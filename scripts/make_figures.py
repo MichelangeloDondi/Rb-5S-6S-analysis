@@ -97,9 +97,17 @@ def fig_power_sweep():
     a1.set_xlabel("power (mW)"); a1.set_ylabel("FWHM (MHz, transition)")
     a1.set_title("C3a: linewidth flat vs power\n(ramp law predicts $\\leq$2% inflation)", fontsize=9)
     a1.legend(fontsize=8)
-    # amplitude log-log with a slope-2 guide
+    # amplitude log-log: a slope-2 (P^2) fit anchored to each peak's own data, so
+    # the guide tracks the points instead of floating beside them
     a2.set_xscale("log"); a2.set_yscale("log")
-    P0 = np.array([25, 225]); a2.plot(P0, 3e-4 * P0 ** 2, "k--", lw=1, label="$\\propto P^2$")
+    Pline = np.array([22.0, 250.0])
+    for i, peak in enumerate(("4121", "4154", "4192", "4207")):
+        d = sorted(by[peak])
+        P = np.array([x[0] for x in d], float)
+        A = np.array([x[3] for x in d], float)
+        logk = np.mean(np.log10(A) - 2.0 * np.log10(P))  # least-squares slope-2 intercept
+        a2.plot(Pline, 10 ** logk * Pline ** 2, "--", color=PEAK_COLOR[peak], lw=1.0,
+                label=r"$\propto P^2$ fit" if i == 0 else None)
     a2.set_xlabel("power (mW)"); a2.set_ylabel("peak amplitude (V)")
     a2.set_title("C3b: amplitude $\\propto P^2$\n(two-photon rate law)", fontsize=9)
     a2.legend(fontsize=8)
