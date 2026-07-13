@@ -1,0 +1,619 @@
+% Bibliography for the Rb 5S->6S two-photon lineshape/broadening papers.
+% 31 entries (consolidated 2026-07-13, digestion turns A-E). Most are VERIFIED
+% from a held PDF (path in each `note`). Identifiers: a DOI is given only where
+% it was read from the PDF or Crossref-confirmed (never a guessed suffix);
+% otherwise the arXiv/HAL eprint is the identifier. Fields still needing a
+% pre-submission check are flagged `VERIFY` in the note (a few published
+% vol/page/DOI for arXiv-sourced entries; Borde/Roy/Ray title/authors).
+% Maintained by hand; see docs/LITERATURE.md for the prose prior-art ledger.
+
+% ======================================================================
+%  Transit-time lineshape (our transit kernel)
+% ======================================================================
+
+@article{biraben1979,
+  author  = {Biraben, F. and Bassini, M. and Cagnac, B.},
+  title   = {Line-shapes in {Doppler}-free two-photon spectroscopy:
+             the effect of finite transit time},
+  journal = {J. Phys. (Paris)},
+  volume  = {40},
+  number  = {5},
+  pages   = {445--455},
+  year    = {1979},
+  note    = {PDF\_papers/Biraben\_1979\_finite-transit-time-two-photon-lineshape.pdf;
+             HAL jpa-00209125. Origin of our transit kernel: the finite-transit
+             Doppler-free two-photon line is a Lorentzian convolved with a
+             two-sided exponential (the central cusp).}
+}
+
+@article{borde1976,
+  author  = {Bord\'e, C. J.},
+  title   = {[Two-photon Doppler-free lineshapes, general transit-time treatment]},
+  journal = {C. R. Acad. Sci. Ser. B},
+  volume  = {282},
+  pages   = {341--344},
+  year    = {1976},
+  note    = {PDF\_papers/Borde\_1976\_general-two-photon-Doppler-free-transit-lineshape.pdf
+             (scanned image, title not machine-recovered -- VERIFY title/authors).
+             The earlier, more general transit-time treatment that Biraben~1979
+             and Lehmann~2021 both simplify.}
+}
+
+@article{lehmann2021,
+  author  = {Lehmann, Kevin K.},
+  title   = {Two-photon absorption lineshapes in the transit-time limit},
+  journal = {J. Chem. Phys.},
+  volume  = {154},
+  number  = {10},
+  pages   = {104105},
+  year    = {2021},
+  doi     = {10.1063/5.0040868},
+  note    = {PDF\_papers/Lehmann\_2021\_transit-time-limited-two-photon-lineshape.pdf.
+             Modern closed-form transit-limit lineshape (the ``Lehmann lineshape'').
+             Its analytic width (NNO example, HWHM 41.2 kHz) is the standard that
+             fixed the M9 transit-MC flux bug -- see docs/transit\_width\_resolved.md.}
+}
+
+% ======================================================================
+%  Collisional (pressure) broadening/shift -- the beta_self expectation
+% ======================================================================
+
+@article{zameroski2014,
+  author  = {Zameroski, Nathan D. and Hager, Gordon D. and
+             Erickson, Christopher J. and Burke, John H.},
+  title   = {Pressure broadening and frequency shift of the
+             $5S_{1/2}\to5D_{5/2}$ and $5S_{1/2}\to7S_{1/2}$ two-photon
+             transitions in $^{85}$Rb by the noble gases and {N$_2$}},
+  journal = {J. Phys. B: At. Mol. Opt. Phys.},
+  volume  = {47},
+  number  = {22},
+  pages   = {225205},
+  year    = {2014},
+  doi     = {10.1088/0953-4075/47/22/225205},
+  note    = {PDF\_papers/Zameroski\_2014\_Rb-5S-5D-7S-pressure-broadening-and-shift.pdf.
+             Nearest measured self-shift series; scaling the 7S self-shift to 6S
+             gives the expected beta\_self(6S) ~1 kHz per 1e12 cm^-3, ~40-100x
+             below our archival bound (consistent, not constraining).}
+}
+
+% ======================================================================
+%  AC-Stark lineshape (novelty positioning) and the <E^2> convention
+% ======================================================================
+
+@article{stalnaker2006,
+  author  = {Stalnaker, J. E. and Budker, D. and Freedman, S. J. and
+             Guzman, J. S. and Rochester, S. M. and Yashchuk, V. V.},
+  title   = {Dynamic {Stark} effect and forbidden-transition spectral lineshapes},
+  journal = {Phys. Rev. A},
+  volume  = {73},
+  number  = {4},
+  pages   = {043416},
+  year    = {2006},
+  doi     = {10.1103/PhysRevA.73.043416},
+  eprint  = {physics/0512111},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Stalnaker\_2006\_dynamic-Stark-forbidden-transition-asymmetric-lineshapes.pdf.
+             Nearest prior art: a spatially-varying AC-Stark shift producing an
+             asymmetric lineshape from which alpha was extracted (standing wave,
+             numerical Bloch). Bounds our novelty claim (we do NOT claim the
+             asymmetry's existence) and supplies the fringe-averaged FM regime.}
+}
+
+@article{grimm2000,
+  author  = {Grimm, Rudolf and Weidem\"uller, Matthias and Ovchinnikov, Yurii B.},
+  title   = {Optical dipole traps for neutral atoms},
+  journal = {Adv. At. Mol. Opt. Phys.},
+  volume  = {42},
+  pages   = {95--170},
+  year    = {2000},
+  eprint  = {physics/9902072},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Grimm\_2000\_optical-dipole-traps-AC-Stark-shift-convention.pdf.
+             The standard AMO <E^2> convention we adopt for S0:
+             Delta E = -(1/4) alpha E0^2 = -alpha I/(2 eps0 c).}
+}
+
+% ======================================================================
+%  Cited but no PDF held (details from citation -- verify before submission)
+% ======================================================================
+
+@article{gokhroo2022,
+  author  = {Gokhroo, Vandna and Le Kien, Fam and Nic Chormaic, S\'ile},
+  title   = {Rubidium atom spectral lineshapes in high intensity electric
+             fields near an optical nanofibre},
+  journal = {J. Phys. B: At. Mol. Opt. Phys.},
+  volume  = {55},
+  number  = {12},
+  pages   = {125301},
+  year    = {2022},
+  eprint  = {2201.06000},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Gokhroo\_2022\_ONF-two-photon-pushing-density-dip\_Paper2-target.pdf.
+             Paper 2 baseline (the ONF/pushing-dip lineshapes to be quantitatively
+             completed). Title verified from the PDF 2026-07-13.}
+}
+
+@misc{steck_rb,
+  author       = {Steck, Daniel A.},
+  title        = {Rubidium 85 and 87 {D} Line Data},
+  howpublished = {available online at \url{https://steck.us/alkalidata}},
+  note         = {Reference atomic constants for Rb (line frequencies, natural
+                  widths, polarizabilities). No PDF held -- standard online ref.}
+}
+
+% ======================================================================
+%  Prior work on THIS line (Rb 5S->6S) -- verified from held PDFs
+% ======================================================================
+
+@article{ayachitula2024,
+  author  = {Ayachitula, R. and Anderson, M. D. and McLaughlin, C. D. and
+             Knize, R. J. and Mungan, C. E. and Lindsay, M. D.},
+  title   = {Precision measurement of hyperfine constants and isotope shift of
+             the {Rb} $6S_{1/2}$ state via a two-photon transition},
+  journal = {Phys. Rev. A},
+  volume  = {110},
+  number  = {2},
+  pages   = {022803},
+  year    = {2024},
+  doi     = {10.1103/PhysRevA.110.022803},
+  note    = {PDF\_papers/Ayachitula\_2024\_Rb-6S-hyperfine-constants-isotope-shift-kHz.pdf.
+             Source of A\_6S\_RB87/85\_HZ in rb5s6s/constants.py (807.355(2),
+             239.065(2) MHz); isotope shift (85-87) -99.189(3) MHz.}
+}
+
+@article{orson2021,
+  author  = {Orson, S. T. and McLaughlin, C. D. and Lindsay, M. D. and Knize, R. J.},
+  title   = {Absolute hyperfine energy levels and isotope shift of {Rb} 5S--6S
+             two-photon transition},
+  journal = {J. Phys. B: At. Mol. Opt. Phys.},
+  volume  = {54},
+  number  = {17},
+  pages   = {175001},
+  year    = {2021},
+  doi     = {10.1088/1361-6455/ac2812},
+  note    = {PDF\_papers/Orson\_2021\_Rb-5S-6S-absolute-hyperfine-isotope-shift.pdf.
+             Source of DELTA\_ALPHA\_AU: they compute alpha\_56=alpha(5S)-alpha(6S)
+             =-1093 a.u. (our +1093). Prior nulls: no AC-Stark and no density
+             shift at 6 MHz resolution. Our stark\_shift\_S0\_mhz reproduces their
+             -0.66 MHz shift to the digit.}
+}
+
+@article{nieddu2019,
+  author  = {Nieddu, T. and Ray, T. and Rajasree, K. S. and Roy, R. and
+             Nic Chormaic, S.},
+  title   = {A simple, narrow, and robust atomic frequency reference at 993 nm
+             exploiting the rubidium $5S_{1/2}$ to $6S_{1/2}$ transition using
+             one-color two-photon excitation},
+  journal = {Opt. Express},
+  volume  = {27},
+  number  = {5},
+  pages   = {6528},
+  year    = {2019},
+  doi     = {10.1364/OE.27.006528},
+  eprint  = {1812.07874},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Nieddu\_2019\_993nm-5S-6S-two-photon-frequency-reference.pdf.
+             OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um,
+             f=150 mm) -- corroborates our w0 re-pin; four peaks FWHM 2.43-2.60 MHz
+             laser-axis (~5 MHz transition). Journal page/DOI VERIFY at submission.}
+}
+
+@article{gomez2005,
+  author  = {Gomez, E. and Baumer, F. and Lange, A. D. and Sprouse, G. D. and
+             Orozco, L. A.},
+  title   = {Lifetime measurement of the $6s$ level of rubidium},
+  journal = {Phys. Rev. A},
+  volume  = {72},
+  number  = {1},
+  pages   = {012502},
+  year    = {2005},
+  doi     = {10.1103/PhysRevA.72.012502},
+  eprint  = {physics/0502090},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Gomez\_2005\_Rb-6S-lifetime-tau-45ns.pdf.
+             tau(6S)=45.57(17) ns -> GAMMA\_NAT\_HZ (3.4926 MHz) in constants.py.}
+}
+
+% ======================================================================
+%  Differential polarizability Delta_alpha(993 nm)
+% ======================================================================
+
+@article{safronova2006,
+  author  = {Safronova, M. S. and Arora, Bindiya and Clark, Charles W.},
+  title   = {Frequency-dependent polarizabilities of alkali-metal atoms from
+             ultraviolet through infrared spectral regions},
+  journal = {Phys. Rev. A},
+  volume  = {73},
+  number  = {2},
+  pages   = {022505},
+  year    = {2006},
+  doi     = {10.1103/PhysRevA.73.022505},
+  eprint  = {physics/0508087},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Safronova\_2006\_alkali-frequency-dependent-polarizabilities.pdf.
+             Dynamic alpha(omega) matrix-element source; the independent-recompute
+             fallback for Delta\_alpha (which we take from Orson 2021).}
+}
+
+@article{martin2019,
+  author  = {Martin, K. W. and Stuhl, B. and Eugenio, J. and Safronova, M. S. and
+             Phelps, G. and Burke, J. H. and Lemke, N. D.},
+  title   = {Frequency shifts due to {Stark} effects on a rubidium two-photon
+             transition},
+  journal = {Phys. Rev. A},
+  volume  = {100},
+  number  = {2},
+  pages   = {023417},
+  year    = {2019},
+  doi     = {10.1103/PhysRevA.100.023417},
+  note    = {PDF\_papers/Martin\_2019\_Rb-778nm-two-photon-Stark-shifts-differential-polarizability.pdf.
+             The 5S-5D differential-polarizability method Orson followed for our
+             5S-6S Delta\_alpha.}
+}
+
+@article{hamilton2023,
+  author  = {Hamilton, R. and Roberts, B. M. and Scholten, S. K. and Locke, C. and
+             Luiten, A. N. and Ginges, J. S. M. and Perrella, C.},
+  title   = {Experimental and theoretical study of dynamic polarizabilities in the
+             $5S_{1/2}$--$5D_{5/2}$ clock transition in rubidium-87 and
+             determination of {E1} matrix elements},
+  journal = {Phys. Rev. A},
+  year    = {2023},
+  eprint  = {2212.10743},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Hamilton\_2023\_Rb-5D-dynamic-polarizability-E1-elements.pdf.
+             Rigor template for the polarizability side (+ magic-lambda idea).
+             Journal vol/page/DOI VERIFY at submission.}
+}
+
+% ======================================================================
+%  Two-photon optical-clock siblings (778 nm 5S-5D; 5S-7S)
+% ======================================================================
+
+@article{martin2018,
+  author  = {Martin, K. W. and Phelps, G. and Lemke, N. D. and Bigelow, M. S. and
+             Stuhl, B. and Wojcik, M. and Holt, M. and Coddington, I. and
+             Bishop, M. W. and Burke, J. H.},
+  title   = {Compact optical atomic clock based on a two-photon transition in
+             rubidium},
+  journal = {Phys. Rev. Applied},
+  volume  = {9},
+  number  = {1},
+  pages   = {014019},
+  year    = {2018},
+  doi     = {10.1103/PhysRevApplied.9.014019},
+  eprint  = {1903.11231},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Martin\_2018\_compact-778nm-two-photon-clock.pdf. Compact-clock
+             motivation for the transition class.}
+}
+
+@article{gerginov2018,
+  author  = {Gerginov, V. and Beloy, K.},
+  title   = {Two-photon optical frequency reference with active ac {Stark} shift
+             cancellation},
+  journal = {Phys. Rev. Applied},
+  volume  = {10},
+  number  = {1},
+  pages   = {014031},
+  year    = {2018},
+  doi     = {10.1103/PhysRevApplied.10.014031},
+  eprint  = {1808.01373},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Gerginov\_2018\_778nm-active-AC-Stark-cancellation.pdf.
+             The suppress-the-shift stance our USE-the-shift method contrasts with.}
+}
+
+@article{newman2021,
+  author  = {Newman, Z. L. and Maurice, V. and Fredrick, C. and Fortier, T. and
+             Leopardi, H. and Hollberg, L. and Diddams, S. A. and Kitching, J. and
+             Hummon, M. T.},
+  title   = {High-performance, compact optical standard},
+  journal = {Opt. Lett.},
+  volume  = {46},
+  number  = {18},
+  pages   = {4702},
+  year    = {2021},
+  eprint  = {2105.00610},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Newman\_2021\_compact-778nm-optical-standard.pdf.
+             State-of-the-art compact 778 nm standard. DOI VERIFY at submission.}
+}
+
+@article{callejo2025,
+  author  = {Callejo, M. and others},
+  title   = {Short-term stability of a microcell optical reference based on the
+             {Rb} atom two-photon transition at 778 nm},
+  journal = {J. Opt. Soc. Am. B},
+  volume  = {42},
+  number  = {1},
+  pages   = {151},
+  year    = {2025},
+  eprint  = {2407.00841},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Callejo\_2025\_778nm-microcell-clock-stability.pdf.
+             Recent microcell landscape. Author list/DOI VERIFY at submission.}
+}
+
+@article{poulin2002,
+  author  = {Poulin, M. and Latrasse, C. and Touahri, D. and T\^etu, M.},
+  title   = {Frequency stability of an optical frequency standard at 192.6 {THz}
+             based on a two-photon transition of rubidium atoms},
+  journal = {Opt. Commun.},
+  volume  = {207},
+  pages   = {233--242},
+  year    = {2002},
+  doi     = {10.1016/S0030-4018(02)01354-8},
+  note    = {PDF\_papers/Poulin\_2002\_1556nm-telecom-Rb-778nm-two-photon-frequency-standard.pdf.
+             Telecom-band (192.6 THz) standard referenced to the Rb two-photon line.
+             Vol/page VERIFY at submission.}
+}
+
+@article{morzynski2013,
+  author  = {Morzy\'nski, P. and Wci\'slo, P. and Ablewski, P. and Gartman, R. and
+             Gawlik, W. and Mas\l{}owski, P. and Nag\'orny, B. and Ozimek, F. and
+             Radzewicz, C. and Witkowski, M. and Ciury\l{}o, R. and Zawada, M.},
+  title   = {Absolute frequency measurement of rubidium 5S--7S two-photon
+             transitions},
+  journal = {Opt. Lett.},
+  volume  = {38},
+  number  = {22},
+  pages   = {4581},
+  year    = {2013},
+  doi     = {10.1364/OL.38.004581},
+  eprint  = {1311.3577},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Morzynski\_2013\_Rb-5S-7S-two-photon-absolute-frequency.pdf.
+             5S-7S sibling; DOI Crossref-verified 2026-07-13.}
+}
+
+% ======================================================================
+%  Method anchors: two-photon review, FM ruler, radiation trapping
+% ======================================================================
+
+@article{biraben2019,
+  author  = {Biraben, Fran\c{c}ois},
+  title   = {The first decades of {Doppler}-free two-photon spectroscopy},
+  journal = {C. R. Phys.},
+  volume  = {20},
+  number  = {7--8},
+  pages   = {671--681},
+  year    = {2019},
+  doi     = {10.1016/j.crhy.2019.04.003},
+  note    = {PDF\_papers/Biraben\_2019\_first-decades-Doppler-free-two-photon-review.pdf.
+             The pioneer's own retrospective review; the Intro history anchor.}
+}
+
+@inproceedings{snadden1996,
+  author    = {Snadden, M. J. and Bell, A. S. and Clarke, R. B. M. and Riis, E.},
+  title     = {Frequency modulation two-photon spectroscopy with a mode-locked
+               laser in laser-cooled {Rb}},
+  booktitle = {Int. Quantum Electronics Conf. (IQEC)},
+  pages     = {paper FM5},
+  year      = {1996},
+  note      = {PDF\_papers/Snadden\_1996\_FM-two-photon-spectroscopy-mode-locked-laser-cold-Rb.pdf.
+               FM two-photon in cold Rb -- EOM-ruler ancestry (with Zapka 1983,
+               Bjorklund 1980). Conference abstract; no DOI.}
+}
+
+@article{fioretti1998,
+  author  = {Fioretti, A. and Molisch, A. F. and M\"uller, J. H. and
+             Verkerk, P. and Allegrini, M.},
+  title   = {Observation of radiation trapping in a dense {Cs} magneto-optical trap},
+  journal = {Opt. Commun.},
+  volume  = {149},
+  number  = {4--6},
+  pages   = {415--422},
+  year    = {1998},
+  doi     = {10.1016/S0030-4018(97)00704-9},
+  note    = {PDF\_papers/Fioretti\_1998\_radiation-trapping-dense-Cs-MOT.pdf.
+             Alkali-cloud radiation-trapping anchor for M7/VI.D. DOI Crossref-verified.}
+}
+
+@article{amy2017,
+  author  = {Amy, L. and Lenci, L. and Villalba, S. and Failache, H. and Lezama, A.},
+  title   = {Two-photon excitation of rubidium atoms inside porous glass},
+  journal = {Phys. Rev. A},
+  year    = {2017},
+  eprint  = {1706.04868},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Amy\_2017\_two-photon-5S-5D-Rb-in-porous-glass.pdf.
+             Two-photon Rb under confinement (context). Vol/page/DOI VERIFY.}
+}
+
+% ======================================================================
+%  Collisional-broadening theory / self-broadening (beta_self framing)
+% ======================================================================
+
+@article{sautenkov2026,
+  author  = {Sautenkov, V. and Saakyan, S. and Bobrov, A. and Vilshanskaya, E. and
+             Zelener, B. B.},
+  title   = {Collision and static widths of self-broadened line shapes in
+             optically saturated high-density atomic vapor},
+  year    = {2026},
+  eprint  = {2607.07303},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Sautenkov\_2026\_self-broadened-lineshapes-optically-saturated-high-density-Rb.pdf.
+             Rb D2 RESONANCE-line self-broadening (static+collision width): the
+             resonance-vs-vdW contrast for why our S->S self term is small.}
+}
+
+@article{bala2026,
+  author  = {Bala, Renu and Linek, Adam and Witkowski, Marcin and
+             \.Zuchowski, Piotr S. and Zawada, Micha\l{} and Julienne, Paul S. and
+             Ciury\l{}o, Roman},
+  title   = {Isotopic effect on collisional widths and shifts of {Hg} clock
+             transition induced by cold {Rb} atoms},
+  year    = {2026},
+  eprint  = {2605.01908},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Bala\_2026\_isotopic-effect-collisional-widths-shifts-Hg-clock-by-Rb.pdf.
+             Isotope-dependence-of-collisional-width framework: why beta\_85=beta\_87
+             is expected (thermal impact, tiny reduced-mass difference).}
+}
+
+@article{spiegelman2022,
+  author  = {Spiegelman, F. and Allard, N. F. and Kielkopf, J. F.},
+  title   = {Collision-induced satellite in the blue wing of the Balmer-$\beta$
+             line and consequences on the Balmer series},
+  journal = {Astron. Astrophys.},
+  year    = {2022},
+  eprint  = {2201.03294},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Spiegelman-Allard-Kielkopf\_2022\_collision-satellite-Balmer-beta-wing.pdf.
+             Allard-Kielkopf broadening lineage (quasistatic satellites); FEED.}
+}
+
+% ======================================================================
+%  OIST group lineage (apparatus/context)
+% ======================================================================
+
+@article{rajasree2020,
+  author  = {Rajasree, K. S. and Ray, T. and Karlsson, K. and Everett, J. L. and
+             Nic Chormaic, S.},
+  title   = {Generation of cold {Rydberg} atoms at submicron distances from an
+             optical nanofiber},
+  journal = {Phys. Rev. Research},
+  volume  = {2},
+  number  = {1},
+  pages   = {012038},
+  year    = {2020},
+  eprint  = {1907.10802},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Rajasree\_2020\_cold-Rydberg-atoms-near-nanofiber.pdf (+ OIST
+             thesis). Confirms the 128 um beam + Steck N(T) chain. DOI VERIFY.}
+}
+
+@article{roy2017,
+  author  = {Roy, R. and others},
+  title   = {[1033 nm {Yb}-fiber-laser frequency reference -- VERIFY title/authors]},
+  year    = {2017},
+  eprint  = {1612.01815},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Roy\_2017\_1033nm-Yb-fiber-laser-frequency-reference.pdf.
+             Group lineage; title/journal VERIFY.}
+}
+
+@article{ray2020,
+  author  = {Ray, T. and others},
+  title   = {[516 nm electric-quadrupole transition near a nanofiber --
+             VERIFY title/authors]},
+  year    = {2020},
+  eprint  = {2002.01658},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Ray\_2020\_516nm-electric-quadrupole-nanofiber.pdf.
+             Group lineage; title/journal VERIFY.}
+}
+
+% ======================================================================
+%  2024-2026 landscape (Paper-1 positioning + Ti:Sapph future transitions)
+%  arXiv IDs verified 2026-07-13; new APS "coden" DOIs left to arXiv.
+% ======================================================================
+
+@article{andeweg2026,
+  author  = {Andeweg, Yorick and Kitching, John and Hummon, Matthew T.},
+  title   = {Active compensation of the {AC} {Stark} shift in a two-photon
+             rubidium optical frequency reference using power modulation},
+  journal = {Phys. Rev. Applied},
+  volume  = {25},
+  number  = {3},
+  pages   = {034059},
+  year    = {2026},
+  eprint  = {2511.19702},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Andeweg\_2026\_778nm-active-AC-Stark-power-modulation-NIST.pdf.
+             Newest competitor: active power-modulation ac-Stark suppression (x1000)
+             on 778 nm 5S-5D. The passive-vs-active contrast for our method.
+             (APS "coden" DOI 10.1103/25md-vv43 -- verify at cite; arXiv is the handle.)}
+}
+
+@article{ahern2025,
+  author  = {Ahern, E. J. and Scholten, S. K. and Locke, C. and
+             Bourbeau H\'ebert, N. and White, B. and Luiten, A. N. and Perrella, C.},
+  title   = {Tailoring the stability of a two-color, two-photon rubidium frequency
+             standard},
+  journal = {Phys. Rev. Applied},
+  volume  = {23},
+  number  = {4},
+  pages   = {044025},
+  year    = {2025},
+  doi     = {10.1103/PhysRevApplied.23.044025},
+  eprint  = {2410.16654},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Ahern\_2025\_778nm-5S5D-two-color-clock-stability.pdf.
+             Two-color 5S-5D standard, 6e-14/sqrt(tau), light-shift-limited long term.}
+}
+
+@article{antypas2018,
+  author  = {Antypas, Dionysios and Fabricant, Anne and Budker, Dmitry},
+  title   = {Lineshape-asymmetry elimination in weak atomic transitions driven by
+             an intense standing wave field},
+  journal = {Opt. Lett.},
+  year    = {2018},
+  eprint  = {1803.05884},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Antypas\_2018\_lineshape-asymmetry-elimination-Yb.pdf.
+             The ac-Stark-asymmetry ELIMINATION precedent (Yb) our method INVERTS
+             into a reference-free observable. Vol/page/DOI VERIFY.}
+}
+
+@article{safronova2004,
+  author  = {Safronova, M. S. and Williams, Carl J. and Clark, Charles W.},
+  title   = {Relativistic many-body calculations of electric-dipole matrix
+             elements, lifetimes, and polarizabilities in rubidium},
+  journal = {Phys. Rev. A},
+  volume  = {69},
+  number  = {2},
+  pages   = {022509},
+  year    = {2004},
+  doi     = {10.1103/PhysRevA.69.022509},
+  eprint  = {physics/0307057},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Safronova\_2004\_Rb-matrix-elements-lifetimes-polarizabilities.pdf.
+             Benchmark Rb ns matrix elements/lifetimes/polarizabilities -- carries the
+             6S dynamic polarizability; the stronger Delta\_alpha anchor for 6S.}
+}
+
+@article{chevrollier2012,
+  author  = {Chevrollier, Martine},
+  title   = {Radiation trapping and {L\'evy} flights in atomic vapours: an
+             introductory review},
+  journal = {Contemp. Phys.},
+  volume  = {53},
+  number  = {3},
+  pages   = {227--239},
+  year    = {2012},
+  eprint  = {1311.0253},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Chevrollier\_2012\_radiation-trapping-Levy-flights-review.pdf.
+             The dedicated radiation-trapping / Levy-flight review for M7/VI.D. DOI VERIFY.}
+}
+
+@article{araujo2021,
+  author  = {Ara\'ujo, M. O. and Passerat de Silans, T. and Kaiser, R.},
+  title   = {L\'evy flights of photons with infinite mean free path},
+  journal = {Phys. Rev. E},
+  volume  = {103},
+  number  = {1},
+  pages   = {L010101},
+  year    = {2021},
+  doi     = {10.1103/PhysRevE.103.L010101},
+  eprint  = {2008.03506},
+  archivePrefix = {arXiv},
+  note    = {PDF\_papers/Araujo\_2021\_Levy-flights-photons-He-broadened-hot-Rb.pdf.
+             Levy flights in He-broadened hot Rb (alpha~0.5) -- closest to a heated cell.}
+}
+
+@article{bandi2025,
+  author  = {Obaze-Adeleke, A. C. and Semon, B. and Bandi, T. N.},
+  title   = {A comprehensive review of rubidium two-photon vapor cell optical clock:
+             long-term performance limitations and potential improvements},
+  journal = {Photonics},
+  volume  = {12},
+  number  = {5},
+  pages   = {513},
+  year    = {2025},
+  doi     = {10.3390/photonics12050513},
+  note    = {MDPI open access (not yet held as PDF; grab from the page). The single
+             best landscape/systematics-benchmark review for the Rb two-photon clock.}
+}

@@ -1,0 +1,13 @@
+quantity,key,value,err,unit,status
+kappa,shared,0.000,8.376,"MHz per W (S0 = kappa*P, transition axis); err is chi2-INFLATED",BOUND
+kappa_err_raw,shared,4.019,2.08,value=un-inflated kappa error; err=inflation factor sqrt(chi2_red) applied to get kappa_err,DIAGNOSTIC
+kappa_ub95,shared,13.778,,"one-sided 95% upper bound on kappa (MHz per W), from the chi2-inflated error",BOUND
+S0_225mW_fit,shared,0.000,,"fitted on-axis AC-Stark shift at 225 mW (MHz, transition)",BOUND
+S0_225mW_ub95,shared,3.100,,"95% upper bound on S0 at 225 mW (MHz), chi2-INFLATED -- the archival BOUND",BOUND
+S0_225mW_ub95_raw,shared,1.488,,un-inflated 95% bound (MHz); the chi2-inflated bound above is the conservative one we quote (chi2>1 over-dispersion). Both exceed the ~0.6 MHz prediction,DIAGNOSTIC
+S0_225mW_pred,shared,0.587,,"predicted S0 at 225 mW (w0=50um prior, rho=1) for comparison",CALIB
+chi2_red,fit,4.343,,over 20 width points,DIAGNOSTIC
+core_sigma_laser,993.4121nm,0.531,,"per-peak power-independent core width (MHz, transition)",PRELIM
+core_sigma_laser,993.4154nm,0.523,,"per-peak power-independent core width (MHz, transition)",PRELIM
+core_sigma_laser,993.4192nm,0.819,,"per-peak power-independent core width (MHz, transition)",PRELIM
+core_sigma_laser,993.4207nm,0.824,,"per-peak power-independent core width (MHz, transition)",PRELIM
