@@ -183,14 +183,18 @@ correlation); $\gamma_\text{coll}$ enters the fits in `linefit.py`/`beta.py`.
 ### 2.3 Laser linewidth — and why it enters *twice*
 
 Let the instantaneous laser frequency be $\nu_L(t)=\bar\nu_L+\delta(t)$, with
-$\delta$ the frequency jitter. For the counter-propagating pair the two-photon
-detuning (using §1.1) is
+$\delta$ the frequency jitter. Unlike the Doppler shift (§1.1), which has
+opposite signs for the two counter-propagating photons and therefore cancels,
+the laser-frequency fluctuation is common to both photons — the same source,
+retro-reflected onto itself — and therefore adds. For the counter-propagating
+pair the two-photon detuning is
 
 $$\big[\nu_L(1+\tfrac{v}{c})\big]+\big[\nu_L(1-\tfrac{v}{c})\big]-\nu_0
 =2\nu_L-\nu_0=2\big(\bar\nu_L-\tfrac{\nu_0}{2}\big)+2\delta(t)$$
 
-The jitter appears as $2\delta$: **laser noise enters the two-photon line with
-twice its single-pass magnitude.** If $\delta$ is the sum of many small
+confirming the jitter appears as $2\delta$: the two-photon detuning is **twice
+as sensitive to laser-frequency noise** as a single pass. If $\delta$ is the
+sum of many small
 independent wander sources, the central-limit theorem makes its distribution
 Gaussian, so we model the laser kernel as a **Gaussian** $G(\nu)$ (a Lorentzian
 variant is retained as a model-form check, §2.5). **No independent diagnostic
@@ -218,10 +222,11 @@ approximation
 
 $$f_V\approx 0.5346f_L+\sqrt{0.2166f_L^2+f_G^2}$$
 
-**The property that dominates the statistics:** near the core, a slightly wider
-Gaussian mimics a slightly wider Lorentzian, so in any real fit
-$\sigma_\text{laser}$ and $\gamma_\text{coll}$ are strongly anti-correlated (we
-measure $\mathrm{corr}\approx-0.85$). The *total* width is well determined; the
+**The property that dominates the statistics:** near the line centre, modest
+increases in either the Gaussian or Lorentzian width produce very similar
+changes in the Voigt profile, so in any real fit $\sigma_\text{laser}$ and
+$\gamma_\text{coll}$ are strongly anti-correlated (we measure
+$\mathrm{corr}\approx-0.85$). The *total* width is well determined; the
 *split between the two* is fragile. Section 4 is largely about handling this
 honestly. *Code:* `model_profile()`, `voigt_fwhm()`.
 
