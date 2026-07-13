@@ -1,0 +1,19 @@
+# Generated outputs: results/ IS committed (small, ~180 KB) so the README's
+# claims are verifiable without a run (review round 3). Regenerate with the
+# scripts; the committed copy is the documented run. Only the huge raw QC dump
+# stays out.
+results/qc_metrics.csv
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# macOS
+.DS_Store
+
+# source-literature PDFs (possibly copyrighted): keep the index + bib, not the PDFs
+PDF_papers/*
+!PDF_papers/README.md

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rb5s6s"
+version = "0.1.0"
+description = "From-scratch analysis of the OIST Rb 5S->6S two-photon lineshape campaigns (2025 archival + 2026 top-up)"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=1.5",
+    "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["rb5s6s"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: high-statistics closure test, skipped by default; run with --runslow (CI always does)",
+]

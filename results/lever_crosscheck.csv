@@ -1,0 +1,48 @@
+quantity,key,value,err,unit,status
+beta_crosscheck,85Rb,0.0355,0.0036,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
+beta_err_modelform,85Rb,0.0326,,model-form grid spread (max-min),BOUND
+beta_err_transit,85Rb,0.0326,,transit axis (|Voigt - Lehmann|),BOUND
+beta_err_sharing,85Rb,0.0008,,sigma-sharing axis (|per_T - per_block|),BOUND
+beta_w0_band,85Rb,0.0025,0.0547,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_loo_peak,85Rb,0.0069,,largest |dbeta| dropping one PEAK -- robustness (peak 4192),DIAGNOSTIC
+beta_loo_temp,85Rb,0.0947,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
+beta_lever_probe_130,85Rb,0.0139,-0.0217,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
+beta_crosscheck,87Rb,0.0360,0.0041,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
+beta_err_modelform,87Rb,0.0336,,model-form grid spread (max-min),BOUND
+beta_err_transit,87Rb,0.0320,,transit axis (|Voigt - Lehmann|),BOUND
+beta_err_sharing,87Rb,0.0016,,sigma-sharing axis (|per_T - per_block|),BOUND
+beta_w0_band,87Rb,0.0035,0.0548,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_loo_peak,87Rb,0.0049,,largest |dbeta| dropping one PEAK -- robustness (peak 4207),DIAGNOSTIC
+beta_loo_temp,87Rb,0.0305,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
+beta_lever_probe_130,87Rb,0.0159,-0.0200,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
+beta_grid_exp_per_T,85Rb,0.0355,0.0036,chi2_red=0.853,PRELIM
+beta_grid_exp_per_T,87Rb,0.0360,0.0041,chi2_red=0.853,PRELIM
+beta_grid_gaussian_per_T,85Rb,0.0681,0.0044,chi2_red=0.863,PRELIM
+beta_grid_gaussian_per_T,87Rb,0.0680,0.0047,chi2_red=0.863,PRELIM
+beta_grid_exp_per_block,85Rb,0.0363,0.0041,chi2_red=0.850,PRELIM
+beta_grid_exp_per_block,87Rb,0.0344,0.0061,chi2_red=0.850,PRELIM
+beta_loo_drop,4121|85Rb,0.0348,-0.0008,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4121|87Rb,0.0382,+0.0022,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4121|70C,1.459,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4121|90C,1.655,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4121|110C,1.081,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4154|85Rb,0.0368,+0.0013,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4154|87Rb,0.0354,-0.0006,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4154|70C,1.545,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4154|90C,1.619,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4154|110C,1.078,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4192|85Rb,0.0286,-0.0069,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4192|87Rb,0.0356,-0.0004,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4192|70C,1.411,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4192|90C,1.490,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4192|110C,1.088,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4207|85Rb,0.0358,+0.0003,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4207|87Rb,0.0311,-0.0049,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4207|70C,1.461,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4207|90C,1.713,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4207|110C,1.032,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+gamma_coll_mean_vs_T,70C,0.245,0.56,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_coll_mean_vs_T,90C,0.231,2.45,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_coll_mean_vs_T,110C,0.289,9.10,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_coll_mean_vs_T,130C,0.454,29.43,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_rise_factor,70to130,1.85,52.5,"value=gamma(130)/gamma(70); err=density ratio -- far sub-linear => floor, beta is a BOUND",MEASURED
