@@ -71,17 +71,21 @@ axis and would read $1.746$ MHz on the laser axis.
 
 ## 1. The measurement
 
-A hot Rb vapour cell is illuminated by a 993 nm laser beam retro-reflected
-onto itself. An atom absorbs one photon from each direction and climbs
-$5S_{1/2}\to 6S_{1/2}$. It then cascades back down, $6S\to 5P_{1/2}\to 5S$,
-emitting a 795 nm photon that we count on a PMT behind 50 dB of 795 nm
-filtering. The laser is slowly swept in frequency; the fluorescence versus
-time is one "trace". Four hyperfine components are measured, labelled by
-wavelength: 993.4207 nm ($^{87}$Rb $F{=}2\to2$), 993.4192 nm ($^{85}$Rb
-$F{=}3\to3$), 993.4154 nm ($^{85}$Rb $F{=}2\to2$), 993.4121 nm ($^{87}$Rb
-$F{=}1\to1$). Throughout we write these full labels; in code and filenames the
-last four digits ("4207") are the key, and `constants.peak_label()` renders the
-full form for all output.
+A hot Rb vapour cell is illuminated by a 993 nm laser beam retro-reflected onto
+itself, forming two counter-propagating fields. The laser frequency is slowly
+swept across the two-photon $5S_{1/2}\to 6S_{1/2}$ transition while the
+resulting fluorescence is recorded versus time — one such record is a
+"trace" (mapped onto a frequency axis in §3). The observed narrow resonance
+arises from atoms absorbing one photon from each counter-propagating beam, for
+which the first-order Doppler shifts cancel (§1.1). The excited $6S_{1/2}$
+state can decay through several channels; here we detect only the
+$6S\to 5P_{1/2}\to 5S$ cascade, collecting the emitted 795 nm photons on a PMT
+behind 50 dB of 795 nm filtering. Four hyperfine components are measured,
+labelled by wavelength: 993.4207 nm ($^{87}$Rb $F{=}2\to2$), 993.4192 nm
+($^{85}$Rb $F{=}3\to3$), 993.4154 nm ($^{85}$Rb $F{=}2\to2$), 993.4121 nm
+($^{87}$Rb $F{=}1\to1$). Throughout we write these full labels; in code and
+filenames the last four digits ("4207") are the key, and `constants.peak_label()`
+renders the full form for all output.
 
 ### 1.1 Why two counter-propagating photons kill the Doppler width
 
@@ -139,12 +143,17 @@ $$\boxed{ \Gamma_\text{nat}=\frac{1}{2\pi\tau} }
  = \frac{1}{2\pi(45.57\ \text{ns})}=3.4926\ \text{MHz}$$
 
 Two features matter later: the Lorentzian has slowly-decaying **wings**
-($\propto 1/\nu^2$, far fatter than a Gaussian), and — a subtlety we inherited
-— the $6S\to5P\to5S$ cascade adds **no** width to *this* line, because $\tau$
-(hence $\Gamma_\text{nat}$) already includes every decay channel of $6S$; the
-$5P$ width belongs to the *emitted* 795 nm photon, not to the $5S\to6S$
-resonance. *Code:* `lorentzian()` in `rb5s6s/lineshape.py`; $\Gamma_\text{nat}$
-computed from $\tau$ in `constants.py`.
+($\propto 1/\nu^2$, far fatter than a Gaussian), and — a subtlety worth stating
+precisely — the $6S\to5P\to5S$ cascade adds **no** width to *this* line. The
+natural linewidth of the $5S\to6S$ transition is set by the lifetime of the
+excited $6S$ state; that measured $6S$ lifetime already includes *all* of its
+radiative decay channels (§1), so the subsequent $5P\to5S$ decay affects only
+the linewidth of the *emitted* 795 nm fluorescence, not that of the excitation
+resonance. Put differently: the transition whose frequency is scanned (the
+$5S\to6S$ two-photon resonance) determines the measured linewidth, not the
+transition used for detection — the PMT is simply a population monitor for the
+excited state ($6S$). *Code:* `lorentzian()` in `rb5s6s/lineshape.py`;
+$\Gamma_\text{nat}$ computed from $\tau$ in `constants.py`.
 
 ### 2.2 Collisional broadening — the same Lorentzian, grown by density
 
@@ -256,6 +265,17 @@ $\sim1.2$ MHz at the $50\ \mu$m prior — so large that at 32 µm
 natural$\otimes$transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ (§5).
+
+**Independent corroboration.** The same 993 nm beamline was measured directly by
+Nieddu (2019, Opt. Express and OIST thesis) and by Rajasree-KP (2020, OIST
+thesis), both reporting a $1/e^2$ beam diameter of 128 µm with the same $f=150$
+mm focusing lens — i.e. $w_0=64$ µm, with the same 3 mm EOM aperture truncating
+the input beam that the naive (untruncated) estimate misses. That direct
+measurement lands at the top of the transit-inferred 45–70 µm band and
+independently excludes 32 µm, agreeing with the corrected transit physics on
+$w_0\approx50$–64 µm. Nieddu additionally reports the same four two-photon peaks
+at 2.43–2.60 MHz FWHM (laser axis, $\approx5$ MHz transition axis) with a
+locked laser — consistent with the archival $\approx5.25$ MHz line.
 
 The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a

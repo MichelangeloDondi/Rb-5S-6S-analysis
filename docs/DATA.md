@@ -272,7 +272,7 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
   clean decision. The `qc_reason` column now records this concretely.
 
 - **Transit-MC flux bug fixed + w₀ re-pinned 32 → 50 µm (2026-07-13; full detail
-  in `docs/transit_width_resolved.md`).** The M9 transit Monte-Carlo was missing
+  in `docs/notes/transit_width_resolved.md`).** The M9 transit Monte-Carlo was missing
   the atom-crossing flux factor and ran ~2× too narrow; the corrected transit
   (validated against Lehmann's 41.2 kHz NNO example) excludes the 32 µm nominal
   and re-centres w₀ to ~50 µm. Every w₀-conditional fit was re-run; the
@@ -280,23 +280,12 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
   are unchanged. An earlier "w₀ ≈ 90 µm" note was a spurious factor-of-2 —
   retracted.
 
-- **Literature provenance dig (2026-07-13, digestion turn A) — three findings.**
-  (a) **Direct w₀ measurement corroborates the re-pin.** Nieddu 2019 (his
-  Opt. Express paper AND his OIST thesis) and the Rajasree-KP 2020 OIST thesis
-  all quote the focused 993 nm cell beam as a **1/e² diameter of 128 µm → w₀ =
-  64 µm**, same f = 150 mm lens. A direct measurement at the top of the
-  transit-inferred 45–70 µm band, independently killing the 32 µm nominal. Kept
-  50 µm as the central prior (user call; 2025 alignment not guaranteed identical),
-  archival range now w₀ ~ 50–64 µm. (b) **The saved "Nieddu 2.5 MHz" Q&A note is
-  DEBUNKED** (it was UNVERIFIED input). The actual Nieddu paper fits the same four
-  two-photon peaks at FWHM **2.43–2.60 MHz on the laser axis = ~5 MHz transition
-  axis** — a legitimate two-photon linewidth CONSISTENT with our archival ~5.25
-  MHz, not "inconsistent with atomic physics." The note wrongly used the 795 nm
-  *detection*-photon D1 width (~5.75 MHz) as a floor on the *two-photon resonance*
-  width — a category error (the resonance is scanned on the 993 nm laser; the D1
-  emission width is the detection channel, irrelevant to the scan). So Nieddu 2019
-  is an external corroboration of our line width, not a puzzle. (c) **N(T) chain
-  confirmed:** `rb5s6s/density.py` uses the Steck/Nesmeyanov liquid-Rb correlation
+- **Literature provenance dig (2026-07-13, digestion turn A).** The Nieddu 2019 /
+  Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm) and the resolution
+  of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
+  `docs/LITERATURE.md` §6a — both external corroborations of the archival w₀ re-pin
+  and the observed line width, not raised here to avoid duplicating that entry.
+  **N(T) chain confirmed:** `rb5s6s/density.py` uses the Steck/Nesmeyanov liquid-Rb correlation
   + ideal gas — exactly the T→P→N chain the theses use (Rajasree cites Steck); no
   change. The June-2025 `Lab_plan` is a 4-week project-management doc (planned
   40–80 °C; the campaign actually went to 130 °C) and does NOT pin the beam

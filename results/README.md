@@ -11,7 +11,7 @@ run last in the pipeline) so the caveat travels *with the number* into any plot
 or table — a bound never reads as a measurement. The controlled vocabulary:
 **`BOUND`** (a limit, NOT a measurement — β_self, σ_laser, S₀; conditional on the
 OPEN beam waist w₀, now re-centred to ~50 µm after the transit-MC flux bug was
-fixed and propagated — see `docs/transit_width_resolved.md`); **`NULL`**
+fixed and propagated — see `docs/notes/transit_width_resolved.md`); **`NULL`**
 (below detection / no model preference); **`MEASURED`** (a genuine result — the
 frequency rate, the P² scaling, the γ-floor); **`PRELIM`** (a model-dependent
 cross-check superseded by a BOUND headline); **`ARTIFACT`** (identified noise,

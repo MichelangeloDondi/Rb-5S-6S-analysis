@@ -47,7 +47,7 @@ def main() -> int:
       "$w_0$-conditional because the transit vs $\\sigma_\\text{laser}$ degeneracy "
       "means the archival line cannot pin $w_0$ itself — that is the knife-edge's job. "
       "An earlier note inferred $w_0\\approx90$ µm from a second (spurious) factor-of-2; "
-      "retracted — see `docs/transit_width_resolved.md`, "
+      "retracted — see `docs/notes/transit_width_resolved.md`, "
       "`literature_food_for_thought.md`.\n")
 
     # ---- C1: beta_self ----
