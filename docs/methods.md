@@ -193,12 +193,17 @@ The jitter appears as $2\delta$: **laser noise enters the two-photon line with
 twice its single-pass magnitude.** If $\delta$ is the sum of many small
 independent wander sources, the central-limit theorem makes its distribution
 Gaussian, so we model the laser kernel as a **Gaussian** $G(\nu)$ (a Lorentzian
-variant is retained as a model-form check, §2.5). The 2025 lock was
-misconfigured; one deliverable (C2) is to characterize that epoch's
-$\sigma_\text{laser}$ — from the archival data an **upper bound** (it is
-degenerate with the transit width; see §2.5 and §5), to be turned into a
-measurement by the October knife-edge $w_0$. *Code:* `gaussian()`;
-`sigma_laser` in the fits (already carrying the factor 2).
+variant is retained as a model-form check, §2.5). **No independent diagnostic
+of the laser's jitter exists for either epoch** — no reference-cavity beat
+note or self-heterodyne measurement was recorded — so $\sigma_\text{laser}$ is
+inferred purely from the fitted lineshape, never benchmarked against a
+separate instrument. The 2025 lock was misconfigured; one deliverable (C2) is
+to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
+**upper bound** (it is degenerate with the transit width; see §2.5 and §5).
+The October knife-edge $w_0$ turns this into a measurement by removing the
+transit degeneracy, not by adding an independent check on the laser itself —
+$\sigma_\text{laser}$ stays a lineshape-fit result throughout. *Code:*
+`gaussian()`; `sigma_laser` in the fits (already carrying the factor 2).
 
 ### 2.4 The Voigt profile — Lorentzian $\otimes$ Gaussian
 
