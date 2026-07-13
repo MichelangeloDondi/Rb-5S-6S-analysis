@@ -157,8 +157,9 @@ $\Gamma_\text{nat}$ computed from $\tau$ in `constants.py`.
 
 ### 2.2 Collisional broadening — the same Lorentzian, grown by density
 
-In the **impact approximation**, a collision with another Rb atom randomizes
-the optical phase in a time much shorter than the mean time between collisions.
+In the **impact approximation** (Baranger, *Phys. Rev.* **112**, 855 (1958)),
+a collision with another Rb atom randomizes the optical phase in a time much
+shorter than the mean time between collisions.
 Random phase interruptions at mean rate $1/\tau_c$ are, statistically,
 indistinguishable from an extra decay channel: they add a term $1/\tau_c$ to
 the coherence decay rate. The line therefore *stays Lorentzian* and its width
