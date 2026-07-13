@@ -116,7 +116,7 @@ the archival brackets into measurements, so several sections are written as
 
 ## II. The two-epoch design (methodological spine)
 
-> **First-pass prose drafted** in [`paper1_draft_II_two_epoch.md`](paper1_draft_II_two_epoch.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/II_two_epoch.md`](paper1/drafts/II_two_epoch.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
 - **Epoch 1 (2025, this archive):** lock drifts ~MHz/min. Centres dead → *shapes* and
   *relative* structure survive; every per-scan centre is a free nuisance. What this
@@ -168,7 +168,7 @@ the archival brackets into measurements, so several sections are written as
 
 ## V. Analysis
 
-> **First-pass prose drafted** in [`paper1_draft_V_analysis.md`](paper1_draft_V_analysis.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/V_analysis.md`](paper1/drafts/V_analysis.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
 - **Frequency axis (MEASURED-HERE):** EOM sidebands as a ruler → 0.04257(5) MHz/ms
   laser-axis (0.08514 transition), per-block, sweep linear to <0.4%. The fold-robust
@@ -188,7 +188,7 @@ the archival brackets into measurements, so several sections are written as
 
 ### VI.A Collisional self-broadening $\beta_\text{self}$ — a bound *(headline archival result)* — Figs. 1, 5, 6
 
-> **First-pass prose drafted** in [`paper1_draft_VI-A_beta.md`](paper1_draft_VI-A_beta.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/VI-A_beta.md`](paper1/drafts/VI-A_beta.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
 - **Model-independent width-slope bound** (the headline): raw widths are non-monotonic
   in density for 3/4 peaks — impossible for real collisions — because between-block
@@ -224,7 +224,7 @@ the archival brackets into measurements, so several sections are written as
 
 ### VI.C Power sweep — the ramp-law predictions confirmed — Fig. 2
 
-> **First-pass prose drafted** (with §VI.D) in [`paper1_draft_VI-CD_power_stark.md`](paper1_draft_VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
 - **C3a** linewidth flat ($\lesssim2\%$ over $9\times$ power — the ramp adds
   $\propto S_0^2$, negligible). **C3b** amplitude $\propto P^2$ (log-log slopes
@@ -235,7 +235,7 @@ the archival brackets into measurements, so several sections are written as
 
 ### VI.D AC-Stark coefficient — a bound from the power lever — (Fig. 2 inset / new panel)
 
-> **First-pass prose drafted** (with §VI.C) in [`paper1_draft_VI-CD_power_stark.md`](paper1_draft_VI-CD_power_stark.md).
+> **First-pass prose drafted** (with §VI.C) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md).
 
 - Joint fit of one $\kappa$ ($S_0=\kappa P$) to the four peaks' width-vs-power:
   **$S_0(225\text{ mW}) < 3.1$ MHz (95%)**, fit $0.0$, consistent with the predicted

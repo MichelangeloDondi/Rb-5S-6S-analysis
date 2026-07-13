@@ -54,7 +54,7 @@ correction to fold into the ramp MC. CALCULATED 2026-07-12.
 ## 2. Collision-rate series — calibrates what β_self should BE
 
 **Zameroski et al., J. Phys. B 47, 225205 (2014)** — abstract/indices
-VERIFIED; full-text digits TO-PULL (paywalled; university access or Zohreh).
+VERIFIED; full-text digits TO-PULL (paywalled; needs university library access).
 Measured Rb 5S→7S and 5S→5D broadening/shift by noble gases + N₂, plus
 self-rates. **Rb–Rb self-shift of 5S→7S: −17.82(81) kHz/mTorr.**
 
@@ -199,7 +199,7 @@ archival bounds refine).
   * **Beam geometry:** plano-convex L1, f₁ = 150 mm, focused **1/e² beam diameter
     = 128 µm ⇒ w₀ = 64 µm** ("measured to be 128 µm" in the thesis). This is the
     direct beam measurement that corroborates our transit-physics w₀ re-pin (32 µm
-    is excluded; archival w₀ ~ 50–64 µm — see `docs/transit_width_resolved.md`).
+    is excluded; archival w₀ ~ 50–64 µm — see `docs/notes/transit_width_resolved.md`).
   * **Line width:** the four two-photon peaks fit to FWHM **2.43–2.60 MHz on the
     laser axis = ~5 MHz transition axis** — CONSISTENT with our archival ~5.25 MHz
     (an external corroboration of the observed width). Their reference laser had a

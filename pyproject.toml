@@ -4,15 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rb5s6s"
-version = "0.1.0"
+version = "1.0.0"
 description = "From-scratch analysis of the OIST Rb 5S->6S two-photon lineshape campaigns (2025 archival + 2026 top-up)"
+readme = "README.md"
 requires-python = ">=3.9"
+authors = [
+    { name = "Michelangelo Dondi" },
+]
 dependencies = [
     "numpy>=1.24",
     "scipy>=1.10",
     "pandas>=1.5",
     "matplotlib>=3.6",
 ]
+
+[project.urls]
+Repository = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis"
 
 [project.optional-dependencies]
 dev = ["pytest>=7"]

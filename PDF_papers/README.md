@@ -16,7 +16,7 @@ pass per turn); `DONE` items have been folded into `docs/LITERATURE.md` /
 |---|---|---|---|
 | `Biraben_1979_finite-transit-time-two-photon-lineshape.pdf` | biraben1979 | the original Lorentzian ⊗ double-exponential transit line | DONE (transit kernel) |
 | `Borde_1976_general-two-photon-Doppler-free-transit-lineshape.pdf` | borde1976 | general treatment; the *C. R. Acad. Sci. B* **282**, 341 two-photon note (scan — we DO hold a copy, contra the intake digest's "not digitized") | DONE (App. B lineage) |
-| `Lehmann_2021_transit-time-limited-two-photon-lineshape.pdf` | lehmann2021 | closed-form transit limit; its 41.2 kHz NNO example VALIDATED the 2026-07-13 flux-bug fix (`docs/transit_width_resolved.md`) | DONE |
+| `Lehmann_2021_transit-time-limited-two-photon-lineshape.pdf` | lehmann2021 | closed-form transit limit; its 41.2 kHz NNO example VALIDATED the 2026-07-13 flux-bug fix (`docs/notes/transit_width_resolved.md`) | DONE |
 | `Stalnaker_2006_dynamic-Stark-forbidden-transition-asymmetric-lineshapes.pdf` | stalnaker2006 | AC-Stark lineshape asymmetry prior art; FM/fringe-averaging regime | DONE |
 | `Grimm_2000_optical-dipole-traps-AC-Stark-shift-convention.pdf` | grimm2000 | the pinned ⟨E²⟩/light-shift convention | DONE |
 | `Zameroski_2014_Rb-5S-5D-7S-pressure-broadening-and-shift.pdf` | zameroski2014 | 7S self-broadening 129 kHz/mTorr ≈ 5 kHz per 10¹² cm⁻³ — the β_self scale anchor | DONE |
