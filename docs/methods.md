@@ -1123,7 +1123,7 @@ tests/    113-test battery (104 fast ~22 s + 9 `slow` high-statistics
           synthetic-κ closures and the MANIFEST qc_reason guards);
           CI runs the full set on numpy-minimum AND latest
 docs/     PLAN.md (plan of record) · DATA.md (archive provenance) · RESULTS.md (auto-generated ledger)
-          · THEORY_NOTE.md (ramp theory, Brion-facing) · LITERATURE.md (prior-art ledger)
+          · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
           · PAPER1_SKELETON.md (manuscript scaffold)
 results/  committed CSVs (the documented run) + results/README.md
 figures/  paper figures from make_figures.py (C1 width-vs-density, C3 power
