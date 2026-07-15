@@ -1,7 +1,7 @@
 # Rb 5S→6S two-photon lineshape analysis
 
 Analysis of the rubidium $5S_{1/2}\to 6S_{1/2}$ two-photon transition at
-993 nm (data taken at OIST in 2025, follow-up planned October 2026). This
+993 nm (data taken at OIST in 2025, follow-up planned a fixed-lock session 2026). This
 document doubles as the **methods draft** for the paper: every broadening
 mechanism and every statistical choice is derived from first principles and
 then tied to its implementation in the code. It is written to be read
@@ -10,7 +10,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 
 > **Status (2026-07-12):** the **archival data is exhausted** — every quantity
 > it can yield has been extracted, and each is a documented **bound or null with
-> a named October measurement that lifts it**; nothing here is an absolute
+> a named a fixed-lock session measurement that lifts it**; nothing here is an absolute
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
 > OPEN prior. That status is stated per-result in §5 **and now machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…), so
@@ -23,7 +23,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > [`docs/PAPER1_SKELETON.md`](docs/PAPER1_SKELETON.md). Prose results in §5; the auto-generated
 > single-source-of-truth table is [`docs/RESULTS.md`](docs/RESULTS.md); the
 > prior-art delineation and collision-rate calibration are in
-> [`docs/LITERATURE.md`](docs/LITERATURE.md); what October lifts is in §7.
+> [`docs/LITERATURE.md`](docs/LITERATURE.md); what a fixed-lock session lifts is in §7.
 
 ### Notation and abbreviations (defined once, used throughout)
 
@@ -208,7 +208,7 @@ inferred purely from the fitted lineshape, never benchmarked against a
 separate instrument. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
 **upper bound** (it is degenerate with the transit width; see §2.5 and §5).
-The October knife-edge $w_0$ turns this into a measurement by removing the
+The knife-edge measurement $w_0$ turns this into a measurement by removing the
 transit degeneracy, not by adding an independent check on the laser itself —
 $\sigma_\text{laser}$ stays a lineshape-fit result throughout. *Code:*
 `gaussian()`; `sigma_laser` in the fits (already carrying the factor 2).
@@ -296,11 +296,11 @@ The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a
 Voigt against a Lorentzian$\otimes$exponential can detect it — to our
 knowledge not cleanly resolved as a *cusp* in a thermal two-photon line (an
-October target with a narrow laser). Caveat: $w_0$
+target for a fixed-lock session with a narrow laser). Caveat: $w_0$
 is only a prior ($\sim50\ \mu$m — re-centred from 32 µm when the transit physics
 was corrected, since the corrected transit excludes 32 µm; the beam was clipped
 by a 3 mm aperture, so it is uncertain at the tens-of-% level) **until the
-October knife-edge measurement** (below); every *absolute* width built on it is
+knife-edge measurement measurement** (below); every *absolute* width built on it is
 therefore PRELIMINARY. *Code:* `two_sided_exponential()`; `transit_fwhm_at_T()` enforces
 the $\sqrt T$ law.
 
@@ -323,7 +323,7 @@ waist $w_0$. It is direct, needs no lineshape model, and is good to $\sim\mu$m.
 **Why a knife-edge rather than a camera?** Both are beam-profile measurements
 that end in a Gaussian fit; they differ only in the transducer, so this is a
 choice of instrument, not of method. A camera's resolution is set by its pixel
-pitch (typically 3–5 µm): at October's small-waist config ($w_0\approx16$ µm,
+pitch (typically 3–5 µm): at the fixed-lock session's small-waist config ($w_0\approx16$ µm,
 so a $1/e^2$ diameter of only $\approx32$ µm) that is 6–9 pixels across the
 entire beam, far too few to fit reliably, whereas the knife-edge's resolution
 comes from the translation stage (sub-µm) and is indifferent to how tight the
@@ -347,12 +347,14 @@ Why it is the linchpin for this analysis: $w_0$ sets the **transit width**
 §2.6), and it is **degenerate with $\sigma_\text{laser}$** in the fits (§2.4,
 §5) — so as long as $w_0$ is only the clipped-beam prior, the transit/laser
 split and all absolute coefficients stay PRELIMINARY. Measuring $w_0$ directly
-in October collapses that degeneracy: transit becomes fixed, the leftover
+in a fixed-lock session collapses that degeneracy: transit becomes fixed, the leftover
 Gaussian is then unambiguously the laser (turning the §5 $\sigma_\text{laser}$
 *bound* into a measurement, retroactively for the 2025 data too), and $\beta_\text{self}$
-and the Stark coefficient acquire their absolute scale. It is the single
-measurement that unlocks the most downstream numbers, so it is task #1 of the
-October cell campaign (PLAN §7-adjacent).
+and the Stark coefficient acquire their absolute scale. It unlocks more
+downstream numbers than any other single measurement, which is why the
+specification in PLAN §8 puts it at the top of the priority order — and why it
+is worth doing even on its own: it needs the beam, not the full session, and it
+retroactively sharpens the existing archive.
 
 ### 2.6 AC-Stark shift — derivation of the triangular "ramp law"
 
@@ -402,7 +404,7 @@ $\kappa_2\equiv\mathrm{Var}$ and $\kappa_3$ are the second and third
 *cumulants*; the ramp's own **standardized** skewness — the scale-free shape
 number — is $\kappa_3/\kappa_2^{3/2}=18^{3/2}/135\approx0.566$, independent
 of $S_0$ (a property of the triangle, not of the power). That fixed number is
-the target of the October form test (below); what varies with power is the
+the target of the form test (below); what varies with power is the
 *observed line's* asymmetry, which we get by folding the ramp into the rest
 of the line.
 
@@ -414,7 +416,7 @@ convolution untouched — the *whole line's* first-moment pull is
 $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 **exactly**, independent of the (unknown) laser/transit widths. These two
 odd cumulants are the clean, apparatus-independent handles, and the mean
-pull is the primary October observable (§7).
+pull is the primary a fixed-lock session observable (§7).
 
 A literal *standardized* skewness of the full profile is more delicate,
 because the homogeneous Lorentzian has divergent second and higher even
@@ -434,7 +436,7 @@ for the archival data:** (i) the FWHM moves $\lesssim2\%$ across our power
 sweep, so the old "power null" is a *prediction confirmed*, not a null
 result; (ii) the observed asymmetry $\propto P^3$ is $\sim10^{-4}$ against a
 $\sim10^{-3}$ noise floor — unmeasurable — so all AC-Stark *coefficients*
-move to October (where the shift itself, $\propto P$, is measured directly
+move to a fixed-lock session (where the shift itself, $\propto P$, is measured directly
 against a stable lock). *Code:* `stark_ramp()` — built from exact per-cell
 integrals so the area is exactly 1 and the mean exactly $-\tfrac23 S_0$ even
 for shifts far below the grid step.
@@ -458,7 +460,7 @@ AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
 the $n=1$, fringe-resolved regime — full delineation in
 `docs/LITERATURE.md`).
 
-#### The parameter-free moment hierarchy (the October form test)
+#### The parameter-free moment hierarchy (the form test)
 
 Dividing out $S_0$, the ramp component predicts *pure numbers*:
 
@@ -467,7 +469,7 @@ $$\frac{\mathrm{Var}(s)}{\langle s\rangle^2}=\frac{1/18}{4/9}=\frac18,
 g_1\equiv\frac{\kappa_3}{\mathrm{Var}(s)^{3/2}}
 =\frac{1/135}{(1/18)^{3/2}}=\frac{18^{3/2}}{135}\approx+0.566$$
 
-October tests them in order of statistical cost: (1) **mean pull vs
+A fixed-lock session tests them in order of statistical cost: (1) **mean pull vs
 $P$** — the first cumulant, exact and apparatus-independent (§above), first
 order in $S_0$, and the fixed lock makes centers usable; (2) **excess
 variance vs $P^2$** — the symmetric second-moment growth
@@ -496,19 +498,19 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m+\frac{\zeta_m^3}{3}\right],
 
 $Z_c/z_R\to0$ recovers the triangle; the hard edge at $-S_0$ softens to zero
 (only the focal plane reaches the full shift). Numerically (uniform window,
-$Z_c=2$ mm placeholder — OPEN until the October collection-profile
+$Z_c=2$ mm placeholder — OPEN until the fixed-lock session collection-profile
 measurement):
 
 | config | $Z_c/z_R$ | mean$/S_0$ | Var/mean$^2$ | $g_1$ |
 |---|---|---|---|---|
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
-| 60 µm (October L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
+| 60 µm (a fixed-lock session L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
 | 50 µm (2025 archival) | 0.25 | $-0.653$ | 0.125 | $+0.558$ |
-| 16 µm (October S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ |
+| 16 µm (a fixed-lock session S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ |
 
 **The skewness flips sign** (crossover near $Z_c/z_R\approx1.2$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
-$-S_0$. So the October skew program is a **sign-flip test between beam
+$-S_0$. So the fixed-lock session skew program is a **sign-flip test between beam
 configurations** — $g_1>0$ at the large waist, $g_1<0$ at the small one —
 a signature no instrumental asymmetry can mimic, because the instrument
 knows nothing about $z_R$. At the re-centred 50 µm archival waist the
@@ -533,7 +535,7 @@ intensity. The shift is thus $\propto(1+\rho)I_{\text{fwd}}$ with $\rho$ the
 retro power ratio, with **no coherent fringe enhancement**. (Atoms with axial
 speed $\lesssim5$ m/s — 1–2% of the signal — are fringe-resolved; a
 percent-level correction.) The remaining OPEN quantity in $S_0$ is the
-measured $\rho$ per beam configuration (October, in situ at the cell).
+measured $\rho$ per beam configuration (in situ at the cell, in a fixed-lock session).
 
 **Why $\rho\approx1$ is a design property here.** The 2025 retro is a
 self-imaging (lens-based) one: the beam is focused into the cell by L1
@@ -552,7 +554,7 @@ dominated by mirror *tilt*, not longitudinal placement. (The 2019 reference
 measurement on this line achieves the same self-imaging with a concave mirror
 at $2f$ instead of a lens plus flat mirror — a different implementation of the
 identical idea; `LITERATURE.md` §6a.) Note the design must be *re-established
-per waist* in October: L2 has to sit a focal length from the new waist, and the
+per waist* in a fixed-lock session: L2 has to sit a focal length from the new waist, and the
 intermediate beam grows to $\approx3$ mm at $w_0=16\ \mu$m, so return-path
 clipping is the thing to watch (PLAN §8.1).
 
@@ -567,7 +569,7 @@ a badly mismatched retro would have destroyed the signal long before it
 appreciably moved the shift, so the archive's strong, clean lines are
 themselves evidence that $\rho$ is not small. The asymmetry is worth
 remembering — the retro is a *signal* risk far more than a *coefficient* risk.
-It matters for October precisely because the coefficient is then the point:
+It matters for a fixed-lock session precisely because the coefficient is then the point:
 $\rho$ is measured in situ, per configuration (return-path clipping differs
 with waist), before any $\Delta\alpha$ in physical units is quoted.
 
@@ -585,7 +587,7 @@ I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
 With $\Delta\alpha=1093$ a.u. this is $S_0=0.59$ MHz (transition) at 225 mW,
 $w_0=50\ \mu$m (the archival prior; it was 1.43 at the old 32 µm nominal),
-$\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m (why October's
+$\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m (why the fixed-lock session's
 small waist makes the $\propto S_0^3$ skew measurable). The **sign** is
 convention-independent — set by $\text{sign}(\Delta\alpha)$, here red
 ($\Delta\alpha>0$). *Code:* `lineshape.stark_shift_S0_mhz()`. The full
@@ -636,7 +638,7 @@ Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
 per-trace nuisances of §4.2. It uses the pure triangular ramp
 (`stark_ramp()`); the archival fits keep it because $S_0$ is fixed per power
-and the geometry correction sits far below the 2025 noise. October
+and the geometry correction sits far below the 2025 noise. A fixed-lock session
 center-fits swap in `stark_ramp_axial()` (the diverging-beam kernel of §2.6)
 once the collection profile is measured. The no-Stark composite shared by the
 $\beta_\text{self}$ and global fits is `composite_profile()` in the same
@@ -712,7 +714,7 @@ temperatures at once, sharing each parameter at the level the physics licenses
   — which lets its drift across the cooling session be *measured* rather than
   mistaken for collisions. (Sharing one *global* $\sigma_\text{laser}$ across
   all temperatures — as a naive fit does — is exactly what manufactures a false
-  detection; see §4.5. For October's stable lock, global sharing becomes
+  detection; see §4.5. For a stable lock, global sharing becomes
   correct.)
 - $\beta_\text{self}$ is shared **per isotope**, not globally: collision
   cross-sections need not be equal for $^{85}$Rb and $^{87}$Rb, so we *test*
@@ -748,7 +750,7 @@ that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,
 and $\beta$ is a **lever-dependent bound**, not a value — exactly why the
 model-independent bound is the headline. (The 130 °C data are also a different
-session, a secondary caveat we cannot fully separate; either way October needs
+session, a secondary caveat we cannot fully separate; either way a fixed-lock session needs
 *same-session* high-density points to resolve any real slope.)
 *Run:* `run_lever_crosscheck.py` → `results/lever_crosscheck.csv`; numbers in the
 results ledger (`docs/RESULTS.md`).
@@ -918,7 +920,7 @@ at $w_0=32\ \mu$m (which OVERSHOOTS the observed line, excluding 32 µm) but onl
 $\sim1.2$ MHz at the $50\ \mu$m prior, so below $w_0\approx38\ \mu$m transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 50 µm prior the laser carries $\sim0.8$ MHz laser-axis. The
-archival data cannot locate that crossover; only the October knife-edge $w_0$
+archival data cannot locate that crossover; only the knife-edge measurement $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.) The
 knife-edge $w_0$ (fixing transit) turns this bound into a measurement; meanwhile it is the
 ONF starting linewidth for Paper 2.
@@ -933,7 +935,7 @@ clustered on the two-photon rate law; 993.4121 nm sits below at 1.83). We say
 a slope below 2 could be genuine saturation OR a weak power-dependence of the
 trapping collection efficiency through the saturating emitter profile, and the
 single-temperature archival sweep cannot separate the two — the 4121 low slope
-is the visible symptom of that degeneracy, resolvable only by October's
+is the visible symptom of that degeneracy, resolvable only by the fixed-lock session's
 multi-$T$ sweeps;
 (C3c) the **ramp** skew (growing as $P^3$) is below detection, a bound — but the
 committed residual skew is emphatically *not* zero: it is large and positive at
@@ -976,7 +978,7 @@ the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the
 drift scatter). *Verdict:* trapping is physically present and expected-large by
 $\tau$, but its net effect on the collected amplitude is modest and its
 degeneracy-breaking effect is $\lesssim10\%$, buried under drift; separating it
-needs October's fixed-lock interleaved-peak run with a controlled collection
+needs the fixed-lock session's fixed-lock interleaved-peak run with a controlled collection
 geometry. A clean separation of the trapping/993-absorption losses and an
 absolute trapping fraction additionally want Nieddu's 2019 same-channel
 baseline (not loaded here).
@@ -991,7 +993,7 @@ $\Delta\text{BIC}\gtrsim10$. The honest statement is that **the archival data
 cannot distinguish a cusped (Lehmann) from a smooth (Voigt) extra-broadening**
 — exactly as the two-epoch design anticipated, since the $\sim2$ MHz bad-lock
 laser Gaussian smears the cusp and the transit/laser split is itself
-unresolved (§2.5). No lean is claimed. The decisive cusp test is October's
+unresolved (§2.5). No lean is claimed. The decisive cusp test is the fixed-lock session's
 narrow-laser data, for which this module (closure-tested to prefer the right
 form when a cusp *is* present) is validated infrastructure.
 
@@ -1010,7 +1012,7 @@ same drift story) — that is between-block power/alignment drift, not physics
 (real differential trapping would be smooth in density).
 Two consequences: cross-peak amplitude comparisons in this archive carry
 $\sim$30–50% systematics (per-peak, within-block analyses like M7 are
-unaffected), and the clean degeneracy-law test is an October task — measure
+unaffected), and the clean degeneracy-law test is an task for the fixed-lock session — measure
 the four peaks **interleaved**, with power logging.
 
 **Foundational results underpinning all of the above.** The sweep rate is
@@ -1039,8 +1041,8 @@ either quarantined or handled).
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). The model-form study (§4.7, M8) confirms the 2025
    data cannot distinguish these forms — so the *shape* assumption is untested
-   by the archival data and is a genuine attack surface until October.
-4. Transit width rides on the OPEN $w_0$ prior until the October knife-edge.
+   by the archival data and is a genuine attack surface until a fixed-lock session.
+4. Transit width rides on the OPEN $w_0$ prior until the knife-edge measurement.
 5. The retro ratio $\rho=1$ behind the quoted $S_0$ prediction (§2.6) is a
    *geometric design property, not a measured number*. The 2025 retro is
    self-imaging: L2 ($f=150$ mm) maps the cell waist to a $\sim$1 mm
@@ -1054,7 +1056,7 @@ either quarantined or handled).
    archive's strong lines already argue $\rho$ is not small. What no static
    bound covers is a *drifting* overlap within a scan (mirror tilt is the
    sensitive axis; the longitudinal placement is forgiving to tens of cm),
-   which is skew-like. October measures $\rho$ in situ per configuration
+   which is skew-like. A fixed-lock session measures $\rho$ in situ per configuration
    (PLAN §8.1).
 6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
    artifact (block rates scatter only $0.6\%\approx0.03$ MHz on a 5 MHz line).
@@ -1074,7 +1076,7 @@ What is left is not more archival analysis but the measurements the 2025 data
 physically cannot yield — first among them the $w_0$ knife-edge on which every
 absolute scale above rests.
 
-*October 2026 (fixed lock) — the measurements that lift the bounds* (full
+*A fixed-lock session — the measurements that lift the bounds* (full
 time-budgeted design: **PLAN §8**). Power is capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
 ($I\propto P/w_0^2$; a telescope unclips the EOM aperture and two working

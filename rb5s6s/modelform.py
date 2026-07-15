@@ -20,7 +20,7 @@ per-trace amplitude/center/tilted-baseline; all windowed like the main fits):
 
 EXPECTATION (honest, from the two-epoch design): with the 2025 laser Gaussian
 ~2 MHz smearing the cusp, the archival data most likely CANNOT distinguish
-voigt from lehmann (|dBIC| small). The decisive test is October's narrow-laser
+voigt from lehmann (|dBIC| small). The decisive test is a fixed-lock session's narrow-laser
 cold-dim data; this module is the warm-up + the infrastructure for it.
 """
 

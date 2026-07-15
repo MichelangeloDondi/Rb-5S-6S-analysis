@@ -47,7 +47,7 @@ right, and two independent things follow:
 **This propagation is DONE** (`docs/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
 headline archival results are unchanged in *kind* (model-independent bounds and
-nulls, gated on the October knife-edge); only the w₀-conditional central values
+nulls, gated on the knife-edge measurement); only the w₀-conditional central values
 moved (β central ~0.056 → 0.036, σ_laser bound 1.1 → 1.0 laser axis, S₀ pred
 1.43 → 0.59).
 
@@ -61,7 +61,7 @@ sits ~15–30× above the 7S self-broadening scale (6S should be similar or a bi
 smaller). Refinement for the paper: quote the **self-broadening** coefficient
 (what β_self is), not the self-*shift* (−17.8 kHz/mTorr) the memory had used — the
 right comparison is broadening-to-broadening. Conclusion unchanged (consistent,
-not constraining; the 70–130 °C lever can't reach it → October's 150–170 °C).
+not constraining; the 70–130 °C lever can't reach it → the fixed-lock session's 150–170 °C).
 
 ## 3. Grimm & Stalnaker — the ⟨E²⟩ convention and the novelty bound (both hold)
 
@@ -74,14 +74,14 @@ not constraining; the 70–130 °C lever can't reach it → October's 150–170 
   *supports our method* — it is a precedent for using the shift's spatial
   structure as a measurement channel, in the fringe-averaged FM regime we invoke.
 
-## 4. Lehmann §II — a ready-made tool for October's saturated Stark regime
+## 4. Lehmann §II — a ready-made tool for the fixed-lock session's saturated Stark regime
 
 Lehmann's saturated-field treatment (his §II) gives the two-photon lineshape
 *with* an AC-Stark shift in dimensionless reduced units (reduced Rabi
 $\Omega'=\sqrt{\pi/2}\cdot w\Omega_{2p}/v$, reduced shift $\beta=\Delta\omega_{fg}/\Omega_{2p}$).
-October's small-waist runs are exactly this regime (high intensity, non-negligible
+the small-waist runs are exactly this regime (high intensity, non-negligible
 S₀). His reduced-unit lineshape + the numerical integration of
-$d\vec r/dt=-\vec\Omega\times\vec r$ is a validated forward model to fit October's
+$d\vec r/dt=-\vec\Omega\times\vec r$ is a validated forward model to fit the fixed-lock session's
 Stark data against — worth adopting rather than re-deriving. (Also: his 2nd-order
 Doppler shift $-\omega v^2/2c^2$ is ~tens of Hz, negligible for us — one less
 systematic to worry about.)

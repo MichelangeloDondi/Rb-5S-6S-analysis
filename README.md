@@ -2,7 +2,7 @@
 
 First-principles analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon transition
 at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Data taken at OIST
-in 2025; a fixed-lock follow-up is planned for October 2026.
+in 2025; a fixed-lock follow-up is planned for a fixed-lock session 2026.
 
 <p align="center">
   <img src="figures/fig0_spectrum.png" width="560" alt="A representative fitted line">
@@ -54,7 +54,7 @@ analysis, and it is why the results below are bounds rather than measurements.
 ## Results at a glance
 
 Every absolute number is limited by a single systematic — the beam waist **w₀** —
-so each is reported as a bound together with the October measurement that lifts it.
+so each is reported as a bound together with the fixed-lock session measurement that lifts it.
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
@@ -113,20 +113,27 @@ less room for laser width, and vice versa. The observed ≈ 5.2 MHz line is
 reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 50 µm (laser ~1 MHz).
 Only a direct beam-profile ("knife-edge") measurement collapses this — which is
 why every absolute number above is w₀-conditional, and why it is the first thing
-the October campaign fixes.
+The fixed-lock session fixes.
 
 <p align="center">
   <img src="figures/fig3_transit_mc.png" width="560" alt="Line width versus beam waist: the transit/laser degeneracy">
 </p>
 
-## What the follow-up campaigns add
+## What a follow-up session would add
 
-- **October 2026 (fixed lock).** A stable lock returns the absolute centres, and a
+*Neither session below is scheduled or agreed, and neither assumes a particular
+operator: both are written as specifications, so whoever has the apparatus and the
+beam time could run one — in whole, or from the top of the priority list down as far
+as the time allows. Everything above stands on the archive alone.*
+
+- **A fixed-lock session.** A stable lock returns the absolute centres, and a
   knife-edge measures w₀ — turning the bounds above into the first measured 5S–6S
   AC-Stark and collisional self-shift coefficients. With power capped at 225 mW,
   the intensity axis comes from the waist instead (a telescope gives two working
   waists spanning a ×16 intensity range), and a same-session 150–170 °C extension
-  gives β_self a real density lever. Full shot list: [`docs/PLAN.md`](docs/PLAN.md) §8.
+  gives β_self a real density lever. The knife-edge alone is worth a visit: it needs
+  only the beam, and it retroactively sharpens this archive. Full specification:
+  [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre (Paper 2).** The same ramp law tested in the evanescent field
   at a fibre surface, where an atom–surface potential and the known "pushing dip"
   ride on the lineshape.

@@ -32,7 +32,7 @@ Maxwell-Boltzmann transverse speeds, and an optional collection-efficiency
 weight eps(z). The flux weight is essential -- the signal is a steady-state RATE
 (flux * excitation-probability), and it is what makes the Biraben-Cagnac cusp a
 FINITE peak rather than a divergence. No free parameters beyond the geometry and
-temperature; this is what a knife-edge-measured w(z) feeds in October.
+temperature; this is what a knife-edge-measured w(z) feeds in a fixed-lock session.
 
 The closed-form counterpart is constants.transit_fwhm_from_w0 (a two-sided
 exponential of FWHM ln2 v_th / (pi w0), v_th = sqrt(2kT/m)), validated against

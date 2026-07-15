@@ -1,18 +1,21 @@
 # From-scratch analysis plan — Rb 5S₁/₂→6S₁/₂ two-photon, 2025 archival campaign
 
-*Plan of record, v1.1 (2026-07-11). Supersedes the initial-brief pipeline (§6) where they conflict.
-Old code in the previous repository is never read or reused; old outputs serve only as external cross-check targets.*
+*Analysis plan of record for the 2025 archive, v1.1 (2026-07-11); §§7–9 are a
+specification for possible future sessions, not a schedule or an agreement.
+Supersedes the initial-brief pipeline (§6) where they conflict. Old code in the
+previous repository is never read or reused; old outputs serve only as external
+cross-check targets.*
 
 ## 0. What the analysis is for (Paper 1 claims)
 
 From the 2025 archival data:
 - **C1** First determination — or honest bound — of collisional self-broadening β_self of the 5S→6S line vs Rb density (T-sweep).
-- **C2** Quantitative characterization of the 2025-epoch laser (within-scan kernel + drift diary). Internal deliverable; ONF baseline for Zohreh.
+- **C2** Quantitative characterization of the 2025-epoch laser (within-scan kernel + drift diary). Supporting deliverable; also the starting linewidth baseline for any ONF work on this line.
 - **C3** Power nulls as *predictions confirmed*: FWHM inflation ≤2% and asymmetry ≤10⁻⁴ across 25–225 mW, as required by the intensity-averaging (ramp) law. Measured sensitivity quoted alongside.
 
-Reserved for October 2026 (fixed lock): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest October data unchanged.
+Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
-**Which papers this produces under which campaigns (October cell top-up × ONF × the Ti:Sapph 5D/7S extension) is mapped in `docs/PAPERS_PORTFOLIO.md`** — the archive alone is P1-min (method + bounds = the thesis core); October gives P1-full (measured coefficients); ONF gives Paper 2 (Zohreh); a 5D/7S session gives Papers A/B/C (`FUTURE_TRANSITIONS_titsapph.md`).
+**Which papers this produces under which sessions (a fixed-lock cell session × ONF × the Ti:Sapph 5D/7S extension) is mapped in `docs/PAPERS_PORTFOLIO.md`** — the archive alone is P1-min (method + bounds = the thesis core); a fixed-lock session gives P1-full (measured coefficients); ONF gives Paper 2; a 5D/7S session gives Papers A/B/C (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
 
 ## 1. Ground rules
 
@@ -70,7 +73,7 @@ per-line residuals (= the differential-Stark signal); **σ_laser per block**
 with a drift hyperprior (penalty scale ≈ the measured 0.1 MHz, a poor-man's
 random effect); amplitude/center/tilted baseline per trace, as now. Plus a
 leave-one-condition-out diagnostic on every shared parameter, and per-block
-ruler-rate uncertainties propagated into the stack. For OCTOBER (stable lock)
+ruler-rate uncertainties propagated into the stack. For a fixed-lock session
 the reviewer's structure applies verbatim — σ_laser genuinely global.
 
 **M5 — 2025 laser epoch.** Laser kernel per block from M3 (two-photon ×2 convention explicit); coarse drift diary from bracket comb positions (upper bound only — knob moves alias). Deliverable table + figure.
@@ -83,27 +86,27 @@ the reviewer's structure applies verbatim — σ_laser genuinely global.
 
 ## 4. Non-goals (archival)
 
-Line centers and absolute frequencies (drift; knob moves); skew as a *measurement* (bound only — dead at 10⁻⁴ vs 10⁻³ noise, CALCULATED); EOM modulation depth β (drive voltage unrecorded — DESCOPED, revives in October); wide scans (identification already closed by the hyperfine label-spacing check, CALCULATED ~1%, encoded as a permanent test).
+Line centers and absolute frequencies (drift; knob moves); skew as a *measurement* (bound only — dead at 10⁻⁴ vs 10⁻³ noise, CALCULATED); EOM modulation depth β (drive voltage unrecorded — DESCOPED, revives in a fixed-lock session); wide scans (identification already closed by the hyperfine label-spacing check, CALCULATED ~1%, encoded as a permanent test).
 
 ## 5. Standing micro-questions (non-blocking)
 
 1. A1 trigger-sync confirmation (one word).
 2. Peak order within each session (4207→4192→4154→4121?) — refines drift interpolation, not required.
 3. If the aborted 4154 attempt's story ever resurfaces: did the underscore bracket re-take follow it?
-4. **Does the 2025 archive hold a per-peak wavemeter reading?** (asked 2026-07-11). If the wide identification scans logged the HighFinesse value at each of the four peaks, those four readings vs the known hyperfine intervals give a free GHz-baseline linearity check of the 2025 wavemeter (§7.2). Check the archive / ask Zohreh. If absent, this cross-check waits for October — no loss, since archival centers are dead anyway.
+4. **Does the 2025 archive hold a per-peak wavemeter reading?** (asked 2026-07-11). If the wide identification scans logged the HighFinesse value at each of the four peaks, those four readings vs the known hyperfine intervals give a free GHz-baseline linearity check of the 2025 wavemeter (§7.2). Check the archive / ask Zohreh. If absent, this cross-check waits for a fixed-lock session — no loss, since archival centers are dead anyway.
 
 ## 6. Verification
 
 Synthetic closure per module; end-to-end synthetic campaign (full trace count, injected β_self, laser kernels, nonlinear axis, noise model, drift + recenters) recovered within quoted errors; only then real data. Real-data acceptance checks: rate consistency across the ~22 ruler blocks; cross-peak γ agreement at fixed T; M6 nulls.
 
-## 7. October wavemeter calibration (shot list)
+## 7. Wavemeter calibration (shot list)
 
 **Direction of calibration (the load-bearing point):** the accuracy hierarchy
 is atoms (5S→6S hyperfine centers, ~kHz — Ayachitula 2024) ≫ EOM comb
 (6.25 MHz laser-axis teeth, RF-exact intervals) ≫ HighFinesse wavemeter
 (~10 MHz). The wavemeter is the LEAST accurate reference, so our data
 calibrate the instrument, never the reverse. Absolute wavemeter calibration
-is a near-free **byproduct**, NOT on the critical path — Paper 1's October
+is a near-free **byproduct**, NOT on the critical path — Paper 1's a fixed-lock session
 targets are frequency *shifts* (AC-Stark vs P, collisional vs density), which
 are differences that ignore the wavemeter's absolute offset; and absolute
 centers belong to Ayachitula 2024 at kHz (a declared non-goal, §4).
@@ -131,7 +134,15 @@ Caveat: the comb calibrates the SCAN/scope axis (already done by M2), not the
 wavemeter directly — so the wavemeter's own scale must come from shot 2, not
 from the comb.
 
-## 8. October 2026 cell campaign — plan of record v2 (revised, 2026-07-12)
+## 8. What a fixed-lock session must measure (specification, revised 2026-07-12)
+
+**Status: a specification, not a schedule or an agreement.** Nothing below has been
+agreed with the group, no date is assumed, and no particular person is assumed to
+run it. It is written so that whoever has the cell and the beam time can execute it,
+in whole or — following the priority order in §8.0 — as far down the list as the
+available time allows. Each item names the archival bound it converts into a
+measurement, so a *partial* session is still worth running and its value is
+predictable in advance.
 
 Constraint set: no more power (225 mW ceiling); telescope before the EOM and
 lens swaps ARE allowed; repeats across days and orders are allowed. Core
@@ -145,7 +156,7 @@ time budget with two waists, not three (§8.5).
 
 ### 8.0 Impact priorities (ranked) — what to protect if the budget shrinks
 
-October's job is **bounds → measurements**. Rank effort by *which bound becomes a
+The session's job is **bounds → measurements**. Rank effort by *which bound becomes a
 measurement, and how absolute* — not by data volume. If a day is lost, cut from the
 bottom of this list, never the top.
 
@@ -281,12 +292,12 @@ order of statistical cost:
    upgraded the test, 2026-07-12). The z-average of transverse ramps has the
    closed form f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3], ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (lineshape.stark_ramp_axial; table from scripts/run_ramp_geometry.py).
-   At the October configs (Z_c = 2 mm placeholder, OPEN): L stays clean
+   At the planned configs (Z_c = 2 mm placeholder, OPEN): L stays clean
    (mean/S₀ −0.66, g1 +0.56); the 2025 archival M geometry is already
    10–40% modified (g1 +0.40 — the −⅔S₀ / +S₀³/135 numbers are the Z→0
    limit and now carry this caveat); and at S **the skewness flips sign**
    (g1 ≈ −0.35; crossover near Z_c/z_R ≈ 1.2): the long window piles weight
-   at weak out-of-focus shifts with a tail toward −S₀. The October skew
+   at weak out-of-focus shifts with a tail toward −S₀. The a fixed-lock session skew
    program is therefore a **sign-flip test between configs** — g1 > 0 at L,
    g1 < 0 at S, crossover set by the measured collection profile — which no
    instrumental asymmetry (blind to z_R) can mimic. The absolute third
@@ -353,7 +364,12 @@ one); the hybrid is across the moment hierarchy, never across methods.
 - Timestamps logged (scope clock + notebook) — the 2025 σ_laser-sharing
   assumption was unverifiable without them.
 
-### 8.5 Time budget (revision #5: it must close on paper, cell-half ≈ 8 days of ~15)
+### 8.5 Indicative sizing (the programme closes in ~8 days of cell time)
+
+*Not a schedule and not a booking: an ordering that shows the full programme fits
+in roughly eight days at the cell, and which shots depend on which. Run it in this
+order and a session truncated at any point still leaves the higher-priority bounds
+(§8.0) converted. Day labels are relative, not calendar dates.*
 
 - **D1**: telescope install; config L: knife-edge w(z), ρ in situ.
 - **D2**: T grid day A at L, ascending, 4 peaks interleaved (incl. 150/170 °C

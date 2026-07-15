@@ -86,7 +86,7 @@ lever-limited (§VI.A). The second degeneracy, between the transit width and the
 beam waist $w_0$, is *not* broken by any amount of archival data: every absolute
 width — and hence every absolute $\beta_\text{self}$ and $\sigma_\text{laser}$ —
 rides on the open $w_0$, which is the single reason those quantities are bounds
-here and measurements only after the October knife-edge. All reported fit errors
+here and measurements only after the knife-edge measurement. All reported fit errors
 are marginal (from the full covariance, folding in the anti-correlations), and
 where a fit is over-dispersed the covariance is conservatively rescaled by
 $\max(\chi^2_\text{red},1)$.

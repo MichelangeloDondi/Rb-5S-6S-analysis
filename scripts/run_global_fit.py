@@ -147,7 +147,7 @@ def main() -> int:
         print(f"  => beta_{iso}: stat {fit['beta_by_isotope'][iso]:.3f}"
               f"({fit['beta_err_by_isotope'][iso]*1e3:.0f}) "
               f"+w0syst [{lo:.3f}, {hi:.3f}] (the w0 band DOMINATES the error)")
-    print("  Conditional on w0; only the October knife-edge collapses this band.")
+    print("  Conditional on w0; only the knife-edge measurement collapses this band.")
 
     # ---- leave-one-condition-out robustness ----
     print(f"\n{'-'*74}\nLEAVE-ONE-CONDITION-OUT (does one block move a shared parameter?):")

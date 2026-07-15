@@ -4,7 +4,7 @@ M3 real-data shakedown: joint lineshape fit of every canonical RF-off
 condition, end-to-end through M0->M1->M2->M3.
 
 PRELIMINARY by construction — read before using any number:
-  * the transit width rides on w0 (OPEN until the October knife-edge); it is
+  * the transit width rides on w0 (OPEN until the knife-edge measurement); it is
     FIXED here at a placeholder (config.TRANSIT_FWHM_PLACEHOLDER_MHZ at 110 C
     with sqrt(T) scaling). Absolute sigma_laser and gamma_coll inherit that
     assumption AND the -0.9 laser<->coll degeneracy (see linefit.py).

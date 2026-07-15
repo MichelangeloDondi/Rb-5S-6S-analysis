@@ -179,7 +179,7 @@ def _trapping_vs_drift(data, slopes, out):
     print("law ratios are NON-monotonic in density => the 30-50% disagreement is")
     print("between-block DRIFT, not trapping (which would be monotonic). The one")
     print("surviving trapping fingerprint -- 85Rb more sublinear than 87Rb -- has the")
-    print("right sign but is only ~1sigma. Clean separation needs October's fixed-lock,")
+    print("right sign but is only ~1sigma. Clean separation needs the fixed-lock session's fixed-lock,")
     print("interleaved-peak run (no drift) with a controlled collection geometry.")
 
 

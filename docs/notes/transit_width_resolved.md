@@ -50,7 +50,7 @@ a direct measurement) now agree: **w₀ ≈ 50–64 µm**. We keep 50 µm as the
 drifted 2025 laser under its C2 bound; and the 2025 alignment is not guaranteed
 identical to Nieddu's) — but if the archival beam were exactly 64 µm, the observed
 width would **pin σ_laser ≈ 1.1 MHz laser-axis** (the transit↔laser degeneracy
-collapses once w₀ is fixed), turning the C2 bound into an estimate. The October
+collapses once w₀ is fixed), turning the C2 bound into an estimate. The a fixed-lock session
 knife-edge measures the 2025 beam directly and settles it.
 
 Corroboration also on the *width* itself: Nieddu 2019 fits the same four two-photon
@@ -78,7 +78,7 @@ it and re-centres w₀:
 | S₀(225 mW) 95% bound | ~2.0 | **~3.1** (broader baseline ⇒ weaker bound) |
 
 Every result stays **w₀-conditional and PRELIMINARY**: the transit↔σ_laser
-degeneracy means the archival line cannot pin w₀ on its own — the October
+degeneracy means the archival line cannot pin w₀ on its own — the fixed-lock session
 knife-edge does. The re-pin corrects the central prior and excludes 32 µm; it is
 not a w₀ measurement.
 

@@ -7,9 +7,9 @@ verified session values (see `docs/RESULTS.md` for the auto-generated ledger the
 come from); provenance tags follow the house convention
 (MEASURED-HERE / CALCULATED / ESTABLISHED / ENVELOPE / OPEN). Port to the journal
 LaTeX template when structure is agreed. **Everything absolute is PRELIMINARY** —
-it rides on the OPEN beam waist $w_0$; the October fixed-lock campaign is what turns
+it rides on the OPEN beam waist $w_0$; the fixed-lock session is what turns
 the archival brackets into measurements, so several sections are written as
-"archive brackets → October resolves".
+"archive brackets → a fixed-lock session resolves".
 
 ---
 
@@ -24,15 +24,16 @@ the archival brackets into measurements, so several sections are written as
   bounds), and we do **not** claim the asymmetry's existence (Stalnaker *et al.* 2006
   precede us — §novelty).
 - **Scope / journal.** Full paper (PRA-length). The archive gives **P1-min** (method +
-  bounds, ready now = the thesis core); adding the October fixed-lock session gives
+  bounds, ready now = the thesis core); adding a fixed-lock session gives
   **P1-full** (the measured coefficients — the flagship). Default: **hold for P1-full**,
-  one combined paper (October §VII stubbed as predictions until the data exists),
+  one combined paper (§VII stubbed as predictions until such data exists),
   because the 5S–6S light shift / β_self is un-scooped and the field is not racing on
-  this line. Fallback: publish P1-min now if a deadline/scoop forces it. The full
-  contingency map — P1-min/full, the ONF Paper 2, and the Ti:Sapph 5D/7S papers
-  (A/B/C), as a function of which campaigns happen — is in **`docs/PAPERS_PORTFOLIO.md`**.
-  (Thesis vs papers timeline: thesis due Oct 2026 rides on the archive; the OIST
-  campaigns are post-submission and feed the papers.)
+  this line. Fallback: publish P1-min now if a deadline/scoop forces it — and note this
+  fallback is the *only* branch fully under our control, since no session is scheduled
+  or agreed. The full contingency map — P1-min/full, the ONF Paper 2, and the Ti:Sapph
+  5D/7S papers (A/B/C), as a function of which sessions happen — is in
+  **`docs/PAPERS_PORTFOLIO.md`**. (Thesis vs papers: the thesis rides on the archive
+  alone; any further session, whenever and by whoever it is run, feeds the papers.)
 - **Author list & contributions**, target journal, and whether the ramp theory is a
   co-submitted companion or an appendix here (currently: appendix + `THEORY_NOTE.md`
   is the standalone theorist-facing version for É. Brion).
@@ -111,7 +112,7 @@ the archival brackets into measurements, so several sections are written as
   (S₀ several MHz — skew ~×64 — with the pull resurrected) delivers the *coefficients*.
 - Contributions list (3–4 bullets): the closed-form fringe-averaged two-photon ramp
   law; the drift-immune moment method + its honest reach (bounds now, values in
-  October); the archival bounds + systematics catalogue; the two-epoch/fixed-lock
+  a fixed-lock session); the archival bounds + systematics catalogue; the two-epoch/fixed-lock
   route. End of intro.
 
 ## II. The two-epoch design (methodological spine)
@@ -144,7 +145,7 @@ the archival brackets into measurements, so several sections are written as
   goes as $I^2$).
 - **The drift-immune method:** in a drifted archive the first-order pull is degenerate
   with the free per-scan centre and *absorbed*; the **skew** is the drift-immune
-  handle (∝$S_0^3$, below the archival floor → a bound). In October the fixed lock
+  handle (∝$S_0^3$, below the archival floor → a bound). With a fixed lock
   un-absorbs the pull (the sensitive handle). The "principled hybrid": fit ONE $S_0$
   per condition, check pull/variance/skew as three analytic functionals of it.
 - **The $\langle E^2\rangle$ convention, pinned** (CALCULATED): standard AMO
@@ -209,7 +210,7 @@ the archival brackets into measurements, so several sections are written as
   $<1\sigma$; drops neither $\beta$ nor the $\sigma_\text{laser}(T)$ trend).
 - **Expectation context:** Zameroski 7S scaling ⇒ expected $\beta_\text{self}(6S)\sim$
   1 kHz per $10^{12}$ cm⁻³ ⇒ the bound is $\sim$40–100× above expectation (consistent,
-  not constraining). October needs same-session 150–170 °C points (Δγ measurable).
+  not constraining). A fixed-lock session needs same-session 150–170 °C points (Δγ measurable).
 - *Message:* the archive *proves the two-epoch design was necessary* — this bound is
   a Paper-1 result in itself, and the naive global Voigt fit's 4–10σ "detection" is
   the cautionary tale.
@@ -248,15 +249,20 @@ the archival brackets into measurements, so several sections are written as
 - Transit-broadening Monte Carlo (Fig. 3): the flux-corrected transit adds
   $\sim2.1$ MHz@32 µm (which OVERSHOOTS the observed line, excluding 32 µm) and
   $\sim1.2$@50 µm — degenerate with $\sigma_\text{laser}$ through $w_0$ (crossover
-  $\sim18$–20 µm). Sets the transit subtraction October's knife-edge $w_0$ enables.
+  $\sim18$–20 µm). Sets the transit subtraction the fixed-lock session's knife-edge $w_0$ enables.
 - Degeneracy-law amplitude ratios (Fig. 4): predicted abundance$\times(2F{+}1)$;
   measured ratios swing 30–50% between blocks (drift) → untestable in the archive, a
-  cross-peak systematic October's interleaving fixes. Bounds cross-peak comparisons.
+  cross-peak systematic interleaving in a fixed-lock session fixes. Bounds cross-peak comparisons.
 
-## VII. The October fixed-lock campaign *(predictions & what it resolves)*
+## VII. The fixed-lock session *(predictions & what it would resolve)*
+
+*Written as predictions against a session that is specified but not scheduled
+(`PLAN.md` §8) — if no such data exists by writing time, this section either
+states the predictions as future work (P1-min) or is dropped.*
 
 - **Knife-edge $w_0$** (+ collection profile): collapses the transit$\leftrightarrow
-  \sigma_\text{laser}$ degeneracy, sets every absolute scale. Task #1.
+  \sigma_\text{laser}$ degeneracy, sets every absolute scale. Highest priority of
+  the specification, and the one item worth doing even standalone.
 - **Fixed-lock centres:** first absolute AC-Stark shift (the pull $\propto S_0$,
   un-absorbed) and collisional self-shift. Small waist ($S_0$ 4× larger) makes the
   $\propto S_0^3$ skew a detection; the axial-averaged ramp predicts a **skew

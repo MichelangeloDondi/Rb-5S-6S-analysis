@@ -5,7 +5,7 @@ Generate docs/RESULTS.md -- the single referee-facing results ledger.
 Every headline number is READ from the committed results/*.csv (never
 hand-typed), so the ledger cannot drift from the code: re-run this after the
 pipeline and the table regenerates. Each row carries value, error, the
-dominant systematic, a provenance status, and the October measurement that
+dominant systematic, a provenance status, and the fixed-lock session measurement that
 lifts it. This is the source of truth the README prose summarizes.
 """
 
@@ -36,7 +36,7 @@ def main() -> int:
       "absolute numbers are PRELIMINARY where noted — they ride on the OPEN "
       "beam waist $w_0$ (README §2.5). Frequencies are transition-axis unless "
       "a `_LASER` note says otherwise.\n")
-    W("> **The dominant systematic is the OPEN beam waist $w_0$ — only the October "
+    W("> **The dominant systematic is the OPEN beam waist $w_0$ — only the fixed-lock session "
       "knife-edge measures it.** The M9 transit Monte-Carlo flux bug (it ran ~2× too "
       "narrow) was FIXED and fully propagated on 2026-07-13: the corrected transit "
       "excludes the old 32 µm nominal (natural convolved with transit alone already "
@@ -57,7 +57,7 @@ def main() -> int:
     W("model-dependence IS the C1 uncertainty, larger than any single fit's error")
     W("bar, and it is the honest headline. The **conservative model-independent")
     W("bound ($<\\sim$0.15) is the robust floor**; the fits are PRELIMINARY")
-    W("cross-checks pending October.\n")
+    W("cross-checks pending a fixed-lock session.\n")
     W("| estimator | value (MHz per $10^{12}$ cm$^{-3}$) | status |")
     W("|---|---|---|")
     pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("variant", "").startswith("70-110")}
@@ -159,7 +159,7 @@ def main() -> int:
               f"same holds for every other single-peak drop.\n")
         lt = _dv("beta_loo_temp", isos[0]) if isos else None
         W("\n> The **$w_0$-band is the largest systematic** (the OPEN waist — the "
-          "October knife-edge collapses it), then the transit model-form (Lehmann cusp "
+          "knife-edge measurement collapses it), then the transit model-form (Lehmann cusp "
           "vs Voigt); the $\\sigma_\\text{laser}$ A-vs-B *sharing* choice is minor — "
           "per-block (Model B) gives $\\beta_{87}=0.034$ vs per-$T$ 0.036, agreeing to "
           "$\\sim$0.002, so the per-$T$ headline (the M4c-consistent, physically-"
@@ -192,7 +192,7 @@ def main() -> int:
               f"lever lengthens (per-condition $\\beta$ is only $\\sim$0.01; the joint 0.036 "
               f"is $\\sigma_\\text{{laser}}$-sharing-inflated). That is precisely why "
               f"$\\beta$ is a BOUND. The 130 °C data are also a different session — a "
-              f"secondary, unseparable caveat — so October needs *same-session* "
+              f"secondary, unseparable caveat — so a fixed-lock session needs *same-session* "
               f"high-density points to resolve any real collisional slope.\n")
     else:
         gf_mf = [r for r in rows("global_fit") if r["quantity"] == "beta_modelform_syst"]
@@ -203,7 +203,7 @@ def main() -> int:
               f"**transit model-form $\\pm${mf:.3f}** (the $|$Voigt $-$ Lehmann$|$ $\\beta$ "
               f"shift, `run_global_fit`); and the $w_0$-band $\\sim\\pm$0.01–0.02 (the OPEN "
               f"beam waist). The paper quotes all three bars, not one optimistic $\\pm$.\n")
-    W("*Lifted by:* October fixed lock (removes between-block laser drift) + "
+    W("*Lifted by:* a fixed lock (removes between-block laser drift) + "
       "knife-edge $w_0$ (sets the transit subtraction) → a clean measurement.\n")
 
     # ---- C2: sigma_laser ----
@@ -226,7 +226,7 @@ def main() -> int:
       "fit is flatter, $\\sim$1.0–1.25 transition); the underlying laser width is "
       "$\\sim$1.1 transition $=$ ~0.55 laser. Every committed CSV carries the axis in "
       "its unit string.\n")
-    W("*Lifted by:* knife-edge $w_0$ + a direct linewidth measurement in October.\n")
+    W("*Lifted by:* knife-edge $w_0$ + a direct linewidth measurement in a fixed-lock session.\n")
 
     # ---- C3: power sweep ----
     W("## C3 — power sweep (ramp-law predictions confirmed)\n")
@@ -250,7 +250,7 @@ def main() -> int:
       "is the operative condition — ground-state non-depletion — not a "
       "linear-reabsorption assumption.) This immunity is an ARGUMENT, not tested "
       "here: the archival sweep is single-temperature (130 °C, one $\\tau$), so "
-      "slope-vs-$\\tau$ cannot be checked — October's multi-T power sweeps would. "
+      "slope-vs-$\\tau$ cannot be checked — multi-T power sweeps in a fixed-lock session would. "
       "993.4121 nm's low slope (1.83) is unresolved: dim-line SNR bias at 25 mW, "
       "genuine saturation, or a weak power-dependence of trapping at the thick end "
       "are not separable from one single-T sweep.")
@@ -273,7 +273,7 @@ def main() -> int:
       "archival skew cannot serve as a ramp measurement. (Per-peak scaling exponent "
       "$-0.2$ to $-0.9$ about the $-0.5$ shot-noise value, so a small extra "
       "low-power systematic — baseline, line-pull — is not excluded, but shot noise "
-      "dominates.) October lifts the real observable two ways: the fixed lock "
+      "dominates.) a fixed-lock session lifts the real observable two ways: the fixed lock "
       "un-absorbs the large first-order pull, and the small waist ($S_0$ 4× larger, "
       "skew up to 64×) makes the ramp asymmetry a detection — conditional on the "
       "§7 geometry correction. See docs/THEORY_NOTE.md §3.\n")
@@ -302,7 +302,7 @@ def main() -> int:
           f"({float(sv['S0_225mW_ub95_raw']['value']):.1f} MHz) exceeds the {pr:.2f} MHz "
           f"prediction, so the archive is consistent with it either way but cannot "
           f"distinguish it from zero. Inflating for the measured scatter is the honest "
-          f"choice. *Lifted by:* October's fixed lock measures the pull $\\sim S_0$ "
+          f"choice. *Lifted by:* the fixed lock measures the pull $\\sim S_0$ "
           f"directly, and the small waist makes $S_0$ several-fold larger — turning this "
           f"bound into the coefficient.\n")
 
@@ -340,7 +340,7 @@ def main() -> int:
           f"all $<$1), consistent with the per-T sharing the global fit assumes. Two "
           f"honest limits: (i) agreement is **necessary, not sufficient** — the four "
           f"peaks could have co-drifted between acquisitions and still agree; only "
-          f"logged timestamps (October) settle it. (ii) It is **in-sample**: the check "
+          f"logged timestamps (a fixed-lock session) settle it. (ii) It is **in-sample**: the check "
           f"uses 70/90/110 °C and the headline fit uses the *same* three temperatures, "
           f"so it cannot be an out-of-sample test — the 130 °C block that would stress "
           f"the assumption is a different session (excluded, §C1 lever test). (iii) "
@@ -362,7 +362,7 @@ def main() -> int:
         d = [float(r["dBIC_voigt_minus_lehmann"]) for r in mf]
         W(f"- **Lehmann cusp (M8):** ΔBIC(Voigt−Lehmann) {min(d):+.1f}…{max(d):+.1f} "
           "— no preference for the cusp (the negative end is a mild dispreference "
-          "on 993.4207 nm), all far below the gate ≥10; needs October's narrow laser.")
+          "on 993.4207 nm), all far below the gate ≥10; needs the fixed-lock session's narrow laser.")
     am = rows("amplitude_trapping")
     if am:
         W("- **Radiation trapping (M7):** amplitude ∝ N, log-log slopes 0.85–1.02 "
@@ -376,7 +376,7 @@ def main() -> int:
     if ar:
         W("- **Degeneracy law (M10):** areas should be abundance×(2F+1) "
           "(5/3, 7/5 within-isotope); measured ratios swing 30–50% between "
-          "blocks (drift) — not testable in the archive; October: interleave peaks.")
+          "blocks (drift) — not testable in the archive; a fixed-lock session: interleave peaks.")
     W("\n---\n*Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / "
       "OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*")
 

@@ -29,7 +29,7 @@ Delineation (what is genuinely not in Stalnaker/Wieman):
 | Ensemble | collimated beam, velocity-selective | thermal vapor cell |
 | Regime | **fringe-resolved**: FM index ξ/Ω ≳ 1, Bessel sidebands, sub-Doppler features | **fringe-averaged**: ξ/Ω ~ 10⁻³, atoms see the time-averaged envelope |
 | Lineshape | numerical Bloch, per-condition | **closed-form** shift density f(s) ∝ \|s\| on [−S₀,0] |
-| Extraction | full-shape fit; needs β, cavity field, velocity model, per-scan free center | **closed-form ramp** fit with a per-trace free center; the ramp SHIFT is absorbed by the free center, so S₀ is read from the drift-invariant SHAPE ASYMMETRY (skew) — the stable-lock pull is October's separate, larger handle |
+| Extraction | full-shape fit; needs β, cavity field, velocity model, per-scan free center | **closed-form ramp** fit with a per-trace free center; the ramp SHIFT is absorbed by the free center, so S₀ is read from the drift-invariant SHAPE ASYMMETRY (skew) — the stable-lock pull is the fixed-lock session's separate, larger handle |
 | Saturation | saturating + hole-burning entangled with the asymmetry | unsaturated throughout (C3: amplitude ∝ P² confirmed) |
 
 The generic quasi-static law both regimes reduce to: signal weight ∝ Iⁿ over
@@ -46,7 +46,7 @@ frequency modulation of depth ξ = ½αε₀² at rate Ω/2π = 2v/λ. For us:
 ξ = S₀ ≲ 1 MHz → **modulation index ξ/Ω ≲ 2×10⁻³ → pure carrier at the
 time-averaged intensity**. So the shift is set by the fringe-averaged
 intensity I₁ + I₂ = (1+ρ)I₁ — no coherent ×2 fringe enhancement. The
-residual OPEN item is the measured retro ratio ρ (October, per
+residual OPEN item is the measured retro ratio ρ (measured in a fixed-lock session, per
 configuration). Caveat: atoms with axial speed ≲ 5 m/s (~1–2% of weight)
 are fringe-resolved and see a static node/antinode spread — a percent-level
 correction to fold into the ramp MC. CALCULATED 2026-07-12.
@@ -76,7 +76,7 @@ Consequences (the honest calibration of our own result):
 - **The 70–130 °C lever is insufficient to MEASURE the expected β**:
   ΔN ≈ 2×10¹³ cm⁻³ → Δγ ≈ 20 kHz, invisible under any realistic width
   budget. A real measurement needs **150–170 °C points** (N ≈ 0.7–2.7×10¹⁴
-  cm⁻³ → Δγ ≈ 0.07–0.25 MHz) — an October shot-list change, subject to
+  cm⁻³ → Δγ ≈ 0.07–0.25 MHz) — an a fixed-lock session shot-list change, subject to
   cell/oven limits. Trapping grows there but affects amplitude, not width.
 - Weber & Niemax, Z. Phys. A 307, 13 (1982) (Rb nS/nD self-broadening
   series) — TO-PULL; it is the n-scaling anchor that makes "6S completes
@@ -175,7 +175,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    reference; precision groups suppressed the shift.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
    gap-filling number, not a headline. In the archive it is a bound ~40–100×
-   above expectation; a measurement requires the October high-T extension.
+   above expectation; a measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
    per-block).
 
@@ -224,7 +224,7 @@ archival bounds refine).
     1 only through losses (extra L2 and window passes, mirror reflectivity),
     never characterized for the archive. Residual sensitivity is mirror **tilt**,
     not longitudinal placement (the intermediate beam's z_R ≈ 2.8 m makes the
-    mirror position forgiving to tens of cm). October measures ρ in situ
+    mirror position forgiving to tens of cm). A fixed-lock session measures ρ in situ
     (PLAN §8.1).
   * Their detection is the **780 nm and 795 nm cascades together** through an
     800 nm short-pass (Hamamatsu R636-10) — unlike the 2025 archival 795-only
@@ -244,8 +244,8 @@ archival bounds refine).
     (thermally stressed cell windows, waveplate drift) is a *specific,
     physically-motivated* candidate for the M10 between-block amplitude wander
     — common-mode per block, but the archival peaks were taken hours apart, so
-    it does not cancel in the cross-peak ratios; October should **log (or fix
-    with a clean polarizer) the polarization at the cell**. (ii) A free October
+    it does not cancel in the cross-peak ratios; a fixed-lock session should **log (or fix
+    with a clean polarizer) the polarization at the cell**. (ii) A free a fixed-lock session
     diagnostic: rotating to circular must **extinguish** the two-photon line —
     any residual is polarization impurity or background, a null test that costs
     one waveplate turn per config.
@@ -280,7 +280,7 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
   lock test still passes). 6S splittings 1614.709(3)/717.195(3) MHz; **isotope
   shift (85−87) = −99.189(3) MHz**. Their line-center drift control (<0.5 kHz over
   50 min; centers stable to 3 kHz) is a benchmark for what a fixed lock buys —
-  exactly the October target.
+  exactly the target for a fixed-lock session.
 - **Orson 2021** (J. Phys. B **54**, 175001, `orson2021`; same USAFA group) —
   absolute hyperfine energy levels + isotope shift of the 5S–6S transition.
   **[CITE]** Load-bearing prior nulls (extracted 2026-07-13): they **"find no AC

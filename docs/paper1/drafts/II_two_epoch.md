@@ -47,7 +47,7 @@ waist $w_0$ at the interaction region uncertain at the tens-of-percent level
 [OPEN]. Because the transit width scales as $1/w_0$ and the AC-Stark depth as
 $1/w_0^2$, every *absolute* width and shift we quote from the archive is
 conditional on $w_0$; this is the reason those quantities appear throughout as
-bounds rather than values, and why the October knife-edge is the campaign's first
+bounds rather than values, and why the knife-edge measurement is the campaign's first
 task. The two-epoch design is thus not a workaround for a spoiled dataset but a
 deliberate division of labour — the drifted archive establishes the method, the
 systematics, and the bounds; the fixed-lock top-up, on the ground the archive

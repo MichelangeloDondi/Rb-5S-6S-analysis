@@ -123,7 +123,7 @@ def main() -> int:
     print("hours apart, with knob/cavity re-tweaks -- corroborated by the M0 audit's")
     print("block amplitude anomalies). CONCLUSION: the archival data cannot test the")
     print("degeneracy law beyond the ~40% level; the parameter-free prediction stands")
-    print("ready, and the OCTOBER task is to measure the four peaks INTERLEAVED (or")
+    print("ready, and a fixed-lock session must measure the four peaks INTERLEAVED (or")
     print("with continuous power logging) so the ~% -level test becomes possible.")
     print("Corollary: cross-peak AMPLITUDE comparisons in this archive carry ~30-50%")
     print("systematics (per-peak, within-block analyses -- M7's slopes -- are safe).")
