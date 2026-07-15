@@ -235,7 +235,14 @@ positions through the focus (w(z) hyperbola gives w₀ AND z_R; consistency
 z_R = πw₀²/λ cross-checks the stage scale — a knife-scale error k and stage
 error s must satisfy s = k² to hide), retro ratio ρ measured IN SITU at the
 cell position (both directions; return-path clipping differs per waist —
-revision #7), collection geometry photographed and measured for the MC.
+revision #7), collection geometry photographed and measured for the MC, and
+**polarization logged (or fixed with a clean polarizer) at the cell**: the
+paraxial two-photon rate goes as the squared degree of linear polarization and
+is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measured
+on this line), so polarization drift is a specific candidate for the archival
+30–50% between-block amplitude wander, and one QWP turn to circular per config
+is a free extinction null test (any residual peak = polarization impurity or
+background).
 
 ### 8.2 The intensity axis (revision #1: collapse test is blind to common scale)
 
