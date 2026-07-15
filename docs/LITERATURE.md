@@ -212,12 +212,23 @@ archival bounds refine).
     a real two-photon FWHM (laser axis); the note wrongly used the 795 nm D1
     *detection*-photon width as a floor on the *resonance* width (see DATA.md).
   * **Apparatus facts from the published paper (held since 2026-07-14; page/DOI
-    verified):** the retro is a **concave mirror, f = 75 mm, placed at 2f from
-    the focal plane** — a self-imaging retro that re-images the waist onto
-    itself, which is the design answer to the retro-overlap/ρ worry (a *flat*
-    mirror at that distance would collapse the return intensity; the 2f–2f
-    imaging supports the ρ ≈ 1 assumption up to losses and misalignment). And
-    their detection is the **780 nm and 795 nm cascades together** through an
+    verified) — read as a CONTRAST with our setup, not a match.** Nieddu's retro
+    is a **concave mirror, f = 75 mm, at 2f from the focal plane**: a
+    self-imaging (2f–2f) arrangement that re-images the waist back onto itself,
+    which makes ρ ≈ 1 a *design property* for them rather than an assumption.
+    **Our 2025 archival setup does not use this** (MD, 2026-07-14), so the
+    retro-overlap systematic — return-beam power, waist, and overlap differing
+    from the forward beam, and drifting during a scan — stays **live** for the
+    archival data, and the ρ = 1 default behind the S₀ prediction
+    (`lineshape.stark_shift_S0_mhz`; the 0.59 MHz figure) is an inherited ideal,
+    not a designed or measured value. Two things bound the damage: S₀ ∝ (1+ρ)/2,
+    so *any* ρ ∈ [0,1] moves the prediction only within 0.29–0.59 MHz (the
+    committed < 3.1 MHz bound brackets all of it); and the Doppler-free rate
+    itself scales as ρ (∝ I_fwd·I_bwd), so the archive's strong, clean lines are
+    evidence ρ is not small. October measures ρ in situ (PLAN §8.1). **The
+    archival retro geometry is not documented anywhere in this repo** — an
+    apparatus-section gap to close from the bench.
+  * Their detection is the **780 nm and 795 nm cascades together** through an
     800 nm short-pass (Hamamatsu R636-10) — unlike the 2025 archival 795-only
     narrowband stack — so amplitude/trapping comparisons against Nieddu must
     not assume the same collection channel (the 780/D2 branch sees a different
