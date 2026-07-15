@@ -116,7 +116,39 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 ## 6. Facts that supersede the initial July brief
 
-(Recorded here because Zohreh may have seen earlier numbers.)
+(Recorded because earlier numbers circulated before this analysis existed.)
+
+**Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
+ground rule in `PLAN.md` (old *code* is never read; old *outputs* serve only as
+external cross-check targets), the previous attempt's committed report and summary
+CSVs — not its source — were reviewed after this analysis was complete. The
+comparison is worth recording because it explains the two analyses' different
+conclusions:
+
+- **The earlier analysis modelled the line as an ordinary Doppler-broadened
+  absorption profile.** Its report contains no mention of *two-photon*,
+  *counter-propagating*, *retro-reflected*, *transit-time*, or *AC-Stark*, and it
+  interprets the fitted Gaussian width as "a direct measurement of the atomic
+  velocity distribution … compared to the Maxwell–Boltzmann distribution".
+- **Its own numbers refute that reading.** At 70–130 °C the first-order Doppler
+  FWHM on this line would be 430–466 MHz, whereas the Gaussian it fits is
+  σ ≈ 0.81–0.88 MHz, i.e. an FWHM of ≈1.9–2.1 MHz — **~220× narrower than Doppler**.
+  That factor is not an error in the fit; it is the Doppler-free geometry working
+  as designed (§1.1 of `methods.md`): the first-order shift cancels for every atom,
+  which is the entire purpose of retro-reflecting the beam. A Gaussian of ~2 MHz on
+  this line therefore cannot be the velocity distribution.
+- **What that Gaussian was actually absorbing.** With no transit-time kernel in the
+  model, the single free Gaussian is the only component able to take up the transit
+  width. Suggestively, its mean rises 8.4% from 70→130 °C where the √T transit law
+  predicts 8.4% — though with ~0.07 MHz of peak-to-peak scatter and a *fall* from
+  70→90 °C, four points do not establish this. Read it as consistent with transit +
+  laser being absorbed into one Gaussian, not as a measurement of either.
+- **Consequences for us:** the earlier per-condition widths remain usable as
+  order-of-magnitude cross-check targets (their total widths are in the same few-MHz
+  range as ours), but none of their *physical interpretations* transfer, and their
+  reduced χ² of 2–5 is consistent with a missing model component. This is the
+  clearest justification for the from-scratch re-derivation: the disagreement is not
+  about fitting quality, it is about which mechanisms are in the model at all.
 
 - **Scan rate**: comb teeth are ~147 ms apart ⇒ ≈ 0.043 MHz/ms on the laser
   axis (preliminary, finder-level) — ~11× slower than the brief's
