@@ -36,7 +36,7 @@ the archival brackets into measurements, so several sections are written as
   alone; any further session, whenever and by whoever it is run, feeds the papers.)
 - **Author list & contributions**, target journal, and whether the ramp theory is a
   co-submitted companion or an appendix here (currently: appendix + `THEORY_NOTE.md`
-  is the standalone theorist-facing version for É. Brion).
+  as the standalone version for a theorist reader).
 
 ---
 
