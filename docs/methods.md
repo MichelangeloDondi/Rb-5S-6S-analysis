@@ -72,7 +72,11 @@ axis and would read $1.746$ MHz on the laser axis.
 ## 1. The measurement
 
 A hot Rb vapour cell is illuminated by a 993 nm laser beam retro-reflected onto
-itself, forming two counter-propagating fields. The laser frequency is slowly
+itself, forming two counter-propagating fields. The beam is focused into the
+cell by a lens (L1, $f=150$ mm); a second identical lens (L2) after the cell and
+a flat mirror behind it return the beam along its own path — a self-imaging
+arrangement that re-forms the same waist at the atoms on the return pass
+(§2.6). The laser frequency is slowly
 swept across the two-photon $5S_{1/2}\to 6S_{1/2}$ transition while the
 resulting fluorescence is recorded versus time — one such record is a
 "trace" (mapped onto a frequency axis in §3). The observed narrow resonance
@@ -531,8 +535,29 @@ speed $\lesssim5$ m/s — 1–2% of the signal — are fringe-resolved; a
 percent-level correction.) The remaining OPEN quantity in $S_0$ is the
 measured $\rho$ per beam configuration (October, in situ at the cell).
 
-How much does the unmeasured $\rho$ actually cost? Less than one might fear,
-and the archive partly self-certifies. Since $S_0\propto(1+\rho)$, *any*
+**Why $\rho\approx1$ is a design property here.** The 2025 retro is a
+self-imaging (lens-based) one: the beam is focused into the cell by L1
+($f=150$ mm), and a second lens L2 ($f=150$ mm) after the cell maps the cell
+waist onto an intermediate waist behind it — by the Gaussian $f$–$f$ property a
+waist at a lens's front focal plane becomes a waist at its back focal plane,
+here $w_0'=\lambda f/(\pi w_0)\approx0.95$ mm for $w_0=50\ \mu$m. A **flat**
+mirror placed at that flat wavefront *time-reverses* the beam, so it retraces
+back through L2 and re-forms the original 50 µm cell waist. The forward and
+return modes therefore match **by construction**, and $\rho$ falls below 1 only
+through losses (two further L2 passes, two further window passes, mirror
+reflectivity), not through mode mismatch. The arrangement is also forgiving:
+that intermediate beam has $z_R'\approx2.8$ m, so the "mirror at the waist"
+condition holds to within tens of centimetres, and residual sensitivity is
+dominated by mirror *tilt*, not longitudinal placement. (The 2019 reference
+measurement on this line achieves the same self-imaging with a concave mirror
+at $2f$ instead of a lens plus flat mirror — a different implementation of the
+identical idea; `LITERATURE.md` §6a.) Note the design must be *re-established
+per waist* in October: L2 has to sit a focal length from the new waist, and the
+intermediate beam grows to $\approx3$ mm at $w_0=16\ \mu$m, so return-path
+clipping is the thing to watch (PLAN §8.1).
+
+How much would a departure from $\rho=1$ actually cost? Less than one might
+fear, and the archive partly self-certifies. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.29 and 0.59 MHz — a factor
 of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<3.1$ MHz, §5)
 brackets the whole range, so no archival conclusion turns on it. Better, the
@@ -1016,16 +1041,21 @@ either quarantined or handled).
    data cannot distinguish these forms — so the *shape* assumption is untested
    by the archival data and is a genuine attack surface until October.
 4. Transit width rides on the OPEN $w_0$ prior until the October knife-edge.
-5. The retro ratio $\rho=1$ (perfect retro) behind the quoted $S_0$ prediction
-   (§2.6) is an *inherited ideal*, not a measured or designed value: the 2025
-   retro is not a self-imaging arrangement (unlike the 2019 reference
-   measurement on this line, which used a concave mirror at $2f$ — see
-   `LITERATURE.md` §6a), and the archival return-beam power, waist, and overlap
-   were never characterized. Bounded but untested: $S_0\propto(1+\rho)$ confines
-   the prediction to 0.29–0.59 MHz for any $\rho$, and the signal's own
-   $\propto\rho$ scaling argues $\rho$ is not small — but a *drifting* overlap
-   during a scan is a skew-like contaminant no bound covers. October measures
-   $\rho$ in situ per configuration (PLAN §8.1).
+5. The retro ratio $\rho=1$ behind the quoted $S_0$ prediction (§2.6) is a
+   *geometric design property, not a measured number*. The 2025 retro is
+   self-imaging: L2 ($f=150$ mm) maps the cell waist to a $\sim$1 mm
+   intermediate waist and a flat mirror at that flat wavefront time-reverses
+   the beam, re-forming the original waist (§2.6) — so the forward/return
+   *mode match* is by construction, and $\rho$ departs from 1 only through
+   *losses* (two extra L2 passes, two extra window passes, mirror
+   reflectivity), never characterized for the archive. The exposure is bounded
+   anyway: $S_0\propto(1+\rho)$ confines the prediction to 0.29–0.59 MHz for
+   any $\rho$, and the Doppler-free rate's own $\propto\rho$ scaling means the
+   archive's strong lines already argue $\rho$ is not small. What no static
+   bound covers is a *drifting* overlap within a scan (mirror tilt is the
+   sensitive axis; the longitudinal placement is forgiving to tens of cm),
+   which is skew-like. October measures $\rho$ in situ per configuration
+   (PLAN §8.1).
 6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
    artifact (block rates scatter only $0.6\%\approx0.03$ MHz on a 5 MHz line).
 7. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
