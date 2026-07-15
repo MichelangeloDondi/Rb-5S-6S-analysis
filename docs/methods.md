@@ -303,8 +303,8 @@ the $\sqrt T$ law.
 #### What "the knife-edge $w_0$" means
 
 $w_0$ is the beam waist — the radius at which the intensity falls to $1/e^2$ of
-its on-axis value at the focus. A **knife-edge measurement** is the standard,
-model-free way to measure it: you translate a sharp opaque edge (literally a
+its on-axis value at the focus. A **knife-edge measurement** is the standard
+way to measure it: you translate a sharp opaque edge (literally a
 razor blade — hence "knife-edge") across the beam, perpendicular to its
 propagation, and record the transmitted power $P(x)$ versus the blade position
 $x$. For a Gaussian beam the blade integrates a Gaussian, so $P(x)$ traces an
@@ -315,6 +315,28 @@ $$\frac{dP}{dx} \propto \exp \Big(-\frac{2x^2}{w^2}\Big)$$
 whose width gives the local radius $w$. Repeating at several positions along
 the propagation axis $z$ near the focus and finding the minimum locates the
 waist $w_0$. It is direct, needs no lineshape model, and is good to $\sim\mu$m.
+
+**Why a knife-edge rather than a camera?** Both are beam-profile measurements
+that end in a Gaussian fit; they differ only in the transducer, so this is a
+choice of instrument, not of method. A camera's resolution is set by its pixel
+pitch (typically 3–5 µm): at October's small-waist config ($w_0\approx16$ µm,
+so a $1/e^2$ diameter of only $\approx32$ µm) that is 6–9 pixels across the
+entire beam, far too few to fit reliably, whereas the knife-edge's resolution
+comes from the translation stage (sub-µm) and is indifferent to how tight the
+focus is. The knife-edge also reads a power meter — large dynamic range, no
+saturation — where a camera at these powers needs attenuation that can itself
+distort the mode. The trade-off is real, though: the knife-edge *assumes* a
+Gaussian, returning a best-fit $w$ whether or not the beam is one. A camera
+image is the natural complement, since it shows astigmatism, ellipticity, and
+any diffraction structure from aperture clipping — the very effect that makes
+the archival $w_0$ uncertain — and §2.6 derives the ramp law from a Gaussian
+$I(r)$, so confirming Gaussianity is itself worth a measurement rather than an
+assumption. The planned $z$-scan (PLAN §8.1) already covers part of this for
+free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
+since $z_R=\pi w_0^2/(M^2\lambda)$, the ratio $(\pi w_0^2/\lambda)/z_R$ is
+exactly $M^2$ — so the $z_R=\pi w_0^2/\lambda$ consistency test is also a
+beam-quality test, albeit one that cannot separate $M^2>1$ from a stage-scale
+error without an independent image.
 
 Why it is the linchpin for this analysis: $w_0$ sets the **transit width**
 ($\propto 1/w_0$, §2.5) *and* every AC-Stark magnitude ($\propto 1/w_0^2$,
