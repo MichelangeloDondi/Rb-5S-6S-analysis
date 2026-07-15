@@ -168,7 +168,7 @@ transitions, including the hot 5D clock line).
   the drift-immune AC-Stark Δα(n), tested against the n-scaling (β ∝ C₆^{2/5},
   C₆ ~ n*⁷) and the Safronova matrix elements. We find **no modern 6S dynamic
   polarizability at 993 nm exists** — a gap this fills.
-- Feasibility: β_self is ~kHz at 6S (needs the October high-T, same-session shot-list
+- Feasibility: β_self is ~kHz at 6S (needs the fixed-lock session high-T, same-session shot-list
   upgrade already in PLAN §8.4); 5D/7S sit closer to resonance so *may* broaden more
   and be easier. Lower risk than A, lower ceiling.
 
@@ -202,7 +202,7 @@ method and cannot be scooped.
   993 nm, or need swaps? (The intensity-anchor / retro-ratio ρ must be re-characterised
   per wavelength.)
 - Cell/oven: 5D/7S may want *lower* density than 6S (they are stronger / closer to
-  resonance) — the October shot-list temperature range would differ per transition.
+  resonance) — the fixed-lock session shot-list temperature range would differ per transition.
 
 *References for §3 are collected in `docs/LITERATURE.md` §8 (2024–2026 landscape).
 Source landscape doc: `PDF_papers/literature_intake/landscape_2026_drift-immune-Rb-5S6S-and-778nm-frontier.md`.*

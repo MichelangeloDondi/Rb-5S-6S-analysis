@@ -21,7 +21,7 @@ collisions (which must be LINEAR in N). beta is therefore a LEVER-DEPENDENT BOUN
 the long lever simply exposes that. The
 130 C data are also a different session -- a secondary caveat we cannot fully
 separate -- but leverage, not a session jump, is the driver. Either way the
-model-independent BOUND, not any fit, is the archival headline, and October
+model-independent BOUND, not any fit, is the archival headline, and a fixed-lock session
 needs same-session high-density points to resolve any real collisional slope.
 (Run-once script, several minutes: the per_block fit floats one laser width
 per block.)
@@ -297,7 +297,7 @@ def main() -> int:
 
     print(f"\n{'-'*74}\nWrote results/lever_crosscheck.csv. Model-based cross-check + isotope test")
     print("with the full audited budget; the raw-width BOUND stays the archival headline.")
-    print("October fixed lock + knife-edge w0 collapse the w0 bar and the session split.")
+    print("a fixed lock + knife-edge w0 collapse the w0 bar and the session split.")
     return 0
 
 

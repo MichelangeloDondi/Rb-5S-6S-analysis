@@ -66,7 +66,7 @@ def test_stark_ramp_shape_and_mean():
 def test_stark_ramp_small_s0_continuous_and_mean_exact():
     # Review fix regression lock: the old implementation switched
     # DISCONTINUOUSLY from ramp to grid spike at s0 <= dnu (a false-minimum
-    # trap for October fits that float s0). The cell-integral + moment-
+    # trap for fixed-lock fits that float s0). The cell-integral + moment-
     # corrected version must (a) keep exact unit mass, (b) keep the exact
     # -2/3 s0 mean even for s0 far below the grid step, and (c) evolve
     # continuously as s0 sweeps through the grid scale.
@@ -86,7 +86,7 @@ def test_stark_ramp_small_s0_continuous_and_mean_exact():
 
 def test_stark_ramp_small_s0_continuous_and_mean_exact():
     # Review fix: the old grid-spike fallback switched the shape
-    # DISCONTINUOUSLY at s0 ~ dnu (false-minimum trap for October fits that
+    # DISCONTINUOUSLY at s0 ~ dnu (false-minimum trap for fixed-lock fits that
     # float s0). Now: exact area at every s0, exact mean -2/3 s0 even far
     # below the grid step, and no large L1 jumps along a fine s0 sweep.
     nu = np.arange(-30.0, 30.0, 0.05)
@@ -212,7 +212,7 @@ def test_stark_S0_reproduces_orson2021():
 
 def test_ramp_moment_contributions_forward_model():
     # The three moment-functionals of one S0 (pure-triangle limit): the
-    # forward model the October joint fit checks the data against.
+    # forward model the fixed-lock joint fit checks the data against.
     from rb5s6s.lineshape import ramp_moment_contributions
     S0 = 3.0
     m = ramp_moment_contributions(S0, z_ratio=0.0)

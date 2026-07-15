@@ -123,7 +123,7 @@ Galvan et al. 2008's 239.18(3) MHz). 6S splitting F=3-F=2 = 3A = 717.195(3) MHz
 (I=5/2)."""
 
 # --------------------------------------------------------------------------
-# AC-Stark / polarizability (October physics; archival *prediction* only)
+# AC-Stark / polarizability (fixed-lock physics; archival *prediction* only)
 # --------------------------------------------------------------------------
 DELTA_ALPHA_AU = 1093.0
 """alpha(6S) - alpha(5S) at 993 nm, atomic units. SOURCED (2026-07-13) to Orson
@@ -155,7 +155,7 @@ with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
 (forward + retro, NO coherent x2 -- the fringe-averaging argument below).
 => S0(225 mW, w0=50 um, rho=1) = 0.59 MHz transition (0.29 laser axis) [archival
    prior; was 1.43 at the old 32 um nominal, now excluded -- see W0_PRIOR_M];
-   S0(225 mW, w0=16 um, rho=1) = 5.7  MHz transition (why October's small
+   S0(225 mW, w0=16 um, rho=1) = 5.7  MHz transition (why the fixed-lock session's small
    waist makes the skew, ~S0^3, measurable). See stark_shift_S0_mhz().
 The archival ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
 mean pull -(2/3) S0; third cumulant +S0^3/135.
@@ -166,7 +166,7 @@ xi = S0 <~ 1 MHz at rate 2v/lambda ~ 0.56 GHz (axial thermal speed ~280 m/s);
 modulation index ~2e-3 => pure carrier at the time-averaged intensity, no
 coherent x2. (Atoms with axial speed <~ 5 m/s, ~1-2% of weight, are
 fringe-resolved -- a percent-level MC correction.) Remaining measured input
-before an absolute Stark coefficient: the retro ratio rho (October, per
+before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
 and docs/THEORY_NOTE.md."""
 
@@ -207,7 +207,7 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # Beam geometry
 # --------------------------------------------------------------------------
 W0_PRIOR_M = 50e-6
-"""Beam waist PRIOR (central value), OPEN until the October knife-edge. Enters
+"""Beam waist PRIOR (central value), OPEN until the knife-edge measurement. Enters
 the transit width (~1/w0) and all Stark magnitudes (~1/w0^2).
 
 Re-centred 32 -> 50 um (2026-07-12) after the transit-broadening physics was
@@ -219,7 +219,7 @@ BEFORE any laser or collisional width -- so w0 = 32 um is EXCLUDED. The observed
 width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um is adopted as
 the central corrected-physics prior. NOTE this is still a PRIOR, not a
 measurement: the transit<->sigma_laser degeneracy means the archival line cannot
-pin w0 on its own -- that is exactly what the October knife-edge settles. (The
+pin w0 on its own -- that is exactly what the knife-edge measurement settles. (The
 Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, but the 3 mm EOM
 aperture clipped the beam, widening the true waist -- consistent with ~50 um.)
 
@@ -235,7 +235,7 @@ the drifted 2025 laser stays comfortably under its C2 bound) because the 2025
 alignment is not guaranteed identical to Nieddu's; the honest archival range is
 w0 ~ 50-64 um. If the archival beam WERE exactly 64 um, the observed line pins
 sigma_laser ~ 1.1 MHz laser-axis (the transit<->laser degeneracy collapses once
-w0 is fixed) -- which the October knife-edge will do directly."""
+w0 is fixed) -- which the knife-edge measurement will do directly."""
 
 
 def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,

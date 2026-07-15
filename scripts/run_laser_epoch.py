@@ -14,7 +14,7 @@ the fit cannot say how much is which --
     transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.4 MHz (laser could be narrow)
 So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is NOT the culprit (~0.01 MHz within a
-scan). The October knife-edge w0 turns this bound into a measurement. (w0 was
+scan). The knife-edge measurement w0 turns this bound into a measurement. (w0 was
 re-centred 32 -> 50 um 2026-07-12 when the transit physics was corrected; 32 um
 now OVERSHOOTS the observed line and is excluded -- see constants.W0_PRIOR_M.)
 
@@ -99,7 +99,7 @@ def main() -> int:
     print(f"\n  HEADLINE (C2): sigma_laser(2025) <~ {sl_l.max():.1f} MHz (laser axis), UPPER BOUND.")
     print("    - degenerate with w0: if w0 < 50um the true laser is narrower (possibly << 1 MHz)")
     print("    - slow drift is NOT the cause (~0.01 MHz within a 1 s scan)")
-    print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the October")
+    print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the fixed-lock session")
     print("      knife-edge w0 (fixing transit) converts this bound into a measurement")
     print("    - this bound is the ONF starting linewidth for Paper 2")
 

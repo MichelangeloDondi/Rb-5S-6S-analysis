@@ -36,7 +36,7 @@ on the OPEN w0 (the confound bar spans it), so the model-independent raw-width
 BOUND (run_beta_self.py) stays the paper's headline number. The value here is
 (a) the isotope test beta_85 vs beta_87, (b) turning the between-block laser
 drift into a measured sigma_laser(T), and (c) an auditable, fully-bracketed
-error budget the October fixed-lock data will collapse.
+error budget the fixed-lock data will collapse.
 """
 
 from __future__ import annotations

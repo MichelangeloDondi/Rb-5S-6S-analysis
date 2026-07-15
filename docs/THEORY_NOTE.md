@@ -85,7 +85,7 @@ $$\text{centroid pull} = -\tfrac{2}{3}S_0,\qquad
 
 order the signal by statistical cost — pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$ (the last vanishing unless $n=2$, the $I^2$
-signature) — but note the pull is available only once a stable lock (October)
+signature) — but note the pull is available only once a stable lock (a fixed-lock session)
 un-absorbs it.
 
 Two caveats. *Between*-scan drift is absorbed exactly by the free centres.
@@ -100,7 +100,7 @@ with zero**: at $\le225$ mW its significance (the skew grows only as $S_0^3$)
 sits below the SNR $\approx130$ floor, so the estimator — correct as it is —
 returns an **upper bound, not a detection**. A fit always returns *some* value
 with an error bar; the discipline is to report a bound unless it clears that
-bar, which at archival intensity it does not. October changes this two ways:
+bar, which at archival intensity it does not. A fixed-lock session changes this two ways:
 the fixed lock **recovers the first-order pull** ($-\tfrac23 S_0 \propto P$, a
 $\sim$MHz shift against a stable reference — the primary $S_0$ measurement, no
 longer absorbed by a free centre); and the small waist, where $S_0$ is $4\times$
@@ -114,7 +114,7 @@ $\Delta\alpha$, is read.
 measurements to be combined or cherry-picked — they are three analytic
 functionals of the *one* parameter $S_0(P)$ (`lineshape.ramp_moment_contributions`):
 pull $\propto S_0$, excess variance $\propto S_0^2$, third cumulant $\propto
-S_0^3$. October fits a single $S_0$ per condition and checks that the pull,
+S_0^3$. the fixed-lock fit uses a single $S_0$ per condition and checks that the pull,
 excess-variance and third-cumulant *measured from the data* are mutually
 consistent with it — a $\chi^2$ across the moment hierarchy. The primary
 observable at each intensity is pre-registered as the lowest-order moment above
@@ -148,7 +148,7 @@ broadening (a $1.4$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through th
 §5 convention, at the nominal $w_0=50\ \mu$m this brackets $\Delta\alpha$ below
 $\sim1.4\times$ the computed value ($<\sim5800$ a.u., 95%) — consistent with
 $1093$, with the mapping inheriting the open $w_0$. So the archive **does not
-contradict** the computed $\Delta\alpha$; October's fixed lock measures the pull
+contradict** the computed $\Delta\alpha$; the fixed lock measures the pull
 $\propto S_0$ directly (small waist $\Rightarrow S_0$ $\sim4\times$ larger),
 turning this bracket into the coefficient.
 
@@ -177,7 +177,7 @@ frequency-modulation index is $\sim2\times10^{-3}$ — deep in the narrow-band
 regime, the atom responds to the fringe-averaged intensity (Stalnaker *et al.*,
 *Phys. Rev. A* **73**, 043416 (2006), Sec. IV). With $\Delta\alpha = 1093$ a.u.
 (Orson *et al.* 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
-$\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why October's small
+$\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why the fixed-lock session's small
 waist makes the $\propto S_0^3$ skew measurable. Code: `lineshape.stark_shift_S0_mhz`.
 
 **Sign, and provenance.** The $\langle E^2\rangle$ convention is magnitude-only;
@@ -246,6 +246,6 @@ survive the same scrutiny? These are well-posed, they need no new data, and
 they sit exactly at the focused-two-photon / inhomogeneous-field boundary.
 
 *Backing material in the repo: README §2.6 (derivations), `docs/LITERATURE.md`
-(prior-art ledger), `docs/PLAN.md` §8 (the October campaign that measures $S_0$
-and tests the sign-flip). Absolute numbers are PRELIMINARY pending the October
+(prior-art ledger), `docs/PLAN.md` §8 (the fixed-lock session that measures $S_0$
+and tests the sign-flip). Absolute numbers are PRELIMINARY pending the fixed-lock session
 beam-waist measurement, on which every magnitude rides.*

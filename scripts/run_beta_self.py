@@ -255,7 +255,7 @@ def main() -> int:
     print("trend, so the archival T-sweep BOUNDS beta_self (it does not measure it).")
     print("The global-fit sigmas above are OVERCONFIDENT — they assume one shared")
     print("sigma_laser across blocks and so omit exactly this between-block drift.")
-    print("=> Clean beta_self REQUIRES the fixed-lock October campaign (two-epoch design).")
+    print("=> Clean beta_self REQUIRES the fixed-lock fixed-lock session (two-epoch design).")
 
     print(f"\n{'-'*74}\nCAVEATS (all results PRELIMINARY):")
     print("  * transit fixed on the OPEN w0 prior -> absolute scale of any beta")

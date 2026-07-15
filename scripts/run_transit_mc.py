@@ -10,7 +10,7 @@ the 2025 laser width, and (3) how far the phenomenological two-sided
 exponential is from the MC kernel.
 
 All in the weak-field, straight-line, flux-weighted approximation; absolute
-values ride on the OPEN w0 and the (October) collection geometry. (An earlier
+values ride on the OPEN w0 and the (a fixed-lock session) collection geometry. (An earlier
 version omitted the crossing-flux factor and ran ~2x too narrow with a spurious
 divergent cusp; fixed 2026-07-12 -- see transit_mc.py.) Outputs:
 results/transit_mc.csv.
@@ -98,9 +98,9 @@ def main() -> int:
     print("      - w0 ~< 40 um: transit alone ~fills the 5.25 MHz => laser NARROW/none;")
     print("      - w0 = 50 um (prior): transit ~1.2, leaving ~0.8 MHz laser axis for laser.")
     print("    The MC does NOT settle narrow-vs-not by itself -- it QUANTIFIES the w0")
-    print("    degeneracy; October's knife-edge w0 is the decisive measurement.")
+    print("    degeneracy; the fixed-lock session's knife-edge w0 is the decisive measurement.")
     print(f"  * objection #1 (collection over many mm): a real tens-of-% effect on the")
-    print("    transit -- needs October's measured collection profile.")
+    print("    transit -- needs the fixed-lock session's measured collection profile.")
     print(f"  * the kernel is a finite cusp (excess kurtosis {kurt:.1f}, Gaussian=0): the")
     print("    phenomenological two-sided exponential is close but under-represents the")
     print("    core, so the fits should adopt this MC kernel once w0 + collection are known.")

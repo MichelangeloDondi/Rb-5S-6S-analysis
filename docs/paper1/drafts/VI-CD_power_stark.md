@@ -29,7 +29,7 @@ consistent with $P^2$. The one low value (993.4121 nm, slope $\approx1.85$) is
 driven by its 25 mW point, where saturation and radiation-trapping corrections
 are degenerate in a single-temperature sweep; we therefore say "consistent with
 $P^2$", not "confirms $P^2$", and defer the trapping discriminator to the
-interleaved October data (§VII).
+interleaved a fixed-lock session data (§VII).
 
 **The ramp asymmetry is a bound, and the low-power skew is shot noise, not the
 ramp (C3c).** These are two distinct quantities and conflating them is the trap.

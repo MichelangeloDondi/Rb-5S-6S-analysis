@@ -129,7 +129,7 @@ def fig_transit_mc():
     ax.fill_between([min(w0), 20], GNAT, 6.0, color="#009E73", alpha=0.10)
     ax.annotate("laser NARROW\n(transit fills budget)", (16.5, 5.5), fontsize=8, color="#009E73")
     ax.annotate("laser ~1 MHz", (36, 4.2), fontsize=8, color="0.3")
-    ax.set_xlabel(r"beam waist $w_0$ ($\mu$m)  — OPEN until October knife-edge")
+    ax.set_xlabel(r"beam waist $w_0$ ($\mu$m)  — OPEN until knife-edge measurement")
     ax.set_ylabel("FWHM (MHz, transition)")
     ax.set_title("M9: transit ⊗ natural vs $w_0$ — the transit/laser degeneracy\n"
                  "crossover near $w_0\\approx18$–$20\\,\\mu$m sets narrow-vs-not", fontsize=9)
@@ -171,7 +171,7 @@ def fig_pooled_width():
     statistics-limited and non-monotonic. Companion panel: the shared σ_laser(T)
     is NOT flat — the residual drift systematic, shown not hidden. This is
     PRECISION not accuracy: still a BOUND, because the common-mode time-drift
-    survives pooling (only October's opposite-order grid decontaminates)."""
+    survives pooling (only the fixed-lock session's opposite-order grid decontaminates)."""
     rows = _rows("linefit_conditions")
 
     def width(peak, T):

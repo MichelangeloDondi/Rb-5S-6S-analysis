@@ -25,7 +25,7 @@ Design rules
   f(s) ∝ |s| on [-S0, 0], from the I^2-excitation / I-shift derivation).
   Free per condition: amplitude, center, background, gamma_coll, and (per
   block) sigma_laser; S0 is FIXED per power from the prediction in the
-  archival fits (it is a MEASUREMENT only in the October fixed-lock data).
+  archival fits (it is a MEASUREMENT only in the fixed-lock data).
 
 Provenance of the transit kernel (ESTABLISHED, not phenomenological):
 Biraben, Bassini & Cagnac, J. Phys. (Paris) 40, 445 (1979) derived the
@@ -85,7 +85,7 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     IMPLEMENTATION (fix, 2026-07-11): the original code dropped a
     grid-point spike for any s0 <= dnu, so the shape switched DISCONTINUOUSLY
     from ramp to spike — a false-minimum trap for any fit that floats s0
-    (October data will). Now: exact per-cell integrals of the ramp density
+    (fixed-lock data will). Now: exact per-cell integrals of the ramp density
     (area exactly 1, continuous in s0 at every scale), plus a one-node
     first-moment transfer so the discrete mean equals the exact -2/3 s0 even
     when s0 is far below the grid step — d(profile)/d(s0) never dies."""
@@ -125,7 +125,7 @@ def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
 
     rho = retro power ratio (1.0 = perfect retro). Returns S0 > 0 for a red
     shift (Delta_alpha > 0). Laser-axis value is S0/2. This is the coefficient
-    the October fixed-lock mean-pull-vs-power fit measures (inverted to give
+    the fixed-lock mean-pull-vs-power fit measures (inverted to give
     Delta_alpha); the archival ramp SHAPE does not depend on it."""
     i_eff = (1.0 + rho) * 2.0 * power_w / (np.pi * w0_m ** 2)
     d_alpha = delta_alpha_au * ATOMIC_POLARIZABILITY_SI
@@ -139,7 +139,7 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     """Fast no-Stark composite on a self-sized grid: Lorentzian(Gamma_nat +
     gamma_coll) (X) laser kernel (X) transit kernel, area-normalized.
     Returns (grid, profile). This is the shared kernel of the beta_self and
-    global fits (S0 is fixed/negligible in the archival width fits; October
+    global fits (S0 is fixed/negligible in the archival width fits; a fixed-lock session
     center fits use model_profile with the ramp instead). Moved here from
     beta.py (revision #9, 2026-07-11): composite lineshapes belong in the
     lineshape module, not in one consumer.
@@ -168,7 +168,7 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
 
 def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
                      n_photon: int = 2) -> np.ndarray:
-    """Diverging-beam generalization of stark_ramp (October PLAN §8.3;
+    """Diverging-beam generalization of stark_ramp (PLAN §8.3;
     revision 2026-07-12 #3): the observed shift distribution when the
     collection volume spans an axial window |z| <= Z around the focus of a
     Gaussian beam with Rayleigh range z_R.  z_ratio = Z / z_R.
@@ -186,7 +186,7 @@ def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
     (triangle for n=2); the hard edge at -s0 softens to zero (only the
     focal plane reaches the full shift). Uniform collection weight is
     assumed on the window — replace with the measured collection profile
-    in October before quoting coefficients (OPEN)."""
+    in a fixed-lock session before quoting coefficients (OPEN)."""
     dnu = nu[1] - nu[0]
     if s0 <= 0:
         out = np.zeros_like(nu)
@@ -237,7 +237,7 @@ def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
 def ramp_moment_contributions(s0: float, z_ratio: float = 0.0,
                               n_photon: int = 2) -> dict:
     """The ramp's ADDITIVE contributions to the three lowest line cumulants —
-    the forward model for the October "principled hybrid" (docs/PLAN.md §8.3,
+    the forward model for the fixed-lock session "principled hybrid" (docs/PLAN.md §8.3,
     THEORY_NOTE §3). Because the symmetric kernels contribute nothing to the
     odd cumulants and only add to the (even) variance, the ramp contributes:
 
@@ -246,7 +246,7 @@ def ramp_moment_contributions(s0: float, z_ratio: float = 0.0,
         kappa3     = kappa_3  (third cumulant, MHz^3)
 
     These are THREE analytic functionals of the ONE parameter S0 (at a given
-    collection geometry z_ratio = Z_c/z_R): the October joint fit constrains a
+    collection geometry z_ratio = Z_c/z_R): the fixed-lock joint fit constrains a
     single S0(P) per condition and checks that the pull, excess-variance and
     third-cumulant measured from the data are mutually consistent with it
     (a chi^2). One S0, three moments -- a spurious asymmetry that is not a

@@ -130,7 +130,7 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 - **Power dependence**: the archival "FWHM null vs power" is the *predicted*
   behaviour (ramp-law inflation ≤2% across 25→225 mW); the third-moment/skew
   observable proposed in the brief is unmeasurable (≈1×10⁻⁴ vs noise floor
-  ≈1×10⁻³) — power-shift physics moves to the October campaign.
+  ≈1×10⁻³) — power-shift physics moves to the fixed-lock session.
 - Traces are 1.000 s / 2000 pts (brief said 840 ms — wrong).
 - The sweep turnaround can sit **inside** the acquisition window: in the
   4207 nm 25 mW block the triangle folds at t ≈ 432 ms and the retrace
@@ -159,7 +159,7 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
   culprit is **laser-width (σ_laser) drift between the cooling-session blocks
   (~0.06–0.16 MHz)**, comparable to the whole collisional trend. Result:
   β_self < ~0.04–0.11 MHz per 10¹² cm⁻³ (95%, per peak); a clean measurement
-  needs the fixed-lock October campaign — this is the archival data proving
+  needs the fixed-lock fixed-lock session — this is the archival data proving
   the two-epoch design was necessary, a Paper-1 result in itself. NOTE: the
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   OVERCONFIDENT — they assume one shared σ_laser across blocks and so omit the
@@ -213,7 +213,7 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
   fig5 panel A and fig6. ⇒ the fitted "collisional" width is a residual floor
   (transit/laser model + block scatter), the apparent β shrinks as the lever
   lengthens, and the archival β is a BOUND — reinforcing, not adding to, the
-  model-independent headline. October: the 150–170 °C points must be taken
+  model-independent headline. A fixed-lock session: the 150–170 °C points must be taken
   inside ONE locked session (PLAN §8.4). RETRACTED framings (do not
   re-litigate): (i) "between-session systematic — the sessions cannot be
   combined" as the PRIMARY story (commit d711950) — the 130 °C widths lie

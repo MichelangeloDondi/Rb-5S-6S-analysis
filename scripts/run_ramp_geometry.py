@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-Ramp-law moment coefficients vs collection geometry (October PLAN §8.3).
+Ramp-law moment coefficients vs collection geometry (PLAN §8.3).
 
 Review 2026-07-12 #3 required extending the triangular-ramp model to the
 diverging-beam collection geometry before the small-waist skew can be
 interpreted. This script evaluates the closed-form axial-averaged shift
-density (lineshape.stark_ramp_axial) at the three October configurations
+density (lineshape.stark_ramp_axial) at the three a fixed-lock session configurations
 and prints the moment coefficients the fits will need.
 
 HEADLINE PREDICTION (2026-07-12): the standardized skewness g1 CHANGES SIGN
 near Z/z_R ~ 1.2. The pure transverse triangle gives g1 = +0.566; a long
 collection window mixes in out-of-focus (weak-shift) regions, piling weight
 near zero shift with a tail toward -S0, driving g1 negative (~ -0.35 at the
-16 um config with a +/-2 mm window). So October should see POSITIVE skew at
+16 um config with a +/-2 mm window). So a fixed-lock session should see POSITIVE skew at
 the large waist and NEGATIVE skew at the small waist — a sign flip across
 configurations that no instrumental asymmetry (which knows nothing about
 z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
@@ -21,7 +21,7 @@ units of the 2025 on-axis S0^3 (vs +0.0074 for the 2025 triangle) — a ~47x
 magnitude gain AND a flipped sign.
 
 Caveats: uniform collection weight on |z| <= Z_c is a placeholder; Z_c is
-OPEN until the October collection-geometry measurement (config lists an
+OPEN until the fixed-lock session collection-geometry measurement (config lists an
 envelope). Quasi-static in z is safe: an atom moves ~30 um axially between
 excitation and 795 nm emission, negligible vs z_R (mm scale).
 
@@ -63,7 +63,7 @@ def main() -> int:
     print("Reading: g1 stays ~ +0.56 at BOTH the 60 um config and the ~50 um 2025")
     print("archival geometry (clean form test -- the larger corrected waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
-    print("config -> the October two-config skew comparison is a sign-flip test, not")
+    print("config -> the fixed-lock session two-config skew comparison is a sign-flip test, not")
     print("a magnitude hunt.")
     return 0
 

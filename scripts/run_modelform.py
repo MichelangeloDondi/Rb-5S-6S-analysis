@@ -7,7 +7,7 @@ At 70 C the line is narrowest, so the transit fraction is largest and the cusp
 'voigt', 'lehmann' and 'full' and report BIC. dBIC = BIC(voigt) - BIC(lehmann):
 positive favours the cusp, negative favours Gaussian; |dBIC| < 2 means the
 archival data cannot tell them apart (the expected outcome -- the decisive
-test is October's narrow laser).
+test is the fixed-lock session's narrow laser).
 
 Reads results/ruler_blocks.csv for rates. PRELIMINARY.
 """
@@ -84,7 +84,7 @@ def main() -> int:
         print("bad-lock laser Gaussian smears the cusp. Mild colour, not a claim:")
         print(f"dBIC is non-negative on {npos}/{len(ds)} peaks (a faint, consistent LEAN")
         print("toward the cusp, one peak at 'positive evidence' ~3.7) -- suggestive that a")
-        print("real cusp is there but unresolved. The decisive test is October's")
+        print("real cusp is there but unresolved. The decisive test is the fixed-lock session's")
         print("narrow-laser cold-dim run; this module is its validated infrastructure.")
     else:
         print("VERDICT: a DECISIVE preference is present -- inspect the winning form and")

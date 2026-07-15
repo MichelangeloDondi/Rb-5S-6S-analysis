@@ -248,7 +248,7 @@ TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_PRIOR_M, 110.0)
 """Central transit FWHM at 110 C (transition axis, bare kernel), scaled sqrt(T)
 elsewhere. DERIVED from the corrected transit<->w0 physics
 (constants.transit_fwhm_from_w0, Lehmann-validated) at the W0_PRIOR central
-(50 um) => ~1.20 MHz. This rides on w0, which is OPEN until the October
+(50 um) => ~1.20 MHz. This rides on w0, which is OPEN until the fixed-lock session
 knife-edge, so every M3 absolute width that uses this is PRELIMINARY; the
 degeneracy-robust total width and its T-trend are the trustworthy shakedown
 outputs. Do not quote a number built on this without the w0 caveat.
@@ -264,13 +264,13 @@ RAMP_GEOMETRY_CONFIGS_UM = {
 }
 """Beam-waist configurations for the ramp-geometry predictions (PLAN §8.1;
 run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
-2026-07-12, see constants.W0_PRIOR_M); L and S are October targets, all
+2026-07-12, see constants.W0_PRIOR_M); L and S are target for a fixed-lock sessions, all
 pending knife-edge measurement (OPEN)."""
 
 RAMP_COLLECTION_HALFLENGTH_MM_ENVELOPE = (1.0, 2.0, 4.0)
 """Envelope of the fluorescence-collection axial half-length Z_c: the f=18 mm
 lens + PMT geometry collects light from 'many mm' of the beam (user,
-2026-07-11 session), value unmeasured. OPEN until the October
+2026-07-11 session), value unmeasured. OPEN until the fixed-lock session
 collection-profile measurement; every ramp-geometry moment coefficient
 (including the g1 sign-flip location) depends on it, hence an envelope,
 never a single number."""

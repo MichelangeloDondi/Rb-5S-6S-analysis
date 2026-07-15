@@ -12,7 +12,7 @@ the ramp's contribution to the line WIDTH -- the intensity-averaged triangular
 ramp of on-axis shift S0 adds an excess variance ~S0^2/18, i.e. it BROADENS the
 line as P^2. That is a weak handle (a ~0.6 MHz S0 inflates a ~5 MHz line by
 <~0.1 MHz), so we get a one-sided UPPER BOUND on kappa, not a measurement. The
-skew handle (~S0^3) is weaker still and shot-noise-dominated (M6 C3c). October's
+skew handle (~S0^3) is weaker still and shot-noise-dominated (M6 C3c). The fixed-lock session's
 fixed lock measures the pull ~S0 directly and at a smaller waist (S0 several-fold larger),
 which is the actual measurement -- this archival bound just brackets it.
 
