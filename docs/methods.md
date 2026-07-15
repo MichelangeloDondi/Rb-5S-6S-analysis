@@ -531,6 +531,21 @@ speed $\lesssim5$ m/s — 1–2% of the signal — are fringe-resolved; a
 percent-level correction.) The remaining OPEN quantity in $S_0$ is the
 measured $\rho$ per beam configuration (October, in situ at the cell).
 
+How much does the unmeasured $\rho$ actually cost? Less than one might fear,
+and the archive partly self-certifies. Since $S_0\propto(1+\rho)$, *any*
+$\rho\in[0,1]$ moves the prediction only between 0.29 and 0.59 MHz — a factor
+of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<3.1$ MHz, §5)
+brackets the whole range, so no archival conclusion turns on it. Better, the
+Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
+direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
+a badly mismatched retro would have destroyed the signal long before it
+appreciably moved the shift, so the archive's strong, clean lines are
+themselves evidence that $\rho$ is not small. The asymmetry is worth
+remembering — the retro is a *signal* risk far more than a *coefficient* risk.
+It matters for October precisely because the coefficient is then the point:
+$\rho$ is measured in situ, per configuration (return-path clipping differs
+with waist), before any $\Delta\alpha$ in physical units is quoted.
+
 #### The coefficient (field-intensity convention, pinned)
 
 The ramp *shape* and its centred moments are convention-free, but the
@@ -1001,11 +1016,21 @@ either quarantined or handled).
    data cannot distinguish these forms — so the *shape* assumption is untested
    by the archival data and is a genuine attack surface until October.
 4. Transit width rides on the OPEN $w_0$ prior until the October knife-edge.
-5. The non-monotonicity is laser drift, not a temperature-correlated *rate*
+5. The retro ratio $\rho=1$ (perfect retro) behind the quoted $S_0$ prediction
+   (§2.6) is an *inherited ideal*, not a measured or designed value: the 2025
+   retro is not a self-imaging arrangement (unlike the 2019 reference
+   measurement on this line, which used a concave mirror at $2f$ — see
+   `LITERATURE.md` §6a), and the archival return-beam power, waist, and overlap
+   were never characterized. Bounded but untested: $S_0\propto(1+\rho)$ confines
+   the prediction to 0.29–0.59 MHz for any $\rho$, and the signal's own
+   $\propto\rho$ scaling argues $\rho$ is not small — but a *drifting* overlap
+   during a scan is a skew-like contaminant no bound covers. October measures
+   $\rho$ in situ per configuration (PLAN §8.1).
+6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
    artifact (block rates scatter only $0.6\%\approx0.03$ MHz on a 5 MHz line).
-6. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
+7. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
    scales, not the *shape* of $N(T)$.
-7. Discards and quarantine are curation-time (pre-analysis) decisions, audited
+8. Discards and quarantine are curation-time (pre-analysis) decisions, audited
    symmetrically, so they cannot bias the fits.
 
 ---
