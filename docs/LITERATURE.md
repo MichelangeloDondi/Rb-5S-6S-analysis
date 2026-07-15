@@ -211,10 +211,49 @@ archival bounds refine).
     stability/factor-2 artifact was **debunked** on reading the paper — 2.5 MHz is
     a real two-photon FWHM (laser axis); the note wrongly used the 795 nm D1
     *detection*-photon width as a floor on the *resonance* width (see DATA.md).
+  * **Apparatus facts from the published paper (held since 2026-07-14; page/DOI
+    verified):** the retro is a **concave mirror, f = 75 mm, placed at 2f from
+    the focal plane** — a self-imaging retro that re-images the waist onto
+    itself, which is the design answer to the retro-overlap/ρ worry (a *flat*
+    mirror at that distance would collapse the return intensity; the 2f–2f
+    imaging supports the ρ ≈ 1 assumption up to losses and misalignment). And
+    their detection is the **780 nm and 795 nm cascades together** through an
+    800 nm short-pass (Hamamatsu R636-10) — unlike the 2025 archival 795-only
+    narrowband stack — so amplitude/trapping comparisons against Nieddu must
+    not assume the same collection channel (the 780/D2 branch sees a different
+    optical depth than 795/D1). QWP slots exist before L1 and before the CM.
 - **Rajasree-KP 2020** (OIST PhD thesis, `rajasree2020`) — repeats the same
   993 nm cell setup ("L1, f = 150 mm; beam diameter 128 µm") and cites Steck for
   the Rb data, confirming both the beam geometry and the N(T) vapor-pressure
   chain our `density.py` uses. **[FEED]**
+- **Rajasree 2020, PRR 2, 033341** (`rajasree2020spin`, held) — *spin selection
+  in single-frequency two-photon excitation*, tested on OUR line in two configs.
+  **[CITE, ESTABLISHED]** Three load-bearing consequences:
+  * **The polarization amplitude law (paraxial, warm cell):** the transition
+    rate scales as the **squared degree of linear polarization, D²** — exactly
+    zero for circular light. Two uses for us: (i) a drifting polarization
+    (thermally stressed cell windows, waveplate drift) is a *specific,
+    physically-motivated* candidate for the M10 between-block amplitude wander
+    — common-mode per block, but the archival peaks were taken hours apart, so
+    it does not cancel in the cross-peak ratios; October should **log (or fix
+    with a clean polarizer) the polarization at the cell**. (ii) A free October
+    diagnostic: rotating to circular must **extinguish** the two-photon line —
+    any residual is polarization impurity or background, a null test that costs
+    one waveplate turn per config.
+  * **The scalar-operator basis, published in-lineage:** their K = 0, 1, 2
+    two-photon operator decomposition (with Le Kien) is the citable basis for
+    our M10 degeneracy-law claim (identical photons on S→S: vector and tensor
+    parts vanish, only the scalar survives ⇒ areas ∝ abundance × (2F+1)).
+  * **ONF feasibility evidence for Paper 2:** they excite 5S–6S in **cold ⁸⁷Rb
+    around a 400 nm-waist nanofibre** (SM800-5.6-125, ~30% transmission at
+    993 nm) via the evanescent field, detecting 25–40 counts/ms at the peaks —
+    so ONF-mediated 5S–6S from atoms near the fibre is *demonstrated*, and the
+    open Paper-2 question is the quantitative near-surface *lineshape* program
+    (pushing dip, surface shift), not whether the signal exists. Nonparaxial
+    twist: in the evanescent field the transition is **not extinguishable** by
+    polarization (minimum ~13% theory / ~25% observed) — the longitudinal field
+    components break the paraxial D² law, itself a lineshape-relevant fact for
+    any ONF campaign.
 
 ### 6b. USAF Academy precision-metrology lineage (Knize/Lindsay group)
 
