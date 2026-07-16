@@ -107,6 +107,31 @@ the genuine null; the significant low-power skew is identified, not unexplained.
 The old "power null" is thus a suite of confirmed predictions — with the
 residual skew correctly attributed to shot noise, not laundered into "zero."
 
+(C3d) the same width-vs-power data **bound the AC-Stark coefficient itself**
+(module M4e, `run_stark_sweep`): one shared $\kappa$ ($S_0=\kappa P$) fit to the
+four peaks' FWHM-vs-power, each floating its power-independent core. In the
+drifted archive the *shift* (the pull $\propto S_0$) is dead, so $\kappa$ is
+constrained only through the ramp's $\propto S_0^2$ width broadening — a weak,
+one-sided handle, so the best fit **rails at $\kappa=0$**. That boundary is why
+the bound needs care: at $\kappa=0$ the width handle has *zero gradient*, so a
+linearized (Wald) $\kappa+1.645\sigma$ interval is evaluated where the Jacobian
+column vanishes and its "$\sigma$" is a finite-difference artifact with no 95%
+coverage (it read a spurious 3.1 MHz). The quoted limit is therefore a
+**profile likelihood** — scan $\kappa$ upward, re-minimizing the per-peak cores,
+to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
+threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx4$,
+the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
+elsewhere). It gives
+$$S_0(225\ \text{mW}) < 0.63\ \text{MHz}\quad(95\%),$$
+sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
+against the computed 1093 ([§3 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
+The honest reading is not "we see nothing" but the sharper one: the archival
+width data are **already sensitive at the scale of the predicted coefficient** —
+anything well above the prediction is excluded, while the prediction itself (and
+zero) remain allowed. The fixed-lock session's stable lock resurrects the pull
+$\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
+several-fold larger, turning this bracket into the measured coefficient.
+
 **Radiation trapping — thick cell, near-linear signal, drift-dominated ratios
 (module M7).** Peak amplitude scales roughly *linearly* with density: log-log
 slopes $0.94(13)$, $0.91(5)$, $0.85(15)$, $1.02(8)$ across $\times52$ in $N$ —
