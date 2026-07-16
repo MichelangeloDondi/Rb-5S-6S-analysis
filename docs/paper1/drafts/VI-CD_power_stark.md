@@ -57,30 +57,35 @@ core width. This is only an **upper bound**, and for the same two-epoch reason a
 everywhere else: the drifted lock kills the line centres, so the AC-Stark
 *shift* (the pull $\propto S_0$, the sensitive handle) is absorbed by each scan's
 free centre, leaving only the ramp's $\propto S_0^2$ width broadening — a weak
-handle, since a 0.6 MHz $S_0$ inflates a 5 MHz line by under 0.05 MHz. The fit
+handle, since a 0.6 MHz $S_0$ inflates a 5 MHz line by under 0.1 MHz. The fit
 returns $\kappa$ consistent with zero and
-$$S_0(225\ \text{mW}) < 3.1\ \text{MHz}\quad(95\%),$$
-consistent with the value $S_0=0.59$ MHz predicted from the computed differential
-polarizability [CALCULATED; §III, App. A]. The archive thus **brackets** the
-prediction without resolving it.
+$$S_0(225\ \text{mW}) < 0.63\ \text{MHz}\quad(95\%,\ \text{profile likelihood}),$$
+sitting just above the value $S_0=0.59$ MHz predicted from the computed
+differential polarizability [CALCULATED; §III, App. A]. The archive thus
+**brackets** the prediction without resolving it — and its width data are
+already sensitive at the scale of the predicted coefficient.
 
-[Reviewer-hardening — keep this transparency, it is load-bearing.] The width-
-versus-power fit is over-dispersed ($\chi^2_\text{red}\approx4.3$, from
-block-to-block width scatter), so the parameter error is conservatively inflated
-by $\sqrt{\chi^2_\text{red}}\approx2.1$ — the standard over-dispersion rescale.
-This inflation is the conservative over-dispersion choice: the quoted bound is
-3.1 MHz, but even the un-inflated bound ($\approx1.5$ MHz) exceeds the 0.59 MHz
-prediction, so the archive is consistent with it either way (and with zero).
-Ignoring the measured scatter would be the over-confident choice, so the inflated
-bound is the honest one;
-we quote it and report the un-inflated value alongside [`stark_sweep.csv`:
-`S0_225mW_ub95` vs `_raw`]. Through the §III convention, at the nominal
-$w_0=50\ \mu$m this brackets the differential polarizability at
-$\Delta\alpha<\sim5800$ a.u. (95%), consistent with the computed 1093 — the
-mapping inheriting the open beam waist. The archive therefore does not contradict
-the computed coefficient; the fixed-lock campaign measures the pull $\propto S_0$
-directly, and at a smaller waist ($S_0$ several-fold larger), turning this bracket
-into the coefficient (§VII).
+[Reviewer-hardening — keep this transparency, it is load-bearing.] Two
+statistical choices define the bound. First, the best fit rails at $\kappa=0$,
+where the width handle ($\propto S_0^2$) has zero gradient, so a linearized
+(Wald) $\kappa+1.645\sigma$ interval has no valid coverage there — its
+$\sigma$ is a finite-difference artifact. The quoted limit is therefore a
+**profile-likelihood** bound: $\kappa$ is scanned upward with the per-component
+core widths re-minimized at each point, and the limit sits at the one-sided
+$\Delta\chi^2 = 2.706$ crossing. Second, the fit is over-dispersed
+($\chi^2_\text{red}\approx4.3$, block-to-block width scatter), so the
+$\Delta\chi^2$ threshold is scaled by $\chi^2_\text{red}$ — the profile-space
+equivalent of the standard $\sqrt{\chi^2_\text{red}}$ error inflation, and the
+conservative choice (the unscaled threshold would give a tighter limit). The
+superseded Wald numbers stay in the CSV as diagnostics [`stark_sweep.csv`:
+`S0_225mW_ub95_profile` is the bound; `_ub95` and `_ub95_raw` are labelled
+superseded]. Through the §III convention, at the nominal $w_0=50\ \mu$m this
+brackets the differential polarizability at $\Delta\alpha<\sim1200$ a.u.
+(95%), consistent with the computed 1093 — the mapping inheriting the open
+beam waist. The archive therefore does not contradict the computed
+coefficient; a fixed-lock session measures the pull $\propto S_0$ directly,
+and at a smaller waist ($S_0$ several-fold larger), turning this bracket into
+the coefficient (§VII).
 
 ---
 
@@ -89,11 +94,11 @@ into the coefficient (§VII).
 - C3a width inflation 3–8% (measurement scatter, no power trend); predicted ramp $<2\%$
 - C3b amplitude log–log slopes $1.83$–$2.12$; 993.4121 nm low end ($\approx1.85$) = saturation/trapping degeneracy
 - C3c ramp skew below floor (a bound); residual skew up to $9.6\sigma$ (993.4154 nm, $0.35\pm0.04$ @25 mW), $\sim\text{amp}^{-1/2}$ = shot noise
-- C3d $S_0(225)<3.1$ MHz (95%, $\chi^2$-inflated $\times2.1$); raw $\approx1.5$; predicted 0.59; $\kappa=0.00\pm8.4$; $\Delta\alpha<\sim5800$ a.u.
+- C3d $S_0(225)<0.63$ MHz (95%, profile likelihood, $\Delta\chi^2$ threshold scaled by $\chi^2_\text{red}\approx4.3$); superseded Wald 1.5 raw / 3.1 inflated; predicted 0.59; $\kappa=0.00$ railed; $\Delta\alpha<\sim1200$ a.u.
 
 ### Figures: 2 (`fig2_power_sweep`); a κ/S₀-vs-power panel is optional for §VI.D (skeleton note)
 
 ### Open framing choices for you
 - §VI.C and §VI.D can merge into one "power dependence" section, or §VI.D can fold into §III as the archival test of the ramp coefficient — your structural call.
 - How prominently to feature the shot-noise identification: it is a genuinely nice piece of forensic work (a 9σ effect fully explained), but it is also a negative/diagnostic result — decide whether it earns its own paragraph or a footnote.
-- Whether to state the $\Delta\alpha<5800$ a.u. bracket in the main text (it inherits $w_0$) or relegate it to the ramp-theory section where the convention lives.
+- Whether to state the $\Delta\alpha<\sim1200$ a.u. bracket in the main text (it inherits $w_0$) or relegate it to the ramp-theory section where the convention lives. Note it now sits only $\sim$10% above the computed 1093, which strengthens the case for the main text.

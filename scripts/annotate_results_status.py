@@ -82,8 +82,9 @@ QUANTITY_STATUS = {
         "gamma_coll_mean_vs_T": "MEASURED", "gamma_rise_factor": "MEASURED",
     },
     "stark_sweep.csv": {
-        "kappa_ub95": "BOUND", "kappa_err_raw": "DIAGNOSTIC", "kappa": "BOUND",
-        "S0_225mW_ub95_raw": "DIAGNOSTIC", "S0_225mW_ub95": "BOUND",
+        "kappa_ub95_profile": "BOUND", "S0_225mW_ub95_profile": "BOUND",
+        "kappa_ub95": "DIAGNOSTIC", "kappa_err_raw": "DIAGNOSTIC", "kappa": "BOUND",
+        "S0_225mW_ub95_raw": "DIAGNOSTIC", "S0_225mW_ub95": "DIAGNOSTIC",
         "S0_225mW_fit": "BOUND", "S0_225mW_pred": "CALIB",
         "chi2_red": "DIAGNOSTIC", "core_sigma_laser": "PRELIM",
     },

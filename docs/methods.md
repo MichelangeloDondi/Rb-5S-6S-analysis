@@ -567,7 +567,7 @@ clipping is the thing to watch (PLAN §8.1).
 How much would a departure from $\rho=1$ actually cost? Less than one might
 fear, and the archive partly self-certifies. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.29 and 0.59 MHz — a factor
-of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<3.1$ MHz, §5)
+of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.63$ MHz, §5)
 brackets the whole range, so no archival conclusion turns on it. Better, the
 Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:

@@ -53,7 +53,7 @@ def test_stark_sweep_recovers_injected_kappa():
     kappa_true = 15.0                                    # MHz/W (S0@225mW = 3.4)
     cores = {"4121": 1.55, "4154": 1.70, "4192": 1.60, "4207": 1.75}
     grid = _synth_grid(kappa_true, cores, noise=0.02, seed=3)
-    res = fit_stark_sweep(grid)
+    res = fit_stark_sweep(grid, profile=False)
     assert abs(res["kappa"] - kappa_true) < max(4 * res["kappa_err"], 2.0), res
     # the per-peak cores come back close to injected
     for peak in PEAKS:
@@ -65,7 +65,31 @@ def test_stark_sweep_upper_bound_brackets_zero_signal():
     # positive one-sided upper bound (the archival situation).
     cores = {p: 1.6 for p in PEAKS}
     grid = _synth_grid(0.0, cores, noise=0.03, seed=7)
-    res = fit_stark_sweep(grid)
+    res = fit_stark_sweep(grid, profile=False)
     assert res["kappa_ub95"] > 0.0 and np.isfinite(res["kappa_ub95"])
     assert res["kappa"] < res["kappa_ub95"]
     assert res["S0_225_ub95"] == res["kappa_ub95"] * 0.225
+
+
+def test_stark_profile_bound_covers_truth_and_zero_case():
+    # The QUOTED bound is the profile-likelihood one. Two closures on a coarse
+    # frequency grid (nu_step=0.1 -- the profile curve was checked grid-stable
+    # at 0.01 vs 0.02 on the real data; the tolerance here is generous):
+    # (a) strong injected kappa: the one-sided 95% UB must sit ABOVE the truth
+    #     and above the best fit;
+    # (b) zero signal (the archival situation): the UB must be finite, positive,
+    #     and BELOW the Wald bound evaluated at the kappa=0 rail, where the
+    #     vanishing gradient makes the Wald sigma a finite-difference artifact
+    #     (that inflated Wald "bound" is exactly what this construction replaces).
+    cores = {p: 1.6 for p in PEAKS}
+    grid = _synth_grid(15.0, cores, noise=0.02, seed=3)
+    res = fit_stark_sweep(grid, profile=True, nu_step=0.1)
+    assert np.isfinite(res["kappa_ub95_profile"])
+    assert res["kappa_ub95_profile"] > res["kappa"]
+    assert res["kappa_ub95_profile"] > 15.0
+    assert res["S0_225_ub95_profile"] == res["kappa_ub95_profile"] * 0.225
+
+    grid0 = _synth_grid(0.0, cores, noise=0.03, seed=7)
+    res0 = fit_stark_sweep(grid0, profile=True, nu_step=0.1)
+    assert np.isfinite(res0["kappa_ub95_profile"]) and res0["kappa_ub95_profile"] > 0.0
+    assert res0["kappa_ub95_profile"] < res0["kappa_ub95"]

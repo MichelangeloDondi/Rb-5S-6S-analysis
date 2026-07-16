@@ -281,30 +281,36 @@ def main() -> int:
     ss = rows("stark_sweep")
     if ss:
         sv = {r["quantity"]: r for r in ss if r["key"] in ("shared", "fit")}
-        ub = float(sv["S0_225mW_ub95"]["value"])
+        ub = float(sv["S0_225mW_ub95_profile"]["value"])
         pr = float(sv["S0_225mW_pred"]["value"])
         fit = float(sv["S0_225mW_fit"]["value"])
         c2 = float(sv["chi2_red"]["value"])
         W(f"- **C3d — the AC-Stark coefficient, from the power-lever: an UPPER BOUND "
-          f"$S_0$(225 mW) $< {ub:.1f}$ MHz (95%), consistent with the predicted "
-          f"{pr:.2f} MHz** (`run_stark_sweep`, M4e — the power-lever twin of the "
-          f"$\\beta$ fit). One shared $\\kappa$ ($S_0=\\kappa P$) is fit to the four "
-          f"peaks' FWHM-vs-power (each floating its core width); the ramp broadens the "
-          f"line as $\\sim S_0^2$, the only live handle since the *shift* (pull "
-          f"$\\sim S_0$) is dead in the 2025 drift. The fit ($S_0(225) = {fit:.2f}$, "
-          f"$\\kappa$ consistent with zero) is **not** a measurement; it **brackets** "
-          f"the prediction. **The 95% and the bracketing are load-bearing on one "
-          f"documented step:** the fit is over-dispersed ($\\chi^2_\\text{{red}}\\approx"
-          f"{c2:.0f}$, block-to-block width scatter), so the covariance is inflated by "
-          f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{c2**0.5:.1f}\\times$ "
-          f"(`stark.py`, `cov *= max(chi2_red,1)`) — the conservative choice. It makes "
-          f"the quoted bound {ub:.1f} MHz; even the un-inflated bound "
-          f"({float(sv['S0_225mW_ub95_raw']['value']):.1f} MHz) exceeds the {pr:.2f} MHz "
-          f"prediction, so the archive is consistent with it either way but cannot "
-          f"distinguish it from zero. Inflating for the measured scatter is the honest "
-          f"choice. *Lifted by:* the fixed lock measures the pull $\\sim S_0$ "
-          f"directly, and the small waist makes $S_0$ several-fold larger — turning this "
-          f"bound into the coefficient.\n")
+          f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, profile likelihood), sitting just "
+          f"above the predicted {pr:.2f} MHz** (`run_stark_sweep`, M4e — the "
+          f"power-lever twin of the $\\beta$ fit). One shared $\\kappa$ ($S_0=\\kappa "
+          f"P$) is fit to the four peaks' FWHM-vs-power (each floating its core "
+          f"width); the ramp broadens the line as $\\sim S_0^2$, the only live handle "
+          f"since the *shift* (pull $\\sim S_0$) is dead in the 2025 drift. The fit "
+          f"($S_0(225) = {fit:.2f}$, $\\kappa$ consistent with zero) is **not** a "
+          f"measurement; it **brackets** the prediction. **The construction of the "
+          f"95% is load-bearing and documented:** the best fit rails at $\\kappa=0$, "
+          f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
+          f"linearized (Wald) $\\kappa+1.645\\sigma$ bound has no valid coverage "
+          f"there — its $\\sigma$ is a finite-difference artifact (the superseded "
+          f"Wald numbers, {float(sv['S0_225mW_ub95_raw']['value']):.1f} raw / "
+          f"{float(sv['S0_225mW_ub95']['value']):.1f} inflated MHz, stay in the CSV "
+          f"as diagnostics). The quoted bound is instead a **profile-likelihood** "
+          f"limit: $\\kappa$ is scanned upward with the per-peak cores re-minimized "
+          f"at each point, and the limit sits where $\\chi^2$ rises by $2.706\\times"
+          f"\\chi^2_\\text{{red}}$ — the threshold scaling that carries the "
+          f"over-dispersion ($\\chi^2_\\text{{red}}\\approx{c2:.0f}$, block-to-block "
+          f"width scatter) into the bound, conservatively. The result says the "
+          f"archive's width data are already sensitive at the scale of the predicted "
+          f"coefficient: anything much above the prediction is excluded, while the "
+          f"prediction itself (and zero) remain allowed. *Lifted by:* the fixed lock "
+          f"measures the pull $\\sim S_0$ directly, and the small waist makes $S_0$ "
+          f"several-fold larger — turning this bound into the coefficient.\n")
 
     # ---- supporting ----
     W("## Supporting results\n")

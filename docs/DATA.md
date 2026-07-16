@@ -118,6 +118,23 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 (Recorded because earlier numbers circulated before this analysis existed.)
 
+**AC-Stark bound reconstructed as a profile-likelihood limit (2026-07-16).**
+The quoted archival bound changed **3.1 → 0.63 MHz** (95%, $S_0$ at 225 mW) with
+**no change to the data or the fit** — only to the interval construction. The
+best fit rails at $\kappa=0$, where the width handle ($\propto S_0^2$) has zero
+gradient; a linearized (Wald) $\kappa+1.645\sigma$ interval evaluated there has
+no valid coverage — its $\sigma$ is a finite-difference artifact, and it
+happened to be a large one (the old 3.1). The profile-likelihood limit (scan
+$\kappa$, re-minimize the per-peak cores, one-sided $\Delta\chi^2=2.706$ scaled
+by $\chi^2_\text{red}\approx4.3$ for over-dispersion) crosses at 0.63 MHz —
+checked smooth and grid-stable (identical to 0.1 MHz at half the frequency-grid
+step). Physical reading: the archive's width data are already sensitive at the
+scale of the predicted coefficient (0.59 MHz at the 50 µm prior); anything much
+above the prediction is excluded, while the prediction itself and zero remain
+allowed. The superseded Wald rows stay in `stark_sweep.csv` as labelled
+diagnostics. Downstream, the $\Delta\alpha$ bracket tightens $\sim5800 \to
+\sim1200$ a.u. (~1.1× the computed 1093), still $w_0$-conditional.
+
 **Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
 ground rule in `PLAN.md` (old *code* is never read; old *outputs* serve only as
 external cross-check targets), the previous attempt's committed report and summary

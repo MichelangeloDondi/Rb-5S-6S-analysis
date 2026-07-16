@@ -60,7 +60,12 @@ def test_headline_bounds_tagged_bound_not_measurement():
     assert d["beta_crosscheck"]["status"] == "BOUND"
     assert d["gamma_rise_factor"]["status"] == "MEASURED"        # the floor IS measured
     s = {r["quantity"]: r for r in _rows("stark_sweep.csv")}
-    assert s["S0_225mW_ub95"]["status"] == "BOUND"
+    # the quoted bound is the profile-likelihood row; the Wald rows (raw and
+    # chi2-inflated) are superseded diagnostics -- the fit rails at kappa=0
+    # where a linearized interval has no coverage.
+    assert s["S0_225mW_ub95_profile"]["status"] == "BOUND"
+    assert s["S0_225mW_ub95"]["status"] == "DIAGNOSTIC"
+    assert s["S0_225mW_ub95_raw"]["status"] == "DIAGNOSTIC"
     assert all(r["status"] == "BOUND" for r in _rows("beta_self_probe.csv"))
     assert all(r["status"] == "PRELIM" for r in _rows("beta_self.csv"))
     assert all(r["status"] == "NULL" for r in _rows("modelform.csv"))

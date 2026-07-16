@@ -40,7 +40,7 @@ right, and two independent things follow:
 - The dominant systematic's central value moves from ~32 µm to **~50 µm** (~1.5×).
 - $S_0\propto 1/w_0^2$, so the predicted AC-Stark shift drops by
   $(32/50)^2\approx2.4\times$: $S_0(225\text{ mW})\approx1.43\to0.59$ MHz (not ÷8).
-  The archival bound (re-run: 95% $<\sim$3.1 MHz) still brackets it.
+  The archival bound (re-run: 95% $<\sim$0.63 MHz, profile likelihood) still brackets it, now narrowly.
 - `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm); every fit was re-run.
 
