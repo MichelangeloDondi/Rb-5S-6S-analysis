@@ -116,7 +116,9 @@ CANONICAL = [
         find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*[<≲]\s*([0-9.]+)\s*MHz"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
-              "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md"],
+              "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
+              "docs/THEORY_NOTE.md", "docs/paper1/drafts/VI-CD_power_stark.md",
+              "results/README.md"],
     ),
     dict(
         name="AC-Stark predicted S0(225mW)",
