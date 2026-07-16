@@ -235,7 +235,9 @@ def main() -> int:
             pr = width_vs_density_probe(rows, peak, trates, prates, include_130=use130)
             if pr is None:
                 continue
-            probe_rows.append({"peak": peak, "variant": variant, **{k: pr[k] for k in
+            probe_rows.append({"peak": peak, "variant": variant,
+                              "headline": "no" if use130 else "yes",
+                              **{k: pr[k] for k in
                               ("beta_eff", "formal_err", "syst_err", "resid_rms", "snr",
                                "dof", "t95", "bound95", "n_frac_syst",
                                "bound95_nscale", "verdict", "monotonic")}})

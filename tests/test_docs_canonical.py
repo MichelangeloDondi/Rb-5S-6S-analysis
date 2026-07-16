@@ -55,7 +55,7 @@ def _beta_bound_range():
     """min/max of the model-independent per-peak 95% bound (70-110 C variant),
     rounded to 1 dp -- the '0.2-0.4' headline."""
     vals = [float(r["bound95_nscale"]) for r in csv.DictReader(open(RESULTS / "beta_self_probe.csv"))
-            if r["variant"].startswith("70-110")]
+            if r.get("headline") == "yes"]
     return f"{min(vals):.1f}", f"{max(vals):.1f}"
 
 

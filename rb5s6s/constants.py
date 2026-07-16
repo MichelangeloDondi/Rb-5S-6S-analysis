@@ -237,6 +237,13 @@ w0 ~ 50-64 um. If the archival beam WERE exactly 64 um, the observed line pins
 sigma_laser ~ 1.1 MHz laser-axis (the transit<->laser degeneracy collapses once
 w0 is fixed) -- which the knife-edge measurement will do directly."""
 
+W0_BAND_M = (45e-6, 70e-6)
+"""The transit-inferred w0 band (hard floor ~38 um) that reproduces the observed
+~5.25 MHz line under a laser-width prior -- a CONDITIONAL prior range, NOT a
+measurement (the archive cannot pin w0 on its own; that is the knife-edge's job,
+see W0_PRIOR_M). Single source for w0-conditional prediction bands (e.g. the S0
+prediction range in stark.fit_stark_sweep), so the band is never hand-typed."""
+
 
 def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,
                          mass_kg: float | None = None) -> float:
