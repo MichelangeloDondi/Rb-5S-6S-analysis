@@ -228,7 +228,7 @@ the archival brackets into measurements, so several sections are written as
 
 > **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
-- **C3a** linewidth flat ($\lesssim2\%$ over $9\times$ power — the ramp adds
+- **C3a** linewidth flat ($\lesssim2$% over $9\times$ power — the ramp adds
   $\propto S_0^2$, negligible). **C3b** amplitude $\propto P^2$ (log-log slopes
   1.83–2.12; 4121 low end = saturation-vs-trapping degeneracy, say "consistent with").
   **C3c** asymmetry below the archival floor — a bound; the large low-power residual

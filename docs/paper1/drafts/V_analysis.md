@@ -95,8 +95,8 @@ $\max(\chi^2_\text{red},1)$.
 
 ### Numbers used (all from `docs/RESULTS.md` / committed CSVs, keep synced)
 
-- rate $0.04257(5)$ MHz/ms laser ($=0.08514$ transition); EOM teeth $6.25$ MHz; per-block; sweep linear $<0.4\%$
-- campaign $\chi^2_\text{red}=6.8$ (0.65% scatter, 20 blocks), PDG-inflated $\times2.6$; drop-4207-after shift $0.08\%$/$0.70\sigma$
+- rate $0.04257(5)$ MHz/ms laser ($=0.08514$ transition); EOM teeth $6.25$ MHz; per-block; sweep linear $<0.4$%
+- campaign $\chi^2_\text{red}=6.8$ (0.65% scatter, 20 blocks), PDG-inflated $\times2.6$; drop-4207-after shift $0.08$%/$0.70\sigma$
 - adaptive window $\pm3.5\times$FWHM, $[9,25]$ MHz; 993.4207 nm mirror up to 79% @ $\sim40$ MHz
 - noise $\tau_\text{int}\approx1.3$–$20$; Voigt corr $-0.85$ to $-0.92$ (single) $\to$ $-0.78$ to $-0.80$ (global)
 - $\Gamma_\text{nat}=3.4926$ MHz fixed; covariance rescaled by $\max(\chi^2_\text{red},1)$

@@ -76,7 +76,7 @@ $$g_1^{\text{obs}} \sim \frac{\kappa_3^{\text{tot}}}{\sigma_\text{eff}^3}
 since $S_0\propto$ power $P$. (No contradiction with the fixed $0.566$: that
 is the standardized skew of the ramp *alone*; here the same $\kappa_3$ is
 divided by a much larger, nearly fixed symmetric width.) **Two consequences
-for the archival data:** (i) the FWHM moves $\lesssim2\%$ across our power
+for the archival data:** (i) the FWHM moves $\lesssim2$% across our power
 sweep, so the old "power null" is a *prediction confirmed*, not a null
 result; (ii) the observed asymmetry $\propto P^3$ is $\sim10^{-4}$ against a
 $\sim10^{-3}$ noise floor — unmeasurable — so all AC-Stark *coefficients*

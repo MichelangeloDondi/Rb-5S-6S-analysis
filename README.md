@@ -90,7 +90,7 @@ follows the two-photon rate law, ∝ P².
 
 The measured line is a convolution (⊗) of independent broadening mechanisms:
 
-$$I(\nu) = A\left[\, L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \;\otimes\; G_{\sigma_\mathrm{laser}} \;\otimes\; K_\mathrm{transit} \;\otimes\; R_{S_0} \,\right] + \text{background}$$
+$$I(\nu) = A\left[ L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigma_\mathrm{laser}} \otimes K_\mathrm{transit} \otimes R_{S_0} \right] + \text{background}$$
 
 | Mechanism | Physical origin | Size (transition axis) | Shape |
 |---|---|---|---|

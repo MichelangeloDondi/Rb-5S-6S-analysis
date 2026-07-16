@@ -28,7 +28,7 @@
    which is skew-like. A fixed-lock session measures $\rho$ in situ per configuration
    (PLAN §8.1).
 6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
-   artifact (block rates scatter only $0.6\%\approx0.03$ MHz on a 5 MHz line).
+   artifact (block rates scatter only $0.6$% ($\approx0.03$ MHz) on a 5 MHz line).
 7. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
    scales, not the *shape* of $N(T)$.
 8. Discards and quarantine are curation-time (pre-analysis) decisions, audited
