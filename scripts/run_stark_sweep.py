@@ -40,9 +40,16 @@ def main() -> int:
     print(f"  kappa = {res['kappa']:.2f} +/- {res['kappa_err']:.2f} MHz/W "
           f"(consistent with 0 and with the predicted {res['kappa_pred']:.2f})")
     print(f"  => S0(225 mW):  fit {res['S0_225_fit']:.2f}   "
-          f"predicted {res['S0_225_pred']:.2f}   **95% UPPER BOUND {res['S0_225_ub95']:.2f} MHz**")
+          f"predicted {res['S0_225_pred']:.2f}")
+    print(f"  **95% UPPER BOUND (profile likelihood) {res['S0_225_ub95_profile']:.2f} MHz**")
+    print(f"  (The fit rails at kappa=0 where the width handle has zero gradient, so")
+    print(f"   the Wald bounds -- raw {res['S0_225_ub95_raw']:.2f}, chi2-inflated "
+          f"{res['S0_225_ub95']:.2f} -- have no valid coverage there;")
+    print(f"   they are kept in the CSV as diagnostics. The profile scans kappa with the")
+    print(f"   per-peak cores re-minimized, threshold Dchi2 = 2.706 x chi2_red = "
+          f"{res['profile_delta_chi2']:.2f}.)")
     verdict = ("brackets the prediction (cannot distinguish it from 0)"
-               if res["S0_225_ub95"] > res["S0_225_pred"] else
+               if res["S0_225_ub95_profile"] > res["S0_225_pred"] else
                "BELOW the prediction -- tension, inspect")
     print(f"  The archive {verdict}.")
     print(f"  per-peak core sigma_laser (transition): "
@@ -59,14 +66,18 @@ def main() -> int:
         w.writerow(["kappa_err_raw", "shared", f"{res['kappa_err_raw']:.3f}",
                     f"{res['chi2_inflation']:.2f}",
                     "value=un-inflated kappa error; err=inflation factor sqrt(chi2_red) applied to get kappa_err"])
+        w.writerow(["kappa_ub95_profile", "shared", f"{res['kappa_ub95_profile']:.3f}", "",
+                    "one-sided 95% upper bound on kappa (MHz per W), profile likelihood: Dchi2 = 2.706 x max(chi2_red,1) with per-peak cores re-minimized at each kappa -- THE quoted construction (the fit rails at kappa=0 where the Wald error has no coverage)"])
+        w.writerow(["S0_225mW_ub95_profile", "shared", f"{res['S0_225_ub95_profile']:.3f}", "",
+                    "95% upper bound on S0 at 225 mW (MHz, transition), profile likelihood -- the archival BOUND"])
         w.writerow(["kappa_ub95", "shared", f"{res['kappa_ub95']:.3f}", "",
-                    "one-sided 95% upper bound on kappa (MHz per W), from the chi2-inflated error"])
+                    "SUPERSEDED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage"])
         w.writerow(["S0_225mW_fit", "shared", f"{res['S0_225_fit']:.3f}", "",
                     "fitted on-axis AC-Stark shift at 225 mW (MHz, transition)"])
         w.writerow(["S0_225mW_ub95", "shared", f"{res['S0_225_ub95']:.3f}", "",
-                    "95% upper bound on S0 at 225 mW (MHz), chi2-INFLATED -- the archival BOUND"])
+                    "SUPERSEDED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead"])
         w.writerow(["S0_225mW_ub95_raw", "shared", f"{res['S0_225_ub95_raw']:.3f}", "",
-                    "un-inflated 95% bound (MHz); the chi2-inflated bound above is the conservative one we quote (chi2>1 over-dispersion). Both exceed the ~0.6 MHz prediction"])
+                    "SUPERSEDED diagnostic: un-inflated Wald bound (MHz)"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
                     "predicted S0 at 225 mW (w0=50um prior, rho=1) for comparison"])
         w.writerow(["chi2_red", "fit", f"{res['chi2_red']:.3f}", "",

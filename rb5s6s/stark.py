@@ -59,7 +59,8 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
                     T_C: float = 130.0,
                     transit_ref_mhz: float = TRANSIT_FWHM_PLACEHOLDER_MHZ,
                     gamma_coll: float = 0.6, w0_um: float = W0_PRIOR_M * 1e6,
-                    rho: float = 1.0) -> Dict:
+                    rho: float = 1.0, profile: bool = True,
+                    nu_step: float = 0.01) -> Dict:
     """Bound the AC-Stark coefficient kappa from FWHM-vs-power at fixed T.
 
     grid: {(peak, P_watts): (fwhm_mhz, fwhm_err_mhz)} on the transition axis.
@@ -68,14 +69,25 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     fixed at their T_C values (they only set the baseline the per-peak core
     absorbs; kappa rides on the power-DEPENDENT part).
 
-    Returns kappa, its 1-sigma error, the one-sided 95% upper bound
-    (kappa + 1.645 sigma, floored at 0), the implied S0 at 225 mW, the predicted
+    The QUOTED 95% bound is the PROFILE-LIKELIHOOD one (profile=True): scan
+    kappa upward from the minimum, re-minimizing the per-peak nuisances at each
+    point, and place the one-sided 95% limit where the chi2 rises by
+    2.706 x max(chi2_red, 1) -- the over-dispersion scaling equivalent to the
+    sqrt(chi2_red) error inflation used elsewhere. This construction is needed
+    because the best fit rails at kappa = 0, where the width handle (broadening
+    ~ S0^2) has zero gradient: the linearized Wald bound kappa + 1.645 sigma is
+    evaluated where the Jacobian column vanishes, so its "sigma" is a
+    finite-difference artifact and carries no 95% coverage. The Wald numbers
+    are retained in the output as diagnostics/continuity, not as the bound.
+
+    Returns kappa, its Wald error, both Wald bounds (raw / chi2-inflated), the
+    profile bound kappa_ub95_profile (and S0 at 225 mW for each), the predicted
     kappa from stark_shift_S0_mhz, and chi2_red.
     """
     peaks = sorted({p for p, _ in grid})
     items = sorted(grid.items())
     transit = transit_fwhm_at_T(T_C, transit_ref_mhz)
-    nu = np.arange(-45.0, 45.0, 0.01)
+    nu = np.arange(-45.0, 45.0, nu_step)
     npk = len(peaks)
 
     # seeds: per-peak sigma_laser ~1.6, kappa ~ predicted
@@ -112,14 +124,67 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
         kerr_raw = float("inf")
     kerr = kerr_raw * infl
     kappa = float(sol.x[npk])
+
+    # -- profile-likelihood one-sided 95% bound (the quoted construction) -----
+    # chi2 profiled over the per-peak nuisances at fixed kappa; the limit sits
+    # where chi2 rises by 2.706 x max(chi2_red, 1) above the minimum. Scaling
+    # the threshold by chi2_red is algebraically the same over-dispersion
+    # rescale as multiplying errors by sqrt(chi2_red) in the Wald path.
+    kappa_ub95_prof = float("nan")
+    profile_thresh = float("nan")
+    if profile:
+        chi2_min = float(np.sum(sol.fun ** 2))
+        profile_thresh = 2.706 * max(chi2_red, 1.0)
+        idx = {p: i for i, p in enumerate(peaks)}
+
+        def chi2_at(kappa_fixed: float, sl_seed: np.ndarray):
+            def r(sl):
+                out = []
+                for (peak, P), (f, ferr) in items:
+                    fm = _fwhm_of(gamma_coll, sl[idx[peak]], transit,
+                                  kappa_fixed * P, nu)
+                    out.append((fm - f) / ferr)
+                return np.array(out)
+            s = least_squares(r, sl_seed, bounds=(np.zeros(npk),
+                                                  np.full(npk, np.inf)),
+                              max_nfev=2000)
+            return float(np.sum(s.fun ** 2)), s.x
+
+        # bracket the crossing: expand upward from the minimum
+        sl_seed = sol.x[:npk].copy()
+        k_lo, c_lo = kappa, chi2_min
+        step = max(kpred, 1.0)
+        k_hi = kappa + step
+        c_hi, sl_seed = chi2_at(k_hi, sl_seed)
+        n_exp = 0
+        while c_hi - chi2_min < profile_thresh and n_exp < 40:
+            k_lo, c_lo = k_hi, c_hi
+            k_hi = kappa + (k_hi - kappa) * 2.0
+            c_hi, sl_seed = chi2_at(k_hi, sl_seed)
+            n_exp += 1
+        # bisect to the threshold crossing
+        for _ in range(60):
+            if k_hi - k_lo <= 1e-3 * max(k_hi, 1.0):
+                break
+            k_mid = 0.5 * (k_lo + k_hi)
+            c_mid, sl_seed = chi2_at(k_mid, sl_seed)
+            if c_mid - chi2_min < profile_thresh:
+                k_lo, c_lo = k_mid, c_mid
+            else:
+                k_hi, c_hi = k_mid, c_mid
+        kappa_ub95_prof = 0.5 * (k_lo + k_hi)
+
     return {
         "peaks": peaks,
         "sigma_laser_by_peak": {p: float(sol.x[i]) for i, p in enumerate(peaks)},
         "kappa": kappa, "kappa_err": kerr, "kappa_err_raw": kerr_raw,
         "chi2_inflation": infl,
         "kappa_ub95": max(kappa + 1.645 * kerr, 0.0),
+        "kappa_ub95_profile": kappa_ub95_prof,
+        "profile_delta_chi2": profile_thresh,
         "S0_225_fit": kappa * 0.225, "S0_225_ub95": max(kappa + 1.645 * kerr, 0.0) * 0.225,
         "S0_225_ub95_raw": max(kappa + 1.645 * kerr_raw, 0.0) * 0.225,
+        "S0_225_ub95_profile": kappa_ub95_prof * 0.225,
         "kappa_pred": float(kpred), "S0_225_pred": float(kpred) * 0.225,
         "chi2_red": chi2_red, "n": ndata,
     }

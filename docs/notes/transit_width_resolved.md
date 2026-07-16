@@ -60,7 +60,8 @@ consistent with our archival ~5.25 MHz, and with a locked-laser linewidth of
 
 Cascade on the AC-Stark prediction (S₀ ∝ 1/w₀²): the predicted on-axis shift at
 225 mW drops **1.43 → ~0.59 MHz (÷2.4), not ÷8**. It stays well inside the
-archival bound (re-run: 95% upper bound ~3.1 MHz).
+archival bound (re-run: 95% upper bound 0.63 MHz, profile likelihood; the 3.1
+quoted earlier was a Wald interval taken at the kappa=0 rail, since superseded).
 
 ## What the propagation changed (all re-run 2026-07-13)
 

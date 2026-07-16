@@ -58,11 +58,11 @@ so each is reported as a bound together with the fixed-lock session measurement 
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
-| Collisional self-broadening **β_self** | ≲ 0.07–0.15 MHz per 10¹² cm⁻³ | bound | Oct: same-session 150–170 °C |
-| 2025 laser linewidth **σ_laser** | ≲ 1.0 MHz (laser axis) | bound | Oct: knife-edge w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 3.1 MHz (predicted 0.59) | bound | Oct: fixed lock + tighter focus |
+| Collisional self-broadening **β_self** | ≲ 0.07–0.15 MHz per 10¹² cm⁻³ | bound | same-session 150–170 °C points |
+| 2025 laser linewidth **σ_laser** | ≲ 1.0 MHz (laser axis) | bound | knife-edge w₀ |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
 | Power scaling | width flat; amplitude ∝ P² | confirmed prediction | — |
-| Beam waist **w₀** | ≈ 50 µm (prior; 32 µm excluded) | open | Oct: knife-edge measurement |
+| Beam waist **w₀** | ≈ 50 µm (prior; 32 µm excluded) | open | knife-edge measurement |
 
 **β_self is a bound, not a measurement — and the data show why.** The fitted
 collisional width barely grows with density (below), while a real binary-collision

@@ -146,7 +146,9 @@ line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
 broadening (a $1.4$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through the
 §5 convention, at the nominal $w_0=50\ \mu$m this brackets $\Delta\alpha$ below
-$\sim1.4\times$ the computed value ($<\sim5800$ a.u., 95%) — consistent with
+$\sim1.1\times$ the computed value ($<\sim1200$ a.u., 95%, profile likelihood;
+the earlier $\sim5800$ came from a Wald interval evaluated at the $\kappa=0$
+rail, where it has no valid coverage) — consistent with
 $1093$, with the mapping inheriting the open $w_0$. So the archive **does not
 contradict** the computed $\Delta\alpha$; the fixed lock measures the pull
 $\propto S_0$ directly (small waist $\Rightarrow S_0$ $\sim4\times$ larger),

@@ -288,7 +288,7 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
   laser power) and **"no density shift … for a range of Rb atom densities from
   3×10¹¹ cm⁻³"** upward. Both are prior NULLS on our C3d (AC-Stark) and C1
   (collisional self-shift) channels — consistent with, and refined below, by our
-  archival bounds (S₀ < 3.1 MHz; β_self a bound). **They also compute the
+  archival bounds (S₀ < 0.63 MHz, profile likelihood; β_self a bound). **They also compute the
   differential polarizability α₅₆ = α(5S)−α(6S) = −1093 a.u.** (= −1.80×10⁻³⁸
   J m²/V², "in a manner similar to Martin 2019") — this is the **source of our
   `DELTA_ALPHA_AU = +1093`** (opposite sign by definition; the value was never a

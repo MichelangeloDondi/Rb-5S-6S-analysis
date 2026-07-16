@@ -239,10 +239,13 @@ the archival brackets into measurements, so several sections are written as
 > **First-pass prose drafted** (with §VI.C) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md).
 
 - Joint fit of one $\kappa$ ($S_0=\kappa P$) to the four peaks' width-vs-power:
-  **$S_0(225\text{ mW}) < 3.1$ MHz (95%)**, fit $0.0$, consistent with the predicted
-  0.59. A bound (the pull is dead; only the $\propto S_0^2$ width handle is live).
-  Via §III's convention at nominal $w_0=50$ µm ⇒ $\Delta\alpha < \sim5800$ a.u.,
-  consistent with the computed 1093 — the archive does **not** contradict the theory.
+  **$S_0(225\text{ mW}) < 0.63$ MHz (95%, profile likelihood)**, fit $0.0$, sitting
+  just above the predicted 0.59. A bound (the pull is dead; only the $\propto S_0^2$
+  width handle is live); the fit rails at $\kappa=0$, so the limit is a profile scan
+  ($\Delta\chi^2 = 2.706\times\chi^2_\text{red}$), not a Wald interval.
+  Via §III's convention at nominal $w_0=50$ µm ⇒ $\Delta\alpha < \sim1200$ a.u.,
+  consistent with the computed 1093 — the archive does **not** contradict the theory,
+  and its width data are already sensitive at the scale of the predicted coefficient.
 
 ### VI.E Supporting / systematics — Figs. 3, 4
 
@@ -312,7 +315,7 @@ inset; a §III schematic of the ramp geometry + the triangular $f(s)$.
 
 - $\beta_\text{self}$ bound $0.07$–$0.15$; hierarchical $0.036(4)$; lever $\to 0.014$;
   γ rise $\times1.85$ / $\times53$. — $\sigma_\text{laser}\lesssim1.0$ laser.
-- $S_0(225) < 3.1$ MHz (95%), pred. 0.59; $\Delta\alpha < \sim5800$ a.u.
+- $S_0(225) < 0.63$ MHz (95%, profile), pred. 0.59; $\Delta\alpha < \sim1200$ a.u.
 - rate $0.04257(5)$ MHz/ms laser; $\Gamma_\text{nat}=3.4926$ MHz; $w_0$ nominal 50 µm (OPEN).
 
 ## Reference anchors (BibTeX in [`references.bib`](references.bib); prose ledger in `LITERATURE.md`)
