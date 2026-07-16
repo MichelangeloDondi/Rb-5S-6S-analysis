@@ -123,11 +123,6 @@ a fixed-lock session fixes.
 
 ## What a follow-up session would add
 
-*Neither session below is scheduled or agreed, and neither assumes a particular
-operator: both are written as specifications, so whoever has the apparatus and the
-beam time could run one — in whole, or from the top of the priority list down as far
-as the time allows. Everything above stands on the archive alone.*
-
 - **A fixed-lock session.** A stable lock returns the absolute centres, and a
   knife-edge measures w₀ — turning the bounds above into the first measured 5S–6S
   AC-Stark and collisional self-shift coefficients. With power capped at 225 mW,
