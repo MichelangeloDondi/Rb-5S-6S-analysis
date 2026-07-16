@@ -64,7 +64,8 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         The Voigt-vs-Lehmann beta spread is the transit model-form systematic.
     sigma_sharing : the lever-crosscheck Model A vs B axis --
         'per_T'     (A) one sigma_laser(T) shared across the 4 peaks at each T
-                        (M4c-validated: the 4 peaks agree on one laser width);
+                        (M4c-consistent: the 4 peaks agree on one laser width in
+                        an in-sample consistency check, not a proof);
         'per_block' (B) sigma_laser free per (peak, T) block, the conservative
                         model that lets every block float its own laser width.
         The A-vs-B beta spread is the sigma-sharing systematic. Running the 2x2
