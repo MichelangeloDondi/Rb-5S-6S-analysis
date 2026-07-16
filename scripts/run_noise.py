@@ -83,20 +83,20 @@ def main() -> int:
           f"(error inflation sqrt(tau) ~ {np.sqrt(np.median(taus)):.2f})")
     print(f"conditions preferring the c*V^2 term: {ncs}/{len(results)}")
 
-    # ---- honest read of the law-fit chi2_red (revision #5) ----
+    # ---- honest read of the law-fit chi2_red (revision #5; rescaled 2026-07-16) ----
     ch = [law["chi2_red"] for _, law in results]
     print(f"\nlaw-fit chi2_red: median {np.median(ch):.1f} (range {min(ch):.1f}-{max(ch):.1f})")
-    print("  This is HIGH and looks alarming, so read it carefully. It is the")
-    print("  goodness-of-fit of the a^2+bV law to the binned ROBUST-sigma points,")
-    print("  and it is inflated by two effects that do NOT bias the weights: the")
-    print("  MAD scale estimator has ~2.7x the sampling variance of the Gaussian")
-    print("  2*sigma^4/n used for the bin errors, and second-difference samples")
-    print("  retain some correlation within a bin (effective n < n). What actually")
+    print("  Read this with its two known inflators in mind (neither biases the")
+    print("  weights): the MAD scale estimator has ~2.7x the sampling variance of")
+    print("  the Gaussian 2*sigma^4/n used for the bin errors, and second-")
+    print("  difference samples retain some correlation within a bin (effective")
+    print("  n < n). Together they account for most of the remaining elevation.")
+    print("  (An earlier revision also carried a coded 4x inflation in the chi2")
+    print("  prefactor -- fixed 2026-07-16; a, b, c and the BIC choice never")
+    print("  depended on it, so no weight or downstream fit changes.) What")
     print("  validates the per-sample sigma(V) weights is the DOWNSTREAM per-trace")
-    print("  chi2_red, which is ~0.9 (see run_linefit) -- i.e. the weights are")
-    print("  right, if anything slightly conservative. So the high law-fit chi2_red")
-    print("  is a mis-scaled diagnostic, NOT evidence of 4x-optimistic error bars;")
-    print("  the fitting a^2+bV floor is validated by that downstream chi2_red~1.")
+    print("  chi2_red ~0.9 (run_linefit): the weights are right, if anything")
+    print("  slightly conservative.")
     return 0
 
 

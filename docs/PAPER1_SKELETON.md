@@ -194,7 +194,8 @@ the archival brackets into measurements, so several sections are written as
 - **Model-independent width-slope bound** (the headline): raw widths are non-monotonic
   in density for 3/4 peaks — impossible for real collisions — because between-block
   $\sigma_\text{laser}$ drift ($\sim0.06$–$0.16$ MHz) $\approx$ the whole collisional
-  trend. $\Rightarrow \beta_\text{self}\lesssim 0.07$–$0.15$ MHz per $10^{12}$ cm⁻³
+  trend. $\Rightarrow \beta_\text{self}\lesssim 0.2$–$0.4$ MHz per $10^{12}$ cm⁻³
+  (95% per peak: $t(1)=6.31$ on the 1-DOF scatter, ×1.2 density scale)
   ($\approx2\sigma$, per peak). Each bound carries a factor-$\sim$2 own-uncertainty
   (1–2 residual DOF) — quote to 2 figures.
 - **The lever test (why it is a *bound*, not a value)** — Fig. 6. The fitted
@@ -204,9 +205,9 @@ the archival brackets into measurements, so several sections are written as
   the (cross-session) 130 °C lever is added; per-condition $\beta\sim0.01$. So $\beta$
   is lever- and model-dependent — the definition of a bound.
 - **Hierarchical cross-check + isotope test:** $\beta_{85}=\beta_{87}=0.036(4)$
-  (STAT-only), no isotope dependence ($0.0\sigma$); three separate error bars
-  (statistical / transit model-form $\pm0.033$ / $w_0$-band $[0.004,0.055]$, the
-  largest). Robust to leave-one-**peak**-out (4207 moves $\beta_{87}$ by $-0.004$,
+  (STAT-only), no isotope dependence ($0.0\sigma$); four separate error bars
+  (statistical / transit model-form $\pm0.033$ / density scale $\pm0.007$ /
+  $w_0$-band $[0.004,0.055]$, the largest). Robust to leave-one-**peak**-out (4207 moves $\beta_{87}$ by $-0.004$,
   $<1\sigma$; drops neither $\beta$ nor the $\sigma_\text{laser}(T)$ trend).
 - **Expectation context:** Zameroski 7S scaling ⇒ expected $\beta_\text{self}(6S)\sim$
   1 kHz per $10^{12}$ cm⁻³ ⇒ the bound is $\sim$40–100× above expectation (consistent,
@@ -313,7 +314,7 @@ inset; a §III schematic of the ramp geometry + the triangular $f(s)$.
 
 ## Key numbers to keep synchronized with `docs/RESULTS.md` (do not hand-retype elsewhere)
 
-- $\beta_\text{self}$ bound $0.07$–$0.15$; hierarchical $0.036(4)$; lever $\to 0.014$;
+- $\beta_\text{self}$ bound $0.2$–$0.4$ (95%, t + N-scale); hierarchical $0.036(4)$; lever $\to 0.014$;
   γ rise $\times1.85$ / $\times53$. — $\sigma_\text{laser}\lesssim1.0$ laser.
 - $S_0(225) < 0.63$ MHz (95%, profile), pred. 0.59; $\Delta\alpha < \sim1200$ a.u.
 - rate $0.04257(5)$ MHz/ms laser; $\Gamma_\text{nat}=3.4926$ MHz; $w_0$ nominal 50 µm (OPEN).

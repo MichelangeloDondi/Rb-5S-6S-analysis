@@ -46,8 +46,10 @@ from typing import Dict, List, Optional
 
 import numpy as np
 from scipy.optimize import least_squares
+from scipy.stats import t as student_t
 
 from . import config as C
+from .density import N_SCALE_FRAC_SYST
 from .lineshape import composite_profile
 from .linefit import transit_fwhm_at_T
 from .noise import signal_level, sigma_of_v
@@ -66,7 +68,23 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
 
     Returns beta_eff, formal_err (within-block only), syst_err (with the
     between-block systematic), resid_rms, snr (=|beta|/syst_err), verdict
-    ('MEASUREMENT' iff snr >= snr_measure else 'BOUND'), bound95, monotonic.
+    ('MEASUREMENT' iff snr >= snr_measure else 'BOUND'), dof, t95, bound95,
+    n_frac_syst, bound95_nscale, monotonic.
+
+    COVERAGE of the bound (corrected 2026-07-16): the between-block scatter
+    that dominates syst_err is estimated on only dof = n - 2 degrees of
+    freedom (1 for the 3-point headline variant), so a one-sided 95% limit
+    needs the Student-t quantile t(0.95, dof) -- 6.31 at dof=1, 2.92 at
+    dof=2 -- NOT the Gaussian-asymptotic 2 that was hard-coded before. This
+    is conservative where the well-determined within-block part contributes,
+    which is the right direction for a bound. bound95 = |beta| + t95*syst.
+
+    DENSITY SCALE (propagated 2026-07-16): beta ~ slope vs N, so a fractional
+    error f on the N calibration moves beta by the same fraction
+    (beta_true = beta_fit * N_assumed/N_true); the cold-spot direction makes
+    the fitted beta an UNDERestimate, so the upper bound is inflated on the +
+    side: bound95_nscale = bound95 * (1 + N_SCALE_FRAC_SYST). That final
+    number is the quotable per-peak bound.
 
     'monotonic' is a DESCRIPTOR, not evidence: with <=4 points monotonicity is
     a 1-in-24 coincidence and, worse, a monotonic session drift aliased onto
@@ -87,19 +105,25 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     # the DEGREES OF FREEDOM (n - p, p=2), not by n. np.mean would divide by n
     # and bias the scatter LOW by sqrt(n/(n-p)) -- for the 3-point headline
     # variant that is sqrt(3) ~ 1.7, tightening the "conservative" bound by
-    # ~40% (2026-07-12). CAVEAT: with n-p = 1-2 this estimate is
-    # itself very noisy (its own uncertainty ~100%), so the bound carries a
-    # ~factor-2 own-uncertainty -- surfaced in the ledger, quoted to 1 sig fig.
+    # ~40% (2026-07-12). With n-p = 1-2 this estimate is itself very noisy;
+    # that used to be a prose caveat ("~factor-2 own-uncertainty") and is now
+    # FORMALIZED by the Student-t multiplier below (2026-07-16).
     dof = max(len(N) - 2, 1)
     resid_rms = float(np.sqrt(np.sum((W - A @ coef) ** 2) / dof))
     E_sys = np.sqrt(E ** 2 + resid_rms ** 2)
     syst_err = float(np.sqrt(np.linalg.inv(A.T @ np.diag(1.0 / E_sys ** 2) @ A)[1, 1]))
     beta_eff = float(coef[1])
     snr = abs(beta_eff) / syst_err if syst_err > 0 else 0.0
+    # one-sided 95% multiplier with the scatter's own dof honoured (see docstring)
+    t95 = float(student_t.ppf(0.95, dof))
+    bound95 = abs(beta_eff) + t95 * syst_err
     return {
         "beta_eff": beta_eff, "formal_err": float(np.sqrt(cov[1, 1])),
         "syst_err": syst_err, "resid_rms": resid_rms, "snr": float(snr),
-        "bound95": abs(beta_eff) + 2 * syst_err,
+        "dof": int(dof), "t95": t95,
+        "bound95": bound95,
+        "n_frac_syst": N_SCALE_FRAC_SYST,
+        "bound95_nscale": bound95 * (1.0 + N_SCALE_FRAC_SYST),
         "verdict": "MEASUREMENT" if snr >= snr_measure else "BOUND",
         "monotonic": bool(np.all(np.diff(W[np.argsort(N)]) > 0)),
     }

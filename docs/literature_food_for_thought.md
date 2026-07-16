@@ -56,8 +56,9 @@ moved (β central ~0.056 → 0.036, σ_laser bound 1.1 → 1.0 laser axis, S₀ 
 Zameroski 2014 measures the **7S self-broadening rate = 129 kHz/mTorr** (p.11).
 Converting: at 393 K, 1 mTorr ↔ 24.5×10¹² cm⁻³, so
 $$\beta_\text{self}(7S)\approx 129/24.5 \approx 5\ \text{kHz per }10^{12}\ \text{cm}^{-3}.$$
-Our archival β_self **bound** is 0.07–0.15 MHz = 70–150 kHz per 10¹² cm⁻³, so it
-sits ~15–30× above the 7S self-broadening scale (6S should be similar or a bit
+Our archival β_self **bound** is 0.2–0.4 MHz = 200–440 kHz per 10¹² cm⁻³ (95%,
+t-corrected for the 1-DOF scatter + the 20% density-scale systematic), so it
+sits ~40–90× above the 7S self-broadening scale (6S should be similar or a bit
 smaller). Refinement for the paper: quote the **self-broadening** coefficient
 (what β_self is), not the self-*shift* (−17.8 kHz/mTorr) the memory had used — the
 right comparison is broadening-to-broadening. Conclusion unchanged (consistent,

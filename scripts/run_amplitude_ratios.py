@@ -90,8 +90,8 @@ def main() -> int:
                 r = ma / mb
                 er = r * np.hypot(ea / ma, eb / mb)
                 cells.append((r, er, p))
-                out.append({"T": T, "ratio": f"{a}/{b}", "measured": r, "err": er,
-                            "predicted": p, "pull_sigma": (r - p) / er if er > 0 else np.nan})
+                out.append({"T": T, "ratio": f"{a}/{b}", "measured": r, "err_stat": er,
+                            "predicted": p})
         if len(cells) == 2:
             (r1, e1, _), (r2, e2, _) = cells
             print(f"  {T:>4s}C {r1:>7.2f}+/-{e1:<4.2f} {5/3:>9.3f} "
@@ -104,17 +104,44 @@ def main() -> int:
             (ma, ea), (mb, eb) = areas[("4192", T)], areas[("4207", T)]
             r = ma / mb; er = r * np.hypot(ea / ma, eb / mb)
             p = pred["4192"] / pred["4207"]
-            out.append({"T": T, "ratio": "4192/4207", "measured": r, "err": er,
-                        "predicted": p, "pull_sigma": (r - p) / er if er > 0 else np.nan})
+            out.append({"T": T, "ratio": "4192/4207", "measured": r, "err_stat": er,
+                        "predicted": p})
             print(f"  {T:>4s}C {r:>7.2f}+/-{er:<4.2f} {p:>7.3f}")
 
+    # Between-block systematic, estimated FROM the data: the law predicts each
+    # ratio is temperature-independent, so the between-T spread of a family's
+    # measured ratio IS the between-block (power/alignment drift) systematic.
+    # Folding it into the pull is what makes the CSV honest on its own: the
+    # stat-only pulls (up to ~40 sigma against a parameter-free law) are a
+    # statement about drift, not about the law, and are kept only as the
+    # labelled diagnostic column.
+    by_family = defaultdict(list)
+    for o in out:
+        by_family[o["ratio"]].append(o["measured"])
+    fam_syst = {k: (float(np.std(v, ddof=1)) if len(v) > 1 else 0.0)
+                for k, v in by_family.items()}
+    for o in out:
+        syst = fam_syst[o["ratio"]]
+        tot = float(np.hypot(o["err_stat"], syst))
+        o["syst_between_block"] = syst
+        o["err_total"] = tot
+        o["pull_sigma"] = (o["measured"] - o["predicted"]) / tot if tot > 0 else np.nan
+        o["pull_stat_only"] = ((o["measured"] - o["predicted"]) / o["err_stat"]
+                               if o["err_stat"] > 0 else np.nan)
+
+    cols = ["T", "ratio", "measured", "err_stat", "syst_between_block",
+            "err_total", "predicted", "pull_sigma", "pull_stat_only"]
     with open(C.RESULTS_DIR / "amplitude_ratios.csv", "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
+        w = csv.DictWriter(f, fieldnames=cols); w.writeheader(); w.writerows(out)
 
     pulls = [abs(o["pull_sigma"]) for o in out if np.isfinite(o["pull_sigma"])]
+    pulls_stat = [abs(o["pull_stat_only"]) for o in out if np.isfinite(o["pull_stat_only"])]
     print(f"\n{'-'*76}")
-    print(f"  |pull| median {np.median(pulls):.1f} sigma, max {max(pulls):.1f} sigma "
-          f"-- against STATISTICAL errors only.")
+    print(f"  |pull| vs total error (stat + between-block): median "
+          f"{np.median(pulls):.1f} sigma, max {max(pulls):.1f} sigma")
+    print(f"  (vs statistical only -- the labelled diagnostic column: median "
+          f"{np.median(pulls_stat):.1f}, max {max(pulls_stat):.1f} sigma; large "
+          f"because the SEM ignores the drift the verdict below describes)")
     print("\nVERDICT (2026-07-11 archival run): the within-block statistics are ~1-3%,")
     print("but the ratios swing 30-50% BETWEEN temperatures and NON-monotonically")
     print("(e.g. 993.4207/993.4121 nm: 1.10 -> 0.98 -> 2.53 -> 1.97 vs constant 5/3 the")

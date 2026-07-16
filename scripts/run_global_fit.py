@@ -25,7 +25,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import PEAKS as PEAKINFO, transit_fwhm_from_w0  # noqa: E402
-from rb5s6s.density import density_units  # noqa: E402
+from rb5s6s.density import density_units, N_SCALE_FRAC_SYST  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
@@ -125,6 +125,13 @@ def main() -> int:
         for iso in fit["beta_keys"]:
             w.writerow(["beta_modelform_syst", f"{iso}Rb", f"{mf_syst[iso]:.4f}", "",
                         "MHz per 1e12 cm^-3 (|Lehmann - Voigt transit|)"])
+        for iso in fit["beta_keys"]:
+            w.writerow(["beta_nscale_syst", f"{iso}Rb",
+                        f"{abs(fit['beta_by_isotope'][iso]) * N_SCALE_FRAC_SYST:.4f}",
+                        "",
+                        f"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, "
+                        f"so the {N_SCALE_FRAC_SYST:.0%} vapor-pressure-correlation "
+                        f"spread moves beta by the same fraction; density.py)"])
 
     # ---- w0 systematic band on beta (review round 5 #4) ----
     # transit_ref comes from the OPEN w0 prior (central 50 um; the old 32 um is

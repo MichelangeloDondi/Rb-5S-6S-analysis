@@ -867,14 +867,22 @@ produce). Within-block repeat scatter is $\sim0.05$ MHz, but between-block
 scatter is $\sim0.06$–$0.16$ MHz: the 2025 laser width drifted between cooling
 steps by about as much as the entire collisional trend. Applying §4.5,
 
-$$\boxed{ \beta_\text{self}\lesssim 0.07\text{–}0.15\ \text{MHz per }10^{12}\ \text{cm}^{-3}\ (\approx2\sigma,\ \text{per peak}). }$$
+$$\boxed{ \beta_\text{self}\lesssim 0.2\text{–}0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}\ (95\%,\ \text{per peak}). }$$
 
-The between-block systematic here is an RMS over only 1–2 residual degrees of
-freedom (3–4 density points), so each bound carries a **$\sim$factor-2
-own-uncertainty** and the "$\approx2\sigma$" coverage is approximate — hence
-the two-figure quote and the range, not a crisp number. (The scatter estimate
-divides by the DOF, not by $n$; using $n$ would tighten the bound $\sim$40% —
-a directional bug fixed 2026-07-12.) A naive global Voigt fit instead reports a
+Two coverage corrections define this bound (both 2026-07-16). First, the
+between-block scatter that dominates the slope error is estimated on only
+**one residual degree of freedom** (3 density points, 2 fit parameters), so a
+one-sided 95% limit needs the Student-t quantile $t(0.95, 1)=6.31$, not the
+Gaussian-asymptotic 2 an earlier revision used — that earlier
+"$\approx2\sigma$" quote (0.07–0.15) under-covered, which is exactly why it
+was flagged with a factor-2 own-uncertainty; the t-quantile formalizes that
+flag into the number. Second, $\beta\propto 1/N$, so the $\sim$20% spread
+between published vapor-pressure correlations is a density-scale systematic
+that moves every $\beta$ by the same fraction; the cold-spot direction makes
+the fitted $\beta$ an underestimate, so the bound is inflated on the + side
+($\times1.2$; see `density.py`). (The scatter estimate divides by the DOF,
+not by $n$; using $n$ would tighten the bound $\sim$40% — a directional bug
+fixed 2026-07-12.) A naive global Voigt fit instead reports a
 4–10$\sigma$ "detection" — the §4.5 cautionary tale made flesh. This bound is
 the archival data *proving the two-epoch design was necessary*, and is itself a
 Paper-1 result.
@@ -886,17 +894,19 @@ $\beta_{85}=\beta_{87}=0.036(4)$ MHz per $10^{12}$ cm$^{-3}$: **no isotope
 dependence** ($\beta_{85}-\beta_{87}=0.000\pm0.006$, $0.0\sigma$), robust to
 leaving any block out. It is a *model-based* value: it sits above the per-peak model fits
 ($0.027$–$0.047$) but comfortably **below all four** model-independent per-peak
-bounds ($0.07$–$0.15$, once those are computed with the correct
-degrees-of-freedom denominator) — so it is consistent with the bound, not in
+bounds ($0.22$–$0.44$ with the corrected t-quantile and density-scale
+coverage) — so it is consistent with the bound, not in
 tension with it, though it still inherits the same $w_0$ and model-form limits.
-Those limits are **not** hand-waved: this $0.036$ carries **three separate error
-bars**, and the two systematics dominate the statistical one — statistical
-$\pm0.004$ (joint-fit covariance); **transit model-form $\pm0.012$** (the
+Those limits are **not** hand-waved: this $0.036$ carries **four separate error
+bars**, and the systematics dominate the statistical one — statistical
+$\pm0.004$ (joint-fit covariance); **transit model-form $\pm0.033$** (the
 $|\text{Voigt}-\text{Lehmann}|$ shift, §4.7, `run_global_fit`: the Gaussian-transit
 Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core forces
-more width onto collisions); and — **largest of the three** — the $w_0$-band
+more width onto collisions); **density scale $\pm0.007$** ($\beta\propto1/N$, the
+$\sim$20% spread between published vapor-pressure correlations, `density.py`);
+and — **largest of the four** — the $w_0$-band
 $[0.025,0.065]$ (a factor ${\sim}2.5$, since every absolute $\beta$ rides on the
-OPEN beam waist). The paper must quote all three, not the optimistic $\pm0.004$ alone.
+OPEN beam waist). The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
 Its real value is the isotope test, and the validation (M4c, §sharing test) that
 the four peaks at each temperature agree on a single $\sigma_\text{laser}$
@@ -909,7 +919,7 @@ stale block (and it does not corrupt $\beta$, which the density lever still
 pins).
 
 The **lever cross-check** (M4d, `run_lever_crosscheck`) packages exactly this — the
-cooling-sweep $\beta$ with all three error bars and a leave-one-peak /
+cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak /
 leave-one-temperature scan — and adds the honest lever test: folding in the
 130 °C anchor (§4.2) pulls $\beta$ well below $0.036$, because $\gamma_\text{coll}$
 rises only ${\sim}1.5\times$ across a ${\times}52$ density span — a residual floor,

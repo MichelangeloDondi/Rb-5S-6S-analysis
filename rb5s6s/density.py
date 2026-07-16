@@ -13,15 +13,28 @@ Vapor pressure: Nesmeyanov's liquid-Rb correlation as tabulated by Steck
 
 Number density from the ideal gas law: N = P / (k_B T).
 
-CAVEATS carried downstream (M4 error budget):
-  * a hot vapor cell's density is set by the COLDEST spot on the glass, not
-    the nominal set temperature (cold-spot systematic) — the absolute N(T)
-    can be off by a temperature-offset the archival data cannot pin. The
-    beta_self fit therefore leans on the SHAPE of N(T) (its ~50x rise across
-    70->130 C), and any absolute N carries this caveat.
+CAVEATS carried downstream (M4 error budget) — now PROPAGATED, not just named:
   * different vapor-pressure correlations disagree at the ~10-30% level; we
-    quote the Steck/Nesmeyanov choice explicitly and treat the spread as a
-    systematic when a number is published.
+    quote the Steck/Nesmeyanov choice explicitly and adopt the midpoint of
+    that spread, N_SCALE_FRAC_SYST = 0.20, as the density-SCALE systematic.
+    Anything that scales as 1/N (beta_self and its bounds) inherits the same
+    fractional error: beta_true = beta_fit x N_assumed/N_true, so a 20% N
+    error moves every beta number 20%. Downstream consumers multiply their
+    quoted upper bounds by (1 + N_SCALE_FRAC_SYST).
+  * a hot vapor cell's density is set by the COLDEST spot on the glass, not
+    the nominal set temperature. The offset dT is unpinned by the archive,
+    but its SIGN is known: a cold spot means N_true < N_assumed, i.e. the
+    fitted beta UNDERSTATES the true beta — the dangerous direction for an
+    upper bound, and exactly why the (1 + f) inflation above is applied to
+    the + side. Scale: dlnN/dT is ~7.8%/K at 70 C falling to ~5.6%/K at
+    130 C (dlnN_dT_per_K below), so each kelvin of cold spot is ~6-8% of N.
+    Because dlnN/dT itself varies across the sweep, a constant cold-spot
+    offset also TILTS the N(T) lever arm by ~2.3%/K of offset — a slope
+    (not just scale) bias, second-order relative to the 20% scale term and
+    recorded here rather than propagated.
+  * the beta_self fit leans on the SHAPE of N(T) (its ~50x rise across
+    70->130 C), which is robust to a pure scale error; the terms above bite
+    the ABSOLUTE calibration of beta, not the existence of the bound.
 """
 
 from __future__ import annotations
@@ -56,6 +69,22 @@ def number_density_cm3(T_C: np.ndarray) -> np.ndarray:
     P_pa = vapor_pressure_torr(T_C) * TORR_TO_PA
     N_m3 = P_pa / (K_B_J_PER_K * T_K)
     return N_m3 * 1e-6  # m^-3 -> cm^-3
+
+
+# Density-SCALE fractional systematic: midpoint of the ~10-30% spread between
+# published vapor-pressure correlations (see module docstring). Consumers with
+# a 1/N dependence (beta_self bounds) multiply their upper bounds by (1 + this).
+N_SCALE_FRAC_SYST = 0.20
+
+
+def dlnN_dT_per_K(T_C):
+    """d ln N / dT (per kelvin) of the Nesmeyanov/Steck liquid correlation.
+
+    Analytic: ln N = ln10 * (A - B/T + C*T - D*log10 T) - ln(kB T) + const, so
+    d lnN/dT = ln10 * (B/T^2 + C) - D/T - 1/T. Used to size the cold-spot
+    systematic (~6-8%/K over 70-130 C); see the module docstring."""
+    T = np.asarray(T_C, float) + 273.15
+    return np.log(10.0) * (_B / T ** 2 + _C) - _D / T - 1.0 / T
 
 
 # Convenience scale for beta_self fits: density in units of 1e12 cm^-3, so
