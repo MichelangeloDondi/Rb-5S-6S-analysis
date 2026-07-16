@@ -45,22 +45,38 @@ MHZ_TOOTH = TOOTH_SPACING_LASER_HZ / 1e6
 
 
 def load_block_rates():
-    """Read M2 results/ruler_blocks.csv -> transition-axis rate per block.
-    Returns dicts keyed for T-sweep and P-sweep line lookups."""
+    """Read M2 results/ruler_blocks.csv -> transition-axis rate per block,
+    WITH each block's relative rate error (2026-07-16 -- review finding: the
+    ruler calibration error was folded in run_beta_self/run_power_sweep but
+    dropped here, where the per-condition widths are made). A rate error
+    scales the whole frequency axis of its block, so every width-type
+    quantity from that block (gamma_coll, sigma_laser, total FWHM) carries a
+    block-coherent fractional error equal to it; it is folded into the
+    written errors below. P-sweep brackets: rate = mean(before, after), the
+    half-difference added in quadrature (matching run_beta_self).
+
+    Returns dicts of (rate, relerr) keyed for T-sweep and P-sweep lookups."""
     path = C.RESULTS_DIR / "ruler_blocks.csv"
     if not path.exists():
         raise SystemExit("run scripts/run_ruler.py first (need results/ruler_blocks.csv)")
     trate, pbrackets = {}, defaultdict(dict)
     for r in csv.DictReader(open(path)):
-        rate_transition = 2.0 * float(r["rate"])  # laser -> transition axis
+        rr = 2.0 * float(r["rate"])   # laser -> transition axis
+        ee = 2.0 * float(r["rate_err"])
         if r["session"] == "T":
-            trate[(r["peak"], r["T"])] = rate_transition
+            trate[(r["peak"], r["T"])] = (rr, ee / rr)
         else:
-            pbrackets[r["peak"]][r["bracket"]] = rate_transition
+            pbrackets[r["peak"]][r["bracket"]] = (rr, ee)
     prate = {}
     for peak, br in pbrackets.items():
-        vals = list(br.values())
-        prate[peak] = float(np.mean(vals)) if vals else None
+        if "before" in br and "after" in br:
+            (rb, eb), (ra, ea) = br["before"], br["after"]
+            mean = 0.5 * (rb + ra)
+            err = np.sqrt(0.5 * (eb ** 2 + ea ** 2) + (0.5 * (rb - ra)) ** 2)
+            prate[peak] = (mean, err / mean)
+        elif br:
+            (rr, ee) = next(iter(br.values()))
+            prate[peak] = (rr, ee / rr)
     return trate, prate
 
 
@@ -84,9 +100,10 @@ def main() -> int:
     out = []
     for key in sorted(conds):
         role, peak, T, P = key
-        rate = condition_rate(role, peak, T, trate, prate)
-        if rate is None:
+        entry = condition_rate(role, peak, T, trate, prate)
+        if entry is None:
             print(f"  [skip] {key}: no M2 rate"); continue
+        rate, rate_relerr = entry
         freqs, volts = [], []
         for r in conds[key]:
             t, v, info = load_trace(trace_path(r), with_info=True)
@@ -143,11 +160,23 @@ def main() -> int:
         total_fwhm_err = float(np.sqrt(max(var, 0.0)))
         out.append({
             "role": role, "peak": peak, "T": T, "P": P, "rate_t": rate,
+            "rate_relerr": rate_relerr,
+            # the block-coherent ruler-rate error scales every width in the
+            # block together; folded here so no consumer of this CSV can drop
+            # it (review finding 4, 2026-07-16)
             "n": len(volts), "gamma_coll": fit["gamma_coll"],
-            "gamma_coll_err": fit["gamma_coll_err"], "sigma_laser": fit["sigma_laser"],
-            "sigma_laser_err": fit["sigma_laser_err"], "total_fwhm": total_fwhm,
-            "total_fwhm_err": total_fwhm_err,
+            "gamma_coll_err": float(np.hypot(fit["gamma_coll_err"],
+                                             fit["gamma_coll"] * rate_relerr)),
+            "sigma_laser": fit["sigma_laser"],
+            "sigma_laser_err": float(np.hypot(fit["sigma_laser_err"],
+                                              fit["sigma_laser"] * rate_relerr)),
+            "total_fwhm": total_fwhm,
+            "total_fwhm_err": float(np.hypot(total_fwhm_err,
+                                             total_fwhm * rate_relerr)),
             "corr": fit["corr_laser_coll"], "chi2_red": fit["chi2_red"],
+            "noise_floor_limited": fit["noise_floor_limited"],
+            "gamma_coll_at_bound": fit["gamma_coll_at_bound"],
+            "sigma_laser_at_bound": fit["sigma_laser_at_bound"],
         })
 
     with open(C.RESULTS_DIR / "linefit_conditions.csv", "w", newline="") as f:

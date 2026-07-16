@@ -9,3 +9,5 @@ beta_modelform_syst,85Rb,0.0326,,MHz per 1e12 cm^-3 (|Lehmann - Voigt transit|),
 beta_modelform_syst,87Rb,0.0320,,MHz per 1e12 cm^-3 (|Lehmann - Voigt transit|),BOUND
 beta_nscale_syst,85Rb,0.0071,,"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, so the 20% vapor-pressure-correlation spread moves beta by the same fraction; density.py)",BOUND
 beta_nscale_syst,87Rb,0.0072,,"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, so the 20% vapor-pressure-correlation spread moves beta by the same fraction; density.py)",BOUND
+noise_floor_limited,global,False,,"chi2_red < 0.8: the errors are set by the conservative noise model (tau inflation), not by the fit residuals",DIAGNOSTIC
+params_at_bound,global,none,,"shared parameters pinned at their 0 rail, where the symmetric Gaussian error is one-sided in truth",DIAGNOSTIC

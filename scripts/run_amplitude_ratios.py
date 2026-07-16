@@ -38,6 +38,9 @@ TEMPS = ("70", "90", "110", "130")
 def load_rates():
     trate, prate = {}, defaultdict(list)
     for r in csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):
+        # rate_err omitted deliberately: it enters each AREA as a ~0.5-1.8%
+        # block-coherent scale, dwarfed by the 20-40% between-block systematic
+        # now carried in syst_between_block (review finding 4, 2026-07-16)
         rr = 2.0 * float(r["rate"])
         if r["session"] == "T":
             trate[(r["peak"], r["T"])] = rr

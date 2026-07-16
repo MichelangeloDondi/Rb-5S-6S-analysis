@@ -172,6 +172,11 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         "sigma_laser_err": [float(err[i]) for i in range(nS)],
         "transit_ref": float(sol.x[nS + nB] if fit_transit else transit_ref_mhz),
         "chi2_red": chi2_red, "n_traces": ntr,
+        "noise_floor_limited": bool(chi2_red < 0.8),
+        "params_at_bound": sorted(
+            [f"sigma_{k}" for i, k in enumerate(sig_keys) if sol.x[i] <= 1e-9]
+            + [f"beta_{iso}" for bi, iso in enumerate(beta_keys)
+               if sol.x[nS + bi] <= 1e-9]),
         "sig_keys": sig_keys, "beta_keys": beta_keys,
         "sigma_sharing": sigma_sharing, "transit_kind": transit_kind,
     }

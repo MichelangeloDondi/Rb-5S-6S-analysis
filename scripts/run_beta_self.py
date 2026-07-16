@@ -174,7 +174,8 @@ def main() -> int:
         fits[peak] = (fit, conds)
         results.append({"peak": peak, **{k: fit[k] for k in
                         ("beta_self", "beta_self_err", "sigma_laser", "sigma_laser_err",
-                         "chi2_red", "corr_beta_laser")}})
+                         "chi2_red", "corr_beta_laser", "noise_floor_limited",
+                         "beta_at_bound", "sigma_laser_at_bound")}})
 
     with open(C.RESULTS_DIR / "beta_self.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(results[0].keys())); w.writeheader(); w.writerows(results)

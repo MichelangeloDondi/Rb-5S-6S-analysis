@@ -230,6 +230,13 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "transit_fitted": bool(fit_transit),
         "chi2_red": chi2_red, "n_traces": ntr,
         "noise_floor_limited": bool(chi2_red < 0.8),  # errors set by the noise model, not the fit
+        # bound_active flags (2026-07-16): scipy's covariance ignores active
+        # bounds, so a parameter pinned at its 0 rail wears a symmetric
+        # Gaussian error where the true interval is one-sided. The flag
+        # travels with the number so a reader can see which errors carry
+        # that caveat.
+        "gamma_coll_at_bound": bool(gc <= 1e-9),
+        "sigma_laser_at_bound": bool(sl <= 1e-9),
         "corr_laser_coll": corr_gs,
         "centers": [float(sol.x[nshared + 4 * i + 1]) for i in range(ntr)],
         "amps": [float(sol.x[nshared + 4 * i]) for i in range(ntr)],

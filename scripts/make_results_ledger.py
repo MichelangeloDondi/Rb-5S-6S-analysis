@@ -355,7 +355,12 @@ def main() -> int:
           f"auto-cut), now with the leave-out on record.")
     ss = rows("sigma_laser_sharing")
     if ss:
-        chis = "/".join(f"{float(r['chi2_red_4peak']):.1f}" for r in ss)
+        chis = "/".join(f"{float(r['chi2_red_4peak']):.2f}" for r in ss)
+        free = [float(r["sigma_laser_free_common"]) for r in ss]
+        tied = [float(r["sigma_laser_globalA_tied"]) for r in ss]
+        free_rng = f"{min(free):.1f}–{max(free):.1f}"
+        tied_rng = f"{min(tied):.1f}–{max(tied):.1f}"
+        tied_min = f"{min(tied):.2f}"
         W(f"- **σ_laser sharing (M4c) — an IN-SAMPLE consistency check, not a proof:** "
           f"at 70/90/110 °C the four peak-blocks agree on one σ_laser (χ²/dof {chis}, "
           f"all $<$1), consistent with the per-T sharing the global fit assumes. Two "
@@ -365,17 +370,17 @@ def main() -> int:
           f"uses 70/90/110 °C and the headline fit uses the *same* three temperatures, "
           f"so it cannot be an out-of-sample test — the 130 °C block that would stress "
           f"the assumption is a different session (excluded, §C1 lever test). (iii) "
-          f"**The test is under-powered:** χ²/dof of 0.21/0.64/0.33 are *well below 1*, "
+          f"**The test is under-powered:** χ²/dof of {chis} are *well below 1*, "
           f"so the peaks agree only within error bars that are themselves $\\sim$1.2–"
           f"2.2× too large (the conservative $\\tau_\\text{{int}}$ noise inflation "
           f"over-estimates them). At these χ² the data cannot discriminate shared from "
           f"unshared — so the sharing is **untested**, not merely unverifiable. So it "
           f"answers the round-5 timing worry as *consistency*, not confirmation. But the "
           f"*free* per-condition σ_laser "
-          f"is $\\sim$flat (1.6–1.8), while the β·N-tied global fit inflates it to "
-          f"2.1–2.2 and drops it to 1.60 at 110 °C: that σ_laser(T) trend is the "
+          f"is $\\sim$flat ({free_rng}), while the β·N-tied global fit inflates it to "
+          f"{tied_rng} across the sweep: that σ_laser(T) trend is the "
           f"**β↔σ_laser degeneracy** under the density constraint, NOT a physical "
-          f"laser drift — so the '110 °C anomaly' is a model artifact, not a stale "
+          f"laser drift — so the trend is a model artifact, not a stale "
           f"block, and it does not corrupt β (the density lever still pins the "
           f"collisional slope). Reproducible: `run_sigma_laser_sharing.py`.")
     mf = rows("modelform")

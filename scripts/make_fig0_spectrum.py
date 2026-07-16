@@ -50,6 +50,8 @@ def _block_rates():
     trate, pbr = {}, defaultdict(dict)
     for r in csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):
         rate = 2.0 * float(r["rate"])  # laser -> transition axis
+        # rate_err omitted deliberately: display-only figure; the ~1% axis-scale
+        # error is invisible at plot resolution (review finding 4, 2026-07-16)
         if r["session"] == "T":
             trate[(r["peak"], r["T"])] = rate
         else:
