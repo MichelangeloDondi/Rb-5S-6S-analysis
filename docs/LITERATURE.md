@@ -404,3 +404,31 @@ gap Paper B can flag.
 021002, the flagship ONF review), `sadeghi2026` (ONF cascaded fluorescence,
 power-dependent surface shift, arXiv:2412.01099). The clean cell lineshape is the
 reference against which ONF surface/pushing effects are read.
+
+**Prior-art audit on the pushing dip (2026-07-16).** Because a near-surface
+lineshape is the natural Paper-2 direction, we checked whether anyone has since
+modelled the `gokhroo2022` dip. Crossref/OpenAlex list **6 citing works, 4 unique**
+(two are preprint/published pairs), and **none models the dip**: Kestler *et al.*
+(UCSD, Sr state-insensitive ONF trap — unrelated); Vylegzhanin *et al.* 2023
+(*Optica Quantum*, ONF Rydberg excitation); `li2024perspective`; and Vylegzhanin
+*et al.* 2025 (*NJP*, fictitious-field trap). Fam Le Kien — the theorist on the
+paper, and the person most likely to complete it — has published no follow-up; his
+ONF force work predates it (2018 and earlier). Two facts sharpen what is and is
+not open:
+
+- **The demonstration is published; the model is not.** `li2024perspective` — the
+  group's own review — cites `gokhroo2022` exactly once in its body, for the
+  *capability*: "the nanofibre-based multilevel cascade atomic system allows us to
+  observe two-photon guided-mode coupled excitation of the 5S₁∕₂–6S₁∕₂ transition
+  in ⁸⁷Rb". It never discusses the dip, and never calls it solved or open.
+- **`gokhroo2022` itself stops at a hypothesis** ("We speculate that … resonance
+  scattering induced pushing … becomes the dominant effect"), compares dip
+  positions with dressed-state resonances, and contains no Casimir-Polder or van
+  der Waals content at all.
+
+**Scope caveat, recorded so we do not overclaim later:** the dip is a
+*density-depletion* effect (atoms pushed out of the bright region), whereas the
+ramp machinery describes the *distribution of light shifts* in an inhomogeneous
+field. The ramp is at most one ingredient of a quantitative treatment — a full
+model also needs the force/density dynamics. "Nobody has modelled it" is
+established; "our framework is the missing model" is not.
