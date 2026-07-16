@@ -104,7 +104,7 @@ The AC-Stark **ramp** is the analysis's novel core: because the beam is focused,
 the light shift runs from zero at the dim edge to a maximum S₀ on the bright axis,
 and for a two-photon (intensity-squared) signal that distribution is a closed-form
 triangle. Its skew is a light-shift readout that survives a drifting lock — the
-derivation is in [`docs/methods.md`](docs/methods.md) §2.6 and
+derivation is in [`docs/methods/03_the_ac_stark_ramp.md`](docs/methods/03_the_ac_stark_ramp.md) and
 [`docs/THEORY_NOTE.md`](docs/THEORY_NOTE.md).
 
 ## The dominant systematic: the beam waist w₀
@@ -175,7 +175,8 @@ data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 results/    committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
 tests/      full test battery; CI runs it on the minimum and latest numpy
-docs/       methods.md (full derivations) · PLAN.md (measurement plan) ·
+docs/       methods.md (index) + methods/ (8 ordered chapters: the full
+            derivations) · PLAN.md (measurement plan) ·
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
             PAPER1_SKELETON.md (manuscript outline)
