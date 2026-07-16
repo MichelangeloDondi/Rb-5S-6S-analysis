@@ -18,6 +18,17 @@ I(\nu) = A \Big[
 \Big] + \text{background}
 $$
 
+The factorization assumes the four contributions are **statistically independent**,
+which holds because each is driven by a physically separate random process with no
+coupling between them: spontaneous emission (natural), Rb–Rb collision times
+(collisional), the laser's own frequency jitter (laser), and the atom's trajectory
+through the beam (transit). The laser's instantaneous frequency does not depend on
+which atom is crossing or how fast it moves, and vice versa — so the joint
+distribution factorizes and the profiles convolve. (A correlation between, say,
+laser frequency and transit *would* break the convolution, but there is no
+mechanism here to produce one; a drifting *centre* is separate and is handled
+per-trace, §4.2, not as a broadening.)
+
 We now build each factor.
 
 ### 2.1 Natural width — a finite lifetime is a Lorentzian

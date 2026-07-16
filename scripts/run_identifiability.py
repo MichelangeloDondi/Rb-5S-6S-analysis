@@ -90,8 +90,9 @@ def main() -> int:
                     "MHz; 1sigma on the degenerate split direction"])
     print("\n  READING: the archive pins the TOTAL width tightly but the SPLIT loosely,")
     print("  so gamma_coll / sigma_laser / transit are w0-conditional bounds, not")
-    print("  measurements -- the knife-edge w0 removes transit as a free width and")
-    print("  lifts the degeneracy. Wrote results/identifiability.csv.")
+    print("  measurements -- the knife-edge w0 fixes transit to within its own")
+    print("  precision and COLLAPSES the degeneracy (not removes it exactly).")
+    print("  Wrote results/identifiability.csv.")
     return 0
 
 

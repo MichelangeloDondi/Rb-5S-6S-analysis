@@ -17,7 +17,8 @@ reports, for the 3x3 width block:
   * the CORRELATION MATRIX -- the pairwise trade-offs (expect sigma_laser vs
     transit near -1: the w0 degeneracy; sigma_laser vs gamma_coll strongly
     negative: the Voigt core degeneracy);
-  * the CONDITION NUMBER of that block (ratio of largest to smallest eigenvalue)
+  * the CONDITION NUMBER of that 3x3 width-block COVARIANCE (the ratio of its
+    largest to smallest eigenvalue -- not of the Jacobian or the Fisher matrix)
     -- large means ill-conditioned, i.e. one combination is essentially
     unconstrained;
   * the EIGENVECTORS -- the best-constrained direction (a total width) and the
@@ -26,7 +27,9 @@ reports, for the 3x3 width block:
 The honest headline this produces: the archive constrains the TOTAL width well
 but the SPLIT poorly -- so the individual coefficients are w0-conditional bounds,
 not measurements, which is what the repository claims. The knife-edge w0
-measurement is what lifts the degeneracy (it removes transit as a free width).
+measurement COLLAPSES the degeneracy -- it fixes transit to within its own
+precision, so the split becomes identifiable within that uncertainty (a
+perfectly-known w0 would remove it exactly; a real one greatly reduces it).
 """
 
 from __future__ import annotations
