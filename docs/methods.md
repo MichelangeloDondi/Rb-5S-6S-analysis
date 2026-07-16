@@ -205,7 +205,13 @@ variant is retained as a model-form check, §2.5). **No independent diagnostic
 of the laser's jitter exists for either epoch** — no reference-cavity beat
 note or self-heterodyne measurement was recorded — so $\sigma_\text{laser}$ is
 inferred purely from the fitted lineshape, never benchmarked against a
-separate instrument. The 2025 lock was misconfigured; one deliverable (C2) is
+separate instrument. The closest external anchor is in-house: the group's own
+nanofibre study on this same line (Gokhroo 2022, J. Phys. B) describes the
+same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
+figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
+linewidth rather than to the 2025 lock's behaviour — but it is consistent with
+the shape-based bound $\sigma_\text{laser} \lesssim 1.0$ MHz found here, and it
+is the only published number for this laser on this line. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
 **upper bound** (it is degenerate with the transit width; see §2.5 and §5).
 The knife-edge measurement $w_0$ turns this into a measurement by removing the
