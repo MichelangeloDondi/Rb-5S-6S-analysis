@@ -77,10 +77,14 @@ itself a result.
   <img src="figures/fig6_gamma_floor.png" width="560" alt="The lever test: the collisional width is a floor">
 </p>
 
-**The power sweep confirms the light-shift model.** At fixed temperature only the
-AC-Stark shift varies with power, and the predictions hold: the linewidth stays
-flat (the shift broadens the line only as S₀², negligible here) and the amplitude
-follows the two-photon rate law, ∝ P².
+**The power sweep bears out the ramp's power-law predictions.** At fixed
+temperature only the AC-Stark shift varies with power, and both hold: the
+linewidth stays flat (the shift broadens the line only as S₀², negligible here)
+and the amplitude follows the two-photon rate law, ∝ P². These are *consistent
+with* the light-shift model, not proof of it — a flat width is equally what zero
+shift would give; the ramp's *distinctive* signature, the skew ∝ S₀³, is below
+detection in the archive (a bound), which is why the coefficient itself waits
+for a fixed-lock session.
 
 <p align="center">
   <img src="figures/fig2_power_sweep.png" width="720" alt="Power sweep: width flat, amplitude proportional to P squared">
