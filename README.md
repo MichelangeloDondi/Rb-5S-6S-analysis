@@ -61,10 +61,10 @@ so each is reported as a bound together with the fixed-lock session measurement 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points |
-| 2025 laser linewidth **σ_laser** | ≲ 1.0 MHz (laser axis) | bound | knife-edge w₀ |
+| 2025 laser linewidth **σ_laser** | ≈ 0.8 MHz at the w₀ prior (0.4–1.1 over the open w₀) | bound | knife-edge w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
 | Power scaling | width flat; amplitude ∝ P² | confirmed prediction | — |
-| Beam waist **w₀** | ≈ 50 µm (prior; 32 µm excluded) | open | knife-edge measurement |
+| Beam waist **w₀** | ≈ 50 µm (prior; direct waist ≈ 64 µm) | open | knife-edge measurement |
 
 **β_self is a bound, not a measurement — and the data show why.** The fitted
 collisional width barely grows with density (below), while a real binary-collision
@@ -112,7 +112,7 @@ derivation is in [`docs/methods/03_the_ac_stark_ramp.md`](docs/methods/03_the_ac
 The transit width and the laser width both depend on the beam waist, and the
 archive cannot separate them — a tighter waist means more transit broadening and
 less room for laser width, and vice versa. The observed ≈ 5.2 MHz line is
-reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 50 µm (laser ~1 MHz).
+reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 65 µm (laser ~1.1 MHz).
 Only a direct beam-profile ("knife-edge") measurement collapses this — which is
 why every absolute number above is w₀-conditional, and why it is the first thing
 a fixed-lock session fixes.

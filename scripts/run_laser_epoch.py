@@ -96,7 +96,13 @@ def main() -> int:
         note = "  <- laser could be NARROW" if sl < 0.05 else ""
         print(f"     transit {tr:.1f} MHz ({w0:>10s}): sigma_laser = {sl:.2f} MHz laser axis{note}")
 
-    print(f"\n  HEADLINE (C2): sigma_laser(2025) <~ {sl_l.max():.1f} MHz (laser axis), UPPER BOUND.")
+    # Honest upper bound over the OPEN w0: sigma_laser rises with w0 (bigger
+    # waist -> less transit -> more room for laser), so the bound is the band
+    # MAXIMUM (the largest plausible w0), not the value at the 50 um prior --
+    # which is ~0.8. Reporting the prior value as the bound understates it.
+    bound = max(sl_l.max(), max(s for _, _, s in band))
+    print(f"\n  HEADLINE (C2): sigma_laser(2025) <~ {bound:.1f} MHz (laser axis) over the open"
+          f" w0 band; ~{np.median(sl_l):.1f} at the 50 um prior.")
     print("    - degenerate with w0: if w0 < 50um the true laser is narrower (possibly << 1 MHz)")
     print("    - slow drift is NOT the cause (~0.01 MHz within a 1 s scan)")
     print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the fixed-lock session")
@@ -109,8 +115,9 @@ def main() -> int:
         # (it reaches 0 at w0~=16um, see the band below), so 3-digit precision
         # would be false. It is a bound, not a measurement.
         w.writerow(["quantity", "value_MHz", "axis", "status"])
-        w.writerow(["sigma_laser_bound", f"<{sl_l.max():.1f}", "laser",
-                    "UPPER_BOUND@w0prior; =0 at w0~16um; unmeasurable pending knife-edge"])
+        w.writerow(["sigma_laser_bound", f"<{bound:.1f}", "laser",
+                    "upper bound over the open w0 band (45-70um); ~0.8 at the 50um "
+                    "prior, rising with w0; =0 at w0~16um; unmeasurable pending knife-edge"])
         for tr, w0, sl in band:
             w.writerow([f"sigma_laser_at_transit_{tr}", f"{sl:.3f}", "laser", f"w0_{w0}"])
     print(f"\nwrote {C.RESULTS_DIR / 'laser_epoch.csv'}")

@@ -345,7 +345,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
   yields 0.07–0.25 MHz — measurable.
 - **High-density points must be SAME-SESSION — mandatory, not preferable
   (M4d lever test, 2026-07-12: measured, not anticipated).** The archival
-  γ_coll rises only ×1.5 across the ×52 density span 70→130 °C (a residual
+  γ_coll rises only ×1.85 across the ×52 density span 70→130 °C (a residual
   floor, not resolved collisions), and the joint β collapses 0.036 → 0.014
   when the ×53 cross-session 130 °C anchor is folded in (DATA.md lever-test
   entry; fig6). Cross-session anchors are diagnostics only: the 150–170 °C
