@@ -18,8 +18,10 @@ amplitude for one atom is the Fourier transform of its two-photon coupling
 along its trajectory, and the two-photon Rabi frequency is proportional to the
 INTENSITY, Omega_2ph(t) ∝ I(r(t)). For a straight-line crossing of a Gaussian
 beam (w ~ constant during the ~0.2 us transit, since an atom moves only
-~30 um in z << zR ~ 3 mm), the intensity envelope is Gaussian in time, so the
-per-atom lineshape is analytic:
+~30 um in z << zR ~ 3 mm; and the crossing is collisionless -- even at the
+densest 130 C the Rb-Rb mean free path ~1-2 cm dwarfs the ~50 um waist, so an
+atom crosses the beam ~300x before a velocity-changing collision), the
+intensity envelope is Gaussian in time, so the per-atom lineshape is analytic:
 
     P_atom(nu) = I_pk^2 * (pi w^2 / (2 v_perp^2)) * exp(-(2 pi nu)^2 w^2 / (4 v_perp^2)),
     I_pk = (w0/w)^2 * exp(-2 b^2 / w^2),
