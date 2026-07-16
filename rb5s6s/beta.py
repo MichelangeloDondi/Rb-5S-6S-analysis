@@ -66,8 +66,10 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     scatter beyond the within-block errors bounds how much of the trend can be
     collisional.
 
-    Returns beta_eff, formal_err (within-block only), syst_err (with the
-    between-block systematic), resid_rms, snr (=|beta|/syst_err), verdict
+    Returns beta_eff, formal_err (within-block only), syst_err (the TOTAL
+    slope error: the within-block errors and the between-block scatter are
+    combined in quadrature per point via E_sys, so do NOT add formal_err on
+    top of it), resid_rms, snr (=|beta|/syst_err), verdict
     ('MEASUREMENT' iff snr >= snr_measure else 'BOUND'), dof, t95, bound95,
     n_frac_syst, bound95_nscale, monotonic.
 
@@ -129,7 +131,7 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     }
 
 
-# composite kernel now lives in lineshape.composite_profile (revision #9);
+# composite kernel now lives in lineshape.composite_profile;
 # imported above — the fit machinery below is unchanged.
 
 
@@ -173,7 +175,7 @@ def fit_beta_self(conditions: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_
         m = np.abs(freqs[i] - seeds_c[i]) <= adaptive_halfwidth(freqs[i], volts[i])
         freqs[i] = freqs[i][m]; volts[i] = volts[i][m]; sigmas[i] = sigmas[i][m]
 
-    # CORRELATED-NOISE WEIGHTING (round-3 fix): PER-BLOCK tau enters the fit
+    # CORRELATED-NOISE WEIGHTING: PER-BLOCK tau enters the fit
     # weights (sigma_eff = sigma * sqrt(tau_block)), so blocks with more
     # correlated noise get proportionally less pull -- previously one MEAN tau
     # multiplied the final covariance, throwing away the per-block structure.
@@ -211,7 +213,7 @@ def fit_beta_self(conditions: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_
             out.append((volts[i] - model) / sigmas[i])
         return np.concatenate(out)
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=60000)
     if not sol.success:
         raise RuntimeError(f"beta_self fit failed: {sol.message}")

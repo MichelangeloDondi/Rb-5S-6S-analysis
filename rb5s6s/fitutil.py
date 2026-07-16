@@ -14,8 +14,8 @@ def feasible_p0(p0, lo, hi):
     """Project a seed vector into [lo, hi] before least_squares.
 
     scipy's least_squares HARD-RAISES 'x0 is infeasible' if any seed violates
-    a bound -- so a single mis-seeded block would crash a whole global fit
-    (review round 5). Clipping projects the seed into the feasible box so the
+    a bound -- so a single mis-seeded block would crash a whole global fit.
+    Clipping projects the seed into the feasible box so the
     optimizer starts legally and degrades gracefully. A tiny inward margin
     keeps the seed strictly interior (scipy dislikes seeds exactly on a bound
     for some methods)."""

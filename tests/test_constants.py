@@ -59,7 +59,7 @@ def test_peak_label_full_form():
 def test_no_direct_trapezoid_outside_compat():
     # Recurrence guard: np.trapezoid is numpy 2.0+, so any direct use breaks
     # the declared numpy>=1.24 floor (it regressed into modelform.py after the
-    # round-1 fix, then into tests/scripts after that -- caught only by the
+    # first fix, then into tests/scripts after that -- caught only by the
     # minimum-versions CI job, 2026-07-12). The shim in rb5s6s/_compat.py is
     # the ONLY place allowed to touch np.trapezoid / np.trapz, and this guard
     # now scans the package, the scripts AND the tests so it cannot slip past

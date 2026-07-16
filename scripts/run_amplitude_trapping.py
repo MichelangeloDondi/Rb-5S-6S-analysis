@@ -97,7 +97,7 @@ def main() -> int:
             else:
                 cells.append("  -  ")
         # global log-log slope A ~ N^slope, WITH its uncertainty (the slope
-        # error is the whole result for a rollover claim -- round-3 fix).
+        # error is the whole result for a rollover claim).
         # Weight convention: np.polyfit's w multiplies the UNSQUARED residual,
         # i.e. w = 1/sigma_y. In log space sigma_logA = Ae/A, so w = A/Ae --
         # which is sqrt((A/Ae)^2). (A reviewer misread this as a 1/sigma^2

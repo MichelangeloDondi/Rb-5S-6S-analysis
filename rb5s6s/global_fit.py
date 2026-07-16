@@ -13,7 +13,7 @@ between-block laser width DRIFTS across the 2025 cooling session:
     MEASURED rather than mistaken for collisions). NOT shared across T --
     that global-sharing is exactly what made the M4 global fit overconfident.
     [For a stable lock, share sigma_laser globally instead.]
-    ASSUMPTION (review round 5, cannot be fully verified -- NO timestamps
+    ASSUMPTION (cannot be fully verified -- NO timestamps
     exist in the archive): per-T sharing is valid only if the 4 peaks at a
     given T were acquired close enough in time that the laser did not drift
     between them. If they were minutes apart at ~4 MHz/min drift, forcing one
@@ -84,7 +84,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
 
     # N(T) must be UNIQUE per temperature (all peaks at one T see one vapor
     # density). Assert rather than silently use whichever block comes first
-    # (review round 3: a manifest edit could otherwise bite silently).
+    # (a manifest edit could otherwise bite silently).
     N_by_T = {}
     for b in blocks:
         if b["T_C"] in N_by_T and not np.isclose(N_by_T[b["T_C"]], b["N_units"]):
@@ -94,7 +94,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
 
     # flatten traces; remember each trace's block, its sigma/beta indices,
     # window it about its seed center, precompute weights
-    # CORRELATED-NOISE WEIGHTING (round-3 fix): PER-BLOCK tau_int inflates
+    # CORRELATED-NOISE WEIGHTING: PER-BLOCK tau_int inflates
     # each trace's sigma inside the fit (sigma_eff = sigma*sqrt(tau_block)),
     # so every block contributes its true information content; previously one
     # MEAN tau multiplied the final covariance, giving shared and nuisance
@@ -151,7 +151,7 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
             out.append((t[1] - model) / t[2])
         return np.concatenate(out)
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=80000)
     if not sol.success:
         raise RuntimeError(f"global fit failed: {sol.message}")

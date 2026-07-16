@@ -130,7 +130,7 @@ def main() -> int:
             prof = model_profile(nu, gamma_coll=max(gc, 0.0),
                                  sigma_laser_fwhm=max(sl, 1e-6), transit_fwhm=transit)
             # sub-grid FWHM by linear interpolation of the two half-max crossings
-            # (revision #6: reading nu[prof>=half] quantizes FWHM to the grid step)
+            # (reading nu[prof>=half] quantizes FWHM to the grid step)
             h = 0.5 * prof.max()
             above = np.where(prof >= h)[0]
             lo, hi = above[0], above[-1]

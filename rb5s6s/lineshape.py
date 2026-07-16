@@ -141,7 +141,7 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     Returns (grid, profile). This is the shared kernel of the beta_self and
     global fits (S0 is fixed/negligible in the archival width fits; a fixed-lock session
     center fits use model_profile with the ramp instead). Moved here from
-    beta.py (revision #9, 2026-07-11): composite lineshapes belong in the
+    beta.py (2026-07-11): composite lineshapes belong in the
     lineshape module, not in one consumer.
 
     transit_kind selects the MODEL FORM for the transit contribution and is the

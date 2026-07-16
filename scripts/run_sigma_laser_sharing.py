@@ -55,7 +55,7 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
     print(f"\n{'-'*74}")
     print("FINDING: chi2/dof << 1 at every T -> the four peak-blocks SHARE one")
-    print("sigma_laser (Model A is LICENSED; the round-5 'unverifiable timing'")
+    print("sigma_laser (Model A is LICENSED; the 'unverifiable timing'")
     print("concern is answered POSITIVELY -- the peaks did see a common laser width).")
     print("But the free-fit common sigma_laser is ~flat (1.0-1.25), while the")
     print("beta*N-TIED global fit inflates it (1.5-1.6 at 70/90 C) then drops it to")

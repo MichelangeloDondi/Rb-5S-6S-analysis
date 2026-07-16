@@ -1,5 +1,5 @@
 quantity,key,value,err,unit,status
-kappa,shared,0.000,8.376,"MHz per W (S0 = kappa*P, transition axis); err is chi2-INFLATED",BOUND
+kappa,shared,0.000,8.376,"MHz per W (S0 = kappa*P, transition axis); err is chi2-INFLATED",DIAGNOSTIC
 kappa_err_raw,shared,4.019,2.08,value=un-inflated kappa error; err=inflation factor sqrt(chi2_red) applied to get kappa_err,DIAGNOSTIC
 kappa_ub95_profile,shared,2.812,,"one-sided 95% upper bound on kappa (MHz per W), profile likelihood: Dchi2 = 2.706 x max(chi2_red,1) with per-peak cores re-minimized at each kappa -- THE quoted construction (the fit rails at kappa=0 where the Wald error has no coverage)",BOUND
 S0_225mW_ub95_profile,shared,0.633,,"95% upper bound on S0 at 225 mW (MHz, transition), profile likelihood -- the archival BOUND",BOUND
