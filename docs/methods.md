@@ -3,7 +3,7 @@
 Analysis of the rubidium $5S_{1/2}\to 6S_{1/2}$ two-photon transition at
 993 nm (data taken at OIST in 2025, follow-up planned a fixed-lock session 2026). This
 document doubles as the **methods draft** for the paper: every broadening
-mechanism and every statistical choice is derived from first principles and
+mechanism and every statistical choice is derived rather than asserted, and
 then tied to its implementation in the code. It is written to be read
 top-to-bottom by someone new to the experiment. Nothing is
 assumed beyond undergraduate quantum mechanics and statistics.

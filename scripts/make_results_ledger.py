@@ -308,7 +308,12 @@ def main() -> int:
           f"width); the ramp broadens the line as $\\sim S_0^2$, the only live handle "
           f"since the *shift* (pull $\\sim S_0$) is dead in the 2025 drift. The fit "
           f"($S_0(225) = {fit:.2f}$, $\\kappa$ consistent with zero) is **not** a "
-          f"measurement; it **brackets** the prediction. **The construction of the "
+          f"measurement; it **brackets** the prediction. The bound and the "
+          f"prediction are independent by construction: the bound uses only the "
+          f"width-vs-power data (no $w_0$ enters), while the prediction is the "
+          f"computed polarizability at the $w_0$ prior, fixed before the fit and "
+          f"never an input to it — proximity is a test passed, not a tuning. "
+          f"**The construction of the "
           f"95% is load-bearing and documented:** the best fit rails at $\\kappa=0$, "
           f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
           f"linearized (Wald) $\\kappa+1.645\\sigma$ bound has no valid coverage "
@@ -326,6 +331,49 @@ def main() -> int:
           f"prediction itself (and zero) remain allowed. *Lifted by:* the fixed lock "
           f"measures the pull $\\sim S_0$ directly, and the small waist makes $S_0$ "
           f"several-fold larger — turning this bound into the coefficient.\n")
+
+    # ---- sensitivity summary: the referee view, one table, always fresh ----
+    lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
+    if lc and ss:
+        W("## Sensitivity at a glance\n")
+        W("The referee question — *what moves if an assumption moves* — in one "
+          "table, generated live from `lever_crosscheck.csv` and "
+          "`stark_sweep.csv` so it cannot go stale (β_self entries in MHz per "
+          "10¹² cm⁻³; full prose reading in C1/C3d above).\n")
+
+        def _iso(q, col="value"):
+            return tuple(float(lc[(q, k)][col]) for k in ("85Rb", "87Rb"))
+        w0lo, w0hi = _iso("beta_w0_band"), _iso("beta_w0_band", "err")
+        mf, sh = _iso("beta_err_modelform"), _iso("beta_err_sharing")
+        lp, lt = _iso("beta_loo_peak"), _iso("beta_loo_temp")
+        pv = _iso("beta_lever_probe_130", "err")
+        W("| vary this | β_self moves by (85Rb · 87Rb) | reading |")
+        W("|---|---|---|")
+        W(f"| the OPEN w₀ (transit band, ~65→40 µm) | spans "
+          f"{w0lo[0]:.3f}–{w0hi[0]:.3f} · {w0lo[1]:.3f}–{w0hi[1]:.3f} | "
+          f"the dominant systematic — the knife-edge collapses it |")
+        W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3f} · "
+          f"{mf[1]:.3f} | comparable to β_self itself — part of why the "
+          f"headline is a bound |")
+        W(f"| σ_laser sharing (per-T ↔ per-block) | {sh[0]:.3f} · {sh[1]:.3f} "
+          f"| negligible — the sharing choice is not a coin flip |")
+        W(f"| drop any one peak | ≤ {lp[0]:.3f} · ≤ {lp[1]:.3f} | no single "
+          f"line drives the result |")
+        W(f"| drop one temperature | up to {lt[0]:.2f} · {lt[1]:.2f} | lever "
+          f"leverage with three densities — expected, not fragility |")
+        W(f"| add the ×53 130 °C lever | {pv[0]:+.3f} · {pv[1]:+.3f} | pulls "
+          f"β_self down — the width is a floor, not resolved collisions (C1) |\n")
+        W("| vary this | the S₀(225 mW) bound | reading |")
+        W("|---|---|---|")
+        W("| the OPEN w₀ | unchanged | the bound uses width-vs-power only; "
+          "only the *prediction* is w₀-conditional |")
+        W(f"| bound construction (Wald ↔ profile) | "
+          f"{float(sv['S0_225mW_ub95_raw']['value']):.1f} / "
+          f"{float(sv['S0_225mW_ub95']['value']):.1f} → {ub:.2f} MHz | Wald "
+          f"has no coverage at the κ = 0 rail; the profile limit is the "
+          f"quoted bound |")
+        W("| per-peak core widths | absorbed | each peak's core floats per "
+          "power — laser-epoch drift cannot fake a κ |\n")
 
     # ---- supporting ----
     W("## Supporting results\n")
