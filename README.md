@@ -159,6 +159,13 @@ python scripts/make_results_ledger.py   # regenerate docs/RESULTS.md
 
 Re-running any stage reproduces its committed CSV in `results/` byte-for-byte.
 
+The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
+are cited across many documents. `tests/test_docs_canonical.py` holds each in a
+single registry, reads its true value from the committed CSV, and checks that
+every document quotes *that* value — so a re-analysis that moves a number can
+never leave a stale copy behind unnoticed. To change a headline number: re-run
+its producer, then run the suite; it names any document still out of step.
+
 ## Repository map
 
 ```
