@@ -20,7 +20,7 @@ $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} 
 
 — the same factor-2 as [§0 — conventions](../methods.md). Fitting the tooth spacing (in ms) per block gives
 the sweep rate; we measure $0.04257(5)$ MHz/ms on the laser axis, and the
-sweep is linear across the window to $<0.4\%$. A half-wave-plate trick mixes in
+sweep is linear across the window to $<0.4$%. A half-wave-plate trick mixes in
 amplitude modulation on the ruler traces to suppress the carrier so the
 sidebands stand tall — so the tooth *spacing* is exact, but tooth *heights*
 carry no information about the modulation depth. *Code:* `ruler.py` (M2);

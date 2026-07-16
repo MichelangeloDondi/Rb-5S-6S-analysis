@@ -58,8 +58,8 @@ everywhere else: the drifted lock kills the line centres, so the AC-Stark
 *shift* (the pull $\propto S_0$, the sensitive handle) is absorbed by each scan's
 free centre, leaving only the ramp's $\propto S_0^2$ width broadening — a weak
 handle, since a 0.6 MHz $S_0$ inflates a 5 MHz line by under 0.1 MHz. The fit
-returns $\kappa$ consistent with zero and
-$$S_0(225\ \text{mW}) < 0.63\ \text{MHz}\quad(95\%,\ \text{profile likelihood}),$$
+returns $\kappa$ consistent with zero, giving the 95% profile-likelihood bound
+$$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the value $S_0=0.59$ MHz predicted from the computed
 differential polarizability [CALCULATED; §III, App. A]. The archive thus
 **brackets** the prediction without resolving it — and its width data are
@@ -91,7 +91,7 @@ the coefficient (§VII).
 
 ### Numbers used (all from `docs/RESULTS.md` / committed CSVs, keep synced)
 
-- C3a width inflation 3–8% (measurement scatter, no power trend); predicted ramp $<2\%$
+- C3a width inflation 3–8% (measurement scatter, no power trend); predicted ramp $<2$%
 - C3b amplitude log–log slopes $1.83$–$2.12$; 993.4121 nm low end ($\approx1.85$) = saturation/trapping degeneracy
 - C3c ramp skew below floor (a bound); residual skew up to $9.6\sigma$ (993.4154 nm, $0.35\pm0.04$ @25 mW), $\sim\text{amp}^{-1/2}$ = shot noise
 - C3d $S_0(225)<0.63$ MHz (95%, profile likelihood, $\Delta\chi^2$ threshold scaled by $\chi^2_\text{red}\approx4.3$); superseded Wald 1.5 raw / 3.1 inflated; predicted 0.59; $\kappa=0.00$ railed; $\Delta\alpha<\sim1200$ a.u.

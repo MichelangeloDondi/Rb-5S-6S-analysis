@@ -8,9 +8,9 @@ density** for three of four peaks (e.g. 993.4207 nm: 5.11 → 4.92 → 5.35 MHz 
 70 → 90 → 110 °C — *narrower* at higher density, which no collision can
 produce). Within-block repeat scatter is $\sim0.05$ MHz, but between-block
 scatter is $\sim0.06$–$0.16$ MHz: the 2025 laser width drifted between cooling
-steps by about as much as the entire collisional trend. Applying [§4.5 — The statistics](06_the_statistics.md),
+steps by about as much as the entire collisional trend. Applying [§4.5 — The statistics](06_the_statistics.md), the model-independent 95% per-peak bound is
 
-$$\boxed{ \beta_\text{self}\lesssim 0.2\text{–}0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}\ (95\%,\ \text{per peak}). }$$
+$$\boxed{ \beta_\text{self}\lesssim 0.2\text{ to }0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}. }$$
 
 Two coverage corrections define this bound (both 2026-07-16). First, the
 between-block scatter that dominates the slope error is estimated on only
@@ -121,8 +121,8 @@ coverage (it read a spurious 3.1 MHz). The quoted limit is therefore a
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx4$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
-elsewhere). It gives
-$$S_0(225\ \text{mW}) < 0.63\ \text{MHz}\quad(95\%),$$
+elsewhere). It gives the 95% profile-likelihood bound
+$$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
 against the computed 1093 ([§3 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
 The honest reading is not "we see nothing" but the sharper one: the archival
@@ -161,7 +161,7 @@ between-block **drift**, not trapping. (iii) A one-parameter trapping model does
 the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the
 drift scatter). *Verdict:* trapping is physically present and expected-large by
 $\tau$, but its net effect on the collected amplitude is modest and its
-degeneracy-breaking effect is $\lesssim10\%$, buried under drift; separating it
+degeneracy-breaking effect is $\lesssim10$%, buried under drift; separating it
 needs the fixed-lock session's fixed-lock interleaved-peak run with a controlled collection
 geometry. A clean separation of the trapping/993-absorption losses and an
 absolute trapping fraction additionally want Nieddu's 2019 same-channel
@@ -188,7 +188,7 @@ $J=\tfrac12\to\tfrac12$), so every $F,m_F$ has the same per-atom rate and the
 line *areas* (not heights — heights confound with width) must be pure initial
 population: $S\propto\text{abundance}\times(2F{+}1)$, i.e. within-isotope
 ratios of exactly $5/3$ ($^{87}$Rb) and $7/5$ ($^{85}$Rb). Measured: the
-within-block statistics are superb ($1$–$3\%$), but the area ratios swing
+within-block statistics are superb ($1$–$3$%), but the area ratios swing
 30–50% *between* temperatures, non-monotonically (the 993.4207/993.4121 nm
 *area* ratio runs $1.10\to0.98\to2.53\to1.97$ against a constant $5/3$; the
 slightly different height ratios in the trapping paragraph above tell the
@@ -201,7 +201,7 @@ the four peaks **interleaved**, with power logging.
 
 **Foundational results underpinning all of the above.** The sweep rate is
 $0.04257(5)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
-seed, confirmed by three independent methods, sweep linear to $<0.4\%$ within a
+seed, confirmed by three independent methods, sweep linear to $<0.4$% within a
 block. The 20 blocks over-disperse ($\chi^2_\text{red}=6.8$) — block-level
 ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),
 **not** a peak-ordered trend (bracket-resolved rates are non-monotonic) — and

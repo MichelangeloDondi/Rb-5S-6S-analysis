@@ -131,7 +131,7 @@ functionals of it — never several estimators of one moment.)
 ## 4. Prediction confirmed in the archive
 
 At fixed density the archive already confirms the *convention-free* content:
-across a $9\times$ power sweep the linewidth is flat to $\lesssim2\%$ (the ramp
+across a $9\times$ power sweep the linewidth is flat to $\lesssim2$% (the ramp
 adds variance $\propto S_0^2$, negligible against the $\sim$5 MHz budget), and
 the amplitude scales as $P^{2}$ (log-log slopes 1.83–2.12). The asymmetry is
 predicted below the archival noise and is not detected — as designed.

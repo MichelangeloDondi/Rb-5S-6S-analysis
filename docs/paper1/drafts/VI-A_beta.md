@@ -29,8 +29,8 @@ hyperfine components (Fig. 1), which is impossible for a genuine collisional
 term, which can only broaden. The non-monotonicity is set by the between-block
 drift of the laser width ($\sim0.06$–$0.16$ MHz across the cooling session),
 which is comparable to the entire collisional trend it would have to sit on top
-of. Bounding the width-vs-density slope by this scatter gives
-$$\beta_\text{self}\lesssim 0.2\text{–}0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}\quad(95\%,\ \text{per component})$$
+of. Bounding the width-vs-density slope by this scatter gives the 95% per-component bound
+$$\beta_\text{self}\lesssim 0.2\text{ to }0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}$$
 [MEASURED-HERE, per-peak]. Each bound rests on only 1–2 residual degrees of
 freedom (three-to-four density points minus the fit parameters), so it carries a
 $\sim$factor-2 own-uncertainty and the $\approx2\sigma$ coverage is approximate;
