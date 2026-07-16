@@ -118,6 +118,26 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 (Recorded because earlier numbers circulated before this analysis existed.)
 
+**The β_self bound gains proper coverage and the density systematic
+(2026-07-16).** The headline per-peak bound changed **0.07–0.15 → 0.2–0.4 MHz
+per 10¹² cm⁻³**, again with no change to data or fits — two coverage
+corrections. (i) The between-block scatter that dominates the slope error is
+estimated on **one residual degree of freedom** (3 density points, 2
+parameters), so the one-sided 95% multiplier is the Student-t quantile
+$t(0.95,1)=6.31$, not the hard-coded 2 — the old "≈2σ" under-covered, which is
+exactly what its "~factor-2 own-uncertainty" prose flag was admitting; the
+t-quantile turns the flag into the number. (ii) β ∝ 1/N, so the ~20% spread
+between published vapor-pressure correlations (`density.py`,
+`N_SCALE_FRAC_SYST`) moves every β by the same fraction; the cold-spot
+direction makes the fitted β an *under*estimate, so the bound inflates on the
++ side (×1.2). The selection rule also flips: the *loosest* peak is the honest
+single-number floor (the min of noisy 1-DOF estimates is the down-fluctuated
+one), not the tightest. The cross-session 130 °C lever variant (dof = 2)
+barely moves (0.03–0.05) but keeps its cross-session caveat. The hierarchical
+global-fit β gains a `beta_nscale_syst` row (±20% of β). A constant cold-spot
+offset also *tilts* the N(T) lever by ~2.3%/K of offset (slope, not scale) —
+quantified in `density.py`, recorded, not propagated (second-order).
+
 **AC-Stark bound reconstructed as a profile-likelihood limit (2026-07-16).**
 The quoted archival bound changed **3.1 → 0.63 MHz** (95%, $S_0$ at 225 mW) with
 **no change to the data or the fit** — only to the interval construction. The

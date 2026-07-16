@@ -124,7 +124,12 @@ def fit_variance_law(levels: np.ndarray, sigmas: np.ndarray, counts: np.ndarray)
         Aw = X * w[:, None]
         beta, *_ = np.linalg.lstsq(Aw.T @ X, Aw.T @ y, rcond=None)
         resid = y - X @ beta
-        chi2 = float(np.sum(w * resid ** 2) * (2.0 / 1.0))  # ~2 sigma^4/n var
+        # var(sigma^2_bin) ~ 2 sigma^4 / n and w = n / sigma^4, so
+        # chi2 = sum resid^2 / var = 0.5 * sum(w * resid^2). (An earlier
+        # revision multiplied by 2.0 instead -- a 4x-inflated diagnostic; the
+        # fitted a, b, c and the BIC model choice were unaffected because the
+        # factor is common to both candidate models.)
+        chi2 = float(np.sum(w * resid ** 2) * 0.5)
         return beta, chi2
 
     X2 = np.column_stack([np.ones_like(levels), levels])

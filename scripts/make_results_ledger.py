@@ -62,20 +62,31 @@ def main() -> int:
     W("|---|---|---|")
     pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("variant", "").startswith("70-110")}
     if pr:
-        bnds = [f"993.{p} nm $<$ {float(pr[p]['bound95']):.2f}" for p in sorted(pr)]
-        W(f"| model-independent width-slope ($\\approx$2σ bound, per peak) | {'; '.join(bnds)} | "
-          "**headline BOUND** (geometry-robust) |")
-    W("\n> Bound caveat (reviewed 2026-07-12): the between-block systematic is an "
-      "RMS over only **1–2 residual DOF** (3–4 density points, 2 fit params), so "
-      "each bound carries a **~factor-2 own-uncertainty** and the “$\\approx$2σ” "
-      "coverage is approximate (a low-DOF estimate has heavy tails). `resid_rms` "
-      "now divides by the DOF, not by $n$ (fixing a ~40%-too-tight bias); the "
-      "numbers are quoted to 2 figures deliberately, not more. **The 2× per-peak "
-      "spread (0.07–0.15) is systematics, not physics:** the bounds track each "
+        bnds = [f"993.{p} nm $<$ {float(pr[p]['bound95_nscale']):.2f}" for p in sorted(pr)]
+        any_r = next(iter(pr.values()))
+        W(f"| model-independent width-slope (95% bound, per peak: "
+          f"$t({any_r['dof']})={float(any_r['t95']):.2f}\\times$syst, then "
+          f"$\\times{1 + float(any_r['n_frac_syst']):.1f}$ density-scale) | "
+          f"{'; '.join(bnds)} | **headline BOUND** (geometry-robust) |")
+    W("\n> Bound construction (corrected 2026-07-16 — two coverage fixes). "
+      "(i) **Student-t, not 2σ:** the between-block scatter that dominates the "
+      "slope error is estimated on only **1 residual DOF** (3 density points, 2 "
+      "fit params), so a one-sided 95% needs $t(0.95, 1) = 6.31$, not the "
+      "Gaussian-asymptotic 2 used before — the old “$\\approx$2σ” bounds "
+      "(0.07–0.15) under-covered, which is why they were always flagged with a "
+      "~factor-2 own-uncertainty; the t-quantile formalizes exactly that. "
+      "(ii) **Density scale:** $\\beta \\propto 1/N$, so the ~20% spread between "
+      "published vapor-pressure correlations moves every $\\beta$ by 20%; the "
+      "cold-spot direction makes the fitted $\\beta$ an UNDERestimate, so the "
+      "bound is inflated on the + side ($\\times$1.2; `density.py`). **The "
+      "per-peak spread is systematics, not physics:** the bounds track each "
       "peak's `resid_rms` (0.13/0.35/0.18/0.29), not a physical rate — all four "
-      "have SNR $<$ 2 (none resolves collisions), so the spread reflects per-peak "
-      "between-block control, and the tightest (993.4121 nm, 0.07, best-controlled) "
-      "is the most honest single bound.\n")
+      "have SNR $<$ 2 (none resolves collisions). Because the min of noisy "
+      "1-DOF estimates is the down-fluctuated one, the **loosest** peak is the "
+      "honest single-number floor, not the tightest (that would be selection "
+      "bias); quote the range, floor at the loosest. The cross-session 130 °C "
+      "lever variant (dof = 2, in the CSV) is far tighter but carries its "
+      "documented cross-session caveat.\n")
     bs = rows("beta_self")
     if bs:
         s = "; ".join(f"993.{r['peak']} nm {float(r['beta_self']):.3f}({float(r['beta_self_err'])*1e3:.0f})"
@@ -198,11 +209,15 @@ def main() -> int:
         gf_mf = [r for r in rows("global_fit") if r["quantity"] == "beta_modelform_syst"]
         if gf_mf:
             mf = max(float(r["value"]) for r in gf_mf)
-            W(f"> **Three separate error bars on the hierarchical $\\beta$ (0.036), and the "
+            gf_ns = [r for r in rows("global_fit") if r["quantity"] == "beta_nscale_syst"]
+            ns = max((float(r["value"]) for r in gf_ns), default=0.0)
+            W(f"> **Four separate error bars on the hierarchical $\\beta$ (0.036), and the "
               f"systematics dominate:** statistical $\\pm$0.004 (joint-fit covariance); the "
               f"**transit model-form $\\pm${mf:.3f}** (the $|$Voigt $-$ Lehmann$|$ $\\beta$ "
-              f"shift, `run_global_fit`); and the $w_0$-band $\\sim\\pm$0.01–0.02 (the OPEN "
-              f"beam waist). The paper quotes all three bars, not one optimistic $\\pm$.\n")
+              f"shift, `run_global_fit`); the $w_0$-band $\\sim\\pm$0.01–0.02 (the OPEN "
+              f"beam waist); and the **density scale $\\pm${ns:.3f}** ($\\beta\\propto1/N$, "
+              f"the ~20% vapor-pressure-correlation spread; `density.py`). The paper "
+              f"quotes all four bars, not one optimistic $\\pm$.\n")
     W("*Lifted by:* a fixed lock (removes between-block laser drift) + "
       "knife-edge $w_0$ (sets the transit subtraction) → a clean measurement.\n")
 

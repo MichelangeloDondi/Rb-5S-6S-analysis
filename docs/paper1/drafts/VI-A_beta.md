@@ -30,7 +30,7 @@ term, which can only broaden. The non-monotonicity is set by the between-block
 drift of the laser width ($\sim0.06$–$0.16$ MHz across the cooling session),
 which is comparable to the entire collisional trend it would have to sit on top
 of. Bounding the width-vs-density slope by this scatter gives
-$$\beta_\text{self}\lesssim 0.07\text{–}0.15\ \text{MHz per }10^{12}\ \text{cm}^{-3}\quad(\approx2\sigma,\ \text{per component})$$
+$$\beta_\text{self}\lesssim 0.2\text{–}0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}\quad(95\%,\ \text{per component})$$
 [MEASURED-HERE, per-peak]. Each bound rests on only 1–2 residual degrees of
 freedom (three-to-four density points minus the fit parameters), so it carries a
 $\sim$factor-2 own-uncertainty and the $\approx2\sigma$ coverage is approximate;
@@ -94,7 +94,7 @@ fixed-lock campaign.
 
 ### Numbers used (all from `docs/RESULTS.md`, keep synced)
 
-- bound $0.07$–$0.15$ MHz per $10^{12}$ cm⁻³ ($\approx2\sigma$/peak; 1–2 DOF, factor-2 own-uncertainty)
+- bound $0.2$–$0.4$ MHz per $10^{12}$ cm⁻³ (95%/peak: $t(1)=6.31$ on the 1-DOF scatter, ×1.2 density-scale; loosest peak = the floor)
 - hierarchical $0.036(4)$ stat; lever $\to 0.014$ (+130), per-condition $\sim0.01$
 - $\gamma_\text{coll}$ mean $0.41\to0.61$ MHz over $N\times52$ (rise $\times1.5$)
 - isotope $\beta_{85}-\beta_{87}=0.000\pm0.006$; bars stat $\pm0.004$ / transit $\pm0.033$ / $w_0$ $[0.004,0.055]$

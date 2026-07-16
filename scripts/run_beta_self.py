@@ -236,11 +236,14 @@ def main() -> int:
                 continue
             probe_rows.append({"peak": peak, "variant": variant, **{k: pr[k] for k in
                               ("beta_eff", "formal_err", "syst_err", "resid_rms", "snr",
-                               "bound95", "verdict", "monotonic")}})
+                               "dof", "t95", "bound95", "n_frac_syst",
+                               "bound95_nscale", "verdict", "monotonic")}})
             print(f"{peak:>6s} {pr['beta_eff']:>10.4f} {pr['formal_err']:>8.4f} "
                   f"{pr['syst_err']:>8.4f} {pr['resid_rms']:>7.3f} {pr['snr']:>5.1f} "
                   f"{('yes' if pr['monotonic'] else 'NO'):>5s}  {pr['verdict']}"
-                  + (f" (<{pr['bound95']:.3f} @95%)" if pr['verdict'] == 'BOUND' else ""))
+                  + (f" (<{pr['bound95_nscale']:.3f} @95%; t({pr['dof']})="
+                     f"{pr['t95']:.2f}, x{1 + pr['n_frac_syst']:.1f} N-scale)"
+                     if pr['verdict'] == 'BOUND' else ""))
     with open(C.RESULTS_DIR / "beta_self_probe.csv", "w", newline="") as f:
         if probe_rows:
             w = csv.DictWriter(f, fieldnames=list(probe_rows[0].keys()))

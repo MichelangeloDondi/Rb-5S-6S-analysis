@@ -2,7 +2,7 @@
 
 First-principles analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon transition
 at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Data taken at OIST
-in 2025; a fixed-lock follow-up is planned for a fixed-lock session 2026.
+in 2025; a fixed-lock follow-up session is specified in [`docs/PLAN.md`](docs/PLAN.md).
 
 <p align="center">
   <img src="figures/fig0_spectrum.png" width="560" alt="A representative fitted line">
@@ -58,7 +58,7 @@ so each is reported as a bound together with the fixed-lock session measurement 
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
-| Collisional self-broadening **β_self** | ≲ 0.07–0.15 MHz per 10¹² cm⁻³ | bound | same-session 150–170 °C points |
+| Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points |
 | 2025 laser linewidth **σ_laser** | ≲ 1.0 MHz (laser axis) | bound | knife-edge w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
 | Power scaling | width flat; amplitude ∝ P² | confirmed prediction | — |
@@ -113,7 +113,7 @@ less room for laser width, and vice versa. The observed ≈ 5.2 MHz line is
 reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 50 µm (laser ~1 MHz).
 Only a direct beam-profile ("knife-edge") measurement collapses this — which is
 why every absolute number above is w₀-conditional, and why it is the first thing
-The fixed-lock session fixes.
+a fixed-lock session fixes.
 
 <p align="center">
   <img src="figures/fig3_transit_mc.png" width="560" alt="Line width versus beam waist: the transit/laser degeneracy">

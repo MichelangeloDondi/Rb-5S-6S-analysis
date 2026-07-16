@@ -119,6 +119,33 @@ def test_collisional_slope_nonmonotonic_is_bound():
     assert res["syst_err"] > 2 * res["formal_err"]  # systematic dominates
 
 
+def test_collisional_slope_bound_coverage_construction():
+    # The 95% bound must honour the scatter's own degrees of freedom (Student-t,
+    # NOT the asymptotic 2) and carry the density-scale systematic on top.
+    from scipy.stats import t as student_t
+    from rb5s6s.density import N_SCALE_FRAC_SYST
+
+    # 3 points -> dof = 1 -> t95 = 6.31; 4 points -> dof = 2 -> t95 = 2.92
+    N3 = np.array([density_units(t) for t in (70.0, 90.0, 110.0)])
+    r3 = collisional_slope(N3, np.array([5.11, 4.87, 5.28]),
+                           np.array([0.07, 0.03, 0.02]))
+    assert r3["dof"] == 1
+    assert abs(r3["t95"] - student_t.ppf(0.95, 1)) < 1e-9      # 6.314
+    assert abs(r3["bound95"] - (abs(r3["beta_eff"]) + r3["t95"] * r3["syst_err"])) < 1e-12
+
+    N4 = np.array([density_units(t) for t in (70.0, 90.0, 110.0, 130.0)])
+    r4 = collisional_slope(N4, np.array([5.11, 4.87, 5.28, 5.35]),
+                           np.array([0.07, 0.03, 0.02, 0.03]))
+    assert r4["dof"] == 2
+    assert abs(r4["t95"] - student_t.ppf(0.95, 2)) < 1e-9      # 2.920
+
+    # the N-scale inflation rides on the + side of the bound
+    for r in (r3, r4):
+        assert r["n_frac_syst"] == N_SCALE_FRAC_SYST
+        assert abs(r["bound95_nscale"] - r["bound95"] * (1 + N_SCALE_FRAC_SYST)) < 1e-12
+        assert r["bound95_nscale"] > r["bound95"]
+
+
 @pytest.mark.slow
 def test_with_130C_extends_lever_arm():
     # Adding the 130 C (highest-density) point should tighten beta_self.
