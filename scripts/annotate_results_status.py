@@ -97,6 +97,10 @@ QUANTITY_STATUS = {
         "condition_number": "DIAGNOSTIC", "corr": "DIAGNOSTIC",
         "best_constrained_sigma": "DIAGNOSTIC", "worst_constrained_sigma": "DIAGNOSTIC",
     },
+    "coverage.csv": {
+        "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
+        "false_measurement_rate": "DIAGNOSTIC",
+    },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 

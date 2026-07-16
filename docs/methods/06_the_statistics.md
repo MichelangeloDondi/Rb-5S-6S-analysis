@@ -235,6 +235,35 @@ $\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ correlation quoted in
 §2.4. *Code:* `rb5s6s/identifiability.py`, `run_identifiability.py`; closure
 `tests/test_identifiability.py`; numbers `results/identifiability.csv`.
 
+### 4.11 Does the 95% bound actually cover? — an injection-recovery study (M13)
+
+The collisional bound's 95% is built from a between-block scatter estimated on
+one residual degree of freedom, so it uses the Student-t quantile
+$t(0.95,1)=6.31$, not the Gaussian 2 (§4.5). A bound is only worth its coverage,
+so we check it by simulation rather than assert it: at a grid of *known* true
+$\beta$ we generate 2000 synthetic 3-point cooling sweeps each — with the
+archive's own structure, a between-block scatter mimicking the drift wander plus
+the small within-block SEM — run the **shipped** estimator
+`beta.collisional_slope` on every one, and measure bias, coverage, and the
+false-detection rate. The result:
+
+- the point estimate is **unbiased** (bias $\approx-0.0006$ MHz per $10^{12}$
+  cm$^{-3}$, i.e. $\ll$ the bound);
+- the Student-t 95% upper bound **covers the true $\beta$ $\gtrsim99$% of the
+  time** — valid and, on 1 DOF, conservative (the safe direction for a bound;
+  the Gaussian-2 bound this replaced would *under*-cover, which is the whole
+  reason for the t-quantile);
+- at $\beta_\text{true}=0$ the pre-registered SNR $\ge3$ "measurement" rule
+  alone fires $\approx6$% of the time — a real false-positive rate, which is
+  precisely why the analysis does **not** rely on SNR alone: the
+  non-monotonic width-vs-density pattern (3/4 real peaks) is the decisive guard
+  that forces the BOUND reading regardless (§C1).
+
+So the headline is empirically calibrated: unbiased estimate, a genuinely-95%
+(conservative) bound, and a documented false-detection rate that the
+monotonicity guard suppresses. *Code:* `rb5s6s/coverage.py`, `run_coverage.py`;
+closure `tests/test_coverage.py`; numbers `results/coverage.csv`.
+
 ---
 
 ---

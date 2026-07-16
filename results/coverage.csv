@@ -1,0 +1,13 @@
+quantity,key,value,unit,status
+bias,beta_true_0.00,-0.0006,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
+coverage95,beta_true_0.00,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
+false_measurement_rate,beta_true_0.00,0.062,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
+bias,beta_true_0.05,-0.0006,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
+coverage95,beta_true_0.05,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
+false_measurement_rate,beta_true_0.05,0.473,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
+bias,beta_true_0.10,-0.0006,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
+coverage95,beta_true_0.10,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
+false_measurement_rate,beta_true_0.10,0.866,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
+bias,beta_true_0.20,-0.0006,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
+coverage95,beta_true_0.20,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
+false_measurement_rate,beta_true_0.20,0.999,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
