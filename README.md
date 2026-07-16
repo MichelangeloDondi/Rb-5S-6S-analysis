@@ -132,7 +132,7 @@ a fixed-lock session fixes.
   only the beam, and it retroactively sharpens this archive. Full specification:
   [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre (Paper 2).** The same ramp law tested in the evanescent field
-  at a fibre surface, where an atom–surface potential and the known "pushing dip"
+  at a fibre surface, where an atom–surface potential and the "pushing dip" (Gekhroo, 2022)
   ride on the lineshape.
 
 ## Reproduce
