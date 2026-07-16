@@ -90,3 +90,20 @@ def test_white_trace_correlation_neutral():
     c = wing_correlation(v)
     assert c["tau_int"] < 1.5
     assert 0.9 < c["white_ratio"] < 1.1
+
+
+def test_sigma_of_v_floored_at_dark_noise_even_for_negative_c():
+    # The one committed negative-c law (993.4207 nm, 130 C, 125 mW) turns its
+    # variance over at V = 0.756 V -- above its own 0.525 V maximum level, so
+    # the pathology is latent in the data. The floor at a (raised from 0.2*a,
+    # 2026-07-16) guarantees that even an OUT-OF-DOMAIN evaluation of such a
+    # law can never hand out sigmas below the zero-signal noise, i.e. no
+    # runaway weights, while changing nothing inside the fitted domain.
+    law = {"a": 3.6e-3, "b": 1.29e-3, "c": -8.5e-4}
+    V = np.array([0.0, 0.3, 0.525, 0.756, 1.6, 3.0])   # spans past the turnover
+    s = sigma_of_v(V, law)
+    assert np.all(s >= law["a"] - 1e-15)
+    # inside the fitted domain the law itself is above the floor -> unchanged
+    inside = V <= 0.525
+    expect = np.sqrt(law["a"] ** 2 + law["b"] * V[inside] + law["c"] * V[inside] ** 2)
+    assert np.allclose(s[inside], expect)

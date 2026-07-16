@@ -118,6 +118,29 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 (Recorded because earlier numbers circulated before this analysis existed.)
 
+**Error-plumbing hardening round (2026-07-16, follows the two entries below).**
+Five smaller review items closed, none moving a headline: (i) the
+block-coherent ruler-rate error (~0.5–1.8%) is now folded into every
+width-type error in `linefit_conditions.csv` (γ_coll, σ_laser, total FWHM,
+plus a `rate_relerr` column) — it was carried in `run_beta_self`/
+`run_power_sweep` but dropped where the per-condition widths are made; the
+remaining bare-rate consumers each carry an explicit justified-omission
+comment (BIC: a common scale cancels; areas: dwarfed by the 20–40%
+between-block systematic; hierarchical β: ≤0.0006 vs ±0.004 stat). (ii)
+`noise_floor_limited` and `*_at_bound` flags now travel in
+`linefit_conditions.csv`, `beta_self.csv` and `global_fit.csv`: scipy's
+covariance ignores active bounds, so a parameter pinned at its zero rail
+wears a symmetric error where the truth is one-sided — the flag makes that
+visible per row. (iii) the transit-MC FWHM is now read with sub-grid
+interpolation: the old raster read quantized it to the 0.01 MHz step, so the
+committed "MC errors" were the grid quantum in disguise (exact multiples of
+0.0041); the seed spread now measures genuine sampling noise. (iv) the noise
+law's σ(V) floor rose from 0.2·a to a (the dark noise is the physical floor);
+verified zero-churn — the one negative-c law turns over at 0.756 V, above its
+own 0.525 V maximum level, so the floor never engages in-domain and the
+hazard was only ever out-of-domain. (v) tests: a floor test past the
+turnover; flags plumbed through the suite.
+
 **The β_self bound gains proper coverage and the density systematic
 (2026-07-16).** The headline per-peak bound changed **0.07–0.15 → 0.2–0.4 MHz
 per 10¹² cm⁻³**, again with no change to data or fits — two coverage

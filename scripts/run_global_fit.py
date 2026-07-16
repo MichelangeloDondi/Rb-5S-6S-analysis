@@ -66,6 +66,11 @@ def main() -> int:
     trates = {}
     for r in csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):
         if r["session"] == "T":
+            # rate_err omitted deliberately: a block-coherent axis-scale error
+            # moves beta by <= beta * relerr ~ 0.0006 (relerr <= 1.8%), far under
+            # the +/-0.004 stat bar and the 0.01-0.03 systematics; a rigorous
+            # treatment needs per-block scale nuisances, out of scope for a
+            # sub-dominant term (review finding 4, 2026-07-16)
             trates[(r["peak"], r["T"])] = 2.0 * float(r["rate"])
 
     blocks = build_blocks(rows, trates)
@@ -132,6 +137,14 @@ def main() -> int:
                         f"MHz per 1e12 cm^-3 (density-SCALE systematic: beta ~ 1/N, "
                         f"so the {N_SCALE_FRAC_SYST:.0%} vapor-pressure-correlation "
                         f"spread moves beta by the same fraction; density.py)"])
+        w.writerow(["noise_floor_limited", "global",
+                    str(fit["noise_floor_limited"]), "",
+                    "chi2_red < 0.8: the errors are set by the conservative "
+                    "noise model (tau inflation), not by the fit residuals"])
+        w.writerow(["params_at_bound", "global",
+                    ";".join(fit["params_at_bound"]) or "none", "",
+                    "shared parameters pinned at their 0 rail, where the "
+                    "symmetric Gaussian error is one-sided in truth"])
 
     # ---- w0 systematic band on beta (review round 5 #4) ----
     # transit_ref comes from the OPEN w0 prior (central 50 um; the old 32 um is

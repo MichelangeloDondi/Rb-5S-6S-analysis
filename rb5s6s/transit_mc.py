@@ -142,5 +142,22 @@ def transit_added_fwhm_mc(gamma_nat_mhz: float = None, **kw) -> float:
     dnu = nu[1] - nu[0]
     Lt = transit_lineshape_mc(nu, **kw)
     tot = np.convolve(Lt, lorentzian(nu, gnat), "same") * dnu
-    half = nu[tot >= 0.5 * tot.max()]
-    return float(half[-1] - half[0]) - gnat
+    # Sub-grid interpolation of the two half-max crossings (2026-07-16).
+    # Reading the edges off the raster (nu[tot >= half]) quantized the FWHM to
+    # the 0.01 MHz grid step, so the seed-to-seed "MC error" downstream was
+    # really the grid quantum in disguise (committed errors were exact
+    # multiples of it), not a sampling error. Linear interpolation removes
+    # that floor; the seed spread now measures genuine Monte-Carlo noise.
+    ypk = float(tot.max())
+    above = np.where(tot >= 0.5 * ypk)[0]
+    lo, hi = int(above[0]), int(above[-1])
+
+    def cross(i, j):
+        y1, y2 = float(tot[i]), float(tot[j])
+        if y2 == y1:
+            return float(nu[i])
+        return float(nu[i]) + (0.5 * ypk - y1) * (float(nu[j]) - float(nu[i])) / (y2 - y1)
+
+    left = cross(lo - 1, lo) if lo > 0 else float(nu[lo])
+    right = cross(hi, hi + 1) if hi + 1 < len(nu) else float(nu[hi])
+    return (right - left) - gnat

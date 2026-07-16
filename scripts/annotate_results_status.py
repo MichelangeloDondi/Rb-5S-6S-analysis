@@ -71,7 +71,8 @@ QUANTITY_STATUS = {
     "global_fit.csv": {
         "beta_self": "BOUND", "sigma_laser": "BOUND",
         "beta_modelform_syst": "BOUND", "beta_nscale_syst": "BOUND",
-        "chi2_red": "DIAGNOSTIC",
+        "chi2_red": "DIAGNOSTIC", "noise_floor_limited": "DIAGNOSTIC",
+        "params_at_bound": "DIAGNOSTIC",
     },
     "lever_crosscheck.csv": {
         "beta_crosscheck": "BOUND", "beta_err_modelform": "BOUND",

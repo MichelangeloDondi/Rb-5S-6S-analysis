@@ -232,11 +232,18 @@ def condition_noise_model(traces: List[np.ndarray]) -> Dict:
 
 def sigma_of_v(level: np.ndarray, law: Dict) -> np.ndarray:
     """Evaluate the noise law: per-sample sigma at signal level `level`
-    (volts above baseline). Floor at 20% of `a` guards degenerate weights.
+    (volts above baseline). Floored at `a` (the fitted dark floor): the noise
+    at any signal level cannot be below the zero-signal noise, so `a` is the
+    physical floor. (Raised from the earlier 0.2*a guard 2026-07-16; on the
+    committed data the law never dips below a^2 inside its fitted domain --
+    the one negative-c condition turns over at 0.756 V, above its own 0.525 V
+    maximum level -- so this changes no committed weight; it removes the
+    hazard that an out-of-domain evaluation of a negative-c law could ever
+    hand out near-zero sigmas, i.e. runaway weights.)
 
     DOMAIN: the law is empirical and valid only within the level range it
     was fit on (law['lev_max']); in normal use this is automatic because
     weights are evaluated on the very traces the law came from. Do not
     extrapolate a dim condition's law to bright levels."""
     var = law["a"] ** 2 + law["b"] * np.maximum(level, 0.0) + law["c"] * np.maximum(level, 0.0) ** 2
-    return np.sqrt(np.maximum(var, (0.2 * law["a"]) ** 2))
+    return np.sqrt(np.maximum(var, law["a"] ** 2))
