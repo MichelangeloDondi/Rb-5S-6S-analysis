@@ -1,0 +1,10 @@
+quantity,key,value,unit,status
+condition_number,width_block,164.4,"eigenvalue ratio of the (gamma_coll,sigma_laser,transit) covariance; >>1 = degenerate",DIAGNOSTIC
+corr,gamma_coll_gamma_coll,1.000,width-width correlation coefficient,DIAGNOSTIC
+corr,gamma_coll_sigma_laser,-0.676,width-width correlation coefficient,DIAGNOSTIC
+corr,gamma_coll_transit,-0.013,width-width correlation coefficient,DIAGNOSTIC
+corr,sigma_laser_sigma_laser,1.000,width-width correlation coefficient,DIAGNOSTIC
+corr,sigma_laser_transit,-0.656,width-width correlation coefficient,DIAGNOSTIC
+corr,transit_transit,1.000,width-width correlation coefficient,DIAGNOSTIC
+best_constrained_sigma,total_width,0.0047,MHz; 1sigma on the best-constrained width combination (~the total),DIAGNOSTIC
+worst_constrained_sigma,split,0.0604,MHz; 1sigma on the degenerate split direction,DIAGNOSTIC

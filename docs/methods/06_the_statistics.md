@@ -208,6 +208,33 @@ archive is a property of the drift, not of the method: a fixed-lock session
 would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`;
 closure `tests/test_model_ladder.py`; numbers `results/model_ladder.csv`.
 
+### 4.10 Is the decomposition identifiable? — covariance and condition number (M12)
+
+The degeneracy asserted throughout — that $\gamma_\text{coll}$,
+$\sigma_\text{laser}$ and transit all broaden the same line, so the main fit
+*fixes* transit and reports $\sigma_\text{laser}$ as a bound — is here made
+quantitative. We fit one bright condition (993.4192 nm, 130 °C, 225 mW) with all
+three widths free, form the parameter covariance from the SVD of the Jacobian
+(`fitutil.cov_from_jac`), and diagonalize its $3\times3$ width block:
+
+- the **correlation matrix** shows the trade-offs — $\gamma_\text{coll}$ vs
+  $\sigma_\text{laser}$ and $\sigma_\text{laser}$ vs transit both $\approx-0.66$
+  to $-0.68$: raising one and lowering another leaves the line almost unchanged;
+- the **condition number** of the width block is $\approx160$ — strongly
+  ill-conditioned, i.e. one combination is nearly unconstrained;
+- the **eigen-directions** name it: the best-constrained combination (all three
+  widths with the same sign — essentially the *total* width) is pinned to
+  $1\sigma\approx0.005$ MHz, while the worst-constrained direction (the transit
+  vs $\sigma_\text{laser}$ *split*) is $\approx0.06$ MHz — about **13× looser**.
+
+So the archive constrains the total width to $\sim$0.1% but the split ten-fold
+worse: the individual widths are genuinely $w_0$-conditional bounds, not
+measurements, and the knife-edge $w_0$ (which removes transit as a free width) is
+exactly what lifts the degeneracy. This is the formal statement behind the
+$\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ correlation quoted in
+§2.4. *Code:* `rb5s6s/identifiability.py`, `run_identifiability.py`; closure
+`tests/test_identifiability.py`; numbers `results/identifiability.csv`.
+
 ---
 
 ---
