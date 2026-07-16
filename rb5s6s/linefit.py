@@ -145,7 +145,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         wf.append(freqs[i][m]); wv.append(volts[i][m]); ws.append(sigmas[i][m])
     freqs, volts, sigmas = wf, wv, ws
 
-    # CORRELATED-NOISE WEIGHTING (review round 3 fix): each sample's sigma
+    # CORRELATED-NOISE WEIGHTING: each sample's sigma
     # is inflated by sqrt(tau_int) INSIDE the fit, so the optimizer sees each
     # trace's true information content (tau correlated samples ~ one
     # independent one). Diagnostics (chi2, per-trace residuals) use the
@@ -184,7 +184,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
             out.append((volts[i] - model) / sigmas[i])
         return np.concatenate(out)
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=40000)
     if not sol.success:
         raise RuntimeError(f"condition fit failed: {sol.message}")

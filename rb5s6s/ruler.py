@@ -139,7 +139,7 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None) -> Dic
     def resid(p):
         return (v - _comb(t_ms, p[0], p[1], p[2], p[3:8], p[8], p[9])) / sig
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(resid, p0, bounds=(lo, hi), max_nfev=20000)
     if not sol.success:
         raise RuntimeError(f"comb fit failed: {sol.message}")
@@ -215,7 +215,7 @@ def fit_comb_free_centers(t_ms: np.ndarray, v: np.ndarray, base_fit: Dict,
         return (v - _comb_free(t_ms, p[:nt], p[nt], p[nt + 1:2 * nt + 1],
                                p[2 * nt + 1], p[2 * nt + 2])) / sig
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(resid, p0, bounds=(lo, hi), max_nfev=20000)
     if not sol.success:
         raise RuntimeError(f"free-center fit failed: {sol.message}")

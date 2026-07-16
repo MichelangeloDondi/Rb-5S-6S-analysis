@@ -99,7 +99,7 @@ def fit_form(freqs: List[np.ndarray], volts: List[np.ndarray], kind: str,
             out.append((wv[i] - model) / ws[i])
         return np.concatenate(out)
 
-    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds (round-5 fix)
+    p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(resid, p0, bounds=(lo, hi), max_nfev=40000)
     if not sol.success:
         raise RuntimeError(f"{kind} fit failed: {sol.message}")

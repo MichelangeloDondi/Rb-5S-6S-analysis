@@ -114,7 +114,7 @@ def main() -> int:
     print("  This |diff| is the transit-model-form error bar the paper quotes ALONGSIDE")
     print("  the statistical error and the w0-band systematic (three separate bars).")
 
-    # persist the result (was stdout-only -- revision #6/round-3 gap): the
+    # persist the result (was stdout-only): the
     # per-isotope beta and sigma_laser(T) belong in a committed CSV so the
     # README/ledger claim is verifiable without a run.
     with open(C.RESULTS_DIR / "global_fit.csv", "w", newline="") as f:
@@ -146,7 +146,7 @@ def main() -> int:
                     "shared parameters pinned at their 0 rail, where the "
                     "symmetric Gaussian error is one-sided in truth"])
 
-    # ---- w0 systematic band on beta (review round 5 #4) ----
+    # ---- w0 systematic band on beta ----
     # transit_ref comes from the OPEN w0 prior (central 50 um; the old 32 um is
     # EXCLUDED by the corrected transit physics). Every absolute beta rides on it,
     # so refit across the corrected-physics w0 band (65/50/40 um, bracketing the

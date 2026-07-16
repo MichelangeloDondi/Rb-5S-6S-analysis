@@ -80,7 +80,7 @@ def test_equal_isotopes_recovered_equal():
 
 
 def test_fit_global_runs_on_real_data():
-    # DATA-VALIDATED smoke test (review round 5 #2): the headline fit must
+    # DATA-VALIDATED smoke test: the headline fit must
     # RUN on the actual archive traces, not only on synthetics it generated.
     # Builds 2 peaks x 2 temperatures from data_raw at a fixed sane rate and
     # asserts convergence + a sane chi2_red. (Not a physics claim -- a

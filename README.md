@@ -112,7 +112,8 @@ detection in the archive (a bound), which is why the coefficient itself waits
 for a fixed-lock session. The S₀ bound and its prediction are independent by
 construction: the bound uses only the width-vs-power data (no w₀ enters),
 while the predicted 0.59 MHz is the computed polarizability at the beam
-geometry's w₀ prior — fixed before the fit and never an input to it. Their
+geometry's w₀ prior, with the retro ratio ρ=1 asserted (its in-situ measurement
+is a fixed-lock-session task) — fixed before the fit and never an input to it. Their
 proximity is a test passed, not a tuning.
 
 <p align="center">

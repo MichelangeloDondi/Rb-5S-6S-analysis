@@ -58,7 +58,7 @@ Per-trace rate = 6.25 MHz / Δ (laser axis; CALCULATED from Ω/2 selection rules
 
 **M4 — β_self & the confound program.** γ_coll = β_self·N(T), N(T) from a stated vapor-pressure correlation (carry its systematic; add cell cold-spot caveat). **Temperature is monotonic with time across the whole campaign (130 first … 70 last): ordering de-confounds nothing.** Stationarity probes instead: (i) P-session widths vs block order at fixed 130 °C — hours-scale drift monitor, since power's true width effect is ≤2% (CALCULATED); (ii) before/after bracket tooth *widths* per peak — fixed-condition drift over each peak's session; (iii) cross-peak γ consistency at fixed T (four lines, one density); (iv) σ_laser(block) time series from M3. **Pre-registered rule: quote a measurement iff the probes bound the drift contribution ≤ ~⅓ of the observed γ(T) trend; otherwise a bound.** Bonus replicate: ruler tooth widths vs T form a hidden second T-sweep (cross-check only).
 
-*M4 addendum — hierarchical `fit_global` design (review round 2, 2026-07-11).*
+*M4 addendum — hierarchical `fit_global` design (2026-07-11).*
 The cross-TEMPERATURE pooling already exists (`fit_beta_self`: one β_self and
 one σ_laser shared across a peak's T-sweep). The reviewer's proposed extension
 — pooling all 4 peaks × 5 repeats — is accepted with one amendment **our own
@@ -245,8 +245,7 @@ Telescope sized so the beam enters the EOM at ≤1 mm waist (3 mm aperture
 positions through the focus (w(z) hyperbola gives w₀ AND z_R; consistency
 z_R = πw₀²/λ cross-checks the stage scale — a knife-scale error k and stage
 error s must satisfy s = k² to hide), retro ratio ρ measured IN SITU at the
-cell position (both directions; return-path clipping differs per waist —
-revision #7), collection geometry photographed and measured for the MC, and
+cell position (both directions; return-path clipping differs per waist), collection geometry photographed and measured for the MC, and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
 paraxial two-photon rate goes as the squared degree of linear polarization and
 is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measured
@@ -255,7 +254,7 @@ on this line), so polarization drift is a specific candidate for the archival
 is a free extinction null test (any residual peak = polarization impurity or
 background).
 
-### 8.2 The intensity axis (revision #1: collapse test is blind to common scale)
+### 8.2 The intensity axis (the collapse test is blind to common scale)
 
 The shift-vs-(P/w₀²) collapse across configs catches only RELATIVE waist
 errors; a common knife-edge scale error passes it silently. Orthogonal
@@ -269,7 +268,7 @@ before any Stark coefficient in physical units is quoted. Note the split:
 the ramp-law FORM tests (§8.3) never need absolute intensity — only the
 coefficient Δα does.
 
-### 8.3 Stark ramp program (revision #2, #3: no promised σ; geometry breaks the clean triangle at S)
+### 8.3 Stark ramp program (no promised σ; geometry breaks the clean triangle at S)
 
 The pure triangular ramp f(s) ∝ |s| predicts a PARAMETER-FREE moment
 hierarchy on the ramp component: mean pull = −(2/3)S₀ (linear in P),
@@ -288,7 +287,7 @@ order of statistical cost:
    written derivation + Etienne check). **Session sized for the pessimistic
    end**: ≥ 15× the 2025-equivalent trace count at one condition (~110 °C,
    225 mW) so even 0.8σ-per-2025-block becomes ≥3σ. Decisive either way.
-4. **Geometry correction at S** (revision #3 accepted — and computing it
+4. **Geometry correction at S** (computing it
    upgraded the test, 2026-07-12). The z-average of transverse ramps has the
    closed form f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3], ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (lineshape.stark_ramp_axial; table from scripts/run_ramp_geometry.py).
@@ -330,7 +329,7 @@ same photons, the numerical one is strictly worse (window-dependent), and
 detections this close to the floor. One estimator per observable (the fitted
 one); the hybrid is across the moment hierarchy, never across methods.
 
-### 8.4 Width/collision program (revision #4, #6 + literature calibration)
+### 8.4 Width/collision program (with literature calibration)
 
 - **T grid at L only**, twice, different days, OPPOSITE directions (day A
   70→…, day B …→70). Kills drift components monotonic in time; brackets
@@ -351,7 +350,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
   entry; fig6). Cross-session anchors are diagnostics only: the 150–170 °C
   points go inside the SAME locked, bracketed session as the rest of the
   T grid, or they cannot be combined and the collisional slope stays a bound.
-- σ_laser at L (revision #6 accepted in part): transit removed by geometry,
+- σ_laser at L: transit removed by geometry,
   and the collision term is bounded EXTERNALLY at ~tens of kHz by the
   literature scale — three orders below the 2025 σ_laser bound. Quote
   σ_laser with that prior stated explicitly (ENVELOPE, not our data), or as
@@ -359,7 +358,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
 - **Four peaks interleaved within every block** (minutes apart, per-trace
   power logging): cross-peak systematics 30–50% → 2–4%; enables the
   degeneracy-law and trapping discriminators (M7/M10). Amplitude-ratio
-  blocks get **12–16 repeats** (revision #8: they are gain-scatter-limited);
+  blocks get **12–16 repeats** (they are gain-scatter-limited);
   width blocks 8. Randomized P order (free — no thermalization).
 - Timestamps logged (scope clock + notebook) — the 2025 σ_laser-sharing
   assumption was unverifiable without them.

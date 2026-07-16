@@ -188,7 +188,7 @@ def main() -> int:
               f"{r['sigma_laser']:>6.2f}+/-{r['sigma_laser_err']:<5.2f} "
               f"{r['chi2_red']:>6.2f} {r['corr_beta_laser']:>9.2f}")
 
-    # ---- per-peak beta consistency + within-isotope pooling (revision #2) ----
+    # ---- per-peak beta consistency + within-isotope pooling ----
     print(f"\n{'-'*74}\nPER-PEAK beta_self consistency (are the four values mutually OK?):")
     iso = {"4121": 87, "4207": 87, "4154": 85, "4192": 85}
     bp = {r["peak"]: (r["beta_self"], r["beta_self_err"]) for r in results}

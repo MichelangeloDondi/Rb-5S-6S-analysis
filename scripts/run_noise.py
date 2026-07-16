@@ -83,7 +83,7 @@ def main() -> int:
           f"(error inflation sqrt(tau) ~ {np.sqrt(np.median(taus)):.2f})")
     print(f"conditions preferring the c*V^2 term: {ncs}/{len(results)}")
 
-    # ---- honest read of the law-fit chi2_red (revision #5; rescaled 2026-07-16) ----
+    # ---- honest read of the law-fit chi2_red (rescaled 2026-07-16) ----
     ch = [law["chi2_red"] for _, law in results]
     print(f"\nlaw-fit chi2_red: median {np.median(ch):.1f} (range {min(ch):.1f}-{max(ch):.1f})")
     print("  Read this with its two known inflators in mind (neither biases the")
