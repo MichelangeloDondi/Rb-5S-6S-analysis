@@ -125,10 +125,12 @@ elsewhere). It gives the 95% profile-likelihood bound
 $$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
 against the computed 1093 ([§3 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
-The honest reading is not "we see nothing" but the sharper one: the archival
-width data are **already sensitive at the scale of the predicted coefficient** —
-anything well above the prediction is excluded, while the prediction itself (and
-zero) remain allowed. The fixed-lock session's stable lock resurrects the pull
+The honest reading is a conservative bound, not a sensitivity claim: the width
+channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
+so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
+inflated threshold and brackets the predicted $0.59$ without measuring it (an
+unscaled threshold would fall below the prediction). It bounds the drift, not the
+coefficient's scale. The fixed-lock session's stable lock resurrects the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
 several-fold larger, turning this bracket into the measured coefficient.
 

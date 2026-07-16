@@ -1,5 +1,5 @@
 quantity,value_MHz,axis,status
-sigma_laser_bound,<1.0,laser,UPPER_BOUND@w0prior; =0 at w0~16um; unmeasurable pending knife-edge
+sigma_laser_bound,<1.1,laser,"upper bound over the open w0 band (45-70um); ~0.8 at the 50um prior, rising with w0; =0 at w0~16um; unmeasurable pending knife-edge"
 sigma_laser_at_transit_0.9190643271973629,1.100,laser,w0_~65um
 sigma_laser_at_transit_1.1947836253565718,0.836,laser,w0_50um prior
 sigma_laser_at_transit_1.4934795316957148,0.363,laser,w0_~40um

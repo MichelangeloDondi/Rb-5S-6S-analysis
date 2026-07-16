@@ -138,13 +138,13 @@ predicted below the archival noise and is not detected — as designed.
 
 That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the
 four peaks' width-vs-power (`stark.fit_stark_sweep`, M4e) turns it into a
-quantitative **upper bound $S_0$(225 mW) $<2.0$ MHz (95%)**; the fitted value
-$0.1$ MHz is consistent with zero, so the archive *brackets* the predicted
+quantitative **upper bound $S_0$(225 mW) $<0.63$ MHz (95%, profile
+likelihood)**; the fitted value is consistent with zero, so the archive *brackets* the predicted
 $0.59$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
 same two-epoch reason as everything else here: the 2025 drifted lock kills the
 line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
-broadening (a $1.4$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through the
+broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through the
 §5 convention, at the nominal $w_0=50\ \mu$m this brackets $\Delta\alpha$ below
 $\sim1.1\times$ the computed value ($<\sim1200$ a.u., 95%, profile likelihood;
 the earlier $\sim5800$ came from a Wald interval evaluated at the $\kappa=0$

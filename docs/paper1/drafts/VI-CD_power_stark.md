@@ -62,8 +62,9 @@ returns $\kappa$ consistent with zero, giving the 95% profile-likelihood bound
 $$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the value $S_0=0.59$ MHz predicted from the computed
 differential polarizability [CALCULATED; §III, App. A]. The archive thus
-**brackets** the prediction without resolving it — and its width data are
-already sensitive at the scale of the predicted coefficient.
+**brackets** the prediction without resolving it — a bracketing contingent on the
+conservative over-dispersion rescale (below), not a resolution of the coefficient
+(the width channel is drift-limited, $\chi^2_\text{red}\approx4.3$).
 
 [Reviewer-hardening — keep this transparency, it is load-bearing.] Two
 statistical choices define the bound. First, the best fit rails at $\kappa=0$,
