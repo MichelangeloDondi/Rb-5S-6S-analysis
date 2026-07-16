@@ -220,8 +220,9 @@ three widths free, form the parameter covariance from the SVD of the Jacobian
 - the **correlation matrix** shows the trade-offs — $\gamma_\text{coll}$ vs
   $\sigma_\text{laser}$ and $\sigma_\text{laser}$ vs transit both $\approx-0.66$
   to $-0.68$: raising one and lowering another leaves the line almost unchanged;
-- the **condition number** of the width block is $\approx160$ — strongly
-  ill-conditioned, i.e. one combination is nearly unconstrained;
+- the **condition number** of the width-block *covariance* (its largest/smallest
+  eigenvalue) is $\approx160$ — strongly ill-conditioned, i.e. one combination is
+  nearly unconstrained;
 - the **eigen-directions** name it: the best-constrained combination (all three
   widths with the same sign — essentially the *total* width) is pinned to
   $1\sigma\approx0.005$ MHz, while the worst-constrained direction (the transit
@@ -229,8 +230,11 @@ three widths free, form the parameter covariance from the SVD of the Jacobian
 
 So the archive constrains the total width to $\sim$0.1% but the split ten-fold
 worse: the individual widths are genuinely $w_0$-conditional bounds, not
-measurements, and the knife-edge $w_0$ (which removes transit as a free width) is
-exactly what lifts the degeneracy. This is the formal statement behind the
+measurements, and the knife-edge $w_0$ **collapses** the degeneracy — it fixes
+transit to within the knife-edge's own precision, so the split becomes
+identifiable within that uncertainty rather than removed exactly (a
+perfectly-known $w_0$ would remove it; a real one greatly reduces it). This is the
+formal statement behind the
 $\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ correlation quoted in
 §2.4.
 
