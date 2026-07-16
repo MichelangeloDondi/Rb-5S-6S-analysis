@@ -56,7 +56,7 @@ def main() -> int:
     W("## C1 — collisional self-broadening $\\beta_\\text{self}$\n")
     # every number in this intro is READ from the CSVs -- a hand-written bound
     # here once went stale (3x tight) against the corrected construction below
-    pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("variant", "").startswith("70-110")}
+    pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("headline") == "yes"}
     pbounds = sorted(float(r["bound95_nscale"]) for r in pr.values())
     fitvals = ([float(r["beta_self"]) for r in rows("beta_self")] +
                [float(r["value"]) for r in rows("global_fit")
@@ -327,12 +327,15 @@ def main() -> int:
         sv = {r["quantity"]: r for r in ss if r["key"] in ("shared", "fit")}
         ub = float(sv["S0_225mW_ub95_profile"]["value"])
         pr = float(sv["S0_225mW_pred"]["value"])
+        plo = float(sv["S0_225mW_pred_lo"]["value"])
+        phi = float(sv["S0_225mW_pred_hi"]["value"])
         fit = float(sv["S0_225mW_fit"]["value"])
         c2 = float(sv["chi2_red"]["value"])
         W(f"- **C3d — the AC-Stark coefficient, from the power-lever: an UPPER BOUND "
-          f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, profile likelihood), sitting just "
-          f"above the predicted {pr:.2f} MHz** (`run_stark_sweep`, M4e — the "
-          f"power-lever twin of the $\\beta$ fit). One shared $\\kappa$ ($S_0=\\kappa "
+          f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, profile likelihood), landing "
+          f"inside the predicted band {plo:.2f}–{phi:.2f} MHz** (`run_stark_sweep`, "
+          f"M4e — the power-lever twin of the $\\beta$ fit). One shared $\\kappa$ "
+          f"($S_0=\\kappa "
           f"P$) is fit to the four peaks' FWHM-vs-power (each floating its core "
           f"width); the ramp broadens the line as $\\sim S_0^2$, the only live handle "
           f"since the *shift* (pull $\\sim S_0$) is dead in the 2025 drift. The fit "
@@ -342,11 +345,13 @@ def main() -> int:
           f"width-vs-power data (no $w_0$ enters), while the prediction is the "
           f"computed polarizability at the $w_0$ prior, fixed before the fit and "
           f"never an input to it — proximity is a test passed, not a tuning. "
-          f"The prediction is itself conditional: evaluated at the $w_0=50$ µm "
-          f"prior ($\\propto 1/w_0^2$) with the retro ratio $\\rho=1$ asserted, "
-          f"not measured ($S_0\\propto(1+\\rho)$, so a real $\\rho<1$ lowers it; "
-          f"the in-situ $\\rho$ is a fixed-lock-session task, PLAN §8), under "
-          f"the field-intensity convention pinned in THEORY_NOTE §5. "
+          f"The prediction is not a point but a **band**: the {plo:.2f}–{phi:.2f} "
+          f"MHz spread is $S_0$ over the OPEN $w_0=45$–70 µm ($\\propto 1/w_0^2$; "
+          f"central {pr:.2f} at the 50 µm prior) at $\\rho=1$, the retro ratio "
+          f"asserted, not measured ($S_0\\propto(1+\\rho)$, so a real $\\rho<1$ "
+          f"lowers the whole band; the in-situ $\\rho$ is a fixed-lock-session "
+          f"task, PLAN §8), under the field-intensity convention pinned in "
+          f"THEORY_NOTE §5. "
           f"**The construction of the "
           f"95% is load-bearing and documented:** the best fit rails at $\\kappa=0$, "
           f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
@@ -365,8 +370,10 @@ def main() -> int:
           f"profile limit would be the sharper construction; not run on the "
           f"archive). The result says the "
           f"archive's width data are already sensitive at the scale of the predicted "
-          f"coefficient: anything much above the prediction is excluded, while the "
-          f"prediction itself (and zero) remain allowed. *Lifted by:* the fixed lock "
+          f"coefficient: the bound falls inside the prediction band, so it already "
+          f"**excludes the tight-waist (high-$S_0$) top** of that band while its "
+          f"lower reach (and zero) remain allowed — the archive is beginning to "
+          f"constrain the prediction, not merely consistent with it. *Lifted by:* the fixed lock "
           f"measures the pull $\\sim S_0$ directly, and the small waist makes $S_0$ "
           f"several-fold larger — turning this bound into the coefficient.\n")
 

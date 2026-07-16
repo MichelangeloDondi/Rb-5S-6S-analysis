@@ -35,7 +35,7 @@ from scipy.optimize import least_squares
 
 from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
-from .constants import GAMMA_NAT_HZ, W0_PRIOR_M
+from .constants import GAMMA_NAT_HZ, W0_BAND_M, W0_PRIOR_M
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
@@ -93,6 +93,12 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # seeds: per-peak sigma_laser ~1.6, kappa ~ predicted
     kpred = stark_shift_S0_mhz(1.0, w0_um * 1e-6, rho=rho)   # MHz per W (S0 at 1 W)
     p0 = np.array([1.6] * npk + [kpred], float)
+    # S0 prediction BAND over the OPEN w0 (S0 ~ 1/w0^2, so the small-waist edge
+    # gives the high S0). At rho=1; a real rho<1 lowers both edges. From the
+    # W0_BAND_M constant so the 45-70 um band is never hand-typed here.
+    _w0_lo_m, _w0_hi_m = W0_BAND_M
+    s0_225_pred_hi = stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho)   # 45 um -> larger S0
+    s0_225_pred_lo = stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho)   # 70 um -> smaller S0
     lo = np.array([0.0] * npk + [0.0], float)
     hi = np.array([np.inf] * (npk + 1), float)
 
@@ -186,5 +192,6 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
         "S0_225_ub95_raw": max(kappa + 1.645 * kerr_raw, 0.0) * 0.225,
         "S0_225_ub95_profile": kappa_ub95_prof * 0.225,
         "kappa_pred": float(kpred), "S0_225_pred": float(kpred) * 0.225,
+        "S0_225_pred_lo": float(s0_225_pred_lo), "S0_225_pred_hi": float(s0_225_pred_hi),
         "chi2_red": chi2_red, "n": ndata,
     }

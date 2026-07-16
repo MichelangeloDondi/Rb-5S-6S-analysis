@@ -80,6 +80,10 @@ def main() -> int:
                     "SUPERSEDED diagnostic: un-inflated Wald bound (MHz)"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
                     "predicted S0 at 225 mW (w0=50um prior, rho=1) for comparison"])
+        w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",
+                    "predicted S0 at 225 mW, w0=70um (band LOW edge, rho=1)"])
+        w.writerow(["S0_225mW_pred_hi", "shared", f"{res['S0_225_pred_hi']:.3f}", "",
+                    "predicted S0 at 225 mW, w0=45um (band HIGH edge, rho=1)"])
         w.writerow(["chi2_red", "fit", f"{res['chi2_red']:.3f}", "",
                     f"over {res['n']} width points"])
         for p, s in res["sigma_laser_by_peak"].items():

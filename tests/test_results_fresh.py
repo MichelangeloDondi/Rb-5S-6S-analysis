@@ -51,6 +51,8 @@ def _stark_sweep_from_code():
         ("S0_225mW_ub95", "shared"): res["S0_225_ub95"],
         ("S0_225mW_ub95_raw", "shared"): res["S0_225_ub95_raw"],
         ("S0_225mW_pred", "shared"): res["S0_225_pred"],
+        ("S0_225mW_pred_lo", "shared"): res["S0_225_pred_lo"],
+        ("S0_225mW_pred_hi", "shared"): res["S0_225_pred_hi"],
         ("chi2_red", "fit"): res["chi2_red"],
     }
     for p, s in res["sigma_laser_by_peak"].items():
