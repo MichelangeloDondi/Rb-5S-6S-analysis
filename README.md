@@ -1,7 +1,7 @@
 # Rb 5S→6S two-photon lineshape analysis
 
-First-principles analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon transition
-at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Data taken at OIST
+A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon
+transition at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Data taken at OIST
 in 2025; a fixed-lock follow-up session is specified in [`docs/PLAN.md`](docs/PLAN.md).
 
 <p align="center">
@@ -13,8 +13,8 @@ residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise flo
 (reduced χ² ≈ 1.1) — this is the raw material everything below is built from.*
 
 > **In one sentence:** from a 2025 dataset taken with a drifting laser lock, we
-> extract everything that lives in the *shape* of the line — collisional
-> broadening, laser width, the power-dependent light shift — as rigorous **bounds**,
+> extract what lives in the *shape* of the line — collisional
+> broadening, laser width, the power-dependent light shift — as **bounds**,
 > and lay out the fixed-lock measurements that turn each bound into a number.
 
 **Where to go next:** the big picture (goals, prior art, what each future
@@ -43,15 +43,40 @@ traces in all.
 ## Why this dataset is unusual: shapes without centres
 
 The 2025 data were taken with a **slowly drifting lock** (~MHz/min). That has one
-decisive consequence:
+consequence:
 
 - absolute line **centres are lost** (drift moves them scan to scan), but
 - line **shapes survive intact**.
 
-So the archive rigorously delivers everything that lives in the *shape* of a line —
+So the archive delivers what lives in the *shape* of a line —
 widths, power-law scalings, asymmetry — as **bounds and nulls**, while the absolute
 shifts wait for a stable lock. Being honest about that split is the backbone of the
 analysis, and it is why the results below are bounds rather than measurements.
+
+A bound is a result, not a failed measurement: an upper bound excludes every
+model that predicts more, and each bound here is the sensitivity target a
+follow-up session has to beat — the fixed-lock plan is specified against these
+numbers. The width data are already sensitive at the physical scale (the
+AC-Stark bound sits just above its prediction), and the 95% constructions are
+validated by injection-recovery
+([methods §4.11](docs/methods/06_the_statistics.md)), not assumed.
+
+The chain from raw trace to quoted bound — each stage a runnable script, each
+output a committed CSV:
+
+```mermaid
+flowchart LR
+    T[297 raw traces] --> N[measured noise law]
+    T --> K[frequency ruler]
+    N --> F[hierarchical lineshape fits]
+    K --> F
+    F --> W[widths and shapes vs T, P]
+    W --> D[density lever → β_self bound]
+    W --> P[power lever → S₀ bound]
+    W --> S[skew and amplitude laws → nulls]
+    G[guards: model ladder · identifiability · coverage] -.-> D
+    G -.-> P
+```
 
 ## Results at a glance
 
@@ -70,7 +95,7 @@ so each is reported as a bound together with the fixed-lock session measurement 
 collisional width barely grows with density (below), while a real binary-collision
 width must grow *linearly*. So the fitted width is a residual floor, not resolved
 collisions — and a naive fit that reports a "detection" here is reading a floor as
-a signal. Demonstrating that the drifting-lock design *required* this care is
+a signal. Demonstrating that the drifting lock *required* this care is
 itself a result.
 
 <p align="center">
@@ -84,7 +109,11 @@ and the amplitude follows the two-photon rate law, ∝ P². These are *consisten
 with* the light-shift model, not proof of it — a flat width is equally what zero
 shift would give; the ramp's *distinctive* signature, the skew ∝ S₀³, is below
 detection in the archive (a bound), which is why the coefficient itself waits
-for a fixed-lock session.
+for a fixed-lock session. The S₀ bound and its prediction are independent by
+construction: the bound uses only the width-vs-power data (no w₀ enters),
+while the predicted 0.59 MHz is the computed polarizability at the beam
+geometry's w₀ prior — fixed before the fit and never an input to it. Their
+proximity is a test passed, not a tuning.
 
 <p align="center">
   <img src="figures/fig2_power_sweep.png" width="720" alt="Power sweep: width flat, amplitude proportional to P squared">
@@ -119,7 +148,9 @@ less room for laser width, and vice versa. The observed ≈ 5.2 MHz line is
 reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 65 µm (laser ~1.1 MHz).
 Only a direct beam-profile ("knife-edge") measurement collapses this — which is
 why every absolute number above is w₀-conditional, and why it is the first thing
-a fixed-lock session fixes.
+a fixed-lock session fixes. What each assumption moves, quantity by quantity, is
+tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
+("Sensitivity at a glance").
 
 <p align="center">
   <img src="figures/fig3_transit_mc.png" width="560" alt="Line width versus beam waist: the transit/laser degeneracy">
@@ -144,7 +175,7 @@ a fixed-lock session fixes.
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest -q                 # fast test suite (~22 s)
+pytest -q                 # fast test suite (~35 s)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
@@ -152,13 +183,8 @@ The 2025 dataset is already in `data_raw/`, so the pipeline runs directly. Each
 stage reads the previous stages' output in `results/`:
 
 ```bash
-for s in run_qc run_noise run_ruler run_linefit \
-         run_beta_self run_global_fit run_lever_crosscheck run_laser_epoch \
-         run_power_sweep run_stark_sweep run_amplitude_trapping run_modelform; do
-    python scripts/$s.py
-done
-python scripts/make_figures.py          # regenerate figures/
-python scripts/make_results_ledger.py   # regenerate docs/RESULTS.md
+bash scripts/run_all.sh   # every stage in dependency order, then the figures,
+                          # docs/RESULTS.md, and the CSV status column
 ```
 
 Re-running any stage reproduces its committed CSV in `results/` byte-for-byte.

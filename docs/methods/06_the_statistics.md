@@ -232,8 +232,16 @@ worse: the individual widths are genuinely $w_0$-conditional bounds, not
 measurements, and the knife-edge $w_0$ (which removes transit as a free width) is
 exactly what lifts the degeneracy. This is the formal statement behind the
 $\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ correlation quoted in
-§2.4. *Code:* `rb5s6s/identifiability.py`, `run_identifiability.py`; closure
-`tests/test_identifiability.py`; numbers `results/identifiability.csv`.
+§2.4.
+
+The same numbers answer *why not fit $w_0$ jointly*: $w_0$ enters the line only
+through this width block (transit $\propto 1/w_0$) and the intensity
+normalization ($\propto 1/w_0^2$), so freeing it adds a fourth member to the one
+subspace the data already cannot split — the fit would return the prior dressed
+as a posterior. $w_0$ is instead measured out of band (the knife-edge) and
+propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
+`run_identifiability.py`; closure `tests/test_identifiability.py`; numbers
+`results/identifiability.csv`.
 
 ### 4.11 Does the 95% bound actually cover? — an injection-recovery study (M13)
 
@@ -263,6 +271,28 @@ So the headline is empirically calibrated: unbiased estimate, a genuinely-95%
 (conservative) bound, and a documented false-detection rate that the
 monotonicity guard suppresses. *Code:* `rb5s6s/coverage.py`, `run_coverage.py`;
 closure `tests/test_coverage.py`; numbers `results/coverage.csv`.
+
+### 4.12 Why a profile likelihood, not a posterior
+
+The choice is driven by this dataset, not by doctrine:
+
+1. **The headline is a bound, and a bound is only worth its frequentist
+   coverage** — which §4.11 buys by simulation. A credible interval would need
+   the same injection study to earn the same trust; the profile construction is
+   the one we can, and do, calibrate directly.
+2. **The dominant systematic is deliberately OPEN.** A posterior needs a prior
+   on $w_0$, and marginalizing folds that prior invisibly into the quoted
+   number. Keeping $w_0$ out of the likelihood and quoting an explicit
+   $w_0$-band (§C1 of the ledger) keeps the conditionality on the page — and
+   when the knife-edge lands, the band collapses without redoing the inference.
+3. **Where the data are weakest, a prior would dominate.** Three densities and
+   one residual degree of freedom (§4.5), or a $\chi^2$ flat to first order at
+   the $\kappa=0$ rail (C3d): exactly where honesty matters most, a posterior
+   mostly reflects the prior, while the Student-t quantile and the profile scan
+   state the data-poverty out loud.
+
+Bayesian machinery is used where it is the right tool — model *selection* — as
+the BIC ladder of §4.9.
 
 ---
 
