@@ -93,6 +93,10 @@ QUANTITY_STATUS = {
     "model_ladder.csv": {
         "summed_bic": "DIAGNOSTIC", "dBIC_rung": "DIAGNOSTIC",
     },
+    "identifiability.csv": {
+        "condition_number": "DIAGNOSTIC", "corr": "DIAGNOSTIC",
+        "best_constrained_sigma": "DIAGNOSTIC", "worst_constrained_sigma": "DIAGNOSTIC",
+    },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 
