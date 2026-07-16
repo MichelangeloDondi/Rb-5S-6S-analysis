@@ -17,7 +17,9 @@ residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise flo
 > broadening, laser width, the power-dependent light shift — as rigorous **bounds**,
 > and lay out the fixed-lock measurements that turn each bound into a number.
 
-**Where to go next:** full derivations and statistics → [`docs/methods.md`](docs/methods.md) ·
+**Where to go next:** the big picture (goals, prior art, what each future
+measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
+full derivations and statistics → [`docs/methods.md`](docs/methods.md) ·
 results table (auto-generated) → [`docs/RESULTS.md`](docs/RESULTS.md) ·
 measurement plan → [`docs/PLAN.md`](docs/PLAN.md) ·
 prior work → [`docs/LITERATURE.md`](docs/LITERATURE.md).
