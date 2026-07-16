@@ -33,6 +33,19 @@ from rb5s6s.constants import GAMMA_NAT_HZ  # noqa: E402
 GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
 FIG.mkdir(exist_ok=True)
+# Fingerprint of the results/ CSVs these figures are drawn from, stamped into
+# each PNG's metadata so a stale figure (results changed, figure not redrawn)
+# is caught by tests/test_figures_fresh.py without a fragile pixel compare.
+_DATA_FP = C.results_fingerprint()
+
+
+def _save(fig, name):
+    """tight_layout + savefig with the data fingerprint embedded, then close."""
+    fig.tight_layout()
+    fig.savefig(FIG / name, metadata={"DataFingerprint": _DATA_FP})
+    plt.close(fig)
+
+
 # Okabe-Ito (colorblind-safe), fixed order for the four peaks
 PEAK_COLOR = {"4121": "#0072B2", "4154": "#D55E00", "4192": "#009E73", "4207": "#E69F00"}
 _ISO = {"4121": "$^{87}$Rb F1", "4154": "$^{85}$Rb F2",
@@ -77,7 +90,7 @@ def fig_width_vs_density():
                  "(collisions must be monotonic; the wiggles are between-block laser drift)",
                  fontsize=9)
     ax.legend(fontsize=8, ncol=2)
-    fig.tight_layout(); fig.savefig(FIG / "fig1_width_vs_density.png"); plt.close(fig)
+    _save(fig, "fig1_width_vs_density.png")
 
 
 def fig_power_sweep():
@@ -111,7 +124,7 @@ def fig_power_sweep():
     a2.set_xlabel("power (mW)"); a2.set_ylabel("peak amplitude (V)")
     a2.set_title("C3b: amplitude $\\propto P^2$\n(two-photon rate law)", fontsize=9)
     a2.legend(fontsize=8)
-    fig.tight_layout(); fig.savefig(FIG / "fig2_power_sweep.png"); plt.close(fig)
+    _save(fig, "fig2_power_sweep.png")
 
 
 def fig_transit_mc():
@@ -134,7 +147,7 @@ def fig_transit_mc():
     ax.set_title("M9: transit ⊗ natural vs $w_0$ — the transit/laser degeneracy\n"
                  "crossover near $w_0\\approx18$–$20\\,\\mu$m sets narrow-vs-not", fontsize=9)
     ax.legend(fontsize=8, loc="center right")
-    fig.tight_layout(); fig.savefig(FIG / "fig3_transit_mc.png"); plt.close(fig)
+    _save(fig, "fig3_transit_mc.png")
 
 
 def fig_amplitude_ratios():
@@ -163,7 +176,7 @@ def fig_amplitude_ratios():
                  "1–3% within-block, but 30–50% between-block drift ⇒ archive can't test it",
                  fontsize=9)
     ax.legend(fontsize=8)
-    fig.tight_layout(); fig.savefig(FIG / "fig4_amplitude_ratios.png"); plt.close(fig)
+    _save(fig, "fig4_amplitude_ratios.png")
 
 
 def fig_pooled_width():
@@ -241,7 +254,7 @@ def fig_pooled_width():
                  "4 peaks agree ⇒ sharing validated, M4c); the tied fit's drop is\n"
                  "the β↔σ_laser degeneracy, not a physical laser drift", fontsize=8)
     a2.legend(fontsize=7.5)
-    fig.tight_layout(); fig.savefig(FIG / "fig5_pooled_width.png"); plt.close(fig)
+    _save(fig, "fig5_pooled_width.png")
 
 
 def fig_gamma_floor():
@@ -305,7 +318,7 @@ def fig_gamma_floor():
                  "lever-dependent BOUND (per-condition split;\n"
                  "split-independent check in fig5A)", fontsize=8)
     ax.legend(fontsize=7, loc="upper left", ncol=2)
-    fig.tight_layout(); fig.savefig(FIG / "fig6_gamma_floor.png"); plt.close(fig)
+    _save(fig, "fig6_gamma_floor.png")
 
 
 def main() -> int:

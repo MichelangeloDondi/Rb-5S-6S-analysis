@@ -33,6 +33,26 @@ ARCHIVE_SOURCE_DIR = Path(
 Only needed to (re)run scripts/import_data.py on Michelangelo's machine.
 Everyone else: data_raw/ ships inside this repository — you never need this."""
 
+
+def results_fingerprint(results_dir=None):
+    """A deterministic short hash over the committed results CSVs — the mutable
+    inputs the figures are drawn from.
+
+    `make_figures.py` embeds this in each figure's PNG metadata at draw time,
+    and `tests/test_figures_fresh.py` checks the committed figures still carry
+    the CURRENT fingerprint. So a stale figure (a CSV moved but the figure was
+    not redrawn — the failure that once left fig1/3/5/6 showing an old beta)
+    is caught mechanically, without a matplotlib-version-fragile pixel compare.
+    Over the whole results/ set on purpose: figures are committed artifacts of
+    the pipeline, so any results change should be followed by a redraw."""
+    import hashlib
+    d = Path(results_dir) if results_dir else RESULTS_DIR
+    h = hashlib.sha256()
+    for p in sorted(d.glob("*.csv")):
+        h.update(p.name.encode())
+        h.update(p.read_bytes())
+    return h.hexdigest()[:16]
+
 # --------------------------------------------------------------------------
 # M0 — ingest & QC
 # --------------------------------------------------------------------------

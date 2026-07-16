@@ -166,6 +166,12 @@ every document quotes *that* value — so a re-analysis that moves a number can
 never leave a stale copy behind unnoticed. To change a headline number: re-run
 its producer, then run the suite; it names any document still out of step.
 
+The **figures** carry the same discipline: `make_figures.py` stamps a fingerprint
+of the results CSVs into each PNG's metadata, and `tests/test_figures_fresh.py`
+fails if a committed figure was drawn from stale results (the fix is to re-run
+`make_figures.py`). The check reads a hash in the PNG, not pixels, so it is
+independent of the matplotlib version that drew the figure.
+
 ## Repository map
 
 ```
