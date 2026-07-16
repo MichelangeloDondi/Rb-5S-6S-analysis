@@ -14,8 +14,8 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
 > OPEN prior. That status is stated per-result in §5 **and now machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…), so
-> a number never reads as more certain than it is. Modules M0→M13
-> (with lettered fitting sub-stages M4b–M4e), **212 tests**
+> a number never reads as more certain than it is. Modules M0→M14
+> (with lettered fitting sub-stages M4b–M4e), **214 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3
 > power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level. A
@@ -71,7 +71,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M4 density + $\beta$ | M4b global fit | M4c $\sigma_\text{laser}$ sharing | M4d lever check |
   | M4e Stark sweep | M5 laser epoch | M6 power sweep | M7 amplitude trapping |
   | M8 model-form | M9 transit MC | M10 amplitude ratios | M11 model ladder (BIC) |
-  | M12 identifiability | M13 coverage study |  |  |
+  | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -131,13 +131,13 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           lineshape(M3) linefit(M3) density(M4) beta(M4) global_fit(M4b)
           lever_crosscheck(M4d) stark(M4e) modelform(M8) transit_mc(M9)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
-          fitutil _compat
+          sharing_bic(M14) fitutil _compat
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
-tests/    212-test battery (195 fast ~35 s + 17 `slow` high-statistics
+tests/    214-test battery (195 fast ~35 s + 19 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures and the MANIFEST qc_reason guards);
           CI runs the full set on numpy-minimum AND latest
@@ -156,7 +156,7 @@ The first five scripts form the pipeline (each reads the previous ones'
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]" && pytest -q          # 195 fast tests (~35 s)
-pytest -q --runslow                           # full 212 incl. slow closures (what CI runs)
+pytest -q --runslow                           # full 214 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the old archive):
 bash scripts/run_all.sh
