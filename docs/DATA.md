@@ -194,7 +194,7 @@ conclusions:
   FWHM on this line would be 430–466 MHz, whereas the Gaussian it fits is
   σ ≈ 0.81–0.88 MHz, i.e. an FWHM of ≈1.9–2.1 MHz — **~220× narrower than Doppler**.
   That factor is not an error in the fit; it is the Doppler-free geometry working
-  as designed (§1.1 of `methods.md`): the first-order shift cancels for every atom,
+  as designed (`methods/01_the_measurement.md`): the first-order shift cancels for every atom,
   which is the entire purpose of retro-reflecting the beam. A Gaussian of ~2 MHz on
   this line therefore cannot be the velocity distribution.
 - **What that Gaussian was actually absorbing.** With no transit-time kernel in the
