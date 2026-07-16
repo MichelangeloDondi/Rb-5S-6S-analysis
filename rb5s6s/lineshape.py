@@ -301,7 +301,8 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     lk = gaussian(g, sigma_laser_fwhm) if laser_kind == "gaussian" \
         else lorentzian(g, sigma_laser_fwhm)
     prof = _conv(prof, lk, dnu)
-    prof = _conv(prof, two_sided_exponential(g, transit_fwhm), dnu)
+    if transit_fwhm > 0:                 # 0 => no transit kernel (nested-model ladder)
+        prof = _conv(prof, two_sided_exponential(g, transit_fwhm), dnu)
     if s0 > 0:
         prof = _conv(prof, stark_ramp(g, s0), dnu)
 

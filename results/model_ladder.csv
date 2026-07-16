@@ -1,0 +1,8 @@
+quantity,key,value,unit,status
+summed_bic,A_voigt,45812.9,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,B_transit,44113.0,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,C_collisions,43677.7,BIC over 12 T-sweep conditions,DIAGNOSTIC
+summed_bic,D_stark,43777.8,BIC over 12 T-sweep conditions,DIAGNOSTIC
+dBIC_rung,A_voigt->B_transit,1699.9,BIC[simpler]-BIC[richer]; decisive; WARRANTED (>10 decisive),DIAGNOSTIC
+dBIC_rung,B_transit->C_collisions,435.3,BIC[simpler]-BIC[richer]; decisive; WARRANTED (>10 decisive),DIAGNOSTIC
+dBIC_rung,C_collisions->D_stark,-100.1,BIC[simpler]-BIC[richer]; decisive; not warranted (>10 decisive),DIAGNOSTIC

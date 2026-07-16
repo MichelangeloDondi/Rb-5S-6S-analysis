@@ -90,6 +90,9 @@ QUANTITY_STATUS = {
         "S0_225mW_fit": "BOUND", "S0_225mW_pred": "CALIB",
         "chi2_red": "DIAGNOSTIC", "core_sigma_laser": "PRELIM",
     },
+    "model_ladder.csv": {
+        "summed_bic": "DIAGNOSTIC", "dBIC_rung": "DIAGNOSTIC",
+    },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 

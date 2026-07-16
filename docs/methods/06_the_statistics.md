@@ -175,6 +175,39 @@ trace's own measured FWHM, clipped to $[9,25]$ MHz. The rulers need no such cut
 intrinsically fold-robust (only a single line, which literally appears twice,
 is at risk). *Code:* `linefit.adaptive_halfwidth()`.
 
+### 4.9 Is each component warranted? — the nested model ladder (M11)
+
+§4.7's BIC compares two *shapes* with the same parameter count. A stricter
+question a referee asks is whether each physical *component* earns its place, or
+whether a simpler model fits as well. So we fit a nested ladder of increasing
+physics and compare by BIC ($\text{BIC}=\chi^2+k\ln N$, summed over conditions
+since BIC is additive over independent data):
+
+$$
+\text{A: Voigt} \subset \text{B: +transit} \subset \text{C: +collisional width} \subset \text{D: +AC-Stark ramp}.
+$$
+
+On the T-sweep archive the summed $\Delta\text{BIC}$ per rung is **A→B $\approx
++1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
+Lorentzian width beyond natural is warranted — the line genuinely needs both a
+Lorentzian and a Gaussian component), and **C→D $\approx -100$** — *the free
+AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design
+stated as a model comparison, and it is the honest referee-facing answer to "is
+your novel AC-Stark component an unnecessary parameter?": on the *drifted*
+archive it **is** — the free per-scan centres absorb the ramp's pull and
+$\sigma_\text{laser}$ its width, so BIC declines to buy it, which is precisely
+why the archival AC-Stark result is a **bound**, not a measurement (§4.5).
+
+Two guards keep this from being mere blindness. The B→C rung warrants a free
+homogeneous *width*, not resolved collisions: that width is separately shown
+(M4) to be a **density-independent floor**, so $\beta_\text{self}$ stays a bound
+regardless. And the *same* ladder, on synthetic data built with a stable lock
+(no per-scan drift), **decisively warrants the AC-Stark rung and recovers the
+injected $S_0$** — while on $S_0=0$ data it declines it. So the null on the real
+archive is a property of the drift, not of the method: a fixed-lock session
+would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`;
+closure `tests/test_model_ladder.py`; numbers `results/model_ladder.csv`.
+
 ---
 
 ---
