@@ -165,8 +165,29 @@ bottom of this list, never the top.
    so w₀ sets the systematic on *every* absolute number (a 10% w₀ error → **20% on Δα**)
    *and* collapses the transit↔σ_laser degeneracy (the only reason σ_laser is a bound).
    This is the difference between "w₀-conditional bracket" and "absolute measurement."
-2. **Retro-ratio ρ in situ, per config.** $S_0\propto(1+\rho)$; without ρ the absolute
-   Δα carries a ~2× ambiguity. Cheap, essential.
+2. **Retro-ratio ρ in situ, per config — and it drifts with temperature.**
+   $S_0\propto(1+\rho)$, so ρ scales the coefficient directly; without it the
+   absolute Δα carries a ~2× ambiguity. ρ is **not** constant across a T-sweep.
+   The retro leg is exit-window → lens → mirror → lens → exit-window, so
+   $\rho = T_\text{win}^2 T_\text{lens}^2 R_\text{mirror}$ (only the *exit*
+   window enters, and it enters *twice*; the entrance window attenuates forward
+   and retro equally and cancels). The exit window accumulates a Rb film that
+   thickens as the cell cools — windows sit below the reservoir at low T — so a
+   film transmission falling ~0.99→0.90 per pass takes ρ from ~0.90 at 130 °C to
+   ~0.75 at 70 °C: $(1+\rho)$ goes 1.90→1.75, an **~8% drift in $S_0$ across the
+   sweep from optics alone**. Uncorrected, that reads as a temperature-dependent
+   light shift — the exact confound the self-shift program must not inherit.
+
+   *How to measure it (decompose stable from drifting):* **(a)** the retro optics
+   $T_\text{lens}^2R_\text{mirror}$ **once, before the campaign** — power into vs
+   back out of the lens–mirror–lens cat's-eye — since they do not drift; **(b)**
+   the window transmission **at every condition, before *and* after the cell (not
+   only after)** — the live before/after ratio gives $T_\text{win}$ at that
+   (T, dwell), where a value taken once, or only downstream, is already stale by
+   the next condition; before-and-after also separates entrance- from exit-window
+   filming if they differ. Then $\rho(T)=T_\text{win}(T)^2 [T_\text{lens}^2 R_\text{mirror}]$.
+   *Gold standard, no symmetry assumption:* a pick-off before the cell reading
+   **both** the outgoing and the returning beam gives ρ directly. Cheap, essential.
 
 **Tier 1 — enablers (the measurement does not exist without them):**
 3. **150–170 °C, SAME session, INTERLEAVED T order.** The β_self / self-shift lever:
