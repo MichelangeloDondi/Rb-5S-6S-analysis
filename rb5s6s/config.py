@@ -35,22 +35,36 @@ Everyone else: data_raw/ ships inside this repository — you never need this.""
 
 
 def results_fingerprint(results_dir=None):
-    """A deterministic short hash over the committed results CSVs — the mutable
-    inputs the figures are drawn from.
+    """A deterministic short hash over the git-TRACKED results CSVs — the
+    committed inputs the figures are drawn from.
 
     `make_figures.py` embeds this in each figure's PNG metadata at draw time,
     and `tests/test_figures_fresh.py` checks the committed figures still carry
     the CURRENT fingerprint. So a stale figure (a CSV moved but the figure was
     not redrawn — the failure that once left fig1/3/5/6 showing an old beta)
     is caught mechanically, without a matplotlib-version-fragile pixel compare.
-    Over the whole results/ set on purpose: figures are committed artifacts of
-    the pipeline, so any results change should be followed by a redraw."""
+
+    Over the git-TRACKED CSVs specifically, for two reasons: (1) it covers every
+    committed result, so it cannot miss a figure's input (a hand-listed input
+    set can, and did); (2) it must exclude gitignored scratch dumps like
+    `qc_metrics.csv` — those are present in a dev checkout but not in CI's, so
+    hashing the raw directory gives a different value on each and the check
+    fails spuriously. `git ls-files` is exactly the committed set CI sees."""
     import hashlib
+    import subprocess
     d = Path(results_dir) if results_dir else RESULTS_DIR
+    try:
+        out = subprocess.run(["git", "-C", str(REPO_ROOT), "ls-files", "results/*.csv"],
+                             capture_output=True, text=True, check=True).stdout
+        rels = sorted(out.split())
+    except Exception:                                   # no git (e.g. a tarball): best effort
+        rels = sorted(str(p.relative_to(REPO_ROOT)) for p in d.glob("*.csv"))
     h = hashlib.sha256()
-    for p in sorted(d.glob("*.csv")):
-        h.update(p.name.encode())
-        h.update(p.read_bytes())
+    for rel in rels:
+        p = REPO_ROOT / rel
+        if p.exists():
+            h.update(rel.encode())
+            h.update(p.read_bytes())
     return h.hexdigest()[:16]
 
 # --------------------------------------------------------------------------
