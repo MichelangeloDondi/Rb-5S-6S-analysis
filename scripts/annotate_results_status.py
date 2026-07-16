@@ -104,6 +104,11 @@ QUANTITY_STATUS = {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
         "false_measurement_rate": "DIAGNOSTIC",
     },
+    "sharing_bic.csv": {
+        "bic_eff": "DIAGNOSTIC", "chi2_red": "DIAGNOSTIC",
+        "dBIC_eff_block_minus_T": "DIAGNOSTIC",
+        "dBIC_raw_block_minus_T": "DIAGNOSTIC",
+    },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 

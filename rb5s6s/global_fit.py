@@ -173,6 +173,13 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
         "sigma_laser_err": [float(err[i]) for i in range(nS)],
         "transit_ref": float(sol.x[nS + nB] if fit_transit else transit_ref_mhz),
         "chi2_red": chi2_red, "n_traces": ntr,
+        # for BIC (M14): raw counts AND the correlation-corrected effective ones.
+        # The fit whitens each residual by sqrt(tau_block), so the matching
+        # effective sample size divides each block's points by its tau; using raw
+        # N with the whitened chi2 (or vice-versa) double-counts the correlation.
+        "ndata": ndata, "nparams": len(p0),
+        "chi2_whitened": float(2.0 * sol.cost),                      # sum of whitened resid^2
+        "ndata_eff": float(sum(len(t[0]) / t[10] for t in tr)),      # sum n_block / tau_block
         "noise_floor_limited": bool(chi2_red < 0.8),
         "params_at_bound": sorted(
             [f"sigma_{k}" for i, k in enumerate(sig_keys) if sol.x[i] <= 1e-9]

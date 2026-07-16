@@ -294,6 +294,42 @@ The choice is driven by this dataset, not by doctrine:
 Bayesian machinery is used where it is the right tool — model *selection* — as
 the BIC ladder of §4.9.
 
+### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? — a BIC, and a cautionary one (M14)
+
+The hierarchical fit (§4.2) shares one $\sigma_\text{laser}(T)$ across the four
+peaks at each temperature (Model A, per-$T$); the conservative alternative frees
+it per (peak, $T$) block (Model B, per-block, 9 more parameters). §4.5 and the
+M4c check argue the sharing is *consistent* but *underpowered*; this puts a number
+on it. Both models are fit with the same machinery (`fit_global`) and scored by
+$\text{BIC}=\chi^2+k\ln N$, with $\Delta\text{BIC}=\text{BIC}_\text{block}-\text{BIC}_T$
+($>0$ favours the shared model).
+
+The result is a lesson in why this must be done carefully. Each trace is a smooth
+line sampled at $\sim$2000 **correlated** points, so the $\sim$49k raw samples are
+not 49k independent observations. Counting them as such over-weights the per-block
+fit's tiny $\chi^2$ gain and returns $\Delta\text{BIC}\approx-46$ ("per-block
+wins"). But the noise model already whitens each residual by $\sqrt{\tau_\text{int}}$
+($\tau\approx3.5$); the **matching** effective size $N_\text{eff}=N/\tau$ with the
+whitened $\chi^2$ gives $\Delta\text{BIC}\approx+62$ ("shared wins, decisively").
+The effective-$N$ BIC is the statistically correct one — correlated samples are not
+independent — so the shared model is favoured: **the archive cannot pay for
+per-block $\sigma_\text{laser}$ freedom**. Two honest riders travel with that:
+
+- it is **parsimony, not physics** — four peaks that co-drifted between unlogged
+  acquisitions would look shared too (§4.2, M4c), and no in-sample score recovers
+  the timing; $\Delta\text{BIC}>0$ means "the alternative is not warranted", not
+  "the sharing is real";
+- the sign **flips** with the sample-counting, so the archive does not *robustly*
+  resolve shared-vs-independent — which is exactly the M4c reading, now
+  quantitative. The headline therefore stays the model-independent width-slope
+  bound (C1), not the sharing-dependent hierarchical value.
+
+*Closure* (`tests/test_sharing_bic.py`, clean synthetics where $\tau=1$ so the two
+$N$s coincide): the score correctly favours per-$T$ when the peaks truly share one
+$\sigma_\text{laser}$ and per-block when they carry grossly different ones — it
+detects real sharing structure when the data carry the power the archive lacks.
+*Code:* `rb5s6s/sharing_bic.py`, `run_sharing_bic.py`; numbers `results/sharing_bic.csv`.
+
 ---
 
 ---
