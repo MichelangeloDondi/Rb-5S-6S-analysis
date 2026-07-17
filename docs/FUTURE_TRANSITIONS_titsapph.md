@@ -108,8 +108,10 @@ the current near-IR path does not pass. So:
   **InGaAs** detector — single-photon sensitivity below a Si PMT, plus hot-cell
   IR-background filtering) is a **trapping-free** amplitude channel, and the
   **795-vs-1.3 µm ratio discriminates a real degeneracy-law/amplitude deviation from
-  a radiation-trapping artifact** (`PLAN.md` §8.4a). Orthogonal to the 420 nm
-  upper-ladder swap — this is a 6S-detection refinement, not an enabler.
+  a radiation-trapping artifact** (`PLAN.md` §8.4a). The IR-cascade-to-beat-trapping
+  trick is established on the sibling line — Hassanin et al. 2023 (5D→5P) and Beard
+  et al. 2024 (5D→6P, 776 nm) — so it is proven, not speculative. Orthogonal to the
+  420 nm upper-ladder swap — this is a 6S-detection refinement, not an enabler.
 
 Net: the filter swap is the price of admission to the upper ladder, and it is a
 *cheap, one-time* price (one blue detection path) for a *large* payoff (four new

@@ -102,6 +102,27 @@ atoms.
 
 - Derive f(s) for the evanescent mode profile; convolve with the transit kernel
   for atoms crossing the shell and the cell-referenced natural + laser widths.
+- **The surface term is two parts, not one — Casimir–Polder + a calibratable
+  electrostatic component.** Pennetta et al. 2026 (`LITERATURE.md` §8) show that on
+  this exact platform the atom–surface potential is **CP *plus* electrostatic
+  attraction from surface charges on the silica**, not CP alone. So the surface
+  shift folded into the lineshape must carry (i) the universal CP term (near-field
+  C₃/z³ crossing to the retarded C₄/z⁴ — the regime and z-scaling Ton, Kestler,
+  Steck & Barreiro 2026 measure directly, `LITERATURE.md` §9), and (ii) a
+  **device- and time-dependent electrostatic term** that must be calibrated per run
+  and treated as a systematic, not a universal constant. This upgrades the model
+  from a single vdW shift to a two-component surface potential and is the honest
+  form of the "near-surface shift" the fit extracts.
+- **Read the surface shift *from the line*, as a distribution.** The template is
+  established: Ton et al. 2026 extract a kHz CP shift purely from the spectroscopic
+  lineshape (Sr, 189 nm from a dielectric); the near-surface shift here is likewise a
+  *distribution* over the atoms' distance-from-surface, read by the same moment
+  machinery that reads the light-shift distribution — the two inhomogeneities are
+  handled by one method. (To verify before citing: Dutta et al. and Sargsyan/Sarkisyan
+  on higher-order-CP / selective-reflection lineshapes, `LITERATURE.md` §9.)
+- **A feasibility constraint to respect:** the evanescent probe itself heats the
+  trapped atoms, so near-field probing is inherently transient (Piotrowski/
+  Rauschenbeutel 2026, to verify) — the measurement window and probe power are bounded.
 - Fit the pushing dip vs power and detuning; extract the near-surface shift and
   test the resonance-scattering-pushing hypothesis quantitatively against the
   data — the quantitative completion of Gokhroo 2022.

@@ -809,7 +809,14 @@ absorption channel — a probe laser + pickoff photodiode):
    vanishes at 1.3 µm was trapping, one that persists is real (polarization impurity
    opening the vector channel, or a genuine operator effect); the 795/1.3 µm ratio
    itself measures the trapping factor. It is the direct twin of exploit 4 (detect the
-   untrapped signal rather than correct the trapped one). **Cost:** 1.3 µm is past
+   untrapped signal rather than correct the trapped one). **This is an established
+   technique, not a new one:** Hassanin et al. (2023, Phys. Rev. A **107**, 043104)
+   detect the sibling **5D→5P infrared cascade** in a hot Rb cell precisely because it
+   "does not suffer from reabsorption," which is what lets them study collisions at
+   high density; Beard et al. (2024, Opt. Express, DOI 10.1364/OE.513974) stabilise a
+   5D clock on the 776 nm (5D→6P) cascade. So the 1.3 µm channel is a *proven*
+   trapping-free readout — the only new element here is turning it onto the
+   degeneracy-law / amplitude-ratio test on the 6S line. **Cost:** 1.3 µm is past
    silicon → an **InGaAs detector** (single-photon sensitivity below a Si/GaAs PMT at
    795; the hot-cell IR background needs filtering); broadband 1.32–1.37 µm catches
    both fine-structure branches.
