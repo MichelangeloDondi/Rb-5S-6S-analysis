@@ -220,8 +220,11 @@ is **blue**, not red. Every archival result is sign-immune (C3c is a symmetric
 null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
 *pull direction* and the ramp's stated side depend on it. The discrepancy with
 Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
-check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm); the
-narrative above keeps the established convention until it is resolved.
+check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm) — and
+since Orson's own AC-Stark measurement was a *null* at 6 MHz resolution, the sign
+was never set by experiment, so this is a theory-vs-theory question that a
+fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle
+outright. The narrative above keeps the established convention until it is resolved.
 
 ## 6. Honest novelty position
 
