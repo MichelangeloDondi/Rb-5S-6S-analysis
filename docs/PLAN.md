@@ -158,7 +158,9 @@ time budget with two waists, not three (§8.5).
 
 The session's job is **bounds → measurements**. Rank effort by *which bound becomes a
 measurement, and how absolute* — not by data volume. If a day is lost, cut from the
-bottom of this list, never the top.
+bottom of this list, never the top. (This section ranks *observables*; §8.7 ranks
+the *sampling currencies* — repeats vs blocks vs days vs orders — against the
+measured 2025 failure modes.)
 
 **Tier 0 — the systematic floor (protect first; the single biggest impact, and not a "more data" knob):**
 1. **Knife-edge w₀, per config.** $S_0\propto 1/w_0^2$ and β_self rides on transit($w_0$),
@@ -437,10 +439,12 @@ in roughly eight days at the cell, and which shots depend on which. Run it in th
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: telescope install; config L: knife-edge w(z), ρ in situ.
-- **D2**: T grid day A at L, ascending, 4 peaks interleaved (incl. 150/170 °C
-  if oven allows).
-- **D3**: T grid day B at L, descending.
+- **D1**: telescope install; config L: knife-edge w(z), ρ in situ. While the
+  oven settles: the drift-characterization block (§8.7.5) → freeze the RF
+  bracket cadence.
+- **D2**: T grid day A at L, ascending, 4 peaks interleaved + mini-P excursion
+  per dwell (§8.7.4), sentinel ×3 (§8.7.6) (incl. 150/170 °C if oven allows).
+- **D3**: T grid day B at L, descending; sentinel ×3.
 - **D4**: P grid at L (randomized, ~8 powers), am. Reconfigure → S:
   knife-edge, ρ, pm.
 - **D5**: skew deep-integration session at S (sized per §8.3); P grid at S.
@@ -461,6 +465,135 @@ session → S₀ magnitude + skew detection attempt; L/M mean-pull + variance �
 ramp-law form test (the actual novelty claim); S−L width difference → absolute
 intensity axis → Δα in physical units; interleaved blocks → degeneracy-law +
 trapping test; M spot → 2025↔2026 epoch bridge; cusp session → M8 closure.
+
+### 8.7 Resource allocation — what bit in 2025, and what each hour buys
+
+The prescriptions above each cure one 2025 failure; this section is the ledger
+that connects them. It states what actually bit — in measured numbers, with the
+module that measured it — and then prices the four ways cell time can be spent
+(repetitions, blocks, days/orders, interleaves), so that when the schedule
+compresses the cuts follow arithmetic, not habit.
+
+#### 8.7.1 The 2025 post-mortem (measured, not remembered)
+
+| # | What bit | Measured size | Consequence | Cure (where) |
+|---|----------|---------------|-------------|--------------|
+| 1 | Between-block width scatter from the drifting lock | σ_B ≈ 0.12 MHz vs within-block SEM ≈ 0.05 MHz (`coverage.py`, archive-calibrated) | widths drift-limited, not photon-limited; σ_laser a bound | fixed lock; brackets + veto (§8.4) |
+| 2 | Only 3 densities → 1 residual DOF | t(0.95,1) = 6.31 error multiplier | β_self a bound | ≥5 T blocks (§8.4) |
+| 3 | T monotonic in time (one sweep direction, ever) | density slope exactly collinear with drift | monotonicity guard had to carry the claim | opposite-order days (§8.4) |
+| 4 | Cross-session high-density anchor | joint β collapses 0.036 → 0.014 when folded in (M4d lever test) | high-T lever unusable | 150–170 °C same-session (§8.4) |
+| 5 | No timestamps anywhere | block order the only clock | σ_laser-sharing assumption untestable | log scope clock + notebook (§8.4) |
+| 6 | Ruler traces HWP-rotated (AM trick) | monitor reliability ≈ 0; wrong-sign correlation ~2σ | no drift compensator on the archive | β ≈ 1.20 pure-PM null (§8.4; methods §3) |
+| 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | knife-edge first (§8.0 #1) |
+| 8 | ρ(T) never measured | ~8% S₀ drift across the sweep from window filming alone | optics drift masquerades as physics | T_win before AND after, per condition (§8.0 #2) |
+| 9 | P sweep at a single T (130 °C) | trapping-immunity argument untested across density | discriminators data-starved | mini-P excursion in every dwell (§8.7.4) |
+| 10 | Between-block amplitude wander | 30–50% (polarization the specific suspect) | amplitude observables noisy | polarization fixed/logged + QWP null (§8.1); 12–16 reps (§8.4) |
+
+Items 1–3 are one lesson wearing three hats: **2025 spent statistics against a
+systematics-limited experiment.** Within-block noise was already 2.4× below the
+block-to-block scatter — the campaign kept buying the cheap term.
+
+#### 8.7.2 The variance budget — why repetition stopped paying at n ≈ 5
+
+For any block-mean observable, Var(mean) = σ_w²/n + σ_B²: repetition divides
+only the first term. At the archive numbers (σ_w/√5 ≈ 0.05, σ_B ≈ 0.12 MHz)
+the block error is 0.13 MHz; **doubling the repeats buys 4% for 100% more
+time**, and infinite repeats saturate at 0.12. The same hour spent on one more
+T block divides σ_B by √N AND buys a residual DOF — and the t ladder is where
+the archive bled: t(0.95, dof) = 6.31, 2.92, 2.35, 2.13, 2.02 for dof = 1…5.
+Going 3 → 5 T blocks is a ~2.7× tightening from the quantile alone (§8.4),
+before the averaging gain. Diminishing returns set in near dof ≈ 5 (2.02 vs
+the asymptotic 1.96) — hence "≥5 blocks" in §8.4, not "as many as possible."
+
+**Stopping rule (freeze it in the run notebook): repeat a condition until
+σ_w/√n < σ_B/2, then stop — past that point the statistical term inflates the
+block error by ≤ 12%, so even infinite further repeats recover at most that.**
+With 2025-like per-trace noise that is n ≈ 4–5 for width blocks, exactly where
+§8.4 already caps them.
+
+Where repetition IS the right currency — the observables that are genuinely
+photon- or gain-limited, not drift-limited: the skew deep-integration at S
+(third moment, honest 1/√N), amplitude-ratio blocks (gain scatter → 12–16
+reps, §8.4), and the tooth-width monitor (needs ~10× the 2025 count to reach
+reliability > 0, §8.4). Know which regime an observable is in before spending.
+
+#### 8.7.3 Bias is not variance — what ordering buys that repetition cannot
+
+Within a single sweep direction, drift monotonic in time is **exactly
+collinear** with physics monotonic in T: no number of repetitions separates
+them, because collinearity is a rank problem, not a noise problem (this is 2025
+item 3, and why the archive needed a guard instead of a measurement). Day A
+ascending + day B descending cancels every drift component linear in time in
+the (A+B)/2 mean, and the A−B difference *measures* the residual — a
+systematic error bar earned, not assumed. Two days in opposite orders
+therefore beat four days in the same order. Full T randomization would be
+marginally better on paper but each extra T reversal costs thermal settling
+(tens of minutes); the single reversal buys most of the protection at zero
+extra settling. Randomize freely only the free knobs (P order, peak order —
+§8.4 already does).
+
+#### 8.7.4 Loop structure — T outside (it is the expensive axis), everything else inside the dwell
+
+Thermal settling makes T the only slow knob; power, peak selection, and RF are
+seconds-scale. So T is the outer loop by necessity, and each dwell must
+extract everything cheap while the cell sits there:
+
+- 4 peaks interleaved, minutes apart (§8.4);
+- **a mini-P excursion — 2–3 powers, randomized, ~10 min**: this converts the
+  2025 single-T power sweep into width-vs-P *at every temperature*, which is
+  precisely the data the trapping/degeneracy discriminators (M7/M10) were
+  starved of. The full ~8-point P grid keeps its own block (D4) at the
+  reference T; the excursions buy the T-resolved slope;
+- matched-PM ruler brackets and interleaves (§8.4; cadence from §8.7.5);
+- the window-transmission before/after reading (§8.0 #2).
+
+Never the converse (P outer, T inner): re-thermalizing per power point
+multiplies dead time by the grid size for nothing.
+
+#### 8.7.5 RF cadence — bracket at a *measured* cadence; do not strictly alternate
+
+Strict on-off-on-off alternation halves science time for monitor information
+that saturates within a few brackets. With the β ≈ 1.20 matched-PM design an
+RF-on trace is no longer dead time (sweep rate + tooth widths + purity from
+the A₊ₖ = A₋ₖ symmetry, all at science polarization and power), but tooth
+overlap at Ω/2 = 6.25 MHz spacing still contaminates the *moment* observables
+— skew and the drift-immune centered moments come from RF-off traces only. So
+the pattern per block is: [on] – a few off traces (peaks interleaved) – [on] –
+…, and the open question is only the cadence. **Make it a measurement, not a
+guess: spend the first ~30–45 min of D1, while the oven settles, on a
+dedicated drift-characterization block** — alternate on/off at one fixed
+condition and compute the Allan deviation of tooth width and sweep rate vs
+lag; set the bracket spacing where the drift deviation crosses the few-trace
+SEM. Freeze the cadence before the first science block — the §8.4
+frozen-rules discipline applies to sampling, not only to vetoes.
+
+#### 8.7.6 The sentinel condition — a drift ruler across days (new prescription)
+
+Pick ONE condition (e.g. 90 °C, 125 mW, peak 4192, config L) and re-measure it
+at the start, middle, and end of every day, identically. Cost: ~3 short blocks
+per day. It delivers three things the 2025 archive structurally lacks: (i) a
+within-day drift time series with real DOF at fixed physics — the natural
+calibration set for the §8.4 control-variate λ; (ii) the day-to-day
+reproducibility number that §8.0 Tier 3 says must be *earned* before averaging
+days together; (iii) the common level that ties the D2 and D3 opposite-order
+grids to each other. Every 2025 drift statement is an inference through the
+lineshape model because no condition was ever revisited; the sentinel makes
+drift a direct observable.
+
+#### 8.7.7 The currency table (cut from the bottom, never the top)
+
+| Currency | Attacks | Marginal value at archive numbers | Verdict |
+|----------|---------|-----------------------------------|---------|
+| Knife-edge + ρ + high-T same-session (Tier 0/1) | the systematic floor | converts bounds → absolute measurements | never cut |
+| Second day, opposite T order | time-monotone bias | removes what NO averaging can; measures the residual | mandatory, costs no settling |
+| More T blocks (to ~6) | DOF + σ_B averaging | ~2.7× from the t quantile alone | the best statistical buy |
+| Interleaves (peaks, mini-P, rulers) | cross-condition systematics | 30–50% → 2–4% at near-zero dwell cost | always on |
+| More repeats, same condition | photon noise only | 4% for 2× time (past the crossover) | only for skew / amplitudes / ruler monitor |
+| Strict RF alternation | monitor variance | saturates; halves science time | no — bracket at the §8.7.5 measured cadence |
+
+One sentence to run the campaign by: **spend structure before statistics —
+orders before days, blocks before repeats, interleaves before points, and one
+measured cadence instead of a guessed alternation.**
 
 ## 9. Beyond 993 nm — the tunable-Ti:Sapph frontier (forward-looking)
 
