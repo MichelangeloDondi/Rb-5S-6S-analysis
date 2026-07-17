@@ -125,7 +125,7 @@ QUANTITY_STATUS = {
     },
     "fringe_tail.csv": {
         # fringe-tail leverage on the Stark ramp: the sign and magnitude at the
-        # small October waist ride on the OPEN coherence window and collection
+        # small (16 um, config S) waist ride on the OPEN coherence window and collection
         # geometry, so the coefficients are ENVELOPE (a bracket, re-derive with
         # the measured collection profile); the MC error and window fraction are
         # diagnostics of that bracket.

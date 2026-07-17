@@ -29,7 +29,7 @@ PRODUCT s(1+x) inherits a cross-term in its third moment,
 so the ramp's own skew is SUPPRESSED, not inflated -- the arcsine fringe kills
 its own skew but not the product's. The effect is a same-sign (negative) rider
 on the beam-DIVERGENCE axial averaging the pipeline already models
-(lineshape.stark_ramp_axial); at the small October waist the two must be fit
+(lineshape.stark_ramp_axial); at the small (16 um, config S) waist the two must be fit
 jointly, which is why their coefficients are wanted as reproducible facts.
 
 PHYSICS OF ONE ATOM. Beam axis z, transverse plane (x, y); Gaussian beam of
@@ -67,7 +67,7 @@ flux and the Gaussian crossing time), exactly the transit_mc convention.
 COHERENCE WINDOW. tau_c is the ONE open modelling choice. The coherent
 excitation amplitude lives at most one 6S lifetime (tau_6S ~ 46 ns), but the
 beam crossing may be shorter or longer: at the archival 50 um waist the transit
-is ~0.2 us (transit-limited, tau_c -> inf is the right cap), at the October
+is ~0.2 us (transit-limited, tau_c -> inf is the right cap), at the small
 16 um waist it is ~65 ns, comparable to tau_6S, so the two bracket the fringe
 survival. fringe_tail_mc SWEEPS tau_c between the transit-limited case and
 tau_6S to report that bracket. The fringe-survival moments are

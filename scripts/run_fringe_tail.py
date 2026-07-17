@@ -3,7 +3,7 @@
 M14: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
-at the archival (50 um, S0 = 0.6 MHz) and October (16 um, S0 = 5.7 MHz)
+at the archival (50 um, S0 = 0.6 MHz) and small-waist config S (16 um, S0 = 5.7 MHz)
 geometries, rho = 1 and 0.75, and reports how the slow-axial-speed fringe tail
 suppresses the ramp's skew, inflates its variance, and how large the
 fringe-resolved fraction is. The coherence window is swept between the
@@ -25,10 +25,10 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import TAU_6S_S  # noqa: E402
 from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
 
-# (label, w0 in m, S0 in MHz): archival prior and the October small-waist target
+# (label, w0 in m, S0 in MHz): archival prior and the small-waist (config S) target
 REGIMES = (
     ("2025 (50um, 0.6MHz)", 50e-6, 0.6),
-    ("Oct  (16um, 5.7MHz)", 16e-6, 5.7),
+    ("S    (16um, 5.7MHz)", 16e-6, 5.7),
 )
 RHOS = (1.0, 0.75)
 # coherence window: transit-limited (None) and 6S-lifetime-capped -> the bracket
@@ -96,10 +96,10 @@ def main() -> int:
     print("\n  READING: the fringe tail SUPPRESSES the ramp skew (d_skew < 0) and")
     print("  inflates its variance, both scaling with the fringe-modulation")
     print("  variance. Negligible at the archival 50 um waist (|d_skew| ~ 0.05,")
-    print("  below the archival noise); material at the October 16 um waist")
+    print("  below the archival noise); material at the small 16 um waist (config S)")
     print("  (|d_skew| ~ 0.15, ~27% of the +0.566 triangle skew). The transit <->")
     print("  tau_6S window sweep brackets it; the third cumulant is the stable")
-    print("  bracket (Oct -0.15 -> -0.18 MHz^3), the standardized skew nearly flat")
+    print("  bracket (config S -0.15 -> -0.18 MHz^3), the standardized skew nearly flat")
     print("  because the same window that grows the cumulant also grows the")
     print("  variance it is normalized by. Wrote results/fringe_tail.csv.")
     return 0

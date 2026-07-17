@@ -144,6 +144,29 @@ available time allows. Each item names the archival bound it converts into a
 measurement, so a *partial* session is still worth running and its value is
 predictable in advance.
 
+**What already stands without any new data, and the smallest tranche that adds
+to it.** The analysis of record is complete and under continuous test (public
+repository, full pytest battery + CI); §0's pipeline ingests fixed-lock data
+*unchanged*, so a session carries no analysis risk and requires no
+re-derivation — only shots. What the **archive alone** already supports is
+**P1-min**: the drift-immune moment/bounds framework, the self-calibrating EOM
+ruler, the identifiability and coverage analyses, and the computed 5S–6S
+dynamic polarizabilities and magic wavelengths (`PAPERS_PORTFOLIO.md`, §0).
+That is a self-contained, defensible result — the thesis core and a methods
+paper — and it depends on **no** further data being taken. A fixed-lock
+session is therefore an *upgrade*, not a prerequisite: it converts the named
+bounds into measured coefficients (**P1-full**). The **smallest tranche that
+converts even one bound into a measurement** is the config-L width program — a
+geometry-setup block plus the *two opposite-order* T-grid days (§8.5 D1–D3) —
+which by itself yields β_self (or a much-tightened bound) and the fixed-lock
+σ_laser; a single same-direction day does **not**, because §8.4's
+bound→measurement guarantee needs the opposite-order pair (no single element
+earns it). Value is monotone in shots: a session truncated at any point still
+leaves the higher-priority conversions done (§8.0), and if none is ever run,
+P1-min stands unchanged. Nothing below asks the group to bet on the analysis —
+the analysis is finished; a session only decides whether the coefficients are
+*measured* or remain *bounded*.
+
 Constraint set: no more power (225 mW ceiling); telescope before the EOM and
 lens swaps ARE allowed; repeats across days and orders are allowed. Core
 architecture (survived review): **the telescope is an intensity
@@ -267,7 +290,8 @@ Telescope sized so the beam enters the EOM at ≤1 mm waist (3 mm aperture
 ≥ 3w → clipping negligible at the source). Per config: knife-edge at ≥5 z
 positions through the focus (w(z) hyperbola gives w₀ AND z_R; consistency
 z_R = πw₀²/λ cross-checks the stage scale — a knife-scale error k and stage
-error s must satisfy s = k² to hide), retro ratio ρ measured IN SITU at the
+error s must satisfy s = k² to hide), **lens separations calipered at both setup
+and teardown** (§8.1a below), retro ratio ρ measured IN SITU at the
 cell position (both directions; return-path clipping differs per waist), collection geometry photographed and measured for the MC, and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
 paraxial two-photon rate goes as the squared degree of linear polarization and
@@ -275,7 +299,143 @@ is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measure
 on this line), so polarization drift is a specific candidate for the archival
 30–50% between-block amplitude wander, and one QWP turn to circular per config
 is a free extinction null test (any residual peak = polarization impurity or
-background).
+background) — expanded, with the plate placement that makes it work, in §8.1.1.
+
+#### 8.1a Lens separations as a geometry consistency check (caliper, setup + teardown)
+
+**Prescription.** At every configuration setup *and* teardown, caliper (or read
+off marked rail positions) the two lens separations that bracket the cell — the
+focusing lens to the cell, and the retro lens to the folding mirror — and log
+them beside the knife-edge. The design geometry is fixed and known: the group's
+993 nm lineage focuses with a plano-convex lens of f = 150 mm and retro-images
+with the mirror placed at 2f from the focus, so the beam self-images back onto
+its own waist (ρ ≈ 1 by construction; Nieddu 2019, verified from the published
+setup). The measured separations must reproduce that layout.
+
+**What it does and does not buy.** A tape/caliper is good to only ~1–2 mm
+absolutely, so it does **not** pin w₀ — the knife-edge does. Two things still
+make it worth the thirty seconds:
+- **Coarse waist-position closure, and it bites hardest exactly where it
+  matters.** On-axis intensity falls as I(z) = I₀/(1+(z/z_R)²). At config S
+  (z_R ≈ 0.8 mm) a 1 mm placement error drops the intensity to
+  1/(1+(1/0.8)²) ≈ 0.4 — a **>2× intensity error** the knife-edge would
+  otherwise have to catch unaided, and directly a shift in S₀ ∝ I; at config L
+  (z_R ≈ 11 mm) the same millimetre is <1%. So it is a strong constraint at S
+  and a loose sanity check at L — cheap insurance against a gross mispositioning
+  between the knife-edge scan and the science blocks.
+- **Differential creep detector (the real value).** Caliper *repeatability* on
+  fixed fiducial marks is <0.1 mm — far better than its absolute accuracy — so a
+  setup-vs-teardown change flags mechanical drift of the focus or the retro
+  overlap *during* the run. That is the mechanism behind a within-config S₀ or ρ
+  walk that a single knife-edge, taken once at setup, cannot see. The retro
+  lens-to-mirror separation specifically gates the self-imaging condition that
+  sets ρ and the standing-wave overlap, so its teardown reproducibility is a
+  direct, independent check on ρ stability (§8.0 #2) — complementary to the
+  in-situ ρ pick-off, and free.
+
+Book any setup↔teardown separation change alongside the ρ before/after ratio as
+a per-config mechanical-stability line; a config whose lenses moved is a config
+whose w₀ and ρ are suspect for its science blocks.
+
+#### 8.1.1 Polarization management, and the plate before the retro mirror
+
+**Why polarization is a first-order knob here, not a detail.** For these
+S₁/₂ → S₁/₂ lines the two-photon operator carries only a scalar (rank-0) and a
+vector (rank-1) part; the strong ΔF = 0 main lines are driven by the **scalar**
+term, whose amplitude ∝ ε_f·ε_b (the dot product of the forward and retro photon
+polarizations). Rajasree 2020 measured on this exact line that the rate scales as
+the squared degree of *linear* polarization and is exactly zero for circular.
+So the retro polarization relative to the forward is not cosmetic: it multiplies
+the Doppler-free signal by ε_f·ε_b, and any birefringence in the retro path
+walks that number.
+
+**The configuration table (Nieddu 2019 mapped all of these on this cell; verified
+from the paper).** With the forward beam linear:
+
+| Config | Plates | Doppler-free peak | Background | Peak height | Note |
+|---|---|---|---|---|---|
+| **π–π** | none (forward ∥ retro linear) | **yes** | Doppler-broadened pedestal (same-beam pairs) | **1.0** (ref) | the 2025 archival config; B-field-impervious |
+| π–π′ | one QWP after cell @45° → retro ⊥ forward | **no** | two Doppler pedestals (2×) | — | ε_f·ε_b = 0 kills the cross term |
+| σ | QWP before cell, retro blocked | — | — | **0** | forbidden: 2 photons from one beam carry 2ℏ |
+| σ–σ | QWP before cell, retro on | **no** | — | **0** | forbidden: counter-prop same-handed, 2ℏ |
+| **σ–σ′** | QWP before cell **and** QWP before mirror | **yes** | **background-less** | **0.5** | opposite-circular; the *vector* channel |
+
+The two verified facts that decide the question: Nieddu reports σ–σ′ gives a
+"background-less, Doppler-free spectrum," at half the π–π peak height, and that
+for the plate before the mirror "the orientation of the waveplate's axis is
+irrelevant."
+
+**So, is it worth a plate between the post-cell lens and the retro mirror?**
+Two-part answer, and the parts point opposite ways:
+
+1. **A plate there *alone* is counterproductive — it deletes the signal.** A
+   single QWP before the mirror double-passes to a net half-wave rotation, so
+   the retro returns *orthogonal* to the forward: that is the π–π′ column, and
+   the Doppler-free peak vanishes (ε_f·ε_b = 0). One plate before the mirror
+   does not improve the standard configuration; it destroys it. The useful
+   circular configuration needs QWPs before **both** the cell and the mirror —
+   Nieddu's two-slot design — not one plate before the mirror.
+
+2. **The σ–σ′ configuration (both plates) is genuinely valuable — as a
+   *removable diagnostic*, never the default — because its two properties map
+   one-to-one onto two of our open systematics:**
+   - **Background-less ⇒ a pedestal-subtraction cross-check.** σ–σ′ removes the
+     broad Doppler-broadened pedestal that sits under the narrow line in π–π.
+     Refitting center/width/moments with the pedestal present (π–π) vs absent
+     (σ–σ′) at the same condition is a direct, referee-grade test that the
+     pedestal is not biasing the line shape our M3 baseline models.
+   - **No intensity standing wave ⇒ an on/off switch for the fringe
+     systematic.** Forward σ⁺ and retro σ⁻ make a σ⁺–σ⁻ field whose *intensity
+     is spatially uniform* (a rotating-linear corkscrew, not an intensity
+     grating), so the standing-wave intensity fringes are **off**; π–π (parallel
+     linear) has them fully **on**. Because the AC-Stark shift follows the local
+     |E|², the fringe imprint that `fringe_tail`/THEORY_NOTE §5 price (the
+     fringe-resolved skew suppression, the fringe-affected transit) is present
+     in π–π and absent in σ–σ′. Comparing the two at matched power **measures**
+     that fringe contribution instead of only modelling it — it should vanish in
+     σ–σ′ and reappear in π–π by the predicted amount. This is the cheapest
+     possible experimental test of the whole standing-wave/fringe analysis.
+
+   Three honest caveats keep σ–σ′ off the precision path:
+   - **Half the signal** (SNR cost).
+   - **It is the vector channel** (opposite spins), so the effective coupling,
+     the AC-Stark ramp coefficient, and the transit weighting differ from the
+     scalar π channel: the π-vs-σ–σ′ comparison tests *fringes × coupling
+     change*, and the coupling change (computable from the polarizability
+     tensor) must be divided out before the residual is attributed to fringes.
+     It is not a pure single-knob switch.
+   - **Circular light carries a vector, m_F-dependent AC-Stark shift and is
+     B-field sensitive** — it splits/broadens rather than cleanly shifts, which
+     is poison for the scalar Δα flagship. The Stark/Δα program (config S)
+     therefore stays on **linear (π)**; σ–σ′ is a config-L diagnostic at matched,
+     modest power.
+
+3. **A subtler reason a plate can matter even for the linear default:
+   retardance robustness.** In π–π, any birefringence in the exit window + retro
+   lens + mirror (all double-passed) elliptizes the retro away from parallel,
+   pulling ε_f·ε_b below 1 — which both lowers the Doppler-free amplitude *and
+   lets it drift* as those optics warm and the exit window films: a concrete
+   candidate for the 30–50% between-block amplitude wander (§8.7 item 10).
+   Nieddu's "orientation-irrelevant" result says σ–σ′ is insensitive to the
+   mirror-plate axis and hence far more tolerant of small retro-path retardance,
+   so σ–σ′ may *stabilize* the amplitude that π lets wander — a hypothesis to
+   test, not a claimed cure (residual retardance still perturbs circular purity).
+
+**Prescriptions for the session.**
+- **Default π (parallel linear), polarization DEFINED by a polarizer/PBS at the
+  cell, not merely logged**, with a per-config extinction null: the σ or σ–σ
+  *forbidden* setting must give zero signal — any residual is polarization
+  impurity or stray background, and it calibrates ε_f·ε_b.
+- **Characterize the retro-path retardance** by polarization tomography — rotate
+  a QWP and reconstruct the Stokes vector of the *returning* beam (Nieddu's
+  thesis method, §5) — to quantify the window+lens+mirror birefringence the
+  amplitude-wander rides on, and to decide whether a fixed compensating plate is
+  needed to restore ε_f·ε_b → 1 for the linear science.
+- **Fit QWP slots before the focusing lens and before the retro mirror on
+  removable/flip mounts** (Nieddu's two-slot layout), so σ–σ′ is available on
+  demand for the pedestal cross-check, the fringe on/off test, and the
+  retardance-robustness test — without disturbing the default linear science
+  blocks.
 
 ### 8.2 The intensity axis (the collapse test is blind to common scale)
 
@@ -286,8 +446,9 @@ same session ≈ transit(S) − transit(L) ≈ 1.7 MHz — σ_laser, collisions,
 natural width cancel in the difference (brackets verify the laser held);
 transit ∝ v̄/w₀ from thermal physics, no knife-edge involved. Measured to
 ±5–7% → intensity axis absolute to ~15%, independent of the stage. The
-knife-edge, the w(z) self-consistency, and the transit difference must agree
-before any Stark coefficient in physical units is quoted. Note the split:
+knife-edge, the w(z) self-consistency, the lens-separation geometry (§8.1a), and
+the transit difference must agree before any Stark coefficient in physical units
+is quoted. Note the split:
 the ramp-law FORM tests (§8.3) never need absolute intensity — only the
 coefficient Δα does.
 
@@ -439,7 +600,9 @@ in roughly eight days at the cell, and which shots depend on which. Run it in th
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: telescope install; config L: knife-edge w(z), ρ in situ. While the
+- **D1**: telescope install; config L: knife-edge w(z), lens separations
+  calipered (§8.1a), ρ in situ, polarization defined at the cell + retro-path
+  retardance tomography and the σ/σ–σ extinction null (§8.1.1). While the
   oven settles: the drift-characterization block (§8.7.5) → freeze the RF
   bracket cadence.
 - **D2**: T grid day A at L, ascending, 4 peaks interleaved + mini-P excursion
@@ -460,11 +623,12 @@ the novel results first).
 
 ### 8.6 Deliverables map
 
-L T-grid → β_self measurement (or honest bound) + σ_laser(2026); S skew
-session → S₀ magnitude + skew detection attempt; L/M mean-pull + variance →
-ramp-law form test (the actual novelty claim); S−L width difference → absolute
-intensity axis → Δα in physical units; interleaved blocks → degeneracy-law +
-trapping test; M spot → 2025↔2026 epoch bridge; cusp session → M8 closure.
+L T-grid → β_self measurement (or honest bound) + σ_laser (fixed-lock epoch);
+S skew session → S₀ magnitude + skew detection attempt; L/M mean-pull +
+variance → ramp-law form test (the actual novelty claim); S−L width difference
+→ absolute intensity axis → Δα in physical units; interleaved blocks →
+degeneracy-law + trapping test; M spot → archive ↔ fixed-lock epoch bridge;
+cusp session → M8 closure.
 
 ### 8.7 Resource allocation — what bit in 2025, and what each hour buys
 
@@ -487,7 +651,7 @@ compresses the cuts follow arithmetic, not habit.
 | 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | knife-edge first (§8.0 #1) |
 | 8 | ρ(T) never measured | ~8% S₀ drift across the sweep from window filming alone | optics drift masquerades as physics | T_win before AND after, per condition (§8.0 #2) |
 | 9 | P sweep at a single T (130 °C) | trapping-immunity argument untested across density | discriminators data-starved | mini-P excursion in every dwell (§8.7.4) |
-| 10 | Between-block amplitude wander | 30–50% (polarization the specific suspect) | amplitude observables noisy | polarization fixed/logged + QWP null (§8.1); 12–16 reps (§8.4) |
+| 10 | Between-block amplitude wander | 30–50% (polarization the specific suspect: retro-path retardance walks ε_f·ε_b) | amplitude observables noisy | polarization defined at cell + retardance tomography + σ–σ′ robustness test (§8.1.1); 12–16 reps (§8.4) |
 
 Items 1–3 are one lesson wearing three hats: **2025 spent statistics against a
 systematics-limited experiment.** Within-block noise was already 2.4× below the
