@@ -118,11 +118,13 @@ atoms.
   lineshape (Sr, 189 nm from a dielectric); the near-surface shift here is likewise a
   *distribution* over the atoms' distance-from-surface, read by the same moment
   machinery that reads the light-shift distribution — the two inhomogeneities are
-  handled by one method. (To verify before citing: Dutta et al. and Sargsyan/Sarkisyan
-  on higher-order-CP / selective-reflection lineshapes, `LITERATURE.md` §9.)
+  handled by one method. The templates are established: Dutta et al. 2025 fold the
+  thermal velocity distribution into the CP selective-reflection lineshape, and
+  Sargsyan et al. 2025 extract the surface C₃ from a nanocell lineshape
+  (`LITERATURE.md` §9).
 - **A feasibility constraint to respect:** the evanescent probe itself heats the
-  trapped atoms, so near-field probing is inherently transient (Piotrowski/
-  Rauschenbeutel 2026, to verify) — the measurement window and probe power are bounded.
+  trapped atoms, so near-field probing is inherently transient (Piotrowski et al. 2026)
+  — the measurement window and probe power are bounded.
 - Fit the pushing dip vs power and detuning; extract the near-surface shift and
   test the resonance-scattering-pushing hypothesis quantitatively against the
   data — the quantitative completion of Gokhroo 2022.

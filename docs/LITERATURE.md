@@ -559,15 +559,30 @@ cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
   2×10¹⁸ Hz/s): the modern frontier of the "internal ruler tracks a drifting axis"
   idea our EOM ruler embodies. [FEED — Intro/method context]
 
-**To VERIFY before citing (real-looking, not yet confirmed against a source):** Dutta
-et al. 2024 (arXiv:2404.13354, PRR) + 2025 (arXiv:2507.05925) — higher-order CP + thermal
-effects on near-surface/selective-reflection lineshapes; Sargsyan/Sarkisyan 2025
-(arXiv:2501.11548) + 2026 (arXiv:2601.04661) — Cs 6S–7P vdW surface shift from
-nanocell lineshapes; Piotrowski/Rauschenbeutel 2026 (arXiv:2605.07798) — evanescent-
-probe heating makes near-field probing transient (a Paper-2 systematic); a Shanxi Univ.
-2025 five-channel 5S–7S cascade-fluorescence study (no ID); Obaze et al. 2025 (Photonics
-**12**, 513) — a second 778 nm clock stability review. **Quarantined (do NOT cite):
-arXiv:2602.07161** (malformed, re-surfaced).
+**Verified and folded in (2026-07-18) — the near-surface CP-lineshape cluster + the
+7S cascade study (all PDFs held):**
+- **Dutta et al. 2025** (`dutta2025`, Phys. Rev. A accepted, arXiv:2507.05925) — CP
+  selective-reflection lineshape *with the thermal velocity distribution folded in*:
+  the direct template for reading the near-surface shift as a thermal-averaged
+  distribution in Paper 2 §IV. [CITE]
+- **Dutta et al. 2024** (`dutta2024`, Phys. Rev. Research, arXiv:2404.13354) —
+  higher-order (quadrupole/octupole) CP corrections when the wavefunction is not small
+  vs the atom-surface distance: the close-range background. [FEED]
+- **Sargsyan, Momier & Sarkisyan 2025** (`sargsyan2025`, arXiv:2501.11548) — the Cs
+  6S–7P surface shift (C₃) read from a nanocell selective-reflection lineshape: the
+  experimental analogue of extracting a surface shift from the line. [CITE]
+- **Piotrowski, Bach, Vera Paz, Schneeweiss & Rauschenbeutel 2026** (`piotrowski2026`,
+  arXiv:2605.07798) — probe-light scattering heats trapped atoms → near-field probing
+  is inherently transient: a Paper-2 feasibility bound on the probe window/power. [CITE]
+- **Wang, Cao, Yuan, Wang, Xiao & Jia 2025** (`wang2025`, Spectrochim. Acta B, Shanxi
+  Univ.) — experimental Rb **5S–7S** multi-channel cascade fluorescence
+  (780/741/795/728/~420 nm) vs power/polarization/temperature: directly on our 7S
+  ladder (the 741/728 nm channels are the 7S→5P near-poles that set the ladder magic
+  wavelength) and a multi-channel-detection precedent for the amplitude work. [CITE]
+
+**Still to verify:** Sargsyan/Sarkisyan 2026 (arXiv:2601.04661, a second nanocell
+surface-shift paper) and Obaze et al. 2025 (Photonics **12**, 513, a second 778 nm
+clock review). **Quarantined (do NOT cite): arXiv:2602.07161** (malformed, re-surfaced).
 
 **The ONF community map (why the nearest-platform refs cluster here).** The two poles
 of the optical-nanofibre cold-atom field are the **Rauschenbeutel group** (Humboldt
