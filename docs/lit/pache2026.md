@@ -24,7 +24,7 @@ summary: >
   EIT-cooling / atom-source thread (companion to pennetta2026, same group
   + 450 nm fibre).
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # pache2026

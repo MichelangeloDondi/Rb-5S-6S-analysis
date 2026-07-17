@@ -24,7 +24,7 @@ verified_date: null
 summary: >
   tau(6S)=45.57(17) ns -> GAMMA\_NAT\_HZ (3.4926 MHz) in constants.py.
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # gomez2005

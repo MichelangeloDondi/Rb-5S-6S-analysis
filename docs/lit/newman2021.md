@@ -29,7 +29,7 @@ verified_date: null
 summary: >
   State-of-the-art compact 778 nm standard.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # newman2021

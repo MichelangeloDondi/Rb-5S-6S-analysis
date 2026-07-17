@@ -27,7 +27,7 @@ summary: >
   asymmetric lineshape from which alpha was extracted (standing wave,
   numerical Bloch).
 loci: []
-section: unsorted
+section: prior-art
 ---
 
 # stalnaker2006

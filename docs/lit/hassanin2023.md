@@ -26,7 +26,7 @@ summary: >
   precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel
   (PLAN 8.4a).
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # hassanin2023

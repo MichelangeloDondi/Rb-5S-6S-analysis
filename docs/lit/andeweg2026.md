@@ -23,7 +23,7 @@ summary: >
   Newest competitor: active power-modulation ac-Stark suppression (x1000)
   on 778 nm 5S-5D.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # andeweg2026

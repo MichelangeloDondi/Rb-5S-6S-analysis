@@ -22,7 +22,7 @@ verified_date: null
 summary: >
   Dynamic alpha(omega) matrix-element source.
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # safronova2006

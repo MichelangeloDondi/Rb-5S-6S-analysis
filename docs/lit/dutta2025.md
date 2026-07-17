@@ -27,7 +27,7 @@ summary: >
   approximation) -- the direct template for reading the near-surface shift
   as a thermal-averaged distribution in Paper 2 sec IV.
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # dutta2025

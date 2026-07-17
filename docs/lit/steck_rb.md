@@ -17,7 +17,7 @@ summary: >
   Reference atomic constants for Rb (line frequencies, natural widths,
   polarizabilities).
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # steck_rb

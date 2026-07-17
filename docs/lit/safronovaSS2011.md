@@ -24,7 +24,7 @@ summary: >
   elements descend from), and the independent source to validate the M16
   7S static (~3.2e4 a.u.).
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # safronovaSS2011

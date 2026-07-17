@@ -24,7 +24,7 @@ verified_date: null
 summary: >
   Rigor template for the polarizability side (+ magic-lambda idea).
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # hamilton2023

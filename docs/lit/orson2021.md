@@ -24,7 +24,7 @@ summary: >
   Source of DELTA\_ALPHA\_AU: they compute alpha\_56=alpha(5S)-alpha(6S)
   =-1093 a.u.
 loci: []
-section: unsorted
+section: usafa-lineage
 ---
 
 # orson2021

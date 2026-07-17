@@ -23,7 +23,7 @@ summary: >
   coherence decay, keeping the line Lorentzian with a density-linear width
   -- textbook basis for gamma\_coll = beta\_self * N.
 loci: []
-section: unsorted
+section: collision-series
 ---
 
 # baranger1958

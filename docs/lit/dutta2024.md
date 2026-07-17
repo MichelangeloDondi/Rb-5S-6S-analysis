@@ -27,7 +27,7 @@ summary: >
   small vs atom-surface distance, and their imprint on thin-cell /
   selective-reflection lineshapes.
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # dutta2024

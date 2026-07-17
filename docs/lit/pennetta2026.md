@@ -23,7 +23,7 @@ verified_date: null
 summary: >
   nearest-platform for Paper 2.
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # pennetta2026

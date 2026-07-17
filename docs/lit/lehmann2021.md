@@ -20,7 +20,7 @@ verified_date: null
 summary: >
   Modern closed-form transit-limit lineshape (the ``Lehmann lineshape'').
 loci: []
-section: unsorted
+section: transit-time
 ---
 
 # lehmann2021

@@ -23,7 +23,7 @@ verified_date: null
 summary: >
   Rb 5S-to-4D two-photon lattice clock.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # duspayev2024

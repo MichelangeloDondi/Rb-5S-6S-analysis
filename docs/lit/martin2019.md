@@ -27,7 +27,7 @@ summary: >
   The 5S-5D differential-polarizability method Orson followed for our
   5S-6S Delta\_alpha.
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # martin2019

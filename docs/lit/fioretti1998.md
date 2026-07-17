@@ -24,7 +24,7 @@ verified_date: null
 summary: >
   Alkali-cloud radiation-trapping anchor for M7/VI.D.
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # fioretti1998

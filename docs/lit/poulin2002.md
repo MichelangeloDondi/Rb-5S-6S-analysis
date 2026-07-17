@@ -23,7 +23,7 @@ verified_date: null
 summary: >
   Telecom-band (192.6 THz) standard referenced to the Rb two-photon line.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # poulin2002
