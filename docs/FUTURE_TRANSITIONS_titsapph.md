@@ -101,6 +101,16 @@ the current near-IR path does not pass. So:
   swapped for a 420 nm bandpass; the latter (pump rejection) still needs a new
   pump-blocking edge at 760–778 nm. Both are routine, but they are different parts.
 
+- **A note for the 6S line itself: a trapping-free 1.3 µm option.** The 6S cascade's
+  *first* step, 6S→5P, emits at **1.32/1.37 µm** — and unlike the 780/795 nm D-line
+  photons (ground-resonant, hence radiation-trapped in the dense cell), the 1.3 µm
+  photon is resonant with nothing populated and escapes freely. Detecting it (an
+  **InGaAs** detector — single-photon sensitivity below a Si PMT, plus hot-cell
+  IR-background filtering) is a **trapping-free** amplitude channel, and the
+  **795-vs-1.3 µm ratio discriminates a real degeneracy-law/amplitude deviation from
+  a radiation-trapping artifact** (`PLAN.md` §8.4a). Orthogonal to the 420 nm
+  upper-ladder swap — this is a 6S-detection refinement, not an enabler.
+
 Net: the filter swap is the price of admission to the upper ladder, and it is a
 *cheap, one-time* price (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).

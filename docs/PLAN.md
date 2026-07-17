@@ -795,6 +795,24 @@ absorption channel — a probe laser + pickoff photodiode):
    efficiency η_coll(N) — the deferred clean trapping test, sharpest at the new
    150–170 °C lever. Discriminant: real trapping is *smooth/monotonic* in density;
    drift is random/non-monotonic (the archive's 1.10→0.98→2.53→1.97 swing was drift).
+5. **1.3 µm cascade detection — a trapping-free channel, the cleanest arbiter of
+   the ratios.** The 6S decays first to 5P (6S→5P₁/₂ 1324 nm, 6S→5P₃/₂ 1367 nm) and
+   only then to ground (the detected 780/795 nm D-line photons). The 780/795 channel
+   sits on a **ground-resonant** line, so those photons are radiation-trapped in the
+   dense vapour — the M7 distortion, density- and isotope-dependent (⁸⁵Rb has ~2.6×
+   the D-line absorbers, so the **2.59 cross-isotope ratio is the most
+   trapping-vulnerable**). The **6S→5P (1.3 µm) photon is resonant with nothing
+   populated** (5P is only transient), so it escapes freely: detecting it is
+   **trapping-free**, and the common 6S→5P branching cancels in the ratios. So 1.3 µm
+   measures the degeneracy law without the trapping confound, and **running 795 and
+   1.3 µm at the same condition turns an off-ratio into a verdict** — a deviation that
+   vanishes at 1.3 µm was trapping, one that persists is real (polarization impurity
+   opening the vector channel, or a genuine operator effect); the 795/1.3 µm ratio
+   itself measures the trapping factor. It is the direct twin of exploit 4 (detect the
+   untrapped signal rather than correct the trapped one). **Cost:** 1.3 µm is past
+   silicon → an **InGaAs detector** (single-photon sensitivity below a Si/GaAs PMT at
+   795; the hot-cell IR background needs filtering); broadband 1.32–1.37 µm catches
+   both fine-structure branches.
 
 **Enabling and defensive (cheap, protect the headlines):**
 - **Polarization-purity gauge:** the forbidden σ / σ–σ configs must read zero (the
