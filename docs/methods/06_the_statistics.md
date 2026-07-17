@@ -208,34 +208,67 @@ archive is a property of the drift, not of the method: a fixed-lock session
 would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`;
 closure `tests/test_model_ladder.py`; numbers `results/model_ladder.csv`.
 
-### 4.10 Is the decomposition identifiable? — covariance and condition number (M12)
+### 4.10 Is the decomposition identifiable? — covariance, condition number, and the profile-likelihood map (M12)
 
 The degeneracy asserted throughout — that $\gamma_\text{coll}$,
 $\sigma_\text{laser}$ and transit all broaden the same line, so the main fit
 *fixes* transit and reports $\sigma_\text{laser}$ as a bound — is here made
-quantitative. We fit one bright condition (993.4192 nm, 130 °C, 225 mW) with all
-three widths free, form the parameter covariance from the SVD of the Jacobian
-(`fitutil.cov_from_jac`), and diagonalize its $3\times3$ width block:
+quantitative in two layers: a LOCAL covariance analysis and the GLOBAL
+profile-likelihood map that first corrected and then certified it. Both on one
+bright condition (993.4192 nm, 130 °C, 225 mW), all three widths free plus the
+per-trace nuisances.
 
-- the **correlation matrix** shows the trade-offs — $\gamma_\text{coll}$ vs
-  $\sigma_\text{laser}$ and $\sigma_\text{laser}$ vs transit both $\approx-0.66$
-  to $-0.68$: raising one and lowering another leaves the line almost unchanged;
-- the **condition number** of the width-block *covariance* (its largest/smallest
-  eigenvalue) is $\approx160$ — strongly ill-conditioned, i.e. one combination is
-  nearly unconstrained;
-- the **eigen-directions** name it: the best-constrained combination (all three
-  widths with the same sign — essentially the *total* width) is pinned to
-  $1\sigma\approx0.005$ MHz, while the worst-constrained direction (the transit
-  vs $\sigma_\text{laser}$ *split*) is $\approx0.06$ MHz — about **13× looser**.
+**The map found the fit's second basin first.** A single-start three-width fit
+lands in a Gaussian-dominated basin ($\sigma_\text{laser}\approx2.4$ MHz,
+transit railed at zero, $\chi^2 = 5024$). The profile map exposed a **deeper,
+cusp-dominated basin** — $\gamma_\text{coll}\approx0.22$,
+$\sigma_\text{laser}\approx0.51$, transit $\approx1.43$ MHz, i.e. the transit
+width the $w_0\approx43$ µm geometry predicts — at $\chi^2 = 4548$, a
+$\Delta\chi^2\approx476$ preference. The local analysis is therefore anchored
+by a **two-start fit** at the deeper branch, and both branches plus their gap
+are committed (`branch`, `branch_gap` rows). Taken at face value the shape data
+*prefer* the physical decomposition (real transit cusp, narrow laser); but
+$\Delta\chi^2 = 476$ over $\sim$4400 points is a $\sim$10% $\chi^2$ change
+($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel
+model-form imperfection also lives — a **consistency indication, not a
+shape-based $w_0$ measurement**; the knife-edge stays the arbiter, and the
+C1/C2 upper bounds are unaffected.
 
-So the archive constrains the total width to $\sim$0.1% but the split ten-fold
-worse: the individual widths are genuinely $w_0$-conditional bounds, not
-measurements, and the knife-edge $w_0$ **collapses** the degeneracy — it fixes
-transit to within the knife-edge's own precision, so the split becomes
-identifiable within that uncertainty rather than removed exactly (a
-perfectly-known $w_0$ would remove it; a real one greatly reduces it). This is the
-formal statement behind the
-$\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ correlation quoted in
+At the anchored branch, the covariance (SVD of the Jacobian,
+`fitutil.cov_from_jac`), diagonalized over the $3\times3$ width block:
+
+- the strongest trade-off is $\gamma_\text{coll}\leftrightarrow$ transit
+  ($\approx-0.96$): the two cusp-generating widths swap almost freely;
+- the **condition number** of the width-block *covariance* is $\approx480$ —
+  strongly ill-conditioned;
+- the **eigen-directions**: the best-constrained combination (a
+  total-width-like sum, mostly $\gamma_\text{coll}$ + transit) is pinned to
+  $1\sigma\approx0.003$ MHz, while the worst-constrained direction (dominated
+  by $\sigma_\text{laser}$) is $\approx0.07$ MHz — about **22× looser**.
+
+**The global map** (the standard referee demand: profile, not just covariance)
+fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
+$\chi^2$ over transit and every per-trace nuisance at each point (variable
+projection; each cell fit from two independent warm-start lineages, with a
+fresh-seed audit on every fifth cell). Its certifications, all committed: audit
+gains $\le0.01$ (no warm-start trapping), map minimum equal to the anchored
+free fit's, and a **straight** valley floor (RMS 0.003 MHz against a 0.020 MHz
+grid step) whose ridge slope (+0.074) **agrees** with the covariance ellipse's
+prediction (+0.108) — in the Gaussian limit the profile contours are exactly
+the marginal covariance ellipse, so that agreement is the trust test, and it
+passes. The joint-95% region closes inside the physical range **except toward
+$\sigma_\text{laser}\to0$**: the line *shape* alone cannot exclude a
+near-zero laser width at this condition. `figures/fig7` shows both maps with
+the ellipse overlaid.
+
+So the archive constrains the total width to $\sim$0.1% but the split
+twenty-fold worse — now as a certified-global statement, not a local one: the
+individual widths are genuinely $w_0$-conditional bounds, not measurements,
+and the knife-edge $w_0$ **collapses** the degeneracy — it fixes transit to
+within the knife-edge's own precision, so the split becomes identifiable
+within that uncertainty rather than removed exactly (a perfectly-known $w_0$
+would remove it; a real one greatly reduces it). This is the formal statement
+behind the width correlations quoted in
 §2.4.
 
 The same numbers answer *why not fit $w_0$ jointly*: $w_0$ enters the line only

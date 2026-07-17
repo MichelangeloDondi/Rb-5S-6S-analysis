@@ -33,6 +33,7 @@ DATA_DRIVEN = [
     "fig4_amplitude_ratios",
     "fig5_pooled_width",
     "fig6_gamma_floor",
+    "fig7_identifiability_profile",
 ]
 
 

@@ -1,10 +1,21 @@
 quantity,key,value,unit,status
-condition_number,width_block,164.4,"eigenvalue ratio of the (gamma_coll,sigma_laser,transit) covariance; >>1 = degenerate",DIAGNOSTIC
+condition_number,width_block,480.7,"eigenvalue ratio of the (gamma_coll,sigma_laser,transit) covariance; >>1 = degenerate",DIAGNOSTIC
 corr,gamma_coll_gamma_coll,1.000,width-width correlation coefficient,DIAGNOSTIC
-corr,gamma_coll_sigma_laser,-0.676,width-width correlation coefficient,DIAGNOSTIC
-corr,gamma_coll_transit,-0.013,width-width correlation coefficient,DIAGNOSTIC
+corr,gamma_coll_sigma_laser,0.225,width-width correlation coefficient,DIAGNOSTIC
+corr,gamma_coll_transit,-0.958,width-width correlation coefficient,DIAGNOSTIC
 corr,sigma_laser_sigma_laser,1.000,width-width correlation coefficient,DIAGNOSTIC
-corr,sigma_laser_transit,-0.656,width-width correlation coefficient,DIAGNOSTIC
+corr,sigma_laser_transit,-0.449,width-width correlation coefficient,DIAGNOSTIC
 corr,transit_transit,1.000,width-width correlation coefficient,DIAGNOSTIC
-best_constrained_sigma,total_width,0.0047,MHz; 1sigma on the best-constrained width combination (~the total),DIAGNOSTIC
-worst_constrained_sigma,split,0.0604,MHz; 1sigma on the degenerate split direction,DIAGNOSTIC
+best_constrained_sigma,total_width,0.0032,MHz; 1sigma on the best-constrained width combination (~the total),DIAGNOSTIC
+worst_constrained_sigma,split,0.0694,MHz; 1sigma on the degenerate split direction,DIAGNOSTIC
+banana_rms,zoom_profile,0.0031,"MHz; RMS of the zoom-map valley floor about a straight line, transit-unpinned rows only (vs gc grid step 0.0195; the trust verdict needs this AND the slope agreement below)",DIAGNOSTIC
+ridge_slope,zoom_profile,0.074,d(gamma_coll)/d(sigma_laser) along the profile valley; the local covariance predicts 0.108 (agreement = the Gaussian profile<->ellipse correspondence holds where transit is unpinned),DIAGNOSTIC
+profile_free_gap,zoom_profile,-0.24,profile chi2_min minus the free-fit chi2 (same model space; ~0 = consistent),DIAGNOSTIC
+audit_max_gain,zoom_profile,0.000,largest chi2 improvement when every 5th cell is refit from the fresh seed (warm-start trapping bound; <<2.30 certifies the surface),DIAGNOSTIC
+audit_max_gain,wide_profile,0.010,same fresh-seed audit on the wide map,DIAGNOSTIC
+transit_railed_frac,zoom_profile,0.00,fraction of zoom cells whose profiled transit pins at its 0 bound (there the Gaussian ellipse equivalence does not apply),DIAGNOSTIC
+branch,gaussian,5024.2,"raw chi2; gc=0.727, sl=2.443, tr=0.131 MHz (two-start local fit; the analysis anchors at the deeper branch)",DIAGNOSTIC
+branch,cusp,4548.4,"raw chi2; gc=0.224, sl=0.509, tr=1.431 MHz (two-start local fit; the analysis anchors at the deeper branch)",DIAGNOSTIC
+branch_gap,local,475.7,chi2 gap between the Gaussian- and cusp-dominated local basins (the branch choice was invisible to a single-start fit),DIAGNOSTIC
+wide_free_gap,wide_profile,0.2,free-fit chi2 minus the wide-map chi2_min; >6 means the free fit (and hence the local covariance analysis above) sits at a LOCAL optimum and the global valley is deeper -- the map-level statement of the split's non-identifiability,DIAGNOSTIC
+closed_95,wide_profile,False,"does the dchi2=5.99 region (raw, shape diagnostic) close inside the wide grid (sub-grid edge minima; edge min dchi2 = 1.0)? open edges: sl_low; at the chi2_red-scaled threshold 5.99x1.04 the verdict is the same",DIAGNOSTIC

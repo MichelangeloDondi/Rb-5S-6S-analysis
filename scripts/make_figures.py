@@ -321,6 +321,90 @@ def fig_gamma_floor():
     _save(fig, "fig6_gamma_floor.png")
 
 
+def fig_identifiability_profile():
+    """The global profile-likelihood map behind M12 (methods §4.10): chi2
+    minimised over transit + all per-trace nuisances at each (gamma_coll,
+    sigma_laser) point, on the bright 993.4192 nm 130 C / 225 mW condition.
+    LEFT: the wide map — the topology of the width degeneracy (log10 dchi2)
+    with the joint-68/95% contours. RIGHT: the zoom about the minimum, profile
+    contours against the LOCAL covariance ellipse (dashed): in the Gaussian
+    limit the two coincide, so their agreement is the trust test for every
+    covariance-based statement; the valley-floor points trace the degeneracy
+    direction. All values read from results/identifiability_profile.csv."""
+    fp = C.RESULTS_DIR / "identifiability_profile.csv"
+    if not fp.exists():
+        print("  (identifiability_profile.csv absent -- skipping fig7)")
+        return
+    rows = list(csv.DictReader(open(fp)))
+
+    def axis(name):
+        vals = {int(r["key"]): float(r["value"]) for r in rows if r["quantity"] == name}
+        return np.array([vals[i] for i in sorted(vals)])
+
+    def surf(name, nsl, ngc):
+        Z = np.empty((nsl, ngc))
+        for r in rows:
+            if r["quantity"] == name:
+                i, j = r["key"].split("|")
+                Z[int(i), int(j)] = float(r["value"])
+        return Z
+
+    cov = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "cov"}
+    fit = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "fit"}
+    M = np.array([[cov["gc_gc"], cov["gc_sl"]], [cov["gc_sl"], cov["sl_sl"]]])
+    from rb5s6s.identifiability import valley_floor
+
+    fig, axes = plt.subplots(1, 2, figsize=(9.8, 4.4))
+    for k, (nm, ax) in enumerate(zip(("wide", "zoom"), axes)):
+        gc = axis(f"{nm}_gc"); sl = axis(f"{nm}_sl")
+        D = surf(f"{nm}_dchi2", len(sl), len(gc))
+        T = surf(f"{nm}_transit", len(sl), len(gc))
+        pc = ax.contourf(gc, sl, np.log10(np.maximum(D, 0.05)), levels=18,
+                         cmap="viridis")
+        ax.contour(gc, sl, D, levels=[2.30, 5.99], colors=["w", "w"],
+                   linestyles=["-", "--"], linewidths=1.2)
+        # the transit -> 0 wall: beyond it the profiled transit is pinned at its
+        # bound and the Gaussian ellipse correspondence does not apply
+        if (T < 0.02).any() and not (T < 0.02).all():
+            ax.contour(gc, sl, T, levels=[0.02], colors="gray",
+                       linestyles=":", linewidths=1.4)
+            ax.plot([], [], ":", color="gray", label=r"transit$\to$0 wall (pinned beyond)")
+        ax.plot(fit["gamma_coll"], fit["sigma_laser"], "*", color="w", ms=11,
+                mec="k", mew=0.6, label="free fit (all widths free)", zorder=5)
+        i_m, j_m = np.unravel_index(int(np.argmin(D)), D.shape)
+        ax.plot(gc[j_m], sl[i_m], "o", color="#D55E00", ms=6, mec="w", mew=0.6,
+                label="profile minimum", zorder=5)
+        # same floor definition as the shipped banana metric (within=5.99 on the
+        # zoom); the wide panel uses a looser cut purely to trace the topology
+        fl = valley_floor(gc, sl, D, within=(5.99 if nm == "zoom" else 25.0))
+        ax.plot(fl["floor_gc"], fl["floor_sl"], ".", color="#E69F00", ms=4,
+                label="profile valley floor")
+        if nm == "zoom":
+            evals, evecs = np.linalg.eigh(M)
+            th = np.linspace(0, 2 * np.pi, 200)
+            for c, ls in ((2.30, "-"), (5.99, "--")):
+                e = (np.sqrt(c * evals[0]) * np.outer(np.cos(th), evecs[:, 0])
+                     + np.sqrt(c * evals[1]) * np.outer(np.sin(th), evecs[:, 1]))
+                ax.plot(fit["gamma_coll"] + e[:, 0], fit["sigma_laser"] + e[:, 1],
+                        ls, color="k", lw=1.1,
+                        label=("local covariance ellipse (68/95%)" if c == 2.30 else None))
+            ax.set_title("zoom: profile contours (white)\nvs the local covariance ellipse (black)",
+                         fontsize=9)
+        else:
+            ax.set_title("wide: the width-degeneracy topology\n"
+                         r"(joint 68/95% contours in white; log$_{10}\Delta\chi^2$ fill)",
+                         fontsize=9)
+        ax.set_xlabel(r"$\gamma_\mathrm{coll}$ (MHz, transition)")
+        if k == 0:
+            ax.set_ylabel(r"$\sigma_\mathrm{laser}$ FWHM (MHz, transition)")
+        cb = fig.colorbar(pc, ax=ax, shrink=0.9)
+        cb.set_label(r"log$_{10}\,\Delta\chi^2$", fontsize=8)
+        ax.legend(fontsize=7, loc="upper right")
+    fig.suptitle("Profile likelihood of the width split (993.4192 nm, 130 °C / 225 mW; "
+                 "transit + nuisances re-minimised per point)", fontsize=9)
+    _save(fig, "fig7_identifiability_profile.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -328,7 +412,8 @@ def main() -> int:
     fig_amplitude_ratios()
     fig_pooled_width()
     fig_gamma_floor()
-    print(f"wrote 6 figures to {FIG}/")
+    fig_identifiability_profile()
+    print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")
     return 0
