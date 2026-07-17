@@ -95,16 +95,18 @@ TAIL_6S, TAIL_6S_SIG = 3.4, 3.4           # fixed by static 5167(22); +-100%
 _POLES_6S_NM = sorted(1e7 / abs(e - E_6S_CM) for e, _, _ in LINES_6S)
 
 
-def _alpha(lines, lam_nm, upper_cm=0.0, tail=0.0, core=0.0, scale=None):
-    """Scalar polarizability (a.u.) of a J=1/2 state from its line list.
-    alpha0(w) = (1/6) sum 2*dE*d^2 / (dE^2 - w^2), dE = E_line - E_state."""
+def _alpha(lines, lam_nm, upper_cm=0.0, tail=0.0, core=0.0, scale=None,
+           prefactor=1.0 / 6.0):
+    """Scalar polarizability (a.u.) of a state from its line list.
+    alpha0(w) = prefactor * sum 2*dE*d^2 / (dE^2 - w^2), dE = E_line - E_state.
+    prefactor = 1/(3(2J+1)): 1/6 for J=1/2 (5S/6S/7S), 1/18 for J=5/2 (5D5/2)."""
     w = (1e7 / lam_nm) / CM_PER_HARTREE if lam_nm else 0.0
     s = 0.0
     for i, (e, d, _) in enumerate(lines):
         de = (e - upper_cm) / CM_PER_HARTREE
         dd = d if scale is None else scale[i]
         s += 2.0 * de * dd * dd / (de * de - w * w)
-    return s / 6.0 + tail + core
+    return s * prefactor + tail + core
 
 
 def alpha_5s(lam_nm: float, scale=None, tail=TAIL_5S, core=CORE_5S) -> float:
@@ -174,3 +176,81 @@ def mc_band(fn, n: int = 1500, seed: int = 0) -> Dict:
     v = np.sort(np.asarray(vals, float))
     return {"median": float(np.median(v)), "lo": float(np.percentile(v, 16)),
             "hi": float(np.percentile(v, 84)), "n": len(v), "failed": failed}
+
+
+# ---------------------------------------------------------------------------
+# The Ti:Sapph ladder: 5S->7S (760 nm) and 5S->5D5/2 (778 nm).
+#
+# 7S is treated on the SAME footing as 6S: an S1/2 state, scalar-only, coupling
+# only to nP -- an INDEPENDENT sum-over-states here, from the Safronova-group
+# all-order matrix elements (physics/0307057, Table I, retrieved 2026-07-17;
+# quoted accurate to <=2%, taken as the 1-sigma) and NIST energies.
+#
+# 5D5/2 is NOT recomputed from scratch: it is a J=5/2 state with SCALAR + TENSOR
+# polarizability and nP AND nF couplings, and its magic wavelength sits on the
+# near-resonant 5P3/2-5D5/2 line whose matrix element is itself contested. That
+# full calculation is Hamilton et al. 2023 (Phys. Rev. A 108, 023111; PDF in
+# hand), who MEASURE the 5S1/2-5D5/2 magic wavelength = 776.179(5) nm (theory
+# 776.21) and the 5P3/2-5D5/2 element = 1.80(6) a.u. We ADOPT their magic (=
+# the transition-shift sign-flip) as authoritative and only illustrate the
+# near-776 Delta_alpha shape from the one verified near-resonant pole; a full
+# independent 5D recompute needs the 5D-nF elements (not in the Safronova 2004
+# tables) and the tensor treatment, and is flagged as future work.
+# ---------------------------------------------------------------------------
+
+E_7S_CM = 26311.437                        # NIST ASD, 7S1/2 above 5S ground
+E_5D52_CM = 25703.498                      # NIST ASD, 5D5/2 above 5S ground
+
+# (energy above 5S [cm^-1], <7S||D||nP> [a.u.], 1-sigma): Safronova 2004 Table I
+# all-order, 2% accuracy. nP energies are the same NIST values as LINES_5S/6S.
+LINES_7S = (
+    (12578.950, 0.954, 0.019), (12816.545, 1.352, 0.027),   # 5P1/2, 5P3/2
+    (23715.081, 9.189, 0.184), (23792.591, 13.353, 0.267),  # 6P1/2, 6P3/2
+    (27835.02, 16.844, 0.337), (27870.11, 23.587, 0.472),   # 7P1/2, 7P3/2
+    (29834.94, 1.865, 0.037), (29853.79, 2.833, 0.057),     # 8P1/2, 8P3/2
+)
+CORE_7S, CORE_7S_SIG = 9.1, 0.5            # Rb+ ionic core (state-independent)
+TAIL_7S, TAIL_7S_SIG = 0.3, 0.3           # n>=9 P states (small, far-poled)
+
+_POLES_7S_NM = sorted(1e7 / abs(e - E_7S_CM) for e, _, _ in LINES_7S)
+
+# Hamilton et al. 2023 -- ADOPTED, not recomputed (see block header):
+MAGIC_5S5D52_EXP_NM = 776.179              # +-0.005 (experimental)
+MAGIC_5S5D52_THEORY_NM = 776.21            # (theoretical)
+RME_5P32_5D52 = 1.80                       # +-0.06 a.u. (Hamilton, experimental)
+
+
+def alpha_7s(lam_nm: float, scale=None, tail=TAIL_7S, core=CORE_7S) -> float:
+    """Dynamic scalar polarizability of 7S1/2 (a.u.); lam_nm=0 gives static."""
+    return _alpha(LINES_7S, lam_nm, E_7S_CM, tail, core, scale)
+
+
+def delta_alpha_7s(lam_nm: float) -> float:
+    """alpha_7S - alpha_5S (a.u.): the 5S->7S transition differential. Its zero
+    crossings are the 5S-7S magic wavelengths = the light-shift sign-flips."""
+    return alpha_7s(lam_nm) - alpha_5s(lam_nm)
+
+
+def _crossings(f, lo, hi, poles, guard=1.5, n=400):
+    """All sign changes of f in [lo, hi], searched between the poles."""
+    edges = [lo] + sorted(p for p in poles if lo < p < hi) + [hi]
+    out = []
+    for a, b in zip(edges, edges[1:]):
+        aa, bb = a + guard, b - guard
+        if bb <= aa:
+            continue
+        g = np.linspace(aa, bb, n)
+        v = [f(x) for x in g]
+        for i in range(len(g) - 1):
+            if v[i] * v[i + 1] < 0:
+                out.append(float(brentq(f, g[i], g[i + 1], xtol=1e-6)))
+    return out
+
+
+def magic_5s7s(lo: float = 700.0, hi: float = 1000.0):
+    """5S-7S magic wavelengths (= sign-flips of the 5S->7S light shift) in
+    [lo, hi] nm: alpha_7S = alpha_5S crossings. Returns (lambda_nm, alpha_au)."""
+    poles = sorted(set(_POLES_7S_NM) |
+                   {1e7 / abs(e) for e, _, _ in LINES_5S})
+    xs = _crossings(delta_alpha_7s, lo, hi, poles)
+    return [(x, float(alpha_5s(x))) for x in xs]
