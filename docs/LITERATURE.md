@@ -47,9 +47,46 @@ frequency modulation of depth ξ = ½αε₀² at rate Ω/2π = 2v/λ. For us:
 time-averaged intensity**. So the shift is set by the fringe-averaged
 intensity I₁ + I₂ = (1+ρ)I₁ — no coherent ×2 fringe enhancement. The
 residual OPEN item is the measured retro ratio ρ (measured in a fixed-lock session, per
-configuration). Caveat: atoms with axial speed ≲ 5 m/s (~1–2% of weight)
-are fringe-resolved and see a static node/antinode spread — a percent-level
-correction to fold into the ramp MC. CALCULATED 2026-07-12.
+configuration). But the fringe-resolved tail is NOT a benign percent-level
+broadening: near-transverse atoms (small axial speed) sample the node/antinode
+arcsine, and because the fringe MULTIPLIES the shift (s → s(1+x), x arcsine) it
+SUPPRESSES the ramp skew — κ₃ → S₀³(1/135 − f_res/10) at ρ=1, a −13.5·f_res
+fractional leverage (∝ contrast², not contrast³ — the arcsine has E[cos³]=0; only
+the product P = f_res·σ_x² is observable). Negligible at w₀=50 µm (~5–8% of an
+already-below-noise skew), ~25% at w₀=16 µm, and same-sign-additive to the
+beam-divergence correction — fit jointly at the small waist (quantified,
+coherence-window bracketed, in `rb5s6s/fringe_tail.py`). CALCULATED 2026-07-17.
+
+**Hamilton, Roberts, Scholten, Locke, Luiten, Ginges, Perrella,
+Phys. Rev. Applied 19, 054059 (2023)** (arXiv:2212.10743) — VERIFIED
+(full text read; PDF in PDF_papers). The nearest prior art for our specific
+CONSTRUCTION, and geometrically closer than Stalnaker: a RETRO-REFLECTED Rb-87
+vapour two-photon line (5S→5D, two-colour 780+776 nm via the near-resonant 5P
+intermediate). They build the identical focus average — fluorescence amplitude
+∝ I(r)₇₈₀·I(r)₇₇₆, integrated as F(Δ) = ∫F(Δ,r) r dr with the cylindrical
+Jacobian — the same Iⁿ·(linear shift)·(r dr) integral we reduce to the wedge.
+
+Delineation (what is genuinely NOT in Hamilton):
+- they **collapse the integral to a single spatially-averaged shift** (a ~3.6
+  factor from mean shift to Δα) and never keep the shift DISTRIBUTION — so the
+  closed-form wedge f(s) ∝ \|s\| and its third moment are not there. The novelty
+  is "keep the distribution, close it in form, read the drift-immune skew", not
+  "set up the integral";
+- their signal is a two-colour PRODUCT I₇₈₀·I₇₇₆ (near-resonant ladder), not the
+  degenerate single-colour I² of the 993 nm 5S→6S virtual-state two-photon;
+- they **do not treat the axial standing-wave fringes at all** (transverse-profile
+  average only) — on the fringe axis they are fringe-*ignored*, not fringe-
+  *averaged*, which reinforces rather than threatens our fringe delineation.
+
+MUST be delineated in the paper's introduction: a referee who knows Hamilton will
+see the integral parallel immediately, so we state up front what we add.
+
+**Dounas-Frazer, Tsigutkin, Family, Budker, Phys. Rev. A 82, 062507 (2010)**
+(arXiv:1009.5952) — VERIFIED online (ADS 2010PhRvA..82f2507D; PDF TO-PULL).
+Extends "polarizability from a standing-wave lineshape" to Yb 5d6s ³D₁ (dynamic
+scalar + tensor), same fringe-resolved atomic-beam family as Stalnaker/Wieman.
+Reinforces that polarizability-from-asymmetry is established prior art — so our
+novelty is narrowed to the fringe-AVERAGED closed-form + drift-immune moment.
 
 ## 2. Collision-rate series — calibrates what β_self should BE
 
