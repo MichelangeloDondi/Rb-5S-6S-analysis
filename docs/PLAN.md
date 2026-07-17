@@ -437,6 +437,54 @@ Two-part answer, and the parts point opposite ways:
   retardance-robustness test — without disturbing the default linear science
   blocks.
 
+#### 8.1.2 Magnetic field and m_F — a systematic to bound, not an axis to scan
+
+Neither an applied B field nor m_F state preparation earns a place as a science
+axis here, and the reason is symmetry, not only the (real) difficulty of holding
+a prepared state in a hot, collisional, transit-limited cell.
+
+**The line is m_F-blind by construction.** For 5S₁/₂ → 6S₁/₂ with identical
+photons the two-photon operator is purely scalar (rank-2 cannot connect
+J=½→½): every m_F has the same per-atom rate and the same scalar light shift —
+the very degeneracy that makes the area ∝ (2F+1) law (§8.4a) parameter-free. The
+flagship Δα is a scalar shift between two J=½ states, and J=½ carries **zero
+tensor polarizability**, so there is no tensor Stark structure for m_F selection
+to resolve. m_F preparation therefore sharpens nothing the campaign measures, and
+it would actively break the degeneracy-law amplitude test (which needs thermal,
+equal-m_F population); optical pumping into one m_F would deplete, not boost, the
+scalar-summed signal.
+
+**The main line barely responds to B either.** 5S₁/₂ and 6S₁/₂ are both ns₁/₂
+with essentially identical g_J (they differ only by a relativistic/QED correction
+~10⁻⁴), and the nuclear term cancels, so the ΔF=0, Δm_F=0 transition shift scales
+as Δg_J — **sub-kHz per Gauss**, three-plus orders below the linewidth. A B-scan
+resolves nothing on β_self, σ_laser, or the scalar shift (this is Nieddu's
+"impervious to stray magnetic fields"). What *does* move with B is (i) the
+individual m_F sublevels at ~0.7 MHz/G — which cancels in the Δm_F=0 transition
+unless (ii) a **circular-polarization impurity** opens Δm_F=±1 vector satellites
+that walk at ~±0.7 MHz/G. So B enters the lineshape only as
+(polarization impurity) × B — a wing distortion to suppress, never a handle.
+
+**But a real systematic hides here: the heater is a B source, and its field
+tracks temperature.** Heater current scales with heater power scales with T, so a
+resistive, non-bifilar winding puts a T-correlated stray field on the atoms along
+the very axis of the self-shift measurement; combined with any circular impurity
+it produces T-dependent vector satellites — a confound that mimics a
+temperature-dependent shift/width, exactly what the self-shift program must not
+inherit. The prescription is a **bound, not a scan**:
+- **Kill or characterize the heater field:** bifilar (AC) winding cancels it for
+  free; else a magnetometer/Hall reading at the cell, or a modest mu-metal shield.
+- **One deliberate B-systematic block:** apply a few *known* fields (±a few Gauss
+  from a coil) at one condition, measure dν/dB, dΓ/dB and any satellite growth → a
+  pre-registered empirical bound on the residual B-sensitivity and the heater
+  contribution. It doubles as a polarization-purity gauge (satellites appear only
+  if circular impurity × B ≠ 0), tying into §8.1.1.
+
+The one physics a field *would* unlock — the 6S vector polarizability and the
+differential g_J(6S−5S) — needs circular light (signal-halving, B-sensitive) and
+belongs on a cold, trapped, field-controlled platform, not the hot cell
+(`PAPER2_SKELETON.md`, the trapped-platform extensions).
+
 ### 8.2 The intensity axis (the collapse test is blind to common scale)
 
 The shift-vs-(P/w₀²) collapse across configs catches only RELATIVE waist
@@ -593,6 +641,88 @@ one); the hybrid is across the moment hierarchy, never across methods.
 - Timestamps logged (scope clock + notebook) — the 2025 σ_laser-sharing
   assumption was unverifiable without them.
 
+### 8.4a Amplitude program — the archive's weakest observable, made into levers
+
+Amplitudes were useless in 2025 for one measured reason: within-block statistics
+are superb (1–3%, photon-limited, falling as amp⁻⁰·⁵), but **between-block gain +
+power + polarization drift wanders 30–50%**, so the clean amplitude physics was
+explicitly deferred to a fixed-lock session. The fixed lock, the interleaved
+four-peak blocks, and the defined polarization (§8.1.1) remove the common-mode
+drift, and every exploit below is built on a **ratio, a within-block slope, or a
+monitored quantity** so the 30–50% wander cancels identically. Nothing here rests
+on absolute cross-block amplitude.
+
+**Two new measurements (the headline amplitude results):**
+1. **The degeneracy-law test — the deferred clean scalar-operator measurement.**
+   The S→S two-photon operator is pure scalar (rank-2 forbidden for J=½→½; rank-1
+   nulled by identical π-π polarization), so line *areas* are pure initial
+   population: within one isotope the ratios are parameter-free — exactly
+   **5/3 (⁸⁷Rb) and 7/5 (⁸⁵Rb)**. On the four *interleaved* lines (common block,
+   intensity, gain) the ratio precision drops from the archive's 30–50%
+   between-block swing to the 1–3% within-block floor, turning an untestable
+   prediction into a genuine test that the operator is pure scalar. *Corrected
+   null:* the cross-isotope **total** area ratio (both lines of each isotope
+   summed) is the flat abundance ratio **2.59, constant in T** — the (2I+1)(2J+1)
+   normalizations cancel the (2F+1) sums, so it is 2.59, not any
+   degeneracy-weighted number; its constancy licenses area-as-density and its
+   onset of curvature flags PMT nonlinearity.
+2. **The four-line common-slope Δα fit, with √area as the per-trace intensity
+   proxy — a flagship boost.** Δα is electronic and scalar, hyperfine-independent
+   to ppm, so all four interleaved lines share **one** Stark slope dS/dI: a
+   4×-over-determined Δα, with radiation-trapping / blend-induced center pulls
+   isolated as the *line-specific* residual. And since area ∝ I²·(ε_f·ε_b)²,
+   **√area tracks the delivered intensity of the same trace** (including waist
+   drift: area ∝ 1/w⁴, S ∝ 1/w², so √area ∝ I), so regressing the center shift on
+   √area rather than on the coarse power setpoint is an errors-in-variables
+   de-biasing that soaks up the block-to-block intensity/alignment wander inflating
+   the shift-vs-P slope. Within a block √(area/area_ref) = I/I_ref cancels gain,
+   density and polarization exactly — no absolute amplitude enters. Valid only where
+   area ∝ I² holds (config L, PMT-linear); config S is saturated, so the proxy is
+   disqualified there — a pre-registered admissibility gate.
+
+**Two systematic attacks on the density axis** (need a weak auxiliary D-line
+absorption channel — a probe laser + pickoff photodiode):
+
+3. **Absorption-channel N(T) → cold-spot detection.** Transmission on a photodiode
+   is a ratio immune to PMT gain (the dominant wander) and power-self-normalized;
+   its log-slope vs 1/T returns the vapor-pressure latent heat. A cold spot lagging
+   the set temperature flattens the high-T end and depresses the fitted slope, so
+   the offset from the Steck prediction **measures the cold-spot lag ΔT_cs** —
+   converting the dominant N(T) systematic on β_self from an assumption into an
+   in-situ-verified curve. Use the **D-line linear probe, not 993 depletion** (the
+   two-photon cross-section is not known to metrology precision — anchoring on it
+   would be circular). One long soak-verified fixed point on the same channel gives
+   an absolute column-density anchor, replacing the ±5% Steck absolute-N assumption.
+4. **Fluorescence-area ÷ absorption → clean radiation-trapping separation.**
+   Absorption sees true N (incident-beam depletion, undistorted by trapping of the
+   *emitted* photons); fluorescence sees the trapping-distorted emission. Their
+   within-block ratio cancels N and leaves the trapping-modified collection
+   efficiency η_coll(N) — the deferred clean trapping test, sharpest at the new
+   150–170 °C lever. Discriminant: real trapping is *smooth/monotonic* in density;
+   drift is random/non-monotonic (the archive's 1.10→0.98→2.53→1.97 swing was drift).
+
+**Enabling and defensive (cheap, protect the headlines):**
+- **Polarization-purity gauge:** the forbidden σ / σ–σ configs must read zero (the
+  null residual sets the impurity ε directly) and π-π : σ–σ′ must be 2:1 (§8.1.1) —
+  turning polarization drift from an unbounded systematic into a measured,
+  subtractable number feeding exploits 1–2.
+- **Radiation-trapping sentinel:** a pre-registered density/T threshold above which
+  the reabsorbed skirt inflates the fitted width beyond tolerance (e.g. >2%),
+  fencing the high-T β_self points — trapping is strongest exactly at the 150–170 °C
+  lever the campaign depends on.
+- **Area, not peak height,** is the drift/width-robust observable (peak confounds
+  with the changing width that *is* the β_self signal); the area-minus-peak-ratio
+  gap is a live lineshape-distortion monitor.
+- **PMT-nonlinearity certificate:** a back-to-back calibrated-ND linearity check
+  spanning the campaign's full fluorescence range (worst at high T) with a
+  pre-registered counts ceiling, plus an A/P² within-block watchdog that admits a
+  Stark block only if its intensity axis held.
+
+*Hardware note:* exploits 1–2 and the defensive set need only the already-planned
+interleaved blocks (12–16 reps) and per-trace power logging; exploits 3–4 add a
+weak D-line absorption probe + photodiode — moderate, and the single highest-value
+addition because it attacks the N(T) systematic that limits β_self.
+
 ### 8.5 Indicative sizing (the programme closes in ~8 days of cell time)
 
 *Not a schedule and not a booking: an ordering that shows the full programme fits
@@ -628,7 +758,11 @@ S skew session → S₀ magnitude + skew detection attempt; L/M mean-pull +
 variance → ramp-law form test (the actual novelty claim); S−L width difference
 → absolute intensity axis → Δα in physical units; interleaved blocks →
 degeneracy-law + trapping test; M spot → archive ↔ fixed-lock epoch bridge;
-cusp session → M8 closure.
+cusp session → M8 closure. Amplitude program (§8.4a): interleaved four-line
+areas → the parameter-free degeneracy-law test (5/3, 7/5) + the four-line
+common-slope Δα (√area intensity proxy); D-line absorption channel → in-situ
+N(T) / cold-spot lag + clean radiation-trapping separation + the high-T β_self
+trapping sentinel.
 
 ### 8.7 Resource allocation — what bit in 2025, and what each hour buys
 
