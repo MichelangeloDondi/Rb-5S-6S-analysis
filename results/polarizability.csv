@@ -1,0 +1,9 @@
+quantity,key,value,unit,status
+alpha_5s_static,model,318.28,au; validation vs measured 318.79(1.42) (Holmgren 2010),DIAGNOSTIC
+alpha_6s_static,model,5167.0,au; tail calibrated to the Safronova-group 5167(22),DIAGNOSTIC
+tuneout_5s,model,790.0339,nm; validation vs measured 790.03235(3) (Leonard 2015),DIAGNOSTIC
+delta_alpha_993,model,-1145,"au (alpha_6S - alpha_5S); band -1151..-1140; |value| within ~5% of Orson 2021's 1093 but OPPOSITE sign (6S pushed up at 993 nm => blue shift) -- flagged, archival results sign-immune",DIAGNOSTIC
+alpha_6s_1064,model,-116.4,au; small and negative -- a 1064 nm trap arm adds nearly the full alpha_5S(1064) ~ +687 au to the differential shift,ENVELOPE
+magic_5s6s,1204nm,1203.89,nm; alpha there 547 au (trapping both states); 16-84% band 1203.06..1204.73 nm; unpublished (searched 2026-07-17); scalar only -- vector shifts near the 6S-5P lines need their own treatment before a trap design,ENVELOPE
+magic_5s6s,1288nm,1287.87,nm; alpha there 501 au (trapping both states); 16-84% band 1287.71..1288.03 nm; unpublished (searched 2026-07-17); scalar only -- vector shifts near the 6S-5P lines need their own treatment before a trap design,ENVELOPE
+magic_5s6s,1340nm,1339.57,nm; alpha there 480 au (trapping both states); 16-84% band 1339.51..1339.64 nm; unpublished (searched 2026-07-17); scalar only -- vector shifts near the 6S-5P lines need their own treatment before a trap design,ENVELOPE

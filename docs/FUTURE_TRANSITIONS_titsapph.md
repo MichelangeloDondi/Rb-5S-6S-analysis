@@ -133,6 +133,16 @@ transitions, including the hot 5D clock line).
   and flips sign** as Δα→0 — a **passive determination of the magic wavelength /
   differential-polarizability zero-crossing**, with no reference cavity and no active
   feedback. That is a clean, novel, clock-relevant result.
+- **Magic wavelengths for our own 5S–6S pair now exist as computed candidates**
+  (M16, `results/polarizability.csv`; unpublished elsewhere to the depth searched
+  2026-07-17): α₅S = α₆S crossings at **≈1203.9 nm** (the clean one, far from every
+  6S resonance; α ≈ +547 a.u., trapping both states; 16–84% band ±0.8 nm),
+  ≈1287.9 nm and ≈1339.6 nm (both wedged near the 6S–7P / between the 6S–5P lines,
+  where vector shifts need their own treatment). A trap at the 1203.9 nm crossing
+  would hold atoms without perturbing the 993 nm line — the state-insensitive-trap
+  ingredient for any trapped-atom version of this spectroscopy, and a small
+  original result in its own right. Scalar only; a vector/tensor treatment and a
+  blue-side crossing search are the follow-up.
 - **Novelty (three, all defensible).** (i) The *inversion* of lineshape asymmetry from
   nuisance-to-eliminate (Wieman 1987; Antypas–Budker 2018) into a self-calibrating
   observable, realized on a *focused* two-photon transition; (ii) magic-λ from an
