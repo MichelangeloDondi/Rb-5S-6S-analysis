@@ -62,6 +62,7 @@ FILE_STATUS = {
     "ruler_nlmap.csv": "CALIB",
     "sigma_laser_sharing.csv": "DIAGNOSTIC",  # the M4c in-sample consistency check
     "transit_mc.csv": "ENVELOPE",         # w0-parametric transit-broadening model
+    "identifiability_profile.csv": "DIAGNOSTIC",  # the M12 profile-likelihood grids (fig7)
 }
 
 # long (quantity/key/value/err/unit) CSVs: status keyed by `quantity`
@@ -99,6 +100,12 @@ QUANTITY_STATUS = {
     "identifiability.csv": {
         "condition_number": "DIAGNOSTIC", "corr": "DIAGNOSTIC",
         "best_constrained_sigma": "DIAGNOSTIC", "worst_constrained_sigma": "DIAGNOSTIC",
+        # the global profile-likelihood complements (all shape diagnostics)
+        "banana_rms": "DIAGNOSTIC", "ridge_slope": "DIAGNOSTIC",
+        "profile_free_gap": "DIAGNOSTIC", "closed_95": "DIAGNOSTIC",
+        "audit_max_gain": "DIAGNOSTIC", "transit_railed_frac": "DIAGNOSTIC",
+        "wide_free_gap": "DIAGNOSTIC", "branch": "DIAGNOSTIC",
+        "branch_gap": "DIAGNOSTIC",
     },
     "coverage.csv": {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
