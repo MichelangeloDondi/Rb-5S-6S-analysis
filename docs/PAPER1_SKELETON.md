@@ -123,7 +123,7 @@ the archival brackets into measurements, so several sections are written as
   *relative* structure survive; every per-scan centre is a free nuisance. What this
   licenses: widths, power/density scalings, ramp *shape* moments. What it forbids:
   absolute shifts.
-- **Epoch 2 (Oct 2026, fixed lock):** centres → the first absolute AC-Stark and
+- **Epoch 2 (fixed lock):** centres → the first absolute AC-Stark and
   collisional self-shift coefficients; a knife-edge $w_0$ sets every absolute scale.
 - State plainly: **the dominant systematic throughout is the OPEN beam waist $w_0$**
   (beam clipped by the 3 mm EOM aperture, tens-of-% uncertain). Every "absolute"

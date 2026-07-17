@@ -23,27 +23,27 @@ d_kappa3,2025_rho0.75_tau6s,-0.0001,third-cumulant change MHz^3 (with - without 
 excess_var_frac,2025_rho0.75_tau6s,0.0332,fraction of the shift variance contributed by the fringe,ENVELOPE
 frac_resolved,2025_rho0.75_tau6s,0.0108,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
 window_frac,2025_rho0.75_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
-d_skew,Oct_rho1.00_transit,-0.1556,standardized skew change (with - without fringe),ENVELOPE
-d_skew_mc_err,Oct_rho1.00_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,Oct_rho1.00_transit,-0.1497,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-excess_var_frac,Oct_rho1.00_transit,0.0631,fraction of the shift variance contributed by the fringe,ENVELOPE
-frac_resolved,Oct_rho1.00_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
-window_frac,Oct_rho1.00_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
-d_skew,Oct_rho1.00_tau6s,-0.1493,standardized skew change (with - without fringe),ENVELOPE
-d_skew_mc_err,Oct_rho1.00_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,Oct_rho1.00_tau6s,-0.1754,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-excess_var_frac,Oct_rho1.00_tau6s,0.0663,fraction of the shift variance contributed by the fringe,ENVELOPE
-frac_resolved,Oct_rho1.00_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
-window_frac,Oct_rho1.00_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
-d_skew,Oct_rho0.75_transit,-0.1527,standardized skew change (with - without fringe),ENVELOPE
-d_skew_mc_err,Oct_rho0.75_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,Oct_rho0.75_transit,-0.1467,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-excess_var_frac,Oct_rho0.75_transit,0.0618,fraction of the shift variance contributed by the fringe,ENVELOPE
-frac_resolved,Oct_rho0.75_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
-window_frac,Oct_rho0.75_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
-d_skew,Oct_rho0.75_tau6s,-0.1466,standardized skew change (with - without fringe),ENVELOPE
-d_skew_mc_err,Oct_rho0.75_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,Oct_rho0.75_tau6s,-0.1719,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-excess_var_frac,Oct_rho0.75_tau6s,0.0650,fraction of the shift variance contributed by the fringe,ENVELOPE
-frac_resolved,Oct_rho0.75_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
-window_frac,Oct_rho0.75_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
+d_skew,S_rho1.00_transit,-0.1556,standardized skew change (with - without fringe),ENVELOPE
+d_skew_mc_err,S_rho1.00_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
+d_kappa3,S_rho1.00_transit,-0.1497,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+excess_var_frac,S_rho1.00_transit,0.0631,fraction of the shift variance contributed by the fringe,ENVELOPE
+frac_resolved,S_rho1.00_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
+window_frac,S_rho1.00_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
+d_skew,S_rho1.00_tau6s,-0.1493,standardized skew change (with - without fringe),ENVELOPE
+d_skew_mc_err,S_rho1.00_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
+d_kappa3,S_rho1.00_tau6s,-0.1754,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+excess_var_frac,S_rho1.00_tau6s,0.0663,fraction of the shift variance contributed by the fringe,ENVELOPE
+frac_resolved,S_rho1.00_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
+window_frac,S_rho1.00_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
+d_skew,S_rho0.75_transit,-0.1527,standardized skew change (with - without fringe),ENVELOPE
+d_skew_mc_err,S_rho0.75_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
+d_kappa3,S_rho0.75_transit,-0.1467,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+excess_var_frac,S_rho0.75_transit,0.0618,fraction of the shift variance contributed by the fringe,ENVELOPE
+frac_resolved,S_rho0.75_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
+window_frac,S_rho0.75_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
+d_skew,S_rho0.75_tau6s,-0.1466,standardized skew change (with - without fringe),ENVELOPE
+d_skew_mc_err,S_rho0.75_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
+d_kappa3,S_rho0.75_tau6s,-0.1719,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+excess_var_frac,S_rho0.75_tau6s,0.0650,fraction of the shift variance contributed by the fringe,ENVELOPE
+frac_resolved,S_rho0.75_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
+window_frac,S_rho0.75_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC

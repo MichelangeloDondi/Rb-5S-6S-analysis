@@ -292,9 +292,9 @@ too narrow); re-derived 2026-07-12 when the MC flux bug was fixed and w0
 re-centred 32 -> 50 um. See constants.W0_PRIOR_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {
-    "L (60 um, Oct)": 60.0,
+    "L (60 um, config)": 60.0,
     "M (50 um, archival)": 50.0,
-    "S (16 um, Oct)": 16.0,
+    "S (16 um, config)": 16.0,
 }
 """Beam-waist configurations for the ramp-geometry predictions (PLAN §8.1;
 run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
