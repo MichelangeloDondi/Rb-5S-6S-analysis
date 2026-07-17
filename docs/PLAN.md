@@ -167,6 +167,96 @@ P1-min stands unchanged. Nothing below asks the group to bet on the analysis —
 the analysis is finished; a session only decides whether the coefficients are
 *measured* or remain *bounded*.
 
+### For a skeptical reader — the strongest objections, answered honestly
+
+*The objections a skeptical PI or co-author would raise, in their words. Each is
+answered by conceding what is true first — the campaign is not worth running if
+these do not survive. Supporting detail lives where cited.*
+
+**"Orson (USAFA, 2021) already published nulls on this exact line. Your bounds
+just say 'we also saw nothing,' slower."** Conceded: **as pure numbers the
+archival bounds are confirmatory of Orson's nulls** — same direction, tighter.
+The increment is by channel. (a) *Method*: a closed-form fringe-averaged
+two-photon triangular-ramp lineshape law plus a reference-free, drift-immune
+moment readout — un-scooped, and distinct from Orson's absolute-frequency and
+mean-shift work (the axis-by-axis delineation vs Stalnaker is in `LITERATURE.md`
+§1; the not-claimable list in §5). (b) *An order-of-magnitude tighter S₀ bound*
+(< 0.63 MHz vs Orson's ~6 MHz null) extracted **from shape alone under a
+MHz/min-drifting lock**. (c) *With a fixed-lock session*, the **first measured
+light shift on this line** — the pull ∝ S₀ is a positive observable, not a
+sharper null — plus the collisional self-*shift*, two positive observables Orson
+only nulled. Honest bottom line: **P1-min's acceptance rides on the method being
+judged novel; the measured coefficients need the session.**
+
+**"The lock drifted at MHz/min and killed the centres — that IS why you have
+bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
+is *asserted*, not demonstrated from the archive (no timestamps survive; the
+2025 root cause was never established — §8.7.1 item 5). But the session's value
+does not hinge on a *perfect* lock. (a) The pull is a **differential**
+measurement (shift vs power) needing minutes of stability, not hours. (b) The
+pre-registered bracket veto (§8.4) **excludes** any block whose ruler tooth moved
+> 0.2 MHz — drift-jump blocks are cut, not averaged. (c) The sentinel condition
+(§8.7.6) turns residual drift into a directly-monitored observable. (d) Existence
+proof: Ayachitula (2024), doing precision metrology on **this same transition**,
+reports a lock stable to < 0.5 kHz over 50 min — a stable lock here is
+demonstrated-achievable, not hoped-for. (e) Fail-safe: even if the lock drifts
+again, the D1 knife-edge w₀ + ρ **retroactively sharpen the 2025 archive and
+stand alone** (worth doing with only the beam). The worst case is therefore *a
+sharpened archive plus a diagnosed lock*, not another undifferentiated pile of
+bounds.
+
+**"MHz/min drift does not politely stay out of the shape — it skews the line
+within a scan, and skew is your observable."** Right in principle; answered by
+the timescale separation. A scan window is ~1 s (one up-ramp), and MHz/min is
+~0.017 MHz/s, so within-scan drift is **~0.01 MHz** — negligible against the
+~5.25 MHz width, and each block is self-calibrated by its own EOM ruler. The
+drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
+β_self is a bound, not a value (`RESULTS.md` C1). The clean closure — inject a
+within-scan drift ramp into synthetic data and confirm the recovered moments are
+unbiased — is the one check that would seal this; it is flagged as the honest
+next test, not claimed as done.
+
+**"Your Δα bracket ~1200 a.u. is 'consistent with' Orson's computed 1093 — a
+bracket that wide discriminates nothing."** Conceded fully: the archival S₀ bound
+**excludes only S₀(225 mW) > 0.63 MHz** (Δα above ~1200), the tight-waist top of
+the prediction band; every value from **zero** up to 1093 remains allowed, so it
+discriminates nothing among reasonable theories (`RESULTS.md` C3d states this).
+"Consistent with 1093" is evidence the pipeline is **not mis-scaled**, not a
+physics result — the measured coefficient needs the session.
+
+**"Your own recompute flips the sign of Δα against the one published computation.
+Bug, or should I not trust your pipeline?"** Not a bug. The recompute (M16) is an
+independent sum-over-states calculation validated on anchors it does **not** fit
+— it reproduces the *measured* 5S tune-out (790.032 nm) to ~2 pm and the static
+polarizabilities — so its magnitude (within 5% of Orson) and its magic-wavelength
+outputs are trustworthy. It agrees with Orson's magnitude and disagrees on the
+*sign* of α₆ₛ(993) through an identified mechanism. Crucially **every 2025 result
+is sign-immune** (the asymmetry null is symmetric; the S₀ bound and prediction
+band use |Δα|), so the disagreement touches no archival number; the sign is a
+flagged open **theory** item — one line for a theorist — not a pipeline fault and
+not a blocker for the session (`THEORY_NOTE.md` §5).
+
+**"You went dark for a year; the analysis lives in a pipeline only you
+understand; put a student on this and it strands them with un-analysed shots."**
+Conceded plainly: fair — and the spec deliberately names no operator, no dates,
+no handover, because those are a *project* commitment, not a document artifact,
+and belong in the direct conversation, not here. What the document *can* put
+against the stall risk: the pipeline is built to a **bus-test standard** (a new
+operator can take it over — that was a design requirement, §1), it **ingests
+session data unchanged** (no re-derivation — §0), and the smallest tranche
+(§8.5 D1–D3) has a **defined standalone deliverable**, so a partial or truncated
+session yields a finished result, not orphaned data. The analysis is done; what a
+session adds is shots, not months of new modelling.
+
+**"The numbers keep moving — β went from ~0.07 to ~0.4 this month. How do I know
+they are frozen?"** They moved because the **error treatment was made more
+conservative** — Student-t on one residual degree of freedom replacing a naive
+√n, and the beam-waist re-pin — so the bounds *loosened toward honesty*, the
+opposite of tuning a number down. Every headline is auto-generated from the
+committed CSVs (prose cannot drift from data), the clean repository is tagged,
+and a submission tag freezes the science snapshot. The conservative *direction*
+of every revision is the reason to trust them, not doubt them.
+
 Constraint set: no more power (225 mW ceiling); telescope before the EOM and
 lens swaps ARE allowed; repeats across days and orders are allowed. Core
 architecture (survived review): **the telescope is an intensity
