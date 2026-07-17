@@ -64,6 +64,35 @@ equally:
 `figures/fig8_ruler.png` shows a representative trace with its five-tooth comb
 fit and the nonlinearity map.
 
+### The comb amplitudes — and the pure-phase-modulation null
+
+For *pure* phase modulation at index $\beta$ on both counter-propagating
+beams, the two-photon tooth amplitudes obey an exact closed law: the tooth at
+$k$ sums every sideband pair $m+m'=k$, and by Neumann's addition theorem
+
+$$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2 .$$
+
+This explains the 2025 design compromise and prescribes its fix:
+
+- **At small $\beta$ the sidebands are buried**: $J_k(2\beta)^2$ gives
+  $1 : 0.10 : 0.002$ at $\beta=0.3$ — the outer teeth drown in the central
+  tooth's tails. The 2025 workaround rotated a half-wave plate to admix
+  amplitude modulation and suppress the optical carrier — which worked, but
+  put the ruler light at a **different polarization and power than the science
+  light** (the reason the ruler traces cannot serve as a hardware-matched
+  width monitor for the archive; PLAN §8.4).
+- **The clean fix needs no polarizer at all**: drive the EOM at
+  $\beta \approx 1.202$ (where $J_0(2\beta)=0$) and the central tooth **nulls
+  by coherent pair interference** — the two-photon analogue of carrier
+  suppression — leaving a comb $0 : 1.00 : 0.69 : 0.15$ ($k=0,\pm1,\pm2,\pm3$)
+  with the ruler light *identical* to the science light.
+- **The pattern is a built-in modulation diagnostic**: pure PM demands
+  $A_{+k}=A_{-k}$ exactly; the 2025 traces violate it (e.g. $1.00$ vs $0.90$
+  at $k=\pm1$ on a T-session ruler, with block-dependent central-tooth
+  suppression) — the fingerprint of the AM admixture, visible per block. A
+  fixed-lock session can monitor modulation purity live from the tooth
+  asymmetry alone.
+
 ---
 
 ---
