@@ -683,7 +683,12 @@ one); the hybrid is across the moment hierarchy, never across methods.
   fluctuation with all identified fit/rate artifacts positive and ≤ +0.03).
   (ii) **No resolution:** per-block tooth-width SEM 0.06–0.36 MHz (~5
   repeats) at or above the 0.12 MHz drift signal — block-level reliability
-  measured ≈ 0.
+  measured ≈ 0. The HWP-cancelling *(after − before)* bracket-width difference was
+  measured too (the shared HWP setting cancels the polarization offset in the
+  difference) and is no better: per-difference error 0.05–0.14 MHz ≈ the drift,
+  only 1 of 4 peaks resolvable (`docs/DATA.md`), since it inherits √2× the
+  width noise — so it serves as a within-session drift *bound* (≤ ~0.17 MHz), not
+  a block-by-block correction.
 
   **The corrected design (fixed-lock session):**
   1. **Drive the EOM at β ≈ 1.20 instead of rotating the HWP.** The pure-PM

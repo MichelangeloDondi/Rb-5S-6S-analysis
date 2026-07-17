@@ -124,6 +124,25 @@ atoms.
 - **Incommensurate-lattice / arcsine light-shift distribution** for a two-colour
   guided lattice — the guided analogue of the triangular ramp, a distinct f(s) the
   same moment machinery reads.
+- **The method's reach beyond the fibre — optical-lattice atom interferometry.**
+  The inhomogeneous light-shift distribution the fibre makes unavoidable is the
+  *same* systematic that limits coherence in held-atom / optical-lattice atom
+  interferometers, where the differential light shift of the trapping lattice
+  dominates the interferometer phase. The drift-immune moment method plus the
+  magic/tune-out-wavelength toolkit (M16) are directly a **characterisation and
+  trap-design** capability there — a distribution-aware readout of the very shift
+  those experiments fight, and the wavelengths that null it.
+- **Atoms in a plasmonic near-field (a further near-surface extension).** A
+  metal-coated fibre or a plasmonic nanostructure steepens the near-field, so the
+  light-shift distribution f(s) is larger and more sharply shaped, the decay is
+  Purcell-modified (a position-dependent linewidth), and the surface shift can be
+  resonantly enhanced — the near-surface lineshape program of §IV with plasmonic
+  enhancement. The lineshape-decomposition toolkit is in fact domain-general:
+  single-particle plasmon-linewidth spectroscopy separates the homogeneous
+  (single-particle damping) from the inhomogeneous (ensemble size/shape) width
+  exactly as Doppler-free two-photon separates natural/collisional from Doppler
+  here — the method travels even where no atom is involved. *(Forward-looking and
+  deliberately hedged: a lateral reach, not a Paper-2 claim.)*
 
 ## VII. Status, dependencies, and risk
 

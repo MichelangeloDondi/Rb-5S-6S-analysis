@@ -383,3 +383,24 @@ conclusions:
   40–80 °C; the campaign actually went to 130 °C) and does NOT pin the beam
   geometry — so the w₀ prior legitimately rests on the Gaussian estimate +
   Nieddu's measurement, not the plan.
+
+- **The RF-off/on/off bracket structure, tested for extra statistics
+  (2026-07-17).** Each power-session block is bracketed by an EOM ruler *before*
+  and *after* (RF-on), around the RF-off science lines. The clean quantity to
+  exploit is the *(after − before)* ruler-width difference: because both brackets
+  share the same rotated-HWP setting, the polarization/power offset that sinks the
+  absolute ruler-width monitor cancels in the difference, leaving only the
+  within-session σ_laser drift. Measured per peak (from `results/ruler_traces.csv`,
+  transition axis): 4121 −0.17 MHz (2.5σ, the only resolvable one), 4154 +0.13
+  (0.9σ), 4192 −0.05 (1.1σ), 4207 +0.06 (0.5σ). So the difference does remove the
+  HWP bias, but inherits √2× the ruler-width noise (per-difference error
+  0.05–0.14 MHz), comparable to the ~0.12 MHz drift it would monitor — reliability
+  ≈ 0, the same wall as the absolute control variate. It is therefore a legitimate
+  **stationarity bound** (within-power-session σ_laser drift ≤ ~0.17 MHz — the
+  M4(ii) probe with a measured value), **not** a block-by-block correction: at
+  reliability ≈ 0 a correction can only widen the bounds, never earn a measurement
+  (the asymmetry rule). The T-sweep (the β_self density axis) has per-block rulers
+  and no before/after brackets, so it cannot benefit at all. Where the idea pays is
+  the fixed-lock session's matched-PM, interleaved ruler (PLAN §8.4 / §8.7.5),
+  where the tooth widths become clean and well-sampled and the control variate
+  crosses reliability ≈ 0 → useful.
