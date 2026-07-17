@@ -61,6 +61,9 @@ equally:
   self-consistently calibrated out, which is the whole point of a per-block
   ruler under a drifting lock.
 
+`figures/fig8_ruler.png` shows a representative trace with its five-tooth comb
+fit and the nonlinearity map.
+
 ---
 
 ---

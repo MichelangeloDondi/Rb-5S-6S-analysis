@@ -78,6 +78,16 @@ flowchart LR
     G -.-> P
 ```
 
+Every scan carries its own frequency ruler — an EOM comb that excites five
+copies of the line, exactly 6.25 MHz apart on the laser axis — so the
+frequency axis is self-calibrated per block even as the lock drifts, and the
+ruler *rate* is a differential across identical lines, immune to the light
+shift and to the lineshape asymmetry (methods §3):
+
+<p align="center">
+  <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its five-tooth comb fit, and the empirical sweep-linearity map">
+</p>
+
 ## Results at a glance
 
 Every absolute number is limited by a single systematic — the beam waist **w₀** —
