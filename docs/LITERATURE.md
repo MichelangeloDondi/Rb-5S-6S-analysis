@@ -442,6 +442,50 @@ gap Paper B can flag.
 power-dependent surface shift, arXiv:2412.01099). The clean cell lineshape is the
 reference against which ONF surface/pushing effects are read.
 
+**[FEED] Pennetta et al. 2026** (*Nature Photonics*, `pennetta2026`, DOI
+10.1038/s41566-026-01961-9; arXiv:2509.17767; PDF held) — the nearest-platform
+result to Paper 2, feeding two of its pillars; NO committed number moved. The
+Rauschenbeutel group demonstrate a **hybrid nanofibre trap** for cold **Cs** on a
+**450 nm** tapered fibre: attraction from **surface forces (Casimir–Polder +
+electrostatic charges on the waveguide)**, repulsion from a blue-detuned
+evanescent field; loaded at 96(5)% from the standard two-colour (935/685 nm
+magic) trap; depth ~1 µK, radial trap ~7 kHz, atom ~280 nm from the surface;
+storage 140(9) ms; **Ramsey T₂\* = 17.8(7) ms, spin-echo T₂′ = 44.7(2.5) ms**
+(records for the platform). The two feeds:
+- **It puts quantified atom–surface content on the near-surface potential** —
+  Casimir–Polder plus surface-charge electrostatics — which is exactly what
+  `gokhroo2022` left at the hypothesis stage (its dip has "no Casimir-Polder or
+  van der Waals content at all"): a concrete ingredient for any Paper-2
+  near-surface *lineshape* model.
+- **Its coherence gain is a suppression of the trapping-light differential light
+  shift.** The paper states the decoherence it beats "arises from
+  motional-state-dependent differential light shifts … proportional to the
+  intensity of the trapping fields," cured by holding atoms in low-light regions
+  — a real-world confirmation, on Paper-2's own platform, that the
+  **inhomogeneous/differential light shift is the coherence-limiting systematic
+  in guided-atom systems**, which is the premise of our light-shift-distribution
+  method (THEORY_NOTE §3), the M16 magic-wavelength toolkit, and the guided-mode
+  framing in `PAPER2_SKELETON.md` §V–VI.
+
+Platform caveats (so we do not overclaim): Cs not Rb, a D2 hyperfine qubit not the
+5S–6S two-photon line, a 450 nm fibre not the OIST 650 nm — the *physics* (surface
+forces; differential-light-shift dephasing) transfers, the numbers do not.
+
+**[FEED] Pache et al. 2026** (`pache2026`, arXiv:2605.13387; PDF held) — the same
+group's companion, on the **loading and cooling** toolkit for this platform, and a
+direct feed to the EIT-cooling / atom-source thread; NO committed number moved.
+Λ-enhanced gray molasses gives a **6× loading gain** over red-detuned polarization-
+gradient cooling (~4000 Cs atoms in a shallow 24 µK trap, optical depth > 140,
+collisional blockade over ~1 mm), and **EIT-assisted cooling** then raises the trap
+storage time to **400(9) ms** (5×), working with two co-propagating guided fields at
+only a few hundred pW. Why it feeds us: (i) it is guided-atom **source optimisation**
+— the strongest match to what a guided-atom group would want from this analysis
+lineage (the EIT-cooling / fibre-source skill set; the Lan-pitch lead); (ii) it is
+the loading/cooling half of Paper 2's experimental toolkit, complementary to the trap
+physics of `pennetta2026`; (iii) it again names the **residual differential light
+shift of the trapping fields** as the limiting imperfection — the recurring
+guided-mode theme. Cs / D2 again: the physics transfers, the numbers do not.
+
 **Prior-art audit on the pushing dip (2026-07-16).** Because a near-surface
 lineshape is the natural Paper-2 direction, we checked whether anyone has since
 modelled the `gokhroo2022` dip. Crossref/OpenAlex list **6 citing works, 4 unique**

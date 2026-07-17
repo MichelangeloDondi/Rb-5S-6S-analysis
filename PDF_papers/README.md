@@ -69,6 +69,13 @@ Ayachitula copy (`PRA.pdf`) was md5-checked and removed.
 | `Biraben_2019_first-decades-Doppler-free-two-photon-review.pdf` | biraben2019 | C. R. Physique 20, 671 — the pioneer's own retrospective review of Doppler-free two-photon spectroscopy; Intro anchor | **DONE (D)** [CITE], LITERATURE §7 |
 | `Amy_2017_two-photon-5S-5D-Rb-in-porous-glass.pdf` | amy2017 | arXiv:1706.04868 — two-photon 5S→5D Rb under confinement (porous glass); landscape | **DONE (D)** [FEED], LITERATURE §7 |
 
+## Latest intake (2026-07-17)
+
+| file | key | why held |
+|---|---|---|
+| `Pennetta_2026_hybrid-nanofiber-trap-surface-forces-blue-detuned.pdf` | pennetta2026 | *Nature Photonics* DOI 10.1038/s41566-026-01961-9 (arXiv:2509.17767; published PDF held). Rauschenbeutel **hybrid ONF trap** — Casimir–Polder + surface-charge attraction vs blue-detuned repulsion; Cs on a 450 nm fibre; storage 140(9) ms, Ramsey T₂\*=17.8(7) ms. **[FEED]** — nearest-platform for Paper 2: the quantified atom–surface forces `gokhroo2022` lacks, and a real-world demonstration that differential-light-shift dephasing is the guided-atom coherence limiter. `docs/LITERATURE.md` §8. |
+| `Pache_2026_gray-molasses-EIT-cooling-nanophotonic-traps.pdf` | pache2026 | arXiv:2605.13387 (same Rauschenbeutel group, 450 nm fibre). **Λ-gray-molasses loading** (6× gain) + **EIT cooling** of Cs in a nanophotonic trap; ~4000 atoms in a 24 µK trap, storage 400(9) ms (5×), a few hundred pW. **[FEED]** — guided-atom source optimisation (the EIT-cooling / Lan-pitch match) and Paper 2's loading/cooling toolkit; again flags the trapping-field differential light shift. `docs/LITERATURE.md` §8. |
+
 ## Theses & internal materials
 
 | file | what it is | digestion target |
