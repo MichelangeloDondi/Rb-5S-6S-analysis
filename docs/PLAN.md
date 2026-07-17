@@ -361,6 +361,30 @@ one); the hybrid is across the moment hierarchy, never across methods.
   block → block excluded (jump-like drift does not average out — review
   #4 accepted: opposite-order + brackets + veto + interleave jointly earn a
   measurement, no single element does).
+- **Buy degrees of freedom first — the cheapest cure for the t(0.95,1)=6.31
+  penalty is more T blocks, not statistical cleverness.** The archival bound's
+  ×6.31 multiplier exists only because the between-block scatter is estimated
+  on ONE residual DOF (3 densities, 2 fit params); **≥5 T blocks per peak**
+  gives t(0.95,3)=2.35 — a ~2.7× tightening before any drift compensation is
+  even considered.
+- **The ruler teeth as a width monitor — a designed compensator, prescribed
+  here, NOT applied to the archive.** Each ruler tooth is a copy of the line,
+  so its fitted width is a contemporaneous linewidth monitor that could cancel
+  between-block σ_laser drift as a control variate. On the 2025 archive this
+  fails on measured grounds: the per-block tooth-width SEM (0.06–0.36 MHz,
+  ~5 repeats) is at or above the 0.12 MHz drift signal — the monitor's
+  block-level reliability is measured ≈ 0 — and the observed monitor–line
+  width correlation is a ~2σ fluctuation of the wrong sign for a common
+  σ_laser (all identified fit/rate artifacts are positive and ≤ +0.03). To
+  make it work by design: **hardware-matched rulers (same HWP setting, same
+  power at the cell, RF power logged), interleaved rather than only
+  bracketed, ~10× more ruler repeats per block**, and the coefficient λ
+  measured in a dedicated calibration (dither the lock to impose known
+  σ_laser excursions, record both width types) — never fitted to the science
+  data. Decision rules frozen before first data, with the asymmetry rule:
+  a correction may widen a bound but may never, by itself, flip BOUND to
+  MEASUREMENT. Until then the ruler widths serve as the per-block QC veto
+  above (a gate, not a variate).
 - **High-T extension 150 → 170 °C** (oven/cell permitting): the Zameroski
   calibration (LITERATURE.md) puts expected β_self(6S) ~1 kHz per
   10¹² cm⁻³, so 70–130 °C yields Δγ ≈ 20 kHz — unmeasurable; 150–170 °C
