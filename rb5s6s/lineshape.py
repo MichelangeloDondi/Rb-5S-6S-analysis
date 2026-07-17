@@ -238,8 +238,12 @@ def ramp_moment_contributions(s0: float, z_ratio: float = 0.0,
                               n_photon: int = 2) -> dict:
     """The ramp's ADDITIVE contributions to the three lowest line cumulants —
     the forward model for the fixed-lock session "principled hybrid" (docs/PLAN.md §8.3,
-    THEORY_NOTE §3). Because the symmetric kernels contribute nothing to the
-    odd cumulants and only add to the (even) variance, the ramp contributes:
+    THEORY_NOTE §3). The convolved symmetric CORE kernels (natural, laser,
+    transit) contribute nothing to the odd cumulants and only add to the (even)
+    variance, so the ramp alone sets the odd part -- but the standing-wave fringe
+    tail is a separate MULTIPLICATIVE effect that DOES suppress this third
+    cumulant at the small waist (constants.py / fringe_tail), not modelled here.
+    The ramp contributes:
 
         pull       = kappa_1  (centroid shift, MHz)
         excess_var = kappa_2  (variance the ramp adds, MHz^2)

@@ -319,8 +319,11 @@ def main() -> int:
       "low-power systematic — baseline, line-pull — is not excluded, but shot noise "
       "dominates.) a fixed-lock session lifts the real observable two ways: the fixed lock "
       "un-absorbs the large first-order pull, and the small waist ($S_0$ 4× larger, "
-      "skew up to 64×) makes the ramp asymmetry a detection — conditional on the "
-      "§7 geometry correction. See docs/THEORY_NOTE.md §3.\n")
+      "skew scaling up to 64×) makes the ramp asymmetry a detection — conditional on "
+      "**two** same-sign small-waist corrections that suppress the skew and must be "
+      "fit jointly: the §7 beam-divergence axial average (the larger, sign-flipping "
+      "one) and the standing-wave fringe-resolved tail (~25% at 16 µm; THEORY_NOTE "
+      "§5). See docs/THEORY_NOTE.md §3.\n")
 
     ss = rows("stark_sweep")
     if ss:

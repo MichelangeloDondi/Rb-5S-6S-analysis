@@ -105,10 +105,11 @@ the fixed lock **recovers the first-order pull** ($-\tfrac23 S_0 \propto P$, a
 $\sim$MHz shift against a stable reference — the primary $S_0$ measurement, no
 longer absorbed by a free centre); and the small waist, where $S_0$ is $4\times$
 larger and its skew signature up to $64\times$ larger, lifts the shape asymmetry
-into a **detection**. Both are *conditional on the collection-geometry
-correction of §7*, which moves the ramp form — and the pull coefficient off
-$-\tfrac23$ — at small waist, and must be applied before $S_0$, hence
-$\Delta\alpha$, is read.
+into a **detection**. Both are *conditional on the small-waist skew corrections
+— the beam-divergence collection average of §7 (the larger, sign-flipping one)
+and the standing-wave fringe-resolved tail of §5, same-sign and fit jointly* —
+which move the ramp form — and the pull coefficient off $-\tfrac23$ — at small
+waist, and must be applied before $S_0$, hence $\Delta\alpha$, is read.
 
 **The hybrid, made principled.** The three cumulants are not three rival
 measurements to be combined or cherry-picked — they are three analytic
@@ -173,11 +174,23 @@ I_{\text{eff}} = (1+\rho)\frac{2P}{\pi w_0^2}\ }$$
 
 Here $I_{\text{eff}}$ is the **time-averaged** on-axis intensity of the forward
 plus retro beams, $\rho$ the retro power ratio. There is **no coherent
-$\times2$ standing-wave enhancement**: an atom crosses the $\lambda/2$ fringes
-at $\sim0.56$ GHz while the shift depth is $\lesssim1$ MHz, so the
-frequency-modulation index is $\sim2\times10^{-3}$ — deep in the narrow-band
-regime, the atom responds to the fringe-averaged intensity (Stalnaker *et al.*,
-*Phys. Rev. A* **73**, 043416 (2006), Sec. IV). With $\Delta\alpha = 1093$ a.u.
+$\times2$ standing-wave enhancement**: a *fast-axial* atom crosses the
+$\lambda/2$ fringes at $2v_z/\lambda\sim0.56$ GHz (mean axial speed) while the
+shift depth is $\lesssim1$ MHz, so its frequency-modulation index is
+$\sim2\times10^{-3}$ — narrow-band, so it responds to the fringe-*mean*
+intensity and $I_{\text{eff}}$ **is** that standing-wave mean (Stalnaker *et
+al.*, *Phys. Rev. A* **73**, 043416 (2006), Sec. IV) — the pull is exactly
+fringe-immune. But the line is Doppler-free over **all** $v_z$, so
+near-transverse atoms sit at a frozen fringe and sample the node-antinode
+arcsine: a fringe-*resolved* tail (weight $f_\text{res}$) that keeps the mean
+but, because the fringe *multiplies* the shift $s\to s(1+x)$ with $x$ arcsine,
+**suppresses** the ramp skew — $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at
+$\rho=1$ (a $-13.5 f_\text{res}$ fractional leverage $\propto$ contrast$^2$; only
+$P=f_\text{res}\sigma_x^2$ is observable). Negligible at $w_0=50\ \mu$m
+($\sim$5–8% of an already-below-noise skew), $\sim$25% at $16\ \mu$m, and
+**same-sign-additive** to the larger §7 divergence correction — the two must be
+fit jointly at small waist (quantified, coherence-window-bracketed, in
+`fringe_tail`). With $\Delta\alpha = 1093$ a.u.
 (Orson *et al.* 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
 $\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why the fixed-lock session's small
 waist makes the $\propto S_0^3$ skew measurable. Code: `lineshape.stark_shift_S0_mhz`.
@@ -205,9 +218,12 @@ AC-Stark parameter from the asymmetry. We do **not** claim the existence of the
 asymmetry. What we believe is specific and defensible:
 
 1. the **closed-form** law $f(s)\propto|s|^{n-1}$ for the focused,
-   retro-reflected, fringe-*averaged* travelling-wave geometry — the triangle
+   retro-reflected, fringe-*averaged* **standing-wave** geometry — the triangle
    for $n=2$ — versus their fringe-*resolved* numerical Bloch treatment for
-   $n=1$;
+   $n=1$. The honest delineation is fringe-*averaged* vs fringe-*resolved*, **not**
+   travelling vs standing (both are standing waves): their slow atomic beam
+   resolves the $\lambda/2$ fringes, our fast thermal atoms average them (leaving
+   only the small resolved tail of §5 / `fringe_tail`);
 2. the **drift-immune moment method** (§3) — using a light shift as a
    reference-free measurement channel, which the precision community's
    suppress-the-shift approach never needed;

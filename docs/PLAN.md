@@ -303,9 +303,11 @@ order of statistical cost:
 2. **Excess variance vs P²** (the Cheng-style symmetric reading, config L/M).
 3. **Skew hunt at S**: S₀³ ×64 vs 2025. NOT a promised headline: the ⟨E²⟩
    amplitude convention still spans a factor 2 in S₀ = factor 8 in skew
-   (predicted significance ~0.8–50σ; the fringe-averaging physics is settled
-   — LITERATURE.md — the residual is algebra convention, to be fixed in the
-   written derivation + Etienne check). **Session sized for the pessimistic
+   (predicted significance ~0.8–50σ; the fringe-averaged **mean** is settled
+   — LITERATURE.md — but the fringe-*resolved* tail **suppresses** the
+   small-waist skew ~25% (THEORY_NOTE §5, `fringe_tail`), same-sign-additive to
+   the item-4 divergence correction; the residual ⟨E²⟩ convention factor is
+   fixed in the written derivation + Etienne check). **Session sized for the pessimistic
    end**: ≥ 15× the 2025-equivalent trace count at one condition (~110 °C,
    225 mW) so even 0.8σ-per-2025-block becomes ≥3σ. Decisive either way.
 4. **Geometry correction at S** (computing it
