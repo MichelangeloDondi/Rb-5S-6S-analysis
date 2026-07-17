@@ -64,8 +64,12 @@ TOOTH_SPACING_LASER_HZ = OMEGA_EOM_HZ / 2.0
 CALCULATED: with phase-modulation sidebands on both counter-propagating beams,
 Doppler-free resonances occur when 2*nu_c + n*Omega = nu_0, so adjacent n are
 Omega/2 apart in laser frequency. Locked experimentally by the observed
-5-tooth amplitude pattern (weak / strong / suppressed-carrier / strong / weak)
-across all 2025 ruler blocks (MEASURED-HERE, 2026-07-11 session)."""
+5-tooth pattern -- weak outer teeth (second-order sideband pairs) bracketing
+three strong inner teeth -- across all 2025 ruler blocks (MEASURED-HERE,
+2026-07-11 session). The central tooth's height varies block to block with
+the HWP/AM setting (it is fed by (s+,s-) pairs as well as (c,c)); pure PM
+would give exactly A_k ~ J_k(2 beta)^2 with A(+k) = A(-k), and the observed
++-k asymmetry is the AM-admixture fingerprint (methods section 3)."""
 
 TOOTH_SPACING_TRANSITION_HZ = OMEGA_EOM_HZ
 """Same teeth measured on the transition axis: 12.5 MHz. CALCULATED (x2)."""

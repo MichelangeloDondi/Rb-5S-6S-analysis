@@ -371,20 +371,40 @@ one); the hybrid is across the moment hierarchy, never across methods.
   here, NOT applied to the archive.** Each ruler tooth is a copy of the line,
   so its fitted width is a contemporaneous linewidth monitor that could cancel
   between-block σ_laser drift as a control variate. On the 2025 archive this
-  fails on measured grounds: the per-block tooth-width SEM (0.06–0.36 MHz,
-  ~5 repeats) is at or above the 0.12 MHz drift signal — the monitor's
-  block-level reliability is measured ≈ 0 — and the observed monitor–line
-  width correlation is a ~2σ fluctuation of the wrong sign for a common
-  σ_laser (all identified fit/rate artifacts are positive and ≤ +0.03). To
-  make it work by design: **hardware-matched rulers (same HWP setting, same
-  power at the cell, RF power logged), interleaved rather than only
-  bracketed, ~10× more ruler repeats per block**, and the coefficient λ
-  measured in a dedicated calibration (dither the lock to impose known
-  σ_laser excursions, record both width types) — never fitted to the science
-  data. Decision rules frozen before first data, with the asymmetry rule:
-  a correction may widen a bound but may never, by itself, flip BOUND to
-  MEASUREMENT. Until then the ruler widths serve as the per-block QC veto
-  above (a gate, not a variate).
+  fails on two measured/structural grounds. (i) **Hardware mismatch by
+  construction:** every 2025 ruler trace was taken with the half-wave plate
+  rotated (AM admixture suppressing the optical carrier by 2–3 orders) —
+  necessary because at the achievable modulation index the sidebands were
+  buried in the central tooth's tails — so the ruler light had a *different
+  polarization and power* at the atoms than the science light, and its width
+  fluctuations track HWP/power partition as much as σ_laser (the mechanical
+  channel behind the anomalous, wrong-sign monitor–line correlation, a ~2σ
+  fluctuation with all identified fit/rate artifacts positive and ≤ +0.03).
+  (ii) **No resolution:** per-block tooth-width SEM 0.06–0.36 MHz (~5
+  repeats) at or above the 0.12 MHz drift signal — block-level reliability
+  measured ≈ 0.
+
+  **The corrected design (fixed-lock session):**
+  1. **Drive the EOM at β ≈ 1.20 instead of rotating the HWP.** The pure-PM
+     two-photon comb obeys A_k ∝ J_k(2β)² (methods §3): at β ≈ 1.202 the
+     central tooth **nulls by coherent pair interference** (comb
+     0 : 1.00 : 0.69 : 0.15), so the sidebands stand tall with the ruler
+     light **identical in polarization and power to the science light** —
+     the HWP trick becomes obsolete, and with it the hardware mismatch.
+     If the 12.5 MHz tank cannot reach β ≈ 1.2, a higher-frequency EOM
+     helps twice: more index headroom AND tooth spacing ≥ 3–4× the
+     laser-axis linewidth un-buries the tooth *widths* from overlap.
+  2. **Interleave rulers with science blocks** (not only bracket) at ~10×
+     the 2025 repeat count, RF power logged; monitor modulation purity live
+     via the exact pure-PM symmetry A₊ₖ = A₋ₖ (the 2025 traces violate it —
+     the AM fingerprint — so the asymmetry is a per-block purity gauge).
+  3. **λ from a dedicated calibration, never fitted:** dither the lock to
+     impose known σ_laser excursions, record both width types, fix the
+     control-variate coefficient before science data.
+  4. **Decision rules frozen before first data**, with the asymmetry rule: a
+     correction may widen a bound but may never, by itself, flip BOUND to
+     MEASUREMENT. Until all of this exists the ruler widths serve as the
+     per-block QC veto above (a gate, not a variate).
 - **High-T extension 150 → 170 °C** (oven/cell permitting): the Zameroski
   calibration (LITERATURE.md) puts expected β_self(6S) ~1 kHz per
   10¹² cm⁻³, so 70–130 °C yields Δγ ≈ 20 kHz — unmeasurable; 150–170 °C

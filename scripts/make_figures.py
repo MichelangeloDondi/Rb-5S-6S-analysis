@@ -409,8 +409,10 @@ def fig_ruler():
     """The built-in frequency ruler (M2, methods §3): a representative EOM
     ruler trace with its constrained five-tooth comb fit — the same physical
     line excited via five sideband pairs, teeth exactly 6.25 MHz apart on the
-    laser axis (outer teeth weak: they need second-order sideband pairs; the
-    carrier-suppression trick applies on other blocks). RIGHT: the
+    laser axis (outer teeth weak: they need second-order pairs; note the k=0
+    TOOTH is fed by (s+,s-) pairs as well as (c,c), so it can stand tall even
+    with the optical carrier AM-suppressed -- the tooth pattern varies block
+    to block with the 2025 HWP setting; methods section 3). RIGHT: the
     free-centres nonlinearity map (results/ruler_nlmap.csv) — the empirical
     bound (~0.3% per position) on scan nonlinearity AND any tooth-dependent
     pull (differential Stark, asymmetric-wing overlap), the ruler's
