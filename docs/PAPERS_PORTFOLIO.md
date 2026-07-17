@@ -36,7 +36,7 @@ are what a session would unlock, whoever runs it.
 |---|---|---|---|---|
 | **P1-min** | *Drift-immune metrology of Rb 5S–6S: method + archival bounds* | archive only | the two-epoch method + closed-form two-photon ramp + **bounds** (β_self, σ_laser, S₀) + systematics | **ready now**; modest but solid + un-scooped; = the thesis core |
 | **P1-full** | same, + the fixed-lock coefficients | archive + **a fixed-lock session** | as P1-min, plus **measured** AC-Stark coeff (pull resurrected), β_self (high-T lever + knife-edge w₀), σ_laser | flagship; medium risk (a fixed-lock session must deliver) |
-| **P2** | *ONF pushing-dip / near-surface two-photon lineshapes* | **ONF** (+ cell as reference) | quantitative completion of Gokhroo 2022; surface/pushing effects vs the clean cell line | needs an ONF collaboration (not approached); impact set by the ONF result |
+| **P2** | *ONF pushing-dip / near-surface two-photon lineshapes* (skeleton: `PAPER2_SKELETON.md`) | **ONF** (+ cell as reference) | quantitative completion of Gokhroo 2022; surface/pushing effects vs the clean cell line; the method transplanted as an in-fibre thermometer; **+ trapped-platform upside**: the 6S vector polarizability / differential g_J and travelling-vs-standing-wave in-fibre — measurements the hot cell structurally cannot do (`PLAN.md` §8.1.2) | needs an ONF collaboration (not approached); impact set by the ONF result |
 | **PA** | *Reference-free light shift / magic-λ on 778 nm 5S–5D via lineshape asymmetry* | new **5D-capable** session (optics set + 420 nm det.) | reference-free, orthogonal-systematics magic-λ cross-check | topical, **methodological not precision-competitive** (see §Paper A caveat there); needs PC |
 | **PB** | *β_self and Δα across the Rb 5S→nS/nD ladder (6S, 7S, 5D)* | multi-transition session | the n-scaling series; completes Zameroski/Weber-Niemax | **unscoopable, safer, lower ceiling** — a strong thesis/second-paper bet |
 | **PC** | *Near-resonant intermediate state and the two-photon transit/ramp lineshape* | 5D + 7S data | clean(6S)→resonant(5D) lineshape ladder; Bjorkholm–Liao test | methods engine that de-risks PA |
@@ -82,6 +82,6 @@ are what a session would unlock, whoever runs it.
 4. **Opportunistic third:** PA+PC (the 5D magic-λ story) if a 5D session with adequate
    S₀ (small waist) happens — framed as method + cross-check, not a precision claim.
 
-*Cross-refs: `PAPER1_SKELETON.md` (P1 structure), `PLAN.md` §8–9 (the fixed-lock session + Ti:Sapph
+*Cross-refs: `PAPER1_SKELETON.md` (P1 structure), `PAPER2_SKELETON.md` (P2 structure), `PLAN.md` §8–9 (the fixed-lock session + Ti:Sapph
 shot lists), `FUTURE_TRANSITIONS_titsapph.md` (PA/PB/PC physics + optics), `LITERATURE.md`
 §8 (competitive landscape + positioning).*
