@@ -25,7 +25,7 @@ verified_date: null
 summary: >
   Confirms the 128 um beam + Steck N(T) chain.
 loci: []
-section: unsorted
+section: oist-lineage
 ---
 
 # rajasree2020

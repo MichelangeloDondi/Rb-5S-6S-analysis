@@ -27,7 +27,7 @@ summary: >
   cascade fluorescence -- a second cascade-detection precedent for PLAN
   8.4a.
 loci: []
-section: unsorted
+section: deep-search
 ---
 
 # beard2024

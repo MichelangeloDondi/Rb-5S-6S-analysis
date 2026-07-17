@@ -24,7 +24,7 @@ summary: >
   line is a Lorentzian convolved with a two-sided exponential (the central
   cusp).
 loci: []
-section: unsorted
+section: transit-time
 ---
 
 # biraben1979

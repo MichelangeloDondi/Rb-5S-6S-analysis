@@ -25,7 +25,7 @@ summary: >
   OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um,
   f=150 mm) -- corroborates our w0 re-pin.
 loci: []
-section: unsorted
+section: oist-lineage
 ---
 
 # nieddu2019

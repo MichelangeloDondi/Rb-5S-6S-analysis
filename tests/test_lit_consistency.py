@@ -150,10 +150,12 @@ def test_allowlists_are_not_stale():
 def test_frontmatter_well_typed(key):
     fm = _fm(key)
     assert fm.get("citekey") == key, f"citekey '{fm.get('citekey')}' != filename '{key}'"
-    for req in ("type", "title", "authors", "status", "summary"):
+    for req in ("type", "title", "authors", "status", "summary", "section"):
         assert fm.get(req) not in (None, "", []), f"{key}: missing/empty '{req}'"
     assert fm["type"] in _TYPE_OK, f"{key}: type '{fm['type']}' not in {_TYPE_OK}"
     assert fm["status"] in _STATUS_OK, f"{key}: status '{fm['status']}' not in {_STATUS_OK}"
+    assert fm["section"] in bli.SECTION_SLUGS, (
+        f"{key}: section '{fm['section']}' not in {bli.SECTION_SLUGS}")
     assert isinstance(fm.get("authors"), list), f"{key}: authors must be a list"
     assert isinstance(fm.get("held"), bool), f"{key}: held must be a bool"
     routing = fm.get("routing") or []

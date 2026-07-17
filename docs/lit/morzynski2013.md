@@ -31,7 +31,7 @@ verified_date: null
 summary: >
   5S-7S sibling; DOI Crossref-verified 2026-07-13.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # morzynski2013

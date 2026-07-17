@@ -22,7 +22,7 @@ verified_date: null
 summary: >
   Recent microcell landscape.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # callejo2025

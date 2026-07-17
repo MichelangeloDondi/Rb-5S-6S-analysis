@@ -19,7 +19,7 @@ verified_date: null
 summary: >
   Allard-Kielkopf broadening lineage (quasistatic satellites).
 loci: []
-section: unsorted
+section: collision-series
 ---
 
 # spiegelman2022

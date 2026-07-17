@@ -27,7 +27,7 @@ summary: >
   counter-propagating 993 nm vapour cell as the Doppler-free frequency
   reference.
 loci: []
-section: unsorted
+section: oist-lineage
 ---
 
 # gokhroo2022

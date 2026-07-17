@@ -29,7 +29,7 @@ verified_date: null
 summary: >
   Compact-clock motivation for the transition class.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # martin2018

@@ -27,7 +27,7 @@ summary: >
   Two-color 5S-5D standard, 6e-14/sqrt(tau), light-shift-limited long
   term.
 loci: []
-section: unsorted
+section: landscape-24-26
 ---
 
 # ahern2025

@@ -22,7 +22,7 @@ summary: >
   FM two-photon in cold Rb -- EOM-ruler ancestry (with Zapka 1983,
   Bjorklund 1980).
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # snadden1996

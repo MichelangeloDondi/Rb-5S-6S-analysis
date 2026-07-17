@@ -21,7 +21,7 @@ summary: >
   Rb D2 RESONANCE-line self-broadening (static+collision width): the
   resonance-vs-vdW contrast for why our S->S self term is small.
 loci: []
-section: unsorted
+section: collision-series
 ---
 
 # sautenkov2026

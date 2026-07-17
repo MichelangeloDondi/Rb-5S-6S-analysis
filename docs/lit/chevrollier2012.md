@@ -21,7 +21,7 @@ verified_date: null
 summary: >
   The dedicated radiation-trapping / Levy-flight review for M7/VI.D.
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # chevrollier2012

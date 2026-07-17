@@ -22,7 +22,7 @@ summary: >
   The standard AMO <E^2> convention we adopt for S0: Delta E = -(1/4)
   alpha E0^2 = -alpha I/(2 eps0 c).
 loci: []
-section: unsorted
+section: method-anchors
 ---
 
 # grimm2000

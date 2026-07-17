@@ -21,7 +21,7 @@ verified_date: null
 summary: >
   The suppress-the-shift stance our USE-the-shift method contrasts with.
 loci: []
-section: unsorted
+section: prior-art
 ---
 
 # gerginov2018

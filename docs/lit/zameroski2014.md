@@ -23,7 +23,7 @@ verified_date: null
 summary: >
   Nearest measured self-shift series.
 loci: []
-section: unsorted
+section: collision-series
 ---
 
 # zameroski2014
