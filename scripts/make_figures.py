@@ -405,6 +405,67 @@ def fig_identifiability_profile():
     _save(fig, "fig7_identifiability_profile.png")
 
 
+def fig_ruler():
+    """The built-in frequency ruler (M2, methods §3): a representative EOM
+    ruler trace with its constrained five-tooth comb fit — the same physical
+    line excited via five sideband pairs, teeth exactly 6.25 MHz apart on the
+    laser axis (outer teeth weak: they need second-order sideband pairs; the
+    carrier-suppression trick applies on other blocks). RIGHT: the
+    free-centres nonlinearity map (results/ruler_nlmap.csv) — the empirical
+    bound (~0.3% per position) on scan nonlinearity AND any tooth-dependent
+    pull (differential Stark, asymmetric-wing overlap), the ruler's
+    common-mode-rejection receipt. Trace choice is deterministic: the first
+    canonical rf-on ruler of the brightest 130 °C block."""
+    from rb5s6s.ingest import load_manifest, load_trace, trace_path
+    from rb5s6s.ruler import fit_comb, _comb
+
+    rows = sorted((r for r in load_manifest()
+                   if r["role"].startswith("ruler") and r["flag"] == "canonical"
+                   and r["rf_on"] == "True"),
+                  key=lambda r: (r["peak"] != "4154", r["temperature_C"] != "130",
+                                 r["peak"], r["temperature_C"], trace_path(r)))
+    if not rows:
+        print("  (no ruler trace found -- skipping fig8)")
+        return
+    t, v = load_trace(trace_path(rows[0]))
+    fit = fit_comb(t, v)
+
+    fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.8, 3.9),
+                                  gridspec_kw={"width_ratios": [2.1, 1.0]})
+    ax.plot(t, v, ".", ms=1.6, color="0.55", label="ruler trace (raw)")
+    tf = np.linspace(t[0], t[-1], 3000)
+    ax.plot(tf, _comb(tf, fit["t0_ms"], fit["delta_ms"], fit["width_ms"],
+                      fit["heights"], fit["b0"], fit["b1"]),
+            "-", color="#0072B2", lw=1.4, label="constrained 5-tooth comb fit")
+    ymax = max(fit["heights"]) + fit["b0"]
+    for n in range(-2, 3):
+        tc = fit["t0_ms"] + n * fit["delta_ms"]
+        ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
+        ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.04), ha="center", fontsize=8,
+                    color="#D55E00")
+    ax.annotate("6.25 MHz per tooth (laser axis)\n= the frequency ruler",
+                xy=(fit["t0_ms"] + 0.5 * fit["delta_ms"], ymax * 0.55),
+                ha="center", fontsize=8)
+    ax.set_xlabel("scan time (ms)")
+    ax.set_ylabel("fluorescence (V)")
+    ax.set_title("the scan carries its own calibration: five copies of the\n"
+                 "same line via EOM sideband pairs", fontsize=9)
+    ax.legend(fontsize=7, loc="upper right")
+
+    nl = _rows("ruler_nlmap")
+    pos = np.array([float(r["pos_ms"]) for r in nl])
+    rr = np.array([float(r["rate_rel"]) for r in nl])
+    er = np.array([float(r["rate_rel_err"]) for r in nl])
+    ax2.errorbar(pos, rr, yerr=er, fmt="o", ms=3.5, color="#009E73", lw=1)
+    ax2.axhline(1.0, color="k", lw=0.8)
+    ax2.axhspan(0.996, 1.004, color="#009E73", alpha=0.10)
+    ax2.set_xlabel("window position (ms)")
+    ax2.set_ylabel("local rate / block rate")
+    ax2.set_title("sweep linearity + any tooth-dependent\npull, bounded "
+                  r"empirically ($\lesssim$0.4%)", fontsize=9)
+    _save(fig, "fig8_ruler.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -413,6 +474,7 @@ def main() -> int:
     fig_pooled_width()
     fig_gamma_floor()
     fig_identifiability_profile()
+    fig_ruler()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")
