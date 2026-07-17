@@ -513,3 +513,66 @@ ramp machinery describes the *distribution of light shifts* in an inhomogeneous
 field. The ramp is at most one ingredient of a quantitative treatment — a full
 model also needs the force/density dynamics. "Nobody has modelled it" is
 established; "our framework is the missing model" is not.
+
+## 9. Deep-search intake (2026-07-17) — verified finds + the ONF community map
+
+A systematic sweep for relevant work not already held; only verified-real finds are
+given citekeys.
+
+**Cascade / IR detection to beat radiation trapping — ESTABLISHED prior art (now
+cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
+- **Hassanin et al. 2023** (`hassanin2023`, Phys. Rev. A **107**, 043104, DOI
+  10.1103/PhysRevA.107.043104) — observe the Rb **5S–5D** Doppler-free two-photon line
+  in a hot cell by detecting the **5D→5P infrared cascade**, which "does not suffer
+  from reabsorption" and so works at high density (enabling collisional-broadening /
+  energy-transfer studies). The direct precedent for our 1.3 µm (6S→5P) trapping-free
+  channel — proven, on the sibling line, for exactly our reason. [CITE]
+- **Beard et al. 2024** (`beard2024`, Opt. Express **32**, 7417, DOI 10.1364/OE.513974;
+  PDF held) — first 5S–5D₅/₂ two-photon Rb clock stabilised on the **776 nm (5D→6P)
+  cascade** fluorescence. A second cascade-detection precedent. [CITE]
+
+**Near-surface Casimir–Polder shift read FROM a lineshape — template for Paper 2 §IV:**
+- **Ton, Kestler, Steck & Barreiro 2026** (`ton2026`, arXiv:2604.14721) —
+  spectroscopically read the kHz CP shift of ultracold Sr **189 nm** from a dielectric,
+  across the z⁻³→z⁻⁴ retardation crossover. The state-of-the-art template for
+  extracting a surface shift from the line; D. A. Steck (our constants lineage) is a
+  co-author. [CITE — the model template for Paper 2's surface term]
+
+**Sibling cold-atom two-photon clock (ladder / magic-λ context):**
+- **Duspayev, Owens, Dash & Raithel 2024** (`duspayev2024`, Quantum Sci. Technol. **9**,
+  045046, DOI 10.1088/2058-9565/ad77ef; arXiv:2406.09352) — a Rb **5S→4D_J** lattice
+  two-photon clock with a **magic wavelength ~1060 nm** and two-colour Rabi-matching
+  AC-Stark cancellation (Raithel/Michigan). A direct sibling to our ladder (the 4D_J =
+  1033 nm rung) and an independent magic-λ determination to cross-check M16. [FEED]
+
+**Polarizability validation source:**
+- **Safronova & Safronova 2011** (`safronovaSS2011`, Phys. Rev. A **83**, 052508, DOI
+  10.1103/PhysRevA.83.052508) — critically-evaluated Rb ns/np/nd matrix elements +
+  scalar/tensor static polarizabilities (the "S&S 2011 lineage" our polarizability
+  elements descend from): the **independent published source to validate the M16 7S
+  static** (~3.2×10⁴ a.u.) we could not otherwise anchor. [FEED — pull the 7S/5D values]
+
+**Self-calibrated frequency tracking (ruler-method context):**
+- **Yang et al. 2025** (`yang2025`, arXiv:2508.16278 — an arXiv preprint, NOT Nature
+  Photonics as a first search wrongly claimed) — integrated LiNbO₃ **electro-optic
+  combs** track a laser's *instantaneous* frequency in real time (chirp to
+  2×10¹⁸ Hz/s): the modern frontier of the "internal ruler tracks a drifting axis"
+  idea our EOM ruler embodies. [FEED — Intro/method context]
+
+**To VERIFY before citing (real-looking, not yet confirmed against a source):** Dutta
+et al. 2024 (arXiv:2404.13354, PRR) + 2025 (arXiv:2507.05925) — higher-order CP + thermal
+effects on near-surface/selective-reflection lineshapes; Sargsyan/Sarkisyan 2025
+(arXiv:2501.11548) + 2026 (arXiv:2601.04661) — Cs 6S–7P vdW surface shift from
+nanocell lineshapes; Piotrowski/Rauschenbeutel 2026 (arXiv:2605.07798) — evanescent-
+probe heating makes near-field probing transient (a Paper-2 systematic); a Shanxi Univ.
+2025 five-channel 5S–7S cascade-fluorescence study (no ID); Obaze et al. 2025 (Photonics
+**12**, 513) — a second 778 nm clock stability review. **Quarantined (do NOT cite):
+arXiv:2602.07161** (malformed, re-surfaced).
+
+**The ONF community map (why the nearest-platform refs cluster here).** The two poles
+of the optical-nanofibre cold-atom field are the **Rauschenbeutel group** (Humboldt
+Berlin; `pennetta2026`, `pache2026`) and the **Nic Chormaic group** (OIST; `nieddu2019`,
+`rajasree2020`, `gokhroo2022` — our own provenance and Paper 2's platform); they
+co-organise the ONNA (Optical Nanofibre Applications) conference series. So the newest
+nearest-platform work is from Paper 2's own community — engaging it well is both good
+scholarship and the natural way this program is read by that community.
