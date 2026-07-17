@@ -26,6 +26,41 @@ sidebands stand tall — so the tooth *spacing* is exact, but tooth *heights*
 carry no information about the modulation depth. *Code:* `ruler.py` (M2);
 $\Omega/2$ locked by a permanent test in `test_constants.py`.
 
+### Why the ruler is a clean number — the common-mode rejections
+
+The rate is a *differential* measurement across five copies of the **same
+physical line**, and everything that afflicts the line afflicts every copy
+equally:
+
+- **The AC-Stark shift.** The atom sees the *total* field — carrier plus all
+  sidebands, both beams — at every instant, regardless of which tooth is
+  resonant, so the light shift translates the whole comb **rigidly**: the
+  spacing is untouched. The residual is second-order — a power drift *within*
+  one trace shifts teeth differentially by $S_0\times$(fractional drift per
+  spacing) $\lesssim10^{-4}$ at the archival $S_0\lesssim0.6$ MHz — below the
+  quoted precision.
+- **The line asymmetry** (the ramp skew of [§2.6](03_the_ac_stark_ramp.md),
+  or any other shape distortion). Same line, same intensity, same shape on
+  every tooth ⇒ the same centre pull on every tooth ⇒ absorbed into the comb
+  phase $t_0$, never into the spacing. The genuine second-order effect —
+  **edge teeth have only one neighbour**, so overlapping *asymmetric* wings
+  pull the comb ends differently — is why the fit is a *constrained
+  simultaneous* comb (one shared tooth shape, free heights; at $\sim$147 ms
+  spacing and $\sim$60 ms width a strong tooth's wing under a weak neighbour
+  is $\sim$20% of the weak peak, and single-tooth fits pull centres by O(ms)),
+  and why the free-centres nonlinearity map exists: it bounds *any*
+  tooth-dependent pull — scan nonlinearity and differential shape effects
+  together — **empirically at $\lesssim0.3$% per position**
+  (`results/ruler_nlmap.csv`), already inside the quoted error through the
+  PDG block-scatter inflation.
+- **Sideband amplitude imbalance** (residual AM from the carrier-suppression
+  trick): absorbed by the free per-tooth heights — amplitude never enters the
+  spacing.
+- **Laser drift during a trace** is not a bias but part of the *measured*
+  effective rate, and the line fits use their own block's rate — the drift is
+  self-consistently calibrated out, which is the whole point of a per-block
+  ruler under a drifting lock.
+
 ---
 
 ---
