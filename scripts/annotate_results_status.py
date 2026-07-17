@@ -111,6 +111,13 @@ QUANTITY_STATUS = {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
         "false_measurement_rate": "DIAGNOSTIC",
     },
+    "polarizability.csv": {
+        # M16: validation anchors are diagnostics; the unpublished design
+        # numbers (magic wavelengths, alpha_6S(1064)) are model estimates
+        "alpha_5s_static": "DIAGNOSTIC", "alpha_6s_static": "DIAGNOSTIC",
+        "tuneout_5s": "DIAGNOSTIC", "delta_alpha_993": "DIAGNOSTIC",
+        "alpha_6s_1064": "ENVELOPE", "magic_5s6s": "ENVELOPE",
+    },
     "sharing_bic.csv": {
         "bic_eff": "DIAGNOSTIC", "chi2_red": "DIAGNOSTIC",
         "dBIC_eff_block_minus_T": "DIAGNOSTIC",

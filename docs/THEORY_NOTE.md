@@ -204,9 +204,24 @@ a.u. "in a manner similar to Martin 2019," so our $\Delta\alpha=\alpha_{6S}-\alp
 This was formerly flagged as the number most wanting a theorist's check; it is now
 (a) a **cited** value on our exact transition and (b) **cross-checked** — our
 `stark_shift_S0_mhz` reproduces Orson's own $-0.66$ MHz shift prediction (0.8 W,
-63 µm) to the digit (`test_stark_S0_reproduces_orson2021`). An independent recompute
-from Safronova, Arora & Clark, *Phys. Rev. A* **73**, 022505 (2006) matrix elements
-remains available if a referee pushes.
+63 µm) to the digit (`test_stark_S0_reproduces_orson2021`).
+
+**The independent recompute now exists in-repo** (`rb5s6s/polarizability.py`,
+M16): a sum-over-states model from Safronova-lineage matrix elements, validated
+on anchors it does not use — it reproduces the *measured* 5S scalar tune-out
+790.03235 nm to $\approx2$ pm, the measured static $\alpha_{5S}=318.79(1.42)$,
+and the Safronova-group static $\alpha_{6S}=5167(22)$. It **confirms the
+magnitude**, $|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093 —
+**but finds the opposite sign**: $\alpha_{6S}(993)\approx-330$ a.u. (the
+dominant 6S couplings, 6S–6P at 2.73/2.79 µm, are driven far blue-detuned at
+993 nm, pushing 6S *up*, while 5S is pushed *down*), so
+$\Delta\alpha=\alpha_{6S}-\alpha_{5S}<0$ and the light shift of the transition
+is **blue**, not red. Every archival result is sign-immune (C3c is a symmetric
+null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
+*pull direction* and the ramp's stated side depend on it. The discrepancy with
+Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
+check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm); the
+narrative above keeps the established convention until it is resolved.
 
 ## 6. Honest novelty position
 
