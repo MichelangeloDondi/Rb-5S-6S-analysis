@@ -77,6 +77,16 @@ atoms.
 - Near-surface: the atom-surface potential (van der Waals / Casimir–Polder) shifts
   and truncates the sampled shell — the extra ingredient the cell does not have and
   the source of the pushing dip.
+- **Nearest-platform evidence (Pennetta et al. 2026, `LITERATURE.md` §8).** On this
+  exact class of platform (Cs on a 450 nm nanofibre) the Rauschenbeutel group build a
+  trap from **Casimir–Polder + surface-charge** forces against a blue-detuned field —
+  the atom–surface potential §IV must model, now quantified rather than hypothesised —
+  and reach a record Ramsey T₂\* = 17.8 ms **precisely by suppressing the
+  motional-state-dependent differential light shift** (holding atoms in low-light
+  regions). That is the two pillars of this paper demonstrated on the platform: the
+  near-surface force is real and harnessable, and the guided-mode differential light
+  shift is the coherence-limiting systematic the moment method (§III, §V–VI) is built
+  to read.
 
 ## III. Method transplanted (the reuse that de-risks this)
 
