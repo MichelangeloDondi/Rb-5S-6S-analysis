@@ -177,10 +177,10 @@ plus retro beams, $\rho$ the retro power ratio. There is **no coherent
 $\times2$ standing-wave enhancement**: a *fast-axial* atom crosses the
 $\lambda/2$ fringes at $2v_z/\lambda\sim0.56$ GHz (mean axial speed) while the
 shift depth is $\lesssim1$ MHz, so its frequency-modulation index is
-$\sim2\times10^{-3}$ — narrow-band, so it responds to the fringe-*mean*
-intensity and $I_{\text{eff}}$ **is** that standing-wave mean (Stalnaker *et
-al.*, *Phys. Rev. A* **73**, 043416 (2006), Sec. IV) — the pull is exactly
-fringe-immune. But the line is Doppler-free over **all** $v_z$, so
+$\sim2\times10^{-3}$ — in Stalnaker's FM framework (*Phys. Rev. A* **73**,
+043416 (2006), Sec. IV), the small-modulation-index limit puts the carrier at
+the fringe-*mean* intensity, so $I_{\text{eff}}$ **is** that standing-wave mean
+and the pull is exactly fringe-immune. But the line is Doppler-free over **all** $v_z$, so
 near-transverse atoms sit at a frozen fringe and sample the node-antinode
 arcsine: a fringe-*resolved* tail (weight $f_\text{res}$) that keeps the mean
 but, because the fringe *multiplies* the shift $s\to s(1+x)$ with $x$ arcsine,
@@ -214,8 +214,11 @@ Asymmetric two-photon-like lineshapes from *spatially distributed* AC-Stark
 shifts are **not new**: the cesium parity-violation lineage
 (Wieman *et al.*, *Phys. Rev. Lett.* **58**, 1738 (1987); Stalnaker *et al.*
 2006) modelled them numerically in a standing wave and even extracted an
-AC-Stark parameter from the asymmetry. We do **not** claim the existence of the
-asymmetry. What we believe is specific and defensible:
+AC-Stark parameter from the asymmetry; and the nearest *construction* is
+Hamilton *et al.* (*Phys. Rev. Applied* **19**, 054059 (2023)), a
+retro-reflected Rb vapour two-photon line whose focus-averaged shift integral is
+identical to ours — but collapsed to a single mean shift, never the distribution
+(LITERATURE.md §1). We do **not** claim the existence of the asymmetry. What we believe is specific and defensible:
 
 1. the **closed-form** law $f(s)\propto|s|^{n-1}$ for the focused,
    retro-reflected, fringe-*averaged* **standing-wave** geometry — the triangle
