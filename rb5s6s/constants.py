@@ -158,14 +158,26 @@ with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
    S0(225 mW, w0=16 um, rho=1) = 5.7  MHz transition (why the fixed-lock session's small
    waist makes the skew, ~S0^3, measurable). See stark_shift_S0_mhz().
 The archival ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
-mean pull -(2/3) S0; third cumulant +S0^3/135.
+mean pull -(2/3) S0; third cumulant +S0^3/135 (the fringe-mean, focal Z->0 limit;
+the small-waist collection geometry and the fringe tail below both modify the
+skew -- see stark_ramp_axial and fringe_tail).
 
-Fringe averaging (Stalnaker et al., PRA 73, 043416 (2006), Sec. IV): an atom
-crossing the lambda/2 fringes sees the shift frequency-modulated with depth
-xi = S0 <~ 1 MHz at rate 2v/lambda ~ 0.56 GHz (axial thermal speed ~280 m/s);
-modulation index ~2e-3 => pure carrier at the time-averaged intensity, no
-coherent x2. (Atoms with axial speed <~ 5 m/s, ~1-2% of weight, are
-fringe-resolved -- a percent-level MC correction.) Remaining measured input
+Fringe averaging (Stalnaker et al., PRA 73, 043416 (2006), Sec. IV): a FAST-axial
+atom crossing the lambda/2 fringes sees the shift frequency-modulated at rate
+2 v_z/lambda; at the mean axial speed ~280 m/s this is ~0.56 GHz, far above the
+shift depth <~ 1 MHz, so it responds to the time-averaged (fringe-MEAN) intensity
+-- I_eff IS that standing-wave mean (no coherent x2), and the MEAN/pull is exactly
+fringe-immune. But the Doppler-free line accepts ALL v_z: near-transverse atoms
+(small v_z) sit at a frozen fringe and sample the node-antinode arcsine -- a
+fringe-RESOLVED tail. It is NOT benign: the fringe MULTIPLIES the shift,
+s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ramp
+skew -- kappa3 -> S0^3 (1/135 - f_res*sigma_x^2/5) (= 1/135 - f_res/10 at rho=1),
+a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
+the product P = f_res*sigma_x^2 is observable). Negligible at w0=50 um (~5-8% of an
+already-below-noise skew) but ~25% at w0=16 um, and SAME-SIGN-additive to the
+larger beam-divergence correction (stark_ramp_axial) -- the two must be fit
+JOINTLY at the small waist. Quantified, bracketed by the coherence window, in
+rb5s6s/fringe_tail.py. Remaining measured input
 before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
 and docs/THEORY_NOTE.md."""

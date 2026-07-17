@@ -109,6 +109,16 @@ QUANTITY_STATUS = {
         "dBIC_eff_block_minus_T": "DIAGNOSTIC",
         "dBIC_raw_block_minus_T": "DIAGNOSTIC",
     },
+    "fringe_tail.csv": {
+        # fringe-tail leverage on the Stark ramp: the sign and magnitude at the
+        # small October waist ride on the OPEN coherence window and collection
+        # geometry, so the coefficients are ENVELOPE (a bracket, re-derive with
+        # the measured collection profile); the MC error and window fraction are
+        # diagnostics of that bracket.
+        "d_skew": "ENVELOPE", "d_kappa3": "ENVELOPE",
+        "excess_var_frac": "ENVELOPE", "frac_resolved": "ENVELOPE",
+        "d_skew_mc_err": "DIAGNOSTIC", "window_frac": "DIAGNOSTIC",
+    },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.
 
