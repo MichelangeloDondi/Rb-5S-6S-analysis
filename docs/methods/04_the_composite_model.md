@@ -21,7 +21,7 @@ $\tau_\text{opt}\sim1$, i.e. $N\sim1/(\sigma_{795}L)\sim10^{12}$–$10^{13}$
 cm$^{-3}$, straddled by our T-sweep. We tested the statistics route: the
 shot-noise coefficient $b$ in the noise law ([§4.4 — The statistics](06_the_statistics.md)) is **flat in temperature**
 (no growth of the Fano factor 70→130 °C), so trapping, if it shows anywhere,
-shows in *amplitude ratios* versus density (module M7, against Nieddu's 2019
+shows in *amplitude ratios* versus density (module M7, against [Nieddu's 2019](../lit/nieddu2019.md)
 same-channel baseline), never in the width. *Code:* the $b(T)$ table from
 `noise.py`; the M7 finding is below.
 

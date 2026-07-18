@@ -63,7 +63,7 @@ $\Gamma_\text{nat}$ computed from $\tau$ in `constants.py`.
 
 ### 2.2 Collisional broadening — the same Lorentzian, grown by density
 
-In the **impact approximation** (Baranger, *Phys. Rev.* **112**, 855 (1958)),
+In the **impact approximation** ([Baranger](../lit/baranger1958.md), *Phys. Rev.* **112**, 855 (1958)),
 a collision with another Rb atom randomizes the optical phase in a time much
 shorter than the mean time between collisions.
 Random phase interruptions at mean rate $1/\tau_c$ are, statistically,
@@ -108,7 +108,7 @@ of the laser's jitter exists for either epoch** — no reference-cavity beat
 note or self-heterodyne measurement was recorded — so $\sigma_\text{laser}$ is
 inferred purely from the fitted lineshape, never benchmarked against a
 separate instrument. The closest external anchor is in-house: the group's own
-nanofibre study on this same line (Gokhroo 2022, J. Phys. B) describes the
+nanofibre study on this same line ([Gokhroo 2022](../lit/gokhroo2022.md), J. Phys. B) describes the
 same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
 linewidth rather than to the 2025 lock's behaviour — but it is consistent with
@@ -164,11 +164,11 @@ ones from slow atoms, a few broad ones from fast atoms) does *not* give a
 Gaussian. Slow atoms pile up sharp, narrow responses at line center → a
 **cusp** (a sharp point) at $\nu=0$; fast atoms contribute broad tails → wings
 that fall off **exponentially**, far fatter than a Gaussian's. This is not a
-phenomenological guess: Biraben, Bassini and Cagnac (*J. Phys. (Paris)* **40**,
+phenomenological guess: [Biraben, Bassini and Cagnac](../lit/biraben1979.md) (*J. Phys. (Paris)* **40**,
 445 (1979)) derived the finite-transit Doppler-free two-photon line as exactly
 a **Lorentzian convolved with a two-sided exponential** (the general treatment
-is Bordé, *C. R. Acad. Sci. B* **282**, 341 (1976); the modern closed form in
-the transit-time limit is Lehmann, *J. Chem. Phys.* **154**, 104105 (2021) —
+is [Bordé](../lit/borde1976.md), *C. R. Acad. Sci. B* **282**, 341 (1976); the modern closed form in
+the transit-time limit is [Lehmann](../lit/lehmann2021.md), *J. Chem. Phys.* **154**, 104105 (2021) —
 hence "Lehmann lineshape"). So our transit kernel is that established
 two-sided exponential,
 
@@ -181,7 +181,7 @@ objections (1) and (2) above (which the analytic forms idealize away). Two lesso
 than a Gaussian (excess kurtosis $\sim3$, close to the two-sided exponential's
 value) — a **finite** cusp once the crossing-flux weight is included (an earlier
 version omitted it, weighting $\propto1/v$ near $v=0$, and produced a spurious
-log-divergence; fixed 2026-07-13, validated against Lehmann's 41.2 kHz NNO
+log-divergence; fixed 2026-07-13, validated against [Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO
 example). We quote the width the kernel *adds to the natural line* once
 convolved. Second, that added width is $\sim2.1$ MHz at $w_0=32\ \mu$m and
 $\sim1.2$ MHz at the $50\ \mu$m prior — so large that at 32 µm
@@ -190,13 +190,13 @@ is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([§5 — What we found (2025 archive)](07_what_we_found.md)).
 
 **Independent corroboration.** The same 993 nm beamline was measured directly by
-Nieddu (2019, Opt. Express and OIST thesis) and by Rajasree-KP (2020, OIST
+[Nieddu](../lit/nieddu2019.md) (2019, Opt. Express and OIST thesis) and by [Rajasree-KP](../lit/rajasree2020.md) (2020, OIST
 thesis), both reporting a $1/e^2$ beam diameter of 128 µm with the same $f=150$
 mm focusing lens — i.e. $w_0=64$ µm, with the same 3 mm EOM aperture truncating
 the input beam that the naive (untruncated) estimate misses. That direct
 measurement lands at the top of the transit-inferred 45–70 µm band and
 independently excludes 32 µm, agreeing with the corrected transit physics on
-$w_0\approx50$–64 µm. Nieddu additionally reports the same four two-photon peaks
+$w_0\approx50$–64 µm. [Nieddu](../lit/nieddu2019.md) additionally reports the same four two-photon peaks
 at 2.43–2.60 MHz FWHM (laser axis, $\approx5$ MHz transition axis) with a
 locked laser — consistent with the archival $\approx5.25$ MHz line.
 
