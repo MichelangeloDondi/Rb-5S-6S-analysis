@@ -7,19 +7,13 @@ we have not yet read in full — cite nothing REPORTED until it is upgraded.
 
 ## 1. Nearest prior art — MUST cite and delineate
 
-**Stalnaker, Budker, Freedman, Guzman, Rochester, Yashchuk,
-Phys. Rev. A 73, 043416 (2006)** (arXiv:physics/0512111) — VERIFIED
-(full text read 2026-07-12). Lineage: Wieman et al., PRL 58, 1738 (1987),
-Cs 6S→7S parity violation.
-
-What it is: Yb 6s² ¹S₀ → 5d6s ³D₁ (408 nm) — a **one-photon forbidden
-Stark-induced transition**, collimated **atomic beam**, intense **standing
-wave in a power-buildup cavity**. Numerical density-matrix (optical-Bloch)
-lineshapes (20–60 min each), integrated over trajectories, velocities and
-standing-wave phase. **They fit the measured asymmetric lineshapes and
-extract the ac-Stark parameter α = −0.312(34) Hz/(V/cm)²** — so the
-asymmetry-as-observable idea EXISTS in prior art; the honest claim must be
-narrower than "first use of the asymmetry".
+**[Stalnaker et al., Phys. Rev. A 73, 043416 (2006)](lit/stalnaker2006.md)**
+(arXiv:physics/0512111) — VERIFIED (full text read 2026-07-12); lineage
+Wieman et al., PRL 58, 1738 (1987), Cs 6S→7S parity violation. One-photon
+forbidden Stark-induced transition (Yb 408 nm), collimated atomic beam,
+cavity standing wave, numerically fit to extract α = −0.312(34) Hz/(V/cm)²
+— so the asymmetry-as-observable idea EXISTS in prior art; the honest claim
+must be narrower than "first use of the asymmetry".
 
 Delineation (what is genuinely not in Stalnaker/Wieman):
 
@@ -57,26 +51,22 @@ already-below-noise skew), ~25% at w₀=16 µm, and same-sign-additive to the
 beam-divergence correction — fit jointly at the small waist (quantified,
 coherence-window bracketed, in `rb5s6s/fringe_tail.py`). CALCULATED 2026-07-17.
 
-**Hamilton, Roberts, Scholten, Locke, Luiten, Ginges, Perrella,
-Phys. Rev. Applied 19, 054059 (2023)** (arXiv:2212.10743) — VERIFIED
-(full text read; PDF in PDF_papers). The nearest prior art for our specific
-CONSTRUCTION, and geometrically closer than Stalnaker: a RETRO-REFLECTED Rb-87
-vapour two-photon line (5S→5D, two-colour 780+776 nm via the near-resonant 5P
-intermediate). They build the identical focus average — fluorescence amplitude
-∝ I(r)₇₈₀·I(r)₇₇₆, integrated as F(Δ) = ∫F(Δ,r) r dr with the cylindrical
-Jacobian — the same Iⁿ·(linear shift)·(r dr) integral we reduce to the wedge.
+**[Hamilton et al., Phys. Rev. Applied 19, 054059 (2023)](lit/hamilton2023.md)**
+(arXiv:2212.10743) — VERIFIED (full text read; PDF in PDF_papers). The
+nearest prior art for our specific CONSTRUCTION, and geometrically closer
+than Stalnaker: a RETRO-REFLECTED Rb-87 vapour two-photon line (5S→5D,
+two-colour 780+776 nm), building the identical focus average — the same
+Iⁿ·(linear shift)·(r dr) integral we reduce to the wedge.
 
-Delineation (what is genuinely NOT in Hamilton):
-- they **collapse the integral to a single spatially-averaged shift** (a ~3.6
-  factor from mean shift to Δα) and never keep the shift DISTRIBUTION — so the
-  closed-form wedge f(s) ∝ \|s\| and its third moment are not there. The novelty
-  is "keep the distribution, close it in form, read the drift-immune skew", not
-  "set up the integral";
-- their signal is a two-colour PRODUCT I₇₈₀·I₇₇₆ (near-resonant ladder), not the
-  degenerate single-colour I² of the 993 nm 5S→6S virtual-state two-photon;
-- they **do not treat the axial standing-wave fringes at all** (transverse-profile
-  average only) — on the fringe axis they are fringe-*ignored*, not fringe-
-  *averaged*, which reinforces rather than threatens our fringe delineation.
+Delineation (what is genuinely NOT in Hamilton) — see
+[lit/hamilton2023.md](lit/hamilton2023.md): they collapse the integral to a
+single spatially-averaged shift without ever keeping the shift DISTRIBUTION
+(the novelty is "keep the distribution, close it in form, read the
+drift-immune skew", not "set up the integral"); their signal is a
+two-colour PRODUCT I₇₈₀·I₇₇₆, not the degenerate single-colour I² of our
+993 nm 5S→6S virtual-state two-photon; and they do not treat the axial
+standing-wave fringes at all (fringe-*ignored*, not fringe-*averaged*,
+which reinforces rather than threatens our fringe delineation).
 
 MUST be delineated in the paper's introduction: a referee who knows Hamilton will
 see the integral parallel immediately, so we state up front what we add.
@@ -90,20 +80,14 @@ novelty is narrowed to the fringe-AVERAGED closed-form + drift-immune moment.
 
 ## 2. Collision-rate series — calibrates what β_self should BE
 
-**Zameroski et al., J. Phys. B 47, 225205 (2014)** — abstract/indices
-VERIFIED; full-text digits TO-PULL (paywalled; needs university library access).
-Measured Rb 5S→7S and 5S→5D broadening/shift by noble gases + N₂, plus
-self-rates. **Rb–Rb self-shift of 5S→7S: −17.82(81) kHz/mTorr.**
-
-Unit conversion (at their cell T ≈ 400 K; 1 mTorr ↔ 2.41×10¹³ cm⁻³):
-−17.8 kHz/mTorr ≈ **−0.74 kHz per 10¹² cm⁻³** (−0.9 at 500 K — the
-conversion needs their exact cell T from the full text). The same-family
-broadening scale ~50 MHz/Torr ≈ 2.1 kHz per 10¹² cm⁻³, and 50/17.8 ≈ 2.8
-matches the Lindholm–Foley vdW broadening-to-shift ratio (~2.76). ENVELOPE.
-
-Scaling 7S→6S (vdW impact: γ ∝ C₆^{2/5}, C₆ ~ n*⁷; n*(6S) = 2.87,
-n*(7S) = 3.87 → factor ≈ 0.43): **expected β_self(6S) ~ 1 kHz per
-10¹² cm⁻³**. ENVELOPE.
+[Zameroski et al., J. Phys. B 47, 225205 (2014)](lit/zameroski2014.md) —
+abstract/indices VERIFIED; full-text digits TO-PULL (paywalled; needs
+university library access). Rb–Rb self-shift of 5S→7S: −17.82(81) kHz/mTorr,
+converting to **−0.74 kHz per 10¹² cm⁻³** (−0.9 at 500 K — the conversion
+needs their exact cell T from the full text). Scaling that self-shift
+7S→6S (vdW impact, C₆ ~ n*⁷) gives the expected **β_self(6S) ~ 1 kHz per
+10¹² cm⁻³** (ENVELOPE); the unit-conversion, Lindholm–Foley ratio-check, and
+n*-scaling derivation are in the lit file.
 
 Consequences (the honest calibration of our own result):
 - The archival bound (< 40–110 kHz per 10¹² cm⁻³) sits **~40–100× above
@@ -123,28 +107,24 @@ Consequences (the honest calibration of our own result):
 - *Why the S→S self term is small (the physics behind the ~1 kHz expectation).*
   The 5S and 6S are both S states, so the 6S–5S pair has **no resonance
   dipole–dipole (C₃) self-broadening** — the self term is van-der-Waals (C₆),
-  which is why it sits far below the resonance lines. **Sautenkov et al. 2026**
-  (arXiv:2607.07303, self-broadened line shapes in optically saturated
-  high-density Rb vapor) makes the contrast concrete: they decompose the Rb D2
-  **resonance** line (5S–5P₃/₂, 780 nm) self-broadening into *static + collision
-  width* at N ~ 10¹⁷ cm⁻³ (10⁵× our densities) — precisely the resonance-broadened
-  case our S→S line is definitionally NOT. **[FEED]** for the resonance-vs-vdW
-  contrast in §VI.A; their static+collision-width split mirrors our
-  transit(static-ish)/γ_coll(collision) decomposition.
-- *Isotope effect on β (why β₈₅ = β₈₇ is EXPECTED, not a surprise).* **Bala et al.
-  2026** (arXiv:2605.01908; Toruń, Julienne/Ciuryło) give the theoretical
-  isotope-dependence of collisional widths/shifts from reduced mass + C₆ +
-  scattering length. In the thermal impact regime the ⁸⁵/⁸⁷ reduced-mass
-  difference is ~1% ⇒ a negligible width isotope-effect, so our measured
-  β₈₅ = β₈₇ null is the physically expected result. **[FEED]** for the isotope-null
-  framing (their Hg–Rb ultracold system is a different regime; cite the framework,
-  not the numbers).
+  which is why it sits far below the resonance lines. [Sautenkov et al.
+  2026](lit/sautenkov2026.md) makes the contrast concrete via their Rb D2
+  resonance-line self-broadening decomposition. **[FEED]** for the
+  resonance-vs-vdW contrast in §VI.A; their static+collision-width split
+  mirrors our transit(static-ish)/γ_coll(collision) decomposition.
+- *Isotope effect on β (why β₈₅ = β₈₇ is EXPECTED, not a surprise).* [Bala
+  et al. 2026](lit/bala2026.md) give the theoretical isotope-dependence of
+  collisional widths/shifts from reduced mass + C₆ + scattering length; in
+  the thermal impact regime this predicts a negligible width isotope-effect,
+  so our measured β₈₅ = β₈₇ null is the physically expected result.
+  **[FEED]** for the isotope-null framing (their Hg–Rb ultracold system is a
+  different regime; cite the framework, not the numbers).
 - *Impact-broadening theory lineage.* Lewis 1980 (Phys. Rep. 58, 1) and Allard &
   Kielkopf 1982 (RMP 54, 1103) are the standard reviews (both paywalled); the
-  Allard–Kielkopf lineage's recent **Spiegelman, Allard & Kielkopf 2022**
-  (arXiv:2201.03294, non-Lorentzian Balmer satellites in white dwarfs) is a
-  **[FEED]** pointer to the quasistatic/satellite regime our low-density
-  impact-regime Lorentzian assumption sits opposite to.
+  Allard–Kielkopf lineage's recent [Spiegelman, Allard & Kielkopf
+  2022](lit/spiegelman2022.md) is a **[FEED]** pointer to the
+  quasistatic/satellite regime our low-density impact-regime Lorentzian
+  assumption sits opposite to.
 
 ## 3. Transit-time lineshape — the analytic pedigree of our transit kernel
 
@@ -152,25 +132,25 @@ Our transit kernel (lineshape.two_sided_exponential, the exp(−|ν|/b) that
 convolves with the natural Lorentzian) is NOT a phenomenological guess — it
 is the established Doppler-free two-photon transit-time lineshape. Chain:
 
-- **Bordé, C. R. Acad. Sci. Paris B 282, 341 (1976)** — the original, most
-  general derivation of the two-photon transit-time lineshape. Citation from
-  search cross-refs; TO-PULL (French, likely no open PDF). Cite as the
-  primary general treatment only.
-- **Biraben, Bassini & Cagnac, J. Phys. (Paris) 40, 445–455 (1979)** — the
-  canonical result: the finite-transit Doppler-free two-photon line is
+- [Bordé, C. R. Acad. Sci. Paris B 282, 341 (1976)](lit/borde1976.md) — the
+  original, general two-photon transit-time derivation; cite as the primary
+  general treatment only. Citation from search cross-refs; TO-PULL (French,
+  likely no open PDF).
+- [Biraben, Bassini & Cagnac, J. Phys. (Paris) 40, 445–455 (1979)](lit/biraben1979.md)
+  — the canonical result: the finite-transit Doppler-free two-photon line is
   **exactly a Lorentzian ⊗ two-sided-exponential** ("double-exponential
-  meeting at a cusp"). This IS our model. Open access (HAL jpa-00209125,
+  meeting at a cusp"); this IS our model. Open access (HAL jpa-00209125,
   access-gated to WebFetch but bibliographic data + the key "Lorentzian
   convolved with double-exponential" result VERIFIED via multiple search
   cross-refs 2026-07-12; read the HAL PDF to upgrade to fully VERIFIED).
-- **K. K. Lehmann (sole author), J. Chem. Phys. 154, 104105 (2021),
-  doi:10.1063/5.0040868** — modern closed analytic form in the transit-time
-  limit for a TEM00 standing wave; simpler than Bordé's general case; gives
-  spectrum ∝ e^(−|Δν|/γ₀(T)) with γ₀(T) ∝ √T (matches our √T scaling law,
-  transit_fwhm_at_T). This is the "Lehmann lineshape" named in README §2.5.
-  Title/journal/vol/year/DOI + functional form VERIFIED via search
-  cross-refs; PDF at par.nsf.gov/servlets/purl/10477667 (socket-hung on
-  WebFetch — retry to fully VERIFY and pull the exact γ₀(w₀,T) prefactor).
+- [K. K. Lehmann (sole author), J. Chem. Phys. 154, 104105 (2021),
+  doi:10.1063/5.0040868](lit/lehmann2021.md) — the "Lehmann lineshape"
+  (README §2.5): modern closed analytic form in the transit-time limit for a
+  TEM00 standing wave, simpler than Bordé's general case, with γ₀(T) ∝ √T
+  matching our √T scaling law (transit_fwhm_at_T). Title/journal/vol/year/DOI
+  + functional form VERIFIED via search cross-refs; PDF at
+  par.nsf.gov/servlets/purl/10477667 (socket-hung on WebFetch — retry to
+  fully VERIFY and pull the exact γ₀(w₀,T) prefactor).
 
 Why this matters for the paper: it upgrades the transit model from "assumed
 shape" to "literature-standard analytic form," and it means the M8 Voigt-vs-
@@ -230,17 +210,19 @@ archival bounds refine).
 
 ### 6a. OIST apparatus lineage (our provenance + a corroborating data point)
 
-- **Nieddu 2019** (Opt. Express, `nieddu2019`; + his OIST PhD thesis) — the
-  group's 993 nm two-photon *frequency-reference* demonstration on our exact line.
-  **[CITE, ESTABLISHED]** Load-bearing facts extracted (2026-07-13):
-  * **Beam geometry:** plano-convex L1, f₁ = 150 mm, focused **1/e² beam diameter
-    = 128 µm ⇒ w₀ = 64 µm** ("measured to be 128 µm" in the thesis). This is the
-    direct beam measurement that corroborates our transit-physics w₀ re-pin (32 µm
-    is excluded; archival w₀ ~ 50–64 µm — see `docs/notes/transit_width_resolved.md`).
-  * **Line width:** the four two-photon peaks fit to FWHM **2.43–2.60 MHz on the
-    laser axis = ~5 MHz transition axis** — CONSISTENT with our archival ~5.25 MHz
-    (an external corroboration of the observed width). Their reference laser had a
-    ~100 kHz linewidth (vs the drifted 2025 lock).
+- **Nieddu 2019** (Opt. Express, [`nieddu2019`](lit/nieddu2019.md); + his OIST
+  PhD thesis) — the group's 993 nm two-photon *frequency-reference*
+  demonstration on our exact line. **[CITE, ESTABLISHED]** Load-bearing facts
+  extracted (2026-07-13):
+  * **Beam geometry:** they measured **w₀ = 64 µm** (f₁ = 150 mm plano-convex
+    L1) — see [nieddu2019](lit/nieddu2019.md). This is the direct beam
+    measurement that corroborates our transit-physics w₀ re-pin (32 µm is
+    excluded; archival w₀ ~ 50–64 µm — see
+    `docs/notes/transit_width_resolved.md`).
+  * **Line width:** their four two-photon peaks (FWHM ~5 MHz transition axis
+    — see [nieddu2019](lit/nieddu2019.md)) are CONSISTENT with our archival
+    ~5.25 MHz (an external corroboration of the observed width). Their
+    reference laser had a ~100 kHz linewidth (vs the drifted 2025 lock).
   * They state the two-photon mapping explicitly ("relative frequency differences
     of the peaks are half the actual energy differences") — the laser↔transition
     factor of 2 we carry project-wide.
@@ -248,41 +230,43 @@ archival bounds refine).
     stability/factor-2 artifact was **debunked** on reading the paper — 2.5 MHz is
     a real two-photon FWHM (laser axis); the note wrongly used the 795 nm D1
     *detection*-photon width as a floor on the *resonance* width (see DATA.md).
-  * **Apparatus facts from the published paper (held since 2026-07-14; page/DOI
-    verified) — the same idea as ours, implemented differently.** Nieddu's retro
-    is a **concave mirror, f = 75 mm, at 2f from the focal plane**: a
-    self-imaging (2f–2f) arrangement that re-images the waist back onto itself.
-    Ours (MD, 2026-07-14) is the **lens-based equivalent** — L1 (f = 150 mm)
-    focuses into the cell, L2 (f = 150 mm) after the cell maps the waist to a
-    ~1 mm intermediate waist, and a **flat mirror** at that flat wavefront
-    time-reverses the beam so it retraces and re-forms the original waist
-    (methods §2.6). So ρ ≈ 1 is a *design property* in both experiments, and the
-    forward/return **mode match is by construction** in ours too; ρ departs from
-    1 only through losses (extra L2 and window passes, mirror reflectivity),
-    never characterized for the archive. Residual sensitivity is mirror **tilt**,
+  * **Apparatus:** [nieddu2019](lit/nieddu2019.md)'s retro is a concave mirror
+    (f = 75 mm) at 2f from the focal plane — a self-imaging arrangement, the
+    same idea as ours, implemented differently. Ours (MD, 2026-07-14) is the
+    **lens-based equivalent** — L1 (f = 150 mm) focuses into the cell, L2
+    (f = 150 mm) after the cell maps the waist to a ~1 mm intermediate waist,
+    and a **flat mirror** at that flat wavefront time-reverses the beam so it
+    retraces and re-forms the original waist (methods §2.6). So ρ ≈ 1 is a
+    *design property* in both experiments, and the forward/return **mode
+    match is by construction** in ours too; ρ departs from 1 only through
+    losses (extra L2 and window passes, mirror reflectivity), never
+    characterized for the archive. Residual sensitivity is mirror **tilt**,
     not longitudinal placement (the intermediate beam's z_R ≈ 2.8 m makes the
-    mirror position forgiving to tens of cm). A fixed-lock session measures ρ in situ
-    (PLAN §8.1).
-  * Their detection is the **780 nm and 795 nm cascades together** through an
-    800 nm short-pass (Hamamatsu R636-10) — unlike the 2025 archival 795-only
-    narrowband stack — so amplitude/trapping comparisons against Nieddu must
-    not assume the same collection channel (the 780/D2 branch sees a different
-    optical depth than 795/D1). QWP slots exist before L1 and before the CM.
-- **Rajasree-KP 2020** (OIST PhD thesis, `rajasree2020`) — repeats the same
-  993 nm cell setup ("L1, f = 150 mm; beam diameter 128 µm") and cites Steck for
-  the Rb data, confirming both the beam geometry and the N(T) vapor-pressure
-  chain our `density.py` uses. **[FEED]**
-- **Rajasree 2020, PRR 2, 033341** (`rajasree2020spin`, held) — *spin selection
-  in single-frequency two-photon excitation*, tested on OUR line in two configs.
-  **[CITE, ESTABLISHED]** Three load-bearing consequences:
+    mirror position forgiving to tens of cm). A fixed-lock session measures ρ
+    in situ (PLAN §8.1).
+  * Their detection ([nieddu2019](lit/nieddu2019.md)) is the **780 nm and
+    795 nm cascades together** through an 800 nm short-pass (Hamamatsu
+    R636-10) — unlike the 2025 archival 795-only narrowband stack — so
+    amplitude/trapping comparisons against Nieddu must not assume the same
+    collection channel (the 780/D2 branch sees a different optical depth than
+    795/D1). QWP slots exist before L1 and before the CM.
+- **Rajasree-KP 2020** ([`rajasree2020`](lit/rajasree2020.md), OIST PhD thesis)
+  — repeats the same 993 nm cell setup and cites Steck for the Rb data,
+  confirming both the beam geometry and the N(T) vapor-pressure chain our
+  `density.py` uses. **[FEED]**
+- **Rajasree 2020, PRR 2, 033341** ([`rajasree2020spin`](lit/rajasree2020spin.md),
+  held) — *spin selection in single-frequency two-photon excitation*, tested on
+  OUR line in two configs. **[CITE, ESTABLISHED]** Three load-bearing
+  consequences:
   * **The polarization amplitude law (paraxial, warm cell):** the transition
     rate scales as the **squared degree of linear polarization, D²** — exactly
-    zero for circular light. Two uses for us: (i) a drifting polarization
-    (thermally stressed cell windows, waveplate drift) is a *specific,
-    physically-motivated* candidate for the M10 between-block amplitude wander
-    — common-mode per block, but the archival peaks were taken hours apart, so
-    it does not cancel in the cross-peak ratios; a fixed-lock session should **log (or fix
-    with a clean polarizer) the polarization at the cell**. (ii) A free a fixed-lock session
+    zero for circular light (see [rajasree2020spin](lit/rajasree2020spin.md)).
+    Two uses for us: (i) a drifting polarization (thermally stressed cell
+    windows, waveplate drift) is a *specific, physically-motivated* candidate
+    for the M10 between-block amplitude wander — common-mode per block, but
+    the archival peaks were taken hours apart, so it does not cancel in the
+    cross-peak ratios; a fixed-lock session should **log (or fix with a clean
+    polarizer) the polarization at the cell**. (ii) A free a fixed-lock session
     diagnostic: rotating to circular must **extinguish** the two-photon line —
     any residual is polarization impurity or background, a null test that costs
     one waveplate turn per config.
@@ -290,16 +274,16 @@ archival bounds refine).
     two-photon operator decomposition (with Le Kien) is the citable basis for
     our M10 degeneracy-law claim (identical photons on S→S: vector and tensor
     parts vanish, only the scalar survives ⇒ areas ∝ abundance × (2F+1)).
-  * **ONF feasibility evidence for Paper 2:** they excite 5S–6S in **cold ⁸⁷Rb
-    around a 400 nm-waist nanofibre** (SM800-5.6-125, ~30% transmission at
-    993 nm) via the evanescent field, detecting 25–40 counts/ms at the peaks —
-    so ONF-mediated 5S–6S from atoms near the fibre is *demonstrated*, and the
-    open Paper-2 question is the quantitative near-surface *lineshape* program
-    (pushing dip, surface shift), not whether the signal exists. Nonparaxial
-    twist: in the evanescent field the transition is **not extinguishable** by
-    polarization (minimum ~13% theory / ~25% observed) — the longitudinal field
-    components break the paraxial D² law, itself a lineshape-relevant fact for
-    any ONF campaign.
+  * **ONF feasibility evidence for Paper 2:**
+    [rajasree2020spin](lit/rajasree2020spin.md) demonstrates 5S–6S excitation
+    in **cold ⁸⁷Rb around a 400 nm-waist nanofibre** (SM800-5.6-125, ~30%
+    transmission at 993 nm) via the evanescent field — so ONF-mediated 5S–6S
+    from atoms near the fibre is *demonstrated*, and the open Paper-2 question
+    is the quantitative near-surface *lineshape* program (pushing dip, surface
+    shift), not whether the signal exists. Nonparaxial twist: in the
+    evanescent field the transition is **not extinguishable** by polarization
+    — the longitudinal field components break the paraxial D² law, itself a
+    lineshape-relevant fact for any ONF campaign.
 
 ### 6b. USAF Academy precision-metrology lineage (Knize/Lindsay group)
 
@@ -308,59 +292,44 @@ directly relevant to us — looked for the AC-Stark and collisional shifts and
 reported NULLS at MHz-scale resolution. Our archival BOUNDS sit below their
 resolution; our two-epoch design turns those nulls into measured coefficients.*
 
-- **Ayachitula 2024** (Phys. Rev. A **110**, 022803, `ayachitula2024`) — the
-  kHz-precision Doppler-free two-photon remeasurement of the 6S₁/₂ hyperfine
-  structure, both isotopes. **[CITE, ESTABLISHED]** **A(6S₁/₂) = 807.355(2) MHz
-  (⁸⁷Rb), 239.065(2) MHz (⁸⁵Rb)** — now the source of `A_6S_RB87/85_HZ` in
-  `constants.py` (swapped in 2026-07-13, superseding Perez Galván 2008's
-  807.66/239.18; a ~0.3 MHz shift, negligible for peak ID, and the consistency-
-  lock test still passes). 6S splittings 1614.709(3)/717.195(3) MHz; **isotope
-  shift (85−87) = −99.189(3) MHz**. Their line-center drift control (<0.5 kHz over
-  50 min; centers stable to 3 kHz) is a benchmark for what a fixed lock buys —
-  exactly the target for a fixed-lock session.
-- **Orson 2021** (J. Phys. B **54**, 175001, `orson2021`; same USAFA group) —
-  absolute hyperfine energy levels + isotope shift of the 5S–6S transition.
-  **[CITE]** Load-bearing prior nulls (extracted 2026-07-13): they **"find no AC
-  Stark or light shift of the lines at 6 MHz spectral resolution"** (they varied
-  laser power) and **"no density shift … for a range of Rb atom densities from
-  3×10¹¹ cm⁻³"** upward. Both are prior NULLS on our C3d (AC-Stark) and C1
-  (collisional self-shift) channels — consistent with, and refined below, by our
-  archival bounds (S₀ < 0.63 MHz, profile likelihood; β_self a bound). **They also compute the
-  differential polarizability α₅₆ = α(5S)−α(6S) = −1093 a.u.** (= −1.80×10⁻³⁸
-  J m²/V², "in a manner similar to Martin 2019") — this is the **source of our
-  `DELTA_ALPHA_AU = +1093`** (opposite sign by definition; the value was never a
-  loose in-house estimate). Our `stark_shift_S0_mhz` reproduces their predicted
-  −0.66 MHz shift (0.8 W, 63 µm waist) **to the digit** — locked by
-  `test_stark_S0_reproduces_orson2021`. (Their 63 µm waist coincidentally echoes
-  Nieddu's 64 µm, though a different apparatus.) Isotope shift (87−85) = +94(12)
-  MHz — cross-checks Ayachitula's more precise +99.189(3). Laser linewidth <50 kHz;
-  they use the Perez Galván hyperfine constants (now superseded by Ayachitula).
-  **Intro framing:** prior groups looked for these shifts on THIS line and saw
-  nulls at ~MHz resolution; our drift-immune ramp method + two-epoch design is the
-  route to the coefficients *below* that floor.
+- **Ayachitula 2024** ([`ayachitula2024`](lit/ayachitula2024.md), Phys. Rev. A
+  **110**, 022803) — the kHz-precision Doppler-free two-photon remeasurement
+  of the 6S₁/₂ hyperfine structure, both isotopes; now the source of
+  `A_6S_RB87/85_HZ` in `constants.py` (swapped in 2026-07-13, superseding
+  Perez Galván 2008 — see [ayachitula2024](lit/ayachitula2024.md) for the raw
+  values). **[CITE, ESTABLISHED]** Their line-center drift control (<0.5 kHz
+  over 50 min; centers stable to 3 kHz) is a benchmark for what a fixed lock
+  buys — exactly the target for a fixed-lock session.
+- **Orson 2021** ([`orson2021`](lit/orson2021.md), J. Phys. B **54**, 175001;
+  same USAFA group) — absolute hyperfine energy levels + isotope shift of the
+  5S–6S transition. **[CITE]** Their prior AC-Stark and density-shift nulls
+  (see [orson2021](lit/orson2021.md) for the exact quotes and resolution) are
+  on our C3d (AC-Stark) and C1 (collisional self-shift) channels — consistent
+  with, and refined below, by our archival bounds (S₀ < 0.63 MHz, profile
+  likelihood; β_self a bound). They are also the **source of our
+  `DELTA_ALPHA_AU = +1093`** (opposite sign by definition; the value was never
+  a loose in-house estimate), and our `stark_shift_S0_mhz` reproduces their
+  predicted shift **to the digit** — locked by
+  `test_stark_S0_reproduces_orson2021`. (Their 63 µm waist coincidentally
+  echoes Nieddu's 64 µm, though a different apparatus.) **Intro framing:**
+  prior groups looked for these shifts on THIS line and saw nulls at ~MHz
+  resolution; our drift-immune ramp method + two-epoch design is the route to
+  the coefficients *below* that floor.
 
 ## 7. Method anchors (intake 2026-07-13): FM ruler, radiation trapping, the two-photon review
 
-- **FM-spectroscopy ruler ancestry (§V).** **Snadden, Bell, Clarke & Riis 1996**
-  (IQEC; FM two-photon spectroscopy with a mode-locked laser in laser-cooled Rb) —
-  a direct FM-two-photon-in-Rb precedent for our EOM-sideband in-scan ruler,
-  alongside the (paywalled) Zapka 1983 (CW two-photon FM in Rb vapour) and
-  Bjorklund 1980 (the FM-spectroscopy origin). **[CITE]** for the ruler lineage;
-  together they pre-empt a "has FM been used on this system?" referee question.
-- **Radiation trapping (§VI.D / M7).** **Fioretti et al. 1998** (Opt. Commun. 149,
-  415; observation of radiation trapping in a dense Cs magneto-optical trap) — the
-  canonical *alkali-cloud* demonstration that fluorescence departs from linearity
-  in density; the closest precedent for our M7 amplitude behaviour. **[CITE]** (now
-  in hand; was a Tier-2 chase). With Holstein 1947 (foundational, paywalled) +
-  Molisch & Oehry 1998 (the monograph).
-- **Doppler-free two-photon review (Intro).** **Biraben 2019** (C. R. Physique 20,
-  671, "The first decades of Doppler-free two-photon spectroscopy") — the
-  pioneer's own retrospective (Biraben is also our transit-kernel source,
-  `biraben1979`). **[CITE]** — the modern canonical history/review for the Intro,
-  a fuller companion to Grynberg–Cagnac 1977.
-- **Two-photon Rb in a confined/perturbed geometry.** **Amy et al. 2017**
-  (arXiv:1706.04868; two-photon 5S→5D Rb inside porous glass; Montevideo) — a
-  landscape point on two-photon Rb spectroscopy under confinement. **[FEED]**
+- **FM-spectroscopy ruler ancestry (§V).** [Snadden, Bell, Clarke & Riis 1996](lit/snadden1996.md)
+  — FM two-photon in cold Rb, EOM-ruler ancestry, alongside the (paywalled) Zapka
+  1983 (CW two-photon FM in Rb vapour) and Bjorklund 1980 (the FM-spectroscopy
+  origin). **[CITE]** for the ruler lineage; together they pre-empt a "has FM been
+  used on this system?" referee question.
+- **Radiation trapping (§VI.D / M7).** [Fioretti et al. 1998](lit/fioretti1998.md)
+  — the alkali-cloud radiation-trapping anchor for M7/VI.D. **[CITE]** (now in
+  hand; was a Tier-2 chase).
+- **Doppler-free two-photon review (Intro).** [Biraben 2019](lit/biraben2019.md)
+  — the pioneer's own retrospective review. **[CITE]**
+- **Two-photon Rb in a confined/perturbed geometry.** [Amy et al. 2017](lit/amy2017.md)
+  — two-photon Rb under confinement (context). **[FEED]**
 
 ## 8. The 2024–2026 landscape (Paper-1 positioning + future-transition frontier)
 
@@ -371,15 +340,15 @@ Source sweep: `PDF_papers/literature_intake/landscape_2026_...md` +
 handles.
 
 **Update 2026-07-13 — 6 of these are now HELD PDFs** (each arXiv ID verified
-before fetching; Bandi2025 is MDPI-OA, grab from the page): **`andeweg2026`**
-(arXiv:2511.19702), **`ahern2025`** (2410.16654), **`antypas2018`** (1803.05884),
-**`chevrollier2012`** (1311.0253), **`araujo2021`** (2008.03506), **`safronova2004`**
-(physics/0307057 — Safronova, Williams & Clark: relativistic MBPT E1 matrix
-elements, lifetimes and polarizabilities in Rb, the benchmark that carries the **6S
-dynamic polarizability**, a stronger Δα anchor for the 6S state than safronova2006).
-Two IDs the compass synthesis got wrong are QUARANTINED (do not cite): the Li
-dual-interrogation arXiv (real compensation-method preprint is 2405.14281, a
-different paper) and `drago2026` (2602.07161, malformed).
+before fetching; [bandi2025](lit/bandi2025.md) is MDPI-OA, grab from the page):
+[andeweg2026](lit/andeweg2026.md), [ahern2025](lit/ahern2025.md),
+[antypas2018](lit/antypas2018.md), [chevrollier2012](lit/chevrollier2012.md),
+[araujo2021](lit/araujo2021.md), and [safronova2004](lit/safronova2004.md) — the
+benchmark that carries the **6S dynamic polarizability**, a stronger Δα anchor for
+the 6S state than safronova2006. Two IDs the compass synthesis got wrong are
+QUARANTINED (do not cite): the Li dual-interrogation arXiv (real
+compensation-method preprint is 2405.14281, a different paper) and `drago2026`
+(2602.07161, malformed).
 
 **Positioning Paper 1 (our 993 nm 5S→6S).** The line is un-scooped: the only active
 group (USAFA/Knize — `ayachitula2024`; and the earlier McLaughlin 5S–6S absolute-
@@ -391,8 +360,8 @@ into a reference-free estimator:
 - **`wieman1987`** — Wieman, Noecker, Masterson, Cooper, *PRL* **58**, 1738 (1987):
   ac-Stark lineshape asymmetry in standing waves, the foundational precedent
   (treated as a distortion). **[CITE]**
-- **`antypas2018`** — Antypas, Fabricant, Budker, arXiv:1803.05884: methods to
-  *eliminate* the asymmetry on Yb — the idea we invert. **[CITE]**
+- [antypas2018](lit/antypas2018.md) — the ac-Stark-asymmetry elimination
+  precedent (Yb) our method inverts. **[CITE]**
 - **`bevilacqua2012`** — *PRA* **86**, 012501 (2012): Gaussian-beam transit-time
   two-photon gives a Voigt whose width is set solely by w₀ (curvature broadening
   cancels transit) — directly supports our w₀-as-dominant-systematic story. **[CITE]**
@@ -400,11 +369,11 @@ into a reference-free estimator:
 **The 778 nm 5S→5D clock frontier (the competition — all *active* AC-Stark
 suppression; our passive method is the differentiator).** [FEED/CITE for §VI.D/§VII
 contrast and for the future Paper A.]
-- **`andeweg2026`** — Andeweg, Kitching, Hummon (NIST), *PRApplied* **25**, 034059
-  (2026), arXiv:2511.19702: active **power-modulation** ac-Stark suppression (×1000).
-  The newest competitor method — contrast our passive approach against it.
-- **`ahern2025`** — Ahern et al. (Adelaide), *PRApplied* **23**, 044025 (2025),
-  arXiv:2410.16654: two-color 5S–5D standard, 6×10⁻¹⁴/√τ, light-shift-limited.
+- [andeweg2026](lit/andeweg2026.md) — Andeweg, Kitching, Hummon (NIST): the
+  newest competitor method, active **power-modulation** ac-Stark suppression
+  (×1000); contrast our passive approach against it.
+- [ahern2025](lit/ahern2025.md) — Ahern et al. (Adelaide): two-color 5S–5D
+  standard, 6×10⁻¹⁴/√τ, light-shift-limited.
 - **`feng2026`** — Feng et al., *Opt. Lett.* **51**, 1363 (2026): 5S–5D fiber-laser
   clock, He-equilibration collisional-shift control.
 - **`yudin2020`** — *PRApplied* **14**, 024001 (2020): the power-modulation
@@ -413,45 +382,41 @@ contrast and for the future Paper A.]
   artifact's arXiv:2310.10175 was WRONG — we flagged it — the related
   *compensation-method* preprint is arXiv:2405.14281, a different paper]. (With
   `gerginov2018`, `callejo2025`, `newman2021`,
-  `martin2018/2019` already in §6/bib, and `hamilton2023`'s **776.179 nm magic
-  wavelength** — the target of the proposed Ti:Sapph asymmetry scan.)
-- **`bandi2025`** — Obaze-Adeleke, Semon, Bandi, *Photonics* **12**(5), 513 (2025),
-  OA: comprehensive review of Rb two-photon clock systematics + the stability
-  benchmarks. **[CITE]** the single best landscape citation.
+  `martin2018/2019` already in §6/bib, and
+  [hamilton2023](lit/hamilton2023.md)'s magic-wavelength target for the proposed
+  Ti:Sapph asymmetry scan.)
+- [bandi2025](lit/bandi2025.md) — comprehensive review of Rb two-photon clock
+  systematics and the stability benchmarks. **[CITE]** the single best landscape
+  citation.
 - **`bjorkholm1976`** — *PRA* **14**, 751: two-photon lineshape with a near-resonant
   intermediate — the theory anchor for the future 6S(clean)-vs-5D(resonant) Paper C
   (intermediate detunings 75 → 1 THz; see the strategy doc).
 
 **Radiation-trapping updates (795 nm systematic, M7/§VI.D) — the modern Lévy-flight
 lineage** beyond the Holstein/Molisch/Fioretti canon (Kaiser & Passerat de Silans):
-- **`chevrollier2012`** — *Contemp. Phys.* **53**, 227, arXiv:1311.0253: the canonical
-  radiation-trapping / Lévy-flight review. **[CITE]** framework.
-- **`araujo2021`** (*PRE* **103**, L010101, arXiv:2008.03506, Lévy flights in
-  He-broadened hot Rb, α≈0.5), **`weiss2018`** (*NJP* **20**, 063024 — trapping vs
-  subradiance), **`nunes2024`** (arXiv:2411.18570 — frequency-redistribution for
-  Rb/Cs). **[FEED]** modern Rb-specific trapping.
+- [chevrollier2012](lit/chevrollier2012.md) — the canonical radiation-trapping /
+  Lévy-flight review. **[CITE]** framework.
+- [araujo2021](lit/araujo2021.md) (Lévy flights in He-broadened hot Rb, α≈0.5),
+  **`weiss2018`** (*NJP* **20**, 063024 — trapping vs subradiance), **`nunes2024`**
+  (arXiv:2411.18570 — frequency-redistribution for Rb/Cs). **[FEED]** modern
+  Rb-specific trapping.
 
-**Theory anchors.** `safronova2004` (*PRA* **69**, 022509, arXiv:physics/0307057 —
-benchmark Rb ns/nd matrix elements/lifetimes/polarizabilities) joins `safronova2006`
-and `gomez2005`; we note **no dedicated modern 6S polarizability at 993 nm** — a
-gap Paper B can flag.
+**Theory anchors.** [safronova2004](lit/safronova2004.md) joins
+[safronova2006](lit/safronova2006.md) and [gomez2005](lit/gomez2005.md); we note
+**no dedicated modern 6S polarizability at 993 nm** — a gap Paper B can flag.
 
-**Nanofibre bridge to Paper 2** (Gokhroo/Le Kien/Nic Chormaic lineage): `gokhroo2022`
-(the ONF two-peak pushing-dip analog), `li2024perspective` (*J. Phys. Photonics* **6**,
+**Nanofibre bridge to Paper 2** (Gokhroo/Le Kien/Nic Chormaic lineage):
+[gokhroo2022](lit/gokhroo2022.md) (the ONF two-peak pushing-dip analog),
+`li2024perspective` (*J. Phys. Photonics* **6**,
 021002, the flagship ONF review), `sadeghi2026` (ONF cascaded fluorescence,
 power-dependent surface shift, arXiv:2412.01099). The clean cell lineshape is the
 reference against which ONF surface/pushing effects are read.
 
-**[FEED] Pennetta et al. 2026** (*Nature Photonics*, `pennetta2026`, DOI
-10.1038/s41566-026-01961-9; arXiv:2509.17767; PDF held) — the nearest-platform
-result to Paper 2, feeding two of its pillars; NO committed number moved. The
-Rauschenbeutel group demonstrate a **hybrid nanofibre trap** for cold **Cs** on a
-**450 nm** tapered fibre: attraction from **surface forces (Casimir–Polder +
-electrostatic charges on the waveguide)**, repulsion from a blue-detuned
-evanescent field; loaded at 96(5)% from the standard two-colour (935/685 nm
-magic) trap; depth ~1 µK, radial trap ~7 kHz, atom ~280 nm from the surface;
-storage 140(9) ms; **Ramsey T₂\* = 17.8(7) ms, spin-echo T₂′ = 44.7(2.5) ms**
-(records for the platform). The two feeds:
+**[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)) — the
+nearest-platform result to Paper 2, feeding two of its pillars; NO committed number
+moved. Two details beyond the lit-file summary: radial trap ~7 kHz, atom ~280 nm
+from the surface; the Ramsey/spin-echo coherence times are records for the
+platform. The two feeds:
 - **It puts quantified atom–surface content on the near-surface potential** —
   Casimir–Polder plus surface-charge electrostatics — which is exactly what
   `gokhroo2022` left at the hypothesis stage (its dip has "no Casimir-Polder or
@@ -471,18 +436,10 @@ Platform caveats (so we do not overclaim): Cs not Rb, a D2 hyperfine qubit not t
 5S–6S two-photon line, a 450 nm fibre not the OIST 650 nm — the *physics* (surface
 forces; differential-light-shift dephasing) transfers, the numbers do not.
 
-**[FEED] Pache et al. 2026** (`pache2026`, arXiv:2605.13387; PDF held) — the same
-group's companion, on the **loading and cooling** toolkit for this platform, and a
-direct feed to the EIT-cooling / atom-source thread; NO committed number moved.
-Λ-enhanced gray molasses gives a **6× loading gain** over red-detuned polarization-
-gradient cooling (~4000 Cs atoms in a shallow 24 µK trap, optical depth > 140,
-collisional blockade over ~1 mm), and **EIT-assisted cooling** then raises the trap
-storage time to **400(9) ms** (5×), working with two co-propagating guided fields at
-only a few hundred pW. Why it feeds us: (i) it is guided-atom **source optimisation**
-— the strongest match to what a guided-atom group would want from this analysis
-lineage (the EIT-cooling / fibre-source skill set; the Lan-pitch lead); (ii) it is
-the loading/cooling half of Paper 2's experimental toolkit, complementary to the trap
-physics of `pennetta2026`; (iii) it again names the **residual differential light
+**[FEED] Pache et al. 2026** ([pache2026](lit/pache2026.md)) — the same group's
+companion, on the loading and cooling toolkit for this platform, and a direct feed
+to the EIT-cooling / atom-source thread; NO committed number moved. Why it feeds us
+beyond the lit-file summary: it again names the **residual differential light
 shift of the trapping fields** as the limiting imperfection — the recurring
 guided-mode theme. Cs / D2 again: the physics transfers, the numbers do not.
 
@@ -521,64 +478,47 @@ given citekeys.
 
 **Cascade / IR detection to beat radiation trapping — ESTABLISHED prior art (now
 cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
-- **Hassanin et al. 2023** (`hassanin2023`, Phys. Rev. A **107**, 043104, DOI
-  10.1103/PhysRevA.107.043104) — observe the Rb **5S–5D** Doppler-free two-photon line
-  in a hot cell by detecting the **5D→5P infrared cascade**, which "does not suffer
-  from reabsorption" and so works at high density (enabling collisional-broadening /
-  energy-transfer studies). The direct precedent for our 1.3 µm (6S→5P) trapping-free
-  channel — proven, on the sibling line, for exactly our reason. [CITE]
-- **Beard et al. 2024** (`beard2024`, Opt. Express **32**, 7417, DOI 10.1364/OE.513974;
-  PDF held) — first 5S–5D₅/₂ two-photon Rb clock stabilised on the **776 nm (5D→6P)
-  cascade** fluorescence. A second cascade-detection precedent. [CITE]
+- **[Hassanin et al. 2023](lit/hassanin2023.md)** — the direct precedent for our
+  1.3 µm (6S→5P) trapping-free channel: the reabsorption-free 5D→5P cascade lets
+  the sibling 5S–5D line be probed at high density, enabling collisional-
+  broadening/energy-transfer studies. [CITE]
+- **[Beard et al. 2024](lit/beard2024.md)** — a second cascade-detection
+  precedent (776 nm 5D→6P fluorescence). [CITE]
 
 **Near-surface Casimir–Polder shift read FROM a lineshape — template for Paper 2 §IV:**
-- **Ton, Kestler, Steck & Barreiro 2026** (`ton2026`, arXiv:2604.14721) —
-  spectroscopically read the kHz CP shift of ultracold Sr **189 nm** from a dielectric,
-  across the z⁻³→z⁻⁴ retardation crossover. The state-of-the-art template for
-  extracting a surface shift from the line; D. A. Steck (our constants lineage) is a
-  co-author. [CITE — the model template for Paper 2's surface term]
+- **[Ton, Kestler, Steck & Barreiro 2026](lit/ton2026.md)** — the state-of-the-art
+  template for extracting a surface shift from the line; D. A. Steck (our
+  constants lineage) is a co-author. [CITE — the model template for Paper 2's
+  surface term]
 
 **Sibling cold-atom two-photon clock (ladder / magic-λ context):**
-- **Duspayev, Owens, Dash & Raithel 2024** (`duspayev2024`, Quantum Sci. Technol. **9**,
-  045046, DOI 10.1088/2058-9565/ad77ef; arXiv:2406.09352) — a Rb **5S→4D_J** lattice
-  two-photon clock with a **magic wavelength ~1060 nm** and two-colour Rabi-matching
-  AC-Stark cancellation (Raithel/Michigan). A direct sibling to our ladder (the 4D_J =
-  1033 nm rung) and an independent magic-λ determination to cross-check M16. [FEED]
+- **[Duspayev, Owens, Dash & Raithel 2024](lit/duspayev2024.md)** — a direct
+  sibling to our ladder (the 4D_J = 1033 nm rung) and an independent magic-λ
+  determination to cross-check M16. [FEED]
 
 **Polarizability validation source:**
-- **Safronova & Safronova 2011** (`safronovaSS2011`, Phys. Rev. A **83**, 052508, DOI
-  10.1103/PhysRevA.83.052508) — critically-evaluated Rb ns/np/nd matrix elements +
-  scalar/tensor static polarizabilities (the "S&S 2011 lineage" our polarizability
-  elements descend from): the **independent published source to validate the M16 7S
-  static** (~3.2×10⁴ a.u.) we could not otherwise anchor. [FEED — pull the 7S/5D values]
+- **[Safronova & Safronova 2011](lit/safronovaSS2011.md)** — the independent
+  published source to validate the M16 7S static (~3.2×10⁴ a.u.) we could not
+  otherwise anchor. [FEED — pull the 7S/5D values]
 
 **Self-calibrated frequency tracking (ruler-method context):**
-- **Yang et al. 2025** (`yang2025`, arXiv:2508.16278 — an arXiv preprint, NOT Nature
-  Photonics as a first search wrongly claimed) — integrated LiNbO₃ **electro-optic
-  combs** track a laser's *instantaneous* frequency in real time (chirp to
-  2×10¹⁸ Hz/s): the modern frontier of the "internal ruler tracks a drifting axis"
-  idea our EOM ruler embodies. [FEED — Intro/method context]
+- **[Yang et al. 2025](lit/yang2025.md)** — the modern frontier of the
+  "internal ruler tracks a drifting axis" idea our EOM ruler embodies.
+  [FEED — Intro/method context]
 
 **Verified and folded in (2026-07-18) — the near-surface CP-lineshape cluster + the
 7S cascade study (all PDFs held):**
-- **Dutta et al. 2025** (`dutta2025`, Phys. Rev. A accepted, arXiv:2507.05925) — CP
-  selective-reflection lineshape *with the thermal velocity distribution folded in*:
-  the direct template for reading the near-surface shift as a thermal-averaged
-  distribution in Paper 2 §IV. [CITE]
-- **Dutta et al. 2024** (`dutta2024`, Phys. Rev. Research, arXiv:2404.13354) —
-  higher-order (quadrupole/octupole) CP corrections when the wavefunction is not small
-  vs the atom-surface distance: the close-range background. [FEED]
-- **Sargsyan, Momier & Sarkisyan 2025** (`sargsyan2025`, arXiv:2501.11548) — the Cs
-  6S–7P surface shift (C₃) read from a nanocell selective-reflection lineshape: the
+- **[Dutta et al. 2025](lit/dutta2025.md)** — the direct template for reading
+  the near-surface shift as a thermal-averaged distribution in Paper 2 §IV. [CITE]
+- **[Dutta et al. 2024](lit/dutta2024.md)** — higher-order CP corrections at
+  close range: the background for Paper 2's near-surface term. [FEED]
+- **[Sargsyan, Momier & Sarkisyan 2025](lit/sargsyan2025.md)** — the
   experimental analogue of extracting a surface shift from the line. [CITE]
-- **Piotrowski, Bach, Vera Paz, Schneeweiss & Rauschenbeutel 2026** (`piotrowski2026`,
-  arXiv:2605.07798) — probe-light scattering heats trapped atoms → near-field probing
-  is inherently transient: a Paper-2 feasibility bound on the probe window/power. [CITE]
-- **Wang, Cao, Yuan, Wang, Xiao & Jia 2025** (`wang2025`, Spectrochim. Acta B, Shanxi
-  Univ.) — experimental Rb **5S–7S** multi-channel cascade fluorescence
-  (780/741/795/728/~420 nm) vs power/polarization/temperature: directly on our 7S
-  ladder (the 741/728 nm channels are the 7S→5P near-poles that set the ladder magic
-  wavelength) and a multi-channel-detection precedent for the amplitude work. [CITE]
+- **[Piotrowski, Bach, Vera Paz, Schneeweiss & Rauschenbeutel 2026](lit/piotrowski2026.md)**
+  — a Paper-2 feasibility bound on the probe window/power. [CITE]
+- **[Wang, Cao, Yuan, Wang, Xiao & Jia 2025](lit/wang2025.md)** — directly on
+  our 5S–7S ladder (the 741/728 nm channels set the ladder magic wavelength)
+  and a multi-channel-detection precedent for the amplitude work. [CITE]
 
 **Still to verify:** Sargsyan/Sarkisyan 2026 (arXiv:2601.04661, a second nanocell
 surface-shift paper) and Obaze et al. 2025 (Photonics **12**, 513, a second 778 nm
