@@ -26,7 +26,11 @@ summary: >
   Nearest prior art: a spatially-varying AC-Stark shift producing an
   asymmetric lineshape from which alpha was extracted (standing wave,
   numerical Bloch).
-loci: []
+loci:
+  - P1
+  - THEORY
+  - constants
+  - methods/03
 section: prior-art
 ---
 

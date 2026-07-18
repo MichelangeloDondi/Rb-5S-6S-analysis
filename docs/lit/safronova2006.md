@@ -21,7 +21,10 @@ verify_flags: []
 verified_date: null
 summary: >
   Dynamic alpha(omega) matrix-element source.
-loci: []
+loci:
+  - M16
+  - THEORY
+  - constants
 section: method-anchors
 ---
 

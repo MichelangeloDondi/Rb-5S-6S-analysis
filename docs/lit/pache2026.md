@@ -23,7 +23,8 @@ verified_date: null
 summary: >
   EIT-cooling / atom-source thread (companion to pennetta2026, same group
   + 450 nm fibre).
-loci: []
+loci:
+  - P2
 section: deep-search
 ---
 

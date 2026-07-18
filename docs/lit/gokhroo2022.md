@@ -26,7 +26,10 @@ summary: >
   Squared SolsTis Ti:Sapph quoted at sub-MHz linewidth, and a
   counter-propagating 993 nm vapour cell as the Doppler-free frequency
   reference.
-loci: []
+loci:
+  - P1
+  - P2
+  - methods/02
 section: oist-lineage
 ---
 

@@ -22,7 +22,8 @@ summary: >
   from a nanocell selective-reflection lineshape (below 400 nm thickness)
   -- the experimental analogue of reading a surface shift from the line
   for Paper 2 sec IV.
-loci: []
+loci:
+  - 'P2:§IV'
 section: deep-search
 ---
 

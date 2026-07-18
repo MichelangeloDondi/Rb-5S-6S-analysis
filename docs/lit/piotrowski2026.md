@@ -22,7 +22,8 @@ verified_date: null
 summary: >
   Probe-light scattering heats nanophotonic-trapped atoms, so near-field
   probing is inherently transient (coupling + atom-number decay).
-loci: []
+loci:
+  - P2
 section: deep-search
 ---
 

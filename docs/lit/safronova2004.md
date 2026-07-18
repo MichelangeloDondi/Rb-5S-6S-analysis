@@ -22,7 +22,9 @@ verified_date: null
 summary: >
   Benchmark Rb ns matrix elements/lifetimes/polarizabilities -- carries
   the 6S dynamic polarizability.
-loci: []
+loci:
+  - THEORY
+  - constants
 section: method-anchors
 ---
 

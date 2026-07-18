@@ -23,7 +23,12 @@ verified_date: null
 summary: >
   Source of DELTA\_ALPHA\_AU: they compute alpha\_56=alpha(5S)-alpha(6S)
   =-1093 a.u.
-loci: []
+loci:
+  - M16
+  - M4e
+  - P1
+  - THEORY
+  - constants
 section: usafa-lineage
 ---
 

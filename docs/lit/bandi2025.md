@@ -22,7 +22,8 @@ verified_date: null
 summary: >
   The single best landscape/systematics-benchmark review for the Rb
   two-photon clock.
-loci: []
+loci:
+  - P1
 section: landscape-24-26
 ---
 

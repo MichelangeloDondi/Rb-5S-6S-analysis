@@ -23,7 +23,9 @@ summary: >
   static polarizabilities (the S and S 2011 lineage our polarizability
   elements descend from), and the independent source to validate the M16
   7S static (~3.2e4 a.u.).
-loci: []
+loci:
+  - M16
+  - THEORY
 section: method-anchors
 ---
 

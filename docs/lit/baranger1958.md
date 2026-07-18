@@ -22,7 +22,8 @@ summary: >
   Sec.\ 2.2: uncorrelated, phase-interrupting collisions add a rate to the
   coherence decay, keeping the line Lorentzian with a density-linear width
   -- textbook basis for gamma\_coll = beta\_self * N.
-loci: []
+loci:
+  - methods/02
 section: collision-series
 ---
 

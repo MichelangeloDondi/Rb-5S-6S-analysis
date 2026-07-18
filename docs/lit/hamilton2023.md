@@ -23,7 +23,10 @@ verify_flags:
 verified_date: null
 summary: >
   Rigor template for the polarizability side (+ magic-lambda idea).
-loci: []
+loci:
+  - M16
+  - P1
+  - THEORY
 section: method-anchors
 ---
 

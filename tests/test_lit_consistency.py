@@ -75,7 +75,7 @@ _LINK_RE = re.compile(r"\]\((?:\.\./)?lit/([a-zA-Z0-9_]+)\.md\)")
 _TYPE_OK = {"article", "inproceedings", "misc"}
 _STATUS_OK = {"VERIFIED", "REPORTED"}
 _ROUTING_OK = {"CITE", "FEED"}
-_LOCI_RE = re.compile(r"^(P1|P2|THEORY|constants|methods/\d{2}|M\d+)(:.+)?$")
+_LOCI_RE = re.compile(r"^(P1|P2|THEORY|constants|methods/\d{2}|M\d+[a-z]?)(:.+)?$")
 
 _PDFS_PRESENT = any(PDF_DIR.glob("*.pdf"))  # True locally, False on CI (gitignored)
 

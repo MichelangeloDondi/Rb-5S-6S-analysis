@@ -22,7 +22,9 @@ verify_flags: []
 verified_date: null
 summary: >
   Nearest measured self-shift series.
-loci: []
+loci:
+  - M4
+  - P1
 section: collision-series
 ---
 

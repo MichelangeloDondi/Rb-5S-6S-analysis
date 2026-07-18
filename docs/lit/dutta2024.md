@@ -26,7 +26,8 @@ summary: >
   Quadrupole/octupole CP corrections when the atomic wavefunction is not
   small vs atom-surface distance, and their imprint on thin-cell /
   selective-reflection lineshapes.
-loci: []
+loci:
+  - P2
 section: deep-search
 ---
 

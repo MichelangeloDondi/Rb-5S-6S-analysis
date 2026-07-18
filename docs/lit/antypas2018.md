@@ -20,7 +20,8 @@ verified_date: null
 summary: >
   The ac-Stark-asymmetry ELIMINATION precedent (Yb) our method INVERTS
   into a reference-free observable.
-loci: []
+loci:
+  - P1
 section: prior-art
 ---
 

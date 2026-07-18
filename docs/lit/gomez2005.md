@@ -23,7 +23,8 @@ verify_flags: []
 verified_date: null
 summary: >
   tau(6S)=45.57(17) ns -> GAMMA\_NAT\_HZ (3.4926 MHz) in constants.py.
-loci: []
+loci:
+  - constants
 section: method-anchors
 ---
 

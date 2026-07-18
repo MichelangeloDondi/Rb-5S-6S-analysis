@@ -25,7 +25,9 @@ verified_date: null
 summary: >
   Source of A\_6S\_RB87/85\_HZ in rb5s6s/constants.py (807.355(2),
   239.065(2) MHz).
-loci: []
+loci:
+  - P1
+  - constants
 section: usafa-lineage
 ---
 

@@ -19,7 +19,8 @@ verify_flags: []
 verified_date: null
 summary: >
   The pioneer's own retrospective review.
-loci: []
+loci:
+  - P1
 section: method-anchors
 ---
 

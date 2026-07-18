@@ -23,7 +23,10 @@ summary: >
   Origin of our transit kernel: the finite-transit Doppler-free two-photon
   line is a Lorentzian convolved with a two-sided exponential (the central
   cusp).
-loci: []
+loci:
+  - M3
+  - M9
+  - methods/02
 section: transit-time
 ---
 

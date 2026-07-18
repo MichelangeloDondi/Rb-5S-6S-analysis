@@ -26,7 +26,8 @@ verified_date: null
 summary: >
   Two-color 5S-5D standard, 6e-14/sqrt(tau), light-shift-limited long
   term.
-loci: []
+loci:
+  - P1
 section: landscape-24-26
 ---
 
