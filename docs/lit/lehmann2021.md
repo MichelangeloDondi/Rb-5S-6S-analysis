@@ -19,7 +19,11 @@ verify_flags: []
 verified_date: null
 summary: >
   Modern closed-form transit-limit lineshape (the ``Lehmann lineshape'').
-loci: []
+loci:
+  - M8
+  - M9
+  - constants
+  - methods/02
 section: transit-time
 ---
 

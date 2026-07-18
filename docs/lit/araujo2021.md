@@ -22,7 +22,8 @@ verified_date: null
 summary: >
   Levy flights in He-broadened hot Rb (alpha~0.5) -- closest to a heated
   cell.
-loci: []
+loci:
+  - M7
 section: collision-series
 ---
 

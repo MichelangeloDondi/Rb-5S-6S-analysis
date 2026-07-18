@@ -16,7 +16,10 @@ verified_date: null
 summary: >
   Reference atomic constants for Rb (line frequencies, natural widths,
   polarizabilities).
-loci: []
+loci:
+  - M4
+  - constants
+  - methods/02
 section: method-anchors
 ---
 

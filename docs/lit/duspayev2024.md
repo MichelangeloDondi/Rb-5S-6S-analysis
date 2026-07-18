@@ -22,7 +22,8 @@ verify_flags: []
 verified_date: null
 summary: >
   Rb 5S-to-4D two-photon lattice clock.
-loci: []
+loci:
+  - M16
 section: landscape-24-26
 ---
 

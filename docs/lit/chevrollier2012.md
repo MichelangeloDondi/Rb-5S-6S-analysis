@@ -20,7 +20,9 @@ verify_flags:
 verified_date: null
 summary: >
   The dedicated radiation-trapping / Levy-flight review for M7/VI.D.
-loci: []
+loci:
+  - M7
+  - 'P1:§VI.D'
 section: method-anchors
 ---
 

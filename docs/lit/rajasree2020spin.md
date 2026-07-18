@@ -30,7 +30,9 @@ summary: >
   polarization amplitude law and the fixed-lock session extinction
   null-test) and cold 87Rb around a 400 nm ONF (evanescent-field 5S-6S at
   25-40 counts/ms -- Paper-2 feasibility evidence.
-loci: []
+loci:
+  - M10
+  - P2
 section: oist-lineage
 ---
 

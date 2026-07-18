@@ -22,7 +22,8 @@ verify_flags: []
 verified_date: null
 summary: >
   nearest-platform for Paper 2.
-loci: []
+loci:
+  - P2
 section: deep-search
 ---
 

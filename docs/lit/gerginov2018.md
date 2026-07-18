@@ -20,7 +20,8 @@ verify_flags: []
 verified_date: null
 summary: >
   The suppress-the-shift stance our USE-the-shift method contrasts with.
-loci: []
+loci:
+  - P1
 section: prior-art
 ---
 

@@ -20,7 +20,8 @@ verified_date: null
 summary: >
   The earlier, more general transit-time treatment that Biraben~1979 and
   Lehmann~2021 both simplify.
-loci: []
+loci:
+  - methods/02
 section: transit-time
 ---
 

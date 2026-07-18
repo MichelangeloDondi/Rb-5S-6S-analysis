@@ -26,7 +26,8 @@ summary: >
   selective-reflection lineshape (beyond the infinite-Doppler
   approximation) -- the direct template for reading the near-surface shift
   as a thermal-averaged distribution in Paper 2 sec IV.
-loci: []
+loci:
+  - 'P2:§IV'
 section: deep-search
 ---
 

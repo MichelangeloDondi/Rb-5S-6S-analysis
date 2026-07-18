@@ -25,7 +25,8 @@ summary: >
   two-photon line without reabsorption at high density -- the direct
   precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel
   (PLAN 8.4a).
-loci: []
+loci:
+  - M7
 section: deep-search
 ---
 
