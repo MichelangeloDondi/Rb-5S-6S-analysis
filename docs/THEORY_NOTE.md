@@ -93,7 +93,15 @@ Two caveats. *Between*-scan drift is absorbed exactly by the free centres.
 asymmetrically in a scan-direction-dependent way that couples the fitted centre
 to the fitted asymmetry; at the established $\lesssim0.1$ MHz within-scan drift
 this is small, but because the asymmetry is itself small it must be *estimated*,
-not assumed zero.
+not assumed zero. A synthetic closure test now bounds it rather than the
+timescale argument alone (`tests/test_intrascan_drift.py`): the drift is injected
+into a synthetic scan and the asymmetry recovered through the same free-centre
+fit, so the linear sweep warp lands in the fitted width and only the residual
+curvature can skew. At the archival within-scan drift the fitted ramp
+coefficient shifts by **well under a fifth of its SNR-limited statistical
+error** — a few $\times 10^{-3}$ on $S_0$ for the dominant linear part — and
+reaches order-$S_0$ only at tens of times the archival rate. The within-scan
+skew is therefore bounded and small, not unmodelled.
 
 **Status.** In the 2025 sweep the fitted asymmetry coefficient is **consistent
 with zero**: at $\le225$ mW its significance (the skew grows only as $S_0^3$)
