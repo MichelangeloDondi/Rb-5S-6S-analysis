@@ -733,8 +733,42 @@ one); the hybrid is across the moment hierarchy, never across methods.
   degeneracy-law and trapping discriminators (M7/M10). Amplitude-ratio
   blocks get **12–16 repeats** (they are gain-scatter-limited);
   width blocks 8. Randomized P order (free — no thermalization).
-- Timestamps logged (scope clock + notebook) — the 2025 σ_laser-sharing
-  assumption was unverifiable without them.
+- **Per-scan timestamps — recorded in hardware metadata, not just the notebook
+  (the fix for 2025 post-mortem #5).** The archive carries *no* acquisition time
+  on any trace, so block order is the only clock — and that is the single reason
+  the σ_laser-sharing the hierarchical β rests on is untestable: the four peaks at
+  a given T could have co-drifted between acquisitions and still agree (M4c), so
+  the sharing check is necessary-not-sufficient (RESULTS.md). A wall-clock time on
+  every scan buys four things. (i) It turns σ_laser-sharing into a *tested* fact —
+  confirm the four interleaved peaks were acquired close enough in time that the
+  accumulated drift across the set (elapsed time × drift rate) is a small fraction
+  of the width, so a common σ_laser is forced, not assumed. (ii) It reconstructs
+  the drift diary — the only way to separate between-scan drift (free centres
+  absorb it) from within-scan drift (the residual skew channel; THEORY_NOTE §3,
+  `tests/test_intrascan_drift.py`) — and lets us *measure* the lock drift rate
+  that is today only an envelope (`constants.DRIFT_RATE_LASER_HZ_PER_MIN`,
+  4 MHz/min, a user figure). (iii) It makes the T↔time collinearity (post-mortem
+  #3) checkable, so the opposite-order days can regress drift out of the density
+  lever. (iv) It time-orders the interleaved four-peak / per-trace-power blocks
+  (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on. Keep
+  the timestamp in the trace *metadata*, not only the filename, so a re-save or
+  rename cannot strip it.
+- **How, on our scope (LeCroy WaveSurfer 3104z).** The scope already timestamps
+  every acquisition in hardware (the trigger time); the 2025 loss was the
+  *export* — the minimal CSV we saved is a 2-line `second,Volt` header
+  (`config.CSV_HEADER_LINES`) with no time field. Preserve it one of two ways.
+  **(a) Save the native binary `.trc`**, whose WAVEDESC header carries a
+  `TRIGGER_TIME` field (calendar date down to a fractional second) that
+  `lecroyparser`/`readTrc` read back per trace — the guaranteed route, and the
+  ingest loader gains a per-trace time column for free. **(b)** Take each
+  back-to-back set (the repeats, or the four interleaved peaks) as one
+  **Sequence / segmented** acquisition: the scope then stores a per-segment
+  **TRIGTIME** array (trigger time + offset, high resolution), recording the
+  *inter-scan* elapsed time directly — exactly the quantity the σ_laser-co-drift
+  test needs, and immune to any file-clock rounding. Precondition for both: set
+  the scope real-time clock (Utilities setup) at session start, and still note
+  each block's start time in the notebook as an independent check, so a mis-set
+  scope clock is caught rather than trusted.
 
 ### 8.4a Amplitude program — the archive's weakest observable, made into levers
 
