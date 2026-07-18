@@ -166,7 +166,7 @@ $\tau$, but its net effect on the collected amplitude is modest and its
 degeneracy-breaking effect is $\lesssim10$%, buried under drift; separating it
 needs the fixed-lock session's fixed-lock interleaved-peak run with a controlled collection
 geometry. A clean separation of the trapping/993-absorption losses and an
-absolute trapping fraction additionally want Nieddu's 2019 same-channel
+absolute trapping fraction additionally want [Nieddu's 2019](../lit/nieddu2019.md) same-channel
 baseline (not loaded here).
 
 **The Lehmann cusp — not resolvable in 2025, as designed (module M8).** At the

@@ -21,7 +21,7 @@ the archival brackets into measurements, so several sections are written as
   demonstrated on a 2025 archive that *brackets* the collisional and AC-Stark
   coefficients and pins the systematics, then completed by a fixed-lock campaign. We
   do **not** claim to have measured either coefficient in the archive (both are
-  bounds), and we do **not** claim the asymmetry's existence (Stalnaker *et al.* 2006
+  bounds), and we do **not** claim the asymmetry's existence ([Stalnaker *et al.*](lit/stalnaker2006.md) 2006
   precede us — §novelty).
 - **Scope / journal.** Full paper (PRA-length). The archive gives **P1-min** (method +
   bounds, ready now = the thesis core); adding a fixed-lock session gives
@@ -69,14 +69,14 @@ the archival brackets into measurements, so several sections are written as
 ## I. Introduction
 
 - The 5S→6S two-photon transition: why it matters (a forbidden-ish, narrow, metrology-
-  relevant line; the 6S state; relation to the 5D/7S self-shift series — Zameroski,
+  relevant line; the 6S state; relation to the 5D/7S self-shift series — [Zameroski](lit/zameroski2014.md),
   ESTABLISHED). One paragraph.
 - **Prior work on this exact line, and the gap we fill.** The USAF Academy group did
-  precision hyperfine/isotope-shift metrology on 5S–6S (Orson 2021; Ayachitula 2024 —
+  precision hyperfine/isotope-shift metrology on 5S–6S ([Orson](lit/orson2021.md) 2021; [Ayachitula](lit/ayachitula2024.md) 2024 —
   kHz $A(6S)$, our source for the hyperfine constants) and, directly relevant here,
   *looked* for the AC-Stark and collisional-density shifts and reported **nulls at
-  ~6 MHz resolution** (Orson 2021, over $N \gtrsim 3\times10^{11}$ cm$^{-3}$). The
-  OIST group demonstrated a 993 nm frequency reference on it (Nieddu 2019). Our angle
+  ~6 MHz resolution** ([Orson](lit/orson2021.md) 2021, over $N \gtrsim 3\times10^{11}$ cm$^{-3}$). The
+  OIST group demonstrated a 993 nm frequency reference on it ([Nieddu](lit/nieddu2019.md) 2019). Our angle
   is orthogonal to all of these: a *drift-immune* method that turns the archive's
   shape information into bounds on those very shifts *below* the prior resolution
   floor, plus the two-epoch route to the coefficients themselves.
@@ -90,16 +90,16 @@ the archival brackets into measurements, so several sections are written as
   and what still needs a stable lock? — the two-epoch idea. Frame it here.
 - **The AC-Stark ramp as an observable, not a nuisance — stated honestly.** The
   precision-clock community treats this shift as *the* systematic to suppress, almost
-  always *actively* (power modulation — Andeweg 2026, Yudin 2020; dual interrogation —
-  Gerginov 2018, Li 2024; two-color/magic-wavelength — Ahern 2025, Hamilton 2023), and
-  the asymmetry itself has been treated as a distortion to *eliminate* (Antypas 2018).
+  always *actively* (power modulation — [Andeweg](lit/andeweg2026.md) 2026, Yudin 2020; dual interrogation —
+  [Gerginov](lit/gerginov2018.md) 2018, Li 2024; two-color/magic-wavelength — [Ahern](lit/ahern2025.md) 2025, [Hamilton](lit/hamilton2023.md) 2023), and
+  the asymmetry itself has been treated as a distortion to *eliminate* ([Antypas](lit/antypas2018.md) 2018).
   We instead read the shift off the drift-invariant shape — a **passive, reference-free,
   no-extra-hardware** route. **Be precise about the novelty (do not overclaim):** the
   asymmetric AC-Stark lineshape is not new (Wieman 1987), and a polarizability has
-  already been *extracted from it* (Stalnaker 2006, with a stable reference and a
+  already been *extracted from it* ([Stalnaker](lit/stalnaker2006.md) 2006, with a stable reference and a
   full-shape numerical fit). What is genuinely ours is (i) extraction from the shape
   *alone*, surviving a reference too unstable for the centre; (ii) a **closed-form
-  two-photon** triangular ramp law (signal ∝ I², vs Stalnaker's numerical one-photon
+  two-photon** triangular ramp law (signal ∝ I², vs [Stalnaker's](lit/stalnaker2006.md) numerical one-photon
   standing wave); (iii) the **two-epoch** design. The method is *complementary* to the
   active schemes — its systematics are orthogonal and it needs no feedback or second
   laser — **not** a precision competitor to them.
@@ -135,8 +135,8 @@ the archival brackets into measurements, so several sections are written as
   $\otimes$ transit kernel $\otimes$ laser Gaussian $\otimes$ AC-Stark ramp, on the
   transition (two-photon-sum) axis.
 - **Transit kernel** (ESTABLISHED, not phenomenological): Lorentzian $\otimes$
-  two-sided exponential = Biraben–Bassini–Cagnac (1979); modern closed transit-limit
-  form = Lehmann (2021). Cite, don't reinvent (App. B / LITERATURE.md).
+  two-sided exponential = [Biraben–Bassini–Cagnac](lit/biraben1979.md) (1979); modern closed transit-limit
+  form = [Lehmann](lit/lehmann2021.md) (2021). Cite, don't reinvent (App. B / LITERATURE.md).
 - **The ramp law** (the novel core, CALCULATED): signal $\propto I^2$, shift
   $\propto I$, volume measure $\Rightarrow$ density $f(s)\propto|s|^{n-1}$ on
   $[-S_0,0]$; the triangle for $n=2$. Cumulants: pull $-\tfrac{2}{3}S_0$, excess
@@ -151,7 +151,7 @@ the archival brackets into measurements, so several sections are written as
 - **The $\langle E^2\rangle$ convention, pinned** (CALCULATED): standard AMO
   $\Delta E=-\tfrac14\alpha E_0^2$; $S_0=\Delta\alpha\cdot I_\text{eff}/(2\varepsilon_0 c h)$,
   $I_\text{eff}=(1{+}\rho)\cdot 2P/(\pi w_0^2)$; no coherent $\times2$ (fringe-averaged,
-  Stalnaker FM regime). $\Rightarrow S_0=0.59$ MHz at 225 mW, 50 µm, $\rho{=}1$
+  [Stalnaker](lit/stalnaker2006.md) FM regime). $\Rightarrow S_0=0.59$ MHz at 225 mW, 50 µm, $\rho{=}1$
   (5.7 MHz at 16 µm). Sign set by $\mathrm{sign}(\Delta\alpha)>0$ (red). *[App. A]*
 
 ## IV. Apparatus and the 2025 archive
@@ -209,7 +209,7 @@ the archival brackets into measurements, so several sections are written as
   (statistical / transit model-form $\pm0.033$ / density scale $\pm0.007$ /
   $w_0$-band $[0.004,0.055]$, the largest). Robust to leave-one-**peak**-out (4207 moves $\beta_{87}$ by $-0.004$,
   $<1\sigma$; drops neither $\beta$ nor the $\sigma_\text{laser}(T)$ trend).
-- **Expectation context:** Zameroski 7S scaling ⇒ expected $\beta_\text{self}(6S)\sim$
+- **Expectation context:** [Zameroski](lit/zameroski2014.md) 7S scaling ⇒ expected $\beta_\text{self}(6S)\sim$
   1 kHz per $10^{12}$ cm⁻³ ⇒ the bound is $\sim$40–100× above expectation (consistent,
   not constraining). A fixed-lock session needs same-session 150–170 °C points (Δγ measurable).
 - *Message:* the archive *proves the two-epoch design was necessary* — this bound is
@@ -290,7 +290,7 @@ states the predictions as future work (P1-min) or is dropped.*
 - **A. The ramp law derivation** — $I^2$-excitation/$I$-shift → $f(s)\propto|s|^{n-1}$;
   cumulants; the $\langle E^2\rangle$ convention; the diverging-beam axial average and
   the OPEN $Z_c/z_R$ (from `THEORY_NOTE.md` §§2,3,5,7).
-- **B. The transit kernel** — Biraben/Bordé/Lehmann provenance (`LITERATURE.md` §3).
+- **B. The transit kernel** — [Biraben](lit/biraben1979.md)/[Bordé](lit/borde1976.md)/Lehmann provenance (`LITERATURE.md` §3).
 - **C. QC, curation, and provenance** — the pre-registered hard/soft policy; the 4
   discards + 29 quarantines with committed `qc_reason`; the curation audit.
 - **D. Degeneracies and honest covariances** — the Voigt and transit/$w_0$
@@ -321,9 +321,9 @@ inset; a §III schematic of the ramp geometry + the triangular $f(s)$.
 
 ## Reference anchors (BibTeX in [`references.bib`](references.bib); prose ledger in `LITERATURE.md`)
 
-Biraben, Bassini & Cagnac, *J. Phys. (Paris)* **40**, 445 (1979) · Bordé, *C. R. Acad.
-Sci. B* **282**, 341 (1976) · Lehmann, *J. Chem. Phys.* **154**, 104105 (2021) ·
-Stalnaker *et al.*, *Phys. Rev. A* **73**, 043416 (2006) · Grimm, Weidemüller &
-Ovchinnikov, *Adv. At. Mol. Opt. Phys.* **42**, 95 (2000) · Zameroski *et al.*,
-*J. Phys. B* **47**, 225205 (2014) · Gokhroo, Le Kien & Nic Chormaic, *J. Phys. B*
+[Biraben, Bassini & Cagnac](lit/biraben1979.md), *J. Phys. (Paris)* **40**, 445 (1979) · [Bordé](lit/borde1976.md), *C. R. Acad.
+Sci. B* **282**, 341 (1976) · [Lehmann](lit/lehmann2021.md), *J. Chem. Phys.* **154**, 104105 (2021) ·
+[Stalnaker *et al.*](lit/stalnaker2006.md), *Phys. Rev. A* **73**, 043416 (2006) · [Grimm, Weidemüller &
+Ovchinnikov](lit/grimm2000.md), *Adv. At. Mol. Opt. Phys.* **42**, 95 (2000) — source of the standard AMO ⟨E²⟩ convention (ΔE = −(1/4)αE₀²) adopted for S₀ in §III · [Zameroski *et al.*](lit/zameroski2014.md),
+*J. Phys. B* **47**, 225205 (2014) · [Gokhroo, Le Kien & Nic Chormaic](lit/gokhroo2022.md), *J. Phys. B*
 **55**, 125301 (2022) [Paper 2].

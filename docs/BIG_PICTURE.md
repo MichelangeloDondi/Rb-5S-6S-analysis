@@ -38,18 +38,18 @@ measurements.
 ## 2. What others have already done
 
 **On this line.** Precision work on 5S–6S is essentially one group: the USAF
-Academy measured the absolute frequencies and hyperfine constants (Orson
-2021, to MHz; Ayachitula 2024, to kHz, with a lock stable to <0.5 kHz over
-50 minutes). Orson 2021 also reports two null results at ~6 MHz resolution —
+Academy measured the absolute frequencies and hyperfine constants ([Orson
+2021](lit/orson2021.md), to MHz; [Ayachitula 2024](lit/ayachitula2024.md), to kHz, with a lock stable to <0.5 kHz over
+50 minutes). [Orson 2021](lit/orson2021.md) also reports two null results at ~6 MHz resolution —
 no observable light shift and no density shift — and computes the
 differential polarizability Δα = 1093 a.u. that our own convention
 reproduces to the digit. So on this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
-**In the group.** OIST has its own 993 nm lineage: Nieddu 2019 demonstrated
-the cell line as a frequency reference; Rajasree 2020 excited 5S–6S in cold
+**In the group.** OIST has its own 993 nm lineage: [Nieddu 2019](lit/nieddu2019.md) demonstrated
+the cell line as a frequency reference; [Rajasree 2020](lit/rajasree2020spin.md) excited 5S–6S in cold
 atoms through an optical nanofibre's evanescent field (tens of counts per
-millisecond — the feasibility number for everything in §5); Gokhroo 2022
+millisecond — the feasibility number for everything in §5); [Gokhroo 2022](lit/gokhroo2022.md)
 drove the same transition on cold atoms around a nanofibre and observed a
 two-peak profile — a dip where resonance-scattering pushes atoms out of the
 evanescent field — explained at the level of a stated hypothesis, with no
@@ -57,8 +57,8 @@ fitted model. A citation audit (2026-07, in `LITERATURE.md`) confirms nobody
 has modelled that dip since.
 
 **Method precedents.** The transit lineshape theory is textbook
-(Biraben–Cagnac; Lehmann 2021). Extracting a polarizability from an
-asymmetric line has one clear precedent (Stalnaker 2006: one-photon,
+([Biraben–Cagnac](lit/biraben1979.md); [Lehmann 2021](lit/lehmann2021.md)). Extracting a polarizability from an
+asymmetric line has one clear precedent ([Stalnaker 2006](lit/stalnaker2006.md): one-photon,
 standing wave, stable reference, numerical model) — so the *idea* of reading
 physics from asymmetry is not new; what is open is the two-photon,
 closed-form, reference-free version, used *because* no reference is
@@ -92,7 +92,7 @@ as a bound. Concretely:
   two-epoch design was *required* is itself a result.
 - **The ramp's power laws are confirmed** (width flat, amplitude ∝ P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
-  same laser in Gokhroo 2022), and the drift-immune skew observable is
+  same laser in [Gokhroo 2022](lit/gokhroo2022.md)), and the drift-immune skew observable is
   derived, bounded, and waiting for the geometry that amplifies it.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
   the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
@@ -141,11 +141,11 @@ home of the ramp physics: the intensity gradient is steep and exponential,
 so the local light-shift distribution is large and strongly shaped, and the
 same |s|^(n−1) machinery applies. The group has already demonstrated the
 hard part — 5S–6S excitation through the fibre works, in warm operation and
-with cold atoms (Rajasree 2020's count rates are the existence proof). What
+with cold atoms ([Rajasree 2020](lit/rajasree2020spin.md)'s count rates are the existence proof). What
 does not exist, anywhere, is a **quantitative near-surface lineshape
 program**:
 
-- a fitted model of Gokhroo 2022's pushing dip (its position, width and
+- a fitted model of [Gokhroo 2022](lit/gokhroo2022.md)'s pushing dip (its position, width and
   power dependence), which needs the force/density dynamics *plus* the
   lineshape pieces this repo provides — the ramp is one ingredient, not the
   whole model;

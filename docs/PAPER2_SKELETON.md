@@ -14,7 +14,7 @@ in hand.*
 ## 0. Framing decisions to settle first (not for the manuscript)
 
 - **Scope.** The safe core is the **quantitative near-surface two-photon
-  lineshape** — completing Gokhroo 2022, which observed the pushing profile but
+  lineshape** — completing [Gokhroo 2022](lit/gokhroo2022.md), which observed the pushing profile but
   fit no model. The trapped-platform extensions in §VI are genuine but larger and
   should be labelled future work unless the data exist.
 - **Platform.** OIST **optical nanofibre** (evanescent field, ~650 nm silica
@@ -38,7 +38,7 @@ in hand.*
 Cold-atom two-photon spectroscopy at an optical nanofibre probes atoms in the
 steep evanescent-field gradient, where the AC-Stark light shift is not a number
 but a broad distribution and the collected line is pushed and distorted near the
-surface. Gokhroo *et al.* (2022) observed this pushing profile on the Rb
+surface. [Gokhroo *et al.*](lit/gokhroo2022.md) (2022) observed this pushing profile on the Rb
 5S₁/₂→6S₁/₂ line but did not model it. We port a drift-immune,
 distribution-aware lineshape framework — developed and validated on the clean
 vapour-cell line (Paper 1) — to the nanofibre geometry: the evanescent-mode
@@ -54,14 +54,14 @@ atoms.
   distribution-of-light-shifts physics — the intensity gradient is steep, so the
   light-shift distribution is large and the shape effects Paper 1 works to see in a
   gentle focus are unavoidable here.
-- Prior art on this exact channel, all OIST lineage (PDFs in hand): **Nieddu 2019**
-  (the cell 993 nm reference), **Rajasree 2020** (5S–6S excitation *through* the
+- Prior art on this exact channel, all OIST lineage (PDFs in hand): **[Nieddu 2019](lit/nieddu2019.md)**
+  (the cell 993 nm reference), **[Rajasree 2020](lit/rajasree2020spin.md)** (5S–6S excitation *through* the
   nanofibre with cold atoms; the spin-selection / polarization law on this line),
-  **Gokhroo 2022** (the two-peak pushing profile near the fibre — *observed, not
+  **[Gokhroo 2022](lit/gokhroo2022.md)** (the two-peak pushing profile near the fibre — *observed, not
   modelled*: DOI 10.1088/1361-6455/ac6bd4, "resonance-scattering-induced pushing"
   at hypothesis level, zero fitted lineshape, no Casimir–Polder content). The gap:
   **no quantitative near-surface lineshape model exists** — verified across every
-  paper citing Gokhroo 2022.
+  paper citing [Gokhroo 2022](lit/gokhroo2022.md).
 - The contribution: a physics-anchored, drift-immune lineshape for the guided
   geometry, referenced to the clean cell line.
 
@@ -69,7 +69,7 @@ atoms.
 
 - Evanescent HE₁₁ mode of the ~650 nm waist: the transverse intensity profile
   (the I²-weighted excitation shell, the fringe scale) and the **strong
-  longitudinal field component** — the physics that Rajasree 2020 shows prevents a
+  longitudinal field component** — the physics that [Rajasree 2020](lit/rajasree2020spin.md) shows prevents a
   pure-circular null (minimum ~13% theory / ~25% observed).
 - The light-shift distribution here is set by the *mode profile*, not a Gaussian
   focus — a different f(s) to derive, same machinery (`THEORY_NOTE.md` ramp
@@ -77,7 +77,7 @@ atoms.
 - Near-surface: the atom-surface potential (van der Waals / Casimir–Polder) shifts
   and truncates the sampled shell — the extra ingredient the cell does not have and
   the source of the pushing dip.
-- **Nearest-platform evidence (Pennetta et al. 2026, `LITERATURE.md` §8).** On this
+- **Nearest-platform evidence ([Pennetta et al. 2026](lit/pennetta2026.md), `LITERATURE.md` §8).** On this
   exact class of platform (Cs on a 450 nm nanofibre) the Rauschenbeutel group build a
   trap from **Casimir–Polder + surface-charge** forces against a blue-detuned field —
   the atom–surface potential §IV must model, now quantified rather than hypothesised —
@@ -103,38 +103,38 @@ atoms.
 - Derive f(s) for the evanescent mode profile; convolve with the transit kernel
   for atoms crossing the shell and the cell-referenced natural + laser widths.
 - **The surface term is two parts, not one — Casimir–Polder + a calibratable
-  electrostatic component.** Pennetta et al. 2026 (`LITERATURE.md` §8) show that on
+  electrostatic component.** [Pennetta et al. 2026](lit/pennetta2026.md) (`LITERATURE.md` §8) show that on
   this exact platform the atom–surface potential is **CP *plus* electrostatic
   attraction from surface charges on the silica**, not CP alone. So the surface
   shift folded into the lineshape must carry (i) the universal CP term (near-field
-  C₃/z³ crossing to the retarded C₄/z⁴ — the regime and z-scaling Ton, Kestler,
-  Steck & Barreiro 2026 measure directly, `LITERATURE.md` §9), and (ii) a
+  C₃/z³ crossing to the retarded C₄/z⁴ — the regime and z-scaling [Ton, Kestler,
+  Steck & Barreiro 2026](lit/ton2026.md) measure directly, `LITERATURE.md` §9), and (ii) a
   **device- and time-dependent electrostatic term** that must be calibrated per run
   and treated as a systematic, not a universal constant. This upgrades the model
   from a single vdW shift to a two-component surface potential and is the honest
   form of the "near-surface shift" the fit extracts.
 - **Read the surface shift *from the line*, as a distribution.** The template is
-  established: Ton et al. 2026 extract a kHz CP shift purely from the spectroscopic
+  established: [Ton et al. 2026](lit/ton2026.md) extract a kHz CP shift purely from the spectroscopic
   lineshape (Sr, 189 nm from a dielectric); the near-surface shift here is likewise a
   *distribution* over the atoms' distance-from-surface, read by the same moment
   machinery that reads the light-shift distribution — the two inhomogeneities are
-  handled by one method. The templates are established: Dutta et al. 2025 fold the
+  handled by one method. The templates are established: [Dutta et al. 2025](lit/dutta2025.md) fold the
   thermal velocity distribution into the CP selective-reflection lineshape, and
-  Sargsyan et al. 2025 extract the surface C₃ from a nanocell lineshape
+  [Sargsyan et al. 2025](lit/sargsyan2025.md) extract the surface C₃ from a nanocell lineshape
   (`LITERATURE.md` §9).
 - **A feasibility constraint to respect:** the evanescent probe itself heats the
-  trapped atoms, so near-field probing is inherently transient (Piotrowski et al. 2026)
+  trapped atoms, so near-field probing is inherently transient ([Piotrowski et al. 2026](lit/piotrowski2026.md))
   — the measurement window and probe power are bounded.
 - Fit the pushing dip vs power and detuning; extract the near-surface shift and
   test the resonance-scattering-pushing hypothesis quantitatively against the
-  data — the quantitative completion of Gokhroo 2022.
+  data — the quantitative completion of [Gokhroo 2022](lit/gokhroo2022.md).
 - Cell line (Paper 1) as the reference that removes the laser and axis systematics.
 
 ## V. Polarization control at the nanofibre
 
 - The two-photon rate ∝ (degree of linear polarization)² and the σ-configuration
   selection rules (Paper 1 §8.1.1) carry over — but the **longitudinal field
-  modifies them**: the "circular" null is a minimum, not a zero (Rajasree 2020).
+  modifies them**: the "circular" null is a minimum, not a zero ([Rajasree 2020](lit/rajasree2020spin.md)).
 - This is both a systematic (the polarization at the atom is not the input
   polarization) and a handle (polarization tomography of the guided mode).
 
@@ -188,10 +188,10 @@ atoms.
 
 ## Reference anchors (PDFs in hand; BibTeX in `references.bib`, ledger in `LITERATURE.md`)
 
-- `nieddu2019` — the cell 993 nm reference (same line, same lens lineage).
-- `rajasree2020spin` — 5S–6S through the nanofibre; the polarization law and the
+- [`nieddu2019`](lit/nieddu2019.md) — the cell 993 nm reference (same line, same lens lineage).
+- [`rajasree2020spin`](lit/rajasree2020spin.md) — 5S–6S through the nanofibre; the polarization law and the
   longitudinal-field limit on the circular null.
-- `gokhroo2022` — the observed pushing dip this paper models (title "light
+- [`gokhroo2022`](lit/gokhroo2022.md) — the observed pushing dip this paper models (title "light
   fields"; DOI 10.1088/1361-6455/ac6bd4).
 - Paper 1 (`PAPER1_SKELETON.md`, `THEORY_NOTE.md`) — the method, the ramp
   formalism, and the cell reference.

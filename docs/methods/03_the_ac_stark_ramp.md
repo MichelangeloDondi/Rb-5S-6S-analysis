@@ -99,7 +99,7 @@ lines of the parity-violation literature) the distribution is **uniform**:
 mean $-S_0/2$ and, being symmetric about its mean, $\kappa_3=0$ — **zero
 skew**. The skewness observable exists at all *only because the two-photon
 signal goes as $I^2$*. This one line is the delineation from the nearest
-prior art (Stalnaker *et al.*, PRA **73**, 043416 (2006), who extracted an
+prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**, 043416 (2006), who extracted an
 AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
 the $n=1$, fringe-resolved regime — full delineation in
 `docs/LITERATURE.md`).
@@ -167,7 +167,7 @@ the ramp nearly the pure-triangle $Z_c\to0$ limit, $g_1\approx+0.56$; it was
 
 The retro-reflected beam makes $\lambda/2$ intensity fringes — does an atom
 feel the fringe *peak* intensity (a coherent $\times2$) or the average? The
-frequency-modulation criterion (Stalnaker *et al.*, Sec. IV): as an atom
+frequency-modulation criterion ([Stalnaker *et al.*](../lit/stalnaker2006.md), Sec. IV): as an atom
 crosses fringes its AC-Stark shift is modulated with peak deviation
 $\xi=S_0\lesssim1$ MHz at modulation frequency
 $f_\text{mod}=2v/\lambda\approx0.56$ GHz (axial thermal speed $\sim280$ m/s,
@@ -222,8 +222,8 @@ with waist), before any $\Delta\alpha$ in physical units is quoted.
 The ramp *shape* and its centred moments are convention-free, but the
 *magnitude* of $S_0$ — which converts a measured centroid pull into the
 differential polarizability $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$ — needs the
-$\langle E^2\rangle$ convention fixed. We adopt the standard AMO one (Grimm
-*et al.* 2000; Steck): for $E(t)=E_0\cos\omega t$, $\langle E^2\rangle=E_0^2/2$,
+$\langle E^2\rangle$ convention fixed. We adopt the standard AMO one ([Grimm
+*et al.*](../lit/grimm2000.md) 2000; [Steck](../lit/steck_rb.md)): for $E(t)=E_0\cos\omega t$, $\langle E^2\rangle=E_0^2/2$,
 so $\Delta E_i=-\tfrac14\alpha_i E_0^2=-\alpha_i I/(2\varepsilon_0 c)$ and
 
 $$S_0=\frac{\Delta\alpha\ I_\text{eff}}{2\varepsilon_0 c h},\qquad

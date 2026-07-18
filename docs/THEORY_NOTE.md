@@ -169,8 +169,8 @@ The shape and centred moments above are convention-free. The **magnitude** of
 $S_0$ — needed to turn a measured pull into a differential polarizability
 $\Delta\alpha = \alpha_{6S}-\alpha_{5S}$, or to predict $S_0$ from a computed
 $\Delta\alpha$ — requires fixing the $\langle E^2\rangle$ convention. We adopt
-the standard AMO one (Grimm, Weidemüller & Ovchinnikov, *Adv. At. Mol. Opt.
-Phys.* **42**, 95 (2000); Steck): for a real field $E(t)=E_0\cos(\omega t)$ the
+the standard AMO one ([Grimm, Weidemüller & Ovchinnikov](lit/grimm2000.md), *Adv. At. Mol. Opt.
+Phys.* **42**, 95 (2000); [Steck](lit/steck_rb.md)): for a real field $E(t)=E_0\cos(\omega t)$ the
 time average is $\langle E^2\rangle = E_0^2/2$, and
 
 $$\Delta E_i = -\tfrac{1}{2}\alpha_i\langle E^2\rangle
@@ -185,7 +185,7 @@ plus retro beams, $\rho$ the retro power ratio. There is **no coherent
 $\times2$ standing-wave enhancement**: a *fast-axial* atom crosses the
 $\lambda/2$ fringes at $2v_z/\lambda\sim0.56$ GHz (mean axial speed) while the
 shift depth is $\lesssim1$ MHz, so its frequency-modulation index is
-$\sim2\times10^{-3}$ — in Stalnaker's FM framework (*Phys. Rev. A* **73**,
+$\sim2\times10^{-3}$ — in [Stalnaker](lit/stalnaker2006.md)'s FM framework (*Phys. Rev. A* **73**,
 043416 (2006), Sec. IV), the small-modulation-index limit puts the carrier at
 the fringe-*mean* intensity, so $I_{\text{eff}}$ **is** that standing-wave mean
 and the pull is exactly fringe-immune. But the line is Doppler-free over **all** $v_z$, so
@@ -199,15 +199,15 @@ $P=f_\text{res}\sigma_x^2$ is observable). Negligible at $w_0=50\ \mu$m
 **same-sign-additive** to the larger §7 divergence correction — the two must be
 fit jointly at small waist (quantified, coherence-window-bracketed, in
 `fringe_tail`). With $\Delta\alpha = 1093$ a.u.
-(Orson *et al.* 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
+([Orson *et al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
 $\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why the fixed-lock session's small
 waist makes the $\propto S_0^3$ skew measurable. Code: `lineshape.stark_shift_S0_mhz`.
 
 **Sign, and provenance.** The $\langle E^2\rangle$ convention is magnitude-only;
 the *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$. **$\Delta\alpha$
-is Orson *et al.* 2021's published value** (*J. Phys. B* **54**, 175001 — prior art
+is [Orson *et al.*](lit/orson2021.md) 2021's published value** (*J. Phys. B* **54**, 175001 — prior art
 on this exact 5S–6S line): they compute $\alpha_{56}=\alpha_{5S}-\alpha_{6S}=-1093$
-a.u. "in a manner similar to Martin 2019," so our $\Delta\alpha=\alpha_{6S}-\alpha_{5S}
+a.u. "in a manner similar to [Martin 2019](lit/martin2019.md)," so our $\Delta\alpha=\alpha_{6S}-\alpha_{5S}
 =+1093>0$ (6S pulled down more than 5S $\Rightarrow$ red shift $\Rightarrow$ $S_0>0$).
 This was formerly flagged as the number most wanting a theorist's check; it is now
 (a) a **cited** value on our exact transition and (b) **cross-checked** — our
@@ -238,10 +238,10 @@ outright. The narrative above keeps the established convention until it is resol
 
 Asymmetric two-photon-like lineshapes from *spatially distributed* AC-Stark
 shifts are **not new**: the cesium parity-violation lineage
-(Wieman *et al.*, *Phys. Rev. Lett.* **58**, 1738 (1987); Stalnaker *et al.*
-2006) modelled them numerically in a standing wave and even extracted an
+(Wieman *et al.*, *Phys. Rev. Lett.* **58**, 1738 (1987); [Stalnaker *et al.*
+2006](lit/stalnaker2006.md)) modelled them numerically in a standing wave and even extracted an
 AC-Stark parameter from the asymmetry; and the nearest *construction* is
-Hamilton *et al.* (*Phys. Rev. Applied* **19**, 054059 (2023)), a
+[Hamilton *et al.*](lit/hamilton2023.md) (*Phys. Rev. Applied* **19**, 054059 (2023)), a
 retro-reflected Rb vapour two-photon line whose focus-averaged shift integral is
 identical to ours — but collapsed to a single mean shift, never the distribution
 (LITERATURE.md §1). We do **not** claim the existence of the asymmetry. What we believe is specific and defensible:
@@ -260,7 +260,7 @@ identical to ours — but collapsed to a single mean shift, never the distributi
    nanofibre lineshape.
 
 (The transit kernel itself, natural Lorentzian $\otimes$ two-sided exponential,
-is the established Biraben–Bassini–Cagnac result, *J. Phys. (Paris)* **40**, 445
+is the established [Biraben–Bassini–Cagnac](lit/biraben1979.md) result, *J. Phys. (Paris)* **40**, 445
 (1979); we do not reinvent it. Full ledger: `docs/LITERATURE.md`.)
 
 ## 7. The open question (where a contribution fits)
