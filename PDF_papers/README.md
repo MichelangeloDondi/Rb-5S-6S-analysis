@@ -38,7 +38,7 @@ Everything except this README is gitignored (source PDFs are possibly copyrighte
 |---|---|---|---|---|---|---|
 | `Gokhroo_2022_ONF-two-photon-pushing-density-dip_Paper2-target.pdf` | `gokhroo2022` | yes | VERIFIED | — | P1, P2, methods/02 | Read in full 2026-07-16: cold $^{87}$Rb in a MOT around the fibre (NOT a warm vapour, as an earlier draft of ours said), driving $5S_{1/2} (F{=}2) \to 6S_{1/2} (F''{=}2)$ at 993 nm -- our exact line -- with an M Squared SolsTis Ti:Sapph quoted at sub-MHz linewidth, and a counter-propagating 993 nm vapour cell as the Doppler-free frequency reference. |
 | `Nieddu_2019_993nm-5S-6S-two-photon-frequency-reference.pdf` | `nieddu2019` | yes | VERIFIED | — | M7, P1, P2, constants, methods/02 | OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um, f=150 mm) -- corroborates our w0 re-pin. |
-| `Rajasree_2020_cold-Rydberg-atoms-near-nanofiber.pdf` | `rajasree2020` | yes | VERIFIED | — | P1, constants, methods/02 | Confirms the 128 um beam + Steck N(T) chain. |
+| `Rajasree_2020_cold-Rydberg-atoms-near-nanofiber.pdf` | `rajasree2020` | yes | VERIFIED | — | constants, methods/02 | Confirms the 128 um beam + Steck N(T) chain. |
 | `Rajasree_2020_spin-selection-two-photon-ONF-cold-atoms.pdf` | `rajasree2020spin` | yes | VERIFIED | — | M10, P2 | OUR line, two configs: warm vapor paraxial (rate proportional to the squared degree of linear polarization, ZERO for circular -- the polarization amplitude law and the fixed-lock session extinction null-test) and cold 87Rb around a 400 nm ONF (evanescent-field 5S-6S at 25-40 counts/ms -- Paper-2 feasibility evidence. |
 | `Ray_2020_516nm-electric-quadrupole-nanofiber.pdf` | `ray2020` | yes | VERIFIED | — | — | Group lineage; title/journal VERIFY. |
 | `Roy_2017_1033nm-Yb-fiber-laser-frequency-reference.pdf` | `roy2017` | yes | VERIFIED | — | — | Group lineage; title/journal VERIFY. |
@@ -62,10 +62,10 @@ Everything except this README is gitignored (source PDFs are possibly copyrighte
 | `Hamilton_2023_Rb-5D-dynamic-polarizability-E1-elements.pdf` | `hamilton2023` | yes | VERIFIED | — | M16, P1, THEORY | Rigor template for the polarizability side (+ magic-lambda idea). |
 | `Martin_2019_Rb-778nm-two-photon-Stark-shifts-differential-polarizability.pdf` | `martin2019` | yes | VERIFIED | — | THEORY | The 5S-5D differential-polarizability method Orson followed for our 5S-6S Delta\_alpha. |
 | `Safronova_2004_Rb-matrix-elements-lifetimes-polarizabilities.pdf` | `safronova2004` | yes | VERIFIED | — | THEORY, constants | Benchmark Rb ns matrix elements/lifetimes/polarizabilities -- carries the 6S dynamic polarizability. |
-| `Safronova_2006_alkali-frequency-dependent-polarizabilities.pdf` | `safronova2006` | yes | VERIFIED | — | M16, THEORY, constants | Dynamic alpha(omega) matrix-element source. |
+| `Safronova_2006_alkali-frequency-dependent-polarizabilities.pdf` | `safronova2006` | yes | VERIFIED | — | constants | Dynamic alpha(omega) matrix-element source. |
 | `*(not held)*` | `safronovaSS2011` | no | VERIFIED | FEED | M16, THEORY | The critically-evaluated Rb ns/np/nd matrix elements + scalar/tensor static polarizabilities (the S and S 2011 lineage our polarizability elements descend from), and the independent source to validate the M16 7S static (~3.2e4 a.u.). |
 | `Snadden_1996_FM-two-photon-spectroscopy-mode-locked-laser-cold-Rb.pdf` | `snadden1996` | yes | VERIFIED | — | M2 | FM two-photon in cold Rb -- EOM-ruler ancestry (with Zapka 1983, Bjorklund 1980). |
-| `*(not held)*` | `steck_rb` | no | REPORTED | — | M4, constants, methods/02 | Reference atomic constants for Rb (line frequencies, natural widths, polarizabilities). |
+| `*(not held)*` | `steck_rb` | no | REPORTED | — | M4, constants, methods/02, methods/03 | Reference atomic constants for Rb (line frequencies, natural widths, polarizabilities). |
 | `*(not held)*` | `yang2025` | no | VERIFIED | FEED | M2 | Integrated LiNbO3 electro-optic combs track a laser's instantaneous optical frequency in real time (chirp to 2e18 Hz/s) -- the modern frontier of the internal-ruler-tracks-a-drifting-axis idea our EOM ruler embodies. |
 
 ### The 2024-2026 landscape and future transitions
