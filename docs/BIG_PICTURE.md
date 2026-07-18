@@ -93,7 +93,13 @@ as a bound. Concretely:
 - **The ramp's power laws are confirmed** (width flat, amplitude ∝ P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md)), and the drift-immune skew observable is
-  derived, bounded, and waiting for the geometry that amplifies it.
+  derived, bounded, and waiting for the geometry that amplifies it. The premise
+  the whole method rests on — that the line *shape* outlives the drift — is now
+  **tested, not just argued**: between-scan drift is absorbed exactly by the
+  per-scan free centres, and a synthetic closure test
+  (`tests/test_intrascan_drift.py`) bounds the leftover *within*-scan effect at
+  well under a fifth of the statistical error on the recovered asymmetry at the
+  archival ~MHz/min rate — it reaches order-S₀ only at tens of times that rate.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
   the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
   MEASURED / …); the documentation is written to be picked up by whoever
@@ -129,6 +135,21 @@ coefficients for this line. In order of leverage:
    the intrinsic asymmetry becomes detectable — turning the drift-immune
    shape readout from a bound into a demonstration, cross-checked against
    the simultaneously measured pull.
+
+Two acquisition changes make those four *trustworthy*, not merely *possible* —
+each closes a gap the 2025 archive could only bound around. **Logging a per-scan
+timestamp** (the one thing the archive never recorded) turns the σ_laser-sharing
+behind the tighter β from an untestable assumption into a checked fact; the
+HighFinesse wavemeter's own long-term log, running alongside, is an independent
+drift diary for free — and, if it was already logging in 2025, a chance to
+recover some of the archive's lost acquisition timing retroactively — an open
+lead worth chasing before the archive is called finished. **Reading the 6S→5P ~1.3 µm cascade**
+instead of the reabsorbed 795 nm fluorescence — trapping-free detection,
+established on the sibling 5S–5D line ([Hassanin 2023](lit/hassanin2023.md),
+[Beard 2024](lit/beard2024.md)) and plausibly feasible with an IR receiver
+already on the bench — de-risks the density and amplitude work at the higher
+temperatures item 3 needs. Neither is new physics; both remove a systematic the
+archive had to live with.
 
 None of this is scheduled or assigned; the specification (`PLAN.md` §8) is
 written so that whoever has the apparatus and beam time can run any prefix
