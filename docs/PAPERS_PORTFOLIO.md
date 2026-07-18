@@ -40,6 +40,7 @@ are what a session would unlock, whoever runs it.
 | **PA** | *Reference-free light shift / magic-λ on 778 nm 5S–5D via lineshape asymmetry* | new **5D-capable** session (optics set + 420 nm det.) | reference-free, orthogonal-systematics magic-λ cross-check | topical, **methodological not precision-competitive** (see §Paper A caveat there); needs PC |
 | **PB** | *β_self and Δα across the Rb 5S→nS/nD ladder (6S, 7S, 5D)* | multi-transition session | the n-scaling series; completes Zameroski/Weber-Niemax | **unscoopable, safer, lower ceiling** — a strong thesis/second-paper bet |
 | **PC** | *Near-resonant intermediate state and the two-photon transit/ramp lineshape* | 5D + 7S data | clean(6S)→resonant(5D) lineshape ladder; Bjorkholm–Liao test | methods engine that de-risks PA |
+| **PD** | *Two-photon light-shift-distribution spectroscopy of guided cold atoms (hollow-core fibre)* | a lab with **both** a 993 nm source and an in-vacuum HCPCF cold-atom platform | the drift-immune ramp method on atoms held in a guided 1064 nm trap — the cold, **low-surface middle rung** between the hot cell (P1) and the near-surface ONF (P2): the Gaussian guided mode gives each atom a different differential AC-Stark shift, so the line reads the **trap's own light-shift distribution in situ** (one method, three f(s) regimes: cell / HCPCF / evanescent) | **idea only (2026-07-18), hardware-contingent**: no current partner site has both — Bologna (CRYST³) has the HCPCF + 1064 nm trap but no 993 nm source; OIST has the 993 nm Ti:Sapph but nanofibres, not hollow-core. Needs a third lab or a hardware move |
 
 ## The 2×2 (fixed-lock session × ONF), Ti:Sapph 5D/7S as a conditional add-on
 
@@ -64,6 +65,10 @@ are what a session would unlock, whoever runs it.
 - **P2 needs an ONF collaboration** that has not been approached; it is gated on the
   fibre work, not on us, and is *better with* a fixed-lock session (a refined cell
   reference). If ONF data appear first, P2 can still proceed on the archival reference.
+- **PD is the one entry gated on a *place*, not a session**: the method and both
+  halves of the hardware exist, just never in the same lab. It costs nothing to
+  keep on the map — any future group with a guided cold-atom platform *and* a
+  993 nm-capable source can run it with the pipeline as-is.
 - **PA/PB/PC are the Ti:Sapph upside**, gated on a session that reaches 5D/7S. If the
   installed SolsTiS optics set is **700–1000 nm**, 5D/7S ride the *same optics* as the
   6S work (only the 420 nm detection swap) — then **PB** (the safe, unscoopable ladder)
