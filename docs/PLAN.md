@@ -380,7 +380,9 @@ Telescope sized so the beam enters the EOM at ≤1 mm waist (3 mm aperture
 ≥ 3w → clipping negligible at the source). Per config: knife-edge at ≥5 z
 positions through the focus (w(z) hyperbola gives w₀ AND z_R; consistency
 z_R = πw₀²/λ cross-checks the stage scale — a knife-scale error k and stage
-error s must satisfy s = k² to hide), **lens separations calipered at both setup
+error s must satisfy s = k² to hide), a **camera beam-profile z-scan**
+through the same focus for shape / ellipticity / astigmatism / beam-quality M²
+(§8.1b below), **lens separations calipered at both setup
 and teardown** (§8.1a below), retro ratio ρ measured IN SITU at the
 cell position (both directions; return-path clipping differs per waist), collection geometry photographed and measured for the MC, and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
@@ -426,6 +428,72 @@ make it worth the thirty seconds:
 Book any setup↔teardown separation change alongside the ρ before/after ratio as
 a per-config mechanical-stability line; a config whose lenses moved is a config
 whose w₀ and ρ are suspect for its science blocks.
+
+#### 8.1b Beam-profile metrology: knife-edge and camera, and why both
+
+**Prescription.** Profile w₀ with *two* instruments at every config: the
+knife-edge (§8.1 — power-integrated error-function scan at ≥5 z through the
+focus, in two orientations 0°/90° so ellipticity is not aliased into the waist)
+*and* a camera beam profiler (CCD/CMOS, ND-attenuated below saturation)
+z-scanned through the same focus. Run the camera first — it finds the focus, the
+beam-quality M², and the ellipticity/astigmatism in seconds — then place the
+knife-edge cuts through the focus it located. Cross-calibrate the camera
+pixel→µm scale against the knife-edge stage at config L (both reliable there),
+and thereafter trust the camera's *shape* at config S, where only it resolves
+two dimensions.
+
+**Why w₀ specifically earns two methods.** It is the dominant systematic of the
+whole analysis — every absolute number rides on it (RESULTS, README §2.5). S₀ ∝
+1/w₀² and transit ∝ v̄/w₀, so a fractional waist error *doubles* into the Stark
+coefficient; the open 45–70 µm band is the entire width of both the AC-Stark
+prediction (0.30–0.72 MHz, C3d) and the σ_laser bound (0.4–1.1 MHz). The one
+thing you must not do to your dominant systematic is measure it once, with a
+single instrument that has a single failure mode. The knife-edge and the camera
+fail *differently*: run both and they either agree (you believe w₀) or disagree
+(you caught the error before it silently biased every downstream number).
+
+**What each buys, and its blind spot.**
+- **Knife-edge — absolute size, blind to shape.** Power integration gives the
+  1/e² radius in true optical-power units, with the dynamic range and small-spot
+  reach (config S, ~16 µm) a pixel array cannot match — the number that anchors
+  S₀ and the transit width. But it integrates power along a cut: a non-Gaussian
+  profile (clip wings, a second lobe, a fringe) fits an error function acceptably
+  and returns a "waist" that is not the second-moment waist that actually sets
+  f(s). Two orientations catch ellipticity; no handful of 1D cuts catches the
+  full 2D field.
+- **Camera — shape, blind at small size.** One frame gives ellipticity and its
+  axis, astigmatism (a per-axis focus split the knife-edge sees only as a
+  z-dependent width), M², non-Gaussian structure, and — unique to this
+  standing-wave setup — the forward/retro overlap and pointing that back ρ ≈ 1
+  (§8.0 #2) and the fringe-tail correction (THEORY_NOTE §5). But its pixel pitch
+  under-samples config S (16 µm on a ~4 µm pixel is a few pixels), and
+  saturation/blooming and camera-response nonlinearity corrupt exactly the wings
+  a power-size needs. The camera is weakest precisely where the knife-edge is
+  strongest, and the reverse.
+
+**What the pair buys that neither does alone.**
+- **It validates the Gaussian the analysis integrates over.** The moment method,
+  the M9 transit MC, and the Stark ramp f(s) all assume one intensity
+  distribution (Gaussian, ρ ≈ 1 standing wave), and f(s) is a *functional of that
+  profile* — an elliptical, astigmatic, or clipped beam changes the ramp shape
+  and its moments, the exact object the drift-immune method reads. The camera is
+  the only instrument that checks that profile directly; the knife-edge then
+  sizes it once the shape is trusted. Not luxury metrology — a direct check on
+  the model's central assumption.
+- **A third independent length scale.** §8.1 already crosses the knife stage
+  against z_R = πw₀²/λ (a stage error s and knife-scale error k must satisfy
+  s = k² to hide). The camera pixel scale (a calibrated target) is a third,
+  mechanically unrelated ruler; a scale error in any one must now be mimicked by
+  *two* others to pass unseen.
+
+**What it does not buy.** The camera does not replace the knife-edge for absolute
+small-waist size (it under-samples S), and the knife-edge does not validate the
+2D shape (it integrates it away). Neither alone suffices for a dominant
+systematic; the point of both is that each covers the other's single failure
+mode. Book the camera M²/ellipticity beside the two-orientation knife w(z) per
+config: a beam round and Gaussian on the camera *and* self-consistent between the
+knife stage and z_R is a w₀ you can put under every absolute number — and a
+disagreement is the warning you want before, not after, the science blocks.
 
 #### 8.1.1 Polarization management, and the plate before the retro mirror
 
