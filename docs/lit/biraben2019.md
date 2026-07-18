@@ -27,3 +27,5 @@ section: method-anchors
 # biraben2019
 
 The pioneer's own retrospective review; the Intro history anchor.
+
+C. R. Physique 20, 671, "The first decades of Doppler-free two-photon spectroscopy" -- the modern canonical history/review for the Intro, a fuller companion to Grynberg-Cagnac 1977. Biraben is also our transit-kernel source (`biraben1979`), a different paper by the same author decades apart.

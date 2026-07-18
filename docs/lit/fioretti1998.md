@@ -32,3 +32,5 @@ section: method-anchors
 # fioretti1998
 
 Alkali-cloud radiation-trapping anchor for M7/VI.D. DOI Crossref-verified.
+
+Opt. Commun. 149, 415: observation of radiation trapping in a dense Cs magneto-optical trap -- the canonical alkali-cloud demonstration that fluorescence departs from linearity in density, the closest precedent for our M7 amplitude behaviour. Broader lineage (not separately cited): Holstein 1947 (foundational) and Molisch & Oehry 1998 (the monograph); modern Rb-specific Levy-flight follow-ons are `chevrollier2012` and `araujo2021`.
