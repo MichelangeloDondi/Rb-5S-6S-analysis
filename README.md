@@ -172,16 +172,13 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
 
 ## What a follow-up session would add
 
-- **A proposed fixed-lock session** (not yet scheduled — this repository is the
-  case for why it would be worth doing). A stable lock would return the
+- **A proposed fixed-lock session** A stable lock would return the
   absolute centres, and a direct beam-profile measurement (knife-edge and/or
   camera) would pin w₀ — turning the bounds above into the first measured
   5S–6S AC-Stark and collisional self-shift coefficients. With power capped at
   225 mW, the intensity axis would come from the waist instead (a telescope
   gives two working waists spanning a ×16 intensity range), and a same-session
-  150–170 °C extension would give β_self a real density lever. The
-  beam-profile measurement alone would be a small ask — it needs only the
-  beam — and would retroactively sharpen this archive even on its own. Full
+  150–170 °C extension would give β_self a real density lever. Full
   specification: [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre (Paper 2).** The same ramp law tested in the evanescent field
   at a fibre surface, where an atom–surface potential and the "pushing dip"
