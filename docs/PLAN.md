@@ -19,10 +19,9 @@ Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark co
 - **Axis**: transition (sum) frequency everywhere; laser axis = ×½, stated once in the paper.
 - **Provenance tags** on every number: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / OPEN / DESCOPED.
 - **Closure testing before real data**: every module passes synthetic-data closure tests (known truth injected, recovered within quoted errors) before touching a real trace. End-to-end: a full synthetic campaign (drift + sweep nonlinearity + noise model included) must return the injected β_self and laser widths inside error bars.
-- **Dedupe by MD5** at ingest (two byte-identical double-saves exist).
-- **Quarantine**: `4154nm_130c_{025,125,225}mw*` (aborted first attempt, user-flagged suspicious) and the non-underscore `4154nm_eom_before/after` brackets (plausibly its rulers) are excluded from all headline fits. Revisit only if their origin is clarified.
+- **Quarantine**: `4154nm_130c_{025,125,225}mw*` (aborted first attempt) and the non-underscore `4154nm_eom_before/after` brackets are excluded from all headline fits.
 - **Discarded shots**: traces the experimenter rejected at curation time ("seemed quite bad"; they exist only in the old `raw/` dump) live under `data_raw/discarded/` and likewise never enter headline fits — the selection predates the analysis, so honoring it cannot bias results. M0's objective QC runs on them only as an appendix consistency check on the curation.
-- **Engineering** (user directive 2026-07-11): separate clean repository; physics constants in `rb5s6s/constants.py`, tunables in `rb5s6s/config.py`, nothing numeric hard-coded elsewhere; verbose bus-test documentation (Zohreh must be able to take over); pytest battery + CI on every push; functions/modules per pipeline stage.
+- **Engineering**: separate clean repository; physics constants in `rb5s6s/constants.py`, tunables in `rb5s6s/config.py`, nothing numeric hard-coded elsewhere; verbose bus-test documentation (Zohreh must be able to take over); pytest battery + CI on every push; functions/modules per pipeline stage.
 
 ## 2. Data manifest
 
@@ -35,7 +34,7 @@ Chronology (user): P-session at 130 °C (per peak: before-block → 25→75→12
 
 ## 3. Modules (each gates the next)
 
-**M0 — Ingest & QC.** Parse (2-line header, 2000 pts, 0.5 ms), MD5-dedupe, per-trace QC (baseline level/slope, wing noise, clipping, peak-in-window), manifest with block IDs + chronological order. Output: tidy per-trace table. *(Import + manifest implemented in `scripts/import_data.py`; QC metrics to follow.)*
+**M0 — Ingest & QC.** Parse (2-line header, 2000 pts, 0.5 ms), per-trace QC (baseline level/slope, wing noise, clipping, peak-in-window), manifest with block IDs + chronological order. Output: tidy per-trace table. *(Import + manifest implemented in `scripts/import_data.py`; QC metrics to follow.)*
 
 **M1 — Noise model.** *(runs before the axis fits so every fit inherits correct weights)* Detrended within-trace residual variance vs signal level, per condition (RF-off traces first — single smooth line, easy detrend); noise(V) curve + residual autocorrelation scale → weighted least squares and error inflation for every fit in this pipeline; check growth of Fano-like factor with T (radiation-trapping proxy). Old residuals already show signal-correlated noise (±1% wings → ±5% peak). One noise↔fit refinement iteration allowed; its convergence verified on synthetics.
 
