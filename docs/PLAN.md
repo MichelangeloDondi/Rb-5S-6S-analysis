@@ -28,9 +28,9 @@ Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark co
 See `docs/DATA.md` for the full decoded-archive story and `data_raw/MANIFEST.csv`
 for the per-trace table (role, condition, chronology, flags, MD5, original paths).
 
-Chronology (user): P-session at 130 °C (per peak: before-block → 25→75→125→175→225 → after-block), then stepwise cooling 110 → 90 → 70. Repeat indices chronological (a few possible swaps). Repeats within a block are back-to-back (measured position scatter 1.8 ms ≈ 0.08 MHz laser). No timestamps exist anywhere; block order is the only time coordinate. Scope horizontal-knob and cavity-reference recenters occurred between saves ⇒ absolute positions carry no meaning across saves.
+Chronology: P-session at 130 °C (per peak: before-block → 25→75→125→175→225 → after-block), then stepwise cooling 110 → 90 → 70. Repeat indices chronological (a few possible swaps). Repeats within a block are back-to-back (measured position scatter 1.8 ms ≈ 0.08 MHz laser). No timestamps exist anywhere; block order is the only time coordinate. Scope horizontal-knob and cavity-reference recenters occurred between saves ⇒ absolute positions carry no meaning across saves.
 
-**Assumption A1 (to confirm, one word)**: scope triggered on the sweep sync, so file time = ramp phase. Evidence: frozen repeat positions; window (1.000 s) ≈ one up-ramp (~43 MHz laser at measured rate ≈ user's "~45 MHz"). If false, Module M2 degrades gracefully to per-trace calibration.
+**Assumption A1 (to confirm, one word)**: scope triggered on the sweep sync, so file time = ramp phase. Evidence: frozen repeat positions; window (1.000 s) ≈ one up-ramp (~43 MHz laser at measured rate, consistent with an earlier "~45 MHz" estimate). If false, Module M2 degrades gracefully to per-trace calibration.
 
 ## 3. Modules (each gates the next)
 
@@ -38,7 +38,7 @@ Chronology (user): P-session at 130 °C (per peak: before-block → 25→75→12
 
 **M1 — Noise model.** *(runs before the axis fits so every fit inherits correct weights)* Detrended within-trace residual variance vs signal level, per condition (RF-off traces first — single smooth line, easy detrend); noise(V) curve + residual autocorrelation scale → weighted least squares and error inflation for every fit in this pipeline; check growth of Fano-like factor with T (radiation-trapping proxy). Old residuals already show signal-correlated noise (±1% wings → ±5% peak). One noise↔fit refinement iteration allowed; its convergence verified on synthetics.
 
-**M2 — Frequency axis (ruler).** EOM traces are used *only* as frequency ruler and drift/stationarity monitors; their heights/widths never enter physics fits except as cross-checks. Staged per-trace protocol — no threshold peak-picking at any stage (user directive 2026-07-11):
+**M2 — Frequency axis (ruler).** EOM traces are used *only* as frequency ruler and drift/stationarity monitors; their heights/widths never enter physics fits except as cross-checks. Staged per-trace protocol — no threshold peak-picking at any stage (design decision, 2026-07-11):
 1. *Robust init*: autocorrelation of the baseline-subtracted trace → tooth period Δ (uses all teeth at once; indifferent to a weak/suppressed carrier); cross-correlation against a synthetic comb template → comb phase t₀; grid-search fallback on (Δ, t₀).
 2. *Constrained comb fit (workhorse)*: ONE simultaneous model — centers t₀ + nΔ (+ optional quadratic axis term), n = −2..+2, one shared lineshape, free per-tooth heights, linear background, weights from M1. Simultaneous fitting is mandatory: teeth ~147 ms apart at ~60 ms width overlap at the wing level (a strong tooth's Lorentzian wing under a weak neighbor ≈ 20% of the weak peak → O(ms) center pull if teeth are fit singly or read as maxima).
 3. *Shape ladder*: shared shape Lorentzian → Voigt → exponential-wing (transit-like); selection by BIC; spread across shape choices booked as a model systematic.
@@ -50,7 +50,7 @@ Per-trace rate = 6.25 MHz / Δ (laser axis; CALCULATED from Ω/2 selection rules
 
 *Verified refinements (independent audit, 2026-07-11):* cross-correlation alignment of ruler repeats must restrict the lag search to < half a tooth period — naive global alignment locked 3/5 cold-ruler traces one tooth off. Pooled cold-block traces calibrate tooth SPACING only (real ±13 ms inter-trace drift smears pooled centers; SNR gain ≈1.6×, not √N); per-trace fits of the 2–3 brightest teeth converge even at SNR 2–3 and are the preferred cold-block estimator (cold spacing ≈145 ms, consistent with the campaign rate). `4192nm_eom_070c3` is a partial ruler (1 valid tooth, tail lost to export dropout; RF label verified) — unusable for spacing. **The sweep turnaround can sit INSIDE the window**: in the 4207 nm 25 mW block the triangle folds at t ≈ 432 ms and the retrace re-crosses the line near the window edge ⇒ the ν(t) map must be fold-aware, and folded blocks provide a free up/down-ramp consistency check.
 
-**M3 — Lineshape model & decomposition.** Physics-anchored convolution, transition axis: Lorentzian Γ_nat = 3.494 MHz (fixed; ESTABLISHED) ⊛ Lehmann transit kernel (exponential-wing shape fixed; one global width parameter with enforced √T scaling; prior from w₀ ≈ 50 µm, tens-of-% — OPEN until knife-edge) ⊛ laser kernel per block (Gaussian core + optional Lorentzian tail) ⊛ AC-Stark ramp (fixed prediction per power; f(s) ∝ |s| on [−S₀,0]) + linear background. Joint fit per condition: shared shape across the 5 repeats, per-trace amplitude/center/background. Closure test must demonstrate σ_laser ↔ γ_coll separability at SNR 130 and quantify leakage (this is the fit-level face of the confound). *Verified additions (2026-07-11):* mask sweep-retrace crossings (second above-half region — real signal, confirmed in the 4207 nm 25 mW block) rather than excluding traces; allow a low-order (quadratic) baseline where a block shows a shared slow bow (verified ~0.5 mV across the entire 4207 nm 70 °C block, keepers and discard alike).
+**M3 — Lineshape model & decomposition.** Physics-anchored convolution, transition axis: Lorentzian Γ_nat = 3.494 MHz (fixed; ESTABLISHED) ⊛ Lehmann transit kernel (exponential-wing shape fixed; one global width parameter with enforced √T scaling; prior from w₀ ≈ 50 µm, tens-of-% — a Nieddu-lineage estimate, OPEN until a direct beam-profile measurement) ⊛ laser kernel per block (Gaussian core + optional Lorentzian tail) ⊛ AC-Stark ramp (fixed prediction per power; f(s) ∝ |s| on [−S₀,0]) + linear background. Joint fit per condition: shared shape across the 5 repeats, per-trace amplitude/center/background. Closure test must demonstrate σ_laser ↔ γ_coll separability at SNR 130 and quantify leakage (this is the fit-level face of the confound). *Verified additions (2026-07-11):* mask sweep-retrace crossings (second above-half region — real signal, confirmed in the 4207 nm 25 mW block) rather than excluding traces; allow a low-order (quadratic) baseline where a block shows a shared slow bow (verified ~0.5 mV across the entire 4207 nm 70 °C block, keepers and discard alike).
 
 **M4 — β_self & the confound program.** γ_coll = β_self·N(T), N(T) from a stated vapor-pressure correlation (carry its systematic; add cell cold-spot caveat). **Temperature is monotonic with time across the whole campaign (130 first … 70 last): ordering de-confounds nothing.** Stationarity probes instead: (i) P-session widths vs block order at fixed 130 °C — hours-scale drift monitor, since power's true width effect is ≤2% (CALCULATED); (ii) before/after bracket tooth *widths* per peak — fixed-condition drift over each peak's session; (iii) cross-peak γ consistency at fixed T (four lines, one density); (iv) σ_laser(block) time series from M3. **Pre-registered rule: quote a measurement iff the probes bound the drift contribution ≤ ~⅓ of the observed γ(T) trend; otherwise a bound.** Bonus replicate: ruler tooth widths vs T form a hidden second T-sweep (cross-check only).
 
@@ -159,8 +159,8 @@ which by itself yields β_self (or a much-tightened bound) and the fixed-lock
 bound→measurement guarantee needs the opposite-order pair (no single element
 earns it). Value is monotone in shots: a session truncated at any point still
 leaves the higher-priority conversions done (§8.0), and if none is ever run,
-P1-min stands unchanged. Nothing below asks the group to bet on the analysis —
-the analysis is finished; a session only decides whether the coefficients are
+P1-min stands unchanged. The archive-only analysis (P1-min) is already complete and does not depend on
+this specification; a session only decides whether the coefficients are
 *measured* or remain *bounded*.
 
 ### For a skeptical reader — the strongest objections, answered honestly
@@ -198,8 +198,7 @@ reports a lock stable to < 0.5 kHz over 50 min — a stable lock here is
 demonstrated-achievable, not hoped-for. (e) Fail-safe: even if the lock drifts
 again, the D1 knife-edge w₀ + ρ **retroactively sharpen the 2025 archive and
 stand alone** (worth doing with only the beam). The worst case is therefore *a
-sharpened archive plus a diagnosed lock*, not another undifferentiated pile of
-bounds.
+sharpened archive plus a diagnosed lock*.
 
 **"MHz/min drift does not politely stay out of the shape — it skews the line
 within a scan, and skew is your observable."** Right in principle; answered by
@@ -207,7 +206,7 @@ the timescale separation. A scan window is ~1 s (one up-ramp), and MHz/min is
 ~0.017 MHz/s, so within-scan drift is **~0.01 MHz** — negligible against the
 ~5.25 MHz width, and each block is self-calibrated by its own EOM ruler. The
 drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
-β_self is a bound, not a value (`RESULTS.md` C1). The clean closure — inject a
+β_self is currently reported as a bound (`RESULTS.md` C1). The clean closure — inject a
 within-scan drift ramp into synthetic data and confirm the recovered moments are
 unbiased — is the one check that would seal this; it is flagged as the honest
 next test, not claimed as done.
@@ -217,14 +216,14 @@ bracket that wide discriminates nothing."** Conceded fully: the archival S₀ bo
 **excludes only S₀(225 mW) > 0.63 MHz** (Δα above ~1200), the tight-waist top of
 the prediction band; every value from **zero** up to 1093 remains allowed, so it
 discriminates nothing among reasonable theories (`RESULTS.md` C3d states this).
-"Consistent with 1093" is evidence the pipeline is **not mis-scaled**, not a
-physics result — the measured coefficient needs the session.
+"Consistent with 1093" confirms the pipeline's scale, not a physics result —
+the measured coefficient still needs the session.
 
 **"Your own recompute flips the sign of Δα against the one published computation.
 Bug, or should I not trust your pipeline?"** Not a bug. The recompute (M16) is an
 independent sum-over-states calculation validated on anchors it does **not** fit
-— it reproduces the *measured* 5S tune-out (790.032 nm) to ~2 pm and the static
-polarizabilities — so its magnitude (within 5% of Orson) and its magic-wavelength
+— it reproduces the *measured* 5S tune-out (790.032 nm, see `THEORY_NOTE.md` §5
+for the source) to ~2 pm and the static polarizabilities — so its magnitude (within 5% of Orson) and its magic-wavelength
 outputs are trustworthy. It agrees with Orson's magnitude and disagrees on the
 *sign* of α₆ₛ(993) through an identified mechanism. Crucially **every 2025 result
 is sign-immune** (the asymmetry null is symmetric; the S₀ bound and prediction
@@ -241,17 +240,17 @@ against the stall risk: the pipeline is built to a **bus-test standard** (a new
 operator can take it over — that was a design requirement, §1), it **ingests
 session data unchanged** (no re-derivation — §0), and the smallest tranche
 (§8.5 D1–D3) has a **defined standalone deliverable**, so a partial or truncated
-session yields a finished result, not orphaned data. The analysis is done; what a
-session adds is shots, not months of new modelling.
+session yields a finished result, not orphaned data. The analysis is complete; a
+session would add data collection, not new modelling.
 
 **"The numbers keep moving — β went from ~0.07 to ~0.4 this month. How do I know
 they are frozen?"** They moved because the **error treatment was made more
 conservative** — Student-t on one residual degree of freedom replacing a naive
-√n, and the beam-waist re-pin — so the bounds *loosened toward honesty*, the
+√n, and the beam-waist re-pin — so the bounds loosened, the
 opposite of tuning a number down. Every headline is auto-generated from the
 committed CSVs (prose cannot drift from data), the clean repository is tagged,
-and a submission tag freezes the science snapshot. The conservative *direction*
-of every revision is the reason to trust them, not doubt them.
+and a submission tag freezes the science snapshot. Every revision moved in
+that same conservative direction — toward a looser bound, never a tighter one.
 
 Constraint set: no more power (225 mW ceiling); telescope before the EOM and
 lens swaps ARE allowed; repeats across days and orders are allowed. Core
@@ -272,7 +271,7 @@ the *sampling currencies* — repeats vs blocks vs days vs orders — against th
 measured 2025 failure modes.)
 
 **Tier 0 — the systematic floor (protect first; the single biggest impact, and not a "more data" knob):**
-1. **Knife-edge w₀, per config.** $S_0\propto 1/w_0^2$ and β_self rides on transit($w_0$),
+1. **Knife-edge + camera beam-profile w₀, per config (§8.1b).** $S_0\propto 1/w_0^2$ and β_self rides on transit($w_0$),
    so w₀ sets the systematic on *every* absolute number (a 10% w₀ error → **20% on Δα**)
    *and* collapses the transit↔σ_laser degeneracy (the only reason σ_laser is a bound).
    This is the difference between "w₀-conditional bracket" and "absolute measurement."
@@ -325,7 +324,7 @@ measured 2025 failure modes.)
 9. **Multiple days:** value is (i) *earning the systematic error bar* — a day-reproducible
    shift is a quantifiable systematic, one that is not is a limitation you must quote —
    and (ii) the 32 µm **epoch-bridge** repeat to 2025. Budget 1–2 days; the fixed lock
-   already killed the archive's *dominant* error (σ_laser drift), so this is not drift
+   would remove the archive's *dominant* error (σ_laser drift), so this is not drift
    rescue. Never trade the high-T lever or the knife-edge for averaging days.
 
 **Honest impact ceiling (aim the effort right):** the **AC-Stark coefficient Δα is the
@@ -369,7 +368,7 @@ design, not triage):
   full two-day T grid.
 - **S (small, target w₀ ≈ 15–16 µm, z_R ≈ 0.8 mm)** — the Stark/skew/cusp
   config. S₀ several-fold vs 2025; transit ~3.7 MHz bare (the intensity anchor, §8.2).
-- **M (archival, w₀ ≈ 50 µm)** — half-day spot check only: knife-edge +
+- **M (archival, w₀ ≈ 50 µm)** — half-day spot check only: knife-edge + camera +
   P grid + one 130 °C point, for direct 2025-epoch continuity.
 
 Telescope sized so the beam enters the EOM at ≤1 mm waist (3 mm aperture
@@ -474,8 +473,8 @@ fail *differently*: run both and they either agree (you believe w₀) or disagre
   profile* — an elliptical, astigmatic, or clipped beam changes the ramp shape
   and its moments, the exact object the drift-immune method reads. The camera is
   the only instrument that checks that profile directly; the knife-edge then
-  sizes it once the shape is trusted. Not luxury metrology — a direct check on
-  the model's central assumption.
+  sizes it once the shape is trusted. This directly checks the model's central
+  assumption.
 - **A third independent length scale.** §8.1 already crosses the knife stage
   against z_R = πw₀²/λ (a stage error s and knife-scale error k must satisfy
   s = k² to hide). The camera pixel scale (a calibrated target) is a third,
@@ -811,7 +810,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
   absorb it) from within-scan drift (the residual skew channel; THEORY_NOTE §3,
   `tests/test_intrascan_drift.py`) — and lets us *measure* the lock drift rate
   that is today only an envelope (`constants.DRIFT_RATE_LASER_HZ_PER_MIN`,
-  4 MHz/min, a user figure). (iii) It makes the T↔time collinearity (post-mortem
+  4 MHz/min, an estimated figure). (iii) It makes the T↔time collinearity (post-mortem
   #3) checkable, so the opposite-order days can regress drift out of the density
   lever. (iv) It time-orders the interleaved four-peak / per-trace-power blocks
   (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on. Keep
@@ -840,8 +839,8 @@ Amplitudes were useless in 2025 for one measured reason: within-block statistics
 are superb (1–3%, photon-limited, falling as amp⁻⁰·⁵), but **between-block gain +
 power + polarization drift wanders 30–50%**, so the clean amplitude physics was
 explicitly deferred to a fixed-lock session. The fixed lock, the interleaved
-four-peak blocks, and the defined polarization (§8.1.1) remove the common-mode
-drift, and every exploit below is built on a **ratio, a within-block slope, or a
+four-peak blocks, and the defined polarization (§8.1.1) would remove the common-mode
+drift, and every exploit below is designed around a **ratio, a within-block slope, or a
 monitored quantity** so the 30–50% wander cancels identically. Nothing here rests
 on absolute cross-block amplitude.
 
@@ -941,18 +940,18 @@ interleaved blocks (12–16 reps) and per-trace power logging; exploits 3–4 ad
 weak D-line absorption probe + photodiode — moderate, and the single highest-value
 addition because it attacks the N(T) systematic that limits β_self.
 
-### 8.5 Indicative sizing (the programme closes in ~8 days of cell time)
+### 8.5 Indicative sizing (the programme is sized to ~8 days of cell time)
 
 *Not a schedule and not a booking: an ordering that shows the full programme fits
 in roughly eight days at the cell, and which shots depend on which. Run it in this
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: telescope install; config L: knife-edge w(z), lens separations
-  calipered (§8.1a), ρ in situ, polarization defined at the cell + retro-path
-  retardance tomography and the σ/σ–σ extinction null (§8.1.1). While the
-  oven settles: the drift-characterization block (§8.7.5) → freeze the RF
-  bracket cadence.
+- **D1**: telescope install; config L: knife-edge w(z) + camera beam-profile
+  z-scan (§8.1b), lens separations calipered (§8.1a), ρ in situ, polarization
+  defined at the cell + retro-path retardance tomography and the σ/σ–σ
+  extinction null (§8.1.1). While the oven settles: the drift-characterization
+  block (§8.7.5) → freeze the RF bracket cadence.
 - **D2**: T grid day A at L, ascending, 4 peaks interleaved + mini-P excursion
   per dwell (§8.7.4), sentinel ×3 (§8.7.6) (incl. 150/170 °C if oven allows).
 - **D3**: T grid day B at L, descending; sentinel ×3.
@@ -962,7 +961,7 @@ order and a session truncated at any point still leaves the higher-priority boun
   Overnight: cool for cusp.
 - **D6**: cold-dim cusp session at S (low T, low P — Lehmann vs Voigt);
   the same data anchor the differential-transit intensity calibration.
-- **D7**: config M spot check (knife-edge, P grid, 130 °C point); wavemeter
+- **D7**: config M spot check (knife-edge + camera, P grid, 130 °C point); wavemeter
   GHz-linearity shots (§7).
 - **D8**: contingency — re-run whatever the bracket veto killed.
 Dropped by design: full third waist; T grids at S and M; any shot whose
@@ -988,7 +987,7 @@ The prescriptions above each cure one 2025 failure; this section is the ledger
 that connects them. It states what actually bit — in measured numbers, with the
 module that measured it — and then prices the four ways cell time can be spent
 (repetitions, blocks, days/orders, interleaves), so that when the schedule
-compresses the cuts follow arithmetic, not habit.
+compresses the cuts follow the priority ranking in §8.0/§8.7.7.
 
 #### 8.7.1 The 2025 post-mortem (measured, not remembered)
 
@@ -1000,12 +999,12 @@ compresses the cuts follow arithmetic, not habit.
 | 4 | Cross-session high-density anchor | joint β collapses 0.036 → 0.014 when folded in (M4d lever test) | high-T lever unusable | 150–170 °C same-session (§8.4) |
 | 5 | No timestamps anywhere | block order the only clock | σ_laser-sharing assumption untestable | log scope clock + notebook (§8.4) |
 | 6 | Ruler traces HWP-rotated (AM trick) | monitor reliability ≈ 0; wrong-sign correlation ~2σ | no drift compensator on the archive | β ≈ 1.20 pure-PM null (§8.4; methods §3) |
-| 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | knife-edge first (§8.0 #1) |
+| 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | beam-profile first (§8.0 #1) |
 | 8 | ρ(T) never measured | ~8% S₀ drift across the sweep from window filming alone | optics drift masquerades as physics | T_win before AND after, per condition (§8.0 #2) |
 | 9 | P sweep at a single T (130 °C) | trapping-immunity argument untested across density | discriminators data-starved | mini-P excursion in every dwell (§8.7.4) |
 | 10 | Between-block amplitude wander | 30–50% (polarization the specific suspect: retro-path retardance walks ε_f·ε_b) | amplitude observables noisy | polarization defined at cell + retardance tomography + σ–σ′ robustness test (§8.1.1); 12–16 reps (§8.4) |
 
-Items 1–3 are one lesson wearing three hats: **2025 spent statistics against a
+Items 1–3 share one root cause: **2025 spent statistics against a
 systematics-limited experiment.** Within-block noise was already 2.4× below the
 block-to-block scatter — the campaign kept buying the cheap term.
 
@@ -1033,7 +1032,7 @@ photon- or gain-limited, not drift-limited: the skew deep-integration at S
 reps, §8.4), and the tooth-width monitor (needs ~10× the 2025 count to reach
 reliability > 0, §8.4). Know which regime an observable is in before spending.
 
-#### 8.7.3 Bias is not variance — what ordering buys that repetition cannot
+#### 8.7.3 Bias vs. variance — what ordering buys that repetition cannot
 
 Within a single sweep direction, drift monotonic in time is **exactly
 collinear** with physics monotonic in T: no number of repetitions separates
@@ -1107,9 +1106,9 @@ drift a direct observable.
 | More repeats, same condition | photon noise only | 4% for 2× time (past the crossover) | only for skew / amplitudes / ruler monitor |
 | Strict RF alternation | monitor variance | saturates; halves science time | no — bracket at the §8.7.5 measured cadence |
 
-One sentence to run the campaign by: **spend structure before statistics —
-orders before days, blocks before repeats, interleaves before points, and one
-measured cadence instead of a guessed alternation.**
+**Summary: spend structure before statistics — orders before days, blocks
+before repeats, interleaves before points, and one measured cadence instead
+of a guessed alternation.**
 
 ## 9. Beyond 993 nm — the tunable-Ti:Sapph frontier (forward-looking)
 
