@@ -141,9 +141,7 @@ each closes a gap the 2025 archive could only bound around. **Logging a per-scan
 timestamp** (the one thing the archive never recorded) turns the σ_laser-sharing
 behind the tighter β from an untestable assumption into a checked fact; the
 HighFinesse wavemeter's own long-term log, running alongside, is an independent
-drift diary for free — and, if it was already logging in 2025, a chance to
-recover some of the archive's lost acquisition timing retroactively — an open
-lead worth chasing before the archive is called finished. **Reading the 6S→5P ~1.3 µm cascade**
+drift diary for free. **Reading the 6S→5P ~1.3 µm cascade**
 instead of the reabsorbed 795 nm fluorescence — trapping-free detection,
 established on the sibling 5S–5D line ([Hassanin 2023](lit/hassanin2023.md),
 [Beard 2024](lit/beard2024.md)) and plausibly feasible with an IR receiver
