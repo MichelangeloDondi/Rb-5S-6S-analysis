@@ -1,15 +1,12 @@
 # From-scratch analysis plan — Rb 5S₁/₂→6S₁/₂ two-photon, 2025 archival campaign
 
 *Analysis plan of record for the 2025 archive, v1.1 (2026-07-11); §§7–9 are a
-specification for possible future sessions, not a schedule or an agreement.
-Supersedes the initial-brief pipeline (§6) where they conflict. Old code in the
-previous repository is never read or reused; old outputs serve only as external
-cross-check targets.*
+specification for possible future sessions. Supersedes the initial-brief pipeline (§6) where they conflict. Old code in the previous repository is never read or reused; old outputs serve only as external cross-check targets.*
 
 ## 0. What the analysis is for (Paper 1 claims)
 
 From the 2025 archival data:
-- **C1** First determination — or honest bound — of collisional self-broadening β_self of the 5S→6S line vs Rb density (T-sweep).
+- **C1** First determination — or bound — of collisional self-broadening β_self of the 5S→6S line vs Rb density (T-sweep).
 - **C2** Quantitative characterization of the 2025-epoch laser (within-scan kernel + drift diary). Supporting deliverable; also the starting linewidth baseline for any ONF work on this line.
 - **C3** Power nulls as *predictions confirmed*: FWHM inflation ≤2% and asymmetry ≤10⁻⁴ across 25–225 mW, as required by the intensity-averaging (ramp) law. Measured sensitivity quoted alongside.
 
