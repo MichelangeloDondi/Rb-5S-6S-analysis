@@ -440,31 +440,39 @@ def fig_ruler():
                       fit["heights"], fit["b0"], fit["b1"]),
             "-", color="#0072B2", lw=1.4, label="constrained 5-tooth comb fit")
     ymax = max(fit["heights"]) + fit["b0"]
+    ax.set_ylim(top=ymax * 1.22)
     for n in range(-2, 3):
         tc = fit["t0_ms"] + n * fit["delta_ms"]
         ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
-        ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.04), ha="center", fontsize=8,
+        ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
                     color="#D55E00")
-    ax.annotate("6.25 MHz per tooth (laser axis)\n= the frequency ruler",
-                xy=(fit["t0_ms"] + 0.5 * fit["delta_ms"], ymax * 0.55),
-                ha="center", fontsize=8)
     ax.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
-    ax.set_title("the scan carries its own calibration: five copies of the\n"
-                 "same line via EOM sideband pairs", fontsize=9)
-    ax.legend(fontsize=7, loc="upper right")
+    ax.set_title("the scan carries its own calibration: five copies of the same\n"
+                 "line, 6.25 MHz apart on the laser axis, via EOM sideband pairs",
+                 fontsize=9)
+    ax.legend(fontsize=7, loc="lower left", framealpha=1.0)
 
     nl = _rows("ruler_nlmap")
     pos = np.array([float(r["pos_ms"]) for r in nl])
     rr = np.array([float(r["rate_rel"]) for r in nl])
     er = np.array([float(r["rate_rel_err"]) for r in nl])
-    ax2.errorbar(pos, rr, yerr=er, fmt="o", ms=3.5, color="#009E73", lw=1)
+    n_win = np.array([int(r["n"]) for r in nl])
+    # Marker area scales with the window's sample count n: edge windows have
+    # fewer contributing traces, hence larger shot-noise-like error bars
+    # (er ~ 1/sqrt(n)) -- made visible rather than left looking anomalous.
+    sizes = 12 + 38 * (n_win / n_win.max())
+    ax2.errorbar(pos, rr, yerr=er, fmt="none", ecolor="#009E73", elinewidth=1,
+                 capsize=2, zorder=2)
+    ax2.scatter(pos, rr, s=sizes, color="#009E73", edgecolor="none", zorder=3)
     ax2.axhline(1.0, color="k", lw=0.8)
     ax2.axhspan(0.996, 1.004, color="#009E73", alpha=0.10)
     ax2.set_xlabel("window position (ms)")
     ax2.set_ylabel("local rate / block rate")
     ax2.set_title("sweep linearity + any tooth-dependent\npull, bounded "
                   r"empirically ($\lesssim$0.4%)", fontsize=9)
+    ax2.text(0.03, 0.03, "marker area $\\propto$ window sample count $n$",
+             transform=ax2.transAxes, fontsize=6, color="0.4", va="bottom")
     _save(fig, "fig8_ruler.png")
 
 
