@@ -55,6 +55,11 @@ plt.rcParams.update({"figure.dpi": 130, "font.size": 10, "axes.grid": True,
                      "grid.alpha": 0.25, "axes.axisbelow": True, "legend.frameon": False})
 
 
+# Windows with fewer contributing traces than this cannot test the linearity
+# bound -- their errors exceed it. Split point for fig8's right panel.
+N_WELL_SAMPLED = 19
+
+
 def _rows(name):
     return list(csv.DictReader(open(C.RESULTS_DIR / f"{name}.csv")))
 
@@ -451,28 +456,41 @@ def fig_ruler():
     ax.set_title("the scan carries its own calibration: five copies of the same\n"
                  "line, 6.25 MHz apart on the laser axis, via EOM sideband pairs",
                  fontsize=9)
-    ax.legend(fontsize=7, loc="lower left", framealpha=1.0)
+    ax.legend(fontsize=7, loc="lower left", framealpha=1.0, frameon=True)
 
     nl = _rows("ruler_nlmap")
     pos = np.array([float(r["pos_ms"]) for r in nl])
     rr = np.array([float(r["rate_rel"]) for r in nl])
     er = np.array([float(r["rate_rel_err"]) for r in nl])
     n_win = np.array([int(r["n"]) for r in nl])
-    # Marker area scales with the window's sample count n: edge windows have
-    # fewer contributing traces, hence larger shot-noise-like error bars
-    # (er ~ 1/sqrt(n)) -- made visible rather than left looking anomalous.
+    # Edge windows have few contributing traces, so their errors (~1/sqrt(n))
+    # are LARGER THAN THE BOUND ITSELF -- the rightmost spans +/-0.74% against a
+    # 0.45% band. Scaling marker area with n was not enough: a reader still
+    # reads the long bar as an anomaly, or as contradicting the panel title.
+    # So the two populations are now drawn differently and the title says which
+    # one sets the bound. (The long bar is NOT anomalous: at n=5 it sits 0.9
+    # sigma from the 1/sqrt(n) law, and its CENTRAL value, +0.24%, is inside
+    # the band. Only its precision is poor.)
+    well = n_win >= N_WELL_SAMPLED
     sizes = 12 + 38 * (n_win / n_win.max())
-    ax2.errorbar(pos, rr, yerr=er, fmt="none", ecolor="#009E73", elinewidth=1,
-                 capsize=2, zorder=2)
-    ax2.scatter(pos, rr, s=sizes, color="#009E73", edgecolor="none", zorder=3)
+    for m, ec, alpha, z in ((well, "#009E73", 1.0, 2), (~well, "#8FBFB0", 0.9, 1)):
+        ax2.errorbar(pos[m], rr[m], yerr=er[m], fmt="none", ecolor=ec,
+                     elinewidth=1, capsize=2, alpha=alpha, zorder=z)
+    ax2.scatter(pos[well], rr[well], s=sizes[well], color="#009E73",
+                edgecolor="none", zorder=3,
+                label=f"$n\\geq{N_WELL_SAMPLED}$ (sets the bound)")
+    ax2.scatter(pos[~well], rr[~well], s=sizes[~well], facecolor="white",
+                edgecolor="#009E73", linewidth=1.0, zorder=3,
+                label=f"$n<{N_WELL_SAMPLED}$ (edge; error $>$ bound)")
     ax2.axhline(1.0, color="k", lw=0.8)
-    ax2.axhspan(0.996, 1.004, color="#009E73", alpha=0.10)
+    ax2.axhspan(0.9955, 1.0045, color="#009E73", alpha=0.10)
     ax2.set_xlabel("window position (ms)")
     ax2.set_ylabel("local rate / block rate")
-    ax2.set_title("sweep linearity + any tooth-dependent\npull, bounded "
-                  r"empirically ($\lesssim$0.4%)", fontsize=9)
-    ax2.text(0.03, 0.03, "marker area $\\propto$ window sample count $n$",
-             transform=ax2.transAxes, fontsize=6, color="0.4", va="bottom")
+    ax2.set_title("sweep linearity + any tooth-dependent pull:\n"
+                  r"$\lesssim$0.45% from the well-sampled windows", fontsize=9)
+    # One cue, not two: the legend already carries the n split, and the old
+    # free-floating "marker area ~ n" note collided with it.
+    ax2.legend(fontsize=6, loc="lower left", framealpha=1.0, frameon=True)
     _save(fig, "fig8_ruler.png")
 
 

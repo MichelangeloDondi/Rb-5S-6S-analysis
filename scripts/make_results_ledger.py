@@ -456,7 +456,7 @@ def main() -> int:
           f"ordering (a naive pool of before+after fakes a monotonic trend). So it "
           f"inflates the COMMON axis error symmetrically and does NOT bias the "
           f"cross-peak differential comparisons (β₈₅ vs β₈₇, the M10 ratios). The fits "
-          f"use each condition's own block rate; sweep linear <0.4% within a block. "
+          f"use each condition's own block rate; sweep linear <0.45% within a block. "
           f"**Leave-it-out (drop-a-block rigor):** dropping the flagged 993.4207 nm "
           f"*after* block shifts the campaign rate by only 0.08% (0.70σ, "
           f"0.04257→0.04254) and $\\chi^2_\\text{{red}}$ 6.8→3.8 — it is the dominant "

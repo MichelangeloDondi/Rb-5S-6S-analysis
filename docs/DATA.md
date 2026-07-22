@@ -259,7 +259,7 @@ conclusions:
   4207 nm power session shows a coherent 5.5σ before→after spacing shift
   (146.7 → 144.6 ms) — a real ~1.4% in-session rate change, its own
   calibration systematic for 4207 power points. The fine-scan sweep is
-  **linear to <0.4% across the window** (no piezo nonlinearity — the
+  **linear to <0.45% across the window** (no piezo nonlinearity — the
   ruler-in-fine-scan design worked). Cold 70 °C rulers calibrate fine with
   correctly inflated errors (~2.5 ms vs ~0.3 ms warm).
 - **β_self (M4, 2026-07-11) — the archival T-sweep BOUNDS it, does not

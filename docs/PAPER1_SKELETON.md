@@ -171,7 +171,7 @@ the archival brackets into measurements, so several sections are written as
 > **First-pass prose drafted** in [`paper1/drafts/V_analysis.md`](paper1/drafts/V_analysis.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
 - **Frequency axis (MEASURED-HERE):** EOM sidebands as a ruler → 0.04257(5) MHz/ms
-  laser-axis (0.08514 transition), per-block, sweep linear to <0.4%. The fold-robust
+  laser-axis (0.08514 transition), per-block, sweep linear to <0.45%. The fold-robust
   ruler argument (symmetric triangle) and the adaptive window for off-centre-sweep
   mirror crossings. *[one figure-free subsection]*
 - **Noise model:** per-condition variance law + correlation time $\tau_\text{int}$
