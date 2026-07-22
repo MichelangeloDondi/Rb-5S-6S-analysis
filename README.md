@@ -252,8 +252,20 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
 
 ## About
 
-Michelangelo Dondi — PhD candidate, Department of Physics and Astronomy,
-University of Bologna ([ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881)).
-The 2025 dataset was taken during a research visit to OIST (Japan). Citation
-metadata for this repository is in [`CITATION.cff`](CITATION.cff); the analysis
-is released under the MIT licence.
+I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
+the University of Bologna (EU H2020 project CRYST³), working on the transport
+and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal fibers —
+a platform where the inhomogeneous light shifts of a structured optical field
+govern cooling and coherence. This repository reads the same distribution
+physics from a different observable: the shape of a two-photon line in a
+focused standing wave.
+
+The dataset was taken during a six-month research visit to OIST (Japan) in
+2025, as an independent project alongside my main work there on
+atom–nanofiber interfaces; the analysis package was developed after the
+campaign. A manuscript based on it is in preparation
+([`docs/PAPERS_PORTFOLIO.md`](docs/PAPERS_PORTFOLIO.md)).
+
+Contact: michelangelo.dondi@unibo.it ·
+[ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·
+citation metadata in [`CITATION.cff`](CITATION.cff) · MIT license.
