@@ -266,7 +266,7 @@ archival bounds refine).
     for the M10 between-block amplitude wander — common-mode per block, but
     the archival peaks were taken hours apart, so it does not cancel in the
     cross-peak ratios; a fixed-lock session should **log (or fix with a clean
-    polarizer) the polarization at the cell**. (ii) A free a fixed-lock session
+    polarizer) the polarization at the cell**. (ii) A free fixed-lock-session
     diagnostic: rotating to circular must **extinguish** the two-photon line —
     any residual is polarization impurity or background, a null test that costs
     one waveplate turn per config.

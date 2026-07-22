@@ -2,8 +2,8 @@
 """
 sigma_laser sharing test (M4c) — Model A vs Model B for the lever cross-check.
 
-the "don't-skip" decision for the 20-trace joint fit: does one sigma_laser
-really shared across the four peak-blocks at a given T (Model A, what
+The sharing decision for the 20-trace joint fit: is one sigma_laser really
+shared across the four peak-blocks at a given T (Model A, what
 run_global_fit assumes), or does each block need its own (Model B, four laser
 widths per T -> the per-T sigma_laser was never one number)?
 

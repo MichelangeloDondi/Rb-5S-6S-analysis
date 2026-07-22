@@ -24,12 +24,16 @@ w₀ = 0.90 mm, 300 K) it returns HWHM 41.3 kHz vs his **41.2 kHz** (0.2%). The
 flux-fixed MC reproduces it (40 kHz) and the analytic Rb value (1.87 MHz at 32 µm,
 110 °C, transition axis) to <1%. `tests/test_transit_mc.py` locks both anchors.
 
-## Consequence: w₀ ≈ 50 µm (32 µm excluded), not 90 µm
+## Consequence: w₀ ≈ 50 µm, not 90 µm (32 µm disfavoured)
 
 The corrected **bare** transit at the old 32 µm nominal is **1.87 MHz** (110 °C,
 transition axis). Convolved with the 3.49 MHz natural Lorentzian this already
 gives **5.64 MHz > the observed ~5.25 MHz** line — *before* any laser or
-collisional width — so **w₀ = 32 µm is EXCLUDED**. Matching the observed width
+collisional width — so **w₀ = 32 µm is excluded in the thin single-waist
+limit**. Over a realistic multi-mm collection column the beam defocuses and the
+added transit drops to ~1.6 MHz, which the line alone no longer decisively
+excludes (`results/README.md`, `transit_mc.csv`); the ~50 µm prior therefore
+rests on the direct waist measurement as much as on the line. Matching the observed width
 (with a plausible laser) puts
 
     w₀ ≈ 45–70 µm  (central ~50 µm, hard floor ~38 µm),
@@ -76,7 +80,7 @@ it and re-centres w₀:
 | β (global fit, central) | ~0.056 | **0.036(4)**; w₀-band [0.004, 0.055] |
 | β lever probe (+130 °C) | ~0.02 | **0.014**; γ_coll rises only ×1.85 over ×53 |
 | S₀(225 mW) predicted | 1.43 | **0.59** |
-| S₀(225 mW) 95% bound | ~2.0 | **~3.1** (broader baseline ⇒ weaker bound) |
+| S₀(225 mW) 95% bound | ~2.0 | **0.63** (profile likelihood; the ~3.1 Wald value is superseded — see line above) |
 
 Every result stays **w₀-conditional and PRELIMINARY**: the transit↔σ_laser
 degeneracy means the archival line cannot pin w₀ on its own — the fixed-lock session

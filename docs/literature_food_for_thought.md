@@ -7,7 +7,7 @@ papers + the snippets in each section.
 
 ---
 
-## 1. HEADLINE — the transit MC is wrong, and w₀ is ~3× larger than the nominal
+## 1. The transit MC was wrong; w₀ re-centres from 32 to ~50 µm
 
 **Confirmed by cross-checking against Lehmann's worked example.** Lehmann 2021 works a numerical example (NNO, m=44 u,
 w₀=0.90 mm, T=300 K → transit HWHM **41.2 kHz**, vrms 335 m/s). My analytic
@@ -44,7 +44,7 @@ right, and two independent things follow:
 - `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm); every fit was re-run.
 
-**This propagation is DONE** (`docs/transit_width_resolved.md`): the flux fix +
+**This propagation is DONE** (`docs/notes/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
 headline archival results are unchanged in *kind* (model-independent bounds and
 nulls, gated on a direct beam-profile measurement); only the w₀-conditional central values
