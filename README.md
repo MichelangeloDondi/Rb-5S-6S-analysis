@@ -234,6 +234,7 @@ tests/      full test battery; CI runs it on the minimum and latest numpy
 docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             derivations) · PLAN.md (measurement plan) ·
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
+            APPARATUS.md (hardware of record + provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
             PAPER1_SKELETON.md (manuscript outline)
 ```
