@@ -299,10 +299,11 @@ therefore expected to revise DOWNWARD once block durations are known; the
 recovered-timestamp audit pre-registers that prediction
 (docs/PREREGISTRATION_timestamps.md 7). Treat as an upper bound until then.
 
-CONTRADICTED by a 2025-07-23 HighFinesse WS8 long-term record (setup photos,
-993.420860 nm, 3.5 h): the scan-band centre drifts ~36 MHz over 3.5 h, i.e.
-~0.17 MHz/min -- about 23x below this figure, and consistent with the tension
-above rather than with this value. NOT yet changed, because the record's lock
+CONTRADICTED by TWO independent HighFinesse WS/8L long-term records (setup
+photos): 2025-07-23 at 993.420860 nm over 3.5 h gives -0.17 MHz/min, and a
+53 min run at 993.419281 nm gives +0.19 MHz/min. Both are ~20x below this
+figure, and consistent with the tension above rather than with this value.
+Equal magnitude with opposite sign also says the drift is not a steady ramp. NOT yet changed, because the record's lock
 state and its placement inside the campaign are unconfirmed; see
 docs/PREREGISTRATION_timestamps.md 8. This constant is used only as an
 ENVELOPE (upper bound), so an over-estimate is conservative wherever it
