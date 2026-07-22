@@ -672,7 +672,7 @@ order of statistical cost:
    amplitude convention still spans a factor 2 in S₀ = factor 8 in skew
    (predicted significance ~0.8–50σ; the fringe-averaged **mean** is settled
    — LITERATURE.md — but the fringe-*resolved* tail **suppresses** the
-   small-waist skew ~25% (THEORY_NOTE §5, `fringe_tail`), same-sign-additive to
+   small-waist skew ~26–28% (THEORY_NOTE §5, `fringe_tail`), same-sign-additive to
    the item-4 divergence correction; the residual ⟨E²⟩ convention factor is
    fixed in the written derivation + an external theory check). **Session sized for the pessimistic
    end**: ≥ 15× the 2025-equivalent trace count at one condition (~110 °C,

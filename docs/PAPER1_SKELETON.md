@@ -304,7 +304,7 @@ states the predictions as future work (P1-min) or is dropped.*
 | # | file | section | one-line role |
 |---|---|---|---|
 | 1 | `fig1_width_vs_density.png` | VI.A | per-peak width vs density (the raw non-monotonicity) |
-| 2 | `fig2_power_sweep.png` | VI.C | width flat / amp ∝P² / skew vs power |
+| 2 | `fig2_power_sweep.png` | VI.C | width flat / amp ∝P² |
 | 3 | `fig3_transit_mc.png` | VI.E | transit-broadening MC vs $w_0$ |
 | 4 | `fig4_amplitude_ratios.png` | VI.E | degeneracy-law area ratios (drift-limited) |
 | 5 | `fig5_pooled_width.png` | VI.A/B | pooled width vs density + $\sigma_\text{laser}(T)$ companion |
