@@ -88,7 +88,7 @@ as a bound. Concretely:
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.9 while the density rises ×53 — a
   residual floor, not resolved collisions — so a naive fit's "4–10σ
-  detection" would be an artifact. The honest per-peak bound is
+  detection" would be an artifact. The per-peak bound is
   ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95%, with the low-degrees-of-freedom scatter
   and the vapour-pressure density scale both propagated). Showing that the
   two-epoch design was *required* is reported as a Paper-1 result.

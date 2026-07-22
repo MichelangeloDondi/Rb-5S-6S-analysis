@@ -28,7 +28,7 @@ The primary (headline) model is (exp, per_T) = the Lehmann cusp with one
 sigma_laser(T) shared across the four peaks: the transit form is the published
 one (docs/LITERATURE.md 3) and per-T sharing is M4c-validated. The other three
 cells of the matrix exist to MEASURE how much the headline moves if either
-modelling choice is wrong -- that movement is the honest error, not a hidden
+modelling choice is wrong -- that movement IS the model-form error, not a hidden
 assumption.
 
 STILL a model-based cross-check, not the archival headline: absolute beta rides

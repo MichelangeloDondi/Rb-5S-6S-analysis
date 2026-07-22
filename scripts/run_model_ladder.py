@@ -7,7 +7,7 @@ D(+AC-Stark ramp) and sums the BIC across conditions (BIC is additive over
 independent data), so the per-rung dBIC is an archive-wide statement of which
 physics the 2025 data statistically require.
 
-The honest, thesis-supporting outcome (the drifted lock is the reason): transit
+Expected outcome (the drifted lock is the reason): transit
 is decisively warranted, but the free collisional and AC-Stark parameters are
 NOT -- the archive brackets them, it does not measure them. That the SAME ladder
 decisively warrants an injected Stark shift under a stable lock (closure test

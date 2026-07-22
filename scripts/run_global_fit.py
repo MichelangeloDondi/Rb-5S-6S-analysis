@@ -68,7 +68,7 @@ def main() -> int:
         if r["session"] == "T":
             # rate_err omitted deliberately: a block-coherent axis-scale error
             # moves beta by <= beta * relerr ~ 0.0006 (relerr <= 1.8%), far under
-            # the +/-0.004 stat bar and the 0.01-0.03 systematics; a rigorous
+            # the +/-0.004 stat bar and the 0.01-0.03 systematics; a full
             # treatment needs per-block scale nuisances, out of scope for a
             # sub-dominant term (review finding 4, 2026-07-16)
             trates[(r["peak"], r["T"])] = 2.0 * float(r["rate"])

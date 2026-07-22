@@ -2,7 +2,7 @@
 """
 Append a machine-readable `status` column to every results/*.csv.
 
-Design note (2026-07-12): the repo's honesty lived in `docs/RESULTS.md`
+Design note (2026-07-12): the caveats lived in `docs/RESULTS.md`
 prose while the CSVs held bare numbers -- a plot script that loads
 `beta_self.csv` sees `beta_self=0.0466` with no hint it is a model-dependent
 PRELIM whose headline is a BOUND. The caveat must travel *with the number*. This
@@ -10,7 +10,7 @@ adds a controlled-vocabulary `status` tag to each row (the detail stays in
 RESULTS.md and the `unit` column), so the key provenance survives the CSV into
 any downstream table or figure.
 
-Controlled vocabulary (the honest tag, not decoration):
+Controlled vocabulary:
   BOUND      an upper/lower limit, conditional on the OPEN w0 and/or the model;
              NOT a measurement (beta_self, sigma_laser, S0/kappa).
   NULL       below detection, or no model preference (ramp skew, BIC, the

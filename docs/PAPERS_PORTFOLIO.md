@@ -4,7 +4,7 @@
 Beyond the archive, the publishable output depends on two *independent* future
 measurement sessions — **neither scheduled, agreed, nor assigned to anyone**. This
 doc maps papers → scenarios so the writing plan degrades gracefully if either or
-both never happen — treat that as the default planning case. Honest
+both never happen — treat that as the default planning case.
 throughout: the archive delivers **bounds + a validated method**, not coefficients
 (see `PAPER1_SKELETON.md` §I) — the measurements need a session.
 
@@ -30,12 +30,12 @@ at the apparatus, sooner or later or not at all. The **thesis rides on the archi
 alone** (P1-min content, with the sessions as future work); the further **papers**
 are what a session would unlock, whoever runs it.
 
-## The paper inventory (honest status)
+## The paper inventory
 
 | # | paper | needs | claim | status/risk |
 |---|---|---|---|---|
-| **P1-min** | *Drift-immune metrology of Rb 5S–6S: method + archival bounds* | archive only | the two-epoch method + closed-form two-photon ramp + **bounds** (β_self, σ_laser, S₀) + systematics | **ready now**; modest but solid + un-scooped; = the thesis core |
-| **P1-full** | same, + the fixed-lock coefficients | archive + **a fixed-lock session** | as P1-min, plus **measured** AC-Stark coeff (pull resurrected), β_self (high-T lever + knife-edge w₀), σ_laser | flagship; medium risk (a fixed-lock session must deliver) |
+| **P1-min** | *Drift-immune metrology of Rb 5S–6S: method + archival bounds* | archive only | the two-epoch method + closed-form two-photon ramp + **bounds** (β_self, σ_laser, S₀) + systematics | **ready now**; modest but solid + not pursued elsewhere; = the thesis core |
+| **P1-full** | same, + the fixed-lock coefficients | archive + **a fixed-lock session** | as P1-min, plus **measured** AC-Stark coeff (pull resurrected), β_self (high-T lever + knife-edge w₀), σ_laser | highest impact; medium risk (a fixed-lock session must deliver) |
 | **P2** | *ONF pushing-dip / near-surface two-photon lineshapes* (skeleton: `PAPER2_SKELETON.md`) | **ONF** (+ cell as reference) | quantitative completion of Gokhroo 2022; surface/pushing effects vs the clean cell line; the method transplanted as an in-fibre thermometer; **+ trapped-platform upside**: the 6S vector polarizability / differential g_J and travelling-vs-standing-wave in-fibre — measurements the hot cell structurally cannot do (`PLAN.md` §8.1.2) | needs an ONF collaboration (not approached); impact set by the ONF result |
 | **PA** | *Reference-free light shift / magic-λ on 778 nm 5S–5D via lineshape asymmetry* | new **5D-capable** session (optics set + 420 nm det.) | reference-free, orthogonal-systematics magic-λ cross-check | topical, **methodological not precision-competitive** (see §Paper A caveat there); needs PC |
 | **PB** | *β_self and Δα across the Rb 5S→nS/nD ladder (6S, 7S, 5D)* | multi-transition session | the n-scaling series; completes Zameroski/Weber-Niemax | **unscoopable, safer, lower ceiling** — a strong thesis/second-paper bet |
@@ -47,14 +47,14 @@ are what a session would unlock, whoever runs it.
 | | **no ONF** | **with ONF** |
 |---|---|---|
 | **no fixed-lock session** | **P1-min** only (1 paper: method + bounds). The safe floor. | **P1-min + P2** (2 papers; P2 uses the *archival* cell as reference — weaker but workable). |
-| **with a fixed-lock session** | **P1-full** (the flagship). **+ PA/PB/PC** iff the session tunes to 5D/7S (→ up to 4 papers). | **P1-full + P2** (P2 now uses the *fixed-lock-refined* cell reference — the strongest Paper 2). **+ PA/PB/PC** if extended (→ up to 5). |
+| **with a fixed-lock session** | **P1-full** (the highest-impact option). **+ PA/PB/PC** iff the session tunes to 5D/7S (→ up to 4 papers). | **P1-full + P2** (P2 now uses the *fixed-lock-refined* cell reference — the strongest Paper 2). **+ PA/PB/PC** if extended (→ up to 5). |
 
 ## Decision guidance
 
 - **P1 is the anchor** — the open question is *when/what
   form*:
   - **(a) Hold for P1-full** (one combined paper, a fixed-lock session fills §VII). Higher impact;
-    defensible because the 5S–6S light shift / β_self is **un-scooped** and the field
+    supported because the 5S–6S light shift / β_self is **not currently pursued elsewhere** and the field
     is not racing on this line (it is all on 778 nm — `LITERATURE.md` §8), so priority
     pressure is low. **Recommended default.**
   - **(b) Publish P1-min now**, follow with a measurement paper after a fixed-lock session. De-risks

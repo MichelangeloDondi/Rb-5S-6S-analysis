@@ -4,7 +4,7 @@ Closure tests for the M2 ruler core (rb5s6s/ruler.py).
 Before a single real ruler is fit, the comb machinery must recover KNOWN
 tooth spacings injected into campaign-like synthetics: warm bright combs,
 cold dim combs (init fallback path), suppressed carriers, missing outer
-teeth, and block combination with honest errors.
+teeth, and block combination with propagated errors.
 """
 
 from __future__ import annotations

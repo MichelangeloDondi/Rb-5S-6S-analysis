@@ -110,7 +110,7 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     ymod = (A * shape[win]) / peakV
     resid = y - ymod
     # standardized residuals: per-point M1 noise on the normalized axis. (A flat
-    # +-1 band is honest here; the raw noise grows with signal near the peak, so
+    # a flat +-1 band is valid here; the raw noise grows with signal near the peak, so
     # a single median-sigma band would understate it exactly where resid is
     # largest -- hence resid/sigma, which also visualizes chi2_red ~ 1 directly.)
     lev, _ = signal_level(v)

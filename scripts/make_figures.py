@@ -158,7 +158,7 @@ def fig_amplitude_ratios():
               "4192/4154": ("#009E73", 7 / 5, "993.4192 / 993.4154 nm ($^{85}$Rb)")}
     for key, (col, pred, lab) in styles.items():
         # err_total = stat (SEM) + between-block drift systematic, in quadrature
-        # (the honest bar; the stat-only column is a labelled diagnostic). See
+        # (the total bar; the stat-only column is a labelled diagnostic). See
         # run_amplitude_ratios.py and review finding 5, 2026-07-16.
         d = [(float(r["T"]), float(r["measured"]), float(r["err_total"]))
              for r in rows if r["ratio"] == key]

@@ -53,7 +53,7 @@ def main() -> int:
     print("  archive cannot pay for per-block sigma_laser freedom once the ~3.5x")
     print("  spectral over-sampling is accounted for. This is Occam/parsimony, NOT")
     print("  proof the four peaks shared one laser width (the unlogged timing forbids")
-    print("  that; M4c). That the naive raw-N BIC flips to per_block is the honest")
+    print("  that; M4c). The naive raw-N BIC flips to per_block, which is the")
     print("  caveat: the archive does not ROBUSTLY resolve shared-vs-independent, so")
     print("  the headline stays the model-independent width-slope bound (C1).")
 

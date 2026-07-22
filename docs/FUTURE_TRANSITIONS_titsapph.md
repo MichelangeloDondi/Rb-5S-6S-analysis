@@ -9,12 +9,12 @@ landscape (`PDF_papers/literature_intake/landscape_2026_...md`).
 
 ## 1. The one-sentence strategic picture
 
-Our current line (5S→6S, 993 nm) is **under-measured and un-scooped** — the only
+Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere** — the only
 active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
 reports *null* AC-Stark and density shifts at ~6 MHz resolution — so it is the
-clean **demonstrator** of the drift-immune method. The **fierce competition is one
+clean **demonstrator** of the drift-immune method. The **far more actively worked line is one
 transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (NIST/Andeweg,
-Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li–Dou) attacks the AC-Stark
+Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li–Dou) suppresses the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
@@ -75,8 +75,8 @@ easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares ONE
 detection channel** — 420 nm (6P→5S blue fluorescence) serves 5D, 7S, 8S *and* 9S,
 because they all cascade through 6P; only 6S is the near-IR (795 nm) outlier. So
 the detection swap noted above (the 795 nm filters → a 420 nm bandpass + a
-blue-sensitive PMT) is not a marginal tweak — it is the **single gate** that unlocks
-the entire upper ladder at once (see §Detection below). (iii) The intermediate
+blue-sensitive PMT) is a **prerequisite for every upper-ladder transition**, and one
+swap serves all four (see §Detection below). (iii) The intermediate
 detuning now spans **~68×** across a five-rung ladder 5D→7S→8S→9S→6S (1 → 75 THz) —
 a controlled sweep of intermediate-state admixture in one apparatus (§Paper C).
 
@@ -121,16 +121,16 @@ transitions, including the hot 5D clock line).
 
 ### Paper A — *Reference-free light shift & magic wavelength on the 778 nm 5S→5D clock line, via lineshape asymmetry* — **the topical extension (methodological, not a precision competitor)**
 
-> **Honest caveat up front (2026-07-13).** This is a *reference-free, orthogonal-
+> **Caveat up front (2026-07-13).** This is a *reference-free, orthogonal-
 > systematics, no-extra-hardware* determination — a complementary cross-check and a
 > clean demonstration of the inverted-nuisance idea. It will **not** out-precision the
 > active schemes (NIST/Adelaide), and must not claim to. Its value is method + physics,
 > not a smaller error bar. The shape handles are weak (width ∝S₀², skew ∝S₀³) and the
 > skew is contamination-prone (shot noise, instrument asymmetry), so it needs the
-> *large-S₀* small-waist regime to be a measurement at all — see the honesty note in
+> *large-S₀* small-waist regime to be a measurement at all — see the scope note in
 > `PAPER1_SKELETON.md` §I. The reason "nobody does this" is not an oversight: with a
-> stable reference the pull (∝S₀) is strictly better, so the passive shape route only
-> earns its keep when you *want* reference-freedom / orthogonal systematics.
+> stable reference the pull (∝S₀) is strictly better, so the passive shape route is
+> preferable only where reference-freedom or orthogonal systematics are required.
 
 - **Why now.** 5S→5D at 778 nm is *the* vapor-cell two-photon clock transition, and
   the 2024–2026 leaders (Andeweg 2026 ×1000 power-modulation suppression; Ahern 2025
@@ -139,12 +139,12 @@ transitions, including the hot 5D clock line).
   *passive, reference-free, low-complexity* alternative — a real methodological
   differentiator on a maximally topical transition (Bandi 2025 is the review to cite
   for the benchmark landscape).
-- **The killer use of tunability.** The ramp asymmetry (third-moment/skew observable)
+- **The measurement the tunability enables.** The ramp asymmetry (third-moment/skew observable)
   scales as S₀ ∝ Δα(λ). Hamilton 2023 puts a **magic wavelength at 776.179 nm**, right
   beside the transition. Tune the Ti:Sapph across it and the asymmetry **crosses zero
   and flips sign** as Δα→0 — a **passive determination of the magic wavelength /
   differential-polarizability zero-crossing**, with no reference cavity and no active
-  feedback. That is a clean, novel, clock-relevant result.
+  feedback. That would be a reference-free determination of the differential-polarizability zero crossing.
 - **Magic wavelengths for our own 5S–6S pair now exist as computed candidates**
   (M16, `results/polarizability.csv`; unpublished elsewhere to the depth searched
   2026-07-17): α₅S = α₆S crossings at **≈1203.9 nm** (the clean one, far from every
@@ -155,7 +155,7 @@ transitions, including the hot 5D clock line).
   ingredient for any trapped-atom version of this spectroscopy, and a small
   original result in its own right. Scalar only; a vector/tensor treatment and a
   blue-side crossing search are the follow-up.
-- **Novelty (three, all defensible).** (i) The *inversion* of lineshape asymmetry from
+- **Novelty (three claims).** (i) The *inversion* of lineshape asymmetry from
   nuisance-to-eliminate (Wieman 1987; Antypas–Budker 2018) into a self-calibrating
   observable, realized on a *focused* two-photon transition; (ii) magic-λ from an
   asymmetry sign-flip; (iii) reference-free complement to the active-suppression
@@ -202,7 +202,7 @@ physics argues for if the programme is pursued at all.*
 
 1. **Finish Paper 1 (993 nm 5S→6S)** as the clean method demonstrator — and reframe
    its Intro: the *passive, reference-free inversion* of Wieman/Antypas,
-   explicitly contrasted with the active 778 nm suppression schemes, on an un-scooped
+   explicitly contrasted with the active 778 nm suppression schemes, on a line no other group is currently working
    transition (quote the USAFA nulls). (This is a `PAPER1_SKELETON` Intro edit — cheap,
    do it in the Paper-1 pass; the refs are in `LITERATURE.md` §8.)
 2. **Paper A + C together** are the high-impact next step: carry the method to the
@@ -212,14 +212,14 @@ physics argues for if the programme is pursued at all.*
 3. **Paper B** is the completeness capstone / thesis chapter — attractive because it
    reuses the exact rig and method across the ladder.
 
-**The most *distinctive* experiment the Ti:Sapph unlocks** (distinctive, not
+**The most distinctive experiment the Ti:Sapph enables** (distinctive, not
 necessarily most precise): scanning the 776 nm magic wavelength on 5S→5D and watching
 the ramp asymmetry flip sign — a reference-free magic-wavelength determination, on the
-transition the whole field is fighting, by a method none of them use. Its selling
-point is orthogonal systematics + no active hardware, and it needs the large-S₀
+most actively worked transition, by a method those groups do not use. Its systematics
+are orthogonal and it needs no active hardware, and it needs the large-S₀
 small-waist regime to work at all (§Paper A caveat). A safer thesis bet, lower ceiling
 but lower risk, is **Paper B** (the β_self / Δα ladder) — it reuses the exact rig and
-method, so it is unlikely to be scooped.
+method, so it is unlikely to be duplicated.
 
 ## 5. Open feasibility questions for the experimenter (Michelangelo)
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?

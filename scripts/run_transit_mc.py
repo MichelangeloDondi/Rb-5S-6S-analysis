@@ -40,7 +40,7 @@ def _add_and_err(w0_m, z_half_m, n_full=300_000, n_err=50_000, k_seeds=4):
     """Transit added-FWHM at full n (default seed, so the value is unchanged
     and reproducible), plus its MONTE-CARLO SAMPLING error. The error is the
     seed-to-seed spread at a reduced n_err, scaled by ~1/sqrt(n) to the full
-    sample -- cheap, and it is the honest per-point uncertainty (the curve's
+    sample -- cheap, and it is the per-point sampling uncertainty (the curve's
     DOMINANT uncertainty is the OPEN w0 on the x-axis, not this)."""
     add = transit_added_fwhm_mc(w0_m=w0_m, T_C=110, z_half_range_m=z_half_m, n_atoms=n_full)
     vals = [transit_added_fwhm_mc(w0_m=w0_m, T_C=110, z_half_range_m=z_half_m,

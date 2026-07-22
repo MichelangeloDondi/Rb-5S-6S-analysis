@@ -15,7 +15,7 @@ the archival brackets into measurements, so several sections are written as
 
 ## 0. Framing decisions to settle first (not for the manuscript)
 
-- **Central contribution / thesis.** The novel, defensible claim is a *method*, not a
+- **Central contribution / thesis.** The claim is a *method*, not a
   number: a **drift-immune lineshape-metrology method** built on the AC-Stark "ramp"
   of a focused two-photon transition (closed-form triangular law + moment method),
   demonstrated on a 2025 archive that *brackets* the collisional and AC-Stark
@@ -25,10 +25,9 @@ the archival brackets into measurements, so several sections are written as
   precede us — §novelty).
 - **Scope / journal.** Full paper (PRA-length). The archive gives **P1-min** (method +
   bounds, ready now = the thesis core); adding a fixed-lock session would give
-  **P1-full** (the measured coefficients — the flagship). Default: **hold for P1-full**,
+  **P1-full** (the measured coefficients ). Default: **hold for P1-full**,
   one combined paper (§VII stubbed as predictions until such data exists),
-  because the 5S–6S light shift / β_self is un-scooped and the field is not racing on
-  this line. Fallback: publish P1-min now if a deadline/scoop forces it — and note this
+  because no other group is currently working on the 5S–6S light shift / β_self. Fallback: publish P1-min now if a deadline forces it — and note this
   fallback is the *only* branch fully under our control, since no session is scheduled
   or agreed. The full contingency map — P1-min/full, the ONF Paper 2, and the Ti:Sapph
   5D/7S papers (A/B/C), as a function of which sessions happen — is in
@@ -48,7 +47,7 @@ the archival brackets into measurements, so several sections are written as
    archive, and a fixed-lock route to measurement*
 3. *Two-epoch two-photon metrology: shapes without centres, then centres*
 
-## Abstract (draft — honest, ~150 words)
+## Abstract (draft, ~150 words)
 
 > We study the Doppler-free 5S₁/₂→6S₁/₂ two-photon transition of Rb at 993 nm in a
 > vapour cell as a testbed for lineshape metrology. A focused, retro-reflected beam
@@ -86,9 +85,9 @@ the archival brackets into measurements, so several sections are written as
   leaves three fingerprints on the line: the **pull** (centroid −⅔S₀, ∝S₀), the
   **width** (∝S₀²) and the **asymmetry/skew** (∝S₀³). The pull is a position and dies
   with the drifting centre; the width and skew are *shape* properties and survive. So
-  the honest question the archive answers: what can the drift-invariant shape deliver,
+  the question the archive answers: what can the drift-invariant shape deliver,
   and what still needs a stable lock? — the two-epoch idea. Frame it here.
-- **The AC-Stark ramp as an observable, not a nuisance — stated honestly.** The
+- **The AC-Stark ramp as an observable rather than a nuisance.** The
   precision-clock community treats this shift as *the* systematic to suppress, almost
   always *actively* (power modulation — [Andeweg](lit/andeweg2026.md) 2026, Yudin 2020; dual interrogation —
   [Gerginov](lit/gerginov2018.md) 2018, Li 2024; two-color/magic-wavelength — [Ahern](lit/ahern2025.md) 2025, [Hamilton](lit/hamilton2023.md) 2023), and
@@ -108,10 +107,10 @@ the archival brackets into measurements, so several sections are written as
   shot-noise skewness (∝1/√counts) and instrument asymmetry. At the archival S₀ ≈ 0.6
   MHz they are **below detection → the archival AC-Stark result is a BOUND, not a
   measurement**, and β_self likewise. The archival result is a bound by design: the archive
-  rigorously delivers *bounds + a validated method*; the fixed-lock small-waist epoch
+  delivers *bounds + a validated method*; the fixed-lock small-waist epoch
   (S₀ several MHz — skew ~×64 — with the pull resurrected) delivers the *coefficients*.
 - Contributions list (3–4 bullets): the closed-form fringe-averaged two-photon ramp
-  law; the drift-immune moment method + its honest reach (bounds now, values in
+  law; the drift-immune moment method and its demonstrated reach (bounds now, values in
   a fixed-lock session); the archival bounds + systematics catalogue; the two-epoch/fixed-lock
   route. End of intro.
 
@@ -182,7 +181,7 @@ the archival brackets into measurements, so several sections are written as
   (drift lives here); shared $\gamma_\text{coll}(T){=}\beta N(T)$, $\sigma_\text{laser}(T)$,
   transit($\sqrt T$). The $\sigma_\text{laser}\leftrightarrow\gamma_\text{coll}$ Voigt
   degeneracy (corr $\approx-0.85$) and the transit$\leftrightarrow w_0$ degeneracy —
-  state honestly that the *total* width is robust, the *split* is not. Covariances
+  state that the *total* width is robust, the *split* is not. Covariances
   fold in the anticorrelation (App. D).
 
 ## VI. Results
@@ -279,7 +278,7 @@ states the predictions as future work (P1-min) or is dropped.*
 
 ## VIII. Conclusion
 
-- What the archive rigorously delivers (bounds on β and $\sigma_\text{laser}$;
+- What the archive delivers (bounds on β and $\sigma_\text{laser}$;
   confirmed ramp power laws; an $S_0$ bracket; a validated method and systematics
   catalogue) vs what needs the fixed lock. The two-epoch design as a transferable
   template for metrology in drifting systems. Bridge to the nanofibre lineshape
@@ -293,7 +292,7 @@ states the predictions as future work (P1-min) or is dropped.*
 - **B. The transit kernel** — [Biraben](lit/biraben1979.md)/[Bordé](lit/borde1976.md)/Lehmann provenance (`LITERATURE.md` §3).
 - **C. QC, curation, and provenance** — the pre-registered hard/soft policy; the 4
   discards + 29 quarantines with committed `qc_reason`; the curation audit.
-- **D. Degeneracies and honest covariances** — the Voigt and transit/$w_0$
+- **D. Degeneracies and covariances** — the Voigt and transit/$w_0$
   degeneracies; why the naive global Voigt fit is overconfident (§4.5 cautionary tale).
 
 ---

@@ -248,7 +248,7 @@ band and definitively excludes 32 um (the naive Gaussian value was ~2x too small
 because the 3 mm aperture truncated the ~3 mm-diameter input). We KEEP 50 um as
 the central prior (the transit-width match, which slightly prefers ~50-55 um so
 the drifted 2025 laser stays comfortably under its C2 bound) because the 2025
-alignment is not guaranteed identical to Nieddu's; the honest archival range is
+alignment is not guaranteed identical to Nieddu's; the archival range is
 w0 ~ 50-64 um. If the archival beam WERE exactly 64 um, the observed line pins
 sigma_laser ~ 1.1 MHz laser-axis (the transit<->laser degeneracy collapses once
 w0 is fixed) -- which the knife-edge measurement will do directly."""

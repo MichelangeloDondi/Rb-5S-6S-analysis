@@ -17,7 +17,7 @@ would discard such data as uncalibrated. The observation that organizes this
 paper is that a slow drift destroys *absolute line centres* but leaves *line
 shapes* and *relative* structure intact: within one fast sweep the drift is a
 nearly constant offset, so it displaces a trace bodily without distorting it.
-What a drifted-lock archive can therefore deliver rigorously is everything that
+What a drifted-lock archive can therefore deliver is everything that
 does not require an absolute centre — widths, their scaling with density and
 power, amplitude ratios, and the *shape* of the AC-Stark ramp — while everything
 that does require a centre, the absolute shifts, is out of reach until the lock

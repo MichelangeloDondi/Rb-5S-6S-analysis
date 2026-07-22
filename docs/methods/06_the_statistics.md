@@ -81,7 +81,7 @@ session, a secondary caveat we cannot fully separate; either way a fixed-lock se
 *Run:* `run_lever_crosscheck.py` → `results/lever_crosscheck.csv`; numbers in the
 results ledger (`docs/RESULTS.md`).
 
-### 4.3 The degeneracy and honest covariances
+### 4.3 The degeneracy and the full covariance
 
 Because of the Voigt near-degeneracy ([§2.4 — The lineshape, kernel by kernel](02_the_lineshape.md)), a single-condition fit returns
 $\sigma_\text{laser}$ and $\gamma_\text{coll}$ with correlation
@@ -131,7 +131,7 @@ model-independent:
 3. Claim a **measurement** only if $|\beta_\text{eff}|/\sigma_\text{syst}\ge3$;
    otherwise report a **bound**.
 
-Deciding this rule *before* looking is what separates a defensible answer from
+Deciding this rule *before* looking is what separates a supported answer from
 the overconfident one (see [§5 — What we found (2025 archive)](07_what_we_found.md)). *Code:* `beta.collisional_slope()`,
 `scripts/run_beta_self.py`.
 
@@ -192,7 +192,7 @@ On the T-sweep archive the summed $\Delta\text{BIC}$ per rung is **A→B $\appro
 Lorentzian width beyond natural is warranted — the line genuinely needs both a
 Lorentzian and a Gaussian component), and **C→D $\approx -100$** — *the free
 AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design
-stated as a model comparison, and it is the honest referee-facing answer to "is
+stated as a model comparison, and it answers "is
 your novel AC-Stark component an unnecessary parameter?": on the *drifted*
 archive it **is** — the free per-scan centres absorb the ramp's pull and
 $\sigma_\text{laser}$ its width, so BIC declines to buy it, which is precisely
@@ -324,7 +324,7 @@ The choice is driven by this dataset, not by doctrine:
    when the beam-profile measurement lands, the band collapses without redoing the inference.
 3. **Where the data are weakest, a prior would dominate.** Three densities and
    one residual degree of freedom (§4.5), or a $\chi^2$ flat to first order at
-   the $\kappa=0$ rail (C3d): exactly where honesty matters most, a posterior
+   the $\kappa=0$ rail (C3d): a posterior
    mostly reflects the prior, while the Student-t quantile and the profile scan
    state the data-poverty out loud.
 
@@ -350,7 +350,7 @@ wins"). But the noise model already whitens each residual by $\sqrt{\tau_\text{i
 whitened $\chi^2$ gives $\Delta\text{BIC}\approx+62$ ("shared wins, decisively").
 The effective-$N$ BIC is the statistically correct one — correlated samples are not
 independent — so the shared model is favoured: **the archive cannot pay for
-per-block $\sigma_\text{laser}$ freedom**. Two honest riders travel with that:
+per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
 
 - it is **parsimony, not physics** — four peaks that co-drifted between unlogged
   acquisitions would look shared too (§4.2, M4c), and no in-sample score recovers

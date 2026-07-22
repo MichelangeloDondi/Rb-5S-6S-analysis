@@ -114,7 +114,7 @@ def main() -> int:
     # Between-block systematic, estimated FROM the data: the law predicts each
     # ratio is temperature-independent, so the between-T spread of a family's
     # measured ratio IS the between-block (power/alignment drift) systematic.
-    # Folding it into the pull is what makes the CSV honest on its own: the
+    # Folding it into the pull makes the CSV self-contained: the
     # stat-only pulls (up to ~40 sigma against a parameter-free law) are a
     # statement about drift, not about the law, and are kept only as the
     # labelled diagnostic column.

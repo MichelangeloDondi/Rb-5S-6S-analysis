@@ -61,7 +61,7 @@ one σ_laser shared across a peak's T-sweep). The reviewer's proposed extension
 M4 result forces**: σ_laser must NOT be shared across time-separated blocks in
 the 2025 epoch. The model-independent probe showed between-block σ_laser drift
 (~0.06–0.16 MHz) is the dominant systematic; sharing one σ_laser is exactly
-why the global fit reported 4–10σ where the defensible answer is a bound. Sharing
+why the global fit reported 4–10σ where the correct answer is a bound. Sharing
 structure for a future `fit_global`: **β_self per isotope** (per-line as a
 tested variant — collision physics does not license one global β); **transit
 shared globally** (same beam, √T scaling); **s0(P) shared globally** with
@@ -148,7 +148,7 @@ re-derivation — only shots. What the **archive alone** already supports is
 **P1-min**: the drift-immune moment/bounds framework, the self-calibrating EOM
 ruler, the identifiability and coverage analyses, and the computed 5S–6S
 dynamic polarizabilities and magic wavelengths (`PAPERS_PORTFOLIO.md`, §0).
-That is a self-contained, defensible result — the thesis core and a methods
+That is a self-contained result — the thesis core and a methods
 paper — and it depends on **no** further data being taken. A fixed-lock
 session is therefore an *upgrade*, not a prerequisite: it converts the named
 bounds into measured coefficients (**P1-full**). The **smallest tranche that
@@ -163,7 +163,7 @@ P1-min stands unchanged. The archive-only analysis (P1-min) is already complete 
 this specification; a session only decides whether the coefficients are
 *measured* or remain *bounded*.
 
-### For a skeptical reader — the strongest objections, answered honestly
+### Objections and responses
 
 *The objections a skeptical PI or co-author would raise, in their words. Each is
 answered by conceding what is true first — the campaign is not worth running if
@@ -174,14 +174,14 @@ just say 'we also saw nothing,' slower."** Conceded: **as pure numbers the
 archival bounds are confirmatory of Orson's nulls** — same direction, tighter.
 The increment is by channel. (a) *Method*: a closed-form fringe-averaged
 two-photon triangular-ramp lineshape law plus a reference-free, drift-immune
-moment readout — un-scooped, and distinct from Orson's absolute-frequency and
+moment readout — not pursued elsewhere, and distinct from Orson's absolute-frequency and
 mean-shift work (the axis-by-axis delineation vs Stalnaker is in `LITERATURE.md`
 §1; the not-claimable list in §5). (b) *An order-of-magnitude tighter S₀ bound*
 (< 0.63 MHz vs Orson's ~6 MHz null) extracted **from shape alone under a
 MHz/min-drifting lock**. (c) *With a fixed-lock session*, the **first measured
 light shift on this line** — the pull ∝ S₀ is a positive observable, not a
 sharper null — plus the collisional self-*shift*, two positive observables Orson
-only nulled. Honest bottom line: **P1-min's acceptance rides on the method being
+only nulled. In summary: **P1-min's acceptance rides on the method being
 judged novel; the measured coefficients need the session.**
 
 **"The lock drifted at MHz/min and killed the centres — that IS why you have
@@ -208,7 +208,7 @@ the timescale separation. A scan window is ~1 s (one up-ramp), and MHz/min is
 drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
 β_self is currently reported as a bound (`RESULTS.md` C1). The clean closure — inject a
 within-scan drift ramp into synthetic data and confirm the recovered moments are
-unbiased — is the one check that would seal this; it is flagged as the honest
+unbiased — is the one check that would seal this; it is flagged as the
 next test, not claimed as done.
 
 **"Your Δα bracket ~1200 a.u. is 'consistent with' Orson's computed 1093 — a
@@ -327,8 +327,8 @@ measured 2025 failure modes.)
    would remove the archive's *dominant* error (σ_laser drift), so this is not drift
    rescue. Never trade the high-T lever or the beam-profile measurement for averaging days.
 
-**Honest impact ceiling (aim the effort right):** the **AC-Stark coefficient Δα is the
-robust flagship** (MHz-scale S₀, strong pull under a fixed lock) — point the
+**Impact ceiling (aim the effort right):** the **AC-Stark coefficient Δα is the
+strongest observable** (MHz-scale S₀, strong pull under a fixed lock) — point the
 small-waist / high-intensity effort here. **β_self(6S) is intrinsically ~kHz** → a
 modest first measurement or a much tighter bound even at 170 °C; frame it as completing
 the nS/nD self-rate series, do not over-invest expecting headline precision.
@@ -549,7 +549,7 @@ Two-part answer, and the parts point opposite ways:
      σ–σ′ and reappear in π–π by the predicted amount. This is the cheapest
      possible experimental test of the whole standing-wave/fringe analysis.
 
-   Three honest caveats keep σ–σ′ off the precision path:
+   Three caveats keep σ–σ′ off the precision path:
    - **Half the signal** (SNR cost).
    - **It is the vector channel** (opposite spins), so the effective coupling,
      the AC-Stark ramp coefficient, and the transit weighting differ from the
@@ -559,7 +559,7 @@ Two-part answer, and the parts point opposite ways:
      It is not a pure single-knob switch.
    - **Circular light carries a vector, m_F-dependent AC-Stark shift and is
      B-field sensitive** — it splits/broadens rather than cleanly shifts, which
-     is poison for the scalar Δα flagship. The Stark/Δα program (config S)
+     is unacceptable for the scalar Δα measurement. The Stark/Δα program (config S)
      therefore stays on **linear (π)**; σ–σ′ is a config-L diagnostic at matched,
      modest power.
 
@@ -600,7 +600,7 @@ a prepared state in a hot, collisional, transit-limited cell.
 photons the two-photon operator is purely scalar (rank-2 cannot connect
 J=½→½): every m_F has the same per-atom rate and the same scalar light shift —
 the very degeneracy that makes the area ∝ (2F+1) law (§8.4a) parameter-free. The
-flagship Δα is a scalar shift between two J=½ states, and J=½ carries **zero
+Δα is a scalar shift between two J=½ states, and J=½ carries **zero
 tensor polarizability**, so there is no tensor Stark structure for m_F selection
 to resolve. m_F preparation therefore sharpens nothing the campaign measures, and
 it would actively break the degeneracy-law amplitude test (which needs thermal,
@@ -898,7 +898,7 @@ on absolute cross-block amplitude.
    degeneracy-weighted number; its constancy licenses area-as-density and its
    onset of curvature flags PMT nonlinearity.
 2. **The four-line common-slope Δα fit, with √area as the per-trace intensity
-   proxy — a flagship boost.** Δα is electronic and scalar, hyperfine-independent
+   proxy.** Δα is electronic and scalar, hyperfine-independent
    to ppm, so all four interleaved lines share **one** Stark slope dS/dI: a
    4×-over-determined Δα, with radiation-trapping / blend-induced center pulls
    isolated as the *line-specific* residual. And since area ∝ I²·(ε_f·ε_b)²,
@@ -1014,7 +1014,7 @@ the novel results first).
 
 ### 8.6 Deliverables map
 
-L T-grid → β_self measurement (or honest bound) + σ_laser (fixed-lock epoch);
+L T-grid → β_self measurement (or bound) + σ_laser (fixed-lock epoch);
 S skew session → S₀ magnitude + skew detection attempt; L/M mean-pull +
 variance → ramp-law form test (the actual novelty claim); S−L width difference
 → absolute intensity axis → Δα in physical units; interleaved blocks →
@@ -1072,7 +1072,7 @@ With 2025-like per-trace noise that is n ≈ 4–5 for width blocks, exactly whe
 
 Where repetition IS the right currency — the observables that are genuinely
 photon- or gain-limited, not drift-limited: the skew deep-integration at S
-(third moment, honest 1/√N), amplitude-ratio blocks (gain scatter → 12–16
+(third moment, 1/√N), amplitude-ratio blocks (gain scatter → 12–16
 reps, §8.4), and the tooth-width monitor (needs ~10× the 2025 count to reach
 reliability > 0, §8.4). Know which regime an observable is in before spending.
 
@@ -1159,11 +1159,11 @@ of a guessed alternation.**
 The drive laser is a **tunable Ti:Sapphire**, so future sessions are not locked to
 5S→6S (993 nm). The reachable Rb two-photon lines — **5S→5D (778 nm)**, **5S→7S
 (760 nm)**, plus 6S at the red edge — and the papers they enable are worked out in
-**`docs/FUTURE_TRANSITIONS_titsapph.md`**. Headline: the 778 nm 5S→5D clock
-transition is the field's hot AC-Stark battleground (all *active* suppression), and
+**`docs/FUTURE_TRANSITIONS_titsapph.md`**. The 778 nm 5S→5D clock
+transition is the most actively worked AC-Stark line (all *active* suppression), and
 our passive drift-immune asymmetry method + the Ti:Sapph tunability could give a
 **reference-free magic-wavelength determination** (asymmetry sign-flip across
-Hamilton 2023's 776 nm magic λ) — the single most compelling next experiment. It
+Hamilton 2023's 776 nm magic λ) — the most distinctive next experiment. It
 needs 420 nm detection and the near-resonant-intermediate lineshape correction
 (the 6S-clean → 5D-resonant ladder, a methods companion). 2024–2026 landscape refs:
 `LITERATURE.md` §8.

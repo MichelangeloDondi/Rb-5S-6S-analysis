@@ -63,7 +63,7 @@ pins).
 
 The **lever cross-check** (M4d, `run_lever_crosscheck`) packages exactly this — the
 cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak /
-leave-one-temperature scan — and adds the honest lever test: folding in the
+leave-one-temperature scan — and adds the lever test: folding in the
 130 °C anchor ([§4.2 — The statistics](06_the_statistics.md)) pulls $\beta$ well below $0.036$, because $\gamma_\text{coll}$
 rises only ${\sim}1.5\times$ across a ${\times}52$ density span — a residual floor,
 not resolved collisions — so $\beta$ is a lever-dependent bound. The full audited
@@ -125,7 +125,7 @@ elsewhere). It gives the 95% profile-likelihood bound
 $$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
 against the computed 1093 ([§3 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
-The defensible reading is a conservative bound, not a sensitivity claim: the width
+The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.59$ without measuring it (an
@@ -175,7 +175,7 @@ $\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.6/-0.1$ across
 peaks — a **statistical null**: three of four are $|\Delta\text{BIC}|<2$
 (the "not worth a mention" band) and the fourth is 3.6 (weak, and it is the
 same peak, 993.4192 nm, whose fits are noisiest elsewhere), against a claim gate of
-$\Delta\text{BIC}\gtrsim10$. The defensible statement is that **the archival data
+$\Delta\text{BIC}\gtrsim10$. The statement is that **the archival data
 cannot distinguish a cusped (Lehmann) from a smooth (Voigt) extra-broadening**
 — exactly as the two-epoch design anticipated, since the $\sim2$ MHz bad-lock
 laser Gaussian smears the cusp and the transit/laser split is itself

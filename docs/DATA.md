@@ -153,7 +153,7 @@ t-quantile turns the flag into the number. (ii) β ∝ 1/N, so the ~20% spread
 between published vapor-pressure correlations (`density.py`,
 `N_SCALE_FRAC_SYST`) moves every β by the same fraction; the cold-spot
 direction makes the fitted β an *under*estimate, so the bound inflates on the
-+ side (×1.2). The selection rule also flips: the *loosest* peak is the honest
++ side (×1.2). The selection rule also flips: the *loosest* peak is the conservative
 single-number floor (the min of noisy 1-DOF estimates is the down-fluctuated
 one), not the tightest. The cross-session 130 °C lever variant (dof = 2)
 barely moves (0.03–0.05) but keeps its cross-session caveat. The hierarchical

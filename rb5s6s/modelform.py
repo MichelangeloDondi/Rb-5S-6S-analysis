@@ -18,7 +18,7 @@ per-trace amplitude/center/tilted-baseline; all windowed like the main fits):
   'lehmann' : Lorentz(Gamma_nat + gamma_coll) (x) two-sided-exp(w)   [2 shape]
   'full'    : Lorentz (x) Gaussian(w_g) (x) two-sided-exp(w_e)       [3 shape]
 
-EXPECTATION (honest, from the two-epoch design): with the 2025 laser Gaussian
+EXPECTATION (from the two-epoch design): with the 2025 laser Gaussian
 ~2 MHz smearing the cusp, the archival data most likely CANNOT distinguish
 voigt from lehmann (|dBIC| small). The decisive test is a fixed-lock session's narrow-laser
 cold-dim data; this module is the warm-up + the infrastructure for it.

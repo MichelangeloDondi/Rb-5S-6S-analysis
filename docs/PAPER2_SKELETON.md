@@ -33,7 +33,7 @@ in hand.*
 - *Modelling the evanescent-field pushing dip in nanofibre two-photon
   spectroscopy of rubidium*
 
-## Abstract (draft — honest, ~150 words)
+## Abstract (draft, ~150 words)
 
 Cold-atom two-photon spectroscopy at an optical nanofibre probes atoms in the
 steep evanescent-field gradient, where the AC-Stark light shift is not a number
@@ -111,7 +111,7 @@ atoms.
   Steck & Barreiro 2026](lit/ton2026.md) measure directly, `LITERATURE.md` §9), and (ii) a
   **device- and time-dependent electrostatic term** that must be calibrated per run
   and treated as a systematic, not a universal constant. This upgrades the model
-  from a single vdW shift to a two-component surface potential and is the honest
+  from a single vdW shift to a two-component surface potential, and that is the
   form of the "near-surface shift" the fit extracts.
 - **Read the surface shift *from the line*, as a distribution.** The template is
   established: [Ton et al. 2026](lit/ton2026.md) extract a kHz CP shift purely from the spectroscopic
