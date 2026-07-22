@@ -735,12 +735,15 @@ order of statistical cost:
    record.)
 
    **Install decision — cathode LANDSCAPE (12 mm axis along the beam).**
-   *Cathode geometry confirmed (experimenter, 2026-07-23): the Thorlabs
-   PXT1/M module seen in the in-campaign photograph houses the R636-10, so the
-   3 × 12 mm rectangle and everything below it stand. One practical rider: the
-   tube is in a commercial housing, so orientation is set by rotating the
-   module — check its mounting before assuming both orientations are equally
-   easy to realise.*
+   *Confirmed (experimenter, 2026-07-23): the Thorlabs PXT1/M module houses the
+   R636-10, so the 3 × 12 mm rectangle stands — and the 2025 archive was taken
+   in **landscape** already, so this recommendation continues the existing
+   configuration rather than changing it. Consequence for the archive: with
+   L∥ = 12 mm and the bare f18 close-in (high M), Z_c ≲ 1 mm, giving
+   g1 = +0.565 to +0.566 at the archival waist — even nearer the pure triangle
+   (+0.5657) than the ±2 mm placeholder's +0.558, so no archival number moves.
+   The tube sits in a commercial housing, so orientation means rotating the
+   module; that is how it is already mounted.*
    Orientation is a ×4 lever on Z_c and the one collection choice awkward to
    revisit mid-campaign (rotating the tube re-does the alignment and, worse,
    breaks the single-fixed-Z_c property that makes the cross-config
@@ -941,6 +944,14 @@ one); the hybrid is across the moment hierarchy, never across methods.
   Preserve it one of two ways. **(a) Save the native `.h5`**, which carries
   per-waveform acquisition metadata the plain CSV drops, so the ingest loader
   gains a per-trace time column for free — the guaranteed route on this scope.
+  *Either scope is available for a future session (experimenter, 2026-07-23).*
+  **If the LeCroy's trigger problem can be resolved, prefer it for this
+  purpose**: its native `.trc` WAVEDESC carries an explicit per-trace
+  `TRIGGER_TIME` (calendar date to a fractional second, read back by
+  `lecroyparser`/`readTrc`), and a segmented acquisition stores a per-segment
+  `TRIGTIME` array — inter-scan elapsed time recorded directly, at higher
+  resolution than any file clock. That is a better timestamp story than the
+  Agilent's, and it is the one thing the LeCroy would be chosen for.
   **(b)** Take each back-to-back set (the repeats, or the four interleaved
   peaks) as one **segmented** acquisition, so the scope stores a per-segment
   trigger time, recording the *inter-scan* elapsed time directly — exactly the quantity the σ_laser-co-drift
