@@ -267,12 +267,18 @@ states the predictions as future work (P1-min) or is dropped.*
   \sigma_\text{laser}$ degeneracy, sets every absolute scale. Highest priority of
   the specification, and the one item worth doing even standalone.
 - **Fixed-lock centres:** first absolute AC-Stark shift (the pull $\propto S_0$,
-  un-absorbed) and collisional self-shift. Small waist ($S_0$ 4× larger) makes the
-  $\propto S_0^3$ skew a detection; the axial-averaged ramp predicts a **skew
-  sign-flip** between the two waists (a config-differential test immune to
-  instrumental asymmetry) — *conditional on the collection geometry, which is
-  unmeasured: the flip needs an axial field of view $>1.12 z_R$, and plausible
-  layouts fall on either side (PLAN §8.3 #4).*
+  un-absorbed) and collisional self-shift. Small waist ($S_0$ 4× larger) lifts the
+  ramp asymmetry to a detection — though not by the on-axis $\propto S_0^3$
+  factor, since the axial average over the collection window changes the third
+  cumulant's magnitude and, past $Z_c/z_R\approx1.12$, its sign. That same
+  average predicts a **skew sign-flip** between the two waists (a
+  config-differential test immune to instrumental asymmetry). The PMT is not
+  re-oriented between configurations, so $Z_c$ is a single fixed unknown and
+  the flip needs only $0.90\ \text{mm}<Z_c<12.7$ mm — a window spanning
+  $\times14$, because $z_R$ differs $\times14$ between the waists. The test
+  needs $Z_c$ to fall in that window, not to be known; the archival
+  single-lens collection sits just below it, which is why the collection
+  rebuild is Tier 0 (PLAN §8.3 #4).
 - **Same-session high-density (150–170 °C):** the only way to resolve the collisional
   slope (the archive's cross-session lever does not combine — §VI.A).
 - **Interleaved peaks + logged power/timestamps:** cross-peak systematics 30–50% →

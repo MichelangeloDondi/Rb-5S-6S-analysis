@@ -124,7 +124,7 @@ waist, and must be applied before $S_0$, hence $\Delta\alpha$, is read.
 measurements to be combined or cherry-picked — they are three analytic
 functionals of the *one* parameter $S_0(P)$ (`lineshape.ramp_moment_contributions`):
 pull $\propto S_0$, excess variance $\propto S_0^2$, third cumulant $\propto
-S_0^3$. the fixed-lock fit uses a single $S_0$ per condition and checks that the pull,
+S_0^3$. The fixed-lock fit uses a single $S_0$ per condition and checks that the pull,
 excess-variance and third-cumulant *measured from the data* are mutually
 consistent with it — a $\chi^2$ across the moment hierarchy. The primary
 observable at each intensity is pre-registered as the lowest-order moment above
@@ -202,8 +202,10 @@ $\sim$26–28% at $16\ \mu$m, and
 fit jointly at small waist (quantified, coherence-window-bracketed, in
 `fringe_tail`). With $\Delta\alpha = 1093$ a.u.
 ([Orson *et al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
-$\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why the fixed-lock session's small
-waist makes the $\propto S_0^3$ skew measurable. Code: `lineshape.stark_shift_S0_mhz`.
+$\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why a small waist
+lifts the ramp asymmetry to a detection — but *not* by the on-axis $S_0^3$
+factor of 64, since the axial average over the collection window changes the
+third cumulant's magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7). Code: `lineshape.stark_shift_S0_mhz`.
 
 **Sign, and provenance.** The $\langle E^2\rangle$ convention is magnitude-only;
 the *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$. **$\Delta\alpha$
