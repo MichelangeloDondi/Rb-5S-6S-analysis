@@ -698,17 +698,26 @@ order of statistical cost:
    flip condition at config S reads **r_PMT/M > 1.12 z_R ≈ 0.9 mm**
    (z_R = 0.81 mm at w₀ = 16 µm; for the R636-10's rectangular 3 × 12 mm
    cathode, r_PMT → L∥/2, the half-extent lying along the beam image —
-   tube rotation changes it ×4, §8.1). Plausible layouts land on BOTH
-   sides: the 2025 single f = 18 mm lens worked close-in (large solid
-   angle) and therefore at high M, where even the long axis gives
-   Z_c ≲ 0.7 mm — no flip; a 1:1 relay gives Z_c up to 6 mm — strong flip.
+   tube rotation changes it ×4, §8.1 — but the tube was never rotated
+   during the 2025 campaign (experimenter-confirmed), so Z_c is ONE fixed
+   unknown shared by every archival config, not a per-config nuisance).
+   That matters more than the ignorance does: with Z_c fixed and z_R set by
+   w₀, the flip between L and S needs only **0.90 mm < Z_c < 12.7 mm — a
+   window spanning ×14**, since z_R differs ×14 between the two waists. The
+   test does not require knowing Z_c, only that it lands in that window.
+   Plausible layouts land on BOTH sides of it: the 2025 single f = 18 mm
+   lens worked close-in (large solid angle) and therefore at high M, where
+   even the long axis gives Z_c ≲ 0.7 mm — just BELOW the lower edge, no
+   flip; a 1:1 relay gives Z_c up to 6 mm — mid-window, strong flip. That
+   the archival collection sits just outside is the argument for the
+   rebuild below.
    The solid-angle weighting varies <2% across any such window, so the
    top-hat form is fair: the width is the only unknown.
 
    **Prescription — collect with a two-lens relay, not the bare f18.**
    Keep the f = 18 mm as L1 at its focal distance (it sets the collection
    NA and holds it fixed); add L2 (f₂ ≈ 35–50 mm, 2" to avoid vignetting)
-   focusing onto the PMT, with the 800 nm shortpass in the collimated
+   focusing onto the PMT, with the existing 795 nm bandpass stack in the collimated
    segment (normal incidence — no angle-shifted cutoff). Then M = f₂/f₁
    decouples the field of view from the light collection, and swapping L2
    moves Z_c without touching efficiency — a clean knob. Best practice: an
@@ -990,7 +999,7 @@ order and a session truncated at any point still leaves the higher-priority boun
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
 - **D1**: telescope install; **collection rebuild — f18 as L1 + relay lens L2
-  + image-plane slit, shortpass moved into the collimated segment, PMT long
+  + image-plane slit, 795 nm bandpass moved into the collimated segment, PMT long
   (12 mm) cathode axis set along the beam; then the slit scan that *measures*
   the collection profile and fixes Z_c** (§8.3 #4 — this is the Tier-0 input
   the whole skew program is conditional on, so it precedes the science

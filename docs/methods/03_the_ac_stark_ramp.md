@@ -172,7 +172,12 @@ in object space, $Z_c=r_\text{PMT}/M$ with magnification $M=v/u$
 condition at 16 µm reads $r_\text{PMT}/M > 1.12 z_R \approx 0.9$ mm — and
 plausible bench layouts land on *both* sides (a short-conjugate,
 high-magnification layout gives $g_1\approx+0.5$, no flip; a 1:1 relay or a
-large photocathode gives $g_1\approx-0.3$ to $-0.5$). Three ruler-and-datasheet
+large photocathode gives $g_1\approx-0.3$ to $-0.5$). The PMT is not
+re-oriented between configurations (experimenter-confirmed), so $Z_c$ is a *single fixed unknown*
+and $Z_c/z_R$ moves only through $w_0$: the flip between the two waists
+then needs just $0.90\ \text{mm}<Z_c<12.7$ mm, a window spanning $\times14$
+because $z_R$ itself differs $\times14$. The test needs $Z_c$ to fall in
+that window, not to be known. Three ruler-and-datasheet
 numbers settle it — $u$, $v$, and the cathode's active extent *along the beam
 image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode is a
 3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4) — which is why they are
