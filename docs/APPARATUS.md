@@ -36,13 +36,19 @@ photographs of the SolsTiS control page show which locks were engaged:
 | 2025-06-11 | Locked | Locked | **Not Locked** |
 | 2025-07-29 (teardown) | Not Locked | Not Locked | Not Locked |
 
-**The ECD lock is disengaged in every photograph**, including both operating
-days. Running on etalon (± reference-cavity) lock alone leaves no absolute
-frequency reference, which is exactly the failure the archive shows: line
-centres drift between scans and carry no metrological meaning, while shapes
-survive. This is *consistent with* the recorded symptom and is the most
-specific account available — but **no photograph covers the 17–18 July
-campaign itself**, so it remains a strong candidate, not a confirmed fact.
+**The ECD lock is disengaged in every photograph.** For the campaign itself
+the experimenter confirms (2026-07-23) that the **reference cavity was
+locked**, with its **set point moved from time to time to follow the drift** —
+which is what `DATA.md` §2 records as "cavity-reference recenters".
+
+That completes the account of "misconfigured". Etalon + reference cavity hold
+the laser *short-term*, which is why shapes survive and intra-block positions
+are stable. What is missing is the ECD lock, i.e. any **absolute** reference —
+and because the cavity set point was re-defined by hand whenever drift pushed
+the line out of the window, the zero of the frequency axis is re-chosen
+arbitrarily between blocks. Hence: centres carry no metrological meaning,
+shapes do. The two halves of the archive's central limitation fall out of the
+lock configuration exactly.
 
 ---
 
@@ -135,7 +141,24 @@ scope does not produce. Rewritten for InfiniiVision `.h5`, and integrity gate
 T6 of the [timestamp pre-registration](PREREGISTRATION_timestamps.md) corrected
 the same way — before the backup was opened.
 
-### 4.2 A ramp-monitor channel existed
+### 4.2 The ramp-monitor channel — available, not saved, and not worth much
+
+A 2025-06-10 photograph of the Agilent shows **two channels**: a clean
+triangular sweep-ramp monitor on Ch1 and the fluorescence on Ch2, with the
+fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
+It was **not saved** with the archival traces (experimenter, 2026-07-23).
+
+**Verdict for a future session: low priority.** The EOM comb already carries
+the frequency axis per trace, RF-exact, which a ramp voltage cannot improve on
+— so the ramp channel buys nothing for calibration. Its one real use is that
+`DATA.md` §5 has to *infer* where each window sits on the triangle, and records
+that "window ≈ one up-ramp" holds **for most blocks, not all**, with fits
+masking the retrace region. A recorded ramp would make the apex position a
+measured per-trace quantity instead of an inference, and would retire
+assumption A1 outright rather than leaving it as a stated assumption.
+
+That is worth one spare channel and nothing more. If channels are contended,
+this is the first thing to drop.
 
 A 2025-06-10 photograph of the Agilent scope shows **two channels**: a clean
 triangular **sweep-ramp monitor** on Ch1 and the fluorescence on Ch2, with the
@@ -217,14 +240,25 @@ not a steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
 therefore stands as a genuine **envelope** — it bounds every record here —
 while the settled rate is several times smaller.
 
-**The question this leaves.** Campaign drift depends on which lock was engaged
-on 17–18 July, and no photograph covers those days. If the campaign ran
-etalon-only — which the "misconfigured lock" description and §1.1's
-never-engaged ECD both suggest — the settled expectation is ~1 MHz/min. With
-the reference cavity it would be ~0.2. The Ti:Sapph ran continuously through
-the 24 h ([DATA.md](DATA.md) §2), so most acquisition sat in the settled
-regime; re-centring events that involved retuning would restart a transient,
-and how often that happened is not established.
+**What this implies for the campaign.** The campaign ran with the reference
+cavity locked (experimenter, 2026-07-23), i.e. the 06-11 regime, so the settled
+expectation is **≈0.2 MHz/min** — not the ~1 MHz/min of etalon-only operation.
+The Ti:Sapph ran continuously through the 24 h ([DATA.md](DATA.md) §2), so most
+acquisition sat in the settled regime; each manual set-point move re-zeroed the
+accumulated offset rather than restarting a thermal transient, since the laser
+was neither retuned nor restarted.
+
+**A bound this yields, for free.** The intra-block positions show *no* trend
+with repeat index (§[PREREGISTRATION](PREREGISTRATION_timestamps.md) §8.4,
+p = 0.33). At ≈0.2 MHz/min, drift would reach the observed 0.08 MHz scatter
+only after ~70 s, so its absence bounds the block:
+
+> **5-repeat blocks span less than ~70 s** (under ~14 s per saved trace).
+
+That replaces the voided D4 and inverts its logic: D4 divided the scatter *by*
+a drift rate, assuming the scatter *was* drift; this uses the **absence** of
+drift, together with a drift rate now known from the lock state, as an upper
+bound. It is a genuine pre-data prediction about the recovered timestamps.
 
 ---
 

@@ -251,6 +251,20 @@ Consequences, decided before the backup was opened:
   `constants.DRIFT_RATE_LASER_HZ_PER_MIN` stays an envelope, sourced from one
   in-campaign photograph of a settling transient.
 
+**D5, replacing D4 (added 2026-07-23, still pre-data).** The campaign ran with
+the reference cavity locked, whose settled drift is ≈0.2 MHz/min
+([APPARATUS.md](APPARATUS.md) §6). At that rate drift would reach the observed
+0.08 MHz intra-block scatter only after ~70 s — and no trend is present. So:
+
+> **D5.** Median 5-repeat block duration is **under ~70 s** (under ~14 s per
+> saved trace). Pass: median block span < 70 s.
+
+D4 divided the scatter *by* a drift rate on the assumption it *was* drift, and
+died when that assumption failed. D5 uses the **absence** of a trend, plus a
+drift rate now known from the lock configuration, as an upper bound — the same
+measurement read the other way round, and it survives the finding that killed
+D4.
+
 **An anomaly worth its own answer.** Eight of the 32 blocks show a *step*
 rather than scatter — position jumping mid-block, which "nothing moved within a
 block" does not predict. Two are dramatic: `4207 @175 mW` reads
