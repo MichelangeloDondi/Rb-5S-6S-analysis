@@ -323,3 +323,38 @@ def test_slit_scan_actually_crosses_zero_within_its_range():
     assert _g1(0.5e-3 / z_r16) > 0 and _g1(3.0e-3 / z_r16) < 0
     crossing = brentq(lambda zc: _g1(zc / z_r16), 0.5e-3, 3.0e-3, xtol=1e-9)
     assert crossing * 1e3 == pytest.approx(0.90, abs=0.02)
+
+
+# The R636-10 attribution came from Nieddu 2019 -- a DIFFERENT experiment (the
+# nanofibre bench) -- and was assumed to carry over. An in-campaign photograph
+# (2025-07-18) shows the cell detector labelled Thorlabs PXT1/M. Until the
+# experimenter reconciles the two, every document that builds on the 3 x 12 mm
+# cathode has to say the geometry is assumed, not measured.
+def test_cathode_geometry_is_flagged_as_assumed():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        pytest.skip("not a git checkout")
+    bad = []
+    for rel in [p for p in out.stdout.split("\n") if p]:
+        if rel == "tests/test_ramp_geometry_docs.py" or rel.startswith("docs/lit/"):
+            continue
+        txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        if "R636-10" not in txt:
+            continue
+        # LITERATURE.md legitimately describes Nieddu's OWN detector
+        if "nieddu" in txt.lower() and "their" in txt.lower():
+            continue
+        # the caveat must sit NEAR the mention, not anywhere in the file: these
+        # documents all contain the word "conditional" about the sign FLIP, so a
+        # whole-file search passes for the wrong reason.
+        for m in re.finditer(r"R636-10", txt):
+            near = txt[max(0, m.start() - 500):m.end() + 500]
+            if not re.search(r"assum|unverified|PXT1|in question", near, re.I):
+                bad.append(f"{rel}:{txt[:m.start()].count(chr(10)) + 1}")
+    assert not bad, (
+        "these build on the R636-10 cathode without flagging that the "
+        "attribution is from Nieddu 2019 (a different bench) and is "
+        "contradicted by an in-campaign photo of a Thorlabs PXT1/M:\n  "
+        + "\n  ".join(bad))

@@ -735,6 +735,14 @@ order of statistical cost:
    record.)
 
    **Install decision — cathode LANDSCAPE (12 mm axis along the beam).**
+   *Conditional on the cathode geometry, which is now in question: the
+   R636-10 attribution came from Nieddu 2019 (the nanofibre experiment), but
+   an in-campaign photograph shows the cell detector labelled Thorlabs
+   PXT1/M. The 3 × 12 mm rectangle, the ×4 rotation lever and the table below
+   all follow from that attribution and must be re-derived if it is wrong.
+   The ×14 flip window above does NOT depend on it — that comes only from
+   z_R at the two waists — so the sign-flip test survives regardless; what is
+   conditional is which orientation to install.*
    Orientation is a ×4 lever on Z_c and the one collection choice awkward to
    revisit mid-campaign (rotating the tube re-does the alignment and, worse,
    breaks the single-fixed-Z_c property that makes the cross-config
