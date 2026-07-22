@@ -277,10 +277,15 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 which we evaluate numerically (`lineshape.stark_ramp_axial`). It has a striking
 consequence: the standardised skewness **changes sign** with the collection
 window — $g_1 \approx +0.57$ at $w_0=60\ \mu$m ($z_R \gg Z_c$) but $\approx
--0.35$ at $w_0=16\ \mu$m ($z_R \ll Z_c$), crossing zero near $Z_c/z_R\approx1.2$
-— because a long window piles weight at weak out-of-focus shifts. So the pure
-triangle holds only at large waist, and the small-waist configuration that
-maximises $S_0$ is exactly where the clean triangular law is least valid.
+-0.35$ at $w_0=16\ \mu$m ($z_R \ll Z_c$), crossing zero at $Z_c/z_R\approx1.12$
+— because a long window piles weight at weak out-of-focus shifts. The flip at
+small waist is conditional on the (unmeasured) collection geometry: $Z_c$ is
+the imaging field of view $r_\text{PMT}/M$ of the side-viewing $f=18$ mm lens,
+so it follows from the lens–beam distance, the lens–PMT distance and the PMT
+active diameter, and plausible layouts land on either side of the crossover
+(PLAN §8.3 #4). So the pure triangle holds only at large waist, and the
+small-waist configuration that maximises $S_0$ is exactly where the clean
+triangular law is least valid.
 
 **The questions.** (i) Is the axial-averaged form above correct and complete, or
 does a proper treatment of the position- *and* velocity-dependent shift (the
