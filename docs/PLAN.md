@@ -28,7 +28,7 @@ Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark co
 See `docs/DATA.md` for the full decoded-archive story and `data_raw/MANIFEST.csv`
 for the per-trace table (role, condition, chronology, flags, MD5, original paths).
 
-Chronology: P-session at 130 °C (per peak: before-block → 25→75→125→175→225 → after-block), then stepwise cooling 110 → 90 → 70. Repeat indices chronological (a few possible swaps). Repeats within a block are back-to-back (measured position scatter 1.8 ms ≈ 0.08 MHz laser). No timestamps exist anywhere; block order is the only time coordinate. Scope horizontal-knob and cavity-reference recenters occurred between saves ⇒ absolute positions carry no meaning across saves.
+Chronology: P-session at 130 °C (per peak: before-block → 25→75→125→175→225 → after-block), then stepwise cooling 110 → 90 → 70. Repeat indices chronological (a few possible swaps). Repeats within a block are back-to-back (measured position scatter 1.8 ms ≈ 0.08 MHz laser). No acquisition clock was available to the archival analysis; block order is its only time coordinate. (A backup carrying file timestamps surfaced 2026-07-22, after every result here was fixed; it is unopened and under a pre-registered audit — docs/PREREGISTRATION_timestamps.md. Nothing below uses it.) Scope horizontal-knob and cavity-reference recenters occurred between saves ⇒ absolute positions carry no meaning across saves.
 
 **Assumption A1 (to confirm, one word)**: scope triggered on the sweep sync, so file time = ramp phase. Evidence: frozen repeat positions; window (1.000 s) ≈ one up-ramp (~43 MHz laser at measured rate, consistent with an earlier "~45 MHz" estimate). If false, Module M2 degrades gracefully to per-trace calibration.
 
@@ -186,7 +186,7 @@ judged novel; the measured coefficients need the session.**
 
 **"The lock drifted at MHz/min and destroyed the centres — that IS why you have
 bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
-is *asserted*, not demonstrated from the archive (no timestamps survive; the
+is *asserted*, not demonstrated from the archive (no clock was available to it; the
 2025 root cause was never established — §8.7.1 item 5). But the session's value
 does not hinge on a *perfect* lock. (a) The pull is a **differential**
 measurement (shift vs power) needing minutes of stability, not hours. (b) The
@@ -1117,7 +1117,7 @@ compresses the cuts follow the priority ranking in §8.0/§8.7.7.
 | 2 | Only 3 densities → 1 residual DOF | t(0.95,1) = 6.31 error multiplier | β_self a bound | ≥5 T blocks (§8.4) |
 | 3 | T monotonic in time (one sweep direction, ever) | density slope exactly collinear with drift | monotonicity guard had to carry the claim | opposite-order days (§8.4) |
 | 4 | Cross-session high-density anchor | joint β collapses 0.036 → 0.014 when folded in (M4d lever test) | high-T lever unusable | 150–170 °C same-session (§8.4) |
-| 5 | No timestamps anywhere | block order the only clock | σ_laser-sharing assumption untestable | log scope clock + notebook (§8.4) |
+| 5 | No acquisition clock available to the analysis | block order the only clock | σ_laser-sharing assumption untestable **as analysed**; a recovered backup is under pre-registered audit (2026-07-22) which may lift this | log scope clock + notebook (§8.4) |
 | 6 | Ruler traces HWP-rotated (AM trick) | monitor reliability ≈ 0; wrong-sign correlation ~2σ | no drift compensator on the archive | β ≈ 1.20 pure-PM null (§8.4; methods §3) |
 | 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | beam-profile first (§8.0 #1) |
 | 8 | ρ(T) never measured | ~8% S₀ drift across the sweep from window filming alone | optics drift masquerades as physics | T_win before AND after, per condition (§8.0 #2) |

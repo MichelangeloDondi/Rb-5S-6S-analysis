@@ -20,6 +20,13 @@ step, 1.000 s window.
 
 ## 2. Campaign design and chronology (experimenter-confirmed)
 
+> Standing as of 2026-07-22: **recollection, not yet checked against a
+> clock.** This section has been public and unchanged in substance since
+> `9190b0b` (2026-07-13, `v1.0.0`); a backup carrying acquisition
+> timestamps surfaced nine days later and is under a pre-registered audit
+> ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
+> predictions are taken verbatim from the text below.
+
 Per peak, in time order, all at 130 °C: **before-rulers → 25 → 75 → 125 →
 175 → 225 mW → after-rulers** (each power = 5 back-to-back RF-off repeats;
 each ruler block = ~5 back-to-back RF-on repeats). After the whole power

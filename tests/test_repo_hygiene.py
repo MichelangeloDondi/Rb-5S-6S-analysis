@@ -181,6 +181,38 @@ def test_no_doubled_words():
 
 
 # --------------------------------------------------------------------------
+# 2b. Retired factual claims
+# --------------------------------------------------------------------------
+# "No timestamps exist anywhere" was true of what the archival analysis could
+# see, and became false on 2026-07-22 when a backup carrying them surfaced. The
+# unqualified form must not return: it is the premise limitation row 5 and the
+# collisional chronology both rest on, and a reader who meets it will not go
+# looking for the audit. The qualified forms ("no acquisition clock was
+# available to the archival analysis", "no clock was available to it") are the
+# supported ones.
+_RETIRED_TIMESTAMP = re.compile(
+    r"no timestamps? (?:exist|surviv|are available)\w*\s+(?:anywhere|at all)?|"
+    r"timestamps? (?:do not|don't) exist", re.I)
+
+
+def test_retired_no_timestamps_claim_stays_retired():
+    hits = []
+    for rel in _prose_files():
+        try:
+            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for i, line in enumerate(txt.split("\n"), 1):
+            if _RETIRED_TIMESTAMP.search(line):
+                hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+    assert not hits, (
+        "the unqualified 'no timestamps exist' claim is back; a backup "
+        "carrying them surfaced 2026-07-22 and is under pre-registered audit "
+        "(docs/PREREGISTRATION_timestamps.md). Say what was available to the "
+        "ARCHIVAL ANALYSIS instead:\n  " + "\n  ".join(hits))
+
+
+# --------------------------------------------------------------------------
 # 3. Names: citation context only
 # --------------------------------------------------------------------------
 # Surnames that must not appear in the published tree in a process role.
