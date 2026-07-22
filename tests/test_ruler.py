@@ -109,3 +109,54 @@ def test_block_combination_scatter_inflation():
     blk2 = combine_block(fits[1:] + [bad])
     assert blk2["delta_err_ms"] > blk["delta_err_ms"]
     assert blk2["block_chi2_red"] > 3.0
+
+
+# --------------------------------------------------------------------------
+# The sweep-linearity bound quoted in fig8 and the prose must match the map.
+# --------------------------------------------------------------------------
+# Raised 2026-07-22: fig8's right panel showed a rightmost error bar of +/-0.74%
+# under a title claiming "<=0.4%", which reads as the figure refuting itself.
+# The bar is NOT anomalous (n=5, 0.9 sigma from the 1/sqrt(n) law, and its
+# CENTRAL value is inside the band) -- but the sparse edge windows cannot test
+# a bound their own errors exceed, so the claim belongs to the well-sampled
+# windows and the number has to be the one they actually support.
+def test_linearity_bound_matches_the_wellsampled_windows():
+    import csv
+    import sys
+    import numpy as np
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    rows = list(csv.DictReader(open(root / "results" / "ruler_nlmap.csv")))
+    n = np.array([int(r["n"]) for r in rows])
+    dev = np.abs(np.array([float(r["rate_rel"]) for r in rows]) - 1.0)
+    err = np.array([float(r["rate_rel_err"]) for r in rows])
+
+    from make_figures import N_WELL_SAMPLED  # the split fig8 draws
+    well = n >= N_WELL_SAMPLED
+    assert well.sum() >= 5, "too few well-sampled windows to set a bound"
+    # the quoted 0.45% must cover them, and not be loose by more than ~0.1%
+    assert dev[well].max() <= 0.0045 + 1e-9, (
+        f"a well-sampled window deviates {dev[well].max():.4%}, beyond the "
+        f"quoted 0.45% -- update the bound in fig8, DATA.md, PAPER1_SKELETON "
+        f"and make_results_ledger.py together")
+    assert dev[well].max() > 0.0035, (
+        "the bound is now loose; requote it nearer the data")
+    # the sparse windows are the ones whose errors exceed the bound: that is
+    # the whole reason they are drawn differently
+    assert err[~well].max() > 0.0045, (
+        "sparse-window errors no longer exceed the bound; the fig8 split by "
+        "N_WELL_SAMPLED may no longer be warranted")
+
+
+def test_fig8_legends_are_opaque():
+    """rcParams sets legend.frameon False globally, which silently defeats
+    framealpha and let plotted data show through fig8's legend text."""
+    import re
+    from pathlib import Path
+    src = (Path(__file__).resolve().parents[1] / "scripts"
+           / "make_figures.py").read_text(encoding="utf-8")
+    for m in re.finditer(r"\.legend\(([^)]*framealpha[^)]*)\)", src):
+        assert "frameon=True" in m.group(1), (
+            "a legend asks for framealpha while legend.frameon is globally "
+            f"False, so it draws no frame at all: {m.group(0)}")

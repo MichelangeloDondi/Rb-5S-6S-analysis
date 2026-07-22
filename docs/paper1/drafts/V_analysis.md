@@ -21,7 +21,7 @@ $$0.04257(5)\ \text{MHz/ms}\quad(\text{laser axis})$$
 the laser detuning; we state the factor of two once and work on the transition
 axis throughout). The rate is measured **per block** from that block's own
 before/after ruler brackets, not assumed global; within a block the sweep is
-linear to better than 0.4%.
+linear to better than 0.45%.
 
 The campaign rate is the inverse-variance mean over the 20 blocks. Its
 $\chi^2_\text{red}=6.8$ (0.65% block-to-block scatter) is genuine
