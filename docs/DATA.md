@@ -33,10 +33,16 @@ each ruler block = ~5 back-to-back RF-on repeats). After the whole power
 session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
 with its own 5-repeat RF-off block and its own ruler block. Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
-0.08 MHz laser). Between saves the experimenter sometimes moved the scope's
-horizontal knob and manually recentered the cavity reference — so **absolute
-trace positions carry no meaning across saves**; each trace's comb is its own
-frequency axis.
+0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
+knob and manually recentered the cavity reference **many times** — the lock
+drifted enough that the transitions had to be brought back inside the scan
+window repeatedly — so **absolute trace positions carry no meaning across
+saves**; each trace's comb is its own frequency axis. **Within a single
+5-repeat block, however, nothing was moved** (experimenter-confirmed,
+2026-07-22). That makes intra-block position scatter a *drift observable*
+rather than an artifact of re-centring, which matters once the block's
+elapsed time is known — see
+[PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md) §7.
 
 Consequence for the collisional analysis: temperature is monotonic with time
 across the whole campaign (130 °C first … 70 °C last), so ordering alone

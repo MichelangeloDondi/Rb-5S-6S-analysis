@@ -11,6 +11,8 @@ fails.
 
 import math
 
+import pytest
+
 from rb5s6s import constants as K
 
 
@@ -76,3 +78,44 @@ def test_no_direct_trapezoid_outside_compat():
             if call.search(py.read_text()):
                 offenders.append(f"{sub}/{py.name}")
     assert not offenders, f"direct numpy trapezoid CALL outside _compat: {offenders}"
+
+
+# --------------------------------------------------------------------------
+# The drift envelope is in tension with the measured intra-block scatter.
+# --------------------------------------------------------------------------
+# The reference was NOT moved within a 5-repeat block (experimenter-confirmed
+# 2026-07-22), so the ~0.08 MHz intra-block position scatter is drift
+# accumulated over the block, not a re-centring artifact. For 5 evenly spaced
+# traces under linear drift the scatter is rate x T x 0.354, so the 4 MHz/min
+# envelope implies a block spanning ~3.4 s -- less than the 5 x 1.000 s of
+# acquisition the block must contain. docs/PREREGISTRATION_timestamps.md 7
+# pre-registers the resulting prediction (D0: the measured rate lands BELOW
+# the envelope). This test pins the arithmetic behind that prediction so the
+# envelope and the scatter cannot drift apart unnoticed.
+INTRA_BLOCK_SCATTER_MHZ = 0.08   # MEASURED-HERE, DATA.md section 2
+SPACING_FACTOR = 0.35355339      # std of [0, .25, .5, .75, 1]
+
+
+def test_drift_envelope_is_in_tension_with_intra_block_scatter():
+    import statistics
+    assert statistics.pstdev([0, .25, .5, .75, 1.0]) == \
+        pytest.approx(SPACING_FACTOR, abs=1e-6)
+    rate_mhz_per_s = K.DRIFT_RATE_LASER_HZ_PER_MIN / 1e6 / 60.0
+    implied_block_s = INTRA_BLOCK_SCATTER_MHZ / (rate_mhz_per_s * SPACING_FACTOR)
+    assert implied_block_s == pytest.approx(3.4, abs=0.15)
+    # the block must physically contain 5 acquisitions of TRACE_DT_S x N points
+    floor_s = 5 * K.TRACE_N_POINTS * K.TRACE_DT_S
+    assert floor_s == pytest.approx(5.0, abs=1e-9)
+    assert implied_block_s < floor_s, (
+        "the tension this test documents has gone away -- if the envelope or "
+        "the scatter changed, docs/PREREGISTRATION_timestamps.md 7 (prediction "
+        "D0) must be revisited, and it may no longer be pre-data")
+
+
+@pytest.mark.parametrize("block_s,lo,hi", [(10, 1.2, 1.5), (60, 0.20, 0.25)])
+def test_preregistered_drift_rate_band(block_s, lo, hi):
+    """The 0.2-1.4 MHz/min band quoted in the pre-registration for 10-60 s
+    blocks. Pinned so the quoted band matches the arithmetic that produced it."""
+    rate = INTRA_BLOCK_SCATTER_MHZ / (block_s * SPACING_FACTOR) * 60
+    assert lo <= rate <= hi
+    assert rate < K.DRIFT_RATE_LASER_HZ_PER_MIN / 1e6
