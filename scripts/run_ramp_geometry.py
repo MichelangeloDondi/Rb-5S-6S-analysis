@@ -75,7 +75,8 @@ def main() -> int:
     print("archival geometry (clean form test -- the larger corrected waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
     print("config AT THE PLACEHOLDER Z_c -- the flip needs r_PMT/M > ~0.9 mm there")
-    print("(measure u, v, PMT diameter; module docstring / PLAN 8.3 #4). Geometry")
+    print("(measure u, v, and the cathode extent ALONG the beam image L_par;")
+    print("Z_c = L_par/(2M) -- module docstring / PLAN 8.3 #4). Geometry")
     print("permitting, the two-config skew comparison is a sign-flip test, not a")
     print("magnitude hunt.")
     return 0

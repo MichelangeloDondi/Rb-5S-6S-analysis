@@ -93,7 +93,7 @@ FORBIDDEN = {
         r"\bcopilot\b", r"\bas an ai\b", r"\blanguage model\b",
     ],
     "aphoristic register": [
-        r"is itself a result", r"is itself the central",
+        r"is itself an?\b", r"is itself the\b",
         r"a test passed, not a tuning", r"the honest headline",
         r"the honest through-line", r"not a hedge but",
         r"cannot be scooped", r"not a failed measurement",
