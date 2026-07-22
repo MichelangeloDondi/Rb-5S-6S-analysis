@@ -11,6 +11,7 @@ config geometry changes, these tests name the documents that must move with
 it.
 """
 
+import re
 from pathlib import Path
 
 import numpy as np
@@ -76,3 +77,47 @@ def test_docs_quote_current_coefficients(relpath, tokens):
                                           (16.0, -0.354)])
 def test_tabulated_g1_match_computation(w0_um, doc_g1):
     assert _g1(_z_ratio(w0_um)) == pytest.approx(doc_g1, abs=2e-3)
+
+
+# Every document that mentions the small-waist skew gain must NOT quote the
+# naive x64 (S_0^3) scaling: the axial average changes the third cumulant's
+# magnitude and, past the crossover, its sign. PLAN itself retracts x64 as
+# "wrong in sign", yet four documents still carried it (found 2026-07-22).
+_X64 = re.compile(r"(×64|x64|64\\times|64\s*×)")
+_RETRACTED = re.compile(r"naive|supersed|wrong in sign|not by the", re.I)
+
+SKEW_DOCS = ["docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
+             "docs/THEORY_NOTE.md", "docs/PLAN.md",
+             "docs/methods/03_the_ac_stark_ramp.md",
+             "docs/methods/08_assumptions_and_outlook.md"]
+
+
+@pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
+def test_no_unretracted_x64_skew_claim(relpath):
+    bad = []
+    for i, line in enumerate((ROOT / relpath).read_text(encoding="utf-8")
+                             .split("\n"), 1):
+        if _X64.search(line) and not _RETRACTED.search(line):
+            bad.append(f"{relpath}:{i}: {line.strip()[:90]}")
+    assert not bad, (
+        "naive x64 small-waist skew scaling quoted without its retraction "
+        "(the axial average changes magnitude AND sign — PLAN 8.3 #4):\n  "
+        + "\n  ".join(bad)
+    )
+
+
+@pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
+def test_sign_flip_claims_carry_the_condition(relpath):
+    """Any document asserting the g1 sign flip must say, somewhere, that it
+    depends on the (unmeasured) collection geometry."""
+    txt = (ROOT / relpath).read_text(encoding="utf-8")
+    asserts_flip = re.search(r"sign[- ]flip|flips? sign|skewness sign", txt, re.I)
+    if not asserts_flip:
+        pytest.skip("document does not assert the flip")
+    carries = re.search(
+        r"conditional|contingent|unmeasured|1\.12|collection geometry|r_?PMT|"
+        r"field of view", txt, re.I)
+    assert carries, (
+        f"{relpath} asserts the g1 sign flip but never states that it is "
+        f"conditional on the unmeasured collection geometry (PLAN 8.3 #4)."
+    )

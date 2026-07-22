@@ -54,7 +54,8 @@ waists, 60 µm and 16 µm, span a $\times16$ intensity range at fixed power).
 Headline shots would be: the AC-Stark shift coefficient with the intensity axis
 anchored by the *differential transit width* (independent of any beam-profile measurement); the
 ramp-law **moment hierarchy** ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
-flip** between the two waists; $\beta_\text{self}$ measured rather than bounded —
+flip** between the two waists (conditional on the collection geometry, which is
+unmeasured — PLAN §8.3 #4); $\beta_\text{self}$ measured rather than bounded —
 which the collision-rate literature says would require the **150–170 °C**
 extension (expected $\beta\sim1$ kHz per $10^{12}$cm$^{-3}$, see
 `docs/LITERATURE.md`); the Lehmann cusp in the cold-dim small-waist corner;

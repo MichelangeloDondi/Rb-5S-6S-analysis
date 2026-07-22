@@ -108,7 +108,7 @@ the archival brackets into measurements, so several sections are written as
   MHz they are **below detection → the archival AC-Stark result is a BOUND, not a
   measurement**, and β_self likewise. The archival result is a bound by design: the archive
   delivers *bounds + a validated method*; the fixed-lock small-waist epoch
-  (S₀ several MHz — skew ~×64 — with the pull resurrected) delivers the *coefficients*.
+  (S₀ several MHz, with the pull no longer absorbed) delivers the *coefficients*.
 - Contributions list (3–4 bullets): the closed-form fringe-averaged two-photon ramp
   law; the drift-immune moment method and its demonstrated reach (bounds now, values in
   a fixed-lock session); the archival bounds + systematics catalogue; the two-epoch/fixed-lock
@@ -269,8 +269,10 @@ states the predictions as future work (P1-min) or is dropped.*
 - **Fixed-lock centres:** first absolute AC-Stark shift (the pull $\propto S_0$,
   un-absorbed) and collisional self-shift. Small waist ($S_0$ 4× larger) makes the
   $\propto S_0^3$ skew a detection; the axial-averaged ramp predicts a **skew
-  sign-flip** with collection window (a config-differential test immune to
-  instrumental asymmetry).
+  sign-flip** between the two waists (a config-differential test immune to
+  instrumental asymmetry) — *conditional on the collection geometry, which is
+  unmeasured: the flip needs an axial field of view $>1.12 z_R$, and plausible
+  layouts fall on either side (PLAN §8.3 #4).*
 - **Same-session high-density (150–170 °C):** the only way to resolve the collisional
   slope (the archive's cross-session lever does not combine — §VI.A).
 - **Interleaved peaks + logged power/timestamps:** cross-peak systematics 30–50% →
