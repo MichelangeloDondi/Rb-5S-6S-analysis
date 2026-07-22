@@ -214,3 +214,100 @@ def test_no_accidental_prefix_collisions():
         "citekey is a strict prefix of another (likely an accidental near-duplicate; "
         "add to INTENTIONAL_PREFIX_PAIRS if deliberate):\n  "
         + "\n  ".join(f"{a} <| {b}" for a, b in collisions))
+
+
+# --------------------------------------------------------------------------
+# Rendering hygiene of the frontmatter (added 2026-07-22)
+#
+# The frontmatter is displayed by GitHub as a table at the top of each note
+# AND is the source for references.bib, so it serves two renderers with
+# opposite needs. Three real defects motivated these checks:
+#   * LaTeX accent macros in author names showed as "Nic Chormaic, S\'ile"
+#     on the public page — a colleague's name, mangled.
+#   * Unquoted arXiv IDs are parsed as floats, so 2201.06000 displayed as
+#     2201.06 (a different, invalid identifier).
+#   * Inline $...$ maths in `summary` renders literally, both in the note and
+#     in the generated holdings table.
+# `title:` and `pages:` are deliberately exempt: they carry publisher/BibTeX
+# form ({Rb}, $6S_{1/2}$, 855--865) because they feed the .bib.
+# --------------------------------------------------------------------------
+
+_BIB_FIELDS = re.compile(r"^\s*(title|pages|journal|booktitle|publisher):")
+
+
+def _lit_lines(key):
+    return (LIT_DIR / f"{key}.md").read_text(encoding="utf-8").split("\n")
+
+
+@pytest.mark.parametrize("key", _lit_keys())
+def test_author_names_are_unicode_not_latex(key):
+    """Author fields must be readable on the page: unicode accents, no macros."""
+    bad, in_authors = [], False
+    for i, line in enumerate(_lit_lines(key), 1):
+        if re.match(r"\s*authors:", line):
+            in_authors = True
+            continue
+        if in_authors and re.match(r"\s*\w+:", line):
+            in_authors = False
+        if in_authors and "\\" in line:
+            bad.append(f"{key}.md:{i}: {line.strip()}")
+    assert not bad, (
+        "LaTeX escape in an author name (use the unicode character — it is "
+        "safe for modern BibTeX and correct on the rendered page):\n  "
+        + "\n  ".join(bad)
+    )
+
+
+@pytest.mark.parametrize("key", _lit_keys())
+def test_arxiv_ids_survive_yaml_parsing(key):
+    """An unquoted NNNN.NNNN0 is a float to YAML and loses its trailing zero."""
+    for i, line in enumerate(_lit_lines(key), 1):
+        m = re.match(r"\s*arxiv:\s*(.+?)\s*$", line)
+        if not m:
+            continue
+        raw = m.group(1)
+        if raw in ("null", "~", ""):
+            continue
+        if raw[0] in "'\"":
+            continue
+        if re.fullmatch(r"\d+\.\d+", raw) and raw.rstrip("0") != raw:
+            pytest.fail(
+                f"{key}.md:{i}: arxiv: {raw} is unquoted and ends in 0, so a "
+                f"YAML parser reads it as the float {float(raw)}. Quote it."
+            )
+
+
+@pytest.mark.parametrize("key", _lit_keys())
+def test_summary_has_no_inline_math(key):
+    """`summary` feeds both the rendered note and the generated holdings
+    table; GitHub shows inline $...$ literally in both."""
+    inline = re.compile(r"(?<!\$)\$(?!\$)[^$\n]{1,80}\$(?!\$)")
+    bad, in_summary = [], False
+    for i, line in enumerate(_lit_lines(key), 1):
+        if re.match(r"\s*summary:", line):
+            in_summary = True
+        elif in_summary and re.match(r"\s*\w+:", line):
+            in_summary = False
+        if in_summary and not _BIB_FIELDS.match(line):
+            for m in inline.finditer(line):
+                bad.append(f"{key}.md:{i}: {m.group(0)}")
+    assert not bad, (
+        "inline maths in `summary` (use unicode: ⁸⁷Rb, 5S₁/₂, →):\n  "
+        + "\n  ".join(bad)
+    )
+
+
+@pytest.mark.parametrize("key", _lit_keys())
+def test_no_process_language_in_lit_notes(key):
+    """docs/lit/ is exempt from the repo-wide phrase guards so that published
+    titles and quoted abstract wording survive verbatim. That exemption must
+    not become a hiding place for drafting-process language or for naming
+    colleagues in a working role."""
+    pat = re.compile(
+        r"\buser(?:'s)?\b|digestion turn|\bas discussed\b|\bper your\b"
+        r"|\bchatgpt\b|\bclaude\b|\banthropic\b|\bZohreh\b|\bEtienne\b",
+        re.I,
+    )
+    bad = [f"{key}.md:{i}: {l.strip()[:100]}"
+           for i, l in enumerate(_lit_lines(key), 1) if pat.search(l)]
+    assert not bad, "process language in a literature note:\n  " + "\n  ".join(bad)
