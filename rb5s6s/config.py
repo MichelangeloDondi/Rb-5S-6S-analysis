@@ -138,7 +138,7 @@ QC_STEP_Z = 7.0
 (QC_STEP_CHUNK_SAMPLES each); a level step shows as an adjacent-chunk median
 jump above QC_STEP_Z times its standard error.
 
-HONEST SCOPE (from the closure tests): this catches SMALL background steps
+SCOPE (from the closure tests): this catches SMALL background steps
 (below ~3 wing sigmas — larger ones classify as signal and leave the mask),
 so it is most effective on dim traces where 3 sigma is a meaningful fraction
 of the line. Large steps under a bright line are indistinguishable from

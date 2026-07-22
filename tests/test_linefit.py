@@ -69,7 +69,7 @@ def test_center_drift_absorbed_not_biasing_width():
 def test_laser_collision_degeneracy_quantified():
     # The crux: at campaign SNR the Gaussian(laser) vs Lorentzian(coll)
     # separation is partially degenerate ("fit-level face of the confound").
-    # Two honest checks: (1) the fit REPORTS the anticorrelation (negative
+    # Two checks: (1) the fit REPORTS the anticorrelation (negative
     # corr), and (2) letting sigma_laser float INFLATES gamma_coll_err vs
     # pinning it — quantifying the degeneracy penalty rather than asserting a
     # magic error floor.
@@ -83,7 +83,7 @@ def test_laser_collision_degeneracy_quantified():
 
 def test_dim_cold_condition_wider_errors():
     # Cold/dim condition (small amplitude): the fit must still run and report
-    # LARGER errors than a bright one (honest error scaling).
+    # LARGER errors than a bright one (correct error scaling).
     bright = fit_condition(*synth_condition(gamma_coll=1.0, sigma_laser=1.0, amp=1.0),
                            T_C=110.0, transit_fwhm=0.9)
     dim = fit_condition(*synth_condition(gamma_coll=1.0, sigma_laser=1.0, amp=0.05,

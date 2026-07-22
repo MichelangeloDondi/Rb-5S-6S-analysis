@@ -129,7 +129,7 @@ consistent with it — a $\chi^2$ across the moment hierarchy. The primary
 observable at each intensity is pre-registered as the lowest-order moment above
 its own noise floor (pull where $S_0$ is small, the skew only where $P^3$ has
 climbed clear of noise); the others are consistency checks with their own error
-bars. This is what makes the fragile small-waist skew defensible: a spurious
+bars. A spurious
 asymmetry from a fit artifact or the diverging-beam geometry will not *also*
 reproduce the correct, more-robust lower-order pull and variance for the same
 $S_0$, so the claim is never "we measured the skew" but "pull, variance and
@@ -234,7 +234,7 @@ was never set by experiment, so this is a theory-vs-theory question that a
 fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle
 outright. The narrative above keeps the established convention until it is resolved.
 
-## 6. Honest novelty position
+## 6. Novelty position relative to prior art
 
 Asymmetric two-photon-like lineshapes from *spatially distributed* AC-Stark
 shifts are **not new**: the cesium parity-violation lineage
@@ -244,12 +244,12 @@ AC-Stark parameter from the asymmetry; and the nearest *construction* is
 [Hamilton *et al.*](lit/hamilton2023.md) (*Phys. Rev. Applied* **19**, 054059 (2023)), a
 retro-reflected Rb vapour two-photon line whose focus-averaged shift integral is
 identical to ours — but collapsed to a single mean shift, never the distribution
-(LITERATURE.md §1). We do **not** claim the existence of the asymmetry. What we believe is specific and defensible:
+(LITERATURE.md §1). We do **not** claim the existence of the asymmetry. What is specific here:
 
 1. the **closed-form** law $f(s)\propto|s|^{n-1}$ for the focused,
    retro-reflected, fringe-*averaged* **standing-wave** geometry — the triangle
    for $n=2$ — versus their fringe-*resolved* numerical Bloch treatment for
-   $n=1$. The honest delineation is fringe-*averaged* vs fringe-*resolved*, **not**
+   $n=1$. The delineation is fringe-*averaged* vs fringe-*resolved*, **not**
    travelling vs standing (both are standing waves): their slow atomic beam
    resolves the $\lambda/2$ fringes, our fast thermal atoms average them (leaving
    only the small resolved tail of §5 / `fringe_tail`);
@@ -274,8 +274,7 @@ the local ramp normalisation up to one factor $1+\zeta^2$) gives the closed form
 $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 \zeta_m(s) = \min \left(\frac{Z_c}{z_R},\ \sqrt{\frac{S_0}{|s|}-1}\right)$$
 
-which we evaluate numerically (`lineshape.stark_ramp_axial`). It has a striking
-consequence: the standardised skewness **changes sign** with the collection
+which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised skewness **changes sign** with the collection
 window — $g_1 \approx +0.57$ at $w_0=60\ \mu$m ($z_R \gg Z_c$) but $\approx
 -0.35$ at $w_0=16\ \mu$m ($z_R \ll Z_c$), crossing zero at $Z_c/z_R\approx1.12$
 — because a long window piles weight at weak out-of-focus shifts. The flip at

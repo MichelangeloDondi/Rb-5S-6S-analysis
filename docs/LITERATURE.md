@@ -12,7 +12,7 @@ we have not yet read in full — cite nothing REPORTED until it is upgraded.
 Wieman et al., PRL 58, 1738 (1987), Cs 6S→7S parity violation. One-photon
 forbidden Stark-induced transition (Yb 408 nm), collimated atomic beam,
 cavity standing wave, numerically fit to extract α = −0.312(34) Hz/(V/cm)²
-— so the asymmetry-as-observable idea EXISTS in prior art; the honest claim
+— so the asymmetry-as-observable idea EXISTS in prior art; the claim
 must be narrower than "first use of the asymmetry".
 
 Delineation (what is genuinely not in Stalnaker/Wieman):
@@ -33,7 +33,7 @@ to two-photon excitation; the same dA ∝ dI/I holds for a thin evanescent
 shell, which is the geometry-independence bridge to Paper 2. CALCULATED
 (README derivation to be extended with this comparison).
 
-**Gift #1 — their FM framework settles our ⟨E²⟩ convention question.**
+**What we take from it:** their FM framework settles our ⟨E²⟩ convention question.
 Their Sec. IV/Fig. 6 analysis: an atom crossing standing-wave fringes sees
 frequency modulation of depth ξ = ½αε₀² at rate Ω/2π = 2v/λ. For us:
 λ/2 ≈ 0.50 µm fringes, axial thermal speed ~280 m/s → Ω/2π ≈ 0.56 GHz,
@@ -191,7 +191,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    as the *measurement channel* — Stalnaker fit full shapes with a good
    reference; precision groups suppressed the shift.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
-   a modest addition to the measured series rather than a flagship result. In the archive it is a bound ~40–100×
+   a modest addition to the measured series rather than a headline result. In the archive it is a bound ~40–100×
    above expectation; a measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
    per-block).
@@ -350,7 +350,7 @@ QUARANTINED (do not cite): the Li dual-interrogation arXiv (real
 compensation-method preprint is 2405.14281, a different paper) and `drago2026`
 (2602.07161, malformed).
 
-**Positioning Paper 1 (our 993 nm 5S→6S).** The line is un-scooped: the only active
+**Positioning Paper 1 (our 993 nm 5S→6S).** No other group is currently working this line: the only active
 group (USAFA/Knize — `ayachitula2024`; and the earlier McLaughlin 5S–6S absolute-
 energy work, *J. Phys. B*-era, VERIFY vol/year via Ayachitula's ref list) reports
 **null AC-Stark and density shifts at ~6 MHz resolution** (up to 10⁴ W/cm², N =
@@ -408,7 +408,7 @@ lineage** beyond the Holstein/Molisch/Fioretti canon (Kaiser & Passerat de Silan
 **Nanofibre bridge to Paper 2** (Gokhroo/Le Kien/Nic Chormaic lineage):
 [gokhroo2022](lit/gokhroo2022.md) (the ONF two-peak pushing-dip analog),
 `li2024perspective` (*J. Phys. Photonics* **6**,
-021002, the flagship ONF review), `sadeghi2026` (ONF cascaded fluorescence,
+021002, the standard ONF review), `sadeghi2026` (ONF cascaded fluorescence,
 power-dependent surface shift, arXiv:2412.01099). The clean cell lineshape is the
 reference against which ONF surface/pushing effects are read.
 

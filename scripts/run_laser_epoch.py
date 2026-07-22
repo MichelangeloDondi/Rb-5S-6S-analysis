@@ -42,7 +42,7 @@ from rb5s6s.constants import transit_fwhm_from_w0  # noqa: E402
 
 def w0_band():
     """sigma_laser (laser axis) needed to reach 5.25 MHz total at each transit
-    prior -- the honest degeneracy band."""
+    prior -- the w0 degeneracy band."""
     from scipy.optimize import brentq
     nu = np.arange(-40, 40, 0.005)
 
@@ -96,7 +96,7 @@ def main() -> int:
         note = "  <- laser could be NARROW" if sl < 0.05 else ""
         print(f"     transit {tr:.1f} MHz ({w0:>10s}): sigma_laser = {sl:.2f} MHz laser axis{note}")
 
-    # Honest upper bound over the OPEN w0: sigma_laser rises with w0 (bigger
+    # Upper bound over the OPEN w0: sigma_laser rises with w0 (bigger
     # waist -> less transit -> more room for laser), so the bound is the band
     # MAXIMUM (the largest plausible w0), not the value at the 50 um prior --
     # which is ~0.8. Reporting the prior value as the bound understates it.

@@ -29,7 +29,7 @@ but C (free collisions) and especially D (free AC-Stark) should NOT clear the
 gate on the drifted-lock archive -- the collisional width is a floor and the
 Stark signature (skew ~ S0^3) is below detection, so adding those parameters
 does not buy enough fit to justify them. A model-comparison that *declined* to
-add the AC-Stark term is the honest, referee-facing statement of "we do not
+add the AC-Stark term is the statement of "we do not
 claim to have measured it here."
 
 The adversarial converse is the real validation (tests/test_model_ladder.py):

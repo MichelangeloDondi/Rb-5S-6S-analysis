@@ -27,7 +27,7 @@ METHOD
    ACF, truncated integrated correlation time tau_int). Fits inflate
    parameter errors by sqrt(tau_int).
 
-HONESTY CAVEAT (documented, tested): second differences HIGH-PASS the
+CAVEAT (documented, tested): second differences HIGH-PASS the
 noise, so correlated noise is underestimated by them. We therefore also
 measure the wing "whiteness ratio" sigma_2nddiff / sigma_direct (=1 for
 white); the sigma(V) law is rescaled by the measured wing ratio so that

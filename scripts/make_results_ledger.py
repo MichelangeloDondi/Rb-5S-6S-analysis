@@ -467,7 +467,7 @@ def main() -> int:
         W(f"- **σ_laser sharing (M4c) — an IN-SAMPLE consistency check, not a proof:** "
           f"at 70/90/110 °C the four peak-blocks agree on one σ_laser (χ²/dof {chis}, "
           f"all $<$1), consistent with the per-T sharing the global fit assumes. Two "
-          f"honest limits: (i) agreement is **necessary, not sufficient** — the four "
+          f"limits: (i) agreement is **necessary, not sufficient** — the four "
           f"peaks could have co-drifted between acquisitions and still agree; only "
           f"logged timestamps (a fixed-lock session) settle it. (ii) It is **in-sample**: the check "
           f"uses 70/90/110 °C and the headline fit uses the *same* three temperatures, "

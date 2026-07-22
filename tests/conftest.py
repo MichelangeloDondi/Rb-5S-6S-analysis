@@ -4,7 +4,7 @@ Pytest configuration: the ``slow`` marker and ``--runslow`` gate.
 A handful of closure tests carry the statistical weight of the whole suite —
 the full-campaign synthetic global-fit recoveries and the transit Monte-Carlo
 scaling/convergence checks. They need large trace counts and 10^5 MC atoms to
-be *rigorous* rather than *flaky*, so they dominate the wall-clock (~90 s of a
+be *thorough* rather than *flaky*, so they dominate the wall-clock (~90 s of a
 ~105 s run).
 
 Rather than under-sample them (which trades rigor for speed and invites

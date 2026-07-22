@@ -197,7 +197,7 @@ def width_profile_2d(freqs: List[np.ndarray], volts: List[np.ndarray],
             prof = profile_for(float(p[0]))
             out = []
             # errstate: macOS Accelerate raises spurious FP flags in matmul on
-            # perfectly finite inputs; the isfinite check below keeps us honest
+            # perfectly finite inputs; the isfinite check below catches non-finite results
             with np.errstate(all="ignore"):
                 for i in range(ntr):
                     g = np.interp(wf[i] - p[1 + i], nu_grid, prof, left=0.0, right=0.0)

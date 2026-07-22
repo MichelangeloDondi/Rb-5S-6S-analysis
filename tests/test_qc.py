@@ -80,7 +80,7 @@ def test_point_glitch_detected():
 
 
 def test_wing_step_detected():
-    # z_step's honest scope (see config.QC_STEP_Z): SMALL background steps on
+    # z_step's scope (see config.QC_STEP_Z): SMALL background steps on
     # strictly signal-free ground — most relevant for dim traces, where a few
     # mV of level jump is a meaningful fraction of the line. Larger steps
     # leave the signal-free mask and are M3's job (fit residuals). Hence a
