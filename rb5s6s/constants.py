@@ -288,4 +288,13 @@ DRIFT_RATE_LASER_HZ_PER_MIN = 4e6
 """Between-scan drift scale of the misconfigured 2025 lock, laser axis.
 ENVELOPE (estimated figure; consistent with wavemeter photo). Within a repeat
 block the measured scatter is only ~0.08 MHz (MEASURED-HERE) because repeats
-were saved back-to-back."""
+were saved back-to-back.
+
+IN TENSION, and possibly measurable. The reference was not moved within a
+5-repeat block (experimenter-confirmed 2026-07-22), so that 0.08 MHz IS the
+drift accumulated over the block. For 5 evenly spaced traces the scatter is
+rate x T x 0.354, so this envelope requires a block spanning only ~3.4 s --
+below the 5 x 1.000 s of acquisition the block must contain. The envelope is
+therefore expected to revise DOWNWARD once block durations are known; the
+recovered-timestamp audit pre-registers that prediction
+(docs/PREREGISTRATION_timestamps.md 7). Treat as an upper bound until then."""

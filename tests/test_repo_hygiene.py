@@ -195,15 +195,27 @@ _RETIRED_TIMESTAMP = re.compile(
     r"timestamps? (?:do not|don't) exist", re.I)
 
 
+# Quoting the retired claim IN ORDER TO retire it is correct and must keep
+# working -- the pre-registration and any results report necessarily do it.
+# Marker may sit on the following line, since prose wraps.
+_RETRACTION_MARKER = re.compile(
+    r"supersed|retired|no longer|corrected|was true of|already false|"
+    r"stated it flatly", re.I)
+
+
 def test_retired_no_timestamps_claim_stays_retired():
     hits = []
     for rel in _prose_files():
         try:
-            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+            lines = (ROOT / rel).read_text(encoding="utf-8",
+                                           errors="replace").split("\n")
         except OSError:
             continue
-        for i, line in enumerate(txt.split("\n"), 1):
-            if _RETIRED_TIMESTAMP.search(line):
+        for i, line in enumerate(lines, 1):
+            if not _RETIRED_TIMESTAMP.search(line):
+                continue
+            scope = line + " " + (lines[i] if i < len(lines) else "")
+            if not _RETRACTION_MARKER.search(scope):
                 hits.append(f"{rel}:{i}: {line.strip()[:90]}")
     assert not hits, (
         "the unqualified 'no timestamps exist' claim is back; a backup "

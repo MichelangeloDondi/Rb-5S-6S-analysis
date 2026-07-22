@@ -102,4 +102,50 @@ archival analysis, with this audit named as pending.
 
 ---
 
+## 7. Amendment, 2026-07-22 — the drift-rate observable
+
+*Added the same day, still **before the backup was opened**, prompted by an
+experimenter clarification. Recorded as an amendment rather than folded into
+the text above so the order of events stays auditable.*
+
+**The clarification.** Re-centring was not occasional: the lock drifted enough
+that the transitions had to be brought back inside the scan window **many
+times**. But **within a single 5-repeat block nothing was moved**.
+
+That second half is what matters. It promotes the intra-block position scatter
+from a nuisance to a **drift measurement** — with the block's elapsed time, the
+2025 lock drift rate becomes measurable from the archive. `PLAN.md` §8.4 lists
+measuring that rate as something only a future session could buy (item ii);
+if the clock survives §3, the archive may yield it retroactively.
+
+**A tension that already exists, stated before looking.** For 5 evenly spaced
+traces under linear drift, scatter $= r \times T \times 0.354$. The measured
+0.08 MHz and the `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of 4 MHz/min
+are mutually consistent only for $T \approx 3.4$ s — shorter than the
+$5\times1.000$ s of acquisition the block must contain. So:
+
+> **Pre-data prediction D0.** The measured archival drift rate will come out
+> **below 4 MHz/min**. For plausible block durations of 10–60 s it lands at
+> **0.2–1.4 MHz/min**, i.e. 3–18× below the current envelope, which will need
+> revising downward.
+
+| # | Derived analysis (scored after P1–P8) | Method | Pre-registered expectation |
+|---|---|---|---|
+| D1 | **Drift rate** of the 2025 lock | intra-block position scatter ÷ block elapsed time, over all blocks | below the 4 MHz/min envelope (D0) |
+| D2 | **Drift model** — linear vs random walk | how intra-block scatter scales with block duration across blocks of differing length: $\propto T$ linear, $\propto\sqrt{T}$ random walk | undeclared; `PLAN.md` §8.9 calls the archive's between-block swing "random/non-monotonic", which favours $\sqrt{T}$, but this is not a prediction |
+| D3 | **Re-centring frequency** consistency | count between-block position discontinuities; compare with (rate × campaign elapsed) ÷ 43 MHz window | the count implied by D1 is consistent with "many times" as reported |
+
+**If D1 and D3 disagree** — a drift rate too low to have forced the re-centring
+the experimenter remembers — then either drift was episodic rather than steady,
+or the intra-block scatter is dominated by lock jitter rather than drift. Both
+are reportable outcomes, not failures; what is *not* permitted is choosing
+between them after seeing which flatters the envelope.
+
+**Scope.** D1–D3 are derived analyses, weaker in standing than P1–P8: they
+depend on the clock being real (§3) and on the no-movement-within-a-block
+protocol being right. They are pre-registered so that the drift rate cannot
+later be quoted as though it had been predicted.
+
+---
+
 [← DATA.md](DATA.md) · [PLAN.md](PLAN.md) · [docs index](../README.md)
