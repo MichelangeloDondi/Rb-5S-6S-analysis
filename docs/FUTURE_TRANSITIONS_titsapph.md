@@ -96,10 +96,13 @@ the current near-IR path does not pass. So:
 - Caveat on signal: the 420 nm branching ratio is favourable for 5D and 7S but
   **dilutes for 8S/9S** (more open decay channels), compounding their blue-edge
   Ti:Sapph disadvantage — so 5D/7S are the high-yield targets, 8S/9S the reach.
-- Practical check first: confirm whether the present 795 nm optics are a *bandpass
-  that passes the signal* or a *notch that rejects the 993 nm pump* — the former is
-  swapped for a 420 nm bandpass; the latter (pump rejection) still needs a new
-  pump-blocking edge at 760–778 nm. Both are routine, but they are different parts.
+- Practical check, now answered (experimenter-confirmed): the present 795 nm
+  optics are a **passband stack**
+  (~50 dB, `DATA.md`), not a pump-rejection notch — so this is the simple branch:
+  the stack is swapped wholesale for a 420 nm bandpass, and no separate
+  760–778 nm pump-blocking edge has to be sourced, provided the replacement's
+  out-of-band blocking at 993 nm is specified (check the datasheet, don't assume:
+  a visible bandpass is not obliged to block deep IR).
 
 - **A note for the 6S line itself: a trapping-free 1.3 µm option.** The 6S cascade's
   *first* step, 6S→5P, emits at **1.32/1.37 µm** — and unlike the 780/795 nm D-line

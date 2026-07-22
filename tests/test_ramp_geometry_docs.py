@@ -185,3 +185,41 @@ def test_no_document_asks_for_a_pmt_diameter():
         "R636-10 cathode is a 3 x 12 mm rectangle (rotation alone changes Z_c "
         "by x4). Following this literally is wrong by up to x8:\n  "
         + "\n  ".join(hits))
+
+
+# The collection path's own facts. The two-lens relay prescription (PLAN 8.3 #4)
+# was written specifying an "800 nm shortpass" in the collimated segment -- that
+# is NIEDDU's detection (LITERATURE.md, correctly attributed there), not this
+# apparatus, which uses a ~50 dB 795 nm PASSBAND stack (DATA.md). Describing our
+# own stack as a shortpass would send someone to the bench with the wrong part,
+# so the attribution has to hold: an unattributed short-pass is the error.
+_SHORTPASS = re.compile(r"short-?pass", re.I)
+_ATTRIB = re.compile(r"nieddu|their |lit/|2019|ONF|nanofib", re.I)
+
+
+def test_shortpass_only_ever_attributed_to_others():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        pytest.skip("not a git checkout")
+    hits = []
+    for rel in [p for p in out.stdout.split("\n") if p]:
+        if rel.startswith("docs/lit/") or rel == "tests/test_ramp_geometry_docs.py":
+            continue
+        try:
+            lines = (ROOT / rel).read_text(encoding="utf-8",
+                                           errors="replace").split("\n")
+        except OSError:
+            continue
+        for i, line in enumerate(lines):
+            if not _SHORTPASS.search(line):
+                continue
+            # attribution may sit on the wrapped line before or after
+            ctx = " ".join(lines[max(0, i - 1):i + 2])
+            if not _ATTRIB.search(ctx):
+                hits.append(f"{rel}:{i + 1}: {line.strip()[:90]}")
+    assert not hits, (
+        "a short-pass is described without attribution; THIS apparatus detects "
+        "through a ~50 dB 795 nm PASSBAND stack (DATA.md) -- the 800 nm "
+        "short-pass belongs to Nieddu's ONF setup:\n  " + "\n  ".join(hits))
