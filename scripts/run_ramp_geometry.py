@@ -79,6 +79,48 @@ def main() -> int:
     print("Z_c = L_par/(2M) -- module docstring / PLAN 8.3 #4). Geometry")
     print("permitting, the two-config skew comparison is a sign-flip test, not a")
     print("magnitude hunt.")
+    print()
+    print("=" * 78)
+    print("INSTALL DECISION: cathode orientation  (PLAN §8.3 #4)")
+    zr = {w: np.pi * (w * 1e-6) ** 2 / LAMBDA_LASER_M
+          for w in C.RAMP_GEOMETRY_CONFIGS_UM.values()}
+    w_l, w_s = max(zr), min(zr)
+    short, long_ = C.RAMP_PMT_CATHODE_MM
+    print(f"{'orientation':>20s} {'M':>4s} {'Z_c(mm)':>8s} "
+          f"{'g1@' + str(w_l) + 'um':>9s} {'g1@' + str(w_s) + 'um':>9s} {'flip':>5s}")
+    for label, l_par in (("landscape", long_), ("portrait", short)):
+        for mag in C.RAMP_RELAY_MAGNIFICATION_ENVELOPE:
+            z_c = l_par / (2 * mag) * 1e-3
+            a_, b_ = (stark_ramp_axial_moments(1.0, z_c / zr[w])["skew_standardized"]
+                      for w in (w_l, w_s))
+            print(f"{label + ' (' + str(l_par) + ' mm)':>20s} {mag:4.1f} "
+                  f"{z_c * 1e3:8.2f} {a_:+9.3f} {b_:+9.3f} "
+                  f"{'YES' if a_ > 0 > b_ else 'no':>5s}")
+    print()
+    print("Portrait falls BELOW the 0.90 mm flip threshold at every plausible M:")
+    print("it does not weaken the sign-flip test, it removes it. Landscape also")
+    print("keeps the cathode from being the limiting aperture, so the image-plane")
+    print("slit sets Z_c -- which is the knob the sweep below uses.")
+    print()
+    print("=" * 78)
+    print(f"SLIT SCAN at the small waist ({w_s} um): g1(Z_c) at FIXED atoms,")
+    print("power, lock and waist -- only the collection geometry moves.")
+    print(f"{'Z_c(mm)':>9s} {'g1@' + str(w_l) + 'um':>9s} {'g1@' + str(w_s) + 'um':>9s} "
+          f"{'signal@' + str(w_s) + 'um':>12s}")
+    for z_c_mm in (0.5, 1.0, 2.0, 3.0):
+        z_c = z_c_mm * 1e-3
+        a_, b_ = (stark_ramp_axial_moments(1.0, z_c / zr[w])["skew_standardized"]
+                  for w in (w_l, w_s))
+        # two-photon rate per unit length ~ 1/(1+(z/z_R)^2): fraction within +-Z_c
+        frac = 2 * np.arctan(z_c / zr[w_s]) / np.pi
+        print(f"{z_c_mm:9.1f} {a_:+9.3f} {b_:+9.3f} {frac:11.0%}")
+    print()
+    print("g1 walks from POSITIVE to NEGATIVE through zero on a slit alone, at one")
+    print("waist -- a cleaner test than the two-waist flip, which unavoidably moves")
+    print("S0, transit time and sampled density together. The same scan MEASURES the")
+    print("collection profile, so it calibrates its own axis. Caveat: the top-hat")
+    print("collection model and a singlet that aberrates at its working NA -- which")
+    print("is why the scan, not the imaging formula, is the number of record.")
     return 0
 
 
