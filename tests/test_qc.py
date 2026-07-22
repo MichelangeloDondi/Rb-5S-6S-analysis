@@ -208,7 +208,7 @@ def test_loader_rejects_wrong_row_count(tmp_path):
 
 def _rows_with_dropouts(empty_at):
     """2000 campaign-like rows; indices in `empty_at` get no voltage field
-    (the LeCroy 'time-without-voltage' export quirk found in ~180 files)."""
+    (the InfiniiVision 'time-without-voltage' export quirk, ~180 files)."""
     out = []
     for i in range(2000):
         t = -0.5 + i * 0.0005

@@ -282,7 +282,7 @@ def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,
 # --------------------------------------------------------------------------
 # 2025 campaign acquisition facts
 # --------------------------------------------------------------------------
-TRACE_N_POINTS = 2000       # ESTABLISHED (LeCroy WaveSurfer 3104z export; all files)
+TRACE_N_POINTS = 2000       # ESTABLISHED (from the files themselves; all files)
 TRACE_DT_S = 0.5e-3         # s/point => 1.000 s window. ESTABLISHED.
 DRIFT_RATE_LASER_HZ_PER_MIN = 4e6
 """Between-scan drift scale of the misconfigured 2025 lock, laser axis.

@@ -264,3 +264,43 @@ def test_head_commit_message_has_no_generated_trailers():
     banned = ["Co-Authored-By", "Co-authored-by", "Generated with"]
     found = [b for b in banned if b in body]
     assert not found, f"HEAD commit message contains {found}"
+
+
+# --------------------------------------------------------------------------
+# 5. Scope of record: pinned to the export format, not to recollection
+# --------------------------------------------------------------------------
+# The repo attributed the archive to a "LeCroy WaveSurfer 3104z" in six places
+# (docs, constants, the CSV parser's docstrings, a QC test). It was taken on
+# the Agilent/Keysight InfiniiVision DSO-X 3054A -- the LeCroy on the same
+# bench would not trigger. The files settle it without needing anyone's memory:
+# `x-axis,N` / `second,Volt` is the InfiniiVision CSV signature; LeCroy writes
+# a different header block. This test keeps the two consistent.
+# Matching any mention of "LeCroy" and excusing it on nearby context proved too
+# permissive -- a planted "Scope: LeCroy WaveSurfer 3104z" was excused by the
+# correct sentence two lines below it. So match the ATTRIBUTION CONSTRUCTIONS
+# instead: the phrasings that name a LeCroy AS the source of the traces.
+_LECROY_ATTRIB = re.compile(
+    r"scope\s*[:(]\s*(?:teledyne\s+)?lecroy|"
+    r"our scope \(\s*(?:teledyne\s+)?lecroy|"
+    r"lecroy\s+(?:csv|export)|"
+    r"read one lecroy|"
+    r"(?:from|on)\s+(?:the\s+)?lecroy\s+wavesurfer", re.I)
+
+
+def test_no_lecroy_attribution_for_the_archive():
+    hits = []
+    for rel in _prose_files():
+        try:
+            lines = (ROOT / rel).read_text(encoding="utf-8",
+                                           errors="replace").split("\n")
+        except OSError:
+            continue
+        for i, line in enumerate(lines, 1):
+            if _LECROY_ATTRIB.search(line) and not re.search(
+                    r"\bnot\b|instead of|rather than", line, re.I):
+                hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+    assert not hits, (
+        "the archive is attributed to a LeCroy scope; it was taken on the "
+        "Agilent/Keysight InfiniiVision DSO-X 3054A (the CSV header signature "
+        "`x-axis,N`/`second,Volt` proves it, and the LeCroy would not "
+        "trigger):\n  " + "\n  ".join(hits))

@@ -71,7 +71,8 @@ def results_fingerprint(results_dir=None):
 # M0 — ingest & QC
 # --------------------------------------------------------------------------
 CSV_HEADER_LINES = 2
-"""LeCroy export format: 2 header lines ('x-axis,2' / 'second,Volt'), then
+"""Agilent/Keysight InfiniiVision export format: 2 header lines
+('x-axis,N' / 'second,Volt'), then
 time,volts rows. A parse failure on any file must raise, never skip silently."""
 
 QC_BASELINE_LOW_FRACTION = 0.20
@@ -85,7 +86,8 @@ Between this and QC_MIN_VALID_POINTS the trace loads but QC hard-flags it."""
 
 QC_MIN_VALID_POINTS = 1990
 """Traces with fewer valid samples than this are hard-flagged (the benign
-LeCroy edge-dropout quirk costs at most ~4 rows; more means truncation)."""
+InfiniiVision edge-dropout quirk costs at most ~4 rows; more means
+truncation)."""
 
 QC_MAX_INTERIOR_DROPOUTS = 5
 """Interior (non-edge) empty-voltage rows beyond this hard-flag the trace as
@@ -317,18 +319,17 @@ replaces the bare f18 with a two-lens relay plus an image-plane slit, which
 makes Z_c settable hardware and directly measurable (PLAN 8.3 #4)."""
 
 RAMP_PMT_CATHODE_MM = (3.0, 12.0)
-"""ASSUMED R636-10 photocathode rectangle (short, long axis), datasheet
-TPMS1016E.
+"""R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.
 
-*** UNVERIFIED FOR THIS APPARATUS (flagged 2026-07-23). *** The R636-10
-attribution was taken from Nieddu 2019 -- the NANOFIBRE experiment -- and
-assumed to carry over to the vapour-cell bench. It does not obviously: an
-in-campaign photograph (2025-07-18, the setup photos) shows the cell
-fluorescence detector labelled THORLABS PXT1/M, a commercial module with a
-finned heat sink, not a bare side-on tube. Whether that module HOUSES an
-R636-10 or is a different detector entirely is an open question for the
-experimenter. Until it is answered, the 3 x 12 mm rectangle below -- and
-everything that follows from it -- is a WORKING ASSUMPTION, not a fact.
+CONFIRMED for this apparatus (experimenter, 2026-07-23): the module visible
+in the in-campaign photograph, a Thorlabs PXT1/M, HOUSES the R636-10. So the
+3 x 12 mm rectangle stands and the install decision built on it is live. Note
+the tube sits in a commercial housing, so orientation is set by rotating the
+MODULE, not the bare tube -- check the housing's mounting before assuming
+either orientation is equally convenient.
+(The attribution was originally taken from Nieddu 2019, the NANOFIBRE
+experiment, and happened to be right; it was flagged as unverified on
+2026-07-23 and confirmed the same day.)
 
 Which axis lies along the beam image is the install decision: L_par = 12 mm
 ('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. Landscape is the
