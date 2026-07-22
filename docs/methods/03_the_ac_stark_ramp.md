@@ -256,8 +256,11 @@ I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
 With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.59$ MHz (transition) at 225 mW,
 $w_0=50\ \mu$m (the archival prior; it was 1.43 at the old 32 µm nominal),
-$\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m (why the fixed-lock session's
-small waist makes the $\propto S_0^3$ skew measurable). The **sign** is
+$\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m. The on-axis $\propto S_0^3$
+scaling above is the *pure transverse triangle*; at a small waist the axial
+average over the collection window changes the third cumulant's magnitude
+and, past $Z_c/z_R\approx1.12$, its sign, so the small-waist gain is not the
+naive $\times 64$ (§ the geometry discussion below; PLAN §8.3 #4). The **sign** is
 convention-independent — set by $\text{sign}(\Delta\alpha)$, red for Orson's
 published $\Delta\alpha>0$. That sign is itself under adjudication: an
 independent sum-over-states recompute here agrees on magnitude (within 5%) but

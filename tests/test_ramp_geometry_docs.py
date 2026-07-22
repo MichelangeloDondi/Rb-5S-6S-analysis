@@ -148,3 +148,40 @@ def test_results_ledger_is_fresh():
         pytest.fail("docs/RESULTS.md is stale against "
                     "scripts/make_results_ledger.py -- re-run the generator "
                     "and commit the result.")
+
+
+# The registry above is a PRESENCE check: it verifies the correct tokens appear
+# somewhere in each file. That can never catch a WRONG instruction sitting a few
+# lines away -- which is exactly what happened. run_ramp_geometry.py passed its
+# token check while line 78 still printed "measure u, v, PMT diameter" to stdout
+# on every run, one commit after the docstring above it was corrected. Z_c takes
+# the cathode's HALF-extent ALONG the beam image; the R636-10 cathode is a
+# 3 x 12 mm rectangle, so "diameter" is both the wrong shape and off by 2x.
+_BAD_EXTENT = re.compile(
+    r"(?:PMT|photocathode|cathode|active)\s+(?:active\s+)?diameter|"
+    r"diameter\s+of\s+the\s+(?:PMT|photocathode|cathode)", re.I)
+
+
+def test_no_document_asks_for_a_pmt_diameter():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        pytest.skip("not a git checkout")
+    hits = []
+    for rel in [p for p in out.stdout.split("\n") if p]:
+        if rel == "tests/test_ramp_geometry_docs.py":
+            continue
+        try:
+            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for i, line in enumerate(txt.split("\n"), 1):
+            if _BAD_EXTENT.search(line):
+                hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+    assert not hits, (
+        "a document asks the reader to measure a PMT/cathode DIAMETER; Z_c = "
+        "L_par/(2M) takes the active extent ALONG the beam image, and the "
+        "R636-10 cathode is a 3 x 12 mm rectangle (rotation alone changes Z_c "
+        "by x4). Following this literally is wrong by up to x8:\n  "
+        + "\n  ".join(hits))

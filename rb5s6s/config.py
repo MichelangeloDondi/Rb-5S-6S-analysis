@@ -10,7 +10,7 @@ the apparatus. Rules:
   does it. If moving a value changes the physics, it is in the wrong file.
 * Every knob is documented: what it does, why the default, what breaks if you
   push it too far.
-* Result-sensitivity to these knobs is itself a deliverable (the systematics
+* Result-sensitivity to these knobs is reported (the systematics
   scans re-run the pipeline over knob ranges).
 """
 
