@@ -53,7 +53,8 @@ def test_crossover_location_and_flip_condition():
 # (doc file, tokens that must appear while the placeholder geometry stands)
 DOC_TOKENS = [
     ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "r_PMT/M > 1.12 z_R",
-                      "3 × 12 mm", "two-lens relay"]),
+                      "3 × 12 mm", "two-lens relay", "LANDSCAPE",
+                      "+0.402", "−0.421"]),
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "r_PMT/M > ~0.9 mm"]),
@@ -257,3 +258,68 @@ def test_no_naive_s0cubed_measurability_claim(relpath):
         "S_0^3 sold as the small-waist measurability gain, with no mention of "
         "the axial average that changes its magnitude and sign in the same "
         "sentence:\n  " + "\n  ".join(bad))
+
+
+# --------------------------------------------------------------------------
+# The install decision (PLAN 8.3 #4): cathode orientation and the slit scan.
+# Both tables are printed by run_ramp_geometry.py and quoted in PLAN; pin them
+# so the recommendation cannot drift from the arithmetic behind it.
+# --------------------------------------------------------------------------
+# (L_par mm, M, Z_c mm, g1 at 60 um, g1 at 16 um)
+ORIENTATION_ROWS = [
+    (12.0, 1.9, 3.16, +0.555, -0.421),
+    (12.0, 2.8, 2.14, +0.563, -0.367),
+    (3.0, 1.9, 0.79, +0.566, +0.103),
+    (3.0, 2.8, 0.54, +0.566, +0.367),
+]
+
+
+@pytest.mark.parametrize("l_par,mag,zc_mm,g1_l,g1_s", ORIENTATION_ROWS)
+def test_orientation_table_matches_computation(l_par, mag, zc_mm, g1_l, g1_s):
+    # g1 from the EXACT geometry, not from the table's rounded Z_c column: at
+    # the tightest row the two differ by 0.004 mm, which is enough to move g1
+    # past the tolerance (g1 is steepest exactly where portrait sits).
+    z_c = l_par / (2 * mag) * 1e-3
+    assert z_c * 1e3 == pytest.approx(zc_mm, abs=5e-3), "table Z_c mis-rounded"
+    assert _g1(z_c / (np.pi * (60e-6) ** 2 / LAMBDA_M)) == \
+        pytest.approx(g1_l, abs=2e-3)
+    assert _g1(z_c / (np.pi * (16e-6) ** 2 / LAMBDA_M)) == \
+        pytest.approx(g1_s, abs=2e-3)
+
+
+def test_portrait_really_forfeits_the_flip():
+    """The recommendation rests on this: portrait is below the crossover at
+    BOTH ends of the magnification envelope, so it is not a weaker test but no
+    test. If the envelope or the crossover moves, the advice must be
+    re-argued."""
+    z_r16 = np.pi * (16e-6) ** 2 / LAMBDA_M
+    for mag in (1.9, 2.8):
+        assert _g1(3.0 / (2 * mag) * 1e-3 / z_r16) > 0, "portrait would flip"
+        assert _g1(12.0 / (2 * mag) * 1e-3 / z_r16) < 0, "landscape would not"
+
+
+# (Z_c mm, g1 at 60 um, g1 at 16 um, collected fraction at 16 um)
+SLIT_ROWS = [(0.5, +0.566, +0.402, 0.35), (1.0, +0.566, -0.071, 0.57),
+             (2.0, +0.564, -0.354, 0.76), (3.0, +0.557, -0.416, 0.83)]
+
+
+@pytest.mark.parametrize("zc_mm,g1_l,g1_s,frac", SLIT_ROWS)
+def test_slit_scan_table_matches_computation(zc_mm, g1_l, g1_s, frac):
+    z_r16 = np.pi * (16e-6) ** 2 / LAMBDA_M
+    assert _g1(zc_mm * 1e-3 / (np.pi * (60e-6) ** 2 / LAMBDA_M)) == \
+        pytest.approx(g1_l, abs=2e-3)
+    assert _g1(zc_mm * 1e-3 / z_r16) == pytest.approx(g1_s, abs=2e-3)
+    # two-photon rate per unit length ~ 1/(1+(z/z_R)^2), so the collected
+    # fraction within +-Z_c is 2 arctan(Z_c/z_R)/pi -- NOT the I^2 form: the
+    # transverse integral of I^2 already supplies one power of w(z)^-2.
+    assert 2 * np.arctan(zc_mm * 1e-3 / z_r16) / np.pi == \
+        pytest.approx(frac, abs=5e-3)
+
+
+def test_slit_scan_actually_crosses_zero_within_its_range():
+    """The scan is worth doing only if the predicted g1 changes SIGN inside the
+    slit range PLAN sends the experimenter to (0.5-3 mm at 16 um)."""
+    z_r16 = np.pi * (16e-6) ** 2 / LAMBDA_M
+    assert _g1(0.5e-3 / z_r16) > 0 and _g1(3.0e-3 / z_r16) < 0
+    crossing = brentq(lambda zc: _g1(zc / z_r16), 0.5e-3, 3.0e-3, xtol=1e-9)
+    assert crossing * 1e3 == pytest.approx(0.90, abs=0.02)

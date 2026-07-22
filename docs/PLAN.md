@@ -732,7 +732,65 @@ order of statistical cost:
    not by tuning. (Imaging formulas are approximate at the f18's working
    NA — a plano-convex singlet aberrates — which is one more reason the
    slit + profile scan, not the geometry calculation, is the number of
-   record.) Geometry permitting, the skew program is a **sign-flip test
+   record.)
+
+   **Install decision — cathode LANDSCAPE (12 mm axis along the beam).**
+   Orientation is a ×4 lever on Z_c and the one collection choice awkward to
+   revisit mid-campaign (rotating the tube re-does the alignment and, worse,
+   breaks the single-fixed-Z_c property that makes the cross-config
+   comparison clean). Numbers from `run_ramp_geometry.py`:
+
+   | orientation | M | Z_c | g1 @ L (60 µm) | g1 @ S (16 µm) | flip |
+   |---|---|---|---|---|---|
+   | landscape (12 mm) | 1.9 | 3.16 mm | +0.555 | **−0.421** | yes |
+   | landscape (12 mm) | 2.8 | 2.14 mm | +0.563 | **−0.367** | yes |
+   | portrait (3 mm) | 1.9 | 0.79 mm | +0.566 | +0.103 | no |
+   | portrait (3 mm) | 2.8 | 0.54 mm | +0.566 | +0.367 | no |
+
+   Portrait sits below the 0.90 mm threshold at every plausible M: it does
+   not weaken the sign-flip test, it removes it. The intuition that a
+   shorter window is *cleaner* (less axial averaging, closer to the pure
+   triangle) is correct, but is better bought by closing the slit, which
+   keeps the option; rotating the tube spends it.
+
+   The margins are asymmetric, which is the sturdier reason to pick
+   landscape: it keeps the flip for any M < 6.6 (2.4× headroom over the
+   envelope's top), whereas portrait would need M < 1.66 to reach the
+   threshold at all — only 14% below the envelope's *bottom*, i.e. f₂ ≲ 30
+   mm, which fights the vignetting margin L2 was sized for. Landscape is
+   robust to how the relay actually gets built; portrait is not.
+
+   On signal: landscape views ×4 the length, so a background uniform along
+   the beam (stray 993, hot-cell IR) also goes ×4, while signal does not —
+   the two-photon rate per unit length is Lorentzian in z, hence
+   concentrated within ~z_R. Collected fraction 3.0% → 11.8% at L (×4.0:
+   the window is the limiting aperture) but 37% → 77% at S (×2.1: the beam
+   is already shorter than the window). So the SNR gain is real at L (≈×2
+   if background-limited) and roughly a wash at S (×1.0 background-limited,
+   up to ×1.4 if signal-shot-noise-limited) — landscape is chosen for the
+   flip and for L's signal, not for S's.
+
+   **Measurement — the slit scan is a skew observable, not just a
+   calibration.** With landscape the cathode is never the limiting
+   aperture, so the slit sets Z_c, and at the SMALL waist alone:
+
+   | slit → Z_c | g1 @ L | g1 @ S | signal @ S |
+   |---|---|---|---|
+   | 0.5 mm | +0.566 | **+0.402** | 35% |
+   | 1.0 mm | +0.566 | −0.071 | 57% |
+   | 2.0 mm | +0.564 | −0.354 | 76% |
+   | 3.0 mm | +0.557 | −0.416 | 83% |
+
+   g1 walks from **+0.40 through zero to −0.42 on a slit alone**, at fixed
+   atoms, power, lock and waist, losing no signal — a cleaner test than the
+   two-waist flip, which unavoidably moves S₀, transit time and sampled
+   density together. Predicted zero crossing at Z_c = 1.12 z_R ≈ 0.90 mm.
+   The same scan measures the collection profile, so it calibrates its own
+   x-axis. Two caveats: the top-hat collection model, and the singlet's
+   aberration at working NA — both reasons the scan, not the imaging
+   formula, is the number of record. Placed at D5 (§8.5).
+
+   Geometry permitting, the skew program is a **sign-flip test
    between configs** — g1 > 0 at L, g1 < 0 at S — which no instrumental
    asymmetry (blind to z_R) can mimic. Two
    caveats travel with it: the naive ×64 small-waist scaling used before
@@ -1000,7 +1058,8 @@ order and a session truncated at any point still leaves the higher-priority boun
 
 - **D1**: telescope install; **collection rebuild — f18 as L1 + relay lens L2
   + image-plane slit, 795 nm bandpass moved into the collimated segment, PMT long
-  (12 mm) cathode axis set along the beam; then the slit scan that *measures*
+  (12 mm) cathode axis set along the beam — LANDSCAPE, the install decision
+  argued in §8.3 #4; then the slit scan that *measures*
   the collection profile and fixes Z_c** (§8.3 #4 — this is the Tier-0 input
   the whole skew program is conditional on, so it precedes the science
   blocks); config L: knife-edge w(z) + camera beam-profile
@@ -1013,7 +1072,12 @@ order and a session truncated at any point still leaves the higher-priority boun
 - **D3**: T grid day B at L, descending; sentinel ×3.
 - **D4**: P grid at L (randomized, ~8 powers), am. Reconfigure → S:
   knife-edge + camera, ρ, pm.
-- **D5**: skew deep-integration session at S (sized per §8.3); P grid at S.
+- **D5**: skew deep-integration session at S (sized per §8.3); **slit scan
+  g1(Z_c) at S — 4–5 settings spanning Z_c ≈ 0.5–3 mm, which walks the
+  predicted g1 from +0.40 through zero (Z_c ≈ 0.90 mm) to −0.42 with atoms,
+  power, lock and waist all held fixed** (§8.3 #4; the same scan measures the
+  collection profile, so it doubles as a cross-check of the D1 calibration at
+  the config that matters); P grid at S.
   Overnight: cool for cusp.
 - **D6**: cold-dim cusp session at S (low T, low P — Lehmann vs Voigt);
   the same data anchor the differential-transit intensity calibration.

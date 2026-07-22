@@ -316,6 +316,19 @@ depends on it, hence an envelope, never a single number. A proposed session
 replaces the bare f18 with a two-lens relay plus an image-plane slit, which
 makes Z_c settable hardware and directly measurable (PLAN 8.3 #4)."""
 
+RAMP_PMT_CATHODE_MM = (3.0, 12.0)
+"""R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.
+Which axis lies along the beam image is the install decision: L_par = 12 mm
+('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. Landscape is the
+recommendation (PLAN 8.3 #4) -- portrait puts Z_c below the 0.90 mm flip
+threshold at every plausible M and forfeits the sign-flip test, while its
+one advantage (less axial averaging) is recovered by closing the slit."""
+
+RAMP_RELAY_MAGNIFICATION_ENVELOPE = (1.9, 2.8)
+"""M = f2/f1 for the proposed two-lens relay, f1 = 18 mm and f2 = 35-50 mm
+(PLAN 8.3 #4). Sets Z_c = L_par/(2M) when the cathode is the limiting
+aperture, or (slit half-width)/M when the image-plane slit is."""
+
 # --------------------------------------------------------------------------
 # Reproducibility
 # --------------------------------------------------------------------------
