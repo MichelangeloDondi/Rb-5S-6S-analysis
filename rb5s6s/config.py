@@ -302,15 +302,20 @@ run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
 pending knife-edge measurement (OPEN)."""
 
 RAMP_COLLECTION_HALFLENGTH_MM_ENVELOPE = (1.0, 2.0, 4.0)
-"""Envelope of the fluorescence-collection axial half-length Z_c: the f=18 mm
-lens + PMT geometry collects light from 'many mm' of the beam (recollection,
-2026-07-11 session), value unmeasured. Z_c is not a free parameter: for the
-side-viewing lens imaging the beam onto the PMT it is the axial field of view
-r_PMT/M, M = v/u with 1/u + 1/v = 1/f, so the lens-beam distance, the
-lens-PMT distance and the PMT active diameter fix it (PLAN sections 8.1 and
-8.3 #4). OPEN until measured; every ramp-geometry moment coefficient —
-including whether the g1 sign flip at config S occurs at all (crossover
-Z_c/z_R ~ 1.12) — depends on it, hence an envelope, never a single number."""
+"""Envelope of the fluorescence-collection axial half-length Z_c: the 2025
+single f=18 mm lens + PMT geometry collects light from 'many mm' of the beam
+(recollection, 2026-07-11 session), value unmeasured. Z_c is not a free
+parameter: for a lens imaging the beam onto the detector it is the axial
+field of view L_par/(2M), M = v/u with 1/u + 1/v = 1/f, where L_par is the
+detector's active extent ALONG the beam image. The PMT of record is the
+side-on Hamamatsu R636-10 (Nieddu 2019; datasheet TPMS1016E), whose cathode
+is a 3 x 12 mm rectangle -- so tube rotation alone changes Z_c by x4, and
+orientation is part of the measurement (PLAN sections 8.1, 8.3 #4). OPEN
+until measured; every ramp-geometry moment coefficient -- including whether
+the g1 sign flip at config S occurs at all (crossover Z_c/z_R ~ 1.12) --
+depends on it, hence an envelope, never a single number. A proposed session
+replaces the bare f18 with a two-lens relay plus an image-plane slit, which
+makes Z_c settable hardware and directly measurable (PLAN 8.3 #4)."""
 
 # --------------------------------------------------------------------------
 # Reproducibility

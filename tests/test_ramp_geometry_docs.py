@@ -50,11 +50,12 @@ def test_crossover_location_and_flip_condition():
 
 # (doc file, tokens that must appear while the placeholder geometry stands)
 DOC_TOKENS = [
-    ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "r_PMT/M > 1.12 z_R"]),
+    ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "r_PMT/M > 1.12 z_R",
+                      "3 × 12 mm", "two-lens relay"]),
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "r_PMT/M > ~0.9 mm"]),
-    ("rb5s6s/config.py", ["1.12", "r_PMT/M"]),
+    ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
     ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "r_\\text{PMT}/M"]),
 ]
 

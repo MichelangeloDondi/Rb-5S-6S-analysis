@@ -379,7 +379,7 @@ error s must satisfy s = k² to hide), a **camera beam-profile z-scan**
 through the same focus for shape / ellipticity / astigmatism / beam-quality M²
 (§8.1b below), **lens separations calipered at both setup
 and teardown** (§8.1a below), retro ratio ρ measured IN SITU at the
-cell position (both directions; return-path clipping differs per waist), collection geometry measured, not only photographed — the lens–beam distance u, the lens–PMT distance v and the PMT active diameter, which fix the axial field of view Z_c = r_PMT/(v/u) that both the transit MC and the ramp-geometry moments (§8.3 #4) consume — and
+cell position (both directions; return-path clipping differs per waist), collection geometry measured, not only photographed — the lens–beam distance u, the lens–detector distance v, the detector's effective aperture AND its rotational orientation: the PMT of record is the side-on Hamamatsu R636-10 ([Nieddu 2019](lit/nieddu2019.md); datasheet TPMS1016E) whose cathode is a 3 × 12 mm rectangle, so the axial field of view Z_c = L∥/(2M) (L∥ = cathode extent lying along the beam image, M = v/u) changes ×4 with tube rotation. These numbers feed both the transit MC and the ramp-geometry moments (§8.3 #4) — and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
 paraxial two-photon rate goes as the squared degree of linear polarization and
 is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measured
@@ -689,22 +689,40 @@ order of statistical cost:
 
    **The flip at S is conditional on the collection geometry, which is
    unmeasured — measure it before pre-registering the skew moments.** Z_c
-   is not a free parameter: for the side-viewing f = 18 mm lens imaging the
-   beam onto the PMT it is the axial field of view in object space,
-   Z_c = r_PMT/M with M = v/u (u = lens–beam, v = lens–PMT, 1/u + 1/v =
-   1/f), so the flip condition at config S reads **r_PMT/M > 1.12 z_R ≈
-   0.9 mm** (z_R = 0.81 mm at w₀ = 16 µm). Plausible layouts land on BOTH
-   sides: short-conjugate/high-M with a small photocathode gives g1 ≈ +0.5
-   (no flip); a 1:1 relay or a large photocathode gives g1 ≈ −0.3 to −0.5
-   (strong flip). Three numbers settle it — u and v with a ruler, the PMT
-   active diameter from the datasheet (D1 setup metrology, §8.1) — and the
-   solid-angle weighting varies <2% across any such window, so the top-hat
-   form is fair: the width is the only unknown. If the measured layout
-   lands near the crossover, move the PMT (change v, hence M) to push |g1|
-   away from zero — the same three numbers make the collection window a
-   design knob rather than a systematic. Geometry permitting, the skew
-   program is a **sign-flip test between configs** — g1 > 0 at L, g1 < 0
-   at S — which no instrumental asymmetry (blind to z_R) can mimic. Two
+   is not a free parameter: for a lens imaging the beam onto the detector
+   it is the axial field of view in object space, Z_c = r_PMT/M with
+   M = v/u (u = lens–beam, v = lens–detector, 1/u + 1/v = 1/f), so the
+   flip condition at config S reads **r_PMT/M > 1.12 z_R ≈ 0.9 mm**
+   (z_R = 0.81 mm at w₀ = 16 µm; for the R636-10's rectangular 3 × 12 mm
+   cathode, r_PMT → L∥/2, the half-extent lying along the beam image —
+   tube rotation changes it ×4, §8.1). Plausible layouts land on BOTH
+   sides: the 2025 single f = 18 mm lens worked close-in (large solid
+   angle) and therefore at high M, where even the long axis gives
+   Z_c ≲ 0.7 mm — no flip; a 1:1 relay gives Z_c up to 6 mm — strong flip.
+   The solid-angle weighting varies <2% across any such window, so the
+   top-hat form is fair: the width is the only unknown.
+
+   **Prescription — collect with a two-lens relay, not the bare f18.**
+   Keep the f = 18 mm as L1 at its focal distance (it sets the collection
+   NA and holds it fixed); add L2 (f₂ ≈ 35–50 mm, 2" to avoid vignetting)
+   focusing onto the PMT, with the 800 nm shortpass in the collimated
+   segment (normal incidence — no angle-shifted cutoff). Then M = f₂/f₁
+   decouples the field of view from the light collection, and swapping L2
+   moves Z_c without touching efficiency — a clean knob. Best practice: an
+   adjustable slit at the image plane in front of the cathode sets
+   Z_c = (slit half-width)/M as hardware, replaces the cathode's soft
+   photometric edge with a sharp one, and *scanning the slit measures the
+   collection profile* this section lists as OPEN. With the 12 mm axis (or
+   the slit) along the beam and f₂ = 35–50 mm: M ≈ 1.9–2.8, Z_c ≈ 2.1–3.1
+   mm → g1 ≈ −0.37 to −0.42 at S, while at L and archival-M the flip is
+   unreachable for ANY achievable field of view (needs Z_c > 12.7 / 8.8 mm
+   ≫ L∥/2 = 6 mm) — so the sign-flip contrast is guaranteed by hardware,
+   not by tuning. (Imaging formulas are approximate at the f18's working
+   NA — a plano-convex singlet aberrates — which is one more reason the
+   slit + profile scan, not the geometry calculation, is the number of
+   record.) Geometry permitting, the skew program is a **sign-flip test
+   between configs** — g1 > 0 at L, g1 < 0 at S — which no instrumental
+   asymmetry (blind to z_R) can mimic. Two
    caveats travel with it: the naive ×64 small-waist scaling used before
    this correction was wrong in sign (the placeholder-geometry third
    cumulant at S is large AND negative), and config S is already saturated
@@ -968,7 +986,12 @@ in roughly eight days at the cell, and which shots depend on which. Run it in th
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: telescope install; config L: knife-edge w(z) + camera beam-profile
+- **D1**: telescope install; **collection rebuild — f18 as L1 + relay lens L2
+  + image-plane slit, shortpass moved into the collimated segment, PMT long
+  (12 mm) cathode axis set along the beam; then the slit scan that *measures*
+  the collection profile and fixes Z_c** (§8.3 #4 — this is the Tier-0 input
+  the whole skew program is conditional on, so it precedes the science
+  blocks); config L: knife-edge w(z) + camera beam-profile
   z-scan (§8.1b), lens separations calipered (§8.1a), ρ in situ, polarization
   defined at the cell + retro-path retardance tomography and the σ/σ–σ
   extinction null (§8.1.1). While the oven settles: the drift-characterization
