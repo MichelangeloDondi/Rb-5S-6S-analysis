@@ -20,6 +20,14 @@ step, 1.000 s window.
 
 ## 2. Campaign design and chronology (experimenter-confirmed)
 
+**When.** The whole archive was acquired in a single run of about **24 hours,
+17–18 July 2025**, with the Ti:Sapph **left running throughout**
+(experimenter-confirmed, 2026-07-22). Continuous operation matters beyond
+provenance: it removes warm-up transients between blocks, and it is the
+physical reason a *shared* laser-noise epoch across neighbouring blocks is
+plausible at all — the assumption `PLAN.md` limitation row 5 records as
+untestable without a clock.
+
 > Standing as of 2026-07-22: **recollection, not yet checked against a
 > clock.** This section has been public and unchanged in substance since
 > `9190b0b` (2026-07-13, `v1.0.0`); a backup carrying acquisition

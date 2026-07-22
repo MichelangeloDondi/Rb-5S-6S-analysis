@@ -148,68 +148,78 @@ later be quoted as though it had been predicted.
 
 ---
 
-## 8. Integrity note, 2026-07-22 — D0 is no longer blind
+## 8. Integrity note, 2026-07-22 — the drift evidence, and a retraction
 
-*Recorded the same day §7 was written, before the backup was opened, and
-before any prediction was scored.*
+*Written before the backup was opened and before any prediction was scored.
+§8 as first drafted drew a conclusion from two wavemeter photographs; the
+campaign dates arrived afterwards and invalidated it. The retraction is kept
+in place rather than edited away.*
 
-Setup photographs added to the working tree include **two independent
-HighFinesse WS/8L long-term wavemeter records**:
+### 8.1 The campaign window (experimenter-confirmed, 2026-07-22)
 
-| record | span | net drift of band centre | rate |
+Acquisition ran **≈24 hours, 17–18 July 2025**, with the Ti:Sapph **left on
+throughout**. This sharpens integrity gate T2 from "the 2025 research-visit
+window" to a **24 h window**, which is a far stronger test of whether the
+recovered mtimes are acquisition times: a mass-copy or a backup date has no
+reason to land inside a specific 24 h span.
+
+The continuous-operation fact matters separately: it removes warm-up
+transients between blocks and is the physical basis on which a *shared*
+$\sigma_\text{laser}$ across nearby blocks is plausible at all — the
+assumption limitation row 5 calls untestable.
+
+### 8.2 Retraction: the "20× too high" reading was from outside the campaign
+
+Setup photographs carry three HighFinesse WS/8L long-term records. Their EXIF
+dates place only one inside the campaign:
+
+| record | EXIF date | relative to campaign | reading |
 |---|---|---|---|
-| 2025-07-23, 993.420860 nm | 3 h 30 min | −36 MHz | **−0.17 MHz/min** |
-| 993.419281 nm (one run, captured at 23 and 53 min) | 53 min | +10 MHz | **+0.19 MHz/min** |
+| IMG_2504 / IMG_2506 | 2025-06-11 | **5 weeks before** | ±0.19 MHz/min, swept (≈30 MHz band) |
+| IMG_3020 | 2025-07-23 | **5 days after** | −0.17 MHz/min, swept (≈32 MHz band) |
+| **IMG_2896** | **2025-07-18 17:03** | **inside** | **≈4.35 MHz/min average**, smooth, unswept |
 
-Against the `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of **4 MHz/min**,
-both are roughly **20× lower** (±20% on an off-screen read).
+An earlier version of this section concluded from the first two that
+`constants.DRIFT_RATE_LASER_HZ_PER_MIN` (4 MHz/min) was "≈20× too high,
+confirmed twice". **That conclusion is withdrawn.** Both records predate or
+postdate acquisition, and the one contemporaneous record is *consistent with
+the envelope*, not 20× below it.
 
-The two agree in *magnitude* and differ in *sign*. That is not steady linear
-drift, which would hold its direction, and the near-equal rates over spans
-differing 4× are not what a random walk gives either (it would predict the
-shorter span's rate to be ≈2× the longer's). Two eyeballed points cannot
-settle a drift model — **D2 remains the test**, and it wants the raw logs or
-the timestamps, not photographs.
+IMG_2896 is a smooth single-valued decay, not an oscillating band: 37 MHz over
+8.5 min, with the local slope falling 9.0 → 2.4 MHz/min across the record. It
+is a **settling transient**, so its asymptote is lower than its average and the
+envelope is best read as covering the post-tuning transient rather than the
+steady state. What the steady rate was *during* acquisition is not established
+by any photograph here.
 
-These are *independent* measurements of the quantity D0 predicts, and they
-were read **after** D0 was written but **before** the timestamp audit runs.
-Therefore:
+### 8.3 D0 and D4: status
 
-- **D0 is downgraded from a blind prediction to a corroborated one.** If the
-  timestamp audit later returns a rate below 4 MHz/min, that outcome must NOT
-  be reported as a successful blind prediction. It was known, from another
-  instrument, in advance.
-- D0's *direction* is independently confirmed; its quoted band (0.2–1.4
-  MHz/min) is already slightly high — the photo sits just below it.
-- The corroboration does not come from the timestamps, so P1–P8 and D1–D3
-  retain their standing. Only D0's epistemic status changes.
+- **D0** (the rate lands below 4 MHz/min) is **no longer corroborated, and not
+  blind either.** The out-of-campaign records suggested it; the in-campaign
+  record points the other way. It stands as written, now genuinely uncertain,
+  and whichever way the audit falls it must be reported that this section
+  argued both sides before the data was read.
+- **D4** (5-repeat block ≈80 s) rests on the 0.08 MHz intra-block scatter being
+  accumulated drift. IMG_2896 reports the wavemeter's own **StdDev = 100 kHz**,
+  the same order as that 0.08 MHz. So the scatter may be short-term jitter
+  rather than drift, in which case D4's premise fails and the block duration
+  does not follow from it. **D4 is downgraded to conditional** on the audit
+  itself showing intra-block scatter growing with block duration (that is D2).
+  If D2 shows no growth, D4 is void rather than failed.
 
-**A sharper prediction, still blind with respect to the timestamps.**
-Combining the photo's drift rate with the measured 0.08 MHz intra-block
-scatter — and assuming that scatter is drift-dominated and drift is locally
-linear — gives a *block duration*:
+### 8.4 What would actually settle it
 
-> **D4.** A 5-repeat block spans **≈80 s** (≈16 s per saved trace), order
-> 1 minute rather than order 5 s. Pass: median block duration in 40–160 s.
+The WLM software writes long-term logs to disk (`File ▸ Recording`). A log
+covering 17–18 July replaces every number above with a drift diary at native
+resolution, from an instrument independent of the filesystem clock — and
+distinguishes jitter from drift directly, which no photograph can. Establishing
+whether those logs exist is worth more than any further reading of screen
+photographs.
 
-D4 is a genuine pre-data prediction about the timestamps and is the sharpest
-test in this document: it takes a number from the wavemeter and predicts one
-from the filesystem, with no free parameter between them. A large miss falsifies
-either the drift-dominated reading of the intra-block scatter or the linear-drift
-assumption, and says so.
-
-**Open questions that gate all of this** (experimenter, not derivable here):
-whether the lock was engaged during these records, whether their dates fall
-inside the acquisition campaign, and whether the oscillation visible in the
-traces is the spectroscopy sweep. If a record is free-running rather than
-locked, it constrains free-running drift and D4 does not follow from it.
-
-**The photographs are the weakest possible form of this evidence.** The WLM
-software writes long-term logs to disk (`File ▸ Recording`). If those logs were
-saved for the campaign, they replace every number in this section with a full
-drift diary at native resolution — settling D1 and D2 directly, and doing it
-from an instrument independent of the filesystem clock. Establishing whether
-they exist is worth more than any further reading of screen photographs.
+Open and gating: whether the lock was engaged during each record, and whether
+the oscillation in the two out-of-campaign traces is the spectroscopy sweep
+(IMG_2896, inside the campaign, shows no such band — which itself needs
+explaining before the three are compared).
 
 ---
 
