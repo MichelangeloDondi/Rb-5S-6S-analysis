@@ -148,4 +148,52 @@ later be quoted as though it had been predicted.
 
 ---
 
+## 8. Integrity note, 2026-07-22 — D0 is no longer blind
+
+*Recorded the same day §7 was written, before the backup was opened, and
+before any prediction was scored.*
+
+Setup photographs added to the working tree include a **HighFinesse WS8
+long-term wavemeter record** (2025-07-23, 993.420860 nm, 3 h 30 min). It shows
+the scan band's centre drifting **≈36 MHz downward over 3.5 h**, i.e.
+
+> **≈0.17 MHz/min** (±20% on an off-screen read), against the
+> `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of **4 MHz/min** — roughly
+> **23× lower**.
+
+This is an *independent* measurement of the quantity D0 predicts, and it was
+read **after** D0 was written but **before** the timestamp audit runs.
+Therefore:
+
+- **D0 is downgraded from a blind prediction to a corroborated one.** If the
+  timestamp audit later returns a rate below 4 MHz/min, that outcome must NOT
+  be reported as a successful blind prediction. It was known, from another
+  instrument, in advance.
+- D0's *direction* is independently confirmed; its quoted band (0.2–1.4
+  MHz/min) is already slightly high — the photo sits just below it.
+- The corroboration does not come from the timestamps, so P1–P8 and D1–D3
+  retain their standing. Only D0's epistemic status changes.
+
+**A sharper prediction, still blind with respect to the timestamps.**
+Combining the photo's drift rate with the measured 0.08 MHz intra-block
+scatter — and assuming that scatter is drift-dominated and drift is locally
+linear — gives a *block duration*:
+
+> **D4.** A 5-repeat block spans **≈80 s** (≈16 s per saved trace), order
+> 1 minute rather than order 5 s. Pass: median block duration in 40–160 s.
+
+D4 is a genuine pre-data prediction about the timestamps and is the sharpest
+test in this document: it takes a number from the wavemeter and predicts one
+from the filesystem, with no free parameter between them. A large miss falsifies
+either the drift-dominated reading of the intra-block scatter or the linear-drift
+assumption, and says so.
+
+**Open questions that gate all of this** (experimenter, not derivable here):
+whether the lock was engaged during that record, whether 2025-07-23 falls inside
+the acquisition campaign, and whether the oscillation visible in the trace is the
+spectroscopy sweep. If the record is free-running rather than locked, it
+constrains the free-running drift and D4 does not follow.
+
+---
+
 [← DATA.md](DATA.md) · [PLAN.md](PLAN.md) · [docs index](../README.md)

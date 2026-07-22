@@ -297,4 +297,13 @@ rate x T x 0.354, so this envelope requires a block spanning only ~3.4 s --
 below the 5 x 1.000 s of acquisition the block must contain. The envelope is
 therefore expected to revise DOWNWARD once block durations are known; the
 recovered-timestamp audit pre-registers that prediction
-(docs/PREREGISTRATION_timestamps.md 7). Treat as an upper bound until then."""
+(docs/PREREGISTRATION_timestamps.md 7). Treat as an upper bound until then.
+
+CONTRADICTED by a 2025-07-23 HighFinesse WS8 long-term record (setup photos,
+993.420860 nm, 3.5 h): the scan-band centre drifts ~36 MHz over 3.5 h, i.e.
+~0.17 MHz/min -- about 23x below this figure, and consistent with the tension
+above rather than with this value. NOT yet changed, because the record's lock
+state and its placement inside the campaign are unconfirmed; see
+docs/PREREGISTRATION_timestamps.md 8. This constant is used only as an
+ENVELOPE (upper bound), so an over-estimate is conservative wherever it
+appears -- but it should not be quoted as an estimate of the actual rate."""
