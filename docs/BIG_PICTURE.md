@@ -150,8 +150,9 @@ HighFinesse wavemeter's own long-term log, running alongside, is an independent
 drift diary for free. **Reading the 6S→5P ~1.3 µm cascade**
 instead of the reabsorbed 795 nm fluorescence — trapping-free detection,
 established on the sibling 5S–5D line ([Hassanin 2023](lit/hassanin2023.md),
-[Beard 2024](lit/beard2024.md)) and plausibly feasible with an IR receiver
-already on the bench — supports the density and amplitude work at the higher
+[Beard 2024](lit/beard2024.md)) and plausibly feasible with the IR receiver
+already on the bench — a New Focus 2153 femtowatt photoreceiver, gain to
+2×10¹¹ V/A over DC–750 Hz ([APPARATUS.md](APPARATUS.md) §3) — supports the density and amplitude work at the higher
 temperatures item 3 needs. Neither is new physics; both remove a systematic the
 archive had to live with.
 

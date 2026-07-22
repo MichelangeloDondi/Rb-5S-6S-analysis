@@ -11,9 +11,14 @@ vapor cell (retro-reflected geometry), detecting the 795 nm cascade
 fluorescence (6S→5P₁/₂→5S) through 50 dB of 795 nm filtering on a PMT. Four
 hyperfine components, labelled by their wavelengths: 4207 (⁸⁷Rb F=2→2), 4192
 (⁸⁵Rb F=3→3), 4154 (⁸⁵Rb F=2→2), 4121 (⁸⁷Rb F=1→1). The laser (M Squared
-SolsTiS) was scanned slowly across each line; an EOM at exactly 12.5 MHz was
+SolsTiS) was scanned slowly across each line; an EOM at exactly 12.5 MHz —
+confirmed in hardware, both as the generator setting (Tektronix AFG31021 at
+12.500 000 000 0 MHz) and as the EOM's designed resonance on its test
+certificate ([APPARATUS.md](APPARATUS.md) §2) — was
 toggled ON for separate "ruler" traces, whose two-photon comb teeth (6.25 MHz
-apart on the laser axis) calibrate the sweep. The 2025 lock was misconfigured:
+apart on the laser axis) calibrate the sweep. The 2025 lock was misconfigured (the ECD lock is disengaged in every dated
+photograph of the laser control page, leaving no absolute reference —
+[APPARATUS.md](APPARATUS.md) §1.1; no photograph covers the campaign itself):
 line CENTERS drift between scans and carry no metrological meaning; SHAPES
 survive. Scope: LeCroy WaveSurfer 3104z; every trace is 2000 points, 0.5 ms
 step, 1.000 s window.

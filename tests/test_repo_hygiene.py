@@ -152,6 +152,9 @@ def test_no_doubled_words():
     art = re.compile(r"\b(?:an?|the)\s+(?:an?|the)\s", re.I)
     poss = re.compile(r"\b\w+'s\s+(?:an?|the)\s", re.I)
     known_ok = {"had had", "that that"}
+    # A repeated group of DIGITS is not a doubled word: instrument readouts
+    # are quoted as displayed ("12.500 000 000 0 MHz"), and \w matches digits.
+    digits_only = re.compile(r"^[\d\s.,]+$")
     hits = []
     for rel in _prose_files():
         txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
@@ -172,7 +175,7 @@ def test_no_doubled_words():
                               (poss, " (possessive + article)")):
                 for m in rx.finditer(joined):
                     frag = " ".join(m.group(0).split())
-                    if frag.lower() in known_ok:
+                    if frag.lower() in known_ok or digits_only.match(frag):
                         continue
                     # only report if the defect starts on THIS line
                     if m.start() < len(line):
