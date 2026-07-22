@@ -32,7 +32,7 @@ $P^2$", not "confirms $P^2$", and defer the trapping discriminator to the
 interleaved fixed-lock-session data (§VII).
 
 **The ramp asymmetry is a bound, and the low-power skew is shot noise, not the
-ramp (C3c).** These are two distinct quantities and conflating them is the trap.
+ramp (C3c).** These are two distinct quantities and must not be conflated.
 The *ramp's* skew — the asymmetry coefficient of the fitted ramp$\otimes$core
 profile — scales as $S_0^3$ and is predicted below the archival noise floor at
 $\le225$ mW; a symmetric-model fit therefore leaves it undetected, an upper bound
@@ -54,7 +54,7 @@ The width-versus-power data also bound the AC-Stark coefficient itself. We fit a
 single shared $\kappa$ ($S_0=\kappa P$, common to the four components) to the
 four FWHM-versus-power curves, each component floating its own power-independent
 core width. This is only an **upper bound**, and for the same two-epoch reason as
-everywhere else: the drifted lock kills the line centres, so the AC-Stark
+everywhere else: the drifted lock destroys the line centres, so the AC-Stark
 *shift* (the pull $\propto S_0$, the sensitive handle) is absorbed by each scan's
 free centre, leaving only the ramp's $\propto S_0^2$ width broadening — a weak
 handle, since a 0.6 MHz $S_0$ inflates a 5 MHz line by under 0.1 MHz. The fit

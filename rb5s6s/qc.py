@@ -104,7 +104,7 @@ def signal_free_segments(sm_minus_base: np.ndarray, sigma_w: float,
     This is the ONLY territory where slow-structure statistics (steps, LF
     power) are meaningful without a physics model: the 10% wing mask still
     contains the line's smooth tail, whose curvature masquerades as
-    low-frequency noise (lesson learned twice — first by the step detector's
+    low-frequency noise (caught twice — first by the step detector's
     closure test, then by 120 spurious lf_ratio flags on bright real traces)."""
     strict = sm_minus_base < C.QC_STEP_WING_NSIGMA * sigma_w
     idx = np.where(strict)[0]

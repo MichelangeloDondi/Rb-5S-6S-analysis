@@ -32,7 +32,7 @@ does not buy enough fit to justify them. A model-comparison that *declined* to
 add the AC-Stark term is the statement of "we do not
 claim to have measured it here."
 
-The adversarial converse is the real validation (tests/test_model_ladder.py):
+The converse is tested on synthetics (tests/test_model_ladder.py):
 on SYNTHETIC data built WITH a large S0 the ladder must pick D; on synthetic
 data built with S0 = 0 it must stop at C -- i.e. the ladder cannot invent an
 AC-Stark shift that is not there, and cannot miss one that is.

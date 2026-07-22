@@ -115,7 +115,7 @@ $T$ (the trapping test of [§2.7 — The composite model (and what does not ente
 
 ### 4.5 Statistics versus systematics — the measurement-vs-bound rule
 
-A large shared fit can return a beautifully small formal error that is
+A large shared fit can return a very small formal error that is
 nonetheless *wrong*. If you share $\sigma_\text{laser}$ across blocks recorded
 hours apart and the laser width actually drifted between them, the fit will
 absorb that drift into $\gamma_\text{coll}$ and report a confident collisional
@@ -198,7 +198,7 @@ archive it **is** — the free per-scan centres absorb the ramp's pull and
 $\sigma_\text{laser}$ its width, so BIC declines to buy it, which is precisely
 why the archival AC-Stark result is a **bound**, not a measurement (§4.5).
 
-Two guards keep this from being mere blindness. The B→C rung warrants a free
+Two checks qualify this result. The B→C rung warrants a free
 homogeneous *width*, not resolved collisions: that width is separately shown
 (M4) to be a **density-independent floor**, so $\beta_\text{self}$ stays a bound
 regardless. And the *same* ladder, on synthetic data built with a stable lock
@@ -304,14 +304,14 @@ false-detection rate. The result:
   non-monotonic width-vs-density pattern (3/4 real peaks) is the decisive guard
   that forces the BOUND reading regardless (§C1).
 
-So the headline is empirically calibrated: unbiased estimate, a genuinely-95%
+So the headline is empirically calibrated: unbiased estimate, a 95%
 (conservative) bound, and a documented false-detection rate that the
 monotonicity guard suppresses. *Code:* `rb5s6s/coverage.py`, `run_coverage.py`;
 closure `tests/test_coverage.py`; numbers `results/coverage.csv`.
 
 ### 4.12 Why a profile likelihood, not a posterior
 
-The choice is driven by this dataset, not by doctrine:
+Three features of this dataset drive the choice:
 
 1. **The headline is a bound, and a bound is only worth its frequentist
    coverage** — which §4.11 buys by simulation. A credible interval would need
@@ -341,7 +341,7 @@ on it. Both models are fit with the same machinery (`fit_global`) and scored by
 $\text{BIC}=\chi^2+k\ln N$, with $\Delta\text{BIC}=\text{BIC}_\text{block}-\text{BIC}_T$
 ($>0$ favours the shared model).
 
-The result is a lesson in why this must be done carefully. Each trace is a smooth
+The result depends on how the sample size is counted. Each trace is a smooth
 line sampled at $\sim$2000 **correlated** points, so the $\sim$49k raw samples are
 not 49k independent observations. Counting them as such over-weights the per-block
 fit's tiny $\chi^2$ gain and returns $\Delta\text{BIC}\approx-46$ ("per-block

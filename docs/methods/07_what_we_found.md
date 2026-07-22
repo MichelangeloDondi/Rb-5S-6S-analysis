@@ -26,7 +26,7 @@ the fitted $\beta$ an underestimate, so the bound is inflated on the + side
 ($\times1.2$; see `density.py`). (The scatter estimate divides by the DOF,
 not by $n$; using $n$ would tighten the bound $\sim$40% — a directional bug
 fixed 2026-07-12.) A naive global Voigt fit instead reports a
-4–10$\sigma$ "detection" — the [§4.5 — The statistics](06_the_statistics.md) cautionary tale made flesh. This bound is
+4–10$\sigma$ "detection" — the [§4.5 — The statistics](06_the_statistics.md) cautionary tale in practice. This bound is
 the archival data *showing the two-epoch design was necessary*, and is reported as a
 Paper-1 result.
 
@@ -80,7 +80,7 @@ $\sim1.2$ MHz at the $50\ \mu$m prior, so below $w_0\approx38\ \mu$m transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 50 µm prior the laser carries $\sim0.8$ MHz laser-axis. The
 archival data cannot locate that crossover; only a direct beam-profile $w_0$
-can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.) The
+can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
 A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
 ONF starting linewidth for Paper 2.
 
@@ -190,7 +190,7 @@ $J=\tfrac12\to\tfrac12$), so every $F,m_F$ has the same per-atom rate and the
 line *areas* (not heights — heights confound with width) must be pure initial
 population: $S\propto\text{abundance}\times(2F{+}1)$, i.e. within-isotope
 ratios of exactly $5/3$ ($^{87}$Rb) and $7/5$ ($^{85}$Rb). Measured: the
-within-block statistics are superb ($1$–$3$%), but the area ratios swing
+within-block repeatability is $1$–$3$%, but the area ratios swing
 30–50% *between* temperatures, non-monotonically (the 993.4207/993.4121 nm
 *area* ratio runs $1.10\to0.98\to2.53\to1.97$ against a constant $5/3$; the
 slightly different height ratios in the trapping paragraph above tell the

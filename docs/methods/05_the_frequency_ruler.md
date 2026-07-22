@@ -81,7 +81,7 @@ This explains the 2025 design compromise and prescribes its fix:
   put the ruler light at a **different polarization and power than the science
   light** (the reason the ruler traces cannot serve as a hardware-matched
   width monitor for the archive; PLAN §8.4).
-- **The clean fix needs no polarizer at all**: drive the EOM at
+- **The fix needs no polarizer**: drive the EOM at
   $\beta \approx 1.202$ (where $J_0(2\beta)=0$) and the central tooth **nulls
   by coherent pair interference** — the two-photon analogue of carrier
   suppression — leaving a comb $0 : 1.00 : 0.69 : 0.15$ ($k=0,\pm1,\pm2,\pm3$)

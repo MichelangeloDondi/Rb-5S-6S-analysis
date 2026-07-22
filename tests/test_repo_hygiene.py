@@ -138,22 +138,45 @@ def test_no_forbidden_phrases(label):
 def test_no_doubled_words():
     """Catches find/replace wreckage generically ('an a fixed-lock session',
     'measurement measurement', 'fixed-lock fixed-lock') rather than by
-    enumerating the specific breakages of one incident."""
+    enumerating the specific breakages of one incident.
+
+    Scans Markdown AND Python: the first version of this check looked only at
+    prose, and a later substitution pass left six ungrammatical fragments in
+    shipped modules (two of which printed to stdout on every run) that it
+    could not see."""
     dbl = re.compile(r"\b(\w{2,})\s+\1\b", re.I)
+    # article + article ("an a fixed-lock session") and possessive + article
+    # ("the session's a fixed lock") -- both are the signature of substituting
+    # a noun phrase over text that already had a determiner. Checked on
+    # line-JOINED text, because the real breakages straddled a line wrap.
+    art = re.compile(r"\b(?:an?|the)\s+(?:an?|the)\s", re.I)
+    poss = re.compile(r"\b\w+'s\s+(?:an?|the)\s", re.I)
     known_ok = {"had had", "that that"}
     hits = []
     for rel in _prose_files():
         txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
-        in_fence = False
-        for i, line in enumerate(txt.split("\n"), 1):
+        lines, in_fence, kept = txt.split("\n"), False, []
+        for i, line in enumerate(lines, 1):
             if line.lstrip().startswith("```"):
                 in_fence = not in_fence
                 continue
-            if in_fence:
-                continue
-            for m in dbl.finditer(line):
-                if m.group(0).lower() not in known_ok:
-                    hits.append(f"{rel}:{i}: '{m.group(0)}'")
+            if not in_fence:
+                kept.append((i, line))
+        for idx, (i, line) in enumerate(kept):
+            # Join with the following retained line so a wrapped defect is
+            # seen -- but only in prose: consecutive Python statements are
+            # independent, and joining them invents "matplotlib matplotlib".
+            nxt = kept[idx + 1][1] if idx + 1 < len(kept) else ""
+            joined = (line + " " + nxt) if rel.endswith(".md") else line
+            for rx, label in ((dbl, ""), (art, " (article doubling)"),
+                              (poss, " (possessive + article)")):
+                for m in rx.finditer(joined):
+                    frag = " ".join(m.group(0).split())
+                    if frag.lower() in known_ok:
+                        continue
+                    # only report if the defect starts on THIS line
+                    if m.start() < len(line):
+                        hits.append(f"{rel}:{i}: '{frag}'{label}")
     assert not hits, "doubled words:\n  " + "\n  ".join(hits[:20])
 
 

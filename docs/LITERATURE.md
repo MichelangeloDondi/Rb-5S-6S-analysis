@@ -191,7 +191,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    as the *measurement channel* — Stalnaker fit full shapes with a good
    reference; precision groups suppressed the shift.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
-   a modest addition to the measured series rather than a headline result. In the archive it is a bound ~40–100×
+   modest addition to the measured series rather than a headline result. In the archive it is a bound ~40–100×
    above expectation; a measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
    per-block).
