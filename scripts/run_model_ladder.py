@@ -111,7 +111,7 @@ def main() -> int:
     print("  AC-Stark parameters are NOT -- on the drifted archive the free per-scan")
     print("  centres absorb the ramp's pull and sigma_laser absorbs its width, so BIC")
     print("  will not buy the extra parameters. This is the two-epoch design as a")
-    print("  model comparison: the archive BOUNDS these, a fixed-lock session measures")
+    print("  model comparison: the archive BOUNDS these, a fixed-lock session would measure")
     print("  them (the closure test warrants an injected Stark under a stable lock).")
     print("\n  Wrote results/model_ladder.csv.")
     return 0

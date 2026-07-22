@@ -242,7 +242,7 @@ archival bounds refine).
     losses (extra L2 and window passes, mirror reflectivity), never
     characterized for the archive. Residual sensitivity is mirror **tilt**,
     not longitudinal placement (the intermediate beam's z_R ≈ 2.8 m makes the
-    mirror position forgiving to tens of cm). A fixed-lock session measures ρ
+    mirror position forgiving to tens of cm). A fixed-lock session would measure ρ
     in situ (PLAN §8.1).
   * Their detection ([nieddu2019](lit/nieddu2019.md)) is the **780 nm and
     795 nm cascades together** through an 800 nm short-pass (Hamamatsu

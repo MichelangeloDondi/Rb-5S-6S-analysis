@@ -84,7 +84,7 @@ superseded]. Through the §III convention, at the nominal $w_0=50\ \mu$m this
 brackets the differential polarizability at $\Delta\alpha<\sim1200$ a.u.
 (95%), consistent with the computed 1093 — the mapping inheriting the open
 beam waist. The archive therefore does not contradict the computed
-coefficient; a fixed-lock session measures the pull $\propto S_0$ directly,
+coefficient; a fixed-lock session would measure the pull $\propto S_0$ directly,
 and at a smaller waist ($S_0$ several-fold larger), turning this bracket into
 the coefficient (§VII).
 

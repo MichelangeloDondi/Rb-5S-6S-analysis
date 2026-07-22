@@ -118,9 +118,9 @@ $$\frac{\mathrm{Var}(s)}{\langle s\rangle^2}=\frac{1/18}{4/9}=\frac18,
 g_1\equiv\frac{\kappa_3}{\mathrm{Var}(s)^{3/2}}
 =\frac{1/135}{(1/18)^{3/2}}=\frac{18^{3/2}}{135}\approx+0.566$$
 
-A fixed-lock session tests them in order of statistical cost: (1) **mean pull vs
+A fixed-lock session would test them in order of statistical cost: (1) **mean pull vs
 $P$** — the first cumulant, exact and apparatus-independent (§above), first
-order in $S_0$, and the fixed lock makes centers usable; (2) **excess
+order in $S_0$, and a fixed lock would make centers usable; (2) **excess
 variance vs $P^2$** — the symmetric second-moment growth
 $\mathrm{Var}\propto S_0^2$ (exactly what the Cs 6S–8S literature reported as
 a growing Gaussian width); (3) **skewness** — smallest signal, the only
