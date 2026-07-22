@@ -64,7 +64,7 @@ leave-one-**temperature** robustness scan it returns **one $\beta$ per isotope
 carrying three separately-sourced error bars** (statistical, model-form,
 confound/$w_0$). A synthetic-injection closure test (`tests/test_lever_crosscheck`)
 recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
-itself is validated, not just trusted.
+itself is validated by that recovery, not assumed.
 
 The archive's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}16\to{\times}53$), and the lever cross-check
@@ -131,7 +131,7 @@ model-independent:
 3. Claim a **measurement** only if $|\beta_\text{eff}|/\sigma_\text{syst}\ge3$;
    otherwise report a **bound**.
 
-Deciding this rule *before* looking is what separates the honest answer from
+Deciding this rule *before* looking is what separates a defensible answer from
 the overconfident one (see [§5 — What we found (2025 archive)](07_what_we_found.md)). *Code:* `beta.collisional_slope()`,
 `scripts/run_beta_self.py`.
 
@@ -231,7 +231,7 @@ are committed (`branch`, `branch_gap` rows). Taken at face value the shape data
 $\Delta\chi^2 = 476$ over $\sim$4400 points is a $\sim$10% $\chi^2$ change
 ($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel
 model-form imperfection also lives — a **consistency indication, not a
-shape-based $w_0$ measurement**; the knife-edge stays the arbiter, and the
+shape-based $w_0$ measurement**; a direct beam-profile measurement stays the arbiter, and the
 C1/C2 upper bounds are unaffected.
 
 At the anchored branch, the covariance (SVD of the Jacobian,
@@ -264,8 +264,8 @@ the ellipse overlaid.
 So the archive constrains the total width to $\sim$0.1% but the split
 twenty-fold worse — now as a certified-global statement, not a local one: the
 individual widths are genuinely $w_0$-conditional bounds, not measurements,
-and the knife-edge $w_0$ **collapses** the degeneracy — it fixes transit to
-within the knife-edge's own precision, so the split becomes identifiable
+and a measured $w_0$ **collapses** the degeneracy — it fixes transit to
+within that measurement's own precision, so the split becomes identifiable
 within that uncertainty rather than removed exactly (a perfectly-known $w_0$
 would remove it; a real one greatly reduces it). This is the formal statement
 behind the width correlations quoted in
@@ -275,7 +275,7 @@ The same numbers answer *why not fit $w_0$ jointly*: $w_0$ enters the line only
 through this width block (transit $\propto 1/w_0$) and the intensity
 normalization ($\propto 1/w_0^2$), so freeing it adds a fourth member to the one
 subspace the data already cannot split — the fit would return the prior dressed
-as a posterior. $w_0$ is instead measured out of band (the knife-edge) and
+as a posterior. $w_0$ is instead measured out of band (knife-edge and/or camera) and
 propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
 `run_identifiability.py`; closure `tests/test_identifiability.py`; numbers
 `results/identifiability.csv`.
@@ -321,7 +321,7 @@ The choice is driven by this dataset, not by doctrine:
    on $w_0$, and marginalizing folds that prior invisibly into the quoted
    number. Keeping $w_0$ out of the likelihood and quoting an explicit
    $w_0$-band (§C1 of the ledger) keeps the conditionality on the page — and
-   when the knife-edge lands, the band collapses without redoing the inference.
+   when the beam-profile measurement lands, the band collapses without redoing the inference.
 3. **Where the data are weakest, a prior would dominate.** Three densities and
    one residual degree of freedom (§4.5), or a $\chi^2$ flat to first order at
    the $\kappa=0$ rail (C3d): exactly where honesty matters most, a posterior

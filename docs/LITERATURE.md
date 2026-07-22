@@ -89,7 +89,7 @@ needs their exact cell T from the full text). Scaling that self-shift
 10¹² cm⁻³** (ENVELOPE); the unit-conversion, Lindholm–Foley ratio-check, and
 n*-scaling derivation are in the lit file.
 
-Consequences (the honest calibration of our own result):
+Consequences (calibration against the theoretical expectation):
 - The archival bound (< 40–110 kHz per 10¹² cm⁻³) sits **~40–100× above
   the physically expected value** — consistent, but NOT constraining. Paper
   wording must say exactly that; the bound's value is methodological (it
@@ -97,7 +97,7 @@ Consequences (the honest calibration of our own result):
 - **The 70–130 °C lever is insufficient to MEASURE the expected β**:
   ΔN ≈ 2×10¹³ cm⁻³ → Δγ ≈ 20 kHz, invisible under any realistic width
   budget. A real measurement needs **150–170 °C points** (N ≈ 0.7–2.7×10¹⁴
-  cm⁻³ → Δγ ≈ 0.07–0.25 MHz) — an a fixed-lock session shot-list change, subject to
+  cm⁻³ → Δγ ≈ 0.07–0.25 MHz) — a fixed-lock-session shot-list change, subject to
   cell/oven limits. Trapping grows there but affects amplitude, not width.
 - Weber & Niemax, Z. Phys. A 307, 13 (1982) (Rb nS/nD self-broadening
   series) — TO-PULL; it is the n-scaling anchor that makes "6S completes
@@ -112,7 +112,7 @@ Consequences (the honest calibration of our own result):
   resonance-line self-broadening decomposition. **[FEED]** for the
   resonance-vs-vdW contrast in §VI.A; their static+collision-width split
   mirrors our transit(static-ish)/γ_coll(collision) decomposition.
-- *Isotope effect on β (why β₈₅ = β₈₇ is EXPECTED, not a surprise).* [Bala
+- *Isotope effect on β (why β₈₅ = β₈₇ matches the theoretical prediction).* [Bala
   et al. 2026](lit/bala2026.md) give the theoretical isotope-dependence of
   collisional widths/shifts from reduced mass + C₆ + scattering length; in
   the thermal impact regime this predicts a negligible width isotope-effect,
@@ -129,7 +129,7 @@ Consequences (the honest calibration of our own result):
 ## 3. Transit-time lineshape — the analytic pedigree of our transit kernel
 
 Our transit kernel (lineshape.two_sided_exponential, the exp(−|ν|/b) that
-convolves with the natural Lorentzian) is NOT a phenomenological guess — it
+convolves with the natural Lorentzian) follows the established treatment — it
 is the established Doppler-free two-photon transit-time lineshape. Chain:
 
 - [Bordé, C. R. Acad. Sci. Paris B 282, 341 (1976)](lit/borde1976.md) — the
@@ -191,7 +191,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    as the *measurement channel* — Stalnaker fit full shapes with a good
    reference; precision groups suppressed the shift.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
-   gap-filling number, not a headline. In the archive it is a bound ~40–100×
+   a modest addition to the measured series rather than a flagship result. In the archive it is a bound ~40–100×
    above expectation; a measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
    per-block).

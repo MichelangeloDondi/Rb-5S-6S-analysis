@@ -44,8 +44,8 @@ Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
 per-trace nuisances of [§4.2 — The statistics](06_the_statistics.md). It uses the pure triangular ramp
 (`stark_ramp()`); the archival fits keep it because $S_0$ is fixed per power
-and the geometry correction sits far below the 2025 noise. A fixed-lock session
-center-fits swap in `stark_ramp_axial()` (the diverging-beam kernel of [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md))
+and the geometry correction sits far below the 2025 noise. A proposed fixed-lock session's
+center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md))
 once the collection profile is measured. The no-Stark composite shared by the
 $\beta_\text{self}$ and global fits is `composite_profile()` in the same
 module.

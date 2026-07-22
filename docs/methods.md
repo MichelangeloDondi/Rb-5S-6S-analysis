@@ -1,7 +1,7 @@
 # Rb 5S→6S two-photon lineshape analysis
 
 Analysis of the rubidium $5S_{1/2}\to 6S_{1/2}$ two-photon transition at
-993 nm (data taken at OIST in 2025, follow-up planned a fixed-lock session 2026). This
+993 nm (data taken at OIST in 2025; a fixed-lock follow-up session is proposed, not yet scheduled). This
 document doubles as the **methods draft** for the paper: every broadening
 mechanism and every statistical choice is derived rather than asserted, and
 then tied to its implementation in the code. It is written to be read
@@ -10,7 +10,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 
 > **Status (2026-07-12):** the **archival data is exhausted** — every quantity
 > it can yield has been extracted, and each is a documented **bound or null with
-> a named a fixed-lock session measurement that lifts it**; nothing here is an absolute
+> a named fixed-lock-session measurement that would lift it**; nothing here is an absolute
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
 > OPEN prior. That status is stated per-result in §5 **and now machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…), so

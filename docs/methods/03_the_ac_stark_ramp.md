@@ -3,14 +3,19 @@
 ### 2.6 AC-Stark shift — derivation of the triangular "ramp law"
 
 Intense light shifts atomic levels (the AC-Stark or light shift) by an amount
-proportional to the local intensity $I$; here the shift is toward the **red**
-(lower frequency). Different atoms sit at different radii in the beam and so
+proportional to the local intensity $I$. This chapter takes the shift toward the
+**red** (lower frequency), following [Orson *et al.*](../lit/orson2021.md) 2021's
+published $\Delta\alpha$ for this line; note that an independent recompute here
+returns the same magnitude but the *opposite* sign, an open question flagged for
+adjudication in [`THEORY_NOTE.md`](../THEORY_NOTE.md) §5. Nothing in the archival
+results depends on the choice — the shape below and every bound drawn from it are
+sign-immune ("The coefficient", below). Different atoms sit at different radii in the beam and so
 feel different shifts — what does the *line* show? Two facts set it up:
 
 - **Two-photon excitation rate** $\propto I^2$ (each photon contributes one
   power of $I$).
 - **Shift** $s = -\kappa I$ for some constant $\kappa>0$ (red $\Rightarrow$
-  minus).
+  minus, per the convention fixed above).
 
 Take a Gaussian beam, $I(r)=I_0e^{-2r^2/w_0^2}$, and let $u\equiv I/I_0\in(0,1]$.
 The signal contributed by the annulus between $r$ and $r+dr$ is
@@ -26,7 +31,7 @@ so
 $$dS \propto  u^2\cdot\frac{du}{u} = udu$$
 
 The shift at intensity $u$ is $s=-\kappa I_0u \equiv -S_0u$, where
-$S_0=\kappa I_0>0$ is the on-axis (maximum) red shift. Substituting
+$S_0=\kappa I_0>0$ is the on-axis (maximum) shift magnitude. Substituting
 $u=-s/S_0$, the **signal-weighted distribution of shifts** is
 
 $$\boxed{f(s) \propto |s|\quad\text{on}\quad s\in[-S_0,0]}$$
@@ -60,7 +65,7 @@ convolution untouched — the *whole line's* first-moment pull is
 $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 **exactly**, independent of the (unknown) laser/transit widths. These two
 odd cumulants are the clean, apparatus-independent handles, and the mean
-pull is the primary a fixed-lock session observable ([§7 — Assumptions, and where this can go](08_assumptions_and_outlook.md)).
+pull is the primary fixed-lock-session observable ([§7 — Assumptions, and where this can go](08_assumptions_and_outlook.md)).
 
 A literal *standardized* skewness of the full profile is more delicate,
 because the homogeneous Lorentzian has divergent second and higher even
@@ -203,7 +208,7 @@ intermediate beam grows to $\approx3$ mm at $w_0=16\ \mu$m, so return-path
 clipping is the thing to watch (PLAN §8.1).
 
 How much would a departure from $\rho=1$ actually cost? Less than one might
-fear, and the archive partly self-certifies. Since $S_0\propto(1+\rho)$, *any*
+fear, and the archive's own signal quality provides indirect evidence. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.29 and 0.59 MHz — a factor
 of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.63$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
 brackets the whole range, so no archival conclusion turns on it. Better, the
@@ -211,7 +216,7 @@ Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
 a badly mismatched retro would have destroyed the signal long before it
 appreciably moved the shift, so the archive's strong, clean lines are
-themselves evidence that $\rho$ is not small. The asymmetry is worth
+evidence that $\rho$ is not small. The asymmetry is worth
 remembering — the retro is a *signal* risk far more than a *coefficient* risk.
 It matters for a fixed-lock session precisely because the coefficient is then the point:
 $\rho$ is measured in situ, per configuration (return-path clipping differs
@@ -229,12 +234,17 @@ so $\Delta E_i=-\tfrac14\alpha_i E_0^2=-\alpha_i I/(2\varepsilon_0 c)$ and
 $$S_0=\frac{\Delta\alpha\ I_\text{eff}}{2\varepsilon_0 c h},\qquad
 I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
-With $\Delta\alpha=1093$ a.u. this is $S_0=0.59$ MHz (transition) at 225 mW,
+With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.59$ MHz (transition) at 225 mW,
 $w_0=50\ \mu$m (the archival prior; it was 1.43 at the old 32 µm nominal),
 $\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m (why the fixed-lock session's
 small waist makes the $\propto S_0^3$ skew measurable). The **sign** is
-convention-independent — set by $\text{sign}(\Delta\alpha)$, here red
-($\Delta\alpha>0$). *Code:* `lineshape.stark_shift_S0_mhz()`. The full
+convention-independent — set by $\text{sign}(\Delta\alpha)$, red for Orson's
+published $\Delta\alpha>0$. That sign is itself under adjudication: an
+independent sum-over-states recompute here agrees on magnitude (within 5%) but
+returns $\Delta\alpha<0$, i.e. a **blue** shift ([`THEORY_NOTE.md`](../THEORY_NOTE.md)
+§5). Every archival result quoted in this repository is unaffected — the
+asymmetry null is symmetric, and the $S_0$ bound and its prediction band use
+$|\Delta\alpha|$. *Code:* `lineshape.stark_shift_S0_mhz()`. The full
 theorist-facing derivation, novelty position, and the open diverging-beam
 question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
 

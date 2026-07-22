@@ -9,7 +9,7 @@ papers + the snippets in each section.
 
 ## 1. HEADLINE — the transit MC is wrong, and w₀ is ~3× larger than the nominal
 
-**Confirmed, not a hunch.** Lehmann 2021 works a numerical example (NNO, m=44 u,
+**Confirmed by cross-checking against Lehmann's worked example.** Lehmann 2021 works a numerical example (NNO, m=44 u,
 w₀=0.90 mm, T=300 K → transit HWHM **41.2 kHz**, vrms 335 m/s). My analytic
 transit formula
 $$\text{HWHM}_\text{laser}=\frac{v_\text{th}\ln 2}{2\pi w_0},\quad v_\text{th}=\sqrt{2k_BT/m}$$
@@ -47,7 +47,7 @@ right, and two independent things follow:
 **This propagation is DONE** (`docs/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
 headline archival results are unchanged in *kind* (model-independent bounds and
-nulls, gated on the knife-edge measurement); only the w₀-conditional central values
+nulls, gated on a direct beam-profile measurement); only the w₀-conditional central values
 moved (β central ~0.056 → 0.036, σ_laser bound 1.1 → 1.0 laser axis, S₀ pred
 1.43 → 0.59).
 

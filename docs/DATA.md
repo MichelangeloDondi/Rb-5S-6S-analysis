@@ -193,7 +193,7 @@ conclusions:
 - **Its own numbers refute that reading.** At 70–130 °C the first-order Doppler
   FWHM on this line would be 430–466 MHz, whereas the Gaussian it fits is
   σ ≈ 0.81–0.88 MHz, i.e. an FWHM of ≈1.9–2.1 MHz — **~220× narrower than Doppler**.
-  That factor is not an error in the fit; it is the Doppler-free geometry working
+  The ~220x narrowing is the expected consequence of the Doppler-free geometry
   as designed (`methods/01_the_measurement.md`): the first-order shift cancels for every atom,
   which is the entire purpose of retro-reflecting the beam. A Gaussian of ~2 MHz on
   this line therefore cannot be the velocity distribution.
@@ -206,9 +206,9 @@ conclusions:
 - **Consequences for us:** the earlier per-condition widths remain usable as
   order-of-magnitude cross-check targets (their total widths are in the same few-MHz
   range as ours), but none of their *physical interpretations* transfer, and their
-  reduced χ² of 2–5 is consistent with a missing model component. This is the
-  clearest justification for the from-scratch re-derivation: the disagreement is not
-  about fitting quality, it is about which mechanisms are in the model at all.
+  reduced χ² of 2–5 is consistent with a missing model component. The disagreement traces to which
+  mechanisms are in the model at all, not to fitting quality — which is what
+  motivated the from-scratch re-derivation.
 
 - **Scan rate**: comb teeth are ~147 ms apart ⇒ ≈ 0.043 MHz/ms on the laser
   axis (preliminary, finder-level) — ~11× slower than the brief's
@@ -251,8 +251,8 @@ conclusions:
   culprit is **laser-width (σ_laser) drift between the cooling-session blocks
   (~0.06–0.16 MHz)**, comparable to the whole collisional trend. Result:
   β_self < ~0.04–0.11 MHz per 10¹² cm⁻³ (95%, per peak); a clean measurement
-  needs the fixed-lock fixed-lock session — this is the archival data proving
-  the two-epoch design was necessary, a Paper-1 result in itself. NOTE: the
+  needs a fixed-lock session — this is the archival data showing
+  the two-epoch design was necessary. NOTE: the
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   OVERCONFIDENT — they assume one shared σ_laser across blocks and so omit the
   between-block drift the model-independent probe exposes.
@@ -269,7 +269,7 @@ conclusions:
   in-session effect, not a fold artifact, and the ruler rates need no window.
   (Contrast: a single RF-off *line* has no such protection — it simply
   appears twice, which is why only the RF-off fits get a window.)
-- **Off-center-sweep mirror crossings (user-flagged, 2026-07-11).** When the
+- **Off-center-sweep mirror crossings (noted during curation, 2026-07-11).** When the
   triangular sweep is not centered on the transition, the down-ramp re-crosses
   the line, leaving a mirror ~40 MHz from the main peak inside the window.
   Whole-dataset scan: 8 canonical RF-off traces, almost all in **4207** (the
@@ -372,7 +372,7 @@ conclusions:
   are unchanged. An earlier "w₀ ≈ 90 µm" note was a spurious factor-of-2 —
   retracted.
 
-- **Literature provenance dig (2026-07-13, digestion turn A).** The Nieddu 2019 /
+- **Literature provenance dig (2026-07-13).** The Nieddu 2019 /
   Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm) and the resolution
   of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
   `docs/LITERATURE.md` §6a — both external corroborations of the archival w₀ re-pin

@@ -4,7 +4,7 @@
 Beyond the archive, the publishable output depends on two *independent* future
 measurement sessions — **neither scheduled, agreed, nor assigned to anyone**. This
 doc maps papers → scenarios so the writing plan degrades gracefully if either or
-both never happen (which is the branch to plan against, not the exception). Honest
+both never happen — treat that as the default planning case. Honest
 throughout: the archive delivers **bounds + a validated method**, not coefficients
 (see `PAPER1_SKELETON.md` §I) — the measurements need a session.
 
@@ -13,7 +13,7 @@ throughout: the archive delivers **bounds + a validated method**, not coefficien
 1. **The 2025 archive** — in hand, fully analysed. Delivers the drift-immune *method*
    + *bounds* (β_self, σ_laser, S₀ AC-Stark) + the systematics catalogue + the
    transit/w₀ physics. This is the fixed asset; everything else is contingent.
-2. **A fixed-lock cell session** (specified in `PLAN.md` §8) — knife-edge w₀, a
+2. **A fixed-lock cell session** (specified in `PLAN.md` §8) — beam-profile w₀ (knife-edge and/or camera), a
    *stable* lock (line centres come back), same-session high-T (150–170 °C) and
    power up to ~1 W. Turns the archival **brackets into measurements**. *May* extend to
    the Ti:Sapph 5D/7S lines (`FUTURE_TRANSITIONS_titsapph.md`) if the optics set +
@@ -46,12 +46,12 @@ are what a session would unlock, whoever runs it.
 
 | | **no ONF** | **with ONF** |
 |---|---|---|
-| **no a fixed-lock session** | **P1-min** only (1 paper: method + bounds). The safe floor. | **P1-min + P2** (2 papers; P2 uses the *archival* cell as reference — weaker but workable). |
+| **no fixed-lock session** | **P1-min** only (1 paper: method + bounds). The safe floor. | **P1-min + P2** (2 papers; P2 uses the *archival* cell as reference — weaker but workable). |
 | **with a fixed-lock session** | **P1-full** (the flagship). **+ PA/PB/PC** iff the session tunes to 5D/7S (→ up to 4 papers). | **P1-full + P2** (P2 now uses the *fixed-lock-refined* cell reference — the strongest Paper 2). **+ PA/PB/PC** if extended (→ up to 5). |
 
 ## Decision guidance
 
-- **P1 is the anchor and it is not really optional** — the only choice is *when/what
+- **P1 is the anchor** — the open question is *when/what
   form*:
   - **(a) Hold for P1-full** (one combined paper, a fixed-lock session fills §VII). Higher impact;
     defensible because the 5S–6S light shift / β_self is **un-scooped** and the field
@@ -80,7 +80,7 @@ are what a session would unlock, whoever runs it.
 1. **Now → thesis:** write the thesis on the archive = **P1-min content** + the
    fixed-lock/ONF/Ti:Sapph plans as future work. (The analysis is done; this is a
    writing task, not a measurement one.)
-2. **Default first paper = P1-full**, submitted after a successful a fixed-lock session cell
+2. **Default first paper = P1-full**, submitted after a successful fixed-lock cell
    session. Keep P1-min as the fallback if a fixed-lock session slips past a needed deadline.
 3. **Second paper, whichever campaign lands first:** P2 (if ONF) or PB (if a 5D/7S
    Ti:Sapph session). Both reuse the validated pipeline/method.

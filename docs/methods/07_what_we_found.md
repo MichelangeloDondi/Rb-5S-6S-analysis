@@ -27,7 +27,7 @@ the fitted $\beta$ an underestimate, so the bound is inflated on the + side
 not by $n$; using $n$ would tighten the bound $\sim$40% — a directional bug
 fixed 2026-07-12.) A naive global Voigt fit instead reports a
 4–10$\sigma$ "detection" — the [§4.5 — The statistics](06_the_statistics.md) cautionary tale made flesh. This bound is
-the archival data *proving the two-epoch design was necessary*, and is itself a
+the archival data *showing the two-epoch design was necessary*, and is reported as a
 Paper-1 result.
 
 **A hierarchical cross-check ($\beta$ per isotope).** The full fit ([§4.2 — The statistics](06_the_statistics.md),
@@ -79,9 +79,9 @@ at $w_0=32\ \mu$m (which OVERSHOOTS the observed line, excluding 32 µm) but onl
 $\sim1.2$ MHz at the $50\ \mu$m prior, so below $w_0\approx38\ \mu$m transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 50 µm prior the laser carries $\sim0.8$ MHz laser-axis. The
-archival data cannot locate that crossover; only the knife-edge measurement $w_0$
+archival data cannot locate that crossover; only a direct beam-profile $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.) The
-knife-edge $w_0$ (fixing transit) turns this bound into a measurement; meanwhile it is the
+A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
 ONF starting linewidth for Paper 2.
 
 **The power sweep, recast as confirmed predictions (deliverable C3).** At fixed
@@ -105,7 +105,7 @@ vanishing as the line brightens) — a statistical artifact with the *opposite*
 sign and power dependence to the ramp, not a physical asymmetry. So the ramp is
 the genuine null; the significant low-power skew is identified, not unexplained.
 The old "power null" is thus a suite of confirmed predictions — with the
-residual skew correctly attributed to shot noise, not laundered into "zero."
+residual skew attributed to shot noise rather than reported as zero.
 
 (C3d) the same width-vs-power data **bound the AC-Stark coefficient itself**
 (module M4e, `run_stark_sweep`): one shared $\kappa$ ($S_0=\kappa P$) fit to the
@@ -125,7 +125,7 @@ elsewhere). It gives the 95% profile-likelihood bound
 $$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
 sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
 against the computed 1093 ([§3 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
-The honest reading is a conservative bound, not a sensitivity claim: the width
+The defensible reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.59$ without measuring it (an
@@ -175,7 +175,7 @@ $\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.6/-0.1$ across
 peaks — a **statistical null**: three of four are $|\Delta\text{BIC}|<2$
 (the "not worth a mention" band) and the fourth is 3.6 (weak, and it is the
 same peak, 993.4192 nm, whose fits are noisiest elsewhere), against a claim gate of
-$\Delta\text{BIC}\gtrsim10$. The honest statement is that **the archival data
+$\Delta\text{BIC}\gtrsim10$. The defensible statement is that **the archival data
 cannot distinguish a cusped (Lehmann) from a smooth (Voigt) extra-broadening**
 — exactly as the two-epoch design anticipated, since the $\sim2$ MHz bad-lock
 laser Gaussian smears the cusp and the transit/laser split is itself
@@ -198,7 +198,7 @@ same drift story) — that is between-block power/alignment drift, not physics
 (real differential trapping would be smooth in density).
 Two consequences: cross-peak amplitude comparisons in this archive carry
 $\sim$30–50% systematics (per-peak, within-block analyses like M7 are
-unaffected), and the clean degeneracy-law test is an task for the fixed-lock session — measure
+unaffected), and the clean degeneracy-law test is a task for a fixed-lock session — measure
 the four peaks **interleaved**, with power logging.
 
 **Foundational results underpinning all of the above.** The sweep rate is

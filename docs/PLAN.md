@@ -21,7 +21,7 @@ Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark co
 - **Closure testing before real data**: every module passes synthetic-data closure tests (known truth injected, recovered within quoted errors) before touching a real trace. End-to-end: a full synthetic campaign (drift + sweep nonlinearity + noise model included) must return the injected β_self and laser widths inside error bars.
 - **Quarantine**: `4154nm_130c_{025,125,225}mw*` (aborted first attempt) and the non-underscore `4154nm_eom_before/after` brackets are excluded from all headline fits.
 - **Discarded shots**: traces the experimenter rejected at curation time ("seemed quite bad"; they exist only in the old `raw/` dump) live under `data_raw/discarded/` and likewise never enter headline fits — the selection predates the analysis, so honoring it cannot bias results. M0's objective QC runs on them only as an appendix consistency check on the curation.
-- **Engineering**: separate clean repository; physics constants in `rb5s6s/constants.py`, tunables in `rb5s6s/config.py`, nothing numeric hard-coded elsewhere; verbose bus-test documentation (Zohreh must be able to take over); pytest battery + CI on every push; functions/modules per pipeline stage.
+- **Engineering**: separate clean repository; physics constants in `rb5s6s/constants.py`, tunables in `rb5s6s/config.py`, nothing numeric hard-coded elsewhere; verbose bus-test documentation (a new operator must be able to take over); pytest battery + CI on every push; functions/modules per pipeline stage.
 
 ## 2. Data manifest
 
@@ -61,7 +61,7 @@ one σ_laser shared across a peak's T-sweep). The reviewer's proposed extension
 M4 result forces**: σ_laser must NOT be shared across time-separated blocks in
 the 2025 epoch. The model-independent probe showed between-block σ_laser drift
 (~0.06–0.16 MHz) is the dominant systematic; sharing one σ_laser is exactly
-why the global fit reported 4–10σ where the honest answer is a bound. Sharing
+why the global fit reported 4–10σ where the defensible answer is a bound. Sharing
 structure for a future `fit_global`: **β_self per isotope** (per-line as a
 tested variant — collision physics does not license one global β); **transit
 shared globally** (same beam, √T scaling); **s0(P) shared globally** with
@@ -89,7 +89,7 @@ Line centers and absolute frequencies (drift; knob moves); skew as a *measuremen
 1. A1 trigger-sync confirmation (one word).
 2. Peak order within each session (4207→4192→4154→4121?) — refines drift interpolation, not required.
 3. If the aborted 4154 attempt's story ever resurfaces: did the underscore bracket re-take follow it?
-4. **Does the 2025 archive hold a per-peak wavemeter reading?** (asked 2026-07-11). If the wide identification scans logged the HighFinesse value at each of the four peaks, those four readings vs the known hyperfine intervals give a free GHz-baseline linearity check of the 2025 wavemeter (§7.2). Check the archive / ask Zohreh. If absent, this cross-check waits for a fixed-lock session — no loss, since archival centers are dead anyway.
+4. **Does the 2025 archive hold a per-peak wavemeter reading?** (asked 2026-07-11). If the wide identification scans logged the HighFinesse value at each of the four peaks, those four readings vs the known hyperfine intervals give a free GHz-baseline linearity check of the 2025 wavemeter (§7.2). Check the archive, or ask the group. If absent, this cross-check waits for a fixed-lock session — no loss, since archival centers are dead anyway.
 
 ## 6. Verification
 
@@ -102,7 +102,7 @@ is atoms (5S→6S hyperfine centers, ~kHz — Ayachitula 2024) ≫ EOM comb
 (6.25 MHz laser-axis teeth, RF-exact intervals) ≫ HighFinesse wavemeter
 (~10 MHz). The wavemeter is the LEAST accurate reference, so our data
 calibrate the instrument, never the reverse. Absolute wavemeter calibration
-is a near-free **byproduct**, NOT on the critical path — Paper 1's a fixed-lock session
+is a near-free **byproduct**, NOT on the critical path — Paper 1's fixed-lock-session
 targets are frequency *shifts* (AC-Stark vs P, collisional vs density), which
 are differences that ignore the wavemeter's absolute offset; and absolute
 centers belong to Ayachitula 2024 at kHz (a declared non-goal, §4).
@@ -196,7 +196,7 @@ pre-registered bracket veto (§8.4) **excludes** any block whose ruler tooth mov
 proof: Ayachitula (2024), doing precision metrology on **this same transition**,
 reports a lock stable to < 0.5 kHz over 50 min — a stable lock here is
 demonstrated-achievable, not hoped-for. (e) Fail-safe: even if the lock drifts
-again, the D1 knife-edge w₀ + ρ **retroactively sharpen the 2025 archive and
+again, the D1 beam-profile w₀ + ρ **retroactively sharpen the 2025 archive and
 stand alone** (worth doing with only the beam). The worst case is therefore *a
 sharpened archive plus a diagnosed lock*.
 
@@ -325,7 +325,7 @@ measured 2025 failure modes.)
    shift is a quantifiable systematic, one that is not is a limitation you must quote —
    and (ii) the 32 µm **epoch-bridge** repeat to 2025. Budget 1–2 days; the fixed lock
    would remove the archive's *dominant* error (σ_laser drift), so this is not drift
-   rescue. Never trade the high-T lever or the knife-edge for averaging days.
+   rescue. Never trade the high-T lever or the beam-profile measurement for averaging days.
 
 **Honest impact ceiling (aim the effort right):** the **AC-Stark coefficient Δα is the
 robust flagship** (MHz-scale S₀, strong pull under a fixed lock) — point the
@@ -671,7 +671,7 @@ order of statistical cost:
    — LITERATURE.md — but the fringe-*resolved* tail **suppresses** the
    small-waist skew ~25% (THEORY_NOTE §5, `fringe_tail`), same-sign-additive to
    the item-4 divergence correction; the residual ⟨E²⟩ convention factor is
-   fixed in the written derivation + Etienne check). **Session sized for the pessimistic
+   fixed in the written derivation + an external theory check). **Session sized for the pessimistic
    end**: ≥ 15× the 2025-equivalent trace count at one condition (~110 °C,
    225 mW) so even 0.8σ-per-2025-block becomes ≥3σ. Decisive either way.
 4. **Geometry correction at S** (computing it
@@ -683,7 +683,7 @@ order of statistical cost:
    10–40% modified (g1 +0.40 — the −⅔S₀ / +S₀³/135 numbers are the Z→0
    limit and now carry this caveat); and at S **the skewness flips sign**
    (g1 ≈ −0.35; crossover near Z_c/z_R ≈ 1.2): the long window piles weight
-   at weak out-of-focus shifts with a tail toward −S₀. The a fixed-lock session skew
+   at weak out-of-focus shifts with a tail toward −S₀. A fixed-lock session's skew
    program is therefore a **sign-flip test between configs** — g1 > 0 at L,
    g1 < 0 at S, crossover set by the measured collection profile — which no
    instrumental asymmetry (blind to z_R) can mimic. The absolute third
@@ -956,7 +956,7 @@ order and a session truncated at any point still leaves the higher-priority boun
   per dwell (§8.7.4), sentinel ×3 (§8.7.6) (incl. 150/170 °C if oven allows).
 - **D3**: T grid day B at L, descending; sentinel ×3.
 - **D4**: P grid at L (randomized, ~8 powers), am. Reconfigure → S:
-  knife-edge, ρ, pm.
+  knife-edge + camera, ρ, pm.
 - **D5**: skew deep-integration session at S (sized per §8.3); P grid at S.
   Overnight: cool for cusp.
 - **D6**: cold-dim cusp session at S (low T, low P — Lehmann vs Voigt);
@@ -1099,7 +1099,7 @@ drift a direct observable.
 
 | Currency | Attacks | Marginal value at archive numbers | Verdict |
 |----------|---------|-----------------------------------|---------|
-| Knife-edge + ρ + high-T same-session (Tier 0/1) | the systematic floor | converts bounds → absolute measurements | never cut |
+| Beam-profile (knife-edge + camera) + ρ + high-T same-session (Tier 0/1) | the systematic floor | converts bounds → absolute measurements | never cut |
 | Second day, opposite T order | time-monotone bias | removes what NO averaging can; measures the residual | mandatory, costs no settling |
 | More T blocks (to ~6) | DOF + σ_B averaging | ~2.7× from the t quantile alone | the best statistical buy |
 | Interleaves (peaks, mini-P, rulers) | cross-condition systematics | 30–50% → 2–4% at near-zero dwell cost | always on |

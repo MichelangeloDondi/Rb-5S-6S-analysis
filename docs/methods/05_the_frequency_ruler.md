@@ -58,7 +58,7 @@ equally:
   spacing.
 - **Laser drift during a trace** is not a bias but part of the *measured*
   effective rate, and the line fits use their own block's rate — the drift is
-  self-consistently calibrated out, which is the whole point of a per-block
+  self-consistently calibrated out by a per-block
   ruler under a drifting lock.
 
 `figures/fig8_ruler.png` shows a representative trace with its five-tooth comb
@@ -90,7 +90,7 @@ This explains the 2025 design compromise and prescribes its fix:
   $A_{+k}=A_{-k}$ exactly; the 2025 traces violate it (e.g. $1.00$ vs $0.90$
   at $k=\pm1$ on a T-session ruler, with block-dependent central-tooth
   suppression) — the fingerprint of the AM admixture, visible per block. A
-  fixed-lock session can monitor modulation purity live from the tooth
+  fixed-lock session could monitor modulation purity live from the tooth
   asymmetry alone.
 
 ---

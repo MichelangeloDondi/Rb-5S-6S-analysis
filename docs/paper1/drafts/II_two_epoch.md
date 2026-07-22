@@ -37,7 +37,7 @@ confirmed scalings*: the collisional self-broadening and laser-width bounds, the
 power-law confirmations of the ramp model, and the upper bound on the AC-Stark
 coefficient. The complementary **Epoch 2** — a fixed-lock campaign (§VII) — is
 what converts them into measurements: with the centres alive, the first-order
-AC-Stark and collisional self-*shifts* become observable, and a knife-edge
+AC-Stark and collisional self-*shifts* become observable, and a direct beam-profile
 measurement of the beam waist sets the absolute scale that every width inherits.
 
 That last point is the single systematic that runs through the entire paper and
@@ -47,7 +47,7 @@ waist $w_0$ at the interaction region uncertain at the tens-of-percent level
 [OPEN]. Because the transit width scales as $1/w_0$ and the AC-Stark depth as
 $1/w_0^2$, every *absolute* width and shift we quote from the archive is
 conditional on $w_0$; this is the reason those quantities appear throughout as
-bounds rather than values, and why the knife-edge measurement is the campaign's first
+bounds rather than values, and why the beam-profile measurement would be the campaign's first
 task. The two-epoch design is thus not a workaround for a spoiled dataset but a
 deliberate division of labour — the drifted archive establishes the method, the
 systematics, and the bounds; the fixed-lock top-up, on the ground the archive

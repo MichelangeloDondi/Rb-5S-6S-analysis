@@ -1,7 +1,7 @@
 # Exploiting the tunable Ti:Sapph — future transitions and the papers they enable
 
 **Status: strategy / food-for-thought (2026-07-13).** Not a plan of record. The
-premise (user, 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
+premise (recorded 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
 measurement session is not locked to 993 nm — it can reach *other* Rb two-photon
 transitions, "as long as we can reach the frequency and the optics is fine at the
 next frequency." This note maps what that buys us, grounded in the 2024–2026
@@ -18,7 +18,7 @@ Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li–Dou) attacks the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
-that hot transition — and the tunability itself becomes the measurement.
+that hot transition — so wavelength scans across the magic point become the measurement.
 
 ## 2. The transition menu the Ti:Sapph opens (verified)
 
@@ -74,13 +74,13 @@ Three things fall out. (i) **5D and 7S sit in the Ti:Sapph sweet spot** (more po
 easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares ONE
 detection channel** — 420 nm (6P→5S blue fluorescence) serves 5D, 7S, 8S *and* 9S,
 because they all cascade through 6P; only 6S is the near-IR (795 nm) outlier. So
-the detection swap the user flags (the 795 nm filters → a 420 nm bandpass + a
+the detection swap noted above (the 795 nm filters → a 420 nm bandpass + a
 blue-sensitive PMT) is not a marginal tweak — it is the **single gate** that unlocks
 the entire upper ladder at once (see §Detection below). (iii) The intermediate
 detuning now spans **~68×** across a five-rung ladder 5D→7S→8S→9S→6S (1 → 75 THz) —
 a controlled sweep of intermediate-state admixture in one apparatus (§Paper C).
 
-### Detection — "how much does changing the 795 nm filters help?" (user's question)
+### Detection — how much does changing the 795 nm filters help?
 
 A lot, but as an **enabler rather than an optimisation**. The 6S work detects the
 6S→5P→5S cascade at **795/780 nm** (near-IR). Every *upper* transition (5D, 7S, 8S,
@@ -90,7 +90,7 @@ the current near-IR path does not pass. So:
 - To see *any* of the upper-ladder transitions at all, the detection filters must
   change to a **420 nm bandpass** (plus a PMT/APD with useful blue quantum
   efficiency — many near-IR-optimised detectors are poor at 420 nm). This is a
-  hard requirement, not a knob to trim.
+  hard requirement; it cannot be trimmed or optimised around.
 - The payoff is broad: **one 420 nm path serves 5D, 7S, 8S and 9S together** (all
   via 6P→5S), so a single detection upgrade unlocks the whole upper program.
 - Caveat on signal: the 420 nm branching ratio is favourable for 5D and 7S but
@@ -113,7 +113,7 @@ the current near-IR path does not pass. So:
   et al. 2024 (5D→6P, 776 nm) — so it is proven, not speculative. Orthogonal to the
   420 nm upper-ladder swap — this is a 6S-detection refinement, not an enabler.
 
-Net: the filter swap is the price of admission to the upper ladder, and it is a
+Net: the filter swap is required once to reach the upper ladder, and it is a
 *cheap, one-time* price (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
@@ -161,7 +161,7 @@ transitions, including the hot 5D clock line).
   asymmetry sign-flip; (iii) reference-free complement to the active-suppression
   mainstream. The literature sweep found no passive-asymmetry light-shift measurement on any
   focused two-photon line, and none on 5D.
-- **Feasibility flags (user's call).** 778 nm is easy for the Ti:Sapph. BUT: (a)
+- **Feasibility flags (to decide at the bench).** 778 nm is easy for the Ti:Sapph. BUT: (a)
   detection moves to 420 nm (filter + blue PMT); (b) the **near-resonant 5P₃/₂
   intermediate (1 THz)** distorts the two-photon lineshape — the transit/ramp model
   needs the Bjorkholm–Liao intermediate-state term (this is exactly Paper C, so it
@@ -172,7 +172,7 @@ transitions, including the hot 5D clock line).
 - The intermediate-detuning **ladder** — 6S (75 THz, clean) → 9S (70) → 8S (46) →
   7S (10) → 5D (1 THz, near-resonant) — is a controlled **five-rung, ~68× sweep**
   of intermediate-state admixture **in one apparatus, one method** (8S/9S added
-  2026-07-13 per user; they are blue-edge/short-wave-optics reach but fill the gap
+  2026-07-13; they are blue-edge/short-wave-optics reach but fill the gap
   between the clean 6S anchor and the resonant 5D). Walk it with the Ti:Sapph.
 - Test Bjorkholm–Liao 1976 + our transit (Lehmann/Biraben) + ramp model: *how* the
   near-resonant intermediate reshapes the line and the intensity-shift ramp, and
@@ -215,7 +215,7 @@ transition the whole field is fighting, by a method none of them use. Its sellin
 point is orthogonal systematics + no active hardware, and it needs the large-S₀
 small-waist regime to work at all (§Paper A caveat). A safer thesis bet, lower ceiling
 but lower risk, is **Paper B** (the β_self / Δα ladder) — it reuses the exact rig and
-method and cannot be scooped.
+method, so it is unlikely to be scooped.
 
 ## 5. Open feasibility questions for the experimenter (Michelangelo)
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?
