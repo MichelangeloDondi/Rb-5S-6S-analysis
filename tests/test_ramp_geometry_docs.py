@@ -86,6 +86,14 @@ def test_tabulated_g1_match_computation(w0_um, doc_g1):
 # "wrong in sign", yet four documents still carried it (found 2026-07-22).
 _X64 = re.compile(r"(×64|x64|64\\times|64\s*×)")
 _RETRACTED = re.compile(r"naive|supersed|wrong in sign|not by the", re.I)
+# ...and the same claim survives WITHOUT the literal x64, as "the small waist
+# makes the propto S_0^3 skew a detection" (found in PAPER1_SKELETON and
+# methods/03 after the x64 sweep was declared complete). Flag an S_0^3 that is
+# sold as a measurability gain unless the axial average is named nearby.
+_NAIVE_GAIN = re.compile(
+    r"S_?0?[\^_]?3.{0,80}(?:detect|measurab|measurement)|"
+    r"(?:detect|measurab)\w*.{0,80}S_?0?[\^_]?3", re.I | re.S)
+_AXIAL = re.compile(r"axial|sign|1\.12|cumulant|not by the", re.I)
 
 # Every document that carries the claim -- INCLUDING the generated ledger and
 # the generator it comes from. The first version of this list watched only the
@@ -223,3 +231,29 @@ def test_shortpass_only_ever_attributed_to_others():
         "a short-pass is described without attribution; THIS apparatus detects "
         "through a ~50 dB 795 nm PASSBAND stack (DATA.md) -- the 800 nm "
         "short-pass belongs to Nieddu's ONF setup:\n  " + "\n  ".join(hits))
+
+
+@pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
+def test_no_naive_s0cubed_measurability_claim(relpath):
+    """The x64 sweep keyed on the literal number and so missed the same claim
+    written as "the small waist makes the propto S_0^3 skew a detection".
+
+    Scoped to the SENTENCE, not to a proximity window: the first version of this
+    check allowed +/-300 characters of context, which every one of these
+    documents satisfies -- they all discuss the axial average somewhere. A naive
+    sentence sitting directly beside its own retraction passed. The qualifier
+    has to be in the claim's own sentence (or the next), where a reader lifting
+    the sentence will carry it away too."""
+    txt = " ".join((ROOT / relpath).read_text(encoding="utf-8").split())
+    sents = re.split(r"(?<=[.;])\s+", txt)
+    bad = []
+    for i, sent in enumerate(sents):
+        if not _NAIVE_GAIN.search(sent):
+            continue
+        scope = sent + " " + (sents[i + 1] if i + 1 < len(sents) else "")
+        if not _AXIAL.search(scope):
+            bad.append(sent.strip()[:130])
+    assert not bad, (
+        "S_0^3 sold as the small-waist measurability gain, with no mention of "
+        "the axial average that changes its magnitude and sign in the same "
+        "sentence:\n  " + "\n  ".join(bad))
