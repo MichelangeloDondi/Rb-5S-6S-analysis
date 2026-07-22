@@ -153,16 +153,26 @@ later be quoted as though it had been predicted.
 *Recorded the same day §7 was written, before the backup was opened, and
 before any prediction was scored.*
 
-Setup photographs added to the working tree include a **HighFinesse WS8
-long-term wavemeter record** (2025-07-23, 993.420860 nm, 3 h 30 min). It shows
-the scan band's centre drifting **≈36 MHz downward over 3.5 h**, i.e.
+Setup photographs added to the working tree include **two independent
+HighFinesse WS/8L long-term wavemeter records**:
 
-> **≈0.17 MHz/min** (±20% on an off-screen read), against the
-> `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of **4 MHz/min** — roughly
-> **23× lower**.
+| record | span | net drift of band centre | rate |
+|---|---|---|---|
+| 2025-07-23, 993.420860 nm | 3 h 30 min | −36 MHz | **−0.17 MHz/min** |
+| 993.419281 nm (one run, captured at 23 and 53 min) | 53 min | +10 MHz | **+0.19 MHz/min** |
 
-This is an *independent* measurement of the quantity D0 predicts, and it was
-read **after** D0 was written but **before** the timestamp audit runs.
+Against the `constants.DRIFT_RATE_LASER_HZ_PER_MIN` envelope of **4 MHz/min**,
+both are roughly **20× lower** (±20% on an off-screen read).
+
+The two agree in *magnitude* and differ in *sign*. That is not steady linear
+drift, which would hold its direction, and the near-equal rates over spans
+differing 4× are not what a random walk gives either (it would predict the
+shorter span's rate to be ≈2× the longer's). Two eyeballed points cannot
+settle a drift model — **D2 remains the test**, and it wants the raw logs or
+the timestamps, not photographs.
+
+These are *independent* measurements of the quantity D0 predicts, and they
+were read **after** D0 was written but **before** the timestamp audit runs.
 Therefore:
 
 - **D0 is downgraded from a blind prediction to a corroborated one.** If the
@@ -189,10 +199,17 @@ either the drift-dominated reading of the intra-block scatter or the linear-drif
 assumption, and says so.
 
 **Open questions that gate all of this** (experimenter, not derivable here):
-whether the lock was engaged during that record, whether 2025-07-23 falls inside
-the acquisition campaign, and whether the oscillation visible in the trace is the
-spectroscopy sweep. If the record is free-running rather than locked, it
-constrains the free-running drift and D4 does not follow.
+whether the lock was engaged during these records, whether their dates fall
+inside the acquisition campaign, and whether the oscillation visible in the
+traces is the spectroscopy sweep. If a record is free-running rather than
+locked, it constrains free-running drift and D4 does not follow from it.
+
+**The photographs are the weakest possible form of this evidence.** The WLM
+software writes long-term logs to disk (`File ▸ Recording`). If those logs were
+saved for the campaign, they replace every number in this section with a full
+drift diary at native resolution — settling D1 and D2 directly, and doing it
+from an instrument independent of the filesystem clock. Establishing whether
+they exist is worth more than any further reading of screen photographs.
 
 ---
 
