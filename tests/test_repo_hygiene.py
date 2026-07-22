@@ -106,10 +106,12 @@ FORBIDDEN = {
 # there verbatim and must not be edited to satisfy a style rule.
 SKIP_PREFIXES = ("docs/lit/",)
 
-# The two files that DEFINE these rules necessarily quote the phrases they
-# forbid — the style guide as worked examples, this module as patterns. They
-# are the specification, not instances of the problem.
-SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py"}
+# Files that DEFINE these rules necessarily quote the phrases they forbid —
+# the style guide as worked examples, the guard modules as patterns. They are
+# the specification, not instances of the problem. Any new file that encodes
+# the rules belongs here too.
+SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
+              "tests/test_lit_consistency.py"}
 
 
 def _prose_files() -> list[str]:
