@@ -110,7 +110,11 @@ the text above so the order of events stays auditable.*
 
 **The clarification.** Re-centring was not occasional: the lock drifted enough
 that the transitions had to be brought back inside the scan window **many
-times**. But **within a single 5-repeat block nothing was moved**.
+times**. Within a 5-repeat block the reference was **usually** left alone —
+a tendency, not a protocol (refined 2026-07-23). The archive shows both
+populations directly: 24 of 32 RF-off science blocks scatter about a common
+position, 8 step mid-block. §8.4 uses that split, which is why the exclusion
+there is principled rather than convenient.
 
 That second half is what matters. It promotes the intra-block position scatter
 from a nuisance to a **drift measurement** — with the block's elapsed time, the

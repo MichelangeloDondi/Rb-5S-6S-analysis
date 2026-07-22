@@ -45,12 +45,16 @@ saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 knob and manually recentered the cavity reference **many times** — the lock
 drifted enough that the transitions had to be brought back inside the scan
 window repeatedly — so **absolute trace positions carry no meaning across
-saves**; each trace's comb is its own frequency axis. **Within a single
-5-repeat block, however, nothing was moved** (experimenter-confirmed,
-2026-07-22). That makes intra-block position scatter a *drift observable*
-rather than an artifact of re-centring, which matters once the block's
-elapsed time is known — see
-[PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md) §7.
+saves**; each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
+usually left alone** — a tendency rather than a protocol
+(experimenter-confirmed, 2026-07-22), and the archive shows the exceptions:
+24 of 32 RF-off science blocks scatter about a common position (median
+1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
+them by ~1 s — larger than the trace window, so the axis offset itself moved.
+Within the scatter-like blocks the variation shows no trend with repeat index
+($p=0.33$), so it is laser **jitter**, not accumulated drift
+(`scripts/run_intrablock_trend.py`;
+[PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md) §8.4).
 
 Consequence for the collisional analysis: temperature is monotonic with time
 across the whole campaign (130 °C first … 70 °C last), so ordering alone

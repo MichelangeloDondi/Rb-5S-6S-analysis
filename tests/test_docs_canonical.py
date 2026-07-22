@@ -201,3 +201,54 @@ def test_no_superseded_value_in_front_door(val, pat, label):
         for ln in _read(doc).splitlines():
             if pat.search(ln) and not _ALLOW_SUPERSEDED.search(ln):
                 pytest.fail(f"{doc}: superseded {label} reappears: {ln.strip()[:90]}")
+
+
+# --------------------------------------------------------------------------
+# CLASS GUARD: a quoted bound must be supported by the data it summarises.
+# --------------------------------------------------------------------------
+# Three instances of one defect were found on 2026-07-23, all the same shape:
+# a round number quoted in prose or a figure title that the underlying CSV does
+# not support.
+#   * ruler linearity  "<0.4%"  -- well-sampled windows reach 0.4486%
+#   * C3a linewidth    "<=2%"   -- observed spread is 3-8% (the 2% is the
+#                                  ramp-law PREDICTION, not the observation)
+#   * fig8 title claimed a bound while drawing an error bar twice its size
+# The lesson is that a PREDICTION and an OBSERVATION must not be quoted in the
+# same breath, and that boundary-hugging numbers need pinning to their source.
+def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
+    import csv
+    from collections import defaultdict
+    rows = list(csv.DictReader(open(ROOT / "results" / "power_sweep.csv")))
+    by = defaultdict(list)
+    for r in rows:
+        by[r["peak"]].append(float(r["fwhm"]))
+    spread = [100 * (max(v) / min(v) - 1) for v in by.values()]
+    lo, hi = min(spread), max(spread)
+    assert 2.5 < lo and hi > 5.0, (
+        f"the observed C3a FWHM spread is now {lo:.1f}-{hi:.1f}%; the docs quote "
+        f"3-8% as OBSERVED and <=2% as the ramp-law PREDICTION. If the data "
+        f"moved, requote both -- and keep them distinguishable.")
+    for rel, txt in (("docs/PAPER1_SKELETON.md", None), ("docs/RESULTS.md", None)):
+        body = (ROOT / rel).read_text(encoding="utf-8")
+        if "C3a" not in body:
+            continue
+        seg = body[body.index("C3a"):body.index("C3a") + 400]
+        assert "3–8%" in seg or "3-8%" in seg, (
+            f"{rel} states C3a without the observed 3-8% spread; quoting only "
+            f"the <=2% prediction reads as a measurement it is not")
+
+
+def test_delta_alpha_within_five_percent_is_actually_within_five_percent():
+    """THEORY_NOTE/PLAN/methods03 say the recompute agrees with Orson 'within
+    5%'. It is 4.76% -- true, but close enough to the boundary that a small
+    change to either number would silently falsify three documents."""
+    import csv
+    rows = {r["quantity"]: r for r in
+            csv.DictReader(open(ROOT / "results" / "polarizability.csv"))}
+    recomputed = abs(float(rows["delta_alpha_993"]["value"]))
+    orson = 1093.0
+    frac = abs(recomputed - orson) / orson
+    assert frac < 0.05, (
+        f"the recompute now differs from Orson by {frac:.1%}, so 'within 5%' "
+        f"in THEORY_NOTE §5, PLAN §3 and methods/03 is false")
+    assert frac > 0.03, "agreement tightened; requote it nearer the truth"

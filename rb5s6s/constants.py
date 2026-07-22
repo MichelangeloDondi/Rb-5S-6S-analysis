@@ -290,9 +290,10 @@ ENVELOPE (estimated figure; consistent with wavemeter photo). Within a repeat
 block the measured scatter is only ~0.08 MHz (MEASURED-HERE) because repeats
 were saved back-to-back.
 
-IN TENSION, and possibly measurable. The reference was not moved within a
-5-repeat block (experimenter-confirmed 2026-07-22), so that 0.08 MHz IS the
-drift accumulated over the block. For 5 evenly spaced traces the scatter is
+IN TENSION. The reference was usually (not always) left alone within a
+5-repeat block (experimenter-confirmed 2026-07-22). NOTE the 0.08 MHz is NOT
+accumulated drift: it shows no trend with repeat index (p = 0.33,
+scripts/run_intrablock_trend.py), so it is jitter. For 5 evenly spaced traces the scatter is
 rate x T x 0.354, so this envelope requires a block spanning only ~3.4 s --
 below the 5 x 1.000 s of acquisition the block must contain. The envelope is
 therefore expected to revise DOWNWARD once block durations are known; the
