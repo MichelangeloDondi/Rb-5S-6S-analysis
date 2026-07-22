@@ -66,7 +66,7 @@ differential polarizability [CALCULATED; §III, App. A]. The archive thus
 conservative over-dispersion rescale (below), not a resolution of the coefficient
 (the width channel is drift-limited, $\chi^2_\text{red}\approx4.3$).
 
-[Reviewer-hardening — keep this transparency, it is load-bearing.] Two
+[Keep both statistical caveats below.] Two
 statistical choices define the bound. First, the best fit rails at $\kappa=0$,
 where the width handle ($\propto S_0^2$) has zero gradient, so a linearized
 (Wald) $\kappa+1.645\sigma$ interval has no valid coverage there — its

@@ -48,12 +48,11 @@ observed ~5.25 MHz line, so 32 um is EXCLUDED and w0 must be larger (~50 um
 central, 45-70 um). i.e. the observed line is natural-plus-transit dominated and
 the 2025 laser was NARROW; the MC settles this without a fit.
 
-HISTORY (2026-07-12). An earlier version omitted the crossing-flux factor and so
-weighted the ensemble by ~1/v, producing a spurious log-divergent cusp that ran
-~2x too narrow. A separate note briefly claimed a SECOND (angular, factor-of-2)
-bug and inferred w0 ~ 90 um; that was a laser-vs-transition axis bookkeeping
-error -- the (2 pi nu) transition-axis convention here is correct. One real bug
-(flux), now fixed.
+HISTORY (2026-07-12). An earlier version omitted the crossing-flux factor,
+weighting the ensemble by ~1/v; that produced a spurious log-divergent cusp
+running ~2x too narrow. Fixed. A separately claimed second (angular) factor of
+2, which had implied w0 ~ 90 um, was a laser-vs-transition axis bookkeeping
+error: the (2 pi nu) transition-axis convention here is correct.
 """
 
 from __future__ import annotations

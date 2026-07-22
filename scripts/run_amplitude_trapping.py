@@ -100,8 +100,7 @@ def main() -> int:
         # error is the whole result for a rollover claim).
         # Weight convention: np.polyfit's w multiplies the UNSQUARED residual,
         # i.e. w = 1/sigma_y. In log space sigma_logA = Ae/A, so w = A/Ae --
-        # which is sqrt((A/Ae)^2). (A reviewer misread this as a 1/sigma^2
-        # convention.)
+        # which is sqrt((A/Ae)^2).
         Ns, As, Aes = map(np.array, (Ns, As, Aes))
         wpf = As / Aes
         coef, cov = np.polyfit(np.log(Ns), np.log(As), 1, w=wpf, cov=True)

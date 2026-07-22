@@ -13,7 +13,7 @@ The problem this paper confronts is absolute-frequency metrology in a system
 whose reference drifts. Our 2025 laser lock wandered at of order a megahertz per
 minute — slow on the timescale of a single frequency sweep, but large compared
 with the sub-megahertz shifts and widths we wish to measure. A naive reading
-would discard such data as uncalibrated. The observation that organizes this
+would discard such data as uncalibrated. The observation behind this
 paper is that a slow drift destroys *absolute line centres* but leaves *line
 shapes* and *relative* structure intact: within one fast sweep the drift is a
 nearly constant offset, so it displaces a trace bodily without distorting it.
@@ -40,8 +40,7 @@ what converts them into measurements: with the centres alive, the first-order
 AC-Stark and collisional self-*shifts* become observable, and a direct beam-profile
 measurement of the beam waist sets the absolute scale that every width inherits.
 
-That last point is the single systematic that runs through the entire paper and
-must be stated plainly here. The two-photon beam is focused and retro-reflected
+The beam waist is the single systematic that runs through the entire paper. The two-photon beam is focused and retro-reflected
 through an electro-optic modulator whose 3 mm aperture clips it, leaving the
 waist $w_0$ at the interaction region uncertain at the tens-of-percent level
 [OPEN]. Because the transit width scales as $1/w_0$ and the AC-Stark depth as

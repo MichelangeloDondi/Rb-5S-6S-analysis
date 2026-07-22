@@ -83,12 +83,12 @@ atoms.
   the atom–surface potential §IV must model, now quantified rather than hypothesised —
   and reach a record Ramsey T₂\* = 17.8 ms **precisely by suppressing the
   motional-state-dependent differential light shift** (holding atoms in low-light
-  regions). That is the two pillars of this paper demonstrated on the platform: the
+  regions). Both ingredients of this paper are therefore established on the platform: the
   near-surface force is real and harnessable, and the guided-mode differential light
   shift is the coherence-limiting systematic the moment method (§III, §V–VI) is built
   to read.
 
-## III. Method transplanted (the reuse that de-risks this)
+## III. Method transplanted (the Paper-1 pipeline applied unchanged)
 
 - The Paper-1 pipeline (M0–M16) ingests ONF traces **unchanged** — the same
   ruler/axis, noise model, composite lineshape fit, moment/bounds machinery.
@@ -118,7 +118,7 @@ atoms.
   lineshape (Sr, 189 nm from a dielectric); the near-surface shift here is likewise a
   *distribution* over the atoms' distance-from-surface, read by the same moment
   machinery that reads the light-shift distribution — the two inhomogeneities are
-  handled by one method. The templates are established: [Dutta et al. 2025](lit/dutta2025.md) fold the
+  handled by one method. Precedents: [Dutta et al. 2025](lit/dutta2025.md) fold the
   thermal velocity distribution into the CP selective-reflection lineshape, and
   [Sargsyan et al. 2025](lit/sargsyan2025.md) extract the surface C₃ from a nanocell lineshape
   (`LITERATURE.md` §9).
@@ -170,11 +170,10 @@ atoms.
   light-shift distribution f(s) is larger and more sharply shaped, the decay is
   Purcell-modified (a position-dependent linewidth), and the surface shift can be
   resonantly enhanced — the near-surface lineshape program of §IV with plasmonic
-  enhancement. The lineshape-decomposition toolkit is in fact domain-general:
-  single-particle plasmon-linewidth spectroscopy separates the homogeneous
-  (single-particle damping) from the inhomogeneous (ensemble size/shape) width
-  exactly as Doppler-free two-photon separates natural/collisional from Doppler
-  here — the method travels even where no atom is involved. *(Forward-looking and
+  enhancement. The same homogeneous/inhomogeneous decomposition is
+  used in single-particle plasmon-linewidth spectroscopy, which separates
+  single-particle damping from ensemble size/shape broadening exactly as
+  Doppler-free two-photon separates natural/collisional from Doppler here. *(Forward-looking and
   deliberately hedged: a lateral reach, not a Paper-2 claim.)*
 
 ## VII. Status, dependencies, and risk

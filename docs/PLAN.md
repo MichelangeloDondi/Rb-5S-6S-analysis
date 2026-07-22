@@ -97,7 +97,7 @@ Synthetic closure per module; end-to-end synthetic campaign (full trace count, i
 
 ## 7. Wavemeter calibration (shot list)
 
-**Direction of calibration (the load-bearing point):** the accuracy hierarchy
+**Direction of calibration:** the accuracy hierarchy
 is atoms (5S→6S hyperfine centers, ~kHz — Ayachitula 2024) ≫ EOM comb
 (6.25 MHz laser-axis teeth, RF-exact intervals) ≫ HighFinesse wavemeter
 (~10 MHz). The wavemeter is the LEAST accurate reference, so our data
@@ -526,7 +526,7 @@ Two-part answer, and the parts point opposite ways:
    single QWP before the mirror double-passes to a net half-wave rotation, so
    the retro returns *orthogonal* to the forward: that is the π–π′ column, and
    the Doppler-free peak vanishes (ε_f·ε_b = 0). One plate before the mirror
-   does not improve the standard configuration; it destroys it. The useful
+   does not improve the standard configuration; it removes the signal. The useful
    circular configuration needs QWPs before **both** the cell and the mirror —
    Nieddu's two-slot design — not one plate before the mirror.
 
@@ -536,7 +536,7 @@ Two-part answer, and the parts point opposite ways:
    - **Background-less ⇒ a pedestal-subtraction cross-check.** σ–σ′ removes the
      broad Doppler-broadened pedestal that sits under the narrow line in π–π.
      Refitting center/width/moments with the pedestal present (π–π) vs absent
-     (σ–σ′) at the same condition is a direct, referee-grade test that the
+     (σ–σ′) at the same condition is a direct test that the
      pedestal is not biasing the line shape our M3 baseline models.
    - **No intensity standing wave ⇒ an on/off switch for the fringe
      systematic.** Forward σ⁺ and retro σ⁻ make a σ⁺–σ⁻ field whose *intensity
@@ -754,7 +754,7 @@ consistent with one triangular ramp S₀(P)."
 (fit-parameter vs windowed numerical moment, then combine or pick the higher-
 significance one) — those are correlated estimators of one quantity from the
 same photons, the numerical one is strictly worse (window-dependent), and
-"pick the best" is the multiple-comparisons trap that manufactures false
+"pick the best" is a multiple-comparisons problem that produces false
 detections this close to the floor. One estimator per observable (the fitted
 one); the hybrid is across the moment hierarchy, never across methods.
 

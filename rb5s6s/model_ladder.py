@@ -2,10 +2,9 @@
 Nested model ladder: is each physical component statistically warranted? (M11)
 =============================================================================
 
-A skeptic's question about the composite lineshape is not "does the full model
-fit?" but "does the archive *require* each piece, or is a simpler model just as
-good?". This module answers it the standard way — fit a ladder of nested models
-of increasing physics and compare by BIC:
+Does the archive *require* each piece of the composite lineshape, or is a
+simpler model just as good? Fit a ladder of nested models of increasing
+physics and compare by BIC:
 
     A  Voigt            Lorentz(Gamma_nat) (x) Gaussian(sigma_laser)
     B  + transit        A (x) transit(FIXED at the w0 prior)

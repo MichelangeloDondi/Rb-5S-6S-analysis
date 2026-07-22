@@ -6,9 +6,8 @@ The hierarchical beta (global_fit, M4b) shares one sigma_laser(T) across the fou
 peaks at each temperature (Model A, "per_T"); the conservative alternative frees
 sigma_laser per (peak, T) block (Model B, "per_block"). The choice is not cosmetic
 -- sharing pins sigma_laser lower at high density and reassigns width to
-collisions, raising the hierarchical beta -- so a referee fairly asks: how much
-EVIDENCE does the archive carry for the sharing, beyond "chi2_red < 1 is
-compatible with it" (M4c)?
+collisions, raising the hierarchical beta. How much EVIDENCE does the archive
+carry for the sharing, beyond "chi2_red < 1 is compatible with it" (M4c)?
 
 Both models are fit with the SAME machinery (global_fit); the only difference is
 the sigma_laser grouping -- 3 params (one per T) for per_T vs 12 (one per peak-T
