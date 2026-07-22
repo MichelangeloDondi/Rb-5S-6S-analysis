@@ -128,7 +128,11 @@ transitions, including the hot 5D clock line).
 > not a smaller error bar. The shape handles are weak (width ∝S₀², skew ∝S₀³) and the
 > skew is contamination-prone (shot noise, instrument asymmetry), so it needs the
 > *large-S₀* small-waist regime to be a measurement at all — see the scope note in
-> `PAPER1_SKELETON.md` §I. The reason "nobody does this" is not an oversight: with a
+> `PAPER1_SKELETON.md` §I. That inherits a further dependency: at small waist the
+> ramp skew is itself conditional on the axial collection geometry, which is
+> unmeasured — the axial average can suppress it or reverse its sign
+> (PLAN §8.3 #4). So this proposal is gated on the same collection-profile
+> measurement, not only on reaching small waist. The reason "nobody does this" is not an oversight: with a
 > stable reference the pull (∝S₀) is strictly better, so the passive shape route is
 > preferable only where reference-freedom or orthogonal systematics are required.
 
