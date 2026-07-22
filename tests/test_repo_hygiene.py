@@ -106,10 +106,15 @@ FORBIDDEN = {
 # there verbatim and must not be edited to satisfy a style rule.
 SKIP_PREFIXES = ("docs/lit/",)
 
+# The two files that DEFINE these rules necessarily quote the phrases they
+# forbid — the style guide as worked examples, this module as patterns. They
+# are the specification, not instances of the problem.
+SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py"}
+
 
 def _prose_files() -> list[str]:
     return [p for p in _tracked("*.md", "*.py")
-            if not p.startswith(SKIP_PREFIXES)]
+            if not p.startswith(SKIP_PREFIXES) and p not in SKIP_EXACT]
 
 
 @pytest.mark.parametrize("label", sorted(FORBIDDEN))
