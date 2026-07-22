@@ -319,7 +319,7 @@ def main() -> int:
       "archival skew cannot serve as a ramp measurement. (Per-peak scaling exponent "
       "$-0.2$ to $-0.9$ about the $-0.5$ shot-noise value, so a small extra "
       "low-power systematic — baseline, line-pull — is not excluded, but shot noise "
-      "dominates.) a fixed-lock session lifts the real observable two ways: the fixed lock "
+      "dominates.) a fixed-lock session would lift the real observable two ways: the fixed lock "
       "un-absorbs the large first-order pull, and the small waist ($S_0$ 4× larger, "
       "skew scaling up to 64×) makes the ramp asymmetry a detection — conditional on "
       "**two** same-sign small-waist corrections that suppress the skew and must be "
@@ -383,8 +383,8 @@ def main() -> int:
           f"coefficient: the bound falls inside the prediction band, so it already "
           f"**excludes the tight-waist (high-$S_0$) top** of that band while its "
           f"lower reach (and zero) remain allowed — the archive is beginning to "
-          f"constrain the prediction, not merely consistent with it. *Lifted by:* the fixed lock "
-          f"measures the pull $\\sim S_0$ directly, and the small waist makes $S_0$ "
+          f"constrain the prediction, not merely consistent with it. *Lifted by:* a fixed lock "
+          f"would measure the pull $\\sim S_0$ directly, and the small waist would make $S_0$ "
           f"several-fold larger — turning this bound into the coefficient.\n")
 
     # ---- sensitivity summary: the referee view, one table, always fresh ----

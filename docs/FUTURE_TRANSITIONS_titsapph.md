@@ -196,6 +196,10 @@ transitions, including the hot 5D clock line).
 
 ## 4. Recommendation & sequencing
 
+*A proposal for discussion, not a decided roadmap: none of the sessions or
+papers below is scheduled, agreed, or assigned. The ordering is what the
+physics argues for if the programme is pursued at all.*
+
 1. **Finish Paper 1 (993 nm 5S→6S)** as the clean method demonstrator — and reframe
    its Intro: the *passive, reference-free inversion* of Wieman/Antypas,
    explicitly contrasted with the active 778 nm suppression schemes, on an un-scooped

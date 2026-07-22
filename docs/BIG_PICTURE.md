@@ -77,8 +77,10 @@ as a bound. Concretely:
 
 - **A validated lineshape model.** Natural (3.49 MHz) ⊗ transit ⊗ laser ⊗
   light-shift ramp reproduces every line at reduced χ² ≈ 1.1, with the beam
-  waist re-derived (~50 µm; the 32 µm nominal is excluded by transit physics
-  and corroborated by Nieddu's direct measurement).
+  waist re-derived (~50 µm; the 32 µm nominal is excluded by transit physics.
+  [Nieddu 2019](lit/nieddu2019.md) measured 64 µm directly on the same-lineage
+  apparatus — independent support for excluding 32 µm, and the same order as
+  our value, though not the same number and not the same beam).
 - **The light-shift bound sits at the prediction.** S₀(225 mW) < 0.63 MHz
   (95%), against a predicted 0.59 MHz — equivalently Δα ≲ 1200 a.u. against
   the computed 1093. This is an order of magnitude below Orson's ~6 MHz
@@ -112,8 +114,9 @@ demonstrated-necessary bound, and a method — but no coefficients.*
 ## 4. What new vapour-cell measurements would add
 
 A cell session with a stable lock (the laser's locking has since been
-improved) converts the bounds into the first measured environmental
-coefficients for this line. In order of leverage:
+improved) would convert the bounds into the first measured environmental
+coefficients for this line. None of it is scheduled or agreed; in order of
+leverage:
 
 1. **A direct beam-waist measurement** (knife-edge and/or camera profiler)**.** No physics run at all — but w₀
    is the one systematic every absolute number rides on (transit and laser
@@ -122,8 +125,8 @@ coefficients for this line. In order of leverage:
 2. **Line centre vs power (the "pull").** With centres alive, the
    first-order light shift (−⅔S₀, the strong handle) becomes measurable as
    a *differential* quantity — centre against power within a scan series —
-   needing only minutes-scale lock stability. This is the first measured
-   AC-Stark coefficient of the line, and it directly validates the
+   needing only minutes-scale lock stability. That would be the first
+   measured AC-Stark coefficient of the line, and it would validate the
    shape-based method against the same data.
 3. **Same-session high-density points (150–170 °C).** The 2025 sweep's
    density lever was too short for the expected ~kHz-scale β; the higher
@@ -186,7 +189,7 @@ lineshapes *interpretable*.
         │
         ├── beam-profile w0 ───────► every archive bound sharpens (no new physics run)
         │
-        ├── fixed-lock cell session ► Δα and β measured (first coefficients)
+        ├── fixed-lock cell session ► Δα and β would be measured (if run)
         │         │
         │         └── small waist ──► shape-based readout demonstrated vs the pull
         │

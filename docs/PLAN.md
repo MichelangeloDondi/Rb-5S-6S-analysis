@@ -12,7 +12,7 @@ From the 2025 archival data:
 
 Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
-**Which papers this produces under which sessions (a fixed-lock cell session × ONF × the Ti:Sapph 5D/7S extension) is mapped in `docs/PAPERS_PORTFOLIO.md`** — the archive alone is P1-min (method + bounds = the thesis core); a fixed-lock session gives P1-full (measured coefficients); ONF gives Paper 2; a 5D/7S session gives Papers A/B/C (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
+**Which papers this produces under which sessions (a fixed-lock cell session × ONF × the Ti:Sapph 5D/7S extension) is mapped in `docs/PAPERS_PORTFOLIO.md`** — the archive alone is P1-min (method + bounds = the thesis core); a fixed-lock session would give P1-full (measured coefficients); ONF would give Paper 2; a 5D/7S session would give Papers A/B/C (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
 
 ## 1. Ground rules
 

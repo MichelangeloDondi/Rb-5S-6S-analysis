@@ -8,7 +8,7 @@ powers) with ONE shared kappa and a per-peak core width (rb5s6s.stark). In the
 2025 archive the shift (pull ~S0) is dead (drifted lock), so kappa is
 constrained ONLY through the ramp's width broadening (~S0^2) -- a weak handle,
 hence a one-sided UPPER BOUND, not a measurement. It brackets the predicted S0
-and validates the fixed-lock session method; the fixed lock measures the pull ~S0
+and validates the fixed-lock session method; a fixed lock would measure the pull ~S0
 directly (and at a smaller waist, S0 ~4x larger).
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
@@ -56,7 +56,7 @@ def main() -> int:
           + "  ".join(f"993.{p}={s:.2f}" for p, s in res["sigma_laser_by_peak"].items()))
     print("\n  This is a BOUND because the shift (pull ~S0) is dead in the 2025 drift;")
     print("  only the ramp's width broadening (~S0^2) constrains kappa here. The fixed-lock session's")
-    print("  fixed lock measures the pull ~S0 directly -> the actual coefficient.")
+    print("  a fixed lock would measure the pull ~S0 directly -> the actual coefficient.")
 
     with open(C.RESULTS_DIR / "stark_sweep.csv", "w", newline="") as f:
         w = csv.writer(f)

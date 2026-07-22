@@ -24,7 +24,7 @@ the archival brackets into measurements, so several sections are written as
   bounds), and we do **not** claim the asymmetry's existence ([Stalnaker *et al.*](lit/stalnaker2006.md) 2006
   precede us — §novelty).
 - **Scope / journal.** Full paper (PRA-length). The archive gives **P1-min** (method +
-  bounds, ready now = the thesis core); adding a fixed-lock session gives
+  bounds, ready now = the thesis core); adding a fixed-lock session would give
   **P1-full** (the measured coefficients — the flagship). Default: **hold for P1-full**,
   one combined paper (§VII stubbed as predictions until such data exists),
   because the 5S–6S light shift / β_self is un-scooped and the field is not racing on
@@ -256,7 +256,7 @@ the archival brackets into measurements, so several sections are written as
   $\sim18$–20 µm). Sets the transit subtraction a proposed fixed-lock session's beam-profile $w_0$ would enable.
 - Degeneracy-law amplitude ratios (Fig. 4): predicted abundance$\times(2F{+}1)$;
   measured ratios swing 30–50% between blocks (drift) → untestable in the archive, a
-  cross-peak systematic interleaving in a fixed-lock session fixes. Bounds cross-peak comparisons.
+  cross-peak systematic that interleaving in a fixed-lock session would fix. Bounds cross-peak comparisons.
 
 ## VII. The fixed-lock session *(predictions & what it would resolve)*
 

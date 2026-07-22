@@ -23,7 +23,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > [`docs/PAPER1_SKELETON.md`](PAPER1_SKELETON.md). Prose results in §5; the auto-generated
 > single-source-of-truth table is [`docs/RESULTS.md`](RESULTS.md); the
 > prior-art delineation and collision-rate calibration are in
-> [`docs/LITERATURE.md`](LITERATURE.md); what a fixed-lock session lifts is in §7.
+> [`docs/LITERATURE.md`](LITERATURE.md); what a fixed-lock session would lift is in §7.
 
 ### Notation and abbreviations (defined once, used throughout)
 
