@@ -178,7 +178,7 @@ is at risk). *Code:* `linefit.adaptive_halfwidth()`.
 ### 4.9 Is each component warranted? — the nested model ladder (M11)
 
 §4.7's BIC compares two *shapes* with the same parameter count. A stricter
-question a referee asks is whether each physical *component* earns its place, or
+question is whether each physical *component* is warranted, or
 whether a simpler model fits as well. So we fit a nested ladder of increasing
 physics and compare by BIC ($\text{BIC}=\chi^2+k\ln N$, summed over conditions
 since BIC is additive over independent data):

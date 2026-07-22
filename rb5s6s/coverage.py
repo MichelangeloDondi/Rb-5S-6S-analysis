@@ -6,10 +6,10 @@ The headline collisional result is an UPPER BOUND with a claimed 95% coverage,
 built from a between-block scatter estimated on only one residual degree of
 freedom (3 density points, 2 fit parameters) -- which is why the bound uses the
 Student-t quantile t(0.95, 1) = 6.31 rather than the Gaussian 2 (methods 4.5,
-beta.collisional_slope). A referee's fair question is: does that construction
-actually cover the truth 95% of the time, or is it a plausible-looking formula?
+beta.collisional_slope). Whether that construction actually covers the truth 95% of the time is
+testable by simulation.
 
-This module answers it by simulation. For a grid of TRUE beta values it
+This module runs that test. For a grid of TRUE beta values it
 generates many synthetic width-vs-density datasets with the archive's own
 structure -- three temperatures, a between-block scatter that mimics the
 drift-induced wander (the dominant error), plus the small within-block SEM --

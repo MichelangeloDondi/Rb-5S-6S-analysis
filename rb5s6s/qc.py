@@ -23,7 +23,7 @@ DESIGN NOTES
 ------------
 * Smoothing is plain boxcar (documented widths in config). We learned the
   hard way (2026-07-11 ledger) that raw peak-picking on band-limited noise
-  invents structure — every structural metric therefore works on strongly
+  produces spurious peaks — every structural metric therefore works on strongly
   smoothed data, and no metric here is used for physics.
 * The noise model proper is module M1. QC runs BEFORE M1, so the
   signal-dependent noise scale used by the glitch detector is a documented

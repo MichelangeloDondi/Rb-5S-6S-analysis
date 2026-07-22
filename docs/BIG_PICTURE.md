@@ -95,7 +95,7 @@ as a bound. Concretely:
 - **The ramp's power laws are confirmed** (width flat, amplitude ∝ P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md)), and the drift-immune skew observable is
-  derived, bounded, and waiting for the geometry that amplifies it. The premise
+  derived and bounded; detecting it requires a tighter focus. The premise
   the whole method rests on — that the line *shape* outlives the drift — is now
   **supported by a synthetic closure test**, not only by the timescale argument: between-scan drift is absorbed exactly by the
   per-scan free centres, and a synthetic closure test
@@ -151,7 +151,7 @@ drift diary for free. **Reading the 6S→5P ~1.3 µm cascade**
 instead of the reabsorbed 795 nm fluorescence — trapping-free detection,
 established on the sibling 5S–5D line ([Hassanin 2023](lit/hassanin2023.md),
 [Beard 2024](lit/beard2024.md)) and plausibly feasible with an IR receiver
-already on the bench — de-risks the density and amplitude work at the higher
+already on the bench — supports the density and amplitude work at the higher
 temperatures item 3 needs. Neither is new physics; both remove a systematic the
 archive had to live with.
 

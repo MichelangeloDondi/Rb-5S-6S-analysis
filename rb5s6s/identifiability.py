@@ -143,7 +143,7 @@ def width_profile_2d(freqs: List[np.ndarray], volts: List[np.ndarray],
     the scan up several-fold and prevents the isolated-restart optimiser noise
     that would show up as spurious dchi2 texture. Each cell is additionally fit
     from the independent warm lineage directly above (best kept), and every
-    `audit_stride`-th cell from the fresh seed, so a warm-start trap must fool
+    `audit_stride`-th cell from the fresh seed, so a warm-start false minimum would have to appear in
     two lineages coherently AND survive the audit. Deterministic (no RNG).
 
     Returns the grids, dchi2[i_sl][i_gc] = chi2 - min(chi2), the raw chi2_min,

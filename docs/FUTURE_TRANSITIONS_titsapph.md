@@ -165,7 +165,7 @@ transitions, including the hot 5D clock line).
   detection moves to 420 nm (filter + blue PMT); (b) the **near-resonant 5P₃/₂
   intermediate (1 THz)** distorts the two-photon lineshape — the transit/ramp model
   needs the Bjorkholm–Liao intermediate-state term (this is exactly Paper C, so it
-  de-risks A); (c) verify the EOM/retro/waveplates behave at 778 vs 993 nm.
+  reduces the risk on A); (c) verify the EOM/retro/waveplates behave at 778 vs 993 nm.
 
 ### Paper C — *The near-resonant intermediate state and the two-photon transit/AC-Stark lineshape: a clean-vs-resonant comparison (6S, 7S, 5D)* — **the engine-room companion to A**
 

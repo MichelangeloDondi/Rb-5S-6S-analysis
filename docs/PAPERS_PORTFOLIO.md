@@ -57,7 +57,7 @@ are what a session would unlock, whoever runs it.
     supported because the 5S–6S light shift / β_self is **not currently pursued elsewhere** and the field
     is not racing on this line (it is all on 778 nm — `LITERATURE.md` §8), so priority
     pressure is low. **Recommended default.**
-  - **(b) Publish P1-min now**, follow with a measurement paper after a fixed-lock session. De-risks
+  - **(b) Publish P1-min now**, follow with a measurement paper after a fixed-lock session. Reduces the risk on
     priority, gives an earlier output and a clean thesis chapter, at some cost of a
     thinner first paper. Choose this if a publication is needed on a fixed timescale —
     which, since no session is scheduled or agreed, is the realistic default rather

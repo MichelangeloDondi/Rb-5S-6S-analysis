@@ -7,9 +7,7 @@ self-broadening coefficient (paper deliverable C1, an archival target) — NOT
 the EOM modulation index "beta", which is a different quantity entirely and
 remains DESCOPED for archival data (2025 drive voltage unrecorded; the
 HWP-rotated ruler traces are AM-enhanced, so their sideband ratios carry no
-modulation index). A reviewer conflated the two from the filename alone, so
-the collision of names is recorded here permanently.
-
+modulation index). 
 The per-condition fit (linefit.py) cannot cleanly separate sigma_laser from
 gamma_coll (corr ~ -0.9). This module breaks that degeneracy by fitting ALL
 temperatures of one peak SIMULTANEOUSLY with the collisional width tied to a
