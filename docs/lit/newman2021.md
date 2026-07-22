@@ -18,7 +18,7 @@ number: 18
 pages: 4702
 year: 2021
 doi: null
-arxiv: 2105.00610
+arxiv: '2105.00610'
 pdf: PDF_papers/Newman_2021_compact-778nm-optical-standard.pdf
 held: true
 status: VERIFIED

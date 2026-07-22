@@ -2,7 +2,7 @@
 citekey: biraben2019
 type: article
 authors:
-  - 'Biraben, Fran\c{c}ois'
+  - 'Biraben, François'
 title: 'The first decades of {Doppler}-free two-photon spectroscopy'
 journal: C. R. Phys.
 volume: 20
@@ -28,4 +28,4 @@ section: method-anchors
 
 The pioneer's own retrospective review; the Intro history anchor.
 
-C. R. Physique 20, 671, "The first decades of Doppler-free two-photon spectroscopy" -- the modern canonical history/review for the Intro, a fuller companion to Grynberg-Cagnac 1977. Biraben is also our transit-kernel source (`biraben1979`), a different paper by the same author decades apart.
+C. R. Physique 20, 671, "The first decades of Doppler-free two-photon spectroscopy" — the modern canonical history/review for the Intro, a fuller companion to Grynberg-Cagnac 1977. Biraben is also our transit-kernel source (`biraben1979`), a different paper by the same author decades apart.

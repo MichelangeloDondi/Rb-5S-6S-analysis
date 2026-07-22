@@ -34,4 +34,4 @@ section: oist-lineage
 
 (+ OIST thesis). Confirms the 128 um beam + Steck N(T) chain. DOI VERIFY.
 
-Rajasree-KP's OIST PhD thesis repeats the same 993 nm cell setup ("L1, f = 150 mm; beam diameter 128 um") and cites Steck for the Rb data, confirming both the beam geometry and the N(T) vapor-pressure chain `density.py` uses. A corroborating data point, not a load-bearing measurement of its own -- see `nieddu2019` for the primary apparatus source and `rajasree2020spin` (a different Rajasree 2020 paper, spin selection in single-frequency two-photon excitation) for the polarization-law and ONF-feasibility content.
+Rajasree-KP's OIST PhD thesis repeats the same 993 nm cell setup ("L1, f = 150 mm; beam diameter 128 um") and cites Steck for the Rb data, confirming both the beam geometry and the N(T) vapor-pressure chain `density.py` uses. A corroborating data point, not a load-bearing measurement of its own — see `nieddu2019` for the primary apparatus source and `rajasree2020spin` (a different Rajasree 2020 paper, spin selection in single-frequency two-photon excitation) for the polarization-law and ONF-feasibility content.

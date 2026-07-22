@@ -5,7 +5,7 @@ authors:
   - Poulin, M.
   - Latrasse, C.
   - Touahri, D.
-  - T\^etu, M.
+  - Têtu, M.
 title: 'Frequency stability of an optical frequency standard at 192.6 {THz} based on a two-photon transition of rubidium atoms'
 journal: Opt. Commun.
 volume: 207

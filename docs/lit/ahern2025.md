@@ -5,7 +5,7 @@ authors:
   - Ahern, E. J.
   - Scholten, S. K.
   - Locke, C.
-  - 'Bourbeau H\''ebert, N.'
+  - 'Bourbeau Hébert, N.'
   - White, B.
   - Luiten, A. N.
   - Perrella, C.

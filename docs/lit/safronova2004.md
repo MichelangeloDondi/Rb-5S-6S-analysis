@@ -20,7 +20,7 @@ routing: []
 verify_flags: []
 verified_date: null
 summary: >
-  Benchmark Rb ns matrix elements/lifetimes/polarizabilities -- carries
+  Benchmark Rb ns matrix elements/lifetimes/polarizabilities — carries
   the 6S dynamic polarizability.
 loci:
   - M16
@@ -30,4 +30,4 @@ section: method-anchors
 
 # safronova2004
 
-Benchmark Rb ns matrix elements/lifetimes/polarizabilities -- carries the 6S dynamic polarizability; the stronger Delta\_alpha anchor for 6S.
+Benchmark Rb ns matrix elements/lifetimes/polarizabilities — carries the 6S dynamic polarizability; the stronger Delta\_alpha anchor for 6S.

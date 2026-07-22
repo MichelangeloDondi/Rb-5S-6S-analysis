@@ -26,4 +26,4 @@ section: method-anchors
 
 # steck_rb
 
-Reference atomic constants for Rb (line frequencies, natural widths, polarizabilities). No PDF held -- standard online ref.
+Reference atomic constants for Rb (line frequencies, natural widths, polarizabilities). No PDF held — standard online ref.

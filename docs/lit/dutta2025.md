@@ -24,7 +24,7 @@ verified_date: null
 summary: >
   Folds the finite thermal (Doppler) velocity distribution into the CP
   selective-reflection lineshape (beyond the infinite-Doppler
-  approximation) -- the direct template for reading the near-surface shift
+  approximation) — the direct template for reading the near-surface shift
   as a thermal-averaged distribution in Paper 2 sec IV.
 loci:
   - 'P2:§IV'
@@ -33,4 +33,4 @@ section: deep-search
 
 # dutta2025
 
-Folds the finite thermal (Doppler) velocity distribution into the CP selective-reflection lineshape (beyond the infinite-Doppler approximation) -- the direct template for reading the near-surface shift as a thermal-averaged distribution in Paper 2 sec IV. Verified 2026-07-18.
+Folds the finite thermal (Doppler) velocity distribution into the CP selective-reflection lineshape (beyond the infinite-Doppler approximation) — the direct template for reading the near-surface shift as a thermal-averaged distribution in Paper 2 sec IV. Verified 2026-07-18.

@@ -3,7 +3,7 @@ citekey: grimm2000
 type: article
 authors:
   - Grimm, Rudolf
-  - 'Weidem\"uller, Matthias'
+  - 'Weidemüller, Matthias'
   - Ovchinnikov, Yurii B.
 title: Optical dipole traps for neutral atoms
 journal: Adv. At. Mol. Opt. Phys.
