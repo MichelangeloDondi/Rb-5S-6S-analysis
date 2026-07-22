@@ -58,7 +58,7 @@ correlation time $\tau_\text{int}$ (ranging $\approx1.3$–$20$ across condition
 that inflates each trace's per-sample error to its true information content. The
 raw variance-law fit is a deliberately loose diagnostic; the weights it produces
 are validated *downstream* by the near-unity reduced chi-squared of the line fits
-that consume them. One noise feature is itself a result rather than a nuisance:
+that consume them. One noise feature is diagnostically useful rather than a nuisance:
 the low-power residual skewness of §VI.C is the right-skewed Poisson shot noise
 this model predicts, which is how we separate it from the AC-Stark ramp.
 
@@ -86,7 +86,7 @@ lever-limited (§VI.A). The second degeneracy, between the transit width and the
 beam waist $w_0$, is *not* broken by any amount of archival data: every absolute
 width — and hence every absolute $\beta_\text{self}$ and $\sigma_\text{laser}$ —
 rides on the open $w_0$, which is the single reason those quantities are bounds
-here and measurements only after the knife-edge measurement. All reported fit errors
+here, and would become measurements only after a direct beam-profile measurement. All reported fit errors
 are marginal (from the full covariance, folding in the anti-correlations), and
 where a fit is over-dispersed the covariance is conservatively rescaled by
 $\max(\chi^2_\text{red},1)$.

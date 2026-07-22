@@ -1,6 +1,6 @@
 # Paper 2 — manuscript skeleton
 
-**Status:** scaffold for Zohreh (lead on the fibre side) + Michelangelo, gated on
+**Status:** scaffold; fibre-side lead to be agreed with the OIST side, gated on
 optical-nanofibre (ONF) data that has **not** been taken and a collaboration that
 has **not** been agreed. This is the *narrative and physics* plan, not a draft.
 It reuses the validated Paper-1 pipeline unchanged; the clean vapour-cell line

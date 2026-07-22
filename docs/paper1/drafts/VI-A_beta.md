@@ -17,7 +17,7 @@ $\gamma_\text{coll}(T)=\beta_\text{self}N(T)$, linear in the Rb number density
 $N(T)$ for binary collisions. We vary $N$ over a factor of 52 across the
 70–130 °C sweep and ask what the archive constrains about $\beta_\text{self}$.
 The answer is an **upper bound**, not a value — and the reason it is only a
-bound is itself the central result of this section.
+bound is the central finding of this section.
 
 **The model-independent bound.** Because the collisional width adds in
 quadrature-free fashion to the much larger transit and laser widths (total FWHM
@@ -54,7 +54,7 @@ $\sim0.01$ [MEASURED-HERE, `beta_lever_probe_130`, `gamma_rise_factor`]. A slope
 that moves by $\sim8$ times its own statistical error when a legitimate density
 point is added is, by definition, unresolved. The $0.036$ is the short-lever end
 of a lever-dependent range that is bounded above by the model-independent number
-quoted first; the two are consistent, and the bound is the honest headline.
+quoted first; the two are consistent, and the bound — not the hierarchical number — is the headline result.
 [Framing note: the 130 °C block is a different acquisition session; we treat it
 as a lever probe, not a headline point — see §IV, App. C. The point survives
 either way, because the 130 °C widths sit *on* the flat trend rather than off it.]

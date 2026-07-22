@@ -10,8 +10,8 @@
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). The model-form study ([§4.7 — The statistics](06_the_statistics.md), M8) confirms the 2025
    data cannot distinguish these forms — so the *shape* assumption is untested
-   by the archival data and is a genuine attack surface until a fixed-lock session.
-4. Transit width rides on the OPEN $w_0$ prior until the knife-edge measurement.
+   by the archival data and is a genuine attack surface until a fixed-lock session is run.
+4. Transit width rides on the OPEN $w_0$ prior until a direct beam-profile measurement.
 5. The retro ratio $\rho=1$ behind the quoted $S_0$ prediction ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) is a
    *geometric design property, not a measured number*. The 2025 retro is
    self-imaging: L2 ($f=150$ mm) maps the cell waist to a $\sim$1 mm
@@ -25,7 +25,7 @@
    archive's strong lines already argue $\rho$ is not small. What no static
    bound covers is a *drifting* overlap within a scan (mirror tilt is the
    sensitive axis; the longitudinal placement is forgiving to tens of cm),
-   which is skew-like. A fixed-lock session measures $\rho$ in situ per configuration
+   which is skew-like. A fixed-lock session would measure $\rho$ in situ per configuration
    (PLAN §8.1).
 6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
    artifact (block rates scatter only $0.6$% ($\approx0.03$ MHz) on a 5 MHz line).
@@ -42,26 +42,27 @@
 tested, and reported in [§5 — What we found (2025 archive)](07_what_we_found.md) — collisional bound + isotope test, laser-epoch
 bound, power/ramp-law predictions, trapping, and the cusp model-form study.
 What is left is not more archival analysis but the measurements the 2025 data
-physically cannot yield — first among them the $w_0$ knife-edge on which every
+physically cannot yield — first among them the beam-profile $w_0$ on which every
 absolute scale above rests.
 
-*A fixed-lock session — the measurements that lift the bounds* (full
-time-budgeted design: **PLAN §8**). Power is capped at
+*A proposed fixed-lock session — the measurements that would lift the bounds*
+(not yet scheduled or agreed; full time-budgeted design: **PLAN §8**). Power
+would be capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
 ($I\propto P/w_0^2$; a telescope unclips the EOM aperture and two working
 waists, 60 µm and 16 µm, span a $\times16$ intensity range at fixed power).
-Headline shots: the AC-Stark shift coefficient with the intensity axis
-anchored by the *differential transit width* (knife-edge-independent); the
+Headline shots would be: the AC-Stark shift coefficient with the intensity axis
+anchored by the *differential transit width* (independent of any beam-profile measurement); the
 ramp-law **moment hierarchy** ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
-flip** between the two waists; $\beta_\text{self}$ measured — not bounded —
-which the collision-rate literature says requires the **150–170 °C**
+flip** between the two waists; $\beta_\text{self}$ measured rather than bounded —
+which the collision-rate literature says would require the **150–170 °C**
 extension (expected $\beta\sim1$ kHz per $10^{12}$cm$^{-3}$, see
 `docs/LITERATURE.md`); the Lehmann cusp in the cold-dim small-waist corner;
-the knife-edge $w_0$ itself. Wavemeter calibration is folded in as a
+the beam-profile $w_0$ itself. Wavemeter calibration is folded in as a
 byproduct (PLAN §7): the atoms ($\sim$ kHz) calibrate the wavemeter
 ($\sim$ 10 MHz), not the reverse.
 
-*Paper 2 (nanofibre / ONF):* the same ramp law tested at the fibre; a
+*Paper 2 (nanofibre / ONF), proposed:* the same ramp law tested at the fibre; a
 trajectory Monte-Carlo of the published pushing dip; the pulse-duration kill
 test.
 

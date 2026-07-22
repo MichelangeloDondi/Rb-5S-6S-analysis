@@ -1,5 +1,9 @@
 # Rb 5S→6S two-photon lineshape analysis
 
+[![tests](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/actions/workflows/tests.yml/badge.svg)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/actions/workflows/tests.yml)
+[![release](https://img.shields.io/github/v/release/MichelangeloDondi/Rb-5S-6S-analysis)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂** two-photon
 transition at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Data taken at OIST
 in 2025; a fixed-lock follow-up session is proposed and specified in
@@ -95,7 +99,7 @@ shift and to the lineshape asymmetry (methods §3):
 ## Results at a glance
 
 Every absolute number is limited by a single systematic — the beam waist **w₀** —
-so each is reported as a bound together with the fixed-lock session measurement that lifts it.
+so each is reported as a bound together with the measurement that would lift it.
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
@@ -245,3 +249,11 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
   `config.py`); repeat counts are read from `MANIFEST.csv` rather than
   inferred from filenames, and data-quality cuts are fixed before fitting
   rather than chosen afterward.
+
+## About
+
+Michelangelo Dondi — PhD candidate, Department of Physics and Astronomy,
+University of Bologna ([ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881)).
+The 2025 dataset was taken during a research visit to OIST (Japan). Citation
+metadata for this repository is in [`CITATION.cff`](CITATION.cff); the analysis
+is released under the MIT licence.

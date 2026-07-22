@@ -116,7 +116,7 @@ the shape-based bound $\sigma_\text{laser} \lesssim 1.0$ MHz found here, and it
 is the only published number for this laser on this line. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
 **upper bound** (it is degenerate with the transit width; see §2.5 and [§5 — What we found (2025 archive)](07_what_we_found.md)).
-The knife-edge measurement $w_0$ turns this into a measurement by removing the
+A direct beam-profile measurement of $w_0$ turns this into a measurement by removing the
 transit degeneracy, not by adding an independent check on the laser itself —
 $\sigma_\text{laser}$ stays a lineshape-fit result throughout. *Code:*
 `gaussian()`; `sigma_laser` in the fits (already carrying the factor 2).
@@ -139,8 +139,7 @@ increases in either the Gaussian or Lorentzian width produce very similar
 changes in the Voigt profile, so in any real fit $\sigma_\text{laser}$ and
 $\gamma_\text{coll}$ are strongly anti-correlated (we measure
 $\mathrm{corr}\approx-0.85$). The *total* width is well determined; the
-*split between the two* is fragile. Section 4 is largely about handling this
-honestly. *Code:* `model_profile()`, `voigt_fwhm()`.
+*split between the two* is fragile. Section 4 covers how this split is handled. *Code:* `model_profile()`, `voigt_fwhm()`.
 
 ### 2.5 Transit-time broadening — the Lehmann cusp (not a Gaussian)
 
@@ -208,7 +207,7 @@ target for a fixed-lock session with a narrow laser). Caveat: $w_0$
 is only a prior ($\sim50\ \mu$m — re-centred from 32 µm when the transit physics
 was corrected, since the corrected transit excludes 32 µm; the beam was clipped
 by a 3 mm aperture, so it is uncertain at the tens-of-% level) **until the
-knife-edge measurement measurement** (below); every *absolute* width built on it is
+beam-profile measurement** (below); every *absolute* width built on it is
 therefore PRELIMINARY. *Code:* `two_sided_exponential()`; `transit_fwhm_at_T()` enforces
 the $\sqrt T$ law.
 
@@ -242,7 +241,7 @@ Gaussian, returning a best-fit $w$ whether or not the beam is one. A camera
 image is the natural complement, since it shows astigmatism, ellipticity, and
 any diffraction structure from aperture clipping — the very effect that makes
 the archival $w_0$ uncertain — and [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
-$I(r)$, so confirming Gaussianity is itself worth a measurement rather than an
+$I(r)$, so confirming Gaussianity would be a useful check rather than an
 assumption. The planned $z$-scan (PLAN §8.1) already covers part of this for
 free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
 since $z_R=\pi w_0^2/(M^2\lambda)$, the ratio $(\pi w_0^2/\lambda)/z_R$ is
@@ -250,12 +249,12 @@ exactly $M^2$ — so the $z_R=\pi w_0^2/\lambda$ consistency test is also a
 beam-quality test, albeit one that cannot separate $M^2>1$ from a stage-scale
 error without an independent image.
 
-Why it is the linchpin for this analysis: $w_0$ sets the **transit width**
+Why $w_0$ matters most here: $w_0$ sets the **transit width**
 ($\propto 1/w_0$, §2.5) *and* every AC-Stark magnitude ($\propto 1/w_0^2$,
 [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)), and it is **degenerate with $\sigma_\text{laser}$** in the fits (§2.4,
 [§5 — What we found (2025 archive)](07_what_we_found.md)) — so as long as $w_0$ is only the clipped-beam prior, the transit/laser
 split and all absolute coefficients stay PRELIMINARY. Measuring $w_0$ directly
-in a fixed-lock session collapses that degeneracy: transit becomes fixed, the leftover
+in a fixed-lock session would collapse that degeneracy: transit becomes fixed, the leftover
 Gaussian is then unambiguously the laser (turning the [§5 — What we found (2025 archive)](07_what_we_found.md) $\sigma_\text{laser}$
 *bound* into a measurement, retroactively for the 2025 data too), and $\beta_\text{self}$
 and the Stark coefficient acquire their absolute scale. It unlocks more

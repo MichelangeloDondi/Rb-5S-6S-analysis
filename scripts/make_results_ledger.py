@@ -38,8 +38,9 @@ def main() -> int:
       "absolute numbers are PRELIMINARY where noted — they ride on the OPEN "
       "beam waist $w_0$ (README §2.5). Frequencies are transition-axis unless "
       "a `_LASER` note says otherwise.\n")
-    W("> **The dominant systematic is the OPEN beam waist $w_0$ — only the fixed-lock session "
-      "knife-edge measures it.** The M9 transit Monte-Carlo flux bug (it ran ~2× too "
+    W("> **The dominant systematic is the OPEN beam waist $w_0$ — a direct beam-profile "
+      "measurement (knife-edge and/or camera) in a fixed-lock session would measure it; "
+      "that session is proposed, not scheduled.** The M9 transit Monte-Carlo flux bug (it ran ~2× too "
       "narrow) was FIXED and fully propagated on 2026-07-13: the corrected transit "
       "excludes the old 32 µm nominal (natural convolved with transit alone already "
       "exceeds the observed ~5.25 MHz line there) and re-centres $w_0$ to **~50 µm** "
@@ -47,7 +48,8 @@ def main() -> int:
       "$\\beta_\\text{self}$ and $\\sigma_\\text{laser}$ bounds, $S_0$, the $w_0$-band) "
       "has been RE-RUN at the corrected prior; they stay PRELIMINARY and "
       "$w_0$-conditional because the transit vs $\\sigma_\\text{laser}$ degeneracy "
-      "means the archival line cannot pin $w_0$ itself — that is the knife-edge's job. "
+      "means the archival line cannot pin $w_0$ itself — that is the beam-profile "
+      "measurement's job. "
       "An earlier note inferred $w_0\\approx90$ µm from a second (spurious) factor-of-2; "
       "retracted — see `docs/notes/transit_width_resolved.md`, "
       "`literature_food_for_thought.md`.\n")
@@ -65,7 +67,7 @@ def main() -> int:
     W(f"treatments. They span a **factor $\\sim${max(fitvals) / min(fitvals):.0f}** "
       f"({min(fitvals):.2f}–{max(fitvals):.2f}) — that")
     W("model-dependence IS the C1 uncertainty, larger than any single fit's error")
-    W("bar, and it is the honest headline. The **conservative model-independent")
+    W("bar, and it is the headline uncertainty. The **conservative model-independent")
     W(f"bound (per-peak 95% range {pbounds[0]:.2f}–{pbounds[-1]:.2f}; floored at the")
     W(f"loosest, $<{pbounds[-1]:.2f}$) is the robust floor**; the fits are PRELIMINARY")
     W("cross-checks pending a fixed-lock session.\n")
@@ -95,8 +97,8 @@ def main() -> int:
       f"peak's `resid_rms` ({rr}), not a physical rate — all four "
       "have SNR $<$ 2 (none resolves collisions). Because the min of noisy "
       "1-DOF estimates is the down-fluctuated one, the **loosest** peak is the "
-      "honest single-number floor, not the tightest (that would be selection "
-      "bias); quote the range, floor at the loosest. "
+      "single-number floor to quote; taking the tightest would be selection "
+      "bias. Quote the range, floor at the loosest. "
       "(iii) **What the 95% conditions on:** the t-quantile covers "
       "*exchangeable* between-block scatter; a *monotone* session drift aliased "
       "onto the monotone T-vs-time acquisition would bias the slope with a sign "
@@ -198,7 +200,7 @@ def main() -> int:
         pb87 = _dv("beta_grid_exp_per_block", "87Rb")
         sh87 = _dv("beta_err_sharing", "87Rb")
         W("\n> The **$w_0$-band is the largest systematic** (the OPEN waist — the "
-          "knife-edge measurement collapses it), then the transit model-form (Lehmann cusp "
+          "beam-profile measurement collapses it), then the transit model-form (Lehmann cusp "
           "vs Voigt); the $\\sigma_\\text{laser}$ A-vs-B *sharing* choice is minor — "
           f"per-block (Model B) gives $\\beta_{{87}}={float(pb87['value']):.3f}$ vs "
           f"per-$T$ {bcv['87Rb']:.3f}, agreeing to "
@@ -219,7 +221,7 @@ def main() -> int:
         if all(pb) and grf:
             shifts = "; ".join(f"{r['key']} {float(r['value']):.3f}" for r in pb)
             gfac, nfac = float(grf["value"]), float(grf["err"])
-            W(f"> **Lever test — $\\beta$ is a bound, not a value, because "
+            W(f"> **Lever test — $\\beta$ is reported as a bound because "
               f"$\\gamma_\\text{{coll}}$ barely grows with density.** Adding the curated "
               f"130 °C anchor (`serves_t130`, 225 mW; density lever $\\times16\\to\\times53$) "
               f"pulls the joint $\\beta$ to [{shifts}] — well below the cooling-sweep {bmax:.3f} "
@@ -248,7 +250,7 @@ def main() -> int:
               f"the ~20% vapor-pressure-correlation spread; `density.py`). The paper "
               f"quotes all four bars, not one optimistic $\\pm$.\n")
     W("*Lifted by:* a fixed lock (removes between-block laser drift) + "
-      "knife-edge $w_0$ (sets the transit subtraction) → a clean measurement.\n")
+      "beam-profile $w_0$ (knife-edge and/or camera; sets the transit subtraction) → a clean measurement.\n")
 
     # ---- C2: sigma_laser ----
     W("## C2 — 2025 laser-epoch width $\\sigma_\\text{laser}$\n")
@@ -270,7 +272,7 @@ def main() -> int:
       "fit is flatter, $\\sim$1.0–1.25 transition); the underlying laser width is "
       "$\\sim$1.1 transition $=$ ~0.55 laser. Every committed CSV carries the axis in "
       "its unit string.\n")
-    W("*Lifted by:* knife-edge $w_0$ + a direct linewidth measurement in a fixed-lock session.\n")
+    W("*Lifted by:* beam-profile $w_0$ (knife-edge and/or camera) + a direct linewidth measurement in a fixed-lock session.\n")
 
     # ---- C3: power sweep ----
     W("## C3 — power sweep (ramp-law predictions confirmed)\n")
@@ -347,7 +349,7 @@ def main() -> int:
           f"prediction are independent by construction: the bound uses only the "
           f"width-vs-power data (no $w_0$ enters), while the prediction is the "
           f"computed polarizability at the $w_0$ prior, fixed before the fit and "
-          f"never an input to it — proximity is a test passed, not a tuning. "
+          f"never an input to it, so their agreement is a genuine consistency check. "
           f"That independence is from the density lever and the polarizability, "
           f"**not** from the lineshape model: like the $\\beta$ *fit* (not the "
           f"model-independent width-slope bound that heads C1), the $\\kappa$ fit "
@@ -404,7 +406,7 @@ def main() -> int:
         W("|---|---|---|")
         W(f"| the OPEN w₀ (transit band, ~65→40 µm) | spans "
           f"{w0lo[0]:.3f}–{w0hi[0]:.3f} · {w0lo[1]:.3f}–{w0hi[1]:.3f} | "
-          f"the dominant systematic — the knife-edge collapses it |")
+          f"the dominant systematic — a beam-profile measurement collapses it |")
         W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3f} · "
           f"{mf[1]:.3f} | comparable to β_self itself — part of why the "
           f"headline is a bound |")

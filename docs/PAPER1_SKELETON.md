@@ -60,8 +60,8 @@ the archival brackets into measurements, so several sections are written as
 > cm⁻³), show the fitted collisional width is a density-independent floor rather than
 > a resolved rate, bound the laser linewidth, and confirm the ramp's power-law
 > signatures, yielding an upper bound on the AC-Stark coefficient. Every absolute
-> value is limited by the beam waist; we describe the fixed-lock, calibrated-waist
-> campaign that converts these brackets into measurements. **[Fill X and the σ_laser,
+> value is limited by the beam waist; we outline a proposed fixed-lock,
+> calibrated-waist campaign that would convert these brackets into measurements. **[Fill X and the σ_laser,
 > S₀ numbers from §VI once the headline framing is agreed.]**
 
 ---
@@ -107,7 +107,7 @@ the archival brackets into measurements, so several sections are written as
   handles are weak: width ∝S₀² and skew ∝S₀³, and the skew is further contaminated by
   shot-noise skewness (∝1/√counts) and instrument asymmetry. At the archival S₀ ≈ 0.6
   MHz they are **below detection → the archival AC-Stark result is a BOUND, not a
-  measurement**, and β_self likewise. This is not a hedge but the point: the archive
+  measurement**, and β_self likewise. The archival result is a bound by design: the archive
   rigorously delivers *bounds + a validated method*; the fixed-lock small-waist epoch
   (S₀ several MHz — skew ~×64 — with the pull resurrected) delivers the *coefficients*.
 - Contributions list (3–4 bullets): the closed-form fringe-averaged two-photon ramp
@@ -124,10 +124,10 @@ the archival brackets into measurements, so several sections are written as
   licenses: widths, power/density scalings, ramp *shape* moments. What it forbids:
   absolute shifts.
 - **Epoch 2 (fixed lock):** centres → the first absolute AC-Stark and
-  collisional self-shift coefficients; a knife-edge $w_0$ sets every absolute scale.
+  collisional self-shift coefficients; a direct beam-profile $w_0$ (knife-edge and/or camera) sets every absolute scale.
 - State plainly: **the dominant systematic throughout is the OPEN beam waist $w_0$**
   (beam clipped by the 3 mm EOM aperture, tens-of-% uncertain). Every "absolute"
-  archival number is conditional on it. This is the honest through-line of the paper.
+  archival number is conditional on it. 
 
 ## III. Lineshape model and the AC-Stark ramp *(theory — full derivation in App. A; `THEORY_NOTE.md`)*
 
@@ -253,7 +253,7 @@ the archival brackets into measurements, so several sections are written as
 - Transit-broadening Monte Carlo (Fig. 3): the flux-corrected transit adds
   $\sim2.1$ MHz@32 µm (which OVERSHOOTS the observed line, excluding 32 µm) and
   $\sim1.2$@50 µm — degenerate with $\sigma_\text{laser}$ through $w_0$ (crossover
-  $\sim18$–20 µm). Sets the transit subtraction the fixed-lock session's knife-edge $w_0$ enables.
+  $\sim18$–20 µm). Sets the transit subtraction a proposed fixed-lock session's beam-profile $w_0$ would enable.
 - Degeneracy-law amplitude ratios (Fig. 4): predicted abundance$\times(2F{+}1)$;
   measured ratios swing 30–50% between blocks (drift) → untestable in the archive, a
   cross-peak systematic interleaving in a fixed-lock session fixes. Bounds cross-peak comparisons.
@@ -264,7 +264,7 @@ the archival brackets into measurements, so several sections are written as
 (`PLAN.md` §8) — if no such data exists by writing time, this section either
 states the predictions as future work (P1-min) or is dropped.*
 
-- **Knife-edge $w_0$** (+ collection profile): collapses the transit$\leftrightarrow
+- **Beam-profile $w_0$** (knife-edge and/or camera, + collection profile): collapses the transit$\leftrightarrow
   \sigma_\text{laser}$ degeneracy, sets every absolute scale. Highest priority of
   the specification, and the one item worth doing even standalone.
 - **Fixed-lock centres:** first absolute AC-Stark shift (the pull $\propto S_0$,

@@ -89,13 +89,13 @@ as a bound. Concretely:
   detection" would be an artifact. The honest per-peak bound is
   ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95%, with the low-degrees-of-freedom scatter
   and the vapour-pressure density scale both propagated). Showing that the
-  two-epoch design was *required* is itself a result.
+  two-epoch design was *required* is reported as a Paper-1 result.
 - **The ramp's power laws are confirmed** (width flat, amplitude ∝ P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md)), and the drift-immune skew observable is
   derived, bounded, and waiting for the geometry that amplifies it. The premise
   the whole method rests on — that the line *shape* outlives the drift — is now
-  **tested, not just argued**: between-scan drift is absorbed exactly by the
+  **supported by a synthetic closure test**, not only by the timescale argument: between-scan drift is absorbed exactly by the
   per-scan free centres, and a synthetic closure test
   (`tests/test_intrascan_drift.py`) bounds the leftover *within*-scan effect at
   well under a fifth of the statistical error on the recovered asymmetry at the
@@ -115,7 +115,7 @@ A cell session with a stable lock (the laser's locking has since been
 improved) converts the bounds into the first measured environmental
 coefficients for this line. In order of leverage:
 
-1. **A knife-edge beam-waist measurement.** No physics run at all — but w₀
+1. **A direct beam-waist measurement** (knife-edge and/or camera profiler)**.** No physics run at all — but w₀
    is the one systematic every absolute number rides on (transit and laser
    width are degenerate through it). Measuring it retroactively sharpens
    the entire 2025 archive. Worth doing even if nothing else happens.
@@ -184,7 +184,7 @@ lineshapes *interpretable*.
 ```
   2025 archive (done)        model + bounds + method, w0-conditional
         │
-        ├── knife-edge w0 ──────────► every archive bound sharpens (no new physics run)
+        ├── beam-profile w0 ───────► every archive bound sharpens (no new physics run)
         │
         ├── fixed-lock cell session ► Δα and β measured (first coefficients)
         │         │

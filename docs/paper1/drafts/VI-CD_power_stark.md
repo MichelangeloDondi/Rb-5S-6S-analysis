@@ -29,7 +29,7 @@ consistent with $P^2$. The one low value (993.4121 nm, slope $\approx1.85$) is
 driven by its 25 mW point, where saturation and radiation-trapping corrections
 are degenerate in a single-temperature sweep; we therefore say "consistent with
 $P^2$", not "confirms $P^2$", and defer the trapping discriminator to the
-interleaved a fixed-lock session data (§VII).
+interleaved fixed-lock-session data (§VII).
 
 **The ramp asymmetry is a bound, and the low-power skew is shot noise, not the
 ramp (C3c).** These are two distinct quantities and conflating them is the trap.
@@ -46,7 +46,7 @@ vanishing as the line brightens): it has the opposite sign and the opposite powe
 dependence to the ramp ($\propto P^3$ growth), so it is a statistical artifact of
 the noise, positively identified and cleanly separated from the ramp signal. [The
 old "unexplained low-power asymmetry" is thus resolved into shot noise; keep the
-two-quantities framing, it is the honest version.]
+two-quantities framing.]
 
 ## VI.D The AC-Stark coefficient: an upper bound from the power lever
 
