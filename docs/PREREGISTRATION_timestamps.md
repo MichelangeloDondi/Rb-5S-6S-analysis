@@ -207,14 +207,56 @@ by any photograph here.
   itself showing intra-block scatter growing with block duration (that is D2).
   If D2 shows no growth, D4 is void rather than failed.
 
-### 8.4 What would actually settle it
+### 8.4 The WLM logs do not exist — and the archive answered anyway
 
-The WLM software writes long-term logs to disk (`File ▸ Recording`). A log
-covering 17–18 July replaces every number above with a drift diary at native
-resolution, from an instrument independent of the filesystem clock — and
-distinguishes jitter from drift directly, which no photograph can. Establishing
-whether those logs exist is worth more than any further reading of screen
-photographs.
+The wavemeter's long-term logs were **not saved** (experimenter, 2026-07-22).
+The three photographs are the whole of the wavemeter evidence; there is no
+drift diary to recover.
+
+That route closed, the jitter-vs-drift question was put to the **archive
+itself**, where it turns out to be answerable with no timestamps and no
+wavemeter log at all. Nothing was moved within a 5-repeat block, so its five
+`peak_pos_ms` values are comparable, and `repeat_idx` is their time order — the
+block carries its own arrow of time. Accumulated drift would trend with that
+index; jitter would not (`scripts/run_intrablock_trend.py`):
+
+| | |
+|---|---|
+| RF-off science blocks, ≥4 canonical repeats | 32 (24 scatter-like, 8 step-like) |
+| median within-block scatter | **1.79 ms = 0.079 MHz** — confirms `DATA.md` §2's 1.8 ms |
+| mean $R^2$ of a linear fit vs repeat index | 0.303 |
+| expected if the order were random | 0.253 |
+| paired $t$-test | $t=+0.99$, $p=0.33$ |
+| slope signs | 11 up, 13 down |
+
+**No accumulation.** The scatter is short-term **jitter**, and it matches the
+wavemeter's own StdDev of 100 kHz on IMG_2896 — which is what jitter looks like.
+
+Consequences, decided before the backup was opened:
+
+- **D4 is VOID, not merely conditional.** It divided the 0.08 MHz scatter by a
+  drift rate to predict a block duration; that premise is now tested and false.
+  D4 is withdrawn and must not be scored.
+- **D2 is restated.** It asked whether intra-block scatter scales as $T$ or
+  $\sqrt{T}$. The answer is that it does not scale with duration at all — it is
+  jitter. D2 becomes a *check* of that: if the recovered timestamps show scatter
+  growing with block duration, this section is wrong and D4 revives.
+- **D1 has no route.** Within-block variation is jitter; between-block variation
+  is destroyed by re-centring. **The archive cannot measure the lock drift
+  rate.** That is a negative result and the honest end state:
+  `constants.DRIFT_RATE_LASER_HZ_PER_MIN` stays an envelope, sourced from one
+  in-campaign photograph of a settling transient.
+
+**An anomaly worth its own answer.** Eight of the 32 blocks show a *step*
+rather than scatter — position jumping mid-block, which "nothing moved within a
+block" does not predict. Two are dramatic: `4207 @175 mW` reads
+[1165.5, 1171.0, 25.0, 26.0, 26.0] ms and `4192 @110 °C` reads
+[895, 873, 33, 31, 31] ms — two traces, then a jump of ~1140 ms and ~860 ms.
+Both first values exceed the 1000 ms trace window, so the axis offset itself
+moved. Either the horizontal knob was adjusted mid-block, or these blocks are
+not contiguous in time (curation renumbered the keepers after discards,
+`DATA.md` §3.4). The recovered timestamps settle which — and that is now the
+most informative thing they can do about the protocol.
 
 Open and gating: whether the lock was engaged during each record, and whether
 the oscillation in the two out-of-campaign traces is the spectroscopy sweep

@@ -179,3 +179,51 @@ def test_bias_is_scan_direction_dependent_at_stress():
     a_fwd = _bias(0.0, quad_mhz=_DRIFT_ARCHIVAL_MHZ, direction=+1)
     a_rev = _bias(0.0, quad_mhz=_DRIFT_ARCHIVAL_MHZ, direction=-1)
     assert abs(a_fwd - a_rev) < 8e-3, (a_fwd, a_rev)
+
+
+# --------------------------------------------------------------------------
+# Intra-BLOCK (between repeats) position variation: jitter, not drift.
+# --------------------------------------------------------------------------
+# Distinct from the intra-SCAN drift above. The experimenter confirmed nothing
+# was moved within a 5-repeat block, so repeat positions are comparable and
+# repeat_idx is their time order. If the 0.08 MHz scatter were accumulated
+# drift it would trend with that index; it does not. This matters because
+# docs/PREREGISTRATION_timestamps.md derived a block DURATION by dividing that
+# scatter by a drift rate, which is only valid if it is drift.
+def test_intra_block_scatter_is_jitter_not_drift():
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    from run_intrablock_trend import blocks, JUMP_MS
+    from scipy import stats
+
+    R = blocks()
+    clean = R[R["std"] < JUMP_MS]
+    assert len(clean) >= 20, "too few scatter-like blocks to conclude anything"
+    # DATA.md section 2 quotes 1.8 ms; confirm the ledger against the data
+    assert clean["std"].median() == pytest.approx(1.8, abs=0.5)
+    null = 1.0 / (clean.n - 1)
+    _, p = stats.ttest_1samp(clean.r2 - null, 0.0)
+    assert p > 0.05, (
+        "intra-block positions now show a monotonic trend with repeat index, "
+        "i.e. the scatter IS accumulating drift. PREREGISTRATION D4 was voided "
+        "on the opposite finding and must be reinstated and re-argued."
+    )
+
+
+def test_ruler_blocks_stay_excluded_from_that_test():
+    """Pooling the RF-on ruler blocks in inflates the apparent intra-block
+    scatter ~7x (peak_pos_ms locks onto different comb teeth there, so it
+    measures tooth identification, not the laser). That error was made once."""
+    import pandas as pd
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    d = pd.read_csv(root / "results" / "qc_metrics.csv")
+    d = d[d.flag == "canonical"]
+    rf_on = d[d.rf_on].groupby(
+        ["role", "peak", "temperature_C"], dropna=False).peak_pos_ms.std()
+    assert rf_on.median() > 50, (
+        "ruler-block position scatter is no longer large; if peak_pos_ms now "
+        "tracks a consistent tooth, run_intrablock_trend.py may include them"
+    )
