@@ -284,7 +284,8 @@ window — $g_1 \approx +0.56$ at $w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx
 — because a long window piles weight at weak out-of-focus shifts. The flip at
 small waist is conditional on the (unmeasured) collection geometry: $Z_c$ is
 the imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens
-($L_\parallel$ = the cathode's active extent along the beam image; the R636-10
+($L_\parallel$ = the cathode's active extent along the beam image; the *assumed* R636-10 (attribution from Nieddu 2019, the
+nanofibre bench; an in-campaign photo shows a Thorlabs PXT1/M — unverified)
 cathode is a 3 × 12 mm rectangle, so its rotation changes $Z_c$ by ×4), so it
 follows from the lens–beam distance, the lens–detector distance and that extent, and plausible layouts land on either side of the crossover
 (PLAN §8.3 #4). So the pure triangle holds only at large waist, and the

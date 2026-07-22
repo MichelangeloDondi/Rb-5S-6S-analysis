@@ -19,8 +19,9 @@ imaging field of view r_PMT/M (M = v/u for the side-viewing f = 18 mm
 lens), so the flip needs r_PMT/M > ~0.9 mm at 16 um, and plausible bench
 layouts land on both sides (short-conjugate/high-M: g1 ~ +0.5, no flip;
 1:1 relay or large photocathode: g1 ~ -0.3 to -0.5). Measuring u, v and the
-cathode's active extent ALONG the beam image (L_par; the R636-10 cathode is a
-3 x 12 mm rectangle, so its rotation changes Z_c by x4) settles it; near the crossover,
+cathode's active extent ALONG the beam image (L_par; the R636-10 cathode is ASSUMED to be a
+3 x 12 mm rectangle (attribution from Nieddu 2019's nanofibre bench; an
+in-campaign photo shows a Thorlabs PXT1/M -- unverified), so its rotation changes Z_c by x4) settles it; near the crossover,
 moving the PMT (changing M) is a design knob. If the condition holds, a
 session sees POSITIVE skew at the large waist and NEGATIVE at the small
 one — a sign flip no instrumental asymmetry (none of which depends on

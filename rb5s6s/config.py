@@ -317,7 +317,19 @@ replaces the bare f18 with a two-lens relay plus an image-plane slit, which
 makes Z_c settable hardware and directly measurable (PLAN 8.3 #4)."""
 
 RAMP_PMT_CATHODE_MM = (3.0, 12.0)
-"""R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.
+"""ASSUMED R636-10 photocathode rectangle (short, long axis), datasheet
+TPMS1016E.
+
+*** UNVERIFIED FOR THIS APPARATUS (flagged 2026-07-23). *** The R636-10
+attribution was taken from Nieddu 2019 -- the NANOFIBRE experiment -- and
+assumed to carry over to the vapour-cell bench. It does not obviously: an
+in-campaign photograph (2025-07-18, the setup photos) shows the cell
+fluorescence detector labelled THORLABS PXT1/M, a commercial module with a
+finned heat sink, not a bare side-on tube. Whether that module HOUSES an
+R636-10 or is a different detector entirely is an open question for the
+experimenter. Until it is answered, the 3 x 12 mm rectangle below -- and
+everything that follows from it -- is a WORKING ASSUMPTION, not a fact.
+
 Which axis lies along the beam image is the install decision: L_par = 12 mm
 ('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. Landscape is the
 recommendation (PLAN 8.3 #4) -- portrait puts Z_c below the 0.90 mm flip
