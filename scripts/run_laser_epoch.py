@@ -19,8 +19,8 @@ re-centred 32 -> 50 um 2026-07-12 when the transit physics was corrected; 32 um
 now OVERSHOOTS the observed line and is excluded -- see constants.W0_PRIOR_M.)
 
 We also report the block-to-block scatter of the fitted sigma_laser -- the
-"drift diary" of the bad-lock epoch -- which is what Zohreh needs as the ONF
-starting linewidth, and which (per M4) is the systematic that bounds beta_self.
+"drift diary" of the bad-lock epoch -- the starting linewidth the ONF work
+needs, and which (per M4) is the systematic that bounds beta_self.
 
 Reads results/linefit_conditions.csv (per-condition fits from run_linefit.py).
 Outputs: results/laser_epoch.csv + stdout.

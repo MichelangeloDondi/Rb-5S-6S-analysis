@@ -137,7 +137,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     # Window each trace to +-FIT_HALFWIDTH_MHZ about its seed center, EXCLUDING
     # any off-center-sweep mirror crossing (~40 MHz away) that the full-window
     # single-line fit would otherwise treat as unmodelled signal and let bias
-    # the baseline/width. (user-flagged 2026-07-11; see config.FIT_HALFWIDTH_MHZ)
+    # the baseline/width. (flagged 2026-07-11; see config.FIT_HALFWIDTH_MHZ)
     wf, wv, ws = [], [], []
     for i in range(ntr):
         hw = adaptive_halfwidth(freqs[i], volts[i])

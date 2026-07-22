@@ -11,7 +11,7 @@ exclusion stops being unbiased):
 1. Compute, for every trace in the manifest, a set of objective quality
    metrics (baseline, noise, glitches, steps, clipping, peak location and
    crude extent, comb periodicity).
-2. Audit the experimenter's curation SYMMETRICALLY (user request,
+2. Audit the experimenter's curation SYMMETRICALLY (pre-registered,
    2026-07-11): the discarded traces must look bad by these metrics, and the
    canonical traces must look good — each trace is compared against its
    same-condition siblings. Disagreements in either direction are reported;

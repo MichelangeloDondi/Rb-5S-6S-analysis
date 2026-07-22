@@ -17,3 +17,21 @@ __pycache__/
 # source-literature PDFs (possibly copyrighted): keep the index + bib, not the PDFs
 PDF_papers/*
 !PDF_papers/README.md
+
+# reference-setup lab photos (carry equipment serials + a purchaser name): keep
+# the transcription/notes, not the images, out of the public repo
+docs/reference_setup/photos/*
+!docs/reference_setup/photos/DROP_PHOTOS_HERE.md
+
+# Personal / correspondence working files kept in the tree for convenience but
+# never published. These were previously protected only by .git/info/exclude,
+# which is local to one clone and does not travel — so a fresh clone elsewhere
+# had no protection at all. Patterns are deliberately generic.
+# tests/test_repo_hygiene.py fails if any of these ever becomes tracked.
+docs/brief_*
+docs/*audit*
+docs/*red_team*
+docs/CV_*
+docs/*inquiry*
+docs/linkedin*
+*.docx

@@ -260,7 +260,7 @@ RULER_NLMAP_NBINS = 12
 # re-crosses the line ~40 MHz away (fold near 432 ms in the 4207 blocks;
 # 4207@25mW has a 79%-of-peak mirror in 4/5 traces). A single-line fit over the
 # full 1 s window treats that mirror as unmodelled signal and biases
-# baseline/width (whole-dataset scan 2026-07-11, user-flagged: 8 RF-off traces,
+# baseline/width (whole-dataset scan 2026-07-11, flagged during curation: 8 RF-off traces,
 # almost all 4207). The half-width now SCALES with each trace's own measured
 # FWHM rather than a fixed value, so it keeps ~the same number of Lorentzian
 # wings whether the line is narrow (cold/dim) or collisionally broadened —

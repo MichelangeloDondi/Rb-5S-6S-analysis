@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Run the M0 quality-control metrics over the full manifest and audit the
-experimenter's curation symmetrically (user request, 2026-07-11: "challenge
+experimenter's curation symmetrically (pre-registered 2026-07-11: "challenge
 my choices on both sides").
 
 Outputs
