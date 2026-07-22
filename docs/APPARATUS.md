@@ -95,6 +95,7 @@ generator as well as a different tank.
 |---|---|---|
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
+| Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 

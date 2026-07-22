@@ -332,8 +332,9 @@ experiment, and happened to be right; it was flagged as unverified on
 2026-07-23 and confirmed the same day.)
 
 Which axis lies along the beam image is the install decision: L_par = 12 mm
-('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. Landscape is the
-recommendation (PLAN 8.3 #4) -- portrait puts Z_c below the 0.90 mm flip
+('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. The 2025 archive was
+taken in LANDSCAPE (experimenter-confirmed 2026-07-23), which is also the
+recommendation for a future session (PLAN 8.3 #4) -- portrait puts Z_c below the 0.90 mm flip
 threshold at every plausible M and forfeits the sign-flip test, while its
 one advantage (less axial averaging) is recovered by closing the slit."""
 
