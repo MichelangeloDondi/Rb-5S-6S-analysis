@@ -99,7 +99,13 @@ def fig_width_vs_density():
 
 
 def fig_power_sweep():
-    """C3: FWHM flat vs power; amplitude ~ P^2."""
+    """C3: FWHM shows no power trend; amplitude ~ P^2.
+
+    The observed FWHM spread (3-8%) EXCEEDS the <=2% the ramp law predicts,
+    so the title must not present the prediction as the observation -- it is
+    between-block scatter, and no peak keeps a significant slope once that
+    over-dispersion is absorbed (worst 1.7 sigma). Titling this "flat" read
+    as a claim the plotted points do not support."""
     rows = _rows("power_sweep")
     by = defaultdict(list)
     for r in rows:
@@ -113,7 +119,8 @@ def fig_power_sweep():
         a2.errorbar(P, [x[3] for x in d], yerr=[x[4] for x in d], fmt="o",
                     color=PEAK_COLOR[peak], ms=4, capsize=2)
     a1.set_xlabel("power (mW)"); a1.set_ylabel("FWHM (MHz, transition)")
-    a1.set_title("C3a: linewidth flat vs power\n(ramp law predicts $\\leq$2% inflation)", fontsize=9)
+    a1.set_title("C3a: no power trend in the linewidth\n"
+              "(observed 3–8% scatter; ramp predicts $\\leq$2%)", fontsize=9)
     a1.legend(fontsize=8)
     # amplitude log-log: a slope-2 (P^2) fit anchored to each peak's own data, so
     # the guide tracks the points instead of floating beside them

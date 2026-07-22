@@ -3,10 +3,15 @@
 Is the intra-block position scatter DRIFT or JITTER?  (PLAN §8.4, limitation 5)
 
 The experimenter confirmed (2026-07-22) that the scope horizontal knob and the
-cavity reference were NOT touched within a single 5-repeat block, though they
-were moved many times between blocks. That makes `peak_pos_ms` comparable
-across the repeats of one block -- and since `repeat_idx` is the time order
-(DATA.md §2), the block's five positions carry their own arrow of time.
+cavity reference were USUALLY not touched within a single 5-repeat block --
+a tendency, not a protocol -- though they were moved many times between
+blocks. The exceptions are visible in the data and are separated below: a
+block whose positions STEP rather than scatter is one where something moved,
+so excluding those is principled rather than convenient.
+
+Within a block that did not move, `peak_pos_ms` is comparable across its
+repeats -- and since `repeat_idx` is the time order (DATA.md §2), the block's
+five positions carry their own arrow of time.
 
 So the question can be settled from the archive alone, with no timestamps and
 no wavemeter log:
@@ -95,7 +100,7 @@ def main() -> int:
     print("    lever on the lock DRIFT RATE at all.")
     if len(R) > len(clean):
         print(f"\nStep-like blocks ({len(R) - len(clean)}) -- position jumps mid-block,")
-        print("which the 'nothing moved within a block' protocol does not predict:")
+        print("i.e. blocks where the reference DID move mid-acquisition:")
         for _, row in R[R["std"] >= JUMP_MS].iterrows():
             print(f"  {str(row.key):38s} std={row['std']:7.1f} ms  "
                   f"{np.round(row.positions, 1)}")

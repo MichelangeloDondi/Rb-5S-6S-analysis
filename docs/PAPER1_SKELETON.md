@@ -227,8 +227,11 @@ the archival brackets into measurements, so several sections are written as
 
 > **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
-- **C3a** linewidth flat ($\lesssim2$% over $9\times$ power — the ramp adds
-  $\propto S_0^2$, negligible). **C3b** amplitude $\propto P^2$ (log-log slopes
+- **C3a** linewidth shows no power trend: the observed spread is **3–8%** over
+  $9\times$ power, non-monotonic, and no peak keeps a significant slope once
+  between-block over-dispersion is absorbed (PDG inflation; worst case 1.7$\sigma$).
+  That is block scatter, not power broadening — the ramp itself would add
+  $\propto S_0^2$, $\lesssim2$%, well under the scatter. **C3b** amplitude $\propto P^2$ (log-log slopes
   1.83–2.12; 4121 low end = saturation-vs-trapping degeneracy, say "consistent with").
   **C3c** asymmetry below the archival floor — a bound; the large low-power residual
   skew is **shot noise** (∝amp$^{-0.5}$), identified, opposite sign+scaling to the
