@@ -47,7 +47,7 @@ arcsine, and because the fringe MULTIPLIES the shift (s → s(1+x), x arcsine) i
 SUPPRESSES the ramp skew — κ₃ → S₀³(1/135 − f_res/10) at ρ=1, a −13.5·f_res
 fractional leverage (∝ contrast², not contrast³ — the arcsine has E[cos³]=0; only
 the product P = f_res·σ_x² is observable). Negligible at w₀=50 µm (~5–8% of an
-already-below-noise skew), ~25% at w₀=16 µm, and same-sign-additive to the
+already-below-noise skew), ~26–28% at w₀=16 µm, and same-sign-additive to the
 beam-divergence correction — fit jointly at the small waist (quantified,
 coherence-window bracketed, in `rb5s6s/fringe_tail.py`). CALCULATED 2026-07-17.
 

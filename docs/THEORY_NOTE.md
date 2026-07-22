@@ -196,7 +196,8 @@ but, because the fringe *multiplies* the shift $s\to s(1+x)$ with $x$ arcsine,
 **suppresses** the ramp skew — $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at
 $\rho=1$ (a $-13.5 f_\text{res}$ fractional leverage $\propto$ contrast$^2$; only
 $P=f_\text{res}\sigma_x^2$ is observable). Negligible at $w_0=50\ \mu$m
-($\sim$5–8% of an already-below-noise skew), $\sim$25% at $16\ \mu$m, and
+($\sim$9–14% of an already-below-noise skew, `results/fringe_tail.csv`),
+$\sim$26–28% at $16\ \mu$m, and
 **same-sign-additive** to the larger §7 divergence correction — the two must be
 fit jointly at small waist (quantified, coherence-window-bracketed, in
 `fringe_tail`). With $\Delta\alpha = 1093$ a.u.
@@ -276,13 +277,14 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 \zeta_m(s) = \min \left(\frac{Z_c}{z_R},\ \sqrt{\frac{S_0}{|s|}-1}\right)$$
 
 which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised skewness **changes sign** with the collection
-window — $g_1 \approx +0.57$ at $w_0=60\ \mu$m ($z_R \gg Z_c$) but $\approx
--0.35$ at $w_0=16\ \mu$m ($z_R \ll Z_c$), crossing zero at $Z_c/z_R\approx1.12$
+window — $g_1 \approx +0.56$ at $w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx
+-0.35$ at $w_0=16\ \mu$m ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$
 — because a long window piles weight at weak out-of-focus shifts. The flip at
 small waist is conditional on the (unmeasured) collection geometry: $Z_c$ is
-the imaging field of view $r_\text{PMT}/M$ of the side-viewing $f=18$ mm lens,
-so it follows from the lens–beam distance, the lens–PMT distance and the PMT
-active diameter, and plausible layouts land on either side of the crossover
+the imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens
+($L_\parallel$ = the cathode's active extent along the beam image; the R636-10
+cathode is a 3 × 12 mm rectangle, so its rotation changes $Z_c$ by ×4), so it
+follows from the lens–beam distance, the lens–detector distance and that extent, and plausible layouts land on either side of the crossover
 (PLAN §8.3 #4). So the pure triangle holds only at large waist, and the
 small-waist configuration that maximises $S_0$ is exactly where the clean
 triangular law is least valid.

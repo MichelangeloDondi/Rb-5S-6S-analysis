@@ -12,6 +12,7 @@ it.
 """
 
 import re
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -57,7 +58,7 @@ DOC_TOKENS = [
      ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "r_PMT/M > ~0.9 mm"]),
     ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
-    ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "r_\\text{PMT}/M"]),
+    ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "L_\\parallel/2M"]),
 ]
 
 
@@ -86,10 +87,17 @@ def test_tabulated_g1_match_computation(w0_um, doc_g1):
 _X64 = re.compile(r"(×64|x64|64\\times|64\s*×)")
 _RETRACTED = re.compile(r"naive|supersed|wrong in sign|not by the", re.I)
 
+# Every document that carries the claim -- INCLUDING the generated ledger and
+# the generator it comes from. The first version of this list watched only the
+# hand-written docs, and the three files it omitted (docs/RESULTS.md, its
+# generator, and FUTURE_TRANSITIONS) were exactly the three that still carried
+# the superseded x64 a commit later.
 SKEW_DOCS = ["docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
              "docs/THEORY_NOTE.md", "docs/PLAN.md",
              "docs/methods/03_the_ac_stark_ramp.md",
-             "docs/methods/08_assumptions_and_outlook.md"]
+             "docs/methods/08_assumptions_and_outlook.md",
+             "docs/RESULTS.md", "scripts/make_results_ledger.py",
+             "docs/FUTURE_TRANSITIONS_titsapph.md"]
 
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
@@ -121,3 +129,22 @@ def test_sign_flip_claims_carry_the_condition(relpath):
         f"{relpath} asserts the g1 sign flip but never states that it is "
         f"conditional on the unmeasured collection geometry (PLAN 8.3 #4)."
     )
+
+
+def test_results_ledger_is_fresh():
+    """docs/RESULTS.md is generated; nothing checked that it still matches its
+    generator. It drifted: a wording fix landed in make_results_ledger.py while
+    the committed ledger kept the old text, so the stale claim stayed visible.
+    tests/test_results_fresh.py covers the CSVs, not this document."""
+    import subprocess
+    committed = (ROOT / "docs" / "RESULTS.md").read_text(encoding="utf-8")
+    out = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "make_results_ledger.py")],
+        capture_output=True, text=True, cwd=str(ROOT))
+    assert out.returncode == 0, f"generator failed:\n{out.stderr[-800:]}"
+    regenerated = (ROOT / "docs" / "RESULTS.md").read_text(encoding="utf-8")
+    if regenerated != committed:
+        (ROOT / "docs" / "RESULTS.md").write_text(committed, encoding="utf-8")
+        pytest.fail("docs/RESULTS.md is stale against "
+                    "scripts/make_results_ledger.py -- re-run the generator "
+                    "and commit the result.")

@@ -155,7 +155,12 @@ measurement):
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
 | 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
 | 50 µm (2025 archival) | 0.25 | $-0.653$ | 0.125 | $+0.558$ |
-| 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ |
+| 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ * |
+
+\* At 225 mW config S is already saturated (PLAN §8.0), so the effective
+signal exponent there is $n<2$: that *strengthens* the negative skew but the
+$n=2$ magnitudes in this row are no longer parameter-free. At config S the
+sign is the robust observable; the magnitudes belong to L and M.
 
 **The skewness flips sign** (crossover at $Z_c/z_R\approx1.12$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
@@ -168,7 +173,9 @@ condition at 16 µm reads $r_\text{PMT}/M > 1.12 z_R \approx 0.9$ mm — and
 plausible bench layouts land on *both* sides (a short-conjugate,
 high-magnification layout gives $g_1\approx+0.5$, no flip; a 1:1 relay or a
 large photocathode gives $g_1\approx-0.3$ to $-0.5$). Three ruler-and-datasheet
-numbers ($u$, $v$, the PMT active diameter) settle it, which is why they are
+numbers settle it — $u$, $v$, and the cathode's active extent *along the beam
+image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode is a
+3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4) — which is why they are
 part of the proposed session's setup metrology (PLAN §8.1, §8.3 #4); the
 solid-angle weighting varies by <2% across any such window, so the top-hat
 form is fair and the *width* is the only unknown. Geometry permitting, a
