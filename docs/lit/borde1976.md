@@ -2,7 +2,7 @@
 citekey: borde1976
 type: article
 authors:
-  - 'Bord\''e, C. J.'
+  - 'Bordé, C. J.'
 title: '[Two-photon Doppler-free lineshapes, general transit-time treatment]'
 journal: C. R. Acad. Sci. Ser. B
 volume: 282
@@ -27,6 +27,6 @@ section: transit-time
 
 # borde1976
 
-(scanned image, title not machine-recovered -- VERIFY title/authors). The earlier, more general transit-time treatment that Biraben~1979 and Lehmann~2021 both simplify.
+(scanned image, title not machine-recovered — VERIFY title/authors). The earlier, more general transit-time treatment that Biraben~1979 and Lehmann~2021 both simplify.
 
 The original, most general derivation of the two-photon transit-time lineshape; cite as the primary general treatment only (the specific closed forms used in the pipeline are `biraben1979`'s Lorentzian-times-two-sided-exponential and `lehmann2021`'s modern simplification).

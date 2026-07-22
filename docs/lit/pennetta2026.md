@@ -6,7 +6,7 @@ authors:
   - Glicenstein, Antoine
   - Pache, Lucas
   - Schneeweiss, Philipp
-  - 'Volz, J\"urgen'
+  - 'Volz, Jürgen'
   - Rauschenbeutel, Arno
 title: Hybrid nanophotonic trap for cold atoms using surface forces and a blue-detuned evanescent field
 journal: Nat. Photonics
@@ -29,4 +29,4 @@ section: deep-search
 
 # pennetta2026
 
-nearest-platform for Paper 2. Rauschenbeutel group: hybrid nanofibre trap for cold Cs on a 450 nm tapered fibre, attraction from Casimir-Polder + surface-charge electrostatics, repulsion from a blue-detuned evanescent field; loaded 96(5)\% from the 935/685 nm two-colour magic trap; depth $\sim$1 $\mu$K; storage 140(9) ms; Ramsey $T_2^*=17.8(7)$ ms, spin-echo $T_2'=44.7(2.5)$ ms. Two feeds: quantified atom-surface forces (the Casimir-Polder content gokhroo2022 lacks), and a demonstration that the trapping-light differential light shift is the coherence-limiter, cured by low-light trapping. Cs / D2 qubit / 450 nm fibre -- physics transfers, numbers do not. DOI + fields read off the published PDF 2026-07-17.
+nearest-platform for Paper 2. Rauschenbeutel group: hybrid nanofibre trap for cold Cs on a 450 nm tapered fibre, attraction from Casimir-Polder + surface-charge electrostatics, repulsion from a blue-detuned evanescent field; loaded 96(5)% from the 935/685 nm two-colour magic trap; depth ~1 µK; storage 140(9) ms; Ramsey T₂* = 17.8(7) ms, spin-echo T₂′ = 44.7(2.5) ms. Two feeds: quantified atom-surface forces (the Casimir-Polder content gokhroo2022 lacks), and a demonstration that the trapping-light differential light shift is the coherence-limiter, cured by low-light trapping. Cs / D2 qubit / 450 nm fibre — physics transfers, numbers do not. DOI + fields read off the published PDF 2026-07-17.

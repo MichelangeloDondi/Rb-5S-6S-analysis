@@ -2,17 +2,17 @@
 citekey: morzynski2013
 type: article
 authors:
-  - 'Morzy\''nski, P.'
-  - 'Wci\''slo, P.'
+  - 'Morzyński, P.'
+  - 'Wcisło, P.'
   - Ablewski, P.
   - Gartman, R.
   - Gawlik, W.
-  - 'Mas\l{}owski, P.'
-  - 'Nag\''orny, B.'
+  - 'Masłowski, P.'
+  - 'Nagórny, B.'
   - Ozimek, F.
   - Radzewicz, C.
   - Witkowski, M.
-  - 'Ciury\l{}o, R.'
+  - 'Ciuryło, R.'
   - Zawada, M.
 title: Absolute frequency measurement of rubidium 5S--7S two-photon transitions
 journal: Opt. Lett.

@@ -2,7 +2,7 @@
 citekey: araujo2021
 type: article
 authors:
-  - 'Ara\''ujo, M. O.'
+  - 'Araújo, M. O.'
   - Passerat de Silans, T.
   - Kaiser, R.
 title: 'L\''evy flights of photons with infinite mean free path'
@@ -20,7 +20,7 @@ routing: []
 verify_flags: []
 verified_date: null
 summary: >
-  Levy flights in He-broadened hot Rb (alpha~0.5) -- closest to a heated
+  Levy flights in He-broadened hot Rb (alpha~0.5) — closest to a heated
   cell.
 loci:
   - M7
@@ -29,4 +29,4 @@ section: collision-series
 
 # araujo2021
 
-Levy flights in He-broadened hot Rb (alpha~0.5) -- closest to a heated cell.
+Levy flights in He-broadened hot Rb (alpha~0.5) — closest to a heated cell.

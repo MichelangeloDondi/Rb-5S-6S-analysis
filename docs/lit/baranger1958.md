@@ -21,7 +21,7 @@ summary: >
   The impact approximation cited in docs/methods/02\_the\_lineshape.md
   Sec.\ 2.2: uncorrelated, phase-interrupting collisions add a rate to the
   coherence decay, keeping the line Lorentzian with a density-linear width
-  -- textbook basis for gamma\_coll = beta\_self * N.
+  — textbook basis for gamma\_coll = beta\_self * N.
 loci:
   - methods/02
 section: collision-series
@@ -29,4 +29,4 @@ section: collision-series
 
 # baranger1958
 
-No PDF held; bibliographic details cross-verified via APS and an independent citation index (2026-07). The impact approximation cited in docs/methods/02\_the\_lineshape.md Sec.\ 2.2: uncorrelated, phase-interrupting collisions add a rate to the coherence decay, keeping the line Lorentzian with a density-linear width -- textbook basis for gamma\_coll = beta\_self * N; not itself prior art on our line.
+No PDF held; bibliographic details cross-verified via APS and an independent citation index (2026-07). The impact approximation cited in docs/methods/02\_the\_lineshape.md Sec.\ 2.2: uncorrelated, phase-interrupting collisions add a rate to the coherence decay, keeping the line Lorentzian with a density-linear width — textbook basis for gamma\_coll = beta\_self * N; not itself prior art on our line.

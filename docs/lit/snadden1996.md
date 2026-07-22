@@ -19,7 +19,7 @@ routing: []
 verify_flags: []
 verified_date: null
 summary: >
-  FM two-photon in cold Rb -- EOM-ruler ancestry (with Zapka 1983,
+  FM two-photon in cold Rb — EOM-ruler ancestry (with Zapka 1983,
   Bjorklund 1980).
 loci:
   - M2
@@ -28,4 +28,4 @@ section: method-anchors
 
 # snadden1996
 
-FM two-photon in cold Rb -- EOM-ruler ancestry (with Zapka 1983, Bjorklund 1980). Conference abstract; no DOI.
+FM two-photon in cold Rb — EOM-ruler ancestry (with Zapka 1983, Bjorklund 1980). Conference abstract; no DOI.

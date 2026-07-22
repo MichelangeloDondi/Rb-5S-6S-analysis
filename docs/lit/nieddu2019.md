@@ -23,7 +23,7 @@ verify_flags: []
 verified_date: null
 summary: >
   OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um,
-  f=150 mm) -- corroborates our w0 re-pin.
+  f=150 mm) — corroborates our w0 re-pin.
 loci:
   - M7
   - P1
@@ -35,4 +35,4 @@ section: oist-lineage
 
 # nieddu2019
 
-(published OE copy held since 2026-07-14; page 6528 and DOI read off the publisher PDF -- verified). OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um, f=150 mm) -- corroborates our w0 re-pin; four peaks FWHM 2.43-2.60 MHz laser-axis (~5 MHz transition); MBR-110 at ~100 kHz; 130 C natural-abundance cell. Retro = concave mirror f=75 mm at 2f from the focus (self-imaging); detection = 780+795 together via an 800 nm short-pass (unlike our 795-only archival stack).
+(published OE copy held since 2026-07-14; page 6528 and DOI read off the publisher PDF — verified). OIST apparatus lineage: measured 1/e^2 beam DIAMETER 128 um (w0=64 um, f=150 mm) — corroborates our w0 re-pin; four peaks FWHM 2.43-2.60 MHz laser-axis (~5 MHz transition); MBR-110 at ~100 kHz; 130 C natural-abundance cell. Retro = concave mirror f=75 mm at 2f from the focus (self-imaging); detection = 780+795 together via an 800 nm short-pass (unlike our 795-only archival stack).

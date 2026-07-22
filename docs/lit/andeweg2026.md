@@ -29,4 +29,4 @@ section: landscape-24-26
 
 # andeweg2026
 
-Newest competitor: active power-modulation ac-Stark suppression (x1000) on 778 nm 5S-5D. The passive-vs-active contrast for our method. (APS "coden" DOI 10.1103/25md-vv43 -- verify at cite; arXiv is the handle.)
+Newest competitor: active power-modulation ac-Stark suppression (x1000) on 778 nm 5S-5D. The passive-vs-active contrast for our method. (APS "coden" DOI 10.1103/25md-vv43 — verify at cite; arXiv is the handle.)
