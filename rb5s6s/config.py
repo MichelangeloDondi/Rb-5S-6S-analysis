@@ -303,11 +303,14 @@ pending knife-edge measurement (OPEN)."""
 
 RAMP_COLLECTION_HALFLENGTH_MM_ENVELOPE = (1.0, 2.0, 4.0)
 """Envelope of the fluorescence-collection axial half-length Z_c: the f=18 mm
-lens + PMT geometry collects light from 'many mm' of the beam (user,
-2026-07-11 session), value unmeasured. OPEN until the fixed-lock session
-collection-profile measurement; every ramp-geometry moment coefficient
-(including the g1 sign-flip location) depends on it, hence an envelope,
-never a single number."""
+lens + PMT geometry collects light from 'many mm' of the beam (recollection,
+2026-07-11 session), value unmeasured. Z_c is not a free parameter: for the
+side-viewing lens imaging the beam onto the PMT it is the axial field of view
+r_PMT/M, M = v/u with 1/u + 1/v = 1/f, so the lens-beam distance, the
+lens-PMT distance and the PMT active diameter fix it (PLAN sections 8.1 and
+8.3 #4). OPEN until measured; every ramp-geometry moment coefficient —
+including whether the g1 sign flip at config S occurs at all (crossover
+Z_c/z_R ~ 1.12) — depends on it, hence an envelope, never a single number."""
 
 # --------------------------------------------------------------------------
 # Reproducibility

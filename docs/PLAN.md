@@ -379,7 +379,7 @@ error s must satisfy s = k² to hide), a **camera beam-profile z-scan**
 through the same focus for shape / ellipticity / astigmatism / beam-quality M²
 (§8.1b below), **lens separations calipered at both setup
 and teardown** (§8.1a below), retro ratio ρ measured IN SITU at the
-cell position (both directions; return-path clipping differs per waist), collection geometry photographed and measured for the MC, and
+cell position (both directions; return-path clipping differs per waist), collection geometry measured, not only photographed — the lens–beam distance u, the lens–PMT distance v and the PMT active diameter, which fix the axial field of view Z_c = r_PMT/(v/u) that both the transit MC and the ramp-geometry moments (§8.3 #4) consume — and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
 paraxial two-photon rate goes as the squared degree of linear polarization and
 is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measured
@@ -678,18 +678,39 @@ order of statistical cost:
    upgraded the test, 2026-07-12). The z-average of transverse ramps has the
    closed form f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3], ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (lineshape.stark_ramp_axial; table from scripts/run_ramp_geometry.py).
-   At the planned configs (Z_c = 2 mm placeholder, OPEN): L stays clean
-   (mean/S₀ −0.66, g1 +0.56); the 2025 archival M geometry is already
-   10–40% modified (g1 +0.40 — the −⅔S₀ / +S₀³/135 numbers are the Z→0
-   limit and now carry this caveat); and at S **the skewness flips sign**
-   (g1 ≈ −0.35; crossover near Z_c/z_R ≈ 1.2): the long window piles weight
-   at weak out-of-focus shifts with a tail toward −S₀. A fixed-lock session's skew
-   program is therefore a **sign-flip test between configs** — g1 > 0 at L,
-   g1 < 0 at S, crossover set by the measured collection profile — which no
-   instrumental asymmetry (blind to z_R) can mimic. The absolute third
-   cumulant at S is ~47× the 2025 triangle value in magnitude AND opposite
-   in sign; the naive ×64 scaling used before this correction was wrong in
-   sign.
+   At the planned configs, with the Z_c = 2 mm placeholder (OPEN — see next
+   paragraph): L stays clean (mean/S₀ −0.66, g1 +0.56); the re-pinned 50 µm
+   archival M geometry carries only a few-% correction (g1 +0.558 — an
+   earlier "10–40% modified, g1 +0.40" figure belonged to the superseded
+   32 µm nominal; the −⅔S₀ / +S₀³/135 numbers are the Z→0 limit); and at S
+   **the skewness flips sign** (g1 ≈ −0.35 at the placeholder; crossover at
+   Z_c/z_R ≈ 1.12): the long window piles weight at weak out-of-focus
+   shifts with a tail toward −S₀.
+
+   **The flip at S is conditional on the collection geometry, which is
+   unmeasured — measure it before pre-registering the skew moments.** Z_c
+   is not a free parameter: for the side-viewing f = 18 mm lens imaging the
+   beam onto the PMT it is the axial field of view in object space,
+   Z_c = r_PMT/M with M = v/u (u = lens–beam, v = lens–PMT, 1/u + 1/v =
+   1/f), so the flip condition at config S reads **r_PMT/M > 1.12 z_R ≈
+   0.9 mm** (z_R = 0.81 mm at w₀ = 16 µm). Plausible layouts land on BOTH
+   sides: short-conjugate/high-M with a small photocathode gives g1 ≈ +0.5
+   (no flip); a 1:1 relay or a large photocathode gives g1 ≈ −0.3 to −0.5
+   (strong flip). Three numbers settle it — u and v with a ruler, the PMT
+   active diameter from the datasheet (D1 setup metrology, §8.1) — and the
+   solid-angle weighting varies <2% across any such window, so the top-hat
+   form is fair: the width is the only unknown. If the measured layout
+   lands near the crossover, move the PMT (change v, hence M) to push |g1|
+   away from zero — the same three numbers make the collection window a
+   design knob rather than a systematic. Geometry permitting, the skew
+   program is a **sign-flip test between configs** — g1 > 0 at L, g1 < 0
+   at S — which no instrumental asymmetry (blind to z_R) can mimic. Two
+   caveats travel with it: the naive ×64 small-waist scaling used before
+   this correction was wrong in sign (the placeholder-geometry third
+   cumulant at S is large AND negative), and config S is already saturated
+   at 225 mW (§8.0), so the effective exponent n < 2 there *strengthens*
+   the negative skew while breaking the parameter-free n = 2 magnitudes —
+   at S the sign is the robust observable; the magnitudes belong to L/M.
 
 **The principled hybrid (analysis design, reviewed 2026-07-12).** The four
 items above are ONE fit, not four. Per condition, fit the ramp⊗core profile

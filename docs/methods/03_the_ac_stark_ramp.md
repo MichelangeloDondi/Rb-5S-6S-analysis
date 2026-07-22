@@ -153,13 +153,26 @@ measurement):
 | config | $Z_c/z_R$ | mean$/S_0$ | Var/mean$^2$ | $g_1$ |
 |---|---|---|---|---|
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
-| 60 µm (a fixed-lock session L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
+| 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
 | 50 µm (2025 archival) | 0.25 | $-0.653$ | 0.125 | $+0.558$ |
-| 16 µm (a fixed-lock session S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ |
+| 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ |
 
-**The skewness flips sign** (crossover near $Z_c/z_R\approx1.2$): a long
+**The skewness flips sign** (crossover at $Z_c/z_R\approx1.12$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
-$-S_0$. So the fixed-lock session skew program is a **sign-flip test between beam
+$-S_0$. **The flip at config S is conditional on the collection geometry,
+which is unmeasured.** $Z_c$ is not a free parameter: for the side-viewing
+$f=18$ mm lens imaging the beam onto the PMT it is the axial field of view
+in object space, $Z_c=r_\text{PMT}/M$ with magnification $M=v/u$
+($u$ = lens–beam and $v$ = lens–PMT distances, $1/u+1/v=1/f$), so the flip
+condition at 16 µm reads $r_\text{PMT}/M > 1.12 z_R \approx 0.9$ mm — and
+plausible bench layouts land on *both* sides (a short-conjugate,
+high-magnification layout gives $g_1\approx+0.5$, no flip; a 1:1 relay or a
+large photocathode gives $g_1\approx-0.3$ to $-0.5$). Three ruler-and-datasheet
+numbers ($u$, $v$, the PMT active diameter) settle it, which is why they are
+part of the proposed session's setup metrology (PLAN §8.1, §8.3 #4); the
+solid-angle weighting varies by <2% across any such window, so the top-hat
+form is fair and the *width* is the only unknown. Geometry permitting, a
+proposed session's skew program is then a **sign-flip test between beam
 configurations** — $g_1>0$ at the large waist, $g_1<0$ at the small one —
 a signature no instrumental asymmetry can mimic, because the instrument
 knows nothing about $z_R$. At the re-centred 50 µm archival waist the
