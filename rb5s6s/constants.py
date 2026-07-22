@@ -299,12 +299,18 @@ therefore expected to revise DOWNWARD once block durations are known; the
 recovered-timestamp audit pre-registers that prediction
 (docs/PREREGISTRATION_timestamps.md 7). Treat as an upper bound until then.
 
-CONTRADICTED by TWO independent HighFinesse WS/8L long-term records (setup
-photos): 2025-07-23 at 993.420860 nm over 3.5 h gives -0.17 MHz/min, and a
-53 min run at 993.419281 nm gives +0.19 MHz/min. Both are ~20x below this
-figure, and consistent with the tension above rather than with this value.
-Equal magnitude with opposite sign also says the drift is not a steady ramp. NOT yet changed, because the record's lock
-state and its placement inside the campaign are unconfirmed; see
-docs/PREREGISTRATION_timestamps.md 8. This constant is used only as an
+NOT contradicted after all -- an earlier note here said it was. Three WS/8L
+long-term records exist in the setup photos, but EXIF dates place only ONE
+inside the 17-18 July 2025 campaign: IMG_2896 (2025-07-18 17:03) shows 37 MHz
+over 8.5 min, ~4.35 MHz/min average, i.e. CONSISTENT with this figure. The two
+records reading ~0.18 MHz/min are dated 2025-06-11 and 2025-07-23, five weeks
+before and five days after acquisition, and cannot speak for it. The retracted
+reading is recorded in docs/PREREGISTRATION_timestamps.md 8.2.
+Caveat on the surviving record: it is a smooth SETTLING TRANSIENT (local slope
+falls 9.0 -> 2.4 MHz/min across 8.5 min), so 4 MHz/min covers the post-tuning
+transient; the steady in-campaign rate is not established by any photograph.
+Its StdDev of 100 kHz is also the same order as the 0.08 MHz intra-block
+scatter above, so that scatter may be jitter rather than drift.
+This constant is used only as an
 ENVELOPE (upper bound), so an over-estimate is conservative wherever it
 appears -- but it should not be quoted as an estimate of the actual rate."""
