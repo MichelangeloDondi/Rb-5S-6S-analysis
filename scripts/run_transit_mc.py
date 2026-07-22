@@ -10,7 +10,8 @@ the 2025 laser width, and (3) how far the phenomenological two-sided
 exponential is from the MC kernel.
 
 All in the weak-field, straight-line, flux-weighted approximation; absolute
-values ride on the OPEN w0 and the (a fixed-lock session) collection geometry. (An earlier
+values ride on the OPEN w0 and on the collection geometry (to be measured in a
+fixed-lock session). (An earlier
 version omitted the crossing-flux factor and ran ~2x too narrow with a spurious
 divergent cusp; fixed 2026-07-12 -- see transit_mc.py.) Outputs:
 results/transit_mc.csv.
