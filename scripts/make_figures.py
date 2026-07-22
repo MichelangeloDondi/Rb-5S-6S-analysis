@@ -180,7 +180,7 @@ def fig_amplitude_ratios():
 
 
 def fig_pooled_width():
-    """The 'money figure': the four ΔF=0 components share ONE
+    """fig5: the four ΔF=0 components share ONE
     width budget — β_85 = β_87 was TESTED equal in the joint fit, which is what
     LICENSES pooling (equality tested first, then pool; not the reverse). So the
     pooled width vs density is a clean trend where the individual components are
@@ -416,7 +416,7 @@ def fig_ruler():
     free-centres nonlinearity map (results/ruler_nlmap.csv) — the empirical
     bound (~0.3% per position) on scan nonlinearity AND any tooth-dependent
     pull (differential Stark, asymmetric-wing overlap), the ruler's
-    common-mode-rejection receipt. Trace choice is deterministic: the first
+    common-mode-rejection check. Trace choice is deterministic: the first
     canonical rf-on ruler of the brightest 130 °C block."""
     from rb5s6s.ingest import load_manifest, load_trace, trace_path
     from rb5s6s.ruler import fit_comb, _comb

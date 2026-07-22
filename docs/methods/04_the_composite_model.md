@@ -10,7 +10,7 @@ governing this is
 $$\tau_\text{opt}=n_g\sigma_{795}L$$
 
 with $n_g$ the ground-state density, $\sigma_{795}$ the absorption cross
-section, $L$ the path. The decisive point: $n_g$ is the enormous *thermal*
+section, $L$ the path. Here $n_g$ is the *thermal*
 ground-state population, essentially the full density $N$, which the weak
 two-photon excitation barely perturbs — and it is the **same at every point of
 the 993 nm frequency scan**. So the photon escape probability

@@ -32,7 +32,7 @@ distribution has a closed form (a triangle) with a fixed, calculable
 asymmetry. The line's *shape* therefore carries light-shift information that
 survives even when the laser's absolute frequency is unusable. A shape-based,
 reference-free light-shift readout is worth establishing in its own right:
-it is immune to exactly the failure (lock drift) that kills centre-based
+it is insensitive to the lock drift that prevents centre-based
 measurements.
 
 ## 2. What others have already done
@@ -107,7 +107,7 @@ as a bound. Concretely:
   MEASURED / …); the documentation is written to be picked up by whoever
   works on this next.
 
-One sentence for the whole section: *the archive turned a drifted-lock
+In summary: *the archive turned a drifted-lock
 dataset into a validated model, one near-prediction bound, one
 demonstrated-necessary bound, and a method — but no coefficients.*
 
@@ -181,7 +181,7 @@ program**:
   the per-distance signal budget is an open question.
 
 The cell line of §3–4 is the in-vacuo reference against which every
-near-surface effect would be read. That is the deepest connection between
+near-surface effect would be read. That is the connection between
 the two halves of the program: the cell work is what makes the nanofibre
 lineshapes *interpretable*.
 

@@ -157,7 +157,7 @@ geometry-setup block plus the *two opposite-order* T-grid days (§8.5 D1–D3) �
 which by itself yields β_self (or a much-tightened bound) and the fixed-lock
 σ_laser; a single same-direction day does **not**, because §8.4's
 bound→measurement guarantee needs the opposite-order pair (no single element
-earns it). Value is monotone in shots: a session truncated at any point still
+is sufficient alone). Value is monotone in shots: a session truncated at any point still
 leaves the higher-priority conversions done (§8.0), and if none is ever run,
 P1-min stands unchanged. The archive-only analysis (P1-min) is already complete and does not depend on
 this specification; a session only decides whether the coefficients are
@@ -184,7 +184,7 @@ sharper null — plus the collisional self-*shift*, two positive observables Ors
 only nulled. In summary: **P1-min's acceptance rides on the method being
 judged novel; the measured coefficients need the session.**
 
-**"The lock drifted at MHz/min and killed the centres — that IS why you have
+**"The lock drifted at MHz/min and destroyed the centres — that IS why you have
 bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
 is *asserted*, not demonstrated from the archive (no timestamps survive; the
 2025 root cause was never established — §8.7.1 item 5). But the session's value
@@ -254,9 +254,9 @@ that same conservative direction — toward a looser bound, never a tighter one.
 
 Constraint set: no more power (225 mW ceiling); telescope before the EOM and
 lens swaps ARE allowed; repeats across days and orders are allowed. Core
-architecture (survived review): **the telescope is an intensity
+architecture: **the telescope is an intensity
 knob** — I ∝ P/w₀² buys the intensity sweep the power budget denies — and
-**the opposite-order T grid** attacks the drift-density confound that killed
+**the opposite-order T grid** breaks the drift-density degeneracy that limited
 2025. Three fixes are built in below: an orthogonal absolute
 intensity calibration (§8.2), the skew hunt demoted from promised headline to
 a sized detection attempt inside a moment hierarchy (§8.3), and a closing
@@ -296,7 +296,7 @@ measured 2025 failure modes.)
    (T, dwell), where a value taken once, or only downstream, is already stale by
    the next condition; before-and-after also separates entrance- from exit-window
    filming if they differ. Then $\rho(T)=T_\text{win}(T)^2 [T_\text{lens}^2 R_\text{mirror}]$.
-   *Gold standard, no symmetry assumption:* a pick-off before the cell reading
+   *With no symmetry assumption:* a pick-off before the cell reading
    **both** the outgoing and the returning beam gives ρ directly. Cheap, essential.
 
 **Tier 1 — enablers (the measurement does not exist without them):**
@@ -304,7 +304,7 @@ measured 2025 failure modes.)
    70–130 °C gives Δγ ≈ 20 kHz (invisible); 150–170 °C gives 0.07–0.25 MHz (measurable).
    Same-session (cross-session is what turned the archival β into a bound) and
    interleaved (de-confounds T from time-drift). Also unlocks the collisional
-   self-*shift* (the drift killed it in 2025).
+   self-*shift* (the drift made it unmeasurable in 2025).
 4. **The fixed lock itself** (the epoch premise) — resurrects the *pull* (∝S₀), the
    strong AC-Stark handle that was dead in the archive.
 
@@ -676,7 +676,7 @@ order of statistical cost:
    the item-4 divergence correction; the residual ⟨E²⟩ convention factor is
    fixed in the written derivation + an external theory check). **Session sized for the pessimistic
    end**: ≥ 15× the 2025-equivalent trace count at one condition (~110 °C,
-   225 mW) so even 0.8σ-per-2025-block becomes ≥3σ. Decisive either way.
+   225 mW) so even 0.8σ-per-2025-block becomes ≥3σ — enough for a detection or a meaningful bound either way.
 4. **Geometry correction at S** (computing it
    upgraded the test, 2026-07-12). The z-average of transverse ramps has the
    closed form f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3], ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
@@ -744,12 +744,12 @@ the one S₀**. Pre-register (before fitting) which moment is PRIMARY at which
 small (linear, robust, needs the fixed lock), the skew only at small waist
 where P³ has climbed clear of noise. Report the primary as the measurement,
 the others as consistency checks; do NOT choose post hoc which moment
-"worked." This is the argument that defeats the §8.3-#4 geometry worry: at
+"worked." This addresses the §8.3-#4 geometry concern: at
 small waist a bare skew detection is suspect (diverging-beam collection breaks
 the clean triangle), but if the robust pull measured at the *same* condition
 implies an S₀ consistent with the skew's S₀, the fragile skew is corroborated
 by a more-robust lower-order moment — "pull, variance and skew jointly
-consistent with one triangular ramp S₀(P)," which survives a referee.
+consistent with one triangular ramp S₀(P)."
 **Explicitly REJECTED:** hybridizing the *extraction method* for one moment
 (fit-parameter vs windowed numerical moment, then combine or pick the higher-
 significance one) — those are correlated estimators of one quantity from the
@@ -761,7 +761,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
 ### 8.4 Width/collision program (with literature calibration)
 
 - **T grid at L only**, twice, different days, OPPOSITE directions (day A
-  70→…, day B …→70). Kills drift components monotonic in time; brackets
+  70→…, day B …→70). Cancels drift components monotonic in time; brackets
   (RF-off before/after each set + EOM ruler per block) catch jumps, with a
   **pre-registered per-block veto**: bracket tooth moves > 0.2 MHz within a
   block → block excluded (jump-like drift does not average out — review
@@ -878,7 +878,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
 ### 8.4a Amplitude program — the archive's weakest observable, made into levers
 
 Amplitudes were useless in 2025 for one measured reason: within-block statistics
-are superb (1–3%, photon-limited, falling as amp⁻⁰·⁵), but **between-block gain +
+are excellent (1–3%, photon-limited, falling as amp⁻⁰·⁵), but **between-block gain +
 power + polarization drift wanders 30–50%**, so the clean amplitude physics was
 explicitly deferred to a fixed-lock session. The fixed lock, the interleaved
 four-peak blocks, and the defined polarization (§8.1.1) would remove the common-mode
@@ -1010,7 +1010,7 @@ order and a session truncated at any point still leaves the higher-priority boun
   the same data anchor the differential-transit intensity calibration.
 - **D7**: config M spot check (knife-edge + camera, P grid, 130 °C point); wavemeter
   GHz-linearity shots (§7).
-- **D8**: contingency — re-run whatever the bracket veto killed.
+- **D8**: contingency — re-run whatever the bracket veto excluded.
 Dropped by design: full third waist; T grids at S and M; any shot whose
 loss silently degrades a headline (the compression path no longer sacrifices
 the novel results first).

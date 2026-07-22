@@ -19,7 +19,7 @@ re-centred 32 -> 50 um 2026-07-12 when the transit physics was corrected; 32 um
 now OVERSHOOTS the observed line and is excluded -- see constants.W0_PRIOR_M.)
 
 We also report the block-to-block scatter of the fitted sigma_laser -- the
-"drift diary" of the bad-lock epoch -- the starting linewidth the ONF work
+block-to-block drift record of the bad-lock epoch -- the starting linewidth the ONF work
 needs, and which (per M4) is the systematic that bounds beta_self.
 
 Reads results/linefit_conditions.csv (per-condition fits from run_linefit.py).
@@ -88,7 +88,7 @@ def main() -> int:
                       for r in degen))
     print(f"  well-constrained sigma_laser (transition axis, at the w0=50um prior):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
-          f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift diary)")
+          f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
     print(f"\n  w0-degeneracy band (laser-axis sigma_laser needed for the same 5.25 MHz total):")
     band = w0_band()

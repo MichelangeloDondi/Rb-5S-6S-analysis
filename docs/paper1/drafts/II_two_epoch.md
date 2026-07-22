@@ -50,8 +50,8 @@ conditional on $w_0$; this is the reason those quantities appear throughout as
 bounds rather than values, and why the beam-profile measurement would be the campaign's first
 task. The two-epoch design is thus not a workaround for a spoiled dataset but a
 deliberate division of labour — the drifted archive establishes the method, the
-systematics, and the bounds; the fixed-lock top-up, on the ground the archive
-has cleared, makes the measurements. [Framing: you may want to end §II by
+systematics, and the bounds; the fixed-lock session supplies the absolute
+measurements. [Framing: you may want to end §II by
 positioning this as a transferable template for metrology in any slowly-drifting
 system, or save that for §VIII — your call.]
 

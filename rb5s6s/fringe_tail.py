@@ -26,8 +26,8 @@ PRODUCT s(1+x) inherits a cross-term in its third moment,
 
     mu3(s(1+x)) = mu3(s_wedge) + 3 Var(x) (E[s^3] - <s> E[s^2]),
 
-so the ramp's own skew is SUPPRESSED, not inflated -- the arcsine fringe kills
-its own skew but not the product's. The effect is a same-sign (negative) rider
+so the ramp's own skew is SUPPRESSED, not inflated -- the arcsine fringe has
+zero third moment, but the product s(1+x) does not. The effect is a same-sign (negative) rider
 on the beam-DIVERGENCE axial averaging the pipeline already models
 (lineshape.stark_ramp_axial); at the small (16 um, config S) waist the two must be fit
 jointly, which is why their coefficients are wanted as reproducible facts.

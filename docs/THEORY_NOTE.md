@@ -151,7 +151,7 @@ four peaks' width-vs-power (`stark.fit_stark_sweep`, M4e) turns it into a
 quantitative **upper bound $S_0$(225 mW) $<0.63$ MHz (95%, profile
 likelihood)**; the fitted value is consistent with zero, so the archive *brackets* the predicted
 $0.59$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
-same two-epoch reason as everything else here: the 2025 drifted lock kills the
+same two-epoch reason as everything else here: the 2025 drifted lock destroys the
 line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
 broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through the
@@ -292,7 +292,7 @@ does a proper treatment of the position- *and* velocity-dependent shift (the
 thermal transit through a diverging Gaussian) modify it beyond this
 quasi-static $z$-average? (ii) What is the right observable to quote when the
 triangle fails — the sign-flip of $g_1$ between two waists is one candidate that
-is immune to instrumental asymmetry (the instrument knows nothing about $z_R$);
+is immune to instrumental asymmetry (no instrumental asymmetry depends on $z_R$);
 is there a cleaner invariant? (iii) Does the evanescent-geometry claim in §6
 survive the same scrutiny? These are well-posed, they need no new data, and
 they sit exactly at the focused-two-photon / inhomogeneous-field boundary.

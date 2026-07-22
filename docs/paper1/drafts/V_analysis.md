@@ -75,7 +75,7 @@ and the transit width (one, scaling as $\sqrt T$); the natural width is fixed at
 its physical value.
 
 Two near-degeneracies set what is and is not recoverable, and we quote them
-rather than hide them. The laser Gaussian and the collisional Lorentzian trade
+The laser Gaussian and the collisional Lorentzian trade
 off in a Voigt profile: in a single condition their widths anti-correlate at
 $-0.85$ to $-0.92$, so the *total* width is well determined but its *split* is
 not. The hierarchical fit breaks this two ways at once — the density lever (a

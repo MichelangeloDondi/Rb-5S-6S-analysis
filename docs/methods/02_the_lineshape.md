@@ -144,7 +144,7 @@ $\mathrm{corr}\approx-0.85$). The *total* width is well determined; the
 ### 2.5 Transit-time broadening — the Lehmann cusp (not a Gaussian)
 
 An atom crossing a beam of waist $w_0$ with transverse speed $v$ is
-"interviewed" by the light for only
+illuminated for only
 
 $$\tau_t\sim \frac{w_0}{v}$$
 
@@ -157,7 +157,7 @@ $\langle v\rangle\propto\sqrt{T/m}$, the **width scales as**
 
 $$\boxed{ \Delta\nu_\text{transit} \propto \frac{\sqrt{T}}{w_0} }$$
 
-— our estimate is $\sim0.9$ MHz at 110 °C. The **shape** is the key point:
+— our estimate is $\sim0.9$ MHz at 110 °C. The **shape** matters as much as the width:
 averaging Gaussians whose widths span the whole thermal range (many narrow
 ones from slow atoms, a few broad ones from fast atoms) does *not* give a
 Gaussian. Slow atoms pile up sharp, narrow responses at line center → a
@@ -257,7 +257,7 @@ split and all absolute coefficients stay PRELIMINARY. Measuring $w_0$ directly
 in a fixed-lock session would collapse that degeneracy: transit becomes fixed, the leftover
 Gaussian is then unambiguously the laser (turning the [§5 — What we found (2025 archive)](07_what_we_found.md) $\sigma_\text{laser}$
 *bound* into a measurement, retroactively for the 2025 data too), and $\beta_\text{self}$
-and the Stark coefficient acquire their absolute scale. It unlocks more
+and the Stark coefficient acquire their absolute scale. It constrains more
 downstream numbers than any other single measurement, which is why the
 specification in PLAN §8 puts it at the top of the priority order — and why it
 is worth doing even on its own: it needs the beam, not the full session, and it

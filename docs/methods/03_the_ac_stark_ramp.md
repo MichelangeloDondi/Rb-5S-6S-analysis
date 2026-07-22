@@ -36,7 +36,7 @@ $u=-s/S_0$, the **signal-weighted distribution of shifts** is
 
 $$\boxed{f(s) \propto |s|\quad\text{on}\quad s\in[-S_0,0]}$$
 
-— a triangular **ramp**. (Remarkably, the identical law holds for a nanofibre's
+— a triangular **ramp**. (The same law holds for a nanofibre's
 evanescent field, because the intensity is exponential in the flat coordinate
 there too — that shared law is the physics bridge to Paper 2.) Normalizing,
 $f(s)=2|s|/S_0^2$, we get the moments by direct integration:
@@ -175,7 +175,7 @@ form is fair and the *width* is the only unknown. Geometry permitting, a
 proposed session's skew program is then a **sign-flip test between beam
 configurations** — $g_1>0$ at the large waist, $g_1<0$ at the small one —
 a signature no instrumental asymmetry can mimic, because the instrument
-knows nothing about $z_R$. At the re-centred 50 µm archival waist the
+depends on $z_R$. At the re-centred 50 µm archival waist the
 coefficients above carry only a few-% geometry caveat (its longer $z_R$ makes
 the ramp nearly the pure-triangle $Z_c\to0$ limit, $g_1\approx+0.56$; it was
 10–40% at the old 32 µm nominal). *Code:*

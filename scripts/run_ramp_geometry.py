@@ -22,7 +22,7 @@ layouts land on both sides (short-conjugate/high-M: g1 ~ +0.5, no flip;
 the PMT active diameter (PLAN section 8.1) settles it; near the crossover,
 moving the PMT (changing M) is a design knob. If the condition holds, a
 session sees POSITIVE skew at the large waist and NEGATIVE at the small
-one — a sign flip no instrumental asymmetry (which knows nothing about
+one — a sign flip no instrumental asymmetry (none of which depends on
 z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
 waist is wrong in SIGN at the placeholder geometry; the third cumulant
 there is ~ -0.35 in units of the 2025 on-axis S0^3 (vs +0.0074 for the
