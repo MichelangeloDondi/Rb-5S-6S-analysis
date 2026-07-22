@@ -204,6 +204,9 @@ def test_no_document_asks_for_a_pmt_diameter():
 # so the attribution has to hold: an unattributed short-pass is the error.
 _SHORTPASS = re.compile(r"short-?pass", re.I)
 _ATTRIB = re.compile(r"nieddu|their |lit/|2019|ONF|nanofib", re.I)
+# A NEGATION is correct usage too -- "a 795 nm passband, not a short-pass" is
+# the sentence this guard exists to produce, so it must not trip on it.
+_NEGATED = re.compile(r"not an?\s+short-?pass|not\s+a\s+short-?pass", re.I)
 
 
 def test_shortpass_only_ever_attributed_to_others():
@@ -226,7 +229,7 @@ def test_shortpass_only_ever_attributed_to_others():
                 continue
             # attribution may sit on the wrapped line before or after
             ctx = " ".join(lines[max(0, i - 1):i + 2])
-            if not _ATTRIB.search(ctx):
+            if not _ATTRIB.search(ctx) and not _NEGATED.search(ctx):
                 hits.append(f"{rel}:{i + 1}: {line.strip()[:90]}")
     assert not hits, (
         "a short-pass is described without attribution; THIS apparatus detects "

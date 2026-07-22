@@ -307,7 +307,11 @@ over 8.5 min, ~4.35 MHz/min average, i.e. CONSISTENT with this figure. The two
 records reading ~0.18 MHz/min are dated 2025-06-11 and 2025-07-23, five weeks
 before and five days after acquisition, and cannot speak for it. The retracted
 reading is recorded in docs/PREREGISTRATION_timestamps.md 8.2.
-Caveat on the surviving record: it is a smooth SETTLING TRANSIENT (local slope
+Six wavemeter records are tabulated in docs/APPARATUS.md 6, with lock state
+where known: the reference-cavity lock is worth a factor 2-5 (0.19 MHz/min
+with it, 0.4-1.0 without), and settled drift is ~1 MHz/min on etalon lock
+alone. This constant bounds all of them, which is what an envelope should do.
+Caveat on the in-campaign record: it is a smooth SETTLING TRANSIENT (local slope
 falls 9.0 -> 2.4 MHz/min across 8.5 min), so 4 MHz/min covers the post-tuning
 transient; the steady in-campaign rate is not established by any photograph.
 Its StdDev of 100 kHz is also the same order as the 0.08 MHz intra-block

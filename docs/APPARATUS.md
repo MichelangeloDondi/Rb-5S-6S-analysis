@@ -152,33 +152,57 @@ were logged during the campaign is not established here.
 
 ---
 
-## 6. Laser drift — six wavemeter records
+## 6. Laser drift — six wavemeter records, and what the cavity lock buys
 
 None of the long-term wavemeter logs were saved to disk, so these are read off
 dated screen photographs (±20%, and the band centre of a swept trace is an
 eyeball estimate). Only one falls inside the 17–18 July campaign.
 
-| date | span | reading | note |
+Lock state is known for two of the sessions, which turns the table from a list
+into a comparison:
+
+| date | span | lock state | reading |
 |---|---|---|---|
-| 2025-06-16 | 1 h 50 min | **~85 GHz of settling** | warm-up after tuning; asymptotes to StdDev 400 kHz |
-| 2025-06-19 | 11 min (unswept) | **+1.0 MHz/min** | cleanest settled measurement |
-| 2025-06-19 | 27 min | ~0.4 MHz/min | |
-| 2025-06-19 | 6 min | +0.5 MHz/min | |
-| 2025-06-11 | 53 min | +0.19 MHz/min | |
-| **2025-07-18** | **8.5 min** | **~4.35 MHz/min avg** | **in campaign**; a settling tail — local slope falls 9.0 → 2.4 MHz/min |
-| 2025-07-23 | 3 h 30 min | −0.17 MHz/min | |
+| 2025-06-16 | 1 h 50 min | — | **~85 GHz of settling** after a tuning change; asymptotes to StdDev 400 kHz |
+| 2025-06-11 | 53 min | etalon **+ reference cavity** | **±0.19 MHz/min** |
+| 2025-06-19 | 11 min, unswept | **etalon only** (cavity lock off) | **+1.0 MHz/min** |
+| 2025-06-19 | 27 min | etalon only | ~0.4 MHz/min |
+| 2025-06-19 | 6 min | etalon only | +0.5 MHz/min |
+| **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg** — **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
+| 2025-07-23 | 3 h 30 min | — | −0.17 MHz/min |
+
+**The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
+laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The
+06-11 attribution rests on timing rather than a caption: the two drift records
+were photographed at 22:52 and 23:22 and the control page showing *etalon
+Locked, reference cavity Locked, ECD Not Locked* at 23:33 — eleven minutes
+after the second. Circumstantial, but tight. The 06-19 state
+(etalon on, cavity off, thermally settled) is experimenter-confirmed and
+matches the configuration photographed on 06-10.
+
+**A within-record control.** The 06-19 record runs unswept for its first
+~11 minutes and then with the scan active, under one unchanged lock state —
+which is exactly the comparison needed to separate genuine laser drift from any
+apparent drift introduced by scanning. Reading it off a photograph is not
+precise enough to settle the question, but the measurement exists and the
+design is right; a repeat with the log saved would answer it outright.
 
 **Synthesis.** After a tuning change the laser settles through tens of GHz over
-roughly 1.5 h (the 06-16 curve); once settled it drifts at **0.2–1.0 MHz/min**
-with a sign that varies between sessions. The single in-campaign record is a
-settling tail, not the steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN =
-4 MHz/min` therefore stands as a genuine **envelope** — it bounds every record
-here — while typical settled drift is several times smaller.
+roughly 1.5 h (the 06-16 curve); thermally settled, it drifts at ~1 MHz/min on
+etalon lock alone and ~0.2 MHz/min with the reference cavity added, with a sign
+that varies between sessions. The single in-campaign record is a settling tail,
+not a steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
+therefore stands as a genuine **envelope** — it bounds every record here —
+while the settled rate is several times smaller.
 
-The Ti:Sapph ran continuously through the 24 h campaign
-([DATA.md](DATA.md) §2), so most acquisition sat in the settled regime; but
-re-centring events that involved retuning would restart a transient, and how
-often that happened is not established.
+**The question this leaves.** Campaign drift depends on which lock was engaged
+on 17–18 July, and no photograph covers those days. If the campaign ran
+etalon-only — which the "misconfigured lock" description and §1.1's
+never-engaged ECD both suggest — the settled expectation is ~1 MHz/min. With
+the reference cavity it would be ~0.2. The Ti:Sapph ran continuously through
+the 24 h ([DATA.md](DATA.md) §2), so most acquisition sat in the settled
+regime; re-centring events that involved retuning would restart a transient,
+and how often that happened is not established.
 
 ---
 
