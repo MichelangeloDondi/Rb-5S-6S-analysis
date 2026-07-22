@@ -112,8 +112,9 @@ bar, which at archival intensity it does not. A fixed-lock session changes this 
 the fixed lock **recovers the first-order pull** ($-\tfrac23 S_0 \propto P$, a
 $\sim$MHz shift against a stable reference — the primary $S_0$ measurement, no
 longer absorbed by a free centre); and the small waist, where $S_0$ is $4\times$
-larger and its skew signature up to $64\times$ larger, lifts the shape asymmetry
-into a **detection**. Both are *conditional on the small-waist skew corrections
+larger, lifts the shape asymmetry into a **detection** — though not by the naive
+$S_0^3$ factor of 64: the axial average changes the third cumulant's magnitude
+and, for a long enough collection window, its sign (§7). Both are *conditional on the small-waist skew corrections
 — the beam-divergence collection average of §7 (the larger, sign-flipping one)
 and the standing-wave fringe-resolved tail of §5, same-sign and fit jointly* —
 which move the ramp form — and the pull coefficient off $-\tfrac23$ — at small

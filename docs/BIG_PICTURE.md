@@ -134,8 +134,11 @@ leverage:
    to measure β_self (or bound it near expectation), completing the 5D/7S
    series. Same-session matters: the 2025 data show cross-session drifts
    masquerade as density trends.
-4. **A tighter focus (~16 µm).** S₀ grows ~14×, the skew ~×64ⁿ faster, and
-   the intrinsic asymmetry becomes detectable — turning the drift-immune
+4. **A tighter focus (~16 µm).** S₀ grows ~14×, and the third cumulant grows
+   faster still — but not by the naive ×64: the axial average over the
+   collection window changes both its size and, if the window is long enough,
+   its sign (PLAN §8.3 #4, contingent on the unmeasured collection geometry).
+   The intrinsic asymmetry becomes detectable — turning the drift-immune
    shape readout from a bound into a demonstration, cross-checked against
    the simultaneously measured pull.
 

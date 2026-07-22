@@ -310,7 +310,8 @@ measured 2025 failure modes.)
 
 **Tier 2 — handle strength ($S_0\propto(1+\rho)P/w_0^2$), served by two waists:**
 5. **Small waist (16 µm) = the Stark/skew/form config** — ~14× more S₀ than 60 µm, so
-   the skew (∝S₀³) and the g₁ geometry sign-flip become measurable and, at the cliff
+   the skew (∝S₀³) and, if the collection geometry allows (#4), the g₁ sign-flip
+   become measurable and, at the cliff
    (S₀ ≫ linewidth), the **triangular ramp lineshape is directly visible** (the cleanest
    test of the closed-form law). **60 µm = the clean-κ / width / β_self workhorse.**
 6. **Power** — see the ceiling question below. If liftable, higher power is a *cleaner*
@@ -665,7 +666,9 @@ order of statistical cost:
    S₀, the workhorse form test, config M/L where the transverse derivation
    is clean.
 2. **Excess variance vs P²** (the Cheng-style symmetric reading, config L/M).
-3. **Skew hunt at S**: S₀³ ×64 vs 2025. NOT a promised headline: the ⟨E²⟩
+3. **Skew hunt at S**: the third cumulant grows steeply with S₀, but the naive
+   ×64 reading is superseded — the axial average changes its magnitude and sign
+   (#4 below). NOT a promised result: the ⟨E²⟩
    amplitude convention still spans a factor 2 in S₀ = factor 8 in skew
    (predicted significance ~0.8–50σ; the fringe-averaged **mean** is settled
    — LITERATURE.md — but the fringe-*resolved* tail **suppresses** the
