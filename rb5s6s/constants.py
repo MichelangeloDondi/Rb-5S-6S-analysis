@@ -12,7 +12,7 @@ House rules
 * Every number carries a provenance tag in its comment:
 
   - ``ESTABLISHED``   published/cited value, or an apparatus fact verified by
-                      the experimenter (photos, datasheets, user confirmation)
+                      the experimenter (photos, datasheets, direct confirmation)
   - ``MEASURED-HERE`` extracted from the 2025 archival CSVs by this pipeline
   - ``CALCULATED``    derived; the derivation is stated where first used
   - ``ENVELOPE``      order-of-magnitude; must be re-derived before publication
@@ -286,6 +286,6 @@ TRACE_N_POINTS = 2000       # ESTABLISHED (LeCroy WaveSurfer 3104z export; all f
 TRACE_DT_S = 0.5e-3         # s/point => 1.000 s window. ESTABLISHED.
 DRIFT_RATE_LASER_HZ_PER_MIN = 4e6
 """Between-scan drift scale of the misconfigured 2025 lock, laser axis.
-ENVELOPE (user figure; consistent with wavemeter photo). Within a repeat
+ENVELOPE (estimated figure; consistent with wavemeter photo). Within a repeat
 block the measured scatter is only ~0.08 MHz (MEASURED-HERE) because repeats
 were saved back-to-back."""

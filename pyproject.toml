@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rb5s6s"
-version = "1.0.0"
-description = "From-scratch analysis of the OIST Rb 5S->6S two-photon lineshape campaigns (2025 archival + 2026 top-up)"
+version = "1.1.0"
+description = "Physics-based forward-model analysis of the Rb 5S->6S two-photon lineshape (2025 OIST archival campaign)"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"

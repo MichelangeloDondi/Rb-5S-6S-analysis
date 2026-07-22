@@ -34,7 +34,7 @@ ellipse, so overlaying the two is a direct test of whether the local covariance
 can be trusted: a straight elongated valley matching the ellipse validates it; a
 curved valley or an unclosed contour is exactly what it would hide.
 
-The honest headline this produces: the archive constrains the TOTAL width well
+The headline this produces: the archive constrains the TOTAL width well
 but the SPLIT poorly -- so the individual coefficients are w0-conditional bounds,
 not measurements, which is what the repository claims. The knife-edge w0
 measurement COLLAPSES the degeneracy -- it fixes transit to within its own

@@ -41,7 +41,7 @@ def test_width_split_is_ill_conditioned_but_total_is_not():
     assert r["corr"][gc_i][tr_i] < -0.5, r["corr"]
     # ill-conditioned: one combination is essentially unconstrained
     assert r["condition_number"] > 50, r["condition_number"]
-    # and the honest headline: the total width is far better constrained than the split
+    # and the headline: the total width is far better constrained than the split
     assert r["worst_constrained_sigma"] > 5 * r["best_constrained_sigma"], r
     # the fit still recovers the injected widths (identifiable in aggregate)
     assert abs(r["fit"]["sigma_laser"] - 1.4) < 0.4

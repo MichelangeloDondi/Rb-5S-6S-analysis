@@ -153,7 +153,7 @@ def main() -> int:
     # residual skew scales as ~amp^-0.5 (positive, falling with power) -- the
     # OPPOSITE of the ramp (~P^3). Reporting the log-log exponent + the peak
     # low-power significance IDENTIFIES the 9sigma as shot noise, so it is neither
-    # mistaken for a ramp nor laundered into "consistent with zero".
+    # mistaken for a ramp nor written off as "consistent with zero".
     print(f"\n  shot-noise cross-check [skew ~ amp^s; Poisson predicts s ~ -0.5]:")
     for peak in PEAKS:
         pts = [(o["amp"], o["resid_skew"], o["resid_skew_err"]) for o in out if o["peak"] == peak]
