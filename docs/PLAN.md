@@ -735,14 +735,12 @@ order of statistical cost:
    record.)
 
    **Install decision — cathode LANDSCAPE (12 mm axis along the beam).**
-   *Conditional on the cathode geometry, which is now in question: the
-   R636-10 attribution came from Nieddu 2019 (the nanofibre experiment), but
-   an in-campaign photograph shows the cell detector labelled Thorlabs
-   PXT1/M. The 3 × 12 mm rectangle, the ×4 rotation lever and the table below
-   all follow from that attribution and must be re-derived if it is wrong.
-   The ×14 flip window above does NOT depend on it — that comes only from
-   z_R at the two waists — so the sign-flip test survives regardless; what is
-   conditional is which orientation to install.*
+   *Cathode geometry confirmed (experimenter, 2026-07-23): the Thorlabs
+   PXT1/M module seen in the in-campaign photograph houses the R636-10, so the
+   3 × 12 mm rectangle and everything below it stand. One practical rider: the
+   tube is in a commercial housing, so orientation is set by rotating the
+   module — check its mounting before assuming both orientations are equally
+   easy to realise.*
    Orientation is a ×4 lever on Z_c and the one collection choice awkward to
    revisit mid-campaign (rotating the tube re-does the alignment and, worse,
    breaks the single-fixed-Z_c property that makes the cross-config
@@ -933,18 +931,19 @@ one); the hybrid is across the moment hierarchy, never across methods.
   (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on. Keep
   the timestamp in the trace *metadata*, not only the filename, so a re-save or
   rename cannot strip it.
-- **How, on our scope (LeCroy WaveSurfer 3104z).** The scope already timestamps
-  every acquisition in hardware (the trigger time); the 2025 loss was the
-  *export* — the minimal CSV we saved is a 2-line `second,Volt` header
-  (`config.CSV_HEADER_LINES`) with no time field. Preserve it one of two ways.
-  **(a) Save the native binary `.trc`**, whose WAVEDESC header carries a
-  `TRIGGER_TIME` field (calendar date down to a fractional second) that
-  `lecroyparser`/`readTrc` read back per trace — the guaranteed route, and the
-  ingest loader gains a per-trace time column for free. **(b)** Take each
-  back-to-back set (the repeats, or the four interleaved peaks) as one
-  **Sequence / segmented** acquisition: the scope then stores a per-segment
-  **TRIGTIME** array (trigger time + offset, high resolution), recording the
-  *inter-scan* elapsed time directly — exactly the quantity the σ_laser-co-drift
+- **How, on our scope (Agilent/Keysight InfiniiVision DSO-X 3054A).** The
+  archival traces were taken on the Agilent, not the LeCroy on the same bench —
+  the LeCroy would not trigger reliably (experimenter, 2026-07-23), and the CSV
+  export signature confirms it (`x-axis,N` / `second,Volt` is InfiniiVision's
+  format, not LeCroy's). The scope timestamps every acquisition in hardware;
+  the 2025 loss was the *export* — the minimal CSV we saved is a 2-line
+  `second,Volt` header (`config.CSV_HEADER_LINES`) with no time field.
+  Preserve it one of two ways. **(a) Save the native `.h5`**, which carries
+  per-waveform acquisition metadata the plain CSV drops, so the ingest loader
+  gains a per-trace time column for free — the guaranteed route on this scope.
+  **(b)** Take each back-to-back set (the repeats, or the four interleaved
+  peaks) as one **segmented** acquisition, so the scope stores a per-segment
+  trigger time, recording the *inter-scan* elapsed time directly — exactly the quantity the σ_laser-co-drift
   test needs, and immune to any file-clock rounding. Precondition for both: set
   the scope real-time clock (Utilities setup) at session start, and still note
   each block's start time in the notebook as an independent check, so a mis-set

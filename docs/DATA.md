@@ -20,7 +20,11 @@ apart on the laser axis) calibrate the sweep. The 2025 lock was misconfigured (t
 photograph of the laser control page, leaving no absolute reference —
 [APPARATUS.md](APPARATUS.md) §1.1; no photograph covers the campaign itself):
 line CENTERS drift between scans and carry no metrological meaning; SHAPES
-survive. Scope: LeCroy WaveSurfer 3104z; every trace is 2000 points, 0.5 ms
+survive. Scope: **Agilent/Keysight InfiniiVision DSO-X 3054A** (500 MHz,
+4 GSa/s) — the LeCroy on the same bench would not trigger reliably
+(experimenter, 2026-07-23), and the CSV export signature confirms it: every
+archival file opens `x-axis,N` / `second,Volt`, which is the InfiniiVision
+format, not LeCroy's. Every trace is 2000 points, 0.5 ms
 step, 1.000 s window.
 
 ## 2. Campaign design and chronology (experimenter-confirmed)
@@ -103,7 +107,7 @@ byte-exact:
    aliases in `source_paths` are the better guide (small known exceptions,
    e.g. 4207@90 °C).
 
-5. **LeCroy export quirks (found at first strict-parse contact, 2026-07-11).**
+5. **InfiniiVision export quirks (found at first strict-parse contact, 2026-07-11).**
    (i) ~180 files contain 1–4 "time-without-voltage" rows at the window
    edges (a benign export artifact; the loader drops and counts them).
    (ii) `rulers_t/4192nm_eom_070c3.csv` is dropout-riddled: ~950 *interior*

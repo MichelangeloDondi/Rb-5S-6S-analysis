@@ -2,7 +2,7 @@
 Trace loading and format validation (module M0, part 1)
 =======================================================
 
-Single entry point for reading a LeCroy CSV trace and the dataset manifest.
+Single entry point for reading an InfiniiVision CSV trace and the manifest.
 Everything downstream goes through :func:`load_trace`, which VALIDATES the
 file instead of trusting it: a malformed file raises immediately (plan rule:
 "a parse failure on any file must raise, never skip silently").
@@ -33,10 +33,10 @@ from .constants import TRACE_N_POINTS, TRACE_DT_S
 
 
 def load_trace(path, with_info: bool = False):
-    """Read one LeCroy CSV -> (t_ms, v_volt)[, info], with strict validation.
+    """Read one InfiniiVision CSV -> (t_ms, v_volt)[, info], strictly validated.
 
     ARCHIVE QUIRK (discovered by this loader on first contact, 2026-07-11):
-    LeCroy exports contain "time-without-voltage" rows (``+531.5000E-03,``) —
+    These exports contain "time-without-voltage" rows (``+531.5000E-03,``) —
     the timebase point exists but no sample was written. Most files have 1-4
     of these at the window EDGES (head or tail); one file
     (4192nm_eom_070c3) has ~950 of them INTERLEAVED through the whole trace

@@ -179,9 +179,9 @@ then needs just $0.90\ \text{mm}<Z_c<12.7$ mm, a window spanning $\times14$
 because $z_R$ itself differs $\times14$. The test needs $Z_c$ to fall in
 that window, not to be known. Three ruler-and-datasheet
 numbers settle it — $u$, $v$, and the cathode's active extent *along the beam
-image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode — *assumed*, the attribution
-being from Nieddu 2019's nanofibre bench while an in-campaign photograph shows
-a Thorlabs PXT1/M — is a
+image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode (the tube housed in the
+Thorlabs PXT1/M module seen in the in-campaign photograph;
+experimenter-confirmed 2026-07-23) is a
 3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4) — which is why they are
 part of the proposed session's setup metrology (PLAN §8.1, §8.3 #4); the
 solid-angle weighting varies by <2% across any such window, so the top-hat

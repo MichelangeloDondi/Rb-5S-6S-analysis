@@ -87,19 +87,20 @@ generator as well as a different tank.
 
 | item | value | provenance |
 |---|---|---|
-| Cell fluorescence detector | **Thorlabs PXT1/M** (heat-sinked module) | PHOTO 2025-07-18 (in campaign) |
-| Cathode geometry | 3 × 12 mm rectangle | **ASSUMED** — see below |
+| Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
+| Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
-> **Unresolved, and it matters.** `config.py` attributes the detector to a
-> side-on Hamamatsu R636-10, citing **Nieddu 2019 — the nanofibre experiment,
-> not this bench**. The only in-campaign photograph of the detector shows a
-> Thorlabs PXT1/M. Whether that module houses an R636-10 or is a different
-> detector is open. The 3 × 12 mm cathode, the ×4 rotation lever, and the
-> landscape-vs-portrait install decision in `PLAN.md` §8.3 #4 all follow from
-> the assumed cathode and must be re-derived if it is wrong. The ×14 flip
-> window does **not** depend on it.
+> **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
+> citing *Nieddu 2019 — the nanofibre experiment, not this bench* — and the only
+> in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
+> contradiction. The experimenter confirms the PXT1/M **houses** the R636-10, so
+> the attribution was right by luck rather than by sourcing. The 3 × 12 mm
+> cathode and the landscape-vs-portrait install decision in `PLAN.md` §8.3 #4
+> therefore stand. One practical rider: the tube sits in a commercial housing,
+> so orientation is set by rotating the *module* — worth checking its mounting
+> before assuming both orientations are equally easy to realise.
 
 The IR receiver is the instrument [BIG_PICTURE](BIG_PICTURE.md) refers to as
 "an IR receiver already on the bench" for the trapping-free 6S→5P 1.3 µm
@@ -112,14 +113,29 @@ DC–750 Hz bandwidth is comfortable against a 1 s scan.
 
 | item | value | provenance |
 |---|---|---|
-| Scope of record | Teledyne LeCroy **WaveSurfer 3104z**, 1 GHz, 4 GS/s | PHOTO 2025-07-29 |
-| Also on the bench | LeCroy **WaveSurfer 10** (1 GHz, 10 GS/s); Agilent **DSO-X 3054A** (500 MHz) | PHOTO 2025-07-29, 06-10 |
+| **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + EXPERIMENTER |
+| Also on the bench (not used for the archive) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 GS/s); LeCroy **WaveSurfer 10** (1 GHz, 10 GS/s) | PHOTO 2025-07-29 |
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
 | Wavemeter | HighFinesse **Ångstrom WS-8** (WS/8L, unit 4039) | PHOTO |
 | Wavemeter autocal | every 8 minutes | PHOTO 2025-06-08 |
 | Wavemeter short-term StdDev | 100 kHz (floating, 10 measurements) | PHOTO 2025-07-18 |
 
-### 4.1 A ramp-monitor channel existed
+### 4.1 Why the Agilent, and how we know
+
+The archive was taken on the Agilent, not either LeCroy: the LeCroy would not
+trigger reliably (experimenter, 2026-07-23). That is independently confirmed by
+the files — every archival CSV opens `x-axis,N` / `second,Volt`, the Keysight
+InfiniiVision export signature (398 of 400 sampled; the other two carry a
+corrupted first line already tracked as `header_variant`). LeCroy writes a
+different header block entirely, so the format alone settles it.
+
+This matters beyond attribution: `PLAN.md` §8.4's advice for recovering
+per-scan timestamps was written for LeCroy `.trc`/WAVEDESC files, which this
+scope does not produce. Rewritten for InfiniiVision `.h5`, and integrity gate
+T6 of the [timestamp pre-registration](PREREGISTRATION_timestamps.md) corrected
+the same way — before the backup was opened.
+
+### 4.2 A ramp-monitor channel existed
 
 A 2025-06-10 photograph of the Agilent scope shows **two channels**: a clean
 triangular **sweep-ramp monitor** on Ch1 and the fluorescence on Ch2, with the
@@ -127,11 +143,17 @@ fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
 
 That bears on assumption **A1** (scope triggered on the sweep sync, so file
 time = ramp phase), which `PLAN.md` still lists as needing one word of
-confirmation. A ramp monitor was available; a 2025-07-15 photograph of the
-LeCroy shows the five-tooth comb with the scope reading "Trig'd". **If the ramp
-channel was saved alongside the fluorescence for any archival trace, A1 becomes
-directly testable rather than assumed** — the archive as curated holds
-single-channel traces, so this is a question for the experimenter.
+confirmation: a ramp monitor was demonstrably available, on the Agilent, and
+the photograph shows the fold it produces. **If that channel was saved
+alongside the fluorescence for any archival trace, A1 becomes directly
+testable rather than assumed** — the archive as curated holds single-channel
+traces, so this is a question for the experimenter.
+
+A 2025-07-15 photograph shows the five-tooth comb on the **LeCroy** reading
+"Trig'd", three days before the campaign — consistent with the LeCroy being
+tried and then abandoned for the Agilent. It says nothing about A1, since it
+is not the scope the archive came from; an earlier version of this page cited
+it as weak A1 evidence, which was wrong.
 
 ---
 
