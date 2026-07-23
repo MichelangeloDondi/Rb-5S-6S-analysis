@@ -1,8 +1,9 @@
 # Timestamp-audit report (pre-registered)
 
 *Scored 2026-07-23 by `scripts/run_timestamp_audit.py` at commit `2e56815`
-(committed before first contact with the backup; predictions in `v1.2.0`,
-tagged before the backup was opened). Quarantine copy frozen with a
+(committed before first contact with the backup; predictions committed at
+`0af038b`, 2026-07-22 — the release that also carried them was later
+withdrawn for unrelated scope reasons, see the pre-registration's §9). Quarantine copy frozen with a
 SHA-256+MD5+size+epoch manifest before scoring. One run; this file is its
 unedited output plus this provenance header.*
 
@@ -116,3 +117,36 @@ the backup. None of them was retired after seeing the timestamps.
 * The backup carries a workspace file literally named
   `2025-07-17-Julia.code-workspace`, and every mtime has even seconds — the
   FAT 2 s signature of the stick it lived on.
+
+---
+
+## Addendum, 2026-07-23 (post-release consistency check)
+
+**Edit ledger for the frozen pre-registration.** Its header forbids edits
+after the backup is read, with corrections directed here. Post-run, exactly
+one commit touched it (`d50366d`), and `git diff` confirms zero lines of the
+prediction/gate/consequence tables (§1–§8) changed — the edit rewrote only §9,
+the release-provenance note, after the `v1.0.0`–`v1.2.0` withdrawals. The
+freeze on the scientific content held; this ledger is the audit of that claim.
+
+**Corrected step-block listing.** The post-hoc section above was produced by a
+scorer whose step-block filter used `"25.0"`-style power strings against a
+manifest storing bare integers, so its five `p_sweep` entries silently matched
+nothing and only the three `t_sweep` blocks printed. With the filter fixed
+(same commit series), the full eight:
+
+* step block p_sweep 4121 T=130 P=25: intra-block gaps [10, 16, 22, 12] s
+* step block p_sweep 4192 T=130 P=125: intra-block gaps [30, 32, 10, 22] s
+* step block p_sweep 4207 T=130 P=25: intra-block gaps [62, 20, 10, 20, 10] s
+* step block p_sweep 4207 T=130 P=175: intra-block gaps [8, 128, 6, 6] s
+* step block p_sweep 4207 T=130 P=225: intra-block gaps [14, 14, 8, 12] s
+* step block t_sweep 4121 T=70 P=—: intra-block gaps [24, 6, 6, 6] s
+* step block t_sweep 4192 T=70 P=—: intra-block gaps [10, 6, 6, 6] s
+* step block t_sweep 4192 T=110 P=—: intra-block gaps [34, 18, 6, 6] s
+
+One reading falls out (post-hoc, no standing): the block with the largest
+position step — `4207 @175 mW`, whose axis offset jumps ~1140 ms between
+repeats 2 and 3 — shows a **128 s pause at exactly that boundary**, against
+6–14 s everywhere else in the block. The step and the pause coincide: the
+scope was adjusted during a two-minute interruption, which is precisely the
+"usually, not always" form of the no-touch tendency the experimenter reported.
