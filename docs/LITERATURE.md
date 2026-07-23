@@ -40,8 +40,8 @@ frequency modulation of depth ξ = ½αε₀² at rate Ω/2π = 2v/λ. For us:
 ξ = S₀ ≲ 1 MHz → **modulation index ξ/Ω ≲ 2×10⁻³ → pure carrier at the
 time-averaged intensity**. So the shift is set by the fringe-averaged
 intensity I₁ + I₂ = (1+ρ)I₁ — no coherent ×2 fringe enhancement. The
-residual OPEN item is the measured retro ratio ρ (measured in a fixed-lock session, per
-configuration). But the fringe-resolved tail is NOT a benign percent-level
+residual OPEN item is the retro ratio ρ, which a fixed-lock session would
+measure in situ per configuration (none is scheduled). But the fringe-resolved tail is NOT a benign percent-level
 broadening: near-transverse atoms (small axial speed) sample the node/antinode
 arcsine, and because the fringe MULTIPLIES the shift (s → s(1+x), x arcsine) it
 SUPPRESSES the ramp skew — κ₃ → S₀³(1/135 − f_res/10) at ρ=1, a −13.5·f_res

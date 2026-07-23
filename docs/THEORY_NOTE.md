@@ -299,6 +299,6 @@ survive the same scrutiny? These are well-posed, they need no new data, and
 they sit exactly at the focused-two-photon / inhomogeneous-field boundary.
 
 *Backing material in the repo: README §2.6 (derivations), `docs/LITERATURE.md`
-(prior-art ledger), `docs/PLAN.md` §8 (the fixed-lock session that measures $S_0$
-and tests the sign-flip). Absolute numbers are PRELIMINARY pending the fixed-lock session
+(prior-art ledger), `docs/PLAN.md` §8 (the proposed fixed-lock session, which would measure
+$S_0$ and test the sign-flip). Absolute numbers are PRELIMINARY pending the fixed-lock session
 beam-waist measurement, on which every magnitude rides.*

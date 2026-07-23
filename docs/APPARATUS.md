@@ -58,7 +58,7 @@ distinction matters: if the ECD lock is functional, engaging it converts the
 archive's whole shape-only limitation into an absolute-frequency capability
 at zero hardware cost; if it is broken, that is the first repair to price.
 **Checking whether the ECD lock works is therefore the cheapest
-highest-leverage test the next session can open with.**
+highest-leverage test a future session could open with.**
 
 ---
 
