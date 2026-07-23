@@ -383,6 +383,11 @@ block the within-block slope disagrees with the fitted rate at ~3σ. The
 within-block bounds, not the joint fit, own the pure-drift claim; τ
 describes drift and forced re-centrings jointly.
 
+> **Superseded by addendum 5:** the state-space refinement finds the drift
+> is one *constant* +0.032 [+0.023, +0.040] MHz/min laser — these floor
+> estimates sat 1–1.5σ low because their exponentials leaked early drift.
+> The paragraph is left as written; the refinement is below.
+
 **The settled floor is a detection, not a bound, and it agrees across all
 three estimators**: joint fit **+0.30 [+0.19, +0.37]**, pair median
 +0.50 ± 0.60, tight-cluster mean +0.55 ± 0.17 ms/min — positive in every

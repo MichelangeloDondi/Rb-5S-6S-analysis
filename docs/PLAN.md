@@ -930,11 +930,11 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the drift diary — the only way to separate between-scan drift (free centres
   absorb it) from within-scan drift (the residual skew channel; THEORY_NOTE §3,
   `tests/test_intrascan_drift.py`) — and lets us *measure* the lock drift rate
-  properly — the recovered 2025 clock already yields a settled 0.013–0.023
-  MHz/min (laser) and an envelope-vs-transient resolution
-  (`run_drift_settling.py`), but through interventions it cannot fully
-  deconvolve; a logged clock plus an untouched reference would make the
-  drift diary exact. (iii) It makes the T↔time collinearity (post-mortem
+  properly — the recovered 2025 clock already yields a constant
+  +0.032 [+0.023, +0.040] MHz/min (laser) with the settling attributed to
+  the operator's re-centring, not the lock (`run_drift_settling.py`,
+  state-space stage); a logged clock plus an untouched reference would make
+  the drift diary exact rather than model-mediated. (iii) It makes the T↔time collinearity (post-mortem
   #3) checkable, so the opposite-order days can regress drift out of the density
   lever. (iv) It time-orders the interleaved four-peak / per-trace-power blocks
   (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on. Keep
