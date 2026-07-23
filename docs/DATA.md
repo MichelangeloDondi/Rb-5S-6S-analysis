@@ -41,7 +41,9 @@ untestable without a clock.
 > clock.** This section has been public and unchanged in substance since
 > `9190b0b` (2026-07-13; its original release was later withdrawn —
 > [PREREGISTRATION §9](PREREGISTRATION_timestamps.md)); a backup carrying acquisition
-> timestamps surfaced nine days later and is under a pre-registered audit
+> timestamps surfaced nine days later and was audited under pre-registration
+> (opened 2026-07-23; **integrity void at T1**, predictions unscored, clock
+> window confirmed — [TIMESTAMP_AUDIT_REPORT.md](TIMESTAMP_AUDIT_REPORT.md))
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
 > predictions are taken verbatim from the text below.
 
