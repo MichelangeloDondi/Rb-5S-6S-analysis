@@ -166,7 +166,9 @@ and now directly visible), and **10 carry content that exists nowhere in the
 analysed set** — mostly extra repeats at 993.4121 nm / 75 mW (a 6th–9th, plus
 an eight-file re-take series). They sit inside the campaign window. These are
 the curation-time discards: the repo says they were dropped because they
-"seemed quite bad", and the backup is now the only place they survive.
+"seemed quite bad", and the backup is now the only place they survive
+*(no longer: since addendum 10 they are published in
+`data_recovered/discarded_backup/` and preserved in the release asset)*.
 
 > **Corrected by addendum 3: the figure is 19, not 10.** This count was
 > made by matching filenames, which hid an entire re-taken series behind

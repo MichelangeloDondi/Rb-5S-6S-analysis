@@ -244,6 +244,8 @@ rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
             transit Monte-Carlo, amplitude analyses, shared utilities
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
 data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
+data_recovered/  the backup-recovered layer: the acquisition clock
+            (CLOCK.csv), backup-only discards, degradation lineage
 results/    committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
 tests/      full test battery; CI runs it on the minimum and latest numpy
@@ -252,7 +254,8 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
             APPARATUS.md (hardware of record + provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
-            APPARATUS.md (hardware of record)
+            PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
+            (the timestamp audit: frozen predictions, results, addenda 1-10)
 ```
 
 ## Conventions
