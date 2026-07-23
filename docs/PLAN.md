@@ -1074,7 +1074,11 @@ in roughly eight days at the cell, and which shots depend on which. Run it in th
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: telescope install; **collection rebuild — f18 as L1 + relay lens L2
+- **D1**: **first, before anything else: test whether the ECD lock works** —
+  it was never engaged in 2025 (suspected faulty, untested; APPARATUS §1.1),
+  and if it functions, engaging it is the zero-hardware-cost upgrade the whole
+  fixed-lock design assumes; if not, that repair becomes the critical path.
+  Then telescope install; **collection rebuild — f18 as L1 + relay lens L2
   + image-plane slit, 795 nm bandpass moved into the collimated segment, PMT long
   (12 mm) cathode axis set along the beam — LANDSCAPE, the install decision
   argued in §8.3 #4; then the slit scan that *measures*

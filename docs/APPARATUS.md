@@ -50,6 +50,16 @@ arbitrarily between blocks. Hence: centres carry no metrological meaning,
 shapes do. The two halves of the archive's central limitation fall out of the
 lock configuration exactly.
 
+**The ECD lock was never engaged during the campaign**
+(experimenter-confirmed, 2026-07-23: "I never touched it"), consistent with
+every photograph. Why is a separate question — the experimenter's guess is
+that it was not working, which is untested. For a future session that
+distinction matters: if the ECD lock is functional, engaging it converts the
+archive's whole shape-only limitation into an absolute-frequency capability
+at zero hardware cost; if it is broken, that is the first repair to price.
+**Checking whether the ECD lock works is therefore the cheapest
+highest-leverage test the next session can open with.**
+
 ---
 
 ## 2. Frequency ruler — the EOM chain
