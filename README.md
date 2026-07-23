@@ -83,10 +83,23 @@ flowchart LR
     W --> D[density lever → β_self bound]
     W --> P[power lever → S₀ bound]
     W --> S[ramp asymmetry → upper bound]
-    W --> A[amplitude laws → P² and ∝N checks]
+    W --> A[amplitude laws → P-squared and linear-in-N checks]
     G[guards: model ladder · identifiability · coverage] -.-> D
     G -.-> P
 ```
+
+*The dashed **guards** are the three validation analyses that gate the
+headline bounds ([methods §4](docs/methods/06_the_statistics.md)): the
+**model ladder** — every lineshape component must earn its place against
+nested alternatives (ΔBIC), so nothing is over- or under-fitted;
+**identifiability** — profile likelihoods establish which parameters the
+data can actually separate, and where transit and laser width are
+degenerate the bound carries that degeneracy as an explicit band;
+**coverage** — the quoted 95% intervals are re-run on campaign-like
+synthetic data with known truth, and must cover that truth at the stated
+rate. The **amplitude checks** are the two-photon rate laws: peak
+amplitude must scale as P² at fixed density and linearly with N at fixed
+power — both hold (log-log slopes 1.83–2.12 and 0.85–1.02).*
 
 Every scan carries its own frequency ruler — an EOM comb that excites five
 copies of the line, exactly 6.25 MHz apart on the laser axis — so the
