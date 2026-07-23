@@ -178,14 +178,14 @@ moment readout — not pursued elsewhere, and distinct from Orson's absolute-fre
 mean-shift work (the axis-by-axis delineation vs Stalnaker is in `LITERATURE.md`
 §1; the not-claimable list in §5). (b) *An order-of-magnitude tighter S₀ bound*
 (< 0.63 MHz vs Orson's ~6 MHz null) extracted **from shape alone under a
-MHz/min-drifting lock**. (c) *With a fixed-lock session*, the **first measured
+drifting, hand-re-centred lock**. (c) *With a fixed-lock session*, the **first measured
 light shift on this line** — the pull ∝ S₀ is a positive observable, not a
 sharper null — plus the collisional self-*shift*, two positive observables Orson
 only nulled. In summary: **P1-min's acceptance rides on the method being
 judged novel; the measured coefficients need the session.**
 
-**"The lock drifted at MHz/min and destroyed the centres — that IS why you have
-bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
+**"The lock's line walked MHz-scale all night and destroyed the centres — that
+IS why you have bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
 is *asserted*, not demonstrated from the archive (no clock was available to it; the
 2025 root cause was never established — §8.7.1 item 5). But the session's value
 does not hinge on a *perfect* lock. (a) The pull is a **differential**
@@ -202,8 +202,9 @@ sharpened archive plus a diagnosed lock*.
 
 **"MHz/min drift does not politely stay out of the shape — it skews the line
 within a scan, and skew is your observable."** Right in principle; answered by
-the timescale separation. A scan window is ~1 s (one up-ramp), and MHz/min is
-~0.017 MHz/s, so within-scan drift is **~0.01 MHz** — negligible against the
+the timescale separation. A scan window is ~1 s (one up-ramp), and even the
+envelope's MHz/min is ~0.017 MHz/s, so within-scan drift is **~0.01 MHz** at
+worst — the measured constant rate is ~30× lower again — negligible against the
 ~5.25 MHz width, and each block is self-calibrated by its own EOM ruler. The
 drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
 β_self is currently reported as a bound (`RESULTS.md` C1). The clean closure — inject a

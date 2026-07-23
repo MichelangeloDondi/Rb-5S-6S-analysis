@@ -42,7 +42,8 @@ What the probes say together (2026-07-23 run):
     unflagged pairs collapse to a tight +0.4..0.7 ms/min cluster.
   * The state-space refinement (the final stage below) separates what the
     joint fit could not: THE DRIFT IS ONE CONSTANT, +0.74 [+0.54, +0.94]
-    ms/min = +0.032 [+0.023, +0.040] MHz/min laser, all session -- adding a
+    ms/min = +0.032 [+0.023, +0.040] MHz/min laser, across the five-hour
+    power session the fit sees (T-session probes give only bounds) -- adding a
     drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
     amplitude settles, sigma_gap ~ 88 ms x exp(-t / 86 min). The tau ~ 73 min
     the segmented fit reported was the operator's settling, not the laser's;
@@ -231,9 +232,9 @@ def main() -> int:
     state_space_report()
 
     print("\nD0 postscript (post-hoc; D0 was declared uncertain before the backup):")
-    print("  the drift is one constant 0.06 [0.05, 0.08] MHz/min (transition axis),")
-    print("  ~60x inside the 4 MHz/min envelope; even the within-block bound in")
-    print(f"  hour 1 (<~ {4 * RATE_MHZ_MS * 2:.2f} MHz/min) never approaches it.")
+    print("  measured constant 0.032 [0.023, 0.040] vs the 4 MHz/min envelope,")
+    print("  both laser axis: ~125x inside; even the within-block hour-1 bound")
+    print(f"  (<~ {4 * RATE_MHZ_MS:.2f} MHz/min laser) never approaches it.")
     print("\nNot resolved: per-temperature re-kicks (T-session ruler->block spans")
     print("are operator-contaminated -- the reference was adjusted between ruler")
     print("and science acquisition; intra-block bounds there: |r| <~ 5 ms/min).")
@@ -474,8 +475,9 @@ def state_space_report() -> None:
     print(f"\n  DRIFT IS CONSTANT: c = {th_d[0]:+.2f} [{min(ok):+.2f}, {max(ok):+.2f}] ms/min (68%)")
     print(f"    = {th_d[0]*RATE_MHZ_MS:+.4f} [{min(ok)*RATE_MHZ_MS:+.4f}, "
           f"{max(ok)*RATE_MHZ_MS:+.4f}] MHz/min laser -- a detection, one constant")
-    print(f"    rate across the whole session (~{abs(th_d[0])*RATE_MHZ_MS*60*20.5:.0f} MHz")
-    print(f"    laser over its 20.5 h: the reason the reference needed moving).")
+    print(f"    rate across the five-hour power session the fit sees; persisting,")
+    print(f"    ~{abs(th_d[0])*RATE_MHZ_MS*60*20.5:.0f} MHz laser over the 20.5 h "
+          f"-- the scale that forced the re-centring.")
     if ki == "exp":
         print(f"  THE SETTLING BELONGS TO THE OPERATOR: sig_gap = {th_i[0]:.0f} ms x "
               f"exp(-t/{th_i[1]*60:.0f} min)")

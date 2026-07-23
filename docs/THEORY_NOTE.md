@@ -57,9 +57,10 @@ of what is specific here.
 
 ## 3. The drift-immune method
 
-The 2025 archival lock drifted at $\sim$MHz/min, so absolute line **centres**
-are dead — and a fit must give each scan its own free centre to absorb that
-drift. This has a sharp consequence for the ramp. Its **first-order effect is a
+The 2025 archival line walked at the MHz scale between scans — hand
+re-centrings riding a measured constant $\sim$0.03 MHz/min drift
+(`APPARATUS.md` §6) — so absolute line **centres** are dead, and a fit must
+give each scan its own free centre to absorb that motion. This has a sharp consequence for the ramp. Its **first-order effect is a
 shift** of the line (the centroid pull $-\tfrac23 S_0$), and a shift is exactly
 what a per-scan free centre absorbs — so in the drifted archive the pull is
 **degenerate with the drift and not a usable handle** on $S_0$. What survives is

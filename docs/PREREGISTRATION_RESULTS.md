@@ -417,7 +417,9 @@ re-kick smaller than that. Not confirmed, not refuted, bounded.
 
 **D0 postscript.** D0 — declared genuinely uncertain before the backup was
 opened — is post-hoc satisfied in every epoch probed: settled 0.05, early
-≲ 0.34, envelope 4 MHz/min (transition axis).
+≲ 0.34 (transition axis), envelope 4 MHz/min *[correction, same day: the
+envelope constant is laser-axis — the mislabel does not change the verdict,
+the margin is ~60× either way]*.
 
 No shipped number moves: widths are per-trace, and centre steps do not enter
 them. *Post-hoc throughout; estimator proposed by the experimenter
@@ -451,8 +453,11 @@ declined is now made, in both directions:
 
 - **Drift: c = +0.74 [+0.54, +0.94] ms/min (68%, profile likelihood; 95%
   [+0.24, +1.24]) = +0.032 [+0.023, +0.040] MHz/min laser axis** — one
-  constant rate across the whole session, ~39 MHz laser over its 20.5 hours,
-  which is *why* the reference needed moving all night. Robust: dropping
+  constant rate across the five-hour power session, the span the fit sees
+  (the T-session probes are operator-contaminated and give only bounds,
+  ≲0.2 MHz/min, which contain it). If it persisted, ~39 MHz laser across
+  the 20.5 hours — the scale that forced the all-night re-centring. Robust:
+  dropping
   peak 4207 entirely moves c by +0.013; window-move thresholds of 60 and
   150 ms move it by less than 0.02.
 - **Interventions: σ_gap ≈ 88 ms × exp(−t/86 min)** — per-gap re-centring
@@ -469,8 +474,8 @@ transients are exactly when the operator re-centres hardest. The earlier
 because those decompositions leaked early drift into their exponentials;
 **+0.032 [+0.023, +0.040] MHz/min laser supersedes it.** The within-block
 bounds (|r| ≲ 4 ms/min) contain the constant comfortably and stay the
-model-free anchor. D0's envelope now reads: measured constant 0.06
-[0.05, 0.08] MHz/min transition, ~60× inside 4 MHz/min.
+model-free anchor. D0's envelope, compared on its own axis: measured
+constant 0.032 [0.023, 0.040] vs 4 MHz/min laser — **~125× inside**.
 
 The observation-noise scale fits at 1.93× the block MADs — effective
 per-trace noise 1.5–3 ms, consistent with the 1.8 ms jitter figure, closing
