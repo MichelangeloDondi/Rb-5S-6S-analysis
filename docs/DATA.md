@@ -111,7 +111,13 @@ byte-exact:
    headline fits.** The selection was made at curation time, blind to any
    fitted physics, so honoring it cannot bias results; the M0 objective QC
    is additionally run on them as a consistency check on the curation
-   (reported in an appendix). Chronology: curated indices are chronological
+   (reported in an appendix). **Since 2026-07-23 that check is quantitative
+   and no longer rests on timing alone:** these four, plus sixteen further
+   discarded acquisitions that survive only in the recovered backup, sit
+   inside their conditions' kept spread in linewidth — the quantity the fits
+   use — with one boundary case smaller than the width metric's own
+   quantisation
+   ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 3). Chronology: curated indices are chronological
    among the kept traces; where finer ordering matters, the raw-index
    aliases in `source_paths` are the better guide (small known exceptions,
    e.g. 4207@90 °C).
