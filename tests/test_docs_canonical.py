@@ -268,7 +268,7 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
         "the README diagram again folds distinct outcome types into 'nulls'; "
         "label each branch by what it delivers (bound / null / confirmed law)")
     for token in ("ramp asymmetry → upper bound",
-                  "amplitude laws → P² and ∝N checks"):
+                  "amplitude laws → P-squared and linear-in-N checks"):
         assert token in txt, f"README diagram lost its honest label: {token!r}"
 
 
