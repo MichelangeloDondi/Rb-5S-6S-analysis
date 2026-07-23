@@ -150,3 +150,51 @@ repeats 2 and 3 — shows a **128 s pause at exactly that boundary**, against
 6–14 s everywhere else in the block. The step and the pause coincide: the
 scope was adjusted during a two-minute interruption, which is precisely the
 "usually, not always" form of the no-touch tendency the experimenter reported.
+
+---
+
+## Addendum 2, 2026-07-23 — what the backup holds that the analysed set does not
+
+A propagation check asked whether every audit finding had reached the
+documents. Two had not, and chasing the second overturned a claim made in
+Addendum 1.
+
+**34 backup-only CSVs.** Names present in the backup but in neither the
+manifest nor the local `data/` tree. Of these, 24 are byte-identical to an
+analysed trace (the curation renaming, already documented in `DATA.md` §3.3–3.4
+and now directly visible), and **10 carry content that exists nowhere in the
+analysed set** — mostly extra repeats at 993.4121 nm / 75 mW (a 6th–9th, plus
+an eight-file re-take series). They sit inside the campaign window. These are
+the curation-time discards: the repo says they were dropped because they
+"seemed quite bad", and the backup is now the only place they survive.
+
+**The one T1 absence is not a loss — it is the reverse.** Addendum 1 recorded
+that `p_sweep/4192nm_225mw1.csv`'s analysed bytes are absent from the backup,
+and called it a genuine absence. That is true but misleading. The backup
+contains a file of that name, and it is the **pristine original**; the analysed
+copy is a degraded export of it:
+
+| | analysed copy (`data/raw/`, `power/`, `power copy/`) | backup original |
+|---|---|---|
+| size | 37 558 B | **53 841 B** |
+| header | `jj,nj` — corrupted | `x-axis,2` — standard InfiniiVision |
+| time values | `-4.68E-01` (3 s.f.) | `-468.0000E-03` (7 s.f.) |
+| duplicate timestamps | **799 of 1999** | **0** |
+| distinct Δt | 3 | 1 (uniform) |
+
+Both hold 1999 points over the same −0.468 → +0.531 s window, and the voltages
+agree to 5.0 mV — which is the quantisation of the degraded copy, about 0.3× that
+trace's own wing noise (16.0 mV), so the amplitude penalty is modest. The time
+axis is the real damage: a third of the samples carry a duplicated timestamp,
+which is precisely the aliasing `DATA.md` §3.2 describes and which
+`rb5s6s/ingest.py` special-cases for this one file.
+
+So the repo has been treating a recoverable export defect as an inherent
+property of the data. **No result is retracted and none is claimed changed** —
+this trace is one of five repeats in one condition, its degradation is
+documented and handled, and nothing has been re-fitted. What changes is that
+the defect is now known to be *fixable*: re-ingesting the backup original and
+re-running the affected condition is a concrete, bounded piece of work, and
+whether it moves anything is an open question rather than an assumption.
+
+*Post-hoc throughout; no pre-registered standing.*

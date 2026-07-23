@@ -122,6 +122,10 @@ byte-exact:
    (ii) `rulers_t/4192nm_eom_070c3.csv` is dropout-riddled: ~950 *interior*
    empty rows, only 1047 valid samples — hard-flagged, excluded from ruler
    pooling. (iii) `p_sweep/4192nm_225mw1.csv` is a nonstandard export
+   — **and a recoverable one: the recovered backup holds its pristine
+   full-precision original (uniform time axis, 0 duplicate timestamps vs
+   799 in the analysed copy); see
+   [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 2** —
    (stray header `jj,nj`; time column printed at 3 significant figures so
    0.5 ms steps alias to duplicate timestamps) whose *content* is healthy —
    the loader rebuilds its time axis from the row index and records the
