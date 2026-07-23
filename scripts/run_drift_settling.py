@@ -7,8 +7,8 @@ DRIFT RATE at all" -- true of the archive alone. The recovered backup restores
 a lever, through an estimator the experimenter proposed (2026-07-23): treat
 the reference re-centrings as offset steps that move the frequency but not the
 underlying drift, and difference positions inside spans the steps cannot
-reach. Two differencing baselines exist, and their disagreement is itself the
-finding:
+reach. Two differencing baselines exist, and they disagree -- the
+disagreement is what identifies the interventions:
 
   * BETWEEN blocks (adjacent conditions of one peak's power ladder, ~3-14 min):
     position steps of either sign -- drift PLUS the operator's re-centrings,
