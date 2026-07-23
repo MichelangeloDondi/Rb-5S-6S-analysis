@@ -812,3 +812,48 @@ candidacy for labelled exploratory use only — never silent inclusion.
 *All identities by content hash. Quarantines: main (frozen 2026-07-23),
 RawData2, Pilot, and Prehistory (2026-07-24), each read-only; the Desktop
 originals untouched.*
+
+
+## Addendum 10, 2026-07-24 — consolidation: the clock becomes data, the backup becomes an archive
+
+The two-folder problem (a frozen repo archive with no clock; a private
+backup that *is* the clock) is resolved in four moves, all shipped:
+
+1. **The clock is committed as data.** `data_recovered/CLOCK.csv` — content
+   hash → FAT mtime for all 438 backup files across the four source trees,
+   with the manifest identity wherever content matches the archive. Built
+   deterministically by `scripts/build_clock_table.py`;
+   `run_drift_settling.py` now reads the table first, so **a clone
+   reproduces the entire drift arc (addenda 4–7) with no private folder** —
+   verified by running the full report with the quarantines hidden:
+   identical numbers.
+2. **The recovered files are published.** `data_recovered/discarded_backup/`
+   (the 16 backup-only discards behind the curation test, addendum 3) and
+   `data_recovered/lineage_4192nm_225mw1/` (the four variants of the dated
+   degradation chain, addendum 8), all hash-suffixed against the nine name
+   collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
+   untouched.
+3. **The full timestamped backup is preserved publicly**: release
+   [`raw-backup-2026-07-24`](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases/tag/raw-backup-2026-07-24)
+   carries the complete tree verbatim (`tar.gz`, mtimes intact — verified
+   inside the archive; 753 CSVs, ~460 MB unpacked, 77 MB packed), sha256
+   `58d5315d8bde5fae0c3c0989e5b96c76e24f02645d546791878ba650f9cc08d1`.
+   Anyone can now re-run the audit from first principles, hashing included;
+   and the clock no longer lives on a single disk.
+4. **The folder roles are documented** (`DATA.md` §3a) and guarded
+   (`tests/test_recovered_layer.py`): the clock's manifest identities must
+   agree with `MANIFEST.csv` by hash, campaign rows must sit inside the
+   pre-registered T2 window, every recovered file must hash to its recorded
+   and name-embedded md5 and be absent from the frozen archive, and every
+   recovered file must be datable through the clock.
+
+One count sharpened in passing: the RECOVERED_MANIFEST makes visible that
+the two degraded copies of addendum 2 (`…copy.csv` and `… - Copy.csv`) are
+byte-identical to *each other* — so the backup's "19 unique files" are 19
+files carrying 18 distinct contents. No conclusion touched; the lineage is
+three contents (pristine → degraded re-export ×2 names → header-restored
+intermediate), all published.
+
+The Desktop original and the four quarantines stay private, read-only, and
+untouched — the provenance roots the public record can always be checked
+against.

@@ -103,7 +103,21 @@ def _md5(path: Path) -> str:
 
 def clock() -> dict:
     """file (manifest-relative) -> earliest backup mtime, matched by CONTENT.
-    Name matching is how a re-take series stayed hidden; never match by name."""
+    Name matching is how a re-take series stayed hidden; never match by name.
+
+    Prefers the committed table data_recovered/CLOCK.csv (so a clone
+    reproduces the drift arc with no private folder); falls back to hashing
+    a live quarantine when the table is absent."""
+    table = ROOT / "data_recovered" / "CLOCK.csv"
+    if table.is_file():
+        out: dict[str, float] = {}
+        with open(table) as f:
+            for r in csv.DictReader(f):
+                if r["source"] == "main" and r["manifest_file"]:
+                    t = float(r["mtime_epoch"])
+                    k = r["manifest_file"]
+                    out[k] = min(out.get(k, t), t)
+        return out
     by_md5: dict[str, float] = {}
     for p in QUARANTINE.rglob("*.csv"):
         d = _md5(p)
@@ -162,9 +176,14 @@ def pooled(g: pd.DataFrame) -> tuple[float, float]:
 
 
 def main() -> int:
-    if not QUARANTINE.is_dir():
-        print("no timestamp backup found (set RB5S6S_BACKUP_DIR); the archive alone "
-              "has no clock -- nothing to do.")
+    have_table = (ROOT / "data_recovered" / "CLOCK.csv").is_file()
+    if not have_table and not QUARANTINE.is_dir():
+        print("no timestamp backup found (set RB5S6S_BACKUP_DIR) and no committed "
+              "data_recovered/CLOCK.csv; the archive alone has no clock -- nothing to do.")
+        return 0
+    if not (ROOT / "results" / "qc_metrics.csv").is_file():
+        print("results/qc_metrics.csv not present (gitignored dump; regenerate with "
+              "scripts/run_qc.py) -- the drift analysis needs it; nothing to do.")
         return 0
 
     B = load_blocks()

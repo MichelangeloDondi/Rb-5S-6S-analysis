@@ -53,20 +53,28 @@ def test_audit_report_warns_when_it_names_a_colliding_filename():
 
 
 def test_drift_settling_script_degrades_cleanly_without_the_backup(tmp_path):
-    """The drift-rate recovery needs the timestamp backup, which never ships.
-    Without it the script must exit 0 with the no-clock message -- CI has no
-    backup, so anything else breaks the build for machines that lack a clock.
+    """The drift analysis must never break a machine that lacks its inputs.
+    With the committed data_recovered/CLOCK.csv the private backup is no
+    longer needed -- but qc_metrics.csv is gitignored, so on such machines
+    (CI) the script must exit 0 with a graceful message; where everything is
+    present it must run the full report off the table alone.
     """
     import os
     import subprocess
     import sys
+    from pathlib import Path
 
     env = dict(os.environ, RB5S6S_BACKUP_DIR=str(tmp_path / "nope"))
     out = subprocess.run(
         [sys.executable, "scripts/run_drift_settling.py"],
-        capture_output=True, text=True, env=env, timeout=120)
+        capture_output=True, text=True, env=env, timeout=600)
     assert out.returncode == 0, out.stderr
-    assert "no timestamp backup" in out.stdout
+    if Path("results/qc_metrics.csv").is_file():
+        assert "MIXTURE REFINEMENT" in out.stdout, (
+            "table + qc_metrics present but the full report did not run:\n"
+            + out.stdout)
+    else:
+        assert "qc_metrics.csv not present" in out.stdout
 
 
 def test_drift_settling_numbers_match_the_addendum():
@@ -82,11 +90,8 @@ def test_drift_settling_numbers_match_the_addendum():
 
     import pytest
 
-    backup = Path(os.environ.get(
-        "RB5S6S_BACKUP_DIR",
-        os.path.expanduser("~/Documents/RawDataBackUp_QUARANTINE_2026-07-23")))
-    if not backup.is_dir():
-        pytest.skip("timestamp backup not on this machine")
+    if not Path("results/qc_metrics.csv").is_file():
+        pytest.skip("qc_metrics.csv not present (gitignored dump)")
 
     out = subprocess.run(
         [sys.executable, "scripts/run_drift_settling.py"],
