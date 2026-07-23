@@ -75,16 +75,16 @@ output a committed CSV:
 
 ```mermaid
 flowchart LR
-    T[297 raw traces] --> N[measured noise law]
-    T --> K[frequency ruler]
-    N --> F[hierarchical lineshape fits]
+    T["297 raw traces"] --> N["measured noise law"]
+    T --> K["frequency ruler"]
+    N --> F["hierarchical<br/>lineshape fits"]
     K --> F
-    F --> W[widths and shapes vs T, P]
-    W --> D[density lever → β_self bound]
-    W --> P[power lever → S₀ bound]
-    W --> S[ramp asymmetry → upper bound]
-    W --> A[amplitude laws → P-squared and linear-in-N checks]
-    G[guards: model ladder · identifiability · coverage] -.-> D
+    F --> W["widths and shapes<br/>vs T, P"]
+    W --> D["density lever<br/>β_self bound"]
+    W --> P["power lever<br/>S₀ bound"]
+    W --> S["ramp asymmetry<br/>upper bound"]
+    W --> A["amplitude laws<br/>P² and density<br/>checks"]
+    G["guards<br/>model ladder<br/>identifiability<br/>coverage"] -.-> D
     G -.-> P
 ```
 
@@ -251,7 +251,7 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
             APPARATUS.md (hardware of record + provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
-            PAPER1_SKELETON.md (manuscript outline)
+            APPARATUS.md (hardware of record)
 ```
 
 ## Conventions
@@ -279,8 +279,7 @@ focused standing wave.
 The dataset was taken during a six-month research visit to OIST (Japan) in
 2025, as an independent project alongside my main work there on
 atom–nanofiber interfaces; the analysis package was developed after the
-campaign. A manuscript based on it is in preparation
-([`docs/PAPER1_SKELETON.md`](docs/PAPER1_SKELETON.md)).
+campaign. A manuscript based on it is in preparation.
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·

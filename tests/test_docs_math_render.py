@@ -90,3 +90,41 @@ def test_math_renders_on_github(doc):
             problems.append(f"{rel}:{n}: bare | inside math on a table row — markdown eats it as a column separator")
 
     assert not problems, "GitHub math-render problems:\n  " + "\n  ".join(problems)
+
+
+# --------------------------------------------------------------------------
+# A `$…$` span must not straddle a newline.
+# --------------------------------------------------------------------------
+# GitHub's inline math is single-line: a span opened on one source line and
+# closed on the next is emitted as LITERAL LaTeX on the rendered page. This is
+# invisible locally (editors and most previewers join the lines) and was
+# reported from the live page 2026-07-23 as "raw latex" in THEORY_NOTE.md and
+# PAPER1_SKELETON.md. Seven spans were wrapped across the repo. The check is a
+# per-line dollar-parity test, which is exactly the condition.
+def test_no_inline_math_span_wraps_a_line():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        pytest.skip("not a git checkout")
+    bad = []
+    for rel in [p for p in out.stdout.split("\n") if p]:
+        if rel.startswith("docs/lit/"):
+            continue
+        text = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        in_fence = False
+        for i, line in enumerate(text.split("\n"), 1):
+            if line.lstrip().startswith("```"):
+                in_fence = not in_fence
+                continue
+            if in_fence:
+                continue
+            # display math ($$) opens and closes on its own lines by design
+            if line.strip().startswith("$$") or line.strip().endswith("$$"):
+                continue
+            if line.count("$") % 2 == 1:
+                bad.append(f"{rel}:{i}: {line.strip()[:95]}")
+    assert not bad, (
+        "inline math span left open at end of line — GitHub renders these as "
+        "literal LaTeX because $…$ does not cross a newline; join the lines:\n  "
+        + "\n  ".join(bad[:15]))

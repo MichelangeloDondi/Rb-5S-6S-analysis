@@ -34,8 +34,7 @@ and with $s=-S_0 u$ (where $S_0=\kappa I_0$ is the on-axis maximum shift) the
 
 $$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
 
-For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$. The same $dS\propto
-dI/I \cdot I^{n}$ argument holds for any monotonic $I$ profile that is flat in
+For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$. The same $dS\propto dI/I \cdot I^{n}$ argument holds for any monotonic $I$ profile that is flat in
 one coordinate — including the exponential evanescent field of a nanofibre —
 which is the bridge to the fibre geometry (Paper 2). Normalising, the moments
 follow by direct integration:
@@ -123,8 +122,7 @@ waist, and must be applied before $S_0$, hence $\Delta\alpha$, is read.
 **The hybrid, made principled.** The three cumulants are not three rival
 measurements to be combined or cherry-picked — they are three analytic
 functionals of the *one* parameter $S_0(P)$ (`lineshape.ramp_moment_contributions`):
-pull $\propto S_0$, excess variance $\propto S_0^2$, third cumulant $\propto
-S_0^3$. The fixed-lock fit uses a single $S_0$ per condition and checks that the pull,
+pull $\propto S_0$, excess variance $\propto S_0^2$, third cumulant $\propto S_0^3$. The fixed-lock fit uses a single $S_0$ per condition and checks that the pull,
 excess-variance and third-cumulant *measured from the data* are mutually
 consistent with it — a $\chi^2$ across the moment hierarchy. The primary
 observable at each intensity is pre-registered as the lowest-order moment above
@@ -211,8 +209,7 @@ third cumulant's magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7). Code:
 the *direction* of the pull is set by $\mathrm{sign}(\Delta\alpha)$. **$\Delta\alpha$
 is [Orson *et al.*](lit/orson2021.md) 2021's published value** (*J. Phys. B* **54**, 175001 — prior art
 on this exact 5S–6S line): they compute $\alpha_{56}=\alpha_{5S}-\alpha_{6S}=-1093$
-a.u. "in a manner similar to [Martin 2019](lit/martin2019.md)," so our $\Delta\alpha=\alpha_{6S}-\alpha_{5S}
-=+1093>0$ (6S pulled down more than 5S $\Rightarrow$ red shift $\Rightarrow$ $S_0>0$).
+a.u. "in a manner similar to [Martin 2019](lit/martin2019.md)," so our $\Delta\alpha=\alpha_{6S}-\alpha_{5S} =+1093>0$ (6S pulled down more than 5S $\Rightarrow$ red shift $\Rightarrow$ $S_0>0$).
 This was formerly flagged as the number most wanting a theorist's check; it is now
 (a) a **cited** value on our exact transition and (b) **cross-checked** — our
 `stark_shift_S0_mhz` reproduces Orson's own $-0.66$ MHz shift prediction (0.8 W,
@@ -279,8 +276,7 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 \zeta_m(s) = \min \left(\frac{Z_c}{z_R},\ \sqrt{\frac{S_0}{|s|}-1}\right)$$
 
 which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised skewness **changes sign** with the collection
-window — $g_1 \approx +0.56$ at $w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx
--0.35$ at $w_0=16\ \mu$m ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$
+window — $g_1 \approx +0.56$ at $w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx -0.35$ at $w_0=16\ \mu$m ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$
 — because a long window piles weight at weak out-of-focus shifts. The flip at
 small waist is conditional on the (unmeasured) collection geometry: $Z_c$ is
 the imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens

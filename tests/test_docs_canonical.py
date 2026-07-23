@@ -170,6 +170,12 @@ def test_docs_cite_canonical_value(entry):
     # citation states a canonical token (a stale value anywhere fails).
     toks = _tokens(entry)
     for doc in entry["docs"]:
+        # Manuscript drafts (PAPER1_SKELETON.md, docs/paper1/) were unpublished
+        # 2026-07-23 and are untracked: present in a working checkout, absent in
+        # CI. Skip what is not there rather than fail on the CI clone -- the same
+        # trap results/qc_metrics.csv sprang.
+        if not (ROOT / doc).exists():
+            continue
         text = _read(doc)
         hits = [next(g for g in m.groups() if g) for m in entry["find"].finditer(text)]
         assert hits, f"{entry['name']}: no citation found in {doc} (moved or rephrased?)"
@@ -229,6 +235,8 @@ def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
         f"3-8% as OBSERVED and <=2% as the ramp-law PREDICTION. If the data "
         f"moved, requote both -- and keep them distinguishable.")
     for rel, txt in (("docs/PAPER1_SKELETON.md", None), ("docs/RESULTS.md", None)):
+        if not (ROOT / rel).exists():
+            continue   # unpublished manuscript draft; absent in CI
         body = (ROOT / rel).read_text(encoding="utf-8")
         if "C3a" not in body:
             continue
@@ -267,9 +275,24 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
     assert "→ nulls]" not in txt, (
         "the README diagram again folds distinct outcome types into 'nulls'; "
         "label each branch by what it delivers (bound / null / confirmed law)")
-    for token in ("ramp asymmetry → upper bound",
-                  "amplitude laws → P-squared and linear-in-N checks"):
+    for token in ("ramp asymmetry<br/>upper bound",
+                  "amplitude laws<br/>P² and density<br/>checks"):
         assert token in txt, f"README diagram lost its honest label: {token!r}"
+    # every mermaid node label must be QUOTED and each rendered line short:
+    # GitHub clipped two 53-character labels ("...P-squared and linear-in-N
+    # checks", "guards: model ladder · identifiability · coverage") while every
+    # label <=33 chars rendered. Quote + <br/> is the fix; keep it enforced.
+    import re as _re
+    blk = txt[txt.index("```mermaid"):]
+    blk = blk[:blk.index("```", 3)]
+    for lbl in _re.findall(r'\[([^\]]*)\]', blk):
+        assert lbl.startswith('"') and lbl.endswith('"'), (
+            f"unquoted mermaid label {lbl!r} — quote it, special characters "
+            f"otherwise break parsing")
+        for seg in lbl.strip('"').split("<br/>"):
+            assert len(seg) <= 34, (
+                f"mermaid label line {seg!r} is {len(seg)} chars; GitHub clips "
+                f"long labels — break it with <br/>")
 
 
 def _tracked_prose():
@@ -348,3 +371,61 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     assert "flat (~1.1," in fig_src, "fig5 title no longer quotes ~1.1"
     m07 = (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8")
     assert "1.5/1.6/1.1" in m07 and "$1.0$–$1.25$" in m07
+
+
+# --------------------------------------------------------------------------
+# The power ladder ran DESCENDING (audit, 2026-07-23). Guard the correction.
+# --------------------------------------------------------------------------
+# The recovered timestamps proved 225 -> 25 mW on all four peaks; the repo had
+# documented 25 -> 225 since 2026-07-11. P2 failed with exactly 4 adjacent
+# inversions per peak -- identical across peaks, the signature of a reversed
+# sequence rather than noisy memory. Anything reasserting the ascending order
+# as the ACQUISITION order is stale.
+_ASCENDING = re.compile(
+    r"25\s*(?:->|→|,)\s*75\s*(?:->|→|,)\s*125\s*(?:->|→|,)\s*175\s*(?:->|→|,)\s*225")
+_DESC_OK = re.compile(r"descend|reversed|ascending power|condition ladder|"
+                      r"NOT AN ACQUISITION|by ASCENDING POWER", re.I)
+
+
+def test_power_ladder_documented_descending():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        pytest.skip("not a git checkout")
+    bad = []
+    for rel in [p for p in out.stdout.split("\n") if p]:
+        if rel.startswith(("docs/lit/", "tests/")):
+            continue
+        # the pre-registration is a frozen pre-data document: its P2 row quotes
+        # the prediction as written, which is the point of a pre-registration
+        if rel == "docs/PREREGISTRATION_timestamps.md":
+            continue
+        lines = (ROOT / rel).read_text(encoding="utf-8", errors="replace").split("\n")
+        for i, line in enumerate(lines, 1):
+            if not _ASCENDING.search(line):
+                continue
+            # SAME LINE only. A +/-4-line window was too permissive: it was
+            # satisfied by the very correction note explaining the reversal,
+            # so a planted ascending order passed. The exemption must ride on
+            # the claim itself.
+            if not _DESC_OK.search(line):
+                bad.append(f"{rel}:{i}: {line.strip()[:100]}")
+    assert not bad, (
+        "the power ladder is documented ascending as an ACQUISITION order; the "
+        "recovered timestamps prove it ran 225 -> 25 mW (see "
+        "docs/PREREGISTRATION_RESULTS.md):\n  " + "\n  ".join(bad))
+
+
+def test_block_seq_is_labelled_not_a_time_order():
+    """block_seq maps 25mW->1 ... 225mW->5, i.e. BACKWARDS in acquisition time.
+    The values stay (stable join key, manifest md5s computed over them), so the
+    docstring must say so or a reader will treat block_seq as a sequence."""
+    src = (ROOT / "scripts" / "import_data.py").read_text(encoding="utf-8")
+    assert "NOT AN ACQUISITION ORDER" in src, (
+        "import_data.py no longer warns that block_seq is not a time order")
+    for consumer in ("rb5s6s/ingest.py", "scripts/run_intrablock_trend.py"):
+        body = (ROOT / consumer).read_text(encoding="utf-8")
+        assert "block_seq" not in body, (
+            f"{consumer} now reads block_seq; if it orders by it, that order is "
+            f"reversed in time for the power session")

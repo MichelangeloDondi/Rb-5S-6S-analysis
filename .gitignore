@@ -32,6 +32,9 @@ docs/*audit*
 docs/*red_team*
 docs/CV_*
 docs/PAPERS_PORTFOLIO.md
+# manuscript drafts: unfinished prose with [X] placeholders, not results
+docs/PAPER1_SKELETON.md
+docs/paper1/
 docs/*inquiry*
 docs/linkedin*
 *.docx
