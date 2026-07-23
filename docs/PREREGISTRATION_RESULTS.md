@@ -297,8 +297,12 @@ quantity", not "identical".
 **An independent set, which this addendum first overlooked.** The claim that
 only backup-preserved discards can be tested was wrong: `data_raw/discarded/`
 has published four raw-only discards since the archive was built, from the
-temperature sweeps, with no connection to the backup. Run through the same
-test against the kept repeats at their own conditions:
+temperature sweeps, with no connection to the backup — and the curation audit
+of 2026-07-11 had already examined them, finding `4154nm_070c4` about 27%
+dimmer than its siblings and the other three clean (`DATA.md` §6). What is
+new here is not the look but the axis: that audit judged them on brightness
+and structure, this one on the quantity the fits actually use. Run against
+the kept repeats at their own conditions:
 
 | discarded (already public) | its FWHM | kept at that condition | z | its SNR vs kept median |
 |---|---|---|---|---|
