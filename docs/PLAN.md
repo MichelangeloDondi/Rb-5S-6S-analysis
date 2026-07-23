@@ -950,7 +950,8 @@ one); the hybrid is across the moment hierarchy, never across methods.
   after *any* ≥3 h pause budget the transient again — the 2025 evening dwells
   ran entirely inside a fresh post-break transient and paid 3–6 MHz re-kicks
   per block for it; (ii) once past the transient, **hands off the reference**
-  — at the measured held-lock drift a 43 MHz window lasts ~10 h, so the
+  — at the measured held-lock drift a 43 MHz window lasts tens of hours
+  (~40 h if the ~0.016 MHz/min rate persists), so the
   all-night re-centring was fighting the transient and itself, not the drift;
   (iii) **log the lock state** (even a TTL on a spare channel): with drops
   time-stamped, the drift diary needs no state-space model at all. Keep

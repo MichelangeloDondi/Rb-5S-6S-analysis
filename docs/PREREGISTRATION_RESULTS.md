@@ -383,10 +383,13 @@ block the within-block slope disagrees with the fitted rate at ~3σ. The
 within-block bounds, not the joint fit, own the pure-drift claim; τ
 describes drift and forced re-centrings jointly.
 
-> **Superseded by addendum 5:** the state-space refinement finds the drift
-> is one *constant* +0.032 [+0.023, +0.040] MHz/min laser — these floor
-> estimates sat 1–1.5σ low because their exponentials leaked early drift.
-> The paragraph is left as written; the refinement is below.
+> **Superseded — final value in addendum 7:** the state-space refinement
+> first found a constant +0.032 MHz/min laser and called these floors low
+> (addendum 5); the residual audit then showed that number was biased by
+> unmodelled moves, and the adequate model lands at
+> **+0.016 [+0.007, +0.025] MHz/min — in agreement with these floor
+> estimates after all.** The paragraph is left as written; the audit trail
+> is below.
 
 **The settled floor is a detection, not a bound, and it agrees across all
 three estimators**: joint fit **+0.30 [+0.19, +0.37]**, pair median
@@ -477,7 +480,10 @@ consistent with it matching the wavemeter's post-retune scale, since re-lock
 transients are exactly when the operator re-centres hardest. The earlier
 "settled floor" of 0.013–0.023 MHz/min sits 1–1.5σ below the constant
 because those decompositions leaked early drift into their exponentials;
-**+0.032 [+0.023, +0.040] MHz/min laser supersedes it.** The within-block
+**+0.032 [+0.023, +0.040] MHz/min laser supersedes it** *(a claim addendum 7
+itself supersedes: under the adequate noise model the constant is +0.016
+[+0.007, +0.025], agreeing with those floors — the leak ran the other way)*.
+The within-block
 bounds (|r| ≲ 4 ms/min) contain the constant comfortably and stay the
 model-free anchor. D0's envelope, compared on its own axis: measured
 constant 0.032 [0.023, 0.040] vs 4 MHz/min laser — **~125× inside**.

@@ -48,12 +48,13 @@ What the probes say together (2026-07-23 run):
     indication under the adequate (mixture) noise model -- the gaussian
     +0.74 was biased by three unmodelled end-of-ladder moves. Adding a
     drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
-    amplitude settles, sigma_gap ~ 88 ms x exp(-t / 86 min). The tau ~ 73 min
+    amplitude settles, sigma_gap ~ 85 ms x exp(-t / ~90 min). The tau ~ 73 min
     the segmented fit reported was the operator's settling, not the laser's;
     it matches the ~1-1.5 h post-retune scale the wavemeter photographs show
-    (APPARATUS section 6). The earlier estimators' "settled floor"
-    0.013-0.023 MHz/min sits 1-1.5 sigma below the constant because their
-    exponentials leaked early drift; the state-space value supersedes them.
+    (APPARATUS section 6). Under the mixture model the earlier estimators'
+    "settled floor" (0.013-0.023 MHz/min) and the segmented floor agree with
+    the headline -- the gaussian state space was the one outlier, for the
+    diagnosed reason.
   * Over a 32 s block the constant drift walks the centre ~0.4 ms, below the
     1.8 ms jitter, which is why the intra-block trend test rightly saw jitter.
 
