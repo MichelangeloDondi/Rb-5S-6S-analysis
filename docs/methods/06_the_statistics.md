@@ -187,8 +187,7 @@ $$
 \text{A: Voigt} \subset \text{B: +transit} \subset \text{C: +collisional width} \subset \text{D: +AC-Stark ramp}.
 $$
 
-On the T-sweep archive the summed $\Delta\text{BIC}$ per rung is **A→B $\approx
-+1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
+On the T-sweep archive the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
 Lorentzian width beyond natural is warranted — the line genuinely needs both a
 Lorentzian and a Gaussian component), and **C→D $\approx -100$** — *the free
 AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design

@@ -147,7 +147,7 @@ repository, full pytest battery + CI); §0's pipeline ingests fixed-lock data
 re-derivation — only shots. What the **archive alone** already supports is
 **P1-min**: the drift-immune moment/bounds framework, the self-calibrating EOM
 ruler, the identifiability and coverage analyses, and the computed 5S–6S
-dynamic polarizabilities and magic wavelengths (`PAPER1_SKELETON.md` §0).
+dynamic polarizabilities and magic wavelengths (`THEORY_NOTE.md` §5).
 That is a self-contained result — the core deliverable and a methods
 paper — and it depends on **no** further data being taken. A fixed-lock
 session is therefore an *upgrade*, not a prerequisite: it converts the named

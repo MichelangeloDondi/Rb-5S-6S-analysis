@@ -53,14 +53,30 @@ FLAGS
 * ``quarantined`` — see above
 * ``review``      — did not match any known naming pattern; needs a human
 
-CHRONOLOGY ENCODING (from the experimenter, 2026-07-11)
--------------------------------------------------------
-Per peak, the power session ran: before-rulers -> 25 -> 75 -> 125 -> 175 ->
-225 mW -> after-rulers, all at 130 °C. Then the temperature session cooled
-stepwise 110 -> 90 -> 70 °C. We encode ``session`` ('P' or 'T') and
-``block_seq`` (before=0, powers=1..5, after=6; T: 110=1, 90=2, 70=3).
-Repeat indices are chronological within a block (a few swaps possible).
-The order of the four peaks within a session is not recorded (OPEN).
+CHRONOLOGY ENCODING
+-------------------
+``session`` ('P' or 'T') and ``block_seq`` label the CONDITION LADDER:
+before=0, powers=1..5 by ASCENDING POWER, after=6; T: 110=1, 90=2, 70=3.
+
+*** block_seq IS NOT AN ACQUISITION ORDER (corrected 2026-07-23). *** It was
+assigned in 2026-07-11 from a recollection that the power session ran
+25 -> 225 mW. The recovered acquisition timestamps prove the ladder ran
+DESCENDING -- before-rulers -> 225 -> 175 -> 125 -> 75 -> 25 mW ->
+after-rulers -- so for the power session block_seq counts BACKWARDS in time
+(block_seq 5 = 225 mW ran FIRST). The values are deliberately left as they
+are: they are a stable join key, the manifest's md5s are computed over them,
+and no analysis consumes block_seq as a time proxy (verified: it appears only
+here and in run_timestamp_audit.py, which keys blocks by it without ordering
+them). Anything that DOES need acquisition order must take it from the
+recovered timestamps -- docs/PREREGISTRATION_RESULTS.md.
+
+The temperature session's 110 -> 90 -> 70 ordering IS the true time order
+(audit prediction P3, PASS).
+
+Repeat indices are chronological within a block (audit P5: repeats a median
+8 s apart, vs 383 s between blocks). The order of the four peaks within the
+power session, previously OPEN, is now known from the timestamps:
+4192 -> 4207 -> 4154 -> 4121, overnight 17->18 July 2025 JST.
 
 Usage:  python scripts/import_data.py          (reads rb5s6s.config paths)
 """

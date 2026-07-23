@@ -111,6 +111,8 @@ SKEW_DOCS = ["docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_no_unretracted_x64_skew_claim(relpath):
+    if not (ROOT / relpath).exists():
+        pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     bad = []
     for i, line in enumerate((ROOT / relpath).read_text(encoding="utf-8")
                              .split("\n"), 1):
@@ -125,6 +127,8 @@ def test_no_unretracted_x64_skew_claim(relpath):
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_sign_flip_claims_carry_the_condition(relpath):
+    if not (ROOT / relpath).exists():
+        pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     """Any document asserting the g1 sign flip must say, somewhere, that it
     depends on the (unmeasured) collection geometry."""
     txt = (ROOT / relpath).read_text(encoding="utf-8")
@@ -239,6 +243,8 @@ def test_shortpass_only_ever_attributed_to_others():
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_no_naive_s0cubed_measurability_claim(relpath):
+    if not (ROOT / relpath).exists():
+        pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     """The x64 sweep keyed on the literal number and so missed the same claim
     written as "the small waist makes the propto S_0^3 skew a detection".
 

@@ -218,8 +218,7 @@ step). Physical reading: the archive's width data are already sensitive at the
 scale of the predicted coefficient (0.59 MHz at the 50 µm prior); anything much
 above the prediction is excluded, while the prediction itself and zero remain
 allowed. The superseded Wald rows stay in `stark_sweep.csv` as labelled
-diagnostics. Downstream, the $\Delta\alpha$ bracket tightens $\sim5800 \to
-\sim1200$ a.u. (~1.1× the computed 1093), still $w_0$-conditional.
+diagnostics. Downstream, the $\Delta\alpha$ bracket tightens $\sim5800 \to \sim1200$ a.u. (~1.1× the computed 1093), still $w_0$-conditional.
 
 **Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
 ground rule in `PLAN.md` (old *code* is never read; old *outputs* serve only as

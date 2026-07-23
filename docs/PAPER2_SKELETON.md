@@ -191,7 +191,7 @@ atoms.
   longitudinal-field limit on the circular null.
 - [`gokhroo2022`](lit/gokhroo2022.md) — the observed pushing dip this paper models (title "light
   fields"; DOI 10.1088/1361-6455/ac6bd4).
-- Paper 1 (`PAPER1_SKELETON.md`, `THEORY_NOTE.md`) — the method, the ramp
+- Paper 1 (`THEORY_NOTE.md`, `methods.md`) — the method, the ramp
   formalism, and the cell reference.
 
 *Cross-refs: `PLAN.md` §8.1.2 (why the

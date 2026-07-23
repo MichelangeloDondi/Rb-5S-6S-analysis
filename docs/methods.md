@@ -20,7 +20,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3
 > power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level. A
 > manuscript scaffold with drafted sections is in
-> [`docs/PAPER1_SKELETON.md`](PAPER1_SKELETON.md). Prose results in §5; the auto-generated
+> [`docs/RESULTS.md`](RESULTS.md). Prose results in §5; the auto-generated
 > single-source-of-truth table is [`docs/RESULTS.md`](RESULTS.md); the
 > prior-art delineation and collision-rate calibration are in
 > [`docs/LITERATURE.md`](LITERATURE.md); what a fixed-lock session would lift is in §7.
@@ -144,7 +144,7 @@ tests/    229-test battery (207 fast ~35 s + 22 `slow` high-statistics
           CI runs the full set on numpy-minimum AND latest
 docs/     PLAN.md (plan of record) · DATA.md (archive provenance) · RESULTS.md (auto-generated ledger)
           · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
-          · PAPER1_SKELETON.md (manuscript scaffold)
+          · APPARATUS.md (hardware of record)
 results/  committed CSVs (the documented run) + results/README.md
 figures/  paper figures from make_figures.py (C1 width-vs-density, C3 power
           sweep, M9 transit degeneracy, M10 area ratios, C1 pooled-width money
