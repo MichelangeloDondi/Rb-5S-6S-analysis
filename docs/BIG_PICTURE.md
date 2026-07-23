@@ -92,7 +92,8 @@ as a bound. Concretely:
   ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95%, with the low-degrees-of-freedom scatter
   and the vapour-pressure density scale both propagated). Showing that the
   two-epoch design was *required* is reported as a Paper-1 result.
-- **The ramp's power laws are confirmed** (width flat, amplitude ∝ P²), the
+- **The ramp's power laws hold** (width: no power trend, a null under 3–8%
+  block scatter; amplitude: consistent with P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md)), and the drift-immune skew observable is
   derived and bounded; detecting it requires a tighter focus. The premise

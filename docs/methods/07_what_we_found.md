@@ -54,8 +54,8 @@ So the conservative model-independent bound, not this value, stays the headline.
 Its real value is the isotope test, and the validation (M4c, §sharing test) that
 the four peaks at each temperature agree on a single $\sigma_\text{laser}$
 (χ²/dof < 1) — so the per-temperature sharing is licensed. The fit's
-$\sigma_\text{laser}(T)\approx2.1/2.2/1.6$ MHz is **not** a clean drift curve,
-though: the free per-condition fit gives a *flat* $\sim$1.7 MHz, so that trend
+$\sigma_\text{laser}(T)\approx1.5/1.6/1.1$ MHz is **not** a clean drift curve,
+though: the free per-condition fit gives a *flat* $1.0$–$1.25$ MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density
 tie, not a physical laser drift — the 110 °C dip is a model artifact, not a
 stale block (and it does not corrupt $\beta$, which the density lever still
@@ -84,7 +84,7 @@ can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
 A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
 ONF starting linewidth for Paper 2.
 
-**The power sweep, recast as confirmed predictions (deliverable C3).** At fixed
+**The power sweep, tested against the ramp law's predictions (deliverable C3).** At fixed
 130 °C only the AC-Stark $S_0$ varies, so the ramp law ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) predicts, and the
 data confirm: (C3a) the linewidth is **flat** — no monotonic power broadening,
 with 3–8% block scatter that is the same between-block wander seen elsewhere;
@@ -104,8 +104,9 @@ and *falls* with amplitude as $\sim$amp$^{-0.5}$. That is the Poisson
 vanishing as the line brightens) — a statistical artifact with the *opposite*
 sign and power dependence to the ramp, not a physical asymmetry. So the ramp is
 the genuine null; the significant low-power skew is identified, not unexplained.
-The old "power null" is thus a suite of confirmed predictions — with the
-residual skew attributed to shot noise rather than reported as zero.
+The old "power null" thus resolves into a typed suite — a null (width), a
+consistency check ($P^2$), a bound (skew) — with the residual skew attributed
+to shot noise rather than reported as zero.
 
 (C3d) the same width-vs-power data **bound the AC-Stark coefficient itself**
 (module M4e, `run_stark_sweep`): one shared $\kappa$ ($S_0=\kappa P$) fit to the
@@ -203,7 +204,7 @@ the four peaks **interleaved**, with power logging.
 
 **Foundational results underpinning all of the above.** The sweep rate is
 $0.04257(5)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
-seed, confirmed by three independent methods, sweep linear to $<0.4$% within a
+seed, confirmed by three independent methods, sweep linear to $<0.45$% within a
 block. The 20 blocks over-disperse ($\chi^2_\text{red}=6.8$) — block-level
 ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),
 **not** a peak-ordered trend (bracket-resolved rates are non-monotonic) — and

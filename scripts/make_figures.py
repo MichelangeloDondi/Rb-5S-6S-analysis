@@ -262,7 +262,7 @@ def fig_pooled_width():
             label="free per-condition (4 peaks agree)")
     a2.set_xlabel("temperature (°C)")
     a2.set_ylabel(r"$\sigma_\mathrm{laser}$ (MHz, transition)")
-    a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.7,\n"
+    a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.1,\n"
                  "4 peaks agree ⇒ sharing validated, M4c); the tied fit's drop is\n"
                  "the β↔σ_laser degeneracy, not a physical laser drift", fontsize=8)
     a2.legend(fontsize=7.5)

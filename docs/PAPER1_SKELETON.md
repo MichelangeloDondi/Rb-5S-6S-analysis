@@ -223,7 +223,7 @@ the archival brackets into measurements, so several sections are written as
   the $\sigma_\text{laser}(T)$ trend is the $\beta\leftrightarrow\sigma_\text{laser}$
   degeneracy, not physical drift. A baseline for the ONF/Paper-2 work.
 
-### VI.C Power sweep — the ramp-law predictions confirmed — Fig. 2
+### VI.C Power sweep — tested against the ramp-law predictions — Fig. 2
 
 > **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
 
@@ -235,7 +235,8 @@ the archival brackets into measurements, so several sections are written as
   1.83–2.12; 4121 low end = saturation-vs-trapping degeneracy, say "consistent with").
   **C3c** asymmetry below the archival floor — a bound; the large low-power residual
   skew is **shot noise** (∝amp$^{-0.5}$), identified, opposite sign+scaling to the
-  ramp. The old "power null" recast as *confirmed prediction*.
+  ramp. The old "power null" resolves into a typed suite: a null (width), a
+  consistency check ($P^2$), and a bound (skew).
 
 ### VI.D AC-Stark coefficient — a bound from the power lever — (Fig. 2 inset / new panel)
 
@@ -290,7 +291,7 @@ states the predictions as future work (P1-min) or is dropped.*
 ## VIII. Conclusion
 
 - What the archive delivers (bounds on β and $\sigma_\text{laser}$;
-  confirmed ramp power laws; an $S_0$ bracket; a validated method and systematics
+  ramp power laws holding (a null + a consistency check); an $S_0$ bracket; a validated method and systematics
   catalogue) vs what needs the fixed lock. The two-epoch design as a transferable
   template for metrology in drifting systems. Bridge to the nanofibre lineshape
   (Paper 2).
@@ -313,7 +314,7 @@ states the predictions as future work (P1-min) or is dropped.*
 | # | file | section | one-line role |
 |---|---|---|---|
 | 1 | `fig1_width_vs_density.png` | VI.A | per-peak width vs density (the raw non-monotonicity) |
-| 2 | `fig2_power_sweep.png` | VI.C | width flat / amp ∝P² |
+| 2 | `fig2_power_sweep.png` | VI.C | width: no power trend / amp ∝P² |
 | 3 | `fig3_transit_mc.png` | VI.E | transit-broadening MC vs $w_0$ |
 | 4 | `fig4_amplitude_ratios.png` | VI.E | degeneracy-law area ratios (drift-limited) |
 | 5 | `fig5_pooled_width.png` | VI.A/B | pooled width vs density + $\sigma_\text{laser}(T)$ companion |

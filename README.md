@@ -108,7 +108,7 @@ so each is reported as a bound together with the measurement that would lift it.
 | Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points |
 | 2025 laser linewidth **σ_laser** | ≈ 0.8 MHz at the w₀ prior (0.4–1.1 over the open w₀) | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
-| Power scaling | width flat; amplitude ∝ P² | confirmed prediction | — |
+| Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | ≈ 50 µm (prior; Nieddu 2019 measured 64 µm directly on the same-lineage apparatus) | open | beam-profile measurement |
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
