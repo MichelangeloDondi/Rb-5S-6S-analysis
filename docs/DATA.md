@@ -57,7 +57,13 @@ audit's post-hoc pass found the disagreement; per the pre-registration's §6,
 the clock wins and the reversal is reported, not reconciled
 ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)).** After the whole power
 session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
-with its own 5-repeat RF-off block and its own ruler block. Repeats were
+with its own 5-repeat RF-off block and its own ruler block. (The campaign
+had a prehistory, surfaced 2026-07-24 and kept outside the frozen archive:
+EOM first trials 2025-07-04 03:37 JST; a 50-trace LeCroy dress rehearsal
+that evening — four peaks, 90/180/270 mW, `G=10^6`, two-zone temperature
+notation; then on the campaign morning the ruler's final commissioning
+04:18–06:33, `Initial attempts` → `Def`, and a four-power pilot sweep at
+91 °C, 06:54–07:11; results report addendum 9.) Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
 knob and manually recentered the cavity reference **many times** — not
@@ -135,7 +141,11 @@ byte-exact:
    799 in the analysed copy). Substituting it shifts this condition's
    γ_coll by 0.07σ and the peak's β_self slope by 0.03σ, so the handling
    below is adequate and nothing was re-issued; see
-   [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 2** —
+   [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 2.
+   The full degradation lineage — acquisition 2025-07-17, degraded
+   re-export 2025-08-16 (post-campaign processing), analysed bytes = the
+   2025-08-16 22:15 intermediate modulo line endings — closed with a second
+   source folder on 2026-07-24 (addendum 8)** —
    (stray header `jj,nj`; time column printed at 3 significant figures so
    0.5 ms steps alias to duplicate timestamps) whose *content* is healthy —
    the loader rebuilds its time axis from the row index and records the

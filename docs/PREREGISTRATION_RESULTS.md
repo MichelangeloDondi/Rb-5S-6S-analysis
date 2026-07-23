@@ -679,3 +679,136 @@ now says so.
 *Post-hoc; audit prompted by the experimenter's question, 2026-07-23.
 `run_drift_settling.py` carries the mixture stage as the headline; the
 Gaussian number is kept, labelled as the biased intermediate it was.*
+
+
+## Addendum 8, 2026-07-24 — a second source folder closes the last absence
+
+The experimenter added a folder, `RawData2`, to the Desktop backup on the
+evening of 2026-07-23 (after the main quarantine was frozen; it has its own
+read-only quarantine copy, `RawData2_QUARANTINE_2026-07-24`, hash- and
+mtime-verified). Six files, all at the one condition this report has chased
+since addendum 2 — and they close it.
+
+| file (RawData2) | mtime | identity |
+|---|---|---|
+| `4192nm_225mw2…5.csv` | 2025-07-17 23:47:42–23:48:02 JST | byte-identical to the repo's canonical block; acquisition mtimes match the audit exactly |
+| `4192nm_225mw1copy.csv` | 2025-08-16 18:51 CEST | byte-identical to the main backup's degraded copy |
+| `4192nm_225mw1.csv` | 2025-08-16 22:15 CEST | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after CRLF→LF** |
+
+**The T1 audit's one genuine absence is resolved.** The analysed
+`p_sweep/4192nm_225mw1.csv` — whose bytes the main backup never contained —
+now has a complete, dated lineage:
+
+1. **2025-07-17 23:47:38 JST** — pristine acquisition (53.8 kB, uniform time
+   axis; preserved in the main backup — addendum 2's find).
+2. **2025-08-16 18:51 CEST** — a degraded, headerless re-export
+   (`…copy.csv`, 39.5 kB, time axis at reduced precision → the 799 duplicate
+   timestamps). This is the degradation event, and it is post-campaign
+   processing: the same evening as the stray `Julia.code-workspace` in the
+   backup root.
+3. **2025-08-16 22:15 CEST** — the `jj,nj` header restored (RawData2's
+   unique file, CRLF line endings).
+4. **≤ 2025-08-23 22:05 CEST** — CRLF→LF, and mass-copied into the analysis
+   dataset: the repo's working-tree mtimes carry the bulk stamp
+   2025-08-23 22:05:18 across `p_sweep/` and `t_sweep/` (rulers
+   2025-10-05) — a bonus provenance fact: **the analysed dataset was
+   assembled on 2025-08-23, rulers added 2025-10-05**, which dates the
+   post-campaign analysis epoch itself.
+
+Every byte in the analysed archive now has a documented ancestor and a date.
+No number moves: addendum 2 already measured the degradation's effect by
+substituting the pristine original (+0.07σ on the condition's γ_coll,
++0.03σ on the β_self slope), and the new file *is* the analysed bytes modulo
+line endings — there is nothing to re-fit.
+
+*Names in the table refer to RawData2 / its quarantine, identified by hash —
+the standing collision warning applies. The main quarantine remains frozen
+as found; RawData2 is quarantined separately because it surfaced after that
+freeze.*
+
+
+## Addendum 9, 2026-07-24 — the backup grows: a dated duplicate, the pilot, and the program's prehistory
+
+Two more folders surfaced in the Desktop backup overnight (experimenter,
+2026-07-23/24). One is closure, the other is a prequel.
+
+**`2025-07-17/` is the main backup, reorganised**: 325 files, 325
+content-identical to the frozen quarantine, zero new. It needs no quarantine
+of its own; recorded here so nobody re-audits it.
+
+**`2025-07-16/` is a pilot session nobody's documentation mentioned** — 53
+files, every one content-unique against the archive, the main backup and
+RawData2 (read-only copy: `RawDataPilot_QUARANTINE_2026-07-24`). In
+campaign-local time it is the morning *before* the campaign, and its
+timestamps read like a lab notebook:
+
+| JST (2025-07-17) | what | files |
+|---|---|---|
+| 04:18–04:24 | EOM ruler, `Initial attempts` (`eom_n*`, `eom_hr*`) | 10 |
+| 06:20–06:23 | ruler, adjusted (`*_adj`) | 7 |
+| 06:27–06:33 | **ruler, `Def`** — the configuration is frozen | 10 |
+| 06:54–07:11 | **pilot power sweep, 4192 nm @ 91 °C** (order 210→035→070→105 mW) | 26 |
+
+The frequency ruler this whole analysis stands on was commissioned in about
+two hours, and its definitive form was bracketing real data twenty-one
+minutes later. The main campaign began 23:47 JST the same day.
+
+**Quick QC on the 26 pilot science traces** (descriptive; nothing enters
+`results/`):
+
+| power | n | median SNR | FWHM | height |
+|---|---|---|---|---|
+| 035 mW | 8 | 61 | 60.5 ms | 0.124 V |
+| 070 mW | 6 | 128 | 61.5 ms | 0.487 V |
+| 105 mW | 6 | 161 | 61.0 ms | 1.064 V |
+| 210 mW | 6 | 208 | 60.5 ms | 4.215 V |
+
+Two echoes of the archival results, from data the archive never saw: the
+**width is flat across a 6× power span** (the C3 power-null, in pilot form)
+and sits at ~61 ms — the campaign's own 90 °C width — across a day and a
+re-preparation; and the **amplitudes follow P²** (×34 measured vs ×36
+predicted over the full span). The pilot rulers were exported with a
+different scope template (`x-axis,1,2`, two-channel) that the archive loader
+does not read — a format fact, flagged for any future use.
+
+**And then the excavation reached the program's prehistory** (folders
+`2025-07-03` and `2025-07-04`, added the same night; read-only copy
+`RawDataPrehistory_QUARANTINE_2026-07-24`, 54 files, all content-unique):
+
+- **2025-07-04, 03:37–03:43 JST — the EOM ruler's first trials.** Four
+  scans at 4192 nm / 80 °C / 0.80 A, verbose filenames
+  (`EOM, 993.4192 [nm], T 80 [C], A 0.80 [A], normal 1`), thirteen days
+  before the `Initial attempts` folder. The July-17 "commissioning" was the
+  *final* commissioning.
+- **2025-07-04→05, 22:31–01:38 JST — a fifty-trace dress rehearsal**: four
+  peaks × 90/180/270 mW (ten of twelve cells, five repeats each) at
+  `T=130C(90C-0.65A)`, gain annotated `G=10^6` — the only known record of
+  the PMT gain, anywhere. **Taken on a LeCroy WaveSurfer 3104z** (native
+  header `LECROYWS3104z`, 500 001-point segments, ~9.6 MB per trace,
+  unreadable to the archive loader) — **not** the archive's Keysight: the
+  LeCroy recollection that `APPARATUS.md` had to correct for the campaign
+  was not confabulation, it was the rehearsal epoch, and both attributions
+  now stand with instrument-native evidence.
+- **An open notation question for the experimenter**: the rehearsal names
+  carry a two-zone temperature, `130C(90C-0.65A)`, and the pilot's `650ma`
+  matches the `0.65A`. If the parenthetical is a reservoir / cold-point
+  setpoint, it is the first numeric record of the cell's two-zone thermal
+  configuration — and the density systematic (`N(T)`, the β_self lever)
+  cares which zone the campaign's quoted temperatures refer to.
+
+The program's full arc, now dated: EOM first light (Jul 4, 03:37 JST) →
+LeCroy dress rehearsal that evening → ruler finalisation + 91 °C pilot
+(Jul 17 morning) → **the campaign** (Jul 17 23:47 → Jul 18 20:26 JST) →
+analysis epoch (Aug 16 degradation event, Aug 23 assembly, Oct 5 rulers).
+The frozen archive was take four.
+
+**Standing**: pilot and prehistory are *outside the frozen archive* —
+different days, different or partly different hardware, alignment not
+guaranteed. They move no number. Their value is provenance (the ruler's
+history, the gain record, the two-zone notation, the LeCroy closure),
+corroboration (the pilot echoes the width-flatness and P² laws), and
+candidacy for labelled exploratory use only — never silent inclusion.
+
+*All identities by content hash. Quarantines: main (frozen 2026-07-23),
+RawData2, Pilot, and Prehistory (2026-07-24), each read-only; the Desktop
+originals untouched.*
