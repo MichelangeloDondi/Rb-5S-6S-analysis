@@ -47,9 +47,15 @@ untestable without a clock.
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
 > predictions are taken verbatim from the text below.
 
-Per peak, in time order, all at 130 °C: **before-rulers → 25 → 75 → 125 →
-175 → 225 mW → after-rulers** (each power = 5 back-to-back RF-off repeats;
-each ruler block = ~5 back-to-back RF-on repeats). After the whole power
+Per peak, in time order, all at 130 °C: **before-rulers → 225 → 175 → 125 →
+75 → 25 mW → after-rulers** (each power = 5 back-to-back RF-off repeats; each
+ruler block = ~5 back-to-back RF-on repeats). **Corrected 2026-07-23 from the
+recovered timestamps: the ladder ran DESCENDING on all four peaks (order
+4192 → 4207 → 4154 → 4121, 23:41 → 05:00 JST overnight 17→18 July); the
+original recollection here said ascending — remembered exactly reversed. The
+audit's post-hoc pass found the disagreement; per the pre-registration's §6,
+the clock wins and the reversal is reported, not reconciled
+([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)).** After the whole power
 session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
 with its own 5-repeat RF-off block and its own ruler block. Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈

@@ -56,9 +56,9 @@ P7_PAIRS = [
 ]
 
 # The 8 step-like blocks (run_intrablock_trend.py) -- POST-HOC section only.
-STEP_BLOCKS = [("p_sweep", "4121", "130", "25.0"), ("p_sweep", "4192", "130", "125.0"),
-               ("p_sweep", "4207", "130", "25.0"), ("p_sweep", "4207", "130", "175.0"),
-               ("p_sweep", "4207", "130", "225.0"), ("t_sweep", "4121", "70", ""),
+STEP_BLOCKS = [("p_sweep", "4121", "130", "25"), ("p_sweep", "4192", "130", "125"),
+               ("p_sweep", "4207", "130", "25"), ("p_sweep", "4207", "130", "175"),
+               ("p_sweep", "4207", "130", "225"), ("t_sweep", "4121", "70", ""),
                ("t_sweep", "4192", "70", ""), ("t_sweep", "4192", "110", "")]
 
 
@@ -93,6 +93,15 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--backup", required=True, type=Path)
     ap.add_argument("--report", type=Path, default=None)
+    ap.add_argument("--posthoc-content-match", action="store_true",
+                    help="POST-HOC mode, no pre-registered standing: match "
+                         "manifest rows to backup files by MD5 content rather "
+                         "than name, score predictions even if some rows are "
+                         "absent (absences reported). The pre-registered run "
+                         "is name-matched and voids on T1; this mode exists "
+                         "because that run found the backup to be a superset "
+                         "with naming drift, and its output must always be "
+                         "labelled post-hoc.")
     args = ap.parse_args()
 
     L: list[str] = []
@@ -100,7 +109,11 @@ def main() -> int:
     rows = load_manifest()
     by_name = index_backup(args.backup)
 
-    W("# Timestamp-audit report (pre-registered)")
+    if args.posthoc_content_match:
+        W("# Timestamp audit — POST-HOC content-matched pass "
+          "(NO pre-registered standing)")
+    else:
+        W("# Timestamp-audit report (pre-registered)")
     W("")
     W(f"Backup (quarantine copy): `{args.backup}`  ·  manifest rows: {len(rows)}")
     W(f"Backup files seen: {sum(len(v) for v in by_name.values())} "
@@ -110,12 +123,20 @@ def main() -> int:
     # ---- match manifest rows to backup files via source_paths basenames ----
     matched: dict[str, dict] = {}          # canonical file -> info
     missing: list[str] = []
+    by_md5: dict[str, list[Path]] = defaultdict(list)
+    if args.posthoc_content_match:
+        for ps in by_name.values():
+            for p in ps:
+                by_md5[md5(p)].append(p)
     for r in rows:
         cands: list[Path] = []
-        for sp in (r.get("source_paths") or "").split("|"):
-            if sp:
-                cands += by_name.get(Path(sp).name, [])
-        cands += by_name.get(Path(r["file"]).name, [])
+        if args.posthoc_content_match:
+            cands = list(by_md5.get(r["md5"], []))
+        else:
+            for sp in (r.get("source_paths") or "").split("|"):
+                if sp:
+                    cands += by_name.get(Path(sp).name, [])
+            cands += by_name.get(Path(r["file"]).name, [])
         if not cands:
             missing.append(r["file"])
             continue
@@ -177,6 +198,12 @@ def main() -> int:
     W("")
 
     void = t1 == "FAIL" or t2 == "FAIL" or t3 == "FAIL"
+    if void and args.posthoc_content_match and t2 != "FAIL" and t3 != "FAIL":
+        W(f"*POST-HOC MODE: scoring proceeds despite {len(missing)} absent "
+          f"row(s) (listed above and excluded); these verdicts carry no "
+          f"pre-registered standing.*")
+        W("")
+        void = False
     if void:
         W("**INTEGRITY VOID — predictions deliberately not scored (per the "
           "gate table). This is the honest stop.**")
