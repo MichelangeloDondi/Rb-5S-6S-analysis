@@ -206,7 +206,7 @@ def main() -> int:
         void = False
     if void:
         W("**INTEGRITY VOID — predictions deliberately not scored (per the "
-          "gate table). This is the honest stop.**")
+          "gate table).**")
         text = "\n".join(L) + "\n"
         print(text)
         if args.report:

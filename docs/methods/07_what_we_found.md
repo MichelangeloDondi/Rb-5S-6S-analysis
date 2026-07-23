@@ -51,9 +51,12 @@ and — **largest of the four** — the $w_0$-band
 $[0.025,0.065]$ (a factor ${\sim}2.5$, since every absolute $\beta$ rides on the
 OPEN beam waist). The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
-Its real value is the isotope test, and the validation (M4c, §sharing test) that
-the four peaks at each temperature agree on a single $\sigma_\text{laser}$
-(χ²/dof < 1) — so the per-temperature sharing is licensed. The fit's
+Its real value is the isotope test, and the in-sample consistency check (M4c,
+§sharing test) that the four peaks at each temperature agree on a single
+$\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.19/0.58/0.33, all
+well below 1, so the peak-blocks are closer to the shared model than their own
+error bars — the test cannot discriminate and does not license the sharing, it
+merely fails to contradict it (RESULTS §σ_laser sharing). The fit's
 $\sigma_\text{laser}(T)\approx1.5/1.6/1.1$ MHz is **not** a clean drift curve,
 though: the free per-condition fit gives a *flat* $1.0$–$1.25$ MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density

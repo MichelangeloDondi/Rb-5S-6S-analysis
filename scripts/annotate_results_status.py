@@ -53,7 +53,7 @@ FILE_STATUS = {
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in archive
     "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
-    "power_sweep.csv": "MEASURED",        # fwhm-flat + amp~P^2 confirm the ramp law (resid_skew=ARTIFACT, RESULTS C3c)
+    "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",

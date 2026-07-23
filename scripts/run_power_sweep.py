@@ -5,7 +5,8 @@ M6: the power sweep as a CONFIRMED PREDICTION (paper deliverable C3).
 At fixed 130 C the density, transit and (within the power session) laser width
 are all constant; ONLY the AC-Stark shift S0 changes with power P. The
 intensity-averaging "ramp law" (README section 2.6) then predicts three things
-for the 25 -> 225 mW sweep:
+for the 25-225 mW sweep (acquired 225 -> 25 mW; direction is irrelevant to
+these three predictions, which are functions of P, not of time):
 
   (C3a) LINEWIDTH nearly FLAT: the triangular ramp of on-axis width S0
         convolved into a ~5 MHz line inflates the FWHM by <~2% across the

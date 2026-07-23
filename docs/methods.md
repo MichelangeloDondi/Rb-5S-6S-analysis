@@ -111,7 +111,7 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 | **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code — and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, and the pre-registered measurement-vs-bound rule |
-| **7** | [What we found](methods/07_what_we_found.md) | the 2025 archive's results: the bounds, the nulls, and the confirmed predictions |
+| **7** | [What we found](methods/07_what_we_found.md) | the 2025 archive's results: the bounds, the nulls, and the consistency checks |
 | **8** | [Assumptions, and where this can go](methods/08_assumptions_and_outlook.md) | the load-bearing assumptions to challenge, and what a fixed-lock session would lift |
 
 For the project's goals, the prior art, and what each future measurement would

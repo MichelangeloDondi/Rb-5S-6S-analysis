@@ -24,7 +24,7 @@ Delineation (what is genuinely not in Stalnaker/Wieman):
 | Regime | **fringe-resolved**: FM index ξ/Ω ≳ 1, Bessel sidebands, sub-Doppler features | **fringe-averaged**: ξ/Ω ~ 10⁻³, atoms see the time-averaged envelope |
 | Lineshape | numerical Bloch, per-condition | **closed-form** shift density f(s) ∝ \|s\| on [−S₀,0] |
 | Extraction | full-shape fit; needs β, cavity field, velocity model, per-scan free center | **closed-form ramp** fit with a per-trace free center; the ramp SHIFT is absorbed by the free center, so S₀ is read from the drift-invariant SHAPE ASYMMETRY (skew) — the stable-lock pull is the fixed-lock session's separate, larger handle |
-| Saturation | saturating + hole-burning entangled with the asymmetry | unsaturated throughout (C3: amplitude ∝ P² confirmed) |
+| Saturation | saturating + hole-burning entangled with the asymmetry | unsaturated throughout (C3: amplitude consistent with ∝ P², slopes 1.83–2.12) |
 
 The generic quasi-static law both regimes reduce to: signal weight ∝ Iⁿ over
 a Gaussian envelope gives dA ∝ dI/I, hence **f(s) ∝ |s|^(n−1)** — uniform
@@ -171,7 +171,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
   confirms the phenomenon while missing the asymmetry. REPORTED (2026-07-12);
   pull full text — a referee-critical citation.
 - **Fendel/Udem/Hänsch, Opt. Lett. 32, 701 (2007)** (Cs 6S–8S comb):
-  ac-Stark determined by average not peak intensity; power-to-zero
+  AC-Stark determined by average not peak intensity; power-to-zero
   extrapolation mindset. REPORTED.
 - **Cs 6S–6D (2018)**: 40 µm waist → significant transit broadening.
   Cross-check vs our M9: scaling by v/w₀ (Cs ~200 m/s @40 µm vs Rb ~280 m/s
@@ -358,9 +358,9 @@ energy work, *J. Phys. B*-era, VERIFY vol/year via Ayachitula's ref list) report
 The **novelty to claim** is the *inversion* of lineshape asymmetry from a nuisance
 into a reference-free estimator:
 - **`wieman1987`** — Wieman, Noecker, Masterson, Cooper, *PRL* **58**, 1738 (1987):
-  ac-Stark lineshape asymmetry in standing waves, the foundational precedent
+  AC-Stark lineshape asymmetry in standing waves, the foundational precedent
   (treated as a distortion). **[CITE]**
-- [antypas2018](lit/antypas2018.md) — the ac-Stark-asymmetry elimination
+- [antypas2018](lit/antypas2018.md) — the AC-Stark-asymmetry elimination
   precedent (Yb) our method inverts. **[CITE]**
 - **`bevilacqua2012`** — *PRA* **86**, 012501 (2012): Gaussian-beam transit-time
   two-photon gives a Voigt whose width is set solely by w₀ (curvature broadening
@@ -370,7 +370,7 @@ into a reference-free estimator:
 suppression; our passive method is the differentiator).** [FEED/CITE for §VI.D/§VII
 contrast and for the future Paper A.]
 - [andeweg2026](lit/andeweg2026.md) — Andeweg, Kitching, Hummon (NIST): the
-  newest competitor method, active **power-modulation** ac-Stark suppression
+  newest competitor method, active **power-modulation** AC-Stark suppression
   (×1000); contrast our passive approach against it.
 - [ahern2025](lit/ahern2025.md) — Ahern et al. (Adelaide): two-color 5S–5D
   standard, 6×10⁻¹⁴/√τ, light-shift-limited.

@@ -80,7 +80,7 @@ not constraining; the 70–130 °C lever can't reach it → the fixed-lock sessi
 Lehmann's saturated-field treatment (his §II) gives the two-photon lineshape
 *with* an AC-Stark shift in dimensionless reduced units (reduced Rabi
 $\Omega'=\sqrt{\pi/2}\cdot w\Omega_{2p}/v$, reduced shift $\beta=\Delta\omega_{fg}/\Omega_{2p}$).
-the small-waist runs are exactly this regime (high intensity, non-negligible
+The small-waist runs are exactly this regime (high intensity, non-negligible
 S₀). His reduced-unit lineshape + the numerical integration of
 $d\vec r/dt=-\vec\Omega\times\vec r$ is a validated forward model to fit the fixed-lock session's
 Stark data against — worth adopting rather than re-deriving. (Also: his 2nd-order

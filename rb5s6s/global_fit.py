@@ -13,8 +13,10 @@ between-block laser width DRIFTS across the 2025 cooling session:
     MEASURED rather than mistaken for collisions). NOT shared across T --
     that global-sharing is exactly what made the M4 global fit overconfident.
     [For a stable lock, share sigma_laser globally instead.]
-    ASSUMPTION (cannot be fully verified -- NO timestamps
-    exist in the archive): per-T sharing is valid only if the 4 peaks at a
+    ASSUMPTION (not verifiable from the analysed exports, which carry no
+    acquisition time; a recovered backup's timestamps exist but the
+    pre-registered audit voided at content identity -- see
+    docs/PREREGISTRATION_RESULTS.md): per-T sharing is valid only if the 4 peaks at a
     given T were acquired close enough in time that the laser did not drift
     between them. If they were minutes apart at ~4 MHz/min drift, forcing one
     sigma_laser(T) reintroduces the very overconfidence the cross-T split
