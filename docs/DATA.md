@@ -121,7 +121,8 @@ byte-exact:
    is additionally run on them as a consistency check on the curation
    (reported in an appendix). **Since 2026-07-23 that check is quantitative
    and no longer rests on timing alone:** these four, plus sixteen further
-   discarded acquisitions that survive only in the recovered backup, sit
+   discarded acquisitions recovered from the backup (published under
+   `data_recovered/discarded_backup/` since 2026-07-24), sit
    inside their conditions' kept spread in linewidth — the quantity the fits
    use — with one boundary case smaller than the width metric's own
    quantisation
