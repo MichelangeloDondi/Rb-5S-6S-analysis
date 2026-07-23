@@ -12,7 +12,7 @@ From the 2025 archival data:
 
 Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
-**Which papers this produces under which sessions (a fixed-lock cell session × ONF × the Ti:Sapph 5D/7S extension) is mapped in `docs/PAPERS_PORTFOLIO.md`** — the archive alone is P1-min (method + bounds = the thesis core); a fixed-lock session would give P1-full (measured coefficients); ONF would give Paper 2; a 5D/7S session would give Papers A/B/C (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
+**What this produces**: the archive alone yields the method + bounds (the thesis core); a fixed-lock session would upgrade the bounds to measured coefficients; an ONF campaign would extend the method to the nanofibre line (`PAPER2_SKELETON.md`); a 5D/7S session would extend it up the ladder (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
 
 ## 1. Ground rules
 
@@ -147,7 +147,7 @@ repository, full pytest battery + CI); §0's pipeline ingests fixed-lock data
 re-derivation — only shots. What the **archive alone** already supports is
 **P1-min**: the drift-immune moment/bounds framework, the self-calibrating EOM
 ruler, the identifiability and coverage analyses, and the computed 5S–6S
-dynamic polarizabilities and magic wavelengths (`PAPERS_PORTFOLIO.md`, §0).
+dynamic polarizabilities and magic wavelengths (`PAPER1_SKELETON.md` §0).
 That is a self-contained result — the thesis core and a methods
 paper — and it depends on **no** further data being taken. A fixed-lock
 session is therefore an *upgrade*, not a prerequisite: it converts the named

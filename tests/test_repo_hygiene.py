@@ -44,7 +44,11 @@ def _tracked(*globs: str) -> list[str]:
 # 1. Private material must never be tracked
 # --------------------------------------------------------------------------
 PRIVATE_GLOBS = ["docs/brief_*", "docs/*audit*", "docs/*red_team*",
-                 "docs/CV_*", "docs/*inquiry*", "docs/linkedin*", "*.docx"]
+                 "docs/CV_*", "docs/*inquiry*", "docs/linkedin*", "*.docx",
+                 # publication-strategy planning: process, unpublished
+                 # 2026-07-23 (Sile/Brion/Lan would read plans about their
+                 # own labs/roles that were never agreed with them)
+                 "docs/PAPERS_PORTFOLIO.md"]
 # docs/reference_setup/ is deliberately NOT listed: its lab photos are already
 # excluded by their own .gitignore rule (they carry equipment serials and a
 # name), while whether the notes alongside them are published is an open

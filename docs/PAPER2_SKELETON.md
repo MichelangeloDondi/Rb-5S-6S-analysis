@@ -4,8 +4,7 @@
 optical-nanofibre (ONF) data that has **not** been taken and a collaboration that
 has **not** been agreed. This is the *narrative and physics* plan, not a draft.
 It reuses the validated Paper-1 pipeline unchanged; the clean vapour-cell line
-(Paper 1) is Paper 2's frequency and lineshape **reference**. See
-`PAPERS_PORTFOLIO.md` for how P2 depends on the other campaigns.
+(Paper 1) is Paper 2's frequency and lineshape **reference**.
 
 *House rules as Paper 1: transition (sum) frequency everywhere (laser axis = ×½,
 stated once); provenance tags on every number; no citation enters without the PDF
@@ -195,6 +194,6 @@ atoms.
 - Paper 1 (`PAPER1_SKELETON.md`, `THEORY_NOTE.md`) — the method, the ramp
   formalism, and the cell reference.
 
-*Cross-refs: `PAPERS_PORTFOLIO.md` (scenario map), `PLAN.md` §8.1.2 (why the
+*Cross-refs: `PLAN.md` §8.1.2 (why the
 vector/field physics is a guided-platform measurement, not a cell one),
 `THEORY_NOTE.md` (ramp/standing-wave formalism to generalise).*
