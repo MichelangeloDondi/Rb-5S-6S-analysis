@@ -190,11 +190,27 @@ which is precisely the aliasing `DATA.md` §3.2 describes and which
 `rb5s6s/ingest.py` special-cases for this one file.
 
 So the repo has been treating a recoverable export defect as an inherent
-property of the data. **No result is retracted and none is claimed changed** —
-this trace is one of five repeats in one condition, its degradation is
-documented and handled, and nothing has been re-fitted. What changes is that
-the defect is now known to be *fixable*: re-ingesting the backup original and
-re-running the affected condition is a concrete, bounded piece of work, and
-whether it moves anything is an open question rather than an assumption.
+property of the data.
+
+**And it then turned out not to matter — measured, not assumed.** The obvious
+next question is whether the pristine original changes anything, so it was
+substituted for the degraded copy and the affected fits re-run (read-only; the
+analysed tree was not modified):
+
+| quantity | analysed (degraded) | with backup original | shift |
+|---|---|---|---|
+| γ_coll, 4192 @ 225 mW | 0.4379 ± 0.0222 MHz | 0.4395 ± 0.0221 | **+0.07σ** |
+| σ_laser, same condition | 0.9797 ± 0.0765 MHz | 0.9770 ± 0.0763 | **−0.04σ** |
+| β_self slope, 4192 density lever | +0.00695 ± 0.00186 | +0.00701 ± 0.00186 | **+0.03σ** |
+
+The trace is flagged `serves_t130`, so it also anchors the hot end of that
+peak's density lever — the β_self headline — which is why the lever was tested
+too and not just the power condition. Every shift is far inside the noise.
+
+The defect was real, recoverable, and harmless. `ingest.py`'s special-casing
+of this file was doing its job. Nothing is retracted, nothing is re-issued,
+and the analysed tree is left exactly as it was — but the question is now
+closed with a number instead of an assumption, which is the difference between
+"documented" and "checked".
 
 *Post-hoc throughout; no pre-registered standing.*
