@@ -270,7 +270,7 @@ power-broadened and pooling across conditions would be wrong.
 > by name. Opening the same-named file in `data_raw/` will give different
 > numbers, and that is a collision, not a contradiction.
 
-| surplus discard (backup copy) | its FWHM | kept five at that condition | z |
+| surplus discard (backup copy) | its FWHM | kept five at that condition | z of the discard vs those five |
 |---|---|---|---|
 | `4121nm_125mw5` <br/>`md5 2acede0b…` | 64.50 ms | 63.80 ± 1.20 ms | +0.58 |
 | `4121nm_175mw3` <br/>`md5 7afa9e0f…` | 64.00 ms | 62.90 ± 1.08 ms | +1.01 |
