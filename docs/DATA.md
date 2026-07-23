@@ -124,7 +124,9 @@ byte-exact:
    pooling. (iii) `p_sweep/4192nm_225mw1.csv` is a nonstandard export
    — **and a recoverable one: the recovered backup holds its pristine
    full-precision original (uniform time axis, 0 duplicate timestamps vs
-   799 in the analysed copy); see
+   799 in the analysed copy). Substituting it shifts this condition's
+   γ_coll by 0.07σ and the peak's β_self slope by 0.03σ, so the handling
+   below is adequate and nothing was re-issued; see
    [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 2** —
    (stray header `jj,nj`; time column printed at 3 significant figures so
    0.5 ms steps alias to duplicate timestamps) whose *content* is healthy —
