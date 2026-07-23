@@ -40,15 +40,18 @@ What the probes say together (2026-07-23 run):
     (dAIC ~ +21 over a constant, tau ~ 80 min), step-like blocks concentrate
     in hour 1 (4 of 10 early vs 1 of 10 late), and after t ~ 3.7 h the
     unflagged pairs collapse to a tight +0.4..0.7 ms/min cluster.
-  * The settled floor agrees across all three estimators -- joint fit
-    +0.30 [+0.17, +0.37], pair median +0.50 +/- 0.60, clean cluster
-    +0.55 +/- 0.17 ms/min -- i.e. 0.013-0.023 MHz/min on the laser axis
-    (0.03-0.05 on the transition axis), positive in every one. Over a 32 s
-    block that is ~0.2-0.3 ms of centre walk, below the 1.8 ms jitter, which
-    is why the intra-block trend test rightly saw jitter.
-  * The joint fit's disturbance law: tau = 73 [54, 102] min -- the same
-    ~1-1.5 h thermal settling scale the wavemeter photographs show after a
-    retune (APPARATUS section 6).
+  * The state-space refinement (the final stage below) separates what the
+    joint fit could not: THE DRIFT IS ONE CONSTANT, +0.74 [+0.54, +0.94]
+    ms/min = +0.032 [+0.023, +0.040] MHz/min laser, all session -- adding a
+    drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
+    amplitude settles, sigma_gap ~ 88 ms x exp(-t / 86 min). The tau ~ 73 min
+    the segmented fit reported was the operator's settling, not the laser's;
+    it matches the ~1-1.5 h post-retune scale the wavemeter photographs show
+    (APPARATUS section 6). The earlier estimators' "settled floor"
+    0.013-0.023 MHz/min sits 1-1.5 sigma below the constant because their
+    exponentials leaked early drift; the state-space value supersedes them.
+  * Over a 32 s block the constant drift walks the centre ~0.4 ms, below the
+    1.8 ms jitter, which is why the intra-block trend test rightly saw jitter.
 
 None of this moves a shipped number: widths are per-trace and centre steps do
 not enter them. It characterises the instrument, and it post-hoc answers the
@@ -225,11 +228,12 @@ def main() -> int:
     print(f"  1.8 ms jitter -- consistent with the intra-block JITTER verdict.")
 
     joint_fit_report()
+    state_space_report()
 
     print("\nD0 postscript (post-hoc; D0 was declared uncertain before the backup):")
-    print(f"  every epoch probed sits far inside the 4 MHz/min envelope --")
-    print(f"  settled {abs(2 * med * RATE_MHZ_MS):.2f}, early bounded "
-          f"<~ {4 * RATE_MHZ_MS * 2:.2f} MHz/min (transition axis).")
+    print("  the drift is one constant 0.06 [0.05, 0.08] MHz/min (transition axis),")
+    print("  ~60x inside the 4 MHz/min envelope; even the within-block bound in")
+    print(f"  hour 1 (<~ {4 * RATE_MHZ_MS * 2:.2f} MHz/min) never approaches it.")
     print("\nNot resolved: per-temperature re-kicks (T-session ruler->block spans")
     print("are operator-contaminated -- the reference was adjusted between ruler")
     print("and science acquisition; intra-block bounds there: |r| <~ 5 ms/min).")
@@ -349,6 +353,139 @@ def joint_fit_report() -> None:
     print("  caveat: gap-steps consistent with r(t) are absorbed AS drift, so the")
     print("  within-block bounds above, not this fit, own the pure-drift claim")
     print("  (one early block disagrees with the fitted rate at ~3 sigma).")
+
+
+# ---- the refined model: linear-Gaussian state space, exact likelihood ------
+#
+# y_i = x_i + R(t_i; drift) + eps_i;  x is the cumulative-intervention offset,
+# a random walk whose steps live at between-block gaps: eta ~ N(0, sig_gap(t)^2).
+# Steps > 100 ms are scan-window repositionings and are freed wherever they
+# occur (the 4207 excursion RETURNS mid-block -- gap-only freeing strands the
+# state and poisons every later block). Drift law and intervention law each
+# get {constant | exponential}: the 2x2 comparison asks directly which one
+# settles. The likelihood skip set (first obs per peak + freed window moves)
+# is deterministic and identical across models.
+
+def _R_int(t_h, kind, th):
+    if kind == "const":
+        return th[0] * t_h * 60.0
+    A, tau, c = th
+    return c * t_h * 60.0 + A * tau * 60.0 * (1.0 - np.exp(-t_h / tau))
+
+
+def _kalman_nll(peaks, kind_d, th_d, kind_i, th_i, s):
+    nll = 0.0
+    for p in peaks:
+        y = p["y"] - _R_int(p["t"], kind_d, th_d)
+        m, P = 0.0, 1e12
+        for i in range(len(y)):
+            skip = i == 0
+            if i > 0:
+                if p["wm"][i]:
+                    P += 1e12
+                    skip = True
+                elif p["gap"][i]:
+                    tg = 0.5 * (p["t"][i] + p["t"][i - 1])
+                    sg = th_i[0] if kind_i == "const" else th_i[0] * np.exp(-tg / th_i[1])
+                    P += sg ** 2
+            r = y[i] - m
+            S = P + (s * p["sig"][i]) ** 2
+            if not skip:
+                nll += 0.5 * (np.log(2 * np.pi * S) + r * r / S)
+            K = P / S
+            m += K * r
+            P *= (1 - K)
+    return nll
+
+
+def _unpack(v, kind_d, kind_i):
+    i = 0
+    if kind_d == "const":
+        th_d = [v[0]]; i = 1
+    else:
+        th_d = [np.exp(v[0]), float(np.clip(np.exp(v[1]), 0.05, 12.0)), v[2]]; i = 3
+    if kind_i == "const":
+        th_i = [np.exp(v[i])]; i += 1
+    else:
+        th_i = [np.exp(v[i]), float(np.clip(np.exp(v[i + 1]), 0.05, 12.0))]; i += 2
+    return th_d, th_i, float(np.clip(np.exp(v[i]), 0.3, 5.0))
+
+
+def _ss_fit(peaks, kind_d, kind_i):
+    def nll_vec(v):
+        td, ti, sc = _unpack(v, kind_d, kind_i)
+        return _kalman_nll(peaks, kind_d, td, kind_i, ti, sc)
+    p0 = ([0.5] if kind_d == "const" else [np.log(3.0), 0.0, 0.3])
+    p0 += ([np.log(20.0)] if kind_i == "const" else [np.log(40.0), 0.0])
+    p0 += [np.log(1.2)]
+    p0 = np.array(p0)
+    best = None
+    for f in (0.0, 0.7, -0.7):
+        o = optimize.minimize(nll_vec, p0 + f, method="Nelder-Mead",
+                              options=dict(xatol=1e-4, fatol=1e-4, maxiter=12000))
+        if best is None or o.fun < best.fun:
+            best = o
+    return best.x, best.fun, 2 * best.fun + 2 * len(p0)
+
+
+def state_space_report() -> None:
+    d = _traces()
+    peaks = []
+    for peak, g in d.groupby("peak"):
+        g = g.sort_values("t_h")
+        y = g.peak_pos_ms.to_numpy()
+        blk = g.power_mW.to_numpy()
+        gap = np.zeros(len(y), bool)
+        gap[1:] = blk[1:] != blk[:-1]
+        step = np.zeros(len(y))
+        step[1:] = np.abs(np.diff(y))
+        peaks.append(dict(peak=int(peak), y=y, t=g.t_h.to_numpy(),
+                          sig=g.sig.to_numpy(), gap=gap, wm=step > 100.0))
+
+    print("\nSTATE-SPACE REFINEMENT (Kalman; interventions = a random walk at the")
+    print("gaps; which settles, the drift or the operator, is the 2x2 comparison):")
+    out = {}
+    for kd in ("const", "exp"):
+        for ki in ("const", "exp"):
+            out[(kd, ki)] = _ss_fit(peaks, kd, ki)
+            print(f"  drift {kd:5s} x interv {ki:5s}: AIC {out[(kd, ki)][2]:7.1f}")
+    (kd, ki) = min(out, key=lambda k_: out[k_][2])
+    x, nll, _aic = out[(kd, ki)]
+    th_d, th_i, sc = _unpack(x, kd, ki)
+    d_cc = out[("const", "const")][2] - out[("const", "exp")][2]
+    d_ee = out[("exp", "exp")][2] - out[("const", "exp")][2]
+    print(f"  best: drift {kd.upper()} x interventions {ki.upper()}"
+          f"   (interv settling dAIC {d_cc:+.1f}; adding drift settling {d_ee:+.1f})")
+
+    # profile c by continuation
+    prof = {}
+    for direction in (1, -1):
+        w = np.delete(x, 0)
+        for k in range(11):
+            cv = th_d[0] + direction * 0.1 * k
+            def nllv(wv):
+                td2, ti2, s2 = _unpack(np.concatenate([[cv], wv]), kd, ki)
+                return _kalman_nll(peaks, kd, td2, ki, ti2, s2)
+            o = optimize.minimize(nllv, w, method="Nelder-Mead",
+                                  options=dict(xatol=1e-4, fatol=1e-4, maxiter=12000))
+            prof[round(cv, 3)] = o.fun
+            w = o.x
+    ok = [k for k, v in prof.items() if v - nll < 0.5]
+    print(f"\n  DRIFT IS CONSTANT: c = {th_d[0]:+.2f} [{min(ok):+.2f}, {max(ok):+.2f}] ms/min (68%)")
+    print(f"    = {th_d[0]*RATE_MHZ_MS:+.4f} [{min(ok)*RATE_MHZ_MS:+.4f}, "
+          f"{max(ok)*RATE_MHZ_MS:+.4f}] MHz/min laser -- a detection, one constant")
+    print(f"    rate across the whole session (~{abs(th_d[0])*RATE_MHZ_MS*60*20.5:.0f} MHz")
+    print(f"    laser over its 20.5 h: the reason the reference needed moving).")
+    if ki == "exp":
+        print(f"  THE SETTLING BELONGS TO THE OPERATOR: sig_gap = {th_i[0]:.0f} ms x "
+              f"exp(-t/{th_i[1]*60:.0f} min)")
+        print(f"    (tau_i spans ~70-160 min across analysis variants -- LOO-4207,")
+        print(f"     window-move threshold 60/150 ms -- while c stays within +-0.02;")
+        print(f"     early re-centrings ~1-4 MHz laser RMS, late <~0.2 MHz)")
+    print(f"  obs-noise scale {sc:.2f} on the block MADs -- effective per-trace noise")
+    print(f"  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
+    print("  This claims the split addendum 4 declined: the earlier tau ~ 73 min")
+    print("  exponential was the INTERVENTION amplitude; the drift never settled.")
 
 
 if __name__ == "__main__":

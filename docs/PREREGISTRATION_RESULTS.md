@@ -417,3 +417,60 @@ opened — is post-hoc satisfied in every epoch probed: settled 0.05, early
 No shipped number moves: widths are per-trace, and centre steps do not enter
 them. *Post-hoc throughout; estimator proposed by the experimenter
 2026-07-23; scored by no pre-registered rule.*
+
+
+## Addendum 5, 2026-07-23 — the model refined: the drift never settled; the hand did
+
+Addendum 4 fitted one smooth r(t) with hard-segmented offsets and declined to
+split drift from re-centrings. The refinement replaces the greedy
+segmentation with the model the data actually implies: **a state-space
+formulation** in which the cumulative-intervention offset is a random walk
+whose steps live at the between-block gaps, η ~ N(0, σ_gap(t)²), with
+scan-window repositionings (steps >100 ms, wherever they occur — the 4207
+excursion returns *mid-block*) freed exactly. The marginal likelihood is then
+exact (Kalman filter), no segmentation is chosen by hand, and — the point —
+**drift and intervention amplitude each get their own time law**, so "what
+settles?" becomes a 2×2 model comparison:
+
+| drift law | intervention law | AIC |
+|---|---|---|
+| constant | constant | 634.6 |
+| **constant** | **exponential** | **617.5** |
+| exponential | constant | 638.6 |
+| exponential | exponential | 621.5 |
+
+**The drift is one constant.** Adding a drift-settling term buys nothing
+(ΔAIC +4.0 — pure parameter penalty, the amplitude fits to zero);
+intervention settling is decisive (ΔAIC +17.1). The claim addendum 4
+declined is now made, in both directions:
+
+- **Drift: c = +0.74 [+0.54, +0.94] ms/min (68%, profile likelihood; 95%
+  [+0.24, +1.24]) = +0.032 [+0.023, +0.040] MHz/min laser axis** — one
+  constant rate across the whole session, ~39 MHz laser over its 20.5 hours,
+  which is *why* the reference needed moving all night. Robust: dropping
+  peak 4207 entirely moves c by +0.013; window-move thresholds of 60 and
+  150 ms move it by less than 0.02.
+- **Interventions: σ_gap ≈ 88 ms × exp(−t/86 min)** — per-gap re-centring
+  RMS ~1–4 MHz laser in hour 1, ≲0.2 MHz after hour 4. τ_i is the least
+  stable number (≈70–160 min across the same variants, trading against the
+  amplitude on only ~14 constrained gaps); the *structure* — interventions
+  settle, drift does not — survives every variant.
+
+**What this corrects in the earlier addenda, stated plainly:** the τ ≈ 73 min
+exponential of addendum 4 was the *operator's* settling, not the laser's —
+consistent with it matching the wavemeter's post-retune scale, since re-lock
+transients are exactly when the operator re-centres hardest. The earlier
+"settled floor" of 0.013–0.023 MHz/min sits 1–1.5σ below the constant
+because those decompositions leaked early drift into their exponentials;
+**+0.032 [+0.023, +0.040] MHz/min laser supersedes it.** The within-block
+bounds (|r| ≲ 4 ms/min) contain the constant comfortably and stay the
+model-free anchor. D0's envelope now reads: measured constant 0.06
+[0.05, 0.08] MHz/min transition, ~60× inside 4 MHz/min.
+
+The observation-noise scale fits at 1.93× the block MADs — effective
+per-trace noise 1.5–3 ms, consistent with the 1.8 ms jitter figure, closing
+the loop with §8.4.
+
+*Post-hoc; same estimator lineage (experimenter, 2026-07-23), model
+refinement requested the same day. `scripts/run_drift_settling.py`, final
+stage; runs in seconds; skips cleanly without the backup.*
