@@ -484,3 +484,31 @@ the loop with §8.4.
 *Post-hoc; same estimator lineage (experimenter, 2026-07-23), model
 refinement requested the same day. `scripts/run_drift_settling.py`, final
 stage; runs in seconds; skips cleanly without the backup.*
+
+
+### Postscript to addendum 5, same day — the per-temperature question, split
+
+The refined model splits the last unresolved item of addendum 4 in two, and
+answers one half. For the **drift**, per-temperature re-kicks stay untestable
+(the T-session baselines are too short; intra-block bounds ≲5 ms/min per
+dwell). For the **operator**, the answer was hiding in the discarded probe:
+under the state-space reading, the ruler→science steps that *contaminate* the
+drift estimate simply *are* the intervention amplitude — and it re-kicks at
+every dwell:
+
+| dwell | steps (n) | RMS step | in frequency |
+|---|---|---|---|
+| 110 °C (t ≈ 6.6–7.9 h) | 4 | 74 ms | 3.1 MHz laser |
+| 90 °C (after the 9.6 h break) | 3 | 137 ms | 5.8 MHz laser |
+| 70 °C | 3 | 106 ms | 4.5 MHz laser |
+
+Against the ≲20 ms the amplitude had settled to by late P-session, every
+dwell is an order larger; the single biggest step (237 ms ≈ 10 MHz) lands
+immediately after the 9.6 h break — the freshest re-lock, the same one
+IMG_2896 photographed mid-transient. Each temperature change, with its
+per-peak retunes, begins a fresh re-acquisition transient: **the "one
+exponential per temperature" of the original proposal holds — for the
+disturbance, not the laser.**
+
+*Descriptive RMS over 3–4 single steps per dwell, retunes and window moves
+included; not a fitted σ_gap. Same post-hoc standing as the rest.*
