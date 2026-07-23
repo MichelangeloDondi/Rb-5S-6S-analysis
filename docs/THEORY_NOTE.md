@@ -85,8 +85,15 @@ $$\text{centroid pull} = -\tfrac{2}{3}S_0,\qquad
 
 order the signal by statistical cost — pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$ (the last vanishing unless $n=2$, the $I^2$
-signature) — but note the pull is available only once a stable lock (a fixed-lock session)
-un-absorbs it.
+signature) — but note the pull as a *measurement* is available only once a
+stable lock (a fixed-lock session) un-absorbs it. One nuance, post-dating this
+note: with the recovered acquisition clock the archive's between-block
+structure supports a pull *bound* — a state-space fit with a deterministic
+pull-per-milliwatt term, injection-closure verified, bounds S₀ at 225 mW
+below 3.5 MHz (95%) from the centre channel alone. That is ~5.5× looser than the
+width-channel S₀(225 mW) < 0.63 MHz, but it corroborates it through disjoint
+systematics (results report, addendum 6). The centre floor sits ~6× above the
+predicted pull, so it bounds; it does not measure.
 
 Two caveats. *Between*-scan drift is absorbed exactly by the free centres.
 *Within*-scan drift is not a pure translation — it smears the line
