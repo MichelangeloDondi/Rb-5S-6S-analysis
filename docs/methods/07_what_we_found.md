@@ -134,7 +134,12 @@ channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.59$ without measuring it (an
 unscaled threshold would fall below the prediction). It bounds the drift, not the
-coefficient's scale. A fixed-lock session's stable lock would resurrect the pull
+coefficient's scale. Since 2026-07-23 the bound has an independent
+corroboration through disjoint systematics: the recovered acquisition clock
+supports a centroid-displacement (pull-channel) bound of 3.5 MHz at 95% —
+~5.5× looser, but from centres where this one comes from widths
+([results report, addendum 6](../PREREGISTRATION_RESULTS.md)). A fixed-lock
+session's stable lock would resurrect the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
 several-fold larger, which would turn this bracket into a measured coefficient.
 
