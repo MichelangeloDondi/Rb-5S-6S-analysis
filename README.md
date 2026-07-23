@@ -267,7 +267,7 @@ The dataset was taken during a six-month research visit to OIST (Japan) in
 2025, as an independent project alongside my main work there on
 atom–nanofiber interfaces; the analysis package was developed after the
 campaign. A manuscript based on it is in preparation
-([`docs/PAPERS_PORTFOLIO.md`](docs/PAPERS_PORTFOLIO.md)).
+([`docs/PAPER1_SKELETON.md`](docs/PAPER1_SKELETON.md)).
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·

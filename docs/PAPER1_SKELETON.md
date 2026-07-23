@@ -29,10 +29,10 @@ the archival brackets into measurements, so several sections are written as
   one combined paper (§VII stubbed as predictions until such data exists),
   because no other group is currently working on the 5S–6S light shift / β_self. Fallback: publish P1-min now if a deadline forces it — and note this
   fallback is the *only* branch fully under our control, since no session is scheduled
-  or agreed. The full contingency map — P1-min/full, the ONF Paper 2, and the Ti:Sapph
-  5D/7S papers (A/B/C), as a function of which sessions happen — is in
-  **`docs/PAPERS_PORTFOLIO.md`**. (Thesis vs papers: the thesis rides on the archive
-  alone; any further session, whenever and by whoever it is run, feeds the papers.)
+  or agreed. (Thesis vs papers: the thesis rides on the archive alone; any
+  further session, whenever and by whoever it is run, feeds the papers — the
+  session physics is specified in `PLAN.md` §8 and
+  `FUTURE_TRANSITIONS_titsapph.md`.)
 - **Author list & contributions**, target journal, and whether the ramp theory is a
   co-submitted companion or an appendix here (currently: appendix + `THEORY_NOTE.md`
   as the standalone version for a theorist reader).
