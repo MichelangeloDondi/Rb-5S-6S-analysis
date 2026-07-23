@@ -318,8 +318,9 @@ transient; the steady in-campaign rate is not established by any photograph.
 RESOLVED 2026-07-23 (the "until then" above arrived): the recovered clock
 measured the in-campaign rate (scripts/run_drift_settling.py, results report
 addenda 4-5). The state-space refinement finds ONE CONSTANT drift,
-+0.032 [+0.023, +0.040] MHz/min laser (~125x below this envelope; ~39 MHz
-over the 20.5 h session -- why the reference needed moving), bounded
++0.032 [+0.023, +0.040] MHz/min laser (~125x below this envelope) across
+the five-hour power session the fit sees; persisting, ~39 MHz over the
+20.5 h -- the scale that forced the re-centring. Bounded
 <~0.17 MHz/min within blocks even in hour 1, matching the 0.19 the
 cavity-locked photo shows. What settles (tau ~ 1-2.5 h) is the OPERATOR's
 re-centring amplitude, not the laser. The tension paragraph above dissolves: the envelope

@@ -70,7 +70,9 @@ the reference-free regime.
 ## 3. What the 2025 dataset delivered
 
 The 2025 campaign (297 traces: four hyperfine peaks, 70–130 °C, 25–225 mW)
-was taken with a slowly drifting lock (~MHz/min). That one fact organises
+was taken with a drifting, hand-re-centred lock (MHz-scale line motion
+between blocks; the free-running rate itself measures ~0.03 MHz/min,
+`APPARATUS.md` §6). That one fact organises
 everything: **absolute centres are lost, line shapes survive**. The analysis
 therefore extracts what shapes alone can support, and states everything else
 as a bound. Concretely:
@@ -102,7 +104,8 @@ as a bound. Concretely:
   per-scan free centres, and a synthetic closure test
   (`tests/test_intrascan_drift.py`) bounds the leftover *within*-scan effect at
   well under a fifth of the statistical error on the recovered asymmetry at the
-  archival ~MHz/min rate — it reaches order-S₀ only at tens of times that rate.
+  archival envelope rate (~MHz/min; the measured in-campaign rate is ~30×
+  lower still) — it reaches order-S₀ only at tens of times the envelope.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
   the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
   MEASURED / …); the documentation is written to be picked up by whoever
