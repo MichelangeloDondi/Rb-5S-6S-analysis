@@ -7,7 +7,7 @@ from the committed ledger (`docs/RESULTS.md`), provenance/framing notes in
 
 ---
 
-## VI.C Power dependence: the ramp-law predictions confirmed
+## VI.C Power dependence: tested against the ramp-law predictions
 
 At a fixed 130 °C the density, transit width, and (within one power session) the
 laser width are all constant, so the only quantity that varies across the

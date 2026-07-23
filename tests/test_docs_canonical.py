@@ -270,3 +270,81 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
     for token in ("ramp asymmetry → upper bound",
                   "amplitude laws → P² and ∝N checks"):
         assert token in txt, f"README diagram lost its honest label: {token!r}"
+
+
+def _tracked_prose():
+    import subprocess
+    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
+                         capture_output=True, text=True)
+    if out.returncode != 0:
+        import pytest as _pt
+        _pt.skip("not a git checkout")
+    return [p for p in out.stdout.split("\n")
+            if p and not p.startswith(("tests/", "docs/lit/"))]
+
+
+def test_no_stale_04_linearity_bound_even_latex_wrapped():
+    """The 0.40->0.45 sweep matched ASCII '<0.4%' and missed '$<0.4$%' in
+    methods/05 and methods/07 -- inline math split the number from its percent
+    sign. This scan is LaTeX-aware."""
+    import re
+    pat = re.compile(r"(?:<|≲|\\lesssim)\s*\$?0\.40?\$?\s*\\?%")
+    hits = []
+    for rel in _tracked_prose():
+        for i, line in enumerate(
+                (ROOT / rel).read_text(encoding="utf-8",
+                                       errors="replace").split("\n"), 1):
+            if pat.search(line):
+                hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+    assert not hits, (
+        "the sweep-linearity bound is 0.45% (largest well-sampled window "
+        "0.4486%); a stale <0.4% survives, LaTeX-wrapped or not:\n  "
+        + "\n  ".join(hits))
+
+
+def test_c3_suite_is_not_wrapped_as_confirmed():
+    """methods/07's own body says 'We say consistent with, not confirms' for
+    C3b -- yet four summary surfaces wrapped the whole C3 suite as 'confirmed
+    predictions'. The suite is a null (width) + a consistency check (P^2) + a
+    bound (skew); no wrapper may flatten that back into one word."""
+    banned = ("ramp-law predictions confirmed",
+              "suite of confirmed predictions",
+              "recast as *confirmed prediction*",
+              "power laws are confirmed",
+              "confirmed ramp power laws")
+    hits = []
+    for rel in _tracked_prose():
+        txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        for b in banned:
+            if b in txt:
+                hits.append(f"{rel}: {b!r}")
+    assert not hits, ("C3 wrapped as wholesale confirmation again:\n  "
+                      + "\n  ".join(hits))
+
+
+def test_sigma_laser_panel_numbers_match_the_csvs():
+    """fig5's title said 'flat (~1.7' while its own plotted free-fit means are
+    1.04-1.25, and methods/07 quoted tied values 2.1/2.2/1.6 against a
+    committed global_fit.csv reading 1.48/1.63/1.06 -- both stale against the
+    data under them. Pin quoted <-> computed."""
+    import csv
+    import numpy as np
+    gf = {r["key"]: float(r["value"])
+          for r in csv.DictReader(open(ROOT / "results" / "global_fit.csv"))
+          if r["quantity"] == "sigma_laser"}
+    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [1.5, 1.6, 1.1], (
+        "tied sigma_laser(T) moved; requote methods/07 and this test together")
+    rows = list(csv.DictReader(open(ROOT / "results" / "linefit_conditions.csv")))
+    means = []
+    for T in (70, 90, 110):
+        v = [(float(r["sigma_laser"]), float(r["sigma_laser_err"]))
+             for r in rows if r["role"] == "t_sweep" and int(float(r["T"])) == T]
+        s = np.array([x[0] for x in v]); w = 1 / np.array([x[1] for x in v]) ** 2
+        means.append(float(np.sum(w * s) / np.sum(w)))
+    assert 1.0 <= min(means) and max(means) <= 1.3, (
+        "free per-condition sigma_laser left the 1.0-1.3 band; requote fig5's "
+        "title and methods/07")
+    fig_src = (ROOT / "scripts" / "make_figures.py").read_text(encoding="utf-8")
+    assert "flat (~1.1," in fig_src, "fig5 title no longer quotes ~1.1"
+    m07 = (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8")
+    assert "1.5/1.6/1.1" in m07 and "$1.0$–$1.25$" in m07

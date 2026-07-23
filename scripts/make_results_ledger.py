@@ -275,7 +275,7 @@ def main() -> int:
     W("*Lifted by:* beam-profile $w_0$ (knife-edge and/or camera) + a direct linewidth measurement in a fixed-lock session.\n")
 
     # ---- C3: power sweep ----
-    W("## C3 — power sweep (ramp-law predictions confirmed)\n")
+    W("## C3 — power sweep (tested against the ramp-law predictions)\n")
     ps = rows("power_sweep")
     if ps:
         by = {}
@@ -285,7 +285,7 @@ def main() -> int:
         for p, d in by.items():
             w = [x[1] for x in d]
             infl.append(100 * (max(w) - min(w)) / np.mean(w))
-        W(f"- **C3a linewidth flat:** inflation {min(infl):.0f}–{max(infl):.0f}% "
+        W(f"- **C3a linewidth — no power trend:** inflation {min(infl):.0f}–{max(infl):.0f}% "
           "across 25–225 mW, non-monotonic (block scatter, not power broadening).")
     W("- **C3b amplitude $\\propto P^2$:** log-log slopes 1.83–2.12 (two-photon "
       "rate law; 993.4121 nm mildly saturates). The power slope is immune to "
