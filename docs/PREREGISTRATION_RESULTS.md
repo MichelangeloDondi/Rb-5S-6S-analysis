@@ -168,6 +168,11 @@ an eight-file re-take series). They sit inside the campaign window. These are
 the curation-time discards: the repo says they were dropped because they
 "seemed quite bad", and the backup is now the only place they survive.
 
+> **Corrected by addendum 3: the figure is 19, not 10.** This count was
+> made by matching filenames, which hid an entire re-taken series behind
+> names identical to analysed files. Content hashing is the only correct
+> test. The paragraph is left as written; the correction is below.
+
 **The one T1 absence is not a loss — it is the reverse.** Addendum 1 recorded
 that `p_sweep/4192nm_225mw1.csv`'s analysed bytes are absent from the backup,
 and called it a genuine absence. That is true but misleading. The backup
@@ -289,10 +294,32 @@ width-selective curation — but it is the honest limit of what this test can
 say, and it is why the claim above is "indistinguishable in the fitted
 quantity", not "identical".
 
-Two limits stand on the record. This half-max width is a QC metric, coarser
-than the model widths the fits report; and only discards the backup happened
-to preserve can be tested at all — 19 files of an unknown larger number
-originally taken.
+**An independent set, which this addendum first overlooked.** The claim that
+only backup-preserved discards can be tested was wrong: `data_raw/discarded/`
+has published four raw-only discards since the archive was built, from the
+temperature sweeps, with no connection to the backup. Run through the same
+test against the kept repeats at their own conditions:
+
+| discarded (already public) | its FWHM | kept at that condition | z | its SNR vs kept median |
+|---|---|---|---|---|
+| `4154nm_070c4` | 59.00 ms | 55.38 ± 2.66 ms (n=4) | +1.36 | 20.5 vs 25.2 |
+| `4192nm_090c3` | 60.00 ms | 61.00 ± 1.66 ms (n=5) | −0.60 | 114.8 vs 115.9 |
+| `4207nm_025mw2` | 60.00 ms | 61.80 ± 3.93 ms (n=5) | −0.46 | 14.8 vs 14.5 |
+| `4207nm_070c2` | 56.50 ms | 59.60 ± 2.07 ms (n=5) | −1.49 | 15.6 vs 14.4 |
+
+All four sit inside their conditions' spread, at SNRs indistinguishable from
+their siblings. Different sweeps, different peaks, a provenance independent of
+the backup — and the same answer.
+
+**The count, stated once and exactly.** Of the 19 unique backup files, three
+are not discards (the pristine `4192nm_225mw1` original and its two degraded
+copies), leaving **16 discarded acquisitions**; `data_raw/discarded/` holds
+**4** more. All **20** have now been tested — 12 as two takes by rank test,
+8 individually against their own conditions. Seven of the eight individual
+cases are central; the eighth is the boundary case above.
+
+One limit still stands: this half-max width is a QC metric, coarser than the
+model widths the fits report. And 20 is what survives — not what was taken.
 
 So assumption 8 holds on the evidence, and for a sharper reason than
 "curation was pre-analysis": the discarded material is *indistinguishable in

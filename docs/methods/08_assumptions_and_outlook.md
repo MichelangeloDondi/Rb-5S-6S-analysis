@@ -32,7 +32,11 @@
 7. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
    scales, not the *shape* of $N(T)$.
 8. Discards and quarantine are curation-time (pre-analysis) decisions, audited
-   symmetrically, so they cannot bias the fits.
+   symmetrically, so they cannot bias the fits. **No longer only an argument
+   from timing:** all twenty discarded acquisitions now recoverable were tested
+   against the kept repeats at their own conditions, and are indistinguishable
+   in the *fitted* quantity — linewidth — even where they are measurably dimmer
+   ([PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md) addendum 3).
 
 ---
 
