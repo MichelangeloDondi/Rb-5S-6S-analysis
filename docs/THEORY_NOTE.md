@@ -58,7 +58,7 @@ of what is specific here.
 ## 3. The drift-immune method
 
 The 2025 archival line walked at the MHz scale between scans — hand
-re-centrings riding a measured constant $\sim$0.03 MHz/min drift
+re-centrings riding a measured constant $\sim$0.02 MHz/min drift
 (`APPARATUS.md` §6) — so absolute line **centres** are dead, and a fit must
 give each scan its own free centre to absorb that motion. This has a sharp consequence for the ramp. Its **first-order effect is a
 shift** of the line (the centroid pull $-\tfrac23 S_0$), and a shift is exactly
@@ -90,9 +90,9 @@ stable lock (a fixed-lock session) un-absorbs it. One nuance, post-dating this
 note: with the recovered acquisition clock the archive's between-block
 structure supports a pull *bound* — a state-space fit with a deterministic
 pull-per-milliwatt term, injection-closure verified, bounds S₀ at 225 mW
-below 3.5 MHz (95%) from the centre channel alone. That is ~5.5× looser than the
+below 5.5 MHz (95%) from the centre channel alone. That is ~8× looser than the
 width-channel S₀(225 mW) < 0.63 MHz, but it corroborates it through disjoint
-systematics (results report, addendum 6). The centre floor sits ~6× above the
+systematics (results report, addenda 6–7). The centre floor sits ~9× above the
 predicted pull, so it bounds; it does not measure.
 
 Two caveats. *Between*-scan drift is absorbed exactly by the free centres.

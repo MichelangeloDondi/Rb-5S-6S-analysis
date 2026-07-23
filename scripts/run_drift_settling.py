@@ -41,9 +41,12 @@ What the probes say together (2026-07-23 run):
     in hour 1 (4 of 10 early vs 1 of 10 late), and after t ~ 3.7 h the
     unflagged pairs collapse to a tight +0.4..0.7 ms/min cluster.
   * The state-space refinement (the final stage below) separates what the
-    joint fit could not: THE DRIFT IS ONE CONSTANT, +0.74 [+0.54, +0.94]
-    ms/min = +0.032 [+0.023, +0.040] MHz/min laser, across the five-hour
-    power session the fit sees (T-session probes give only bounds) -- adding a
+    joint fit could not: THE DRIFT IS ONE CONSTANT across the five-hour
+    power session the fit sees (T-session probes give only bounds). The
+    residual audit then revised its size: +0.38 [+0.17, +0.59] ms/min
+    = +0.016 [+0.007, +0.025] MHz/min laser (68%), a ~2-sigma positive
+    indication under the adequate (mixture) noise model -- the gaussian
+    +0.74 was biased by three unmodelled end-of-ladder moves. Adding a
     drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
     amplitude settles, sigma_gap ~ 88 ms x exp(-t / 86 min). The tau ~ 73 min
     the segmented fit reported was the operator's settling, not the laser's;
@@ -230,11 +233,12 @@ def main() -> int:
 
     joint_fit_report()
     state_space_report()
+    mixture_report()
     pull_bound_report()
 
     print("\nD0 postscript (post-hoc; D0 was declared uncertain before the backup):")
-    print("  measured constant 0.032 [0.023, 0.040] vs the 4 MHz/min envelope,")
-    print("  both laser axis: ~125x inside; even the within-block hour-1 bound")
+    print("  measured constant 0.016 [0.007, 0.025] vs the 4 MHz/min envelope,")
+    print("  both laser axis: ~250x inside; even the within-block hour-1 bound")
     print(f"  (<~ {4 * RATE_MHZ_MS:.2f} MHz/min laser) never approaches it.")
     print("\nThe per-temperature question, split by the refined model:")
     print("  for the DRIFT it stays unresolved (T-session baselines too short;")
@@ -482,12 +486,11 @@ def state_space_report() -> None:
             prof[round(cv, 3)] = o.fun
             w = o.x
     ok = [k for k, v in prof.items() if v - nll < 0.5]
-    print(f"\n  DRIFT IS CONSTANT: c = {th_d[0]:+.2f} [{min(ok):+.2f}, {max(ok):+.2f}] ms/min (68%)")
-    print(f"    = {th_d[0]*RATE_MHZ_MS:+.4f} [{min(ok)*RATE_MHZ_MS:+.4f}, "
-          f"{max(ok)*RATE_MHZ_MS:+.4f}] MHz/min laser -- a detection, one constant")
-    print(f"    rate across the five-hour power session the fit sees; persisting,")
-    print(f"    ~{abs(th_d[0])*RATE_MHZ_MS*60*20.5:.0f} MHz laser over the 20.5 h "
-          f"-- the scale that forced the re-centring.")
+    print(f"\n  gaussian-noise drift: {th_d[0]:+.2f} [{min(ok):+.2f}, {max(ok):+.2f}] ms/min (68%)")
+    print(f"    -- BIASED HIGH: the residual audit (addendum 7) found three")
+    print(f"    end-of-ladder within-block moves this noise model cannot")
+    print(f"    represent, absorbed as drift. The mixture stage below is the")
+    print(f"    headline; this number is kept as the intermediate it was.")
     if ki == "exp":
         print(f"  THE SETTLING BELONGS TO THE OPERATOR: sig_gap = {th_i[0]:.0f} ms x "
               f"exp(-t/{th_i[1]*60:.0f} min)")
@@ -498,6 +501,127 @@ def state_space_report() -> None:
     print(f"  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
     print("  This claims the split addendum 4 declined: the earlier tau ~ 73 min")
     print("  exponential was the INTERVENTION amplitude; the drift never settled.")
+
+
+# ---- the adequate noise model: sparse within-block moves (addendum 7) ------
+#
+# The Gaussian state space left innovations with skew +1.9 and excess kurtosis
+# +7 -- all concentrated in within-block steps at the 25 mW end-of-ladder
+# blocks, i.e. rare REAL moves with no model channel, absorbed as drift and
+# biasing c high. The fix: within-block transitions carry mixture process
+# noise, eta ~ (1-pi_w) delta(0) + pi_w N(0, sigma_m^2), evaluated with a
+# collapsed Gaussian-sum filter (exact two-branch likelihood per step,
+# moment-matched collapse -- excellent for rare events). After it, the
+# mixture-PIT innovations pass Shapiro-Wilk (p ~ 0.3), the observation scale
+# drops to ~1.1 (the block MADs were right all along), and the 2x2 structure
+# is unchanged while c halves.
+
+def _mix_filter(peaks, c, B, tau, s, pw, sm, q=0.0):
+    nll = 0.0
+    for p in peaks:
+        y = p["y"] - c * p["t"] * 60.0 - q * p.get("P_mw", np.zeros(len(p["y"])))
+        m, P_ = 0.0, 1e12
+        for i in range(len(y)):
+            so = (s * p["sig"][i]) ** 2
+            skip = i == 0
+            if i > 0 and p["wm"][i]:
+                P_ += 1e12; skip = True
+            gap_i = i > 0 and not p["wm"][i] and p["gap"][i]
+            within = i > 0 and not p["wm"][i] and not p["gap"][i]
+            if gap_i:
+                tg = 0.5 * (p["t"][i] + p["t"][i - 1])
+                P_ += (B * np.exp(-tg / tau)) ** 2
+            if within:
+                r = y[i] - m
+                S0v, S1v = P_ + so, P_ + sm ** 2 + so
+                l0 = (1 - pw) * np.exp(-0.5 * r * r / S0v) / np.sqrt(2 * np.pi * S0v)
+                l1 = pw * np.exp(-0.5 * r * r / S1v) / np.sqrt(2 * np.pi * S1v)
+                L = max(l0 + l1, 1e-300)
+                if not skip:
+                    nll -= np.log(L)
+                w0, w1 = l0 / L, l1 / L
+                K0, K1 = P_ / S0v, (P_ + sm ** 2) / S1v
+                m0, m1 = m + K0 * r, m + K1 * r
+                P0, P1 = P_ * (1 - K0), (P_ + sm ** 2) * (1 - K1)
+                m = w0 * m0 + w1 * m1
+                P_ = w0 * (P0 + (m0 - m) ** 2) + w1 * (P1 + (m1 - m) ** 2)
+                continue
+            r = y[i] - m
+            Sv = P_ + so
+            if not skip:
+                nll += 0.5 * (np.log(2 * np.pi * Sv) + r * r / Sv)
+            K = P_ / Sv
+            m += K * r
+            P_ *= (1 - K)
+    return nll
+
+
+def _mix_peaks():
+    d = _traces()
+    peaks = []
+    for peak, g in d.groupby("peak"):
+        g = g.sort_values("t_h")
+        y = g.peak_pos_ms.to_numpy()
+        blk = g.power_mW.to_numpy()
+        gap = np.zeros(len(y), bool); gap[1:] = blk[1:] != blk[:-1]
+        step = np.zeros(len(y)); step[1:] = np.abs(np.diff(y))
+        peaks.append(dict(peak=int(peak), y=y, t=g.t_h.to_numpy(),
+                          P_mw=blk.astype(float), sig=g.sig.to_numpy(),
+                          gap=gap, wm=step > 100.0))
+    return peaks
+
+
+def _mix_fit(peaks, c_fixed=None, q_mode=None, q_fixed=None):
+    """q_mode: None (no pull), 'free', or use q_fixed."""
+    def f(v):
+        i = 0
+        c = c_fixed if c_fixed is not None else v[i]
+        i += 0 if c_fixed is not None else 1
+        B = np.exp(v[i]); tau = float(np.clip(np.exp(v[i + 1]), .05, 12))
+        s = float(np.clip(np.exp(v[i + 2]), .3, 5))
+        pw = float(np.clip(1 / (1 + np.exp(-v[i + 3])), 1e-4, .5))
+        sm = np.exp(v[i + 4]); i += 5
+        q = 0.0
+        if q_mode == "free":
+            q = v[i]
+        elif q_fixed is not None:
+            q = q_fixed
+        return _mix_filter(peaks, c, B, tau, s, pw, sm, q)
+    p0 = ([] if c_fixed is not None else [0.4]) + [np.log(40.), 0., np.log(1.1),
+                                                  -2.5, np.log(15.)]
+    if q_mode == "free":
+        p0 += [0.0]
+    p0 = np.array(p0)
+    best = None
+    for off in (0.0, 0.5, -0.5):
+        o = optimize.minimize(f, p0 + off, method="Nelder-Mead",
+                              options=dict(xatol=1e-5, fatol=1e-5, maxiter=40000))
+        if best is None or o.fun < best.fun:
+            best = o
+    return best
+
+
+def mixture_report() -> None:
+    peaks = _mix_peaks()
+    b = _mix_fit(peaks)
+    c0, nll0 = float(b.x[0]), float(b.fun)
+    prof = {}
+    for cv in np.arange(c0 - 0.45, c0 + 0.5, 0.06):
+        prof[round(cv, 3)] = float(_mix_fit(peaks, c_fixed=cv).fun)
+    ok68 = [k for k, v in prof.items() if v - nll0 < 0.5]
+    ok95 = [k for k, v in prof.items() if v - nll0 < 1.92]
+    print("\nMIXTURE REFINEMENT (sparse within-block moves; the adequate noise")
+    print("model -- innovations pass Shapiro-Wilk after it, addendum 7):")
+    print(f"  c = {c0:+.2f} [{min(ok68):+.2f}, {max(ok68):+.2f}] ms/min (68%)"
+          f"   [{min(ok95):+.2f}, {max(ok95):+.2f}] (95%)")
+    print(f"    = {c0*RATE_MHZ_MS:+.4f} [{min(ok68)*RATE_MHZ_MS:+.4f}, "
+          f"{max(ok68)*RATE_MHZ_MS:+.4f}] MHz/min laser (68%)")
+    print(f"  a ~2-sigma POSITIVE INDICATION, no longer a firm detection: the")
+    print(f"  gaussian 3-sigma rested on three real end-of-ladder moves absorbed")
+    print(f"  as drift. Converges with the segmented floor (+0.19..+0.37) and")
+    print(f"  the clean-pair cluster (+0.55 +/- 0.17). Structure unchanged:")
+    print(f"  interventions settle (dAIC ~ +17), drift settling buys nothing")
+    print(f"  (dAIC ~ +4 against). Persisting, ~{abs(c0)*RATE_MHZ_MS*60*20.5:.0f} MHz laser over 20.5 h.")
 
 
 def pull_bound_report() -> None:
@@ -559,23 +683,23 @@ def pull_bound_report() -> None:
                 best = o
         return best
 
-    b = fitq()
-    q = b.x[4]
+    peaks_m = _mix_peaks()
+    bq = _mix_fit(peaks_m, q_mode="free")
+    q = float(bq.x[-1]); nq0 = float(bq.fun)
     prof = {}
     for direction in (1, -1):
-        for k in range(13):
-            qv = q + direction * 0.01 * k
-            prof[round(qv, 4)] = fitq(q_fixed=qv).fun
-    n0 = min(prof.values())
-    ok95 = [k for k, v in prof.items() if v - n0 < 1.92]
+        for k in range(10):
+            qv = q + direction * 0.02 * k
+            prof[round(qv, 4)] = float(_mix_fit(peaks_m, q_fixed=qv).fun)
+    ok95 = [k for k, v in prof.items() if v - min(prof.values()) < 1.92]
     qmax = max(abs(min(ok95)), abs(max(ok95)))
     s0 = qmax * RATE_MHZ_MS * 2 * 225 * 1.5
-    print("\nTHE CENTRE CHANNEL, ATTEMPTED (pull bound; estimator unbiased by")
-    print("injection closure -- see addendum 6):")
+    print("\nTHE CENTRE CHANNEL, ATTEMPTED (pull bound under the mixture noise")
+    print("model; estimator unbiased by injection closure -- addenda 6-7):")
     print(f"  q = {q:+.4f} [{min(ok95):+.3f}, {max(ok95):+.3f}] ms/mW (95%)")
     print(f"  -> S0(225 mW) < {s0:.1f} MHz transition from CENTRES alone --")
-    print(f"     ~5.5x looser than the width channel's < 0.63 (profile), but")
-    print(f"     corroborating through disjoint systematics; floor ~6x above")
+    print(f"     ~8x looser than the width channel's < 0.63 (profile), but")
+    print(f"     corroborating through disjoint systematics; floor ~9x above")
     print(f"     the 0.59 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
     print(f"     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
     print(f"     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")

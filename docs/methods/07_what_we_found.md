@@ -136,8 +136,8 @@ inflated threshold and brackets the predicted $0.59$ without measuring it (an
 unscaled threshold would fall below the prediction). It bounds the drift, not the
 coefficient's scale. Since 2026-07-23 the bound has an independent
 corroboration through disjoint systematics: the recovered acquisition clock
-supports a centroid-displacement (pull-channel) bound of 3.5 MHz at 95% —
-~5.5× looser, but from centres where this one comes from widths
+supports a centroid-displacement (pull-channel) bound of 5.5 MHz at 95% —
+~8× looser, but from centres where this one comes from widths
 ([results report, addendum 6](../PREREGISTRATION_RESULTS.md)). A fixed-lock
 session's stable lock would resurrect the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$

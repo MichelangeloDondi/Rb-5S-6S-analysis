@@ -204,7 +204,7 @@ sharpened archive plus a diagnosed lock*.
 within a scan, and skew is your observable."** Right in principle; answered by
 the timescale separation. A scan window is ~1 s (one up-ramp), and even the
 envelope's MHz/min is ~0.017 MHz/s, so within-scan drift is **~0.01 MHz** at
-worst — the measured constant rate is ~30× lower again — negligible against the
+worst — the measured constant rate is ~60× lower again — negligible against the
 ~5.25 MHz width, and each block is self-calibrated by its own EOM ruler. The
 drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
 β_self is currently reported as a bound (`RESULTS.md` C1). The clean closure — inject a
@@ -932,7 +932,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
   absorb it) from within-scan drift (the residual skew channel; THEORY_NOTE §3,
   `tests/test_intrascan_drift.py`) — and lets us *measure* the lock drift rate
   properly — the recovered 2025 clock already yields a constant
-  +0.032 [+0.023, +0.040] MHz/min (laser) with the settling attributed to
+  +0.016 [+0.007, +0.025] MHz/min (laser, ~2σ) with the settling attributed to
   the operator's re-centring, not the lock (`run_drift_settling.py`,
   state-space stage); a logged clock plus an untouched reference would make
   the drift diary exact rather than model-mediated. (iii) It makes the T↔time collinearity (post-mortem
@@ -941,7 +941,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
   (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on.
 - **Etalon-lock thermal discipline (measured + experimenter-confirmed,
   2026-07-23).** The 2025 disturbance was not the drift (a constant
-  ~0.03 MHz/min laser once the lock held) but **cavity-lock dropouts during
+  ~0.02 MHz/min laser once the lock held) but **cavity-lock dropouts during
   the etalon temperature transient** — about 2 h of lock-on after ≥3 h of
   lock-off, dropping every few tens of minutes inside it, with MHz-scale
   recapture excursions (the blind state-space fit found the same settling

@@ -51,7 +51,7 @@ traces, plus 33 quarantined or discarded (full census in
 ## Shapes without centres
 
 The 2025 data were taken with a **drifting, hand-re-centred lock** — a
-measured constant ~0.03 MHz/min plus MHz-scale re-centrings between blocks
+measured constant ~0.02 MHz/min plus MHz-scale re-centrings between blocks
 ([APPARATUS §6](docs/APPARATUS.md)) — which has one consequence:
 
 - absolute line **centres are lost** (drift moves them scan to scan), but
