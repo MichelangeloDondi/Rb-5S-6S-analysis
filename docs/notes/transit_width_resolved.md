@@ -101,5 +101,5 @@ The earlier "DIAGNOSED (decisive), w₀ ≈ 90 µm" claim had two errors:
 
 ## Provenance
 Numbers: `results/transit_mc.csv` (M9), the re-run fit CSVs, and
-`constants.transit_fwhm_from_w0` (Lehmann-validated). Papers in `PDF_papers/`
+`constants.transit_fwhm_from_w0` (Lehmann-validated). Source PDFs are held locally
 (untracked). Synthesis in `docs/literature_food_for_thought.md` §1.

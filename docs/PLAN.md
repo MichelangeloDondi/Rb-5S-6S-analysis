@@ -12,7 +12,7 @@ From the 2025 archival data:
 
 Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
-**What this produces**: the archive alone yields the method + bounds (the thesis core); a fixed-lock session would upgrade the bounds to measured coefficients; an ONF campaign would extend the method to the nanofibre line (`PAPER2_SKELETON.md`); a 5D/7S session would extend it up the ladder (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
+**What this produces**: the archive alone yields the method + bounds (a self-contained core result); a fixed-lock session would upgrade the bounds to measured coefficients; an ONF campaign would extend the method to the nanofibre line (`PAPER2_SKELETON.md`); a 5D/7S session would extend it up the ladder (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
 
 ## 1. Ground rules
 
@@ -134,7 +134,7 @@ from the comb.
 
 **Status: a specification, not a schedule or an agreement.** Nothing below has been
 agreed with the group, no date is assumed, and no particular person is assumed to
-run it. It is written so that whoever has the cell and the beam time can execute it,
+run it. It is written as a specification, executable
 in whole or — following the priority order in §8.0 — as far down the list as the
 available time allows. Each item names the archival bound it converts into a
 measurement, so a *partial* session is still worth running and its value is
@@ -148,7 +148,7 @@ re-derivation — only shots. What the **archive alone** already supports is
 **P1-min**: the drift-immune moment/bounds framework, the self-calibrating EOM
 ruler, the identifiability and coverage analyses, and the computed 5S–6S
 dynamic polarizabilities and magic wavelengths (`PAPER1_SKELETON.md` §0).
-That is a self-contained result — the thesis core and a methods
+That is a self-contained result — the core deliverable and a methods
 paper — and it depends on **no** further data being taken. A fixed-lock
 session is therefore an *upgrade*, not a prerequisite: it converts the named
 bounds into measured coefficients (**P1-full**). The **smallest tranche that

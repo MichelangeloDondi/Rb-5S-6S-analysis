@@ -1,13 +1,13 @@
 # Exploiting the tunable Ti:Sapph — future transitions and the papers they enable
 
-**Status: strategy / food-for-thought (2026-07-13).** Not a plan of record. The
+**Status: physics options / food-for-thought (2026-07-13).** Not a plan of record. The
 premise (recorded 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
 measurement session is not locked to 993 nm — it can reach *other* Rb two-photon
 transitions, "as long as we can reach the frequency and the optics is fine at the
 next frequency." This note maps what that buys us, grounded in the 2024–2026
-landscape (`PDF_papers/literature_intake/landscape_2026_...md`).
+landscape (local literature-intake note, untracked).
 
-## 1. The one-sentence strategic picture
+## 1. The one-sentence picture
 
 Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere** — the only
 active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
@@ -216,17 +216,17 @@ physics argues for if the programme is pursued at all.*
    778 nm clock line and turn the Ti:Sapph tunability into a magic-wavelength /
    Δα(λ) measurement, with the intermediate-state lineshape (C) as the validated
    bridge from the clean 6S anchor. This is where the tunable laser pays off most.
-3. **Paper B** is the completeness capstone / thesis chapter — attractive because it
-   reuses the exact rig and method across the ladder.
+3. **Paper B** is the completeness capstone — it reuses the exact rig and
+   method across the ladder.
 
 **The most distinctive experiment the Ti:Sapph enables** (distinctive, not
 necessarily most precise): scanning the 776 nm magic wavelength on 5S→5D and watching
 the ramp asymmetry flip sign — a reference-free magic-wavelength determination, on the
 most actively worked transition, by a method those groups do not use. Its systematics
 are orthogonal and it needs no active hardware, and it needs the large-S₀
-small-waist regime to work at all (§Paper A caveat). A safer thesis bet, lower ceiling
-but lower risk, is **Paper B** (the β_self / Δα ladder) — it reuses the exact rig and
-method, so it is unlikely to be duplicated.
+small-waist regime to work at all (§Paper A caveat). The lower-risk
+complement is **Paper B** (the β_self / Δα ladder), which reuses the exact
+rig and method.
 
 ## 5. Open feasibility questions for the experimenter (Michelangelo)
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?
@@ -238,4 +238,4 @@ method, so it is unlikely to be duplicated.
   resonance) — the fixed-lock session shot-list temperature range would differ per transition.
 
 *References for §3 are collected in `docs/LITERATURE.md` §8 (2024–2026 landscape).
-Source landscape doc: `PDF_papers/literature_intake/landscape_2026_drift-immune-Rb-5S6S-and-778nm-frontier.md`.*
+Source: the local literature-intake landscape note (untracked).*

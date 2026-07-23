@@ -1,6 +1,6 @@
 # Paper 1 — §II draft prose: the two-epoch design (methodological spine)
 
-**FIRST-PASS DRAFT, for MD/Síle to revise.** Fills the §II stub of
+**FIRST-PASS DRAFT** — to be revised with the co-authors. Fills the §II stub of
 `PAPER1_SKELETON.md`. This is the paper's conceptual spine; it is framing as much
 as fact, so expect it to change most in your revision. Provenance/framing notes
 in **[brackets]**, LaTeX inline.

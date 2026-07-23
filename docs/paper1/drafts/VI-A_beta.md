@@ -1,6 +1,6 @@
 # Paper 1 — §VI.A draft prose: collisional self-broadening (the β bound)
 
-**FIRST-PASS DRAFT, for MD/Síle to revise into your voice.** This fills
+**FIRST-PASS DRAFT** — to be revised with the co-authors. This fills
 the §VI.A stub of `PAPER1_SKELETON.md` with real prose so the writing has a seed;
 it is not final text. Every number is from the committed ledger (`docs/RESULTS.md`);
 provenance tags and framing notes are in **[brackets]** for you to resolve or

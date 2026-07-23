@@ -1,6 +1,6 @@
 # Paper 1 — manuscript skeleton
 
-**Status:** scaffold for Michelangelo (lead) + Síle to fill. This is the *narrative
+**Status:** working scaffold. This is the *narrative
 structure* — the argument section by section, with each committed result slotted as
 evidence and each figure assigned — not prose to submit. Numbers here are the
 verified session values (see `docs/RESULTS.md` for the auto-generated ledger they
@@ -23,19 +23,15 @@ the archival brackets into measurements, so several sections are written as
   do **not** claim to have measured either coefficient in the archive (both are
   bounds), and we do **not** claim the asymmetry's existence ([Stalnaker *et al.*](lit/stalnaker2006.md) 2006
   precede us — §novelty).
-- **Scope / journal.** Full paper (PRA-length). The archive gives **P1-min** (method +
-  bounds, ready now = the thesis core); adding a fixed-lock session would give
-  **P1-full** (the measured coefficients ). Default: **hold for P1-full**,
-  one combined paper (§VII stubbed as predictions until such data exists),
-  because no other group is currently working on the 5S–6S light shift / β_self. Fallback: publish P1-min now if a deadline forces it — and note this
-  fallback is the *only* branch fully under our control, since no session is scheduled
-  or agreed. (Thesis vs papers: the thesis rides on the archive alone; any
-  further session, whenever and by whoever it is run, feeds the papers — the
+- **Scope.** Full paper (PRA-length). The archive gives the method + the
+  bounds, self-contained; a fixed-lock session would add the measured
+  coefficients (§VII is stubbed as predictions until such data exists — the
   session physics is specified in `PLAN.md` §8 and
-  `FUTURE_TRANSITIONS_titsapph.md`.)
-- **Author list & contributions**, target journal, and whether the ramp theory is a
-  co-submitted companion or an appendix here (currently: appendix + `THEORY_NOTE.md`
-  as the standalone version for a theorist reader).
+  `FUTURE_TRANSITIONS_titsapph.md`, neither scheduled nor agreed).
+- **Ramp-theory placement**: appendix here + `THEORY_NOTE.md` as the
+  standalone version for a theorist reader (vs a co-submitted companion —
+  open). Authors, contributions and venue are for the groups involved to
+  decide when a manuscript is concrete.
 
 ---
 
@@ -116,7 +112,7 @@ the archival brackets into measurements, so several sections are written as
 
 ## II. The two-epoch design (methodological spine)
 
-> **First-pass prose drafted** in [`paper1/drafts/II_two_epoch.md`](paper1/drafts/II_two_epoch.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/II_two_epoch.md`](paper1/drafts/II_two_epoch.md) — to be revised with the co-authors. The stubs below are the outline it expands.
 
 - **Epoch 1 (2025, this archive):** lock drifts ~MHz/min. Centres dead → *shapes* and
   *relative* structure survive; every per-scan centre is a free nuisance. What this
@@ -168,7 +164,7 @@ the archival brackets into measurements, so several sections are written as
 
 ## V. Analysis
 
-> **First-pass prose drafted** in [`paper1/drafts/V_analysis.md`](paper1/drafts/V_analysis.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/V_analysis.md`](paper1/drafts/V_analysis.md) — to be revised with the co-authors. The stubs below are the outline it expands.
 
 - **Frequency axis (MEASURED-HERE):** EOM sidebands as a ruler → 0.04257(5) MHz/ms
   laser-axis (0.08514 transition), per-block, sweep linear to <0.45%. The fold-robust
@@ -188,7 +184,7 @@ the archival brackets into measurements, so several sections are written as
 
 ### VI.A Collisional self-broadening $\beta_\text{self}$ — a bound *(headline archival result)* — Figs. 1, 5, 6
 
-> **First-pass prose drafted** in [`paper1/drafts/VI-A_beta.md`](paper1/drafts/VI-A_beta.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** in [`paper1/drafts/VI-A_beta.md`](paper1/drafts/VI-A_beta.md) — to be revised with the co-authors. The stubs below are the outline it expands.
 
 - **Model-independent width-slope bound** (the headline): raw widths are non-monotonic
   in density for 3/4 peaks — impossible for real collisions — because between-block
@@ -225,7 +221,7 @@ the archival brackets into measurements, so several sections are written as
 
 ### VI.C Power sweep — tested against the ramp-law predictions — Fig. 2
 
-> **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — for MD/Síle to revise. The stubs below are the outline it expands.
+> **First-pass prose drafted** (with §VI.D) in [`paper1/drafts/VI-CD_power_stark.md`](paper1/drafts/VI-CD_power_stark.md) — to be revised with the co-authors. The stubs below are the outline it expands.
 
 - **C3a** linewidth shows no power trend: the observed spread is **3–8%** over
   $9\times$ power, non-monotonic, and no peak keeps a significant slope once

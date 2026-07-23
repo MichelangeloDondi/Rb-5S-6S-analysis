@@ -52,7 +52,7 @@ them. Write "a new operator", "the group", "an external theory check".
 | File | Generator |
 |---|---|
 | `docs/RESULTS.md` | `scripts/make_results_ledger.py` |
-| `PDF_papers/README.md` | `scripts/build_lit_index.py` |
+| `docs/LITERATURE_INDEX.md` (+ a local, untracked `PDF_papers/README.md`) | `scripts/build_lit_index.py` |
 | `docs/references.bib` | `scripts/build_lit_index.py` |
 
 Editing these directly is lost on the next run, and the freshness tests fail.

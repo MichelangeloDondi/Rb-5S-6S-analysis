@@ -1,6 +1,6 @@
 """
 SINGLE SOURCE OF TRUTH for the literature: one file per paper under docs/lit/,
-from which docs/references.bib and PDF_papers/README.md are GENERATED.
+from which docs/references.bib and docs/LITERATURE_INDEX.md are GENERATED.
 
 Why this file exists. The literature metadata used to live in three hand-kept
 stores keyed by the same citekey -- LITERATURE.md prose, references.bib, and the
@@ -21,7 +21,7 @@ the one place a paper's facts live and regenerates the other two views from it
       file exists locally, where the gitignored PDFs are present -- degraded to
       a path-only check on CI, which has no PDFs).
   (D) freshness:  re-running the generator in memory reproduces the committed
-      references.bib and PDF_papers/README.md byte-for-byte -- the drift gate.
+      references.bib and docs/LITERATURE_INDEX.md byte-for-byte -- the drift gate.
   (E) collision:  no citekey is an accidental strict prefix of another (the
       rajasree2020/...spin trap), beyond an intentional-pairs allowlist.
 
@@ -192,12 +192,26 @@ def test_generated_bib_is_fresh():
         "commit the result.")
 
 
-def test_generated_readme_is_fresh():
+def test_generated_public_index_is_fresh():
+    entries = bli.load_lit()
+    fresh = bli.emit_public_index(entries)
+    assert (ROOT / "docs" / "LITERATURE_INDEX.md").read_text() == fresh, (
+        "docs/LITERATURE_INDEX.md is stale -- re-run scripts/build_lit_index.py "
+        "and commit the result.")
+
+
+def test_generated_local_readme_is_fresh_when_present():
+    """PDF_papers/README.md is the LOCAL holdings table (untracked since
+    2026-07-23: a public folder named PDF_papers displaying held publisher-PDF
+    filenames reads as a shelf of copyrighted papers, though none is
+    distributed). Gate it only where it exists."""
+    if not PDF_README.exists():
+        pytest.skip("local holdings index absent (untracked; fine in CI)")
     entries = bli.load_lit()
     fresh = bli.emit_readme(entries)
     assert PDF_README.read_text() == fresh, (
-        "PDF_papers/README.md is stale -- re-run scripts/build_lit_index.py and "
-        "commit the result.")
+        "PDF_papers/README.md (local) is stale -- re-run "
+        "scripts/build_lit_index.py.")
 
 
 # --------------------------------------------------------------------------- #
