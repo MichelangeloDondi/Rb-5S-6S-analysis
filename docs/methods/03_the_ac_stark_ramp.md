@@ -66,6 +66,9 @@ $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 **exactly**, independent of the (unknown) laser/transit widths. These two
 odd cumulants are the clean, apparatus-independent handles, and the mean
 pull is the primary fixed-lock-session observable ([§7 — Assumptions, and where this can go](08_assumptions_and_outlook.md)).
+(The recovered acquisition clock also supports an archival pull *bound* from
+between-block centre structure — see [§7 of the results chapter](07_what_we_found.md)
+and the results report, addenda 6–7.)
 
 A literal *standardized* skewness of the full profile is more delicate,
 because the homogeneous Lorentzian has divergent second and higher even

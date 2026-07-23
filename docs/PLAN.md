@@ -186,8 +186,12 @@ judged novel; the measured coefficients need the session.**
 
 **"The lock's line walked MHz-scale all night and destroyed the centres — that
 IS why you have bounds. What stops a new session repeating 2025?"** Conceded: "the lock is fixed"
-is *asserted*, not demonstrated from the archive (no clock was available to it; the
-2025 root cause was never established — §8.7.1 item 5). But the session's value
+is *asserted* for any future session — but the 2025 root cause is no longer
+unknown: the recovered backup clock diagnosed it (cavity-lock dropouts during
+the ~2 h etalon thermal transient, held-lock drift only ~0.016 MHz/min —
+`APPARATUS.md` §6, results report addenda 4–7), and the §8.7 etalon-discipline
+item is the procedural fix. What remains asserted is only that the discipline
+will be followed. And the session's value
 does not hinge on a *perfect* lock. (a) The pull is a **differential**
 measurement (shift vs power) needing minutes of stability, not hours. (b) The
 pre-registered bracket veto (§8.4) **excludes** any block whose ruler tooth moved

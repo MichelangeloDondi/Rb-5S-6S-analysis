@@ -60,10 +60,12 @@ session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
 with its own 5-repeat RF-off block and its own ruler block. Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
-knob and manually recentered the cavity reference **many times** — the lock
-drifted enough that the transitions had to be brought back inside the scan
-window repeatedly — so **absolute trace positions carry no meaning across
-saves**; each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
+knob and manually recentered the cavity reference **many times** — not
+because the held lock drifted fast (measured: ~0.016 MHz/min, which would
+take tens of hours to cross the window) but because the cavity lock kept
+dropping out during the etalon thermal transient, each recapture landing
+MHz-scale off (`APPARATUS.md` §6; results report addenda 4–7) — so
+**absolute trace positions carry no meaning across saves**; each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
 usually left alone** — a tendency rather than a protocol
 (experimenter-confirmed, 2026-07-22), and the archive shows the exceptions:
 24 of 32 RF-off science blocks scatter about a common position (median

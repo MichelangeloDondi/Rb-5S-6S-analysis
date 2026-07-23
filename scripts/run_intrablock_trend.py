@@ -14,7 +14,8 @@ repeats -- and since `repeat_idx` is the time order (DATA.md §2), the block's
 five positions carry their own arrow of time.
 
 So the question can be settled from the archive alone, with no timestamps and
-no wavemeter log:
+no wavemeter log (written before the backup clock surfaced; the timestamped
+re-analysis lives in run_drift_settling.py):
 
   * accumulated DRIFT  -> position trends monotonically with repeat_idx,
                           R^2 of a linear fit -> 1
