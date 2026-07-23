@@ -230,6 +230,7 @@ def main() -> int:
 
     joint_fit_report()
     state_space_report()
+    pull_bound_report()
 
     print("\nD0 postscript (post-hoc; D0 was declared uncertain before the backup):")
     print("  measured constant 0.032 [0.023, 0.040] vs the 4 MHz/min envelope,")
@@ -497,6 +498,88 @@ def state_space_report() -> None:
     print(f"  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
     print("  This claims the split addendum 4 declined: the earlier tau ~ 73 min")
     print("  exponential was the INTERVENTION amplitude; the drift never settled.")
+
+
+def pull_bound_report() -> None:
+    """The centre channel, attempted (experimenter's insistence, 2026-07-23).
+
+    The AC-Stark pull (-2/3 S0, S0 = kappa P) is a DIFFERENTIAL centre
+    observable: locked to the power ladder, repeated at four different times,
+    so it separates from the zero-mean recapture walk (which has no reason to
+    follow P) and from drift (which follows elapsed time, not P). Add q*P to
+    the state-space observation and profile q. Injection closure (recorded in
+    addendum 6): a pull injected at 1x / 4x / 10x the prediction is recovered
+    to +-0.0001 ms/mW -- the estimator is unbiased; only the floor limits it.
+    """
+    d = _traces()
+    peaks = []
+    for peak, g in d.groupby("peak"):
+        g = g.sort_values("t_h")
+        y = g.peak_pos_ms.to_numpy()
+        blk = g.power_mW.to_numpy()
+        gap = np.zeros(len(y), bool); gap[1:] = blk[1:] != blk[:-1]
+        step = np.zeros(len(y)); step[1:] = np.abs(np.diff(y))
+        peaks.append(dict(y=y, t=g.t_h.to_numpy(), P=blk.astype(float),
+                          sig=g.sig.to_numpy(), gap=gap, wm=step > 100.0))
+
+    def nllq(v, q_fixed=None):
+        c, lB, lt, ls = v[:4]
+        q = q_fixed if q_fixed is not None else v[4]
+        B, tau_i = np.exp(lB), float(np.clip(np.exp(lt), 0.05, 12))
+        sc = float(np.clip(np.exp(ls), 0.3, 5))
+        tot = 0.0
+        for p in peaks:
+            y = p["y"] - c * p["t"] * 60.0 - q * p["P"]
+            m, P_ = 0.0, 1e12
+            for i in range(len(y)):
+                skip = i == 0
+                if i > 0:
+                    if p["wm"][i]:
+                        P_ += 1e12; skip = True
+                    elif p["gap"][i]:
+                        tg = 0.5 * (p["t"][i] + p["t"][i - 1])
+                        P_ += (B * np.exp(-tg / tau_i)) ** 2
+                r = y[i] - m
+                S = P_ + (sc * p["sig"][i]) ** 2
+                if not skip:
+                    tot += 0.5 * (np.log(2 * np.pi * S) + r * r / S)
+                K = P_ / S
+                m += K * r
+                P_ *= (1 - K)
+        return tot
+
+    def fitq(q_fixed=None):
+        p0 = [0.5, np.log(40.0), 0.0, np.log(1.2)] + ([] if q_fixed is not None else [0.0])
+        best = None
+        for off in (0.0, 0.5, -0.5):
+            o = optimize.minimize(lambda v: nllq(v, q_fixed), np.array(p0) + off,
+                                  method="Nelder-Mead",
+                                  options=dict(xatol=1e-5, fatol=1e-5, maxiter=20000))
+            if best is None or o.fun < best.fun:
+                best = o
+        return best
+
+    b = fitq()
+    q = b.x[4]
+    prof = {}
+    for direction in (1, -1):
+        for k in range(13):
+            qv = q + direction * 0.01 * k
+            prof[round(qv, 4)] = fitq(q_fixed=qv).fun
+    n0 = min(prof.values())
+    ok95 = [k for k, v in prof.items() if v - n0 < 1.92]
+    qmax = max(abs(min(ok95)), abs(max(ok95)))
+    s0 = qmax * RATE_MHZ_MS * 2 * 225 * 1.5
+    print("\nTHE CENTRE CHANNEL, ATTEMPTED (pull bound; estimator unbiased by")
+    print("injection closure -- see addendum 6):")
+    print(f"  q = {q:+.4f} [{min(ok95):+.3f}, {max(ok95):+.3f}] ms/mW (95%)")
+    print(f"  -> S0(225 mW) < {s0:.1f} MHz transition from CENTRES alone --")
+    print(f"     ~5.5x looser than the width channel's < 0.63 (profile), but")
+    print(f"     corroborating through disjoint systematics; floor ~6x above")
+    print(f"     the 0.59 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
+    print(f"     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
+    print(f"     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")
+    print(f"     nothing bridges, nothing to fit.")
 
 
 if __name__ == "__main__":

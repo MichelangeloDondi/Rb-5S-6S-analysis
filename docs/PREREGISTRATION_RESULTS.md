@@ -552,3 +552,56 @@ and the τ-to-transient match is a scale agreement (86 [70, 104] min vs
 
 *Testimony: EXPERIMENTER, 2026-07-23, after the committed fit. Everything
 else post-hoc as before.*
+
+
+## Addendum 6, 2026-07-23 — the centre channels, attempted at the experimenter's insistence
+
+The two-epoch framing writes the archive's centres off wholesale, and this
+report had repeated that line. The experimenter pushed back — *"I think you
+didn't even try to extract them"* — and was right on both counts: no attempt
+had been made, and for one of the three centre observables an attempt
+succeeds.
+
+**1. The AC-Stark pull: a real bound, from centres alone.** The pull
+(−⅔S₀, S₀ = κP) is a *differential* observable: it is locked to the power
+ladder and repeats at four different times, so it separates from the
+recapture random walk (zero-mean, blind to P) and from drift (which follows
+elapsed time, not P). Adding a deterministic q·P term to the state-space
+observation and profiling q:
+
+- **q = +0.003 [−0.117, +0.123] ms/mW (95%)** → pull(225 mW) ∈ [−2.2, +2.4]
+  MHz transition → **S₀(225 mW) < 3.5 MHz (95%) from the centre channel
+  alone**.
+- **Injection closure**: a pull injected into the real positions at 1×, 4×
+  and 10× the predicted size is recovered to ±0.0001 ms/mW. The estimator is
+  unbiased; only the recapture-noise floor limits it.
+- The width-channel archival bound (M4e, profile likelihood) is
+  S₀(225) < 0.63 MHz — so the centre channel is **~5.5× looser**, and the
+  first draft of this addendum quoted the superseded Wald diagnostic
+  (3.1) beside it until the canonical-value gate caught the stale citation.
+  The two channels **corroborate each other through disjoint systematics** —
+  ramp broadening in the widths, centroid displacement in the centres. The
+  centre floor sits ~6× above the 0.59 MHz prediction, where the width
+  channel already presses against it. A bound, not a measurement; but a
+  bound from a channel the archive was declared incapable of producing.
+
+**2. The collisional self-shift: attempted, honestly vacuous.** The bridges
+between temperature dwells carry the measured re-kick noise (~8 MHz
+transition RMS) against a density span of ~4.4×10¹² cm⁻³, giving an
+achievable shift error of ~1.8 MHz per 10¹² — about **1800× above** the
+~1 kHz per 10¹² expected from the Zameroski 7S scaling. The channel exists;
+its information content at this noise is nil.
+
+**3. The isotope shift / hyperfine intervals: structurally absent.** Peak
+separations are of GHz scale; the scan window is ~43 MHz; every peak change
+was a retune of unlogged magnitude. There is no differential term to fit —
+this is the one claim of the two-epoch framing that survives untouched.
+
+The corrected summary of what the clock buys the centres: **within-window
+differential structure is recoverable (the pull bound); across-window
+structure is not** (shifts across temperature, intervals across peaks). The
+blanket "centres are dead" stands only in its across-window sense.
+
+*Post-hoc; extraction prompted by the experimenter, 2026-07-23.
+`run_drift_settling.py`, final stage; closure documented here, not re-run in
+the script.*
