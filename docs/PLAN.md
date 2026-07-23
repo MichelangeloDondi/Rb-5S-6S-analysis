@@ -938,7 +938,22 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the drift diary exact rather than model-mediated. (iii) It makes the T↔time collinearity (post-mortem
   #3) checkable, so the opposite-order days can regress drift out of the density
   lever. (iv) It time-orders the interleaved four-peak / per-trace-power blocks
-  (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on. Keep
+  (§8.4a) the degeneracy-law and trapping discriminators (M7/M10) pair on.
+- **Etalon-lock thermal discipline (measured + experimenter-confirmed,
+  2026-07-23).** The 2025 disturbance was not the drift (a constant
+  ~0.03 MHz/min laser once the lock held) but **cavity-lock dropouts during
+  the etalon temperature transient** — about 2 h of lock-on after ≥3 h of
+  lock-off, dropping every few tens of minutes inside it, with MHz-scale
+  recapture excursions (the blind state-space fit found the same settling
+  scale, τ ≈ 86 [70, 104] min, before the recollection). Protocol
+  consequences: (i) engage the etalon lock **≥2 h before first data**, and
+  after *any* ≥3 h pause budget the transient again — the 2025 evening dwells
+  ran entirely inside a fresh post-break transient and paid 3–6 MHz re-kicks
+  per block for it; (ii) once past the transient, **hands off the reference**
+  — at the measured held-lock drift a 43 MHz window lasts ~10 h, so the
+  all-night re-centring was fighting the transient and itself, not the drift;
+  (iii) **log the lock state** (even a TTL on a spare channel): with drops
+  time-stamped, the drift diary needs no state-space model at all. Keep
   the timestamp in the trace *metadata*, not only the filename, so a re-save or
   rename cannot strip it.
 - **How, on our scope (Agilent/Keysight InfiniiVision DSO-X 3054A).** The

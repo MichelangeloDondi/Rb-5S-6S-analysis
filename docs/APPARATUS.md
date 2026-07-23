@@ -39,7 +39,15 @@ photographs of the SolsTiS control page show which locks were engaged:
 **The ECD lock is disengaged in every photograph.** For the campaign itself
 the experimenter confirms (2026-07-23) that the **reference cavity was
 locked**, with its **set point moved from time to time to follow the drift** —
-which is what `DATA.md` §2 records as "cavity-reference recenters".
+which is what `DATA.md` §2 records as "cavity-reference recenters". A further
+recollection (EXPERIMENTER, 2026-07-23, given *after* the state-space fit
+below was already committed): **the cavity lock was dropping out on its own,
+typically within a few tens of minutes, especially while the etalon
+temperature transient — about 2 h of lock-on after ≥3 h of lock-off — had not
+yet passed.** So the between-block steps are not only deliberate re-centrings:
+many are drop-and-recapture events, small when the recapture returns to an
+unchanged set point, MHz-large when the drop happens mid-transient with the
+etalon still walking.
 
 That completes the account of "misconfigured". Etalon + reference cavity hold
 the laser *short-term*, which is why shapes survive and intra-block positions
@@ -252,7 +260,19 @@ A drift-settling term adds nothing (ΔAIC +4); **what settles is the
 operator** — per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
 τ ≈ 1–2.5 h to ≲0.2 MHz, plus two ~25–50 MHz scan-window repositionings.
 That operator settling is what matches the post-retune photographs' scale,
-as it should: re-lock transients are when the re-centring works hardest. The clock also
+as it should: re-lock transients are when the re-centring works hardest. The
+mechanism arrived after the fit, in the right order to count as
+corroboration: the model found τ ≈ 86 [70, 104] min blind, and the
+experimenter then independently recalled the ~2 h etalon thermal transient —
+same scale. The timeline agrees in detail: the P session opened inside a
+transient (hour-1 chaos, 4 of 10 blocks stepped), its late ladders sat past
+one (quiet), and after the 9.6 h daytime break the re-lock at ~17:03
+(IMG_2896) restarted the clock — **both evening dwells ran inside or at the
+edge of that fresh transient**, which is why the 70 °C dwell (118–195 min
+after re-lock) never calmed to late-P quietness. σ_gap(t) then reads
+physically: the typical frequency excursion per drop-and-recapture cycle,
+decaying as the etalon thermalises. Individual steps stay unresolvable into
+drop vs deliberate move from mtimes alone. The clock also
 explains the one in-campaign wavemeter record: IMG_2896 (17:03) was shot
 eighteen minutes before the 90 °C dwell resumed (17:21), i.e. during the
 re-lock after the daytime break — its ~4.35 MHz/min is the re-tune transient
