@@ -512,3 +512,43 @@ disturbance, not the laser.**
 
 *Descriptive RMS over 3–4 single steps per dwell, retunes and window moves
 included; not a fitted σ_gap. Same post-hoc standing as the rest.*
+
+
+### Second postscript to addendum 5 — the mechanism, recalled after the fit
+
+Later the same day, the experimenter supplied what the model could not:
+**the cavity lock was dropping out on its own, typically within a few tens of
+minutes — especially while the etalon temperature transient (about 2 h of
+lock-on after ≥3 h of lock-off) had not yet passed.**
+
+The order matters, so it is recorded: the state-space fit found the
+disturbance amplitude settling with **τ = 86 [70, 104] min, blind** — the
+recollection of a **~2 h transient** came after, unprompted by the number.
+That is a corroboration, not a fit to testimony.
+
+It also re-reads the whole disturbance story one level deeper:
+
+- σ_gap(t) is physical: **the typical frequency excursion per
+  drop-and-recapture cycle.** A recapture onto an unchanged set point lands
+  small; a drop mid-transient, with the etalon still walking, lands MHz-large.
+  The decay of σ_gap is the etalon thermalising.
+- The timeline agrees in detail. The P session opened inside a transient
+  (hour-1 chaos, 4 of 10 blocks stepped mid-block); its late ladders sat past
+  one (σ_gap ≲ 20 ms). After the 9.6 h daytime break — far longer than the
+  3 h that resets the etalon — the re-lock at ~17:03 (IMG_2896, photographed
+  mid-settling) restarted the clock, and **both evening dwells ran inside or
+  at the edge of that fresh transient** (90 °C at 18–73 min after re-lock,
+  70 °C at 118–195 min). That is why the 70 °C dwell never calmed to
+  late-P-session quietness — the puzzle the first postscript left open.
+- "The hand settled" therefore sharpens to: **the lock's dropout disturbance
+  settled with the etalon; the hand executed the recaptures.** The constant
+  +0.032 MHz/min laser is the drift of the *held* lock, which is exactly why
+  it matches the cavity-locked wavemeter photograph.
+
+Two honest limits: mtimes cannot resolve any individual step into drop vs
+deliberate move (during the transient the hour-1 hunting is plainly a mix),
+and the τ-to-transient match is a scale agreement (86 [70, 104] min vs
+"about 2 h"), not a calibration.
+
+*Testimony: EXPERIMENTER, 2026-07-23, after the committed fit. Everything
+else post-hoc as before.*

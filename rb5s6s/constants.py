@@ -322,8 +322,10 @@ addenda 4-5). The state-space refinement finds ONE CONSTANT drift,
 the five-hour power session the fit sees; persisting, ~39 MHz over the
 20.5 h -- the scale that forced the re-centring. Bounded
 <~0.17 MHz/min within blocks even in hour 1, matching the 0.19 the
-cavity-locked photo shows. What settles (tau ~ 1-2.5 h) is the OPERATOR's
-re-centring amplitude, not the laser. The tension paragraph above dissolves: the envelope
+cavity-locked photo shows. What settles (tau ~ 1-2.5 h) is the disturbance
+amplitude -- cavity-lock drop-and-recapture excursions during the ~2 h etalon
+thermal transient, executed by hand (experimenter, 2026-07-23, recalled AFTER
+the blind fit found the same scale) -- not the held lock's drift. The tension paragraph above dissolves: the envelope
 describes RE-TUNE transients, and IMG_2896 (17:03) is exactly that -- shot 18
 minutes before the 90 C dwell resumed (17:21, clock-dated), i.e. mid-re-lock
 after the daytime break, not steady acquisition. The envelope stands, as an
