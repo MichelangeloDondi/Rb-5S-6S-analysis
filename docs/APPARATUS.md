@@ -250,7 +250,12 @@ scale). What decays over the first hours is the total disturbance (drift plus
 the hand re-centrings it forced), exponentially with **τ = 73 [54, 102] min**
 — the same settling scale the post-retune photographs show. The re-centrings
 themselves are ±0.2–2 MHz (laser) steps plus two ~25–50 MHz scan-window
-repositionings, frequent in hour 1, nearly absent after hour 4.
+repositionings, frequent in hour 1, nearly absent after hour 4. The clock also
+explains the one in-campaign wavemeter record: IMG_2896 (17:03) was shot
+eighteen minutes before the 90 °C dwell resumed (17:21), i.e. during the
+re-lock after the daytime break — its ~4.35 MHz/min is the re-tune transient
+the envelope exists to bound, not the acquisition-time drift, which the
+archive puts two orders below.
 
 **What this implies for the campaign.** The campaign ran with the reference
 cavity locked (experimenter, 2026-07-23), i.e. the 06-11 regime, so the settled
