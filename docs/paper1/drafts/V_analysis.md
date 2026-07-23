@@ -1,6 +1,6 @@
 # Paper 1 — §V draft prose: analysis (calibration, noise, the fit hierarchy)
 
-**FIRST-PASS DRAFT, for MD/Síle to revise.** Fills the §V stub of
+**FIRST-PASS DRAFT** — to be revised with the co-authors. Fills the §V stub of
 `PAPER1_SKELETON.md`. Not final text; numbers from the committed ledger
 (`docs/RESULTS.md`), provenance/framing in **[brackets]**, LaTeX inline. This is
 the last substantially self-contained section — §I/II/IV/VII/VIII need your voice

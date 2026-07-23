@@ -237,7 +237,7 @@ def test_retired_no_timestamps_claim_stays_retired():
 # Surnames that must not appear in the published tree in a process role.
 # To cite one of these authors, add the citekey file under docs/lit/ and cite
 # it — that path is exempt, which is exactly the distinction being enforced.
-PROCESS_NAMES = [r"\bZohreh\b", r"\bEtienne\b"]
+PROCESS_NAMES = [r"\bZohreh\b", r"\bEtienne\b", r"\bSíle\b", r"\bSile\b"]
 
 
 def test_no_colleagues_named_in_process_roles():

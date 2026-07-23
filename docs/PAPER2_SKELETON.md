@@ -23,7 +23,7 @@ in hand.*
 - **Reference.** Paper 1's cell line is the Doppler-free reference — the same role
   Gokhroo's counter-propagating cell played. A fixed-lock-refined cell reference
   makes the strongest Paper 2; the archival reference still works.
-- **Authorship / journal:** Síle's call.
+- **Authorship / journal:** the fibre group's call.
 
 ## Title (candidates)
 

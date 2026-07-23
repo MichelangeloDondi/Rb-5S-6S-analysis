@@ -19,8 +19,9 @@ A backup of the raw data carrying file timestamps has now surfaced
 The campaign chronology in [`DATA.md`](DATA.md) §2 — the order of powers, the
 cooling sequence, the claim that repeats were saved seconds apart — is
 **experimenter recollection**, tagged as such since it was written. It has been
-public since commit `9190b0b` (2026-07-13, release `v1.0.0`), **nine days
-before the backup surfaced**, and unchanged in substance since.
+public since commit `9190b0b` (2026-07-13), **nine days before the backup
+surfaced**, and unchanged in substance since. *(That commit was originally
+carried by release `v1.0.0`, later withdrawn — §9.)*
 
 That accident makes a genuine blind test available: a detailed, public,
 timestamped account of when things were measured, and an independent clock that
@@ -280,6 +281,27 @@ Open and gating: whether the lock was engaged during each record, and whether
 the oscillation in the two out-of-campaign traces is the spectroscopy sweep
 (IMG_2896, inside the campaign, shows no such band — which itself needs
 explaining before the three are compared).
+
+---
+
+## 9. Integrity note, 2026-07-23 — the release anchors
+
+*Recorded before the backup was opened.*
+
+The `v1.0.0` and `v1.1.0` GitHub releases were **withdrawn** on 2026-07-23,
+during a scope review that unpublished an internal planning document from the
+tree (and therefore from the packaged releases, which carried it). Backup refs
+of both tags are retained locally.
+
+Consequence for this document's provenance, stated plainly: the strongest
+third-party timestamp for "the chronology was public before the backup
+surfaced" was the `v1.0.0` release object (server-dated 2026-07-13). That
+object no longer exists. What remains: commit `9190b0b` and its successors are
+in the repository's public history, the chronology is unchanged in substance
+across them, and the `v1.2.0` release — tagged **while the backup is still
+unopened** — supplies a standing third-party timestamp that precedes the
+audit. The blind test therefore still has a public anchor; it is one step
+weaker than before, and this note is the record of why.
 
 ---
 

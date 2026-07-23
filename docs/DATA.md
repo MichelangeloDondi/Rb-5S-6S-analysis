@@ -39,7 +39,8 @@ untestable without a clock.
 
 > Standing as of 2026-07-22: **recollection, not yet checked against a
 > clock.** This section has been public and unchanged in substance since
-> `9190b0b` (2026-07-13, `v1.0.0`); a backup carrying acquisition
+> `9190b0b` (2026-07-13; its original release was later withdrawn —
+> [PREREGISTRATION §9](PREREGISTRATION_timestamps.md)); a backup carrying acquisition
 > timestamps surfaced nine days later and is under a pre-registered audit
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
 > predictions are taken verbatim from the text below.

@@ -1,6 +1,6 @@
 # Paper 1 — §VI.C/D draft prose: power sweep + the AC-Stark bound
 
-**FIRST-PASS DRAFT, for MD/Síle to revise into your voice.** Fills the
+**FIRST-PASS DRAFT** — to be revised with the co-authors. Fills the
 §VI.C and §VI.D stubs of `PAPER1_SKELETON.md`. Not final text; every number is
 from the committed ledger (`docs/RESULTS.md`), provenance/framing notes in
 **[brackets]**, figures are committed `figures/` files, LaTeX inline.

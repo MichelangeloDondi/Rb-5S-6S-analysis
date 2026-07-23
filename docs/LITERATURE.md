@@ -52,7 +52,7 @@ beam-divergence correction — fit jointly at the small waist (quantified,
 coherence-window bracketed, in `rb5s6s/fringe_tail.py`). CALCULATED 2026-07-17.
 
 **[Hamilton et al., Phys. Rev. Applied 19, 054059 (2023)](lit/hamilton2023.md)**
-(arXiv:2212.10743) — VERIFIED (full text read; PDF in PDF_papers). The
+(arXiv:2212.10743) — VERIFIED (full text read). The
 nearest prior art for our specific CONSTRUCTION, and geometrically closer
 than Stalnaker: a RETRO-REFLECTED Rb-87 vapour two-photon line (5S→5D,
 two-colour 780+776 nm), building the identical focus average — the same
@@ -333,8 +333,8 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
 
 ## 8. The 2024–2026 landscape (Paper-1 positioning + future-transition frontier)
 
-Source sweep: `PDF_papers/literature_intake/landscape_2026_...md` +
-`RECENT_LITERATURE_2023-2026.md`. Strategy for the tunable Ti:Sapph:
+Source sweep: the local literature-intake landscape note (untracked) +
+`RECENT_LITERATURE_2023-2026.md`. Options for the tunable Ti:Sapph:
 `docs/FUTURE_TRANSITIONS_titsapph.md`. **DOI note:** the new APS "coden" DOIs
 (e.g. 10.1103/25md-vv43) need a publisher check; arXiv IDs below are the reliable
 handles.
@@ -390,7 +390,7 @@ contrast and for the future Paper A.]
   citation.
 - **`bjorkholm1976`** — *PRA* **14**, 751: two-photon lineshape with a near-resonant
   intermediate — the theory anchor for the future 6S(clean)-vs-5D(resonant) Paper C
-  (intermediate detunings 75 → 1 THz; see the strategy doc).
+  (intermediate detunings 75 → 1 THz; see `FUTURE_TRANSITIONS_titsapph.md`).
 
 **Radiation-trapping updates (795 nm systematic, M7/§VI.D) — the modern Lévy-flight
 lineage** beyond the Holstein/Molisch/Fioretti canon (Kaiser & Passerat de Silans):

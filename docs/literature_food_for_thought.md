@@ -1,6 +1,6 @@
 # Food for thought — what the pulled papers change
 
-Deep read of `PDF_papers/` (2026-07-12), mined for what actually revises the
+Deep read of the local PDF holdings (2026-07-12), mined for what actually revises the
 analysis, not just what to cite. One headline finding (a confirmed bug + a
 revised w₀), plus three smaller refinements. Numbers reproducible from the
 papers + the snippets in each section.

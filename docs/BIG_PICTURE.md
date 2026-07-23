@@ -158,8 +158,7 @@ temperatures item 3 needs. Neither is new physics; both remove a systematic the
 archive had to live with.
 
 None of this is scheduled or assigned; the specification (`PLAN.md` §8) is
-written so that whoever has the apparatus and beam time can run any prefix
-of it.
+written so that any prefix of it can be run, whenever that becomes possible.
 
 ## 5. What new nanofibre measurements would add
 

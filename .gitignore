@@ -15,8 +15,7 @@ __pycache__/
 .DS_Store
 
 # source-literature PDFs (possibly copyrighted): keep the index + bib, not the PDFs
-PDF_papers/*
-!PDF_papers/README.md
+PDF_papers/
 
 # reference-setup lab photos (carry equipment serials + a purchaser name): keep
 # the transcription/notes, not the images, out of the public repo
