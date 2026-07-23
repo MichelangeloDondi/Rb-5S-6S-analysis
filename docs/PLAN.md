@@ -20,8 +20,7 @@ Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark co
 - **Provenance tags** on every number: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / OPEN / DESCOPED.
 - **Closure testing before real data**: every module passes synthetic-data closure tests (known truth injected, recovered within quoted errors) before touching a real trace. End-to-end: a full synthetic campaign (drift + sweep nonlinearity + noise model included) must return the injected β_self and laser widths inside error bars.
 - **Quarantine**: `4154nm_130c_{025,125,225}mw*` (aborted first attempt) and the non-underscore `4154nm_eom_before/after` brackets are excluded from all headline fits.
-- **Discarded shots**: traces the experimenter rejected at curation time ("seemed quite bad"; four survive in the old `raw/` dump, and the recovered backup preserves
-  sixteen more) live under `data_raw/discarded/` and likewise never enter headline fits — the selection predates the analysis, so honoring it cannot bias results. M0's objective QC runs on them only as an appendix consistency check on the curation.
+- **Discarded shots**: traces the experimenter rejected at curation time ("seemed quite bad") never enter headline fits — the selection predates the analysis, so honoring it cannot bias results. Four survive in the old `raw/` dump and are published under `data_raw/discarded/`; the recovered backup preserves sixteen more (not in the repo; see the results report, addendum 3). M0's objective QC runs on the published four only as an appendix consistency check on the curation.
 - **Engineering**: separate clean repository; physics constants in `rb5s6s/constants.py`, tunables in `rb5s6s/config.py`, nothing numeric hard-coded elsewhere; verbose bus-test documentation (a new operator must be able to take over); pytest battery + CI on every push; functions/modules per pipeline stage.
 
 ## 2. Data manifest
