@@ -105,3 +105,8 @@ def test_drift_settling_numbers_match_the_addendum():
         assert val in doc, (
             f"script's state-space drift {k.group(0)!r} not quoted in addendum 5 "
             f"(missing {val})")
+    # and the centre-channel pull bound must match addendum 6
+    p = re.search(r"S0\(225 mW\) < (\d+\.\d) MHz transition from CENTRES", out)
+    assert p, "pull stage printed no centre-channel bound:\n" + out
+    assert f"< {p.group(1)} MHz" in doc, (
+        f"script's centre-channel bound {p.group(1)} MHz not quoted in addendum 6")
