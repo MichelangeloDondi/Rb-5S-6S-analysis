@@ -337,13 +337,17 @@ conclusions:
   225 mW; γ_coll un-pinned from 0 at 25 mW) and was the sole cause of 4207's
   cross-peak-consistency outlier (χ²/dof 7.4→3.0 after the fix). Headline
   β_self bound unaffected (model-independent raw widths).
-- Curation audit outcome (M0 + systematic curation audit, 2026-07-11):
-  of the four discarded shots, only `4154nm_070c4` shows an objective
+- Curation audit outcome (M0 + systematic curation audit, 2026-07-11;
+  extended to the fitted observable and to 20 discards, 2026-07-23):
+  of the four raw-only discarded shots, only `4154nm_070c4` shows an objective
   signature (~27% dimmer than siblings, structurally clean); `4192nm_090c3`
   is fully clean (a supernumerary 6th repeat); the two 4207 discards are
   indistinguishable from their kept siblings (the flagged features — retrace
   crossing, slow baseline bow — are block-wide). All four stay excluded by
-  pre-registration. On the keeper side no exclusion-worthy trace was found:
+  pre-registration. The 2026-07-23 extension re-ran these four on *linewidth*
+  rather than brightness — the quantity the fits use — and all four sit inside
+  their conditions' kept spread, `4154nm_070c4`'s brightness deficit included.
+  On the keeper side no exclusion-worthy trace was found:
   the flags that survive are fit-time instructions (retrace masking; cold
   rulers → per-trace bright-tooth fits), and RF labels verified 297/297.
 - **The lever test — the fitted γ_coll is a FLOOR; β_self is lever-dependent,
