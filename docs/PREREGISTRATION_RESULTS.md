@@ -261,14 +261,21 @@ the two takes above. Of the remaining seven, one is the pristine original of
 `4192nm_225mw1.csv` and two are its degraded unreadable copies (Addendum 2);
 the last four are single surplus acquisitions, one per condition. Each is
 compared with the five kept repeats *at its own condition*, since width is
-power-broadened and pooling across conditions would be wrong:
+power-broadened and pooling across conditions would be wrong.
 
-| surplus discard | its FWHM | kept five at that condition | z |
+> **Read the names carefully.** Nine of these 19 filenames *also exist in
+> `data_raw/`, holding different traces* — that is exactly how the re-take
+> history stayed hidden until content hashing exposed it. Every file named
+> in this addendum is the **backup copy**, identified by content hash, never
+> by name. Opening the same-named file in `data_raw/` will give different
+> numbers, and that is a collision, not a contradiction.
+
+| surplus discard (backup copy) | its FWHM | kept five at that condition | z |
 |---|---|---|---|
-| `4121nm_125mw5` | 64.50 ms | 63.80 ± 1.20 ms | +0.58 |
-| `4121nm_175mw3` | 64.00 ms | 62.90 ± 1.08 ms | +1.01 |
-| `4121nm_225mw6` | 61.50 ms | 62.80 ± 0.84 ms | −1.55 |
-| `4192nm_075mw5` | 62.50 ms | 64.60 ± 0.65 ms | **−3.22** |
+| `4121nm_125mw5` <br/>`md5 2acede0b…` | 64.50 ms | 63.80 ± 1.20 ms | +0.58 |
+| `4121nm_175mw3` <br/>`md5 7afa9e0f…` | 64.00 ms | 62.90 ± 1.08 ms | +1.01 |
+| `4121nm_225mw6` <br/>`md5 cdf0b163…` | 61.50 ms | 62.80 ± 0.84 ms | −1.55 |
+| `4192nm_075mw5` <br/>`md5 17646bc8…` | 62.50 ms | 64.60 ± 0.65 ms | **−3.22** |
 
 Three are central. **The fourth is not, and is reported rather than smoothed
 over.** Tested properly — a 95% prediction interval for a sixth draw from five
