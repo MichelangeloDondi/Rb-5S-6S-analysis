@@ -451,6 +451,11 @@ settles?" becomes a 2×2 model comparison:
 intervention settling is decisive (ΔAIC +17.1). The claim addendum 4
 declined is now made, in both directions:
 
+> **Superseded by addendum 7:** the residual audit found this noise model
+> inadequate (three real end-of-ladder moves absorbed as drift, kurtosis +7);
+> under the mixture model c = +0.38 [+0.17, +0.59] ms/min — a ~2σ indication,
+> not a 3σ detection. The paragraph stands as written; the audit is below.
+
 - **Drift: c = +0.74 [+0.54, +0.94] ms/min (68%, profile likelihood; 95%
   [+0.24, +1.24]) = +0.032 [+0.023, +0.040] MHz/min laser axis** — one
   constant rate across the five-hour power session, the span the fit sees
@@ -572,6 +577,8 @@ observation and profiling q:
 - **q = +0.003 [−0.117, +0.123] ms/mW (95%)** → pull(225 mW) ∈ [−2.2, +2.4]
   MHz transition → **S₀(225 mW) < 3.5 MHz (95%) from the centre channel
   alone**.
+- *(Addendum 7 re-profiles this under the adequate noise model:
+  < 5.5 MHz — the mixture discounts the 25 mW anchors where the moves live.)*
 - **Injection closure**: a pull injected into the real positions at 1×, 4×
   and 10× the predicted size is recovered to ±0.0001 ms/mW. The estimator is
   unbiased; only the recapture-noise floor limits it.
@@ -605,3 +612,64 @@ blanket "centres are dead" stands only in its across-window sense.
 *Post-hoc; extraction prompted by the experimenter, 2026-07-23.
 `run_drift_settling.py`, final stage; closure documented here, not re-run in
 the script.*
+
+
+## Addendum 7, 2026-07-23 — the residual audit: the noise model was wrong, and it biased the drift
+
+The experimenter asked the right closing question: *are the residuals
+Gaussian, and should they be?* They were not, they should not have been, and
+fixing the model revises the headline.
+
+**The audit.** The standardized one-step innovations of the state-space fit
+fail normality decisively (skew +1.9, excess kurtosis +7.0, Jarque–Bera
+p ≈ 10⁻⁵⁴) — but the failure is *localized*: the 15 gap innovations pass
+cleanly (Shapiro–Wilk p = 0.44; the exponential σ_gap layer is adequate),
+while the within-block steps carry the tails, and the worst offenders all sit
+in **25 mW end-of-ladder blocks** (v up to +5.0). Those are not statistical
+outliers; they are the rare *real* mid-block touches the model gave no
+channel to — so the filter absorbed them into the drift. The bias was live:
+excluding the 25 mW blocks moved the Gaussian c from +0.74 to +0.25, outside
+its own 68% interval. A Gaussian within-block random-walk cannot fix this
+(it fits to exactly zero — a shared variance is the wrong shape for sparse
+events).
+
+**The adequate model.** Within-block transitions get sparse-move mixture
+noise, η ~ (1−π_w)·δ(0) + π_w·N(0, σ_m²), evaluated by a collapsed
+Gaussian-sum filter (exact two-branch likelihood per step, moment-matched
+collapse). ΔAIC = +35.5 over the Gaussian; π_w = 0.078, σ_m ≈ 19 ms; the
+mixture-PIT innovations **pass** (skew +0.3, excess kurtosis +0.7,
+Shapiro–Wilk p = 0.27); the observation scale drops 1.93 → 1.14, vindicating
+the block MADs; and the filter flags exactly three posterior-certain moves —
+all at 25 mW ladder ends, the same events the diagnostics fingered.
+Within-block moves were rare, as remembered: 3 events in 78 transitions.
+
+**The revised numbers, superseding addendum 5's:**
+
+- **Drift: c = +0.38 [+0.17, +0.59] ms/min (68%), [−0.07, +0.83] (95%)
+  = +0.0163 [+0.0073, +0.0252] MHz/min laser.** A **~2σ positive
+  indication, no longer a firm detection** — the Gaussian 3σ rested on the
+  three moves. Robustness now holds: dropping the 25 mW blocks gives +0.25
+  (inside the interval, where the Gaussian model broke), LOO-4207 +0.44.
+  And the methods converge: the segmented floor (+0.19…+0.37), the clean-pair
+  cluster (+0.55 ± 0.17) and the mixture (+0.17…+0.59) now agree within
+  errors — the Gaussian state space was the outlier, for a diagnosed reason.
+- **Structure unchanged**: the 2×2 re-run under the mixture still picks
+  drift-constant × interventions-exponential (settling ΔAIC +16.7; adding
+  drift settling +4.0 against; τ_i ≈ 91 min). The etalon-transient story is
+  untouched.
+- **Pull bound, re-profiled under the mixture: q = −0.050 [−0.190, +0.070]
+  ms/mW (95%) → S₀(225 mW) < 5.5 MHz transition** — looser than addendum 6's
+  3.5 (the mixture rightly discounts the 25 mW anchor points where the moves
+  live), now ~8× above the width channel and ~9× above the prediction.
+- Persistence extrapolation: ~20 MHz laser over the 20.5 h (was ~39).
+  D0 margin: ~250× on the laser axis (was ~125×).
+
+*Why the residuals should never have been Gaussian:* the within-block
+population is a mixture by construction — a quantised jitter core (0.5 ms
+grid) plus rare discrete operator events — and the gap population is
+drop-and-recapture, Gaussian only by the generosity of σ_gap(t). The model
+now says so.
+
+*Post-hoc; audit prompted by the experimenter's question, 2026-07-23.
+`run_drift_settling.py` carries the mixture stage as the headline; the
+Gaussian number is kept, labelled as the biased intermediate it was.*

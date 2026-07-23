@@ -250,11 +250,12 @@ while the settled rate is several times smaller.
 **The archive's own numbers, recovered 2026-07-23.** Differencing block
 positions against the recovered clock (estimator: experimenter;
 `scripts/run_drift_settling.py`; results report addendum 4) gives the
-campaign's in-situ figures: the lock drift is **one constant
-+0.032 [+0.023, +0.040] MHz/min (laser axis) across the five-hour power
-session the fit sees** (the T-session yields bounds that contain it) —
-persisting, ~39 MHz over the 20.5 hours, the scale that forced the all-night
-re-centring — well inside the first-hour within-block bound (≲0.17 MHz/min,
+campaign's in-situ figures: the lock drift is **one constant across the
+five-hour power session the fit sees, +0.016 [+0.007, +0.025] MHz/min laser
+axis (68%; a ~2σ positive indication under the adequate noise model —
+results report addendum 7)**; the T-session yields bounds that contain it.
+Persisting, ~20 MHz over the 20.5 hours — with the drop-and-recapture
+excursions, the scale that forced the all-night re-centring — well inside the first-hour within-block bound (≲0.17 MHz/min,
 itself matching the photographed cavity-locked ±0.19 MHz/min independently).
 A drift-settling term adds nothing (ΔAIC +4); **what settles is the
 operator** — per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
