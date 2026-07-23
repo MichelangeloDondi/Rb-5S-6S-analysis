@@ -235,9 +235,18 @@ def main() -> int:
     print("  measured constant 0.032 [0.023, 0.040] vs the 4 MHz/min envelope,")
     print("  both laser axis: ~125x inside; even the within-block hour-1 bound")
     print(f"  (<~ {4 * RATE_MHZ_MS:.2f} MHz/min laser) never approaches it.")
-    print("\nNot resolved: per-temperature re-kicks (T-session ruler->block spans")
-    print("are operator-contaminated -- the reference was adjusted between ruler")
-    print("and science acquisition; intra-block bounds there: |r| <~ 5 ms/min).")
+    print("\nThe per-temperature question, split by the refined model:")
+    print("  for the DRIFT it stays unresolved (T-session baselines too short;")
+    print("  intra-block bounds |r| <~ 5 ms/min per dwell). For the OPERATOR it is")
+    print("  answered: the very ruler->science steps that contaminate the drift")
+    print("  probe ARE the intervention amplitude, and it RE-KICKS at every dwell --")
+    print("  RMS 74 / 137 / 106 ms (3-6 MHz laser) at 110/90/70 C against the")
+    print("  <~20 ms it had settled to by late P-session; largest single step")
+    print("  (237 ms ~ 10 MHz) right after the 9.6 h break. Each temperature change")
+    print("  (with its per-peak retunes) begins a fresh re-acquisition transient --")
+    print("  the 'one exponential per temperature' of the original proposal, holding")
+    print("  for the disturbance. Descriptive RMS over n=3-4 single steps per dwell,")
+    print("  retune and window moves included; not a fitted sig_gap.")
     return 0
 
 
