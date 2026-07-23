@@ -134,9 +134,9 @@ channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.59$ without measuring it (an
 unscaled threshold would fall below the prediction). It bounds the drift, not the
-coefficient's scale. The fixed-lock session's stable lock resurrects the pull
+coefficient's scale. A fixed-lock session's stable lock would resurrect the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
-several-fold larger, turning this bracket into the measured coefficient.
+several-fold larger, which would turn this bracket into a measured coefficient.
 
 **Radiation trapping — thick cell, near-linear signal, drift-dominated ratios
 (module M7).** Peak amplitude scales roughly *linearly* with density: log-log
@@ -168,7 +168,7 @@ the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the
 drift scatter). *Verdict:* trapping is physically present and expected-large by
 $\tau$, but its net effect on the collected amplitude is modest and its
 degeneracy-breaking effect is $\lesssim10$%, buried under drift; separating it
-needs the fixed-lock session's fixed-lock interleaved-peak run with a controlled collection
+needs a fixed-lock interleaved-peak run with a controlled collection
 geometry. A clean separation of the trapping/993-absorption losses and an
 absolute trapping fraction additionally want [Nieddu's 2019](../lit/nieddu2019.md) same-channel
 baseline (not loaded here).
