@@ -72,7 +72,12 @@ highest-leverage test a future session could open with.**
 
 ## 2. Frequency ruler — the EOM chain
 
-The comb ruler underwrites the whole frequency axis, and assumption 1 of
+The comb ruler underwrites the whole frequency axis — and its history is
+now dated: first trials 2025-07-04, 03:37 JST (four scans, verbose
+filenames, 80 °C); final commissioning on the morning of the campaign
+(2025-07-17, 04:18–06:33 JST — `Initial attempts` → adjusted → `Def`), with
+the `Def` configuration bracketing a pilot power sweep twenty-one minutes
+later (results report, addendum 9). Assumption 1 of
 [methods §6](methods/08_assumptions_and_outlook.md) records that everything
 scales ×2 if the tooth spacing is Ω rather than Ω/2. Both halves are now
 documented in hardware:
@@ -183,7 +188,12 @@ A 2025-07-15 photograph shows the five-tooth comb on the **LeCroy** reading
 "Trig'd", three days before the campaign — consistent with the LeCroy being
 tried and then abandoned for the Agilent. It says nothing about A1, since it
 is not the scope the archive came from; an earlier version of this page cited
-it as weak A1 evidence, which was wrong.
+it as weak A1 evidence, which was wrong. The LeCroy's role is now
+instrument-native fact, not inference: the 2025-07-04 dress rehearsal (50
+traces, results report addendum 9) carries `LECROYWS3104z` headers — so the
+rehearsal ran on the LeCroy and the campaign did **not**; the recollection
+this page corrected was a memory of the rehearsal epoch, and both
+attributions now rest on file signatures.
 
 ---
 
