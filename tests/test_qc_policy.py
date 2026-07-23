@@ -50,3 +50,50 @@ def test_audit_report_warns_when_it_names_a_colliding_filename():
         f"with different content ({colliding[:3]}...) but has lost the warning "
         "that cited names refer to the backup copies, identified by hash."
     )
+
+
+def test_drift_settling_script_degrades_cleanly_without_the_backup(tmp_path):
+    """The drift-rate recovery needs the timestamp backup, which never ships.
+    Without it the script must exit 0 with the no-clock message -- CI has no
+    backup, so anything else breaks the build for machines that lack a clock.
+    """
+    import os
+    import subprocess
+    import sys
+
+    env = dict(os.environ, RB5S6S_BACKUP_DIR=str(tmp_path / "nope"))
+    out = subprocess.run(
+        [sys.executable, "scripts/run_drift_settling.py"],
+        capture_output=True, text=True, env=env, timeout=120)
+    assert out.returncode == 0, out.stderr
+    assert "no timestamp backup" in out.stdout
+
+
+def test_drift_settling_numbers_match_the_addendum():
+    """Addendum 4 quotes +0.55 +/- 0.17 ms/min settled and a dAIC ~ +21 for the
+    exponential. If the backup is present, re-run the estimator and hold the
+    report to its own script -- the doc must not drift from the code.
+    """
+    import os
+    import re
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    import pytest
+
+    backup = Path(os.environ.get(
+        "RB5S6S_BACKUP_DIR",
+        os.path.expanduser("~/Documents/RawDataBackUp_QUARANTINE_2026-07-23")))
+    if not backup.is_dir():
+        pytest.skip("timestamp backup not on this machine")
+
+    out = subprocess.run(
+        [sys.executable, "scripts/run_drift_settling.py"],
+        capture_output=True, text=True, timeout=300).stdout
+    m = re.search(r"agree to \+([\d.]+) \+/- ([\d.]+) ms/min", out)
+    assert m, out
+    doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
+    assert f"+0.{m.group(1).split('.')[1]}" in doc and m.group(2) in doc, (
+        f"script says settled {m.group(1)} +/- {m.group(2)} ms/min; "
+        "addendum 4 quotes something else")

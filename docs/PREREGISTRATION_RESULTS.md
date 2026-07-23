@@ -340,3 +340,80 @@ is stronger than the flawed one, which is luck, not method.*
 
 *Post-hoc throughout; no pre-registered standing. Nothing re-fitted, nothing
 retracted.*
+
+
+## Addendum 4, 2026-07-23 — the drift rate, recovered by differencing
+
+**The estimator is the experimenter's, proposed after Addendum 3:** treat the
+hand re-centrings as offset steps that move the frequency but leave the
+underlying drift untouched, and difference positions inside spans the steps
+cannot reach — the steps then cancel identically, and the drift rate survives.
+The archive alone had no clock to difference against;
+`run_intrablock_trend.py` closed with "no lever on the drift rate at all".
+The recovered timestamps restore the lever. (`scripts/run_drift_settling.py`,
+stdout-only, skips cleanly where the backup is absent.)
+
+Two differencing baselines exist in the power session, and they disagree —
+the disagreement is what identifies the interventions:
+
+| probe | baseline | what it contains | result |
+|---|---|---|---|
+| within blocks, vs real time | ~30 s | pure drift (nothing moved inside a block) | −2.3 ± 1.1 ms/min early, +1.2 ± 0.7 late — **bounds**: below 4 ms/min in magnitude at every epoch |
+| between adjacent blocks of one ladder | 3–14 min | drift **plus re-centrings** (the reference was moved in exactly those gaps, while power was being changed) | 6–9 ms/min apparent in hour 1, collapsing to +0.4–0.7 after hour 3.7 |
+
+The hour-1 between-block rates exceed the within-block bound severalfold, so
+they are not drift: they are the **operator interventions**, both signs,
+±20–70 ms (±1–3 MHz on the laser axis). Their signature is independent:
+mid-block position steps concentrate early (4 of 10 early blocks vs 1 of 10
+late).
+
+**What settles is the disturbance — and the refined fit makes that
+quantitative.** Taking the proposal to trace level, all 99 timestamped
+positions enter one segmented joint fit: per-segment offsets absorb the
+interventions, one smooth r(t) is shared by every segment, the segmentation
+is found iteratively (≥4σ standardized steps, per-trace σ from each block's
+own robust scatter), and the same segmentation serves both rate laws so the
+AIC compares models, not segmentations. The exponential wins decisively —
+**ΔAIC ≈ +196** (scale-profiled likelihood), **τ = 73 [54, 102] min** — the
+same ~1–1.5 h thermal settling scale the wavemeter photographs show after a
+retune (`APPARATUS.md` §6). One caveat is structural, and the layering above
+exists because of it: a gap-step consistent with the fitted r(t) is absorbed
+*as* drift, so sub-threshold interventions can masquerade — and in one early
+block the within-block slope disagrees with the fitted rate at ~3σ. The
+within-block bounds, not the joint fit, own the pure-drift claim; τ
+describes drift and forced re-centrings jointly.
+
+**The settled floor is a detection, not a bound, and it agrees across all
+three estimators**: joint fit **+0.30 [+0.19, +0.37]**, pair median
++0.50 ± 0.60, tight-cluster mean +0.55 ± 0.17 ms/min — positive in every
+one, i.e. **0.013–0.023 MHz/min on the laser axis (0.03–0.05 transition)**.
+Over a 32 s block that is ~0.2–0.3 ms of centre walk, below the 1.8 ms
+jitter, which is why the pre-registered intra-block test rightly returned
+JITTER (§8.4's verdict stands untouched).
+
+**The intervention census falls out of the same fit**: 13 segments over four
+ladders — hour-1 hunting on 4192 (steps of −1.6 and +1.0 MHz laser within
+25 min), the two 4207 scan-window repositionings (+24 and −49 MHz), and
+end-of-ladder nudges of ±0.2–0.9 MHz — frequent early, nearly absent after
+hour 4.
+
+**Concordance with the wavemeter photographs** (`APPARATUS.md` §6), fully
+independent evidence: the early-epoch archive bound (≲0.17 MHz/min laser)
+matches the photographed cavity-locked figure (±0.19 MHz/min); the settled
+0.013–0.023 MHz/min sits an order below, as an hours-deep lock should; and
+the joint fit's τ matches the photographed post-retune settling time.
+
+**Per-temperature re-kicks — the "one exponential per temperature" half of
+the proposal — remain unresolved.** The T-session ruler→science spans are
+operator-contaminated (the reference was adjusted *between* ruler and science
+acquisition: those spans jump ±100 ms both signs in two minutes), and the
+intra-block bounds there (|r| ≲ 5 ms/min per dwell) leave no room to test a
+re-kick smaller than that. Not confirmed, not refuted, bounded.
+
+**D0 postscript.** D0 — declared genuinely uncertain before the backup was
+opened — is post-hoc satisfied in every epoch probed: settled 0.05, early
+≲ 0.34, envelope 4 MHz/min (transition axis).
+
+No shipped number moves: widths are per-trace, and centre steps do not enter
+them. *Post-hoc throughout; estimator proposed by the experimenter
+2026-07-23; scored by no pre-registered rule.*
