@@ -242,15 +242,16 @@ while the settled rate is several times smaller.
 **The archive's own numbers, recovered 2026-07-23.** Differencing block
 positions against the recovered clock (estimator: experimenter;
 `scripts/run_drift_settling.py`; results report addendum 4) gives the
-campaign's in-situ figures: drift bounded |r| ≲ 0.17 MHz/min (laser axis) in
-the first hour — matching the photographed cavity-locked ±0.19 MHz/min above
-by an independent route — and **measured at 0.013–0.023 MHz/min once
-settled** (t ≳ 4 h; the range spans three estimators that agree in sign and
-scale). What decays over the first hours is the total disturbance (drift plus
-the hand re-centrings it forced), exponentially with **τ = 73 [54, 102] min**
-— the same settling scale the post-retune photographs show. The re-centrings
-themselves are ±0.2–2 MHz (laser) steps plus two ~25–50 MHz scan-window
-repositionings, frequent in hour 1, nearly absent after hour 4. The clock also
+campaign's in-situ figures: the lock drift is **one constant
++0.032 [+0.023, +0.040] MHz/min (laser axis) across the whole session** —
+~39 MHz over its 20.5 hours, which is why the reference needed moving all
+night — well inside the first-hour within-block bound (≲0.17 MHz/min,
+itself matching the photographed cavity-locked ±0.19 MHz/min independently).
+A drift-settling term adds nothing (ΔAIC +4); **what settles is the
+operator** — per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
+τ ≈ 1–2.5 h to ≲0.2 MHz, plus two ~25–50 MHz scan-window repositionings.
+That operator settling is what matches the post-retune photographs' scale,
+as it should: re-lock transients are when the re-centring works hardest. The clock also
 explains the one in-campaign wavemeter record: IMG_2896 (17:03) was shot
 eighteen minutes before the 90 °C dwell resumed (17:21), i.e. during the
 re-lock after the daytime break — its ~4.35 MHz/min is the re-tune transient

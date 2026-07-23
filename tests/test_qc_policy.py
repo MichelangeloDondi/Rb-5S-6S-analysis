@@ -97,3 +97,11 @@ def test_drift_settling_numbers_match_the_addendum():
     assert f"+0.{m.group(1).split('.')[1]}" in doc and m.group(2) in doc, (
         f"script says settled {m.group(1)} +/- {m.group(2)} ms/min; "
         "addendum 4 quotes something else")
+    # the state-space stage owns the headline now: constant drift + its CI
+    k = re.search(
+        r"c = (\+\d+\.\d+) \[(\+\d+\.\d+), (\+\d+\.\d+)\] ms/min \(68%\)", out)
+    assert k, "state-space stage printed no constant-drift line:\n" + out
+    for val in k.groups():
+        assert val in doc, (
+            f"script's state-space drift {k.group(0)!r} not quoted in addendum 5 "
+            f"(missing {val})")
