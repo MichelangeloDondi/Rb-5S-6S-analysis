@@ -57,7 +57,7 @@ one consequence:
 - line **shapes are preserved**.
 
 So the archive reports what the *shape* of a line carries — widths, power-law
-scalings, asymmetry — as **bounds, nulls, and confirmed scaling laws**, while
+scalings, asymmetry — as **bounds, nulls, and consistency checks**, while
 the absolute shifts wait
 for a stable lock. This split determines the structure of the results below:
 bounds now, with a proposed fixed-lock follow-up (below) to convert each into
@@ -191,7 +191,7 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
 
 ## What a follow-up session would add
 
-- **A proposed fixed-lock session** A stable lock would return the
+- **A proposed fixed-lock session.** A stable lock would return the
   absolute centres, and a direct beam-profile measurement (knife-edge and/or
   camera) would pin w₀ — turning the bounds above into the first measured
   5S–6S AC-Stark and collisional self-shift coefficients. With power capped at

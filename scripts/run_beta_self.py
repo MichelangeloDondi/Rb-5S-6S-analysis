@@ -10,8 +10,13 @@ apply the measurement-vs-bound rule.
 THE CONFOUND (docs/PLAN.md M4): temperature is monotonic with time across the
 campaign, so a slow instrument drift can mimic collisional broadening. Probes
 that bound the drift contribution:
-  (P1) P-session line widths vs block order at FIXED 130 C (power's true
-       width effect is <=2%) -- a direct hours-scale drift monitor.
+  (P1) P-session line widths vs block order at FIXED 130 C (the ramp predicts
+       a <=2% width effect) -- a drift monitor. NOTE (2026-07-23): block
+       order is ASCENDING POWER, and the recovered timestamps show the
+       session ran DESCENDING, so this axis is reversed in time. The probe
+       is direction-agnostic (it asks whether width varies across the
+       session at fixed T, not which way), so the bound is unaffected --
+       but do not read the sign of any trend here as a drift direction.
   (P2) before/after ruler tooth-width change per peak -- fixed-condition
        instrument drift over each peak's session.
   (P3) cross-peak gamma_coll consistency at fixed T -- four lines see ONE

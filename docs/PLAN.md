@@ -8,7 +8,7 @@ specification for possible future sessions. Supersedes the initial-brief pipelin
 From the 2025 archival data:
 - **C1** First determination — or bound — of collisional self-broadening β_self of the 5S→6S line vs Rb density (T-sweep).
 - **C2** Quantitative characterization of the 2025-epoch laser (within-scan kernel + drift diary). Supporting deliverable; also the starting linewidth baseline for any ONF work on this line.
-- **C3** Power nulls as *predictions confirmed*: FWHM inflation ≤2% and asymmetry ≤10⁻⁴ across 25–225 mW, as required by the intensity-averaging (ramp) law. Measured sensitivity quoted alongside.
+- **C3** Power sweep tested against the ramp law: the law PREDICTS FWHM inflation ≤2% and asymmetry ≈10⁻⁴ across 25–225 mW; the archive OBSERVES a 3–8% non-monotonic width spread (block scatter, no significant power slope) and an asymmetry below its ~10⁻³ noise floor. A null, a consistency check and a bound — not three confirmations.
 
 Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
@@ -915,8 +915,11 @@ one); the hybrid is across the moment hierarchy, never across methods.
   blocks get **12–16 repeats** (they are gain-scatter-limited);
   width blocks 8. Randomized P order (free — no thermalization).
 - **Per-scan timestamps — recorded in hardware metadata, not just the notebook
-  (the fix for 2025 post-mortem #5).** The archive carries *no* acquisition time
-  on any trace, so block order is the only clock — and that is the single reason
+  (the fix for 2025 post-mortem #5).** The analysed exports carry *no* acquisition time
+  on any trace, so block order was the only clock available to the analysis —
+  (a recovered backup later supplied file timestamps; the audit voided at T1,
+  and its post-hoc pass showed block order is not even the acquisition order:
+  the power ladder ran 225 → 25 mW) — and that is the single reason
   the σ_laser-sharing the hierarchical β rests on is untestable: the four peaks at
   a given T could have co-drifted between acquisitions and still agree (M4c), so
   the sharing check is necessary-not-sufficient (RESULTS.md). A wall-clock time on
@@ -1139,7 +1142,7 @@ compresses the cuts follow the priority ranking in §8.0/§8.7.7.
 | 2 | Only 3 densities → 1 residual DOF | t(0.95,1) = 6.31 error multiplier | β_self a bound | ≥5 T blocks (§8.4) |
 | 3 | T monotonic in time (one sweep direction, ever) | density slope exactly collinear with drift | monotonicity guard had to carry the claim | opposite-order days (§8.4) |
 | 4 | Cross-session high-density anchor | joint β collapses 0.036 → 0.014 when folded in (M4d lever test) | high-T lever unusable | 150–170 °C same-session (§8.4) |
-| 5 | No acquisition clock available to the analysis | block order the only clock | σ_laser-sharing assumption untestable **as analysed**; a recovered backup is under pre-registered audit (2026-07-22) which may lift this | log scope clock + notebook (§8.4) |
+| 5 | No acquisition clock available to the analysis | block order the only clock | σ_laser-sharing assumption untestable **as analysed**; the recovered backup was audited 2026-07-23 — integrity void at T1, so this row is unchanged (PREREGISTRATION_RESULTS.md) | log scope clock + notebook (§8.4) |
 | 6 | Ruler traces HWP-rotated (AM trick) | monitor reliability ≈ 0; wrong-sign correlation ~2σ | no drift compensator on the archive | β ≈ 1.20 pure-PM null (§8.4; methods §3) |
 | 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | beam-profile first (§8.0 #1) |
 | 8 | ρ(T) never measured | ~8% S₀ drift across the sweep from window filming alone | optics drift masquerades as physics | T_win before AND after, per condition (§8.0 #2) |

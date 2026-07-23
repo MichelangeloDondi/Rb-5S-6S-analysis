@@ -22,7 +22,7 @@ Manifest rows matched to backup: 282; missing: 15
 * **T5**: all comparisons in raw epoch seconds; JST used for display only.
 * **T6 clock of record** — native scope files present: 0 (mtimes are the clock of record if 0).
 
-**INTEGRITY VOID — predictions deliberately not scored (per the gate table). This is the honest stop.**
+**INTEGRITY VOID — predictions deliberately not scored (per the gate table).**
 
 ---
 
@@ -70,6 +70,24 @@ Manifest rows matched to backup: 296; missing: 1
 
 *One run, everything reported. Scored by scripts/run_timestamp_audit.py at the commit recorded in the results report; criteria are the pre-registered ones and were not adjusted after seeing the data.*
 
+
+### Status of every derived analysis D0–D5
+
+The pre-registration listed six derived analyses. For completeness, since a
+report that scores only the one that passed would be selective reporting:
+
+| # | claim | status |
+|---|---|---|
+| **D0** | the archival drift rate lands below 4 MHz/min | **not scored** — withdrawn before the data was opened (§8.2/§8.3): the corroborating wavemeter photographs proved to be outside the campaign window, and the in-campaign record is consistent with the 4 MHz/min envelope |
+| **D1** | measure the drift rate from intra-block scatter ÷ block duration | **void** — the archive itself showed the intra-block scatter is jitter, not accumulated drift (§8.4), so it cannot be divided by a duration to give a rate |
+| **D2** | drift model, $T$ vs $\sqrt{T}$ scaling of intra-block scatter | **void with D1**, for the same reason: jitter does not scale with block duration |
+| **D3** | re-centring frequency consistent with rate × elapsed ÷ window | **not scored** — depends on D1's rate, which has no route |
+| **D4** | 5-repeat block ≈ 80 s, from scatter ÷ drift rate | **VOID** — its premise (that the scatter is drift) was tested and falsified before the backup was opened (§8.4) |
+| **D5** | median 5-repeat block span under ~70 s | **PASS** — median 34 s (post-hoc pass above) |
+
+D1–D3 were declared in §7 as "weaker in standing than P1–P8", and all three
+died on the same finding, which was itself made and recorded before opening
+the backup. None of them was retired after seeing the timestamps.
 
 ### Post-hoc reading (content-matched pass; no pre-registered standing)
 

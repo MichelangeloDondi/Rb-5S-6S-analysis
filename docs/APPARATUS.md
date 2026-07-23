@@ -171,18 +171,6 @@ assumption A1 outright rather than leaving it as a stated assumption.
 That is worth one spare channel and nothing more. If channels are contended,
 this is the first thing to drop.
 
-A 2025-06-10 photograph of the Agilent scope shows **two channels**: a clean
-triangular **sweep-ramp monitor** on Ch1 and the fluorescence on Ch2, with the
-fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
-
-That bears on assumption **A1** (scope triggered on the sweep sync, so file
-time = ramp phase), which `PLAN.md` still lists as needing one word of
-confirmation: a ramp monitor was demonstrably available, on the Agilent, and
-the photograph shows the fold it produces. **If that channel was saved
-alongside the fluorescence for any archival trace, A1 becomes directly
-testable rather than assumed** — the archive as curated holds single-channel
-traces, so this is a question for the experimenter.
-
 A 2025-07-15 photograph shows the five-tooth comb on the **LeCroy** reading
 "Trig'd", three days before the campaign — consistent with the LeCroy being
 tried and then abandoned for the Agilent. It says nothing about A1, since it
@@ -264,12 +252,14 @@ with repeat index (§[PREREGISTRATION](PREREGISTRATION_timestamps.md) §8.4,
 p = 0.33). At ≈0.2 MHz/min, drift would reach the observed 0.08 MHz scatter
 only after ~70 s, so its absence bounds the block:
 
-> **5-repeat blocks span less than ~70 s** (under ~14 s per saved trace).
+> **The MEDIAN 5-repeat block spans less than ~70 s** (under ~14 s per saved
+> trace). **Scored 2026-07-23: PASS** — median 34 s, range 20–148 s
+> ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)).
 
 That replaces the voided D4 and inverts its logic: D4 divided the scatter *by*
 a drift rate, assuming the scatter *was* drift; this uses the **absence** of
 drift, together with a drift rate now known from the lock state, as an upper
-bound. It is a genuine pre-data prediction about the recovered timestamps.
+bound. It was a genuine pre-data prediction about the recovered timestamps, and it held.
 
 ---
 

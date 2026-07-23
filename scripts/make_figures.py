@@ -242,7 +242,8 @@ def fig_pooled_width():
     a1.set_ylabel("total line FWHM (MHz, transition)")
     a1.set_title("Pooled width vs density: individuals (faint) are\n"
                  "statistics-limited & non-monotonic; the pooled mean\n"
-                 "rises cleanly (β₈₅=β₈₇ tested ⇒ pooling licensed) — still a BOUND",
+                 "rises cleanly (β₈₅, β₈₇ agree within ~1σ — consistent, not\n"
+                 "discriminating) — still a BOUND",
                  fontsize=8)
     a1.legend(fontsize=8, loc="upper left")
     # panel B: σ_laser(T) is MODEL-DEPENDENT -> the "anomaly" is degeneracy, not drift
@@ -263,7 +264,7 @@ def fig_pooled_width():
     a2.set_xlabel("temperature (°C)")
     a2.set_ylabel(r"$\sigma_\mathrm{laser}$ (MHz, transition)")
     a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.1,\n"
-                 "4 peaks agree ⇒ sharing validated, M4c); the tied fit's drop is\n"
+                 "4 peaks agree, χ²<1 ⇒ in-sample check only, M4c); the tied drop is\n"
                  "the β↔σ_laser degeneracy, not a physical laser drift", fontsize=8)
     a2.legend(fontsize=7.5)
     _save(fig, "fig5_pooled_width.png")
