@@ -284,24 +284,41 @@ explaining before the three are compared).
 
 ---
 
-## 9. Integrity note, 2026-07-23 — the release anchors
+## 9. Integrity note — what anchors this pre-registration in time
 
-*Recorded before the backup was opened.*
+*Written 2026-07-23, updated the same day after the audit ran.*
 
-The `v1.0.0` and `v1.1.0` GitHub releases were **withdrawn** on 2026-07-23,
-during a scope review that unpublished an internal planning document from the
-tree (and therefore from the packaged releases, which carried it). Backup refs
-of both tags are retained locally.
+All three GitHub releases that existed during this work — `v1.0.0`, `v1.1.0`,
+`v1.2.0` — were **withdrawn** during scope reviews: their packaged trees carry
+documents later judged unpublishable (an internal planning map, and a
+manuscript draft whose abstract still holds `[X]` placeholders). Backup refs of
+all three tags are retained locally. `v1.3.0` is the first release whose tree
+reflects those decisions.
 
-Consequence for this document's provenance, stated plainly: the strongest
-third-party timestamp for "the chronology was public before the backup
-surfaced" was the `v1.0.0` release object (server-dated 2026-07-13). That
-object no longer exists. What remains: commit `9190b0b` and its successors are
-in the repository's public history, the chronology is unchanged in substance
-across them, and the `v1.2.0` release — tagged **while the backup is still
-unopened** — supplies a standing third-party timestamp that precedes the
-audit. The blind test therefore still has a public anchor; it is one step
-weaker than before, and this note is the record of why.
+That leaves the pre-registration's provenance resting on the **public commit
+history**, not on a release object, and it is worth stating exactly what that
+does and does not prove.
+
+| commit | pushed (server-recorded) | content |
+|---|---|---|
+| `9190b0b` | 2026-07-13 | the campaign chronology, unchanged in substance since |
+| `0af038b` | 2026-07-22 22:43 | **this pre-registration** — predictions P1–P8, gates T1–T6 |
+| `2e56815` | 2026-07-23 04:07 | **the scoring script**, before any contact with the backup |
+| `4592296` | 2026-07-23 04:09 | **the results**, integrity void at T1 |
+
+The ordering is the evidence: the predictions were public nine days before the
+backup surfaced (2026-07-22), and the scorer was public before it was run. Both
+facts are checkable by anyone against GitHub's own commit timeline, which the
+repository owner cannot backdate.
+
+What is weaker than before: a release object is a more conspicuous, harder-to-
+overlook timestamp than a commit, and there is no longer one that predates the
+audit. Nothing about the ordering changed — only how prominently it is
+advertised. This note is the record of that trade, made deliberately: publishing
+an unfinished manuscript to preserve a redundant timestamp would have been the
+worse choice.
+
+---
 
 ---
 
