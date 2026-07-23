@@ -57,7 +57,8 @@ one consequence:
 - line **shapes are preserved**.
 
 So the archive reports what the *shape* of a line carries — widths, power-law
-scalings, asymmetry — as **bounds and nulls**, while the absolute shifts wait
+scalings, asymmetry — as **bounds, nulls, and confirmed scaling laws**, while
+the absolute shifts wait
 for a stable lock. This split determines the structure of the results below:
 bounds now, with a proposed fixed-lock follow-up (below) to convert each into
 a number.
@@ -81,7 +82,8 @@ flowchart LR
     F --> W[widths and shapes vs T, P]
     W --> D[density lever → β_self bound]
     W --> P[power lever → S₀ bound]
-    W --> S[skew and amplitude laws → nulls]
+    W --> S[ramp asymmetry → upper bound]
+    W --> A[amplitude laws → P² and ∝N checks]
     G[guards: model ladder · identifiability · coverage] -.-> D
     G -.-> P
 ```

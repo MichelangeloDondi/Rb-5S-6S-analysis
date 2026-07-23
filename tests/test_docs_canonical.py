@@ -252,3 +252,21 @@ def test_delta_alpha_within_five_percent_is_actually_within_five_percent():
         f"the recompute now differs from Orson by {frac:.1%}, so 'within 5%' "
         f"in THEORY_NOTE §5, PLAN §3 and methods/03 is false")
     assert frac > 0.03, "agreement tightened; requote it nearer the truth"
+
+
+def test_readme_diagram_labels_outcomes_by_their_actual_type():
+    """Third instance of the result-type mislabel class (after fig8's bound and
+    C3a's prediction-as-observation): the README pipeline diagram summarised
+    'skew and amplitude laws -> nulls'. Neither is a null. The ramp asymmetry
+    is an UPPER BOUND (RESULTS C3c: below the SNR floor, consistent with zero
+    -- and STYLE.md says bounds stay bounds), and amplitude ~ P^2 is a
+    CONFIRMED prediction -- the README's own results table says so three
+    sections later. A reader who trusts the diagram would mis-state two of the
+    archive's four headline outcomes."""
+    txt = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "→ nulls]" not in txt, (
+        "the README diagram again folds distinct outcome types into 'nulls'; "
+        "label each branch by what it delivers (bound / null / confirmed law)")
+    for token in ("ramp asymmetry → upper bound",
+                  "amplitude laws → P² and ∝N checks"):
+        assert token in txt, f"README diagram lost its honest label: {token!r}"
