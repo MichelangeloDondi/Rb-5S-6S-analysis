@@ -256,6 +256,37 @@ observable cannot bias the fit that uses it, whatever it does to brightness.
 The three re-take traces dropped to reach N = 5 differ from the kept five in
 nothing at all — the signature of truncation, not cherry-picking.
 
+**The other seven unique files, checked the same way.** Twelve of the 19 are
+the two takes above. Of the remaining seven, one is the pristine original of
+`4192nm_225mw1.csv` and two are its degraded unreadable copies (Addendum 2);
+the last four are single surplus acquisitions, one per condition. Each is
+compared with the five kept repeats *at its own condition*, since width is
+power-broadened and pooling across conditions would be wrong:
+
+| surplus discard | its FWHM | kept five at that condition | z |
+|---|---|---|---|
+| `4121nm_125mw5` | 64.50 ms | 63.80 ± 1.20 ms | +0.58 |
+| `4121nm_175mw3` | 64.00 ms | 62.90 ± 1.08 ms | +1.01 |
+| `4121nm_225mw6` | 61.50 ms | 62.80 ± 0.84 ms | −1.55 |
+| `4192nm_075mw5` | 62.50 ms | 64.60 ± 0.65 ms | **−3.22** |
+
+Three are central. **The fourth is not, and is reported rather than smoothed
+over.** Tested properly — a 95% prediction interval for a sixth draw from five
+points, not a z against a five-point σ — it falls outside by 0.12 ms, which is
+*less than the 0.50 ms quantisation of the metric itself*; its SNR (127) is
+indistinguishable from its siblings' median (129), so it was surplus, not a
+quality cut. Had it been kept, that block's mean width would move by −0.54%,
+against an archive-wide observed linewidth spread of 3–8%. One boundary case
+in four, smaller than the metric's own resolution, is not evidence of
+width-selective curation — but it is the honest limit of what this test can
+say, and it is why the claim above is "indistinguishable in the fitted
+quantity", not "identical".
+
+Two limits stand on the record. This half-max width is a QC metric, coarser
+than the model widths the fits report; and only discards the backup happened
+to preserve can be tested at all — 19 files of an unknown larger number
+originally taken.
+
 So assumption 8 holds on the evidence, and for a sharper reason than
 "curation was pre-analysis": the discarded material is *indistinguishable in
 the fitted quantity*. That is consistent with the repo's stated exclusion rule
