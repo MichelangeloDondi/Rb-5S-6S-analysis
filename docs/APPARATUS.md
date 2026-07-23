@@ -239,6 +239,19 @@ not a steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
 therefore stands as a genuine **envelope** — it bounds every record here —
 while the settled rate is several times smaller.
 
+**The archive's own numbers, recovered 2026-07-23.** Differencing block
+positions against the recovered clock (estimator: experimenter;
+`scripts/run_drift_settling.py`; results report addendum 4) gives the
+campaign's in-situ figures: drift bounded |r| ≲ 0.17 MHz/min (laser axis) in
+the first hour — matching the photographed cavity-locked ±0.19 MHz/min above
+by an independent route — and **measured at 0.013–0.023 MHz/min once
+settled** (t ≳ 4 h; the range spans three estimators that agree in sign and
+scale). What decays over the first hours is the total disturbance (drift plus
+the hand re-centrings it forced), exponentially with **τ = 73 [54, 102] min**
+— the same settling scale the post-retune photographs show. The re-centrings
+themselves are ±0.2–2 MHz (laser) steps plus two ~25–50 MHz scan-window
+repositionings, frequent in hour 1, nearly absent after hour 4.
+
 **What this implies for the campaign.** The campaign ran with the reference
 cavity locked (experimenter, 2026-07-23), i.e. the 06-11 regime, so the settled
 expectation is **≈0.2 MHz/min** — not the ~1 MHz/min of etalon-only operation.

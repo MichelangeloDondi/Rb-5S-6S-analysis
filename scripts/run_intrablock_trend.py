@@ -96,8 +96,9 @@ def main() -> int:
     print("  * It matches the wavemeter's own short-term StdDev (100 kHz,")
     print("    IMG_2896), which is what jitter should look like.")
     print("  * Within-block variation therefore measures laser JITTER; between-")
-    print("    block variation is destroyed by re-centring. The archive has no")
-    print("    lever on the lock DRIFT RATE at all.")
+    print("    block variation is destroyed by re-centring. The archive ALONE has")
+    print("    no lever on the lock DRIFT RATE -- the recovered clock restored")
+    print("    one (scripts/run_drift_settling.py).")
     if len(R) > len(clean):
         print(f"\nStep-like blocks ({len(R) - len(clean)}) -- position jumps mid-block,")
         print("i.e. blocks where the reference DID move mid-acquisition:")
