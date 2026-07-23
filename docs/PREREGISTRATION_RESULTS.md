@@ -859,3 +859,55 @@ intermediate), all published.
 The Desktop original and the four quarantines stay private, read-only, and
 untouched — the provenance roots the public record can always be checked
 against.
+
+
+## Addendum 11, 2026-07-24 — the prehistory exploited: the clock validated in-file, the model tested out of sample
+
+The experimenter's second push in two days — *"I think you underexploited the
+new data"* — and right again. The pilot and prehistory sessions, useless for
+the frozen fits, turn out to carry checks the archive cannot perform on
+itself (`scripts/run_epoch_checks.py`; nothing enters `results/`):
+
+**1. The clock is validated by a second clock, inside the data.** The LeCroy
+rehearsal files embed wall-clock trigger times. Across 47 files:
+**mtime(JST) − TrigTime = +4…+9 s (median +6 s)** — the save-after-trigger
+delay — with one +145 s operator pause. Every timestamp conclusion in
+addenda 1–9 rested on interpreting FAT mtimes as JST; an independent,
+instrument-written clock now confirms that reading to seconds.
+
+**2. The etalon-transient model passes an out-of-sample test.** The pilot's
+science ran ~2.9 h after its morning lock-on — past the ~2 h transient — so
+the disturbance model predicts recapture steps at the settled scale
+(≲20 ms). Measured, on a session the model never saw:
+**+14.0, −5.8, +0.2 ms.** Pass. (The campaign's hour-1 steps, for contrast:
+±20–70 ms, with two window moves in the hundreds.)
+
+**3. The frequency calibration is coherent across days.** The pilot-day
+`Def` rulers give an ACF comb period of **144.2 ± 1.1 ms vs the campaign's
+146.81 ms — the sweep rate agrees to 1.7%** across a day and a
+re-preparation. That is exactly the wander M2's design anticipates: every
+block carries its own rulers because the rate is only per-cent-stable
+between sessions (and 0.6%-stable within one).
+
+**4. The pilot laws** (from addendum 9, restated as checks): width flat at
+60.5–61.5 ms across a 6× power span at 91 °C — the power-null — sitting at
+the campaign's own 90 °C width; amplitudes ×34 vs ×36 predicted P².
+
+**5. One honest non-result.** The rehearsal's dual-scan captures (fast
+dither over a 5 s slow sweep) yield an envelope-centre observable whose
+within-block scatter is largest in the first block (649 ms) and settles
+mid-session (17–131 ms) — consistent with a fresh-lock transient — but the
+final peak's blocks are noisy again (~200–380 ms) and the observable rests
+on an unverified trigger-sync assumption. **No claim either way**; recorded
+so nobody mistakes the suggestive half for a result.
+
+**Open questions for the experimenter, surfaced by the data:** the ~32 ms
+satellite structure beside each `Def`-comb tooth; the identity of the pilot
+rulers' second channel (a 1.92 V DC level, 0.65% wiggle — power monitor?);
+the two-zone temperature notation `130C(90C-0.65A)` (which zone do the
+campaign's quoted temperatures name?); and the three corrupt `4192…270mW`
+rehearsal files (binary content under a `.csv` name).
+
+*Post-hoc, exploratory, outside the frozen archive throughout. The
+disturbance model now has one confirmed out-of-sample prediction and one
+inconclusive one — stated in that order.*
