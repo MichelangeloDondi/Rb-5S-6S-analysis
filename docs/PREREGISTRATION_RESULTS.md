@@ -214,3 +214,60 @@ closed with a number instead of an assumption, which is the difference between
 "documented" and "checked".
 
 *Post-hoc throughout; no pre-registered standing.*
+
+---
+
+## Addendum 3, 2026-07-23 — the discards, tested on the fitted observable
+
+Addendum 2 said 10 backup files "carry content that exists nowhere in the
+analysed set". **That undercounts: the correct figure is 19.** The error was
+matching on filenames — an entire re-taken series hides behind names identical
+to analysed files. The backup's `4121nm_075mw1.csv` and the analysed
+`p_sweep/4121nm_075mw1.csv` share a name and differ in content: the analysed
+copy descends from `4121nm_075mw_1.csv`, the *underscore* re-take. Content
+hashing is the only correct test; 19 of 320 backup CSVs are unique.
+
+**This makes assumption 8 testable for the first time.** The methods chapter
+holds that discards are curation-time (pre-analysis) decisions and therefore
+"cannot bias the fits"; `DATA.md` §3.4 records the reason given — the dropped
+acquisitions "seemed quite bad". Until the backup surfaced no audit could see
+them. At 993.4121 nm / 75 mW it holds **two complete takes**:
+
+| group | n | median SNR | median height | median FWHM | fate |
+|---|---|---|---|---|---|
+| first take (`075mw1–9`) | 9 | 59.1 | 0.1220 V | **63.50 ms** | all discarded |
+| re-take (`_1,_2,_3,_5,_6`) | 5 | 64.9 | 0.1356 V | **63.50 ms** | kept as canonical |
+| re-take (`_4,_7,_8`) | 3 | 65.6 | 0.1347 V | **63.50 ms** | dropped |
+
+Mann–Whitney, kept vs each dropped group:
+
+| | SNR | height | **FWHM** |
+|---|---|---|---|
+| vs first take | p = 0.0020 | p = 0.0010 | **p = 0.89** |
+| vs re-take dropped | p = 0.39 | p = 0.79 | **p = 0.76** |
+
+**The decisive column is the last one.** The first take is genuinely dimmer —
+significantly so in brightness, which vindicates "seemed quite bad" — but the
+**linewidth is identical across all three groups**. Width is what the pipeline
+fits: γ_coll, σ_laser and β_self are width observables, and amplitude enters
+only the separate M7/M10 ratio work. A discard that does not move the fitted
+observable cannot bias the fit that uses it, whatever it does to brightness.
+
+The three re-take traces dropped to reach N = 5 differ from the kept five in
+nothing at all — the signature of truncation, not cherry-picking.
+
+So assumption 8 holds on the evidence, and for a sharper reason than
+"curation was pre-analysis": the discarded material is *indistinguishable in
+the fitted quantity*. That is consistent with the repo's stated exclusion rule
+(`rb5s6s/qc.py`: "QC-based, never result-based").
+
+*Method note, recorded because it was caught rather than avoided: the first
+version of this analysis compared SNR and height and declared the discard
+"justified". SNR and height are not what the analysis fits. The grouping was
+also wrong — a regex silently matched nothing and pooled all 17 traces into
+one bin, so the p-values in that draft were computed on a mis-partitioned set.
+Both were corrected before this addendum was committed; the corrected result
+is stronger than the flawed one, which is luck, not method.*
+
+*Post-hoc throughout; no pre-registered standing. Nothing re-fitted, nothing
+retracted.*
