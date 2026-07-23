@@ -314,6 +314,17 @@ alone. This constant bounds all of them, which is what an envelope should do.
 Caveat on the in-campaign record: it is a smooth SETTLING TRANSIENT (local slope
 falls 9.0 -> 2.4 MHz/min across 8.5 min), so 4 MHz/min covers the post-tuning
 transient; the steady in-campaign rate is not established by any photograph.
+
+RESOLVED 2026-07-23 (the "until then" above arrived): the recovered clock
+measured the in-campaign rate (scripts/run_drift_settling.py, results report
+addendum 4). Settled drift 0.013-0.023 MHz/min laser axis -- ~200x below this
+envelope -- and bounded <~0.17 MHz/min even in hour 1, matching the 0.19 the
+cavity-locked photo shows. The tension paragraph above dissolves: the envelope
+describes RE-TUNE transients, and IMG_2896 (17:03) is exactly that -- shot 18
+minutes before the 90 C dwell resumed (17:21, clock-dated), i.e. mid-re-lock
+after the daytime break, not steady acquisition. The envelope stands, as an
+envelope; the between-block position steps are the operator re-centring
+(+-0.2-2 MHz laser), not free-running drift.
 Its StdDev of 100 kHz is also the same order as the 0.08 MHz intra-block
 scatter above, so that scatter may be jitter rather than drift.
 This constant is used only as an
