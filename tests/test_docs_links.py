@@ -32,17 +32,30 @@ DOCS = sorted(p for p in ROOT.rglob("*.md")
 
 
 def _slug(heading: str) -> str:
-    """Approximate GitHub's heading -> anchor slug (lowercase, punctuation
-    stripped, spaces to hyphens). Good enough for the plain ASCII headings here."""
+    """GitHub's heading -> anchor slug: lowercase, punctuation stripped
+    (em-dashes included), then EVERY space becomes a hyphen -- runs are NOT
+    collapsed, so "A — B" yields "a--b". Verified against GitHub's rendered
+    file HTML 2026-07-24."""
     s = heading.strip().lower()
     s = re.sub(r"[^\w\s-]", "", s)
-    return re.sub(r"\s+", "-", s)
+    return s.replace(" ", "-")
+
+
+def _anchor_set(text: str) -> set:
+    """All anchors a doc offers, with GitHub's duplicate numbering: the second
+    identical heading gets -1, the third -2, ..."""
+    out, seen = set(), {}
+    for h in re.findall(r"^#{1,6}\s+(.*)$", text, re.M):
+        base = _slug(h)
+        k = seen.get(base, 0)
+        seen[base] = k + 1
+        out.add(base if k == 0 else f"{base}-{k}")
+    return out
 
 
 # anchors offered by each doc, keyed by path relative to ROOT
 _ANCHORS = {
-    str(p.relative_to(ROOT)): {_slug(h) for h in
-                               re.findall(r"^#{1,6}\s+(.*)$", p.read_text(encoding="utf-8"), re.M)}
+    str(p.relative_to(ROOT)): _anchor_set(p.read_text(encoding="utf-8"))
     for p in DOCS
 }
 
