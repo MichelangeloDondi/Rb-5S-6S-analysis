@@ -9,7 +9,7 @@ unedited output plus this provenance header.*
 
 ---
 
-**Contents** *(navigational aid, added 2026-07-24 — the report below is unedited)*
+**Contents** *(navigational aid, updated 2026-07-25 — the report below is unedited)*
 
 - [Integrity gates](#integrity-gates)
 - [Integrity gates](#integrity-gates-1)
@@ -31,6 +31,10 @@ unedited output plus this provenance header.*
 - [Addendum 10, 2026-07-24 — consolidation: the clock becomes data, the backup becomes an archive](#addendum-10-2026-07-24--consolidation-the-clock-becomes-data-the-backup-becomes-an-archive)
 - [Addendum 11, 2026-07-24 — the prehistory exploited: the clock validated in-file, the model tested out of sample](#addendum-11-2026-07-24--the-prehistory-exploited-the-clock-validated-in-file-the-model-tested-out-of-sample)
   - [Postscript to addendum 11, 2026-07-24 — two of its open questions closed by analysis](#postscript-to-addendum-11-2026-07-24--two-of-its-open-questions-closed-by-analysis)
+- [Addendum 12, 2026-07-24 — the re-kick, fitted: one transient, restarted by every re-lock](#addendum-12-2026-07-24--the-re-kick-fitted-one-transient-restarted-by-every-re-lock)
+  - [Postscript to addendum 12 — a second timescale, tested and bounded](#postscript-to-addendum-12--a-second-timescale-tested-and-bounded)
+- [Addendum 13, 2026-07-25 — the detection chain's noise spectrum, and a mains line chased into the archive](#addendum-13-2026-07-25--the-detection-chains-noise-spectrum-and-a-mains-line-chased-into-the-archive)
+- [Addendum 14, 2026-07-25 — the last extraction: one test that does not port, one that does](#addendum-14-2026-07-25--the-last-extraction-one-test-that-does-not-port-one-that-does)
 
 ---
 
