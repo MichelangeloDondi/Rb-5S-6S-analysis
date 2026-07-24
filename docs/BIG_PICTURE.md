@@ -147,12 +147,15 @@ leverage:
    the simultaneously measured pull.
 
 Two acquisition changes make those four *trustworthy*, not merely *possible* —
-each closes a gap the 2025 archive could only bound around. **Logging a per-scan
-timestamp** (absent from the analysed exports; a recovered backup supplied file
-timestamps after the fact, but the pre-registered audit voided at content
-identity — [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)) turns the
-σ_laser-sharing behind the tighter β from an untestable assumption into a
-checked fact; the
+each closes a gap the 2025 archive could only bound around. **Interleaving the four peaks within minutes, with a logged per-scan
+timestamp** (absent from the analysed exports; a recovered backup supplied
+file timestamps after the fact — the pre-registered audit voided at content
+identity, but its labelled post-hoc pass then dated the campaign, and the
+dating is what exposed the gap: the four peaks of a dwell were acquired
+**54–76 minutes apart**, so the sharing assumption behind the tighter β was
+never close-in-time to begin with —
+[PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md), [RESULTS.md](RESULTS.md))
+turns that assumption from untested into a checked fact; the
 HighFinesse wavemeter's own long-term log, running alongside, is an independent
 drift diary for free. **Reading the 6S→5P ~1.3 µm cascade**
 instead of the reabsorbed 795 nm fluorescence — trapping-free detection,
