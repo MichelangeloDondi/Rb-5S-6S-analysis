@@ -927,8 +927,13 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the power ladder ran 225 → 25 mW) — and that is the single reason
   the σ_laser-sharing the hierarchical β rests on is untestable: the four peaks at
   a given T could have co-drifted between acquisitions and still agree (M4c), so
-  the sharing check is necessary-not-sufficient (RESULTS.md). A wall-clock time on
-  every scan buys four things. (i) It turns σ_laser-sharing into a *tested* fact —
+  the sharing check is necessary-not-sufficient (RESULTS.md). *(The recovered
+  clock has since dated the gaps — 54–76 min between the four peak-blocks of a
+  dwell — which removes the "acquired close together" justification without
+  refuting sharing: the widths do not track that time, on 12 points with no
+  power. The design fix below is now evidence-backed, not precautionary.)* A
+  wall-clock time on every scan buys four things. (i) It turns σ_laser-sharing
+  into a *tested* fact —
   confirm the four interleaved peaks were acquired close enough in time that the
   accumulated drift across the set (elapsed time × drift rate) is a small fraction
   of the width, so a common σ_laser is forced, not assumed. (ii) It reconstructs
