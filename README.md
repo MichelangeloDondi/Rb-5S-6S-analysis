@@ -18,10 +18,12 @@ residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise flo
 (reduced χ² ≈ 1.1) — this is the raw material everything below is built from.*
 
 <p align="center">
-  <img src="docs/apparatus/apparatus_schematic.svg" width="820" alt="Apparatus schematic: Verdi pump, SolsTiS Ti:Sapph with etalon and reference-cavity locks (ECD absent), wavemeter pickoff, 12.5 MHz EOM, f=150 mm focusing into the two-zone Rb cell, self-imaging flat-mirror retro, side-on PMT (R636-10, assumed, in its photographed Thorlabs PXT1/M housing) behind a 795 nm filter, Keysight scope">
+  <img src="docs/apparatus/apparatus_schematic.svg" width="700" alt="Apparatus schematic in the L-layout of Nieddu 2019: SolsTiS input via fibre to a fold mirror; on the cell axis: polarizing filter, half-wave plate, 12.5 MHz EOM and f=150 mm on the input side of the two-zone Rb cell oven, then f=150 mm, flip-in power meter and the self-imaging flat-mirror retro; fluorescence collected by an f=18 mm lens into the side-on PMT and a G=10⁶ pre-amplifier (R636-10, assumed, in its photographed Thorlabs PXT1/M housing) behind a 795 nm filter, to the Keysight scope">
 </p>
 
-*The bench in one drawing — every element as established in
+*The bench in one drawing — the L-layout of Nieddu et al. (2019), mirrored as
+on the actual breadboard, components numbered 1–13 as in the annotated bench
+photograph. Every element is established in
 [`docs/APPARATUS.md`](docs/APPARATUS.md), which also carries the dated
 photographs behind each box.*
 

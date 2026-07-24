@@ -38,3 +38,7 @@ docs/paper1/
 docs/*inquiry*
 docs/linkedin*
 *.docx
+
+# reference PDFs dropped into docs are never published
+docs/apparatus/*.pdf
+docs/*.pdf

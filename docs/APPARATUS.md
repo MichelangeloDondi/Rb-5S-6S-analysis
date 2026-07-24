@@ -9,9 +9,11 @@ every technical fact and its date in text.*
 
 <img src="apparatus/apparatus_schematic.svg" width="95%" alt="Apparatus schematic: full beam path from pump to detection">
 
-*The bench in one drawing. Every box is established below with its provenance;
-the photographs embedded through this page show the same elements in the
-flesh.*
+*The bench in one drawing — the L-layout of Nieddu et al. (2019, Fig. 2),
+mirrored right-to-left as on the actual breadboard; components numbered 1–13
+following the annotated bench photograph (defense presentation, slide 9).
+Every box is established below with its provenance; the photographs embedded
+through this page show the same elements in the flesh.*
 
 Provenance tags: **PHOTO** (read off a dated setup photograph), **DATA**
 (established from the archive files), **ASSUMED** (inherited from a citation,
@@ -141,6 +143,7 @@ generator as well as a different tank.
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
+| Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA — the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
 > **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
