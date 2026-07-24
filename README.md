@@ -67,6 +67,21 @@ measured constant ~0.02 MHz/min plus MHz-scale re-centrings between blocks
 - absolute line **centres are lost** (drift moves them scan to scan), but
 - line **shapes are preserved**.
 
+The drift rate quoted above was recovered, not recorded. The analysed
+exports carry no acquisition time; a backup that did surfaced a year later
+and was audited
+under a pre-registration written before it was opened. The audit voided at
+its own integrity gate and said so — and a labelled post-hoc pass then dated
+the campaign, corrected the recorded power order, and measured the lock:
+**the drift is one constant +0.016 [0.007, 0.025] MHz/min (laser axis)**,
+while what actually moved the line by megahertz was the hand re-centring
+after each lock dropout, decaying with **τ = 97 [87, 118] min** and re-armed
+by every re-lock. No fitted result changed; the archive simply learned to
+characterise its own instrument — and to date the design flaw (four peaks
+acquired an hour apart) that a follow-up session fixes by interleaving them.
+The full audit trail, including two corrections to its own earlier readings,
+is [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
+
 So the archive reports what the *shape* of a line carries — widths, power-law
 scalings, asymmetry — as **bounds, nulls, and consistency checks**, while
 the absolute shifts wait
