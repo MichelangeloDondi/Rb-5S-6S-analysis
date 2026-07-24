@@ -1130,3 +1130,42 @@ knowing before, not after, a precision session.
 *Exploratory, outside the frozen archive; the rehearsal traces are release-
 asset data (addendum 10). Baseline masking is a 25 %-of-peak threshold;
 Welch PSD, nperseg 2¹⁵ (rehearsal) and 512 (archive).*
+
+
+## Addendum 14, 2026-07-25 — the last extraction: one test that does not port, one that does
+
+The extraction list closes with the rehearsal's own power sweep — four peaks
+at 90/180/270 mW, a third epoch for the C3 laws. One of the two checks turns
+out to be impossible, and saying which is the point.
+
+**The width test does not port, for a geometric reason.** The rehearsal
+captures are *dual-scan*: a fast dither riding a 5 s slow sweep, so what a
+trace shows is a fringe train under an envelope, not a swept line. Measuring
+that envelope gives a median FWHM of **445 ms**, and at the photographed
+SolsTiS setting (3.5 GHz over 5.00 s — the scan panel in
+[`APPARATUS.md`](APPARATUS.md) §1.1) that is **≈ 310 MHz — about 120× the
+~2.6 MHz laser-axis linewidth.** The envelope measures the dither excursion,
+not the line. Any "width versus power" fitted to it would be a statement
+about the modulation depth wearing a physics label; the per-peak slopes it
+produces (+16, +78, −4 ms per e-fold, all p > 0.25) are reported here only to
+be retired. **The archive's C3 width-null cannot be corroborated by this
+epoch, and the pilot session — a genuine single-scan sweep — remains the one
+independent check of it** (addendum 9: flat at 60.5–61.5 ms across a 6× span).
+
+**The amplitude test does port, and holds.** Peak height is a rate
+observable, and the two-photon P² law survives the scan geometry: log-log
+slopes **+2.33, +1.87, +2.36** across the three peaks with a full ladder,
+bracketing 2 and sitting inside the archive's own 1.83–2.12. Three epochs
+now agree on it — archive, pilot (×34 measured vs ×36 predicted over a 6×
+span), and rehearsal — on three different scan configurations and two
+different oscilloscopes.
+
+*One data note: the 4192 nm / 270 mW block contributes n = 2 rather than 5,
+the three missing files being the 0xFF placeholders of addendum 11's
+postscript; its envelope is the outlier that drives the +78 slope above,
+which is a further reason that slope means nothing.*
+
+*Exploratory, outside the frozen archive. With this the extraction list
+opened in addendum 11 is closed: clock validation, out-of-sample transient
+test, cross-day calibration, the discards, the noise spectrum, and now the
+power laws — leaving only the two questions that need the experimenter.*
