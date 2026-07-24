@@ -1015,3 +1015,63 @@ by AIC on 26 steps with an ordinary Gaussian scale likelihood; the 90 °C
 epoch start is the one anchored by a photograph rather than by an
 acquisition, and the P-session epoch start is its first acquisition, not a
 known lock-on — both approximations stated because τ inherits them.*
+
+
+### Postscript to addendum 12 — a second timescale, tested and bounded
+
+The experimenter proposed going further: two time constants — *"a time
+constant for the whole campaign and a second one specific for each subset
+between two re-kicks"* — the natural picture for two servo loops (cavity and
+etalon) with different thermal scales. It is a different model from the
+two-exponential one addendum 12 rejected: that put both decays on the
+**epoch** clock; this puts one on the **campaign** clock.
+
+**Residuals first.** The one-timescale fit leaves nothing obvious to chase:
+standardized residuals have sd 1.07, Shapiro–Wilk p = 0.13, two |z| > 2 where
+1.2 are expected, none above 3, and no correlation of |z| with either clock
+(session r = +0.13, p = 0.5; epoch r = +0.25, p = 0.2). Per-epoch residual
+scale runs 0.76–1.60 (the 90 °C dwell, n = 3, is the loose one).
+
+**Then the models.** Two independent disturbance processes add in *variance*,
+so σ²(t) = A²e^{−2t_session/τ_camp} + B²e^{−2t_epoch/τ_kick}. At n = 26,
+**AICc** (small-sample corrected) is the right criterion:
+
+| model | k | −lnL | AICc |
+|---|---|---|---|
+| **re-kick only** | **2** | **139.17** | **282.9** |
+| campaign **floor** + re-kick | 3 | 139.17 | 285.4 |
+| campaign **decay** + re-kick (quadrature) | 4 | 139.17 | 288.3 |
+| re-kick, τ **per subset** | 5 | 137.76 | 288.5 |
+| campaign decay + per-subset τ | 7 | 137.92 | 296.1 |
+
+**The second timescale's amplitude fits to zero.** Not "small" — zero: the
+log-likelihood is *identical* to the one-timescale fit (139.17 in all three
+campaign-component variants; LRT p = 1.00). Freeing τ per subset buys
+2Δln L = 2.83 on 3 dof (p = 0.42) and leaves the τ's unidentified (one runs
+to 10¹² min, one goes negative). The data does not merely fail to support a
+second process; its best fit contains none.
+
+**So the useful deliverable is a bound**, which is what a null of this shape
+should produce. Profiling the campaign-component amplitude at assumed slow
+timescales:
+
+| assumed τ_campaign | 95% upper bound on its amplitude |
+|---|---|
+| 1 h | 210 ms (8.9 MHz laser) |
+| 3 h | 43 ms (1.8 MHz) |
+| 6 h | 19 ms (0.8 MHz) |
+| 12 h | 13 ms (0.6 MHz) |
+| flat (∞) | 9 ms (0.4 MHz) |
+
+Read that as: a *genuinely slow* campaign-wide disturbance is excluded below
+~1 MHz, while a would-be "campaign" component with a ~1 h timescale is not
+excluded at all — because at 1 h it is degenerate with the re-kick itself
+(τ_kick = 97 min), and the fit simply assigns the variance to whichever term
+is offered. **The archive cannot separate two processes at the same
+timescale**; it can only say that nothing slower than the re-kick is present
+above the bounds above.
+
+*A campaign designed to answer this would log lock-state transitions
+(§8.7 etalon discipline): with re-locks time-stamped, the two clocks stop
+being degenerate. Post-hoc as always; the one-timescale model of addendum 12
+stands.*
