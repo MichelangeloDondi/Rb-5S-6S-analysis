@@ -1,5 +1,26 @@
 """Guards on the exclusion policy itself, not on any one threshold."""
 
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+@pytest.fixture(scope="module")
+def drift_report():
+    """The drift script's stdout, computed ONCE for this module.
+
+    It fits every model in addenda 4-12 (state space, mixture, pull, re-kick,
+    second timescale) and takes ~30 s; three tests read it, so running it per
+    test wasted a minute of every fast-suite run.
+    """
+    if not Path("results/qc_metrics.csv").is_file():
+        pytest.skip("qc_metrics.csv not present (gitignored dump)")
+    out = subprocess.run([sys.executable, "scripts/run_drift_settling.py"],
+                         capture_output=True, text=True, timeout=900)
+    assert out.returncode == 0, out.stderr
+    return out.stdout
+
 
 def test_no_hard_flag_reads_a_quantity_the_physics_fits():
     """The plan's exclusion rule is "QC-based, never result-based" (rb5s6s/qc.py).
@@ -77,25 +98,14 @@ def test_drift_settling_script_degrades_cleanly_without_the_backup(tmp_path):
         assert "qc_metrics.csv not present" in out.stdout
 
 
-def test_drift_settling_numbers_match_the_addendum():
+def test_drift_settling_numbers_match_the_addendum(drift_report):
     """Addendum 4 quotes +0.55 +/- 0.17 ms/min settled and a dAIC ~ +21 for the
     exponential. If the backup is present, re-run the estimator and hold the
     report to its own script -- the doc must not drift from the code.
     """
-    import os
     import re
-    import subprocess
-    import sys
-    from pathlib import Path
 
-    import pytest
-
-    if not Path("results/qc_metrics.csv").is_file():
-        pytest.skip("qc_metrics.csv not present (gitignored dump)")
-
-    out = subprocess.run(
-        [sys.executable, "scripts/run_drift_settling.py"],
-        capture_output=True, text=True, timeout=300).stdout
+    out = drift_report
     m = re.search(r"agree to \+([\d.]+) \+/- ([\d.]+) ms/min", out)
     assert m, out
     doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
@@ -117,25 +127,15 @@ def test_drift_settling_numbers_match_the_addendum():
         f"script's centre-channel bound {p.group(1)} MHz not quoted in addendum 6")
 
 
-def test_rekick_fit_numbers_match_addendum_12():
+def test_rekick_fit_numbers_match_addendum_12(drift_report):
     """Addendum 12 quotes B = 103 ms, tau = 97 min and an AIC ordering. Those
     are now computed by run_drift_settling.py's re-kick stage, so the doc must
     not drift from the code -- the same doc<->script lock the drift and pull
     numbers already carry.
     """
-    import os
     import re
-    import subprocess
-    import sys
-    from pathlib import Path
 
-    import pytest
-
-    if not Path("results/qc_metrics.csv").is_file():
-        pytest.skip("qc_metrics.csv not present (gitignored dump)")
-
-    out = subprocess.run([sys.executable, "scripts/run_drift_settling.py"],
-                         capture_output=True, text=True, timeout=900).stdout
+    out = drift_report
     m = re.search(r"B = (\d+) ms = ([\d.]+) MHz laser, tau = (\d+) min", out)
     assert m, "re-kick stage printed no fitted amplitude/tau:\n" + out
     doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
