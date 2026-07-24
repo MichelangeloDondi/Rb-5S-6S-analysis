@@ -49,6 +49,16 @@ untestable without a clock.
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
 > predictions are taken verbatim from the text below.
 
+<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: dress rehearsal, pilot, and campaign panels with every acquisition marked, etalon-transient windows shaded, and the 9.6 h break annotated">
+
+*The program on its recovered clock — every acquisition in
+[`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv), drawn by
+[`scripts/make_timeline_figure.py`](../scripts/make_timeline_figure.py):
+the LeCroy dress rehearsal (in-file trigger times), the pilot morning
+(ruler commissioning → `Def` → the 91 °C sweep), and the campaign with its
+four power ladders, three temperature dwells, the 9.6 h break, and the
+evidence-backed etalon-transient windows shaded (addenda 4–11).*
+
 Per peak, in time order, all at 130 °C: **before-rulers → 225 → 175 → 125 →
 75 → 25 mW → after-rulers** (each power = 5 back-to-back RF-off repeats; each
 ruler block = ~5 back-to-back RF-on repeats). **Corrected 2026-07-23 from the
