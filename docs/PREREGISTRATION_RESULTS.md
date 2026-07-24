@@ -7,6 +7,33 @@ withdrawn for unrelated scope reasons, see the pre-registration's §9). Quaranti
 SHA-256+MD5+size+epoch manifest before scoring. One run; this file is its
 unedited output plus this provenance header.*
 
+---
+
+**Contents** *(navigational aid, added 2026-07-24 — the report below is unedited)*
+
+- [Integrity gates](#integrity-gates)
+- [Integrity gates](#integrity-gates-1)
+- [Predictions](#predictions)
+- [Post-hoc (no pre-registered standing)](#post-hoc-no-pre-registered-standing)
+  - [Status of every derived analysis D0–D5](#status-of-every-derived-analysis-d0d5)
+  - [Post-hoc reading (content-matched pass; no pre-registered standing)](#post-hoc-reading-content-matched-pass-no-pre-registered-standing)
+- [Addendum, 2026-07-23 (post-release consistency check)](#addendum-2026-07-23-post-release-consistency-check)
+- [Addendum 2, 2026-07-23 — what the backup holds that the analysed set does not](#addendum-2-2026-07-23--what-the-backup-holds-that-the-analysed-set-does-not)
+- [Addendum 3, 2026-07-23 — the discards, tested on the fitted observable](#addendum-3-2026-07-23--the-discards-tested-on-the-fitted-observable)
+- [Addendum 4, 2026-07-23 — the drift rate, recovered by differencing](#addendum-4-2026-07-23--the-drift-rate-recovered-by-differencing)
+- [Addendum 5, 2026-07-23 — the model refined: the drift never settled; the hand did](#addendum-5-2026-07-23--the-model-refined-the-drift-never-settled-the-hand-did)
+  - [Postscript to addendum 5, same day — the per-temperature question, split](#postscript-to-addendum-5-same-day--the-per-temperature-question-split)
+  - [Second postscript to addendum 5 — the mechanism, recalled after the fit](#second-postscript-to-addendum-5--the-mechanism-recalled-after-the-fit)
+- [Addendum 6, 2026-07-23 — the centre channels, attempted at the experimenter's insistence](#addendum-6-2026-07-23--the-centre-channels-attempted-at-the-experimenters-insistence)
+- [Addendum 7, 2026-07-23 — the residual audit: the noise model was wrong, and it biased the drift](#addendum-7-2026-07-23--the-residual-audit-the-noise-model-was-wrong-and-it-biased-the-drift)
+- [Addendum 8, 2026-07-24 — a second source folder closes the last absence](#addendum-8-2026-07-24--a-second-source-folder-closes-the-last-absence)
+- [Addendum 9, 2026-07-24 — the backup grows: a dated duplicate, the pilot, and the program's prehistory](#addendum-9-2026-07-24--the-backup-grows-a-dated-duplicate-the-pilot-and-the-programs-prehistory)
+- [Addendum 10, 2026-07-24 — consolidation: the clock becomes data, the backup becomes an archive](#addendum-10-2026-07-24--consolidation-the-clock-becomes-data-the-backup-becomes-an-archive)
+- [Addendum 11, 2026-07-24 — the prehistory exploited: the clock validated in-file, the model tested out of sample](#addendum-11-2026-07-24--the-prehistory-exploited-the-clock-validated-in-file-the-model-tested-out-of-sample)
+  - [Postscript to addendum 11, 2026-07-24 — two of its open questions closed by analysis](#postscript-to-addendum-11-2026-07-24--two-of-its-open-questions-closed-by-analysis)
+
+---
+
 Backup (quarantine copy): `/Users/michelangelodondi/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
 Backup files seen: 325 (325 distinct basenames)
 

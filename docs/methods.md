@@ -138,13 +138,19 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
           · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
-tests/    229-test battery (207 fast ~35 s + 22 `slow` high-statistics
+tests/    794-test battery (~770 fast ~90 s + 25 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
-          synthetic-κ closures and the MANIFEST qc_reason guards);
+          synthetic-κ closures, the MANIFEST qc_reason guards, and the
+          docs-consistency gates: canonical numbers, links+anchors, math
+          rendering, figure freshness, images, recovered-layer contract);
           CI runs the full set on numpy-minimum AND latest
 docs/     PLAN.md (plan of record) · DATA.md (archive provenance) · RESULTS.md (auto-generated ledger)
           · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
-          · APPARATUS.md (hardware of record)
+          · APPARATUS.md (hardware of record, with photographs + schematic)
+          · PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md (the
+          timestamp audit: frozen predictions, results, addenda 1–11)
+data_recovered/  the backup-recovered layer: the acquisition clock
+          (CLOCK.csv), backup-only discards, degradation lineage
 results/  committed CSVs (the documented run) + results/README.md
 figures/  paper figures from make_figures.py (C1 width-vs-density, C3 power
           sweep, M9 transit degeneracy, M10 area ratios, C1 pooled-width money

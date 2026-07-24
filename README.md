@@ -233,6 +233,20 @@ bash scripts/run_all.sh   # every stage in dependency order, then the figures,
 
 Re-running any stage reproduces its committed CSV in `results/` byte-for-byte.
 
+The **clock-dependent results** (the lock-drift measurement and its audit
+trail, [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md)
+addenda 4–7) also reproduce from a clone: the acquisition clock is committed
+as [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv), and
+
+```bash
+python scripts/run_qc.py              # regenerates the gitignored qc_metrics dump
+python scripts/run_drift_settling.py  # the drift analysis, off the committed clock
+```
+
+prints the full report — no private folder required. The complete
+timestamped raw backup behind the clock is preserved verbatim as the
+release asset `raw-backup-2026-07-24` (sha256 in its notes).
+
 The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
 are cited across many documents. `tests/test_docs_canonical.py` holds each in a
 single registry, reads its true value from the committed CSV, and checks that
