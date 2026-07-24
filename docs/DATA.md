@@ -34,7 +34,7 @@ step, 1.000 s window.
 (experimenter-confirmed, 2026-07-22). Continuous operation matters beyond
 provenance: it removes warm-up transients between blocks, and it is the
 physical reason a *shared* laser-noise epoch across neighbouring blocks is
-plausible at all — the assumption `PLAN.md` limitation row 5 records. The
+plausible at all — the assumption `PLAN.md` §8.7.1 post-mortem row 5 records. The
 recovered clock has since dated it rather than settled it: within a
 temperature dwell the four peak-blocks are **54–76 minutes apart**, so
 "neighbouring" means an hour, and their widths track that hour no better than
