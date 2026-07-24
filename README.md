@@ -17,6 +17,14 @@ in 2025; a fixed-lock follow-up session is proposed and specified in
 residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise floor
 (reduced χ² ≈ 1.1) — this is the raw material everything below is built from.*
 
+<p align="center">
+  <img src="docs/apparatus/apparatus_schematic.svg" width="820" alt="Apparatus schematic: Verdi pump, SolsTiS Ti:Sapph with etalon and reference-cavity locks (ECD absent), wavemeter pickoff, 12.5 MHz EOM, f=150 mm focusing into the two-zone Rb cell, self-imaging flat-mirror retro, side-on R636-10 PMT behind a 795 nm filter, Keysight scope">
+</p>
+
+*The bench in one drawing — every element as established in
+[`docs/APPARATUS.md`](docs/APPARATUS.md), which also carries the dated
+photographs behind each box.*
+
 > **In one sentence:** from a 2025 dataset taken with a drifting laser lock, we
 > extract what lives in the *shape* of the line — collisional
 > broadening, laser width, the power-dependent light shift — as **bounds**,

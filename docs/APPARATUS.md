@@ -7,6 +7,12 @@ and embedded below (2026-07-24); the remainder stays private — some frames
 carry equipment serials and a purchaser's name — and this page still records
 every technical fact and its date in text.*
 
+<img src="apparatus/apparatus_schematic.svg" width="95%" alt="Apparatus schematic: full beam path from pump to detection">
+
+*The bench in one drawing. Every box is established below with its provenance;
+the photographs embedded through this page show the same elements in the
+flesh.*
+
 Provenance tags: **PHOTO** (read off a dated setup photograph), **DATA**
 (established from the archive files), **ASSUMED** (inherited from a citation,
 not verified for this bench), **EXPERIMENTER** (recollection).
