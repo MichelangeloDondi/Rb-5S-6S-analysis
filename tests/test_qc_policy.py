@@ -150,3 +150,15 @@ def test_rekick_fit_numbers_match_addendum_12():
     assert float(d.group(1)) > 4 and float(d.group(2)) > 4, (
         "the re-kick no longer beats its comparators -- addendum 12's argument "
         f"rests on both margins: {d.group(0)}")
+
+    # the second-timescale postscript: its bounds must match the script too,
+    # and its central claim is that the campaign component fits to ZERO
+    for tau, ub in (("3 h", "44"), ("6 h", "20"), ("flat", "10")):
+        assert re.search(rf"tau = {tau}\s*: A < \s*{ub} ms", out), (
+            f"second-timescale bound at tau={tau} is no longer {ub} ms:\n" + out)
+        assert f"| {tau.replace(' h',' h')} | {ub} ms" in doc or f"{ub} ms" in doc, (
+            f"addendum 12's postscript does not quote the {ub} ms bound")
+    amp = re.search(r"amplitude fits to ([\d.]+) ms", out)
+    assert amp and float(amp.group(1)) < 1.0, (
+        "the campaign component no longer fits to zero -- the postscript's "
+        f"'absent, not merely unwarranted' claim would need revisiting: {out}")

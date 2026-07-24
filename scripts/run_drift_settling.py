@@ -880,6 +880,52 @@ def rekick_report() -> None:
           f"({res['rekick2exp'][2]-res['rekick1'][2]:+.1f} AIC).")
     print(f"  One thermal transient, one amplitude, re-armed by every re-lock --")
     print(f"  which is what an etalon settling to a new set point should do.")
+    _second_timescale_report(S, res["rekick1"])
+
+
+def _twoproc_nll(A, tau_c, B, tau_k, S):
+    """Two INDEPENDENT disturbance processes add in variance: a campaign-clock
+    component and the epoch-clock re-kick."""
+    te, ts = S.t_epoch.to_numpy(), S.t_sess.to_numpy()
+    v = ((A*np.exp(-ts/tau_c))**2 + (B*np.exp(-te/tau_k))**2
+         + S.meas.to_numpy()**2)
+    if not np.all(np.isfinite(v)) or np.any(v <= 0):
+        return 1e9
+    return float(0.5*np.sum(np.log(2*np.pi*v) + S.step.to_numpy()**2/v))
+
+
+def _second_timescale_report(S, rekick1_fit) -> None:
+    """A campaign-wide second time constant (experimenter, 2026-07-24): is
+    there one, and if not, how large could it be? At n=26 the criterion is
+    AICc; the answer is a bound, and its caveat is the degeneracy."""
+    n = len(S)
+    th1, nll1, _ = rekick1_fit
+    free = optimize.minimize(
+        lambda p: _twoproc_nll(p[0], p[1], p[2], p[3], S),
+        [60., 3., abs(th1[0]), th1[1]], method="Nelder-Mead",
+        options=dict(xatol=1e-5, fatol=1e-5, maxiter=80000))
+    aicc = lambda f, k: 2*f + 2*k + 2*k*(k+1)/max(n-k-1, 1)
+    print(f"\n  A SECOND, CAMPAIGN-WIDE TIME CONSTANT (independent processes add in")
+    print(f"  variance): AICc {aicc(nll1,2):.1f} for the re-kick alone vs "
+          f"{aicc(float(free.fun),4):.1f} with it.")
+    print(f"    the campaign component's amplitude fits to "
+          f"{abs(free.x[0]):.1f} ms and buys 2dlnL = {2*(nll1-float(free.fun)):.2f} "
+          f"on 2 dof -- it is ABSENT, not merely unwarranted.")
+    print(f"    so the deliverable is its 95% upper bound, per assumed slow tau:")
+    for tau_c, lab in ((3.0, "3 h"), (6.0, "6 h"), (1e3, "flat"), (1.0, "1 h")):
+        lo, hi = 0.0, 800.0
+        for _ in range(22):                       # bisect the 1-dof 95% edge
+            mid = 0.5*(lo + hi)
+            o = optimize.minimize(
+                lambda p: _twoproc_nll(mid, tau_c, p[0], p[1], S),
+                [abs(th1[0]), th1[1]], method="Nelder-Mead",
+                options=dict(xatol=1e-4, fatol=1e-4))
+            (lo := mid) if float(o.fun) - nll1 < 1.92 else (hi := mid)
+        note = "  <-- DEGENERATE with the re-kick's own tau: nothing excluded" \
+               if tau_c < 1.5 else ""
+        print(f"      tau = {lab:5s}: A < {lo:5.0f} ms = {lo*RATE_MHZ_MS:4.1f} MHz laser{note}")
+    print(f"    The archive cannot separate two processes sharing a timescale;")
+    print(f"    logging lock-state transitions is what breaks that degeneracy.")
 
 
 if __name__ == "__main__":
