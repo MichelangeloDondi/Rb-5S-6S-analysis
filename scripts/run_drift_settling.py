@@ -260,25 +260,7 @@ def main() -> int:
     print("  measured constant 0.016 [0.007, 0.025] vs the 4 MHz/min envelope,")
     print("  both laser axis: ~250x inside; even the within-block hour-1 bound")
     print(f"  (<~ {4 * RATE_MHZ_MS:.2f} MHz/min laser) never approaches it.")
-    print("\nThe per-temperature question, FITTED (experimenter's proposal, 2026-07-24):")
-    print("  for the DRIFT it stays unresolved (T-session baselines too short;")
-    print("  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE the")
-    print("  re-kick model is now fitted on all 26 gap steps (16 P-session ladder")
-    print("  pairs + 10 T-session ruler->science), with the epoch clock restarting")
-    print("  at each session/dwell start (90 C from the photographed 17:03 re-lock):")
-    print("    one decay on the session clock          AIC 298.4")
-    print("    per-epoch LEVEL, no decay   [control]   AIC 303.1")
-    print("    RE-KICK, one amplitude, shared tau      AIC 282.4  <-- best")
-    print("    RE-KICK, per-epoch amplitudes           AIC 284.6")
-    print("    RE-KICK, two exponentials               AIC 288.6")
-    print("  => the re-kick is REAL (dAIC +16 over the session clock, +21 over")
-    print("     per-epoch levels: it is the DECAY FROM EACH EPOCH START that")
-    print("     carries it, not merely that epochs differ), and it is UNIVERSAL:")
-    print("     B = 103 [78, 139] ms = 4.4 MHz laser, tau = 97 [87, 118] min,")
-    print("     with per-epoch amplitudes consistent with equal (LRT p = 0.29).")
-    print("     A second exponential buys nothing. One thermal transient, one")
-    print("     amplitude, restarted by every re-lock -- which is what an etalon")
-    print("     settling to a new set point should look like.")
+    rekick_report()
     return 0
 
 
@@ -731,6 +713,173 @@ def pull_bound_report() -> None:
     print(f"     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
     print(f"     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")
     print(f"     nothing bridges, nothing to fit.")
+
+
+# ---- the re-kick fit: does the transient restart at each epoch? (addendum 12)
+#
+# The experimenter's proposal (2026-07-24): fit the disturbance as an
+# exponential RE-KICKED at each temperature rather than one decay from session
+# start. Estimable through a physical constraint, not more data -- tau is the
+# ETALON's thermal time constant (a laser property, not the cell's), so it can
+# be shared across epochs while each keeps its own amplitude.
+#
+# Observable: the per-gap position excursion, two kinds, both "same peak, same
+# frequency region, minutes apart" -- P-session adjacent power blocks of one
+# ladder, and T-session ruler-block -> science-block. Likelihood
+# step ~ N(0, sigma(t_epoch)^2 + measurement^2).
+
+REKICK_EPOCH_START_JST = {          # epoch -> (Y, M, D, h, m) in JST
+    "P": (2025, 7, 17, 23, 47),     # first science acquisition
+    "110C": (2025, 7, 18, 6, 37),   # first acquisition of the dwell
+    "90C": (2025, 7, 18, 17, 3),    # the PHOTOGRAPHED re-lock (IMG_2896)
+    "70C": (2025, 7, 18, 19, 1),
+}
+_EPOCHS = ["P", "110C", "90C", "70C"]
+
+
+def _carrier_ms(path: Path) -> float:
+    """Tallest comb tooth = carrier = the line itself (height-ranked, so a
+    drifting pattern cannot swap tooth identity)."""
+    from scipy import signal
+    from rb5s6s.ingest import load_trace
+    t, v, _ = load_trace(path, with_info=True)
+    t = np.asarray(t, float)
+    if np.ptp(t) < 10:
+        t = t * 1e3
+    v = np.asarray(v, float)
+    vs = np.convolve(v - np.median(v), np.ones(7) / 7, mode="same")
+    pk, pr = signal.find_peaks(vs, height=0.3 * vs.max(), distance=60)
+    return float(t[pk[np.argmax(pr["peak_heights"])]]) if len(pk) else float("nan")
+
+
+def _rekick_steps() -> pd.DataFrame:
+    import datetime as dt
+    JST = dt.timezone(dt.timedelta(hours=9))
+    mt = clock()
+    d = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    d = d[(d.flag == "canonical") & (~d.rf_on)].copy()
+    d["t"] = d.file.map(mt)
+    d = d.dropna(subset=["t"])
+    rows = []
+
+    for peak, g in d[d.role == "p_sweep"].groupby("peak"):
+        blocks = (g.groupby("power_mW")
+                    .agg(t=("t", "median"), pos=("peak_pos_ms", "median"),
+                         sem=("peak_pos_ms", lambda x: x.std(ddof=1) / np.sqrt(len(x))))
+                    .sort_values("t"))
+        recs = list(blocks.itertuples())
+        for a, c in zip(recs, recs[1:]):
+            rows.append(dict(epoch="P", t=(a.t + c.t) / 2, step=c.pos - a.pos,
+                             meas=float(np.hypot(a.sem, c.sem))))
+
+    rul = []
+    for f in sorted((ROOT / "data_raw" / "rulers_t").glob("*.csv")):
+        rel = f"rulers_t/{f.name}"
+        if rel in mt:
+            rul.append(dict(peak=int(f.stem[:4]), T=float(f.stem.split("_")[2][:3]),
+                            t=mt[rel], pos=_carrier_ms(f)))
+    R = pd.DataFrame(rul).dropna()
+    Tsw = d[d.role == "t_sweep"]
+    for (peak, T), g in R.groupby(["peak", "T"]):
+        blk = Tsw[(Tsw.peak == peak) & (Tsw.temperature_C == T)]
+        if blk.empty:
+            continue
+        tr, pr_ = float(np.median(g.t)), float(np.median(g.pos))
+        er = float(g.pos.std(ddof=1) / np.sqrt(len(g))) if len(g) > 1 else 2.0
+        ts, ps = float(blk.t.median()), float(blk.peak_pos_ms.median())
+        es = float(blk.peak_pos_ms.std(ddof=1) / np.sqrt(len(blk)))
+        if (ts - tr) / 60 <= 0.3:
+            continue
+        rows.append(dict(epoch=f"{int(T)}C", t=(ts + tr) / 2, step=ps - pr_,
+                         meas=float(np.hypot(er, es))))
+
+    S = pd.DataFrame(rows)
+    starts = {k: dt.datetime(*v, tzinfo=JST).timestamp()
+              for k, v in REKICK_EPOCH_START_JST.items()}
+    S["t_epoch"] = [(r.t - starts[r.epoch]) / 3600 for r in S.itertuples()]
+    S["t_sess"] = (S.t - S.t.min()) / 3600
+    return S
+
+
+def _rekick_sigma(th, kind, S):
+    te, ts = S.t_epoch.to_numpy(), S.t_sess.to_numpy()
+    if kind == "const":
+        return np.abs(np.full(len(S), th[0]))
+    if kind == "session":
+        return np.abs(th[0] * np.exp(-ts / th[1]))
+    if kind == "rekick1":                       # one amplitude, shared tau
+        return np.abs(th[0] * np.exp(-te / th[1]))
+    amp = np.array([th[_EPOCHS.index(e)] for e in S.epoch])
+    if kind == "levels":
+        return np.abs(amp)
+    if kind == "rekickN":                       # per-epoch amplitude, shared tau
+        return np.abs(amp * np.exp(-te / th[4]))
+    if kind == "rekick2exp":
+        f = 1 / (1 + np.exp(-th[6]))
+        return np.abs(amp * (f * np.exp(-te / th[4]) + (1 - f) * np.exp(-te / th[5])))
+    raise ValueError(kind)
+
+
+def _rekick_nll(th, kind, S):
+    s2 = _rekick_sigma(th, kind, S) ** 2 + S.meas.to_numpy() ** 2
+    if not np.all(np.isfinite(s2)) or np.any(s2 <= 0):
+        return 1e9
+    return float(0.5 * np.sum(np.log(2 * np.pi * s2) + S.step.to_numpy() ** 2 / s2))
+
+
+_REKICK_P0 = {"const": [40.], "session": [80., 1.5], "levels": [80.] * 4,
+              "rekick1": [80., 1.5], "rekickN": [80.] * 4 + [1.5],
+              "rekick2exp": [80.] * 4 + [0.5, 4.0, 0.]}
+
+
+def _rekick_fit(kind, S):
+    p0 = np.array(_REKICK_P0[kind])
+    best = None
+    for f in (1.0, 0.5, 2.0):
+        o = optimize.minimize(lambda th: _rekick_nll(th, kind, S), p0 * f,
+                              method="Nelder-Mead",
+                              options=dict(xatol=1e-4, fatol=1e-4, maxiter=40000))
+        if best is None or o.fun < best.fun:
+            best = o
+    return best.x, float(best.fun), 2 * best.fun + 2 * len(p0)
+
+
+def rekick_report() -> None:
+    from scipy import stats as st
+    S = _rekick_steps()
+    print("\nTHE PER-TEMPERATURE QUESTION, FITTED (experimenter's proposal; addendum 12)")
+    print(f"  for the DRIFT it stays unresolved (T-session baselines too short;")
+    print(f"  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE,")
+    print(f"  {len(S)} gap steps ({(S.epoch=='P').sum()} P-session ladder pairs + "
+          f"{(S.epoch!='P').sum()} T-session ruler->science),")
+    print(f"  each epoch's clock restarting at its own start (90 C at the")
+    print(f"  photographed 17:03 re-lock):")
+    labels = [("const", "constant"), ("session", "one decay, session clock"),
+              ("levels", "per-epoch LEVEL, no decay   [control]"),
+              ("rekick1", "RE-KICK, one amplitude, shared tau"),
+              ("rekickN", "RE-KICK, per-epoch amplitudes"),
+              ("rekick2exp", "RE-KICK, two exponentials")]
+    res = {}
+    for k, lab in labels:
+        res[k] = _rekick_fit(k, S)
+        print(f"    {lab:38s} k={len(res[k][0])}  AIC {res[k][2]:7.1f}")
+    best = min(res, key=lambda k: res[k][2])
+    th1 = res["rekick1"][0]
+    print(f"  best: {best}")
+    print(f"  => dAIC {res['session'][2]-res['rekick1'][2]:+.1f} over the session clock, "
+          f"{res['levels'][2]-res['rekick1'][2]:+.1f} over the per-epoch-level control")
+    print(f"     (so it is the DECAY FROM EACH EPOCH START that carries it, not")
+    print(f"      merely that epochs differ), and one amplitude suffices:")
+    print(f"     B = {th1[0]:.0f} ms = {th1[0]*RATE_MHZ_MS:.1f} MHz laser, "
+          f"tau = {th1[1]*60:.0f} min")
+    lr = 2 * (res["rekick1"][1] - res["rekickN"][1])
+    p = 1 - st.chi2.cdf(max(lr, 0.0), 3)
+    print(f"     per-epoch amplitudes buy 2dlnL = {lr:.2f} on 3 dof -> p = {p:.2f} "
+          f"({'differ' if p < 0.05 else 'CONSISTENT WITH EQUAL'});")
+    print(f"     a second exponential buys nothing "
+          f"({res['rekick2exp'][2]-res['rekick1'][2]:+.1f} AIC).")
+    print(f"  One thermal transient, one amplitude, re-armed by every re-lock --")
+    print(f"  which is what an etalon settling to a new set point should do.")
 
 
 if __name__ == "__main__":
