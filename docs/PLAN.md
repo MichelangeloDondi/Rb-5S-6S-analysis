@@ -989,6 +989,32 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the scope real-time clock (Utilities setup) at session start, and still note
   each block's start time in the notebook as an independent check, so a mis-set
   scope clock is caught rather than trusted.
+- **The LeCroy timestamp story is now demonstrated, not assumed** (addendum 11):
+  the 2025-07-04 dress rehearsal ran on the LeCroy, and its files carry a
+  readable per-trace `TRIGGER_TIME` — 47 of them were read, and
+  mtime(JST) − TrigTime = +4…+9 s, which is what validated the whole
+  FAT-mtime clock reconstruction. So the LeCroy would hand you, for free, the
+  exact provenance whose *absence* cost this entire audit.
+- **But its file weight buys nothing for this signal, measured.** A LeCroy
+  trace is ~250× the bytes of an Agilent one — and that is **sample count, not
+  precision** (500,001 pts at 100 kSa/s over 5 s vs 2,000 at 2 kSa/s over 1 s;
+  per *sample* the Agilent CSV is the heavier of the two). The two-photon line
+  is a ~60 ms feature in sweep time, which the Agilent already samples ~120×;
+  the LeCroy's ~6,000× is pure redundancy, and binning it to equal resolution
+  recovers the same noise. Both are 8-bit — no vertical-resolution edge either
+  way. So the LeCroy's real strengths (GHz bandwidth, GS/s, deep memory) are
+  wasted on a slow swept-fluorescence signal, at a cost of gigabytes for a
+  many-hundred-trace campaign (vs tens of MB) and a more fragile export — three
+  of the 50 rehearsal files were silently binary-corrupt under a `.csv` name.
+- **Recommendation (acquisition hardware).** The one thing that mattered —
+  per-trace time — is obtainable on the lean Agilent by *either* saving its
+  native `.h5` (metadata carries the time column) *or* logging wall-clock
+  externally (the TTL of §(iii) above). Take the science on the Agilent that
+  way. Reach for the LeCroy only if the external time-log proves unreliable in
+  practice (then its embedded TrigTime is worth the disk) **or** if a fast
+  auxiliary channel — a photodiode transient, the ramp monitor at full
+  bandwidth — actually needs the GS/s. Do not choose it for the science traces
+  on a quality argument; there isn't one for a 60 ms feature.
 
 ### 8.4a Amplitude program — the archive's weakest observable, made into levers
 
