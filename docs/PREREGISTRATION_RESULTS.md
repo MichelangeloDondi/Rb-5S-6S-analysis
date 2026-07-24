@@ -1109,23 +1109,43 @@ resonance, nothing that would alias a 2 kSa/s acquisition. But it carries
 across it — so it is exactly the kind of coherent baseline structure a
 lineshape fit could absorb. Chasing it in 120 archive baselines:
 
-- the mains line is present but **weak — 1.9× the local floor** (harmonics
-  1.1–1.3×), against 14.6× in the rehearsal;
-- its amplitude is **~0.5 mV rms vs a 363 mV median line height: 0.14 % of
-  peak**;
+- the mains line is present but weak **relative to the archive's own noise
+  floor — 1.9×** (harmonics 1.1–1.3×), against 14.6× in the rehearsal;
+- its amplitude is **~0.5–0.6 mV rms against a ~310–360 mV median line
+  height: 0.15–0.2 % of peak** (the range is the estimator's sensitivity to
+  the Welch window on a 1 s record, not a disagreement about the physics);
 - and because ~3.6 whole cycles span the line, it **averages rather than
-  displacing the centroid** — it cannot bias a centre, and at 0.14 % it is
+  displacing the centroid** — it cannot bias a centre, and at ~0.2 % it sits
   far below the width systematics that dominate every C1/C3 bound.
 
-**Verdict: identified, quantified, negligible — and the difference between
-the two epochs is itself informative.** The rehearsal ran on the LeCroy with
-a different grounding path; the archive's chain suppressed the same line by
-nearly an order of magnitude. Nothing in `results/` moves.
+**Verdict: identified, quantified, negligible.** Nothing in `results/` moves.
 
-**For the next campaign** this is a cheap thing to keep: the mains line is a
-grounding/pickup diagnostic that costs one long capture to measure, and a
-factor-8 difference between two epochs on the same optical bench is worth
-knowing before, not after, a precision session.
+> **Correction, 2026-07-25 (the day after this addendum was written).** The
+> paragraph that stood here concluded that "the archive's chain suppressed
+> the same line by nearly an order of magnitude" — and built a
+> factor-8-grounding story on it. **That was wrong, and wrong in the
+> flattering direction.** It compared each epoch's line to *its own* noise
+> floor, and the two floors differ by ~4×, so the comparison measures
+> broadband noise as much as pickup. Normalised properly:
+>
+> | | mains rms | signal height | line / signal |
+> |---|---|---|---|
+> | rehearsal (LeCroy) | 105 µV | 81 mV | **0.13 %** |
+> | archive (Agilent) | 633 µV | 306 mV | **0.21 %** |
+>
+> In absolute terms the archive's mains line is **6× larger**, and
+> signal-normalised — the measure that matters for lineshape distortion — it
+> is **1.6× worse, not 8× better**. The substantive conclusion survives
+> untouched (0.2 % of peak, whole cycles across the line, no centroid bias),
+> but the epoch comparison is retracted. *Lesson, recorded because it is the
+> kind of error that reads as a result: a ratio-to-own-floor is not a pickup
+> measurement across chains with different floors.*
+
+**For the next campaign** the diagnostic is still worth its one long capture
+— but for the opposite reason to the one first written here. The mains line
+is at ~0.2 % of peak in the *archive* chain, larger than in the rehearsal,
+and it is the kind of coherent baseline structure that a narrower line (a
+fixed-lock session's goal) would no longer average over.
 
 *Exploratory, outside the frozen archive; the rehearsal traces are release-
 asset data (addendum 10). Baseline masking is a 25 %-of-peak threshold;
