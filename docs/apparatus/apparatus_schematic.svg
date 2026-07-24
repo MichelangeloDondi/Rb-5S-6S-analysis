@@ -1,103 +1,146 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 560" font-family="Helvetica, Arial, sans-serif">
-  <!-- The 2025 5S->6S bench, as established in APPARATUS.md (hand-drawn schematic,
-       2026-07-24). Colors: 532 nm pump #008300, 993 nm beam #e34948,
-       795 nm fluorescence #2a78d6 (validated trio; every path also labeled). -->
-  <rect width="1240" height="560" fill="#fcfcfb"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 0 1080 880" font-family="Helvetica, Arial, sans-serif">
+  <!-- The 2025 5S->6S bench in the L-layout of Nieddu et al. 2019 (Fig. 2),
+       mirrored right-to-left as on the breadboard. The horizontal arm is the
+       fibre delivery; the whole component chain 1-13 (numbering as the
+       annotated bench photo, IMG_2895 / defense slide 9) sits on the cell
+       axis: PF, HWP, EOM and the first f150 on the short (input) side of the
+       vapour cell, the second f150, flip-in power meter and retro beyond it.
+       f = 18 mm is the fluorescence COLLECTION lens in front of the PMT.
+       Colors: 993 nm #e34948, 795 nm fluorescence #2a78d6. 2026-07-24. -->
+  <rect x="-80" width="1080" height="880" fill="#fcfcfb"/>
 
-  <!-- ======================= main beam axis y=310 ======================= -->
-  <!-- Verdi -->
-  <rect x="30" y="272" width="130" height="76" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="95" y="303" text-anchor="middle" font-size="14" fill="#2b2b2a" font-weight="bold">Coherent</text>
-  <text x="95" y="322" text-anchor="middle" font-size="14" fill="#2b2b2a" font-weight="bold">Verdi V-18</text>
-  <text x="95" y="340" text-anchor="middle" font-size="11" fill="#6b6b69">18.50 W · 532 nm</text>
+  <!-- ===================== horizontal delivery arm, y=780, right->left ===================== -->
+  <rect x="795" y="725" width="185" height="110" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="887" y="751" text-anchor="middle" font-size="14" fill="#2b2b2a" font-weight="bold">M Squared SolsTiS</text>
+  <text x="887" y="770" text-anchor="middle" font-size="12" fill="#2b2b2a">993 nm · Verdi V-18 pump</text>
+  <text x="887" y="788" text-anchor="middle" font-size="11" fill="#6b6b69">cavity-triangular scan</text>
+  <text x="887" y="804" text-anchor="middle" font-size="11" fill="#6b6b69">etalon ✓ · ref-cav ✓ · ECD ✗</text>
+  <text x="887" y="820" text-anchor="middle" font-size="11" fill="#6b6b69">pickoff → WS-8 wavemeter</text>
 
-  <!-- pump arrow -->
-  <line x1="160" y1="310" x2="204" y2="310" stroke="#008300" stroke-width="6"/>
-  <polygon points="204,303 218,310 204,317" fill="#008300"/>
-  <text x="188" y="294" text-anchor="middle" font-size="11" fill="#008300" font-weight="bold">532 nm</text>
+  <!-- fibre + collimation -->
+  <path d="M 795 780 q -20 -16 -40 0 q -16 13 -32 0" fill="none" stroke="#8a8a87" stroke-width="2"/>
+  <ellipse cx="705" cy="780" rx="5" ry="15" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="705" y="812" text-anchor="middle" font-size="10.5" fill="#6b6b69">collimation</text>
 
-  <!-- SolsTiS -->
-  <rect x="220" y="258" width="160" height="104" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="300" y="284" text-anchor="middle" font-size="14" fill="#2b2b2a" font-weight="bold">M Squared SolsTiS</text>
-  <text x="300" y="303" text-anchor="middle" font-size="13" fill="#2b2b2a">Ti:Sapph · 993 nm</text>
-  <text x="300" y="322" text-anchor="middle" font-size="11" fill="#6b6b69">cavity-triangular scan</text>
-  <text x="300" y="345" text-anchor="middle" font-size="11" fill="#6b6b69">etalon ✓ · ref-cav ✓ · ECD ✗</text>
+  <!-- beam right->left to the fold -->
+  <line x1="700" y1="780" x2="178" y2="780" stroke="#e34948" stroke-width="2.5"/>
+  <polygon points="420,773 406,780 420,787" fill="#e34948"/>
+  <text x="600" y="762" text-anchor="middle" font-size="11" fill="#e34948" font-weight="bold">993 nm</text>
 
-  <!-- 993 beam to EOM -->
-  <line x1="380" y1="310" x2="470" y2="310" stroke="#e34948" stroke-width="2.5"/>
-  <text x="449" y="296" text-anchor="middle" font-size="11" fill="#e34948" font-weight="bold">993 nm</text>
+  <!-- fold mirror (drawing convention; unnumbered) -->
+  <line x1="152" y1="798" x2="188" y2="762" stroke="#2b2b2a" stroke-width="6"/>
+  <text x="205" y="808" font-size="10.5" fill="#6b6b69">fold M</text>
 
-  <!-- wavemeter pickoff -->
-  <line x1="412" y1="318" x2="428" y2="302" stroke="#2b2b2a" stroke-width="2"/>
-  <line x1="420" y1="310" x2="420" y2="196" stroke="#e34948" stroke-width="1.2" stroke-dasharray="3 3"/>
-  <rect x="345" y="140" width="150" height="56" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="420" y="163" text-anchor="middle" font-size="13" fill="#2b2b2a" font-weight="bold">HighFinesse WS-8</text>
-  <text x="420" y="182" text-anchor="middle" font-size="11" fill="#6b6b69">wavemeter (fibre pickoff)</text>
+  <!-- ===================== the cell axis, x=170, bottom->top ===================== -->
+  <line x1="170" y1="762" x2="170" y2="736" stroke="#e34948" stroke-width="2.5"/>
 
-  <!-- EOM -->
-  <rect x="470" y="278" width="120" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="530" y="303" text-anchor="middle" font-size="14" fill="#2b2b2a" font-weight="bold">EOM</text>
-  <text x="530" y="322" text-anchor="middle" font-size="11" fill="#6b6b69">12.5 MHz resonant</text>
-  <text x="530" y="360" text-anchor="middle" font-size="11" fill="#6b6b69">AFG31021 · 12.500 000 000 0 MHz · 10 Vpp</text>
+  <!-- 1 polarizing filter -->
+  <rect x="146" y="729" width="48" height="7" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="212" y="737" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">1</tspan> · polarizing filter</text>
 
-  <!-- beam to L1 -->
-  <line x1="590" y1="310" x2="648" y2="310" stroke="#e34948" stroke-width="2.5"/>
+  <!-- 2 HWP -->
+  <line x1="170" y1="729" x2="170" y2="700" stroke="#e34948" stroke-width="2.5"/>
+  <rect x="148" y="694" width="44" height="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <circle cx="199" cy="697" r="6.5" fill="none" stroke="#2b2b2a" stroke-width="1.2"/>
+  <text x="216" y="701" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">2</tspan> · λ/2</text>
 
-  <!-- L1 -->
-  <ellipse cx="656" cy="310" rx="7" ry="30" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="656" y="264" text-anchor="middle" font-size="11" fill="#6b6b69">L1 · f = 150 mm</text>
+  <!-- 3 EOM -->
+  <line x1="170" y1="694" x2="170" y2="668" stroke="#e34948" stroke-width="2.5"/>
+  <rect x="128" y="612" width="84" height="56" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="170" y="635" text-anchor="middle" font-size="12.5" fill="#2b2b2a" font-weight="bold">3 · EOM</text>
+  <text x="170" y="651" text-anchor="middle" font-size="10" fill="#6b6b69">12.5 MHz</text>
+  <text x="170" y="663" text-anchor="middle" font-size="10" fill="#6b6b69">resonant</text>
+  <text x="222" y="632" font-size="10.5" fill="#6b6b69">sidebands ⇒ the frequency ruler</text>
+  <text x="222" y="647" font-size="10.5" fill="#6b6b69">AFG31021 · 12.500 000 000 0 MHz · 10 Vpp</text>
 
-  <!-- converging beam into cell, waist, diverging out -->
-  <polygon points="663,296 663,324 775,310" fill="#e34948" opacity="0.8"/>
-  <polygon points="775,310 887,296 887,324" fill="#e34948" opacity="0.8"/>
-  <circle cx="775" cy="310" r="2.6" fill="#2b2b2a"/>
-  <text x="775" y="336" text-anchor="middle" font-size="11" fill="#2b2b2a">w₀ ≈ 50 µm</text>
+  <!-- 4 f150 -->
+  <line x1="170" y1="612" x2="170" y2="580" stroke="#e34948" stroke-width="2.5"/>
+  <ellipse cx="170" cy="573" rx="30" ry="7" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="212" y="577" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">4</tspan> · f = 150 mm</text>
 
-  <!-- cell -->
-  <rect x="695" y="252" width="160" height="106" rx="10" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="775" y="243" text-anchor="middle" font-size="13" fill="#2b2b2a" font-weight="bold">Rb cell · two-zone oven</text>
-  <text x="775" y="374" text-anchor="middle" font-size="11" fill="#6b6b69">70–130 °C · foil-wrapped · N(T) from the cold point</text>
+  <!-- 5 pipe -->
+  <rect x="152" y="512" width="36" height="44" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
+  <text x="196" y="538" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">5</tspan> · pipe</text>
 
-  <!-- L2 -->
-  <ellipse cx="906" cy="310" rx="7" ry="30" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="906" y="264" text-anchor="middle" font-size="11" fill="#6b6b69">L2 · f = 150 mm</text>
+  <!-- converging / diverging beam through the cell -->
+  <polygon points="156,566 184,566 170,404" fill="#e34948" opacity="0.8"/>
+  <polygon points="170,404 156,236 184,236" fill="#e34948" opacity="0.8"/>
+  <circle cx="170" cy="404" r="2.6" fill="#2b2b2a"/>
+  <text x="150" y="384" text-anchor="end" font-size="10.5" fill="#2b2b2a">w₀ ≈ 50 µm</text>
 
-  <!-- beam to mirror -->
-  <line x1="913" y1="310" x2="990" y2="310" stroke="#e34948" stroke-width="2.5"/>
+  <!-- 6 oven -->
+  <rect x="104" y="318" width="132" height="172" rx="12" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="92" y="338" text-anchor="end" font-size="12" fill="#2b2b2a" font-weight="bold">6 · Rb cell in</text>
+  <text x="92" y="354" text-anchor="end" font-size="12" fill="#2b2b2a" font-weight="bold">two-zone oven</text>
+  <text x="92" y="372" text-anchor="end" font-size="10.5" fill="#6b6b69">70–130 °C · foil-wrapped</text>
+  <text x="92" y="386" text-anchor="end" font-size="10.5" fill="#6b6b69">thermocouples 1–4</text>
+  <text x="92" y="400" text-anchor="end" font-size="10.5" fill="#6b6b69">N(T) from the cold point</text>
 
-  <!-- flat mirror -->
-  <rect x="990" y="278" width="8" height="64" fill="#2b2b2a"/>
-  <text x="1002" y="296" font-size="11" fill="#6b6b69">flat mirror</text>
-  <text x="1002" y="311" font-size="11" fill="#6b6b69">self-imaging</text>
-  <text x="1002" y="326" font-size="11" fill="#6b6b69">retro (ρ ≈ 1)</text>
+  <!-- 7 pipe -->
+  <rect x="152" y="256" width="36" height="44" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
+  <text x="196" y="282" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">7</tspan> · pipe</text>
 
-  <!-- return beam, dashed, slightly above -->
-  <line x1="988" y1="298" x2="668" y2="298" stroke="#e34948" stroke-width="1.6" stroke-dasharray="6 4"/>
-  <polygon points="668,293 656,298 668,303" fill="#e34948"/>
-  <text x="960" y="222" text-anchor="middle" font-size="11" fill="#e34948">return beam → standing wave in the cell</text>
-  <line x1="955" y1="228" x2="940" y2="294" stroke="#c9c9c6" stroke-width="0.8"/>
+  <!-- 8 f150 -->
+  <ellipse cx="170" cy="229" rx="30" ry="7" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="212" y="233" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">8</tspan> · f = 150 mm</text>
 
-  <!-- fluorescence up to PMT -->
-  <path d="M 775 252 q -6 -14 0 -28 q 6 -14 0 -28 q -6 -14 0 -26" fill="none" stroke="#2a78d6" stroke-width="2.2"/>
-  <polygon points="768,172 775,158 782,172" fill="#2a78d6"/>
-  <text x="700" y="205" text-anchor="end" font-size="11" fill="#2a78d6" font-weight="bold">795 nm fluorescence</text>
+  <!-- beam f150 -> mirror -->
+  <line x1="170" y1="222" x2="170" y2="98" stroke="#e34948" stroke-width="2.5"/>
 
-  <!-- PMT -->
-  <rect x="700" y="96" width="150" height="62" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="775" y="119" text-anchor="middle" font-size="13" fill="#2b2b2a" font-weight="bold">Hamamatsu R636-10</text>
-  <text x="775" y="136" text-anchor="middle" font-size="11" fill="#6b6b69">side-on PMT · PXT1/M housing</text>
-  <text x="775" y="151" text-anchor="middle" font-size="11" fill="#6b6b69">795 nm filter · landscape</text>
+  <!-- power meter, flip-in, just after the second f150 -->
+  <line x1="170" y1="188" x2="216" y2="170" stroke="#8a8a87" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <rect x="216" y="152" width="96" height="34" rx="5" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="264" y="167" text-anchor="middle" font-size="10.5" fill="#2b2b2a" font-weight="bold">power meter</text>
+  <text x="264" y="180" text-anchor="middle" font-size="10" fill="#6b6b69">flip-in, after 8</text>
+  <path d="M 176 188 a 22 22 0 0 1 30 -14" fill="none" stroke="#8a8a87" stroke-width="1" stroke-dasharray="2 3"/>
 
-  <!-- scope -->
-  <rect x="1000" y="430" width="200" height="76" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="1100" y="456" text-anchor="middle" font-size="13" fill="#2b2b2a" font-weight="bold">Keysight DSO-X 3054A</text>
-  <text x="1100" y="474" text-anchor="middle" font-size="11" fill="#6b6b69">ch1 ramp monitor · ch2 PMT</text>
-  <text x="1100" y="491" text-anchor="middle" font-size="11" fill="#6b6b69">2 000 pts · 1 s up-ramp · CSV</text>
+  <!-- 9 flat mirror -->
+  <rect x="138" y="84" width="64" height="8" fill="#2b2b2a"/>
+  <text x="212" y="78" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">9</tspan> · flat mirror — self-imaging retro (ρ ≈ 1)</text>
+  <text x="212" y="93" font-size="10.5" fill="#6b6b69">return beam ⇒ standing wave in the cell</text>
 
-  <!-- signal lines to scope -->
-  <path d="M 850 127 H 1080 V 430" fill="none" stroke="#a9a9a5" stroke-width="1.4"/>
-  <text x="1088" y="150" font-size="10.5" fill="#6b6b69">ch2 — PMT signal</text>
-  <path d="M 300 362 V 520 H 1030 V 506" fill="none" stroke="#a9a9a5" stroke-width="1.4"/>
-  <text x="330" y="512" font-size="10.5" fill="#6b6b69">ch1 — scan-ramp monitor</text>
+  <!-- return beam, dashed, offset -->
+  <line x1="180" y1="94" x2="180" y2="756" stroke="#e34948" stroke-width="1.6" stroke-dasharray="6 4"/>
+  <polygon points="175,744 180,758 185,744" fill="#e34948"/>
 
+  <!-- ===================== detection stack, right of the oven ===================== -->
+  <path d="M 236 404 q 12 -6 24 0 q 12 6 22 0" fill="none" stroke="#2a78d6" stroke-width="2.2"/>
+  <polygon points="284,397 298,404 284,411" fill="#2a78d6"/>
+  <text x="262" y="384" text-anchor="middle" font-size="10.5" fill="#2a78d6" font-weight="bold">795 nm</text>
+
+  <!-- f18 collection lens -->
+  <ellipse cx="306" cy="404" rx="6" ry="22" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="306" y="446" text-anchor="middle" font-size="10" fill="#6b6b69">f = 18 mm</text>
+  <text x="306" y="459" text-anchor="middle" font-size="10" fill="#6b6b69">collection</text>
+
+  <!-- 10 filter -->
+  <rect x="330" y="376" width="7" height="56" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="333" y="364" text-anchor="middle" font-size="10.5" fill="#2b2b2a" font-weight="bold">10</text>
+  <text x="345" y="473" text-anchor="middle" font-size="10" fill="#6b6b69">795 nm filter</text>
+
+  <!-- 12 holder + 13 PMT + 11 heat sink -->
+  <rect x="352" y="372" width="188" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="446" y="396" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">13 · PMT (R636-10, side-on)</text>
+  <text x="446" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">in 12 · holder — Thorlabs PXT1/M</text>
+  <text x="446" y="427" text-anchor="middle" font-size="10.5" fill="#6b6b69">(cathode identity assumed, Nieddu 2019)</text>
+  <g stroke="#6b6b69" stroke-width="2">
+    <line x1="374" y1="372" x2="374" y2="358"/><line x1="384" y1="372" x2="384" y2="358"/>
+    <line x1="394" y1="372" x2="394" y2="358"/><line x1="404" y1="372" x2="404" y2="358"/>
+    <line x1="414" y1="372" x2="414" y2="358"/>
+  </g>
+  <text x="394" y="348" text-anchor="middle" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">11</tspan> · heat sink</text>
+
+  <!-- signal chain: pre-amp then scope -->
+  <path d="M 540 404 H 583" fill="none" stroke="#a9a9a5" stroke-width="1.4"/>
+  <polygon points="583,384 583,424 645,404" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="607" y="446" text-anchor="middle" font-size="10.5" fill="#6b6b69">pre-amplifier</text>
+  <text x="607" y="459" text-anchor="middle" font-size="10.5" fill="#6b6b69">G = 10⁶</text>
+  <path d="M 645 404 H 688" fill="none" stroke="#a9a9a5" stroke-width="1.4"/>
+  <rect x="688" y="372" width="230" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="803" y="396" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">Keysight DSO-X 3054A</text>
+  <text x="803" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">ch2 — PMT · ch1 — scan-ramp monitor</text>
+  <text x="803" y="427" text-anchor="middle" font-size="10.5" fill="#6b6b69">2 000 pts · 1 s up-ramp · CSV</text>
+
+  <!-- layout credit -->
+  <text x="985" y="866" text-anchor="end" font-size="9.5" fill="#a9a9a5">layout after Nieddu et al. 2019, Fig. 2 · numbering 1–13 as the annotated bench photo</text>
 </svg>
