@@ -27,13 +27,18 @@ perform on itself, plus one honest non-result:
    final peak's blocks are noisy again (~200-380 ms) and the observable
    rests on an unverified trigger-sync assumption: no claim either way.
 
-Open questions this surfaced, updated 2026-07-24 (postscript to addendum
-11): the ~32 ms "satellites" were a peak-finding artifact (ACF shows no
-coherent companion above the few-percent level in either epoch) and the
-three binary 4192@270 files are 0xFF never-written placeholders -- both
-CLOSED. Still open, for the experimenter: the pilot rulers' 1.92 V DC
-channel identity (power monitor?), and the two-zone temperature notation
-130C(90C-0.65A) -- which zone do the campaign temperatures name?
+The extraction list this opened is now CLOSED (addenda 13-14): the noise
+spectrum measured the detection chain over four decades and found a 61 Hz
+mains line at 14.6x the floor, chased into the archive at 1.9x / 0.14% of
+peak -- negligible; and the rehearsal power sweep confirmed the P^2 law
+(slopes 1.87-2.36) while its WIDTH test proved impossible to port, the
+dual-scan envelope being ~120x the linewidth. The "~32 ms satellites" were a
+peak-finding artifact (ACF shows no coherent companion in either epoch), and
+the three binary 4192@270 files are 0xFF never-written placeholders.
+
+Still open, and only the experimenter can close them: the pilot rulers'
+1.92 V DC channel identity (power monitor?), and the two-zone temperature
+notation 130C(90C-0.65A) -- which zone do the campaign temperatures name?
 
 Requires the pilot/prehistory quarantines (private). Exits cleanly without
 them; the committed numbers above are the record, addendum 11 the writeup.
