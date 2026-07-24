@@ -350,7 +350,12 @@ as it should: re-lock transients are when the re-centring works hardest. The
 mechanism arrived after the fit, in the right order to count as
 corroboration: the model found τ ≈ 86 [70, 104] min blind, and the
 experimenter then independently recalled the ~2 h etalon thermal transient —
-same scale. The timeline agrees in detail: the P session opened inside a
+same scale. Fitting the disturbance as a transient that **restarts at each
+re-lock** (results report addendum 12) sharpens both numbers and beats a
+single session-long decay by ΔAIC +16: **B = 103 [78, 139] ms = 4.4 MHz
+laser, τ = 97 [87, 118] min**, one amplitude for every epoch (per-epoch
+amplitudes are consistent with equal, p = 0.29). One thermal transient,
+re-armed by every re-acquisition. The timeline agrees in detail: the P session opened inside a
 transient (hour-1 chaos, 4 of 10 blocks stepped), its late ladders sat past
 one (quiet), and after the 9.6 h daytime break the re-lock at ~17:03
 (IMG_2896) restarted the clock — **both evening dwells ran inside or at the
