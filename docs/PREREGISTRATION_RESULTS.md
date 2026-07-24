@@ -911,3 +911,25 @@ rehearsal files (binary content under a `.csv` name).
 *Post-hoc, exploratory, outside the frozen archive throughout. The
 disturbance model now has one confirmed out-of-sample prediction and one
 inconclusive one — stated in that order.*
+
+
+### Postscript to addendum 11, 2026-07-24 — two of its open questions closed by analysis
+
+**The "~32 ms satellites" were my artifact, not the bench's.** The
+autocorrelation — which detects any coherent periodic companion — shows a
+satellite-band excess of +0.006 (pilot `Def` combs) and +0.004 (campaign
+rulers) against a comb-period bump of ~0.4: **no coherent satellite above
+the few-percent level, in either epoch.** The consistent "pairs" the
+peak-finder reported were the two shoulders of ~60 ms-wide teeth under a
+3.5 ms smoother — tooth *width*, not tooth *structure*. The question is
+withdrawn; the M2 calibration carries no satellite systematic.
+
+**The three binary `4192…270 mW` rehearsal files are unrecoverable
+non-data**: 8.6 MB of pure `0xFF` each — allocation placeholders whose
+content never flushed to the FAT medium (a save failure, consistent with the
+LeCroy's remembered unreliability that evening). Nothing misnamed, nothing
+to parse; the block simply holds 2 real traces of 5, both TrigTime-stamped.
+
+*Remaining from addendum 11's list: the pilot rulers' 1.92 V DC channel
+identity, and the two-zone temperature notation — both experimenter
+questions, the second carrying the density-systematic stakes.*
