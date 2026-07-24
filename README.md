@@ -18,7 +18,7 @@ residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise flo
 (reduced χ² ≈ 1.1) — this is the raw material everything below is built from.*
 
 <p align="center">
-  <img src="docs/apparatus/apparatus_schematic.svg" width="820" alt="Apparatus schematic: Verdi pump, SolsTiS Ti:Sapph with etalon and reference-cavity locks (ECD absent), wavemeter pickoff, 12.5 MHz EOM, f=150 mm focusing into the two-zone Rb cell, self-imaging flat-mirror retro, side-on R636-10 PMT behind a 795 nm filter, Keysight scope">
+  <img src="docs/apparatus/apparatus_schematic.svg" width="820" alt="Apparatus schematic: Verdi pump, SolsTiS Ti:Sapph with etalon and reference-cavity locks (ECD absent), wavemeter pickoff, 12.5 MHz EOM, f=150 mm focusing into the two-zone Rb cell, self-imaging flat-mirror retro, side-on PMT (R636-10, assumed, in its photographed Thorlabs PXT1/M housing) behind a 795 nm filter, Keysight scope">
 </p>
 
 *The bench in one drawing — every element as established in
