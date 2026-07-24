@@ -260,7 +260,10 @@ while the settled rate is several times smaller.
 **The archive's own numbers, recovered 2026-07-23.** Differencing block
 positions against the recovered clock (estimator: experimenter;
 `scripts/run_drift_settling.py`; results report addendum 4) gives the
-campaign's in-situ figures: the lock drift is **one constant across the
+campaign's in-situ figures — resting on a clock reading that is now
+instrument-validated: the LeCroy rehearsal files embed wall-clock trigger
+times, and mtime(JST) − TrigTime = +4…+9 s across 47 files (results report,
+addendum 11). The lock drift is **one constant across the
 five-hour power session the fit sees, +0.016 [+0.007, +0.025] MHz/min laser
 axis (68%; a ~2σ positive indication under the adequate noise model —
 results report addendum 7)**; the T-session yields bounds that contain it.

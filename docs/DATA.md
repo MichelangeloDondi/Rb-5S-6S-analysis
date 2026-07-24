@@ -43,7 +43,9 @@ untestable without a clock.
 > [PREREGISTRATION §9](PREREGISTRATION_timestamps.md)); a backup carrying acquisition
 > timestamps surfaced nine days later and was audited under pre-registration
 > (opened 2026-07-23; **integrity void at T1**, predictions unscored, clock
-> window confirmed — [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md))
+> window confirmed, and the JST clock reading itself later instrument-validated
+> by in-file LeCroy trigger times to seconds (addendum 11) —
+> [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md))
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)) whose
 > predictions are taken verbatim from the text below.
 

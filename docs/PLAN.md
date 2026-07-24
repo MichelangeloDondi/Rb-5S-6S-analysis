@@ -949,7 +949,10 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the etalon temperature transient** — about 2 h of lock-on after ≥3 h of
   lock-off, dropping every few tens of minutes inside it, with MHz-scale
   recapture excursions (the blind state-space fit found the same settling
-  scale, τ ≈ 86 [70, 104] min, before the recollection). Protocol
+  scale, τ ≈ 86 [70, 104] min, before the recollection — and the model then
+  passed an out-of-sample test on the recovered pilot session: predicted
+  post-transient steps ≲20 ms, measured +14.0/−5.8/+0.2 ms, addendum 11).
+  Protocol
   consequences: (i) engage the etalon lock **≥2 h before first data**, and
   after *any* ≥3 h pause budget the transient again — the 2025 evening dwells
   ran entirely inside a fresh post-break transient and paid 3–6 MHz re-kicks
