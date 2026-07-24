@@ -960,3 +960,58 @@ to parse; the block simply holds 2 real traces of 5, both TrigTime-stamped.
 *Remaining from addendum 11's list: the pilot rulers' 1.92 V DC channel
 identity, and the two-zone temperature notation — both experimenter
 questions, the second carrying the density-systematic stakes.*
+
+
+## Addendum 12, 2026-07-24 — the re-kick, fitted: one transient, restarted by every re-lock
+
+The experimenter's original proposal carried a clause the analysis had only
+half-answered: *"one exponential for each temperature value."* Addendum 5's
+postscript could report per-dwell RMS step sizes but not fit them — the
+T-session baselines are short and the ruler→science spans are
+operator-contaminated. What makes the fit possible is a physical constraint,
+not more data: **τ is the etalon's thermal time constant — a property of the
+laser, not of the cell temperature — so it can be shared across epochs while
+each epoch carries its own amplitude.**
+
+Fitted on all **26 gap steps** (16 P-session adjacent-ladder pairs + 10
+T-session ruler→science steps), with each epoch's clock restarting at its own
+start — and the 90 °C epoch starting at the **photographed 17:03 re-lock**,
+not at its first acquisition. The excursion scale σ(t) enters as
+step ~ N(0, σ(t)² + measurement²):
+
+| model | k | AIC |
+|---|---|---|
+| constant | 1 | 301.0 |
+| one decay on the session clock (addendum 5's) | 2 | 298.4 |
+| per-epoch **level**, no decay — *the control* | 4 | 303.1 |
+| **re-kick: one amplitude, shared τ** | **2** | **282.4** |
+| re-kick: per-epoch amplitudes | 5 | 284.6 |
+| re-kick: two exponentials | 7 | 288.6 |
+
+**The re-kick is real, and it is the decay that carries it.** It beats the
+session-clock decay by ΔAIC +16 and the per-epoch-level control by +21 — so
+the gain is not "epochs differ" (that control is the *worst* model of the
+six) but "each epoch restarts a decay". A second exponential adds nothing.
+
+**And the re-kick is universal, not per-temperature.** The winning model has
+a single amplitude:
+
+> **B = 103 [78, 139] ms = 4.4 MHz laser, τ = 97 [87, 118] min**
+
+Letting each epoch keep its own amplitude (P 105, 110 °C 40, 90 °C 211,
+70 °C 69 ms) buys 1.9 in log-likelihood for 3 parameters — a likelihood-ratio
+p = 0.29, **consistent with equal**, and the profiled intervals overlap
+heavily. So the proposal's *shape* is confirmed and its *labelling* refined:
+the transient is not keyed to temperature, it is keyed to **re-locking**, and
+each dwell change happened to involve one. One thermal transient, one
+amplitude, one time constant, restarted every time the lock was re-acquired —
+which is exactly what an etalon settling to a new set point should do, and
+why τ ≈ 97 min lands on the ~2 h the experimenter independently recalled and
+the wavemeter photographs show.
+
+*Post-hoc; the drift itself remains unresolved per temperature (T-session
+baselines too short; intra-block bounds ≲5 ms/min per dwell). Model selection
+by AIC on 26 steps with an ordinary Gaussian scale likelihood; the 90 °C
+epoch start is the one anchored by a photograph rather than by an
+acquisition, and the P-session epoch start is its first acquisition, not a
+known lock-on — both approximations stated because τ inherits them.*

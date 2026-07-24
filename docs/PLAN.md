@@ -954,7 +954,10 @@ one); the hybrid is across the moment hierarchy, never across methods.
   the etalon temperature transient** — about 2 h of lock-on after ≥3 h of
   lock-off, dropping every few tens of minutes inside it, with MHz-scale
   recapture excursions (the blind state-space fit found the same settling
-  scale, τ ≈ 86 [70, 104] min, before the recollection — and the model then
+  scale before the recollection; fitting the transient as **re-armed at each
+  re-lock** gives **B = 103 [78, 139] ms = 4.4 MHz laser, τ = 97 [87, 118]
+  min**, beating a single session-long decay by ΔAIC +16 with one amplitude
+  for every epoch — results report addendum 12 — and the model then
   passed an out-of-sample test on the recovered pilot session: predicted
   post-transient steps ≲20 ms, measured +14.0/−5.8/+0.2 ms, addendum 11).
   Protocol
