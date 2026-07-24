@@ -968,7 +968,14 @@ one); the hybrid is across the moment hierarchy, never across methods.
   — at the measured held-lock drift a 43 MHz window lasts tens of hours
   (~40 h if the ~0.016 MHz/min rate persists), so the
   all-night re-centring was fighting the transient and itself, not the drift;
-  (iii) **log the lock state** (even a TTL on a spare channel): with drops
+  (iii) **one long capture for the noise spectrum** (a few hundred thousand
+  points at ~10 µs, beam on, off resonance): it measures the detection
+  chain's spectral density and its mains pickup in a single acquisition. On
+  the 2025 bench the rehearsal chain carried a 61 Hz line at 14.6× the local
+  noise floor while the campaign chain suppressed the same line to 1.9×
+  (results report addendum 13) — a factor-8 grounding difference between two
+  epochs on one optical table, worth knowing before a precision session
+  rather than after. (iv) **log the lock state** (even a TTL on a spare channel): with drops
   time-stamped, the drift diary needs no state-space model at all. Keep
   the timestamp in the trace *metadata*, not only the filename, so a re-save or
   rename cannot strip it.
