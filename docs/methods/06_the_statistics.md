@@ -351,10 +351,15 @@ The effective-$N$ BIC is the statistically correct one — correlated samples ar
 independent — so the shared model is favoured: **the archive cannot pay for
 per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
 
-- it is **parsimony, not physics** — four peaks that co-drifted between unlogged
+- it is **parsimony, not physics** — four peaks that co-drifted between
   acquisitions would look shared too (§4.2, M4c), and no in-sample score recovers
   the timing; $\Delta\text{BIC}>0$ means "the alternative is not warranted", not
-  "the sharing is real";
+  "the sharing is real". The recovered clock sharpens this from "unlogged" to
+  *dated and unfavourable*: the four peak-blocks of a dwell are **54–76 minutes
+  apart**, not minutes ([RESULTS.md](../RESULTS.md) C1). Their widths show no
+  correlation with that elapsed time ($r=+0.18$, $p=0.6$, n=12), so sharing is
+  not refuted — but the design gave the test no power, which is why the fixed-lock
+  session interleaves the peaks within minutes;
 - the sign **flips** with the sample-counting, so the archive does not *robustly*
   resolve shared-vs-independent — which is exactly the M4c reading, now
   quantitative. The headline therefore stays the model-independent width-slope
