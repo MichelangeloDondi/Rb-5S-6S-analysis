@@ -15,12 +15,11 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > OPEN prior. That status is stated per-result in §5 **and now machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…), so
 > a number never reads as more certain than it is. Modules M0→M16
-> (with lettered fitting sub-stages M4b–M4e), **229 tests**
+> (with lettered fitting sub-stages M4b–M4e), **794 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3
-> power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level. A
-> manuscript scaffold with drafted sections is in
-> [`docs/RESULTS.md`](RESULTS.md). Prose results in §5; the auto-generated
+> power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level.
+> Prose results in §5; the auto-generated
 > single-source-of-truth table is [`docs/RESULTS.md`](RESULTS.md); the
 > prior-art delineation and collision-rate calibration are in
 > [`docs/LITERATURE.md`](LITERATURE.md); what a fixed-lock session would lift is in §7.
