@@ -115,3 +115,38 @@ def test_drift_settling_numbers_match_the_addendum():
     assert p, "pull stage printed no centre-channel bound:\n" + out
     assert f"< {p.group(1)} MHz" in doc, (
         f"script's centre-channel bound {p.group(1)} MHz not quoted in addendum 6")
+
+
+def test_rekick_fit_numbers_match_addendum_12():
+    """Addendum 12 quotes B = 103 ms, tau = 97 min and an AIC ordering. Those
+    are now computed by run_drift_settling.py's re-kick stage, so the doc must
+    not drift from the code -- the same doc<->script lock the drift and pull
+    numbers already carry.
+    """
+    import os
+    import re
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    import pytest
+
+    if not Path("results/qc_metrics.csv").is_file():
+        pytest.skip("qc_metrics.csv not present (gitignored dump)")
+
+    out = subprocess.run([sys.executable, "scripts/run_drift_settling.py"],
+                         capture_output=True, text=True, timeout=900).stdout
+    m = re.search(r"B = (\d+) ms = ([\d.]+) MHz laser, tau = (\d+) min", out)
+    assert m, "re-kick stage printed no fitted amplitude/tau:\n" + out
+    doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
+    B, tau = m.group(1), m.group(3)
+    assert f"B = {B} " in doc, f"script fits B = {B} ms; addendum 12 quotes something else"
+    assert f"τ = {tau} " in doc, f"script fits tau = {tau} min; addendum 12 quotes something else"
+
+    # and the structural claim: the re-kick must beat both the session clock
+    # and the per-epoch-level control, or the addendum's argument is void
+    d = re.search(r"dAIC \+([\d.]+) over the session clock, \+([\d.]+) over", out)
+    assert d, out
+    assert float(d.group(1)) > 4 and float(d.group(2)) > 4, (
+        "the re-kick no longer beats its comparators -- addendum 12's argument "
+        f"rests on both margins: {d.group(0)}")
