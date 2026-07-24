@@ -1,9 +1,11 @@
 # Apparatus — hardware of record and its provenance
 
 *What the 2025 measurement was actually made with, and how each item is known.
-Compiled 2026-07-23 from dated setup photographs (2025-06-07 → 2025-07-29). The
-photographs themselves are not published — they carry equipment serials and a
-purchaser's name — so this page records the technical facts and their dates.*
+Compiled 2026-07-23 from dated setup photographs (2025-06-07 → 2025-07-29).
+A curated, metadata-stripped subset is published in [`apparatus/`](apparatus/)
+and embedded below (2026-07-24); the remainder stays private — some frames
+carry equipment serials and a purchaser's name — and this page still records
+every technical fact and its date in text.*
 
 Provenance tags: **PHOTO** (read off a dated setup photograph), **DATA**
 (established from the archive files), **ASSUMED** (inherited from a citation,
@@ -22,6 +24,12 @@ not verified for this bench), **EXPERIMENTER** (recollection).
 | SolsTiS internal temperature | 40.000 °C | PHOTO 2025-06-10/11 |
 | Scan mode | **"Cavity triangular"**, continuous | PHOTO 2025-06-10/11, 07-29 |
 
+<img src="apparatus/2025-07-29_source_chain_overhead.jpg" width="49%" alt="Source chain from above: Verdi V-18 pump into the M Squared SolsTiS chain"> <img src="apparatus/2025-07-29_verdi_v18_panel.jpg" width="49%" alt="Coherent Verdi V-18 front panel: 18.50 W set, 50.37 A">
+
+*The source chain (2025-07-29): the Verdi V-18 pump feeding the M Squared
+SolsTiS modules (left), and the Verdi front panel at its campaign set point,
+18.50 W / 50.37 A (right).*
+
 The scan-mode reading matters: `DATA.md` §5 *infers* a triangular sweep with a
 fold from the traces themselves. The SolsTiS control page states it directly.
 
@@ -35,6 +43,13 @@ photographs of the SolsTiS control page show which locks were engaged:
 | 2025-06-10 | Locked | **Not Locked** | **Not Locked** |
 | 2025-06-11 | Locked | Locked | **Not Locked** |
 | 2025-07-29 (teardown) | Not Locked | Not Locked | Not Locked |
+
+<img src="apparatus/2025-06-11_solstis_lock_page.jpg" width="80%" alt="SolsTiS control page: Etalon lock Locked, Ref cav lock Locked, ECD lock Not Locked, scan Cavity triangular">
+
+*The SolsTiS control page (2025-06-11, 23:33): **Etalon — Locked; Ref cav —
+Locked; ECD — Not Locked**, scan "Cavity triangular". The archive's central
+limitation in one frame: shapes survive because two locks hold; centres carry
+no metrology because the third — the absolute one — never engaged.*
 
 **The ECD lock is disengaged in every photograph.** For the campaign itself
 the experimenter confirms (2026-07-23) that the **reference cavity was
@@ -139,6 +154,13 @@ DC–750 Hz bandwidth is comfortable against a 1 s scan.
 
 ---
 
+<img src="apparatus/2025-07-18_detection_region_overview.jpg" width="80%" alt="Detection region: foil-wrapped cell, Thorlabs PXT1/M PMT module, MTCD temperature controller">
+
+*The detection region as it ran (2025-07-18, in campaign): the foil-wrapped
+cell at centre-right, the Thorlabs PXT1/M module housing the R636-10 below
+it, lens tube toward the cell, and the MTCD dual-channel temperature
+controller top-right.*
+
 ## 4. Acquisition
 
 | item | value | provenance |
@@ -167,6 +189,14 @@ the same way — before the backup was opened.
 
 ### 4.2 The ramp-monitor channel — available, not saved, and not worth much
 
+<img src="apparatus/2025-06-10_agilent_ramp_and_hyperfine_peaks.jpg" width="90%" alt="Agilent DSO-X 3054A: triangle ramp on channel 1 and the hyperfine fluorescence peaks on channel 2, with fold-mirror echoes at the ramp apex">
+
+*The acquisition in one frame (2025-06-10): the Agilent DSO-X 3054A of
+record, channel 1 the cavity triangle, channel 2 the fluorescence — four
+hyperfine peaks riding Doppler pedestals, and their mirror images folding at
+the ramp apex, the very effect the analysis's adaptive fit window exists to
+handle. Averaging 32, 12.5 kSa/s.*
+
 A 2025-06-10 photograph of the Agilent shows **two channels**: a clean
 triangular sweep-ramp monitor on Ch1 and the fluorescence on Ch2, with the
 fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
@@ -183,6 +213,19 @@ assumption A1 outright rather than leaving it as a stated assumption.
 
 That is worth one spare channel and nothing more. If channels are contended,
 this is the first thing to drop.
+
+<img src="apparatus/2025-07-15_eom_comb_five_teeth.jpg" width="80%" alt="Five-tooth EOM comb on the scope: carrier, two sidebands, two faint outer teeth">
+
+*The frequency ruler in the flesh (2025-07-15): the five-tooth two-photon
+comb — carrier, first sidebands, faint outer teeth — at 200 ms/div. Tooth
+spacing is Ω/2 = 6.25 MHz on the laser axis; a pattern like this calibrates
+every block's sweep.*
+
+<img src="apparatus/2025-07-29_lecroy_ws3104z.jpg" width="60%" alt="Teledyne LeCroy WaveSurfer 3104z with SiP FY24-06 asset tag">
+
+*The LeCroy WaveSurfer 3104z (2025-07-29) — the scope of the 2025-07-04
+dress rehearsal (addendum 9), not of the archive; both attributions rest on
+file signatures.*
 
 A 2025-07-15 photograph shows the five-tooth comb on the **LeCroy** reading
 "Trig'd", three days before the campaign — consistent with the LeCroy being
@@ -205,6 +248,12 @@ attributions now rest on file signatures.
 | Temperature controller | 2-channel | PHOTO |
 | Thermocouple/heater positions | **four**, marked 1, 2 (one end) and 3, 4 (the other) | PHOTO 2025-07-01 |
 | Rb condensation | visible on the cell windows when unwrapped | PHOTO 2025-07-01 |
+
+<img src="apparatus/2025-07-01_cell_thermocouples.jpg" width="70%" alt="Unwrapped cell in its copper block, thermocouple positions 3 and 4 annotated, Rb condensation visible on the window">
+
+*The cell unwrapped (2025-07-01): copper block, Kapton-taped thermocouples —
+positions 3 and 4 annotated on the frame itself — and Rb condensation
+visible on the window. In operation the assembly is foil-wrapped.*
 
 Assumption 7 of [methods §6](methods/08_assumptions_and_outlook.md) allows for
 "a possible cell cold spot". Four monitored positions along the cell is the
@@ -232,6 +281,20 @@ into a comparison:
 | 2025-06-19 | 6 min | etalon only | +0.5 MHz/min |
 | **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg** — **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
 | 2025-07-23 | 3 h 30 min | — | −0.17 MHz/min |
+
+<img src="apparatus/2025-06-11_wavemeter_drift_23min.jpg" width="49%" alt="WLM LongTerm 23-minute record, 2025-06-11 22:52"> <img src="apparatus/2025-06-11_wavemeter_drift_53min.jpg" width="49%" alt="WLM LongTerm 53-minute two-regime record, 2025-06-11 23:22">
+
+*The two 2025-06-11 records (22:52 and 23:22): scan-modulated bands whose
+envelope drift reads ±0.19 MHz/min — the cavity-locked figure the archive's
+within-block bound independently matches.*
+
+<img src="apparatus/2025-07-18_wavemeter_relock_settling.jpg" width="80%" alt="WLM LongTerm settling record, 2025-07-18 17:03 — the post-break re-lock transient; StdDev 100 kHz in the settled tail">
+
+*The one in-campaign record — and its taskbar clock reads **17:03,
+7/18/2025**: eighteen minutes before the 90 °C dwell resumed. This is the
+re-lock transient after the daytime break (addenda 4–8), settling toward the
+100 kHz short-term StdDev visible in the statistics panel; not steady
+acquisition drift, which the archive puts two orders below.*
 
 **The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
 laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The
