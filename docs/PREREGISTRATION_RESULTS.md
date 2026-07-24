@@ -1057,11 +1057,14 @@ timescales:
 
 | assumed τ_campaign | 95% upper bound on its amplitude |
 |---|---|
-| 1 h | 210 ms (8.9 MHz laser) |
-| 3 h | 43 ms (1.8 MHz) |
-| 6 h | 19 ms (0.8 MHz) |
-| 12 h | 13 ms (0.6 MHz) |
-| flat (∞) | 9 ms (0.4 MHz) |
+| 1 h | 211 ms (9.0 MHz laser) |
+| 3 h | 44 ms (1.9 MHz) |
+| 6 h | 20 ms (0.9 MHz) |
+| flat (∞) | 10 ms (0.4 MHz) |
+
+*(Bounds as `run_drift_settling.py` computes them by bisecting the 1-dof 95%
+edge; the exploratory grid scan that first produced them agreed to one
+millisecond.)*
 
 Read that as: a *genuinely slow* campaign-wide disturbance is excluded below
 ~1 MHz, while a would-be "campaign" component with a ~1 h timescale is not
