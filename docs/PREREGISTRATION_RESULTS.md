@@ -1078,3 +1078,55 @@ above the bounds above.
 (§8.7 etalon discipline): with re-locks time-stamped, the two clocks stop
 being degenerate. Post-hoc as always; the one-timescale model of addendum 12
 stands.*
+
+
+## Addendum 13, 2026-07-25 — the detection chain's noise spectrum, and a mains line chased into the archive
+
+The rehearsal captures buy something the archive cannot give itself: 500 001
+points at 10 µs, so **0.2 Hz – 50 kHz** on the same PMT + pre-amplifier chain,
+with the gain (G = 10⁶) recorded in the filename. The archive's own traces are
+2 000 points over 1 s — Nyquist 1 kHz — so its noise model (M1) has never seen
+above that.
+
+**What the chain looks like** (median over six rehearsal baselines, line
+regions masked):
+
+| band | amplitude spectral density |
+|---|---|
+| 10–100 Hz | 63 µV/√Hz |
+| 100–1 000 Hz | 54–56 µV/√Hz |
+| 1–5 kHz | 41 µV/√Hz |
+| 5–20 kHz | 35 µV/√Hz |
+| 20–49 kHz | 26 µV/√Hz |
+
+Broadly flat with a gentle fall — no filter pole inside the band, no
+resonance, nothing that would alias a 2 kSa/s acquisition. But it carries
+**discrete mains lines: 61 Hz at 14.6× the local floor**, with harmonics at
+119 Hz (5.6×) and 180 Hz (6.0×). Sixty hertz is correct for Okinawa.
+
+**So the obvious question: does it reach the archive?** A 60 Hz ripple has a
+16.7 ms period, and the two-photon line is ~60 ms wide — about 3.6 cycles
+across it — so it is exactly the kind of coherent baseline structure a
+lineshape fit could absorb. Chasing it in 120 archive baselines:
+
+- the mains line is present but **weak — 1.9× the local floor** (harmonics
+  1.1–1.3×), against 14.6× in the rehearsal;
+- its amplitude is **~0.5 mV rms vs a 363 mV median line height: 0.14 % of
+  peak**;
+- and because ~3.6 whole cycles span the line, it **averages rather than
+  displacing the centroid** — it cannot bias a centre, and at 0.14 % it is
+  far below the width systematics that dominate every C1/C3 bound.
+
+**Verdict: identified, quantified, negligible — and the difference between
+the two epochs is itself informative.** The rehearsal ran on the LeCroy with
+a different grounding path; the archive's chain suppressed the same line by
+nearly an order of magnitude. Nothing in `results/` moves.
+
+**For the next campaign** this is a cheap thing to keep: the mains line is a
+grounding/pickup diagnostic that costs one long capture to measure, and a
+factor-8 difference between two epochs on the same optical bench is worth
+knowing before, not after, a precision session.
+
+*Exploratory, outside the frozen archive; the rehearsal traces are release-
+asset data (addendum 10). Baseline masking is a 25 %-of-peak threshold;
+Welch PSD, nperseg 2¹⁵ (rehearsal) and 512 (archive).*
