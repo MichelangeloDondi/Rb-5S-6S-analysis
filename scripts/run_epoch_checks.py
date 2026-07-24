@@ -27,10 +27,13 @@ perform on itself, plus one honest non-result:
    final peak's blocks are noisy again (~200-380 ms) and the observable
    rests on an unverified trigger-sync assumption: no claim either way.
 
-Open questions this surfaced for the experimenter: the ~32 ms satellite
-structure beside each Def-comb tooth; the identity of the pilot rulers'
-1.92 V DC channel (power monitor?); the two-zone temperature notation
-130C(90C-0.65A); the three corrupt 4192@270 rehearsal files.
+Open questions this surfaced, updated 2026-07-24 (postscript to addendum
+11): the ~32 ms "satellites" were a peak-finding artifact (ACF shows no
+coherent companion above the few-percent level in either epoch) and the
+three binary 4192@270 files are 0xFF never-written placeholders -- both
+CLOSED. Still open, for the experimenter: the pilot rulers' 1.92 V DC
+channel identity (power monitor?), and the two-zone temperature notation
+130C(90C-0.65A) -- which zone do the campaign temperatures name?
 
 Requires the pilot/prehistory quarantines (private). Exits cleanly without
 them; the committed numbers above are the record, addendum 11 the writeup.
@@ -112,7 +115,9 @@ def pilot_ruler_rate() -> None:
           f"{np.median(per):.1f} ms (n={len(per)}, spread {per.std(ddof=1):.1f})")
     print(f"   vs campaign {CAMPAIGN_TOOTH_MS} ms -> sweep-rate ratio {ratio:.4f} "
           f"({100*(1-ratio):+.1f}%): per-block rulers vindicated.")
-    print(f"   (unexplained: ~32 ms satellites beside each tooth -- flagged)")
+    print(f"   (the once-flagged ~32 ms satellites: a peak-finding artifact --")
+    print(f"    ACF shows no coherent companion in either epoch; see the")
+    print(f"    postscript to addendum 11)")
 
 
 def main() -> int:
