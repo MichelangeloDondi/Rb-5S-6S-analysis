@@ -105,9 +105,14 @@ def main() -> int:
       "no scatter quantile covers, and the per-peak `monotonic` flags "
       f"({nmono}/{len(pr)} peaks non-monotonic) cannot discriminate that "
       "confound — it is held by the BOUND framing itself, not by the quantile "
-      "(`beta.collisional_slope` docstring). The cross-session 130 °C "
-      "lever variant (dof = 2, in the CSV) is far tighter but carries its "
-      "documented cross-session caveat.\n")
+      "(`beta.collisional_slope` docstring). The 130 °C "
+      "lever variant (dof = 2, in the CSV) is far tighter but carries its own "
+      "caveat — **not** that it is a different session. The recovered clock "
+      "places it 2.3 h before the 110 °C dwell, inside the same continuous "
+      "campaign, while the 9.6 h break falls *between* 110 °C and 90 °C. What "
+      "it is: a 4.5 h power-ladder block at the extreme end of the density "
+      "lever, and folding an extreme lever point in moves the answer by "
+      "leverage rather than by physics.\n")
     bs = rows("beta_self")
     if bs:
         s = "; ".join(f"993.{r['peak']} nm {float(r['beta_self']):.3f}({float(r['beta_self_err'])*1e3:.0f})"

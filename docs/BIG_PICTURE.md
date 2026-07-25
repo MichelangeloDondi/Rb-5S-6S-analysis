@@ -139,8 +139,8 @@ leverage:
    density lever was too short for the expected ~kHz-scale β; the higher
    temperatures make the collisional width move by 0.07–0.25 MHz — enough
    to measure β_self (or bound it near expectation), completing the 5D/7S
-   series. Same-session matters: the 2025 data show cross-session drifts
-   masquerade as density trends.
+   series. Interleaving matters: in 2025 temperature ran monotonically down
+   with elapsed time, so slow drift and density trends are confounded.
 4. **A tighter focus (~16 µm).** S₀ grows ~14×, and the third cumulant grows
    faster still — but not by the naive ×64: the axial average over the
    collection window changes both its size and, if the window is long enough,

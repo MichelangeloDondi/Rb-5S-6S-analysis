@@ -260,7 +260,7 @@ def main() -> int:
           f"{'resid':>7s} {'sig':>5s} {'mono':>5s}  verdict")
     probe_rows = []
     for variant, use130 in (("70-110C (one session)", False),
-                            ("70-130C (adds cross-session 130C, 3.2x lever)", True)):
+                            ("70-130C (adds the 130C extreme lever point, 3.2x)", True)):
         print(f"  --- {variant} ---")
         for peak in PEAKS:
             pr = width_vs_density_probe(rows, peak, trates, prates, include_130=use130)

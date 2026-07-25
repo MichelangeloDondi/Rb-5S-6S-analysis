@@ -307,8 +307,10 @@ measured 2025 failure modes.)
 **Tier 1 — enablers (the measurement does not exist without them):**
 3. **150–170 °C, SAME session, INTERLEAVED T order.** The β_self / self-shift lever:
    70–130 °C gives Δγ ≈ 20 kHz (invisible); 150–170 °C gives 0.07–0.25 MHz (measurable).
-   Same-session (cross-session is what turned the archival β into a bound) and
-   interleaved (de-confounds T from time-drift). Also unlocks the collisional
+   Same-session and, above all, **interleaved**: in 2025 temperature ran
+   monotonically down with elapsed time (130 → 110 → break → 90 → 70), so T and
+   time-drift are confounded — that, not any session boundary, is what turned
+   the archival β into a bound. Also unlocks the collisional
    self-*shift* (the drift made it unmeasurable in 2025).
 4. **The fixed lock itself** (the epoch premise) — resurrects the *pull* (∝S₀), the
    strong AC-Stark handle that was dead in the archive.
@@ -918,8 +920,8 @@ one); the hybrid is across the moment hierarchy, never across methods.
   (M4d lever test, 2026-07-12: measured, not anticipated).** The archival
   γ_coll rises only ×1.85 across the ×52 density span 70→130 °C (a residual
   floor, not resolved collisions), and the joint β collapses 0.036 → 0.014
-  when the ×53 cross-session 130 °C anchor is folded in (DATA.md lever-test
-  entry; fig6). Cross-session anchors are diagnostics only: the 150–170 °C
+  when the ×53 130 °C anchor is folded in (DATA.md lever-test
+  entry; fig6). Extreme lever points are diagnostics only: the 150–170 °C
   points go inside the SAME locked, bracketed session as the rest of the
   T grid, or they cannot be combined and the collisional slope stays a bound.
 - σ_laser at L: transit removed by geometry,

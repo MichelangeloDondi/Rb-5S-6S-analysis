@@ -270,8 +270,12 @@ between published vapor-pressure correlations (`density.py`,
 direction makes the fitted β an *under*estimate, so the bound inflates on the
 + side (×1.2). The selection rule also flips: the *loosest* peak is the conservative
 single-number floor (the min of noisy 1-DOF estimates is the down-fluctuated
-one), not the tightest. The cross-session 130 °C lever variant (dof = 2)
-barely moves (0.03–0.05) but keeps its cross-session caveat. The hierarchical
+one), not the tightest. The 130 °C lever variant (dof = 2)
+barely moves (0.03–0.05) but keeps a caveat — a re-grounded one: the clock
+puts it 2.3 h from the 110 °C dwell inside the same campaign (the 9.6 h break
+is between 110 °C and 90 °C), so the objection is not a session boundary but
+that it is an extreme lever point, and that T is confounded with elapsed time
+across the whole campaign. The hierarchical
 global-fit β gains a `beta_nscale_syst` row (±20% of β). A constant cold-spot
 offset also *tilts* the N(T) lever by ~2.3%/K of offset (slope, not scale) —
 quantified in `density.py`, recorded, not propagated (second-order).
