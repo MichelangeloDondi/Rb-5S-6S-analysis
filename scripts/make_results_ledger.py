@@ -408,6 +408,29 @@ def main() -> int:
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
     if lc and ss:
+        cov = rows("coverage")
+        if cov:
+            m = {r["key"]: float(r["value"]) for r in cov if r["quantity"] == "mde_beta"}
+            fp = [float(r["value"]) for r in cov
+                  if r["quantity"] == "false_measurement_rate"
+                  and r["key"] == "beta_true_0.00"]
+            if m:
+                W(f"\n> **The sensitivity behind the null (M13).** A bound is only "
+                  f"interpretable next to the effect size the analysis could "
+                  f"actually have caught, so the same injection-recovery machinery "
+                  f"is run forward: the **minimum detectable effect** is "
+                  f"$\\beta \\approx$ **{m.get('detect_50pct', float('nan')):.2f}** "
+                  f"at 50% and **{m.get('detect_95pct', float('nan')):.2f}** at 95% "
+                  f"detection probability (MHz per 10¹² cm⁻³). The archive was "
+                  f"therefore genuinely sensitive at the 0.05–0.14 level and saw "
+                  f"nothing — the null is a real constraint, not an insensitive "
+                  f"experiment — while the quoted headline bound sits *above* that, "
+                  f"deliberately, through the t(0.95,1) and density-scale inflations "
+                  f"(C1). At $\\beta=0$ the SNR rule alone fires "
+                  f"{fp[0]:.0%} of the time" + (", close to its nominal 5%, which is "
+                  f"the calibration check on the detection rule itself.\n"
+                  if fp else ".\n"))
+
         W("## Sensitivity at a glance\n")
         W("The referee question — *what moves if an assumption moves* — in one "
           "table, generated live from `lever_crosscheck.csv` and "

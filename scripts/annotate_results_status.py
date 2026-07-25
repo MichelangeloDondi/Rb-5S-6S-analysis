@@ -110,6 +110,9 @@ QUANTITY_STATUS = {
     "coverage.csv": {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
         "false_measurement_rate": "DIAGNOSTIC",
+        # the minimum detectable effect: a property of THIS analysis at the
+        # archive's own noise, simulated rather than measured on the data
+        "mde_beta": "DIAGNOSTIC",
     },
     "polarizability.csv": {
         # M16: validation anchors are diagnostics; the unpublished design

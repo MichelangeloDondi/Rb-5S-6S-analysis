@@ -70,3 +70,31 @@ def coverage_study(beta_true: float, *, block_sigma: float = 0.12,
         "coverage": covered / n_trials,
         "false_measurement_rate": called_meas / n_trials,
     }
+
+
+def minimum_detectable_beta(targets=(0.5, 0.95), *, grid=None,
+                            block_sigma: float = 0.12, n_trials: int = 2000,
+                            seed: int = 1) -> Dict[float, float]:
+    """The MINIMUM DETECTABLE EFFECT: the true beta at which this analysis would
+    actually call a MEASUREMENT with probability `target`.
+
+    A null result is only interpretable next to the sensitivity that produced
+    it -- "we saw nothing" and "we could not have seen it" are different
+    scientific statements, and an upper bound quoted without an MDE cannot
+    distinguish them. Reuses coverage_study's detection rate
+    (`false_measurement_rate` is the detection probability at beta_true > 0;
+    at beta_true = 0 it is the false-positive rate), and interpolates the
+    detection curve at each target probability.
+
+    Returns {target_probability: beta_MDE} in MHz per 1e12 cm^-3.
+    """
+    if grid is None:
+        grid = (0.0, 0.02, 0.04, 0.06, 0.08, 0.10, 0.15, 0.20, 0.30)
+    xs = np.asarray(grid, dtype=float)
+    ys = np.array([coverage_study(b, block_sigma=block_sigma, n_trials=n_trials,
+                                  seed=seed)["false_measurement_rate"]
+                   for b in xs])
+    out = {}
+    for t in targets:
+        out[float(t)] = float(np.interp(t, ys, xs)) if ys.max() >= t else float("nan")
+    return out

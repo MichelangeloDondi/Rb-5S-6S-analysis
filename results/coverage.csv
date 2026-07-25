@@ -1,4 +1,6 @@
 quantity,key,value,unit,status
+mde_beta,detect_50pct,0.052,MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null),DIAGNOSTIC
+mde_beta,detect_95pct,0.138,MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null),DIAGNOSTIC
 bias,beta_true_0.00,-0.0006,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
 coverage95,beta_true_0.00,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
 false_measurement_rate,beta_true_0.00,0.062,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC

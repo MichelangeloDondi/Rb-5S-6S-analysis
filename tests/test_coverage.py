@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from rb5s6s.coverage import coverage_study
+from rb5s6s.coverage import coverage_study, minimum_detectable_beta
 
 
 @pytest.mark.slow
@@ -30,3 +30,30 @@ def test_gaussian_two_would_undercover_but_t_quantile_does_not():
     # the estimator uses t(0.95, 1) = 6.31 and not the Gaussian 2.
     r = coverage_study(0.0, n_trials=800, seed=2)
     assert r["coverage"] >= 0.95, r
+
+
+def test_minimum_detectable_effect_is_below_the_quoted_bound():
+    """The MDE is what makes the null interpretable: the archive must have been
+    able to SEE an effect at or below the size it reports a bound on, otherwise
+    "no detection" says nothing about the physics.
+
+    Pins both that the sensitivity is real (95%-detection MDE below the loosest
+    quoted per-peak bound) and that it is not absurdly small (the estimator has
+    not been accidentally made infinitely sensitive by a scale error).
+    """
+    import csv as _csv
+    from pathlib import Path
+    from rb5s6s import config as _C
+
+    mde = minimum_detectable_beta(n_trials=600, seed=1)
+    m95 = mde[0.95]
+    assert 0.05 < m95 < 0.30, m95        # sane scale for this lever arm
+
+    probe = Path(_C.RESULTS_DIR) / "beta_self_probe.csv"
+    if probe.exists():
+        bounds = [float(r["bound95_nscale"]) for r in _csv.DictReader(open(probe))
+                  if r.get("headline") == "yes"]
+        assert m95 < max(bounds), (
+            f"MDE at 95% detection ({m95:.2f}) is above the loosest quoted bound "
+            f"({max(bounds):.2f}) -- the experiment could not have detected an "
+            f"effect the size it claims to bound, so the null is uninformative")

@@ -20,7 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.coverage import coverage_study  # noqa: E402
+from rb5s6s.coverage import coverage_study, minimum_detectable_beta  # noqa: E402
 
 BETAS = (0.0, 0.05, 0.10, 0.20)   # MHz per 1e12 cm^-3
 
@@ -38,9 +38,19 @@ def main() -> int:
               f"{r['coverage']:>13.3f} {r['false_measurement_rate']:>11.3f}")
         rows.append(r)
 
+    mde = minimum_detectable_beta()
+    print(f"\n  MINIMUM DETECTABLE EFFECT (the sensitivity behind the null):")
+    for t, b in mde.items():
+        print(f"    beta = {b:.2f} MHz/1e12 would be called a measurement "
+              f"{t:.0%} of the time")
+
     with open(C.RESULTS_DIR / "coverage.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["quantity", "key", "value", "unit"])
+        for t, b in mde.items():
+            w.writerow(["mde_beta", f"detect_{int(t*100)}pct", f"{b:.3f}",
+                        "MHz/1e12; true beta this analysis would CALL a measurement "
+                        "at this probability (the sensitivity behind the null)"])
         for r in rows:
             k = f"beta_true_{r['beta_true']:.2f}"
             w.writerow(["bias", k, f"{r['bias']:.4f}", "MHz/1e12; mean(beta_eff)-beta_true"])
