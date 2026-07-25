@@ -38,7 +38,7 @@ section: prior-art
 
 Nearest prior art: a spatially-varying AC-Stark shift producing an asymmetric lineshape from which alpha was extracted (standing wave, numerical Bloch). Bounds our novelty claim (we do NOT claim the asymmetry's existence) and supplies the fringe-averaged FM regime. Lineage: Wieman, Noecker, Masterson & Cooper, *PRL* **58**, 1738 (1987), the Cs 6S→7S parity-violation precedent.
 
-**What it is.** Yb 6s² ¹S₀ → 5d6s ³D₁ (408 nm) — a one-photon forbidden Stark-induced transition, collimated atomic beam, intense standing wave in a power-buildup cavity. Numerical density-matrix (optical-Bloch) lineshapes (20-60 min each), integrated over trajectories, velocities and standing-wave phase. They fit the measured asymmetric lineshapes and extract the ac-Stark parameter alpha = -0.312(34) Hz/(V/cm)^2 — so the asymmetry-as-observable idea EXISTS in prior art; the honest claim must be narrower than "first use of the asymmetry."
+**What it is.** Yb 6s² ¹S₀ → 5d6s ³D₁ (408 nm) — a one-photon forbidden Stark-induced transition, collimated atomic beam, intense standing wave in a power-buildup cavity. Numerical density-matrix (optical-Bloch) lineshapes (20-60 min each), integrated over trajectories, velocities and standing-wave phase. They fit the measured asymmetric lineshapes and extract the ac-Stark parameter alpha = -0.312(34) Hz/(V/cm)^2 — so the asymmetry-as-observable idea exists in prior art; the novelty claim must be narrower than "first use of the asymmetry."
 
 **Delineation (what is genuinely not in Stalnaker/Wieman):**
 
