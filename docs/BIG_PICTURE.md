@@ -109,9 +109,10 @@ as a bound. Concretely:
   archival envelope rate (~MHz/min; the measured in-campaign rate is ~60×
   lower still) — it reaches order-S₀ only at tens of times the envelope.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
-  the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
-  MEASURED / …); the documentation is written to be picked up by whoever
-  works on this next.
+  the frozen raw data (held privately, available on request — this repository
+  ships the manifest, the results and the analysis); every CSV row carries a
+  status tag (BOUND / NULL / MEASURED / …); the documentation is written to be
+  picked up by whoever works on this next.
 
 In summary, the archive turned a drifted-lock
 dataset into a validated model, one near-prediction bound, one

@@ -239,15 +239,30 @@ pytest -q                 # fast test suite (~35 s)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
-The 2025 dataset is already in `data_raw/`, so the pipeline runs directly. Each
-stage reads the previous stages' output in `results/`:
+**On the raw traces.** This repository ships the analysis, the committed
+results, the figures, and the dataset's manifest
+([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv) — every trace's filename,
+condition, role and MD5), but **not the 297 raw traces themselves**. They were
+taken at OIST and are held privately; they are available on request
+(michelangelo.dondi@unibo.it). What that means concretely:
+
+- **Everything that certifies the analysis runs here.** The injection-recovery
+  closures, the coverage study and minimum-detectable-effect, the transit-kernel
+  asymptotics, the identifiability and model-comparison machinery — all of it is
+  synthetic and needs no archive. That is the bulk of the suite.
+- **The clock-dependent results also reproduce from a clone**, because the
+  acquisition clock is committed as
+  [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv) (hashes → timestamps,
+  not measurement data).
+- **What cannot run here** is the raw→results pipeline itself, and the four
+  tests that re-hash the traces against the manifest; those skip with a stated
+  reason rather than failing. With the traces in place they all run, and each
+  stage reproduces its committed CSV byte-for-byte:
 
 ```bash
 bash scripts/run_all.sh   # every stage in dependency order, then the figures,
                           # docs/RESULTS.md, and the CSV status column
 ```
-
-Re-running any stage reproduces its committed CSV in `results/` byte-for-byte.
 
 The **clock-dependent results** (the lock-drift measurement and its audit
 trail, [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md)
@@ -261,7 +276,7 @@ python scripts/run_drift_settling.py  # the drift analysis, off the committed cl
 
 prints the full report — no private folder required. The complete
 timestamped raw backup behind the clock is preserved verbatim as the
-release asset `raw-backup-2026-07-24` (sha256 in its notes).
+raw-data archive held with the traces (sha256 recorded in the audit report).
 
 The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
 are cited across many documents. `tests/test_docs_canonical.py` holds each in a

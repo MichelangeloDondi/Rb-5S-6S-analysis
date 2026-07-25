@@ -163,8 +163,8 @@ The first five scripts form the pipeline (each reads the previous ones'
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]" && pytest -q          # 779 fast tests (~90 s)
 pytest -q --runslow                           # full 803 incl. slow closures (what CI runs)
-# reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
-# (already in git; import_data.py only re-imports from the old archive):
+# with the raw traces in place (held privately, available on request),
+# reproduces every committed CSV, figure and docs/RESULTS.md:
 bash scripts/run_all.sh
 ```
 

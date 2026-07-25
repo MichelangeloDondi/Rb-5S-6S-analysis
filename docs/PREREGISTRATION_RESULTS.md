@@ -930,10 +930,16 @@ backup that *is* the clock) is resolved in four moves, all shipped:
    collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
    untouched.
 3. **The full timestamped backup is preserved publicly**: release
-   [`raw-backup-2026-07-24`](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases/tag/raw-backup-2026-07-24)
+   `raw-backup-2026-07-24`
    carries the complete tree verbatim (`tar.gz`, mtimes intact — verified
    inside the archive; 753 CSVs, ~460 MB unpacked, 77 MB packed), sha256
    `58d5315d8bde5fae0c3c0989e5b96c76e24f02645d546791878ba650f9cc08d1`.
+   *(Note, 2026-07-25: that release was published from the working repository,
+   which also carried the raw traces. This public repository ships the
+   analysis, the manifest and the results without the traces; the archive and
+   its release are held privately and available on request. The hash above
+   still identifies it. Nothing about the audit's findings changes — they were
+   derived from the clock, which remains committed as `CLOCK.csv`.)*
    Anyone can now re-run the audit from first principles, hashing included;
    and the clock no longer lives on a single disk.
 4. **The folder roles are documented** (`DATA.md` §3a) and guarded

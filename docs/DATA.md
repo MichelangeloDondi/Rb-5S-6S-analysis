@@ -191,9 +191,9 @@ hash**:
 
 | where | what | status |
 |---|---|---|
-| `data_raw/` (this repo) | the frozen analysis archive: 297 curated traces + MANIFEST.csv. Every fitted number regenerates from it. | **frozen** — never edited |
-| `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only |
-| release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes; sha256 in the release notes and addendum 10) — campaign, pilot, prehistory, LeCroy rehearsal | preserved public archive |
+| `data_raw/` (this repo) | `MANIFEST.csv` only — every trace's filename, condition, role and MD5. The 297 traces are held privately (available on request); every fitted number regenerates from them. | **frozen** — never edited |
+| `data_recovered/` (this repo) | `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files) and `RECOVERED_MANIFEST.csv`. The recovered traces — the 16 backup-only discards and the degraded-trace lineage — are held with the archive. See its README. | additive only |
+| `raw-backup-2026-07-24` (held privately) | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes; sha256 in addendum 10) — campaign, pilot, prehistory, LeCroy rehearsal | preserved archive, on request |
 | Desktop `RawDataBackUp` (private) | the provenance root, as found | never touched |
 | `~/Documents/*_QUARANTINE_*` (private) | read-only working copies the audit ran on | never modified |
 
