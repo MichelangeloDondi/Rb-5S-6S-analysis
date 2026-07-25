@@ -42,3 +42,4 @@ docs/linkedin*
 # reference PDFs dropped into docs are never published
 docs/apparatus/*.pdf
 docs/*.pdf
+.venv/
