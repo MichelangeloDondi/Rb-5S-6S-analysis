@@ -52,8 +52,24 @@ die() { echo "sync_public: $*" >&2; exit 1; }
 
 [ -d "$PUBLIC/.git" ] || die "public clone not found at $PUBLIC"
 cd "$PUBLIC"
+# Guard: origin here MUST be the public repository. (On 2026-07-25 the
+# archive clone's origin still pointed at the pre-rename URL, which the rename
+# had handed to the PUBLIC repo -- a push from there would have sent the full
+# raw-data history public. It was refused only by a non-fast-forward. Never
+# rely on that a second time.)
+_origin="$(git remote get-url origin)"
+case "$_origin" in
+  *Rb-5S-6S-analysis-archive*) die "origin is the ARCHIVE ($_origin) -- refusing" ;;
+  *Rb-5S-6S-analysis*)         : ;;
+  *) die "origin is not the expected public repo: $_origin" ;;
+esac
+
 git remote get-url archive >/dev/null 2>&1 || git remote add archive "$ARCHIVE"
-git fetch --quiet archive
+# --no-tags matters: the archive carries tags (raw-backup-2026-07-24, the
+# msg-rewrite backup) that point at UNFILTERED commits, i.e. at the raw
+# traces. A plain fetch drags them into the public clone. (Observed and
+# cleaned 2026-07-25.)
+git fetch --quiet --no-tags archive
 
 # --- what does the public repo not have yet? -------------------------------
 # Compare by SUBJECT, since hashes differ between the two histories.
@@ -108,4 +124,12 @@ if [ -x .venv/bin/python ]; then PY=.venv/bin/python; else PY=python3; fi
 $PY -m pytest -q || die "tests failed in the public repo -- not pushing"
 
 git push origin main
-echo "sync_public: public repo updated and pushed."
+
+# Do not leave raw-data objects sitting in the public clone: fetching the
+# archive brings them in via remote-tracking refs, where a careless
+# `git push --all/--mirror` could leak them. Drop the remote and prune.
+git remote remove archive >/dev/null 2>&1 || true
+git reflog expire --expire=now --all >/dev/null 2>&1 || true
+git gc --prune=now --quiet >/dev/null 2>&1 || true
+
+echo "sync_public: public repo updated and pushed; archive objects pruned."
