@@ -37,3 +37,35 @@ def pytest_collection_modifyitems(config, items):
     for item in items:
         if "slow" in item.keywords:
             item.add_marker(skip_slow)
+
+
+# --------------------------------------------------------------------------
+# Raw-trace availability
+# --------------------------------------------------------------------------
+# The public repository ships the analysis, the committed results, the
+# figures and the dataset's MANIFEST (filenames, conditions, md5s) -- but not
+# the 297 raw traces themselves, which are held and available on request.
+# A handful of tests verify the traces byte-for-byte against that manifest;
+# they are meaningful only where the traces are present, so they SKIP rather
+# than fail when they are not. Everything that certifies the analysis itself
+# -- the synthetic injection-recovery closures, the coverage study, the
+# transit-kernel asymptotics, every physics and statistics test -- runs
+# regardless, because none of it needs the archive.
+from pathlib import Path as _Path
+
+import pytest as _pytest
+
+_RAW = _Path(__file__).resolve().parents[1] / "data_raw"
+
+
+def raw_traces_available() -> bool:
+    """True when the raw trace files (not just the manifest) are present."""
+    return any(_RAW.glob("**/*.csv")) and any(
+        p.name != "MANIFEST.csv" for p in _RAW.glob("**/*.csv"))
+
+
+requires_raw_traces = _pytest.mark.skipif(
+    not raw_traces_available(),
+    reason="raw traces not in this checkout (held privately, available on "
+           "request); the manifest, results and analysis tests still run",
+)

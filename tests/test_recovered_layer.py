@@ -12,6 +12,7 @@ from __future__ import annotations
 import csv
 import hashlib
 from pathlib import Path
+from conftest import requires_raw_traces
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "data_recovered"
@@ -66,6 +67,7 @@ def test_clock_is_sorted_and_unique():
     assert len(keys) == len(set(keys)), "duplicate (source, path) rows"
 
 
+@requires_raw_traces
 def test_recovered_files_match_their_manifest_and_stay_out_of_the_archive():
     """Every published recovered file: exists, hashes to its recorded md5
     (and to the __hash suffix in its own name), and its content is ABSENT

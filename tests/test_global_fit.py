@@ -18,6 +18,7 @@ from rb5s6s.density import density_units
 from rb5s6s.lineshape import model_profile
 from rb5s6s.linefit import to_frequency, transit_fwhm_at_T
 from rb5s6s.global_fit import fit_global
+from conftest import requires_raw_traces
 
 RATE_T = 0.08514
 T_MS = np.arange(2000) * 0.5 - 500.0
@@ -79,6 +80,7 @@ def test_equal_isotopes_recovered_equal():
     assert abs(b85 - b87) < 3 * e + 0.02, (b85, b87)
 
 
+@requires_raw_traces
 def test_fit_global_runs_on_real_data():
     # DATA-VALIDATED smoke test: the headline fit must
     # RUN on the actual archive traces, not only on synthetics it generated.

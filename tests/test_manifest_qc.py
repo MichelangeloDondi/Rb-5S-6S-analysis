@@ -13,6 +13,7 @@ import csv
 from rb5s6s.config import MANIFEST_CSV
 from rb5s6s.ingest import load_manifest, load_trace, trace_path
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags
+from conftest import requires_raw_traces
 
 
 def _rows():
@@ -51,6 +52,7 @@ def test_quarantine_reasons_are_session_grain():
     assert all(r["qc_reason"].startswith("session quarantine: aborted") for r in powers)
 
 
+@requires_raw_traces
 def test_quarantined_traces_really_are_individually_clean():
     # The recorded reason asserts "trace individually clean (no hard flags)".
     # Pin that against the data on a sample of both kinds, so the manifest can

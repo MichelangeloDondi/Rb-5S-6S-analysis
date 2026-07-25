@@ -15,6 +15,7 @@ from collections import Counter
 import pytest
 
 from rb5s6s.config import DATA_RAW_DIR, MANIFEST_CSV
+from conftest import requires_raw_traces
 
 # The census established at import time (2026-07-11). If this ever changes,
 # someone touched the frozen dataset — that must be a deliberate, documented
@@ -48,6 +49,7 @@ def test_paths_and_hashes_unique(rows):
     assert len(set(hashes)) == len(hashes), "duplicate MD5 — dedupe failed"
 
 
+@requires_raw_traces
 def test_every_file_present_and_bitexact(rows):
     # Full re-hash of the dataset (~16 MB): the strongest statement CI can
     # make that the frozen data has not rotted or been edited.
