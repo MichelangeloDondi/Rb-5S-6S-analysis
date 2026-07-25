@@ -15,7 +15,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > OPEN prior. That status is stated per-result in §5 **and machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…),
 > the same provenance tag README describes. Modules M0→M16
-> (with lettered fitting sub-stages M4b–M4e), **794 tests**
+> (with lettered fitting sub-stages M4b–M4e), **795 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3
 > power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level.
@@ -137,7 +137,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
           · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
-tests/    794-test battery (~770 fast ~90 s + 25 `slow` high-statistics
+tests/    795-test battery (~770 fast ~90 s + 25 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -147,7 +147,7 @@ docs/     PLAN.md (plan of record) · DATA.md (archive provenance) · RESULTS.md
           · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
           · APPARATUS.md (hardware of record, with photographs + schematic)
           · PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md (the
-          timestamp audit: frozen predictions, results, addenda 1–11)
+          timestamp audit: frozen predictions, results, addenda 1–15)
 data_recovered/  the backup-recovered layer: the acquisition clock
           (CLOCK.csv), backup-only discards, degradation lineage
 results/  committed CSVs (the documented run) + results/README.md
@@ -161,8 +161,8 @@ The first five scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 195 fast tests (~35 s)
-pytest -q --runslow                           # full 229 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 771 fast tests (~90 s)
+pytest -q --runslow                           # full 795 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the old archive):
 bash scripts/run_all.sh

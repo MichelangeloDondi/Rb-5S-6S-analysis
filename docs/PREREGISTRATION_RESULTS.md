@@ -1009,7 +1009,7 @@ inconclusive one — stated in that order.*
 
 ### Postscript to addendum 11, 2026-07-24 — two of its open questions closed by analysis
 
-**The "~32 ms satellites" were my artifact, not the bench's.** The
+**The "~32 ms satellites" were an artifact of the analysis, not the bench.** The
 autocorrelation — which detects any coherent periodic companion — shows a
 satellite-band excess of +0.006 (pilot `Def` combs) and +0.004 (campaign
 rulers) against a comb-period bump of ~0.4: **no coherent satellite above
@@ -1025,8 +1025,8 @@ LeCroy's remembered unreliability that evening). Nothing misnamed, nothing
 to parse; the block simply holds 2 real traces of 5, both TrigTime-stamped.
 
 *Remaining from addendum 11's list: the pilot rulers' 1.92 V DC channel
-identity, and the two-zone temperature notation — both experimenter
-questions, the second carrying the density-systematic stakes.*
+identity — still open. The two-zone temperature notation, the one carrying
+the density-systematic stakes, is resolved in addendum 15.*
 
 
 ## Addendum 12, 2026-07-24 — the re-kick, fitted: one transient, restarted by every re-lock

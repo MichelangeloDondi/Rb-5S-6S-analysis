@@ -63,7 +63,9 @@ now for a stated reason: the design, not the missing log.
 the LeCroy dress rehearsal (in-file trigger times), the pilot morning
 (ruler commissioning → `Def` → the 91 °C sweep), and the campaign with its
 four power ladders, three temperature dwells, the 9.6 h break, and the
-evidence-backed etalon-transient windows shaded (addenda 4–11).*
+evidence-backed etalon-transient windows shaded (addenda 4–7, 12 — the
+last of which fits the transient itself: one universal re-kick, τ ≈ 97 min,
+re-armed at every re-lock).*
 
 Per peak, in time order, all at 130 °C: **before-rulers → 225 → 175 → 125 →
 75 → 25 mW → after-rulers** (each power = 5 back-to-back RF-off repeats; each
