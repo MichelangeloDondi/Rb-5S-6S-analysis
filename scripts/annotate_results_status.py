@@ -63,6 +63,7 @@ FILE_STATUS = {
     "sigma_laser_sharing.csv": "DIAGNOSTIC",  # the M4c in-sample consistency check
     "transit_mc.csv": "ENVELOPE",         # w0-parametric transit-broadening model
     "identifiability_profile.csv": "DIAGNOSTIC",  # the M12 profile-likelihood grids (fig7)
+    "noise_law_swap.csv": "DIAGNOSTIC",   # robustness swap of the fit WEIGHTS, not physics
 }
 
 # long (quantity/key/value/err/unit) CSVs: status keyed by `quantity`

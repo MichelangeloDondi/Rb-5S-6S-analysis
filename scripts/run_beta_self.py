@@ -43,7 +43,8 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from rb5s6s import config as C  # noqa: E402
+from rb5s6s import config as C
+from rb5s6s import constants as _CONST  # noqa: E402
 from rb5s6s.constants import TOOTH_SPACING_LASER_HZ  # noqa: E402
 from rb5s6s.density import density_units, number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
@@ -184,6 +185,31 @@ def main() -> int:
 
     with open(C.RESULTS_DIR / "beta_self.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(results[0].keys())); w.writeheader(); w.writerows(results)
+
+    # ---- robustness swap: the M1 noise law vs UNIFORM weights -------------
+    # The weights come from the measured sigma(V) law (M1). If beta depended
+    # strongly on that choice, the noise model would be doing physics work it
+    # was never validated for. Refit every peak with law=None (uniform) and
+    # record the shift; a red-team review named this swap as untested (2026-07-25).
+    swap_rows = []
+    for peak, (fit_w, conds) in fits.items():
+        uni = fit_beta_self([dict(c, law=None) for c in conds],
+                            transit_ref_mhz=C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+        swap_rows.append({
+            "peak": peak,
+            "isotope": _CONST.PEAKS[peak]["isotope"],
+            "beta_m1_law": f"{fit_w['beta_self']:.4f}",
+            "beta_uniform": f"{uni['beta_self']:.4f}",
+            "shift": f"{uni['beta_self'] - fit_w['beta_self']:+.4f}",
+            "unit": "MHz per 1e12 cm^-3",
+        })
+    if swap_rows:
+        with open(C.RESULTS_DIR / "noise_law_swap.csv", "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=list(swap_rows[0].keys()))
+            w.writeheader(); w.writerows(swap_rows)
+        mx = max(abs(float(r["shift"])) for r in swap_rows)
+        print(f"\n  NOISE-LAW SWAP (M1 weights -> uniform): max |d beta| = {mx:.4f} "
+              f"MHz/1e12 -- wrote results/noise_law_swap.csv")
 
     print("=" * 74)
     print("beta_self (PRELIMINARY: transit on OPEN w0 prior; MHz per 1e12 cm^-3):")

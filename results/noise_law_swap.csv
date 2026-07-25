@@ -1,0 +1,5 @@
+peak,isotope,beta_m1_law,beta_uniform,shift,unit,status
+4121,87,0.0185,0.0152,-0.0033,MHz per 1e12 cm^-3,DIAGNOSTIC
+4154,85,0.0155,0.0106,-0.0049,MHz per 1e12 cm^-3,DIAGNOSTIC
+4192,85,0.0191,0.0169,-0.0022,MHz per 1e12 cm^-3,DIAGNOSTIC
+4207,87,0.0342,0.0474,+0.0132,MHz per 1e12 cm^-3,DIAGNOSTIC

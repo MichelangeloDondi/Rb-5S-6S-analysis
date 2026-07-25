@@ -453,6 +453,16 @@ def main() -> int:
           f"headline is a bound |")
         W(f"| σ_laser sharing (per-T ↔ per-block) | {sh[0]:.3f} · {sh[1]:.3f} "
           f"| negligible next to the other two rows |")
+        nls = rows("noise_law_swap")
+        if nls:
+            per_iso = {}
+            for r in nls:
+                per_iso.setdefault(r["isotope"], []).append(abs(float(r["shift"])))
+            m85 = max(per_iso.get("85", [float("nan")]))
+            m87 = max(per_iso.get("87", [float("nan")]))
+            W(f"| the M1 noise law (measured σ(V) ↔ uniform weights) | "
+              f"≤ {m85:.3f} · ≤ {m87:.3f} | the weights are not doing physics "
+              f"— the largest shift is on the 993.4207 nm suspect peak |")
         W(f"| drop any one peak | ≤ {lp[0]:.3f} · ≤ {lp[1]:.3f} | no single "
           f"line drives the result |")
         W(f"| drop one temperature | up to {lt[0]:.2f} · {lt[1]:.2f} | lever "
