@@ -137,10 +137,15 @@ leverage:
    shape-based method against the same data.
 3. **Same-session high-density points (150–170 °C).** The 2025 sweep's
    density lever was too short for the expected ~kHz-scale β; the higher
-   temperatures make the collisional width move by 0.07–0.25 MHz — enough
-   to measure β_self (or bound it near expectation), completing the 5D/7S
-   series. Interleaving matters: in 2025 temperature ran monotonically down
-   with elapsed time, so slow drift and density trends are confounded.
+   temperatures make the collisional width move by 0.07–0.25 MHz, against a
+   ~20 kHz signal in 2025. **The hot points are necessary and not
+   sufficient**: measured against the block-to-block width reproducibility
+   that actually limits the comparison, they reach only 0.8–2.9σ per block
+   (module M17). Interleaving the peaks and logging the power per trace cut
+   that floor, and take the same signal to 3.2–11.6σ — so the two halves are
+   co-limiting, not a headline and a refinement. Interleaving also fixes a
+   second problem: in 2025 temperature ran monotonically down with elapsed
+   time, so slow drift and density trends are confounded.
 4. **A tighter focus (~16 µm).** S₀ grows ~14×, and the third cumulant grows
    faster still — but not by the naive ×64: the axial average over the
    collection window changes both its size and, if the window is long enough,

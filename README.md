@@ -143,7 +143,7 @@ so each is reported as a bound together with the measurement that would lift it.
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
-| Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points |
+| Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points **and** a lower block-noise floor — both, see M17 |
 | 2025 laser linewidth **σ_laser** | ≈ 0.8 MHz at the w₀ prior (0.4–1.1 over the open w₀) | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
@@ -224,7 +224,9 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
   5S–6S AC-Stark and collisional self-shift coefficients. With power capped at
   225 mW, the intensity axis would come from the waist instead (a telescope
   gives two working waists spanning a ×16 intensity range), and a same-session
-  150–170 °C extension would give β_self a real density lever. Full
+  150–170 °C extension would give β_self a real density lever — though the
+  lever alone is not enough, since the block-noise floor is co-limiting (M17).
+  Full
   specification: [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre (Paper 2).** The same ramp law tested in the evanescent field
   at a fibre surface, where an atom–surface potential and the "pushing dip"

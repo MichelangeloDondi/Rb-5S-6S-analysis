@@ -306,7 +306,7 @@ measured 2025 failure modes.)
 
 **Tier 1 — enablers (the measurement does not exist without them):**
 3. **150–170 °C, SAME session, INTERLEAVED T order.** The β_self / self-shift lever:
-   70–130 °C gives Δγ ≈ 20 kHz (invisible); 150–170 °C gives 0.07–0.25 MHz (measurable).
+   70–130 °C gives Δγ ≈ 20 kHz (invisible); 150–170 °C gives 0.07–0.25 MHz.
    Same-session and, above all, **interleaved**: in 2025 temperature ran
    monotonically down with elapsed time (130 → 110 → break → 90 → 70), so T and
    time-drift are confounded — that, not any session boundary, is what turned
@@ -922,7 +922,9 @@ one); the hybrid is across the moment hierarchy, never across methods.
 - **High-T extension 150 → 170 °C** (oven/cell permitting): the Zameroski
   calibration (LITERATURE.md) puts expected β_self(6S) ~1 kHz per
   10¹² cm⁻³, so 70–130 °C yields Δγ ≈ 20 kHz — unmeasurable; 150–170 °C
-  yields 0.07–0.25 MHz — measurable.
+  yields 0.07–0.25 MHz — which is 0.8–2.9σ against the *current* block-noise
+  floor and 3.2–11.6σ once that floor is cut 4× (M17). Necessary, not
+  sufficient.
 - **High-density points must be SAME-SESSION — mandatory, not preferable
   (M4d lever test, 2026-07-12: measured, not anticipated).** The archival
   γ_coll rises only ×1.85 across the ×52 density span 70→130 °C (a residual
