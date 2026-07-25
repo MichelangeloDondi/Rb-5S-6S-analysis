@@ -1339,3 +1339,161 @@ in the same session.
 *Post-hoc, exploratory; the t_sweep power column is empty in the manifest, so
 this test assumes the three dwells ran at one power — true by design, but not
 recorded per-trace.*
+
+
+### Postscript to addendum 15, 2026-07-25 — the isotope route tested, and closed
+
+Addendum 15 left the cold-spot offset degenerate with radiation trapping. An
+apparent way out: a cold spot is a **density-scale** error, so it shifts both
+isotopes identically, while trapping scales with the ground-state D1 absorber
+column and must hit ⁸⁵Rb (72 % abundance) about 2.6× harder than ⁸⁷Rb. The
+isotope *difference* in the log-log slope should therefore separate them.
+
+**It does not, and the reason is worth recording.** The sign of that
+difference is not robust to two ordinary analysis choices — whether the
+130 °C point (a *different session*) is included, and whether the fit is
+weighted:
+
+| 130 °C included | weighted | ⁸⁵Rb | ⁸⁷Rb | ⁸⁵−⁸⁷ | reads as |
+|---|---|---|---|---|---|
+| yes | yes | 0.883 | 0.978 | **−0.095** | trapping |
+| yes | no | 1.071 | 1.044 | +0.027 | not trapping |
+| no | yes | 1.103 | 0.961 | +0.142 | not trapping |
+| no | no | 1.185 | 1.062 | +0.123 | not trapping |
+
+Three of four combinations give one answer and the fourth gives the
+opposite, with the spread comparable to the effect. **The archive cannot
+separate cold spot from trapping by this route**, and any single cut that
+appears to is selecting an answer rather than measuring one.
+
+Two consequences, both corrections to things stated earlier in this
+repository:
+
+1. **A claim made earlier today is withdrawn.** On first running the
+   unweighted, 70–110 °C version of this test it looked as though the archive
+   *weakly favoured* the cold-spot interpretation over trapping. It does not.
+   That reading was an artifact of the cut.
+2. **M7's trapping hint inherits the same caveat.** The ledger records ⁸⁵Rb
+   as "0.09 ± 0.08 more sublinear … right sign, ~1σ". That is the top row
+   above — true for M7's committed choice (weighted, 130 °C in), and reversed
+   by dropping either. It is not evidence for trapping; it is one cut among
+   four.
+
+**What this leaves.** The cold-spot offset stays bounded only by addendum
+15's 0–30 K, with its ×1.4–×7.4 leverage on β_self, and the archive has now
+exhausted its own routes to narrowing it. That is not a failure of the
+analysis — it is the correct answer to "can this dataset settle it", and it
+is precisely why `PLAN.md` §8.0 item 3 (D-line absorption thermometry,
+measuring N directly and returning ΔT_cs as the offset from the
+vapour-pressure prediction) is the measurement that does, and item 4
+(fluorescence-area ÷ absorption) the one that separates trapping cleanly.
+
+*Post-hoc, exploratory. Computed from the committed `amplitude_trapping.csv`;
+the four-way table is reproducible from it in a few lines.*
+
+
+## Addendum 16, 2026-07-25 — the cold spot by maximum likelihood, where slope-fitting failed
+
+The postscript above closed the isotope route: its sign flipped under ordinary
+analysis choices. That failure was diagnostic rather than fatal — it is what
+ad-hoc slope comparisons do when they discard information and make arbitrary
+cuts. The experimenter's response was the right one: **fit it properly.**
+
+**The model.** For peak $i$ at temperature $T$,
+
+$$A_i(T) = C_i \cdot N(T-\Delta T_\text{cs}) \cdot \exp\big[-\kappa \cdot a_i \cdot N(T-\Delta T_\text{cs})\big]$$
+
+with $C_i$ a per-peak normalisation (collection efficiency, matrix element,
+power), $\Delta T_\text{cs}$ the **cold-spot offset shared by all peaks** — a
+temperature error cannot be peak-specific — and $\kappa$ a trapping strength
+also shared, multiplied by the *fixed* natural abundance $a_i$ (0.722 for
+⁸⁵Rb, 0.278 for ⁸⁷Rb) rather than fitted per isotope. That is what makes the
+two effects separable in principle: the offset slides the $N(T)$ curve while
+trapping bends it, and the bend is isotope-weighted.
+
+Two things make the fit behave where the slope tests did not. The four $C_i$
+are **linear in log space**, so they are profiled analytically instead of
+being handed to an optimiser — which turns a flaky 7-parameter search into a
+stable 3-parameter one. And the error model carries a **fitted excess scatter**
+$s$, because the quoted within-block errors (1.9 %) under-describe the actual
+residual scatter about $A\propto N$ (24 %) by a factor of 12 — the documented
+block-to-block amplitude wander. Fitting with the raw errors gives
+$\chi^2/\text{dof}\approx 470$ and is meaningless.
+
+**Result.**
+
+| | 70–110 °C only (n = 12) | all four densities (n = 16) |
+|---|---|---|
+| $\Delta T_\text{cs}$ | **+19.6 K** | **+20.8 K** |
+| 95 % profile | [+5, +24] K | [+6, +24] K |
+| $\Delta T=0$ rejected at | 2$\Delta\ln L$ = 5.5, **2.3σ** | 6.3, **2.5σ** |
+| fitted scatter $s$ | 18 % | — |
+| trapping $\kappa$ | **not needed** (freeing it changes nothing) | same |
+
+Three things are worth more than the central value. **It is stable across the
+130 °C inclusion choice** — the exact choice that reversed the isotope test —
+which is the first sign in this whole thread that a result is being measured
+rather than selected. **Trapping is not required**: with $\kappa$
+free the fit puts it at zero and the likelihood is unchanged, so the
+amplitude-vs-density behaviour is explained by the temperature offset alone.
+And it converts addendum 15's hand-waved 0–30 K into a profile interval with
+zero disfavoured at ~2.4σ.
+
+**What it does not license.** 2.4σ is an indication, not a detection. The
+upper edge (+24 K) sits against the constraint that $T-\Delta T$ stay above
+rubidium's melting point at the 70 °C dwell, so it is truncated by
+physics-validity rather than determined by data. The escape factor is
+phenomenological, not Holstein — a different trapping form could partly mimic
+the offset. And this is the amplitude channel, which this repository treats
+cautiously everywhere else for good reason.
+
+**Consequence for C1, stated plainly.** At $\Delta T_\text{cs}\approx 20$ K
+the density lever compresses by ×3.6, so the headline model-independent bound
+would move from $\beta_\text{self} < 0.44$ to roughly **< 1.6** MHz per
+10¹² cm⁻³. The bound is not restated here — a 2.4σ indication from a
+systematics-dominated channel is not grounds to move a headline — but it is
+now the largest identified systematic on C1, ahead of the beam waist, and
+`PLAN.md` §8.0 item 3 (D-line absorption thermometry) measures it directly.
+
+*Post-hoc, exploratory. Reproducible from the committed `amplitude_trapping.csv`;
+the per-peak normalisations are profiled analytically and the excess scatter is
+fitted, not assumed.*
+
+
+### Postscript to addendum 16 — "cross-session" is the wrong word for the 130 °C point
+
+Written while labelling the table above, and corrected by the experimenter:
+*"I would not say 130 °C was a different session."* He is right, and the
+recovered clock makes the point sharper than testimony alone could.
+
+The 130 °C density point is the power sweep's 225 mW block. The four density
+points, in acquisition order:
+
+| | when (JST) | gap to the next |
+|---|---|---|
+| 130 °C (= 225 mW) | 17 Jul 23:47 → 18 Jul 04:21 | **2.3 h** |
+| 110 °C dwell | 18 Jul 06:37 → 07:42 | **9.6 h** |
+| 90 °C dwell | 18 Jul 17:21 → 18:16 | 0.7 h |
+| 70 °C dwell | 18 Jul 19:00 → 20:17 | — |
+
+**The 130 °C point sits 2.3 h from the 110 °C dwell, while the two halves of
+the supposedly "same-session" 70/90/110 sweep are split by 9.6 h — the
+documented break.** All four are inside one continuous ~24 h campaign with
+the Ti:Sapph on throughout. If a temporal caveat belongs anywhere it is on
+the 110↔90 boundary, not on 130.
+
+The natural grouping by elapsed time is therefore **{130, 110} — break —
+{90, 70}**, not {70, 90, 110} — {130}. And note what that implies for the
+confound this report has worried about elsewhere: across the whole campaign
+the density sequence is *monotone decreasing in time*, with the long break in
+its middle.
+
+**This language predates the clock and should be retired.** The phrase
+"cross-session 130 °C" appears in `DATA.md`, `PLAN.md` and the generated
+`RESULTS.md` (via `make_results_ledger.py`), where the 130 °C lever variant
+is described as "far tighter but carrying its documented cross-session
+caveat". The tightness is real and so is the caution — a 4½-hour block
+acquired before a lock re-acquisition is not interchangeable with a one-hour
+dwell — but the *reason* stated is wrong, and by elapsed time it applies more
+forcefully to the 90 °C dwell than to 130 °C. Correcting that wording is a
+separate pass, flagged here rather than done silently inside an addendum.
