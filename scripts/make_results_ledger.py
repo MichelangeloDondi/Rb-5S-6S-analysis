@@ -524,6 +524,32 @@ def main() -> int:
         W("- **Degeneracy law (M10):** areas should be abundance×(2F+1) "
           "(5/3, 7/5 within-isotope); measured ratios swing 30–50% between "
           "blocks (drift) — not testable in the archive; a fixed-lock session: interleave peaks.")
+    pol = rows("polarizability")
+    if pol:
+        by = {(r["quantity"], r["key"]): r for r in pol}
+        da = float(by[("delta_alpha_993", "model")]["value"])
+        to = float(by[("tuneout_5s", "model")]["value"])
+        a5 = float(by[("alpha_5s_static", "model")]["value"])
+        a6 = float(by[("alpha_6s_static", "model")]["value"])
+        magic = sorted(float(by[("magic_5s6s", k)]["value"])
+                       for k in ("1204nm", "1288nm", "1340nm"))
+        mtxt = " / ".join(f"{m:.1f}" for m in magic)
+        W(f"- **Dynamic polarizabilities (M16):** an independent sum-over-states "
+          f"recompute of $\\Delta\\alpha(993)=\\alpha_{{6S}}-\\alpha_{{5S}}$ gives "
+          f"**{da:.0f} a.u.** — $|\\Delta\\alpha|$ within $\\sim$5% of Orson et "
+          f"al.'s 1093, but the **opposite sign** (a blue transition shift); the "
+          f"sign is an open theory item flagged for external adjudication "
+          f"(THEORY_NOTE §5), and every archival result is sign-immune "
+          f"($S_0$ bounds and the asymmetry null use $|\\Delta\\alpha|$). "
+          f"Validation against anchors the model does not use: the measured 5S "
+          f"tune-out 790.03235(3) nm is reproduced at {to:.4f} nm ($\\approx$2 pm), "
+          f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2f}, and the "
+          f"static $\\alpha_{{6S}}$ tail is calibrated to Safronova's 5167(22) "
+          f"({a6:.0f}). The same model gives the **first 5S–6S magic wavelengths** "
+          f"(scalar, ENVELOPE): $\\lambda_m \\approx$ {mtxt} nm — a trap at any of "
+          f"them would hold both states without pulling the 993 nm line. Scalar "
+          f"only; the tensor treatment and a trapped-atom platform are the "
+          f"follow-up. Reproducible: `run_polarizability.py`.")
     W("\n---\n*Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / "
       "OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*")
 

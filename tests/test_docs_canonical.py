@@ -148,6 +148,24 @@ CANONICAL = [
         mode="any",
         docs=["README.md", "docs/BIG_PICTURE.md"],
     ),
+    dict(
+        # The M16 recompute -- distinct from Orson's fixed 1093 (which stays
+        # unguarded as a textbook input, see the scope note above): -1145 is a
+        # re-runnable result of run_polarizability.py and its stale copies
+        # would contradict the ledger.
+        name="M16 Delta-alpha(993) recompute",
+        value=lambda: f"{abs(float(_cell('polarizability.csv', 'delta_alpha_993', 'model'))):.0f}",
+        find=re.compile(r"[−-](1[0-9]{3})\s*a\.u"),
+        mode="all",
+        docs=["README.md", "docs/BIG_PICTURE.md", "docs/RESULTS.md"],
+    ),
+    dict(
+        name="M16 first 5S-6S magic wavelength (1204 nm crossing)",
+        value=lambda: f"{float(_cell('polarizability.csv', 'magic_5s6s', '1204nm')):.1f}",
+        find=re.compile(r"(120[0-9]\.[0-9])\s*/"),
+        mode="all",
+        docs=["README.md", "docs/RESULTS.md"],
+    ),
 ]
 
 

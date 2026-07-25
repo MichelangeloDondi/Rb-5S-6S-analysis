@@ -41,8 +41,11 @@ Academy measured the absolute frequencies and hyperfine constants ([Orson
 2021](lit/orson2021.md), to MHz; [Ayachitula 2024](lit/ayachitula2024.md), to kHz, with a lock stable to <0.5 kHz over
 50 minutes). [Orson 2021](lit/orson2021.md) also reports two null results at ~6 MHz resolution —
 no observable light shift and no density shift — and computes the
-differential polarizability Δα = 1093 a.u. that our own convention
-reproduces to the digit. So on this line the *constants* are measured, but
+differential polarizability Δα = 1093 a.u. An independent in-repo recompute
+(module M16) reproduces that magnitude to ~5% at −1145 a.u. but finds the
+opposite sign — an open theory item under external adjudication
+([THEORY_NOTE §5](THEORY_NOTE.md)); every archival result here uses |Δα| and
+is sign-immune. So on this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
 **In the group.** OIST has its own 993 nm lineage: [Nieddu 2019](lit/nieddu2019.md) demonstrated
