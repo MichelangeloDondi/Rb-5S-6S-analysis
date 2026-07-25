@@ -374,6 +374,19 @@ design, not triage):
   full two-day T grid.
 - **S (small, target w₀ ≈ 15–16 µm, z_R ≈ 0.8 mm)** — the Stark/skew/cusp
   config. S₀ several-fold vs 2025; transit ~3.7 MHz bare (the intensity anchor, §8.2).
+  **Model caveat specific to this config (noted 2026-07-25).** The composite
+  lineshape convolves transit with the natural Lorentzian, which is rigorous
+  when the two act as independent frequency distributions. That separation is
+  cleanest when the transit time is long against the 6S lifetime (≈45 ns): at
+  the archival waist the crossing time is ≈185 ns (w₀/v_mp at 110 °C), a factor
+  ~4, but **at 15–16 µm it falls to ≈58 ns — within a factor ~1.3 of the
+  lifetime**, where an atom radiates before it has crossed and the two
+  mechanisms are no longer cleanly separable. The kernel is still the right
+  leading description, but config S is exactly where a referee should ask for
+  the convolution's validity range, and where a Bloch-equation cross-check
+  (or a measured departure from the predicted transit scaling) is worth the
+  time. Config S remains the right choice for the Stark/skew lever — this is a
+  caveat to state and test, not a reason to retreat to a larger waist.
 - **M (archival, w₀ ≈ 50 µm)** — half-day spot check only: knife-edge + camera +
   P grid + one 130 °C point, for direct 2025-epoch continuity.
 

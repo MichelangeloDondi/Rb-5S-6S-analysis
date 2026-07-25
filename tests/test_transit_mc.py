@@ -109,3 +109,37 @@ def test_collection_range_matters():
     tight = transit_added_fwhm_mc(w0_m=32e-6, T_C=110, z_half_range_m=0.3e-3, n_atoms=200_000)
     longcol = transit_added_fwhm_mc(w0_m=32e-6, T_C=110, z_half_range_m=6e-3, n_atoms=200_000)
     assert abs(longcol - tight) > 0.05 and longcol != tight
+
+
+# --- asymptotic invariants of the forward model -----------------------------
+# A forward model should satisfy its limiting cases automatically, without the
+# fit ever being asked. Two limits are diagnostic rather than tautological:
+# they fail loudly if any construction step has introduced an additive width
+# floor (a grid resolution, a minimum-width guard, a smoothing kernel).
+# Added 2026-07-25 after an external red-team review named the w0 -> infinity
+# limit "an extremely powerful asymptotic test" and it was found untested.
+
+@pytest.mark.slow
+def test_wide_beam_limit_transit_collapses_toward_a_delta():
+    """w0 -> infinity: the crossing time diverges, so the transit kernel must
+    collapse toward delta(nu). Catches any width floor that does NOT scale with
+    1/w0 -- such a floor would leave a residual width here and would inflate
+    the transit share of the line budget at every waist."""
+    wide = _bare_fwhm(w0_m=4000e-6, T_C=110)
+    ref = _bare_fwhm(w0_m=50e-6, T_C=110)
+    # 80x the waist must buy ~80x the narrowing (allow generous MC slack).
+    assert wide < ref / 40, (wide, ref)
+    # and it must be small on the scale of every other kernel in the budget
+    assert wide < 0.05, wide          # MHz, vs Gamma_nat = 3.49
+
+
+@pytest.mark.slow
+def test_transit_width_is_bounded_by_the_analytic_form_at_both_ends():
+    """tau -> infinity (wide beam) and tau -> short (tight beam) must BOTH
+    track the closed form constants.transit_fwhm_from_w0, not just the single
+    waist the module was tuned at. Guards against a scaling law that happens to
+    be right at 50 um and wrong elsewhere."""
+    for w0 in (16e-6, 50e-6, 200e-6):
+        mc = _bare_fwhm(w0_m=w0, T_C=110)
+        analytic = transit_fwhm_from_w0(w0, T_C=110)
+        assert abs(mc / analytic - 1.0) < 0.25, (w0, mc, analytic)
