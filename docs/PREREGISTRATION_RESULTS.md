@@ -105,6 +105,7 @@ re-open a fitted result.
 - [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
   - [Postscript to addendum 17, 2026-07-25 — the linewidth test refitted, and withdrawn](#postscript-to-addendum-17-2026-07-25--the-linewidth-test-refitted-and-withdrawn)
 - [Addendum 18, 2026-07-25 — one ratio that predicts every result's status](#addendum-18-2026-07-25--one-ratio-that-predicts-every-results-status)
+  - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
 
 ---
 
@@ -1899,3 +1900,66 @@ it. It brackets the outcome; it does not predict a single value.
 Computed by `scripts/run_resolving_power.py` into
 `results/resolving_power.csv` (DIAGNOSTIC — it measures the experiment's
 sensitivity, not the atom); summarised in [`RESULTS.md`](RESULTS.md) M17.
+
+---
+
+### Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested
+
+The density axis was the comfortable one: the ratio reproduced the archive's
+own statuses and the projection sharpened PLAN. Turned on the **power** axis
+the lens finds something less comfortable, and it sits underneath a headline.
+
+**The setup.** The AC-Stark bound (M4e) fits one shared κ to the width-versus-
+power data and inflates its errors by √χ² — χ²_red ≈ 4.3 — to absorb the
+block-to-block width scatter. That is the correct remedy for *independent*
+noise, which averages down so the parameter error shrinks as 1/√N. It is the
+wrong remedy for a systematic **common to all four peaks at a given power**,
+which does not average at all.
+
+Ordinarily that distinction would be a technicality. Here it is not, because
+of a coincidence: the predicted ramp broadening at 225 mW is **~0.09 MHz**,
+and one single-block width scatter is **0.088 MHz**. The effect the bound is
+built to constrain is exactly one block's worth of noise. Everything the
+bound achieves, it achieves by averaging — so whether the scatter averages is
+not a detail of the error budget, it *is* the error budget.
+
+**The test.** Take each peak's residuals about its own power-mean and permute
+them across powers, independently per peak. That destroys any common
+per-power component while preserving each peak's own distribution — the
+independence null. The statistic is how much the scatter shrinks when the
+four peaks are averaged: 2.0× under independence, 1.0× if the scatter is
+entirely common.
+
+| | variance reduction |
+|---|---|
+| observed | **1.39×** |
+| independence null (median, 90% band) | 1.89× [1.29, 4.04] |
+| p(≤ observed \| independence) | **0.11** |
+
+**The verdict is a shrug, and the shrug is the finding.** A common component
+is not established — p = 0.11 clears nothing. It is equally **not excluded**:
+the null's own 90% band runs from 1.29 to 4.04, so the statistic is wildly
+uncertain, and the observed 1.39 sits comfortably inside it. Four peaks by
+five powers cannot resolve this question. The point estimate of the common
+variance fraction is 36%, which is worth exactly nothing given that band.
+
+The eye is drawn to the 225 mW column, where all four residuals are negative
+(mean −0.104 MHz, 2.3σ) — and a systematically *narrow* line at the highest
+power is the opposite sign to ramp broadening, so it would mask the effect
+rather than mimic it. That is the most extreme of five columns, though;
+look-elsewhere makes it unremarkable, and it is recorded as a thing to watch,
+not a thing found.
+
+**So the assumption stands untested rather than contradicted**, which is a
+weaker statement than the bound's presentation implies and a stronger one
+than "it is broken". Nothing in `results/` moves: the bound is not shown to
+be wrong, and there is no better estimate to replace it with.
+
+**What it buys is a cheap fix.** The 2025 ladder walked the power monotonically
+and never returned. Re-measuring **one earlier condition later in the same
+session** separates common from independent scatter directly, because the two
+make different predictions about a repeat at identical settings. One block.
+`PLAN.md` §8 now carries it, and it is the cheapest item on that page —
+which is the argument for it: every bound in this archive that absorbs block
+scatter by inflating errors is making the same assumption, and one block
+would test them all.

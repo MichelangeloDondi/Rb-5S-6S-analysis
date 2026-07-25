@@ -8,3 +8,4 @@ projection,hot_only_low,0.07,0.0863263,0.810877,MHz,PLAN_8_projection,DIAGNOSTIC
 projection,hot_only_high,0.25,0.0863263,2.89599,MHz,PLAN_8_projection,DIAGNOSTIC
 projection,both_low,0.07,0.0215816,3.24351,MHz,PLAN_8_projection,DIAGNOSTIC
 projection,both_high,0.25,0.0215816,11.584,MHz,PLAN_8_projection,DIAGNOSTIC
+assumption,s0_block_scatter_averages_down,1.38706,1.89485,0.10985,variance_reduction_vs_permutation_null,UNTESTABLE_HERE,DIAGNOSTIC

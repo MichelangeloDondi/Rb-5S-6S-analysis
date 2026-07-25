@@ -925,6 +925,15 @@ one); the hybrid is across the moment hierarchy, never across methods.
   yields 0.07–0.25 MHz — which is 0.8–2.9σ against the *current* block-noise
   floor and 3.2–11.6σ once that floor is cut 4× (M17). Necessary, not
   sufficient.
+- **A RETURNED-TO block, at a condition already measured earlier in the
+  session** (new, from M17). Every bound that absorbs block scatter by
+  inflating errors — the S₀ bound most of all, where the predicted effect is
+  one single-block scatter — assumes that scatter *averages down*. A
+  systematic common to all peaks at a given setting does not average, and the
+  2025 design cannot tell the two apart: a permutation test against the
+  independence null gives p = 0.11 on 4 peaks × 5 powers, which excludes
+  nothing. Re-measuring one earlier condition later in the session separates
+  them directly, at the cost of a single block. Cheapest item on this page.
 - **High-density points must be SAME-SESSION — mandatory, not preferable
   (M4d lever test, 2026-07-12: measured, not anticipated).** The archival
   γ_coll rises only ×1.85 across the ×52 density span 70→130 °C (a residual

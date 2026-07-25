@@ -106,5 +106,7 @@ The ratio reproduces this ledger's own status assignments, each of which was arg
 
 It is also predictive, which is the point. PLAN §8 asks for two things — hot points at 150–170 °C to grow the signal, and interleaving with per-trace power logging to cut the block noise. Hot points alone reach only 0.8–2.9σ per block; with the noise cut 4× as well, 3.2–11.6σ. **Both halves of the prescription are load-bearing** — the second is not a refinement of the first. Reproducible: `run_resolving_power.py`.
 
+The same lens on the *power* axis finds an untested assumption. The S₀ bound (M4e) inflates its errors by $\sqrt{\chi^2}$ to absorb block scatter, which is the right remedy only if that scatter averages down — and the predicted ramp broadening at 225 mW is almost exactly one single-block scatter, so the bound rests on it. A permutation test against the independence null returns p = 0.11: neither established nor excluded, because four peaks by five powers cannot resolve it. Untested rather than wrong; `PLAN.md` §8 now asks for the returned-to block that would settle it.
+
 ---
 *Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*

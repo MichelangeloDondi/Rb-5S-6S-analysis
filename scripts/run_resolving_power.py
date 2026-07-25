@@ -35,6 +35,18 @@ projection at the end shows the temperature lever ALONE buys only ~1-3 sigma
 per block, so the second half is not a refinement of the first: both are
 load-bearing.
 
+The same lens turned on the POWER axis finds something less comfortable. The
+AC-Stark bound (M4e) inflates its errors by sqrt(chi2) to absorb the
+block-to-block width scatter, which is the right remedy only if that scatter
+is INDEPENDENT between blocks -- independent noise averages down, a
+systematic common to all four peaks at a given power does not. The predicted
+ramp broadening at 225 mW is ~0.09 MHz, almost exactly ONE single-block
+scatter, so the bound rests entirely on that averaging. A permutation test
+against the independence null returns p = 0.11: the assumption is neither
+established nor excluded, because 4 peaks x 5 powers cannot resolve it. It is
+untested rather than wrong, and PLAN 8.4 now asks for the returned-to power
+block that would test it.
+
 Writes results/resolving_power.csv. Status DIAGNOSTIC -- this measures the
 experiment's sensitivity, not the atom.
 """
@@ -129,6 +141,35 @@ def main() -> int:
     print("   interleaving and per-trace power logging that cut the block noise")
     print("   are co-limiting, not a refinement: both halves are load-bearing.")
 
+    # ---- the power axis, and the assumption under the S0 bound -----------
+    # The AC-Stark bound (M4e) inflates its errors by sqrt(chi2) for the
+    # block-to-block width scatter. That is the right remedy only if the
+    # scatter is INDEPENDENT between blocks: independent noise averages down
+    # and the parameter error shrinks, a systematic common to all peaks at a
+    # given power does not. The predicted ramp broadening at 225 mW is
+    # ~0.09 MHz, which is one single-block scatter -- so the whole bound
+    # rests on that averaging. It has never been tested. Test it.
+    g = ladder.groupby(["peak", "P"]).total_fwhm.mean().unstack()
+    resid = (g.sub(g.mean(axis=1), axis=0)).values      # rows are mean-zero
+    def _reduction(m):
+        return m.std(ddof=1) / m.mean(axis=0).std(ddof=1)
+    obs = float(_reduction(resid))
+    rng_ = np.random.default_rng(C.RNG_SEED if hasattr(C, "RNG_SEED") else 1)
+    null = np.array([_reduction(np.array([rng_.permutation(row) for row in resid]))
+                     for _ in range(20000)])
+    p_common = float((null <= obs).mean())
+    lo, hi = float(np.percentile(null, 5)), float(np.percentile(null, 95))
+    print(f"\nTHE ASSUMPTION UNDER THE S0 BOUND (M4e).")
+    print(f"  Its sqrt(chi2) inflation is the right remedy only if the block")
+    print(f"  scatter averages down. Permuting each peak's residuals across")
+    print(f"  powers gives the independence null:")
+    print(f"    observed variance-reduction {obs:.2f}x   "
+          f"null {np.median(null):.2f}x [{lo:.2f}, {hi:.2f}] (90%)   p = {p_common:.3f}")
+    print(f"  -> a common component is NOT established, and equally NOT excluded:")
+    print(f"     the null's own 90% band spans [{lo:.2f}, {hi:.2f}], so 4 peaks x 5")
+    print(f"     powers cannot resolve this. The assumption stands untested, not")
+    print(f"     contradicted. A returned-to power block would test it directly.")
+
     out = C.RESULTS_DIR / "resolving_power.csv"
     with open(out, "w", newline="") as f:
         wtr = csv.writer(f)
@@ -143,6 +184,9 @@ def main() -> int:
         for tag, sig, nz, r in proj:
             wtr.writerow(["projection", tag, f"{sig:.6g}", f"{nz:.6g}",
                           f"{r:.6g}", "MHz", "PLAN_8_projection"])
+        wtr.writerow(["assumption", "s0_block_scatter_averages_down",
+                      f"{obs:.6g}", f"{np.median(null):.6g}", f"{p_common:.6g}",
+                      "variance_reduction_vs_permutation_null", "UNTESTABLE_HERE"])
     print(f"\nwrote {out.relative_to(ROOT)}")
     return 0
 

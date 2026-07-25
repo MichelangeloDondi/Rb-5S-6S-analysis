@@ -624,6 +624,19 @@ def main() -> int:
               f"{float(pr['both_high']['ratio']):.1f}σ. **Both halves of the "
               f"prescription are load-bearing** — the second is not a refinement "
               f"of the first. Reproducible: `run_resolving_power.py`.")
+        asm = [r for r in rp if r["kind"] == "assumption"]
+        if asm:
+            a = asm[0]
+            W(f"\nThe same lens on the *power* axis finds an untested assumption. "
+              f"The S₀ bound (M4e) inflates its errors by $\\sqrt{{\\chi^2}}$ to "
+              f"absorb block scatter, which is the right remedy only if that "
+              f"scatter averages down — and the predicted ramp broadening at "
+              f"225 mW is almost exactly one single-block scatter, so the bound "
+              f"rests on it. A permutation test against the independence null "
+              f"returns p = {float(a['ratio']):.2f}: neither established nor "
+              f"excluded, because four peaks by five powers cannot resolve it. "
+              f"Untested rather than wrong; `PLAN.md` §8 now asks for the "
+              f"returned-to block that would settle it.")
 
     W("\n---\n*Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / "
       "OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*")
