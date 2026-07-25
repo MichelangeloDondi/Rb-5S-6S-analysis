@@ -1,0 +1,10 @@
+kind,observable,signal,noise,ratio,units,verdict,status
+observable,total_fwhm,0.0858929,0.0161547,5.3169,ln_range_vs_rel_scatter,MARGINAL,DIAGNOSTIC
+observable,gamma_coll,0.636823,0.174848,3.64216,ln_range_vs_rel_scatter,MARGINAL,DIAGNOSTIC
+observable,sigma_laser,0.468592,0.303158,1.5457,ln_range_vs_rel_scatter,CANNOT_RESOLVE,DIAGNOSTIC
+observable,amplitude,4.22658,0.093702,45.1066,ln_range_vs_rel_scatter,RESOLVES,DIAGNOSTIC
+projection,archival,0.02,0.0863263,0.231679,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,hot_only_low,0.07,0.0863263,0.810877,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,hot_only_high,0.25,0.0863263,2.89599,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,both_low,0.07,0.0215816,3.24351,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,both_high,0.25,0.0215816,11.584,MHz,PLAN_8_projection,DIAGNOSTIC

@@ -44,6 +44,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The `130C(90C-0.65A)` notation is a **thermocouple reading and a variac set point**, giving the cold-spot offset its first handle | addendum 15 |
 | The cold spot fits at **ΔT ≈ +20 K [+5, +24]** by maximum likelihood, with radiation trapping unneeded | addendum 16 |
 | The pilot session's `91 °C` is a **set point, not a cell temperature** — it ran at the rehearsal's internal ~130 °C, not the campaign's 90 °C | addendum 17 |
+| **One ratio predicts every result's status**: dynamic range over block noise — amplitude 45, widths 1.5–5.3, matching where the archive reports numbers vs bounds | addendum 18 |
 | The archive's composite lineshape describes the **pilot out of sample** at χ²_red 0.83–1.01, and reproduces its γ_coll↔σ_laser degeneracy at corr −0.97 | addendum 17 postscript |
 
 **What it corrected about itself.** Six readings were withdrawn after being
@@ -103,6 +104,7 @@ re-open a fitted result.
   - [Postscript to addendum 16, 2026-07-25 — the excess scatter, recovered without the model](#postscript-to-addendum-16-2026-07-25--the-excess-scatter-recovered-without-the-model)
 - [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
   - [Postscript to addendum 17, 2026-07-25 — the linewidth test refitted, and withdrawn](#postscript-to-addendum-17-2026-07-25--the-linewidth-test-refitted-and-withdrawn)
+- [Addendum 18, 2026-07-25 — one ratio that predicts every result's status](#addendum-18-2026-07-25--one-ratio-that-predicts-every-results-status)
 
 ---
 
@@ -1827,3 +1829,73 @@ flag bad traces, and it is good at that; the moment a number of its was
 carried into a quantitative comparison it brought a 6% systematic with it.
 Where the repo compares widths for physics it uses the fitted composite, and
 this is now the reason why, written down.
+
+---
+
+## Addendum 18, 2026-07-25 — one ratio that predicts every result's status
+
+The pilot investigation kept colliding with the same wall in different
+disguises: a single-temperature session whose normalisation is degenerate
+with density; a QC width carrying an SNR bias; γ_coll degenerate with
+σ_laser; a width-versus-temperature curve whose offset is degenerate with its
+constant. Four objects that look informative and are not.
+
+They share a form. **An observable can only answer a question if it moves
+more across the conditions of interest than it scatters when nothing physical
+is changing.** Both halves of that are measurable here, so it can be computed
+rather than reasoned about.
+
+The dynamic range is the per-dwell mean over the 70–130 °C sweep. The noise
+floor is the block-to-block scatter at *fixed* conditions, and the 130 °C
+power ladder supplies it — five blocks at one temperature, where width is
+power-independent by the C3 null, so whatever separates them is
+instrumental. Both in log space, since these are multiplicative quantities;
+mixing a log ratio for one against a fractional range for another is what
+made the first version of this table wrong.
+
+| observable | dynamic range | block noise | ratio | |
+|---|---|---|---|---|
+| amplitude | 4.23 | 9.4% | **45.1** | resolves it |
+| `total_fwhm` | 0.09 | 1.6% | 5.3 | marginal |
+| `gamma_coll` | 0.64 | 17.5% | 3.6 | marginal |
+| `sigma_laser` | 0.47 | 30.3% | 1.5 | cannot resolve it |
+
+**The ratio reproduces the archive's own status assignments.** Amplitude
+clears its floor 45× and is the single place the archive extracts a *number* —
+the cold spot, ΔT ≈ +20 K (addendum 16). The widths sit between 1.5 and 5.3
+and are exactly where it reports *bounds*: β_self from `total_fwhm`, the
+residual floor from `gamma_coll`, the laser width from `sigma_laser`. Those
+four statuses were each argued separately, by monotonicity tests, degeneracy
+analysis and model comparison. One ratio, computed from block scatter,
+recovers all of them.
+
+That is a consistency check on the archive rather than a new physical result,
+and it is worth having for the same reason the closure tests are: the
+statuses are the load-bearing part of a bounds-heavy paper, and they now have
+a second, independent justification that does not go through any lineshape
+model.
+
+**What it is actually for is October.** The diagnostic is predictive, and it
+says something PLAN did not. The prescription has two halves — hot points at
+150–170 °C to grow the signal, interleaving and per-trace power logging to
+cut the block noise — and the temperature half has always read as the
+headline. Against the measured floor of 0.086 MHz on a 5.3 MHz line:
+
+| | per-block significance |
+|---|---|
+| 2025 as taken (Δγ ≈ 20 kHz) | 0.2σ |
+| hot points alone | 0.8–2.9σ |
+| hot points **and** the noise cut 4× | 3.2–11.6σ |
+
+**Hot points alone do not deliver a measurement.** They move β_self from
+invisible to marginal. The noise half is co-limiting, not a refinement of the
+temperature half, and `PLAN.md` §8 Tier 1 now says so with these numbers
+attached.
+
+The one caveat to carry: the 0.07–0.25 MHz signal is itself derived from a
+bounded β_self, so the projection inherits that range rather than resolving
+it. It brackets the outcome; it does not predict a single value.
+
+Computed by `scripts/run_resolving_power.py` into
+`results/resolving_power.csv` (DIAGNOSTIC — it measures the experiment's
+sensitivity, not the atom); summarised in [`RESULTS.md`](RESULTS.md) M17.

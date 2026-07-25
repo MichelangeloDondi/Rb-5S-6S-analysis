@@ -57,6 +57,8 @@ FILE_STATUS = {
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
+    "resolving_power.csv": "DIAGNOSTIC",  # measures the experiment's sensitivity, not the atom
+
     "ruler_blocks.csv": "CALIB",
     "ruler_traces.csv": "CALIB",
     "ruler_nlmap.csv": "CALIB",

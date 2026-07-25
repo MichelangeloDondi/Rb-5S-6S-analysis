@@ -91,5 +91,20 @@ The referee question — *what moves if an assumption moves* — in one table, g
 - **Degeneracy law (M10):** areas should be abundance×(2F+1) (5/3, 7/5 within-isotope); measured ratios swing 30–50% between blocks (drift) — not testable in the archive; a fixed-lock session: interleave peaks.
 - **Dynamic polarizabilities (M16):** an independent sum-over-states recompute of $\Delta\alpha(993)=\alpha_{6S}-\alpha_{5S}$ gives **-1145 a.u.** — $|\Delta\alpha|$ within $\sim$5% of Orson et al.'s 1093, but the **opposite sign** (a blue transition shift); the sign is an open theory item flagged for external adjudication (THEORY_NOTE §5), and every archival result is sign-immune ($S_0$ bounds and the asymmetry null use $|\Delta\alpha|$). Validation against anchors the model does not use: the measured 5S tune-out 790.03235(3) nm is reproduced at 790.0339 nm ($\approx$2 pm), the measured static $\alpha_{5S}$ 318.79(1.42) at 318.28, and the static $\alpha_{6S}$ tail is calibrated to Safronova's 5167(22) (5167). The same model gives the **first 5S–6S magic wavelengths** (scalar, ENVELOPE): $\lambda_m \approx$ 1203.9 / 1287.9 / 1339.6 nm — a trap at any of them would hold both states without pulling the 993 nm line. Scalar only; the tensor treatment and a trapped-atom platform are the follow-up. Reproducible: `run_polarizability.py`.
 
+### M17 — resolving power: why each result has the status it has (DIAGNOSTIC)
+
+An observable can only answer a question if it moves more across the conditions than it scatters when nothing physical changes. Both are measurable: the dynamic range over the 70–130 °C sweep, and the block-to-block scatter at fixed conditions taken from the 130 °C power ladder, where width is power-independent. Their ratio:
+
+| observable | dynamic range in block-noise units | verdict |
+|---|---|---|
+| `amplitude` | 45.1 | resolves |
+| `total_fwhm` | 5.3 | marginal |
+| `gamma_coll` | 3.6 | marginal |
+| `sigma_laser` | 1.5 | cannot resolve |
+
+The ratio reproduces this ledger's own status assignments, each of which was argued separately and by different means: amplitude clears the floor 45× and is the one place the archive extracts a number (the cold spot, ΔT ≈ +20 K); the widths sit at 1.5–5.3 and are exactly where it reports bounds.
+
+It is also predictive, which is the point. PLAN §8 asks for two things — hot points at 150–170 °C to grow the signal, and interleaving with per-trace power logging to cut the block noise. Hot points alone reach only 0.8–2.9σ per block; with the noise cut 4× as well, 3.2–11.6σ. **Both halves of the prescription are load-bearing** — the second is not a refinement of the first. Reproducible: `run_resolving_power.py`.
+
 ---
 *Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*

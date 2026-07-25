@@ -312,6 +312,13 @@ measured 2025 failure modes.)
    time-drift are confounded — that, not any session boundary, is what turned
    the archival β into a bound. Also unlocks the collisional
    self-*shift* (the drift made it unmeasurable in 2025).
+   **The hot points are not sufficient on their own** (M17,
+   `results/resolving_power.csv`): the block-to-block width reproducibility is
+   1.6%, i.e. 0.086 MHz on a 5.3 MHz line, so a 0.07–0.25 MHz signal is only
+   **0.8–2.9σ per block** if the noise stays as it was. Cutting it 4× — which
+   is what the interleaving and the per-trace power logging of item 6 buy —
+   takes the same signal to **3.2–11.6σ**. Both halves are load-bearing; the
+   noise half is not a refinement of the temperature half.
 4. **The fixed lock itself** (the epoch premise) — resurrects the *pull* (∝S₀), the
    strong AC-Stark handle that was dead in the archive.
 

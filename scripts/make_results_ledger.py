@@ -588,6 +588,43 @@ def main() -> int:
           f"them would hold both states without pulling the 993 nm line. Scalar "
           f"only; the tensor treatment and a trapped-atom platform are the "
           f"follow-up. Reproducible: `run_polarizability.py`.")
+    rp = rows("resolving_power")
+    if rp:
+        obs = {r["observable"]: r for r in rp if r["kind"] == "observable"}
+        pr = {r["observable"]: r for r in rp if r["kind"] == "projection"}
+        def _r(k): return float(obs[k]["ratio"])
+        W(f"\n### M17 — resolving power: why each result has the status it has "
+          f"(DIAGNOSTIC)\n")
+        W(f"An observable can only answer a question if it moves more across the "
+          f"conditions than it scatters when nothing physical changes. Both are "
+          f"measurable: the dynamic range over the 70–130 °C sweep, and the "
+          f"block-to-block scatter at fixed conditions taken from the 130 °C "
+          f"power ladder, where width is power-independent. Their ratio:\n")
+        W("| observable | dynamic range in block-noise units | verdict |")
+        W("|---|---|---|")
+        for k in ("amplitude", "total_fwhm", "gamma_coll", "sigma_laser"):
+            if k in obs:
+                W(f"| `{k}` | {float(obs[k]['ratio']):.1f} | "
+                  f"{obs[k]['verdict'].replace('_', ' ').lower()} |")
+        W(f"\nThe ratio reproduces this ledger's own status assignments, each of "
+          f"which was argued separately and by different means: amplitude clears "
+          f"the floor {_r('amplitude'):.0f}× and is the one place the archive "
+          f"extracts a number (the cold spot, ΔT ≈ +20 K); the widths sit at "
+          f"{_r('sigma_laser'):.1f}–{_r('total_fwhm'):.1f} and are exactly where "
+          f"it reports bounds.\n")
+        if pr:
+            W(f"It is also predictive, which is the point. PLAN §8 asks for two "
+              f"things — hot points at 150–170 °C to grow the signal, and "
+              f"interleaving with per-trace power logging to cut the block noise. "
+              f"Hot points alone reach only "
+              f"{float(pr['hot_only_low']['ratio']):.1f}–"
+              f"{float(pr['hot_only_high']['ratio']):.1f}σ per block; with the "
+              f"noise cut 4× as well, "
+              f"{float(pr['both_low']['ratio']):.1f}–"
+              f"{float(pr['both_high']['ratio']):.1f}σ. **Both halves of the "
+              f"prescription are load-bearing** — the second is not a refinement "
+              f"of the first. Reproducible: `run_resolving_power.py`.")
+
     W("\n---\n*Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / "
       "OPEN / DESCOPED tags live at each number's definition in `rb5s6s/`.*")
 
