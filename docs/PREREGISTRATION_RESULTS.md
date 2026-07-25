@@ -1690,12 +1690,30 @@ the two disagree systematically:
 | 130 °C | 2.693 | 5.433 |
 | **70 → 130 growth** | **×1.135** | **×1.072** |
 
-The crude metric climbs nearly twice as fast. It also produces a smooth
-concave curve (ΔFWHM² of +0.78, +0.49, +0.34 per 20 K) that the fitted widths
-show no trace of. The direction is what one expects: a half-maximum crossing
-read off a noisy trace is biased outward, worst where the signal is weakest,
-and 70 °C has the smallest amplitudes in the campaign. **That manufactured
-steepness was the entire source of the test's apparent resolving power.**
+The crude metric climbs nearly twice as fast, and it is not peculiar to this
+peak — every peak shows it, the crude-to-fitted growth ratio running 1.04 to
+1.18 with a mean of **1.061**:
+
+| peak | crude growth | fitted growth | ratio |
+|---|---|---|---|
+| 4121 | ×1.250 | ×1.063 | 1.176 |
+| 4154 | ×1.192 | ×1.143 | 1.044 |
+| 4192 | ×1.135 | ×1.072 | 1.059 |
+| 4207 | ×1.124 | ×1.084 | 1.037 |
+
+**The mechanism runs the opposite way to the obvious guess.** One expects a
+half-maximum crossing on a noisy trace to be biased *outward*. It is biased
+*inward*: a positive noise excursion near the peak inflates the measured
+maximum, which lifts the half-maximum level and cuts the width narrow. So the
+crude estimator **under-reports, worst where the signal is weakest** — and
+across all 32 campaign conditions the crude-to-fitted ratio correlates with
+signal-to-noise at **+0.66** in log SNR, the low-SNR end running ~6% narrow.
+The campaign's smallest amplitudes are at 70 °C, so the bottom of the ladder
+is pulled down and the whole climb is exaggerated. It also explains the
+concave curve (ΔFWHM² of +0.78, +0.49, +0.34 per 20 K, which the fitted
+widths show no trace of): a depressed 70 °C point inflates the first
+increment. **That manufactured steepness was the entire source of the test's
+apparent resolving power.**
 
 *The error budget.* The 1.7% quoted as the dominant systematic is the
 cross-day rate *difference* — which is precisely what the pilot's own ruler
@@ -1750,6 +1768,20 @@ T-independent width. No width-versus-temperature curve can separate them.
 This is why the comparison was posed differentially in the first place, and
 it closes off reading a cold-spot offset out of the widths: that route is
 shut by algebra, not by noise.
+
+**Does this reach the archive's own results?** Two of them use the same raw
+estimator deliberately, and the answer is that the bias helps rather than
+hurts. `run_beta_self.py` and `run_power_sweep.py` both take
+`contiguous_fwhm_ms` as a *model-independent* width, which is the point — a
+bound argued from raw widths does not inherit the lineshape model's
+assumptions. The C1 headline is that widths grow far too little with density
+to be collisions (a residual floor, hence a bound). Since the estimator
+**exaggerates** the climb with temperature, the true climb is smaller still:
+the bias pushes against the archive's own conclusion, so the bound is
+conservative with respect to it. The C3 power-null is likewise safe — power
+varies SNR within a dwell, but the pilot's four power blocks are flat under
+the *fitted* width too (5.320 / 5.371 / 5.295 / 5.286 MHz at 35–210 mW), so
+the null survives the change of estimator out of sample.
 
 **Net effect on the archive: none.** No `results/` value moves; the pilot
 sits outside the frozen archive, and its two laws remain internal ratios.
