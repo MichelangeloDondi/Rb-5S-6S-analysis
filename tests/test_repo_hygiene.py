@@ -348,3 +348,22 @@ def test_lit_notes_are_not_tailored_to_a_reader():
         "a docs/lit/ note reads as tailored to one specific reader, not as "
         "a plain relevance note every reader sees the same way:\n  "
         + "\n  ".join(hits))
+
+
+# --------------------------------------------------------------------------
+# 6. Version bookkeeping: pyproject and CITATION.cff must agree
+# --------------------------------------------------------------------------
+# They diverged silently once (pyproject stale at 1.1.0 while CITATION.cff
+# and the release tags advanced to 1.4.0, caught 2026-07-25) because nothing
+# compared them. The release TAG is not checked here -- tagging happens after
+# the version-bump commit, so requiring tag==file would make that commit
+# unlandable; the release process itself aligns the tag.
+def test_pyproject_and_citation_versions_agree():
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    citation = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    pv = re.search(r'^version = "([^"]+)"', pyproject, re.M)
+    cv = re.search(r"^version: (\S+)", citation, re.M)
+    assert pv and cv, "version fields missing from pyproject.toml or CITATION.cff"
+    assert pv.group(1) == cv.group(1), (
+        f"version drift: pyproject.toml says {pv.group(1)}, "
+        f"CITATION.cff says {cv.group(1)} -- bump them together")
