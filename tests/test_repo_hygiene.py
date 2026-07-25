@@ -411,3 +411,29 @@ def test_audit_toc_anchors_all_resolve():
         if a not in anchors
     ]
     assert not broken, "table-of-contents links that go nowhere:\n  " + "\n  ".join(broken)
+
+
+def test_audit_summary_covers_the_latest_addendum():
+    """The one-page summary stopped at addendum 14 while 15-17 existed.
+
+    A reader who reads only the top of the report should not be three
+    findings behind. Requiring the highest-numbered addendum to appear in
+    the summary is weak enough not to force a row for every postscript, and
+    strong enough to catch the drift.
+    """
+    path = ROOT / "docs" / "PREREGISTRATION_RESULTS.md"
+    text = path.read_text(encoding="utf-8")
+    numbers = [int(n) for n in re.findall(r"^## Addendum (\d+),", text, re.M)]
+    assert numbers, "no addenda found -- has the report been restructured?"
+    latest = max(numbers)
+    # Look for the summary TABLE CELL form, "| ... | addendum N |". Matching
+    # loose prose would be satisfied by the table of contents, which names
+    # every addendum by construction and so can never go stale.
+    cells = re.findall(r"\|\s*addend(?:um|a)\s*([\d\s,–-]+)(?:postscript)?\s*\|",
+                       text[:text.index("## Addendum 1,")] if "## Addendum 1," in text
+                       else text, re.I)
+    covered = {int(n) for c in cells for n in re.findall(r"\d+", c)}
+    assert latest in covered, (
+        f"addendum {latest} has no row in the one-page summary table "
+        f"(summarised: {sorted(covered)}) -- the top of the report is behind "
+        "the bottom of it")

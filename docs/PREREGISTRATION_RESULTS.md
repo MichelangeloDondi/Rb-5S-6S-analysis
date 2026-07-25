@@ -41,14 +41,25 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
 | The detection chain carries a **61 Hz mains line at ~0.2 % of peak** — averaged over by a 60 ms line, harmless here | addendum 13 |
 | The **P² two-photon law** holds in a third epoch (slopes 1.87–2.36) | addendum 14 |
+| The `130C(90C-0.65A)` notation is a **thermocouple reading and a variac set point**, giving the cold-spot offset its first handle | addendum 15 |
+| The cold spot fits at **ΔT ≈ +20 K [+5, +24]** by maximum likelihood, with radiation trapping unneeded | addendum 16 |
+| The pilot session's `91 °C` is a **set point, not a cell temperature** — it ran at the rehearsal's internal ~130 °C, not the campaign's 90 °C | addendum 17 |
+| The archive's composite lineshape describes the **pilot out of sample** at χ²_red 0.83–1.01, and reproduces its γ_coll↔σ_laser degeneracy at corr −0.97 | addendum 17 postscript |
 
-**What it corrected about itself.** Three readings were withdrawn after
-being published here: a "~32 ms satellite" structure that was an artifact of
-the analysis's own peak-finder (addendum 11 postscript); a width-versus-power slope from
-the rehearsal, retired once the dual-scan geometry showed its envelope is
-~120× the linewidth (addendum 14); and a mains-line "epoch suppression"
-claim that compared each chain to its own noise floor and inverted the
-conclusion (correction inside addendum 13).
+**What it corrected about itself.** Six readings were withdrawn after being
+published here: a "~32 ms satellite" structure that was an artifact of the
+analysis's own peak-finder (addendum 11 postscript); a width-versus-power
+slope from the rehearsal, retired once the dual-scan geometry showed its
+envelope is ~120× the linewidth (addendum 14); a mains-line "epoch
+suppression" claim that compared each chain to its own noise floor and
+inverted the conclusion (correction inside addendum 13); an isotope-abundance
+route to separating the cold spot from radiation trapping, which reversed
+sign across cuts (addendum 15 postscript); the phrase "cross-session" for the
+130 °C block, which the recovered clock contradicts (addendum 16
+postscript); and a linewidth thermometry test, withdrawn once refitting
+showed a crude QC width had manufactured its entire resolving power
+(addendum 17 postscript). The last is the one worth reading: it was
+published, called load-bearing, and was a null.
 
 **What none of it changed.** No number in [`results/`](../results/) moved.
 Widths are per-trace and centre steps do not enter them. The clock
