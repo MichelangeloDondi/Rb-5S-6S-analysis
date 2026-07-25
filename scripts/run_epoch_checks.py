@@ -22,13 +22,18 @@ perform on itself, plus one honest non-result:
    amplitude x34 vs x36 predicted P^2 over the 6x span. Both are INTERNAL
    ratios, so both are immune to what the pilot's oven label means -- which
    is just as well, because check 5 shows it does not mean what it seems.
-5. PILOT THERMOMETRY (addendum 17) -- the pilot's `91c650ma` pairs a
-   temperature with a CURRENT, which is the rehearsal parenthetical's
-   structure, not the campaign's. Two observables agree that it is indeed a
-   variac set point: the pilot's linewidth, on its own day's ruler, lands on
-   the campaign's internal 110 C dwell (+0.2 sigma) and 1.9 sigma off its
-   90 C one; and its amplitude/P^2 sits within 30% of the 130 C ladder, where
-   an internal-90 C pilot would sit ~12x lower. So the pilot ran HOT.
+5. PILOT THERMOMETRY (addendum 17 + its postscript) -- the pilot's
+   `91c650ma` pairs a temperature with a CURRENT, which is the rehearsal
+   parenthetical's structure, not the campaign's, so that `91 C` should be a
+   variac SET POINT and the pilot should have run at the rehearsal's internal
+   ~130 C. It did: amplitude/P^2 sits within 30% of the 130 C ladder, where
+   an internal-90 C pilot would be ~12x lower, and the pilot ran the MORNING
+   of the campaign's own day so an unlogged gain change is unlikely. The
+   WIDTH test is a NULL -- refitted with the archive's composite model the
+   pilot is within 0.7 sigma of every dwell from 90 to 130 C. The first
+   version of this check used the crude QC FWHM, which inflates the low-SNR
+   end and manufactured a 1.9 sigma that is not there. QC metrics triage
+   traces; they do not measure widths.
 
 6. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
    dual-scan captures scatter most in the first block (649 ms) and settle
@@ -136,7 +141,6 @@ def pilot_ruler_rate() -> None:
     print(f"    ACF shows no coherent companion in either epoch; see the")
     print(f"    postscript to addendum 11)")
 
-
 def pilot_thermometry() -> None:
     """Which campaign dwell does the pilot's oven setting correspond to?
 
@@ -144,53 +148,90 @@ def pilot_thermometry() -> None:
     structurally the rehearsal's parenthetical (`90C-0.65A`), which addendum
     15 identified as the variac set point. If that reading is right the pilot
     ran at the same oven setting as the rehearsal, whose headline records an
-    internal 130 C -- NOT at the campaign's internal 90 C. Two observables
-    test it; the width one is immune to gain and alignment, which is what
-    makes it the load-bearing half.
+    internal 130 C -- NOT at the campaign's internal 90 C.
+
+    Two observables were put to it. The WIDTH test is a NULL: fitted with the
+    archive's own composite model it cannot tell 90 from 130 C (postscript to
+    addendum 17). It is computed here anyway, because the first version of
+    this check used the crude QC FWHM, got a spurious 1.9 sigma, and the
+    correction is worth being able to re-run. What carries the conclusion is
+    the filename structure and the amplitude.
     """
     import pandas as pd
+    from rb5s6s import config as C
     from rb5s6s.ingest import load_trace
     from rb5s6s.qc import trace_metrics
+    from rb5s6s.noise import condition_noise_model
+    from rb5s6s.linefit import fit_condition, to_frequency, transit_fwhm_at_T
+    from rb5s6s.lineshape import model_profile
 
-    rows = []
+    def _total_fwhm(gc, sl, transit):
+        # the helper run_linefit uses: sub-grid interpolated FWHM of the
+        # fitted composite -- robust to how width splits laser vs collisional
+        nu = np.arange(-60, 60, 0.005)
+        prof = model_profile(nu, gamma_coll=max(gc, 0.0),
+                             sigma_laser_fwhm=max(sl, 1e-6), transit_fwhm=transit)
+        h = 0.5 * prof.max()
+        ab = np.where(prof >= h)[0]
+        lo, hi = ab[0], ab[-1]
+        left = nu[lo] - (prof[lo] - h) / (prof[lo] - prof[lo - 1]) * (nu[lo] - nu[lo - 1])
+        right = nu[hi] + (prof[hi] - h) / (prof[hi] - prof[hi + 1]) * (nu[hi + 1] - nu[hi])
+        return float(right - left)
+
+    RATE_T = 2 * 6.25 / PILOT_TOOTH_MS      # transition axis, pilot's own comb
+    blocks, amps = {}, []
     for p in sorted((QP / "4192nm91c650ma").glob("*.csv")):
         mw = int(p.stem.split("650ma")[1].rstrip("0123456789").replace("mw", ""))
         t, v, _ = load_trace(p, with_info=True)
-        m = trace_metrics(t, v)
-        rows.append((mw, m["fwhm_ms"], m["height_v"]))
-    P = pd.DataFrame(rows, columns=["mW", "fwhm_ms", "amp"])
-    blk = P.groupby("mW").agg(fwhm=("fwhm_ms", "median"), amp=("amp", "median"))
-    # the pilot day's OWN sweep calibration (check 3), not the campaign's
-    wid = blk.fwhm * RATE_MHZ_MS * (CAMPAIGN_TOOTH_MS / PILOT_TOOTH_MS)
+        blocks.setdefault(mw, []).append((to_frequency(t, RATE_T), v))
+        amps.append((mw, trace_metrics(t, v)["height_v"]))
+
+    transit = transit_fwhm_at_T(110.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+    wid = []
+    for mw in sorted(blocks):
+        fr = [a for a, _ in blocks[mw]]
+        vo = [b for _, b in blocks[mw]]
+        fit = fit_condition(fr, vo, T_C=110.0, law=condition_noise_model(vo),
+                            transit_fwhm=transit)
+        wid.append(_total_fwhm(fit["gamma_coll"], fit["sigma_laser"], transit))
+    wid = np.array(wid)
     pm = float(wid.mean())
     pse = float(wid.std(ddof=1) / np.sqrt(len(wid)))
-    cal = pm * 0.017                      # the 1.7% cross-day rate agreement
 
+    d = pd.read_csv(ROOT / "results" / "linefit_conditions.csv")
+    c = d[(d.peak == 4192) & ((d.role == "t_sweep")
+                              | ((d.role == "p_sweep") & (d["T"] == 130)))]
+    g = c.groupby("T").agg(w=("total_fwhm", "mean"), err=("total_fwhm_err", "mean"),
+                           sd=("total_fwhm", "std"))
+    # block-to-block reproducibility: the 130 C ladder holds T fixed across
+    # five power blocks, and width is power-independent (the C3 null)
+    blk = float(g.loc[130, "sd"] / g.loc[130, "w"])
+
+    print("\n5. PILOT THERMOMETRY -- the pilot's oven setting, from physics")
+    print(f"   pilot 4192, archive composite fit: {pm:.3f} +- {pse:.3f}(block SE)"
+          f" +- {pm*blk:.3f}(reproducibility {100*blk:.1f}%) MHz")
+    for T, r in g.iterrows():
+        dd = pm - r.w
+        e = float(np.sqrt(pse**2 + (pm * blk)**2 + r.err**2 + (r.w * blk)**2))
+        print(f"   vs campaign internal {int(T):3d} C ({r.w:.3f} MHz): "
+              f"{dd:+.3f} +- {e:.3f} -> {dd/e:+.1f} sigma")
+    print("   -> NULL. Consistent with every dwell from 90 to 130 C: the fitted")
+    print("      ladder spans 3% across 60 K while one block reproduces to 2%.")
+    print("      (The crude QC FWHM appears to resolve this. It does not -- it")
+    print("       inflates the low-SNR end; see the postscript to addendum 17.)")
+
+    A = pd.DataFrame(amps, columns=["mW", "amp"])
+    pl = float(np.median(A.amp / (A.mW / 100.0) ** 2))
     q = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
     q = q[q.peak == 4192]
-    C = q.groupby("temperature_C").agg(f=("fwhm_ms", "median"),
-                                       s=("fwhm_ms", "std"), n=("fwhm_ms", "size"))
-    print("\n6. PILOT THERMOMETRY -- the pilot's oven setting, from physics")
-    print(f"   pilot 4192 width {pm:.3f} +- {pse:.3f}(block) +- {cal:.3f}(cross-day)"
-          f" MHz, over {len(P)} traces")
-    for T, r in C.iterrows():
-        mhz = r.f * RATE_MHZ_MS
-        se = r.s / np.sqrt(r.n) * RATE_MHZ_MS
-        d = pm - mhz
-        e = float(np.hypot(np.hypot(pse, cal), se))
-        print(f"   vs campaign internal {int(T):3d} C ({mhz:.3f} MHz): "
-              f"{d:+.3f} +- {e:.3f} MHz -> {d/e:+.1f} sigma")
-
-    # amplitude: a 12x density lever, but only as good as the gain assumption
-    pl = float(np.median(P.amp / (P.mW / 100.0) ** 2))
     gp = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
     cp = float(np.median(gp.height_v / (gp.power_mW / 100.0) ** 2))
     print(f"   amplitude/P^2: pilot {pl:.3f} V vs campaign 130 C ladder {cp:.3f} V "
           f"(x{pl/cp:.2f});")
-    print(f"   an internal-90 C pilot would sit ~12x lower (the 90->130 density "
-          f"ratio), i.e. x{12*cp/pl:.0f} below what is measured.")
-    print("   -> the pilot ran at the rehearsal's oven setting (internal ~110-130 C),")
-    print("      not at the campaign's internal 90 C. See addendum 17.")
+    print(f"   an internal-90 C pilot would sit ~12x lower, i.e. x{12*cp/pl:.0f} below")
+    print("   what is measured. Gain is untokened on both sides, but the pilot ran")
+    print("   the MORNING of the campaign's own day -- so this carries the verdict,")
+    print("   together with the filename structure. See addendum 17.")
 
 
 def main() -> int:

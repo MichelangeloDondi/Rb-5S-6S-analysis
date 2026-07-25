@@ -91,6 +91,7 @@ re-open a fitted result.
   - [Postscript to addendum 16 — "cross-session" is the wrong word for the 130 °C point](#postscript-to-addendum-16--cross-session-is-the-wrong-word-for-the-130-c-point)
   - [Postscript to addendum 16, 2026-07-25 — the excess scatter, recovered without the model](#postscript-to-addendum-16-2026-07-25--the-excess-scatter-recovered-without-the-model)
 - [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
+  - [Postscript to addendum 17, 2026-07-25 — the linewidth test refitted, and withdrawn](#postscript-to-addendum-17-2026-07-25--the-linewidth-test-refitted-and-withdrawn)
 
 ---
 
@@ -1595,27 +1596,34 @@ records as **internal 130 °C**.
 **Why it is worth testing rather than asserting.** Filename archaeology
 argued the notation once already and got a reader's-eye answer; the
 experimenter corrected it. So the claim is put to two observables that do not
-read filenames. Only the first is load-bearing.
+read filenames.
+
+> **Corrected — see the postscript below.** Test 1 as first written used the
+> crude QC FWHM and reported the pilot at +0.2σ from the 110 °C dwell and
+> 1.9σ from the 90 °C one, calling it the load-bearing half. Refitting both
+> sides with the archive's own composite model removes that discrimination
+> entirely: the pilot is within 0.7σ of **every** dwell from 90 to 130 °C.
+> **Test 1 is a null.** The table below is kept as the record of the claim
+> that was made; the corrected numbers are in the postscript.
 
 **Test 1 — linewidth thermometry** (immune to gain, alignment and collection
-efficiency, which is what makes it the load-bearing half). The pilot's own
-day-rulers calibrate its sweep rate (144.2 ms comb tooth vs the campaign's
-146.81 ms, check 3), so its widths convert to MHz without borrowing the
-campaign's scale. Pooling the four power blocks — legitimate, because width
-is power-independent, the C3 null — gives
+efficiency). The pilot's own day-rulers calibrate its sweep rate (144.2 ms
+comb tooth vs the campaign's 146.81 ms, check 3), so its widths convert to
+MHz without borrowing the campaign's scale. Pooling the four power blocks —
+legitimate, because width is power-independent, the C3 null — gives
 **2.638 ± 0.010 (block) ± 0.045 (cross-day rate) MHz**:
 
 | campaign dwell (internal) | 4192 width | pilot − dwell | |
 |---|---|---|---|
 | 70 °C | 2.373 MHz | +0.265 ± 0.064 | +4.1σ |
 | 90 °C | 2.533 MHz | +0.105 ± 0.054 | +1.9σ |
-| **110 °C** | **2.629 MHz** | **+0.010 ± 0.053** | **+0.2σ** |
+| 110 °C | 2.629 MHz | +0.010 ± 0.053 | +0.2σ |
 | 130 °C | 2.693 MHz | −0.054 ± 0.047 | −1.2σ |
 
-The pilot lands on the 110 °C dwell, is comfortably consistent with 130 °C,
-and sits 1.9σ from the 90 °C dwell it was previously read against. The
-dominant error is the 1.7% cross-day rate agreement, not counting statistics
-— tightening this would need the pilot's rulers re-reduced, not more traces.
+*(Superseded. Two errors: the widths are crude QC FWHMs, and the 1.7%
+cross-day figure is the rate DIFFERENCE, which the pilot's own ruler already
+removes — the term that actually dominates, block-to-block reproducibility,
+was missing.)*
 
 **Test 2 — amplitude** (a ×12 density lever, but it buys that leverage with
 an assumption). Against the 130 °C power ladder, amplitude/P² is
@@ -1627,12 +1635,13 @@ and one decade of transimpedance gain (the rehearsal's own files record
 **corroborating, not independent** — it agrees, and it would also agree if
 the gain happened to differ by a decade in the convenient direction.
 
-**Verdict.** Three strands — the filename structure, a gain-free linewidth
-thermometer, and a gain-dependent amplitude — agree that the pilot ran at the
-rehearsal's oven setting, internal ~110–130 °C. The pilot's `91 °C` is a
-variac set point, exactly as addendum 15 read the rehearsal's parenthetical.
-The notation resolution now rests on physics as well as on filename
-structure, which is a stronger footing than it had.
+**Verdict** (as corrected). **Two** strands, not three: the filename
+structure, and an amplitude ratio that is gain-dependent but same-day. They
+agree that the pilot ran at the rehearsal's oven setting, internal
+~110–130 °C, and that its `91 °C` is a variac set point exactly as addendum
+15 read the rehearsal's parenthetical. The linewidth neither supports nor
+contradicts this — it has no power to tell these dwells apart, which the
+postscript establishes and which is itself worth knowing.
 
 **What this changes.** Two sentences of addendum 11, corrected in place above:
 the pilot width was described as "sitting at the campaign's own 90 °C width",
@@ -1658,3 +1667,95 @@ looked close enough to call a match, and in raw milliseconds the 110 °C
 dwell (61.75 ms) was *already* the nearer neighbour. The check that caught it
 is `scripts/run_epoch_checks.py` check 5, which now computes the comparison
 against all four dwells rather than asserting one.
+
+---
+
+### Postscript to addendum 17, 2026-07-25 — the linewidth test refitted, and withdrawn
+
+Addendum 17 called its linewidth comparison the load-bearing half. Refitting
+it properly withdraws that. The conclusion survives on its other two strands;
+the width strand does not.
+
+**What was wrong.** Two things, compounding.
+
+*The metric.* Both sides used `trace_metrics`' crude half-maximum FWHM — a
+descriptive QC number, not a fitted width. On the campaign's own 4192 ladder
+the two disagree systematically:
+
+| dwell | crude QC | fitted composite |
+|---|---|---|
+| 70 °C | 2.373 MHz | 5.069 MHz |
+| 90 °C | 2.533 | 5.276 |
+| 110 °C | 2.629 | 5.260 |
+| 130 °C | 2.693 | 5.433 |
+| **70 → 130 growth** | **×1.135** | **×1.072** |
+
+The crude metric climbs nearly twice as fast. It also produces a smooth
+concave curve (ΔFWHM² of +0.78, +0.49, +0.34 per 20 K) that the fitted widths
+show no trace of. The direction is what one expects: a half-maximum crossing
+read off a noisy trace is biased outward, worst where the signal is weakest,
+and 70 °C has the smallest amplitudes in the campaign. **That manufactured
+steepness was the entire source of the test's apparent resolving power.**
+
+*The error budget.* The 1.7% quoted as the dominant systematic is the
+cross-day rate *difference* — which is precisely what the pilot's own ruler
+removes, so counting it again was double-counting. The term that genuinely
+dominates was absent: block-to-block width reproducibility, measurable
+because the 130 °C ladder holds temperature fixed across five power blocks
+where width is power-independent. It is **1.9%**, and it does not average
+down.
+
+**The corrected test.** Fitting the pilot's four blocks with the same
+composite model, on its own frequency axis, gives **5.318 ± 0.019 (block SE)
+± 0.103 (reproducibility) MHz** — and the fitted `total_fwhm` is genuinely
+robust to the split, moving under 0.01 MHz whether the transit is evaluated
+at an assumed 90, 110 or 130 °C:
+
+| campaign dwell | fitted width | pilot − dwell | |
+|---|---|---|---|
+| 70 °C | 5.069 MHz | +0.249 ± 0.162 | +1.5σ |
+| 90 °C | 5.276 | +0.042 ± 0.156 | +0.3σ |
+| 110 °C | 5.260 | +0.058 ± 0.150 | +0.4σ |
+| 130 °C | 5.433 | −0.115 ± 0.157 | −0.7σ |
+
+The pilot is consistent with **every** dwell from 90 to 130 °C. The fitted
+ladder spans 3% across 60 K while a single block reproduces to 2%, so the
+observable never had the resolution the crude version appeared to give it.
+**Test 1 is a null, and the honest reading is that linewidth cannot identify
+which dwell the pilot matched.**
+
+**What survives, and is worth more.** Three things.
+
+*The conclusion.* It rests on the filename structure — three families across
+two days sharing one *(temperature, current)* notation, against a campaign
+that never records a current — and on the amplitude, ~15× above what an
+internal-90 °C pilot would give. That amplitude argument is stronger than
+addendum 17 allowed: the gain caveat was raised against a decade of
+transimpedance, but the pilot ran on **the morning of the campaign's own
+day** (06:54–07:11; the campaign began 23:47 JST), not weeks away, so an
+unrecorded decade change between them is a good deal less likely than the
+caveat implied.
+
+*An out-of-sample model validation.* The pilot fits the archive's composite
+lineshape at **χ²_red 0.83–1.01** across all four power blocks — data the
+archive never saw, a different day, a different sweep rate, its own noise
+model. The model was built on the campaign and it describes the pilot without
+adjustment. That is a better result than the thermometry would have been.
+
+*A limit worth recording.* Linewidth cannot be an **absolute** thermometer
+here at all, and not for want of precision. Transit width goes as √T, so in
+the quadrature approximation FWHM² = A²(T + δ) + B² — which is linear in T
+for any δ, leaving the temperature offset δ exactly degenerate with B², the
+T-independent width. No width-versus-temperature curve can separate them.
+This is why the comparison was posed differentially in the first place, and
+it closes off reading a cold-spot offset out of the widths: that route is
+shut by algebra, not by noise.
+
+**Net effect on the archive: none.** No `results/` value moves; the pilot
+sits outside the frozen archive, and its two laws remain internal ratios.
+What changes is one strand of one argument, and a lesson that generalises —
+**QC metrics are for triage, not for physics.** `trace_metrics` exists to
+flag bad traces, and it is good at that; the moment a number of its was
+carried into a quantitative comparison it brought a 6% systematic with it.
+Where the repo compares widths for physics it uses the fitted composite, and
+this is now the reason why, written down.
