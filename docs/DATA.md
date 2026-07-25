@@ -61,7 +61,7 @@ now for a stated reason: the design, not the missing log.
 [`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv), drawn by
 [`scripts/make_timeline_figure.py`](../scripts/make_timeline_figure.py):
 the LeCroy dress rehearsal (in-file trigger times), the pilot morning
-(ruler commissioning → `Def` → the 91 °C sweep), and the campaign with its
+(ruler commissioning → `Def` → the 0.65 A sweep), and the campaign with its
 four power ladders, three temperature dwells, the 9.6 h break, and the
 evidence-backed etalon-transient windows shaded (addenda 4–7, 12 — the
 last of which fits the transient itself: one universal re-kick, τ ≈ 97 min,
@@ -83,7 +83,11 @@ EOM first trials 2025-07-04 03:37 JST; a 50-trace LeCroy dress rehearsal
 that evening — four peaks, 90/180/270 mW, `G=10^6`, two-zone temperature
 notation; then on the campaign morning the ruler's final commissioning
 04:18–06:33, `Initial attempts` → `Def`, and a four-power pilot sweep at
-91 °C, 06:54–07:11; results report addendum 9.) Repeats were
+06:54–07:11; results report addendum 9. Its files say `91c650ma`, but that
+`91 °C` is a **variac set point**, not a cell temperature comparable to the
+campaign's dwell labels: the same 0.65 A is what the rehearsal records as an
+internal 130 °C, and the pilot's own linewidth puts it at the campaign's
+110 °C dwell — addendum 17.) Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
 knob and manually recentered the cavity reference **many times** — not

@@ -4,7 +4,7 @@ The program on its recovered clock — docs/apparatus/program_timeline.png.
 
 Three panels, one per session, every mark an actual acquisition from
 data_recovered/CLOCK.csv (the committed clock; addenda 1–11): the LeCroy
-dress rehearsal, the pilot morning (ruler commissioning → Def → 91 °C sweep),
+dress rehearsal, the pilot morning (ruler commissioning → Def → 0.65 A sweep),
 and the campaign itself with its power ladders, temperature dwells, the
 9.6 h break, and the evidence-backed etalon-transient windows shaded.
 
@@ -125,7 +125,8 @@ def main() -> int:
     p0 = dt.datetime(2025, 7, 17, 4, 0, tzinfo=JST)
     p1 = dt.datetime(2025, 7, 17, 7, 30, tzinfo=JST)
     panel(ax, ev["pilot"], p0, p1,
-          "2025-07-17 morning · pilot — ruler commissioning, then 4192 nm @ 91 °C")
+          "2025-07-17 morning · pilot — ruler commissioning, then 4192 nm @ 0.65 A "
+          "(variac 91 °C = internal ~110–130 °C, addendum 17)")
     for when, txt in ((dt.datetime(2025, 7, 17, 4, 21, tzinfo=JST), "Initial attempts"),
                       (dt.datetime(2025, 7, 17, 6, 18, tzinfo=JST), "adjusted"),
                       (dt.datetime(2025, 7, 17, 6, 33, tzinfo=JST), "Def")):
