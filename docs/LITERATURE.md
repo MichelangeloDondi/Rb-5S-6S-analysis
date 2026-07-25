@@ -432,7 +432,7 @@ platform. The two feeds:
   method (THEORY_NOTE §3), the M16 magic-wavelength toolkit, and the guided-mode
   framing in `PAPER2_SKELETON.md` §V–VI.
 
-Platform caveats (so we do not overclaim): Cs not Rb, a D2 hyperfine qubit not the
+Platform caveats: Cs not Rb, a D2 hyperfine qubit not the
 5S–6S two-photon line, a 450 nm fibre not the OIST 650 nm — the *physics* (surface
 forces; differential-light-shift dephasing) transfers, the numbers do not.
 
@@ -464,7 +464,7 @@ not open:
   positions with dressed-state resonances, and contains no Casimir-Polder or van
   der Waals content at all.
 
-**Scope caveat, recorded so we do not overclaim later:** the dip is a
+**Scope caveat:** the dip is a
 *density-depletion* effect (atoms pushed out of the bright region), whereas the
 ramp machinery describes the *distribution of light shifts* in an inhomogeneous
 field. The ramp is at most one ingredient of a quantitative treatment — a full

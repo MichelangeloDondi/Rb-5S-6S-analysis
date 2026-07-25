@@ -5,7 +5,7 @@ Peak areas and the degeneracy law (module M10)
 PHYSICS. For two-photon S->S excitation with two IDENTICAL photons, the
 effective two-photon operator contains only tensor ranks K=0 and K=2, and K=2
 cannot connect J=1/2 to J=1/2 (triangle rule K <= J+J' = 1). The operator is
-therefore PURELY SCALAR: Delta F=0, Delta mF=0, and -- crucially -- the same
+therefore PURELY SCALAR: Delta F=0, Delta mF=0, and the same
 per-atom rate for every F and every m_F. The relative line STRENGTH (area) is
 then pure initial-state population,
 

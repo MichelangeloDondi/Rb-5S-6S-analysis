@@ -44,7 +44,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 
 **What it corrected about itself.** Three readings were withdrawn after
 being published here: a "~32 ms satellite" structure that was an artifact of
-my own peak-finder (addendum 11 postscript); a width-versus-power slope from
+the analysis's own peak-finder (addendum 11 postscript); a width-versus-power slope from
 the rehearsal, retired once the dual-scan geometry showed its envelope is
 ~120× the linewidth (addendum 14); and a mains-line "epoch suppression"
 claim that compared each chain to its own noise floor and inverted the
@@ -373,8 +373,8 @@ indistinguishable from its siblings' median (129), so it was surplus, not a
 quality cut. Had it been kept, that block's mean width would move by −0.54%,
 against an archive-wide observed linewidth spread of 3–8%. One boundary case
 in four, smaller than the metric's own resolution, is not evidence of
-width-selective curation — but it is the honest limit of what this test can
-say, and it is why the claim above is "indistinguishable in the fitted
+width-selective curation — but the test cannot rule it out either, which is
+why the claim above is "indistinguishable in the fitted
 quantity", not "identical".
 
 **An independent set, which this addendum first overlooked.** The claim that
@@ -639,7 +639,7 @@ It also re-reads the whole disturbance story one level deeper:
   +0.032 MHz/min laser is the drift of the *held* lock, which is exactly why
   it matches the cavity-locked wavemeter photograph.
 
-Two honest limits: mtimes cannot resolve any individual step into drop vs
+Two limits stand: mtimes cannot resolve any individual step into drop vs
 deliberate move (during the transient the hour-1 hunting is plainly a mix),
 and the τ-to-transient match is a scale agreement (86 [70, 104] min vs
 "about 2 h"), not a calibration.
@@ -651,10 +651,10 @@ else post-hoc as before.*
 ## Addendum 6, 2026-07-23 — the centre channels, attempted at the experimenter's insistence
 
 The two-epoch framing writes the archive's centres off wholesale, and this
-report had repeated that line. The experimenter pushed back — *"I think you
-didn't even try to extract them"* — and was right on both counts: no attempt
-had been made, and for one of the three centre observables an attempt
-succeeds.
+report had repeated that line without testing it. The experimenter pushed
+back, arguing the centre observables deserved a real attempt before being
+written off — correctly on both counts: no attempt had been made, and for
+one of the three centre observables an attempt succeeds.
 
 **1. The AC-Stark pull: a real bound, from centres alone.** The pull
 (−⅔S₀, S₀ = κP) is a *differential* observable: it is locked to the power
@@ -681,7 +681,7 @@ observation and profiling q:
   channel already presses against it. A bound, not a measurement; but a
   bound from a channel the archive was declared incapable of producing.
 
-**2. The collisional self-shift: attempted, honestly vacuous.** The bridges
+**2. The collisional self-shift: attempted, and vacuous.** The bridges
 between temperature dwells carry the measured re-kick noise (~8 MHz
 transition RMS) against a density span of ~4.4×10¹² cm⁻³, giving an
 achievable shift error of ~1.8 MHz per 10¹² — about **1800× above** the
@@ -944,10 +944,10 @@ against.
 
 ## Addendum 11, 2026-07-24 — the prehistory exploited: the clock validated in-file, the model tested out of sample
 
-The experimenter's second push in two days — *"I think you underexploited the
-new data"* — and right again. The pilot and prehistory sessions, useless for
-the frozen fits, turn out to carry checks the archive cannot perform on
-itself (`scripts/run_epoch_checks.py`; nothing enters `results/`):
+A second push from the experimenter, two days later, argued the new backup
+data was still being underexploited — right again. The pilot and prehistory
+sessions, useless for the frozen fits, turn out to carry checks the archive
+cannot perform on itself (`scripts/run_epoch_checks.py`; nothing enters `results/`):
 
 **1. The clock is validated by a second clock, inside the data.** The LeCroy
 rehearsal files embed wall-clock trigger times. Across 47 files:
@@ -974,7 +974,7 @@ between sessions (and 0.6%-stable within one).
 60.5–61.5 ms across a 6× power span at 91 °C — the power-null — sitting at
 the campaign's own 90 °C width; amplitudes ×34 vs ×36 predicted P².
 
-**5. One honest non-result.** The rehearsal's dual-scan captures (fast
+**5. One non-result.** The rehearsal's dual-scan captures (fast
 dither over a 5 s slow sweep) yield an envelope-centre observable whose
 within-block scatter is largest in the first block (649 ms) and settles
 mid-session (17–131 ms) — consistent with a fresh-lock transient — but the

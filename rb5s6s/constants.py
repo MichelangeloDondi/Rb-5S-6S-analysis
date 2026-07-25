@@ -137,7 +137,7 @@ calculate the differential polarizability alpha_56 = alpha(5S) - alpha(6S) =
 (the 5S-5D method paper, Phys. Rev. A 100, 023417). Our Delta_alpha =
 alpha(6S) - alpha(5S) = -alpha_56 = +1093 a.u. (SAME number, opposite sign by
 definition). This supersedes the earlier "CALCULATED (provisional), refine
-with Brion" tag -- the value was right and is now a CITED number that
+with theory" tag -- the value was right and is now a CITED number that
 cross-checks our Stark code THREE ways (all verified 2026-07-13):
   (i)   SI: 1093 * ATOMIC_POLARIZABILITY_SI = 1.80e-38 J m^2/V^2 = Orson exactly;
   (ii)  SIGN: Delta_alpha > 0 => 6S pulled down more than 5S => the two-photon

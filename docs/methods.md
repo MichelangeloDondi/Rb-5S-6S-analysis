@@ -12,9 +12,9 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > it can yield has been extracted, and each is a documented **bound or null with
 > a named fixed-lock-session measurement that would lift it**; nothing here is an absolute
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
-> OPEN prior. That status is stated per-result in §5 **and now machine-attached**:
-> every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…), so
-> a number never reads as more certain than it is. Modules M0→M16
+> OPEN prior. That status is stated per-result in §5 **and machine-attached**:
+> every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…),
+> the same provenance tag README describes. Modules M0→M16
 > (with lettered fitting sub-stages M4b–M4e), **794 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3

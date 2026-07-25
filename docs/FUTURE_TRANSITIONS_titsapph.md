@@ -159,8 +159,8 @@ transitions, including the hot 5D clock line).
   ≈1287.9 nm and ≈1339.6 nm (both wedged near the 6S–7P / between the 6S–5P lines,
   where vector shifts need their own treatment). A trap at the 1203.9 nm crossing
   would hold atoms without perturbing the 993 nm line — the state-insensitive-trap
-  ingredient for any trapped-atom version of this spectroscopy, and a small
-  original result in its own right. Scalar only; a vector/tensor treatment and a
+  ingredient for any trapped-atom version of this spectroscopy.
+  Scalar only; a vector/tensor treatment and a
   blue-side crossing search are the follow-up.
 - **Novelty (three claims).** (i) The *inversion* of lineshape asymmetry from
   nuisance-to-eliminate (Wieman 1987; Antypas–Budker 2018) into a self-calibrating

@@ -46,8 +46,8 @@ def _tracked(*globs: str) -> list[str]:
 PRIVATE_GLOBS = ["docs/brief_*", "docs/*audit*", "docs/*red_team*",
                  "docs/CV_*", "docs/*inquiry*", "docs/linkedin*", "*.docx",
                  # publication-strategy planning: process, unpublished
-                 # 2026-07-23 (Sile/Brion/Lan would read plans about their
-                 # own labs/roles that were never agreed with them)
+                 # 2026-07-23 (assigns collaborators roles and labs on an
+                 # unagreed paper -- internal planning, not for outside eyes)
                  "docs/PAPERS_PORTFOLIO.md",
                  # manuscript drafts, unpublished 2026-07-23: an abstract
                  # carrying literal [X] placeholders and "once the headline
@@ -241,7 +241,8 @@ def test_retired_no_timestamps_claim_stays_retired():
 # Surnames that must not appear in the published tree in a process role.
 # To cite one of these authors, add the citekey file under docs/lit/ and cite
 # it — that path is exempt, which is exactly the distinction being enforced.
-PROCESS_NAMES = [r"\bZohreh\b", r"\bEtienne\b", r"\bSíle\b", r"\bSile\b"]
+PROCESS_NAMES = [r"\bZohreh\b", r"\bEtienne\b", r"\bSíle\b", r"\bSile\b",
+                 r"\bBrion\b", r"\bLan\b"]
 
 
 def test_no_colleagues_named_in_process_roles():
@@ -312,3 +313,38 @@ def test_no_lecroy_attribution_for_the_archive():
         "Agilent/Keysight InfiniiVision DSO-X 3054A (the CSV header signature "
         "`x-axis,N`/`second,Volt` proves it, and the LeCroy would not "
         "trigger):\n  " + "\n  ".join(hits))
+
+
+# --------------------------------------------------------------------------
+# 5. docs/lit/ notes: no reader-tailoring language
+# --------------------------------------------------------------------------
+# docs/lit/ is exempt from every other guard above (published titles/abstracts
+# are quoted verbatim there and must not be edited to satisfy a style rule --
+# see SKIP_PREFIXES). That exemption is a blind spot for anything that ISN'T
+# a citation: one note (pache2026, 2026-07-25) carried "(the strongest
+# Lan-pitch match)" -- editorial commentary revealing the literature review
+# had been calibrated to one specific reader, which is precisely what the
+# project ruled out (every reader sees the same pages). PROCESS_NAMES cannot
+# catch this because names ARE legitimate here (author lists); this guards
+# the TAILORING WORDS instead, name-independent.
+_TAILORING_WORDS = re.compile(
+    r"\bpitch\b|\bsell(?:s|ing)?\s+(?:to|the)\b|\bappeals?\s+to\b|"
+    r"\bwould\s+resonate\b|\bfor\s+(?:the\s+)?(?:target\s+reader|PI)\b",
+    re.I)
+
+
+def test_lit_notes_are_not_tailored_to_a_reader():
+    hits = []
+    for rel in _tracked("docs/lit/*.md"):
+        try:
+            lines = (ROOT / rel).read_text(encoding="utf-8",
+                                           errors="replace").split("\n")
+        except OSError:
+            continue
+        for i, line in enumerate(lines, 1):
+            if _TAILORING_WORDS.search(line):
+                hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+    assert not hits, (
+        "a docs/lit/ note reads as tailored to one specific reader, not as "
+        "a plain relevance note every reader sees the same way:\n  "
+        + "\n  ".join(hits))

@@ -216,7 +216,7 @@ def main() -> int:
           f"per-block (Model B) gives $\\beta_{{87}}={float(pb87['value']):.3f}$ vs "
           f"per-$T$ {bcv['87Rb']:.3f}, agreeing to "
           f"$\\sim${float(sh87['value']):.3f}, so the per-$T$ headline (the M4c-consistent, physically-"
-          "motivated choice) is *robust to it*, not a coin flip. **Drop-a-peak is "
+          "motivated choice) is *robust to the sharing choice*. **Drop-a-peak is "
           "small** — no single peak, "
           "including the 993.4207 nm suspect, drives $\\beta$. (Drop-a-*temperature* is "
           f"large — up to {float(lt['value']):.2f} if present — but that is expected "
@@ -429,7 +429,7 @@ def main() -> int:
           f"{mf[1]:.3f} | comparable to β_self itself — part of why the "
           f"headline is a bound |")
         W(f"| σ_laser sharing (per-T ↔ per-block) | {sh[0]:.3f} · {sh[1]:.3f} "
-          f"| negligible — the sharing choice is not a coin flip |")
+          f"| negligible next to the other two rows |")
         W(f"| drop any one peak | ≤ {lp[0]:.3f} · ≤ {lp[1]:.3f} | no single "
           f"line drives the result |")
         W(f"| drop one temperature | up to {lt[0]:.2f} · {lt[1]:.2f} | lever "

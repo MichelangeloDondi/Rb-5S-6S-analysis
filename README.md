@@ -89,9 +89,8 @@ for a stable lock. This split determines the structure of the results below:
 bounds now, with a proposed fixed-lock follow-up (below) to convert each into
 a number.
 
-An upper bound is a genuine result: it excludes every model that predicts
-more, and each bound here would set the sensitivity target a follow-up
-session needs to beat. The width data are already sensitive at the physical
+An upper bound excludes every model that predicts more, and each bound here
+sets the sensitivity target a follow-up session would need to beat. The width data are already sensitive at the physical
 scale (the AC-Stark bound sits just above its prediction), and the 95%
 constructions are validated by injection-recovery
 ([methods §4.11](docs/methods/06_the_statistics.md)), not assumed.

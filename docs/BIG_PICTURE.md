@@ -30,10 +30,9 @@ number but a distribution — zero at the dim edge of the beam, maximal on
 axis — and because a two-photon signal scales as intensity *squared*, that
 distribution has a closed form (a triangle) with a fixed, calculable
 asymmetry. The line's *shape* therefore carries light-shift information that
-survives even when the laser's absolute frequency is unusable. A shape-based,
-reference-free light-shift readout is worth establishing in its own right:
-it is insensitive to the lock drift that prevents centre-based
-measurements.
+survives even when the laser's absolute frequency is unusable — a
+shape-based, reference-free light-shift readout, insensitive to the lock
+drift that prevents centre-based measurements.
 
 ## 2. What others have already done
 
@@ -111,9 +110,9 @@ as a bound. Concretely:
   MEASURED / …); the documentation is written to be picked up by whoever
   works on this next.
 
-In summary: *the archive turned a drifted-lock
+In summary, the archive turned a drifted-lock
 dataset into a validated model, one near-prediction bound, one
-demonstrated-necessary bound, and a method — but no coefficients.*
+demonstrated-necessary bound, and a method — but no coefficients.
 
 ## 4. What new vapour-cell measurements would add
 
@@ -124,8 +123,8 @@ leverage:
 
 1. **A direct beam-waist measurement** (knife-edge and/or camera profiler)**.** No physics run at all — but w₀
    is the one systematic every absolute number rides on (transit and laser
-   width are degenerate through it). Measuring it retroactively sharpens
-   the entire 2025 archive. Worth doing even if nothing else happens.
+   width are degenerate through it), so measuring it retroactively sharpens
+   every absolute number in the 2025 archive at once.
 2. **Line centre vs power (the "pull").** With centres alive, the
    first-order light shift (−⅔S₀, the strong handle) becomes measurable as
    a *differential* quantity — centre against power within a scan series —

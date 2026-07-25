@@ -230,7 +230,7 @@ independent sum-over-states calculation validated on anchors it does **not** fit
 — it reproduces the *measured* 5S tune-out (790.032 nm, see `THEORY_NOTE.md` §5
 for the source) to ~2 pm and the static polarizabilities — so its magnitude (within 5% of Orson) and its magic-wavelength
 outputs are trustworthy. It agrees with Orson's magnitude and disagrees on the
-*sign* of α₆ₛ(993) through an identified mechanism. Crucially **every 2025 result
+*sign* of α₆ₛ(993) through an identified mechanism. **Every 2025 result
 is sign-immune** (the asymmetry null is symmetric; the S₀ bound and prediction
 band use |Δα|), so the disagreement touches no archival number; the sign is a
 flagged open **theory** item — one line for a theorist — not a pipeline fault and

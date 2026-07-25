@@ -236,8 +236,8 @@ def test_no_accidental_prefix_collisions():
 # The frontmatter is displayed by GitHub as a table at the top of each note
 # AND is the source for references.bib, so it serves two renderers with
 # opposite needs. Three real defects motivated these checks:
-#   * LaTeX accent macros in author names showed as "Nic Chormaic, S\'ile"
-#     on the public page — a colleague's name, mangled.
+#   * LaTeX accent macros in author names showed as "S\'ile" on the public
+#     page instead of "Síle" — an author name, mangled.
 #   * Unquoted arXiv IDs are parsed as floats, so 2201.06000 displayed as
 #     2201.06 (a different, invalid identifier).
 #   * Inline $...$ maths in `summary` renders literally, both in the note and
