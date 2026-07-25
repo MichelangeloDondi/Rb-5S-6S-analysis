@@ -22,8 +22,13 @@ CAVEATS carried downstream (M4 error budget) — now PROPAGATED, not just named:
     error moves every beta number 20%. Downstream consumers multiply their
     quoted upper bounds by (1 + N_SCALE_FRAC_SYST).
   * a hot vapor cell's density is set by the COLDEST spot on the glass, not
-    the nominal set temperature. The offset dT is unpinned by the archive,
-    but its SIGN is known: a cold spot means N_true < N_assumed, i.e. the
+    the nominal set temperature. The archive gives a FIRST HANDLE on the
+    offset (results report addendum 15): the line area scales as N, so
+    dln(area)/dlnN(T_read) would be 1 for perfect readings; measured it is
+    1.14 +/- 0.07 (sem over 4 peaks), consistent with 1 at ~2 sigma and
+    preferring dT ~ 20 K at face value. That test cannot separate a cold spot
+    from radiation trapping of the detected 795 nm fluorescence or from
+    block-to-block amplitude wander, so 0-30 K stands. Its SIGN is known: a cold spot means N_true < N_assumed, i.e. the
     fitted beta UNDERSTATES the true beta — the dangerous direction for an
     upper bound, and exactly why the (1 + f) inflation above is applied to
     the + side. Scale: dlnN/dT is ~7.8%/K at 70 C falling to ~5.6%/K at

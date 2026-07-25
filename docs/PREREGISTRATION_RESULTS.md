@@ -7,10 +7,60 @@ withdrawn for unrelated scope reasons, see the pre-registration's §9). Quaranti
 SHA-256+MD5+size+epoch manifest before scoring. One run; this file is its
 unedited output plus this provenance header.*
 
+
+## What this document establishes — one page
+
+*Added 2026-07-25 as a reader's entry point. Everything below it is the
+original record, in the order it happened, including the readings it later
+had to correct.*
+
+**The situation.** The 2025 archive was frozen with no acquisition
+timestamps. A backup that carried them surfaced a year later. Before opening
+it, predictions were committed about what it would contain
+([`PREREGISTRATION_timestamps.md`](PREREGISTRATION_timestamps.md), commit
+`0af038b`); the quarantine copy was then frozen under a
+SHA-256+MD5+size+epoch manifest and scored once.
+
+**The audit voided.** Its own integrity gate — content identity between
+archive and backup — failed at T1. That verdict stands unedited, and
+everything after it is labelled **post-hoc**, with no pre-registered
+standing. The gate did its job: it stopped a favourable-looking result from
+being reported as a confirmed one.
+
+**What the labelled post-hoc pass then established** (each reproducible from
+a clone via `scripts/run_drift_settling.py`, off the committed
+[`CLOCK.csv`](../data_recovered/CLOCK.csv)):
+
+| finding | where |
+|---|---|
+| The recorded block order is **not** the acquisition order — the power ladder ran 225→25 mW | addendum 8 |
+| The lock drift is **one constant**, +0.016 [0.007, 0.025] MHz/min (laser axis) — ~250× inside the pre-registered envelope | addenda 4–7 |
+| The megahertz-scale motion was **not drift** but hand re-centring after lock dropouts | addendum 5 |
+| That disturbance is **one transient re-armed by every re-lock**: B = 103 [78, 139] ms, τ = 97 [87, 118] min | addendum 12 |
+| A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |
+| The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
+| The detection chain carries a **61 Hz mains line at ~0.2 % of peak** — averaged over by a 60 ms line, harmless here | addendum 13 |
+| The **P² two-photon law** holds in a third epoch (slopes 1.87–2.36) | addendum 14 |
+
+**What it corrected about itself.** Three readings were withdrawn after
+being published here: a "~32 ms satellite" structure that was an artifact of
+my own peak-finder (addendum 11 postscript); a width-versus-power slope from
+the rehearsal, retired once the dual-scan geometry showed its envelope is
+~120× the linewidth (addendum 14); and a mains-line "epoch suppression"
+claim that compared each chain to its own noise floor and inverted the
+conclusion (correction inside addendum 13).
+
+**What none of it changed.** No number in [`results/`](../results/) moved.
+Widths are per-trace and centre steps do not enter them. The clock
+characterises the instrument, dates a design flaw — four peaks spread over an
+hour — and specifies its remedy in [`PLAN.md`](PLAN.md); it does not
+re-open a fitted result.
+
 ---
 
 **Contents** *(navigational aid, updated 2026-07-25 — the report below is unedited)*
 
+- [What this document establishes — one page](#what-this-document-establishes--one-page)
 - [Integrity gates](#integrity-gates)
 - [Integrity gates](#integrity-gates-1)
 - [Predictions](#predictions)
@@ -1193,3 +1243,80 @@ which is a further reason that slope means nothing.*
 opened in addendum 11 is closed: clock validation, out-of-sample transient
 test, cross-day calibration, the discards, the noise spectrum, and now the
 power laws — leaving only the two questions that need the experimenter.*
+
+
+## Addendum 15, 2026-07-25 — the temperature notation resolved, and the cold spot given a first number
+
+The last physics-relevant open question is answered by the experimenter
+(2026-07-25), and answering it opens a bigger one.
+
+**The notation.** In `130C(90C-0.65A)` the parenthetical is **not a second
+cell temperature**: it is the **variac set point and current**, whose
+thermocouple sat *on the aluminium foil on the outside of the oven*. The
+campaign temperatures — the value outside the parentheses — come from **four
+thermocouples inside the oven**. So the quoted temperatures are internal
+readings, which is the favourable answer: they are cell-relevant, not heater
+control points. *(Recollection, not a log; the experimenter adds that he does
+not know how far to trust the thermocouples — which is the right instinct,
+and testable.)*
+
+**But an internal thermocouple is not the cold spot**, and the cold spot is
+what sets the density. `rb5s6s/density.py` has always said so, and has always
+said the offset was "unpinned by the archive". It is no longer entirely
+unpinned. The two-photon line **area is proportional to N**, so if the
+readings tracked the cold spot exactly, d ln(area) / d ln N(T_read) would be
+**1**. Measured across the three dwells, per peak:
+
+| peak | slope | | peak | slope |
+|---|---|---|---|---|
+| 993.4121 | +0.93 ± 0.17 | | 993.4192 | +1.25 ± 0.03 |
+| 993.4154 | +1.18 ± 0.14 | | 993.4207 | +1.22 ± 0.06 |
+
+**Mean +1.14, sem 0.07 — consistent with 1 at about 2σ.** Taken at face value
+the excess prefers a cold spot running **~20 K below the readings** (the
+offset that drives the slope to exactly 1.00), with roughly ±10 K from the
+slope error alone. Read conservatively: **the thermocouples are not grossly
+wrong — no runaway offset, no failure of the vapour-pressure law — and an
+offset anywhere from 0 to ~30 K is not excluded.**
+
+**Why this matters more than the ×1.2 already carried.** The density-scale
+systematic in the error budget (20 %, from the spread between published
+vapour-pressure correlations) does *not* cover a cold-spot offset, and the
+offset's leverage is far larger, because β_self is a slope against N and an
+offset **compresses the whole N lever arm**:
+
+| cold-spot offset | β_self inflation |
+|---|---|
+| 5 K | ×1.4 |
+| 10 K | ×1.9 |
+| 20 K | ×3.6 |
+| 30 K | ×7.4 |
+
+The direction is the unfavourable one already named in `density.py`:
+N_true < N_assumed means the fitted β **understates** the truth, so an upper
+bound must be **loosened**, not tightened. At the face-value ~20 K the
+headline model-independent bound would move from < 0.44 to roughly **< 1.6**
+(MHz per 10¹² cm⁻³).
+
+**Three things this is not.** It is not a measurement of the offset: the
+same slope excess would be produced by **radiation trapping** of the detected
+795 nm fluorescence at high density (which suppresses signal at 110 °C and
+would imply an even *larger* true offset), by any power or alignment drift
+across dwells acquired 54–76 minutes apart, or by the 30–50 % between-block
+amplitude wander that dominates the per-peak scatter above. The archive
+cannot separate these. It is not a correction to any published number —
+nothing in [`results/`](../results/) moves, and the bound stays a bound. And
+it is not new in kind: it quantifies a systematic the error budget already
+named and deliberately left unpropagated.
+
+**What it changes is the priority.** An in-situ density measurement was one
+item among several on the fixed-lock session's list
+([`PLAN.md`](PLAN.md) §8.0). It should be near the top: at ×1.4–×7 leverage
+on the headline C1 number, the cold spot is plausibly a **larger systematic
+than the beam waist**, and unlike w₀ it is cheap to bound — a thermocouple on
+the coldest accessible glass, or a Rb absorption measurement on a weak probe,
+in the same session.
+
+*Post-hoc, exploratory; the t_sweep power column is empty in the manifest, so
+this test assumes the three dwells ran at one power — true by design, but not
+recorded per-trace.*

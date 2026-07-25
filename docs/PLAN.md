@@ -1079,7 +1079,13 @@ absorption channel — a probe laser + pickoff photodiode):
    the set temperature flattens the high-T end and depresses the fitted slope, so
    the offset from the Steck prediction **measures the cold-spot lag ΔT_cs** —
    converting the dominant N(T) systematic on β_self from an assumption into an
-   in-situ-verified curve. Use the **D-line linear probe, not 993 depletion** (the
+   in-situ-verified curve. **Raised in priority 2026-07-25:** the archive now
+   gives ΔT_cs a first handle — the line area's scaling against N(T_read) has
+   log-slope 1.14 ± 0.07 where perfect readings would give 1, preferring
+   ΔT_cs ≈ 20 K at face value with 0–30 K unexcluded (results report
+   addendum 15). At ×1.4–×7 leverage on the headline C1 bound that makes the
+   cold spot plausibly a **larger systematic than w₀**, and unlike w₀ it is
+   cheap to bound in the same session. Use the **D-line linear probe, not 993 depletion** (the
    two-photon cross-section is not known to metrology precision — anchoring on it
    would be circular). One long soak-verified fixed point on the same channel gives
    an absolute column-density anchor, replacing the ±5% Steck absolute-N assumption.
@@ -1145,10 +1151,14 @@ in roughly eight days at the cell, and which shots depend on which. Run it in th
 order and a session truncated at any point still leaves the higher-priority bounds
 (§8.0) converted. Day labels are relative, not calendar dates.*
 
-- **D1**: **first, before anything else: test whether the ECD lock works** —
-  it was never engaged in 2025 (suspected faulty, untested; APPARATUS §1.1),
-  and if it functions, engaging it is the zero-hardware-cost upgrade the whole
-  fixed-lock design assumes; if not, that repair becomes the critical path.
+- **D1**: **first, before anything else: characterise the wavemeter link** —
+  how tightly the laser holds to a wavemeter set point, and with what
+  calibration drift between autocals. That link, not the ECD, is this
+  system's outer loop against an absolute reference (ECD is the External
+  Cavity Doubler, irrelevant to a fundamental-wavelength experiment —
+  APPARATUS §1.1 correction, 2026-07-25). It needs no new hardware, and it
+  decides whether AC-Stark pulls and collisional shifts are measurable at
+  all; if the link cannot hold, that becomes the critical path.
   Then telescope install; **collection rebuild — f18 as L1 + relay lens L2
   + image-plane slit, 795 nm bandpass moved into the collimated segment, PMT long
   (12 mm) cathode axis set along the beam — LANDSCAPE, the install decision

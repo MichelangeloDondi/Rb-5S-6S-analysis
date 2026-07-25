@@ -16,9 +16,11 @@ confirmed in hardware, both as the generator setting (Tektronix AFG31021 at
 12.500 000 000 0 MHz) and as the EOM's designed resonance on its test
 certificate ([APPARATUS.md](APPARATUS.md) §2) — was
 toggled ON for separate "ruler" traces, whose two-photon comb teeth (6.25 MHz
-apart on the laser axis) calibrate the sweep. The 2025 lock was misconfigured (the ECD lock is disengaged in every dated
-photograph of the laser control page, leaving no absolute reference —
-[APPARATUS.md](APPARATUS.md) §1.1; no photograph covers the campaign itself):
+apart on the laser axis) calibrate the sweep. The 2025 lock was misconfigured (etalon and reference cavity held, but no
+outer loop against an absolute reference was engaged —
+[APPARATUS.md](APPARATUS.md) §1.1, incl. its 2026-07-25 correction on what
+the control page's "ECD" row actually is; no photograph covers the campaign
+itself):
 line CENTERS drift between scans and carry no metrological meaning; SHAPES
 survive. Scope: **Agilent/Keysight InfiniiVision DSO-X 3054A** (500 MHz,
 4 GSa/s) — the LeCroy on the same bench would not trigger reliably
@@ -168,6 +170,16 @@ byte-exact:
    the loader rebuilds its time axis from the row index and records the
    salvage. The old pipeline's `genfromtxt`+NaN-drop parsing swallowed all
    of this silently.
+
+> **The temperature notation, resolved 2026-07-25 (experimenter).** In
+> filenames of the form `130C(90C-0.65A)` the parenthetical is the **variac
+> set point and current**, its thermocouple mounted on the aluminium foil on
+> the *outside* of the oven. The campaign temperature is the value outside
+> the parentheses, read from **four thermocouples inside the oven**. So the
+> quoted temperatures are internal readings — but an internal thermocouple is
+> still not the cold spot that sets the density; results report addendum 15
+> gives that offset its first empirical handle (Δ ≈ 0–30 K, face value ~20 K),
+> and `PLAN.md` §8.0 item 3 is the measurement that would settle it.
 
 ## 3a. The folders of record (consolidated 2026-07-24)
 

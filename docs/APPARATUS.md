@@ -55,13 +55,29 @@ photographs of the SolsTiS control page show which locks were engaged:
 <img src="apparatus/2025-06-11_solstis_lock_page.jpg" width="80%" alt="SolsTiS control page: Etalon lock Locked, Ref cav lock Locked, ECD lock Not Locked, scan Cavity triangular">
 
 *The SolsTiS control page (2025-06-11, 23:33): **Etalon — Locked; Ref cav —
-Locked; ECD — Not Locked**, scan "Cavity triangular". The archive's central
-limitation in one frame: shapes survive because two locks hold; centres carry
-no metrology because the third — the absolute one — never engaged.*
+Locked; ECD — Not Locked**, scan "Cavity triangular". Two locks hold the
+laser short-term, which is why shapes survive.*
 
-**The ECD lock is disengaged in every photograph.** For the campaign itself
-the experimenter confirms (2026-07-23) that the **reference cavity was
-locked**, with its **set point moved from time to time to follow the drift** —
+> **Correction, 2026-07-25 — what "ECD" is.** This section previously read
+> the ECD row as the laser's *absolute* reference lock and called checking it
+> "the cheapest highest-leverage test a future session could open with".
+> **That was wrong.** On the M Squared system **ECD is the External Cavity
+> Doubler** — the resonant second-harmonic stage — and its lock is the
+> doubling cavity's, not a frequency reference (a laser-side colleague, via
+> the experimenter, 2026-07-25: *"ECD is for second harmonic generation"*).
+> It reads *Not Locked* in every photograph for the simple reason that this
+> experiment uses the **993 nm fundamental** and never needed the doubler.
+> Nothing about the archive's limitation changes — the frequency axis still
+> has no absolute zero, for the reasons below — but the *remedy* named here
+> was the wrong hardware. **The actual outer loop available on this system is
+> the wavemeter link**: the same colleague reports that the improved locking
+> of the later period came from coupling the laser output directly to the
+> wavemeter. That, not the doubler, is what a future session should
+> engage and characterise.
+
+**For the campaign itself** the experimenter confirms (2026-07-23) that the
+**reference cavity was locked**, with its **set point moved from time to time
+to follow the drift** —
 which is what `DATA.md` §2 records as "cavity-reference recenters". A further
 recollection (EXPERIMENTER, 2026-07-23, given *after* the state-space fit
 below was already committed): **the cavity lock was dropping out on its own,
@@ -74,22 +90,24 @@ etalon still walking.
 
 That completes the account of "misconfigured". Etalon + reference cavity hold
 the laser *short-term*, which is why shapes survive and intra-block positions
-are stable. What is missing is the ECD lock, i.e. any **absolute** reference —
-and because the cavity set point was re-defined by hand whenever drift pushed
-the line out of the window, the zero of the frequency axis is re-chosen
-arbitrarily between blocks. Hence: centres carry no metrological meaning,
-shapes do. The two halves of the archive's central limitation fall out of the
-lock configuration exactly.
+are stable. What is missing is any **outer loop against an absolute
+reference** — and because the cavity set point was re-defined by hand
+whenever drift pushed the line out of the window, the zero of the frequency
+axis is re-chosen arbitrarily between blocks. Hence: centres carry no
+metrological meaning, shapes do. The two halves of the archive's central
+limitation fall out of the lock configuration exactly.
 
-**The ECD lock was never engaged during the campaign**
-(experimenter-confirmed, 2026-07-23: "I never touched it"), consistent with
-every photograph. Why is a separate question — the experimenter's guess is
-that it was not working, which is untested. For a future session that
-distinction matters: if the ECD lock is functional, engaging it converts the
-archive's whole shape-only limitation into an absolute-frequency capability
-at zero hardware cost; if it is broken, that is the first repair to price.
-**Checking whether the ECD lock works is therefore the cheapest
-highest-leverage test a future session could open with.**
+**The reference cavity is an excellent ruler and a poor origin**: it is a
+piece of glass whose length wanders, so "locked to fringe N" is stable only
+relative to something drifting. Closing that outer loop is what would convert
+the archive's shape-only limitation into an absolute-frequency capability,
+and on this system the instrument for it is the **HighFinesse wavemeter link**
+(the control page's `Wavemeter link: On`), not the doubler — see the
+correction above. **Characterising that link — how tightly the laser can be
+held to a wavemeter set point, and with what long-term calibration drift — is
+the cheapest high-leverage test a future session could open with**, since it
+needs no new hardware and decides whether AC-Stark pulls and collisional
+shifts become measurable at all.
 
 ---
 
