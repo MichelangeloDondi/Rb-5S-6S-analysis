@@ -367,3 +367,47 @@ def test_pyproject_and_citation_versions_agree():
     assert pv.group(1) == cv.group(1), (
         f"version drift: pyproject.toml says {pv.group(1)}, "
         f"CITATION.cff says {cv.group(1)} -- bump them together")
+
+
+def _github_anchors(markdown: str) -> set[str]:
+    """The anchor ids GitHub will mint for a document's headings.
+
+    Punctuation is dropped and each surviving space becomes one hyphen -- so
+    ``a — b`` yields ``a--b``, the em dash leaving its two spaces behind. A
+    repeated heading gets ``-1``, ``-2``, ... appended.
+    """
+    import collections
+    seen: collections.Counter[str] = collections.Counter()
+    out: set[str] = set()
+    for head in re.findall(r"^#{2,6} (.+)$", markdown, re.M):
+        base = re.sub(r"[^\w\s\-]", "", head.strip().lower()).replace(" ", "-")
+        out.add(base if not seen[base] else f"{base}-{seen[base]}")
+        seen[base] += 1
+    return out
+
+
+def test_audit_addenda_are_all_reachable_from_its_toc():
+    """Addenda 15 and 16 were written without TOC entries and sat unlinked.
+
+    The audit report is long enough that an addendum missing from the
+    contents is, in practice, an addendum nobody finds.
+    """
+    path = ROOT / "docs" / "PREREGISTRATION_RESULTS.md"
+    text = path.read_text(encoding="utf-8")
+    listed = set(re.findall(r"^\s*- \[([^\]]+)\]\(#[^)]+\)", text, re.M))
+    missing = [
+        h for h in re.findall(r"^#{2,3} ((?:Addendum|Postscript) .+)$", text, re.M)
+        if h not in listed
+    ]
+    assert not missing, "not linked from the table of contents:\n  " + "\n  ".join(missing)
+
+
+def test_audit_toc_anchors_all_resolve():
+    path = ROOT / "docs" / "PREREGISTRATION_RESULTS.md"
+    text = path.read_text(encoding="utf-8")
+    anchors = _github_anchors(text)
+    broken = [
+        a for a in re.findall(r"^\s*- \[[^\]]+\]\(#([^)]+)\)", text, re.M)
+        if a not in anchors
+    ]
+    assert not broken, "table-of-contents links that go nowhere:\n  " + "\n  ".join(broken)

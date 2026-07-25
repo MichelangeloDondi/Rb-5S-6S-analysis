@@ -3,7 +3,7 @@
 Cross-epoch checks from the pilot and prehistory sessions.  (addendum 11)
 
 The recovered pilot (2025-07-16 folder) and prehistory (2025-07-03/04) are
-OUTSIDE the frozen archive, but they carry four checks the archive cannot
+OUTSIDE the frozen archive, but they carry five checks the archive cannot
 perform on itself, plus one honest non-result:
 
 1. CLOCK VALIDATION -- the LeCroy dress-rehearsal files embed wall-clock
@@ -18,10 +18,19 @@ perform on itself, plus one honest non-result:
    of 144.2(11) ms vs the campaign's 146.81 ms: the sweep rate agrees to
    1.7% across days and re-preparations, which is precisely why M2
    calibrates every block with its own rulers (per-block scatter 0.6%).
-4. PILOT LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null,
-   at 91 C) matching the campaign's 90 C width; amplitude x34 vs x36
-   predicted P^2 over the 6x span.
-5. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
+4. PILOT LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null);
+   amplitude x34 vs x36 predicted P^2 over the 6x span. Both are INTERNAL
+   ratios, so both are immune to what the pilot's oven label means -- which
+   is just as well, because check 5 shows it does not mean what it seems.
+5. PILOT THERMOMETRY (addendum 17) -- the pilot's `91c650ma` pairs a
+   temperature with a CURRENT, which is the rehearsal parenthetical's
+   structure, not the campaign's. Two observables agree that it is indeed a
+   variac set point: the pilot's linewidth, on its own day's ruler, lands on
+   the campaign's internal 110 C dwell (+0.2 sigma) and 1.9 sigma off its
+   90 C one; and its amplitude/P^2 sits within 30% of the 130 C ladder, where
+   an internal-90 C pilot would sit ~12x lower. So the pilot ran HOT.
+
+6. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
    dual-scan captures scatter most in the first block (649 ms) and settle
    mid-session (17-131 ms), consistent with a fresh-lock transient, but the
    final peak's blocks are noisy again (~200-380 ms) and the observable
@@ -65,6 +74,7 @@ QP = Path(os.path.expanduser("~/Documents/RawDataPilot_QUARANTINE_2026-07-24"))
 QH = Path(os.path.expanduser("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24"))
 RATE_MHZ_MS = 0.04257061052233977
 CAMPAIGN_TOOTH_MS = 146.81
+PILOT_TOOTH_MS = 144.2      # the pilot day's own Def-comb ACF period (check 3)
 
 
 def trigtime_check() -> None:
@@ -127,6 +137,62 @@ def pilot_ruler_rate() -> None:
     print(f"    postscript to addendum 11)")
 
 
+def pilot_thermometry() -> None:
+    """Which campaign dwell does the pilot's oven setting correspond to?
+
+    The pilot filenames pair a temperature with a CURRENT (`91c650ma`) --
+    structurally the rehearsal's parenthetical (`90C-0.65A`), which addendum
+    15 identified as the variac set point. If that reading is right the pilot
+    ran at the same oven setting as the rehearsal, whose headline records an
+    internal 130 C -- NOT at the campaign's internal 90 C. Two observables
+    test it; the width one is immune to gain and alignment, which is what
+    makes it the load-bearing half.
+    """
+    import pandas as pd
+    from rb5s6s.ingest import load_trace
+    from rb5s6s.qc import trace_metrics
+
+    rows = []
+    for p in sorted((QP / "4192nm91c650ma").glob("*.csv")):
+        mw = int(p.stem.split("650ma")[1].rstrip("0123456789").replace("mw", ""))
+        t, v, _ = load_trace(p, with_info=True)
+        m = trace_metrics(t, v)
+        rows.append((mw, m["fwhm_ms"], m["height_v"]))
+    P = pd.DataFrame(rows, columns=["mW", "fwhm_ms", "amp"])
+    blk = P.groupby("mW").agg(fwhm=("fwhm_ms", "median"), amp=("amp", "median"))
+    # the pilot day's OWN sweep calibration (check 3), not the campaign's
+    wid = blk.fwhm * RATE_MHZ_MS * (CAMPAIGN_TOOTH_MS / PILOT_TOOTH_MS)
+    pm = float(wid.mean())
+    pse = float(wid.std(ddof=1) / np.sqrt(len(wid)))
+    cal = pm * 0.017                      # the 1.7% cross-day rate agreement
+
+    q = pd.read_csv(ROOT / "results" / "qc_metrics.csv")
+    q = q[q.peak == 4192]
+    C = q.groupby("temperature_C").agg(f=("fwhm_ms", "median"),
+                                       s=("fwhm_ms", "std"), n=("fwhm_ms", "size"))
+    print("\n6. PILOT THERMOMETRY -- the pilot's oven setting, from physics")
+    print(f"   pilot 4192 width {pm:.3f} +- {pse:.3f}(block) +- {cal:.3f}(cross-day)"
+          f" MHz, over {len(P)} traces")
+    for T, r in C.iterrows():
+        mhz = r.f * RATE_MHZ_MS
+        se = r.s / np.sqrt(r.n) * RATE_MHZ_MS
+        d = pm - mhz
+        e = float(np.hypot(np.hypot(pse, cal), se))
+        print(f"   vs campaign internal {int(T):3d} C ({mhz:.3f} MHz): "
+              f"{d:+.3f} +- {e:.3f} MHz -> {d/e:+.1f} sigma")
+
+    # amplitude: a 12x density lever, but only as good as the gain assumption
+    pl = float(np.median(P.amp / (P.mW / 100.0) ** 2))
+    gp = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
+    cp = float(np.median(gp.height_v / (gp.power_mW / 100.0) ** 2))
+    print(f"   amplitude/P^2: pilot {pl:.3f} V vs campaign 130 C ladder {cp:.3f} V "
+          f"(x{pl/cp:.2f});")
+    print(f"   an internal-90 C pilot would sit ~12x lower (the 90->130 density "
+          f"ratio), i.e. x{12*cp/pl:.0f} below what is measured.")
+    print("   -> the pilot ran at the rehearsal's oven setting (internal ~110-130 C),")
+    print("      not at the campaign's internal 90 C. See addendum 17.")
+
+
 def main() -> int:
     if not (QP.is_dir() and QH.is_dir()):
         print("pilot/prehistory quarantines not on this machine -- the committed "
@@ -135,6 +201,7 @@ def main() -> int:
     trigtime_check()
     pilot_steps()
     pilot_ruler_rate()
+    pilot_thermometry()
     print("\n4.-5. pilot laws and the rehearsal chronology non-result: see the")
     print("   docstring and addendum 11 (envelope analysis needs no re-run).")
     return 0

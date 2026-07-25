@@ -85,6 +85,11 @@ re-open a fitted result.
   - [Postscript to addendum 12 — a second timescale, tested and bounded](#postscript-to-addendum-12--a-second-timescale-tested-and-bounded)
 - [Addendum 13, 2026-07-25 — the detection chain's noise spectrum, and a mains line chased into the archive](#addendum-13-2026-07-25--the-detection-chains-noise-spectrum-and-a-mains-line-chased-into-the-archive)
 - [Addendum 14, 2026-07-25 — the last extraction: one test that does not port, one that does](#addendum-14-2026-07-25--the-last-extraction-one-test-that-does-not-port-one-that-does)
+- [Addendum 15, 2026-07-25 — the temperature notation resolved, and the cold spot given a first number](#addendum-15-2026-07-25--the-temperature-notation-resolved-and-the-cold-spot-given-a-first-number)
+  - [Postscript to addendum 15, 2026-07-25 — the isotope route tested, and closed](#postscript-to-addendum-15-2026-07-25--the-isotope-route-tested-and-closed)
+- [Addendum 16, 2026-07-25 — the cold spot by maximum likelihood, where slope-fitting failed](#addendum-16-2026-07-25--the-cold-spot-by-maximum-likelihood-where-slope-fitting-failed)
+  - [Postscript to addendum 16 — "cross-session" is the wrong word for the 130 °C point](#postscript-to-addendum-16--cross-session-is-the-wrong-word-for-the-130-c-point)
+- [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
 
 ---
 
@@ -861,8 +866,9 @@ minutes later. The main campaign began 23:47 JST the same day.
 
 Two echoes of the archival results, from data the archive never saw: the
 **width is flat across a 6× power span** (the C3 power-null, in pilot form)
-and sits at ~61 ms — the campaign's own 90 °C width — across a day and a
-re-preparation; and the **amplitudes follow P²** (×34 measured vs ×36
+and sits at ~61 ms across a day and a re-preparation (which campaign dwell
+that width actually corresponds to is settled in **addendum 17**: not the
+90 °C one); and the **amplitudes follow P²** (×34 measured vs ×36
 predicted over the full span). The pilot rulers were exported with a
 different scope template (`x-axis,1,2`, two-channel) that the archive loader
 does not read — a format fact, flagged for any future use.
@@ -990,8 +996,11 @@ block carries its own rulers because the rate is only per-cent-stable
 between sessions (and 0.6%-stable within one).
 
 **4. The pilot laws** (from addendum 9, restated as checks): width flat at
-60.5–61.5 ms across a 6× power span at 91 °C — the power-null — sitting at
-the campaign's own 90 °C width; amplitudes ×34 vs ×36 predicted P².
+60.5–61.5 ms across a 6× power span — the power-null — and amplitudes ×34 vs
+×36 predicted P². Both are *internal* ratios, so neither depends on what the
+pilot's `91c` label means; the reading of that label given here — that the
+width sits at the campaign's own 90 °C width — is corrected in **addendum
+17**, which finds the pilot ran far hotter than 90 °C.
 
 **5. One non-result.** The rehearsal's dual-scan captures (fast
 dither over a 5 s slow sweep) yield an envelope-centre observable whose
@@ -1497,3 +1506,105 @@ acquired before a lock re-acquisition is not interchangeable with a one-hour
 dwell — but the *reason* stated is wrong, and by elapsed time it applies more
 forcefully to the 90 °C dwell than to 130 °C. Correcting that wording is a
 separate pass, flagged here rather than done silently inside an addendum.
+
+---
+
+## Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading
+
+**The gap this closes.** Addendum 15 resolved the rehearsal's
+`130C(90C-0.65A)`: the parenthetical is the **variac set point and current**,
+the headline the **internal thermocouple**. That resolution was never carried
+back to the *pilot*, whose science files are named
+`4192nm91c650ma035mw1` — a temperature and a current, together. That is the
+parenthetical's structure, not the campaign's: campaign filenames carry a
+temperature and **no current at all** (`4192nm_090c1`). And the two match on
+their face — the pilot's `650ma` is the rehearsal's `0.65A`, its `91c` the
+rehearsal's `90C`. Every one of the 26 pilot science traces carries the pair;
+all 50 rehearsal science traces carry `0.65A`; not one of the 297 campaign
+traces carries a current token.
+
+And the rehearsal session settles the *structure* of that pair by writing it
+out in words. Its four EOM ruler files are named
+
+> `EOM, 993.4192 [nm], T 80 [C], A 0.80 [A], high resolution 1`
+
+— a temperature and a current, labelled and dimensioned, in the same session
+whose science files compress the same pair to `(90C-0.65A)`. Three filename
+families across two days therefore share one notation: *(temperature, heater
+current)*, which is what addendum 15 concluded from the experimenter's
+account alone. (These rulers sit at a different setting — 80 °C at 0.80 A —
+and the pairing is not monotonic against the science point's 90 °C at 0.65 A.
+Recorded as an oddity, not explained: a variac dial and the current it draws
+need not move together while an oven is away from equilibrium, and these are
+ruler captures whose place in the day is not established.)
+
+If the pilot's label is a set point, the pilot did not run near the
+campaign's 90 °C dwell at all. It ran at the setting the rehearsal itself
+records as **internal 130 °C**.
+
+**Why it is worth testing rather than asserting.** Filename archaeology
+argued the notation once already and got a reader's-eye answer; the
+experimenter corrected it. So the claim is put to two observables that do not
+read filenames. Only the first is load-bearing.
+
+**Test 1 — linewidth thermometry** (immune to gain, alignment and collection
+efficiency, which is what makes it the load-bearing half). The pilot's own
+day-rulers calibrate its sweep rate (144.2 ms comb tooth vs the campaign's
+146.81 ms, check 3), so its widths convert to MHz without borrowing the
+campaign's scale. Pooling the four power blocks — legitimate, because width
+is power-independent, the C3 null — gives
+**2.638 ± 0.010 (block) ± 0.045 (cross-day rate) MHz**:
+
+| campaign dwell (internal) | 4192 width | pilot − dwell | |
+|---|---|---|---|
+| 70 °C | 2.373 MHz | +0.265 ± 0.064 | +4.1σ |
+| 90 °C | 2.533 MHz | +0.105 ± 0.054 | +1.9σ |
+| **110 °C** | **2.629 MHz** | **+0.010 ± 0.053** | **+0.2σ** |
+| 130 °C | 2.693 MHz | −0.054 ± 0.047 | −1.2σ |
+
+The pilot lands on the 110 °C dwell, is comfortably consistent with 130 °C,
+and sits 1.9σ from the 90 °C dwell it was previously read against. The
+dominant error is the 1.7% cross-day rate agreement, not counting statistics
+— tightening this would need the pilot's rulers re-reduced, not more traces.
+
+**Test 2 — amplitude** (a ×12 density lever, but it buys that leverage with
+an assumption). Against the 130 °C power ladder, amplitude/P² is
+**0.979 V for the pilot vs 0.764 V for the campaign — a factor 1.28**. A
+pilot sitting at internal 90 °C would be a factor ~9 below what is measured.
+That looks decisive and is not, quite: the pilot files carry no gain token,
+and one decade of transimpedance gain (the rehearsal's own files record
+`G=10^6`) would mimic most of the density ratio. The test is therefore
+**corroborating, not independent** — it agrees, and it would also agree if
+the gain happened to differ by a decade in the convenient direction.
+
+**Verdict.** Three strands — the filename structure, a gain-free linewidth
+thermometer, and a gain-dependent amplitude — agree that the pilot ran at the
+rehearsal's oven setting, internal ~110–130 °C. The pilot's `91 °C` is a
+variac set point, exactly as addendum 15 read the rehearsal's parenthetical.
+The notation resolution now rests on physics as well as on filename
+structure, which is a stronger footing than it had.
+
+**What this changes.** Two sentences of addendum 11, corrected in place above:
+the pilot width was described as "sitting at the campaign's own 90 °C width",
+and it does not — it sits at the 110 °C one. **Nothing in `results/` moves.**
+The pilot's two laws are the power-null and the P² amplitude scaling, and
+both are ratios *within* the pilot, so both survive the relabelling
+untouched; they were never claims about which dwell the pilot matched.
+
+**What it does not settle.** The width thermometer reads the **kinetic
+temperature of atoms in the beam**; the cold spot that sets *density* is a
+different location, and addendum 16's maximum-likelihood offset
+(ΔT ≈ +20 K, the vapour colder than the readings) is untouched by anything
+here. The campaign's own width-versus-temperature rise (×1.135 from 70 to
+130 °C) is steeper than pure transit scaling predicts (×1.084), so width is
+not a clean thermometer in absolute terms either — it is used here only
+*differentially*, pilot against campaign, where the extra broadening is
+common to both.
+
+**Recorded as a caution.** Addendum 11's error was not a bad measurement; it
+was reading a number off the nearest label without checking that the two
+labels meant the same thing. The pilot's 61 ms and the campaign's 59.5 ms
+looked close enough to call a match, and in raw milliseconds the 110 °C
+dwell (61.75 ms) was *already* the nearer neighbour. The check that caught it
+is `scripts/run_epoch_checks.py` check 5, which now computes the comparison
+against all four dwells rather than asserting one.
