@@ -1760,6 +1760,31 @@ archive never saw, a different day, a different sweep rate, its own noise
 model. The model was built on the campaign and it describes the pilot without
 adjustment. That is a better result than the thermometry would have been.
 
+*The degeneracy, demonstrated out of sample.* Having the pilot fitted makes
+one more check free, and it is the sharpest of them. Across the pilot's four
+power blocks the fit's two width components swing hard and in opposite
+directions — γ_coll 0.428 → 0.489 while σ_laser 1.027 → 0.744 — at
+**corr = −0.97**, while their combination holds to **0.7%**:
+
+| | γ_coll | σ_laser | total |
+|---|---|---|---|
+| 35 mW | 0.428 | 1.027 | 5.320 |
+| 70 mW | 0.423 | 1.175 | 5.371 |
+| 105 mW | 0.483 | 0.796 | 5.295 |
+| 210 mW | 0.489 | 0.744 | 5.286 |
+| **spread** | **8%** | **22%** | **0.7%** |
+
+The archive reports this degeneracy at corr = −0.85 over its own 32
+conditions and reports `total_fwhm` because of it. The pilot reproduces it on
+a different day, at a different sweep rate, without being asked to — and it
+settles one loose end. After the width test failed, the tempting next move is
+to read the pilot's γ_coll (0.43–0.49) against the campaign's ladder (0.201 /
+0.300 / 0.301 / 0.469), where it lands squarely on 130 °C and looks like the
+missing third strand. **It is not evidence.** γ_coll varies 8% across blocks
+that differ only in power, at fixed density, purely by trading against
+σ_laser. A parameter that moves that much at constant density cannot measure
+density.
+
 *A limit worth recording.* Linewidth cannot be an **absolute** thermometer
 here at all, and not for want of precision. Transit width goes as √T, so in
 the quadrature approximation FWHM² = A²(T + δ) + B² — which is linear in T

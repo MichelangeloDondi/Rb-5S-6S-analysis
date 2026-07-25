@@ -70,6 +70,12 @@ def raw_fwhm_mhz(recs, rate, rate_relerr=0.0):
     ws = []
     for r in recs:
         t, v = load_trace(trace_path(r))
+        # Raw half-maximum width, DELIBERATELY model-independent: a bound
+        # argued from raw widths inherits none of the lineshape model's
+        # assumptions. It carries a known SNR bias (narrow at low SNR,
+        # ~6% at the 70 C end) which EXAGGERATES the climb with density --
+        # i.e. it pushes against this module's own conclusion, so the bound
+        # is conservative w.r.t. it. Postscript to addendum 17.
         ws.append(contiguous_fwhm_ms(t, v) * rate)   # retrace-safe (shared helper)
     W = float(np.mean(ws))
     sem = float(np.std(ws, ddof=1) / np.sqrt(len(ws)))

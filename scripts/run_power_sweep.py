@@ -56,6 +56,10 @@ def raw_fwhm_amp(recs, rate, rate_relerr):
     ws, amps = [], []
     for r in recs:
         t, v = load_trace(trace_path(r))
+        # Raw half-maximum width, deliberately model-independent (see
+        # run_beta_self). Its SNR bias varies with power here, but the
+        # power-null also holds under the FITTED width out of sample
+        # (pilot, postscript to addendum 17), so the null is not an artifact.
         ws.append(contiguous_fwhm_ms(t, v) * rate)   # retrace-safe FWHM
         sm = boxcar(v, 21)
         amps.append((sm - np.median(np.sort(sm)[:400])).max())
