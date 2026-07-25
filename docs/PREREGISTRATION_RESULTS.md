@@ -205,10 +205,23 @@ the backup. None of them was retired after seeing the timestamps.
 
 **Edit ledger for the frozen pre-registration.** Its header forbids edits
 after the backup is read, with corrections directed here. Post-run, exactly
-one commit touched it (`d50366d`), and `git diff` confirms zero lines of the
+one commit touched it (`f9918c8`), and `git diff` confirms zero lines of the
 prediction/gate/consequence tables (§1–§8) changed — the edit rewrote only §9,
 the release-provenance note, after the `v1.0.0`–`v1.2.0` withdrawals. The
 freeze on the scientific content held; this ledger is the audit of that claim.
+
+**Hash supersession, 2026-07-25 — a bookkeeping note, not a correction.** A
+message-only history rewrite (commit-message register only; `git diff`
+between every pre- and post-rewrite commit is empty, and all tree hashes
+match 1:1 in order) changed the identity of every commit from
+`2026-07-22` 06:xx onward, including ones this audit trail cites as
+provenance. `docs/PREREGISTRATION_timestamps.md` is itself frozen — its own
+header forbids editing it even for this — so its citations
+(`fd45da6`, `0af038b`, `2e56815`, `4592296`) are left exactly as written;
+their current identities are `ff505ea`, `6d68b4b`, `853cb72`, `29c8d45`
+respectively, content-for-content identical (`git show --stat` on each new
+hash reproduces the same file list and prose the old hash did). `9190b0b`
+(the campaign chronology) predates the rewritten range and is unaffected.
 
 **Corrected step-block listing.** The post-hoc section above was produced by a
 scorer whose step-block filter used `"25.0"`-style power strings against a
