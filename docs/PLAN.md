@@ -934,6 +934,11 @@ one); the hybrid is across the moment hierarchy, never across methods.
   independence null gives p = 0.11 on 4 peaks × 5 powers, which excludes
   nothing. Re-measuring one earlier condition later in the session separates
   them directly, at the cost of a single block. Cheapest item on this page.
+  Scope, checked rather than assumed: this is load-bearing for **S₀ alone**,
+  whose 0.09 MHz predicted effect is 1.0 block scatters. β_self's 0.02 MHz is
+  0.23 block scatters — a bound whichever way the question falls, though its
+  bound *tightness* still rides on the averaging — and the M2 rate is
+  nowhere near a decision boundary.
 - **High-density points must be SAME-SESSION — mandatory, not preferable
   (M4d lever test, 2026-07-12: measured, not anticipated).** The archival
   γ_coll rises only ×1.85 across the ×52 density span 70→130 °C (a residual

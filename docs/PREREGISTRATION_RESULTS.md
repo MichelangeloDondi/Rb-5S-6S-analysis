@@ -1959,7 +1959,26 @@ be wrong, and there is no better estimate to replace it with.
 and never returned. Re-measuring **one earlier condition later in the same
 session** separates common from independent scatter directly, because the two
 make different predictions about a repeat at identical settings. One block.
-`PLAN.md` §8 now carries it, and it is the cheapest item on that page —
-which is the argument for it: every bound in this archive that absorbs block
-scatter by inflating errors is making the same assumption, and one block
-would test them all.
+`PLAN.md` §8 now carries it, and it is the cheapest item on that page.
+
+**One correction to that argument, made after checking it.** The first
+version of this claimed that *every* bound absorbing block scatter makes the
+same assumption, so one block would test them all. Four modules do inflate
+for over-dispersion — `beta`, `global_fit`, `ruler`, `stark` — but the
+assumption is only load-bearing where the effect being constrained is
+*comparable to* one block scatter, because that is the regime in which the
+averaging is what produces the answer:
+
+| result | effect it constrains | ÷ one block (0.088 MHz) | averaging load-bearing? |
+|---|---|---|---|
+| S₀ (M4e) | 0.09 MHz, predicted ramp at 225 mW | **1.0** | **yes — the answer *is* the averaging** |
+| β_self (M4) | 0.02 MHz, Δγ over 70–130 °C | 0.23 | no — four times below one block, so a bound either way |
+| rate (M2) | 0.6% block scatter on a quantity known to 0.12% | — | no — nowhere near a decision boundary |
+
+So it is **one** result that hangs on this, not all of them. β_self's status
+does not move whichever way the question falls, though the *tightness* of its
+bound still rides on the same averaging — and `beta.py` already carries an
+explicit coverage correction for estimating that scatter on n − 2 degrees of
+freedom, so it was not taken for granted there. The returned-to block is
+still worth one block of beam time; the honest case for it is narrower than
+the case first written here.
