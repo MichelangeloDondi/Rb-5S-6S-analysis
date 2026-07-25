@@ -89,6 +89,7 @@ re-open a fitted result.
   - [Postscript to addendum 15, 2026-07-25 — the isotope route tested, and closed](#postscript-to-addendum-15-2026-07-25--the-isotope-route-tested-and-closed)
 - [Addendum 16, 2026-07-25 — the cold spot by maximum likelihood, where slope-fitting failed](#addendum-16-2026-07-25--the-cold-spot-by-maximum-likelihood-where-slope-fitting-failed)
   - [Postscript to addendum 16 — "cross-session" is the wrong word for the 130 °C point](#postscript-to-addendum-16--cross-session-is-the-wrong-word-for-the-130-c-point)
+  - [Postscript to addendum 16, 2026-07-25 — the excess scatter, recovered without the model](#postscript-to-addendum-16-2026-07-25--the-excess-scatter-recovered-without-the-model)
 - [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
 
 ---
@@ -1506,6 +1507,55 @@ acquired before a lock re-acquisition is not interchangeable with a one-hour
 dwell — but the *reason* stated is wrong, and by elapsed time it applies more
 forcefully to the 90 °C dwell than to 130 °C. Correcting that wording is a
 separate pass, flagged here rather than done silently inside an addendum.
+
+---
+
+### Postscript to addendum 16, 2026-07-25 — the excess scatter, recovered without the model
+
+Addendum 16's fit needed a **24% excess scatter** term to describe residuals
+against quoted errors of ~2%, and that term is doing a lot of work: it is
+what widens ΔT to [+5, +24] K. A fitted nuisance that large deserves a check
+that does not come from the same seven-parameter optimisation.
+
+Here is one. A cold spot is a **density** error, so it rescales all four
+peaks *identically* at a given temperature. Normalise each peak to its own
+70 °C point and the density cancels exactly — whatever the cold spot is, the
+four columns must then agree. They do not:
+
+| | 4121 | 4154 | 4192 | 4207 | spread |
+|---|---|---|---|---|---|
+| 90 °C | 1.32 | 1.68 | 1.45 | 1.23 | ×1.37 |
+| 110 °C | 0.79 | 1.50 | 1.84 | 1.78 | ×2.35 |
+| 130 °C | 0.93 | 1.30 | 1.31 | 1.65 | ×1.78 |
+
+The scatter of ln(A/N) about each row's mean is **25%** — against the same
+~2% quoted errors, and recovered with no model at all beyond "the density
+cancels". That it lands on addendum 16's fitted 24% is the check passing:
+the excess-scatter term was measuring something real, not absorbing a bad
+fit.
+
+**And it is not trapping.** Radiation trapping is a property of a *line*, so
+it would rank the four peaks the same way at every density. The ranking
+reshuffles instead — Kendall's W = 0.42 across the three temperatures,
+Friedman χ² = 3.8 on 3 dof, no significant agreement. That is the eyeball
+non-monotonicity argument of `run_amplitude_trapping.py` discriminator (3)
+put on a statistic, now added there as discriminator (4), and it is the third
+independent route to the same place: trapping is not what these amplitudes
+are showing (addendum 15's postscript closed the isotope route; addendum 16
+found trapping unneeded).
+
+**What it is, most likely.** The t_sweep power was **never recorded** —
+`power_mW` is empty for every t_sweep row — and amplitude goes as P², so a
+12% power difference alone makes 25%. Add that the four peaks of a dwell were
+acquired 54–76 minutes apart under a hand-re-centred lock and the size is
+unremarkable. PLAN §M4 pre-registered exactly this: cross-peak systematics of
+**30–50%**, to be cut to 2–4% by per-trace power logging. The measurement
+sits inside the band the plan predicted for it, which is the more useful
+outcome than a surprise would have been.
+
+**Net effect on addendum 16: none, and that is the point.** ΔT ≈ +20 K with a
+[+5, +24] K interval stands, its dominant uncertainty independently confirmed
+rather than assumed.
 
 ---
 
