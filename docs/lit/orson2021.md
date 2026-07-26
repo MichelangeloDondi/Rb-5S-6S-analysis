@@ -81,3 +81,11 @@ disagreement between three state-of-the-art calculations** — and the lifetime
 those elements imply, 45.44(8) ns, already matches the Gomez 2005 measurement
 of 45.57(17) ns to 0.29%. The atomic data does not permit the flip.
 
+## Identifier confirmed (2026-07-26)
+
+The external audit could not confirm the article number from citation trails
+and advised citing the DOI alone. The PDF settles it — **175001 confirmed** from
+the paper's own header: "S T Orson *et al* 2021 *J. Phys. B: At. Mol. Opt.
+Phys.* **54** 175001", and the running head "J. Phys. B: At. Mol. Opt. Phys. 54
+(2021) 175001 (6pp), https://doi.org/10.1088/1361-6455/ac2812". Six pages.
+Cite with confidence.

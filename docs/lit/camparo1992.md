@@ -62,5 +62,20 @@ Two consequences worth carrying:
   but distinct from, the shot-noise skew already identified in C3c. Worth a
   look before the ramp asymmetry is ever claimed as a detection.
 
-**ACTION: obtain the PDF.** The second point above cannot be assessed from the
-abstract.
+**A partial, honest bound on that caution, from the archive's own noise model.**
+M1 fits sigma^2 = a^2 + b*V + c*V^2, where the c term is multiplicative noise —
+variance proportional to signal squared, which is what large relative intensity
+fluctuations would produce. Across the 32 fitted conditions the BIC selects the
+c term in **1**, and there its fitted value is **negative** (-8.5e-4), which is
+unphysical for a variance contribution and marks it as a fitting artifact
+rather than a detection. So there is no multiplicative-noise signature in these
+data.
+
+That is evidence, not proof, and the distinction matters: Camparo's mechanism
+is a fluctuating *shift* skewing the line, whereas c bounds a fluctuating
+*amplitude* inflating the variance. A laser with large intensity fluctuations
+should show both, so the absence of one argues against the other — weakly.
+
+**ACTION: obtain the PDF.** Whether the shift-skew mechanism is bounded at the
+level this archive needs cannot be judged from an abstract, and the C3c
+asymmetry work is where it would bite.
