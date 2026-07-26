@@ -120,6 +120,35 @@ Net: the filter swap is required once to reach the upper ladder, and it is a
 *cheap, one-time* price (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
+**But "cheap" describes the hardware, not the risk — and the risk is the noise
+floor, which has to be measured rather than assumed** (2026-07-26). M1's fitted
+law is σ² = a² + b·V: a detector floor plus a Poisson term. Which of the two
+dominates sets how signal-to-noise responds to a *fainter* line, and the two
+answers differ by a square:
+
+- above the crossover V\* = a²/b the line is **shot-limited**, SNR ∝ √S — so a
+  10× weaker signal costs only ~3× in SNR;
+- below it the line is **floor-limited**, SNR ∝ S — the same 10× deficit costs
+  the full 10×.
+
+That distinction decides feasibility for any dimmer configuration, and it is not
+a small effect: across the 32 archival conditions **V\* spans 2–258 mV**
+(median ≈ 9 mV, `results/noise_model.csv`), so even one detection chain
+straddles both regimes. The 795 nm path happened to land shot-limited over the
+whole archival range — the faintest line, 20 mV, still sits above the median
+crossover — which is *why* the archive's dimmest 70 °C dwells were fittable at
+SNR ≈ 16. **A blue chain inherits none of that.** Blue-sensitive photocathodes,
+different dark rates and a different filter stack move both a and b, and a
+420 nm path landing at the high end of that V\* range would be floor-limited
+exactly where an upper-ladder line is faintest.
+
+**The check is a re-run of M1 on the new path, not new analysis:**
+`rb5s6s.noise.condition_noise_model` fits a and b from a handful of repeats, so
+the blue chain's V\* can be measured on the bench — a lamp, the filter, and the
+detector — before any transition is attempted. Doing it first converts the
+detection swap from an assumption into a number, and it is the cheapest
+derisking step on this page.
+
 ## 3. The papers this enables (ranked)
 
 ### Paper A — *Reference-free light shift & magic wavelength on the 778 nm 5S→5D clock line, via lineshape asymmetry* — **the topical extension (methodological, not a precision competitor)**
