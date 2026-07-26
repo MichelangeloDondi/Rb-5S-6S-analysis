@@ -229,17 +229,32 @@ line is worth characterising at all — stated at the size the evidence
 supports, since two of the three items below are still calculations rather
 than results.
 
-**A second two-photon reference line, in a convenient place.** The 778 nm
-5S→5D two-photon transition is an established optical frequency reference, and
-the reason is structural: two-photon Doppler-free excitation kills the
-first-order Doppler width without a beam-geometry trick, so the line is narrow
-and the apparatus is a cell, a laser and a detector. 993 nm 5S→6S has the same
-structure and a *narrower* natural width (3.49 MHz), yet its environmental
-coefficients — how it moves with density and with intensity — have only ever
-been bounded, and coarsely ([Orson 2021](lit/orson2021.md)'s nulls at ~6 MHz).
-Those coefficients are exactly what decides whether a line can carry a
-reference: they set how well the environment has to be controlled for a target
-stability. Measuring them is the gate, and it is the gate this program is at.
+**An uncharacterised line in a well-motivated class — but not a better clock
+line.** The 778 nm 5S→5D two-photon transition is an established optical
+frequency reference, and the reason is structural: two-photon Doppler-free
+excitation kills the first-order Doppler width without a beam-geometry trick,
+so the apparatus is a cell, a laser and a detector. That compactness is the
+documented draw of the whole class ([Martin 2018](lit/martin2018.md);
+[Newman 2021](lit/newman2021.md)).
+
+993 nm 5S→6S shares that structure. It does **not** share the linewidth
+advantage, and the honest comparison should be stated plainly rather than
+implied away: the 6S₁/₂ upper state lives 45.57 ns
+([Gomez 2005](lit/gomez2005.md)), giving the 3.49 MHz natural width every fit
+here carries, whereas 5D₅/₂ is far longer-lived and its line is
+correspondingly narrower. On natural quality factor alone, 993 nm starts
+*behind* the line the compact-clock community already uses — and that
+community is at 6×10⁻¹⁴/√τ ([Ahern 2025](lit/ahern2025.md)). Nothing in this
+archive suggests 993 nm would overtake it, and this page should not be read as
+claiming so.
+
+What is true is narrower and worth stating on its own: the environmental
+coefficients of 993 nm have only ever been bounded, and coarsely
+([Orson 2021](lit/orson2021.md)'s nulls at ~6 MHz). Those coefficients decide
+how well an environment must be controlled for any target stability, so they
+are worth knowing for a line nobody has measured them on — and they are the
+entry the 5D/7S self-broadening series is missing. That is the case: an
+uncharacterised line in a practically-motivated class, not a challenger.
 
 **Magic wavelengths would let it be done on trapped atoms.** The awkwardness of
 a cell reference is that the atoms are hot, colliding and moving through the
@@ -293,6 +308,7 @@ that series. This is the most modest item on the page and is listed as such —
 but it is also the one the archive already has the design for, needing only the
 higher-density points of §4.
 
-*Status, plainly: the reference-line case is a motivation, not a claim; the
+*Status, plainly: 993 nm is not put forward as a better clock line — on
+natural linewidth it is worse than the 778 nm standard; the
 magic wavelengths are calculated and unvalidated; the method is demonstrated
 on this dataset as a bound. What has actually been delivered is in §3.*
