@@ -257,8 +257,10 @@ check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 > | 6S–5P | 1324 nm | downward | **+214** |
 > | | | **net** | **−312** |
 >
-> The upward 6P group ($-846$) and the downward 5P cascade ($+623$) very nearly
-> cancel; the negative total survives by about 27% of the larger group. So the
+> Summed over *all* terms, not just the four largest: the upward group totals
+> $-947$ and the downward 5P cascade $+623$, so the lines give $-324$ and the
+> tail and core carry it to $-312$. The negative total survives by about 34% of
+> the larger group. So the
 > sign *is* sensitive to the relative strengths of those two groups: raising the
 > 6S–5P (1367 nm) strength by **33%**, or lowering the 6S–6P (2732 nm) strength
 > by 95%, drives $\alpha_{6S}$ through zero.
