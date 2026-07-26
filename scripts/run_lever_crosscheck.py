@@ -19,8 +19,8 @@ the fitted "collisional" width is a residual FLOOR, not resolved linear
 collisions (which must be LINEAR in N). beta is therefore a LEVER-DEPENDENT BOUND
 (per-condition ~0.01; the joint ~0.036 is inflated by sigma_laser sharing), and
 the long lever simply exposes that. The
-130 C data are also a different session -- a secondary caveat we cannot fully
-separate -- but leverage, not a session jump, is the driver. Either way the
+130 C data are the extreme end of the lever, not a separate session (the
+recovered clock puts them 2.3 h from the 110 C dwell); leverage is the driver. Either way the
 model-independent BOUND, not any fit, is the archival headline, and a fixed-lock session
 needs same-session high-density points to resolve any real collisional slope.
 (Run-once script, several minutes: the per_block fit floats one laser width
@@ -237,7 +237,7 @@ def main() -> int:
     print("  A real binary-collision width is LINEAR in N, so this near-flat gamma is a")
     print("  residual FLOOR, not resolved collisions -> beta is a lever-dependent BOUND")
     print("  (joint ~0.036 short-lever -> ~0.014 long-lever; per-condition ~0.01). The 130 C")
-    print("  data are also a different session (secondary caveat), but the widths sit ON")
+    print("  data are the extreme lever point, not another session; the widths sit ON")
     print("  the sub-linear trend, so leverage is the cause. Headline stays the BOUND.")
 
     # ---- persist ----

@@ -88,8 +88,10 @@ def width_vs_density_probe(rows, peak, trates, prates, include_130=False):
     ruler-rate uncertainty, both block-coherent) — the error the global fit's
     shared-sigma_laser assumption omits. Optionally extends the lever arm with
     the 130 C point (the 225 mW power-session files): N(130)/N(110) ~ 3.2, at
-    the price of a cross-session comparison whose rate comes from the bracket
-    combination (its before/after half-difference carried as uncertainty)."""
+    the price of reaching the extreme end of the lever, with a rate from the
+    bracket combination (its before/after half-difference carried as
+    uncertainty). Not a cross-session comparison: the recovered clock puts the
+    130 C block 2.3 h from the 110 C dwell, inside one campaign."""
     byT = defaultdict(list)
     for r in rows:
         if (r["flag"] == "canonical" and r["role"] == "t_sweep"
@@ -302,7 +304,7 @@ def main() -> int:
 
     print(f"\n{'-'*74}\nCAVEATS (all results PRELIMINARY):")
     print("  * transit fixed on the OPEN w0 prior -> absolute scale of any beta")
-    print("  * within-session T-sweep only (70/90/110); 130C is a different session")
+    print("  * cooling T-sweep only (70/90/110); 130C is the extreme lever point")
     print("  * vapor-density cold-spot systematic (density.py) on absolute N(T)")
     return 0
 

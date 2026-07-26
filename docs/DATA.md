@@ -295,9 +295,11 @@ happened to be a large one (the old 3.1). The profile-likelihood limit (scan
 $\kappa$, re-minimize the per-peak cores, one-sided $\Delta\chi^2=2.706$ scaled
 by $\chi^2_\text{red}\approx4.3$ for over-dispersion) crosses at 0.63 MHz —
 checked smooth and grid-stable (identical to 0.1 MHz at half the frequency-grid
-step). Physical reading: the archive's width data are already sensitive at the
-scale of the predicted coefficient (0.59 MHz at the 50 µm prior); anything much
-above the prediction is excluded, while the prediction itself and zero remain
+step). Physical reading: the bound brackets the predicted coefficient (0.59 MHz at
+the 50 µm prior) rather than demonstrating sensitivity to it — the predicted
+effect is ~0.09 MHz against a 0.088 MHz single-block width scatter, so the
+bound comes entirely from averaging, an assumption M17 finds untested.
+Anything much above the prediction is excluded, while the prediction itself and zero remain
 allowed. The superseded Wald rows stay in `stark_sweep.csv` as labelled
 diagnostics. Downstream, the $\Delta\alpha$ bracket tightens $\sim5800 \to \sim1200$ a.u. (~1.1× the computed 1093), still $w_0$-conditional.
 

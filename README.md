@@ -90,8 +90,9 @@ bounds now, with a proposed fixed-lock follow-up (below) to convert each into
 a number.
 
 An upper bound excludes every model that predicts more, and each bound here
-sets the sensitivity target a follow-up session would need to beat. The width data are already sensitive at the physical
-scale (the AC-Stark bound sits just above its prediction), and the 95%
+sets the sensitivity target a follow-up session would need to beat. The AC-Stark bound brackets its
+prediction rather than resolving it (the predicted effect is about one block's
+width scatter, so the bound rests on averaging — M17), and the 95%
 constructions are validated by injection-recovery
 ([methods §4.11](docs/methods/06_the_statistics.md)), not assumed.
 

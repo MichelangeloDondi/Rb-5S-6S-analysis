@@ -12,7 +12,7 @@ What it does that the exploratory M4b `run_global_fit` does not:
     the (gaussian, per_block) corner is dropped because per_block fits are
     ~50x costlier and the axes are near-independent) --
         transit kernel : exp (Lehmann/Biraben cusp) vs gaussian (Voigt, no cusp)
-        sigma sharing  : per_T (Model A, M4c-validated) vs per_block (Model B);
+        sigma sharing  : per_T (Model A) vs per_block (Model B);
     the beta spread across the cells IS the model-form error bar;
   * assembles the three error bars into one object:
         [1] statistical  -- the primary fit's joint covariance,
@@ -26,7 +26,8 @@ What it does that the exploratory M4b `run_global_fit` does not:
 
 The primary (headline) model is (exp, per_T) = the Lehmann cusp with one
 sigma_laser(T) shared across the four peaks: the transit form is the published
-one (docs/LITERATURE.md 3) and per-T sharing is M4c-validated. The other three
+one (docs/LITERATURE.md 3) and per-T sharing is M4c-CHECKED but not validated
+(the chi2<1 test cannot discriminate; RESULTS.md C2). The other three
 cells of the matrix exist to MEASURE how much the headline moves if either
 modelling choice is wrong -- that movement IS the model-form error, not a hidden
 assumption.
@@ -49,8 +50,8 @@ from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 # the 2x2 model-form matrix axes
 TRANSIT_KINDS = ("exp", "gaussian")       # Lehmann cusp | Voigt (no cusp)
-SIGMA_SHARINGS = ("per_T", "per_block")   # Model A (M4c-validated) | Model B
-PRIMARY = ("exp", "per_T")                # the validated headline model
+SIGMA_SHARINGS = ("per_T", "per_block")   # Model A | Model B
+PRIMARY = ("exp", "per_T")                # the headline model (sharing CHECKED, not validated)
 # L-shaped 3-cell model-form grid: the primary corner plus one step along each
 # axis. Spans transit (exp->gaussian) and sharing (per_T->per_block) for the
 # cost of a single expensive per_block fit; (gaussian, per_block) is omitted.
