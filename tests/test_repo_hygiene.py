@@ -437,3 +437,61 @@ def test_audit_summary_covers_the_latest_addendum():
         f"addendum {latest} has no row in the one-page summary table "
         f"(summarised: {sorted(covered)}) -- the top of the report is behind "
         "the bottom of it")
+
+
+# results files git deliberately does not track -- reading one unconditionally
+# in a test passes locally (the dump is lying around from a pipeline run) and
+# fails in CI and on a fresh clone. This bit once, in the M17 freshness canary.
+_GITIGNORED_RESULTS = ("qc_metrics.csv",)
+
+
+def test_no_test_reads_a_gitignored_results_file_unconditionally():
+    """A test that opens a gitignored CSV must guard it with an existence check.
+
+    The failure mode is invisible locally: the file is present because a
+    pipeline run left it there, so the suite is green on the machine that
+    wrote the test and red everywhere else. Requiring an `.exists()` /
+    `.is_file()` guard in the same file is a coarse check, but it is exactly
+    the discipline that was missing when this bit.
+    """
+    offenders = []
+    for path in (ROOT / "tests").glob("test_*.py"):
+        text = path.read_text(encoding="utf-8")
+        for name in _GITIGNORED_RESULTS:
+            if name not in text:
+                continue
+            guarded = (".exists()" in text or ".is_file()" in text
+                       or "requires_raw_traces" in text
+                       or "raw_traces_available" in text)
+            if not guarded:
+                offenders.append(f"{path.name} reads {name} without an existence guard")
+    assert not offenders, "\n".join(offenders)
+
+
+def test_module_range_glosses_are_not_stale():
+    """`M0–M<n>` range glosses must not stop below the highest module.
+
+    The audit found methods/08, PAPER2_SKELETON, __init__ and a README line
+    all frozen at an old top module while M17 existed. The highest module is
+    read from methods.md's pipeline line, so this tracks reality automatically.
+    """
+    methods = (ROOT / "docs" / "methods.md").read_text(encoding="utf-8")
+    top = max(int(n) for n in re.findall(r"\bM(\d+)\b", methods))
+    stale = []
+    for path in list((ROOT / "docs").rglob("*.md")) + [ROOT / "README.md",
+                                                        ROOT / "rb5s6s" / "__init__.py"]:
+        text = path.read_text(encoding="utf-8")
+        for m in re.finditer(r"M0\s*[–-]\s*M?(\d+)", text):
+            hi = int(m.group(1))
+            # a range that ends below `top` is stale UNLESS it is explicitly a
+            # historical/pipeline-stage range (those name the older scheme)
+            line = text[max(0, m.start() - 160):m.start() + 40]
+            # exempt only an EXPLICIT older-scheme marker, not any prose that
+            # happens to contain "pipeline" -- "the Paper-1 pipeline (M0-M17)"
+            # is a live range, "M8 outputs, the older pipeline-stage numbering"
+            # is not.
+            historical = re.search(r"pipeline[- ]stage|stage numbering|older"
+                                   r"|historical|deprecated", line, re.I)
+            if hi < top and not historical:
+                stale.append(f"{path.relative_to(ROOT)}: 'M0-M{hi}' but modules run to M{top}")
+    assert not stale, "\n".join(stale)
