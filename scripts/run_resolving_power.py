@@ -47,6 +47,10 @@ established nor excluded, because 4 peaks x 5 powers cannot resolve it. It is
 untested rather than wrong, and PLAN 8.4 now asks for the returned-to power
 block that would test it.
 
+The arithmetic lives in rb5s6s/resolving.py (closure-tested in
+tests/test_resolving.py, with a freshness canary on this CSV); this script is
+the driver that reads the committed inputs and writes the table.
+
 Writes results/resolving_power.csv. Status DIAGNOSTIC -- this measures the
 experiment's sensitivity, not the atom.
 """
@@ -64,6 +68,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from rb5s6s import config as C  # noqa: E402
+from rb5s6s.resolving import (  # noqa: E402
+    averaging_test, block_noise, common_variance_fraction, dynamic_range,
+    projection, variance_reduction, verdict,
+)
 
 # PLAN M4 / BIG_PICTURE 4: the collisional width moves this much once the
 # sweep reaches 150-170 C. Quoted as a range because beta_self is a bound.
@@ -77,36 +85,25 @@ def _sweep_and_ladder():
     return d, sweep, ladder
 
 
-def _rel_block_noise(frame: pd.DataFrame, col: str) -> float:
-    """Relative scatter between blocks at fixed conditions, averaged over peaks."""
-    g = frame.groupby("peak")[col]
-    return float((g.std() / g.mean()).mean())
-
-
 def main() -> int:
     _, sweep, ladder = _sweep_and_ladder()
     rows = []
 
     for col in ("total_fwhm", "gamma_coll", "sigma_laser"):
-        per_T = sweep.groupby("T")[col].mean()
-        rng = float(np.log(per_T.max() / per_T.min()))
-        noise = _rel_block_noise(ladder, col)
+        rng = dynamic_range(sweep, col, "T")
+        noise = block_noise(ladder, col)
         rows.append((col, rng, noise, rng / noise))
 
     # amplitude: the density lever proper. Its block noise is measured on the
     # same ladder after removing the P^2 dependence, so what remains is
     # instrumental (alignment, lock state, the un-logged power).
     amp = pd.read_csv(C.RESULTS_DIR / "amplitude_trapping.csv")
-    per_T = amp.groupby("T").amp.mean()
-    rng = float(np.log(per_T.max() / per_T.min()))
+    rng = dynamic_range(amp, "amp", "T")
     q = pd.read_csv(C.RESULTS_DIR / "qc_metrics.csv")
     lad = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
     lad = lad.assign(scaled=lad.height_v / (lad.power_mW / 100.0) ** 2)
-    noise = _rel_block_noise(lad, "scaled")
+    noise = block_noise(lad, "scaled")
     rows.append(("amplitude", rng, noise, rng / noise))
-
-    def verdict(r: float) -> str:
-        return "RESOLVES" if r > 10 else "MARGINAL" if r > 3 else "CANNOT_RESOLVE"
 
     print("M17 -- resolving power for the 70-130 C density question")
     print("(dynamic range in block-noise units; both in log space)\n")
@@ -123,7 +120,7 @@ def main() -> int:
 
     # ---- what October's two prescriptions each buy ------------------------
     w = float(sweep.total_fwhm.mean())
-    noise_w = w * _rel_block_noise(ladder, "total_fwhm")
+    noise_w = w * block_noise(ladder, "total_fwhm")
     print(f"\nPROJECTION. total_fwhm block noise = {noise_w:.3f} MHz.")
     print("PLAN M4's 150-170 C points move the collisional width "
           f"{HOT_POINT_SIGNAL_MHZ[0]}-{HOT_POINT_SIGNAL_MHZ[1]} MHz:\n")
@@ -151,20 +148,15 @@ def main() -> int:
     # rests on that averaging. It has never been tested. Test it.
     g = ladder.groupby(["peak", "P"]).total_fwhm.mean().unstack()
     resid = (g.sub(g.mean(axis=1), axis=0)).values      # rows are mean-zero
-    def _reduction(m):
-        return m.std(ddof=1) / m.mean(axis=0).std(ddof=1)
-    obs = float(_reduction(resid))
-    rng_ = np.random.default_rng(C.RNG_SEED if hasattr(C, "RNG_SEED") else 1)
-    null = np.array([_reduction(np.array([rng_.permutation(row) for row in resid]))
-                     for _ in range(20000)])
-    p_common = float((null <= obs).mean())
-    lo, hi = float(np.percentile(null, 5)), float(np.percentile(null, 95))
+    at = averaging_test(resid, n_perm=20000, seed=C.RNG_SEED)
+    obs, p_common = at["observed"], at["p_common"]
+    lo, hi = at["null_lo90"], at["null_hi90"]
     print(f"\nTHE ASSUMPTION UNDER THE S0 BOUND (M4e).")
     print(f"  Its sqrt(chi2) inflation is the right remedy only if the block")
     print(f"  scatter averages down. Permuting each peak's residuals across")
     print(f"  powers gives the independence null:")
     print(f"    observed variance-reduction {obs:.2f}x   "
-          f"null {np.median(null):.2f}x [{lo:.2f}, {hi:.2f}] (90%)   p = {p_common:.3f}")
+          f"null {at['null_median']:.2f}x [{lo:.2f}, {hi:.2f}] (90%)   p = {p_common:.3f}")
     print(f"  -> a common component is NOT established, and equally NOT excluded:")
     print(f"     the null's own 90% band spans [{lo:.2f}, {hi:.2f}], so 4 peaks x 5")
     print(f"     powers cannot resolve this. The assumption stands untested, not")
@@ -185,7 +177,7 @@ def main() -> int:
             wtr.writerow(["projection", tag, f"{sig:.6g}", f"{nz:.6g}",
                           f"{r:.6g}", "MHz", "PLAN_8_projection"])
         wtr.writerow(["assumption", "s0_block_scatter_averages_down",
-                      f"{obs:.6g}", f"{np.median(null):.6g}", f"{p_common:.6g}",
+                      f"{obs:.6g}", f"{at['null_median']:.6g}", f"{p_common:.6g}",
                       "variance_reduction_vs_permutation_null", "UNTESTABLE_HERE"])
     print(f"\nwrote {out.relative_to(ROOT)}")
     return 0

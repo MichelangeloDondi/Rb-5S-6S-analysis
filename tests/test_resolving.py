@@ -1,0 +1,143 @@
+"""
+M17 closure tests: inject a known answer, check the module recovers it.
+
+The resolving-power ratio is only useful if it means what it claims, and the
+averaging test is only useful if it can actually tell a common systematic
+from independent noise. Both are checked here by construction rather than on
+the archive, where the true answer is unknown -- which is the point of the
+module's own finding that four peaks by five powers cannot resolve it.
+
+The last test is a freshness canary in the pattern of test_results_fresh.py:
+resolving_power.csv is recomputed from its committed inputs, so editing
+rb5s6s.resolving without re-running the producer fails here instead of
+sitting green with a stale CSV, a stale doc and a matching fingerprint.
+"""
+
+from __future__ import annotations
+
+import csv
+
+import numpy as np
+import pandas as pd
+import pytest
+
+from rb5s6s import config as C
+from rb5s6s.resolving import (
+    averaging_test, block_noise, common_variance_fraction, dynamic_range,
+    projection, variance_reduction, verdict,
+)
+
+
+def _independent(n_rows=4, n_cols=5, seed=0, scale=1.0):
+    rng = np.random.default_rng(seed)
+    m = rng.normal(0.0, scale, size=(n_rows, n_cols))
+    return m - m.mean(axis=1, keepdims=True)          # rows mean-zero, as used
+
+
+def _with_common(n_rows=4, n_cols=5, seed=0, common=3.0):
+    rng = np.random.default_rng(seed)
+    shared = rng.normal(0.0, common, size=(1, n_cols))
+    m = rng.normal(0.0, 1.0, size=(n_rows, n_cols)) + shared
+    return m - m.mean(axis=1, keepdims=True)
+
+
+def test_variance_reduction_recovers_sqrt_n_for_independent_rows():
+    """Independent rows must average down as sqrt(n). Averaged over many
+    draws, since a single 4x5 draw is itself noisy -- which is precisely the
+    limitation the archive runs into."""
+    vals = [variance_reduction(_independent(seed=s)) for s in range(400)]
+    assert 1.7 < float(np.median(vals)) < 2.4, float(np.median(vals))
+
+
+def test_variance_reduction_collapses_toward_one_when_rows_share_a_component():
+    vals = [variance_reduction(_with_common(seed=s, common=6.0)) for s in range(400)]
+    assert float(np.median(vals)) < 1.4, float(np.median(vals))
+
+
+def test_averaging_test_does_not_cry_wolf_on_independent_data():
+    """The null must not reject when the data really are independent."""
+    ps = [averaging_test(_independent(seed=s), n_perm=400, seed=s)["p_common"]
+          for s in range(25)]
+    assert sum(p < 0.05 for p in ps) <= 4, ps      # ~5% false positives, allow slack
+
+
+def test_averaging_test_detects_a_strong_common_component():
+    """Injection-recovery: a large shared per-condition term must be caught."""
+    ps = [averaging_test(_with_common(seed=s, common=8.0), n_perm=400, seed=s)["p_common"]
+          for s in range(15)]
+    assert sum(p < 0.05 for p in ps) >= 11, ps
+
+def test_averaging_test_reports_a_null_band_wide_enough_to_be_honest():
+    """The band is the part that stops a small p being over-read; it must be
+    returned and must bracket the median."""
+    r = averaging_test(_independent(seed=3), n_perm=2000, seed=3)
+    assert r["null_lo90"] < r["null_median"] < r["null_hi90"]
+
+
+def test_common_variance_fraction_round_trips():
+    for f in (0.0, 0.25, 0.5, 0.9):
+        n = 4
+        # invert the definition: 1/R^2 = f + (1-f)/n
+        R = 1.0 / np.sqrt(f + (1.0 - f) / n)
+        assert common_variance_fraction(R, n) == pytest.approx(f, abs=1e-9)
+
+
+def test_dynamic_range_and_block_noise_on_known_input():
+    df = pd.DataFrame({"T": [70, 70, 130, 130], "peak": [1, 2, 1, 2],
+                       "x": [1.0, 1.0, np.e, np.e]})
+    assert dynamic_range(df, "x", "T") == pytest.approx(1.0)
+    flat = pd.DataFrame({"peak": [1, 1, 2, 2], "x": [1.0, 1.0, 2.0, 2.0]})
+    assert block_noise(flat, "x") == pytest.approx(0.0)
+
+
+def test_verdict_bands():
+    assert verdict(45.0) == "RESOLVES"
+    assert verdict(5.0) == "MARGINAL"
+    assert verdict(1.5) == "CANNOT_RESOLVE"
+
+
+def test_projection_scales_with_the_noise_cut():
+    a, = projection([0.25], 0.1)
+    b, = projection([0.25], 0.1, noise_cut=4.0)
+    assert b == pytest.approx(4.0 * a)
+
+
+@pytest.mark.slow
+def test_resolving_power_csv_matches_current_code():
+    """Freshness canary -- recompute the committed CSV from committed inputs."""
+    d = pd.read_csv(C.RESULTS_DIR / "linefit_conditions.csv")
+    sweep = d[(d.role == "t_sweep") | ((d.role == "p_sweep") & (d["T"] == 130))]
+    ladder = d[(d.role == "p_sweep") & (d["T"] == 130)]
+    fresh = {}
+    for col in ("total_fwhm", "gamma_coll", "sigma_laser"):
+        rng = dynamic_range(sweep, col, "T")
+        noise = block_noise(ladder, col)
+        fresh[col] = (rng, noise, rng / noise)
+    amp = pd.read_csv(C.RESULTS_DIR / "amplitude_trapping.csv")
+    q = pd.read_csv(C.RESULTS_DIR / "qc_metrics.csv")
+    q = q[q.peak == 4192]
+    lad = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
+    lad = lad.assign(scaled=lad.height_v / (lad.power_mW / 100.0) ** 2)
+    rng = dynamic_range(amp, "amp", "T")
+    # the amplitude row's block noise is measured over ALL peaks, so recompute
+    # it from the unrestricted ladder exactly as the producer does
+    q_all = pd.read_csv(C.RESULTS_DIR / "qc_metrics.csv")
+    lad_all = q_all[(q_all.role == "p_sweep")
+                    & (q_all.temperature_C == 130)].dropna(subset=["power_mW"])
+    lad_all = lad_all.assign(scaled=lad_all.height_v / (lad_all.power_mW / 100.0) ** 2)
+    noise = block_noise(lad_all, "scaled")
+    fresh["amplitude"] = (rng, noise, rng / noise)
+
+    committed = {r["observable"]: r for r in
+                 csv.DictReader(open(C.RESULTS_DIR / "resolving_power.csv"))
+                 if r["kind"] == "observable"}
+    stale = []
+    for name, (rg, no, ratio) in fresh.items():
+        c = committed[name]
+        for label, got, want in (("signal", rg, float(c["signal"])),
+                                 ("noise", no, float(c["noise"])),
+                                 ("ratio", ratio, float(c["ratio"]))):
+            if got != pytest.approx(want, rel=1e-4):
+                stale.append(f"{name}.{label}: code {got:.6g} vs committed {want:.6g}")
+    assert not stale, ("resolving_power.csv is stale -- re-run "
+                       "scripts/run_resolving_power.py:\n  " + "\n  ".join(stale))

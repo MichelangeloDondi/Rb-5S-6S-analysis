@@ -12,7 +12,7 @@ for s in run_qc run_noise run_ruler run_linefit \
          run_power_sweep run_stark_sweep run_amplitude_trapping run_modelform \
          run_sigma_laser_sharing run_transit_mc run_amplitude_ratios run_ramp_geometry \
          run_model_ladder run_identifiability run_coverage run_sharing_bic run_fringe_tail \
-         run_polarizability; do
+         run_polarizability run_resolving_power; do
     echo "== scripts/$s.py =="
     python scripts/$s.py
 done

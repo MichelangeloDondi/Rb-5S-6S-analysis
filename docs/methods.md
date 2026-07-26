@@ -14,7 +14,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
 > OPEN prior. That status is stated per-result in §5 **and machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…),
-> the same provenance tag README describes. Modules M0→M16
+> the same provenance tag README describes. Modules M0→M17
 > (with lettered fitting sub-stages M4b–M4e), **803 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all Paper-1 deliverables (C1 collisional broadening, C2 laser epoch, C3
@@ -60,7 +60,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$; C2 the 2025 laser-epoch width $\sigma_\text{laser}$; C3
   the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 archive.
-- **M0 … M16 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M17 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each; the fitting core has lettered
   sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
