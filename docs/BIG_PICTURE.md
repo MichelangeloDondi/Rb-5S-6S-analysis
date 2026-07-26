@@ -354,8 +354,23 @@ that it has yet beaten anything.
 the 5D and 7S states; 6S is the missing entry. A measured β_self(6S) closes
 that series.
 
-The expected size now has an upper anchor rather than resting on the 7S
-analogy alone. [Weller 2011](lit/weller2011.md) measures the Rb **D1**
+**The expected size is now computed rather than borrowed** (M18,
+`rb5s6s/vanderwaals.py`). Both 5S and 6S are S states, so there is no resonant
+dipole-dipole term and the leading interaction is van der Waals — which means
+the coefficient follows from the same matrix elements that produced Δα(993),
+continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That gives
+**C₆(5S+6S) ≈ 2.9×10⁴ a.u.**, and through the impact-broadening law an expected
+**β_self(6S) ≈ 5.9 kHz per 10¹² cm⁻³** at 130 °C. The archival bound of
+0.2–0.4 MHz therefore sits **34–68× above a computed expectation**, not above
+one imported from the 7S measurement.
+
+The validation matters more than the number: the identical machinery gives
+C₆(5S+5S) = 4180 a.u. against the literature Rb₂ value of ~4691 — 11% low, in
+the direction and roughly the size the deliberately-dropped core predicts. Read
+everything here as ENVELOPE at the 10–15% level, and note that the impact
+prefactor is quoted from the pressure-broadening literature rather than derived.
+
+That expectation also has an upper anchor from measurement. [Weller 2011](lit/weller2011.md) measures the Rb **D1**
 self-broadening coefficient at β/2π = (0.69 ± 0.04)×10⁻⁷ Hz cm³ — **69 kHz per
 10¹² cm⁻³**. D1 is the *resonant* dipole-dipole case, the largest such
 mechanism, because its two states are dipole-coupled to each other. 5S–6S
