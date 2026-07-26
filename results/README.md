@@ -1,9 +1,9 @@
 # Committed results
 
 These CSVs are the outputs of the documented run of the pipeline (the numbers
-quoted in the top-level README §5 and `docs/DATA.md`), committed so the claims
+quoted in the top-level README "Results at a glance" and `docs/DATA.md`), committed so the claims
 are verifiable without re-running. They regenerate exactly by running the
-scripts in order (see the top-level README §8); `results/qc_metrics.csv` (the
+scripts in order (see the top-level README "Reproduce" section); `results/qc_metrics.csv` (the
 ~112 KB per-trace QC dump) is the one output kept out of git.
 
 **Every row carries a machine-readable `status` column** (`scripts/annotate_results_status.py`,

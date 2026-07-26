@@ -1,5 +1,5 @@
 """
-Fringe-tail Monte-Carlo of the standing-wave AC-Stark ramp (module M14)
+Fringe-tail Monte-Carlo of the standing-wave AC-Stark ramp (module M15)
 =======================================================================
 
 The 5S->6S retro-excitation is a focused STANDING wave. The Doppler-free drive

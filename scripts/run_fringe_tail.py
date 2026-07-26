@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M14: fringe-tail imprint on the standing-wave AC-Stark ramp.
+M15: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
 at the archival (50 um, S0 = 0.6 MHz) and small-waist config S (16 um, S0 = 5.7 MHz)
@@ -42,7 +42,7 @@ N_BLOCKS = 16
 
 def main() -> int:
     print("=" * 82)
-    print("(M14) FRINGE-TAIL imprint on the standing-wave AC-Stark ramp")
+    print("(M15) FRINGE-TAIL imprint on the standing-wave AC-Stark ramp")
     print(f"  3D-MB + fringe-phase MC, {N_BLOCKS} x {N_ATOMS} atoms pooled;")
     print("  coherence window swept transit <-> tau_6S.\n")
     print(f"  {'regime':22s} {'rho':>4} {'window':>8} {'d_skew':>16} "

@@ -147,7 +147,7 @@ docs/     PLAN.md (plan of record) · DATA.md (archive provenance) · RESULTS.md
           · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
           · APPARATUS.md (hardware of record, with photographs + schematic)
           · PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md (the
-          timestamp audit: frozen predictions, results, addenda 1–15)
+          timestamp audit: frozen predictions, results, addenda 1–18)
 data_recovered/  the backup-recovered layer: the acquisition clock
           (CLOCK.csv), backup-only discards, degradation lineage
 results/  committed CSVs (the documented run) + results/README.md

@@ -142,13 +142,13 @@ archive rulers show.
 
 **Modulation headroom.** The campaign ran at 10.00 Vpp, which the certificates
 place at **≈54–60% of full modulation**; full scale is ≈1.6× higher in drive
-voltage. `PLAN.md` §8.9 asks whether the 12.5 MHz tank can reach β ≈ 1.2 — that
+voltage. `PLAN.md` §8.4 asks whether the 12.5 MHz tank can reach β ≈ 1.2 — that
 headroom is the first quantitative input to the question. Note the certificates
 were taken at 780 nm, and phase-modulation index scales as 1/λ, so the index at
 993 nm is ≈0.79× the 780 nm figure at equal drive.
 
 **A constraint on the upgrade path.** The AFG31021 tops out at **25 MHz**, so
-the "higher-frequency EOM" fallback in `PLAN.md` §8.9 needs a different
+the "higher-frequency EOM" fallback in `PLAN.md` §8.4 needs a different
 generator as well as a different tank.
 
 ---
@@ -319,7 +319,7 @@ within-block bound independently matches.*
 
 *The one in-campaign record — and its taskbar clock reads **17:03,
 7/18/2025**: eighteen minutes before the 90 °C dwell resumed. This is the
-re-lock transient after the daytime break (addenda 4–8), settling toward the
+re-lock transient after the daytime break (addenda 4–7), settling toward the
 100 kHz short-term StdDev visible in the statistics panel; not steady
 acquisition drift, which the archive puts two orders below.*
 

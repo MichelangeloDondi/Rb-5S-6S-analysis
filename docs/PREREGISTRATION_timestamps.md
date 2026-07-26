@@ -137,7 +137,7 @@ $5\times1.000$ s of acquisition the block must contain. So:
 | # | Derived analysis (scored after P1–P8) | Method | Pre-registered expectation |
 |---|---|---|---|
 | D1 | **Drift rate** of the 2025 lock | intra-block position scatter ÷ block elapsed time, over all blocks | below the 4 MHz/min envelope (D0) |
-| D2 | **Drift model** — linear vs random walk | how intra-block scatter scales with block duration across blocks of differing length: $\propto T$ linear, $\propto\sqrt{T}$ random walk | undeclared; `PLAN.md` §8.9 calls the archive's between-block swing "random/non-monotonic", which favours $\sqrt{T}$, but this is not a prediction |
+| D2 | **Drift model** — linear vs random walk | how intra-block scatter scales with block duration across blocks of differing length: $\propto T$ linear, $\propto\sqrt{T}$ random walk | undeclared; `PLAN.md` §8.4a calls the archive's between-block swing "random/non-monotonic", which favours $\sqrt{T}$, but this is not a prediction |
 | D3 | **Re-centring frequency** consistency | count between-block position discontinuities; compare with (rate × campaign elapsed) ÷ 43 MHz window | the count implied by D1 is consistent with "many times" as reported |
 
 **If D1 and D3 disagree** — a drift rate too low to have forced the re-centring

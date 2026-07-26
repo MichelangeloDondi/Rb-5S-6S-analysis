@@ -314,7 +314,7 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             APPARATUS.md (hardware of record + provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
             PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
-            (the timestamp audit: frozen predictions, results, addenda 1-15)
+            (the timestamp audit: frozen predictions, results, addenda 1-18)
 ```
 
 ## Conventions

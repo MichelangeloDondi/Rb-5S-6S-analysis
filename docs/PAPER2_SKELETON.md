@@ -89,7 +89,7 @@ atoms.
 
 ## III. Method transplanted (the Paper-1 pipeline applied unchanged)
 
-- The Paper-1 pipeline (M0–M16) ingests ONF traces **unchanged** — the same
+- The Paper-1 pipeline (M0–M17) ingests ONF traces **unchanged** — the same
   ruler/axis, noise model, composite lineshape fit, moment/bounds machinery.
 - **In-fibre thermometry from the moments.** The drift-immune centred moments are
   a transit/temperature readout: transit ∝ v̄/w, so the fitted width and moments

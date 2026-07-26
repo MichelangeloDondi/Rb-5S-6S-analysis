@@ -42,7 +42,7 @@
 
 ## 7. Where this can go next
 
-*Archival: done conditional on $w_0$.* Every archival module (M0–M8) is built,
+*Archival: done conditional on $w_0$.* Every archival module (M0–M17) is built,
 tested, and reported in [§5 — What we found (2025 archive)](07_what_we_found.md) — collisional bound + isotope test, laser-epoch
 bound, power/ramp-law predictions, trapping, and the cusp model-form study.
 What is left is not more archival analysis but the measurements the 2025 data

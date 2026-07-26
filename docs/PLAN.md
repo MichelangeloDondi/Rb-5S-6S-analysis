@@ -78,7 +78,7 @@ the reviewer's structure applies verbatim — σ_laser genuinely global.
 
 **M7 — Amplitudes vs density.** Peak amplitudes across T per peak; ratios against Nieddu's same-channel baseline; radiation-trapping rollover curve (with M1's Fano trend as corroboration).
 
-**M8 — Outputs.** Per-module CSV/JSON + figures, provenance-tagged; final table with stat/syst split; comparison appendix vs rescaled old-pipeline trends (external check only).
+**M8 (pipeline stage) — Outputs.** (Distinct from the analysis module M8 = model-form, Voigt vs Lehmann cusp; this section is the older pipeline-stage numbering.) Per-module CSV/JSON + figures, provenance-tagged; final table with stat/syst split; comparison appendix vs rescaled old-pipeline trends (external check only).
 
 ## 4. Non-goals (archival)
 

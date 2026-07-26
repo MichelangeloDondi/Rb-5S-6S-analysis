@@ -333,8 +333,8 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
 
 ## 8. The 2024–2026 landscape (Paper-1 positioning + future-transition frontier)
 
-Source sweep: the local literature-intake landscape note (untracked) +
-`RECENT_LITERATURE_2023-2026.md`. Options for the tunable Ti:Sapph:
+Source sweep: the local literature-intake landscape note (untracked, a `RECENT_LITERATURE`
+working file not part of the repo). Options for the tunable Ti:Sapph:
 `docs/FUTURE_TRANSITIONS_titsapph.md`. **DOI note:** the new APS "coden" DOIs
 (e.g. 10.1103/25md-vv43) need a publisher check; arXiv IDs below are the reliable
 handles.
