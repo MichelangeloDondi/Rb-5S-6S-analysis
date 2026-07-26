@@ -270,6 +270,15 @@ before it had none. **ENVELOPE, and scalar only**: the vector and tensor terms
 near the 6S–5P lines need their own treatment before anyone designs a trap,
 and none of the three has been measured.
 
+Worth one line on where they landed, since it was not designed for: **two of the
+three sit inside the telecom O-band** (1260–1360 nm, ITU) — 1287.9 and
+1339.6 nm — so a trap at either could in principle be built from datacom-grade
+diodes, which are cheap, fibre-coupled by default and available space-qualified.
+The caveat is real though: the O-band has no erbium amplifier, so reaching trap
+power there is harder than in the C-band. Recorded as an observation about the
+numbers, not a design: they remain unvalidated, scalar-only envelopes, and the
+band edges are an external convention rather than anything this repo computes.
+
 **The method outlives the line, and the gap it fills is a real one.** In any
 structured field the light shift is not one number but a distribution over
 where the atoms sit — and because a two-photon signal goes as intensity
