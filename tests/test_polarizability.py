@@ -43,6 +43,68 @@ def test_delta_alpha_993_magnitude_matches_orson():
     assert da < 0.0, "sign finding: alpha_6S(993) < alpha_5S(993) (blue shift)"
 
 
+def test_the_993_sign_and_its_margin():
+    """The sign disagreement with Orson 2021 is the item going to external
+    theorists, so both halves of the claim are pinned here -- including the
+    half that is NOT robust.
+
+    alpha_5S(993) is unanimous: 993 nm is red of every strong 5S line, so every
+    term is positive and no single-line revision can flip it. That is asserted
+    directly.
+
+    alpha_6S(993) is NOT unanimous -- it is a partial cancellation between the
+    upward 6S-6P group (~-846) and the downward 6S-5P cascade (~+623), netting
+    about -312. Its sign therefore has a finite margin, and the margin itself
+    is the interesting quantity for the correspondence: it says the dispute
+    lives in the 6P-vs-5P matrix-element balance. Guarded so neither the sign
+    nor the margin can drift unnoticed.
+    """
+    from rb5s6s import polarizability as P
+    a5, a6 = alpha_5s(993.0), alpha_6s(993.0)
+    assert a5 > 0 > a6, (a5, a6)
+
+    # 5S: unanimous -- scaling ANY single line by +-50% must leave it positive
+    for i in range(len(P.LINES_5S)):
+        for k in (0.5, 1.5):
+            bumped = [list(t) for t in P.LINES_5S]
+            bumped[i][1] *= k
+            saved = P.LINES_5S[:]
+            P.LINES_5S = [tuple(t) for t in bumped]
+            try:
+                assert alpha_5s(993.0) > 0, (i, k)
+            finally:
+                P.LINES_5S = saved
+
+    # 6S: a cancellation. Pin the margin rather than pretend it is unanimous --
+    # the two cascade lines are the ones that can flip it, and they need large
+    # revisions to do so (a few percent is the plausible matrix-element error).
+    def flip_factor(i):
+        saved = P.LINES_6S[:]
+        lo, hi = 1.0, 4.0
+        for _ in range(40):
+            mid = 0.5 * (lo + hi)
+            bumped = [list(t) for t in saved]
+            bumped[i][1] *= mid
+            P.LINES_6S = [tuple(t) for t in bumped]
+            try:
+                v = alpha_6s(993.0)
+            finally:
+                P.LINES_6S = saved
+            if v >= 0:
+                hi = mid
+            else:
+                lo = mid
+        return 0.5 * (lo + hi)
+
+    # index the two downward 6S->5P cascade lines by their level energies
+    cascade = [i for i, (e, _, _) in enumerate(P.LINES_6S) if e < P.E_6S_CM]
+    assert cascade, "no downward 6S->5P lines found"
+    factors = sorted(flip_factor(i) for i in cascade)
+    # the easiest flip needs a >25% strength revision; if this ever drops below
+    # that, the sign has become genuinely fragile and the claim must be requalified
+    assert factors[0] > 1.25, factors
+
+
 def test_magic_crossings_exist_and_trap():
     magic = magic_wavelengths(950.0, 1500.0)
     lams = [m[0] for m in magic]

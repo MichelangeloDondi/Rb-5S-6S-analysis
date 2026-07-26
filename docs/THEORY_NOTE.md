@@ -239,27 +239,36 @@ null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
 Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
 check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 
-> **Why the sign is not delicate.** Naming one dominant coupling invites the
-> reply "so your 6S–6P matrix element is off." It would not help. At 993 nm the
-> photon (10070 cm⁻¹) sits *above* **every** strong 6S transition and *below*
-> **every** strong 5S one, so each state's sign is set unanimously rather than
-> by a near-cancellation. Ranking the terms at 993 nm (arbitrary common units):
+> **Where the sign actually comes from — and how much margin it has.** The two
+> states are not alike here, and only one of them is robust.
 >
-> | state | transition | λ | detuning | contribution |
-> |---|---|---|---|---|
-> | 6S | 6S–6P | 2732 nm | blue | −0.0155 |
-> | 6S | 6S–5P | 1367 nm | blue | −0.0112 |
-> | 6S | 6S–6P | 2791 nm | blue | −0.0076 |
-> | 6S | 6S–5P | 1324 nm | blue | −0.0059 |
-> | 5S | D2 | 780 nm | red | **+**0.0146 |
-> | 5S | D1 | 795 nm | red | **+**0.0079 |
+> $\alpha_{5S}(993)=+834$ a.u. is **unanimous**: 993 nm is red of every strong
+> 5S line, so every term is positive (D2 $+533$, D1 $+290$, rest $<+2$). No
+> matrix-element revision can make it negative.
 >
-> Every 6S term is negative and every 5S term positive, giving
-> $\alpha_{5S}(993)=+834$ and $\alpha_{6S}(993)=-312$ a.u. (both stored in
-> `results/polarizability.csv`). Flipping $\Delta\alpha$ would require moving a
-> *resonance* across 993 nm, not reweighting a matrix element — 993 nm lies in
-> the gap between the 6S–5P cascade at 1324/1367 nm and the 5S D lines at
-> 780/795 nm, and that ordering is spectroscopically settled. — and
+> $\alpha_{6S}(993)=-312$ a.u. is a **partial cancellation**, and this is the
+> honest weak point:
+>
+> | 6S transition | λ | direction | contribution (a.u.) |
+> |---|---|---|---|
+> | 6S–6P | 2732 nm | upward | **−566** |
+> | 6S–5P | 1367 nm | downward | **+409** |
+> | 6S–6P | 2791 nm | upward | **−280** |
+> | 6S–5P | 1324 nm | downward | **+214** |
+> | | | **net** | **−312** |
+>
+> The upward 6P group ($-846$) and the downward 5P cascade ($+623$) very nearly
+> cancel; the negative total survives by about 27% of the larger group. So the
+> sign *is* sensitive to the relative strengths of those two groups: raising the
+> 6S–5P (1367 nm) strength by **33%**, or lowering the 6S–6P (2732 nm) strength
+> by 95%, drives $\alpha_{6S}$ through zero.
+>
+> That makes the disagreement with Orson a **specific, answerable question**
+> rather than a bare contradiction: it lives in the balance between the
+> 6S–6P (2.7 µm) and 6S–5P (1.3 µm) reduced matrix elements, not in the overall
+> method. Both are stored (`alpha_5s_993`, `alpha_6s_993` in
+> `results/polarizability.csv`) and the margins are regression-guarded
+> (`test_the_993_sign_and_its_margin`). — and
 since Orson's own AC-Stark measurement was a *null* at 6 MHz resolution, the sign
 was never set by experiment, so this is a theory-vs-theory question that a
 fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle
