@@ -315,15 +315,33 @@ environment takes away.
 An earlier version of this paragraph said the width "is what nobody is
 measuring". That is too strong and has been withdrawn: the audit surfaced two
 prior treatments that keep the distribution and read an asymmetric line from
-it — one in a focused free-space beam, one in a hollow-core fibre, both
-pre-2015 (see `LITERATURE.md`; neither is held here yet, so neither is cited
-by name in this document until read). Keeping the distribution rather than its
-mean is therefore **not** new.
+it, both pre-2015. [Slepkov 2010](lit/slepkov2010.md) is now read here and
+says it plainly: simulating a Lorentzian saturated-absorption peak through a
+Gaussian-core guided mode, "the nonuniformity of the core mode is also seen to
+broaden and to steepen the line toward higher frequencies", and the measured
+shifts are "well fit by the simulated shift of a nonuniform Gaussian-guided
+mode" in preference to a flat-top model. And
+[Wall 2014](lit/wall2014.md), now read, goes further than the audit reported:
+exciting helium Rydberg states in a converging beam, atoms far from the focus
+"experience a smaller range of ac Stark shifts, causing the overall signal from
+these atoms to 'bunch up' close to the unperturbed transition frequency", while
+those near the focus spread out — giving "a spectral line with a maximum close
+to the unperturbed transition frequency, and a long tail towards higher
+frequencies". That is the density-of-states argument behind a ramp-shaped
+weight, and it is **single-colour two-photon**, so even the I² intensity
+weighting is not new.
 
-What the audit did not find, and what this analysis actually adds, is the
-conjunction: a **closed-form** weight — the triangular law from the I²
-two-photon intensity dependence, with an analytically calculable asymmetry —
-used to recover the shift **when the frequency reference is unusable**. That
+Keeping the distribution rather than its mean is therefore **not** new, and
+neither is the I² weighting on its own.
+
+What neither precedent contains — checked in both PDFs rather than inferred —
+is a **closed form**. Both reproduce their lineshape by numerical ensemble
+averaging over the beam, describe the asymmetry qualitatively, and keep the
+frequency axis intact; neither writes an analytic weight with a calculable
+asymmetry coefficient, and neither inverts the lineshape to recover the shift.
+So what this analysis adds is the conjunction: the **triangular law in closed
+form**, its asymmetry calculable rather than simulated, used to recover the
+coefficient **when the frequency reference is unusable**. That
 is the sentence the paper should claim, and the precedents should be cited up
 front rather than discovered by a referee.
 
@@ -334,7 +352,18 @@ that it has yet beaten anything.
 
 **And one small completion.** Self-broadening coefficients are published for
 the 5D and 7S states; 6S is the missing entry. A measured β_self(6S) closes
-that series. This is the most modest item on the page and is listed as such —
+that series.
+
+The expected size now has an upper anchor rather than resting on the 7S
+analogy alone. [Weller 2011](lit/weller2011.md) measures the Rb **D1**
+self-broadening coefficient at β/2π = (0.69 ± 0.04)×10⁻⁷ Hz cm³ — **69 kHz per
+10¹² cm⁻³**. D1 is the *resonant* dipole-dipole case, the largest such
+mechanism, because its two states are dipole-coupled to each other. 5S–6S
+cannot work that way: both states are S, so there is no resonant dipole
+coupling and the interaction is van der Waals, which should sit well below
+that figure. So 69 kHz is a ceiling the 6S coefficient should fall far
+under — consistent with the ~kHz expectation, and it makes the archival bound
+of 0.2–0.4 MHz loose by a factor one can now name rather than guess. This is the most modest item on the page and is listed as such —
 but it is also the one the archive already has the design for, needing only the
 higher-density points of §4.
 

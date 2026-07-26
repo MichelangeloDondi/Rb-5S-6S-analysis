@@ -13,7 +13,7 @@ pages: 513
 year: 2025
 doi: 10.3390/photonics12050513
 arxiv: null
-pdf: PDF_papers/photonics-12-00513-v2.pdf
+pdf: PDF_papers/Bandi_2025_Rb-two-photon-vapor-cell-clock-review.pdf
 held: true
 status: VERIFIED
 routing: []

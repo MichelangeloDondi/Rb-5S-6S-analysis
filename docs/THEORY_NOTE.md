@@ -239,6 +239,30 @@ null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
 Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
 check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 
+> **Convention table — read this before comparing any α with the literature.**
+> An external audit (2026-07-26) proposed that the whole Orson disagreement was
+> a convention artifact. It is not — but a careful reader did reach that
+> conclusion from the published material, so every definition is stated
+> explicitly here:
+>
+> | symbol | definition here | value at 993 nm |
+> |---|---|---|
+> | $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | $+832$, $-312$ a.u. |
+> | $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. |
+> | $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
+> | level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
+> | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
+>
+> The last row is the point: **both conventions give the same formula**, so the
+> algebra is not in dispute. Orson prints $\alpha_{56}=-1093$, hence a *red*
+> transition shift; this work computes $\Delta\alpha=-1145$, i.e.
+> $\alpha_{56}=+1145$, hence a *blue* one. Same equation, opposite input, and
+> the two differ by ~5% in magnitude with opposite sign — which is why the
+> resemblance of $1093$ to $1145$ is a coincidence of magnitude and not a
+> partial agreement.
+>
+> Every archival result uses $|\Delta\alpha|$ and is unaffected either way.
+>
 > **Where the sign actually comes from — and how much margin it has.** The two
 > states are not alike here, and only one of them is robust.
 >
