@@ -279,8 +279,7 @@ unusable.
 What makes this worth saying is how the neighbouring field handles the same
 problem. On the 778 nm 5S→5D line the AC-Stark shift is *the* limiting
 systematic — [Ahern 2025](lit/ahern2025.md) is explicitly light-shift-limited
-at 6×10⁻¹⁴/√τ, [Bandi 2025](lit/bandi2025.md)'s review says the same of the
-field — and the effort goes into suppressing it: shift cancellation
+at 6×10⁻¹⁴/√τ — and the effort across the field goes into suppressing it: shift cancellation
 ([Gerginov 2018](lit/gerginov2018.md)), active power modulation at ×1000
 (Yudin 2020; [Andeweg 2026](lit/andeweg2026.md)), magic
 wavelengths ([Hamilton 2023](lit/hamilton2023.md)). Every one of those

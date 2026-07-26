@@ -325,3 +325,44 @@ def test_no_process_language_in_lit_notes(key):
     bad = [f"{key}.md:{i}: {l.strip()[:100]}"
            for i, l in enumerate(_lit_lines(key), 1) if pat.search(l)]
     assert not bad, "process language in a literature note:\n  " + "\n  ".join(bad)
+
+
+def test_narrative_docs_do_not_argue_from_unverified_papers():
+    """A REPORTED note is one nobody in this repo has actually read.
+
+    Cataloguing such a paper is fine -- that is what LITERATURE.md and
+    LITERATURE_INDEX.md are for. Citing it in a document that ARGUES is not:
+    BIG_PICTURE once carried "[Bandi 2025]'s review says the same of the
+    field", attributing a specific finding to a paper held: false,
+    status: REPORTED. The claim happened to be plausible, which is exactly why
+    it survived review by eye.
+    """
+    import re
+    from pathlib import Path
+
+    reported = set()
+    for note in (ROOT / "docs" / "lit").glob("*.md"):
+        t = note.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r"^status:\s*(\S+)", t, re.M)
+        if m and m.group(1).strip() == "REPORTED":
+            reported.add(note.stem)
+    if not reported:
+        return
+
+    CATALOGUES = {"docs/LITERATURE.md", "docs/LITERATURE_INDEX.md"}
+    import subprocess
+    tracked = subprocess.run(["git", "ls-files", "docs/*.md", "README.md"],
+                             cwd=ROOT, capture_output=True, text=True).stdout.split()
+    hits = []
+    for rel in tracked:
+        if rel in CATALOGUES or "/lit/" in rel:
+            continue
+        for i, line in enumerate(
+                (ROOT / rel).read_text(encoding="utf-8",
+                                       errors="replace").split("\n"), 1):
+            for key in re.findall(r"\(lit/([a-z0-9]+)\.md\)", line):
+                if key in reported:
+                    hits.append(f"{rel}:{i}: cites {key} (status REPORTED)")
+    assert not hits, (
+        "a narrative document argues from a paper nobody here has read; "
+        "either verify the source or drop the claim:\n  " + "\n  ".join(hits))
