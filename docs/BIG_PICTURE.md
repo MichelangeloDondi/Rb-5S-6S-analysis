@@ -307,9 +307,25 @@ up and discarded. Nulling a mean leaves the *spread*, and a spread over atoms
 does not average away: it dephases them. Whenever atoms are held long enough
 for that to matter — an evanescent field around a nanofibre (§5), an optical
 lattice, a hollow-core fibre mode — what limits coherence is the width of the
-shift distribution, not its centre, and that width is what nobody is
-measuring. This method reads it, from lineshape, without needing the
-absolute frequency that a drifting or structured environment takes away.
+shift distribution, not its centre. This method reads that width from
+lineshape, without needing the absolute frequency a drifting or structured
+environment takes away.
+
+**The narrower claim, after an adversarial literature audit (2026-07-26).**
+An earlier version of this paragraph said the width "is what nobody is
+measuring". That is too strong and has been withdrawn: the audit surfaced two
+prior treatments that keep the distribution and read an asymmetric line from
+it — one in a focused free-space beam, one in a hollow-core fibre, both
+pre-2015 (see `LITERATURE.md`; neither is held here yet, so neither is cited
+by name in this document until read). Keeping the distribution rather than its
+mean is therefore **not** new.
+
+What the audit did not find, and what this analysis actually adds, is the
+conjunction: a **closed-form** weight — the triangular law from the I²
+two-photon intensity dependence, with an analytically calculable asymmetry —
+used to recover the shift **when the frequency reference is unusable**. That
+is the sentence the paper should claim, and the precedents should be cited up
+front rather than discovered by a referee.
 
 The cell is simply where that is cheap to validate, which is why it was built
 here first. **What is demonstrated so far is a bound, on one line, in one
