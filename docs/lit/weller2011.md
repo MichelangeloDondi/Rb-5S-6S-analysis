@@ -10,6 +10,7 @@ authors:
 title: 'Absolute absorption on rubidium D1 line: including resonant dipole-dipole interactions'
 journal: J. Phys. B At. Mol. Opt. Phys.
 volume: 44
+number: 19
 pages: 195006
 year: 2011
 doi: 10.1088/0953-4075/44/19/195006
