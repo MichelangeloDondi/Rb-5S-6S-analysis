@@ -237,7 +237,29 @@ is **blue**, not red. Every archival result is sign-immune (C3c is a symmetric
 null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
 *pull direction* and the ramp's stated side depend on it. The discrepancy with
 Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
-check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm) — and
+check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
+
+> **Why the sign is not delicate.** Naming one dominant coupling invites the
+> reply "so your 6S–6P matrix element is off." It would not help. At 993 nm the
+> photon (10070 cm⁻¹) sits *above* **every** strong 6S transition and *below*
+> **every** strong 5S one, so each state's sign is set unanimously rather than
+> by a near-cancellation. Ranking the terms at 993 nm (arbitrary common units):
+>
+> | state | transition | λ | detuning | contribution |
+> |---|---|---|---|---|
+> | 6S | 6S–6P | 2732 nm | blue | −0.0155 |
+> | 6S | 6S–5P | 1367 nm | blue | −0.0112 |
+> | 6S | 6S–6P | 2791 nm | blue | −0.0076 |
+> | 6S | 6S–5P | 1324 nm | blue | −0.0059 |
+> | 5S | D2 | 780 nm | red | **+**0.0146 |
+> | 5S | D1 | 795 nm | red | **+**0.0079 |
+>
+> Every 6S term is negative and every 5S term positive, giving
+> $\alpha_{5S}(993)=+834$ and $\alpha_{6S}(993)=-312$ a.u. (both stored in
+> `results/polarizability.csv`). Flipping $\Delta\alpha$ would require moving a
+> *resonance* across 993 nm, not reweighting a matrix element — 993 nm lies in
+> the gap between the 6S–5P cascade at 1324/1367 nm and the 5S D lines at
+> 780/795 nm, and that ordering is spectroscopically settled. — and
 since Orson's own AC-Stark measurement was a *null* at 6 MHz resolution, the sign
 was never set by experiment, so this is a theory-vs-theory question that a
 fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle

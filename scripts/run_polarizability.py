@@ -92,6 +92,17 @@ def main() -> int:
                     "au; tail calibrated to the Safronova-group 5167(22)"])
         w.writerow(["tuneout_5s", "model", f"{t0:.4f}",
                     "nm; validation vs measured 790.03235(3) (Leonard 2015)"])
+        # The two states SEPARATELY at 993 nm. These carry the sign argument:
+        # 993 nm lies in the gap between the 6S->5P cascade (1324/1367 nm) and
+        # the 5S D lines (780/795 nm), so it is BLUE of 6S's nearest strong
+        # lines and RED of 5S's. Opposite detuning signs => opposite
+        # polarizability signs => the difference cannot come out positive,
+        # whatever the matrix elements do.
+        w.writerow(["alpha_5s_993", "model", f"{alpha_5s(993.0):.1f}",
+                    "au; POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm)"])
+        w.writerow(["alpha_6s_993", "model", f"{alpha_6s(993.0):.1f}",
+                    "au; NEGATIVE -- 993 nm is blue of the 6S->5P cascade "
+                    "(1324/1367 nm), the dominant 6S term"])
         w.writerow(["delta_alpha_993", "model", f"{da993:.0f}",
                     f"au (alpha_6S - alpha_5S); band {b['lo']:.0f}..{b['hi']:.0f}; "
                     f"|value| within ~5% of Orson 2021's 1093 but OPPOSITE sign "

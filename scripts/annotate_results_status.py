@@ -122,6 +122,8 @@ QUANTITY_STATUS = {
         # numbers (magic wavelengths, alpha_6S(1064)) are model estimates
         "alpha_5s_static": "DIAGNOSTIC", "alpha_6s_static": "DIAGNOSTIC",
         "tuneout_5s": "DIAGNOSTIC", "delta_alpha_993": "DIAGNOSTIC",
+        # the two states separately at 993 nm -- the evidence behind the sign
+        "alpha_5s_993": "DIAGNOSTIC", "alpha_6s_993": "DIAGNOSTIC",
         "alpha_6s_1064": "ENVELOPE", "magic_5s6s": "ENVELOPE",
     },
     "sharing_bic.csv": {
