@@ -241,9 +241,10 @@ documented draw of the whole class ([Martin 2018](lit/martin2018.md);
 advantage, and the honest comparison should be stated plainly rather than
 implied away: the 6S₁/₂ upper state lives 45.57 ns
 ([Gomez 2005](lit/gomez2005.md)), giving the 3.49 MHz natural width every fit
-here carries, whereas 5D₅/₂ is far longer-lived and its line is
-correspondingly narrower. On natural quality factor alone, 993 nm starts
-*behind* the line the compact-clock community already uses — and that
+here carries, whereas 5D₅/₂ is far longer-lived: [Bandi 2025](lit/bandi2025.md)
+quotes the 5S→5D two-photon working linewidth as **≈330 kHz**, about an order of
+magnitude narrower. On natural quality factor alone, 993 nm starts *behind* the
+line the compact-clock community already uses — and that
 community is at 6×10⁻¹⁴/√τ ([Ahern 2025](lit/ahern2025.md)). Nothing in this
 archive suggests 993 nm would overtake it, and this page should not be read as
 claiming so.
@@ -279,10 +280,12 @@ unusable.
 What makes this worth saying is how the neighbouring field handles the same
 problem. On the 778 nm 5S→5D line the AC-Stark shift is *the* limiting
 systematic — [Ahern 2025](lit/ahern2025.md) is explicitly light-shift-limited
-at 6×10⁻¹⁴/√τ, and [Bandi 2025](lit/bandi2025.md)'s review names it first among
-the medium-to-long-term limiters (alongside the temperature-induced shift and
-laser drift — it does not rank one above the others) against a field target of
-better than 10⁻¹⁵ at a day. The effort goes into suppressing it: shift cancellation
+at 6×10⁻¹⁴/√τ, and [Bandi 2025](lit/bandi2025.md)'s review states that light-shift
+variations "and vapor-cell temperature variations predominantly limit
+performance for medium- to long-term averaging", against a field target of
+better than 10⁻¹⁵ at a day. Note *both* halves of that pair: the light shift is
+what the shape method reads, and the cell-temperature term is the
+density-coefficient territory this archive bounds. The effort goes into suppressing it: shift cancellation
 ([Gerginov 2018](lit/gerginov2018.md)), active power modulation at ×1000
 (Yudin 2020; [Andeweg 2026](lit/andeweg2026.md)), magic
 wavelengths ([Hamilton 2023](lit/hamilton2023.md)). Every one of those

@@ -13,13 +13,14 @@ pages: 513
 year: 2025
 doi: 10.3390/photonics12050513
 arxiv: null
-pdf: null
-held: false
+pdf: PDF_papers/photonics-12-00513-v2.pdf
+held: true
 status: VERIFIED
 routing: []
 verify_flags:
-  - ABSTRACT-LEVEL ONLY -- full text not read; MDPI and preprints.org both 403 to
-    automated fetch. Do not attribute anything beyond the abstract quoted below.
+  - 'Quotes Hamilton''s 5S-5D magic wavelength as 778.179(5) nm; Hamilton 2023
+    itself says 776.179(5) nm in its abstract and conclusions. Transposition in
+    the review -- cite Hamilton directly, not this.'
 verified_date: null
 summary: >
   Landscape/systematics review for the Rb two-photon clock. Names the AC Stark
@@ -36,27 +37,43 @@ MDPI open access (not yet held as PDF; MDPI and preprints.org both refuse
 automated fetch -- download by hand from the DOI page). The single best
 landscape/systematics-benchmark review for the Rb two-photon clock.
 
-**Abstract, verbatim (retrieved 2026-07-26 via the NSF public-access record):**
+**Full text read 2026-07-26** (44 pp; PDF supplied by the experimenter after
+MDPI and preprints.org both refused automated fetch).
 
-> Two-photon vapor cell-based optical clocks are strong candidates for
-> next-generation portable atomic standards, offering simplicity, compactness,
-> and high performance. Their narrow clock transitions with counter-propagating
-> beams enable first-order Doppler-free operation. However, systematic
-> perturbations such as the AC Stark shift, temperature-induced shift, and
-> drifts resulting from the laser system pose challenges cause instabilities to
-> medium- to long-term performance. This paper provides a comprehensive
-> overview of Rb two-photon vapor cell optical standards, focusing on the
-> long-term performance-limiting effects and potential mitigation strategies,
-> aiming for clock stabilities better than 1 x 10^-15 over the averaging time of
-> a day and beyond.
+**What it actually ranks.** The abstract lists three limiters without ordering
+them, but the body does order them:
 
-**What this does and does not license.** It names the AC Stark shift FIRST among
-the limiters, but it does *not* single it out as dominant -- the
-temperature-induced shift and laser drift are listed alongside it. Any citation
-saying "the review identifies the light shift as THE limiting systematic"
-overstates it (that claim was written and withdrawn on 2026-07-26). What the
-abstract does support, and what is more useful here, is that the
-**temperature-induced shift sits among the leading long-term limiters** -- the
-density-coefficient territory this archive bounds -- and that the field's target
-is better than 1e-15 at one day. The abstract mentions neither 993 nm nor magic
-wavelengths.
+> "light shift variations (stemming from fluctuations in the laser optical power
+> that probe the rubidium transition) [117,120,136,157] and vapor-cell
+> temperature variations [136] **predominantly limit performance for medium- to
+> long-term averaging**."
+
+So the pair -- light shift AND cell temperature -- is named as predominant
+together, above laser drift and the rest. Both halves matter here: the light
+shift is what the ramp method reads, and the cell-temperature term is the
+density-coefficient territory this archive bounds.
+
+**Numbers worth having.** The 5S-5D two-photon working linewidth is quoted as
+**~330 kHz**, against the 3.49 MHz natural width of 5S-6S -- the 778 nm line is
+roughly an order of magnitude narrower, which is the quantitative form of why
+993 nm is not a better clock line. Field target: better than 1e-15 at one day.
+Reported temperature coefficient -1.09(4)e-12 per K; He collisional shift
+0.55e-8.
+
+**A transcription error to route around.** The review reports Hamilton's 5S-5D
+magic wavelength as "an experimental magic wavelength of 778.179(5) nm and a
+theoretical magic wavelength of 776.21 nm". Hamilton 2023 (held here) says
+**776.179(5) nm** experimental and 776.21 nm theoretical, repeatedly, in both
+abstract and conclusions -- the review has transposed a digit. `constants.py`
+carries 776.179, which is correct. Hamilton also reports a SECOND magic
+wavelength at 790.26 nm, close to the 5S tune-out.
+
+**Coverage gap, confirmed by search.** 5S-6S / 993 nm appears nowhere in the
+body -- the only hits are reference titles (Nez 1993, a 5S-5D3/2 paper). The
+review is a 5S-5D landscape; it does not touch this line.
+
+**Citation scope.** "The review identifies light shift and cell temperature as
+predominantly limiting medium-to-long-term performance" is supported verbatim.
+"The review identifies the light shift as THE limiting systematic" is not --
+that claim was written and withdrawn on 2026-07-26, before the full text was
+available.
