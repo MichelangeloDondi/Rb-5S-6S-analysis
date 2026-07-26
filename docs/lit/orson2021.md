@@ -67,8 +67,17 @@ dominant 6S–6P lines are at 2.7/2.8 µm, so 993 nm is far blue of them and
 those terms are negative. Our −312 is the sum of that negative upward group
 (−947) and the positive downward 5P cascade (+623).
 
-The audit's own supporting evidence points the same way: Safronova 2004's
-all-order 6S–5P elements (4.119 / 6.013 a.u.) and the Gomez 2005 / Arora–Sahoo
-2012 lifetimes (45.57(17) / 45.44(8) ns) pin the cascade term at the
-sub-percent level, leaving no room for the ~33% revision a flip would need.
+**The cascade term is pinned, and this is now first-hand rather than relayed.**
+The downward 6S–5P contribution is what would have to move to flip the sign,
+and three independent determinations agree on it to well under a percent:
+
+| transition | this repo | [Safronova 2004](safronova2004.md) all-order | [Arora 2012](arora2012.md) CC | spread |
+|---|---|---|---|---|
+| 6s–5p₁/₂ | 4.146 | 4.119 | 4.144(3) | 0.66% |
+| 6s–5p₃/₂ | 6.048 | 6.013 | 6.048(5) | 0.58% |
+
+A sign flip needs a **33%** revision of the 6s–5p₃/₂ strength — **50× the
+disagreement between three state-of-the-art calculations** — and the lifetime
+those elements imply, 45.44(8) ns, already matches the Gomez 2005 measurement
+of 45.57(17) ns to 0.29%. The atomic data does not permit the flip.
 
