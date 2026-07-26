@@ -1,8 +1,9 @@
 # The big picture
 
 *Where this project sits: what we are trying to do, what already exists, what
-the 2025 dataset delivered, and what new measurements — in the vapour cell or
-at an optical nanofibre — would each add. Everything quantitative below is in
+the 2025 dataset delivered, what new measurements — in the vapour cell or at
+an optical nanofibre — would each add, and (§7) what the line would be good
+for once characterised. Everything quantitative below is in
 [`RESULTS.md`](RESULTS.md) with its provenance; this page is the map.*
 
 ---
@@ -220,3 +221,55 @@ lineshapes *interpretable*.
 
 Each arrow is independently valuable; nothing below the archive is required
 for the archive's own results to stand.
+
+## 7. What any of it would be good for
+
+Sections 4–6 say what the *next measurements* would add. This one says why the
+line is worth characterising at all — stated at the size the evidence
+supports, since two of the three items below are still calculations rather
+than results.
+
+**A second two-photon reference line, in a convenient place.** The 778 nm
+5S→5D two-photon transition is an established optical frequency reference, and
+the reason is structural: two-photon Doppler-free excitation kills the
+first-order Doppler width without a beam-geometry trick, so the line is narrow
+and the apparatus is a cell, a laser and a detector. 993 nm 5S→6S has the same
+structure and a *narrower* natural width (3.49 MHz), yet its environmental
+coefficients — how it moves with density and with intensity — have only ever
+been bounded, and coarsely ([Orson 2021](lit/orson2021.md)'s nulls at ~6 MHz).
+Those coefficients are exactly what decides whether a line can carry a
+reference: they set how well the environment has to be controlled for a target
+stability. Measuring them is the gate, and it is the gate this program is at.
+
+**Magic wavelengths would let it be done on trapped atoms.** The awkwardness of
+a cell reference is that the atoms are hot, colliding and moving through the
+beam — the transit and collisional terms this archive spends its effort
+bounding. Trapping fixes that, but a trap normally shifts the very line you
+are measuring. A *magic* wavelength does not: both states shift equally, and
+the transition frequency is untouched. That is the trick behind lattice
+clocks (Sr at 813 nm). M16 computes the **first 5S–6S magic wavelengths** —
+≈ 1204 / 1288 / 1340 nm, all trapping (α > 0 for both states) — so the
+trapped-atom version of this measurement has candidate wavelengths where
+before it had none. **ENVELOPE, and scalar only**: the vector and tensor terms
+near the 6S–5P lines need their own treatment before anyone designs a trap,
+and none of the three has been measured.
+
+**The method outlives the line.** In any structured field the light shift is
+not one number but a distribution over where the atoms sit — and because a
+two-photon signal goes as intensity *squared*, that distribution has a closed
+form with a calculable asymmetry that survives in the line *shape* even when
+the absolute frequency is unusable. Nothing in that argument is specific to a
+vapour cell or to 993 nm. It applies wherever atoms sample an inhomogeneous
+intensity: an evanescent field around a nanofibre (§5), a lattice, a
+hollow-core fibre mode. The cell is where the method is cheap to validate,
+which is why it was built here first.
+
+**And one small completion.** Self-broadening coefficients are published for
+the 5D and 7S states; 6S is the missing entry. A measured β_self(6S) closes
+that series. This is the most modest item on the page and is listed as such —
+but it is also the one the archive already has the design for, needing only the
+higher-density points of §4.
+
+*Status, plainly: the reference-line case is a motivation, not a claim; the
+magic wavelengths are calculated and unvalidated; the method is demonstrated
+on this dataset as a bound. What has actually been delivered is in §3.*
