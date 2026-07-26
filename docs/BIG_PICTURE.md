@@ -254,15 +254,38 @@ before it had none. **ENVELOPE, and scalar only**: the vector and tensor terms
 near the 6S–5P lines need their own treatment before anyone designs a trap,
 and none of the three has been measured.
 
-**The method outlives the line.** In any structured field the light shift is
-not one number but a distribution over where the atoms sit — and because a
-two-photon signal goes as intensity *squared*, that distribution has a closed
-form with a calculable asymmetry that survives in the line *shape* even when
-the absolute frequency is unusable. Nothing in that argument is specific to a
-vapour cell or to 993 nm. It applies wherever atoms sample an inhomogeneous
-intensity: an evanescent field around a nanofibre (§5), a lattice, a
-hollow-core fibre mode. The cell is where the method is cheap to validate,
-which is why it was built here first.
+**The method outlives the line, and the gap it fills is a real one.** In any
+structured field the light shift is not one number but a distribution over
+where the atoms sit — and because a two-photon signal goes as intensity
+*squared*, that distribution has a closed form with a calculable asymmetry
+that survives in the line *shape* even when the absolute frequency is
+unusable.
+
+What makes this worth saying is how the neighbouring field handles the same
+problem. On the 778 nm 5S→5D line the AC-Stark shift is *the* limiting
+systematic — [Ahern 2025](lit/ahern2025.md) is explicitly light-shift-limited
+at 6×10⁻¹⁴/√τ, [Bandi 2025](lit/bandi2025.md)'s review says the same of the
+field — and the effort goes into suppressing it: shift cancellation
+([Gerginov 2018](lit/gerginov2018.md)), active power modulation at ×1000
+(Yudin 2020; [Andeweg 2026](lit/andeweg2026.md)), magic
+wavelengths ([Hamilton 2023](lit/hamilton2023.md)). Every one of those
+suppresses the **mean** shift.
+
+But the mean is not the distribution. [Hamilton 2023](lit/hamilton2023.md)
+builds the very same focus-average integral this analysis does and then
+collapses it to a single spatially-averaged number — the distribution is set
+up and discarded. Nulling a mean leaves the *spread*, and a spread over atoms
+does not average away: it dephases them. Whenever atoms are held long enough
+for that to matter — an evanescent field around a nanofibre (§5), an optical
+lattice, a hollow-core fibre mode — what limits coherence is the width of the
+shift distribution, not its centre, and that width is what nobody is
+measuring. This method reads it, from lineshape, without needing the
+absolute frequency that a drifting or structured environment takes away.
+
+The cell is simply where that is cheap to validate, which is why it was built
+here first. **What is demonstrated so far is a bound, on one line, in one
+geometry** — the claim is that the observable exists and is drift-immune, not
+that it has yet beaten anything.
 
 **And one small completion.** Self-broadening coefficients are published for
 the 5D and 7S states; 6S is the missing entry. A measured β_self(6S) closes
