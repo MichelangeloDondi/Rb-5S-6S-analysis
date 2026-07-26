@@ -429,9 +429,15 @@ def test_audit_summary_covers_the_latest_addendum():
     # Look for the summary TABLE CELL form, "| ... | addendum N |". Matching
     # loose prose would be satisfied by the table of contents, which names
     # every addendum by construction and so can never go stale.
+    # Slice at the FIRST "## Addendum" heading of any form. The first addendum
+    # in this report is unnumbered ("## Addendum, 2026-07-23"), so anchoring on
+    # "## Addendum 1," silently fell through to scanning the whole document --
+    # which happens to pass today only because no addendum-cell appears lower
+    # down, and would stop guarding the moment one did.
+    first = re.search(r"^## Addendum", text, re.M)
+    summary = text[:first.start()] if first else text
     cells = re.findall(r"\|\s*addend(?:um|a)\s*([\d\s,–-]+)(?:postscript)?\s*\|",
-                       text[:text.index("## Addendum 1,")] if "## Addendum 1," in text
-                       else text, re.I)
+                       summary, re.I)
     covered = {int(n) for c in cells for n in re.findall(r"\d+", c)}
     assert latest in covered, (
         f"addendum {latest} has no row in the one-page summary table "
