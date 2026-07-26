@@ -16,7 +16,7 @@ number: 2
 pages: 023417
 year: 2019
 doi: 10.1103/PhysRevA.100.023417
-arxiv: null
+arxiv: '1907.10805'
 pdf: PDF_papers/Martin_2019_Rb-778nm-two-photon-Stark-shifts-differential-polarizability.pdf
 held: true
 status: VERIFIED

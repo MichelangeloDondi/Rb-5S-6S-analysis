@@ -12,70 +12,106 @@ pages: 2163
 year: 1992
 doi: null
 arxiv: null
-pdf: null
-held: false
+pdf: PDF_papers/Camparo_1992_two-photon-ac-Stark-shift-stochastic-field-asymmetric-lineshape.pdf
+held: true
 status: VERIFIED
 routing: []
-verify_flags:
-  - 'ABSTRACT + INTRODUCTION ONLY, supplied by the experimenter 2026-07-26 (RG record). Identifier confirmed from the article header; DOI not located. Do not attribute beyond the abstract.'
+verify_flags: []
 verified_date: 2026-07-26
 summary: >
   Monte-Carlo study of the ac Stark shift of a TWO-PHOTON transition in a
-  stochastic field. In strong fields the fluctuating Stark shifts produce an
-  asymmetric line shape "in a fashion analogous to inhomogeneous broadening",
-  with a sublinear dependence of peak position on intensity.
-loci: []
+  stochastic field. Whether a distribution of shifts skews the line is set by
+  ADIABATICITY: slow (adiabatic) intensity fluctuations give an asymmetric line
+  whose peak moves sublinearly with intensity, while fast fluctuations average
+  to a symmetric line at the mean shift. The line's first moment tracks the
+  ensemble-average shift; its peak does not.
+loci:
+  - M19
+  - THEORY
 section: prior-art
 ---
 
 # camparo1992
 
-**Identifier confirmed 2026-07-26** from the article header supplied by the
-experimenter: J. Opt. Soc. Am. B **9**(12), 2163 (1992), Camparo (Aerospace
-Corp.) and Lambropoulos (USC), received 22 January 1992. The external audit
-named this as a third precedent without a verified reference; it is real.
+**Read in full 2026-07-26**, from the PDF supplied by the experimenter. This
+replaces an abstract-level entry that carried the action "obtain the PDF" —
+and the full text changes the reading in the programme's favour, while adding
+one objection the abstract did not contain.
 
-**The relevant sentence, verbatim from the abstract:** "In strong fields the
-fluctuating Stark shifts give rise to an **asymmetric resonance line shape in a
-fashion analogous to inhomogeneous broadening**. The line shape's peak position
-then has a **sublinear dependence** on the stochastic field's intensity."
+## What the abstract already gave
 
-**Where it sits relative to this programme -- and the difference is the point.**
-It is a two-photon transition whose ac Stark shift distribution produces an
-asymmetric line, so at that level of description it belongs with wall2014 and
-slepkov2010. But the distribution here is over a **stochastic field in time**
-(amplitude and frequency fluctuations of a model laser field, treated by Monte
-Carlo), not over **position in an inhomogeneous beam**. The mechanism, the
-independent variable, and the experimental control are all different: their
-asymmetry is set by the field's higher-order coherence functions, ours by the
-spatial intensity profile and the I^2 weighting.
+J. Opt. Soc. Am. B **9**(12), 2163 (1992), Camparo (Aerospace Corp.) and
+Lambropoulos (USC), received 22 January 1992, revised 7 April 1992. Verbatim:
+"In strong fields the fluctuating Stark shifts give rise to an **asymmetric
+resonance line shape in a fashion analogous to inhomogeneous broadening**. The
+line shape's peak position then has a **sublinear dependence** on the
+stochastic field's intensity."
 
-Two consequences worth carrying:
+## What only the full text gives — and it is the important part
 
-- **Cite it, but do not conflate it.** It is a genuine precedent for
-  "shift distribution -> asymmetric two-photon line", and a referee who knows
-  the light-shift literature will know it. Stating the distinction first is
-  cheaper than having it raised.
-- **It is also a caution about our own laser.** If field-amplitude noise alone
-  can skew a two-photon line sublinearly in intensity, then laser intensity
-  noise is a candidate systematic for any asymmetry measurement -- adjacent to,
-  but distinct from, the shot-noise skew already identified in C3c. Worth a
-  look before the ramp asymmetry is ever claimed as a detection.
+**The asymmetry is conditional on adiabaticity, and they say so explicitly.**
+Their Fig. 5 contrasts the same two-photon resonance at Ω₀ = 0.03 and Ω₀ = 30.
+The asymmetry appears in the adiabatic case, where the field's intensity varies
+slowly compared with the atomic response; in the fast-fluctuation case the atom
+samples the whole distribution within its response time and the line is
+symmetric. Verbatim on the weak-field side: "In weak fields for which the line
+shape is symmetric, the line shape peak and the first moment are equivalent.
+Consequently, the observed ac Stark shift displays a **linear** dependence on
+intensity."
 
-**A partial, honest bound on that caution, from the archive's own noise model.**
-M1 fits sigma^2 = a^2 + b*V + c*V^2, where the c term is multiplicative noise —
-variance proportional to signal squared, which is what large relative intensity
-fluctuations would produce. Across the 32 fitted conditions the BIC selects the
-c term in **1**, and there its fitted value is **negative** (-8.5e-4), which is
-unphysical for a variance contribution and marks it as a fitting artifact
-rather than a detection. So there is no multiplicative-noise signature in these
-data.
+Their explanation of the sublinearity is a moment argument: "If we consider
+that the line shape's **first moment should always be proportional to the
+average ac Stark shift** seen by the atoms... for the asymmetry to develop in
+the strong-field regime, the line shape's first moment must be larger (in an
+absolute-value sense) than the line shape's peak position."
 
-That is evidence, not proof, and the distinction matters: Camparo's mechanism
-is a fluctuating *shift* skewing the line, whereas c bounds a fluctuating
-*amplitude* inflating the variance. A laser with large intensity fluctuations
-should show both, so the absence of one argues against the other — weakly.
+## Why this is not a scoop, and where it does bite
 
-**ACTION: obtain the PDF.** Whether the shift-skew mechanism is bounded at the
-level this archive needs cannot be judged from an abstract, and the C3c
-asymmetry work is where it would bite.
+Not a scoop, for the reason the earlier entry already gave and the full text
+confirms: their distribution is over a **stochastic field in time**, ours over
+**position in a structured beam**. Theirs is Monte Carlo over a model field's
+coherence functions; ours is a closed form over a measured profile. Their
+asymmetry needs the strong-field/adiabatic regime; ours arises in the weak,
+unsaturated field purely from the I² weighting of a two-photon rate.
+
+**Two things it does bite on.**
+
+*First, it supplies a referee's objection to the ramp itself, and a sharp one.*
+If a distribution of shifts only skews a line when it is sampled adiabatically,
+then an atom **flying through** the beam — which sweeps its own shift from zero
+to the on-axis maximum and back within a transit time comparable to 1/Γ — might
+average the ramp away exactly as Camparo's fast fluctuations do. The composite
+model convolves a static ramp with a transit lineshape as though the two were
+independent, and this paper is the reason that cannot simply be asserted.
+**Checked, and it survives: M19 (`rb5s6s/ramp_transit.py`)** propagates the
+weak-excitation amplitude with the shift integrated along each trajectory, no
+quasi-static step, and recovers the static triangle's first two moments to
+~0.1% across S₀/transit-width from 0.09 to 7.6. The reason is a change of
+variables — impact parameter and v·t *are* the transverse plane — so motion
+re-labels which atom carries which shift without changing the distribution over
+shifts. This paper is what prompted the check; cite it where the check is
+reported.
+
+*Second, their sublinearity does not threaten the ramp law here, and the
+distinction is worth stating before a referee draws it the wrong way.* The
+archival prediction is a pull **linear** in S₀ and hence in power. Camparo's
+sublinear peak arises in the strong-field adiabatic regime through saturation
+between intensity spikes; in the weak-field regime they report the linear
+behaviour this programme predicts. Quote their own weak-field sentence rather
+than arguing the point.
+
+## The laser-noise caution, and the bound on it
+
+Retained from the earlier reading: if field-amplitude noise alone can skew a
+two-photon line, laser intensity noise is a candidate systematic for any
+asymmetry measurement. M1 fits σ² = a² + b·V + c·V², where c is the
+multiplicative (intensity-fluctuation) term. Across the 32 fitted conditions
+the BIC selects c in **1**, and there its value is **negative** (−8.5e−4),
+unphysical for a variance contribution and so a fitting artifact. No
+multiplicative-noise signature in these data.
+
+That remains evidence rather than proof, and the mismatch is the same one as
+before: Camparo's mechanism is a fluctuating *shift* skewing the line, while c
+bounds a fluctuating *amplitude* inflating the variance. What the full text
+adds is a reason the gap may matter less here — their skew needs the
+fluctuation to be slow compared with the atomic response.

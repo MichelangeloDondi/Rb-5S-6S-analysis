@@ -55,6 +55,64 @@ $\kappa_3=0$ — **exactly zero skew**. The skewness observable therefore exists
 *only because the two-photon rate goes as $I^2$*; that is the sharpest statement
 of what is specific here.
 
+### 2.1 Does the atoms' motion wash the ramp out? (M19)
+
+The derivation above is **quasi-static**: each atom sits at one intensity and
+carries one shift. Real atoms cross the beam, sweeping their own shift from
+zero to the on-axis maximum and back within a transit time (~0.2 µs at
+$w_0\approx 50$ µm) that is only a few times the
+natural response $1/\Gamma\approx 45$ ns. Camparo and Lambropoulos (JOSA B **9**, 2163 (1992)) show for
+a two-photon transition in a fluctuating field that this ratio decides the
+answer: slowly-varying intensity gives an asymmetric line, rapidly-varying
+intensity averages to a symmetric one at the mean shift. So the composite model
+convolving a static ramp with a transit lineshape needs a justification, not an
+assumption — the two factors describe the same atom crossing the same beam.
+
+**It survives, and the reason is a change of variables.** An atom's impact
+parameter $b$ and its displacement $vt$ along the flight direction *are* the
+transverse plane, and $\mathrm{d}b\mathrm{d}(vt)$ *is* the area element; a
+uniform-density ensemble weighted by crossing flux therefore samples exactly
+the spatial measure the static derivation integrates over. Motion re-labels
+which atom carries which shift without changing the distribution over shifts.
+
+Because that argument still assumes the atom's spectrum reflects the shifts it
+samples — the very quasi-static step at issue — **M19**
+(`rb5s6s/ramp_transit.py`) checks it without that assumption, propagating the
+weak-excitation amplitude with the phase integrated along each trajectory. The
+static triangle's first two moments are recovered to $\sim0.1$% across
+$S_0/\mathrm{transit\ FWHM}$ from $0.09$ to $7.6$ — from far inside the
+non-adiabatic regime to far inside the adiabatic one. The first-moment
+invariance is in fact exact for any modulation, since the mean of a power
+spectrum is the coupling-weighted mean instantaneous frequency; the second
+moment is the substantive check, and it is what licenses the convolution.
+
+**The real geometry adds two more complications, and the pull survives both.**
+The beam is retro-reflected, so it is a standing wave whose $\lambda/2$ fringes
+modulate the shift; and the atoms carry a thermal spread of speeds, not one
+speed.
+
+- *Standing wave.* The fringe modulates the **shift**, which follows the total
+  $|E_+ + E_-|^2$ over the full fringe period, but not the **coupling**: the
+  Doppler-free rate takes one photon from each counter-propagating beam, so it
+  goes as $I_+I_-$ and is $z$-uniform. M19 recovers the triangle in both
+  limits — fringes swept fast by an axial atom (~113 per transit, the
+  experiment's ~0.56 GHz against a ~5 MHz transit rate) and the frozen fringe
+  of a near-transverse atom sampled over the node–antinode arcsine. That
+  independently confirms the fringe-immunity of the **mean** asserted in
+  `constants`; the fringe's suppression of the **skew** is a different and
+  non-null question, quantified separately in M15.
+- *Maxwell–Boltzmann.* Only the ratio $S_0/(v/w)$ enters, so the sweep above is
+  itself a sweep over transverse speed spanning ~80×, bracketing the thermal
+  distribution. Every speed class shares one mean and one ramp variance and
+  differs only in transit width, so any mixture inherits both — checked
+  directly against a flux-weighted Maxwell–Boltzmann sample.
+
+The third cumulant — the one the asymmetry claim rests on — is **not** resolved
+by that simulation: the FFT noise floor weighted by $\nu^3$ swamps it. For
+$\kappa_3$ the change-of-variables argument stands alone, and it carries the
+quasi-static assumption. The fringe's effect on $\kappa_3$ is M15's result, not
+this one's.
+
 ## 3. The drift-immune method
 
 The 2025 archival line walked at the MHz scale between scans — hand
