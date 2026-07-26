@@ -37,7 +37,7 @@ $\beta_{85}=\beta_{87}=0.036(4)$ MHz per $10^{12}$ cm$^{-3}$: **no isotope
 dependence** ($\beta_{85}-\beta_{87}=0.000\pm0.006$, $0.0\sigma$), robust to
 leaving any block out. It is a *model-based* value: it sits above the per-peak model fits
 ($0.016$–$0.034$) but comfortably **below all four** model-independent per-peak
-bounds ($0.22$–$0.44$ with the corrected t-quantile and density-scale
+bounds ($0.21$–$0.44$ with the corrected t-quantile and density-scale
 coverage) — so it is consistent with the bound, not in
 tension with it, though it still inherits the same $w_0$ and model-form limits.
 Those limits are **not** hand-waved: this $0.036$ carries **four separate error
@@ -219,7 +219,7 @@ ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),
 the quoted error is already $\sqrt{\chi^2_\text{red}}$-inflated ($\approx$2.6×)
 to absorb it, so it is a symmetric common-axis uncertainty, not a cross-peak
 bias; the fits use each condition's own block rate. Total
-line widths are 4.8–5.5 MHz, sitting exactly on the [§2 — The lineshape, kernel by kernel](02_the_lineshape.md) budget; and the dataset
+line widths are 4.8–5.7 MHz, sitting on the [§2 — The lineshape, kernel by kernel](02_the_lineshape.md) budget; and the dataset
 is decoded and frozen (722 files → **297 unique traces**, every anomaly —
 double-saves, renames, discards, off-center-sweep mirrors — explained and
 either quarantined or handled).

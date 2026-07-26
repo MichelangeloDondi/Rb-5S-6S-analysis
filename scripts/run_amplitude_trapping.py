@@ -139,7 +139,8 @@ def _trapping_vs_drift(data, slopes, out):
         print(f"    {T:>4d}C  {d1_optical_depth_per_cm(T,87):>8.1f}  "
               f"{d1_optical_depth_per_cm(T,85):>8.1f}")
 
-    # (2) isotope-averaged slope difference: the cleanest trapping fingerprint.
+    # (2) isotope-averaged slope difference: the trapping fingerprint IF it were
+    #     one -- but it is cut-dependent (see the verdict), so a discriminator, not proof.
     iso = {87: [], 85: []}
     for pk, (sl, se) in slopes.items():
         iso[PK[pk]["isotope"]].append((sl, se))
@@ -152,8 +153,9 @@ def _trapping_vs_drift(data, slopes, out):
     print("\n(2) log-log slope A~N^s by isotope (s<1 = sublinear = losses):")
     print(f"    87Rb <s> = {s87:.2f}+/-{e87:.2f}    85Rb <s> = {s85:.2f}+/-{e85:.2f}")
     print(f"    87-85 = {d:+.2f}+/-{de:.2f}  ({abs(d)/de:.1f}sigma).  Trapping predicts")
-    print("    85Rb MORE sublinear (s85<s87, so 87-85>0): sign is as predicted, but")
-    print("    only ~1sigma -- a hint, not a detection.")
+    print("    85Rb MORE sublinear (s85<s87, so 87-85>0): sign is as predicted for")
+    print("    THIS cut (weighted, 130C in), but it reverses if either is dropped --")
+    print("    one cut among four, ~1sigma. Not evidence for trapping (addendum 15 PS).")
 
     # (3) ratio-vs-density monotonicity: trapping bends ratios MONOTONICALLY;
     #     drift scatters them. Compare with the scalar-degeneracy prediction.
@@ -206,9 +208,10 @@ def _trapping_vs_drift(data, slopes, out):
     print("geometry trapping REDISTRIBUTES the 795 photons rather than destroying the")
     print("collected signal (weak quenching / broad f18mm collection). The degeneracy-")
     print("law ratios are NON-monotonic in density => the 30-50% disagreement is")
-    print("between-block DRIFT, not trapping (which would be monotonic). The one")
-    print("surviving trapping fingerprint -- 85Rb more sublinear than 87Rb -- has the")
-    print("right sign but is only ~1sigma. Clean separation needs a fixed lock,")
+    print("between-block DRIFT, not trapping (which would be monotonic). The isotope")
+    print("slope difference -- 85Rb more sublinear than 87Rb -- has the predicted sign")
+    print("for the committed cut but reverses across cuts (one of four, ~1sigma): not")
+    print("evidence either (addendum 15 PS). Clean separation needs a fixed lock,")
     print("interleaved-peak run (no drift) with a controlled collection geometry.")
 
 
