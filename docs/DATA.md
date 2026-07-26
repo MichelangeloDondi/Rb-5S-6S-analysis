@@ -440,7 +440,7 @@ conclusions:
   drop (the session difference stays a secondary, unseparable caveat);
   (ii) a corr(γ, log N) > corr(γ, N) argument — fragile (993.4121 nm is
   non-monotonic and the pooled means reverse it); the robust metric is the
-  rise factor ×1.5 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
+  rise factor ×1.85 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
 - **Discard/quarantine audit adjudicated + `qc_reason` column added (2026-07-12).**
   An external audit of the excluded traces was verified against the
   repo; its two central factual claims did NOT survive, in opposite directions

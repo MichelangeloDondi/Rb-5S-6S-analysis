@@ -70,12 +70,12 @@ The archive's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}16\to{\times}53$), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block" — it is that
-$\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.5\times$
+$\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.85\times$
 across a ${\times}52$ density span (70→130 °C), and the 130 °C widths sit *on*
 that near-flat trend, whereas a real binary-collision width is *linear* in $N$.
 So the fitted $\gamma_\text{coll}$ is a residual floor, not resolved collisions,
 and $\beta$ is a **lever-dependent bound**, not a value — exactly why the
-model-independent bound is the headline. (The 130 °C data are also a different
+model-independent bound is the headline. (The 130 °C data are the extreme end of the
 session, a secondary caveat we cannot fully separate; either way a fixed-lock session needs
 *same-session* high-density points to resolve any real slope.)
 *Run:* `run_lever_crosscheck.py` → `results/lever_crosscheck.csv`; numbers in the

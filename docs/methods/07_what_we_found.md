@@ -4,7 +4,7 @@
 
 **Headline: the T-sweep *bounds* $\beta_\text{self}$ and shows why it cannot
 measure it.** The raw, model-independent widths are **non-monotonic in
-density** for three of four peaks (e.g. 993.4207 nm: 5.11 → 4.92 → 5.35 MHz for
+density** for three of four peaks (e.g. 993.4207 nm: 5.11 → 4.87 → 5.28 MHz for
 70 → 90 → 110 °C — *narrower* at higher density, which no collision can
 produce). Within-block repeat scatter is $\sim0.05$ MHz, but between-block
 scatter is $\sim0.06$–$0.16$ MHz: the 2025 laser width drifted between cooling
@@ -36,7 +36,7 @@ and weights each block by its own correlation time — returns
 $\beta_{85}=\beta_{87}=0.036(4)$ MHz per $10^{12}$ cm$^{-3}$: **no isotope
 dependence** ($\beta_{85}-\beta_{87}=0.000\pm0.006$, $0.0\sigma$), robust to
 leaving any block out. It is a *model-based* value: it sits above the per-peak model fits
-($0.027$–$0.047$) but comfortably **below all four** model-independent per-peak
+($0.016$–$0.034$) but comfortably **below all four** model-independent per-peak
 bounds ($0.22$–$0.44$ with the corrected t-quantile and density-scale
 coverage) — so it is consistent with the bound, not in
 tension with it, though it still inherits the same $w_0$ and model-form limits.
@@ -48,7 +48,7 @@ Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core for
 more width onto collisions); **density scale $\pm0.007$** ($\beta\propto1/N$, the
 $\sim$20% spread between published vapor-pressure correlations, `density.py`);
 and — **largest of the four** — the $w_0$-band
-$[0.025,0.065]$ (a factor ${\sim}2.5$, since every absolute $\beta$ rides on the
+$[0.003,0.055]$ (a factor ${\sim}16$, since every absolute $\beta$ rides on the
 OPEN beam waist). The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
 Its real value is the isotope test, and the in-sample consistency check (M4c,
@@ -68,7 +68,7 @@ The **lever cross-check** (M4d, `run_lever_crosscheck`) packages exactly this �
 cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak /
 leave-one-temperature scan — and adds the lever test: folding in the
 130 °C anchor ([§4.2 — The statistics](06_the_statistics.md)) pulls $\beta$ well below $0.036$, because $\gamma_\text{coll}$
-rises only ${\sim}1.5\times$ across a ${\times}52$ density span — a residual floor,
+rises only ${\sim}1.85\times$ across a ${\times}52$ density span — a residual floor,
 not resolved collisions — so $\beta$ is a lever-dependent bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).
 

@@ -204,7 +204,8 @@ derivation is in [`docs/methods/03_the_ac_stark_ramp.md`](docs/methods/03_the_ac
 The transit width and the laser width both depend on the beam waist, and the
 archive cannot separate them — a tighter waist means more transit broadening and
 less room for laser width, and vice versa. The observed ≈ 5.2 MHz line is
-reproduced anywhere from w₀ ≈ 20 µm (laser width → 0) up to ≈ 65 µm (laser ~1.1 MHz).
+reproduced anywhere from w₀ ≈ 38 µm (the hard floor, where laser width → 0) up to
+≈ 65 µm (laser ~1.1 MHz).
 Only a direct beam-profile measurement (a knife-edge scan, a camera beam
 profiler, or both) collapses this — which is why every absolute number above
 is w₀-conditional, and why it is the first thing a proposed fixed-lock session

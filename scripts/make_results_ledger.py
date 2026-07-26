@@ -249,9 +249,12 @@ def main() -> int:
               f"**floor**, not resolved collisions, and the apparent $\\beta$ shrinks as the "
               f"lever lengthens (per-condition $\\beta$ is only $\\sim$0.01; the joint {bmax:.3f} "
               f"is $\\sigma_\\text{{laser}}$-sharing-inflated). That is precisely why "
-              f"$\\beta$ is a BOUND. The 130 °C data are also a different session — a "
-              f"secondary, unseparable caveat — so a fixed-lock session needs *same-session* "
-              f"high-density points to resolve any real collisional slope.\n")
+              f"$\\beta$ is a BOUND. The 130 °C block is not a separate session — the "
+              f"recovered clock puts it 2.3 h from the 110 °C dwell inside one "
+              f"campaign — but it *is* the extreme end of the lever, so folding it "
+              f"in moves the answer by leverage. A fixed-lock session needs "
+              f"*interleaved* high-density points to resolve any real collisional "
+              f"slope.\n")
     else:
         gf_mf = [r for r in rows("global_fit") if r["quantity"] == "beta_modelform_syst"]
         if gf_mf:
@@ -278,7 +281,7 @@ def main() -> int:
       "at $w_0=32$ µm (which OVERSHOOTS the observed line, so 32 µm is excluded) and "
       "~1.2 MHz at the 50 µm prior; more transit leaves less width for the laser.")
     W("\n> **Reconciling the three $\\sigma_\\text{laser}$ numbers (they are not "
-      "contradictory — mind the axis).** This C2 bound is $<$1.0 MHz on the **laser** "
+      "contradictory — mind the axis).** This C2 bound is $<$1.1 MHz on the **laser** "
       "axis; the lever-crosscheck $\\sigma_\\text{laser}(T)$ (1.48/1.63/1.06) and the "
       "Stark-fit core (0.52–0.82) are on the **transition** axis ($=2\\times$ laser). "
       "Halved, the lever gives laser $\\approx$0.53–0.82 and the Stark core "
@@ -528,7 +531,7 @@ def main() -> int:
           f"logged timestamps (a fixed-lock session) settle it. (ii) It is **in-sample**: the check "
           f"uses 70/90/110 °C and the headline fit uses the *same* three temperatures, "
           f"so it cannot be an out-of-sample test — the 130 °C block that would stress "
-          f"the assumption is a different session (excluded, §C1 lever test). (iii) "
+          f"the assumption is excluded from it (§C1 lever test). (iii) "
           f"**The test is under-powered:** χ²/dof of {chis} are *well below 1*, "
           f"so the peaks agree only within error bars that are themselves $\\sim$1.2–"
           f"2.2× too large (the conservative $\\tau_\\text{{int}}$ noise inflation "
