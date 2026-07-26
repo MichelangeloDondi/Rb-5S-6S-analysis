@@ -200,6 +200,55 @@ NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
 (Wieman 1987 / Stalnaker 2006 own it), or "first extraction of a
 polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45).
 
+### 5.1 Narrowed again by the adversarial audit (2026-07-26)
+
+An external deep-search audit found **two further precedents, both now read
+here**, and claim 1 above had to give ground twice:
+
+- [slepkov2010](lit/slepkov2010.md) — Rb in a hollow-core fibre. Simulates the
+  AC-Stark-shifted line through a Gaussian-core guided mode; "the nonuniformity
+  of the core mode is also seen to broaden and to steepen the line toward
+  higher frequencies", and the data are fit by that simulated non-uniform-mode
+  lineshape in preference to a flat-top model. **Keeping the distribution is
+  not new**, and it has been done in a guided geometry.
+- [wall2014](lit/wall2014.md) — helium Rydberg states, and the stronger
+  precedent of the two: it is **single-colour two-photon**, so the I²
+  weighting is present too, alongside the "bunch up close to the unperturbed
+  transition frequency" density-of-states argument. **The I² weighting is not
+  new either.**
+- [camparo1992](lit/camparo1992.md) — a two-photon Stark-shift *distribution*
+  giving "an asymmetric resonance line shape in a fashion analogous to
+  inhomogeneous broadening", though over a stochastic field in time rather than
+  position in a beam. Different mechanism; cite it, do not conflate it.
+
+**What survives, and it is narrow:** the **closed form** — an analytic
+triangular weight with a calculable asymmetry coefficient — used to recover the
+shift **when the frequency reference is unusable**. Checked in both PDFs:
+Slepkov and Wall each reproduce their lineshape by numerical ensemble averaging,
+describe the asymmetry qualitatively, keep the frequency axis intact, and never
+invert the lineshape for the shift. Cite all three up front rather than let a
+referee find them.
+
+### 5.2 Negative searches — record these, they are what defend the rest
+
+The same audit searched and found nothing, which is worth stating explicitly in
+any manuscript:
+
+- **No other group working 5S–6S.** Precision work on this line remains the
+  USAFA lineage (Orson, Ayachitula). No new entrants found.
+- **No prior 5S–6S magic wavelength** anywhere near 1204 / 1288 / 1340 nm.
+  *Phrase the claim as 5S–6S specifically*: arXiv:1204.4354 does tabulate magic
+  wavelengths for the **6S–5P** active-clock transition across 1200–1600 nm, a
+  different transition in an overlapping range, and a referee may reach for it.
+- **No profile-likelihood precedent** in vapour-cell two-photon metrology, and
+  **no pre-registration or blind analysis** in atomic spectroscopy of this kind.
+- **No 6S self-broadening coefficient** in a second targeted pass; Zameroski
+  2014 (5D, 7S) remains the nearest. The gap is real, and
+  [weller2011](lit/weller2011.md) now anchors the expected scale from above.
+
+Not exhaustive: Japanese- and Russian-language 6S self-broadening theory was
+not searched.
+
 ## 6. Prior work on THIS line (5S–6S, 993 nm)
 
 Two distinct lineages measured our exact transition before us: the **OIST**
