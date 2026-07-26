@@ -3,7 +3,7 @@
 Cross-epoch checks from the pilot and prehistory sessions.  (addendum 11)
 
 The recovered pilot (2025-07-16 folder) and prehistory (2025-07-03/04) are
-OUTSIDE the frozen archive, but they carry five checks the archive cannot
+OUTSIDE the frozen archive, but they carry six checks the archive cannot
 perform on itself, plus one honest non-result:
 
 1. CLOCK VALIDATION -- the LeCroy dress-rehearsal files embed wall-clock
@@ -35,7 +35,16 @@ perform on itself, plus one honest non-result:
    end and manufactured a 1.9 sigma that is not there. QC metrics triage
    traces; they do not measure widths.
 
-6. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
+6. PILOT ch1 IDENTITY -- the pilot rulers' 1.92 V second channel
+   is the frequency SWEEP, not a power monitor: it ramps linearly in every
+   record, its slope ALTERNATES SIGN at fixed magnitude (successive legs of
+   the triangle sweep), and the implied calibration ~4.7 MHz/mV reproduces
+   the EOM comb's own rate. It wanders 5-9% from straight, well above the
+   sweep's own 0.45% nonlinearity bound, so it monitors the scan rather than
+   calibrating it -- which is why the comb ruler exists. Which actuator it
+   is (piezo vs elsewhere in the scan chain) the trace cannot say.
+
+7. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
    dual-scan captures scatter most in the first block (649 ms) and settle
    mid-session (17-131 ms), consistent with a fresh-lock transient, but the
    final peak's blocks are noisy again (~200-380 ms) and the observable
@@ -50,7 +59,6 @@ dual-scan envelope being ~120x the linewidth. The "~32 ms satellites" were a
 peak-finding artifact (ACF shows no coherent companion in either epoch), and
 the three binary 4192@270 files are 0xFF never-written placeholders.
 
-Still open: the pilot rulers' 1.92 V DC channel identity (power monitor?).
 The two-zone temperature notation 130C(90C-0.65A) is resolved -- the
 parenthetical is the variac set point, the campaign temperature is the
 internal-thermocouple reading -- see addendum 15, which also gives the
@@ -80,6 +88,7 @@ QH = Path(os.path.expanduser("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-2
 RATE_MHZ_MS = 0.04257061052233977
 CAMPAIGN_TOOTH_MS = 146.81
 PILOT_TOOTH_MS = 144.2      # the pilot day's own Def-comb ACF period (check 3)
+TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
 
 
 def trigtime_check() -> None:
@@ -234,6 +243,52 @@ def pilot_thermometry() -> None:
     print("   together with the filename structure. See addendum 17.")
 
 
+def pilot_ch1_identity() -> None:
+    """What is the pilot rulers' second channel? (was: "1.92 V DC, power monitor?")
+
+    The experimenter's recollection was that it is the piezo sweeping the laser
+    frequency. The data agree, and the discriminator is the SIGN. A power
+    monitor sits at a level; a triangle frequency sweep is caught one leg at a
+    time, so successive records must show a RAMP whose slope alternates in sign
+    while its magnitude stays put. That is what they show.
+
+    What this does NOT establish is which actuator: the trace says "a scan
+    control voltage proportional to laser frequency", not specifically the
+    piezo as opposed to any other element in the scan chain.
+    """
+    rows = []
+    for f in sorted((QP / "EOM ruler" / "Def").glob("eom_def_*.csv")):
+        d = np.genfromtxt(f, delimiter=",", skip_header=2)
+        d = d[~np.isnan(d).any(axis=1)]
+        t, c1, c2 = d[:, 0] * 1e3, d[:, 1], d[:, 2]
+        pf = np.polyfit(t, c1, 1)
+        resid = c1 - np.polyval(pf, t)
+        v = c2 - np.median(c2)
+        ac = np.correlate(v, v, "full")[len(v) - 1:]
+        dtm = np.median(np.diff(t))
+        lo, hi = int(100 / dtm), int(200 / dtm)
+        per = (lo + int(np.argmax(ac[lo:hi]))) * dtm
+        mv_tooth = abs(pf[0]) * per * 1e3
+        rows.append((pf[0] * 1e3, resid.std() * 1e3,
+                     1e3 * (c1.max() - c1.min()),
+                     TOOTH_SPACING_LASER_MHZ / mv_tooth if mv_tooth else np.nan))
+    a = np.array(rows)
+    sgn = "".join("+" if x > 0 else "-" for x in a[:, 0])
+    print("\n6. PILOT ch1 IDENTITY -- the 1.92 V channel is the frequency SWEEP")
+    print(f"   {len(a)} ruler records; ch1 is a linear ramp in every one")
+    print(f"   |slope| {np.abs(a[:, 0]).mean():.5f} mV/ms, spread "
+          f"{100*np.abs(a[:, 0]).std()/np.abs(a[:, 0]).mean():.0f}%")
+    print(f"   slope SIGNS across records: {sgn}")
+    print("   -> alternating sign at fixed magnitude = successive legs of the")
+    print("      triangle sweep. A power monitor cannot do that.")
+    print(f"   implied calibration {np.nanmean(a[:, 3]):.2f} MHz/mV (laser axis), "
+          f"spread {100*np.nanstd(a[:, 3])/np.nanmean(a[:, 3]):.0f}%")
+    print(f"   ramp span {a[:, 2].mean():.1f} mV per ~1 s record; residual from a")
+    print(f"   straight line {100*(a[:, 1]/a[:, 2]).mean():.0f}% of it -- far above the")
+    print("   sweep's own 0.45% nonlinearity bound, so this is a MONITOR of the")
+    print("   scan, not a usable frequency axis. The EOM comb remains the ruler.")
+
+
 def main() -> int:
     if not (QP.is_dir() and QH.is_dir()):
         print("pilot/prehistory quarantines not on this machine -- the committed "
@@ -243,7 +298,8 @@ def main() -> int:
     pilot_steps()
     pilot_ruler_rate()
     pilot_thermometry()
-    print("\n4.-5. pilot laws and the rehearsal chronology non-result: see the")
+    pilot_ch1_identity()
+    print("\n4. and 7.: pilot laws and the rehearsal chronology non-result -- see the")
     print("   docstring and addendum 11 (envelope analysis needs no re-run).")
     return 0
 
