@@ -659,6 +659,80 @@ def fig_laser_history():
     _save(fig, "fig11_laser_history.png")
 
 
+def fig_ramp_construction():
+    """How a Gaussian beam becomes a triangular shift distribution (THEORY_NOTE
+    section 2, methods chapter 3). The derivation is four lines of change-of-
+    variables and the result is the observable the whole analysis rests on, so
+    it is worth seeing rather than integrating mentally. Every curve comes from
+    rb5s6s.lineshape -- no data, no fitted parameters."""
+    from rb5s6s.lineshape import stark_ramp, model_profile
+    fig, ax = plt.subplots(1, 4, figsize=(13.6, 3.5))
+    S0 = 1.0
+
+    # (a) the beam, and the shift it imposes
+    r = np.linspace(0, 2.2, 400)
+    u = np.exp(-2 * r ** 2)
+    ax[0].plot(r, u, color="#0072B2", lw=1.8)
+    ax[0].fill_between(r, 0, u, color="#0072B2", alpha=0.12)
+    for rr, lab, dx, dy in ((0.0, "axis: $s=-S_0$", 10, -12),
+                            (1.18, "edge: $s\\to 0$", 10, 6)):
+        ax[0].plot([rr], [np.exp(-2 * rr ** 2)], "o", color="#D55E00", ms=6)
+        ax[0].annotate(lab, (rr, np.exp(-2 * rr ** 2)), fontsize=7,
+                       textcoords="offset points", xytext=(dx, dy))
+    ax[0].set_ylim(-0.03, 1.12)
+    ax[0].set_xlabel("radius  $r/w$")
+    ax[0].set_ylabel("$u = I/I_0$")
+    ax[0].set_title("(a) the beam sets the shift\n$s = -S_0\\,u$", fontsize=9)
+
+    # (b) the two competing weights
+    uu = np.linspace(0.02, 1.0, 300)
+    # all three normalised to their value on axis (u = 1) so they are comparable
+    ax[1].semilogy(uu, 1 / uu, color="0.45", lw=1.6,
+                   label=r"atoms per $\mathrm{d}u$: $1/u$")
+    ax[1].semilogy(uu, uu ** 2, color="#009E73", lw=1.8,
+                   label=r"signal each gives: $u^2$")
+    ax[1].semilogy(uu, uu, color="#D55E00", lw=2.2, ls="--",
+                   label=r"product: $u$")
+    ax[1].set_xlabel("$u = I/I_0$")
+    ax[1].set_ylabel("weight, relative to on-axis")
+    ax[1].set_title("(b) many dim atoms, few bright\nones -- but $I^2$ wins",
+                    fontsize=9)
+    ax[1].legend(fontsize=7, framealpha=1.0, frameon=True)
+
+    # (c) the triangle itself
+    nu = np.arange(-1.6, 0.4, 0.002)
+    ax[2].plot(nu, stark_ramp(nu, S0), color="#D55E00", lw=1.9)
+    ax[2].axvline(-2 / 3 * S0, color="0.35", lw=1.0, ls=":")
+    ax[2].annotate("mean $-\\frac{2}{3}S_0$", (-2 / 3 * S0, 2.28), fontsize=7,
+                   ha="center", color="0.3")
+    ax[2].set_ylim(0, 2.55)
+    ax[2].set_xlabel("shift  $s/S_0$")
+    ax[2].set_ylabel("density  $f(s)$")
+    ax[2].set_title(r"(c) a triangle: $f(s)\propto|s|$" "\n"
+                    r"skew $g_1=+0.566$, from $I^2$ alone", fontsize=9)
+
+    # (d) what it does to the line
+    g = np.arange(-14, 14, 0.01)
+    sym = model_profile(g, gamma_coll=0.45, sigma_laser_fwhm=1.1,
+                        transit_fwhm=1.9, s0=0.0)
+    ramped = model_profile(g, gamma_coll=0.45, sigma_laser_fwhm=1.1,
+                           transit_fwhm=1.9, s0=3.0)
+    ax[3].plot(g, sym / sym.max(), color="0.5", lw=1.4, label="$S_0=0$")
+    ax[3].plot(g, ramped / ramped.max(), color="#D55E00", lw=1.9,
+               label="$S_0=3$ MHz")
+    ax[3].set_xlabel("detuning (MHz)")
+    ax[3].set_ylabel("normalised signal")
+    ax[3].set_title("(d) the line it produces\n(exaggerated $S_0$ to show it)",
+                    fontsize=9)
+    ax[3].legend(fontsize=7, framealpha=1.0, frameon=True)
+
+    for a in ax:
+        a.grid(alpha=0.22, lw=0.5)
+    fig.suptitle("The AC-Stark ramp: a focused beam gives a distribution of "
+                 "light shifts, not one shift", fontsize=10)
+    _save(fig, "fig12_ramp_construction.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -670,6 +744,7 @@ def main() -> int:
     fig_ruler()
     fig_degeneracy_vs_observable()
     fig_laser_history()
+    fig_ramp_construction()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

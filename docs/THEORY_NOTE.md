@@ -113,6 +113,17 @@ $\kappa_3$ the change-of-variables argument stands alone, and it carries the
 quasi-static assumption. The fringe's effect on $\kappa_3$ is M15's result, not
 this one's.
 
+
+![the ramp construction](../figures/fig12_ramp_construction.png)
+
+*From a Gaussian beam to a triangular shift distribution. (a) the intensity
+profile sets each atom's shift, from zero at the dim edge to $-S_0$ on axis;
+(b) the two weights that compete — many atoms sit at low intensity, but each
+contributes only $I^2$ of signal, and the product is linear in $u$; (c) hence
+$f(s)\propto|s|$, a triangle with mean $-\tfrac{2}{3}S_0$ and intrinsic skew
+$+0.566$, which exists at all only because the rate goes as $I^2$; (d) the line
+it produces, with $S_0$ exaggerated so the asymmetry is visible.*
+
 ## 3. The drift-immune method
 
 The 2025 archival line walked at the MHz scale between scans — hand
