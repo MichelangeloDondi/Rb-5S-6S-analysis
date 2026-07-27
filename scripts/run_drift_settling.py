@@ -856,6 +856,18 @@ def _rekick_fit(kind, S):
 def rekick_report() -> None:
     from scipy import stats as st
     S = _rekick_steps()
+    # The whole comparison is between a session clock and a per-epoch re-kick
+    # decay, so it needs BOTH epochs. A checkout without the raw ruler traces
+    # (the public mirror) has only the P-epoch steps, and fitting six models to
+    # one epoch is not a degraded answer but a meaningless one -- the per-epoch
+    # amplitude models become unidentifiable. Say so and stop.
+    if S.empty or (S.epoch != "P").sum() == 0:
+        print("\nTHE PER-TEMPERATURE QUESTION, FITTED (addendum 12)")
+        print("  SKIPPED: needs both epochs, and the T-epoch steps come from")
+        print("  data_raw/rulers_t/ which this checkout does not have. The model")
+        print("  comparison is between a session clock and a per-epoch decay, so")
+        print("  one epoch cannot answer it. Numbers of record: addendum 12.")
+        return
     print("\nTHE PER-TEMPERATURE QUESTION, FITTED (experimenter's proposal; addendum 12)")
     print("  for the DRIFT it stays unresolved (T-session baselines too short;")
     print("  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE,")
