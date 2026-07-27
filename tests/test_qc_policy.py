@@ -15,7 +15,7 @@ def drift_report():
     test wasted a minute of every fast-suite run.
     """
     if not Path("results/qc_metrics.csv").is_file():
-        pytest.skip("qc_metrics.csv not present (gitignored dump)")
+        pytest.skip("qc_metrics.csv absent (pre-2026-07-27 checkout)")
     out = subprocess.run([sys.executable, "scripts/run_drift_settling.py"],
                          capture_output=True, text=True, timeout=900)
     assert out.returncode == 0, out.stderr

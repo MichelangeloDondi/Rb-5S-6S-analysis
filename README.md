@@ -193,7 +193,7 @@ $$I(\nu) = A\left[ L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigm
 | Transit | finite time an atom spends in the beam | ~1.2 MHz at w₀ ≈ 50 µm | cusp kernel (Biraben–Cagnac / Lehmann) |
 | AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.6 MHz at 225 mW | triangular "ramp" |
 
-The AC-Stark **ramp** is the analysis's novel core: because the beam is focused,
+The AC-Stark **ramp** is what the rest of the analysis is built on: because the beam is focused,
 the light shift runs from zero at the dim edge to a maximum S₀ on the bright axis,
 and for a two-photon (intensity-squared) signal that distribution is a closed-form
 triangle. Its skew is a light-shift readout that survives a drifting lock — the
@@ -239,7 +239,7 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest -q                 # fast test suite (~35 s)
+pytest -q                 # fast test suite (~2 min)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
@@ -274,11 +274,12 @@ addenda 4–7) also reproduce from a clone: the acquisition clock is committed
 as [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv), and
 
 ```bash
-python scripts/run_qc.py              # regenerates the gitignored qc_metrics dump
 python scripts/run_drift_settling.py  # the drift analysis, off the committed clock
+python scripts/run_laser_history.py   # rebuilds the laser's frequency history
 ```
 
-prints the full report — no private folder required. The complete
+print the full report — no raw traces and no private folder required, because
+the per-trace QC metrics they read (`results/qc_metrics.csv`) are committed. The complete
 timestamped raw backup behind the clock is preserved verbatim as the
 raw-data archive held with the traces (sha256 recorded in the audit report).
 

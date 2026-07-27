@@ -447,3 +447,32 @@ def test_block_seq_is_labelled_not_a_time_order():
         assert "block_seq" not in body, (
             f"{consumer} now reads block_seq; if it orders by it, that order is "
             f"reversed in time for the power session")
+
+
+def test_advertised_test_counts_match_the_real_suite():
+    """The counts in README and methods.md drifted to 803/779 while the suite had
+    grown past a thousand, and a reader who runs the command sees the mismatch
+    immediately. Collect the real numbers instead of trusting the prose."""
+    import re
+    import subprocess
+    import sys
+    def collected(args):
+        out = subprocess.run(
+            [sys.executable, "-m", "pytest", "--collect-only", "-q", *args],
+            cwd=ROOT, capture_output=True, text=True).stdout
+        m = re.search(r"(\d+)(?:/\d+)? tests collected", out)
+        return int(m.group(1)) if m else None
+    total = collected([])
+    slow = collected(["-m", "slow"])
+    if total is None or slow is None:
+        import pytest as _p
+        _p.skip("could not collect")
+    txt = (ROOT / "docs" / "methods.md").read_text() + (ROOT / "README.md").read_text()
+    # 5% tolerance: the point is to catch DRIFT (803 documented against 1092
+    # real, a 26% gap that had gone unnoticed), not to force a docs edit with
+    # every test added.
+    stale = [n for n in re.findall(r"\b(\d{3,5})[- ]test", txt)
+             if abs(int(n) - total) / total > 0.05]
+    assert not stale, (
+        f"documented test counts {stale} are more than 5% from the real {total} "
+        f"({slow} slow). Update docs/methods.md and README.md.")

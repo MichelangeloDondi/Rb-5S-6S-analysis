@@ -360,15 +360,27 @@ outright. The narrative above keeps the established convention until it is resol
 
 ## 6. Novelty position relative to prior art
 
-Asymmetric two-photon-like lineshapes from *spatially distributed* AC-Stark
-shifts are **not new**: the cesium parity-violation lineage
-(Wieman *et al.*, *Phys. Rev. Lett.* **58**, 1738 (1987); [Stalnaker *et al.*
-2006](lit/stalnaker2006.md)) modelled them numerically in a standing wave and even extracted an
-AC-Stark parameter from the asymmetry; and the nearest *construction* is
-[Hamilton *et al.*](lit/hamilton2023.md) (*Phys. Rev. Applied* **19**, 054059 (2023)), a
-retro-reflected Rb vapour two-photon line whose focus-averaged shift integral is
-identical to ours — but collapsed to a single mean shift, never the distribution
-(LITERATURE.md §1). We do **not** claim the existence of the asymmetry. What is specific here:
+Asymmetric lineshapes from *distributed* AC-Stark shifts are **not new**, and
+five separate lines of prior art reach parts of what is done here. Naming them
+first is cheaper than having a referee do it.
+
+| prior work | what it already has | what it does not do |
+|---|---|---|
+| Wieman 1987; [Stalnaker 2006](lit/stalnaker2006.md) | a spatially varying shift producing an asymmetric line, with α extracted *from* the asymmetry | numerical Bloch treatment, fringe-*resolved*, one-photon (n=1), so no I² weighting |
+| [Slepkov 2010](lit/slepkov2010.md) | the shift distribution of a guided mode kept and fitted, not averaged | saturated absorption in a hollow core, not two-photon; no closed form |
+| [Wall 2014](lit/wall2014.md) | single-colour two-photon, so the I² weighting *is* present, over a measured 3D intensity map | purely numerical; inference runs the other way (α in, lineshape out); longitudinal not transverse; shift ≫ linewidth; a working frequency reference throughout |
+| [Camparo 1992](lit/camparo1992.md) | a two-photon shift *distribution* giving an asymmetric line, with the first moment separated from the peak | the distribution is over a stochastic field in **time**, by Monte Carlo, and needs the strong-field adiabatic regime |
+| [Fendel 2007](lit/fendel2007.md) | the peak-vs-average question tested and settled in a hot-alkali single-colour two-photon cell: −0.21 Hz/(mW/cm²) against *average* intensity | a deliberately **unfocused** 0.72 mm waist, chosen to make the distribution narrow enough that the average suffices |
+
+[Hamilton 2023](lit/hamilton2023.md) builds the identical focus-averaged shift
+integral on a retro-reflected Rb vapour line, then collapses it to a single mean.
+
+Read together these bound the claim tightly: **the existence of the asymmetry is
+not claimed here, nor is the I² weighting, nor keeping the distribution.** Fendel
+in particular is the paper a referee is most likely to cite back, and it reads
+*for* this work rather than against it — a first-rate group, facing a focused-beam
+light-shift distribution, engineered it away rather than modelling it. What is
+specific here:
 
 1. the **closed-form** law $f(s)\propto|s|^{n-1}$ for the focused,
    retro-reflected, fringe-*averaged* **standing-wave** geometry — the triangle

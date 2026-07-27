@@ -176,8 +176,13 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
   confirms the phenomenon while missing the asymmetry. REPORTED (2026-07-12);
   pull full text — a referee-critical citation.
 - **Fendel/Udem/Hänsch, Opt. Lett. 32, 701 (2007)** (Cs 6S–8S comb):
-  AC-Stark determined by average not peak intensity; power-to-zero
-  extrapolation mindset. REPORTED.
+  published paper text read directly (`lit/fendel2007.md`, VERIFIED). They
+  *tested* peak against average and found the average correct,
+  −0.21 Hz/(mW/cm²) against average single-beam intensity, cross-checked
+  against cw and theory. Their waist was a deliberately unfocused 0.72 mm,
+  chosen to keep the intensity distribution narrow — so the result holds where
+  the distribution is narrow and says nothing about a tight focus. Cited in
+  THEORY_NOTE §6; the nearest prior art on the peak-vs-average question.
 - **Cs 6S–6D (2018)**: 40 µm waist → significant transit broadening.
   Cross-check vs our M9: scaling by v/w₀ (Cs ~200 m/s @40 µm vs Rb ~280 m/s
   @32 µm) puts their transit at ~0.6× ours — consistent with our

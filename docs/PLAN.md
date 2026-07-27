@@ -213,8 +213,7 @@ worst — the measured constant rate is ~60× lower again — negligible against
 drift manifests **between** blocks (0.06–0.16 MHz scatter), which is exactly why
 β_self is currently reported as a bound (`RESULTS.md` C1). The clean closure — inject a
 within-scan drift ramp into synthetic data and confirm the recovered moments are
-unbiased — is the one check that would seal this; it is flagged as the
-next test, not claimed as done.
+unbiased — has been run: `tests/test_intrascan_drift.py`.
 
 **"Your Δα bracket ~1200 a.u. is 'consistent with' Orson's computed 1093 — a
 bracket that wide discriminates nothing."** Conceded fully: the archival S₀ bound
@@ -920,7 +919,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
      MEASUREMENT. Until all of this exists the ruler widths serve as the
      per-block QC veto above (a gate, not a variate).
 - **High-T extension 150 → 170 °C** (oven/cell permitting): the Zameroski
-  calibration (LITERATURE.md) puts expected β_self(6S) ~3.5 kHz per
+  calibration (LITERATURE.md) puts expected β_self(6S) ≈ 3.5 kHz per
   10¹² cm⁻³, so 70–130 °C yields Δγ ≈ 20 kHz — unmeasurable; 150–170 °C
   yields 0.07–0.25 MHz — which is 0.8–2.9σ against the *current* block-noise
   floor and 3.2–11.6σ once that floor is cut 4× (M17). Necessary, not

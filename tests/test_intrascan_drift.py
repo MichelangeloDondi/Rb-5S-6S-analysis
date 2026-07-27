@@ -194,13 +194,14 @@ def test_intra_block_scatter_is_jitter_not_drift():
     import sys
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
-    # results/qc_metrics.csv is the raw QC dump -- deliberately gitignored
+    # results/qc_metrics.csv is the per-trace QC table (committed since
+    # 2026-07-27; the skip is kept for checkouts predating that)
     # (.gitignore: "the huge raw QC dump stays out"), regenerated from the raw
     # data/ traces, which are not in the public repo either. So it is present
     # in a working analysis checkout but absent in CI; skip there rather than
     # committing a 112 KB file against that decision.
     if not (root / "results" / "qc_metrics.csv").exists():
-        pytest.skip("results/qc_metrics.csv absent (gitignored; needs a QC run)")
+        pytest.skip("results/qc_metrics.csv absent (pre-2026-07-27 checkout)")
     sys.path.insert(0, str(root / "scripts"))
     from run_intrablock_trend import blocks, JUMP_MS
     from scipy import stats
@@ -227,7 +228,7 @@ def test_ruler_blocks_stay_excluded_from_that_test():
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     if not (root / "results" / "qc_metrics.csv").exists():
-        pytest.skip("results/qc_metrics.csv absent (gitignored; needs a QC run)")
+        pytest.skip("results/qc_metrics.csv absent (pre-2026-07-27 checkout)")
     d = pd.read_csv(root / "results" / "qc_metrics.csv")
     d = d[d.flag == "canonical"]
     rf_on = d[d.rf_on].groupby(

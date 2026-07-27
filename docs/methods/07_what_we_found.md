@@ -2,6 +2,8 @@
 
 ## 5. What we found (2025 archival data)
 
+### 5.1 $\beta_\text{self}$: the T-sweep bounds it
+
 **Headline: the T-sweep *bounds* $\beta_\text{self}$ and shows why it cannot
 measure it.** The raw, model-independent widths are **non-monotonic in
 density** for three of four peaks (e.g. 993.4207 nm: 5.11 → 4.87 → 5.28 MHz for
@@ -30,6 +32,8 @@ fixed 2026-07-12.) A naive global Voigt fit instead reports a
 the archival data *showing the two-epoch design was necessary*, and is reported as a
 Paper-1 result.
 
+### 5.2 A hierarchical cross-check ($\beta$ per isotope)
+
 **A hierarchical cross-check ($\beta$ per isotope).** The full fit ([§4.2 — The statistics](06_the_statistics.md),
 `fit_global`) — which properly lets $\sigma_\text{laser}$ drift per temperature
 and weights each block by its own correlation time — returns
@@ -40,8 +44,7 @@ leaving any block out. It is a *model-based* value: it sits above the per-peak m
 bounds ($0.21$–$0.44$ with the corrected t-quantile and density-scale
 coverage) — so it is consistent with the bound, not in
 tension with it, though it still inherits the same $w_0$ and model-form limits.
-Those limits are **not** hand-waved: this $0.036$ carries **four separate error
-bars**, and the systematics dominate the statistical one — statistical
+This $0.036$ carries **four separate error bars**, and the systematics dominate the statistical one — statistical
 $\pm0.004$ (joint-fit covariance); **transit model-form $\pm0.033$** (the
 $|\text{Voigt}-\text{Lehmann}|$ shift, [§4.7 — The statistics](06_the_statistics.md), `run_global_fit`: the Gaussian-transit
 Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core forces
@@ -72,6 +75,8 @@ rises only ${\sim}1.85\times$ across a ${\times}52$ density span — a residual 
 not resolved collisions — so $\beta$ is a lever-dependent bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).
 
+### 5.3 The 2025 laser width (C2)
+
 **The 2025 laser width (deliverable C2) — an upper bound.**
 $\sigma_\text{laser}(2025)\lesssim2.0$ MHz (transition axis; $\lesssim1.0$ MHz
 laser axis; it is $\sim0.84$ MHz laser-axis at the $w_0=50\ \mu$m prior) —
@@ -86,6 +91,8 @@ archival data cannot locate that crossover; only a direct beam-profile $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
 A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
 ONF starting linewidth for Paper 2.
+
+### 5.4 The power sweep against the ramp law (C3a–c)
 
 **The power sweep, tested against the ramp law's predictions (deliverable C3).** At fixed
 130 °C only the AC-Stark $S_0$ varies, so the ramp law ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) predicts, and the
@@ -143,6 +150,8 @@ session's stable lock would resurrect the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
 several-fold larger, which would turn this bracket into a measured coefficient.
 
+### 5.5 Radiation trapping (M7)
+
 **Radiation trapping — thick cell, near-linear signal, drift-dominated ratios
 (module M7).** Peak amplitude scales roughly *linearly* with density: log-log
 slopes $0.94(13)$, $0.91(5)$, $0.85(15)$, $1.02(8)$ across $\times52$ in $N$ —
@@ -178,6 +187,8 @@ geometry. A clean separation of the trapping/993-absorption losses and an
 absolute trapping fraction additionally want [Nieddu's 2019](../lit/nieddu2019.md) same-channel
 baseline (not loaded here).
 
+### 5.6 The Lehmann cusp (M8)
+
 **The Lehmann cusp — not resolvable in 2025, as designed (module M8).** At the
 cold-dim 70 °C corner the BIC comparison ([§4.7 — The statistics](06_the_statistics.md)) gives
 $\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.6/-0.1$ across
@@ -191,6 +202,8 @@ laser Gaussian smears the cusp and the transit/laser split is itself
 unresolved ([§2.5 — The lineshape, kernel by kernel](02_the_lineshape.md)). No lean is claimed. The decisive cusp test is the fixed-lock session's
 narrow-laser data, for which this module (closure-tested to prefer the right
 form when a cusp *is* present) is validated infrastructure.
+
+### 5.7 Area ratios against the degeneracy law (M10)
 
 **Area ratios vs the degeneracy law (module M10) — a parameter-free
 prediction the archive cannot yet test.** For two *identical* photons the
@@ -209,6 +222,8 @@ Two consequences: cross-peak amplitude comparisons in this archive carry
 $\sim$30–50% systematics (per-peak, within-block analyses like M7 are
 unaffected), and the clean degeneracy-law test is a task for a fixed-lock session — measure
 the four peaks **interleaved**, with power logging.
+
+### 5.8 Foundational results underpinning the above
 
 **Foundational results underpinning all of the above.** The sweep rate is
 $0.04257(5)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis

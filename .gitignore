@@ -2,7 +2,13 @@
 # claims are verifiable without a run (review round 3). Regenerate with the
 # scripts; the committed copy is the documented run. Only the huge raw QC dump
 # stays out.
-results/qc_metrics.csv
+# results/qc_metrics.csv was ignored as a "scratch dump" until 2026-07-27,
+# when two things showed it should not be: the README advertises a public
+# reproduction path (run_qc.py -> run_drift_settling.py) that CANNOT work
+# without raw traces, so the public mirror hit FileNotFoundError; and M20 reads
+# it to rebuild the laser history. It is 112 KB of derived per-trace scalars --
+# baseline, snr, peak position, widths -- with no raw samples, the same
+# category as the committed ruler_traces.csv. Now committed.
 
 # Python
 __pycache__/
