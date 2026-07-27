@@ -779,6 +779,15 @@ def _rekick_steps() -> pd.DataFrame:
             rul.append(dict(peak=int(f.stem[:4]), T=float(f.stem.split("_")[2][:3]),
                             t=mt[rel], pos=_carrier_ms(f)))
     R = pd.DataFrame(rul).dropna()
+    # The T-epoch half needs the ruler traces themselves, which live in
+    # data_raw/rulers_t/. A checkout without the raw traces (the public mirror)
+    # gets an empty frame here, and groupby on it raises KeyError rather than
+    # returning nothing -- so the P-epoch steps, which come from the committed
+    # qc_metrics table and ARE available, are returned alone.
+    if R.empty:
+        print("  (no data_raw/rulers_t traces -- T-epoch re-kick steps skipped;"
+              " P-epoch steps below come from the committed QC table)")
+        return pd.DataFrame(rows)
     Tsw = d[d.role == "t_sweep"]
     for (peak, T), g in R.groupby(["peak", "T"]):
         blk = Tsw[(Tsw.peak == peak) & (Tsw.temperature_C == T)]
