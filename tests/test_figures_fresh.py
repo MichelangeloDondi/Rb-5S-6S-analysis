@@ -19,7 +19,6 @@ illustration (frozen data_raw + fit), not an artifact of the mutable results/.
 
 from __future__ import annotations
 
-from pathlib import Path
 
 import pytest
 from PIL import Image

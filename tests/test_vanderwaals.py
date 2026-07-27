@@ -82,3 +82,36 @@ def test_mean_relative_speed_uses_the_reduced_mass():
     import rb5s6s.vanderwaals as V
     single = math.sqrt(8 * V.KB * 403.15 / (math.pi * V.M_RB87))
     assert mean_relative_speed(403.15) == pytest.approx(math.sqrt(2) * single, rel=1e-9)
+
+
+def test_module_overpredicts_the_one_measured_nS_rate():
+    """The external check this module lacked until Zameroski's 7S broadening
+    rate was read off the held PDF. Run on 7S -- the only nS state in Rb with a
+    measured self-broadening rate -- the absolute prediction is high by ~1.7x,
+    outside anything the sum-over-states truncation explains. Lock the size in:
+    if it silently improves, the prefactor was changed and the anchored
+    estimate below must be revisited; if it worsens, something regressed."""
+    from rb5s6s.vanderwaals import beta_self_anchored
+    r = beta_self_anchored()
+    assert 1.5 < r["prefactor_discrepancy"] < 1.9, r["prefactor_discrepancy"]
+    assert r["beta7_measured_khz"] == pytest.approx(5.39, rel=0.02)
+
+
+def test_anchored_beta_is_bracketed_by_its_two_inputs():
+    """beta(6S) anchored = beta(7S)_measured * [C6(6S)/C6(7S)]^(2/5). Since
+    C6(6S) < C6(7S), the result must sit BELOW the measured 7S rate -- the
+    ordering the raw prediction appeared to violate before the prefactor error
+    was isolated."""
+    from rb5s6s.vanderwaals import beta_self_anchored
+    r = beta_self_anchored()
+    assert r["c6_ratio"] < 1.0
+    assert 0.0 < r["beta6_khz"] < r["beta7_measured_khz"]
+    assert r["beta6_khz"] == pytest.approx(3.53, rel=0.05)
+
+
+def test_archival_bound_still_sits_well_above_the_anchored_expectation():
+    """The conclusion that survives every route to an expected value: the
+    archival bound (0.2-0.4 MHz per 1e12 cm^-3) is orders above it."""
+    from rb5s6s.vanderwaals import beta_self_anchored
+    b = beta_self_anchored()["beta6_khz"]
+    assert 40 < 200.0 / b and 400.0 / b < 200

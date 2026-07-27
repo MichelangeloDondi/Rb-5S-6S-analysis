@@ -48,7 +48,7 @@ from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.linefit import to_frequency  # noqa: E402
 from rb5s6s.global_fit import fit_global  # noqa: E402
-from rb5s6s.lever_crosscheck import lever_crosscheck_beta, GRID_CELLS, PRIMARY  # noqa: E402
+from rb5s6s.lever_crosscheck import lever_crosscheck_beta, GRID_CELLS  # noqa: E402
 
 PEAKS = ("4121", "4154", "4192", "4207")
 TSWEEP = ("70", "90", "110")
@@ -145,7 +145,7 @@ def _report(res, blocks):
     isos = res["isotopes"]
     tk, sh = res["primary"]
     print("=" * 74)
-    print(f"LEVER CROSS-CHECK beta_self (cooling sweep 70/90/110 C) -- a bound, NOT the headline")
+    print("LEVER CROSS-CHECK beta_self (cooling sweep 70/90/110 C) -- a bound, NOT the headline")
     print(f"  {len(blocks)} blocks, {res['n_traces']} traces, density lever x{_lever(blocks):.0f}")
     print(f"  headline model = ({tk}, {sh}) = Lehmann cusp + M4c-validated per-T sharing")
     print(f"  chi2_red (headline) = {res['chi2_red'][f'{tk}|{sh}']:.3f}\n")

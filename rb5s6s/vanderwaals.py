@@ -59,6 +59,15 @@ M_RB87 = 86.909180527 * 1.66053907e-27
 # Literature Rb2 ground-state C6, for the validation path only.
 C6_RB2_GROUND_LIT_AU = 4691.0
 
+# Zameroski 2014 (J. Phys. B 47, 225205), section 2.5: the MEASURED self-
+# broadening rate of the 85Rb 5S1/2(F=2) -> 7S1/2(F=2) two-photon line,
+# 129 +- 11 kHz/mTorr. Their 7S self-SHIFT could not be extracted from the data
+# -- the -17.8 kHz/mTorr sometimes attributed to them is Morzynski 2013's, on
+# the laser axis. This is the only measured self-broadening rate for an nS state
+# in Rb, and so the only external check this module has.
+ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR = 129.0
+ZAMEROSKI_7S_BROADENING_ERR = 11.0
+
 # Lindholm-Foley impact prefactor for a -C6/R^6 potential: HWHM in angular
 # units. Quoted from the standard pressure-broadening literature, NOT derived
 # here -- see the module docstring.
@@ -108,6 +117,44 @@ def c6_5s6s() -> float:
 def mean_relative_speed(T_K: float) -> float:
     """Mean RELATIVE speed of two Rb atoms (reduced mass m/2), m/s."""
     return math.sqrt(8.0 * KB * T_K / (math.pi * (M_RB87 / 2.0)))
+
+
+def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
+    """beta_self(6S) anchored on Zameroski's MEASURED 7S rate, using this
+    module only for the RATIO of C6 coefficients.
+
+    Why not just call beta_self_vdw for 6S: it over-predicts. Run against the
+    one state where a measurement exists, this module gives beta_self(7S) =
+    9.0 kHz per 1e12 cm^-3 where Zameroski measured 5.4 -- high by 1.67x, well
+    outside the +-10-15% the sum-over-states truncation can explain. The module
+    docstring already names the suspect: the Lindholm-Foley prefactor is quoted
+    from the pressure-broadening literature, not derived here, and its
+    convention (HWHM vs FWHM, angular vs ordinary units) is where a factor of
+    that size lives.
+
+    Whatever that error is, it is COMMON to 6S and 7S -- same prefactor, same
+    law, same units. It cancels in the ratio:
+
+        beta(6S) = beta(7S)_measured * [C6(6S) / C6(7S)]^(2/5)
+
+    which uses this module for the part it does well (a ratio of two sums over
+    the same matrix elements) and takes the absolute scale from an experiment.
+    Returns ~3.5 kHz per 1e12 cm^-3, between the raw 5.9 and the ~1 kHz that an
+    older n*^7 Rydberg scaling of a MISATTRIBUTED self-shift used to give.
+    """
+    from .polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM
+    c6_6 = c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
+    c6_7 = c6_coefficient(LINES_5S, 0.0, LINES_7S, E_7S_CM)
+    n_per_mtorr = (1e-3 * 133.322) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
+    beta7_meas = ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR / (n_per_mtorr / n_cm3)
+    err7 = ZAMEROSKI_7S_BROADENING_ERR / (n_per_mtorr / n_cm3)
+    scale = (c6_6 / c6_7) ** 0.4
+    return {"beta6_khz": beta7_meas * scale,
+            "beta6_err_khz": err7 * scale,
+            "beta7_measured_khz": beta7_meas,
+            "beta7_predicted_khz": beta_self_vdw(c6_7, T_K, n_cm3) / 1e3,
+            "c6_ratio": c6_6 / c6_7,
+            "prefactor_discrepancy": (beta_self_vdw(c6_7, T_K, n_cm3) / 1e3) / beta7_meas}
 
 
 def beta_self_vdw(c6_au: float, T_K: float, n_cm3: float = 1e12,

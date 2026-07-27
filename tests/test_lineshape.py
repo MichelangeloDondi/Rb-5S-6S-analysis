@@ -84,24 +84,6 @@ def test_stark_ramp_small_s0_continuous_and_mean_exact():
         prev = r
 
 
-def test_stark_ramp_small_s0_continuous_and_mean_exact():
-    # Review fix: the old grid-spike fallback switched the shape
-    # DISCONTINUOUSLY at s0 ~ dnu (false-minimum trap for fixed-lock fits that
-    # float s0). Now: exact area at every s0, exact mean -2/3 s0 even far
-    # below the grid step, and no large L1 jumps along a fine s0 sweep.
-    nu = np.arange(-30.0, 30.0, 0.05)
-    dnu = 0.05
-    prev = None
-    for s0 in np.arange(0.2 * dnu, 6.0 * dnu, 0.1 * dnu):
-        r = stark_ramp(nu, float(s0))
-        assert abs(np.sum(r) * dnu - 1.0) < 1e-9          # exact area
-        mean = float(np.sum(nu * r) * dnu)
-        assert abs(mean - (-(2.0 / 3.0) * s0)) < 1e-6      # exact mean
-        if prev is not None:                                # continuity
-            assert np.sum(np.abs(r - prev)) * dnu < 0.35, s0
-        prev = r
-
-
 def test_composite_reduces_to_lorentzian():
     # kill every extra mechanism => pure natural Lorentzian.
     nu = np.arange(-60, 60, 0.02)

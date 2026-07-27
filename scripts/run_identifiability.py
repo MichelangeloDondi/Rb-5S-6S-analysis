@@ -260,7 +260,7 @@ def main() -> int:
     print(f"  locally the profile {'CONFIRMS' if straight and slope_ok and abs(dmin) < 6 else 'QUALIFIES'} "
           f"the covariance ({'straight' if straight else 'curved'} valley, "
           f"slope {'agreeing' if slope_ok else 'disagreeing'}, min gap {dmin:+.1f});")
-    print(f"  globally the wide map "
+    print("  globally the wide map "
           + (f"finds DEEPER chi2 ({gap_wide:+.1f}) away from the free fit -- the free "
              f"fit is one of several near-degenerate optima -- "
              if gap_wide > 6.0 else "confirms the free fit as its optimum, ")

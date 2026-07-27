@@ -43,7 +43,12 @@ def _tracked(*globs: str) -> list[str]:
 # --------------------------------------------------------------------------
 # 1. Private material must never be tracked
 # --------------------------------------------------------------------------
-PRIVATE_GLOBS = ["docs/brief_*", "docs/*audit*", "docs/*red_team*",
+PRIVATE_GLOBS = ["private/*", "private/**/*", "docs/brief_*", "docs/*audit*", "docs/*red_team*",
+                 # the underscore-free spelling: external critiques of the
+                 # APPLICATION (PI named, referees, career strategy). Three
+                 # such files were unignored on 2026-07-27 because every
+                 # private glob here assumed "red_team".
+                 "docs/*redteam*", "docs/ChatGPT*", "ChatGPT*",
                  "docs/CV_*", "docs/*inquiry*", "docs/linkedin*", "*.docx",
                  # publication-strategy planning: process, unpublished
                  # 2026-07-23 (assigns collaborators roles and labs on an
@@ -501,3 +506,19 @@ def test_module_range_glosses_are_not_stale():
             if hi < top and not historical:
                 stale.append(f"{path.relative_to(ROOT)}: 'M0-M{hi}' but modules run to M{top}")
     assert not stale, "\n".join(stale)
+
+
+def test_sigma_sharing_producer_does_not_overclaim():
+    """The M4c sharing check is under-powered (chi2/dof ~0.2-0.6, i.e. error bars
+    too large to discriminate), so its verdict is CONSISTENCY, not confirmation.
+    run_sigma_laser_sharing.py once printed that the timing concern was 'answered
+    POSITIVELY -- the peaks did see a common laser width' while docs/RESULTS.md
+    had already walked that back to 'untested'. Producer stdout is what a reader
+    running the pipeline actually sees, so it must not carry the stronger claim
+    the analysis retracted."""
+    src = (ROOT / "scripts" / "run_sigma_laser_sharing.py").read_text()
+    banned = ["answered POSITIVELY", "is LICENSED", "did see a common laser width"]
+    hits = [b for b in banned if b in src and "withdrawn" not in src.split(b)[1][:400]]
+    assert not hits, f"retracted sharing claim back in the producer: {hits}"
+    assert "UNDER-POWERED" in src or "under-powered" in src, \
+        "the under-powered caveat must stay in the producer's finding"

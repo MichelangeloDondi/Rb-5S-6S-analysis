@@ -13,8 +13,7 @@ from __future__ import annotations
 import numpy as np
 
 from rb5s6s import config as C
-from rb5s6s.noise import (condition_noise_model, fit_variance_law,
-                          noise_vs_level, second_diff, robust_sigma,
+from rb5s6s.noise import (condition_noise_model, second_diff, robust_sigma,
                           wing_correlation, sigma_of_v)
 
 T_MS = np.arange(2000) * 0.5 - 500.0

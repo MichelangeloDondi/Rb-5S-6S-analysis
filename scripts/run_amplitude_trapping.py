@@ -80,7 +80,6 @@ def main() -> int:
           + "     A/N norm to 70C (1.0 = linear)")
     for peak in PEAKS:
         d = data[peak]
-        Ts = sorted(d)
         if 70 not in d:
             continue
         A70, N70 = d[70][0], density_units(70.0)

@@ -35,9 +35,8 @@ whether the data can pay for 9 extra parameters -- not the PHYSICS of sharing.
 Four peaks that co-drifted between unlogged acquisitions would look shared too
 (M4c), and no in-sample score can recover the timing. So dBIC > 0 reads "the
 archive cannot justify per-block freedom" (Occam on underpowered data), NOT "the
-sharing is confirmed". That the sign even flips with the sample counting is itself
-the headline: the archive does not robustly resolve shared-vs-independent,
-exactly as M4c frames it. The headline result stays the model-INDEPENDENT
+sharing is confirmed". The sign flips with the sample counting, so the archive
+does not robustly resolve shared-vs-independent, exactly as M4c frames it. The headline result stays the model-INDEPENDENT
 width-slope bound (C1); this only turns the M4c consistency check into a number.
 
 The closure test (tests/test_sharing_bic.py) uses clean synthetics (tau = 1, so

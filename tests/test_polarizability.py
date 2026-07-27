@@ -10,7 +10,6 @@ ship its magic wavelengths.
 
 from __future__ import annotations
 
-import numpy as np
 
 from rb5s6s.constants import DELTA_ALPHA_AU
 from rb5s6s.polarizability import (alpha_5s, alpha_6s, alpha_7s, delta_alpha,

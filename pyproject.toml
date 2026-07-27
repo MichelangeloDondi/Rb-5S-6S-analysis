@@ -33,3 +33,33 @@ testpaths = ["tests"]
 markers = [
     "slow: high-statistics closure test, skipped by default; run with --runslow (CI always does)",
 ]
+
+[tool.ruff]
+# 100, not the default 88: the p99 line in this tree is 94 characters, and the
+# long lines are overwhelmingly scientific docstrings where re-wrapping would
+# break tables and formulae. Anything past 100 is a genuine offender.
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F"]
+# Deliberate, not unexamined. E702: this tree uses semicolon-joined parallel
+# assignments for index masking and unpacking (`freqs[i] = freqs[i][m]; ...`),
+# which keeps related array operations on one visual line; splitting the ~130
+# instances would be churn without a defect fixed. E741: `l`, `I` and `O` appear
+# as conventional physics symbols (path length, intensity) where renaming would
+# be less readable, not more. E731: a handful of local lambdas in numeric inner
+# loops. E501: docstrings here carry tables, formulae and provenance prose that
+# re-wrapping would break, and console output is column-aligned; the p99 code
+# line is 94 characters, so length is not the problem length rules solve.
+# Everything else in E and F is enforced, and F -- the rules that catch real
+# defects -- is CLEAN. The F811 it caught was a test defined twice, so one copy
+# had never run; the F841s were dead assignments left by refactors.
+ignore = ["E702", "E741", "E731", "E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# the package surface deliberately re-exports names it does not itself use
+"rb5s6s/__init__.py" = ["F401"]
+# analysis drivers put sys.path setup before their local imports
+"scripts/*.py" = ["E402"]
+# conftest documents the archive-optional skip policy above its imports
+"tests/conftest.py" = ["E402"]

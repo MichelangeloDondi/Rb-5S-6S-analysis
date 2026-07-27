@@ -338,7 +338,6 @@ def test_narrative_docs_do_not_argue_from_unverified_papers():
     it survived review by eye.
     """
     import re
-    from pathlib import Path
 
     reported = set()
     for note in (ROOT / "docs" / "lit").glob("*.md"):

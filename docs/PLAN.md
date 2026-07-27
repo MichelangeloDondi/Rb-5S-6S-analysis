@@ -920,7 +920,7 @@ one); the hybrid is across the moment hierarchy, never across methods.
      MEASUREMENT. Until all of this exists the ruler widths serve as the
      per-block QC veto above (a gate, not a variate).
 - **High-T extension 150 → 170 °C** (oven/cell permitting): the Zameroski
-  calibration (LITERATURE.md) puts expected β_self(6S) ~1 kHz per
+  calibration (LITERATURE.md) puts expected β_self(6S) ~3.5 kHz per
   10¹² cm⁻³, so 70–130 °C yields Δγ ≈ 20 kHz — unmeasurable; 150–170 °C
   yields 0.07–0.25 MHz — which is 0.8–2.9σ against the *current* block-noise
   floor and 3.2–11.6σ once that floor is cut 4× (M17). Necessary, not

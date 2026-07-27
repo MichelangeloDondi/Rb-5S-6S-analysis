@@ -201,8 +201,8 @@ def main() -> int:
     print("\nWITHIN blocks -- reset-free local drift (bounds, not detections):")
     print(f"  t < {EARLY_H:g} h : {me:+5.2f} +/- {ee:.2f} ms/min   (n={len(early)})")
     print(f"  t > {LATE_H:g} h : {ml:+5.2f} +/- {el:.2f} ms/min   (n={len(late)})")
-    print(f"  => |drift| <~ 4 ms/min at every epoch; the early 6-9 ms/min the")
-    print(f"     between-block pairs show CANNOT be drift.")
+    print("  => |drift| <~ 4 ms/min at every epoch; the early 6-9 ms/min the")
+    print("     between-block pairs show CANNOT be drift.")
 
     print("\nBETWEEN blocks -- drift PLUS operator re-centrings:")
     steps_early = int(B[B.t_h < EARLY_H].step.sum())
@@ -231,8 +231,8 @@ def main() -> int:
     print(f"    exponential + floor: A={f1.x[0]:.1f}, tau={f1.x[1]*60:.0f} min, "
           f"floor={f1.x[2]:+.2f}   AIC {a1:6.1f}")
     print(f"    dAIC = {a0 - a1:+.1f} for the exponential -- the DISTURBANCE settles")
-    print(f"    (tau describes drift+re-centrings jointly; the pure-drift split is")
-    print(f"     below the within-block bound and is not claimed)")
+    print("    (tau describes drift+re-centrings jointly; the pure-drift split is")
+    print("     below the within-block bound and is not claimed)")
 
     lp = PR[(PR.t_h > LATE_H) & ~PR.touches_step]
     med = float(lp.rate.median())
@@ -249,7 +249,7 @@ def main() -> int:
           f"-- a detection,\n  not a bound, though its cleanliness rests on the "
           f"cluster being interventions-free.")
     print(f"  over a 32 s block: {med * 32 / 60:.2f} ms of centre walk, below the")
-    print(f"  1.8 ms jitter -- consistent with the intra-block JITTER verdict.")
+    print("  1.8 ms jitter -- consistent with the intra-block JITTER verdict.")
 
     joint_fit_report()
     state_space_report()
@@ -496,18 +496,18 @@ def state_space_report() -> None:
             w = o.x
     ok = [k for k, v in prof.items() if v - nll < 0.5]
     print(f"\n  gaussian-noise drift: {th_d[0]:+.2f} [{min(ok):+.2f}, {max(ok):+.2f}] ms/min (68%)")
-    print(f"    -- BIASED HIGH: the residual audit (addendum 7) found three")
-    print(f"    end-of-ladder within-block moves this noise model cannot")
-    print(f"    represent, absorbed as drift. The mixture stage below is the")
-    print(f"    headline; this number is kept as the intermediate it was.")
+    print("    -- BIASED HIGH: the residual audit (addendum 7) found three")
+    print("    end-of-ladder within-block moves this noise model cannot")
+    print("    represent, absorbed as drift. The mixture stage below is the")
+    print("    headline; this number is kept as the intermediate it was.")
     if ki == "exp":
         print(f"  THE SETTLING BELONGS TO THE OPERATOR: sig_gap = {th_i[0]:.0f} ms x "
               f"exp(-t/{th_i[1]*60:.0f} min)")
-        print(f"    (tau_i spans ~70-160 min across analysis variants -- LOO-4207,")
-        print(f"     window-move threshold 60/150 ms -- while c stays within +-0.02;")
-        print(f"     early re-centrings ~1-4 MHz laser RMS, late <~0.2 MHz)")
+        print("    (tau_i spans ~70-160 min across analysis variants -- LOO-4207,")
+        print("     window-move threshold 60/150 ms -- while c stays within +-0.02;")
+        print("     early re-centrings ~1-4 MHz laser RMS, late <~0.2 MHz)")
     print(f"  obs-noise scale {sc:.2f} on the block MADs -- effective per-trace noise")
-    print(f"  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
+    print("  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
     print("  This claims the split addendum 4 declined: the earlier tau ~ 73 min")
     print("  exponential was the INTERVENTION amplitude; the drift never settled.")
 
@@ -625,11 +625,11 @@ def mixture_report() -> None:
           f"   [{min(ok95):+.2f}, {max(ok95):+.2f}] (95%)")
     print(f"    = {c0*RATE_MHZ_MS:+.4f} [{min(ok68)*RATE_MHZ_MS:+.4f}, "
           f"{max(ok68)*RATE_MHZ_MS:+.4f}] MHz/min laser (68%)")
-    print(f"  a ~2-sigma POSITIVE INDICATION, no longer a firm detection: the")
-    print(f"  gaussian 3-sigma rested on three real end-of-ladder moves absorbed")
-    print(f"  as drift. Converges with the segmented floor (+0.19..+0.37) and")
-    print(f"  the clean-pair cluster (+0.55 +/- 0.17). Structure unchanged:")
-    print(f"  interventions settle (dAIC ~ +17), drift settling buys nothing")
+    print("  a ~2-sigma POSITIVE INDICATION, no longer a firm detection: the")
+    print("  gaussian 3-sigma rested on three real end-of-ladder moves absorbed")
+    print("  as drift. Converges with the segmented floor (+0.19..+0.37) and")
+    print("  the clean-pair cluster (+0.55 +/- 0.17). Structure unchanged:")
+    print("  interventions settle (dAIC ~ +17), drift settling buys nothing")
     print(f"  (dAIC ~ +4 against). Persisting, ~{abs(c0)*RATE_MHZ_MS*60*20.5:.0f} MHz laser over 20.5 h.")
 
 
@@ -694,7 +694,7 @@ def pull_bound_report() -> None:
 
     peaks_m = _mix_peaks()
     bq = _mix_fit(peaks_m, q_mode="free")
-    q = float(bq.x[-1]); nq0 = float(bq.fun)
+    q = float(bq.x[-1])
     prof = {}
     for direction in (1, -1):
         for k in range(10):
@@ -707,12 +707,12 @@ def pull_bound_report() -> None:
     print("model; estimator unbiased by injection closure -- addenda 6-7):")
     print(f"  q = {q:+.4f} [{min(ok95):+.3f}, {max(ok95):+.3f}] ms/mW (95%)")
     print(f"  -> S0(225 mW) < {s0:.1f} MHz transition from CENTRES alone --")
-    print(f"     ~8x looser than the width channel's < 0.63 (profile), but")
-    print(f"     corroborating through disjoint systematics; floor ~9x above")
-    print(f"     the 0.59 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
-    print(f"     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
-    print(f"     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")
-    print(f"     nothing bridges, nothing to fit.")
+    print("     ~8x looser than the width channel's < 0.63 (profile), but")
+    print("     corroborating through disjoint systematics; floor ~9x above")
+    print("     the 0.59 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
+    print("     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
+    print("     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")
+    print("     nothing bridges, nothing to fit.")
 
 
 # ---- the re-kick fit: does the transient restart at each epoch? (addendum 12)
@@ -848,12 +848,12 @@ def rekick_report() -> None:
     from scipy import stats as st
     S = _rekick_steps()
     print("\nTHE PER-TEMPERATURE QUESTION, FITTED (experimenter's proposal; addendum 12)")
-    print(f"  for the DRIFT it stays unresolved (T-session baselines too short;")
-    print(f"  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE,")
+    print("  for the DRIFT it stays unresolved (T-session baselines too short;")
+    print("  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE,")
     print(f"  {len(S)} gap steps ({(S.epoch=='P').sum()} P-session ladder pairs + "
           f"{(S.epoch!='P').sum()} T-session ruler->science),")
-    print(f"  each epoch's clock restarting at its own start (90 C at the")
-    print(f"  photographed 17:03 re-lock):")
+    print("  each epoch's clock restarting at its own start (90 C at the")
+    print("  photographed 17:03 re-lock):")
     labels = [("const", "constant"), ("session", "one decay, session clock"),
               ("levels", "per-epoch LEVEL, no decay   [control]"),
               ("rekick1", "RE-KICK, one amplitude, shared tau"),
@@ -868,8 +868,8 @@ def rekick_report() -> None:
     print(f"  best: {best}")
     print(f"  => dAIC {res['session'][2]-res['rekick1'][2]:+.1f} over the session clock, "
           f"{res['levels'][2]-res['rekick1'][2]:+.1f} over the per-epoch-level control")
-    print(f"     (so it is the DECAY FROM EACH EPOCH START that carries it, not")
-    print(f"      merely that epochs differ), and one amplitude suffices:")
+    print("     (so it is the DECAY FROM EACH EPOCH START that carries it, not")
+    print("      merely that epochs differ), and one amplitude suffices:")
     print(f"     B = {th1[0]:.0f} ms = {th1[0]*RATE_MHZ_MS:.1f} MHz laser, "
           f"tau = {th1[1]*60:.0f} min")
     lr = 2 * (res["rekick1"][1] - res["rekickN"][1])
@@ -878,8 +878,8 @@ def rekick_report() -> None:
           f"({'differ' if p < 0.05 else 'CONSISTENT WITH EQUAL'});")
     print(f"     a second exponential buys nothing "
           f"({res['rekick2exp'][2]-res['rekick1'][2]:+.1f} AIC).")
-    print(f"  One thermal transient, one amplitude, re-armed by every re-lock --")
-    print(f"  which is what an etalon settling to a new set point should do.")
+    print("  One thermal transient, one amplitude, re-armed by every re-lock --")
+    print("  which is what an etalon settling to a new set point should do.")
     _second_timescale_report(S, res["rekick1"])
 
 
@@ -905,13 +905,13 @@ def _second_timescale_report(S, rekick1_fit) -> None:
         [60., 3., abs(th1[0]), th1[1]], method="Nelder-Mead",
         options=dict(xatol=1e-5, fatol=1e-5, maxiter=80000))
     aicc = lambda f, k: 2*f + 2*k + 2*k*(k+1)/max(n-k-1, 1)
-    print(f"\n  A SECOND, CAMPAIGN-WIDE TIME CONSTANT (independent processes add in")
+    print("\n  A SECOND, CAMPAIGN-WIDE TIME CONSTANT (independent processes add in")
     print(f"  variance): AICc {aicc(nll1,2):.1f} for the re-kick alone vs "
           f"{aicc(float(free.fun),4):.1f} with it.")
     print(f"    the campaign component's amplitude fits to "
           f"{abs(free.x[0]):.1f} ms and buys 2dlnL = {2*(nll1-float(free.fun)):.2f} "
           f"on 2 dof -- it is ABSENT, not merely unwarranted.")
-    print(f"    so the deliverable is its 95% upper bound, per assumed slow tau:")
+    print("    so the deliverable is its 95% upper bound, per assumed slow tau:")
     for tau_c, lab in ((3.0, "3 h"), (6.0, "6 h"), (1e3, "flat"), (1.0, "1 h")):
         lo, hi = 0.0, 800.0
         for _ in range(22):                       # bisect the 1-dof 95% edge
@@ -924,8 +924,8 @@ def _second_timescale_report(S, rekick1_fit) -> None:
         note = "  <-- DEGENERATE with the re-kick's own tau: nothing excluded" \
                if tau_c < 1.5 else ""
         print(f"      tau = {lab:5s}: A < {lo:5.0f} ms = {lo*RATE_MHZ_MS:4.1f} MHz laser{note}")
-    print(f"    The archive cannot separate two processes sharing a timescale;")
-    print(f"    logging lock-state transitions is what breaks that degeneracy.")
+    print("    The archive cannot separate two processes sharing a timescale;")
+    print("    logging lock-state transitions is what breaks that degeneracy.")
 
 
 if __name__ == "__main__":

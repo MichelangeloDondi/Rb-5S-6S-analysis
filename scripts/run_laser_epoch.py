@@ -83,14 +83,14 @@ def main() -> int:
     print("(M5) 2025 LASER-EPOCH sigma_laser -- UPPER BOUND (degenerate with w0)")
     print(f"  {len(good)}/{len(rows)} conditions constrain sigma_laser (rel err <40%); "
           f"{len(degen)} EXCLUDED as degenerate (low-SNR cold/low-power corners")
-    print(f"    where sigma<->gamma is unconstrained): "
+    print("    where sigma<->gamma is unconstrained): "
           + ", ".join(f"{r['peak']}@{r['T'] if r['role']=='t_sweep' else '130/'+r['P']+'mw'}"
                       for r in degen))
-    print(f"  well-constrained sigma_laser (transition axis, at the w0=50um prior):")
+    print("  well-constrained sigma_laser (transition axis, at the w0=50um prior):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
           f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
-    print(f"\n  w0-degeneracy band (laser-axis sigma_laser needed for the same 5.25 MHz total):")
+    print("\n  w0-degeneracy band (laser-axis sigma_laser needed for the same 5.25 MHz total):")
     band = w0_band()
     for tr, w0, sl in band:
         note = "  <- laser could be NARROW" if sl < 0.05 else ""

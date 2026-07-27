@@ -159,7 +159,7 @@ def main() -> int:
     # OPPOSITE of the ramp (~P^3). Reporting the log-log exponent + the peak
     # low-power significance IDENTIFIES the 9sigma as shot noise, so it is neither
     # mistaken for a ramp nor written off as "consistent with zero".
-    print(f"\n  shot-noise cross-check [skew ~ amp^s; Poisson predicts s ~ -0.5]:")
+    print("\n  shot-noise cross-check [skew ~ amp^s; Poisson predicts s ~ -0.5]:")
     for peak in PEAKS:
         pts = [(o["amp"], o["resid_skew"], o["resid_skew_err"]) for o in out if o["peak"] == peak]
         a = np.array([x[0] for x in pts]); s = np.array([x[1] for x in pts])

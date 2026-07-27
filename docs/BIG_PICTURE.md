@@ -359,10 +359,24 @@ that series.
 dipole-dipole term and the leading interaction is van der Waals — which means
 the coefficient follows from the same matrix elements that produced Δα(993),
 continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That gives
-**C₆(5S+6S) ≈ 2.9×10⁴ a.u.**, and through the impact-broadening law an expected
-**β_self(6S) ≈ 5.9 kHz per 10¹² cm⁻³** at 130 °C. The archival bound of
-0.2–0.4 MHz therefore sits **34–68× above a computed expectation**, not above
-one imported from the 7S measurement.
+**C₆(5S+6S) ≈ 2.9×10⁴ a.u.**
+
+That absolute value should not be used on its own, and the reason is worth
+stating. Run on 7S — the one nS state in Rb with a *measured* self-broadening
+rate (Zameroski 2014, 129 ± 11 kHz/mTorr) — the same code returns 9.0 kHz per
+10¹² cm⁻³ against a measured 5.4, high by 1.7×. That is well outside the
+±10–15% the valence-only truncation explains, and it falls on the weakness the
+module had already flagged: the impact prefactor is quoted from the
+pressure-broadening literature, not derived.
+
+The error is common to 6S and 7S, so it cancels in a ratio. Using the computed
+C₆(6S)/C₆(7S) = 0.347 to scale the *measured* 7S rate gives
+
+**β_self(6S) = 3.5 ± 0.3 kHz per 10¹² cm⁻³**,
+
+an expectation anchored on a measurement of the same observable on the
+neighbouring state. The archival bound of 0.2–0.4 MHz sits **57–113× above
+it**.
 
 The validation matters more than the number: the identical machinery gives
 C₆(5S+5S) = 4180 a.u. against the literature Rb₂ value of ~4691 — 11% low, in

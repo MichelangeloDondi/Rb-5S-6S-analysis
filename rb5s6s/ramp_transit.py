@@ -60,8 +60,7 @@ the substantive check, and it is what licenses the convolution.
 WHAT ELSE THE REAL GEOMETRY THROWS AT IT. The beam is retro-reflected, so it
 is a standing wave with lambda/2 fringes; the atoms carry a Maxwell-Boltzmann
 velocity distribution; and the shift is inhomogeneous in three dimensions, not
-one. Each of those is checked rather than assumed, and the pull survives all
-three:
+one. Each is checked below, and the pull survives all three:
 
   * STANDING WAVE. The fringe modulates the SHIFT (which follows the total
     |E+ + E-|^2 over the full lambda/2 period) but NOT the coupling (the
@@ -85,9 +84,7 @@ suppression of the third cumulant is `fringe_tail` (M15) -- neither is
 re-derived here. Third and higher cumulants are NOT resolved by this simulation -- the
 numerical noise floor of the FFT, weighted by nu^3, swamps kappa_3 -- so the
 change-of-variables argument is the only support for the odd cumulants above
-the first, and it carries the quasi-static assumption. Stated as a limitation
-rather than papered over, because kappa_3 is the moment the asymmetry claim
-actually rests on.
+the first, and it carries the quasi-static assumption. kappa_3 is the moment the asymmetry claim rests on.
 """
 
 from __future__ import annotations

@@ -314,7 +314,13 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             APPARATUS.md (hardware of record + provenance) ·
             THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
             PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
-            (the timestamp audit: frozen predictions, results, addenda 1-18)
+            (the timestamp audit: frozen predictions, results, addenda 1-18) ·
+            RESEARCH_DECISIONS.md (why the analysis stops where it does) ·
+            lit/ (one note per paper) + STYLE.md
+private/    NOT PART OF THE REPOSITORY -- excluded wholesale by .gitignore and
+            by tests/test_repo_hygiene.py. Correspondence, career material,
+            external critiques and unpublished manuscript drafts live here so
+            that docs/ contains only material intended for a reader.
 ```
 
 ## Conventions

@@ -61,7 +61,6 @@ import csv
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,8 +68,8 @@ sys.path.insert(0, str(ROOT))
 
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.resolving import (  # noqa: E402
-    averaging_test, block_noise, common_variance_fraction, dynamic_range,
-    projection, variance_reduction, verdict,
+    averaging_test, block_noise, dynamic_range,
+    verdict,
 )
 
 # PLAN M4 / BIG_PICTURE 4: the collisional width moves this much once the
@@ -151,16 +150,16 @@ def main() -> int:
     at = averaging_test(resid, n_perm=20000, seed=C.RNG_SEED)
     obs, p_common = at["observed"], at["p_common"]
     lo, hi = at["null_lo90"], at["null_hi90"]
-    print(f"\nTHE ASSUMPTION UNDER THE S0 BOUND (M4e).")
-    print(f"  Its sqrt(chi2) inflation is the right remedy only if the block")
-    print(f"  scatter averages down. Permuting each peak's residuals across")
-    print(f"  powers gives the independence null:")
+    print("\nTHE ASSUMPTION UNDER THE S0 BOUND (M4e).")
+    print("  Its sqrt(chi2) inflation is the right remedy only if the block")
+    print("  scatter averages down. Permuting each peak's residuals across")
+    print("  powers gives the independence null:")
     print(f"    observed variance-reduction {obs:.2f}x   "
           f"null {at['null_median']:.2f}x [{lo:.2f}, {hi:.2f}] (90%)   p = {p_common:.3f}")
-    print(f"  -> a common component is NOT established, and equally NOT excluded:")
+    print("  -> a common component is NOT established, and equally NOT excluded:")
     print(f"     the null's own 90% band spans [{lo:.2f}, {hi:.2f}], so 4 peaks x 5")
-    print(f"     powers cannot resolve this. The assumption stands untested, not")
-    print(f"     contradicted. A returned-to power block would test it directly.")
+    print("     powers cannot resolve this. The assumption stands untested, not")
+    print("     contradicted. A returned-to power block would test it directly.")
 
     out = C.RESULTS_DIR / "resolving_power.csv"
     with open(out, "w", newline="") as f:

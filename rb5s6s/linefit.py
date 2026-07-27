@@ -50,7 +50,7 @@ corr(sigma_laser, gamma_coll) ~ -0.9. So:
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import numpy as np
 from scipy.optimize import least_squares

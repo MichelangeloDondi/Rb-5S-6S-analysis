@@ -502,6 +502,163 @@ def fig_ruler():
     _save(fig, "fig8_ruler.png")
 
 
+def fig_degeneracy_vs_observable():
+    """Why the per-condition Lorentzian/Gaussian split is never quoted as
+    physics (docs/RESEARCH_DECISIONS.md 1). LEFT: the 20 power-sweep conditions
+    at 130 C in the (gamma_coll, sigma_laser) plane, each with its 1-sigma
+    error ellipse from the fit's own covariance, over contours of constant
+    TOTAL FWHM. The ellipses are elongated along the contours and the condition
+    centres scatter along the same direction -- the split moves freely in the
+    direction the observable does not constrain. RIGHT: the same conditions'
+    total FWHM against power, the quantity actually measured: flat (no power
+    broadening, C3a) and determined to ~1%. All values read from
+    results/linefit_conditions.csv; contours from the shipped model."""
+    fp = C.RESULTS_DIR / "linefit_conditions.csv"
+    if not fp.exists():
+        print("  (linefit_conditions.csv absent -- skipping fig10)")
+        return
+    rows = [r for r in csv.DictReader(open(fp)) if r["role"] == "p_sweep"]
+    if not rows:
+        print("  (no p_sweep rows -- skipping fig10)")
+        return
+    from rb5s6s.stark import _fwhm_of
+    from rb5s6s.linefit import transit_fwhm_at_T
+
+    g = np.array([float(r["gamma_coll"]) for r in rows])
+    ge = np.array([float(r["gamma_coll_err"]) for r in rows])
+    sl = np.array([float(r["sigma_laser"]) for r in rows])
+    sle = np.array([float(r["sigma_laser_err"]) for r in rows])
+    corr = np.array([float(r["corr"]) for r in rows])
+    tw = np.array([float(r["total_fwhm"]) for r in rows])
+    twe = np.array([float(r["total_fwhm_err"]) for r in rows])
+    P = np.array([float(r["P"]) for r in rows])
+    peaks = [r["peak"] for r in rows]
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.2, 4.5))
+
+    # --- LEFT: the degeneracy plane -------------------------------------
+    transit = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+    gg = np.linspace(max(g.min() - 0.15, 0.0), g.max() + 0.15, 46)
+    ss = np.linspace(max(sl.min() - 0.2, 0.0), sl.max() + 0.2, 46)
+    nu = np.arange(-40.0, 40.0, 0.01)
+    W = np.array([[_fwhm_of(a, b, transit, 0.0, nu) for a in gg] for b in ss])
+    cs = ax1.contour(gg, ss, W, levels=8, colors="0.55", linewidths=0.8)
+    ax1.clabel(cs, inline=True, fontsize=6, fmt="%.2f")
+
+    th = np.linspace(0, 2 * np.pi, 120)
+    for i, pk in enumerate(peaks):
+        c = PEAK_COLOR.get(pk, "0.4")
+        cov = np.array([[ge[i] ** 2, corr[i] * ge[i] * sle[i]],
+                        [corr[i] * ge[i] * sle[i], sle[i] ** 2]])
+        vals, vecs = np.linalg.eigh(cov)
+        pts = vecs @ (np.sqrt(np.maximum(vals, 0))[:, None] * np.array([np.cos(th), np.sin(th)]))
+        ax1.plot(g[i] + pts[0], sl[i] + pts[1], color=c, lw=0.8, alpha=0.55)
+        ax1.plot(g[i], sl[i], "o", color=c, ms=3.5, zorder=3)
+    for pk, c in PEAK_COLOR.items():
+        if pk in peaks:
+            ax1.plot([], [], "o-", color=c, ms=3.5, lw=0.8, label=f"993.{pk} nm")
+    ax1.set_xlabel(r"$\gamma_\mathrm{coll}$  (MHz, Lorentzian component)")
+    ax1.set_ylabel(r"$\sigma_\mathrm{laser}$  (MHz, Gaussian component)")
+    ax1.axhline(0.0, color="0.3", lw=0.8, ls=":")
+    ax1.text(gg[-1], 0.02, "unphysical below", fontsize=6, color="0.3",
+             ha="right", va="bottom")
+    ax1.set_ylim(min(-0.25, ss[0]), ss[-1])
+    ax1.set_title("the split: free along the contour\n"
+                  f"median corr = {np.median(corr):+.2f}; several 1$\\sigma$ "
+                  "ellipses reach unphysical widths", fontsize=9)
+    ax1.legend(fontsize=7, framealpha=1.0, frameon=True)
+    ax1.grid(alpha=0.25, lw=0.5)
+
+    # --- RIGHT: the observable ------------------------------------------
+    for pk in PEAK_COLOR:
+        m = [i for i, p in enumerate(peaks) if p == pk]
+        if not m:
+            continue
+        o = np.argsort(P[m])
+        ax2.errorbar(P[m][o], tw[m][o], yerr=twe[m][o], marker="o", ms=4,
+                     lw=1.0, capsize=2, color=PEAK_COLOR[pk], label=f"993.{pk} nm")
+    ax2.set_xlabel("laser power (mW)")
+    ax2.set_ylabel("total FWHM  (MHz, transition axis)")
+    ax2.set_title("the observable: no power broadening, determined to "
+                  f"{100 * np.median(twe) / np.median(tw):.1f}%", fontsize=9)
+    ax2.legend(fontsize=7, framealpha=1.0, frameon=True)
+    ax2.grid(alpha=0.25, lw=0.5)
+
+    fig.suptitle("One temperature, 20 conditions: the total width is measured; "
+                 "its decomposition is not", fontsize=10)
+    _save(fig, "fig10_degeneracy_vs_observable.png")
+
+
+def fig_laser_history():
+    """The laser's frequency history, reconstructed from the atoms and the
+    recovered file timestamps alone (M20, scripts/run_laser_history.py). No
+    wavemeter log survives the 2025 campaign; the fitted peak position IS the
+    laser's offset within the sweep, and the EOM ruler converts it to MHz. One
+    panel per acquisition day, hours since that day's first trace. This is a
+    PREDICTION of what a wavemeter log would show -- if one is ever recovered,
+    it can be compared point by point, testing the ruler calibration, the
+    mtime-as-acquisition-time assumption and the peak extraction at once."""
+    fp = C.RESULTS_DIR / "laser_history.csv"
+    if not fp.exists():
+        print("  (laser_history.csv absent -- skipping fig11)")
+        return
+    rows = list(csv.DictReader(open(fp)))
+    if not rows:
+        return
+    days = sorted({r["session_day"] for r in rows})
+    sf_fp = C.RESULTS_DIR / "laser_history_structure.csv"
+    sf = list(csv.DictReader(open(sf_fp))) if sf_fp.exists() else []
+    ncol = len(days) + (1 if sf else 0)
+    fig, axes = plt.subplots(1, ncol, figsize=(4.8 * ncol, 4.3), squeeze=False)
+    for ax, d in zip(axes[0], days):
+        rs = sorted((r for r in rows if r["session_day"] == d),
+                    key=lambda r: int(r["t_epoch"]))
+        t0 = int(rs[0]["t_epoch"])
+        for pk in PEAK_COLOR:
+            sel = [r for r in rs if r["peak"] == pk]
+            if not sel:
+                continue
+            ax.plot([(int(r["t_epoch"]) - t0) / 3600 for r in sel],
+                    [float(r["offset_mhz"]) for r in sel],
+                    "o", ms=3.2, alpha=0.8, color=PEAK_COLOR[pk],
+                    label=f"993.{pk} nm")
+        other = [r for r in rs if r["peak"] not in PEAK_COLOR]
+        if other:
+            ax.plot([(int(r["t_epoch"]) - t0) / 3600 for r in other],
+                    [float(r["offset_mhz"]) for r in other],
+                    "o", ms=2.6, alpha=0.5, color="0.55", label="other/QC")
+        ax.axhline(0.0, color="0.4", lw=0.8, ls=":")
+        ax.set_xlabel("hours since first trace of the day")
+        ax.set_ylabel("reconstructed laser offset (MHz, laser axis)")
+        import datetime as _dt
+        ax.set_title(_dt.datetime.fromtimestamp(t0).strftime("%Y-%m-%d")
+                     + f"  ({len(rs)} traces)", fontsize=9)
+        ax.legend(fontsize=7, framealpha=1.0, frameon=True)
+        ax.grid(alpha=0.25, lw=0.5)
+    if sf:
+        ax = axes[0][-1]
+        lag = [0.5 * (float(b["lag_lo_s"]) + min(float(b["lag_hi_s"]), 7200.0))
+               for b in sf]
+        rms = [float(b["rms_mhz"]) for b in sf]
+        ax.semilogx(lag, rms, "o-", color="#0072B2", ms=5, lw=1.4)
+        for x, y, b in zip(lag, rms, sf):
+            ax.annotate(f"n={b['n_pairs']}", (x, y), fontsize=6,
+                        textcoords="offset points", xytext=(0, -12), ha="center")
+        ax.axhline(rms[0], color="0.5", lw=0.8, ls=":")
+        ax.text(lag[0], rms[0] * 1.04, "flat here = scatter, not history",
+                fontsize=6.5, color="0.35")
+        ax.set_xlabel("time between two traces of the SAME line (s)")
+        ax.set_ylabel("RMS disagreement (MHz)")
+        ax.set_title(f"the test: {rms[-1] / rms[0]:.1f}× rise, so it is real\n"
+                     "correlation time a few minutes", fontsize=9)
+        ax.grid(alpha=0.25, lw=0.5, which="both")
+    off = [float(r["offset_mhz"]) for r in rows]
+    fig.suptitle("No wavemeter log survives: the laser's drift and hand re-centrings, "
+                 f"rebuilt from the lines themselves ({max(off) - min(off):.0f} MHz "
+                 "peak-to-peak)", fontsize=10)
+    _save(fig, "fig11_laser_history.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -511,6 +668,8 @@ def main() -> int:
     fig_gamma_floor()
     fig_identifiability_profile()
     fig_ruler()
+    fig_degeneracy_vs_observable()
+    fig_laser_history()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

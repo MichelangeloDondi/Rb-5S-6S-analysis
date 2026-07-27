@@ -39,7 +39,7 @@ def main() -> int:
         rows.append(r)
 
     mde = minimum_detectable_beta()
-    print(f"\n  MINIMUM DETECTABLE EFFECT (the sensitivity behind the null):")
+    print("\n  MINIMUM DETECTABLE EFFECT (the sensitivity behind the null):")
     for t, b in mde.items():
         print(f"    beta = {b:.2f} MHz/1e12 would be called a measurement "
               f"{t:.0%} of the time")

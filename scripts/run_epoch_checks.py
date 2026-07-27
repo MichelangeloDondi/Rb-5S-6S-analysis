@@ -105,7 +105,7 @@ def trigtime_check() -> None:
     print(f"1. CLOCK VALIDATION: {len(d)} in-file LeCroy TrigTimes;")
     print(f"   mtime(JST) - TrigTime: median {np.median(d):+.0f} s, "
           f"range [{d.min():+.0f}, {d.max():+.0f}] s")
-    print(f"   -> the audit's JST clock interpretation confirmed in-file.")
+    print("   -> the audit's JST clock interpretation confirmed in-file.")
 
 
 def pilot_steps() -> None:
@@ -146,9 +146,9 @@ def pilot_ruler_rate() -> None:
           f"{np.median(per):.1f} ms (n={len(per)}, spread {per.std(ddof=1):.1f})")
     print(f"   vs campaign {CAMPAIGN_TOOTH_MS} ms -> sweep-rate ratio {ratio:.4f} "
           f"({100*(1-ratio):+.1f}%): per-block rulers vindicated.")
-    print(f"   (the once-flagged ~32 ms satellites: a peak-finding artifact --")
-    print(f"    ACF shows no coherent companion in either epoch; see the")
-    print(f"    postscript to addendum 11)")
+    print("   (the once-flagged ~32 ms satellites: a peak-finding artifact --")
+    print("    ACF shows no coherent companion in either epoch; see the")
+    print("    postscript to addendum 11)")
 
 def pilot_thermometry() -> None:
     """Which campaign dwell does the pilot's oven setting correspond to?

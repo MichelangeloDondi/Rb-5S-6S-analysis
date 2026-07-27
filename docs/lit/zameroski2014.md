@@ -21,7 +21,11 @@ routing: []
 verify_flags: []
 verified_date: null
 summary: >
-  Nearest measured self-shift series.
+  Measures the Rb 5S->7S self-BROADENING rate, 129 +- 11 kHz/mTorr = 5.39 kHz
+  per 1e12 cm^-3 -- the only measured self-broadening rate for an nS state in
+  Rb, and the anchor for this programme's expected beta_self(6S) = 3.5 kHz per
+  1e12 cm^-3. Its 7S self-SHIFT could not be extracted; the -17.8 kHz/mTorr
+  often attributed here is Morzynski 2013's, on the laser axis.
 loci:
   - M4
   - P1
@@ -30,6 +34,52 @@ section: collision-series
 
 # zameroski2014
 
-Nearest measured self-shift series; scaling the 7S self-shift to 6S gives the expected beta\_self(6S) ~1 kHz per 1e12 cm^-3, ~40-100x below our archival bound (consistent, not constraining).
+**Re-read from the held PDF 2026-07-27, and the earlier reading was wrong in
+its central number.** This entry used to build the expected beta_self from a
+self-SHIFT of -17.82 kHz/mTorr attributed to Zameroski. That figure is not his.
+Section 2.5 states plainly that for 7S "the self-shift rate could not be
+extracted from the experimental data"; the -17.82 kHz/mTorr is Morzynski 2013's,
+quoted on the LASER axis, which Zameroski restates on the transition axis as
+-35.6 +- 1.6 kHz/mTorr. The old chain then converted that shift into a
+broadening through a Lindholm-Foley ratio -- a conversion that was never needed,
+because the paper measures the broadening directly.
 
-Measured Rb 5S->7S and 5S->5D broadening/shift by noble gases + N2, plus self-rates: Rb-Rb self-shift of 5S->7S = -17.82(81) kHz/mTorr (at their cell T ~= 400 K; 1 mTorr <-> 2.41e13 cm^-3), giving ~-0.74 kHz per 1e12 cm^-3 (ENVELOPE). The same-family broadening scale ~50 MHz/Torr ~= 2.1 kHz per 1e12 cm^-3, and 50/17.8 ~= 2.8 matches the Lindholm-Foley vdW broadening-to-shift ratio (~2.76). Scaling 7S->6S (vdW impact: gamma proportional to C6^(2/5), C6 ~ n*^7; n*(6S)=2.87, n*(7S)=3.87 -> factor ~= 0.43) gives expected beta_self(6S) ~ 1 kHz per 1e12 cm^-3 (ENVELOPE). Consequence: the 70-130 C lever is insufficient to MEASURE the expected beta — delta-N ~= 2e13 cm^-3 -> delta-gamma ~= 20 kHz, invisible under any realistic width budget; a real measurement needs 150-170 C points (N ~= 0.7-2.7e14 cm^-3 -> delta-gamma ~= 0.07-0.25 MHz).
+**What it actually measures, and why it is the anchor.** Section 2.5, verbatim:
+"The self-broadening rate gamma_B = 129 +- 11 kHz mTorr^-1", for the
+85Rb 5S(F=2) -> 7S(F=2) two-photon line -- the sister transition to this
+programme's, one principal quantum number up. Self-broadening is exactly what
+beta_self is, so no conversion of any kind is required. At their cell
+temperature (~403 K; 1 mTorr <-> 2.40e13 cm^-3) that is
+**beta_self(7S) = 5.39 +- 0.46 kHz per 1e12 cm^-3**.
+
+This is the **only measured self-broadening rate for an nS state in rubidium**,
+and so the only external check M18 has.
+
+**It failed that check by 1.7x, and the failure is informative.** Run on 7S,
+M18's absolute prediction is 8.99 kHz per 1e12 cm^-3 against the measured 5.39.
+The discrepancy is far outside the +-10-15% the valence-only truncation can
+explain, and it lands on the weakness the module had already named: the
+Lindholm-Foley prefactor is quoted from the pressure-broadening literature
+rather than derived, and its convention is where a factor of that size lives.
+
+That error is common to 6S and 7S -- same prefactor, same law, same units -- so
+it cancels in a ratio. `vanderwaals.beta_self_anchored` therefore uses M18 only
+for C6(6S)/C6(7S) = 0.347, a ratio of two sums over the same matrix elements,
+and takes the absolute scale from this measurement:
+
+    beta_self(6S) = 5.39 * 0.347^(2/5) = **3.53 +- 0.30 kHz per 1e12 cm^-3**
+
+**Consequences.** The archival bound sits **57-113x above** this, rather than
+the ~40-100x the old misattributed chain gave, or the 34-68x M18's uncorrected
+absolute value gave. The conclusion is unchanged in kind -- the bound is far
+above any expected value -- and is now anchored on a measurement of the same
+observable on the neighbouring state.
+
+The old entry's forward-looking point stands and is worth keeping: the 70-130 C
+lever cannot MEASURE a beta of this size (Delta-N ~ 2e13 cm^-3 gives
+Delta-gamma ~ 70 kHz at 3.5 kHz per 1e12, still under the width budget); a real
+measurement needs 150-170 C points.
+
+Also measured here, and not used by this programme: broadening and shift rates
+of 5S->5D (778 nm) and 5S->7S (760 nm) by the noble gases and N2, reported for
+the first time.

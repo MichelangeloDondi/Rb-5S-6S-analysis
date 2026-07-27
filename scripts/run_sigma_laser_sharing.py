@@ -15,7 +15,8 @@ estimates; their chi2/dof against a single common value tests Model A.
 Outputs: results/sigma_laser_sharing.csv + stdout.
 """
 from __future__ import annotations
-import csv, sys
+import csv
+import sys
 from pathlib import Path
 import numpy as np
 
@@ -54,9 +55,17 @@ def main() -> int:
     with open(C.RESULTS_DIR / "sigma_laser_sharing.csv", "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
     print(f"\n{'-'*74}")
-    print("FINDING: chi2/dof << 1 at every T -> the four peak-blocks SHARE one")
-    print("sigma_laser (Model A is LICENSED; the 'unverifiable timing'")
-    print("concern is answered POSITIVELY -- the peaks did see a common laser width).")
+    print("FINDING: chi2/dof << 1 at every T -> the four peak-blocks are CONSISTENT")
+    print("with sharing one sigma_laser, which is what Model A assumes. That is")
+    print("consistency, NOT confirmation, and the test is UNDER-POWERED: chi2/dof")
+    print("well below 1 means the error bars are themselves ~1.2-2.2x too large")
+    print("(conservative tau_int inflation), so these data cannot discriminate")
+    print("shared from unshared at all. Agreement is necessary, not sufficient --")
+    print("four peaks that co-drifted between unlogged acquisitions would look")
+    print("identical. The sharing is UNTESTED, not merely unverifiable; only")
+    print("logged timestamps settle it. (An earlier version of this line claimed")
+    print("the timing concern was 'answered POSITIVELY'; that overstated a null")
+    print("and is withdrawn -- see docs/RESULTS.md M4c.)")
     print("But the free-fit common sigma_laser is ~flat (1.0-1.25), while the")
     print("beta*N-TIED global fit inflates it (1.5-1.6 at 70/90 C) then drops it to")
     print("1.06 at 110 C: that")

@@ -85,7 +85,7 @@ def main() -> None:
     print(f"  Delta_alpha(760) = {d760[0]:+.0f} a.u. [{d760[1]:+.0f}, {d760[2]:+.0f}]"
           f"  (RED shift; large -- 760 sits near the 5S D lines at 780/795)")
     magic7 = P.magic_5s7s()
-    print(f"  magic / sign-flips (700-1000 nm):")
+    print("  magic / sign-flips (700-1000 nm):")
     for x, a in magic7:
         near = "  <- just red of the 7S-5P3/2 pole (741 nm)" if abs(x - 742) < 3 else \
                "  <- beside the 5S tune-out (790.03)" if abs(x - 790) < 2 else ""
@@ -102,8 +102,8 @@ def main() -> None:
     print(f"  5P3/2-5D5/2 resonance at {lam_res:.1f} nm (RME {P.RME_5P32_5D52} a.u.)")
     print(f"  magic / sign-flip = {P.MAGIC_5S5D52_EXP_NM} nm (experimental, +-0.005)"
           f" / {P.MAGIC_5S5D52_THEORY_NM} nm (theory)")
-    print(f"  -> at the 778 nm drive Delta_alpha != 0 (the magic sits ~2 nm blue),"
-          f" so the light shift there has a definite, non-zero sign.")
+    print("  -> at the 778 nm drive Delta_alpha != 0 (the magic sits ~2 nm blue),"
+          " so the light shift there has a definite, non-zero sign.")
     print("  NOTE: a from-scratch 5D recompute needs the 5D-nF elements (absent from")
     print("  the Safronova 2004 tables) and the tensor treatment -- future work.")
 

@@ -82,7 +82,7 @@ def main() -> int:
           f"(DATA.md quotes 1.8 ms = 0.08 MHz)")
     null = 1.0 / (clean.n - 1)
     t, p = stats.ttest_1samp(clean.r2 - null, 0.0)
-    print(f"\nlinear trend vs repeat index:")
+    print("\nlinear trend vs repeat index:")
     print(f"  mean R^2 observed      : {clean.r2.mean():.3f}")
     print(f"  expected if order random: {null.mean():.3f}")
     print(f"  paired t-test          : t = {t:+.2f}, p = {p:.3f}")

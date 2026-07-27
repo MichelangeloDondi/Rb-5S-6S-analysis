@@ -27,9 +27,25 @@ docs/reference_setup/photos/*
 # which is local to one clone and does not travel — so a fresh clone elsewhere
 # had no protection at all. Patterns are deliberately generic.
 # tests/test_repo_hygiene.py fails if any of these ever becomes tracked.
+# ---------------------------------------------------------------------------
+# EVERYTHING under private/ is excluded, wholesale and by structure.
+# 2026-07-27: this replaces a list of ten filename globs that had to guess how
+# each private file would be named. It failed exactly that way -- three
+# ChatGPT_redteam_*.md files sat UNIGNORED because every glob assumed the
+# spelling "red_team". A directory cannot be misspelled into visibility.
+# The globs below are kept as a second line of defence for anything that lands
+# in docs/ by mistake.
+/private/
+
 docs/brief_*
 docs/*audit*
 docs/*red_team*
+# same material, hyphen-free spelling: external critique of the application
+# itself (names the PI, referees, career strategy). 2026-07-27: three such
+# files were sitting UNIGNORED because the glob above assumes an underscore.
+docs/*redteam*
+docs/ChatGPT*
+ChatGPT*
 docs/CV_*
 docs/PAPERS_PORTFOLIO.md
 # manuscript drafts: unfinished prose with [X] placeholders, not results

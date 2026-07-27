@@ -14,6 +14,18 @@ name: tests
 on: [push, pull_request]
 
 jobs:
+  lint:
+    # Separate from pytest so a style failure is never confused with a physics
+    # failure. Config and its justified ignores live in pyproject.toml.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check rb5s6s scripts tests
+
   pytest:
     runs-on: ubuntu-latest
     strategy:

@@ -16,7 +16,6 @@ import pytest
 from rb5s6s.lineshape import model_profile
 from rb5s6s.linefit import to_frequency
 from rb5s6s.model_ladder import fit_ladder
-from rb5s6s import config as C
 
 RATE_T = 0.08514
 NU = to_frequency(np.arange(2000) * 0.5 - 500.0, RATE_T)
@@ -60,7 +59,7 @@ def test_ladder_cannot_measure_stark_under_drift():
     # ramp's pull, leaving only the sub-detectable skew. This is the two-epoch
     # thesis as a model-comparison: the archive can only BOUND the Stark.
     freqs, volts = _synth(s0=8.0, drift=1.0, noise=3e-3, ntr=5)
-    d = r = fit_ladder(freqs, volts, transit_fwhm=_TRANSIT)["rungs"]["C_collisions->D_stark"]["dBIC"]
+    d = fit_ladder(freqs, volts, transit_fwhm=_TRANSIT)["rungs"]["C_collisions->D_stark"]["dBIC"]
     assert d < 6, f"drifted archive should not warrant +Stark, got dBIC={d:.1f}"
 
 

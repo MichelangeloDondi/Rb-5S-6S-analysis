@@ -45,14 +45,13 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C
 from rb5s6s import constants as _CONST  # noqa: E402
-from rb5s6s.constants import TOOTH_SPACING_LASER_HZ  # noqa: E402
-from rb5s6s.density import density_units, number_density_cm3  # noqa: E402
+from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.linefit import to_frequency  # noqa: E402
 from rb5s6s.beta import fit_beta_self, collisional_slope  # noqa: E402
-from rb5s6s.qc import boxcar, contiguous_fwhm_ms  # noqa: E402
+from rb5s6s.qc import contiguous_fwhm_ms  # noqa: E402
 
 PEAKS = ("4121", "4154", "4192", "4207")
 TSWEEP = ("70", "90", "110")
@@ -257,7 +256,7 @@ def main() -> int:
     vals = np.array([g[1] for g in gc110]); errs = np.array([g[2] for g in gc110])
     wmean = np.sum(vals / errs ** 2) / np.sum(1 / errs ** 2)
     chi2_cross = np.sum(((vals - wmean) / errs) ** 2) / max(len(vals) - 1, 1)
-    print(f"\n(P3) cross-peak gamma_coll @110C: " +
+    print("\n(P3) cross-peak gamma_coll @110C: " +
           ", ".join(f"{p}={v:.2f}" for p, v, e in gc110) +
           f"  | chi2/dof vs common = {chi2_cross:.1f} "
           f"({'consistent' if chi2_cross < 3 else 'INCONSISTENT -> per-peak systematic'})")

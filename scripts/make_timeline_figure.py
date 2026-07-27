@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
-from collections import defaultdict
 from pathlib import Path
 
 import matplotlib

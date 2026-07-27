@@ -99,7 +99,8 @@ to keep a ~60 ms line intact, wide enough to kill sample noise."""
 
 QC_STRUCT_SMOOTH_W = 41
 """Stronger boxcar (20.5 ms) for the bump-counting metric. Structure detection
-on lightly-smoothed noise invents periodic peaks (2026-07-11 ledger) — count bumps only after aggressive smoothing."""
+on lightly-smoothed noise invents periodic peaks (2026-07-11 ledger) — count
+bumps only after aggressive smoothing."""
 
 QC_WING_FRACTION = 0.10
 """Samples whose smoothed signal is below this fraction of the peak height

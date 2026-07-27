@@ -81,17 +81,22 @@ novelty is narrowed to the fringe-AVERAGED closed-form + drift-immune moment.
 ## 2. Collision-rate series — calibrates what β_self should BE
 
 [Zameroski et al., J. Phys. B 47, 225205 (2014)](lit/zameroski2014.md) —
-abstract/indices VERIFIED; full-text digits TO-PULL (paywalled; needs
-university library access). Rb–Rb self-shift of 5S→7S: −17.82(81) kHz/mTorr,
-converting to **−0.74 kHz per 10¹² cm⁻³** (−0.9 at 500 K — the conversion
-needs their exact cell T from the full text). Scaling that self-shift
-7S→6S (vdW impact, C₆ ~ n*⁷) gives the expected **β_self(6S) ~ 1 kHz per
-10¹² cm⁻³** (ENVELOPE); the unit-conversion, Lindholm–Foley ratio-check, and
-n*-scaling derivation are in the lit file.
+full text HELD and read 2026-07-27, correcting this entry's central number.
+Zameroski measures the 5S→7S **self-BROADENING** rate directly:
+**129 ± 11 kHz/mTorr**, i.e. **5.39 ± 0.46 kHz per 10¹² cm⁻³** at their cell
+temperature — the only measured self-broadening rate for an nS state in Rb, and
+exactly the observable β_self is. Their 7S self-*shift* "could not be extracted
+from the experimental data"; the −17.82(81) kHz/mTorr this entry previously
+attributed to them is **Morzyński 2013's**, on the laser axis (Zameroski
+restates it on the transition axis as −35.6 ± 1.6). Scaling the measured 7S
+broadening to 6S by the computed C₆ ratio (M18, 0.347) gives the expected
+**β_self(6S) = 3.5 ± 0.3 kHz per 10¹² cm⁻³** — anchored on a measurement, with
+the suspect impact prefactor cancelling in the ratio. Derivation in the lit
+file and in `rb5s6s/vanderwaals.beta_self_anchored`.
 
 Consequences (calibration against the theoretical expectation):
-- The archival bound (< 40–110 kHz per 10¹² cm⁻³) sits **~40–100× above
-  the physically expected value** — consistent, but NOT constraining. Paper
+- The archival bound (0.2–0.4 MHz per 10¹² cm⁻³) sits **57–113× above
+  the expected value** — consistent, but NOT constraining. Paper
   wording must say exactly that; the bound's value is methodological (it
   quantifies the drift confound), not a physics constraint on β.
 - **The 70–130 °C lever is insufficient to MEASURE the expected β**:
@@ -191,7 +196,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    as the *measurement channel* — Stalnaker fit full shapes with a good
    reference; precision groups suppressed the shift.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
-   modest addition to the measured series rather than a headline result. In the archive it is a bound ~40–100×
+   modest addition to the measured series rather than a headline result. In the archive it is a bound 57–113×
    above expectation; a measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
    per-block).

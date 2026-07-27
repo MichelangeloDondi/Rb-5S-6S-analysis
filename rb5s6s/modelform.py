@@ -31,7 +31,6 @@ from typing import Dict, List
 import numpy as np
 from scipy.optimize import least_squares
 
-from . import config as C
 from ._compat import trapezoid
 from .constants import GAMMA_NAT_HZ
 from .lineshape import lorentzian, gaussian, two_sided_exponential

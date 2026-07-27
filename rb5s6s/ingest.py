@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import csv
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import List, Dict
 
 import numpy as np
 

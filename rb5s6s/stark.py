@@ -35,7 +35,7 @@ from scipy.optimize import least_squares
 
 from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
-from .constants import GAMMA_NAT_HZ, W0_BAND_M, W0_PRIOR_M
+from .constants import W0_BAND_M, W0_PRIOR_M
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
@@ -158,13 +158,13 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
 
         # bracket the crossing: expand upward from the minimum
         sl_seed = sol.x[:npk].copy()
-        k_lo, c_lo = kappa, chi2_min
+        k_lo = kappa
         step = max(kpred, 1.0)
         k_hi = kappa + step
         c_hi, sl_seed = chi2_at(k_hi, sl_seed)
         n_exp = 0
         while c_hi - chi2_min < profile_thresh and n_exp < 40:
-            k_lo, c_lo = k_hi, c_hi
+            k_lo = k_hi
             k_hi = kappa + (k_hi - kappa) * 2.0
             c_hi, sl_seed = chi2_at(k_hi, sl_seed)
             n_exp += 1
@@ -175,9 +175,9 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
             k_mid = 0.5 * (k_lo + k_hi)
             c_mid, sl_seed = chi2_at(k_mid, sl_seed)
             if c_mid - chi2_min < profile_thresh:
-                k_lo, c_lo = k_mid, c_mid
+                k_lo = k_mid
             else:
-                k_hi, c_hi = k_mid, c_mid
+                k_hi = k_mid
         kappa_ub95_prof = 0.5 * (k_lo + k_hi)
 
     return {

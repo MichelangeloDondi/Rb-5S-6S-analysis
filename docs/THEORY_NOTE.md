@@ -176,7 +176,7 @@ with an error bar; the discipline is to report a bound unless it clears that
 bar, which at archival intensity it does not. A fixed-lock session changes this two ways:
 the fixed lock **recovers the first-order pull** ($-\tfrac23 S_0 \propto P$, a
 $\sim$MHz shift against a stable reference — the primary $S_0$ measurement, no
-longer absorbed by a free centre); and the small waist, where $S_0$ is $4\times$
+longer absorbed by a free centre); and the small waist, where $S_0$ is $\approx10\times$
 larger, lifts the shape asymmetry into a **detection** — though not by the naive
 $S_0^3$ factor of 64: the axial average changes the third cumulant's magnitude
 and, for a long enough collection window, its sign (§7). Both are *conditional on the small-waist skew corrections
@@ -225,7 +225,7 @@ the earlier $\sim5800$ came from a Wald interval evaluated at the $\kappa=0$
 rail, where it has no valid coverage) — consistent with
 $1093$, with the mapping inheriting the open $w_0$. So the archive **does not
 contradict** the computed $\Delta\alpha$; a fixed lock would measure the pull
-$\propto S_0$ directly (small waist $\Rightarrow S_0$ $\sim4\times$ larger),
+$\propto S_0$ directly (small waist $\Rightarrow S_0$ $\approx10\times$ larger),
 turning this bracket into the coefficient.
 
 ## 5. The coefficient (the field-intensity convention, pinned)

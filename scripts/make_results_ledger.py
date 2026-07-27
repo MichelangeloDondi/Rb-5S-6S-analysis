@@ -343,7 +343,8 @@ def main() -> int:
       "$-0.2$ to $-0.9$ about the $-0.5$ shot-noise value, so a small extra "
       "low-power systematic — baseline, line-pull — is not excluded, but shot noise "
       "dominates.) a fixed-lock session would lift the real observable two ways: the fixed lock "
-      "un-absorbs the large first-order pull, and the small waist ($S_0$ 4× larger) "
+      "un-absorbs the large first-order pull, and the small waist "
+      "($S_0$ 0.59 → 5.7 MHz, $\\approx$10× larger at 225 mW) "
       "makes the ramp asymmetry a detection. The naive $S_0^3$ reading (×64) is "
       "superseded: the axial average changes the third cumulant's magnitude and, "
       "past $Z_c/z_R\\approx1.12$, its sign (PLAN §8.3 #4) — and which side of that "
@@ -442,7 +443,7 @@ def main() -> int:
                   f"deliberately, through the t(0.95,1) and density-scale inflations "
                   f"(C1). At $\\beta=0$ the SNR rule alone fires "
                   f"{fp[0]:.0%} of the time" + (", close to its nominal 5%, which is "
-                  f"the calibration check on the detection rule itself.\n"
+                  "the calibration check on the detection rule itself.\n"
                   if fp else ".\n"))
 
         W("## Sensitivity at a glance\n")
@@ -528,7 +529,6 @@ def main() -> int:
         tied = [float(r["sigma_laser_globalA_tied"]) for r in ss]
         free_rng = f"{min(free):.1f}–{max(free):.1f}"
         tied_rng = f"{min(tied):.1f}–{max(tied):.1f}"
-        tied_min = f"{min(tied):.2f}"
         W(f"- **σ_laser sharing (M4c) — an IN-SAMPLE consistency check, not a proof:** "
           f"at 70/90/110 °C the four peak-blocks agree on one σ_laser (χ²/dof {chis}, "
           f"all $<$1), consistent with the per-T sharing the global fit assumes. Two "
@@ -602,13 +602,13 @@ def main() -> int:
         obs = {r["observable"]: r for r in rp if r["kind"] == "observable"}
         pr = {r["observable"]: r for r in rp if r["kind"] == "projection"}
         def _r(k): return float(obs[k]["ratio"])
-        W(f"\n### M17 — resolving power: why each result has the status it has "
-          f"(DIAGNOSTIC)\n")
-        W(f"An observable can only answer a question if it moves more across the "
-          f"conditions than it scatters when nothing physical changes. Both are "
-          f"measurable: the dynamic range over the 70–130 °C sweep, and the "
-          f"block-to-block scatter at fixed conditions taken from the 130 °C "
-          f"power ladder, where width is power-independent. Their ratio:\n")
+        W("\n### M17 — resolving power: why each result has the status it has "
+          "(DIAGNOSTIC)\n")
+        W("An observable can only answer a question if it moves more across the "
+          "conditions than it scatters when nothing physical changes. Both are "
+          "measurable: the dynamic range over the 70–130 °C sweep, and the "
+          "block-to-block scatter at fixed conditions taken from the 130 °C "
+          "power ladder, where width is power-independent. Their ratio:\n")
         W("| observable | dynamic range in block-noise units | verdict |")
         W("|---|---|---|")
         for k in ("amplitude", "total_fwhm", "gamma_coll", "sigma_laser"):

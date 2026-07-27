@@ -101,7 +101,7 @@ _AXIAL = re.compile(r"axial|sign|1\.12|cumulant|not by the", re.I)
 # hand-written docs, and the three files it omitted (docs/RESULTS.md, its
 # generator, and FUTURE_TRANSITIONS) were exactly the three that still carried
 # the superseded x64 a commit later.
-SKEW_DOCS = ["docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
+SKEW_DOCS = ["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
              "docs/THEORY_NOTE.md", "docs/PLAN.md",
              "docs/methods/03_the_ac_stark_ramp.md",
              "docs/methods/08_assumptions_and_outlook.md",
@@ -367,3 +367,28 @@ def test_cathode_geometry_is_flagged_as_assumed():
         "attribution is from Nieddu 2019 (a different bench) and is "
         "contradicted by an in-campaign photo of a Thorlabs PXT1/M:\n  "
         + "\n  ".join(bad))
+
+
+def test_small_waist_S0_factor_tracks_the_waist_prior():
+    """The "small waist makes S0 N-times larger" factor is not a constant: it is
+    S0(16 um)/S0(W0_PRIOR_M), so it moves whenever the waist prior moves. It once
+    said 4x, which is exactly (32/16)^2 -- the ratio at the 32 um nominal that
+    constants.py itself marks excluded. Recompute it and require the docs to
+    quote the current value, so the factor cannot outlive the prior again."""
+    import re
+    from rb5s6s.lineshape import stark_shift_S0_mhz
+    from rb5s6s.constants import W0_PRIOR_M
+    ratio = stark_shift_S0_mhz(0.225, 16e-6) / stark_shift_S0_mhz(0.225, W0_PRIOR_M)
+    stale = round(stark_shift_S0_mhz(0.225, 16e-6)
+                  / stark_shift_S0_mhz(0.225, 32e-6))          # the 4 that was there
+    assert ratio > stale + 1, "prior moved; this guard's premise needs revisiting"
+    bad = []
+    for rel in ("docs/THEORY_NOTE.md", "docs/RESULTS.md"):
+        txt = (ROOT / rel).read_text()
+        for m in re.finditer(r"small waist[^.\n]{0,80}", txt):
+            seg = m.group(0)
+            if re.search(rf"(^|[^0-9]){stale}\s*(×|\\times|x larger)", seg):
+                bad.append(f"{rel}: {seg[:70]!r}")
+    assert not bad, (
+        f"the superseded x{stale} waist factor is back; the current ratio is "
+        f"x{ratio:.1f} at w0={W0_PRIOR_M * 1e6:.0f} um:\n  " + "\n  ".join(bad))

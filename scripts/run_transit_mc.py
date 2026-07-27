@@ -30,7 +30,6 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s._compat import trapezoid  # noqa: E402  (np.trapezoid is numpy 2.0+)
 from rb5s6s.constants import GAMMA_NAT_HZ  # noqa: E402
 from rb5s6s.transit_mc import transit_added_fwhm_mc, transit_lineshape_mc  # noqa: E402
-from rb5s6s.lineshape import lorentzian  # noqa: E402
 
 GNAT = GAMMA_NAT_HZ / 1e6
 OBSERVED = 5.25  # MHz, observed total FWHM at the reference condition
@@ -100,7 +99,7 @@ def main() -> int:
     print("      - w0 = 50 um (prior): transit ~1.2, leaving ~0.8 MHz laser axis for laser.")
     print("    The MC does NOT settle narrow-vs-not by itself -- it QUANTIFIES the w0")
     print("    degeneracy; the fixed-lock session's knife-edge w0 is the decisive measurement.")
-    print(f"  * objection #1 (collection over many mm): a real tens-of-% effect on the")
+    print("  * objection #1 (collection over many mm): a real tens-of-% effect on the")
     print("    transit -- needs the fixed-lock session's measured collection profile.")
     print(f"  * the kernel is a finite cusp (excess kurtosis {kurt:.1f}, Gaussian=0): the")
     print("    phenomenological two-sided exponential is close but under-represents the")

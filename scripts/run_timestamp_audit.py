@@ -29,7 +29,6 @@ import argparse
 import csv
 import hashlib
 import os
-import sys
 from collections import defaultdict
 from pathlib import Path
 from statistics import median

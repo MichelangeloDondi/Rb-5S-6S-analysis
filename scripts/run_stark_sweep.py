@@ -9,7 +9,8 @@ powers) with ONE shared kappa and a per-peak core width (rb5s6s.stark). In the
 constrained ONLY through the ramp's width broadening (~S0^2) -- a weak handle,
 hence a one-sided UPPER BOUND, not a measurement. It brackets the predicted S0
 and validates the fixed-lock session method; a fixed lock would measure the pull ~S0
-directly (and at a smaller waist, S0 ~4x larger).
+directly (and at a smaller waist, S0 ~10x larger: 0.59 -> 5.7 MHz at 225 mW,
+w0 50 -> 16 um).
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
 """
@@ -35,24 +36,24 @@ def main() -> int:
     print("=" * 74)
     print("(M4e) AC-STARK POWER-LEVER BOUND: kappa from FWHM-vs-power at 130 C")
     print(f"  {res['n']} width points (4 peaks x 5 powers), chi2_red = {res['chi2_red']:.2f}")
-    print(f"  (chi2>1: block-to-block width scatter exceeds statistical; the covariance")
-    print(f"   is rescaled by it, so the bound below is conservative.)\n")
+    print("  (chi2>1: block-to-block width scatter exceeds statistical; the covariance")
+    print("   is rescaled by it, so the bound below is conservative.)\n")
     print(f"  kappa = {res['kappa']:.2f} +/- {res['kappa_err']:.2f} MHz/W "
           f"(consistent with 0 and with the predicted {res['kappa_pred']:.2f})")
     print(f"  => S0(225 mW):  fit {res['S0_225_fit']:.2f}   "
           f"predicted {res['S0_225_pred']:.2f}")
     print(f"  **95% UPPER BOUND (profile likelihood) {res['S0_225_ub95_profile']:.2f} MHz**")
-    print(f"  (The fit rails at kappa=0 where the width handle has zero gradient, so")
+    print("  (The fit rails at kappa=0 where the width handle has zero gradient, so")
     print(f"   the Wald bounds -- raw {res['S0_225_ub95_raw']:.2f}, chi2-inflated "
           f"{res['S0_225_ub95']:.2f} -- have no valid coverage there;")
-    print(f"   they are kept in the CSV as diagnostics. The profile scans kappa with the")
+    print("   they are kept in the CSV as diagnostics. The profile scans kappa with the")
     print(f"   per-peak cores re-minimized, threshold Dchi2 = 2.706 x chi2_red = "
           f"{res['profile_delta_chi2']:.2f}.)")
     verdict = ("brackets the prediction (cannot distinguish it from 0)"
                if res["S0_225_ub95_profile"] > res["S0_225_pred"] else
                "BELOW the prediction -- tension, inspect")
     print(f"  The archive {verdict}.")
-    print(f"  per-peak core sigma_laser (transition): "
+    print("  per-peak core sigma_laser (transition): "
           + "  ".join(f"993.{p}={s:.2f}" for p, s in res["sigma_laser_by_peak"].items()))
     print("\n  This is a BOUND because the shift (pull ~S0) is dead in the 2025 drift;")
     print("  only the ramp's width broadening (~S0^2) constrains kappa here. The fixed-lock session's")

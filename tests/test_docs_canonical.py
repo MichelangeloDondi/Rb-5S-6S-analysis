@@ -115,9 +115,9 @@ CANONICAL = [
         value=lambda: f"{float(_cell('stark_sweep.csv', 'S0_225mW_ub95_profile')):.2f}",
         find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*[<≲]\s*([0-9.]+)\s*MHz"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md",
+        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
-              "docs/THEORY_NOTE.md", "docs/paper1/drafts/VI-CD_power_stark.md",
+              "docs/THEORY_NOTE.md", "private/manuscripts/paper1/drafts/VI-CD_power_stark.md",
               "results/README.md"],
     ),
     dict(
@@ -132,14 +132,14 @@ CANONICAL = [
         value=_beta_range_token,
         find=re.compile(r"([0-9]\.[0-9]-[0-9]\.[0-9]) MHz per 10"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md"],
+        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
         name="Delta-alpha archival bracket (was ~5800)",
         value=lambda: "1200",
         find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/PAPER1_SKELETON.md"],
+        docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
         name="beam waist w0 prior",
@@ -188,7 +188,7 @@ def test_docs_cite_canonical_value(entry):
     # citation states a canonical token (a stale value anywhere fails).
     toks = _tokens(entry)
     for doc in entry["docs"]:
-        # Manuscript drafts (PAPER1_SKELETON.md, docs/paper1/) were unpublished
+        # Manuscript drafts (PAPER1_SKELETON.md, private/manuscripts/paper1/) were unpublished
         # 2026-07-23 and are untracked: present in a working checkout, absent in
         # CI. Skip what is not there rather than fail on the CI clone -- the same
         # trap results/qc_metrics.csv sprang.
@@ -252,7 +252,7 @@ def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
         f"the observed C3a FWHM spread is now {lo:.1f}-{hi:.1f}%; the docs quote "
         f"3-8% as OBSERVED and <=2% as the ramp-law PREDICTION. If the data "
         f"moved, requote both -- and keep them distinguishable.")
-    for rel, txt in (("docs/PAPER1_SKELETON.md", None), ("docs/RESULTS.md", None)):
+    for rel, txt in (("private/manuscripts/PAPER1_SKELETON.md", None), ("docs/RESULTS.md", None)):
         if not (ROOT / rel).exists():
             continue   # unpublished manuscript draft; absent in CI
         body = (ROOT / rel).read_text(encoding="utf-8")

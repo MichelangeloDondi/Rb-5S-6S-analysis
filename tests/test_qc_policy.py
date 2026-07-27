@@ -31,7 +31,8 @@ def test_no_hard_flag_reads_a_quantity_the_physics_fits():
     centre or an amplitude. A future flag keyed on `fwhm_ms` would silently
     convert curation into a result-based cut -- the exact thing the plan forbids.
     """
-    import inspect, re
+    import inspect
+    import re
     from rb5s6s import qc
 
     src = inspect.getsource(qc.hard_flags)

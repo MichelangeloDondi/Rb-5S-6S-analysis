@@ -38,7 +38,6 @@ from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.linefit import fit_condition, to_frequency, transit_fwhm_at_T  # noqa: E402
-from rb5s6s.lineshape import voigt_fwhm  # noqa: E402
 
 GNAT = GAMMA_NAT_HZ / 1e6
 MHZ_TOOTH = TOOTH_SPACING_LASER_HZ / 1e6

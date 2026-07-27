@@ -40,7 +40,7 @@ WHAT THIS DOES AND DOES NOT GIVE:
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import numpy as np
 from scipy.optimize import least_squares
@@ -133,7 +133,8 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
 # imported above — the fit machinery below is unchanged.
 
 
-def fit_beta_self(conditions: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
+def fit_beta_self(conditions: List[Dict], *,
+                  transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                   fit_transit: bool = False, T_ref_C: float = 110.0,
                   laser_kind: str = "gaussian") -> Dict:
     """Global beta_self fit for one peak across temperatures.
@@ -177,7 +178,6 @@ def fit_beta_self(conditions: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_
     # weights (sigma_eff = sigma * sqrt(tau_block)), so blocks with more
     # correlated noise get proportionally less pull -- previously one MEAN tau
     # multiplied the final covariance, throwing away the per-block structure.
-    sigmas_raw = [s.copy() for s in sigmas]
     sigmas = [s * np.sqrt(t) for s, t in zip(sigmas, tr_tau)]
 
     nshared = 3 if fit_transit else 2
