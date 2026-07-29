@@ -71,7 +71,8 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M4e Stark sweep | M5 laser epoch | M6 power sweep | M7 amplitude trapping |
   | M8 model-form | M9 transit MC | M10 amplitude ratios | M11 model ladder (BIC) |
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
-  | M16 polarizabilities |  |  |  |
+  | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
+  | M20 laser history |  |  |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -131,11 +132,14 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           lineshape(M3) linefit(M3) density(M4) beta(M4) global_fit(M4b)
           lever_crosscheck(M4d) stark(M4e) modelform(M8) transit_mc(M9)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
-          sharing_bic(M14) fringe_tail(M15) polarizability(M16) fitutil _compat
+          sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
+          vanderwaals(M18) ramp_transit(M19) fitutil _compat
+          (M18 and M19 are library-and-test only: they have no CSV product, so
+           grepping results/ for them finds nothing -- see their test files)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · vanderwaals(M18, C6 -> expected beta_self) · ramp_transit(M19, ramp survives atomic motion) · run_laser_history(M20, laser frequency history rebuilt from the lines) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency history rebuilt from the lines) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 tests/    1092-test battery (1064 fast ~2 min + 28 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e

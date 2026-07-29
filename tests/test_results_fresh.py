@@ -87,3 +87,28 @@ def test_stark_sweep_csv_matches_current_code():
         "stark_sweep.csv no longer matches rb5s6s.stark -- re-run "
         "scripts/run_stark_sweep.py and commit results/stark_sweep.csv.\n  "
         + "\n  ".join(f"{q}/{k}: committed {c} vs code {v}" for (q, k), c, v in stale))
+
+
+@pytest.mark.slow
+def test_committed_csvs_still_match_their_producers():
+    """The blind spot this battery had until 2026-07-29.
+
+    results/beta_self_probe.csv carried a label its own producer had retracted
+    two days earlier, and every test stayed green -- because they all read the
+    CSV, and the CSV was self-consistent. Nothing compared it against the code
+    that writes it. test_figures_fresh plays this role for figures via an
+    embedded fingerprint; nothing played it one level up.
+
+    scripts/verify_results_fresh.py re-runs each cheap producer and diffs the
+    result against what is committed AT HEAD (not the working tree, which would
+    compare a dirty checkout against itself and pass). Needs the raw traces, so
+    it does not run in the public mirror.
+    """
+    import subprocess
+    import sys
+    if not (C.REPO_ROOT / "data_raw" / "p_sweep").is_dir():
+        pytest.skip("producers need the raw traces; not available in this checkout")
+    proc = subprocess.run([sys.executable, "scripts/verify_results_fresh.py"],
+                          cwd=C.REPO_ROOT, capture_output=True, text=True,
+                          timeout=900)
+    assert proc.returncode == 0, proc.stdout + proc.stderr

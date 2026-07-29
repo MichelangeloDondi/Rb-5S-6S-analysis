@@ -522,3 +522,20 @@ def test_sigma_sharing_producer_does_not_overclaim():
     assert not hits, f"retracted sharing claim back in the producer: {hits}"
     assert "UNDER-POWERED" in src or "under-powered" in src, \
         "the under-powered caveat must stay in the producer's finding"
+
+
+def test_every_library_module_appears_in_the_methods_map():
+    """A module can ship without ever being documented, and three did: the
+    methods.md grid stopped at M16 while M17-M20 existed, and two library
+    modules were listed under scripts/ where no such runnable exists. Check the
+    map against the filesystem so the listing cannot drift behind the code."""
+    import re
+    mods = {p.stem for p in (ROOT / "rb5s6s").glob("*.py")
+            if p.stem not in {"__init__"}}
+    text = (ROOT / "docs" / "methods.md").read_text()
+    block = re.search(r"^rb5s6s/(.*?)^scripts/", text, re.S | re.M)
+    assert block, "could not find the rb5s6s/ block in the methods.md repository map"
+    listed = set(re.findall(r"[a-z_][a-z0-9_]*", block.group(1)))
+    missing = sorted(m for m in mods if m not in listed)
+    assert not missing, (
+        f"library modules absent from docs/methods.md's repository map: {missing}")
