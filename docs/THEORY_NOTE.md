@@ -345,6 +345,23 @@ check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 > the model reproduces it. Orson reports only the difference, which cannot be
 > checked that way.
 >
+> **The disagreement is not symmetric, and a measured lifetime breaks it.**
+> This is the answer to the fair question *how do you know the sign error is
+> not yours*. $\alpha_{6S}(993)$ is a cancellation with only one side free.
+> The upward 6S–6P group contributes $-949$ a.u. and **its sign is structural**:
+> at 993 nm the drive sits above the 2732 nm resonance, so $\omega>\omega_0$
+> makes every one of those denominators negative. Orson's $\alpha_{56}=-1093$
+> requires $\alpha_{6S}=+1925$, so the downward 6S–5P cascade would have to
+> supply $+2874$ instead of $+624$ — a factor $4.6$ in $\alpha$, hence
+> $\times2.15$ in the dipole elements.
+>
+> Those same elements set the 6S lifetime. Unscaled they give **45.42 ns**
+> against a measured **45.57(17) ns** ([Gomez 2005](lit/gomez2005.md)) and
+> **45.44(8) ns** ([Arora & Sahoo 2012](lit/arora2012.md)) — 0.3% agreement.
+> Scaled to reach Orson's sign they give **9.9 ns**, about **210σ** from Gomez
+> alone. Held as a test
+> (`test_orsons_sign_would_require_an_excluded_6S_lifetime`).
+>
 > **A candidate mechanism, offered as a hypothesis and not as a finding.**
 > Orson writes that he calculated "in a manner similar to that of Martin *et
 > al*". Martin's Eqs. (2) and (21) as printed carry a **leading minus**,
@@ -406,6 +423,37 @@ since Orson's own AC-Stark measurement was a *null* at 6 MHz resolution, the sig
 was never set by experiment, so this is a theory-vs-theory question that a
 fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle
 outright. The narrative above keeps the established convention until it is resolved.
+
+### 5.1 Electric quadrupole and magnetic dipole: why neither appears
+
+A fair question about any polarizability calculation, and it splits in two.
+
+**The driven transition is purely E1·E1, by parity.** $5S_{1/2}$ and $6S_{1/2}$
+are both even, so a two-photon amplitude connecting them must be even overall.
+E1·E1 is odd × odd = even and is the allowed channel. E1·M1 and E1·E2 are both
+odd × even = odd, and so vanish identically for $S\to S$. There is no multipole
+admixture to the transition amplitude to include or to bound — the selection
+rule is exact, not an approximation.
+
+**The polarizability does admit E2 and M1 terms, and they are far below
+everything else here.** Their nominal scales relative to $\alpha_{E1}$ are
+
+$$\frac{\alpha_{E2}}{\alpha_{E1}}\sim(ka_0)^2 = 1.1\times10^{-7},\qquad
+\frac{\alpha_{M1}}{\alpha_{E1}}\sim\alpha_{\text{fs}}^2 = 5.3\times10^{-5}$$
+
+at $k=2\pi/993.4$ nm. Against $\alpha_{6S}(993)=-312$ a.u. that is
+$3.5\times10^{-5}$ and $1.7\times10^{-2}$ a.u. The comparison that matters is
+with the questions actually open on this line: the sign dispute is a factor
+$4.6$ in a group of terms, the magnitude spread between this work and Orson is
+4.7%, and the $w_0$ prior is $\pm20$% and gates every absolute result.
+Multipole corrections enter at $10^{-5}$% and $10^{-3}$%.
+
+**Nor is any multipole channel resonantly enhanced out of that suppression.**
+The nearest $S$–$D$ (E2) and $S$–$S$ (M1) channels from either state sit
+thousands of cm⁻¹ from the 10066 cm⁻¹ drive: $5S$–$4D$ at 516.7 nm (detuned
+9289 cm⁻¹), $5S$–$6S$ M1 at 496.7 nm (10066), $6S$–$5D$ at 1796 nm (4497),
+$6S$–$4D$ at 12.9 µm (9289). A near-degeneracy could in principle lift a
+suppressed channel into relevance; none is available.
 
 ## 6. Novelty position relative to prior art
 

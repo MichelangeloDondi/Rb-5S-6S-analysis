@@ -47,4 +47,9 @@ jobs:
       - name: pin declared minimum dependencies
         if: matrix.deps == 'minimum'
         run: pip install "numpy==1.24.4" "scipy==1.10.1"
+      # FRESHNESS_CHECK on one leg only: the committed-CSV-vs-fresh-run check
+      # takes ~4 min and its answer cannot differ between interpreters, so
+      # running it three times costs ~8 minutes of Actions time for nothing.
       - run: pytest -q --runslow   # CI runs the full battery incl. slow closure tests
+        env:
+          FRESHNESS_CHECK: ${{ (matrix.python-version == '3.11' && matrix.deps == 'latest') && '1' || '0' }}

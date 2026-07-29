@@ -48,10 +48,14 @@ opposite sign. Both sides are now verified from the typeset PDFs: Orson states
 the convention in words, repeats the value in SI, and works a −0.66 MHz red
 shift that this repo's unit chain returns as −0.653 — so the disagreement is
 real, not a convention or units artifact — while this work's sign is anchored
-to two measurements it does not fit, the static α and the tune-out. Which side
-is wrong remains open ([THEORY_NOTE §5](THEORY_NOTE.md), which records a
-candidate mechanism as a hypothesis); every archival result here uses |Δα| and
-is sign-immune. So on this line the *constants* are measured, but
+to two measurements it does not fit, the static α and the tune-out. And the disagreement is **not symmetric**: reaching Orson's sign would need
+the 6S–5P dipole elements ×2.15, which drives the 6S lifetime from 45.4 ns to
+9.9 ns against a measured 45.57(17) and 45.44(8) — roughly 210σ. The upward
+6S–6P group cannot supply it instead, because at 993 nm the drive sits above
+that resonance and those terms are negative by construction. So one side is
+anchored to a measured lifetime and the other is not
+([THEORY_NOTE §5](THEORY_NOTE.md), which also records a candidate mechanism as
+a hypothesis); every archival result here uses |Δα| and is sign-immune. So on this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
 **In the group.** OIST has its own 993 nm lineage: [Nieddu 2019](lit/nieddu2019.md) demonstrated

@@ -181,3 +181,69 @@ def test_sign_is_anchored_to_measurements_not_to_a_convention():
     assert alpha56_here > 0, "this work gives alpha_56 > 0; Orson prints -1093"
     assert abs(abs(alpha56_here) / 1093.0 - 1.0) < 0.10, \
         "magnitudes no longer agree to ~5%; the sign-error diagnostic rests on that"
+
+
+def test_orsons_sign_would_require_an_excluded_6S_lifetime():
+    """The answer to "how do we know the sign error isn't yours".
+
+    The Delta_alpha(993) sign hinges on alpha_6S: this work gets -312 a.u.,
+    Orson's published alpha_56 = -1093 implies +1925. Reaching +1925 is not a
+    matter of taste, because alpha_6S(993) is a cancellation with only one
+    adjustable side. The upward 6S-6P group contributes -949 and its sign is
+    structural -- at 993 nm the drive sits ABOVE the 2732 nm resonance, so
+    omega > omega_0 makes every one of those denominators negative. Only the
+    downward 6S-5P cascade can move, and it would have to supply +2874 instead
+    of +624.
+
+    That is a factor 4.6 in alpha, hence 2.15 in the dipole elements -- and
+    those same elements set the 6S lifetime. Unscaled they give 45.42 ns
+    against a measured 45.57(17) [Gomez 2005] and 45.44(8) [Arora & Sahoo
+    2012]. Scaled to reach Orson's sign they give 9.9 ns, which is ~210 sigma
+    from Gomez alone.
+
+    So the sign disagreement is not symmetric: one side is anchored to a
+    measured lifetime and the other is not. This test fails if the matrix
+    elements, the level energies or the prefactor ever drift enough to break
+    that anchor.
+    """
+    from rb5s6s.polarizability import LINES_6S, E_6S_CM, CM_PER_HARTREE, alpha_5s
+
+    alpha_fs = 1.0 / 137.035999084
+    au_time = 2.4188843265857e-17
+    w_drive = 1e7 / 993.4 / CM_PER_HARTREE
+
+    def alpha6(scale_down):
+        s = 0.0
+        for e, d, _ in LINES_6S:
+            de = (e - E_6S_CM) / CM_PER_HARTREE
+            dd = d * scale_down if de < 0 else d
+            s += 2.0 * de * dd * dd / (de * de - w_drive * w_drive)
+        return s / 6.0
+
+    def tau(scale_down):
+        rate = 0.0
+        for e, d, _ in LINES_6S:
+            de = e - E_6S_CM
+            if de >= 0:
+                continue
+            w = abs(de) / CM_PER_HARTREE
+            rate += (4.0 / 3.0) * alpha_fs ** 3 * w ** 3 * (d * scale_down) ** 2 / 2.0
+        return au_time / rate
+
+    # the unscaled elements reproduce the measured lifetime
+    assert tau(1.0) * 1e9 == pytest.approx(45.5, rel=0.02), \
+        "6S-5P elements no longer reproduce the measured 45.5 ns lifetime"
+
+    # the upward group's sign is structural, not fitted
+    up = sum(2.0 * (de := (e - E_6S_CM) / CM_PER_HARTREE) * d * d
+             / (de * de - w_drive * w_drive) / 6.0
+             for e, d, _ in LINES_6S if e > E_6S_CM)
+    assert up < 0, "upward 6S-6P group should be negative at 993 nm (drive above resonance)"
+
+    # what Orson's sign costs
+    from scipy.optimize import brentq
+    target = alpha_5s(993.4) + 1093.0
+    k = brentq(lambda x: alpha6(x) - target, 1.0, 5.0)
+    assert k > 1.8, f"scale factor {k:.2f} unexpectedly small -- re-derive the argument"
+    assert tau(k) * 1e9 < 15.0, (
+        f"Orson's sign would need tau(6S) = {tau(k) * 1e9:.1f} ns; measured is 45.5(2)")

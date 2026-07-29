@@ -104,10 +104,17 @@ def test_committed_csvs_still_match_their_producers():
     compare a dirty checkout against itself and pass). Needs the raw traces, so
     it does not run in the public mirror.
     """
+    import os
     import subprocess
     import sys
     if not (C.REPO_ROOT / "data_raw" / "p_sweep").is_dir():
         pytest.skip("producers need the raw traces; not available in this checkout")
+    # ~4 minutes, and CI runs a three-way matrix, so unguarded it costs ~12
+    # minutes of Actions time per push for a check whose answer cannot differ
+    # between interpreters -- it compares committed CSVs against a fresh run,
+    # not against anything version-dependent. One matrix leg is enough.
+    if os.environ.get("CI") and os.environ.get("FRESHNESS_CHECK") != "1":
+        pytest.skip("runs on one matrix leg only (set FRESHNESS_CHECK=1)")
     proc = subprocess.run([sys.executable, "scripts/verify_results_fresh.py"],
                           cwd=C.REPO_ROOT, capture_output=True, text=True,
                           timeout=900)
