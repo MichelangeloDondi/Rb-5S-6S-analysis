@@ -50,7 +50,7 @@ shift that this repo's unit chain returns as −0.653 — so the disagreement is
 real, not a convention or units artifact — while this work's sign is anchored
 to two measurements it does not fit, the static α and the tune-out. And the disagreement is **not symmetric**: reaching Orson's sign would need
 the 6S–5P dipole elements ×2.15, which drives the 6S lifetime from 45.4 ns to
-9.9 ns against a measured 45.57(17) and 45.44(8) — roughly 210σ. The upward
+9.9 ns against the measured 45.57(17) ns (Gomez 2005) — roughly 210σ. The upward
 6S–6P group cannot supply it instead, because at 993 nm the drive sits above
 that resonance and those terms are negative by construction. So one side is
 anchored to a measured lifetime and the other is not

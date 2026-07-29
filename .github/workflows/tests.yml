@@ -1,4 +1,15 @@
-# CI: run the full pytest battery on every push/PR.
+# CI: the full pytest battery.
+#
+# COST NOTE (2026-07-29). This repository is PRIVATE, so every minute here is
+# billed against the account's Actions allowance, while the public mirror
+# (MichelangeloDondi/Rb-5S-6S-analysis) runs the same battery for free and is
+# the reference green check. Running the full three-way matrix on every push
+# cost ~35 minutes a push and exhausted the allowance.
+#
+# So the matrix now runs on TAGS and on manual dispatch only. Ordinary pushes
+# get `lint` and a single fast-suite job, ~3 minutes. Nothing is lost: the full
+# battery still runs locally before every commit (house rule), and the public
+# mirror runs it on every push at no cost.
 #
 # THREE jobs, not one (fix, 2026-07-11): the original single
 # latest-deps job silently installed numpy 2.x while pyproject declared
@@ -11,7 +22,12 @@
 # green run certifies code AND dataset integrity together.
 name: tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:        # run the full matrix on demand
+
 
 jobs:
   lint:
@@ -26,7 +42,23 @@ jobs:
       - run: pip install ruff
       - run: ruff check rb5s6s scripts tests
 
+  # Every push gets this instead of the matrix: the fast suite on one
+  # interpreter, ~2 minutes. The slow closures and the numpy-floor job run on
+  # tags and on demand.
+  fast:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -e ".[dev]"
+      - run: pytest -q          # fast suite only; --runslow runs on tags
+
+  # The full battery: tags and manual dispatch only -- see the cost note above.
   pytest:
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

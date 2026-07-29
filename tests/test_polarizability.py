@@ -197,9 +197,11 @@ def test_orsons_sign_would_require_an_excluded_6S_lifetime():
 
     That is a factor 4.6 in alpha, hence 2.15 in the dipole elements -- and
     those same elements set the 6S lifetime. Unscaled they give 45.42 ns
-    against a measured 45.57(17) [Gomez 2005] and 45.44(8) [Arora & Sahoo
-    2012]. Scaled to reach Orson's sign they give 9.9 ns, which is ~210 sigma
-    from Gomez alone.
+    against the MEASURED 45.57(17) ns -- Gomez 2005, itself 45.64(22) in a
+    vapour cell and 45.48(25) in a MOT, averaged. (Arora & Sahoo's 45.44(8) is
+    THEORY from matrix elements 4.144/6.048, essentially the ones used here, so
+    it checks the arithmetic and is not a second measurement.) Scaled to reach
+    Orson's sign they give 9.9 ns, ~210 sigma from the measurement.
 
     So the sign disagreement is not symmetric: one side is anchored to a
     measured lifetime and the other is not. This test fails if the matrix

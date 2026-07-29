@@ -195,8 +195,43 @@ numbers settle it — $u$, $v$, and the cathode's active extent *along the beam
 image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode (the tube housed in the
 Thorlabs PXT1/M module seen in the in-campaign photograph;
 experimenter-confirmed 2026-07-23) is a
-3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4) — which is why they are
-part of the proposed session's setup metrology (PLAN §8.1, §8.3 #4); the
+3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4).
+
+**The rotation is now known: the window is LANDSCAPE** (experimenter,
+2026-07-29), so the 12 mm axis lies along the beam image and
+$Z_c = L_\parallel/2M = 6/M$ mm. That is the larger of the two cases — it
+pushes $Z_c$ *towards* the crossover rather than away from it — and the
+two-waist flip survives it across the whole plausible range of magnification:
+
+| $M$ | $Z_c$ (mm) | $g_1$ at 60 µm | $g_1$ at 16 µm | flips |
+|---|---|---|---|---|
+| 0.5 | 12.0 | $+0.044$ | $-0.510$ | yes |
+| 1.0 | 6.0 | $+0.464$ | $-0.476$ | yes |
+| 2.0 | 3.0 | $+0.557$ | $-0.416$ | yes |
+| 4.0 | 1.5 | $+0.565$ | $-0.277$ | yes |
+| 6.0 | 1.0 | $+0.566$ | $-0.071$ | yes |
+
+So the sign-flip test is no longer conditional on $Z_c$ falling in a window: it
+holds for every $M$ from 0.5 to 6.
+
+**And the magnification is roughly known too.** The collection lens was the
+$f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (experimenter,
+2026-07-29 — an ESTIMATE, not a measurement; $u$ and $v$ still want a ruler).
+That gives $Z_c = 6/M = 2.0$–$2.4$ mm, and it hangs together: $1/u+1/v=1/f$ with
+$M=2.5$–3 puts the lens 24–25 mm from the beam and the photocathode 63–72 mm
+behind it, an ordinary side-viewing layout. Three consequences:
+
+1. **The $Z_c = 2$ mm placeholder this chapter has been carrying was right.**
+   The estimate lands at 2.0–2.4 mm, so the archival numbers computed with it
+   stand rather than needing revision.
+2. **The archival configuration sits at $\zeta = 0.25$–$0.30$**, i.e. well
+   inside the transverse-only regime, with $g_1 = +0.551$ to $+0.558$ and mean
+   $0.648$–$0.653$ $S_0$ — within 3% of the pure-triangle values.
+3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 60 µm
+   against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$–$0.95$ in a
+   quantity whose full range is $\pm0.57$.
+
+The remaining measurement is $u$ and $v$ (PLAN §8.1, §8.3 #4); the
 solid-angle weighting varies by <2% across any such window, so the top-hat
 form is fair and the *width* is the only unknown. Geometry permitting, a
 proposed session's skew program is then a **sign-flip test between beam
