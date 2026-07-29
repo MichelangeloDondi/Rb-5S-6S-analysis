@@ -283,7 +283,7 @@ as [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv), and
 
 ```bash
 python scripts/run_drift_settling.py  # the drift analysis, off the committed clock
-python scripts/run_laser_history.py   # rebuilds the laser's frequency history
+python scripts/run_laser_history.py   # laser frequency, within each display epoch
 ```
 
 print the full report — no raw traces and no private folder required, because

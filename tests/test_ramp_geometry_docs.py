@@ -98,7 +98,14 @@ _RETRACTED = re.compile(r"naive|supersed|wrong in sign|not by the", re.I)
 _NAIVE_GAIN = re.compile(
     r"S_?0?[\^_]?3.{0,80}(?:detect|measurab|measurement)|"
     r"(?:detect|measurab)\w*.{0,80}S_?0?[\^_]?3", re.I | re.S)
-_AXIAL = re.compile(r"axial|sign|1\.12|cumulant|not by the", re.I)
+# No bare "sign": under re.I it matched signal, design, significant, signature,
+# assigned. Of the 195 sentences in these documents that satisfied this
+# qualifier, 160 did so through that substring alone -- ordinary physics prose
+# was excusing the very claim the guard exists to catch. What actually
+# qualifies is naming the axial average, the crossover, the cumulant, or the
+# sign flip as such.
+_AXIAL = re.compile(r"axial|sign[- ]flip|flips? sign|1\.12|cumulant|"
+                    r"not by the", re.I)
 
 # Every document that carries the claim -- INCLUDING the generated ledger and
 # the generator it comes from. The first version of this list watched only the
@@ -129,33 +136,51 @@ def test_no_unretracted_x64_skew_claim(relpath):
     )
 
 
+_FLIP_CLAIM = re.compile(r"sign[- ]flip|flips? sign|skewness sign", re.I)
+# The OTHER sign flip in this programme: the asymmetry crossing zero as the
+# DIFFERENTIAL POLARIZABILITY does, at a magic wavelength. Nothing geometric
+# about it, so demanding Z_c beside it would be wrong.
+_MAGIC = re.compile(r"magic|Δα|\\Delta\\alpha|zero[- ]cross|polariz", re.I)
+# What "states the condition" means. Deliberately NARROW: the earlier version
+# also accepted "conditional", "contingent" and "unmeasured", each of which
+# occurs in nearly every long document here for unrelated reasons, which made
+# the guard pass on any prose at all.
+_GEOMETRIC = re.compile(
+    r"1\.12|collection geometry|field of view|Z_c|L_\\parallel|L∥|"
+    r"axial (?:window|average)", re.I)
+
+
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_sign_flip_claims_carry_the_condition(relpath):
-    """Any document asserting the g1 sign flip must say, somewhere, that the
-    flip is a statement about the COLLECTION GEOMETRY -- it happens because the
-    axial window Z_c crosses 1.12 z_R, not because the atoms do anything new.
+    """A document asserting the g1 sign flip must tie it to the COLLECTION
+    GEOMETRY: it happens because the axial window Z_c crosses 1.12 z_R, not
+    because the atoms do anything new. Landscape secures the flip for every
+    plausible magnification, so the claim is no longer contingent on a
+    measurement -- but it is still geometric, and stated bare it stops being
+    falsifiable.
 
-    The landscape cathode secures the flip for every plausible magnification
-    (Z_c = 6/M mm clears the window for 0.47 < M < 6.6), so the claim is no
-    longer contingent on a measurement. It is still geometric, and a document
-    that states it bare -- with no Z_c, no field of view, no crossover -- has
-    dropped the thing that makes it falsifiable.
+    Scoped to the FIRST geometric-flip paragraph and its neighbours, not to the
+    whole file. Searching the whole file made this vacuous: every one of these
+    documents mentions Z_c somewhere, so prose asserting the exact OPPOSITE
+    ("the flip is intrinsic and has nothing to do with Z_c") passed. Later
+    mentions may legitimately be shorthand once the condition has been stated.
 
-    (The docstring used to sit below the skip guard, where Python treats it as
-    a discarded string expression rather than a docstring.)"""
+    (Red-team pass 2026-07-29. The docstring also used to sit below the skip
+    guard, where Python discards it as a statement rather than binding it.)"""
     if not (ROOT / relpath).exists():
         pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
-    txt = (ROOT / relpath).read_text(encoding="utf-8")
-    asserts_flip = re.search(r"sign[- ]flip|flips? sign|skewness sign", txt, re.I)
-    if not asserts_flip:
-        pytest.skip("document does not assert the flip")
-    carries = re.search(
-        r"conditional|contingent|unmeasured|1\.12|collection geometry|r_?PMT|"
-        r"field of view|Z_c|L_\\parallel|L∥", txt, re.I)
-    assert carries, (
-        f"{relpath} asserts the g1 sign flip but never ties it to the "
-        f"collection geometry -- the axial window Z_c crossing 1.12 z_R is "
-        f"why it flips (PLAN 8.3 #4)."
+    paras = re.split(r"\n\s*\n", (ROOT / relpath).read_text(encoding="utf-8"))
+    geometric = [i for i, p in enumerate(paras)
+                 if _FLIP_CLAIM.search(p) and not _MAGIC.search(p)]
+    if not geometric:
+        pytest.skip("document does not assert the geometric flip")
+    i = geometric[0]
+    window = " ".join(paras[max(0, i - 1):i + 2])
+    assert _GEOMETRIC.search(window), (
+        f"{relpath} first asserts the g1 sign flip at paragraph {i} without "
+        f"tying it to the collection geometry in that paragraph or its "
+        f"neighbours -- the axial window Z_c crossing 1.12 z_R is why it flips "
+        f"(PLAN 8.3 #4).\n  {' '.join(paras[i].split())[:200]}"
     )
 
 
@@ -222,7 +247,12 @@ def test_no_document_asks_for_a_pmt_diameter():
 # own stack as a shortpass would send someone to the bench with the wrong part,
 # so the attribution has to hold: an unattributed short-pass is the error.
 _SHORTPASS = re.compile(r"short-?pass", re.I)
-_ATTRIB = re.compile(r"nieddu|their |lit/|2019|ONF|nanofib", re.I)
+# \bONF\b, not ONF: under re.I a bare "ONF" matches the middle of config,
+# confirm, confound, configuration -- 400 lines of this corpus satisfied the
+# alternative and only 30 contained the acronym, so almost any short-pass
+# sentence sitting near the word "configuration" was excused. The bare year
+# goes too: "2019" appearing somewhere in a line is not an attribution.
+_ATTRIB = re.compile(r"nieddu|their |lit/|\bONF\b|nanofib", re.I)
 # A NEGATION is correct usage too -- "a 795 nm passband, not a short-pass" is
 # the sentence this guard exists to produce, so it must not trip on it.
 _NEGATED = re.compile(r"not an?\s+short-?pass|not\s+a\s+short-?pass", re.I)
@@ -258,8 +288,6 @@ def test_shortpass_only_ever_attributed_to_others():
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_no_naive_s0cubed_measurability_claim(relpath):
-    if not (ROOT / relpath).exists():
-        pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     """The x64 sweep keyed on the literal number and so missed the same claim
     written as "the small waist makes the propto S_0^3 skew a detection".
 
@@ -269,6 +297,8 @@ def test_no_naive_s0cubed_measurability_claim(relpath):
     sentence sitting directly beside its own retraction passed. The qualifier
     has to be in the claim's own sentence (or the next), where a reader lifting
     the sentence will carry it away too."""
+    if not (ROOT / relpath).exists():
+        pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     txt = " ".join((ROOT / relpath).read_text(encoding="utf-8").split())
     sents = re.split(r"(?<=[.;])\s+", txt)
     bad = []

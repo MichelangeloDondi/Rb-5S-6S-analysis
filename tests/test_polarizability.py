@@ -121,6 +121,29 @@ def test_mc_band_deterministic():
     assert b1 == b2
 
 
+def test_mc_band_reports_one_sigma_not_some_other_percentile():
+    """mc_band's docstring promises the 16/84 percentiles, i.e. a 1-sigma band,
+    and every uncertainty this module quotes is that half-width. Nothing pinned
+    it: the reproducibility test above passes a CONSTANT functional, for which
+    lo == hi == median whatever percentiles the code uses, so 16/84 -> 5/95
+    inflated every published band x1.62 with the suite still green (mutation
+    test, 2026-07-29).
+
+    Pinned here against a functional whose spread is known analytically. Drawing
+    the 5S core straight through gives Normal(CORE_5S, CORE_5S_SIG), so the
+    half-width (hi-lo)/2 must come back as CORE_5S_SIG. 5/95 would return
+    1.645x that and fail by a wide margin."""
+    from rb5s6s.polarizability import CORE_5S, CORE_5S_SIG
+
+    band = mc_band(lambda k5, k6: k5["core"], n=20_000, seed=11)
+    assert band["failed"] == 0 and band["n"] == 20_000
+    assert band["median"] == pytest.approx(CORE_5S, abs=0.05 * CORE_5S_SIG)
+    half = 0.5 * (band["hi"] - band["lo"])
+    assert half == pytest.approx(CORE_5S_SIG, rel=0.04), (
+        f"mc_band half-width {half:.4g} is not the 1-sigma {CORE_5S_SIG:.4g}; "
+        f"ratio {half / CORE_5S_SIG:.3f} (1.645 would mean 5/95 percentiles)")
+
+
 # --- the Ti:Sapph ladder: 5S->7S (independent) and 5S->5D5/2 (Hamilton anchor) ---
 
 def test_7s_static_follows_the_ns_trend():

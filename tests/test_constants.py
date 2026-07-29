@@ -30,6 +30,13 @@ def test_natural_width_value():
 
 
 def test_tooth_spacing_axis_convention():
+    # The EOM drive is the ABSOLUTE SCALE of the frequency ruler: every width
+    # and shift in this analysis is measured in teeth, so a wrong Omega scales
+    # the whole result set linearly. Pin the value, not only its bookkeeping --
+    # both assertions below read Omega from the module under test, so a
+    # 12.5 -> 125 MHz typo satisfied them and the entire suite stayed green
+    # (red-team, 2026-07-29). The number is the EOM-02-12.5-V drive.
+    assert K.OMEGA_EOM_HZ == 12.5e6
     # Adjacent two-photon comb teeth: Omega/2 on the laser axis, Omega on the
     # transition axis. The factor-2 bookkeeping must never drift.
     assert K.TOOTH_SPACING_LASER_HZ == K.OMEGA_EOM_HZ / 2.0

@@ -107,13 +107,17 @@ def test_drift_settling_numbers_match_the_addendum(drift_report):
     import re
 
     out = drift_report
-    # The re-kick fit needs steps from BOTH epochs, and the T-epoch half comes
-    # from data_raw/rulers_t/ which a checkout without raw traces (the public
-    # mirror) does not have. The script now says so and stops rather than
-    # fitting six models to one epoch; there is then nothing to lock the doc
-    # against, so skip rather than fail on a correctly-degraded run.
-    if "SKIPPED: needs both epochs" in out:
-        pytest.skip("re-kick fit skipped: no raw ruler traces in this checkout")
+    # No skip here on purpose. This test used to bail out whenever the re-kick
+    # stage reported "SKIPPED: needs both epochs" -- but the re-kick stage is
+    # the LAST of four, and the three quantities checked below (addendum 4
+    # settled drift, addendum 5 state-space constant drift, addendum 6
+    # centre-channel bound) are all computed and printed on exactly that
+    # degraded run. Verified in the public mirror on 2026-07-29: the script
+    # prints +0.55 +/- 0.17, c = +0.38 [+0.17, +0.59] and S0 < 5.5 MHz on the
+    # same run whose re-kick stage says SKIPPED. One skip was discarding three
+    # enforced doc<->code locks to dodge a fourth. The re-kick numbers keep
+    # their own guard in test_rekick_fit_numbers_match_addendum_12 below, where
+    # the skip belongs.
     m = re.search(r"agree to \+([\d.]+) \+/- ([\d.]+) ms/min", out)
     assert m, out
     doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")

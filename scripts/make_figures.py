@@ -16,6 +16,7 @@ Writes PNGs to figures/. Run after the pipeline (reads results/*.csv).
 from __future__ import annotations
 
 import csv
+import datetime as dt_module
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -589,73 +590,142 @@ def fig_degeneracy_vs_observable():
     _save(fig, "fig10_degeneracy_vs_observable.png")
 
 
+_RUN_GAP_S = 120      # traces this far apart or less are one acquisition run
+_KICK_MHZ = 8.0       # step size that separates a hand re-centring from drift
+
+
 def fig_laser_history():
-    """The laser's frequency history, reconstructed from the atoms and the
-    recovered file timestamps alone (M20, scripts/run_laser_history.py). No
-    wavemeter log survives the 2025 campaign; the fitted peak position IS the
-    laser's offset within the sweep, and the EOM ruler converts it to MHz. One
-    panel per acquisition day, hours since that day's first trace. This is a
-    PREDICTION of what a wavemeter log would show -- if one is ever recovered,
-    it can be compared point by point, testing the ruler calibration, the
-    mtime-as-acquisition-time assumption and the peak extraction at once."""
+    """M20: the laser frequency history, reconstructed PIECEWISE.
+
+    Rebuilt 2026-07-29 after the retraction. The earlier version plotted
+    session-referenced offsets as one continuous record and titled itself with a
+    65 MHz peak-to-peak excursion; that excursion was the scope's horizontal
+    knob (window-start travel x rate = 64.54 MHz against the 64.97 quoted), and
+    an offset means nothing across a change of that setting. So the record is
+    drawn in DISPLAY EPOCHS -- runs of unchanged window_start_ms -- with a
+    visible break at every setting change, because across a break the offset is
+    unknown rather than zero.
+
+    Three panels. Left: the two sessions, one connected segment per (epoch,
+    line), breaks left empty. Middle: the one long knob-untouched stretch, which
+    is a genuine drift measurement. Right: the within-epoch step distribution,
+    whose heavy tail is the CAVITY reference being recentred -- a real frequency
+    step, unlike a knob move.
+    """
     fp = C.RESULTS_DIR / "laser_history.csv"
     if not fp.exists():
         print("  (laser_history.csv absent -- skipping fig11)")
         return
     rows = list(csv.DictReader(open(fp)))
-    if not rows:
+    if not rows or "display_epoch" not in rows[0]:
+        print("  (laser_history.csv predates display_epoch -- re-run "
+              "run_laser_history.py; skipping fig11)")
         return
+    for r in rows:
+        r["_t"] = int(r["t_epoch"])
+        r["_o"] = float(r["offset_mhz"])
+        r["_e"] = int(r["display_epoch"])
+    rows.sort(key=lambda r: r["_t"])
     days = sorted({r["session_day"] for r in rows})
-    sf_fp = C.RESULTS_DIR / "laser_history_structure.csv"
-    sf = list(csv.DictReader(open(sf_fp))) if sf_fp.exists() else []
-    ncol = len(days) + (1 if sf else 0)
-    fig, axes = plt.subplots(1, ncol, figsize=(4.8 * ncol, 4.3), squeeze=False)
-    for ax, d in zip(axes[0], days):
-        rs = sorted((r for r in rows if r["session_day"] == d),
-                    key=lambda r: int(r["t_epoch"]))
-        t0 = int(rs[0]["t_epoch"])
-        for pk in PEAK_COLOR:
-            sel = [r for r in rs if r["peak"] == pk]
-            if not sel:
+
+    fig, axes = plt.subplots(1, 3, figsize=(15.0, 4.5))
+
+    # ---- panel 1: piecewise record, both sessions side by side --------------
+    ax = axes[0]
+    xoff, ticks = 0.0, []
+    for d in days:
+        rs = [r for r in rows if r["session_day"] == d]
+        t0 = rs[0]["_t"]
+        day_segs = defaultdict(list)
+        for r in rs:
+            day_segs[(r["_e"], r["peak"])].append(r)
+        for (_, pk), g in sorted(day_segs.items()):
+            if len(g) < 2:
                 continue
-            ax.plot([(int(r["t_epoch"]) - t0) / 3600 for r in sel],
-                    [float(r["offset_mhz"]) for r in sel],
-                    "o", ms=3.2, alpha=0.8, color=PEAK_COLOR[pk],
-                    label=f"993.{pk} nm")
-        other = [r for r in rs if r["peak"] not in PEAK_COLOR]
-        if other:
-            ax.plot([(int(r["t_epoch"]) - t0) / 3600 for r in other],
-                    [float(r["offset_mhz"]) for r in other],
-                    "o", ms=2.6, alpha=0.5, color="0.55", label="other/QC")
-        ax.axhline(0.0, color="0.4", lw=0.8, ls=":")
-        ax.set_xlabel("hours since first trace of the day")
-        ax.set_ylabel("reconstructed laser offset (MHz, laser axis)")
-        import datetime as _dt
-        ax.set_title(_dt.datetime.fromtimestamp(t0).strftime("%Y-%m-%d")
-                     + f"  ({len(rs)} traces)", fontsize=9)
-        ax.legend(fontsize=7, framealpha=1.0, frameon=True)
+            x = [xoff + (r["_t"] - t0) / 3600.0 for r in g]
+            ax.plot(x, [r["_o"] for r in g], "-o", ms=2.6, lw=0.9,
+                    color=PEAK_COLOR.get(pk, "0.6"), alpha=0.9)
+        span = (rs[-1]["_t"] - t0) / 3600.0
+        ticks.append((xoff + span / 2, dt_module.datetime.fromtimestamp(t0)
+                      .strftime("%m-%d")))
+        xoff += span + 0.6
+    ax.axhline(0.0, color="0.5", lw=0.8, ls=":")
+    ax.set_xticks([t for t, _ in ticks])
+    ax.set_xticklabels([lab for _, lab in ticks])
+    ax.set_xlabel("session (hours run left to right within each)")
+    ax.set_ylabel("offset within its display epoch (MHz, laser axis)")
+    n_ep = len({r["_e"] for r in rows})
+    ax.set_title(f"{len(rows)} traces in {n_ep} display epochs — each segment is\n"
+                 "referenced to itself; gaps are knob moves, offset unknown across them",
+                 fontsize=8.5)
+    ax.grid(alpha=0.25, lw=0.5)
+    h = [plt.Line2D([], [], color=c, lw=2, label=f"993.{k} nm")
+         for k, c in PEAK_COLOR.items()]
+    ax.legend(handles=h, fontsize=7, frameon=True, framealpha=0.95, ncol=2,
+              loc="lower left")
+
+    # ---- panel 2: the QUIETEST well-sampled segment -------------------------
+    # NOT the longest: the longest (75 min) is two bursts 75 min apart with
+    # ~13 MHz of internal scatter, so a line through it measures a cavity
+    # re-centring between the clusters, not a drift rate. Drawing it is what
+    # exposed that. No epoch in the archive gives a long intervention-free
+    # stretch, so the archive does NOT measure a drift rate; what it does
+    # measure is how still the laser sat when nobody touched it.
+    ax = axes[1]
+    segs = defaultdict(list)
+    for r in rows:
+        segs[(r["_e"], r["peak"])].append(r)
+    cand = []
+    for key, g in sorted(segs.items()):
+        if len(g) < 6:
+            continue
+        g = sorted(g, key=lambda r: r["_t"])
+        dur = (g[-1]["_t"] - g[0]["_t"]) / 60.0
+        yy = [r["_o"] for r in g]
+        if dur > 0:
+            cand.append((max(yy) - min(yy), key, g, dur))
+    if cand:
+        cand.sort()
+        pp, (_, pk), g, dur = cand[0]
+        x = (np.array([r["_t"] for r in g], float) - g[0]["_t"]) / 60.0
+        y = [r["_o"] for r in g]
+        ax.plot(x, y, "-o", ms=5, lw=1.0,
+                color=PEAK_COLOR.get(pk, "0.6"))
+        ax.axhline(0.0, color="0.5", lw=0.8, ls=":")
+        pad = max(0.15, 0.35 * pp)
+        ax.set_ylim(min(y) - pad, max(y) + pad)
+        ax.set_xlabel("minutes into the epoch")
+        ax.set_ylabel("offset (MHz, laser axis)")
+        ax.set_title(f"the quietest well-sampled epoch: 993.{pk} nm,\n"
+                     f"{len(g)} traces over {dur:.1f} min held to "
+                     f"{pp:.2f} MHz peak-to-peak", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5)
-    if sf:
-        ax = axes[0][-1]
-        lag = [0.5 * (float(b["lag_lo_s"]) + min(float(b["lag_hi_s"]), 7200.0))
-               for b in sf]
-        rms = [float(b["rms_mhz"]) for b in sf]
-        ax.semilogx(lag, rms, "o-", color="#0072B2", ms=5, lw=1.4)
-        for x, y, b in zip(lag, rms, sf):
-            ax.annotate(f"n={b['n_pairs']}", (x, y), fontsize=6,
-                        textcoords="offset points", xytext=(0, -12), ha="center")
-        ax.axhline(rms[0], color="0.5", lw=0.8, ls=":")
-        ax.text(lag[0], rms[0] * 1.04, "flat here = scatter, not history",
-                fontsize=6.5, color="0.35")
-        ax.set_xlabel("time between two traces of the SAME line (s)")
-        ax.set_ylabel("RMS disagreement (MHz)")
-        ax.set_title(f"the test: {rms[-1] / rms[0]:.1f}× rise, so it is real\n"
-                     "correlation time a few minutes", fontsize=9)
+
+    # ---- panel 3: within-epoch steps, the cavity re-centrings --------------
+    ax = axes[2]
+    steps = []
+    by = defaultdict(list)
+    for r in rows:
+        by[(r["_e"], r["peak"])].append(r)
+    for g in by.values():
+        g.sort(key=lambda r: r["_t"])
+        steps += [abs(b["_o"] - a["_o"]) for a, b in zip(g, g[1:])
+                  if 0 < b["_t"] - a["_t"] < 120]
+    if steps:
+        s = np.array(steps)
+        ax.hist(s, bins=np.linspace(0, max(16.0, s.max()), 33),
+                color="#0072B2", alpha=0.85)
+        med = float(np.median(s))
+        ax.axvline(med, color="0.15", lw=1.4, ls="--")
+        ax.set_yscale("log")
+        ax.set_xlabel("|step| between consecutive traces, same epoch (MHz)")
+        ax.set_ylabel("count (log)")
+        ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz —\n"
+                     "quiet drift, punctuated by cavity re-centrings", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5, which="both")
-    off = [float(r["offset_mhz"]) for r in rows]
-    fig.suptitle("No wavemeter log survives: the laser's drift and hand re-centrings, "
-                 f"rebuilt from the lines themselves ({max(off) - min(off):.0f} MHz "
-                 "peak-to-peak)", fontsize=10)
+
+    fig.suptitle("No wavemeter log survives: what the traces can and cannot say about "
+                 "the laser's frequency", fontsize=10.5)
     _save(fig, "fig11_laser_history.png")
 
 

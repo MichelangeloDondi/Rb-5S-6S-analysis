@@ -127,7 +127,22 @@ def trace_metrics(t_ms: np.ndarray, v: np.ndarray) -> Dict[str, float]:
       sigma_wing_v      wing noise sigma [V]
       height_v          smoothed peak height above baseline [V]
       snr               height_v / sigma_wing_v
-      peak_pos_ms       smoothed peak position [ms]
+      peak_pos_ms       smoothed peak position [ms], ON THIS FILE'S OWN AXIS --
+                        see window_start_ms; NOT comparable across a change of it
+      window_start_ms   first sample's time [ms], i.e. the scope's horizontal
+                        position setting. Recorded because peak_pos_ms is
+                        measured against it: the export is WINDOW-referenced, so
+                        moving the horizontal knob re-zeros the axis and shifts
+                        peak_pos_ms with it. Established from the archive
+                        (2026-07-29): across 295 consecutive pairs the value is
+                        identically unchanged 237 times and every change is a
+                        multiple of 2 ms (minimum 4 ms) -- a discrete setting
+                        that never jitters -- and within single 5-repeat blocks
+                        saved SECONDS apart, a change of ds moves peak_pos_ms by
+                        0.938*ds (residual 8.8 ms, the size of the ordinary
+                        window-still jitter of 5.2 ms). A laser cannot move
+                        22 MHz in seconds. So peak_pos_ms is a frequency measure
+                        only WITHIN a run of unchanged window_start_ms.
       fwhm_ms           crude smoothed half-max extent [ms] (QC only, never physics)
       edge_margin_ms    distance of the nearer half-max edge from the window end;
                         small => the line is cut by the window
@@ -164,6 +179,8 @@ def trace_metrics(t_ms: np.ndarray, v: np.ndarray) -> Dict[str, float]:
     m["height_v"] = float(height)
     m["snr"] = float(height / m["sigma_wing_v"]) if m["sigma_wing_v"] > 0 else np.inf
     m["peak_pos_ms"] = float(t_ms[ipk])
+    # the horizontal-position setting this peak position is measured against
+    m["window_start_ms"] = float(t_ms[0])
     # FWHM and edge margin use the CONTIGUOUS above-half region containing
     # the maximum — never the union of disjoint regions. (independent
     # verification caught the union inflating a healthy 60 ms line to

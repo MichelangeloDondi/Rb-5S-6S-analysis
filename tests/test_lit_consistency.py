@@ -350,7 +350,16 @@ def test_narrative_docs_do_not_argue_from_unverified_papers():
         if m and m.group(1).strip() == "REPORTED":
             reported.add(note.stem)
     if not reported:
-        return
+        # Every one of the 72 notes is currently VERIFIED, so this guard has
+        # been executing zero comparisons -- dormant, not passing (red-team,
+        # 2026-07-29). That is the intended end state and not a defect: a paper
+        # nobody has read normally has no note at all, it sits in the dangling
+        # list. Say so out loud rather than returning silently, so an empty
+        # population reads as a deliberate state in `-rs` output and anyone
+        # reintroducing the REPORTED status gets the guard back automatically.
+        pytest.skip("no note carries status: REPORTED -- nothing to guard "
+                    "(every note is VERIFIED; an unread paper normally has no "
+                    "note at all and sits in the KNOWN_DANGLING allowlist)")
 
     CATALOGUES = {"docs/LITERATURE.md", "docs/LITERATURE_INDEX.md"}
     import subprocess

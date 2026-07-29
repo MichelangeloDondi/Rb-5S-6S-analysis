@@ -256,3 +256,36 @@ def test_axial_ramp_matches_the_independent_closed_form():
         mm = stark_ramp_axial_moments(1.0, z)
         assert abs(mm["mean"]) == pytest.approx(mean_note, rel=2e-3)
         assert mm["skew_standardized"] == pytest.approx(skew_note, rel=2e-2)
+
+
+def test_model_profile_is_converged_in_its_internal_grid(monkeypatch):
+    """model_profile convolves on an internal grid of min(width)/12. Nothing
+    checked that 12 is enough, and the composite FWHM is exactly what the
+    beta_self and kappa regressions fit, so a grid bias goes straight into
+    those slopes. It cannot be caught downstream: the synthetic closure tests
+    build their data with this same routine, so the bias cancels identically
+    (mutation test, 2026-07-29 -- coarsening to /4 moved the FWHM ~0.1% with
+    the suite green).
+
+    Varies the divisor directly. An earlier attempt compared the shipped
+    profile against one built from 4x-smaller physical widths, which is
+    vacuous: shrinking every width shrinks the step in proportion, so the
+    step-to-width ratio -- the only thing convergence depends on -- never
+    moved, and the test passed at /4 too. The widths below also keep the
+    profile clear of GRID_STEP_FLOOR_MHZ, where the floor binds and the
+    divisor stops mattering at all."""
+    import rb5s6s.lineshape as LS
+
+    nu = np.linspace(-40.0, 40.0, 400_001)
+    for kw in (dict(gamma_coll=0.5, sigma_laser_fwhm=1.0, transit_fwhm=1.5),
+               dict(gamma_coll=0.5, sigma_laser_fwhm=1.0, transit_fwhm=1.5,
+                    s0=2.0)):
+        shipped = _fwhm(nu, model_profile(nu, **kw))
+        monkeypatch.setattr(LS, "GRID_STEPS_PER_KERNEL", 4.0 * LS.GRID_STEPS_PER_KERNEL)
+        finer = _fwhm(nu, model_profile(nu, **kw))
+        monkeypatch.undo()
+        rel = abs(shipped - finer) / finer
+        assert rel < 5e-4, (
+            f"model_profile is not grid-converged for {kw}: the shipped "
+            f"divisor gives {shipped:.6f} MHz, 4x finer {finer:.6f} "
+            f"({rel:.2%}) -- raise GRID_STEPS_PER_KERNEL in lineshape.py")

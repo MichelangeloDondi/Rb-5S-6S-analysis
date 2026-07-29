@@ -55,6 +55,22 @@ from .constants import (GAMMA_NAT_HZ, DELTA_ALPHA_AU, ATOMIC_POLARIZABILITY_SI,
 # elementary profiles (all AREA-NORMALIzed to 1, argument nu in MHz)
 # ---------------------------------------------------------------------------
 
+GRID_STEPS_PER_KERNEL = 12.0
+"""Convolution grid steps per narrowest kernel FWHM.
+
+Named rather than inlined so a test can vary it: with the divisor written as a
+literal in two places, nothing could build the same profile on a finer grid,
+and there was no convergence test at all. Coarsening it to 4 shifted the
+composite FWHM -- the quantity the beta_self and kappa regressions fit -- by
+~0.1% with the whole suite green (mutation test, 2026-07-29). The synthetic
+closure tests cannot catch that: they build their data with this same routine,
+so a grid bias cancels exactly."""
+
+GRID_STEP_FLOOR_MHZ = 1e-3
+"""Absolute floor on the grid step, so a vanishing kernel width cannot explode
+the grid. Where this floor binds, the divisor above has no effect."""
+
+
 def lorentzian(nu: np.ndarray, fwhm: float) -> np.ndarray:
     """Area-normalized Lorentzian of full width at half maximum `fwhm`."""
     hwhm = 0.5 * fwhm
@@ -153,7 +169,7 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     homog = GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0)
     widths = [homog, max(sigma_laser, 1e-6), max(transit_fwhm, 1e-6)]
     span = 6.0 * (sum(widths) + max(widths)) + 5.0
-    dnu = max(min(widths) / 12.0, 1e-3)
+    dnu = max(min(widths) / GRID_STEPS_PER_KERNEL, GRID_STEP_FLOOR_MHZ)
     n = int(np.ceil(span / dnu))
     g = np.arange(-n, n + 1) * dnu
     prof = lorentzian(g, homog)
@@ -297,8 +313,8 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # grid step from the smooth kernels only: stark_ramp handles s0 below the
     # grid step exactly (cell integrals + moment correction), so a tiny s0
     # must not explode the grid (fix, 2026-07-11)
-    dnu = min(w for w in kernel_widths if w > 0) / 12.0
-    dnu = max(dnu, 1e-3)
+    dnu = min(w for w in kernel_widths if w > 0) / GRID_STEPS_PER_KERNEL
+    dnu = max(dnu, GRID_STEP_FLOOR_MHZ)
     g = _grid(span, dnu)
 
     prof = lorentzian(g, homog)

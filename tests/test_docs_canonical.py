@@ -175,9 +175,18 @@ def _tokens(entry):
 
 
 @pytest.mark.parametrize("entry", CANONICAL, ids=lambda e: e["name"])
-def test_canonical_value_matches_source(entry):
-    # (A) the registry token is derived live from the CSV/constant, so this just
-    # asserts it is well-formed and non-empty -- the derivation IS the SSOT tie.
+def test_canonical_registry_entries_are_well_formed(entry):
+    """(A) The registry token is DERIVED live from the CSV or constant, so this
+    checks only that the derivation produced something usable -- non-empty and
+    not a stringified NaN. It is not the value<->source tie and was renamed
+    because its old name (`..._value_matches_source`) claimed to be
+    (red-team, 2026-07-29).
+
+    The real protection is the next test: corrupting
+    results/stark_sweep.csv fails test_docs_cite_canonical_value, verified by
+    planting 0.633 -> 999.999. Keep both -- this one catches a producer that
+    silently emits NaN, which the citation check would then happily match
+    against equally-NaN prose."""
     toks = _tokens(entry)
     assert toks and all(t and not t.startswith("nan") for t in toks), entry["name"]
 

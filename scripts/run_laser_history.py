@@ -3,19 +3,55 @@
 Reconstruct the laser's frequency history from the traces (module M20)
 =====================================================================
 
-The 2025 campaign ran on a drifting, hand re-centred lock and no wavemeter log
-survives. That is usually stated as a loss. It is recoverable, because every
-trace carries the information: the line sits wherever the laser happened to be
-within the sweep, so the FITTED PEAK POSITION IS THE LASER'S FREQUENCY OFFSET,
-in units the EOM ruler converts to MHz. Joined to the recovered acquisition
-clock, the 297 traces become a ~22-hour record of what the laser did.
+RETRACTED AND REBUILT, 2026-07-29. The first version of this module referenced
+peak positions to a PER-SESSION mean and reported a ~22-hour, 65 MHz
+peak-to-peak reconstruction of the laser's frequency. That number was the scope's
+HORIZONTAL KNOB, not the laser. Two measurements settle it, both from the
+archive alone:
 
-    offset(MHz) = (peak_pos_ms - <peak_pos_ms>_session) * rate_campaign
+1. The exported time axis is WINDOW-referenced, not trigger-referenced. Each
+   file's first sample time (now recorded as qc's window_start_ms) is a discrete
+   setting: across 295 consecutive pairs it is identically unchanged 237 times,
+   and every one of the 58 changes is a multiple of 2 ms with a 4 ms minimum. It
+   never jitters.
+2. Within SINGLE 5-repeat blocks, whose traces are saved seconds apart, a change
+   of ds in that setting moves peak_pos_ms by 0.938*ds, with an 8.8 ms residual
+   -- the size of the ordinary window-still scatter (5.2 ms, 0.22 MHz). A laser
+   does not move 22 MHz in seconds, and the window-still control says it moves
+   0.22 MHz. The peak follows the window.
+
+And the retracted headline was arithmetically the knob: reported 64.97 MHz
+peak-to-peak against a window-start travel of 1516 ms x 0.04257 = 64.54 MHz,
+a ratio of 1.007.
+
+The repository had already said so, and this module had not read it -- PLAN.md:
+"Scope horizontal-knob and cavity-reference recenters occurred between saves --
+MANY times ... => absolute positions carry no meaning across saves."
+
+WHAT IS RECONSTRUCTED INSTEAD. A peak position is a frequency measure only while
+the horizontal setting is untouched, so the campaign is cut into DISPLAY EPOCHS
+-- maximal runs of unchanged window_start_ms within a session -- and referenced
+inside each:
+
+    offset(MHz) = (peak_pos_ms - <peak_pos_ms>_epoch,peak) * rate_campaign
 
 with rate_campaign = 0.04257(5) MHz/ms, laser axis (M2, results/ruler_campaign).
-The per-session mean is subtracted because the ABSOLUTE frequency is exactly
-what this archive cannot supply -- only the excursions are reconstructed, which
-is the same limitation the rest of the analysis carries.
+The reference is per (epoch, peak) because the four lines sit at different places
+in the sweep. Across an epoch boundary the offset is UNKNOWN -- not zero, not
+interpolated -- and nothing here joins two epochs.
+
+That gives 296 traces in 60 epochs, of which 45 hold three or more traces of one
+line. The within-epoch excursion is 1.28 MHz peak-to-peak (median), and the one
+long knob-untouched stretch -- epoch 38, 993.4121 nm, ten traces over 74.9
+minutes on 2025-07-17 -- drifts at -0.022 MHz/min. That last number is the
+result worth having: DATA.md quotes the held lock at ~0.016 MHz/min from an
+independent argument, and this is a direct measurement of it from the atoms.
+
+TWO INTERVENTION CHANNELS, and only one is visible in the setting. A knob move
+shows up in window_start_ms and breaks the record. A CAVITY-REFERENCE recentring
+does not -- it is a genuine frequency step, and it appears as a step inside an
+epoch. So a within-epoch excursion of 10-15 MHz (some epochs) is real frequency
+motion, mostly operator-induced, while the epoch boundaries are simply blind.
 
 WHAT THIS IS FOR, and it is not decoration.
 
@@ -41,6 +77,17 @@ WHAT THIS IS FOR, and it is not decoration.
    -- the EOM ruler measured the rate per block rather than assuming it -- but
    the protection is invisible until the roll-off is characterised, and a future
    experimenter has no way to know how fast is too fast.
+
+EVERYTHING BELOW THIS LINE PREDATES THE RETRACTION and is under review. The
+numbers in it were computed from session-referenced offsets, so any of them that
+differences peak positions ACROSS a horizontal-setting change is affected --
+including the quoted "48.8 MHz re-kick" in the 993.4207 nm sweep, the "11.3" at
+110 C, the centre-channel bound |S0(225 mW)| < 7.3 MHz, and the claim that
+blocks 54-76 min apart were "fully decorrelated". The DESIGN LESSON (cycle the
+power ordering) does not depend on any of them and stands. The same exposure
+reaches scripts/run_drift_settling.py, which compares block-median peak
+positions across blocks and feeds preregistration addenda 4, 5, 6 and 12; that
+is tracked separately and is NOT fixed by this module's rebuild.
 
 IS THE RECONSTRUCTION REAL? Yes, and it is tested here rather than asserted. A
 curve like this could be nothing but per-trace scatter dressed up as history, so
@@ -154,29 +201,53 @@ def build() -> list[dict]:
         q = qc[f]
         if not q.get("peak_pos_ms"):
             continue
+        if not q.get("window_start_ms"):
+            print("  qc_metrics.csv predates window_start_ms -- re-run "
+                  "scripts/run_qc.py; peak positions cannot be referenced "
+                  "without the horizontal setting")
+            return []
         rows.append({"file": f, "t_epoch": t, "role": q["role"], "flag": q["flag"],
                      "peak": q["peak"], "temperature_C": q["temperature_C"],
                      "power_mW": q["power_mW"], "peak_pos_ms": float(q["peak_pos_ms"]),
+                     "window_start_ms": float(q["window_start_ms"]),
                      "snr": q["snr"]})
     # session = a contiguous run of acquisitions; the campaign has two days
     rows.sort(key=lambda r: r["t_epoch"])
     day = defaultdict(list)
     for r in rows:
         day[r["t_epoch"] // 86400].append(r)
-    # Reference PER (day, peak), not per day. The four lines are different
+    # DISPLAY EPOCH: a maximal run of unchanged window_start_ms within one
+    # session. The setting is discrete and never jitters, so this needs no
+    # tolerance -- any change at all starts a new epoch, and no offset crosses
+    # one. (Referencing per session instead is what produced the retracted
+    # 65 MHz; see the module docstring.)
+    ep = 0
+    for prev, cur in zip(rows, rows[1:]):
+        prev["display_epoch"] = ep
+        if (cur["window_start_ms"] != prev["window_start_ms"]
+                or cur["t_epoch"] // 86400 != prev["t_epoch"] // 86400):
+            ep += 1
+        cur["display_epoch"] = ep
+    if rows:
+        rows[0].setdefault("display_epoch", 0)
+
+    # Reference PER (epoch, peak). Per peak because the four lines are different
     # transitions sitting at different places in the sweep, so a common
     # reference would fold the line spacing into what is meant to be laser
-    # drift. Within one peak, the excursion is the laser (plus any real shift).
+    # drift; per epoch because that is the span over which a peak position is a
+    # frequency at all.
     for k, rs in day.items():
-        by_peak = defaultdict(list)
         for r in rs:
-            by_peak[r["peak"]].append(r)
-        for pk, prs in by_peak.items():
-            mid = statistics.median(r["peak_pos_ms"] for r in prs)
-            for r in prs:
-                r["session_day"] = k
-                r["offset_mhz"] = (r["peak_pos_ms"] - mid) * rate
-                r["offset_err_mhz"] = abs(r["peak_pos_ms"] - mid) * rate_err / rate
+            r["session_day"] = k
+    by_seg = defaultdict(list)
+    for r in rows:
+        by_seg[(r["display_epoch"], r["peak"])].append(r)
+    for (_, _), prs in by_seg.items():
+        mid = statistics.median(r["peak_pos_ms"] for r in prs)
+        for r in prs:
+            r["offset_mhz"] = (r["peak_pos_ms"] - mid) * rate
+            r["offset_err_mhz"] = abs(r["peak_pos_ms"] - mid) * rate_err / rate
+            r["n_in_segment"] = len(prs)
     return rows
 
 
@@ -192,6 +263,16 @@ def structure_function(rows: list[dict], same_peak: bool = True,
     compares traces of one line (probing short lags, where the archive has
     ~10 s bursts); False compares different lines, which the acquisition
     pattern leaves no closer than 6.6 minutes.
+
+    PAIRS ARE CONFINED TO ONE DISPLAY EPOCH (2026-07-29). Comparing across a
+    horizontal-knob move differences two numbers measured against different
+    zeros, and the earlier version did exactly that: its monotone rise to
+    11-13 MHz with a few-minute correlation time was the knob's cadence, since
+    an intervention every few minutes produces the same shape as drift over the
+    same scale. This test cannot distinguish drift from intervention, so it is
+    now only asked the question it can answer -- whether the WITHIN-epoch
+    reconstruction is time-correlated rather than per-trace scatter. That costs
+    the long-lag bins, which is honest: nothing in the archive constrains them.
     """
     import itertools
     out = []
@@ -199,6 +280,7 @@ def structure_function(rows: list[dict], same_peak: bool = True,
         d = [a["offset_mhz"] - b["offset_mhz"]
              for a, b in itertools.combinations(rows, 2)
              if (a["peak"] == b["peak"]) == same_peak
+             and a.get("display_epoch") == b.get("display_epoch")
              and lo <= abs(a["t_epoch"] - b["t_epoch"]) < hi]
         if len(d) > 5:
             m = sum(d) / len(d)
@@ -217,11 +299,17 @@ def step_statistics(rows: list[dict], max_gap_s: int = 120) -> dict:
     """The re-kick population, from steps between consecutive traces of one
     line. A continuously-drifting laser gives a Gaussian step distribution; a
     hand re-centred one gives a narrow core (the drift) plus a heavy tail (the
-    interventions), and the median-to-RMS ratio is the cleanest way to see it."""
+    interventions), and the median-to-RMS ratio is the cleanest way to see it.
+
+    Steps are taken WITHIN a display epoch only, so the tail is the CAVITY
+    reference being recentred -- a real frequency step -- and not the horizontal
+    knob, which is a change of coordinate and no step at all."""
     rows = sorted(rows, key=lambda r: (r["peak"], r["t_epoch"]))
     steps = [b["offset_mhz"] - a["offset_mhz"]
              for a, b in zip(rows, rows[1:])
-             if a["peak"] == b["peak"] and 0 < b["t_epoch"] - a["t_epoch"] < max_gap_s]
+             if a["peak"] == b["peak"]
+             and a.get("display_epoch") == b.get("display_epoch")
+             and 0 < b["t_epoch"] - a["t_epoch"] < max_gap_s]
     if not steps:
         return {}
     n = len(steps)
@@ -243,7 +331,8 @@ def main() -> int:
         # DIAGNOSTIC: a reconstruction, conditional on the ruler rate and on
         # mtime standing in for acquisition time. Not a measured frequency.
         r["status"] = "DIAGNOSTIC"
-    cols = ["file", "t_epoch", "session_day", "role", "flag", "peak",
+    cols = ["file", "t_epoch", "session_day", "display_epoch", "window_start_ms",
+            "n_in_segment", "role", "flag", "peak",
             "temperature_C", "power_mW", "snr", "peak_pos_ms",
             "offset_mhz", "offset_err_mhz", "status"]
     with open(out, "w", newline="") as f:
@@ -251,10 +340,20 @@ def main() -> int:
         w.writeheader()
         w.writerows(rows)
     span_h = (max(r["t_epoch"] for r in rows) - min(r["t_epoch"] for r in rows)) / 3600
-    off = [r["offset_mhz"] for r in rows]
-    print(f"wrote {out.name}: {len(rows)} traces over {span_h:.1f} h")
-    print(f"  reconstructed offset range: {min(off):+.1f} .. {max(off):+.1f} MHz "
-          f"(laser axis), peak-to-peak {max(off) - min(off):.1f} MHz")
+    n_ep = len({r["display_epoch"] for r in rows})
+    print(f"wrote {out.name}: {len(rows)} traces over {span_h:.1f} h, "
+          f"{n_ep} display epochs ({n_ep - 1} horizontal-setting changes)")
+    # Per (epoch, peak): the only span over which these offsets are frequencies.
+    # NO campaign-wide peak-to-peak is printed -- that figure was the knob.
+    segs = defaultdict(list)
+    for r in rows:
+        segs[(r["display_epoch"], r["peak"])].append(r)
+    pp = sorted((max(o) - min(o)) for o in
+                ([x["offset_mhz"] for x in v] for v in segs.values()) if len(o) >= 3)
+    if pp:
+        print(f"  within-epoch excursion, per (epoch, line), {len(pp)} segments of >=3: "
+              f"median {pp[len(pp) // 2]:.2f} MHz, max {pp[-1]:.2f} MHz")
+    print("  across an epoch boundary the offset is UNKNOWN; nothing here joins two.")
     sf = structure_function(rows, same_peak=True)
     st = step_statistics(rows)
     print("  structure function (same line), the test that it is not just scatter:")
@@ -263,9 +362,23 @@ def main() -> int:
         print(f"    lag {b['lag_lo_s']:>5}-{hi:>5} s : n={b['n_pairs']:5d}"
               f"   RMS = {b['rms_mhz']:5.2f} MHz")
     if len(sf) >= 2:
-        g = sf[-1]["rms_mhz"] / sf[0]["rms_mhz"]
-        print(f"  growth shortest->longest lag: {g:.2f}x "
-              f"({'REAL time-correlated drift' if g > 1.5 else 'FLAT -- scatter-dominated'})")
+        r = [b["rms_mhz"] for b in sf]
+        g = r[-1] / r[0]
+        mono = all(b >= a - 1e-9 for a, b in zip(r, r[1:]))
+        # Honest verdict (2026-07-29): confining pairs to one display epoch cost
+        # the long-lag bins, and what is left is NOT monotone -- it rises, dips,
+        # then rises on 25 pairs. A ratio of first to last across a non-monotone
+        # curve is not evidence of a correlation time, and the previous version
+        # printed "REAL time-correlated drift" from exactly that ratio.
+        if mono and g > 1.5:
+            verdict = "monotone rise -- time-correlated within an epoch"
+        elif g > 1.5:
+            verdict = ("NON-MONOTONE: rises, dips, rises; the ratio alone is "
+                       "not evidence of a correlation time")
+        else:
+            verdict = "FLAT -- scatter-dominated"
+        print(f"  shortest->longest lag: {g:.2f}x  ({verdict})")
+        print(f"    thin bins: {', '.join(str(b['n_pairs']) for b in sf)} pairs")
     for b in sf:
         b["status"] = "DIAGNOSTIC"
     with open(C.RESULTS_DIR / "laser_history_structure.csv", "w", newline="") as f:
