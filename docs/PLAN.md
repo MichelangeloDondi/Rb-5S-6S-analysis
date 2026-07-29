@@ -406,7 +406,7 @@ error s must satisfy s = k² to hide), a **camera beam-profile z-scan**
 through the same focus for shape / ellipticity / astigmatism / beam-quality M²
 (§8.1b below), **lens separations calipered at both setup
 and teardown** (§8.1a below), retro ratio ρ measured IN SITU at the
-cell position (both directions; return-path clipping differs per waist), collection geometry measured, not only photographed — the lens–beam distance u, the lens–detector distance v, the detector's effective aperture AND its rotational orientation: the PMT of record is the side-on Hamamatsu R636-10 ([Nieddu 2019](lit/nieddu2019.md); datasheet TPMS1016E) whose cathode is a 3 × 12 mm rectangle, so the axial field of view Z_c = L∥/(2M) (L∥ = cathode extent lying along the beam image, M = v/u) changes ×4 with tube rotation. These numbers feed both the transit MC and the ramp-geometry moments (§8.3 #4) — and
+cell position (both directions; return-path clipping differs per waist), collection geometry measured, not only photographed — the lens–beam distance u, the lens–detector distance v, and the detector's effective aperture: the PMT of record is the side-on Hamamatsu R636-10 (datasheet TPMS1016E; experimenter-confirmed) whose cathode is a 3 × 12 mm rectangle, so the axial field of view Z_c = L∥/(2M) (L∥ = cathode extent lying along the beam image, M = v/u) changes ×4 with tube rotation. Rotation is the one item here already settled — landscape, L∥ = 12 mm — so what u and v buy is the magnitude of Z_c, not its ×4 ambiguity. These numbers feed both the transit MC and the ramp-geometry moments (§8.3 #4) — and
 **polarization logged (or fixed with a clean polarizer) at the cell**: the
 paraxial two-photon rate goes as the squared degree of linear polarization and
 is exactly zero for circular light (Rajasree 2020, PRR **2**, 033341 — measured
@@ -707,8 +707,9 @@ order of statistical cost:
    upgraded the test, 2026-07-12). The z-average of transverse ramps has the
    closed form f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3], ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (lineshape.stark_ramp_axial; table from scripts/run_ramp_geometry.py).
-   At the planned configs, with the Z_c = 2 mm placeholder (OPEN — see next
-   paragraph): L stays clean (mean/S₀ −0.66, g1 +0.56); the re-pinned 50 µm
+   At the planned configs, with Z_c = 2 mm (a placeholder when this was
+   computed; the magnification estimate in the next paragraph supports
+   2.0–2.4 mm, so it stands): L stays clean (mean/S₀ −0.66, g1 +0.56); the re-pinned 50 µm
    archival M geometry carries only a few-% correction (g1 +0.558 — an
    earlier "10–40% modified, g1 +0.40" figure belonged to the superseded
    32 µm nominal; the −⅔S₀ / +S₀³/135 numbers are the Z→0 limit); and at S
@@ -716,27 +717,31 @@ order of statistical cost:
    Z_c/z_R ≈ 1.12): the long window piles weight at weak out-of-focus
    shifts with a tail toward −S₀.
 
-   **The flip at S is conditional on the collection geometry, which is
-   unmeasured — measure it before pre-registering the skew moments.** Z_c
-   is not a free parameter: for a lens imaging the beam onto the detector
-   it is the axial field of view in object space, Z_c = r_PMT/M with
-   M = v/u (u = lens–beam, v = lens–detector, 1/u + 1/v = 1/f), so the
-   flip condition at config S reads **r_PMT/M > 1.12 z_R ≈ 0.9 mm**
-   (z_R = 0.81 mm at w₀ = 16 µm; for the R636-10's rectangular 3 × 12 mm
-   cathode, r_PMT → L∥/2, the half-extent lying along the beam image —
-   tube rotation changes it ×4, §8.1 — but the tube was never rotated
-   during the 2025 campaign (experimenter-confirmed), so Z_c is ONE fixed
-   unknown shared by every archival config, not a per-config nuisance).
-   That matters more than the ignorance does: with Z_c fixed and z_R set by
-   w₀, the flip between L and S needs only **0.90 mm < Z_c < 12.7 mm — a
-   window spanning ×14**, since z_R differs ×14 between the two waists. The
-   test does not require knowing Z_c, only that it lands in that window.
-   Plausible layouts land on BOTH sides of it: the 2025 single f = 18 mm
-   lens worked close-in (large solid angle) and therefore at high M, where
-   even the long axis gives Z_c ≲ 0.7 mm — just BELOW the lower edge, no
-   flip; a 1:1 relay gives Z_c up to 6 mm — mid-window, strong flip. That
-   the archival collection sits just outside is the argument for the
-   rebuild below.
+   **The flip at S needs Z_c in a window, and the geometry now puts it
+   there.** Z_c is not a free parameter: for a lens imaging the beam onto
+   the detector it is the axial field of view in object space,
+   Z_c = L∥/2M with M = v/u (u = lens–beam, v = lens–detector,
+   1/u + 1/v = 1/f), so the flip condition at config S reads
+   **Z_c > 1.12 z_R ≈ 0.9 mm** (z_R = 0.81 mm at w₀ = 16 µm). L∥ is the
+   R636-10 cathode extent lying along the beam image; tube rotation is a ×4
+   lever on it (§8.1), and the tube was mounted landscape and never rotated
+   during the 2025 campaign (experimenter-confirmed), so **L∥ = 12 mm** and
+   Z_c = 6/M mm is ONE fixed number shared by every archival config, not a
+   per-config nuisance. With Z_c fixed and z_R set by w₀, the flip between L
+   and S needs only **0.90 mm < Z_c < 12.7 mm — a window spanning ×14**,
+   since z_R differs ×14 between the two waists; landscape clears its lower
+   edge for every M < 6.6 and its upper for every M > 0.47, so the test does
+   not require knowing Z_c at all.
+
+   *Superseded 2026-07-29.* This paragraph used to argue that the 2025 f = 18
+   mm lens worked close-in at high M, giving Z_c ≲ 0.7 mm — just BELOW the
+   lower edge, no flip — and that the archival collection sitting *just
+   outside* the window was the argument for the rebuild below. The
+   magnification estimate (M = 2.5–3, experimenter) gives Z_c = 2.0–2.4 mm,
+   comfortably inside. So the bare f18 as it was used would already deliver
+   the flip, and the case for the relay is the one it should always have
+   been: it makes Z_c settable hardware and lets the slit scan *measure* the
+   collection profile, rather than rescuing a test that was never lost.
    The solid-angle weighting varies <2% across any such window, so the
    top-hat form is fair: the width is the only unknown.
 
@@ -765,11 +770,14 @@ order of statistical cost:
    R636-10, so the 3 × 12 mm rectangle stands — and the 2025 archive was taken
    in **landscape** already, so this recommendation continues the existing
    configuration rather than changing it. Consequence for the archive: with
-   L∥ = 12 mm and the bare f18 close-in (high M), Z_c ≲ 1 mm, giving
-   g1 = +0.565 to +0.566 at the archival waist — even nearer the pure triangle
-   (+0.5657) than the ±2 mm placeholder's +0.558, so no archival number moves.
-   The tube sits in a commercial housing, so orientation means rotating the
-   module; that is how it is already mounted.*
+   L∥ = 12 mm and the f18 at M = 2.5–3 (experimenter estimate, 2026-07-29),
+   Z_c = 6/M = 2.0–2.4 mm, giving g1 = +0.551 to +0.558 at the archival 50 µm
+   waist — within 1.3% of the ±2 mm placeholder's +0.558, so no archival number
+   moves. This entry previously assumed the bare f18 sat close in at high M and
+   put Z_c ≲ 1 mm with g1 = +0.565; the M estimate supersedes that, and the
+   placeholder was the better guess of the two. The tube sits in a commercial
+   housing, so orientation means rotating the module; that is how it is already
+   mounted.*
    Orientation is a ×4 lever on Z_c and the one collection choice awkward to
    revisit mid-campaign (rotating the tube re-does the alignment and, worse,
    breaks the single-fixed-Z_c property that makes the cross-config

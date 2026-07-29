@@ -39,10 +39,16 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# every tracked-ish .md except vendored PDFs and the venv
+# Every tracked-ish .md except vendored PDFs, the venv, and anything under a
+# dot-directory. The dot-directory rule is load-bearing: a nested checkout (a
+# stray `git worktree`, a tool cache) is a COMPLETE second copy of the repo, so
+# without it this module silently ran twice -- once on the real docs and once on
+# a stale snapshot -- and inflated the suite by ~170 cases. Found 2026-07-29,
+# when the advertised count fell by that much after one such copy was removed.
 DOCS = [p for p in ROOT.rglob("*.md")
         if ".venv" not in p.parts and "PDF_papers" not in p.parts
-        and "node_modules" not in p.parts]
+        and "node_modules" not in p.parts
+        and not any(s.startswith(".") for s in p.parts)]
 
 _PUNCT = re.compile(r"\\([!-/:-@\[-`{-~])")          # backslash + ASCII punctuation
 _TEXTGRP = re.compile(r"\\(?:text|mathrm|mathbf|textrm)\{([^{}]*)\}")

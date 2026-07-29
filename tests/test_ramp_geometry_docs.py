@@ -52,12 +52,16 @@ def test_crossover_location_and_flip_condition():
 
 # (doc file, tokens that must appear while the placeholder geometry stands)
 DOC_TOKENS = [
-    ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "r_PMT/M > 1.12 z_R",
+    # "Z_c > 1.12 z_R" replaced "r_PMT/M > 1.12 z_R" on 2026-07-29: r_PMT was a
+    # loose stand-in from before the cathode rotation was known. With landscape
+    # fixed, the flip condition is stated in the same L_par/2M that the rest of
+    # the chain uses, and the half-aperture never appears on its own.
+    ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R",
                       "3 × 12 mm", "two-lens relay", "LANDSCAPE",
                       "+0.402", "−0.421"]),
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
-    ("scripts/run_ramp_geometry.py", ["1.12", "r_PMT/M > ~0.9 mm"]),
+    ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
     ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
     ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "L_\\parallel/2M"]),
 ]
@@ -127,20 +131,31 @@ def test_no_unretracted_x64_skew_claim(relpath):
 
 @pytest.mark.parametrize("relpath", SKEW_DOCS, ids=SKEW_DOCS)
 def test_sign_flip_claims_carry_the_condition(relpath):
+    """Any document asserting the g1 sign flip must say, somewhere, that the
+    flip is a statement about the COLLECTION GEOMETRY -- it happens because the
+    axial window Z_c crosses 1.12 z_R, not because the atoms do anything new.
+
+    The landscape cathode secures the flip for every plausible magnification
+    (Z_c = 6/M mm clears the window for 0.47 < M < 6.6), so the claim is no
+    longer contingent on a measurement. It is still geometric, and a document
+    that states it bare -- with no Z_c, no field of view, no crossover -- has
+    dropped the thing that makes it falsifiable.
+
+    (The docstring used to sit below the skip guard, where Python treats it as
+    a discarded string expression rather than a docstring.)"""
     if not (ROOT / relpath).exists():
         pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
-    """Any document asserting the g1 sign flip must say, somewhere, that it
-    depends on the (unmeasured) collection geometry."""
     txt = (ROOT / relpath).read_text(encoding="utf-8")
     asserts_flip = re.search(r"sign[- ]flip|flips? sign|skewness sign", txt, re.I)
     if not asserts_flip:
         pytest.skip("document does not assert the flip")
     carries = re.search(
         r"conditional|contingent|unmeasured|1\.12|collection geometry|r_?PMT|"
-        r"field of view", txt, re.I)
+        r"field of view|Z_c|L_\\parallel|L∥", txt, re.I)
     assert carries, (
-        f"{relpath} asserts the g1 sign flip but never states that it is "
-        f"conditional on the unmeasured collection geometry (PLAN 8.3 #4)."
+        f"{relpath} asserts the g1 sign flip but never ties it to the "
+        f"collection geometry -- the axial window Z_c crossing 1.12 z_R is "
+        f"why it flips (PLAN 8.3 #4)."
     )
 
 

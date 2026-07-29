@@ -26,9 +26,13 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+# Dot-directories excluded so a nested checkout -- a full second copy of the
+# repo -- is not parametrised in alongside the real docs. See the note in
+# test_docs_math_render.py.
 DOCS = sorted(p for p in ROOT.rglob("*.md")
               if ".venv" not in p.parts and "PDF_papers" not in p.parts
-              and "node_modules" not in p.parts)
+              and "node_modules" not in p.parts
+              and not any(s.startswith(".") for s in p.parts))
 
 
 def _slug(heading: str) -> str:

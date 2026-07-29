@@ -511,14 +511,16 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 
 which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised skewness **changes sign** with the collection
 window — $g_1 \approx +0.56$ at $w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx -0.35$ at $w_0=16\ \mu$m ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$
-— because a long window piles weight at weak out-of-focus shifts. The flip at
-small waist is conditional on the (unmeasured) collection geometry: $Z_c$ is
-the imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens
-($L_\parallel$ = the cathode's active extent along the beam image; the R636-10 (housed in the Thorlabs PXT1/M module
-seen in the in-campaign photo; experimenter-confirmed 2026-07-23)
-cathode is a 3 × 12 mm rectangle, so its rotation changes $Z_c$ by ×4), so it
-follows from the lens–beam distance, the lens–detector distance and that extent, and plausible layouts land on either side of the crossover
-(PLAN §8.3 #4). So the pure triangle holds only at large waist, and the
+— because a long window piles weight at weak out-of-focus shifts. Where the
+crossover falls is set by the collection geometry: $Z_c$ is the imaging field of
+view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens, with $L_\parallel$ the
+cathode's active extent along the beam image. That extent is 12 mm — the R636-10
+(housed in the Thorlabs PXT1/M module seen in the in-campaign photo) has a
+3 × 12 mm cathode, whose rotation is a ×4 lever on $Z_c$, and it was mounted
+landscape (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm, and the
+two-waist flip holds for every $M$ from 0.5 to 6 rather than depending on which
+layout the bench happens to realise; $u$ and $v$ remain unmeasured, so the
+magnitude still carries an envelope (PLAN §8.3 #4). The pure triangle holds only at large waist, and the
 small-waist configuration that maximises $S_0$ is exactly where the clean
 triangular law is least valid.
 

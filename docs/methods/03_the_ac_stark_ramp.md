@@ -152,8 +152,9 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m+\frac{\zeta_m^3}{3}\right],
 
 $Z_c/z_R\to0$ recovers the triangle; the hard edge at $-S_0$ softens to zero
 (only the focal plane reaches the full shift). Numerically (uniform window,
-$Z_c=2$ mm placeholder — OPEN until the fixed-lock session collection-profile
-measurement):
+$Z_c=2$ mm — a placeholder when this table was first computed, and since
+supported by the magnification estimate below, which gives 2.0–2.4 mm; still
+OPEN until the fixed-lock session's collection-profile measurement):
 
 | config | $Z_c/z_R$ | mean$/S_0$ | Var/mean$^2$ | $g_1$ |
 |---|---|---|---|---|
@@ -177,31 +178,23 @@ tests (`test_axial_ramp_matches_the_independent_closed_form`).
 
 **The skewness flips sign** (crossover at $Z_c/z_R = 1.1172$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
-$-S_0$. **The flip at config S is conditional on the collection geometry,
-which is unmeasured.** $Z_c$ is not a free parameter: for the side-viewing
-$f=18$ mm lens imaging the beam onto the PMT it is the axial field of view
-in object space, $Z_c=r_\text{PMT}/M$ with magnification $M=v/u$
-($u$ = lens–beam and $v$ = lens–PMT distances, $1/u+1/v=1/f$), so the flip
-condition at 16 µm reads $r_\text{PMT}/M > 1.12 z_R \approx 0.9$ mm — and
-plausible bench layouts land on *both* sides (a short-conjugate,
-high-magnification layout gives $g_1\approx+0.5$, no flip; a 1:1 relay or a
-large photocathode gives $g_1\approx-0.3$ to $-0.5$). The PMT is not
-re-oriented between configurations (experimenter-confirmed), so $Z_c$ is a *single fixed unknown*
-and $Z_c/z_R$ moves only through $w_0$: the flip between the two waists
-then needs just $0.90\ \text{mm}<Z_c<12.7$ mm, a window spanning $\times14$
-because $z_R$ itself differs $\times14$. The test needs $Z_c$ to fall in
-that window, not to be known. Three ruler-and-datasheet
-numbers settle it — $u$, $v$, and the cathode's active extent *along the beam
-image* $L_\parallel$ (so $Z_c=L_\parallel/2M$; the R636-10 cathode (the tube housed in the
-Thorlabs PXT1/M module seen in the in-campaign photograph;
-experimenter-confirmed 2026-07-23) is a
-3 × 12 mm rectangle, so its rotation alone changes $Z_c$ by ×4).
+$-S_0$. Whether config S lands past the crossover is a question about the
+collection optics, and $Z_c$ is not a free parameter: for the side-viewing
+$f=18$ mm lens imaging the beam onto the PMT it is the axial field of view in
+object space, $Z_c=L_\parallel/2M$ with magnification $M=v/u$ ($u$ = lens–beam
+and $v$ = lens–PMT distances, $1/u+1/v=1/f$), where $L_\parallel$ is the
+photocathode's active extent *along the beam image*. The R636-10 cathode — the
+tube housed in the Thorlabs PXT1/M module seen in the in-campaign photograph —
+is a 3 × 12 mm rectangle, so which of its axes lies along the beam is a ×4
+lever on $Z_c$.
 
-**The rotation is now known: the window is LANDSCAPE** (experimenter,
-2026-07-29), so the 12 mm axis lies along the beam image and
-$Z_c = L_\parallel/2M = 6/M$ mm. That is the larger of the two cases — it
-pushes $Z_c$ *towards* the crossover rather than away from it — and the
-two-waist flip survives it across the whole plausible range of magnification:
+It is the 12 mm axis. The cathode was mounted **landscape** through the 2025
+campaign (experimenter-confirmed 2026-07-23, [APPARATUS](../APPARATUS.md)) and is not
+re-oriented between configurations, so $Z_c = 6/M$ mm is a single fixed number
+and $Z_c/z_R$ moves between the two configurations only through $w_0$.
+Landscape is the larger of the two cases — it pushes $Z_c$ *towards* the
+crossover rather than away from it — and the two-waist flip survives it across
+the whole plausible range of magnification:
 
 | $M$ | $Z_c$ (mm) | $g_1$ at 60 µm | $g_1$ at 16 µm | flips |
 |---|---|---|---|---|
@@ -211,10 +204,11 @@ two-waist flip survives it across the whole plausible range of magnification:
 | 4.0 | 1.5 | $+0.565$ | $-0.277$ | yes |
 | 6.0 | 1.0 | $+0.566$ | $-0.071$ | yes |
 
-So the sign-flip test is no longer conditional on $Z_c$ falling in a window: it
-holds for every $M$ from 0.5 to 6.
+So the sign-flip test does not require $M$ to be known: it holds for every $M$
+from 0.5 to 6. Portrait would have forfeited it — $Z_c = 1.5/M$ mm sits below
+the 0.90 mm flip threshold for any $M>1.7$ (PLAN §8.3 #4).
 
-**And the magnification is roughly known too.** The collection lens was the
+**The magnification is roughly known too.** The collection lens was the
 $f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (experimenter,
 2026-07-29 — an ESTIMATE, not a measurement; $u$ and $v$ still want a ruler).
 That gives $Z_c = 6/M = 2.0$–$2.4$ mm, and it hangs together: $1/u+1/v=1/f$ with

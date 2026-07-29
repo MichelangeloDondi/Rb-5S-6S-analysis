@@ -13,27 +13,27 @@ CONDITIONAL PREDICTION (2026-07-12; conditionality made explicit
 The pure transverse triangle gives g1 = +0.566; a long collection window
 mixes in out-of-focus (weak-shift) regions, piling weight near zero shift
 with a tail toward -S0, driving g1 negative (~ -0.35 at the 16 um config
-with the +/-2 mm placeholder window). Whether config S actually sits past
-the crossover depends on the UNMEASURED collection geometry: Z_c is the
-imaging field of view r_PMT/M (M = v/u for the side-viewing f = 18 mm
-lens), so the flip needs r_PMT/M > ~0.9 mm at 16 um, and plausible bench
-layouts land on both sides (short-conjugate/high-M: g1 ~ +0.5, no flip;
-1:1 relay or large photocathode: g1 ~ -0.3 to -0.5). Measuring u, v and the
-cathode's active extent ALONG the beam image (L_par; the R636-10 cathode is a
-3 x 12 mm rectangle (the tube housed in the Thorlabs PXT1/M module;
-experimenter-confirmed 2026-07-23), so its rotation changes Z_c by x4) settles it; near the crossover,
-moving the PMT (changing M) is a design knob. If the condition holds, a
-session sees POSITIVE skew at the large waist and NEGATIVE at the small
-one — a sign flip no instrumental asymmetry (none of which depends on
-z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
+with the +/-2 mm placeholder window). Whether config S sits past the
+crossover is set by the collection geometry: Z_c is the imaging field of
+view L_par/2M (M = v/u for the side-viewing f = 18 mm lens), so the flip
+needs Z_c > ~0.9 mm at 16 um. The rotation lever is closed -- the R636-10
+cathode is a 3 x 12 mm rectangle (the tube housed in the Thorlabs PXT1/M
+module; experimenter-confirmed 2026-07-23) and it was mounted LANDSCAPE, so
+L_par = 12 mm and Z_c = 6/M mm, which clears 0.9 mm for every M < 6.6. The
+flip therefore holds across the whole plausible magnification range rather
+than depending on how the bench is laid out; measuring u and v pins the
+magnitude, not the sign, and near the crossover moving the PMT (changing M)
+remains a design knob. A session sees POSITIVE skew at the large waist and
+NEGATIVE at the small one — a sign flip no instrumental asymmetry (none of
+which depends on z_R) can mimic. The naive "skew scales as S0^3 = x64" reading of the small
 waist is wrong in SIGN at the placeholder geometry; the third cumulant
 there is ~ -0.35 in units of the 2025 on-axis S0^3 (vs +0.0074 for the
 2025 triangle).
 
 Caveats: uniform collection weight on |z| <= Z_c is a placeholder (the
 solid angle varies <2% across such windows, so the top-hat FORM is fair —
-the width is the unknown); Z_c is OPEN until the collection-geometry
-measurement (config lists an envelope). Quasi-static in z is safe: an atom
+the width is the unknown); Z_c stays an envelope until u and v are measured,
+the magnification estimate of 2.5-3 notwithstanding. Quasi-static in z is safe: an atom
 moves ~30 um axially between excitation and 795 nm emission, negligible vs
 z_R (mm scale).
 
@@ -75,7 +75,7 @@ def main() -> int:
     print("Reading: g1 stays ~ +0.56 at BOTH the 60 um config and the ~50 um 2025")
     print("archival geometry (clean form test -- the larger corrected waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
-    print("config AT THE PLACEHOLDER Z_c -- the flip needs r_PMT/M > ~0.9 mm there")
+    print("config AT THE PLACEHOLDER Z_c -- the flip needs Z_c > ~0.9 mm there")
     print("(measure u, v, and the cathode extent ALONG the beam image L_par;")
     print("Z_c = L_par/(2M) -- module docstring / PLAN 8.3 #4). Geometry")
     print("permitting, the two-config skew comparison is a sign-flip test, not a")

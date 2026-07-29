@@ -310,14 +310,22 @@ single f=18 mm lens + PMT geometry collects light from 'many mm' of the beam
 parameter: for a lens imaging the beam onto the detector it is the axial
 field of view L_par/(2M), M = v/u with 1/u + 1/v = 1/f, where L_par is the
 detector's active extent ALONG the beam image. The PMT of record is the
-side-on Hamamatsu R636-10 (Nieddu 2019; datasheet TPMS1016E), whose cathode
-is a 3 x 12 mm rectangle -- so tube rotation alone changes Z_c by x4, and
-orientation is part of the measurement (PLAN sections 8.1, 8.3 #4). OPEN
-until measured; every ramp-geometry moment coefficient -- including whether
-the g1 sign flip at config S occurs at all (crossover Z_c/z_R ~ 1.12) --
-depends on it, hence an envelope, never a single number. A proposed session
-replaces the bare f18 with a two-lens relay plus an image-plane slit, which
-makes Z_c settable hardware and directly measurable (PLAN 8.3 #4)."""
+side-on Hamamatsu R636-10 (datasheet TPMS1016E; experimenter-confirmed
+2026-07-23), whose cathode is a 3 x 12 mm rectangle -- rotation alone is a x4
+lever on Z_c, and the cathode was LANDSCAPE through the 2025 campaign
+(experimenter-confirmed 2026-07-23), so L_par = 12 mm and Z_c = 6/M mm.
+
+Two of the three inputs are now fixed and the third is estimated: M = 2.5-3
+for the bare f18 (experimenter, 2026-07-29 -- an ESTIMATE, u and v unmeasured),
+giving Z_c = 2.0-2.4 mm. This envelope is DELIBERATELY NOT narrowed to it. An
+estimate is not a measurement, and every ramp-geometry moment coefficient --
+including whether the g1 sign flip at config S occurs at all (crossover
+Z_c/z_R ~ 1.12) -- depends on Z_c, so the published coefficients stay bracketed
+until u and v are read off a ruler. What the estimate does buy is that it lands
+on the envelope's middle entry, so the 2 mm figures quoted throughout are the
+ones the geometry actually supports. A proposed session replaces the bare f18
+with a two-lens relay plus an image-plane slit, which makes Z_c settable
+hardware and directly measurable (PLAN 8.3 #4)."""
 
 RAMP_PMT_CATHODE_MM = (3.0, 12.0)
 """R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.

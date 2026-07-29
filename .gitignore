@@ -15,7 +15,10 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
-.venv/
+# no trailing slash: in this repo .venv is a SYMLINK into the private
+# archive checkout, and a directory-only pattern would not match it --
+# `git add -A` staged it once (2026-07-29).
+.venv
 
 # macOS
 .DS_Store
@@ -69,3 +72,8 @@ docs/linkedin*
 docs/apparatus/*.pdf
 docs/*.pdf
 .venv/
+
+# local tool scratch and nested checkouts. Nothing here has ever been tracked,
+# and a stray worktree underneath would otherwise be swept up by the broad
+# `git add -A` this repo commits with.
+.claude/
