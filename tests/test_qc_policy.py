@@ -107,6 +107,13 @@ def test_drift_settling_numbers_match_the_addendum(drift_report):
     import re
 
     out = drift_report
+    # The re-kick fit needs steps from BOTH epochs, and the T-epoch half comes
+    # from data_raw/rulers_t/ which a checkout without raw traces (the public
+    # mirror) does not have. The script now says so and stops rather than
+    # fitting six models to one epoch; there is then nothing to lock the doc
+    # against, so skip rather than fail on a correctly-degraded run.
+    if "SKIPPED: needs both epochs" in out:
+        pytest.skip("re-kick fit skipped: no raw ruler traces in this checkout")
     m = re.search(r"agree to \+([\d.]+) \+/- ([\d.]+) ms/min", out)
     assert m, out
     doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
@@ -137,6 +144,11 @@ def test_rekick_fit_numbers_match_addendum_12(drift_report):
     import re
 
     out = drift_report
+    # Same degraded path as the test above: without the T-epoch ruler traces the
+    # script says so and stops, so there are no fitted numbers to lock the doc
+    # against.
+    if "SKIPPED: needs both epochs" in out:
+        pytest.skip("re-kick fit skipped: no raw ruler traces in this checkout")
     m = re.search(r"B = (\d+) ms = ([\d.]+) MHz laser, tau = (\d+) min", out)
     assert m, "re-kick stage printed no fitted amplitude/tau:\n" + out
     doc = Path("docs/PREREGISTRATION_RESULTS.md").read_text(encoding="utf-8")
