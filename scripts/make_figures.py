@@ -733,6 +733,87 @@ def fig_ramp_construction():
     _save(fig, "fig12_ramp_construction.png")
 
 
+def fig_level_scheme():
+    """What transition is driven and what is detected. Vertical positions are
+    TO SCALE in term energy: 5P_1/2 at 12579 cm^-1 and 6S_1/2 at 20133 cm^-1
+    above the ground state, with the 993 nm virtual level at exactly half the
+    two-photon energy -- which is why it falls BELOW the real 5P_1/2, not above.
+    Every number is from rb5s6s.constants and polarizability; the hyperfine
+    assignments are methods chapter 1."""
+    from rb5s6s.polarizability import E_6S_CM
+    E_5P_CM = 1.0e7 / 794.979          # 5P_1/2 term energy, NIST
+    E_VIRT_CM = 1.0e7 / (C.LAMBDA_LASER_M * 1e9) if False else 1.0e7 / 993.4
+
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11.0, 5.0),
+                                 gridspec_kw={"width_ratios": [1.15, 1]})
+
+    y5s, yv, y5p, y6s = 0.0, E_VIRT_CM, E_5P_CM, E_6S_CM
+    for y, lab in ((y5s, r"$5S_{1/2}$"), (y5p, r"$5P_{1/2}$"), (y6s, r"$6S_{1/2}$")):
+        ax.hlines(y, 0.10, 0.72, color="0.15", lw=2.4)
+        ax.text(0.745, y, lab, va="center", fontsize=10)
+        ax.text(0.745, y - 700, f"{y:,.0f}" + r" cm$^{-1}$", va="center",
+                fontsize=6.5, color="0.5")
+    ax.hlines(yv, 0.16, 0.46, color="0.55", lw=1.3, ls=(0, (4, 3)))
+    ax.text(0.16, yv - 1150, "virtual level, half the two-photon energy",
+            fontsize=6.8, color="0.45", va="center")
+
+    # the two 993 nm photons, one per beam direction
+    for x in (0.26, 0.40):
+        ax.annotate("", (x, yv), (x, y5s),
+                    arrowprops=dict(arrowstyle="-|>", color="#0072B2", lw=1.9))
+        ax.annotate("", (x, y6s), (x, yv),
+                    arrowprops=dict(arrowstyle="-|>", color="#0072B2", lw=1.9))
+    ax.text(0.115, y6s * 0.80, "2 x 993 nm,\none photon from\neach beam\n(Doppler-free)",
+            fontsize=7.5, color="#0072B2", va="top")
+
+    # the cascade that is detected
+    ax.annotate("", (0.60, y5p), (0.60, y6s),
+                arrowprops=dict(arrowstyle="-|>", color="#009E73", lw=1.9))
+    ax.text(0.615, 0.5 * (y5p + y6s), "1367 nm", fontsize=7.5, color="#009E73",
+            va="center")
+    ax.annotate("", (0.60, y5s), (0.60, y5p),
+                arrowprops=dict(arrowstyle="-|>", color="#D55E00", lw=2.6))
+    ax.text(0.615, 0.5 * y5p, "795 nm\ndetected", fontsize=8.5, color="#D55E00",
+            va="center", fontweight="bold")
+
+    ax.set_xlim(0.02, 0.92)
+    ax.set_ylim(-1800, y6s * 1.10)
+    ax.set_ylabel(r"term energy above $5S_{1/2}$ (cm$^{-1}$)", fontsize=8)
+    ax.tick_params(labelsize=7)
+    ax.spines[["top", "right", "bottom"]].set_visible(False)
+    ax.set_xticks([])
+    ax.set_title(f"to scale; natural width {GNAT:.2f} MHz", fontsize=9)
+
+    # --- the four measured lines ---------------------------------------
+    lines = [("4121", 993.4121, r"$^{87}$Rb", r"$F{=}1\!\to\!1$"),
+             ("4154", 993.4154, r"$^{85}$Rb", r"$F{=}2\!\to\!2$"),
+             ("4192", 993.4192, r"$^{85}$Rb", r"$F{=}3\!\to\!3$"),
+             ("4207", 993.4207, r"$^{87}$Rb", r"$F{=}2\!\to\!2$")]
+    for pk, lam, iso, hf in lines:
+        c = PEAK_COLOR[pk]
+        bx.vlines(lam, 0.32, 0.78, color=c, lw=2.6)
+        bx.text(lam, 0.82, f"993.{pk}", rotation=90, fontsize=7.5,
+                color=c, ha="center", va="bottom")
+        bx.text(lam, 0.275, iso, fontsize=7.5, color=c, ha="center", va="top")
+        bx.text(lam, 0.205, hf, fontsize=7, color=c, ha="center", va="top")
+    bx.set_xlim(993.4108, 993.4220)
+    bx.set_ylim(0.0, 1.30)
+    bx.ticklabel_format(useOffset=False, style="plain", axis="x")
+    bx.set_xticks([993.412, 993.415, 993.418, 993.421])
+    bx.set_xticklabels(["993.4120", "993.4150", "993.4180", "993.4210"],
+                       fontsize=8)
+    bx.set_yticks([])
+    bx.set_xlabel("wavemeter reading (nm, uncalibrated)")
+    bx.set_title("the four hyperfine components measured", fontsize=9)
+    bx.text(0.5, 0.04, "readings identify the lines, not absolute wavelengths",
+            transform=bx.transAxes, ha="center", fontsize=7, color="0.35")
+    bx.grid(alpha=0.20, lw=0.5, axis="x")
+
+    fig.suptitle(r"Rb $5S_{1/2}\to 6S_{1/2}$: a degenerate two-photon transition, "
+                 "read out on the 795 nm cascade", fontsize=10)
+    _save(fig, "fig13_level_scheme.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -745,6 +826,7 @@ def main() -> int:
     fig_degeneracy_vs_observable()
     fig_laser_history()
     fig_ramp_construction()
+    fig_level_scheme()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

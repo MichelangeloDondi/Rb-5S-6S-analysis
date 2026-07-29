@@ -49,6 +49,15 @@ from each direction and climbs 5S₁/₂ → 6S₁/₂; because the two photons 
 opposite directions, the first-order Doppler shift **cancels for every atom**,
 collapsing the ~500 MHz thermal smear to a line a few MHz wide:
 
+![the level scheme](figures/fig13_level_scheme.png)
+
+*Left: two 993 nm photons, one from each direction of the retro-reflected beam,
+drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the real 5P₁/₂;
+taking one photon from each beam is what cancels the first-order Doppler shift.
+The state is detected not directly but on the 795 nm arm of the 6S → 5P₁/₂ → 5S
+cascade. Right: the four hyperfine components measured, two per isotope, all
+F → F, labelled by uncalibrated wavemeter reading.*
+
 $$\nu\left(1 + \tfrac{v}{c}\right) + \nu\left(1 - \tfrac{v}{c}\right) = 2\nu$$
 
 The 6S₁/₂ population is read out through the 795 nm fluorescence of the

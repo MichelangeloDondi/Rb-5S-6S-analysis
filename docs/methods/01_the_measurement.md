@@ -20,7 +20,18 @@ labelled by wavelength: 993.4207 nm ($^{87}$Rb $F{=}2\to2$), 993.4192 nm
 ($^{85}$Rb $F{=}3\to3$), 993.4154 nm ($^{85}$Rb $F{=}2\to2$), 993.4121 nm
 ($^{87}$Rb $F{=}1\to1$). Throughout we write these full labels; in code and
 filenames the last four digits ("4207") are the key, and `constants.peak_label()`
-renders the full form for all output.
+renders the full form for all output. The readings come from an uncalibrated
+wavemeter, so they identify the lines rather than measure them; the hyperfine
+assignments are what fix which line is which.
+
+![the level scheme](../../figures/fig13_level_scheme.png)
+
+*Left: two 993 nm photons, one from each direction of the retro-reflected beam,
+drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the real 5P₁/₂;
+taking one photon from each beam is what cancels the first-order Doppler shift.
+The state is detected not directly but on the 795 nm arm of the 6S → 5P₁/₂ → 5S
+cascade. Right: the four hyperfine components measured, two per isotope, all
+F → F, labelled by uncalibrated wavemeter reading.*
 
 ### 1.1 Why two counter-propagating photons kill the Doppler width
 

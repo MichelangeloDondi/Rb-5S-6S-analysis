@@ -82,7 +82,19 @@ def _rows(path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def _differs(committed: list[dict], fresh: list[dict], rtol: float = 1e-6):
+# Iterative fits do not converge bit-identically across numpy versions, and CI
+# runs three (3.9-minimum, 3.9-latest, 3.11-latest). Measured spread on the
+# committed set, 2026-07-29: amplitude_ratios err_stat 3.2e-4 relative,
+# laser_history offset_err 5.5e-5, modelform chi2 1.8e-5, noise a_V 2.8e-5,
+# ruler block chi2 3.0e-5. A 1e-6 tolerance therefore fails on every CI job
+# while passing locally, which is a flaky guard and worse than none. 5e-3 sits
+# an order above the observed spread and still catches any change that means
+# anything. The sharp edge of this check is the STRING comparison anyway -- a
+# stale label is what actually drifted -- and that stays exact.
+NUMERIC_RTOL = 5e-3
+
+
+def _differs(committed: list[dict], fresh: list[dict], rtol: float = NUMERIC_RTOL):
     """Return a short description of the first meaningful difference, or None."""
     if len(committed) != len(fresh):
         return f"row count {len(committed)} committed vs {len(fresh)} fresh"
@@ -96,8 +108,10 @@ def _differs(committed: list[dict], fresh: list[dict], rtol: float = 1e-6):
                 fa, fb = float(va), float(vb)
             except (TypeError, ValueError):
                 return f"row {i} column {k!r}: committed {va!r} vs fresh {vb!r}"
-            if fa != fb and abs(fa - fb) > rtol * max(abs(fa), abs(fb), 1e-30):
-                return f"row {i} column {k!r}: committed {fa!r} vs fresh {fb!r}"
+            scale = max(abs(fa), abs(fb), 1e-30)
+            if fa != fb and abs(fa - fb) > rtol * scale:
+                return (f"row {i} column {k!r}: committed {fa!r} vs fresh {fb!r} "
+                        f"({abs(fa - fb) / scale:.1e} relative)")
     return None
 
 
