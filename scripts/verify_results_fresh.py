@@ -57,6 +57,7 @@ CHEAP = {
     "run_transit_mc": ["transit_mc.csv"],
     "run_sharing_bic": ["sharing_bic.csv"],
     "run_resolving_power": ["resolving_power.csv"],
+    "run_stark_centres": ["stark_centres.csv"],
     "run_laser_history": ["laser_history.csv", "laser_history_structure.csv"],
     "run_fringe_tail": ["fringe_tail.csv"],
 }

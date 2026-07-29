@@ -423,6 +423,39 @@ def main() -> int:
           f"would measure the pull $\\sim S_0$ directly, and the small waist would make $S_0$ "
           f"several-fold larger — turning this bound into the coefficient.\n")
 
+    sc = {r["drift_model"]: r for r in rows("stark_centres")}
+    if sc:
+        lin, ex, ex2 = (sc.get("linear"), sc.get("exp"), sc.get("exp2"))
+        W(f"- **C3e — the CENTRE channel cannot measure the pull, and the failure is "
+          f"unidentifiability rather than imprecision** (`run_stark_centres`, M21). "
+          f"The AC-Stark shift moves the line centre as $\\propto S_0$, which is a "
+          f"stronger dependence than the width's $\\propto S_0^2$, so the centres "
+          f"ought to be the better channel. They are not, for a reason that is a "
+          f"design fault and not a statistical shortfall. Peak positions are only "
+          f"frequencies within a *display epoch* (a run of unchanged scope "
+          f"horizontal position — see `run_laser_history`'s retraction), so each "
+          f"epoch carries a free offset; of the 26 epochs covering the power sweep "
+          f"only **three** contrast two powers at all, each a 50 mW step, and no "
+          f"epoch spans two lines. Inside those three, power still descends with "
+          f"time, exactly as the campaign was run. Fitting a shared pull against "
+          f"three drift forms therefore gives "
+          f"$|S_0(225\\ \\mathrm{{mW}})| < {float(lin['S0_abs_ub95']):.2f}$, "
+          f"$< {float(ex['S0_abs_ub95']):.2f}$ and "
+          f"$< {float(ex2['S0_abs_ub95']):.2f}$ MHz for linear, one-exponential and "
+          f"two-exponential drift — and the pull's **sign flips** between the first "
+          f"two ({float(lin['pull_mhz_per_w_laser']):+.1f} vs "
+          f"{float(ex['pull_mhz_per_w_laser']):+.1f} MHz/W) while the bound degrades "
+          f"monotonically as the drift model gains freedom. A merely imprecise "
+          f"parameter does neither. The best of the three is "
+          f"{float(lin['times_weaker_than_width']):.0f}× weaker than C3d's width "
+          f"bound, so the width channel carries the light-shift information and the "
+          f"centres carry none. Tagged NULL, not BOUND. **The design consequence is "
+          f"the deliverable:** cycle or randomise the power ordering so drift is "
+          f"orthogonal to the pull, *and* leave the horizontal position alone — or "
+          f"log it — because every move severs the centre record. A superseded "
+          f"$< 7.3$ MHz version of this bound was tighter only because it "
+          f"differenced positions across those moves.\n")
+
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
     if lc and ss:

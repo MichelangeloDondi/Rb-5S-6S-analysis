@@ -1,0 +1,4 @@
+drift_model,n_traces,n_epochs,dof,resid_mhz,pull_mhz_per_w_laser,pull_lo95,pull_hi95,S0_225mW_mhz,S0_lo95,S0_hi95,S0_abs_ub95,width_channel_bound_mhz,times_weaker_than_width,status
+linear,99,26,71,0.21153,3.4457,-6.8913,13.7826,-2.3745,-9.498,4.749,9.498,0.633,15.0,NULL
+exp,99,26,70,0.21655,-3.257,-6.514,21.1706,2.2445,-14.5892,4.489,14.5892,0.633,23.05,NULL
+exp2,99,26,68,0.21934,-3.2053,-14.4238,25.6423,2.2089,-17.6708,9.9398,17.6708,0.633,27.92,NULL
