@@ -147,7 +147,8 @@ def _report(res, blocks):
     print("=" * 74)
     print("LEVER CROSS-CHECK beta_self (cooling sweep 70/90/110 C) -- a bound, NOT the headline")
     print(f"  {len(blocks)} blocks, {res['n_traces']} traces, density lever x{_lever(blocks):.0f}")
-    print(f"  headline model = ({tk}, {sh}) = Lehmann cusp + M4c-validated per-T sharing")
+    print(f"  headline model = ({tk}, {sh}) = Lehmann cusp + per-T sharing"
+          " (M4c-CONSISTENT, in-sample and under-powered -- not validated)")
     print(f"  chi2_red (headline) = {res['chi2_red'][f'{tk}|{sh}']:.3f}\n")
     print("  beta (MHz per 1e12 cm^-3) with THREE error bars:")
     for iso in isos:

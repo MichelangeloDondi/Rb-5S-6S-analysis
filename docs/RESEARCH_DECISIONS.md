@@ -46,8 +46,9 @@ the twenty reaching unphysical negative widths, and the centres scatter in the
 same direction. Right: the quantity actually measured.*
 
 **Decision: the estimator uses only the informative direction.** `beta_self`
-rides on the *difference* in `gamma_coll` across temperature, driven by the ×50
-density lever, and not on any absolute per-condition value
+rides on the *difference* in `gamma_coll` across temperature — the headline
+bound uses the ×16 lever of the 70–110 °C single session — and not on any
+absolute per-condition value
 ([linefit.py:40](../rb5s6s/linefit.py#L40)).
 
 [M12](../rb5s6s/identifiability.py) maps the degeneracy: the χ² surface is

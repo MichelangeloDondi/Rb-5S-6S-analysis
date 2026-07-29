@@ -58,6 +58,11 @@ FILE_STATUS = {
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
     "resolving_power.csv": "DIAGNOSTIC",  # measures the experiment's sensitivity, not the atom
+    # M20: a reconstruction of the laser's frequency history, conditional on the
+    # ruler rate and on mtime standing in for acquisition time. Not a measured
+    # frequency -- the absolute scale is exactly what the archive cannot supply.
+    "laser_history.csv": "DIAGNOSTIC",
+    "laser_history_structure.csv": "DIAGNOSTIC",
 
     "ruler_blocks.csv": "CALIB",
     "ruler_traces.csv": "CALIB",

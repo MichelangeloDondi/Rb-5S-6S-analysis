@@ -188,7 +188,7 @@ $$I(\nu) = A\left[ L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigm
 | Mechanism | Physical origin | Size (transition axis) | Shape |
 |---|---|---|---|
 | Natural width **Γ_nat** | finite 6S lifetime | 3.49 MHz (fixed, known) | Lorentzian |
-| Collisional **γ_coll** | Rb–Rb collisions | ≲ 0.5 MHz | Lorentzian (adds to natural) |
+| Collisional **γ_coll** | Rb–Rb collisions | 0.12–0.70 MHz across conditions | Lorentzian (adds to natural) |
 | Laser **σ_laser** | laser frequency jitter | ~1.5 MHz (≲ 2.2 bound) | Gaussian |
 | Transit | finite time an atom spends in the beam | ~1.2 MHz at w₀ ≈ 50 µm | cusp kernel (Biraben–Cagnac / Lehmann) |
 | AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.6 MHz at 225 mW | triangular "ramp" |

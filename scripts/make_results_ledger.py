@@ -355,7 +355,7 @@ def main() -> int:
       "$\\times14$. Conditional also on "
       "**two** same-sign small-waist corrections that suppress the skew and must be "
       "fit jointly: the §7 beam-divergence axial average (the larger, sign-flipping "
-      "one) and the standing-wave fringe-resolved tail (~25% at 16 µm; THEORY_NOTE "
+      "one) and the standing-wave fringe-resolved tail (~26-28% at 16 µm; THEORY_NOTE "
       "§5). See docs/THEORY_NOTE.md §3.\n")
 
     ss = rows("stark_sweep")

@@ -46,3 +46,8 @@ These are what the guided-platform probe-scattering estimate uses (private
 planning note). An earlier version of that estimate flagged them as coming from
 outside the repo and needing sourcing; that was wrong — both Steck sheets were
 already in `PDF_papers/`, and the values used match this sheet exactly.
+
+**Both isotope tables are held**, not just the one the `pdf:` field can name:
+`Steck_Rb87_D-line-data.pdf` and `Steck_Rb85_D-line-data.pdf`. The 85 tables
+matter here because two of the four measured lines are 85Rb, and the
+per-isotope beta_self split (M4b) needs both sets of matrix elements.

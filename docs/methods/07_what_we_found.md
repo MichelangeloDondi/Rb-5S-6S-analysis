@@ -78,7 +78,7 @@ budget is in the results ledger (`docs/RESULTS.md`).
 ### 5.3 The 2025 laser width (C2)
 
 **The 2025 laser width (deliverable C2) — an upper bound.**
-$\sigma_\text{laser}(2025)\lesssim2.0$ MHz (transition axis; $\lesssim1.0$ MHz
+$\sigma_\text{laser}(2025)\lesssim2.2$ MHz (transition axis; $<1.1$ MHz
 laser axis; it is $\sim0.84$ MHz laser-axis at the $w_0=50\ \mu$m prior) —
 a bound, not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5 — The lineshape, kernel by kernel](02_the_lineshape.md), M9)

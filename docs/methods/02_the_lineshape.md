@@ -112,7 +112,7 @@ nanofibre study on this same line ([Gokhroo 2022](../lit/gokhroo2022.md), J. Phy
 same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
 linewidth rather than to the 2025 lock's behaviour — but it is consistent with
-the shape-based bound $\sigma_\text{laser} \lesssim 1.0$ MHz found here, and it
+the shape-based bound $\sigma_\text{laser} < 1.1$ MHz (laser axis) found here, and it
 is the only published number for this laser on this line. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
 **upper bound** (it is degenerate with the transit width; see §2.5 and [§5 — What we found (2025 archive)](07_what_we_found.md)).

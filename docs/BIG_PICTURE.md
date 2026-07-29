@@ -147,7 +147,7 @@ leverage:
    co-limiting, not a headline and a refinement. Interleaving also fixes a
    second problem: in 2025 temperature ran monotonically down with elapsed
    time, so slow drift and density trends are confounded.
-4. **A tighter focus (~16 µm).** S₀ grows ~14×, and the third cumulant grows
+4. **A tighter focus (~16 µm).** S₀ grows ~10× over the archival 50 µm waist (×14 against the planned 60 µm config-L), and the third cumulant grows
    faster still — but not by the naive ×64: the axial average over the
    collection window changes both its size and, if the window is long enough,
    its sign (PLAN §8.3 #4, contingent on the unmeasured collection geometry).

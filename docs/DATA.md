@@ -375,7 +375,7 @@ conclusions:
   precise; the blocks simply disagree with a monotonic density trend. The
   culprit is **laser-width (σ_laser) drift between the cooling-session blocks
   (~0.06–0.16 MHz)**, comparable to the whole collisional trend. Result:
-  β_self < ~0.04–0.11 MHz per 10¹² cm⁻³ (95%, per peak); a clean measurement
+  β_self < 0.21–0.44 MHz per 10¹² cm⁻³ (95%, per peak; headline ≲0.2–0.4); a clean measurement
   needs a fixed-lock session — this is the archival data showing
   the two-epoch design was necessary. NOTE: the
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
