@@ -41,6 +41,10 @@ docs/reference_setup/photos/*
 # spelling "red_team". A directory cannot be misspelled into visibility.
 # The globs below are kept as a second line of defence for anything that lands
 # in docs/ by mistake.
+# Working rules for Claude sessions. Private: it names the two repositories
+# including the private one, and records conventions rather than results.
+/CLAUDE.md
+
 /private/
 
 docs/brief_*

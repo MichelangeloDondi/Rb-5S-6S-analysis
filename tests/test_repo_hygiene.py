@@ -43,7 +43,7 @@ def _tracked(*globs: str) -> list[str]:
 # --------------------------------------------------------------------------
 # 1. Private material must never be tracked
 # --------------------------------------------------------------------------
-PRIVATE_GLOBS = ["private/*", "private/**/*", "docs/brief_*", "docs/*audit*", "docs/*red_team*",
+PRIVATE_GLOBS = ["private/*", "private/**/*", "CLAUDE.md", "docs/brief_*", "docs/*audit*", "docs/*red_team*",
                  # the underscore-free spelling: external critiques of the
                  # APPLICATION (PI named, referees, career strategy). Three
                  # such files were unignored on 2026-07-27 because every
