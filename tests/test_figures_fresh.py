@@ -25,6 +25,16 @@ from PIL import Image
 
 from rb5s6s import config as C
 
+
+def _load_make_figures():
+    """Import scripts/make_figures.py by path -- scripts/ is not a package."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "make_figures", C.REPO_ROOT / "scripts" / "make_figures.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
 DATA_DRIVEN = [
     "fig1_width_vs_density",
     "fig2_power_sweep",
@@ -62,3 +72,63 @@ def test_all_data_driven_figures_share_one_fingerprint():
     fps = {name: _embedded(name) for name in DATA_DRIVEN}
     distinct = set(fps.values())
     assert len(distinct) == 1, f"figures drawn from different results snapshots: {fps}"
+
+
+@pytest.mark.slow
+def test_figure_text_does_not_overlap():
+    """Measure label collisions instead of eyeballing them.
+
+    Added 2026-07-29 after a review asked for no overlapping labels in the
+    figures. Reading them by eye passed fig13; measuring the rendered bounding
+    boxes did not -- its level names overlapped their own energy annotations by
+    ~25%, invisible at a glance and obvious at 200%. Every figure is drawn
+    in-process and every pair of text artists in each axes is compared; more
+    than 20% of the smaller box covered is a collision.
+
+    The 20% floor is deliberate: rotated tick labels and sub/superscripts touch
+    at a few percent without being unreadable, and a zero-tolerance version
+    would be noise.
+    """
+    import itertools
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    mf = _load_make_figures()
+    drawers = [(n, getattr(mf, n)) for n in dir(mf)
+               if n.startswith("fig_") and callable(getattr(mf, n))]
+    assert drawers, "no figure drawers found in make_figures"
+    original = mf._save
+    problems = []
+    try:
+        for name, fn in drawers:
+            plt.close("all")
+            captured = {}
+            mf._save = lambda fig, nm, _c=captured: _c.__setitem__("fig", fig)
+            try:
+                fn()
+            except Exception:
+                continue                      # inputs absent in this checkout
+            finally:
+                mf._save = original
+            fig = captured.get("fig")
+            if fig is None:
+                continue
+            fig.canvas.draw()
+            r = fig.canvas.get_renderer()
+            for ax in fig.axes:
+                boxes = []
+                for t in ax.texts:
+                    if t.get_text().strip():
+                        boxes.append((t.get_text()[:24],
+                                      t.get_window_extent(renderer=r)))
+                for (t1, b1), (t2, b2) in itertools.combinations(boxes, 2):
+                    ov = (max(0.0, min(b1.x1, b2.x1) - max(b1.x0, b2.x0))
+                          * max(0.0, min(b1.y1, b2.y1) - max(b1.y0, b2.y0)))
+                    small = min(b1.width * b1.height, b2.width * b2.height)
+                    if small > 0 and ov / small > 0.20:
+                        problems.append(
+                            f"{name}: {t1!r} overlaps {t2!r} by {100 * ov / small:.0f}%")
+    finally:
+        mf._save = original
+        plt.close("all")
+    assert not problems, "overlapping figure labels:\n  " + "\n  ".join(problems)

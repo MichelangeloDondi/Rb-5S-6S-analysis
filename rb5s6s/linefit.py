@@ -134,10 +134,13 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
             sigmas.append(np.full_like(v, max(np.std(np.diff(v)) / np.sqrt(2.0), 1e-6)))
     tau = max(law.get("tau_int", 1.0), 1.0) if law is not None else 1.0
 
-    # Window each trace to +-FIT_HALFWIDTH_MHZ about its seed center, EXCLUDING
-    # any off-center-sweep mirror crossing (~40 MHz away) that the full-window
-    # single-line fit would otherwise treat as unmodelled signal and let bias
-    # the baseline/width. (flagged 2026-07-11; see config.FIT_HALFWIDTH_MHZ)
+    # Window each trace about its seed center, EXCLUDING any off-center-sweep
+    # mirror crossing (~40 MHz away) that the full-window single-line fit would
+    # otherwise treat as unmodelled signal and let bias the baseline/width.
+    # (flagged 2026-07-11.) The half-width is ADAPTIVE -- a multiple of the
+    # trace's own measured FWHM, clipped to [MIN, MAX] -- not the fixed
+    # FIT_HALFWIDTH_MHZ this comment used to name, which no longer exists:
+    # see adaptive_halfwidth() and config.FIT_HALFWIDTH_FWHM_MULT.
     wf, wv, ws = [], [], []
     for i in range(ntr):
         hw = adaptive_halfwidth(freqs[i], volts[i])

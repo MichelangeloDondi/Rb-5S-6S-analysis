@@ -750,8 +750,8 @@ def fig_level_scheme():
     y5s, yv, y5p, y6s = 0.0, E_VIRT_CM, E_5P_CM, E_6S_CM
     for y, lab in ((y5s, r"$5S_{1/2}$"), (y5p, r"$5P_{1/2}$"), (y6s, r"$6S_{1/2}$")):
         ax.hlines(y, 0.10, 0.72, color="0.15", lw=2.4)
-        ax.text(0.745, y, lab, va="center", fontsize=10)
-        ax.text(0.745, y - 700, f"{y:,.0f}" + r" cm$^{-1}$", va="center",
+        ax.text(0.745, y + 620, lab, va="bottom", fontsize=10)
+        ax.text(0.745, y - 620, f"{y:,.0f}" + r" cm$^{-1}$", va="top",
                 fontsize=6.5, color="0.5")
     ax.hlines(yv, 0.16, 0.46, color="0.55", lw=1.3, ls=(0, (4, 3)))
     ax.text(0.16, yv - 1150, "virtual level, half the two-photon energy",
