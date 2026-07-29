@@ -595,8 +595,15 @@ def main() -> int:
           f"({a6:.0f}). The same model gives the **first 5S–6S magic wavelengths** "
           f"(scalar, ENVELOPE): $\\lambda_m \\approx$ {mtxt} nm — a trap at any of "
           f"them would hold both states without pulling the 993 nm line. Scalar "
-          f"only; the tensor treatment and a trapped-atom platform are the "
-          f"follow-up. Reproducible: `run_polarizability.py`.")
+          f"only — which is exact for these $J=1/2$ states under linear "
+          f"polarization, the tensor term vanishing by the triangle rule; the "
+          f"vector term matters only for circular components near the 6S–5P "
+          f"lines. Nearest prior work in the same band is Zang *et al.* 2012 "
+          f"(arXiv:1204.4354), magic at 1342 and 1421 nm for the **6s–5p** pair "
+          f"of a four-level active clock — 2.4 nm from the 1339.6 here, and a "
+          f"different state pair, so the claim is specifically 5S–6S. A "
+          f"trapped-atom platform is the follow-up. Reproducible: "
+          f"`run_polarizability.py`.")
     rp = rows("resolving_power")
     if rp:
         obs = {r["observable"]: r for r in rp if r["kind"] == "observable"}

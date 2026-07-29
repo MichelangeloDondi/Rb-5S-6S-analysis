@@ -134,8 +134,11 @@ threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
 elsewhere). It gives the 95% profile-likelihood bound
 $$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
-sitting just above the predicted 0.59 MHz — i.e. $\Delta\alpha\lesssim1200$ a.u.
-against the computed 1093 ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)).
+sitting just above the predicted 0.59 MHz — i.e. $|\Delta\alpha|\lesssim1200$ a.u.,
+which brackets both values on the table: Orson's published 1093 and this work's
+recomputed 1145 ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The
+comparison is on magnitude and is therefore untouched by the sign disagreement
+between them ([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the

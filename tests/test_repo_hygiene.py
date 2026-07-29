@@ -539,3 +539,28 @@ def test_every_library_module_appears_in_the_methods_map():
     missing = sorted(m for m in mods if m not in listed)
     assert not missing, (
         f"library modules absent from docs/methods.md's repository map: {missing}")
+
+
+def test_no_tracked_artifact_schedules_the_fixed_lock_session():
+    """PLAN is explicit that the follow-up session is "not scheduled", that "no
+    date is assumed" and that the spec "names no operator, no dates". Four
+    tracked artifacts nonetheless called it "October" -- a producer docstring,
+    its stdout, the results README and a preregistration addendum -- which is a
+    commitment the plan of record does not make. Keep it out."""
+    import re
+    offenders = []
+    months = re.compile(r"\b(January|February|March|April|May|June|July|August|"
+                        r"September|October|November|December)\b")
+    for rel in _tracked("scripts/*.py", "rb5s6s/*.py", "results/README.md"):
+        txt = (ROOT / rel).read_text(encoding="utf-8", errors="ignore")
+        for m in months.finditer(txt):
+            line = txt[:m.start()].count("\n") + 1
+            ctx = txt[max(0, m.start() - 90):m.start() + 60]
+            # dated provenance notes ("fixed 2026-07-11", "July 2025 campaign")
+            # are fine; a bare month naming the FUTURE session is not
+            if re.search(r"\d{4}", ctx) or "campaign" in ctx.lower():
+                continue
+            offenders.append(f"{rel}:{line}: {m.group(0)} in {ctx[-70:]!r}")
+    assert not offenders, (
+        "a tracked artifact schedules the fixed-lock session; PLAN assumes no "
+        "date:\n  " + "\n  ".join(offenders))

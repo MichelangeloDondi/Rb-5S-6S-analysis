@@ -44,8 +44,13 @@ Academy measured the absolute frequencies and hyperfine constants ([Orson
 no observable light shift and no density shift — and computes the
 differential polarizability Δα = 1093 a.u. An independent in-repo recompute
 (module M16) reproduces that magnitude to ~5% at −1145 a.u. but finds the
-opposite sign — an open theory item under external adjudication
-([THEORY_NOTE §5](THEORY_NOTE.md)); every archival result here uses |Δα| and
+opposite sign. Both sides are now verified from the typeset PDFs: Orson states
+the convention in words, repeats the value in SI, and works a −0.66 MHz red
+shift that this repo's unit chain returns as −0.653 — so the disagreement is
+real, not a convention or units artifact — while this work's sign is anchored
+to two measurements it does not fit, the static α and the tune-out. Which side
+is wrong remains open ([THEORY_NOTE §5](THEORY_NOTE.md), which records a
+candidate mechanism as a hypothesis); every archival result here uses |Δα| and
 is sign-immune. So on this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
@@ -266,7 +271,12 @@ the transition frequency is untouched. That is the trick behind lattice
 clocks (Sr at 813 nm). M16 computes the **first 5S–6S magic wavelengths** —
 ≈ 1204 / 1288 / 1340 nm, all trapping (α > 0 for both states) — so the
 trapped-atom version of this measurement has candidate wavelengths where
-before it had none. **ENVELOPE, and scalar only**: the vector and tensor terms
+before it had none. The state pair has to be said out loud: Zang *et al.* 2012
+report a magic wavelength at 1342 nm for the **6s–5p** pair of a four-level
+active clock, 2.4 nm from the 1340 here and a different magic condition. **ENVELOPE, and scalar only** — which for these states is less of a caveat
+than it sounds: the tensor polarizability vanishes identically for $J=1/2$
+(triangle rule), so with linear polarization the scalar term is exact, not an
+approximation. The residual is the vector term
 near the 6S–5P lines need their own treatment before anyone designs a trap,
 and none of the three has been measured.
 
@@ -392,9 +402,9 @@ cannot work that way: both states are S, so there is no resonant dipole
 coupling and the interaction is van der Waals, which should sit well below
 that figure. So 69 kHz is a ceiling the 6S coefficient should fall far
 under — consistent with the ~kHz expectation, and it makes the archival bound
-of 0.2–0.4 MHz loose by a factor one can now name rather than guess. This is the most modest item on the page and is listed as such —
-but it is also the one the archive already has the design for, needing only the
-higher-density points of §4.
+of 0.2–0.4 MHz loose by a factor one can now name rather than guess. The
+archive already has the design for this one; it needs only the higher-density
+points of §4.
 
 *Status, plainly: 993 nm is not put forward as a better clock line — on
 natural linewidth it is worse than the 778 nm standard; the

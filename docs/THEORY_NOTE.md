@@ -326,9 +326,47 @@ check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 > algebra is not in dispute. Orson prints $\alpha_{56}=-1093$, hence a *red*
 > transition shift; this work computes $\Delta\alpha=-1145$, i.e.
 > $\alpha_{56}=+1145$, hence a *blue* one. Same equation, opposite input, and
-> the two differ by ~5% in magnitude with opposite sign — which is why the
-> resemblance of $1093$ to $1145$ is a coincidence of magnitude and not a
-> partial agreement.
+> **Both sides verified from the typeset PDFs, 2026-07-29** — this no longer
+> rests on text extraction or an aggregator. Orson states the convention in
+> words ("the AC Stark differential polarizabilty of the 5S state minus 6S
+> state $\alpha_5-\alpha_6=\alpha_{56}$"), prints $\alpha_{56}=-1093$ a.u.,
+> gives it again in SI as $-1.80\times10^{-38}$ J m² V⁻² (also negative), and
+> draws a consequence: at his $w_0=63$ µm and $P=0.8$ W, $E^2=4.8\times10^{10}$
+> V² m⁻² and $\Delta f=-0.66$ MHz — a **red** shift. Feeding his own numbers
+> through this repo's unit chain returns $-0.653$ MHz, so the disagreement is
+> not a units or convention artifact: the same arithmetic on his input
+> reproduces his output.
+>
+> **Where this work's sign comes from, and why it is not a convention choice.**
+> $\alpha_{5S}$ here is anchored to two measurements the model does not fit:
+> the static value, $+318.28$ against the measured $318.79(1.42)$, and the
+> tune-out at $790.0339$ nm against the measured $790.03235(3)$. A positive
+> ground-state polarizability far below resonance is required physically, and
+> the model reproduces it. Orson reports only the difference, which cannot be
+> checked that way.
+>
+> **A candidate mechanism, offered as a hypothesis and not as a finding.**
+> Orson writes that he calculated "in a manner similar to that of Martin *et
+> al*". Martin's Eqs. (2) and (21) as printed carry a **leading minus**,
+> $\alpha(\omega,J)=-\frac{2}{3(2J+1)}\sum\ldots$, which would make a ground
+> state below resonance negatively polarizable. If that minus propagated, the
+> published $-1093$ would be the negative of what the method gives, i.e.
+> $+1093$ — agreeing with this work in sign and to 4.7% in magnitude. This is
+> *not verified*: it would need Martin's tabulated $\alpha$ values checked
+> against their own printed equation, and Orson's intermediate numbers, neither
+> of which is available here. Recorded because it is testable, not because it
+> is established. (Martin is independently inconsistent on sign: $+2.30(4)$ in
+> the abstract and Table II against $-2.5(2)$ in Fig. 5's caption for the same
+> coefficient.)
+>
+> the two differ by ~5% in magnitude with opposite sign. That pattern is
+> itself diagnostic: a genuine matrix-element disagreement would have to move
+> $\alpha_{6S}$ by $\sim$2200 a.u. and then land within 5% of the original
+> magnitude by coincidence, whereas a global sign error — in either work —
+> produces exactly magnitude agreement with sign opposition. (The same
+> literature demonstrably carries printed-sign faults: Martin et al. 2019
+> quote $+2.30$ in the abstract and $-2.5$ in Fig. 5 for the same
+> coefficient; verified from the held PDF.)
 >
 > Every archival result uses $|\Delta\alpha|$ and is unaffected either way.
 >

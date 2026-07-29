@@ -80,14 +80,13 @@ The drift rate quoted above was recovered, not recorded. The analysed
 exports carry no acquisition time; a backup that did surfaced a year later
 and was audited
 under a pre-registration written before it was opened. The audit voided at
-its own integrity gate and said so — and a labelled post-hoc pass then dated
-the campaign, corrected the recorded power order, and measured the lock:
+its own integrity gate; a labelled post-hoc pass then dated the campaign,
+corrected the recorded power order, and measured the lock:
 **the drift is one constant +0.016 [0.007, 0.025] MHz/min (laser axis)**,
 while what actually moved the line by megahertz was the hand re-centring
 after each lock dropout, decaying with **τ = 97 [87, 118] min** and re-armed
-by every re-lock. No fitted result changed; the archive simply learned to
-characterise its own instrument — and to date the design flaw (four peaks
-acquired an hour apart) that a follow-up session fixes by interleaving them.
+by every re-lock. No fitted result changed. The dating did expose a design flaw — four peaks
+acquired an hour apart — that a follow-up session fixes by interleaving them.
 The full audit trail, including two corrections to its own earlier readings,
 is [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
@@ -158,8 +157,8 @@ so each is reported as a bound together with the measurement that would lift it.
 | AC-Stark coefficient **S₀(225 mW)** | < 0.63 MHz (95%, profile likelihood; predicted 0.59) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | ≈ 50 µm (prior; Nieddu 2019 measured 64 µm directly on the same-lineage apparatus) | open | beam-profile measurement |
-| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign (open theory item, [THEORY_NOTE §5](docs/THEORY_NOTE.md)); model reproduces the measured 5S tune-out to ≈2 pm | calculated | external sign adjudication |
-| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line | calculated (envelope) | tensor treatment; a trapped-atom platform |
+| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is now verified from the typeset PDF — convention stated in words, value repeated in SI, and his own worked −0.66 MHz reproduced here at −0.653 — so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
+| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line | calculated (envelope) | vector term under circular polarization; a trapped-atom platform |
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must

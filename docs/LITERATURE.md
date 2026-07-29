@@ -246,10 +246,13 @@ any manuscript:
 
 - **No other group working 5S–6S.** Precision work on this line remains the
   USAFA lineage (Orson, Ayachitula). No new entrants found.
-- **No prior 5S–6S magic wavelength** anywhere near 1204 / 1288 / 1340 nm.
-  *Phrase the claim as 5S–6S specifically*: arXiv:1204.4354 does tabulate magic
-  wavelengths for the **6S–5P** active-clock transition across 1200–1600 nm, a
-  different transition in an overlapping range, and a referee may reach for it.
+- **No prior 5S–6S magic wavelength.** *Phrase the claim as 5S–6S
+  specifically*, because the nearest prior number is close:
+  [zang2012](lit/zang2012.md) (arXiv:1204.4354, held) tabulates magic
+  wavelengths for the **6s–5p** pair of a four-level active clock and reports
+  **1342 nm** — **2.4 nm** from this work's 1339.6 nm. A different state pair
+  and a different magic condition, but near enough that an unqualified claim
+  would look like an oversight.
 - **No profile-likelihood precedent** in vapour-cell two-photon metrology, and
   **no pre-registration or blind analysis** in atomic spectroscopy of this kind.
 - **No 6S self-broadening coefficient** in a second targeted pass; Zameroski

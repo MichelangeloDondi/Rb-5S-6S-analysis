@@ -19,7 +19,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-29
 summary: >
   Models the AC-Stark shift of a saturated-absorption line from the non-uniform radial intensity of a guided mode; the non-uniformity broadens and steepens the line toward higher frequencies.
 loci: []

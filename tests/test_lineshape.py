@@ -11,6 +11,7 @@ run without any real data.
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from rb5s6s._compat import trapezoid
 from rb5s6s.lineshape import (lorentzian, gaussian, two_sided_exponential,
@@ -224,3 +225,34 @@ def test_composite_transit_kind_voigt_vs_lehmann():
 
     assert fwhm(g_e, p_e) > fwhm(g_v, p_v)   # exp fat wings -> broader composite
     assert float(np.max(np.abs(p_e - p_v))) > 1e-3   # genuinely different form
+
+
+def test_axial_ramp_matches_the_independent_closed_form():
+    """An external review (private/reviews/Claude_literature_chat, 2026-07-26)
+    derived the z-integrated ramp weight in closed form, by hand and with its
+    own quadrature -- different author, different code, different
+    parametrisation. In the long-cell limit it gets
+
+        w(u) propto sqrt((1-u)/u) (1+2u),
+        mean S0/3,  variance 11 S0^2/144,  |skew| (5/432)/(11/144)^1.5 = 0.5482
+
+    and a skew zero crossing at z_ratio = 1.1172, where this repo had quoted
+    ~1.12 from its own numerics. Hold the two implementations together: the
+    module must reproduce the closed-form limits and the crossover."""
+    from rb5s6s.lineshape import stark_ramp_axial_moments
+    m = stark_ramp_axial_moments(1.0, 200.0)
+    assert abs(m["mean"]) == pytest.approx(1.0 / 3.0, rel=5e-3)
+    assert m["var"] == pytest.approx(11.0 / 144.0, rel=5e-3)
+    assert abs(m["skew_standardized"]) == pytest.approx(0.5482, rel=2e-2)
+
+    # the crossover, previously "~1.12": bracket it tightly
+    lo = stark_ramp_axial_moments(1.0, 1.10)["skew_standardized"]
+    hi = stark_ramp_axial_moments(1.0, 1.13)["skew_standardized"]
+    assert lo * hi < 0, f"skew does not change sign in [1.10, 1.13]: {lo}, {hi}"
+
+    # spot-check the interpolation against the review's table
+    for z, mean_note, skew_note in ((0.5, 0.6209, 0.4793), (2.0, 0.4538, -0.3016),
+                                    (5.0, 0.3800, -0.4460)):
+        mm = stark_ramp_axial_moments(1.0, z)
+        assert abs(mm["mean"]) == pytest.approx(mean_note, rel=2e-3)
+        assert mm["skew_standardized"] == pytest.approx(skew_note, rel=2e-2)

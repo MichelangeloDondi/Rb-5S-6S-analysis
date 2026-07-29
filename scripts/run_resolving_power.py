@@ -28,7 +28,7 @@ result: amplitude resolves the sweep ~45x over and is the one place the
 archive extracts a NUMBER (the cold spot, addendum 16); the widths sit at
 1.5-5 and are exactly where it reports BOUNDS.
 
-It is also predictive, and that is what it is for. The October prescription
+It is also predictive, and that is what it is for. PLAN section 8's prescription
 (PLAN 8) has two halves -- hot points at 150-170 C to grow the signal, and
 interleaving with per-trace power logging to shrink the block noise. The
 projection at the end shows the temperature lever ALONE buys only ~1-3 sigma
@@ -117,7 +117,7 @@ def main() -> int:
     print("  sigma_laser -> a BOUND, degenerate with w0 (C2)")
     print("-> one ratio predicts all four statuses.")
 
-    # ---- what October's two prescriptions each buy ------------------------
+    # ---- what the two halves of the prescription each buy -----------------
     w = float(sweep.total_fwhm.mean())
     noise_w = w * block_noise(ladder, "total_fwhm")
     print(f"\nPROJECTION. total_fwhm block noise = {noise_w:.3f} MHz.")

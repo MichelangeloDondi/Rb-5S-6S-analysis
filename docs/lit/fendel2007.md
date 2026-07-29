@@ -14,18 +14,20 @@ pages: 701
 year: 2007
 doi: null
 arxiv: null
-pdf: null
-held: false
+pdf: PDF_papers/Fendel_2007_Cs-6s-8s-two-photon-comb-average-not-peak-AC-Stark.pdf
+held: true
 status: VERIFIED
 routing: []
-verify_flags:
-  - 'Read by the external audit from the published text; not held here. DOI not confirmed -- cite by volume/issue/page. OBTAIN THE PDF.'
-verified_date: 2026-07-26
+verify_flags: []
+verified_date: 2026-07-29
 summary: >
-  Cs 6s-8s single-colour two-photon in a hot vapour cell with fluorescence
-  detection -- the same experiment as this programme, one element to the left.
-  Shows the AC-Stark shift is set by the AVERAGE rather than the much larger
-  PEAK intensity: -0.21 Hz/(mW/cm^2) against average single-beam intensity.
+  Cs 6s-8s single-colour two-photon in a hot vapour cell -- the same experiment
+  as this programme, one element to the left, driven by a frequency COMB. The
+  AC-Stark shift follows the AVERAGE rather than the much larger PEAK intensity
+  (-0.21 Hz/(mW/cm^2) against average single-beam intensity) -- and that
+  peak-vs-average is the comb's TEMPORAL pulse train, ns spacing against a
+  ~50 ns atomic response: the fast-modulation limit of Camparo 1992, realised.
+  The SPATIAL distribution was engineered away with an unfocused 0.72 mm waist.
 loci: []
 section: prior-art
 ---
@@ -67,3 +69,23 @@ distinction in one sentence.** Per the audit this is the single largest
 remaining referee risk in the light-shift argument. Obtain the PDF: the waist,
 the intensity definition (single-beam vs total) and the 225 mW figure all need
 reading first-hand before the comparison is put in print.
+
+**Read in full 2026-07-29** from the PDF supplied by the experimenter; the
+key numbers verify verbatim (-0.21 Hz/(mW/cm^2) against average single-beam
+intensity; unfocused 0.72 mm 1/e^2 waist; 2.9 kHz shift at 225 mW incident).
+
+**The full text sharpens what "average not peak" means, and the distinction
+matters for how it is cited.** Their peak-vs-average is the frequency comb's
+TEMPORAL structure -- pulsed excitation against cw -- not the spatial profile:
+the pulse spacing is nanoseconds against a ~50 ns atomic response, so the atom
+integrates the pulse train and shifts with the average intensity. That is the
+fast-modulation limit of [Camparo 1992](camparo1992.md), realised in exactly
+this class of experiment (and the same physics M19 checks for atoms crossing a
+standing wave: modulation fast compared with the response leaves the mean).
+
+The SPATIAL question -- the distribution of shifts across a focused profile,
+which is this programme's subject -- they did not test but engineered away:
+the 0.72 mm waist keeps the intensity distribution narrow enough that its
+spread never matters. So the paper settles the temporal question, supports
+the fast-limit physics, and leaves the focused-beam spatial distribution
+exactly as open as the programme claims.

@@ -1876,7 +1876,8 @@ statuses are the load-bearing part of a bounds-heavy paper, and they now have
 a second, independent justification that does not go through any lineshape
 model.
 
-**What it is actually for is October.** The diagnostic is predictive, and it
+**What it is actually for is the fixed-lock session.** The diagnostic is
+predictive, and it
 says something PLAN did not. The prescription has two halves — hot points at
 150–170 °C to grow the signal, interleaving and per-trace power logging to
 cut the block noise — and the temperature half has always read as the

@@ -167,7 +167,15 @@ signal exponent there is $n<2$: that *strengthens* the negative skew but the
 $n=2$ magnitudes in this row are no longer parameter-free. At config S the
 sign is the robust observable; the magnitudes belong to L and M.
 
-**The skewness flips sign** (crossover at $Z_c/z_R\approx1.12$): a long
+An independent derivation reached the same numbers (external review,
+2026-07-26, held privately): working the $z$-integration by hand gives the
+long-cell weight in closed form, $w(u)\propto\sqrt{(1-u)/u}(1+2u)$ with
+mean $S_0/3$, variance $11S_0^2/144$ and $|g_1| = 0.5482$, and its quadrature
+matches this module's numerics to every printed digit at every geometry
+tested, with the crossover at $Z_c/z_R = 1.1172$. The closed forms are held as
+tests (`test_axial_ramp_matches_the_independent_closed_form`).
+
+**The skewness flips sign** (crossover at $Z_c/z_R = 1.1172$): a long
 window piles signal into weak out-of-focus shifts, leaving a tail toward
 $-S_0$. **The flip at config S is conditional on the collection geometry,
 which is unmeasured.** $Z_c$ is not a free parameter: for the side-viewing

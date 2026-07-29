@@ -10,6 +10,8 @@ ship its magic wavelengths.
 
 from __future__ import annotations
 
+import pytest
+
 
 from rb5s6s.constants import DELTA_ALPHA_AU
 from rb5s6s.polarizability import (alpha_5s, alpha_6s, alpha_7s, delta_alpha,
@@ -151,3 +153,31 @@ def test_5d_anchor_is_hamilton_2023():
     # measured 776.179(5) nm and the near-resonant 5P3/2-5D5/2 element 1.80(6)
     assert abs(MAGIC_5S5D52_EXP_NM - 776.179) < 0.01
     assert abs(RME_5P32_5D52 - 1.80) < 0.01
+
+
+def test_sign_is_anchored_to_measurements_not_to_a_convention():
+    """The Delta_alpha(993) sign disagreement with Orson 2021 is the most
+    falsifiable claim in the repo, so the anchor has to be explicit.
+
+    This work's sign is not a convention choice. alpha_5S is pinned by two
+    measurements the model does not fit: the static polarizability (+318.79(1.42)
+    measured) and the tune-out wavelength (790.03235(3) nm measured). A ground
+    state far below resonance must be positively polarizable; if that ever comes
+    out negative the sum-over-states has a global sign fault and every
+    Delta_alpha statement downstream is void.
+
+    Orson's published alpha_56 = -1093 (verified verbatim from the typeset PDF
+    2026-07-29, with his convention stated in words, the SI value also negative,
+    and a worked -0.66 MHz red shift this repo reproduces at -0.653) has the
+    opposite sign to this work's +1145 in the same convention.
+    """
+    from rb5s6s.polarizability import alpha_5s, delta_alpha
+    # far below every resonance the ground state is positively polarizable
+    assert alpha_5s(1.0e7) > 0
+    assert alpha_5s(1.0e7) == pytest.approx(318.79, abs=3.0), \
+        "static alpha_5S no longer reproduces the measured value -- sign anchor lost"
+    # and the disagreement, in Orson's convention
+    alpha56_here = -delta_alpha(993.4)
+    assert alpha56_here > 0, "this work gives alpha_56 > 0; Orson prints -1093"
+    assert abs(abs(alpha56_here) / 1093.0 - 1.0) < 0.10, \
+        "magnitudes no longer agree to ~5%; the sign-error diagnostic rests on that"

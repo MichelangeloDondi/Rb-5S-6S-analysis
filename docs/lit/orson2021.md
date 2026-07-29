@@ -89,3 +89,17 @@ the paper's own header: "S T Orson *et al* 2021 *J. Phys. B: At. Mol. Opt.
 Phys.* **54** 175001", and the running head "J. Phys. B: At. Mol. Opt. Phys. 54
 (2021) 175001 (6pp), https://doi.org/10.1088/1361-6455/ac2812". Six pages.
 Cite with confidence.
+
+**Sign fact verified from the typeset PDF, 2026-07-29** — previously this rested
+on a text extraction. The paper states the convention in words ("the AC Stark
+differential polarizabilty of the 5S state minus 6S state alpha_5 - alpha_6 =
+alpha_56"), prints **alpha_56 = -1093 a.u.**, repeats it in SI as
+**-1.80e-38 J m^2 V^-2** (also negative), and works a consequence: at w0 = 63 um
+and P = 0.8 W, E^2 = 4.8e10 V^2/m^2 and **Delta_f = -0.66 MHz**, a RED shift.
+Running his own inputs through this repo's unit chain returns -0.653 MHz, so the
+disagreement with this work is not a units or convention artifact.
+
+He also notes calculating "in a manner similar to that of Martin et al [24]" --
+see [martin2019](martin2019.md), whose printed Eqs. (2) and (21) carry a leading
+minus. Whether that propagated here is a hypothesis, not a finding; it is stated
+as such in THEORY_NOTE section 5.

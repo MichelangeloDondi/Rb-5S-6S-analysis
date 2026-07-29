@@ -64,7 +64,11 @@ KNOWN_DANGLING = {
 QUARANTINE = {"drago2026"}
 
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
-INTENTIONAL_PREFIX_PAIRS = {("rajasree2020", "rajasree2020spin")}
+INTENTIONAL_PREFIX_PAIRS = {("rajasree2020", "rajasree2020spin"),
+    # same first author, same year, different papers: JOSA B 9 2163
+    # (with Lambropoulos) and Opt. Commun. 91 343 (with Klimcak)
+    ("camparo1992", "camparo1992b"),
+}
 
 # A backtick token shaped like a bibtex key: >=2 leading letters, a 4-digit year,
 # optional suffix. Tight enough to skip `M16`, `power_025`, `4121nm`, `rb5s6s`.
