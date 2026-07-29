@@ -485,3 +485,34 @@ def test_advertised_test_counts_match_the_real_suite():
     assert not stale, (
         f"documented test counts {stale} are more than 5% from the real {total} "
         f"({slow} slow). Update docs/methods.md and README.md.")
+
+
+def test_peak_labels_are_not_presented_as_measured_wavelengths():
+    """The 993.4xxx peak labels are identifiers, not measurements: they come
+    from a wavemeter that was never calibrated, and what actually fixes which
+    line is which is the hyperfine assignment. They appear 44 times across the
+    docs as keys, which is fine and stays fine -- but a future sentence calling
+    one a measured or absolute wavelength would be a real error, and the
+    caveat currently lives in exactly one paragraph. Guard both ends: forbid
+    the phrasing, and require the paragraph."""
+    import re
+    banned = re.compile(
+        r"(measured|absolute|calibrated)\s+(vacuum\s+)?wavelengths?\s+"
+        r"(of\s+)?993\.4|993\.4\d{3}\s*nm[^.\n]{0,30}\b(measured|absolute)\s+wavelength",
+        re.I)
+    offenders = []
+    for rel in ["README.md"] + [f"docs/{p.name}" for p in (ROOT / "docs").glob("*.md")] \
+            + [f"docs/methods/{p.name}" for p in (ROOT / "docs" / "methods").glob("*.md")]:
+        f = ROOT / rel
+        if not f.is_file():
+            continue
+        for m in banned.finditer(f.read_text(encoding="utf-8")):
+            offenders.append(f"{rel}: {m.group(0)[:70]!r}")
+    assert not offenders, (
+        "a peak label is presented as a measured wavelength; the wavemeter was "
+        "never calibrated:\n  " + "\n  ".join(offenders))
+
+    defining = (ROOT / "docs" / "methods" / "01_the_measurement.md").read_text(encoding="utf-8")
+    assert "uncalibrated" in defining.lower(), (
+        "docs/methods/01 defines the peak labels but no longer says the "
+        "wavemeter was uncalibrated -- the caveat has been dropped")
