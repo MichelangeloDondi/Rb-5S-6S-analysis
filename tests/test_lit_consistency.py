@@ -378,3 +378,50 @@ def test_narrative_docs_do_not_argue_from_unverified_papers():
     assert not hits, (
         "a narrative document argues from a paper nobody here has read; "
         "either verify the source or drop the claim:\n  " + "\n  ".join(hits))
+
+
+def test_verified_status_requires_a_real_bibliographic_record():
+    """LITERATURE.md defines the tiers: "VERIFIED means we read the source
+    itself; REPORTED means a literature-scout summary we have not yet read in
+    full". A note whose TITLE is a bracketed description rather than the paper's
+    title, or whose author list ends in a bare "others", is a record nobody has
+    checked against the paper -- so it cannot be VERIFIED.
+
+    Found 2026-07-30, when the status field turned out to be non-discriminating:
+    72 of 72 notes said VERIFIED and REPORTED was used zero times, while three
+    of them carried placeholder titles and three a stub author list. Those were
+    demoted (ray2020, roy2017, callejo2025 -- none cited anywhere that argues).
+    borde1976 is the exception and is allowed here only because it carries an
+    explicit verify_flag saying so: it IS cited, in methods/02 and the
+    manuscript skeleton, so demoting it silently would have left an argument
+    resting on a REPORTED source, which the same rule forbids.
+
+    The escape hatch is deliberate and narrow: a placeholder record may keep
+    VERIFIED only if a verify_flag names the defect, so the gap is visible in
+    the note and in the generated bib rather than implied by its absence.
+    """
+    import re
+
+    offenders = []
+    for note in sorted((ROOT / "docs" / "lit").glob("*.md")):
+        txt = note.read_text(encoding="utf-8")
+        if not txt.startswith("---"):
+            continue
+        fm = txt.split("---")[1]
+        status = re.search(r"^status:\s*(\S+)", fm, re.M)
+        if not status or status.group(1).strip() != "VERIFIED":
+            continue
+        title = re.search(r"^title:\s*(.*)$", fm, re.M)
+        placeholder = bool(title and title.group(1).strip().strip("'\"").startswith("["))
+        stub_author = bool(re.search(r"^\s*-\s*others\s*$", fm, re.M))
+        if not (placeholder or stub_author):
+            continue
+        flagged = "PLACEHOLDER" in fm.upper()
+        if not flagged:
+            why = "placeholder title" if placeholder else "stub author list"
+            offenders.append(f"{note.name}: VERIFIED with a {why} and no verify_flag saying so")
+    assert not offenders, (
+        "status: VERIFIED asserts the source was read; these records were never "
+        "checked against the paper:\n  " + "\n  ".join(offenders) +
+        "\nEither demote to REPORTED, fill the record, or add a verify_flag "
+        "naming the gap.")

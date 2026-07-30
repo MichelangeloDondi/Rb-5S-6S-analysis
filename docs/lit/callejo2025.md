@@ -14,9 +14,11 @@ doi: null
 arxiv: 2407.00841
 pdf: PDF_papers/Callejo_2025_778nm-microcell-clock-stability.pdf
 held: true
-status: VERIFIED
+status: REPORTED
 routing: []
 verify_flags:
+  - 'Demoted VERIFIED -> REPORTED on 2026-07-30: placeholder
+    bibliographic record; upgrade by confirming title/authors/DOI.'
   - Author list/DOI VERIFY at submission
 verified_date: null
 summary: >

@@ -93,7 +93,8 @@ saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
 knob and manually recentered the cavity reference **many times** — not
 because the held lock drifted fast (measured: ~0.016 MHz/min, which would
-take tens of hours to cross the window) but because the cavity lock kept
+take tens of hours to cross the window — but see the provenance note below)
+but because the cavity lock kept
 dropping out during the etalon thermal transient, each recapture landing
 MHz-scale off (`APPARATUS.md` §6; results report addenda 4–7) — so
 **absolute trace positions carry no meaning across saves**; each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
@@ -102,6 +103,22 @@ usually left alone** — a tendency rather than a protocol
 24 of 32 RF-off science blocks scatter about a common position (median
 1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
 them by ~1 s — larger than the trace window, so the axis offset itself moved.
+
+> **Provenance note on the ~0.016 MHz/min (2026-07-30).** That figure comes from
+> `run_drift_settling.py`'s state-space fit, which compares block-**median** peak
+> positions **across** blocks — the same comparison the M20 retraction showed is
+> contaminated by the scope's horizontal setting, since the setting moved 58
+> times and the fit frees only the 19 moves above 100 ms. So its provenance is
+> exposed, and it has not been re-derived.
+>
+> It is not contradicted, either. Measured only *within* a display epoch — a run
+> of unchanged `window_start_ms`, where the position is a frequency under either
+> reading of the licensing question and so needs no correction at all — the two
+> longest knob-untouched segments give −0.022 and −0.018 MHz/min, bracketing the
+> quoted value. The shorter segments (3–6 min) scatter to ±1.5 MHz/min, which is
+> what a 0.27 MHz per-trace scatter produces over such baselines; the archive
+> simply has no long intervention-free stretch. Treat 0.016 MHz/min as the best
+> available number with an unverified derivation, not as measured.
 Within the scatter-like blocks the variation shows no trend with repeat index
 ($p=0.33$), so it is laser **jitter**, not accumulated drift
 (`scripts/run_intrablock_trend.py`;

@@ -15,6 +15,13 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags:
+  - 'BIBLIOGRAPHIC RECORD IS A PLACEHOLDER (noticed 2026-07-30): the title
+    field is a description in square brackets, not the paper title, and the
+    author list is unconfirmed. Unlike the other placeholder records this one
+    is CITED in methods/02 and in the manuscript skeleton, so it is flagged
+    rather than demoted to REPORTED -- but the citation must not go to a
+    referee until title, authors, journal, volume, pages and DOI are read off
+    the paper itself.'
   - ' VERIFY at submission'
 verified_date: null
 summary: >
