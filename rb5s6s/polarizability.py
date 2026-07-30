@@ -48,8 +48,14 @@ Matrix elements (reduced E1, atomic units) and their sources:
   6S core    9.1(5)                   Safronova, Williams & Clark, PRA 69,
                                       022509 (2004); Arora et al. 2007
   6S tail    +3.4 (fixed by the Safronova-group static alpha_6S = 5167(22);
-             varied +-100% in the uncertainty band; consistent with Zang
-             et al. 2012's bound that states above 8P contribute < 0.1%)
+             varied +-100% in the uncertainty band. Zang et al. 2012 is
+             consistent but is weaker than this comment used to claim: they
+             MEASURE that 8p_1/2 and 8p_3/2 together contribute "less than
+             0.081%, at all magic wavelengths, to the total polarizability of
+             6s", and then say only that they "believe that states above 8p
+             will contribute fewer" -- a stated expectation, not a bound.
+             The tail here rests on the Safronova static value; Zang is
+             corroboration, not a constraint.)
 Energies: NIST ASD (Rb I, cm^-1) for 5P-8P and 6S; Leonard Table II for
 9P-12P. All levels relative to the 5S ground state.
 

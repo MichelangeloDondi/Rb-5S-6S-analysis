@@ -284,10 +284,18 @@ any manuscript:
 - **No prior 5S–6S magic wavelength.** *Phrase the claim as 5S–6S
   specifically*, because the nearest prior number is close:
   [zang2012](lit/zang2012.md) (arXiv:1204.4354, held) tabulates magic
-  wavelengths for the **6s–5p** pair of a four-level active clock and reports
-  **1342 nm** — **2.4 nm** from this work's 1339.6 nm. A different state pair
-  and a different magic condition, but near enough that an unqualified claim
-  would look like an oversight.
+  wavelengths for the **6s–5p₁/₂,₃/₂** pairs of a four-level active clock and
+  reports **six** of them between 1200 and 1600 nm: 1342 and 1421 nm for
+  6s–5p₁/₂, and 1331, 1336, 1453, 1461 nm for 6s–5p₃/₂. **This work's 1339.6 nm
+  is bracketed by two** — 1336 (−3.6) and 1342 (+2.4). *This entry previously
+  recorded only 1342, which understated it.*
+  What defuses it is structural rather than rhetorical: their Table I puts the
+  5p₁/₂–6s₁/₂ resonance at 1323.88 nm and 5p₃/₂–6s₁/₂ at 1366.87 nm, so **every**
+  6S-involving magic wavelength in the infrared is confined to that 43 nm window
+  and few-nm separations inside it are forced by the level structure. Different
+  state pair, different magic condition — but the claim must be phrased as
+  5S–6S specifically, and should say why the proximity is expected rather than
+  leaving a referee to wonder.
 - **No profile-likelihood precedent** in vapour-cell two-photon metrology, and
   **no pre-registration or blind analysis** in atomic spectroscopy of this kind.
 - **No 6S self-broadening coefficient** in a second targeted pass; Zameroski
@@ -296,6 +304,20 @@ any manuscript:
 
 Not exhaustive: Japanese- and Russian-language 6S self-broadening theory was
 not searched.
+
+**Audit status of the notes these negative searches rest on (2026-07-30).**
+`zang2012` was checked line-by-line against its PDF and four defects were found
+and fixed, including the one corrected immediately above — a two-value reading
+of a six-value table, in the note carrying a negative-search claim. That is
+enough to distrust the rest by default. **Still unaudited, and load-bearing:**
+[stalnaker2006](lit/stalnaker2006.md) (on which the "first extraction of a
+polarizability from the asymmetry" concession rests, via its Eq. 45),
+[slepkov2010](lit/slepkov2010.md) (§5.1), [camparo1992](lit/camparo1992.md),
+[wall2014](lit/wall2014.md), [weller2011](lit/weller2011.md),
+[biraben1979](lit/biraben1979.md) and [lehmann2021](lit/lehmann2021.md) (the
+transit-kernel pair, whose form `bruvelis2012` stated backwards until today).
+An audit pass on these was started and did not finish. **Do this before Paper 1's
+introduction is written.** **[OPEN]**
 
 ### 5.3 The nearest analogue experiment, and what it costs claim 1 (2026-07-30)
 

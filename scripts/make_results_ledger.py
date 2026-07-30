@@ -658,9 +658,15 @@ def main() -> int:
           f"polarization, the tensor term vanishing by the triangle rule; the "
           f"vector term matters only for circular components near the 6S–5P "
           f"lines. Nearest prior work in the same band is Zang *et al.* 2012 "
-          f"(arXiv:1204.4354), magic at 1342 and 1421 nm for the **6s–5p** pair "
-          f"of a four-level active clock — 2.4 nm from the 1339.6 here, and a "
-          f"different state pair, so the claim is specifically 5S–6S. A "
+          f"(arXiv:1204.4354), which reports six magic wavelengths between 1200 "
+          f"and 1600 nm for the **6s–5p** pairs of a four-level active clock: "
+          f"1342 and 1421 nm for 6s–5p_1/2, and 1331, 1336, 1453, 1461 nm for "
+          f"6s–5p_3/2. Two of them bracket the 1339.6 here (1336 and 1342), "
+          f"which is expected rather than suspicious: every 6S-involving root "
+          f"in this band is confined between the 5p_1/2–6s_1/2 and 5p_3/2–6s_1/2 "
+          f"resonances at 1323.88 and 1366.87 nm, a 43 nm window. Different "
+          f"state pair and different magic condition, so the claim is "
+          f"specifically 5S–6S. A "
           f"trapped-atom platform is the follow-up. Reproducible: "
           f"`run_polarizability.py`.")
     rp = rows("resolving_power")

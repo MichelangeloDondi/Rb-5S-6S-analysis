@@ -278,8 +278,12 @@ clocks (Sr at 813 nm). M16 computes the **first 5S–6S magic wavelengths** —
 ≈ 1204 / 1288 / 1340 nm, all trapping (α > 0 for both states) — so the
 trapped-atom version of this measurement has candidate wavelengths where
 before it had none. The state pair has to be said out loud: Zang *et al.* 2012
-report a magic wavelength at 1342 nm for the **6s–5p** pair of a four-level
-active clock, 2.4 nm from the 1340 here and a different magic condition. **ENVELOPE, and scalar only** — which for these states is less of a caveat
+report six magic wavelengths between 1200 and 1600 nm for the **6s–5p₁/₂,₃/₂**
+pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
+1339.6 here. They are a different state pair and a different magic condition,
+and the crowding is expected: every 6S-involving root in the infrared is
+confined between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂ resonances at 1323.88 and
+1366.87 nm, a 43 nm window. **ENVELOPE, and scalar only** — which for these states is less of a caveat
 than it sounds: the tensor polarizability vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
 approximation. The residual is the vector term
