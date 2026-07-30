@@ -72,10 +72,11 @@ KNOWN_DANGLING = {
     # and cited in LITERATURE.md as the experimental check on the Cs 8s-6pj
     # matrix elements in iskrenovatchoukova2007. An attempt to add the PDF the
     # same day did not land, so it has no lit file yet.
-    "sieradzan2004",
     # boustimi2002 (PRB 65, 155402): the van der Waals shift near a cylinder,
     # sague2007's ref [15] and the second theory input the Patterson refit needs.
-    # Not on arXiv (checked 2026-07-30 by author search); APS paywalled.
+    # Confirmed paywalled again 2026-07-30 (no arXiv preprint, no repository
+    # copy, no OA route; real title is "van der Waals interaction between an
+    # atom and a metallic nanowire" -- the citation elsewhere is a paraphrase).
     "boustimi2002",
 }
 

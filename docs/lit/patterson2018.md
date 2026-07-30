@@ -273,19 +273,40 @@ $p_{\rm abs}$. If the fitted $\Gamma_0$ falls toward 6.065 MHz, the residual is
 explained; if it does not, the most plausible candidate is dead. **Publishable
 either way, and not attempted here.**
 
-**The REPORTED half, which needs the source before it is used.** An external
-literature pass reports that Sagué *et al.* (2007) explain their own excess as
-van der Waals shift plus modified spontaneous emission, with a
-**position-dependent** decay rate $\gamma(r)$ running to **+57% at the surface**,
-and — decisively — that their model carries **no fitted width parameter at all**,
-so their 6.2 MHz is an *output*, not a residual. If that holds, Sagué is not a
-second instance of an unexplained excess and should leave the table; the question
-sharpens to "what does Patterson's model contain that Sagué's does not". **Sagué
-is not held here and none of this has been checked against it.** The same pass
-reports a further ⁸⁷Rb D2 data point (Liu *et al.*, 2024/25) with a fitted
-2–4 MHz residual, and flags Hümmer *et al.*, *PRL* **126**, 163601 (2021) as the
-nearest un-applied candidate mechanism. Theory inputs for the position-dependent
-quantities, as printed in Sagué and **not** Crossref-checked: Klimov & Ducloy,
-*PRA* **69**, 013812 (2004) for $\gamma_{\rm free}(r)$; Boustimi *et al.*,
-*PRB* **65**, 155402 (2002) for the van der Waals shift near a cylinder.
+**The second unexplained case is now held, and it is larger than Patterson's
+(2026-07-30).** Liu *et al.*, *Ferromagnetic Traps for Quasi-Continuous
+Operation of Optical Nanofiber Interfaces* (arXiv:2412.20734), fit
+$\tilde\Gamma/2\pi \approx 9.5$–$10.5$ MHz on the ⁸⁷Rb D2 line and say it "is
+substantially larger than one might expect from the $\Gamma = 2\pi \times 6.1$
+MHz natural linewidth of the D2 transition, **even after accounting for the
+ONF-enhanced emission and the surface interactions**" — so an excess of
+**3.4–4.4 MHz that survives the two corrections Sagué used to close his budget**.
+
+Two features make it a sharper data point than Patterson's. Their probe is
+nanosecond, so "the atomic motion is effectively frozen" and the density is
+largely uniform in the near field — the trajectory and desorption complications
+of Patterson's measurement are absent. And they see the excess **without the
+asymmetry**: a Lorentzian profile "broadened but without substantial
+van-der-Waals-shift induced asymmetry", which they call "quite puzzling". That
+is the same combination Patterson has — broadening without the vdW signature —
+and it is what a *distribution of widths* would produce while a distribution of
+*shifts* would not.
+
+Their own attribution differs from the mechanism proposed here: they give
+"strong evidence that the anomalously large linewidth ... is affected by the
+surface quality of ONF and is likely of magnetic origin". **That is a rival
+explanation and must be read properly before either is preferred** — a magnetic
+origin would also be broadly symmetric and would also survive Sagué's
+corrections. Reading their Appendix C is the next step on this thread.
+
+**Where the rest of the thread now stands (superseding the paragraph this
+replaces, which described Sagué, Liu and the two theory inputs as unread
+externally-reported material — all four are now held).**
+[sague2007](sague2007.md) is read: no fitted width parameter, position-dependent
+$\gamma(r)$ to +57% at the surface, budget closed. [liu2024](liu2024.md) is
+read: see above. [klimovducloy2004](klimovducloy2004.md) (analytic
+subwavelength decay rates) and [hummer2021](hummer2021.md) (candidate
+mechanism, fetched but not yet read against this question) are both held.
+Only `boustimi2002` — the van der Waals shift near a cylinder, Sagué's other
+theory input — remains paywalled with no free route found.
 

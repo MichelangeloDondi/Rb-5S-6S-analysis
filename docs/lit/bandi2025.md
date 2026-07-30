@@ -135,16 +135,54 @@ prediction should sit *below* the excess — which it does in five of seven rows
 by factors of 2 to 8. That is the expected direction but says nothing sharp,
 because the missing factor is unconstrained.
 
-Second, and the reason this cannot be pushed further as it stands: **Callejo's
-row is impossible**. A 100 µm waist at 110 °C gives a transit width of 597 kHz
-on its own, against a *total* observed linewidth of 450 kHz — and reading the
-tabulated waist as a diameter makes it worse, not better (1195 kHz). A single
-row where one contribution exceeds the whole measured width means the comparison
-is not like-for-like. The most likely explanation is that "1/e² beam waist"
-is not the same quantity across ten papers pulled into one review table — radius
-versus diameter, waist versus spot size at the cell — rather than a defect in
-the transit formula, which is separately anchored on
-[biraben1979](biraben1979.md) and [lehmann2021](lehmann2021.md).
+Second — **and this was run down to its source on 2026-07-30, with a result that
+indicts the review rather than the formula.** Callejo's row looked impossible: a
+100 µm waist at 110 °C gives 597 kHz of transit on its own, against a *total*
+tabulated linewidth of 450 kHz. Reading the primary
+([callejo2025](callejo2025.md), held) resolves it. Their waist is genuine —
+"the waist of the laser beam (w0 ∼ 100 µm)", focused into a 2 mm × 1.5 mm MEMS
+cavity — but **their measured linewidth is "in the 1.5 - 2.1 MHz range", not
+450 kHz**, and the "25 mm diameter, 70 mm length" cell in this table row is
+their *reference glass-blown* cell, used for comparison, not the microcell.
+The row conflates two cells and reports a width matching neither.
+
+With the primary numbers the row is **consistent**: 597 kHz of transit against
+1170–1770 kHz of excess over the 330 kHz natural width, i.e. transit supplying
+34–51% and the rest going to collisions in a microcell plus laser width.
+`lemke2022` likewise checks out once read at source: w₀ = 2.1(3) mm, stated as
+an **intensity radius (1/e²)**, giving 28 kHz of transit against 220 kHz of
+excess — 13%, as a beam that large should.
+
+**But the waist column is NOT uniform, and a third primary shows it.** A claim
+first written here — that the column is a radius throughout — was wrong, and
+Erickson's thesis (held, `theses/`) says so explicitly: his transit contribution
+is "310 kHz for 230 µm beam **diameter** at 100 °C". Lemke states a radius,
+Erickson states a diameter, both unambiguously, in the same tabulated column.
+**Every row must be taken to its own primary; the column cannot be read as one
+convention.**
+
+**And a second, deeper mismatch that the same line exposes.** At Erickson's
+physical geometry — 230 µm diameter, so $w_0 = 115$ µm — this repository's
+`transit_fwhm_from_w0` gives **513 kHz** against his stated **310 kHz**, a factor
+of 1.65. That is not a waist-convention error; it is a difference in what
+"transit-time broadening" *means*, and the candidates are well known (a 1/e²
+crossing time, a FWHM, the Biraben–Cagnac two-sided-exponential width, a Gaussian
+approximation to it). **Until that is pinned down, no cross-paper transit
+comparison from this table is quotable**, including the two rows above, whose
+apparent agreement may be a coincidence of matched conventions.
+
+Erickson is the most useful row regardless, because he publishes a **complete
+budget** rather than a total: 762 kHz observed (cw), from natural 330 kHz,
+transit 310 kHz, helium collisional 200 kHz at 4 mTorr, Rb collisional 16 kHz,
+Zeeman negligible. That is the only row that can be checked term by term.
+
+**The lesson is about the review, not the physics.** Three primaries read, one
+review row simply wrong, and a column that mixes conventions. Any further use of
+this table should go to the primaries — seven of which are **already held here**:
+[gerginov2018](gerginov2018.md), [callejo2025](callejo2025.md),
+[beard2024](beard2024.md), [poulin2002](poulin2002.md),
+[martin2018](martin2018.md), [erickson2024](erickson2024.md) (thesis) and
+[lemke2022](lemke2022.md) (note pending).
 
 **What would make this worth doing properly**, and it is cheap: take the three or
 four rows whose primary sources are held or obtainable, read the waist

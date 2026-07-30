@@ -405,17 +405,34 @@ any manuscript:
   state pair, different magic condition — but the claim must be phrased as
   5S–6S specifically, and should say why the proximity is expected rather than
   leaving a referee to wonder.
-- **An external test set for M9 exists and has not been used**
+- **An external test set for M9, and it survives contact with the primaries**
   ([bandi2025](lit/bandi2025.md) Table 1). Ten Rb two-photon vapour-cell
   standards, tabulated with signal linewidth, cell temperature **and 1/e² beam
   waist** — the three quantities `transit_fwhm_from_w0` maps between. A first
-  pass is inconclusive: the transit prediction sits below the excess over the
-  ≈330 kHz natural width in five of seven usable rows, as it should given that
-  laser linewidth and self-collisions also contribute, but Callejo's row is
-  impossible (transit alone 597 kHz against a 450 kHz *total*), which says the
-  waist convention is not uniform across a review table. **Reading the waist
-  definition out of three or four primary sources and redoing it would be a real
-  external check on M9, and would put a prior on the open $w_0$.** **[OPEN]**
+  pass looked inconclusive, with Callejo's row apparently impossible (transit
+  alone 597 kHz against a 450 kHz *total*). **Two rows were then run down to
+  their primaries on 2026-07-30 and both check out.**
+  [callejo2025](lit/callejo2025.md): the waist is genuinely ~100 µm, but their
+  measured linewidth is **1.5–2.1 MHz, not the 450 kHz tabulated** — that row
+  conflates the MEMS microcell with the reference glass-blown cell — and against
+  the primary numbers transit supplies 34–51% of the excess over the 330 kHz
+  natural width, as it should. `lemke2022` (now held): w₀ = 2.1(3) mm, stated as
+  an **intensity radius (1/e²)**, giving 13%, as a millimetre beam should.
+  So Callejo's anomaly was a transcription error in the review, not a defect in
+  M9. **But the column is not uniform** — a claim briefly written here that it
+  was a radius throughout is withdrawn: Erickson's thesis states "310 kHz for
+  230 µm beam **diameter**", against Lemke's explicit radius. Worse, at
+  Erickson's geometry our `transit_fwhm_from_w0` gives 513 kHz against his
+  310 kHz, a factor of 1.65 that is a **transit-definition** difference rather
+  than a waist one. **No cross-paper transit number from this table is quotable
+  until that definition is pinned down.**
+  **Seven of the table's primaries are already held** —
+  [gerginov2018](lit/gerginov2018.md), [callejo2025](lit/callejo2025.md),
+  [beard2024](lit/beard2024.md), [poulin2002](lit/poulin2002.md),
+  [martin2018](lit/martin2018.md), [erickson2024](lit/erickson2024.md) (the
+  thesis, held under `PDF_papers/theses/`) and `lemke2022` (held, note
+  pending) — so finishing this is mostly a matter of reading what is on disk
+  rather than fetching anything. **[OPEN]**
 - **No profile-likelihood precedent** in vapour-cell two-photon metrology, and
   **no pre-registration or blind analysis** in atomic spectroscopy of this kind.
 - **No 6S self-broadening coefficient** in a second targeted pass; Zameroski
