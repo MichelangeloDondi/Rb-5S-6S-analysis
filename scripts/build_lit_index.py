@@ -116,9 +116,20 @@ def _parse_frontmatter(text: str) -> dict:
         if rest.strip() == "":  # maybe a block list
             items = []
             i += 1
+            # A block-list item may WRAP over several indented lines. The first
+            # version took only the "- " line and advanced, so every multi-line
+            # verify_flag was exported truncated mid-sentence -- and the loss was
+            # baked into the committed references.bib, where a reader saw half a
+            # caveat and no sign that the rest existed (found 2026-07-30).
             while i < len(lines) and lines[i].lstrip().startswith("- "):
-                items.append(_scalar(lines[i].lstrip()[2:]))
+                parts = [lines[i].lstrip()[2:].rstrip()]
                 i += 1
+                while (i < len(lines) and lines[i].strip()
+                       and not lines[i].lstrip().startswith("- ")
+                       and lines[i][:1].isspace()):
+                    parts.append(lines[i].strip())
+                    i += 1
+                items.append(_scalar(" ".join(parts)))
             out[key] = items
             continue
         out[key] = _scalar(rest)
