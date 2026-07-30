@@ -58,8 +58,37 @@ section: prior-art
 # bruvelis2012
 
 **REPORTED, 2026-07-30.** Bibliographic record from Crossref, which is
-authoritative for the DOI; abstract from the publisher listing. Not held and not
-read in full — APS returns 403 without a subscription.
+authoritative for the DOI; **full abstract supplied by the experimenter from the
+publisher listing the same day**, which confirms the author list and the
+correction below. Not held and not read in full — APS returns 403 without a
+subscription.
+
+**Abstract, verbatim.** "We revisit transit time broadening for one of the
+typical experiment designs in molecular spectroscopy, that of a collimated
+supersonic beam of particles crossing a focused Gaussian laser beam. In
+particular, we consider a Doppler-free arrangement of a collimated supersonic
+beam of Na₂ molecules crossing two counterpropagating laser beams that excite a
+two-photon transition in a three-level ladder scheme. We propose an analytical
+two-level model with a virtual intermediate level to show that the excitation
+line shape is described by a Voigt profile and provide the validity range of this
+model with respect to significant experimental parameters. The model also shows
+that line broadening due to the curvature of laser field wave fronts on the
+particle beam path is exactly compensated by increased transit time of particles
+farther away from the beam axis, such that the broadening is determined solely by
+the size of the laser beam waist. The analytical model is validated by comparing
+it with numerical simulations of density-matrix equations of motion using a split
+propagation technique and with experimental results."
+
+Two things that abstract settles, and one it sharpens. The geometry is
+**Doppler-free, counterpropagating, two-photon through a virtual intermediate
+level** — the same class as this programme's, not merely a general ladder
+result, which strengthens the transfer considerably. And the analytical model is
+validated twice over, against density-matrix numerics (split propagation) *and*
+against experiment, so the exact-compensation claim is not resting on the
+analytics alone. What it sharpens rather than settles is the thing still worth
+reading the paper for: the abstract says a **validity range** is provided but not
+what it is, and whether this programme's geometry sits inside it is exactly the
+question.
 
 **The result this programme needs.** For two-photon excitation in a three-level
 ladder, an analytical two-level treatment with a virtual intermediate level gives
@@ -73,9 +102,21 @@ the size of the beam waist**.
 That is precisely the assumption underneath M9 and the whole
 `w0`-as-dominant-systematic story: the transit contribution is a function of
 $w_0$ alone, and the beam's divergence does not add a second, independent width.
-This repository has been asserting the transit-Voigt form from
-[biraben1979](biraben1979.md) and [lehmann2021](lehmann2021.md); this is the
-paper that says the curvature term cancels rather than being neglected.
+**A correction to how this note first described the transit kernel, because it
+had the repository's own position backwards.** Neither
+[biraben1979](biraben1979.md) nor [lehmann2021](lehmann2021.md) gives a Voigt:
+Biraben, Bassini & Cagnac obtain a *convolution of a Lorentzian and a
+double-exponential* — the cusped kernel — and Lehmann's form is the same family.
+In this repository the **Voigt is the rival**, not the inherited assumption: it
+is the `transit_kind='gaussian'` leg of the M4c/M8 model-form systematic on
+$\beta_{\rm self}$, run precisely so the difference against the two-sided
+exponential can be quoted as an error bar. So Bruvelis reporting a **Voigt**
+excitation profile is not a confirmation of what this repository assumes — it is
+a data point on the side of the rival form, for a different geometry (supersonic
+molecular beam) and a different observable. What transfers cleanly is the
+geometric result below; the lineshape claim needs the full text and a careful
+look at whether their two-level-with-virtual-intermediate reduction is doing the
+Gaussianising.
 
 **Two things to hold onto rather than assume.** The measurement is a collimated
 supersonic beam of **Na₂ molecules**, not a hot alkali vapour — the derivation is

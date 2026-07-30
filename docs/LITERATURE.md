@@ -207,8 +207,11 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    per-block).
 
 NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
-(Wieman 1987 / Stalnaker 2006 own it), or "first extraction of a
-polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45).
+(Wieman 1987 / Stalnaker 2006 own it), "first extraction of a
+polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45), or —
+added 2026-07-30 — **that intensity-inhomogeneity broadening of a two-photon
+alkali line in a hot cell is a new observation** ([lee2010](lit/lee2010.md) owns
+it; see §5.3).
 
 > **The concession stands, and it can be narrowed — but not yet (2026-07-30).**
 > [`wieman1987`](lit/wieman1987.md) now has a note and a full record: *Asymmetric
@@ -293,6 +296,59 @@ any manuscript:
 
 Not exhaustive: Japanese- and Russian-language 6S self-broadening theory was
 not searched.
+
+### 5.3 The nearest analogue experiment, and what it costs claim 1 (2026-07-30)
+
+[lee2010](lit/lee2010.md) — Lee, Chui, Chen, Chang & Tsai, *Opt. Commun.* **283**,
+1788 (2010), held and read — is closer to Paper 1 than anything in §5.1. Not an
+adjacent geometry: **the same experiment**, in Cs. A two-photon $nS \to n'S$
+alkali line in a hot vapour cell, Doppler-free with a retro-reflected beam,
+cascade-fluorescence detection, laser intensity and vapour density scanned as the
+two independent variables, and a lineshape decomposition into a homogeneous part
+and an intensity-dependent part. They attribute the intensity-dependent part
+as one of two candidates — "the laser beam is not a plane wave. Therefore, the
+Gaussian width is possibly obtained from the spatially inhomogeneous of laser
+intensities" — and
+report a light shift of $-7.25(45)$ Hz/(mW/mm²) and a power- and
+pressure-independent Lorentzian of $1.53 \pm 0.08$ MHz. Their hedge is worth
+keeping: they write the Gaussian is "*possibly*" from the intensity
+inhomogeneity, and keep velocity-dependent collisions alive as the alternative.
+
+**What this takes.** The *phenomenon* — that the transverse intensity
+distribution broadens a two-photon alkali line, and that the broadening grows
+with power while the homogeneous part does not — is theirs, sixteen years ago.
+Any wording implying this programme first noticed that is indefensible.
+
+**What survives, and it is the whole of claim 1.** They fit the effect as a
+**Gaussian**: symmetric, $\kappa_3 = 0$, no closed form, no cumulants, and the
+distribution treated as a nuisance parameter to be separated from the natural
+width. The programme's derivation gives $f(s)\propto|s|^{n-1}$ — triangular at
+$n=2$, with intrinsic skew $g_1 = +0.566$ — and a Voigt fit has no third moment
+to put it in. So the claim to defend is **the shape and its cumulants**, never
+the phenomenon. That is narrower than the §5 wording was, and it is the version
+that survives contact with this paper.
+
+**There is a check against their published data, but not the obvious one, and
+this section first stated it wrongly.** The tempting argument — an AC-Stark
+$W_G$ must be *linear in power*, their $W_G$ is not linear through the origin,
+so something is missing — **is invalid**: $W_G$ is the total Gaussian component
+of a Voigt fit, independent Gaussian terms add in quadrature, and so
+$W_G(P)=\sqrt{W_{G0}^2+(aP)^2}$ is non-linear and misses the origin even when
+the AC-Stark part is exactly linear. The correct test is $W_G^2$ against $P^2$,
+whose intercept is the power-independent floor and whose slope carries
+$\Delta\alpha$. Note their floor is *not* the 1 MHz laser bandwidth, which they
+assign to the **Lorentzian**. Even done properly this probes the kernel's
+*width*, not its *shape*; the shape needs residuals they do not publish.
+**Nothing computed. Recorded as OPEN, not as evidence.**
+
+**A caution that points back at us.** Their headline is that the Lorentzian is
+invariant, read as the natural width. If the true intensity kernel is skewed and
+is fitted as Gaussian, the misspecification has to go somewhere, and in a Voigt
+fit that is usually the Lorentzian. Whether their 1.53 MHz bound survives a
+correctly shaped kernel is open — and the same question is the `transit_kind`
+model-form systematic on $\beta_{\rm self}$ (M4c/M8), where this repository
+already differences the two-sided-exponential and Gaussian transit forms for
+exactly this reason.
 
 ## 6. Prior work on THIS line (5S–6S, 993 nm)
 
@@ -506,12 +562,124 @@ lineage** beyond the Holstein/Molisch/Fioretti canon (Kaiser & Passerat de Silan
 [safronova2006](lit/safronova2006.md) and [gomez2005](lit/gomez2005.md); we note
 **no dedicated modern 6S polarizability at 993 nm** — a gap Paper B can flag.
 
+**The Cs validation triangle (intake 2026-07-30).** The Δα sign-and-magnitude
+dispute will not be closed by re-deriving Rb. What *can* be done is to show the
+machinery reproduces a **measured** alkali $nS\to(n{+}1)S$ differential, which
+removes "the code has a global sign or normalisation error" from the table of
+explanations without settling the 993 nm answer itself. Caesium supplies such a
+differential to about half a percent, from two directions:
+
+- [quirk2024](lit/quirk2024.md) — the measurement. $k = 0.72246(29)$ Hz/(V/cm)²
+  at 0.04%, giving $\alpha_{7s} = 6207.9(2.4)$ against
+  $\alpha_{6s} = 401.1(5)$, i.e. $\Delta\alpha({\rm Cs}\ 6s\to7s) = 5807~a_0^3$.
+  Also revises $\tilde\beta = 27.043(36)~a_0^3$. **[FEED]**
+- [iskrenovatchoukova2007](lit/iskrenovatchoukova2007.md) — the first-principles
+  side, all-order SD with evaluated uncertainties: $\alpha_{6s} = 398.4(7)$,
+  $\alpha_{7s} = 6238(41)$, $\alpha_{8s} = 38270(280)~a_0^3$. Its differential
+  $5840~a_0^3$ agrees with Quirk's measured $5807$ to **0.57%**. **[FEED]**
+- `sieradzan2004` — Sieradzan, Havey & Safronova, *PRA* **69**, 022502 (2004),
+  "Combined experimental and theoretical study of the $6p~^2P_j \to 8s~^2S_{1/2}$
+  relative transition matrix elements in atomic Cs" (record confirmed via
+  Crossref 2026-07-30). The experimental check on the $8s$–$6p_j$ matrix
+  elements — 17.78(7) and 24.56(10) $ea_0$ — that feed $\alpha_{8s}$.
+  **Not held**: an attempt to add it on 2026-07-30 did not reach
+  `PDF_papers/`. **[CITE]**
+
+`polarizability.py` must reproduce $\alpha_{7s}$ from Cs matrix elements before
+the Rb 993 nm sign is argued from it. Both anchors are **static**, so neither
+constrains the 993 nm cancellation directly — they validate the machine, not the
+answer.
+
+**The Cs 6S–8S line, which is the closest analogue experiment there is.**
+[lee2010](lit/lee2010.md) (Tsai/Chui, NCKU Tainan) and its sister
+[lee2012](lit/lee2012.md) run a hot-cell, retro-reflected, cascade-detected
+two-photon $nS\to n'S$ alkali line with laser intensity and vapour density as
+independent variables — Paper 1's experiment, in Cs. They measure a light shift
+of $-7.25(45)$ Hz/(mW/mm²) against a theoretical $-6.58$; this repository's
+pinned $\Delta\alpha = 1093.0$ a.u. gives 5.12 Hz/(mW/mm²) on the transition
+axis, the same order, which is a magnitude sanity check and **not** a sign test.
+Their Voigt decomposition separates a power- and pressure-independent Lorentzian
+(1.53 ± 0.08 MHz, an upper bound on the Cs 8S natural width) from a Gaussian that
+**grows with laser power**, which they attribute to "the spatially inhomogeneous
+of laser intensities". **That is our physics fitted with a symmetric shape.**
+§5's novelty wording should therefore concede the *phenomenon* to `lee2010` as it
+concedes asymmetry to `wieman1987`, and claim only the closed-form distribution
+$f(s)\propto|s|^{n-1}$ and its cumulants — a narrower and far more defensible
+claim. Two apparatus lessons transfer directly and belong in any proposal: a
+**second cell at fixed intensity** makes the light shift differential, which is
+exactly the failure mode that forced the M20 retraction; and a **cold finger at
+10 °C under a 65 °C body** decouples vapour density from thermal velocity, the
+degeneracy this campaign's temperature scan has to break by shape. **[CITE]**
+
 **Nanofibre bridge to Paper 2** (Gokhroo/Le Kien/Nic Chormaic lineage):
 [gokhroo2022](lit/gokhroo2022.md) (the ONF two-peak pushing-dip analog),
 `li2024perspective` (*J. Phys. Photonics* **6**,
-021002, the standard ONF review), `sadeghi2026` (ONF cascaded fluorescence,
-power-dependent surface shift, arXiv:2412.01099). The clean cell lineshape is the
-reference against which ONF surface/pushing effects are read.
+021002, the standard ONF review), [sadeghi2026](lit/sadeghi2026.md) (ONF
+delayed-feedback fluorescence, arXiv:2412.01099 — **now held and read**: the ONF
+linewidth is ~16 MHz against a 5.2 MHz natural width, with Γ₀ = 8.44 ± 0.80 MHz
+of non-atomic broadening, and a power-dependent shift of (0.25 ± 0.06) MHz slope
+attributed to surface-shifted atoms being excited preferentially at higher
+drive). The clean cell lineshape is the reference against which ONF
+surface/pushing effects are read.
+
+- [patterson2018](lit/patterson2018.md) — Patterson, Solano, Julienne, Orozco &
+  Rolston, *PRA* **97**, 032509 (2018), "Spectral asymmetry of atoms in the van
+  der Waals potential of an optical nanofiber". Surfaced 2026-07-30 from
+  `sadeghi2026`'s ref [25]; **held and read 2026-07-30**. It stands to Paper 2 as
+  [wieman1987](lit/wieman1987.md) does to Paper 1: cold Rb around a 240 nm
+  nanofibre, where the van der Waals surface potential red-shifts atoms nearer
+  the silica and the transmission spectrum is built as a Lorentzian of
+  position-dependent centre averaged over a density-times-coupling weight — the
+  same shift-distribution convolution this programme uses, with a static surface
+  potential in place of the AC-Stark shift, and the quasistatic assumption stated
+  outright. They quantify the asymmetry as $A = (L-R)/(L+R)$ and, like us and
+  unlike [antypas2018](lit/antypas2018.md), treat it as an information channel
+  rather than a defect. **So the concession §5 makes to `wieman1987` must be made
+  again here, one step closer to home.** What survives it: their shift is
+  *static*, so weight and shift are independent functions sharing a coordinate,
+  whereas an AC-Stark shift **is** the intensity that weights the excitation —
+  which is what yields the closed form $f(s)\propto|s|^{n-1}$ they have no
+  analogue of. And their asymmetry is *non-monotonic* in power, through a thermal
+  bound-state population; an AC-Stark asymmetry rises monotonically with probe
+  power, which is a discriminating signature worth stating in Paper 2. **[CITE]**
+- **The open question it hands us, worth more than the citation.** Patterson
+  measure $\Gamma_0 = 8.1(3)$ MHz — the *total* homogeneous width in their model —
+  and write that they "consistently measure a 2 MHz increase from the natural
+  linewidth which we do not yet understand", after excluding Doppler,
+  collective/superradiant, Purcell, continuum-atom and Zeeman explanations one by
+  one. (The 6.065 MHz Rb D2 natural width is supplied by us; their paper never
+  states it.) Sagué *et al.* (2007) saw 6.2 MHz in Cs against 5.2 natural, i.e.
+  ~1 MHz, likewise unaccounted for. **Two ONF experiments, eleven years apart,
+  ~1–2 MHz of genuinely unexplained width each.**
+  *A third case is a contrast, not a confirmation, and this section first got it
+  wrong.* [sadeghi2026](lit/sadeghi2026.md) fit
+  $W(s_0) = \Gamma\sqrt{s_0+1} + \Gamma_0$ with $\Gamma = 6.45(1.17)$ and
+  $\Gamma_0 = 8.44(80)$ MHz — $\Gamma_0$ there is an **additive excess, not a
+  total width**, so setting it against 5.2 MHz is a category error (at their
+  $s_0 = 0.4$ the formula returns 16.1 MHz, reproducing their quoted ~16 MHz).
+  Their surplus over natural is of order **10 MHz**, four to five times
+  Patterson's, and they *do* attribute it. The near-equality of 8.1 and 8.44 is a
+  coincidence of notation between different quantities.
+  Whether the small unexplained residual and the large attributed one are the
+  same physics at different scales is **OPEN**; this repository has not checked
+  them against a common model. Even narrowed, it is a better premise for Paper 2
+  than measuring one more ONF lineshape. **[OPEN]**
+- [perrella2013](lit/perrella2013.md) — Perrella, Light, Anstie, Stace, Benabid &
+  Luiten, *PRA* **87**, 013818 (2013), two-photon spectroscopy of thermal Rb in a
+  hollow-core photonic-crystal fibre: 10 MHz linewidths resolving 5D₅∕₂ hyperfine
+  structure, with >90% nonlinear absorption observed (and "substantial" absorption
+  maintained to 9 GHz detuning — the abstract's two clauses carry different
+  quantifiers). The high-resolution counterpart to [saha2010](lit/saha2010.md),
+  and the closest thing to an indication of what confinement *costs*: 10 MHz is
+  the right order for a transit-limited **few-micron** guided mode, against
+  **1.19 MHz** for this campaign's free-space $w_0 = 50$ µm. **The penalty is not
+  a constant and this entry first said it was:** transit goes as $1/w_0$, so the
+  repository's own candidate hollow core — the 18 µm Bologna mode field recorded
+  in `saha2010` — gives **3.3 MHz**, a factor of 2.8, not ten. Perrella's mode is
+  several times tighter than the fibre this programme would use. The trade to put
+  in the motivation is therefore *3–10× in width depending on the fibre*, against
+  a $w_0$ that becomes a characterised component property rather than a daily
+  alignment. REPORTED, abstract only. **[CITE]**
 
 **[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)) — the
 nearest-platform result to Paper 2, feeding two of its pillars; NO committed number

@@ -63,7 +63,16 @@ KNOWN_DANGLING = {
     # bevilacqua2012 RETIRED 2026-07-30: a misattribution. PRA 86, 012501
     # (2012) is Bruvelis et al., now docs/lit/bruvelis2012.md. The old key is
     # not aliased, so nothing can cite the wrong author by accident.
-    "nunes2024", "weiss2018", "sadeghi2026", "bjorkholm1976",
+    # sadeghi2026 and quirk2024 left this list 2026-07-30: both fetched from
+    # arXiv, read, and noted. patterson2018 was a must-read surfaced by
+    # sadeghi2026 ref [25] -- PRA 97, 032509 (2018), spectral asymmetry in the
+    # van der Waals potential of an ONF, the direct precedent for Paper 2.
+    "nunes2024", "weiss2018", "bjorkholm1976",
+    # sieradzan2004 (PRA 69, 022502): record confirmed via Crossref 2026-07-30
+    # and cited in LITERATURE.md as the experimental check on the Cs 8s-6pj
+    # matrix elements in iskrenovatchoukova2007. An attempt to add the PDF the
+    # same day did not land, so it has no lit file yet.
+    "sieradzan2004",
 }
 
 # Cited ONLY to forbid citing (malformed / superseded). Must have no lit file.

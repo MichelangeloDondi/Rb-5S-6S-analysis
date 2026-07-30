@@ -51,6 +51,20 @@ generalising and extending this paper. The full text has not been read — PRL
 1987 predates arXiv and APS returns 403 without a subscription. Everything below
 is flagged accordingly, because the novelty delineation depends on it.
 
+**Abstract, verbatim** (supplied by the experimenter from the publisher listing,
+2026-07-30; published 27 April 1987). "We have observed the resonance line shape
+for a very weak atomic transition excited when an atomic beam intersects a strong
+standing-wave laser field. The line shape has a dramatic intensity-dependent
+distortion which is Doppler free and independent of the excitation rate. We have
+calculated the line shape predicted by optical Bloch equations that include a
+spatially varying ac Stark shift, and find good agreement with our experimental
+results."
+
+Note what the abstract does *not* contain, which is why this note stays REPORTED:
+no shift distribution, no moment, no asymmetry coefficient — only that a
+lineshape was calculated from Bloch equations and matched. The three questions at
+the end of this note are exactly the ones the abstract leaves open.
+
 **What it did.** Excited a *very weak* atomic transition — the forbidden
 6S → 7S magnetic-dipole and Stark-induced line in caesium, in the context of the
 JILA parity-violation experiment — where an **atomic beam** crosses an intense
@@ -83,10 +97,12 @@ wave shown *not* to move the mean at all (M19), because the Doppler-free rate
 goes as $I_+I_-$ and is $z$-uniform.
 
 Four further differences worth stating rather than assuming: atomic beam versus
-hot vapour cell; a numerical Bloch treatment (which
-[stalnaker2006](stalnaker2006.md) then generalised) versus a closed form with
-analytic cumulants; a distribution over *position and velocity in a standing
-wave* versus over *transverse intensity*; and — the one that matters for the
+hot vapour cell; an optical-Bloch treatment (which
+[stalnaker2006](stalnaker2006.md) describes only as an "approach" it
+"generalizes and extends", never characterising it as numerical — this note
+originally called it numerical, which no held source supports) versus a closed
+form with analytic cumulants; a distribution over *position and velocity in a
+standing wave* versus over *transverse intensity*; and — the one that matters for the
 programme — the asymmetry treated as a **distortion to be understood and
 removed**, which is explicit in the title of the descendant
 [antypas2018](antypas2018.md), "Lineshape-asymmetry *elimination*", against this
