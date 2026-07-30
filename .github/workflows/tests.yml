@@ -43,7 +43,18 @@ name: tests
 # Coverage is unaffected. The full battery runs locally before every commit
 # (house rule), and the PUBLIC mirror runs the three-way --runslow matrix on
 # every push for free; it is the reference green check.
+# TRIGGERS: every push, and that is the point -- this repo is the reference
+# green check while the private archive's Actions are billing-blocked. On
+# 2026-07-30 the archive was set to workflow_dispatch-only to stop it emailing
+# failures for jobs that never start, and that change PROPAGATED HERE silently:
+# the `on:` blocks were identical in the two repos, so the cherry-pick applied
+# cleanly even though this file is on the sync script's DIVERGENT list. That list
+# predicts conflicts; it does not prevent merges. Guarded now by
+# tests/test_ci_triggers.py.
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 
