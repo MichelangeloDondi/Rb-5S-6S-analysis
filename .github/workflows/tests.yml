@@ -25,11 +25,26 @@
 # here certifies the CODE; dataset integrity is certified in the archive.
 name: tests
 
+# TRIGGERS: manual only, from 2026-07-30.
+#
+# This repository is PRIVATE, so its Actions are billed, and the account's
+# Actions are blocked: every job fails in 2-3 seconds without starting, with
+# "The job was not started because recent account payments have failed or your
+# spending limit needs to be increased". `lint` is `pip install ruff && ruff
+# check` and cannot fail on content, so a 3-second lint failure is proof the job
+# never ran. Nothing here is broken.
+#
+# Pushing therefore produced one red run and one failure email per commit, for
+# CI that cannot execute. The owner has decided not to pay, so the honest
+# configuration is not to schedule work that cannot run: push and pull_request
+# are removed and the workflow is manual only. If the billing state is ever
+# cleared, add them back -- nothing else needs changing.
+#
+# Coverage is unaffected. The full battery runs locally before every commit
+# (house rule), and the PUBLIC mirror runs the three-way --runslow matrix on
+# every push for free; it is the reference green check.
 on:
-  push:
-    branches: [main]
-  pull_request:
-  workflow_dispatch:        # run the full matrix on demand
+  workflow_dispatch:
 
 
 jobs:
