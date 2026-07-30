@@ -18,6 +18,16 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags:
+  - 'CITEKEY NAMES THE CORRESPONDING AUTHOR, NOT THE FIRST (noted
+    2026-07-30). The record here is correct and checked against the held
+    PDF: the paper is Obaze-Adeleke, Semon and Bandi, and T. N. Bandi is
+    the corresponding author, not the first. The key follows how the
+    review is known rather than this repository''s usual first-author
+    convention. Consequence to watch: docs cite it in prose as "Bandi
+    2025", and expanding that to "Bandi et al. (2025)" in a manuscript
+    would be WRONG -- it is "Obaze-Adeleke et al. (2025)". Do not rename
+    the key (it is used in three documents); render the citation from the
+    authors field, not from the key.'
   - 'Quotes Hamilton''s 5S-5D magic wavelength as 778.179(5) nm; Hamilton 2023
     itself says 776.179(5) nm in its abstract and conclusions. Transposition in
     the review -- cite Hamilton directly, not this.'

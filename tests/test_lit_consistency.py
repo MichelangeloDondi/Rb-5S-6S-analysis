@@ -496,3 +496,69 @@ def test_verified_notes_carry_a_verification_date():
     assert not stale, (
         "these notes now HAVE a verified_date -- remove them from "
         f"UNDATED_VERIFIED so the list keeps shrinking: {sorted(stale)}")
+
+
+# Keys that deliberately do NOT name their paper's first author. Each needs a
+# verify_flag in its note saying so, because the mismatch is otherwise
+# indistinguishable from the misattribution that motivated this guard.
+CITEKEY_NOT_FIRST_AUTHOR = {
+    "bandi2025",        # Obaze-Adeleke, Semon & Bandi; key names the corresponding author
+    "steck_rb",         # a data compilation, not an author-year key
+}
+
+
+def test_citekey_matches_its_first_author():
+    """The error this catches actually happened, and would have reached a referee.
+
+    PRA 86, 012501 (2012) was carried for months as `bevilacqua2012`. Volume,
+    page, year and the physics description were all correct; the author was not
+    -- Crossref gives Bruvelis, Ulmanis, Bezuglov, Miculis, Andreeva, Mahrov,
+    Tretyakov and Ekers, with no Bevilacqua among them. The key is marked CITE,
+    so the manuscript would have credited the transit-Voigt result to somebody
+    who did not write it, in a citation nobody could resolve.
+
+    So: a citekey must agree with the first author its own note records. That is
+    a purely internal check -- it cannot tell whether the authors field is right,
+    only whether the key and the field tell the same story -- but the
+    bevilacqua2012 note never existed, and the moment one was written the
+    mismatch would have been visible. Genuine exceptions (a key naming a
+    corresponding author, a data compilation) are allowlisted and must carry a
+    verify_flag explaining themselves, so a silent mismatch cannot hide among
+    them.
+    """
+    import re
+    import unicodedata
+
+    def norm(s):
+        s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+        return re.sub(r"[^a-z]", "", s.lower())
+
+    bad, undocumented = [], []
+    for note in sorted(LIT_DIR.glob("*.md")):
+        fm = bli._parse_frontmatter(note.read_text(encoding="utf-8"))
+        authors = fm.get("authors") or []
+        if not authors:
+            continue
+        surname = norm(str(authors[0]).split(",")[0])
+        prefix = re.sub(r"\d.*$", "", note.stem)
+        agrees = bool(surname and prefix) and (
+            prefix.startswith(surname[:5]) or surname.startswith(prefix[:5]))
+        if agrees:
+            continue
+        if note.stem not in CITEKEY_NOT_FIRST_AUTHOR:
+            bad.append(f"{note.stem}: first author is {authors[0]!r}")
+        else:
+            flags = " ".join(fm.get("verify_flags") or []).upper()
+            if "CITEKEY" not in flags:
+                undocumented.append(note.stem)
+
+    assert not bad, (
+        "citekey disagrees with the note's own first author -- either the key or "
+        "the authors field is wrong, and one of them will reach a referee:\n  "
+        + "\n  ".join(bad)
+        + "\nIf the key deliberately names someone else (a corresponding author, "
+          "a compilation), add it to CITEKEY_NOT_FIRST_AUTHOR *and* put a "
+          "verify_flag in the note saying so.")
+    assert not undocumented, (
+        "these keys are allowlisted as not-first-author but their notes carry no "
+        f"verify_flag explaining it: {sorted(undocumented)}")
