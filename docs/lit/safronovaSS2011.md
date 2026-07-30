@@ -17,7 +17,7 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-17
 summary: >
   The critically-evaluated Rb ns/np/nd matrix elements + scalar/tensor
   static polarizabilities (the S and S 2011 lineage our polarizability

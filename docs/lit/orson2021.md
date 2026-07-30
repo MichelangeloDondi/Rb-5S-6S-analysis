@@ -19,7 +19,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-29
 summary: >
   Source of DELTA\_ALPHA\_AU: they compute alpha\_56=alpha(5S)-alpha(6S)
   =-1093 a.u.

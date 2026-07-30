@@ -22,7 +22,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-29
 summary: >
   The 5S-5D differential-polarizability method Orson followed for our
   5S-6S Delta\_alpha.

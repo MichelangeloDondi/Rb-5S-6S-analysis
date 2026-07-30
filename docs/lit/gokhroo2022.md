@@ -18,7 +18,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-16
 summary: >
   Read in full 2026-07-16: cold ⁸⁷Rb in a MOT around the fibre (NOT a
   warm vapour, as an earlier draft of ours said), driving 5S₁/₂

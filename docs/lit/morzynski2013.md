@@ -27,7 +27,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-13
 summary: >
   5S-7S sibling; DOI Crossref-verified 2026-07-13.
 loci: []

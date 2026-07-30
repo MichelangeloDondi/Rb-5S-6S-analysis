@@ -19,7 +19,7 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-17
 summary: >
   Rb 5S-to-4D two-photon lattice clock.
 loci:

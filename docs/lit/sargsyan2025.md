@@ -16,7 +16,7 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-18
 summary: >
   Extracts the atom-surface red shift (estimates C3) of the Cs 6S-7P line
   from a nanocell selective-reflection lineshape (below 400 nm thickness)

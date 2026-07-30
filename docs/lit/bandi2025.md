@@ -21,7 +21,7 @@ verify_flags:
   - 'Quotes Hamilton''s 5S-5D magic wavelength as 778.179(5) nm; Hamilton 2023
     itself says 776.179(5) nm in its abstract and conclusions. Transposition in
     the review -- cite Hamilton directly, not this.'
-verified_date: null
+verified_date: 2026-07-26
 summary: >
   Landscape/systematics review for the Rb two-photon clock. Names the AC Stark
   shift, the temperature-induced shift and laser drift together as the

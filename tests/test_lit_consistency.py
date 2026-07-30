@@ -425,3 +425,61 @@ def test_verified_status_requires_a_real_bibliographic_record():
         "checked against the paper:\n  " + "\n  ".join(offenders) +
         "\nEither demote to REPORTED, fill the record, or add a verify_flag "
         "naming the gap.")
+
+
+# VERIFIED notes that predate the verified_date convention and carry no date
+# anywhere in the file. Frozen 2026-07-30 so the debt can only SHRINK: a new
+# note cannot join this list, and one that gains a date must leave it.
+# 53 notes were dateless before that pass; 20 had the date sitting in their body
+# prose and were backfilled from it. These 30 have none to recover, so the date
+# has to come from whoever reads the paper next.
+UNDATED_VERIFIED = {
+    "ahern2025", "amy2017", "andeweg2026", "antypas2018", "araujo2021",
+    "ayachitula2024", "bala2026", "baranger1958", "biraben1979",
+    "biraben2019", "borde1976", "chevrollier2012", "fioretti1998",
+    "gerginov2018", "gomez2005", "grimm2000", "hamilton2023",
+    "lehmann2021", "martin2018", "newman2021", "nieddu2019", "poulin2002",
+    "rajasree2020", "rajasree2020spin", "safronova2004", "safronova2006",
+    "sautenkov2026", "snadden1996", "spiegelman2022", "stalnaker2006",
+}
+
+
+def test_verified_notes_carry_a_verification_date():
+    """"VERIFIED means we read the source itself" (LITERATURE.md). A claim to
+    have read something on no stated date is not checkable, and 53 of 72 notes
+    carried exactly that.
+
+    This freezes the debt rather than papering over it. UNDATED_VERIFIED lists
+    the notes whose date could not be recovered from their own body; everything
+    else must carry one. So a NEW note cannot be VERIFIED without a date, and
+    the list can only shrink -- the second assertion fails if a listed note
+    gains a date and is not removed, which is what stops the allowlist
+    outliving its reason.
+    """
+    import re
+
+    missing, stale = [], []
+    for note in sorted((ROOT / "docs" / "lit").glob("*.md")):
+        txt = note.read_text(encoding="utf-8")
+        if not txt.startswith("---"):
+            continue
+        fm = txt.split("---")[1]
+        st = re.search(r"^status:\s*(\S+)", fm, re.M)
+        if not st or st.group(1).strip() != "VERIFIED":
+            continue
+        vd = re.search(r"^verified_date:\s*(\S+)", fm, re.M)
+        dated = bool(vd and vd.group(1).strip() != "null")
+        if dated and note.stem in UNDATED_VERIFIED:
+            stale.append(note.stem)
+        if not dated and note.stem not in UNDATED_VERIFIED:
+            missing.append(note.stem)
+
+    assert not missing, (
+        "VERIFIED with no verified_date, and not on the frozen debt list:\n  "
+        + "\n  ".join(missing)
+        + "\nEither date it, demote it to REPORTED, or -- only if it predates "
+          "the convention and its body carries no date -- add it to "
+          "UNDATED_VERIFIED with a reason.")
+    assert not stale, (
+        "these notes now HAVE a verified_date -- remove them from "
+        f"UNDATED_VERIFIED so the list keeps shrinking: {sorted(stale)}")

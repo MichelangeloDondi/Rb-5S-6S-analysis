@@ -20,7 +20,7 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-18
 summary: >
   Folds the finite thermal (Doppler) velocity distribution into the CP
   selective-reflection lineshape (beyond the infinite-Doppler

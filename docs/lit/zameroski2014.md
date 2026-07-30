@@ -19,7 +19,7 @@ held: true
 status: VERIFIED
 routing: []
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-27
 summary: >
   Measures the Rb 5S->7S self-BROADENING rate, 129 +- 11 kHz/mTorr = 5.39 kHz
   per 1e12 cm^-3 -- the only measured self-broadening rate for an nS state in

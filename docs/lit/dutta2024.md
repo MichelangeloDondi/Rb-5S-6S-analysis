@@ -21,7 +21,7 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags: []
-verified_date: null
+verified_date: 2026-07-18
 summary: >
   Quadrupole/octupole CP corrections when the atomic wavefunction is not
   small vs atom-surface distance, and their imprint on thin-cell /
