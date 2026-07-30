@@ -639,9 +639,16 @@ surface/pushing effects are read.
   *static*, so weight and shift are independent functions sharing a coordinate,
   whereas an AC-Stark shift **is** the intensity that weights the excitation —
   which is what yields the closed form $f(s)\propto|s|^{n-1}$ they have no
-  analogue of. And their asymmetry is *non-monotonic* in power, through a thermal
-  bound-state population; an AC-Stark asymmetry rises monotonically with probe
-  power, which is a discriminating signature worth stating in Paper 2. **[CITE]**
+  analogue of. And their asymmetry is *non-monotonic* in **heating** power — the
+  750 nm desorption beam that warms the fibre, scanned 0–350 µW with the
+  asymmetry peaking at 0.36 near 120 µW — through a thermal bound-state
+  population. **Their probe is held below a tenth of saturation and is never
+  scanned**, so the two knobs must not be run together: this is a
+  *cross-mechanism inference*, not a measured head-to-head. The argument is that
+  a static van der Waals shift is by construction independent of probe intensity,
+  so a monotone rise of asymmetry with **probe** power cannot be the van der
+  Waals mechanism — a discriminating signature for Paper 2 to *measure*, and one
+  nobody has measured yet. **[CITE]**
 - **The open question it hands us, worth more than the citation.** Patterson
   measure $\Gamma_0 = 8.1(3)$ MHz — the *total* homogeneous width in their model —
   and write that they "consistently measure a 2 MHz increase from the natural

@@ -110,7 +110,10 @@ The MOT-only spectrum has FWHM **8.9 ± 0.2 MHz** and "very little asymmetry".
 integrated red and blue of centre (their Eq. 11) — zero for a symmetric line,
 strictly positive here because van der Waals shifts red.
 
-**The power dependence is non-monotonic**, peaking near 120 µW. Their explanation
+**The power dependence is non-monotonic** — in the **heating** beam, the 750 nm
+desorption laser scanned 0–350 µW, peaking near 120 µW. The probe is a separate
+laser held below a tenth of saturation and **never scanned**, so nothing here is
+a probe-power dependence. Their explanation
 is thermal, not spectroscopic: too cold and atoms cannot climb into the high
 bound states, too hot and they are desorbed and fly away, so an intermediate
 nanofibre temperature maximises the bound population. They also note the
@@ -146,12 +149,17 @@ plainly rather than discovered by a referee.
    $f(s) \propto |s|^{n-1}$ with its analytic cumulants. Patterson have no such
    reduction and integrate numerically. This is the sharpest available statement
    of what the closed form is worth.
-2. **Non-monotonic against monotonic.** Their asymmetry rises and falls with
-   *heating* power through a thermal population; an AC-Stark asymmetry grows with
-   *probe* power because the shift itself scales with intensity. That is a
-   **discriminating experimental signature**, and Paper 2 should say so: a
-   monotone rise of asymmetry with probe power cannot be the van der Waals
-   mechanism.
+2. **Two different power knobs, and the discrimination is an inference not a
+   measurement.** Their asymmetry rises and falls with *heating* power through a
+   thermal population; an AC-Stark asymmetry would grow with *probe* power
+   because the shift itself scales with intensity. **Patterson never scan probe
+   power at all**, so the two behaviours have never been put head to head. The
+   argument is structural rather than empirical: a static van der Waals shift is
+   independent of probe intensity by construction, so a monotone rise of
+   asymmetry with probe power cannot be the van der Waals mechanism. That makes
+   it a **discriminating signature for Paper 2 to measure** — not a result to
+   cite. Stating it as though Patterson had measured it would be the same class
+   of error as running their two power axes together.
 3. **One photon, cold atoms.** 5S→5P at 330 µK: $n = 1$, transit time
    irrelevant, no Doppler pedestal. Ours is $n = 2$ in a hot cell where transit
    through $w_0$ is the dominant systematic.
