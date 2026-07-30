@@ -15,6 +15,7 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
+.ruff_cache/
 # no trailing slash: in this repo .venv is a SYMLINK into the private
 # archive checkout, and a directory-only pattern would not match it --
 # `git add -A` staged it once (2026-07-29).

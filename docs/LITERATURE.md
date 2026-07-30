@@ -210,19 +210,41 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    bridge), which Delone have no occasion to consider.
    Stalnaker remains distinct on other axes (numerical, n = 1, fringe-resolved),
    but he is no longer the binding precedent for this claim — Delone is.
-2. **Drift-immune moment method**: the third cumulant carries S₀ and survives a
-   reference too unstable for the centre. **Narrowed 2026-07-30, because
-   [delone1980](lit/delone1980.md) is closer here than Stalnaker.** Delone *do*
-   frame the lineshape as a read-out channel — twice, explicitly: "one can
-   reconstruct the distribution P(F) from this relationship". So "using the
-   lineshape to read the distribution" is theirs. Two things are not: they read
-   the **whole shape**, never a single moment; and their motivation is that P is
-   the unknown of interest, whereas here the moment is chosen **because the
-   centre cannot be trusted** — a response to an unstable frequency reference,
-   which is an experimental problem Delone do not have and precision groups
-   solved the other way (Stalnaker fit full shapes against a good reference;
-   others suppressed the shift). The claim is therefore *the choice of a
-   particular cumulant for drift immunity*, not moment methods in general.
+2. **The asymmetry channel, claimed for SPECIFICITY rather than sensitivity.**
+   Reworded 2026-07-30 twice over: first because
+   [delone1980](lit/delone1980.md) is closer here than Stalnaker, then because
+   "drift-immune" named only half the argument.
+   *What is conceded.* Delone frame the lineshape as a read-out channel —
+   twice, explicitly: "one can reconstruct the distribution P(F) from this
+   relationship". Using a lineshape to read a shift distribution is theirs.
+   *What is claimed, and it is two separate properties.* **(i) Translation
+   immunity:** the ramp's first-order effect is a centroid pull, which a
+   per-scan free centre absorbs, so in a drifted archive the pull is degenerate
+   with the drift; the asymmetry is not a translation and survives. That is the
+   response to an unstable reference — a problem Delone do not have, and one
+   precision groups solved the other way (Stalnaker fit full shapes against a
+   good reference; others suppressed the shift).
+   **(ii) Component specificity, which is the stronger half.** Every other
+   factor in the model core — the natural and collisional Lorentzian, the laser
+   kernel, the transit kernel — is **symmetric by construction**, and a
+   symmetric factor cannot produce asymmetry at any width. The ramp is the only
+   asymmetric factor, so the fitted asymmetry does **not** trade against
+   $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or the
+   transit width — the four-way degeneracy that dominates the width channel.
+   The single remaining exposure is an *asymmetric* misspecification of the
+   core, which is checkable by BIC and the M8 cusp fit. See
+   [THEORY_NOTE](THEORY_NOTE.md) §3.
+   *And the width channel is not a weaker alternative — it is blind.* At 225 mW
+   and $w_0 = 50$ µm the ramp kernel is 0.33 MHz FWHM, which added in
+   quadrature to the observed 5.2 MHz line is **0.010 MHz**, a part in 500. No
+   width measurement reaches this signal at any precision.
+   The same arithmetic settles a loose end in [lee2010](lit/lee2010.md): their
+   power-dependent Gaussian growth of ~1.9 MHz is **4–9× larger** than the ramp
+   their own measured light-shift coefficient can produce, so the intensity
+   inhomogeneity they name — tentatively, "possibly", against velocity-dependent
+   collisions as the alternative — is probably not its dominant cause.
+   PRELIMINARY: the span covers the retro and transition-vs-laser-axis
+   conventions their text leaves open. **[OPEN]**
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
    modest addition to the measured series rather than a headline result. In the archive it is a bound 57–113×
    above expectation; a measurement requires the high-T extension.

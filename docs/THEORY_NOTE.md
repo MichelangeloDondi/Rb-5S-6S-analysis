@@ -147,7 +147,39 @@ skewness divergent never enter. The residual systematic is then
 **core-model-dependence**: the fitted asymmetry depends on the assumed core, and
 a wrong core (Voigt where the truth is Voigt$\otimes$transit-cusp) trades
 against it — but unlike raw-moment window-dependence, that is *checkable*, by
-BIC and the M8 cusp fit. The reference moments the fit encodes,
+BIC and the M8 cusp fit.
+
+**Why the asymmetry is identified while the width is not.** The drift argument
+above is about *translations*: a per-scan free centre absorbs a shift and cannot
+absorb a shape change. A second and independent argument is about *the other
+broadeners*, and it is what makes the fit identifiable at all. The model core is
+a convolution of components that are **symmetric by construction** — the natural
+and collisional Lorentzian, the laser kernel, the transit kernel (two-sided
+exponential or Gaussian, `lineshape.composite_profile`). A symmetric component
+cannot produce asymmetry at any width. The ramp is the *only* asymmetric factor
+in the model, so the fitted asymmetry coefficient does not trade against
+$\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or the transit
+width — the four-way degeneracy that dominates the width channel and that M9
+and M4c spend their effort on. (Stated as symmetry rather than as
+$\kappa_3 = 0$: cumulants are additive under convolution and vanish for
+symmetric factors, but a Lorentzian has no finite third moment, so symmetry is
+the property the fit actually uses. This is the same reason the extraction is a
+model fit rather than a raw-moment computation.)
+
+The exposure that remains is therefore narrow and named: **an asymmetric error
+in the assumed core**, not a mis-estimated symmetric width. That is the
+core-model dependence above, and it is checkable by BIC and the M8 cusp fit,
+which is why those exist.
+
+**And the width channel is not merely worse — it is blind.** At the campaign's
+maximum 225 mW with the $w_0 = 50$ µm prior, `stark_shift_S0_mhz` gives
+$S_0 = 0.587$ MHz, so the ramp kernel is 0.33 MHz FWHM. Added in quadrature to
+the observed 5.2 MHz line that is **0.010 MHz** of extra width — a part in 500,
+far below the width budget's own systematics. No width measurement of any
+precision reaches this signal; the asymmetry channel is not a refinement of the
+width channel but the only channel there is. CALCULATED 2026-07-30.
+
+The reference moments the fit encodes,
 
 $$\text{centroid pull} = -\tfrac{2}{3}S_0,\qquad
 \kappa_3^{\text{ramp}} = +\tfrac{1}{135}S_0^3$$
