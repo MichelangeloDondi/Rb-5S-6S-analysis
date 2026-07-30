@@ -90,6 +90,18 @@ acquired an hour apart — that a follow-up session fixes by interleaving them.
 The full audit trail, including two corrections to its own earlier readings,
 is [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
+> Those two rates — the 0.016 MHz/min drift and the τ = 97 min re-centring —
+> come from a fit that compares peak positions **across saves**, and in 2026-07
+> that comparison was found to be contaminated by the oscilloscope's horizontal
+> position: the exported time axis is referenced to it, the setting moved 58
+> times, and the fit frees only the 19 largest moves
+> ([`run_laser_history.py`](scripts/run_laser_history.py) records the retraction
+> of a headline that turned out to be the knob). Neither rate has been
+> re-derived, and neither is contradicted — measured *inside* a run of unchanged
+> setting, where no correction is needed at all, the two longest stretches give
+> −0.022 and −0.018 MHz/min. Read them as the best available numbers with an
+> unverified derivation ([DATA §2](docs/DATA.md)).
+
 So the archive reports what the *shape* of a line carries — widths, power-law
 scalings, asymmetry — as **bounds, nulls, and consistency checks**, while
 the absolute shifts wait

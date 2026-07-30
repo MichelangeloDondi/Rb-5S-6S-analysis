@@ -275,6 +275,26 @@ the *sampling currencies* — repeats vs blocks vs days vs orders — against th
 measured 2025 failure modes.)
 
 **Tier 0 — the systematic floor (protect first; the single biggest impact, and not a "more data" knob):**
+
+0. **Record the frequency axis in the file — export the ramp monitor.** *Added
+   2026-07-30, and placed first because it is free and because its absence is
+   what cost the archive its centre channel.* The triangle drive was already on
+   scope CH1 ([APPARATUS](APPARATUS.md) §1) and **only CH2 was saved**. Without
+   it the exported time axis is referenced to the horizontal-position setting, so
+   moving that setting re-zeros the axis — which is how a 65 MHz "laser history"
+   turned out to be the knob (`run_laser_history.py`), and why the AC-Stark pull
+   cannot be recovered from the centres even with the setting recorded
+   (`run_stark_centres.py`, M21): the correction that would work is not licensed,
+   because nothing in a single-channel trace fixes the time origin independently
+   of both knob and laser. One extra column removes the ambiguity entirely.
+   Rahaman & Dutta 2022 ([`rahaman2022`](lit/rahaman2022.md)) do exactly this on
+   the sister Cs line — an rf-synthesiser voltage linear in frequency co-recorded
+   with the signal, and results published stratified by scope acquisition mode.
+   Two riders, both free: **do not move the horizontal position mid-session** (or
+   log it — `window_start_ms` is now a qc metric and the setting moved 58 times
+   in 2025), and **do not put the lowest power last in a descending ladder**, where
+   it is at once the most drifted, the lowest-SNR, and the only rung whose sweep
+   retrace re-crosses the line (8 of its 20 archival traces, against 0 of 79).
 1. **Knife-edge + camera beam-profile w₀, per config (§8.1b).** $S_0\propto 1/w_0^2$ and β_self rides on transit($w_0$),
    so w₀ sets the systematic on *every* absolute number (a 10% w₀ error → **20% on Δα**)
    *and* collapses the transit↔σ_laser degeneracy (the only reason σ_laser is a bound).

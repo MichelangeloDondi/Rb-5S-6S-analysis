@@ -210,6 +210,19 @@ NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
 (Wieman 1987 / Stalnaker 2006 own it), or "first extraction of a
 polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45).
 
+> **The Wieman half of that concession is made from a citation, not from the
+> paper (flagged 2026-07-30).** `stalnaker2006` is held and read — the Eq. 45
+> claim above is checked against the text. `wieman1987` is **not held and not
+> read**: it sits in `KNOWN_DANGLING` with no note and no bib entry, and
+> everything this repository says about it comes from secondary description.
+> Conceding priority is the safe direction to be wrong in, so the delineation
+> stands as written and nothing downstream depends on it. But it is the single
+> highest-value gap in the holdings: it is the *only* prior work said to have
+> looked at the asymmetry as such rather than eliminated it, so what it did and
+> did not do sets the boundary of this programme's contribution. Read it before
+> the introduction is written, and either confirm the concession or narrow it.
+> Wieman, Noecker, Masterson & Cooper, *Phys. Rev. Lett.* **58**, 1738 (1987).
+
 ### 5.1 Narrowed again by the adversarial audit (2026-07-26)
 
 An external deep-search audit found **two further precedents, both now read
