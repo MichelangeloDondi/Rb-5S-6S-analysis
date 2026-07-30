@@ -60,11 +60,21 @@ KNOWN_DANGLING = {
     # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
     # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
     "li2024perspective", "yudin2020", "feng2026", "lidou2024",
-    "nunes2024", "weiss2018", "sadeghi2026", "bevilacqua2012", "bjorkholm1976",
+    # bevilacqua2012 RETIRED 2026-07-30: a misattribution. PRA 86, 012501
+    # (2012) is Bruvelis et al., now docs/lit/bruvelis2012.md. The old key is
+    # not aliased, so nothing can cite the wrong author by accident.
+    "nunes2024", "weiss2018", "sadeghi2026", "bjorkholm1976",
 }
 
 # Cited ONLY to forbid citing (malformed / superseded). Must have no lit file.
-QUARANTINE = {"drago2026"}
+QUARANTINE = {
+    "drago2026",
+    # bevilacqua2012: a MISATTRIBUTION, not a bad paper. PRA 86, 012501 (2012)
+    # is Bruvelis et al. (docs/lit/bruvelis2012.md); there is no Bevilacqua
+    # among the authors. The key is quarantined rather than aliased so that
+    # the only place it may appear is the correction that retires it.
+    "bevilacqua2012",
+}
 
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
 INTENTIONAL_PREFIX_PAIRS = {("rajasree2020", "rajasree2020spin"),

@@ -456,9 +456,16 @@ into a reference-free estimator:
   (treated as a distortion). **[CITE]**
 - [antypas2018](lit/antypas2018.md) — the AC-Stark-asymmetry elimination
   precedent (Yb) our method inverts. **[CITE]**
-- **`bevilacqua2012`** — *PRA* **86**, 012501 (2012): Gaussian-beam transit-time
-  two-photon gives a Voigt whose width is set solely by w₀ (curvature broadening
-  cancels transit) — directly supports our w₀-as-dominant-systematic story. **[CITE]**
+- [`bruvelis2012`](lit/bruvelis2012.md) — Bruvelis, Ulmanis, Bezuglov, Miculis,
+  Andreeva, Mahrov, Tretyakov & Ekers, *PRA* **86**, 012501 (2012): two-photon
+  excitation in a three-level ladder gives a Voigt whose width is set **solely by
+  w₀**, because wavefront-curvature broadening is *exactly compensated* by the
+  longer transit of particles farther off axis — directly supports our
+  w₀-as-dominant-systematic story. **[CITE]**
+  *Corrected 2026-07-30: carried here as `bevilacqua2012` until then. Volume,
+  page, year and physics were right; there is no Bevilacqua among the authors.
+  Note also that the validation is a supersonic **Na₂ molecular beam**, not a
+  vapour cell — the transfer is geometric.*
 
 **The 778 nm 5S→5D clock frontier (the competition — all *active* AC-Stark
 suppression; our passive method is the differentiator).** [FEED/CITE for §VI.D/§VII
