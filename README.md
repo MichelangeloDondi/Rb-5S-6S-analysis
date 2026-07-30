@@ -99,8 +99,12 @@ is [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 > of a headline that turned out to be the knob). Neither rate has been
 > re-derived, and neither is contradicted — measured *inside* a run of unchanged
 > setting, where no correction is needed at all, the two longest stretches give
-> −0.022 and −0.018 MHz/min. Read them as the best available numbers with an
-> unverified derivation ([DATA §2](docs/DATA.md)).
+> −0.022 and −0.018 MHz/min. Recomputed in the other frame, two of the three
+> estimators for the settled rate change sign, so neither number is a measured
+> rate: what the archive supports is a **bound of order 0.02 MHz/min (laser
+> axis), sign undetermined** — which is all the shape-based argument needs, since
+> it turns on the rate being small rather than on its value
+> ([DATA §2](docs/DATA.md)).
 
 So the archive reports what the *shape* of a line carries — widths, power-law
 scalings, asymmetry — as **bounds, nulls, and consistency checks**, while

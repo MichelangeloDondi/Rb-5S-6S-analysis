@@ -65,7 +65,44 @@ question D0 asked: every epoch probed sits far inside the 4 MHz/min envelope.
 Requires the timestamp backup (quarantine copy). Without it this script -- like
 the audit -- has no clock, and exits cleanly saying so.
 
-Outputs: stdout only (a diagnostic of archival data, not a new result).
+Outputs: stdout only (a diagnostic of archival data, not a new result
+FRAME EXPOSURE, MEASURED AND UNRESOLVED (2026-07-30). This module never reads
+window_start_ms, and the exported time axis is referenced to it. Its ">100 ms
+repositioning" rule is a rule on the POSITION SERIES, not on the recorded
+setting: of the 22 setting changes among the 99 traces the state space sees, it
+frees 2, absorbs 13 into sigma_gap as if they were laser motion, and leaves 9
+within-block moves with no channel at all.
+
+Across the 16 adjacent-block steps: RMS d(peak_pos) = 145.2 ms, RMS d(window)
+= 145.9 ms, RMS d(peak_pos - window) = 6.3 ms. 99.8% of the between-block
+variance fitted here as intervention is the horizontal setting. The five blocks
+this script screens out as "step-like" are exactly, one for one, the five whose
+setting changes mid-block.
+
+Recomputing every estimator in both frames (scratch analysis, not shipped):
+what survives is the WITHIN-block drift bounds -- frame-invariant by
+construction, since a constant offset does not change a slope -- their agreement
+with the photographed +-0.19 MHz/min, the null on drift settling (dAIC +4 in
+every cell), the >=125x margin on the 4 MHz/min envelope, the identification of
+the two 4207 excursions as window travel, and the T-epoch step sizes, which grow
+under subtraction and so are not knob artifacts. What flips: the sign of the
+settled drift in two of three estimators, the 2x2 winner, the intervention
+settling verdict (dAIC +17.1 -> -2.9), sigma_gap (88 -> 3 ms), and addendum 12's
+re-kick model, which loses to its own per-epoch level control.
+
+NEITHER FRAME IS LICENSED. Subtracting the setting is right if the knob merely
+relabels the axis and wrong if the operator moved it to follow a drifted line;
+the licensing regression (1.005 over 15 moves) has 99.5% of its leverage on two
+moves above 800 ms, while the 13 moves the dispute concerns give 1.06 [0.75,
+1.19]. Both readings predict a ratio of 1 to ~0.002 against 11.5 ms of scatter,
+so the test has no power. The fix is hardware and is now Tier-0 item 0 in
+PLAN 8.0: export the ramp monitor, which was already on scope CH1.
+
+Until then the addenda quote bands, not numbers -- see the standing frame caveat
+at the head of addendum 4 in PREREGISTRATION_RESULTS.md. This script is left
+computing the raw-frame values it always computed, because half of a band is
+still one end of it, and because rewriting it to privilege the other frame would
+assert exactly the thing that is not established.
 """
 
 from __future__ import annotations

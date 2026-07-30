@@ -117,8 +117,19 @@ them by ~1 s — larger than the trace window, so the axis offset itself moved.
 > longest knob-untouched segments give −0.022 and −0.018 MHz/min, bracketing the
 > quoted value. The shorter segments (3–6 min) scatter to ±1.5 MHz/min, which is
 > what a 0.27 MHz per-trace scatter produces over such baselines; the archive
-> simply has no long intervention-free stretch. Treat 0.016 MHz/min as the best
-> available number with an unverified derivation, not as measured.
+> simply has no long intervention-free stretch.
+>
+> *Sharpened 2026-07-30, after recomputing the whole fit in both frames.* Across
+> the 16 adjacent-block steps of the power session, RMS Δ(peak position) is
+> 145.2 ms while RMS Δ(window setting) is 145.9 ms and RMS Δ(difference) is
+> 6.3 ms: **99.8% of the between-block excursion the fit reads as re-centring is
+> the horizontal setting.** Recomputed in the other frame, two of the three
+> estimators for the settled drift **change sign** (+0.55 ± 0.17 → −0.28 ± 0.16).
+> So 0.016 MHz/min is not a measured rate in either direction. The defensible
+> statement is a **bound of order 0.02 MHz/min on the laser axis, sign
+> undetermined** — which is all the drift-immune argument ever needed, since it
+> turns on the rate being small, not on its value or its sign. Full four-way
+> table in [PREREGISTRATION_RESULTS](PREREGISTRATION_RESULTS.md), addendum 4.
 Within the scatter-like blocks the variation shows no trend with repeat index
 ($p=0.33$), so it is laser **jitter**, not accumulated drift
 (`scripts/run_intrablock_trend.py`;

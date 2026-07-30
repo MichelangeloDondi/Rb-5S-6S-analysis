@@ -470,6 +470,75 @@ The archive alone had no clock to difference against;
 The recovered timestamps restore the lever. (`scripts/run_drift_settling.py`,
 stdout-only, skips cleanly where the backup is absent.)
 
+> ### Frame caveat, standing — applies to addenda 4, 5, 6 and 12 (2026-07-30)
+>
+> Every position in these addenda is `peak_pos_ms`, and the exported
+> InfiniiVision time axis is **window-referenced**: moving the scope's horizontal
+> position re-zeros it. That setting is now a per-trace qc metric
+> (`window_start_ms`); it changed 58 times across the campaign, and
+> `run_drift_settling.py` never reads it. Its ">100 ms repositioning" rule is a
+> rule on the *position series*, not on the setting: of the 22 recorded moves
+> among the 99 traces the state space sees, it frees **2**, absorbs 13 into
+> σ_gap as if they were laser motion, and gives the remaining 9 within-block
+> moves no channel at all.
+>
+> The scale of the exposure, measured: across the 16 adjacent-block steps of the
+> power session, RMS Δ(peak position) = **145.2 ms** while RMS Δ(window setting)
+> = **145.9 ms** and RMS Δ(difference) = **6.3 ms**. Thirteen of the sixteen gaps
+> carry a knob move. So **99.8% of the between-block variance these addenda model
+> as "intervention" is the horizontal setting.** And the five "step-like" blocks
+> of the table below are *exactly*, one for one, the five blocks whose window
+> setting changes mid-block — set equality, no exceptions.
+>
+> **Two readings are admissible and this archive cannot choose between them.** If
+> the knob merely relabels the axis, then `rel = peak_pos_ms − window_start_ms`
+> is the physical position and the raw-frame numbers are artifacts. If the
+> operator moved the knob to follow a line that had moved, `rel` is drift-scrubbed
+> by construction and the rel-frame numbers are nulls guaranteed by the
+> estimator. The licensing statistic — Δ(position)/Δ(window) = 1.005 over 15
+> within-block moves — does not decide it: 99.5% of its leverage is two moves
+> larger than 800 ms, and the 13 small moves that the dispute actually concerns
+> (median 16 ms) give 1.06 with a 95% interval of [0.75, 1.19], which contains
+> the alternative. Both readings predict a ratio of 1 to within ~0.002, against a
+> per-move scatter of 11.5 ms. The test has no power. Nothing decides it because
+> the triangle ramp was on scope **CH1 and only CH2 was exported** — the omission
+> now recorded as Tier-0 item 0 in [PLAN](PLAN.md) §8.0.
+>
+> **Therefore: no quantity below that depends on a between-block position
+> difference is a single number.** Each is a band spanned by the two frames.
+> Recomputed both ways (and again excluding the 10 blocks whose setting changes
+> mid-block, which changes little because neighbouring blocks still differ):
+>
+> | quantity | raw frame | rel frame | status |
+> |---|---|---|---|
+> | within-block drift, early / late | −2.3 ± 1.1 / +1.2 ± 0.7 | −2.8 ± 0.7 / +1.2 ± 0.7 | **survives** — frame-invariant |
+> | bound \|r\| at every epoch | < 4 ms/min | < 4 ms/min | **survives** |
+> | step-like blocks, early vs late | 4/10 vs 1/10 | 1/10 vs 1/10 | **withdrawn** |
+> | hour-1 apparent rate, max | 9.15 ms/min | 4.05 ms/min | band |
+> | settling τ (joint fit) | 73 min, ΔAIC +196 | ~2 min, ΔAIC +22 | **unidentifiable** |
+> | settled floor, pair median | +0.50 ± 0.60 | −0.28 ± 0.41 | **sign flips** |
+> | settled floor, tight cluster | +0.55 ± 0.17 | −0.28 ± 0.16 | **sign flips** |
+> | state-space drift c | +0.74 [+0.54, +0.94] | +0.24 [+0.14, +0.34] | band −0.03 … +0.74 |
+> | mixture drift c | +0.38 [+0.17, +0.59] | +0.00 [−0.21, +0.21] | **straddles zero** |
+> | intervention settling | ΔAIC +17.1 (exp wins) | ΔAIC −2.9 (const wins) | **flips** |
+> | σ_gap amplitude | 88 ms | 2.9 ms | factor 30 |
+> | re-kick B, τ | 103 ms, 97 min | level control wins | **flips** |
+>
+> What survives all four cells: the within-block bounds and their agreement with
+> the photographed ±0.19 MHz/min cavity-locked figure; that adding drift settling
+> buys nothing (ΔAIC +4.0 everywhere); the ≥125× margin against the 4 MHz/min
+> envelope, stated as a bound; the identification of the two 4207 nm excursions
+> as window travel rather than frequency; that a session-wide clock is the wrong
+> clock for the disturbance (+10 to +17 AIC everywhere); and the T-epoch
+> per-dwell step sizes, which get *larger* under subtraction and so are not knob
+> artifacts.
+>
+> **The headline drift rate is the main casualty.** "+0.016 [+0.007, +0.025]
+> MHz/min", and the claim at the end of this addendum that the settled floor is
+> "a detection, not a bound … positive in every one", do not survive: two of the
+> three estimators change sign. The honest statement is a **bound of order
+> 0.02 MHz/min on the laser axis with the sign undetermined.**
+
 Two differencing baselines exist in the power session, and they disagree —
 the disagreement is what identifies the interventions:
 
