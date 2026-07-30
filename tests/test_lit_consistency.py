@@ -56,7 +56,10 @@ _spec.loader.exec_module(bli)
 # Cited in LITERATURE.md with inline bib details but no PDF and no lit file yet
 # (reported, not held). Allowed to dangle; promote to a lit file when a PDF lands.
 KNOWN_DANGLING = {
-    "li2024perspective", "wieman1987", "yudin2020", "feng2026", "lidou2024",
+    # wieman1987 left this list 2026-07-30: it now has a note at REPORTED with a
+    # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
+    # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
+    "li2024perspective", "yudin2020", "feng2026", "lidou2024",
     "nunes2024", "weiss2018", "sadeghi2026", "bevilacqua2012", "bjorkholm1976",
 }
 

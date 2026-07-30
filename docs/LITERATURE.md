@@ -210,18 +210,37 @@ NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
 (Wieman 1987 / Stalnaker 2006 own it), or "first extraction of a
 polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45).
 
-> **The Wieman half of that concession is made from a citation, not from the
-> paper (flagged 2026-07-30).** `stalnaker2006` is held and read — the Eq. 45
-> claim above is checked against the text. `wieman1987` is **not held and not
-> read**: it sits in `KNOWN_DANGLING` with no note and no bib entry, and
-> everything this repository says about it comes from secondary description.
-> Conceding priority is the safe direction to be wrong in, so the delineation
-> stands as written and nothing downstream depends on it. But it is the single
-> highest-value gap in the holdings: it is the *only* prior work said to have
-> looked at the asymmetry as such rather than eliminated it, so what it did and
-> did not do sets the boundary of this programme's contribution. Read it before
-> the introduction is written, and either confirm the concession or narrow it.
-> Wieman, Noecker, Masterson & Cooper, *Phys. Rev. Lett.* **58**, 1738 (1987).
+> **The concession stands, and it can be narrowed — but not yet (2026-07-30).**
+> [`wieman1987`](lit/wieman1987.md) now has a note and a full record: *Asymmetric
+> line shapes for weak transitions in strong standing-wave fields*, Wieman,
+> Noecker, Masterson & Cooper, *Phys. Rev. Lett.* **58**, 1738 (1987),
+> doi:10.1103/PhysRevLett.58.1738. It is **REPORTED, not VERIFIED**: the abstract
+> and the record were read from the publisher, and the physics from the
+> introduction of [`stalnaker2006`](lit/stalnaker2006.md) — held, read, and
+> self-described as generalising it — but the paper itself is 1987, predates
+> arXiv, and APS returns 403 without a subscription.
+>
+> What that establishes: they excited the **forbidden 6S → 7S M1 and
+> Stark-induced** line in Cs where an atomic beam crosses an intense **standing
+> wave**, whose spatial variation makes the shift position- *and*
+> velocity-dependent, and modelled the resulting Doppler-free distortion with
+> optical Bloch equations. So the general concession is correct and nothing here
+> is first at "asymmetry from a distributed AC-Stark shift".
+>
+> What it also shows is that the *mechanism* is not the same one. Theirs is a
+> **one-photon** rate, and [THEORY_NOTE](THEORY_NOTE.md) §2 gives
+> $f(s)\propto|s|^{n-1}$, so $n=1$ — the case it already names as "a
+> Stark-induced forbidden line" — is the **uniform** distribution with
+> $\kappa_3 = 0$, exactly zero skew. The triangular ramp and its $+0.566$ cannot
+> be Wieman's effect; theirs is the standing wave's node structure crossed with
+> velocity, ours the $I^2$ weighting over a transverse Gaussian, with the
+> standing wave shown not to move the mean at all (M19).
+>
+> The delineation is therefore left **conceded in general and narrowed in the
+> note, not here** — narrowing a priority claim on a paper nobody has read is the
+> error this repository has spent the week correcting. Read the full text before
+> Paper 1's introduction; the three things to check are listed at the end of the
+> note.
 
 ### 5.1 Narrowed again by the adversarial audit (2026-07-26)
 
