@@ -249,8 +249,7 @@ documented draw of the whole class ([Martin 2018](lit/martin2018.md);
 [Newman 2021](lit/newman2021.md)).
 
 993 nm 5S→6S shares that structure. It does **not** share the linewidth
-advantage, and the honest comparison should be stated plainly rather than
-implied away: the 6S₁/₂ upper state lives 45.57 ns
+advantage: the 6S₁/₂ upper state lives 45.57 ns
 ([Gomez 2005](lit/gomez2005.md)), giving the 3.49 MHz natural width every fit
 here carries, whereas 5D₅/₂ is far longer-lived: [Bandi 2025](lit/bandi2025.md)
 quotes the 5S→5D two-photon working linewidth as **≈330 kHz**, about an order of

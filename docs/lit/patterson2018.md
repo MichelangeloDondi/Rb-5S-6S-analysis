@@ -218,3 +218,74 @@ the campaign lines would put a number in the same units as a published one.
 Deliberately **not** done yet: it is a new statistic on data whose absolute
 frame is still `BOUND` on the open $w_0$, and it should be pre-registered before
 it is computed, not added to a results table after the fact.
+
+## A candidate mechanism for their unexplained width, and a cheap test of it
+
+**Status: the structural facts below are VERIFIED here against the held PDF; the
+mechanism built on them is a HYPOTHESIS, and the supporting Sagué reading is
+REPORTED (that paper is not held).** Surfaced 2026-07-30 by an external
+literature pass and checked in the equations rather than taken on trust.
+
+**What the paper's own equations say.** Their fitting model, Eq. (10), is
+
+$$P_{\rm abs}(\omega) = O - I_0 \int [\alpha(r)(\rho(r,T_{\rm MOT}) + u_0 r^{-3/2}) \times p_{\rm abs}(r, \omega-\omega_0, \Gamma_0)]~r~{\rm d}r$$
+
+Every position dependence lives in $\alpha(r)$, $\rho(r)$ and
+$\delta_{\rm vdW}(r)$. **$\Gamma_0$ is a scalar** — it enters $p_{\rm abs}$
+(Eq. 8) as a constant in the Lorentzian denominator, identical for every atom.
+Meanwhile their Eq. (3) defines $\alpha(r) = \Gamma_{\rm 1D}(r)/\Gamma_0$: a
+**position-dependent decay-rate enhancement**, which they use as the detection
+weight.
+
+**The hypothesis.** The same $\Gamma_{\rm 1D}(r)$ that scales an atom's *signal*
+also contributes to its *homogeneous width*, so the ensemble has a distribution
+of linewidths rather than a linewidth. Fitting a single scalar $\Gamma_0$ to a
+superposition of Lorentzians of differing widths returns something too broad, and
+the result stays near-Lorentzian, so the misspecification does not announce
+itself. It is symmetric, and independent of density, temperature and magnetic
+field — which is why it survives every exclusion on their list.
+
+**Why their Purcell exclusion does not cover it.** Their ~10% figure is a
+**mean** enhancement. This is about the **variance** across the
+$\alpha$-weighted distribution, and the two are not the same quantity. Worse for
+the mean argument: $\alpha(r)$ decays with distance, so the signal is weighted
+toward exactly the near-surface atoms with the largest enhancement — their
+Fig. 1(c) shows the weighted distribution peaking close in. Weight and
+enhancement are positively correlated in $r$, so a scalar fit is **pulled up**,
+not merely smeared.
+
+**Weak corroboration in their own Table I, stated as weak.** From 0 to 120 µW,
+$u_0$ goes $0 \to 7182$ (more atoms near the surface) while $\Gamma_0$ rises
+$8.1 \to 9.2$ MHz — the predicted direction. But the 350 µW row breaks it
+($u_0 = 0.11$, $\Gamma_0 = 9.5 \pm 2.4$), and with three usable points and those
+error bars this is suggestive at best.
+
+**A caution about the canonical 8.1 ± 0.3 itself.** It comes from the 0 µW row,
+which is also the row whose $\omega_0/2\pi = 5.9 \pm 0.2$ MHz sits five-fold
+above the other four (0.7, 1.0, 0.9, 0.8) — an outlier in the parameter that
+trades most directly against line position. They report checking $\Gamma_0$
+against $T_{\rm MOT}$ for covariance, but not against $\omega_0$. **Verified
+here in Table I.** Any use of the 2 MHz excess should carry this.
+
+**The falsification test, which is cheap.** Refit their published spectra with
+$\Gamma(r) = \Gamma_0[1 + \alpha(r) + \text{free-space modification}]$ inside
+$p_{\rm abs}$. If the fitted $\Gamma_0$ falls toward 6.065 MHz, the residual is
+explained; if it does not, the most plausible candidate is dead. **Publishable
+either way, and not attempted here.**
+
+**The REPORTED half, which needs the source before it is used.** An external
+literature pass reports that Sagué *et al.* (2007) explain their own excess as
+van der Waals shift plus modified spontaneous emission, with a
+**position-dependent** decay rate $\gamma(r)$ running to **+57% at the surface**,
+and — decisively — that their model carries **no fitted width parameter at all**,
+so their 6.2 MHz is an *output*, not a residual. If that holds, Sagué is not a
+second instance of an unexplained excess and should leave the table; the question
+sharpens to "what does Patterson's model contain that Sagué's does not". **Sagué
+is not held here and none of this has been checked against it.** The same pass
+reports a further ⁸⁷Rb D2 data point (Liu *et al.*, 2024/25) with a fitted
+2–4 MHz residual, and flags Hümmer *et al.*, *PRL* **126**, 163601 (2021) as the
+nearest un-applied candidate mechanism. Theory inputs for the position-dependent
+quantities, as printed in Sagué and **not** Crossref-checked: Klimov & Ducloy,
+*PRA* **69**, 013812 (2004) for $\gamma_{\rm free}(r)$; Boustimi *et al.*,
+*PRB* **65**, 155402 (2002) for the van der Waals shift near a cylinder.
+

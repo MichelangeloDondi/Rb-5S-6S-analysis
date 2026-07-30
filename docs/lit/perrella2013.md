@@ -45,9 +45,14 @@ summary: >
   detuning range. The high-resolution counterpart to saha2010 in the same
   geometry, and the closest published indication of what confinement COSTS in
   linewidth: 10 MHz is the right order for a transit-limited FEW-MICRON guided
-  mode by this repository's own transit formula. Note that the repository's own
-  candidate hollow core (the 18 um Bologna mode field) is much larger and would
-  give only ~3.3 MHz, so Perrella's figure is NOT a generic hollow-core cost.
+  mode by this repository's own transit formula. The published hollow cores in
+  this lineage are TIGHTER still -- Saha's own is a 6 um Crystal Fiber AIR-6-800
+  (~28 MHz) and Slepkov's stated 1e-7 cm^2 area is ~1.8 um (~33 MHz) -- so
+  Perrella's 10 MHz is if anything better than those geometries predict, and the
+  realistic penalty against free space is 15-30x for THOSE fibres. The 18 um
+  mode field this note previously credited to saha2010 appears in NO held paper:
+  it is the experimenter's own CRYST3 apparatus at Bologna, gives ~3.3 MHz, and
+  is an UNSOURCED apparatus fact needing confirmation (radius or diameter?).
 loci:
   - M9
   - P2
@@ -101,16 +106,41 @@ a hollow core at 780 nm — so the reported linewidth is *consistent with* being
 transit-limited by the guided mode, against this campaign's **1.19 MHz** at the
 free-space $w_0 = 50$ µm prior.
 
-**But this is not a generic hollow-core cost, and this note first claimed it
-was.** The scaling is $1/w_0$, so the penalty is entirely a matter of which fibre.
-This repository's own candidate — the **18 µm mode field** recorded in
-[saha2010](saha2010.md) for the Bologna fibre, and the ~18 µm CRYST3 figure in
-[slepkov2010](slepkov2010.md) — gives **3.3 MHz** on the same formula, a factor
-of 2.8 above free space rather than the "factor of ten" first written here.
-Perrella's 10 MHz implies a mode several times tighter than the fibre this
-programme would actually use. The honest ledger entry is therefore: *hollow-core
-confinement costs transit width in inverse proportion to the mode radius, between
-about 3× and 10× depending on the fibre* — not a single number.
+**The penalty depends entirely on which fibre, and this note has now been wrong
+about it in both directions.** The scaling is $1/w_0$. A first version called it a
+flat "factor of ten"; a correction then put the repository's own candidate at
+3.3 MHz — a factor of 2.8 — on the strength of an **18 µm mode field** attributed
+to [saha2010](saha2010.md) and [slepkov2010](slepkov2010.md). **Both attributions
+were wrong** (checked 2026-07-30): neither paper contains an 18 µm figure, and
+that number is an apparatus value for a *prospective* collaboration supplied by
+the experimenter, not a literature quantity.
+
+The hollow cores actually in this literature are much tighter, and the penalty is
+correspondingly much worse (CALCULATED at 100 °C with the repo's own function):
+
+| fibre, as published | mode radius | transit FWHM |
+|---|---|---|
+| Saha's Crystal Fiber AIR-6-800, **6 µm core** | ~2.1 µm | **28 MHz** |
+| Slepkov's stated area $10^{-7}$ cm² | ~1.8 µm | **33 MHz** |
+| a 10 µm core (Slepkov's acetylene citation) | ~3.5 µm | **17 MHz** |
+| free-space campaign prior | 50 µm | 1.2 MHz |
+| *prospective* 18 µm mode field (experimenter, not literature) | 18 µm | *3.3 MHz* |
+
+So Perrella's 10 MHz is, if anything, **better than the published hollow-core
+geometries would predict** — it implies a looser mode than Saha's or Slepkov's,
+and the penalty across *that literature* is roughly **15–30×**, not 3× and not
+10×.
+
+**But the relevant fibre is not one of theirs.** The experimenter's own CRYST³
+hollow core (EU H2020 GA 964531, the Bologna apparatus behind their doctoral
+work) is quoted at an 18 µm mode field, which gives **3.3 MHz** — a factor of
+2.8. So there are two different statements and they must not be run together:
+*published* hollow cores in the Rb two-photon literature are tight and cost
+15–30×; *this programme's* fibre is much larger and costs about 3×. Perrella
+sits between them. **The 18 µm itself is an apparatus fact with no source in
+this repository** and needs confirming by the experimenter, including whether it
+is a radius or a diameter — as a radius it gives 3.3 MHz, as a diameter
+6.6 MHz.
 
 *And the whole comparison is an inference.* The core diameter is not in the
 abstract, the vapour temperature in the fibre is not either, and 10 MHz may

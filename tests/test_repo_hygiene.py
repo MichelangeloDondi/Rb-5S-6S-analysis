@@ -107,8 +107,18 @@ FORBIDDEN = {
     ],
     "aphoristic register": [
         r"is itself an?\b", r"is itself the\b",
-        r"a test passed, not a tuning", r"the honest headline",
-        r"the honest through-line", r"not a hedge but",
+        r"a test passed, not a tuning",
+        # Generalizes what were two exact strings ("the honest headline", "the
+        # honest through-line") after a same-day audit found the register
+        # recurring as "the honest reading/comparison/statement/case/summary/
+        # weak point/end state" across docs/BIG_PICTURE.md,
+        # docs/THEORY_NOTE.md, docs/PREREGISTRATION_RESULTS.md,
+        # docs/PREREGISTRATION_timestamps.md and docs/lit/*.md (2026-07-30).
+        # Matching just "the honest <word>" catches all of these, including
+        # hyphenated tails like "through-line", since re.search only needs
+        # the pattern present as a substring.
+        r"the honest \w+",
+        r"not a hedge but",
         r"cannot be scooped", r"not a failed measurement",
         r"laundered into", r"not a hunch", r"selling point",
         r"price of admission", r"self-certifies",

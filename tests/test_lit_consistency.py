@@ -73,6 +73,10 @@ KNOWN_DANGLING = {
     # matrix elements in iskrenovatchoukova2007. An attempt to add the PDF the
     # same day did not land, so it has no lit file yet.
     "sieradzan2004",
+    # boustimi2002 (PRB 65, 155402): the van der Waals shift near a cylinder,
+    # sague2007's ref [15] and the second theory input the Patterson refit needs.
+    # Not on arXiv (checked 2026-07-30 by author search); APS paywalled.
+    "boustimi2002",
 }
 
 # Cited ONLY to forbid citing (malformed / superseded). Must have no lit file.

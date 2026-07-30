@@ -403,8 +403,7 @@ check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 > 5S line, so every term is positive (D2 $+533$, D1 $+290$, rest $<+2$). No
 > matrix-element revision can make it negative.
 >
-> $\alpha_{6S}(993)=-312$ a.u. is a **partial cancellation**, and this is the
-> honest weak point:
+> $\alpha_{6S}(993)=-312$ a.u. is a **partial cancellation** — the weak point:
 >
 > | 6S transition | λ | direction | contribution (a.u.) |
 > |---|---|---|---|

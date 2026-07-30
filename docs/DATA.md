@@ -88,7 +88,7 @@ notation; then on the campaign morning the ruler's final commissioning
 campaign's dwell labels: the same 0.65 A is what the rehearsal records as an
 internal 130 °C, and the pilot's amplitude agrees, sitting ~15× above what an
 internal-90 °C pilot would give — addendum 17. Its linewidth cannot tell the
-dwells apart either way, which took two attempts to establish honestly.) Repeats were
+dwells apart either way, which took two attempts to establish.) Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
 knob and manually recentered the cavity reference **many times** — not

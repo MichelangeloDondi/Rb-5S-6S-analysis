@@ -344,8 +344,7 @@ docs/       methods.md (index) + methods/ (8 ordered chapters: the full
             lit/ (one note per paper) + STYLE.md
 private/    NOT PART OF THE REPOSITORY -- excluded wholesale by .gitignore and
             by tests/test_repo_hygiene.py. Correspondence, career material,
-            external critiques and unpublished manuscript drafts live here so
-            that docs/ contains only material intended for a reader.
+            external critiques and unpublished manuscript drafts.
 ```
 
 ## Conventions

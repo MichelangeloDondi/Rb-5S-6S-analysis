@@ -82,8 +82,76 @@ wavelength at 790.26 nm, close to the 5S tune-out.
 body -- the only hits are reference titles (Nez 1993, a 5S-5D3/2 paper). The
 review is a 5S-5D landscape; it does not touch this line.
 
-**Citation scope.** "The review identifies light shift and cell temperature as
-predominantly limiting medium-to-long-term performance" is supported verbatim.
-"The review identifies the light shift as THE limiting systematic" is not --
-that claim was written and withdrawn on 2026-07-26, before the full text was
-available.
+**Citation scope.** <!-- not-from-pdf: the two strings below are OUR claim
+wordings under discussion, not passages quoted from the paper. -->
+The claim "the review identifies light shift and cell temperature as
+predominantly limiting medium-to-long-term performance" is **supported**, though
+it is a paraphrase and not a quotation; the paper's own sentence is "light shift
+variations (stemming from fluctuations in the laser optical power that probe the
+rubidium transition) and vapor-cell temperature variations predominantly limit
+performance for medium- to long-term averaging". *The word "verbatim" was
+attached to our paraphrase here until 2026-07-30, when a mechanical check
+against the PDF caught it.* The stronger claim "the review identifies the light
+shift as THE limiting systematic" is **not** supported -- it was written and
+withdrawn on 2026-07-26, before the full text was available.
+
+**A line worth carrying into Paper 1, found while checking the above.** The
+review states: "The natural linewidth of the two-photon transition in Rb is
+[approximately] 330 kHz; however, as shown in Table 1, the measured linewidths
+consistently exceed this intrinsic value." That is a *third* setting -- Rb
+two-photon vapour-cell clocks, alongside the nanofibre cases in
+[patterson2018](patterson2018.md) -- where measured linewidths sit above the
+intrinsic value across a whole table of published work. Whether the causes are
+shared is OPEN and almost certainly not; the point is that "the measured line is
+wider than it should be, consistently, and the field notes it" is a broader
+premise than this programme had realised.
+
+## Their Table 1 is an external test set for M9 — and it does not come out clean
+
+Their Table 1 tabulates, for ten Rb two-photon vapour-cell standards, the signal
+linewidth **together with the cell temperature and the 1/e² beam waist**. Those
+are precisely the three quantities `rb5s6s.constants.transit_fwhm_from_w0` maps
+between, so it is a chance to test M9's transit model against somebody else's
+apparatus. Against a natural linewidth of ≈330 kHz (their figure, for 5S→5D),
+taking the tabulated waist as a *radius* (CALCULATED here):
+
+| work | observed | excess over natural | transit predicted |
+|---|---|---|---|
+| Poulin 2002 | 410 kHz | 80 | 138 |
+| Callejo 2024 | 450 | 120 | **597** |
+| Lemke 2022 | 550 | 220 | 28 |
+| Li 2024 | 618 | 288 | 74 |
+| Erickson 2024 | 774 | 444 | 256 |
+| Gerginov 2018 | 795 | 465 | 145 |
+| Maurice 2020 | 2200 | 1870 | 574 |
+
+**This is recorded as a DIAGNOSTIC, not as a validation and not as a
+refutation.** Two things stop it being either.
+
+First, transit is only one term. Bandi attribute the broadening to "transit-time
+broadening due to the finite interaction period of atoms with the laser and
+self-collisional broadening, as well as the laser's linewidth", so the
+prediction should sit *below* the excess — which it does in five of seven rows,
+by factors of 2 to 8. That is the expected direction but says nothing sharp,
+because the missing factor is unconstrained.
+
+Second, and the reason this cannot be pushed further as it stands: **Callejo's
+row is impossible**. A 100 µm waist at 110 °C gives a transit width of 597 kHz
+on its own, against a *total* observed linewidth of 450 kHz — and reading the
+tabulated waist as a diameter makes it worse, not better (1195 kHz). A single
+row where one contribution exceeds the whole measured width means the comparison
+is not like-for-like. The most likely explanation is that "1/e² beam waist"
+is not the same quantity across ten papers pulled into one review table — radius
+versus diameter, waist versus spot size at the cell — rather than a defect in
+the transit formula, which is separately anchored on
+[biraben1979](biraben1979.md) and [lehmann2021](lehmann2021.md).
+
+**What would make this worth doing properly**, and it is cheap: take the three or
+four rows whose primary sources are held or obtainable, read the waist
+definition out of each paper rather than the review, and redo the comparison. A
+transit model that reproduces published linewidths across four independent
+apparatus would be a far stronger statement about M9 than any internal
+consistency check — and the same exercise would put a real prior on $w_0$, which
+is the open systematic every absolute result in this repository is bound on.
+**Not attempted here. Recorded as OPEN.**
+

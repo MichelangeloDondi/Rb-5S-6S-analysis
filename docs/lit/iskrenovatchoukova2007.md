@@ -113,7 +113,7 @@ is genuinely not tuned to experiment, but several input matrix elements are
 experimental, and the 7s *Expt.* column derives from the same Stark-shift lineage
 Quirk revises. Second, the 0.7σ theory-vs-Quirk agreement quoted above is
 therefore weaker than it looks, since the theory sits essentially on the older
-measurement. **The honest summary: theory and both measurements agree to about
+measurement. **In summary: theory and both measurements agree to about
 0.5%, and the two measurements disagree with each other by more than either
 quotes.** For validating a sum-over-states code at the percent level that is
 ample — and it is why the target should be a band, not a four-figure number.

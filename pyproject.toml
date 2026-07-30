@@ -23,7 +23,11 @@ dependencies = [
 Repository = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis"
 
 [project.optional-dependencies]
-dev = ["pytest>=7"]
+# pypdf is used ONLY by tests/test_lit_quotes_are_verbatim.py, which checks that
+# quotations in the literature notes are verbatim against the held PDFs. Those
+# PDFs are gitignored, so that test skips in CI and pypdf is optional there --
+# but it must be installed locally for the guard to actually guard.
+dev = ["pytest>=7", "pypdf>=3"]
 
 [tool.setuptools]
 packages = ["rb5s6s"]

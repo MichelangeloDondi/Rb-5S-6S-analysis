@@ -536,7 +536,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > **The headline drift rate is the main casualty.** "+0.016 [+0.007, +0.025]
 > MHz/min", and the claim at the end of this addendum that the settled floor is
 > "a detection, not a bound … positive in every one", do not survive: two of the
-> three estimators change sign. The honest statement is a **bound of order
+> three estimators change sign. What remains is a **bound of order
 > 0.02 MHz/min on the laser axis with the sign undetermined.**
 
 Two differencing baselines exist in the power session, and they disagree —
@@ -1852,8 +1852,7 @@ at an assumed 90, 110 or 130 °C:
 The pilot is consistent with **every** dwell from 90 to 130 °C. The fitted
 ladder spans 3% across 60 K while a single block reproduces to 2%, so the
 observable never had the resolution the crude version appeared to give it.
-**Test 1 is a null, and the honest reading is that linewidth cannot identify
-which dwell the pilot matched.**
+**Test 1 is a null: linewidth cannot identify which dwell the pilot matched.**
 
 **What survives, and is worth more.** Three things.
 
@@ -2080,5 +2079,5 @@ does not move whichever way the question falls, though the *tightness* of its
 bound still rides on the same averaging — and `beta.py` already carries an
 explicit coverage correction for estimating that scatter on n − 2 degrees of
 freedom, so it was not taken for granted there. The returned-to block is
-still worth one block of beam time; the honest case for it is narrower than
+still worth one block of beam time; the case for it is narrower than
 the case first written here.

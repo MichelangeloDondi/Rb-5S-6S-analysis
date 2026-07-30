@@ -80,10 +80,9 @@ cite one as support for the other.
 ## On the Russian-language facet — it does not close it
 
 The audit's addendum B recorded that Cyrillic searches could not reach
-untranslated *Optika i Spektroskopiya* research articles, and that the honest
-statement was "this facet cannot be closed with the tools used here." **Holding
-this paper does not change that**, and the manuscript should not imply
-otherwise:
+untranslated *Optika i Spektroskopiya* research articles: "this facet cannot be
+closed with the tools used here." **Holding this paper does not change that**,
+and the manuscript should not imply otherwise:
 
 - it is a **translated** review, indexed in the ordinary Western corpus, so it
   is not evidence that the untranslated literature is reachable;

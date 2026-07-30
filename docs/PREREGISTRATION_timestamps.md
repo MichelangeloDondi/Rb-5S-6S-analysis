@@ -248,7 +248,7 @@ Consequences, decided before the backup was opened:
   growing with block duration, this section is wrong and D4 revives.
 - **D1 has no route.** Within-block variation is jitter; between-block variation
   is destroyed by re-centring. **The archive cannot measure the lock drift
-  rate.** That is a negative result and the honest end state:
+  rate.** That is a negative result:
   `constants.DRIFT_RATE_LASER_HZ_PER_MIN` stays an envelope, sourced from one
   in-campaign photograph of a settling transient.
 

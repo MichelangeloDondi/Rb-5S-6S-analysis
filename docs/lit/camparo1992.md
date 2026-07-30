@@ -115,3 +115,44 @@ before: Camparo's mechanism is a fluctuating *shift* skewing the line, while c
 bounds a fluctuating *amplitude* inflating the variance. What the full text
 adds is a reason the gap may matter less here — their skew needs the
 fluctuation to be slow compared with the atomic response.
+
+## Audited against the PDF, 2026-07-30 — and it turned up a sentence this note
+## should have carried
+
+Every claim above checks out: the abstract quotation is verbatim, the
+adiabaticity condition is theirs ($\Omega \gg 1/\tau_{\rm coh}$), the
+first-moment statement is theirs ("the line shape's first moment should always
+be proportional to the average ac Stark shift seen by the atoms"), and the
+bibliographic record is right.
+
+**What the note omitted, and it is the closest sentence in the holdings to this
+programme's own thesis.** In their §3 they write that under adiabatic conditions
+
+> the multiphoton transition line shape may be expected to act as a map of the
+> probability distribution of Stark shifts,⁸ which will follow the asymmetric
+> distribution of $(1+\epsilon)^2$.
+
+That is *the lineshape maps the shift distribution*, stated in 1992, for a
+**two-photon** transition, with an asymmetric distribution arising from an
+intensity that enters quadratically. It is materially closer to Paper 1's frame
+than [wieman1987](wieman1987.md) (one-photon) or
+[stalnaker2006](stalnaker2006.md) (one-photon, numerical), and the concession in
+`LITERATURE.md` §5 should name it.
+
+**What still separates the two, and it is not small.** Their distribution is over
+**temporal** intensity fluctuations of a stochastic field — a chaotic multimode
+laser, characterised by a coherence time — and the whole paper is a Monte-Carlo
+study of when those fluctuations are adiabatic enough to inhomogeneously
+broaden. This programme's distribution is over the **spatial** transverse
+intensity profile of a coherent beam, is quasistatic by construction rather than
+by a $\Omega\tau_{\rm coh}$ criterion, and closes in analytic form with
+cumulants. The $(1+\epsilon)^2$ they name is the field's own fluctuation
+statistics, not $f(s)\propto|s|^{n-1}$.
+
+**A lead not followed.** They attribute the mapping idea itself to their ref [8],
+N. B. Delone, V. A. Kovarskii, A. V. Massalov & N. F. Perel'man, "An atom in the
+radiation field of a multifrequency laser", *Sov. Phys. Usp.* **23**, 472 (1980).
+If the mapping statement is to be attributed correctly, that review is where it
+comes from and it predates everything else in this section. **Not held, not
+read.** Worth one search before Paper 1's introduction is written.
+

@@ -192,14 +192,37 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
 
 ## 5. Revised novelty claims (post-Stalnaker, wording to defend)
 
-1. **Closed-form triangular ramp** f(s) ∝ |s| for focused, retro-reflected,
-   fringe-averaged two-photon vapor-cell geometry, with the |s|^(n−1)
-   signal-exponent law and its evanescent-geometry invariance (Paper 2
-   bridge). Not in Stalnaker (numerical, n = 1, fringe-resolved).
-2. **Drift-immune moment method**: third cumulant carries S₀ and survives a
-   reference too unstable for the center. No prior work frames the moment
-   as the *measurement channel* — Stalnaker fit full shapes with a good
-   reference; precision groups suppressed the shift.
+1. **REWORDED 2026-07-30 and much narrower than it was — read §5.2a first.**
+   The old wording claimed the closed-form triangular ramp f(s) ∝ |s| and the
+   |s|^(n−1) signal-exponent law as new. **They are not.** Both reduce exactly
+   to Eq. (5.3) of [delone1980](lit/delone1980.md), a 1980 review, once the
+   geometric P(I) ∝ 1/I of a Gaussian beam is substituted — verified against the
+   shipped `stark_ramp` to 7×10⁻¹².
+   What is claimable is the *evaluation and its consequences*, not the relation:
+   **(a)** identifying that for a focused beam the shift distribution is fixed by
+   geometry rather than by laser statistics, so Delone's integral — which they
+   could only leave formal, P being their unknown — closes;
+   **(b)** the resulting **analytic cumulants** on bounded support, in particular
+   the intrinsic g₁ = +0.566 at n = 2, which is a number and not a fit;
+   **(c)** the fringe-averaged treatment and the M19 result that a retro standing
+   wave does not move the mean; and
+   **(d)** the evanescent-geometry invariance of the dA ∝ dI/I step (the Paper 2
+   bridge), which Delone have no occasion to consider.
+   Stalnaker remains distinct on other axes (numerical, n = 1, fringe-resolved),
+   but he is no longer the binding precedent for this claim — Delone is.
+2. **Drift-immune moment method**: the third cumulant carries S₀ and survives a
+   reference too unstable for the centre. **Narrowed 2026-07-30, because
+   [delone1980](lit/delone1980.md) is closer here than Stalnaker.** Delone *do*
+   frame the lineshape as a read-out channel — twice, explicitly: "one can
+   reconstruct the distribution P(F) from this relationship". So "using the
+   lineshape to read the distribution" is theirs. Two things are not: they read
+   the **whole shape**, never a single moment; and their motivation is that P is
+   the unknown of interest, whereas here the moment is chosen **because the
+   centre cannot be trusted** — a response to an unstable frequency reference,
+   which is an experimental problem Delone do not have and precision groups
+   solved the other way (Stalnaker fit full shapes against a good reference;
+   others suppressed the shift). The claim is therefore *the choice of a
+   particular cumulant for drift immunity*, not moment methods in general.
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
    modest addition to the measured series rather than a headline result. In the archive it is a bound 57–113×
    above expectation; a measurement requires the high-T extension.
@@ -209,9 +232,73 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
 NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
 (Wieman 1987 / Stalnaker 2006 own it), "first extraction of a
 polarizability from the asymmetry" (Stalnaker did exactly that, Eq. 45), or —
-added 2026-07-30 — **that intensity-inhomogeneity broadening of a two-photon
+both added 2026-07-30 — **that intensity-inhomogeneity broadening of a two-photon
 alkali line in a hot cell is a new observation** ([lee2010](lit/lee2010.md) owns
-it; see §5.3).
+it; see §5.3), or **that reading a lineshape as a map of the underlying
+distribution of AC-Stark shifts is a new frame**.
+
+> **The mapping idea is 1992 at the latest, and for a two-photon transition
+> (found 2026-07-30 while auditing).** [camparo1992](lit/camparo1992.md) §3:
+> "the multiphoton transition line shape may be expected to act as a map of the
+> probability distribution of Stark shifts, which will follow the asymmetric
+> distribution of $(1+\epsilon)^2$." That is materially closer to Paper 1's
+> frame than `wieman1987` or `stalnaker2006`, both of which are one-photon, and
+> the concession must name it.
+>
+> What survives is the same narrow thing §5.3 leaves standing. Camparo's
+> distribution is over **temporal** fluctuations of a stochastic multimode
+> field, its inhomogeneous character is contingent on an adiabaticity criterion
+> $\Omega \gg 1/\tau_{\rm coh}$, the distribution is the field's own
+> $(1+\epsilon)^2$ statistics, and the treatment is Monte-Carlo. This
+> programme's is over the **spatial** transverse profile of a coherent beam,
+> quasistatic by construction, with a closed form $f(s)\propto|s|^{n-1}$ and
+> analytic cumulants. **The claim is the closed form and its cumulants — never
+> the mapping, never the phenomenon.**
+>
+> Camparo attributes the mapping to Delone, Kovarskii, Masalov & Perel'man,
+> *Sov. Phys. Usp.* **23**, 472 (1980). **That review is now held and read, and
+> it is worse than the attribution suggested — see below.**
+
+> ### 5.2a The concession runs to 1980, and the closed form is not new either
+>
+> [delone1980](lit/delone1980.md), read 2026-07-30 from the rendered pages,
+> contains four things this repository had treated as its own frame — and it is a
+> **review**, so they were established before it:
+>
+> - **Eq. (4.5):** $K(\Omega) \sim P(-(\omega_{n1}-\Omega)/\alpha_{1f}\hbar)$ —
+>   for a shift linear in intensity, the lineshape *is* the intensity
+>   distribution, rescaled by the polarizability.
+> - **Eq. (5.2):** the multiphoton rate as a shifted Lorentzian integrated over
+>   $P(F)$ with an **$F^{k}$ weight**, $k$ = number of photons absorbed. That is
+>   `THEORY_NOTE` §2's construction with $k$ in the role of $n$.
+> - **Eq. (5.3):** the shift-dominated limit,
+>   $W \sim (\omega_f-k\omega_0)^k P((\omega_f-k\omega_0)/\alpha_{1f}\hbar)$,
+>   which they describe as "an asymmetrically broadened line".
+> - **The inverse problem**, stated twice: "one can reconstruct the distribution
+>   $P(F)$ from this relationship."
+>
+> **And the closed form reduces to theirs exactly (CALCULATED 2026-07-30).** For
+> atoms uniform in space across a Gaussian profile the area measure gives
+> $2\pi r~{\rm d}r \propto {\rm d}I/I$, so $P(I)\propto 1/I$ — verified
+> numerically to 1 part in $10^4$ over four decades. Substituting that into their
+> Eq. (5.3) gives $W(s)\propto s^{k}\cdot s^{-1} = s^{k-1}$, i.e.
+> $f(s)\propto|s|^{n-1}$ with $k=n$; and at $n=2$ it agrees with the shipped
+> `lineshape.stark_ramp` to $7\times10^{-12}$. **This repository's closed form is
+> Delone's Eq. (5.3) evaluated for the intensity distribution of a focused
+> Gaussian beam.** Paper 1's introduction must say so in those words.
+>
+> **What survives, and it is narrower than claim 1 as written.** Delone treat
+> $P$ as the *unknown to be reconstructed* — their point is that the lineshape
+> measures the laser's statistics. This programme runs it backwards: $P$ is
+> **known from the geometry**, so the integral evaluates and the result carries
+> **analytic cumulants**, an intrinsic $g_1=+0.566$ on bounded support that is a
+> number rather than a fit. Delone cannot write that number because in their
+> setting it is exactly what is unknown. The defensible contributions are
+> therefore: evaluating a known general result for the geometry that actually
+> occurs; its cumulants in closed form; and using the **third** cumulant as a
+> drift-immune measurement channel — which answers an experimental problem (an
+> untrustworthy centre) that does not arise in Delone's setting. **Claim 1 above
+> should be reworded accordingly before the introduction is drafted.** **[OPEN]**
 
 > **The concession stands, and it can be narrowed — but not yet (2026-07-30).**
 > [`wieman1987`](lit/wieman1987.md) now has a note and a full record: *Asymmetric
@@ -296,6 +383,17 @@ any manuscript:
   state pair, different magic condition — but the claim must be phrased as
   5S–6S specifically, and should say why the proximity is expected rather than
   leaving a referee to wonder.
+- **An external test set for M9 exists and has not been used**
+  ([bandi2025](lit/bandi2025.md) Table 1). Ten Rb two-photon vapour-cell
+  standards, tabulated with signal linewidth, cell temperature **and 1/e² beam
+  waist** — the three quantities `transit_fwhm_from_w0` maps between. A first
+  pass is inconclusive: the transit prediction sits below the excess over the
+  ≈330 kHz natural width in five of seven usable rows, as it should given that
+  laser linewidth and self-collisions also contribute, but Callejo's row is
+  impossible (transit alone 597 kHz against a 450 kHz *total*), which says the
+  waist convention is not uniform across a review table. **Reading the waist
+  definition out of three or four primary sources and redoing it would be a real
+  external check on M9, and would put a prior on the open $w_0$.** **[OPEN]**
 - **No profile-likelihood precedent** in vapour-cell two-photon metrology, and
   **no pre-registration or blind analysis** in atomic spectroscopy of this kind.
 - **No 6S self-broadening coefficient** in a second targeted pass; Zameroski
@@ -312,12 +410,46 @@ of a six-value table, in the note carrying a negative-search claim. That is
 enough to distrust the rest by default. **Still unaudited, and load-bearing:**
 [stalnaker2006](lit/stalnaker2006.md) (on which the "first extraction of a
 polarizability from the asymmetry" concession rests, via its Eq. 45),
-[slepkov2010](lit/slepkov2010.md) (§5.1), [camparo1992](lit/camparo1992.md),
-[wall2014](lit/wall2014.md), [weller2011](lit/weller2011.md),
-[biraben1979](lit/biraben1979.md) and [lehmann2021](lit/lehmann2021.md) (the
-transit-kernel pair, whose form `bruvelis2012` stated backwards until today).
-An audit pass on these was started and did not finish. **Do this before Paper 1's
-introduction is written.** **[OPEN]**
+only. Everything on the list has now been checked by hand.
+[stalnaker2006](lit/stalnaker2006.md) was checked on the claims §5 leans on and
+they hold — Eq. (45) extracts a polarizability *combination* from fitted
+lineshapes, Eq. (37) and Eq. (38) are the FM depth and rate as this repository
+quotes them, and every Wieman characterisation sourced from its introduction is
+verbatim. **What remains OPEN there is narrower and is ours, not theirs:** the
+delineation table and the "Gift #1" fringe-tail derivation are this
+repository's own inferences built on the paper, so they need checking against
+`rb5s6s/fringe_tail.py` as well as against the PDF. One factor of two to carry
+into any paper sentence: their carrier-only criterion is $\xi/2 \ll \Omega$, not
+$\xi \ll \Omega$ (our index is $2\times10^{-3}$, so nothing shipped changes).
+An unsourced "20–60 min per lineshape" computation time was removed from the
+note; no such figure is in the paper. **[OPEN]**
+  *Cleared by hand the same day, all three correct as written:*
+  [biraben1979](lit/biraben1979.md) and [lehmann2021](lit/lehmann2021.md) — the
+  transit-kernel pair whose form `bruvelis2012` had backwards — check out, with
+  Biraben's abstract and Eq. (46) both giving the Lorentzian ⊗
+  double-exponential and Lehmann stating the cusp explicitly. Biraben also
+  contains the sentence that explains the `bruvelis2012` error: a Voigt *is*
+  there, as the per-velocity-class profile, and the double exponential appears
+  only after averaging over radial velocities.
+  [weller2011](lit/weller2011.md) checks out too — its quotation is verbatim and
+  $\beta/2\pi = (0.69 \pm 0.04) \times 10^{-7}$ Hz cm³, the 0.73 theory value,
+  the 0.1% agreement to $3\times10^{14}$ cm⁻³ and the 170 °C all hold. So do
+  [wall2014](lit/wall2014.md) (record, authorship and the "bunch up" passage all
+  exact) and [camparo1992](lit/camparo1992.md) — though Camparo turned up a
+  sentence that costs a novelty claim, recorded in §5 above.
+  **Two attribution errors were found outside the checked set and fixed:**
+  [saha2010](lit/saha2010.md) and [slepkov2010](lit/slepkov2010.md) were both
+  credited with an 18 µm hollow-core mode field that appears in **neither**
+  paper — Saha's own fibre is a 6 µm Crystal Fiber AIR-6-800, and "CRYST3" is
+  not in Slepkov at all. The 18 µm belongs to the experimenter's own CRYST³
+  fibre at Bologna, is unsourced in this repository, and is now tagged as an
+  apparatus fact awaiting confirmation.
+  [stalnaker2006](lit/stalnaker2006.md) was spot-checked on the two claims §5
+  leans on: its Eq. (45) does extract a polarizability combination from fitted
+  lineshapes — $\alpha_0^{ac}(^3D_1) + \alpha_2^{ac}(^3D_1) - \alpha_0^{ac}(^1S_0) = -0.312(34)$
+  Hz/(V/cm)² — so the concession stands, and
+  every characterisation of Wieman that [wieman1987](lit/wieman1987.md) sources
+  from its introduction is verbatim. A full pass on it is still outstanding.
 
 ### 5.3 The nearest analogue experiment, and what it costs claim 1 (2026-07-30)
 
@@ -693,6 +825,50 @@ surface/pushing effects are read.
   same physics at different scales is **OPEN**; this repository has not checked
   them against a common model. Even narrowed, it is a better premise for Paper 2
   than measuring one more ONF lineshape. **[OPEN]**
+- **The premise narrowed twice more on 2026-07-30, and gained a mechanism.** An
+  external literature pass found no post-2018 paper explaining the residual, and
+  two things that change the framing.
+  *First, Sagué may not belong in the table at all.* Reportedly their model
+  carries **no fitted width parameter**, so their 6.2 MHz is a model *output*
+  that matched, not a residual — and they attribute it to van der Waals shift
+  plus modified spontaneous emission, with a position-dependent $\gamma(r)$
+  reaching **+57% at the surface**. If so the count is Patterson plus a newly
+  surfaced Liu *et al.* (2024/25, ⁸⁷Rb D2, fitted 2–4 MHz residual), and the
+  question sharpens usefully to *what does Patterson's model contain that
+  Sagué's does not*. **REPORTED — Sagué is not held and none of this is checked
+  against it.**
+  *Second, and verified here in the equations:* Patterson's Eq. (10) integrates
+  $\alpha(r)$, $\rho(r)$ and $\delta_{\rm vdW}(r)$ over $r$ but passes
+  $\Gamma_0$ in as a **scalar**, while their own Eq. (3) defines
+  $\alpha(r) = \Gamma_{\rm 1D}(r)/\Gamma_0$ — a position-dependent decay rate
+  used as the detection *weight* and omitted from the *width*. An ensemble with
+  a distribution of $\Gamma_{\rm 1D}(r)$ fitted by one scalar returns a width
+  that is too broad, symmetric, near-Lorentzian, and independent of density,
+  temperature and field — surviving every exclusion they list, because their
+  Purcell argument bounds a **mean** and this is a **variance**. See
+  [patterson2018](lit/patterson2018.md) for the falsification test, which is a
+  refit of their published spectra and is publishable either way. **[OPEN]**
+- **The contrast is already in the literature, and it settles the mechanism's
+  plausibility (intake 2026-07-30).** [sague2007](lit/sague2007.md) — held and
+  read — puts $\gamma(r)$ **inside** the spatial integral of its Eq. (1),
+  predicts a **57% enhancement at the fibre surface**, fits with only two free
+  parameters (atom number and a frequency offset, **no width parameter at all**),
+  and closes its budget: its 6.2 MHz against 5.2 natural is "explained by
+  surface interactions, i.e. the vdW shift ... and the modification of the
+  spontaneous emission rate", the two being of "the same magnitude". Patterson,
+  eleven years later in the same geometry with a *tighter* fibre, passes
+  $\Gamma_0$ as a scalar and is left with 2 MHz. **So Sagué leaves the
+  unexplained column** — a correction now made from the source rather than on
+  report — and what remains is Patterson plus Liu *et al.*
+  The two theory inputs a refit needs are
+  [klimovducloy2004](lit/klimovducloy2004.md) for $\gamma_{\rm free}(r)$, now
+  **held**, which derives analytical transition rates in the subwavelength
+  regime with guided-mode contributions exponentially small; and `boustimi2002`
+  (*PRB* **65**, 155402) for the van der Waals shift near a cylinder, which is
+  **not on arXiv and not held**. **[OPEN]**
+  *Caution attached to the canonical number:* the 8.1 ± 0.3 comes from the row
+  whose $\omega_0/2\pi = 5.9 \pm 0.2$ MHz is a five-fold outlier against the
+  other four, and covariance between those two was not reported.
 - [perrella2013](lit/perrella2013.md) — Perrella, Light, Anstie, Stace, Benabid &
   Luiten, *PRA* **87**, 013818 (2013), two-photon spectroscopy of thermal Rb in a
   hollow-core photonic-crystal fibre: 10 MHz linewidths resolving 5D₅∕₂ hyperfine
@@ -702,13 +878,20 @@ surface/pushing effects are read.
   and the closest thing to an indication of what confinement *costs*: 10 MHz is
   the right order for a transit-limited **few-micron** guided mode, against
   **1.19 MHz** for this campaign's free-space $w_0 = 50$ µm. **The penalty is not
-  a constant and this entry first said it was:** transit goes as $1/w_0$, so the
-  repository's own candidate hollow core — the 18 µm Bologna mode field recorded
-  in `saha2010` — gives **3.3 MHz**, a factor of 2.8, not ten. Perrella's mode is
-  several times tighter than the fibre this programme would use. The trade to put
-  in the motivation is therefore *3–10× in width depending on the fibre*, against
-  a $w_0$ that becomes a characterised component property rather than a daily
-  alignment. REPORTED, abstract only. **[CITE]**
+  a constant, and this entry has now been wrong about it twice.** Transit goes as
+  $1/w_0$. A "factor of ten" was replaced by "3.3 MHz, a factor of 2.8" on the
+  strength of an 18 µm mode field credited to `saha2010` — but **no 18 µm figure
+  appears in that paper**; it is a prospective apparatus number from the
+  experimenter. The published hollow cores are far tighter: Saha's own is a 6 µm
+  Crystal Fiber AIR-6-800 (~28 MHz) and Slepkov's stated $10^{-7}$ cm² area is
+  ~1.8 µm (~33 MHz). **The penalty across that literature is 15–30×**, and
+  Perrella's 10 MHz is better than those geometries predict. **This programme's
+  own fibre is a separate statement:** the CRYST³ hollow core at Bologna is
+  quoted at an 18 µm mode field, giving ~3.3 MHz, a factor of 2.8 — so published
+  cores and this apparatus must not be run together. That 18 µm is an
+  **unsourced apparatus fact** (it entered `saha2010.md` in 080d2b2 with no
+  citation) and needs confirming, radius-or-diameter included. What is unambiguous is the qualitative trade: $w_0$
+  becomes a characterised component property rather than a daily alignment. REPORTED, abstract only. **[CITE]**
 
 **[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)) — the
 nearest-platform result to Paper 2, feeding two of its pillars; NO committed number
