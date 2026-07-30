@@ -362,7 +362,18 @@ excursions, the scale that forced the all-night re-centring — well inside the 
 itself matching the photographed cavity-locked ±0.19 MHz/min independently).
 A drift-settling term adds nothing (ΔAIC +4); **what settles is the
 operator** — per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
-τ ≈ 1–2.5 h to ≲0.2 MHz, plus two ~25–50 MHz scan-window repositionings.
+τ ≈ 1–2.5 h to ≲0.2 MHz, plus two large scan-window repositionings.
+*Corrected 2026-07-30:* those two were quoted here as "~25–50 MHz", which is the
+window travel multiplied by the EOM rate — the retracted arithmetic (M20). A
+repositioning moves the scope's horizontal setting, not the laser, and the
+exported time axis is referenced to that setting, so it carries no
+frequency content at all. The two events are **+564 ms and −1151 ms of
+`window_start_ms`**; the second is the 1134 ms move inside a single 175 mW block
+during which the line's position *within the display* moved 6 ms (0.26 MHz). The
+per-gap re-centring figures above are also not clean: the >100 ms threshold that
+freed "repositionings" in that fit catches only 19 of the 58 recorded window
+moves, and the remaining 39 (median 42 ms ≈ 1.8 MHz apparent) are absorbed into
+exactly the ~1–4 MHz they are compared against.
 That operator settling is what matches the post-retune photographs' scale,
 as it should: re-lock transients are when the re-centring works hardest. The
 mechanism arrived after the fit, in the right order to count as

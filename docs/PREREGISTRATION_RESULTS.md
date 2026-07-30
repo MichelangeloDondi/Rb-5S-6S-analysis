@@ -518,7 +518,8 @@ JITTER (§8.4's verdict stands untouched).
 
 **The intervention census falls out of the same fit**: 13 segments over four
 ladders — hour-1 hunting on 4192 (steps of −1.6 and +1.0 MHz laser within
-25 min), the two 4207 scan-window repositionings (+24 and −49 MHz), and
+25 min), the two 4207 scan-window repositionings (+564 ms and −1151 ms of window
+travel — **not** frequency; quoted here as +24 and −49 MHz until 2026-07-30, which was the retracted arithmetic, M21), and
 end-of-ladder nudges of ±0.2–0.9 MHz — frequent early, nearly absent after
 hour 4.
 
@@ -554,7 +555,13 @@ segmentation with the model the data actually implies: **a state-space
 formulation** in which the cumulative-intervention offset is a random walk
 whose steps live at the between-block gaps, η ~ N(0, σ_gap(t)²), with
 scan-window repositionings (steps >100 ms, wherever they occur — the 4207
-excursion returns *mid-block*) freed exactly. The marginal likelihood is then
+excursion returns *mid-block*) freed exactly. *Caveat added 2026-07-30:* the
+horizontal setting is now known per trace (`window_start_ms`) and it moved **58**
+times, of which only **19** exceed 100 ms. The other 39 — median 42 ms, RMS
+36 ms, i.e. ~1.5–1.8 MHz of *apparent* laser-axis motion — are not freed, and are
+absorbed into the very σ_gap ("~1–4 MHz laser in hour 1") this fit reports as
+hand re-centring. The fit should be redone with a free offset at every recorded
+move, not at a threshold. The marginal likelihood is then
 exact (Kalman filter), no segmentation is chosen by hand, and — the point —
 **drift and intervention amplitude each get their own time law**, so "what
 settles?" becomes a 2×2 model comparison:
@@ -690,6 +697,19 @@ back, arguing the centre observables deserved a real attempt before being
 written off — correctly on both counts: no attempt had been made, and for
 one of the three centre observables an attempt succeeds.
 
+> **§1 WITHDRAWN 2026-07-30 (M21).** The pull bound below — 3.5 MHz here, 5.5 MHz
+> under addendum 7's mixture — is retracted. Its observation model has no free
+> offset at a scope horizontal-position move, and the exported time axis is
+> referenced to that setting, so differencing centres across a move differences
+> two numbers measured against different zeros (see `run_laser_history.py`'s
+> retraction: the setting changed 58 times, and only 19 of those exceed the
+> >100 ms threshold this fit frees). Redone with a free offset per display epoch,
+> the pull is **unidentifiable**: the sign flips between drift models and the
+> limit degrades from 9.50 to 17.67 MHz as the drift gains freedom
+> (`results/stark_centres.csv`, tagged NULL). These numbers were tighter than the
+> defensible ones precisely because they borrowed that invalid leverage — a
+> tighter bound is not a better one. §2 and §3 below are unaffected.
+
 **1. The AC-Stark pull: a real bound, from centres alone.** The pull
 (−⅔S₀, S₀ = κP) is a *differential* observable: it is locked to the power
 ladder and repeats at four different times, so it separates from the
@@ -727,10 +747,18 @@ separations are of GHz scale; the scan window is ~43 MHz; every peak change
 was a retune of unlogged magnitude. There is no differential term to fit —
 this is the one claim of the two-epoch framing that survives untouched.
 
-The corrected summary of what the clock buys the centres: **within-window
-differential structure is recoverable (the pull bound); across-window
-structure is not** (shifts across temperature, intervals across peaks). The
-blanket "centres are dead" stands only in its across-window sense.
+The corrected summary of what the clock buys the centres — *revised 2026-07-30,
+because the first version's only worked example was the pull bound and that is
+withdrawn.* The unit of comparability is not the scan window but the **display
+epoch**: a run of unchanged scope horizontal position, since the exported time
+axis is referenced to that setting. Inside one epoch a centre difference is a
+frequency difference; across a boundary it is not, and the setting moved 58
+times. The archive's power ladder puts two powers inside one epoch in only 3 of
+26 cases, so the pull joins the self-shift and the intervals as **not
+recoverable**. The blanket "centres are dead" is restored, now for a measured
+reason rather than an assumed one. What the clock does still buy is real and
+smaller: chronology, the descending power order, and the within-epoch stability
+(0.17 MHz peak-to-peak over 3.4 min in the quietest well-sampled epoch).
 
 *Post-hoc; extraction prompted by the experimenter, 2026-07-23.
 `run_drift_settling.py`, final stage; closure documented here, not re-run in
@@ -781,7 +809,9 @@ Within-block moves were rare, as remembered: 3 events in 78 transitions.
   drift settling +4.0 against; τ_i ≈ 91 min). The etalon-transient story is
   untouched.
 - **Pull bound, re-profiled under the mixture: q = −0.050 [−0.190, +0.070]
-  ms/mW (95%) → S₀(225 mW) < 5.5 MHz transition** — looser than addendum 6's
+  ms/mW (95%) → S₀(225 mW) < 5.5 MHz transition** — WITHDRAWN 2026-07-30 for the
+  reason given at addendum 6 §1 (no free offset at a horizontal-position move);
+  it was looser than addendum 6's
   3.5 (the mixture rightly discounts the 25 mW anchor points where the moves
   live), now ~8× above the width channel and ~9× above the prediction.
 - Persistence extrapolation: ~20 MHz laser over the 20.5 h (was ~39).

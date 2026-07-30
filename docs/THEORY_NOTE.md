@@ -155,14 +155,21 @@ $$\text{centroid pull} = -\tfrac{2}{3}S_0,\qquad
 order the signal by statistical cost — pull $\propto P$, excess variance
 $\propto P^2$, skew $\propto P^3$ (the last vanishing unless $n=2$, the $I^2$
 signature) — but note the pull as a *measurement* is available only once a
-stable lock (a fixed-lock session) un-absorbs it. One nuance, post-dating this
-note: with the recovered acquisition clock the archive's between-block
-structure supports a pull *bound* — a state-space fit with a deterministic
-pull-per-milliwatt term, injection-closure verified, bounds S₀ at 225 mW
-below 5.5 MHz (95%) from the centre channel alone. That is ~8× looser than the
-width-channel S₀(225 mW) < 0.63 MHz, but it corroborates it through disjoint
-systematics (results report, addenda 6–7). The centre floor sits ~9× above the
-predicted pull, so it bounds; it does not measure.
+stable lock (a fixed-lock session) un-absorbs it. **The centre channel gives no
+bound either** (M21, `scripts/run_stark_centres.py`, 2026-07-30). A peak position
+is a frequency only within a *display epoch* — a run of unchanged scope
+horizontal position, see `run_laser_history.py`'s retraction — so each epoch
+carries a free offset, and of the 26 epochs covering the power sweep only three
+contrast two powers, none spanning two lines. The pull is then unidentifiable
+rather than imprecise: its sign REVERSES between drift models
+($+3.45$ vs $-3.26$ MHz/W) and the limit degrades as the drift model gains
+freedom, $|S_0(225$ mW$)| < 9.50$, $14.59$, $17.67$ MHz for linear,
+one-exponential and two-exponential drift. Tagged NULL. Earlier
+state-space versions of this bound — $3.5$ MHz in addendum 6, $5.5$ MHz under
+addendum 7's mixture, and a $7.3$ MHz variant in M20 — were *tighter* only
+because they differenced centres across horizontal-position moves, and are
+withdrawn. The width channel's $S_0(225$ mW$) < 0.63$ MHz is the archive's only
+light-shift channel; there is no second channel to corroborate it.
 
 Two caveats. *Between*-scan drift is absorbed exactly by the free centres.
 *Within*-scan drift is not a pure translation — it smears the line
