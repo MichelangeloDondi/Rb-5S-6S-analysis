@@ -42,12 +42,75 @@ bound worse than the retracted 7.3 MHz, because the free epoch offsets remove
 cross-block leverage the old number was borrowing from comparisons that were not
 valid. A tighter number is not a better one.
 
+A SECOND, STRONGER ATTEMPT, AND WHY IT ALSO FAILS (2026-07-30). The free-offset
+model above throws away the fact that the horizontal setting is RECORDED. A knob
+move shifts peak_pos_ms and window_start_ms together, so
+
+    rel = (peak_pos_ms - window_start_ms) * rate
+
+should be invariant under the move and vary only with the laser. It does collapse
+the scatter of the 158 canonical science traces from 7.75 MHz sd to 0.28 MHz over
+20.5 h -- a factor 28, reproduced independently -- and restores the campaign as
+one continuous record. Fitting rel = c_peak + pull*P on the 99 canonical p_sweep
+traces returns S0(225 mW) = +0.894 +- 0.274 MHz, apparently 3.3 sigma, with the
+four lines agreeing at chi2/dof = 1.27 and residuals showing no trend in time.
+
+It is not a detection, for four reasons, and the FIRST is the one that should
+have been tested before any of the drift modelling:
+
+1. THE PULL'S OWN SHAPE IS REJECTED. An AC-Stark shift is linear in P by
+   construction. Replacing pull*P with four free power-level offsets gives
+   F(3, 91) = 4.48, p = 0.0055, and the rung means are not monotone --
+   +0.243 MHz at 25 mW, then -0.088, -0.050, +0.025, -0.137 at 75 to 225 mW.
+   The HIGHEST power, where the shift must be largest, sits above 125 and 175.
+   That is a one-level step, not a pull. Five drift forms were tested here
+   before the signal's own mandatory form ever was.
+2. THE WHOLE EFFECT IS THE BOTTOM RUNG. Dropping 25 mW: S0 = +0.100 +- 0.222,
+   0.45 sigma, over a threefold power range. Three of the four lines change
+   sign. And 25 mW is the worst rung to lean on -- SNR 18 against 193 at
+   225 mW, residual scatter 4.6x larger, and the only level at which the
+   triangular sweep's RETRACE produces a second above-half-max region (8 of its
+   20 traces, against 0 of the other 79).
+3. THE SIGMA IS INFLATED BY REPLICATES. The 99 traces are 20 conditions of ~5
+   repeats saved seconds apart; the residual intraclass correlation is 0.38, a
+   design effect of 2.5. Cluster-robust on 20 blocks gives p = 0.077, a block
+   bootstrap gives a 95% interval of [-0.31, +1.86] that includes zero, and a
+   structure-preserving permutation test gives p = 0.086. Every honest variance
+   treatment lands at 1.6-1.9 sigma.
+4. THE CONSTRUCTION IS NOT LICENSED. The retraction established that the knob is
+   not a PROXY for drift. This use needs the strictly stronger claim that it is
+   not a RESPONSE to drift, and the archive cannot decide between them: the
+   licensing regression d(peak_pos)/d(window_start) = 1.005 +- 0.009 is predicted
+   equally by "the knob relabels the axis" and by "the line moved and the
+   operator followed it", 64% of its leverage sits on a single event, and no
+   knob-immune reference was exported -- the triangle ramp was on scope CH1
+   (APPARATUS section 1) and only CH2 was saved.
+
+What is worth keeping from the attempt: the centre estimator is NOT the problem.
+Five independent estimators -- smoothed argmax, above-half centroid, half-max
+midpoint, parabolic top, and full Gaussian least squares on the raw trace with a
+linear background -- all return +0.88 to +0.91 MHz, and the baseline-tilt
+displacement of the mode is 3e-4 MHz against a 0.27 MHz residual. The unit chain
+(laser-to-transition factor 2, ramp first moment -0.653) was also checked end to
+end and is correct.
+
 THE DESIGN CONSEQUENCE, which is what this is for. The existing lesson -- cycle
 or randomise the power ordering, so drift is orthogonal to the pull -- is
 necessary and now demonstrably not sufficient. A second requirement joins it:
 DO NOT MOVE THE SCOPE'S HORIZONTAL POSITION during a session, and if it must
 move, record it, because every move severs the centre record. Both cost nothing
 but the order and discipline of knob turns.
+
+A third joins them, and it is the cheapest of the three: EXPORT THE RAMP MONITOR.
+The triangle drive was already on scope CH1 and only CH2 was saved, which is why
+the knob-immune construction above cannot be licensed -- with the ramp channel in
+the file, the time origin is fixed independently of both the knob and the laser
+and the question answers itself. One extra column.
+
+And a fourth, from the bottom rung: DO NOT PUT THE LOWEST POWER AT THE END OF A
+DESCENDING LADDER. At 25 mW the line is weak enough that the sweep retrace makes
+a second above-half-max region in 8 of 20 traces, and being last it is also the
+most drifted. Cycling the power ordering fixes both at once.
 
 Outputs: results/stark_centres.csv (one row per drift form).
 """
@@ -163,9 +226,90 @@ for kind in ("linear", "exp", "exp2"):
                      "width_channel_bound_mhz": WIDTH_BOUND,
                      "times_weaker_than_width": round(ub / WIDTH_BOUND, 2)})
 
+# ---- the knob-immune check, and the test that actually decides it ----------
+# rel = (peak_pos - window_start) removes the horizontal setting exactly, so it
+# is the strongest form the centre channel can take. Its power dependence is
+# then asked the ONE question a pull must answer: is it linear in P?
+S = np.array([float(r["window_start_ms"]) for r in sci])
+REL = (np.array([float(r["peak_pos_ms"]) for r in sci]) - S) * RATE
+PMW = np.array([float(r["power_mW"]) for r in sci])
+NL = len(set(E))
+KL = E
+
+
+def _ls(X, y):
+    b = np.linalg.lstsq(X, y, rcond=None)[0]
+    r = y - X @ b
+    return b, float(r @ r)
+
+
+nrow = len(REL)
+peaks = sorted({r["peak"] for r in sci})
+kp = np.array([peaks.index(r["peak"]) for r in sci])
+X_lin = np.zeros((nrow, len(peaks) + 1))
+X_lin[np.arange(nrow), kp] = 1.0
+X_lin[:, -1] = PMW / 1000.0
+b_lin, rss_lin = _ls(X_lin, REL)
+
+levels = sorted(set(PMW))
+X_fac = np.zeros((nrow, len(peaks) + len(levels) - 1))
+X_fac[np.arange(nrow), kp] = 1.0
+for i, v in enumerate(PMW):
+    j = levels.index(v)
+    if j > 0:
+        X_fac[i, len(peaks) + j - 1] = 1.0
+_, rss_fac = _ls(X_fac, REL)
+
+df_lin = nrow - (len(peaks) + 1)
+df_fac = nrow - (len(peaks) + len(levels) - 1)
+F = ((rss_lin - rss_fac) / (df_lin - df_fac)) / (rss_fac / df_fac)
+try:
+    from scipy import stats as _st
+    pF = float(_st.f.sf(F, df_lin - df_fac, df_fac))
+except Exception:
+    pF = float("nan")
+
+keep = PMW > min(levels)
+Xk = np.zeros((int(keep.sum()), len(peaks) + 1))
+Xk[np.arange(int(keep.sum())), kp[keep]] = 1.0
+Xk[:, -1] = PMW[keep] / 1000.0
+bk, rssk = _ls(Xk, REL[keep])
+dofk = int(keep.sum()) - (len(peaks) + 1)
+cvk = np.linalg.pinv(Xk.T @ Xk) * (rssk / dofk)
+s0_drop = 2 * bk[-1] * 0.225 / MEAN_OVER_S0
+s0_drop_e = abs(2 * np.sqrt(cvk[-1, -1]) * 0.225 / MEAN_OVER_S0)
+s0_all = 2 * b_lin[-1] * 0.225 / MEAN_OVER_S0
+
+print("knob-immune variable (peak_pos - window_start):")
+print(f"  sd {REL.std(ddof=1):.3f} MHz on {nrow} p_sweep traces")
+print(f"  S0(225) all five rungs        {s0_all:+.3f} MHz")
+print(f"  linear-in-P vs rung-as-factor F({df_lin-df_fac},{df_fac}) = {F:.2f}, "
+      f"p = {pF:.4f}   <- a pull MUST be linear in P")
+print(f"  S0(225) dropping the {min(levels):.0f} mW rung  {s0_drop:+.3f} "
+      f"+- {s0_drop_e:.3f} MHz ({abs(s0_drop/s0_drop_e):.2f} sigma)")
+print("  -> the apparent effect is a step at the bottom rung, not a pull")
+
+out_rows.append({"drift_model": "knob_immune_linearity", "n_traces": nrow,
+                 "n_epochs": NL, "dof": df_fac,
+                 "resid_mhz": round(float(np.sqrt(rss_fac / df_fac)), 5),
+                 "pull_mhz_per_w_laser": round(float(b_lin[-1]), 4),
+                 "pull_lo95": "", "pull_hi95": "",
+                 "S0_225mW_mhz": round(float(s0_all), 4),
+                 "S0_lo95": round(float(s0_drop - 2 * s0_drop_e), 4),
+                 "S0_hi95": round(float(s0_drop + 2 * s0_drop_e), 4),
+                 "S0_abs_ub95": round(float(abs(s0_drop) + 2 * s0_drop_e), 4),
+                 "width_channel_bound_mhz": WIDTH_BOUND,
+                 "times_weaker_than_width": round(
+                     (abs(s0_drop) + 2 * s0_drop_e) / WIDTH_BOUND, 2),
+                 "linearity_F": round(float(F), 3),
+                 "linearity_p": round(pF, 5),
+                 "S0_drop_lowest_rung": round(float(s0_drop), 4),
+                 "S0_drop_lowest_rung_err": round(float(s0_drop_e), 4)})
+
 RES = REPO / "results" / "stark_centres.csv"
 with open(RES, "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
+    cols = list(out_rows[-1].keys())
+    w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
     w.writeheader()
     w.writerows(out_rows)
 print(f"wrote {RES.name}: {len(out_rows)} drift models")

@@ -454,7 +454,30 @@ def main() -> int:
           f"orthogonal to the pull, *and* leave the horizontal position alone — or "
           f"log it — because every move severs the centre record. A superseded "
           f"$< 7.3$ MHz version of this bound was tighter only because it "
-          f"differenced positions across those moves.\n")
+          f"differenced positions across those moves. "
+          f"**A second, stronger attempt failed on the signal's own shape.** "
+          f"Referencing each centre to its own display window (the peak "
+          f"position minus the window start) "
+          f"is exactly knob-immune and collapses the campaign scatter from "
+          f"7.75 to 0.28 MHz; fitting a pull on it returns "
+          f"$S_0(225) = +0.89\\pm0.27$ MHz, apparently $3.3\\sigma$. It is not "
+          f"one. An AC-Stark pull is **linear in $P$ by construction**, and "
+          f"free per-rung offsets reject linearity at "
+          f"$F(3,91) = {float(sc['knob_immune_linearity']['linearity_F']):.2f}$, "
+          f"$p = {float(sc['knob_immune_linearity']['linearity_p']):.4f}$: the rung "
+          f"means are non-monotone (+0.243 MHz at 25 mW against $-$0.137 at "
+          f"225 mW, so the highest power sits above the middle ones). Dropping "
+          f"the 25 mW rung leaves "
+          f"${float(sc['knob_immune_linearity']['S0_drop_lowest_rung']):+.2f}"
+          f"\\pm{float(sc['knob_immune_linearity']['S0_drop_lowest_rung_err']):.2f}$ "
+          f"MHz over a threefold power range. That rung is also the worst to "
+          f"lean on: SNR 18 against 193, scatter 4.6$\\times$ larger, and the "
+          f"only level where the sweep retrace makes a second above-half-max "
+          f"region (8 of 20 traces, against 0 of 79). The apparent significance "
+          f"is inflated besides -- the 99 traces are 20 conditions of ~5 "
+          f"repeats, intraclass correlation 0.38, and a block bootstrap gives "
+          f"$[-0.31, +1.86]$. Not the estimator's fault: five independent "
+          f"centre estimators agree to $\\pm$0.02 MHz.\n")
 
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
