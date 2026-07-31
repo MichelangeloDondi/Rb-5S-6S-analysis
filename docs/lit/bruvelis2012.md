@@ -17,17 +17,19 @@ pages: 012501
 year: 2012
 doi: 10.1103/PhysRevA.86.012501
 arxiv: null
-pdf: null
-held: false
-status: REPORTED
+pdf: PDF_papers/Bruvelis_2012_transit-time-broadening-two-photon-ladder.pdf
+held: true
+status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'REPORTED. Record taken from Crossref (authoritative for the DOI) and the
-    abstract from the publisher listing, 2026-07-30; the paper itself has not
-    been read and APS returns 403 without a subscription. Upgrade after reading
-    the full text -- the exact-compensation claim below is the one that matters
-    here and should be checked against their derivation, not against a summary.'
+  - 'HELD AND READ 2026-07-31, supplied by the experimenter. The exact-
+    compensation claim in the abstract is confirmed verbatim. But reading the
+    paper WEAKENED the transfer to this programme rather than strengthening it,
+    reversing what this note previously said -- see the body. Their geometry is
+    a CYLINDRICAL-lens sheet crossed by a collimated supersonic beam, and the
+    paper states in its own words that the Voigt profile forms by a DIFFERENT
+    mechanism in a thermal gas.'
   - 'CITEKEY CORRECTION: this repository cited the paper as `bevilacqua2012`
     until 2026-07-30. There is no Bevilacqua among the authors. The volume, page
     and year were right and the physics description was right; only the
@@ -37,7 +39,7 @@ verify_flags:
     vapour. The result is derived for a general three-level ladder and the
     transfer is on the geometry, not on the species -- but the note must not be
     read as a vapour-cell measurement.'
-verified_date: null
+verified_date: 2026-07-31
 summary: >
   Analytical model of transit-time broadening for two-photon excitation in a
   three-level ladder, validated on a collimated supersonic Na2 beam crossing two
@@ -79,16 +81,37 @@ the size of the laser beam waist. The analytical model is validated by comparing
 it with numerical simulations of density-matrix equations of motion using a split
 propagation technique and with experimental results."
 
-Two things that abstract settles, and one it sharpens. The geometry is
-**Doppler-free, counterpropagating, two-photon through a virtual intermediate
-level** — the same class as this programme's, not merely a general ladder
-result, which strengthens the transfer considerably. And the analytical model is
-validated twice over, against density-matrix numerics (split propagation) *and*
-against experiment, so the exact-compensation claim is not resting on the
-analytics alone. What it sharpens rather than settles is the thing still worth
-reading the paper for: the abstract says a **validity range** is provided but not
-what it is, and whether this programme's geometry sits inside it is exactly the
-question.
+**Read 2026-07-31, and it weakens the transfer rather than strengthening it.**
+This note previously argued from the abstract that the geometry is "the same
+class as this programme's, not merely a general ladder result, which
+strengthens the transfer considerably". The excitation scheme is indeed the
+same class, Doppler-free and counterpropagating through a virtual intermediate
+level. The geometry is not.
+
+Their laser is focused by a **cylindrical lens** into a sheet, with measured
+waists of 26.1 and 86 µm along one axis and about 1 cm along the other, and it
+is crossed at right angles by a **collimated supersonic beam of Na₂ molecules**
+at 1340 m/s with a 260 m/s spread. This campaign focuses a circular beam into an
+isotropic thermal vapour. The compensation they derive is between wavefront
+curvature along a single particle path and the transit time of particles farther
+off axis, which is a statement about that crossed-beam arrangement.
+
+The paper makes the distinction itself, which is what settles it:
+
+> "mechanisms of the formation of Voigt profile … in the case of collimated
+> beams and in the case of thermal gases are different. In the former case all
+> molecules have nearly the same velocity, and the Voigt profile results from
+> Gaussian switching of coupling between the molecules and the laser field,
+> while in the latter case it results from the Maxwell velocity distribution"
+
+So both geometries give a Voigt profile and they arrive at it by different
+routes. Citing this paper as external support for a thermal-vapour transit
+kernel would be citing the right conclusion from the wrong mechanism.
+
+What does survive: the analytical model is validated twice, against
+density-matrix numerics and against experiment, so the compensation result is
+not resting on analytics alone. It is a clean statement that in a crossed-beam
+geometry the divergence does not add an independent width.
 
 **The result this programme needs.** For two-photon excitation in a three-level
 ladder, an analytical two-level treatment with a virtual intermediate level gives

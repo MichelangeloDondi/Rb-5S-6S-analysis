@@ -720,12 +720,21 @@ into a reference-free estimator:
   Andreeva, Mahrov, Tretyakov & Ekers, *PRA* **86**, 012501 (2012): two-photon
   excitation in a three-level ladder gives a Voigt whose width is set **solely by
   w₀**, because wavefront-curvature broadening is *exactly compensated* by the
-  longer transit of particles farther off axis — directly supports our
-  w₀-as-dominant-systematic story. **[CITE]**
-  *Corrected 2026-07-30: carried here as `bevilacqua2012` until then. Volume,
-  page, year and physics were right; there is no Bevilacqua among the authors.
-  Note also that the validation is a supersonic **Na₂ molecular beam**, not a
-  vapour cell — the transfer is geometric.*
+  longer transit of particles farther off axis. **[CITE]**
+
+  *Held and read 2026-07-31, which weakened its use here.* This entry said the
+  result "directly supports our w₀-as-dominant-systematic story" and that "the
+  transfer is geometric". The compensation is real and doubly validated, against
+  density-matrix numerics and against experiment, but it is derived for a
+  **cylindrical-lens sheet crossed by a collimated supersonic Na₂ beam**, not a
+  circular focus in a thermal vapour. The paper draws the distinction itself:
+  the Voigt profile forms by *different mechanisms* in the two cases, from
+  Gaussian switching of the coupling for a collimated beam and from the Maxwell
+  velocity distribution for a thermal gas. So it is the right conclusion reached
+  by a route this campaign does not share, and the in-repo support for the
+  transit kernel is M19's own change-of-variables check rather than this paper.
+  *Also corrected 2026-07-30: carried here as `bevilacqua2012` until then, and
+  there is no Bevilacqua among the authors.*
 
 **The 778 nm 5S→5D clock frontier (the competition — all *active* AC-Stark
 suppression; our passive method is the differentiator).** [FEED/CITE for §VI.D/§VII
