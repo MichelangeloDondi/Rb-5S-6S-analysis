@@ -262,74 +262,89 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
   into the canonical rulers, so this set plausibly belongs to the aborted
   attempt. Held out pending clarification.
 
-## 6. Facts that supersede the initial July brief
+## 6. What changed after the first pass, and why
 
-(Recorded because earlier numbers circulated before this analysis existed.)
+In July 2026, before this pipeline existed, a first-pass brief circulated with
+preliminary numbers from this dataset. Several were wrong. They are recorded
+here because they were seen by other people, so a reader who met them first
+needs to know which ones moved and what caused each error.
 
-**Error-plumbing hardening round (2026-07-16, follows the two entries below).**
-Five smaller review items closed, none moving a headline: (i) the
-block-coherent ruler-rate error (~0.5–1.8%) is now folded into every
-width-type error in `linefit_conditions.csv` (γ_coll, σ_laser, total FWHM,
-plus a `rate_relerr` column) — it was carried in `run_beta_self`/
-`run_power_sweep` but dropped where the per-condition widths are made; the
-remaining bare-rate consumers each carry an explicit justified-omission
-comment (BIC: a common scale cancels; areas: dwarfed by the 20–40%
-between-block systematic; hierarchical β: ≤0.0006 vs ±0.004 stat). (ii)
-`noise_floor_limited` and `*_at_bound` flags now travel in
-`linefit_conditions.csv`, `beta_self.csv` and `global_fit.csv`: scipy's
-covariance ignores active bounds, so a parameter pinned at its zero rail
-wears a symmetric error where the truth is one-sided — the flag makes that
-visible per row. (iii) the transit-MC FWHM is now read with sub-grid
-interpolation: the old raster read quantized it to the 0.01 MHz step, so the
-committed "MC errors" were the grid quantum in disguise (exact multiples of
-0.0041); the seed spread now measures genuine sampling noise. (iv) the noise
-law's σ(V) floor rose from 0.2·a to a (the dark noise is the physical floor);
-verified zero-churn — the one negative-c law turns over at 0.756 V, above its
-own 0.525 V maximum level, so the floor never engages in-domain and the
-hazard was only ever out-of-domain. (v) tests: a floor test past the
-turnover; flags plumbed through the suite.
+The brief's central mistake was reading the frequency ruler. It seeded a scan
+rate of 0.49 MHz/ms by taking noise substructure for comb teeth, and read the
+two strong 6.25 MHz sidebands as "two triplets 270 to 280 ms apart". The comb
+teeth are actually about 147 ms apart, which is 0.043 MHz/ms, eleven times
+slower. Every absolute width in the brief inherited that factor.
 
-**The β_self bound gains proper coverage and the density systematic
-(2026-07-16).** The headline per-peak bound changed **0.07–0.15 → 0.2–0.4 MHz
-per 10¹² cm⁻³**, again with no change to data or fits — two coverage
-corrections. (i) The between-block scatter that dominates the slope error is
-estimated on **one residual degree of freedom** (3 density points, 2
-parameters), so the one-sided 95% multiplier is the Student-t quantile
-$t(0.95,1)=6.31$, not the hard-coded 2 — the old "≈2σ" under-covered, which is
-exactly what its "~factor-2 own-uncertainty" prose flag was admitting; the
-t-quantile turns the flag into the number. (ii) β ∝ 1/N, so the ~20% spread
-between published vapor-pressure correlations (`density.py`,
-`N_SCALE_FRAC_SYST`) moves every β by the same fraction; the cold-spot
-direction makes the fitted β an *under*estimate, so the bound inflates on the
-+ side (×1.2). The selection rule also flips: the *loosest* peak is the conservative
-single-number floor (the min of noisy 1-DOF estimates is the down-fluctuated
-one), not the tightest. The 130 °C lever variant (dof = 2)
-barely moves (0.03–0.05) but keeps a caveat — a re-grounded one: the clock
-puts it 2.3 h from the 110 °C dwell inside the same campaign (the 9.6 h break
-is between 110 °C and 90 °C), so the objection is not a session boundary but
-that it is an extreme lever point, and that T is confounded with elapsed time
-across the whole campaign. The hierarchical
-global-fit β gains a `beta_nscale_syst` row (±20% of β). A constant cold-spot
-offset also *tilts* the N(T) lever by ~2.3%/K of offset (slope, not scale) —
-quantified in `density.py`, recorded, not propagated (second-order).
+Two later corrections moved headline numbers after this pipeline existed, and
+neither came from new data or a refitted model. Both were interval
+construction. They are the two entries below marked as such.
 
-**AC-Stark bound reconstructed as a profile-likelihood limit (2026-07-16).**
-The quoted archival bound changed **3.1 → 0.63 MHz** (95%, $S_0$ at 225 mW) with
-**no change to the data or the fit** — only to the interval construction. The
-best fit rails at $\kappa=0$, where the width handle ($\propto S_0^2$) has zero
-gradient; a linearized (Wald) $\kappa+1.645\sigma$ interval evaluated there has
-no valid coverage — its $\sigma$ is a finite-difference artifact, and it
-happened to be a large one (the old 3.1). The profile-likelihood limit (scan
-$\kappa$, re-minimize the per-peak cores, one-sided $\Delta\chi^2=2.706$ scaled
-by $\chi^2_\text{red}\approx4.3$ for over-dispersion) crosses at 0.63 MHz —
-checked smooth and grid-stable (identical to 0.1 MHz at half the frequency-grid
-step). Physical reading: the bound brackets the predicted coefficient (0.59 MHz at
-the 50 µm prior) rather than demonstrating sensitivity to it — the predicted
-effect is ~0.09 MHz against a 0.088 MHz single-block width scatter, so the
-bound comes entirely from averaging, an assumption M17 finds untested.
-Anything much above the prediction is excluded, while the prediction itself and zero remain
-allowed. The superseded Wald rows stay in `stark_sweep.csv` as labelled
-diagnostics. Downstream, the $\Delta\alpha$ bracket tightens $\sim5800 \to \sim1200$ a.u. (~1.1× the computed 1093), still $w_0$-conditional.
+**Error-plumbing round (2026-07-16).** Five review items closed, none moving a
+headline number: the block-coherent ruler-rate error is now folded into every
+width-type error in `linefit_conditions.csv`; `noise_floor_limited` and
+`*_at_bound` flags travel with the fits, so a parameter pinned at a rail no
+longer wears a symmetric error silently; the transit-MC FWHM is read with
+sub-grid interpolation, which turned out to matter because the committed "MC
+errors" had been the 0.01 MHz grid quantum in disguise; the noise-law floor
+rose to the dark-noise level, verified zero-churn; and tests were added for
+both. Detail is in the commits.
+
+**The collisional bound, 0.07–0.15 → 0.2–0.4 MHz per 10¹² cm⁻³
+(2026-07-16).**
+
+*What was wrong.* The interval used a hard-coded 2σ multiplier.
+
+*How it surfaced.* The between-block scatter that dominates the slope error is
+estimated on **one residual degree of freedom**, three density points against
+two parameters. With one degree of freedom the one-sided 95% multiplier is the
+Student-t quantile $t(0.95,1) = 6.31$, not 2. The old interval therefore
+under-covered, which its own prose flag had been admitting in words ("~factor-2
+own uncertainty") without acting on it.
+
+*What it taught.* Two things. A hard-coded multiplier hides its own assumption
+about degrees of freedom, so the quantile must be computed from the fit. And
+because β scales as 1/N, the ~20% spread between published vapour-pressure
+correlations moves every β by the same fraction (`density.py`,
+`N_SCALE_FRAC_SYST`); the cold-spot direction makes the fitted β an
+underestimate, so the bound inflates on the + side by ×1.2. The selection rule
+flips with it: the *loosest* peak is the conservative single-number floor,
+because the minimum of noisy one-degree-of-freedom estimates is the
+down-fluctuated one.
+
+The 130 °C lever variant (dof = 2) barely moves, 0.03 to 0.05, and keeps a
+caveat. The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
+so the objection is not a session boundary but that it is an extreme lever
+point, with T confounded against elapsed time across the whole campaign. The
+hierarchical global-fit β gains a `beta_nscale_syst` row at ±20%. A constant
+cold-spot offset also tilts the N(T) lever by ~2.3%/K of offset, which is a
+slope effect rather than a scale one, quantified in `density.py` and recorded
+but not propagated as second order.
+
+**The AC-Stark bound, 3.1 → 0.63 MHz (2026-07-16).** 95% limit on $S_0$ at
+225 mW.
+
+*What was wrong.* The interval was built by linearising at the best fit. The
+best fit rails at $\kappa = 0$, and the width handle there goes as $S_0^2$, so
+its gradient vanishes. A Wald interval $\kappa + 1.645\sigma$ evaluated at that
+point has no valid coverage, and its $\sigma$ was a finite-difference artifact
+that happened to be large.
+
+*How it surfaced.* Rebuilding the limit by profile likelihood: scan $\kappa$,
+re-minimise the per-peak cores at each step, one-sided $\Delta\chi^2 = 2.706$
+scaled by $\chi^2_{\rm red} \approx 4.3$ for over-dispersion. That crosses at
+0.63 MHz, checked smooth and stable to 0.1 MHz at half the frequency-grid step.
+
+*What it taught.* At a boundary, a linearised interval reports the curvature of
+the fitter rather than the constraint from the data. The physical reading also
+changed with it, and became weaker rather than stronger: the bound brackets the
+predicted coefficient (0.59 MHz at the 50 µm prior) instead of demonstrating
+sensitivity to it. The predicted effect is ~0.09 MHz against 0.088 MHz of
+single-block width scatter, so the bound comes entirely from averaging, an
+assumption M17 finds untested. Anything far above the prediction is excluded,
+while the prediction itself and zero both remain allowed.
+
+The superseded Wald rows stay in `stark_sweep.csv` as labelled diagnostics.
+Downstream, the $\Delta\alpha$ bracket tightens from ~5800 to ~1200 a.u.
 
 **Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
 ground rule in `PLAN.md` (old *code* is never read; old *outputs* serve only as
@@ -362,6 +377,8 @@ conclusions:
   reduced χ² of 2–5 is consistent with a missing model component. The disagreement traces to which
   mechanisms are in the model at all, not to fitting quality — which is what
   motivated the from-scratch re-derivation.
+
+### The brief's numbers, item by item
 
 - **Scan rate**: comb teeth are ~147 ms apart ⇒ ≈ 0.043 MHz/ms on the laser
   axis (preliminary, finder-level) — ~11× slower than the brief's
@@ -409,6 +426,12 @@ conclusions:
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   OVERCONFIDENT — they assume one shared σ_laser across blocks and so omit the
   between-block drift the model-independent probe exposes.
+### Audit and curation decisions
+
+Kept because each one settles a question a reader of `MANIFEST.csv` could
+otherwise reopen. They are decisions about the archive, not corrections to
+the brief, and they moved no headline number.
+
 - **RF-on rulers are fold-robust (checked 2026-07-11, do not re-litigate).**
   The rulers were taken with the same sweeps as their blocks, so one might
   worry the off-center-sweep fold (below) also corrupts the tooth-spacing
