@@ -13,8 +13,8 @@ pages: 045046
 year: 2024
 doi: 10.1088/2058-9565/ad77ef
 arxiv: 2406.09352
-pdf: null
-held: false
+pdf: PDF_papers/Duspayev_2024_optical-clock-4DJ-states-rubidium.pdf
+held: true
 status: VERIFIED
 routing:
   - FEED

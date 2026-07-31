@@ -29,10 +29,16 @@ def test_static_anchors():
 
 
 def test_measured_tuneout_reproduced():
-    # Leonard et al. 2015: 790.03235(3) nm. The model does not use this
-    # number; hitting it validates the D-line matrix-element ratio and the
+    # Leonard et al. 2015 as corrected by their 2017 erratum (PRA 95,
+    # 059901(E)): 790.032326(32) nm. The model does not use this number;
+    # hitting it validates the D-line matrix-element ratio and the
     # 6P-12P + tail + core budget at the few-pm level.
-    assert abs(tuneout_5s() - 790.03235) < 0.2
+    #
+    # The "790.03235(3)" that stood here until 2026-07-31 appears in NEITHER
+    # document -- see rb5s6s/polarizability.py:tuneout_5s. The tolerance is
+    # 0.2 nm, three orders above the 0.062 pm between the published values, so
+    # this assertion never distinguished them; only the provenance changed.
+    assert abs(tuneout_5s() - 790.032326) < 0.2
 
 
 def test_delta_alpha_993_magnitude_matches_orson():
@@ -184,7 +190,8 @@ def test_sign_is_anchored_to_measurements_not_to_a_convention():
 
     This work's sign is not a convention choice. alpha_5S is pinned by two
     measurements the model does not fit: the static polarizability (+318.79(1.42)
-    measured) and the tune-out wavelength (790.03235(3) nm measured). A ground
+    measured) and the tune-out wavelength (790.032326(32) nm measured, Leonard's
+    2015 value as corrected by their 2017 erratum). A ground
     state far below resonance must be positively polarizable; if that ever comes
     out negative the sum-over-states has a global sign fault and every
     Delta_alpha statement downstream is void.

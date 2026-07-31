@@ -15,44 +15,37 @@ pages: 013818
 year: 2013
 doi: 10.1103/PhysRevA.87.013818
 arxiv: null
-pdf: null
-held: false
-status: REPORTED
+pdf: PDF_papers/theses/Perrella_2013_PhD-thesis_nonlinear-spectroscopy-Rb-hollow-core-fibres.pdf
+held: true
+status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'REPORTED. The bibliographic record is from Crossref, authoritative for the
-    DOI, and confirms the author list, title, volume, page and the 17 January
-    2013 date exactly as supplied; the abstract was supplied verbatim by the
-    experimenter the same day. The paper itself has not been read and APS
-    returns 403 without a subscription.'
-  - 'The abstract says absorption was maintained over detunings up to 9 GHz
-    "from an intermediate state". A DEGENERATE 778 nm two-photon excitation sits
-    of order 1 THz from 5P_3/2, so a 9 GHz detuning scale implies a TWO-COLOUR
-    scheme (near 780 + 776 nm) rather than the degenerate one -- but the
-    abstract does not say, and this note must not assume it. Settle it from the
-    full text before citing the geometry.'
-  - 'The hollow-core fibre type and core diameter are not in the abstract. The
-    transit arithmetic in the body is therefore an inference about their
-    linewidth, not a reading of their paper.'
+  - 'HELD VIA THE THESIS, NOT THE ARTICLE. The APS paper is paywalled and has no
+    arXiv preprint (checked 2026-07-30). What is held is the first author''s
+    open-access UWA PhD thesis, "Non-Linear Spectroscopy of Rubidium in
+    Hollow-Core Fibres" (Feb 2013, 235 pp, supervisors Luiten and Light), which
+    REPRINTS this paper in full including its abstract, setup and figures.
+    Quotations below are from that reprint. Page and figure numbers are the
+    article''s own.'
+  - 'The two questions this note previously carried as OPEN are now SETTLED from
+    that reprint, and both had been guessed correctly in one case and wrongly in
+    the other -- see the body. Excitation: TWO-COLOUR, 780 + 776 nm. Fibre:
+    kagome HC-PCF, 45 um CORE DIAMETER, 40 cm, at 90 C.'
+verified_date: 2026-07-31
 summary: >
-  Two-photon spectroscopy of THERMAL Rb vapour confined in the hollow core of a
-  photonic-crystal fibre (Adelaide/Luiten with Benabid): linewidths as narrow as
-  10 MHz on 5S1/2 -> 5D5/2, resolving the excited-state hyperfine structure,
-  with very strong nonlinear absorption (>90%) observed and "substantial"
-  absorption maintained out to 9 GHz of intermediate-state detuning -- two
-  separate statements in the abstract, the weaker quantifier attached to the
-  detuning range. The high-resolution counterpart to saha2010 in the same
-  geometry, and the closest published indication of what confinement COSTS in
-  linewidth: 10 MHz is the right order for a transit-limited FEW-MICRON guided
-  mode by this repository's own transit formula. The published hollow cores in
-  this lineage are TIGHTER still -- Saha's own is a 6 um Crystal Fiber AIR-6-800
-  (~28 MHz) and Slepkov's stated 1e-7 cm^2 area is ~1.8 um (~33 MHz) -- so
-  Perrella's 10 MHz is if anything better than those geometries predict, and the
-  realistic penalty against free space is 15-30x for THOSE fibres. The 18 um
-  mode field this note previously credited to saha2010 appears in NO held paper:
-  it is the experimenter's own CRYST3 apparatus at Bologna, gives ~3.3 MHz, and
-  is an UNSOURCED apparatus fact needing confirmation (radius or diameter?).
+  Two-photon spectroscopy of THERMAL Rb vapour in a hollow-core fibre
+  (Adelaide/Luiten with Benabid), 5S1/2 -> 5D5/2, linewidths as narrow as
+  10 MHz, >90% nonlinear absorption, absorption sustained to 9 GHz of
+  intermediate-state detuning. Held from 2026-07-31 via the first author's
+  open-access PhD thesis, which reprints the paper. TWO CORRECTIONS TO THIS
+  NOTE followed: the excitation is TWO-COLOUR (780 + 776 nm, an ECDL and a
+  Ti:sapphire), as the 9 GHz detuning scale had suggested; and the fibre is a
+  kagome HC-PCF of 45 um CORE DIAMETER at 90 C, so the mode radius is ~15 um
+  and transit accounts for only 3-4 MHz of the 10 MHz -- NOT the few-micron,
+  transit-limited mode this note previously inferred by reading the geometry
+  backwards out of the linewidth. The thesis points at coupling to higher-order
+  transverse modes, caused by the curved large-core fibre, for the remainder.
 loci:
   - M9
   - P2
@@ -61,10 +54,12 @@ section: oist-lineage
 
 # perrella2013
 
-**REPORTED, 2026-07-30.** Record from Crossref (authoritative for the DOI, and
-it confirms every field the experimenter supplied); abstract supplied verbatim by
-the experimenter from the publisher listing. Not held, not read — APS returns 403
-without a subscription.
+**VERIFIED 2026-07-31, via the thesis.** The APS article is paywalled and has no
+arXiv preprint, but the first author's open-access UWA PhD thesis — *Non-Linear
+Spectroscopy of Rubidium in Hollow-Core Fibres*, 235 pp — reprints it in full,
+and is what is held. The record itself came from Crossref (authoritative for the
+DOI, confirming every field the experimenter supplied) and the abstract was
+supplied verbatim by the experimenter from the publisher listing.
 
 **Abstract, verbatim.** "We present two-photon spectroscopy of a thermal rubidium
 vapor confined to the hollow core of a photonic-crystal fiber. Linewidths as
@@ -76,10 +71,15 @@ ideal for many frequency metrology and quantum optics applications."
 
 ## Where it sits
 
-[saha2010](saha2010.md) is the existence proof — Doppler-free two-photon Rb at
-778 nm inside a hollow core, 1% absorption at 1 mW. This is the same geometry
-pushed to **high resolution and near-complete absorption**: >90% nonlinear
-absorption, and a line narrow enough to resolve 5D₅∕₂ hyperfine structure. Where
+[saha2010](saha2010.md) is the existence proof — *degenerate* Doppler-free
+two-photon Rb at 778 nm inside a **6 µm-core** photonic band-gap fibre, 1%
+absorption at 1 mW. This is the same **platform** pushed to **high resolution
+and near-complete absorption**: >90% nonlinear absorption, and a line narrow
+enough to resolve 5D₅∕₂ hyperfine structure. It is **not the same experiment**,
+and the note used to call it "the same geometry", which it is not: the core here
+is a 45 µm kagomé, seven times wider, and the excitation is **two-colour
+780 + 776 nm** rather than degenerate 778 nm. Both differences change what
+transfers. Where
 [slepkov2010](slepkov2010.md) models the AC-Stark shift through a Gaussian-core
 guided mode, this measures what the resulting line actually looks like. It
 belongs in the guided-mode paragraph of `LITERATURE.md` §5 alongside those two.
@@ -101,19 +101,39 @@ from the paper):
 | 12 µm | 4.9 MHz |
 | 20 µm | 2.9 MHz |
 
-Their "as narrow as 10 MHz" lands at $w_0 \approx 5$–6 µm, entirely plausible for
-a hollow core at 780 nm — so the reported linewidth is *consistent with* being
-transit-limited by the guided mode, against this campaign's **1.19 MHz** at the
-free-space $w_0 = 50$ µm prior.
+**That inference was wrong, and the paper's own thesis says so
+(2026-07-31).** It read the geometry backwards out of the linewidth: "as narrow
+as 10 MHz" was taken to imply $w_0 \approx 5$–6 µm. The fibre is nothing like
+that. Perrella's PhD thesis (`theses/`, 235 pp, open access from UWA, which
+reprints this paper in full) states the setup outright: a **kagomé HC-PCF of
+45 µm core diameter**, 40 cm long, at **90 °C**, with a mode radius therefore
+around 15 µm. Recomputed at that geometry:
+
+| $w_0$ | transit FWHM at 90 °C |
+|---|---|
+| 14.6 µm ($0.65a$) | **3.98 MHz** |
+| 15.8 µm ($0.70a$) | **3.69 MHz** |
+| 22.5 µm (= core radius, upper bound) | 2.58 MHz |
+
+So **transit accounts for only 3–4 MHz of their 10 MHz**, not the whole of it,
+and this paper is *not* an example of a transit-limited hollow-core line. The
+thesis names a likely source of the remainder: the fibre "was curved between the
+vacuum chambers, which, combined with its large core diameter, resulted in
+**coupling to higher-order transverse optical modes**" — several modes with
+different intensity profiles, which broadens a two-photon line without any of it
+being transit. Pressure broadening they put at ≈12 kHz, negligible.
 
 **The penalty depends entirely on which fibre, and this note has now been wrong
 about it in both directions.** The scaling is $1/w_0$. A first version called it a
 flat "factor of ten"; a correction then put the repository's own candidate at
 3.3 MHz — a factor of 2.8 — on the strength of an **18 µm mode field** attributed
 to [saha2010](saha2010.md) and [slepkov2010](slepkov2010.md). **Both attributions
-were wrong** (checked 2026-07-30): neither paper contains an 18 µm figure, and
-that number is an apparatus value for a *prospective* collaboration supplied by
-the experimenter, not a literature quantity.
+were wrong** (checked 2026-07-30): neither paper contains an 18 µm figure. The
+description that replaced them — "an apparatus value for a *prospective*
+collaboration" — was **also wrong**, and was retracted in
+[saha2010](saha2010.md): the CRYST³ fibre is the experimenter's **own operating
+apparatus** at Bologna, not a prospect. It is now sourced to
+[nasoni2026](nasoni2026.md).
 
 The hollow cores actually in this literature are much tighter, and the penalty is
 correspondingly much worse (CALCULATED at 100 °C with the repo's own function):
@@ -124,30 +144,51 @@ correspondingly much worse (CALCULATED at 100 °C with the repo's own function):
 | Slepkov's stated area $10^{-7}$ cm² | ~1.8 µm | **33 MHz** |
 | a 10 µm core (Slepkov's acetylene citation) | ~3.5 µm | **17 MHz** |
 | free-space campaign prior | 50 µm | 1.2 MHz |
-| *prospective* 18 µm mode field (experimenter, not literature) | 18 µm | *3.3 MHz* |
+| CRYST³ 1064 nm ODT injection waist, a RADIUS ([nasoni2026](nasoni2026.md)) | 18 µm target; 17.1×19.3 µm measured | *3.1–3.4 MHz* |
 
-So Perrella's 10 MHz is, if anything, **better than the published hollow-core
-geometries would predict** — it implies a looser mode than Saha's or Slepkov's,
-and the penalty across *that literature* is roughly **15–30×**, not 3× and not
-10×.
+So Perrella's 10 MHz is narrower than transit alone would give in any of the
+*published* hollow cores — but **that follows from their fibre, which is now
+known, not from their line**. The thesis states a 45 µm kagomé core, putting the
+mode radius near 15 µm by the $0.65a$–$0.70a$ convention, seven to eight times
+looser than Saha's or Slepkov's. *An earlier version of this sentence said the
+10 MHz "implies a looser mode than Saha's or Slepkov's" — that is the
+reading-the-geometry-backwards-out-of-the-linewidth move this note already
+retracted once, and it is withdrawn here too.* The penalty across *that
+literature* is roughly **15–30×**.
 
 **But the relevant fibre is not one of theirs.** The experimenter's own CRYST³
 hollow core (EU H2020 GA 964531, the Bologna apparatus behind their doctoral
-work) is quoted at an 18 µm mode field, which gives **3.3 MHz** — a factor of
-2.8. So there are two different statements and they must not be run together:
-*published* hollow cores in the Rb two-photon literature are tight and cost
-15–30×; *this programme's* fibre is much larger and costs about 3×. Perrella
-sits between them. **The 18 µm itself is an apparatus fact with no source in
-this repository** and needs confirming by the experimenter, including whether it
-is a radius or a diameter — as a radius it gives 3.3 MHz, as a diameter
-6.6 MHz.
+work) runs an ~18 µm injection waist, giving **3.1–3.4 MHz**. So there are two
+different statements and they must not be run together: *published* hollow cores
+in the Rb two-photon literature are tight and cost 15–30×; *this programme's*
+fibre is much larger and costs about 3×.
 
-*And the whole comparison is an inference.* The core diameter is not in the
-abstract, the vapour temperature in the fibre is not either, and 10 MHz may
-include laser width, power broadening or collisional contributions that would
-push the implied $w_0$ larger — which would shrink the penalty further. The claim
-defended here is only that 10 MHz is the right order for a transit-limited
-few-micron mode, not that their line *is* transit-limited.
+**The 18 µm was an apparatus fact with no source in this repository, and was
+sourced 2026-07-31** — a held master's thesis on that apparatus
+([nasoni2026](nasoni2026.md), co-supervised by the experimenter). It is an **injection beam waist**, hence a **RADIUS**, so
+the 3.3 MHz reading was the right one and the 6.6 MHz alternative is dead. It is
+also *measured*: 17.1 ± 0.7 µm by 19.3 ± 0.4 µm, slightly elliptical, against an
+18 µm design target and a 13.6 ± 0.1 µm ideal thin-lens value. **The live caveat
+is now a different one:** that is the **1064 nm optical-dipole-trap** beam, not
+a two-photon probe, and a hollow-core mode depends on wavelength — so carrying
+it over to a 778 nm line is an assumption, and it rests on an unpublished
+thesis.
+
+**And with the geometry known, Perrella lands next to this programme's fibre
+rather than between the two groups.** A ~15 µm mode radius against a *measured*
+17.1–19.3 µm injection waist is the same regime. That makes this the **most
+relevant published point in the table** — and its lesson is not the transit
+number, which is a comfortable 3–4 MHz, but that the *measured* line was
+10 MHz. In a real large-core fibre,
+transit was less than half the width. Whatever a guided-mode extension of this
+campaign budgets for transit, it should budget separately for mode structure.
+
+*The residual inference.* The vapour temperature quoted here is the thesis's
+90 °C, but the mode radius is not measured in the reprint as read — the 14.6 and
+15.8 µm entries are the conventional $0.65a$–$0.70a$ fractions of the stated
+45 µm core, not a published mode field. And the 10 MHz may still include laser
+width and power broadening, which would leave even less of it for anything
+positional.
 
 ## The compensation, which needs stating carefully
 
@@ -167,11 +208,26 @@ their own intensity structure to model. The defensible version is that the
 measurement moves from a knife-edge on a free-space focus to a mode
 characterisation on a fibre, which is a different and more stable problem.
 
-## What to check in the full text
+## What the full text settled, and what it did not
 
-Whether the excitation is degenerate 778 nm or two-colour (see the verify flag —
-the 9 GHz detuning scale suggests two-colour, and it changes what transfers);
-what the core diameter and mode field radius actually are, which converts the
-table above from an inference into a comparison; and how they decompose the
-10 MHz, since a published transit/power/collisional budget in a guided geometry
-is directly reusable and is exactly what M9 does in free space.
+Two of the three questions this section used to pose are **answered** from the
+thesis reprint (2026-07-31).
+
+**Excitation is two-colour**, as the 9 GHz detuning scale had suggested —
+verbatim: "Two lasers, of wavelengths 780 and 776 nm, drove the
+5S₁∕₂ → 5D₅∕₂ two-photon transition", an ECDL and a Ti:sapphire. That matters
+for what transfers: a two-colour ladder has a residual first-order Doppler term
+and an intermediate-state detuning knob that a degenerate 778 nm scheme does
+not, so their 9 GHz result is **not** a statement about the degenerate geometry
+this campaign runs.
+
+**The geometry is a 45 µm-core kagomé HC-PCF**, 40 cm, at 90 °C — settled, and
+it overturned this note's earlier inference (see above).
+
+**The decomposition of the 10 MHz is still not fully in hand.** Transit gives
+3–4 MHz and pressure ≈12 kHz; the thesis attributes the remainder to
+higher-order transverse mode coupling but, as read so far, does not turn that
+into a line in a budget. A published transit/power/collisional budget in a
+guided geometry is directly reusable and is exactly what M9 does in free space,
+so **extracting it from the thesis is worth a dedicated pass** — the reprint is
+held, so this is reading, not fetching. **[OPEN]**

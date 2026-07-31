@@ -60,7 +60,7 @@ def main() -> int:
     print("\n  VALIDATION (anchors the model does not use):")
     print(f"    alpha_5S(0)  = {a5s:8.2f} au   (measured 318.79(1.42))")
     print(f"    alpha_6S(0)  = {a6s:8.1f} au   (Safronova-group 5167(22); tail calibrated)")
-    print(f"    5S tune-out  = {t0:9.3f} nm  (measured 790.03235(3))")
+    print(f"    5S tune-out  = {t0:9.3f} nm  (measured 790.032326(32))")
     print("\n  THE DIFFERENTIAL AT 993 nm (the independent recompute):")
     b = mc_band(lambda k5, k6: _a6(k6, 993.0) - _a5(k5, 993.0))
     print(f"    Delta_alpha(993) = {da993:+.0f} au  [band {b['lo']:+.0f} .. {b['hi']:+.0f}]")
@@ -90,7 +90,8 @@ def main() -> int:
         w.writerow(["alpha_6s_static", "model", f"{a6s:.1f}",
                     "au; tail calibrated to the Safronova-group 5167(22)"])
         w.writerow(["tuneout_5s", "model", f"{t0:.4f}",
-                    "nm; validation vs measured 790.03235(3) (Leonard 2015)"])
+                    "nm; validation vs measured 790.032326(32) "
+                    "(Leonard 2015 as corrected by the 2017 erratum)"])
         # The two states SEPARATELY at 993 nm. These carry the sign argument:
         # 993 nm lies in the gap between the 6S->5P cascade (1324/1367 nm) and
         # the 5S D lines (780/795 nm), so it is BLUE of 6S's nearest strong

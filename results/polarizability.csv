@@ -1,7 +1,7 @@
 quantity,key,value,unit,status
 alpha_5s_static,model,318.28,au; validation vs measured 318.79(1.42) (Holmgren 2010),DIAGNOSTIC
 alpha_6s_static,model,5167.0,au; tail calibrated to the Safronova-group 5167(22),DIAGNOSTIC
-tuneout_5s,model,790.0339,nm; validation vs measured 790.03235(3) (Leonard 2015),DIAGNOSTIC
+tuneout_5s,model,790.0339,nm; validation vs measured 790.032326(32) (Leonard 2015 as corrected by the 2017 erratum),DIAGNOSTIC
 alpha_5s_993,model,833.6,au; POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm),DIAGNOSTIC
 alpha_6s_993,model,-311.7,"au; NEGATIVE -- 993 nm is blue of the 6S->5P cascade (1324/1367 nm), the dominant 6S term",DIAGNOSTIC
 delta_alpha_993,model,-1145,"au (alpha_6S - alpha_5S); band -1151..-1140; |value| within ~5% of Orson 2021's 1093 but OPPOSITE sign (6S pushed up at 993 nm => blue shift) -- flagged, archival results sign-immune",DIAGNOSTIC

@@ -68,15 +68,21 @@ KNOWN_DANGLING = {
     # sadeghi2026 ref [25] -- PRA 97, 032509 (2018), spectral asymmetry in the
     # van der Waals potential of an ONF, the direct precedent for Paper 2.
     "nunes2024", "weiss2018", "bjorkholm1976",
-    # sieradzan2004 (PRA 69, 022502): record confirmed via Crossref 2026-07-30
-    # and cited in LITERATURE.md as the experimental check on the Cs 8s-6pj
-    # matrix elements in iskrenovatchoukova2007. An attempt to add the PDF the
-    # same day did not land, so it has no lit file yet.
-    # boustimi2002 (PRB 65, 155402): the van der Waals shift near a cylinder,
-    # sague2007's ref [15] and the second theory input the Patterson refit needs.
-    # Confirmed paywalled again 2026-07-30 (no arXiv preprint, no repository
-    # copy, no OA route; real title is "van der Waals interaction between an
-    # atom and a metallic nanowire" -- the citation elsewhere is a paraphrase).
+    # (sieradzan2004 was described here as having no lit file, on the strength of
+    # a PDF add that "did not land". That is FALSE and was removed 2026-07-31:
+    # docs/lit/sieradzan2004.md exists, held and VERIFIED, with the arXiv
+    # preprint physics/0308092 on disk. The stale comment sat directly above the
+    # allow-list and read as if it were justifying an entry in it.)
+    # boustimi2002 (PRB 65, 155402): sague2007's ref [15], long carried here as
+    # the second theory input the Patterson refit needs. Confirmed paywalled
+    # again 2026-07-30 (no arXiv preprint, no repository copy, no OA route; real
+    # title is "van der Waals interaction between an atom and a metallic
+    # nanowire" -- the citation elsewhere is a paraphrase). DEMOTED 2026-07-31
+    # and no longer on the critical path: Sague CALCULATED their own vdW shift
+    # and cite this for the method, and both Boustimi papers work the metallic
+    # wire while the fibres are silica. frawley2012 replaces it and is HELD --
+    # frawley2012 was supplied by the experimenter 2026-07-31 and is held.
+    # boustimi2002 stays in this list only because the notes still name it.
     "boustimi2002",
 }
 
@@ -92,6 +98,13 @@ QUARANTINE = {
 
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
 INTENTIONAL_PREFIX_PAIRS = {("rajasree2020", "rajasree2020spin"),
+    # THREE distinct Rajasree 2020 documents, and conflating them is not
+    # hypothetical: until 2026-07-31 both LITERATURE.md and rajasree2020.md
+    # attributed the thesis's 993 nm vapour-cell apparatus to the PRR paper's
+    # key. rajasree2020 = PRR 2, 012038 (cold Rydberg near an ONF, no warm
+    # cell); rajasree2020thesis = the OIST PhD thesis, whose section 5.2 IS
+    # that cell apparatus and carries the density.py N(T) FEED.
+    ("rajasree2020", "rajasree2020thesis"),
     # same first author, same year, different papers: JOSA B 9 2163
     # (with Lambropoulos) and Opt. Commun. 91 343 (with Klimcak)
     ("camparo1992", "camparo1992b"),

@@ -334,7 +334,7 @@ This was formerly flagged as the number most wanting a theorist's check; it is n
 **The independent recompute now exists in-repo** (`rb5s6s/polarizability.py`,
 M16): a sum-over-states model from Safronova-lineage matrix elements, validated
 on anchors it does not use — it reproduces the *measured* 5S scalar tune-out
-790.03235 nm to $\approx2$ pm, the measured static $\alpha_{5S}=318.79(1.42)$,
+790.032326(32) nm to $\approx1.6$ pm, the measured static $\alpha_{5S}=318.79(1.42)$,
 and the Safronova-group static $\alpha_{6S}=5167(22)$. It **confirms the
 magnitude**, $|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093 —
 **but finds the opposite sign**: $\alpha_{6S}(993)\approx-330$ a.u. (the
@@ -379,7 +379,14 @@ check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 > **Where this work's sign comes from, and why it is not a convention choice.**
 > $\alpha_{5S}$ here is anchored to two measurements the model does not fit:
 > the static value, $+318.28$ against the measured $318.79(1.42)$, and the
-> tune-out at $790.0339$ nm against the measured $790.03235(3)$. A positive
+> tune-out at $790.0339$ nm against the measured $790.032326(32)$ — Leonard's
+> 2015 measurement **as corrected by their 2017 erratum** (PRA **95**,
+> 059901(E)), both now read from held PDFs. *A "790.03235(3)" stood here until
+> 2026-07-31 and appears nowhere in either document; the 2015 paper states five
+> different wavelengths and none of them is that one.* The erratum restores a
+> ground-state Zeeman shift omitted from $\omega'$, calling it "an adjustment of
+> about 2$\sigma$"; the superseded 2015 figure was $790.032388(32)$, 0.062 pm
+> away, against a 1.6 pm agreement, so nothing below turns on which is used. A positive
 > ground-state polarizability far below resonance is required physically, and
 > the model reproduces it. Orson reports only the difference, which cannot be
 > checked that way.

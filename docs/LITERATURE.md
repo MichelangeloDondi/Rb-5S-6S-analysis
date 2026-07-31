@@ -481,8 +481,13 @@ note; no such figure is in the paper. **[OPEN]**
   credited with an 18 µm hollow-core mode field that appears in **neither**
   paper — Saha's own fibre is a 6 µm Crystal Fiber AIR-6-800, and "CRYST3" is
   not in Slepkov at all. The 18 µm belongs to the experimenter's own CRYST³
-  fibre at Bologna, is unsourced in this repository, and is now tagged as an
-  apparatus fact awaiting confirmation.
+  fibre at Bologna; it was unsourced in this repository until 2026-07-31, when a
+  held master's thesis on that apparatus (Nasoni 2026) supplied it as the
+  **injection beam waist of the 1064 nm dipole-trap beam** — a **radius**. The
+  thesis calls ~18 µm the *target*; its ideal thin-lens value is 13.6 ± 0.1 µm,
+  but the measurement on the same page is 17.1 ± 0.7 µm by 19.3 ± 0.4 µm, so
+  ~18 µm is the figure to carry. It is an injection waist for the *trap* beam,
+  not the guided mode of a two-photon probe.
   [stalnaker2006](lit/stalnaker2006.md) was spot-checked on the two claims §5
   leans on: its Eq. (45) does extract a polarizability combination from fitted
   lineshapes — $\alpha_0^{ac}(^3D_1) + \alpha_2^{ac}(^3D_1) - \alpha_0^{ac}(^1S_0) = -0.312(34)$
@@ -593,10 +598,16 @@ archival bounds refine).
     amplitude/trapping comparisons against Nieddu must not assume the same
     collection channel (the 780/D2 branch sees a different optical depth than
     795/D1). QWP slots exist before L1 and before the CM.
-- **Rajasree-KP 2020** ([`rajasree2020`](lit/rajasree2020.md), OIST PhD thesis)
-  — repeats the same 993 nm cell setup and cites Steck for the Rb data,
-  confirming both the beam geometry and the N(T) vapor-pressure chain our
-  `density.py` uses. **[FEED]**
+- **Rajasree-KP 2020, OIST PhD thesis**
+  ([`rajasree2020thesis`](lit/rajasree2020thesis.md), held) — its §5.2 repeats
+  the same 993 nm cell setup (L1 with $f = 150$ mm, a **measured** 128 µm beam
+  *diameter*, concave-mirror retro at $f_{\rm CM} = 75$ mm, cell at 130 °C) and
+  cites Steck for the Rb data, confirming both the beam geometry and the N(T)
+  vapour-pressure chain our `density.py` uses. **[FEED, VERIFIED from the held
+  PDF]** *Corrected 2026-07-31:* this entry carried the citekey
+  [`rajasree2020`](lit/rajasree2020.md), which is a different document — *PRR*
+  **2**, 012038, cold Rydberg atoms near an ONF, with no warm cell. The prose
+  named the thesis; the key resolved to the paper.
 - **Rajasree 2020, PRR 2, 033341** ([`rajasree2020spin`](lit/rajasree2020spin.md),
   held) — *spin selection in single-frequency two-photon excitation*, tested on
   OUR line in two configs. **[CITE, ESTABLISHED]** Three load-bearing
@@ -901,10 +912,47 @@ surface/pushing effects are read.
   report — and what remains is Patterson plus Liu *et al.*
   The two theory inputs a refit needs are
   [klimovducloy2004](lit/klimovducloy2004.md) for $\gamma_{\rm free}(r)$, now
-  **held**, which derives analytical transition rates in the subwavelength
-  regime with guided-mode contributions exponentially small; and `boustimi2002`
-  (*PRB* **65**, 155402) for the van der Waals shift near a cylinder, which is
-  **not on arXiv and not held**. **[OPEN]**
+  **held**, with its quasistatic section and Conclusion read 2026-07-31 — it
+  derives analytical transition rates in the subwavelength regime with
+  guided-mode contributions exponentially small, **but licenses that closed form
+  only for $ka < 1/\varepsilon$** (VERIFIED, its Conclusion), which for fused
+  silica is 0.473 while Patterson sits at $ka = 0.967$ and Sagué at 1.844
+  (CALCULATED). Both fall in the band where that paper says guided-mode
+  influence is *substantial*, which is why Sagué carries a separate
+  $\gamma_{\rm guid}$. So the closed form **cannot simply be coded**; the refit
+  needs his Section IV, held and unread. And, for the van
+  der Waals shift near a cylinder, [frawley2012](lit/frawley2012.md) — *Phys.
+  Scr.* **85**, 058103, Nic Chormaic and Minogin — which gives closed analytical
+  equations for **metal and dielectric** nanocylinders in the electrostatic
+  approximation, and **is held** — supplied by the experimenter on 2026-07-31
+  after being named as the top outstanding want. (A claim that it "was in
+  `PDF_papers/` all along" stood here briefly and was wrong: the file's birth
+  time is 01:21 that night.) It replaces `boustimi2002` here: Sagué's own words are "we
+  **calculated** the vdW shift", so Boustimi is a method citation and not a
+  source of numbers, and both Boustimi papers work the *metallic* wire while
+  these fibres are silica. Frawley factorises the answer as
+  $U = -(C_3/x_0^3)\mu$; the correction $\mu$ tends to **unity** close in, where
+  "the curvature of the surface is of no importance", falling below 0.75 only at
+  $x_0 = R$, to "a little more than 0.5" at $x_0 = 5R$, and to about 0.2 at
+  $x_0 = 100R$ (VERIFIED, body text) — so a flat-surface form is adequate near a
+  nanofibre, and it is far from the surface that curvature bites. *A claim that
+  a flat-surface $C_3/r^3$ **overestimates** the shift at nanofibre distances by
+  about a factor of two stood in this ledger for a few hours on 2026-07-31,
+  taken from a paraphrase of Frawley's abstract; it is withdrawn — the body
+  says the opposite.* Note too that Frawley's own electrostatic derivation is
+  licensed only for $ka < 1$, which Patterson's fibre meets marginally (0.967)
+  and Sagué's fails (1.844). **[OPEN]** — the Bessel integrands must
+  be read off the rendered page before coding; they do not extract reliably.
+  Its **concave** counterpart [afanasiev2010](lit/afanasiev2010.md) (*PRA*
+  **82**, 052903, Minogin with Afanasiev) was supplied the same day and covers
+  the *hollow-core* interior in the identical factorised form: $\mu \to 1$ at the
+  wall again, rising to **4** near the axis (and 2× the two-parallel-plane
+  result). Together the two settle both curvatures from primary sources and
+  retire the sphere→cylinder extrapolation that
+  [schmidt2011](lit/schmidt2011.md) had been carrying — the cylinder figure is 4,
+  not the sphere's 6. **The concave enhancement costs the guided-mode extension
+  nothing:** it multiplies $C_3/x_0^3$ on the axis, which for bores from 250 nm
+  to 22.5 µm is $10^{-4}$ to $10^{-10}$ of the near-wall value (CALCULATED).
   *Caution attached to the canonical number:* the 8.1 ± 0.3 comes from the row
   whose $\omega_0/2\pi = 5.9 \pm 0.2$ MHz is a five-fold outlier against the
   other four, and covariance between those two was not reported.
@@ -913,24 +961,48 @@ surface/pushing effects are read.
   hollow-core photonic-crystal fibre: 10 MHz linewidths resolving 5D₅∕₂ hyperfine
   structure, with >90% nonlinear absorption observed (and "substantial" absorption
   maintained to 9 GHz detuning — the abstract's two clauses carry different
-  quantifiers). The high-resolution counterpart to [saha2010](lit/saha2010.md),
-  and the closest thing to an indication of what confinement *costs*: 10 MHz is
-  the right order for a transit-limited **few-micron** guided mode, against
-  **1.19 MHz** for this campaign's free-space $w_0 = 50$ µm. **The penalty is not
-  a constant, and this entry has now been wrong about it twice.** Transit goes as
-  $1/w_0$. A "factor of ten" was replaced by "3.3 MHz, a factor of 2.8" on the
-  strength of an 18 µm mode field credited to `saha2010` — but **no 18 µm figure
-  appears in that paper**; it is a prospective apparatus number from the
-  experimenter. The published hollow cores are far tighter: Saha's own is a 6 µm
-  Crystal Fiber AIR-6-800 (~28 MHz) and Slepkov's stated $10^{-7}$ cm² area is
-  ~1.8 µm (~33 MHz). **The penalty across that literature is 15–30×**, and
-  Perrella's 10 MHz is better than those geometries predict. **This programme's
-  own fibre is a separate statement:** the CRYST³ hollow core at Bologna is
-  quoted at an 18 µm mode field, giving ~3.3 MHz, a factor of 2.8 — so published
-  cores and this apparatus must not be run together. That 18 µm is an
-  **unsourced apparatus fact** (it entered `saha2010.md` in 080d2b2 with no
-  citation) and needs confirming, radius-or-diameter included. What is unambiguous is the qualitative trade: $w_0$
-  becomes a characterised component property rather than a daily alignment. REPORTED, abstract only. **[CITE]**
+  quantifiers). The high-resolution counterpart to [saha2010](lit/saha2010.md)
+  in the same hollow-core class — but a **different fibre** (Saha's 6 µm PBG core
+  against Perrella's 45 µm kagomé) and, more to the point, a **different
+  excitation**: two-colour 780 + 776 nm here against Saha's degenerate 778 nm.
+
+  **The geometry is now known, and it is not what this entry said (2026-07-31).**
+  The paper is paywalled, but the first author's open-access UWA PhD thesis
+  reprints it, and states the setup outright: a **kagomé HC-PCF of 45 µm core
+  diameter**, 40 cm long, at **90 °C**, excited **two-colour at 780 + 776 nm**.
+  So the mode radius is ~15 µm, not the few microns this entry twice inferred by
+  reading the geometry backwards out of the 10 MHz. Through the repo's own
+  `transit_fwhm_from_w0`, **transit supplies only 3–4 MHz of their 10 MHz**
+  (3.98 MHz at $w_0 = 14.6$ µm, 3.69 at 15.8). Perrella is therefore **not an
+  example of a transit-limited hollow-core line**, and cannot be cited as one.
+  The thesis names a likely source of the remainder: the fibre was curved, and
+  that with the large core "resulted in coupling to higher-order transverse
+  optical modes". Pressure broadening they put at ≈12 kHz.
+
+  **That correction makes this paper *more* useful, not less.** Its ~15 µm mode
+  radius is close to the 18 µm quoted for this programme's own CRYST³ hollow core
+  at Bologna — so it is the **closest published analogue to the fibre actually
+  contemplated**, far closer than Saha's 6 µm Crystal Fiber AIR-6-800 (~28 MHz)
+  or Slepkov's $10^{-7}$ cm² area (~1.8 µm, ~33 MHz). The trade is now: transit
+  at this programme's contemplated core costs **~3.1–4.3 MHz** across the
+  thesis's ideal, target and measured waists
+  against **1.18 MHz** for the free-space $w_0 = 50$ µm — a factor of 3–4, not
+  the 15–30× that the tighter published cores would impose — but Perrella's
+  total of 10 MHz is a warning that **transit is not the whole budget in a real
+  large-core fibre**, and higher-order-mode coupling is the term to design
+  against. **The 18 µm is no longer unsourced (2026-07-31):** a held master's
+  thesis on the apparatus (Nasoni 2026, co-supervised by the experimenter) gives
+  it as an **injection beam waist**, i.e. a **radius**, and it is *measured* —
+  $w_x = 17.1 \pm 0.7$ µm and $w_y = 19.3 \pm 0.4$ µm, slightly elliptical from
+  AOM distortion, against an ideal thin-lens 13.6 ± 0.1 µm and an 18 µm design
+  target. **The caveat is the beam, not the number: it is the 1064 nm
+  optical-dipole-trap beam, not a two-photon probe**, and a hollow-core mode is
+  wavelength-dependent, so using it as the transit waist for a 778 nm line is an
+  assumption rather than a measurement of the relevant mode. Taken at face value
+  the measured pair gives 3.1–3.4 MHz. The source is an unpublished thesis, so
+  the experimenter should confirm before any published claim rests on it.
+  The qualitative trade is unaffected: $w_0$ becomes a characterised component
+  property rather than a daily alignment. VERIFIED via the thesis. **[CITE]**
 
 **[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)) — the
 nearest-platform result to Paper 2, feeding two of its pillars; NO committed number

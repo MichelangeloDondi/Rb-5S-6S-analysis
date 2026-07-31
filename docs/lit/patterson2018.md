@@ -267,11 +267,23 @@ trades most directly against line position. They report checking $\Gamma_0$
 against $T_{\rm MOT}$ for covariance, but not against $\omega_0$. **Verified
 here in Table I.** Any use of the 2 MHz excess should carry this.
 
-**The falsification test, which is cheap.** Refit their published spectra with
+**The falsification test — and it is no longer cheap (revised 2026-07-31).**
+Refit their published spectra with
 $\Gamma(r) = \Gamma_0[1 + \alpha(r) + \text{free-space modification}]$ inside
 $p_{\rm abs}$. If the fitted $\Gamma_0$ falls toward 6.065 MHz, the residual is
 explained; if it does not, the most plausible candidate is dead. **Publishable
 either way, and not attempted here.**
+
+This was called "cheap" on the assumption that the free-space modification came
+ready-made in closed form from [klimovducloy2004](klimovducloy2004.md). It does
+not, at this fibre. That paper proves its quasistatic closed form valid only for
+$ka < 1/\varepsilon = 0.473$ (VERIFIED, its Conclusion), while Patterson's
+$a = 120$ nm at 780 nm gives $ka = 0.967$ (CALCULATED) — twice the bound, and
+inside the band where Klimov says guided-mode influence is *substantial*. The
+term must come from his Section IV, the full electrodynamic treatment, which is
+**held but unread** (10.6k characters of cylinder-harmonic expansion). So the
+test is still well posed and still publishable; it is a piece of theory work
+first, not an afternoon's fitting.
 
 **The second unexplained case is now held, and it is larger than Patterson's
 (2026-07-30).** Liu *et al.*, *Ferromagnetic Traps for Quasi-Continuous
@@ -304,9 +316,54 @@ replaces, which described Sagué, Liu and the two theory inputs as unread
 externally-reported material — all four are now held).**
 [sague2007](sague2007.md) is read: no fitted width parameter, position-dependent
 $\gamma(r)$ to +57% at the surface, budget closed. [liu2024](liu2024.md) is
-read: see above. [klimovducloy2004](klimovducloy2004.md) (analytic
-subwavelength decay rates) and [hummer2021](hummer2021.md) (candidate
-mechanism, fetched but not yet read against this question) are both held.
-Only `boustimi2002` — the van der Waals shift near a cylinder, Sagué's other
-theory input — remains paywalled with no free route found.
+read: see above. [klimovducloy2004](klimovducloy2004.md) is held, and its
+quasistatic section and its Conclusion were read 2026-07-31. **Two claims that
+stood here are withdrawn**: that only its abstract and regime statements had
+been read, and that it "supplies the analytic subwavelength decay rates the
+refit needs". The closed form is there and is elementary, but *subwavelength is
+not its criterion* — the paper licenses it only for $ka < 1/\varepsilon$, and
+this fibre misses that by a factor of two. What the refit needs from that paper
+is its **Section IV**, held and unread.
+The second theory input, the van der Waals shift near a cylinder, **is no longer
+blocked on `boustimi2002` (2026-07-31)**. Two things changed. First, Sagué says
+"**We calculated** the vdW shift … near a 500 nm diameter **dielectric**
+cylinder [15]" — Boustimi is cited for the *method*, so what has to be
+reproduced is a calculation, not a number lifted from a paywalled table.
+Second, [frawley2012](frawley2012.md) — Nic Chormaic and Minogin, the cylinder
+counterpart of the held [schmidt2011](schmidt2011.md) — gives closed analytical
+equations for **metal *and* dielectric** nanocylinders in the electrostatic
+approximation. `boustimi2002` and [boustimi2017](boustimi2017.md) both work the
+*metallic* wire and are the wrong material for a silica fibre either way.
+
+**Two clauses that stood here are struck (2026-07-31).** "It is not held;
+**FETCH** it" — the fetch happened: the experimenter supplied it that night
+(file birth 01:21), and it is held and read. And "the same quasistatic footing
+as Klimov's Eq. (29), so the two compose" — Klimov's Eq. (29) is out of range at
+this fibre (see above), so there is nothing for Frawley to compose *with* until
+Section IV is worked through. Frawley's own electrostatic derivation is
+separately licensed and stands; the two simply are not a matched pair the way
+this sentence claimed.
+
+**And frawley2012 was supplied and read the same day** — which
+which corrected a claim this note carried for a few hours. Curvature does weaken
+the potential, but **not at the distances that matter here**. Frawley writes
+$U = -(C_3/x_0^3)\mu$ and states that for $x_0 \ll R$ the factor "is close to
+unity and therefore the curvature of the surface is of no importance"; $\mu$ is
+$<0.75$ only by $x_0 = R$ and reaches ~0.5 near $x_0 = 5R$. With $R = 120$ nm
+here, the near-surface atoms carrying the asymmetry sit at $x_0/R \lesssim 1$,
+where $\mu \approx 0.75$–1. **A flat-surface $C_3/x^3$ is therefore adequate to
+tens of percent for this fibre** — the "overestimates by about a factor of two"
+that stood here briefly was read off a paraphrase of Frawley's abstract and is
+withdrawn.
+
+**[hummer2021](hummer2021.md) is NOT a candidate mechanism for this, and was
+listed as one here until it was read (2026-07-31).** It was fetched on an
+external description of it as "the nearest un-applied candidate mechanism" for
+the excess. It is not: every linewidth in that paper is the width of a
+transition *between motional states* of an adsorbed atom — a few hundred kHz,
+between bound states a few MHz deep — broadened by phonon dephasing. That is a
+different object from the megahertz of excess **optical** D2 width at issue
+here, and the paper claims no connection to it. Its real relevance is to the
+van der Waals bound states that the $u_0$ term above parameterises with a
+single scaling.
 

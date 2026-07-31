@@ -10,9 +10,11 @@ energies -- every number in the tables below carries its source. Three jobs:
    Delta_alpha(993 nm) that THEORY_NOTE section 5 promises a referee (the
    shipped magnitude rides on Orson et al. 2021's +-1093 a.u.);
 2. VALIDATION against precision measurements that the model does not use:
-   the measured 5S scalar tune-out 790.032 nm (Leonard et al. 2015) -- this
-   model reproduces it to ~2 pm -- the measured static alpha_5S 318.79(1.42),
-   and the Safronova-group static alpha_6S 5167(22);
+   the measured 5S scalar tune-out 790.032326(32) nm -- Leonard et al. 2015
+   as CORRECTED BY THEIR 2017 ERRATUM, PRA 95, 059901(E), both PDFs held
+   [VERIFIED; see tuneout_5s below] -- which this model reproduces to
+   ~1.6 pm, the measured static alpha_5S 318.79(1.42), and the
+   Safronova-group static alpha_6S 5167(22);
 3. the 5S-6S MAGIC WAVELENGTHS (alpha_5S = alpha_6S crossings, unpublished to
    the depth searched 2026-07-17) and alpha_6S(1064) (also unpublished), the
    design inputs for a state-insensitive trap on this transition.
@@ -133,7 +135,37 @@ def delta_alpha(lam_nm: float, **kw) -> float:
 
 def tuneout_5s(lo: float = 781.0, hi: float = 794.0) -> float:
     """The 5S scalar tune-out between the D lines (nm) -- the validation
-    anchor: Leonard et al. measured 790.03235(3) nm."""
+    anchor: 790.032326(32) nm, Leonard et al. as CORRECTED BY THEIR 2017
+    ERRATUM [VERIFIED]. The 2015 paper's 790.032388(32) is superseded.
+
+    Both are now read from held PDFs (erratum obtained and read 2026-07-31;
+    PRA 95, 059901(E)). Its own words: the F=2 Zeeman correction was applied
+    with the ground-state shift omitted from omega-prime, so "the reported value
+    for lambda(0) is incorrect. The correct value is lambda(0) =
+    790.032 326(32) nm, an adjustment of about 2 sigma." The erratum also
+    revises the matrix-element ratio to R = |d_3/2|^2/|d_1/2|^2 = 1.99217(3) and
+    the theory value to 790.0315(7) nm. It is not on arXiv -- the arXiv record
+    (1507.07898) is pre-erratum through v3, which is why this stood unverified
+    until the PDF was obtained.
+
+    The value that stood here before 2026-07-31 was "790.03235(3)", which
+    appears NOWHERE in either document. The 2015 PDF states five wavelengths and
+    790.03235 is none of them: the reported result 790.032388(32) (abstract, and
+    the constrained fit, quoted as 790.032388(29) in the text); the
+    unconstrained fit 790.032439(35); a raw regression intercept 790.03232; and
+    theory 790.0312(7).
+
+    None of this moves the agreement claim: computed 790.0339 sits 1.57 pm from
+    the erratum value, against a 0.062 pm spread between the two published
+    numbers. NOT re-checked: TAIL_5S and CORE_5S above, from Leonard's
+    decomposition table rather than the measured tune-out, which a Zeeman
+    correction to the measurement should not touch.
+
+    One further fact from the erratum, worth keeping because it retires an
+    apparent literature conflict: the disagreement with Lamporesi et al.'s
+    790.018(2) nm is not a discrepancy but a different ground state -- theirs is
+    F=1. Leonard's own measurement carried to F=1 gives 790.017496(32) nm
+    against a 790.0167(7) theory, and the two then agree."""
     return brentq(lambda x: alpha_5s(x), lo, hi, xtol=1e-6)
 
 

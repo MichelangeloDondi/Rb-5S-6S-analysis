@@ -83,9 +83,20 @@ $\gamma_{\rm free}(r)$ taken from [klimovducloy2004](klimovducloy2004.md) and
 $$\gamma_{\rm guid}(r) \simeq 0.3 \gamma_0  I_P(r)/I_P(a)$$
 
 where $a$ is the fibre radius and $0.3\gamma_0$ is the emission rate of an atom
-*on* the surface into the guided mode. The van der Waals shift
-$\delta_{\rm vdW}(r)$ is computed for the Cs D2 line near a 500 nm cylinder from
-`boustimi2002`.
+*on* the surface into the guided mode.
+
+The van der Waals shift $\delta_{\rm vdW}(r)$ is **their own calculation**, not a
+number imported from elsewhere. Verbatim: "We calculated the vdW shift,
+δvdW(r), for the D2 line of Cs near a 500 nm diameter dielectric cylinder [15]."
+The emphasis is worth stating plainly rather than with markup inside the
+quotation: it is *their* calculation, and the cylinder is *dielectric*.
+Their [15] is `boustimi2002`, cited for the *method*. This
+distinction was missed on the first pass through and matters (established
+2026-07-31): the standing objection that Boustimi's worked case is an argon atom
+near an *aluminium* wire, while this fibre is silica, does not land — nobody
+imported a metallic number into a dielectric problem. What has to be reproduced
+to redo this is a calculation, not a lookup. See
+[boustimi2017](boustimi2017.md) and [frawley2012](frawley2012.md).
 
 **On the surface, Eq. (2) predicts a 57% increase of the spontaneous emission
 rate** — verbatim: "On the surface of the fiber, Eq. (2) then predicts a 57%
@@ -137,9 +148,18 @@ atoms with a 1 MHz probe laser and 20% excess; Patterson fits a five-parameter
 model to spectra taken with a desorption laser present. The two are not the same
 measurement, and "Sagué's model structure would have absorbed Patterson's
 residual" remains a **prediction to be tested by refitting**, not a demonstrated
-result. What *is* now established is that the term is physically real, is
-computable from [klimovducloy2004](klimovducloy2004.md), and is absent from
-Patterson's width.
+result. What *is* now established is that the term is physically real and is
+absent from Patterson's width.
+
+**This sentence also said the term "is computable from
+[klimovducloy2004](klimovducloy2004.md)"; that was too quick, and is corrected
+here rather than dropped (2026-07-31).** That paper's closed form is
+quasistatic, and its own Conclusion bounds the quasistatic regime at
+$ka < 1/\varepsilon$ — 0.473 for silica, against $ka = 1.844$ for *this* fibre
+and 0.967 for Patterson's (CALCULATED). Computable it is, but from that paper's
+full electrodynamic Section IV, not from its Eq. (29). Sagué's own
+$\gamma = \gamma_{\rm free} + \gamma_{\rm guid}$ split is the tell: a separate
+guided-mode term is exactly what this regime demands.
 
 ## Two smaller things worth keeping
 
