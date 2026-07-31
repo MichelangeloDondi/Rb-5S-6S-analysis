@@ -62,7 +62,11 @@ def test_figure_drawn_from_current_results(name):
         f"{name}.png carries no DataFingerprint -- redraw it with scripts/make_figures.py")
     assert embedded == current, (
         f"{name}.png is STALE: drawn from results {embedded}, current is {current}. "
-        f"A results CSV changed without redrawing the figures -- run "
+        "If you just ADDED a results CSV, this is the expected ordering trap: the "
+        "fingerprint hashes `git ls-files`, so a new CSV joins it only once it is "
+        "staged, and every figure drawn before that goes stale at commit time. "
+        "Redraw after staging, not before. "
+        f"Otherwise a results CSV changed without redrawing the figures -- run "
         f"scripts/make_figures.py and commit the updated PNGs.")
 
 
