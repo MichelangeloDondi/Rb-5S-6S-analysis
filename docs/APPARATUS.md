@@ -323,28 +323,43 @@ re-lock transient after the daytime break (addenda 4–7), settling toward the
 100 kHz short-term StdDev visible in the statistics panel; not steady
 acquisition drift, which the archive puts two orders below.*
 
-> **The 2025-06-11 record has since been digitised, and it is not a drift
-> (2026-07-31).** The photograph is legible enough to measure rather than
-> estimate, so `scripts/run_wavemeter_reconstruction.py` extracts the trace by
-> colour and calibrates it against the plot's own ticks. What it contains is a
-> **sawtooth**: eight upward steps of +2.4 to +15.7 MHz, with the frequency
-> decaying back between them, fastest early at −9.3 MHz/min and slowest late at
-> −0.43. A straight line through that returns +0.14 MHz/min, close to the
-> ±0.19 read off by eye, but the number measures where the steps happen to fall
-> rather than any rate the laser holds. Two independent centre estimators agree
-> to 0.001 MHz/min, so the structure is in the record, not in the method.
+> **The 2025-06-11 record has since been digitised, and it measures something
+> the table does not (2026-07-31).** That photograph is from a preliminary
+> session five weeks before the campaign, so it says nothing about the campaign
+> laser. What it supports is a measurement, because the plot is legible enough
+> to extract: `scripts/run_wavemeter_reconstruction.py` pulls the trace out by
+> colour and calibrates against the plot's own ticks.
 >
-> That behaviour is what §6 and the timestamp audit already describe from the
-> traces: the cavity lock dropping out during the etalon transient, each
-> recapture landing megahertz-scale off, with one re-kick of τ ≈ 97 min re-armed
-> at every re-lock. Reaching it from a photograph is an independent route to the
-> same picture.
+> The record is not a drift. It is a sequence of about a dozen re-locks, each
+> kicking the frequency up and relaxing back, so the 0.19 MHz/min in the table
+> is a straight line through a sawtooth rather than a rate the laser holds.
 >
-> **What this does not settle.** The 06-19 etalon-only records have not been
-> digitised, so the comparison below still rests on eye-read numbers on both
-> sides. If those records are sawtooth too, the factor 2–5 is comparing two
-> averaging artifacts. Digitising them is the obvious next step and needs only
-> the photographs already held. See `figures/fig14_wavemeter_reconstruction.png`.
+> **The result is the settled floor: 0.8 to 1.0 MHz.** That is the laser motion
+> left once the re-locks and their relaxation are removed. It is stable to about
+> twenty per cent across kick counts, weightings and random restarts, and the
+> pull distribution comes out at unit width, which is the check that the noise
+> model is right. The scatter itself settles, on a timescale near a minute, so
+> the floor is a settled-state number and the early record is several times
+> worse. Against the campaign's AC-Stark bound of 0.63 MHz the floor is
+> comparable rather than dominant, which is consistent with that bound coming
+> from averaging across blocks rather than from any single block. See
+> `figures/fig14_wavemeter_reconstruction.png`.
+>
+> **What this record does not measure.** The relaxation time constants vary by
+> a factor of about fifty between fits of equal likelihood, so any agreement
+> between them and the 97 min the timestamp audit fitted to the traces would be
+> coincidence. The event count is good to an order of magnitude only. An
+> earlier version of this module reported 42 events and a slow constant of
+> 88 min; both were artifacts of fitting with the noise held constant, and both
+> are withdrawn.
+>
+> **The in-campaign record needs no digitising.** The 2025-07-18 photograph has
+> the wavemeter's own statistics panel in shot: mean 301.7796130 THz, standard
+> deviation 100 kHz, a 38 MHz excursion across 8.5 minutes. It is one smooth
+> relaxation with no re-locks, a different regime from the June record.
+>
+> **Still open.** The 06-19 etalon-only records are not digitised, so the factor
+> 2 to 5 below rests on eye-read numbers on both sides.
 
 **The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
 laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The

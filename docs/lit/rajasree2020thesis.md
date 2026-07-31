@@ -16,11 +16,11 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'DISAMBIGUATION, and the reason this file exists. The citekey rajasree2020
-    is a DIFFERENT document -- Phys. Rev. Research 2, 012038, "Generation of
+  - 'Disambiguation, and the reason this file exists. The citekey rajasree2020
+    is a different document -- Phys. Rev. Research 2, 012038, "Generation of
     cold Rydberg atoms at submicron distances from an optical nanofiber", a
     cold-atom nanofibre experiment with no warm vapour cell. Until 2026-07-31
-    both LITERATURE.md and docs/lit/rajasree2020.md attributed THIS thesis''s
+    both LITERATURE.md and docs/lit/rajasree2020.md attributed this thesis''s
     993 nm vapour-cell apparatus to that citekey. There is also
     rajasree2020spin, a third Rajasree 2020 document. Check which is meant.'
   - 'The author''s name is given here as printed on the OIST record. Thesis
@@ -32,7 +32,7 @@ summary: >
   is the warm-cell half of the OIST 993 nm lineage: section 5.2,
   "Single-Frequency, Two-Photon Spectroscopy in a Rubidium Vapour Cell",
   repeats the apparatus this programme's density chain leans on -- a 150 mW
-  993 nm beam focused by L1 (f = 150 mm) to a MEASURED 128 um beam DIAMETER
+  993 nm beam focused by L1 (f = 150 mm) to a MEASURED 128 um beam diameter
   (Thorlabs BC106VIS profiler), retro-reflected by a concave mirror
   (f_CM = 75 mm) at 2 f_CM, with the cell held at 130 C -- and cites Steck for
   the Rb data, which is the N(T) vapour-pressure chain rb5s6s/density.py uses.

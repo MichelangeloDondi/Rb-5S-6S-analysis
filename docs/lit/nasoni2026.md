@@ -16,20 +16,20 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'UNPUBLISHED THESIS from the experimenter''s own group -- supervisors
+  - 'unpublished thesis from the experimenter''s own group -- supervisors
     Minardi and Prevedelli, co-supervisor M. Dondi (the experimenter),
-    defended July 2026. It is APPARATUS PROVENANCE, not independent literature.
+    defended July 2026. It is apparatus provenance, not independent literature.
     Confirm with the experimenter before any published claim rests on it, and
     do not treat it as a citable external source.'
-  - 'THE WAIST IT SUPPLIES IS FOR A DIFFERENT BEAM AND A DIFFERENT EXPERIMENT,
+  - 'the waist IT supplies IS for A different beam and A different experiment,
     and this must travel with the number. The 17.1 x 19.3 um injection waist is
-    the 1064 nm OPTICAL DIPOLE TRAP beam. A hollow-core guided mode depends on
-    wavelength, so carrying it to a 778 nm or 993 nm line is an ASSUMPTION.
+    the 1064 nm optical dipole trap beam. A hollow-core guided mode depends on
+    wavelength, so carrying it to a 778 nm or 993 nm line is an assumption.
     Further, per the experimenter (2026-07-31), the apparatus is headed for
     780 nm EIT cooling; two-photon spectroscopy in that fibre is speculative.'
   - 'Read for the injection-waist passage (its section 2.2.2.1) and the
     abstract. The trap-depth model, the loading-efficiency result and the
-    fibre-characterisation chapters are NOT read.'
+    fibre-characterisation chapters are not read.'
 verified_date: 2026-07-31
 summary: >
   Bologna master's thesis, 103 pp, on an optical dipole trap for cold 87Rb made
@@ -39,12 +39,12 @@ summary: >
   an optical conveyor belt. Held since 2026-07-18 and given a lit file
   2026-07-31, when it turned out to be the source of a number the repo had
   carried unsourced for weeks: the CRYST3 fibre's "18 um mode field". The
-  thesis makes it an INJECTION BEAM WAIST -- a RADIUS, settling a
+  thesis makes it an injection beam waist -- a radius, settling a
   radius-vs-diameter question worth a factor of two in every transit estimate
   -- with an 18 um design target, a 13.6 +/- 0.1 um ideal thin-lens value, and
-  a MEASURED 17.1 +/- 0.7 um by 19.3 +/- 0.4 um. CONFIRMED BY THE EXPERIMENTER
-  2026-07-31: that mode belongs to the 1064 nm TRAPPING laser, the planned next
-  step for the apparatus is 780 nm EIT COOLING, and a 778 nm two-photon line in
+  a MEASURED 17.1 +/- 0.7 um by 19.3 +/- 0.4 um. Confirmed BY the experimenter
+  2026-07-31: that mode belongs to the 1064 nm trapping laser, the planned next
+  step for the apparatus is 780 nm EIT cooling, and a 778 nm two-photon line in
   the hollow core is a speculative idea for a possible separate paper rather
   than a plan. Transit numbers computed here for a 778 nm probe are answers to
   a hypothetical.
@@ -89,11 +89,11 @@ and an $M^2 = 1.2$ correction giving $\simeq 15.1$ µm. And then it is
 slightly elliptical, which the thesis attributes to the AOM compressing the beam
 in $y$ and expanding it in $x$.
 
-**So the 18 µm is a RADIUS** — the 3.3 MHz reading was right and the 6.6 MHz
+**So the 18 µm is a radius** — the 3.3 MHz reading was right and the 6.6 MHz
 alternative is dead — and it is a target that the measurement bears out.
 Through the repo's own `transit_fwhm_from_w0` at 100 °C (CALCULATED):
 
-| $w_0$ | source | transit FWHM |
+| $w_0$ | source | transit fwhm |
 |---|---|---|
 | 13.6 µm | ideal thin-lens | 4.34 MHz |
 | 15.1 µm | $M^2 = 1.2$ | 3.90 MHz |

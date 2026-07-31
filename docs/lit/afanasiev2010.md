@@ -17,28 +17,28 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'THE BESSEL INTEGRAND OF EQ. (20) DOES NOT EXTRACT CLEANLY FROM THE PDF.
-    "Km(kR) Im(kR)" is almost certainly a stacked FRACTION rendered as a
-    product, and note it is INVERTED relative to frawley2012 Eq. (20) -- there
+  - 'The Bessel integrand of Eq. (20) does not extract cleanly from the PDF.
+    "Km(kR) Im(kR)" is almost certainly a stacked fraction rendered as a
+    product, and note it is inverted relative to frawley2012 Eq. (20) -- there
     the ratio runs I/K with K-squared brackets, here K/I with I-squared
-    brackets, which is what one expects for interior vs exterior, but it has NOT
-    been confirmed off the rendered page. DO NOT CODE FROM THIS NOTE.'
-  - 'The prose, the abstract, the conclusion and all the FACTORS below were read
+    brackets, which is what one expects for interior vs exterior, but it has not
+    been confirmed off the rendered page. Do not code from this note.'
+  - 'The prose, the abstract, the conclusion and all the factors below were read
     directly and are reliable. Only the explicit integrand is uncertain.'
-  - 'AUTHORS: this is Afanasiev and Minogin. It is NOT a Frawley/Nic Chormaic
+  - 'Authors: this is Afanasiev and Minogin. It is not a Frawley/Nic Chormaic
     paper, though it was surfaced through that group''s citation network and
     shares Minogin and the method.'
 verified_date: 2026-07-31
 summary: >
-  The CONCAVE counterpart of frawley2012, by Minogin with Afanasiev, held and
+  The concave counterpart of frawley2012, by Minogin with Afanasiev, held and
   read 2026-07-31. Closed analytical equations, electrostatic approximation, for
-  an atom inside a METAL OR DIELECTRIC hollow cylinder. Same factorised form
-  U = -(C_3/x_0^3) mu, with an INTERNAL cylindrical surface factor mu that goes
-  to 1 AT THE WALL and rises to 4 near the axis -- so a flat-surface C_3/x^3 is
+  an atom inside a metal or dielectric hollow cylinder. Same factorised form
+  U = -(C_3/x_0^3) mu, with an internal cylindrical surface factor mu that goes
+  to 1 at the wall and rises to 4 near the axis -- so a flat-surface C_3/x^3 is
   right at the wall in the concave case too, and curvature only matters at
   distances comparable to the bore radius. It also exceeds the two-parallel-
   planes result by a factor 2 near the centre. Together with frawley2012 this
-  settles the geometry question for BOTH the nanofibre exterior and the
+  settles the geometry question for both the nanofibre exterior and the
   hollow-core interior from primary sources, and it retires the sphere->cylinder
   extrapolation that schmidt2011 had been carrying. For realistic hollow cores
   the 4x is practically irrelevant -- see the body, it multiplies a quantity
@@ -58,7 +58,7 @@ identified as the top outstanding want. Institute of Spectroscopy, Troitsk.
 [schmidt2011](schmidt2011.md) reports that *concave* surfaces **enhance** the van
 der Waals energy — up to a factor of 6 — but it is a **sphere**. This note's
 predecessor flagged that carrying that into a cylindrical bore was "an
-extrapolation across geometries and is NOT established here", and recorded it as
+extrapolation across geometries and is not established here", and recorded it as
 OPEN. **This paper is the cylinder case**, so the extrapolation is no longer
 needed. The cylinder figure is **4**, not 6.
 

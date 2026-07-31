@@ -18,31 +18,31 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'ABSTRACT AND FRONT MATTER READ; the derivations in sections 2-4 are NOT.
+  - 'abstract and front matter read; the derivations in sections 2-4 are not.
     The factors of 6 and 2 quoted below are the paper''s own abstract wording.
     Their range of validity -- which distances, which permittivities -- has not
     been checked against the derivation, and the abstract does not state it.'
-  - 'WRONG GEOMETRY for the nanofibre problem. This is a SPHERE. It is filed as a
+  - 'wrong geometry for the nanofibre problem. This is a sphere. It is filed as a
     method anchor and as the source of the curvature result, not as an input to
-    the patterson2018 refit; frawley2012 is the cylinder analogue, is HELD, and
+    the patterson2018 refit; frawley2012 is the cylinder analogue, is held, and
     is the one actually needed. Where the two disagree, prefer Frawley -- and
-    prefer Frawley''s BODY over either abstract, since taking the curvature
+    prefer Frawley''s body over either abstract, since taking the curvature
     result from an abstract alone produced a wrong claim here on 2026-07-31.'
 verified_date: 2026-07-31
 summary: >
   Closed analytical equations, in the electrostatic approximation, for the van
-  der Waals energy of an atom near the INTERNAL and EXTERNAL surfaces of a metal
-  or dielectric NANOSPHERE. Tyndall/UCC/Mainz/Troitsk -- Nic Chormaic and
+  der Waals energy of an atom near the internal and external surfaces of a metal
+  or dielectric nanosphere. Tyndall/ucc/Mainz/Troitsk -- Nic Chormaic and
   Minogin, the same group as frawley2012, of which this is the spherical
-  counterpart. The result that carries beyond the geometry is that CURVATURE
-  SIGN MATTERS: concave (internal) surfaces enhance the vdW energy by up to a
+  counterpart. The result that carries beyond the geometry is that curvature
+  sign matters: concave (internal) surfaces enhance the vdW energy by up to a
   factor of 6 over a flat surface, convex ones weaken it by up to a factor of 2.
-  NOTE WHAT "UP TO" HIDES, because it is the whole story: the two held
-  CYLINDRICAL papers from the same lineage -- frawley2012 (convex) and
-  afanasiev2010 (concave) -- both have their surface factor tending to UNITY AT
-  THE WALL, with curvature biting only at distances comparable to the radius. So
+  note what "UP TO" hides, because it is the whole story: the two held
+  cylindrical papers from the same lineage -- frawley2012 (convex) and
+  afanasiev2010 (concave) -- both have their surface factor tending to unity AT
+  the wall, with curvature biting only at distances comparable to the radius. So
   a flat-surface C_3/r^3 is adequate near a surface of either curvature, and the
-  extreme factors apply far from it. This SPHERE paper is superseded for both
+  extreme factors apply far from it. This sphere paper is superseded for both
   geometries by those two; keep it as the method anchor and for the fact that
   curvature sign matters at all.
 loci:
@@ -103,14 +103,14 @@ note first took from the sphere abstract alone. That bears on
 on the convex exterior of a fibre with their atoms *close* to it, and for which
 the flat-surface form is consequently adequate.
 
-**Concave, factor of 6 up — and this is now CLOSED, without needing the
+**Concave, factor of 6 up — and this is now closed, without needing the
 extrapolation.** A hollow-core experiment would put atoms *inside* a
 hollow core: a concave dielectric surface. This note previously asked whether
 the spherical 6× carries over to a cylindrical bore and recorded it as OPEN and
 unquantified, warning that the sphere→cylinder step was exactly the kind of
 geometric extrapolation this repository has been burned by. **The extrapolation
 turned out to be unnecessary**: [afanasiev2010](afanasiev2010.md) (Minogin
-again, PRA **82**, 052903) is the hollow-*cylinder* case, was obtained the same
+again, pra **82**, 052903) is the hollow-*cylinder* case, was obtained the same
 day, and gives the factor directly. It is **4**, not 6, and it applies near the
 axis; at the wall the internal surface factor goes to 1, exactly as the convex
 factor does.

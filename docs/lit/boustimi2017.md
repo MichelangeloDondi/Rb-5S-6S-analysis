@@ -20,29 +20,29 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'Author list COMPLETED 2026-07-31 from the paper''s own title block: M
+  - 'Author list completed 2026-07-31 from the paper''s own title block: M
     Boustimi, M Loulou, S Natto (Umm Al-Qura, Makkah), A Belafhal (Chouaib
     Doukkali, El Jadida) and J Baudon (LPL, Paris 13). Two earlier versions of
     this field were wrong and are recorded so the pattern is visible: the first
-    GUESSED "Baudon, J.; Robert, J." from the author''s other work; the second
+    guessed "Baudon, J.; Robert, J." from the author''s other work; the second
     took "M Boustimi, M Loulou, S Natto et al." from schmidt2011''s IOP citation
     list and truncated at "et al.". Baudon happens to be real -- which is
     exactly why the guess was not acceptable evidence.'
   - 'Its equations do not survive PDF text extraction (the reflection-coefficient
     and energy expressions come out as mojibake). Everything quoted below is
-    from prose; the formulae themselves have NOT been read and must be taken
+    from prose; the formulae themselves have not been read and must be taken
     from the rendered pages before use.'
 verified_date: 2026-07-31
 summary: >
-  OPEN-ACCESS conference paper by the same author as the paywalled boustimi2002,
+  Open-access conference paper by the same author as the paywalled boustimi2002,
   presenting the same susceptibility-tensor framework for van der Waals
   dispersion energy and covering "sphere, cylinder and plane" geometries -- its
   section 2.2 treats an atom near a nanowire explicitly. Held 2026-07-31 as a
-  possible free substitute for the METHOD that sague2007 used to compute its own
+  possible free substitute for the method that sague2007 used to compute its own
   van der Waals shift. Carries the same limitation as the 2002 paper: the
-  worked nanowire case is METALLIC, with the dispersion coefficients written to
+  worked nanowire case is metallic, with the dispersion coefficients written to
   "carry the nonlocal behavior of the metal". So it supplies the framework, not
-  a dielectric result. SUPERSEDED FOR THE REFIT later the same day: frawley2012
+  a dielectric result. Superseded for the refit later the same day: frawley2012
   was found to be held, and is cylindrical, dielectric-capable and in a directly
   usable factorised form. Keep this only as an independent cross-check of the
   framework.

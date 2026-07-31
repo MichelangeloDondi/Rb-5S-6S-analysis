@@ -19,8 +19,8 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'This erratum SUPERSEDES leonard2015 on the tune-out and on the
-    matrix-element ratio. Cite THIS for both. It is not on arXiv -- the 2015
+  - 'This erratum supersedes leonard2015 on the tune-out and on the
+    matrix-element ratio. Cite this for both. It is not on arXiv -- the 2015
     arXiv record (1507.07898) is pre-erratum through v3 -- which is why the repo
     carried the erratum values as merely REPORTED until the PDF was obtained on
     2026-07-31.'
@@ -35,7 +35,7 @@ summary: >
   790.0315(7) nm, improving agreement. It also retires an apparent conflict in
   the literature: the disagreement with Lamporesi et al.'s 790.018(2) nm is not
   a discrepancy but a different ground state (F=1), and carried to F=1 this
-  measurement gives 790.017496(32) against a 790.0167(7) theory. THIS is the
+  measurement gives 790.017496(32) against a 790.0167(7) theory. This is the
   source of the 5S tune-out validation anchor used by rb5s6s/polarizability.py.
 loci:
   - M16

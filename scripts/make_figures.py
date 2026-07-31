@@ -886,39 +886,64 @@ def fig_level_scheme():
 
 
 def fig_wavemeter_reconstruction():
-    """The 2025-06-11 wavemeter record, digitised from its photograph (M22).
+    """The wavemeter record, its model, and the same quantity from our traces (M22).
 
-    APPARATUS.md section 6 quotes a drift read off this photograph by eye. The
-    photograph does not show a drift. It shows a sawtooth: discrete upward
-    re-lock steps with the frequency decaying back between them.
+    The result is the settled floor on unmodelled laser motion. The relaxation
+    time constants are not constrained by this record and are not shown as
+    though they were.
     """
+    import csv, collections
+    import matplotlib.image as mpimg
     sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
-    from run_wavemeter_reconstruction import reconstruct
-    res, t, f, band, jumps, segs = reconstruct()
+    from run_wavemeter_reconstruction import reconstruct, PHOTO
+    r = reconstruct()
+    t, f, band = r["t"], r["f"], r["band"]
+    tf, mu, sg = r["t_fit"], r["mu"], r["sigma"]
 
-    fig, (ax, ax2) = plt.subplots(2, 1, figsize=(7.4, 5.6), sharex=True,
-                                  gridspec_kw={"height_ratios": [2.4, 1]})
-    ax.fill_between(t, f - band / 2, f + band / 2, color="#0072B2", alpha=0.20,
-                    lw=0, label=f"scan band, {res['band_mhz']:.0f} MHz wide")
-    ax.plot(t, f, color="#0072B2", lw=0.8, label="band centre")
-    for k, (tj, dz) in enumerate(jumps):
-        ax.axvline(tj, color="#D55E00", lw=1.0, ls=":", alpha=0.85,
-                   label="re-lock step" if k == 0 else None)
-    for k, (a, b, sl) in enumerate(segs):
-        m = (t >= a + 0.2) & (t <= b - 0.2)
-        if m.sum() < 20:
-            continue
-        ax.plot(t[m], np.polyval(np.polyfit(t[m], f[m], 1), t[m]), color="#009E73",
-                lw=2.0, label="decay between steps" if k == 0 else None)
-    ax.set_ylabel("frequency  (MHz, laser axis)")
-    ax.legend(loc="lower right", fontsize=8, frameon=True, framealpha=0.9, ncol=2)
-    ax.set_title("2025-06-11 wavemeter record, digitised from the photograph: "
-                 "re-lock steps, not drift", fontsize=9)
+    fig = plt.figure(figsize=(7.6, 8.4))
+    gs = fig.add_gridspec(3, 1, height_ratios=[1.35, 2.0, 1.5], hspace=0.34)
 
-    ax2.plot(t, band, color="#666666", lw=0.8)
-    ax2.set_ylabel("band width\n(MHz)")
+    ax0 = fig.add_subplot(gs[0])
+    ax0.imshow(mpimg.imread(str(PHOTO)))
+    ax0.set_axis_off()
+    ax0.set_title("(a) as photographed: 2025-06-11, a preliminary session five "
+                  "weeks before the campaign", fontsize=8.5)
+
+    ax1 = fig.add_subplot(gs[1])
+    ax1.fill_between(t, f - band/2, f + band/2, color="#0072B2", alpha=0.15, lw=0,
+                     label=f"scan band, {r['band_mhz']:.0f} MHz")
+    ax1.plot(t, f, color="#0072B2", lw=0.7, label="digitised band centre")
+    ax1.plot(tf, mu, color="#D55E00", lw=1.8,
+             label=f"{r['n_kicks']} re-locks, each relaxing back")
+    for k, tk in enumerate(r["kick_times"]):
+        ax1.axvline(tk, color="#D55E00", lw=0.8, ls=":", alpha=0.55)
+    ax1.set_ylabel("frequency  (MHz)")
+    ax1.legend(loc="lower right", fontsize=7.5, frameon=True, framealpha=0.9)
+    ax1.set_title("(b) the record is re-locks and relaxation, not drift", fontsize=8.5)
+
+    ax2 = fig.add_subplot(gs[2])
+    ax2.fill_between(tf, -sg, sg, color="#D55E00", alpha=0.18, lw=0,
+                     label=f"fitted noise, settling to {r['sigma_inf']:.2f} MHz")
+    ax2.plot(tf, f[::3] - mu, color="#666666", lw=0.6, label="residual")
+    rows = [x for x in csv.DictReader(open(C.REPO_ROOT / "results" / "laser_history.csv"))
+            if x["flag"] == "canonical" and x["offset_mhz"] not in ("", "nan")]
+    ep = collections.defaultdict(list)
+    for x in rows:
+        ep[x["display_epoch"]].append((int(x["t_epoch"]), float(x["offset_mhz"])))
+    best = sorted(max(ep.values(), key=lambda v: max(a for a, _ in v) - min(a for a, _ in v)))
+    tt = np.array([(a - best[0][0]) / 60 for a, _ in best])
+    oo = np.array([b for _, b in best]); oo -= oo.mean()
+    # markers only: the archive samples in bursts, not continuously
+    ax2.plot(tt, oo, "o", color="#009E73", ms=5,
+             label=f"our traces, same quantity, sd {oo.std():.1f} MHz")
+    ax2.axhline(0, color="k", lw=0.5)
     ax2.set_xlabel("time  (min)")
-    ax2.set_ylim(0, None)
+    ax2.set_ylabel("frequency  (MHz)")
+    ax2.legend(loc="upper right", fontsize=7.5, frameon=True, framealpha=0.9)
+    ax2.set_ylim(-9, 12)          # the first seconds spike off-scale; the
+                                  # settled region is the point of this panel
+    ax2.set_title("(c) what is left: the noise settles, and the floor is what "
+                  "a measurement must beat  (axis clipped)", fontsize=8.5)
     _save(fig, "fig14_wavemeter_reconstruction.png")
 
 

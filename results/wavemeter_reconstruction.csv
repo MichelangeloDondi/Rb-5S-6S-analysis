@@ -1,8 +1,9 @@
 quantity,key,value,unit,status
 record_length,2025-06-11,53.8,min; digitised from the screen photograph,DIAGNOSTIC
 scan_band_width,2025-06-11,19.3,"MHz; the scan modulation, laser axis",DIAGNOSTIC
-n_relock_steps,2025-06-11,8,count; upward discontinuities in the band centre,DIAGNOSTIC
-relock_step_range,2025-06-11,2.4-15.7,MHz; smallest to largest step,DIAGNOSTIC
-decay_between_steps,2025-06-11,-9.26..-0.36,"MHz/min; fastest (early, short segment) to slowest (late)",DIAGNOSTIC
-naive_line_slope,2025-06-11,0.137,"MHz/min; a straight line through the sawtooth, NOT a drift rate",DIAGNOSTIC
-estimator_agreement,2025-06-11,0.0012,"MHz/min; midpoint vs median centre, a robustness check",DIAGNOSTIC
+settled_noise_floor,2025-06-11,0.98,"MHz; THE RESULT. unmodelled laser motion once re-locks and their relaxation are removed; stable to ~20% across kick counts, weightings and restarts",DIAGNOSTIC
+noise_settling_time,2025-06-11,1.0,min; the scatter itself settles on this timescale,DIAGNOSTIC
+n_relock_events,2025-06-11,12,"count; order of magnitude only, one per 5-7 min, consistent with the apparatus record",DIAGNOSTIC
+pull_width,2025-06-11,1.003,dimensionless; 1.0 means the settling-noise model is right,DIAGNOSTIC
+relaxation_tau_fast,2025-06-11,7.65,"min; NOT CONSTRAINED by this record, see the module docstring",DIAGNOSTIC
+relaxation_tau_slow,2025-06-11,529.0,"min; NOT CONSTRAINED, varies ~50x between equal-likelihood fits",DIAGNOSTIC

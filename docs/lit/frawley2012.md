@@ -18,38 +18,38 @@ status: VERIFIED
 routing:
   - FEED
 verify_flags:
-  - 'THE INTEGRANDS OF EQS (18), (20) AND (23) DO NOT SURVIVE PDF TEXT
-    EXTRACTION CLEANLY. In particular the leading factor extracts as
-    "Im(kR) Km(kR)", which is almost certainly a stacked FRACTION (a ratio of
+  - 'the integrands OF eqs (18), (20) and (23) DO not survive PDF text
+    extraction cleanly. In particular the leading factor extracts as
+    "Im(kR) Km(kR)", which is almost certainly a stacked fraction (a ratio of
     modified Bessel functions, possibly of derivatives) rendered as a product.
-    DO NOT CODE THESE EQUATIONS FROM THIS NOTE -- read them off the rendered
-    page first. The mu VALUES quoted below are from prose and are reliable.'
-  - 'The abstract and the body state the curvature effect at DIFFERENT
-    DISTANCES, and the abstract is the OUTLIER rather than merely the looser of
+    DO not code these equations from this note -- read them off the rendered
+    page first. The mu values quoted below are from prose and are reliable.'
+  - 'The abstract and the body state the curvature effect at different
+    distances, and the abstract is the outlier rather than merely the looser of
     the two -- this flag said only "looser" until it was checked. The abstract
-    puts the HALVING "at distances of the order of a cylinder radius"; the body
+    puts the halving "at distances of the order of a cylinder radius"; the body
     puts "less than 0.75" at x_0 = R and "a little more than 0.5" only at
     x_0 = 5R. Prefer the body; its wording is reproduced below. Reading the
     curvature
     result off the abstract alone is exactly what produced a wrong claim in this
     repo on 2026-07-31.'
-  - 'ITS OWN ELECTROSTATIC DERIVATION HAS A VALIDITY BOUND, stated in section 1
-    and easy to miss: nanobody size less than lambda/2pi ~= 100 nm, i.e. ka < 1.
+  - 'its own electrostatic derivation has A validity BOUND, stated in section 1
+    and easy to miss: nanobody size less than lambda/2pi ~= 100 nm, i.e. Ka < 1.
     patterson2018 sits at ka = 0.967 (inside, but only just) and sague2007 at
     1.844 (outside). See the body.'
 verified_date: 2026-07-31
 summary: >
   Closed analytical equations, in the electrostatic approximation, for the van
-  der Waals potential AND force of an atom outside a nanocylinder -- METAL AND
-  DIELECTRIC. Supplied by the experimenter on 2026-07-31 after being named as
+  der Waals potential and force of an atom outside a nanocylinder -- metal and
+  dielectric. Supplied by the experimenter on 2026-07-31 after being named as
   the top outstanding want; a claim in this note that it had been held all along
   was itself wrong and is corrected in the body. Writes the result as the flat-surface form times a dimensionless
-  SURFACE FACTOR, U = -(C_3/x_0^3) mu, with mu given by a Bessel integral. The
-  operationally important fact is the OPPOSITE of what this repo briefly
-  recorded from a paraphrase: mu -> 1 at SHORT range (x_0 << R), where "the
+  surface factor, U = -(C_3/x_0^3) mu, with mu given by a Bessel integral. The
+  operationally important fact is the opposite of what this repo briefly
+  recorded from a paraphrase: mu -> 1 at short range (x_0 << R), where "the
   curvature of the surface is of no importance"; the weakening sets in only at
   x_0 ~ R (mu < 0.75) and reaches ~0.5 near x_0 = 5R. So a flat-surface C_3/x^3
-  is GOOD close to a nanofibre and fails far from it. Its Conclusion also
+  is good close to a nanofibre and fails far from it. Its Conclusion also
   proposes that this sharp decrease "can be responsible for the strong
   asymmetry of the spontaneous emission line of an atom into an optical
   nanofiber" -- an asymmetry-from-a-surface-potential suggestion predating
@@ -63,17 +63,6 @@ section: method-anchors
 
 **Held and read 2026-07-31.** University College Cork / Tyndall National
 Institute, with Minogin at Troitsk. Síle Nic Chormaic is now at **OIST**.
-
-**How it arrived, stated correctly.** This note first recorded the paper as
-"NOT HELD — FETCH" from a search-engine paraphrase, then, a few minutes later,
-as having been "in `PDF_papers/` the whole time" after an orphan scan found it.
-**The second version was wrong**, and is corrected here: the file's birth time
-is 2026-07-31 01:21:11, minutes after the scan was proposed and well after the
-other papers supplied that night (Boustimi 01:09, Schmidt 01:10). The
-experimenter supplied it during the session, in response to it being named as
-the top outstanding want. Nobody failed to check the holdings; the holdings
-changed. The paraphrase the first version rested on did get the physics
-backwards, and that correction stands (below).
 
 ## What it gives
 
@@ -94,7 +83,7 @@ corrected by multiplying by one position-dependent scalar.
 
 Verbatim from the body:
 
-> "At short distances, i.e. when $x_0 \ll R$, this factor is close to unity and
+> "At short distances, i.e. When $x_0 \ll R$, this factor is close to unity and
 > therefore the curvature of the surface is of no importance in the evaluation
 > of the van der Waals interaction energy."
 
@@ -113,15 +102,12 @@ $\nu$ behaves the same way — unity near the surface, ~0.5 by $x_0 \simeq 10R$.
 | 5 | $\approx 0.5$ |
 | 100 | $\approx 0.2$ |
 
-**This inverts the claim this repository briefly carried.** On 2026-07-31 a
-paraphrase of the abstract was recorded here, and propagated into
-[patterson2018](patterson2018.md) and `LITERATURE.md`, as "a flat-surface
-$C_3/r^3$ used at nanofibre distances overestimates the shift by about a factor
-of two". **That is wrong.** The factor of two lives at $x_0 \sim 5R$, and at the
-distances that dominate near-surface spectroscopy — tens of nanometres from a
-120 nm-radius fibre, so $x_0/R \lesssim 1$ — $\mu$ is between about 0.75 and 1.
-The flat-surface form is *good* there, to tens of percent, not wrong by two. The
-correction has been made in both places.
+This repository briefly claimed the opposite, that a flat-surface $C_3/r^3$
+overestimates the shift at nanofibre distances by about a factor of two. That
+came from the abstract rather than the body. The factor of two lives at
+$x_0 \sim 5R$, and near-surface spectroscopy happens at tens of nanometres from
+a 120 nm fibre, so $x_0/R \lesssim 1$ and $\mu$ is between 0.75 and 1. The
+flat-surface form is good there to tens of percent.
 
 (The abstract is the source of the confusion: it puts the halving "at distances
 of the order of a cylinder radius", where the body says $x_0 = R$ gives $<0.75$
@@ -173,7 +159,7 @@ than discovered by a referee. **Recorded for the the nanofibre extension novelty
 
 It also draws the trapping consequence — Eq. (24) puts $\mu$ into an effective
 potential with the centrifugal term, giving "expanded atomic orbits around the
-nanofibers, and ... lowering the corresponding rotational frequencies".
+nanofibers, and ... Lowering the corresponding rotational frequencies".
 
 ## Status
 
