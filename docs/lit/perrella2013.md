@@ -86,7 +86,8 @@ belongs in the guided-mode paragraph of `LITERATURE.md` §5 alongside those two.
 
 ## The number that matters here, and it is a cost not a benefit
 
-The programme's guided-mode extension is usually argued on absorption: a hollow
+A hollow-core two-photon experiment, were one ever run, would usually be
+argued on absorption: a hollow
 core holds the intensity over centimetres instead of a Rayleigh range. This paper
 supplies the other half of the ledger. Feeding a guided-mode radius through this
 repository's **own** `transit_fwhm_from_w0` at 100 °C (CALCULATED here, not read
@@ -180,8 +181,11 @@ rather than between the two groups.** A ~15 µm mode radius against a *measured*
 relevant published point in the table** — and its lesson is not the transit
 number, which is a comfortable 3–4 MHz, but that the *measured* line was
 10 MHz. In a real large-core fibre,
-transit was less than half the width. Whatever a guided-mode extension of this
-campaign budgets for transit, it should budget separately for mode structure.
+transit was less than half the width. Any guided-geometry experiment on this
+line should budget separately for mode structure. That remains true whether or
+not such an experiment is ever run, and at present none is planned: the
+Bologna hollow-core fibre is headed for 780 nm EIT cooling, and a two-photon
+line in it is speculative (experimenter, 2026-07-31).
 
 *The residual inference.* The vapour temperature quoted here is the thesis's
 90 °C, but the mode radius is not measured in the reprint as read — the 14.6 and

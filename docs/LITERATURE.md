@@ -950,8 +950,8 @@ surface/pushing effects are read.
   result). Together the two settle both curvatures from primary sources and
   retire the sphere→cylinder extrapolation that
   [schmidt2011](lit/schmidt2011.md) had been carrying — the cylinder figure is 4,
-  not the sphere's 6. **The concave enhancement costs the guided-mode extension
-  nothing:** it multiplies $C_3/x_0^3$ on the axis, which for bores from 250 nm
+  not the sphere's 6. **The concave enhancement would cost a hollow-core
+  geometry nothing:** it multiplies $C_3/x_0^3$ on the axis, which for bores from 250 nm
   to 22.5 µm is $10^{-4}$ to $10^{-10}$ of the near-wall value (CALCULATED).
   *Caution attached to the canonical number:* the 8.1 ± 0.3 comes from the row
   whose $\omega_0/2\pi = 5.9 \pm 0.2$ MHz is a five-fold outlier against the

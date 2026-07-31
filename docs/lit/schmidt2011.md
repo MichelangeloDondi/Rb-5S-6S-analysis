@@ -104,7 +104,7 @@ on the convex exterior of a fibre with their atoms *close* to it, and for which
 the flat-surface form is consequently adequate.
 
 **Concave, factor of 6 up — and this is now CLOSED, without needing the
-extrapolation.** The programme's guided-mode extension puts atoms *inside* a
+extrapolation.** A hollow-core experiment would put atoms *inside* a
 hollow core: a concave dielectric surface. This note previously asked whether
 the spherical 6× carries over to a cylindrical bore and recorded it as OPEN and
 unquantified, warning that the sphere→cylinder step was exactly the kind of
@@ -118,6 +118,6 @@ factor does.
 **And the enhancement is negligible in practice.** The 4× multiplies $C_3/x_0^3$
 evaluated on the axis, which for any core in this programme's sights is between
 $10^{-4}$ and $10^{-10}$ of the value 10 nm from the wall — see the table in
-[afanasiev2010](afanasiev2010.md). So the guided-mode extension carries no van
+[afanasiev2010](afanasiev2010.md). So a hollow-core geometry would carry no van
 der Waals cost from concavity, and the estimate this note asked for has been
 done rather than deferred.

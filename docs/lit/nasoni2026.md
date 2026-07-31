@@ -21,11 +21,12 @@ verify_flags:
     defended July 2026. It is APPARATUS PROVENANCE, not independent literature.
     Confirm with the experimenter before any published claim rests on it, and
     do not treat it as a citable external source.'
-  - 'THE WAIST IT SUPPLIES IS FOR THE WRONG BEAM, and this must travel with the
-    number. The 17.1 x 19.3 um injection waist is the 1064 nm OPTICAL DIPOLE
-    TRAP beam. It is NOT a two-photon probe waist, and a hollow-core guided mode
-    depends on wavelength, so carrying it to a 778 nm or 993 nm line is an
-    ASSUMPTION.'
+  - 'THE WAIST IT SUPPLIES IS FOR A DIFFERENT BEAM AND A DIFFERENT EXPERIMENT,
+    and this must travel with the number. The 17.1 x 19.3 um injection waist is
+    the 1064 nm OPTICAL DIPOLE TRAP beam. A hollow-core guided mode depends on
+    wavelength, so carrying it to a 778 nm or 993 nm line is an ASSUMPTION.
+    Further, per the experimenter (2026-07-31), the apparatus is headed for
+    780 nm EIT cooling; two-photon spectroscopy in that fibre is speculative.'
   - 'Read for the injection-waist passage (its section 2.2.2.1) and the
     abstract. The trap-depth model, the loading-efficiency result and the
     fibre-characterisation chapters are NOT read.'
@@ -41,7 +42,12 @@ summary: >
   thesis makes it an INJECTION BEAM WAIST -- a RADIUS, settling a
   radius-vs-diameter question worth a factor of two in every transit estimate
   -- with an 18 um design target, a 13.6 +/- 0.1 um ideal thin-lens value, and
-  a MEASURED 17.1 +/- 0.7 um by 19.3 +/- 0.4 um.
+  a MEASURED 17.1 +/- 0.7 um by 19.3 +/- 0.4 um. CONFIRMED BY THE EXPERIMENTER
+  2026-07-31: that mode belongs to the 1064 nm TRAPPING laser, the planned next
+  step for the apparatus is 780 nm EIT COOLING, and a 778 nm two-photon line in
+  the hollow core is a speculative idea for a possible separate paper rather
+  than a plan. Transit numbers computed here for a 778 nm probe are answers to
+  a hypothetical.
 loci:
   - P1
   - P2
@@ -95,20 +101,30 @@ Through the repo's own `transit_fwhm_from_w0` at 100 °C (CALCULATED):
 | 18.0 µm | design target | 3.28 MHz |
 | 19.3 µm | **measured**, $y$ | 3.06 MHz |
 
-## The caveat that must not be dropped
+## What the fibre is actually for, and it is not this analysis
 
-**This is the 1064 nm optical-dipole-trap beam.** The thesis builds an ODT by
-coupling 1064 nm into the HCPCF; there is no two-photon probe in it. A
-hollow-core guided mode is set by the fibre *at the wavelength in question*, so
-the 778 nm or 993 nm probe mode is a different number. Every transit estimate in
-this repository that uses 18 µm is therefore resting on an assumption — that the
-probe mode is comparable to the trap mode — which is plausible, unstated, and
-untested. Recorded so it is not mistaken for a measurement of the relevant mode.
+**Confirmed by the experimenter, 2026-07-31.** The 18 µm is the guided mode of
+the **1064 nm trapping laser**. The next step planned for that apparatus is
+**780 nm light for EIT cooling**. Running a 778 nm two-photon line in the
+hollow core is *an idea for a possible separate paper, and is speculative at
+this stage.*
+
+That matters because this repository had drifted into describing the
+hollow-core fibre as its own "guided-mode extension", as though a two-photon
+spectroscopy campaign there were planned. It is not. The fibre belongs to an
+EIT-cooling programme, and the two-photon use of it is one speculative option
+among others. Every transit number computed here for a 778 nm probe answers a
+hypothetical question, and is labelled as such wherever it appears.
+
+The physical caveat stands on top of that. A hollow-core guided mode is set by
+the fibre *at the wavelength in question*, so the 1064 nm trap mode is not the
+778 nm or 993 nm probe mode. Even if the speculative experiment happened, 18 µm
+would be an assumption about it rather than a measurement of it.
 
 ## Other content, not read
 
 The trap-depth ("non-shallow") model, the loading-efficiency result quoted
 against an expected $0.41 \pm 0.04$ per cent, the near-field imaging alignment
 procedure, and the conveyor-belt plan for a counter-propagating second 1064 nm
-beam. If the guided-mode extension is ever written up, the loading efficiency
-and the alignment method are the parts to return to.
+beam. If the speculative two-photon use of this fibre is ever pursued, the
+loading efficiency and the alignment method are the parts to return to.
