@@ -157,7 +157,7 @@ tens of nanometres out.
 radius $a = 100$ nm they take $C_3 = 1.6$ mHz µm³ — a concrete constant for this
 geometry, and the same alkali-on-silica combination as `sague2007`.
 
-## The claim in its Conclusion that matters for Paper 2
+## The claim in its Conclusion that matters for the nanofibre extension
 
 > "the sharp decrease in the potential with distance can be responsible for the
 > **strong asymmetry of the spontaneous emission line** of an atom into an
@@ -169,7 +169,7 @@ potential, proposed in 2012 — **six years before**
 *suggestion*, not a derivation: there is no lineshape, no moment, no fit to
 data here, and the paper does not develop it. But it belongs in the priority
 discussion alongside [delone1980](delone1980.md), and it should be cited rather
-than discovered by a referee. **Recorded for the Paper 2 novelty audit.**
+than discovered by a referee. **Recorded for the the nanofibre extension novelty audit.**
 
 It also draws the trapping consequence — Eq. (24) puts $\mu$ into an effective
 potential with the centrifugal term, giving "expanded atomic orbits around the

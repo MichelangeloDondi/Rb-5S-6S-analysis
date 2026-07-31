@@ -38,7 +38,7 @@ $$\boxed{f(s) \propto |s|\quad\text{on}\quad s\in[-S_0,0]}$$
 
 — a triangular **ramp**. (The same law holds for a nanofibre's
 evanescent field, because the intensity is exponential in the flat coordinate
-there too — that shared law is the physics bridge to Paper 2.) Normalizing,
+there too, and that shared law is the physics bridge to the nanofibre extension.) Normalizing,
 $f(s)=2|s|/S_0^2$, we get the moments by direct integration:
 
 $$\langle s\rangle=\int_{-S_0}^{0}  sf(s)ds=-\tfrac{2}{3}S_0,

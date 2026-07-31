@@ -122,7 +122,7 @@ Gaussianising.
 supersonic beam of **Na₂ molecules**, not a hot alkali vapour — the derivation is
 for a general ladder and the transfer is geometric, but this is not a vapour-cell
 result and should not be cited as one. And the exact-compensation claim is
-strong enough that it should be read in the original before Paper 1 leans on it;
+strong enough that it should be read in the original before this analysis leans on it.
 a summary is not a derivation.
 
 **Citekey correction.** This paper was carried as `bevilacqua2012` from the

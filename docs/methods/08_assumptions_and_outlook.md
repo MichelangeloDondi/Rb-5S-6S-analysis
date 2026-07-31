@@ -67,7 +67,7 @@ the beam-profile $w_0$ itself. Wavemeter calibration is folded in as a
 byproduct (PLAN §7): the atoms ($\sim$ kHz) calibrate the wavemeter
 ($\sim$ 10 MHz), not the reverse.
 
-*Paper 2 (nanofibre / ONF), proposed:* the same ramp law tested at the fibre; a
+*The nanofibre extension, proposed:* the same ramp law tested at the fibre. A
 trajectory Monte-Carlo of the published pushing dip; the pulse-duration kill
 test.
 

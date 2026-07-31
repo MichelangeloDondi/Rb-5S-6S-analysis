@@ -95,7 +95,7 @@ against the PDF caught it.* The stronger claim "the review identifies the light
 shift as THE limiting systematic" is **not** supported -- it was written and
 withdrawn on 2026-07-26, before the full text was available.
 
-**A line worth carrying into Paper 1, found while checking the above.** The
+**A line worth carrying into this analysis, found while checking the above.** The
 review states: "The natural linewidth of the two-photon transition in Rb is
 [approximately] 330 kHz; however, as shown in Table 1, the measured linewidths
 consistently exceed this intrinsic value." That is a *third* setting -- Rb

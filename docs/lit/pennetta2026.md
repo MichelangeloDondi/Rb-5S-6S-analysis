@@ -21,7 +21,7 @@ routing:
 verify_flags: []
 verified_date: 2026-07-17
 summary: >
-  nearest-platform for Paper 2.
+  nearest-platform for the nanofibre extension.
 loci:
   - P2
 section: deep-search
@@ -29,4 +29,4 @@ section: deep-search
 
 # pennetta2026
 
-nearest-platform for Paper 2. Rauschenbeutel group: hybrid nanofibre trap for cold Cs on a 450 nm tapered fibre, attraction from Casimir-Polder + surface-charge electrostatics, repulsion from a blue-detuned evanescent field; loaded 96(5)% from the 935/685 nm two-colour magic trap; depth ~1 µK; storage 140(9) ms; Ramsey T₂* = 17.8(7) ms, spin-echo T₂′ = 44.7(2.5) ms. Two feeds: quantified atom-surface forces (the Casimir-Polder content gokhroo2022 lacks), and a demonstration that the trapping-light differential light shift is the coherence-limiter, cured by low-light trapping. Cs / D2 qubit / 450 nm fibre — physics transfers, numbers do not. DOI + fields read off the published PDF 2026-07-17.
+nearest-platform for the nanofibre extension. Rauschenbeutel group: hybrid nanofibre trap for cold Cs on a 450 nm tapered fibre, attraction from Casimir-Polder + surface-charge electrostatics, repulsion from a blue-detuned evanescent field; loaded 96(5)% from the 935/685 nm two-colour magic trap; depth ~1 µK; storage 140(9) ms; Ramsey T₂* = 17.8(7) ms, spin-echo T₂′ = 44.7(2.5) ms. Two feeds: quantified atom-surface forces (the Casimir-Polder content gokhroo2022 lacks), and a demonstration that the trapping-light differential light shift is the coherence-limiter, cured by low-light trapping. Cs / D2 qubit / 450 nm fibre — physics transfers, numbers do not. DOI + fields read off the published PDF 2026-07-17.

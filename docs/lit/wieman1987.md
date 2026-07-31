@@ -108,7 +108,7 @@ removed**, which is explicit in the title of the descendant
 [antypas2018](antypas2018.md), "Lineshape-asymmetry *elimination*", against this
 work's use of it as the measurement channel.
 
-**What must be checked in the full text before Paper 1's introduction is
+**What must be checked in the full text before the introduction here is
 written**, because each would change the delineation: whether they write the
 shift distribution explicitly (and if so, in what variable); whether any moment
 or asymmetry coefficient is quoted as a number rather than fitted numerically;

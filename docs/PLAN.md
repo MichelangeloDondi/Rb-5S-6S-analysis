@@ -3,7 +3,7 @@
 *Analysis plan of record for the 2025 archive, v1.1 (2026-07-11); §§7–9 are a
 specification for possible future sessions. Supersedes the initial-brief pipeline (§6) where they conflict. Old code in the previous repository is never read or reused; old outputs serve only as external cross-check targets.*
 
-## 0. What the analysis is for (Paper 1 claims)
+## 0. What the analysis is for (this analysis claims)
 
 From the 2025 archival data:
 - **C1** First determination — or bound — of collisional self-broadening β_self of the 5S→6S line vs Rb density (T-sweep).
@@ -12,7 +12,7 @@ From the 2025 archival data:
 
 Reserved for a fixed-lock session (specified in §8; not scheduled): AC-Stark coefficient (P up to ~1 W, ramp-cliff regime), collisional self-shift, direct high-power lineshape test, Lehmann-cusp attempt. The pipeline below must ingest such data unchanged.
 
-**What this produces**: the archive alone yields the method + bounds (a self-contained core result); a fixed-lock session would upgrade the bounds to measured coefficients; an ONF campaign would extend the method to the nanofibre line (`PAPER2_SKELETON.md`); a 5D/7S session would extend it up the ladder (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
+**What this produces**: the archive alone yields the method + bounds (a self-contained core result). A fixed-lock session would upgrade the bounds to measured coefficients; an ONF campaign would extend the method to the nanofibre line; a 5D/7S session would extend it up the ladder (`FUTURE_TRANSITIONS_titsapph.md`). None of these sessions is scheduled or agreed.
 
 ## 1. Ground rules
 
@@ -102,7 +102,7 @@ is atoms (5S→6S hyperfine centers, ~kHz — Ayachitula 2024) ≫ EOM comb
 (6.25 MHz laser-axis teeth, RF-exact intervals) ≫ HighFinesse wavemeter
 (~10 MHz). The wavemeter is the LEAST accurate reference, so our data
 calibrate the instrument, never the reverse. Absolute wavemeter calibration
-is a near-free **byproduct**, NOT on the critical path — Paper 1's fixed-lock-session
+is a near-free **byproduct**, NOT on the critical path. The fixed-lock session's
 targets are frequency *shifts* (AC-Stark vs P, collisional vs density), which
 are differences that ignore the wavemeter's absolute offset; and absolute
 centers belong to Ayachitula 2024 at kHz (a declared non-goal, §4).
@@ -683,7 +683,7 @@ inherit. The prescription is a **bound, not a scan**:
 The one physics a field *would* unlock — the 6S vector polarizability and the
 differential g_J(6S−5S) — needs circular light (signal-halving, B-sensitive) and
 belongs on a cold, trapped, field-controlled platform, not the hot cell
-(`PAPER2_SKELETON.md`, the trapped-platform extensions).
+(the trapped-platform extensions).
 
 ### 8.2 The intensity axis (the collapse test is blind to common scale)
 

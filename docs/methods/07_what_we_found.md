@@ -30,7 +30,7 @@ not by $n$; using $n$ would tighten the bound $\sim$40% — a directional bug
 fixed 2026-07-12.) A naive global Voigt fit instead reports a
 4–10$\sigma$ "detection" — the [§4.5 — The statistics](06_the_statistics.md) cautionary tale in practice. This bound is
 the archival data *showing the two-epoch design was necessary*, and is reported as a
-Paper-1 result.
+vapour-cell result.
 
 ### 5.2 A hierarchical cross-check ($\beta$ per isotope)
 
@@ -90,7 +90,7 @@ alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 archival data cannot locate that crossover; only a direct beam-profile $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
 A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
-ONF starting linewidth for Paper 2.
+ONF starting linewidth for the nanofibre extension.
 
 ### 5.4 The power sweep against the ramp law (C3a–c)
 

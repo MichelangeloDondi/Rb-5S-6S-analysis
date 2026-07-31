@@ -49,7 +49,7 @@ the emitted 795 nm photon (settled earlier)."""
 
 TAU_5P12_S = 27.7e-9
 """5P1/2 lifetime. ESTABLISHED. Sets the ~73 ns cascade latency (matters only
-for ONF geometry / Paper 2, never for cell linewidths)."""
+for ONF geometry / the nanofibre extension, never for cell linewidths)."""
 
 # --------------------------------------------------------------------------
 # EOM frequency ruler

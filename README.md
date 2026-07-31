@@ -254,7 +254,7 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
   lever alone is not enough, since the block-noise floor is co-limiting (M17).
   Full
   specification: [`docs/PLAN.md`](docs/PLAN.md) §8.
-- **Optical nanofibre (Paper 2).** The same ramp law tested in the evanescent field
+- **Optical nanofibre (the nanofibre extension).** The same ramp law tested in the evanescent field
   at a fibre surface, where an atom–surface potential and the "pushing dip"
   (Gokhroo et al., 2022) ride on the lineshape.
 

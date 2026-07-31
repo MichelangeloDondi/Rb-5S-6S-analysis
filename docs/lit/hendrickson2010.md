@@ -54,5 +54,5 @@ completes the guided-geometry prior-art pair: hollow core and nanofibre, both
 demonstrated for two-photon Rb at low power around 2010. What neither does is
 the degenerate Doppler-free scheme in the guided mode, nor any treatment of
 the guided-mode light-shift distribution — the two things the proposed
-extension actually contributes. Cite both up front in Paper 2's framing and
+extension actually contributes. Cite both up front in the nanofibre extension's framing and
 claim only the remainder.

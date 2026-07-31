@@ -29,9 +29,13 @@ ROOT = Path(__file__).resolve().parents[1]
 # Dot-directories excluded so a nested checkout -- a full second copy of the
 # repo -- is not parametrised in alongside the real docs. See the note in
 # test_docs_math_render.py.
+# `private/` is gitignored and never published, so CI (which clones from git)
+# never sees it. Scanning it locally made the suite disagree with CI: a draft
+# moved there kept its docs-relative links and failed a check that only ever
+# applied to published files. Excluded 2026-07-31 so local matches CI.
 DOCS = sorted(p for p in ROOT.rglob("*.md")
               if ".venv" not in p.parts and "PDF_papers" not in p.parts
-              and "node_modules" not in p.parts
+              and "node_modules" not in p.parts and "private" not in p.parts
               and not any(s.startswith(".") for s in p.parts))
 
 

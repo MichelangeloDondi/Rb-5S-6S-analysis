@@ -27,7 +27,7 @@ verify_flags:
     record carries no journal-ref.'
 verified_date: 2026-07-30
 summary: >
-  The direct precedent for Paper 2: an ASYMMETRIC lineshape produced by a
+  The direct precedent for the nanofibre extension: an ASYMMETRIC lineshape produced by a
   spatially distributed level shift in an optical-nanofibre geometry, quantified
   and fitted. Cold Rb-87 around a 240 nm ONF; the van der Waals surface
   potential U = -C3/r^3 red-shifts atoms nearer the silica, and the transmission
@@ -126,7 +126,7 @@ frees $b_o$ as well and gives $b_o = 0.156 \pm 0.019$ with
 $g = 2.15 \pm 0.136$, which they note is consistent within errors. The
 expectation is $g < 3$.
 
-## The concession Paper 2 must make
+## The concession the nanofibre extension must make
 
 `LITERATURE.md` §5 already concedes that asymmetric lineshapes from a distributed
 AC-Stark shift are not new, on the strength of [wieman1987](wieman1987.md). This
@@ -157,7 +157,7 @@ plainly rather than discovered by a referee.
    argument is structural rather than empirical: a static van der Waals shift is
    independent of probe intensity by construction, so a monotone rise of
    asymmetry with probe power cannot be the van der Waals mechanism. That makes
-   it a **discriminating signature for Paper 2 to measure** — not a result to
+   it a **discriminating signature for the nanofibre extension to measure**, not a result to
    cite. Stating it as though Patterson had measured it would be the same class
    of error as running their two power axes together.
 3. **One photon, cold atoms.** 5S→5P at 330 µK: $n = 1$, transit time
@@ -201,7 +201,7 @@ experiments report ~1–2 MHz of genuinely unexplained width, and a third report
 much larger surplus that it does attribute.** Whether the small unexplained
 residual and the large attributed one are the same physics at different scales is
 **OPEN** — this repository has not checked them against a common model, and doing
-so is the work, not the observation. It remains a better premise for Paper 2 than
+so is the work, not the observation. It remains a better premise for the nanofibre extension than
 "we measure a lineshape in an ONF too".
 
 **A second, smaller borrowing.** Their probe scan runs red→blue then blue→red

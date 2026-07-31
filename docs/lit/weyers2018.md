@@ -64,7 +64,7 @@ $\beta_{\rm self}$ determination has exactly this character: the collisional
 term is not cleanly separable from the drift, and the archival bound sits
 57–113× above the expected value precisely because the two are entangled. PTB's
 answer is neither to force a separation nor to quote a statistical-only bar, but
-to declare the entanglement and book the whole thing as systematic. **Paper 1's
+to declare the entanglement and book the whole thing as systematic. **this analysis'
 $\beta_{\rm self}$ section should say what it does with the entangled part, in
 those terms, and can cite a primary standard for the practice.**
 

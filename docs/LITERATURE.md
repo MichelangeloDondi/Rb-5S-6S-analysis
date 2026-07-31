@@ -1,6 +1,6 @@
 # Literature ledger — prior art, anchors, and the novelty delineation
 
-Purpose: every external number or claim Paper 1 leans on, with provenance,
+Purpose: every external number or claim this analysis leans on, with provenance,
 so no novelty sentence is written from memory. House rules apply: VERIFIED
 means we read the source itself; REPORTED means a literature-scout summary
 we have not yet read in full — cite nothing REPORTED until it is upgraded.
@@ -30,7 +30,7 @@ The generic quasi-static law both regimes reduce to: signal weight ∝ Iⁿ over
 a Gaussian envelope gives dA ∝ dI/I, hence **f(s) ∝ |s|^(n−1)** — uniform
 for their n = 1, triangular for our n = 2. The triangular form is specific
 to two-photon excitation; the same dA ∝ dI/I holds for a thin evanescent
-shell, which is the geometry-independence bridge to Paper 2. CALCULATED
+shell, which is the geometry-independence bridge to the nanofibre extension. CALCULATED
 (README derivation to be extended with this comparison).
 
 **What we take from it:** their FM framework settles our ⟨E²⟩ convention question.
@@ -206,7 +206,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    the intrinsic g₁ = +0.566 at n = 2, which is a number and not a fit;
    **(c)** the fringe-averaged treatment and the M19 result that a retro standing
    wave does not move the mean; and
-   **(d)** the evanescent-geometry invariance of the dA ∝ dI/I step (the Paper 2
+   **(d)** the evanescent-geometry invariance of the dA ∝ dI/I step (the nanofibre extension
    bridge), which Delone have no occasion to consider.
    Stalnaker remains distinct on other axes (numerical, n = 1, fringe-resolved),
    but he is no longer the binding precedent for this claim — Delone is.
@@ -263,7 +263,7 @@ distribution of AC-Stark shifts is a new frame**.
 > (found 2026-07-30 while auditing).** [camparo1992](lit/camparo1992.md) §3:
 > "the multiphoton transition line shape may be expected to act as a map of the
 > probability distribution of Stark shifts, which will follow the asymmetric
-> distribution of $(1+\epsilon)^2$." That is materially closer to Paper 1's
+> distribution of $(1+\epsilon)^2$." That is materially closer to this analysis'
 > frame than `wieman1987` or `stalnaker2006`, both of which are one-photon, and
 > the concession must name it.
 >
@@ -307,7 +307,7 @@ distribution of AC-Stark shifts is a new frame**.
 > $f(s)\propto|s|^{n-1}$ with $k=n$; and at $n=2$ it agrees with the shipped
 > `lineshape.stark_ramp` to $7\times10^{-12}$. **This repository's closed form is
 > Delone's Eq. (5.3) evaluated for the intensity distribution of a focused
-> Gaussian beam.** Paper 1's introduction must say so in those words.
+> Gaussian beam.** the introduction here must say so in those words.
 >
 > **What survives, and it is narrower than claim 1 as written.** Delone treat
 > $P$ as the *unknown to be reconstructed* — their point is that the lineshape
@@ -351,7 +351,7 @@ distribution of AC-Stark shifts is a new frame**.
 > The delineation is therefore left **conceded in general and narrowed in the
 > note, not here** — narrowing a priority claim on a paper nobody has read is the
 > error this repository has spent the week correcting. Read the full text before
-> Paper 1's introduction; the three things to check are listed at the end of the
+> the introduction here. The three things to check are listed at the end of the
 > note.
 
 ### 5.1 Narrowed again by the adversarial audit (2026-07-26)
@@ -498,7 +498,7 @@ note; no such figure is in the paper. **[OPEN]**
 ### 5.3 The nearest analogue experiment, and what it costs claim 1 (2026-07-30)
 
 [lee2010](lit/lee2010.md) — Lee, Chui, Chen, Chang & Tsai, *Opt. Commun.* **283**,
-1788 (2010), held and read — is closer to Paper 1 than anything in §5.1. Not an
+1788 (2010), held and read, is closer to this analysis than anything in §5.1. Not an
 adjacent geometry: **the same experiment**, in Cs. A two-photon $nS \to n'S$
 alkali line in a hot vapour cell, Doppler-free with a retro-reflected beam,
 cascade-fluorescence detection, laser intensity and vapour density scanned as the
@@ -628,11 +628,11 @@ archival bounds refine).
     two-photon operator decomposition (with Le Kien) is the citable basis for
     our M10 degeneracy-law claim (identical photons on S→S: vector and tensor
     parts vanish, only the scalar survives ⇒ areas ∝ abundance × (2F+1)).
-  * **ONF feasibility evidence for Paper 2:**
+  * **ONF feasibility evidence for the nanofibre extension:**
     [rajasree2020spin](lit/rajasree2020spin.md) demonstrates 5S–6S excitation
     in **cold ⁸⁷Rb around a 400 nm-waist nanofibre** (SM800-5.6-125, ~30%
     transmission at 993 nm) via the evanescent field — so ONF-mediated 5S–6S
-    from atoms near the fibre is *demonstrated*, and the open Paper-2 question
+    from atoms near the fibre is *demonstrated*, and the open nanofibre question
     is the quantitative near-surface *lineshape* program (pushing dip, surface
     shift), not whether the signal exists. Nonparaxial twist: in the
     evanescent field the transition is **not extinguishable** by polarization
@@ -685,7 +685,7 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
 - **Two-photon Rb in a confined/perturbed geometry.** [Amy et al. 2017](lit/amy2017.md)
   — two-photon Rb under confinement (context). **[FEED]**
 
-## 8. The 2024–2026 landscape (Paper-1 positioning + future-transition frontier)
+## 8. The 2024–2026 landscape (vapour-cell positioning + future-transition frontier)
 
 Source sweep: the local literature-intake landscape note (untracked, a `RECENT_LITERATURE`
 working file not part of the repo). Options for the tunable Ti:Sapph:
@@ -704,7 +704,7 @@ QUARANTINED (do not cite): the Li dual-interrogation arXiv (real
 compensation-method preprint is 2405.14281, a different paper) and `drago2026`
 (2602.07161, malformed).
 
-**Positioning Paper 1 (our 993 nm 5S→6S).** No other group is currently working this line: the only active
+**Positioning this analysis (our 993 nm 5S→6S).** No other group is currently working this line: the only active
 group (USAFA/Knize — `ayachitula2024`; and the earlier McLaughlin 5S–6S absolute-
 energy work, *J. Phys. B*-era, VERIFY vol/year via Ayachitula's ref list) reports
 **null AC-Stark and density shifts at ~6 MHz resolution** (up to 10⁴ W/cm², N =
@@ -798,7 +798,7 @@ answer.
 [lee2010](lit/lee2010.md) (Tsai/Chui, NCKU Tainan) and its sister
 [lee2012](lit/lee2012.md) run a hot-cell, retro-reflected, cascade-detected
 two-photon $nS\to n'S$ alkali line with laser intensity and vapour density as
-independent variables — Paper 1's experiment, in Cs. They measure a light shift
+independent variables, which is the experiment here, in Cs. They measure a light shift
 of $-7.25(45)$ Hz/(mW/mm²) against a theoretical $-6.58$; this repository's
 pinned $\Delta\alpha = 1093.0$ a.u. gives 5.12 Hz/(mW/mm²) on the transition
 axis, the same order, which is a magnitude sanity check and **not** a sign test.
@@ -815,7 +815,7 @@ exactly the failure mode that forced the M20 retraction; and a **cold finger at
 10 °C under a 65 °C body** decouples vapour density from thermal velocity, the
 degeneracy this campaign's temperature scan has to break by shape. **[CITE]**
 
-**Nanofibre bridge to Paper 2** (Gokhroo/Le Kien/Nic Chormaic lineage):
+**Nanofibre bridge to the nanofibre extension** (Gokhroo/Le Kien/Nic Chormaic lineage):
 [gokhroo2022](lit/gokhroo2022.md) (the ONF two-peak pushing-dip analog),
 `li2024perspective` (*J. Phys. Photonics* **6**,
 021002, the standard ONF review), [sadeghi2026](lit/sadeghi2026.md) (ONF
@@ -829,8 +829,8 @@ surface/pushing effects are read.
 - [patterson2018](lit/patterson2018.md) — Patterson, Solano, Julienne, Orozco &
   Rolston, *PRA* **97**, 032509 (2018), "Spectral asymmetry of atoms in the van
   der Waals potential of an optical nanofiber". Surfaced 2026-07-30 from
-  `sadeghi2026`'s ref [25]; **held and read 2026-07-30**. It stands to Paper 2 as
-  [wieman1987](lit/wieman1987.md) does to Paper 1: cold Rb around a 240 nm
+  `sadeghi2026`'s ref [25], **held and read 2026-07-30**. It stands to the nanofibre extension as
+  [wieman1987](lit/wieman1987.md) does to this analysis: cold Rb around a 240 nm
   nanofibre, where the van der Waals surface potential red-shifts atoms nearer
   the silica and the transmission spectrum is built as a Lorentzian of
   position-dependent centre averaged over a density-times-coupling weight — the
@@ -851,7 +851,7 @@ surface/pushing effects are read.
   *cross-mechanism inference*, not a measured head-to-head. The argument is that
   a static van der Waals shift is by construction independent of probe intensity,
   so a monotone rise of asymmetry with **probe** power cannot be the van der
-  Waals mechanism — a discriminating signature for Paper 2 to *measure*, and one
+  Waals mechanism, a discriminating signature for the nanofibre extension to *measure*, and one
   nobody has measured yet. **[CITE]**
 - **The open question it hands us, worth more than the citation.** Patterson
   measure $\Gamma_0 = 8.1(3)$ MHz — the *total* homogeneous width in their model —
@@ -873,7 +873,7 @@ surface/pushing effects are read.
   coincidence of notation between different quantities.
   Whether the small unexplained residual and the large attributed one are the
   same physics at different scales is **OPEN**; this repository has not checked
-  them against a common model. Even narrowed, it is a better premise for Paper 2
+  them against a common model. Even narrowed, it is a better premise for the nanofibre extension
   than measuring one more ONF lineshape. **[OPEN]**
 - **The premise narrowed twice more on 2026-07-30, and gained a mechanism.** An
   external literature pass found no post-2018 paper explaining the residual, and
@@ -1005,24 +1005,24 @@ surface/pushing effects are read.
   property rather than a daily alignment. VERIFIED via the thesis. **[CITE]**
 
 **[FEED] Pennetta et al. 2026** ([pennetta2026](lit/pennetta2026.md)) — the
-nearest-platform result to Paper 2, feeding two of its pillars; NO committed number
+nearest-platform result to the nanofibre extension, feeding two of its pillars. NO committed number
 moved. Two details beyond the lit-file summary: radial trap ~7 kHz, atom ~280 nm
 from the surface; the Ramsey/spin-echo coherence times are records for the
 platform. The two feeds:
 - **It puts quantified atom–surface content on the near-surface potential** —
   Casimir–Polder plus surface-charge electrostatics — which is exactly what
   `gokhroo2022` left at the hypothesis stage (its dip has "no Casimir-Polder or
-  van der Waals content at all"): a concrete ingredient for any Paper-2
+  van der Waals content at all"): a concrete ingredient for any nanofibre
   near-surface *lineshape* model.
 - **Its coherence gain is a suppression of the trapping-light differential light
   shift.** The paper states the decoherence it beats "arises from
   motional-state-dependent differential light shifts … proportional to the
   intensity of the trapping fields," cured by holding atoms in low-light regions
-  — a real-world confirmation, on Paper-2's own platform, that the
+  a real-world confirmation, on the nanofibre platform itself, that the
   **inhomogeneous/differential light shift is the coherence-limiting systematic
   in guided-atom systems**, which is the premise of our light-shift-distribution
   method (THEORY_NOTE §3), the M16 magic-wavelength toolkit, and the guided-mode
-  framing in `PAPER2_SKELETON.md` §V–VI.
+  framing of the trapped-platform extensions.
 
 Platform caveats: Cs not Rb, a D2 hyperfine qubit not the
 5S–6S two-photon line, a 450 nm fibre not the OIST 650 nm — the *physics* (surface
@@ -1036,7 +1036,7 @@ shift of the trapping fields** as the limiting imperfection — the recurring
 guided-mode theme. Cs / D2 again: the physics transfers, the numbers do not.
 
 **Prior-art audit on the pushing dip (2026-07-16).** Because a near-surface
-lineshape is the natural Paper-2 direction, we checked whether anyone has since
+lineshape is the natural nanofibre direction, we checked whether anyone has since
 modelled the `gokhroo2022` dip. Crossref/OpenAlex list **6 citing works, 4 unique**
 (two are preprint/published pairs), and **none models the dip**: Kestler *et al.*
 (UCSD, Sr state-insensitive ONF trap — unrelated); Vylegzhanin *et al.* 2023
@@ -1077,10 +1077,10 @@ cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
 - **[Beard et al. 2024](lit/beard2024.md)** — a second cascade-detection
   precedent (776 nm 5D→6P fluorescence). [CITE]
 
-**Near-surface Casimir–Polder shift read FROM a lineshape — template for Paper 2 §IV:**
+**Near-surface Casimir–Polder shift read FROM a lineshape, the template for the nanofibre extension §IV:**
 - **[Ton, Kestler, Steck & Barreiro 2026](lit/ton2026.md)** — the state-of-the-art
   template for extracting a surface shift from the line; D. A. Steck (our
-  constants lineage) is a co-author. [CITE — the model template for Paper 2's
+  constants lineage) is a co-author. [CITE. The model template for the nanofibre extension's
   surface term]
 
 **Sibling cold-atom two-photon clock (ladder / magic-λ context):**
@@ -1101,13 +1101,13 @@ cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
 **Verified and folded in (2026-07-18) — the near-surface CP-lineshape cluster + the
 7S cascade study (all PDFs held):**
 - **[Dutta et al. 2025](lit/dutta2025.md)** — the direct template for reading
-  the near-surface shift as a thermal-averaged distribution in Paper 2 §IV. [CITE]
+  the near-surface shift as a thermal-averaged distribution in the nanofibre extension §IV. [CITE]
 - **[Dutta et al. 2024](lit/dutta2024.md)** — higher-order CP corrections at
-  close range: the background for Paper 2's near-surface term. [FEED]
+  close range: the background for the nanofibre extension's near-surface term. [FEED]
 - **[Sargsyan, Momier & Sarkisyan 2025](lit/sargsyan2025.md)** — the
   experimental analogue of extracting a surface shift from the line. [CITE]
 - **[Piotrowski, Bach, Vera Paz, Schneeweiss & Rauschenbeutel 2026](lit/piotrowski2026.md)**
-  — a Paper-2 feasibility bound on the probe window/power. [CITE]
+  A nanofibre feasibility bound on the probe window and power. [CITE]
 - **[Wang, Cao, Yuan, Wang, Xiao & Jia 2025](lit/wang2025.md)** — directly on
   our 5S–7S ladder (the 741/728 nm channels set the ladder magic wavelength)
   and a multi-channel-detection precedent for the amplitude work. [CITE]
@@ -1119,7 +1119,7 @@ clock review). **Quarantined (do NOT cite): arXiv:2602.07161** (malformed, re-su
 **The ONF community map (why the nearest-platform refs cluster here).** The two poles
 of the optical-nanofibre cold-atom field are the **Rauschenbeutel group** (Humboldt
 Berlin; `pennetta2026`, `pache2026`) and the **Nic Chormaic group** (OIST; `nieddu2019`,
-`rajasree2020`, `gokhroo2022` — our own provenance and Paper 2's platform); they
+`rajasree2020`, `gokhroo2022`, our own provenance and the nanofibre extension's platform); they
 co-organise the ONNA (Optical Nanofibre Applications) conference series. So the newest
-nearest-platform work is from Paper 2's own community — engaging it well is both good
+nearest-platform work is from the nanofibre community, and engaging it well is both good
 scholarship and the natural way this program is read by that community.

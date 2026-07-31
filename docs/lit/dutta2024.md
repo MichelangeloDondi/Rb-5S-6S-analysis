@@ -33,4 +33,4 @@ section: deep-search
 
 # dutta2024
 
-Quadrupole/octupole CP corrections when the atomic wavefunction is not small vs atom-surface distance, and their imprint on thin-cell / selective-reflection lineshapes. Background for Paper 2 near-surface term at close range. Verified 2026-07-18.
+Quadrupole/octupole CP corrections when the atomic wavefunction is not small vs atom-surface distance, and their imprint on thin-cell / selective-reflection lineshapes. Background for the nanofibre extension near-surface term at close range. Verified 2026-07-18.

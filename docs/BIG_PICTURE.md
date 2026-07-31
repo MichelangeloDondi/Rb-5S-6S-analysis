@@ -105,7 +105,7 @@ as a bound. Concretely:
   detection" would be an artifact. The per-peak bound is
   ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95%, with the low-degrees-of-freedom scatter
   and the vapour-pressure density scale both propagated). Showing that the
-  two-epoch design was *required* is reported as a Paper-1 result.
+  two-epoch design was *required* is reported as a vapour-cell result.
 - **The ramp's power laws hold** (width: no power trend, a null under 3–8%
   block scatter; amplitude: consistent with P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the

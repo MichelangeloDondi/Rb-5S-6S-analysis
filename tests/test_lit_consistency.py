@@ -66,7 +66,7 @@ KNOWN_DANGLING = {
     # sadeghi2026 and quirk2024 left this list 2026-07-30: both fetched from
     # arXiv, read, and noted. patterson2018 was a must-read surfaced by
     # sadeghi2026 ref [25] -- PRA 97, 032509 (2018), spectral asymmetry in the
-    # van der Waals potential of an ONF, the direct precedent for Paper 2.
+    # van der Waals potential of an ONF, the direct precedent for the nanofibre extension.
     "nunes2024", "weiss2018", "bjorkholm1976",
     # (sieradzan2004 was described here as having no lit file, on the strength of
     # a PDF add that "did not land". That is FALSE and was removed 2026-07-31:

@@ -134,7 +134,7 @@ programme's own thesis.** In their §3 they write that under adiabatic condition
 
 That is *the lineshape maps the shift distribution*, stated in 1992, for a
 **two-photon** transition, with an asymmetric distribution arising from an
-intensity that enters quadratically. It is materially closer to Paper 1's frame
+intensity that enters quadratically. It is materially closer to the frame used here
 than [wieman1987](wieman1987.md) (one-photon) or
 [stalnaker2006](stalnaker2006.md) (one-photon, numerical), and the concession in
 `LITERATURE.md` §5 should name it.
@@ -154,5 +154,5 @@ N. B. Delone, V. A. Kovarskii, A. V. Massalov & N. F. Perel'man, "An atom in the
 radiation field of a multifrequency laser", *Sov. Phys. Usp.* **23**, 472 (1980).
 If the mapping statement is to be attributed correctly, that review is where it
 comes from and it predates everything else in this section. **Not held, not
-read.** Worth one search before Paper 1's introduction is written.
+read.** Worth one search before the introduction here is written.
 

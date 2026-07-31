@@ -146,7 +146,7 @@ So the defensible claim is not the machinery and not the mapping. It is:
   have;
 - everything experimental, and the fringe-averaging result (M19).
 
-**Paper 1's introduction should cite this paper early and concede all four
+**the introduction here should cite this paper early and concede all four
 points above explicitly.** A referee who knows the Soviet nonlinear-optics
 literature will otherwise find it, and the claim as previously worded would not
 survive that.
@@ -180,7 +180,7 @@ the same function.
 
 **So the concession is as tight as it can be.** This repository's closed form is
 Delone's Eq. (5.3) evaluated for the intensity distribution of a focused Gaussian
-beam. That must be said in Paper 1's introduction in those words.
+beam. That must be said in the introduction here in those words.
 
 **What that leaves, stated precisely.** Delone give the general relation and
 treat $P$ as the *unknown to be reconstructed* — their whole point is that the

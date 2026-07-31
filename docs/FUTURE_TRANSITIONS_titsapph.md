@@ -160,7 +160,7 @@ derisking step on this page.
 > not a smaller error bar. The shape handles are weak (width ∝S₀², skew ∝S₀³) and the
 > skew is contamination-prone (shot noise, instrument asymmetry), so it needs the
 > *large-S₀* small-waist regime to be a measurement at all — see the scope note in
-> the Paper-1 framing. That inherits a further dependency: at small waist the
+> the vapour-cell framing. That inherits a further dependency: at small waist the
 > ramp skew is itself conditional on the axial collection geometry, which is
 > unmeasured — the axial average can suppress it or reverse its sign
 > (PLAN §8.3 #4). So this proposal is gated on the same collection-profile
@@ -236,11 +236,11 @@ derisking step on this page.
 papers below is scheduled, agreed, or assigned. The ordering is what the
 physics argues for if the programme is pursued at all.*
 
-1. **Finish Paper 1 (993 nm 5S→6S)** as the clean method demonstrator — and reframe
+1. **Finish this analysis (993 nm 5S→6S)** as the clean method demonstrator, then reframe
    its Intro: the *passive, reference-free inversion* of Wieman/Antypas,
    explicitly contrasted with the active 778 nm suppression schemes, on a line no other group is currently working
-   transition (quote the USAFA nulls). (This is a Paper-1 Intro edit — cheap,
-   do it in the Paper-1 pass; the refs are in `LITERATURE.md` §8.)
+   transition (quote the USAFA nulls). (This is a vapour-cell Intro edit. It is cheap,
+   do it in the vapour-cell pass. The refs are in `LITERATURE.md` §8.)
 2. **Paper A + C together** are the high-impact next step: carry the method to the
    778 nm clock line and turn the Ti:Sapph tunability into a magic-wavelength /
    Δα(λ) measurement, with the intermediate-state lineshape (C) as the validated

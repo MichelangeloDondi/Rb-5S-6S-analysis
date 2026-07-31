@@ -86,7 +86,7 @@ def test_the_centre_channel_stays_far_weaker_than_the_width_channel():
     assert best > 5.0 * width, (
         f"best centre bound {best:.2f} MHz is within 5x of the width channel's "
         f"{width} MHz -- if real, the centre channel is no longer negligible and "
-        "the Paper-1 narrative needs updating")
+        "the vapour-cell narrative needs updating")
 
 
 def test_the_pull_must_be_linear_in_power_and_is_not():

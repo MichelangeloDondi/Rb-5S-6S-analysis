@@ -107,7 +107,7 @@ def main() -> int:
     print("    - slow drift is NOT the cause (~0.01 MHz within a 1 s scan)")
     print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the fixed-lock session")
     print("      knife-edge w0 (fixing transit) converts this bound into a measurement")
-    print("    - this bound is the ONF starting linewidth for Paper 2")
+    print("    - this bound is the ONF starting linewidth for the nanofibre extension")
 
     with open(C.RESULTS_DIR / "laser_epoch.csv", "w", newline="") as f:
         w = csv.writer(f)

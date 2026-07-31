@@ -492,9 +492,10 @@ def test_no_test_reads_a_gitignored_results_file_unconditionally():
 def test_module_range_glosses_are_not_stale():
     """`M0–M<n>` range glosses must not stop below the highest module.
 
-    The audit found methods/08, PAPER2_SKELETON, __init__ and a README line
-    all frozen at an old top module while M17 existed. The highest module is
-    read from methods.md's pipeline line, so this tracks reality automatically.
+    The audit found methods/08, __init__, a README line and a planning
+    document all frozen at an old top module while M17 existed. The highest
+    module is read from methods.md's pipeline line, so this tracks reality
+    automatically.
     """
     methods = (ROOT / "docs" / "methods.md").read_text(encoding="utf-8")
     top = max(int(n) for n in re.findall(r"\bM(\d+)\b", methods))
@@ -508,7 +509,7 @@ def test_module_range_glosses_are_not_stale():
             # historical/pipeline-stage range (those name the older scheme)
             line = text[max(0, m.start() - 160):m.start() + 40]
             # exempt only an EXPLICIT older-scheme marker, not any prose that
-            # happens to contain "pipeline" -- "the Paper-1 pipeline (M0-M17)"
+            # happens to contain "pipeline" -- "the vapour-cell pipeline (M0-M17)"
             # is a live range, "M8 outputs, the older pipeline-stage numbering"
             # is not.
             historical = re.search(r"pipeline[- ]stage|stage numbering|older"

@@ -36,7 +36,7 @@ $$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
 
 For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$. The same $dS\propto dI/I \cdot I^{n}$ argument holds for any monotonic $I$ profile that is flat in
 one coordinate — including the exponential evanescent field of a nanofibre —
-which is the bridge to the fibre geometry (Paper 2). Normalising, the moments
+which is the bridge to the fibre geometry of the proposed extension. Normalising, the moments
 follow by direct integration:
 
 $$\langle s\rangle = -\tfrac{2}{3}S_0,\qquad

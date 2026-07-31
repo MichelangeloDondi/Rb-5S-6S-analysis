@@ -41,7 +41,7 @@ summary: >
   between direct and returned fluorescence GROWS WITH EXCITATION POWER at
   (0.25 +- 0.06) MHz slope, which the authors attribute to surface-shifted
   atoms being excited preferentially at higher intensity. The nearest
-  competitor to Paper 2's ONF lineshape programme.
+  competitor to the nanofibre extension's ONF lineshape programme.
 loci:
   - P2
 section: oist-lineage
@@ -58,7 +58,7 @@ return to interact with the same ensemble after a delay — a one-way cascaded /
 delayed-feedback atom–photon interface, motivated by distributed quantum
 computing.
 
-**Why it matters to Paper 2 anyway, and this is the part to cite.** The ONF
+**Why it matters to the nanofibre extension anyway, and this is the part to cite.** The ONF
 lineshape they report is dominated by things that are not the atom:
 
 - observed linewidth **~16 MHz** against a natural **5.2 MHz**;
@@ -72,10 +72,10 @@ lineshape they report is dominated by things that are not the atom:
 
 That last mechanism is a *power-dependent shift arising from a spatially varying
 potential selecting which atoms are excited* — structurally the same kind of
-statement this programme makes about the AC-Stark ramp, in the geometry Paper 2
+statement this programme makes about the AC-Stark ramp, in the geometry the nanofibre extension
 targets, and with the roles of the two effects reversed: for them the surface
 potential is the nuisance, for us the intensity distribution is the signal. A
-Paper-2 lineshape treatment has to account for their Γ₀ before it can claim to
+nanofibre lineshape treatment has to account for their Γ₀ before it can claim to
 have modelled anything.
 
 **A correction to how this repository described it.** The intake files call it
@@ -90,11 +90,11 @@ paper than the one you need.
 B. Patterson, P. Solano, P. Julienne, L. Orozco and S. Rolston, *"Spectral
 asymmetry of atoms in the van der Waals potential of an optical nanofiber"*,
 Phys. Rev. A **97**, 032509 (2018). Lineshape **asymmetry** produced by a
-distributed potential, in the ONF geometry — a direct precedent for Paper 2's
+distributed potential, in the ONF geometry, a direct precedent for the nanofibre extension's
 central object, and absent from these holdings entirely when this note was
 written. **Obtained and read the same day**: see
 [patterson2018](patterson2018.md). It confirms the reasoning that made
-[wieman1987](wieman1987.md) matter for Paper 1, and it turns this paper's Γ₀ into
+[wieman1987](wieman1987.md) matter for this analysis, and it turns this paper's Γ₀ into
 part of a pattern — Patterson report the same ~2 MHz of unexplained excess width
 in Rb that this paper reports in Cs, and say explicitly that they cannot account
 for it.
