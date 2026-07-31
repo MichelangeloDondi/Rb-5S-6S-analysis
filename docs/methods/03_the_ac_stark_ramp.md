@@ -5,7 +5,7 @@
 Intense light shifts atomic levels (the AC-Stark or light shift) by an amount
 proportional to the local intensity $I$. This chapter takes the shift toward the
 **red** (lower frequency), following [Orson *et al.*](../lit/orson2021.md) 2021's
-published $\Delta\alpha$ for this line; note that an independent recompute here
+published $\Delta\alpha$ for this line. An independent recompute here
 returns the same magnitude but the *opposite* sign, an open question flagged for
 adjudication in [`THEORY_NOTE.md`](../THEORY_NOTE.md) §5. Nothing in the archival
 results depends on the choice — the shape below and every bound drawn from it are

@@ -400,7 +400,7 @@ it**.
 The validation matters more than the number: the identical machinery gives
 C₆(5S+5S) = 4180 a.u. against the literature Rb₂ value of ~4691 — 11% low, in
 the direction and roughly the size the deliberately-dropped core predicts. Read
-everything here as ENVELOPE at the 10–15% level, and note that the impact
+everything here as ENVELOPE at the 10–15% level. The impact
 prefactor is quoted from the pressure-broadening literature rather than derived.
 
 That expectation also has an upper anchor from measurement. [Weller 2011](lit/weller2011.md) measures the Rb **D1**
