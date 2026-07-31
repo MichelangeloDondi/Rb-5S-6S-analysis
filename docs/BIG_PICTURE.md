@@ -310,6 +310,21 @@ as a bound. Concretely:
   status tag (BOUND / NULL / MEASURED / …); the documentation is written to be
   picked up by whoever works on this next.
 
+**What of the method is actually new, stated at the size it will survive.** The
+relation the analysis rests on, that the signal-weighted shift distribution goes
+as $|s|^{n-1}$, is **not new**. It reduces exactly to Eq. (5.3) of Delone and
+Krainov's 1980 review, checked against the shipped implementation to
+$7\times10^{-12}$, and that review already carries the lineshape as a map of the
+shift distribution and the $k$-photon intensity weighting
+([delone1980](lit/delone1980.md), and §5 of [LITERATURE.md](LITERATURE.md) for
+the full concession).
+
+Three things survive it. Their distribution is the statistics of a fluctuating
+field, unknown in advance, so their integral stays formal. In a focused beam it
+is fixed by **geometry**, so it closes. That closure gives **analytic cumulants**
+on bounded support. And the third of them is a **drift-immune channel**, which is
+what makes a dataset with no usable line centres say anything at all.
+
 In summary, the archive turned a drifted-lock
 dataset into a validated model, one near-prediction bound, one
 demonstrated-necessary bound, and a method — but no coefficients.

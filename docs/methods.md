@@ -14,7 +14,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 > measurement, because the dominant systematic (the beam waist $w_0$) is still an
 > OPEN prior. That status is stated per-result in §5 **and machine-attached**:
 > every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…),
-> the same provenance tag README describes. Modules M0→M21
+> the same provenance tag README describes. Modules M0→M22
 > (with lettered fitting sub-stages M4b–M4e), **1211 tests**
 > passing on numpy 1.24 *and* 2.0;
 > all vapour-cell deliverables (C1 collisional broadening, C2 laser epoch, C3
@@ -72,7 +72,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M8 model-form | M9 transit MC | M10 amplitude ratios | M11 model ladder (BIC) |
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
-  | M20 laser history (piecewise) | M21 centre channel (null) |  |  |
+  | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -139,7 +139,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_ramp_geometry(§2.6/PLAN §8.3 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 tests/    1211-test battery (1180 fast ~2 min + 31 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e

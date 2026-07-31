@@ -11,10 +11,14 @@ We drive the Doppler-free $5S_{1/2}\to 6S_{1/2}$ two-photon transition in a Rb
 vapour cell with a **focused, retro-reflected** 993 nm beam. Because the
 excitation rate goes as the square of a spatially inhomogeneous intensity, the
 distribution of AC-Stark shifts across the illuminated atoms is not a single
-number but a **skewed distribution with a closed form**. This note derives that
-form, its moments, the drift-immune way we extract it from a lock too unstable
-to hold a line centre, and the field-intensity convention that fixes its
-coefficient. It closes with **one genuinely open theoretical question** — the
+number but a **skewed distribution with a closed form**. That relation is a
+1980 result, Eq. (5.3) of Delone and Krainov's review, and §2 shows the
+reduction. What this note does is evaluate it for the case where the
+distribution is set by beam geometry rather than by laser statistics, which is
+where their integral closes and ours does not stay formal. It gives that
+evaluation, its moments, the drift-immune way we extract it from a lock too
+unstable to hold a line centre, and the field-intensity convention that fixes
+its coefficient. It closes with **one genuinely open theoretical question** — the
 survival of the closed form under the real collection geometry — which is the
 natural place for a contribution.
 
@@ -34,7 +38,23 @@ and with $s=-S_0 u$ (where $S_0=\kappa I_0$ is the on-axis maximum shift) the
 
 $$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
 
-For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$. The same $dS\propto dI/I \cdot I^{n}$ argument holds for any monotonic $I$ profile that is flat in
+For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$.
+
+**This relation is not new, and the note should not be read as claiming it.**
+It reduces exactly to Eq. (5.3) of Delone and Krainov's 1980 review
+([delone1980](lit/delone1980.md)) once the geometric intensity distribution of
+a Gaussian beam, $P(I) \propto 1/I$, is substituted into their general result.
+The reduction was checked against the shipped `stark_ramp` implementation and
+agrees to $7\times10^{-12}$. Their review also already contains the lineshape
+as a map of the shift distribution, the $F^k$ intensity weighting for $k$-photon
+excitation, and the asymmetric shift-dominated limit.
+
+What is claimable here is the evaluation rather than the relation. Delone's
+$P$ is the statistics of a fluctuating field, unknown a priori, so their
+integral stays formal. In a focused beam the distribution is fixed by
+**geometry**, so the integral closes, and what follows from that closure is the
+subject of this note: the analytic cumulants on bounded support in the next
+paragraph, and the third cumulant as a drift-immune channel in §3. The same $dS\propto dI/I \cdot I^{n}$ argument holds for any monotonic $I$ profile that is flat in
 one coordinate — including the exponential evanescent field of a nanofibre —
 which is the bridge to the fibre geometry of the proposed extension. Normalising, the moments
 follow by direct integration:

@@ -323,6 +323,29 @@ re-lock transient after the daytime break (addenda 4–7), settling toward the
 100 kHz short-term StdDev visible in the statistics panel; not steady
 acquisition drift, which the archive puts two orders below.*
 
+> **The 2025-06-11 record has since been digitised, and it is not a drift
+> (2026-07-31).** The photograph is legible enough to measure rather than
+> estimate, so `scripts/run_wavemeter_reconstruction.py` extracts the trace by
+> colour and calibrates it against the plot's own ticks. What it contains is a
+> **sawtooth**: eight upward steps of +2.4 to +15.7 MHz, with the frequency
+> decaying back between them, fastest early at −9.3 MHz/min and slowest late at
+> −0.43. A straight line through that returns +0.14 MHz/min, close to the
+> ±0.19 read off by eye, but the number measures where the steps happen to fall
+> rather than any rate the laser holds. Two independent centre estimators agree
+> to 0.001 MHz/min, so the structure is in the record, not in the method.
+>
+> That behaviour is what §6 and the timestamp audit already describe from the
+> traces: the cavity lock dropping out during the etalon transient, each
+> recapture landing megahertz-scale off, with one re-kick of τ ≈ 97 min re-armed
+> at every re-lock. Reaching it from a photograph is an independent route to the
+> same picture.
+>
+> **What this does not settle.** The 06-19 etalon-only records have not been
+> digitised, so the comparison below still rests on eye-read numbers on both
+> sides. If those records are sawtooth too, the factor 2–5 is comparing two
+> averaging artifacts. Digitising them is the obvious next step and needs only
+> the photographs already held. See `figures/fig14_wavemeter_reconstruction.png`.
+
 **The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
 laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The
 06-11 attribution rests on timing rather than a caption: the two drift records

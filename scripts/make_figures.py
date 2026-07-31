@@ -884,6 +884,44 @@ def fig_level_scheme():
     _save(fig, "fig13_level_scheme.png")
 
 
+
+def fig_wavemeter_reconstruction():
+    """The 2025-06-11 wavemeter record, digitised from its photograph (M22).
+
+    APPARATUS.md section 6 quotes a drift read off this photograph by eye. The
+    photograph does not show a drift. It shows a sawtooth: discrete upward
+    re-lock steps with the frequency decaying back between them.
+    """
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_wavemeter_reconstruction import reconstruct
+    res, t, f, band, jumps, segs = reconstruct()
+
+    fig, (ax, ax2) = plt.subplots(2, 1, figsize=(7.4, 5.6), sharex=True,
+                                  gridspec_kw={"height_ratios": [2.4, 1]})
+    ax.fill_between(t, f - band / 2, f + band / 2, color="#0072B2", alpha=0.20,
+                    lw=0, label=f"scan band, {res['band_mhz']:.0f} MHz wide")
+    ax.plot(t, f, color="#0072B2", lw=0.8, label="band centre")
+    for k, (tj, dz) in enumerate(jumps):
+        ax.axvline(tj, color="#D55E00", lw=1.0, ls=":", alpha=0.85,
+                   label="re-lock step" if k == 0 else None)
+    for k, (a, b, sl) in enumerate(segs):
+        m = (t >= a + 0.2) & (t <= b - 0.2)
+        if m.sum() < 20:
+            continue
+        ax.plot(t[m], np.polyval(np.polyfit(t[m], f[m], 1), t[m]), color="#009E73",
+                lw=2.0, label="decay between steps" if k == 0 else None)
+    ax.set_ylabel("frequency  (MHz, laser axis)")
+    ax.legend(loc="lower right", fontsize=8, frameon=True, framealpha=0.9, ncol=2)
+    ax.set_title("2025-06-11 wavemeter record, digitised from the photograph: "
+                 "re-lock steps, not drift", fontsize=9)
+
+    ax2.plot(t, band, color="#666666", lw=0.8)
+    ax2.set_ylabel("band width\n(MHz)")
+    ax2.set_xlabel("time  (min)")
+    ax2.set_ylim(0, None)
+    _save(fig, "fig14_wavemeter_reconstruction.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -897,6 +935,7 @@ def main() -> int:
     fig_laser_history()
     fig_ramp_construction()
     fig_level_scheme()
+    fig_wavemeter_reconstruction()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

@@ -57,6 +57,10 @@ FILE_STATUS = {
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
+    # M22: digitised from a screen photograph, not from the archive. It measures
+    # what the photograph contains rather than what the unsaved log held, so it
+    # is a diagnostic of the apparatus record, never an input to a fit.
+    "wavemeter_reconstruction.csv": "DIAGNOSTIC",
     "resolving_power.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise
