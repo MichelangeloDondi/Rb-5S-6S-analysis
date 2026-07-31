@@ -253,14 +253,30 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 ## 5. Quarantine (pre-registered; never in headline fits)
 
-- **`4154nm_130c_{025,125,225}mw*`** (~19 unique traces): an aborted first
-  attempt at the power sweep. The experimenter does not remember why it was
-  stopped and flags it as suspicious (2026-07-11). Potential future use, with
-  care: a same-condition/different-hour reproducibility probe.
-- **`4154nm_eom_before{1..5}` / `after{1..5}` (non-underscore)**: 4154 is the
-  only peak with two bracket sets; the underscore re-take is the one pooled
-  into the canonical rulers, so this set plausibly belongs to the aborted
-  attempt. Held out pending clarification.
+- **`4154nm_130c_{025,125,225}mw*`** (19 unique traces): a preliminary attempt
+  at the power sweep, taken 22:48 to 23:16 JST on 17 July, twenty-five minutes
+  before the campaign proper began on a different peak. Excluded as a matter of
+  course: it is a rehearsal, it covers three power levels rather than five, and
+  the campaign retook the point it was meant to measure. Kept in the archive
+  because it is a same-condition, different-hour probe if one is ever wanted.
+
+  It was stopped because the baseline would not stay flat, and the traces show
+  it. The 225 mW block has a mean off-peak slope of 0.074 V/s against 0.0009
+  in the canonical retake, a factor of eighty, while the 25 and 125 mW blocks
+  match the retake to within a factor of two. The defect is confined to the
+  highest power, which is the signature of a drift that grows with it. At the
+  line level the set is unremarkable, with height, width and signal-to-noise
+  matching the retake to better than two per cent, which is why it passes
+  mechanical quality control and has to be excluded by judgement instead. The
+  re-examination in §6 confirmed the exclusion does not matter either way:
+  folding these traces into the power fit moves the AC-Stark bound by a few
+  per cent, within its own scatter.
+- **`4154nm_eom_before{1..5}` / `after{1..5}` (non-underscore)**: the ruler
+  brackets of that same preliminary attempt, and 4154 is the only peak with two
+  bracket sets because of it. The clock settles which is which. These run at
+  22:48 and 23:14, bracketing the preliminary sweep; the underscore set pooled
+  into the canonical rulers runs at 03:25 and 03:53, bracketing the campaign's
+  own 4154 block. Excluded with the sweep they belong to.
 
 ## 6. What changed after the first pass, and why
 
