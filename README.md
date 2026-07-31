@@ -9,6 +9,22 @@ transition at **993 nm** — Doppler-free spectroscopy in a hot vapour cell. Dat
 in 2025; a fixed-lock follow-up session is proposed and specified in
 [`docs/PLAN.md`](docs/PLAN.md).
 
+> **In one sentence:** from a 2025 dataset taken with a drifting laser lock, we
+> extract what lives in the *shape* of the line — collisional
+> broadening, laser width, the power-dependent light shift — as **bounds**,
+> and lay out a proposed set of fixed-lock measurements that would turn each
+> bound into a number.
+
+**Why the line is worth the trouble.** The environmental coefficients of the
+993 nm 5S→6S line have only ever been bounded, and coarsely. Those
+coefficients set how tightly an environment must be controlled to reach any
+given stability, so they are worth knowing for a line nobody has measured them
+on. This is not a claim that 993 nm beats the 778 nm 5S→5D reference the
+compact-clock community already uses. On natural linewidth it starts behind
+it, by about an order of magnitude, and nothing here suggests otherwise
+([`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) §1).
+
+
 <p align="center">
   <img src="figures/fig0_spectrum.png" width="560" alt="A representative fitted line">
 </p>
@@ -26,12 +42,6 @@ on the actual breadboard, components numbered 1–13 as in the annotated bench
 photograph. Every element is established in
 [`docs/APPARATUS.md`](docs/APPARATUS.md), which also carries the dated
 photographs behind each box.*
-
-> **In one sentence:** from a 2025 dataset taken with a drifting laser lock, we
-> extract what lives in the *shape* of the line — collisional
-> broadening, laser width, the power-dependent light shift — as **bounds**,
-> and lay out a proposed set of fixed-lock measurements that would turn each
-> bound into a number.
 
 **Where to go next:** the big picture (goals, prior art, what each future
 measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
