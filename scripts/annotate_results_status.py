@@ -84,6 +84,14 @@ FILE_STATUS = {
 # (exact match, then longest-prefix). Unmapped -> hard error, so no row is
 # silently left un-tagged.
 QUANTITY_STATUS = {
+    # M24: the wing check -- a NULL that closes C3f's open structure. The
+    # per-condition and mean f_wing rows are bounds on a wing fraction; the
+    # verdict row is the closure statement itself.
+    "wing_check.csv": {
+        "f_wing_red": "BOUND", "f_wing_blue": "BOUND",
+        "f_wing_red_mean": "BOUND", "f_wing_blue_mean": "BOUND",
+        "f_wing_red_130C": "NULL", "density_lever": "DIAGNOSTIC",
+    },
     # M23: the joint two-session profile-likelihood bound. The headline rows
     # are BOUNDs (one-sided by construction -- the ramp model only broadens
     # red); the kappa_min/dchi2 preference is DIAGNOSTIC, not a detection.

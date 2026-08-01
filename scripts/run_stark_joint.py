@@ -311,8 +311,8 @@ def chain(resid, Sf, lo, hi, q0, kappas, ncamp, tag, nfev=1500):
                           max_nfev=nfev, x_scale="jac", ftol=1e-12, xtol=1e-12)
         q = s.x.copy()
         r = fn(q)
-        res[kap] = (float(r @ r), float(np.sum(r[:ncamp] ** 2)), q.copy())
-        print(f"    [{tag}] kappa={kap:5.2f}  chi2={r@r:11.2f}", flush=True)
+        res[kap] = (float(np.sum(r * r)), float(np.sum(r[:ncamp] ** 2)), q.copy())
+        print(f"    [{tag}] kappa={kap:5.2f}  chi2={np.sum(r * r):11.2f}", flush=True)
     return res
 
 

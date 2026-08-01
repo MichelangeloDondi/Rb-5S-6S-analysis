@@ -515,12 +515,38 @@ def main() -> int:
           f"rehearsal's fitted scan rates; dropping any one peak leaves the "
           f"$\\kappa=2.62$ rejection intact (LOPO rows); and the rehearsal "
           f"axis-direction hypothesis moves no $\\chi^2$ by more than "
-          f"{v('direction_dchi2_max','robustness'):.1f}. The residual "
-          f"structure that survives — a same-physical-side near-core "
-          f"asymmetry in both sessions, weakly power-dependent, absorbed by "
-          f"neither a detector time constant (killed at $+2200$ for 10 ms) "
-          f"nor a standoff red wing — is the open item, and its weak power "
-          f"dependence is what keeps it out of the Stark budget.\n")
+          f"{v('direction_dchi2_max','robustness'):.1f}. One piece of "
+          f"residual structure survived this fit: a same-physical-side "
+          f"near-core asymmetry in both sessions, absorbed by neither a "
+          f"detector time constant (killed at $+2200$ for 10 ms) nor the "
+          f"wing nuisance. C3g closes it.\n")
+    wc = {(r["quantity"], r["key"]): r for r in rows("wing_check")}
+    if wc:
+        f130 = float(wc[("f_wing_red_130C", "verdict")]["value"])
+        e130 = float(wc[("f_wing_red_130C", "verdict")]["err"])
+        W(f"- **C3g — the residual asymmetry is not a collisional wing; "
+          f"C3f's open item is closed** (`run_wing_check`, M24). A "
+          f"quasistatic self-broadening satellite is a pair effect, so its "
+          f"fractional weight must scale with density, and the temperature "
+          f"sweep holds a ×52 density lever at fixed 225 mW while the Stark "
+          f"wedge and any instrument asymmetry stay put. The M23 standoff "
+          f"wing, fitted per condition on both sides of the line, returns "
+          f"$f_\\mathrm{{wing}}(\\mathrm{{red}}, 130°C) = {f130:.4f} \\pm "
+          f"{e130:.4f}$ of peak — a per-mille null exactly where a "
+          f"collisional wing would be 52× enhanced — and every 110 °C and "
+          f"130 °C condition is consistent with zero on both sides. The "
+          f"largest central value sits at 70 °C, the lowest-density, "
+          f"lowest-amplitude corner, at 1.3σ: the SNR direction, opposite "
+          f"to collisional. The power lever agrees: at fixed density the "
+          f"fitted fraction falls with power instead of holding constant, "
+          f"tracking amplitude exactly as C3c's shot-noise identification "
+          f"of the residual skew already said. Both levers contradict a "
+          f"physical wing, so the asymmetry M23 flagged is amplitude-linked "
+          f"statistics, nothing about it enters the Stark budget, and the "
+          f"satellite thread is closed on this archive. A real satellite "
+          f"search needs the fixed-lock session's SNR at 150–170 °C, where "
+          f"this same estimator would resolve a 0.001-fraction wing at many "
+          f"sigma.\n")
 
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
