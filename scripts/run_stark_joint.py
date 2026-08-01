@@ -78,7 +78,6 @@ from __future__ import annotations
 import csv
 import datetime
 import glob
-import json
 import re
 import sys
 import time
@@ -87,7 +86,7 @@ from pathlib import Path
 
 import numpy as np
 from scipy.optimize import least_squares
-from scipy.sparse import lil_matrix, vstack, hstack
+from scipy.sparse import lil_matrix, vstack
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -454,7 +453,7 @@ def main() -> int:
             w.writerow(["profile_point", f"{kap:.2f}", f"{c2:.2f}", f"{cc:.2f}",
                         "chi2 total (value) and campaign-only (err column), "
                         "primary settings"])
-    print(f"\n  Wrote results/stark_joint.csv.")
+    print("\n  Wrote results/stark_joint.csv.")
     return 0
 
 

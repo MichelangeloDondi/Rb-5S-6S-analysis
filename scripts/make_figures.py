@@ -892,7 +892,9 @@ def fig_wavemeter_reconstruction():
     time constants are not constrained by this record and are not shown as
     though they were.
     """
-    import csv, collections
+    import collections
+    import csv
+
     import matplotlib.image as mpimg
     sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
     from run_wavemeter_reconstruction import reconstruct, PHOTO
