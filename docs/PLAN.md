@@ -176,9 +176,10 @@ The increment is by channel. (a) *Method*: a closed-form fringe-averaged
 two-photon triangular-ramp lineshape law plus a reference-free, drift-immune
 moment readout — not pursued elsewhere, and distinct from Orson's absolute-frequency and
 mean-shift work (the axis-by-axis delineation vs Stalnaker is in `LITERATURE.md`
-§1; the not-claimable list in §5). (b) *An order-of-magnitude tighter S₀ bound*
-(< 0.63 MHz vs Orson's ~6 MHz null) extracted **from shape alone under a
-drifting, hand-re-centred lock**. (c) *With a fixed-lock session*, the **first measured
+§1; the not-claimable list in §5). (b) *A ~25× tighter S₀ bound*
+(< 0.25 MHz via M23's joint two-session full-profile fit, vs Orson's ~6 MHz
+null; the width-only construction gives < 0.63) extracted **from shape alone
+under a drifting, hand-re-centred lock**. (c) *With a fixed-lock session*, the **first measured
 light shift on this line** — the pull ∝ S₀ is a positive observable, not a
 sharper null — plus the collisional self-*shift*, two positive observables Orson
 only nulled. In summary: **P1-min's acceptance rides on the method being
@@ -216,12 +217,15 @@ within-scan drift ramp into synthetic data and confirm the recovered moments are
 unbiased — has been run: `tests/test_intrascan_drift.py`.
 
 **"Your Δα bracket ~1200 a.u. is 'consistent with' Orson's computed 1093 — a
-bracket that wide discriminates nothing."** Conceded fully: the archival S₀ bound
-**excludes only S₀(225 mW) > 0.63 MHz** (Δα above ~1200), the tight-waist top of
-the prediction band; every value from **zero** up to 1093 remains allowed, so it
-discriminates nothing among reasonable theories (`RESULTS.md` C3d states this).
-"Consistent with 1093" confirms the pipeline's scale, not a physics result —
-the measured coefficient still needs the session.
+bracket that wide discriminates nothing."** Conceded when written, and now
+partly answered by M23: the joint two-session bound **S₀(225 mW) < 0.25 MHz**
+maps to Δα ≲ 480 a.u. *at the nominal w₀ = 50 µm*, below 1093, so the
+archive now genuinely constrains the (Δα, intensity) pair rather than
+nothing. What it still cannot do is split that pair: if the computed
+magnitude is right the waist must sit ≳ 76 µm, which is where Nieddu's
+measured 64 µm and the band's wide edge already point, so the tension
+resolves onto the open w₀ rather than onto the theory (`RESULTS.md` C3f).
+The measured coefficient still needs the session.
 
 **"Your own recompute flips the sign of Δα against the one published computation.
 Bug, or should I not trust your pipeline?"** Not a bug. The recompute (M16) is an

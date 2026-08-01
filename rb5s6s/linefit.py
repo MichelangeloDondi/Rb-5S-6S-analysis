@@ -54,6 +54,7 @@ from typing import Dict, List, Optional
 
 import numpy as np
 from scipy.optimize import least_squares
+from scipy.signal import fftconvolve
 
 from . import config as C
 from .constants import GAMMA_NAT_HZ
@@ -71,21 +72,33 @@ def to_frequency(t_ms: np.ndarray, rate_transition_mhz_per_ms: float) -> np.ndar
     return t_ms * rate_transition_mhz_per_ms
 
 
-def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind):
+def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
+                         dnu_floor: float = 1e-3):
     """Build the area-normalized shared line shape ONCE on a fine grid; the
-    per-trace fit interpolates it at (nu - center). Returns (grid, profile)."""
+    per-trace fit interpolates it at (nu - center). Returns (grid, profile).
+
+    dnu_floor is the coarsest the internal grid step may get when a width
+    parameter collapses. The 1e-3 MHz default reproduces every committed
+    result bit-for-bit. M23's optimizer probes near-zero sigma_laser, where
+    a 1e-3 step means ~1e5-point grids and the direct convolutions here go
+    quadratic (minutes per profile); it passes 2e-2, which changes the
+    profile by < 3e-6 of peak against lines that are never narrower than
+    4 MHz (test_stark_joint has the equivalence test). The convolutions are
+    FFT-based since 2026-08-01 -- identical to within float noise at any
+    floor, and what makes the M23 corner cheap.
+    """
     homog = GNAT_MHZ + max(gamma_coll, 0.0)
     widths = [homog, max(sigma_laser, 1e-6), max(transit_fwhm, 1e-6)] + ([s0] if s0 > 0 else [])
     span = 6.0 * (sum(widths) + max(widths)) + 5.0
-    dnu = max(min(widths) / 12.0, 1e-3)
+    dnu = max(min(widths) / 12.0, dnu_floor)
     n = int(np.ceil(span / dnu))
     g = np.arange(-n, n + 1) * dnu
     prof = lorentzian(g, homog)
     lk = gaussian(g, sigma_laser) if laser_kind == "gaussian" else lorentzian(g, sigma_laser)
-    prof = np.convolve(prof, lk, "same") * dnu
-    prof = np.convolve(prof, two_sided_exponential(g, transit_fwhm), "same") * dnu
+    prof = fftconvolve(prof, lk, "same") * dnu
+    prof = fftconvolve(prof, two_sided_exponential(g, transit_fwhm), "same") * dnu
     if s0 > 0:
-        prof = np.convolve(prof, stark_ramp(g, s0), "same") * dnu
+        prof = fftconvolve(prof, stark_ramp(g, s0), "same") * dnu
     area = trapezoid(prof, g)
     return g, (prof / area if area > 0 else prof)
 

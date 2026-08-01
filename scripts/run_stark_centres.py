@@ -96,7 +96,13 @@ end and is correct.
 
 THE DESIGN CONSEQUENCE, which is what this is for. The existing lesson -- cycle
 or randomise the power ordering, so drift is orthogonal to the pull -- is
-necessary and now demonstrably not sufficient. A second requirement joins it:
+necessary and now demonstrably not sufficient. (The 2025-07-04 LeCroy dress
+rehearsal already ran its ladders in ALTERNATING directions -- descending on
+4192, ascending on 4207 and 4121 -- which is exactly this design; what wasted
+it there was the scope auto-triggering, so the sweep phase is random per
+trace and the centres carry no frequency anyway. M23 uses the rehearsal's
+shapes and widths instead; the centre channel stays dead in both sessions,
+each for its own missing reference.) A second requirement joins it:
 DO NOT MOVE THE SCOPE'S HORIZONTAL POSITION during a session, and if it must
 move, record it, because every move severs the centre record. Both cost nothing
 but the order and discipline of knob turns.

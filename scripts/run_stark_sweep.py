@@ -13,6 +13,13 @@ directly (and at a smaller waist, S0 ~10x larger: 0.59 -> 5.7 MHz at 225 mW,
 w0 50 -> 16 um).
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
+
+SUPERSEDED AS THE TIGHTEST BOUND (2026-08-01): M23 (run_stark_joint) fits the
+FULL profiles of both sessions -- 20 summary widths here against ~220k points
+there -- and lands ~3x tighter. This module stays as the independent,
+simpler construction on committed summary numbers: it needs no quarantine
+tree, runs in seconds, and brackets M23 from above, which is exactly what a
+cross-check should do.
 """
 
 from __future__ import annotations

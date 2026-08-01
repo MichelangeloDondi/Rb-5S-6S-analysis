@@ -220,8 +220,12 @@ one-exponential and two-exponential drift. Tagged NULL. Earlier
 state-space versions of this bound — $3.5$ MHz in addendum 6, $5.5$ MHz under
 addendum 7's mixture, and a $7.3$ MHz variant in M20 — were *tighter* only
 because they differenced centres across horizontal-position moves, and are
-withdrawn. The width channel's $S_0(225$ mW$) < 0.63$ MHz is the archive's only
-light-shift channel; there is no second channel to corroborate it.
+withdrawn. The width-and-shape channel is the archive's only light-shift
+channel. Its best construction is M23's joint two-session full-profile fit,
+$S_0(225$ mW$) < 0.25$ MHz (95%), with the 20-summary-width construction
+(M4e, $< 0.63$ MHz) kept as the independent simpler bracket — two
+constructions, but one physical channel, so there is still no second
+channel to corroborate it.
 
 Two caveats. *Between*-scan drift is absorbed exactly by the free centres.
 *Within*-scan drift is not a pure translation — it smears the line
@@ -282,21 +286,29 @@ predicted below the archival noise and is not detected — as designed.
 
 That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the
 four peaks' width-vs-power (`stark.fit_stark_sweep`, M4e) turns it into a
-quantitative **upper bound $S_0$(225 mW) $<0.63$ MHz (95%, profile
+quantitative **upper bound of $0.63$ MHz on $S_0$ at 225 mW (95%, profile
 likelihood)**; the fitted value is consistent with zero, so the archive *brackets* the predicted
 $0.59$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
 same two-epoch reason as everything else here: the 2025 drifted lock destroys the
 line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
-broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). Through the
-§5 convention, at the nominal $w_0=50\ \mu$m this brackets $\Delta\alpha$ below
-$\sim1.1\times$ the computed value ($<\sim1200$ a.u., 95%, profile likelihood;
-the earlier $\sim5800$ came from a Wald interval evaluated at the $\kappa=0$
-rail, where it has no valid coverage) — consistent with
-$1093$, with the mapping inheriting the open $w_0$. So the archive **does not
-contradict** the computed $\Delta\alpha$; a fixed lock would measure the pull
-$\propto S_0$ directly (small waist $\Rightarrow S_0$ $\approx10\times$ larger),
-turning this bracket into the coefficient.
+broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). M23
+(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.25$ MHz
+by fitting every point of every profile across both sessions instead of the
+20 summary widths. Through the §5 convention that maps to
+$|\Delta\alpha| \lesssim 480$ a.u. **at the nominal** $w_0=50\ \mu$m, below
+the computed $1093$, so the archive now constrains the
+$(\Delta\alpha,\ \text{intensity})$ pair: if the computed magnitude is
+right, the on-axis intensity must sit $\gtrsim2.3\times$ under the nominal
+prior (equivalent waist $\gtrsim 76\ \mu$m), the same wide side where the
+prediction band's $70\ \mu$m edge and Nieddu 2019's measured $64\ \mu$m
+already live. (The earlier readings of this passage: $<\sim1200$ a.u. from
+the M4e width-only bound, and before that $\sim5800$ from a Wald interval
+evaluated at the $\kappa=0$ rail, where it has no valid coverage.) The
+archive does not adjudicate $\Delta\alpha$ itself — the mapping inherits
+the open $w_0$ — and a fixed lock would measure the pull $\propto S_0$
+directly (small waist $\Rightarrow S_0$ $\approx10\times$ larger), turning
+this bracket into the coefficient.
 
 ## 5. The coefficient (the field-intensity convention, pinned)
 

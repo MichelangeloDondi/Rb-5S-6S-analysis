@@ -479,6 +479,49 @@ def main() -> int:
           f"$[-0.31, +1.86]$. Not the estimator's fault: five independent "
           f"centre estimators agree to $\\pm$0.02 MHz.\n")
 
+    sj = {(r["quantity"], r["key"]): r for r in rows("stark_joint")}
+    if sj:
+        v = lambda q, k: float(sj[(q, k)]["value"])
+        W(f"- **C3f — the joint two-session fit tightens the light-shift bound "
+          f"to $S_0(225\\ \\mathrm{{mW}}) < {v('S0_225mW_ub95','primary'):.2f}$ MHz** "
+          f"(`run_stark_joint`, M23; 95% one-sided profile likelihood). Instead "
+          f"of C3d's 20 summary widths, every point of every canonical "
+          f"power-sweep profile enters a joint maximum-likelihood fit — "
+          f"{sj[('n_traces','camp/reh')]['value']} traces across two sessions — "
+          f"with one shared $\\kappa$ ($S_0=\\kappa P$), per-peak physical "
+          f"widths under a $\\gamma_\\mathrm{{coll}}$ prior from the archive's "
+          f"own $\\beta_\\mathrm{{self}}\\times N(130°C)$ chain, per-trace free "
+          f"centres (drift and re-locks are profiled out exactly, not "
+          f"modelled), and a per-session detector-saturation nuisance that "
+          f"fits linear — the instrument's receipt. The second session is the "
+          f"2025-07-04 LeCroy dress rehearsal (46 usable traces; 90/180/270 "
+          f"mW), whose 270 mW rung carries 1.44× the campaign's maximum "
+          f"$S_0^2$ lever and whose alternating ladder directions are the "
+          f"design M21 demanded — though its auto-triggered scope randomises "
+          f"the sweep phase per trace, so it contributes shape and width, not "
+          f"centres. The profile minimum sits at $\\kappa = "
+          f"{v('kappa_min','primary'):.2f}$ MHz/W, only $\\Delta\\chi^2 = "
+          f"{v('dchi2_kappa0','primary'):.1f}$ below $\\kappa=0$ — consistent "
+          f"with no shift at all (earlier passes of this fit showed a "
+          f"2$\\sigma$ preference for $\\kappa>0$ that bidirectional profile "
+          f"chaining exposed as optimizer hysteresis) — and the predicted "
+          f"$\\kappa=2.62$ "
+          f"($w_0=50$ µm, $\\rho=1$) is disfavoured, which pushes the waist "
+          f"prior toward its wide edge exactly as the knife-edge gate "
+          f"anticipates. Three robustness rows guard the headline: the "
+          f"campaign rows alone reproduce the bound "
+          f"($\\kappa < {v('kappa_ub95_camponly','robustness'):.2f}$ vs "
+          f"{v('kappa_ub95','primary'):.2f} MHz/W), so nothing leans on the "
+          f"rehearsal's fitted scan rates; dropping any one peak leaves the "
+          f"$\\kappa=2.62$ rejection intact (LOPO rows); and the rehearsal "
+          f"axis-direction hypothesis moves no $\\chi^2$ by more than "
+          f"{v('direction_dchi2_max','robustness'):.1f}. The residual "
+          f"structure that survives — a same-physical-side near-core "
+          f"asymmetry in both sessions, weakly power-dependent, absorbed by "
+          f"neither a detector time constant (killed at $+2200$ for 10 ms) "
+          f"nor a standoff red wing — is the open item, and its weak power "
+          f"dependence is what keeps it out of the Stark budget.\n")
+
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
     if lc and ss:

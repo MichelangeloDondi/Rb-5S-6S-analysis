@@ -265,6 +265,19 @@ rehearsal ran on the LeCroy and the campaign did **not**; the recollection
 this page corrected was a memory of the rehearsal epoch, and both
 attributions now rest on file signatures.
 
+Three more instrument facts surfaced when M23 put the rehearsal traces into
+a fit (2026-08-01). The LeCroy **auto-triggered**: repeat traces of one
+condition place the line up to 0.45 s apart within 84 s. As laser drift that
+would be ~4 MHz/min, ten times the campaign's worst, so it is the triangle
+phase falling at random against the trigger, and the rehearsal's absolute
+peak positions carry no frequency. Its scan ran **~4× slower** than the
+campaign's: the same line spans ~490 ms against ~140 ms, and the fitted
+rates are 0.0103 to 0.0108 MHz/ms per peak against the campaign's 0.0426,
+so nothing transfers between the two time axes without a per-peak rate fit.
+And each file embeds a wall-clock `TrigTime` per segment. Those are the only
+instrument-stamped acquisition times anywhere in this programme's data. The
+campaign has only FAT mtimes at 2 s granularity.
+
 ---
 
 ## 5. Cell and thermal environment
@@ -340,9 +353,10 @@ acquisition drift, which the archive puts two orders below.*
 > pull distribution comes out at unit width, which is the check that the noise
 > model is right. The scatter itself settles, on a timescale near a minute, so
 > the floor is a settled-state number and the early record is several times
-> worse. Against the campaign's AC-Stark bound of 0.63 MHz the floor is
-> comparable rather than dominant, which is consistent with that bound coming
-> from averaging across blocks rather than from any single block. See
+> worse. Against the campaign's AC-Stark bound (0.25 MHz since M23, 0.63
+> from the width-only construction) the floor sits above rather than below,
+> which is consistent with those bounds coming from averaging across many
+> traces and blocks rather than from any single block. See
 > `figures/fig14_wavemeter_reconstruction.png`.
 >
 > **What this record does not measure.** The relaxation time constants vary by

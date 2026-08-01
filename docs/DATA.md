@@ -88,7 +88,14 @@ notation; then on the campaign morning the ruler's final commissioning
 campaign's dwell labels: the same 0.65 A is what the rehearsal records as an
 internal 130 °C, and the pilot's amplitude agrees, sitting ~15× above what an
 internal-90 °C pilot would give — addendum 17. Its linewidth cannot tell the
-dwells apart either way, which took two attempts to establish.) Repeats were
+dwells apart either way, which took two attempts to establish. **Since
+2026-08-01 the rehearsal is no longer analysis-untouched:** M23
+(`run_stark_joint`) reads its traces in place from the quarantine tree,
+never copying them into the repository, as the second session of the joint
+light-shift fit, because its 270 mW rung and alternating ladder directions
+add leverage the campaign lacks. 46 of the 50 traces enter. Three are
+0xff-corrupted on disk and one has no line in the window. The quarantine
+copies themselves remain read-only and unmodified.) Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
 0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
 knob and manually recentered the cavity reference **many times** — not
@@ -336,7 +343,10 @@ cold-spot offset also tilts the N(T) lever by ~2.3%/K of offset, which is a
 slope effect rather than a scale one, quantified in `density.py` and recorded
 but not propagated as second order.
 
-**The AC-Stark bound, 3.1 → 0.63 MHz (2026-07-16).** 95% limit on $S_0$ at
+**The AC-Stark bound, 3.1 → 0.63 MHz (2026-07-16), then 0.63 → 0.25 MHz
+(2026-08-01, a construction change rather than a correction: M23 fits every
+point of every profile across both sessions where M4e fit 20 summary widths.
+Both bounds stand, the tighter one is quoted).** 95% limit on $S_0$ at
 225 mW.
 
 *What was wrong.* The interval was built by linearising at the best fit. The

@@ -1,0 +1,462 @@
+#!/usr/bin/env python3
+"""
+M23: the joint two-session Stark fit -- every lineshape at once, one kappa.
+
+THE QUESTION. The AC-Stark programme had three channels and two of them are
+dead: the centres are unidentifiable (M21 -- power descends with time inside
+every display epoch, so drift and pull are one regression column), and the
+third cumulant is ~150x below this archive's noise at the predicted S0. What
+remained was the width-and-shape channel, which M4e used through 20 summary
+FWHM numbers. This module uses everything instead: a joint maximum-likelihood
+fit of the FULL PROFILES of all canonical power-sweep traces, with a single
+shared kappa (S0 = kappa * P, transition axis), per-peak physical widths, and
+every trace keeping a free centre -- so laser drift and re-locks are profiled
+out exactly rather than modelled.
+
+THE SECOND SESSION. The 2025-07-04 LeCroy dress rehearsal (results report
+addendum 9; prehistory quarantine tree) joins the fit: 46 usable traces of 50
+(three are 0xff-corrupted, one has no line), at 90/180/270 mW -- the 270 mW
+rung carries 1.44x the campaign's maximum S0^2 lever. Its ladders were run in
+ALTERNATING directions (4192 descending, 4207 and 4121 ascending, each ladder
+complete inside 6-13 min), which is exactly the design M21 demanded and the
+campaign lacked. Two facts blunt what the rehearsal can say on its own: the
+LeCroy auto-triggered, so the triangle phase is random per trace and absolute
+positions carry no frequency (repeat centres jump ~0.45 s within 84 s, which
+would be 4 MHz/min as drift -- impossible); and its scan is ~4x slower than
+the campaign's, so its ms->MHz rate must be fitted per peak, anchored only by
+the physical widths it shares with the campaign. The direction of its
+frequency axis is a discrete hypothesis and the corrected likelihood is
+INDIFFERENT to it (the CSV row quotes the delta); v1 of this fit had decided
+it at delta chi2 = 318 under a mis-weighted likelihood, which was wrong.
+
+WHAT THE FIT CONTAINS, and what died on the way in (each kept a CSV row or a
+docstring sentence because the wrong version ran first):
+
+  * Per-session noise via the M1 law (condition_noise_model on each 5-repeat
+    block, both sessions). v1 gave the rehearsal a constant per-trace sigma;
+    its pull widths then grew 1.0 -> 3.5 with power, which was the noise
+    model, not physics.
+  * Per-session sigma_laser (different days, no shared laser width) and per
+    peak. v1 shared it across sessions and the campaign pull widths exploded
+    to 4.4 at 225 mW; v2's flat 0.44-0.69 is what unmasked everything else.
+  * gamma_coll per peak under a Gaussian prior from the archive's own chain,
+    beta_self x N(130 C) (0.55/0.46/0.56/1.01 +/- 0.23/0.23/0.12/0.19 MHz).
+    Without the prior the rehearsal's rate-width degeneracy rails gamma_coll
+    at zero, which contradicts the repo's own beta_self measurement.
+  * A detector saturation nuisance Vsat per session. Both sessions fit
+    essentially LINEAR (tens to hundreds of volts against ~1 V signals) --
+    the instrument is vindicated, the row is the receipt.
+  * A causal detector tail tau_det was tried and is DEAD: the 2D
+    (kappa, tau) profile pays +33 at tau = 2.5 ms and +2200 at 10 ms. The
+    campaign's power-dependent residual skew is not a detector time constant.
+  * A red-side WING nuisance (standoff 2 MHz, scale 2-60 MHz, amplitude
+    free): the one residual structure left is a same-physical-side wing
+    excess in BOTH sessions (campaign skew +0.33 falling with P; rehearsal
+    -0.28 under its flipped axis -- the same side of the line). The wing row
+    reports how the kappa bound moves when that structure is absorbed; the
+    wedge and the wing both live on the red side, so this is the fit's
+    hardest robustness test, not a formality.
+
+CONVERGENCE DISCIPLINE, learned twice: scipy's free fits on this problem
+land thousands of chi2 above their own profiles. Nothing from a free fit is
+quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles
+(left-to-right, then right-to-left from the far seed, pointwise minimum) at
+ftol = xtol = 1e-12.
+
+RUNTIME: ~1 h single process (the profile builder runs at dnu_floor = 2e-2,
+see _shared_profile_grid -- equivalence tested). The quarantine prehistory
+tree must be present for the rehearsal arm; without it this module prints
+what is missing and exits 0, and the committed CSV remains the record
+(build_clock_table pattern). Raw traces never enter the repository.
+
+Writes results/stark_joint.csv. Reads results/beta_self.csv (run M4 first)
+and the M2 bracket rates.
+"""
+
+from __future__ import annotations
+
+import csv
+import datetime
+import glob
+import json
+import re
+import sys
+import time
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+from scipy.optimize import least_squares
+from scipy.sparse import lil_matrix, vstack, hstack
+
+REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+sys.path.insert(0, str(REPO / "scripts"))
+
+from rb5s6s import config as C  # noqa: E402
+from rb5s6s.density import number_density_cm3  # noqa: E402
+from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
+from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
+                            to_frequency, transit_fwhm_at_T)
+from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
+from run_beta_self import load_t_rates  # noqa: E402
+
+PREHISTORY = Path("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24").expanduser()
+PEAKS = ("4121", "4154", "4192", "4207")
+PK_IX = {p: i for i, p in enumerate(PEAKS)}
+TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+DNU_FLOOR = 2e-2          # see _shared_profile_grid's docstring
+NU0_WING = 2.0            # MHz standoff of the wing nuisance
+KAPPAS = (0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.62, 3.5, 5.0)
+NS = 19                   # shared params: kappa, 2 Vsat, 4 gc, 8 sl, 4 rates
+
+
+# ---------------------------------------------------------------------------
+# loading
+# ---------------------------------------------------------------------------
+
+def gc_priors() -> dict:
+    """gamma_coll(130 C) per peak from the repo's own beta_self x N chain."""
+    n130 = float(number_density_cm3(np.array([130.0]))[0]) / 1e12
+    out = {}
+    for r in csv.DictReader(open(C.RESULTS_DIR / "beta_self.csv")):
+        out[r["peak"]] = (float(r["beta_self"]) * n130,
+                          float(r["beta_self_err"]) * n130)
+    return out
+
+
+def load_campaign():
+    rows = load_manifest()
+    _, prates = load_t_rates()
+    out = []
+    for peak in PEAKS:
+        rate, _ = prates[peak]
+        byP = defaultdict(list)
+        for r in rows:
+            if (r["flag"] == "canonical" and r["role"] == "p_sweep"
+                    and r["peak"] == peak):
+                byP[r["power_mW"]].append(r)
+        for P, recs in sorted(byP.items(), key=lambda kv: int(kv[0])):
+            if len(recs) < 3:
+                continue
+            volts = [load_trace(trace_path(r))[1] for r in recs]
+            law = condition_noise_model(volts)
+            tau = max(law.get("tau_int", 1.0), 1.0)
+            for r in recs:
+                t, v = load_trace(trace_path(r))
+                nu = to_frequency(t, rate)
+                lev, base = signal_level(v)
+                c0 = float(nu[int(np.argmax(lev))])
+                sg = sigma_of_v(np.maximum(lev, 0.0), law) * np.sqrt(tau)
+                m = np.abs(nu - c0) <= adaptive_halfwidth(nu, v)
+                out.append(dict(sess="camp", peak=peak, P=int(P) / 1e3,
+                                x=nu[m], v=v[m], sg=sg[m],
+                                c0=c0, A0=float(lev.max()), b0=float(base)))
+    return out
+
+
+def load_rehearsal():
+    """Reduce the LeCroy rehearsal in place: header TrigTime, 50 ms boxcar
+    segmentation, window +/-1.6 FWHM, 0.5 ms sampling. Never writes."""
+    files = sorted(glob.glob(str(PREHISTORY / "2025-07-04" / "C2L=*.csv")))
+    out, n_corrupt = [], 0
+    raw_traces = {}
+    for f in files:
+        m = re.search(r"993\.(\d{4})nm.*P=(\d+)mW_n(\d+)", f)
+        try:
+            head = open(f, "rb").read(400).decode("utf-8")
+            tm = re.search(r"#1,(\d{2}-\w{3}-\d{4} \d{2}:\d{2}:\d{2})", head)
+            trig = datetime.datetime.strptime(
+                tm.group(1), "%d-%b-%Y %H:%M:%S").timestamp()
+            d = np.genfromtxt(f, delimiter=",", skip_header=5)
+        except Exception:
+            n_corrupt += 1
+            continue
+        t, v = d[:, 0], d[:, 1]
+        k = 5001
+        sm = np.convolve(v, np.ones(k) / k, "same")
+        base = np.median(np.sort(sm)[:len(sm) // 5])
+        pk = sm.max()
+        above = sm > base + 0.5 * (pk - base)
+        edges = np.flatnonzero(np.diff(above.astype(int)))
+        segs = [(edges[i], edges[i + 1]) for i in range(0, len(edges) - 1, 2)
+                if t[edges[i + 1]] - t[edges[i]] > 0.05]
+        if not segs:
+            n_corrupt += 1
+            continue
+        a, b = max(segs, key=lambda s: s[1] - s[0])
+        w = t[b] - t[a]
+        cmid = (t[a] + t[b]) / 2
+        msk = (t > cmid - 1.6 * w) & (t < cmid + 1.6 * w)
+        td, vd = t[msk][::50] * 1e3, v[msk][::50]        # ms, 0.5 ms sampling
+        out.append(dict(sess="reh", peak=m.group(1), P=int(m.group(2)) / 1e3,
+                        x=td, v=vd, sg=None, trig=trig,
+                        c0=float(cmid * 1e3), A0=float(pk - base), b0=0.0))
+        raw_traces.setdefault((m.group(1), m.group(2)), []).append(out[-1])
+    for grp in raw_traces.values():
+        law = condition_noise_model([t["v"] for t in grp])
+        tau = max(law.get("tau_int", 1.0), 1.0)
+        for t in grp:
+            lev = t["v"] - np.median(np.sort(t["v"])[:max(len(t["v"]) // 5, 8)])
+            t["sg"] = sigma_of_v(np.maximum(lev, 0.0), law) * np.sqrt(tau)
+    return out, n_corrupt
+
+
+# ---------------------------------------------------------------------------
+# the model
+# ---------------------------------------------------------------------------
+
+def build(traces, priors, wing):
+    r0 = np.log(5.9 / 470.0)
+    ns_tot = NS + (2 if wing else 0)
+    p0 = np.zeros(ns_tot + 4 * len(traces))
+    lo = np.full_like(p0, -np.inf)
+    hi = np.full_like(p0, np.inf)
+    p0[0] = 0.0; lo[0] = 0.0; hi[0] = 60.0
+    for j in (1, 2):
+        p0[j] = 5.0; lo[j] = -1.0; hi[j] = 6.0
+    for k, pk in enumerate(PEAKS):
+        p0[3 + k] = priors[pk][0]; lo[3 + k] = 0.0; hi[3 + k] = 50.0
+        p0[7 + k] = 1.0; lo[7 + k] = 0.05; hi[7 + k] = 50.0
+        p0[11 + k] = 1.0; lo[11 + k] = 0.05; hi[11 + k] = 50.0
+        p0[15 + k] = r0; lo[15 + k] = r0 - np.log(4); hi[15 + k] = r0 + np.log(4)
+    if wing:
+        p0[NS] = 0.005; lo[NS] = 0.0; hi[NS] = 0.5
+        p0[NS + 1] = np.log(6.0); lo[NS + 1] = np.log(2.0); hi[NS + 1] = np.log(60.0)
+    for i, t in enumerate(traces):
+        j = ns_tot + 4 * i
+        p0[j:j + 4] = [t["A0"], t["c0"], t["b0"], 0.0]
+        lo[j] = 0.0
+        span = 8.0 if t["sess"] == "camp" else 1200.0
+        lo[j + 1] = t["c0"] - span; hi[j + 1] = t["c0"] + span
+    return p0, lo, hi
+
+
+def make_resid(traces, priors, direction, wing):
+    ns_tot = NS + (2 if wing else 0)
+
+    def resid(p, kappa=None):
+        kap = p[0] if kappa is None else kappa
+        f_w = p[NS] if wing else 0.0
+        w_w = np.exp(p[NS + 1]) if wing else 1.0
+        cache = {}
+        out = []
+        for i, t in enumerate(traces):
+            k = PK_IX[t["peak"]]
+            gc = p[3 + k]
+            s0 = kap * t["P"]
+            sess_c = t["sess"] == "camp"
+            sl = p[7 + k] if sess_c else p[11 + k]
+            key = (sess_c, k, round(sl, 7), round(gc, 7), round(s0, 8),
+                   round(f_w, 7), round(w_w, 5))
+            if key not in cache:
+                g, prof = _shared_profile_grid(gc, sl, TRANSIT, s0, "gaussian",
+                                               dnu_floor=DNU_FLOOR)
+                if f_w > 0:
+                    msk = g < -NU0_WING
+                    prof = prof.copy()
+                    prof[msk] += (f_w * prof.max()
+                                  * np.exp(-(np.abs(g[msk]) - NU0_WING) / w_w))
+                if (not sess_c) and direction < 0:
+                    prof = prof[::-1]
+                cache[key] = (g, prof)
+            g, prof = cache[key]
+            A, cc, b0, b1 = p[ns_tot + 4 * i: ns_tot + 4 * i + 4]
+            if sess_c:
+                lin = A * np.interp(t["x"] - cc, g, prof, left=0., right=0.)
+                Vs = np.exp(p[1])
+            else:
+                rate = np.exp(p[15 + k])
+                lin = A * np.interp(rate * (t["x"] - cc), g, prof, left=0., right=0.)
+                Vs = np.exp(p[2])
+            mdl = Vs * (1.0 - np.exp(-lin / Vs)) + b0 + b1 * t["x"]
+            out.append((t["v"] - mdl) / t["sg"])
+        out.append(np.array([(p[3 + k] - priors[pk][0]) / priors[pk][1]
+                             for k, pk in enumerate(PEAKS)]))
+        return np.concatenate(out)
+    return resid
+
+
+def sparsity(traces, wing):
+    ns_tot = NS + (2 if wing else 0)
+    n_rows = sum(len(t["x"]) for t in traces)
+    S = lil_matrix((n_rows, ns_tot + 4 * len(traces)), dtype=int)
+    r0 = 0
+    for i, t in enumerate(traces):
+        n = len(t["x"]); k = PK_IX[t["peak"]]
+        S[r0:r0 + n, 0] = 1
+        S[r0:r0 + n, 3 + k] = 1
+        if wing:
+            S[r0:r0 + n, NS] = 1; S[r0:r0 + n, NS + 1] = 1
+        if t["sess"] == "camp":
+            S[r0:r0 + n, 1] = 1; S[r0:r0 + n, 7 + k] = 1
+        else:
+            S[r0:r0 + n, 2] = 1; S[r0:r0 + n, 11 + k] = 1; S[r0:r0 + n, 15 + k] = 1
+        S[r0:r0 + n, ns_tot + 4 * i: ns_tot + 4 * i + 4] = 1
+        r0 += n
+    pri = lil_matrix((4, S.shape[1]), dtype=int)
+    for k in range(4):
+        pri[k, 3 + k] = 1
+    return vstack([S.tocsr(), pri.tocsr()]).tocsr()
+
+
+# ---------------------------------------------------------------------------
+# profiles
+# ---------------------------------------------------------------------------
+
+def chain(resid, Sf, lo, hi, q0, kappas, ncamp, tag, nfev=1500):
+    res, q = {}, q0.copy()
+    for kap in kappas:
+        fn = lambda z: resid(np.concatenate([[0.0], z]), kappa=kap)
+        s = least_squares(fn, q, bounds=(lo[1:], hi[1:]), jac_sparsity=Sf,
+                          max_nfev=nfev, x_scale="jac", ftol=1e-12, xtol=1e-12)
+        q = s.x.copy()
+        r = fn(q)
+        res[kap] = (float(r @ r), float(np.sum(r[:ncamp] ** 2)), q.copy())
+        print(f"    [{tag}] kappa={kap:5.2f}  chi2={r@r:11.2f}", flush=True)
+    return res
+
+
+def bidi_profile(traces, priors, direction, wing, tag):
+    p0, lo, hi = build(traces, priors, wing)
+    resid = make_resid(traces, priors, direction, wing)
+    Sf = sparsity(traces, wing)[:, 1:]
+    ncamp = sum(len(t["x"]) for t in traces if t["sess"] == "camp")
+    fwd = chain(resid, Sf, lo, hi, p0[1:], KAPPAS, ncamp, tag + ">")
+    bwd = chain(resid, Sf, lo, hi, fwd[KAPPAS[-1]][2], KAPPAS[::-1], ncamp, tag + "<")
+    prof, best = [], (np.inf, None, None)
+    for kap in KAPPAS:
+        pick = fwd[kap] if fwd[kap][0] <= bwd[kap][0] else bwd[kap]
+        prof.append((kap, pick[0], pick[1]))
+        if pick[0] < best[0]:
+            best = (pick[0], kap, pick[2])
+    return np.array(prof), best[1], best[2]
+
+
+def ub95(arr, col=1):
+    k, c = arr[:, 0], arr[:, col] - arr[:, col].min()
+    i = int(np.argmin(arr[:, col]))
+    above = np.where((k > k[i]) & (c > 2.706))[0]
+    if not len(above):
+        return float("nan")
+    j = above[0]
+    return float(np.interp(2.706, [c[j - 1], c[j]], [k[j - 1], k[j]]))
+
+
+# ---------------------------------------------------------------------------
+
+def main() -> int:
+    if not PREHISTORY.is_dir():
+        print(f"quarantine prehistory tree not on this machine "
+              f"({PREHISTORY}) -- the committed results/stark_joint.csv is "
+              f"the record; nothing to do.")
+        return 0
+    priors = gc_priors()
+    camp = load_campaign()
+    reh, n_corrupt = load_rehearsal()
+    traces = camp + reh
+    npts = sum(len(t["x"]) for t in traces)
+    print(f"(M23) JOINT TWO-SESSION STARK FIT: {len(camp)} campaign + "
+          f"{len(reh)} rehearsal traces ({n_corrupt} rehearsal files "
+          f"unusable), {npts} points")
+
+    t0 = time.time()
+    print("  primary profile (priors, rehearsal dir -1):")
+    prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-")
+    print("  direction check (dir +1):")
+    prof_b, kmin_b, _ = bidi_profile(traces, priors, +1, False, "A+")
+    print("  wing robustness (dir -1):")
+    prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
+    print("  wing robustness (dir +1):")
+    prof_d, kmin_d, _ = bidi_profile(traces, priors, +1, True, "C+")
+
+    ka, kc = ub95(prof_a), ub95(prof_c)
+    ka_camp = ub95(prof_a, col=2)
+    dchi2_a = float(prof_a[0, 1] - prof_a[:, 1].min())
+    dir_delta = float(np.abs(prof_a[:, 1] - prof_b[:, 1]).max())
+
+    # LOPO at the primary settings, seeded from the full solution
+    lopo = {}
+    for drop in PEAKS:
+        keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
+        sub = [traces[i] for i in keep]
+        p0s, los, his = build(sub, priors, False)
+        qs = p0s[1:].copy()
+        qs[:NS - 1] = q_a[:NS - 1]
+        for j, i in enumerate(keep):
+            qs[NS - 1 + 4 * j: NS - 1 + 4 * j + 4] = q_a[NS - 1 + 4 * i: NS - 1 + 4 * i + 4]
+        rs = make_resid(sub, priors, -1, False)
+        Sfs = sparsity(sub, False)[:, 1:]
+        ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
+        res = chain(rs, Sfs, los, his, qs, (0.0, 0.25, 1.0, 2.0, 2.62), ncs,
+                    f"L{drop}", nfev=900)
+        cs = {k: v[0] for k, v in res.items()}
+        mn = min(cs.values())
+        lopo[drop] = {k: cs[k] - mn for k in cs}
+        print(f"  LOPO {drop}: "
+              + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
+
+    print(f"\n  primary: min kappa = {kmin_a}, dchi2(kappa=0) = {dchi2_a:.2f}")
+    print(f"  **95% UB kappa < {ka:.2f} MHz/W -> S0(225 mW) < {ka*0.225:.3f} MHz**")
+    print(f"  campaign-only UB: kappa < {ka_camp:.2f} -> S0(225) < {ka_camp*0.225:.3f}")
+    print(f"  wing-marginalized: min {kmin_c}, UB kappa < {kc:.2f}"
+          f" -> S0(225) < {kc*0.225:.3f}")
+    print(f"  direction indifference: max |dchi2| between dirs = {dir_delta:.2f}")
+    print(f"  ({(time.time()-t0)/60:.0f} min)")
+
+    with open(C.RESULTS_DIR / "stark_joint.csv", "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["quantity", "key", "value", "err", "unit"])
+        w.writerow(["kappa_min", "primary", f"{kmin_a:.2f}", "",
+                    "MHz per W; profile minimum, priors, dir -1; NOT a "
+                    "detection (see dchi2_kappa0)"])
+        w.writerow(["dchi2_kappa0", "primary", f"{dchi2_a:.2f}", "",
+                    "chi2(kappa=0) - chi2(min); the strength of the kappa>0 "
+                    "preference"])
+        w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
+                    "MHz per W; 95% one-sided profile-likelihood bound -- "
+                    "THE quoted construction (negative kappa is flat by "
+                    "construction: the ramp model only broadens red)"])
+        w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
+                    "MHz, transition axis; joint two-session bound at the "
+                    "campaign's maximum power"])
+        w.writerow(["S0_270mW_ub95", "primary", f"{ka*0.270:.3f}", "",
+                    "MHz; at the rehearsal's maximum power"])
+        w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
+                    "MHz per W; campaign rows of the same profile -- the "
+                    "bound does not lean on the rehearsal's soft rate anchor"])
+        w.writerow(["kappa_min_wing", "robustness", f"{kmin_c:.2f}", "",
+                    "MHz per W; minimum with the red-wing nuisance free"])
+        w.writerow(["kappa_ub95_wing", "robustness", f"{kc:.3f}", "",
+                    "MHz per W; bound with the wing marginalized -- quote "
+                    "alongside the primary, the gap IS the wing systematic"])
+        w.writerow(["direction_dchi2_max", "robustness", f"{dir_delta:.2f}", "",
+                    "max |chi2 difference| between rehearsal axis directions "
+                    "across the profile; small = indifferent"])
+        for pk in PEAKS:
+            w.writerow(["lopo_dchi2_262", pk, f"{lopo[pk][2.62]:+.2f}", "",
+                        "chi2(kappa=2.62)-min with this peak dropped; all "
+                        "positive and similar = no single peak drives it"])
+        for k, pk in enumerate(PEAKS):
+            w.writerow(["gamma_coll_post", pk, f"{q_a[2 + k]:.3f}", "",
+                        f"MHz; posterior under the beta_self prior "
+                        f"{priors[pk][0]:.3f}+/-{priors[pk][1]:.3f}"])
+            w.writerow(["reh_rate", pk, f"{np.exp(q_a[14 + k]):.5f}", "",
+                        "MHz per ms, transition; fitted rehearsal scan rate"])
+        w.writerow(["Vsat_camp", "nuisance", f"{np.exp(q_a[0]):.1f}", "",
+                    "V; detector saturation, campaign -- large = linear"])
+        w.writerow(["Vsat_reh", "nuisance", f"{np.exp(q_a[1]):.1f}", "",
+                    "V; detector saturation, rehearsal"])
+        w.writerow(["n_traces", "camp/reh", f"{len(camp)}/{len(reh)}", "",
+                    f"canonical p_sweep / usable rehearsal ({n_corrupt} "
+                    f"rehearsal files corrupt or lineless)"])
+        for kap, c2, cc in prof_a:
+            w.writerow(["profile_point", f"{kap:.2f}", f"{c2:.2f}", f"{cc:.2f}",
+                        "chi2 total (value) and campaign-only (err column), "
+                        "primary settings"])
+    print(f"\n  Wrote results/stark_joint.csv.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

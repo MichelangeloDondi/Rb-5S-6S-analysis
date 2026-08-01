@@ -111,8 +111,11 @@ def _beta_range_token():
 #               legitimately co-occurs with others, e.g. "50 µm ... 32 µm excluded").
 CANONICAL = [
     dict(
+        # since M23 the headline is the joint two-session bound; M4e's 0.63
+        # stays in stark_sweep.csv as the width-only bracket, and prose that
+        # cites it avoids the S0(225)< pattern so this guard stays sharp
         name="AC-Stark bound S0(225mW), 95% profile",
-        value=lambda: f"{float(_cell('stark_sweep.csv', 'S0_225mW_ub95_profile')):.2f}",
+        value=lambda: f"{float(_cell('stark_joint.csv', 'S0_225mW_ub95')):.2f}",
         find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*[<≲]\s*([0-9.]+)\s*MHz"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
@@ -135,8 +138,8 @@ CANONICAL = [
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
-        name="Delta-alpha archival bracket (was ~5800)",
-        value=lambda: "1200",
+        name="Delta-alpha archival bracket (was ~1200, before that ~5800)",
+        value=lambda: "480",
         find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
         docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],

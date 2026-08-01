@@ -84,6 +84,20 @@ FILE_STATUS = {
 # (exact match, then longest-prefix). Unmapped -> hard error, so no row is
 # silently left un-tagged.
 QUANTITY_STATUS = {
+    # M23: the joint two-session profile-likelihood bound. The headline rows
+    # are BOUNDs (one-sided by construction -- the ramp model only broadens
+    # red); the kappa_min/dchi2 preference is DIAGNOSTIC, not a detection.
+    "stark_joint.csv": {
+        "kappa_ub95": "BOUND", "S0_225mW_ub95": "BOUND",
+        "S0_270mW_ub95": "BOUND",
+        "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",
+        "kappa_ub95_camponly": "BOUND", "kappa_min_wing": "DIAGNOSTIC",
+        "kappa_ub95_wing": "BOUND", "direction_dchi2_max": "DIAGNOSTIC",
+        "lopo_dchi2_262": "DIAGNOSTIC", "gamma_coll_post": "PRELIM",
+        "reh_rate": "CALIB", "Vsat_camp": "DIAGNOSTIC",
+        "Vsat_reh": "DIAGNOSTIC", "n_traces": "DIAGNOSTIC",
+        "profile_point": "DIAGNOSTIC",
+    },
     "global_fit.csv": {
         "beta_self": "BOUND", "sigma_laser": "BOUND",
         "beta_modelform_syst": "BOUND", "beta_nscale_syst": "BOUND",

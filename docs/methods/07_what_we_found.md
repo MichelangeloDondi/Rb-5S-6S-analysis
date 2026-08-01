@@ -132,13 +132,18 @@ coverage (it read a spurious 3.1 MHz). The quoted limit is therefore a
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx4$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
-elsewhere). It gives the 95% profile-likelihood bound
-$$S_0(225\ \text{mW}) < 0.63\ \text{MHz},$$
-sitting just above the predicted 0.59 MHz — i.e. $|\Delta\alpha|\lesssim1200$ a.u.,
-which brackets both values on the table: Orson's published 1093 and this work's
-recomputed 1145 ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The
-comparison is on magnitude and is therefore untouched by the sign disagreement
-between them ([THEORY_NOTE §5](../THEORY_NOTE.md)).
+elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
+widths alone. The joint two-session full-profile fit (M23,
+`run_stark_joint`, RESULTS C3f) sharpens the same channel to
+$$S_0(225\ \text{mW}) < 0.25\ \text{MHz},$$
+below the predicted 0.59 MHz at the nominal waist, i.e.
+$|\Delta\alpha|\lesssim480$ a.u. at $w_0=50$ µm, under both values on the
+table (Orson's published 1093 and this work's recomputed 1145,
+[§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The constraint
+therefore lands on the (Δα, intensity) pair and pushes the open waist wide
+rather than adjudicating the theory. The comparison is on magnitude and is
+therefore untouched by the sign disagreement between them
+([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
