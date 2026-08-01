@@ -139,7 +139,7 @@ CANONICAL = [
     ),
     dict(
         name="Delta-alpha archival bracket (was ~1200, before that ~5800)",
-        value=lambda: "480",
+        value=lambda: "271",
         find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
         docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],

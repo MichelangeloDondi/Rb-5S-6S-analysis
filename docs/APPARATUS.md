@@ -353,7 +353,7 @@ acquisition drift, which the archive puts two orders below.*
 > pull distribution comes out at unit width, which is the check that the noise
 > model is right. The scatter itself settles, on a timescale near a minute, so
 > the floor is a settled-state number and the early record is several times
-> worse. Against the campaign's AC-Stark bound (0.25 MHz since M23, 0.63
+> worse. Against the campaign's AC-Stark bound (0.14 MHz since M23, 0.63
 > from the width-only construction) the floor sits above rather than below,
 > which is consistent with those bounds coming from averaging across many
 > traces and blocks rather than from any single block. See

@@ -222,7 +222,7 @@ addendum 7's mixture, and a $7.3$ MHz variant in M20 — were *tighter* only
 because they differenced centres across horizontal-position moves, and are
 withdrawn. The width-and-shape channel is the archive's only light-shift
 channel. Its best construction is M23's joint two-session full-profile fit,
-$S_0(225$ mW$) < 0.25$ MHz (95%), with the 20-summary-width construction
+$S_0(225$ mW$) < 0.14$ MHz (95%), with the 20-summary-width construction
 (M4e, $< 0.63$ MHz) kept as the independent simpler bracket — two
 constructions, but one physical channel, so there is still no second
 channel to corroborate it.
@@ -293,10 +293,10 @@ same two-epoch reason as everything else here: the 2025 drifted lock destroys th
 line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
 broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). M23
-(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.25$ MHz
+(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.14$ MHz
 by fitting every point of every profile across both sessions instead of the
 20 summary widths. Through the §5 convention that maps to
-$|\Delta\alpha| \lesssim 480$ a.u. **at the nominal** $w_0=50\ \mu$m, below
+$|\Delta\alpha| \lesssim 271$ a.u. **at the nominal** $w_0=50\ \mu$m, below
 the computed $1093$, so the archive now constrains the
 $(\Delta\alpha,\ \text{intensity})$ pair: if the computed magnitude is
 right, the on-axis intensity must sit $\gtrsim2.3\times$ under the nominal

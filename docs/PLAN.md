@@ -177,7 +177,7 @@ two-photon triangular-ramp lineshape law plus a reference-free, drift-immune
 moment readout — not pursued elsewhere, and distinct from Orson's absolute-frequency and
 mean-shift work (the axis-by-axis delineation vs Stalnaker is in `LITERATURE.md`
 §1; the not-claimable list in §5). (b) *A ~25× tighter S₀ bound*
-(< 0.25 MHz via M23's joint two-session full-profile fit, vs Orson's ~6 MHz
+(< 0.14 MHz via M23's joint three-session full-profile fit, vs Orson's ~6 MHz
 null; the width-only construction gives < 0.63) extracted **from shape alone
 under a drifting, hand-re-centred lock**. (c) *With a fixed-lock session*, the **first measured
 light shift on this line** — the pull ∝ S₀ is a positive observable, not a
@@ -218,8 +218,8 @@ unbiased — has been run: `tests/test_intrascan_drift.py`.
 
 **"Your Δα bracket ~1200 a.u. is 'consistent with' Orson's computed 1093 — a
 bracket that wide discriminates nothing."** Conceded when written, and now
-partly answered by M23: the joint two-session bound **S₀(225 mW) < 0.25 MHz**
-maps to Δα ≲ 480 a.u. *at the nominal w₀ = 50 µm*, below 1093, so the
+partly answered by M23: the joint two-session bound **S₀(225 mW) < 0.14 MHz**
+maps to Δα ≲ 271 a.u. *at the nominal w₀ = 50 µm*, below 1093, so the
 archive now genuinely constrains the (Δα, intensity) pair rather than
 nothing. What it still cannot do is split that pair: if the computed
 magnitude is right the waist must sit ≳ 76 µm, which is where Nieddu's

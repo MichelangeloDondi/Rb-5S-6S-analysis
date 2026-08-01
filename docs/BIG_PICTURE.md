@@ -282,13 +282,14 @@ as a bound. Concretely:
   apparatus — independent support for excluding 32 µm, and the same order as
   our value, though not the same number and not the same beam).
 - **The light-shift bound now cuts into the prediction band.** S₀(225 mW)
-  < 0.25 MHz (95%, M23: a joint full-profile fit of both sessions, every
-  trace with a free centre so the drifting laser costs nothing). Against
+  < 0.14 MHz (95%, M23: a joint full-profile fit of three sessions,
+  every trace with a free centre so the drifting laser costs nothing). Against
   the predicted 0.59 MHz at the w₀ = 50 µm prior, that excludes the
-  tight-waist corner: equivalently Δα ≲ 480 a.u. at the nominal waist, so
+  tight-waist corner: equivalently Δα ≲ 271 a.u. at the nominal waist, so
   if |Δα| is near the computed ~1100 a.u. the intensity must sit at least
-  2.3× below the prior (equivalent waist ≳ 76 µm), the same wide-waist
-  direction Nieddu 2019's measured 64 µm points. Twenty-five times below
+  4× below the prior (equivalent waist ≳ 100 µm), and even the most
+  conservative data subset requires ≳ 65 µm, which is where Nieddu 2019's
+  measured 64 µm sits. Twenty-five times below
   Orson's ~6 MHz null, from shape alone.
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.9 while the density rises ×53 — a

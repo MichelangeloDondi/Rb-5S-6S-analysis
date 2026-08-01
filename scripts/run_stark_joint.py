@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M23: the joint two-session Stark fit -- every lineshape at once, one kappa.
+M23: the joint Stark fit -- every lineshape from every session, one kappa.
 
 THE QUESTION. The AC-Stark programme had three channels and two of them are
 dead: the centres are unidentifiable (M21 -- power descends with time inside
@@ -57,13 +57,46 @@ docstring sentence because the wrong version ran first):
     wedge and the wing both live on the red side, so this is the fit's
     hardest robustness test, not a formality.
 
+THE THIRD SESSION (added 2026-08-01, the module's v2). The 2025-07-18
+MORNING PILOT: 26 traces on peak 4192 alone, powers 35/70/105/210 mW at the
+campaign's internal ~130 C (addendum 17 established it ran hot), on the
+Agilent in campaign trace format, ~20 minutes after the ruler's final
+commissioning. Its axis borrows the campaign 4192 bracket rate through a
+rate-scale nuisance bounded to +/-10% -- licensed by the raw widths: the
+pilot 210 mW line is 60.8 +/- 0.4 ms against the campaign 225 mW line's
+62.6 +/- 0.3, ratio 0.971, which equal rates and near-equal physics
+predict. Its ladder ran 210 -> 35 -> 70 -> 105, non-monotone in time --
+the ordering M21 asked for -- but its CENTRES still stay out of the fit:
+the recorded window starts step with the power changes, in the same
+direction and at the same scale as the expected pull (-478 ms at 210 mW,
+-464 at 35, -468 at 70/105), which is M21's response-versus-relabel
+ambiguity in miniature. Shape and width only, like everything else here.
+THE PIEZO-RAMP CHANNEL of the 2025-07-03 EOM prehistory traces, and what
+it settles (an earlier version of this note dismissed it as a near-DC
+monitor; the experimenter's memory said piezo ramp, and the data agree).
+The signal channel's two equal peaks are the SAME line crossed twice near
+a sweep turnaround, and the ramp channel proves it: at the two crossings
+it reads equal to 0.04-0.12 mV on a 13 mV in-window sweep, forty times
+tighter than a monotone ramp would allow. That validated axis then gets a
+calibration from a ~2% satellite sitting at a CONSTANT ramp-voltage offset
+from the line (+2.29 and +2.48 mV in the two traces that show it): read as
+the 12.5 MHz EOM tooth it gives 5.24 MHz/mV, under which the line's
+0.98 +/- 0.03 mV width is 5.1 MHz at 80 C -- on the physical budget --
+while the 25 MHz reading gives an unphysical 10.3. The EOM-day scan rate
+at the crossings is therefore MEASURED: 4.5 mV/s x 5.24 = 0.024 MHz/ms
+(transition). That is 2.2x the rehearsal's width-fitted 0.0107, so the
+07-03 and 07-04 scan configurations genuinely differ and no rate
+transfers: the rehearsal's anchor stays width-tied as a measured
+conclusion, not an assumption. No usable in-trace ruler exists for the
+rehearsal itself.
+
 CONVERGENCE DISCIPLINE, learned twice: scipy's free fits on this problem
 land thousands of chi2 above their own profiles. Nothing from a free fit is
 quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles
 (left-to-right, then right-to-left from the far seed, pointwise minimum) at
 ftol = xtol = 1e-12.
 
-RUNTIME: ~1 h single process (the profile builder runs at dnu_floor = 2e-2,
+RUNTIME: ~5 h single process (three sessions, 172 traces) (the profile builder runs at dnu_floor = 2e-2,
 see _shared_profile_grid -- equivalence tested). The quarantine prehistory
 tree must be present for the rehearsal arm; without it this module prints
 what is missing and exits 0, and the committed CSV remains the record
@@ -107,7 +140,8 @@ TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
 DNU_FLOOR = 2e-2          # see _shared_profile_grid's docstring
 NU0_WING = 2.0            # MHz standoff of the wing nuisance
 KAPPAS = (0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.62, 3.5, 5.0)
-NS = 19                   # shared params: kappa, 2 Vsat, 4 gc, 8 sl, 4 rates
+NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 reh rates, 1 pilot rate-scale
+PILOT = Path("~/Documents/RawDataPilot_QUARANTINE_2026-07-24/4192nm91c650ma").expanduser()
 
 
 # ---------------------------------------------------------------------------
@@ -201,6 +235,46 @@ def load_rehearsal():
     return out, n_corrupt
 
 
+def load_pilot(rate_4192):
+    """The 2025-07-18 morning pilot: 26 traces, peak 4192 only, powers
+    35/70/105/210 mW at the campaign's internal ~130 C (addendum 17), on the
+    Agilent in campaign format, ~20 min after the ruler's final
+    commissioning. Its frequency axis is the campaign 4192 bracket rate
+    times a free scale bounded to +/-10% (the raw 210 mW width matches the
+    campaign 225 mW width to 2.9%, so the scale is a nuisance, not a leap).
+    Its ladder ran 210 -> 35 -> 70 -> 105, non-monotone in time -- but its
+    centres stay OUT of the fit: the recorded window starts move with the
+    power steps in the same direction and size as the expected pull, which
+    is exactly M21's response-versus-relabel ambiguity. Shape and width
+    only, like every other trace here. NaN rows in the raw files (the
+    header-variant quirk) are masked."""
+    files = sorted(glob.glob(str(PILOT / "*mw*.csv")))
+    out = []
+    bycond = {}
+    for f in files:
+        m = re.search(r"(\d{3})mw(\d+)\.csv", f)
+        d = np.genfromtxt(f, delimiter=",", skip_header=2)
+        msk = np.isfinite(d[:, 0]) & np.isfinite(d[:, 1])
+        t_ms, v = d[msk, 0] * 1e3, d[msk, 1]
+        nu = t_ms * rate_4192
+        lev, base = signal_level(v)
+        c0 = float(nu[int(np.argmax(lev))])
+        hw = adaptive_halfwidth(nu, v)
+        w = np.abs(nu - c0) <= hw
+        out.append(dict(sess="pil", peak="4192", P=int(m.group(1)) / 1e3,
+                        x=nu[w], v=v[w], sg=None,
+                        c0=c0, A0=float(lev.max()), b0=float(base)))
+        bycond.setdefault(m.group(1), []).append(out[-1])
+    for grp in bycond.values():
+        law = condition_noise_model([t["v"] for t in grp])
+        tau = max(law.get("tau_int", 1.0), 1.0)
+        for t in grp:
+            lev = t["v"] - np.median(np.sort(t["v"])[:max(len(t["v"]) // 5, 8)])
+            t["sg"] = np.maximum(
+                sigma_of_v(np.maximum(lev, 0.0), law), 1e-6) * np.sqrt(tau)
+    return out
+
+
 # ---------------------------------------------------------------------------
 # the model
 # ---------------------------------------------------------------------------
@@ -219,6 +293,7 @@ def build(traces, priors, wing):
         p0[7 + k] = 1.0; lo[7 + k] = 0.05; hi[7 + k] = 50.0
         p0[11 + k] = 1.0; lo[11 + k] = 0.05; hi[11 + k] = 50.0
         p0[15 + k] = r0; lo[15 + k] = r0 - np.log(4); hi[15 + k] = r0 + np.log(4)
+    p0[19] = 0.0; lo[19] = np.log(0.9); hi[19] = np.log(1.1)   # pilot rate scale
     if wing:
         p0[NS] = 0.005; lo[NS] = 0.0; hi[NS] = 0.5
         p0[NS + 1] = np.log(6.0); lo[NS + 1] = np.log(2.0); hi[NS + 1] = np.log(60.0)
@@ -244,9 +319,9 @@ def make_resid(traces, priors, direction, wing):
             k = PK_IX[t["peak"]]
             gc = p[3 + k]
             s0 = kap * t["P"]
-            sess_c = t["sess"] == "camp"
-            sl = p[7 + k] if sess_c else p[11 + k]
-            key = (sess_c, k, round(sl, 7), round(gc, 7), round(s0, 8),
+            sess = t["sess"]
+            sl = p[11 + k] if sess == "reh" else p[7 + k]
+            key = (sess == "reh", k, round(sl, 7), round(gc, 7), round(s0, 8),
                    round(f_w, 7), round(w_w, 5))
             if key not in cache:
                 g, prof = _shared_profile_grid(gc, sl, TRANSIT, s0, "gaussian",
@@ -256,13 +331,17 @@ def make_resid(traces, priors, direction, wing):
                     prof = prof.copy()
                     prof[msk] += (f_w * prof.max()
                                   * np.exp(-(np.abs(g[msk]) - NU0_WING) / w_w))
-                if (not sess_c) and direction < 0:
+                if sess == "reh" and direction < 0:
                     prof = prof[::-1]
                 cache[key] = (g, prof)
             g, prof = cache[key]
             A, cc, b0, b1 = p[ns_tot + 4 * i: ns_tot + 4 * i + 4]
-            if sess_c:
+            if sess == "camp":
                 lin = A * np.interp(t["x"] - cc, g, prof, left=0., right=0.)
+                Vs = np.exp(p[1])
+            elif sess == "pil":
+                scale = np.exp(p[19])
+                lin = A * np.interp(scale * t["x"] - cc, g, prof, left=0., right=0.)
                 Vs = np.exp(p[1])
             else:
                 rate = np.exp(p[15 + k])
@@ -289,6 +368,8 @@ def sparsity(traces, wing):
             S[r0:r0 + n, NS] = 1; S[r0:r0 + n, NS + 1] = 1
         if t["sess"] == "camp":
             S[r0:r0 + n, 1] = 1; S[r0:r0 + n, 7 + k] = 1
+        elif t["sess"] == "pil":
+            S[r0:r0 + n, 1] = 1; S[r0:r0 + n, 7 + k] = 1; S[r0:r0 + n, 19] = 1
         else:
             S[r0:r0 + n, 2] = 1; S[r0:r0 + n, 11 + k] = 1; S[r0:r0 + n, 15 + k] = 1
         S[r0:r0 + n, ns_tot + 4 * i: ns_tot + 4 * i + 4] = 1
@@ -345,19 +426,21 @@ def ub95(arr, col=1):
 # ---------------------------------------------------------------------------
 
 def main() -> int:
-    if not PREHISTORY.is_dir():
-        print(f"quarantine prehistory tree not on this machine "
-              f"({PREHISTORY}) -- the committed results/stark_joint.csv is "
-              f"the record; nothing to do.")
+    if not (PREHISTORY.is_dir() and PILOT.is_dir()):
+        print(f"quarantine tree(s) not on this machine "
+              f"({PREHISTORY}, {PILOT}) -- the committed "
+              f"results/stark_joint.csv is the record; nothing to do.")
         return 0
     priors = gc_priors()
     camp = load_campaign()
     reh, n_corrupt = load_rehearsal()
-    traces = camp + reh
+    _, prates = load_t_rates()
+    pil = load_pilot(prates["4192"][0])
+    traces = camp + reh + pil
     npts = sum(len(t["x"]) for t in traces)
-    print(f"(M23) JOINT TWO-SESSION STARK FIT: {len(camp)} campaign + "
-          f"{len(reh)} rehearsal traces ({n_corrupt} rehearsal files "
-          f"unusable), {npts} points")
+    print(f"(M23) JOINT THREE-SESSION STARK FIT: {len(camp)} campaign + "
+          f"{len(reh)} rehearsal ({n_corrupt} files unusable) + "
+          f"{len(pil)} pilot traces, {npts} points")
 
     t0 = time.time()
     print("  primary profile (priors, rehearsal dir -1):")
@@ -417,8 +500,7 @@ def main() -> int:
                     "THE quoted construction (negative kappa is flat by "
                     "construction: the ramp model only broadens red)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
-                    "MHz, transition axis; joint two-session bound at the "
-                    "campaign's maximum power"])
+                    "MHz, transition axis; joint three-session bound at the "                    "campaign's maximum power"])
         w.writerow(["S0_270mW_ub95", "primary", f"{ka*0.270:.3f}", "",
                     "MHz; at the rehearsal's maximum power"])
         w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
@@ -446,9 +528,13 @@ def main() -> int:
                     "V; detector saturation, campaign -- large = linear"])
         w.writerow(["Vsat_reh", "nuisance", f"{np.exp(q_a[1]):.1f}", "",
                     "V; detector saturation, rehearsal"])
-        w.writerow(["n_traces", "camp/reh", f"{len(camp)}/{len(reh)}", "",
-                    f"canonical p_sweep / usable rehearsal ({n_corrupt} "
-                    f"rehearsal files corrupt or lineless)"])
+        w.writerow(["n_traces", "camp/reh/pil", f"{len(camp)}/{len(reh)}/{len(pil)}", "",
+                    f"canonical p_sweep / usable rehearsal ({n_corrupt} files "
+                    f"corrupt or lineless) / pilot morning sweep"])
+        w.writerow(["pilot_rate_scale", "nuisance", f"{np.exp(q_a[18]):.4f}", "",
+                    "pilot axis = campaign 4192 bracket rate x this factor, "
+                    "bounded [0.9, 1.1]; the raw 210 vs 225 mW width ratio "
+                    "0.971 justified the tight band"])
         for kap, c2, cc in prof_a:
             w.writerow(["profile_point", f"{kap:.2f}", f"{c2:.2f}", f"{cc:.2f}",
                         "chi2 total (value) and campaign-only (err column), "

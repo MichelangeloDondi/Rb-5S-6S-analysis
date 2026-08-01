@@ -289,3 +289,73 @@ def test_model_profile_is_converged_in_its_internal_grid(monkeypatch):
             f"model_profile is not grid-converged for {kw}: the shipped "
             f"divisor gives {shipped:.6f} MHz, 4x finer {finer:.6f} "
             f"({rel:.2%}) -- raise GRID_STEPS_PER_KERNEL in lineshape.py")
+
+
+# ---------------------------------------------------------------------------
+# the general intensity-profile seam (stark_from_intensity_profile)
+# ---------------------------------------------------------------------------
+
+def test_general_profile_reproduces_focused_beam_triangle():
+    """The transverse-Gaussian case through the general machinery must
+    reproduce stark_ramp: I = exp(-2r^2/w^2) with measure r dr is the
+    geometry whose signal-weighted shift density is the triangle (the
+    docstring's du/u derivation). The axial Lorentzian is a DIFFERENT
+    geometry (mean -3/4 s0, checked below) -- an early version of this
+    test conflated them."""
+    from rb5s6s.lineshape import stark_from_intensity_profile, stark_ramp
+    s0 = 2.0
+    nu = np.arange(-4.0, 1.0, 0.002)
+    r = np.linspace(0.0, 5.0, 400001)
+    intensity = np.exp(-2.0 * r ** 2)
+    general = stark_from_intensity_profile(nu, s0, intensity, r, n_photon=2)
+    triangle = stark_ramp(nu, s0)
+    # compare the three lowest moments, the physics the fits consume
+    for pw, tol in ((1, 5e-3), (2, 2e-2)):
+        mg = float(np.sum(nu ** pw * general) * (nu[1] - nu[0]))
+        mt = float(np.sum(nu ** pw * triangle) * (nu[1] - nu[0]))
+        assert abs(mg - mt) < tol * max(abs(mt), 1.0), (pw, mg, mt)
+
+
+def test_general_profile_n1_uniform_mean():
+    """n_photon=1 on the same geometry: mean pull -s0/2 (the flat case)."""
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    s0 = 1.5
+    nu = np.arange(-3.0, 1.0, 0.002)
+    r = np.linspace(0.0, 5.0, 400001)
+    f = stark_from_intensity_profile(nu, s0, np.exp(-2.0 * r ** 2), r,
+                                     n_photon=1)
+    mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
+    assert abs(mean - (-s0 / 2.0)) < 5e-3
+
+
+def test_general_profile_evanescent_is_not_a_triangle():
+    """A nanofibre-like evanescent field (I ~ e^{-2r/L}, measure r dr)
+    must give a different distribution: the measure grows outward while the
+    intensity dies, boosting the small-shift tail, so the mean pull is
+    SHALLOWER than the focused beam's -2/3 s0 (an early version of this
+    test asserted the opposite; the machinery corrected the intuition)."""
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    s0 = 2.0
+    nu = np.arange(-4.0, 1.0, 0.002)
+    r = np.linspace(120.0, 800.0, 200001)      # nm, from the fibre surface
+    L = 100.0
+    inten = np.exp(-2.0 * (r - r[0]) / L)
+    f = stark_from_intensity_profile(nu, s0, inten, r, n_photon=2)
+    mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
+    assert -(2.0 / 3.0) * s0 + 0.02 < mean < -0.2 * s0, mean
+    assert abs(float(np.sum(f) * (nu[1] - nu[0])) - 1.0) < 1e-9
+
+
+def test_general_profile_axial_lorentzian_mean():
+    """The axial line I(z) = 1/(1+z^2) with uniform measure: weight u^2 dz
+    with dz ~ du/(u^1.5 sqrt(1-u)) gives mean -3/4 s0 for n=2 -- a genuinely
+    different geometry from the transverse triangle, kept as the example
+    that the seam distinguishes geometries the summary widths cannot."""
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    s0 = 2.0
+    nu = np.arange(-4.0, 1.0, 0.002)
+    z = np.linspace(-200.0, 200.0, 400001)
+    f = stark_from_intensity_profile(nu, s0, 1.0 / (1.0 + z ** 2),
+                                     np.ones_like(z), n_photon=2)
+    mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
+    assert abs(mean - (-0.75 * s0)) < 5e-3, mean

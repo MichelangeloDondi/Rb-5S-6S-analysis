@@ -279,6 +279,45 @@ def ramp_moment_contributions(s0: float, z_ratio: float = 0.0,
             "kappa3": m["skew_standardized"] * m["var"] ** 1.5}
 
 
+def stark_from_intensity_profile(nu: np.ndarray, s0: float,
+                                 intensity: np.ndarray,
+                                 measure: np.ndarray,
+                                 n_photon: int = 2) -> np.ndarray:
+    """The general seam behind stark_ramp: the light-shift distribution for
+    ANY sampled intensity profile, area-normalized on the grid.
+
+    Every environment gives light a different intensity distribution — a
+    focused beam, a nanofibre evanescent field, a hollow-core mode, a
+    lattice site — and each turns the AC-Stark shift into its own lineshape
+    through the same three ingredients: the shift is proportional to I, the
+    detected signal to I^n_photon, and positions are weighted by the
+    geometry's volume measure. Pass intensity samples I(x_i)/I_max on any
+    parameterization x of the geometry, with measure_i the volume weight of
+    each sample (r dr for a cylindrical evanescent field, uniform for a 1D
+    scan, ...), and the returned density on nu is
+
+        f(s) with s_i = -s0 * I_i / I_max, weight_i = measure_i * I_i^n.
+
+    For the focused-beam geometric measure this reproduces stark_ramp's
+    triangle exactly (test_lineshape has the equivalence test), and the n=1
+    uniform case reproduces its flat distribution. Atoms outside the light
+    (I=0) contribute at nu=0 with their signal weight, which is zero for
+    any n >= 1, so truncating the sampling domain where the signal has died
+    is safe. Returns a unit spike at nu=0 when s0 <= 0."""
+    dnu = nu[1] - nu[0]
+    out = np.zeros_like(nu, dtype=float)
+    if s0 <= 0:
+        out[np.argmin(np.abs(nu))] = 1.0 / dnu
+        return out
+    ii = np.asarray(intensity, float)
+    w = np.asarray(measure, float) * np.maximum(ii, 0.0) ** n_photon
+    s = -s0 * ii / ii.max()
+    idx = np.clip(np.round((s - nu[0]) / dnu).astype(int), 0, len(nu) - 1)
+    np.add.at(out, idx, w)
+    area = out.sum() * dnu
+    return out / area if area > 0 else out
+
+
 # ---------------------------------------------------------------------------
 # the composite model
 # ---------------------------------------------------------------------------

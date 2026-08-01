@@ -135,9 +135,9 @@ the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
 elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
 widths alone. The joint two-session full-profile fit (M23,
 `run_stark_joint`, RESULTS C3f) sharpens the same channel to
-$$S_0(225\ \text{mW}) < 0.25\ \text{MHz},$$
+$$S_0(225\ \text{mW}) < 0.14\ \text{MHz},$$
 below the predicted 0.59 MHz at the nominal waist, i.e.
-$|\Delta\alpha|\lesssim480$ a.u. at $w_0=50$ µm, under both values on the
+$|\Delta\alpha|\lesssim271$ a.u. at $w_0=50$ µm, under both values on the
 table (Orson's published 1093 and this work's recomputed 1145,
 [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The constraint
 therefore lands on the (Δα, intensity) pair and pushes the open waist wide

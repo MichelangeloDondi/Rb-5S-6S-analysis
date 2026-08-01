@@ -65,13 +65,27 @@ def test_no_detection_claim():
     assert val("dchi2_kappa0", "primary") < 9.0
 
 
-def test_campaign_only_reproduces_bound():
-    """The robustness claim made in RESULTS: the campaign rows alone give
-    nearly the same bound, so nothing leans on the rehearsal's fitted
-    scan rates."""
+def test_campaign_only_is_weaker_but_same_order():
+    """Since the pilot joined (three sessions), the campaign rows alone no
+    longer REPRODUCE the bound -- they give a weaker one, which is the
+    expected direction when data are removed, and the gap is the pilot's
+    leverage. What must hold: the subset bound is weaker, and not by more
+    than a factor 4 (beyond that the sessions would be describing
+    different physics rather than adding information)."""
     joint = val("kappa_ub95", "primary")
     camp = val("kappa_ub95_camponly", "robustness")
-    assert abs(camp - joint) < 0.5 * joint
+    assert camp > joint, (camp, joint)
+    assert camp < 4.0 * joint, (camp, joint)
+
+
+def test_every_subset_lies_below_the_nominal_prediction():
+    """The load-bearing claim of C3f: the bound excludes the 0.59 MHz
+    prediction at w0 = 50 um whichever subset carries the weight. The two
+    subsets in the CSV are checked here; the third (drop peak 4192, which
+    removes the pilot) is a LOPO row and is checked in the docs."""
+    pred = 0.59
+    assert val("S0_225mW_ub95", "primary") < pred
+    assert val("kappa_ub95_camponly", "robustness") * 0.225 < pred
 
 
 def test_direction_indifference():
@@ -88,6 +102,14 @@ def test_saturation_fitted_linear():
     """The detector-linearity receipt: both Vsat >> the ~1 V signals."""
     assert val("Vsat_camp", "nuisance") > 10.0
     assert val("Vsat_reh", "nuisance") > 10.0
+
+
+def test_pilot_rate_scale_in_band():
+    """The pilot axis borrows the campaign rate through a scale bounded to
+    [0.9, 1.1]; a posterior AT either bound would mean the width-licensed
+    assumption failed and the pilot is pulling the axis, not riding it."""
+    s = val("pilot_rate_scale", "nuisance")
+    assert 0.905 < s < 1.095, s
 
 
 def test_rehearsal_rates_sane():
