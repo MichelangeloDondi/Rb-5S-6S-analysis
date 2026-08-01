@@ -236,8 +236,21 @@ width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um is adopted as
 the central corrected-physics prior. NOTE this is still a PRIOR, not a
 measurement: the transit<->sigma_laser degeneracy means the archival line cannot
 pin w0 on its own -- that is exactly what the knife-edge measurement settles. (The
-Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, but the 3 mm EOM
-aperture clipped the beam, widening the true waist -- consistent with ~50 um.)
+Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, attributed to
+"the EOM aperture" clipping the beam. That attribution is now sourced rather
+than inferred (2026-08-01, APPARATUS.md sec 1.2/2): no lens or telescope sits
+between the SolsTiS and the EOM (EXPERIMENTER), the isolator before it (ISOWAVE
+I-98T-5L, 5 mm clear aperture, manufacturer datasheet) is wide enough not to
+clip, and the EOM-02-12.5-V's own clear aperture IS 3 mm per the manufacturer's
+"Standard Characteristics" table -- confirmed directly from
+photonicstechnologies.com, not from the test certificates, which do not state
+it. The experimenter separately recalls an IR viewer card showing clipping at
+the EOM (a recollection over a year old, not a contemporaneous measurement).
+So w_in = 1.5 mm (3 mm diameter) is a real aperture with a real clipping
+observation behind it, not a free parameter chosen to fit -- though a
+recollected clipping EVENT does not by itself fix how MUCH of the beam was
+clipped, which is why this stays a Gaussian-optics estimate and not a
+measurement.)
 
 DIRECT-MEASUREMENT CORROBORATION (2026-07-13, from the group's own 993 nm
 lineage): Nieddu 2019 (Opt. Express, and his OIST thesis: "measured to be

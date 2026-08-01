@@ -47,12 +47,22 @@ Opt. Express paper *and* OIST thesis, "measured to be 128 µm") and the
 **Rajasree-KP 2020** OIST thesis both quote a **1/e² beam diameter of 128 µm →
 w₀ = 64 µm**, with the same f = 150 mm lens. That measured value lands at the top
 of the transit-inferred 45–70 µm band and **independently excludes 32 µm** — the
-naive Gaussian estimate was ~2× too small because the 3 mm EOM aperture truncated
-the ~3 mm input beam. So two independent routes (the corrected transit physics and
-a direct measurement) now agree: **w₀ ≈ 50–64 µm**. We keep 50 µm as the central
-`W0_PRIOR_M` (the transit-width match slightly prefers ~50–55 µm, keeping the
+naive Gaussian estimate assumed a 3 mm input beam diameter clipped by "the EOM
+aperture". That attribution is now sourced rather than inferred (2026-08-01,
+APPARATUS.md §1.2/§2): no lens or telescope sits between the SolsTiS and the
+EOM, the isolator ahead of it (ISOWAVE I-98T-5L, 5 mm clear aperture) is wide
+enough not to clip, and the EOM-02-12.5-V's own clear aperture **is** 3 mm per
+the manufacturer's specification table, with the experimenter separately
+recalling an IR-card observation of clipping there. A recollected clipping
+event does not fix how much of the beam was clipped, so the estimate stays a
+Gaussian-optics calculation, not a measurement. It is, though, no longer a free
+parameter chosen to fit. Two independent routes (the corrected transit physics
+and a direct beam-profile
+measurement, both below) now converge on **w₀ ≈ 50–64 µm**, above the naive
+32 µm estimate. We keep 50 µm as the
+central `W0_PRIOR_M` (the transit-width match slightly prefers ~50–55 µm, keeping the
 drifted 2025 laser under its C2 bound; and the 2025 alignment is not guaranteed
-identical to Nieddu's) — but if the archival beam were exactly 64 µm, the observed
+identical to Nieddu's/Rajasree's) — but if the archival beam were exactly 64 µm, the observed
 width would **pin σ_laser ≈ 1.1 MHz laser-axis** (the transit↔laser degeneracy
 collapses once w₀ is fixed), turning the C2 bound into an estimate. A fixed-lock session's
 beam-profile measurement (knife-edge and/or camera) would measure the 2025 beam directly and settle it.

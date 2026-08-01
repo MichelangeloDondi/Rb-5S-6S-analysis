@@ -111,6 +111,46 @@ shifts become measurable at all.
 
 ---
 
+## 1.2 The optical isolator before the cell
+
+| item | value | provenance |
+|---|---|---|
+| Optical isolator | ISOWAVE **I-98T-5L** | EXPERIMENTER, 2026-08-01 |
+| Clear aperture | **5 mm** | manufacturer datasheet (ISOWAVE DS9010-012010, 900–1000 nm series) |
+| Design wavelength | centred at 980 nm standard, orderable anywhere 900–1000 nm | manufacturer datasheet |
+| Isolation / insertion loss | 35 dB min (38 typical) / 0.3 dB typical, 0.5 dB max | manufacturer datasheet |
+| Tunable | yes (input polarizer rotates to maximize isolation) | manufacturer datasheet |
+| Housing diameter / length | 34.9 mm / 102 mm | manufacturer datasheet |
+
+Placed after the SolsTiS and before the focusing lens, matching the
+[Nieddu 2019](lit/nieddu2019.md) / [Rajasree 2020 thesis](lit/rajasree2020thesis.md)
+layout this bench follows ("An optical isolator is placed ... before the
+vapor cell ... A plano-convex lens (L1) ... is placed after the optical
+isolator to focus the beam").
+
+**The beam path order and the EOM aperture, now sourced (2026-08-01).**
+EXPERIMENTER: no lens or telescope sits between the SolsTiS output and the
+EOM, so the isolator and the EOM both see the raw SolsTiS beam. The isolator's
+5 mm clear aperture is wider than that beam and does not obviously clip it.
+The EOM does: the experimenter recalls an IR viewer card showing clipping at
+the EOM aperture (recollection, over a year old, not a contemporaneous
+measurement). That aperture is now a sourced number rather than an
+assumption. The manufacturer's own "Standard Characteristics" table for the
+EOM-01/EOM-02 series (Photonics Technologies, `photonicstechnologies.com`,
+confirmed 2026-08-01) states **Aperture Diameter 3 mm** for both crystal
+variants, so it applies to our EOM-02-12.5-V. This is the same 3 mm the
+naive Gaussian-optics $w_0\approx32\ \mu$m estimate in `constants.py` used.
+It was previously carried as an inferred number chosen to make the clipping
+story work, and is now grounded in a manufacturer spec plus an experimenter recollection
+of the clipping itself. See `constants.py`'s `W0_PRIOR_M` docstring and
+`docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
+[Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
+($w_0=64\ \mu$m) on the same lens and the same-model SolsTiS laser, which
+remains the better-evidenced comparison since a recollected clipping event
+does not by itself fix how much of the beam was clipped.
+
+---
+
 ## 2. Frequency ruler — the EOM chain
 
 The comb ruler underwrites the whole frequency axis — and its history is
@@ -132,6 +172,7 @@ documented in hardware:
 | EOM 3 dB bandwidth | 550 kHz / 546 kHz | PHOTO |
 | EOM AR coating | **650–1000 nm** — covers 993.4 nm | PHOTO |
 | EOM impedance / SWR | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 | PHOTO |
+| EOM clear aperture | **3 mm** (both crystal variants, EOM-01 and EOM-02) | manufacturer's "Standard Characteristics" table, `photonicstechnologies.com`, confirmed 2026-08-01 — not on the test certificates §1.2 |
 | Drive for 100% modulation | 15.4 V / 16.0 V pk-pk | PHOTO |
 
 So Ω = 12.5 MHz is set to 0.1 Hz resolution on the generator *and* is the
@@ -303,7 +344,7 @@ were logged during the campaign is not established here.
 
 ---
 
-## 6. Laser drift — six wavemeter records, and what the cavity lock buys
+## 6. Laser drift — eight wavemeter records, and what the cavity lock buys
 
 None of the long-term wavemeter logs were saved to disk, so these are read off
 dated screen photographs (±20%, and the band centre of a swept trace is an
@@ -316,9 +357,11 @@ into a comparison:
 |---|---|---|---|
 | 2025-06-16 | 1 h 50 min | — | **~85 GHz of settling** after a tuning change; asymptotes to StdDev 400 kHz |
 | 2025-06-11 | 53 min | etalon **+ reference cavity** | **±0.19 MHz/min** |
+| 2025-06-18 | 2 min, unswept | **cavity error** (scan stopped) | RMS 0.05 MHz, drift −0.05 MHz/min (digitised, see below) |
 | 2025-06-19 | 11 min, unswept | **etalon only** (cavity lock off) | **+1.0 MHz/min** |
 | 2025-06-19 | 27 min | etalon only | ~0.4 MHz/min |
 | 2025-06-19 | 6 min | etalon only | +0.5 MHz/min |
+| 2025-07-02 | 5.5 min, unswept | **cavity error** (scan stopped) | RMS 0.04 MHz, drift −0.005 MHz/min (digitised, see below) |
 | **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg** — **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
 | 2025-07-23 | 3 h 30 min | — | −0.17 MHz/min |
 
@@ -374,6 +417,38 @@ acquisition drift, which the archive puts two orders below.*
 >
 > **Still open.** The 06-19 etalon-only records are not digitised, so the factor
 > 2 to 5 below rests on eye-read numbers on both sides.
+
+> **Two cavity-error records digitised (2026-08-01), and they refine the
+> comparison.** Both photographs show the WLM with the scan stopped by a
+> reference-cavity error, the state in which the spectroscopy signal on the
+> scope goes flat. Both were digitised by the M22 colour-extraction method,
+> and the calibration is self-validating: mapping the two labelled 1 MHz
+> gridlines to pixels reproduces the panel's own displayed mean to 2 kHz on
+> one record and 4 kHz on the other. The dates come from the photographs'
+> EXIF, and the 06-18 record's EXIF matches the taskbar clock in shot.
+>
+> The numbers, laser axis. 2025-06-18 (21:13, 2 min at 993.4191 nm):
+> RMS 0.052 MHz, peak-to-peak 0.33 MHz, drift −0.049 MHz/min. 2025-07-02
+> (16:39, 5.5 min at 993.4165 nm, two days before the dress rehearsal):
+> RMS 0.037 MHz, peak-to-peak 0.23 MHz, drift −0.005 MHz/min. Both records
+> sit at an autocorrelation time near the wavemeter's own second-scale
+> cadence, so the fast component is at or below the instrument's time
+> resolution and these numbers bound the slow component only. They say
+> nothing about the millisecond-scale laser kernel that sets
+> $\sigma_\text{laser}$ in the fits, where the C2 bound remains the
+> operative number.
+>
+> What they add to the comparison: the scan-off laser can also sit
+> essentially still, tens of kHz RMS with negligible drift for minutes at
+> a time. The 06-19 etalon-only drifts of 0.4 to 1.0 MHz/min are therefore
+> not a floor of that lock state but one of its behaviours, and the
+> within-block centre scatter the archive measures from repeats
+> (~0.08 MHz laser) is consistent with these direct records as an upper
+> bound. The cavity-error state also documents the failure mode itself:
+> when the cavity errors, the sweep stops, and an acquisition saved in that
+> state would show a flat trace. No archival canonical trace shows this
+> signature. The rehearsal's four unusable files are disk corruption, a
+> different failure.
 
 **The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
 laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The
