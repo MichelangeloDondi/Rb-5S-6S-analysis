@@ -35,20 +35,27 @@ def test_csv_exists_with_verdict():
 
 
 def test_the_closure_is_a_null_at_the_lever():
-    """The whole argument: at the x52 density point the red wing fraction
-    must be consistent with zero at the per-mille level. If a rerun ever
-    finds a >3 sigma wing here, C3g's closure is wrong and every doc citing
-    it must change."""
-    v, e = val("f_wing_red_130C", "verdict")
+    """The whole argument: at the x52 density point the RED-MINUS-BLUE
+    asymmetry must be consistent with zero at the per-mille level. Since
+    v3.0.0 the individual red side is no longer a null on its own (a
+    symmetric transit-kernel misfit raises both sides, see the module
+    docstring); it is the DIFFERENCE that a collisional satellite cannot
+    fake. If a rerun ever finds a >3 sigma asymmetry here, C3g's closure is
+    wrong and every doc citing it must change."""
+    v, e = val("asymmetry_130C", "verdict")
     assert e < 0.005, "lost the per-mille sensitivity the closure quotes"
-    assert abs(v) < 3 * e, "a wing appeared at the density lever"
+    assert abs(v) < 3 * e, "an asymmetry appeared at the density lever"
 
 
-def test_high_density_rows_null_both_sides():
+def test_high_density_asymmetry_is_null():
+    """T110 and T130 each carry one single-peak anomaly in the individual
+    sides (4192 red-only at T110, 4207 symmetric at T130; see the module
+    docstring), so the individual f_wing_{side}_mean rows are no longer
+    gated here. The DIFFERENCE, which a symmetric misfit cancels and a real
+    wing would not, must still be null at both temperatures."""
     for T in ("T110", "T130"):
-        for side in ("red", "blue"):
-            v, e = val(f"f_wing_{side}_mean", T)
-            assert abs(v) < 3 * e, (T, side, v, e)
+        v, e = val("asymmetry_red_minus_blue", T)
+        assert abs(v) < 3 * e, (T, v, e)
 
 
 def test_no_rising_density_trend():

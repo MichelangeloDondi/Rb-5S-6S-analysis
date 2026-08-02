@@ -20,16 +20,23 @@ same estimator then runs across the 130 C power sweep, where a physical
 wing must be a CONSTANT fraction (density fixed) while an SNR artifact
 tracks amplitude.
 
-THE RESULT, twice over:
+WHAT THE OBSERVABLE ACTUALLY IS, corrected at v3.0.0. Fitting one side at a
+time measures "how much extra sits in that wing", and a SYMMETRIC misfit --
+the fixed transit kernel not quite matching the free Voigt core -- raises
+both sides equally without being an asymmetry at all. So the quantity that
+answers the question is the DIFFERENCE, red minus blue. The v3.0.0 reprior
+made this distinction matter: at w0 = 64 um the transit narrows to 0.93 MHz,
+which raises both single-side fractions together while leaving their
+difference at zero.
 
-  * Density lever: f_w(red, 130 C) = 0.0002 +/- 0.0009 of peak -- a
-    per-mille null exactly where a collisional wing would be 52x enhanced.
-    Every 110 C and 130 C condition is consistent with zero on both sides.
-    The largest central value in the sweep sits at 70 C (+0.010 +/- 0.008,
-    1.3 sigma), the LOWEST-density, lowest-amplitude corner -- the SNR
-    direction, and the opposite of collisional.
-  * Power lever: at fixed density the fitted wing fraction falls with
-    power instead of holding constant, tracking amplitude exactly as
+THE RESULT:
+
+  * Density lever, the closure: the red-minus-blue asymmetry at 130 C is
+    -0.0007 +/- 0.0013 of peak, 0.5 sigma, exactly where a collisional
+    satellite would be 52x enhanced. At 110 C it is -0.2 sigma, and at
+    70 C and 90 C +0.7 sigma.
+  * Power lever: at fixed density the fitted fraction does not hold
+    constant as a physical wing must; it tracks amplitude, exactly as
     C3c's shot-noise identification of the residual skew already said.
 
 Both levers contradict a physical wing. The asymmetry M23 flagged is
@@ -38,6 +45,20 @@ Stark budget, and the self-broadening satellite thread is closed on this
 archive. (What a real satellite search needs is the fixed-lock session's
 SNR at 150-170 C, where the same estimator would see a 0.001-fraction wing
 at many sigma.)
+
+THE ANOMALIES WERE THE FITTER, NOT THE LINE (resolved 2026-08-02). Earlier
+versions of this module reported two single-condition anomalies, f_w(red) =
+0.139 at 4192/110 C and 0.185 at 4207/130 C, and flagged them for
+investigation. Both were the same defect: the wing amplitude was started at
+zero only, and on the brightest conditions that start converges to a local
+minimum twenty times worse in chi2 than the true one. See the multi-start
+note in fit_wing for the measured table. With the multi-start in place both
+vanish, and the closure below is a clean null on every temperature.
+
+What made them look like physics was that each appeared to respond to
+unrelated changes: the first to the v3.0.0 waist reprior, the second to a
+0.2% rate change. A result that moves under an input it should not depend on
+is a convergence failure until proven otherwise.
 
 Writes results/wing_check.csv. Reads data_raw and the M2 bracket rates.
 Runtime ~6 min.
@@ -67,6 +88,7 @@ from run_beta_self import load_t_rates  # noqa: E402
 
 NU0_MHZ = 2.0             # wing standoff, as in M23
 W_WING_MHZ = 6.0          # wing scale, fixed: not identifiable at 70 C SNR
+F_WING_STARTS = (0.0, 0.02, 0.10, 0.20, 0.40)   # see the multi-start note in fit_wing
 PEAKS = ("4121", "4154", "4192", "4207")
 
 
@@ -108,11 +130,37 @@ def fit_wing(recs, rate, T_C, side):
             out.append((v - mdl) / sg)
         return np.concatenate(out)
 
-    s = least_squares(resid, p0, bounds=(lo, hi), max_nfev=4000,
-                      x_scale="jac", ftol=1e-12, xtol=1e-12)
-    r = resid(s.x)
+    # MULTI-START, added 2026-08-02. A single start at f_w = 0 is not safe:
+    # on the brightest conditions the wing amplitude has a second, far worse
+    # local minimum that the zero start falls straight into. Measured on
+    # 4207 at 130 C, refitting the same data from five starts:
+    #
+    #     start 0.00 -> f_w 0.194  chi2 30845     <- what a single start gave
+    #     start 0.02 -> f_w 0.198  chi2 30756
+    #     start 0.10 -> f_w 0.000  chi2  1577     <- the real minimum
+    #     start 0.20 -> f_w 0.000  chi2  1577
+    #     start 0.40 -> f_w 0.000  chi2  1577
+    #
+    # The committed value was a fit failure sitting at twenty times the chi2
+    # of the true optimum, and it read as a large one-sided wing at exactly
+    # the density lever the closure rests on. Keeping the lowest chi2 over a
+    # spread of starts removes it. The bad minimum is not marginal, so the
+    # comparison is unambiguous.
+    best = None
+    for fw0 in F_WING_STARTS:
+        pp = p0.copy()
+        pp[2] = fw0
+        s = least_squares(resid, pp, bounds=(lo, hi), max_nfev=4000,
+                          x_scale="jac", ftol=1e-12, xtol=1e-12)
+        r = resid(s.x)
+        # np.sum, not r@r: Accelerate matmul raises spurious FP warnings on
+        # Apple Silicon
+        ssq = float(np.sum(r * r))
+        if best is None or ssq < best[1]:
+            best = (s, ssq, r)
+    s, ssq, r = best
     dof = max(len(r) - len(p0), 1)
-    chi2_red = float(np.sum(r * r)) / dof  # np.sum, not r@r: Accelerate matmul raises spurious FP warnings on Apple Silicon
+    chi2_red = ssq / dof
     try:
         cov = np.linalg.inv(s.jac.T @ s.jac)
         fe = float(np.sqrt(max(cov[2, 2], 0)) * np.sqrt(max(chi2_red, 1)))
@@ -181,12 +229,37 @@ def main() -> int:
                          "fraction across this row, an SNR artifact falls"])
         print(f"  P={P}: {m:+.4f} +/- {e:.4f}")
 
-    # the verdict rows the ledger reads
+    # THE observable: red MINUS blue. A symmetric width misfit (the fixed
+    # transit kernel not quite matching the free Voigt core) raises BOTH
+    # wings equally and is not an asymmetry at all, so differencing the two
+    # sides is what actually answers M24's question. Added at v3.0.0, when
+    # the narrower transit at w0 = 64 um made both single-side fractions
+    # nonzero while their difference stayed at zero.
+    import math as _math
+    for T in sorted(perT):
+        rv, re_ = wmean(perT[T]["red"])
+        bv, be = wmean(perT[T]["blue"])
+        out_rows.append(["asymmetry_red_minus_blue", f"T{T}",
+                         f"{rv - bv:+.4f}", f"{_math.hypot(re_, be):.4f}",
+                         "fraction of peak; THE observable -- a symmetric "
+                         "misfit cancels here, a one-sided wing does not"])
+    _a130 = wmean(perT[130]["red"])[0] - wmean(perT[130]["blue"])[0]
+    _e130 = _math.hypot(wmean(perT[130]["red"])[1], wmean(perT[130]["blue"])[1])
+    out_rows.append(["asymmetry_130C", "verdict", f"{_a130:+.4f}", f"{_e130:.4f}",
+                     "THE closure: the red-minus-blue asymmetry at the x52 "
+                     "density lever, where a collisional satellite would be "
+                     "52x enhanced"])
+
+    # context row for the ledger: the individual red side at 130 C, no longer
+    # a null since v3.0.0 (see the docstring) -- the CLOSURE is asymmetry_130C
+    # above, this row exists so the size of the symmetric-misfit floor is on
+    # the record next to it.
     m130, e130 = wmean(perT[130]["red"])
     out_rows.append(["f_wing_red_130C", "verdict", f"{m130:.4f}", f"{e130:.4f}",
-                     "THE closure: per-mille null exactly where a collisional "
-                     "satellite would be 52x enhanced; the asymmetry M23 "
-                     "flagged is amplitude-linked statistics, not line physics"])
+                     "the individual red side at the density lever, not a "
+                     "null since v3.0.0's narrower transit; the asymmetry "
+                     "M23 originally flagged is amplitude-linked statistics, "
+                     "not line physics"])
     out_rows.append(["density_lever", "verdict", "52.5", "",
                      "N(130C)/N(70C); the scaling a pair effect cannot dodge"])
 
