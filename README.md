@@ -164,6 +164,17 @@ shift and to the lineshape asymmetry (methods §3):
 
 ## Results at a glance
 
+The model these numbers rest on, shown against one representative trace per
+line: the global archive fit at its committed optimum, residuals below each
+panel. The near-centre residual structure is shot noise (it falls as
+amplitude^-0.5 on both the power and temperature axes). One feature remains
+unattributed: a symmetric centre excess up to 1.4% of peak on the brightest
+line. It sits below the noise inflation and moves no committed number.
+
+<p align="center">
+  <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global archive model over one trace per peak, with residual panels">
+</p>
+
 Every absolute number is limited by a single systematic — the beam waist **w₀** —
 so each is reported as a bound together with the measurement that would lift it.
 
@@ -176,6 +187,16 @@ so each is reported as a bound together with the measurement that would lift it.
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is now verified from the typeset PDF — convention stated in words, value repeated in SI, and his own worked −0.66 MHz reproduced here at −0.653 — so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line | calculated (envelope) | vector term under circular polarization; a trapped-atom platform |
+
+The last row of the table, drawn: a magic wavelength is where the
+differential light shift between the two states vanishes, so a trap there
+holds atoms without pulling the transition. The lower panel shows why the
+crossings exist where they do: the flat 5S polarizability threads the
+6S curve's nearby resonances.
+
+<p align="center">
+  <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
+</p>
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must

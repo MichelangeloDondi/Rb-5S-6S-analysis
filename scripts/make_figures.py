@@ -22,6 +22,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
+from scipy.optimize import least_squares
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -29,7 +30,7 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
-from rb5s6s.constants import GAMMA_NAT_HZ  # noqa: E402
+from rb5s6s.constants import GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S  # noqa: E402
 
 GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
@@ -983,10 +984,32 @@ def fig_drift_story():
     rows = [x for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_history.csv"))
             if x["flag"] == "canonical" and x["offset_mhz"]]
     t0 = min(float(x["t_epoch"]) for x in rows)
+
+    # Each row IS a recorded trace: a 2000-point, fixed-duration Agilent scan
+    # (module M0/ingest.py), so its clock time carries a real scan span, not
+    # just a fitted centre. duration x the trace's own session rate
+    # (results/ruler_blocks.csv, before/after brackets averaged for the P
+    # sessions) is that span; falls back to the campaign-wide rate only if a
+    # (session, peak, T) combination is somehow absent from ruler_blocks.
+    trace_duration_ms = TRACE_N_POINTS * TRACE_DT_S * 1e3   # 1000 ms, fixed format
+    rate_sum, rate_n = defaultdict(float), defaultdict(int)
+    for rb in _csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):
+        key = (rb["session"], rb["peak"], rb["T"])
+        rate_sum[key] += float(rb["rate"])
+        rate_n[key] += 1
+    rate_by_key = {k: rate_sum[k] / rate_n[k] for k in rate_sum}
+    campaign_rate = float(next(iter(
+        _csv.DictReader(open(C.RESULTS_DIR / "ruler_campaign.csv"))))["rate_laser"])
+
+    def _span_mhz(x):
+        session = "P" if x["role"] in ("p_sweep", "ruler_p") else "T"
+        rate = rate_by_key.get((session, x["peak"], x["temperature_C"]), campaign_rate)
+        return trace_duration_ms * rate
+
     by_ep = {}
     for x in rows:
         by_ep.setdefault(int(x["display_epoch"]), []).append(
-            ((float(x["t_epoch"]) - t0) / 3600.0, float(x["offset_mhz"])))
+            ((float(x["t_epoch"]) - t0) / 3600.0, float(x["offset_mhz"]), _span_mhz(x)))
 
     # the extracted-vs-gain numbers, read from the committed CSVs
     s0 = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "stark_joint.csv"))
@@ -1021,14 +1044,28 @@ def fig_drift_story():
     drift = 0.016   # MHz/min, laser; audit addendum 5 (state-space, recovered clock)
     dlo, dhi = 0.007, 0.025
     first = True
+    first_band = True
     for ep, pts in sorted(by_ep.items()):
         if len(pts) < 2:
             continue
         pts.sort()
         th = [p[0] for p in pts]
         off = [p[1] for p in pts]
-        ax.plot(th, off, "-", color="#009E73", lw=0.8, alpha=0.85)
-        ax.plot(th, off, ".", color="#009E73", ms=2.5,
+        span = [p[2] for p in pts]
+        # texture, not decoration: each segment is one recorded trace's own
+        # piezo scan ramp (duration x that session's ruler rate), centred on
+        # its fitted centre -- the like-for-like counterpart of panel (a)'s
+        # photographed scan band, drawn low-alpha so the smooth centre
+        # line/points (plotted next, on top) stay legible.
+        lbl = None
+        if first_band:
+            lbl = f"each trace's own scan ramp (~{span[0]:.0f} MHz)"
+        ax.vlines(th, [o - s / 2 for o, s in zip(off, span)],
+                  [o + s / 2 for o, s in zip(off, span)],
+                  color="#009E73", lw=0.7, alpha=0.10, zorder=1, label=lbl)
+        first_band = False
+        ax.plot(th, off, "-", color="#009E73", lw=0.8, alpha=0.85, zorder=2)
+        ax.plot(th, off, ".", color="#009E73", ms=2.5, zorder=3,
                 label="line offset within one knob epoch" if first else None)
         first = False
     # A slope INDICATOR over 3 h, not a fit across the record: the absolute
@@ -1078,6 +1115,292 @@ def fig_drift_story():
     _save(fig, "fig15_drift_story.png")
 
 
+def fig_fit_gallery():
+    """M25 fit-quality gallery: data, model overlay and residuals, per peak.
+
+    Picks the single highest-SNR campaign trace per peak (the 225 mW, 130 C
+    p_sweep condition, the brightest combination of power and temperature the
+    campaign ran, per fig2's P^2 amplitude law, taking the largest-amplitude
+    repeat of the five) and overlays the M25 global archive model at the
+    COMMITTED shared optimum read from results/global_archive_fit.csv:
+    kappa_min, beta_self_joint, sigma_laser (per session/T block) and the
+    transit reference. This does not re-run the global fit.
+
+    Per-trace nuisances the global fit solves separately for every trace
+    (amplitude, centre, background level and slope) are recomputed here by a
+    local least-squares fit with the shared parameters held fixed. The
+    saturation scale Vsat is also a per-session shared M25 parameter, but its
+    fitted value is not written to the committed CSV, so it is refit as a
+    local nuisance here too, which is noted on the figure.
+
+    At the committed profile minimum kappa_min = 0.0 MHz/W, so the AC-Stark
+    ramp width is exactly zero in the drawn model for every trace here. That
+    is a property of the committed optimum, not a choice made for this
+    figure.
+    """
+    fp = C.RESULTS_DIR / "global_archive_fit.csv"
+    if not fp.exists():
+        print("  (global_archive_fit.csv absent -- skipping fig16)")
+        return
+    if not (C.DATA_RAW_DIR / "MANIFEST.csv").exists():
+        print("  (data_raw/MANIFEST.csv absent -- skipping fig16)")
+        return
+
+    rows = _rows("global_archive_fit")
+
+    def val(q, k="primary"):
+        return float(next(r["value"] for r in rows if r["quantity"] == q and r["key"] == k))
+
+    status = next(r["status"] for r in rows if r["quantity"] == "beta_self_joint")
+    kappa = val("kappa_min")
+    beta = val("beta_self_joint")
+    sl_blocks = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "sigma_laser"}
+
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    try:
+        from run_global_archive_fit import DNU_FLOOR, load_campaign_all
+        from rb5s6s.linefit import _shared_profile_grid, transit_fwhm_at_T
+        traces = load_campaign_all()
+    except Exception as e:  # missing/changed raw archive: degrade like fig7/10/11
+        print(f"  (could not load campaign traces for fig16: {e} -- skipping)")
+        return
+
+    # brightest campaign condition per peak: 225 mW at 130 C is both the
+    # highest power AND the highest temperature the campaign ran, so it is
+    # the single brightest condition available (fig2: amplitude ~ P^2).
+    # Within its five repeats, take the largest peak-amplitude one.
+    reps = {}
+    for t in traces:
+        if t["T"] == 130.0 and abs(t["P"] - 0.225) < 1e-9:
+            cur = reps.get(t["peak"])
+            if cur is None or t["A0"] > cur["A0"]:
+                reps[t["peak"]] = t
+    peaks = ("4121", "4154", "4192", "4207")
+    if not all(pk in reps for pk in peaks):
+        print("  (missing a 225 mW / 130 C campaign trace for some peak, skipping fig16)")
+        return
+
+    fig = plt.figure(figsize=(13.5, 9.8))
+    outer = fig.add_gridspec(2, 2, hspace=0.34, wspace=0.24, top=0.83, bottom=0.06,
+                             left=0.06, right=0.98)
+    slot = {"4121": (0, 0), "4154": (0, 1), "4192": (1, 0), "4207": (1, 1)}
+
+    for peak in peaks:
+        t = reps[peak]
+        r0, c0 = slot[peak]
+        inner = outer[r0, c0].subgridspec(2, 1, height_ratios=[3.0, 1.1], hspace=0.08)
+        ax_main = fig.add_subplot(inner[0])
+        ax_res = fig.add_subplot(inner[1], sharex=ax_main)
+
+        T, P = t["T"], t["P"]
+        gc = beta * float(density_units(T))
+        sl = sl_blocks[t["sl"]]
+        transit = transit_fwhm_at_T(T, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+        s0 = kappa * P
+        g, prof = _shared_profile_grid(gc, sl, transit, s0, "gaussian", dnu_floor=DNU_FLOOR)
+        x, v, sg = t["x"], t["v"], t["sg"]
+
+        def model_at(p, xx, g=g, prof=prof):
+            A, cc, b0, b1, logVs = p
+            lin = A * np.interp(xx - cc, g, prof, left=0.0, right=0.0)
+            Vs = np.exp(logVs)
+            return Vs * (1.0 - np.exp(-lin / Vs)) + b0 + b1 * xx
+
+        def resid(p, x=x, v=v, sg=sg):
+            return (v - model_at(p, x)) / sg
+
+        p0 = [t["A0"], t["c0"], t["b0"], 0.0, 5.0]
+        lo = [0.0, t["c0"] - 8.0, -np.inf, -np.inf, -1.0]
+        hi = [np.inf, t["c0"] + 8.0, np.inf, np.inf, 6.0]
+        sol = least_squares(resid, p0, bounds=(lo, hi), x_scale="jac", ftol=1e-13, xtol=1e-13)
+        A, cc, b0, b1, logVs = sol.x
+        Vs = np.exp(logVs)
+        n_local = 5
+        chi2 = float(np.sum(resid(sol.x) ** 2))
+        dof = max(len(x) - n_local, 1)
+        chi2_red = chi2 / dof
+
+        # FWHM measured off the drawn model curve (background subtracted),
+        # by linear interpolation across the half-maximum crossings.
+        xf = np.linspace(x.min(), x.max(), 4000)
+        lin_f = A * np.interp(xf - cc, g, prof, left=0.0, right=0.0)
+        line_f = Vs * (1.0 - np.exp(-lin_f / Vs))
+        half = line_f.max() / 2.0
+        idx = np.where(line_f >= half)[0]
+        if len(idx) >= 2:
+            il, ir = int(idx[0]), int(idx[-1])
+
+            def cross(i0, i1):
+                x0, x1, y0, y1 = xf[i0], xf[i1], line_f[i0], line_f[i1]
+                return x0 + (half - y0) * (x1 - x0) / (y1 - y0)
+            xl = cross(il - 1, il) if il > 0 else xf[il]
+            xr = cross(ir, ir + 1) if ir < len(xf) - 1 else xf[ir]
+            fwhm = xr - xl
+        else:
+            fwhm = float("nan")
+
+        # ---- main panel: data + model, centred on the fitted line centre ----
+        xd = x - cc
+        ax_main.plot(xd, v, ".", ms=2.2, color="0.4", alpha=0.5, label="data")
+        ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=1.7,
+                     label="M25 global model")
+        ax_main.set_ylabel("signal (V)")
+        ax_main.set_title(f"{PEAK_LABEL[peak]}, 225 mW / 130 °C p_sweep, "
+                           f"brightest repeat\nFWHM {fwhm:.3f} MHz, "
+                           r"$\chi^2_\nu$" + f" = {chi2_red:.2f} (n={len(x)})",
+                           fontsize=8.5)
+        ax_main.legend(fontsize=7, loc="upper right", frameon=True, framealpha=0.9)
+        ax_main.tick_params(labelbottom=False)
+
+        # ---- residual panel ----
+        res_v = v - model_at(sol.x, x)
+        ax_res.plot(xd, res_v, ".", ms=2.0, color=PEAK_COLOR[peak], alpha=0.6)
+        ax_res.axhline(0.0, color="k", lw=0.7)
+        rmax = float(np.max(np.abs(res_v))) * 1.15 if len(res_v) else 1.0
+        ax_res.set_ylim(-rmax, rmax)
+        ax_res.set_xlabel("detuning from fitted centre (MHz, transition axis)")
+        ax_res.set_ylabel("resid (V)", fontsize=8)
+
+    fig.suptitle(
+        "Fit-quality gallery: the M25 global archive model at its committed shared "
+        f"optimum (status {status}) against one representative trace per peak\n"
+        "Shared kappa, beta_self, sigma_laser and transit are frozen at the M25 "
+        "committed values (kappa_min = 0, so no Stark ramp is drawn).\n"
+        "Per-trace amplitude, centre, background and the saturation scale (not "
+        "persisted in the committed CSV) are refit locally. No re-run.\n"
+        "Residuals: the antisymmetric near-centre structure falls as "
+        "amplitude$^{-0.5}$ on both the power and temperature axes (shot noise, "
+        "the C3g residual-skew scaling, not a lineshape asymmetry).\n"
+        "A small symmetric centre excess on the brightest traces (up to 1.4% of "
+        "peak on 4192, below the noise inflation) remains unattributed and does "
+        "not move any committed number.",
+        fontsize=9.0, y=0.995)
+    _save(fig, "fig16_fit_gallery.png")
+
+
+def fig_magic_wavelengths():
+    """The 5S-6S magic wavelengths (M16): where the light shift lands the
+    same on both clock states.
+
+    GENERIC LAW FIRST: a magic wavelength is a wavelength where the
+    differential AC-Stark shift between two states vanishes. A trap held
+    there shifts both states equally, so it does not move the transition
+    between them -- the trick behind every optical-lattice clock (e.g. Sr
+    at 813 nm). THE INSTANCE here: for Rb 5S1/2 and 6S1/2 (the 993 nm line)
+    that happens near 1204, 1288 and 1340 nm, from an independent
+    sum-over-states recompute (rb5s6s.polarizability, M16) on published
+    matrix elements -- Volz & Schmoranzer 1996, Herold et al. 2012, the
+    Safronova-group portal, Leonard et al. 2015; full sourcing is in that
+    module's docstring. Both states are J=1/2, so under linear polarization
+    the scalar term is EXACT (the tensor polarizability vanishes
+    identically by the triangle rule), not an approximation resting on the
+    vector/tensor terms being small.
+
+    TOP panel: Delta_alpha = alpha_6S - alpha_5S and its three zero
+    crossings, each marked with its committed 16-84% Monte Carlo band
+    (results/polarizability.csv). BOTTOM panel: alpha_5S and alpha_6S
+    separately, on the same axis, so the crossings are visibly just where
+    a nearly-flat curve (alpha_5S, far from its own D-line poles here)
+    meets a curve threaded between nearby 6S->nP resonances (alpha_6S).
+    Points within a mask of a 6S->nP pole are dropped (NaN) so the
+    crossings stay readable; the poles are the physics, not a plotting
+    artifact.
+
+    Status: ENVELOPE (unpublished to the depth searched 2026-07-17,
+    scalar-only). The vector term near the 6S-5P lines needs its own
+    treatment before any trap design -- see rb5s6s/polarizability.py.
+    """
+    import re
+
+    from rb5s6s import polarizability as P
+
+    rows = _rows("polarizability")
+    magic_rows = sorted((r for r in rows if r["quantity"] == "magic_5s6s"),
+                        key=lambda r: float(r["value"]))
+    if not magic_rows:
+        print("  (no magic_5s6s rows in polarizability.csv -- skipping fig17)")
+        return
+    status = magic_rows[0]["status"]
+    crossings = []
+    for r in magic_rows:
+        lam = float(r["value"])
+        m = re.search(r"16-84% band ([\d.]+)\.\.([\d.]+) nm", r["unit"])
+        lo, hi = (float(m.group(1)), float(m.group(2))) if m else (lam, lam)
+        crossings.append((lam, lo, hi))
+
+    lo_nm, hi_nm = 1050.0, 1420.0
+    CLIP = 2500.0                                  # a.u.; masks the 6S->nP poles
+    g = np.linspace(lo_nm, hi_nm, 4000)
+    a5 = np.array([P.alpha_5s(x) for x in g])
+    a6 = np.array([P.alpha_6s(x) for x in g])
+    da = a6 - a5
+    a6_m = np.where(np.abs(a6) > CLIP, np.nan, a6)
+    da_m = np.where(np.abs(da) > CLIP, np.nan, da)
+
+    fig, (ax_top, ax_bot) = plt.subplots(
+        2, 1, figsize=(9.6, 7.8), sharex=True,
+        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.08})
+
+    # ---- top: the differential and its zero crossings ----
+    ax_top.axhline(0, color="0.55", lw=0.9)
+    ax_top.plot(g, da_m, color="#0072B2", lw=1.7)
+    for i, (lam, clo, chi) in enumerate(crossings):
+        ax_top.axvline(lam, color="#D55E00", ls="--", lw=1.1)
+        ax_top.annotate(
+            f"{lam:.2f} nm\n[{clo:.2f}, {chi:.2f}]",
+            (lam, 0.0), xytext=(0, 34 if i % 2 == 0 else -46),
+            textcoords="offset points", ha="center", fontsize=7.6,
+            color="#D55E00",
+            bbox=dict(boxstyle="round,pad=0.15", facecolor="white",
+                     edgecolor="none", alpha=0.85),
+            arrowprops=dict(arrowstyle="-", color="#D55E00", lw=0.7, alpha=0.6))
+    ax_top.text(
+        lo_nm + (hi_nm - lo_nm) * 0.02, CLIP * 0.88,
+        "at each crossing a trap pulls 5S and 6S equally --\n"
+        "the 993 nm clock transition does not move",
+        fontsize=7.6, color="0.3", ha="left", va="top")
+    ax_top.set_ylabel(r"$\Delta\alpha=\alpha_{6S}-\alpha_{5S}$  (a.u.)")
+    ax_top.set_ylim(-CLIP * 1.05, CLIP * 1.05)
+    ax_top.set_title(
+        "Magic wavelengths: the zero crossings of the differential scalar "
+        "polarizability", fontsize=9.5)
+
+    # ---- bottom: the two states separately -- the resonance structure ----
+    ax_bot.axhline(0, color="0.7", lw=0.7)
+    ax_bot.plot(g, a5, color="#009E73", lw=1.7,
+                label=r"$\alpha_{5S}$ (smooth: far from its own D-line poles)")
+    ax_bot.plot(g, a6_m, color="#E69F00", lw=1.5,
+                label=r"$\alpha_{6S}$ (poles: nearby 6S$\to n$P resonances)")
+    for lam, _, _ in crossings:
+        ax_bot.axvline(lam, color="#D55E00", ls=":", lw=1.0)
+    ax_bot.set_ylim(-CLIP * 1.05, CLIP * 1.05)
+    ax_bot.set_xlabel("wavelength (nm)")
+    ax_bot.set_ylabel(r"$\alpha$  (a.u.)")
+    ax_bot.legend(fontsize=7.5, loc="lower left", framealpha=1.0, frameon=True)
+
+    fig.suptitle(
+        "A magic wavelength is where the differential light shift between two states vanishes:\n"
+        "a trap there shifts both equally, so the transition it holds atoms for does not move.\n"
+        r"Instance: Rb 5S$_{1/2}$-6S$_{1/2}$ (993 nm) -- scalar-only, EXACT for $J=1/2$ under "
+        f"linear polarization. Status: {status}.",
+        fontsize=9.0, y=0.995)
+
+    fig.text(
+        0.01, 0.018,
+        "Source: results/polarizability.csv (magic_5s6s rows) + rb5s6s/polarizability.py "
+        "(alpha_5s, alpha_6s). Regenerate: python scripts/run_polarizability.py && "
+        "python scripts/make_figures.py.",
+        fontsize=6.6, color="0.35")
+    fig.text(
+        0.01, 0.002,
+        "Matrix elements: Volz & Schmoranzer 1996, Herold et al. 2012, the Safronova-group "
+        "portal, Leonard et al. 2015 (full sourcing in rb5s6s/polarizability.py); unpublished "
+        "to the depth searched 2026-07-17.",
+        fontsize=6.6, color="0.35")
+
+    _save(fig, "fig17_magic_wavelengths.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -1093,6 +1416,8 @@ def main() -> int:
     fig_level_scheme()
     fig_wavemeter_reconstruction()
     fig_drift_story()
+    fig_fit_gallery()
+    fig_magic_wavelengths()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

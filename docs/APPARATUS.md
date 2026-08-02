@@ -393,22 +393,24 @@ acquisition drift, which the archive puts two orders below.*
 > kicking the frequency up and relaxing back, so the 0.19 MHz/min in the table
 > is a straight line through a sawtooth rather than a rate the laser holds.
 >
-> **The result is the settled floor: 0.8 to 1.0 MHz.** That is the laser motion
-> left once the re-locks and their relaxation are removed. It is stable to about
-> twenty per cent across kick counts, weightings and random restarts, and the
-> pull distribution comes out at unit width, which is the check that the noise
-> model is right. The scatter itself settles, on a timescale near a minute, so
-> the floor is a settled-state number and the early record is several times
-> worse. Against the campaign's AC-Stark bound (0.14 MHz since M23, 0.63
-> from the width-only construction) the floor sits above rather than below,
-> which is consistent with those bounds coming from averaging across many
-> traces and blocks rather than from any single block. See
-> `figures/fig14_wavemeter_reconstruction.png`.
+> **The result is the settled floor: about 0.63 MHz.** That is the laser motion
+> left once the re-locks, their shared relaxation and the quadratic background
+> drift are removed (the 2026-08-02 residual-driven refinement, which beat the
+> older two-exponential form decisively at the same parameter count). The
+> number moved by about a third when the model improved, so it is quoted as a
+> model-dependent characterisation rather than a stable measurement. The
+> scatter settles on a timescale near nine minutes, so the floor is a
+> settled-state number and the early record is several times worse. Against
+> the campaign's AC-Stark bound (0.14 MHz since M23, 0.63 from the width-only
+> construction) the floor now sits at the width-only bound rather than above
+> it, which still says single-block centres cannot beat the averaged bounds.
+> See `figures/fig14_wavemeter_reconstruction.png`.
 >
-> **What this record does not measure.** The relaxation time constants vary by
-> a factor of about fifty between fits of equal likelihood, so any agreement
-> between them and the 97 min the timestamp audit fitted to the traces would be
-> coincidence. The event count is good to an order of magnitude only. An
+> **What this record does not measure.** The adopted relaxation constant is
+> 353 min with roughly 30% local uncertainty and a 250 to 550 min spread
+> across restarts, one long thermal timescale rather than a resolved pair, so
+> any agreement with the 97 min the timestamp audit fitted to the traces would
+> still be coincidence. The event count is good to an order of magnitude only. An
 > earlier version of this module reported 42 events and a slow constant of
 > 88 min; both were artifacts of fitting with the noise held constant, and both
 > are withdrawn.

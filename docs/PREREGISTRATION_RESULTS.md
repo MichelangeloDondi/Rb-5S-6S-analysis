@@ -48,6 +48,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The archive's composite lineshape describes the **pilot out of sample** at χ²_red 0.83–1.01, and reproduces its γ_coll↔σ_laser degeneracy at corr −0.97 | addendum 17 postscript |
 | The **frequency ruler fitted five comb teeth where there are seven**, biasing the sweep rate high by 0.104%. Corrected to 0.042526 MHz/ms and the whole pipeline re-run | addendum 19 |
 | Two flagged wing anomalies were **one un-converged fit**: a single start left the amplitude at 20x the true chi2. Multi-started, both vanish and C3g's closure is a null at every temperature | addendum 20 |
+| The fit gallery shows a **symmetric centre excess on the brightest lines** (1.4% of peak, 3.7 sigma on 993.4192 nm), absorbed by the noise inflation. Saturation, width sharing, hyperfine and pedestal all ruled out. Open, moves nothing | addendum 21 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -109,6 +110,7 @@ re-open a fitted result.
 - [Addendum 18, 2026-07-25 — one ratio that predicts every result's status](#addendum-18-2026-07-25--one-ratio-that-predicts-every-results-status)
 - [Addendum 19, 2026-08-01 — the frequency ruler fitted five teeth where there are seven](#addendum-19-2026-08-01--the-frequency-ruler-fitted-five-teeth-where-there-are-seven)
 - [Addendum 20, 2026-08-02 — two flagged anomalies were one un-converged fit](#addendum-20-2026-08-02--two-flagged-anomalies-were-one-un-converged-fit)
+- [Addendum 21, 2026-08-02 — a centre excess the statistics absorb and the eye does not](#addendum-21-2026-08-02--a-centre-excess-the-statistics-absorb-and-the-eye-does-not)
   - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
 
 ---
@@ -2187,3 +2189,73 @@ a physical anomaly worth flagging before anyone asked whether the fit had
 converged. Check convergence before interpreting an outlier, and treat
 sensitivity to an irrelevant input as evidence of a numerical problem rather
 than a subtle physical one.
+
+## Addendum 21, 2026-08-02 — a centre excess the statistics absorb and the eye does not
+
+**What was seen.** The new fit-quality gallery (fig16) draws the global
+archive model at its committed optimum over the brightest 225 mW / 130 °C
+trace of each line, with residual panels. On 993.4192 nm the residuals show
+a symmetric excess at line centre reaching 1.4% of peak (3.7σ against the
+per-point noise), with negative shoulders near ±1–3 MHz. Three of the four
+lines show the same signature at smaller amplitude, growing with peak
+brightness. Every reduced χ² in the gallery is below 1, so the archive's
+conservative noise inflation absorbs the structure entirely. The eye sees
+what the statistics forgive.
+
+**What it is not.** Four candidates were tested and each fails
+quantitatively. Saturation mismodelling predicts a correction two orders of
+magnitude below the observed excess at the recorded V_sat. A free extra
+Lorentzian width is pulled by up to −127 kHz (4.2σ on 993.4192 nm) yet does
+not remove the bump, so it is not a mis-shared width. A second hyperfine
+component is closed by the selection rules this archive documents: for
+J=1/2 to J=1/2 with identical photons only ΔF=0 survives, and the nearest
+allowed neighbour sits 717–1615 MHz away against a fit window of ±25 MHz.
+The co-propagating Doppler pedestal is GHz-wide and would surface in the
+wings, which are clean. Separately, the antisymmetric near-centre structure
+in the same panels was closed as shot noise: its fraction falls as
+amplitude^-0.5 along both the power axis and the temperature axis, the
+Poisson exponent, matching the committed residual-skew scaling of C3g.
+
+**Why nothing moves.** The excess sits below the inflated noise at every
+condition, biases neither the fitted widths nor the centres at the quoted
+precision, and lies far under the Stark bounds of C3d and C3f. No committed
+number depends on its resolution.
+
+**Status and lesson.** Open and unattributed, the only such feature in the
+gallery. The measured-prior refit and the fixed-lock session should both
+look at it with fresh data. The lesson is the inverse of addendum 20's:
+there a confident number hid a failure to converge, here a comfortable χ²
+hides visible structure. Conservative error inflation buys robustness and
+costs sensitivity, and a residual panel is the check the inflated
+statistics cannot perform. The gallery stays in the pipeline so every
+future fit faces it.
+
+**Postscript, same day.** Freeing the Gaussian width per trace, multi-started
+per addendum 20's lesson, halves the excess on the two affected lines
+(993.4192 nm: a −287 ± 197 kHz pull at 4.6σ takes the excess from 1.45% to
+0.83% of peak; 993.4154 nm similarly) and leaves the other two lines
+unpulled. So the shared width is part of the artifact and not all of it.
+Polarization admixture is closed on sign and size: the scalar operator makes
+it rate-only at zero field, and the ambient-field Zeeman spread is of order
+1 kHz, two orders too small, in the broadening direction besides. Residual
+Doppler from retro overlap has the right sign and a credible size, the
+kHz pulls imply 0.5–1.3 mrad of misalignment, but no timestamped alignment
+record exists to test the epoch fingerprint, so it stays plausible rather
+than confirmed. Two consequences are booked: the next joint refit fits the
+Gaussian width per session and peak with a shrinkage prior instead of
+pooling per temperature, and the fixed-lock session logs every retro
+realignment with a timestamp, which is the record this test needed and the
+archive does not have.
+
+**Second postscript, same day.** Three more candidates were tested and each
+misses cleanly. The archive's own slow-transit tail predicts a centre
+residual of −0.0025% of peak, negative where the excess is positive and
+30–300× too small, flat from 70 to 130 °C. EOM sideband leakage shows no
+coherent structure at ±6.25 or ±12.5 MHz, all sixteen peak-offset points
+below 1.4σ with incoherent signs, bounded under 0.4% of peak, and the ruler
+rate's immunity to any such leak was verified in the code rather than
+asserted. The time-resolved sweep-rate correction moves the excess by less
+than its error bar in either direction. The unexplained half has now
+survived a twelve-candidate elimination, every branch closed with a number,
+and it stays exactly as stated above: open, below the inflation, moving
+nothing. The fixed-lock session inherits it as a target, not a debt.

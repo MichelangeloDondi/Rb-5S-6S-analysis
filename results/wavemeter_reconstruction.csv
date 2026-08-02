@@ -1,9 +1,10 @@
 quantity,key,value,unit,status
 record_length,2025-06-11,53.8,min; digitised from the screen photograph,DIAGNOSTIC
 scan_band_width,2025-06-11,19.3,"MHz; the scan modulation, laser axis",DIAGNOSTIC
-settled_noise_floor,2025-06-11,0.98,"MHz; THE RESULT. unmodelled laser motion once re-locks and their relaxation are removed; stable to ~20% across kick counts, weightings and restarts",DIAGNOSTIC
-noise_settling_time,2025-06-11,1.0,min; the scatter itself settles on this timescale,DIAGNOSTIC
-n_relock_events,2025-06-11,12,"count; order of magnitude only, one per 5-7 min, consistent with the apparatus record",DIAGNOSTIC
-pull_width,2025-06-11,1.003,dimensionless; 1.0 means the settling-noise model is right,DIAGNOSTIC
-relaxation_tau_fast,2025-06-11,7.65,"min; NOT CONSTRAINED by this record, see the module docstring",DIAGNOSTIC
-relaxation_tau_slow,2025-06-11,529.0,"min; NOT CONSTRAINED, varies ~50x between equal-likelihood fits",DIAGNOSTIC
+settled_noise_floor,2025-06-11,0.63,"MHz; THE RESULT. unmodelled laser motion once re-locks, their relaxation and the shared background drift are removed; moved down about a third at the 2026-08-02 mean-model refinement (residual structure absorbed into a better mean, not noise); see the module docstring",DIAGNOSTIC
+noise_settling_time,2025-06-11,9.1,min; the scatter itself settles on this timescale,DIAGNOSTIC
+n_relock_events,2025-06-11,12,"count; order of magnitude only, one per 5-7 min, consistent with the apparatus record; unaffected by the 2026-08-02 mean-model refinement (the kick finder did not change)",DIAGNOSTIC
+pull_width,2025-06-11,1.000,dimensionless; 1.0 means the settling-noise model is right,DIAGNOSTIC
+relaxation_tau,2025-06-11,353.1,"min; ONE shared re-lock relaxation constant (superseded a two-timescale form the record could not resolve, see the module docstring); still loosely pinned, local SE ~30%, comparably good fits found from ~250 to ~550 min",DIAGNOSTIC
+background_drift,2025-06-11,-1.437,"MHz/min; shared linear term of the record-wide background (NOT the campaign held-lock drift, a different record/script)",DIAGNOSTIC
+background_curvature,2025-06-11,0.01290,"MHz/min^2; shared quadratic term, the leading correction to treating the ~53 min background as linear -- the term whose absence was the biggest defect of the superseded model",DIAGNOSTIC
