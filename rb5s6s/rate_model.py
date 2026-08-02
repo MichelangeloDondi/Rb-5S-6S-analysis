@@ -31,7 +31,7 @@ uncertainty rather than modelled (`run_beta_self.load_t_rates`, audit fix of
    exactly where `load_t_rates`' own budget note called the ruler error
    co-dominant with the laser-width drift. One block moves the other way
    (4154 110 C, 0.20 -> 0.32%): the pooled scatter there exceeds that
-   block's own formal error, and the wider number is the honest one.
+   block's own formal error, so the wider number is the one that stands.
 
 THE MODEL. Per (session, peak): rate(t) = a + b (t - t0)/3600, ordinary
 least squares over that peak's ruler traces, with SCATTER-BASED covariance
