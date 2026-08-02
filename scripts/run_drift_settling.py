@@ -96,7 +96,7 @@ the licensing regression (1.005 over 15 moves) has 99.5% of its leverage on two
 moves above 800 ms, while the 13 moves the dispute concerns give 1.06 [0.75,
 1.19]. Both readings predict a ratio of 1 to ~0.002 against 11.5 ms of scatter,
 so the test has no power. The fix is hardware and is now Tier-0 item 0 in
-PLAN 8.0: export the ramp monitor, which was already on scope CH1.
+PLAN §3: export the ramp monitor, which was already on scope CH1.
 
 Until then the addenda quote bands, not numbers -- see the standing frame caveat
 at the head of addendum 4 in PREREGISTRATION_RESULTS.md. This script is left
@@ -123,7 +123,8 @@ sys.path.insert(0, str(ROOT))
 QUARANTINE = Path(
     os.environ.get("RB5S6S_BACKUP_DIR",
                    os.path.expanduser("~/Documents/RawDataBackUp_QUARANTINE_2026-07-23")))
-RATE_MHZ_MS = 0.04257061052233977   # laser axis; M2, results/ruler_campaign.csv
+RATE_MHZ_MS = float(next(csv.DictReader(
+    open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])  # laser axis, M2
 JUMP_MS = 10.0                      # same step-block screen as run_intrablock_trend
 LONG_PAIR_MIN = 7.0                 # pairs longer than this likely contain a re-centring
 EARLY_H = 1.2                       # hour-1 ladders (4192, 4207)
@@ -744,9 +745,9 @@ def pull_bound_report() -> None:
     print("model; estimator unbiased by injection closure -- addenda 6-7):")
     print(f"  q = {q:+.4f} [{min(ok95):+.3f}, {max(ok95):+.3f}] ms/mW (95%)")
     print(f"  -> S0(225 mW) < {s0:.1f} MHz transition from CENTRES alone --")
-    print("     ~8x looser than the width channel's < 0.63 (profile), but")
-    print("     corroborating through disjoint systematics; floor ~9x above")
-    print("     the 0.59 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
+    print("     ~9x looser than the width channel's < 0.64 (profile), but")
+    print("     corroborating through disjoint systematics; floor ~16x above")
+    print("     the 0.35 MHz prediction, so it bounds, not measures. Collisional shift: bridge noise ~8 MHz")
     print("     across dwells -> ~1800x above the ~kHz expectation, vacuous.")
     print("     Isotope shift: GHz retunes, unlogged, 43 MHz windows --")
     print("     nothing bridges, nothing to fit.")

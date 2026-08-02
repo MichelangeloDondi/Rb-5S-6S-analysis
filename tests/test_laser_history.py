@@ -136,8 +136,8 @@ def test_offsets_are_referenced_inside_a_display_epoch_not_across_the_knob():
     jitters (237 of 295 consecutive pairs identical, every change a multiple of
     2 ms), and inside single 5-repeat blocks saved SECONDS apart a change of ds
     moves peak_pos_ms by 0.938*ds. The retracted headline was arithmetically the
-    knob -- 64.97 MHz quoted against 1516 ms of window travel x 0.04257 =
-    64.54 MHz, ratio 1.007.
+    knob -- 64.97 MHz quoted against 1516 ms of window travel x 0.042526 =
+    64.47 MHz, ratio 1.008.
 
     So this asserts the three properties that keep it retracted: the epoch
     column exists, an epoch never spans two horizontal settings, and no offset

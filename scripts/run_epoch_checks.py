@@ -15,8 +15,8 @@ perform on itself, plus one honest non-result:
    transient; the model predicts recapture steps at the settled scale
    (<~20 ms). Measured: +14.0 / -5.8 / +0.2 ms. PASS.
 3. CROSS-DAY CALIBRATION -- the pilot-day Def rulers give an ACF comb period
-   of 144.2(11) ms vs the campaign's 146.81 ms: the sweep rate agrees to
-   1.7% across days and re-preparations, which is precisely why M2
+   of 144.2(11) ms vs the campaign's 146.97 ms: the sweep rate agrees to
+   1.9% across days and re-preparations, which is precisely why M2
    calibrates every block with its own rulers (per-block scatter 0.6%).
 4. PILOT LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null);
    amplitude x34 vs x36 predicted P^2 over the 6x span. Both are INTERNAL
@@ -40,7 +40,7 @@ perform on itself, plus one honest non-result:
    record, its slope ALTERNATES SIGN at fixed magnitude (successive legs of
    the triangle sweep), and the implied calibration ~4.7 MHz/mV reproduces
    the EOM comb's own rate. It wanders 5-9% from straight, well above the
-   sweep's own 0.45% nonlinearity bound, so it monitors the scan rather than
+   sweep's own 0.3% nonlinearity bound, so it monitors the scan rather than
    calibrating it -- which is why the comb ruler exists. Which actuator it
    is (piezo vs elsewhere in the scan chain) the trace cannot say.
 
@@ -72,6 +72,7 @@ Nothing here enters results/.
 from __future__ import annotations
 
 import collections
+import csv
 import datetime as dt
 import os
 import re
@@ -85,10 +86,11 @@ sys.path.insert(0, str(ROOT))
 
 QP = Path(os.path.expanduser("~/Documents/RawDataPilot_QUARANTINE_2026-07-24"))
 QH = Path(os.path.expanduser("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24"))
-RATE_MHZ_MS = 0.04257061052233977
-CAMPAIGN_TOOTH_MS = 146.81
-PILOT_TOOTH_MS = 144.2      # the pilot day's own Def-comb ACF period (check 3)
 TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
+RATE_MHZ_MS = float(next(csv.DictReader(
+    open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])
+CAMPAIGN_TOOTH_MS = TOOTH_SPACING_LASER_MHZ / RATE_MHZ_MS
+PILOT_TOOTH_MS = 144.2      # the pilot day's own Def-comb ACF period (check 3)
 
 
 def trigtime_check() -> None:

@@ -41,6 +41,7 @@ from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
 from rb5s6s.ruler import fit_comb, fit_comb_free_centers, combine_block  # noqa: E402
+from rb5s6s import rate_model as RMOD  # noqa: E402
 
 MHZ_PER_TOOTH = TOOTH_SPACING_LASER_HZ / 1e6  # 6.25 MHz, laser axis
 
@@ -173,6 +174,21 @@ def main() -> int:
     print(f"  = {crate*2:.5f} MHz/ms transition axis; mean tooth spacing "
           f"{MHZ_PER_TOOTH/crate:.1f} ms; block spread {100*rates.std()/rates.mean():.1f}% RMS")
     print(f"  blocks: {len(block_out)}, plain range {rates.min():.4f}-{rates.max():.4f}")
+
+    # ---- time-resolved rate models (rate_model.py) ----
+    # The per-block constants above stay authoritative as constructor and
+    # fallback; the models overlay them in load_t_rates where the recovered
+    # clocks license it. Fitted here so one run_ruler pass regenerates both.
+    trace_dicts = [dict(zip(["file", "session", "peak", "T", "bracket",
+                             "repeat_idx", "delta_ms", "delta_err_ms",
+                             "rate_MHzms", "width_ms", "chi2_red",
+                             "init_fallback", "acf_score"],
+                            [str(x) for x in row])) for row in trace_out]
+    models = RMOD.fit_rate_models(trace_dicts, RMOD.load_clock())
+    if models:
+        RMOD.write_models(models)
+        print(f"  rate(t) models: {len(models)} (session,peak) fits -> "
+              f"results/{RMOD.MODEL_CSV}")
 
     # ---- before/after per peak (P-session drift systematic) ----
     print(f"\n{'-'*70}\nBEFORE vs AFTER brackets per peak (fixed-condition session drift):")

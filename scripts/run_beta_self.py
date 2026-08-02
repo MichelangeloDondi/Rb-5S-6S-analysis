@@ -38,12 +38,14 @@ from __future__ import annotations
 import csv
 import sys
 from collections import defaultdict
+import pathlib
 from pathlib import Path
 
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C
+from rb5s6s import rate_model as RM
 from rb5s6s import constants as _CONST  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
@@ -142,6 +144,53 @@ def load_t_rates():
             mean = 0.5 * (rb + ra)
             err = np.sqrt(0.5 * (eb ** 2 + ea ** 2) + (0.5 * (rb - ra)) ** 2)
             prate[peak] = (mean, err / mean)
+    return _apply_rate_models(trate, prate)
+
+
+def _apply_rate_models(trate, prate):
+    """Overlay the time-resolved rate(t) model where science times exist.
+
+    The bracket/block scheme above stays the constructor and the FALLBACK:
+    any (peak, T) or peak whose science-side clock or model is missing keeps
+    its committed value unchanged (in production that is the 4154 70 C
+    block, whose science traces have no recovered clock). Where the model
+    applies, the rate is rate(t) evaluated at the block's mean science time
+    and the error is the model's, PLUS - for the P session, whose consumers
+    apply ONE rate to a whole drifting ladder - the rms spread of rate(t)
+    across that peak's science-trace times, in quadrature. That keeps the
+    ladder-drift systematic covered while the central error falls 3-5x.
+    All numbers stay transition-axis (2x laser), like the fallback."""
+    models = RM.read_models()
+    if not models:
+        return trate, prate
+    clock = RM.load_clock()
+    man = defaultdict(list)
+    for r in csv.DictReader(open(C.MANIFEST_CSV)):
+        if r["flag"] != "canonical":
+            continue
+        t = clock.get(pathlib.Path(r["file"]).name.lower())
+        if t is not None:
+            man[(r["role"], r["peak"], r["temperature_C"])].append(t)
+    for (peak, T), _ in list(trate.items()):
+        m = models.get(("T", peak))
+        times = man.get(("t_sweep", peak, T))
+        if not m or not times:
+            continue
+        span = m["t_max_epoch"] - m["t_min_epoch"]
+        tc = float(np.mean(times))
+        if not (m["t_min_epoch"] - 0.25 * span <= tc <= m["t_max_epoch"] + 0.25 * span):
+            continue
+        r, rel = RM.rate_at(m, tc)
+        trate[(peak, T)] = (2.0 * r, rel)
+    for peak in list(prate):
+        m = models.get(("P", peak))
+        times = man.get(("p_sweep", peak, "130"))
+        if not m or not times:
+            continue
+        rates = np.array([RM.rate_at(m, t)[0] for t in times])
+        rc, rel = RM.rate_at(m, float(np.mean(times)))
+        rel = float(np.sqrt(rel ** 2 + np.var(rates) / rc ** 2))
+        prate[peak] = (2.0 * rc, rel)
     return trate, prate
 
 

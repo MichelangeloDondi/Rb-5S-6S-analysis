@@ -131,10 +131,20 @@ from scipy.optimize import least_squares
 REPO = Path("/Users/michelangelodondi/Documents/GitHub/Rb-5S-6S-analysis")
 sys.path.insert(0, str(REPO))
 
-RATE = 0.04257061052233977          # MHz/ms, laser axis (M2)
+from rb5s6s import config as C  # noqa: E402
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+
 MEAN_OVER_S0 = -0.653               # archival ramp geometry, methods/03
-WIDTH_BOUND = 0.633                 # MHz, the width channel's 95% bound
-PREDICTED = 0.59                    # MHz, S0(225 mW) predicted
+# All three READ from the pipeline rather than hand-typed (v3.0.0, extended
+# 2026-08-01): the rate from M2's committed CSV, the width bound from M4e's,
+# the prediction from the constants. They used to be literals and went stale
+# together whenever the priors (or the rate) moved.
+RATE = float(next(csv.DictReader(
+    open(REPO / "results/ruler_campaign.csv")))["rate_laser"])  # MHz/ms, laser
+WIDTH_BOUND = float(next(
+    r["value"] for r in csv.DictReader(open(REPO / "results/stark_sweep.csv"))
+    if r["quantity"] == "S0_225mW_ub95_profile"))   # MHz, width channel 95%
+PREDICTED = stark_shift_S0_mhz(0.225, C.W0_PRIOR_M, rho=C.RHO_RETRO)  # MHz
 
 rows = [r for r in csv.DictReader(open(REPO / "results/laser_history.csv"))]
 sci = [r for r in rows if r["role"] == "p_sweep" and r["flag"] == "canonical"]

@@ -77,13 +77,13 @@ def estimate_delta_acf(t_ms: np.ndarray, v: np.ndarray) -> Dict:
 
 def estimate_t0(t_ms: np.ndarray, v: np.ndarray, delta_ms: float) -> float:
     """Comb phase by brute-force scan: t0 maximizing the summed smoothed
-    signal at the five predicted tooth positions (teeth outside the window
+    signal at the predicted tooth positions (teeth outside the window
     simply do not contribute)."""
     lev, _ = signal_level(v)
     sm = boxcar(lev, C.QC_SMOOTH_W)
     best_t0, best_score = t_ms[0], -np.inf
     for t0 in np.arange(t_ms[0], t_ms[0] + delta_ms, 2.0):
-        pos = t0 + delta_ms * np.arange(-2, 3)
+        pos = t0 + delta_ms * np.array(TEETH)
         inside = (pos >= t_ms[0]) & (pos <= t_ms[-1])
         if not inside.any():
             continue
@@ -100,9 +100,29 @@ def estimate_t0(t_ms: np.ndarray, v: np.ndarray, delta_ms: float) -> float:
 # stage 2 — constrained simultaneous comb fit
 # ---------------------------------------------------------------------------
 
+N_TEETH = 7          # the comb runs to +/-3 orders. Fitting only +/-2 lets
+TEETH = tuple(range(-(N_TEETH // 2), N_TEETH // 2 + 1))
+"""Tooth orders fitted. RAISED 5 -> 7 on 2026-08-01 and it moves the rate.
+
+The 6th and 7th teeth are present (EXPERIMENTER), and truncating at five
+biases the SPACING: the unmodelled +/-3 tails pull the outermost fitted
+teeth outward, so Delta comes out too small and the rate too high. Measured
+on 24 ruler traces across the four peaks, refitting the same data both ways:
+
+    Delta(5 teeth) = 146.804 ms  ->  rate 0.042574 MHz/ms  (= the committed
+                                     0.04257061, i.e. this reproduces M2)
+    Delta(7 teeth) = 146.970 ms  ->  rate 0.042526 MHz/ms
+
+a +0.113% one-directional bias on every frequency the repository quotes.
+It is ~1 sigma of the quoted rate error and small beside the w0 systematic,
+but it is a bias rather than scatter, so it is fixed rather than absorbed.
+The same truncation railed gamma_coll at zero in the M25 comb fits, which is
+how it was found."""
+
+
 def _comb(t_ms, t0, delta, w, heights, b0, b1):
     out = b0 + b1 * (t_ms - t_ms[0])
-    for n, h in zip(range(-2, 3), heights):
+    for n, h in zip(TEETH, heights):
         x = 2.0 * (t_ms - (t0 + n * delta)) / w
         out = out + h / (1.0 + x * x)
     return out
@@ -128,16 +148,17 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None) -> Dic
         tau = 1.0
 
     sm = boxcar(lev, C.QC_SMOOTH_W)
-    h0 = np.clip(np.interp(t00 + d0 * np.arange(-2, 3), t_ms, sm), 1e-4, None)
+    h0 = np.clip(np.interp(t00 + d0 * np.array(TEETH), t_ms, sm), 1e-4, None)
 
     p0 = np.concatenate([[t00, d0, C.RULER_TOOTH_WIDTH_INIT_MS], h0, [base, 0.0]])
     lo = np.concatenate([[t00 - d0 / 2, C.RULER_DELTA_RANGE_MS[0], 15.0],
-                         np.zeros(5), [-np.inf, -np.inf]])
+                         np.zeros(N_TEETH), [-np.inf, -np.inf]])
     hi = np.concatenate([[t00 + d0 / 2, C.RULER_DELTA_RANGE_MS[1], 120.0],
-                         np.full(5, np.inf), [np.inf, np.inf]])
+                         np.full(N_TEETH, np.inf), [np.inf, np.inf]])
 
     def resid(p):
-        return (v - _comb(t_ms, p[0], p[1], p[2], p[3:8], p[8], p[9])) / sig
+        return (v - _comb(t_ms, p[0], p[1], p[2], p[3:3 + N_TEETH],
+                          p[-2], p[-1])) / sig
 
     p0 = feasible_p0(p0, lo, hi)  # project seed into bounds
     sol = least_squares(resid, p0, bounds=(lo, hi), max_nfev=20000)
@@ -155,8 +176,8 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None) -> Dic
         "delta_err_ms": float(np.sqrt(max(cov[1, 1], 0.0)) * infl),
         "t0_ms": float(sol.x[0]),
         "width_ms": float(sol.x[2]),
-        "heights": sol.x[3:8].tolist(),
-        "b0": float(sol.x[8]), "b1": float(sol.x[9]),
+        "heights": sol.x[3:3 + N_TEETH].tolist(),
+        "b0": float(sol.x[-2]), "b1": float(sol.x[-1]),
         "chi2_red": chi2_red,
         "init_fallback": init["fallback"],
         "acf_score": init["score"],
@@ -192,7 +213,7 @@ def fit_comb_free_centers(t_ms: np.ndarray, v: np.ndarray, base_fit: Dict,
     heights = np.array(base_fit["heights"])
     hmax = heights.max() if heights.size else 0.0
     ns, seeds, h0 = [], [], []
-    for i, n in enumerate(range(-2, 3)):
+    for i, n in enumerate(TEETH):
         c = t0 + n * d
         if t_ms[0] <= c <= t_ms[-1] and heights[i] > C.RULER_FREE_MIN_HEIGHT_FRAC * hmax:
             ns.append(n); seeds.append(c); h0.append(max(heights[i], 1e-4))

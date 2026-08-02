@@ -135,16 +135,17 @@ def test_linearity_bound_matches_the_wellsampled_windows():
     from make_figures import N_WELL_SAMPLED  # the split fig8 draws
     well = n >= N_WELL_SAMPLED
     assert well.sum() >= 5, "too few well-sampled windows to set a bound"
-    # the quoted 0.45% must cover them, and not be loose by more than ~0.1%
-    assert dev[well].max() <= 0.0045 + 1e-9, (
+    # the quoted 0.3% must cover them, and not be loose by more than ~0.1%
+    # (0.45% until 2026-08-01; the seven-tooth refit tightened the map)
+    assert dev[well].max() <= 0.0030 + 1e-9, (
         f"a well-sampled window deviates {dev[well].max():.4%}, beyond the "
-        f"quoted 0.45% -- update the bound in fig8, DATA.md, PAPER1_SKELETON "
+        f"quoted 0.3% -- update the bound in fig8, DATA.md, PAPER1_SKELETON "
         f"and make_results_ledger.py together")
-    assert dev[well].max() > 0.0035, (
+    assert dev[well].max() > 0.0020, (
         "the bound is now loose; requote it nearer the data")
     # the sparse windows are the ones whose errors exceed the bound: that is
     # the whole reason they are drawn differently
-    assert err[~well].max() > 0.0045, (
+    assert err[~well].max() > 0.0030, (
         "sparse-window errors no longer exceed the bound; the fig8 split by "
         "N_WELL_SAMPLED may no longer be warranted")
 
