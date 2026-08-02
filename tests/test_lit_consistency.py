@@ -97,7 +97,9 @@ QUARANTINE = {
 }
 
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
-INTENTIONAL_PREFIX_PAIRS = {("rajasree2020", "rajasree2020spin"),
+INTENTIONAL_PREFIX_PAIRS = {
+    ("li2024", "li2024b"),  # same year, same 778 nm line, different first authors; cross-referenced in both notes
+("rajasree2020", "rajasree2020spin"),
     # THREE distinct Rajasree 2020 documents, and conflating them is not
     # hypothetical: until 2026-07-31 both LITERATURE.md and rajasree2020.md
     # attributed the thesis's 993 nm vapour-cell apparatus to the PRR paper's

@@ -138,8 +138,17 @@ CANONICAL = [
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
+        # COMPUTED since 2026-08-01, previously the literal "271". The bracket
+        # is the computed polarizability scaled by how far the bound sits
+        # below its own prediction, so it moves whenever EITHER the bound or
+        # the priors move -- and the literal had already drifted ~4% (the
+        # formula gives 261 at the values that produced it). A hand-typed
+        # number here defeats the point of the registry.
         name="Delta-alpha archival bracket (was ~1200, before that ~5800)",
-        value=lambda: "271",
+        value=lambda: str(int(round(
+            _const("DELTA_ALPHA_AU")
+            * float(_cell("stark_joint.csv", "S0_225mW_ub95", "primary"))
+            / float(_cell("stark_sweep.csv", "S0_225mW_pred"))))),
         find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
         docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
@@ -339,9 +348,14 @@ def _tracked_prose():
 def test_no_stale_04_linearity_bound_even_latex_wrapped():
     """The 0.40->0.45 sweep matched ASCII '<0.4%' and missed '$<0.4$%' in
     methods/05 and methods/07 -- inline math split the number from its percent
-    sign. This scan is LaTeX-aware."""
+    sign. This scan is LaTeX-aware.
+
+    Extended 2026-08-01: the seven-tooth comb refit tightened the map again,
+    0.45% -> 0.3%, so 0.45% is now ALSO a stale value the same regression
+    could reintroduce -- caught with the same pattern rather than a second
+    copy of this test."""
     import re
-    pat = re.compile(r"(?:<|≲|\\lesssim)\s*\$?0\.40?\$?\s*\\?%")
+    pat = re.compile(r"(?:<|≲|\\lesssim)\s*\$?0\.(?:40?|45)\$?\s*\\?%")
     hits = []
     for rel in _tracked_prose():
         for i, line in enumerate(
@@ -350,8 +364,8 @@ def test_no_stale_04_linearity_bound_even_latex_wrapped():
             if pat.search(line):
                 hits.append(f"{rel}:{i}: {line.strip()[:90]}")
     assert not hits, (
-        "the sweep-linearity bound is 0.45% (largest well-sampled window "
-        "0.4486%); a stale <0.4% survives, LaTeX-wrapped or not:\n  "
+        "the sweep-linearity bound is 0.3% (seven-tooth refit, 2026-08-01); "
+        "a stale <0.4% or <0.45% survives, LaTeX-wrapped or not:\n  "
         + "\n  ".join(hits))
 
 
@@ -385,7 +399,7 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     gf = {r["key"]: float(r["value"])
           for r in csv.DictReader(open(ROOT / "results" / "global_fit.csv"))
           if r["quantity"] == "sigma_laser"}
-    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [1.5, 1.6, 1.1], (
+    assert [round(gf[k], 1) for k in ("70C", "90C", "110C")] == [2.1, 2.2, 1.5], (
         "tied sigma_laser(T) moved; requote methods/07 and this test together")
     rows = list(csv.DictReader(open(ROOT / "results" / "linefit_conditions.csv")))
     means = []
@@ -394,13 +408,13 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
              for r in rows if r["role"] == "t_sweep" and int(float(r["T"])) == T]
         s = np.array([x[0] for x in v]); w = 1 / np.array([x[1] for x in v]) ** 2
         means.append(float(np.sum(w * s) / np.sum(w)))
-    assert 1.0 <= min(means) and max(means) <= 1.3, (
-        "free per-condition sigma_laser left the 1.0-1.3 band; requote fig5's "
+    assert 1.4 <= min(means) and max(means) <= 1.8, (
+        "free per-condition sigma_laser left the 1.4-1.8 band; requote fig5's "
         "title and methods/07")
     fig_src = (ROOT / "scripts" / "make_figures.py").read_text(encoding="utf-8")
-    assert "flat (~1.1," in fig_src, "fig5 title no longer quotes ~1.1"
+    assert "flat (~1.6," in fig_src, "fig5 title no longer quotes ~1.6"
     m07 = (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8")
-    assert "1.5/1.6/1.1" in m07 and "$1.0$–$1.25$" in m07
+    assert "2.1/2.2/1.5" in m07 and "$1.5$–$1.75$" in m07
 
 
 # --------------------------------------------------------------------------

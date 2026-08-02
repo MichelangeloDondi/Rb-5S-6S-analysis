@@ -57,7 +57,7 @@ DOC_TOKENS = [
     # fixed, the flip condition is stated in the same L_par/2M that the rest of
     # the chain uses, and the half-aperture never appears on its own.
     ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R",
-                      "3 × 12 mm", "two-lens relay", "LANDSCAPE",
+                      "3 × 12 mm", "two-lens relay", "landscape",
                       "+0.402", "−0.421"]),
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
@@ -131,7 +131,7 @@ def test_no_unretracted_x64_skew_claim(relpath):
             bad.append(f"{relpath}:{i}: {line.strip()[:90]}")
     assert not bad, (
         "naive x64 small-waist skew scaling quoted without its retraction "
-        "(the axial average changes magnitude AND sign — PLAN 8.3 #4):\n  "
+        "(the axial average changes magnitude AND sign — PLAN §6 #4):\n  "
         + "\n  ".join(bad)
     )
 
@@ -180,7 +180,7 @@ def test_sign_flip_claims_carry_the_condition(relpath):
         f"{relpath} first asserts the g1 sign flip at paragraph {i} without "
         f"tying it to the collection geometry in that paragraph or its "
         f"neighbours -- the axial window Z_c crossing 1.12 z_R is why it flips "
-        f"(PLAN 8.3 #4).\n  {' '.join(paras[i].split())[:200]}"
+        f"(PLAN §6 #4).\n  {' '.join(paras[i].split())[:200]}"
     )
 
 
@@ -240,7 +240,7 @@ def test_no_document_asks_for_a_pmt_diameter():
         + "\n  ".join(hits))
 
 
-# The collection path's own facts. The two-lens relay prescription (PLAN 8.3 #4)
+# The collection path's own facts. The two-lens relay prescription (PLAN §6 #4)
 # was written specifying an "800 nm shortpass" in the collimated segment -- that
 # is NIEDDU's detection (LITERATURE.md, correctly attributed there), not this
 # apparatus, which uses a ~50 dB 795 nm PASSBAND stack (DATA.md). Describing our
@@ -315,7 +315,7 @@ def test_no_naive_s0cubed_measurability_claim(relpath):
 
 
 # --------------------------------------------------------------------------
-# The install decision (PLAN 8.3 #4): cathode orientation and the slit scan.
+# The install decision (PLAN §6 #4): cathode orientation and the slit scan.
 # Both tables are printed by run_ramp_geometry.py and quoted in PLAN; pin them
 # so the recommendation cannot drift from the arithmetic behind it.
 # --------------------------------------------------------------------------
