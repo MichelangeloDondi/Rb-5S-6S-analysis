@@ -311,7 +311,13 @@ def build(traces, priors, wing):
         p0[7 + k] = 1.0; lo[7 + k] = 0.05; hi[7 + k] = 50.0
         p0[11 + k] = 1.0; lo[11 + k] = 0.05; hi[11 + k] = 50.0
         p0[15 + k] = r0; lo[15 + k] = r0 - np.log(4); hi[15 + k] = r0 + np.log(4)
-    p0[19] = 0.0; lo[19] = np.log(0.9); hi[19] = np.log(1.1)   # pilot rate scale
+    _mps = measured_pilot_scale()
+    if _mps is not None:
+        _m, _e = _mps
+        p0[19] = np.log(_m)
+        lo[19] = np.log(_m - 5 * _e); hi[19] = np.log(_m + 5 * _e)
+    else:
+        p0[19] = 0.0; lo[19] = np.log(0.9); hi[19] = np.log(1.1)   # pilot rate scale
     if wing:
         p0[NS] = 0.005; lo[NS] = 0.0; hi[NS] = 0.5
         p0[NS + 1] = np.log(6.0); lo[NS + 1] = np.log(2.0); hi[NS + 1] = np.log(60.0)
@@ -413,6 +419,27 @@ def chain(resid, Sf, lo, hi, q0, kappas, ncamp, tag, nfev=1500):
         res[kap] = (float(np.sum(r * r)), float(np.sum(r[:ncamp] ** 2)), q.copy())
         print(f"    [{tag}] kappa={kap:5.2f}  chi2={np.sum(r * r):11.2f}", flush=True)
     return res
+
+
+
+
+def measured_pilot_scale():
+    """The M26 measured pilot_rate_scale, if the committed CSV carries it.
+
+    Returns (mean, err) or None. When present, the pilot axis scale becomes a
+    tight box around the MEASURED value instead of the [0.9, 1.1] assumption
+    box: the pilot day's own 27 rulers beat a fitted nuisance. The 2026-08-02
+    fits put the fitted scale at 1.023-1.029 while the rulers measure
+    1.0022(12); imposing the measurement is the experiment that decides
+    whether that gap was the axis or absorbed width physics."""
+    import csv as _csv
+    path = REPO / "results" / "pilot_ruler.csv"
+    if not path.exists():
+        return None
+    for r in _csv.DictReader(open(path)):
+        if r["quantity"] == "pilot_rate_scale_measured":
+            return float(r["value"]), float(r["err"])
+    return None
 
 
 def bidi_profile(traces, priors, direction, wing, tag, seed=None):
@@ -588,9 +615,11 @@ def main() -> int:
         w.writerow(["n_traces", "camp/reh/pil", f"{len(camp)}/{len(reh)}/{len(pil)}", "",
                     f"canonical p_sweep / usable rehearsal ({n_corrupt} files "
                     f"corrupt or lineless) / pilot morning sweep"])
+        _box = ("box = measured M26 value +/- 5 sigma"
+                if measured_pilot_scale() else "bounded [0.9, 1.1]")
         w.writerow(["pilot_rate_scale", "nuisance", f"{np.exp(q_a[18]):.4f}", "",
                     "pilot axis = campaign 4192 bracket rate x this factor, "
-                    "bounded [0.9, 1.1]; the raw 210 vs 225 mW width ratio "
+                    + _box + "; the raw 210 vs 225 mW width ratio "
                     "0.971 justified the tight band"])
         for kap, c2, cc in prof_a:
             w.writerow(["profile_point", f"{kap:.2f}", f"{c2:.2f}", f"{cc:.2f}",

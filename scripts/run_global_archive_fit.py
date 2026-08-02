@@ -242,6 +242,27 @@ def load_rulers_t():
     return out
 
 
+
+
+def measured_pilot_scale():
+    """The M26 measured pilot_rate_scale, if the committed CSV carries it.
+
+    Returns (mean, err) or None. When present, the pilot axis scale becomes a
+    tight box around the MEASURED value instead of the [0.9, 1.1] assumption
+    box: the pilot day's own 27 rulers beat a fitted nuisance. The 2026-08-02
+    fits put the fitted scale at 1.023-1.029 while the rulers measure
+    1.0022(12); imposing the measurement is the experiment that decides
+    whether that gap was the axis or absorbed width physics."""
+    import csv as _csv
+    path = C.RESULTS_DIR.parent / "results" / "pilot_ruler.csv"
+    if not path.exists():
+        return None
+    for r in _csv.DictReader(open(path)):
+        if r["quantity"] == "pilot_rate_scale_measured":
+            return float(r["value"]), float(r["err"])
+    return None
+
+
 def build(traces):
     p0 = np.zeros(NS + (N_TEETH + 3) * len(traces))
     lo = np.full_like(p0, -np.inf)
@@ -258,7 +279,13 @@ def build(traces):
         i = I_REHRATE + k
         p0[i] = r0; lo[i] = r0 - np.log(4); hi[i] = r0 + np.log(4)
     p0[I_PILSCALE] = 0.0
-    lo[I_PILSCALE] = np.log(0.9); hi[I_PILSCALE] = np.log(1.1)
+    _mps = measured_pilot_scale()
+    if _mps is not None:
+        _m, _e = _mps
+        p0[I_PILSCALE] = np.log(_m)
+        lo[I_PILSCALE] = np.log(_m - 5 * _e); hi[I_PILSCALE] = np.log(_m + 5 * _e)
+    else:
+        lo[I_PILSCALE] = np.log(0.9); hi[I_PILSCALE] = np.log(1.1)
     j = NS
     offsets = []
     for t in traces:
