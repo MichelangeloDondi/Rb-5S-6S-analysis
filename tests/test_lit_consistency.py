@@ -59,7 +59,7 @@ KNOWN_DANGLING = {
     # wieman1987 left this list 2026-07-30: it now has a note at REPORTED with a
     # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
     # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
-    "li2024perspective", "yudin2020", "feng2026", "lidou2024",
+    "li2024perspective",
     # bevilacqua2012 RETIRED 2026-07-30: a misattribution. PRA 86, 012501
     # (2012) is Bruvelis et al., now docs/lit/bruvelis2012.md. The old key is
     # not aliased, so nothing can cite the wrong author by accident.
@@ -67,7 +67,7 @@ KNOWN_DANGLING = {
     # arXiv, read, and noted. patterson2018 was a must-read surfaced by
     # sadeghi2026 ref [25] -- PRA 97, 032509 (2018), spectral asymmetry in the
     # van der Waals potential of an ONF, the direct precedent for the nanofibre extension.
-    "nunes2024", "weiss2018", "bjorkholm1976",
+    "nunes2024", "weiss2018",
     # (sieradzan2004 was described here as having no lit file, on the strength of
     # a PDF add that "did not land". That is FALSE and was removed 2026-07-31:
     # docs/lit/sieradzan2004.md exists, held and VERIFIED, with the arXiv
