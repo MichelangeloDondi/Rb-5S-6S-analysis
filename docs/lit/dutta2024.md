@@ -10,7 +10,7 @@ authors:
   - Boldt, C.
   - Kaushal, J.
   - Scheel, S.
-title: 'Effects of higher-order {Casimir}--{Polder} interactions on {Rydberg} atom spectroscopy'
+title: 'Effects of higher-order Casimir–Polder interactions on Rydberg atom spectroscopy'
 journal: Phys. Rev. Research
 year: 2024
 doi: null

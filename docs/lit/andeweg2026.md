@@ -5,7 +5,7 @@ authors:
   - Andeweg, Yorick
   - Kitching, John
   - Hummon, Matthew T.
-title: 'Active compensation of the {AC} {Stark} shift in a two-photon rubidium optical frequency reference using power modulation'
+title: 'Active compensation of the AC Stark shift in a two-photon rubidium optical frequency reference using power modulation'
 journal: Phys. Rev. Applied
 volume: 25
 number: 3

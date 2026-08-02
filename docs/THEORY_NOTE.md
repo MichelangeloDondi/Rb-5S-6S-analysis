@@ -80,7 +80,7 @@ of what is specific here.
 The derivation above is **quasi-static**: each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
 zero to the on-axis maximum and back within a transit time (~0.2 µs at
-$w_0\approx 50$ µm) that is only a few times the
+$w_0\approx 64$ µm) that is only a few times the
 natural response $1/\Gamma\approx 45$ ns. Camparo and Lambropoulos (JOSA B **9**, 2163 (1992)) show for
 a two-photon transition in a fluctuating field that this ratio decides the
 answer: slowly-varying intensity gives an asymmetric line, rapidly-varying
@@ -192,12 +192,13 @@ core-model dependence above, and it is checkable by BIC and the M8 cusp fit,
 which is why those exist.
 
 **And the width channel is not merely worse — it is blind.** At the campaign's
-maximum 225 mW with the $w_0 = 50$ µm prior, `stark_shift_S0_mhz` gives
-$S_0 = 0.587$ MHz, so the ramp kernel is 0.33 MHz FWHM. Added in quadrature to
-the observed 5.2 MHz line that is **0.010 MHz** of extra width — a part in 500,
-far below the width budget's own systematics. No width measurement of any
+maximum 225 mW with the adopted $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
+$S_0 = 0.348$ MHz, so the ramp kernel is 0.20 MHz FWHM. Added in quadrature to
+the observed 5.2 MHz line that is **0.004 MHz** of extra width — a part in
+1400, far below the width budget's own systematics. No width measurement of any
 precision reaches this signal; the asymmetry channel is not a refinement of the
-width channel but the only channel there is. CALCULATED 2026-07-30.
+width channel but the only channel there is. CALCULATED 2026-07-30, requoted
+2026-08-02 at the adopted waist.
 
 The reference moments the fit encodes,
 
@@ -222,8 +223,8 @@ addendum 7's mixture, and a $7.3$ MHz variant in M20 — were *tighter* only
 because they differenced centres across horizontal-position moves, and are
 withdrawn. The width-and-shape channel is the archive's only light-shift
 channel. Its best construction is M23's joint two-session full-profile fit,
-$S_0(225$ mW$) < 0.14$ MHz (95%), with the 20-summary-width construction
-(M4e, $< 0.63$ MHz) kept as the independent simpler bracket — two
+$S_0(225$ mW$) < 0.15$ MHz (95%), with the 20-summary-width construction
+(M4e, $< 0.64$ MHz) kept as the independent simpler bracket — two
 constructions, but one physical channel, so there is still no second
 channel to corroborate it.
 
@@ -288,27 +289,27 @@ That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the
 four peaks' width-vs-power (`stark.fit_stark_sweep`, M4e) turns it into a
 quantitative **upper bound of $0.63$ MHz on $S_0$ at 225 mW (95%, profile
 likelihood)**; the fitted value is consistent with zero, so the archive *brackets* the predicted
-$0.59$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
+$0.35$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
 same two-epoch reason as everything else here: the 2025 drifted lock destroys the
 line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
 each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
 broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). M23
-(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.14$ MHz
+(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.15$ MHz
 by fitting every point of every profile across both sessions instead of the
-20 summary widths. Through the §5 convention that maps to
-$|\Delta\alpha| \lesssim 271$ a.u. **at the nominal** $w_0=50\ \mu$m, below
-the computed $1093$, so the archive now constrains the
-$(\Delta\alpha,\ \text{intensity})$ pair: if the computed magnitude is
-right, the on-axis intensity must sit $\gtrsim2.3\times$ under the nominal
-prior (equivalent waist $\gtrsim 76\ \mu$m), the same wide side where the
-prediction band's $70\ \mu$m edge and Nieddu 2019's measured $64\ \mu$m
-already live. (The earlier readings of this passage: $<\sim1200$ a.u. from
-the M4e width-only bound, and before that $\sim5800$ from a Wald interval
-evaluated at the $\kappa=0$ rail, where it has no valid coverage.) The
-archive does not adjudicate $\Delta\alpha$ itself — the mapping inherits
-the open $w_0$ — and a fixed lock would measure the pull $\propto S_0$
-directly (small waist $\Rightarrow S_0$ $\approx10\times$ larger), turning
-this bracket into the coefficient.
+20 summary widths. Through the §5 convention that maps to a $\Delta\alpha$ bracket well below
+the computed $1093$ at the adopted $w_0=64\ \mu$m, so the archive
+constrains the $(\Delta\alpha,\ \text{intensity})$ pair rather than either
+alone. The prior is now the lineage measurement itself (§5), so this is a
+direct test of it and not an inference pointing at an external number. Two
+effects push the *effective* intensity below what even that prior assumes,
+and both are documented rather than fitted: residual clipping at the 3 mm
+EOM aperture, and imperfect superposition of the retro beam. (Earlier
+readings of this passage: $\lesssim271$ a.u. at the superseded $50\ \mu$m
+prior, $<\sim1200$ from the M4e width-only bound, and $\sim5800$ from a
+Wald interval evaluated at the $\kappa=0$ rail where it has no coverage.)
+The archive does not adjudicate $\Delta\alpha$ itself, since the mapping
+inherits $w_0$, and a fixed lock would measure the pull $\propto S_0$
+directly at a small waist, turning this bracket into the coefficient.
 
 ## 5. The coefficient (the field-intensity convention, pinned)
 
@@ -341,14 +342,14 @@ arcsine: a fringe-*resolved* tail (weight $f_\text{res}$) that keeps the mean
 but, because the fringe *multiplies* the shift $s\to s(1+x)$ with $x$ arcsine,
 **suppresses** the ramp skew — $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at
 $\rho=1$ (a $-13.5 f_\text{res}$ fractional leverage $\propto$ contrast$^2$; only
-$P=f_\text{res}\sigma_x^2$ is observable). Negligible at $w_0=50\ \mu$m
+$P=f_\text{res}\sigma_x^2$ is observable). Negligible at $w_0=64\ \mu$m
 ($\sim$9–14% of an already-below-noise skew, `results/fringe_tail.csv`),
 $\sim$26–28% at $16\ \mu$m, and
 **same-sign-additive** to the larger §7 divergence correction — the two must be
 fit jointly at small waist (quantified, coherence-window-bracketed, in
 `fringe_tail`). With $\Delta\alpha = 1093$ a.u.
-([Orson *et al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.59$ MHz (transition) at $P=225$ mW, $w_0=50\ \mu$m,
-$\rho=1$; it grows to $5.7$ MHz at $w_0=16\ \mu$m, which is why a small waist
+([Orson *et al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.35$ MHz (transition) at $P=225$ mW, $w_0=64\ \mu$m,
+$\rho=0.94$; it grows to $5.6$ MHz at $w_0=16\ \mu$m, which is why a small waist
 lifts the ramp asymmetry to a detection — but *not* by the on-axis $S_0^3$
 factor of 64, since the axial average over the collection window changes the
 third cumulant's magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7). Code: `lineshape.stark_shift_S0_mhz`.
@@ -379,129 +380,111 @@ null; C3d and the prediction band use $|\Delta\alpha|$), but the fixed-lock
 Orson's printed $\alpha_{56}=-1093$ is flagged for adjudication (the decisive
 check is one line for a theorist: the sign of $\alpha_{6S}$ at 993 nm)
 
-> **Convention table — read this before comparing any α with the literature.**
-> An external audit (2026-07-26) proposed that the whole Orson disagreement was
-> a convention artifact. It is not — but a careful reader did reach that
-> conclusion from the published material, so every definition is stated
-> explicitly here:
->
-> | symbol | definition here | value at 993 nm |
-> |---|---|---|
-> | $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | $+832$, $-312$ a.u. |
-> | $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. |
-> | $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
-> | level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
-> | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
->
-> The last row is the point: **both conventions give the same formula**, so the
-> algebra is not in dispute. Orson prints $\alpha_{56}=-1093$, hence a *red*
-> transition shift; this work computes $\Delta\alpha=-1145$, i.e.
-> $\alpha_{56}=+1145$, hence a *blue* one. Same equation, opposite input, and
-> **Both sides verified from the typeset PDFs, 2026-07-29** — this no longer
-> rests on text extraction or an aggregator. Orson states the convention in
-> words ("the AC Stark differential polarizabilty of the 5S state minus 6S
-> state $\alpha_5-\alpha_6=\alpha_{56}$"), prints $\alpha_{56}=-1093$ a.u.,
-> gives it again in SI as $-1.80\times10^{-38}$ J m² V⁻² (also negative), and
-> draws a consequence: at his $w_0=63$ µm and $P=0.8$ W, $E^2=4.8\times10^{10}$
-> V² m⁻² and $\Delta f=-0.66$ MHz — a **red** shift. Feeding his own numbers
-> through this repo's unit chain returns $-0.653$ MHz, so the disagreement is
-> not a units or convention artifact: the same arithmetic on his input
-> reproduces his output.
->
-> **Where this work's sign comes from, and why it is not a convention choice.**
-> $\alpha_{5S}$ here is anchored to two measurements the model does not fit:
-> the static value, $+318.28$ against the measured $318.79(1.42)$, and the
-> tune-out at $790.0339$ nm against the measured $790.032326(32)$ — Leonard's
-> 2015 measurement **as corrected by their 2017 erratum** (PRA **95**,
-> 059901(E)), both now read from held PDFs. *A "790.03235(3)" stood here until
-> 2026-07-31 and appears nowhere in either document; the 2015 paper states five
-> different wavelengths and none of them is that one.* The erratum restores a
-> ground-state Zeeman shift omitted from $\omega'$, calling it "an adjustment of
-> about 2$\sigma$"; the superseded 2015 figure was $790.032388(32)$, 0.062 pm
-> away, against a 1.6 pm agreement, so nothing below turns on which is used. A positive
-> ground-state polarizability far below resonance is required physically, and
-> the model reproduces it. Orson reports only the difference, which cannot be
-> checked that way.
->
-> **The disagreement is not symmetric, and a measured lifetime breaks it.**
-> This is the answer to the fair question *how do you know the sign error is
-> not yours*. $\alpha_{6S}(993)$ is a cancellation with only one side free.
-> The upward 6S–6P group contributes $-949$ a.u. and **its sign is structural**:
-> at 993 nm the drive sits above the 2732 nm resonance, so $\omega>\omega_0$
-> makes every one of those denominators negative. Orson's $\alpha_{56}=-1093$
-> requires $\alpha_{6S}=+1925$, so the downward 6S–5P cascade would have to
-> supply $+2874$ instead of $+624$ — a factor $4.6$ in $\alpha$, hence
-> $\times2.15$ in the dipole elements.
->
-> Those same elements set the 6S lifetime. Unscaled they give **45.42 ns**
-> against the **measured 45.57(17) ns** ([Gomez 2005](lit/gomez2005.md), itself
-> 45.64(22) in a vapour cell and 45.48(25) in a MOT, averaged) — 0.3%, i.e.
-> 0.9σ. ([Arora & Sahoo 2012](lit/arora2012.md)'s 45.44(8) is *calculated* from
-> matrix elements 4.144/6.048, essentially the ones used here, so it checks the
-> arithmetic rather than supplying a second measurement.) Scaled to reach
-> Orson's sign they give **9.9 ns**, about **210σ** from the measurement. Held as a test
-> (`test_orsons_sign_would_require_an_excluded_6S_lifetime`).
->
-> **A candidate mechanism, offered as a hypothesis and not as a finding.**
-> Orson writes that he calculated "in a manner similar to that of Martin *et
-> al*". Martin's Eqs. (2) and (21) as printed carry a **leading minus**,
-> $\alpha(\omega,J)=-\frac{2}{3(2J+1)}\sum\ldots$, which would make a ground
-> state below resonance negatively polarizable. If that minus propagated, the
-> published $-1093$ would be the negative of what the method gives, i.e.
-> $+1093$ — agreeing with this work in sign and to 4.7% in magnitude. This is
-> *not verified*: it would need Martin's tabulated $\alpha$ values checked
-> against their own printed equation, and Orson's intermediate numbers, neither
-> of which is available here. Recorded because it is testable, not because it
-> is established. (Martin is independently inconsistent on sign: $+2.30(4)$ in
-> the abstract and Table II against $-2.5(2)$ in Fig. 5's caption for the same
-> coefficient.)
->
-> the two differ by ~5% in magnitude with opposite sign. That pattern is
-> itself diagnostic: a genuine matrix-element disagreement would have to move
-> $\alpha_{6S}$ by $\sim$2200 a.u. and then land within 5% of the original
-> magnitude by coincidence, whereas a global sign error — in either work —
-> produces exactly magnitude agreement with sign opposition. (The same
-> literature demonstrably carries printed-sign faults: Martin et al. 2019
-> quote $+2.30$ in the abstract and $-2.5$ in Fig. 5 for the same
-> coefficient; verified from the held PDF.)
->
-> Every archival result uses $|\Delta\alpha|$ and is unaffected either way.
->
-> **Where the sign actually comes from — and how much margin it has.** The two
-> states are not alike here, and only one of them is robust.
->
-> $\alpha_{5S}(993)=+834$ a.u. is **unanimous**: 993 nm is red of every strong
-> 5S line, so every term is positive (D2 $+533$, D1 $+290$, rest $<+2$). No
-> matrix-element revision can make it negative.
->
-> $\alpha_{6S}(993)=-312$ a.u. is a **partial cancellation** — the weak point:
->
-> | 6S transition | λ | direction | contribution (a.u.) |
-> |---|---|---|---|
-> | 6S–6P | 2732 nm | upward | **−566** |
-> | 6S–5P | 1367 nm | downward | **+409** |
-> | 6S–6P | 2791 nm | upward | **−280** |
-> | 6S–5P | 1324 nm | downward | **+214** |
-> | | | **net** | **−312** |
->
-> Summed over *all* terms, not just the four largest: the upward group totals
-> $-947$ and the downward 5P cascade $+623$, so the lines give $-324$ and the
-> tail and core carry it to $-312$. The negative total survives by about 34% of
-> the larger group. So the
-> sign *is* sensitive to the relative strengths of those two groups: raising the
-> 6S–5P (1367 nm) strength by **33%**, or lowering the 6S–6P (2732 nm) strength
-> by 95%, drives $\alpha_{6S}$ through zero.
->
-> That makes the disagreement with Orson a **specific, answerable question**
-> rather than a bare contradiction: it lives in the balance between the
-> 6S–6P (2.7 µm) and 6S–5P (1.3 µm) reduced matrix elements, not in the overall
-> method. Both are stored (`alpha_5s_993`, `alpha_6s_993` in
-> `results/polarizability.csv`) and the margins are regression-guarded
-> (`test_the_993_sign_and_its_margin`). — and
-since Orson's own AC-Stark measurement was a *null* at 6 MHz resolution, the sign
-was never set by experiment, so this is a theory-vs-theory question that a
-fixed-lock *pull* measurement (the sign of the shift-vs-power slope) would settle
-outright. The narrative above keeps the established convention until it is resolved.
+### 5.0 The sign dispute, laid out for adjudication
+
+An external audit (2026-07-26) proposed that the whole Orson disagreement was
+a convention artifact. It is not, but a careful reader did reach that
+conclusion from the published material, so every definition is stated
+explicitly before anything is compared:
+
+| symbol | definition here | value at 993 nm |
+|---|---|---|
+| $\alpha_{5S}$, $\alpha_{6S}$ | scalar polarizability of each level | $+834$, $-312$ a.u. |
+| $\Delta\alpha$ | $\alpha_{6S}-\alpha_{5S}$ (**excited minus ground**) | $-1145$ a.u. |
+| $\alpha_{56}$ (Orson's) | $\alpha_{5S}-\alpha_{6S}$ (**ground minus excited**) | $=-\Delta\alpha$ |
+| level shift | $\delta E = -\tfrac{1}{2}\alpha E^2$ | — |
+| transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
+
+The last row is the point: both conventions give the same formula, so the
+algebra is not in dispute. Orson prints $\alpha_{56}=-1093$, hence a red
+transition shift. This work computes $\Delta\alpha=-1145$, that is
+$\alpha_{56}=+1145$, hence a blue one. Same equation, opposite input. Both
+sides are verified from the typeset PDFs. Orson states the convention in
+words, prints $\alpha_{56}=-1093$ a.u., repeats it in SI as
+$-1.80\times10^{-38}$ J m² V⁻², and draws the consequence $\Delta f=-0.66$
+MHz at his own $w_0=63$ µm, $P=0.8$ W. Feeding his numbers through this
+repository's unit chain returns $-0.653$ MHz, so the disagreement is not a
+units artifact: the same arithmetic on his input reproduces his output.
+
+The magnitude pattern is itself diagnostic. The two computations differ by
+~5% in magnitude with opposite sign. A genuine matrix-element disagreement
+would have to move $\alpha_{6S}$ by ~2200 a.u. and then land within 5% of
+the original magnitude by coincidence, whereas a global sign error, in either
+work, produces exactly magnitude agreement with sign opposition. The same
+literature demonstrably carries printed-sign faults: [Martin 2019](lit/martin2019.md)
+quotes $+2.30$ in its abstract and Table II against $-2.5$ in its Fig. 5
+caption for the same coefficient, verified from the held PDF.
+
+### 5.0.1 Where this work's sign is anchored
+
+$\alpha_{5S}$ here is pinned by two measurements the model does not fit: the
+static value ($+318.28$ computed against the measured $318.79(1.42)$) and the
+5S tune-out wavelength ($790.0339$ nm computed against the measured
+$790.032326(32)$, [Leonard 2015](lit/leonard2015.md) as corrected by their
+[2017 erratum](lit/leonard2017.md), both held). A positive ground-state
+polarizability far below resonance is also required physically. Orson reports
+only the difference, which cannot be checked this way.
+
+$\alpha_{5S}(993)=+834$ a.u. is unanimous: 993 nm is red of every strong 5S
+line, so every term is positive (D2 $+533$, D1 $+290$, the rest $<+2$). No
+matrix-element revision can make it negative.
+
+$\alpha_{6S}(993)=-312$ a.u. is a partial cancellation, and that is the
+honest weak point:
+
+| 6S transition | λ | direction | contribution (a.u.) |
+|---|---|---|---|
+| 6S–6P | 2732 nm | upward | **−566** |
+| 6S–5P | 1367 nm | downward | **+409** |
+| 6S–6P | 2791 nm | upward | **−280** |
+| 6S–5P | 1324 nm | downward | **+214** |
+| | | **net** | **−312** |
+
+Summed over all terms: the upward group totals $-947$, the downward 5P
+cascade $+623$, the lines give $-324$, and the tail and core carry it to
+$-312$. The negative total survives by about a third of the larger group, so
+the sign is sensitive to the balance: raising the 6S–5P (1367 nm) strength by
+33%, or lowering the 6S–6P (2732 nm) strength by 95%, drives $\alpha_{6S}$
+through zero. That makes the disagreement a specific, answerable question
+about two reduced matrix elements, not a bare contradiction. Both values are
+committed (`results/polarizability.csv`) and the margins are
+regression-guarded (`test_the_993_sign_and_its_margin`).
+
+### 5.0.2 The lifetime discriminant
+
+This answers the fair question of how we know the sign error is not ours. The
+upward 6S–6P group's sign is structural: at 993 nm the drive sits above the
+2732 nm resonance, so every one of those denominators is negative. Orson's
+$\alpha_{56}=-1093$ therefore requires $\alpha_{6S}=+1925$, which the
+downward 6S–5P cascade could only supply by growing from $+624$ to $+2874$: a
+factor 4.6 in $\alpha$, hence $\times2.15$ in the dipole elements.
+
+Those same elements set the 6S lifetime. Unscaled they give **45.42 ns**
+against the measured **45.57(17) ns** ([Gomez 2005](lit/gomez2005.md)), a
+0.9σ agreement. Scaled to reach Orson's sign they give **9.9 ns**, about
+**210σ** from the measurement. Held as a permanent test
+(`test_orsons_sign_would_require_an_excluded_6S_lifetime`).
+
+### 5.0.3 A candidate mechanism, offered as hypothesis
+
+Orson writes that he calculated "in a manner similar to that of Martin et
+al." Martin's Eqs. (2) and (21) as printed carry a leading minus,
+$\alpha(\omega,J)=-\frac{2}{3(2J+1)}\sum\ldots$, which would make a
+ground state below resonance negatively polarizable. If that minus
+propagated, the published $-1093$ would be the negative of what the method
+gives, agreeing with this work in sign and to 4.7% in magnitude. Not
+verified: it would need Martin's tabulated values checked against their own
+printed equation, and Orson's intermediate numbers, neither available here.
+Recorded because it is testable.
+
+### 5.0.4 What resolves it
+
+Every archival result uses $|\Delta\alpha|$ and is unaffected either way.
+Orson's own AC-Stark measurement was a null at 6 MHz resolution, so the sign
+has never been set by experiment. A fixed-lock pull measurement (the sign of
+the shift-versus-power slope) settles it outright, and until then the
+narrative keeps the established convention. The decisive theory check is one
+line for a specialist: the sign of $\alpha_{6S}$ at 993 nm.
 
 ### 5.1 Electric quadrupole and magnetic dipole: why neither appears
 
@@ -597,7 +580,7 @@ cathode's active extent along the beam image. That extent is 12 mm — the R636-
 landscape (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm, and the
 two-waist flip holds for every $M$ from 0.5 to 6 rather than depending on which
 layout the bench happens to realise; $u$ and $v$ remain unmeasured, so the
-magnitude still carries an envelope (PLAN §8.3 #4). The pure triangle holds only at large waist, and the
+magnitude still carries an envelope (PLAN §6 #4). The pure triangle holds only at large waist, and the
 small-waist configuration that maximises $S_0$ is exactly where the clean
 triangular law is least valid.
 

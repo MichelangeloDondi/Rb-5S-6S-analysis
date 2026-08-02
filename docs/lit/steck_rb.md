@@ -3,7 +3,7 @@ citekey: steck_rb
 type: misc
 authors:
   - Steck, Daniel A.
-title: 'Rubidium 85 and 87 {D} Line Data'
+title: 'Rubidium 85 and 87 D Line Data'
 journal: 'available online at \url{https://steck.us/alkalidata}'
 doi: null
 arxiv: null

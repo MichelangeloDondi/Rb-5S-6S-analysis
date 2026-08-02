@@ -6,7 +6,7 @@ authors:
   - Bell, A. S.
   - Clarke, R. B. M.
   - Riis, E.
-title: 'Frequency modulation two-photon spectroscopy with a mode-locked laser in laser-cooled {Rb}'
+title: 'Frequency modulation two-photon spectroscopy with a mode-locked laser in laser-cooled Rb'
 journal: Int. Quantum Electronics Conf. (IQEC)
 pages: paper FM5
 year: 1996

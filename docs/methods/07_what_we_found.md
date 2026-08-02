@@ -60,8 +60,8 @@ $\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.19/0.58/0.33, all
 well below 1, so the peak-blocks are closer to the shared model than their own
 error bars — the test cannot discriminate and does not license the sharing, it
 merely fails to contradict it (RESULTS §σ_laser sharing). The fit's
-$\sigma_\text{laser}(T)\approx1.5/1.6/1.1$ MHz is **not** a clean drift curve,
-though: the free per-condition fit gives a *flat* $1.0$–$1.25$ MHz, so that trend
+$\sigma_\text{laser}(T)\approx2.1/2.2/1.5$ MHz is **not** a clean drift curve,
+though: the free per-condition fit gives a *flat* $1.5$–$1.75$ MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density
 tie, not a physical laser drift — the 110 °C dip is a model artifact, not a
 stale block (and it does not corrupt $\beta$, which the density lever still
@@ -78,15 +78,17 @@ budget is in the results ledger (`docs/RESULTS.md`).
 ### 5.3 The 2025 laser width (C2)
 
 **The 2025 laser width (deliverable C2) — an upper bound.**
-$\sigma_\text{laser}(2025)\lesssim2.2$ MHz (transition axis; $<1.1$ MHz
-laser axis; it is $\sim0.84$ MHz laser-axis at the $w_0=50\ \mu$m prior) —
+$\sigma_\text{laser}(2025)\lesssim2.2$ MHz (transition axis; $<1.2$ MHz
+laser axis; it is $\sim1.09$ MHz laser-axis at the adopted $w_0=64\ \mu$m
+prior) —
 a bound, not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5 — The lineshape, kernel by kernel](02_the_lineshape.md), M9)
 now makes the degeneracy quantitative: the corrected transit adds $\sim2.1$ MHz
 at $w_0=32\ \mu$m (which OVERSHOOTS the observed line, excluding 32 µm) but only
-$\sim1.2$ MHz at the $50\ \mu$m prior, so below $w_0\approx38\ \mu$m transit
+$\sim0.93$ MHz at the $64\ \mu$m prior, so below $w_0\approx38\ \mu$m transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
-50 µm prior the laser carries $\sim0.8$ MHz laser-axis. The
+adopted 64 µm prior the laser carries $\sim1.09$ MHz laser-axis, close to the
+bound itself: widening the waist hands width from transit to laser. The
 archival data cannot locate that crossover; only a direct beam-profile $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
 A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
@@ -132,23 +134,23 @@ coverage (it read a spurious 3.1 MHz). The quoted limit is therefore a
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx4$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
-elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
+elsewhere). It gives a 95% profile-likelihood bound of 0.64 MHz from the
 widths alone. The joint two-session full-profile fit (M23,
 `run_stark_joint`, RESULTS C3f) sharpens the same channel to
-$$S_0(225\ \text{mW}) < 0.14\ \text{MHz},$$
-below the predicted 0.59 MHz at the nominal waist, i.e.
-$|\Delta\alpha|\lesssim271$ a.u. at $w_0=50$ µm, under both values on the
-table (Orson's published 1093 and this work's recomputed 1145,
+$$S_0(225\ \text{mW}) < 0.15\ \text{MHz},$$
+below the 0.35 MHz predicted at the adopted waist, so the $\Delta\alpha$
+bracket sits under both values on the table (Orson's published 1093 and this
+work's recomputed 1145,
 [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The constraint
-therefore lands on the (Δα, intensity) pair and pushes the open waist wide
-rather than adjudicating the theory. The comparison is on magnitude and is
+therefore lands on the (Δα, intensity) pair rather than adjudicating the
+theory, and since the waist prior is now itself the lineage measurement, the
+comparison is a direct test of it. The comparison is on magnitude and is
 therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
-inflated threshold and brackets the predicted $0.59$ without measuring it (an
-unscaled threshold would fall below the prediction). It bounds the drift, not the
+inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
 coefficient's scale. Since 2026-07-23 the bound has an independent
 corroboration through disjoint systematics: the recovered acquisition clock
 supports a centroid-displacement (pull-channel) bound of 5.5 MHz at 95% —
@@ -234,8 +236,8 @@ the four peaks **interleaved**, with power logging.
 ### 5.8 Foundational results underpinning the above
 
 **Foundational results underpinning all of the above.** The sweep rate is
-$0.04257(5)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
-seed, confirmed by three independent methods, sweep linear to $<0.45$% within a
+$0.042526(51)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
+seed, confirmed by three independent methods, sweep linear to $<0.3$% within a
 block. The 20 blocks over-disperse ($\chi^2_\text{red}=6.8$) — block-level
 ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),
 **not** a peak-ordered trend (bracket-resolved rates are non-monotonic) — and

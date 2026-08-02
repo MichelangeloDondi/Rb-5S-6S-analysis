@@ -7,7 +7,7 @@ authors:
   - Rajasree, K. S.
   - Roy, R.
   - Nic Chormaic, S.
-title: 'A simple, narrow, and robust atomic frequency reference at 993 nm exploiting the rubidium $5S_{1/2}$ to $6S_{1/2}$ transition using one-color two-photon excitation'
+title: 'A simple, narrow, and robust atomic frequency reference at 993 nm exploiting the rubidium 5S₁/₂ to 6S₁/₂ transition using one-color two-photon excitation'
 journal: Opt. Express
 volume: 27
 number: 5

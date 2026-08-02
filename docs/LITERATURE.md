@@ -46,7 +46,7 @@ broadening: near-transverse atoms (small axial speed) sample the node/antinode
 arcsine, and because the fringe MULTIPLIES the shift (s → s(1+x), x arcsine) it
 SUPPRESSES the ramp skew — κ₃ → S₀³(1/135 − f_res/10) at ρ=1, a −13.5·f_res
 fractional leverage (∝ contrast², not contrast³ — the arcsine has E[cos³]=0; only
-the product P = f_res·σ_x² is observable). Negligible at w₀=50 µm (~5–8% of an
+the product P = f_res·σ_x² is observable). Negligible at w₀=64 µm (~9–14% of an
 already-below-noise skew), ~26–28% at w₀=16 µm, and same-sign-additive to the
 beam-divergence correction — fit jointly at the small waist (quantified,
 coherence-window bracketed, in `rb5s6s/fringe_tail.py`). CALCULATED 2026-07-17.
@@ -235,9 +235,9 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
    core, which is checkable by BIC and the M8 cusp fit. See
    [THEORY_NOTE](THEORY_NOTE.md) §3.
    *And the width channel is not a weaker alternative — it is blind.* At 225 mW
-   and $w_0 = 50$ µm the ramp kernel is 0.33 MHz FWHM, which added in
-   quadrature to the observed 5.2 MHz line is **0.010 MHz**, a part in 500. No
-   width measurement reaches this signal at any precision.
+   and the adopted $w_0 = 64$ µm the ramp kernel is 0.20 MHz FWHM, which added
+   in quadrature to the observed 5.2 MHz line is **0.004 MHz**, a part in
+   1400. No width measurement reaches this signal at any precision.
    The same arithmetic settles a loose end in [lee2010](lit/lee2010.md): their
    power-dependent Gaussian growth of ~1.9 MHz is **4–9× larger** than the ramp
    their own measured light-shift coefficient can produce, so the intensity
@@ -248,7 +248,7 @@ absolute prediction, not a placeholder, and (c) confirm the b→FWHM and the
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series — a
    modest addition to the measured series rather than a headline result. In the archive it is a bound 57–113×
    above expectation; a measurement requires the high-T extension.
-4. **EOM-comb-in-fine-scan** frequency axis (0.04257(5) MHz/ms laser-axis,
+4. **EOM-comb-in-fine-scan** frequency axis (0.042526(51) MHz/ms laser-axis,
    per-block).
 
 NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"
@@ -591,7 +591,7 @@ archival bounds refine).
     characterized for the archive. Residual sensitivity is mirror **tilt**,
     not longitudinal placement (the intermediate beam's z_R ≈ 2.8 m makes the
     mirror position forgiving to tens of cm). A fixed-lock session would measure ρ
-    in situ (PLAN §8.1).
+    in situ (PLAN §4).
   * Their detection ([nieddu2019](lit/nieddu2019.md)) is the **780 nm and
     795 nm cascades together** through an 800 nm short-pass (Hamamatsu
     R636-10) — unlike the 2025 archival 795-only narrowband stack — so
@@ -659,7 +659,7 @@ resolution; our two-epoch design turns those nulls into measured coefficients.*
   5S–6S transition. **[CITE]** Their prior AC-Stark and density-shift nulls
   (see [orson2021](lit/orson2021.md) for the exact quotes and resolution) are
   on our C3d (AC-Stark) and C1 (collisional self-shift) channels — consistent
-  with, and refined below, by our archival bounds (S₀ < 0.63 MHz, profile
+  with, and refined below, by our archival bounds (S₀ < 0.64 MHz, profile
   likelihood; β_self a bound). They are also the **source of our
   `DELTA_ALPHA_AU = +1093`** (opposite sign by definition; the value was never
   a loose in-house estimate), and our `stark_shift_S0_mhz` reproduces their
@@ -995,7 +995,7 @@ surface/pushing effects are read.
   or Slepkov's $10^{-7}$ cm² area (~1.8 µm, ~33 MHz). The trade is now: transit
   at this programme's contemplated core costs **~3.1–4.3 MHz** across the
   thesis's ideal, target and measured waists
-  against **1.18 MHz** for the free-space $w_0 = 50$ µm — a factor of 3–4, not
+  against **0.93 MHz** for the free-space adopted $w_0 = 64$ µm — a factor of 3–5, not
   the 15–30× that the tighter published cores would impose — but Perrella's
   total of 10 MHz is a warning that **transit is not the whole budget in a real
   large-core fibre**, and higher-order-mode coupling is the term to design
@@ -1078,7 +1078,7 @@ A systematic sweep for relevant work not already held; only verified-real finds 
 given citekeys.
 
 **Cascade / IR detection to beat radiation trapping — ESTABLISHED prior art (now
-cited in PLAN §8.4a; corrects our 1.3 µm exploit's novelty framing):**
+cited in PLAN §8; corrects our 1.3 µm exploit's novelty framing):**
 - **[Hassanin et al. 2023](lit/hassanin2023.md)** — the direct precedent for our
   1.3 µm (6S→5P) trapping-free channel: the reabsorption-free 5D→5P cascade lets
   the sibling 5S–5D line be probed at high density, enabling collisional-

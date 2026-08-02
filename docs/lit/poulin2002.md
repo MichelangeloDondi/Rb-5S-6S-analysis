@@ -6,7 +6,7 @@ authors:
   - Latrasse, C.
   - Touahri, D.
   - Têtu, M.
-title: 'Frequency stability of an optical frequency standard at 192.6 {THz} based on a two-photon transition of rubidium atoms'
+title: 'Frequency stability of an optical frequency standard at 192.6 THz based on a two-photon transition of rubidium atoms'
 journal: Opt. Commun.
 volume: 207
 pages: 233--242

@@ -11,22 +11,34 @@
    split depends on them). The model-form study ([§4.7 — The statistics](06_the_statistics.md), M8) confirms the 2025
    data cannot distinguish these forms — so the *shape* assumption is untested
    by the archival data and is a genuine attack surface until a fixed-lock session is run.
-4. Transit width rides on the OPEN $w_0$ prior until a direct beam-profile measurement.
-5. The retro ratio $\rho=1$ behind the quoted $S_0$ prediction ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) is a
-   *geometric design property, not a measured number*. The 2025 retro is
-   self-imaging: L2 ($f=150$ mm) maps the cell waist to a $\sim$1 mm
-   intermediate waist and a flat mirror at that flat wavefront time-reverses
-   the beam, re-forming the original waist ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) — so the forward/return
-   *mode match* is by construction, and $\rho$ departs from 1 only through
-   *losses* (two extra L2 passes, two extra window passes, mirror
-   reflectivity), never characterized for the archive. The exposure is bounded
-   anyway: $S_0\propto(1+\rho)$ confines the prediction to 0.29–0.59 MHz for
-   any $\rho$, and the Doppler-free rate's own $\propto\rho$ scaling means the
-   archive's strong lines already argue $\rho$ is not small. What no static
-   bound covers is a *drifting* overlap within a scan (mirror tilt is the
-   sensitive axis; the longitudinal placement is forgiving to tens of cm),
-   which is skew-like. A fixed-lock session would measure $\rho$ in situ per configuration
-   (PLAN §8.1).
+4. The beam waist $w_0=64\ \mu$m is **adopted from the lineage measurement,
+   not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
+   diameter with a beam profiler on the same laser model, the same $f=150$ mm
+   lens, the same 130 °C cell and the same $2f$ retro geometry, and Nieddu
+   2019 quotes the same number on the older laser. Transferring it assumes the
+   2025 alignment matched. Two documented effects push the *effective* waist
+   ABOVE 64 µm and neither is fitted: residual clipping at the 3 mm EOM
+   aperture, and imperfect superposition of the retro beam. A direct
+   beam-profile measurement in a fixed-lock session settles it for this bench;
+   until then every absolute number carries the $w_0$ band.
+5. The retro ratio $\rho=0.94\pm0.04$ behind the quoted $S_0$ prediction
+   ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) is an **assumption**.
+   Until v3.0.0 the code asserted $\rho=1$ on a geometric design argument: the
+   2025 retro is self-imaging, L2 ($f=150$ mm) maps the cell waist to a
+   $\sim$0.7 mm intermediate waist and a flat mirror at that flat wavefront
+   time-reverses the beam, re-forming the original waist, so the
+   forward/return *mode match* is by construction. That argument covers mode
+   matching and not *loss* (two extra L2 passes, two extra window passes,
+   mirror reflectivity), and it does not cover alignment-imperfect
+   superposition either. Neither was characterized for the archive, so a
+   modest departure is now assumed instead of a perfect retro. The exposure is
+   bounded either way: $S_0\propto(1+\rho)$ confines the prediction to
+   0.18–0.36 MHz for any $\rho$, and the Doppler-free rate's own
+   $\propto\rho$ scaling means the archive's strong lines already argue
+   $\rho$ is not small. What no static bound covers is a *drifting* overlap
+   within a scan (mirror tilt is the sensitive axis; the longitudinal
+   placement is forgiving to tens of cm), which is skew-like. A fixed-lock
+   session would measure $\rho$ in situ per configuration (PLAN §4).
 6. The non-monotonicity is laser drift, not a temperature-correlated *rate*
    artifact (block rates scatter only $0.6$% ($\approx0.03$ MHz) on a 5 MHz line).
 7. $N(T)$ correlation + a possible cell cold spot affect only *absolute*
@@ -59,7 +71,7 @@ Headline shots would be: the AC-Stark shift coefficient with the intensity axis
 anchored by the *differential transit width* (independent of any beam-profile measurement); the
 ramp-law **moment hierarchy** ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
 flip** between the two waists (conditional on the collection geometry, which is
-unmeasured — PLAN §8.3 #4); $\beta_\text{self}$ measured rather than bounded —
+unmeasured — PLAN §6 #4); $\beta_\text{self}$ measured rather than bounded —
 which the collision-rate literature says would require the **150–170 °C**
 extension (expected $\beta\sim1$ kHz per $10^{12}$cm$^{-3}$, see
 `docs/LITERATURE.md`); the Lehmann cusp in the cold-dim small-waist corner;

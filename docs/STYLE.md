@@ -17,7 +17,7 @@ data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
   mistake a plan for a commitment.
 - **Conditional predictions name their condition.** If a result depends on an
   unmeasured parameter, the sentence that states the result states the
-  dependency and the threshold — see the g1 sign-flip discussion in PLAN §8.3
+  dependency and the threshold — see the g1 sign-flip discussion in PLAN §6
   #4, which is conditional on a collection geometry that has not been measured.
 - **Numbers live in one place.** Headline values are generated from the
   committed CSVs; prose quotes them, never restates them independently.

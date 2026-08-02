@@ -4,7 +4,7 @@ type: article
 authors:
   - Gerginov, V.
   - Beloy, K.
-title: 'Two-photon optical frequency reference with active ac {Stark} shift cancellation'
+title: 'Two-photon optical frequency reference with active ac Stark shift cancellation'
 journal: Phys. Rev. Applied
 volume: 10
 number: 1

@@ -41,6 +41,35 @@ are worth knowing for a line nobody has measured them on — and they are the
 entry the 5D/7S self-broadening series is missing. That is the case: an
 uncharacterised line in a practically-motivated class, not a challenger.
 
+The rungs either side of it are now measured, by one group and one method,
+which makes the gap concrete rather than rhetorical. Both drive a
+Doppler-free two-photon line in a pure Rb cell and read the cascade
+fluorescence, and both infer density from cell temperature rather than
+measuring it:
+
+| line | self-broadening | in MHz per 10¹² cm⁻³ | convention |
+|---|---|---|---|
+| 5S→5D₃/₂ ([Cao 2025](lit/cao2025.md)) | 40 ± 0.54 kHz/mTorr | ≈ 0.0018 | FWHM, stated |
+| 5S→7S ([Wang 2025](lit/wang2025.md)) | 0.32 ± 0.01 MHz/mTorr | ≈ 0.014 | not stated |
+| **5S→6S, this work** | — | **bound 0.21–0.43** | FWHM |
+
+Converted at 423 K, the temperature both papers use. The 7S paper never says
+whether its linewidth is a half width or a full width, so the factor of eight
+between the two rungs carries a factor-of-two caveat until someone settles it.
+
+Two things follow. This archive's bound sits 15 to 31 times above the 7S
+entry, which is the headroom a bound should have and is not in tension with
+anything. And the per-peak *fitted* values here, 0.026 to 0.045, land above
+the 7S rung even though 6S is the more compact state. That is independent
+support, from outside this archive, for the reading its own lever test already
+forces: those fitted widths are a floor, not resolved collisions. Inside the
+archive the evidence is that the width rises only ×1.47 across a ×52.5 density
+span. The neighbouring rung says the same thing from the other direction.
+
+Worth noting who else is in this space: [Wang 2025](lit/wang2025.md) closes by
+proposing 5S→7S as the basis for an optical frequency standard. The 5S→6S line
+is not being characterised in an empty field.
+
 **Magic wavelengths would let it be done on trapped atoms.** The awkwardness of
 a cell reference is that the atoms are hot, colliding and moving through the
 beam — the transit and collisional terms this archive spends its effort
@@ -62,6 +91,12 @@ than it sounds: the tensor polarizability vanishes identically for $J=1/2$
 approximation. The residual is the vector term
 near the 6S–5P lines need their own treatment before anyone designs a trap,
 and none of the three has been measured.
+
+![the polarizability ladder and the magic crossings](../figures/fig9_polarizability_ladder.png)
+
+*Where the magic wavelengths come from: the 5S and 6S dynamic polarizabilities
+cross three times between 1200 and 1340 nm, and each crossing is a wavelength
+where a trap would hold both states without pulling the 993 nm line.*
 
 Worth one line on where they landed, since it was not designed for: **two of the
 three sit inside the telecom O-band** (1260–1360 nm, ITU) — 1287.9 and
@@ -92,6 +127,13 @@ density-coefficient territory this archive bounds. The effort goes into suppress
 (Yudin 2020; [Andeweg 2026](lit/andeweg2026.md)), magic
 wavelengths ([Hamilton 2023](lit/hamilton2023.md)). Every one of those
 suppresses the **mean** shift.
+
+![what each observable can and cannot see](../figures/fig10_degeneracy_vs_observable.png)
+
+*The method in one picture: which physical parameters each lineshape
+observable responds to. The mean shift, the width and the asymmetry read
+different projections of the same shift distribution, which is why nulling
+the mean leaves the spread untouched.*
 
 But the mean is not the distribution. [Hamilton 2023](lit/hamilton2023.md)
 builds the very same focus-average integral this analysis does and then
@@ -276,21 +318,25 @@ therefore extracts what shapes alone can support, and states everything else
 as a bound. Concretely:
 
 - **A validated lineshape model.** Natural (3.49 MHz) ⊗ transit ⊗ laser ⊗
-  light-shift ramp reproduces every line at reduced χ² ≈ 1.1, with the beam
-  waist re-derived (~50 µm; the 32 µm nominal is excluded by transit physics.
-  [Nieddu 2019](lit/nieddu2019.md) measured 64 µm directly on the same-lineage
-  apparatus — independent support for excluding 32 µm, and the same order as
-  our value, though not the same number and not the same beam).
-- **The light-shift bound now cuts into the prediction band.** S₀(225 mW)
-  < 0.14 MHz (95%, M23: a joint full-profile fit of three sessions,
-  every trace with a free centre so the drifting laser costs nothing). Against
-  the predicted 0.59 MHz at the w₀ = 50 µm prior, that excludes the
-  tight-waist corner: equivalently Δα ≲ 271 a.u. at the nominal waist, so
-  if |Δα| is near the computed ~1100 a.u. the intensity must sit at least
-  4× below the prior (equivalent waist ≳ 100 µm), and even the most
-  conservative data subset requires ≳ 65 µm, which is where Nieddu 2019's
-  measured 64 µm sits. Twenty-five times below
-  Orson's ~6 MHz null, from shape alone.
+  light-shift ramp reproduces every line at reduced χ² ≈ 1.1. The beam waist
+  is **adopted, not measured here**: 64 µm (prior), the value
+  [Rajasree 2020](lit/rajasree2020thesis.md) measured on the same laser model,
+  the same f = 150 mm lens and the same retro geometry. The 32 µm figure this
+  work started from was a Gaussian-optics estimate that cannot account for how
+  much of the beam the 3 mm EOM aperture removed, and transit physics excludes
+  it. Residual clipping and imperfect retro overlap both push the *effective*
+  waist above 64 µm, so the working band is 60–70 µm and ρ = 0.94 ± 0.04.
+- **The light-shift bound sits below its own prediction.** S₀(225 mW)
+  < 0.15 MHz (95%, M23: a joint full-profile fit of three sessions, every
+  trace with a free centre so the drifting laser costs nothing). The
+  predicted 0.35 MHz at the adopted geometry puts the bound **2.3×
+  below it**, equivalently Δα ≲ 484 a.u. against the computed ~1100 a.u.
+  The tension is real but modest. At the old 50 µm prior the same bound
+  looked 4.2× below a 0.59 MHz prediction, and most of that gap was the
+  waist being wrong rather than the physics being
+  surprising. Either the intensity is lower than the adopted geometry implies,
+  or |Δα| is smaller than computed. A beam-profile measurement decides which.
+  Twenty-five times below Orson's ~6 MHz null, from shape alone.
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.9 while the density rises ×53 — a
   residual floor, not resolved collisions — so a naive fit's "4–10σ
@@ -363,10 +409,10 @@ leverage:
    co-limiting, not a headline and a refinement. Interleaving also fixes a
    second problem: in 2025 temperature ran monotonically down with elapsed
    time, so slow drift and density trends are confounded.
-4. **A tighter focus (~16 µm).** S₀ grows ~10× over the archival 50 µm waist (×14 against the planned 60 µm config-L), and the third cumulant grows
+4. **A tighter focus (~16 µm).** S₀ grows ~16× over the archival 64 µm waist (×14 against the planned 60 µm config-L), and the third cumulant grows
    faster still — but not by the naive ×64: the axial average over the
    collection window changes both its size and, if the window is long enough,
-   its sign (PLAN §8.3 #4 — the sign flip is secured by the landscape cathode
+   its sign (PLAN §6 #4 — the sign flip is secured by the landscape cathode
    for any plausible magnification; its size still rides on the unmeasured
    lens conjugates).
    The intrinsic asymmetry becomes detectable — turning the drift-immune
@@ -393,7 +439,7 @@ already on the bench — a New Focus 2153 femtowatt photoreceiver, gain to
 temperatures item 3 needs. Neither is new physics; both remove a systematic the
 archive had to live with.
 
-None of this is scheduled or assigned; the specification (`PLAN.md` §8) is
+None of this is scheduled or assigned; the specification ([`PLAN.md`](PLAN.md)) is
 written so that any prefix of it can be run, whenever that becomes possible.
 
 ## 6. What new nanofibre measurements would add

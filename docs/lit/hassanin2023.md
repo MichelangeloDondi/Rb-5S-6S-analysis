@@ -6,7 +6,7 @@ authors:
   - Federsel, P.
   - Karlewski, F.
   - Zimmermann, C.
-title: '{$5S$--$5D$} two-photon transition in rubidium vapor at high densities'
+title: '5S–5D two-photon transition in rubidium vapor at high densities'
 journal: Phys. Rev. A
 volume: 107
 pages: 043104
@@ -24,7 +24,7 @@ summary: >
   Detects the 5D-to-5P INFRARED cascade to observe the Doppler-free 5S-5D
   two-photon line without reabsorption at high density — the direct
   precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel
-  (PLAN 8.4a).
+  (PLAN §8).
 loci:
   - M7
 section: deep-search
@@ -32,4 +32,4 @@ section: deep-search
 
 # hassanin2023
 
-Detects the 5D-to-5P INFRARED cascade to observe the Doppler-free 5S-5D two-photon line without reabsorption at high density — the direct precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel (PLAN 8.4a). DOI verified 2026-07-17; PDF paywalled (APS), pull if needed.
+Detects the 5D-to-5P INFRARED cascade to observe the Doppler-free 5S-5D two-photon line without reabsorption at high density — the direct precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel (PLAN §8). DOI verified 2026-07-17; PDF paywalled (APS), pull if needed.

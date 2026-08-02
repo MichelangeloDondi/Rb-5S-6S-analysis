@@ -5,7 +5,7 @@ authors:
   - 'Araújo, M. O.'
   - Passerat de Silans, T.
   - Kaiser, R.
-title: 'L\''evy flights of photons with infinite mean free path'
+title: 'Lévy flights of photons with infinite mean free path'
 journal: Phys. Rev. E
 volume: 103
 number: 1

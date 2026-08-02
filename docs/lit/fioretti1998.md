@@ -7,7 +7,7 @@ authors:
   - 'Müller, J. H.'
   - Verkerk, P.
   - Allegrini, M.
-title: 'Observation of radiation trapping in a dense {Cs} magneto-optical trap'
+title: 'Observation of radiation trapping in a dense Cs magneto-optical trap'
 journal: Opt. Commun.
 volume: 149
 number: 4--6

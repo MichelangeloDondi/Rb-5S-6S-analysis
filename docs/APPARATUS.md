@@ -177,19 +177,19 @@ documented in hardware:
 
 So Ω = 12.5 MHz is set to 0.1 Hz resolution on the generator *and* is the
 EOM's designed resonance, independently. The 6.25 MHz laser-axis tooth spacing
-follows as Ω/2 by the two-photon selection rules (`PLAN.md` §2), and the
-certificates' own 100%-modulation traces show the same five-tooth pattern the
+follows as Ω/2 by the two-photon selection rules ([`DATA.md`](DATA.md) §1), and the
+certificates' own 100%-modulation traces show the same comb pattern the
 archive rulers show.
 
 **Modulation headroom.** The campaign ran at 10.00 Vpp, which the certificates
 place at **≈54–60% of full modulation**; full scale is ≈1.6× higher in drive
-voltage. `PLAN.md` §8.4 asks whether the 12.5 MHz tank can reach β ≈ 1.2 — that
+voltage. `PLAN.md` §7 asks whether the 12.5 MHz tank can reach β ≈ 1.2 — that
 headroom is the first quantitative input to the question. Note the certificates
 were taken at 780 nm, and phase-modulation index scales as 1/λ, so the index at
 993 nm is ≈0.79× the 780 nm figure at equal drive.
 
 **A constraint on the upgrade path.** The AFG31021 tops out at **25 MHz**, so
-the "higher-frequency EOM" fallback in `PLAN.md` §8.4 needs a different
+the "higher-frequency EOM" fallback in `PLAN.md` §7 needs a different
 generator as well as a different tank.
 
 ---
@@ -210,7 +210,7 @@ generator as well as a different tank.
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
 > contradiction. The experimenter confirms the PXT1/M **houses** the R636-10, so
 > the attribution was right by luck rather than by sourcing. The 3 × 12 mm
-> cathode and the landscape-vs-portrait install decision in `PLAN.md` §8.3 #4
+> cathode and the landscape-vs-portrait install decision in `PLAN.md` §6 #4
 > therefore stand. One practical rider: the tube sits in a commercial housing,
 > so orientation is set by rotating the *module* — worth checking its mounting
 > before assuming both orientations are equally easy to realise.
@@ -249,7 +249,7 @@ InfiniiVision export signature (398 of 400 sampled; the other two carry a
 corrupted first line already tracked as `header_variant`). LeCroy writes a
 different header block entirely, so the format alone settles it.
 
-This matters beyond attribution: `PLAN.md` §8.4's advice for recovering
+This matters beyond attribution: `PLAN.md` §7's advice for recovering
 per-scan timestamps was written for LeCroy `.trc`/WAVEDESC files, which this
 scope does not produce. Rewritten for InfiniiVision `.h5`, and integrity gate
 T6 of the [timestamp pre-registration](PREREGISTRATION_timestamps.md) corrected
@@ -284,10 +284,13 @@ this is the first thing to drop.
 
 <img src="apparatus/2025-07-15_eom_comb_five_teeth.jpg" width="80%" alt="Five-tooth EOM comb on the scope: carrier, two sidebands, two faint outer teeth">
 
-*The frequency ruler in the flesh (2025-07-15): the five-tooth two-photon
-comb — carrier, first sidebands, faint outer teeth — at 200 ms/div. Tooth
-spacing is Ω/2 = 6.25 MHz on the laser axis; a pattern like this calibrates
-every block's sweep.*
+*The frequency ruler in the flesh (2025-07-15): the two-photon comb at
+200 ms/div, with carrier, first sidebands and faint outer teeth. Five teeth
+are visible here. The comb actually runs to ±3 orders and the fit models
+seven, because the sixth and seventh rise above the noise only on the
+brighter traces, and truncating at five biases the spacing (addendum 19).
+Tooth spacing is Ω/2 = 6.25 MHz on the laser axis, and a pattern like this
+calibrates every block's sweep.*
 
 <img src="apparatus/2025-07-29_lecroy_ws3104z.jpg" width="60%" alt="Teledyne LeCroy WaveSurfer 3104z with SiP FY24-06 asset tag">
 

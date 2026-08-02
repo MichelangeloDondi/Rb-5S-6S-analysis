@@ -9,7 +9,7 @@ authors:
   - Luiten, A. N.
   - Ginges, J. S. M.
   - Perrella, C.
-title: 'Experimental and theoretical study of dynamic polarizabilities in the $5S_{1/2}$--$5D_{5/2}$ clock transition in rubidium-87 and determination of {E1} matrix elements'
+title: 'Experimental and theoretical study of dynamic polarizabilities in the 5S₁/₂–5D₅/₂ clock transition in rubidium-87 and determination of E1 matrix elements'
 journal: Phys. Rev. A
 year: 2023
 doi: null

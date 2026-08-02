@@ -242,7 +242,7 @@ image is the natural complement, since it shows astigmatism, ellipticity, and
 any diffraction structure from aperture clipping — the very effect that makes
 the archival $w_0$ uncertain — and [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
 $I(r)$, so confirming Gaussianity would be a useful check rather than an
-assumption. The planned $z$-scan (PLAN §8.1) already covers part of this for
+assumption. The planned $z$-scan (PLAN §4) already covers part of this for
 free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
 since $z_R=\pi w_0^2/(M^2\lambda)$, the ratio $(\pi w_0^2/\lambda)/z_R$ is
 exactly $M^2$ — so the $z_R=\pi w_0^2/\lambda$ consistency test is also a

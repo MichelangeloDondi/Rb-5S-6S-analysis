@@ -36,7 +36,7 @@ step, 1.000 s window.
 (experimenter-confirmed, 2026-07-22). Continuous operation matters beyond
 provenance: it removes warm-up transients between blocks, and it is the
 physical reason a *shared* laser-noise epoch across neighbouring blocks is
-plausible at all — the assumption `PLAN.md` §8.7.1 post-mortem row 5 records. The
+plausible at all — the assumption `PLAN.md` §10.1 post-mortem row 5 records. The
 recovered clock has since dated it rather than settled it: within a
 temperature dwell the four peak-blocks are **54–76 minutes apart**, so
 "neighbouring" means an hour, and their widths track that hour no better than
@@ -230,7 +230,7 @@ byte-exact:
 > quoted temperatures are internal readings — but an internal thermocouple is
 > still not the cold spot that sets the density; results report addendum 15
 > gives that offset its first empirical handle (Δ ≈ 0–30 K, face value ~20 K),
-> and `PLAN.md` §8.0 item 3 is the measurement that would settle it.
+> and `PLAN.md` §8 item 3 is the measurement that would settle it.
 
 ## 3a. The folders of record (consolidated 2026-07-24)
 
@@ -434,16 +434,17 @@ conclusions:
   re-crosses the line near the window edge (in 3 of 5 keepers and the
   discarded shot; verified independently from raw traces). "One window ≈ one
   up-ramp" holds for most blocks, not all — fits mask the retrace region.
-- **Frequency axis (M2 real-data run, 2026-07-11)**: laser-axis sweep rate
-  **0.04257 ± 0.00005 MHz/ms** (transition axis 0.08514; mean tooth spacing
-  146.8 ms) — ~11× slower than the initial brief's 0.49 MHz/ms seed, which
+- **Frequency axis (M2, corrected 2026-08-01)**: laser-axis sweep rate
+  **0.042526 ± 0.000051 MHz/ms** (transition axis 0.085053; mean tooth spacing
+  147.0 ms) — ~11× slower than the initial brief's 0.49 MHz/ms seed, which
   misread noise substructure as teeth. Blocks are NOT all consistent with a
-  single rate (campaign χ²/block 6.8, 0.6% RMS spread) ⇒ M3 uses **per-block
-  rates**, interpolated across bracket sequences for the power session. The
-  4207 nm power session shows a coherent 5.5σ before→after spacing shift
-  (146.7 → 144.6 ms) — a real ~1.4% in-session rate change, its own
+  single rate (campaign χ²/block 8.1, 0.6% RMS spread) ⇒ M3 uses **per-block
+  rates**, and `rate_model.py` (M2b) now also carries a time-resolved rate(t)
+  per session and peak, read where the recovered clocks license it. The
+  4207 nm power session shows a coherent 3.7σ before→after spacing shift
+  (146.4 → 144.8 ms) — a real ~1.1% in-session rate change, its own
   calibration systematic for 4207 power points. The fine-scan sweep is
-  **linear to <0.45% across the window** (no piezo nonlinearity — the
+  **linear to <0.3% across the window** (no piezo nonlinearity — the
   ruler-in-fine-scan design worked). Cold 70 °C rulers calibrate fine with
   correctly inflated errors (~2.5 ms vs ~0.3 ms warm).
 - **β_self (M4, 2026-07-11) — the archival T-sweep BOUNDS it, does not
@@ -521,7 +522,7 @@ the brief, and they moved no headline number.
   (transit/laser model + block scatter), the apparent β shrinks as the lever
   lengthens, and the archival β is a BOUND — reinforcing, not adding to, the
   model-independent headline. A fixed-lock session: the 150–170 °C points must be taken
-  inside ONE locked session (PLAN §8.4). RETRACTED framings (do not
+  inside ONE locked session (PLAN §7). RETRACTED framings (do not
   re-litigate): (i) "between-session systematic — the sessions cannot be
   combined" as the PRIMARY story (commit d711950) — the 130 °C widths lie
   on-trend, so leverage on a near-flat γ, not a session jump, drives the β
@@ -616,6 +617,6 @@ the brief, and they moved no headline number.
   reliability ≈ 0 a correction can only widen the bounds, never earn a measurement
   (the asymmetry rule). The T-sweep (the β_self density axis) has per-block rulers
   and no before/after brackets, so it cannot benefit at all. Where the idea pays is
-  the fixed-lock session's matched-PM, interleaved ruler (PLAN §8.4 / §8.7.5),
+  the fixed-lock session's matched-PM, interleaved ruler (PLAN §7 / §10.5),
   where the tooth widths become clean and well-sampled and the control variate
   crosses reliability ≈ 0 → useful.

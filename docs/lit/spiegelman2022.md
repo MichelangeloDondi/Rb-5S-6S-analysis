@@ -5,7 +5,7 @@ authors:
   - Spiegelman, F.
   - Allard, N. F.
   - Kielkopf, J. F.
-title: Collision-induced satellite in the blue wing of the Balmer-$\beta$ line and consequences on the Balmer series
+title: Collision-induced satellite in the blue wing of the Balmer-β line and consequences on the Balmer series
 journal: Astron. Astrophys.
 year: 2022
 doi: null

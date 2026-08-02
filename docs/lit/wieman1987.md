@@ -13,21 +13,13 @@ pages: 1738
 year: 1987
 doi: 10.1103/PhysRevLett.58.1738
 arxiv: null
-pdf: null
-held: false
-status: REPORTED
+pdf: PDF_papers/wieman1987.pdf
+held: true
+status: VERIFIED
 routing:
   - CITE
-verify_flags:
-  - 'REPORTED, deliberately. The bibliographic record and the abstract were read
-    from the publisher listing on 2026-07-30, and the physics below is taken
-    from the introduction of stalnaker2006, which is held and read and which
-    states that it "generalizes and extends the approach of Wieman et al." The
-    paper ITSELF has not been read: it is 1987, predates arXiv, and APS returns
-    403 without an institutional subscription. Upgrade to VERIFIED only after
-    reading the full text -- the delineation in LITERATURE.md section 5 turns on
-    what it does and does not do.'
-verified_date: null
+verify_flags: []
+verified_date: '2026-08-02'
 summary: >
   The foundational precedent for AC-Stark lineshape asymmetry: a weak transition
   (the forbidden 6S->7S M1 and Stark-induced line in Cs, from the JILA
@@ -44,12 +36,11 @@ section: prior-art
 
 # wieman1987
 
-**REPORTED, 2026-07-30.** Abstract and bibliographic record read from the
-publisher listing; the physics here is from the introduction of
-[stalnaker2006](stalnaker2006.md), which is held, read, and describes itself as
-generalising and extending this paper. The full text has not been read — PRL
-1987 predates arXiv and APS returns 403 without a subscription. Everything below
-is flagged accordingly, because the novelty delineation depends on it.
+**VERIFIED, 2026-08-02**, from the full four-page PRL (58, 1738-1741,
+27 April 1987), supplied by the experimenter. This note previously ran on the
+abstract plus [stalnaker2006](stalnaker2006.md)'s account of it, and flagged
+three questions the delineation depended on. All three are now answered from
+the primary text, and each lands where the hedge expected.
 
 **Abstract, verbatim** (supplied by the experimenter from the publisher listing,
 2026-07-30; published 27 April 1987). "We have observed the resonance line shape
@@ -60,10 +51,9 @@ calculated the line shape predicted by optical Bloch equations that include a
 spatially varying ac Stark shift, and find good agreement with our experimental
 results."
 
-Note what the abstract does *not* contain, which is why this note stays REPORTED:
-no shift distribution, no moment, no asymmetry coefficient — only that a
-lineshape was calculated from Bloch equations and matched. The three questions at
-the end of this note are exactly the ones the abstract leaves open.
+What the abstract does not contain, the full text does not contain either:
+no shift distribution, no moment, no asymmetry coefficient. It calculates a
+lineshape from Bloch equations and matches it to data.
 
 **What it did.** Excited a *very weak* atomic transition — the forbidden
 6S → 7S magnetic-dipole and Stark-induced line in caesium, in the context of the
@@ -96,23 +86,76 @@ weighting of a two-photon rate over a transverse Gaussian, with the standing
 wave shown *not* to move the mean at all (M19), because the Doppler-free rate
 goes as $I_+I_-$ and is $z$-uniform.
 
-Four further differences worth stating rather than assuming: atomic beam versus
-hot vapour cell; an optical-Bloch treatment (which
-[stalnaker2006](stalnaker2006.md) describes only as an "approach" it
-"generalizes and extends", never characterising it as numerical — this note
-originally called it numerical, which no held source supports) versus a closed
-form with analytic cumulants; a distribution over *position and velocity in a
-standing wave* versus over *transverse intensity*; and — the one that matters for the
-programme — the asymmetry treated as a **distortion to be understood and
-removed**, which is explicit in the title of the descendant
-[antypas2018](antypas2018.md), "Lineshape-asymmetry *elimination*", against this
-work's use of it as the measurement channel.
+Four further differences, each now confirmed against the full text: atomic beam
+versus hot vapour cell; a **numerical** optical-Bloch treatment, solved
+atom-by-atom and averaged numerically over standing-wave phase and transverse
+velocity, versus a closed form with analytic cumulants; a distribution over
+*longitudinal position and velocity in a standing wave* versus over *transverse
+intensity*; and the one that matters for the programme, the asymmetry treated
+as a **distortion to be understood and removed**, explicit in the title of the
+descendant [antypas2018](antypas2018.md), "Lineshape-asymmetry *elimination*",
+against this work's use of it as the measurement channel.
 
-**What must be checked in the full text before the introduction here is
-written**, because each would change the delineation: whether they write the
-shift distribution explicitly (and if so, in what variable); whether any moment
-or asymmetry coefficient is quoted as a number rather than fitted numerically;
-and whether the velocity dependence is separable from the spatial one. On the
-present evidence the concession is correctly *general* and can be *narrowed* —
-but narrowing it on an unread paper is exactly the error this repository has
-been correcting elsewhere, so it is left conceded and flagged.
+**The three questions this note carried, answered from the full text
+(2026-08-02).**
+
+1. *Is the shift distribution written explicitly, and in what variable?* No.
+   The AC-Stark detuning enters as a phase, proportional to
+   $\varepsilon^2\cos[kz(t)]$ with $z(t)=z_0+v_z t$, and the lineshape is
+   obtained by solving the Bloch equations for one atom and averaging
+   numerically over the initial standing-wave phase $z_0$ and the transverse
+   velocity distribution. No probability density of the shift appears. The
+   transverse profile is not integrated at all: the field is taken as constant
+   over the distance an atom moves in one lifetime.
+2. *Is any moment or asymmetry coefficient quoted as a number?* No. The only
+   asymmetry measure is an operational ratio $D=d/h$, the wing-distortion
+   amplitude over the undistorted peak height, read off and compared against
+   numerical output. No mean, variance, or cumulant of a shift distribution is
+   computed anywhere.
+3. *Is the velocity dependence separable from the spatial one?* No, and
+   deliberately. Both sit inside the same cosine phase through
+   $z(t)=z_0+v_z t$. The paper's physical account is a fast-atom versus
+   slow-atom dichotomy: atoms crossing many fringes per lifetime see the
+   fringe-averaged field and give symmetric wings, while slow atoms sit at a
+   frozen fringe and skew toward the local field maximum.
+
+**So the concession narrows, on evidence rather than on inference.** What is
+genuinely prior art is the general proposition, that a spatially inhomogeneous
+AC-Stark shift averaged over an atom's trajectory distorts a line
+asymmetrically, computed from first principles and matched to data with no free
+parameters. That is conceded without reservation. What is confirmed absent is
+the closed-form distribution, any cumulant, and the $I^2$ weighting: the
+transition is single-photon throughout, magnetic-dipole plus Stark-induced E1,
+so the $\varepsilon^2$ in its shift coefficient is the ordinary quadratic
+field dependence every AC-Stark shift has, not a two-photon rate weighting.
+
+**The sentence a referee would use.** The paper claims its own priority for the
+general phenomenon, saying it is to their knowledge the first observation of
+this type of line-shape distortion (p. 1738). That claim is correct and is
+already conceded here. It does not reach the closed-form power-law
+distribution, the mean pull, or the third cumulant, none of which appear in the
+paper in any form.
+
+## The abstract, verbatim (2026-08-01)
+
+Retrieved while assessing how far this paper narrows the novelty claim. It is
+the only primary text held for this reference, and it is *not* the full paper.
+
+> "We have observed the resonance line shape for a very weak atomic transition
+> excited when an atomic beam intersects a strong standing-wave laser field.
+> The line shape has a dramatic intensity-dependent distortion which is Doppler
+> free and independent of the excitation rate. We have calculated the line shape
+> predicted by optical Bloch equations that include a spatially varying ac Stark
+> shift, and find good agreement with our experimental results."
+
+Two AI assessments of this paper argued that the novelty here survives because
+"a very weak transition" implies a linear, single-photon response, which cannot
+produce the two-photon triangle. That inference is **not safe on the abstract
+alone**, and this repository does not rest on it, for two reasons. First, the
+argument was already conceded more strictly elsewhere: the $I^k$ weighting for
+$k$-photon excitation is in [delone1980](delone1980.md), so "the $I^2$ weighting
+is ours" was never available. Second, a standing wave has its own geometric
+intensity distribution, so whether the Bloch treatment amounts in effect to a
+shift-distribution map is exactly what the full text decides. The status stays
+REPORTED and the concession stays general until the paper is read. It is the
+first item on the paper request to OIST for that reason.

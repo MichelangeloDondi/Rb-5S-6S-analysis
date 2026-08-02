@@ -19,12 +19,30 @@ $\nu_c=(\nu_0-k\Omega)/2$, i.e. a comb of line-copies spaced by
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
 — the same factor-2 as [§0 — conventions](../methods.md). Fitting the tooth spacing (in ms) per block gives
-the sweep rate; we measure $0.04257(5)$ MHz/ms on the laser axis, and the
-sweep is linear across the window to $<0.45$%. A half-wave-plate trick mixes in
+the sweep rate; we measure $0.042526(51)$ MHz/ms on the laser axis, and the
+sweep is linear across the window to $<0.3$%. A half-wave-plate trick mixes in
 amplitude modulation on the ruler traces to suppress the carrier so the
 sidebands stand tall — so the tooth *spacing* is exact, but tooth *heights*
 carry no information about the modulation depth. *Code:* `ruler.py` (M2);
 $\Omega/2$ locked by a permanent test in `test_constants.py`.
+
+**How many teeth the fit must include, and what it cost to get wrong
+(2026-08-01).** The comb runs to $\pm3$ orders. Until this date the fit
+modelled only $\pm2$, and truncation is not a harmless economy here: the
+unmodelled sixth and seventh teeth sit just outside the fitted set, their
+tails leak into the window, and the only way a five-tooth model can absorb
+them is to push its outermost teeth outward. That makes $\Delta$ too small
+and the rate too high. Refitting the same 24 ruler traces both ways gives
+$\Delta=146.804$ ms at five teeth against $146.970$ ms at seven, and the
+five-tooth value reproduces the previously committed rate exactly, which is
+what identifies the truncation as the cause. The corrected campaign rate is
+therefore **0.4% of a linewidth lower**, $0.0425706 \to 0.0425265$ MHz/ms,
+a $-0.104$% shift carried by every frequency this analysis quotes. The size
+is about one standard error of the rate itself and is small beside the beam
+waist, but it is a one-directional bias rather than scatter, so it is
+corrected rather than absorbed into an error bar. The same truncation was
+railing the collisional width at zero in the M25 comb fits, which is how it
+surfaced.
 
 ### Why the ruler is a clean number — the common-mode rejections
 
@@ -61,8 +79,11 @@ equally:
   self-consistently calibrated out by a per-block
   ruler under a drifting lock.
 
-`figures/fig8_ruler.png` shows a representative trace with its five-tooth comb
-fit and the nonlinearity map.
+![a ruler trace and the sweep-linearity map](../../figures/fig8_ruler.png)
+
+*A representative ruler trace with its seven-tooth comb fit (left) and the
+pooled sweep-linearity map (right): the local rate never departs from the
+block rate by more than 0.3% in any well-sampled window.*
 
 ### The comb amplitudes — and the pure-phase-modulation null
 
@@ -80,7 +101,7 @@ This explains the 2025 design compromise and prescribes its fix:
   amplitude modulation and suppress the optical carrier — which worked, but
   put the ruler light at a **different polarization and power than the science
   light** (the reason the ruler traces cannot serve as a hardware-matched
-  width monitor for the archive; PLAN §8.4).
+  width monitor for the archive; PLAN §7).
 - **The fix needs no polarizer**: drive the EOM at
   $\beta \approx 1.202$ (where $J_0(2\beta)=0$) and the central tooth **nulls
   by coherent pair interference** — the two-photon analogue of carrier

@@ -5,7 +5,7 @@ authors:
   - Biraben, F.
   - Bassini, M.
   - Cagnac, B.
-title: 'Line-shapes in {Doppler}-free two-photon spectroscopy: the effect of finite transit time'
+title: 'Line-shapes in Doppler-free two-photon spectroscopy: the effect of finite transit time'
 journal: J. Phys. (Paris)
 volume: 40
 number: 5

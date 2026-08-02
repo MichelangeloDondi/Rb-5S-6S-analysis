@@ -6,7 +6,7 @@ authors:
   - Hager, Gordon D.
   - Erickson, Christopher J.
   - Burke, John H.
-title: 'Pressure broadening and frequency shift of the $5S_{1/2}\to5D_{5/2}$ and $5S_{1/2}\to7S_{1/2}$ two-photon transitions in $^{85}$Rb by the noble gases and {N$_2$}'
+title: 'Pressure broadening and frequency shift of the 5S₁/₂→5D₅/₂ and 5S₁/₂→7S₁/₂ two-photon transitions in ⁸⁵Rb by the noble gases and N₂'
 journal: 'J. Phys. B: At. Mol. Opt. Phys.'
 volume: 47
 number: 22

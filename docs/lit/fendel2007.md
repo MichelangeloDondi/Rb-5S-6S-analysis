@@ -60,7 +60,7 @@ claimed here.
 
 **A coincidence worth checking before it is noticed for us.** Fendel quote a
 2.9 kHz shift for **225 mW** incident on the cell -- the same power figure as
-this archive's S_0(225 mW) < 0.63 MHz bound. Whether that is coincidence or a
+this archive's S_0(225 mW) < 0.64 MHz bound. Whether that is coincidence or a
 convention inherited from this literature, it makes the two numbers directly
 comparable and a reviewer will see it.
 

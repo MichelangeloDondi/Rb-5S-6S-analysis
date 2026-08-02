@@ -8,7 +8,7 @@ authors:
   - 'Volz, Jürgen'
   - Rauschenbeutel, Arno
   - Pennetta, Riccardo
-title: '{$\Lambda$}-enhanced gray-molasses loading and {EIT} cooling of neutral atoms in nanophotonic traps'
+title: 'Λ-enhanced gray-molasses loading and EIT cooling of neutral atoms in nanophotonic traps'
 journal: arXiv preprint
 year: 2026
 doi: null

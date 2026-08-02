@@ -160,10 +160,10 @@ OPEN until the fixed-lock session's collection-profile measurement):
 |---|---|---|---|---|
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
 | 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
-| 50 µm (2025 archival) | 0.25 | $-0.653$ | 0.125 | $+0.558$ |
+| 64 µm (2025 archival) | 0.31 | $-0.647$ | 0.126 | $+0.550$ |
 | 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ * |
 
-\* At 225 mW config S is already saturated (PLAN §8.0), so the effective
+\* At 225 mW config S is already saturated (PLAN §3), so the effective
 signal exponent there is $n<2$: that *strengthens* the negative skew but the
 $n=2$ magnitudes in this row are no longer parameter-free. At config S the
 sign is the robust observable; the magnitudes belong to L and M.
@@ -206,7 +206,7 @@ the whole plausible range of magnification:
 
 So the sign-flip test does not require $M$ to be known: it holds for every $M$
 from 0.5 to 6. Portrait would have forfeited it — $Z_c = 1.5/M$ mm sits below
-the 0.90 mm flip threshold for any $M>1.7$ (PLAN §8.3 #4).
+the 0.90 mm flip threshold for any $M>1.7$ (PLAN §6 #4).
 
 **The magnification is roughly known too.** The collection lens was the
 $f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (experimenter,
@@ -225,16 +225,17 @@ behind it, an ordinary side-viewing layout. Three consequences:
    against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$–$0.95$ in a
    quantity whose full range is $\pm0.57$.
 
-The remaining measurement is $u$ and $v$ (PLAN §8.1, §8.3 #4); the
+The remaining measurement is $u$ and $v$ (PLAN §4, §6 #4); the
 solid-angle weighting varies by <2% across any such window, so the top-hat
 form is fair and the *width* is the only unknown. Geometry permitting, a
 proposed session's skew program is then a **sign-flip test between beam
 configurations** — $g_1>0$ at the large waist, $g_1<0$ at the small one —
 a signature no instrumental asymmetry can mimic, because the instrument
-depends on $z_R$. At the re-centred 50 µm archival waist the
+depends on $z_R$. At the adopted 64 µm archival waist the
 coefficients above carry only a few-% geometry caveat (its longer $z_R$ makes
 the ramp nearly the pure-triangle $Z_c\to0$ limit, $g_1\approx+0.56$; it was
-10–40% at the old 32 µm nominal). *Code:*
+10–40% at the old 32 µm nominal, and the wider waist only strengthens the
+approximation). *Code:*
 `stark_ramp_axial()`, table from `scripts/run_ramp_geometry.py`.
 
 #### Standing-wave fringes: why the shift follows the envelope
@@ -255,17 +256,21 @@ speed $\lesssim5$ m/s — 1–2% of the signal — are fringe-resolved; a
 percent-level correction.) The remaining OPEN quantity in $S_0$ is the
 measured $\rho$ per beam configuration (in situ at the cell, in a fixed-lock session).
 
-**Why $\rho\approx1$ is a design property here.** The 2025 retro is a
+**Why $\rho$ sits close to 1 by design, and why it is now assumed rather
+than asserted.** The 2025 retro is a
 self-imaging (lens-based) one: the beam is focused into the cell by L1
 ($f=150$ mm), and a second lens L2 ($f=150$ mm) after the cell maps the cell
 waist onto an intermediate waist behind it — by the Gaussian $f$–$f$ property a
 waist at a lens's front focal plane becomes a waist at its back focal plane,
-here $w_0'=\lambda f/(\pi w_0)\approx0.95$ mm for $w_0=50\ \mu$m. A **flat**
+here $w_0'=\lambda f/(\pi w_0)\approx0.74$ mm for $w_0=64\ \mu$m. A **flat**
 mirror placed at that flat wavefront *time-reverses* the beam, so it retraces
-back through L2 and re-forms the original 50 µm cell waist. The forward and
-return modes therefore match **by construction**, and $\rho$ falls below 1 only
+back through L2 and re-forms the original 64 µm cell waist. The forward and
+return modes therefore match **by construction**, and $\rho$ falls below 1
 through losses (two further L2 passes, two further window passes, mirror
-reflectivity), not through mode mismatch. The arrangement is also forgiving:
+reflectivity) and through whatever superposition imperfection the alignment
+leaves. Since v3.0.0 the code assumes $\rho=0.94\pm0.04$ rather than the
+design value 1, because the design argument covers mode matching and not
+loss. The arrangement is also forgiving:
 that intermediate beam has $z_R'\approx2.8$ m, so the "mirror at the waist"
 condition holds to within tens of centimetres, and residual sensitivity is
 dominated by mirror *tilt*, not longitudinal placement. (The 2019 reference
@@ -274,12 +279,13 @@ at $2f$ instead of a lens plus flat mirror — a different implementation of the
 identical idea; `LITERATURE.md` [§6 — Assumptions, and where this can go](08_assumptions_and_outlook.md)a.) Note the design must be *re-established
 per waist* in a fixed-lock session: L2 has to sit a focal length from the new waist, and the
 intermediate beam grows to $\approx3$ mm at $w_0=16\ \mu$m, so return-path
-clipping is the thing to watch (PLAN §8.1).
+clipping is the thing to watch (PLAN §4).
 
-How much would a departure from $\rho=1$ actually cost? Less than one might
-fear, and the archive's own signal quality provides indirect evidence. Since $S_0\propto(1+\rho)$, *any*
-$\rho\in[0,1]$ moves the prediction only between 0.29 and 0.59 MHz — a factor
-of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.14$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
+How much would a departure from the assumed $\rho$ actually cost? Less than
+one might fear, and the archive's own signal quality provides indirect
+evidence. Since $S_0\propto(1+\rho)$, *any*
+$\rho\in[0,1]$ moves the prediction only between 0.18 and 0.36 MHz — a factor
+of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.15$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
 brackets the whole range, so no archival conclusion turns on it. Better, the
 Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
@@ -303,13 +309,14 @@ so $\Delta E_i=-\tfrac14\alpha_i E_0^2=-\alpha_i I/(2\varepsilon_0 c)$ and
 $$S_0=\frac{\Delta\alpha\ I_\text{eff}}{2\varepsilon_0 c h},\qquad
 I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
-With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.59$ MHz (transition) at 225 mW,
-$w_0=50\ \mu$m (the archival prior; it was 1.43 at the old 32 µm nominal),
-$\rho=1$, growing to 5.7 MHz at $w_0=16\ \mu$m. The on-axis $\propto S_0^3$
+With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.35$ MHz (transition) at 225 mW,
+$w_0=64\ \mu$m (the adopted prior; it read 0.59 at the superseded 50 µm and
+1.43 at the 32 µm nominal before that),
+$\rho=0.94$, growing to 5.6 MHz at $w_0=16\ \mu$m. The on-axis $\propto S_0^3$
 scaling above is the *pure transverse triangle*; at a small waist the axial
 average over the collection window changes the third cumulant's magnitude
 and, past $Z_c/z_R\approx1.12$, its sign, so the small-waist gain is not the
-naive $\times 64$ (§ the geometry discussion below; PLAN §8.3 #4). The **sign** is
+naive $\times 64$ (§ the geometry discussion below; PLAN §6 #4). The **sign** is
 convention-independent — set by $\text{sign}(\Delta\alpha)$, red for Orson's
 published $\Delta\alpha>0$. That sign is itself under adjudication: an
 independent sum-over-states recompute here agrees on magnitude (within 5%) but

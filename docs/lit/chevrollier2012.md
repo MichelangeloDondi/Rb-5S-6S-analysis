@@ -3,7 +3,7 @@ citekey: chevrollier2012
 type: article
 authors:
   - Chevrollier, Martine
-title: 'Radiation trapping and {L\''evy} flights in atomic vapours: an introductory review'
+title: 'Radiation trapping and Lévy flights in atomic vapours: an introductory review'
 journal: Contemp. Phys.
 volume: 53
 number: 3

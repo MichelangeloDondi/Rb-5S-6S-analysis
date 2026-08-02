@@ -9,7 +9,7 @@ authors:
   - Pedri, P.
   - Scheel, S.
   - Laliotis, A.
-title: 'Selective reflection {Casimir}--{Polder} spectroscopy in vapor cells: the influence of the thermal velocity distribution'
+title: 'Selective reflection Casimir–Polder spectroscopy in vapor cells: the influence of the thermal velocity distribution'
 journal: Phys. Rev. A (accepted)
 year: 2025
 doi: null

@@ -168,7 +168,7 @@ ruler *rate* is a differential across identical lines, immune to the light
 shift and to the lineshape asymmetry (methods §3):
 
 <p align="center">
-  <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its five-tooth comb fit, and the empirical sweep-linearity map">
+  <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its seven-tooth comb fit, and the empirical sweep-linearity map">
 </p>
 
 ## Results at a glance
@@ -180,9 +180,9 @@ so each is reported as a bound together with the measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points **and** a lower block-noise floor — both, see M17 |
 | 2025 laser linewidth **σ_laser** | ≈ 0.8 MHz at the w₀ prior (0.4–1.1 over the open w₀) | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.14 MHz (95%, joint three-session full-profile likelihood, M23; below the 0.59 predicted at the nominal waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.15 MHz (95%, joint three-session full-profile likelihood, M23; below the 0.35 predicted at the adopted waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
-| Beam waist **w₀** | ≈ 50 µm (prior; Nieddu 2019 measured 64 µm directly on the same-lineage apparatus) | open | beam-profile measurement |
+| Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is now verified from the typeset PDF — convention stated in words, value repeated in SI, and his own worked −0.66 MHz reproduced here at −0.653 — so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line | calculated (envelope) | vector term under circular polarization; a trapped-atom platform |
 
@@ -205,8 +205,8 @@ shift would give; the ramp's *distinctive* signature, the skew ∝ S₀³, is be
 detection in the archive (a bound), which is why the coefficient itself waits
 for a fixed-lock session. The S₀ bound and its prediction are independent by
 construction: the bound uses only the width-vs-power data (no w₀ enters),
-while the predicted 0.59 MHz is the computed polarizability at the beam
-geometry's w₀ prior, with the retro ratio ρ=1 asserted (its in-situ measurement
+while the predicted 0.35 MHz is the computed polarizability at the beam
+geometry's w₀ prior, with the retro ratio ρ=0.94±0.04 (its in-situ measurement
 is a fixed-lock-session task) — fixed before the fit and never an input to it.
 
 <p align="center">
@@ -223,9 +223,9 @@ $$I(\nu) = A\left[ L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigm
 |---|---|---|---|
 | Natural width **Γ_nat** | finite 6S lifetime | 3.49 MHz (fixed, known) | Lorentzian |
 | Collisional **γ_coll** | Rb–Rb collisions | 0.12–0.70 MHz across conditions | Lorentzian (adds to natural) |
-| Laser **σ_laser** | laser frequency jitter | ~1.5 MHz (≲ 2.2 bound) | Gaussian |
-| Transit | finite time an atom spends in the beam | ~1.2 MHz at w₀ ≈ 50 µm | cusp kernel (Biraben–Cagnac / Lehmann) |
-| AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.6 MHz at 225 mW | triangular "ramp" |
+| Laser **σ_laser** | laser frequency jitter | ~1.9 MHz (range 1.8–2.1 across peaks) | Gaussian |
+| Transit | finite time an atom spends in the beam | ~0.93 MHz at w₀ ≈ 64 µm | cusp kernel (Biraben–Cagnac / Lehmann) |
+| AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.35 MHz at 225 mW | triangular "ramp" |
 
 The AC-Stark **ramp** is what the rest of the analysis is built on: because the beam is focused,
 the light shift runs from zero at the dim edge to a maximum S₀ on the bright axis,

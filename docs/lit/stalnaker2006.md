@@ -8,7 +8,7 @@ authors:
   - Guzman, J. S.
   - Rochester, S. M.
   - Yashchuk, V. V.
-title: 'Dynamic {Stark} effect and forbidden-transition spectral lineshapes'
+title: 'Dynamic Stark effect and forbidden-transition spectral lineshapes'
 journal: Phys. Rev. A
 volume: 73
 number: 4

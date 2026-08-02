@@ -9,7 +9,7 @@ authors:
   - Phelps, G.
   - Burke, J. H.
   - Lemke, N. D.
-title: 'Frequency shifts due to {Stark} effects on a rubidium two-photon transition'
+title: 'Frequency shifts due to Stark effects on a rubidium two-photon transition'
 journal: Phys. Rev. A
 volume: 100
 number: 2

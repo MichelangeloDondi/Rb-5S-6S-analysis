@@ -7,7 +7,7 @@ authors:
   - Lange, A. D.
   - Sprouse, G. D.
   - Orozco, L. A.
-title: Lifetime measurement of the $6s$ level of rubidium
+title: Lifetime measurement of the 6s level of rubidium
 journal: Phys. Rev. A
 volume: 72
 number: 1

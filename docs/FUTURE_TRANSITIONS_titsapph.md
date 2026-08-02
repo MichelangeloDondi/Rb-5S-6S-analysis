@@ -111,7 +111,7 @@ the current near-IR path does not pass. So:
   **InGaAs** detector — single-photon sensitivity below a Si PMT, plus hot-cell
   IR-background filtering) is a **trapping-free** amplitude channel, and the
   **795-vs-1.3 µm ratio discriminates a real degeneracy-law/amplitude deviation from
-  a radiation-trapping artifact** (`PLAN.md` §8.4a). The IR-cascade-to-beat-trapping
+  a radiation-trapping artifact** (`PLAN.md` §8). The IR-cascade-to-beat-trapping
   trick is established on the sibling line — Hassanin et al. 2023 (5D→5P) and Beard
   et al. 2024 (5D→6P, 776 nm) — so it is proven, not speculative. Orthogonal to the
   420 nm upper-ladder swap — this is a 6S-detection refinement, not an enabler.
@@ -163,7 +163,7 @@ derisking step on this page.
 > the vapour-cell framing. That inherits a further dependency: at small waist the
 > ramp skew is itself conditional on the axial collection geometry, which is
 > unmeasured — the axial average can suppress it or reverse its sign
-> (PLAN §8.3 #4). So this proposal is gated on the same collection-profile
+> (PLAN §6 #4). So this proposal is gated on the same collection-profile
 > measurement, not only on reaching small waist. The reason "nobody does this" is not an oversight: with a
 > stable reference the pull (∝S₀) is strictly better, so the passive shape route is
 > preferable only where reference-freedom or orthogonal systematics are required.
@@ -227,7 +227,7 @@ derisking step on this page.
   C₆ ~ n*⁷) and the Safronova matrix elements. We find **no modern 6S dynamic
   polarizability at 993 nm exists** — a gap this fills.
 - Feasibility: β_self is ~kHz at 6S (needs the fixed-lock session high-T, same-session shot-list
-  upgrade already in PLAN §8.4); 5D/7S sit closer to resonance so *may* broaden more
+  upgrade already in PLAN §7); 5D/7S sit closer to resonance so *may* broaden more
   and be easier. Lower risk than A, lower ceiling.
 
 ## 4. Recommendation & sequencing

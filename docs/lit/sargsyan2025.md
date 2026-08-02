@@ -5,7 +5,7 @@ authors:
   - Sargsyan, A.
   - Momier, R.
   - Sarkisyan, D.
-title: 'Doppler-free selective reflection spectroscopy of the {6s}~{$^2S_{1/2}$}--{7p}~{$^2P_{3/2}$} transition of cesium using a nanofabricated vapor cell'
+title: 'Doppler-free selective reflection spectroscopy of the 6²S₁/₂–7p ²P₃/₂ transition of cesium using a nanofabricated vapor cell'
 journal: arXiv preprint
 year: 2025
 doi: null

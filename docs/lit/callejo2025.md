@@ -4,7 +4,7 @@ type: article
 authors:
   - Callejo, M.
   - others
-title: 'Short-term stability of a microcell optical reference based on the {Rb} atom two-photon transition at 778 nm'
+title: 'Short-term stability of a microcell optical reference based on the Rb atom two-photon transition at 778 nm'
 journal: J. Opt. Soc. Am. B
 volume: 42
 number: 1

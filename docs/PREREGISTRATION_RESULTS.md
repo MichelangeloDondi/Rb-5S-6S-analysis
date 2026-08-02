@@ -21,8 +21,8 @@ it, predictions were committed about what it would contain
 `0af038b`); the quarantine copy was then frozen under a
 SHA-256+MD5+size+epoch manifest and scored once.
 
-**The audit voided.** Its own integrity gate — content identity between
-archive and backup — failed at T1. That verdict stands unedited, and
+**The audit voided.** Its own integrity gate, content identity between
+archive and backup, failed at T1. That verdict stands unedited, and
 everything after it is labelled **post-hoc**, with no pre-registered
 standing. The gate did its job: it stopped a favourable-looking result from
 being reported as a confirmed one.
@@ -46,6 +46,8 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The pilot session's `91 °C` is a **set point, not a cell temperature** — it ran at the rehearsal's internal ~130 °C, not the campaign's 90 °C | addendum 17 |
 | **One ratio predicts every result's status**: dynamic range over block noise — amplitude 45, widths 1.5–5.3, matching where the archive reports numbers vs bounds | addendum 18 |
 | The archive's composite lineshape describes the **pilot out of sample** at χ²_red 0.83–1.01, and reproduces its γ_coll↔σ_laser degeneracy at corr −0.97 | addendum 17 postscript |
+| The **frequency ruler fitted five comb teeth where there are seven**, biasing the sweep rate high by 0.104%. Corrected to 0.042526 MHz/ms and the whole pipeline re-run | addendum 19 |
+| Two flagged wing anomalies were **one un-converged fit**: a single start left the amplitude at 20x the true chi2. Multi-started, both vanish and C3g's closure is a null at every temperature | addendum 20 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -64,8 +66,8 @@ published, called load-bearing, and was a null.
 
 **What none of it changed.** No number in [`results/`](../results/) moved.
 Widths are per-trace and centre steps do not enter them. The clock
-characterises the instrument, dates a design flaw — four peaks spread over an
-hour — and specifies its remedy in [`PLAN.md`](PLAN.md); it does not
+characterises the instrument, dates a design flaw (four peaks spread over an
+hour) and specifies its remedy in [`PLAN.md`](PLAN.md). It does not
 re-open a fitted result.
 
 ---
@@ -105,6 +107,8 @@ re-open a fitted result.
 - [Addendum 17, 2026-07-25 — the pilot ran hot: its oven label is a set point, not a reading](#addendum-17-2026-07-25--the-pilot-ran-hot-its-oven-label-is-a-set-point-not-a-reading)
   - [Postscript to addendum 17, 2026-07-25 — the linewidth test refitted, and withdrawn](#postscript-to-addendum-17-2026-07-25--the-linewidth-test-refitted-and-withdrawn)
 - [Addendum 18, 2026-07-25 — one ratio that predicts every result's status](#addendum-18-2026-07-25--one-ratio-that-predicts-every-results-status)
+- [Addendum 19, 2026-08-01 — the frequency ruler fitted five teeth where there are seven](#addendum-19-2026-08-01--the-frequency-ruler-fitted-five-teeth-where-there-are-seven)
+- [Addendum 20, 2026-08-02 — two flagged anomalies were one un-converged fit](#addendum-20-2026-08-02--two-flagged-anomalies-were-one-un-converged-fit)
   - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
 
 ---
@@ -502,7 +506,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > the alternative. Both readings predict a ratio of 1 to within ~0.002, against a
 > per-move scatter of 11.5 ms. The test has no power. Nothing decides it because
 > the triangle ramp was on scope **CH1 and only CH2 was exported** — the omission
-> now recorded as Tier-0 item 0 in [PLAN](PLAN.md) §8.0.
+> now recorded as Tier-0 item 0 in [PLAN](PLAN.md) §3.
 >
 > **Therefore: no quantity below that depends on a between-block position
 > difference is a single number.** Each is a band spanned by the two frames.
@@ -766,7 +770,7 @@ back, arguing the centre observables deserved a real attempt before being
 written off — correctly on both counts: no attempt had been made, and for
 one of the three centre observables an attempt succeeds.
 
-> **§1 WITHDRAWN 2026-07-30 (M21).** The pull bound below — 3.5 MHz here, 5.5 MHz
+> **§1 WITHDRAWN 2026-07-30 (M21).** The pull bound below — 3.5 MHz here, 5.4 MHz
 > under addendum 7's mixture — is retracted. Its observation model has no free
 > offset at a scope horizontal-position move, and the exported time axis is
 > referenced to that setting, so differencing centres across a move differences
@@ -790,17 +794,17 @@ observation and profiling q:
   MHz transition → **S₀(225 mW) < 3.5 MHz (95%) from the centre channel
   alone**.
 - *(Addendum 7 re-profiles this under the adequate noise model:
-  < 5.5 MHz — the mixture discounts the 25 mW anchors where the moves live.)*
+  < 5.4 MHz — the mixture discounts the 25 mW anchors where the moves live.)*
 - **Injection closure**: a pull injected into the real positions at 1×, 4×
   and 10× the predicted size is recovered to ±0.0001 ms/mW. The estimator is
   unbiased; only the recapture-noise floor limits it.
 - The width-channel archival bound (M4e, profile likelihood) is
-  S₀(225) < 0.63 MHz — so the centre channel is **~5.5× looser**, and the
+  S₀(225) < 0.64 MHz — so the centre channel is **~5.5× looser**, and the
   first draft of this addendum quoted the superseded Wald diagnostic
   (3.1) beside it until the canonical-value gate caught the stale citation.
   The two channels **corroborate each other through disjoint systematics** —
   ramp broadening in the widths, centroid displacement in the centres. The
-  centre floor sits ~6× above the 0.59 MHz prediction, where the width
+  centre floor sits ~10× above the 0.35 MHz prediction, where the width
   channel already presses against it. A bound, not a measurement; but a
   bound from a channel the archive was declared incapable of producing.
 
@@ -878,11 +882,11 @@ Within-block moves were rare, as remembered: 3 events in 78 transitions.
   drift settling +4.0 against; τ_i ≈ 91 min). The etalon-transient story is
   untouched.
 - **Pull bound, re-profiled under the mixture: q = −0.050 [−0.190, +0.070]
-  ms/mW (95%) → S₀(225 mW) < 5.5 MHz transition** — WITHDRAWN 2026-07-30 for the
+  ms/mW (95%) → S₀(225 mW) < 5.4 MHz transition** — WITHDRAWN 2026-07-30 for the
   reason given at addendum 6 §1 (no free offset at a horizontal-position move);
   it was looser than addendum 6's
   3.5 (the mixture rightly discounts the 25 mW anchor points where the moves
-  live), now ~8× above the width channel and ~9× above the prediction.
+  live), now ~9× above the width channel and ~16× above the prediction.
 - Persistence extrapolation: ~20 MHz laser over the 20.5 h (was ~39).
   D0 margin: ~250× on the laser axis (was ~125×).
 
@@ -1454,7 +1458,7 @@ named and deliberately left unpropagated.
 
 **What it changes is the priority.** An in-situ density measurement was one
 item among several on the fixed-lock session's list
-([`PLAN.md`](PLAN.md) §8.0). It should be near the top: at ×1.4–×7 leverage
+([`PLAN.md`](PLAN.md) §3). It should be near the top: at ×1.4–×7 leverage
 on the headline C1 number, the cold spot is plausibly a **larger systematic
 than the beam waist**, and unlike w₀ it is cheap to bound — a thermocouple on
 the coldest accessible glass, or a Rb absorption measurement on a weak probe,
@@ -1507,7 +1511,7 @@ repository:
 15's 0–30 K, with its ×1.4–×7.4 leverage on β_self, and the archive has now
 exhausted its own routes to narrowing it. That is not a failure of the
 analysis — it is the correct answer to "can this dataset settle it", and it
-is precisely why `PLAN.md` §8.0 item 3 (D-line absorption thermometry,
+is precisely why `PLAN.md` §8 item 3 (D-line absorption thermometry,
 measuring N directly and returning ΔT_cs as the offset from the
 vapour-pressure prediction) is the measurement that does, and item 4
 (fluorescence-area ÷ absorption) the one that separates trapping cleanly.
@@ -1577,7 +1581,7 @@ would move from $\beta_\text{self} < 0.44$ to roughly **< 1.6** MHz per
 10¹² cm⁻³. The bound is not restated here — a 2.4σ indication from a
 systematics-dominated channel is not grounds to move a headline — but it is
 now the largest identified systematic on C1, ahead of the beam waist, and
-`PLAN.md` §8.0 item 3 (D-line absorption thermometry) measures it directly.
+`PLAN.md` §8 item 3 (D-line absorption thermometry) measures it directly.
 
 *Post-hoc, exploratory. Reproducible from the committed `amplitude_trapping.csv`;
 the per-peak normalisations are profiled analytically and the excess scatter is
@@ -1989,7 +1993,7 @@ headline. Against the measured floor of 0.086 MHz on a 5.3 MHz line:
 
 **Hot points alone do not deliver a measurement.** They move β_self from
 invisible to marginal. The noise half is co-limiting, not a refinement of the
-temperature half, and `PLAN.md` §8 Tier 1 now says so with these numbers
+temperature half, and `PLAN.md` §3 Tier 1 now says so with these numbers
 attached.
 
 The one caveat to carry: the 0.07–0.25 MHz signal is itself derived from a
@@ -2058,7 +2062,7 @@ be wrong, and there is no better estimate to replace it with.
 and never returned. Re-measuring **one earlier condition later in the same
 session** separates common from independent scatter directly, because the two
 make different predictions about a repeat at identical settings. One block.
-`PLAN.md` §8 now carries it, and it is the cheapest item on that page.
+`PLAN.md` §7 now carries it, and it is the cheapest item on that page.
 
 **One correction to that argument, made after checking it.** The first
 version of this claimed that *every* bound absorbing block scatter makes the
@@ -2081,3 +2085,105 @@ explicit coverage correction for estimating that scatter on n − 2 degrees of
 freedom, so it was not taken for granted there. The returned-to block is
 still worth one block of beam time; the case for it is narrower than
 the case first written here.
+
+---
+
+## Addendum 19, 2026-08-01 — the frequency ruler fitted five teeth where there are seven
+
+**What happened.** `rb5s6s/ruler.py` modelled the EOM comb with five teeth,
+orders $-2$ to $+2$, in all three places that touch tooth positions. The comb
+runs to $\pm3$. The experimenter said so directly, and the traces agree.
+
+**Why a truncation moves a spacing.** The sixth and seventh teeth sit just
+outside the fitted set. Their tails still fall inside the fitting window, and
+a five-tooth model has only one way to absorb signal it cannot name, which is
+to push its outermost teeth outward. That makes the fitted spacing $\Delta$
+too small, and since the rate is $\Omega/2\Delta$, it makes the rate too high.
+
+**The measurement.** The same 24 ruler traces, refitted both ways on the raw
+millisecond axis, before anything downstream was touched:
+
+| tooth count | $\Delta$ | rate (laser axis) |
+|---|---|---|
+| five | 146.804 ms | 0.042574 MHz/ms |
+| seven | 146.970 ms | 0.042526 MHz/ms |
+
+The five-tooth number reproduces the committed 0.04257061 to 0.008%, which is
+what identifies truncation as the cause rather than a difference in method.
+Re-running M2 in full gives **0.04257061 → 0.04252649 MHz/ms, a $-0.104$%
+shift**, and it is carried by every frequency this analysis quotes.
+
+**How large is that.** About one standard error of the rate itself, and small
+next to the beam waist. It matters because it is one-directional. Scatter
+averages away across blocks and a bias does not, so it is corrected in the
+code rather than carried in an error bar.
+
+**How it surfaced.** Not from the ruler at all. The M25 global fit models the
+ruler traces as combs, and with five teeth its collisional width railed at
+exactly zero on all four peaks. A parameter pinned at a bound is a symptom
+rather than a result, and following it back found the truncation. The same
+fit with seven teeth returns physical widths.
+
+**What was checked and not changed.** The EOM drive frequency is untouched:
+$\Omega = 12.5$ MHz is a hardware certificate, and the tooth spacing measured
+in frequency units still agrees with it to 0.1 to 0.5% across peaks. The
+comb's own uniformity was tested by fitting the spacing free rather than
+assuming it, and it is uniform. An earlier reading of these traces claimed a
+retrace fold, which was an artifact of a threshold peak finder run at 3% on
+unsmoothed data and is withdrawn.
+
+**Status of everything downstream.** Every fitted number in the repository
+rides on this rate, so the whole pipeline was re-run from `run_ruler` forward
+rather than patched. Numbers shift by of order 0.1%, which is well inside
+every quoted systematic and changes no conclusion, but the values in the
+committed CSVs are the corrected ones from this date.
+
+---
+
+## Addendum 20, 2026-08-02 — two flagged anomalies were one un-converged fit
+
+**What was reported.** The wing check (M24) carried two single-condition
+anomalies it could not explain: a red-side wing fraction of 0.139 at
+993.4192 nm / 110 °C, flagged on 2026-07-31, and 0.185 at 993.4207 nm /
+130 °C, flagged the next day. Both were recorded rather than smoothed over,
+and both were left standing as open items.
+
+**The tell.** Each moved when something unrelated to it changed. The first
+appeared after the beam-waist reprior. The second appeared after a 0.2%
+change in the sweep rate, and in the same step the first vanished. A
+quantity that responds to an input it does not depend on has not measured
+anything.
+
+**What it was.** The wing amplitude was started at zero and fitted once. On
+the brightest conditions that start converges to a second, far worse local
+minimum. Refitting 993.4207 nm / 130 °C from five starts, on identical data:
+
+| start | fitted $f_w$ | $\chi^2$ |
+|---|---|---|
+| 0.00 | 0.194 | 30845 |
+| 0.02 | 0.198 | 30756 |
+| 0.10 | **0.000** | **1577** |
+| 0.20 | 0.000 | 1577 |
+| 0.40 | 0.000 | 1577 |
+
+The committed value sat at twenty times the $\chi^2$ of the true optimum. It
+was not a marginal preference between comparable fits, it was a failure to
+converge, and it landed at exactly the density lever the C3g closure rests
+on.
+
+**The fix and its effect.** `fit_wing` now starts from a spread of
+amplitudes and keeps the lowest $\chi^2$. Both anomalies disappear, and the
+closure is a null at every temperature: the red-minus-blue asymmetry at
+130 °C is $-0.0007 \pm 0.0013$ of peak, and no temperature exceeds 0.7σ.
+C3g's conclusion is unchanged. What changed is that it no longer rests on a
+number that a different starting guess would have moved.
+
+**The general lesson, which is why this is an addendum and not a commit
+message.** A bounded least-squares fit of an amplitude that can trade
+against the core is not safe from one start at high signal-to-noise.
+The failure is silent: the fitter returns, the error bar is small, and the
+result reads as a detection. Two rounds of this report treated the output as
+a physical anomaly worth flagging before anyone asked whether the fit had
+converged. Check convergence before interpreting an outlier, and treat
+sensitivity to an irrelevant input as evidence of a numerical problem rather
+than a subtle physical one.

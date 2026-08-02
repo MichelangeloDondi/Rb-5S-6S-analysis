@@ -6,7 +6,7 @@ authors:
   - Owens, Carlos
   - Dash, Bineet
   - Raithel, Georg
-title: 'An optical atomic clock using {$4D_J$} states of rubidium'
+title: 'An optical atomic clock using 4D_J states of rubidium'
 journal: Quantum Sci. Technol.
 volume: 9
 pages: 045046

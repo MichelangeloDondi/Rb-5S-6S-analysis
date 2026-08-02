@@ -14,7 +14,7 @@ authors:
   - Witkowski, M.
   - 'Ciuryło, R.'
   - Zawada, M.
-title: Absolute frequency measurement of rubidium 5S--7S two-photon transitions
+title: Absolute frequency measurement of rubidium 5S–7S two-photon transitions
 journal: Opt. Lett.
 volume: 38
 number: 22

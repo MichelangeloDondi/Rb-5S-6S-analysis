@@ -7,7 +7,7 @@ authors:
   - Karlsson, K.
   - Everett, J. L.
   - Nic Chormaic, S.
-title: 'Generation of cold {Rydberg} atoms at submicron distances from an optical nanofiber'
+title: 'Generation of cold Rydberg atoms at submicron distances from an optical nanofiber'
 journal: Phys. Rev. Research
 volume: 2
 number: 1

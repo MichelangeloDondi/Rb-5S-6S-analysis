@@ -3,7 +3,7 @@ citekey: biraben2019
 type: article
 authors:
   - 'Biraben, François'
-title: 'The first decades of {Doppler}-free two-photon spectroscopy'
+title: 'The first decades of Doppler-free two-photon spectroscopy'
 journal: C. R. Phys.
 volume: 20
 number: 7--8

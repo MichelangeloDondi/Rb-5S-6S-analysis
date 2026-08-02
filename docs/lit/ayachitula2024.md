@@ -8,7 +8,7 @@ authors:
   - Knize, R. J.
   - Mungan, C. E.
   - Lindsay, M. D.
-title: 'Precision measurement of hyperfine constants and isotope shift of the {Rb} $6S_{1/2}$ state via a two-photon transition'
+title: 'Precision measurement of hyperfine constants and isotope shift of the Rb 6S₁/₂ state via a two-photon transition'
 journal: Phys. Rev. A
 volume: 110
 number: 2
