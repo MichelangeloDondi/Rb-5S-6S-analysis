@@ -55,7 +55,8 @@ FILE_STATUS = {
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
-    "ruler_rate_model.csv": "MEASURED",   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "ruler_rate_model.csv": "MEASURED",
+    "pilot_ruler.csv": "CALIB",           # M26: the pilot day's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
     "global_archive_fit.csv": "PRELIM",   # M25 joint archive fit, rulers-on arm; headline stays with M23
     "global_archive_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split

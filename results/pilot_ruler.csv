@@ -1,0 +1,31 @@
+quantity,key,value,err,unit,status
+trace_rate,def/eom_def_hr_1.csv,0.042451,0.000022,"MHz/ms laser; delta 147.23 ms, chi2_red 1.18",CALIB
+trace_rate,def/eom_def_hr_2.csv,0.042507,0.000022,"MHz/ms laser; delta 147.03 ms, chi2_red 1.22",CALIB
+trace_rate,def/eom_def_hr_3.csv,0.042750,0.000019,"MHz/ms laser; delta 146.20 ms, chi2_red 1.32",CALIB
+trace_rate,def/eom_def_hr_4.csv,0.042396,0.000025,"MHz/ms laser; delta 147.42 ms, chi2_red 1.95",CALIB
+trace_rate,def/eom_def_hr_5.csv,0.042561,0.000022,"MHz/ms laser; delta 146.85 ms, chi2_red 1.13",CALIB
+trace_rate,def/eom_def_no_1.csv,0.042189,0.000058,"MHz/ms laser; delta 148.14 ms, chi2_red 1.64",CALIB
+trace_rate,def/eom_def_no_2.csv,0.042175,0.000062,"MHz/ms laser; delta 148.19 ms, chi2_red 1.21",CALIB
+trace_rate,def/eom_def_no_3.csv,0.042477,0.000069,"MHz/ms laser; delta 147.14 ms, chi2_red 1.79",CALIB
+trace_rate,def/eom_def_no_4.csv,0.042405,0.000062,"MHz/ms laser; delta 147.39 ms, chi2_red 1.20",CALIB
+trace_rate,def/eom_def_no_5.csv,0.042803,0.000061,"MHz/ms laser; delta 146.02 ms, chi2_red 1.15",CALIB
+group_rate,def,0.042538,0.000051,"MHz/ms laser; n=10, PDG-inflated, chi2_red 30.24",CALIB
+trace_railed,initial/eom_hr1.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_hr2.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_hr3.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_hr4.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_hr5.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_rate,initial/eom_hradj1.csv,0.042576,0.000022,"MHz/ms laser; delta 146.80 ms, chi2_red 1.12",CALIB
+trace_rate,initial/eom_hradj2.csv,0.042651,0.000028,"MHz/ms laser; delta 146.54 ms, chi2_red 1.11",CALIB
+trace_rate,initial/eom_n1.csv,0.042439,0.000071,"MHz/ms laser; delta 147.27 ms, chi2_red 5.26",CALIB
+trace_railed,initial/eom_n2.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_n3.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_n4.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_railed,initial/eom_n5.csv,0.048077,,"delta at the 130.0 ms fit bound: pre-adjustment configuration, excluded from every mean",CALIB
+trace_rate,initial/eom_n_adj1.csv,0.042779,0.000047,"MHz/ms laser; delta 146.10 ms, chi2_red 1.21",CALIB
+trace_rate,initial/eom_n_adj2.csv,0.043216,0.000043,"MHz/ms laser; delta 144.62 ms, chi2_red 1.07",CALIB
+trace_rate,initial/eom_n_adj3.csv,0.042670,0.000053,"MHz/ms laser; delta 146.47 ms, chi2_red 1.06",CALIB
+trace_rate,initial/eom_n_adj4.csv,0.042623,0.000051,"MHz/ms laser; delta 146.63 ms, chi2_red 1.03",CALIB
+trace_rate,initial/eom_n_adj5.csv,0.042667,0.000062,"MHz/ms laser; delta 146.48 ms, chi2_red 1.04",CALIB
+group_rate,initial,0.042679,0.000070,"MHz/ms laser; n=8, PDG-inflated, chi2_red 27.68",CALIB
+pilot_rate_scale_measured,def_vs_camp4192,1.00216,0.00119,"the MEASURED replacement for M23/M25's fitted pilot_rate_scale (which both fits put at 1.02-1.03 inside a [0.9, 1.1] box); Def group only -- the 'Initial attempts' group is configuration-adjustment data and is reported above, not used",CALIB
