@@ -29,6 +29,11 @@ PDF_papers/
 
 # reference-setup lab photos (carry equipment serials + a purchaser name): keep
 # the transcription/notes, not the images, out of the public repo
+# The setup notes: publication is an open decision (they name a colleague in
+# a process role). Twice in one night a broad `git add docs/` re-tracked them
+# past the restore-staged discipline, so the guard is now structural. To
+# publish later: delete this line and curate the content first.
+docs/reference_setup/NOTES.md
 docs/reference_setup/photos/*
 !docs/reference_setup/photos/DROP_PHOTOS_HERE.md
 

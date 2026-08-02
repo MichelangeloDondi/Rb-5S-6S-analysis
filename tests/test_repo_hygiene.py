@@ -57,12 +57,13 @@ PRIVATE_GLOBS = ["private/*", "private/**/*", "CLAUDE.md", "docs/brief_*", "docs
                  # manuscript drafts, unpublished 2026-07-23: an abstract
                  # carrying literal [X] placeholders and "once the headline
                  # framing is agreed" is a working draft, not a result
-                 "docs/PAPER1_SKELETON.md", "docs/paper1/*"]
-# docs/reference_setup/ is deliberately NOT listed: its lab photos are already
-# excluded by their own .gitignore rule (they carry equipment serials and a
-# name), while whether the notes alongside them are published is an open
-# decision. Blanket-ignoring the directory would silently settle it, and would
-# also defeat the negation that keeps the placeholder file addable.
+                 "docs/PAPER1_SKELETON.md", "docs/paper1/*",
+                 "docs/reference_setup/NOTES.md"]
+# docs/reference_setup/NOTES.md joined the globs on 2026-08-02 after a broad
+# `git add docs/` re-tracked it twice in one night past the restore-staged
+# discipline. Whether the notes are ever published stays an open decision;
+# until it is decided, tracking them is an error this test makes loud. The
+# photos were always excluded (serials and a name).
 
 
 def test_no_private_documents_tracked():
