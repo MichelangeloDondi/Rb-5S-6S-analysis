@@ -184,7 +184,7 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
 
 def stark_ramp_axial(nu: np.ndarray, s0: float, z_ratio: float,
                      n_photon: int = 2) -> np.ndarray:
-    """Diverging-beam generalization of stark_ramp (PLAN §8.3;
+    """Diverging-beam generalization of stark_ramp (PLAN §6;
     revision 2026-07-12 #3): the observed shift distribution when the
     collection volume spans an axial window |z| <= Z around the focus of a
     Gaussian beam with Rayleigh range z_R.  z_ratio = Z / z_R.

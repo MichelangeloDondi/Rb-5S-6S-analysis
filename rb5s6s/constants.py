@@ -157,10 +157,12 @@ The two-photon transition (sum axis) therefore shifts by
     S0 = |dE_6S - dE_5S| / h = Delta_alpha * I_eff / (2 eps0 c h),
 with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
 (forward + retro, NO coherent x2 -- the fringe-averaging argument below).
-=> S0(225 mW, w0=50 um, rho=1) = 0.59 MHz transition (0.29 laser axis) [archival
-   prior; was 1.43 at the old 32 um nominal, now excluded -- see W0_PRIOR_M];
-   S0(225 mW, w0=16 um, rho=1) = 5.7  MHz transition (why the fixed-lock session's small
-   waist makes the skew, ~S0^3, measurable). See stark_shift_S0_mhz().
+=> S0(225 mW, w0=64 um, rho=0.94) = 0.35 MHz transition (0.17 laser axis)
+   [the v3.0.0 prior; was 0.59 at the superseded 50 um / rho=1, and 1.43 at the
+   32 um nominal before that -- see W0_PRIOR_M and RHO_RETRO];
+   S0(225 mW, w0=16 um, rho=0.94) = 5.56 MHz transition (why the fixed-lock
+   session's small waist makes the skew, ~S0^3, measurable). See
+   stark_shift_S0_mhz().
 The archival ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
 mean pull -(2/3) S0; third cumulant +S0^3/135 (the fringe-mean, focal Z->0 limit;
 the small-waist collection geometry and the fringe tail below both modify the
@@ -177,7 +179,7 @@ fringe-RESOLVED tail. It is NOT benign: the fringe MULTIPLIES the shift,
 s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ramp
 skew -- kappa3 -> S0^3 (1/135 - f_res*sigma_x^2/5) (= 1/135 - f_res/10 at rho=1),
 a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
-the product P = f_res*sigma_x^2 is observable). Negligible at w0=50 um (~5-8% of an
+the product P = f_res*sigma_x^2 is observable). Negligible at the w0=64 um prior (~5-8% of an
 already-below-noise skew) but ~25% at w0=16 um, and SAME-SIGN-additive to the
 larger beam-divergence correction (stark_ramp_axial) -- the two must be fit
 JOINTLY at the small waist. Quantified, bracketed by the coherence window, in
@@ -222,7 +224,7 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # --------------------------------------------------------------------------
 # Beam geometry
 # --------------------------------------------------------------------------
-W0_PRIOR_M = 50e-6
+W0_PRIOR_M = 64e-6
 """Beam waist PRIOR (central value), OPEN until the knife-edge measurement. Enters
 the transit width (~1/w0) and all Stark magnitudes (~1/w0^2).
 
@@ -252,26 +254,69 @@ recollected clipping EVENT does not by itself fix how MUCH of the beam was
 clipped, which is why this stays a Gaussian-optics estimate and not a
 measurement.)
 
-DIRECT-MEASUREMENT CORROBORATION (2026-07-13, from the group's own 993 nm
-lineage): Nieddu 2019 (Opt. Express, and his OIST thesis: "measured to be
-128 um") AND the Rajasree-KP 2020 OIST thesis both quote the focused 993 nm cell
-beam as a 1/e^2 DIAMETER of 128 um -- i.e. w0 = 64 um -- with the SAME f = 150 mm
-lens. That direct measurement lands at the top of the transit-inferred 45-70 um
-band and definitively excludes 32 um (the naive Gaussian value was ~2x too small
-because the 3 mm aperture truncated the ~3 mm-diameter input). We KEEP 50 um as
-the central prior (the transit-width match, which slightly prefers ~50-55 um so
-the drifted 2025 laser stays comfortably under its C2 bound) because the 2025
-alignment is not guaranteed identical to Nieddu's; the archival range is
-w0 ~ 50-64 um. If the archival beam WERE exactly 64 um, the observed line pins
-sigma_laser ~ 1.1 MHz laser-axis (the transit<->laser degeneracy collapses once
-w0 is fixed) -- which the knife-edge measurement will do directly."""
+ADOPTED FROM THE LINEAGE MEASUREMENT (2026-08-01, v3.0.0). The prior is now
+the value the group MEASURED on this apparatus lineage, not a value inferred
+from our own line. The Rajasree-KP 2020 OIST thesis section 5.2 records the
+focused 993 nm cell beam as a 1/e^2 DIAMETER of 128 um, i.e. w0 = 64 um, with
+a Thorlabs BC106VIS profiler, through L1 with f = 150 mm, at 130 C, in the
+same 2 f_CM retro geometry -- and on the SAME LASER MODEL this campaign used,
+the M Squared SolsTiS. Nieddu 2019 quotes the identical 128 um on the older
+Coherent MBR 110. That is this campaign's configuration in every documented
+respect, which is why 64 um is adopted rather than merely cited.
 
-W0_BAND_M = (45e-6, 70e-6)
-"""The transit-inferred w0 band (hard floor ~38 um) that reproduces the observed
-~5.25 MHz line under a laser-width prior -- a CONDITIONAL prior range, NOT a
-measurement (the archive cannot pin w0 on its own; that is the knife-edge's job,
-see W0_PRIOR_M). Single source for w0-conditional prediction bands (e.g. the S0
-prediction range in stark.fit_stark_sweep), so the band is never hand-typed."""
+It is an ADOPTED prior, NOT a measurement of this beam. Two known effects sit
+between Rajasree's bench and ours, and BOTH push the EFFECTIVE waist ABOVE
+64 um:
+  * residual clipping at the 3 mm EOM aperture (sourced from the
+    manufacturer's specification table, APPARATUS.md sec 1.2/2), which
+    truncates the beam and widens the focus;
+  * imperfect superposition of the counter-propagating retro beam, which
+    dilutes the effective on-axis intensity relative to a perfect overlap.
+Five years of possible realignment separate the two benches as well. Hence
+W0_BAND_M below is centred on 64 um and the residual effects are recorded
+as biasing the effective value high rather than low.
+
+The archive's own light-shift data agree: the three-session bound (M23) sits
+BELOW the prediction at every subset, which is what a larger waist (lower
+intensity) produces. The knife-edge measurement in a fixed-lock session
+remains the way to measure THIS beam; it is now confirmatory rather than the
+sole route to a sane value."""
+
+W0_BAND_M = (60e-6, 70e-6)
+"""Prior band on w0 (m) around the adopted 64 um central value.
+
+NOT the old transit-inferred range: since v3.0.0 the central value comes from
+an external lineage measurement (see W0_PRIOR_M), so this band expresses
+confidence in transferring that measurement to this bench, not the width of
+what our own line can accommodate. It leans high because the two residual
+effects named in W0_PRIOR_M (EOM clipping, imperfect retro superposition)
+both bias the EFFECTIVE waist upward. Single source for w0-conditional
+prediction bands (e.g. stark.fit_stark_sweep), so the band is never
+hand-typed downstream."""
+
+RHO_RETRO = 0.94
+"""Retro-reflection power ratio (returning/forward intensity at the atoms).
+
+ASSUMPTION, not a measurement. S0 scales as (1 + rho), so this enters every
+absolute AC-Stark prediction. Until v3.0.0 the code asserted rho = 1 (a
+perfect retro), justified as a geometric design property: the 2025 retro is
+self-imaging, L2 maps the cell waist to an intermediate waist and a flat
+mirror at that flat wavefront time-reverses the beam, so the forward/return
+MODE MATCH is by construction. What that argument does not cover is LOSS --
+two extra L2 passes, two extra window passes, mirror reflectivity -- nor
+imperfect superposition from alignment. Both push rho below 1.
+
+0.94 +/- 0.04 is adopted as a deliberately modest departure from the design
+value, covering a few per cent of loss per surface. The exposure is bounded
+either way: S0 ~ (1 + rho) confines the prediction to within a factor 2 of
+the rho = 1 value for ANY rho, so no plausible error here changes an
+order of magnitude. A fixed-lock session measures rho in situ (PLAN sec 8),
+which is what turns this assumption into a number."""
+
+RHO_RETRO_ERR = 0.04
+"""One-sigma uncertainty on RHO_RETRO. Enters the S0 prediction band together
+with W0_BAND_M: the band corners are (w0_hi, rho - err) and (w0_lo,
+rho + err), so the widest credible prediction interval is quoted."""
 
 
 def transit_fwhm_from_w0(w0_m: float, T_C: float, isotope: int = 87,

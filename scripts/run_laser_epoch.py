@@ -9,8 +9,8 @@ on the OPEN w0 prior. Concretely (README section 2.5): to reach the observed
 ~5.25 MHz total from the 3.49 MHz natural Lorentzian, the extra broadening is
 split between the transit kernel (which rides on the OPEN w0) and the laser, and
 the fit cannot say how much is which --
-    transit 0.92 MHz (w0~65um)       => sigma_laser ~ 1.1 MHz (laser axis)
-    transit 1.20 MHz (w0=50um prior) => sigma_laser ~ 0.8 MHz
+    transit 0.85 MHz (w0~70um)       => sigma_laser ~ 1.1 MHz (laser axis)
+    transit 0.93 MHz (w0=64um prior) => sigma_laser ~ 1.1 MHz
     transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.4 MHz (laser could be narrow)
 So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is NOT the culprit (~0.01 MHz within a
@@ -51,7 +51,11 @@ def w0_band():
         a = nu[y >= y.max() / 2]
         return a[-1] - a[0]
     band = []
-    for w0_um, w0 in ((65.0, "~65um"), (50.0, "50um prior"), (40.0, "~40um")):
+    _lo_um, _hi_um = C.W0_BAND_M[0] * 1e6, C.W0_BAND_M[1] * 1e6
+    _pr_um = C.W0_PRIOR_M * 1e6
+    for w0_um, w0 in ((_hi_um, f"~{_hi_um:.0f}um"),
+                      (_pr_um, f"{_pr_um:.0f}um prior"),
+                      (_lo_um, f"~{_lo_um:.0f}um")):
         tr = transit_fwhm_from_w0(w0_um * 1e-6, 110.0)
         if fwhm(1e-3, tr) >= 5.25:
             band.append((tr, w0, 0.0))
@@ -86,7 +90,8 @@ def main() -> int:
     print("    where sigma<->gamma is unconstrained): "
           + ", ".join(f"{r['peak']}@{r['T'] if r['role']=='t_sweep' else '130/'+r['P']+'mw'}"
                       for r in degen))
-    print("  well-constrained sigma_laser (transition axis, at the w0=50um prior):")
+    print(f"  well-constrained sigma_laser (transition axis, at the "
+          f"w0={C.W0_PRIOR_M*1e6:.0f}um prior):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
           f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
@@ -116,8 +121,11 @@ def main() -> int:
         # would be false. It is a bound, not a measurement.
         w.writerow(["quantity", "value_MHz", "axis", "status"])
         w.writerow(["sigma_laser_bound", f"<{bound:.1f}", "laser",
-                    "upper bound over the open w0 band (45-70um); ~0.8 at the 50um "
-                    "prior, rising with w0; =0 at w0~16um; unmeasurable pending knife-edge"])
+                    f"upper bound over the w0 prior band "
+                    f"({C.W0_BAND_M[0]*1e6:.0f}-{C.W0_BAND_M[1]*1e6:.0f}um), "
+                    f"rising with w0; =0 at w0~16um; conditional on the "
+                    f"adopted w0={C.W0_PRIOR_M*1e6:.0f}um until a beam profile "
+                    f"is measured on this bench"])
         for tr, w0, sl in band:
             w.writerow([f"sigma_laser_at_transit_{tr}", f"{sl:.3f}", "laser", f"w0_{w0}"])
     print(f"\nwrote {C.RESULTS_DIR / 'laser_epoch.csv'}")

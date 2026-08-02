@@ -35,7 +35,7 @@ from scipy.optimize import least_squares
 
 from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
-from .constants import W0_BAND_M, W0_PRIOR_M
+from .constants import RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_PRIOR_M
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
@@ -59,7 +59,7 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
                     T_C: float = 130.0,
                     transit_ref_mhz: float = TRANSIT_FWHM_PLACEHOLDER_MHZ,
                     gamma_coll: float = 0.6, w0_um: float = W0_PRIOR_M * 1e6,
-                    rho: float = 1.0, profile: bool = True,
+                    rho: float = RHO_RETRO, profile: bool = True,
                     nu_step: float = 0.01) -> Dict:
     """Bound the AC-Stark coefficient kappa from FWHM-vs-power at fixed T.
 
@@ -93,12 +93,14 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # seeds: per-peak sigma_laser ~1.6, kappa ~ predicted
     kpred = stark_shift_S0_mhz(1.0, w0_um * 1e-6, rho=rho)   # MHz per W (S0 at 1 W)
     p0 = np.array([1.6] * npk + [kpred], float)
-    # S0 prediction BAND over the OPEN w0 (S0 ~ 1/w0^2, so the small-waist edge
-    # gives the high S0). At rho=1; a real rho<1 lowers both edges. From the
-    # W0_BAND_M constant so the 45-70 um band is never hand-typed here.
+    # S0 prediction BAND over the w0 prior band AND the rho uncertainty. S0 ~
+    # (1+rho)/w0^2, so the widest credible interval pairs the tight-waist edge
+    # with the high rho and the wide-waist edge with the low rho. Both bands
+    # come from constants (W0_BAND_M, RHO_RETRO +/- RHO_RETRO_ERR) so no edge
+    # is ever hand-typed here.
     _w0_lo_m, _w0_hi_m = W0_BAND_M
-    s0_225_pred_hi = stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho)   # 45 um -> larger S0
-    s0_225_pred_lo = stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho)   # 70 um -> smaller S0
+    s0_225_pred_hi = stark_shift_S0_mhz(0.225, _w0_lo_m, rho=rho + RHO_RETRO_ERR)
+    s0_225_pred_lo = stark_shift_S0_mhz(0.225, _w0_hi_m, rho=rho - RHO_RETRO_ERR)
     lo = np.array([0.0] * npk + [0.0], float)
     hi = np.array([np.inf] * (npk + 1), float)
 

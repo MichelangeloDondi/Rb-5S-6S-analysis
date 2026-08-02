@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Is the intra-block position scatter DRIFT or JITTER?  (PLAN §8.4, limitation 5)
+Is the intra-block position scatter DRIFT or JITTER?  (PLAN §7, limitation 5)
 
 The experimenter confirmed (2026-07-22) that the scope horizontal knob and the
 cavity reference were USUALLY not touched within a single 5-repeat block --

@@ -37,7 +37,7 @@ which is the check that the noise model is right.
 THE RESULT, and it is one number: sigma_inf, the settled floor on unmodelled
 laser motion, is about 0.8 to 0.95 MHz. That is stable to twenty per cent
 across every kick count, weighting and random restart tried. Against the
-campaign's AC-Stark bound of 0.63 MHz it is comparable rather than dominant,
+campaign's AC-Stark bound of 0.64 MHz it is comparable rather than dominant,
 which is consistent with the archival bound coming from averaging across blocks
 rather than from any single block.
 

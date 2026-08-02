@@ -44,7 +44,7 @@ ramp broadening at 225 mW is ~0.09 MHz, almost exactly ONE single-block
 scatter, so the bound rests entirely on that averaging. A permutation test
 against the independence null returns p = 0.11: the assumption is neither
 established nor excluded, because 4 peaks x 5 powers cannot resolve it. It is
-untested rather than wrong, and PLAN 8.4 now asks for the returned-to power
+untested rather than wrong, and PLAN §7 now asks for the returned-to power
 block that would test it.
 
 The arithmetic lives in rb5s6s/resolving.py (closure-tested in

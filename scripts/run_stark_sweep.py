@@ -9,8 +9,8 @@ powers) with ONE shared kappa and a per-peak core width (rb5s6s.stark). In the
 constrained ONLY through the ramp's width broadening (~S0^2) -- a weak handle,
 hence a one-sided UPPER BOUND, not a measurement. It brackets the predicted S0
 and validates the fixed-lock session method; a fixed lock would measure the pull ~S0
-directly (and at a smaller waist, S0 ~10x larger: 0.59 -> 5.7 MHz at 225 mW,
-w0 50 -> 16 um).
+directly (and at a smaller waist, S0 ~16x larger: 0.35 -> 5.56 MHz at
+225 mW, w0 64 -> 16 um).
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
 
@@ -87,11 +87,11 @@ def main() -> int:
         w.writerow(["S0_225mW_ub95_raw", "shared", f"{res['S0_225_ub95_raw']:.3f}", "",
                     "SUPERSEDED diagnostic: un-inflated Wald bound (MHz)"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
-                    "predicted S0 at 225 mW (w0=50um prior, rho=1) for comparison"])
+                    f"predicted S0 at 225 mW (w0={C.W0_PRIOR_M*1e6:.0f}um prior, rho={C.RHO_RETRO}) for comparison"])
         w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",
-                    "predicted S0 at 225 mW, w0=70um (band LOW edge, rho=1)"])
+                    f"predicted S0 at 225 mW, w0={C.W0_BAND_M[1]*1e6:.0f}um, rho={C.RHO_RETRO-C.RHO_RETRO_ERR:.2f} (band LOW edge)"])
         w.writerow(["S0_225mW_pred_hi", "shared", f"{res['S0_225_pred_hi']:.3f}", "",
-                    "predicted S0 at 225 mW, w0=45um (band HIGH edge, rho=1)"])
+                    f"predicted S0 at 225 mW, w0={C.W0_BAND_M[0]*1e6:.0f}um, rho={C.RHO_RETRO+C.RHO_RETRO_ERR:.2f} (band HIGH edge)"])
         w.writerow(["chi2_red", "fit", f"{res['chi2_red']:.3f}", "",
                     f"over {res['n']} width points"])
         for p, s in res["sigma_laser_by_peak"].items():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Ramp-law moment coefficients vs collection geometry (PLAN §8.3).
+Ramp-law moment coefficients vs collection geometry (PLAN §6).
 
 Review 2026-07-12 #3 required extending the triangular-ramp model to the
 diverging-beam collection geometry before the small-waist skew can be
@@ -58,7 +58,7 @@ TRIANGLE_G1 = 18.0 ** 1.5 / 135.0
 
 def main() -> int:
     print("=" * 78)
-    print("RAMP-LAW MOMENTS vs COLLECTION GEOMETRY  (predictions for PLAN §8.3)")
+    print("RAMP-LAW MOMENTS vs COLLECTION GEOMETRY  (predictions for PLAN §6)")
     print(f"pure transverse triangle: mean/S0 = -2/3, var/mean^2 = 1/8, "
           f"g1 = +{TRIANGLE_G1:.4f}")
     print(f"{'config':>24s} {'z_R(mm)':>8s} {'Z/z_R':>6s} {'mean/S0':>8s} "
@@ -77,12 +77,12 @@ def main() -> int:
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
     print("config AT THE PLACEHOLDER Z_c -- the flip needs Z_c > ~0.9 mm there")
     print("(measure u, v, and the cathode extent ALONG the beam image L_par;")
-    print("Z_c = L_par/(2M) -- module docstring / PLAN 8.3 #4). Geometry")
+    print("Z_c = L_par/(2M) -- module docstring / PLAN §6 #4). Geometry")
     print("permitting, the two-config skew comparison is a sign-flip test, not a")
     print("magnitude hunt.")
     print()
     print("=" * 78)
-    print("INSTALL DECISION: cathode orientation  (PLAN §8.3 #4)")
+    print("INSTALL DECISION: cathode orientation  (PLAN §6 #4)")
     zr = {w: np.pi * (w * 1e-6) ** 2 / LAMBDA_LASER_M
           for w in C.RAMP_GEOMETRY_CONFIGS_UM.values()}
     w_l, w_s = max(zr), min(zr)

@@ -45,7 +45,7 @@ from __future__ import annotations
 from typing import Dict, List
 
 from .global_fit import fit_global
-from .constants import transit_fwhm_from_w0
+from .constants import W0_BAND_M, W0_PRIOR_M, transit_fwhm_from_w0
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 # the 2x2 model-form matrix axes
@@ -57,10 +57,10 @@ PRIMARY = ("exp", "per_T")                # the headline model (sharing CHECKED,
 # cost of a single expensive per_block fit; (gaussian, per_block) is omitted.
 GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # w0 confound band: transit_ref values from the CORRECTED transit<->w0 law at
-# w0 = 65 / 50 / 40 um, bracketing the corrected-physics inference (~45-70 um,
-# central 50). (Was (0.6,0.9,1.3) MHz mislabelled "w0 48/32/24 um" under the old
-# ~2x-too-narrow transit; 32 um is now excluded -- see constants.W0_PRIOR_M.)
-W0_BAND_UM = (65.0, 50.0, 40.0)
+# the wide edge / central prior / tight edge. DERIVED from the constants since
+# v3.0.0 (was a parallel hard-coded (65,50,40) that had to be edited by hand
+# whenever the prior moved, and silently went stale when it did).
+W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_PRIOR_M * 1e6, W0_BAND_M[0] * 1e6)
 W0_BAND_MHZ = tuple(round(transit_fwhm_from_w0(w * 1e-6, 110.0), 3) for w in W0_BAND_UM)
 
 

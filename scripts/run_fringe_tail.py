@@ -24,13 +24,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import TAU_6S_S  # noqa: E402
 from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
 # (label, w0 in m, S0 in MHz): archival prior and the small-waist (config S) target
+_S0_ARCHIVAL = stark_shift_S0_mhz(0.225, C.W0_PRIOR_M, rho=C.RHO_RETRO)
+_S0_SMALL = stark_shift_S0_mhz(0.225, 16e-6, rho=C.RHO_RETRO)
 REGIMES = (
-    ("2025 (50um, 0.6MHz)", 50e-6, 0.6),
-    ("S    (16um, 5.7MHz)", 16e-6, 5.7),
+    (f"2025 ({C.W0_PRIOR_M*1e6:.0f}um, {_S0_ARCHIVAL:.2f}MHz)",
+     C.W0_PRIOR_M, _S0_ARCHIVAL),
+    (f"S    (16um, {_S0_SMALL:.1f}MHz)", 16e-6, _S0_SMALL),
 )
-RHOS = (1.0, 0.75)
+RHOS = (1.0, C.RHO_RETRO, 0.75)
 # coherence window: transit-limited (None) and 6S-lifetime-capped -> the bracket
 WINDOWS = (("transit", None), ("tau6s", TAU_6S_S))
 T_C = 130.0

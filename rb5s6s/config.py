@@ -16,7 +16,12 @@ the apparatus. Rules:
 
 from pathlib import Path
 
-from .constants import W0_PRIOR_M, transit_fwhm_from_w0
+# W0_PRIOR_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
+# RHO_RETRO_ERR and W0_BAND_M are deliberate RE-EXPORTS so the scripts, which
+# already import config as C, can reach every prior through one namespace
+# instead of importing constants separately.
+from .constants import (  # noqa: F401
+    RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_PRIOR_M, transit_fwhm_from_w0)
 
 # --------------------------------------------------------------------------
 # Paths
@@ -284,21 +289,25 @@ TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_PRIOR_M, 110.0)
 """Central transit FWHM at 110 C (transition axis, bare kernel), scaled sqrt(T)
 elsewhere. DERIVED from the corrected transit<->w0 physics
 (constants.transit_fwhm_from_w0, Lehmann-validated) at the W0_PRIOR central
-(50 um) => ~1.20 MHz. This rides on w0, which is OPEN until the fixed-lock session
+(64 um) => ~0.93 MHz. This rides on w0, which is an ADOPTED prior until the
+fixed-lock session
 knife-edge, so every M3 absolute width that uses this is PRELIMINARY; the
 degeneracy-robust total width and its T-trend are the trustworthy shakedown
 outputs. Do not quote a number built on this without the w0 caveat.
 
 History: was a hand-set 0.9 (tied to the OLD buggy transit MC, which was ~2x
 too narrow); re-derived 2026-07-12 when the MC flux bug was fixed and w0
-re-centred 32 -> 50 um. See constants.W0_PRIOR_M."""
+re-centred 32 -> 50 um; re-derived again 2026-08-01 (v3.0.0) when w0 moved
+50 -> 64 um on the adopted lineage measurement, narrowing this to ~0.93 MHz.
+See constants.W0_PRIOR_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {
     "L (60 um, config)": 60.0,
-    "M (50 um, archival)": 50.0,
+    # the archival entry tracks the prior, so it can never drift from it
+    f"M ({W0_PRIOR_M * 1e6:.0f} um, archival)": W0_PRIOR_M * 1e6,
     "S (16 um, config)": 16.0,
 }
-"""Beam-waist configurations for the ramp-geometry predictions (PLAN §8.1;
+"""Beam-waist configurations for the ramp-geometry predictions (PLAN §4;
 run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
 2026-07-12, see constants.W0_PRIOR_M); L and S are target for a fixed-lock sessions, all
 pending knife-edge measurement (OPEN)."""
@@ -325,7 +334,7 @@ until u and v are read off a ruler. What the estimate does buy is that it lands
 on the envelope's middle entry, so the 2 mm figures quoted throughout are the
 ones the geometry actually supports. A proposed session replaces the bare f18
 with a two-lens relay plus an image-plane slit, which makes Z_c settable
-hardware and directly measurable (PLAN 8.3 #4)."""
+hardware and directly measurable (PLAN §6 #4)."""
 
 RAMP_PMT_CATHODE_MM = (3.0, 12.0)
 """R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.
@@ -343,13 +352,13 @@ experiment, and happened to be right; it was flagged as unverified on
 Which axis lies along the beam image is the install decision: L_par = 12 mm
 ('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. The 2025 archive was
 taken in LANDSCAPE (experimenter-confirmed 2026-07-23), which is also the
-recommendation for a future session (PLAN 8.3 #4) -- portrait puts Z_c below the 0.90 mm flip
+recommendation for a future session (PLAN §6 #4) -- portrait puts Z_c below the 0.90 mm flip
 threshold at every plausible M and forfeits the sign-flip test, while its
 one advantage (less axial averaging) is recovered by closing the slit."""
 
 RAMP_RELAY_MAGNIFICATION_ENVELOPE = (1.9, 2.8)
 """M = f2/f1 for the proposed two-lens relay, f1 = 18 mm and f2 = 35-50 mm
-(PLAN 8.3 #4). Sets Z_c = L_par/(2M) when the cathode is the limiting
+(PLAN §6 #4). Sets Z_c = L_par/(2M) when the cathode is the limiting
 aperture, or (slit half-width)/M when the image-plane slit is."""
 
 # --------------------------------------------------------------------------
