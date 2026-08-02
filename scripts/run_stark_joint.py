@@ -90,6 +90,16 @@ transfers: the rehearsal's anchor stays width-tied as a measured
 conclusion, not an assumption. No usable in-trace ruler exists for the
 rehearsal itself.
 
+THE PRIORS MOVED AT v3.0.0 (2026-08-01), which is why the numbers in this
+docstring's history differ from the CSV. w0 went 50 -> 64 um (adopted from
+the Nieddu/Rajasree lineage measurement on the same laser model, lens and
+geometry) and the retro ratio went from an asserted 1 to an assumed
+0.94 +/- 0.04. The predicted coefficient therefore moved 2.62 -> 1.55 MHz/W
+and is now COMPUTED from the constants (KAPPA_PRED) rather than typed into
+the grid; 2.62 is kept as a legacy checkpoint so older profiles stay
+comparable. The bound itself also moves a little, because the transit width
+that enters this fit's lineshape rides on w0.
+
 CONVERGENCE DISCIPLINE, learned twice: scipy's free fits on this problem
 land thousands of chi2 above their own profiles. Nothing from a free fit is
 quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles
@@ -128,6 +138,7 @@ sys.path.insert(0, str(REPO / "scripts"))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import number_density_cm3  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E402
                             to_frequency, transit_fwhm_at_T)
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
@@ -139,7 +150,14 @@ PK_IX = {p: i for i, p in enumerate(PEAKS)}
 TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
 DNU_FLOOR = 2e-2          # see _shared_profile_grid's docstring
 NU0_WING = 2.0            # MHz standoff of the wing nuisance
-KAPPAS = (0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.62, 3.5, 5.0)
+KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_PRIOR_M, rho=C.RHO_RETRO)
+"""The predicted coefficient, COMPUTED from the constants rather than typed.
+It moved 2.62 -> 1.55 MHz/W at v3.0.0 when the priors became w0 = 64 um and
+rho = 0.94; the grid below keeps 2.62 as a legacy checkpoint so the older
+profiles stay comparable."""
+KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
+                       1.5, 2.0, 2.62, 3.5, 5.0}))
+KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
 NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 reh rates, 1 pilot rate-scale
 PILOT = Path("~/Documents/RawDataPilot_QUARANTINE_2026-07-24/4192nm91c650ma").expanduser()
 
@@ -397,16 +415,30 @@ def chain(resid, Sf, lo, hi, q0, kappas, ncamp, tag, nfev=1500):
     return res
 
 
-def bidi_profile(traces, priors, direction, wing, tag):
+def bidi_profile(traces, priors, direction, wing, tag, seed=None):
+    """seed (2026-08-02): a converged parameter vector from another variant.
+
+    The direction check flips only the rehearsal x axis, but a cold start on
+    the flipped axis can park the 46 rehearsal centres in the wrong basin and
+    stay there for the WHOLE chain, forward and backward: the 2026-08-02 run
+    left the dir +1 priors variant 17,779 chi2 above the dir -1 primary at
+    every kappa, while the wing variant of the same direction found the true
+    basin (chi2 189,580) -- so the gap was warm-up, not physics. Seeding each
+    direction variant from its converged opposite-direction twin removes the
+    failure mode; the seeded chain is run IN ADDITION to the cold one and the
+    pointwise minimum is kept, so a seed can only improve the profile."""
     p0, lo, hi = build(traces, priors, wing)
     resid = make_resid(traces, priors, direction, wing)
     Sf = sparsity(traces, wing)[:, 1:]
     ncamp = sum(len(t["x"]) for t in traces if t["sess"] == "camp")
     fwd = chain(resid, Sf, lo, hi, p0[1:], KAPPAS, ncamp, tag + ">")
     bwd = chain(resid, Sf, lo, hi, fwd[KAPPAS[-1]][2], KAPPAS[::-1], ncamp, tag + "<")
+    chains = [fwd, bwd]
+    if seed is not None:
+        chains.append(chain(resid, Sf, lo, hi, seed, KAPPAS, ncamp, tag + "s"))
     prof, best = [], (np.inf, None, None)
     for kap in KAPPAS:
-        pick = fwd[kap] if fwd[kap][0] <= bwd[kap][0] else bwd[kap]
+        pick = min((c[kap] for c in chains), key=lambda r: r[0])
         prof.append((kap, pick[0], pick[1]))
         if pick[0] < best[0]:
             best = (pick[0], kap, pick[2])
@@ -445,20 +477,23 @@ def main() -> int:
     t0 = time.time()
     print("  primary profile (priors, rehearsal dir -1):")
     prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-")
-    print("  direction check (dir +1):")
-    prof_b, kmin_b, _ = bidi_profile(traces, priors, +1, False, "A+")
+    print("  direction check (dir +1, seeded from the dir -1 solution):")
+    prof_b, kmin_b, _ = bidi_profile(traces, priors, +1, False, "A+", seed=q_a)
     print("  wing robustness (dir -1):")
     prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
-    print("  wing robustness (dir +1):")
-    prof_d, kmin_d, _ = bidi_profile(traces, priors, +1, True, "C+")
+    print("  wing robustness (dir +1, seeded):")
+    prof_d, kmin_d, _ = bidi_profile(traces, priors, +1, True, "C+", seed=q_c)
 
     ka, kc = ub95(prof_a), ub95(prof_c)
     ka_camp = ub95(prof_a, col=2)
     dchi2_a = float(prof_a[0, 1] - prof_a[:, 1].min())
     dir_delta = float(np.abs(prof_a[:, 1] - prof_b[:, 1]).max())
 
-    # LOPO at the primary settings, seeded from the full solution
-    lopo = {}
+    # LOPO at the primary settings, seeded from the full solution. Peak 4192
+    # gets the FULL kappa grid rather than the short one, because dropping it
+    # removes the entire pilot session -- so that subset deserves a real
+    # profile bound, which the ledger used to hand-type as "0.34".
+    lopo, lopo_prof = {}, {}
     for drop in PEAKS:
         keep = [i for i, t in enumerate(traces) if t["peak"] != drop]
         sub = [traces[i] for i in keep]
@@ -470,13 +505,16 @@ def main() -> int:
         rs = make_resid(sub, priors, -1, False)
         Sfs = sparsity(sub, False)[:, 1:]
         ncs = sum(len(t["x"]) for t in sub if t["sess"] == "camp")
-        res = chain(rs, Sfs, los, his, qs, (0.0, 0.25, 1.0, 2.0, 2.62), ncs,
-                    f"L{drop}", nfev=900)
+        grid = KAPPAS if drop == "4192" else KAPPAS_LOPO
+        res = chain(rs, Sfs, los, his, qs, grid, ncs, f"L{drop}", nfev=900)
         cs = {k: v[0] for k, v in res.items()}
         mn = min(cs.values())
         lopo[drop] = {k: cs[k] - mn for k in cs}
+        lopo_prof[drop] = np.array([[k, cs[k], cs[k]] for k in sorted(cs)])
         print(f"  LOPO {drop}: "
               + "  ".join(f"k={k}:{lopo[drop][k]:+.2f}" for k in sorted(cs)))
+
+    ka_d4192 = ub95(lopo_prof["4192"])
 
     print(f"\n  primary: min kappa = {kmin_a}, dchi2(kappa=0) = {dchi2_a:.2f}")
     print(f"  **95% UB kappa < {ka:.2f} MHz/W -> S0(225 mW) < {ka*0.225:.3f} MHz**")
@@ -503,6 +541,21 @@ def main() -> int:
                     "MHz, transition axis; joint three-session bound at the "                    "campaign's maximum power"])
         w.writerow(["S0_270mW_ub95", "primary", f"{ka*0.270:.3f}", "",
                     "MHz; at the rehearsal's maximum power"])
+        w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
+                    f"MHz per W; the PREDICTED coefficient at the current "
+                    f"priors (w0 = {C.W0_PRIOR_M*1e6:.0f} um, rho = "
+                    f"{C.RHO_RETRO}), computed from constants -- what the "
+                    f"bound is compared against"])
+        w.writerow(["S0_225mW_pred", "prediction",
+                    f"{KAPPA_PRED * 0.225:.3f}", "",
+                    "MHz, transition axis; the prediction at 225 mW"])
+        w.writerow(["kappa_ub95_drop4192", "robustness", f"{ka_d4192:.3f}", "",
+                    "MHz per W; 95% bound with peak 4192 dropped, which "
+                    "removes the ENTIRE pilot session -- the most "
+                    "conservative subset"])
+        w.writerow(["S0_225mW_ub95_drop4192", "robustness",
+                    f"{ka_d4192 * 0.225:.3f}", "",
+                    "MHz; the drop-4192 bound at 225 mW"])
         w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
                     "MHz per W; campaign rows of the same profile -- the "
                     "bound does not lean on the rehearsal's soft rate anchor"])
@@ -515,6 +568,10 @@ def main() -> int:
                     "max |chi2 difference| between rehearsal axis directions "
                     "across the profile; small = indifferent"])
         for pk in PEAKS:
+            w.writerow(["lopo_dchi2_pred", pk,
+                        f"{lopo[pk][round(KAPPA_PRED, 3)]:+.2f}", "",
+                        "chi2(kappa_pred) - min with this peak dropped; all "
+                        "positive and similar = no single peak drives it"])
             w.writerow(["lopo_dchi2_262", pk, f"{lopo[pk][2.62]:+.2f}", "",
                         "chi2(kappa=2.62)-min with this peak dropped; all "
                         "positive and similar = no single peak drives it"])
