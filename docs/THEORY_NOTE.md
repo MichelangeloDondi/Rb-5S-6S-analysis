@@ -287,29 +287,31 @@ predicted below the archival noise and is not detected — as designed.
 
 That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the
 four peaks' width-vs-power (`stark.fit_stark_sweep`, M4e) turns it into a
-quantitative **upper bound of $0.63$ MHz on $S_0$ at 225 mW (95%, profile
-likelihood)**; the fitted value is consistent with zero, so the archive *brackets* the predicted
-$0.35$ MHz (§5) without resolving it. It is a bound, not a measurement, for the
-same two-epoch reason as everything else here: the 2025 drifted lock destroys the
-line centres, so the pull $\propto S_0$ — the sensitive handle — is absorbed by
-each trace's free centre, leaving only the ramp's $\propto S_0^2$ width
-broadening (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz). M23
-(`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.15$ MHz
-by fitting every point of every profile across both sessions instead of the
-20 summary widths. Through the §5 convention that maps to a $\Delta\alpha$ bracket well below
-the computed $1093$ at the adopted $w_0=64\ \mu$m, so the archive
-constrains the $(\Delta\alpha,\ \text{intensity})$ pair rather than either
-alone. The prior is now the lineage measurement itself (§5), so this is a
-direct test of it and not an inference pointing at an external number. Two
-effects push the *effective* intensity below what even that prior assumes,
-and both are documented rather than fitted: residual clipping at the 3 mm
-EOM aperture, and imperfect superposition of the retro beam. (Earlier
-readings of this passage: $\lesssim271$ a.u. at the superseded $50\ \mu$m
-prior, $<\sim1200$ from the M4e width-only bound, and $\sim5800$ from a
-Wald interval evaluated at the $\kappa=0$ rail where it has no coverage.)
-The archive does not adjudicate $\Delta\alpha$ itself, since the mapping
-inherits $w_0$, and a fixed lock would measure the pull $\propto S_0$
-directly at a small waist, turning this bracket into the coefficient.
+quantitative **upper bound of $0.64$ MHz on $S_0$ at 225 mW (95%, profile
+likelihood)**. The fitted value is consistent with zero, so the archive
+*brackets* the predicted $0.35$ MHz (§5) without resolving it. It is a bound
+for the same two-epoch reason as everything else here: the drifted lock
+destroys the centres, the pull $\propto S_0$ is absorbed by each trace's
+free centre, and only the ramp's $\propto S_0^2$ width broadening survives
+(a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz).
+
+M23 (`run_stark_joint`) tightens the same channel to
+$S_0(225$ mW$) < 0.15$ MHz by fitting every point of every profile across
+the sessions instead of 20 summary widths. Through the §5 convention that
+maps to a $\Delta\alpha$ bracket well below the computed $1093$ at the
+adopted $w_0=64\ \mu$m, so the archive constrains the
+$(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
+prior is now the lineage measurement itself (§5), a direct test rather than
+an inference pointing at an external number. Two documented effects push the
+*effective* intensity below even that prior: residual clipping at the 3 mm
+EOM aperture, and imperfect superposition of the retro beam.
+
+The superseded readings of this bracket (271 a.u. at the old 50 µm prior,
+~1200 from the width-only bound, ~5800 from a Wald interval with no coverage
+at the rail) live in the audit record. The archive does not adjudicate
+$\Delta\alpha$ itself, since the mapping inherits $w_0$. A fixed lock would
+measure the pull $\propto S_0$ directly at a small waist, turning this
+bracket into the coefficient.
 
 ## 5. The coefficient (the field-intensity convention, pinned)
 

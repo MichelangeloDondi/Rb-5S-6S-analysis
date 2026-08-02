@@ -11,7 +11,7 @@
  "docs/PREREGISTRATION_timestamps.md": 45,
  "docs/RESEARCH_DECISIONS.md": 31,
  "docs/STYLE.md": 13,
- "docs/THEORY_NOTE.md": 99,
+ "docs/THEORY_NOTE.md": 96,
  "docs/lit/afanasiev2010.md": 5,
  "docs/lit/amy2017.md": 1,
  "docs/lit/andeweg2026.md": 2,
@@ -108,5 +108,6 @@
  "docs/methods/07_what_we_found.md": 79,
  "docs/methods/08_assumptions_and_outlook.md": 24,
  "docs/notes/transit_width_resolved.md": 19,
+ "docs/reference_setup/NOTES.md": 28,
  "results/README.md": 12
 }
