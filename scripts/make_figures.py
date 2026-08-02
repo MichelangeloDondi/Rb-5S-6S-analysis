@@ -264,7 +264,7 @@ def fig_pooled_width():
             label="free per-condition (4 peaks agree)")
     a2.set_xlabel("temperature (°C)")
     a2.set_ylabel(r"$\sigma_\mathrm{laser}$ (MHz, transition)")
-    a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.1,\n"
+    a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.6,\n"
                  "4 peaks agree, χ²<1 ⇒ in-sample check only, M4c); the tied drop is\n"
                  "the β↔σ_laser degeneracy, not a physical laser drift", fontsize=8)
     a2.legend(fontsize=7.5)
@@ -421,19 +421,19 @@ def fig_identifiability_profile():
 
 def fig_ruler():
     """The built-in frequency ruler (M2, methods §3): a representative EOM
-    ruler trace with its constrained five-tooth comb fit — the same physical
-    line excited via five sideband pairs, teeth exactly 6.25 MHz apart on the
-    laser axis (outer teeth weak: they need second-order pairs; note the k=0
-    TOOTH is fed by (s+,s-) pairs as well as (c,c), so it can stand tall even
-    with the optical carrier AM-suppressed -- the tooth pattern varies block
-    to block with the 2025 HWP setting; methods section 3). RIGHT: the
-    free-centres nonlinearity map (results/ruler_nlmap.csv) — the empirical
-    bound (~0.3% per position) on scan nonlinearity AND any tooth-dependent
-    pull (differential Stark, asymmetric-wing overlap), the ruler's
-    common-mode-rejection check. Trace choice is deterministic: the first
-    canonical rf-on ruler of the brightest 130 °C block."""
+    ruler trace with its constrained seven-tooth comb fit — the same physical
+    line excited via up to seven sideband pairs, teeth exactly 6.25 MHz apart
+    on the laser axis (outer teeth weak: they need higher-order pairs; note
+    the k=0 TOOTH is fed by (s+,s-) pairs as well as (c,c), so it can stand
+    tall even with the optical carrier AM-suppressed -- the tooth pattern
+    varies block to block with the 2025 HWP setting; methods section 3).
+    RIGHT: the free-centres nonlinearity map (results/ruler_nlmap.csv) — the
+    empirical bound (~0.3% per position) on scan nonlinearity AND any
+    tooth-dependent pull (differential Stark, asymmetric-wing overlap), the
+    ruler's common-mode-rejection check. Trace choice is deterministic: the
+    first canonical rf-on ruler of the brightest 130 °C block."""
     from rb5s6s.ingest import load_manifest, load_trace, trace_path
-    from rb5s6s.ruler import fit_comb, _comb
+    from rb5s6s.ruler import fit_comb, _comb, TEETH
 
     rows = sorted((r for r in load_manifest()
                    if r["role"].startswith("ruler") and r["flag"] == "canonical"
@@ -452,17 +452,18 @@ def fig_ruler():
     tf = np.linspace(t[0], t[-1], 3000)
     ax.plot(tf, _comb(tf, fit["t0_ms"], fit["delta_ms"], fit["width_ms"],
                       fit["heights"], fit["b0"], fit["b1"]),
-            "-", color="#0072B2", lw=1.4, label="constrained 5-tooth comb fit")
+            "-", color="#0072B2", lw=1.4,
+            label=f"constrained {len(TEETH)}-tooth comb fit")
     ymax = max(fit["heights"]) + fit["b0"]
     ax.set_ylim(top=ymax * 1.22)
-    for n in range(-2, 3):
+    for n in TEETH:
         tc = fit["t0_ms"] + n * fit["delta_ms"]
         ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
         ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
                     color="#D55E00")
     ax.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
-    ax.set_title("the scan carries its own calibration: five copies of the same\n"
+    ax.set_title(f"the scan carries its own calibration: {len(TEETH)} copies of the same\n"
                  "line, 6.25 MHz apart on the laser axis, via EOM sideband pairs",
                  fontsize=9)
     ax.legend(fontsize=7, loc="lower left", framealpha=1.0, frameon=True)
@@ -474,7 +475,7 @@ def fig_ruler():
     n_win = np.array([int(r["n"]) for r in nl])
     # Edge windows have few contributing traces, so their errors (~1/sqrt(n))
     # are LARGER THAN THE BOUND ITSELF -- the rightmost spans +/-0.74% against a
-    # 0.45% band. Scaling marker area with n was not enough: a reader still
+    # 0.3% band. Scaling marker area with n was not enough: a reader still
     # reads the long bar as an anomaly, or as contradicting the panel title.
     # So the two populations are now drawn differently and the title says which
     # one sets the bound. (The long bar is NOT anomalous: at n=5 it sits 0.9
@@ -496,7 +497,7 @@ def fig_ruler():
     ax2.set_xlabel("window position (ms)")
     ax2.set_ylabel("local rate / block rate")
     ax2.set_title("sweep linearity + any tooth-dependent pull:\n"
-                  r"$\lesssim$0.45% from the well-sampled windows", fontsize=9)
+                  r"$\lesssim$0.3% from the well-sampled windows", fontsize=9)
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower left", framealpha=1.0, frameon=True)
@@ -949,6 +950,134 @@ def fig_wavemeter_reconstruction():
     _save(fig, "fig14_wavemeter_reconstruction.png")
 
 
+
+
+def fig_drift_story():
+    """The drift problem, what the archive extracted despite it, and what a
+    fixed lock buys (fig15). Three panels.
+
+    (a) The problem, photographed: the 2025-06-11 wavemeter record, digitised
+        by M22 -- re-lock kicks and relaxations on a drifting cavity lock.
+        Not campaign data; the campaign saved no wavemeter log at all, which
+        is the point of panel (b).
+    (b) The campaign, reconstructed from its own traces (M20): line offsets
+        within each scope-knob epoch. Absolute frequency is unknowable across
+        epoch boundaries (the knob moved 58 times), so each segment floats;
+        within a segment the excursion is ~1 MHz and the held-lock drift is
+        +0.016 [0.007, 0.025] MHz/min (state-space fit on the recovered
+        clock, audit addendum 5; band shown).
+    (c) The consequence ladder: what each drift regime licenses, with the
+        archive's extracted bounds and the fixed-lock conversions annotated.
+        The fixed-lock benchmark is Ayachitula 2024 on this same transition:
+        < 0.5 kHz over 50 min.
+    """
+    import csv as _csv
+
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_wavemeter_reconstruction import reconstruct
+    r = reconstruct()
+    t, f, band = r["t"], r["f"], r["band"]
+    tf, mu = r["t_fit"], r["mu"]
+
+    # campaign side: within-epoch offsets from the committed laser history
+    rows = [x for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_history.csv"))
+            if x["flag"] == "canonical" and x["offset_mhz"]]
+    t0 = min(float(x["t_epoch"]) for x in rows)
+    by_ep = {}
+    for x in rows:
+        by_ep.setdefault(int(x["display_epoch"]), []).append(
+            ((float(x["t_epoch"]) - t0) / 3600.0, float(x["offset_mhz"])))
+
+    # the extracted-vs-gain numbers, read from the committed CSVs
+    s0 = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "stark_joint.csv"))
+                    if x["quantity"] == "S0_225mW_ub95"))
+    bvals = [float(x["bound95_nscale"]) for x in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
+             if x.get("headline") == "yes"]
+    sl = float(next(x["value_MHz"].lstrip("<") for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_epoch.csv"))
+                    if x["quantity"] == "sigma_laser_bound"))
+
+    fig = plt.figure(figsize=(8.6, 9.2))
+    gs = fig.add_gridspec(3, 1, height_ratios=[1.6, 1.6, 1.15], hspace=0.42)
+
+    # (a) the photographed record, digitised
+    ax = fig.add_subplot(gs[0])
+    ax.fill_between(t, f - band / 2, f + band / 2, color="#0072B2", alpha=0.25,
+                    lw=0, label="scan band (the sweep, not noise)")
+    ax.plot(t, f, color="#0072B2", lw=0.9, label="band centre = laser frequency")
+    mclip = tf > 0.4     # the pre-first-kick baseline is a fit artifact
+    ax.plot(tf[mclip], mu[mclip], color="#D55E00", lw=1.6, ls="--",
+            label="M22 model: re-lock kicks + relaxations")
+    for tk in r["kick_times"]:
+        ax.axvline(tk, color="0.55", lw=0.7, alpha=0.6)
+    ax.set_xlabel("time (min)")
+    ax.set_ylabel("laser detuning (MHz)")
+    ax.set_title("(a) the problem, photographed: wavemeter record, 2025-06-11 "
+                 "preliminary session (no log survives from the campaign itself)",
+                 fontsize=9)
+    ax.legend(fontsize=7, loc="lower right", framealpha=1.0, frameon=True)
+
+    # (b) the campaign, reconstructed from its own traces
+    ax = fig.add_subplot(gs[1])
+    drift = 0.016   # MHz/min, laser; audit addendum 5 (state-space, recovered clock)
+    dlo, dhi = 0.007, 0.025
+    first = True
+    for ep, pts in sorted(by_ep.items()):
+        if len(pts) < 2:
+            continue
+        pts.sort()
+        th = [p[0] for p in pts]
+        off = [p[1] for p in pts]
+        ax.plot(th, off, "-", color="#009E73", lw=0.8, alpha=0.85)
+        ax.plot(th, off, ".", color="#009E73", ms=2.5,
+                label="line offset within one knob epoch" if first else None)
+        first = False
+    # A slope INDICATOR over 3 h, not a fit across the record: the absolute
+    # trend across epochs is exactly what the knob moves make unknowable.
+    ts0, y0 = 9.0, -9.5
+    tind = np.linspace(ts0, ts0 + 3.0, 20)
+    ax.plot(tind, y0 + (tind - ts0) * 60 * drift, color="#D55E00", lw=1.8,
+            ls="--", label="held-lock drift, slope only: +0.016 MHz/min")
+    ax.fill_between(tind, y0 + (tind - ts0) * 60 * dlo,
+                    y0 + (tind - ts0) * 60 * dhi,
+                    color="#D55E00", alpha=0.25, lw=0)
+    ax.annotate("what the held lock does in 3 h", xy=(ts0 + 1.5, y0 + 3.2),
+                ha="center", fontsize=7.5, color="#D55E00")
+    ax.set_xlabel("time into campaign (h)")
+    ax.set_ylabel("offset (MHz, laser)")
+    ax.set_title("(b) the campaign, reconstructed from its own traces (M20): "
+                 "segments float (58 knob moves re-zero the axis); shapes survive",
+                 fontsize=9)
+    ax.legend(fontsize=7, loc="upper right", framealpha=1.0, frameon=True)
+
+    # (c) the consequence ladder
+    ax = fig.add_subplot(gs[2])
+    regimes = [
+        (4.0, "planning envelope (2025)", "everything below is usable"),
+        (drift, "2025 held lock, measured", "shapes only: bounds\n"
+         f"$S_0<{s0:.2f}$ MHz, $\\beta$ {min(bvals):.1f}-{max(bvals):.1f}, "
+         f"$\\sigma_\\mathrm{{laser}}<{sl:.1f}$ MHz"),
+        (1e-5, "fixed lock, demonstrated on this line\n(Ayachitula 2024: <0.5 kHz / 50 min)",
+         "centres usable: measure the pull ($\\propto S_0$),\n"
+         "the self-shift, and $\\beta$ at 3-12$\\sigma$"),
+    ]
+    ys = [2, 1, 0]
+    for y, (rate, left, right) in zip(ys, regimes):
+        ax.plot([rate], [y], "o", ms=9, color="#0072B2")
+        ax.annotate(left, xy=(rate, y), xytext=(0, 12), textcoords="offset points",
+                    ha="center", fontsize=7.5)
+        ax.annotate(right.replace("\\n", "\n"), xy=(rate, y), xytext=(0, -13),
+                    textcoords="offset points", ha="center", va="top", fontsize=7.5)
+    ax.set_xscale("log")
+    ax.set_xlim(3e-6, 30)
+    ax.set_ylim(-1.4, 3.1)
+    ax.set_yticks([])
+    ax.set_xlabel("laser drift rate (MHz/min, laser axis)")
+    ax.set_title("(c) what each regime licenses: the archive's bounds, and the "
+                 "session's conversions", fontsize=9)
+    ax.grid(axis="y", visible=False)
+    _save(fig, "fig15_drift_story.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -963,6 +1092,7 @@ def main() -> int:
     fig_ramp_construction()
     fig_level_scheme()
     fig_wavemeter_reconstruction()
+    fig_drift_story()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

@@ -55,6 +55,9 @@ FILE_STATUS = {
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
+    "ruler_rate_model.csv": "MEASURED",   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "global_archive_fit.csv": "PRELIM",   # M25 joint archive fit, rulers-on arm; headline stays with M23
+    "global_archive_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
     # M22: digitised from a screen photograph, not from the archive. It measures
@@ -90,7 +93,13 @@ QUANTITY_STATUS = {
     "wing_check.csv": {
         "f_wing_red": "BOUND", "f_wing_blue": "BOUND",
         "f_wing_red_mean": "BOUND", "f_wing_blue_mean": "BOUND",
-        "f_wing_red_130C": "NULL", "density_lever": "DIAGNOSTIC",
+        # M24 restructure (2026-08-01): the licensed observable is red minus
+        # blue (a symmetric transit mismatch cancels in the difference). The
+        # 130 C closure is its null check; the individual red side at 130 C
+        # is context (it is a real nonzero floor from the symmetric misfit,
+        # not itself a null since the v3.0.0 reprior narrowed the transit).
+        "f_wing_red_130C": "MEASURED", "density_lever": "DIAGNOSTIC",
+        "asymmetry_red_minus_blue": "MEASURED", "asymmetry_130C": "NULL",
     },
     # M23: the joint two-session profile-likelihood bound. The headline rows
     # are BOUNDs (one-sided by construction -- the ramp model only broadens
@@ -100,8 +109,17 @@ QUANTITY_STATUS = {
         "S0_270mW_ub95": "BOUND",
         "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",
         "kappa_ub95_camponly": "BOUND", "kappa_min_wing": "DIAGNOSTIC",
-        "kappa_ub95_wing": "BOUND", "direction_dchi2_max": "DIAGNOSTIC",
-        "lopo_dchi2_262": "DIAGNOSTIC", "gamma_coll_post": "PRELIM",
+        "kappa_ub95_wing": "BOUND",
+        # 2026-08-02: the dir+1 priors variant failed to converge (cold start
+        # on the flipped rehearsal axis, 17.8k chi2 high at every kappa, while
+        # the same direction's wing variant converged to the common basin) --
+        # so this run's number is a warm-up ARTIFACT, not a sensitivity. The
+        # seeded re-run (bidi_profile seed=) replaces it.
+        "direction_dchi2_max": "ARTIFACT",
+        "lopo_dchi2_262": "DIAGNOSTIC", "lopo_dchi2_pred": "DIAGNOSTIC",
+        "kappa_pred": "CALIB", "S0_225mW_pred": "CALIB",
+        "kappa_ub95_drop4192": "BOUND", "S0_225mW_ub95_drop4192": "BOUND",
+        "gamma_coll_post": "PRELIM",
         "reh_rate": "CALIB", "pilot_rate_scale": "CALIB",
         "Vsat_camp": "DIAGNOSTIC",
         "Vsat_reh": "DIAGNOSTIC", "n_traces": "DIAGNOSTIC",

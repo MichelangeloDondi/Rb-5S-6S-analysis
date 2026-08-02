@@ -1,36 +1,45 @@
 quantity,key,value,err,unit,status
-kappa_min,primary,0.25,,"MHz per W; profile minimum, priors, dir -1; NOT a detection (see dchi2_kappa0)",DIAGNOSTIC
-dchi2_kappa0,primary,1.26,,chi2(kappa=0) - chi2(min); the strength of the kappa>0 preference,DIAGNOSTIC
-kappa_ub95,primary,0.628,,MHz per W; 95% one-sided profile-likelihood bound -- THE quoted construction (negative kappa is flat by construction: the ramp model only broadens red),BOUND
-S0_225mW_ub95,primary,0.141,,"MHz, transition axis; joint three-session bound at the campaign's maximum power",BOUND
-S0_270mW_ub95,primary,0.169,,MHz; at the rehearsal's maximum power,BOUND
-kappa_ub95_camponly,robustness,1.065,,MHz per W; campaign rows of the same profile -- the bound does not lean on the rehearsal's soft rate anchor,BOUND
-kappa_min_wing,robustness,0.25,,MHz per W; minimum with the red-wing nuisance free,DIAGNOSTIC
-kappa_ub95_wing,robustness,0.778,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
-direction_dchi2_max,robustness,9.73,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,DIAGNOSTIC
-lopo_dchi2_262,4121,+24.14,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4154,+6.51,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4192,+9.53,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4207,+6.66,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-gamma_coll_post,4121,0.414,,MHz; posterior under the beta_self prior 0.545+/-0.231,PRELIM
-reh_rate,4121,0.01311,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4154,0.388,,MHz; posterior under the beta_self prior 0.456+/-0.227,PRELIM
-reh_rate,4154,0.01383,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4192,0.392,,MHz; posterior under the beta_self prior 0.562+/-0.122,PRELIM
-reh_rate,4192,0.01296,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-gamma_coll_post,4207,0.414,,MHz; posterior under the beta_self prior 1.008+/-0.188,PRELIM
-reh_rate,4207,0.01232,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-Vsat_camp,nuisance,403.4,,"V; detector saturation, campaign -- large = linear",DIAGNOSTIC
-Vsat_reh,nuisance,383.9,,"V; detector saturation, rehearsal",DIAGNOSTIC
+kappa_min,primary,0.00,,"MHz per W; profile minimum, priors, dir -1; NOT a detection (see dchi2_kappa0)",DIAGNOSTIC
+dchi2_kappa0,primary,0.00,,chi2(kappa=0) - chi2(min); the strength of the kappa>0 preference,DIAGNOSTIC
+kappa_ub95,primary,0.685,,MHz per W; 95% one-sided profile-likelihood bound -- THE quoted construction (negative kappa is flat by construction: the ramp model only broadens red),BOUND
+S0_225mW_ub95,primary,0.154,,"MHz, transition axis; joint three-session bound at the campaign's maximum power",BOUND
+S0_270mW_ub95,primary,0.185,,MHz; at the rehearsal's maximum power,BOUND
+kappa_pred,prediction,1.545,,"MHz per W; the PREDICTED coefficient at the current priors (w0 = 64 um, rho = 0.94), computed from constants -- what the bound is compared against",CALIB
+S0_225mW_pred,prediction,0.348,,"MHz, transition axis; the prediction at 225 mW",CALIB
+kappa_ub95_drop4192,robustness,1.560,,"MHz per W; 95% bound with peak 4192 dropped, which removes the ENTIRE pilot session -- the most conservative subset",BOUND
+S0_225mW_ub95_drop4192,robustness,0.351,,MHz; the drop-4192 bound at 225 mW,BOUND
+kappa_ub95_camponly,robustness,0.980,,MHz per W; campaign rows of the same profile -- the bound does not lean on the rehearsal's soft rate anchor,BOUND
+kappa_min_wing,robustness,0.00,,MHz per W; minimum with the red-wing nuisance free,DIAGNOSTIC
+kappa_ub95_wing,robustness,0.744,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
+direction_dchi2_max,robustness,17779.02,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,ARTIFACT
+lopo_dchi2_pred,4121,+6.50,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4121,+25.10,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_pred,4154,+1.11,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4154,+6.97,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_pred,4192,+2.62,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4192,+10.14,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_pred,4207,+0.57,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4207,+4.52,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+gamma_coll_post,4121,0.573,,MHz; posterior under the beta_self prior 0.766+/-0.234,PRELIM
+reh_rate,4121,0.01295,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
+gamma_coll_post,4154,0.550,,MHz; posterior under the beta_self prior 0.751+/-0.228,PRELIM
+reh_rate,4154,0.01373,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
+gamma_coll_post,4192,0.554,,MHz; posterior under the beta_self prior 0.882+/-0.123,PRELIM
+reh_rate,4192,0.01272,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
+gamma_coll_post,4207,0.572,,MHz; posterior under the beta_self prior 1.312+/-0.188,PRELIM
+reh_rate,4207,0.01196,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
+Vsat_camp,nuisance,402.2,,"V; detector saturation, campaign -- large = linear",DIAGNOSTIC
+Vsat_reh,nuisance,367.6,,"V; detector saturation, rehearsal",DIAGNOSTIC
 n_traces,camp/reh/pil,100/46/26,,canonical p_sweep / usable rehearsal (4 files corrupt or lineless) / pilot morning sweep,DIAGNOSTIC
-pilot_rate_scale,nuisance,1.0290,,"pilot axis = campaign 4192 bracket rate x this factor, bounded [0.9, 1.1]; the raw 210 vs 225 mW width ratio 0.971 justified the tight band",CALIB
-profile_point,0.00,188736.42,31030.02,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.25,188735.15,31029.22,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.50,188736.96,31029.64,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.75,188738.72,31030.56,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.00,188740.97,31031.50,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.50,188746.42,31034.77,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.00,188751.54,31040.06,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.62,188763.62,31049.40,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,3.50,188785.19,31065.48,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,5.00,188861.93,31107.47,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+pilot_rate_scale,nuisance,1.0293,,"pilot axis = campaign 4192 bracket rate x this factor, bounded [0.9, 1.1]; the raw 210 vs 225 mW width ratio 0.971 justified the tight band",CALIB
+profile_point,0.00,189617.07,31307.86,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.25,189617.83,31307.20,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.50,189617.77,31307.40,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.75,189620.49,31308.41,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.00,189622.70,31310.04,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.50,189627.38,31313.50,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.54,189628.29,31314.09,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.00,189633.87,31318.93,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.62,189644.78,31327.47,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,3.50,189666.79,31342.99,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,5.00,189743.79,31385.61,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC

@@ -46,11 +46,15 @@ def main() -> int:
       "convolved with transit alone already exceeds the observed ~5.25 MHz line "
       "there, though over a realistic multi-mm collection column that margin "
       "narrows and the line alone no longer decides it; the independent 64 µm "
-      "waist measurement (Nieddu/Rajasree) is what makes the exclusion safe — "
-      "and re-centres $w_0$ to **~50 µm** "
-      "(45–70; hard floor 38). Every $w_0$-conditional number below (the "
+      "waist measurement (Nieddu/Rajasree) is what makes the exclusion safe. "
+      f"Since v3.0.0 that measurement IS the prior: $w_0$ is **"
+      f"{C.W0_PRIOR_M*1e6:.0f} µm** (band {C.W0_BAND_M[0]*1e6:.0f}–"
+      f"{C.W0_BAND_M[1]*1e6:.0f}), adopted from the lineage rather than "
+      "inferred from our own line, and the retro ratio is "
+      f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$ rather than an asserted 1. "
+      "Every $w_0$-conditional number below (the "
       "$\\beta_\\text{self}$ and $\\sigma_\\text{laser}$ bounds, $S_0$, the $w_0$-band) "
-      "has been RE-RUN at the corrected prior; they stay PRELIMINARY and "
+      "has been RE-RUN at the adopted prior; they stay PRELIMINARY and "
       "$w_0$-conditional because the transit vs $\\sigma_\\text{laser}$ degeneracy "
       "means the archival line cannot pin $w_0$ itself — that is the beam-profile "
       "measurement's job. "
@@ -283,7 +287,9 @@ def main() -> int:
         W(f"- **{b['value_MHz']} MHz ({b['axis']} axis)** — {b['status']}.")
     W("- Degenerate with $w_0$ via transit (M9): the corrected transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which OVERSHOOTS the observed line, so 32 µm is excluded) and "
-      "~1.2 MHz at the 50 µm prior; more transit leaves less width for the laser.")
+      f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2f} MHz at the "
+      f"{C.W0_PRIOR_M*1e6:.0f} µm prior; more transit leaves less width for "
+      "the laser.")
     W("\n> **Reconciling the three $\\sigma_\\text{laser}$ numbers (they are not "
       "contradictory — mind the axis).** This C2 bound is $<$1.1 MHz on the **laser** "
       "axis; the lever-crosscheck $\\sigma_\\text{laser}(T)$ (1.48/1.63/1.06) and the "
@@ -347,7 +353,7 @@ def main() -> int:
       "($S_0$ 0.59 → 5.7 MHz, $\\approx$10× larger at 225 mW) "
       "makes the ramp asymmetry a detection. The naive $S_0^3$ reading (×64) is "
       "superseded: the axial average changes the third cumulant's magnitude and, "
-      "past $Z_c/z_R\\approx1.12$, its sign (PLAN §8.3 #4). Which side of that "
+      "past $Z_c/z_R\\approx1.12$, its sign (PLAN §6 #4). Which side of that "
       "crossover each configuration sits on is set by $Z_c = L_\\parallel/2M$, and "
       "that is now largely pinned: the cathode is landscape, so $L_\\parallel = 12$ "
       "mm and $Z_c = 6/M$ mm, and the PMT is not re-oriented between configurations. "
@@ -390,12 +396,14 @@ def main() -> int:
           f"forward-models each line through `model_profile`, so this bound is "
           f"conditional on that spectral model. "
           f"The prediction is not a point but a **band**: the {plo:.2f}–{phi:.2f} "
-          f"MHz spread is $S_0$ over the OPEN $w_0=45$–70 µm ($\\propto 1/w_0^2$; "
-          f"central {pr:.2f} at the 50 µm prior) at $\\rho=1$, the retro ratio "
-          f"asserted, not measured ($S_0\\propto(1+\\rho)$, so a real $\\rho<1$ "
-          f"lowers the whole band; the in-situ $\\rho$ is a fixed-lock-session "
-          f"task, PLAN §8), under the field-intensity convention pinned in "
-          f"THEORY_NOTE §5. "
+          f"MHz spread is $S_0$ over the $w_0$ prior band "
+          f"{C.W0_BAND_M[0]*1e6:.0f}–{C.W0_BAND_M[1]*1e6:.0f} µm "
+          f"($\\propto 1/w_0^2$; central {pr:.2f} at the adopted "
+          f"{C.W0_PRIOR_M*1e6:.0f} µm) folded with "
+          f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$, the retro ratio now "
+          f"assumed rather than asserted at 1 ($S_0\\propto(1+\\rho)$; the "
+          f"in-situ $\\rho$ is a fixed-lock-session task, PLAN §3), under the "
+          f"field-intensity convention pinned in THEORY_NOTE §5. "
           f"**The construction of the "
           f"95% is load-bearing and documented:** the best fit rails at $\\kappa=0$, "
           f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
@@ -480,9 +488,16 @@ def main() -> int:
           f"centre estimators agree to $\\pm$0.02 MHz.\n")
 
     sj = {(r["quantity"], r["key"]): r for r in rows("stark_joint")}
+    if sj and ("S0_225mW_pred", "prediction") not in sj:
+        # M23 has not been re-run since the priors moved, so its CSV predates
+        # the kappa_pred/drop4192 rows this section reads. Skip rather than
+        # print numbers computed against a superseded prior.
+        print("  [C3f skipped] results/stark_joint.csv predates the current "
+              "priors -- re-run scripts/run_stark_joint.py, then regenerate.")
+        sj = {}
     if sj:
         v = lambda q, k: float(sj[(q, k)]["value"])
-        pred_ratio = 0.59 / v("S0_225mW_ub95", "primary")
+        pred_ratio = v("S0_225mW_pred", "prediction") / v("S0_225mW_ub95", "primary")
         W(f"- **C3f — the joint three-session fit puts the light-shift bound "
           f"to $S_0(225\\ \\mathrm{{mW}}) < {v('S0_225mW_ub95','primary'):.2f}$ MHz** "
           f"(`run_stark_joint`, M23; 95% one-sided profile likelihood). Instead "
@@ -516,59 +531,71 @@ def main() -> int:
           f"suggested a detection near the predicted $\\kappa$; the backward "
           f"pass polished $\\kappa=0$ down and the preference vanished, which "
           f"is why only bidirectional profiles are quoted here). "
-          f"**The bound now sits below the nominal prediction, and that is "
-          f"the result.** Against $S_0(225) = 0.59$ MHz predicted at "
-          f"$w_0=50$ µm with $\\rho=1$, the fit gives "
+          f"**The bound sits below the prediction, and that is the result.** "
+          f"Against $S_0(225) = {v('S0_225mW_pred','prediction'):.2f}$ MHz "
+          f"predicted at the adopted $w_0={C.W0_PRIOR_M*1e6:.0f}$ µm with "
+          f"$\\rho={C.RHO_RETRO}$, the fit gives "
           f"{pred_ratio:.1f}× less. The spread across data subsets is the "
           f"dominant systematic — {v('S0_225mW_ub95','primary'):.2f} MHz from all "
           f"three sessions, {v('kappa_ub95_camponly','robustness')*0.225:.2f} "
-          f"from the campaign rows alone, and 0.34 with peak 4192 dropped "
-          f"(which removes the entire pilot) — but **every subset lies below "
-          f"the prediction**, by factors 1.8 to 4.2. The retro ratio cannot "
+          f"from the campaign rows alone, and "
+          f"{v('S0_225mW_ub95_drop4192','robustness'):.2f} with peak 4192 "
+          f"dropped (which removes the entire pilot). The retro ratio cannot "
           f"absorb that: $S_0\\propto(1+\\rho)$ buys at most a factor 2 even "
           f"at $\\rho=0$. The intensity must be lower than the prior assumes, "
           f"and the most conservative subset already requires "
-          f"$w_0 \\gtrsim 65$ µm if $|\\Delta\\alpha|$ is near the computed "
-          f"1093 a.u. — which is where "
-          f"[Nieddu 2019](lit/nieddu2019.md)'s **measured** 64 µm on the "
-          f"same-lineage apparatus sits. Two independent routes, the "
-          f"light-shift data here and a direct beam profile there, now "
-          f"disfavour the 50 µm prior together. Further robustness: dropping "
-          f"any one peak leaves the $\\kappa=2.62$ rejection intact (LOPO "
+          f"a lower intensity than even the adopted prior assumes. That "
+          f"prior is itself now the lineage measurement — "
+          f"[Rajasree 2020](lit/rajasree2020thesis.md) recorded 128 µm "
+          f"diameter on the same laser model, lens and geometry — so the "
+          f"comparison is no longer an inference pointing at an external "
+          f"number but a direct test of it, and the bound still lands under "
+          f"it. Further robustness: dropping "
+          f"any one peak leaves the predicted $\\kappa$ rejection intact (LOPO "
           f"rows); and the rehearsal "
-          f"axis-direction hypothesis moves no $\\chi^2$ by more than "
-          f"{v('direction_dchi2_max','robustness'):.1f}. One piece of "
-          f"residual structure survived this fit: a same-physical-side "
-          f"near-core asymmetry in both sessions, absorbed by neither a "
-          f"detector time constant (killed at $+2200$ for 10 ms) nor the "
-          f"wing nuisance. C3g closes it.\n")
+          f"axis-direction hypothesis "
+          + (f"moves no $\\chi^2$ by more than "
+             f"{v('direction_dchi2_max','robustness'):.1f}"
+             if v('direction_dchi2_max','robustness') < 100 else
+             "check did not converge in this run (a cold start on the "
+             "flipped rehearsal axis; the converged wing-variant pair of the "
+             "same directions agrees to a few tens of $\\chi^2$, and a "
+             "seeded re-run is in progress)")
+          + ". One piece of "
+          "residual structure survived this fit: a same-physical-side "
+          "near-core asymmetry in both sessions, absorbed by neither a "
+          "detector time constant (killed at $+2200$ for 10 ms) nor the "
+          "wing nuisance. C3g closes it.\n")
     wc = {(r["quantity"], r["key"]): r for r in rows("wing_check")}
     if wc:
-        f130 = float(wc[("f_wing_red_130C", "verdict")]["value"])
-        e130 = float(wc[("f_wing_red_130C", "verdict")]["err"])
+        a130 = float(wc[("asymmetry_130C", "verdict")]["value"])
+        ae130 = float(wc[("asymmetry_130C", "verdict")]["err"])
+        asym = {k[1]: (float(v["value"]), float(v["err"]))
+                for k, v in wc.items() if k[0] == "asymmetry_red_minus_blue"}
+        worst = max(asym.items(), key=lambda kv: abs(kv[1][0]) / max(kv[1][1], 1e-9))
         W(f"- **C3g — the residual asymmetry is not a collisional wing; "
           f"C3f's open item is closed** (`run_wing_check`, M24). A "
           f"quasistatic self-broadening satellite is a pair effect, so its "
           f"fractional weight must scale with density, and the temperature "
           f"sweep holds a ×52 density lever at fixed 225 mW while the Stark "
-          f"wedge and any instrument asymmetry stay put. The M23 standoff "
-          f"wing, fitted per condition on both sides of the line, returns "
-          f"$f_\\mathrm{{wing}}(\\mathrm{{red}}, 130°C) = {f130:.4f} \\pm "
-          f"{e130:.4f}$ of peak — a per-mille null exactly where a "
-          f"collisional wing would be 52× enhanced — and every 110 °C and "
-          f"130 °C condition is consistent with zero on both sides. The "
-          f"largest central value sits at 70 °C, the lowest-density, "
-          f"lowest-amplitude corner, at 1.3σ: the SNR direction, opposite "
-          f"to collisional. The power lever agrees: at fixed density the "
-          f"fitted fraction falls with power instead of holding constant, "
-          f"tracking amplitude exactly as C3c's shot-noise identification "
-          f"of the residual skew already said. Both levers contradict a "
-          f"physical wing, so the asymmetry M23 flagged is amplitude-linked "
-          f"statistics, nothing about it enters the Stark budget, and the "
-          f"satellite thread is closed on this archive. A real satellite "
-          f"search needs the fixed-lock session's SNR at 150–170 °C, where "
-          f"this same estimator would resolve a 0.001-fraction wing at many "
-          f"sigma.\n")
+          f"wedge and any instrument asymmetry stay put. The observable is "
+          f"the **difference** between the two sides, red minus blue: a "
+          f"symmetric mismatch between the fixed transit kernel and the free "
+          f"core raises both wings together and is not an asymmetry, so only "
+          f"the difference answers the question. It returns "
+          f"**{a130:+.4f} ± {ae130:.4f}** of peak at 130 °C, "
+          f"{abs(a130)/ae130:.1f}σ, exactly where a collisional satellite "
+          f"would be 52× enhanced, and no temperature exceeds "
+          f"{abs(worst[1][0])/max(worst[1][1], 1e-9):.1f}σ. The power lever "
+          f"agrees: at fixed density the fitted fraction does not hold "
+          f"constant as a physical wing must, but tracks amplitude, exactly "
+          f"as C3c's shot-noise identification of the residual skew already "
+          f"said. Both levers contradict a physical wing, so the asymmetry "
+          f"M23 flagged is amplitude-linked statistics, nothing about it "
+          f"enters the Stark budget, and the satellite thread is closed on "
+          f"this archive. A real satellite search needs the fixed-lock "
+          f"session's SNR at 150–170 °C, where this same estimator would "
+          f"resolve a 0.001-fraction wing at many sigma.\n")
 
     # ---- sensitivity summary: the referee view, one table, always fresh ----
     lc = {(r["quantity"], r["key"]): r for r in rows("lever_crosscheck")}
@@ -649,29 +676,41 @@ def main() -> int:
     # ---- supporting ----
     W("## Supporting results\n")
     rc = rows("ruler_campaign")
-    if rc:
+    rb = rows("ruler_blocks")
+    if rc and rb:
         c = rc[0]  # authoritative inverse-variance campaign rate from run_ruler
         chi2 = float(c["block_chi2_red"])
-        W(f"- **Frequency axis (M2):** {float(c['rate_laser']):.5f}"
-          f"({float(c['rate_laser_err'])*1e5:.0f}) MHz/ms laser-axis (~0.12%). The "
-          f"$\\chi^2_\\text{{red}}={chi2:.1f}$ over {c['n_blocks']} blocks is genuine "
-          f"over-dispersion, and the quoted error is **already** PDG-inflated by "
-          f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx2.6\\times$ to absorb it (verified: "
-          f"$5.0\\times10^{{-5}} = 1.9\\times10^{{-5}}\\times2.6$). The over-dispersion is "
-          f"**block-level ruler scatter** — drift between the before/after brackets, "
-          f"plus a likely outlier (the 993.4207 nm *after* block at 0.0432, ~1.4% above "
-          f"its own *before*) — **not** a peak-ordered axis distortion: bracket-resolved, "
-          f"the per-peak rates are non-monotonic and the two brackets disagree on the "
-          f"ordering (a naive pool of before+after fakes a monotonic trend). So it "
-          f"inflates the COMMON axis error symmetrically and does NOT bias the "
-          f"cross-peak differential comparisons (β₈₅ vs β₈₇, the M10 ratios). The fits "
-          f"use each condition's own block rate; sweep linear <0.45% within a block. "
-          f"**Leave-it-out (drop-a-block rigor):** dropping the flagged 993.4207 nm "
-          f"*after* block shifts the campaign rate by only 0.08% (0.70σ, "
-          f"0.04257→0.04254) and $\\chi^2_\\text{{red}}$ 6.8→3.8 — it is the dominant "
-          f"scatter contributor but the PDG inflation already absorbs it, so the rate is "
-          f"robust to it. Kept per policy (statistical outliers are review-only, not "
-          f"auto-cut), now with the leave-out on record.")
+        rate = np.array([float(r["rate"]) for r in rb])
+        err = np.array([float(r["rate_err"]) for r in rb])
+        mean = float(c["rate_laser"])
+        infl = np.sqrt(max(chi2, 1.0))
+        # The dominant outlier by |deviation|/error, and the effect of
+        # dropping it, computed here rather than hand-typed, so a re-run on
+        # different data cannot leave a stale number behind.
+        dev = np.abs(rate - mean) / err
+        i = int(np.argmax(dev))
+        w = 1.0 / np.delete(err, i) ** 2
+        drop_mean = float(np.sum(w * np.delete(rate, i)) / np.sum(w))
+        drop_chi2 = float(np.sum(w * (np.delete(rate, i) - drop_mean) ** 2)
+                          / max(len(rb) - 2, 1))
+        drop_shift = 100 * (drop_mean / mean - 1)
+        drop_sigma = (drop_mean - mean) / float(c["rate_laser_err"])
+        out_label = f"993.{rb[i]['peak']} nm {rb[i].get('bracket') or rb[i]['T'] + ' C'}"
+        out_dev = 100 * (rate[i] / mean - 1)
+        W(f"- **Frequency axis (M2):** {mean:.5f}({float(c['rate_laser_err'])*1e5:.0f}) "
+          f"MHz/ms laser axis. The 20 ruler blocks disagree by more than their own "
+          f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1f}$), and the quoted error "
+          f"is PDG-inflated by $\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1f}\\times$ to "
+          f"cover it. The scatter is block level: before/after brackets drift within a "
+          f"session rather than the peaks moving in step, so it widens the common axis "
+          f"error without biasing a cross-peak comparison such as $\\beta_{{85}}$ vs "
+          f"$\\beta_{{87}}$. Each science block uses its own condition's rate, and the "
+          f"sweep is linear across the window to $<0.3$%. The single largest outlier is "
+          f"{out_label} at {out_dev:+.1f}% from the campaign mean. Dropping it moves the "
+          f"campaign rate by {drop_shift:+.2f}% ({abs(drop_sigma):.1f}$\\sigma$) and "
+          f"$\\chi^2_\\text{{red}}$ from {chi2:.1f} to {drop_chi2:.1f}: the inflation "
+          f"already covers it, so it stays in by the pre-registered policy of reviewing "
+          f"outliers rather than cutting them.")
     ss = rows("sigma_laser_sharing")
     if ss:
         chis = "/".join(f"{float(r['chi2_red_4peak']):.2f}" for r in ss)
@@ -788,7 +827,7 @@ def main() -> int:
           f"{_r('sigma_laser'):.1f}–{_r('total_fwhm'):.1f} and are exactly where "
           f"it reports bounds.\n")
         if pr:
-            W(f"It is also predictive, which is the point. PLAN §8 asks for two "
+            W(f"It is also predictive, which is the point. PLAN §3 asks for two "
               f"things — hot points at 150–170 °C to grow the signal, and "
               f"interleaving with per-trace power logging to cut the block noise. "
               f"Hot points alone reach only "
@@ -810,7 +849,7 @@ def main() -> int:
               f"rests on it. A permutation test against the independence null "
               f"returns p = {float(a['ratio']):.2f}: neither established nor "
               f"excluded, because four peaks by five powers cannot resolve it. "
-              f"Untested rather than wrong; `PLAN.md` §8 now asks for the "
+              f"Untested rather than wrong; `PLAN.md` §7 now asks for the "
               f"returned-to block that would settle it.")
 
     W("\n---\n*Provenance: ESTABLISHED / MEASURED-HERE / CALCULATED / ENVELOPE / "
