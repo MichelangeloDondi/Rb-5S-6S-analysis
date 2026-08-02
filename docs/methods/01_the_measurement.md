@@ -49,6 +49,17 @@ and we are left with a line only a few MHz wide, whose residual width is the
 stack of mechanisms below. (A second-order Doppler term $\propto (v/c)^2$
 survives but is $\sim$ kHz here — negligible.)
 
+This is the same cancellation condition that
+[Biraben, Cagnac and Grynberg](../lit/biraben1974.md) first demonstrated
+experimentally (*Phys. Rev. Lett.* **32**, 643 (1974)): driving the analogous
+3S–5S transition in sodium, they showed the Doppler pedestal vanishes only
+when the atom is forced to take one photon from each counter-propagating
+beam, not merely by illuminating with a standing wave. That founding result
+covers the demonstration and the algebra above. The transit-time lineshape
+our line actually has, once a finite crossing time is added, is a separate,
+later result, covered next in [§2, the lineshape kernel by
+kernel](02_the_lineshape.md).
+
 ---
 
 ---

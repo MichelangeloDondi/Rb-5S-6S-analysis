@@ -100,6 +100,27 @@ the grid; 2.62 is kept as a legacy checkpoint so older profiles stay
 comparable. The bound itself also moves a little, because the transit width
 that enters this fit's lineshape rides on w0.
 
+SIGMA GRANULARITY, verified 2026-08-02 against the measured-prior re-run's
+requirement. `build()`/`make_resid()` already carry sigma_laser per PEAK,
+separately for the campaign+pilot session (`p[7+k]`, indices 7-10) and the
+rehearsal session (`p[11+k]`, indices 11-14) -- 8 parameters, no coarser
+pooling above the peak axis to shrink from. The pilot traces reuse the
+campaign's peak-4192 slot rather than getting a dedicated one, which is not
+a pooling gap: the pilot only ever touches peak 4192, so there is nothing
+else its own slot could resolve, and sharing it with the campaign's
+best-measured peak is a data-availability choice, not an averaging-away of
+distinct physics. private/reviews/digest/fig16_residual_asymmetry.md
+("Seventh addition", Granularity recommendation) reads this same code and
+reaches the same conclusion: "M23's peak-resolved choice is closer to what
+T=130 supports" and names it the baseline the M25 re-run should match. No
+change made here; M25 (`run_global_archive_fit.py`, `_m25_norulers.py`) is
+the one that needed the upgrade, since it pools sigma_laser across all four
+peaks per campaign temperature block -- see its own docstring's SIGMA
+GRANULARITY UPGRADE section for the hierarchical-shrinkage fix applied
+there. No transit-tail or periodic term is added to this module either;
+both were tested elsewhere in the same digest and excluded (wrong sign /
+too small, and unsupported for a different module respectively).
+
 CONVERGENCE DISCIPLINE, learned twice: scipy's free fits on this problem
 land thousands of chi2 above their own profiles. Nothing from a free fit is
 quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles

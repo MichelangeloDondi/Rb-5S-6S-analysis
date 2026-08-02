@@ -29,6 +29,15 @@ This is what makes drifted 2025 data usable: the drift lives in the per-trace
 centers, the physics in the shared shape. The same idea extends across
 temperatures — `fit_beta_self()` ties $\gamma_\text{coll}(T)=\beta_\text{self}N(T)$
 with a single shared $\beta_\text{self}$, turning four widths into one slope.
+Treating $\beta_\text{self}$ as $T$-independent here is an approximation.
+[Lewis 1980](../lit/lewis1980.md) Table 4.1 predicts an additional $T^{0.3}$
+coefficient scaling for an $n=6$ potential, a $\sim$5% rise from 70 to
+130 °C, checked directly by refitting each peak's four raw widths with that
+scaling folded into the density axis. The result shifts $\chi^2$ by $<0.4$
+against a between-block scatter of 140–250 kHz, roughly an order of
+magnitude larger than the predicted effect, so today's archive has no power
+to test the exponent. The flat-$\beta_\text{self}$ assumption is unresolved,
+not confirmed.
 
 **The full hierarchy** (`fit_global()`, module M4b) fits *all* peaks and
 temperatures at once, sharing each parameter at the level the physics licenses
@@ -282,25 +291,27 @@ propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
 ### 4.11 Does the 95% bound actually cover? — an injection-recovery study (M13)
 
 The collisional bound's 95% is built from a between-block scatter estimated on
-one residual degree of freedom, so it uses the Student-t quantile
-$t(0.95,1)=6.31$, not the Gaussian 2 (§4.5). A bound is only worth its coverage,
-so we check it by simulation rather than assert it: at a grid of *known* true
-$\beta$ we generate 2000 synthetic 3-point cooling sweeps each — with the
-archive's own structure, a between-block scatter mimicking the drift wander plus
-the small within-block SEM — run the **shipped** estimator
-`beta.collisional_slope` on every one, and measure bias, coverage, and the
-false-detection rate. The result:
+a small number of residual degrees of freedom, so it uses the Student-t
+quantile rather than the Gaussian 2 (§4.5): $t(0.95,2)=2.92$ for the current
+four-point headline (70/90/110/130 °C, since 2026-08-02; the superseded
+three-point 70–110 °C headline used $t(0.95,1)=6.31$). A bound is only worth
+its coverage, so we check it by simulation rather than assert it: at a grid
+of *known* true $\beta$ we generate 2000 synthetic four-point cooling+130 °C
+sweeps each — with the archive's own structure, a between-block scatter
+mimicking the drift wander plus the small within-block SEM — run the
+**shipped** estimator `beta.collisional_slope` on every one, and measure
+bias, coverage, and the false-detection rate. The result:
 
-- the point estimate is **unbiased** (bias $\approx-0.0006$ MHz per $10^{12}$
+- the point estimate is **unbiased** (bias $\approx-0.0001$ MHz per $10^{12}$
   cm$^{-3}$, i.e. $\ll$ the bound);
-- the Student-t 95% upper bound **covers the true $\beta$ $\gtrsim99$% of the
-  time** — valid and, on 1 DOF, conservative (the safe direction for a bound;
+- the Student-t 95% upper bound **covers the true $\beta$ $\approx100$% of the
+  time** — valid and, on 2 DOF, conservative (the safe direction for a bound;
   the Gaussian-2 bound this replaced would *under*-cover, which is the whole
   reason for the t-quantile);
 - at $\beta_\text{true}=0$ the pre-registered SNR $\ge3$ "measurement" rule
-  alone fires $\approx6$% of the time — a real false-positive rate, which is
+  alone fires $\approx4$% of the time — a real false-positive rate, which is
   precisely why the analysis does **not** rely on SNR alone: the
-  non-monotonic width-vs-density pattern (3/4 real peaks) is the decisive guard
+  non-monotonic width-vs-density pattern (2/4 real peaks) is the decisive guard
   that forces the BOUND reading regardless (§C1).
 
 So the headline is empirically calibrated: unbiased estimate, a 95%
@@ -321,8 +332,8 @@ Three features of this dataset drive the choice:
    number. Keeping $w_0$ out of the likelihood and quoting an explicit
    $w_0$-band (§C1 of the ledger) keeps the conditionality on the page — and
    when the beam-profile measurement lands, the band collapses without redoing the inference.
-3. **Where the data are weakest, a prior would dominate.** Three densities and
-   one residual degree of freedom (§4.5), or a $\chi^2$ flat to first order at
+3. **Where the data are weakest, a prior would dominate.** Four densities and
+   two residual degrees of freedom (§4.5), or a $\chi^2$ flat to first order at
    the $\kappa=0$ rail (C3d): a posterior
    mostly reflects the prior, while the Student-t quantile and the profile scan
    state the data-poverty out loud.

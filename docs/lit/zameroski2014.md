@@ -55,29 +55,34 @@ temperature (~403 K; 1 mTorr <-> 2.40e13 cm^-3) that is
 This is the **only measured self-broadening rate for an nS state in rubidium**,
 and so the only external check M18 has.
 
-**It failed that check by 1.7x, and the failure is informative.** Run on 7S,
-M18's absolute prediction is 8.99 kHz per 1e12 cm^-3 against the measured 5.39.
-The discrepancy is far outside the +-10-15% the valence-only truncation can
-explain, and it lands on the weakness the module had already named: the
-Lindholm-Foley prefactor is quoted from the pressure-broadening literature
-rather than derived, and its convention is where a factor of that size lives.
+**It sits ~17% low, inside the envelope the truncation already predicts.** Run
+on 7S, M18's corrected absolute prediction is 4.50 kHz per 1e12 cm^-3 against
+the measured 5.39. An earlier version of `beta_self_vdw` double-applied the
+HWHM->FWHM conversion and reported this as "high by 1.67x" -- that was a
+double-count in the code, not a physical discrepancy (traced and fixed
+2026-08-03, docs/PREREGISTRATION_RESULTS.md Addendum 23). The corrected 17%
+gap is close to (a bit past) the +-10-15% the valence-only truncation and the
+mean-speed-vs-full-Boltzmann-average approximation can explain.
 
-That error is common to 6S and 7S -- same prefactor, same law, same units -- so
-it cancels in a ratio. `vanderwaals.beta_self_anchored` therefore uses M18 only
+The prefactor is common to 6S and 7S -- same law, same units -- so it cancels
+in a ratio regardless. `vanderwaals.beta_self_anchored` therefore uses M18 only
 for C6(6S)/C6(7S) = 0.347, a ratio of two sums over the same matrix elements,
 and takes the absolute scale from this measurement:
 
     beta_self(6S) = 5.39 * 0.347^(2/5) = **3.53 +- 0.30 kHz per 1e12 cm^-3**
 
-**Consequences.** The archival bound sits **57-113x above** this, rather than
-the ~40-100x the old misattributed chain gave, or the 34-68x M18's uncorrected
-absolute value gave. The conclusion is unchanged in kind -- the bound is far
-above any expected value -- and is now anchored on a measurement of the same
-observable on the neighbouring state.
+**Consequences.** The archival bound sits **8-14x above** this (the four-point
+70/90/110/130 C headline, 2026-08-02, ~0.03-0.05 MHz per 1e12 cm^-3) -- was
+57-113x above on the earlier three-point 70-110 C headline (~0.2-0.4 MHz),
+which was itself tighter than the ~40-100x the old misattributed chain gave,
+or the 34-68x M18's uncorrected absolute value gave. The conclusion is
+unchanged in kind -- the bound is still above any expected value -- and is
+anchored on a measurement of the same observable on the neighbouring state.
 
-The old entry's forward-looking point stands and is worth keeping: the 70-130 C
-lever cannot MEASURE a beta of this size (Delta-N ~ 2e13 cm^-3 gives
-Delta-gamma ~ 70 kHz at 3.5 kHz per 1e12, still under the width budget); a real
+The old entry's forward-looking point stands and is worth keeping, just at a
+tighter margin: even the full 70-130 C archival lever cannot MEASURE a beta
+of this size (Delta-N ~ 2e13 cm^-3 gives Delta-gamma ~ 70 kHz at 3.5 kHz per
+1e12, still under the width budget); a real
 measurement needs 150-170 C points.
 
 Also measured here, and not used by this programme: broadening and shift rates

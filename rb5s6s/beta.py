@@ -73,9 +73,11 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
 
     COVERAGE of the bound (corrected 2026-07-16): the between-block scatter
     that dominates syst_err is estimated on only dof = n - 2 degrees of
-    freedom (1 for the 3-point headline variant), so a one-sided 95% limit
-    needs the Student-t quantile t(0.95, dof) -- 6.31 at dof=1, 2.92 at
-    dof=2 -- NOT the Gaussian-asymptotic 2 that was hard-coded before. This
+    freedom (2 for the four-point headline variant, 70/90/110/130 C, since
+    2026-08-02; 1 for the superseded 3-point 70/90/110 C variant), so a
+    one-sided 95% limit needs the Student-t quantile t(0.95, dof) -- 6.31 at
+    dof=1, 2.92 at dof=2 -- NOT the Gaussian-asymptotic 2 that was hard-coded
+    before. This
     is conservative where the well-determined within-block part contributes,
     which is the right direction for a bound. bound95 = |beta| + t95*syst.
 
@@ -90,9 +92,10 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     a 1-in-24 coincidence and, worse, a monotonic session drift aliased onto
     the monotonic T-vs-time acquisition (the 2025 confound) produces monotonic
     W-vs-N with ZERO collisional content -- so the flag cannot discriminate the
-    one confound that matters. Non-monotonic (3/4 peaks) is the useful reading
-    (widths falling with density cannot be pure collisions); the confound is
-    handled by the BOUND framing, not by this flag.
+    one confound that matters. Non-monotonic (2/4 peaks in the four-point
+    headline, 70/90/110/130 C) is the useful reading (widths falling with
+    density cannot be pure collisions); the confound is handled by the
+    BOUND framing, not by this flag.
     """
     N = np.asarray(N_units, float)
     W = np.asarray(widths_mhz, float)
@@ -103,12 +106,12 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     coef = cov @ A.T @ Winv @ W
     # Between-block scatter estimate: divide the summed squared residuals by
     # the DEGREES OF FREEDOM (n - p, p=2), not by n. np.mean would divide by n
-    # and bias the scatter LOW by sqrt(n/(n-p)) -- for the 3-point headline
-    # variant that is sqrt(3) ~ 1.7, tightening the "conservative" bound by
-    # ~40% (2026-07-12). With n-p = 1-2 this estimate is itself very noisy;
+    # and bias the scatter LOW by sqrt(n/(n-p)) -- for a 3-point fit (the
+    # superseded headline) that is sqrt(3) ~ 1.7, tightening the "conservative"
+    # bound by ~40% (2026-07-12). With n-p = 1-2 this estimate is itself very noisy;
     # that used to be a prose caveat ("~factor-2 own-uncertainty") and is now
     # FORMALIZED by the Student-t multiplier below (2026-07-16).
-    dof = max(len(N) - 2, 1)
+    dof = max(len(N) - 2, 1)  # 2 for the four-point headline (70/90/110/130 C)
     resid_rms = float(np.sqrt(np.sum((W - A @ coef) ** 2) / dof))
     E_sys = np.sqrt(E ** 2 + resid_rms ** 2)
     syst_err = float(np.sqrt(np.linalg.inv(A.T @ np.diag(1.0 / E_sys ** 2) @ A)[1, 1]))

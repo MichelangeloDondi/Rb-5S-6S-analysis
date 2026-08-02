@@ -345,6 +345,19 @@ instrumentation you would add to characterise exactly that gradient, and the
 visible window condensation shows where Rb collects. Whether the four channels
 were logged during the campaign is not established here.
 
+**OPEN: cell glass type and seal/fill date are not on record.** Helium
+permeation through borosilicate glass is a documented long-term drift
+mechanism in exactly this class of two-photon vapour-cell experiment:
+[Feng et al. 2026](lit/feng2026.md) bake their own borosilicate cell for
+over 300 days (~37 permeation time constants) specifically to equilibrate it
+away. Whether that mechanism matters for our cell is genuinely open, not
+ruled out: the glass composition and seal date are undocumented, so an old,
+sealed cell could in principle be carrying an undocumented He collisional
+component alongside the Rb-Rb self-broadening this programme fits. Not the
+same physics as β_self (foreign-gas shift vs. Rb-Rb self-broadening) and not
+evidence of a problem, just a record gap worth closing if the cell's
+paperwork ever surfaces.
+
 ---
 
 ## 6. Laser drift — eight wavemeter records, and what the cavity lock buys

@@ -109,6 +109,50 @@ waist: transit rides on w0, so beta_self and kappa remain w0-conditional and
 PRELIMINARY. What changes is that they are now conditional on ONE assumption
 instead of a chain of three.
 
+SIGMA GRANULARITY UPGRADE (2026-08-02), the measured-prior re-run's second
+change. Until now sigma_laser was pooled per SL_BLOCKS entry only (one value
+per campaign temperature, plus one each for the rehearsal and pilot sessions,
+6 total), which POOLS ALL FOUR PEAKS inside every block. Free-Gaussian-sigma
+probes on the single brightest trace per peak at 225 mW/130 C (private/
+reviews/digest/fig16_residual_asymmetry.md, "Seventh addition") found that
+pooling too coarse there: peak-level deviations of -287 kHz (4192, dchi2
+21.5, 4.6 sigma) and -121 kHz (4154, dchi2 9.1, 3.0 sigma), with 4121 and
+4207 consistent with zero (-85 +/- 256, +97 +/- 199 kHz). The digest's own
+recommendation (same section, "Recommendation") is to resolve sigma_laser
+per (session-block, peak) -- matching the granularity M23 already uses --
+but with a HIERARCHICAL SHRINKAGE PRIOR rather than a flat parameter-count
+expansion, because a flat per-(peak, temperature) grid is not affordable at
+the campaign's low-temperature blocks (single-trace sigma errors already
+reach 0.5-2.3 MHz at 70/90 C, per the same digest section).
+
+Implementation: the SL_BLOCKS parameters (indices I_SL..I_SL+5) are KEPT
+UNCHANGED as session/block-level population means sigma_s. A new block of
+sigma_sp parameters is appended at index NS, one per (SL_BLOCKS entry, peak)
+combination actually realized in the loaded traces -- 21 in the full
+archive (4 campaign temperatures x 4 peaks = 16, rehearsal 4 peaks, pilot
+1 peak, since the pilot only ever touches 4192). Each trace's lineshape
+uses its own sigma_sp directly (not the pooled sigma_s); a soft Gaussian
+prior residual (sigma_sp - sigma_s) / SIGMA_SP_PRIOR_MHZ is added for every
+sp parameter, tying it back to its block's mean. The prior width, 150 kHz,
+is the mean absolute pull from the four probe numbers above:
+mean(|-85|, |-121|, |-287|, |97|) = 147.5 kHz, rounded. This is not a hard
+constraint: at camp130 (the only block with a resolved peak-level pull) the
+data can pay the ~4-9 dchi2 cost of a 150 kHz-scale deviation and win far
+more in likelihood, exactly as the free-sigma probe found; at camp70/camp90
+(errors of 0.5-2.3 MHz per trace) the prior chi2 cost of any comparable
+deviation swamps the handful of noisy points that would otherwise drive it,
+so those cells are shrunk back toward the pooled mean automatically. This is
+partial pooling, not a flat 6 -> 27 parameter-count increase: the EFFECTIVE
+number of free sigmas is set by how much SNR each cell actually has, which
+is the property the digest asked for and a hard per-(peak,T) split cannot
+provide. Two alternative parents of the same residual excess were tested
+elsewhere in the same digest and excluded, so neither is implemented here:
+a transit-tail term (MC-vs-analytic-kernel test, wrong sign and 2-3 orders
+of magnitude too small) and a periodic term (tested for a different module,
+M22, and found unsupported). New CSV rows carry quantity "sigma_laser_sp",
+key f"{block}_{peak}" (e.g. "camp130_4192"); the existing "sigma_laser" rows
+are unchanged and still report the pooled sigma_s means.
+
 Writes results/global_archive_fit.csv. Needs the quarantine prehistory and
 pilot trees; without them it prints what is missing and exits 0.
 Runtime: long (many hours). Run it in the background.
@@ -124,7 +168,7 @@ from pathlib import Path
 
 import numpy as np
 from scipy.optimize import least_squares
-from scipy.sparse import lil_matrix
+from scipy.sparse import lil_matrix, vstack
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -148,7 +192,10 @@ KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
 
 # sigma_laser blocks: campaign gets one per temperature (the M4b hierarchical
 # choice, whose per-T sharing across peaks M4c found untested but not
-# contradicted); the two other sessions get one each.
+# contradicted); the two other sessions get one each. These remain the
+# session/block-level POPULATION MEANS sigma_s; see SIGMA GRANULARITY UPGRADE
+# in the module docstring for the per-(block, peak) sigma_sp layer appended
+# at index NS.
 SL_BLOCKS = ["camp70", "camp90", "camp110", "camp130", "reh", "pil"]
 SL_IX = {b: i for i, b in enumerate(SL_BLOCKS)}
 NS = 2 + len(SL_BLOCKS) + 2 + len(PEAKS) + 1   # kappa,beta + sl + Vsat*2 + rates + pilot
@@ -160,6 +207,24 @@ I_REHRATE = I_VSAT_LC + 1
 I_PILSCALE = I_REHRATE + len(PEAKS)
 
 N_UNIT = 1e12
+
+SIGMA_SP_PRIOR_MHZ = 0.15
+"""Hierarchical shrinkage prior width for the per-(session-block, peak)
+sigma_sp deviations from their block's sigma_s mean (see the module
+docstring, SIGMA GRANULARITY UPGRADE). Set to the mean absolute pull
+observed in the free-Gaussian-sigma probe (fig16_residual_asymmetry.md,
+Seventh addition): mean(|-85|, |-121|, |-287|, |+97|) kHz = 147.5 kHz,
+rounded to 150 kHz -- the scale a real per-peak effect is expected to sit
+at, not a value tuned to this fit's own outcome."""
+
+
+def sp_keys_for(traces):
+    """Realized (sigma_laser block, peak) pairs, sorted for a deterministic
+    parameter ordering shared by build(), make_resid() and sparsity() (all
+    three recompute this from the same `traces` list rather than threading
+    an extra argument through every call site, including profile2d and
+    w0_scan)."""
+    return sorted({(t["sl"], t["peak"]) for t in traces})
 
 
 def load_campaign_all():
@@ -264,7 +329,9 @@ def measured_pilot_scale():
 
 
 def build(traces):
-    p0 = np.zeros(NS + (N_TEETH + 3) * len(traces))
+    sp_keys = sp_keys_for(traces)
+    n_sp = len(sp_keys)
+    p0 = np.zeros(NS + n_sp + (N_TEETH + 3) * len(traces))
     lo = np.full_like(p0, -np.inf)
     hi = np.full_like(p0, np.inf)
     p0[I_KAPPA] = 0.0; lo[I_KAPPA] = 0.0; hi[I_KAPPA] = 60.0
@@ -286,7 +353,12 @@ def build(traces):
         lo[I_PILSCALE] = np.log(_m - 5 * _e); hi[I_PILSCALE] = np.log(_m + 5 * _e)
     else:
         lo[I_PILSCALE] = np.log(0.9); hi[I_PILSCALE] = np.log(1.1)
-    j = NS
+    # per-(session-block, peak) sigma_sp: seeded at the same value as the
+    # pooled sigma_s blocks, tied to them by the shrinkage prior in resid().
+    for i, (blk, pk) in enumerate(sp_keys):
+        idx = NS + i
+        p0[idx] = 1.2; lo[idx] = 0.05; hi[idx] = 50.0
+    j = NS + n_sp
     offsets = []
     for t in traces:
         offsets.append(j)
@@ -315,6 +387,8 @@ def build(traces):
 def make_resid(traces, offsets, direction=-1, transit_ref=None):
     dens = {T: float(number_density_cm3(np.array([T]))[0]) / N_UNIT
             for T in sorted({t["T"] for t in traces})}
+    sp_keys = sp_keys_for(traces)
+    sp_ix = {k: i for i, k in enumerate(sp_keys)}
 
     def resid(p, kappa=None):
         kap = p[I_KAPPA] if kappa is None else kappa
@@ -324,7 +398,7 @@ def make_resid(traces, offsets, direction=-1, transit_ref=None):
         for i, t in enumerate(traces):
             T = t["T"]
             gc = beta * dens[T]                       # the collisional model
-            sl = p[I_SL + SL_IX[t["sl"]]]
+            sl = p[NS + sp_ix[(t["sl"], t["peak"])]]
             transit = transit_fwhm_at_T(
                 T, C.TRANSIT_FWHM_PLACEHOLDER_MHZ
                 if transit_ref is None else transit_ref)
@@ -365,11 +439,20 @@ def make_resid(traces, offsets, direction=-1, transit_ref=None):
                 Vs = np.exp(p[I_VSAT_AG])
             mdl = Vs * (1.0 - np.exp(-lin / Vs)) + b0 + b1 * t["x"]
             out.append((t["v"] - mdl) / t["sg"])
+        # hierarchical shrinkage: each sigma_sp is pulled toward its block's
+        # sigma_s mean by a Gaussian prior of width SIGMA_SP_PRIOR_MHZ (see
+        # SIGMA GRANULARITY UPGRADE in the module docstring).
+        out.append(np.array([
+            (p[NS + i] - p[I_SL + SL_IX[blk]]) / SIGMA_SP_PRIOR_MHZ
+            for (blk, pk), i in sp_ix.items()
+        ]))
         return np.concatenate(out)
     return resid
 
 
 def sparsity(traces, offsets, nparams):
+    sp_keys = sp_keys_for(traces)
+    sp_ix = {k: i for i, k in enumerate(sp_keys)}
     n_rows = sum(len(t["x"]) for t in traces)
     S = lil_matrix((n_rows, nparams), dtype=int)
     r0 = 0
@@ -377,7 +460,7 @@ def sparsity(traces, offsets, nparams):
         n = len(t["x"])
         S[r0:r0 + n, I_KAPPA] = 1
         S[r0:r0 + n, I_BETA] = 1
-        S[r0:r0 + n, I_SL + SL_IX[t["sl"]]] = 1
+        S[r0:r0 + n, NS + sp_ix[(t["sl"], t["peak"])]] = 1
         if t["sess"] == "reh":
             S[r0:r0 + n, I_VSAT_LC] = 1
             S[r0:r0 + n, I_REHRATE + PK_IX[t["peak"]]] = 1
@@ -388,7 +471,11 @@ def sparsity(traces, offsets, nparams):
         width = N_TEETH + 3 if t["sess"] == "ruler" else 4
         S[r0:r0 + n, offsets[i]:offsets[i] + width] = 1
         r0 += n
-    return S.tocsr()
+    pri = lil_matrix((len(sp_keys), nparams), dtype=int)
+    for (blk, pk), i in sp_ix.items():
+        pri[i, I_SL + SL_IX[blk]] = 1
+        pri[i, NS + i] = 1
+    return vstack([S.tocsr(), pri.tocsr()]).tocsr()
 
 
 def chain(resid, Sf, lo, hi, q0, kappas, tag, nfev=2500):
@@ -547,6 +634,16 @@ def main() -> int:
         for b in SL_BLOCKS:
             w.writerow(["sigma_laser", b, f"{best_q[I_SL + SL_IX[b] - 1]:.3f}", "",
                         "MHz, transition axis; free per session/temperature block"])
+        sp_keys = sp_keys_for(traces)
+        sp_ix = {k: i for i, k in enumerate(sp_keys)}
+        for (blk, pk), i in sp_ix.items():
+            sp_val = best_q[NS + i - 1]
+            dev = sp_val - best_q[I_SL + SL_IX[blk] - 1]
+            w.writerow(["sigma_laser_sp", f"{blk}_{pk}", f"{sp_val:.3f}", f"{dev:+.3f}",
+                        f"MHz, transition axis; per-(session,peak) sigma_laser, "
+                        f"hierarchical shrinkage prior width "
+                        f"{SIGMA_SP_PRIOR_MHZ*1e3:.0f} kHz toward the {blk} pooled "
+                        f"mean (err column: deviation from that mean)"])
         for k, pk in enumerate(PEAKS):
             w.writerow(["reh_rate", pk, f"{np.exp(best_q[I_REHRATE + k - 1]):.5f}",
                         "", "MHz per ms, transition; fitted rehearsal scan rate"])

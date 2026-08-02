@@ -90,6 +90,14 @@ LINES_5S = (
 TAIL_5S, TAIL_5S_SIG = 0.097, 0.097       # Leonard tails (n>12), +-100%
 CORE_5S, CORE_5S_SIG = 8.709, 0.093       # Leonard "core + vc"
 
+# The two real 5P fine-structure levels, as term energies above the 5S ground
+# state (NIST ASD, same table row this module already uses for the 5S->5P
+# matrix elements above -- named here so other modules (make_figures.py's
+# level-scheme figure) read the SAME NIST numbers instead of re-deriving them
+# from the D-line vacuum wavelengths independently.
+E_5P12_CM = LINES_5S[0][0]                # 5P1/2 term energy, NIST ASD
+E_5P32_CM = LINES_5S[1][0]                # 5P3/2 term energy, NIST ASD
+
 LINES_6S = (
     (12578.950, 4.1462, 0.0082), (12816.545, 6.048, 0.013),
     (23715.081, 9.720, 0.025), (23792.591, 13.645, 0.036),

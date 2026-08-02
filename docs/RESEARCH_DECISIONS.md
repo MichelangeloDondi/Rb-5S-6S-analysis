@@ -47,8 +47,9 @@ same direction. Right: the quantity actually measured.*
 
 **Decision: the estimator uses only the informative direction.** `beta_self`
 rides on the *difference* in `gamma_coll` across temperature — the headline
-bound uses the ×16 lever of the 70–110 °C single session — and not on any
-absolute per-condition value
+bound uses the ×52.5 lever of the four-point 70/90/110/130 °C construction
+(since 2026-08-02; was the ×16.2 lever of the 70–110 °C three-point
+construction — see §9) — and not on any absolute per-condition value
 ([linefit.py:40](../rb5s6s/linefit.py#L40)).
 
 [M12](../rb5s6s/identifiability.py) maps the degeneracy: the χ² surface is
@@ -103,10 +104,10 @@ the headline.
 
 M4's own producer says the same about its error bars, and gives the mechanism:
 
-> the archival T-sweep BOUNDS beta_self (it does not measure it). The global-fit
-> sigmas above are OVERCONFIDENT — they assume one shared sigma_laser across
-> blocks and so omit exactly this between-block drift.
-> ([run_beta_self.py:300](../scripts/run_beta_self.py#L300))
+> the archival four-point lever BOUNDS beta_self (it does not measure it). The
+> global-fit sigmas above are OVERCONFIDENT — they assume one shared sigma_laser
+> across blocks and so omit exactly this between-block drift.
+> ([run_beta_self.py:396](../scripts/run_beta_self.py#L396))
 
 Between-block width scatter (residuals ~0.06–0.16 MHz) is the dominant error:
 laser drift over the cooling session is comparable to the collisional trend
@@ -248,6 +249,96 @@ Two negative results: no Rb 6S self-broadening coefficient exists in the
 literature after four independent search framings, and Russian-language coverage
 could not be closed with the tools available — a limitation, not an absence
 ([lit/beterov1973.md](lit/beterov1973.md)).
+
+## 9. The 130 °C point moves from a diagnostic to the headline (2026-08-02)
+
+Through 2026-08-01 the `beta_self` headline used only the 70/90/110 °C
+temperature sweep — three points, dof=1, a ×16.2 density lever — and treated
+the 130 °C power-sweep session's 225 mW block as an optional fourth lever
+point, folded in only inside a separate, non-headline probe
+(the fig19 trend audit, an internal working note). The
+stated reason was that the 130 °C block looked like a different apparatus
+configuration: a power sweep rather than a temperature sweep, calibrated off
+before/after EOM ruler brackets rather than the T-session's own per-block
+ruler.
+
+**Decision: the 130 °C point is folded into the headline.** Michelangelo, on
+firsthand apparatus authority, states that the 130 °C power-sweep session ran
+in the SAME optical/cell configuration as the 70/90/110 °C temperature sweep
+— same beam path, same cell, same detection chain. That removes the
+"different configuration" objection. What genuinely differs between the two
+sessions is the acquisition epoch and the axis calibration, and the
+calibration difference is already handled PER SESSION: `load_t_rates()`
+derives the T-sweep rate from the T-session's own per-block ruler and the
+P-sweep rate from the P-session's before/after bracket combination
+independently, so combining the two onto one shared density axis carries no
+unhandled calibration mismatch. There is no remaining reason to keep 130 °C
+out of the headline, and no separate three-point construction is kept
+alongside it — one licensed construction, one bound, per peak
+([run_beta_self.py](../scripts/run_beta_self.py), module docstring).
+
+The four-point construction (70/90/110/130 °C, dof=2, ×52.5 density lever)
+tightens the per-peak 95% bound by roughly an order of magnitude, from
+≲0.2–0.4 to ≲0.03–0.05 MHz per 10¹² cm⁻³, and the physics reading gets
+stronger with it: `rb5s6s/lever_crosscheck.py` had already noted that folding
+in the 130 °C anchor pulls the fitted slope down because `gamma_coll(T)`
+barely grows across the full lever — a residual floor, not resolved
+collisions — and that is a cleaner demonstration with the full ×52.5 span
+than with the ×16.2 one. What does NOT change: the bound still sits an order
+of magnitude above the ~3.5 kHz expectation anchored on the measured 7S
+self-broadening rate ([BIG_PICTURE.md](BIG_PICTURE.md) §1), so a same-session
+150–170 °C extension remains worth doing — not to combine extreme lever
+points at all (that objection is retired), but because a purpose-built
+within-session lever removes the cross-epoch calibration step this fold-in
+relies on, and reaches densities where a genuine collisional effect could
+clear the block-noise floor ([PLAN.md](PLAN.md) §7).
+
+## 10. Three decisions from the same joint-refit night (2026-08-03)
+
+Recorded together because the fold-in reviews them as one commit.
+
+**Decision: the four-point `beta_self` lever, already decided in §9, gets
+the code that had not caught up to it.** The promotion of the
+70/90/110/130 °C construction to the sole headline (dof=2, the ×52.5 lever,
+the same-configuration fact and the instrument authority both recorded in
+§9) was a documentation decision before it was a code one. `rb5s6s/beta.py`
+and `rb5s6s/coverage.py` still ran the three-point, dof=1 machinery through
+the night §9 was written. Both now compute dof=2 from the four-point lever
+directly ([beta.py:114](../rb5s6s/beta.py#L114),
+[coverage.py:42](../rb5s6s/coverage.py#L42)), so the coverage study that
+certifies the bound's 95% claim tests the construction the headline
+actually reports, not its retired three-point predecessor. No separate
+construction is kept alongside it, matching §9's own statement of the
+decision.
+
+**Decision: the per-(session, peak) `sigma_laser` split takes a shrinkage
+prior sized from the evidence that motivated it, not from convenience.** A
+free-Gaussian-sigma probe on the brightest trace per peak
+(`private/reviews/digest/fig16_residual_asymmetry.md`, "Seventh addition")
+found the pooled-per-block `sigma_laser` too coarse at camp130: −85 kHz
+(4121), −121 kHz (4154), −287 kHz (4192) and +97 kHz (4207). Their mean
+absolute size, 147.5 kHz, rounded to the 150 kHz prior width that now pulls
+every `sigma_sp` cell back toward its block's mean
+([run_global_archive_fit.py:211](../scripts/run_global_archive_fit.py#L211)).
+The joint refit reproduces the probe's own ordering at camp130 (−14, −36,
+−57 and +107 kHz across the same four peaks), at the smaller amplitude the
+prior was built to allow, which is the validation the probe alone could not
+give itself: a number chosen from one free fit, checked against a second,
+independent fit constrained by it.
+[PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 21's third
+postscript carries the full comparison.
+
+**Decision: the pilot-axis nuisance takes the measured prior in place of the
+assumption box.** `pilot_rate_scale` used to float inside a flat [0.9, 1.1]
+box and had drifted to 1.02–1.03 in earlier fits. M26's own ruler day
+measures it directly, at 1.0022(12) from 27 rulers, and the refit now uses a
+tight ±5σ box around that number, [0.9962, 1.0081], in its place
+([run_global_archive_fit.py:312](../scripts/run_global_archive_fit.py#L312)).
+The posterior comes out at 1.0081, indistinguishable at this precision from
+that box's own upper edge. The measurement is doing the constraining now,
+not an assumption, and the fit still wants a rate above what the
+measurement allows. Whether that gap is the axis or absorbed width physics,
+the question the module docstring poses, stays open.
 
 ---
 

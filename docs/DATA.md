@@ -344,7 +344,9 @@ because the minimum of noisy one-degree-of-freedom estimates is the
 down-fluctuated one.
 
 The 130 °C lever variant (dof = 2) barely moves, 0.03 to 0.05, and keeps a
-caveat. The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
+caveat — promoted to the sole headline 2026-08-02 (Michelangelo, firsthand:
+the 130 °C session shares the same apparatus/optical configuration as the
+T-sweep; see the M4 entry above and RESEARCH_DECISIONS.md §9). The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
 so the objection is not a session boundary but that it is an extreme lever
 point, with T confounded against elapsed time across the whole campaign. The
 hierarchical global-fit β gains a `beta_nscale_syst` row at ±20%. A constant
@@ -462,6 +464,18 @@ conclusions:
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   OVERCONFIDENT — they assume one shared σ_laser across blocks and so omit the
   between-block drift the model-independent probe exposes.
+  **Superseded 2026-08-02 (Michelangelo, firsthand apparatus authority):** the
+  three-point 70–110 °C headline above is retired. The 130 °C power-sweep
+  session's 225 mW block ran in the SAME optical/cell configuration as this
+  T-sweep, so the "different configuration" reason for excluding it no
+  longer holds; the two sessions differ only by acquisition epoch and axis
+  calibration, and the calibration is already handled per session
+  (`load_t_rates`). The headline is now the four-point 70/90/110/130 °C
+  construction (dof=2, ×52.5 lever): β_self ≲0.03–0.05 MHz per 10¹² cm⁻³
+  (95%, per peak), non-monotonic in density for 2 of 4 peaks, an order of
+  magnitude tighter than the retired three-point reading. See
+  `scripts/run_beta_self.py`'s module docstring and
+  [RESEARCH_DECISIONS.md §9](RESEARCH_DECISIONS.md).
 ### Audit and curation decisions
 
 Kept because each one settles a question a reader of `MANIFEST.csv` could

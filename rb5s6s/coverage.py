@@ -3,15 +3,17 @@ Injection-recovery coverage of the collisional bound (M13)
 ==========================================================
 
 The headline collisional result is an UPPER BOUND with a claimed 95% coverage,
-built from a between-block scatter estimated on only one residual degree of
-freedom (3 density points, 2 fit parameters) -- which is why the bound uses the
-Student-t quantile t(0.95, 1) = 6.31 rather than the Gaussian 2 (methods 4.5,
-beta.collisional_slope). Whether that construction actually covers the truth 95% of the time is
-testable by simulation.
+built from a between-block scatter estimated on a small number of residual
+degrees of freedom (dof = n - 2, where n is the number of density points) --
+which is why the bound uses the Student-t quantile t(0.95, dof) rather than
+the Gaussian 2 (methods 4.5, beta.collisional_slope). Whether that
+construction actually covers the truth 95% of the time is testable by
+simulation.
 
-This module runs that test. For a grid of TRUE beta values it
-generates many synthetic width-vs-density datasets with the archive's own
-structure -- three temperatures, a between-block scatter that mimics the
+This module runs that test. For a grid of TRUE beta values it generates many
+synthetic width-vs-density datasets with the archive's own structure -- the
+four-point headline lever (70/90/110/130 C, dof=2, since 2026-08-02; see
+scripts/run_beta_self.py), a between-block scatter that mimics the
 drift-induced wander (the dominant error), plus the small within-block SEM --
 runs the SHIPPED estimator `beta.collisional_slope` on each, and measures:
 
@@ -21,7 +23,7 @@ runs the SHIPPED estimator `beta.collisional_slope` on each, and measures:
   * FALSE-POS : at beta_true = 0, the fraction the pre-registered rule would
                 call a MEASUREMENT rather than a bound (should be small)
 
-Because the scatter estimate has 1 DOF, the Gaussian-2 bound UNDER-covers and the
+Because the scatter estimate has few DOF, the Gaussian-2 bound UNDER-covers and the
 t-quantile bound is (conservatively) at or above nominal -- which is exactly the
 correction this study is here to verify empirically rather than assert.
 """
@@ -35,27 +37,30 @@ import numpy as np
 from .beta import collisional_slope
 from .density import density_units
 
-# the 3-point headline cooling sweep
-_TEMPS = (70.0, 90.0, 110.0)
+# the four-point headline lever (70/90/110/130 C, dof=2, since 2026-08-02;
+# the prior three-point 70/90/110 C, dof=1 construction is superseded)
+_TEMPS = (70.0, 90.0, 110.0, 130.0)
 _N = np.array([density_units(t) for t in _TEMPS])
+_NPTS = len(_TEMPS)
 _W0 = 4.8            # MHz baseline width (natural (x) transit (x) laser, ~constant in N)
 _SEM = 0.05         # within-block statistical error per condition (MHz)
 
 
 def coverage_study(beta_true: float, *, block_sigma: float = 0.12,
                    n_trials: int = 2000, seed: int = 0) -> Dict:
-    """Simulate the 3-point collisional bound at a known beta_true and return
-    bias, 95% coverage, and (at beta_true = 0) the false-MEASUREMENT rate.
+    """Simulate the four-point collisional bound at a known beta_true and
+    return bias, 95% coverage, and (at beta_true = 0) the false-MEASUREMENT
+    rate.
 
     block_sigma: 1-sigma of the between-block width scatter (the drift proxy,
     the dominant error in the real archive, ~0.06-0.16 MHz)."""
     rng = np.random.default_rng(seed)
     betas, covered, called_meas = [], 0, 0
-    E = np.full(3, _SEM)
+    E = np.full(_NPTS, _SEM)
     for _ in range(n_trials):
         # true line + between-block scatter (common drift-like wander) + within-block noise
         W = _W0 + beta_true * _N \
-            + rng.normal(0.0, block_sigma, 3) + rng.normal(0.0, _SEM, 3)
+            + rng.normal(0.0, block_sigma, _NPTS) + rng.normal(0.0, _SEM, _NPTS)
         r = collisional_slope(_N, W, E)
         betas.append(r["beta_eff"])
         if r["bound95_nscale"] >= beta_true:

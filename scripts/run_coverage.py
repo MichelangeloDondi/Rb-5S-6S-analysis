@@ -2,8 +2,9 @@
 """
 M13: injection-recovery coverage of the collisional 95% bound.
 
-Simulates the 3-point cooling sweep at known true beta values, runs the SHIPPED
-estimator (beta.collisional_slope) on many synthetic datasets, and measures
+Simulates the four-point headline lever (70/90/110/130 C, dof=2, since
+2026-08-02) at known true beta values, runs the SHIPPED estimator
+(beta.collisional_slope) on many synthetic datasets, and measures
 whether the point estimate is unbiased and whether the Student-t 95% upper bound
 actually covers the truth 95% of the time. This is the empirical validation of
 the t-quantile coverage correction (methods 4.5): a bound is only as good as its
@@ -28,7 +29,7 @@ BETAS = (0.0, 0.05, 0.10, 0.20)   # MHz per 1e12 cm^-3
 def main() -> int:
     print("=" * 74)
     print("(M13) INJECTION-RECOVERY COVERAGE of the collisional 95% bound")
-    print("  3-point cooling sweep, 2000 synthetic datasets per true beta,")
+    print("  four-point headline lever, 2000 synthetic datasets per true beta,")
     print("  run through beta.collisional_slope (the shipped estimator).\n")
     print(f"  {'beta_true':>9} {'bias':>9} {'scatter':>8} {'95% coverage':>13} {'false-meas':>11}")
     rows = []
@@ -61,10 +62,11 @@ def main() -> int:
 
     print("\n  READING: the point estimate is unbiased (bias ~ 0); the Student-t 95%")
     print("  bound COVERS the truth at >= 95% (conservative, the safe direction for a")
-    print("  bound) -- the empirical check on the t(0.95,1)=6.31 construction. At")
-    print("  beta_true=0 the SNR>=3 'measurement' rule alone fires ~6% of the time,")
-    print("  which is why the analysis does NOT rely on SNR alone: the non-monotonic")
-    print("  width-vs-density pattern (3/4 real peaks) is the decisive bound guard.")
+    print("  bound) -- the empirical check on the t(0.95,2)=2.92 construction (the")
+    print("  four-point headline, dof=2). At beta_true=0 the SNR>=3 'measurement' rule")
+    print("  alone fires ~4% of the time, which is why the analysis does NOT rely on")
+    print("  SNR alone: the non-monotonic width-vs-density pattern (2/4 real peaks) is")
+    print("  the decisive bound guard.")
     print("  Wrote results/coverage.csv.")
     return 0
 

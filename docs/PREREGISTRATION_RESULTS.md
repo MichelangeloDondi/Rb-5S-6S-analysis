@@ -49,6 +49,8 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The **frequency ruler fitted five comb teeth where there are seven**, biasing the sweep rate high by 0.104%. Corrected to 0.042526 MHz/ms and the whole pipeline re-run | addendum 19 |
 | Two flagged wing anomalies were **one un-converged fit**: a single start left the amplitude at 20x the true chi2. Multi-started, both vanish and C3g's closure is a null at every temperature | addendum 20 |
 | The fit gallery shows a **symmetric centre excess on the brightest lines** (1.4% of peak, 3.7 sigma on 993.4192 nm), absorbed by the noise inflation. Saturation, width sharing, hyperfine and pedestal all ruled out. Open, moves nothing | addendum 21 |
+| The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
+| The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-14x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -111,7 +113,9 @@ re-open a fitted result.
 - [Addendum 19, 2026-08-01 — the frequency ruler fitted five teeth where there are seven](#addendum-19-2026-08-01--the-frequency-ruler-fitted-five-teeth-where-there-are-seven)
 - [Addendum 20, 2026-08-02 — two flagged anomalies were one un-converged fit](#addendum-20-2026-08-02--two-flagged-anomalies-were-one-un-converged-fit)
 - [Addendum 21, 2026-08-02 — a centre excess the statistics absorb and the eye does not](#addendum-21-2026-08-02--a-centre-excess-the-statistics-absorb-and-the-eye-does-not)
+- [Addendum 22, 2026-08-03 — the frequency axis gets its theoretical receipt](#addendum-22-2026-08-03--the-frequency-axis-gets-its-theoretical-receipt)
   - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
+- [Addendum 23, 2026-08-03 — the 1.67x anomaly was a factor-of-two of our own](#addendum-23-2026-08-03--the-167x-anomaly-was-a-factor-of-two-of-our-own)
 
 ---
 
@@ -1057,16 +1061,10 @@ backup that *is* the clock) is resolved in four moves, all shipped:
    collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
    untouched.
 3. **The full timestamped backup is preserved publicly**: release
-   `raw-backup-2026-07-24`
+   [`raw-backup-2026-07-24`](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases/tag/raw-backup-2026-07-24)
    carries the complete tree verbatim (`tar.gz`, mtimes intact — verified
    inside the archive; 753 CSVs, ~460 MB unpacked, 77 MB packed), sha256
    `58d5315d8bde5fae0c3c0989e5b96c76e24f02645d546791878ba650f9cc08d1`.
-   *(Note, 2026-07-25: that release was published from the working repository,
-   which also carried the raw traces. This public repository ships the
-   analysis, the manifest and the results without the traces; the archive and
-   its release are held privately and available on request. The hash above
-   still identifies it. Nothing about the audit's findings changes — they were
-   derived from the clock, which remains committed as `CLOCK.csv`.)*
    Anyone can now re-run the audit from first principles, hashing included;
    and the clock no longer lives on a single disk.
 4. **The folder roles are documented** (`DATA.md` §3a) and guarded
@@ -2259,3 +2257,118 @@ than its error bar in either direction. The unexplained half has now
 survived a twelve-candidate elimination, every branch closed with a number,
 and it stays exactly as stated above: open, below the inflation, moving
 nothing. The fixed-lock session inherits it as a target, not a debt.
+
+**Third postscript, 2026-08-03.** The per-(session, peak) sigma_laser layer
+recommended above ran inside the full joint refit, each cell pulled toward
+its block's pooled mean by the 150 kHz shrinkage prior. At camp130, the only
+block the free-width probe had resolved, the refit reproduces the probe's
+ordering exactly: 993.4121 nm pulls −14 kHz, 993.4154 nm −36 kHz, 993.4192 nm
+−57 kHz, and 993.4207 nm +107 kHz, against the probe's unshrunk −287 kHz
+pull on 993.4192 nm. The shrinkage prior moderates the amplitude as
+designed, trading the probe's free-per-trace deviation for a value
+disciplined by its block's mean. The attributed half of the excess is
+confirmed structural. The unattributed remainder stands exactly as stated
+above, open, below the inflated noise, and moving nothing.
+
+## Addendum 22, 2026-08-03 — the frequency axis gets its theoretical receipt
+
+**What was asked.** Every number in this archive rides on one assumption:
+that the EOM comb's tooth spacings equal the modulation frequency exactly,
+so the fitted spacing calibrates the sweep rate (M2). The teeth of a
+phase-modulated standing wave are not simple copies of the line: the tooth
+at offset n is fed by every counter-propagating sideband pair (k, m) with
+k + m = n, the pathways are phase-coherent, and interference could in
+principle pull tooth centroids differentially, which would bias the rate
+and with it the whole axis. The assumption had never been derived.
+
+**What the derivation shows.** The coherent pathway sum collapses by the
+Bessel addition theorem to tooth amplitudes proportional to J_n(2beta)
+squared. The centroid question closes on a symmetry: relabeling k to n-k
+leaves each pathway weight unchanged (the sideband products commute) while
+flipping the sign of the Doppler term, so every tooth's profile is exactly
+symmetric in atomic velocity. The only ingredient is that the retro beam
+carries the same sideband spectrum as the forward beam, which the
+single-pass EOM followed by the retro mirror guarantees by construction.
+Tooth spacings are exactly the modulation frequency.
+
+**The numbers.** Feeding the measured sideband asymmetry into a worst-case
+pull estimate gives 1 to 6 parts in 10^6 of the 6.25 MHz spacing, three to
+four orders below the 0.1% level that would matter against the committed
+rate. Residual first-order Doppler broadening for unequal pairs is about
+11 Hz per unit of |k - m|, at most about 65 Hz against a 2.38 MHz tooth
+width. One caveat stays open: amplitude modulation residuals on the EOM
+drive would modulate the light shift itself, a different mechanism the
+symmetry does not cover, listed as unquantified.
+
+**A companion finding.** The same derivation was tested against the
+measured tooth amplitude ratios. The temperature-session rulers fit
+reasonably. The power-session bracket rulers do not fit at all, consistent
+with the plan's own record that their light path differed from the science
+light. The consequence is a refusal: ruler traces are not licensed as
+lineshape data for now, because their model demonstrably does not close on
+the power-session population, and a width extracted from a wrong model
+would be a fabricated number. The axis calibration is untouched by this,
+it needs only the spacings, which the symmetry protects.
+
+**Status and lesson.** The axis assumption is now a proved property, not a
+habit. The lesson is the same one this report keeps learning from both
+directions: the difference between an assumption that has always worked
+and a property that has been derived is one afternoon of algebra, and the
+derivation also told us, for free, exactly which reuse of the same data is
+not allowed.
+
+## Addendum 23, 2026-08-03 — the 1.67x anomaly was a factor-of-two of our own
+
+**What was suspected.** M18 (`rb5s6s/vanderwaals.py`) computes a van der
+Waals beta_self for the 5S+6S asymptote and checks the machinery against
+the one nS state with a measured self-broadening rate, Zameroski's 7S
+number. The check had been failing by 1.67x, high, for longer than it
+should have gone unresolved. The module's own docstring already named a
+suspect: the Lindholm-Foley impact prefactor is quoted from the
+pressure-broadening literature, not derived, and its HWHM/FWHM convention
+was flagged as the most likely place for an error of that size to hide.
+
+**What the audit traced.** A same-day audit (`private/reviews/digest/vdw_convention_audit.md`)
+walked the chain end to end: the C6 integral, Lewis 1980's eq. (4.16)-(4.17)
+cross-section prefactor (independently recomputed at 4.0414, matching
+Lewis's own quoted 4.04 to four digits), and eq. (4.18)'s velocity-averaged
+width. Lewis's own text calls that width a half-width, and Table 4.1's
+width-to-shift ratio is written 2*gamma/beta, a leading 2 that is only
+needed when gamma is a HWHM to begin with. The convention as written in
+the module docstring was correct throughout.
+
+**The double-count.** The bug was in applying the convention, not in
+stating it. `LINDHOLM_FOLEY_PREFACTOR = 8.16` is not the bare eq. (4.17)
+HWHM prefactor (4.04) but 2x that value (2 x 4.0414 = 8.083, matching 8.16
+to 0.9%, ordinary literature rounding). The constant was already a FWHM
+angular prefactor. `beta_self_vdw`'s return line then applied a second
+factor of 2 on top of it, converting angular to ordinary units with
+`hwhm_ang / (2*pi) * 2.0` when the trailing `* 2.0` had nothing left to
+do. The HWHM to FWHM step was counted once inside the constant and once
+again in the return statement.
+
+**The corrected closure.** Removing the redundant `* 2.0` moves the 7S
+prediction from 8.99 kHz per 1e12 cm^-3 to 4.50 kHz, against Zameroski's
+measured 5.39. The mismatch flips from 67% high to 17% low, and the 17%
+now sits close to (a bit past) the +-10-15% envelope the dropped
+core/tail and the mean-speed-vs-full-Boltzmann-average approximation
+already predict. What had read as an unexplained 1.67x anomaly closes
+into an expected, small, low-side gap.
+
+**What is unaffected, and why.** `beta_self_anchored` never used
+`beta_self_vdw` for its headline number. It takes the absolute scale from
+Zameroski's measurement and uses this module only for the ratio
+C6(6S)/C6(7S) = 0.347, so beta_self(6S) = 3.53 +- 0.30 kHz per 1e12 cm^-3
+is unchanged before and after the fix (verified directly: 3.5280870 kHz
+both ways). The archival bound sitting 8-14x above that anchor is
+likewise untouched, because the doubled prefactor cancels in the ratio
+regardless of whether it is right or wrong. Both numbers were checked
+against the running code as part of this fix, not assumed from the audit.
+
+**Status and lesson.** A convention that the module's own docstring had
+flagged as a live suspect was traced and fixed within a day of being
+named. The fix touched one line, `rb5s6s/vanderwaals.py` line 190, plus
+the comments and prose that had described the bug's symptom as a physical
+discrepancy rather than a bookkeeping one. Nothing downstream of the
+ratio-anchored numbers moved. The anomaly did not get explained away, it
+dissolved into agreement.

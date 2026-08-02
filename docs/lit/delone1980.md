@@ -182,6 +182,15 @@ the same function.
 Delone's Eq. (5.3) evaluated for the intensity distribution of a focused Gaussian
 beam. That must be said in the introduction here in those words.
 
+**The distribution-from-profile idea has independent roots outside atomic
+physics too, REPORTED and not read here.** Efimov and Khitrov made an early
+1979 attempt at treating inhomogeneous broadening as a probability
+distribution over a lineshape's parameters, work a modern general inverse
+framework picks up and extends well past atomic spectroscopy: Prokopeva and
+Kildishev, *Nanophotonics* **14**, 4177 (2025), doi:10.1515/nanoph-2025-0044,
+recover the same kind of distribution from a measured lineshape for
+dielectric-function models in nanophotonic materials.
+
 **What that leaves, stated precisely.** Delone give the general relation and
 treat $P$ as the *unknown to be reconstructed* — their whole point is that the
 lineshape measures the laser's statistics. This programme runs it the other way:

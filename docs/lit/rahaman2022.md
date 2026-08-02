@@ -27,7 +27,23 @@ verify_flags:
     1.64 m), and -1.18(4) MHz/W at 1.5P bidirectional through w = 63 um gives
     -49.5, not -495. The corrupted -495 has propagated to secondary web
     sources -- do not re-derive it from the text layer.'
-verified_date: 2026-07-30
+  - 'Re-verified 2026-08-03 against a fresh full read of the held PDF (86
+    pdftotext -layout pages of running text, all of Sections I-V plus both
+    supplements). The pdftotext corruption stands: independently rederived
+    -49 Hz/(W/cm^2) from I_peak/P = 3/(pi w0^2) with w0 = 63 um and
+    kappa = -1.18 MHz/W, matching their stated value to within their quoted
+    +-5 rounding. The APS abstract (link.aps.org/doi/10.1103/PhysRevA.106.042811)
+    independently confirms Phys. Rev. A 106, 042811, published 17 Oct 2022,
+    and quotes the same -49 +- 5 Hz/(W/cm^2) in its own abstract text, so the
+    coefficient is now cross-confirmed by three independent readings (this
+    PDF, the arithmetic check, and the published abstract) rather than one.
+    No other numbers in this file changed. PDF_papers/2210.01481v1.pdf, a
+    byte-identical raw-arxiv-named duplicate of the held, correctly-named PDF,
+    appeared in PDF_papers/ during this pass and was removed as clutter -- it
+    was never referenced by any lit file, the bib, the index, or the
+    holdings README, all of which already point to
+    Rahaman-Dutta_2022_Cs-7D32-hyperfine-ac-Stark-767nm.pdf.'
+verified_date: 2026-08-03
 summary: >
   Precision two-photon spectroscopy of Cs 6s -> 7d 2D3/2 at 767 nm (TIFR):
   hyperfine splitting AND the ac Stark shift of the transition measured in one

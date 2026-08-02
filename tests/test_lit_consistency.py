@@ -60,9 +60,9 @@ KNOWN_DANGLING = {
     # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
     # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
     "li2024perspective",
-    # still wanted, not yet supplied (the 2026-08-02 delivery covered
-    # everything else on the request list)
-    "feng2026",
+    # feng2026 left this list 2026-08-03: now docs/lit/feng2026.md, held and
+    # VERIFIED (Opt. Lett. 51, 1363-1366 (2026), DOI 10.1364/OL.589640).
+    # lidou2024 still wanted, not yet supplied.
     "lidou2024",
     # bevilacqua2012 RETIRED 2026-07-30: a misattribution. PRA 86, 012501
     # (2012) is Bruvelis et al., now docs/lit/bruvelis2012.md. The old key is
@@ -481,7 +481,7 @@ def test_verified_status_requires_a_real_bibliographic_record():
 # has to come from whoever reads the paper next.
 UNDATED_VERIFIED = {
     "ahern2025", "amy2017", "andeweg2026", "antypas2018", "araujo2021",
-    "ayachitula2024", "bala2026", "baranger1958", "biraben1979",
+    "ayachitula2024", "bala2026",
     "biraben2019", "borde1976", "chevrollier2012", "fioretti1998",
     "gerginov2018", "gomez2005", "grimm2000", "hamilton2023",
     "lehmann2021", "martin2018", "newman2021", "nieddu2019", "poulin2002",

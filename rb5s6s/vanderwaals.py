@@ -30,9 +30,21 @@ The cost is visible in the validation below.
 
 And the broadening prefactor is quoted, not derived. The Lindholm-Foley impact
 result for a -C6/R^6 potential is used as stated in the literature; its
-convention (HWHM, angular units, C6 entering as C6/hbar) is the most likely
+convention (FWHM, angular units, C6 entering as C6/hbar) is the most likely
 place for an error, so it is written out in `beta_self_vdw` rather than
-buried.
+buried. The primary source for this whole construction is Lewis, Phys. Rep.
+58, 1-71 (1980) (docs/lit/lewis1980.md), section 4.2: the scalar
+Anderson/phase-shift cross-section for a -C6/R^6 potential, eq. (4.15)-(4.17),
+specialized to n=6 gives exactly the (C6/hbar)^0.4 * v^0.6 powers used below,
+and eq. (4.18) is the w = <N*sigma*v> step this module evaluates. Lewis's own
+error bound on the Lindholm-Foley approximation (~4%, section 4.3.2) is for a
+J=1 excited-state ANGULAR average that our S-S pair does not have (S states
+carry no such tensor to average over, so the scalar formula is exact in that
+respect); it is quoted here only to note that it is far smaller than the
+~17% gap between this module's corrected 7S prediction and Zameroski's
+measured rate (see `beta_self_anchored` below), and so cannot explain that
+gap either -- the gap is attributed to the dropped core/tail and the mean-
+speed approximation, both already named above.
 
 VALIDATION, which is the point of doing the ground state first: the same
 machinery gives C6(5S+5S) = 4180 a.u. against a literature Rb2 value of
@@ -68,9 +80,11 @@ C6_RB2_GROUND_LIT_AU = 4691.0
 ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR = 129.0
 ZAMEROSKI_7S_BROADENING_ERR = 11.0
 
-# Lindholm-Foley impact prefactor for a -C6/R^6 potential: HWHM in angular
-# units. Quoted from the standard pressure-broadening literature, NOT derived
-# here -- see the module docstring.
+# Lindholm-Foley impact prefactor for a -C6/R^6 potential: FULL width at half
+# maximum (FWHM) in angular units -- 2x the bare eq.(4.17) HALF-width value
+# (2 * 4.04 = 8.08, matching this constant to 0.9%, plausible literature
+# rounding). Quoted from the standard pressure-broadening literature, NOT
+# derived here -- see the module docstring.
 LINDHOLM_FOLEY_PREFACTOR = 8.16
 
 
@@ -123,14 +137,17 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     """beta_self(6S) anchored on Zameroski's MEASURED 7S rate, using this
     module only for the RATIO of C6 coefficients.
 
-    Why not just call beta_self_vdw for 6S: it over-predicts. Run against the
-    one state where a measurement exists, this module gives beta_self(7S) =
-    9.0 kHz per 1e12 cm^-3 where Zameroski measured 5.4 -- high by 1.67x, well
-    outside the +-10-15% the sum-over-states truncation can explain. The module
-    docstring already names the suspect: the Lindholm-Foley prefactor is quoted
-    from the pressure-broadening literature, not derived here, and its
-    convention (HWHM vs FWHM, angular vs ordinary units) is where a factor of
-    that size lives.
+    Why not just call beta_self_vdw for 6S: run against the one state where a
+    measurement exists, this module gives beta_self(7S) = 4.45 kHz per
+    1e12 cm^-3 where Zameroski measured 5.4 -- 17% low, close to (a bit past)
+    the +-10-15% envelope the dropped core/tail and the mean-speed-vs-full-
+    Boltzmann-average approximation already predict (see module docstring).
+    An earlier version of this module double-applied the HWHM->FWHM
+    conversion in `beta_self_vdw` and reported this as "high by 1.67x";
+    that was a bug in the code, not a physical discrepancy -- see
+    docs/PREREGISTRATION_RESULTS.md Addendum 23. NOT the same thing as
+    Lewis 1980's own quoted ~4% Lindholm-Foley error (docs/lit/lewis1980.md):
+    that 4% is for a J=1 angular average this S-S pair does not carry.
 
     Whatever that error is, it is COMMON to 6S and 7S -- same prefactor, same
     law, same units. It cancels in the ratio:
@@ -163,12 +180,17 @@ def beta_self_vdw(c6_au: float, T_K: float, n_cm3: float = 1e12,
 
     Written out because the unit conventions are the failure mode:
       * C6 enters as C6/hbar, i.e. rad/s * m^6, NOT as an energy;
-      * the prefactor gives the HALF width at half maximum in ANGULAR units;
-      * the return is converted to a FULL width in ordinary Hz.
+      * the prefactor gives the FULL width at half maximum in ANGULAR units
+        (LINDHOLM_FOLEY_PREFACTOR is already 2x the bare eq.(4.17) half-width
+        value -- see the constant's comment above);
+      * the return divides by 2*pi only, to convert ANGULAR to ordinary Hz.
+        A second factor of 2 here would double-count the HWHM->FWHM step
+        already folded into the prefactor -- that double-count was the M18
+        bug (see docs/PREREGISTRATION_RESULTS.md Addendum 23).
     """
     c6_si = c6_au * HARTREE_J * BOHR_M ** 6          # J m^6
     c6_rate = c6_si / HBAR                            # rad/s m^6
     v = mean_relative_speed(T_K)
     n = n_cm3 * 1e6                                   # m^-3
-    hwhm_ang = prefactor * c6_rate ** 0.4 * v ** 0.6 * n
-    return hwhm_ang / (2.0 * math.pi) * 2.0
+    fwhm_ang = prefactor * c6_rate ** 0.4 * v ** 0.6 * n
+    return fwhm_ang / (2.0 * math.pi)

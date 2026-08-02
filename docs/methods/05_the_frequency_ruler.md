@@ -20,7 +20,18 @@ $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} 
 
 — the same factor-2 as [§0 — conventions](../methods.md). Fitting the tooth spacing (in ms) per block gives
 the sweep rate; we measure $0.042526(51)$ MHz/ms on the laser axis, and the
-sweep is linear across the window to $<0.3$%. A half-wave-plate trick mixes in
+sweep is linear across the window to $<0.3$%.
+
+This spacing's exactness, assumed above to calibrate the sweep rate, is now
+a derived property rather than a design assumption: a velocity-symmetry
+argument shows every tooth centroid is exactly symmetric in atomic velocity,
+because the retro beam carries the same sideband spectrum as the forward
+beam by construction. The worst-case differential pull from sideband
+interference is 1 to 6 parts in $10^6$ of the 6.25 MHz spacing, with the
+full derivation in the audit trail
+([PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md), addendum 22).
+
+A half-wave-plate trick mixes in
 amplitude modulation on the ruler traces to suppress the carrier so the
 sidebands stand tall — so the tooth *spacing* is exact, but tooth *heights*
 carry no information about the modulation depth. *Code:* `ruler.py` (M2);

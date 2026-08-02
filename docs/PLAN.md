@@ -416,11 +416,31 @@ magnitudes). The magnitudes belong to L/M.
   multiplier is the t quantile on one residual degree of freedom. Five
   blocks give t(0.95,3) = 2.35, a ~2.7× tightening before any drift
   compensation. This is the cheapest statistical buy on the page.
-- **150–170 °C in the same locked session, interleaved.** Mandatory, not
-  preferable: the archival lever test shows cross-session high-density
-  anchors cannot be combined (the joint β collapsed 0.036 → 0.014 when the
-  ×53 anchor was folded in). Extreme lever points either sit inside the
-  same bracketed session or they stay diagnostics.
+- **150–170 °C in the same locked session, interleaved.** Still wanted, for a
+  narrower reason than the 2025 post-mortem gave it. The archival lever test
+  shows the joint β collapses 0.036 → 0.014 when the ×53 anchor (the 130 °C
+  block) is folded in; earlier drafts of this plan read that collapse as
+  "cross-session anchors cannot be combined." `rb5s6s/lever_crosscheck.py`'s
+  own docstring already disagreed with that reading, and a 2026-08-02
+  decision (Michelangelo, firsthand: the 130 °C power-sweep session ran in
+  the SAME optical/cell configuration as the T-sweep, differing only by
+  epoch and per-session calibration, which `load_t_rates` already handles)
+  promoted the four-point fold-in to the archival headline
+  (`scripts/run_beta_self.py`). The collapse is not a session artifact: it
+  is the correct least-squares response to a line that barely moves across
+  a 52.5× density span (gamma_coll rises only ×1.47–1.9), which is exactly
+  what makes "residual floor, not resolved collisions" a demonstrated
+  conclusion rather than an assumption. What a same-session 150–170 °C
+  extension still buys, on top of the archival fold-in: it removes the
+  cross-epoch calibration step entirely rather than relying on it being
+  handled correctly after the fact (a within-session lever is cleaner than
+  a cross-session one on general grounds, independent of this particular
+  case), and it is the only route to densities where a genuine ~kHz
+  collisional effect could clear the block-noise floor -- the archive's
+  four-point bound (≲0.03–0.05 MHz per 10¹² cm⁻³) is still roughly an order
+  of magnitude above the ~3.5 kHz expectation (§1, `docs/BIG_PICTURE.md`
+  §1), so the case for the session is now about REACH, not about combining
+  points at all.
   ![the EOM comb and its nonlinearity map](../figures/fig8_ruler.png)
 
   *The ruler as it worked in 2025: seven line replicas 6.25 MHz apart on the
@@ -476,6 +496,13 @@ magnitudes). The magnitudes belong to L/M.
 - **σ_laser at L**: transit removed by geometry, collisions bounded
   externally at tens of kHz by the literature scale. Quote it with that
   prior stated, or as a bound. Never as an assumption-free measurement.
+- **The width/shift ratio, a fixed-lock-only check.** A drifting lock cannot
+  measure a pressure *shift*: only widths survive the 2025 archive, so the
+  session's centre channel is what would let this run. Lewis (1980, Table
+  4.1) predicts $2\gamma/\beta = 2.75$ for a pure $n=6$ van der Waals
+  potential, a second, independent test of the vdW anchor (M18) beyond the
+  $T^{0.3}$ width-scaling check (§4.2 of the statistics chapter), and one the
+  archive has no route to at all.
 
 ## 8. The amplitude program
 
@@ -551,9 +578,9 @@ epoch bridge. Cusp session → the model-form closure.
 | # | what bit | measured size | consequence | cure |
 |---|---|---|---|---|
 | 1 | between-block width scatter (drifting lock) | σ_B ≈ 0.12 MHz vs within-block SEM ≈ 0.05 | widths drift-limited; σ_laser a bound | fixed lock; brackets + veto (§7) |
-| 2 | only 3 densities, 1 residual DOF | t(0.95,1) = 6.31 | β_self a bound | ≥5 T blocks (§7) |
+| 2 | only 3 densities, 1 residual DOF | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (2026-08-02, headline); ≥5 T blocks tightens further (§7) |
 | 3 | T monotonic in time | density slope collinear with drift | a guard had to carry the claim | opposite-order days (§7) |
-| 4 | cross-session high-density anchor | joint β collapses 0.036 → 0.014 | high-T lever unusable | same-session 150–170 °C (§7) |
+| 4 | archival lever short at ×16.2 (three T points) | joint β collapses 0.036 → 0.014 once the ×52.5 (130 °C) anchor is folded in | was read as "high-T lever unusable"; now read as the fitted floor responding correctly to a near-flat gamma_coll(T) (`lever_crosscheck.py`) -- folded into the headline 2026-08-02 | same-session 150–170 °C (§7) still wanted, to reach densities where a ~kHz effect could clear the block-noise floor |
 | 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable; the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes + hardware timestamps (§7) |
 | 6 | ruler light ≠ science light (HWP trick) | monitor reliability ≈ 0 | no drift compensator | matched-PM ruler at β ≈ 1.202 (§7) |
 | 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | beam profile first (§3, item 1) |

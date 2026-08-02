@@ -80,8 +80,8 @@ traces, plus 33 quarantined or discarded (full census in
 ## Shapes without centres
 
 The 2025 data were taken with a **drifting, hand-re-centred lock** — a
-measured constant ~0.02 MHz/min plus MHz-scale re-centrings between blocks
-([APPARATUS §6](docs/APPARATUS.md)) — which has one consequence:
+drift bounded at order 0.02 MHz/min plus MHz-scale re-centrings between
+blocks ([APPARATUS §6](docs/APPARATUS.md)) — which has one consequence:
 
 - absolute line **centres are lost** (drift moves them scan to scan), but
 - line **shapes are preserved**.
@@ -115,9 +115,11 @@ bounds now, with a proposed fixed-lock follow-up (below) to convert each into
 a number.
 
 An upper bound excludes every model that predicts more, and each bound here
-sets the sensitivity target a follow-up session would need to beat. The AC-Stark bound brackets its
-prediction rather than resolving it (the predicted effect is about one block's
-width scatter, so the bound rests on averaging — M17), and the 95%
+sets the sensitivity target a follow-up session would need to beat. The
+width-only AC-Stark bound brackets its prediction rather than resolving it
+(the predicted effect is about one block's width scatter, so the bound rests
+on averaging — M17), while the joint three-session fit lands below the
+predicted band, which is the C3f tension the results table quotes. The 95%
 constructions are validated by injection-recovery
 ([methods §4.11](docs/methods/06_the_statistics.md)), not assumed.
 
@@ -175,12 +177,14 @@ line. It sits below the noise inflation and moves no committed number.
   <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global archive model over one trace per peak, with residual panels">
 </p>
 
-Every absolute number is limited by a single systematic — the beam waist **w₀** —
-so each is reported as a bound together with the measurement that would lift it.
+The dominant shared systematic for every absolute number is the beam waist
+**w₀** (density scale, model form and block scatter contribute at a lower
+level, see RESULTS), so each is reported as a bound together with the
+measurement that would lift it.
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
-| Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points **and** a lower block-noise floor — both, see M17 |
+| Collisional self-broadening **β_self** | ≲ 0.03–0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (×16.2→×52.5, 2026-08-02); same-session 150–170 °C points **and** a lower block-noise floor still needed for a measurement, see M17 |
 | 2025 laser linewidth **σ_laser** | ≈ 1.09 MHz laser-axis at the w₀ prior (bound < 1.2, rising with w₀) | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.15 MHz (95%, joint three-session full-profile likelihood, M23; below the 0.35 predicted at the adopted waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
@@ -272,8 +276,11 @@ tabulated live from the result CSVs in [`docs/RESULTS.md`](docs/RESULTS.md)
   5S–6S AC-Stark and collisional self-shift coefficients. With power capped at
   225 mW, the intensity axis would come from the waist instead (a telescope
   gives two working waists spanning a ×16 intensity range), and a same-session
-  150–170 °C extension would give β_self a real density lever — though the
-  lever alone is not enough, since the block-noise floor is co-limiting (M17).
+  150–170 °C extension would give β_self a real density lever without leaning
+  on a cross-epoch fold-in — the archive's own 130 °C point already stretches
+  the lever to ×52.5 (2026-08-02, see the results table above), but the
+  lever alone is not enough even at that reach, since the block-noise floor
+  is co-limiting (M17).
   Full
   specification: [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre (the nanofibre extension).** The same ramp law tested in the evanescent field
@@ -289,38 +296,19 @@ pytest -q                 # fast test suite (~2 min)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
-**On the raw traces.** This repository ships the analysis, the committed
-results, the figures, and the dataset's manifest
-([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv) — every trace's filename,
-condition, role and MD5), but **not the 297 raw traces themselves**. They were
-taken at OIST and are held privately; they are available on request
-(michelangelo.dondi@unibo.it). What that means concretely:
-
-- **Everything that certifies the analysis runs here.** The injection-recovery
-  closures, the coverage study and minimum-detectable-effect, the transit-kernel
-  asymptotics, the identifiability and model-comparison machinery — all of it is
-  synthetic and needs no archive. That is the bulk of the suite.
-- **The clock-dependent results also reproduce from a clone**, because the
-  acquisition clock is committed as
-  [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv) (hashes → timestamps,
-  not measurement data).
-- **What cannot run here** is the raw→results pipeline itself, and the four
-  tests that re-hash the traces against the manifest; those skip with a stated
-  reason rather than failing. With the traces in place they all run, and each
-  stage reproduces its committed CSV byte-for-byte:
-
-**Adapting it to your own line.** The analysis is a library with its
-physics, apparatus, and statistics kept behind separate seams.
-[docs/ADAPTING.md](docs/ADAPTING.md) names them for anyone pointing the
-machinery at a different transition, species, or light geometry, and
-[examples/your_line.ipynb](examples/your_line.ipynb) lets you try it on
-your own line by editing one dictionary. Neither needs the raw traces.
-
+The 2025 dataset is already in `data_raw/`, so the pipeline runs directly.
+The analysis is a library with its physics, apparatus, and statistics kept
+behind separate seams. [docs/ADAPTING.md](docs/ADAPTING.md) names them for
+anyone pointing the machinery at a different transition, species, or light
+geometry, and [examples/your_line.ipynb](examples/your_line.ipynb) lets you
+try it on your own line by editing one dictionary. Each stage reads the previous stages' output in `results/`:
 
 ```bash
 bash scripts/run_all.sh   # every stage in dependency order, then the figures,
                           # docs/RESULTS.md, and the CSV status column
 ```
+
+Re-running any stage reproduces its committed CSV in `results/` byte-for-byte.
 
 The **clock-dependent results** (the lock-drift measurement and its audit
 trail, [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md)
@@ -335,7 +323,7 @@ python scripts/run_laser_history.py   # laser frequency, within each display epo
 print the full report — no raw traces and no private folder required, because
 the per-trace QC metrics they read (`results/qc_metrics.csv`) are committed. The complete
 timestamped raw backup behind the clock is preserved verbatim as the
-raw-data archive held with the traces (sha256 recorded in the audit report).
+release asset `raw-backup-2026-07-24` (sha256 in its notes).
 
 The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
 are cited across many documents. `tests/test_docs_canonical.py` holds each in a
@@ -407,3 +395,64 @@ campaign. A manuscript based on it is in preparation.
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·
 citation metadata in [`CITATION.cff`](CITATION.cff) · MIT license.
+
+**On the raw traces.** This repository ships the analysis, the committed
+results, the figures, and the dataset's manifest
+([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv) — every trace's filename,
+condition, role and MD5), but **not the 297 raw traces themselves**. They were
+taken at OIST and are held privately; they are available on request
+(michelangelo.dondi@unibo.it). What that means concretely:
+
+- **Everything that certifies the analysis runs here.** The injection-recovery
+  closures, the coverage study and minimum-detectable-effect, the transit-kernel
+  asymptotics, the identifiability and model-comparison machinery — all of it is
+  synthetic and needs no archive. That is the bulk of the suite.
+- **The clock-dependent results also reproduce from a clone**, because the
+  acquisition clock is committed as
+  [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv) (hashes → timestamps,
+  not measurement data).
+- **What cannot run here** is the raw→results pipeline itself, and the four
+  tests that re-hash the traces against the manifest; those skip with a stated
+  reason rather than failing. With the traces in place they all run, and each
+  stage reproduces its committed CSV byte-for-byte:
+
+**Adapting it to your own line.** The analysis is a library with its
+physics, apparatus, and statistics kept behind separate seams.
+[docs/ADAPTING.md](docs/ADAPTING.md) names them for anyone pointing the
+machinery at a different transition, species, or light geometry, and
+[examples/your_line.ipynb](examples/your_line.ipynb) lets you try it on
+your own line by editing one dictionary. Neither needs the raw traces.
+
+
+```bash
+bash scripts/run_all.sh   # every stage in dependency order, then the figures,
+                          # docs/RESULTS.md, and the CSV status column
+```
+
+The **clock-dependent results** (the lock-drift measurement and its audit
+trail, [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md)
+addenda 4–7) also reproduce from a clone: the acquisition clock is committed
+as [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv), and
+
+```bash
+python scripts/run_drift_settling.py  # the drift analysis, off the committed clock
+python scripts/run_laser_history.py   # laser frequency, within each display epoch
+```
+
+print the full report — no raw traces and no private folder required, because
+the per-trace QC metrics they read (`results/qc_metrics.csv`) are committed. The complete
+timestamped raw backup behind the clock is preserved verbatim as the
+raw-data archive held with the traces (sha256 recorded in the audit report).
+
+The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
+are cited across many documents. `tests/test_docs_canonical.py` holds each in a
+single registry, reads its true value from the committed CSV, and checks that
+every document quotes *that* value — so a re-analysis that moves a number can
+never leave a stale copy behind unnoticed. To change a headline number: re-run
+its producer, then run the suite; it names any document still out of step.
+
+The **figures** follow the same rule: `make_figures.py` stamps a fingerprint
+of the results CSVs into each PNG's metadata, and `tests/test_figures_fresh.py`
+fails if a committed figure was drawn from stale results (the fix is to re-run
+`make_figures.py`). The check reads a hash in the PNG, not pixels, so it is
+independent of the matplotlib version that drew the figure.

@@ -51,7 +51,7 @@ measuring it:
 |---|---|---|---|
 | 5S→5D₃/₂ ([Cao 2025](lit/cao2025.md)) | 40 ± 0.54 kHz/mTorr | ≈ 0.0018 | FWHM, stated |
 | 5S→7S ([Wang 2025](lit/wang2025.md)) | 0.32 ± 0.01 MHz/mTorr | ≈ 0.014 | not stated |
-| **5S→6S, this work** | — | **bound 0.21–0.43** | FWHM |
+| **5S→6S, this work** | — | **bound 0.03–0.05** | FWHM |
 
 Converted at 423 K, the temperature both papers use. The 7S paper never says
 whether its linewidth is a half width or a full width, so the factor of eight
@@ -198,20 +198,33 @@ continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That 
 
 That absolute value should not be used on its own, and the reason is worth
 stating. Run on 7S — the one nS state in Rb with a *measured* self-broadening
-rate (Zameroski 2014, 129 ± 11 kHz/mTorr) — the same code returns 9.0 kHz per
-10¹² cm⁻³ against a measured 5.4, high by 1.7×. That is well outside the
-±10–15% the valence-only truncation explains, and it falls on the weakness the
-module had already flagged: the impact prefactor is quoted from the
-pressure-broadening literature, not derived.
+rate (Zameroski 2014, 129 ± 11 kHz/mTorr) — the same code returns 4.5 kHz per
+10¹² cm⁻³ against a measured 5.4, 17% low. That is close to (a bit past) the
+±10–15% the valence-only truncation and the mean-speed approximation explain.
+(An earlier version of the code double-applied the HWHM→FWHM conversion,
+a double-count in the code that had been reported as "high by 1.7×,"
+traced and fixed 2026-08-03, see `docs/PREREGISTRATION_RESULTS.md`
+Addendum 23.) The
+(C₆/ħ)^0.4 v^0.6 scaling itself is [Lewis 1980](lit/lewis1980.md)'s
+(*Phys. Rep.* **58**, 1 (1980)) primary phase-shift derivation for an n=6
+potential, specialised from his eq. (4.15)–(4.18). His own quoted ~4%
+Lindholm-Foley error bound is for a different comparison (a J=1 excited-state
+angular average our S–S pair does not have) and is far too small to be the
+17% seen here, so it rules that approximation out as the cause of the
+residual gap.
 
-The error is common to 6S and 7S, so it cancels in a ratio. Using the computed
-C₆(6S)/C₆(7S) = 0.347 to scale the *measured* 7S rate gives
+The prefactor is common to 6S and 7S, so it cancels in a ratio regardless of
+its absolute accuracy. Using the computed C₆(6S)/C₆(7S) = 0.347 to scale the
+*measured* 7S rate gives
 
 **β_self(6S) = 3.5 ± 0.3 kHz per 10¹² cm⁻³**,
 
 an expectation anchored on a measurement of the same observable on the
-neighbouring state. The archival bound of 0.2–0.4 MHz sits **57–113× above
-it**.
+neighbouring state. The archival bound (0.03–0.05 MHz, the four-point
+70/90/110/130 °C construction, 2026-08-02) sits **8–14× above it** -- tighter
+than the earlier three-point bound (was 0.2–0.4 MHz, 57–113× above), because
+folding the 130 °C point into the headline extends the density lever from
+×16.2 to ×52.5 (`scripts/run_beta_self.py`).
 
 The validation matters more than the number: the identical machinery gives
 C₆(5S+5S) = 4180 a.u. against the literature Rb₂ value of ~4691 — 11% low, in
@@ -227,9 +240,10 @@ cannot work that way: both states are S, so there is no resonant dipole
 coupling and the interaction is van der Waals, which should sit well below
 that figure. So 69 kHz is a ceiling the 6S coefficient should fall far
 under — consistent with the ~kHz expectation, and it makes the archival bound
-of 0.2–0.4 MHz loose by a factor one can now name rather than guess. The
-archive already has the design for this one; it needs only the higher-density
-points of §4.
+(0.03–0.05 MHz, four-point, 2026-08-02) loose by a factor one can now name
+rather than guess, tighter by an order of magnitude than the earlier
+three-point reading (was 0.2–0.4 MHz). The archive already has the design for
+this one; it needs only the higher-density points of §4.
 
 *Status, plainly: 993 nm is not put forward as a better clock line — on
 natural linewidth it is worse than the 778 nm standard; the
@@ -330,7 +344,7 @@ as a bound. Concretely:
   < 0.15 MHz (95%, M23: a joint full-profile fit of three sessions, every
   trace with a free centre so the drifting laser costs nothing). The
   predicted 0.35 MHz at the adopted geometry puts the bound **2.3×
-  below it**, equivalently Δα ≲ 484 a.u. against the computed ~1100 a.u.
+  below it**, equivalently Δα ≲ 474 a.u. against the computed ~1100 a.u.
   The tension is real but modest. At the old 50 µm prior the same bound
   looked 4.2× below a 0.59 MHz prediction, and most of that gap was the
   waist being wrong rather than the physics being
@@ -340,10 +354,17 @@ as a bound. Concretely:
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.9 while the density rises ×53 — a
   residual floor, not resolved collisions — so a naive fit's "4–10σ
-  detection" would be an artifact. The per-peak bound is
-  ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95%, with the low-degrees-of-freedom scatter
-  and the vapour-pressure density scale both propagated). Showing that the
-  two-epoch design was *required* is reported as a vapour-cell result.
+  detection" would be an artifact. Since 2026-08-02 the headline construction
+  folds that same ×52.5-lever 130 °C point into the density-slope fit
+  itself (`scripts/run_beta_self.py`; earlier drafts kept it out on a
+  "different configuration" reading of the 130 °C power-sweep session that
+  did not survive firsthand confirmation the apparatus was unchanged). The
+  per-peak bound is
+  ≲ 0.03–0.05 MHz per 10¹² cm⁻³ (95%, four-point, dof=2, with the
+  low-degrees-of-freedom scatter and the vapour-pressure density scale both
+  propagated) -- an order of magnitude tighter than the earlier three-point
+  reading (was ≲0.2–0.4 MHz, dof=1). Showing that the two-epoch design was
+  *required* is reported as a vapour-cell result.
 - **The ramp's power laws hold** (width: no power trend, a null under 3–8%
   block scatter; amplitude: consistent with P²), the
   laser width is bounded (≲1 MHz, consistent with the sub-MHz quote for the
@@ -357,10 +378,9 @@ as a bound. Concretely:
   archival envelope rate (~MHz/min; the measured in-campaign rate is ~60×
   lower still) — it reaches order-S₀ only at tens of times the envelope.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
-  the frozen raw data (held privately, available on request — this repository
-  ships the manifest, the results and the analysis); every CSV row carries a
-  status tag (BOUND / NULL / MEASURED / …); the documentation is written to be
-  picked up by whoever works on this next.
+  the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
+  MEASURED / …); the documentation is written to be picked up by whoever
+  works on this next.
 
 **What of the method is actually new, stated at the size it will survive.** The
 relation the analysis rests on, that the signal-weighted shift distribution goes
@@ -398,8 +418,15 @@ leverage:
    needing only minutes-scale lock stability. That would be the first
    measured AC-Stark coefficient of the line, and it would validate the
    shape-based method against the same data.
-3. **Same-session high-density points (150–170 °C).** The 2025 sweep's
-   density lever was too short for the expected ~kHz-scale β; the higher
+3. **Same-session high-density points (150–170 °C).** Folding the archive's
+   own 130 °C point into the headline (2026-08-02) already stretched the
+   2025 lever from ×16.2 to ×52.5 and tightened the bound an order of
+   magnitude (was 0.2–0.4, now 0.03–0.05 MHz per 10¹² cm⁻³); the case for
+   going further is now about reach, not about whether extreme lever points can be
+   combined at all. Even at ×52.5 the bound sits only 8–14× above the
+   ~3.5 kHz expectation (§1) -- closer than before, but a same-session
+   150–170 °C extension is still the cleaner route: it removes the
+   cross-epoch calibration step this fold-in relies on, and the higher
    temperatures make the collisional width move by 0.07–0.25 MHz, against a
    ~20 kHz signal in 2025. **The hot points are necessary and not
    sufficient**: measured against the block-to-block width reproducibility

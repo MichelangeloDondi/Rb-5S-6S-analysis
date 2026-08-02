@@ -30,7 +30,9 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
-from rb5s6s.constants import GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S  # noqa: E402
+from rb5s6s.constants import (  # noqa: E402
+    GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S, LAMBDA_LASER_M,
+    TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
 
 GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
@@ -48,6 +50,19 @@ def _save(fig, name):
     plt.close(fig)
 
 
+def _footer(fig, text, y=0.012, fontsize=6.3):
+    """The one footer line every figure carries: what CSVs/modules it is
+    drawn from, and the exact command that regenerates it -- so a reader who
+    doubts a number knows where it came from and how to rebuild it. One call
+    site so the position/size stays identical figure to figure.
+
+    verticalalignment="bottom" so a two-line footer (a wide multi-panel
+    figure's source list can outrun one line) grows UPWARD from y instead of
+    the default baseline anchoring, which would push a second line below the
+    figure's bottom edge and off the canvas."""
+    fig.text(0.01, y, text, fontsize=fontsize, color="0.35", va="bottom")
+
+
 # Okabe-Ito (colorblind-safe), fixed order for the four peaks
 PEAK_COLOR = {"4121": "#0072B2", "4154": "#D55E00", "4192": "#009E73", "4207": "#E69F00"}
 _ISO = {"4121": "$^{87}$Rb F1", "4154": "$^{85}$Rb F2",
@@ -55,6 +70,17 @@ _ISO = {"4121": "$^{87}$Rb F1", "4154": "$^{85}$Rb F2",
 PEAK_LABEL = {k: f"993.{k} nm ({_ISO[k]})" for k in PEAK_COLOR}
 plt.rcParams.update({"figure.dpi": 130, "font.size": 10, "axes.grid": True,
                      "grid.alpha": 0.25, "axes.axisbelow": True, "legend.frameon": False})
+
+# The results CSVs tag every quantity with an ALL-CAPS provenance code (see
+# rb5s6s/constants.py's house rules). Those codes are useful in a CSV column
+# but read as pipeline jargon on a figure, so anywhere a status is worth
+# stating on-figure it goes through this plain-English map instead (or is
+# dropped to the footer).
+STATUS_WORD = {"PRELIM": "preliminary", "BOUND": "a bound, not a measurement",
+               "MEASURED-HERE": "measured directly", "ESTABLISHED": "an established value",
+               "ENVELOPE": "an order-of-magnitude envelope", "OPEN": "not yet resolved",
+               "DIAGNOSTIC": "a diagnostic", "ARTIFACT": "a known artifact",
+               "CALIB": "a calibration"}
 
 
 # Windows with fewer contributing traces than this cannot test the linearity
@@ -93,10 +119,14 @@ def fig_width_vs_density():
     ax.set_xscale("log")
     ax.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     ax.set_ylabel("total line FWHM  (MHz, transition axis)")
-    ax.set_title("C1: width vs density — non-monotonic ⇒ $\\beta_\\mathrm{self}$ is bounded\n"
-                 "(collisions must be monotonic; the wiggles are between-block laser drift)",
+    ax.set_title("Generic law: a real collisional width must grow monotonically with "
+                 "density.\nRb instance: total FWHM vs $N$ is NOT monotonic -- "
+                 "$\\beta_\\mathrm{self}$ is bounded, not measured\n"
+                 "(the wiggles are between-block laser drift)",
                  fontsize=9)
     ax.legend(fontsize=8, ncol=2)
+    _footer(fig, "Source: results/linefit_conditions.csv. Regenerate: "
+                 "python scripts/make_figures.py.")
     _save(fig, "fig1_width_vs_density.png")
 
 
@@ -113,7 +143,8 @@ def fig_power_sweep():
     for r in rows:
         by[r["peak"]].append((int(r["power_mW"]), float(r["fwhm"]), float(r["fwhm_err"]),
                               float(r["amp"]), float(r["amp_err"])))
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.5, 4.2))
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.5, 4.7))
+    fig.subplots_adjust(top=0.80, bottom=0.12)
     for peak in ("4121", "4154", "4192", "4207"):
         d = sorted(by[peak]); P = [x[0] for x in d]
         a1.errorbar(P, [x[1] for x in d], yerr=[x[2] for x in d], fmt="-o",
@@ -121,13 +152,15 @@ def fig_power_sweep():
         a2.errorbar(P, [x[3] for x in d], yerr=[x[4] for x in d], fmt="o",
                     color=PEAK_COLOR[peak], ms=4, capsize=2)
     a1.set_xlabel("power (mW)"); a1.set_ylabel("FWHM (MHz, transition)")
-    a1.set_title("C3a: no power trend in the linewidth\n"
+    a1.set_title("No power trend in the linewidth\n"
               "(observed 3–8% scatter; ramp predicts $\\leq$2%)", fontsize=9)
     a1.legend(fontsize=8)
     # amplitude log-log: a slope-2 (P^2) fit anchored to each peak's own data, so
-    # the guide tracks the points instead of floating beside them
+    # the guide tracks the points instead of floating beside them. Line drawn
+    # over the campaign's own measured power range, not a fixed guess.
     a2.set_xscale("log"); a2.set_yscale("log")
-    Pline = np.array([22.0, 250.0])
+    P_all = np.array(sorted({x[0] for v in by.values() for x in v}), float)
+    Pline = np.array([P_all.min(), P_all.max()])
     for i, peak in enumerate(("4121", "4154", "4192", "4207")):
         d = sorted(by[peak])
         P = np.array([x[0] for x in d], float)
@@ -136,60 +169,110 @@ def fig_power_sweep():
         a2.plot(Pline, 10 ** logk * Pline ** 2, "--", color=PEAK_COLOR[peak], lw=1.0,
                 label=r"$\propto P^2$ fit" if i == 0 else None)
     a2.set_xlabel("power (mW)"); a2.set_ylabel("peak amplitude (V)")
-    a2.set_title("C3b: amplitude $\\propto P^2$\n(two-photon rate law)", fontsize=9)
+    a2.set_title("Amplitude $\\propto P^2$\n(two-photon rate law)", fontsize=9)
     a2.legend(fontsize=8)
+    fig.suptitle("Generic laws: pressure broadening does not depend on drive power; "
+                 "two-photon excitation rate scales as intensity squared.\n"
+                 "Rb instance: the 993 nm line's FWHM and amplitude vs power, both tested "
+                 "against those two predictions.", fontsize=9.5, y=0.975)
+    _footer(fig, "Source: results/power_sweep.csv. Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig2_power_sweep.png")
 
 
 def fig_transit_mc():
-    """M9: transit contribution vs w0 with the laser-narrow crossover."""
+    """M9: transit contribution vs w0 with the laser-narrow crossover.
+
+    The crossover w0 (where natural-convolved-transit reaches the observed
+    total) is COMPUTED from the plotted (w0, nat_conv_transit) points against
+    the reference OBSERVED total imported from run_transit_mc.py -- not typed
+    in -- so a change to either side of that comparison cannot leave the
+    title's claim stale (an earlier version stated "18-20 um" here, from
+    before the 2026-07-12 flux-factor fix; the corrected data cross near
+    39 um, matching run_transit_mc.py's own "w0 ~< 40 um" narrative)."""
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_transit_mc import OBSERVED
+
     rows = [r for r in _rows("transit_mc") if r["collection"] == "thin"]
-    w0 = [float(r["w0_um"]) for r in rows]
-    natx = [float(r["nat_conv_transit"]) for r in rows]
+    w0 = np.array([float(r["w0_um"]) for r in rows])
+    natx = np.array([float(r["nat_conv_transit"]) for r in rows])
     natx_err = [float(r["nat_conv_transit_err"]) for r in rows]
+    order = np.argsort(w0)
+    w0_s, natx_s = w0[order], natx[order]
+    # natx is decreasing in w0 over the covered range, so np.interp needs an
+    # increasing x -- feed it reversed (natx descending -> ascending flip).
+    w0_cross = float(np.interp(OBSERVED, natx_s[::-1], w0_s[::-1]))
+
     fig, ax = plt.subplots(figsize=(6, 4.2))
     ax.errorbar(w0, natx, yerr=natx_err, fmt="-o", color="#0072B2", ms=5, lw=1.6,
                 capsize=2, label="natural ⊗ transit (MC)")
-    ax.axhline(5.25, ls="--", color="#D55E00", lw=1.3, label="observed total ~5.2 MHz")
+    ax.axhline(OBSERVED, ls="--", color="#D55E00", lw=1.3,
+               label=f"observed total ~{OBSERVED:.2f} MHz")
     ax.axhline(GNAT, ls=":", color="0.4", lw=1, label="natural alone")
-    # shade the laser-narrow region (where nat⊗transit >= observed)
-    ax.fill_between([min(w0), 20], GNAT, 6.0, color="#009E73", alpha=0.10)
-    ax.annotate("laser NARROW\n(transit fills budget)", (16.5, 5.5), fontsize=8, color="#009E73")
-    ax.annotate("laser ~1 MHz", (36, 4.2), fontsize=8, color="0.3")
-    ax.set_xlabel(r"beam waist $w_0$ ($\mu$m)  — OPEN until knife-edge measurement")
+    # shade the laser-narrow region: where nat(x)transit >= observed, i.e.
+    # up to the computed crossover (not the leftmost data point -- the old
+    # version capped the shading at min(w0), under-covering the region
+    # between it and the true crossover).
+    ax.fill_between([min(w0.min(), w0_cross) - 8.0, w0_cross], GNAT, 6.0,
+                    color="#009E73", alpha=0.10)
+    ax.annotate("laser NARROW\n(transit fills budget)",
+                (w0_cross - 9.0, 5.5), fontsize=8, color="#009E73", ha="right")
+    ax.annotate("laser ~1 MHz", (w0_cross + 12.0, 4.2), fontsize=8, color="0.3")
+    ax.set_xlabel(r"beam waist $w_0$ ($\mu$m)  -- not yet measured (knife-edge pending)")
     ax.set_ylabel("FWHM (MHz, transition)")
-    ax.set_title("M9: transit ⊗ natural vs $w_0$ — the transit/laser degeneracy\n"
-                 "crossover near $w_0\\approx18$–$20\\,\\mu$m sets narrow-vs-not", fontsize=9)
+    ax.set_title("Generic law: transit-time broadening grows as the beam narrows "
+                 "(shorter crossing time,\nlarger frequency spread). Instance: "
+                 "natural $\\otimes$ transit vs $w_0$ crosses the observed\n"
+                 f"total near $w_0\\approx{w0_cross:.0f}\\,\\mu\\mathrm{{m}}$, "
+                 "setting narrow-vs-not",
+                 fontsize=9)
     ax.legend(fontsize=8, loc="center right")
+    _footer(fig, "Source: results/transit_mc.csv (rb5s6s.transit_mc) +\n"
+                 "scripts/run_transit_mc.py (reference level). Regenerate: "
+                 "python scripts/run_transit_mc.py && python scripts/make_figures.py.",
+            fontsize=5.7)
     _save(fig, "fig3_transit_mc.png")
 
 
 def fig_amplitude_ratios():
     """M10: within-isotope area ratios vs the parameter-free degeneracy law."""
+    from fractions import Fraction
     rows = _rows("amplitude_ratios")
-    fig, ax = plt.subplots(figsize=(6, 4.2))
-    styles = {"4207/4121": ("#E69F00", 5 / 3, "993.4207 / 993.4121 nm ($^{87}$Rb)"),
-              "4192/4154": ("#009E73", 7 / 5, "993.4192 / 993.4154 nm ($^{85}$Rb)")}
-    for key, (col, pred, lab) in styles.items():
+    fig, ax = plt.subplots(figsize=(7.2, 4.6))
+    # colour = the NUMERATOR peak's own PEAK_COLOR entry (same registry every
+    # other figure uses, not an independently hard-coded hex duplicate);
+    # predicted value read from the CSV's own "predicted" column (the
+    # (2F+1) statistical-weight ratio computed by run_amplitude_ratios.py),
+    # not retyped here.
+    keys = {"4207/4121": "993.4207 / 993.4121 nm ($^{87}$Rb)",
+            "4192/4154": "993.4192 / 993.4154 nm ($^{85}$Rb)"}
+    for key, lab in keys.items():
+        col = PEAK_COLOR[key.split("/")[0]]
+        d = [(float(r["T"]), float(r["measured"]), float(r["err_total"]), float(r["predicted"]))
+             for r in rows if r["ratio"] == key]
         # err_total = stat (SEM) + between-block drift systematic, in quadrature
         # (the total bar; the stat-only column is a labelled diagnostic). See
         # run_amplitude_ratios.py and review finding 5, 2026-07-16.
-        d = [(float(r["T"]), float(r["measured"]), float(r["err_total"]))
-             for r in rows if r["ratio"] == key]
         d.sort()
         if not d:
             continue
-        T, m, e = zip(*d)
+        T, m, e, pr = zip(*d)
+        pred = pr[0]
         ax.errorbar(T, m, yerr=e, fmt="-o", color=col, ms=5, lw=1.3, capsize=2, label=lab)
         ax.axhline(pred, ls="--", color=col, lw=1)
-    ax.annotate("predicted 5/3", (128, 5 / 3 + 0.03), fontsize=8, color="#E69F00", ha="right")
-    ax.annotate("predicted 7/5", (128, 7 / 5 - 0.10), fontsize=8, color="#009E73", ha="right")
+        frac = Fraction(pred).limit_denominator(12)
+        ax.annotate(f"predicted {frac.numerator}/{frac.denominator}",
+                    (128, pred + (0.03 if pred > 1.5 else -0.10)),
+                    fontsize=8, color=col, ha="right")
     ax.set_xlabel("temperature (°C)")
     ax.set_ylabel("area ratio")
-    ax.set_title("M10: area ratios vs the scalar-operator degeneracy law\n"
+    ax.set_title("Generic law: for a scalar operator, transition strengths ratio as the\n"
+                 "upper-level statistical weight $(2F+1)$. Instance: two within-isotope "
+                 "area ratios\n"
                  "1–3% within-block, but 30–50% between-block drift ⇒ archive can't test it",
-                 fontsize=9)
+                 fontsize=8.7)
     ax.legend(fontsize=8)
+    _footer(fig, "Source: results/amplitude_ratios.csv. Regenerate: "
+                 "python scripts/run_amplitude_ratios.py && python scripts/make_figures.py.")
     _save(fig, "fig4_amplitude_ratios.png")
 
 
@@ -244,8 +327,8 @@ def fig_pooled_width():
     a1.set_ylabel("total line FWHM (MHz, transition)")
     a1.set_title("Pooled width vs density: individuals (faint) are\n"
                  "statistics-limited & non-monotonic; the pooled mean\n"
-                 "rises cleanly (β₈₅, β₈₇ agree within ~1σ — consistent, not\n"
-                 "discriminating) — still a BOUND",
+                 "rises cleanly (β₈₅, β₈₇ agree within ~1σ -- consistent, not\n"
+                 "discriminating) -- still a BOUND",
                  fontsize=8)
     a1.legend(fontsize=8, loc="upper left")
     # panel B: σ_laser(T) is MODEL-DEPENDENT -> the "anomaly" is degeneracy, not drift
@@ -265,10 +348,13 @@ def fig_pooled_width():
             label="free per-condition (4 peaks agree)")
     a2.set_xlabel("temperature (°C)")
     a2.set_ylabel(r"$\sigma_\mathrm{laser}$ (MHz, transition)")
-    a2.set_title("σ_laser(T) is MODEL-DEPENDENT: the free fit is flat (~1.6,\n"
-                 "4 peaks agree, χ²<1 ⇒ in-sample check only, M4c); the tied drop is\n"
-                 "the β↔σ_laser degeneracy, not a physical laser drift", fontsize=8)
+    a2.set_title("The laser linewidth $\\sigma_L(T)$ is MODEL-DEPENDENT: the free fit is "
+                 "flat (~1.6,\n"
+                 "4 peaks agree, $\\chi^2<1$, an in-sample check only); the tied drop is\n"
+                 "the $\\beta$-$\\sigma_L$ degeneracy, not a physical laser drift", fontsize=8)
     a2.legend(fontsize=7.5)
+    _footer(fig, "Source: results/linefit_conditions.csv, results/global_fit.csv, "
+                 "results/lever_crosscheck.csv. Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig5_pooled_width.png")
 
 
@@ -297,7 +383,14 @@ def fig_gamma_floor():
     fig, ax = plt.subplots(figsize=(6.6, 4.8))
     for peak in peaks:
         gv = [gam(peak, T) for T in Ts]
-        ax.errorbar(N, [g[0] for g in gv], yerr=[g[1] for g in gv], fmt="-o",
+        gval = np.array([g[0] for g in gv])
+        gerr = np.array([g[1] for g in gv])
+        # gamma_coll is a width: it cannot be negative, so a symmetric Wald
+        # error bar that exceeds the point estimate (993.4154 nm at 70 C does,
+        # 0.19 +/- 0.32) must not be drawn crossing zero -- clip the lower
+        # whisker at the physical boundary instead of past it.
+        lower = np.minimum(gerr, gval)
+        ax.errorbar(N, gval, yerr=[lower, gerr], fmt="-o",
                     color=PEAK_COLOR[peak], alpha=0.30, ms=3, lw=0.9,
                     label=PEAK_LABEL[peak])
     mean_g = np.array([np.mean([gam(p, T)[0] for p in peaks]) for T in Ts])
@@ -329,10 +422,12 @@ def fig_gamma_floor():
     lever = N[-1] / N[0]
     ax.set_title("The lever test: fitted collisional width is a near-flat FLOOR\n"
                  + (r"($\gamma$ rises x%.1f while $N$ rises x%.0f)" % (rise, lever))
-                 + " — a real binary-collision\nwidth is linear in N ⇒ β is a "
+                 + " -- a real binary-collision\nwidth is linear in N ⇒ β is a "
                  "lever-dependent BOUND (per-condition split;\n"
                  "split-independent check in fig5A)", fontsize=8)
     ax.legend(fontsize=7, loc="upper left", ncol=2)
+    _footer(fig, "Source: results/linefit_conditions.csv, results/lever_crosscheck.csv. "
+                 "Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig6_gamma_floor.png")
 
 
@@ -417,6 +512,9 @@ def fig_identifiability_profile():
         ax.legend(fontsize=7, loc="upper right")
     fig.suptitle("Profile likelihood of the width split (993.4192 nm, 130 °C / 225 mW; "
                  "transit + nuisances re-minimised per point)", fontsize=9)
+    _footer(fig, "Source: results/identifiability_profile.csv (rb5s6s.identifiability). "
+                 "Regenerate: python scripts/run_identifiability.py && "
+                 "python scripts/make_figures.py.")
     _save(fig, "fig7_identifiability_profile.png")
 
 
@@ -465,7 +563,8 @@ def fig_ruler():
     ax.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
     ax.set_title(f"the scan carries its own calibration: {len(TEETH)} copies of the same\n"
-                 "line, 6.25 MHz apart on the laser axis, via EOM sideband pairs",
+                 f"line, {TOOTH_SPACING_LASER_HZ / 1e6:.2f} MHz apart on the laser axis, "
+                 "via EOM sideband pairs",
                  fontsize=9)
     ax.legend(fontsize=7, loc="lower left", framealpha=1.0, frameon=True)
 
@@ -502,6 +601,9 @@ def fig_ruler():
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower left", framealpha=1.0, frameon=True)
+    _footer(fig, "Source: data_raw archive (rb5s6s.ingest, rb5s6s.ruler; the plotted trace) + "
+                 "results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py && "
+                 "python scripts/make_figures.py.")
     _save(fig, "fig8_ruler.png")
 
 
@@ -589,11 +691,9 @@ def fig_degeneracy_vs_observable():
 
     fig.suptitle("One temperature, 20 conditions: the total width is measured; "
                  "its decomposition is not", fontsize=10)
+    _footer(fig, "Source: results/linefit_conditions.csv (rb5s6s.stark, rb5s6s.linefit for "
+                 "the contour model). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig10_degeneracy_vs_observable.png")
-
-
-_RUN_GAP_S = 120      # traces this far apart or less are one acquisition run
-_KICK_MHZ = 8.0       # step size that separates a hand re-centring from drift
 
 
 def fig_laser_history():
@@ -657,7 +757,7 @@ def fig_laser_history():
     ax.set_xlabel("session (hours run left to right within each)")
     ax.set_ylabel("offset within its display epoch (MHz, laser axis)")
     n_ep = len({r["_e"] for r in rows})
-    ax.set_title(f"{len(rows)} traces in {n_ep} display epochs — each segment is\n"
+    ax.set_title(f"{len(rows)} traces in {n_ep} display epochs -- each segment is\n"
                  "referenced to itself; gaps are knob moves, offset unknown across them",
                  fontsize=8.5)
     ax.grid(alpha=0.25, lw=0.5)
@@ -722,12 +822,14 @@ def fig_laser_history():
         ax.set_yscale("log")
         ax.set_xlabel("|step| between consecutive traces, same epoch (MHz)")
         ax.set_ylabel("count (log)")
-        ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz —\n"
+        ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz --\n"
                      "quiet drift, punctuated by cavity re-centrings", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5, which="both")
 
     fig.suptitle("No wavemeter log survives: what the traces can and cannot say about "
                  "the laser's frequency", fontsize=10.5)
+    _footer(fig, "Source: results/laser_history.csv. Regenerate: "
+                 "python scripts/run_laser_history.py && python scripts/make_figures.py.")
     _save(fig, "fig11_laser_history.png")
 
 
@@ -802,6 +904,8 @@ def fig_ramp_construction():
         a.grid(alpha=0.22, lw=0.5)
     fig.suptitle("The AC-Stark ramp: a focused beam gives a distribution of "
                  "light shifts, not one shift", fontsize=10)
+    _footer(fig, "Source: rb5s6s.lineshape (stark_ramp, model_profile) -- no data, no fitted "
+                 "parameters. Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig12_ramp_construction.png")
 
 
@@ -811,78 +915,162 @@ def fig_level_scheme():
     above the ground state, with the 993 nm virtual level at exactly half the
     two-photon energy -- which is why it falls BELOW the real 5P_1/2, not above.
     Every number is from rb5s6s.constants and polarizability; the hyperfine
-    assignments are methods chapter 1."""
-    from rb5s6s.polarizability import E_6S_CM
-    E_5P_CM = 1.0e7 / 794.979          # 5P_1/2 term energy, NIST
-    E_VIRT_CM = 1.0e7 / (C.LAMBDA_LASER_M * 1e9) if False else 1.0e7 / 993.4
+    assignments are methods chapter 1.
 
-    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11.0, 5.0),
+    6S_1/2 decays through BOTH 5P fine-structure levels (237.6 cm^-1 apart,
+    too close to draw resolved at this axis scale): 5P_1/2 then 795 nm, and
+    5P_3/2 then 780 nm. This bench detects only the first -- its 795 nm
+    passband filter (~50 dB, docs/APPARATUS.md sec. 3) rejects the 780 nm arm
+    before it reaches the PMT, not because that arm isn't emitted. Right
+    panel: the real cavity scan the laser is stepped across the line with,
+    digitised from a photograph (data/provenance in
+    docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv).
+    """
+    # E_5P12_CM/E_5P32_CM read from rb5s6s.polarizability -- the same NIST ASD
+    # term energies that module's own 5S->5P matrix elements are keyed to,
+    # rather than re-derived here from the D-line vacuum wavelengths
+    # independently (the two used to agree only to ~0.01 nm by coincidence of
+    # rounding, not by construction).
+    from rb5s6s.polarizability import E_6S_CM, E_5P12_CM, E_5P32_CM
+    SPLIT_CM = E_5P32_CM - E_5P12_CM         # fine-structure splitting, 237.6 cm^-1
+    LAM_6S_5P12_NM = 1.0e7 / (E_6S_CM - E_5P12_CM)   # 1324 nm, detected arm
+    LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
+    E_VIRT_CM = 1.0e7 / (LAMBDA_LASER_M * 1e9)       # half the two-photon energy
+
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(12.2, 6.2),
                                  gridspec_kw={"width_ratios": [1.15, 1]})
 
-    y5s, yv, y5p, y6s = 0.0, E_VIRT_CM, E_5P_CM, E_6S_CM
-    for y, lab in ((y5s, r"$5S_{1/2}$"), (y5p, r"$5P_{1/2}$"), (y6s, r"$6S_{1/2}$")):
-        ax.hlines(y, 0.10, 0.72, color="0.15", lw=2.4)
-        ax.text(0.745, y + 620, lab, va="bottom", fontsize=10)
-        ax.text(0.745, y - 620, f"{y:,.0f}" + r" cm$^{-1}$", va="top",
+    # --- left: the level scheme and both decay channels -----------------
+    # the "not resolved" clarifier rides in the same text block as the 5P
+    # energy label (rather than as a separate floating annotation) so it
+    # cannot collide with anything else on the diagram.
+    y5s, yv, y5p, y6s = 0.0, E_VIRT_CM, E_5P12_CM, E_6S_CM
+    for y, lab, lw, extra in (
+            (y5s, r"$5S_{1/2}$", 2.4, ""),
+            (y5p, r"$5P_{1/2},5P_{3/2}$", 3.4,
+             f"\n(5P$_{{3/2}}$ +{SPLIT_CM:.0f}, unresolved here)"),
+            (y6s, r"$6S_{1/2}$", 2.4, "")):
+        ax.hlines(y, 0.06, 0.48, color="0.15", lw=lw)
+        ax.text(0.50, y + 620, lab, va="bottom", fontsize=10)
+        ax.text(0.50, y - 620, f"{y:,.0f}" + r" cm$^{-1}$" + extra, va="top",
                 fontsize=6.5, color="0.5")
-    ax.hlines(yv, 0.16, 0.46, color="0.55", lw=1.3, ls=(0, (4, 3)))
-    ax.text(0.16, yv - 1150, "virtual level, half the two-photon energy",
+    ax.hlines(yv, 0.10, 0.28, color="0.55", lw=1.3, ls=(0, (4, 3)))
+    ax.text(0.10, yv - 2100, "virtual level, half the\ntwo-photon energy",
             fontsize=6.8, color="0.45", va="center")
 
     # the two 993 nm photons, one per beam direction
-    for x in (0.26, 0.40):
+    for x in (0.15, 0.23):
         ax.annotate("", (x, yv), (x, y5s),
                     arrowprops=dict(arrowstyle="-|>", color="#0072B2", lw=1.9))
         ax.annotate("", (x, y6s), (x, yv),
                     arrowprops=dict(arrowstyle="-|>", color="#0072B2", lw=1.9))
-    ax.text(0.115, y6s * 0.80, "2 x 993 nm,\none photon from\neach beam\n(Doppler-free)",
-            fontsize=7.5, color="#0072B2", va="top")
+    ax.text(-0.04, y6s * 0.62, "2 x 993 nm\n1 photon/beam\n(Doppler-free)",
+            fontsize=7, color="#0072B2", va="top")
 
-    # the cascade that is detected
-    ax.annotate("", (0.60, y5p), (0.60, y6s),
+    # detected cascade: 6S -> 5P_1/2 (1324 nm) -> 5S (795 nm), bold and in colour
+    ax.annotate("", (0.62, y5p), (0.62, y6s),
                 arrowprops=dict(arrowstyle="-|>", color="#009E73", lw=1.9))
-    ax.text(0.615, 0.5 * (y5p + y6s), "1367 nm", fontsize=7.5, color="#009E73",
-            va="center")
-    ax.annotate("", (0.60, y5s), (0.60, y5p),
+    ax.text(0.635, y5p + 0.60 * (y6s - y5p), f"{LAM_6S_5P12_NM:.0f} nm",
+            fontsize=7.5, color="#009E73", va="center")
+    ax.annotate("", (0.62, y5s), (0.62, y5p),
                 arrowprops=dict(arrowstyle="-|>", color="#D55E00", lw=2.6))
-    ax.text(0.615, 0.5 * y5p, "795 nm\ndetected", fontsize=8.5, color="#D55E00",
+    ax.text(0.635, 0.35 * y5p, "795 nm\ndetected", fontsize=8.5, color="#D55E00",
             va="center", fontweight="bold")
 
-    ax.set_xlim(0.02, 0.92)
-    ax.set_ylim(-1800, y6s * 1.10)
+    # real but rejected cascade: 6S -> 5P_3/2 (1367 nm) -> 5S (780 nm), offset
+    # well clear of the detected branch and vertically staggered so neither
+    # pair of labels lines up with the other. Same visual grammar as the
+    # virtual level above: muted grey and dashed means real physics that is
+    # not this bench's data.
+    ax.annotate("", (0.86, y5p), (0.86, y6s),
+                arrowprops=dict(arrowstyle="-|>", color="0.55", lw=1.5,
+                                 ls=(0, (4, 3))))
+    ax.text(0.845, y5p + 0.22 * (y6s - y5p), f"{LAM_6S_5P32_NM:.0f} nm",
+            fontsize=7, color="0.45", ha="right", va="center")
+    ax.annotate("", (0.86, y5s), (0.86, y5p),
+                arrowprops=dict(arrowstyle="-|>", color="0.55", lw=1.5,
+                                 ls=(0, (4, 3))))
+    ax.text(0.845, 0.68 * y5p, "780 nm\nNOT DETECTED", fontsize=7, color="0.45",
+            ha="right", va="center")
+
+    ax.set_xlim(-0.06, 1.02)
+    ax.set_ylim(-3400, y6s * 1.10)
     ax.set_ylabel(r"term energy above $5S_{1/2}$ (cm$^{-1}$)", fontsize=8)
     ax.tick_params(labelsize=7)
     ax.spines[["top", "right", "bottom"]].set_visible(False)
     ax.set_xticks([])
     ax.set_title(f"to scale; natural width {GNAT:.2f} MHz", fontsize=9)
+    ax.text(0.44, -3050,
+            "780 nm exists in the cascade but is filtered out here,\n"
+            "not because it isn't emitted", fontsize=6.3, color="0.45",
+            ha="center", va="bottom")
 
-    # --- the four measured lines ---------------------------------------
-    lines = [("4121", 993.4121, r"$^{87}$Rb", r"$F{=}1\!\to\!1$"),
-             ("4154", 993.4154, r"$^{85}$Rb", r"$F{=}2\!\to\!2$"),
-             ("4192", 993.4192, r"$^{85}$Rb", r"$F{=}3\!\to\!3$"),
-             ("4207", 993.4207, r"$^{87}$Rb", r"$F{=}2\!\to\!2$")]
-    for pk, lam, iso, hf in lines:
-        c = PEAK_COLOR[pk]
-        bx.vlines(lam, 0.32, 0.78, color=c, lw=2.6)
-        bx.text(lam, 0.82, f"993.{pk}", rotation=90, fontsize=7.5,
-                color=c, ha="center", va="bottom")
-        bx.text(lam, 0.275, iso, fontsize=7.5, color=c, ha="center", va="top")
-        bx.text(lam, 0.205, hf, fontsize=7, color=c, ha="center", va="top")
-    bx.set_xlim(993.4108, 993.4220)
-    bx.set_ylim(0.0, 1.30)
-    bx.ticklabel_format(useOffset=False, style="plain", axis="x")
-    bx.set_xticks([993.412, 993.415, 993.418, 993.421])
-    bx.set_xticklabels(["993.4120", "993.4150", "993.4180", "993.4210"],
-                       fontsize=8)
-    bx.set_yticks([])
-    bx.set_xlabel("wavemeter reading (nm, uncalibrated)")
-    bx.set_title("the four hyperfine components measured", fontsize=9)
-    bx.text(0.5, 0.04, "readings identify the lines, not absolute wavelengths",
+    # --- right: the real cavity scan, digitised from a photograph -------
+    scan_csv = C.REPO_ROOT / "docs" / "apparatus" / \
+        "2025-06-12_cavity_scan_IMG_2508_digitised.csv"
+    scan = list(csv.DictReader(open(scan_csv)))
+    t = np.array([float(r["t_s"]) for r in scan])
+    ch1 = np.array([float(r["ch1_div"]) for r in scan])
+    ch2 = np.array([float(r["ch2_div"]) for r in scan])
+
+    CH1_COLOR, CH2_COLOR = "#B8860B", "#4C8C6B"
+    bx.plot(t, ch1, color=CH1_COLOR, lw=1.6)
+    bx.plot(t, ch2, color=CH2_COLOR, lw=1.1)
+    # labelled directly on the traces, in clear stretches, rather than a
+    # legend box (there is nowhere left in this panel a legend would not
+    # sit on top of either a trace feature or the footer text)
+    bx.text(3.85, float(ch1[(t > 3.7) & (t < 4.0)].mean()) + 0.55,
+            "channel 1: cavity scan ramp", color=CH1_COLOR, fontsize=7.5,
+            ha="right", fontweight="bold")
+    bx.text(0.05, 6.3, "channel 2: unlabelled trace", color=CH2_COLOR,
+            fontsize=7, ha="left")
+
+    spike_t = [0.20, 0.64, 1.69, 2.53, 2.67, 3.61, 4.60, 4.96]
+    spike_x, spike_y = [], []
+    for st in spike_t:
+        window = (t > st - 0.03) & (t < st + 0.03)
+        if window.any():
+            i = int(np.argmax(ch2[window]))
+            spike_x.append(t[window][i])
+            spike_y.append(ch2[window][i])
+    bx.scatter(spike_x, spike_y, color=CH2_COLOR, s=22, zorder=5,
+               edgecolor="0.2", linewidth=0.4)
+
+    t_peak = float(t[np.argmax(ch1)])
+    bx.axvline(t_peak, color="0.5", lw=0.8, ls=(0, (3, 2)))
+    bx.text(t_peak + 0.15, float(ch1.max()) - 1.35,
+            f"peak at t = {t_peak:.2f} s\n({100 * t_peak / 5.0:.0f}% of period)",
+            fontsize=7, color="0.35", va="top")
+    bx.annotate("", (5.0, 8.25), (0.0, 8.25),
+               arrowprops=dict(arrowstyle="<->", color="0.4", lw=1.0))
+    bx.text(2.5, 8.45, "one full triangular period, 5.00 s (500.0 ms/div x 10 div)",
+            fontsize=7, color="0.35", ha="center")
+
+    bx.set_xlim(-0.1, 5.1)
+    bx.set_ylim(-2.9, 9.2)
+    bx.set_xlabel("time (s)")
+    bx.set_ylabel("scope divisions")
+    bx.set_title("the real cavity scan that sweeps the laser across the line",
+                fontsize=9)
+    bx.text(0.5, 0.10,
+            "hyperfine lines this scan sweeps: 993.4121 / .4154 / .4192 / .4207 nm",
             transform=bx.transAxes, ha="center", fontsize=7, color="0.35")
-    bx.grid(alpha=0.20, lw=0.5, axis="x")
+    bx.text(0.5, 0.045,
+            "digitised from a photograph (IMG_2508, 2025-06-12); calibration "
+            "in docs/APPARATUS.md",
+            transform=bx.transAxes, ha="center", fontsize=6.5, color="0.45")
 
-    fig.suptitle(r"Rb $5S_{1/2}\to 6S_{1/2}$: a degenerate two-photon transition, "
-                 "read out on the 795 nm cascade", fontsize=10)
+    fig.suptitle(
+        "A single excited state decays through every channel its selection\n"
+        "rules allow; a detector only sees the channels its filters pass.\n"
+        r"Instance: Rb $5S_{1/2}\to 6S_{1/2}$ (993 nm), read out on the 795 nm "
+        r"arm of the $6S\to5P_{1/2}\to5S$ cascade." "\n"
+        r"The $6S\to5P_{3/2}\to5S$ arm (780 nm) is real but rejected by a "
+        "~50 dB, 795 nm passband filter.",
+        fontsize=9.2, y=0.995)
+    _footer(fig, "Sources: rb5s6s.constants, rb5s6s.polarizability (level scheme); "
+                 "docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv, digitised "
+                 "from IMG_2508.jpeg (cavity scan). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig13_level_scheme.png")
 
 
@@ -948,6 +1136,10 @@ def fig_wavemeter_reconstruction():
                                   # settled region is the point of this panel
     ax2.set_title("(c) what is left: the noise settles, and the floor is what "
                   "a measurement must beat  (axis clipped)", fontsize=8.5)
+    _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (reconstruct(); the "
+                 "photographed record) + results/laser_history.csv\n"
+                 "(panel c overlay). Regenerate: python scripts/make_figures.py.",
+            fontsize=5.9)
     _save(fig, "fig14_wavemeter_reconstruction.png")
 
 
@@ -1029,7 +1221,7 @@ def fig_drift_story():
     ax.plot(t, f, color="#0072B2", lw=0.9, label="band centre = laser frequency")
     mclip = tf > 0.4     # the pre-first-kick baseline is a fit artifact
     ax.plot(tf[mclip], mu[mclip], color="#D55E00", lw=1.6, ls="--",
-            label="M22 model: re-lock kicks + relaxations")
+            label="fitted model: re-lock kicks + relaxations")
     for tk in r["kick_times"]:
         ax.axvline(tk, color="0.55", lw=0.7, alpha=0.6)
     ax.set_xlabel("time (min)")
@@ -1081,19 +1273,22 @@ def fig_drift_story():
                 ha="center", fontsize=7.5, color="#D55E00")
     ax.set_xlabel("time into campaign (h)")
     ax.set_ylabel("offset (MHz, laser)")
-    ax.set_title("(b) the campaign, reconstructed from its own traces (M20): "
+    ax.set_title("(b) the campaign, reconstructed from its own traces: "
                  "segments float (58 knob moves re-zero the axis); shapes survive",
                  fontsize=9)
     ax.legend(fontsize=7, loc="upper right", framealpha=1.0, frameon=True)
 
     # (c) the consequence ladder
     ax = fig.add_subplot(gs[2])
+    envelope_mhz_per_min = DRIFT_RATE_LASER_HZ_PER_MIN / 1e6  # rb5s6s.constants ENVELOPE
+    ayachitula_mhz_per_min = 0.5e-3 / 50.0  # <0.5 kHz / 50 min (Ayachitula et al. 2024)
     regimes = [
-        (4.0, "planning envelope (2025)", "everything below is usable"),
+        (envelope_mhz_per_min, "planning envelope (2025)", "everything below is usable"),
         (drift, "2025 held lock, measured", "shapes only: bounds\n"
          f"$S_0<{s0:.2f}$ MHz, $\\beta$ {min(bvals):.1f}-{max(bvals):.1f}, "
          f"$\\sigma_\\mathrm{{laser}}<{sl:.1f}$ MHz"),
-        (1e-5, "fixed lock, demonstrated on this line\n(Ayachitula 2024: <0.5 kHz / 50 min)",
+        (ayachitula_mhz_per_min,
+         "fixed lock, demonstrated on this line\n(Ayachitula 2024: <0.5 kHz / 50 min)",
          "centres usable: measure the pull ($\\propto S_0$),\n"
          "the self-shift, and $\\beta$ at 3-12$\\sigma$"),
     ]
@@ -1112,7 +1307,177 @@ def fig_drift_story():
     ax.set_title("(c) what each regime licenses: the archive's bounds, and the "
                  "session's conversions", fontsize=9)
     ax.grid(axis="y", visible=False)
+    _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (panel a) + "
+                 "results/laser_history.csv, results/ruler_blocks.csv,\n"
+                 "results/ruler_campaign.csv (panel b) + results/stark_joint.csv, "
+                 "results/beta_self_probe.csv, results/laser_epoch.csv (panel c). "
+                 "Regenerate: python scripts/make_figures.py.", fontsize=5.9)
     _save(fig, "fig15_drift_story.png")
+
+
+def _gallery_context():
+    """Shared M25 single-trace context for fig16 and fig18: the committed
+    global-archive-fit shared optimum, plus the brightest 225 mW / 130 C
+    campaign repeat per peak. Returns None (after printing why) if a required
+    input is missing, so callers degrade the same way fig7/10/11 do.
+
+    Refactored out of fig_fit_gallery (2026-08) so fig18 (fig_single_peak_fits)
+    computes identical numbers from one code path -- no duplicated fit logic.
+    """
+    fp = C.RESULTS_DIR / "global_archive_fit.csv"
+    if not fp.exists():
+        print("  (global_archive_fit.csv absent -- skipping the fit-gallery figures)")
+        return None
+    if not (C.DATA_RAW_DIR / "MANIFEST.csv").exists():
+        print("  (data_raw/MANIFEST.csv absent -- skipping the fit-gallery figures)")
+        return None
+
+    rows = _rows("global_archive_fit")
+
+    def val(q, k="primary"):
+        return float(next(r["value"] for r in rows if r["quantity"] == q and r["key"] == k))
+
+    status = next(r["status"] for r in rows if r["quantity"] == "beta_self_joint")
+    kappa = val("kappa_min")
+    beta = val("beta_self_joint")
+    sl_blocks = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "sigma_laser"}
+
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    try:
+        from run_global_archive_fit import DNU_FLOOR, load_campaign_all
+        from rb5s6s.linefit import _shared_profile_grid, transit_fwhm_at_T
+        traces = load_campaign_all()
+    except Exception as e:  # missing/changed raw archive: degrade like fig7/10/11
+        print(f"  (could not load campaign traces for the fit gallery: {e} -- skipping)")
+        return None
+
+    # brightest campaign condition per peak: 225 mW at 130 C is both the
+    # highest power AND the highest temperature the campaign ran, so it is
+    # the single brightest condition available (fig2: amplitude ~ P^2).
+    # Within its five repeats, take the largest peak-amplitude one.
+    reps = {}
+    for t in traces:
+        if t["T"] == 130.0 and abs(t["P"] - 0.225) < 1e-9:
+            cur = reps.get(t["peak"])
+            if cur is None or t["A0"] > cur["A0"]:
+                reps[t["peak"]] = t
+    peaks = ("4121", "4154", "4192", "4207")
+    if not all(pk in reps for pk in peaks):
+        print("  (missing a 225 mW / 130 C campaign trace for some peak -- "
+              "skipping the fit-gallery figures)")
+        return None
+
+    return {"status": status, "kappa": kappa, "beta": beta, "sl_blocks": sl_blocks,
+           "reps": reps, "peaks": peaks, "DNU_FLOOR": DNU_FLOOR,
+           "_shared_profile_grid": _shared_profile_grid,
+           "transit_fwhm_at_T": transit_fwhm_at_T}
+
+
+def _fit_trace_nuisances(ctx, peak):
+    """Refit one trace's M25 per-trace nuisances (amplitude, centre,
+    background level+slope, saturation scale) by local least-squares, with
+    the shared parameters (kappa, beta_self_joint, sigma_laser, transit)
+    frozen at the M25 committed optimum carried in `ctx`. No shared parameter
+    is touched here -- this does not re-run the global fit.
+
+    Returns the trace record, the physical widths used to build its profile,
+    the model callable, the local solution, its 1-sigma errors (from the
+    fit's own Jacobian, chi2-inflated the same way stark.py inflates the
+    kappa bound), chi2_red, and the FWHM measured off the drawn model curve.
+    """
+    t = ctx["reps"][peak]
+    T, P = t["T"], t["P"]
+    gc = ctx["beta"] * float(density_units(T))
+    sl = ctx["sl_blocks"][t["sl"]]
+    transit = ctx["transit_fwhm_at_T"](T, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+    s0 = ctx["kappa"] * P
+    g, prof = ctx["_shared_profile_grid"](gc, sl, transit, s0, "gaussian",
+                                          dnu_floor=ctx["DNU_FLOOR"])
+    x, v, sg = t["x"], t["v"], t["sg"]
+
+    def model_at(p, xx, g=g, prof=prof):
+        A, cc, b0, b1, logVs = p
+        lin = A * np.interp(xx - cc, g, prof, left=0.0, right=0.0)
+        Vs = np.exp(logVs)
+        return Vs * (1.0 - np.exp(-lin / Vs)) + b0 + b1 * xx
+
+    def resid(p, x=x, v=v, sg=sg):
+        return (v - model_at(p, x)) / sg
+
+    p0 = [t["A0"], t["c0"], t["b0"], 0.0, 5.0]
+    lo = [0.0, t["c0"] - 8.0, -np.inf, -np.inf, -1.0]
+    hi = [np.inf, t["c0"] + 8.0, np.inf, np.inf, 6.0]
+    sol = least_squares(resid, p0, bounds=(lo, hi), x_scale="jac", ftol=1e-13, xtol=1e-13)
+    A, cc, b0, b1, logVs = sol.x
+    Vs = np.exp(logVs)
+    n_local = 5
+    chi2 = float(np.sum(resid(sol.x) ** 2))
+    dof = max(len(x) - n_local, 1)
+    chi2_red = chi2 / dof
+
+    from rb5s6s.fitutil import cov_from_jac
+    cov = cov_from_jac(sol.jac) * max(chi2_red, 1.0)
+    perr = np.sqrt(np.clip(np.diag(cov), 0.0, None))
+    Vs_err = Vs * perr[4]  # d(exp(logVs))/d(logVs) = Vs
+
+    # FWHM measured off the drawn model curve (background subtracted),
+    # by linear interpolation across the half-maximum crossings.
+    xf = np.linspace(x.min(), x.max(), 4000)
+    lin_f = A * np.interp(xf - cc, g, prof, left=0.0, right=0.0)
+    line_f = Vs * (1.0 - np.exp(-lin_f / Vs))
+    half = line_f.max() / 2.0
+    idx = np.where(line_f >= half)[0]
+    if len(idx) >= 2:
+        il, ir = int(idx[0]), int(idx[-1])
+
+        def cross(i0, i1):
+            x0, x1, y0, y1 = xf[i0], xf[i1], line_f[i0], line_f[i1]
+            return x0 + (half - y0) * (x1 - x0) / (y1 - y0)
+        xl = cross(il - 1, il) if il > 0 else xf[il]
+        xr = cross(ir, ir + 1) if ir < len(xf) - 1 else xf[ir]
+        fwhm = xr - xl
+    else:
+        fwhm = float("nan")
+
+    return {"t": t, "T": T, "P": P, "gc": gc, "sl": sl, "transit": transit, "s0": s0,
+           "g": g, "prof": prof, "x": x, "v": v, "sg": sg, "xf": xf,
+           "model_at": model_at, "sol": sol,
+           "A": A, "A_err": float(perr[0]), "cc": cc, "cc_err": float(perr[1]),
+           "b0": b0, "b0_err": float(perr[2]), "b1": b1, "b1_err": float(perr[3]),
+           "logVs": logVs, "logVs_err": float(perr[4]), "Vs": Vs, "Vs_err": Vs_err,
+           "lin_peak": float(np.max(lin_f)),
+           "chi2_red": chi2_red, "dof": dof, "fwhm": fwhm}
+
+
+def _saturation_display(fr, z95=1.645):
+    """The parameter-box line for the fitted saturation scale, re-expressed
+    to stay physical.
+
+    Vsat is fit here as exp(logVs), so the fit itself never goes negative --
+    but converting logVs's Gaussian (Wald) uncertainty into a SYMMETRIC
+    +/- on Vsat directly is the wrong display whenever that uncertainty is
+    not small (it is not, here: the three brightest traces' local refit
+    cannot resolve any saturation at all), because it then implies negative
+    saturation voltages within one sigma -- the same pathology the kappa
+    treatment avoids with a zero-gradient/boundary argument (rb5s6s/stark.py).
+
+    Fix: reparameterize as the compression coefficient c = 1/Vsat (bounded
+    at zero, well-behaved as the "no saturation" limit) and report its
+    one-sided 95% upper limit. If c is not significantly above zero, state
+    the resulting LOWER BOUND on Vsat -- the same "detector response is
+    linear" receipt the global fit checks numerically (Vsat > 10 V,
+    tests/test_stark_joint.py). If a trace DOES detect compression, report
+    it as the percent effect at that trace's own peak signal, the
+    physically readable quantity, instead of a scale-parameter error bar.
+    """
+    c_hat = float(np.exp(-fr["logVs"]))       # = 1 / Vsat, exact, always >= 0
+    sigma_c = c_hat * fr["logVs_err"]         # delta method on c, so >= 0 by construction
+    if c_hat > z95 * sigma_c:                 # compression detected above the 95% floor
+        pct = 100.0 * c_hat * fr["lin_peak"]
+        pct_err = 100.0 * sigma_c * fr["lin_peak"]
+        return f"  saturation: {pct:.1f} ± {pct_err:.1f}% compression at peak signal"
+    vsat_lb95 = 1.0 / (c_hat + z95 * sigma_c)  # one-sided 95% lower bound on Vsat
+    return f"  detector response: linear (saturation scale > {vsat_lb95:.0f} V, 95%)"
 
 
 def fig_fit_gallery():
@@ -1137,48 +1502,14 @@ def fig_fit_gallery():
     ramp width is exactly zero in the drawn model for every trace here. That
     is a property of the committed optimum, not a choice made for this
     figure.
+
+    See fig18 (fig_single_peak_fits) for the one-panel-per-peak version with
+    a parameter box; both share _gallery_context/_fit_trace_nuisances.
     """
-    fp = C.RESULTS_DIR / "global_archive_fit.csv"
-    if not fp.exists():
-        print("  (global_archive_fit.csv absent -- skipping fig16)")
+    ctx = _gallery_context()
+    if ctx is None:
         return
-    if not (C.DATA_RAW_DIR / "MANIFEST.csv").exists():
-        print("  (data_raw/MANIFEST.csv absent -- skipping fig16)")
-        return
-
-    rows = _rows("global_archive_fit")
-
-    def val(q, k="primary"):
-        return float(next(r["value"] for r in rows if r["quantity"] == q and r["key"] == k))
-
-    status = next(r["status"] for r in rows if r["quantity"] == "beta_self_joint")
-    kappa = val("kappa_min")
-    beta = val("beta_self_joint")
-    sl_blocks = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "sigma_laser"}
-
-    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
-    try:
-        from run_global_archive_fit import DNU_FLOOR, load_campaign_all
-        from rb5s6s.linefit import _shared_profile_grid, transit_fwhm_at_T
-        traces = load_campaign_all()
-    except Exception as e:  # missing/changed raw archive: degrade like fig7/10/11
-        print(f"  (could not load campaign traces for fig16: {e} -- skipping)")
-        return
-
-    # brightest campaign condition per peak: 225 mW at 130 C is both the
-    # highest power AND the highest temperature the campaign ran, so it is
-    # the single brightest condition available (fig2: amplitude ~ P^2).
-    # Within its five repeats, take the largest peak-amplitude one.
-    reps = {}
-    for t in traces:
-        if t["T"] == 130.0 and abs(t["P"] - 0.225) < 1e-9:
-            cur = reps.get(t["peak"])
-            if cur is None or t["A0"] > cur["A0"]:
-                reps[t["peak"]] = t
-    peaks = ("4121", "4154", "4192", "4207")
-    if not all(pk in reps for pk in peaks):
-        print("  (missing a 225 mW / 130 C campaign trace for some peak, skipping fig16)")
-        return
+    status, peaks = ctx["status"], ctx["peaks"]
 
     fig = plt.figure(figsize=(13.5, 9.8))
     outer = fig.add_gridspec(2, 2, hspace=0.34, wspace=0.24, top=0.83, bottom=0.06,
@@ -1186,66 +1517,23 @@ def fig_fit_gallery():
     slot = {"4121": (0, 0), "4154": (0, 1), "4192": (1, 0), "4207": (1, 1)}
 
     for peak in peaks:
-        t = reps[peak]
+        fr = _fit_trace_nuisances(ctx, peak)
         r0, c0 = slot[peak]
         inner = outer[r0, c0].subgridspec(2, 1, height_ratios=[3.0, 1.1], hspace=0.08)
         ax_main = fig.add_subplot(inner[0])
         ax_res = fig.add_subplot(inner[1], sharex=ax_main)
 
-        T, P = t["T"], t["P"]
-        gc = beta * float(density_units(T))
-        sl = sl_blocks[t["sl"]]
-        transit = transit_fwhm_at_T(T, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
-        s0 = kappa * P
-        g, prof = _shared_profile_grid(gc, sl, transit, s0, "gaussian", dnu_floor=DNU_FLOOR)
-        x, v, sg = t["x"], t["v"], t["sg"]
-
-        def model_at(p, xx, g=g, prof=prof):
-            A, cc, b0, b1, logVs = p
-            lin = A * np.interp(xx - cc, g, prof, left=0.0, right=0.0)
-            Vs = np.exp(logVs)
-            return Vs * (1.0 - np.exp(-lin / Vs)) + b0 + b1 * xx
-
-        def resid(p, x=x, v=v, sg=sg):
-            return (v - model_at(p, x)) / sg
-
-        p0 = [t["A0"], t["c0"], t["b0"], 0.0, 5.0]
-        lo = [0.0, t["c0"] - 8.0, -np.inf, -np.inf, -1.0]
-        hi = [np.inf, t["c0"] + 8.0, np.inf, np.inf, 6.0]
-        sol = least_squares(resid, p0, bounds=(lo, hi), x_scale="jac", ftol=1e-13, xtol=1e-13)
-        A, cc, b0, b1, logVs = sol.x
-        Vs = np.exp(logVs)
-        n_local = 5
-        chi2 = float(np.sum(resid(sol.x) ** 2))
-        dof = max(len(x) - n_local, 1)
-        chi2_red = chi2 / dof
-
-        # FWHM measured off the drawn model curve (background subtracted),
-        # by linear interpolation across the half-maximum crossings.
-        xf = np.linspace(x.min(), x.max(), 4000)
-        lin_f = A * np.interp(xf - cc, g, prof, left=0.0, right=0.0)
-        line_f = Vs * (1.0 - np.exp(-lin_f / Vs))
-        half = line_f.max() / 2.0
-        idx = np.where(line_f >= half)[0]
-        if len(idx) >= 2:
-            il, ir = int(idx[0]), int(idx[-1])
-
-            def cross(i0, i1):
-                x0, x1, y0, y1 = xf[i0], xf[i1], line_f[i0], line_f[i1]
-                return x0 + (half - y0) * (x1 - x0) / (y1 - y0)
-            xl = cross(il - 1, il) if il > 0 else xf[il]
-            xr = cross(ir, ir + 1) if ir < len(xf) - 1 else xf[ir]
-            fwhm = xr - xl
-        else:
-            fwhm = float("nan")
+        x, v, cc = fr["x"], fr["v"], fr["cc"]
+        xf, sol, model_at = fr["xf"], fr["sol"], fr["model_at"]
+        fwhm, chi2_red = fr["fwhm"], fr["chi2_red"]
 
         # ---- main panel: data + model, centred on the fitted line centre ----
         xd = x - cc
         ax_main.plot(xd, v, ".", ms=2.2, color="0.4", alpha=0.5, label="data")
         ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=1.7,
-                     label="M25 global model")
+                     label="joint fit of all campaign traces")
         ax_main.set_ylabel("signal (V)")
-        ax_main.set_title(f"{PEAK_LABEL[peak]}, 225 mW / 130 °C p_sweep, "
+        ax_main.set_title(f"{PEAK_LABEL[peak]}, 225 mW / 130 °C power sweep, "
                            f"brightest repeat\nFWHM {fwhm:.3f} MHz, "
                            r"$\chi^2_\nu$" + f" = {chi2_red:.2f} (n={len(x)})",
                            fontsize=8.5)
@@ -1262,20 +1550,385 @@ def fig_fit_gallery():
         ax_res.set_ylabel("resid (V)", fontsize=8)
 
     fig.suptitle(
-        "Fit-quality gallery: the M25 global archive model at its committed shared "
-        f"optimum (status {status}) against one representative trace per peak\n"
-        "Shared kappa, beta_self, sigma_laser and transit are frozen at the M25 "
-        "committed values (kappa_min = 0, so no Stark ramp is drawn).\n"
-        "Per-trace amplitude, centre, background and the saturation scale (not "
-        "persisted in the committed CSV) are refit locally. No re-run.\n"
-        "Residuals: the antisymmetric near-centre structure falls as "
-        "amplitude$^{-0.5}$ on both the power and temperature axes (shot noise, "
-        "the C3g residual-skew scaling, not a lineshape asymmetry).\n"
-        "A small symmetric centre excess on the brightest traces (up to 1.4% of "
-        "peak on 4192, below the noise inflation) remains unattributed and does "
-        "not move any committed number.",
+        "Fit-quality gallery: one joint fit of all campaign traces, drawn against one "
+        f"representative trace per peak ({STATUS_WORD.get(status, status.lower())})\n"
+        "The collisional width, laser linewidth, Stark coefficient and transit width are "
+        "shared across every trace and held fixed here (the fitted Stark\n"
+        "coefficient sits at zero, so no Stark broadening is drawn). Each trace's own "
+        "amplitude, centre, and background are refit individually -- no re-run.\n"
+        "Residuals: the antisymmetric near-centre structure falls with amplitude as "
+        "expected for shot noise (not a lineshape asymmetry).\n"
+        "A small symmetric excess at line centre on the brightest traces (up to 1.4% of "
+        "peak on 993.4192 nm, below the noise level) remains unexplained and does "
+        "not change any reported value.",
         fontsize=9.0, y=0.995)
+    _footer(fig, "Source: results/global_archive_fit.csv (shared parameters) + the "
+                 "data_raw archive (per-trace data; local refit only). "
+                 "Regenerate: python scripts/run_global_archive_fit.py && "
+                 "python scripts/make_figures.py.")
     _save(fig, "fig16_fit_gallery.png")
+
+
+def fig_single_peak_fits():
+    """M25 single-peak teaching figures (fig18): one large panel per peak,
+    each its own PNG (fig18_single_<peak>.png) -- the "classic single-peak
+    presentation" alongside fig16's four-up gallery.
+
+    DESIGN CHOICE: four separate PNGs, not one paged figure. A parameter box
+    this detailed (11 labelled numbers) does not fit legibly at quarter-page
+    size, and a reader studying one peak's fit does not want the other three
+    sharing the frame.
+
+    Same M25 committed optimum and brightest-trace selection as fig16, via
+    the shared _gallery_context/_fit_trace_nuisances helpers -- both figures
+    compute identical numbers from one code path; this does not re-run the
+    global fit and does no fitting beyond the same local per-trace nuisance
+    refit fig16 already does.
+
+    Adds, beyond fig16: a parameter box naming every number's ROLE -- SHARED
+    (frozen at the M25 committed optimum) vs PER-TRACE (refit locally here,
+    not persisted to any committed CSV) -- with its status tag, so the figure
+    teaches the model's structure while showing the fit, not just the
+    residuals. Uncertainties are shown where the source carries one: the
+    committed CSV gives no error on the shared quantities (sigma_laser,
+    beta_self_joint, kappa), so those are reported as point values with that
+    fact stated; the per-trace nuisances get their 1-sigma error from this
+    figure's own local-fit Jacobian.
+    """
+    ctx = _gallery_context()
+    if ctx is None:
+        return
+    status, peaks = ctx["status"], ctx["peaks"]
+
+    for peak in peaks:
+        fr = _fit_trace_nuisances(ctx, peak)
+        x, v, cc = fr["x"], fr["v"], fr["cc"]
+        xf, sol, model_at = fr["xf"], fr["sol"], fr["model_at"]
+
+        fig = plt.figure(figsize=(10.8, 6.4))
+        gs = fig.add_gridspec(2, 2, height_ratios=[3.0, 1.15], width_ratios=[2.15, 1.55],
+                              hspace=0.08, wspace=0.06, top=0.84, bottom=0.13,
+                              left=0.085, right=0.99)
+        ax_main = fig.add_subplot(gs[0, 0])
+        ax_res = fig.add_subplot(gs[1, 0], sharex=ax_main)
+        ax_box = fig.add_subplot(gs[:, 1])
+        ax_box.axis("off")
+
+        # ---- main panel: data + model, centred on the fitted line centre ----
+        xd = x - cc
+        ax_main.plot(xd, v, ".", ms=3.0, color="0.4", alpha=0.5, label="data")
+        ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=2.0,
+                     label="joint fit of all campaign traces")
+        ax_main.set_ylabel("signal (V)")
+        ax_main.set_title(f"{PEAK_LABEL[peak]}: data vs the joint fit\n"
+                          "225 mW / 130 °C power sweep, brightest repeat", fontsize=10)
+        ax_main.legend(fontsize=8, loc="upper right", frameon=True, framealpha=0.9)
+        ax_main.tick_params(labelbottom=False)
+
+        # ---- residual panel ----
+        res_v = v - model_at(sol.x, x)
+        ax_res.plot(xd, res_v, ".", ms=2.6, color=PEAK_COLOR[peak], alpha=0.6)
+        ax_res.axhline(0.0, color="k", lw=0.7)
+        rmax = float(np.max(np.abs(res_v))) * 1.15 if len(res_v) else 1.0
+        ax_res.set_ylim(-rmax, rmax)
+        ax_res.set_xlabel("detuning from fitted centre (MHz, transition axis)")
+        ax_res.set_ylabel("resid (V)", fontsize=8.5)
+
+        # ---- the parameter box: every number labelled by what it comes from ----
+        N_here = float(density_units(fr["T"]))
+        lines = [
+            f"993.{peak} nm  --  225 mW, 130 °C",
+            "-" * 40,
+            "Shared across every campaign trace (held fixed here):",
+            f"  laser linewidth $\\sigma_L$ = {fr['sl']:.3f} MHz",
+            "    (shared within this session/temperature block;",
+            "    uncertainty not separately quoted)",
+            f"  collisional width $\\gamma_c$ = {fr['gc']:.3f} MHz",
+            "    = self-broadening rate x density",
+            f"    = {ctx['beta']:.4f} x {N_here:.2f} "
+            r"($10^{12}\,\mathrm{cm^{-3}}$)",
+            "    (uncertainty not separately quoted)",
+            f"  Stark coefficient $\\kappa$ = {ctx['kappa']:.3f} MHz/W",
+            f"    -> light shift $S_0=\\kappa P$ = {fr['s0']:.3f} MHz",
+            f"  transit width = {fr['transit']:.3f} MHz",
+            "    (fixed prior; beam waist not yet measured)",
+            "-" * 40,
+            "From the fit above:",
+            f"  FWHM (model) = {fr['fwhm']:.3f} MHz",
+            f"  reduced $\\chi^2$ = {fr['chi2_red']:.2f}  (n={len(x)})",
+            "-" * 40,
+            "This trace only (refit individually):",
+            f"  amplitude = {fr['A']:.4f} ± {fr['A_err']:.4f} V",
+            f"  centre = {fr['cc']:.3f} ± {fr['cc_err']:.3f} MHz",
+            f"  background level = {fr['b0']:.4f} ± {fr['b0_err']:.4f} V",
+            f"  background slope = {fr['b1']:.5f} ± {fr['b1_err']:.5f} V/MHz",
+            _saturation_display(fr),
+        ]
+        ax_box.text(0.02, 0.98, "\n".join(lines), transform=ax_box.transAxes,
+                    fontsize=7.0, va="top", ha="left", family="monospace", linespacing=1.35,
+                    bbox=dict(boxstyle="round,pad=0.5", facecolor="0.97",
+                             edgecolor="0.6", lw=0.8))
+
+        fig.suptitle(
+            "A two-photon Doppler-free line: a Lorentzian core (natural + "
+            "collisional) convolved with a Gaussian laser/transit\n"
+            "envelope, saturating at high power. Instance: 993." + peak + " nm at the "
+            "values shared across the whole campaign fit;\n"
+            "this trace's own amplitude, centre and background are refit "
+            "individually here, without re-running that shared fit.",
+            fontsize=9.2, y=0.995)
+        _footer(fig, "Source: results/global_archive_fit.csv (shared parameters, "
+                     f"{STATUS_WORD.get(status, status.lower())}) + the data_raw archive "
+                     "(this trace; refit individually). Regenerate: "
+                     "python scripts/run_global_archive_fit.py && "
+                     "python scripts/make_figures.py.", y=0.015)
+        _save(fig, f"fig18_single_{peak}.png")
+
+
+def fig_width_trends():
+    """M4 / M4e physics-trend panels (fig19): the two width-broadening laws
+    the archive tests, side by side.
+
+    GENERIC LAW, panel 1: pressure (collisional) broadening adds width
+    linearly in the perturber density, W = floor + beta*N -- measured here
+    as a SLOPE, because per-condition widths carry a common floor (fig6:
+    fig_gamma_floor shows the free per-condition gamma_coll is a near-flat
+    FLOOR, degenerate with sigma_laser at corr ~ -0.85 to -0.9, that does
+    not resolve collisions point-by-point). RB INSTANCE: this panel does
+    NOT plot that free-fit gamma_coll against an unrelated line -- the two
+    constructions are not comparable (RESULTS_C-chain, docs/RESULTS.md
+    C1). It instead reproduces the archive's own HEADLINE beta_self
+    estimator verbatim: the model-independent P0 confound probe in
+    scripts/run_beta_self.py (collisional_slope, results/beta_self_probe.csv),
+    which fits RAW contiguous FWHM (no lineshape split) vs N over the
+    70-110 C cooling sweep as W(N) = floor + beta_eff*N, then inflates the
+    slope error by the between-block scatter (the same floor fig6 shows)
+    via a Student-t 95% bound -- why beta_self is reported as a BOUND, not
+    a measurement (SNR<3, all four peaks). The fitted line and its
+    systematic-error band therefore pass through the data BY CONSTRUCTION:
+    this is the actual fit the bound comes from, drawn only over its own
+    70-110 C fit domain (no out-of-domain extrapolation). The 130 C point is
+    NOT folded into this fit: it ran in the SAME optical/cell configuration,
+    but as its own SESSION (a different day and display epoch, calibrated
+    against its own before/after EOM-ruler brackets rather than the
+    t_sweep's per-block ruler) -- a cross-session comparability question, not
+    a different apparatus configuration. run_beta_self.py keeps it available
+    only as an optional fourth lever point in a separate, non-headline probe
+    (dof=2, headline=no in results/beta_self_probe.csv), matching this panel.
+
+    Retroactive honesty pass, private/reviews/digest/fig19_trend_audit.md
+    (2026-08-02): the construction was independently reproduced to float
+    precision and confirmed correct -- what was missing was the panel saying,
+    out loud, how thin it is (n=3 per peak, dof=1) and that the drawn line
+    and band ARE the fit the bound comes from, not a denser trend it happens
+    to pass through. Also flagged: a documented, quantified low-SNR
+    narrowing bias at the 70 C anchor (~6%, right sign for 3 of 4 peaks,
+    scripts/run_beta_self.py's raw_fwhm_mhz) steepens the fitted slope,
+    which can only make the reported bound MORE conservative, never less.
+    Both are now stated compactly on the panel itself (title + one
+    annotation), not just here.
+
+    GENERIC LAW, panel 2: a light-shift GRADIENT across the beam broadens the
+    line as the shift squared (the AC-Stark ramp, fig12), so a bound on the
+    Stark coefficient kappa implies an upper bound on this width growth, not
+    a value -- drawn as a one-sided shaded EXCLUSION, never an error bar.
+    RB INSTANCE: FWHM vs power at 130 C (results/power_sweep.csv, the same
+    source fig2 uses) against the kappa_ub95_profile bound
+    (results/stark_sweep.csv, M4e / run_stark_sweep.py). sigma_laser vs power
+    is NOT shown: at fixed condition it is degenerate with gamma_coll
+    (corr ~ -0.90; fig10 is the dedicated figure for that degeneracy) and does
+    not read as a clean per-point trend (checked: non-monotonic, largest
+    error exceeds the whole span).
+    """
+    manifest_fp = C.MANIFEST_CSV
+    ruler_fp = C.RESULTS_DIR / "ruler_blocks.csv"
+    probe_fp = C.RESULTS_DIR / "beta_self_probe.csv"
+    pw_fp = C.RESULTS_DIR / "power_sweep.csv"
+    stark_fp = C.RESULTS_DIR / "stark_sweep.csv"
+    if not (manifest_fp.exists() and ruler_fp.exists() and probe_fp.exists()
+            and pw_fp.exists() and stark_fp.exists()):
+        print("  (a source file for fig19 is absent -- skipping)")
+        return
+
+    from rb5s6s.stark import _fwhm_of
+    from rb5s6s.linefit import transit_fwhm_at_T
+    from rb5s6s.beta import collisional_slope
+    from rb5s6s.ingest import load_manifest
+
+    # scripts/ is not a package (see tests/test_figures_fresh.py's own
+    # importlib-by-path workaround) -- add it to sys.path so we can reuse the
+    # P0 confound probe's own functions (raw_fwhm_mhz, load_t_rates, TSWEEP)
+    # verbatim rather than re-deriving them, so this panel is guaranteed to
+    # match results/beta_self_probe.csv, not merely resemble it.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import run_beta_self as _rbp
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13.6, 5.3))
+    fig.subplots_adjust(top=0.76, bottom=0.15, left=0.075, right=0.98, wspace=0.26)
+
+    # ======== panel 1: the licensed channel -- raw width vs N(T), =========
+    # ======== floor + slope, the fit results/beta_self_probe.csv comes from
+    T_grid = np.linspace(55.0, 140.0, 4000)
+    N_grid = density_units(T_grid)
+
+    def N_to_T(N):
+        return np.interp(N, N_grid, T_grid)
+
+    def T_to_N(T):
+        # matplotlib probes the secondary axis's own default view (e.g. the
+        # [0, 1] Axes default) while wiring up the scale, before any real
+        # limits are set -- clip into the liquid-phase-valid band so that
+        # probe never hits density_units' melting-point guard.
+        Tc = np.clip(np.asarray(T, float), 55.0, 140.0)
+        return density_units(Tc)
+
+    manifest_rows = load_manifest()
+    trates, _prates = _rbp.load_t_rates()
+    ymin_p1, ymax_p1 = 1e9, 0.0
+    for peak in ("4121", "4154", "4192", "4207"):
+        byT = defaultdict(list)
+        for r in manifest_rows:
+            if (r["flag"] == "canonical" and r["role"] == "t_sweep"
+                    and r["peak"] == peak and r["temperature_C"] in _rbp.TSWEEP):
+                byT[r["temperature_C"]].append(r)
+        N, W, E = [], [], []
+        for T in _rbp.TSWEEP:
+            if T in byT and (peak, T) in trates:
+                rate, relerr = trates[(peak, T)]
+                m, e = _rbp.raw_fwhm_mhz(byT[T], rate, relerr)
+                N.append(float(density_units(float(T)))); W.append(m); E.append(e)
+        if len(N) < 3:
+            continue
+        N = np.array(N); W = np.array(W); E = np.array(E)
+
+        # identical weighted fit to collisional_slope()'s internals (floor is
+        # not in its return dict, so recovered here from the same A/Winv/W);
+        # cs supplies the vetted error terms (syst_err folds in the
+        # between-block scatter fig6 calls the floor -- the fit weight, not
+        # a subtraction, since gamma_coll is never split out of this raw
+        # width at all).
+        cs = collisional_slope(N, W, E)
+        A = np.vstack([np.ones_like(N), N]).T
+        Winv = np.diag(1.0 / E ** 2)
+        floor, slope = np.linalg.solve(A.T @ Winv @ A, A.T @ Winv @ W)
+        Esys = np.sqrt(E ** 2 + cs["resid_rms"] ** 2)
+
+        ax1.errorbar(N, W, yerr=Esys, fmt="o", color=PEAK_COLOR[peak], ms=5.5, lw=1.4,
+                     capsize=2, label=PEAK_LABEL[peak], zorder=4)
+        Nfit = np.linspace(N.min(), N.max(), 60)
+        line = floor + slope * Nfit
+        band = cs["syst_err"] * (Nfit - N[0])  # zero at the anchor point, by construction
+        ax1.plot(Nfit, line, "-", color=PEAK_COLOR[peak], lw=1.1, alpha=0.85, zorder=2)
+        ax1.fill_between(Nfit, line - band, line + band, color=PEAK_COLOR[peak],
+                         alpha=0.14, lw=0, zorder=1)
+        ymin_p1 = min(ymin_p1, float(np.min(W - Esys)), float(np.min(line - band)))
+        ymax_p1 = max(ymax_p1, float(np.max(W + Esys)), float(np.max(line + band)))
+
+    pad1 = 0.08 * (ymax_p1 - ymin_p1)
+    ax1.set_ylim(ymin_p1 - pad1, ymax_p1 + pad1)
+    ax1.set_xscale("log")
+    ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
+    ax1.set_ylabel("raw FWHM (MHz, transition; model-independent)")
+    ax1.set_title("Floor + slope fit to the raw linewidth vs density: 3 temperature "
+                 "points per peak (dof=1) --\n"
+                 "the line and band ARE the fit the bound is built from, not a denser "
+                 "measurement.\n"
+                 r"slope = $\beta_\mathrm{self}$, a bound not a measurement "
+                 "(signal-to-noise $<$3, all four peaks)",
+                 fontsize=8.2)
+    # Compact honesty note (private/reviews/digest/fig19_trend_audit.md): the bars on
+    # this panel are the repeat + between-block scatter that FEEDS the reported 95%
+    # bound, not the bound itself (a further one-sided Student-t inflation, dof=1);
+    # and the lowest-density point carries a documented, quantified low-SNR narrowing
+    # bias (run_beta_self.py's own raw_fwhm_mhz) that -- because it narrows the anchor
+    # point -- steepens the fitted slope, so it can only make the bound conservative,
+    # never understate it. Placed top-left, the one corner both the data (which rise
+    # in scatter toward low N) and the lower-right legend leave clear.
+    ax1.text(0.02, 0.97,
+             "bars: repeat + between-block scatter, not the reported 95% bound\n"
+             "(a further $\\times$6.3 Student-t inflation, dof=1); ~6% low-SNR\n"
+             "narrowing at 70 °C (3 of 4 peaks) makes the bound conservative",
+             transform=ax1.transAxes, ha="left", va="top", fontsize=6.3, color="0.3",
+             bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="0.7", lw=0.5))
+    # lower right: the fit lines rise with N, and the low-N data (left) carry
+    # the largest error bars, so the low-W / high-N corner stays clear
+    ax1.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True)
+    sec = ax1.secondary_xaxis("top", functions=(N_to_T, T_to_N))
+    sec.set_xlabel("temperature (°C)", fontsize=8.5)
+    sec.tick_params(labelsize=7.5)
+
+    # ================= panel 2: FWHM vs power, Stark exclusion wedge =======
+    pw_rows = _rows("power_sweep")
+    stark_rows = _rows("stark_sweep")
+    kappa_ub = float(next(r["value"] for r in stark_rows
+                          if r["quantity"] == "kappa_ub95_profile"))
+    chi2_red_stark = float(next(r["value"] for r in stark_rows if r["quantity"] == "chi2_red"))
+    core = {r["key"]: float(r["value"]) for r in stark_rows if r["quantity"] == "core_sigma_laser"}
+    transit130 = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+    nu = np.arange(-45.0, 45.0, 0.02)
+    Pgrid_W = np.linspace(0.0, 0.26, 60)
+    core_mean = float(np.mean(list(core.values()))) if core else 1.6
+
+    growth225, spreads, ymax_panel, ymin_panel = [], [], 0.0, 1e9
+    for peak in ("4121", "4154", "4192", "4207"):
+        d = sorted((int(r["power_mW"]), float(r["fwhm"]), float(r["fwhm_err"]))
+                  for r in pw_rows if r["peak"] == peak)
+        P_mw, F, Fe = zip(*d)
+        ax2.errorbar(P_mw, F, yerr=Fe, fmt="-o", color=PEAK_COLOR[peak], ms=5.5, lw=1.4,
+                    capsize=2, label=PEAK_LABEL[peak], zorder=4)
+        ymax_panel = max(ymax_panel, max(f + fe for f, fe in zip(F, Fe)))
+        ymin_panel = min(ymin_panel, min(f - fe for f, fe in zip(F, Fe)))
+        spreads.append(max(F) - min(F))
+
+        core_pk = core.get(f"993.{peak}nm", core_mean)
+        base0 = _fwhm_of(0.6, core_pk, transit130, 0.0, nu)
+        excess = np.array([_fwhm_of(0.6, core_pk, transit130, kappa_ub * P, nu)
+                           for P in Pgrid_W]) - base0
+        growth225.append(float(excess[-1]))
+        anchor = F[0]  # this peak's own lowest-power data point
+        curve = anchor + (excess - excess[0])
+        ax2.plot(Pgrid_W * 1000.0, curve, "--", color=PEAK_COLOR[peak], lw=1.0, alpha=0.75,
+                zorder=3)
+        ax2.fill_between(Pgrid_W * 1000.0, curve, 100.0, color=PEAK_COLOR[peak],
+                         alpha=0.05, zorder=1)
+
+    pad = 0.08 * (ymax_panel - ymin_panel)
+    ax2.set_xlim(0.0, 260.0)
+    ax2.set_ylim(ymin_panel - pad, ymax_panel + pad)
+    ratio = float(np.mean(spreads)) / max(float(np.mean(growth225)), 1e-9)
+    ax2.set_xlabel("power (mW)")
+    ax2.set_ylabel("FWHM (MHz, transition)")
+    ax2.set_title("Linewidth-based Stark exclusion: predicted growth is\n"
+                 r"$\sim$%dx smaller than the block-to-block scatter (reduced "
+                 r"$\chi^2=$%.1f)" "\n"
+                 "laser-linewidth component not shown (degenerate at fixed condition)"
+                 % (round(ratio), chi2_red_stark), fontsize=8.2)
+    # lower right: at P>150 mW the four traces converge to a tight 5.28-5.45
+    # MHz band, well clear of the axis floor -- the only corner free of both
+    # data and the top-left annotation below.
+    ax2.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True)
+    # the bound's claim as a plain annotation, not a legend entry (an
+    # exclusion wedge is not a data series): upper right, where the highest
+    # data point (P=25 mW, up to ~5.57 MHz) does not reach.
+    ax2.text(0.98, 0.97,
+             r"$\kappa<$%.2f MHz/W (95%%, profile likelihood):" % kappa_ub + "\n"
+             "predicted growth vs power, shaded above each dashed line",
+             transform=ax2.transAxes, ha="right", va="top", fontsize=6.6, color="0.25",
+             bbox=dict(boxstyle="round,pad=0.35", facecolor="white", edgecolor="0.6", lw=0.6))
+
+    fig.suptitle(
+        "Two broadening laws: pressure broadening adds width linearly in density "
+        r"($W=\mathrm{floor}+\beta N$), measured"
+        "\nhere as a SLOPE because per-condition widths carry a common floor; a "
+        "light-shift gradient broadens the"
+        "\nline as intensity squared (the AC-Stark ramp). Rb instance: the four "
+        "993 nm 5S-6S hyperfine components.", fontsize=9.2, y=0.995)
+    _footer(fig, "Source: data_raw/MANIFEST.csv + results/ruler_blocks.csv (panel 1 raw "
+                 "widths, reproducing the results/beta_self_probe.csv construction),\n"
+                 "results/power_sweep.csv, results/stark_sweep.csv (panel 2). Regenerate: "
+                 "python scripts/run_beta_self.py && python scripts/run_stark_sweep.py "
+                 "&& python scripts/make_figures.py.", fontsize=5.9)
+    _save(fig, "fig19_width_trends.png")
 
 
 def fig_magic_wavelengths():
@@ -1385,12 +2038,9 @@ def fig_magic_wavelengths():
         f"linear polarization. Status: {status}.",
         fontsize=9.0, y=0.995)
 
-    fig.text(
-        0.01, 0.018,
-        "Source: results/polarizability.csv (magic_5s6s rows) + rb5s6s/polarizability.py "
-        "(alpha_5s, alpha_6s). Regenerate: python scripts/run_polarizability.py && "
-        "python scripts/make_figures.py.",
-        fontsize=6.6, color="0.35")
+    _footer(fig, "Source: results/polarizability.csv (magic_5s6s rows) + rb5s6s/polarizability.py "
+                 "(alpha_5s, alpha_6s). Regenerate: python scripts/run_polarizability.py && "
+                 "python scripts/make_figures.py.", y=0.018, fontsize=6.6)
     fig.text(
         0.01, 0.002,
         "Matrix elements: Volz & Schmoranzer 1996, Herold et al. 2012, the Safronova-group "
@@ -1399,6 +2049,161 @@ def fig_magic_wavelengths():
         fontsize=6.6, color="0.35")
 
     _save(fig, "fig17_magic_wavelengths.png")
+
+
+def fig_method_loop():
+    """fig20: the conceptual method this whole repository runs, drawn once.
+
+    No data, no fitted parameters -- a schematic, like fig12 (the AC-Stark
+    ramp derivation). An observation admits several candidate physical
+    mechanisms; an identifiability analysis (a profile-likelihood map, a
+    lever test, a covariance check -- fig7, fig6 and fig10 are three
+    instances already in this repository) decides which branch applies.
+    IDENTIFIED closes cleanly into a claim. DEGENERATE does not stop there:
+    it names the dominant limitation, which points at a targeted
+    measurement, which buys a new capability -- and that capability changes
+    what the NEXT observation can resolve, so the diagram closes into a
+    loop rather than a dead end. Two worked examples from this archive sit
+    underneath, both instances of the degenerate branch, because that is
+    the branch every headline number in this repository currently sits on.
+    """
+    import matplotlib.patches as mpatches
+    from matplotlib.patches import FancyArrowPatch
+
+    BLUE, ORANGE, GREEN, GREY = "#0072B2", "#D55E00", "#009E73", "#4D4D4D"
+
+    fig = plt.figure(figsize=(13.5, 9.4))
+    # Two explicitly-placed axes (not plt.subplots' default margins, which
+    # left content clipped at the canvas edge here): the main loop on top,
+    # the worked examples below, with dead figure-fraction space between
+    # them for the section heading -- so the two coordinate systems never
+    # share the same patch of canvas.
+    ax = fig.add_axes([0.02, 0.335, 0.96, 0.565])
+    ax.set_xlim(0, 128)
+    ax.set_ylim(36, 108)
+    ax.axis("off")
+
+    def box(xy, w, h, text, edge=GREY, face="white", fontsize=9.5, fontweight="normal",
+            lw=1.6, textcolor="0.1", ax_=ax):
+        x, y = xy
+        p = mpatches.FancyBboxPatch((x - w / 2, y - h / 2), w, h,
+                                    boxstyle="round,pad=0.35,rounding_size=2.5",
+                                    linewidth=lw, edgecolor=edge, facecolor=face, zorder=3)
+        ax_.add_patch(p)
+        ax_.text(x, y, text, ha="center", va="center", fontsize=fontsize,
+                 fontweight=fontweight, color=textcolor, zorder=4, linespacing=1.25)
+        return x, y
+
+    def diamond(xy, w, h, text, edge=GREY, face="#F2F2F2", fontsize=9.0):
+        x, y = xy
+        pts = [(x, y + h / 2), (x + w / 2, y), (x, y - h / 2), (x - w / 2, y)]
+        p = mpatches.Polygon(pts, closed=True, linewidth=1.8, edgecolor=edge,
+                             facecolor=face, zorder=3)
+        ax.add_patch(p)
+        ax.text(x, y, text, ha="center", va="center", fontsize=9.0,
+                fontweight="bold", color="0.1", zorder=4, linespacing=1.2)
+        return x, y
+
+    def arrow(p0, p1, color=GREY, lw=1.8, connectionstyle="arc3,rad=0.0",
+              label=None, label_frac=0.5, label_dy=3.2, fontsize=7.6, ax_=ax):
+        a = FancyArrowPatch(p0, p1, arrowstyle="-|>", mutation_scale=14,
+                            color=color, lw=lw, shrinkA=2, shrinkB=2,
+                            connectionstyle=connectionstyle, zorder=2)
+        ax_.add_patch(a)
+        if label:
+            lx = p0[0] + label_frac * (p1[0] - p0[0])
+            ly = p0[1] + label_frac * (p1[1] - p0[1]) + label_dy
+            ax_.text(lx, ly, label, ha="center", va="bottom", fontsize=fontsize,
+                     color=color, style="italic", zorder=4)
+
+    # ---- the main loop -----------------------------------------------
+    yT, yB, ySpur = 86.0, 60.0, 100.0
+    x_obs, x_mech, x_id = 16.0, 50.0, 86.0
+    x_claim = 113.0
+    x_dom, x_tgt, x_cap = 66.0, 44.0, 16.0
+
+    box((x_obs, yT), 24, 14, "OBSERVATION", edge=GREY, fontweight="bold")
+    box((x_mech, yT), 28, 14, "CANDIDATE PHYSICAL\nMECHANISMS", edge=GREY)
+    diamond((x_id, yT), 28, 22, "IDENTIFIABILITY\nANALYSIS", edge=GREY)
+
+    arrow((x_obs + 12, yT), (x_mech - 14, yT))
+    arrow((x_mech + 14, yT), (x_id - 14, yT))
+
+    # identified branch: a short spur up and out -- a claim does not loop
+    box((x_id, ySpur), 22, 11, "IDENTIFIED", edge=BLUE, face="#EAF3FA", textcolor=BLUE,
+        fontweight="bold")
+    box((x_claim, ySpur), 22, 11, "CLAIM", edge=BLUE, face=BLUE, textcolor="white",
+        fontweight="bold")
+    arrow((x_id, yT + 11), (x_id, ySpur - 5.5), color=BLUE)
+    arrow((x_id + 11, ySpur), (x_claim - 11, ySpur), color=BLUE)
+
+    # degenerate branch: down, then back left along the bottom, forming the loop
+    box((x_id, yB), 24, 12, "DEGENERATE", edge=ORANGE, face="#FBEEE6", textcolor=ORANGE,
+        fontweight="bold")
+    arrow((x_id, yT - 11), (x_id, yB + 6), color=ORANGE)
+
+    box((x_dom, yB), 24, 12, "DOMINANT\nLIMITATION", edge=ORANGE, face="#FBEEE6")
+    arrow((x_id - 12, yB), (x_dom + 12, yB), color=ORANGE)
+
+    box((x_tgt, yB), 24, 12, "TARGETED\nMEASUREMENT", edge=ORANGE, face="#FBEEE6")
+    arrow((x_dom - 12, yB), (x_tgt + 12, yB), color=ORANGE)
+
+    box((x_cap, yB), 24, 12, "NEW CAPABILITY", edge=GREEN, face="#E6F4EF", textcolor=GREEN,
+        fontweight="bold")
+    arrow((x_tgt - 12, yB), (x_cap + 12, yB), color=ORANGE)
+
+    # close the loop: a new capability changes what the next observation can resolve
+    arrow((x_cap, yB + 6), (x_obs, yT - 7), color=GREEN, lw=2.0,
+          label="changes what the next\nobservation can resolve", label_frac=0.5,
+          label_dy=1.5, fontsize=7.8)
+
+    ax.text(x_mech, yT - 12.5, "e.g. a profile-likelihood map, a lever test,\n"
+            "a covariance check (fig6, fig7, fig10)",
+            ha="center", va="top", fontsize=7.2, color="0.4", style="italic")
+
+    ax.text(64, 44.0,
+            "The 30-second version of this repository's method: most of what it "
+            "reports today lives on the\nDEGENERATE branch, worked twice below.",
+            ha="center", va="center", fontsize=9.2, color="0.15")
+
+    # ---- two worked examples, smaller type, underneath -----------------
+    fig.text(0.5, 0.300, "Two instances of the degenerate branch, from this archive",
+             ha="center", fontsize=9.8, fontweight="bold", color="0.15")
+
+    ax2 = fig.add_axes([0.02, 0.045, 0.96, 0.225])
+    ax2.set_xlim(0, 128)
+    ax2.set_ylim(0, 46)
+    ax2.axis("off")
+
+    def chain2(y, label, steps, color):
+        ax2.text(1, y, label, ha="left", va="center", fontsize=8.6, fontweight="bold",
+                 color="0.15")
+        n = len(steps)
+        x0, x1 = 21.0, 111.0
+        xs = np.linspace(x0, x1, n)
+        w = (xs[1] - xs[0]) * 0.76
+        for i, (x, text) in enumerate(zip(xs, steps)):
+            edge = GREY if i == 0 else (GREEN if i == n - 1 else color)
+            face = "#F2F2F2" if i == 0 else ("#E6F4EF" if i == n - 1 else "white")
+            box((x, y), w, 16, text, edge=edge, face=face, fontsize=7.4,
+                textcolor=(GREEN if i == n - 1 else "0.1"),
+                fontweight=("bold" if i in (0, n - 1) else "normal"), lw=1.3, ax_=ax2)
+            if i > 0:
+                arrow((xs[i - 1] + w / 2, y), (x - w / 2, y), color=color, lw=1.3, ax_=ax2)
+
+    chain2(33, "(a)", ["linewidth", "transit + laser\nboth broaden it", "strong\ndegeneracy",
+                       "beam-waist\nmeasurement", "absolute\ndecomposition"], ORANGE)
+    chain2(11, "(b)", ["AC-Stark shift", "line centres\nlost (fit)", "width-only\nhandle",
+                       "fixed\nfrequency lock", "direct Stark\nmeasurement"], ORANGE)
+
+    fig.suptitle("From an observation to a claim, or to the capability that gets you one: "
+                 "the identifiability loop",
+                 fontsize=12.5, y=0.985, fontweight="bold")
+    _footer(fig, "Source: none -- a schematic of the method (rb5s6s.identifiability, "
+                 "fig6/fig7/fig10 are worked instances of the identifiability-analysis step; "
+                 "fig3 and results/centre_stark.csv are the two worked examples below). "
+                 "Regenerate: python scripts/make_figures.py.")
+    _save(fig, "fig20_method_loop.png")
 
 
 def main() -> int:
@@ -1417,7 +2222,10 @@ def main() -> int:
     fig_wavemeter_reconstruction()
     fig_drift_story()
     fig_fit_gallery()
+    fig_single_peak_fits()
+    fig_width_trends()
     fig_magic_wavelengths()
+    fig_method_loop()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

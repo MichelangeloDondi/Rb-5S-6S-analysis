@@ -73,6 +73,14 @@ grows linearly with collision rate, i.e. linearly with density:
 
 $$\gamma_\text{coll}=\beta_\text{self}N$$
 
+Baranger's own dilute-gas/binary-collision validity condition (his interaction
+volume $U\ll n^{-1}$) holds by a margin of $\sim$140× at our densest point,
+130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$), so this Lorentzian-and-linear-in-$N$
+form is not in question anywhere in our sweep. What remains open is only the
+separate, later step from a $-C_6/R^6$ potential to a cross-section
+([Lewis 1980](../lit/lewis1980.md), `rb5s6s/vanderwaals.py`, M18), a step
+Baranger's theorem does not itself supply.
+
 Because the convolution of two Lorentzians is a Lorentzian whose **widths
 add**, the natural and collisional contributions combine analytically into a
 single Lorentzian of width $\Gamma_\text{nat}+\gamma_\text{coll}$ — we exploit

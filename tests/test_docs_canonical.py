@@ -52,11 +52,16 @@ def _cell(fname, quantity, key=None, col="value"):
 
 
 def _beta_bound_range():
-    """min/max of the model-independent per-peak 95% bound (70-110 C variant),
-    rounded to 1 dp -- the '0.2-0.4' headline."""
+    """min/max of the model-independent per-peak 95% bound (the headline
+    variant), rounded to 2 dp. Since the 2026-08-02 promotion of the
+    four-point (70/90/110/130 C, dof=2) construction to the sole headline,
+    the bound is roughly an order of magnitude tighter than the superseded
+    three-point '0.2-0.4' headline, so 1 dp (which rounded the new range to
+    '0.0-0.0') is no longer enough resolution to say anything -- 2 dp gives
+    the '0.03-0.05' headline."""
     vals = [float(r["bound95_nscale"]) for r in csv.DictReader(open(RESULTS / "beta_self_probe.csv"))
             if r.get("headline") == "yes"]
-    return f"{min(vals):.1f}", f"{max(vals):.1f}"
+    return f"{min(vals):.2f}", f"{max(vals):.2f}"
 
 
 def _const(name):
@@ -131,9 +136,11 @@ CANONICAL = [
         docs=["README.md", "docs/BIG_PICTURE.md"],
     ),
     dict(
-        name="beta_self model-independent bound range (70-110C, 95%)",
+        # four-point headline (70/90/110/130 C, dof=2) since 2026-08-02;
+        # was the three-point (70-110C, dof=1) '0.2-0.4' range before
+        name="beta_self model-independent bound range (four-point headline, 95%)",
         value=_beta_range_token,
-        find=re.compile(r"([0-9]\.[0-9]-[0-9]\.[0-9]) MHz per 10"),
+        find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2}) MHz per 10"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
@@ -236,6 +243,9 @@ SUPERSEDED = [
     ("3.1", re.compile(r"S(?:₀|_?0).{0,40}3\.1\b"), "AC-Stark bound (was the Wald 3.1 MHz)"),
     ("5800", re.compile(r"5800"), "Delta-alpha bracket (was ~5800 a.u.)"),
     ("0.07-0.15", re.compile(r"0\.07-0\.15|0\.07.{0,6}0\.15"), "beta bound (was 0.07-0.15)"),
+    ("0.2-0.4", re.compile(r"0\.2-0\.4|0\.2.{0,6}0\.4"),
+     "beta bound (was the three-point/dof=1 headline 0.2-0.4, superseded "
+     "2026-08-02 by the four-point/dof=2 0.03-0.05 headline)"),
 ]
 _ALLOW_SUPERSEDED = re.compile(r"supersed|earlier|Wald|was |before |old ", re.I)
 

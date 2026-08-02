@@ -2,10 +2,38 @@
 """
 M4: collisional self-broadening beta_self + the confound program.
 
-For each peak, fit beta_self globally across the T-sweep (70/90/110 C, one
-cooling session) with gamma_coll(T) = beta_self * N(T) and a shared
-sigma_laser (rb5s6s.beta). Then run the pre-registered confound probes and
-apply the measurement-vs-bound rule.
+For each peak, fit beta_self globally across the density lever with
+gamma_coll(T) = beta_self * N(T) and a shared sigma_laser (rb5s6s.beta).
+Then run the pre-registered confound probes and apply the
+measurement-vs-bound rule.
+
+HEADLINE CONSTRUCTION (2026-08-02, decided by Michelangelo on firsthand
+apparatus authority). The beta_self headline is now the FOUR-POINT
+construction: 70/90/110/130 C, dof=2, the x52.5 density lever (N(130)/N(70)),
+built from the T-sweep (70/90/110 C) plus the 130 C power-sweep session's
+225 mW block. There is no separate three-point (70/90/110 C, dof=1, x16.2
+lever) headline kept alongside it; that construction is superseded, not
+demoted to a robustness row -- one licensed construction, one bound, per
+peak. The prior version of this module (and of docs/DATA.md, README.md and
+the ledger) treated 130 C as an optional extra lever point excluded from the
+headline because it looked like a different apparatus configuration (a power
+sweep, not a temperature sweep, calibrated off before/after EOM ruler
+brackets rather than the T-session's own per-block ruler). That exclusion
+reasoning does not survive Michelangelo's firsthand statement: the 130 C
+power-sweep session ran in the SAME optical/cell configuration as the
+70/90/110 C temperature sweep (same beam path, same cell, same detection
+chain). What actually differs between the two sessions is the acquisition
+epoch and the axis calibration, and the calibration difference is already
+handled PER SESSION -- load_t_rates() derives the T-sweep rate from the
+T-session's own per-block ruler and the P-sweep rate from the P-session's
+before/after bracket combination, so folding the 130 C point into one shared
+density axis carries no unhandled calibration mismatch. See
+private/reviews/digest/fig19_trend_audit.md for the prior "different
+configuration" reading this decision overrides, and docs/DATA.md's clock
+entry for the timing (130 C sits 2.3 h from the 110 C dwell, inside the same
+continuous campaign). The remaining caveat is not a configuration break, it
+is that 130 C is the extreme end of the density lever, so the fit still
+leans on a short arm relative to a purpose-built session.
 
 THE CONFOUND (docs/PLAN.md M4): temperature is monotonic with time across the
 campaign, so a slow instrument drift can mimic collisional broadening. Probes
@@ -30,7 +58,7 @@ bound the drift contribution to <= ~1/3 of the observed gamma_coll(T) trend;
 otherwise report a BOUND. Absolute value remains PRELIMINARY until the w0
 knife-edge fixes the transit prior.
 
-Outputs: results/beta_self.csv + stdout report.
+Outputs: results/beta_self.csv + results/beta_self_probe.csv + stdout report.
 """
 
 from __future__ import annotations
@@ -194,8 +222,32 @@ def _apply_rate_models(trate, prate):
     return trate, prate
 
 
-def load_conditions(rows, peak, trates):
-    """Build the beta.fit condition list for one peak's T-sweep."""
+def _load_block_condition(recs, T_C, rate):
+    """Shared per-block trace loader: QC-filter, convert to frequency, and
+    build one beta.fit condition dict. Used for both the T-sweep dwells and
+    the 130 C P-sweep 225 mW block (the headline's fourth point), so the two
+    share exactly the same QC and windowing path."""
+    freqs, volts = [], []
+    for r in recs:
+        t, v, info = load_trace(trace_path(r), with_info=True)
+        m = trace_metrics(t, v)
+        if any("truncated" in f or "dropout" in f
+               for f in hard_flags(m, rf_on=False) + ingest_flags(info)):
+            continue
+        freqs.append(to_frequency(t, rate)); volts.append(v)
+    if len(volts) < 3:
+        return None
+    law = condition_noise_model(volts)
+    return {"T_C": float(T_C), "N_units": density_units(float(T_C)),
+            "freqs": freqs, "volts": volts, "law": law}
+
+
+def load_conditions(rows, peak, trates, prates=None):
+    """Build the beta.fit condition list for one peak: the four-point
+    headline (2026-08-02) is the 70/90/110 C T-sweep plus the 130 C P-sweep
+    225 mW block, one shared density axis, each block calibrated by its own
+    session's rate (see the module docstring). Pass prates=None to get the
+    T-sweep-only (superseded) three-point list, e.g. for a diagnostic."""
     byT = defaultdict(list)
     for r in rows:
         if (r["flag"] == "canonical" and r["role"] == "t_sweep"
@@ -206,19 +258,15 @@ def load_conditions(rows, peak, trates):
         entry = trates.get((peak, T))
         if entry is None:
             continue
-        rate = entry[0]
-        freqs, volts = [], []
-        for r in byT[T]:
-            t, v, info = load_trace(trace_path(r), with_info=True)
-            m = trace_metrics(t, v)
-            if any("truncated" in f or "dropout" in f
-                   for f in hard_flags(m, rf_on=False) + ingest_flags(info)):
-                continue
-            freqs.append(to_frequency(t, rate)); volts.append(v)
-        if len(volts) >= 3:
-            law = condition_noise_model(volts)
-            conds.append({"T_C": float(T), "N_units": density_units(float(T)),
-                          "freqs": freqs, "volts": volts, "law": law})
+        cond = _load_block_condition(byT[T], T, entry[0])
+        if cond is not None:
+            conds.append(cond)
+    if prates is not None and peak in prates:
+        recs130 = [r for r in rows if r["flag"] == "canonical" and r["role"] == "p_sweep"
+                   and r["peak"] == peak and r["power_mW"] == "225"]
+        cond130 = _load_block_condition(recs130, 130.0, prates[peak][0])
+        if cond130 is not None:
+            conds.append(cond130)
     return conds
 
 
@@ -229,7 +277,7 @@ def main() -> int:
     results = []
     fits = {}
     for peak in PEAKS:
-        conds = load_conditions(rows, peak, trates)
+        conds = load_conditions(rows, peak, trates, prates)
         if len(conds) < 2:
             print(f"[skip] {peak}: {len(conds)} temperatures"); continue
         fit = fit_beta_self(conds, transit_ref_mhz=C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
@@ -294,8 +342,8 @@ def main() -> int:
               f"chi2/dof={chi2:.1f}  "
               f"({'consistent' if chi2 < 3 else 'INCONSISTENT'}; "
               f"worst {worst} at {pull[worst]:+.1f}sigma)")
-    print("  NOTE: per-peak beta (this fit, ~0.03-0.05) and the per-isotope global")
-    print("  fit (fit_global, ~0.056) differ at the factor-~2 level depending on the")
+    print("  NOTE: per-peak beta (this fit, four-point, ~0.01-0.02) and the per-isotope")
+    print("  global fit (fit_global, ~0.056) differ at the factor-~3 level depending on the")
     print("  sigma_laser sharing -- a model systematic; the headline stays the")
     print("  model-independent raw-width BOUND (P0 below), not any single beta value.")
 
@@ -314,45 +362,48 @@ def main() -> int:
     print(f"\n{'-'*74}\n(P0) MODEL-INDEPENDENT raw-width vs density [the decisive confound probe]:")
     print(f"{'peak':>6s} {'beta_eff':>10s} {'formal':>8s} {'+syst':>8s} "
           f"{'resid':>7s} {'sig':>5s} {'mono':>5s}  verdict")
+    # Single headline variant (2026-08-02): 70/90/110/130 C, dof=2, the
+    # x52.5 density lever. No separate three-point row is kept; see the
+    # module docstring for why.
     probe_rows = []
-    for variant, use130 in (("70-110C (one session)", False),
-                            ("70-130C (adds the 130C extreme lever point, 3.2x)", True)):
-        print(f"  --- {variant} ---")
-        for peak in PEAKS:
-            pr = width_vs_density_probe(rows, peak, trates, prates, include_130=use130)
-            if pr is None:
-                continue
-            probe_rows.append({"peak": peak, "variant": variant,
-                              "headline": "no" if use130 else "yes",
-                              **{k: pr[k] for k in
-                              ("beta_eff", "formal_err", "syst_err", "resid_rms", "snr",
-                               "dof", "t95", "bound95", "n_frac_syst",
-                               "bound95_nscale", "verdict", "monotonic")}})
-            print(f"{peak:>6s} {pr['beta_eff']:>10.4f} {pr['formal_err']:>8.4f} "
-                  f"{pr['syst_err']:>8.4f} {pr['resid_rms']:>7.3f} {pr['snr']:>5.1f} "
-                  f"{('yes' if pr['monotonic'] else 'NO'):>5s}  {pr['verdict']}"
-                  + (f" (<{pr['bound95_nscale']:.3f} @95%; t({pr['dof']})="
-                     f"{pr['t95']:.2f}, x{1 + pr['n_frac_syst']:.1f} N-scale)"
-                     if pr['verdict'] == 'BOUND' else ""))
+    variant = "70-130C (headline, four-point, same configuration, 52.5x lever)"
+    print(f"  --- {variant} ---")
+    for peak in PEAKS:
+        pr = width_vs_density_probe(rows, peak, trates, prates, include_130=True)
+        if pr is None:
+            continue
+        probe_rows.append({"peak": peak, "variant": variant, "headline": "yes",
+                          **{k: pr[k] for k in
+                          ("beta_eff", "formal_err", "syst_err", "resid_rms", "snr",
+                           "dof", "t95", "bound95", "n_frac_syst",
+                           "bound95_nscale", "verdict", "monotonic")}})
+        print(f"{peak:>6s} {pr['beta_eff']:>10.4f} {pr['formal_err']:>8.4f} "
+              f"{pr['syst_err']:>8.4f} {pr['resid_rms']:>7.3f} {pr['snr']:>5.1f} "
+              f"{('yes' if pr['monotonic'] else 'NO'):>5s}  {pr['verdict']}"
+              + (f" (<{pr['bound95_nscale']:.3f} @95%; t({pr['dof']})="
+                 f"{pr['t95']:.2f}, x{1 + pr['n_frac_syst']:.1f} N-scale)"
+                 if pr['verdict'] == 'BOUND' else ""))
     with open(C.RESULTS_DIR / "beta_self_probe.csv", "w", newline="") as f:
         if probe_rows:
             w = csv.DictWriter(f, fieldnames=list(probe_rows[0].keys()))
             w.writeheader(); w.writerows(probe_rows)
 
-    one_session = [p for p in probe_rows if not p["variant"].startswith("70-130")]
-    n_nonmono = sum(1 for p in one_session if not p["monotonic"])
-    print(f"\nVERDICT: {n_nonmono}/{len(one_session)} peaks are NON-MONOTONIC in density"
-          " — impossible for pure collisional broadening.")
-    print("The between-block width scatter (resid ~0.06-0.16 MHz) is the DOMINANT error:")
-    print("laser-width drift over the cooling session is comparable to the collisional")
-    print("trend, so the archival T-sweep BOUNDS beta_self (it does not measure it).")
-    print("The global-fit sigmas above are OVERCONFIDENT — they assume one shared")
+    n_nonmono = sum(1 for p in probe_rows if not p["monotonic"])
+    print(f"\nVERDICT: {n_nonmono}/{len(probe_rows)} peaks are NON-MONOTONIC in density"
+          " -- impossible for pure collisional broadening.")
+    print("The between-block width scatter is the DOMINANT error: laser-width drift")
+    print("across sessions is comparable to the collisional trend, so the archival")
+    print("four-point lever BOUNDS beta_self (it does not measure it).")
+    print("The global-fit sigmas above are OVERCONFIDENT -- they assume one shared")
     print("sigma_laser across blocks and so omit exactly this between-block drift.")
     print("=> Clean beta_self REQUIRES a fixed-lock session (two-epoch design).")
 
     print(f"\n{'-'*74}\nCAVEATS (all results PRELIMINARY):")
     print("  * transit fixed on the OPEN w0 prior -> absolute scale of any beta")
-    print("  * cooling T-sweep only (70/90/110); 130C is the extreme lever point")
+    print("  * headline is 70/90/110/130 C (dof=2); 130C is still the extreme end")
+    print("    of the lever, same apparatus/optical configuration as 70-110C")
+    print("    (Michelangelo, firsthand), differing only by session/epoch and")
+    print("    per-session rate calibration (handled in load_t_rates)")
     print("  * vapor-density cold-spot systematic (density.py) on absolute N(T)")
     return 0
 
