@@ -86,35 +86,26 @@ measured constant ~0.02 MHz/min plus MHz-scale re-centrings between blocks
 - absolute line **centres are lost** (drift moves them scan to scan), but
 - line **shapes are preserved**.
 
-The drift rate quoted above was recovered, not recorded. The analysed
-exports carry no acquisition time; a backup that did surfaced a year later
-and was audited
-under a pre-registration written before it was opened. The audit voided at
-its own integrity gate; a labelled post-hoc pass then dated the campaign,
-corrected the recorded power order, and measured the lock:
-**the drift is one constant +0.016 [0.007, 0.025] MHz/min (laser axis)**,
-while what actually moved the line by megahertz was the hand re-centring
-after each lock dropout, decaying with **τ = 97 [87, 118] min** and re-armed
-by every re-lock. No fitted result changed. The dating did expose a design flaw — four peaks
-acquired an hour apart — that a follow-up session fixes by interleaving them.
-The full audit trail, including two corrections to its own earlier readings,
-is [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
+<p align="center">
+  <img src="figures/fig15_drift_story.png" width="760" alt="The drift problem photographed, the campaign reconstructed from its own traces, and what each drift regime licenses">
+</p>
 
-> Those two rates — the 0.016 MHz/min drift and the τ = 97 min re-centring —
-> come from a fit that compares peak positions **across saves**, and in 2026-07
-> that comparison was found to be contaminated by the oscilloscope's horizontal
-> position: the exported time axis is referenced to it, the setting moved 58
-> times, and the fit frees only the 19 largest moves
-> ([`run_laser_history.py`](scripts/run_laser_history.py) records the retraction
-> of a headline that turned out to be the knob). Neither rate has been
-> re-derived, and neither is contradicted — measured *inside* a run of unchanged
-> setting, where no correction is needed at all, the two longest stretches give
-> −0.022 and −0.018 MHz/min. Recomputed in the other frame, two of the three
-> estimators for the settled rate change sign, so neither number is a measured
-> rate: what the archive supports is a **bound of order 0.02 MHz/min (laser
-> axis), sign undetermined** — which is all the shape-based argument needs, since
-> it turns on the rate being small rather than on its value
-> ([DATA §2](docs/DATA.md)).
+*The whole constraint in one figure. Top: the problem as photographed on a
+preliminary session, a wavemeter record of cavity re-locks and relaxations.
+Middle: the campaign reconstructed from its own traces. Offsets mean
+something only within one scope-knob epoch, the spikes are re-lock events,
+and the held-lock drift barely moves in three hours, which is why shapes
+survive and centres do not. Bottom: what each drift regime licenses, from
+the 2025 bounds to the fixed-lock session that would convert them.*
+
+The numbers behind the figure were recovered, not recorded: the exports
+carry no acquisition time, and a backup that did was audited under a
+pre-registration written before it was opened. The held-lock drift is
+bounded at order 0.02 MHz/min (laser axis, sign undetermined once the
+scope-knob reference frame is handled honestly), and the megahertz motion
+was the hand re-centring after lock dropouts, not the drift. The full trail,
+including the retraction of a headline that turned out to be the knob, is
+[`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
 So the archive reports what the *shape* of a line carries — widths, power-law
 scalings, asymmetry — as **bounds, nulls, and consistency checks**, while
@@ -161,8 +152,8 @@ rate. The **amplitude checks** are the two-photon rate laws: peak
 amplitude must scale as P² at fixed density and linearly with N at fixed
 power — both hold (log-log slopes 1.83–2.12 and 0.85–1.02).*
 
-Every scan carries its own frequency ruler — an EOM comb that excites five
-copies of the line, exactly 6.25 MHz apart on the laser axis — so the
+Every scan carries its own frequency ruler — an EOM comb that excites up to
+seven copies of the line, exactly 6.25 MHz apart on the laser axis — so the
 frequency axis is self-calibrated per block even as the lock drifts, and the
 ruler *rate* is a differential across identical lines, immune to the light
 shift and to the lineshape asymmetry (methods §3):
@@ -179,7 +170,7 @@ so each is reported as a bound together with the measurement that would lift it.
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.2–0.4 MHz per 10¹² cm⁻³ (95% per peak) | bound | same-session 150–170 °C points **and** a lower block-noise floor — both, see M17 |
-| 2025 laser linewidth **σ_laser** | ≈ 0.8 MHz at the w₀ prior (0.4–1.1 over the open w₀) | bound | beam-profile w₀ |
+| 2025 laser linewidth **σ_laser** | ≈ 1.09 MHz laser-axis at the w₀ prior (bound < 1.2, rising with w₀) | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.15 MHz (95%, joint three-session full-profile likelihood, M23; below the 0.35 predicted at the adopted waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
