@@ -60,6 +60,10 @@ KNOWN_DANGLING = {
     # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
     # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
     "li2024perspective",
+    # still wanted, not yet supplied (the 2026-08-02 delivery covered
+    # everything else on the request list)
+    "feng2026",
+    "lidou2024",
     # bevilacqua2012 RETIRED 2026-07-30: a misattribution. PRA 86, 012501
     # (2012) is Bruvelis et al., now docs/lit/bruvelis2012.md. The old key is
     # not aliased, so nothing can cite the wrong author by accident.
