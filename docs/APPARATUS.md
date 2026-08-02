@@ -415,6 +415,35 @@ acquisition drift, which the archive puts two orders below.*
 > 88 min; both were artifacts of fitting with the noise held constant, and both
 > are withdrawn.
 >
+> **A visually apparent sub-minute envelope on the 06-11 LongTerm screenshots
+> is not evidence of laser modulation (2026-08-02).** IMG_2504 (23 min) and
+> the 53-minute sibling both show what reads by eye as a roughly 50 s
+> breathing of the scan band. Digitised and tested, the band centre carries
+> no significant sinusoid near 50 s once re-lock kicks, relaxation and
+> background drift are removed (amplitude 0.26 to 0.36 MHz, 0.6 to 0.7 sigma
+> above a spectrum-matched noise surrogate, phase incoherent), and the
+> campaign's own held-lock trace record shows the same null under a stacked
+> Lomb-Scargle test. A same-night scope and controller screenshot documents
+> a 5.00 s triangular cavity scan running that evening, and beating a ramp
+> near that period against a plausible wavemeter display rate (1 to 5 Hz)
+> reaches a 30 to 90 s Moire period for about 1 in 12 of that range, needing
+> only 2 to 5% detuning between independently clocked hardware. Band-envelope
+> structure on a photographed LongTerm screenshot is not licensed as evidence
+> of real laser motion unless it also survives in trace-level data at
+> matching amplitude and phase, which this record does not.
+>
+> **HighFinesse AutoCal (every 8 minutes) is not resolvable in the 06-11
+> 23-minute record.** A phase-grid search for a step common to two or more
+> candidate times 480 s apart, on the kick-and-relaxation residual, finds no
+> pair of mutually consistent steps anywhere in the record. The largest
+> un-repeated local fluctuation is about 1 MHz, which sets a loose upper
+> bound: any genuine common AutoCal step is below roughly 1 MHz, consistent
+> with the prior expectation of a sub-MHz seam (AutoCal recalibrates the
+> wavemeter's own reference, not the laser). The digitisation noise floor
+> (residual RMS 2.4 to 3.0 MHz) is too coarse to measure the expected
+> sub-MHz scale directly, so this bound is consistent with the expectation
+> rather than competitive with it.
+>
 > **The in-campaign record needs no digitising.** The 2025-07-18 photograph has
 > the wavemeter's own statistics panel in shot: mean 301.7796130 THz, standard
 > deviation 100 kHz, a 38 MHz excursion across 8.5 minutes. It is one smooth

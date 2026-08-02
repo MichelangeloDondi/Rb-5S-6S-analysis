@@ -44,7 +44,10 @@ VOCAB = {"BOUND", "NULL", "MEASURED", "PRELIM", "ARTIFACT", "DIAGNOSTIC",
          "CALIB", "ENVELOPE"}
 
 # files that already carry their own provenance column -> leave untouched
-SKIP = {"laser_epoch.csv", "qc_metrics.csv"}
+SKIP = {"laser_epoch.csv", "qc_metrics.csv",
+        # M27 writes its own per-row statuses (the bound and the case
+        # verdict are BOUND, every diagnostic row says so itself)
+        "centre_stark.csv"}
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
@@ -111,12 +114,12 @@ QUANTITY_STATUS = {
         "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",
         "kappa_ub95_camponly": "BOUND", "kappa_min_wing": "DIAGNOSTIC",
         "kappa_ub95_wing": "BOUND",
-        # 2026-08-02: the dir+1 priors variant failed to converge (cold start
-        # on the flipped rehearsal axis, 17.8k chi2 high at every kappa, while
-        # the same direction's wing variant converged to the common basin) --
-        # so this run's number is a warm-up ARTIFACT, not a sensitivity. The
-        # seeded re-run (bidi_profile seed=) replaces it.
-        "direction_dchi2_max": "ARTIFACT",
+        # 2026-08-02, resolved: the earlier 17.8k value was a cold-start
+        # warm-up gap (tagged ARTIFACT at the time). The seeded run's own
+        # merged pointwise-min gives 13.27 (priors pair; wing pair 24.84),
+        # verified by recomputation from the run log. Direction indifference
+        # holds at the 1e-4 level of the 190k chi2 profile.
+        "direction_dchi2_max": "DIAGNOSTIC",
         "lopo_dchi2_262": "DIAGNOSTIC", "lopo_dchi2_pred": "DIAGNOSTIC",
         "kappa_pred": "CALIB", "S0_225mW_pred": "CALIB",
         "kappa_ub95_drop4192": "BOUND", "S0_225mW_ub95_drop4192": "BOUND",

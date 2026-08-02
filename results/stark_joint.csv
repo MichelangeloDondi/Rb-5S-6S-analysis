@@ -11,7 +11,7 @@ S0_225mW_ub95_drop4192,robustness,0.351,,MHz; the drop-4192 bound at 225 mW,BOUN
 kappa_ub95_camponly,robustness,0.980,,MHz per W; campaign rows of the same profile -- the bound does not lean on the rehearsal's soft rate anchor,BOUND
 kappa_min_wing,robustness,0.00,,MHz per W; minimum with the red-wing nuisance free,DIAGNOSTIC
 kappa_ub95_wing,robustness,0.744,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
-direction_dchi2_max,robustness,17779.02,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,ARTIFACT
+direction_dchi2_max,robustness,13.27,,"max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent; recomputed from the run log's seeded chains (2026-08-02): the committed row was a stale snapshot, the run itself printed 13.27 and the log reproduces it exactly",DIAGNOSTIC
 lopo_dchi2_pred,4121,+6.50,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
 lopo_dchi2_262,4121,+25.10,,chi2(kappa=2.62)-min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
 lopo_dchi2_pred,4154,+1.11,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
