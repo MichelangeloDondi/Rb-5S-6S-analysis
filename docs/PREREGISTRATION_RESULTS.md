@@ -51,6 +51,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The fit gallery shows a **symmetric centre excess on the brightest lines** (1.4% of peak, 3.7 sigma on 993.4192 nm), absorbed by the noise inflation. Saturation, width sharing, hyperfine and pedestal all ruled out. Open, moves nothing | addendum 21 |
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
 | The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-14x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
+| The v3.2.0 light-shift bound 0.151 MHz was **basin-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units | addendum 24 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -116,6 +117,7 @@ re-open a fitted result.
 - [Addendum 22, 2026-08-03 — the frequency axis gets its theoretical receipt](#addendum-22-2026-08-03--the-frequency-axis-gets-its-theoretical-receipt)
   - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
 - [Addendum 23, 2026-08-03 — the 1.67x anomaly was a factor-of-two of our own](#addendum-23-2026-08-03--the-167x-anomaly-was-a-factor-of-two-of-our-own)
+- [Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data](#addendum-24-2026-08-03-the-light-shift-bound-was-reading-a-starting-point-not-the-data)
 
 ---
 
@@ -2372,3 +2374,119 @@ the comments and prose that had described the bug's symptom as a physical
 discrepancy rather than a bookkeeping one. Nothing downstream of the
 ratio-anchored numbers moved. The anomaly did not get explained away, it
 dissolved into agreement.
+
+## Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data
+
+**What v3.2.0 shipped.** The joint three-session Stark fit (M23,
+`scripts/run_stark_joint.py`) quoted S_0(225 mW) < 0.151 MHz. That number
+is now retracted. It was not measuring the data alone. It was partly
+measuring where its own optimiser started.
+
+**How the fault surfaced.** The four-point refit was run with the
+rehearsal direction check re-armed, and its robustness row came back at
+283,135 units of chi square. That row is the largest gap between the
+primary profile and the flipped-direction profile across the kappa grid.
+No direction convention can cost a quarter of a million units on 247,783
+points. The row was not comparing two directions. It was comparing a
+stuck fit against a converged one.
+
+**What the chains actually do.** Each profile family runs a cold forward
+chain from the same default starting vector, a backward chain seeded from
+the forward chain's last point, and, where a seed is supplied, a third
+chain from that seed. The pointwise minimum of those chains is the
+profile. For the primary layout, which carries the collision priors and
+no red-wing nuisance, the cold start parked in a local minimum and stayed
+there for the whole chain, forward and backward: 469,570.98 at kappa = 0
+going up, 469,510.09 coming back down. The wing variant, which has two
+more free parameters, escaped from the identical cold start and settled
+at 186,370.45. The extra freedom opens a path out that the tighter layout
+does not have.
+
+**The measurement that proves it is a basin and not physics.** Seeding
+the primary layout from the wing solution, with the two wing entries
+deleted so the vector fits the narrower layout, reaches 186,370.03 at
+kappa = 0. Same data, same priors, same objective, same number of free
+parameters as the stuck chain, 283,140 units lower. A fit cannot disagree
+with itself by that much for any physical reason.
+
+**Where the excess is not.** The run writes a campaign-only chi square
+alongside the total. Between the stuck solution and the true one it moves
+from 31,485.43 to 31,477.36, eight units out of 283,140. Whatever the
+cold chain was doing wrong, it was not doing it to the campaign traces.
+That is consistent with the rehearsal free centres, the parking spot the
+fitter's own docstring documents from an earlier run, though the gap has
+not been formally decomposed session by session and this record does not
+claim it has.
+
+**The structural fix.** The wing variant now runs first, because a cold
+start finds the true basin reliably there, and every other family is
+seeded: the primary from the wing solution with the wing entries deleted,
+the flipped direction from the converged primary, the flipped wing
+variant from the wing solution. Each seeded chain runs in addition to the
+cold ones and the pointwise minimum is kept, so a seed can only improve a
+profile, never inflate one. The rule is recorded in RESEARCH_DECISIONS
+section 11 and methods 06 section 4.12: no cold-start profile is quoted
+without a seeded twin. A profile is only as good as its basin. The
+corrected production run demonstrated the fix live: its cold primary
+chains parked at 469,510 again, and its seeded twin walked straight to
+186,370, so the artifact appeared and was disarmed in the same run.
+
+**How far v3.2.0 was off.** The same disease was present in v3.2.0 at an
+amplitude small enough to look like convergence. Its committed profile
+point at kappa = 0 was 189,761.79. Re-profiling in the true basin under
+v3.2.0's own priors, same direction and same layout, gives 186,360.89 at
+the same kappa. v3.2.0 was mis-parked by 3,401 units, about one part in
+fifty of its own chi square, which is why nothing flagged it.
+
+**The discriminant: basin against priors.** The four-point refit changed
+the collision priors at the same time as the basin fix, so the two
+effects were separated by re-profiling in the true basin under v3.2.0's
+own priors. That gives kappa < 0.982, which is S_0(225 mW) < 0.221 MHz.
+Against the 0.151 MHz that shipped, the bound at the old priors is
+46% looser, or equivalently v3.2.0's number was 32% tighter than its own
+data and its own priors support. The basin effect dominates the change.
+The prior update accounts only for the remaining step from 0.221 to the
+production bound.
+
+**The bound of record.** The corrected run (382 minutes, all four
+families seeded, LOPO complete) puts the profile minimum at kappa = 0.00
+exactly, with no chi-square preference for any positive shift. The 95%
+upper limit is kappa < 1.192 MHz per W, which is
+
+  S_0(225 mW) < 0.268 MHz.
+
+The robustness family around it: campaign rows alone give 0.177 MHz, the
+wing-marginalized profile gives 0.195 MHz, dropping peak 4192 (which
+removes the entire pilot session) gives 0.355 MHz, and the rehearsal
+direction row sits at 10.5 units of chi square across the whole grid,
+indifference where the artifact printed 283,135. No single peak drives
+the result (all leave-one-peak-out rows positive and similar). Two
+features of the corrected basin are logged as observations: the joint
+bound sits looser than its own campaign-only column, because the
+rehearsal data mildly prefer a positive shift and drag the profile's
+rise, and the pilot peak's collision width settles 4.7 prior sigmas
+above its four-point prior.
+
+**What the margin is.** The prediction at the adopted waist is
+0.348 MHz at 225 mW. The primary bound sits 1.3x below it, against the
+2.3x v3.2.0 claimed. The drop-4192 subset now reaches 0.355 MHz, slightly
+above the predicted central value, so the statement that every subset
+requires a lower intensity than the prior assumes is retracted along with
+the headline: the primary and campaign-only subsets still sit below the
+prediction, the most conservative subset no longer does. The predicted
+coefficient kappa = 1.545 lies above the 95% limit but only by
+delta-chi-square of about 4.0, an exclusion at roughly the two-sigma
+level, not the comfortable rejection the inflated bound implied.
+
+**One observation logged, not interpreted.** With the wing nuisance free,
+the flipped-direction family settles about 54 units below its unflipped
+twin, while the no-wing families are direction-indifferent. This pattern
+touches the same near-core structure the C3g follow-up owns, and it is
+left there.
+
+**Lesson.** An optimiser's starting point is an input. The failure was
+not caught by any residual plot, any coverage test, or any robustness
+row, because all of them lived inside the same basin. It was caught by a
+number that could not be physical, and only because a robustness check
+was re-armed that compared two chains which happened to have parked in
+different places.

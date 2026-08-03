@@ -285,7 +285,7 @@ How much would a departure from the assumed $\rho$ actually cost? Less than
 one might fear, and the archive's own signal quality provides indirect
 evidence. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.18 and 0.36 MHz — a factor
-of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.15$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
+of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.27$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
 brackets the whole range, so no archival conclusion turns on it. Better, the
 Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:

@@ -48,7 +48,7 @@ saw nothing', slower."** True as pure numbers: the archival bounds are
 confirmatory of Orson's nulls, same direction, tighter. The increment is by
 channel. The method (a closed-form two-photon ramp lineshape law plus a
 reference-free moment readout) is not pursued elsewhere. The S₀ bound
-(< 0.15 MHz, ~39× below Orson's ~6 MHz null) was extracted from shape alone
+(< 0.27 MHz, ~22× below Orson's ~6 MHz null) was extracted from shape alone
 under a drifting lock. And a fixed-lock session would give the first measured
 light shift on this line, plus the collisional self-shift: positive
 observables, not sharper nulls.
@@ -89,12 +89,12 @@ closure test (inject a within-scan ramp, confirm unbiased moments) is
 committed: `tests/test_intrascan_drift.py`.
 
 **"A Δα bracket that wide discriminates nothing."** Partly answered by the
-joint three-session bound: S₀(225 mW) < 0.15 MHz sits 2.3× below the
+joint three-session bound: S₀(225 mW) < 0.27 MHz sits 1.3× below the
 0.35 MHz prediction at the adopted geometry, so the archive constrains the
-(Δα, intensity) pair. What it cannot do is split the pair: at face value the
-intensity must sit low (equivalent waist ≳ 96 µm at face value, while the most conservative
-data subset sits at the prediction itself and needs no extra headroom), or |Δα| is
-smaller than computed. A beam-profile measurement decides which. The measured
+(Δα, intensity) pair. What it cannot do is split the pair: either the
+intensity or |Δα| sits modestly below the adopted values, and the most
+conservative data subset reaches the prediction itself and needs no
+headroom at all. A beam-profile measurement decides which. The measured
 coefficient needs the session.
 
 **"Your own recompute flips the sign of Δα against the published computation.
@@ -412,10 +412,12 @@ magnitudes). The magnitudes belong to L/M.
   bound. The session's levers are the two the figure lacks: densities at
   150–170 °C, and block noise cut 4× by interleaving.*
 
-- **At least five T blocks per peak.** The archival bound's ×6.31 error
-  multiplier is the t quantile on one residual degree of freedom. Five
-  blocks give t(0.95,3) = 2.35, a ~2.7× tightening before any drift
-  compensation. This is the cheapest statistical buy on the page.
+- **At least five T blocks per peak.** The archival headline now runs on
+  four points and two residual degrees of freedom, so its error
+  multiplier is t(0.95,2) = 2.92 (the three-point construction it
+  replaced paid ×6.31 on one). Five blocks give t(0.95,3) = 2.35, a
+  further tightening before any drift compensation, and the cheapest
+  statistical buy on the page.
 - **150–170 °C in the same locked session, interleaved.** Still wanted, for a
   narrower reason than the 2025 post-mortem gave it. The archival lever test
   shows the joint β collapses 0.036 → 0.014 when the ×53 anchor (the 130 °C

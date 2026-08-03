@@ -12,7 +12,8 @@ vapour cell with a **focused, retro-reflected** 993 nm beam. Because the
 excitation rate goes as the square of a spatially inhomogeneous intensity, the
 distribution of AC-Stark shifts across the illuminated atoms is not a single
 number but a **skewed distribution with a closed form**. That relation is a
-1980 result, Eq. (5.3) of Delone and Krainov's review, and §2 shows the
+1980 result, Eq. (5.3) of the multifrequency-field review of Delone,
+Kovarskii, Masalov and Perel'man, and §2 shows the
 reduction. What this note does is evaluate it for the case where the
 distribution is set by beam geometry rather than by laser statistics, which is
 where their integral closes and ours does not stay formal. It gives that
@@ -41,7 +42,8 @@ $$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
 For $n=2$ this is the **triangular ramp** $f(s)=2|s|/S_0^2$.
 
 **This relation is not new, and the note should not be read as claiming it.**
-It reduces exactly to Eq. (5.3) of Delone and Krainov's 1980 review
+It reduces exactly to Eq. (5.3) of the 1980 review of Delone, Kovarskii,
+Masalov and Perel'man
 ([delone1980](lit/delone1980.md)) once the geometric intensity distribution of
 a Gaussian beam, $P(I) \propto 1/I$, is substituted into their general result.
 The reduction was checked against the shipped `stark_ramp` implementation and
@@ -225,7 +227,7 @@ horizontal-position moves, and are withdrawn.
 
 The width-and-shape channel is therefore the archive's only light-shift
 channel. Its best construction is M23's joint full-profile fit,
-$S_0(225$ mW$) < 0.15$ MHz (95%), with the 20-summary-width construction
+$S_0(225$ mW$) < 0.27$ MHz (95%), with the 20-summary-width construction
 (M4e, $< 0.64$ MHz) kept as the independent simpler bracket: two
 constructions, one physical channel, so there is still no second channel to
 corroborate it.
@@ -298,9 +300,9 @@ free centre, and only the ramp's $\propto S_0^2$ width broadening survives
 (a $0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz).
 
 M23 (`run_stark_joint`) tightens the same channel to
-$S_0(225$ mW$) < 0.15$ MHz by fitting every point of every profile across
+$S_0(225$ mW$) < 0.27$ MHz by fitting every point of every profile across
 the sessions instead of 20 summary widths. Through the §5 convention that
-maps to a $\Delta\alpha$ bracket well below the computed $1093$ at the
+maps to a $\Delta\alpha$ bracket below the computed $1093$ at the
 adopted $w_0=64\ \mu$m, so the archive constrains the
 $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than

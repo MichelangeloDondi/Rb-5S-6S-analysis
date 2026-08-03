@@ -137,7 +137,7 @@ the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
 elsewhere). It gives a 95% profile-likelihood bound of 0.64 MHz from the
 widths alone. The joint two-session full-profile fit (M23,
 `run_stark_joint`, RESULTS C3f) sharpens the same channel to
-$$S_0(225\ \text{mW}) < 0.15\ \text{MHz},$$
+$$S_0(225\ \text{mW}) < 0.27\ \text{MHz},$$
 below the 0.35 MHz predicted at the adopted waist, so the $\Delta\alpha$
 bracket sits under both values on the table (Orson's published 1093 and this
 work's recomputed 1145,

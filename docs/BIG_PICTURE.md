@@ -359,17 +359,18 @@ as a bound. Concretely:
   much of the beam the 3 mm EOM aperture removed, and transit physics excludes
   it. Residual clipping and imperfect retro overlap both push the *effective*
   waist above 64 µm, so the working band is 60–70 µm and ρ = 0.94 ± 0.04.
-- **The light-shift bound sits below its own prediction.** S₀(225 mW)
-  < 0.15 MHz (95%, M23: a joint full-profile fit of three sessions, every
-  trace with a free centre so the drifting laser costs nothing). The
-  predicted 0.35 MHz at the adopted geometry puts the bound **2.3×
-  below it**, equivalently Δα ≲ 474 a.u. against the computed ~1100 a.u.
-  The tension is real but modest. At the old 50 µm prior the same bound
-  looked 4.2× below a 0.59 MHz prediction, and most of that gap was the
-  waist being wrong rather than the physics being
-  surprising. Either the intensity is lower than the adopted geometry implies,
-  or |Δα| is smaller than computed. A beam-profile measurement decides which.
-  Twenty-five times below Orson's ~6 MHz null, from shape alone.
+- **The light-shift bound sits just below its own prediction.** S₀(225 mW)
+  < 0.27 MHz (95%, M23: a joint full-profile fit of three sessions, every
+  trace with a free centre so the drifting laser costs nothing. The
+  earlier 0.15 MHz was basin-inflated and is retracted, preregistration
+  addendum 24). The predicted 0.35 MHz at the adopted geometry puts the
+  bound **1.3× below it**, equivalently Δα ≲ 842 a.u. against the
+  computed ~1100 a.u. The tension is modest, and the most conservative
+  data subset (dropping the peak that carries the pilot session) reaches
+  the prediction itself. Either the intensity sits slightly lower than
+  the adopted geometry implies, or |Δα| is slightly smaller than
+  computed. A beam-profile measurement decides which. Twenty-two times
+  below Orson's ~6 MHz null, from shape alone.
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.9 while the density rises ×53 — a
   residual floor, not resolved collisions — so a naive fit's "4–10σ
@@ -403,8 +404,9 @@ as a bound. Concretely:
 
 **What of the method is actually new, stated at the size it will survive.** The
 relation the analysis rests on, that the signal-weighted shift distribution goes
-as $|s|^{n-1}$, is **not new**. It reduces exactly to Eq. (5.3) of Delone and
-Krainov's 1980 review, checked against the shipped implementation to
+as $|s|^{n-1}$, is **not new**. It reduces exactly to Eq. (5.3) of the 1980
+review of Delone, Kovarskii, Masalov and Perel'man, checked against the
+shipped implementation to
 $7\times10^{-12}$, and that review already carries the lineshape as a map of the
 shift distribution and the $k$-photon intensity weighting
 ([delone1980](lit/delone1980.md), and §5 of [LITERATURE.md](LITERATURE.md) for

@@ -126,7 +126,7 @@ CANONICAL = [
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
               "docs/THEORY_NOTE.md", "private/manuscripts/paper1/drafts/VI-CD_power_stark.md",
-              "results/README.md"],
+              "results/README.md", "docs/CLAIMS.md"],
     ),
     dict(
         name="AC-Stark predicted S0(225mW)",
@@ -142,7 +142,8 @@ CANONICAL = [
         value=_beta_range_token,
         find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2}) MHz per 10"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
+        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
+              "docs/CLAIMS.md"],
     ),
     dict(
         # COMPUTED since 2026-08-01, previously the literal "271". The bracket
