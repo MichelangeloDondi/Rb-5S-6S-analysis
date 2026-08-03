@@ -378,6 +378,21 @@ What the UV would and would not be for:
   5S→7P₃/₂ is **1.28 GHz**, against the 3.49 MHz natural width the 993 nm work
   fits. The passive shape method assumes a Doppler-free line and does not carry
   over without a sub-Doppler scheme.
+- **Not a collinear Doppler-free three-photon route either, although it looks
+  like one.** Three photons are the only way to reach an **F** state from
+  5S₁/₂, since one photon reaches P and two reach S and D, so a doubled beam
+  invites the question. It does open exactly one first-order-Doppler-free
+  collinear combination, two fundamental photons one way against one doubled
+  photon the other, k + k − 2k = 0, with no three-beam geometry needed. The
+  same condition fixes the energy sum at 4ℏω rather than 3ℏω, and 4ℏω clears
+  the Rb ionization limit (33690.81 cm⁻¹) for every fundamental blue of
+  **1187.3 nm**. The reddest catalogue set stops at 1050 nm, where the sum
+  overshoots by 4404 cm⁻¹, and the present 993.418 nm drive overshoots by
+  6574 cm⁻¹. So on this laser the combination would photoionize rather than
+  excite a bound state, and the ion collection it would need for detection,
+  which doubles as its own REMPI background, would return a smooth yield and
+  no line. It would reopen only for a fundamental redder than 1187.3 nm, which
+  no listed set covers.
 - **A resonant source at the wavelength the upper ladder detects on.** The
   Detection subsection asks for the blue chain's noise model to be re-measured
   before any upper-ladder transition is attempted, because a 420 nm path landing
