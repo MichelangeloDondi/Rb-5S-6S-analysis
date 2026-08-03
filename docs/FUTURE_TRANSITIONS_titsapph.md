@@ -409,6 +409,123 @@ the file. No doubling stage is on the bench, none of these wavelengths has been
 produced here, and the feasibility questions of §6 apply to each of them
 separately.
 
+## What the decision-maker needs
+
+Everything above is a physics menu. The host PI deciding bench time reads
+cost, yield and risk instead, so this section restates the same items in
+those three columns. Nothing below is scheduled, agreed or assigned. Every
+duration is [PLAN.md](PLAN.md)'s own where PLAN.md prices the block, and is
+marked as an estimate with its basis where PLAN.md does not.
+
+| item | bench cost | what it would return | what could come back empty |
+|---|---|---|---|
+| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench |
+| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams |
+| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own |
+
+**The beam profile.** `PLAN.md` §3 puts w₀ in Tier 0, the systematic floor,
+because S₀ ∝ 1/w₀² and the transit width rides on w₀, so a 10% waist error is
+20% on Δα. The afternoon quoted above is PLAN's own allocation: §9 gives an
+afternoon of D4 to a metrology block of knife-edge, camera and retro ratio,
+and §4.1 gives half a day to the archival-geometry spot check. No atoms are
+needed for it. What it returns is retroactive. Every waist-conditional
+statement in the 2025 archive would sharpen in place, and the degeneracy
+between transit width and laser width would collapse. The risk is not that
+the measurement fails, since a knife-edge returns a number, but that the
+number describes the present bench rather than the 2025 one. Carrying it
+back needs the config-M spot check of `PLAN.md` §4.1, the archival geometry
+plus one 130 °C point. If that bridge did not hold, nothing would be
+retracted, because the archival statements are already published as
+conditional on the waist prior.
+
+**The fixed-lock cell session.** This is the full ask. `PLAN.md` §9 sizes it
+at about eight days at the cell and orders it so that a truncation at any
+point leaves the higher-priority conversions done, and the tiers of §3 are
+what a shortened session would fall back through. Tier 0 is the systematic
+floor, which is the ramp-monitor export, the beam profile and the retro ratio
+measured in situ, and it converts the archival bounds whether or not a later
+block runs. Tier 1 is the fixed lock itself plus same-session 150 to 170 °C
+points in interleaved temperature order, which is what would turn β_self from
+a bound into a rate. `PLAN.md` §1 names the smallest tranche that converts
+even one bound: a geometry-setup block plus the two opposite-order
+temperature-grid days, D1 to D3, returning β_self or a much tighter bound
+along with the first fixed-lock laser width. Tier 2 buys handle strength
+through a second and tighter waist. Tier 3 is sampling that refines without
+enabling, and it is the first thing to cut. The analysis end carries no
+development risk: the archival pipeline ingests session data unchanged, so
+what a session buys is shots rather than software.
+
+What could come back empty there. β_self is intrinsically a few kHz per
+10¹² cm⁻³, and `PLAN.md` §1 states the deliverable as a modest first
+measurement or a much tighter bound rather than a precision number. At the
+archival block-noise floor the hot points reach only about 1 to 3σ per block,
+and only the interleaving and the per-trace power logging take the same
+signal to about 3 to 12σ, so both halves have to work. The third cumulant
+would reach detection only at the tighter waist and only with the collection
+geometry measured in the same session, because the axial average over the
+collection window sets both its size and its sign. A lock that dropped out
+would repeat 2025. Even then the geometry blocks would still convert the
+archival bounds, the fixed-lock laser width would be a number the archive
+does not contain, and the centre pull needs minutes-scale lock stability
+rather than all-night stability, which makes it the least exposed of the
+three conversions.
+
+**The 7S rung at 760 nm.** On the corrected detection argument of §3.2 this
+is the cheapest new line rather than the second cheapest. Wang's
+five-channel branching puts 420 nm last of five, and the two brightest
+channels are the D-line terminals the present near-IR chain already works
+in, so if the installed passband passes the 741 and 728 nm direct decays and
+blocks a 760 nm drive, 7S would need a laser retune and no new detection
+path. Both are datasheet questions rather than physics, and they are the
+first thing to settle. `PLAN.md` prices no session beyond 993 nm, so no
+duration is quoted for this row. The yield is an adjudication. The archive's
+expected β_self at 6S rides on one external number, and that number has two
+published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
+against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
+in the second. A rate measured here, with the convention stated, would
+replace the choice between them, and a measured β(6S)/β(7S) would test the
+C₆ ratio the module predicts at 0.655 rather than assume it. If 7S returned
+only a bound it would still separate the two published values, provided the
+bound landed below the higher one. If the filter answer goes the other way,
+7S needs the 420 nm path and the blue chain's noise model would have to be
+measured first, which moves it behind the cell session in cost.
+
+**The 778 nm rung.** 5S→5D is the only rung whose environmental coefficients
+are published with error bars small enough to fail against, at 40 ± 0.54
+kHz/mTorr for self-broadening and a magic wavelength at 776.179(5) nm.
+Running the same three observables there would test the method rather than
+produce a coefficient nobody can check, and that is also the limit of what it
+returns. A reproduction would add no new number by design. The case for the
+bench time is that this is the one line where the method can be caught. Two
+conditions belong in the decision. Detection moves to 420 nm unless the 5D
+cascade channels the near-IR path already passes turn out to be sufficient,
+which is the same open question as at 7S. And the magic-wavelength scan is a
+scan of a perturbing beam rather than of the drive, since a single-colour
+drive is pinned at 778.104 nm, so the closed-form shift distribution holds
+only where the perturbing and driving beams are mode matched over the
+collection volume. Where they are not, the map would have to be recomputed
+for the overlap of two profiles, which the machinery supports and has not
+been asked to do.
+
+**The doubling-stage options.** Exploratory, and last in priority. No
+doubling stage is on the bench and none of these wavelengths has been
+produced here, so the cost is new hardware and `PLAN.md` prices none of it.
+A second-harmonic stage would not be a lineshape target: a single-photon line
+out of the ground state is Doppler broadened to about 1.10 GHz at 400 K,
+against the 3.49 MHz natural width the 993 nm work fits. Two secondary uses
+would survive that. A 420.3 nm source would put light of exactly the
+detection wavelength into the same cell, which is what the blue-chain noise
+measurement of §2 asks for, and resonant absorption on the same cell would be
+an independent column-density read against the archive's 20% density-scale
+systematic. Neither would be publishable on its own, which is why the row
+sits last.
+
+If only one item were approved, PLAN's own ranking puts the beam profile
+first, because it is the only one of the five that improves a result already
+in hand.
+
 ## 4. The papers this enables (ranked)
 
 ### Paper A — *Reference-free light shift & magic wavelength on the 778 nm 5S→5D clock line, via lineshape asymmetry* — **the topical extension (methodological, not a precision competitor)**
