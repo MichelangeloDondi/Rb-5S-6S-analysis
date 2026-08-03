@@ -31,7 +31,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.constants import (  # noqa: E402
-    GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S, LAMBDA_LASER_M,
+    GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S,
     TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
 
 GNAT = GAMMA_NAT_HZ / 1e6
@@ -919,7 +919,7 @@ def fig_laser_history():
         ax.set_yscale("log")
         ax.set_xlabel("|step| between consecutive traces, same epoch (MHz)")
         ax.set_ylabel("count (log)")
-        ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz --\n"
+        ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz:\n"
                      "quiet drift, punctuated by cavity re-centrings", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5, which="both")
 
@@ -1031,10 +1031,8 @@ def fig_level_scheme():
     # independently (the two used to agree only to ~0.01 nm by coincidence of
     # rounding, not by construction).
     from rb5s6s.polarizability import E_6S_CM, E_5P12_CM, E_5P32_CM
-    SPLIT_CM = E_5P32_CM - E_5P12_CM         # fine-structure splitting, 237.6 cm^-1
     LAM_6S_5P12_NM = 1.0e7 / (E_6S_CM - E_5P12_CM)   # 1324 nm, detected arm
     LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
-    E_VIRT_CM = 1.0e7 / (LAMBDA_LASER_M * 1e9)       # half the two-photon energy
 
     fig = plt.figure(figsize=(13.0, 6.2))
     gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.45], wspace=0.06,
@@ -1071,12 +1069,14 @@ def fig_level_scheme():
     ax.annotate("", (0.56, y5p12 + 0.008), (0.30, y6s - 0.008),
                 arrowprops=dict(arrowstyle="-|>", color="0.5", lw=1.3,
                                  ls=(0, (4, 3))))
-    ax.text(0.365, 0.86, "1324 nm", rotation=-54, fontsize=7.5, color="0.45",
+    ax.text(0.365, 0.86, f"{LAM_6S_5P12_NM:.0f} nm", rotation=-54,
+            fontsize=7.5, color="0.45",
             ha="center", va="center")
     ax.annotate("", (0.66, y5p32 + 0.008), (0.335, y6s - 0.008),
                 arrowprops=dict(arrowstyle="-|>", color="0.5", lw=1.3,
                                  ls=(0, (4, 3))))
-    ax.text(0.50, 0.885, "1367 nm", rotation=-44, fontsize=7.5, color="0.45",
+    ax.text(0.50, 0.885, f"{LAM_6S_5P32_NM:.0f} nm", rotation=-44,
+            fontsize=7.5, color="0.45",
             ha="center", va="center")
     # cascade, second legs: 795 detected (red), 780 filtered out (grey)
     ax.annotate("", (0.295, y5s + 0.008), (0.545, y5p12 - 0.008),
@@ -1908,8 +1908,8 @@ def fig_width_trends():
     ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     ax1.set_ylabel("raw FWHM (MHz, transition; model-independent)")
     ax1.set_title("Floor + slope fit to the raw linewidth vs density: 3 temperature "
-                 "points per peak (dof=1) --\n"
-                 "the line and band ARE the fit the bound is built from, not a denser "
+                 "points per peak (dof=1).\n"
+                 "The line and band ARE the fit the bound is built from, not a denser "
                  "measurement.\n"
                  r"slope = $\beta_\mathrm{self}$, a bound not a measurement "
                  "(signal-to-noise $<$3, all four peaks)",
@@ -2006,7 +2006,7 @@ def fig_width_trends():
                  "results/power_sweep.csv, results/stark_sweep.csv (panel 2). Regenerate: "
                  "python scripts/run_beta_self.py && python scripts/run_stark_sweep.py "
                  "&& python scripts/make_figures.py.", fontsize=5.9)
-    _save(fig, "fig19_width_trends.png")
+    _save(fig, "fig19_width_trends.png", rect=(0, 0.05, 1, 1))
 
 
 def fig_magic_wavelengths():
@@ -2087,7 +2087,7 @@ def fig_magic_wavelengths():
             arrowprops=dict(arrowstyle="-", color="#D55E00", lw=0.7, alpha=0.6))
     ax_top.text(
         lo_nm + (hi_nm - lo_nm) * 0.02, CLIP * 0.88,
-        "at each crossing a trap pulls 5S and 6S equally --\n"
+        "at each crossing a trap pulls 5S and 6S equally:\n"
         "the 993 nm clock transition does not move",
         fontsize=7.6, color="0.3", ha="left", va="top")
     ax_top.set_ylabel(r"$\Delta\alpha=\alpha_{6S}-\alpha_{5S}$  (a.u.)")
@@ -2113,7 +2113,7 @@ def fig_magic_wavelengths():
         "A magic wavelength is where the differential light shift between two states vanishes:\n"
         "a trap there shifts both equally, so the transition it holds atoms for does not move.\n"
         r"Instance: Rb 5S$_{1/2}$-6S$_{1/2}$ (993 nm). Scalar-only, exact for $J=1/2$ under "
-        f"linear polarization. Status: {status}.",
+        f"linear polarization. Status: {STATUS_WORD.get(status, status.lower())}.",
         fontsize=9.0, y=0.995)
 
     _footer(fig, "Source: results/polarizability.csv (magic_5s6s rows) + rb5s6s/polarizability.py "
