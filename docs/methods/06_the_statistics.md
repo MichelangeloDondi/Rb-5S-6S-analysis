@@ -153,6 +153,22 @@ an **independent method** (e.g. the sweep rate by FFT and autocorrelation; the
 noise law by differencing sibling repeats). Several of our own bugs were caught
 exactly this way; the verification records live in the module docstrings.
 
+**What a same-model closure test does and does not establish.** Generating
+synthetic data from the model and recovering the injected truth validates the
+*implementation*: the estimator is unbiased, the optimizer converges, the
+quoted intervals cover, the degeneracies behave, all of it **under the
+simulated generative model**. It cannot validate the model itself: whether
+the physical lineshape is the right one, whether a mechanism is missing, or
+whether the real noise matches the simulated law. Those questions need
+different evidence, and in this analysis they get it from the nested
+model ladder (§4.9) lets the data reject or demand each component, the
+model-form comparison (M15) asks whether the archive can even distinguish
+competing kernels (it cannot, and that limit is reported rather than
+resolved by assumption), the noise law is *measured* from sibling repeats
+(§4.4) rather than assumed, and the residual audits look for structure no
+fitted component absorbs. Closure certifies the machinery. The physics has
+to earn its place separately.
+
 ### 4.7 Choosing between competing lineshapes — the BIC
 
 To ask *which* model form the data prefer — a smooth Gaussian extra-broadening

@@ -9,9 +9,10 @@ every technical fact and its date in text.*
 
 <img src="apparatus/apparatus_schematic.svg" width="95%" alt="Apparatus schematic: full beam path from pump to detection">
 
-*The bench in one drawing — the L-layout of Nieddu et al. (2019, Fig. 2),
-mirrored right-to-left as on the actual breadboard; components numbered 1–13
-following the annotated bench photograph (defense presentation, slide 9).
+*The bench in one drawing — the L-layout of Nieddu et al. (2019, Fig. 2).
+The drawing, their figure and the breadboard share one handedness (checked
+against the annotated bench photograph, 2026-08-03); components numbered 1–13
+following that photograph (defense presentation, slide 9).
 Every box is established below with its provenance; the photographs embedded
 through this page show the same elements in the flesh.*
 
@@ -149,6 +150,16 @@ of the clipping itself. See `constants.py`'s `W0_PRIOR_M` docstring and
 remains the better-evidenced comparison since a recollected clipping event
 does not by itself fix how much of the beam was clipped.
 
+**The cell-axis optics ahead of and behind the cell** (the schematic's
+numbered components, established here so the README's "every element" claim
+holds on this page): the polarizing filter (1) and half-wave plate (2) set
+the polarization the EOM (3) sees. The first f = 150 mm lens (4) focuses
+the beam into the cell and its twin (8) re-collimates it toward the
+flip-in power meter and the retro mirror (9). All six are visible and
+numbered on the annotated bench photograph (defense presentation, slide 9),
+and the f = 150 mm value is the same lens the Rajasree lineage measurement
+above rides on. PHOTO.
+
 ---
 
 ## 2. Frequency ruler — the EOM chain
@@ -205,6 +216,10 @@ generator as well as a different tank.
 | Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA — the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
+**OPEN: the PMT's high-voltage supply and setting are not on record**
+(2026-08-03 audit). No photograph or note names the supply that biased the
+R636-10 or its voltage. A bench fact only the experimenter can assert.
+
 > **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
 > citing *Nieddu 2019 — the nanofibre experiment, not this bench* — and the only
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
@@ -240,6 +255,10 @@ controller top-right.*
 | Wavemeter autocal | every 8 minutes | PHOTO 2025-06-08 |
 | Wavemeter short-term StdDev | 100 kHz (floating, 10 measurements) | PHOTO 2025-07-18 |
 
+**OPEN: the WS-8's pickoff point is not on record** (2026-08-03 audit). The
+wavemeter is documented as an instrument, but where its fibre taps the beam
+is not.
+
 ### 4.1 Why the Agilent, and how we know
 
 The archive was taken on the Agilent, not either LeCroy: the LeCroy would not
@@ -269,6 +288,13 @@ A 2025-06-10 photograph of the Agilent shows **two channels**: a clean
 triangular sweep-ramp monitor on Ch1 and the fluorescence on Ch2, with the
 fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
 It was **not saved** with the archival traces (experimenter, 2026-07-23).
+
+**OPEN: which output fed Ch1, and the Agilent's trigger settings, are not
+on record** (2026-08-03 audit). The photographs show the ramp arriving at
+the scope, not the cable's far end. The natural candidate is the laser
+controller's scan-monitor output, but that is an inference, not a record,
+and the trigger source, level and slope of the acquisition are likewise
+unrecorded.
 
 **Verdict for a future session: low priority.** The EOM comb already carries
 the frequency axis per trace, RF-exact, which a ramp voltage cannot improve on
@@ -329,7 +355,8 @@ campaign has only FAT mtimes at 2 s granularity.
 | item | value | provenance |
 |---|---|---|
 | Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation | PHOTO 2025-07-01, 07-18 |
-| Temperature controller | 2-channel | PHOTO |
+| Temperature controller | 2-channel (the "two-zone oven" of the schematic and DATA.md; the channel-to-position pairing is not established here) | PHOTO 2025-07-18 |
+| Operating range | 70–130 °C across the campaign's condition grid | DATA (MANIFEST) |
 | Thermocouple/heater positions | **four**, marked 1, 2 (one end) and 3, 4 (the other) | PHOTO 2025-07-01 |
 | Rb condensation | visible on the cell windows when unwrapped | PHOTO 2025-07-01 |
 
@@ -462,6 +489,27 @@ acquisition drift, which the archive puts two orders below.*
 > deviation 100 kHz, a 38 MHz excursion across 8.5 minutes. It is one smooth
 > relaxation with no re-locks, a different regime from the June record.
 >
+> **The 2025-06-12 cavity-scan photograph now carries a physical reading
+> (2026-08-03).** IMG_2508's two channels are digitised in
+> [`2025-06-12_cavity_scan_IMG_2508_digitised.csv`](apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv).
+> Channel 1 is the 5.00 s triangular cavity ramp, apex at t = 2.62 s (52% of
+> the period). Channel 2, unlabelled on the scope, reads as the four 5S→6S
+> hyperfine components crossed once per sweep direction. Two computed facts
+> license that reading: the eight narrow spikes form four mirror pairs about
+> the ramp apex (pair midpoints 2.58 to 2.66 s against the apex at 2.618 s),
+> and the spike strengths follow the ground-state population weights,
+> abundance × (2F+1), with the ⁸⁵Rb pair strongest and the two
+> apex-straddling ⁸⁷Rb F=1 crossings weakest (relative weights
+> 1.00 / 1.67 / 2.88 / 4.03). The up-sweep ⁸⁵ pair's integral ratio is 1.31
+> against the predicted 7/5 = 1.40. The tallest spikes compress in the
+> photographed display, so integrals carry the ratios better than peak
+> heights, and the component sequence is fixed only up to the scan's
+> frequency direction (the observed order matches an up-sweep running from
+> ⁸⁷ F=2 to ⁸⁷ F=1). The level-scheme figure
+> (`figures/fig13_level_scheme.png`) draws the reading, and masks 62 of the
+> 700 digitised channel-1 points as trace cross-talk against a stated
+> flank-fit rule.
+>
 > **Still open.** The 06-19 etalon-only records are not digitised, so the factor
 > 2 to 5 below rests on eye-read numbers on both sides.
 
@@ -527,10 +575,12 @@ positions against the recovered clock (estimator: experimenter;
 campaign's in-situ figures — resting on a clock reading that is now
 instrument-validated: the LeCroy rehearsal files embed wall-clock trigger
 times, and mtime(JST) − TrigTime = +4…+9 s across 47 files (results report,
-addendum 11). The lock drift is **one constant across the
-five-hour power session the fit sees, +0.016 [+0.007, +0.025] MHz/min laser
-axis (68%; a ~2σ positive indication under the adequate noise model —
-results report addendum 7)**; the T-session yields bounds that contain it.
+addendum 11). The held-lock drift is **bounded at
+order 0.02 MHz/min on the laser axis** across the five-hour power session
+the fit sees (the earlier one-constant +0.016 reading did not survive the
+window-reference audit: two of three estimators change sign —
+results report addendum 4 and its retraction postscript); the T-session
+yields bounds that contain it.
 Persisting, ~20 MHz over the 20.5 hours — with the drop-and-recapture
 excursions, the scale that forced the all-night re-centring — well inside the first-hour within-block bound (≲0.17 MHz/min,
 itself matching the photographed cavity-locked ±0.19 MHz/min independently).

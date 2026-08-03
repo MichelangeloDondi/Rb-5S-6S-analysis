@@ -505,6 +505,15 @@ def ub95(arr, col=1):
 
 # ---------------------------------------------------------------------------
 
+def strip_wing(q):
+    """A wing-family solution vector, re-cut for the no-wing layout.
+
+    The two shared wing entries sit at q indices NS-1 and NS (q excludes
+    kappa). Everything else -- session widths, per-peak physics, rates,
+    per-trace blocks -- transplants one to one."""
+    return np.delete(q, [NS - 1, NS])
+
+
 def main() -> int:
     if not (PREHISTORY.is_dir() and PILOT.is_dir()):
         print(f"quarantine tree(s) not on this machine "
@@ -522,13 +531,23 @@ def main() -> int:
           f"{len(reh)} rehearsal ({n_corrupt} files unusable) + "
           f"{len(pil)} pilot traces, {npts} points")
 
+    # Chain order (2026-08-03): the wing variant goes FIRST because a cold
+    # start finds the true basin reliably there, and every other family is
+    # seeded from its solution (in addition to its own cold chains; the
+    # pointwise minimum keeps whichever wins). The 2026-08-03 four-point run
+    # demonstrated the warm-up failure mode striking the PRIMARY variant:
+    # its cold chains parked 283k above the basin every seeded and wing
+    # chain found, and the direction row then compared a stuck profile
+    # against a converged one. Seeding the primary from the wing solution
+    # (wing entries stripped) closes that mode for every family at once.
     t0 = time.time()
-    print("  primary profile (priors, rehearsal dir -1):")
-    prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-")
+    print("  wing robustness (dir -1, cold; the basin-finder):")
+    prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
+    print("  primary profile (priors, rehearsal dir -1, seeded from C-):")
+    prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-",
+                                       seed=strip_wing(q_c))
     print("  direction check (dir +1, seeded from the dir -1 solution):")
     prof_b, kmin_b, _ = bidi_profile(traces, priors, +1, False, "A+", seed=q_a)
-    print("  wing robustness (dir -1):")
-    prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
     print("  wing robustness (dir +1, seeded):")
     prof_d, kmin_d, _ = bidi_profile(traces, priors, +1, True, "C+", seed=q_c)
 

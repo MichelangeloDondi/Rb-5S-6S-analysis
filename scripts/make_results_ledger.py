@@ -394,7 +394,8 @@ def main() -> int:
         fit = float(sv["S0_225mW_fit"]["value"])
         c2 = float(sv["chi2_red"]["value"])
         W(f"- **C3d — the AC-Stark coefficient, from the power-lever: an UPPER BOUND "
-          f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, profile likelihood), landing "
+          f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, over-dispersion-adjusted "
+          f"profile likelihood, the C3f construction), landing "
           f"inside the predicted band {plo:.2f}–{phi:.2f} MHz** (`run_stark_sweep`, "
           f"M4e — the power-lever twin of the $\\beta$ fit). One shared $\\kappa$ "
           f"($S_0=\\kappa "

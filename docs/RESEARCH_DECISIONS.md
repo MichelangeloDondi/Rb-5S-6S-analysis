@@ -10,6 +10,21 @@ The dataset was taken with a **drifting, hand re-centred laser lock**, so
 absolute line centres are unusable and only line *shapes* survive. Most of what
 follows is downstream of that one fact.
 
+The decisions at a glance, each argued in full in its numbered section:
+
+| Question | Decision | Why |
+|---|---|---|
+| Can the width be split into collisional and laser parts? | The total width is the observable, and the split ships with its error and correlation | γ_coll and σ_laser are strongly correlated through the transit kernel (§1) |
+| What heads the β_self result? | The model-independent width-slope bound; the global fit is a cross-check | model-form differences reach the coefficient's own scale (§2) |
+| Does the archive fit carry an AC-Stark term? | No: the nested ladder declines it | the width channel supports a bound, not a component (§3) |
+| Are core widths shared across conditions? | Both verdicts reported | the answer flips with how repeats are counted, so neither is asserted (§4) |
+| The aborted power block? | Stays excluded | the cut predates the fits; re-admitting it now would be post hoc (§5) |
+| What happens to claims that fail? | They stay on the page, marked | the record of a withdrawal is part of the result (§6) |
+| Where do the guards come from? | Each was added after a specific failure | a guard without an incident is decoration (§7) |
+| What is left unmodelled? | Named mechanisms, each with the condition that would revive it | silence would read as completeness (§8) |
+| The 130 °C density point? | Promoted from diagnostic to the headline four-point lever | same configuration as the temperature ladder, session receipts checked (§9) |
+| The joint-refit choices (2026-08-03)? | Measured priors over seeded ones, per-session widths, no robustness row | each argued from the fits' own receipts (§10) |
+
 ---
 
 ## 1. The total width is the observable; the split is reported with its error and correlation
@@ -314,7 +329,7 @@ decision.
 **Decision: the per-(session, peak) `sigma_laser` split takes a shrinkage
 prior sized from the evidence that motivated it, not from convenience.** A
 free-Gaussian-sigma probe on the brightest trace per peak
-(`private/reviews/digest/fig16_residual_asymmetry.md`, "Seventh addition")
+(the fig16 residual-asymmetry working note, "Seventh addition")
 found the pooled-per-block `sigma_laser` too coarse at camp130: −85 kHz
 (4121), −121 kHz (4154), −287 kHz (4192) and +97 kHz (4207). Their mean
 absolute size, 147.5 kHz, rounded to the 150 kHz prior width that now pulls

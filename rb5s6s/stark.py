@@ -69,7 +69,8 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     fixed at their T_C values (they only set the baseline the per-peak core
     absorbs; kappa rides on the power-DEPENDENT part).
 
-    The QUOTED 95% bound is the PROFILE-LIKELIHOOD one (profile=True): scan
+    The QUOTED 95% bound is the over-dispersion-adjusted PROFILE-chi2 one
+    (profile=True): scan
     kappa upward from the minimum, re-minimizing the per-peak nuisances at each
     point, and place the one-sided 95% limit where the chi2 rises by
     2.706 x max(chi2_red, 1) -- the over-dispersion scaling equivalent to the
@@ -133,7 +134,7 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     kerr = kerr_raw * infl
     kappa = float(sol.x[npk])
 
-    # -- profile-likelihood one-sided 95% bound (the quoted construction) -----
+    # -- over-dispersion-adjusted profile-chi2 one-sided 95% bound (quoted) ---
     # chi2 profiled over the per-peak nuisances at fixed kappa; the limit sits
     # where chi2 rises by 2.706 x max(chi2_red, 1) above the minimum. Scaling
     # the threshold by chi2_red is algebraically the same over-dispersion

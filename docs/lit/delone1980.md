@@ -183,13 +183,36 @@ Delone's Eq. (5.3) evaluated for the intensity distribution of a focused Gaussia
 beam. That must be said in the introduction here in those words.
 
 **The distribution-from-profile idea has independent roots outside atomic
-physics too, REPORTED and not read here.** Efimov and Khitrov made an early
-1979 attempt at treating inhomogeneous broadening as a probability
-distribution over a lineshape's parameters, work a modern general inverse
-framework picks up and extends well past atomic spectroscopy: Prokopeva and
-Kildishev, *Nanophotonics* **14**, 4177 (2025), doi:10.1515/nanoph-2025-0044,
-recover the same kind of distribution from a measured lineshape for
-dielectric-function models in nanophotonic materials.
+physics too, and the modern general inverse framework is now held.** A. Efimov
+and V. Khitrov, "Analytical formulas for describing the dispersion of glass
+with refractive indices that observe the continuous nature of absorption,"
+*Fiz. Khim. Stekla*, vol. 5, no. 5, pp. 583-588, 1979, made an early attempt at
+treating inhomogeneous broadening as a probability distribution over a
+lineshape's parameters. A second, independent root sits thirteen years later:
+R. Brendel and D. Bormann, "An infrared dielectric function model for
+amorphous solids," *J. Appl. Phys.*, vol. 71, no. 1, pp. 1-6, 1992, postulated
+the same convolution integral for amorphous-solid infrared spectra, though its
+closed form later turns out to be noncausal. [prokopeva2025](prokopeva2025.md)
+picks both up and extends them well past atomic spectroscopy: a causal,
+Kramers-Kronig-consistent framework that recovers the intrinsic homogeneous
+linewidth and the inhomogeneous disorder distribution together from a
+measured lineshape, correcting the Brendel-Bormann noncausality along the
+way, for dielectric-function models in nanophotonic materials (Gauss-Lorentz,
+Gauss-Debye, Gauss-Drude).
+
+**A candidate for this family, now held and read, and rejected.**
+[lahad2019](lahad2019.md), Phys. Rev. Lett. 123, 173203 (2019), was flagged
+during reconnaissance as a further cousin on the strength of its title,
+"Recovering the Homogeneous Absorption of Inhomogeneous Media." A full
+reading shows the opposite. Its spread parameter delta is a Doppler shift
+whose width is taken as GIVEN from the temperature, never extracted from a
+lineshape, and its measured observable is a single enhancement ratio
+compared against a closed form model, not a reconstructed distribution. The
+paper cancels the spread with a second, correlated light-shift field rather
+than reading it, and its own introduction places the mechanism beside
+Cohen-Tannoudji's 1978 Doppler-compensation proposal, not beside an inverse
+problem. It is not a member of this family. The full account is in its own
+note.
 
 **What that leaves, stated precisely.** Delone give the general relation and
 treat $P$ as the *unknown to be reconstructed* — their whole point is that the

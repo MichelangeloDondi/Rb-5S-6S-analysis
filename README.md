@@ -34,12 +34,12 @@ residuals. The total width is ≈ 5.2 MHz and the residuals sit at the noise flo
 (reduced χ² ≈ 1.1) — this is the raw material everything below is built from.*
 
 <p align="center">
-  <img src="docs/apparatus/apparatus_schematic.svg" width="700" alt="Apparatus schematic in the L-layout of Nieddu 2019: SolsTiS input via fibre to a fold mirror; on the cell axis: polarizing filter, half-wave plate, 12.5 MHz EOM and f=150 mm on the input side of the two-zone Rb cell oven, then f=150 mm, flip-in power meter and the self-imaging flat-mirror retro; fluorescence collected by an f=18 mm lens into the side-on PMT and a G=10⁶ pre-amplifier (R636-10, assumed, in its photographed Thorlabs PXT1/M housing) behind a 795 nm filter, to the Keysight scope">
+  <img src="docs/apparatus/apparatus_schematic.svg" width="700" alt="Apparatus schematic in the L-layout of Nieddu 2019: SolsTiS delivered free-space through a 35 dB optical isolator to a fold mirror; on the cell axis: polarizing filter, half-wave plate, 12.5 MHz EOM and f=150 mm on the input side of the two-zone Rb cell oven, then f=150 mm, flip-in power meter and the self-imaging flat-mirror retro; fluorescence collected by an f=18 mm lens into the side-on PMT and a G=10⁶ pre-amplifier (R636-10, assumed, in its photographed Thorlabs PXT1/M housing) behind a 795 nm filter, to the Keysight scope">
 </p>
 
-*The bench in one drawing — the L-layout of Nieddu et al. (2019), mirrored as
-on the actual breadboard, components numbered 1–13 as in the annotated bench
-photograph. Every element is established in
+*The bench in one drawing — the L-layout of Nieddu et al. (2019), with the
+breadboard's own handedness, components numbered 1–13 as in the annotated
+bench photograph. Every element is established in
 [`docs/APPARATUS.md`](docs/APPARATUS.md), which also carries the dated
 photographs behind each box.*
 
@@ -186,7 +186,7 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03–0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (×16.2→×52.5, 2026-08-02); same-session 150–170 °C points **and** a lower block-noise floor still needed for a measurement, see M17 |
 | 2025 laser linewidth **σ_laser** | ≈ 1.09 MHz laser-axis at the w₀ prior (bound < 1.2, rising with w₀) | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.15 MHz (95%, joint three-session full-profile likelihood, M23; below the 0.35 predicted at the adopted waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.15 MHz (95%, joint three-session over-dispersion-adjusted profile likelihood, M23; below the 0.35 predicted at the adopted waist, see RESULTS C3f) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is now verified from the typeset PDF — convention stated in words, value repeated in SI, and his own worked −0.66 MHz reproduced here at −0.653 — so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |

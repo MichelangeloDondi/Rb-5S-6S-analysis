@@ -34,7 +34,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | finding | where |
 |---|---|
 | The recorded block order is **not** the acquisition order — the power ladder ran 225→25 mW | addendum 8 |
-| The lock drift is **one constant**, +0.016 [0.007, 0.025] MHz/min (laser axis) — ~250× inside the pre-registered envelope | addenda 4–7 |
+| The held-lock drift is **bounded at order 0.02 MHz/min** (laser axis), sign undetermined — the earlier "+0.016, one constant" reading did not survive the window-reference audit | addenda 4–7; retraction in addendum 4's postscript |
 | The megahertz-scale motion was **not drift** but hand re-centring after lock dropouts | addendum 5 |
 | That disturbance is **one transient re-armed by every re-lock**: B = 103 [78, 139] ms, τ = 97 [87, 118] min | addendum 12 |
 | A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |

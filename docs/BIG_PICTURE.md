@@ -325,7 +325,7 @@ the reference-free regime.
 
 The 2025 campaign (297 traces: four hyperfine peaks, 70–130 °C, 25–225 mW)
 was taken with a drifting, hand-re-centred lock (MHz-scale line motion
-between blocks; the held-lock rate itself measures ~0.02 MHz/min,
+between blocks; the held-lock rate itself is bounded at order 0.02 MHz/min,
 `APPARATUS.md` §6). That one fact organises
 everything: **absolute centres are lost, line shapes survive**. The analysis
 therefore extracts what shapes alone can support, and states everything else
@@ -375,7 +375,7 @@ as a bound. Concretely:
   per-scan free centres, and a synthetic closure test
   (`tests/test_intrascan_drift.py`) bounds the leftover *within*-scan effect at
   well under a fifth of the statistical error on the recovered asymmetry at the
-  archival envelope rate (~MHz/min; the measured in-campaign rate is ~60×
+  archival envelope rate (~MHz/min; the in-campaign bound is ~60×
   lower still) — it reaches order-S₀ only at tens of times the envelope.
 - **A reproducible pipeline.** Every number regenerates byte-for-byte from
   the frozen raw data; every CSV row carries a status tag (BOUND / NULL /
@@ -409,8 +409,8 @@ coefficients for this line. None of it is scheduled or agreed; in order of
 leverage:
 
 1. **A direct beam-waist measurement** (knife-edge and/or camera profiler)**.** No physics run at all — but w₀
-   is the one systematic every absolute number rides on (transit and laser
-   width are degenerate through it), so measuring it retroactively sharpens
+   is the dominant shared systematic every absolute number rides on (transit
+   and laser width are degenerate through it), so measuring it retroactively sharpens
    every absolute number in the 2025 archive at once.
 2. **Line centre vs power (the "pull").** With centres alive, the
    first-order light shift (−⅔S₀, the strong handle) becomes measurable as

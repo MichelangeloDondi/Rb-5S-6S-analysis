@@ -1,12 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 0 1080 880" font-family="Helvetica, Arial, sans-serif">
-  <!-- The 2025 5S->6S bench in the L-layout of Nieddu et al. 2019 (Fig. 2),
-       mirrored right-to-left as on the breadboard. The horizontal arm is the
-       fibre delivery; the whole component chain 1-13 (numbering as the
-       annotated bench photo, IMG_2895 / defense slide 9) sits on the cell
-       axis: PF, HWP, EOM and the first f150 on the short (input) side of the
+  <!-- The 2025 5S->6S bench in the L-layout of Nieddu et al. 2019 (Fig. 2);
+       the drawing, their figure and the breadboard share one handedness
+       (verified against the annotated bench photo, defense presentation
+       slide 9, which also fixes the 1-13 numbering). The horizontal arm is
+       the FREE-SPACE delivery through the optical isolator (APPARATUS 1.2:
+       no lens or telescope between the SolsTiS output and the EOM). On the
+       cell axis: PF, HWP, EOM and the first f150 on the input side of the
        vapour cell, the second f150, flip-in power meter and retro beyond it.
        f = 18 mm is the fluorescence COLLECTION lens in front of the PMT.
-       Colors: 993 nm #e34948, 795 nm fluorescence #2a78d6. 2026-07-24. -->
+       Colors: 993 nm #e34948, 795 nm fluorescence #2a78d6. 2026-08-03. -->
   <rect x="-80" width="1080" height="880" fill="#fcfcfb"/>
 
   <!-- ===================== horizontal delivery arm, y=780, right->left ===================== -->
@@ -17,13 +19,12 @@
   <text x="887" y="804" text-anchor="middle" font-size="11" fill="#6b6b69">etalon ✓ · ref-cav ✓ · ECD ✗</text>
   <text x="887" y="820" text-anchor="middle" font-size="11" fill="#6b6b69">pickoff → WS-8 wavemeter</text>
 
-  <!-- fibre + collimation -->
-  <path d="M 795 780 q -20 -16 -40 0 q -16 13 -32 0" fill="none" stroke="#8a8a87" stroke-width="2"/>
-  <ellipse cx="705" cy="780" rx="5" ry="15" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="705" y="812" text-anchor="middle" font-size="10.5" fill="#6b6b69">collimation</text>
+  <!-- optical isolator (free-space delivery; APPARATUS 1.2, unnumbered) -->
+  <rect x="680" y="765" width="52" height="30" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="706" y="812" text-anchor="middle" font-size="10.5" fill="#6b6b69">isolator · 35 dB</text>
 
   <!-- beam right->left to the fold -->
-  <line x1="700" y1="780" x2="178" y2="780" stroke="#e34948" stroke-width="2.5"/>
+  <line x1="795" y1="780" x2="178" y2="780" stroke="#e34948" stroke-width="2.5"/>
   <polygon points="420,773 406,780 420,787" fill="#e34948"/>
   <text x="600" y="762" text-anchor="middle" font-size="11" fill="#e34948" font-weight="bold">993 nm</text>
 
@@ -66,7 +67,7 @@
   <polygon points="156,566 184,566 170,404" fill="#e34948" opacity="0.8"/>
   <polygon points="170,404 156,236 184,236" fill="#e34948" opacity="0.8"/>
   <circle cx="170" cy="404" r="2.6" fill="#2b2b2a"/>
-  <text x="150" y="384" text-anchor="end" font-size="10.5" fill="#2b2b2a">w₀ ≈ 50 µm</text>
+  <text x="92" y="414" text-anchor="end" font-size="10.5" fill="#2b2b2a">w₀ prior 64 µm</text>
 
   <!-- 6 oven -->
   <rect x="104" y="318" width="132" height="172" rx="12" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
@@ -96,7 +97,7 @@
 
   <!-- 9 flat mirror -->
   <rect x="138" y="84" width="64" height="8" fill="#2b2b2a"/>
-  <text x="212" y="78" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">9</tspan> · flat mirror — self-imaging retro (ρ ≈ 1)</text>
+  <text x="212" y="78" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">9</tspan> · flat mirror, self-imaging retro (ρ 0.94 ± 0.04 assumed)</text>
   <text x="212" y="93" font-size="10.5" fill="#6b6b69">return beam ⇒ standing wave in the cell</text>
 
   <!-- return beam, dashed, offset -->
@@ -115,13 +116,12 @@
 
   <!-- 10 filter -->
   <rect x="330" y="376" width="7" height="56" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="333" y="364" text-anchor="middle" font-size="10.5" fill="#2b2b2a" font-weight="bold">10</text>
-  <text x="345" y="473" text-anchor="middle" font-size="10" fill="#6b6b69">795 nm filter</text>
+  <text x="345" y="473" text-anchor="middle" font-size="10" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">10</tspan> · 795 nm filter</text>
 
   <!-- 12 holder + 13 PMT + 11 heat sink -->
   <rect x="352" y="372" width="188" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
   <text x="446" y="396" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">13 · PMT (R636-10, side-on)</text>
-  <text x="446" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">in 12 · holder — Thorlabs PXT1/M</text>
+  <text x="446" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">in 12 · holder, Thorlabs PXT1/M</text>
   <text x="446" y="427" text-anchor="middle" font-size="10.5" fill="#6b6b69">(cathode identity assumed, Nieddu 2019)</text>
   <g stroke="#6b6b69" stroke-width="2">
     <line x1="374" y1="372" x2="374" y2="358"/><line x1="384" y1="372" x2="384" y2="358"/>
@@ -138,7 +138,7 @@
   <path d="M 645 404 H 688" fill="none" stroke="#a9a9a5" stroke-width="1.4"/>
   <rect x="688" y="372" width="230" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
   <text x="803" y="396" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">Keysight DSO-X 3054A</text>
-  <text x="803" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">ch2 — PMT · ch1 — scan-ramp monitor</text>
+  <text x="803" y="413" text-anchor="middle" font-size="10.5" fill="#6b6b69">ch2: PMT · ch1: scan-ramp monitor</text>
   <text x="803" y="427" text-anchor="middle" font-size="10.5" fill="#6b6b69">2 000 pts · 1 s up-ramp · CSV</text>
 
   <!-- layout credit -->

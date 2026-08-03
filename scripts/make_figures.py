@@ -529,21 +529,33 @@ def fig_ruler():
     RIGHT: the free-centres nonlinearity map (results/ruler_nlmap.csv) — the
     empirical bound (~0.3% per position) on scan nonlinearity AND any
     tooth-dependent pull (differential Stark, asymmetric-wing overlap), the
-    ruler's common-mode-rejection check. Trace choice is deterministic: the
-    first canonical rf-on ruler of the brightest 130 °C block."""
+    ruler's common-mode-rejection check. Trace choice is deterministic: every
+    canonical rf-on ruler is comb-fitted and the figure shows the one whose
+    WEAKER outer tooth (k = +-3) stands tallest above that fit's residual
+    noise, so the full seven-tooth structure is actually visible rather than
+    buried (ties broken by path)."""
     from rb5s6s.ingest import load_manifest, load_trace, trace_path
     from rb5s6s.ruler import fit_comb, _comb, TEETH
 
     rows = sorted((r for r in load_manifest()
                    if r["role"].startswith("ruler") and r["flag"] == "canonical"
                    and r["rf_on"] == "True"),
-                  key=lambda r: (r["peak"] != "4154", r["temperature_C"] != "130",
-                                 r["peak"], r["temperature_C"], trace_path(r)))
+                  key=lambda r: trace_path(r))
     if not rows:
         print("  (no ruler trace found -- skipping fig8)")
         return
-    t, v = load_trace(trace_path(rows[0]))
-    fit = fit_comb(t, v)
+    best = None
+    for r in rows:
+        tt, vv = load_trace(trace_path(r))
+        ft = fit_comb(tt, vv)
+        model = _comb(tt, ft["t0_ms"], ft["delta_ms"], ft["width_ms"],
+                      ft["heights"], ft["b0"], ft["b1"])
+        rms = float(np.std(vv - model))
+        h = dict(zip(TEETH, ft["heights"]))
+        score = min(h.get(3, 0.0), h.get(-3, 0.0)) / rms if rms > 0 else 0.0
+        if best is None or score > best[0]:
+            best = (score, tt, vv, ft)
+    _, t, v, fit = best
 
     fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.8, 3.9),
                                   gridspec_kw={"width_ratios": [2.1, 1.0]})
@@ -937,8 +949,12 @@ def fig_level_scheme():
     LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
     E_VIRT_CM = 1.0e7 / (LAMBDA_LASER_M * 1e9)       # half the two-photon energy
 
-    fig, (ax, bx) = plt.subplots(1, 2, figsize=(12.2, 6.2),
-                                 gridspec_kw={"width_ratios": [1.15, 1]})
+    fig = plt.figure(figsize=(12.6, 6.4))
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.15, 1.0], hspace=0.13,
+                          wspace=0.22)
+    ax = fig.add_subplot(gs[:, 0])
+    bx1 = fig.add_subplot(gs[0, 1])
+    bx2 = fig.add_subplot(gs[1, 1], sharex=bx1)
 
     # --- left: the level scheme and both decay channels -----------------
     # the "not resolved" clarifier rides in the same text block as the 5P
@@ -955,8 +971,8 @@ def fig_level_scheme():
         ax.text(0.50, y - 620, f"{y:,.0f}" + r" cm$^{-1}$" + extra, va="top",
                 fontsize=6.5, color="0.5")
     ax.hlines(yv, 0.10, 0.28, color="0.55", lw=1.3, ls=(0, (4, 3)))
-    ax.text(0.10, yv - 2100, "virtual level, half the\ntwo-photon energy",
-            fontsize=6.8, color="0.45", va="center")
+    ax.text(0.30, yv - 1500, "virtual level, half the\ntwo-photon energy",
+            fontsize=6.8, color="0.45", va="center", ha="left")
 
     # the two 993 nm photons, one per beam direction
     for x in (0.15, 0.23):
@@ -968,13 +984,13 @@ def fig_level_scheme():
             fontsize=7, color="#0072B2", va="top")
 
     # detected cascade: 6S -> 5P_1/2 (1324 nm) -> 5S (795 nm), bold and in colour
-    ax.annotate("", (0.62, y5p), (0.62, y6s),
+    ax.annotate("", (0.66, y5p), (0.66, y6s),
                 arrowprops=dict(arrowstyle="-|>", color="#009E73", lw=1.9))
-    ax.text(0.635, y5p + 0.60 * (y6s - y5p), f"{LAM_6S_5P12_NM:.0f} nm",
+    ax.text(0.675, y5p + 0.60 * (y6s - y5p), f"{LAM_6S_5P12_NM:.0f} nm",
             fontsize=7.5, color="#009E73", va="center")
-    ax.annotate("", (0.62, y5s), (0.62, y5p),
+    ax.annotate("", (0.66, y5s), (0.66, y5p),
                 arrowprops=dict(arrowstyle="-|>", color="#D55E00", lw=2.6))
-    ax.text(0.635, 0.35 * y5p, "795 nm\ndetected", fontsize=8.5, color="#D55E00",
+    ax.text(0.675, 0.35 * y5p, "795 nm\ndetected", fontsize=8.5, color="#D55E00",
             va="center", fontweight="bold")
 
     # real but rejected cascade: 6S -> 5P_3/2 (1367 nm) -> 5S (780 nm), offset
@@ -999,13 +1015,18 @@ def fig_level_scheme():
     ax.tick_params(labelsize=7)
     ax.spines[["top", "right", "bottom"]].set_visible(False)
     ax.set_xticks([])
-    ax.set_title(f"to scale; natural width {GNAT:.2f} MHz", fontsize=9)
+    ax.set_title(f"to scale (natural width {GNAT:.2f} MHz)", fontsize=9)
     ax.text(0.44, -3050,
             "780 nm exists in the cascade but is filtered out here,\n"
             "not because it isn't emitted", fontsize=6.3, color="0.45",
             ha="center", va="bottom")
 
     # --- right: the real cavity scan, digitised from a photograph -------
+    # Two stacked panels on one time axis, one channel each, so no trace can
+    # collide with the other trace or with any label. The digitised points
+    # are drawn as points: where the two traces cross in the photograph the
+    # digitiser occasionally follows the wrong one, and a connected line
+    # would turn those isolated strays into solid false walls.
     scan_csv = C.REPO_ROOT / "docs" / "apparatus" / \
         "2025-06-12_cavity_scan_IMG_2508_digitised.csv"
     scan = list(csv.DictReader(open(scan_csv)))
@@ -1014,17 +1035,50 @@ def fig_level_scheme():
     ch2 = np.array([float(r["ch2_div"]) for r in scan])
 
     CH1_COLOR, CH2_COLOR = "#B8860B", "#4C8C6B"
-    bx.plot(t, ch1, color=CH1_COLOR, lw=1.6)
-    bx.plot(t, ch2, color=CH2_COLOR, lw=1.1)
-    # labelled directly on the traces, in clear stretches, rather than a
-    # legend box (there is nowhere left in this panel a legend would not
-    # sit on top of either a trace feature or the footer text)
-    bx.text(3.85, float(ch1[(t > 3.7) & (t < 4.0)].mean()) + 0.55,
-            "channel 1: cavity scan ramp", color=CH1_COLOR, fontsize=7.5,
-            ha="right", fontweight="bold")
-    bx.text(0.05, 6.3, "channel 2: unlabelled trace", color=CH2_COLOR,
-            fontsize=7, ha="left")
+    t_peak = float(t[np.argmax(ch1)])
 
+    # Where the two traces cross in the photograph the digitiser sometimes
+    # follows the wrong one. Those points are identified mechanically, not
+    # by eye: each flank of the triangle is fitted by a line with three
+    # rounds of clipping, and points more than 0.3 div off their flank fit
+    # are masked. The rule and the count are stated on the panel.
+    keep = np.ones(len(t), bool)
+    for side_mask in (t <= t_peak, t > t_peak):
+        idx = np.where(side_mask)[0]
+        m = np.ones(len(idx), bool)
+        for _ in range(3):
+            p = np.polyfit(t[idx][m], ch1[idx][m], 1)
+            m = np.abs(ch1[idx] - np.polyval(p, t[idx])) < 0.30
+        keep[idx] = m
+    n_masked = int((~keep).sum())
+
+    bx1.plot(t[keep], ch1[keep], ".", ms=2.2, color=CH1_COLOR)
+    bx1.axvline(t_peak, color="0.5", lw=0.8, ls=(0, (3, 2)))
+    bx1.text(0.02, 0.80, "channel 1: the cavity-scan ramp", color=CH1_COLOR,
+             fontsize=8, fontweight="bold", transform=bx1.transAxes, va="top")
+    bx1.text(0.02, 0.70, f"{n_masked} of {len(t)} digitised points masked\n"
+             "as trace cross-talk (0.3 div off\ntheir flank fit)",
+             color="0.45", fontsize=6.3, transform=bx1.transAxes, va="top")
+    bx1.annotate("", (5.0, 9.0), (0.0, 9.0),
+                 arrowprops=dict(arrowstyle="<->", color="0.4", lw=1.0))
+    bx1.text(2.5, 9.35, "one full triangular period, 5.00 s "
+             "(500 ms/div x 10 div)", fontsize=7, color="0.35", ha="center",
+             va="bottom")
+    bx1.text(t_peak + 0.14, 1.05,
+             f"apex at t = {t_peak:.2f} s\n"
+             f"({100 * t_peak / 5.0:.0f}% of the period)",
+             fontsize=7, color="0.35", ha="left", va="bottom")
+    bx1.set_xlim(-0.1, 5.1)
+    bx1.set_ylim(-0.4, 10.4)
+    bx1.set_ylabel("channel 1 (div)", fontsize=8)
+    bx1.tick_params(labelsize=7)
+    plt.setp(bx1.get_xticklabels(), visible=False)
+    bx1.set_title("the cavity scan that sweeps the laser across the line",
+                  fontsize=9)
+
+    bx2.plot(t, ch2, color=CH2_COLOR, lw=1.0)
+    bx2.axvline(t_peak, ymin=0.16, ymax=0.72, color="0.5", lw=0.8,
+                ls=(0, (3, 2)))
     spike_t = [0.20, 0.64, 1.69, 2.53, 2.67, 3.61, 4.60, 4.96]
     spike_x, spike_y = [], []
     for st in spike_t:
@@ -1033,44 +1087,57 @@ def fig_level_scheme():
             i = int(np.argmax(ch2[window]))
             spike_x.append(t[window][i])
             spike_y.append(ch2[window][i])
-    bx.scatter(spike_x, spike_y, color=CH2_COLOR, s=22, zorder=5,
-               edgecolor="0.2", linewidth=0.4)
-
-    t_peak = float(t[np.argmax(ch1)])
-    bx.axvline(t_peak, color="0.5", lw=0.8, ls=(0, (3, 2)))
-    bx.text(t_peak + 0.15, float(ch1.max()) - 1.35,
-            f"peak at t = {t_peak:.2f} s\n({100 * t_peak / 5.0:.0f}% of period)",
-            fontsize=7, color="0.35", va="top")
-    bx.annotate("", (5.0, 8.25), (0.0, 8.25),
-               arrowprops=dict(arrowstyle="<->", color="0.4", lw=1.0))
-    bx.text(2.5, 8.45, "one full triangular period, 5.00 s (500.0 ms/div x 10 div)",
-            fontsize=7, color="0.35", ha="center")
-
-    bx.set_xlim(-0.1, 5.1)
-    bx.set_ylim(-2.9, 9.2)
-    bx.set_xlabel("time (s)")
-    bx.set_ylabel("scope divisions")
-    bx.set_title("the real cavity scan that sweeps the laser across the line",
-                fontsize=9)
-    bx.text(0.5, 0.10,
-            "hyperfine lines this scan sweeps: 993.4121 / .4154 / .4192 / .4207 nm",
-            transform=bx.transAxes, ha="center", fontsize=7, color="0.35")
-    bx.text(0.5, 0.045,
-            "digitised from a photograph (IMG_2508, 2025-06-12); calibration "
-            "in docs/APPARATUS.md",
-            transform=bx.transAxes, ha="center", fontsize=6.5, color="0.45")
+    bx2.scatter(spike_x, spike_y, color=CH2_COLOR, s=22, zorder=5,
+                edgecolor="0.2", linewidth=0.4)
+    # The reading below is computed from the committed points against the
+    # rb5s6s/amplitudes.py population law S ~ abundance x (2F+1)/G_iso, not
+    # asserted: the eight spikes form four mirror pairs about the ramp apex
+    # (pair midpoints 2.58 to 2.66 s vs the apex at 2.62 s), the two
+    # apex-straddling spikes are the two weakest exactly where the doubly
+    # crossed 87 F=1 line is predicted weakest (relative weights 1.00
+    # against 1.67 / 2.88 / 4.03), the 85 pair is strongest on both sweeps,
+    # and the up-sweep 85-pair integral ratio is 1.31 against the predicted
+    # 7/5 = 1.40. Heights of the tallest spikes compress in the photographed
+    # display, so the integrals carry the ratio better than the peaks.
+    comp = ["87 F=2", "85 F=3", "85 F=2", None, None,
+            "85 F=2", "85 F=3", "87 F=2"]
+    dx = [0.0, 0.0, 0.0, 0, 0, 0.0, 0.0, -0.06]
+    dy = [0.18, 0.18, 0.18, 0, 0, 0.18, 0.18, 0.62]
+    for sx_, sy_, lab, ox, d in zip(spike_x, spike_y, comp, dx, dy):
+        if lab:
+            bx2.text(sx_ + ox, sy_ + d, lab, fontsize=6, color="0.25",
+                     ha="center", va="bottom")
+    pair_y = max(spike_y[3], spike_y[4]) + 0.18
+    bx2.text(spike_x[3] - 0.10, pair_y, "87 F=1", fontsize=6, color="0.25",
+             ha="right", va="bottom")
+    bx2.text(0.02, 0.95, "channel 2 (unlabelled on the scope photo):\n"
+             "read as the four hyperfine components, each crossed once per "
+             "sweep direction", color=CH2_COLOR, fontsize=8,
+             transform=bx2.transAxes, va="top")
+    bx2.text(0.02, 0.02, "spike strengths follow abundance x (2F+1): the 85 "
+             "pair strongest, the two 87 F=1 crossings weakest,\nup-sweep 85 "
+             "integral ratio 1.31 vs the predicted 7/5 (the tallest spikes "
+             "compress in the photographed display)",
+             fontsize=6.5, color="0.35", transform=bx2.transAxes,
+             va="bottom")
+    bx2.set_xlim(-0.1, 5.1)
+    bx2.set_ylim(0.0, 7.2)
+    bx2.set_xlabel("time (s)", fontsize=9)
+    bx2.set_ylabel("channel 2 (div)", fontsize=8)
+    bx2.tick_params(labelsize=7)
 
     fig.suptitle(
-        "A single excited state decays through every channel its selection\n"
-        "rules allow; a detector only sees the channels its filters pass.\n"
-        r"Instance: Rb $5S_{1/2}\to 6S_{1/2}$ (993 nm), read out on the 795 nm "
-        r"arm of the $6S\to5P_{1/2}\to5S$ cascade." "\n"
-        r"The $6S\to5P_{3/2}\to5S$ arm (780 nm) is real but rejected by a "
+        "A single excited state decays through every channel its selection "
+        "rules allow. A detector sees only the channels its filters pass.\n"
+        r"Instance: Rb $5S_{1/2}\to 6S_{1/2}$ (993 nm), read out on the "
+        r"795 nm arm of the $6S\to5P_{1/2}\to5S$ cascade. The "
+        r"$6S\to5P_{3/2}\to5S$ arm (780 nm) is real but rejected by a "
         "~50 dB, 795 nm passband filter.",
-        fontsize=9.2, y=0.995)
+        fontsize=9.2, y=0.985)
     _footer(fig, "Sources: rb5s6s.constants, rb5s6s.polarizability (level scheme); "
                  "docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv, digitised "
-                 "from IMG_2508.jpeg (cavity scan). Regenerate: python scripts/make_figures.py.")
+                 "from IMG_2508.jpeg (2025-06-12; axis calibration docs/APPARATUS.md). "
+                 "Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig13_level_scheme.png")
 
 
