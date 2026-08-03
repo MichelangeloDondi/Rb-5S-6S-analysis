@@ -296,12 +296,12 @@ pytest -q                 # fast test suite (~2 min)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
-The 2025 dataset is already in `data_raw/`, so the pipeline runs directly.
-The analysis is a library with its physics, apparatus, and statistics kept
-behind separate seams. [docs/ADAPTING.md](docs/ADAPTING.md) names them for
-anyone pointing the machinery at a different transition, species, or light
-geometry, and [examples/your_line.ipynb](examples/your_line.ipynb) lets you
-try it on your own line by editing one dictionary. Each stage reads the previous stages' output in `results/`:
+The dataset's manifest is committed
+([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv)); the 297 raw traces are
+held privately — **On the raw traces**, below, says exactly what that leaves
+runnable from a clone (the certification suite and the clock-dependent
+results, which is the bulk of the battery). With the traces in place, each
+stage reads the previous stages' output in `results/`:
 
 ```bash
 bash scripts/run_all.sh   # every stage in dependency order, then the figures,
@@ -322,8 +322,8 @@ python scripts/run_laser_history.py   # laser frequency, within each display epo
 
 print the full report — no raw traces and no private folder required, because
 the per-trace QC metrics they read (`results/qc_metrics.csv`) are committed. The complete
-timestamped raw backup behind the clock is preserved verbatim as the
-release asset `raw-backup-2026-07-24` (sha256 in its notes).
+timestamped raw backup behind the clock is preserved verbatim in the
+raw-data archive held with the traces (sha256 recorded in the audit report).
 
 The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
 are cited across many documents. `tests/test_docs_canonical.py` holds each in a
@@ -414,7 +414,8 @@ taken at OIST and are held privately; they are available on request
 - **What cannot run here** is the raw→results pipeline itself, and the four
   tests that re-hash the traces against the manifest; those skip with a stated
   reason rather than failing. With the traces in place they all run, and each
-  stage reproduces its committed CSV byte-for-byte:
+  stage reproduces its committed CSV byte-for-byte (the `run_all.sh` command
+  under **Reproduce**).
 
 **Adapting it to your own line.** The analysis is a library with its
 physics, apparatus, and statistics kept behind separate seams.
@@ -422,37 +423,3 @@ physics, apparatus, and statistics kept behind separate seams.
 machinery at a different transition, species, or light geometry, and
 [examples/your_line.ipynb](examples/your_line.ipynb) lets you try it on
 your own line by editing one dictionary. Neither needs the raw traces.
-
-
-```bash
-bash scripts/run_all.sh   # every stage in dependency order, then the figures,
-                          # docs/RESULTS.md, and the CSV status column
-```
-
-The **clock-dependent results** (the lock-drift measurement and its audit
-trail, [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md)
-addenda 4–7) also reproduce from a clone: the acquisition clock is committed
-as [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv), and
-
-```bash
-python scripts/run_drift_settling.py  # the drift analysis, off the committed clock
-python scripts/run_laser_history.py   # laser frequency, within each display epoch
-```
-
-print the full report — no raw traces and no private folder required, because
-the per-trace QC metrics they read (`results/qc_metrics.csv`) are committed. The complete
-timestamped raw backup behind the clock is preserved verbatim as the
-raw-data archive held with the traces (sha256 recorded in the audit report).
-
-The headline numbers (the AC-Stark and collisional bounds, the beam-waist prior)
-are cited across many documents. `tests/test_docs_canonical.py` holds each in a
-single registry, reads its true value from the committed CSV, and checks that
-every document quotes *that* value — so a re-analysis that moves a number can
-never leave a stale copy behind unnoticed. To change a headline number: re-run
-its producer, then run the suite; it names any document still out of step.
-
-The **figures** follow the same rule: `make_figures.py` stamps a fingerprint
-of the results CSVs into each PNG's metadata, and `tests/test_figures_fresh.py`
-fails if a committed figure was drawn from stale results (the fix is to re-run
-`make_figures.py`). The check reads a hash in the PNG, not pixels, so it is
-independent of the matplotlib version that drew the figure.
