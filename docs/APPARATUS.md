@@ -9,10 +9,9 @@ every technical fact and its date in text.*
 
 <img src="apparatus/apparatus_schematic.svg" width="95%" alt="Apparatus schematic: full beam path from pump to detection">
 
-*The bench in one drawing — the L-layout of Nieddu et al. (2019, Fig. 2).
-The drawing, their figure and the breadboard share one handedness (checked
-against the annotated bench photograph, 2026-08-03); components numbered 1–13
-following that photograph (defense presentation, slide 9).
+*The bench in one drawing, components numbered 1–13 following the annotated
+bench photograph (defense presentation, slide 9), which also fixes the
+drawing's handedness.
 Every box is established below with its provenance; the photographs embedded
 through this page show the same elements in the flesh.*
 
@@ -123,11 +122,20 @@ shifts become measurable at all.
 | Tunable | yes (input polarizer rotates to maximize isolation) | manufacturer datasheet |
 | Housing diameter / length | 34.9 mm / 102 mm | manufacturer datasheet |
 
-Placed after the SolsTiS and before the focusing lens, matching the
-[Nieddu 2019](lit/nieddu2019.md) / [Rajasree 2020 thesis](lit/rajasree2020thesis.md)
-layout this bench follows ("An optical isolator is placed ... before the
-vapor cell ... A plano-convex lens (L1) ... is placed after the optical
-isolator to focus the beam").
+On the bench the delivery runs: laser, then a λ/2 + PBS pair that sets the
+power sent to the cell (working in reflection, the PBS's reflected port
+feeding the cell path and providing the turn onto the arm), then the fold
+mirror, with the optical isolator standing on the vertical cell axis just
+after the fold, before the polarizing filter (EXPERIMENTER, 2026-08-03).
+A fibre runs directly from the laser head to the WS-8 wavemeter. The
+isolator-before-the-focusing-lens order matches the
+[Nieddu 2019](lit/nieddu2019.md) /
+[Rajasree 2020 thesis](lit/rajasree2020thesis.md) description ("An optical
+isolator is placed ... before the vapor cell ... A plano-convex lens (L1)
+... is placed after the optical isolator to focus the beam"). The 993 nm
+focus sits near the cell's lower corner on the detection side, at the
+f = 18 mm lens's object plane, so the collection lens re-images the
+fluorescence spot onto the PMT (EXPERIMENTER, 2026-08-03).
 
 **The beam path order and the EOM aperture, now sourced (2026-08-01).**
 EXPERIMENTER: no lens or telescope sits between the SolsTiS output and the
@@ -158,7 +166,8 @@ the beam into the cell and its twin (8) re-collimates it toward the
 flip-in power meter and the retro mirror (9). All six are visible and
 numbered on the annotated bench photograph (defense presentation, slide 9),
 and the f = 150 mm value is the same lens the Rajasree lineage measurement
-above rides on. PHOTO.
+above rides on. PHOTO. The pipes (5 and 7) reach inside the oven's foil
+wrap. EXPERIMENTER, 2026-08-03.
 
 ---
 
@@ -213,6 +222,7 @@ generator as well as a different tank.
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
+| Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
 | Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA — the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
@@ -253,6 +263,7 @@ controller top-right.*
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
 | Wavemeter | HighFinesse **Ångstrom WS-8** (WS/8L, unit 4039) | PHOTO |
 | Wavemeter autocal | every 8 minutes | PHOTO 2025-06-08 |
+| Wavemeter feed | fibre directly from the laser head | EXPERIMENTER 2026-08-03 |
 | Wavemeter short-term StdDev | 100 kHz (floating, 10 measurements) | PHOTO 2025-07-18 |
 
 **OPEN: the WS-8's pickoff point is not on record** (2026-08-03 audit). The
@@ -355,10 +366,11 @@ campaign has only FAT mtimes at 2 s granularity.
 | item | value | provenance |
 |---|---|---|
 | Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation | PHOTO 2025-07-01, 07-18 |
-| Temperature controller | 2-channel (the "two-zone oven" of the schematic and DATA.md; the channel-to-position pairing is not established here) | PHOTO 2025-07-18 |
+| Temperature controller | 2-channel; the rehearsal filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: EXPERIMENTER did not recognise it) | PHOTO 2025-07-18 |
 | Operating range | 70–130 °C across the campaign's condition grid | DATA (MANIFEST) |
 | Thermocouple/heater positions | **four**, marked 1, 2 (one end) and 3, 4 (the other) | PHOTO 2025-07-01 |
 | Rb condensation | visible on the cell windows when unwrapped | PHOTO 2025-07-01 |
+| Oven tilt | about 3° off the beam normal, keeping window back-reflections out of the retro path | EXPERIMENTER 2026-08-03 |
 
 <img src="apparatus/2025-07-01_cell_thermocouples.jpg" width="70%" alt="Unwrapped cell in its copper block, thermocouple positions 3 and 4 annotated, Rb condensation visible on the window">
 

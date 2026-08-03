@@ -24,6 +24,7 @@ The decisions at a glance, each argued in full in its numbered section:
 | What is left unmodelled? | Named mechanisms, each with the condition that would revive it | silence would read as completeness (§8) |
 | The 130 °C density point? | Promoted from diagnostic to the headline four-point lever | same configuration as the temperature ladder, session receipts checked (§9) |
 | The joint-refit choices (2026-08-03)? | Measured priors over seeded ones, per-session widths, no robustness row | each argued from the fits' own receipts (§10) |
+| Can a cold-start profile be quoted? | Not without a seeded twin, and the basin-finder variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
 
 ---
 
@@ -231,6 +232,10 @@ Most of the suite's guards are regression guards for mistakes that were made:
   ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428));
 - an asymptotic w0 → ∞ test, after an external red-team review found it untested
   ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).
+- an SVG canonical-number guard, because the hand-authored bench schematic
+  quoted a waist matching no value in the record and asserted the retro ratio
+  at 1, invisible to both the figure guards and the markdown scan
+  ([test_svg_canonical.py:1](../tests/test_svg_canonical.py#L1)).
 
 [M19](../rb5s6s/ramp_transit.py) came from an objection in
 [Camparo and Lambropoulos 1992](lit/camparo1992.md): a distribution of light
@@ -354,6 +359,42 @@ that box's own upper edge. The measurement is doing the constraining now,
 not an assumption, and the fit still wants a rate above what the
 measurement allows. Whether that gap is the axis or absorbed width physics,
 the question the module docstring poses, stays open.
+
+---
+
+## 11. A profile is only as good as its basin, so the basin-finder now leads (2026-08-03)
+
+The four-point joint refit's primary chain, started cold, parked in a false
+minimum 283,000 chi-squared units above the solution every other chain in
+the same run found, and its headline row and direction row were computed on
+that stuck profile. The run's own campaign-only column moves by four units
+of that 283,000 between the stuck solution and the true one, so the excess
+sits outside the campaign data, consistent with the rehearsal free centres,
+the exact warm-up failure mode the fitter's own docstring had documented
+from an earlier run, striking the primary variant this time. Two structural
+decisions follow.
+
+**Decision: the wing variant runs first and seeds every other family.** A
+cold start finds the true basin reliably only with the wing free, so the
+chain order in [run_stark_joint.py](../scripts/run_stark_joint.py) now puts
+the wing variant first and seeds the primary from its solution with the
+wing entries stripped, in addition to the primary's own cold chains, with
+the pointwise minimum kept. A seed can only improve a profile, so this
+closes the failure mode for every family at once rather than patching the
+variant it last struck.
+
+**Decision: no cold-start profile is quoted without a seeded twin.** The
+previous run's direction row compared a stuck profile against a converged
+one and printed 283,135 where the physics answer, measured in the true
+basin, is indifference. Any future variant added to the fit inherits the
+same rule: its profile enters the CSV only after a seeded chain from the
+best known basin has confirmed or improved its minimum.
+
+The corrected rerun produces the CSV of record. The invalid run's numbers
+never entered a document, and the incident's full account, including what
+the corrected numbers turn out to be and whether the earlier three-point
+primary needs the same correction, goes to the results report as addendum
+24 when that run lands.
 
 ---
 

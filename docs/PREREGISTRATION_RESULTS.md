@@ -1017,7 +1017,7 @@ does not read — a format fact, flagged for any future use.
   was not confabulation, it was the rehearsal epoch, and both attributions
   now stand with instrument-native evidence.
 - **An open notation question for the experimenter**: the rehearsal names
-  carry a two-zone temperature, `130C(90C-0.65A)`, and the pilot's `650ma`
+  carry a double temperature notation, `130C(90C-0.65A)`, and the pilot's `650ma`
   matches the `0.65A`. If the parenthetical is a reservoir / cold-point
   setpoint, it is the first numeric record of the cell's two-zone thermal
   configuration — and the density systematic (`N(T)`, the β_self lever)
@@ -1032,7 +1032,7 @@ The frozen archive was take four.
 **Standing**: pilot and prehistory are *outside the frozen archive* —
 different days, different or partly different hardware, alignment not
 guaranteed. They move no number. Their value is provenance (the ruler's
-history, the gain record, the two-zone notation, the LeCroy closure),
+history, the gain record, the double-temperature notation, the LeCroy closure),
 corroboration (the pilot echoes the width-flatness and P² laws), and
 candidacy for labelled exploratory use only — never silent inclusion.
 
@@ -1132,7 +1132,7 @@ so nobody mistakes the suggestive half for a result.
 **Open questions for the experimenter, surfaced by the data:** the ~32 ms
 satellite structure beside each `Def`-comb tooth; the identity of the pilot
 rulers' second channel (a 1.92 V DC level, 0.65% wiggle — power monitor?);
-the two-zone temperature notation `130C(90C-0.65A)` (which zone do the
+the double-temperature notation `130C(90C-0.65A)` (which reading do the
 campaign's quoted temperatures name?); and the three corrupt `4192…270mW`
 rehearsal files (binary content under a `.csv` name).
 
@@ -1159,7 +1159,7 @@ LeCroy's remembered unreliability that evening). Nothing misnamed, nothing
 to parse; the block simply holds 2 real traces of 5, both TrigTime-stamped.
 
 *Remaining from addendum 11's list: the pilot rulers' 1.92 V DC channel
-identity — still open. The two-zone temperature notation, the one carrying
+identity — still open. The double-temperature notation, the one carrying
 the density-systematic stakes, is resolved in addendum 15.*
 
 

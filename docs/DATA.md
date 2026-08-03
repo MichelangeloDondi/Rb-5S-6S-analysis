@@ -1,4 +1,4 @@
-# The 2025 archive: provenance, decoding, and quarantine
+# The 2025 archive: provenance, decoding, and exclusions
 
 *Everything in this file was established on 2026-07-10/11 by hash comparison
 of the original archive plus direct answers from the experimenter
@@ -80,7 +80,7 @@ session: stepwise cooling **110 → 90 → 70 °C** at 225 mW, each temperature
 with its own 5-repeat RF-off block and its own ruler block. (The campaign
 had a prehistory, surfaced 2026-07-24 and kept outside the frozen archive:
 EOM first trials 2025-07-04 03:37 JST; a 50-trace LeCroy dress rehearsal
-that evening — four peaks, 90/180/270 mW, `G=10^6`, two-zone temperature
+that evening — four peaks, 90/180/270 mW, `G=10^6`, double-temperature
 notation; then on the campaign morning the ruler's final commissioning
 04:18–06:33, `Initial attempts` → `Def`, and a four-power pilot sweep at
 06:54–07:11; results report addendum 9. Its files say `91c650ma`, but that
@@ -267,7 +267,7 @@ Total: **297 unique traces** (from 722 archive files). The census is pinned by
 The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 `review`. **Only `canonical` rows may enter headline fits.**
 
-## 5. Quarantine (pre-registered; never in headline fits)
+## 5. Excluded sessions (pre-registered; never in headline fits)
 
 - **`4154nm_130c_{025,125,225}mw*`** (19 unique traces): a preliminary attempt
   at the power sweep, taken 22:48 to 23:16 JST on 17 July, twenty-five minutes
@@ -296,16 +296,22 @@ The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 
 ## 6. What changed after the first pass, and why
 
-In July 2026, before this pipeline existed, a first-pass brief circulated with
-preliminary numbers from this dataset. Several were wrong. They are recorded
-here because they were seen by other people, so a reader who met them first
-needs to know which ones moved and what caused each error.
+In July 2026, before this pipeline existed, a short first-pass summary of
+this dataset circulated with preliminary numbers, and other people saw it.
+Several of its numbers were wrong. This section records which ones, so a
+reader who met them first knows what moved and why.
 
-The brief's central mistake was reading the frequency ruler. It seeded a scan
-rate of 0.49 MHz/ms by taking noise substructure for comb teeth, and read the
-two strong 6.25 MHz sidebands as "two triplets 270 to 280 ms apart". The comb
-teeth are actually about 147 ms apart, which is 0.043 MHz/ms, eleven times
-slower. Every absolute width in the brief inherited that factor.
+The error: the summary read the frequency ruler by eye, took noise
+substructure for comb teeth, and seeded a scan rate of 0.49 MHz/ms. Every
+absolute width it quoted inherited that rate.
+
+How it was found: when this pipeline's constrained comb fit read the same
+rulers (methods §3), the teeth came out about 147 ms apart, 0.043 MHz/ms,
+eleven times slower.
+
+What was learned, now structural: the frequency axis is never seeded by
+eye. Every block's rate comes from its own fitted comb, with the fit's
+error propagated into every width that uses it.
 
 Two later corrections moved headline numbers after this pipeline existed, and
 neither came from new data or a refitted model. Both were interval

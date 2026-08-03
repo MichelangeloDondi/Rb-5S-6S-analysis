@@ -1,17 +1,36 @@
 # The big picture
 
-*The map of this project. It opens with why the 993 nm line is worth
-characterising at all, then covers what we are trying to do, what already
-exists, what the 2025 dataset delivered, and what new measurements would each
-add, in the vapour cell or at an optical nanofibre. Everything quantitative
-below appears in [`RESULTS.md`](RESULTS.md) with its provenance.*
+*The map of this project. It opens with what each piece buys, then why the
+993 nm line is worth characterising at all, what we are trying to do, what
+already exists, what the 2025 dataset delivered, and what new measurements
+would each add, in the vapour cell or at an optical nanofibre. Everything
+quantitative below appears in [`RESULTS.md`](RESULTS.md) with its
+provenance.*
+
+## What each piece buys
+
+```
+  2025 archive (done)        model + bounds + method, w0-conditional
+        │
+        ├── beam-profile w0 ───────► every archive bound sharpens (no new physics run)
+        │
+        ├── fixed-lock cell session ► Δα and β would be measured (if run)
+        │         │
+        │         └── small waist ──► shape-based readout demonstrated vs the pull
+        │
+        └── nanofibre session ──────► pushing-dip model + surface shift,
+                                      read against the cell reference
+```
+
+Each arrow is independently valuable; nothing below the archive is required
+for the archive's own results to stand.
 
 ---
 
 ## 1. Why the line is worth characterising at all
 
 Stated at the size the evidence supports: two of the three items below are
-still calculations rather than results. Sections 5 to 7 say what the next
+still calculations rather than results. Sections 5 and 6 say what the next
 measurements would add.
 
 **An uncharacterised line in a well-motivated class — but not a better clock
@@ -494,21 +513,3 @@ The cell line of §3–4 is the in-vacuo reference against which every
 near-surface effect would be read. That is the connection between
 the two halves of the program: the cell work is what makes the nanofibre
 lineshapes *interpretable*.
-
-## 7. How the pieces depend on each other
-
-```
-  2025 archive (done)        model + bounds + method, w0-conditional
-        │
-        ├── beam-profile w0 ───────► every archive bound sharpens (no new physics run)
-        │
-        ├── fixed-lock cell session ► Δα and β would be measured (if run)
-        │         │
-        │         └── small waist ──► shape-based readout demonstrated vs the pull
-        │
-        └── nanofibre session ──────► pushing-dip model + surface shift,
-                                      read against the cell reference
-```
-
-Each arrow is independently valuable; nothing below the archive is required
-for the archive's own results to stand.

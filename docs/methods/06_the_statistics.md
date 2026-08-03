@@ -357,6 +357,18 @@ Three features of this dataset drive the choice:
 Bayesian machinery is used where it is the right tool — model *selection* — as
 the BIC ladder of §4.9.
 
+**A profile is only as good as its basin.** A profile scan inherits every
+weakness of the optimizer that walks it: a chain that starts cold and parks
+in a false minimum produces a smooth, confident, wrong curve, and nothing
+in the profile itself reveals the parking. This analysis learned that twice
+on the joint fit, first on a direction variant and then on the primary
+itself (a 283,000-unit false direction signal whose excess sat outside the
+campaign data, the campaign column moving by only four units of it). The working discipline, now structural in the fitter:
+the variant that finds the true basin most reliably runs first, every other
+variant is seeded from its solution in addition to running cold, the
+pointwise minimum over chains is what enters the profile, and no cold-start
+profile is quoted without a seeded twin (docs/RESEARCH_DECISIONS.md §11).
+
 ### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? — a BIC, and a cautionary one (M14)
 
 The hierarchical fit (§4.2) shares one $\sigma_\text{laser}(T)$ across the four

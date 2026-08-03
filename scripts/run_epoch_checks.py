@@ -59,7 +59,7 @@ dual-scan envelope being ~120x the linewidth. The "~32 ms satellites" were a
 peak-finding artifact (ACF shows no coherent companion in either epoch), and
 the three binary 4192@270 files are 0xFF never-written placeholders.
 
-The two-zone temperature notation 130C(90C-0.65A) is resolved -- the
+The double-temperature notation 130C(90C-0.65A) is resolved -- the
 parenthetical is the variac set point, the campaign temperature is the
 internal-thermocouple reading -- see addendum 15, which also gives the
 cold-spot-vs-reading offset its first empirical handle.

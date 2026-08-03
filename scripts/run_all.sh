@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Reproduce every committed results/*.csv, figure, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). Run from the repo
+# Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
+# already-committed data_raw/ (see README.md "Reproduce"). Not everything: the
+# joint three-session Stark bound (run_stark_joint.py) is a long profile run
+# with an extra data dependency and is invoked on its own, and the other
+# late-numbered analyses that read only committed CSVs are checked by the test
+# battery rather than re-run here. Run from the repo
 # root with the project's virtualenv active. annotate_results_status.py must
 # run LAST: it appends the machine-readable status column read by every other
 # consumer of results/*.csv.
