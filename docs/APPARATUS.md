@@ -441,31 +441,43 @@ acquisition drift, which the archive puts two orders below.*
 > to extract: `scripts/run_wavemeter_reconstruction.py` pulls the trace out by
 > colour and calibrates against the plot's own ticks.
 >
-> The record is not a drift. It is a sequence of about a dozen re-locks, each
-> kicking the frequency up and relaxing back, so the 0.19 MHz/min in the table
-> is a straight line through a sawtooth rather than a rate the laser holds.
+> The record is not a drift. It is a sawtooth. Between two re-locks the servo
+> holds the laser onto a reference that is still settling thermally, so the
+> frequency ramps steadily through the whole interval, and a re-lock ends the
+> ramp with a step that takes about 2.6 s to complete. The 0.19 MHz/min in the
+> table is a straight line through that sawtooth rather than a rate the laser
+> holds. The fitted ramp rates fall in magnitude across the record, from
+> −8.9 MHz/min in the first fitted interval to −0.4 MHz/min in the last, which
+> is the thermal settle itself.
 >
-> **The result is the settled floor: about 0.63 MHz.** That is the laser motion
-> left once the re-locks, their shared relaxation and the quadratic background
-> drift are removed (the 2026-08-02 residual-driven refinement, which beat the
-> older two-exponential form decisively at the same parameter count). The
-> number moved by about a third when the model improved, so it is quoted as a
-> model-dependent characterisation rather than a stable measurement. The
-> scatter settles on a timescale near nine minutes, so the floor is a
-> settled-state number and the early record is several times worse. Against
-> the campaign's AC-Stark bound (0.14 MHz since M23, 0.63 from the width-only
-> construction) the floor now sits at the width-only bound rather than above
-> it, which still says single-block centres cannot beat the averaged bounds.
-> See `figures/fig14_wavemeter_reconstruction.png`.
+> **The result is the settled floor: 0.62 MHz.** That is the laser motion left
+> once the re-lock steps and the per-interval ramps are removed. It is the one
+> number that survived the 2026-08-03 replacement of the model, which moved it
+> only from 0.63 to 0.62 while retiring everything else the module reported.
+> The scatter settles on a timescale near 1.3 min, so the floor is a
+> settled-state number and the first minute of the record is several times
+> worse. Against the campaign's AC-Stark bounds carried to the laser axis
+> (0.13 MHz from the joint fit, 0.32 MHz from the width-only construction)
+> the floor sits above both, which says single-block centres cannot beat the
+> averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`.
 >
-> **What this record does not measure.** The adopted relaxation constant is
-> 353 min with roughly 30% local uncertainty and a 250 to 550 min spread
-> across restarts, one long thermal timescale rather than a resolved pair, so
-> any agreement with the 97 min the timestamp audit fitted to the traces would
-> still be coincidence. The event count is good to an order of magnitude only. An
-> earlier version of this module reported 42 events and a slow constant of
-> 88 min; both were artifacts of fitting with the noise held constant, and both
-> are withdrawn.
+> **The event census.** The kick finder flags 12 candidates. The first falls
+> inside the opening 0.4 min the likelihood excludes, so 11 are testable. Of
+> those, 8 step the frequency up by more than 1 MHz and are re-locks proper,
+> 1 steps it **down** by 1.1 MHz, and 2 do not step at all within 0.2 MHz.
+> The two null events are the end of a steep ramp, which the finder reads as a
+> jump. So the record supports roughly ten re-locks, one every five to seven
+> minutes, which is what the apparatus record describes.
+>
+> **What this record does not measure.** No relaxation time constant, of any
+> kind. The earlier reading had every re-lock relaxing back on one shared
+> 353 min constant, and it was replaced on 2026-08-03 when its residual failed
+> a whiteness test that the sawtooth passes (preregistration addendum 25). The
+> two published relaxation constants, 88 min and then 353 min, are both
+> withdrawn, and so is any agreement with the 97 min the timestamp audit fitted
+> to the traces. The event count is good to an order of magnitude only. An
+> earlier version of this module reported 42 events, an artifact of fitting
+> with the noise held constant.
 >
 > **A visually apparent sub-minute envelope on the 06-11 LongTerm screenshots
 > is not evidence of laser modulation (2026-08-02).** IMG_2504 (23 min) and

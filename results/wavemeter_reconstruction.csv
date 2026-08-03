@@ -1,10 +1,18 @@
 quantity,key,value,unit,status
 record_length,2025-06-11,53.8,min; digitised from the screen photograph,DIAGNOSTIC
 scan_band_width,2025-06-11,19.3,"MHz; the scan modulation, laser axis",DIAGNOSTIC
-settled_noise_floor,2025-06-11,0.63,"MHz; THE RESULT. unmodelled laser motion once re-locks, their relaxation and the shared background drift are removed; moved down about a third at the 2026-08-02 mean-model refinement (residual structure absorbed into a better mean, not noise); see the module docstring",DIAGNOSTIC
-noise_settling_time,2025-06-11,9.1,min; the scatter itself settles on this timescale,DIAGNOSTIC
-n_relock_events,2025-06-11,12,"count; order of magnitude only, one per 5-7 min, consistent with the apparatus record; unaffected by the 2026-08-02 mean-model refinement (the kick finder did not change)",DIAGNOSTIC
+settled_noise_floor,2025-06-11,0.62,"MHz; THE RESULT. unmodelled laser motion once the re-lock steps and the per-interval ramps are removed; the one quantity that survived the 2026-08-03 replacement of the relaxation model by the sawtooth (0.63 before, 0.62 now); see the module docstring",DIAGNOSTIC
+noise_settling_time,2025-06-11,1.27,min; the scatter itself settles on this timescale. much shorter than the superseded model's 9.1 min because the ramps now carry the early structure the noise term used to absorb,DIAGNOSTIC
+n_relock_events,2025-06-11,12,"count; candidate events from the kick finder, which did not change at the 2026-08-03 replacement. order of magnitude only, one per 5-7 min, consistent with the apparatus record",DIAGNOSTIC
+n_modelled_steps,2025-06-11,11,"count; the candidates the sawtooth can test. the first kick at 0.22 min falls inside the excluded opening 0.4 min, so it has no fitted interval before it",DIAGNOSTIC
+n_upward_relocks,2025-06-11,8,"count; modelled steps above +1 MHz, the re-locks proper",DIAGNOSTIC
+n_downward_steps,2025-06-11,1,count; modelled steps below -1 MHz. the superseded model could not express one: its amplitudes were bounded non-negative,DIAGNOSTIC
+n_null_events,2025-06-11,2,"count; flagged events whose modelled step is within 1 MHz of zero, i.e. the end of a steep ramp rather than a re-lock",DIAGNOSTIC
+relock_rise_time,2025-06-11,0.0428,"min; ONE shared rise time for the step at every re-lock (logistic width). about 2.6 s, roughly one digitised pixel, so the record resolves the step as fast but not as instantaneous",DIAGNOSTIC
+ramp_rate_first_interval,2025-06-11,-8.87,MHz/min; the fitted ramp of the first fitted inter-lock interval. these per-interval ramps replace the superseded model's record-wide drift and curvature,DIAGNOSTIC
+ramp_rate_last_interval,2025-06-11,-0.43,MHz/min; the fitted ramp of the last interval. the fall in magnitude across the record is the thermal settle,DIAGNOSTIC
 pull_width,2025-06-11,1.000,dimensionless; 1.0 means the settling-noise model is right,DIAGNOSTIC
-relaxation_tau,2025-06-11,353.1,"min; ONE shared re-lock relaxation constant (superseded a two-timescale form the record could not resolve, see the module docstring); still loosely pinned, local SE ~30%, comparably good fits found from ~250 to ~550 min",DIAGNOSTIC
-background_drift,2025-06-11,-1.437,"MHz/min; shared linear term of the record-wide background (NOT the campaign held-lock drift, a different record/script)",DIAGNOSTIC
-background_curvature,2025-06-11,0.01290,"MHz/min^2; shared quadratic term, the leading correction to treating the ~53 min background as linear -- the term whose absence was the biggest defect of the superseded model",DIAGNOSTIC
+residual_rms,2025-06-11,0.660,"MHz; over the fitted points, against the record's own kick-free scatter of 0.55 MHz",DIAGNOSTIC
+residual_runs_z,2025-06-11,-0.21,"dimensionless; Wald-Wolfowitz runs statistic on the residual signs. the superseded relaxation model sat at -6.3, which is what retired it",DIAGNOSTIC
+residual_acf1,2025-06-11,0.108,"dimensionless; lag-1 autocorrelation of the residual, 0.68 under the superseded relaxation model",DIAGNOSTIC
+nll,2025-06-11,26.156,"dimensionless; negative log-likelihood at the optimum, 28 parameters on 481 points. not comparable to the superseded model's 259.3 as a number to prefer, since the parameter counts differ; the whiteness of the residual is what decided between them",DIAGNOSTIC

@@ -136,6 +136,20 @@ would add:
   depends on collection geometry that would have to be measured in the
   same session. The fixed lock alone does not reach this.
 
+**A tunable-drive campaign (options map, not a plan)**, mapped in
+[FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md): the drive
+laser is tunable, so the same machinery would reach other rubidium
+two-photon lines. Running it on the 778 nm reference line, where other
+groups have already measured the environmental coefficients and the magic
+wavelength, would calibrate the method against known values rather than
+add a coefficient. Measuring the 760 nm 7S line would re-derive on this
+bench the external rate that the expected self-broadening of the 993 nm
+line is currently anchored to, and would turn the computed van der Waals
+ratio behind that anchor from an input into something the data test.
+Across three or more rungs the per-line coefficients would become scaling
+laws in the principal quantum number, which discriminate a calculation
+more sharply than any single coefficient does.
+
 **A nanofibre extension**, sketched in
 [BIG_PICTURE.md](BIG_PICTURE.md) §6 and not yet specified as a session:
 the same geometric-closure law read in an evanescent field, where the

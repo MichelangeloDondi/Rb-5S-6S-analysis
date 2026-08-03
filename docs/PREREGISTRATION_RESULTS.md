@@ -52,6 +52,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
 | The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-14x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
 | The v3.2.0 light-shift bound 0.151 MHz was **basin-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units | addendum 24 |
+| The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 ACF 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -118,6 +119,7 @@ re-open a fitted result.
   - [Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested](#postscript-to-addendum-18--the-same-lens-on-the-power-axis-and-an-assumption-nobody-had-tested)
 - [Addendum 23, 2026-08-03 — the 1.67x anomaly was a factor-of-two of our own](#addendum-23-2026-08-03--the-167x-anomaly-was-a-factor-of-two-of-our-own)
 - [Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data](#addendum-24-2026-08-03-the-light-shift-bound-was-reading-a-starting-point-not-the-data)
+- [Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations](#addendum-25-2026-08-03-the-wavemeter-record-is-a-sawtooth-not-a-sequence-of-relaxations)
 
 ---
 
@@ -2490,3 +2492,109 @@ row, because all of them lived inside the same basin. It was caught by a
 number that could not be physical, and only because a robustness check
 was re-armed that compared two chains which happened to have parked in
 different places.
+
+---
+
+## Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations
+
+**What the module claimed.** `scripts/run_wavemeter_reconstruction.py` (M22)
+digitises the 2025-06-11 wavemeter photograph and fits the trace. Since
+2026-08-02 it read the record as twelve re-locks, each kicking the frequency up
+and then relaxing back on ONE shared time constant of 353 min, riding on a
+record-wide quadratic background of drift and curvature, with a
+three-parameter settling noise model on top. Nineteen parameters, fitted by
+twenty restarts of L-BFGS-B over all nineteen at once. The number it published
+was the settled floor on unmodelled laser motion, 0.63 MHz.
+
+**What a model comparison found.** Fourteen alternatives were fitted against
+the same 481 points, the same noise model and the same likelihood, with
+whiteness of the residual as the gate rather than likelihood alone. The
+relaxation model failed on four counts.
+
+1. Its residual is not white. Lag-1 autocorrelation 0.68, and a runs test at
+   z = -6.3, which is 172 sign runs where 241 are expected. Those are long
+   same-sign stretches, the signature of a mean function that is the wrong
+   shape rather than a noisy one.
+2. Its optimiser is not stable. The best of twenty restarts moved by 19.8 in
+   negative log-likelihood across five seeds. That is larger than the gap
+   between the models the fit was being used to choose between, so the
+   published number was partly reporting where its own search started.
+3. Four of its twelve kick amplitudes do essentially nothing. Two sit exactly
+   at zero and two more below 0.6 MHz, so a third of the events the model
+   claims to describe are not being described by it.
+4. Its relaxation cannot be resolved by this record in principle. A 353 min
+   constant on a 54 min record decays by 14% end to end, which is a straight
+   line wearing a curve's clothes.
+
+**What replaces it.** A sawtooth. Between two re-locks the servo holds the
+laser onto a reference that is itself settling thermally, so the frequency
+ramps steadily through the whole interval at a rate that interval sets for
+itself, and a re-lock ends the ramp with a step of finite rise. The fit is a
+free level and a free ramp rate for each inter-lock interval, one shared rise
+time for every step, no relaxation term, and the same three-parameter noise.
+Twenty-eight parameters. The twelve detected kicks cut the record into
+thirteen intervals, but the first kick lands at 0.222 min, inside the opening
+0.4 min the likelihood already excluded as a digitisation edge effect, so
+twelve intervals are fitted and eleven steps are measured.
+
+**How it is fitted.** By profiled likelihood. Hold the rise time fixed and the
+mean is linear in its twenty-four levels and ramps, so those are solved in
+closed form by weighted least squares inside the objective and the outer search
+covers four numbers: the rise time and the three noise parameters. A four
+dimensional search replaces a nineteen dimensional one, which is what removes
+defect 2 above rather than merely reducing it.
+
+**Its numbers.** Residual RMS 0.660 MHz against the record's own kick-free
+scatter of 0.55 MHz in the quiet tail. Runs test z = -0.21, that is 239 runs
+where 241 are expected. Lag-1 autocorrelation 0.11. Pull width 1.000, so the
+noise model is still right. Shared rise time 0.043 min, about 2.6 s, roughly
+one digitised pixel. Settled floor 0.62 MHz. Ljung-Box over twenty lags is
+still elevated, driven by the samples within one decimated step of a kick,
+where the finder's mid-rise timing and the model's step disagree, so the
+residual is called white enough to quote from rather than white.
+
+**The event census, which the old model could not produce.** Its amplitudes
+were bounded non-negative and its kick finder only looks for upward jumps, so
+a downward step was unrepresentable. Of the eleven testable events, 8 step the
+frequency up by more than 1 MHz and are re-locks proper, 1 steps it down by
+1.1 MHz, and 2 do not step at all within 0.2 MHz. The two nulls are the end of
+a steep ramp, which the finder reads as a jump.
+
+**The background drift and curvature are retired as separate objects.** The old
+model carried a shared linear drift of -1.44 MHz/min and a shared curvature of
+0.0129 MHz/min^2 across the whole record, and the curvature was the term whose
+absence had been called the biggest defect of the model before that one.
+Neither survives. The per-interval ramps absorb both: they fall in
+magnitude from -8.9 MHz/min in the first fitted interval to -0.4 MHz/min in
+the last, and that fall IS the thermal settle the quadratic was standing in
+for. Reading the settle interval by interval is what removes the need for a
+record-wide background term, so the two rows are dropped from the output rather
+than updated.
+
+**What moves.** `results/wavemeter_reconstruction.csv` loses its
+`relaxation_tau`, `background_drift` and `background_curvature` rows and gains
+the rise time, the event census, the residual whiteness statistics and the
+likelihood. `figures/fig14_wavemeter_reconstruction.png` panel (b) now
+describes steps and ramps and prints the real event count, and panel (c) prints
+the new floor. `figures/fig15_drift_story.png` panel (a) draws the same model
+through its overlay and its label follows. `docs/APPARATUS.md` section 6
+carries the new reading, the census and the floor.
+
+**What does not move.** Nothing else in the repository. This record is a
+photograph of a preliminary session five weeks before the campaign, it is
+tagged diagnostic in the results tree, and no physics number rides on it. Every
+headline bound stands untouched: the self-broadening coefficient, the
+light-shift bound, the laser-width bound, the collisional widths, the frequency
+ruler. The floor moved from 0.63 to 0.62 MHz, which is inside the rounding the
+apparatus document already used, so even the one number this module publishes
+did not really move. What moved is the story the record tells about the laser,
+from a servo that overshoots and relaxes to a servo that holds a reference
+which is itself still settling.
+
+**Lesson.** A likelihood comparison between two wrong shapes will pick one of
+them. The relaxation model was chosen on 2026-08-02 over its own predecessor by
+a decisive likelihood margin at equal parameter count, and the residual audit
+that chose it recorded the surviving lag-1 autocorrelation and attributed it to
+the noise model rather than the mean. It was the mean. A whiteness gate
+applied first would have rejected both forms and asked for a third, which is
+what it did once it was applied.
