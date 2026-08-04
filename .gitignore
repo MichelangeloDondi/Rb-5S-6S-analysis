@@ -63,6 +63,14 @@ docs/*red_team*
 # itself (names the PI, referees, career strategy). 2026-07-27: three such
 # files were sitting UNIGNORED because the glob above assumes an underscore.
 docs/*redteam*
+# 2026-08-04: both globs above are anchored at docs/, and a .gitignore `*` does
+# not cross a slash, so a red-team note filed one level down
+# (docs/notes/frequency_calibration_red_team.md) matched neither. A port carried
+# it into this tree on 2026-08-04 and it was held back afterwards only by
+# .git/info/exclude -- local to one clone, and it does not travel, which is the
+# same failure the block above was written for. These two lines travel.
+docs/**/*red_team*
+docs/**/*redteam*
 docs/ChatGPT*
 ChatGPT*
 docs/CV_*

@@ -132,6 +132,26 @@ QUANTITY_STATUS = {
         "Vsat_reh": "DIAGNOSTIC", "n_traces": "DIAGNOSTIC",
         "profile_point": "DIAGNOSTIC",
     },
+    # M28: the cross-campaign full-archive joint fit. Same construction as M23
+    # (one profiled kappa, the collisional term under a prior), over M25's
+    # trace set with the rulers excluded. The gate_* rows are the
+    # pre-registered acceptance checks of docs/notes/full_archive_fit_prereg.md
+    # and are diagnostics of the RUN, not of the atom.
+    "full_archive_fit.csv": {
+        "kappa_ub95": "BOUND", "S0_225mW_ub95": "BOUND",
+        "S0_270mW_ub95": "BOUND",
+        "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",
+        "kappa_pred": "CALIB", "S0_225mW_pred": "CALIB",
+        "direction_dchi2_max": "DIAGNOSTIC", "basin_gap_max": "DIAGNOSTIC",
+        "lopo_dchi2": "DIAGNOSTIC",
+        "beta_self_post": "PRELIM", "gamma_coll_post_130C": "PRELIM",
+        "sigma_laser_s": "PRELIM",
+        "reh_rate": "CALIB", "pilot_rate_scale": "CALIB",
+        "Vsat": "DIAGNOSTIC", "n_traces": "DIAGNOSTIC",
+        "qc_gate": "DIAGNOSTIC", "gate_": "DIAGNOSTIC",
+        "railed_": "DIAGNOSTIC",
+        "profile_point": "DIAGNOSTIC",
+    },
     "global_fit.csv": {
         "beta_self": "BOUND", "sigma_laser": "BOUND",
         "beta_modelform_syst": "BOUND", "beta_nscale_syst": "BOUND",
