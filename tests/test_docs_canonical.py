@@ -72,6 +72,17 @@ def _beta_bound_range():
     return f"{min(vals):.2f}", f"{max(vals):.2f}"
 
 
+def _source_headroom(rung: str) -> float:
+    """The source-class headroom row for one rung. Its key carries the rung and
+    then the class name, so it is matched on the rung prefix rather than on the
+    whole key: the class wording is prose that may be rewritten, and pinning a
+    number to a sentence would make the pin the thing that breaks."""
+    for r in csv.DictReader(open(RESULTS / "projections.csv")):
+        if r["quantity"] == "proj_source_headroom" and r["key"].startswith(rung):
+            return float(r["value"])
+    raise KeyError(f"no proj_source_headroom row for {rung}")
+
+
 def _const(name):
     from rb5s6s import constants as K
     return getattr(K, name)
@@ -255,6 +266,80 @@ CANONICAL = [
         # \s+ throughout: the docs wrap, so a hard space in the pattern would
         # miss a citation that happens to straddle a line break
         find=re.compile(r"five\s+sigma\s+needs\s+([0-9]+)\s+kHz\s+per\s+mTorr"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        # The per-rung light-shift ceilings and the two readings that hang off
+        # them. Same reason as the block above: each is quoted in the claims
+        # ledger and in the transitions map, and each rides on the archive's
+        # measured line width and on a differential polarizability, so a
+        # recompute of either moves all three and a stale copy would read as a
+        # drive power the physics does not allow.
+        name="993 nm light-shift ceiling at the archive geometry",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '993 nm, 5S to 6S')):.0f}",
+        # \s+ throughout: the docs wrap, so a hard space would miss a
+        # citation that happens to straddle a line break
+        find=re.compile(r"993\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="760 nm light-shift ceiling at the archive geometry",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '760 nm, 5S to 7S')):.0f}",
+        find=re.compile(r"760\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="778 nm light-shift ceiling at the archive geometry",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '778 nm, 5S to 5D5/2')):.0f}",
+        find=re.compile(r"778\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="7S adjudication margin at the 760 nm ceiling",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_7s_margin_at_ceiling', 'Wang read as FWHM')):.1f}",
+        find=re.compile(r"adjudication\s+keeps\s+a\s+ceiling\s+margin\s+of\s+([0-9.]+)"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="778 nm factor-two test margin at the 778 nm ceiling",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_778_margin_at_ceiling', 'factor-two convention error at 3 sigma')):.2f}",
+        find=re.compile(r"factor-two\s+test\s+drops\s+to\s+a\s+ceiling\s+margin\s+of\s+([0-9.]+)"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="778 nm source-class headroom over its ceiling",
+        value=lambda: f"{_source_headroom('778 nm, 5S to 5D5/2'):.1f}",
+        find=re.compile(r"([0-9.]+)\s+times\s+the\s+778\s+nm\s+ceiling"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        # The wide-scan pedestal add-on. Quoted in the ledger and in the
+        # transitions map, and every figure rides on the archive's own measured
+        # signal to noise, so a re-run of the QC layer moves all three.
+        name="Doppler pedestal width at the design temperature",
+        value=lambda: f"{float(_cell('projections.csv', 'input_pedestal_width', '130 C, 85Rb')):.0f}",
+        find=re.compile(r"([0-9]+)\s+MHz\s+wide\s+on\s+the\s+transition\s+axis"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="pedestal thermometry stacking time, four-pedestal comb",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_pedestal_thermometry_hours', 'to match the density scale, four-pedestal comb')):.1f}",
+        find=re.compile(r"pins\s+the\s+temperature\s+in\s+about\s+([0-9.]+)\s+hours"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="pedestal retro-ratio stacking time, four-pedestal comb",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_pedestal_rho_hours', 'to match the adopted prior, four-pedestal comb')):.1f}",
+        find=re.compile(r"reaches\s+the\s+adopted\s+retro\s+ratio\s+in\s+about\s+([0-9.]+)\s+hours"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),

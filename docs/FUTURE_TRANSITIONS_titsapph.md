@@ -304,7 +304,7 @@ asymptotically sit well below 7.
 |---|---|---|---|
 | 5S→6S | 993.418 nm | −1145 a.u. | sign under dispute, THEORY_NOTE §5 |
 | 5S→7S | 760.126 nm | +4372 a.u. | independent line list, Safronova 2004 |
-| 5S→5D₅/₂ | 778.104 nm | not computed here | J = 5/2, tensor term, contested near-resonant element |
+| 5S→5D₅/₂ | 778.104 nm | ≈ +28600 a.u., anchored not recomputed | J = 5/2, tensor term dropped, magnitude only |
 
 Two consequences. The magnitude is 3.8 times larger at 7S, and the ramp
 observables are powers of S₀ ∝ Δα, so at equal intensity 7S is the more
@@ -312,8 +312,42 @@ favourable line for the shape channel. The sign is opposite, and it is a
 prediction of the same sum-over-states machinery whose 6S sign is disputed. A
 bench that measured both signs would be testing that machinery's structure
 rather than adjudicating the 6S dispute, because a convention error would flip
-both together. 5D is left uncomputed on purpose (`polarizability.py`, Ti:Sapph
-ladder block header), and Hamilton's measurement is adopted instead.
+both together. 5D is left un-recomputed on purpose (`polarizability.py`,
+Ti:Sapph ladder block header), and Hamilton's measurement is adopted instead.
+
+**The anchored 5D entry, and what it is allowed to be used for.** The third row
+is not a sum over states. It is two statements with no free parameter, which is
+what the adopted measurement licenses. Hamilton's measured 776.179 nm magic
+wavelength is where Δα crosses zero. Moving from there to the 778.104 nm drive,
+Δα changes by the near-resonant 5P₃/₂–5D₅/₂ term evaluated with Hamilton's own
+measured 1.80 a.u. element, minus the change in α₅S, which the module computes
+and which is itself steep here because the drive sits 2 nm from the D2 line.
+Every slowly varying part of α(5D₅/₂) cancels between the two evaluations, so it
+never has to be known. The construction is scalar only, it drops the tensor term
+and the hyperfine dependence Hamilton measures, and it is evaluated at the drive
+and nowhere near the pole. It sizes a drive-power ceiling. It is not a
+polarizability and nothing else in this file uses it as one. Computed in
+[scripts/run_projections.py](../scripts/run_projections.py), carried with its
+assumption set in [results/projections.csv](../results/projections.csv).
+
+**What the three differentials cost in drive power.** They span a factor of
+twenty-five, and the light shift is what limits the drive long before the
+available power does. Fixing the ceiling at the power where the on-axis shift
+reaches one tenth of the width the archive measures, at the archive's own 64 µm
+waist and 0.94 retro ratio, gives the 993 nm ceiling of 332 mW, the 760 nm
+ceiling of 87 mW and the 778 nm ceiling of 13 mW. The 993 nm figure sits above
+the campaign's own 225 mW maximum, so that rung is not capped at all. The other
+two are, and because the two-photon rate goes as the square of the intensity, a
+width precision measured at the archive's power degrades in proportion when the
+drive is capped. On the 760 nm rung the projected self-broadening precision goes
+from about 8 to about 18 kHz per mTorr and the adjudication keeps a ceiling
+margin of 2.0, so it still holds and 6.7 repeats of the design would buy the
+uncapped precision back. On the 778 nm rung it goes from about 8 to about
+108 kHz per mTorr and the factor-two test drops to a ceiling margin of 0.12,
+which is the one result in this file the ceiling takes away. About 66 repeats would
+restore its power. The ceiling goes as the square of the waist, so a looser
+focus raises it, at the cost of transit width and of the density lever, and this
+file does not price that trade.
 
 **Magic wavelengths: a family that moves along the ladder.** The way the zero
 crossings of Δα move with n is a map in its own right, and the three rungs this
@@ -424,7 +458,7 @@ separately.
 
 Everything above is a physics menu. The host PI deciding bench time reads
 cost, yield and risk instead, so this section restates the same items in
-those four columns. Nothing below is scheduled, agreed or assigned. Every
+those columns, with the last naming the source class that reaches each rung's light-shift ceiling. Nothing below is scheduled, agreed or assigned. Every
 duration is [PLAN.md](PLAN.md)'s own where PLAN.md prices the block, and is
 marked as an estimate with its basis where PLAN.md does not. Every entry in
 the last column is a projection rather than a result, computed in
@@ -433,13 +467,44 @@ archive's own measured precision and PLAN.md's own session parameters, with
 the assumption set behind each figure carried in
 [results/projections.csv](../results/projections.csv).
 
-| item | bench cost | what it would return | what could come back empty | projected precision |
-|---|---|---|---|---|
-| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in |
-| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma |
-| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr on the self-broadening rate, a fourfold margin over what the adjudication needs |
-| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr, which is 20 percent of the published coefficient |
-| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates |
+| item | bench cost | what it would return | what could come back empty | projected precision | source that reaches the ceiling |
+|---|---|---|---|---|---|
+| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in | no line is driven, so no source question |
+| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, at 0.68 of the 993 nm ceiling of 332 mW, so this is the one rung the ceiling does not make it unnecessary. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the archive's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the archive's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
+| wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design pins the temperature in about 1.9 hours to where the vapour curve's 22-fold leverage keeps the implied density inside the 20 percent scale systematic, and reaches the adopted retro ratio in about 2.1 hours, both on the four-pedestal comb and both about sixteen times longer on a single component | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
+| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
+
+**The wide-scan pedestal, and what the archive can already say about it.** The
+retro-reflected drive makes two kinds of two-photon event. One photon from each
+beam gives the Doppler-free line every number in this repository is fitted to.
+Two photons from the same beam give a line broadened at the full 2kv, 942 MHz
+wide on the transition axis at 130 °C, which sits under the narrow line as a
+pedestal. Its width goes as the square root of the temperature and its area
+against the narrow line's area is 4ρ/(1 + ρ²), so one wide trace measures the
+gas temperature and the retro power ratio together. Both are quantities this
+archive currently adopts rather than measures.
+
+The cost is an acquisition setting. A gigahertz-wide feature does not care about
+a megahertz of lock drift, so the scan needs no lock quality, no new source and
+no new detection path, which is why the table above prices it against any
+session that runs at all rather than against a session of its own. What it does
+cost is time on the stack: the design pins the temperature in about 1.9 hours
+and reaches the adopted retro ratio in about 2.1 hours, both on the comb of four
+hyperfine pedestals, and both about sixteen times longer if only one component
+is fitted.
+
+The archive-side honesty. The 2025 windows span 85 MHz on the transition
+axis, a tenth of the pedestal, so every archival trace samples the pedestal's
+flat top and the linear baseline absorbs it as an offset. The archive can
+therefore bound the retro ratio through that offset and can say nothing at all
+about the width, which needs the session. Two further conditions travel with the
+projection. The pedestal has to be separated from the scattered-light
+background, which is not modelled, and the area ratio peaks at ρ equal to one
+where its slope in ρ vanishes, so it is a weak lever on the very quantity it
+measures and is symmetric under ρ to 1/ρ. Computed in
+[scripts/run_projections.py](../scripts/run_projections.py).
 
 **The beam profile.** `PLAN.md` §3 puts w₀ in Tier 0, the systematic floor,
 because S₀ ∝ 1/w₀² and the transit width rides on w₀, so a 10% waist error is

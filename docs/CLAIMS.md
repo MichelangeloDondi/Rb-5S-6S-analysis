@@ -114,6 +114,17 @@ two-photon sum frequency, twice the laser frequency.
   of those assumptions, the cold-spot lag on the density and the
   fourfold cut in block scatter, are the ones a session would have to
   earn rather than inherit.
+- No independent calculation of the 5D differential polarizability. The
+  778 nm value section 3 quotes is anchored on a published magic
+  wavelength and shaped by one near-resonant term, scalar only, so it
+  sizes a drive-power ceiling and does not stand as a polarizability.
+- No claim that the multi-line projections of section 3 hold at the
+  archive's own drive power on every rung. Two of the three ceil below
+  it, and the delivered precisions are quoted at both readings.
+- No temperature and no retro ratio measured from the Doppler pedestal
+  here. The 2025 windows are a tenth of the pedestal width, so the
+  archive holds a flat offset and not a shape, and section 3's pedestal
+  figures are projections for a wide scan nobody has taken.
 
 ## 3. What another campaign would convert or add
 
@@ -204,6 +215,79 @@ of that span,
 and it would need the perturbing beam mode matched to the drive before
 the closed-form shift distribution applies at all.
 
+Those three projections assume the drive can run at the archive's own
+225 mW, and on two of the three rungs it cannot. The differential
+polarizability that sets the light shift is 1145 atomic units at
+993 nm, 4372 at 760 nm and about 28600 at 778 nm, so the power at
+which the shift stops being a correction to the width and becomes a
+feature of the lineshape differs by a factor of twenty-five across the
+ladder. Reading that ceiling as the power where the on-axis shift
+reaches one tenth of the measured width, at the archive's own waist
+and retro ratio, gives the 993 nm ceiling of 332 mW, the 760 nm
+ceiling of 87 mW and the 778 nm ceiling of 13 mW. The first sits above
+the campaign maximum, so nothing above it changes. The other two do
+not, and the two-photon rate falls as the square of the intensity, so
+a width precision measured at the archive's power degrades in
+proportion once the drive is capped. On the 7S rung the delivered
+precision goes from about 8 to about 18 kHz per mTorr and the
+adjudication keeps a ceiling margin of 2.0, which needs no extra
+session length, and 6.7 repeats of the five-block design would buy the
+uncapped precision back. On the 778 nm rung the delivered precision
+goes from about 8 to about 108 kHz per mTorr and the factor-two test
+drops to a ceiling margin of 0.12, so the calibration rung loses the
+one test it had power for. Recovering that power needs about
+66 repeats of the design, and recovering the uncapped precision needs
+about 288. All of this is envelope class, conditional on the archive's
+block scatter being signal limited at the ladder maximum, which is the
+conservative reading of a scatter averaged over a whole ladder. The
+ceiling goes as the square of the waist, so a looser focus raises it
+and buys back signal at the cost of transit width and of the density
+lever, which is the trade the 778 nm rung would have to make and which
+this projection does not price.
+
+For the bench owner choosing a source rather than a line, those
+ceilings decide the hardware. At 993 nm the ceiling sits above what
+the bench delivers, so the titanium sapphire stays necessary, and the
+diode-seeded ytterbium fibre alternative would be working at the
+short-wavelength edge of its gain band with a reach this repository
+cannot confirm. At 760 nm the ceiling is a third of what the bench
+already delivers, so an extended-cavity diode with a tapered amplifier
+is enough and the titanium sapphire is not required, although no held
+source here states that amplifier's output at this wavelength. At
+778 nm the compact-clock community's own architecture, a 1556 nm fibre
+amplifier with second-harmonic generation, puts 30 mW on a cell in a
+held demonstration, which is 2.3 times the 778 nm ceiling, so the
+titanium sapphire is not required there either. Those source figures
+are calibration class, conditional on the delivered powers being read
+as demonstrated operating points rather than as class maxima.
+
+**A wide-scan add-on**, which costs an acquisition setting and no
+hardware. Two photons taken from the same beam drive a two-photon line
+that is first-order Doppler broadened, 942 MHz wide on the transition
+axis at 130 °C, sitting under the narrow line the archive fits. Its
+width is a thermometer for the atoms actually in the beam, and its area
+against the narrow line's area is 4ρ/(1 + ρ²) in the retro power ratio,
+so one wide trace carries both. For everyone using the
+density-conditioned numbers, the projection is that stacking wide scans
+pins the temperature in about 1.9 hours well enough that the vapour
+curve's 22-fold leverage leaves the implied density inside the
+20 percent scale systematic it would check, and about 31 hours if only
+one hyperfine component's pedestal is fitted rather than the comb of
+four. For everyone using the light-shift prediction, the same design
+reaches the adopted retro ratio in about 2.1 hours on the comb and about
+33 hours on one component, which converts an adopted prior into a
+same-trace measurement rather than improving on one. Two conditions
+travel with both. The pedestal has to be separated from the
+scattered-light background, which the projection does not model, and the
+area ratio peaks at ρ equal to one where its slope vanishes, so it is a
+weak lever on exactly the quantity it measures. The thermometer measures
+the temperature of the atoms in the beam and not the cold spot, so it
+pins the temperature the density curve is evaluated at and leaves the
+cold-spot lag to the absorption channel. The 2025 archive cannot do
+either measurement, because its own scan window is 85 MHz on the
+transition axis, a tenth of the pedestal width, so it samples the
+pedestal's flat top and its linear baseline absorbs it.
+
 **A guided-mode extension**, sketched in
 [BIG_PICTURE.md](BIG_PICTURE.md) §6 and budgeted in
 [notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md),
@@ -280,12 +364,24 @@ it at, with the condition attached:
 - The 778 nm 5D line would calibrate the passive lineshape method
   against the best-measured coefficients in the field, adding no new
   coefficient by design. The audience is anyone deciding whether to
-  trust the method on a line where nothing is known.
+  trust the method on a line where nothing is known. The condition is
+  the one section 3 states: at this waist the light shift caps the
+  drive at 13 mW, and at that power the calibration needs about seventy
+  times the session length before it can catch even a convention error.
+  That audience is served by a longer session or a looser focus, not by
+  the design as it stands.
 - Three or more rungs together would turn per-line coefficients into
   scaling laws in the principal quantum number, which discriminate a
   calculation more sharply than any single value. The audience is the
   polarizability and collision theory the single-line results can only
   poke at.
+- The wide-scan pedestal rows serve everyone who uses a
+  density-conditioned number in this archive, which is every collisional
+  coefficient and every rate quoted per 10¹² cm⁻³, and separately
+  everyone who uses the light-shift prediction, since the retro ratio it
+  rides on is adopted here and would become measured. The add-on rides
+  on any session that runs at all, so it has no audience of its own to
+  justify it.
 - The guided-mode family is section 3's last entry, and none of it is
   claimable from the 2025 data.
 
