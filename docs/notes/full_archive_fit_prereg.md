@@ -271,3 +271,57 @@ more peaks, or a basin gap that survives seeding.
    this module ships. They are deliberately untouched until then, because the
    gloss guard reads the pipeline line and would fail on a module that has not
    run.
+
+---
+
+## Outcome of the first full run, 2026-08-04
+
+The run took 273 minutes over 231 traces and 296,949 points and wrote
+`results/full_archive_fit.csv`. Seven of the eight pre-registered gates
+passed. What it found, stated against the specification above rather
+than against any headline.
+
+**The basin discipline works when it is structural from birth.** The
+worst gap between a cold chain and its seeded twin, across five
+families, is 0.78 units of chi square. The same measurement on the
+predecessor's uncorrected run was 283,140. Nothing in this run had to
+be diagnosed after the fact, which is the whole point of ordering the
+families before the first fit rather than after the first surprise.
+
+**The profile minimum sits at zero shift with no preference for any
+positive value**, as in the predecessor. The 95% upper limit is
+kappa < 0.943 MHz per W, which is S_0(225 mW) < 0.212 MHz. The
+campaign rows alone give 0.639, and the power-ladder rows alone, which
+are the predecessor's own trace set inside this fit, give 0.696. The
+difference between 0.696 and 0.943 is what the temperature ladder adds,
+and it loosens rather than tightens, so the temperature rows mildly
+prefer a positive shift.
+
+**Three constructions now bound the same quantity** and this note does
+not adjudicate between them. The predecessor's three-session fit gives
+0.268 MHz, the free-coefficient archive fit gives 0.217, and this run
+gives 0.212. They differ in trace set, in whether the collisional
+coefficient is a prior or free, and in whether the rulers are excluded.
+Which is the number of record is a judgement about what the archive
+claims, not an outcome of any single fit, and it is left open.
+
+**Gate B4 failed, and the failure is the most interesting result here.**
+The gate asks that no peak's posterior collisional coefficient sit more
+than three standard deviations from its four-point prior. Peak 4192
+sits at 3.77. The other three sit at 2.29, 0.75 and 1.19, and every one
+of the four is on the same side: the full archive wants more collisional
+width than the model-independent width-slope prior supplies. A single
+peak at 3.8 sigma is a fluctuation. Four peaks all high, with a mean
+near 2 sigma, is a coherent pull, and the predecessor saw the same sign
+on the same peak. Two readings are available and this note does not
+choose between them. Either the prior understates the coefficient,
+which would matter for the collisional bound, or the fit is absorbing
+into the collisional term some broadening that belongs elsewhere, most
+plausibly at the hot end where the temperature ladder was added. A
+per-temperature decomposition of the tension would separate them, and
+that is the next thing this module should be asked.
+
+**The detector saturation nuisances railed at their ceilings for both
+instruments**, which the specification anticipated and classified as
+expected rather than flagged, because a saturation scale at its upper
+bound is what a linear detector looks like.
