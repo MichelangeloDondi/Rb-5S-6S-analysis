@@ -778,6 +778,13 @@ rig and method.
   per wavelength.)
 - Cell/oven: 5D/7S may want *lower* density than 6S (they are stronger / closer to
   resonance) — the fixed-lock session shot-list temperature range would differ per transition.
+- The ruler comb itself: in the archive the scan clips one third-order tooth window on
+  every recorded trace, and at the fitted drive depth (2β = 1.62) a fully covered
+  third-order tooth still sits below the per-trace fit residual (pre-registration
+  amendment 4). Widening the scan by about one tooth spacing per side and deepening the
+  EOM drive until J₃² clears the noise would give every calibration trace seven standing
+  teeth instead of six: one more spacing constraint per trace, and outer-slot checks
+  that no longer run at the ramp edge.
 
 *References for §4 are collected in `docs/LITERATURE.md` §8 (2024–2026 landscape).
 Source: the local literature-intake landscape note (untracked).*

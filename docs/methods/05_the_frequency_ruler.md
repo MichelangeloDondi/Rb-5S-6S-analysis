@@ -94,7 +94,11 @@ equally:
 
 *A representative ruler trace with its seven-tooth comb fit (left) and the
 pooled sweep-linearity map (right): the local rate never departs from the
-block rate by more than 0.3% in any well-sampled window.*
+block rate by more than 0.3% in any well-sampled window. Six of the seven
+teeth stand above this trace's fit residual, and the panel states why the
+seventh does not: the third-order pair carries about 2% of the first-order
+power at this modulation depth, and the scan end clips the outermost window,
+as on every recorded ruler (pre-registration amendment 4).*
 
 ### The comb amplitudes — and the pure-phase-modulation null
 

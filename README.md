@@ -196,9 +196,12 @@ lineshape asymmetry ([methods §3](docs/methods/05_the_frequency_ruler.md)):
   <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its seven-tooth comb fit, and the sweep-linearity check, flat to within 0.3 percent in the well-sampled windows">
 </p>
 
-*Left: one ruler trace with its seven-tooth comb fit. Right: the
-sweep-linearity check, local rate against block rate, flat to within 0.3% in
-the well-sampled windows.*
+*Left: one ruler trace with its seven-tooth comb fit, six teeth standing above
+the trace's own fit residual. The panel states why the seventh is below it: at
+this modulation depth the third-order pair carries about 2% of the first-order
+power, and the scan end clips the outermost window. Right: the sweep-linearity
+check, local rate against block rate, flat to within 0.3% in the well-sampled
+windows.*
 
 ## Results at a glance
 

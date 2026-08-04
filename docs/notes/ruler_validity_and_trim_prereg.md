@@ -208,6 +208,10 @@ If the eligible set is empty, the figure is skipped and the reason is printed.
 An empty set would be a finding about the ruler population and would go to the
 owner rather than being worked around by loosening a threshold.
 
+The empty set fired. Amendment 4 records the finding, the two measured causes,
+and the owner's decision to relax the height clause to six standing teeth. The
+text above stands as written.
+
 ## 8. Licensing for the width-against-rate figure
 
 Each point on that figure needs a licensed scan rate and a licensed width. The
@@ -1363,3 +1367,78 @@ failure B5.9 named for the documents and it applies to the tables in the same
 way. `tests/test_results_fresh.py::test_committed_csvs_still_match_their_producers`
 is the test that says so, it compares against HEAD rather than the working tree,
 and it stays red until the recompute lands and is committed.
+
+# Amendment 4, 2026-08-04: the empty set fired, and the height clause is relaxed to six standing
+
+## D1. What section 7 returned
+
+Zero of the 104 fitted rulers are eligible under the rule as written. The
+census by first failing clause: 54 fail the tooth-labelling verdict, 37 have a
+tooth below the fit residual, 13 have a slot railed on its zero bound. The
+height clause is not merely selective, it is unsatisfiable. The tallest
+weakest tooth in the whole population stands at 0.706 of its own fit residual
+(`rulers_p/4154nm_eom_before_1.csv`) against the 1.0 the clause requires. The
+standing-teeth census over all 104 combs: 21 traces stand on six teeth, 64 on
+five, 1 on four, 18 on three. No recorded ruler stands on seven.
+
+## D2. The two causes, both measured
+
+The first cause is the drive depth. Amendment A2 fixed the modulation index at
+2 beta = 1.62 from the height pattern itself, and at that depth the Bessel
+weights put the third-order pair at J3 squared over J1 squared = 1.7 per cent
+of the first-order power. On the trace section D4 selects, the k = -3 window
+is covered in full by the kept samples and its tooth still stands at only 0.63
+of the fit residual. The amplitude cause binds even where the span cause does
+not.
+
+The second cause is the ramp span, raised by the owner and confirmed by
+measurement. For every fitted ruler, take the kept sample interval after any
+recorded trim, the recorded `t0_ms` and `delta_ms`, and ask whether each outer
+tooth window, centre plus or minus half a spacing, lies inside that interval.
+Zero of the 104 combs cover both outer windows in full. The k = -3 window is
+clipped by the ramp edge on 52 traces, the k = +3 window on 36, both on 16.
+The median margin from the tighter outer slot centre to its ramp edge is 0.18
+spacings, against the 0.50 a full window needs. The ramp is short enough that
+one third-order window is always partial, and the drive is shallow enough
+that a fully covered third-order tooth still sits below the noise.
+
+## D3. The decision
+
+The finding went to the owner as section 7 requires, with three options: relax
+the clause to six standing, relax it and overlay the fitted Bessel envelope,
+or drop the figure. The owner chose six standing with no envelope, with the
+caption stating why the third order is below the noise. The owner also named
+the span cause before the measurement confirmed it.
+
+The amended clause: at least six of the seven fitted heights stand strictly
+above the fit residual standard deviation, none railed. Every other clause is
+unchanged, the clean-pass verdict, the ladder having taken no action, no
+quarantine, the chi-squared ceiling, the ranking by the smallest of the seven
+heights over the residual, and the untrimmed preference. The ranking keeps the
+property the rule was built for, since a mirror in an outer slot cannot raise
+the smallest of seven heights. The panel caption carries the two causes as
+measured on the displayed trace.
+
+## D4. What the amended rule selects
+
+Seven traces are eligible under the amended clause. The winner is
+`rulers_p/4192nm_eom_after1.csv`, six teeth standing, weakest tooth at 0.63 of
+the fit residual, reduced chi-squared 1.01, clean verdict, no ladder action,
+no railed slot, untrimmed. On this trace the standing k = +3 tooth sits in a
+window the scan end clips, and the fully covered k = -3 tooth is the one below
+the residual, so the two causes of section D2 are both visible on the panel
+itself. The trace with the tallest weakest tooth, 0.71 on
+`rulers_p/4154nm_eom_before_1.csv`, stands on six teeth and is still not the
+winner, because it fails the tooth-labelling verdict and the ladder had to
+re-index it, the one-slot mislabelling signature of amendment A2. The clause
+the relaxation touched is not the clause holding that trace out. `tests/test_ruler.py` holds the amended clause the same way it
+held the original, both directions, and the seven-standing assertion is
+replaced by six-standing with the railed count still required to be zero.
+
+## D5. What a seven-tooth comb would take
+
+A ruler that stands on all seven teeth needs both knobs moved: a scan long
+enough to hold seven full tooth windows with margin, and a drive deep enough
+to lift the third-order pair above the residual. That is a statement about the
+next campaign, and it is recorded in the campaign-planning documents rather
+than argued here.

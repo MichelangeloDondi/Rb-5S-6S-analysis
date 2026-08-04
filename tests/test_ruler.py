@@ -544,6 +544,153 @@ def test_linearity_bound_matches_the_wellsampled_windows():
         "N_WELL_SAMPLED may no longer be warranted")
 
 
+# --------------------------------------------------------------------------
+# WHICH TRACE fig8 IS ALLOWED TO SHOW
+# --------------------------------------------------------------------------
+# The rule fig8 used until 2026-08-04 scored candidates by the smaller of the
+# two OUTERMOST fitted heights over the residual noise, so a retrace mirror
+# sitting in an outer slot RAISED a trace's score. The figure meant to
+# advertise the frequency axis was therefore selected by the defect that
+# axis had to be audited for. The replacement is section 7 of
+# docs/notes/ruler_validity_and_trim_prereg.md, implemented in
+# make_figures.ruler_fig_candidates, and these tests hold it to that text.
+
+
+def _make_figures():
+    import importlib.util
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    spec = importlib.util.spec_from_file_location(
+        "make_figures", root / "scripts" / "make_figures.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _candidate_row(mf, heights, **over):
+    """One results/ruler_traces.csv row, as strings, eligible unless overridden."""
+    row = {c: repr(h) for c, h in zip(mf.RULER_HEIGHT_COLS, heights)}
+    row.update(file="rulers_t/synthetic.csv", fit_rms="0.004", top3_ok="True",
+               top3_marginal="False", reindex_action="none", quarantined="False",
+               n_railed="0", chi2_red="1.0", trimmed="False")
+    row.update(over)
+    return row
+
+
+def test_fig8_eligibility_bites_on_every_clause():
+    """Each clause of the pre-registered rule must be able to reject on its
+    own. A filter whose clauses are never exercised is a filter nobody can
+    tell is running."""
+    mf = _make_figures()
+    ok = [0.02] * 7                       # all seven well above a 0.004 residual
+    assert len(mf.ruler_fig_candidates([_candidate_row(mf, ok)])[0]) == 1
+    defects = [
+        {"top3_ok": "False"},                       # the verdict failed
+        {"top3_marginal": "True"},                  # ... or only just passed
+        {"reindex_action": "phase_shift"},          # the ladder had to act
+        {"quarantined": "True"},
+        {"n_railed": "1"},
+        {"chi2_red": repr(mf.RULER_FIG_CHI2_MAX + 0.1)},
+    ]
+    for over in defects:
+        ranked, census = mf.ruler_fig_candidates([_candidate_row(mf, ok, **over)])
+        assert not ranked, f"{over} was accepted onto fig8"
+        assert sum(census.values()) == 1
+    # and the height clause, which reads the heights rather than a column.
+    # Amendment 4 relaxed it to six standing, so one below-residual tooth is
+    # tolerated and two are not. Both directions are held here.
+    five = list(ok); five[0] = 0.004; five[6] = 0.004
+    assert not mf.ruler_fig_candidates([_candidate_row(mf, five)])[0]
+    six = list(ok); six[0] = 0.004
+    assert len(mf.ruler_fig_candidates([_candidate_row(mf, six)])[0]) == 1
+
+
+def test_fig8_ranking_cannot_be_raised_by_an_outer_mirror():
+    """The property the whole replacement exists for. A mirror lands in an
+    OUTER slot and lifts that height. It cannot lift the smallest of the seven,
+    so a trace carrying one must not outrank an evenly lit trace under the new
+    score, though it beat it under the old one (which read the outer slots)."""
+    mf = _make_figures()
+    even = _candidate_row(mf, [0.02] * 7, file="rulers_t/even.csv")
+    mirrored = _candidate_row(mf, [0.30, 0.006, 0.02, 0.02, 0.02, 0.006, 0.30],
+                              file="rulers_t/mirrored.csv")
+    def old_score(r):                      # the deleted rule: the outer slots
+        return min(float(r["h_m3"]), float(r["h_p3"]))
+
+    assert old_score(mirrored) > old_score(even), "the injected mirror is not lifting"
+    ranked, _ = mf.ruler_fig_candidates([mirrored, even])
+    assert [r["file"] for _, r in ranked] == ["rulers_t/even.csv",
+                                             "rulers_t/mirrored.csv"], (
+        "the trace with the lifted outer slots is still winning the panel")
+
+
+def test_fig8_prefers_an_untrimmed_trace():
+    """A trimmed trace is drawn with its removed samples shaded, which is more
+    to explain than an untrimmed one needs, so it only wins when nothing else
+    is eligible."""
+    mf = _make_figures()
+    trimmed = _candidate_row(mf, [0.05] * 7, file="rulers_t/a_trimmed.csv",
+                             trimmed="True")
+    plain = _candidate_row(mf, [0.02] * 7, file="rulers_t/b_plain.csv")
+    ranked, _ = mf.ruler_fig_candidates([trimmed, plain])
+    assert [r["file"] for _, r in ranked] == ["rulers_t/b_plain.csv",
+                                              "rulers_t/a_trimmed.csv"]
+
+
+def test_fig8_candidate_set_is_not_empty():
+    """THE loud one. If no ruler in the archive can be shown under the
+    pre-registered rule, that is a finding about the ruler population and it
+    goes to the owner. It is not a threshold to loosen, and it must not pass
+    quietly as a skipped figure.
+
+    It fired once, 2026-08-04: the original all-seven height clause was
+    unsatisfiable, for the two measured reasons amendment 4 of the note
+    records, and the owner relaxed the clause to six standing."""
+    mf = _make_figures()
+    rows = mf._rows("ruler_traces")
+    ranked, census = mf.ruler_fig_candidates(rows)
+
+    def sixth(r):
+        hs = sorted(float(r[c]) for c in mf.RULER_HEIGHT_COLS)
+        return hs[1] / float(r["fit_rms"])
+
+    best = max(rows, key=sixth)
+    assert ranked, (
+        f"no ruler trace is eligible for fig8. Of {len(rows)} fitted rulers, "
+        + ", ".join(f"{n} failed on {why}" for why, n in sorted(census.items()))
+        + f". The tallest second-smallest tooth in the whole population stands "
+        f"at {sixth(best):.2f} of its own fit residual ({best['file']}), against "
+        f"the 1.0 the six-standing clause requires, so no trace can satisfy the "
+        f"rule as amended. Section 7 and amendment 4 of "
+        f"docs/notes/ruler_validity_and_trim_prereg.md are the rule and the "
+        f"owner owns any further amendment to it.")
+
+
+def test_fig8_shows_a_trace_standing_on_at_least_six_teeth():
+    """What the panel claims by drawing seven labelled slots, as amended: at
+    least six teeth that are actually there and no slot railed at zero. Seven
+    was the original demand and no recorded ruler can meet it, because the
+    ramp clips one outer tooth window on every trace and the drive depth holds
+    a covered third-order tooth below the residual anyway (amendment 4). The
+    trace this rule rejected stood on six teeth too, but its sixth was a
+    retrace mirror over a slot railed at zero, which the railed count and the
+    labelling verdict now catch."""
+    mf = _make_figures()
+    ranked, _ = mf.ruler_fig_candidates()
+    if not ranked:
+        pytest.skip("no eligible trace: test_fig8_candidate_set_is_not_empty "
+                    "carries that finding")
+    _, row = ranked[0]
+    heights = [float(row[c]) for c in mf.RULER_HEIGHT_COLS]
+    n_standing = sum(1 for h in heights if h > float(row["fit_rms"]))
+    assert n_standing >= 6, (
+        f"{row['file']} would be drawn with {n_standing} of {len(heights)} teeth "
+        f"above its own fit residual")
+    assert int(row["n_railed"]) == 0
+
+
 def test_fig8_legends_are_opaque():
     """rcParams sets legend.frameon False globally, which silently defeats
     framealpha and let plotted data show through fig8's legend text."""

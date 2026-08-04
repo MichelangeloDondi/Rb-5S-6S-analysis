@@ -98,6 +98,29 @@ N_WELL_SAMPLED = 19
 # results/ruler_nlmap.csv, and fig8's band and title both read it from here.
 RULER_LINEARITY_BOUND = 0.003
 
+# Reduced-chi-squared ceiling for the ruler trace fig8 displays. Fixed in
+# docs/notes/ruler_validity_and_trim_prereg.md section 7 before the code
+# existed, alongside the rest of the eligibility rule below.
+RULER_FIG_CHI2_MAX = 2.0
+
+# The seven fitted tooth heights, in slot order, as results/ruler_traces.csv
+# names them. Persisted for the first time by the validity work of 2026-08-04:
+# until then every run recomputed them and threw them away.
+RULER_HEIGHT_COLS = ("h_m3", "h_m2", "h_m1", "h_0", "h_p1", "h_p2", "h_p3")
+
+# fig19's density lever, fourth point: the 130 C power-sweep session's 225 mW
+# block. Exactly the selection scripts/run_beta_self.py's width_vs_density_probe
+# makes for the headline bound, named here so the panel and the producer cannot
+# drift apart silently.
+BETA_ANCHOR_130 = ("225", 130.0)
+
+# The morning pilot's oven label is a variac set point and not a cell reading,
+# so its density is a range rather than a value: addendum 17 of
+# docs/PREREGISTRATION_RESULTS.md puts the internal temperature at 110 to
+# 130 C. fig19 draws the pilot at the upper end, which is the reading the
+# addendum's verdict rests on, with the bar running down to the lower one.
+PILOT_T_RANGE_C = (110.0, 130.0)
+
 
 def _rows(name):
     return list(csv.DictReader(open(C.RESULTS_DIR / f"{name}.csv")))
@@ -651,44 +674,169 @@ def fig_identifiability_profile():
     _save(fig, "fig7_identifiability_profile.png")
 
 
+def ruler_fig_candidates(rows=None):
+    """Which ruler traces may stand as fig8's example, and in what order.
+
+    The rule this replaces scored candidates by the smaller of the two
+    OUTERMOST fitted heights over the fit residual. That rewarded the exact
+    pathology the 2026-08-04 validity work was opened for: a retrace mirror
+    sitting in an outer slot RAISES an outer height, so the trace with a
+    mirrored tooth won the panel, and the figure's own subtitle then had to
+    admit that one of the seven teeth was not there.
+
+    The replacement is pre-registered in
+    docs/notes/ruler_validity_and_trim_prereg.md section 7 and is applied
+    here exactly as written. Eligibility, every clause required:
+
+      * the top-three verdict PASSES and is not marginal,
+      * the re-index ladder took no action,
+      * the trace is not quarantined,
+      * at least six of the seven fitted heights stand strictly above the fit
+        residual standard deviation, with none railed on its zero bound
+        (amendment 4: the original all-seven clause is unsatisfiable in this
+        campaign, because the ramp clips one outer tooth window on every
+        recorded ruler and the drive depth holds a fully covered third-order
+        tooth below the residual anyway),
+      * the reduced chi-squared is at most RULER_FIG_CHI2_MAX.
+
+    Ranking is by the SMALLEST of the seven heights over the fit residual.
+    A mirror cannot raise the smallest of seven heights, so the ranking is not
+    gameable by the defect the figure is being fixed for. Untrimmed traces
+    outrank trimmed ones and the source path breaks ties, so the choice is
+    deterministic.
+
+    Every field is read from results/ruler_traces.csv, the per-trace record
+    the calibration itself wrote. The figure must show the fit the frequency
+    axis was built on, not a second fit that resembles it: the rule this
+    replaces refit each trace with flat weights, so the heights it scored were
+    never the heights the pipeline used.
+
+    The sibling-outlier mark of the same note's amendment 2 is deliberately
+    NOT one of the clauses. The list above was fixed before that rule existed,
+    and adding a clause to a pre-registered filter after seeing the population
+    is the move the note exists to prevent. Whether an outlier trace should be
+    allowed to stand as the example is a question for the owner.
+
+    Returns (ranked, census). ranked is a list of (score, row), best first.
+    census maps the first clause each rejected trace failed to a count.
+    """
+    if rows is None:
+        rows = _rows("ruler_traces")
+    ranked, census = [], defaultdict(int)
+    for r in rows:
+        heights = [float(r[c]) for c in RULER_HEIGHT_COLS]
+        fit_rms = float(r["fit_rms"])
+        if r["top3_ok"] != "True" or r["top3_marginal"] == "True":
+            census["tooth-labelling verdict is not a clean pass"] += 1
+        elif r["reindex_action"] != "none":
+            census["the ladder had to re-index it"] += 1
+        elif r["quarantined"] == "True":
+            census["quarantined"] += 1
+        elif int(r["n_railed"]):
+            census["a slot is railed on its zero bound"] += 1
+        elif sum(1 for h in heights if h > fit_rms) < 6:
+            census["fewer than six teeth stand above the fit residual"] += 1
+        elif float(r["chi2_red"]) > RULER_FIG_CHI2_MAX:
+            census["reduced chi-squared above the ceiling"] += 1
+        else:
+            ranked.append((min(heights) / fit_rms, r))
+    ranked.sort(key=lambda sr: (sr[1]["trimmed"] == "True", -sr[0], sr[1]["file"]))
+    return ranked, dict(census)
+
+
+def _ruler_block_law(row):
+    """The noise law the calibration fitted this trace under.
+
+    scripts/run_ruler.py builds one law per block from every usable trace in
+    it, so reproducing the recorded fit means reproducing the block, not just
+    the trace. Rebuilt here rather than stored, because a law is a fitted
+    object and the record's job is to carry the fit, not its weights."""
+    from rb5s6s.ingest import load_manifest, load_trace, trace_path
+    from rb5s6s.noise import condition_noise_model
+    from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import run_ruler as _rr
+
+    manifest = {r["file"]: r for r in load_manifest()}
+    rec = manifest[row["file"]]
+    key = _rr.block_key(rec)
+    volts, chosen = [], None
+    for r in manifest.values():
+        if (r["flag"] != "canonical" or r["rf_on"] != "True"
+                or _rr.block_key(r) != key):
+            continue
+        t, v, info = load_trace(trace_path(r), with_info=True)
+        m = trace_metrics(t, v, rf_on=True)
+        hf = hard_flags(m, rf_on=True) + ingest_flags(info)
+        if any("dropout" in f or "no comb" in f or "truncated" in f for f in hf):
+            continue
+        volts.append(v)
+        if r["file"] == row["file"]:
+            chosen = (t, v)
+    return chosen, condition_noise_model(volts)
+
+
 def fig_ruler():
-    """The built-in frequency ruler (M2, methods §3): a representative EOM
-    ruler trace with its constrained seven-tooth comb fit — the same physical
-    line excited via up to seven sideband pairs, teeth exactly 6.25 MHz apart
-    on the laser axis (outer teeth weak: they need higher-order pairs; note
-    the k=0 TOOTH is fed by (s+,s-) pairs as well as (c,c), so it can stand
-    tall even with the optical carrier AM-suppressed -- the tooth pattern
-    varies block to block with the 2025 HWP setting; methods section 3).
-    RIGHT: the free-centres nonlinearity map (results/ruler_nlmap.csv) — the
+    """The built-in frequency ruler (methods §3): one EOM ruler trace with its
+    constrained seven-tooth comb fit, the same physical line excited via up to
+    seven sideband pairs, teeth exactly 6.25 MHz apart on the laser axis
+    (outer teeth weak: they need higher-order pairs; note the k=0 TOOTH is fed
+    by (s+,s-) pairs as well as (c,c), so it can stand tall even with the
+    optical carrier AM-suppressed, and the tooth pattern varies block to block
+    with the 2025 HWP setting; methods section 3).
+
+    RIGHT: the free-centres nonlinearity map (results/ruler_nlmap.csv), the
     empirical bound (~0.3% per position) on scan nonlinearity AND any
     tooth-dependent pull (differential Stark, asymmetric-wing overlap), the
-    ruler's common-mode-rejection check. Trace choice is deterministic: every
-    canonical rf-on ruler is comb-fitted and the figure shows the one whose
-    WEAKER outer tooth (k = +-3) stands tallest above that fit's residual
-    noise, so the full seven-tooth structure is actually visible rather than
-    buried (ties broken by path)."""
-    from rb5s6s.ingest import load_manifest, load_trace, trace_path
-    from rb5s6s.ruler import fit_comb, _comb, TEETH
+    ruler's common-mode-rejection check.
 
-    rows = sorted((r for r in load_manifest()
-                   if r["role"].startswith("ruler") and r["flag"] == "canonical"
-                   and r["rf_on"] == "True"),
-                  key=lambda r: trace_path(r))
-    if not rows:
-        print("  (no ruler trace found -- skipping fig8)")
+    The displayed trace is chosen by ruler_fig_candidates() above, whose
+    docstring carries the rule and the reason it replaced the previous one. An
+    empty eligible set is a finding about the ruler population rather than a
+    figure bug: the figure is skipped, the census is printed, and
+    tests/test_ruler.py::test_fig8_candidate_set_is_not_empty says so out
+    loud."""
+    from rb5s6s.ruler import _comb, TEETH
+
+    def _sixth(r):
+        # The binding height under amendment 4's six-standing clause is the
+        # second-smallest of the seven, since six must clear the residual.
+        hs = sorted(float(r[c]) for c in RULER_HEIGHT_COLS)
+        return hs[1] / float(r["fit_rms"])
+
+    trace_rows = _rows("ruler_traces")
+    ranked, census = ruler_fig_candidates(trace_rows)
+    if not ranked:
+        print("  (no ruler trace is eligible for fig8, so it is NOT redrawn.")
+        for why, n in sorted(census.items(), key=lambda kv: -kv[1]):
+            print(f"     {n:4d} rejected: {why} (first failing clause)")
+        near = max(trace_rows, key=_sixth)
+        print(f"   Over all {len(trace_rows)} fitted rulers the tallest "
+              f"second-smallest tooth stands at {_sixth(near):.2f} of its own "
+              f"fit residual ({near['file']}), against the 1.0 the six-standing "
+              "clause requires.")
+        print("   The eligibility rule is section 7 of "
+              "docs/notes/ruler_validity_and_trim_prereg.md. An empty set is a "
+              "finding about the population, not a threshold to loosen: take it "
+              "to the owner. See tests/test_ruler.py::"
+              "test_fig8_candidate_set_is_not_empty.)")
         return
-    best = None
-    for r in rows:
-        tt, vv = load_trace(trace_path(r))
-        ft = fit_comb(tt, vv)
-        model = _comb(tt, ft["t0_ms"], ft["delta_ms"], ft["width_ms"],
-                      ft["heights"], ft["b0"], ft["b1"])
-        rms = float(np.std(vv - model))
-        h = dict(zip(TEETH, ft["heights"]))
-        score = min(h.get(3, 0.0), h.get(-3, 0.0)) / rms if rms > 0 else 0.0
-        if best is None or score > best[0]:
-            best = (score, tt, vv, ft, rms)
-    _, t, v, fit, fit_rms = best
+    score, row = ranked[0]
+    loaded, law = _ruler_block_law(row)
+    if loaded is None:
+        print(f"  (the eligible ruler trace {row['file']} is not in the raw "
+              "tree here, so fig8 is not redrawn)")
+        return
+    t, v = loaded
+    from rb5s6s.ruler import validated_comb_fit
+    fit = validated_comb_fit(t, v, law)
+    # The refit has to reproduce the record, or the panel would be showing a
+    # different fit from the one the frequency axis was built on. That is
+    # exactly what the deleted selection did, silently, for months.
+    if abs(fit["delta_ms"] - float(row["delta_ms"])) > 1e-6:
+        print(f"  (fig8 warning: refitting {row['file']} gives a tooth spacing of "
+              f"{fit['delta_ms']:.4f} ms against the {float(row['delta_ms']):.4f} ms "
+              "on record, so the drawn curve is not the fit of record)")
 
     fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.8, 3.9),
                                   gridspec_kw={"width_ratios": [2.1, 1.0]})
@@ -700,31 +848,72 @@ def fig_ruler():
             label=f"constrained {len(TEETH)}-tooth comb fit")
     ymax = max(fit["heights"]) + fit["b0"]
     ax.set_ylim(top=ymax * 1.22)
-    # The comb fit constrains all seven tooth positions, but a tooth whose
-    # fitted height sits in the residual noise has nothing visible under its
-    # marker. Counting the ones that do stand up keeps the title's count and
-    # the panel in agreement, whichever trace the selection picks.
-    heights = dict(zip(TEETH, fit["heights"]))
+    # Samples the tail trimmer removed are shaded and named, so a reader sees
+    # the fit's actual sample set. trim_start_ms and trim_end_ms bound the KEPT
+    # interval, one convention across every table in the repository.
+    if fit["trimmed"]:
+        for lo, hi in ((t[0], fit["trim_start_ms"]), (fit["trim_end_ms"], t[-1])):
+            if hi > lo:
+                ax.axvspan(lo, hi, color="0.75", alpha=0.35, lw=0, zorder=0)
+        ax.annotate("shaded: samples excluded from the fit\n"
+                    f"({fit['trim_reason']})",
+                    xy=(0.5, 0.02), xycoords="axes fraction", ha="center",
+                    va="bottom", fontsize=6.4, color="0.3")
     for n in TEETH:
         tc = fit["t0_ms"] + n * fit["delta_ms"]
         ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
         ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
                     color="#D55E00")
-    n_standing = sum(1 for n in TEETH if heights[n] > fit_rms)
-    stand_note = ("" if n_standing == len(TEETH) else
-                  f"\n({n_standing} of the {len(TEETH)} stand above the "
-                  "residual noise in this trace)")
     ax.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
-    ax.set_title("the scan carries its own calibration: up to "
+    ax.set_title("the scan carries its own calibration: "
                  f"{len(TEETH)} copies of the same\n"
                  f"line, {TOOTH_SPACING_LASER_HZ / 1e6:.2f} MHz apart on the laser axis, "
-                 "via EOM sideband pairs" + stand_note,
+                 "via EOM sideband pairs",
                  fontsize=9)
     # Anchored below the tooth labels rather than at the bottom left, where the
     # opaque box covered the left tail of the outermost fitted tooth.
     ax.legend(fontsize=7, loc="upper left", bbox_to_anchor=(0.012, 0.80),
               framealpha=1.0, frameon=True)
+    # The check this trace passed, on the figure rather than in a docstring: a
+    # reader who wants to know why THIS trace can see the rule, and the rule is
+    # the one thing the previous selection got wrong. Sits under the legend, in
+    # the flat stretch left of the first tooth.
+    heights = fit["heights"]
+    n_standing = sum(1 for h in heights if h > fit["fit_rms"])
+    ax.text(0.012, 0.615,
+            "shown because it passes the tooth-labelling check: both\n"
+            "first-order teeth in the top three, no relabelling needed,\n"
+            f"{n_standing} of {len(TEETH)} heights above the fit residual "
+            f"(weakest at {score:.2f} of it),\n"
+            f"reduced chi-squared {float(row['chi2_red']):.2f}, at or below "
+            f"{RULER_FIG_CHI2_MAX:.1f}",
+            transform=ax.transAxes, ha="left", va="top", fontsize=6.4,
+            color="0.3", bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
+                                   edgecolor="0.7", lw=0.5))
+    # Why the third order is under the noise, on the panel, because the axis
+    # draws seven labelled slots and a reader will count the visible teeth.
+    # Both causes are measured on THIS trace and campaign-wide in amendment 4
+    # of docs/notes/ruler_validity_and_trim_prereg.md: no recorded ruler
+    # covers both outer windows in full, and none stands on seven teeth.
+    third_pct = 100.0 * (heights[0] + heights[6]) / (heights[2] + heights[4])
+    t_lo = fit["trim_start_ms"] if fit["trimmed"] else t[0]
+    t_hi = fit["trim_end_ms"] if fit["trimmed"] else t[-1]
+    half = 0.5 * fit["delta_ms"]
+    lo_cut = fit["t0_ms"] - 3 * fit["delta_ms"] - half < t_lo
+    hi_cut = fit["t0_ms"] + 3 * fit["delta_ms"] + half > t_hi
+    clip = {(True, False): "the scan start clips the $k=-3$ window",
+            (False, True): "the scan end clips the $k=+3$ window",
+            (True, True): "the scan clips both outer windows"}.get(
+                (lo_cut, hi_cut))
+    why = (f"the faint teeth are the third-order pair, at {third_pct:.0f}% of "
+           "the first-order\npower at this modulation depth")
+    if clip is not None:
+        why += f", and {clip},\nas on every ruler in the campaign"
+    ax.text(0.985, 0.03, why, transform=ax.transAxes, ha="right", va="bottom",
+            fontsize=6.4, color="0.3",
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
+                      edgecolor="0.7", lw=0.5))
 
     nl = _rows("ruler_nlmap")
     pos = np.array([float(r["pos_ms"]) for r in nl])
@@ -765,10 +954,12 @@ def fig_ruler():
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower center", framealpha=1.0, frameon=True)
-    _footer(fig, "Source: data_raw archive (rb5s6s.ingest, rb5s6s.ruler; the plotted trace) + "
-                 "results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py && "
-                 "python scripts/make_figures.py.")
-    _save(fig, "fig8_ruler.png")
+    _footer(fig, "Source: results/ruler_traces.csv (the eligibility and ranking, section 7 of "
+                 "docs/notes/ruler_validity_and_trim_prereg.md) + data_raw archive\n"
+                 "(rb5s6s.ingest, rb5s6s.ruler; the plotted trace, refit under its own block's "
+                 "noise law) + results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py "
+                 "&& python scripts/make_figures.py.")
+    _save(fig, "fig8_ruler.png", rect=(0, 0.03, 1, 1))
 
 
 def fig_degeneracy_vs_observable():
@@ -1890,6 +2081,50 @@ def fig_single_peak_fits():
         _save(fig, f"fig18_single_{peak}.png")
 
 
+def _pilot_width_point(prates):
+    """The morning pilot's raw width and the rate it is licensed under.
+
+    Built exactly like every other point on fig19's first panel: the
+    retrace-safe contiguous half-maximum span of each trace, times the scan
+    rate, averaged over the traces, with the repeat scatter and the rate error
+    combined the way scripts/run_beta_self.py's raw_fwhm_mhz combines them.
+    The four power blocks are pooled because width is power-independent here
+    (the light-shift null), which is the same pooling addendum 17 used.
+
+    The rate is the pilot day's OWN, not a borrowed one: the campaign bracket
+    rate for the pilot's peak times the measured scale in
+    results/pilot_ruler.csv, which the pilot day's 27 rulers fix at 1.0022(12).
+    That measurement is why this point can be drawn at all, and it is what
+    replaced a scale fitted inside the joint fits.
+
+    The traces live in the pilot quarantine tree and are read in place, never
+    copied, so a checkout without that tree gets no pilot point and the rest of
+    the panel is unchanged. Returns (width_MHz, err_MHz, n_traces, peak) or
+    None.
+    """
+    from rb5s6s.qc import contiguous_fwhm_ms
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import run_stark_joint as _rsj
+
+    peak, scale = "4192", _rsj.measured_pilot_scale()
+    if scale is None or peak not in prates or not _rsj.PILOT.is_dir():
+        return None
+    files = sorted(_rsj.PILOT.glob("*mw*.csv"))
+    if len(files) < 3:
+        return None
+    rate, relerr = prates[peak]
+    rate = rate * scale[0]
+    relerr = float(np.hypot(relerr, scale[1] / scale[0]))
+    ws = []
+    for f in files:
+        d = np.genfromtxt(f, delimiter=",", skip_header=2)
+        m = np.isfinite(d[:, 0]) & np.isfinite(d[:, 1])
+        ws.append(contiguous_fwhm_ms(d[m, 0] * 1e3, d[m, 1]))
+    W = float(np.mean(ws)) * rate
+    sem = float(np.std(ws, ddof=1) / np.sqrt(len(ws))) * rate
+    return W, float(np.hypot(sem, W * relerr)), len(ws), peak
+
+
 def fig_width_trends():
     """M4 / M4e physics-trend panels (fig19): the two width-broadening laws
     the archive tests, side by side.
@@ -1905,21 +2140,44 @@ def fig_width_trends():
     C1). It instead reproduces the archive's own HEADLINE beta_self
     estimator verbatim: the model-independent P0 confound probe in
     scripts/run_beta_self.py (collisional_slope, results/beta_self_probe.csv),
-    which fits RAW contiguous FWHM (no lineshape split) vs N over the
-    70-110 C cooling sweep as W(N) = floor + beta_eff*N, then inflates the
-    slope error by the between-block scatter (the same floor fig6 shows)
-    via a Student-t 95% bound -- why beta_self is reported as a BOUND, not
-    a measurement (SNR<3, all four peaks). The fitted line and its
-    systematic-error band therefore pass through the data BY CONSTRUCTION:
-    this is the actual fit the bound comes from, drawn only over its own
-    70-110 C fit domain (no out-of-domain extrapolation). The 130 C point is
-    NOT folded into this fit: it ran in the SAME optical/cell configuration,
-    but as its own SESSION (a different day and display epoch, calibrated
-    against its own before/after EOM-ruler brackets rather than the
-    t_sweep's per-block ruler) -- a cross-session comparability question, not
-    a different apparatus configuration. run_beta_self.py keeps it available
-    only as an optional fourth lever point in a separate, non-headline probe
-    (dof=2, headline=no in results/beta_self_probe.csv), matching this panel.
+    which fits RAW contiguous FWHM (no lineshape split) vs N as
+    W(N) = floor + beta_eff*N, then inflates the slope error by the
+    between-block scatter (the same floor fig6 shows) via a Student-t 95%
+    bound -- why beta_self is reported as a BOUND, not a measurement (SNR<3,
+    all four peaks). The fitted line and its systematic-error band therefore
+    pass through the data BY CONSTRUCTION: this is the actual fit the bound
+    comes from, drawn only over its own fit domain (no out-of-domain
+    extrapolation).
+
+    PER-SOURCE LICENSING (docs/notes/ruler_validity_and_trim_prereg.md
+    section 8, fixed before this rebuild). Every point needs BOTH a licensed
+    rate and a licensed width, and the four candidate sources land as follows.
+      * Campaign 130 C, 20 traces: rate from its own session's before/after
+        bracket rulers, width from the same retrace-safe contiguous span as
+        every other point. ENTERS, and enters the fit. Until 2026-08-04 this
+        panel drew three points per peak under a title quoting a four-point
+        bound (2026-08-02, run_beta_self.py's headline decision), so the
+        drawn construction and the reported one disagreed. They now match.
+      * Morning pilot, 26 traces on one peak: rate from the pilot day's own
+        27 rulers as the measured scale in results/pilot_ruler.csv, width
+        contiguous like the rest. ENTERS as a separately marked point OUTSIDE
+        the fitted slope, with a horizontal error bar over the density its
+        oven label leaves open (addendum 17: its 91 C is a variac set point,
+        the internal temperature is ~110-130 C).
+      * Rehearsal, 46 traces: no rulers of its own, its scan rate is a fitted
+        box inside the joint fits. A width built on a rate fitted inside the
+        same model is not model-independent, which is the one thing this
+        panel's construction is for. STAYS OUT, with the reason on the panel.
+        It is not excluded from the archive: it carries the light-shift
+        bounds, where its rate is properly marginalized.
+      * EOM ruler traces as lineshape data: STAY OUT for this release. The
+        tooth-amplitude law does not close on the power-session ruler
+        population (addendum 22), and licensing calibration traces as
+        lineshape data inside the release that found their indexing broken
+        would invert the burden of proof. The 7 fitted heights per trace now
+        recorded in results/ruler_traces.csv are the dataset an amplitude
+        model would be tested against, and the panel says so.
+    Both refusals are the owner's to overrule.
 
     Retroactive honesty pass, private/reviews/digest/fig19_trend_audit.md
     (2026-08-02): the construction was independently reproduced to float
@@ -1959,6 +2217,7 @@ def fig_width_trends():
     from rb5s6s.linefit import transit_fwhm_at_T
     from rb5s6s.beta import collisional_slope
     from rb5s6s.ingest import load_manifest
+    from rb5s6s.qc import outlier_files
 
     # scripts/ is not a package (see tests/test_figures_fresh.py's own
     # importlib-by-path workaround) -- add it to sys.path so we can reuse the
@@ -1974,7 +2233,15 @@ def fig_width_trends():
     # ======== panel 1: the licensed channel -- raw width vs N(T), =========
     # ======== floor + slope, the fit results/beta_self_probe.csv comes from
     manifest_rows = load_manifest()
-    trates, _prates = _rbp.load_t_rates()
+    # The producer drops sibling outliers from every fit it runs, so the panel
+    # drops them too: a point the bound does not contain must not be drawn as
+    # one of its points. The set is empty today and this keeps it that way by
+    # construction rather than by luck.
+    dropped = outlier_files()
+    if dropped:
+        manifest_rows = [r for r in manifest_rows if r["file"] not in dropped]
+    trates, prates = _rbp.load_t_rates()
+    P_anchor, T_anchor = BETA_ANCHOR_130
     ymin_p1, ymax_p1 = 1e9, 0.0
     for peak in ("4121", "4154", "4192", "4207"):
         byT = defaultdict(list)
@@ -1988,6 +2255,17 @@ def fig_width_trends():
                 rate, relerr = trates[(peak, T)]
                 m, e = _rbp.raw_fwhm_mhz(byT[T], rate, relerr)
                 N.append(float(density_units(float(T)))); W.append(m); E.append(e)
+        # The 130 C anchor, calibrated on its own session's before/after
+        # bracket rulers. It is a point OF the reported bound, so it is drawn
+        # as one: until 2026-08-04 the panel drew three points under a title
+        # quoting the four-point construction.
+        recs130 = [r for r in manifest_rows
+                   if r["flag"] == "canonical" and r["role"] == "p_sweep"
+                   and r["peak"] == peak and r["power_mW"] == P_anchor]
+        if peak in prates and len(recs130) >= 3:
+            rate, relerr = prates[peak]
+            m, e = _rbp.raw_fwhm_mhz(recs130, rate, relerr)
+            N.append(float(density_units(T_anchor))); W.append(m); E.append(e)
         if len(N) < 3:
             continue
         N = np.array(N); W = np.array(W); E = np.array(E)
@@ -2015,17 +2293,37 @@ def fig_width_trends():
         ymin_p1 = min(ymin_p1, float(np.min(W - Esys)), float(np.min(line - band)))
         ymax_p1 = max(ymax_p1, float(np.max(W + Esys)), float(np.max(line + band)))
 
+    # ---- the morning pilot, marked and outside every fitted slope ----------
+    pilot = _pilot_width_point(prates)
+    if pilot is not None:
+        Wp, Ep, npil, pilot_peak = pilot
+        N_lo, N_hi = (float(density_units(T)) for T in PILOT_T_RANGE_C)
+        ax1.errorbar([N_hi], [Wp], yerr=[Ep], xerr=[[N_hi - N_lo], [0.0]],
+                     fmt="D", ms=6.5, mfc="white", mec=PEAK_COLOR[pilot_peak],
+                     ecolor=PEAK_COLOR[pilot_peak], mew=1.5, elinewidth=1.5,
+                     capsize=3.5, capthick=1.5, zorder=5,
+                     # The horizontal bar is not a measurement error, it is the
+                     # range the pilot's own oven label leaves open, so it is
+                     # named where the marker is named. A free-floating note
+                     # next to the bar landed under the legend below it.
+                     label=f"morning pilot, {PEAK_LABEL[pilot_peak].split(' (')[0]}"
+                           f" ({npil} traces, not in any fit)\n"
+                           "bar: the %g to %g °C its oven label leaves open"
+                           % PILOT_T_RANGE_C)
+        ymin_p1 = min(ymin_p1, Wp - Ep)
+        ymax_p1 = max(ymax_p1, Wp + Ep)
+
     pad1 = 0.08 * (ymax_p1 - ymin_p1)
     ax1.set_ylim(ymin_p1 - pad1, ymax_p1 + pad1)
     ax1.set_xscale("log")
     ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     ax1.set_ylabel("raw FWHM (MHz, transition; model-independent)")
-    ax1.set_title("Floor + slope fit to the raw linewidth vs density, drawn over "
-                 "the 70-110 °C points.\n"
-                 "The reported bound is the four-point construction with the 130 °C "
-                 "anchor folded in\n"
-                 r"(dof=2, t=2.92); slope = $\beta_\mathrm{self}$, a bound not a "
-                 "measurement (signal-to-noise $<$2, all peaks)",
+    ax1.set_title("Floor + slope fit to the raw linewidth vs density, over the four "
+                 "points the\n"
+                 "reported bound is built from (70 to 130 °C, dof=2, t=2.92), each on "
+                 "its own session's\n"
+                 r"measured scan rate. Slope = $\beta_\mathrm{self}$, a bound not a "
+                 "measurement (signal-to-noise $<$2)",
                  fontsize=8.2)
     # Compact honesty note (private/reviews/digest/fig19_trend_audit.md): the bars on
     # this panel are the repeat + between-block scatter that FEEDS the reported 95%
@@ -2035,10 +2333,24 @@ def fig_width_trends():
     # point -- steepens the fitted slope, so it can only make the bound conservative,
     # never understate it. Placed top-left, the one corner both the data (which rise
     # in scatter toward low N) and the lower-right legend leave clear.
+    #
+    # The second half of the box is the licensing verdict: which sources were
+    # weighed for this panel and which were refused, on the panel itself, so a
+    # reader is told what is missing instead of being left to notice it. Both
+    # refusals are section 8 of the pre-registration note and both are the
+    # owner's to overrule.
+    n_ruler_traces = len(_rows("ruler_traces"))
     ax1.text(0.02, 0.97,
              "bars: repeat + between-block scatter, not the reported 95% bound\n"
              "(the four-point headline applies t(0.95,2) = 2.92). ~6% low-SNR\n"
-             "narrowing at 70 °C (3 of 4 peaks) makes the bound conservative",
+             "narrowing at 70 °C (3 of 4 peaks) makes the bound conservative\n"
+             "\n"
+             "out of this panel: the rehearsal session, whose scan rate is fitted\n"
+             "inside the joint fits rather than measured, and the ruler traces, whose\n"
+             f"widths would need an amplitude model. The {n_ruler_traces} by 7 fitted "
+             "tooth heights\n"
+             "now in results/ruler_traces.csv are the dataset such a model has to be\n"
+             "tested against.",
              transform=ax1.transAxes, ha="left", va="top", fontsize=6.3, color="0.3",
              bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="0.7", lw=0.5))
     # lower right: the fit lines rise with N, and the low-N data (left) carry
@@ -2048,7 +2360,7 @@ def fig_width_trends():
     # oven settings and writes them as plain degrees. Left to itself the
     # secondary axis inherited the log formatter below it and printed the
     # temperatures as 7x10^1, 8x10^1, 9x10^1, 10^2.
-    sec = _temperature_top_axis(ax1, (70.0, 90.0, 110.0))
+    sec = _temperature_top_axis(ax1, (70.0, 90.0, 110.0, 130.0))
     sec.set_xlabel("temperature (°C)", fontsize=8.5)
     sec.tick_params(labelsize=7.5)
 
@@ -2120,9 +2432,11 @@ def fig_width_trends():
         "993 nm 5S-6S hyperfine components.", fontsize=9.2, y=0.995)
     _footer(fig, "Source: data_raw/MANIFEST.csv + results/ruler_blocks.csv (panel 1 raw "
                  "widths, reproducing the results/beta_self_probe.csv construction),\n"
-                 "results/power_sweep.csv, results/stark_sweep.csv (panel 2). Regenerate: "
-                 "python scripts/run_beta_self.py && python scripts/run_stark_sweep.py "
-                 "&& python scripts/make_figures.py.", fontsize=5.9)
+                 "results/pilot_ruler.csv + the pilot quarantine tree (the pilot point, read "
+                 "in place), results/power_sweep.csv, results/stark_sweep.csv (panel 2). "
+                 "Regenerate: python scripts/run_beta_self.py && python "
+                 "scripts/run_stark_sweep.py && python scripts/make_figures.py.",
+            fontsize=5.9)
     _save(fig, "fig19_width_trends.png", rect=(0, 0.05, 1, 1))
 
 
