@@ -174,3 +174,63 @@ is claimable from the 2025 data.
 
 The dependency map, which measurement unlocks which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).
+
+## 4. Who this serves, now and after a campaign
+
+Stating the audience is part of stating the claim, so this section names
+who has a reason to read the archive today and who would gain from each
+possible campaign. Section 2 already concedes the complement: nobody is
+blocked waiting for these bounds, and this section does not soften that.
+
+**Today, with no new data:**
+
+- Anyone holding a dataset taken against a drifting or absent frequency
+  reference. The demonstrated claim is how much physics the lineshape
+  alone supports, with the validation machinery to show the extraction
+  did not fool itself. The seams for pointing the package at another
+  transition are in [ADAPTING.md](ADAPTING.md).
+- Atomic-structure theory. The differential-polarizability sign
+  disagreement comes with a clean discriminant (the published sign would
+  require a 6S lifetime the measurement excludes at about 210 sigma),
+  and the scalar magic wavelengths are unpublished values a trapping
+  proposal can test.
+- The collision-rate literature. Two published measurements of the 7S
+  self-broadening rate disagree beyond their stated errors under any
+  convention reading, a comparison assembled in
+  [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md).
+  Naming an open disagreement is a small contribution, and it is one.
+- Guided-mode experiments. The trap-induced inhomogeneous shift closes
+  to a rule that depends on atom temperature alone, with the trap depth
+  and waist cancelling
+  ([notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md)).
+
+**After a campaign, by what is run:**
+
+- A beam profile alone would sharpen every waist-conditional statement
+  in the existing archive retroactively. The audience is whoever uses
+  the archive at all, since it upgrades the record without new physics.
+- The 993 nm line under a fixed lock would yield the first measured
+  AC-Stark and collisional self-shift coefficients of this transition,
+  and with the waist measured it would let experiment adjudicate the
+  sign dispute. The audience is the precision-spectroscopy tables and
+  the theory groups on either side of that sign.
+- The 760 nm 7S line would adjudicate the two conflicting published
+  rates with the convention stated, and would re-anchor this archive's
+  own expected self-broadening from the same instrument. The audience is
+  the collision series and the group advancing 7S as a frequency
+  standard, and the result is publishable whichever value wins.
+- The 778 nm 5D line would calibrate the passive lineshape method
+  against the best-measured coefficients in the field, adding no new
+  coefficient by design. The audience is anyone deciding whether to
+  trust the method on a line where nothing is known.
+- Three or more rungs together would turn per-line coefficients into
+  scaling laws in the principal quantum number, which discriminate a
+  calculation more sharply than any single value. The audience is the
+  polarizability and collision theory the single-line results can only
+  poke at.
+- The guided-mode family is section 3's last entry, and none of it is
+  claimable from the 2025 data.
+
+Each audience above maps to a claim this archive either makes now or
+names as conditional. Where no audience could be named, the claim is not
+in this ledger.
