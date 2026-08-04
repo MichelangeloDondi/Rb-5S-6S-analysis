@@ -37,20 +37,22 @@ itself measured rather than assumed, and in which the covariance between
 beta_self and kappa is propagated instead of ignored.
 
 THE RULER COMBS, and a measurement mistake worth recording. The 61
-canonical ruler_t traces carry the EOM comb: five replicas of the same
-physical line at 12.5 MHz transition-axis spacing, which is free lineshape
-statistics at exactly the three cooling temperatures where the density
-lever wants them. Their tooth SPACINGS calibrated the frequency axis (M2);
+canonical ruler_t traces carry the EOM comb: up to seven replicas of the
+same physical line at 12.5 MHz transition-axis spacing, which is free
+lineshape statistics at exactly the three cooling temperatures where the
+density lever wants them. Their tooth SPACINGS calibrated the frequency axis (M2);
 their tooth SHAPES had never fed a width fit until now.
 
 Two facts about the comb, both experimenter-supplied and both confirmed
 against the traces. The carrier is DELIBERATELY SUPPRESSED (the half-wave
 plate was tilted), and the comb is uniform. Measured on 993.4121/4192/4207
-at 110 C: exactly five teeth per trace at 12.49 +/- 1.10, 12.25 +/- 0.29
-and 12.37 +/- 0.58 MHz spacing, with relative amplitudes
-[0.24, 1.00, 0.69, 0.93, 0.21] -- the centre tooth sitting BELOW both of
-its neighbours, which is the suppression, with symmetric +/-1 and +/-2
-sidebands either side of it.
+at 110 C over the five INNER slots, k = -2..+2, which is all the 2026-07-11
+reading resolved: 12.49 +/- 1.10, 12.25 +/- 0.29 and 12.37 +/- 0.58 MHz
+spacing, with relative amplitudes [0.24, 1.00, 0.69, 0.93, 0.21] -- the
+centre tooth sitting BELOW both of its neighbours, which is the suppression,
+with symmetric +/-1 and +/-2 sidebands either side of it. The comb runs to
++/-3, and the fit was widened to all seven slots on 2026-08-01 when the
+truncation was found to bias the spacing (rb5s6s/ruler.py, TEETH).
 
 An intermediate version of this module disabled the rulers on the strength
 of a comb map that showed extra teeth at ~4 MHz offsets, read as a

@@ -51,6 +51,14 @@ def _cell(fname, quantity, key=None, col="value"):
     raise KeyError(f"{quantity}/{key} not in {fname}")
 
 
+def _cell_first(fname, col):
+    """First data row of a WIDE one-row CSV (`ruler_campaign.csv` is one row of
+    named columns, not the quantity/key/value long form `_cell` reads)."""
+    for r in csv.DictReader(open(RESULTS / fname)):
+        return r[col]
+    raise KeyError(f"{fname} has no data rows")
+
+
 def _beta_bound_range():
     """min/max of the model-independent per-peak 95% bound (the headline
     variant), rounded to 2 dp. Since the 2026-08-02 promotion of the
@@ -103,6 +111,22 @@ def _read(rel: str) -> str:
 def _beta_range_token():
     lo, hi = _beta_bound_range()
     return f"{lo}-{hi}"
+
+
+def _rate_laser_tokens():
+    """The campaign sweep rate as the docs write it. Three roundings of ONE
+    value are canonical because three are in use and each is legitimate at its
+    own precision: 5 dp with a parenthesised error (the ledger's own format),
+    6 dp (the methods chapters and the literature table), and 7 dp (methods/05,
+    which writes the superseded value and the current one side by side to the
+    digit that separates them). Every rounding is derived from the CSV, so a
+    stale value fails all three."""
+    r = float(_cell_first("ruler_campaign.csv", "rate_laser"))
+    return {f"{r:.5f}", f"{r:.6f}", f"{r:.7f}"}
+
+
+def _rate_transition_token():
+    return f"{2 * float(_cell_first('ruler_campaign.csv', 'rate_laser')):.6f}"
 
 
 # Registry scope: the RESULTS that a re-analysis can move -- the ones whose stale
@@ -178,6 +202,33 @@ CANONICAL = [
         find=re.compile(r"[−-](1[0-9]{3})\s*a\.u"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "docs/RESULTS.md"],
+    ),
+    dict(
+        # The frequency axis every MHz-denominated number in the repository is
+        # denominated in. It is hand-typed in eight files today, and the ruler
+        # re-validation of docs/notes/ruler_validity_and_trim_prereg.md is
+        # expected to move it, so the citations are mechanized BEFORE the move
+        # rather than chased afterwards.
+        # The regex demands 5 or more decimals immediately in front of MHz/ms,
+        # which is what separates a citation of this number from the rounded
+        # "~0.043 MHz/ms" and "0.0426" that appear legitimately elsewhere.
+        name="M2 campaign sweep rate, laser axis",
+        value=_rate_laser_tokens,
+        find=re.compile(r"([0-9]\.[0-9]{4,7})\s*(?:\([0-9]+\)|±\s*[0-9.]+)?\s*MHz/ms"),
+        mode="all",
+        docs=["docs/DATA.md", "docs/RESULTS.md", "docs/LITERATURE.md",
+              "docs/methods/05_the_frequency_ruler.md",
+              "docs/methods/07_what_we_found.md",
+              "scripts/run_laser_history.py"],
+    ),
+    dict(
+        # Twice the laser-axis rate, written out once so that the factor-2
+        # bookkeeping cannot drift away from its own source.
+        name="M2 campaign sweep rate, transition axis",
+        value=_rate_transition_token,
+        find=re.compile(r"transition axis ([0-9]\.[0-9]{4,7})"),
+        mode="all",
+        docs=["docs/DATA.md"],
     ),
     dict(
         name="M16 first 5S-6S magic wavelength (1204 nm crossing)",

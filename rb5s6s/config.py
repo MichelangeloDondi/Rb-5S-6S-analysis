@@ -258,6 +258,56 @@ nonlinearity map from fitting phantom outer teeth to noise."""
 RULER_NLMAP_NBINS = 12
 """Window-position bins for the pooled sweep-nonlinearity map ν(t)."""
 
+# --- ruler fit VALIDITY (pre-registered in docs/notes/ruler_validity_and_trim_prereg.md) ---
+RULER_TOP3_GATED = False
+"""Whether the top-three amplitude verdict is allowed to ACT on the
+calibration, or is only recorded.
+
+False on landing, and the reason is in the open question at the end of the
+pre-registration note. The rule fails 54 of the 104 fitted campaign rulers, it
+fails CLEAN synthetic combs built from the repository's own Bessel amplitude
+law once the modulation index 2*beta exceeds about 2.7 (where the second-order
+sidebands legitimately outrank the first), and a parallel measurement finds it
+passing an injected fold that costs 7.9% in rate. An instrument that fires on
+half the population, on clean physics, and not on the defect it was written for
+is not yet a gate. The whole ladder still runs and every outcome is written to
+results/ruler_traces.csv as a diagnostic, so the population can be studied
+without any of it touching a block, the campaign rate or the nonlinearity map.
+
+Setting this True is a decision for the owner, and it changes numbers."""
+
+RULER_TOP3_TIE_SIGMA = 1.0
+"""Tie allowance for the top-three tooth-amplitude rule, in units of the fit's
+own residual RMS. A required first-order tooth ranking FOURTH but within this
+many residual RMS of the third-ranked height is recorded as a MARGINAL pass.
+One residual RMS is the scale on which two heights are not distinguishable, so
+this is the smallest defensible allowance; the pre-registration grants no
+other. A marginal pass counts as a pass for the pipeline and as a failure for
+figure eligibility."""
+
+RULER_REINDEX_CHI2_TOL = 1e-3
+"""How much a re-indexed comb fit may worsen chi2_red and still be accepted,
+as a fraction of the failing fit's own chi2_red.
+
+Not zero, and the reason is structural rather than a preference. Relabelling a
+RIGID grid by whole slots is chi-squared DEGENERATE: the same seven free
+heights describe the same peaks, and the only difference is which slots fall
+outside the acquisition window. Measured on the closure synthetics, the correct
+relabelling changes chi2_red by ~1e-4 relative, with the sign set by numerical
+noise, so a strict-improvement test decides the right answer by coin flip and
+quarantines clean combs. The tolerance must also stay tight enough to REJECT a
+relabelling of a contaminated grid, which passes the amplitude rule while
+keeping the contracted spacing that caused the failure. Measured on the folded
+synthetics, that false rescue costs 4e-3 relative and the excision rung then
+recovers the true spacing. 1e-3 separates the two by an order of magnitude on
+each side."""
+
+RULER_REINDEX_MAX_TRIALS = 5
+"""Cap on refits per trace inside the re-index ladder: four comb-phase shifts
+(j = -2, -1, +1, +2) plus one excision refit. The cap equals the full ladder,
+so it forbids a wider search rather than truncating the ladder. A trace needing
+more is quarantined with a recorded reason instead."""
+
 # --------------------------------------------------------------------------
 # M3 — lineshape fit
 # --------------------------------------------------------------------------
