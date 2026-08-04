@@ -78,8 +78,8 @@ between the two rungs carries a factor-of-two caveat until someone settles it.
 
 Two things follow. This archive's bound sits 2.1 to 3.6 times above the 7S
 entry, so it is consistent with the neighbouring rung without yet reaching
-it. And the per-peak *fitted* values here, 0.013 to 0.018, sit at or above
-the 7S rung: three of the four are above 0.014 and the fourth is at it, even
+it. And the per-peak *fitted* values here, 0.013 to 0.018, straddle
+the 7S rung: three of the four are above 0.014 and the fourth just under it, even
 though 6S is the more compact state. That is independent
 support, from outside this archive, for the reading its own lever test already
 forces: those fitted widths are a floor, not resolved collisions. Inside the
@@ -354,12 +354,13 @@ everything: **absolute centres are lost, line shapes survive**. The analysis
 therefore extracts what shapes alone can support, and states everything else
 as a bound. Concretely:
 
-- **A validated lineshape model.** Natural (3.49 MHz) ⊗ transit ⊗ laser ⊗
-  light-shift ramp reproduces every line at reduced χ² between 0.78 and 1.09
-  across the 32 fitted conditions, mean 0.89. Why those sit below one is
-  stated once, beside the fit gallery in the README. The ramp term's own
-  fitted coefficient is consistent with zero, so the ramp is a component
-  these fits accommodate rather than one they resolve. The beam waist
+- **A validated lineshape model.** Natural (3.49 MHz) ⊗ transit ⊗ laser
+  reproduces every line at reduced χ² between 0.78 and 1.09 across the 32
+  fitted conditions, mean 0.89. Why those sit below one is stated once,
+  beside the fit gallery in the README. The per-condition fits hold the
+  ramp at zero, and the shared ramp coefficient of the width-versus-power
+  fit rails at zero, so the ramp is a component the archive bounds rather
+  than one these fits resolve. The beam waist
   is **adopted, not measured here**: 64 µm (prior), the value
   [Rajasree 2020](lit/rajasree2020thesis.md) measured on the same laser model,
   the same f = 150 mm lens and the same retro geometry. The 32 µm figure this
@@ -393,8 +394,8 @@ as a bound. Concretely:
   propagated), an order of magnitude tighter than the earlier three-point
   reading (was ≲0.2–0.4 MHz, dof=1). Showing that the two-epoch design was
   *required* is reported as a vapour-cell result.
-- **The ramp's power laws hold** (width: no power trend, a null under 3–8%
-  block scatter, and amplitude consistent with P²). The
+- **The ramp's power laws hold.** The width shows no power trend, a null
+  under 3–8% block scatter, and the amplitude is consistent with P². The
   laser width is bounded at ≲1.2 MHz on the laser axis, with a central value
   of 1.088 MHz at the adopted waist, against the sub-MHz figure quoted for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md). The drift-immune skew

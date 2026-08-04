@@ -2,11 +2,11 @@
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
 # already-committed data_raw/ (see README.md "Reproduce"). It runs 23 analysis
 # stages, then the figures, the results ledger and the CSV status column. It is
-# not the whole repository. Ten committed CSVs are written by nine scripts this
-# file never calls, listed in README.md "Reproduce". Four of those need the
-# rehearsal, quarantine or pilot trees, which stay outside the repository:
-# run_stark_joint.py, run_global_archive_fit.py, _m25_norulers.py and
-# run_pilot_ruler.py. The other five do run from a clone and are left out for
+# not the whole repository. Eleven committed CSVs are written by ten scripts
+# this file never calls, listed in README.md "Reproduce". Five of those need
+# the rehearsal, quarantine or pilot trees, which stay outside the repository:
+# run_stark_joint.py, run_global_archive_fit.py, _m25_norulers.py,
+# run_pilot_ruler.py and run_full_archive_fit.py. The other five do run from a clone and are left out for
 # runtime or because they are diagnostics: run_wing_check.py loads raw traces
 # and takes about 6 min, run_wavemeter_reconstruction.py digitises a tracked
 # photograph, run_laser_history.py reads the committed acquisition clock, and

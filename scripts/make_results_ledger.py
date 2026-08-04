@@ -472,7 +472,7 @@ def main() -> int:
       "fixed lock "
       "un-absorbs the large first-order pull, and the small waist "
       f"({skew_gain}) "
-      "makes the ramp asymmetry a detection. The naive $S_0^3$ reading (×64) is "
+      "makes the ramp asymmetry a detection. The naive $S_0^3$ reading is "
       "superseded, because the axial average changes the third cumulant's magnitude "
       "and, "
       "past $Z_c/z_R\\approx1.12$, its sign (see `docs/PLAN.md`). Which side of that "
@@ -508,8 +508,10 @@ def main() -> int:
         perm_p = f"p = {float(rp_a['ratio']):.2f}" if rp_a else "not computed here"
         W(f"- **C3d. The AC-Stark coefficient from the power lever is an upper bound, "
           f"$S_0$(225 mW) $< {ub:.2f}$ MHz (95%, over-dispersion-adjusted "
-          f"profile likelihood, the C3f construction), landing "
-          f"inside the predicted band {plo:.2f}–{phi:.2f} MHz** (`run_stark_sweep`, "
+          f"profile likelihood, the C3f construction), "
+          + ("landing inside" if plo <= ub <= phi else
+             ("sitting above" if ub > phi else "sitting below"))
+          + f" the predicted band {plo:.2f}–{phi:.2f} MHz** (`run_stark_sweep`, "
           f"the power-lever twin of the $\\beta$ fit). One shared $\\kappa$ "
           f"($S_0=\\kappa "
           f"P$) is fit to the four peaks' FWHM-against-power (each floating its core "
@@ -554,9 +556,12 @@ def main() -> int:
           f"profile limit would be the sharper construction, and it is not run on "
           f"the "
           f"archive. The result says the "
-          f"bound falls inside the prediction band, excluding the tight-waist "
-          f"(high-$S_0$) top of it while the lower reach and zero remain allowed. "
-          f"Read that as a bracket, not a sensitivity claim: the predicted effect "
+          + (f"bound falls inside the prediction band, excluding the tight-waist "
+             f"(high-$S_0$) top of it while the lower reach and zero remain allowed. "
+             if plo <= ub <= phi else
+             f"bound sits above the whole prediction band, so this power-lever "
+             f"construction excludes none of it and zero remains allowed. ")
+          + f"Read that as a bracket, not a sensitivity claim: the predicted effect "
           f"at 225 mW is ~0.09 MHz against a single-block width scatter of "
           f"0.088 MHz, so the bound is produced entirely by averaging over blocks, "
           f"and the resolving-power check finds that averaging assumption untested "

@@ -788,7 +788,7 @@ one of the three centre observables an attempt succeeds.
 > retraction: the setting changed 58 times, and only 19 of those exceed the
 > >100 ms threshold this fit frees). Redone with a free offset per display epoch,
 > the pull is **unidentifiable**: the sign flips between drift models and the
-> limit degrades from 9.50 to 17.67 MHz as the drift gains freedom
+> limit degrades from 9.49 to 17.65 MHz as the drift gains freedom
 > (`results/stark_centres.csv`, tagged NULL). These numbers were tighter than the
 > defensible ones precisely because they borrowed that invalid leverage — a
 > tighter bound is not a better one. §2 and §3 below are unaffected.

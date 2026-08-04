@@ -145,7 +145,7 @@ def main() -> None:
         ax.set_title(title, fontsize=9.5)
         ax.set_xlabel("wavelength (nm)")
         ax.set_ylabel(r"$\Delta\alpha=\alpha_\mathrm{upper}-\alpha_{5S}$  (a.u.)")
-        ax.legend(fontsize=8, loc="lower right", framealpha=0.95, frameon=True)
+        ax.legend(fontsize=8, loc="lower left", framealpha=0.95, frameon=True)
     axes[1].annotate("5D magic 776.18 nm\n(Hamilton 2023, adopted)", (776, 0),
                      xytext=(730, 3500), fontsize=8, color="0.3",
                      arrowprops=dict(arrowstyle="->", color="0.5"))

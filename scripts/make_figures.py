@@ -764,7 +764,7 @@ def fig_ruler():
                   % (100 * RULER_LINEARITY_BOUND), fontsize=9)
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
-    ax2.legend(fontsize=6, loc="lower left", framealpha=1.0, frameon=True)
+    ax2.legend(fontsize=6, loc="lower center", framealpha=1.0, frameon=True)
     _footer(fig, "Source: data_raw archive (rb5s6s.ingest, rb5s6s.ruler; the plotted trace) + "
                  "results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py && "
                  "python scripts/make_figures.py.")
@@ -2020,12 +2020,12 @@ def fig_width_trends():
     ax1.set_xscale("log")
     ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     ax1.set_ylabel("raw FWHM (MHz, transition; model-independent)")
-    ax1.set_title("Floor + slope fit to the raw linewidth vs density: 3 temperature "
-                 "points per peak (dof=1).\n"
-                 "The line and band ARE the fit the bound is built from, not a denser "
-                 "measurement.\n"
-                 r"slope = $\beta_\mathrm{self}$, a bound not a measurement "
-                 "(signal-to-noise $<$3, all four peaks)",
+    ax1.set_title("Floor + slope fit to the raw linewidth vs density, drawn over "
+                 "the 70-110 °C points.\n"
+                 "The reported bound is the four-point construction with the 130 °C "
+                 "anchor folded in\n"
+                 r"(dof=2, t=2.92); slope = $\beta_\mathrm{self}$, a bound not a "
+                 "measurement (signal-to-noise $<$2, all peaks)",
                  fontsize=8.2)
     # Compact honesty note (private/reviews/digest/fig19_trend_audit.md): the bars on
     # this panel are the repeat + between-block scatter that FEEDS the reported 95%
@@ -2037,7 +2037,7 @@ def fig_width_trends():
     # in scatter toward low N) and the lower-right legend leave clear.
     ax1.text(0.02, 0.97,
              "bars: repeat + between-block scatter, not the reported 95% bound\n"
-             "(a further $\\times$6.3 Student-t inflation, dof=1); ~6% low-SNR\n"
+             "(the four-point headline applies t(0.95,2) = 2.92). ~6% low-SNR\n"
              "narrowing at 70 °C (3 of 4 peaks) makes the bound conservative",
              transform=ax1.transAxes, ha="left", va="top", fontsize=6.3, color="0.3",
              bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="0.7", lw=0.5))

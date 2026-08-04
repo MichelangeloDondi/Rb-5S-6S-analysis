@@ -76,7 +76,7 @@ recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
 itself is validated by that recovery, not assumed.
 
 The archive's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
-triple the density lever ($N{\times}16\to{\times}53$), and the lever cross-check
+triple the density lever ($N{\times}16.2\to{\times}52.5$), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block" — it is that
 $\gamma_\text{coll}$ **barely grows with density**: it rises only ${\sim}1.47\times$

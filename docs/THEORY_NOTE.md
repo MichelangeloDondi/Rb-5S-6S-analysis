@@ -219,8 +219,8 @@ a *display epoch*, a run of unchanged scope horizontal position, so each
 epoch carries a free offset, and of the 26 epochs covering the power sweep
 only three contrast two powers, none spanning two lines. The pull is then
 unidentifiable rather than imprecise: its sign reverses between drift
-models ($+3.45$ vs $-3.26$ MHz/W) and the limit degrades as the drift model
-gains freedom, $|S_0(225$ mW$)| < 9.50$, $14.59$, $17.67$ MHz for linear,
+models ($+3.44$ vs $-3.25$ MHz/W) and the limit degrades as the drift model
+gains freedom, $|S_0(225$ mW$)| < 9.49$, $14.57$, $17.65$ MHz for linear,
 one-exponential and two-exponential drift. Tagged NULL. Earlier versions of
 this bound ($3.5$ MHz in addendum 6, $5.4$ MHz under addendum 7's mixture,
 $7.3$ MHz in M20) were tighter only because they differenced centres across
@@ -256,9 +256,9 @@ with an error bar; the discipline is to report a bound unless it clears that
 bar, which at archival intensity it does not. A fixed-lock session changes this two ways:
 the fixed lock **recovers the first-order pull** ($-\tfrac23 S_0 \propto P$, a
 $\sim$MHz shift against a stable reference — the primary $S_0$ measurement, no
-longer absorbed by a free centre); and the small waist, where $S_0$ is $\approx10\times$
+longer absorbed by a free centre); and the small waist, where $S_0$ is $\approx16\times$
 larger, lifts the shape asymmetry into a **detection** — though not by the naive
-$S_0^3$ factor of 64: the axial average changes the third cumulant's magnitude
+$S_0^3$ cube of that gain: the axial average changes the third cumulant's magnitude
 and, for a long enough collection window, its sign (§7). Both are *conditional on the small-waist skew corrections
 — the beam-divergence collection average of §7 (the larger, sign-flipping one)
 and the standing-wave fringe-resolved tail of §5, same-sign and fit jointly* —
@@ -358,7 +358,7 @@ fit jointly at small waist (quantified, coherence-window-bracketed, in
 ([Orson *et al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.35$ MHz (transition) at $P=225$ mW, $w_0=64\ \mu$m,
 $\rho=0.94$; it grows to $5.6$ MHz at $w_0=16\ \mu$m, which is why a small waist
 lifts the ramp asymmetry to a detection — but *not* by the on-axis $S_0^3$
-factor of 64, since the axial average over the collection window changes the
+cube of the intensity gain, since the axial average over the collection window changes the
 third cumulant's magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7). Code: `lineshape.stark_shift_S0_mhz`.
 
 **Sign, and provenance.** The $\langle E^2\rangle$ convention is magnitude-only;

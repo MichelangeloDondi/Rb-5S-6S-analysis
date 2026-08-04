@@ -92,7 +92,7 @@ the current near-IR path does not pass. So:
   efficiency — many near-IR-optimised detectors are poor at 420 nm). This is a
   hard requirement; it cannot be trimmed or optimised around.
 - **Corrected 2026-08-03 (see §3.2): the requirement above is not hard for 7S,
-  and probably not for 5D either.** Wang *et al.* 2025 read the 5S→7S cascade on
+  and probably not for 5D either.** Wang *et al.* (2026) read the 5S→7S cascade on
   five channels at once and measure the branching, normalised to 780 nm, as
   1 : 0.64 : 0.52 : 0.35 : 0.20 for 780 / 741 / 795 / 728 / 420 nm, which puts
   420 nm last of the five ([wang2025](lit/wang2025.md)). The 741 and 728 nm
@@ -234,7 +234,7 @@ Casimir-Polder integrals, and 5.386 kHz per 10¹² cm⁻³ being Zameroski's mea
 129 ± 11 kHz/mTorr converted at 403 K. Exactly one number in that chain comes
 from outside. The archival bound sits 8 to 14 times above that expectation.
 
-**That one external number is contested.** Wang *et al.* 2025 measure
+**That one external number is contested.** Wang *et al.* (2026) measure
 self-broadening on the same 760 nm 5S→7S line at 0.32 ± 0.01 MHz/mTorr, about
 0.014 MHz per 10¹² cm⁻³ against Zameroski's 0.0054, a factor of 2.6
 ([wang2025](lit/wang2025.md)). Wang states no HWHM/FWHM convention anywhere in
@@ -337,11 +337,7 @@ field and not with the drive (§3.1), since the 5S→7S drive is pinned at
 760.126 nm.
 
 Two caveats on those searches. The windows were 700 to 1500 nm for 5S–6S and
-700 to 1000 nm for 5S–7S, and nothing outside them was looked for. And
-`magic_wavelengths` guards only the 6S→nP poles, which is correct inside its
-default 950 to 1500 nm window but not below it: run from 700 nm it also returns
-the two 5S D-line poles (780.24 and 794.98 nm) as apparent crossings, with α of
-order 10¹¹ a.u. Those are search artifacts and are not quoted above. The
+700 to 1000 nm for 5S–7S, and nothing outside them was looked for. And the
 742.6 nm crossing sits at the search's own 1.5 nm pole guard, so read its
 position as indicative.
 
