@@ -556,11 +556,11 @@ def main() -> int:
           f"profile limit would be the sharper construction, and it is not run on "
           f"the "
           f"archive. The result says the "
-          + (f"bound falls inside the prediction band, excluding the tight-waist "
-             f"(high-$S_0$) top of it while the lower reach and zero remain allowed. "
+          + ("bound falls inside the prediction band, excluding the tight-waist "
+             "(high-$S_0$) top of it while the lower reach and zero remain allowed. "
              if plo <= ub <= phi else
-             f"bound sits above the whole prediction band, so this power-lever "
-             f"construction excludes none of it and zero remains allowed. ")
+             "bound sits above the whole prediction band, so this power-lever "
+             "construction excludes none of it and zero remains allowed. ")
           + f"Read that as a bracket, not a sensitivity claim: the predicted effect "
           f"at 225 mW is ~0.09 MHz against a single-block width scatter of "
           f"0.088 MHz, so the bound is produced entirely by averaging over blocks, "
