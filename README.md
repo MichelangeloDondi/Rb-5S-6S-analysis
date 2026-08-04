@@ -31,7 +31,7 @@ The full claim ledger, including what is deliberately not claimed, is
 </p>
 
 *One 993.4192 nm (⁸⁵Rb) line at 130 °C and 225 mW, with the composite fit and
-its residuals: total FWHM 5.33 MHz, reduced χ² 1.09. This is the raw material
+its residuals: total FWHM 5.37 ± 0.02 MHz, reduced χ² 1.09. This is the raw material
 everything below is built from.*
 
 **Why the line is worth the trouble.** The environmental coefficients of the
@@ -392,21 +392,29 @@ rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
             lineshape + fitting, density, collisional/global/AC-Stark fits,
             transit Monte-Carlo, amplitude analyses, shared utilities
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
+examples/   your_line.ipynb, the pipeline pointed at a different line by
+            editing one dictionary
 data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 data_recovered/  the backup-recovered layer: the acquisition clock
             (CLOCK.csv), backup-only discards, degradation lineage
-results/    committed output CSVs (the documented run)
+results/    the 39 committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
-tests/      full test battery; CI runs it on the minimum and latest numpy
-docs/       methods.md (index) + methods/ (8 ordered chapters: the full
-            derivations) · PLAN.md (measurement plan) ·
+tests/      full test battery, run by CI on the minimum and latest numpy
+docs/       the documentation tree. The ones to read first:
+            CLAIMS.md (the claim ledger) · BIG_PICTURE.md (goals, prior art,
+            what each future measurement would add) · ADAPTING.md (the seams
+            for another line) · methods.md (index) + methods/ (8 ordered
+            chapters: the full derivations) · PLAN.md (measurement plan) ·
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
-            APPARATUS.md (hardware of record + provenance) ·
-            THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work) ·
+            APPARATUS.md (hardware of record + provenance) + apparatus/
+            (the dated photographs and the bench schematic) ·
+            THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work)
+            + LITERATURE_INDEX.md (generated index of the per-paper notes)
+            + lit/ (one note per paper) + references.bib ·
             PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
             (the timestamp audit: frozen predictions, results, dated addenda) ·
             RESEARCH_DECISIONS.md (why the analysis stops where it does) ·
-            lit/ (one note per paper) + STYLE.md
+            notes/ (working notes) · STYLE.md
 private/    local working folder, excluded by .gitignore and enforced by
             tests/test_repo_hygiene.py
 ```

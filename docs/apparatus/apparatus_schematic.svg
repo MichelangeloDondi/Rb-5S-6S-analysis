@@ -24,8 +24,8 @@
   <rect x="566" y="660" width="8" height="108" fill="#a63430" opacity="0.6"/>
   <polygon points="166,776 558,776 558,784 174,784" fill="#a63430" opacity="0.6"/>
   <polygon points="166,620 174,620 174,784 166,776" fill="#a63430" opacity="0.6"/>
-  <polygon points="166,620 174,620 171,440 169,440" fill="#a63430" opacity="0.6"/>
-  <polygon points="169,440 171,440 174,260 166,260" fill="#a63430" opacity="0.6"/>
+  <polygon points="166,620 174,620 170.4,448 170.4,440 169.6,440 169.6,448" fill="#a63430" opacity="0.6"/>
+  <polygon points="169.6,440 170.4,440 170.4,432 174,260 166,260 169.6,432" fill="#a63430" opacity="0.6"/>
   <rect x="166" y="92" width="8" height="168" fill="#a63430" opacity="0.6"/>
   <polygon points="476,776 476,784 464,780" fill="#a63430"/>
   <polygon points="166,726 174,726 170,714" fill="#a63430"/>
@@ -33,9 +33,9 @@
 
   <!-- return beam, dashed: down the axis, along the arm, up into the isolator -->
   <line x1="178" y1="94" x2="178" y2="788" stroke="#7b1f1f" stroke-width="1.3" stroke-dasharray="6 4"/>
-  <line x1="178" y1="788" x2="578" y2="788" stroke="#7b1f1f" stroke-width="1.3" stroke-dasharray="6 4"/>
-  <line x1="578" y1="788" x2="578" y2="706" stroke="#7b1f1f" stroke-width="1.3" stroke-dasharray="6 4"/>
-  <polygon points="573,716 578,704 583,716" fill="#7b1f1f"/>
+  <line x1="178" y1="788" x2="562" y2="788" stroke="#7b1f1f" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <line x1="562" y1="788" x2="562" y2="706" stroke="#7b1f1f" stroke-width="1.3" stroke-dasharray="6 4"/>
+  <polygon points="557,716 562,704 567,716" fill="#7b1f1f"/>
 
   <!-- ===================== source column ===================== -->
   <rect x="535" y="498" width="150" height="34" rx="5" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
@@ -49,15 +49,15 @@
   <text x="610" y="634" text-anchor="middle" font-size="11.5" fill="#2b2b2a">993 nm, Verdi V-18 pump</text>
   <text x="610" y="652" text-anchor="middle" font-size="10.5" fill="#6b6b69">triangle-wave cavity scan</text>
 
-  <rect x="552" y="668" width="36" height="36" rx="4" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="552" y="668" width="36" height="36" rx="4" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <line x1="570" y1="676" x2="570" y2="692" stroke="#2b2b2a" stroke-width="1.6"/>
   <polygon points="565,690 570,700 575,690" fill="#2b2b2a"/>
   <text x="598" y="690" font-size="10.5" fill="#6b6b69">optical isolator</text>
 
-  <rect x="554" y="710" width="32" height="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="554" y="710" width="32" height="6" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <circle cx="596" cy="713" r="5" fill="none" stroke="#2b2b2a" stroke-width="1.1"/>
   <text x="606" y="717" font-size="10.5" fill="#6b6b69">λ/2</text>
-  <rect x="558" y="768" width="24" height="24" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="558" y="768" width="24" height="24" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <line x1="558" y1="792" x2="582" y2="768" stroke="#2b2b2a" stroke-width="1.2"/>
   <text x="590" y="786" font-size="10.5" fill="#6b6b69">PBS</text>
   <line x1="570" y1="792" x2="570" y2="812" stroke="#a9a9a5" stroke-width="1.2"/>
@@ -71,22 +71,22 @@
   <text x="120" y="817" text-anchor="end" font-size="10.5" fill="#6b6b69">fold mirror</text>
 
   <!-- ===================== the cell axis ===================== -->
-  <rect x="146" y="728" width="48" height="7" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="146" y="728" width="48" height="7" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <line x1="162" y1="734" x2="178" y2="729" stroke="#2b2b2a" stroke-width="1"/>
   <text x="212" y="736" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">1</tspan> · polarizing filter</text>
 
-  <rect x="148" y="706" width="44" height="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="148" y="706" width="44" height="6" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <circle cx="199" cy="709" r="6.5" fill="none" stroke="#2b2b2a" stroke-width="1.2"/>
   <text x="216" y="713" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">2</tspan> · λ/2</text>
 
-  <rect x="128" y="636" width="84" height="56" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="128" y="636" width="84" height="56" rx="6" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <rect x="160" y="636" width="20" height="56" fill="none" stroke="#a9a9a5" stroke-width="1"/>
   <text x="122" y="659" text-anchor="end" font-size="12.5" fill="#2b2b2a" font-weight="bold">3 · EOM</text>
   <text x="122" y="675" text-anchor="end" font-size="10.5" fill="#6b6b69">12.5 MHz resonant</text>
   <text x="222" y="656" font-size="10.5" fill="#6b6b69">AFG31021, 12.5 MHz, 10 Vpp</text>
   <text x="222" y="671" font-size="10.5" fill="#6b6b69">frequency-ruler sidebands</text>
 
-  <path d="M 146 620 C 156 611 184 611 194 620 C 184 629 156 629 146 620 Z" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <path d="M 146 620 C 156 611 184 611 194 620 C 184 629 156 629 146 620 Z" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <text x="212" y="624" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">4</tspan> · f = 150 mm</text>
 
   <rect x="152" y="456" width="36" height="78" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
@@ -104,12 +104,14 @@
   <text x="88" y="391" text-anchor="end" font-size="10.5" fill="#6b6b69">tilted ≈ 3° against window reflections</text>
   <text x="88" y="409" text-anchor="end" font-size="10.5" fill="#2b2b2a">two-photon 5S₁/₂→6S₁/₂</text>
   <text x="88" y="452" text-anchor="end" font-size="10.5" fill="#2b2b2a">w₀ ≈ 64 µm</text>
+  <text x="88" y="463" text-anchor="end" font-size="9" fill="#6b6b69">adopted from the beamline lineage,</text>
+  <text x="88" y="474" text-anchor="end" font-size="9" fill="#6b6b69">not measured here</text>
   <line x1="92" y1="448" x2="164" y2="442" stroke="#a9a9a5" stroke-width="0.8" stroke-dasharray="2 3"/>
 
   <rect x="152" y="272" width="36" height="58" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
   <text x="196" y="298" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">7</tspan> · pipe</text>
 
-  <path d="M 146 260 C 156 251 184 251 194 260 C 184 269 156 269 146 260 Z" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <path d="M 146 260 C 156 251 184 251 194 260 C 184 269 156 269 146 260 Z" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <text x="212" y="256" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">8</tspan> · f = 150 mm</text>
 
   <line x1="170" y1="162" x2="216" y2="157" stroke="#8a8a87" stroke-width="1.4" stroke-dasharray="4 3"/>
@@ -124,9 +126,10 @@
   <text x="212" y="90" font-size="12" fill="#2b2b2a" font-weight="bold">9 · flat mirror (self-imaging retro)</text>
 
   <!-- ===================== detection: the f18 at 25 mm, through the oven aperture ===================== -->
+  <polygon points="170,440 188,416 240,416 240,464 188,464" fill="#d62728" opacity="0.6"/>
   <rect x="188" y="410" width="46" height="60" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
-  <path d="M 200 416 C 209 426 209 454 200 464 C 191 454 191 426 200 416 Z" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <rect x="216" y="416" width="6" height="48" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <path d="M 200 416 C 209 426 209 454 200 464 C 191 454 191 426 200 416 Z" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="216" y="416" width="6" height="48" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
   <text x="211" y="486" text-anchor="middle" font-size="10.5" fill="#d62728" font-weight="bold">795 nm</text>
 
   <rect x="240" y="408" width="188" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
@@ -153,5 +156,6 @@
   <text x="620" y="454" text-anchor="middle" font-size="10.5" fill="#6b6b69">ch1: scan ramp · ch2: PMT</text>
 
   <!-- provenance -->
+  <text x="780" y="818" text-anchor="end" font-size="9.5" fill="#a9a9a5">source: docs/APPARATUS.md · hand-drawn, no regenerate script</text>
   <text x="780" y="832" text-anchor="end" font-size="9.5" fill="#a9a9a5">numbering 1–13 as in the annotated bench photograph</text>
 </svg>

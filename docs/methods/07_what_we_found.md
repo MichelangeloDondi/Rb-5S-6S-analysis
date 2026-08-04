@@ -6,73 +6,89 @@
 
 **Headline: the T-sweep *bounds* $\beta_\text{self}$ and shows why it cannot
 measure it.** The raw, model-independent widths are **non-monotonic in
-density** for three of four peaks (e.g. 993.4207 nm: 5.11 → 4.87 → 5.28 MHz for
-70 → 90 → 110 °C — *narrower* at higher density, which no collision can
-produce). Within-block repeat scatter is $\sim0.05$ MHz, but between-block
-scatter is $\sim0.06$–$0.16$ MHz: the 2025 laser width drifted between cooling
-steps by about as much as the entire collisional trend. Applying [§4.5 — The statistics](06_the_statistics.md), the model-independent 95% per-peak bound is
+density** for two of the four peaks (993.4154 and 993.4207 nm): somewhere along
+the sweep the line gets *narrower* at higher density, which no collision can
+produce. The scatter left over about the fitted width-versus-density line is
+0.14 to 0.25 MHz across the four peaks, and it is between-block scatter, the
+2025 laser width wandering between cooling steps by about as much as the entire
+collisional trend. No peak resolves a slope: the four signal-to-noise ratios are
+1.1, 0.7, 0.8 and 1.9. Applying [§4.5 — The statistics](06_the_statistics.md), the model-independent 95% per-peak bound is
 
-$$\boxed{ \beta_\text{self}\lesssim 0.2\text{ to }0.4\ \text{MHz per }10^{12}\ \text{cm}^{-3}. }$$
+$$\boxed{ \beta_\text{self}\lesssim 0.03\text{ to }0.05\ \text{MHz per }10^{12}\ \text{cm}^{-3}. }$$
+
+The four density points are 70, 90, 110 and 130 °C, a $\times52.5$ lever. The
+130 °C point is the 225 mW power session, taken in the same optical and cell
+configuration and inside the same continuous campaign, with each session's axis
+calibrated from its own rate source before the two are put on one density axis
+(`docs/RESEARCH_DECISIONS.md` §9). Folding it in stretches the lever from
+$\times16.2$, and no three-point construction is kept alongside it.
 
 Two coverage corrections define this bound (both 2026-07-16). First, the
 between-block scatter that dominates the slope error is estimated on only
-**one residual degree of freedom** (3 density points, 2 fit parameters), so a
-one-sided 95% limit needs the Student-t quantile $t(0.95, 1)=6.31$, not the
-Gaussian-asymptotic 2 an earlier revision used — that earlier
-"$\approx2\sigma$" quote (0.07–0.15) under-covered, which is exactly why it
-was flagged with a factor-2 own-uncertainty; the t-quantile formalizes that
-flag into the number. Second, $\beta\propto 1/N$, so the $\sim$20% spread
-between published vapor-pressure correlations is a density-scale systematic
-that moves every $\beta$ by the same fraction; the cold-spot direction makes
-the fitted $\beta$ an underestimate, so the bound is inflated on the + side
-($\times1.2$; see `density.py`). (The scatter estimate divides by the DOF,
-not by $n$; using $n$ would tighten the bound $\sim$40% — a directional bug
-fixed 2026-07-12.) A naive global Voigt fit instead reports a
-4–10$\sigma$ "detection" — the [§4.5 — The statistics](06_the_statistics.md) cautionary tale in practice. This bound is
+**two residual degrees of freedom** (4 density points, 2 fit parameters), so a
+one-sided 95% limit needs the Student-t quantile $t(0.95, 2)=2.92$, not the
+Gaussian-asymptotic 2 an earlier revision used. Second, $\beta\propto 1/N$, so
+the $\sim$20% spread between published vapor-pressure correlations is a
+density-scale systematic that moves every $\beta$ by the same fraction, and the
+cold-spot direction makes the fitted $\beta$ an underestimate, so the bound is
+inflated on the + side ($\times1.2$, see `density.py`). (The scatter estimate
+divides by the degrees of freedom, not by $n$. Using $n$ would tighten the
+bound, a directional bug fixed 2026-07-12.) The spread across the boxed range
+is systematics rather than physics, because the four bounds track each peak's
+residual scatter and not a physical rate, so the number to quote is the loosest
+of the four. A naive global Voigt fit instead reports a
+4–10$\sigma$ "detection", the [§4.5 — The statistics](06_the_statistics.md) cautionary tale in practice. This bound is
 the archival data *showing the two-epoch design was necessary*, and is reported as a
 vapour-cell result.
 
 ### 5.2 A hierarchical cross-check ($\beta$ per isotope)
 
 **A hierarchical cross-check ($\beta$ per isotope).** The full fit ([§4.2 — The statistics](06_the_statistics.md),
-`fit_global`) — which properly lets $\sigma_\text{laser}$ drift per temperature
-and weights each block by its own correlation time — returns
-$\beta_{85}=\beta_{87}=0.036(4)$ MHz per $10^{12}$ cm$^{-3}$: **no isotope
-dependence** ($\beta_{85}-\beta_{87}=0.000\pm0.006$, $0.0\sigma$), robust to
-leaving any block out. It is a *model-based* value: it sits above the per-peak model fits
-($0.016$–$0.034$) but comfortably **below all four** model-independent per-peak
-bounds ($0.21$–$0.44$ with the corrected t-quantile and density-scale
-coverage) — so it is consistent with the bound, not in
-tension with it, though it still inherits the same $w_0$ and model-form limits.
-This $0.036$ carries **four separate error bars**, and the systematics dominate the statistical one — statistical
-$\pm0.004$ (joint-fit covariance); **transit model-form $\pm0.033$** (the
+`fit_global`), which lets $\sigma_\text{laser}$ drift per temperature
+and weights each block by its own correlation time, returns
+$\beta_{85}=0.0535(43)$ and $\beta_{87}=0.0528(47)$ MHz per $10^{12}$ cm$^{-3}$:
+**no isotope dependence**, the two differing by $0.0007$, well inside either
+error bar, and dropping any one peak moves the value by at most $0.007$. It is
+a *model-based* value, and it sits **above** both the per-peak model fits
+($0.013$–$0.018$) and all four model-independent per-peak bounds
+($0.03$–$0.05$). The three estimators of the same quantity therefore span about
+a factor of four, and that spread across $\sigma_\text{laser}$ treatments is
+itself the uncertainty on this deliverable, larger than any single fit's error
+bar. This $0.053$ carries **four separate error bars**, and the systematics
+dominate the statistical one: statistical
+$\pm0.004$ (joint-fit covariance), **transit model-form $\pm0.014$**, the
+largest of the four (the
 $|\text{Voigt}-\text{Lehmann}|$ shift, [§4.7 — The statistics](06_the_statistics.md), `run_global_fit`: the Gaussian-transit
 Voigt gives the *higher* $\beta\approx0.068$ because a narrower transit core forces
-more width onto collisions); **density scale $\pm0.007$** ($\beta\propto1/N$, the
-$\sim$20% spread between published vapor-pressure correlations, `density.py`);
-and — **largest of the four** — the $w_0$-band
-$[0.003,0.055]$ (a factor ${\sim}16$, since every absolute $\beta$ rides on the
-OPEN beam waist). The paper must quote all four, not the optimistic $\pm0.004$ alone.
+more width onto collisions), **density scale $\pm0.011$** ($\beta\propto1/N$, the
+$\sim$20% spread between published vapor-pressure correlations, `density.py`),
+and the $w_0$-band $[0.050,0.057]$, which covers transit reference widths from
+$w_0=65$ down to 40 µm and is the narrowest of the four.
+The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
-Its real value is the isotope test, and the in-sample consistency check (M4c,
-§sharing test) that the four peaks at each temperature agree on a single
-$\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.19/0.58/0.33, all
-well below 1, so the peak-blocks are closer to the shared model than their own
-error bars — the test cannot discriminate and does not license the sharing, it
-merely fails to contradict it (RESULTS §σ_laser sharing). The fit's
+Its real value is the isotope test, and the in-sample consistency check
+(`run_sigma_laser_sharing`) that the four peaks at each temperature agree on a
+single $\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.28/0.59/0.29,
+all well below 1, so the peak-blocks are closer to the shared model than their
+own error bars, and the test cannot discriminate. It does not license the
+sharing, it merely fails to contradict it (RESULTS §σ_laser sharing). It also
+covers only 70, 90 and 110 °C, so it says nothing about sharing at the 130 °C
+point that now carries most of the lever. The fit's
 $\sigma_\text{laser}(T)\approx2.1/2.2/1.5$ MHz is **not** a clean drift curve,
 though: the free per-condition fit gives a *flat* $1.5$–$1.75$ MHz, so that trend
 is the $\beta \leftrightarrow \sigma_\text{laser}$ degeneracy under the density
-tie, not a physical laser drift — the 110 °C dip is a model artifact, not a
-stale block (and it does not corrupt $\beta$, which the density lever still
-pins).
+tie, not a physical laser drift. The 110 °C dip is a model artifact, not a
+stale block, and it does not corrupt $\beta$, which the density lever still
+pins.
 
-The **lever cross-check** (M4d, `run_lever_crosscheck`) packages exactly this — the
-cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak /
-leave-one-temperature scan — and adds the lever test: folding in the
-130 °C anchor ([§4.2 — The statistics](06_the_statistics.md)) pulls $\beta$ well below $0.036$, because $\gamma_\text{coll}$
-rises only ${\sim}1.85\times$ across a ${\times}52$ density span — a residual floor,
-not resolved collisions — so $\beta$ is a lever-dependent bound. The full audited
+The **lever cross-check** (`run_lever_crosscheck`) packages exactly this, the
+cooling-sweep $\beta$ with its stacked error bars and a leave-one-peak and
+leave-one-temperature scan, and adds the lever test: folding in the
+130 °C anchor ([§4.2 — The statistics](06_the_statistics.md)) pulls $\beta$ down
+to $0.020$, a shift of $-0.034$, because $\gamma_\text{coll}$
+rises only ${\sim}1.47\times$ across a ${\times}52.5$ density span. That is a
+residual floor rather than resolved collisions, so $\beta$ is a lever-dependent
+bound. The full audited
 budget is in the results ledger (`docs/RESULTS.md`).
 
 ### 5.3 The 2025 laser width (C2)
@@ -129,14 +145,16 @@ one-sided handle, so the best fit **rails at $\kappa=0$**. That boundary is why
 the bound needs care: at $\kappa=0$ the width handle has *zero gradient*, so a
 linearized (Wald) $\kappa+1.645\sigma$ interval is evaluated where the Jacobian
 column vanishes and its "$\sigma$" is a finite-difference artifact with no 95%
-coverage (it read a spurious 3.1 MHz). The quoted limit is therefore a
+coverage (that route reads 1.0 MHz un-inflated and 2.4 MHz inflated, both kept
+in the CSV as superseded diagnostics). The quoted limit is therefore a
 **profile likelihood** — scan $\kappa$ upward, re-minimizing the per-peak cores,
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
-threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}\approx4$,
+threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=5.5$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
-elsewhere). It gives a 95% profile-likelihood bound of 0.64 MHz from the
-widths alone. The joint two-session full-profile fit (M23,
-`run_stark_joint`, RESULTS C3f) sharpens the same channel to
+elsewhere). It gives a 95% profile-likelihood bound of 0.636 MHz from the
+widths alone. The joint three-session full-profile fit
+(`run_stark_joint`, RESULTS C3f), over 100 campaign, 46 rehearsal and 26 pilot
+traces, sharpens the same channel to
 $$S_0(225\ \text{mW}) < 0.27\ \text{MHz},$$
 below the 0.35 MHz predicted at the adopted waist, so the $\Delta\alpha$
 bracket sits under both values on the table (Orson's published 1093 and this
@@ -148,15 +166,20 @@ comparison is a direct test of it. The comparison is on magnitude and is
 therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
-channel is over-dispersed ($\chi^2_\text{red}\approx4.3$, block-to-block drift),
-so it does not cleanly resolve or exclude $\kappa$ — the $0.63$ MHz limit uses the
+channel is over-dispersed ($\chi^2_\text{red}=5.5$, block-to-block drift),
+so it does not cleanly resolve or exclude $\kappa$ — the $0.636$ MHz limit uses the
 inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
-coefficient's scale. Since 2026-07-23 the bound has an independent
-corroboration through disjoint systematics: the recovered acquisition clock
-supports a centroid-displacement (pull-channel) bound of 5.5 MHz at 95% —
-~8× looser, but from centres where this one comes from widths
-([results report, addendum 6](../PREREGISTRATION_RESULTS.md)). A fixed-lock
-session's stable lock would resurrect the pull
+coefficient's scale. There is no second channel behind it. The centre channel
+was worked and yields nothing: the fitted pull reverses sign between drift
+models, and the limit loosens as the drift model gains freedom,
+$|S_0(225\ \text{mW})| < 9.49$, $14.57$ and $17.65$ MHz for linear,
+one-exponential and two-exponential drift, so the pull is unidentifiable in
+this archive rather than merely imprecise. The tighter centre bounds earlier
+releases carried are withdrawn, because they differenced centres across changes
+of the scope horizontal position ([`THEORY_NOTE.md`](../THEORY_NOTE.md) §3).
+Width and shape are the archive's only light-shift channel, and the two
+constructions above are two readings of that one channel, not two channels. A
+fixed-lock session's stable lock would resurrect the pull
 $\propto S_0$ (a far stronger handle), and the small waist makes $S_0$
 several-fold larger, which would turn this bracket into a measured coefficient.
 
@@ -238,10 +261,10 @@ the four peaks **interleaved**, with power logging.
 **Foundational results underpinning all of the above.** The sweep rate is
 $0.042526(51)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
 seed, confirmed by three independent methods, sweep linear to $<0.3$% within a
-block. The 20 blocks over-disperse ($\chi^2_\text{red}=6.8$) — block-level
+block. The 20 blocks over-disperse ($\chi^2_\text{red}=8.1$) — block-level
 ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),
 **not** a peak-ordered trend (bracket-resolved rates are non-monotonic) — and
-the quoted error is already $\sqrt{\chi^2_\text{red}}$-inflated ($\approx$2.6×)
+the quoted error is already $\sqrt{\chi^2_\text{red}}$-inflated ($\approx$2.8×)
 to absorb it, so it is a symmetric common-axis uncertainty, not a cross-peak
 bias; the fits use each condition's own block rate. Total
 line widths are 4.8–5.7 MHz, sitting on the [§2 — The lineshape, kernel by kernel](02_the_lineshape.md) budget; and the dataset

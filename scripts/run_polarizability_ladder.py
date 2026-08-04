@@ -28,6 +28,13 @@ from rb5s6s import polarizability as P  # noqa: E402
 _SEED = 20260717
 
 
+def _footer(fig, text, y=0.012, fontsize=6.3):
+    """The provenance line every figure in this repository carries: the
+    sources it is drawn from and the command that regenerates it. Same
+    position, size and colour as scripts/make_figures.py's own _footer."""
+    fig.text(0.01, y, text, fontsize=fontsize, color="0.35", va="bottom")
+
+
 def _mc_7s(fn, n: int = 1500, seed: int = _SEED):
     """16/50/84 percentiles of fn over draws of the 5S and 7S inputs."""
     rng = np.random.default_rng(seed)
@@ -108,31 +115,50 @@ def main() -> None:
     print("  the Safronova 2004 tables) and the tensor treatment -- future work.")
 
     # --- figure: Delta_alpha(lambda) for the two clean/independent transitions ---
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+    # Same style block, colour registry and footer as scripts/make_figures.py,
+    # so this panel pair reads as part of the same set.
+    plt.rcParams.update({"figure.dpi": 130, "font.size": 10, "axes.grid": True,
+                         "grid.alpha": 0.25, "axes.axisbelow": True,
+                         "legend.frameon": False})
+    BLUE, ORANGE, GREEN = "#0072B2", "#D55E00", "#009E73"
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.4))
     for ax, (lo, hi, drive, fn, title, magics) in zip(axes, [
-        (1150, 1400, 993, P.delta_alpha, "5S->6S", m6),
-        (720, 800, 760, P.delta_alpha_7s, "5S->7S", [x for x, _ in magic7]),
+        (980, 1400, 993, P.delta_alpha, r"5S$\to$6S: the crossings sit far to "
+         "the red of the 993 nm drive", m6),
+        (720, 800, 760, P.delta_alpha_7s, r"5S$\to$7S: the crossings bracket "
+         "the 760 nm drive, between poles", [x for x, _ in magic7]),
     ]):
         g = np.linspace(lo, hi, 2000)
         y = np.array([fn(x) for x in g])
         # clip near poles for a readable axis
         y[np.abs(y) > 8000] = np.nan
         ax.axhline(0, color="0.6", lw=0.8)
-        ax.plot(g, y, color="C0", lw=1.6)
-        ax.axvline(drive, color="C3", ls="--", lw=1.2, label=f"drive {drive} nm")
-        for m in magics:
+        ax.plot(g, y, color=BLUE, lw=1.6)
+        ax.axvline(drive, color=ORANGE, ls="--", lw=1.2, label=f"drive {drive} nm")
+        for i, m in enumerate(magics):
             if lo < m < hi:
-                ax.axvline(m, color="C2", ls=":", lw=1.1)
+                ax.axvline(m, color=GREEN, ls=":", lw=1.1,
+                           label="light shift the same on both states"
+                           if i == 0 else None)
                 ax.annotate(f"{m:.1f}", (m, 0), textcoords="offset points",
-                            xytext=(2, 6), fontsize=8, color="C2")
-        ax.set_title(f"{title}: $\\Delta\\alpha(\\lambda)$")
+                            xytext=(3, 8), fontsize=8, color=GREEN)
+        ax.set_title(title, fontsize=9.5)
         ax.set_xlabel("wavelength (nm)")
-        ax.set_ylabel("$\\Delta\\alpha$ (a.u.)")
-        ax.legend(fontsize=8, loc="best")
+        ax.set_ylabel(r"$\Delta\alpha=\alpha_\mathrm{upper}-\alpha_{5S}$  (a.u.)")
+        ax.legend(fontsize=8, loc="lower right", framealpha=0.95, frameon=True)
     axes[1].annotate("5D magic 776.18 nm\n(Hamilton 2023, adopted)", (776, 0),
                      xytext=(730, 3500), fontsize=8, color="0.3",
                      arrowprops=dict(arrowstyle="->", color="0.5"))
-    fig.tight_layout()
+    fig.suptitle("A magic wavelength is where a trap shifts both states of a "
+                 "transition equally, so the transition itself does not move.\n"
+                 "Instance: two ladders from the Rb ground state, the 993 nm "
+                 "line and the 760 nm line, with their crossings.",
+                 fontsize=9.5, y=0.985)
+    fig.tight_layout(rect=(0, 0.055, 1, 0.945))
+    _footer(fig, "Source: rb5s6s/polarizability.py (sum over states, Safronova 2004 "
+                 "all-order elements for 7S) + Hamilton et al. 2023 (the 5D magic "
+                 "wavelength, adopted).\nRegenerate: python "
+                 "scripts/run_polarizability_ladder.py.")
     out = Path(__file__).resolve().parents[1] / "figures" / "fig9_polarizability_ladder.png"
     fig.savefig(out, dpi=140)
     print(f"\nWrote {out}")

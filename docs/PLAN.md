@@ -56,7 +56,7 @@ observables, not sharper nulls.
 **"The lock drifted MHz-scale all night in 2025. What stops a repeat?"** The
 root cause is now diagnosed, not just remembered: cavity-lock dropouts during
 the ~2 h etalon thermal transient, with held-lock drift only ~0.02 MHz/min
-([`APPARATUS.md`](APPARATUS.md) §6). The etalon discipline in §10 is the
+([`APPARATUS.md`](APPARATUS.md) §6). The etalon discipline in §7 is the
 procedural fix. What remains asserted is only that it will be followed. The
 session also degrades gracefully. The pull is a differential measurement
 needing minutes of stability. The pre-registered bracket veto (§7) cuts
@@ -72,10 +72,11 @@ sharpen the 2025 archive and stand alone.
 a preliminary session, a wavemeter record of cavity re-locks and relaxations
 (no such log survives from the campaign itself). Middle: the campaign,
 reconstructed from its own traces. Line offsets are meaningful only within
-one scope-knob epoch, the spikes are re-lock events, and the measured
-held-lock drift barely moves in three hours, which is why shapes survive and
-centres do not. Bottom: what each drift regime licenses. The 2025 lock
-supported the shape-only bounds this archive reports. A fixed lock of the
+one scope-knob epoch, the spikes are re-lock events, and the held-lock drift
+is bounded at order 0.02 MHz/min on the laser axis with the sign undetermined,
+which is why shapes survive and centres do not. Bottom: what each drift
+regime licenses. The 2025 lock supported the shape-only bounds this archive
+reports. A fixed lock of the
 class already demonstrated on this transition would make the centre channel
 usable, converting the bounds into the measured pull, the collisional
 self-shift, and a 3–12σ β_self.*

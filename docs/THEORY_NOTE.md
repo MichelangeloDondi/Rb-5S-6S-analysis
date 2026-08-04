@@ -148,9 +148,10 @@ it produces, with $S_0$ exaggerated so the asymmetry is visible.*
 
 ## 3. The drift-immune method
 
-The 2025 archival line walked at the MHz scale between scans — hand
-re-centrings riding a measured constant $\sim$0.02 MHz/min drift
-(`APPARATUS.md` §6) — so absolute line **centres** are dead, and a fit must
+The 2025 archival line walked at the MHz scale between scans, with hand
+re-centrings riding a held-lock drift bounded at order 0.02 MHz/min on
+the laser axis, sign undetermined (`APPARATUS.md` §6). So absolute line
+**centres** are dead, and a fit must
 give each scan its own free centre to absorb that motion. This has a sharp consequence for the ramp. Its **first-order effect is a
 shift** of the line (the centroid pull $-\tfrac23 S_0$), and a shift is exactly
 what a per-scan free centre absorbs — so in the drifted archive the pull is

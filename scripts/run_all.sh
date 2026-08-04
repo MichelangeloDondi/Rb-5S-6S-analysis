@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). Not everything: the
-# joint three-session Stark bound (run_stark_joint.py) is a long profile run
-# with an extra data dependency and is invoked on its own, and the other
-# late-numbered analyses that read only committed CSVs are checked by the test
-# battery rather than re-run here. Run from the repo
-# root with the project's virtualenv active. annotate_results_status.py must
-# run LAST: it appends the machine-readable status column read by every other
-# consumer of results/*.csv.
+# already-committed data_raw/ (see README.md "Reproduce"). It runs 23 analysis
+# stages, then the figures, the results ledger and the CSV status column. It is
+# not the whole repository. Ten committed CSVs are written by nine scripts this
+# file never calls, listed in README.md "Reproduce". Four of those need the
+# rehearsal, quarantine or pilot trees, which stay outside the repository:
+# run_stark_joint.py, run_global_archive_fit.py, _m25_norulers.py and
+# run_pilot_ruler.py. The other five do run from a clone and are left out for
+# runtime or because they are diagnostics: run_wing_check.py loads raw traces
+# and takes about 6 min, run_wavemeter_reconstruction.py digitises a tracked
+# photograph, run_laser_history.py reads the committed acquisition clock, and
+# run_stark_centres.py and run_centre_stark.py read committed CSVs. Run from
+# the repo root with the project's virtualenv active. annotate_results_status.py
+# must run LAST: it appends the machine-readable status column read by every
+# other consumer of results/*.csv.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 

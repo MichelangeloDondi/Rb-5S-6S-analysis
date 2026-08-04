@@ -62,7 +62,7 @@ physically cannot yield — first among them the beam-profile $w_0$ on which eve
 absolute scale above rests.
 
 *A proposed fixed-lock session — the measurements that would lift the bounds*
-(not yet scheduled or agreed; full time-budgeted design: **PLAN §8**). Power
+(not yet scheduled or agreed; full time-budgeted design: **PLAN §9**). Power
 would be capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
 ($I\propto P/w_0^2$; a telescope unclips the EOM aperture and two working

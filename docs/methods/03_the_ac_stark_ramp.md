@@ -66,9 +66,12 @@ $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 **exactly**, independent of the (unknown) laser/transit widths. These two
 odd cumulants are the clean, apparatus-independent handles, and the mean
 pull is the primary fixed-lock-session observable ([§7 — Assumptions, and where this can go](08_assumptions_and_outlook.md)).
-(The recovered acquisition clock also supports an archival pull *bound* from
-between-block centre structure — see [the results chapter](07_what_we_found.md)
-and the results report, addenda 6–7.)
+(The archive's centre channel supplies no bound of its own. A peak position is
+a frequency only within a run of traces taken at one scope horizontal setting,
+so each run carries a free offset, and the pull comes out unidentifiable rather
+than merely imprecise. The width-and-shape channel is the archive's only
+light-shift channel: see [the results chapter](07_what_we_found.md) and
+[`THEORY_NOTE.md`](../THEORY_NOTE.md) §3.)
 
 A literal *standardized* skewness of the full profile is more delicate,
 because the homogeneous Lorentzian has divergent second and higher even
@@ -160,7 +163,7 @@ OPEN until the fixed-lock session's collection-profile measurement):
 |---|---|---|---|---|
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
 | 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
-| 64 µm (2025 archival) | 0.31 | $-0.647$ | 0.126 | $+0.550$ |
+| 64 µm (2025 archival) | 0.15 | $-0.661$ | 0.125 | $+0.565$ |
 | 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ * |
 
 \* At 225 mW config S is already saturated (PLAN §3), so the effective
@@ -218,9 +221,9 @@ behind it, an ordinary side-viewing layout. Three consequences:
 1. **The $Z_c = 2$ mm placeholder this chapter has been carrying was right.**
    The estimate lands at 2.0–2.4 mm, so the archival numbers computed with it
    stand rather than needing revision.
-2. **The archival configuration sits at $\zeta = 0.25$–$0.30$**, i.e. well
-   inside the transverse-only regime, with $g_1 = +0.551$ to $+0.558$ and mean
-   $0.648$–$0.653$ $S_0$ — within 3% of the pure-triangle values.
+2. **The archival configuration sits at $\zeta = 0.15$–$0.19$**, i.e. well
+   inside the transverse-only regime, with $g_1 = +0.563$ to $+0.565$ and mean
+   $0.659$–$0.661$ $S_0$, within 1.5% of the pure-triangle values.
 3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 60 µm
    against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$–$0.95$ in a
    quantity whose full range is $\pm0.57$.

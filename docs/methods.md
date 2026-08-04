@@ -8,21 +8,18 @@ then tied to its implementation in the code. It is written to be read
 top-to-bottom by someone new to the experiment. Nothing is
 assumed beyond undergraduate quantum mechanics and statistics.
 
-> **Status (2026-07-12):** the **archival data is exhausted** — every quantity
-> it can yield has been extracted, and each is a documented **bound or null with
-> a named fixed-lock-session measurement that would lift it**; nothing here is an absolute
-> measurement, because the dominant systematic (the beam waist $w_0$) is still an
-> OPEN prior. That status is stated per-result in §5 **and machine-attached**:
-> every `results/*.csv` row carries a `status` column (BOUND/NULL/MEASURED/…),
-> the same provenance tag README describes. Modules M0→M24
-> (with lettered fitting sub-stages M4b–M4e), **1485 tests**
-> passing on numpy 1.24 *and* 2.0;
-> all vapour-cell deliverables (C1 collisional broadening, C2 laser epoch, C3
-> power/ramp-law, C3d Stark-coefficient bound) delivered at bound/null level.
-> Prose results in §5; the auto-generated
-> single-source-of-truth table is [`docs/RESULTS.md`](RESULTS.md); the
-> prior-art delineation and collision-rate calibration are in
-> [`docs/LITERATURE.md`](LITERATURE.md); what a fixed-lock session would lift is in §7.
+> **Status.** Every result in §5 is a bound or a null, and each names the
+> measurement that would lift it. Nothing here is an absolute measurement,
+> because the dominant systematic, the beam waist $w_0$, is still an open
+> prior. That status is stated per result in §5 and attached to the data:
+> every `results/*.csv` row carries a `status` column, the provenance tag the
+> README describes. All four vapour-cell deliverables (C1 collisional
+> broadening, C2 laser epoch, C3 power and ramp law, C3d the Stark-coefficient
+> bound) are delivered at bound or null level. Prose results are in §5, the
+> auto-generated single-source-of-truth table is
+> [`docs/RESULTS.md`](RESULTS.md), the prior-art delineation and collision-rate
+> calibration are in [`docs/LITERATURE.md`](LITERATURE.md), and what a
+> fixed-lock session would lift is in §7.
 
 ### Notation and abbreviations (defined once, used throughout)
 
@@ -71,7 +68,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M8 model-form | M9 transit MC | M10 amplitude ratios | M11 model ladder (BIC) |
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
-  | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint two-session Stark |
+  | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
   | M24 wing check (null) |  |  |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
@@ -125,10 +122,11 @@ $=\tfrac12$, `_LASER` suffix) · a provenance tag on every number
 `DESCOPED`) · validation on synthetic data before real data · independent cross-checks of headline results,
 including the strongest kind, an independent physical channel checking the
 primary fit rather than a re-fit or bootstrap: the collisional-wing null is
-closed by a density lever and a power lever agreeing (C3g), the sweep rate
-is checked by three unrelated length rulers (PLAN §4.2), and the scheduled
-beam-waist measurement will either reproduce the fitted transit width or
-falsify the transit-laser decomposition ·
+closed by a density lever and a power lever agreeing (C3g), and the sweep rate
+is cross-checked against unrelated calibrations in the ruler chapter (§3). The
+same design carries over to the beam waist: PLAN §4.2 gives it two instruments
+with different failure modes, and a measurement would either reproduce the
+fitted transit width or falsify the transit-laser decomposition ·
 physics constants vs analysis choices split across `constants.py` / `config.py`
 · count repeats from `MANIFEST.csv`, never filenames · quarantine and outlier
 rejection pre-registered and QC-based, never result-based.
@@ -146,7 +144,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint two-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 tests/    1485-test battery (1437 fast ~2 min + 48 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e

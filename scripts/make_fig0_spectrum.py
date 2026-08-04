@@ -45,6 +45,27 @@ plt.rcParams.update({"figure.dpi": 130, "font.size": 10, "axes.grid": True,
                      "grid.alpha": 0.25, "axes.axisbelow": True, "legend.frameon": False})
 
 
+def _footer(fig, text, y=0.008, fontsize=6.3):
+    """The provenance line every figure carries: the sources it is drawn from
+    and the command that regenerates it. Same position, size and colour as
+    scripts/make_figures.py's own _footer, so the set reads as one document."""
+    fig.text(0.01, y, text, fontsize=fontsize, color="0.35", va="bottom")
+
+
+def fitted_total_width(role, peak, T, P):
+    """The condition's fitted total FWHM and its uncertainty, read from
+    results/linefit_conditions.csv.
+
+    Measuring the width off the plotted curve on a 0.025 MHz grid (what this
+    script used to do) can only run low, and it printed 5.33 against the
+    5.3683 +/- 0.0202 the committed CSV carries for the same fit. The figure
+    now quotes the value of record, with its uncertainty."""
+    for r in csv.DictReader(open(C.RESULTS_DIR / "linefit_conditions.csv")):
+        if (r["role"], r["peak"], r["T"], r["P"]) == (role, peak, T, P):
+            return float(r["total_fwhm"]), float(r["total_fwhm_err"])
+    raise SystemExit(f"no linefit_conditions row for {(role, peak, T, P)}")
+
+
 def _block_rates():
     """M2 transition-axis rate per block (mirrors run_linefit.load_block_rates)."""
     trate, pbr = {}, defaultdict(dict)
@@ -121,7 +142,7 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     xf = np.linspace(-PLOT_HALFWIDTH_MHZ, PLOT_HALFWIDTH_MHZ, 1200)
     yf = A * np.interp(xf, g, prof, left=0.0, right=0.0) / peakV
 
-    total_fwhm = 2.0 * xf[yf >= 0.5 * yf.max()][-1] if (yf >= 0.5 * yf.max()).any() else np.nan
+    total_fwhm, total_fwhm_err = fitted_total_width(role, peak, T, P)
     col = PEAK_COLOR[peak]
 
     fig, (ax, axr) = plt.subplots(2, 1, figsize=(6.4, 5.3), sharex=True,
@@ -132,8 +153,9 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
             label=r"fit: natural $\otimes$ transit $\otimes$ laser")
     ax.axhline(0.0, color="0.6", lw=0.8, ls=":")
     ax.set_ylabel("normalized fluorescence")
-    ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line — {T} $^{{\\circ}}$C, {P} mW\n"
-                 f"total FWHM {total_fwhm:.2f} MHz (transition axis)", fontsize=9.5)
+    ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line: {T} $^{{\\circ}}$C, {P} mW\n"
+                 f"total FWHM {total_fwhm:.2f} $\\pm$ {total_fwhm_err:.2f} MHz "
+                 "(transition axis)", fontsize=9.5)
     ax.legend(fontsize=8, loc="upper right")
     ax.set_ylim(-0.10, 1.12)
 
@@ -156,10 +178,19 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     axr.legend(fontsize=7, loc="upper right")
     rmax = min(max(float(np.max(np.abs(rstd))) * 1.2, 3.0), 8.0)
     axr.set_ylim(-rmax, rmax)
+    _footer(fig, "Sources: the data_raw archive (this trace, re-fit end to end) + "
+                 "results/ruler_blocks.csv (frequency axis)\n"
+                 "+ results/linefit_conditions.csv (the total width and its error). "
+                 "Regenerate: python scripts/make_fig0_spectrum.py.")
+    # constrained_layout cannot see fig.text, so the footer's strip is
+    # reserved on the layout engine itself (its rect is left, bottom, width,
+    # height, not the corner pair tight_layout takes)
+    fig.get_layout_engine().set(rect=(0.0, 0.048, 1.0, 0.945))
     out = FIG / "fig0_spectrum.png"
     fig.savefig(out); plt.close(fig)
     print(f"wrote {out}")
-    print(f"  {peak} {role} T{T} P{P}: A={A:.2f} V, total_fwhm={total_fwhm:.2f} MHz, "
+    print(f"  {peak} {role} T{T} P{P}: A={A:.2f} V, total_fwhm={total_fwhm:.4f} +/- "
+          f"{total_fwhm_err:.4f} MHz (results/linefit_conditions.csv), "
           f"gamma_coll={gc:.2f}, sigma_laser={sl:.2f}, chi2_red={fit['chi2_red']:.2f}")
     return 0
 

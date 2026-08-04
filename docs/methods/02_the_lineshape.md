@@ -190,8 +190,10 @@ value) — a **finite** cusp once the crossing-flux weight is included (an earli
 version omitted it, weighting $\propto1/v$ near $v=0$, and produced a spurious
 log-divergence; fixed 2026-07-13, validated against [Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO
 example). We quote the width the kernel *adds to the natural line* once
-convolved. Second, that added width is $\sim2.1$ MHz at $w_0=32\ \mu$m and
-$\sim1.2$ MHz at the $50\ \mu$m prior — so large that at 32 µm
+convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32\ \mu$m and
+$\sim0.88$ MHz at $65\ \mu$m, the Monte-Carlo grid point beside the adopted
+$64\ \mu$m prior (it was $\sim1.2$ MHz at the superseded $50\ \mu$m prior). At
+32 µm that is large enough that
 natural$\otimes$transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([§5 — What we found (2025 archive)](07_what_we_found.md)).
@@ -210,11 +212,13 @@ locked laser — consistent with the archival $\approx5.25$ MHz line.
 The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a
 Voigt against a Lorentzian$\otimes$exponential can detect it — to our
-knowledge not cleanly resolved as a *cusp* in a thermal two-photon line (an
+knowledge not cleanly resolved as a *cusp* in a thermal two-photon line (a
 target for a fixed-lock session with a narrow laser). Caveat: $w_0$
-is only a prior ($\sim50\ \mu$m — re-centred from 32 µm when the transit physics
-was corrected, since the corrected transit excludes 32 µm; the beam was clipped
-by a 3 mm aperture, so it is uncertain at the tens-of-% level) **until the
+is only a prior, $64\ \mu$m with a 60–70 µm band, adopted from the beamline
+lineage measurement above rather than measured on this beam (it was re-centred
+from 32 to 50 µm when the transit physics was corrected, then from 50 to 64 µm
+when that measurement was adopted, and the beam is clipped by a 3 mm aperture,
+so it stays uncertain at the tens-of-% level) **until the
 beam-profile measurement** (below); every *absolute* width built on it is
 therefore PRELIMINARY. *Code:* `two_sided_exponential()`; `transit_fwhm_at_T()` enforces
 the $\sqrt T$ law.
@@ -267,7 +271,7 @@ Gaussian is then unambiguously the laser (turning the [§5 — What we found (20
 *bound* into a measurement, retroactively for the 2025 data too), and $\beta_\text{self}$
 and the Stark coefficient acquire their absolute scale. It constrains more
 downstream numbers than any other single measurement, which is why the
-specification in PLAN §8 puts it at the top of the priority order — and why it
+specification in PLAN §3 puts it at the top of the priority order — and why it
 is worth doing even on its own: it needs the beam, not the full session, and it
 retroactively sharpens the existing archive.
 

@@ -33,9 +33,14 @@ ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).parent / "_style_baseline.json"
 
 # Generated: their prose lives in the generators, not in the output.
+#
+# docs/RESULTS.md left this set on 2026-08-04. Being exempt meant the guard
+# could not see the ledger at all, and the ledger is the second link on the
+# README's first screen. Its generator now writes prose without either mark,
+# so the file is held to the same budget as every hand-written document. The
+# other two stay exempt until their generators get the same pass.
 GENERATED = {
     "docs/LITERATURE_INDEX.md",
-    "docs/RESULTS.md",
     "PDF_papers/README.md",
 }
 

@@ -92,6 +92,12 @@ STATUS_WORD = {"PRELIM": "preliminary", "BOUND": "a bound, not a measurement",
 # bound -- their errors exceed it. Split point for fig8's right panel.
 N_WELL_SAMPLED = 19
 
+# The sweep-linearity bound quoted for the ruler: no well-sampled window's
+# local rate departs from its block rate by more than this fraction (the
+# largest departure is 0.25%). tests/test_ruler.py pins it against
+# results/ruler_nlmap.csv, and fig8's band and title both read it from here.
+RULER_LINEARITY_BOUND = 0.003
+
 
 def _rows(name):
     return list(csv.DictReader(open(C.RESULTS_DIR / f"{name}.csv")))
@@ -233,13 +239,21 @@ def fig_power_sweep():
                     color=PEAK_COLOR[peak], label=PEAK_LABEL[peak], ms=4, lw=1.3, capsize=2)
         a2.errorbar(P, [x[3] for x in d], yerr=[x[4] for x in d], fmt="o",
                     color=PEAK_COLOR[peak], ms=4, capsize=2)
-    a1.set_xlabel("power (mW)"); a1.set_ylabel("FWHM (MHz, transition)")
+    a1.set_xlabel("power (mW)")
+    # Estimator named on the axis: this panel's widths are the raw
+    # half-maximum widths of results/power_sweep.csv, averaged over repeats.
+    # fig10's right panel plots the fitted total width of the joint
+    # per-condition lineshape fit, which runs systematically higher, and an
+    # unlabelled "FWHM" on both invites the reader to compare them directly.
+    a1.set_ylabel("raw half-maximum width (MHz, transition)")
     a1.set_title("No power trend in the linewidth\n"
               "(observed 3–8% scatter; ramp predicts $\\leq$2%)", fontsize=9)
     a1.legend(fontsize=8)
-    # amplitude log-log: a slope-2 (P^2) fit anchored to each peak's own data, so
-    # the guide tracks the points instead of floating beside them. Line drawn
-    # over the campaign's own measured power range, not a fixed guess.
+    # amplitude log-log: a slope-2 REFERENCE anchored to each peak's own data,
+    # so the guide tracks the points instead of floating beside them. The slope
+    # is held at 2 and only the offset is fitted, so the line cannot test the
+    # exponent and is labelled as a reference rather than a fit. Drawn over the
+    # campaign's own measured power range, not a fixed guess.
     a2.set_xscale("log"); a2.set_yscale("log")
     P_all = np.array(sorted({x[0] for v in by.values() for x in v}), float)
     Pline = np.array([P_all.min(), P_all.max()])
@@ -249,13 +263,15 @@ def fig_power_sweep():
         A = np.array([x[3] for x in d], float)
         logk = np.mean(np.log10(A) - 2.0 * np.log10(P))  # least-squares slope-2 intercept
         a2.plot(Pline, 10 ** logk * Pline ** 2, "--", color=PEAK_COLOR[peak], lw=1.0,
-                label=r"$\propto P^2$ fit" if i == 0 else None)
+                label=r"slope-2 reference (offset fitted, slope held at 2)"
+                if i == 0 else None)
     a2.set_xlabel("power (mW)"); a2.set_ylabel("peak amplitude (V)")
-    a2.set_title("Amplitude $\\propto P^2$\n(two-photon rate law)", fontsize=9)
+    a2.set_title("Amplitude against power, with the $P^2$ rate law\n"
+                 "drawn as a reference of fixed slope", fontsize=9)
     a2.legend(fontsize=8)
-    fig.suptitle("Generic laws: pressure broadening does not depend on drive power; "
-                 "two-photon excitation rate scales as intensity squared.\n"
-                 "Rb instance: the 993 nm line's FWHM and amplitude vs power, both tested "
+    fig.suptitle("Generic laws: pressure broadening does not depend on drive power. "
+                 "The two-photon excitation rate scales as intensity squared.\n"
+                 "Rb instance: the 993 nm line's width and amplitude vs power, shown "
                  "against those two predictions.", fontsize=9.5, y=0.975)
     _footer(fig, "Source: results/power_sweep.csv. Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig2_power_sweep.png")
@@ -403,17 +419,34 @@ def fig_pooled_width():
                          if r["quantity"] == "beta_crosscheck"])
         Nf = np.geomspace(N[0], N[-1], 200)
         a1.plot(Nf, pooled[0] + 0.5346 * bhead * (Nf - N[0]), "--", color="0.35",
-                lw=1.4, label=(r"min. growth if $\beta$=%.3f were linear"
-                               r" (Voigt slope $\geq$0.53)") % bhead)
+                lw=1.4, label=(r"min. growth if $\beta$=%.3f MHz per "
+                               r"$10^{12}$cm$^{-3}$" "\n"
+                               r"were linear (Voigt slope $\geq$0.53)") % bhead)
+    # The two isotopes' coefficients, with their uncertainties, read from
+    # results/global_fit.csv: the title's agreement claim is about these two
+    # numbers, so they are printed here rather than only asserted.
+    iso = {r["key"]: (float(r["value"]), float(r["err"])) for r in _rows("global_fit")
+           if r["quantity"] == "beta_self"}
+    if {"85Rb", "87Rb"} <= set(iso):
+        lo, hi = a1.get_ylim()          # a clear strip under the data for it
+        a1.set_ylim(lo - 0.20 * (hi - lo), hi)
+        a1.text(0.03, 0.03,
+                r"$\beta$($^{85}$Rb) = %.4f $\pm$ %.4f,   "
+                r"$\beta$($^{87}$Rb) = %.4f $\pm$ %.4f"
+                "\n" r"MHz per $10^{12}$cm$^{-3}$ (joint fit)"
+                % (iso["85Rb"][0], iso["85Rb"][1], iso["87Rb"][0], iso["87Rb"][1]),
+                transform=a1.transAxes, ha="left", va="bottom", fontsize=7,
+                color="0.3")
     a1.set_xscale("log")
     a1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     a1.set_ylabel("total line FWHM (MHz, transition)")
     a1.set_title("Pooled width vs density: individual peaks (faint) are\n"
                  "statistics-limited and non-monotonic. The pooled\n"
-                 "mean rises cleanly. β₈₅ and β₈₇ agree within ~1σ,\n"
-                 "consistent but not discriminating. Still a bound.",
+                 "mean rises cleanly. The two isotopes' coefficients agree\n"
+                 "within about 1σ, consistent but not discriminating.\n"
+                 "Still a bound.",
                  fontsize=8)
-    a1.legend(fontsize=8, loc="upper left")
+    a1.legend(fontsize=7.5, loc="upper left")
     # panel B: σ_laser(T) is MODEL-DEPENDENT -> the "anomaly" is degeneracy, not drift
     gf = _rows("global_fit")
     sl = sorted((float(r["key"][:-1]), float(r["value"]), float(r["err"]))
@@ -421,20 +454,27 @@ def fig_pooled_width():
     a2.errorbar([x[0] for x in sl], [x[1] for x in sl], yerr=[x[2] for x in sl],
                 fmt="-o", color="#D55E00", ms=6, lw=1.6, capsize=3,
                 label=r"global fit ($\beta\cdot N$-tied)")
-    freeT, freeS = [], []
+    freeT, freeS, freeE = [], [], []
     for T in (70, 90, 110):
         v = [(float(r["sigma_laser"]), float(r["sigma_laser_err"])) for r in rows
              if r["role"] == "t_sweep" and int(float(r["T"])) == T]
         s = np.array([x[0] for x in v]); w = 1.0 / np.array([x[1] for x in v]) ** 2
         freeT.append(T); freeS.append(float(np.sum(w * s) / np.sum(w)))
-    a2.plot(freeT, freeS, "-s", color="#0072B2", ms=6, lw=1.6,
-            label="free per-condition (4 peaks agree)")
+        # The inverse-variance mean carries an uncertainty, and at 70 C it is
+        # larger than the excursion the panel calls flat (one of the four
+        # per-peak values there is 0.32 +/- 1.48 and constrains nothing).
+        # Drawing the series with plot() instead of errorbar() hid that.
+        freeE.append(float(1.0 / np.sqrt(np.sum(w))))
+    a2.errorbar(freeT, freeS, yerr=freeE, fmt="-s", color="#0072B2", ms=6, lw=1.6,
+                capsize=3, label="free per-condition (inverse-variance mean\nof the "
+                                 "four peaks, with its uncertainty)")
     a2.set_xlabel("temperature (°C)")
     a2.set_ylabel(r"$\sigma_\mathrm{laser}$ (MHz, transition)")
-    a2.set_title("The laser linewidth $\\sigma_L(T)$ is MODEL-DEPENDENT: the free fit is "
+    a2.set_title("The laser linewidth $\\sigma_L(T)$ is model-dependent. The free fit is "
                  "flat (~1.6,\n"
-                 "4 peaks agree, $\\chi^2<1$, an in-sample check only); the tied drop is\n"
-                 "the $\\beta$-$\\sigma_L$ degeneracy, not a physical laser drift", fontsize=8)
+                 "within the errors shown) and is an in-sample check only. The tied drop\n"
+                 "is the $\\beta$-$\\sigma_L$ degeneracy, not a physical laser drift",
+                 fontsize=8)
     a2.legend(fontsize=7.5)
     _footer(fig, "Source: results/linefit_conditions.csv, results/global_fit.csv, "
                  "results/lever_crosscheck.csv. Regenerate: python scripts/make_figures.py.")
@@ -468,14 +508,15 @@ def fig_gamma_floor():
         gv = [gam(peak, T) for T in Ts]
         gval = np.array([g[0] for g in gv])
         gerr = np.array([g[1] for g in gv])
-        # gamma_coll is a width: it cannot be negative, so a symmetric Wald
-        # error bar that exceeds the point estimate (993.4154 nm at 70 C does,
-        # 0.19 +/- 0.32) must not be drawn crossing zero -- clip the lower
-        # whisker at the physical boundary instead of past it.
-        lower = np.minimum(gerr, gval)
-        ax.errorbar(N, gval, yerr=[lower, gerr], fmt="-o",
+        # gamma_coll is a width and cannot be negative, and one point
+        # (993.4154 nm at 70 C, 0.19 +/- 0.32) has a symmetric Wald error
+        # larger than its own value. Clipping that whisker at zero drew a bar
+        # running into the bottom spine with no cap, which reads as a bar that
+        # continues off the panel. The axis now extends below zero and carries
+        # a zero line instead, so the interval is shown for what it is.
+        ax.errorbar(N, gval, yerr=gerr, fmt="-o",
                     color=PEAK_COLOR[peak], alpha=0.30, ms=3, lw=0.9,
-                    label=PEAK_LABEL[peak])
+                    capsize=2, label=PEAK_LABEL[peak])
     mean_g = np.array([np.mean([gam(p, T)[0] for p in peaks]) for T in Ts])
     scat = np.array([np.std([gam(p, T)[0] for p in peaks], ddof=1) / 2.0 for T in Ts])
     ax.errorbar(N, mean_g, yerr=scat, fmt="-o", color="k", ms=6, lw=2.0, capsize=3,
@@ -495,10 +536,17 @@ def fig_gamma_floor():
         ax.plot(Nf, mean_g[0] + blever * (Nf - N[0]), ":", color="#0072B2", lw=1.8,
                 label=r"if $\beta$=%.3f (joint, ×53 lever) were linear" % blever)
         yend = mean_g[0] + bhead * (N[-1] - N[0])
-        ax.annotate(r"$\rightarrow$ %.1f MHz at 130 °C" % yend, xy=(N[-1], 1.08),
-                    ha="right", fontsize=8, color="#D55E00")
+        # In the empty band under the data at high density: on the top edge,
+        # where it used to sit, the curve it annotates ran straight through
+        # the arrow glyph and the first digit.
+        ax.annotate("the dashed line reaches\n" r"%.1f MHz at 130 °C" % yend,
+                    xy=(N[-1], 0.06), ha="right", va="bottom", fontsize=7.5,
+                    color="#D55E00")
     ax.set_xscale("log")
-    ax.set_ylim(0.0, 1.15)
+    ax.axhline(0.0, color="0.4", lw=0.8, ls=":")
+    ax.set_ylim(-0.22, 1.15)
+    ax.text(0.012, 0.145, "a width cannot be negative", transform=ax.transAxes,
+            fontsize=6.5, color="0.35", ha="left", va="top")
     ax.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, log)")
     ax.set_ylabel(r"fitted $\gamma_\mathrm{coll}$ (MHz, transition)")
     rise = mean_g[-1] / mean_g[0]
@@ -639,8 +687,8 @@ def fig_ruler():
         h = dict(zip(TEETH, ft["heights"]))
         score = min(h.get(3, 0.0), h.get(-3, 0.0)) / rms if rms > 0 else 0.0
         if best is None or score > best[0]:
-            best = (score, tt, vv, ft)
-    _, t, v, fit = best
+            best = (score, tt, vv, ft, rms)
+    _, t, v, fit, fit_rms = best
 
     fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.8, 3.9),
                                   gridspec_kw={"width_ratios": [2.1, 1.0]})
@@ -652,18 +700,31 @@ def fig_ruler():
             label=f"constrained {len(TEETH)}-tooth comb fit")
     ymax = max(fit["heights"]) + fit["b0"]
     ax.set_ylim(top=ymax * 1.22)
+    # The comb fit constrains all seven tooth positions, but a tooth whose
+    # fitted height sits in the residual noise has nothing visible under its
+    # marker. Counting the ones that do stand up keeps the title's count and
+    # the panel in agreement, whichever trace the selection picks.
+    heights = dict(zip(TEETH, fit["heights"]))
     for n in TEETH:
         tc = fit["t0_ms"] + n * fit["delta_ms"]
         ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
         ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
                     color="#D55E00")
+    n_standing = sum(1 for n in TEETH if heights[n] > fit_rms)
+    stand_note = ("" if n_standing == len(TEETH) else
+                  f"\n({n_standing} of the {len(TEETH)} stand above the "
+                  "residual noise in this trace)")
     ax.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
-    ax.set_title(f"the scan carries its own calibration: {len(TEETH)} copies of the same\n"
+    ax.set_title("the scan carries its own calibration: up to "
+                 f"{len(TEETH)} copies of the same\n"
                  f"line, {TOOTH_SPACING_LASER_HZ / 1e6:.2f} MHz apart on the laser axis, "
-                 "via EOM sideband pairs",
+                 "via EOM sideband pairs" + stand_note,
                  fontsize=9)
-    ax.legend(fontsize=7, loc="lower left", framealpha=1.0, frameon=True)
+    # Anchored below the tooth labels rather than at the bottom left, where the
+    # opaque box covered the left tail of the outermost fitted tooth.
+    ax.legend(fontsize=7, loc="upper left", bbox_to_anchor=(0.012, 0.80),
+              framealpha=1.0, frameon=True)
 
     nl = _rows("ruler_nlmap")
     pos = np.array([float(r["pos_ms"]) for r in nl])
@@ -690,11 +751,17 @@ def fig_ruler():
                 edgecolor="#009E73", linewidth=1.0, zorder=3,
                 label=f"$n<{N_WELL_SAMPLED}$ (edge; error $>$ bound)")
     ax2.axhline(1.0, color="k", lw=0.8)
-    ax2.axhspan(0.9955, 1.0045, color="#009E73", alpha=0.10)
+    # The band IS the quoted bound: it was drawn at +-0.45% under a title
+    # quoting 0.3%, so the only visual reference on the panel disagreed with
+    # the number above it. The well-sampled windows reach 0.25%.
+    ax2.axhspan(1.0 - RULER_LINEARITY_BOUND, 1.0 + RULER_LINEARITY_BOUND,
+                color="#009E73", alpha=0.10,
+                label=f"the quoted bound, $\\pm${100 * RULER_LINEARITY_BOUND:.1f}%")
     ax2.set_xlabel("window position (ms)")
     ax2.set_ylabel("local rate / block rate")
     ax2.set_title("sweep linearity + any tooth-dependent pull:\n"
-                  r"$\lesssim$0.3% from the well-sampled windows", fontsize=9)
+                  r"$\lesssim$%.1f%% from the well-sampled windows"
+                  % (100 * RULER_LINEARITY_BOUND), fontsize=9)
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower left", framealpha=1.0, frameon=True)
@@ -780,9 +847,16 @@ def fig_degeneracy_vs_observable():
         ax2.errorbar(P[m][o], tw[m][o], yerr=twe[m][o], marker="o", ms=4,
                      lw=1.0, capsize=2, color=PEAK_COLOR[pk], label=f"993.{pk} nm")
     ax2.set_xlabel("laser power (mW)")
-    ax2.set_ylabel("total FWHM  (MHz, transition axis)")
-    ax2.set_title("the observable: no power broadening, determined to "
-                  f"{100 * np.median(twe) / np.median(tw):.1f}%", fontsize=9)
+    # Estimator named: this is the fitted total width of the joint
+    # per-condition fit, which runs above fig2's raw half-maximum widths on
+    # every shared condition.
+    ax2.set_ylabel("fitted total FWHM  (MHz, transition axis)")
+    # Two claims, not one: the per-condition precision is a property of each
+    # point, and the absence of a power trend rests on the block-to-block
+    # scatter, which is several times larger than these bars.
+    ax2.set_title("the observable: the total width, measured to "
+                  f"{100 * np.median(twe) / np.median(tw):.1f}% within a condition\n"
+                  "no power trend survives the block-to-block scatter", fontsize=9)
     ax2.legend(fontsize=7, framealpha=1.0, frameon=True)
     ax2.grid(alpha=0.25, lw=0.5)
 
@@ -852,16 +926,20 @@ def fig_laser_history():
     ax.set_xticks([t for t, _ in ticks])
     ax.set_xticklabels([lab for _, lab in ticks])
     ax.set_xlabel("session (hours run left to right within each)")
-    ax.set_ylabel("offset within its display epoch (MHz, laser axis)")
+    ax.set_ylabel("offset within one oscilloscope window setting\n(MHz, laser axis)")
     n_ep = len({r["_e"] for r in rows})
-    ax.set_title(f"{len(rows)} traces in {n_ep} display epochs. Each segment is\n"
-                 "referenced to itself. Gaps are knob moves, offset unknown across them.",
+    ax.set_title(f"{len(rows)} traces in {n_ep} segments of unchanged oscilloscope\n"
+                 "window setting. Each segment is referenced to itself. Across a\n"
+                 "change of that setting the offset is unknown, so the record breaks.",
                  fontsize=8.5)
     ax.grid(alpha=0.25, lw=0.5)
     h = [plt.Line2D([], [], color=c, lw=2, label=f"993.{k} nm")
          for k, c in PEAK_COLOR.items()]
-    ax.legend(handles=h, fontsize=7, frameon=True, framealpha=0.95, ncol=2,
-              loc="lower left")
+    # Upper left, not lower left: the opaque box sat on the largest downward
+    # excursions, which are the points that set the spread this panel exists
+    # to show.
+    ax.legend(handles=h, fontsize=7, frameon=True, framealpha=0.95, ncol=1,
+              loc="upper left")
 
     # ---- panel 2: the QUIETEST well-sampled segment -------------------------
     # NOT the longest: the longest (75 min) is two bursts 75 min apart with
@@ -893,9 +971,9 @@ def fig_laser_history():
         ax.axhline(0.0, color="0.5", lw=0.8, ls=":")
         pad = max(0.15, 0.35 * pp)
         ax.set_ylim(min(y) - pad, max(y) + pad)
-        ax.set_xlabel("minutes into the epoch")
+        ax.set_xlabel("minutes into the segment")
         ax.set_ylabel("offset (MHz, laser axis)")
-        ax.set_title(f"the quietest well-sampled epoch: 993.{pk} nm,\n"
+        ax.set_title(f"the quietest well-sampled segment: 993.{pk} nm,\n"
                      f"{len(g)} traces over {dur:.1f} min held to "
                      f"{pp:.2f} MHz peak-to-peak", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5)
@@ -917,7 +995,7 @@ def fig_laser_history():
         med = float(np.median(s))
         ax.axvline(med, color="0.15", lw=1.4, ls="--")
         ax.set_yscale("log")
-        ax.set_xlabel("|step| between consecutive traces, same epoch (MHz)")
+        ax.set_xlabel("|step| between consecutive traces, same segment (MHz)")
         ax.set_ylabel("count (log)")
         ax.set_title(f"median {med:.2f} MHz with a tail to {s.max():.1f} MHz:\n"
                      "quiet drift, punctuated by cavity re-centrings", fontsize=8.5)
@@ -1107,37 +1185,49 @@ def fig_level_scheme():
               "existing PNG")
         return
     photo = plt.imread(photo_path)
-    bx.imshow(photo[182:2495, 364:4020])
+    # Cropped to the waveform area: the instrument's side menu used to bleed
+    # off the right edge of the canvas with its labels cut mid-word, and the
+    # bottom row of the display was clipped the same way. The label positions
+    # below are given in the photograph's own pixels and converted through
+    # this crop, so moving the crop moves the labels with their features.
+    PHOTO_TOP, PHOTO_BOT, PHOTO_LEFT, PHOTO_RIGHT = 182, 2440, 364, 3560
+    bx.imshow(photo[PHOTO_TOP:PHOTO_BOT, PHOTO_LEFT:PHOTO_RIGHT])
     bx.axis("off")
     bx.set_title("the cavity scan, as photographed (500 ms/div)",
                  fontsize=10)
     fx = [pe.withStroke(linewidth=2.2, foreground="black")]
 
-    def lab(x, y, s, **kw):
+    def lab(px, py, s, **kw):
+        """Place a label at (px, py) in the photograph's own pixel grid."""
         kw.setdefault("ha", "center")
+        x = (px - PHOTO_LEFT) / (PHOTO_RIGHT - PHOTO_LEFT)
+        y = 1.0 - (py - PHOTO_TOP) / (PHOTO_BOT - PHOTO_TOP)
         bx.text(x, y, s, transform=bx.transAxes, fontsize=8.5,
                 color="white", path_effects=fx, **kw)
 
-    lab(0.042, 0.500, "⁸⁷Rb\nF=2", va="bottom")
-    lab(0.140, 0.868, "⁸⁵Rb F=3", va="bottom", ha="left")
-    lab(0.315, 0.690, "⁸⁵Rb F=2", va="bottom")
-    lab(0.478, 0.360, "⁸⁷Rb F=1", va="bottom")
-    lab(0.545, 0.870, "ramp apex", va="bottom", ha="left")
-    lab(0.185, 0.560, "cavity-scan ramp", ha="left")
-    lab(0.560, 0.075, "795 nm fluorescence", ha="left")
-    lab(0.760, 0.300, "down-sweep:\nthe same four,\nmirrored", va="center")
+    lab(518, 1339, "⁸⁷Rb\nF=2", va="bottom")
+    lab(876, 487, "⁸⁵Rb F=3", va="bottom", ha="left")
+    lab(1516, 899, "⁸⁵Rb F=2", va="bottom")
+    lab(2112, 1662, "⁸⁷Rb F=1", va="bottom")
+    lab(2357, 483, "ramp apex", va="bottom", ha="left")
+    lab(1040, 1200, "cavity-scan ramp", ha="left")
+    lab(2411, 2322, "795 nm fluorescence", ha="left")
+    lab(3143, 1801, "down-sweep:\nthe same four,\nmirrored", va="center")
 
-    fig.text(0.63, 0.045,
+    fig.text(0.63, 0.062,
              "spike integrals follow (2F+1) × abundance: ⁸⁵ ratio 1.31, "
              "predicted 1.40 (from the digitised record)",
              ha="center", fontsize=8.5, color="0.25")
     fig.suptitle(
         r"The 993 nm two-photon line: excitation, detection, and the scan "
         "across it", fontsize=12.5, y=0.965)
-    _footer(fig, "Sources: rb5s6s.constants + polarizability (level scheme); "
-                 "photograph docs/reference_setup/photos/IMG_2508.jpeg (scope "
-                 "screen, 2025-06-12, cropped); integrals from the digitised "
-                 "record docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv. "
+    # Wrapped: one line ran off the right edge of the canvas and the
+    # regenerate command was cut mid-word.
+    _footer(fig, "Sources: rb5s6s.constants + polarizability (level scheme). Photograph "
+                 "docs/reference_setup/photos/IMG_2508.jpeg (oscilloscope screen, "
+                 "2025-06-12, cropped).\n"
+                 "Integrals from the digitised record "
+                 "docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv. "
                  "Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig13_level_scheme.png")
 
@@ -1197,10 +1287,14 @@ def fig_wavemeter_reconstruction():
                   "re-locks, and each re-lock steps it", fontsize=8.5)
 
     ax2 = fig.add_subplot(gs[2])
+    # Two records share this axis, each counted from its own start: the
+    # residual belongs to the photographed 2025-06-11 session above, the
+    # markers to a campaign segment five weeks later. The legend says so, so
+    # the markers near 74 min do not read as a continuation of the residual.
     ax2.fill_between(tf[mfit], -sg[mfit], sg[mfit], color="#D55E00", alpha=0.18,
                      lw=0, label=f"fitted noise, settling to {floor:.2f} MHz")
     ax2.plot(tf[mfit], (f[::3] - mu)[mfit], color="#666666", lw=0.6,
-             label="residual")
+             label="residual of the 2025-06-11 record above")
     rows = [x for x in csv.DictReader(open(C.REPO_ROOT / "results" / "laser_history.csv"))
             if x["flag"] == "canonical" and x["offset_mhz"] not in ("", "nan")]
     ep = collections.defaultdict(list)
@@ -1211,9 +1305,10 @@ def fig_wavemeter_reconstruction():
     oo = np.array([b for _, b in best]); oo -= oo.mean()
     # markers only: the archive samples in bursts, not continuously
     ax2.plot(tt, oo, "o", color="#009E73", ms=5,
-             label=f"our traces, same quantity, sd {oo.std():.1f} MHz")
+             label=f"our traces, same quantity, a separate campaign\nsegment "
+                   f"on its own clock, sd {oo.std():.1f} MHz")
     ax2.axhline(0, color="k", lw=0.5)
-    ax2.set_xlabel("time  (min)")
+    ax2.set_xlabel("time  (min, each record from its own start)")
     ax2.set_ylabel("frequency  (MHz)")
     ax2.legend(loc="upper right", fontsize=7.5, frameon=True, framealpha=1.0)
     ax2.set_ylim(-9, 12)          # held fixed so the two records share a
@@ -1342,7 +1437,8 @@ def fig_drift_story():
         first_band = False
         ax.plot(th, off, "-", color="#009E73", lw=0.8, alpha=0.85, zorder=2)
         ax.plot(th, off, ".", color="#009E73", ms=2.5, zorder=3,
-                label="line offset within one knob epoch" if first else None)
+                label="line offset within one oscilloscope window setting"
+                if first else None)
         first = False
     # A slope INDICATOR over 3 h, not a fit across the record: the absolute
     # trend across epochs is exactly what the knob moves make unknowable.
@@ -1358,8 +1454,9 @@ def fig_drift_story():
                 ha="center", fontsize=7.5, color="#D55E00")
     ax.set_xlabel("time into campaign (h)")
     ax.set_ylabel("offset (MHz, laser)")
-    ax.set_title("(b) the campaign, reconstructed from its own traces: "
-                 "segments float (58 knob moves re-zero the axis); shapes survive",
+    ax.set_title("(b) the campaign, reconstructed from its own traces: each segment "
+                 "floats, because the\noscilloscope window was moved 58 times and each "
+                 "move re-zeroes the offset axis. The shapes survive it.",
                  fontsize=9)
     ax.legend(fontsize=7, loc="upper right", framealpha=1.0, frameon=True)
 
@@ -1605,9 +1702,13 @@ def fig_fit_gallery():
     status, peaks = ctx["status"], ctx["peaks"]
 
     fig = plt.figure(figsize=(13.5, 9.8))
-    outer = fig.add_gridspec(2, 2, hspace=0.34, wspace=0.24, top=0.83, bottom=0.06,
+    # bottom=0.10 reserves the strip the footer is drawn in: at 0.06 the
+    # provenance line and the lower-left panel's axis title printed through
+    # each other.
+    outer = fig.add_gridspec(2, 2, hspace=0.34, wspace=0.24, top=0.83, bottom=0.10,
                              left=0.06, right=0.98)
     slot = {"4121": (0, 0), "4154": (0, 1), "4192": (1, 0), "4207": (1, 1)}
+    letter = {"4121": "a", "4154": "b", "4192": "c", "4207": "d"}
 
     for peak in peaks:
         fr = _fit_trace_nuisances(ctx, peak)
@@ -1626,8 +1727,8 @@ def fig_fit_gallery():
         ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=1.7,
                      label="joint fit of all campaign traces")
         ax_main.set_ylabel("signal (V)")
-        ax_main.set_title(f"{PEAK_LABEL[peak]}, 225 mW / 130 °C power sweep, "
-                           f"brightest repeat\nFWHM {fwhm:.3f} MHz, "
+        ax_main.set_title(f"({letter[peak]})  {PEAK_LABEL[peak]}, 225 mW / 130 °C power "
+                           f"sweep, brightest repeat\nFWHM {fwhm:.3f} MHz, "
                            r"$\chi^2_\nu$" + f" = {chi2_red:.2f} (n={len(x)})",
                            fontsize=8.5)
         ax_main.legend(fontsize=7, loc="upper right", frameon=True, framealpha=0.9)
@@ -1730,6 +1831,9 @@ def fig_single_peak_fits():
 
         # ---- the parameter box: every number labelled by what it comes from ----
         N_here = float(density_units(fr["T"]))
+        # the height of the drawn line above its background, after saturation
+        # (the same construction fig21's per-repeat box uses)
+        peak_height = float(fr["Vs"] * (1.0 - np.exp(-fr["lin_peak"] / fr["Vs"])))
         lines = [
             f"993.{peak} nm: 225 mW, 130 °C",
             "-" * 40,
@@ -1752,7 +1856,14 @@ def fig_single_peak_fits():
             f"  reduced $\\chi^2$ = {fr['chi2_red']:.2f}  (n={len(x)})",
             "-" * 40,
             "This trace only (refit individually):",
-            f"  amplitude = {fr['A']:.4f} ± {fr['A_err']:.4f} V",
+            # The fitted coefficient multiplies a chain of area-normalized
+            # kernels (rb5s6s/lineshape.py), so it is the line's area and
+            # carries V MHz. Printed as "amplitude ... V" it read as a peak
+            # height, on a panel whose data peak near 1 V while the number
+            # printed 7.7. The drawn peak height is given beneath it, the
+            # same quantity fig21 prints.
+            f"  line area = {fr['A']:.4f} ± {fr['A_err']:.4f} V MHz",
+            f"  peak height (drawn) = {peak_height:.3f} V",
             f"  centre = {fr['cc']:.3f} ± {fr['cc_err']:.3f} MHz",
             f"  background level = {fr['b0']:.4f} ± {fr['b0_err']:.4f} V",
             f"  background slope = {fr['b1']:.5f} ± {fr['b1_err']:.5f} V/MHz",
@@ -1862,20 +1973,6 @@ def fig_width_trends():
 
     # ======== panel 1: the licensed channel -- raw width vs N(T), =========
     # ======== floor + slope, the fit results/beta_self_probe.csv comes from
-    T_grid = np.linspace(55.0, 140.0, 4000)
-    N_grid = density_units(T_grid)
-
-    def N_to_T(N):
-        return np.interp(N, N_grid, T_grid)
-
-    def T_to_N(T):
-        # matplotlib probes the secondary axis's own default view (e.g. the
-        # [0, 1] Axes default) while wiring up the scale, before any real
-        # limits are set -- clip into the liquid-phase-valid band so that
-        # probe never hits density_units' melting-point guard.
-        Tc = np.clip(np.asarray(T, float), 55.0, 140.0)
-        return density_units(Tc)
-
     manifest_rows = load_manifest()
     trates, _prates = _rbp.load_t_rates()
     ymin_p1, ymax_p1 = 1e9, 0.0
@@ -1947,7 +2044,11 @@ def fig_width_trends():
     # lower right: the fit lines rise with N, and the low-N data (left) carry
     # the largest error bars, so the low-W / high-N corner stays clear
     ax1.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True)
-    sec = ax1.secondary_xaxis("top", functions=(N_to_T, T_to_N))
+    # Through the shared helper, which pins the ticks to the archive's own
+    # oven settings and writes them as plain degrees. Left to itself the
+    # secondary axis inherited the log formatter below it and printed the
+    # temperatures as 7x10^1, 8x10^1, 9x10^1, 10^2.
+    sec = _temperature_top_axis(ax1, (70.0, 90.0, 110.0))
     sec.set_xlabel("temperature (°C)", fontsize=8.5)
     sec.tick_params(labelsize=7.5)
 
@@ -2091,11 +2192,19 @@ def fig_magic_wavelengths():
     # ---- top: the differential and its zero crossings ----
     ax_top.axhline(0, color="0.55", lw=0.9)
     ax_top.plot(g, da_m, color="#0072B2", lw=1.7)
+    # Label placement, by crossing (they are sorted by wavelength). The two
+    # right-hand labels used to sit ON the near-vertical branches, and their
+    # opaque boxes erased segments of the curve at the crossings the panel
+    # exists to show. Each now sits in clear space with a leader to its own
+    # crossing: left of the pole for the middle one, right of the last
+    # branch for the third.
+    label_offsets = [(0, 40), (-108, -54), (62, 34)]
     for i, (lam, clo, chi) in enumerate(crossings):
         ax_top.axvline(lam, color="#D55E00", ls="--", lw=1.1)
+        dx, dy = label_offsets[i] if i < len(label_offsets) else (0, 40)
         ax_top.annotate(
             f"{lam:.2f} nm\n[{clo:.2f}, {chi:.2f}]",
-            (lam, 0.0), xytext=(0, 34 if i % 2 == 0 else -46),
+            (lam, 0.0), xytext=(dx, dy),
             textcoords="offset points", ha="center", fontsize=7.6,
             color="#D55E00",
             bbox=dict(boxstyle="round,pad=0.15", facecolor="white",
@@ -2392,7 +2501,10 @@ def fig_joint_fit_twenty():
     POWERS = (0.025, 0.075, 0.125, 0.175, 0.225)
 
     fig = plt.figure(figsize=(11.8, 8.9))
-    gs = fig.add_gridspec(1, 1, left=0.065, right=0.985, top=0.825,
+    # left margin widened to carry a y scale on the first column and the
+    # quantity's name beside it: the grid used to have no y ticks, no y tick
+    # labels and no y axis title anywhere.
+    gs = fig.add_gridspec(1, 1, left=0.115, right=0.985, top=0.825,
                           bottom=0.135)
     inner = gs[0, 0].subgridspec(4, 5, hspace=0.26, wspace=0.10)
     shared = None
@@ -2402,7 +2514,11 @@ def fig_joint_fit_twenty():
                                            hspace=0.05)
             axc = fig.add_subplot(cell[0])
             axr = fig.add_subplot(cell[1], sharex=axc)
-            axc.set_yticks([])
+            if c == 0:
+                axc.yaxis.set_major_locator(plt.MaxNLocator(3))
+                axc.tick_params(axis="y", labelsize=6, length=2)
+            else:
+                axc.set_yticks([])
             axc.set_xticks([])
             axr.set_ylim(-2.6, 2.6)
             axr.axhline(0.0, color="#a63430", lw=0.7, ls="--", alpha=0.8)
@@ -2446,7 +2562,7 @@ def fig_joint_fit_twenty():
                 axc.set_title(f"{int(round(P * 1000))} mW", fontsize=8.5)
             if c == 0:
                 axc.set_ylabel(f"993.{pk} nm", fontsize=8,
-                               color=PEAK_COLOR[pk])
+                               color=PEAK_COLOR[pk], labelpad=6)
                 axr.set_ylabel("resid\n(σ)", fontsize=6.5, color="0.45",
                                labelpad=2)
 
@@ -2466,10 +2582,14 @@ def fig_joint_fit_twenty():
     fig.text(0.5, 0.864,
              "free per trace: centre, height, background, saturation",
              ha="center", fontsize=9, color="0.25")
+    fig.text(0.018, 0.48, "signal above background (V), each panel autoscaled "
+             "to its own trace", rotation=90, ha="left", va="center",
+             fontsize=8.5, color="0.35")
     fig.text(0.5, 0.072, "detuning from each trace's own centre (MHz, "
-             "laser axis) · vertical scales grow with power (amplitude "
-             r"$\propto P^2$)" + " · residual strips are in units of that "
-             "trace's own point-by-point uncertainty",
+             "laser axis) · the first column carries the y scale, and every "
+             "panel is autoscaled, so heights\nare not comparable across the "
+             "grid · residual strips are in units of that trace's own "
+             "point-by-point uncertainty",
              ha="center", fontsize=8.5, color="0.35")
     _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum) "
                  "+ data_raw archive (per-trace data; local nuisance refits "

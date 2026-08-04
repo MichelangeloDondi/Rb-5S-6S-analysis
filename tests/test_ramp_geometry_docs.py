@@ -59,8 +59,12 @@ DOC_TOKENS = [
     ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R",
                       "3 × 12 mm", "two-lens relay", "landscape",
                       "+0.402", "−0.421"]),
+    # "$+0.558$" was replaced by "$+0.565$" on 2026-08-04: the archival row of
+    # methods/03's geometry table and its reading paragraph were still computed
+    # at the superseded 50 um waist, which printed a LARGER Z_c/z_R than the
+    # 60 um row directly above it. Recomputed at the adopted 64 um prior.
     ("docs/methods/03_the_ac_stark_ramp.md",
-     ["$+0.558$", "$-0.354$", "$+0.564$", "1.12"]),
+     ["$+0.565$", "$-0.354$", "$+0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
     ("rb5s6s/config.py", ["1.12", "L_par/(2M)", "R636-10", "3 x 12 mm"]),
     ("docs/THEORY_NOTE.md", ["$Z_c/z_R\\approx1.12$", "L_\\parallel/2M"]),
@@ -79,7 +83,7 @@ def test_docs_quote_current_coefficients(relpath, tokens):
     )
 
 
-@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, 0.564), (50.0, 0.558),
+@pytest.mark.parametrize("w0_um,doc_g1", [(60.0, 0.564), (64.0, 0.565),
                                           (16.0, -0.354)])
 def test_tabulated_g1_match_computation(w0_um, doc_g1):
     assert _g1(_z_ratio(w0_um)) == pytest.approx(doc_g1, abs=2e-3)

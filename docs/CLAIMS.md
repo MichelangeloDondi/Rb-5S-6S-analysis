@@ -20,11 +20,11 @@ two-photon sum frequency, twice the laser frequency.
 
 - Collisional self-broadening of the 993 nm line:
   β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the four hyperfine
-  components, from a 53-fold density lever at four temperatures. This is
+  components, from a 52.5-fold density lever at four temperatures. This is
   the model-independent, geometry-robust construction: it does not lean
   on the beam waist, and the 20% density-scale systematic is folded in
-  on the conservative side. The fitted collisional width grows only 1.5x
-  across the 52-fold density span, so it is read as a floor, not as
+  on the conservative side. The fitted collisional width grows only 1.47
+  times across that 52.5-fold span, so it is read as a floor, not as
   resolved collisions, and that observation is what licenses the bound
   framing.
 - Light shift at the campaign maximum of 225 mW:
@@ -46,6 +46,12 @@ two-photon sum frequency, twice the laser frequency.
   variation is partly the collision-laser degeneracy rather than
   resolved laser physics, and they are quoted as the working range, not
   as a result.
+- The ramp asymmetry: the skew channel sits below the noise floor at the
+  campaign maximum of 225 mW, so what the archive carries is an upper
+  bound consistent with zero rather than a quoted interval. The centroid
+  pull is a separate channel, and every scan carrying a free centre
+  absorbs the first-order shift, which leaves the pull uninformative
+  about S₀ in the 2025 data by construction.
 
 **Nulls and scaling laws:**
 
@@ -55,10 +61,6 @@ two-photon sum frequency, twice the laser frequency.
   amplitude scales as P² at fixed density (log-log slopes 1.83-2.12,
   the one low slope unresolved between SNR bias and real saturation)
   and linearly with density at fixed power (slopes 0.85-1.02).
-- The ramp's skew channel sits below the noise floor. With every scan
-  carrying a free centre, the first-order shift is absorbed, so this
-  channel is uninformative about S₀ in the 2025 data by construction.
-  That is a statement about the data, not a constraint.
 
 **Calculated** (anchored, not fitted to this data):
 
@@ -73,7 +75,8 @@ two-photon sum frequency, twice the laser frequency.
   adjudication.
 - The first scalar magic wavelengths for the 5S-6S pair, near 1203.9,
   1287.9 and 1339.6 nm, the 1204 nm crossing being the practically
-  usable one. No published values were found to the depth searched.
+  usable one. Its 16 to 84 percent band runs 1203.06 to 1204.73 nm. No
+  published values were found to the depth searched.
 
 **Method:**
 
@@ -150,13 +153,24 @@ Across three or more rungs the per-line coefficients would become scaling
 laws in the principal quantum number, which discriminate a calculation
 more sharply than any single coefficient does.
 
-**A nanofibre extension**, sketched in
-[BIG_PICTURE.md](BIG_PICTURE.md) §6 and not yet specified as a session:
-the same geometric-closure law read in an evanescent field, where the
-intensity distribution is set by the fibre mode rather than a Gaussian
-focus, with the cell as its calibrated reference. On that platform the
-ramp would be one ingredient of the atom-surface lineshape model, not
-the whole of it. None of this family is claimable from the 2025 data.
+**A guided-mode extension**, sketched in
+[BIG_PICTURE.md](BIG_PICTURE.md) §6 and budgeted in
+[notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md),
+not specified as a session: the same measurement inside a hollow-core
+fibre or around a nanofibre, where the intensity distribution is set by
+the guided mode rather than by a Gaussian focus. The budget note is
+mostly a record of what does not carry over. The closed-form ramp
+weight is derived for atoms crossing a focused beam and does not
+describe trapped atoms, whose shift distribution is set by their
+vibrational energies and carries the opposite skewness. Fluorescence
+cannot leave along the fibre at any density that gives signal. The
+light shift rather than the available power sets the usable drive. What
+does carry over is the operation the archive is built on, mapping a
+known intensity geometry onto a shift distribution and reading its
+cumulants, and one result closes analytically on the new geometry: the
+trap's own inhomogeneous shift is set by the atom temperature alone,
+with the trap depth and waist cancelling out of it. None of this family
+is claimable from the 2025 data.
 
 The dependency map, which measurement unlocks which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).

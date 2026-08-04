@@ -50,7 +50,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.constants import LAMBDA_LASER_M  # noqa: E402
+from rb5s6s.constants import LAMBDA_LASER_M, W0_PRIOR_M  # noqa: E402
 from rb5s6s.lineshape import stark_ramp_axial_moments  # noqa: E402
 
 TRIANGLE_G1 = 18.0 ** 1.5 / 135.0
@@ -72,8 +72,9 @@ def main() -> int:
                   f"{m['var'] / m['mean'] ** 2:10.4f} "
                   f"{m['skew_standardized']:+8.4f}")
         print()
-    print("Reading: g1 stays ~ +0.56 at BOTH the 60 um config and the ~50 um 2025")
-    print("archival geometry (clean form test -- the larger corrected waist makes the")
+    print(f"Reading: g1 stays ~ +0.56 at BOTH the 60 um config and the "
+          f"{W0_PRIOR_M * 1e6:.0f} um 2025")
+    print("archival geometry (clean form test -- the adopted waist makes the")
     print("archival ramp nearly a pure triangle), and FLIPS SIGN only at the 16 um")
     print("config AT THE PLACEHOLDER Z_c -- the flip needs Z_c > ~0.9 mm there")
     print("(measure u, v, and the cathode extent ALONG the beam image L_par;")
