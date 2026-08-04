@@ -368,8 +368,34 @@ def suspect_outer_slot(heights: Sequence[float]) -> Optional[int]:
     return max(cands, key=lambda k: h[idx[k]]) if cands else None
 
 
+def comb_core_indices(t_ms: np.ndarray, fit: Dict) -> tuple:
+    """Sample indices bounding the inviolable core of a fitted comb.
+
+    The core is the fitted comb SPAN, meaning the outermost fitted tooth
+    centres, widened by C.TRIM_CORE_GUARD_FWHM_MULT fitted tooth widths on each
+    side. Everything the model claims to describe is therefore inside the
+    guard, and the trimmer can only ever reach ground the comb model does not
+    reach.
+    """
+    dt = float(t_ms[1] - t_ms[0])
+    pad = C.TRIM_CORE_GUARD_FWHM_MULT * fit["width_ms"]
+    lo_ms = fit["t0_ms"] + min(TEETH) * fit["delta_ms"] - pad
+    hi_ms = fit["t0_ms"] + max(TEETH) * fit["delta_ms"] + pad
+    n = len(t_ms)
+    lo = int(np.clip(round((lo_ms - t_ms[0]) / dt), 0, n - 1))
+    hi = int(np.clip(round((hi_ms - t_ms[0]) / dt), 0, n - 1))
+    return lo, hi
+
+
+def comb_residual(t_ms: np.ndarray, v: np.ndarray, fit: Dict) -> np.ndarray:
+    """Signed residual of one trace against its own fitted comb."""
+    return np.asarray(v, dtype=float) - _comb(
+        t_ms, fit["t0_ms"], fit["delta_ms"], fit["width_ms"],
+        np.asarray(fit["heights"], dtype=float), fit["b0"], fit["b1"])
+
+
 def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None,
-                       *, allow_trim: bool = False,
+                       *, allow_trim: bool = True,
                        gated: Optional[bool] = None) -> Dict:
     """One ruler trace through the fixed-order validity ladder.
 
@@ -417,15 +443,26 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
 
     fit = fit_comb(t_ms, v, law)                                   # 1
 
-    # 2. trim. TODO(Phase 2, rb5s6s/trim.py): with the residual-tail trimmer in
-    # place this step rebuilds `mask` from cusum_onset/tail_trim under a core
-    # guard of one fitted FWHM either side of the fitted comb span, refits once
-    # through fit_comb(mask=...), and records trimmed/trim_start_ms/
-    # trim_end_ms/trim_reason. Until then the step is a no-op in both branches
-    # and the ladder below is unaffected, so the ordering lands now and the
-    # trimmer slots into exactly one place later.
+    # 2. trim, core-guarded. The core is the fitted comb span widened by one
+    # fitted tooth width on each side, so only ground the seven-tooth model
+    # does not describe is ever scanned. On the campaign geometry the comb
+    # spans about 882 ms of a 999 ms window, so a centred comb leaves a few
+    # samples outside the guard and the trimmer cannot fire at all. An
+    # off-centre comb leaves real room on one side and it can. Either way the
+    # refusal rule of tail_trim decides, and a trim triggers exactly one refit.
     if allow_trim:
-        rec["trim_reason"] = "trimmer not implemented (see Phase 2)"
+        from .trim import tail_trim
+        lo, hi = comb_core_indices(t_ms, fit)
+        tr = tail_trim(t_ms, comb_residual(t_ms, v, fit), lo, hi)
+        rec["trim_reason"] = tr["trim_reason"]
+        if tr["trimmed"]:
+            try:
+                fit = fit_comb(t_ms, v, law, t0_seed=fit["t0_ms"], mask=tr["mask"])
+            except RuntimeError:
+                rec["trim_reason"] = ""          # the untrimmed fit stands
+            else:
+                rec.update(trimmed=True, trim_start_ms=tr["trim_start_ms"],
+                           trim_end_ms=tr["trim_end_ms"])
 
     first, first_verdict = fit, top_three_verdict(fit["heights"], fit["fit_rms"])
     verdict = first_verdict                                        # 3
@@ -579,6 +616,41 @@ def fit_comb_free_centers(t_ms: np.ndarray, v: np.ndarray, base_fit: Dict,
 # ---------------------------------------------------------------------------
 # stage 6 — block combination
 # ---------------------------------------------------------------------------
+
+def campaign_rate_relsyst(results_dir=None) -> float:
+    """Fractional systematic on the campaign sweep rate, for consumers that
+    apply one block-coherent rate error to every width in a block.
+
+    Two terms, both written by scripts/run_ruler.py into
+    results/ruler_campaign.csv and both pre-registered in amendment 2 of
+    docs/notes/ruler_validity_and_trim_prereg.md:
+
+    * `rate_est_spread` over the central rate, which is how much of the rate is
+      a choice among eight legitimate estimators of the same blocks;
+    * `position_mismatch_relerr`, which is the rulers and the lines sitting at
+      different places in the acquisition window, read against the measured
+      sweep-nonlinearity map.
+
+    `rate_laser_err` is deliberately NOT included. It is the campaign
+    statistical error, and every consumer of this function already carries its
+    own per-block statistical error, so folding it in would count the same
+    thing twice.
+
+    Returns 0.0 when the table is absent or predates these columns, so a
+    checkout without a ruler run behaves exactly as it did before.
+    """
+    import csv as _csv
+    d = C.RESULTS_DIR if results_dir is None else results_dir
+    path = d / "ruler_campaign.csv"
+    if not path.exists():
+        return 0.0
+    row = next(iter(_csv.DictReader(open(path))), None)
+    if not row or "rate_est_spread" not in row:
+        return 0.0
+    rate = float(row["rate_laser"])
+    spread = float(row["rate_est_spread"]) / rate if rate else 0.0
+    return float(np.hypot(spread, float(row.get("position_mismatch_relerr") or 0.0)))
+
 
 def combine_block(fits: List[Dict]) -> Dict:
     """Inverse-variance mean of per-trace delta with PDG-style scatter

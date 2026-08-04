@@ -122,16 +122,30 @@ def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0
     return transit_ref_mhz * np.sqrt((T_C + 273.15) / (T_ref_C + 273.15))
 
 
+def _profile_fwhm(g: np.ndarray, prof: np.ndarray) -> float:
+    """Full width at half maximum of a profile sampled on a grid."""
+    above = np.flatnonzero(prof >= 0.5 * prof.max())
+    return float(g[above[-1]] - g[above[0]]) if above.size else 0.0
+
+
 def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   T_C: float, law: Optional[Dict] = None, s0: float = 0.0,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
-                  laser_kind: str = "gaussian") -> Dict:
+                  laser_kind: str = "gaussian", trim_tails: bool = False) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
     Shared free params: gamma_coll, sigma_laser (+ transit_fwhm if fit_transit).
     Per-trace free params: A_i, center_i, b0_i, b1_i.
     Returns dict with shared values+errors, per-trace params, chi2_red, cov of
     the shared block, and the sigma_laser<->gamma_coll correlation.
+
+    `trim_tails` runs the residual-tail trimmer (rb5s6s.trim) as a SINGLE
+    second pass: fit once, cut any sustained positive residual tail outside a
+    core of one fitted full width either side of each fitted centre, refit
+    once, stop. It does not touch the adaptive fit window, which is a separate
+    and earlier decision, and it cannot reach the line because of the core
+    guard. The per-trace record comes back as `trim_records`. Default off, so a
+    plain call reproduces the fit as it stood before the trimmer existed.
     """
     ntr = len(freqs)
     # per-trace seeds from simple moments
@@ -204,6 +218,45 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=40000)
     if not sol.success:
         raise RuntimeError(f"condition fit failed: {sol.message}")
+
+    # --- second pass: cut sustained residual tails, once ---
+    trim_records = [{"trimmed": False, "trim_start_ms": float("nan"),
+                     "trim_end_ms": float("nan"), "trim_reason": "",
+                     "n_trimmed": 0} for _ in range(ntr)]
+    if trim_tails:
+        from .trim import tail_trim
+        gc0, sl0, tr0 = unpack(sol.x)
+        g, prof = _shared_profile_grid(
+            gc0, sl0, transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
+            s0, laser_kind)
+        guard = C.TRIM_CORE_GUARD_FWHM_MULT * _profile_fwhm(g, prof)
+        any_trim = False
+        for i in range(ntr):
+            A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
+            model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
+            inside = np.flatnonzero(np.abs(freqs[i] - c) <= guard)
+            if inside.size == 0:
+                continue
+            rec = tail_trim(freqs[i], volts[i] - model,
+                            int(inside[0]), int(inside[-1]))
+            trim_records[i] = {k: rec[k] for k in
+                               ("trimmed", "trim_start_ms", "trim_end_ms",
+                                "trim_reason", "n_trimmed")}
+            if rec["trimmed"]:
+                any_trim = True
+                keep = rec["mask"]
+                freqs[i], volts[i] = freqs[i][keep], volts[i][keep]
+                sigmas[i], sigmas_raw[i] = sigmas[i][keep], sigmas_raw[i][keep]
+        if any_trim:
+            # Seeded from the ORIGINAL start, not from the contaminated
+            # optimum. The trim changed the data, so the refit is a fresh
+            # answer to a different question, and seeding it at a parameter
+            # sitting on its own bound is how a fit that railed on the
+            # contamination stays railed after the contamination is gone.
+            sol = least_squares(residuals, p0, bounds=(lo, hi), max_nfev=40000)
+            if not sol.success:
+                raise RuntimeError(f"condition refit after trim failed: {sol.message}")
+
     ndata = sum(len(v) for v in volts)
     dof = max(ndata - len(p0), 1)
     # raw chi2 (unscaled sigma) is the goodness-of-fit diagnostic; with the
@@ -257,4 +310,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "centers": [float(sol.x[nshared + 4 * i + 1]) for i in range(ntr)],
         "amps": [float(sol.x[nshared + 4 * i]) for i in range(ntr)],
         "per_trace_diag": diag,
+        # one record per input trace, in input order, whether or not trimming
+        # ran: the caller writes these into results/trim_report.csv
+        "trim_records": trim_records,
     }

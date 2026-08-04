@@ -8,7 +8,8 @@ Outputs
 -------
 results/qc_metrics.csv   one row per trace: manifest fields + all QC metrics
                          + hard-flag list + sibling z-scores (height, FWHM,
-                         wing noise) within its condition group
+                         wing noise) within its condition group + the
+                         residual-tail trim record + the outlier mark
 stdout                   the audit:
                          (a) discarded traces vs their canonical siblings —
                              does objective QC agree they are bad?
@@ -18,9 +19,19 @@ stdout                   the audit:
                          (d) RF-state consistency check (comb vs label)
 
 Policy reminder (docs/PLAN.md): hard-QC failures may exclude canonical traces
-from headline fits (QC-based, pre-registered). Sibling outliers and
-clean-looking discards are REPORTED, not auto-acted-on — the experimenter is
-the instrument for apparatus context.
+from headline fits (QC-based, pre-registered). Clean-looking discards are
+REPORTED, not auto-acted-on. The experimenter is the instrument for apparatus
+context.
+
+Sibling outliers used to be report-only too. Since 2026-08-04 a single
+pre-registered rule (docs/notes/ruler_validity_and_trim_prereg.md, amendment 2
+B4, with the threshold recalibrated against the null in amendment 3) removes at
+most one member per condition group from the CONDITION FITS, and
+marks it in the table with `outlier` and `outlier_reason`. That removal is not a
+hard flag and never enters `hard_flags`: a trace whose height or width its own
+siblings do not share is a different statement from a trace that failed quality
+control, and the archive-wide fit's admission gate reads the second, not the
+first.
 """
 
 from __future__ import annotations
@@ -35,7 +46,17 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s.config import RESULTS_DIR  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
-from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags, sibling_zscores  # noqa: E402
+from rb5s6s import config as C  # noqa: E402
+from rb5s6s.qc import (trace_metrics, hard_flags, ingest_flags,  # noqa: E402
+                       sibling_zscores, outlier_threshold)
+
+OUTLIER_REASON = "sibling_outlier"
+"""The one token population B can carry (pre-registration amendment 2 B4).
+Closed vocabulary, and it is NOT a hard flag: an outlier is removed from the
+condition fits and keeps its row, which is a different decision from failing
+quality control."""
+
+_Z_METRICS = ("zsib_height_v", "zsib_fwhm_ms")
 
 
 def condition_key(r):
@@ -51,7 +72,7 @@ def main() -> int:
     metrics = {}
     for r in rows:
         t, v, info = load_trace(trace_path(r), with_info=True)
-        m = trace_metrics(t, v)
+        m = trace_metrics(t, v, rf_on=(r["rf_on"] == "True"))
         m["n_valid"] = float(info["n_valid"])
         m["empty_interior"] = float(info["empty_interior"])
         m["axis_rebuilt"] = float(info["axis_rebuilt"])
@@ -71,6 +92,39 @@ def main() -> int:
         for name in ("height_v", "fwhm_ms", "sigma_wing_v"):
             vals = np.array([metrics[s["file"]][name] for s in sibs], dtype=float)
             m[f"zsib_{name}"] = sibling_zscores(m[name], vals) if len(vals) >= 3 else np.nan
+        m["outlier"] = 0
+        m["outlier_reason"] = ""
+
+    # ---- the group outlier rule, population B (amendment 2 B4) ----
+    # One pass, at most one removal per condition group, on the LARGER of the
+    # two sibling z scores the table already carries. Those are deviations in
+    # scaled median-absolute-deviation units against the trace's own siblings,
+    # so they are the statistic the rule was written for and no second scale is
+    # applied. Only radio frequency off lines are tested here: the rulers have
+    # their own population and their own statistic in run_ruler.py.
+    outliers = []
+    for key, members in sorted(groups.items()):
+        n = len(members)
+        if n < C.OUTLIER_MIN_GROUP or any(s["rf_on"] == "True" for s in members):
+            continue
+        dev = [max(abs(metrics[s["file"]][z]) for z in _Z_METRICS) for s in members]
+        if not all(np.isfinite(d) for d in dev):
+            continue
+        # The z scores ARE the rule's deviation: sibling_zscores already centred
+        # each metric on its siblings' median and scaled it by their scaled
+        # median absolute deviation. So the threshold is applied to them
+        # directly and the centring is not done twice. It is also why the
+        # threshold reads the SIBLING null: a member left out of its own scale
+        # deviates further than one included in it, and amendment 3 measures how
+        # much further.
+        thr = outlier_threshold(n, len(_Z_METRICS), scaling="sibling")
+        i = int(np.argmax(dev))
+        if dev[i] <= thr:
+            continue
+        f = members[i]["file"]
+        metrics[f]["outlier"] = 1
+        metrics[f]["outlier_reason"] = OUTLIER_REASON
+        outliers.append((f, key, dev[i], thr, n))
 
     # ---- write full metrics table ----
     RESULTS_DIR.mkdir(exist_ok=True)
@@ -128,6 +182,27 @@ def main() -> int:
             print(f"   {r['file']}: " + "  ".join(f"z({k})={z:+.1f}" for k, z in bad.items()))
     if not any_out:
         print("   none")
+
+    print("\n    SIBLING OUTLIERS REMOVED (the pre-registered rule, one pass, at "
+          "most one per condition). These are excluded from the condition fits:")
+    for f, key, d, thr, n in outliers:
+        print(f"   {f}: deviation {d:.2f} against a threshold of {thr:.2f} "
+              f"(n={n}, condition {key[1]} T{key[2]} P{key[3] or '-'})")
+    if not outliers:
+        print("   none")
+    ntrim = sum(1 for r in rows if metrics[r["file"]]["trimmed"])
+    nrefuse = sum(1 for r in rows
+                  if metrics[r["file"]]["trim_reason"].startswith("refused"))
+    nna = sum(1 for r in rows
+              if metrics[r["file"]]["trim_reason"].startswith("not applicable"))
+    print(f"\n    RESIDUAL-TAIL TRIM over {len(rows)} traces: {ntrim} trimmed, "
+          f"{nrefuse} refused, {nna} not applicable (rulers), "
+          f"{len(rows) - ntrim - nrefuse - nna} untouched")
+    for r in rows:
+        m = metrics[r["file"]]
+        if m["trimmed"]:
+            print(f"   {r['file']}: keeps {m['trim_start_ms']:.0f} to "
+                  f"{m['trim_end_ms']:.0f} ms ({m['trim_reason']})")
 
     # ---- audit (c): quarantine summary ----
     print("\n" + "=" * 78)

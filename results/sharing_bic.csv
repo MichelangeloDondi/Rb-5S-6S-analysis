@@ -1,7 +1,7 @@
 quantity,key,value,unit,status
-bic_eff,per_T,14213.4,"correlation-corrected chi2 + k*ln(N_eff); k=241, N_eff=13854",DIAGNOSTIC
+bic_eff,per_T,14213.3,"correlation-corrected chi2 + k*ln(N_eff); k=241, N_eff=13853",DIAGNOSTIC
 chi2_red,per_T,0.857,raw chi2 / dof,DIAGNOSTIC
-bic_eff,per_block,14275.8,"correlation-corrected chi2 + k*ln(N_eff); k=250, N_eff=13854",DIAGNOSTIC
+bic_eff,per_block,14274.5,"correlation-corrected chi2 + k*ln(N_eff); k=250, N_eff=13853",DIAGNOSTIC
 chi2_red,per_block,0.854,raw chi2 / dof,DIAGNOSTIC
-dBIC_eff_block_minus_T,shared,62.4,"PRIMARY: +ve favours per_T (shared); decisive (Kass-Raftery); Occam on underpowered data, NOT sharing proof (M4c)",DIAGNOSTIC
-dBIC_raw_block_minus_T,shared,-47.0,diagnostic: naive raw-N BIC (over-counts correlated samples; flips sign -> the archive does not robustly resolve the sharing),DIAGNOSTIC
+dBIC_eff_block_minus_T,shared,61.3,"PRIMARY: +ve favours per_T (shared); decisive (Kass-Raftery); Occam on underpowered data, NOT sharing proof (M4c)",DIAGNOSTIC
+dBIC_raw_block_minus_T,shared,-51.9,diagnostic: naive raw-N BIC (over-counts correlated samples; flips sign -> the archive does not robustly resolve the sharing),DIAGNOSTIC

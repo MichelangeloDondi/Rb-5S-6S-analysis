@@ -21,7 +21,7 @@ archive alone:
    0.22 MHz. The peak follows the window.
 
 And the retracted headline was arithmetically the knob: reported 64.97 MHz
-peak-to-peak against a window-start travel of 1516 ms x 0.042526 = 64.47 MHz,
+peak-to-peak against a window-start travel of 1516 ms x 0.042524 = 64.47 MHz,
 a ratio of 1.008.
 
 The repository had already said so, and this module had not read it -- PLAN.md:
@@ -35,7 +35,7 @@ inside each:
 
     offset(MHz) = (peak_pos_ms - <peak_pos_ms>_epoch,peak) * rate_campaign
 
-with rate_campaign = 0.04253(5) MHz/ms, laser axis (M2, results/ruler_campaign).
+with rate_campaign = 0.04252(5) MHz/ms, laser axis (M2, results/ruler_campaign).
 The reference is per (epoch, peak) because the four lines sit at different places
 in the sweep. Across an epoch boundary the offset is UNKNOWN -- not zero, not
 interpolated -- and nothing here joins two epochs.

@@ -78,7 +78,9 @@ from rb5s6s import constants as _CONST  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
-from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
+from rb5s6s.qc import (trace_metrics, hard_flags, ingest_flags,  # noqa: E402
+                       outlier_files)
+from rb5s6s.ruler import campaign_rate_relsyst  # noqa: E402
 from rb5s6s.linefit import to_frequency  # noqa: E402
 from rb5s6s.beta import fit_beta_self, collisional_slope  # noqa: E402
 from rb5s6s.qc import contiguous_fwhm_ms  # noqa: E402
@@ -156,7 +158,16 @@ def load_t_rates():
 
     Bracket combination: rate = mean(before, after); its error adds the
     half-difference in quadrature, so a genuine in-session rate shift (4207:
-    1.4%) is carried as uncertainty instead of being averaged away."""
+    1.4%) is carried as uncertainty instead of being averaged away.
+
+    Since 2026-08-04 the campaign-level FRACTIONAL systematics of
+    results/ruler_campaign.csv are folded on top, after the rate(t) overlay
+    (ruler.campaign_rate_relsyst: how much of the rate is a choice among eight
+    legitimate estimators of the same blocks, and the rulers and the lines
+    sitting at different places in the acquisition window). Both scale every
+    width in a block together, like everything else in this budget. The
+    campaign STATISTICAL error is not folded, since the per-block statistical
+    error above already is it."""
     path = C.RESULTS_DIR / "ruler_blocks.csv"
     trate, brackets = {}, defaultdict(dict)
     for r in csv.DictReader(open(path)):
@@ -172,7 +183,13 @@ def load_t_rates():
             mean = 0.5 * (rb + ra)
             err = np.sqrt(0.5 * (eb ** 2 + ea ** 2) + (0.5 * (rb - ra)) ** 2)
             prate[peak] = (mean, err / mean)
-    return _apply_rate_models(trate, prate)
+    trate, prate = _apply_rate_models(trate, prate)
+    syst = campaign_rate_relsyst()
+    if syst > 0:
+        for d in (trate, prate):
+            for k, (rr, rel) in list(d.items()):
+                d[k] = (rr, float(np.hypot(rel, syst)))
+    return trate, prate
 
 
 def _apply_rate_models(trate, prate):
@@ -272,6 +289,17 @@ def load_conditions(rows, peak, trates, prates=None):
 
 def main() -> int:
     rows = load_manifest()
+    # Sibling outliers leave the density fits entirely. A trace whose own
+    # siblings do not share its height or width is not a repeat of the same
+    # condition, and the density lever is built out of repeats. Filtering the
+    # manifest ONCE means every probe below sees the same trace set, which is
+    # the property a per-probe filter would not have. Pre-registered in
+    # docs/notes/ruler_validity_and_trim_prereg.md, amendment 2 B4.
+    dropped = outlier_files()
+    if dropped:
+        rows = [r for r in rows if r["file"] not in dropped]
+        print(f"excluding {len(dropped)} sibling outlier(s) from every fit here: "
+              + ", ".join(sorted(dropped)))
     trates, prates = load_t_rates()
 
     results = []

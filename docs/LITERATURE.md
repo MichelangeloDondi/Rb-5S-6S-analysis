@@ -246,7 +246,7 @@ placeholder.
    modest addition to the measured series rather than a headline result. In the archive it is a bound 8–14×
    above expectation (four-point, 2026-08-02; was 57–113× on the earlier
    three-point construction); a measurement requires the high-T extension.
-4. **EOM-comb-in-fine-scan** frequency axis (0.042526(51) MHz/ms laser-axis,
+4. **EOM-comb-in-fine-scan** frequency axis (0.042524(51) MHz/ms laser-axis,
    per-block).
 
 NOT claimable: "asymmetric lineshapes from distributed AC-Stark are new"

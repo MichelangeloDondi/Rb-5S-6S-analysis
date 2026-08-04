@@ -81,6 +81,9 @@ FILE_STATUS = {
     "ruler_blocks.csv": "CALIB",
     "ruler_traces.csv": "CALIB",
     "ruler_nlmap.csv": "CALIB",
+    # every trim and every outlier removal the pipeline made, collected from
+    # the tables that made them. A record of what was cut, never an input.
+    "trim_report.csv": "DIAGNOSTIC",
     "sigma_laser_sharing.csv": "DIAGNOSTIC",  # the M4c in-sample consistency check
     "transit_mc.csv": "ENVELOPE",         # w0-parametric transit-broadening model
     "identifiability_profile.csv": "DIAGNOSTIC",  # the M12 profile-likelihood grids (fig7)
@@ -187,6 +190,18 @@ QUANTITY_STATUS = {
         "bic_eff": "DIAGNOSTIC", "chi2_red": "DIAGNOSTIC",
         "dBIC_eff_block_minus_T": "DIAGNOSTIC",
         "dBIC_raw_block_minus_T": "DIAGNOSTIC",
+    },
+    # What a further campaign would buy. Every row is a projection of an
+    # instrument's reach, never a measurement, so nothing here may be tagged
+    # MEASURED or BOUND. The two prefixes are the whole map: `input_` rows are
+    # the archive's own measured quantities carried in as calibration for the
+    # arithmetic, and `proj_` rows are the model estimates built on them. This
+    # file is keyed by quantity rather than registered whole in FILE_STATUS
+    # because its rows are not homogeneous, and FILE_STATUS carries one status
+    # for a whole file.
+    "projections.csv": {
+        "input_": "CALIB",
+        "proj_": "ENVELOPE",
     },
     "fringe_tail.csv": {
         # fringe-tail leverage on the Stark ramp: the sign and magnitude at the

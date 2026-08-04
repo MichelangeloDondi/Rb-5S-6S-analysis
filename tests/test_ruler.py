@@ -471,6 +471,7 @@ NEW_TRACE_COLUMNS = [
     "reindex_action", "reindex_j", "excised_k", "n_refits", "delta_advised_ms",
     "quarantine_advised", "quarantined", "quarantine_reason",
     "trimmed", "trim_start_ms", "trim_end_ms", "trim_reason",
+    "outlier", "outlier_reason",
 ]
 
 

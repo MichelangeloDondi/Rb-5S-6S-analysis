@@ -1,2 +1,2 @@
-rate_laser,rate_laser_err,block_chi2_red,n_blocks,scatter_pct,status
-0.04252648925418178,5.100510711176379e-05,8.078088154028958,20,0.6175969151507489,MEASURED
+rate_laser,rate_laser_err,block_chi2_red,n_blocks,scatter_pct,rate_est_spread,rate_err_total,position_mismatch_relerr,rate_laser_with_outliers,status
+0.04252425765210632,5.093915046567471e-05,7.977308991757064,20,0.6167412395459015,7.049897734203239e-05,8.697645001054622e-05,0.00234127009835692,0.04252455011362378,MEASURED

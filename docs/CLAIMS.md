@@ -108,17 +108,33 @@ two-photon sum frequency, twice the laser frequency.
   On natural linewidth it starts an order of magnitude behind.
 - No claim to the lineshape frame itself, which is 1980 review
   material. The claim is the geometric closure and its cumulants.
+- No claim that the projected precisions of section 3 are results. They
+  are the reach of a design under assumptions stated row by row in
+  [results/projections.csv](../results/projections.csv), and the largest
+  of those assumptions, the cold-spot lag on the density and the
+  fourfold cut in block scatter, are the ones a session would have to
+  earn rather than inherit.
 
 ## 3. What another campaign would convert or add
 
 Everything in this section is proposed, not scheduled. Verbs are
-conditional on the sessions happening.
+conditional on the sessions happening. Each figure below is a
+projection, not a result. They are computed in
+[scripts/run_projections.py](../scripts/run_projections.py) from the
+archive's own measured precision and the session parameters
+[PLAN.md](PLAN.md) states, and every one of them travels with its
+assumption set in [results/projections.csv](../results/projections.csv).
 
 **A beam-profile measurement alone** (knife-edge or camera, no physics
 run) would collapse the transit-laser degeneracy, sharpen the
 waist-conditional statements in place, and put the laser-width range on
 a measured geometry. It is the cheapest single improvement to the
-existing archive, specified in [PLAN.md](PLAN.md).
+existing archive, specified in [PLAN.md](PLAN.md). Combined with the
+differential transit width of [PLAN.md](PLAN.md) §5, the projection is
+an intensity axis good to about 15 percent, which is then the floor
+under every absolute coefficient below, conditional on the knife-edge
+and the camera agreeing with the transit difference before any
+coefficient is quoted in physical units.
 
 **A fixed-lock cell session** (the specified follow-up, [PLAN.md](PLAN.md) §8)
 would add:
@@ -126,12 +142,30 @@ would add:
 - The first measured AC-Stark coefficient of the 993 nm line, from the
   centre pull that the 2025 drift erased. With the waist also measured,
   that would split the (Δα, intensity) pair and let the experiment
-  adjudicate the sign-disputed polarizability.
+  adjudicate the sign-disputed polarizability. The projection, on one
+  morning of randomized power cycling with the four lines interleaved,
+  is 0.09 MHz on S₀(225 mW), which would detect a shift of the predicted
+  size at 3.8 sigma and separate the two disputed polarizability signs at
+  8 sigma if the shift is that size, conditional on the lock holding to
+  the archive's own measured held-lock rate rather than to any borrowed
+  cavity figure. Which sign the pull has needs no intensity calibration
+  at all. How far apart the two signs sit does, since a common scale
+  error moves both predictions together. One hour rather than one morning
+  halves that reach to 1.9 sigma, so the morning is what the conversion
+  needs.
 - The first measured collisional self-shift, from the same centre
   channel across density.
 - β_self as a measurement rather than a bound, from same-session
   150-170 °C points interleaved against the block scatter that
-  co-limits the archival lever.
+  co-limits the archival lever. The projection, on five temperature
+  blocks per peak reaching 170 °C with the block scatter cut fourfold,
+  is the expected 3.5 kHz per 10¹² cm⁻³ rate resolved at about 10 sigma,
+  and 3 sigma if the block scatter is not cut, so the interleaving and
+  the temperature reach are co-limiting rather than one refining the
+  other. Resolving the rate is not the same as knowing it: the
+  20 percent density scale would leave the coefficient itself known to
+  about 22 percent until the absorption channel of [PLAN.md](PLAN.md) §8
+  measures the density directly.
 - A demonstration of the drift-immune third-cumulant readout, under a
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about tenfold), which
@@ -153,6 +187,23 @@ Across three or more rungs the per-line coefficients would become scaling
 laws in the principal quantum number, which discriminate a calculation
 more sharply than any single coefficient does.
 
+Three projections size that campaign, each conditional on the archive's
+own per-block width precision and ruler axis carrying over unchanged to
+the new line. Separating the two published 7S rates at five sigma needs
+37 kHz per mTorr, and the same five-block design that converts β_self
+would deliver about 8, so the adjudication has a fourfold margin and is
+the one rung whose result is publishable whichever value wins.
+Reproducing the 778 nm coefficient would catch a factor-two convention
+error, which needs 13 kHz per mTorr against the same 8 delivered, and
+would not reach the 2.6 kHz per mTorr a 20 percent method bias needs, so
+the calibration rung would test the method's bookkeeping rather than its
+accuracy. Placing the magic wavelength to Hamilton's own 5 pm would need
+a scan step of 0.045 nm across the 0.18 nm of half span the neighbouring
+pole leaves usable, each point good to 8 percent of the shift at the edge
+of that span,
+and it would need the perturbing beam mode matched to the drive before
+the closed-form shift distribution applies at all.
+
 **A guided-mode extension**, sketched in
 [BIG_PICTURE.md](BIG_PICTURE.md) §6 and budgeted in
 [notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md),
@@ -169,8 +220,13 @@ does carry over is the operation the archive is built on, mapping a
 known intensity geometry onto a shift distribution and reading its
 cumulants, and one result closes analytically on the new geometry: the
 trap's own inhomogeneous shift is set by the atom temperature alone,
-with the trap depth and waist cancelling out of it. None of this family
-is claimable from the 2025 data.
+with the trap depth and waist cancelling out of it. Two envelope figures
+size it. A hot fill would deliver of order 2.8e5 counts per second at
+the usable drive power, subject to the note's own unclosed factor of 16
+to 47 between the first-principles rate and the archive's detected
+photons, and the light shift rather than the available power would set
+that drive power at about 51 mW, which is where the shift reaches the
+natural width. None of this family is claimable from the 2025 data.
 
 The dependency map, which measurement unlocks which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).
@@ -204,7 +260,9 @@ blocked waiting for these bounds, and this section does not soften that.
   and waist cancelling
   ([notes/guided_mode_two_photon_design.md](notes/guided_mode_two_photon_design.md)).
 
-**After a campaign, by what is run:**
+**After a campaign, by what is run.** Each entry names what the audience
+would gain, and section 3 gives the projected precision they would gain
+it at, with the condition attached:
 
 - A beam profile alone would sharpen every waist-conditional statement
   in the existing archive retroactively. The audience is whoever uses

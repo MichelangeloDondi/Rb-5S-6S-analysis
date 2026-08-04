@@ -36,7 +36,9 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s.constants import GAMMA_NAT_HZ, TOOTH_SPACING_LASER_HZ  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
-from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
+from rb5s6s.qc import (trace_metrics, hard_flags, ingest_flags,  # noqa: E402
+                       outlier_files)
+from rb5s6s.ruler import campaign_rate_relsyst  # noqa: E402
 from rb5s6s.linefit import fit_condition, to_frequency, transit_fwhm_at_T  # noqa: E402
 
 GNAT = GAMMA_NAT_HZ / 1e6
@@ -53,6 +55,15 @@ def load_block_rates():
     block-coherent fractional error equal to it; it is folded into the
     written errors below. P-sweep brackets: rate = mean(before, after), the
     half-difference added in quadrature (matching run_beta_self).
+
+    Since 2026-08-04 the campaign-level FRACTIONAL systematics of
+    results/ruler_campaign.csv are folded on top (ruler.campaign_rate_relsyst:
+    how much of the rate is a choice among eight legitimate estimators of the
+    same blocks, and the rulers and the lines sitting at different places in
+    the acquisition window). Both are block-coherent in exactly the sense the
+    per-block error already carried here is, and neither was in any width's
+    budget before. The campaign STATISTICAL error is not folded, because the
+    per-block statistical error below already is it.
 
     Returns dicts of (rate, relerr) keyed for T-sweep and P-sweep lookups."""
     path = C.RESULTS_DIR / "ruler_blocks.csv"
@@ -76,6 +87,11 @@ def load_block_rates():
         elif br:
             (rr, ee) = next(iter(br.values()))
             prate[peak] = (rr, ee / rr)
+    syst = campaign_rate_relsyst()
+    if syst > 0:
+        for d in (trate, prate):
+            for k, (rr, rel) in list(d.items()):
+                d[k] = (rr, float(np.hypot(rel, syst)))
     return trate, prate
 
 
@@ -88,6 +104,11 @@ def condition_rate(role, peak, T, trate, prate):
 def main() -> int:
     rows = load_manifest()
     trate, prate = load_block_rates()
+    # Sibling outliers are removed from the condition fits: a trace whose own
+    # siblings do not share its height or width is not a repeat of the same
+    # measurement, and averaging it into one is what the pre-registered rule
+    # exists to stop. It keeps its row in results/qc_metrics.csv, marked.
+    dropped = outlier_files()
 
     conds = defaultdict(list)
     for r in rows:
@@ -96,7 +117,10 @@ def main() -> int:
 
     print(f"M3 shakedown: {len(conds)} canonical RF-off conditions "
           f"(transit FIXED at placeholder {C.TRANSIT_FWHM_PLACEHOLDER_MHZ} MHz@110C, w0 OPEN)")
-    out = []
+    if dropped:
+        print(f"  excluding {len(dropped)} sibling outlier(s): "
+              + ", ".join(sorted(dropped)))
+    out, n_trimmed = [], 0
     for key in sorted(conds):
         role, peak, T, P = key
         entry = condition_rate(role, peak, T, trate, prate)
@@ -105,6 +129,8 @@ def main() -> int:
         rate, rate_relerr = entry
         freqs, volts = [], []
         for r in conds[key]:
+            if r["file"] in dropped:
+                continue
             t, v, info = load_trace(trace_path(r), with_info=True)
             m = trace_metrics(t, v)
             if any("truncated" in f or "dropout" in f for f in
@@ -116,9 +142,15 @@ def main() -> int:
         law = condition_noise_model(volts)
         transit = transit_fwhm_at_T(float(T), C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
         try:
-            fit = fit_condition(freqs, volts, T_C=float(T), law=law, transit_fwhm=transit)
+            fit = fit_condition(freqs, volts, T_C=float(T), law=law, transit_fwhm=transit,
+                                trim_tails=True)
         except RuntimeError as e:
             print(f"  [warn] fit failed {key}: {e}"); continue
+        for tr in fit["trim_records"]:
+            if tr["trimmed"]:
+                n_trimmed += 1
+                print(f"  [trim] {key}: a trace keeps {tr['trim_start_ms']:.1f} to "
+                      f"{tr['trim_end_ms']:.1f} MHz ({tr['trim_reason']})")
         # total width = numerical FWHM of the full composite model at the
         # fitted params (the degeneracy-robust observable: insensitive to how
         # the width splits between laser and collisional cores)
@@ -210,6 +242,10 @@ def main() -> int:
           f"median chi2_red = {np.median([o['chi2_red'] for o in out]):.2f}")
     print("ALL PRELIMINARY: transit fixed on the OPEN w0 prior; beta_self + "
           "confound program + N(T) are module M4.")
+    print(f"\nresidual-tail trims taken by the condition fits: {n_trimmed}. "
+          "This producer does not persist a per-trace trim record, so "
+          "results/trim_report.csv leaves its `linefit` rows unrecorded. "
+          "A nonzero count here is the signal that it has to start.")
     return 0
 
 

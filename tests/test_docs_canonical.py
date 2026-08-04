@@ -231,6 +231,34 @@ CANONICAL = [
         docs=["docs/DATA.md"],
     ),
     dict(
+        # The three projections the decision-maker table and the claims ledger
+        # both quote. They are not results, but they are quoted in two places
+        # each and every one of them rides on the campaign sweep rate, so a
+        # recalibration moves them and a stale copy would read as a promise the
+        # arithmetic no longer supports. Same registry, same mechanism.
+        name="projected S0(225 mW) uncertainty, one fixed-lock morning",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_pull_S0_sigma', '24 per day, 1 day')):.2f}",
+        find=re.compile(r"([0-9.]+)\s*MHz on S(?:₀|_?0)\(225"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="projected beta_self detection significance, five interleaved blocks",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_beta_self_detection_sigma', 'interleaved, 20 K cold-spot lag')):.0f}",
+        find=re.compile(r"resolved at about ([0-9]+) sigma"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="7S precision needed to separate the two published rates at 5 sigma",
+        value=lambda: f"{float(_cell('projections.csv', 'proj_7s_precision_needed', 'Wang read as FWHM')):.0f}",
+        # \s+ throughout: the docs wrap, so a hard space in the pattern would
+        # miss a citation that happens to straddle a line break
+        find=re.compile(r"five\s+sigma\s+needs\s+([0-9]+)\s+kHz\s+per\s+mTorr"),
+        mode="all",
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
         name="M16 first 5S-6S magic wavelength (1204 nm crossing)",
         value=lambda: f"{float(_cell('polarizability.csv', 'magic_5s6s', '1204nm')):.1f}",
         find=re.compile(r"(120[0-9]\.[0-9])\s*/"),

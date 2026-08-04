@@ -658,3 +658,708 @@ Section 10's request that "the excision step and the chi-squared tolerance
 would both be revisited before the verdict is allowed to gate" is discharged by
 A4. The tolerance was revised, the excision step was guarded, and the verdict
 is still not gating.
+
+---
+
+# Amendment 2, 2026-08-04: the trimmer lands, the rate error gains an estimator spread, and one outlier rule
+
+Everything above this line stands. Sections B1 to B4 below were written before
+any of the code they describe existed, and no campaign number was consulted
+while they were being fixed. Section B5 records what the rules returned once
+they were run, and is the only part of this amendment written after the fact.
+
+## B1. Where the trimmer is allowed to act
+
+Section 5 fixed the trimmer's five parameters and section 6 fixed the
+calibration that sets the sixth. Neither changes. What this section fixes is
+the three places the module is wired in, and what each one may do.
+
+The module is `rb5s6s/trim.py` and it has three functions. `cusum_onset` runs a
+one-sided cumulative sum on signed smoothed normalized residuals and returns
+the sample at which a sustained positive excursion begins, or nothing.
+`tail_trim` walks outward from a guarded core on each side of a window
+independently and turns an onset into a sample mask. `envelope_residual` builds
+a residual without fitting a lineshape, so the quality pass stays physics
+blind.
+
+**Sustained means the accumulation lasts, not that it is large.** A run is
+accepted only when the cumulative sum keeps rising for at least `TRIM_MIN_RUN`
+samples after the onset. A point glitch is spread over `TRIM_SMOOTH_W` samples
+by the smoother and can therefore accumulate for at most that many, which is
+below the minimum run whatever the glitch's height. That is what makes the
+detector immune to a spike rather than merely resistant to a small one, and it
+is the property the spike test pins.
+
+The three integration points.
+
+1. **The ruler ladder.** Inside `validated_comb_fit`, between the first fit and
+   the verdict, exactly where section 3 reserved rung 2. The core is the fitted
+   comb span, meaning the outermost fitted tooth centres, widened by
+   `TRIM_CORE_GUARD_FWHM_MULT` fitted widths on each side. A trim triggers one
+   refit through `fit_comb(mask=...)` and the trimmed fit becomes the fit the
+   verdict judges.
+2. **The condition fit.** `fit_condition` gains `trim_tails`, applied as a
+   single second pass after the existing per-trace residual loop, with one
+   refit. The adaptive fit window is unchanged, and the mirror-exclusion test
+   that window exists for must keep passing.
+3. **The quality pass.** `trace_metrics` gains `rf_on` and reports `trimmed`,
+   `trim_start_ms`, `trim_end_ms` and `trim_reason` from `envelope_residual`.
+   For a ruler it reports `not applicable, multi-peak trace` and computes
+   nothing, because the ruler's authoritative trim record lives in
+   `results/ruler_traces.csv` and two disagreeing records of the same decision
+   are worse than one.
+
+`trim_start_ms` and `trim_end_ms` bound the KEPT interval, in both tables, so
+there is one convention in the repository rather than two. They are empty when
+nothing was trimmed.
+
+**The trim never enters `hard_flags`.** Section 3 already forbids this and the
+prohibition is repeated here because this amendment is the one that writes the
+code.
+
+## B2. The estimator family behind the campaign rate
+
+`results/ruler_campaign.csv` quotes one central rate and one error. The error is
+the inverse-variance error with the standard scatter inflation, which is the
+spread of the blocks about their own weighted mean. It says nothing about the
+choice of estimator, and the choice of estimator is a real degree of freedom
+that a reader cannot see.
+
+Eight members, fixed here, all computed from the same block table.
+
+| member | what it is |
+|---|---|
+| `invvar_pdg` | inverse-variance mean with scatter inflation, the central value, unchanged |
+| `unweighted` | plain mean of the block rates |
+| `median` | median of the block rates |
+| `clipped3` | mean after iteratively dropping blocks more than three sample standard deviations from the running mean |
+| `P_only` | inverse-variance mean over the power-session bracket blocks alone |
+| `T_only` | inverse-variance mean over the temperature-session dwell blocks alone |
+| `loo_min` | smallest of the leave-one-block-out inverse-variance means |
+| `loo_max` | largest of the same |
+
+Each asks a different question. The unweighted mean and the median do not read
+the per-block errors at all, which matters because those errors are inflated
+twice. The clipped mean asks whether one block carries the answer. The two
+session splits ask whether the two acquisition epochs agree. The leave-one-out
+range asks whether any single block is load bearing.
+
+`rate_est_spread` is half the range of the eight. `rate_err_total` is
+`rate_est_spread` and the existing `rate_laser_err` added in quadrature. Half
+the range is the standard way to turn a family of estimators into a one-sigma
+scale without asserting a distribution over estimators, and it is deliberately
+crude, because the statement that holds is a size and not a probability.
+
+## B3. The ruler-against-line position mismatch
+
+The frequency axis is measured on ruler traces and applied to line traces. The
+sweep is not exactly linear, and `results/ruler_nlmap.csv` measures the local
+rate against position in the acquisition window. If the rulers and the lines sit
+at different window positions then the rate measured on one is not the rate that
+applies to the other. Nothing in the repository has carried that difference.
+
+The rule, fixed here.
+
+1. The ruler position is the count-weighted median of `pos_ms` over the map's
+   own bins, which is where the campaign rate was measured.
+2. The line position is the median `peak_pos_ms` over the canonical radio
+   frequency off traces of `results/qc_metrics.csv`, which is where the lines
+   sit.
+3. The local relative rate at each position comes from linear interpolation of
+   `rate_rel` against `pos_ms` in the map, and its error from the same
+   interpolation of `rate_rel_err`.
+4. `position_mismatch_relerr` is the larger of the absolute difference between
+   the two interpolated rates and the quadrature sum of the two interpolated
+   errors.
+
+Taking the larger of the two refuses to quote a mismatch finer than the map's
+own resolution. The quantity is a relative error, so it is dimensionless and
+adds to the other fractional terms directly.
+
+**Who consumes it.** `load_block_rates` in `run_linefit.py` and `load_t_rates`
+in `run_beta_self.py` build a per-block relative rate error and use it as a
+block-coherent fractional error on every width in the block. Both fold in the
+fractional terms of `rate_err_total`, which are `rate_est_spread` divided by the
+campaign rate and `position_mismatch_relerr`. They do NOT fold in
+`rate_laser_err` itself, because the per-block statistical error is already in
+their own budget and adding the campaign one would count it twice.
+
+## B4. The outlier rule
+
+One rule, two populations, one pass.
+
+**The rule.** Within a group of `n` members, let `M` be the median of the tested
+statistic and `s` be its median absolute deviation scaled by 1.4826. The
+deviation of member `i` is `(x_i - M)` divided by a scale, and the scale is `s`
+floored as stated per population below. The member with the largest absolute
+deviation is removed when that deviation exceeds
+
+    threshold(n, m) = max(3.0, t at 1 - 0.05 / (2 n m) on n - 1 degrees of freedom)
+
+where `m` is the number of statistics tested on each member. At most one member
+is removed per group, and there is one pass. Groups smaller than four members
+are never tested, because with three members the median absolute deviation is a
+single number and a rule built on it is not a measurement.
+
+The threshold is a two-sided t quantile at five per cent, Bonferroni corrected
+over the `n` members of the group and the `m` statistics tested on each, which
+is the standard way to ask whether the most deviant of several members is
+deviant. The floor of 3.0 keeps it from falling below the conventional three
+sigma line as `n` grows.
+
+| n | m = 1 | m = 2 |
+|---|---|---|
+| 4 | 5.392 | 6.895 |
+| 5 | 4.604 | 5.598 |
+| 6 | 4.219 | 4.983 |
+| 7 | 3.997 | 4.632 |
+| 8 | 3.855 | 4.408 |
+
+**Population A, the radio frequency on rulers.** The group is the ruler block.
+The statistic is the per-trace comb spacing `delta_ms`, one statistic per
+member, so `m` is 1. The scale is floored at `OUTLIER_MAD_FLOOR_FRAC` times the
+median spacing, with `OUTLIER_MAD_FLOOR_FRAC` fixed at 1e-3. The floor is set by
+what the fit can resolve rather than by any campaign number. The rigid grid
+places six spacings across a window sampled every 0.5 ms, so the spacing is
+resolved to at best 0.5 divided by 6, which is 5.7e-4 of a 147 ms spacing. A
+floor of one part in a thousand sits just above that and can therefore never be
+reached by a real fit, while still leaving a one per cent disagreement visible
+at ten scale units.
+
+The expected catch is `rulers_p/4207nm_eom_before5.csv`, whose spacing sits
+about one per cent below its own block and which section A5 already identified
+as the trace that moves the 4207 bracket separation. Naming it in advance is
+what makes the run a test rather than a description.
+
+**Population B, the radio frequency off lines.** The group is the
+condition-sibling group `run_qc.py` already builds. The statistics are the
+sibling z scores `zsib_height_v` and `zsib_fwhm_ms` that
+`results/qc_metrics.csv` already carries, so `m` is 2 and the tested quantity is
+the larger of the two absolute values.
+
+Those columns are ALREADY the rule's own deviation: `sibling_zscores` centres
+each metric on the median of the trace's siblings and scales it by their scaled
+median absolute deviation, with the floor `QC_SIBLING_MAD_FLOOR_FRAC`. So the
+centring and scaling step of the rule is already done and is NOT repeated. The
+threshold is applied directly to the larger absolute z score, and the single
+largest member of a group is removed when it exceeds `threshold(n, 2)`. Only
+canonical traces are tested, because the sibling groups are built from canonical
+members.
+
+**What removal means.** An outlier is excluded from block combination, from the
+campaign rate, from the rate model, from the sweep-nonlinearity map and from the
+condition fits. It keeps its row, marked `outlier` with an `outlier_reason` from
+a closed vocabulary, in `results/ruler_traces.csv` for population A and in
+`results/qc_metrics.csv` for population B, and it is listed in
+`results/trim_report.csv` under stage `outlier`. The block combination is
+printed both with and without the removals, so the size of every removal is on
+the record next to the number it changed.
+
+The vocabulary is closed. `spacing_outlier` for population A,
+`sibling_outlier` for population B, and the empty string otherwise.
+
+**What this rule is not.** It is not a quality judgement. A trace removed here
+may be a perfectly good trace of something the block does not share, and the
+with-and-without print is the place to look for that. It also does not touch
+`hard_flags`, for the reason section 3 gives.
+
+## B5. What the rules returned
+
+Written after the run. Nothing above this heading was edited afterwards.
+
+### B5.1 The cumulative-sum threshold, and a degenerate calibration
+
+`TRIM_CUSUM_H = 8`. The section 6 procedure was run as written, 10,000 traces
+of the fitted model plus noise with no tail, through the full two-sided trim
+path at the longest scan any stage performs.
+
+**The procedure as pre-registered returned a degenerate answer, and the
+resolution is on the record rather than hidden.** `TRIM_MIN_RUN` alone holds the
+false-alarm rate below the 1-in-297 target at EVERY threshold on the grid, down
+to 0.5, because an excursion that keeps accumulating for 40 samples is already
+rare. "The smallest threshold meeting the target" would therefore have picked an
+arbitrarily small number. The threshold is instead the smallest integer at which
+the calibration produced no false alarm at all, which is strictly stronger than
+what section 6 asked for. The largest null statistic over the 10,000 traces was
+7.72.
+
+One thing had to be settled that section 5 did not fix, and it moves the
+threshold by a factor of twenty. Section 5 says the detector runs on "signed
+smoothed normalized residuals" without saying whether the normalization comes
+before or after the smoothing. Normalizing AFTER leaves the smoother's own
+correlation inside the statistic, the null wanders to a threshold of 165, and
+that threshold depends strongly on how much tail happens to be scanned.
+Normalizing FIRST puts one unit of the statistic at one sample sigma, which is
+the reading taken, and it lands on 8.
+
+### B5.2 The trim census
+
+| stage | population | trimmed | refused | untouched |
+|---|---|---|---|---|
+| ruler ladder | 104 fitted rulers | 2 | 2 | 100 |
+| quality pass | 182 non-ruler traces | 34 | 0 | 148 |
+| condition fit | 159 canonical lines | 0 | 1 | 158 |
+
+**The ruler stage moves two traces and nothing else.**
+`rulers_t/4207nm_eom_110c5.csv` gains 0.181 ms of spacing and
+`rulers_t/4207nm_eom_090c6.csv` gains 0.016 ms. Both move UP, which is the
+direction removing contamination that contracted the grid predicts. Every other
+fitted ruler is byte-identical to the untrimmed fit. The refusals are the
+guarded-half rule working: a centred campaign comb spans 882 ms of a 999 ms
+window, so one fitted width of guard leaves nothing to scan.
+
+**The condition fit takes no trim on this archive.** That was measured before
+the stage was enabled, so turning it on carries no change to any width, and the
+integration is live rather than dormant. `run_linefit.py` prints the count it
+takes and does not yet persist a per-trace record, so `results/trim_report.csv`
+leaves its `linefit` rows empty rather than filling in a zero it cannot check.
+
+**The quality-pass census is a diagnostic and it is not 34 retrace crossings.**
+Those 34 sit in 8 blocks and arrive in whole blocks at a time, which is what a
+real block-level feature looks like rather than noise. Six of the 34 carry more
+than one half-maximum region and four carry more than one major bump, so the
+quality module's own structure metrics see a second structure on a minority of
+them. The trimmed set also has ten times the median background slope of the
+untrimmed set and 1.6 times the median signal-to-noise, so brightness and
+background are part of what is being detected. Nothing in this stage acts on any
+number. It exists to be read next to the trace in the inspection gallery.
+
+### B5.3 One change made after seeing an output
+
+`envelope_residual` gained a linear background term, fitted on the wings,
+after the first quality run. It is recorded here because it was a change made
+after looking.
+
+The reason is a defect rather than an outcome. Every physics fit in this
+repository carries a linear background, so a model-free stand-in for them has to
+carry one too. Without it the envelope is monotone while the trace is not, a
+background rising by a per cent of the line height across the window violates
+the model by construction, and on a bright trace that is several sigma of
+sustained positive residual. The census fell from 38 to 34 and the trimmed set
+still carries ten times the median background slope, so the term was necessary
+and it was not sufficient. No threshold was touched.
+
+### B5.4 The estimator family
+
+| member | rate, MHz/ms | against the central value |
+|---|---|---|
+| `invvar_pdg` | 0.0425243 | reference |
+| `unweighted` | 0.0426163 | plus 0.216 per cent |
+| `median` | 0.0426331 | plus 0.256 per cent |
+| `clipped3` | 0.0426163 | plus 0.216 per cent |
+| `P_only` | 0.0425044 | minus 0.047 per cent |
+| `T_only` | 0.0426264 | plus 0.240 per cent |
+| `loo_min` | 0.0424921 | minus 0.076 per cent |
+| `loo_max` | 0.0425580 | plus 0.079 per cent |
+
+`rate_est_spread` is 7.048e-5, which is 0.166 per cent of the central rate.
+`rate_laser_err` is 5.098e-5, which is 0.120 per cent. `rate_err_total` is
+8.699e-5, which is 0.205 per cent and 1.71 times the statistical error alone.
+
+**The family reproduces the private red-team finding RT6 and implements its
+recommendation.** RT6 measured five of these estimators against the previous
+committed rate, found the choice of estimator moving the central value by up to
+0.23 per cent while the scatter inflation widened only the error bar, and
+concluded that the right remedy is to quote the estimator spread as a systematic
+rather than to reject blocks. That is now a column.
+
+`clipped3` clips nothing. The pre-registered definition drops blocks further
+than three SAMPLE standard deviations from the running mean, and the most
+deviant block is 2.0 of them, so this member returns the unweighted mean exactly.
+RT6's clip dropped four blocks because it clipped on the per-block errors rather
+than on the sample spread. The member is kept as pre-registered and it adds
+nothing to the range.
+
+### B5.5 The ruler-against-line position mismatch
+
+`position_mismatch_relerr` is 0.234 per cent. The rulers sit at a count-weighted
+median window position of 214 ms and the lines at a median peak position of
+40 ms. The interpolated local rates at those two positions differ by 0.049 per
+cent, and the quadrature sum of the two map errors is 0.234 per cent, so the
+quoted value is the map's own resolution rather than a resolved difference.
+The systematic is real and it is currently a bound on a difference the map
+cannot yet measure.
+
+### B5.6 What the fold moved downstream
+
+The two fractional terms combine to 0.287 per cent, and that is what
+`load_block_rates` and `load_t_rates` fold into their block-coherent relative
+rate errors. Before the fold those errors ran from 0.146 to 1.67 per cent with a
+median of 0.401 per cent. After it they run from 0.322 to 1.69 per cent with a
+median of 0.493 per cent. The growth is between 1.01 and 2.21 times, largest on
+the tightest blocks, which is the expected shape: a systematic floor matters
+most where the statistics are best. The 993.4154 nm power-session bracket grows
+the most, from 0.146 to 0.322 per cent.
+
+Both consumers already carried a per-block STATISTICAL rate error, so
+`rate_laser_err` is not folded in on top of it. Only the two fractional terms
+are, and `run_beta_self.py` folds them after the time-resolved rate model has
+replaced the per-block error, so the model's own smaller error still gains the
+same floor.
+
+### B5.7 The outlier census, both populations
+
+**Population A, the rulers.** Five traces removed, from five of the twenty
+blocks, all of them temperature-session dwells.
+
+| trace | block | spacing, ms | deviation | threshold |
+|---|---|---|---|---|
+| `rulers_t/4207nm_eom_110c3.csv` | T 4207 110 C | 147.96 | 12.17 | 4.60 |
+| `rulers_t/4154nm_eom_090c2.csv` | T 4154 90 C | 144.30 | 9.23 | 4.60 |
+| `rulers_t/4121nm_eom_110c4.csv` | T 4121 110 C | 145.98 | 8.80 | 4.60 |
+| `rulers_t/4207nm_eom_070c4.csv` | T 4207 70 C | 147.40 | 5.91 | 4.60 |
+| `rulers_t/4121nm_eom_070c2.csv` | T 4121 70 C | 147.34 | 5.74 | 4.60 |
+
+**Population B, the lines.** Three traces removed, from three condition groups:
+`p_sweep/4121nm_025mw5.csv` at 5.91 against 5.60, `t_sweep/4154nm_070c1.csv` at
+11.74 against 6.90, and `t_sweep/4207nm_090c5.csv` at 6.14 against 5.60.
+
+**The expected catch did NOT fire, and that is a failed prediction.** B4 named
+`rulers_p/4207nm_eom_before5.csv` in advance. Its spacing of 145.40 ms sits
+0.95 per cent below its block median of 146.80 ms, but the other four members of
+that block spread over 146.49 to 147.08 ms, so the block's own scaled median
+absolute deviation is 0.414 ms and the trace is 3.37 deviations out against a
+threshold of 4.60. The rule does not see it. Amendment A5 reached the same trace
+by a different instrument, the top-three amplitude verdict, which does flag it.
+Two instruments disagreeing about one trace is the useful part of this result.
+
+**The rule fires about twice as often as its nominal level, measured.** The
+threshold is a t quantile, and the statistic is a deviation scaled by a median
+absolute deviation on four to seven points, whose null distribution has far
+heavier tails than a t. Simulated on 200,000 Gaussian groups: the per-group
+false-alarm rate is 7.9 per cent at n of 4, 13.3 per cent at 5, 9.7 per cent at
+6 and 12.5 per cent at 7, against the 5 per cent the Bonferroni construction
+nominally buys. Over twenty blocks that is an expected 2.2 false positives
+against the 5 observed. So some of the five are chance and the rule is not
+calibrated for the statistic it is applied to. The correctly calibrated
+threshold at n of 5 would be about 8.0 rather than 4.60, which would keep the
+top three of the five and drop the other two.
+
+This is left as measured rather than corrected, because correcting a
+pre-registered threshold after seeing which traces it removed is the move this
+note exists to prevent. What the correction would be is stated above so the
+owner can make it deliberately.
+
+### B5.8 What moved in the calibration
+
+| quantity | committed | trim only | outliers only | both |
+|---|---|---|---|---|
+| `rate_laser` | 0.04252649 | 0.04252635 | 0.04252445 | 0.04252431 |
+| shift | reference | minus 0.00034% | minus 0.0048% | minus 0.0051% |
+| `block_chi2_red` | 8.078 | 8.071 | 8.001 | 7.987 |
+| `scatter_pct` | 0.6176 | 0.6173 | 0.6338 | 0.6328 |
+| 4207 before against after | 3.7 sigma | 3.7 | 3.7 | 3.7 |
+
+The rate moves by a fortieth of the 0.2 per cent bound section 9 set.
+`block_chi2_red` falls. The 4207 bracket separation does not move.
+
+**`scatter_pct` rises, and the outlier removal is what raises it.** It goes from
+0.6176 to 0.6328, a rise of 2.5 per cent of itself. The trim alone lowers it.
+The block-to-block spread of the rates is what a removal is supposed to reduce,
+and removing the most deviant member of five blocks made it larger, because each
+of those blocks then combines four traces instead of five and its mean moves.
+Section 9's stop condition on `scatter_pct` is written for a run in which the
+top-three verdict gates, which this is not, so it does not formally bind here.
+It is reported as a stop-condition-shaped result anyway, because a filter that
+makes the blocks agree less about the rate has not obviously removed a defect.
+Amendment A5 read the same signal the same way when the excision rung raised
+`scatter_pct` to 0.6524.
+
+### B5.9 What the record now owes
+
+The campaign rate moved, so the eight files that hand-type it are stale and
+`tests/test_docs_canonical.py` says so for both the laser-axis and the
+transition-axis entries. The tokens move from 0.04253, 0.042526 and 0.0425265
+to 0.04252, 0.042524 and 0.0425243, and the transition axis from 0.085053 to
+0.085049. The propagation is deliberately NOT done here. It belongs with the
+recompute, alongside the sites the registry does not guard, and a partial
+propagation would turn the guard green while leaving the unguarded sites stale,
+which is the failure the guard exists to catch.
+
+`results/linefit_conditions.csv` and everything downstream of it are stale
+against their producers as well, because three canonical traces now leave the
+condition fits. Those producers were not re-run here for the same reason.
+
+---
+
+# Amendment 3, 2026-08-04: the outlier threshold is recalibrated against the null
+
+Everything above this line stands, unedited. This amendment replaces one
+parameter of amendment 2, the outlier threshold, and nothing else. The rule, the
+statistic, the populations, the one-pass structure, the at-most-one-per-group
+cap, the minimum group size, the scale floors and the closed reason vocabulary
+are all as B4 fixed them.
+
+**The caught traces played no role in setting the new thresholds.** The
+calibration below runs on synthetic Gaussian groups and never reads a campaign
+number. Section C1 was written and the thresholds were fixed before any census
+was re-run. The identities of the five traces amendment 2 removed, and of the
+two that a stricter rule would keep, were not consulted, not inspected and not
+used as a target. B5.7 refused to correct the threshold for exactly this reason,
+and the correction is made here only because it can be made against the null.
+
+## C1. Why the pre-registered threshold had to move
+
+B4 set the threshold from a two-sided t quantile at five per cent, Bonferroni
+corrected over the n members and the m statistics, on n-1 degrees of freedom.
+B5.7 then measured what that construction actually delivers, on 200,000
+Gaussian groups: a per-group false-alarm rate of 7.9 per cent at n of 4, 13.3
+at 5, 9.7 at 6 and 12.5 at 7, against the 5 per cent the construction claimed.
+
+The diagnosis in B5.7 is confirmed and is the whole of the reason. A deviation
+scaled by a median absolute deviation on four to seven points is not a t. The
+scale is a small-sample order statistic, it can come out far too small by
+chance, and the ratio inherits a tail much heavier than the t distribution the
+threshold was read from. The Bonferroni step is not what failed. The
+distribution the quantile was taken from is.
+
+**This is a miscalibration of the null, and nothing else.** It is not a
+judgement that the rule caught the wrong traces, not a response to any trace it
+caught, and not a change of level. The pre-registered level of `OUTLIER_ALPHA`
+stays at five per cent. What changes is that five per cent is now measured
+rather than assumed.
+
+## C2. The null, and why there are two of it
+
+The null is a group of n members carrying m statistics each, every value an
+independent standard Gaussian. The group statistic is the largest deviation in
+the group, maximized over the m statistics tested on each member, which is the
+quantity the rule thresholds. The calibrated threshold is the 95th percentile of
+that statistic, so the per-group false-alarm rate is five per cent by
+construction.
+
+The two populations do not compute the same deviation, and calibrating one null
+for both would leave the other wrong.
+
+**The group scaling.** `rb5s6s.qc.group_outlier` takes the median and the scaled
+median absolute deviation over the WHOLE group, including the member under test.
+That is population A, the ruler spacings.
+
+**The sibling scaling.** `rb5s6s.qc.sibling_zscores` centres and scales each
+member on the OTHER n-1 members, and B4 fixed that those columns are the rule's
+own deviation and are not rescaled. That is population B, the lines. A member
+left out of its own scale sits further from it than one included in it, and the
+scale is built from one point fewer, so the same nominal level needs a
+substantially higher threshold.
+
+Both scalings are MAD-scaled Gaussian groups. Naming only one of them would have
+been the same error a second time, on the other population.
+
+Two properties of the calibration are worth stating because they bound its
+direction. The null omits the `QC_SIBLING_MAD_FLOOR_FRAC` floor that population
+B's z scores carry, and a floor can only shrink a deviation, so the calibrated
+sibling thresholds cannot fire more often than five per cent on real groups.
+And the floor of 3.0 that B4 put under the t quantile is retired, because every
+calibrated value stands well above it and a floor that never binds is not a
+floor.
+
+## C3. The calibration, and its counts
+
+2,000,000 Gaussian groups per cell, 10 cells per scaling, 2 scalings, so
+40,000,000 groups in total. Monte Carlo error on each threshold is 0.005 to
+0.03, except the two n=4 sibling cells at 0.19 and 0.44, where the statistic is
+heavy tailed for the reason C5 gives.
+
+The construction was checked against B5.7 before it was used. On the group
+scaling at the retired thresholds it returns 7.91, 13.14, 9.84, 12.61 and 10.40
+per cent at n of 4 to 8, against the 7.9, 13.3, 9.7 and 12.5 B5.7 reported. The
+two measurements are the same measurement.
+
+**The retired thresholds, kept visible.** These are B4's table, and they are
+what every number in amendment 2's B5.7 census was measured against.
+
+| n | retired, m = 1 | retired, m = 2 |
+|---|---|---|
+| 4 | 5.392 | 6.895 |
+| 5 | 4.604 | 5.598 |
+| 6 | 4.219 | 4.983 |
+| 7 | 3.997 | 4.632 |
+| 8 | 3.855 | 4.408 |
+
+**The calibrated thresholds, group scaling.** Population A.
+
+| n | m = 1 | m = 2 |
+|---|---|---|
+| 4 | 6.909 | 9.902 |
+| 5 | 7.926 | 11.411 |
+| 6 | 5.530 | 7.163 |
+| 7 | 5.854 | 7.611 |
+| 8 | 4.915 | 6.072 |
+
+**The calibrated thresholds, sibling scaling.** Population B.
+
+| n | m = 1 | m = 2 |
+|---|---|---|
+| 4 | 61.520 | 122.507 |
+| 5 | 13.847 | 19.884 |
+| 6 | 13.004 | 18.771 |
+| 7 | 8.252 | 10.677 |
+| 8 | 8.102 | 10.506 |
+
+Every calibrated cell sits above the retired cell it replaces, so the
+recalibration can only remove fewer traces than amendment 2 did, never more.
+That is a property of the table and it is pinned by a test.
+
+**Closure.** Each calibrated threshold was re-tested on a fresh, independent
+draw of 500,000 groups of its own null. All twenty cells return between 4.93 and
+5.05 per cent. The thresholds do what they were built to do.
+
+**What one table for both populations would have cost.** Applying the group
+scaling's table to the sibling statistic leaves population B firing at 49.1 per
+cent at n of 4, 13.9 at 5, 27.1 at 6, 11.9 at 7 and 19.4 at 8. That is better
+than the 63.3 to 36.3 per cent the retired table gave it and it is nowhere near
+five.
+
+**The non-monotonicity is real and is not noise.** The thresholds do not fall
+smoothly with n. A median absolute deviation on an even number of points is an
+average of two order statistics and comes out smaller and more variable than one
+on an odd number, so the parity of the point count the scale is built from
+alternates the tail weight. On the group scaling the scale reads all n points,
+so n of 5 and 7 are the heavy ones. On the sibling scaling it reads n-1, so the
+heavy sizes shift by one, to n of 5 and 7 again by way of their even sibling
+counts. A smooth formula fitted through these would be wrong at half the sizes,
+which is why the table is measured values and not a curve.
+
+## C4. Where the code carries it
+
+`config.OUTLIER_THRESHOLDS` holds the two tables. `qc.outlier_threshold` gains a
+`scaling` argument naming which null to read, defaulting to `group`, and
+`run_qc.py` passes `sibling`. `qc.group_outlier` is unchanged apart from its
+docstring.
+
+Two behaviours are new and both are refusals. A group below
+`OUTLIER_MIN_GROUP` returns an infinite threshold, so it is never tested, which
+is what B4 already specified. A group above the calibrated range of eight raises
+instead of extrapolating, because the table is measured and there is nothing to
+evaluate off its end. A ninth member would send someone back to the null, which
+is the correct destination.
+
+`config.RULER_REINDEX_CHI2_TOL` and its stale docstring, flagged in A4, are
+still outside the scope of an amendment about the outlier rule and are still
+flagged rather than silently fixed.
+
+## C5. One finding the calibration produced, and one question it hands over
+
+At n of 4 on the sibling scaling the calibrated threshold is 122.5, and a
+threshold of 122.5 is not a threshold. It is the null telling us the statistic
+has no useful scale there.
+
+The mechanism is the one `OUTLIER_MIN_GROUP` was written for, displaced by one
+step. B4 set the minimum group at four because with three members the scaled
+median absolute deviation is a single number and a rule built on it reports the
+arithmetic of three points. On the sibling scaling a group of four gives each
+member exactly three siblings, so the scale IS a three-point median absolute
+deviation and the pathology is back.
+
+The value is carried as the null returns it rather than capped, which leaves the
+rule inert at n of 4 for population B. The archive has one such group. Whether
+groups of four should be tested on a sibling scaling at all is a policy question
+and it is the owner's, not this amendment's, because raising a minimum group
+size is a change to the rule and not to its calibration.
+
+## C6. The census, both populations, under the calibrated rule
+
+Written after the run.
+
+**Population A, the rulers.** Three traces removed, from three of the twenty
+blocks, all temperature-session dwells, all at n of 5 against a threshold of
+7.926.
+
+| trace | block | spacing, ms | deviation |
+|---|---|---|---|
+| `rulers_t/4207nm_eom_110c3.csv` | T 4207 110 C | 147.96 | 12.17 |
+| `rulers_t/4154nm_eom_090c2.csv` | T 4154 90 C | 144.30 | 9.23 |
+| `rulers_t/4121nm_eom_110c4.csv` | T 4121 110 C | 145.98 | 8.80 |
+
+Two of amendment 2's five now stand: `rulers_t/4207nm_eom_070c4.csv` at 5.91
+and `rulers_t/4121nm_eom_070c2.csv` at 5.74, both below 7.926 and both above the
+retired 4.604.
+
+**This is the outcome B5.7 stated in advance.** It wrote that the correctly
+calibrated threshold at n of 5 would be about 8.0 and that it "would keep the
+top three of the five and drop the other two". The calibration returns 7.926 and
+the census keeps the top three and drops the other two. B5.7 named the answer
+before the calibration was run, which is what makes this a check rather than a
+description.
+
+The trace B4 named in advance, `rulers_p/4207nm_eom_before5.csv`, is still not
+caught. It sits at 3.37 deviations against 7.926, further outside the rule than
+it was against 4.604. The failed prediction of B5.7 fails harder and is recorded
+again rather than reinterpreted. The top-three amplitude verdict still flags it,
+so the two instruments still disagree about that one trace.
+
+**Population B, the lines.** No traces removed, against three under the retired
+table.
+
+| trace | group size | deviation | calibrated threshold |
+|---|---|---|---|
+| `t_sweep/4154nm_070c1.csv` | 4 | 11.74 | 122.507 |
+| `p_sweep/4121nm_025mw5.csv` | 5 | 5.91 | 19.884 |
+| `t_sweep/4207nm_090c5.csv` | 5 | 6.14 | 19.884 |
+
+All three stand. The first of them is the n=4 group of C5, where the rule is
+inert, and it would stand at 19.884 as well.
+
+## C7. The three observables, and the verdict on acting
+
+The removals-off column is a real run with the rule disabled, written to a
+scratch directory. The committed tables were hashed before and after it and are
+unchanged, which was checked rather than assumed.
+
+| quantity | section 9 baseline | section 9 prediction | removals off | removals on |
+|---|---|---|---|---|
+| `rate_laser` | 0.04252649 | moves less than about 0.2% | 0.04252635 | 0.04252426 |
+| `block_chi2_red` | 8.078 | falls | 8.071 | 7.977 |
+| `scatter_pct` | 0.6176 | does not rise | 0.6173 | 0.6167 |
+| 4207 before against after | 3.7 sigma | shrinks | 3.7 | 3.7 |
+
+**`scatter_pct` no longer rises, so the removals act.** It falls to 0.6167 from
+the 0.6173 the same pipeline gives with the rule disabled, and it falls against
+the 0.6176 of section 9's baseline. Under the retired threshold it rose to
+0.6328, and B5.8 read that rise as a filter that made the blocks agree less
+about the rate. The rise goes away exactly when the two chance catches go, which
+is what a false-positive rate of two to three times nominal predicts.
+
+The other two observables meet their predictions. The rate moves 0.0052 per
+cent, a fortieth of the 0.2 per cent bound, and `block_chi2_red` falls. The
+fourth prediction still does not fire in either direction: the 4207 bracket
+separation does not move, as it did not in B5.8.
+
+**The removals are therefore APPLIED, not diagnostic.** A removed trace keeps
+its row, its `outlier` mark and its reason, contributes nothing to a block
+spacing, the campaign rate, the rate model or the sweep-nonlinearity map, and is
+listed in `results/trim_report.csv` under stage `outlier`, exactly as B4
+specified. The block combination is printed with and without the removals, and
+`ruler_blocks.csv` carries both, so the size of every removal stays auditable.
+The diagnostic-only fallback that would have applied had `scatter_pct` risen was
+not needed and was not taken.
+
+## C8. What this amendment leaves stale
+
+The campaign rate moved again, from 0.04252431 to 0.04252426, and the tokens
+`0.04252`, `0.042524` and `0.0425243` are unchanged from what B5.9 predicted
+they would become, so the propagation B5.9 deferred is the propagation this
+landing performs. The six registry-guarded sites now carry the working-tree
+values and `tests/test_docs_canonical.py` is green. The historical addenda and
+the tooth-count docstring keep their superseded values, which carry their own
+context and which the registry does not guard.
+
+`results/linefit_conditions.csv` is a special case worth naming. B5.9 recorded
+it as stale because three canonical traces were leaving the condition fits.
+Population B now removes nothing, so the exclusion set is empty again and the
+condition fits face the same members they always did. The producer was still not
+re-run here, and whether the fold of the changed rate error terms moves it is a
+question for the recompute rather than an answer this amendment has.
+
+**The downstream staleness is measured rather than guessed.** Two of the cheap
+producers `scripts/verify_results_fresh.py` covers were re-run against the
+current tables and both move.
+`results/amplitude_ratios.csv` shifts its `err_total` by up to 0.7 per cent and
+`results/sharing_bic.csv` moves `dBIC_eff_block_minus_T` from 62.4 to 61.3,
+neither of which crosses a threshold either file quotes. Both were put back
+unchanged, because re-running two of the downstream producers and not the nine
+expensive ones would leave a tree that looks recomputed and is not. That is the
+failure B5.9 named for the documents and it applies to the tables in the same
+way. `tests/test_results_fresh.py::test_committed_csvs_still_match_their_producers`
+is the test that says so, it compares against HEAD rather than the working tree,
+and it stays red until the recompute lands and is committed.

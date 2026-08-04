@@ -308,6 +308,130 @@ RULER_REINDEX_MAX_TRIALS = 5
 so it forbids a wider search rather than truncating the ladder. A trace needing
 more is quarantined with a recorded reason instead."""
 
+# --- residual-tail trimmer (rb5s6s/trim.py, pre-registered in the same note,
+# section 5 for the parameters and section 6 for the calibration) ---
+TRIM_SMOOTH_W = 21
+"""Boxcar width (samples) the trimmer smooths residuals with. ADOPTED from
+QC_SMOOTH_W rather than tuned: the quality module already decided what width
+keeps a ~60 ms line intact while killing sample noise, and a second answer to
+the same question would be a knob with no owner."""
+
+TRIM_CUSUM_DRIFT = 0.5
+"""Allowance subtracted from each normalized residual sample before it
+accumulates, in units of the smoothed residual's own sigma. 0.5 is the standard
+allowance of a one-sided cumulative-sum detector: it is the half-shift the
+detector is tuned to find, so a series with no shift drifts down and only a
+sustained positive excursion climbs."""
+
+TRIM_CUSUM_H = 8.0
+"""Cumulative-sum threshold, in accumulated sample sigmas.
+
+Set by the null calibration of the pre-registration's section 6: 10,000
+synthetic traces carrying the fitted model plus noise and no tail, each run
+through the full two-sided trim path at the campaign geometry (2000 samples, a
+core guard leaving about 890 samples of scannable tail on each side, which is
+the longest scan any stage performs and therefore the hardest case).
+
+The calibration returned a degenerate answer to the question as pre-registered
+and the resolution is recorded rather than hidden. TRIM_MIN_RUN alone already
+holds the false-alarm rate below the 1-in-297 target at EVERY threshold on the
+grid, down to 0.5, because a noise excursion that keeps accumulating for 40
+samples is already rare. "The smallest threshold meeting the target" would
+therefore have selected an arbitrarily small number. The threshold is instead
+the smallest integer at which the calibration produced no false alarm AT ALL,
+which is a strictly stronger criterion than the pre-registered one. The largest
+null statistic seen across the 10,000 traces was 7.72.
+
+Guarded by tests/test_trim.py under --runslow, which re-runs the calibration
+and fails if this value stops clearing the null."""
+
+TRIM_MIN_RUN = 40
+"""Samples the cumulative sum must keep RISING after an onset before the
+excursion counts as sustained. 40 samples is 20 ms at the campaign sampling
+interval, below the narrowest feature the apparatus can produce, so nothing
+physical is cut by a run shorter than this. It also sits above TRIM_SMOOTH_W,
+which is what makes a point glitch undetectable as a tail whatever its height:
+the smoother spreads a single sample over exactly TRIM_SMOOTH_W samples, so a
+glitch can accumulate for at most that many."""
+
+TRIM_CORE_GUARD_FWHM_MULT = 1.0
+"""Fitted full widths on each side of the fitted structure that the trimmer may
+never enter. One full width beyond the structure is inviolable, so the trimmer
+cannot reach the line it is protecting even when that line is dim and its wings
+are the only thing standing above noise."""
+
+# --- group outlier rule (pre-registered in the same note, amendment 2 B4,
+#     recalibrated against the null in amendment 3) ---
+OUTLIER_ALPHA = 0.05
+"""Two-sided significance of the group outlier test, before the Bonferroni
+correction over the n members of the group and the m statistics tested on each.
+Five per cent is the conventional level and no other was considered.
+
+Amendment 2 read this level off a t quantile. Amendment 3 keeps the level and
+reads the threshold off the null instead, because the statistic is not a t. It
+is now the target the calibration below hits, not a construction."""
+
+OUTLIER_THRESHOLDS = {
+    "group": {
+        (4, 1): 6.909, (5, 1): 7.926, (6, 1): 5.530, (7, 1): 5.854, (8, 1): 4.915,
+        (4, 2): 9.902, (5, 2): 11.411, (6, 2): 7.163, (7, 2): 7.611, (8, 2): 6.072,
+    },
+    "sibling": {
+        (4, 1): 61.520, (5, 1): 13.847, (6, 1): 13.004, (7, 1): 8.252, (8, 1): 8.102,
+        (4, 2): 122.507, (5, 2): 19.884, (6, 2): 18.771, (7, 2): 10.677, (8, 2): 10.506,
+    },
+}
+"""Deviation above which the most deviant of n group members is removed, keyed
+by the scaling the deviation carries, then by the group size n and the number of
+statistics m tested on each member.
+
+Each entry is the 95th percentile of the group's largest deviation over
+2,000,000 groups of independent standard Gaussians, so the per-group
+false-alarm rate is five per cent by construction rather than by assumption.
+Monte Carlo error on each entry is 0.005 to 0.03 outside the two n=4 sibling
+cells. Amendment 3 of docs/notes/ruler_validity_and_trim_prereg.md records the
+calibration and the values these replace.
+
+The two scalings are two different statistics and they need two different
+nulls.
+
+`group` is the deviation :func:`rb5s6s.qc.group_outlier` computes: the median
+and the scaled median absolute deviation are taken over the whole group,
+including the member being tested. Population A, the ruler spacings.
+
+`sibling` is the deviation :func:`rb5s6s.qc.sibling_zscores` computes: each
+member is centred and scaled by the OTHER n-1 members. Population B, the line
+heights and widths. Dropping the member from its own scale gives the statistic
+much heavier tails, so the same nominal level needs a threshold roughly twice
+as high, and at n=4 the scale is a three-point median absolute deviation and
+the tail is heavy enough that no useful threshold exists. Those two cells are
+carried at the value the null returns rather than being capped, which leaves
+the rule inert at n=4 for population B. Whether to test groups of four on a
+sibling scaling at all is a policy question amendment 3 puts to the owner.
+
+The null omits the QC_SIBLING_MAD_FLOOR_FRAC floor, which can only shrink a
+deviation, so the calibrated thresholds cannot fire more often than five per
+cent on real groups.
+
+Guarded by tests/test_trim.py, which re-runs the calibration under --runslow
+and fails if these values stop returning five per cent."""
+
+OUTLIER_MIN_GROUP = 4
+"""Smallest group the outlier rule will test. With three members the median
+absolute deviation is a single number, so a rule built on it reports the
+arithmetic of three points rather than a property of the group."""
+
+OUTLIER_MAD_FLOOR_FRAC = 1e-3
+"""Floor on the scaled median absolute deviation of the ruler spacing, as a
+fraction of the group median, so a group that happens to agree closely cannot
+divide by nearly zero and manufacture an outlier.
+
+Set by what the fit can resolve rather than by any campaign number: the rigid
+grid places six spacings across a window sampled every 0.5 ms, so the spacing
+is resolved to at best 0.5/6 = 0.083 ms, which is 5.7e-4 of a 147 ms spacing.
+One part in a thousand sits just above that, so a real fit can never reach the
+floor, while a one per cent disagreement is still ten scale units wide."""
+
 # --------------------------------------------------------------------------
 # M3 — lineshape fit
 # --------------------------------------------------------------------------

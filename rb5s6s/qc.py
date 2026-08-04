@@ -118,7 +118,8 @@ def signal_free_segments(sm_minus_base: np.ndarray, sigma_w: float,
 # per-trace metrics
 # ---------------------------------------------------------------------------
 
-def trace_metrics(t_ms: np.ndarray, v: np.ndarray) -> Dict[str, float]:
+def trace_metrics(t_ms: np.ndarray, v: np.ndarray,
+                  rf_on: bool = False) -> Dict[str, float]:
     """All QC metrics for one trace. Returns a flat dict of floats.
 
     Metric glossary (units):
@@ -155,6 +156,18 @@ def trace_metrics(t_ms: np.ndarray, v: np.ndarray) -> Dict[str, float]:
       comb_score        autocorrelation peak in the tooth-lag window (0..1);
                         high => a ~140-150 ms comb is present in the trace
       comb_period_ms    lag of that autocorrelation peak [ms]
+      trimmed           1.0 if a residual tail was cut, else 0.0
+      trim_start_ms     first KEPT sample after trimming [ms], nan when untrimmed
+      trim_end_ms       last KEPT sample after trimming [ms], nan when untrimmed
+      trim_reason       token from rb5s6s.trim.TRIM_REASONS, "" when nothing
+                        happened
+
+    `rf_on` exists only for the trim block. The trimmer is DISABLED on rulers,
+    which report "not applicable, multi-peak trace": a ruler's authoritative
+    trim record is written by the M2 ladder into results/ruler_traces.csv, and
+    two records of one decision that can disagree are worse than one. Nothing
+    in the trim block enters `hard_flags` -- it is a remedy, not an exclusion,
+    and the pre-registration names writing it there as a forbidden change.
     """
     m: Dict[str, float] = {}
     n = len(v)
@@ -293,6 +306,23 @@ def trace_metrics(t_ms: np.ndarray, v: np.ndarray) -> Dict[str, float]:
     m["comb_score"] = float(seg.max()) if len(seg) else np.nan
     m["comb_period_ms"] = float((lo + int(np.argmax(seg))) * dt) if len(seg) else np.nan
 
+    # --- residual tail, against a model-free decaying envelope ---
+    # Imported here rather than at module scope because rb5s6s.trim uses this
+    # module's boxcar, and a top-level import would close the cycle.
+    from .trim import TRIM_REASONS, envelope_residual, tail_trim
+    m["trimmed"] = 0.0
+    m["trim_start_ms"] = np.nan
+    m["trim_end_ms"] = np.nan
+    if rf_on:
+        m["trim_reason"] = TRIM_REASONS[4]
+    else:
+        guard = max(int(round(C.TRIM_CORE_GUARD_FWHM_MULT * m["fwhm_ms"] / dt)), 1)
+        tr = tail_trim(t_ms, envelope_residual(t_ms, v), ipk - guard, ipk + guard)
+        m["trimmed"] = float(tr["trimmed"])
+        m["trim_start_ms"] = tr["trim_start_ms"]
+        m["trim_end_ms"] = tr["trim_end_ms"]
+        m["trim_reason"] = tr["trim_reason"]
+
     return m
 
 
@@ -368,6 +398,97 @@ def ingest_flags(info: Dict[str, int]) -> List[str]:
     if info["empty_interior"] > C.QC_MAX_INTERIOR_DROPOUTS:
         flags.append(f"dropout-riddled export ({info['empty_interior']} interior empty rows)")
     return flags
+
+
+def outlier_files(results_dir=None) -> set:
+    """Files marked as sibling outliers by the last quality run.
+
+    Reads the table this module's metrics feed, results/qc_metrics.csv, and
+    returns the set of file names the pre-registered group rule removed. The
+    consumers are the condition fits, which must not average a trace whose own
+    siblings do not share its height or width.
+
+    Returns an empty set when the table is absent or predates the column, so a
+    checkout without a quality run behaves exactly as it did before.
+    """
+    import csv as _csv
+    d = C.RESULTS_DIR if results_dir is None else results_dir
+    path = d / "qc_metrics.csv"
+    if not path.exists():
+        return set()
+    rows = _csv.DictReader(open(path))
+    return {r["file"] for r in rows if str(r.get("outlier", "")).strip() == "1"}
+
+
+def outlier_threshold(n: int, m: int = 1, *, scaling: str = "group") -> float:
+    """Deviation, in scaled median-absolute-deviation units, above which the
+    most deviant of `n` group members counts as an outlier when `m` statistics
+    are tested on each member.
+
+    Read from `config.OUTLIER_THRESHOLDS`, which holds the 95th percentile of
+    the group's largest deviation under a Gaussian null, so the per-group
+    false-alarm rate is the pre-registered `OUTLIER_ALPHA` by measurement.
+
+    `scaling` names which null, because the two populations do not compute the
+    same deviation. Pass `"group"` for a deviation scaled by the whole group,
+    which is what :func:`group_outlier` computes, and `"sibling"` for one scaled
+    by the other n-1 members, which is what :func:`sibling_zscores` computes.
+
+    Amendment 2 of docs/notes/ruler_validity_and_trim_prereg.md set this from a
+    Bonferroni-corrected two-sided t quantile on n-1 degrees of freedom, floored
+    at 3.0. That construction assumed a statistic the rule does not have: a
+    deviation scaled by a median absolute deviation on four to seven points has
+    far heavier tails than a t, and the thresholds it gave fired at 7.9 to 13.3
+    per cent per group instead of 5. Amendment 3 replaces the construction with
+    the calibration and retires the floor, which never bound on any group this
+    archive contains. Groups above the calibrated range raise rather than
+    extrapolate, so a larger group forces a re-calibration instead of a guess.
+    """
+    n, m = int(n), int(m)
+    if n < C.OUTLIER_MIN_GROUP:
+        return float("inf")
+    table = C.OUTLIER_THRESHOLDS[scaling]
+    if (n, m) not in table:
+        raise ValueError(
+            f"no calibrated outlier threshold for n={n}, m={m} on the "
+            f"{scaling} scaling. The calibrated range is n of 4 to 8 and m of "
+            f"1 to 2. Extend the null calibration and amend "
+            f"docs/notes/ruler_validity_and_trim_prereg.md rather than "
+            f"extrapolating the table.")
+    return float(table[(n, m)])
+
+
+def group_outlier(values, *, floor_frac: float = 0.0, m: int = 1):
+    """The one member of a group that fails the pre-registered outlier rule.
+
+    Returns (index, deviation, threshold) for the single most deviant member
+    when it exceeds :func:`outlier_threshold`, and (None, deviation, threshold)
+    otherwise. At most one member is ever returned, and a group smaller than
+    `config.OUTLIER_MIN_GROUP` is never tested, because with three members the
+    median absolute deviation is a single number and a rule built on it reports
+    the arithmetic of three points rather than a property of the group.
+
+    `floor_frac` floors the scale at that fraction of the group median, which
+    stops a group that happens to agree closely from dividing by nearly zero.
+    Pass 0 when the values are already deviations carrying their own floor.
+
+    The threshold comes from the `"group"` null, because the median and the
+    scale below are taken over the whole group including the member being
+    tested. A caller handing in deviations that were scaled by everything EXCEPT
+    the member, as `sibling_zscores` does, wants :func:`outlier_threshold` with
+    `scaling="sibling"` instead.
+    """
+    x = np.asarray(values, dtype=float)
+    n = x.size
+    thr = outlier_threshold(n, m)
+    if n < C.OUTLIER_MIN_GROUP or not np.all(np.isfinite(x)):
+        return None, 0.0, thr
+    med = float(np.median(x))
+    mad = float(1.4826 * np.median(np.abs(x - med)))
+    scale = max(mad, floor_frac * abs(med), 1e-12)
+    dev = np.abs(x - med) / scale
+    i = int(np.argmax(dev))
+    return (i if dev[i] > thr else None), float(dev[i]), thr
 
 
 def sibling_zscores(value: float, sib_values: np.ndarray) -> float:

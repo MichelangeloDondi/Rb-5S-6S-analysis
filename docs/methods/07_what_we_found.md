@@ -259,7 +259,7 @@ the four peaks **interleaved**, with power logging.
 ### 5.8 Foundational results underpinning the above
 
 **Foundational results underpinning all of the above.** The sweep rate is
-$0.042526(51)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
+$0.042524(51)$ MHz/ms (laser axis) — $\times11$ slower than the pre-analysis
 seed, confirmed by three independent methods, sweep linear to $<0.3$% within a
 block. The 20 blocks over-disperse ($\chi^2_\text{red}=8.1$) — block-level
 ruler scatter (bracket-to-bracket drift, a likely 993.4207-nm-*after* outlier),

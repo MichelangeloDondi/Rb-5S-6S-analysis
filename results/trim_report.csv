@@ -1,0 +1,564 @@
+file,stage,role,peak,T,power_mW,bracket,trimmed,trim_start_ms,trim_end_ms,trim_reason,removed,removed_reason,status
+p_sweep/4121nm_125mw1.csv,qc,p_sweep,4121,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw2.csv,qc,p_sweep,4121,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw3.csv,qc,p_sweep,4121,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw4.csv,qc,p_sweep,4121,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw5.csv,qc,p_sweep,4121,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw1.csv,qc,p_sweep,4121,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw2.csv,qc,p_sweep,4121,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw3.csv,qc,p_sweep,4121,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw4.csv,qc,p_sweep,4121,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw5.csv,qc,p_sweep,4121,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw1.csv,qc,p_sweep,4121,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw2.csv,qc,p_sweep,4121,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw3.csv,qc,p_sweep,4121,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw4.csv,qc,p_sweep,4121,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw5.csv,qc,p_sweep,4121,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw1.csv,qc,p_sweep,4121,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw2.csv,qc,p_sweep,4121,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw3.csv,qc,p_sweep,4121,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw4.csv,qc,p_sweep,4121,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw5.csv,qc,p_sweep,4121,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw1.csv,qc,p_sweep,4121,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw2.csv,qc,p_sweep,4121,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw3.csv,qc,p_sweep,4121,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw4.csv,qc,p_sweep,4121,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw5.csv,qc,p_sweep,4121,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw1.csv,qc,p_sweep,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw2.csv,qc,p_sweep,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw3.csv,qc,p_sweep,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw4.csv,qc,p_sweep,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw5.csv,qc,p_sweep,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw1.csv,qc,p_sweep,4154,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw2.csv,qc,p_sweep,4154,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw3.csv,qc,p_sweep,4154,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw4.csv,qc,p_sweep,4154,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw5.csv,qc,p_sweep,4154,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw1.csv,qc,p_sweep,4154,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw2.csv,qc,p_sweep,4154,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw3.csv,qc,p_sweep,4154,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw4.csv,qc,p_sweep,4154,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw5.csv,qc,p_sweep,4154,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw1.csv,qc,p_sweep,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw2.csv,qc,p_sweep,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw3.csv,qc,p_sweep,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw4.csv,qc,p_sweep,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw5.csv,qc,p_sweep,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw1.csv,qc,p_sweep,4154,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw2.csv,qc,p_sweep,4154,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw3.csv,qc,p_sweep,4154,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw4.csv,qc,p_sweep,4154,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw5.csv,qc,p_sweep,4154,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw1.csv,qc,p_sweep,4192,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw2.csv,qc,p_sweep,4192,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw3.csv,qc,p_sweep,4192,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw4.csv,qc,p_sweep,4192,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw5.csv,qc,p_sweep,4192,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw1.csv,qc,p_sweep,4192,130,175,,1,-435.5,502.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+p_sweep/4192nm_175mw2.csv,qc,p_sweep,4192,130,175,,1,-389.0,563.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4192nm_175mw3.csv,qc,p_sweep,4192,130,175,,1,-385.0,563.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4192nm_175mw4.csv,qc,p_sweep,4192,130,175,,1,-435.5,510.49999999999994,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+p_sweep/4192nm_175mw5.csv,qc,p_sweep,4192,130,175,,1,-379.5,563.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4192nm_225mw1.csv,qc,p_sweep,4192,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw2.csv,qc,p_sweep,4192,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw3.csv,qc,p_sweep,4192,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw4.csv,qc,p_sweep,4192,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw5.csv,qc,p_sweep,4192,130,225,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw1.csv,qc,p_sweep,4192,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw2.csv,qc,p_sweep,4192,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw3.csv,qc,p_sweep,4192,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw4.csv,qc,p_sweep,4192,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw5.csv,qc,p_sweep,4192,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw1.csv,qc,p_sweep,4192,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw2.csv,qc,p_sweep,4192,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw3.csv,qc,p_sweep,4192,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw4.csv,qc,p_sweep,4192,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw5.csv,qc,p_sweep,4192,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw1.csv,qc,p_sweep,4207,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw2.csv,qc,p_sweep,4207,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw3.csv,qc,p_sweep,4207,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw4.csv,qc,p_sweep,4207,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw5.csv,qc,p_sweep,4207,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw1.csv,qc,p_sweep,4207,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw2.csv,qc,p_sweep,4207,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw3.csv,qc,p_sweep,4207,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw4.csv,qc,p_sweep,4207,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw5.csv,qc,p_sweep,4207,130,175,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw1.csv,qc,p_sweep,4207,130,225,,1,181.5,1113.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_225mw2.csv,qc,p_sweep,4207,130,225,,1,167.5,1097.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_225mw3.csv,qc,p_sweep,4207,130,225,,1,156.0,1085.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_225mw4.csv,qc,p_sweep,4207,130,225,,1,156.5,1085.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_225mw5.csv,qc,p_sweep,4207,130,225,,1,147.5,1079.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_025mw1.csv,qc,p_sweep,4207,130,25,,1,-329.0,629.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_025mw2.csv,qc,p_sweep,4207,130,25,,1,-315.5,616.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+discarded/4207nm_025mw2.csv,qc,p_sweep,4207,130,25,,1,-315.5,630.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+p_sweep/4207nm_025mw3.csv,qc,p_sweep,4207,130,25,,1,-252.5,683.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_025mw4.csv,qc,p_sweep,4207,130,25,,1,-262.5,683.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+p_sweep/4207nm_025mw5.csv,qc,p_sweep,4207,130,25,,1,-315.5,625.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+p_sweep/4207nm_075mw1.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw2.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw3.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw4.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw5.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_eom_after1.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_after2.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_after3.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_after4.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_after5.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_before1.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_before2.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_before3.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_before4.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_eom_before5.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw1.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw2.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw3.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw4.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw5.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw6.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw7.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_125mw8.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw1.csv,qc,quarantine,4154,130,225,,1,-406.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw2.csv,qc,quarantine,4154,130,225,,1,-396.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw3.csv,qc,quarantine,4154,130,225,,1,-394.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw4.csv,qc,quarantine,4154,130,225,,1,-465.5,462.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw6.csv,qc,quarantine,4154,130,225,,1,-393.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_225mw7.csv,qc,quarantine,4154,130,225,,1,-397.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+quarantine/4154nm_130c_025mw1.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_025mw2.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_025mw3.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_025mw4.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+quarantine/4154nm_130c_025mw5.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after1.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after2.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after3.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after4.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after5.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after6.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before1.csv,qc,ruler_p,4121,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before2.csv,qc,ruler_p,4121,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before3.csv,qc,ruler_p,4121,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before4.csv,qc,ruler_p,4121,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before5.csv,qc,ruler_p,4121,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_1.csv,qc,ruler_p,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_2.csv,qc,ruler_p,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_3.csv,qc,ruler_p,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_4.csv,qc,ruler_p,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_5.csv,qc,ruler_p,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_1.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_2.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_3.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_4.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_5.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_6.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_7.csv,qc,ruler_p,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after1.csv,qc,ruler_p,4192,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after2.csv,qc,ruler_p,4192,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after3.csv,qc,ruler_p,4192,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after5.csv,qc,ruler_p,4192,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after6.csv,qc,ruler_p,4192,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before1.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before2.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before3.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before4.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before5.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before6.csv,qc,ruler_p,4192,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after1.csv,qc,ruler_p,4207,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after2.csv,qc,ruler_p,4207,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after3.csv,qc,ruler_p,4207,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after4.csv,qc,ruler_p,4207,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after5.csv,qc,ruler_p,4207,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before1.csv,qc,ruler_p,4207,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before2.csv,qc,ruler_p,4207,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before3.csv,qc,ruler_p,4207,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before4.csv,qc,ruler_p,4207,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before5.csv,qc,ruler_p,4207,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c1.csv,qc,ruler_t,4121,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c2.csv,qc,ruler_t,4121,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c3.csv,qc,ruler_t,4121,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c4.csv,qc,ruler_t,4121,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c5.csv,qc,ruler_t,4121,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c1.csv,qc,ruler_t,4121,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c2.csv,qc,ruler_t,4121,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c3.csv,qc,ruler_t,4121,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c4.csv,qc,ruler_t,4121,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c5.csv,qc,ruler_t,4121,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c1.csv,qc,ruler_t,4121,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c2.csv,qc,ruler_t,4121,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c3.csv,qc,ruler_t,4121,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c4.csv,qc,ruler_t,4121,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c5.csv,qc,ruler_t,4121,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c1.csv,qc,ruler_t,4154,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c2.csv,qc,ruler_t,4154,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c3.csv,qc,ruler_t,4154,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c4.csv,qc,ruler_t,4154,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c5.csv,qc,ruler_t,4154,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c1.csv,qc,ruler_t,4154,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c2.csv,qc,ruler_t,4154,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c3.csv,qc,ruler_t,4154,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c4.csv,qc,ruler_t,4154,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c5.csv,qc,ruler_t,4154,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c1.csv,qc,ruler_t,4154,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c2.csv,qc,ruler_t,4154,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c3.csv,qc,ruler_t,4154,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c4.csv,qc,ruler_t,4154,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c5.csv,qc,ruler_t,4154,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c1.csv,qc,ruler_t,4192,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c2.csv,qc,ruler_t,4192,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c3.csv,qc,ruler_t,4192,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c4.csv,qc,ruler_t,4192,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c5.csv,qc,ruler_t,4192,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c1.csv,qc,ruler_t,4192,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c2.csv,qc,ruler_t,4192,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c3.csv,qc,ruler_t,4192,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c4.csv,qc,ruler_t,4192,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c5.csv,qc,ruler_t,4192,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c1.csv,qc,ruler_t,4192,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c2.csv,qc,ruler_t,4192,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c3.csv,qc,ruler_t,4192,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c5.csv,qc,ruler_t,4192,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c6.csv,qc,ruler_t,4192,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c1.csv,qc,ruler_t,4207,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c2.csv,qc,ruler_t,4207,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c3.csv,qc,ruler_t,4207,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c4.csv,qc,ruler_t,4207,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c5.csv,qc,ruler_t,4207,110,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c1.csv,qc,ruler_t,4207,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c2.csv,qc,ruler_t,4207,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c3.csv,qc,ruler_t,4207,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c4.csv,qc,ruler_t,4207,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c5.csv,qc,ruler_t,4207,70,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c1.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c2.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c3.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c4.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c5.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c6.csv,qc,ruler_t,4207,90,,,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+t_sweep/4121nm_110c1.csv,qc,t_sweep,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_110c2.csv,qc,t_sweep,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_110c3.csv,qc,t_sweep,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_110c4.csv,qc,t_sweep,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_110c5.csv,qc,t_sweep,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_070c1.csv,qc,t_sweep,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_070c2.csv,qc,t_sweep,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_070c3.csv,qc,t_sweep,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_070c4.csv,qc,t_sweep,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_070c5.csv,qc,t_sweep,4121,70,,,1,-465.5,498.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4121nm_090c1.csv,qc,t_sweep,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_090c2.csv,qc,t_sweep,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_090c3.csv,qc,t_sweep,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_090c4.csv,qc,t_sweep,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4121nm_090c5.csv,qc,t_sweep,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_110c1.csv,qc,t_sweep,4154,110,,,1,-420.0,544.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4154nm_110c2.csv,qc,t_sweep,4154,110,,,1,-414.0,533.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4154nm_110c3.csv,qc,t_sweep,4154,110,,,1,-414.0,549.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4154nm_110c4.csv,qc,t_sweep,4154,110,,,1,-414.0,526.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4154nm_110c5.csv,qc,t_sweep,4154,110,,,1,-414.0,525.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4154nm_070c1.csv,qc,t_sweep,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_070c3.csv,qc,t_sweep,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_070c4.csv,qc,t_sweep,4154,70,,,1,-445.0,517.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+discarded/4154nm_070c4.csv,qc,t_sweep,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_070c5.csv,qc,t_sweep,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_090c1.csv,qc,t_sweep,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_090c2.csv,qc,t_sweep,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_090c3.csv,qc,t_sweep,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_090c4.csv,qc,t_sweep,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4154nm_090c5.csv,qc,t_sweep,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_110c1.csv,qc,t_sweep,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_110c2.csv,qc,t_sweep,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_110c3.csv,qc,t_sweep,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_110c4.csv,qc,t_sweep,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_110c5.csv,qc,t_sweep,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_070c1.csv,qc,t_sweep,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_070c2.csv,qc,t_sweep,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_070c3.csv,qc,t_sweep,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_070c4.csv,qc,t_sweep,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_070c5.csv,qc,t_sweep,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_090c1.csv,qc,t_sweep,4192,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4192nm_090c2.csv,qc,t_sweep,4192,90,,,1,-465.5,496.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4192nm_090c3.csv,qc,t_sweep,4192,90,,,1,-465.5,488.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+discarded/4192nm_090c3.csv,qc,t_sweep,4192,90,,,1,-465.5,491.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4192nm_090c4.csv,qc,t_sweep,4192,90,,,1,-465.5,496.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4192nm_090c5.csv,qc,t_sweep,4192,90,,,1,-465.5,488.0,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+t_sweep/4207nm_110c1.csv,qc,t_sweep,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_110c2.csv,qc,t_sweep,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_110c3.csv,qc,t_sweep,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_110c4.csv,qc,t_sweep,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_110c5.csv,qc,t_sweep,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_070c1.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_070c2.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+discarded/4207nm_070c2.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_070c3.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_070c4.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_070c5.csv,qc,t_sweep,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_090c1.csv,qc,t_sweep,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_090c2.csv,qc,t_sweep,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_090c3.csv,qc,t_sweep,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_090c4.csv,qc,t_sweep,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+t_sweep/4207nm_090c5.csv,qc,t_sweep,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after1.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after2.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after3.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,"refused, trim would reach into the guarded half",0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after4.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after5.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_after6.csv,ruler,ruler_p,4121,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before1.csv,ruler,ruler_p,4121,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before2.csv,ruler,ruler_p,4121,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before3.csv,ruler,ruler_p,4121,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before4.csv,ruler,ruler_p,4121,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4121nm_eom_before5.csv,ruler,ruler_p,4121,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_1.csv,ruler,ruler_p,4154,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_2.csv,ruler,ruler_p,4154,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_3.csv,ruler,ruler_p,4154,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_4.csv,ruler,ruler_p,4154,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_after_5.csv,ruler,ruler_p,4154,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_1.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_2.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_3.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_4.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_5.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_6.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4154nm_eom_before_7.csv,ruler,ruler_p,4154,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after1.csv,ruler,ruler_p,4192,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after2.csv,ruler,ruler_p,4192,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after3.csv,ruler,ruler_p,4192,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after5.csv,ruler,ruler_p,4192,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_after6.csv,ruler,ruler_p,4192,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before1.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before2.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before3.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before4.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before5.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4192nm_eom_before6.csv,ruler,ruler_p,4192,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after1.csv,ruler,ruler_p,4207,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after2.csv,ruler,ruler_p,4207,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after3.csv,ruler,ruler_p,4207,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after4.csv,ruler,ruler_p,4207,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_after5.csv,ruler,ruler_p,4207,130,,after,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before1.csv,ruler,ruler_p,4207,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before2.csv,ruler,ruler_p,4207,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before3.csv,ruler,ruler_p,4207,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before4.csv,ruler,ruler_p,4207,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_p/4207nm_eom_before5.csv,ruler,ruler_p,4207,130,,before,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c1.csv,ruler,ruler_t,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c2.csv,ruler,ruler_t,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c3.csv,ruler,ruler_t,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c4.csv,ruler,ruler_t,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c5.csv,ruler,ruler_t,4121,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c1.csv,ruler,ruler_t,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c2.csv,ruler,ruler_t,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c3.csv,ruler,ruler_t,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c4.csv,ruler,ruler_t,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_070c5.csv,ruler,ruler_t,4121,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c1.csv,ruler,ruler_t,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c2.csv,ruler,ruler_t,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c3.csv,ruler,ruler_t,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c4.csv,ruler,ruler_t,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_090c5.csv,ruler,ruler_t,4121,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c1.csv,ruler,ruler_t,4154,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c2.csv,ruler,ruler_t,4154,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c3.csv,ruler,ruler_t,4154,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c4.csv,ruler,ruler_t,4154,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_110c5.csv,ruler,ruler_t,4154,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c1.csv,ruler,ruler_t,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c2.csv,ruler,ruler_t,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c3.csv,ruler,ruler_t,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c4.csv,ruler,ruler_t,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_070c5.csv,ruler,ruler_t,4154,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c1.csv,ruler,ruler_t,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c2.csv,ruler,ruler_t,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c3.csv,ruler,ruler_t,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c4.csv,ruler,ruler_t,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4154nm_eom_090c5.csv,ruler,ruler_t,4154,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c1.csv,ruler,ruler_t,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c2.csv,ruler,ruler_t,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c3.csv,ruler,ruler_t,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c4.csv,ruler,ruler_t,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_110c5.csv,ruler,ruler_t,4192,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c1.csv,ruler,ruler_t,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c2.csv,ruler,ruler_t,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c4.csv,ruler,ruler_t,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_070c5.csv,ruler,ruler_t,4192,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c1.csv,ruler,ruler_t,4192,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c2.csv,ruler,ruler_t,4192,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c3.csv,ruler,ruler_t,4192,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c5.csv,ruler,ruler_t,4192,90,,,0,nan,nan,"refused, trim would reach into the guarded half",0,,DIAGNOSTIC
+rulers_t/4192nm_eom_090c6.csv,ruler,ruler_t,4192,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c1.csv,ruler,ruler_t,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c2.csv,ruler,ruler_t,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c3.csv,ruler,ruler_t,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c4.csv,ruler,ruler_t,4207,110,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_110c5.csv,ruler,ruler_t,4207,110,,,1,-440.5,527.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c1.csv,ruler,ruler_t,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c2.csv,ruler,ruler_t,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c3.csv,ruler,ruler_t,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c4.csv,ruler,ruler_t,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_070c5.csv,ruler,ruler_t,4207,70,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c1.csv,ruler,ruler_t,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c2.csv,ruler,ruler_t,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c3.csv,ruler,ruler_t,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c4.csv,ruler,ruler_t,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c5.csv,ruler,ruler_t,4207,90,,,0,nan,nan,,0,,DIAGNOSTIC
+rulers_t/4207nm_eom_090c6.csv,ruler,ruler_t,4207,90,,,1,-335.5,642.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+p_sweep/4121nm_025mw1.csv,linefit,p_sweep,4121,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw2.csv,linefit,p_sweep,4121,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw3.csv,linefit,p_sweep,4121,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw4.csv,linefit,p_sweep,4121,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_025mw5.csv,linefit,p_sweep,4121,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw1.csv,linefit,p_sweep,4121,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw2.csv,linefit,p_sweep,4121,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw3.csv,linefit,p_sweep,4121,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw4.csv,linefit,p_sweep,4121,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_075mw5.csv,linefit,p_sweep,4121,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw1.csv,linefit,p_sweep,4121,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw2.csv,linefit,p_sweep,4121,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw3.csv,linefit,p_sweep,4121,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw4.csv,linefit,p_sweep,4121,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_125mw5.csv,linefit,p_sweep,4121,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw1.csv,linefit,p_sweep,4121,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw2.csv,linefit,p_sweep,4121,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw3.csv,linefit,p_sweep,4121,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw4.csv,linefit,p_sweep,4121,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_175mw5.csv,linefit,p_sweep,4121,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw1.csv,linefit,p_sweep,4121,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw2.csv,linefit,p_sweep,4121,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw3.csv,linefit,p_sweep,4121,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw4.csv,linefit,p_sweep,4121,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4121nm_225mw5.csv,linefit,p_sweep,4121,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw1.csv,linefit,p_sweep,4154,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw2.csv,linefit,p_sweep,4154,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw3.csv,linefit,p_sweep,4154,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw4.csv,linefit,p_sweep,4154,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_025mw5.csv,linefit,p_sweep,4154,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw1.csv,linefit,p_sweep,4154,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw2.csv,linefit,p_sweep,4154,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw3.csv,linefit,p_sweep,4154,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw4.csv,linefit,p_sweep,4154,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_075mw5.csv,linefit,p_sweep,4154,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw1.csv,linefit,p_sweep,4154,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw2.csv,linefit,p_sweep,4154,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw3.csv,linefit,p_sweep,4154,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw4.csv,linefit,p_sweep,4154,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_125mw5.csv,linefit,p_sweep,4154,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw1.csv,linefit,p_sweep,4154,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw2.csv,linefit,p_sweep,4154,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw3.csv,linefit,p_sweep,4154,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw4.csv,linefit,p_sweep,4154,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_175mw5.csv,linefit,p_sweep,4154,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw1.csv,linefit,p_sweep,4154,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw2.csv,linefit,p_sweep,4154,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw3.csv,linefit,p_sweep,4154,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw4.csv,linefit,p_sweep,4154,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4154nm_225mw5.csv,linefit,p_sweep,4154,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw1.csv,linefit,p_sweep,4192,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw2.csv,linefit,p_sweep,4192,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw3.csv,linefit,p_sweep,4192,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw4.csv,linefit,p_sweep,4192,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_025mw5.csv,linefit,p_sweep,4192,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw1.csv,linefit,p_sweep,4192,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw2.csv,linefit,p_sweep,4192,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw3.csv,linefit,p_sweep,4192,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw4.csv,linefit,p_sweep,4192,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_075mw5.csv,linefit,p_sweep,4192,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw1.csv,linefit,p_sweep,4192,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw2.csv,linefit,p_sweep,4192,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw3.csv,linefit,p_sweep,4192,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw4.csv,linefit,p_sweep,4192,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_125mw5.csv,linefit,p_sweep,4192,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw1.csv,linefit,p_sweep,4192,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw2.csv,linefit,p_sweep,4192,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw3.csv,linefit,p_sweep,4192,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw4.csv,linefit,p_sweep,4192,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_175mw5.csv,linefit,p_sweep,4192,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw1.csv,linefit,p_sweep,4192,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw2.csv,linefit,p_sweep,4192,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw3.csv,linefit,p_sweep,4192,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw4.csv,linefit,p_sweep,4192,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4192nm_225mw5.csv,linefit,p_sweep,4192,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_025mw1.csv,linefit,p_sweep,4207,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_025mw2.csv,linefit,p_sweep,4207,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_025mw3.csv,linefit,p_sweep,4207,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_025mw4.csv,linefit,p_sweep,4207,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_025mw5.csv,linefit,p_sweep,4207,130,25,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw1.csv,linefit,p_sweep,4207,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw2.csv,linefit,p_sweep,4207,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw3.csv,linefit,p_sweep,4207,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw4.csv,linefit,p_sweep,4207,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_075mw5.csv,linefit,p_sweep,4207,130,75,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw1.csv,linefit,p_sweep,4207,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw2.csv,linefit,p_sweep,4207,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw3.csv,linefit,p_sweep,4207,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw4.csv,linefit,p_sweep,4207,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_125mw5.csv,linefit,p_sweep,4207,130,125,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw1.csv,linefit,p_sweep,4207,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw2.csv,linefit,p_sweep,4207,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw3.csv,linefit,p_sweep,4207,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw4.csv,linefit,p_sweep,4207,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_175mw5.csv,linefit,p_sweep,4207,130,175,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw1.csv,linefit,p_sweep,4207,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw2.csv,linefit,p_sweep,4207,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw3.csv,linefit,p_sweep,4207,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw4.csv,linefit,p_sweep,4207,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+p_sweep/4207nm_225mw5.csv,linefit,p_sweep,4207,130,225,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_070c1.csv,linefit,t_sweep,4121,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_070c2.csv,linefit,t_sweep,4121,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_070c3.csv,linefit,t_sweep,4121,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_070c4.csv,linefit,t_sweep,4121,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_070c5.csv,linefit,t_sweep,4121,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_090c1.csv,linefit,t_sweep,4121,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_090c2.csv,linefit,t_sweep,4121,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_090c3.csv,linefit,t_sweep,4121,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_090c4.csv,linefit,t_sweep,4121,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_090c5.csv,linefit,t_sweep,4121,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_110c1.csv,linefit,t_sweep,4121,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_110c2.csv,linefit,t_sweep,4121,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_110c3.csv,linefit,t_sweep,4121,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_110c4.csv,linefit,t_sweep,4121,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4121nm_110c5.csv,linefit,t_sweep,4121,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_070c1.csv,linefit,t_sweep,4154,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_070c3.csv,linefit,t_sweep,4154,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_070c4.csv,linefit,t_sweep,4154,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_070c5.csv,linefit,t_sweep,4154,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_090c1.csv,linefit,t_sweep,4154,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_090c2.csv,linefit,t_sweep,4154,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_090c3.csv,linefit,t_sweep,4154,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_090c4.csv,linefit,t_sweep,4154,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_090c5.csv,linefit,t_sweep,4154,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_110c1.csv,linefit,t_sweep,4154,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_110c2.csv,linefit,t_sweep,4154,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_110c3.csv,linefit,t_sweep,4154,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_110c4.csv,linefit,t_sweep,4154,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4154nm_110c5.csv,linefit,t_sweep,4154,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_070c1.csv,linefit,t_sweep,4192,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_070c2.csv,linefit,t_sweep,4192,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_070c3.csv,linefit,t_sweep,4192,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_070c4.csv,linefit,t_sweep,4192,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_070c5.csv,linefit,t_sweep,4192,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_090c1.csv,linefit,t_sweep,4192,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_090c2.csv,linefit,t_sweep,4192,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_090c3.csv,linefit,t_sweep,4192,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_090c4.csv,linefit,t_sweep,4192,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_090c5.csv,linefit,t_sweep,4192,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_110c1.csv,linefit,t_sweep,4192,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_110c2.csv,linefit,t_sweep,4192,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_110c3.csv,linefit,t_sweep,4192,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_110c4.csv,linefit,t_sweep,4192,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4192nm_110c5.csv,linefit,t_sweep,4192,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_070c1.csv,linefit,t_sweep,4207,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_070c2.csv,linefit,t_sweep,4207,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_070c3.csv,linefit,t_sweep,4207,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_070c4.csv,linefit,t_sweep,4207,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_070c5.csv,linefit,t_sweep,4207,70,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_090c1.csv,linefit,t_sweep,4207,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_090c2.csv,linefit,t_sweep,4207,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_090c3.csv,linefit,t_sweep,4207,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_090c4.csv,linefit,t_sweep,4207,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_090c5.csv,linefit,t_sweep,4207,90,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_110c1.csv,linefit,t_sweep,4207,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_110c2.csv,linefit,t_sweep,4207,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_110c3.csv,linefit,t_sweep,4207,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_110c4.csv,linefit,t_sweep,4207,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+t_sweep/4207nm_110c5.csv,linefit,t_sweep,4207,110,,,,,,per-trace record not persisted by run_linefit.py,0,,DIAGNOSTIC
+rulers_t/4121nm_eom_110c4.csv,outlier,ruler_t,4121,110,,,0,,,,1,spacing_outlier,DIAGNOSTIC
+rulers_t/4154nm_eom_090c2.csv,outlier,ruler_t,4154,90,,,0,,,,1,spacing_outlier,DIAGNOSTIC
+rulers_t/4207nm_eom_110c3.csv,outlier,ruler_t,4207,110,,,0,,,,1,spacing_outlier,DIAGNOSTIC

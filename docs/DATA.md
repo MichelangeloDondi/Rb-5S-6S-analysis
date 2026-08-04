@@ -443,10 +443,10 @@ conclusions:
   discarded shot; verified independently from raw traces). "One window ≈ one
   up-ramp" holds for most blocks, not all — fits mask the retrace region.
 - **Frequency axis (M2, corrected 2026-08-01)**: laser-axis sweep rate
-  **0.042526 ± 0.000051 MHz/ms** (transition axis 0.085053; mean tooth spacing
+  **0.042524 ± 0.000051 MHz/ms** (transition axis 0.085049; mean tooth spacing
   147.0 ms) — ~11× slower than the initial brief's 0.49 MHz/ms seed, which
   misread noise substructure as teeth. Blocks are NOT all consistent with a
-  single rate (campaign χ²/block 8.1, 0.6% RMS spread) ⇒ M3 uses **per-block
+  single rate (campaign χ²/block 8.0, 0.6% RMS spread) ⇒ M3 uses **per-block
   rates**, and `rate_model.py` (M2b) now also carries a time-resolved rate(t)
   per session and peak, read where the recovered clocks license it. The
   4207 nm power session shows a coherent 3.7σ before→after spacing shift

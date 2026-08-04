@@ -424,17 +424,22 @@ separately.
 
 Everything above is a physics menu. The host PI deciding bench time reads
 cost, yield and risk instead, so this section restates the same items in
-those three columns. Nothing below is scheduled, agreed or assigned. Every
+those four columns. Nothing below is scheduled, agreed or assigned. Every
 duration is [PLAN.md](PLAN.md)'s own where PLAN.md prices the block, and is
-marked as an estimate with its basis where PLAN.md does not.
+marked as an estimate with its basis where PLAN.md does not. Every entry in
+the last column is a projection rather than a result, computed in
+[scripts/run_projections.py](../scripts/run_projections.py) from the
+archive's own measured precision and PLAN.md's own session parameters, with
+the assumption set behind each figure carried in
+[results/projections.csv](../results/projections.csv).
 
-| item | bench cost | what it would return | what could come back empty |
-|---|---|---|---|
-| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench |
-| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise |
-| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way |
-| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams |
-| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own |
+| item | bench cost | what it would return | what could come back empty | projected precision |
+|---|---|---|---|---|
+| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in |
+| fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr on the self-broadening rate, a fourfold margin over what the adjudication needs |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr, which is 20 percent of the published coefficient |
+| doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates |
 
 **The beam profile.** `PLAN.md` §3 puts w₀ in Tier 0, the systematic floor,
 because S₀ ∝ 1/w₀² and the transit width rides on w₀, so a 10% waist error is
@@ -483,6 +488,25 @@ does not contain, and the centre pull needs minutes-scale lock stability
 rather than all-night stability, which makes it the least exposed of the
 three conversions.
 
+What that reads as, projected on the archive's own numbers. One morning
+of randomized power cycling with the four lines interleaved, at the
+per-trace centre precision the archive measured and the held-lock drift
+rate it bounded, would give 0.09 MHz on S₀(225 mW). That detects a shift
+of the predicted 0.35 MHz size at 3.8 sigma, and separates the two
+disputed polarizability signs at 8 sigma if the shift is that size. Which
+sign the pull has needs no intensity calibration. How far apart the two
+signs sit does, because a common scale error moves both predictions
+together. One hour instead of one morning halves the reach to 1.9 sigma.
+On the width
+side, five temperature blocks per peak reaching 170 °C with the block
+scatter cut fourfold would put the expected β_self resolved at about
+10 sigma, against 3 sigma with the scatter uncut, which is the
+quantitative form of the claim that both halves of the prescription are
+load-bearing. Every figure here is conditional on the cold-spot lag the
+archive prefers at face value, and the coefficient itself would still
+carry the 20 percent density scale until the absorption channel measures
+the density directly.
+
 **The 7S rung at 760 nm.** On the corrected detection argument of §3.2 this
 is the cheapest new line rather than the second cheapest. Wang's
 five-channel branching puts 420 nm last of five, and the two brightest
@@ -503,6 +527,16 @@ bound landed below the higher one. If the filter answer goes the other way,
 7S needs the 420 nm path and the blue chain's noise model would have to be
 measured first, which moves it behind the cell session in cost.
 
+Projected, the adjudication is not close. Separating the two published
+rates at five sigma needs 37 kHz per mTorr once the larger of their own
+errors is folded in, and 102 if Wang's unstated convention turns out to
+be half-width, so the harder of the two readings is the one quoted.
+Running the same five-block density design on the 760 nm line, with the
+archive's own per-block width scatter and per-block ruler spacing
+precision carried over unchanged, would deliver about 8 kHz per mTorr.
+The margin is fourfold, which is why the row is worth its retune even if
+the rate lands between the two published values.
+
 **The 778 nm rung.** 5S→5D is the only rung whose environmental coefficients
 are published with error bars small enough to fail against, at 40 ± 0.54
 kHz/mTorr for self-broadening and a magic wavelength at 776.179(5) nm.
@@ -519,6 +553,26 @@ only where the perturbing and driving beams are mode matched over the
 collection volume. Where they are not, the map would have to be recomputed
 for the overlap of two profiles, which the machinery supports and has not
 been asked to do.
+
+Projected, this rung tests the method's bookkeeping and not its accuracy.
+The same five-block design would deliver about 8 kHz per mTorr on the
+778 nm rate, which is 20 percent of Cao's published 40. That clears the
+13 kHz per mTorr a three sigma rejection of a factor-two convention error
+would take, and it falls threefold short of the 2.6 kHz per mTorr a
+20 percent method bias would take, so a reproduction would establish that
+the passive method counts half-widths and full widths correctly and would
+not establish that it is accurate at the level the published error bar
+allows. The magic-wavelength scan is sized the same way. Placing the
+crossing to Hamilton's own 5 pm, which is 2.5 GHz on the laser axis,
+would need 9 points at a step of 0.045 nm across the 0.18 nm of half span
+the neighbouring 5P₃/₂ to 5D₅/₂ pole leaves usable on the blue side, with
+each point good to 8 percent of the shift at the edge of that span. The
+wavelength axis
+is not the limitation there. The archive's ruler axis carries 0.4 percent,
+and the wavemeter of `PLAN.md` §11 places 5 pm to a fraction of a percent
+of itself, so what the scan would be limited by is the per-point precision
+on the shift observable, which is the quantity a session would have to
+demonstrate.
 
 **The doubling-stage options.** Exploratory, and last in priority. No
 doubling stage is on the bench and none of these wavelengths has been

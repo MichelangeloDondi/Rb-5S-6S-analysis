@@ -50,6 +50,7 @@ RESULTS = ROOT / "results"
 CHEAP = {
     "run_noise": ["noise_model.csv"],
     "run_ruler": ["ruler_traces.csv", "ruler_blocks.csv", "ruler_campaign.csv"],
+    "run_trim_report": ["trim_report.csv"],
     "run_sigma_laser_sharing": ["sigma_laser_sharing.csv"],
     "run_polarizability": ["polarizability.csv"],
     "run_modelform": ["modelform.csv"],

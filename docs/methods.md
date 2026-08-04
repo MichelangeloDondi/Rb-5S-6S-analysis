@@ -134,6 +134,7 @@ rejection pre-registered and QC-based, never result-based.
 ```
 rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           rate_model(M2b: the time-resolved sweep rate)
+          trim(M2c: the residual-tail trimmer, shared by M0, M2 and M3)
           lineshape(M3) linefit(M3) density(M4) beta(M4) global_fit(M4b)
           lever_crosscheck(M4d) stark(M4e) modelform(M8) transit_mc(M9)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
@@ -142,7 +143,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           (M18 and M19 are library-and-test only: they have no CSV product, so
            grepping results/ for them finds nothing -- see their test files)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
-          → run_qc → run_noise → run_ruler → run_linefit
+          → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
           · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
@@ -165,7 +166,7 @@ figures/  paper figures from make_figures.py (C1 width-vs-density, C3 power
           figure + σ_laser(T) anomaly companion, M4d γ-floor lever test, fig15 drift story)
 ```
 
-The first five scripts form the pipeline (each reads the previous ones'
+The first six scripts form the pipeline (each reads the previous ones'
 `results/`); the rest are the physics analyses keyed to the deliverables.
 
 ```bash

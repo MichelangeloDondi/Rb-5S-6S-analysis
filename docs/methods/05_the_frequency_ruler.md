@@ -19,7 +19,7 @@ $\nu_c=(\nu_0-k\Omega)/2$, i.e. a comb of line-copies spaced by
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
 — the same factor-2 as [§0 — conventions](../methods.md). Fitting the tooth spacing (in ms) per block gives
-the sweep rate; we measure $0.042526(51)$ MHz/ms on the laser axis, and the
+the sweep rate; we measure $0.042524(51)$ MHz/ms on the laser axis, and the
 sweep is linear across the window to $<0.3$%.
 
 This spacing's exactness, assumed above to calibrate the sweep rate, is now
@@ -47,8 +47,8 @@ and the rate too high. Refitting the same 24 ruler traces both ways gives
 $\Delta=146.804$ ms at five teeth against $146.970$ ms at seven, and the
 five-tooth value reproduces the previously committed rate exactly, which is
 what identifies the truncation as the cause. The corrected campaign rate is
-therefore **0.4% of a linewidth lower**, $0.0425706 \to 0.0425265$ MHz/ms,
-a $-0.104$% shift carried by every frequency this analysis quotes. The size
+therefore **0.4% of a linewidth lower**, $0.0425706 \to 0.0425243$ MHz/ms,
+a $-0.109$% shift carried by every frequency this analysis quotes. The size
 is about one standard error of the rate itself and is small beside the beam
 waist, but it is a one-directional bias rather than scatter, so it is
 corrected rather than absorbed into an error bar. The same truncation was
