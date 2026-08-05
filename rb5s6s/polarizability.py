@@ -107,7 +107,11 @@ LINES_6S = (
 CORE_6S, CORE_6S_SIG = 9.1, 0.5
 TAIL_6S, TAIL_6S_SIG = 3.4, 3.4           # fixed by static 5167(22); +-100%
 
-# 6S->nP resonance wavelengths (nm) bound the pole-free search windows
+# Resonance wavelengths (nm) bound the pole-free search windows. Any search
+# for an alpha_5S = alpha_XS crossing must guard BOTH states' poles: the 5S
+# D lines (780.24, 794.98 nm) are poles of alpha_5S and read as sign changes
+# of the difference if left inside a bracket.
+_POLES_5S_NM = sorted(1e7 / abs(e) for e, _, _ in LINES_5S)
 _POLES_6S_NM = sorted(1e7 / abs(e - E_6S_CM) for e, _, _ in LINES_6S)
 
 
@@ -177,23 +181,28 @@ def tuneout_5s(lo: float = 781.0, hi: float = 794.0) -> float:
     return brentq(lambda x: alpha_5s(x), lo, hi, xtol=1e-6)
 
 
-def magic_wavelengths(lo: float = 950.0, hi: float = 1500.0):
-    """All alpha_5S = alpha_6S crossings in [lo, hi] nm, searched between the
-    6S->nP poles. Returns a list of (lambda_nm, alpha_at_crossing_au)."""
-    edges = [lo] + [p for p in _POLES_6S_NM if lo < p < hi] + [hi]
+def _crossings(f, lo, hi, poles, guard=1.5, n=400):
+    """All sign changes of f in [lo, hi], searched between the poles."""
+    edges = [lo] + sorted(p for p in poles if lo < p < hi) + [hi]
     out = []
-    f = lambda x: alpha_6s(x) - alpha_5s(x)
     for a, b in zip(edges, edges[1:]):
-        aa, bb = a + 1.5, b - 1.5                 # stay off the poles
+        aa, bb = a + guard, b - guard
         if bb <= aa:
             continue
-        g = np.linspace(aa, bb, 300)
+        g = np.linspace(aa, bb, n)
         v = [f(x) for x in g]
         for i in range(len(g) - 1):
             if v[i] * v[i + 1] < 0:
-                x = brentq(f, g[i], g[i + 1], xtol=1e-6)
-                out.append((float(x), float(alpha_5s(x))))
+                out.append(float(brentq(f, g[i], g[i + 1], xtol=1e-6)))
     return out
+
+
+def magic_wavelengths(lo: float = 950.0, hi: float = 1500.0):
+    """All alpha_5S = alpha_6S crossings in [lo, hi] nm, searched between the
+    5S->nP and 6S->nP poles. Returns a list of (lambda_nm, alpha_au)."""
+    poles = sorted(set(_POLES_5S_NM) | set(_POLES_6S_NM))
+    xs = _crossings(delta_alpha, lo, hi, poles)
+    return [(x, float(alpha_5s(x))) for x in xs]
 
 
 def mc_band(fn, n: int = 1500, seed: int = 0) -> Dict:
@@ -277,26 +286,9 @@ def delta_alpha_7s(lam_nm: float) -> float:
     return alpha_7s(lam_nm) - alpha_5s(lam_nm)
 
 
-def _crossings(f, lo, hi, poles, guard=1.5, n=400):
-    """All sign changes of f in [lo, hi], searched between the poles."""
-    edges = [lo] + sorted(p for p in poles if lo < p < hi) + [hi]
-    out = []
-    for a, b in zip(edges, edges[1:]):
-        aa, bb = a + guard, b - guard
-        if bb <= aa:
-            continue
-        g = np.linspace(aa, bb, n)
-        v = [f(x) for x in g]
-        for i in range(len(g) - 1):
-            if v[i] * v[i + 1] < 0:
-                out.append(float(brentq(f, g[i], g[i + 1], xtol=1e-6)))
-    return out
-
-
 def magic_5s7s(lo: float = 700.0, hi: float = 1000.0):
     """5S-7S magic wavelengths (= sign-flips of the 5S->7S light shift) in
     [lo, hi] nm: alpha_7S = alpha_5S crossings. Returns (lambda_nm, alpha_au)."""
-    poles = sorted(set(_POLES_7S_NM) |
-                   {1e7 / abs(e) for e, _, _ in LINES_5S})
+    poles = sorted(set(_POLES_5S_NM) | set(_POLES_7S_NM))
     xs = _crossings(delta_alpha_7s, lo, hi, poles)
     return [(x, float(alpha_5s(x))) for x in xs]

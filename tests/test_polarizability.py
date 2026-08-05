@@ -121,6 +121,23 @@ def test_magic_crossings_exist_and_trap():
     assert all(a > 0.0 for _, a in magic), magic
 
 
+def test_magic_search_guards_the_5s_d_lines():
+    """magic_wavelengths once bracketed its search with the 6S->nP poles only,
+    which is safe inside the default 950-1500 nm window but not below it: run
+    from 700 nm it returned the 5S D-line poles (780.24, 794.98 nm) as
+    apparent crossings with |alpha| of order 1e11 a.u. Widened searches are
+    quoted in FUTURE_TRANSITIONS_titsapph.md section 3.3, so the guard must
+    hold both states' pole sets."""
+    magic = magic_wavelengths(700.0, 1000.0)
+    assert len(magic) == 1, magic
+    lam, alpha = magic[0]
+    # the one real crossing, between the D lines beside the 5S tune-out
+    assert abs(lam - 790.1298) < 0.01, magic
+    assert abs(alpha - (-244.3)) < 1.0, magic
+    for pole in (780.24, 794.98):
+        assert abs(lam - pole) > 1.0, magic
+
+
 def test_mc_band_deterministic():
     f = lambda k5, k6: 1.0
     b1, b2 = mc_band(f, n=50, seed=3), mc_band(f, n=50, seed=3)
