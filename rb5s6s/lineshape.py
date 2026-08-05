@@ -44,6 +44,8 @@ Gaussian. Full provenance: docs/LITERATURE.md section 3.
 
 from __future__ import annotations
 
+from typing import Callable
+
 import numpy as np
 
 from ._compat import trapezoid
@@ -330,7 +332,9 @@ def _grid(span: float, dnu: float) -> np.ndarray:
 def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                   transit_fwhm: float, s0: float = 0.0,
                   gamma_nat_mhz: float = GAMMA_NAT_HZ / 1e6,
-                  laser_kind: str = "gaussian") -> np.ndarray:
+                  laser_kind: str = "gaussian",
+                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp
+                  ) -> np.ndarray:
     """Area-normalized composite line on the transition axis (MHz).
 
     Parameters (all MHz, all on the transition axis):
@@ -340,6 +344,13 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
       s0                on-axis AC-Stark red shift (0 => no Stark term)
       gamma_nat_mhz     natural FWHM (default the fixed physical value)
       laser_kind        'gaussian' (default) or 'lorentzian' laser wings
+      profile           light-geometry seam: profile(grid, s0) -> the
+                        area-normalized shift density convolved in when
+                        s0 > 0. Default stark_ramp, the focused-beam
+                        triangle. An adapted geometry passes a closure over
+                        stark_from_intensity_profile with its own sampled
+                        intensities and volume measure, e.g.
+                        lambda g, s: stark_from_intensity_profile(g, s, I, m)
 
     Built by convolving the kernels on a fine internal grid, then sampled at
     `nu`. Homogeneous Lorentzians (natural + collisional) are combined
@@ -363,7 +374,7 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     if transit_fwhm > 0:                 # 0 => no transit kernel (nested-model ladder)
         prof = _conv(prof, two_sided_exponential(g, transit_fwhm), dnu)
     if s0 > 0:
-        prof = _conv(prof, stark_ramp(g, s0), dnu)
+        prof = _conv(prof, profile(g, s0), dnu)
 
     prof = np.interp(nu, g, prof, left=0.0, right=0.0)
     area = trapezoid(prof, nu)

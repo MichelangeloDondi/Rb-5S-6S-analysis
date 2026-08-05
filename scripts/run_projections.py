@@ -459,7 +459,9 @@ def project_beta(rows, inp) -> dict:
          "rb5s6s.density")
     _add(rows, "input_beta_self_expected", "vdW anchored", anchor["beta6_khz"],
          anchor["beta6_err_khz"], "kHz per 1e12 cm^-3",
-         "the measured 7S rate carried across one rung by the computed C6 ratio",
+         "the measured 7S rate carried across one rung by the computed "
+         "difference-coefficient ratio (Delta C6, the 2026-08-05 adjudication "
+         "in docs/notes/vdw_difference_potential_and_4d_channel.md)",
          "one external measurement in the chain, and the ratio is the module's "
          "own Casimir-Polder integrals",
          "rb5s6s.vanderwaals.beta_self_anchored, docs/lit/zameroski2014.md")

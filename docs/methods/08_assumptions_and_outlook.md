@@ -1,4 +1,13 @@
-*Chapter 8 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 8 of 8 · [methods index](../methods.md)*
+
+**The question.** What is everything above resting on, and what would a second
+epoch of data lift?
+**Takes.** All seven chapters before it, since each assumption belongs to one
+of them.
+**Gives.** The list a referee should attack first, and the measurements that
+would turn the archive's bounds into values.
+**Skip if.** Nothing. This is the shortest chapter in the set and it is the one
+that says what the other seven are conditional on.
 
 ## 6. Load-bearing assumptions (the ones to challenge)
 
@@ -6,9 +15,9 @@
    wrong; locked by tests + the 5-tooth amplitude pattern + a hyperfine
    label-spacing check).
 2. Scope triggered on the sweep sync so file-time $=$ ramp-phase (evidence
-   strong; experimenter confirmation pending — `A1` in PLAN).
+   strong; experimenter confirmation pending — the ramp-monitor export of PLAN §3 item 0 would settle it).
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
-   split depends on them). The model-form study ([§4.7 — The statistics](06_the_statistics.md), M8) confirms the 2025
+   split depends on them). The model-form study ([§4.7](06_the_statistics.md)) confirms the 2025
    data cannot distinguish these forms — so the *shape* assumption is untested
    by the archival data and is a genuine attack surface until a fixed-lock session is run.
 4. The beam waist $w_0=64\ \mu$m is **adopted from the lineage measurement,
@@ -22,7 +31,7 @@
    beam-profile measurement in a fixed-lock session settles it for this bench;
    until then every absolute number carries the $w_0$ band.
 5. The retro ratio $\rho=0.94\pm0.04$ behind the quoted $S_0$ prediction
-   ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) is an **assumption**.
+   ([§2.6](03_the_ac_stark_ramp.md)) is an **assumption**.
    Until v3.0.0 the code asserted $\rho=1$ on a geometric design argument: the
    2025 retro is self-imaging, L2 ($f=150$ mm) maps the cell waist to a
    $\sim$0.7 mm intermediate waist and a flat mirror at that flat wavefront
@@ -54,8 +63,8 @@
 
 ## 7. Where this can go next
 
-*Archival: done conditional on $w_0$.* Every archival module (M0–M26) is built,
-tested, and reported in [§5 — What we found (2025 archive)](07_what_we_found.md) — collisional bound + isotope test, laser-epoch
+*Archival: done conditional on $w_0$.* Every archival module (M0–M28) is built,
+tested, and reported in [what we found](07_what_we_found.md) — collisional bound + isotope test, laser-epoch
 bound, power/ramp-law predictions, trapping, and the cusp model-form study.
 What is left is not more archival analysis but the measurements the 2025 data
 physically cannot yield — first among them the beam-profile $w_0$ on which every
@@ -69,14 +78,14 @@ would be capped at
 waists, 60 µm and 16 µm, span a $\times16$ intensity range at fixed power).
 Headline shots would be: the AC-Stark shift coefficient with the intensity axis
 anchored by the *differential transit width* (independent of any beam-profile measurement); the
-ramp-law **moment hierarchy** ([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
+ramp-law **moment hierarchy** ([§2.6](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
 flip** between the two waists (conditional on the collection geometry, which is
 unmeasured — PLAN §6 #4); $\beta_\text{self}$ measured rather than bounded —
 which the collision-rate literature says would require the **150–170 °C**
 extension (expected $\beta\sim1$ kHz per $10^{12}$cm$^{-3}$, see
 `docs/LITERATURE.md`); the Lehmann cusp in the cold-dim small-waist corner;
 the beam-profile $w_0$ itself. Wavemeter calibration is folded in as a
-byproduct (PLAN §7): the atoms ($\sim$ kHz) calibrate the wavemeter
+byproduct (PLAN §11): the atoms ($\sim$ kHz) calibrate the wavemeter
 ($\sim$ 10 MHz), not the reverse.
 
 *The nanofibre extension, proposed:* the same ramp law tested at the fibre. A
@@ -85,6 +94,16 @@ test.
 
 ---
 
----
+**Where the numbers live.** Modules M0–M28, the whole archival pipeline ·
+producers every `scripts/run_*.py` that writes a committed CSV · results the
+full `results/` set, indexed in [`docs/RESULTS.md`](../RESULTS.md) · figures:
+none of its own. Each assumption is sourced from the chapter that makes it,
+and the forward programme it points at is costed in [`PLAN.md`](../PLAN.md).
 
-[← What we found (2025 archive)](07_what_we_found.md) · [methods index →](../methods.md)
+**What would falsify this.** A beam-profile measurement returning a waist
+outside the 60 to 70 µm band. Assumption 4 is the one every absolute number in
+this repository leans on, and a waist measured away from the lineage value
+would move the transit subtraction and the Stark prediction together, in the
+same direction, without any fit noticing.
+
+[← What we found](07_what_we_found.md) · [methods index →](../methods.md)

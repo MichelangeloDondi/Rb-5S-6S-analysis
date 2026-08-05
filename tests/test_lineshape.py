@@ -359,3 +359,60 @@ def test_general_profile_axial_lorentzian_mean():
                                      np.ones_like(z), n_photon=2)
     mean = float(np.sum(nu * f) * (nu[1] - nu[0]))
     assert abs(mean - (-0.75 * s0)) < 5e-3, mean
+
+
+def test_model_profile_default_profile_is_stark_ramp_bitwise():
+    """The light-geometry seam (`profile`) defaults to stark_ramp, and the
+    default must be the IDENTICAL code path, not merely a close one: every
+    committed fit ran through the hard-coded ramp, so omitting the argument
+    has to reproduce passing it exactly, bit for bit."""
+    nu = np.arange(-30.0, 15.0, 0.01)
+    kw = dict(gamma_coll=1.5, sigma_laser_fwhm=1.2, transit_fwhm=0.9, s0=2.0)
+    assert np.array_equal(model_profile(nu, **kw),
+                          model_profile(nu, **kw, profile=stark_ramp))
+
+
+def test_model_profile_plumbed_general_seam_matches_ramp():
+    """The plumbed path end-to-end: a closure over
+    stark_from_intensity_profile with the focused-beam geometry, passed
+    through model_profile's profile argument, must reproduce the default
+    (hard-coded-ramp) line. The density equivalence is tested above on a
+    fine grid; here the check is on the model's own internal grid, after
+    convolution with the smooth core, which is what a fit consumes."""
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    r = np.linspace(0.0, 5.0, 200001)
+    inten = np.exp(-2.0 * r ** 2)
+
+    def focused(g, s0):
+        return stark_from_intensity_profile(g, s0, inten, r, n_photon=2)
+
+    nu = np.arange(-30.0, 15.0, 0.01)
+    kw = dict(gamma_coll=1.5, sigma_laser_fwhm=1.2, transit_fwhm=0.9, s0=2.0)
+    ref = model_profile(nu, **kw)
+    gen = model_profile(nu, **kw, profile=focused)
+    assert np.max(np.abs(gen - ref)) < 5e-3 * ref.max(), np.max(np.abs(gen - ref))
+
+
+def test_model_profile_custom_geometry_changes_line():
+    """A different geometry through the same seam must actually reach the
+    model: the n=1 flat density pulls the line by -s0/2 against the
+    triangle's -2/3 s0, so the two composite lines' means must differ by
+    s0/6. Differencing the two means cancels the shared symmetric core and
+    its truncation error."""
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    r = np.linspace(0.0, 5.0, 200001)
+    inten = np.exp(-2.0 * r ** 2)
+
+    def flat(g, s0):
+        return stark_from_intensity_profile(g, s0, inten, r, n_photon=1)
+
+    s0 = 3.0
+    nu = np.arange(-40.0, 40.0, 0.01)
+    kw = dict(gamma_coll=1.5, sigma_laser_fwhm=1.2, transit_fwhm=0.9, s0=s0)
+    dnu = nu[1] - nu[0]
+
+    def mean(y):
+        return float(np.sum(nu * y) * dnu / (np.sum(y) * dnu))
+
+    dm = mean(model_profile(nu, **kw, profile=flat)) - mean(model_profile(nu, **kw))
+    assert abs(dm - s0 / 6.0) < 0.05, dm

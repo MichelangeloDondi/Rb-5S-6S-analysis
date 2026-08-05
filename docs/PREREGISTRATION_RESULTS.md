@@ -7,6 +7,16 @@ withdrawn for unrelated scope reasons, see the pre-registration's §9). Quaranti
 SHA-256+MD5+size+epoch manifest before scoring. One run; this file is its
 unedited output plus this provenance header.*
 
+*This file covers the timestamp audit and the dated addenda that followed it.
+The later analyses carry their own pre-registrations of record, each written
+before its code and each holding the amendments that record what the rules
+returned: the frequency ruler's fit validity and residual-tail trimming
+([`notes/ruler_validity_and_trim_prereg.md`](notes/ruler_validity_and_trim_prereg.md),
+where amendments 4 to 7 govern the current tooth rules) and the full-archive
+fit ([`notes/full_archive_fit_prereg.md`](notes/full_archive_fit_prereg.md)).
+A reader who wants the current state of a ruler rule should go to the first of
+those and read its opening table.*
+
 
 ## What this document establishes — one page
 
@@ -38,6 +48,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The megahertz-scale motion was **not drift** but hand re-centring after lock dropouts | addendum 5 |
 | That disturbance is **one transient re-armed by every re-lock**: B = 103 [78, 139] ms, τ = 97 [87, 118] min | addendum 12 |
 | A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |
+| The ruler’s tooth indexing was unprotected against the retrace. 54 of 104 combs carried a one-slot mislabelling, corrected display-side on a ratio test. The recomputed calibration is byte-identical and the primary bounds stand. The 4207 nm separation prediction FAILED and stands as a measured campaign property | addendum 26 |
 | The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
 | The detection chain carries a **61 Hz mains line at ~0.2 % of peak** — averaged over by a 60 ms line, harmless here | addendum 13 |
 | The **P² two-photon law** holds in a third epoch (slopes 1.87–2.36) | addendum 14 |
@@ -50,7 +61,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | Two flagged wing anomalies were **one un-converged fit**: a single start left the amplitude at 20x the true chi2. Multi-started, both vanish and C3g's closure is a null at every temperature | addendum 20 |
 | The fit gallery shows a **symmetric centre excess on the brightest lines** (1.4% of peak, 3.7 sigma on 993.4192 nm), absorbed by the noise inflation. Saturation, width sharing, hyperfine and pedestal all ruled out. Open, moves nothing | addendum 21 |
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
-| The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-14x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
+| The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-15x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
 | The v3.2.0 light-shift bound 0.151 MHz was **basin-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units | addendum 24 |
 | The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 ACF 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
 
@@ -120,6 +131,7 @@ re-open a fitted result.
 - [Addendum 23, 2026-08-03 — the 1.67x anomaly was a factor-of-two of our own](#addendum-23-2026-08-03--the-167x-anomaly-was-a-factor-of-two-of-our-own)
 - [Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data](#addendum-24-2026-08-03-the-light-shift-bound-was-reading-a-starting-point-not-the-data)
 - [Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations](#addendum-25-2026-08-03-the-wavemeter-record-is-a-sawtooth-not-a-sequence-of-relaxations)
+- [Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute](#addendum-26-2026-08-05-the-six-tooth-defect-the-recalibration-and-the-full-recompute)
 
 ---
 
@@ -1670,7 +1682,7 @@ found trapping unneeded).
 `power_mW` is empty for every t_sweep row — and amplitude goes as P², so a
 12% power difference alone makes 25%. Add that the four peaks of a dwell were
 acquired 54–76 minutes apart under a hand-re-centred lock and the size is
-unremarkable. PLAN §M4 pre-registered exactly this: cross-peak systematics of
+unremarkable. PLAN §7f pre-registered exactly this: cross-peak systematics of
 **30–50%**, to be cut to 2–4% by per-trace power logging. The measurement
 sits inside the band the plan predicted for it, which is the more useful
 outcome than a surprise would have been.
@@ -2364,7 +2376,7 @@ into an expected, small, low-side gap.
 Zameroski's measurement and uses this module only for the ratio
 C6(6S)/C6(7S) = 0.347, so beta_self(6S) = 3.53 +- 0.30 kHz per 1e12 cm^-3
 is unchanged before and after the fix (verified directly: 3.5280870 kHz
-both ways). The archival bound sitting 8-14x above that anchor is
+both ways). The archival bound sitting 8-15x above that anchor is
 likewise untouched, because the doubled prefactor cancels in the ratio
 regardless of whether it is right or wrong. Both numbers were checked
 against the running code as part of this fix, not assumed from the audit.
@@ -2598,3 +2610,103 @@ that chose it recorded the surviving lag-1 autocorrelation and attributed it to
 the noise model rather than the mean. It was the mean. A whiteness gate
 applied first would have rejected both forms and asked for a third, which is
 what it did once it was applied.
+
+## Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute
+
+**What was found.** The frequency ruler's showcase trace was fit and displayed
+as a seven-tooth comb while one displayed tooth was the retrace mirror of a
+real tooth, reflected about the scan ramp's apex. The fitted height at the
+k = -2 slot railed at exactly zero and the selection rule then in force
+actively rewarded the pathology. Nothing in the pipeline protected tooth
+indexing against retrace contamination. The full account, the validity layer
+that now exists, and its seven amendments are in
+`docs/notes/ruler_validity_and_trim_prereg.md`. The corrected pipeline
+re-fits every comb under a top-three verdict, a re-index ladder, a
+core-guarded residual-tail trimmer, and a pre-registered outlier rule, and
+the fitted heights of all combs are persisted for the first time.
+
+**Scale of the labelling defect.** Under the sharpened criterion (a
+second-order tooth taller than its first-order partner marks a displaced
+grid), 54 of 104 recorded combs carry a one-slot displaced numbering, and
+the modulation-depth measurement on the 41 clean combs (2 beta = 1.569,
+standard deviation 0.058) shows the drive depth is one number across the
+campaign, so the displaced grids are mislabelled, not physically different.
+The correction is display-side tooth numbering gated on a Bessel ratio
+test. The spacing fits, and therefore every rate, were re-derived under the
+validity layer.
+
+**What the recompute moved, and what it did not.** The recomputed ruler
+layer is byte-identical to the committed tables (rate 0.042524 MHz per ms,
+block reduced chi-squared 7.977, scatter 0.617 per cent, to every printed
+digit), which is the reproduction statement: a full re-run from raw traces
+lands on the identical calibration. The pre-registered directional
+predictions of the ruler specification's section 9 were adjudicated at the
+recalibration's landing and all met, with one exception recorded below. Of
+the pole fits, the M28 primary bound is unchanged (the light shift at
+225 mW stays below 0.212 MHz, census 231, gates B1 through B8 pass with B4
+carrying its pre-existing 3.78 sigma prior tension), the M23 primary
+tightens about four per cent (the 225 mW bound moves from 0.268 to
+0.258 MHz), and the M25 global fit is byte-stable with the joint
+self-broadening slope at 0.0183 MHz per 10^12 cm^-3. The no-rulers variant
+of the global fit, in which the calibration combs contribute nothing as
+data, lands at the same profile minimum with the joint slope at 0.0182, so
+the physics bounds do not lean on the corrected traces. The subset
+robustness variants (campaign-only and power-ladder-only) moved by 26 and
+35 per cent between runs whose inputs differed by less than 0.001 per
+cent. That pattern is not quoted anywhere until it is adjudicated: an
+identical-input reproduction of M28 is pre-registered at a three per cent
+threshold in `docs/notes/m28_reproducibility_prereg.md` and launches with
+this release.
+
+**The fold-robustness paragraph is superseded in place.** Its structural
+argument (a symmetric triangle preserves tooth spacing under a fold) is
+true of the ramp and false of a rigid-grid fit, whose window assignment is
+exactly what a fold displaces. The bounded form survives: an apex landing
+on a tooth is benign, and the validity layer's tests pin that case. The
+section of `docs/DATA.md` that carried the claim now carries the corrected
+reading under the same anchor.
+
+**Relation to addendum 19.** Addendum 19 corrected a five-tooth fit to
+seven and withdrew an earlier retrace claim as a threshold-finder artifact.
+This addendum sits on top of it with a different instrument class: a
+smoothed fit residual at +10 sigma at a slot whose fitted height rails at
+zero, plus rank statistics under a null-calibrated change-point detector.
+The exploration that first flagged the problem also ran a naive peak
+finder that flagged 41 of 105 rulers, mostly cold-trace noise, and that
+count is deliberately not quoted as evidence. What survives untouched:
+addendum 22's spacing-symmetry receipt (a frequency-domain statement,
+orthogonal to this time-axis defect) and its refusal to license ruler
+combs as lineshape data, which the M28 census re-affirms.
+
+**The one persisted prediction failure, read as agreed.** Section 9
+predicted the 4207 nm before-against-after rate separation would shrink
+under the corrected pipeline. It did not: it holds near 3.7 sigma. The
+persisted 3.7 sigma is the largest of four instances of a measured
+campaign property, not a 4207 defect. The four signed pair separations are
++2.65, -0.06, +2.56 and -3.67 sigma (pair-family reduced chi-squared about
+6.9, the same scale as the block over-dispersion of 7.98 the archive
+documents). The signs are incoherent across lines, so this is not
+common-mode session drift. The separation survived the six-tooth
+correction, so it is not mislabelling. What remains is genuine per-line
+scan-rate wandering between brackets, of which 4207's -1.1 per cent swing
+is the extreme case. The failed prediction carries information: the
+separation was never fold contamination. On signal to noise: 4207's
+bracket errors are already the largest of the set and it is still 3.7
+sigma apart, so the excursion is real, and worst signal-to-noise means the
+line is least able to diagnose itself, not that the excursion is noise. No
+pipeline change ships in this release: combine_block's square-root
+chi-squared inflation already prices the inconsistency into 4207's rate
+error and its power-session widths. Forward, the calibration red team
+tests per-block interpolated rates against the bracket mean (whether
+4207's width scatter drops), and a fixed-lock session kills the class
+outright, which the plan's Tier 0 may cite this excursion as motivation
+for.
+
+**Gates, reported whether they fired.** Stop conditions: block reduced
+chi-squared rising (did not fire, 8.078 to 7.977), scatter rising (did not
+fire), the M28 primary moving beyond noise (did not fire, unchanged),
+census departing 231 (did not fire). Fired and acted on: the seven-tooth
+figure-eligibility clause returned the empty set and was relaxed to six
+standing teeth by owner decision with two measured causes recorded
+(amendment 4). Fired and standing: the 4207 separation prediction,
+recorded as FAILED above.

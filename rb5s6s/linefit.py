@@ -50,7 +50,7 @@ corr(sigma_laser, gamma_coll) ~ -0.9. So:
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 
 import numpy as np
 from scipy.optimize import least_squares
@@ -73,7 +73,8 @@ def to_frequency(t_ms: np.ndarray, rate_transition_mhz_per_ms: float) -> np.ndar
 
 
 def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
-                         dnu_floor: float = 1e-3):
+                         dnu_floor: float = 1e-3,
+                         profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp):
     """Build the area-normalized shared line shape ONCE on a fine grid; the
     per-trace fit interpolates it at (nu - center). Returns (grid, profile).
 
@@ -98,7 +99,7 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     prof = fftconvolve(prof, lk, "same") * dnu
     prof = fftconvolve(prof, two_sided_exponential(g, transit_fwhm), "same") * dnu
     if s0 > 0:
-        prof = fftconvolve(prof, stark_ramp(g, s0), "same") * dnu
+        prof = fftconvolve(prof, profile(g, s0), "same") * dnu
     area = trapezoid(prof, g)
     return g, (prof / area if area > 0 else prof)
 
@@ -131,13 +132,20 @@ def _profile_fwhm(g: np.ndarray, prof: np.ndarray) -> float:
 def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   T_C: float, law: Optional[Dict] = None, s0: float = 0.0,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
-                  laser_kind: str = "gaussian", trim_tails: bool = False) -> Dict:
+                  laser_kind: str = "gaussian", trim_tails: bool = False,
+                  profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
     Shared free params: gamma_coll, sigma_laser (+ transit_fwhm if fit_transit).
     Per-trace free params: A_i, center_i, b0_i, b1_i.
     Returns dict with shared values+errors, per-trace params, chi2_red, cov of
     the shared block, and the sigma_laser<->gamma_coll correlation.
+
+    `profile` is the light-geometry seam, with the same contract as
+    lineshape.model_profile's: profile(grid, s0) -> the area-normalized shift
+    density convolved in when s0 > 0. The stark_ramp default is the
+    focused-beam triangle every committed fit used; an adapted geometry
+    passes a closure over lineshape.stark_from_intensity_profile.
 
     `trim_tails` runs the residual-tail trimmer (rb5s6s.trim) as a SINGLE
     second pass: fit once, cut any sustained positive residual tail outside a
@@ -206,7 +214,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     def residuals(p):
         gc, sl, tr = unpack(p)
         g, prof = _shared_profile_grid(gc, sl, transit_fwhm_at_T(T_C, tr) if fit_transit else tr,
-                                       s0, laser_kind)
+                                       s0, laser_kind, profile=profile)
         out = []
         for i in range(ntr):
             A, c, b0, b1 = p[nshared + 4 * i: nshared + 4 * i + 4]
@@ -228,7 +236,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0 = unpack(sol.x)
         g, prof = _shared_profile_grid(
             gc0, sl0, transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-            s0, laser_kind)
+            s0, laser_kind, profile=profile)
         guard = C.TRIM_CORE_GUARD_FWHM_MULT * _profile_fwhm(g, prof)
         any_trim = False
         for i in range(ntr):
@@ -279,7 +287,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0 = unpack(sol.x)
         g, prof = _shared_profile_grid(gc0, sl0,
                                        transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-                                       s0, laser_kind)
+                                       s0, laser_kind, profile=profile)
         A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
         model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
         r = (volts[i] - model) / sigmas_raw[i]   # diagnostics on UNSCALED sigma

@@ -241,7 +241,12 @@ def synth_bessel_comb(t0_frac, seed=0, two_beta=1.62, carrier=1.57, peak=0.09,
     """A seven-tooth comb under the repository's own amplitude law, placed
     `t0_frac` tooth spacings from the window centre. Around one whole spacing
     off centre, `estimate_t0`'s fold to the tooth nearest the window centre
-    picks the wrong tooth and the comb is labelled one slot out."""
+    picks the wrong tooth and the comb is labelled one slot out.
+
+    The default `two_beta` is a representative depth, not a campaign constant:
+    amendment 6 section F1 of the ruler preregistration measures the drive at a
+    median 2 beta of 1.569 over a 1.449 to 1.730 band, and 1.62 sits inside it.
+    Nothing this test asserts depends on which value inside the band is used."""
     from scipy.special import jv
     ks = np.arange(-3, 4)
     h = np.array([jv(k, two_beta) ** 2 for k in ks], dtype=float)
@@ -477,7 +482,7 @@ NEW_TRACE_COLUMNS = [
 
 def test_ruler_traces_schema_covers_the_validity_record():
     """Schema guard. The seven heights are the reason this table exists in its
-    new form: 105 traces by 7 slots is the matrix an amplitude model and any
+    new form: 104 fitted traces by 7 slots is the matrix an amplitude model and any
     audit of the labelling have to be tested against, and it was recomputed and
     thrown away on every run until now. The producer must declare every column
     and must be able to fill every one it declares."""

@@ -1,4 +1,13 @@
-*Chapter 1 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 1 of 8 · [methods index](../methods.md)*
+
+**The question.** What was measured, on what apparatus, and why does driving a
+two-photon transition from both sides remove the Doppler width?
+**Takes.** Nothing. This is the first chapter.
+**Gives.** The apparatus, the four hyperfine lines and the labels used for them
+everywhere else, and the Doppler-cancellation condition every later chapter
+assumes.
+**Skip if.** You already know the OIST 993 nm two-photon bench, in which case
+start at the lineshape chapter.
 
 ## 1. The measurement
 
@@ -7,10 +16,11 @@ itself, forming two counter-propagating fields. The beam is focused into the
 cell by a lens (L1, $f=150$ mm); a second identical lens (L2) after the cell and
 a flat mirror behind it return the beam along its own path — a self-imaging
 arrangement that re-forms the same waist at the atoms on the return pass
-([§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)). The laser frequency is slowly
+([§2.6](03_the_ac_stark_ramp.md)). The laser frequency is slowly
 swept across the two-photon $5S_{1/2}\to 6S_{1/2}$ transition while the
 resulting fluorescence is recorded versus time — one such record is a
-"trace" (mapped onto a frequency axis in [§3 — From volts to a frequency axis](05_the_frequency_ruler.md)). The observed narrow resonance
+"trace" (mapped onto a frequency axis in
+[the frequency-ruler chapter](05_the_frequency_ruler.md)). The observed narrow resonance
 arises from atoms absorbing one photon from each counter-propagating beam, for
 which the first-order Doppler shifts cancel (§1.1). The excited $6S_{1/2}$
 state can decay through several channels; here we detect only the
@@ -62,6 +72,14 @@ kernel](02_the_lineshape.md).
 
 ---
 
----
+**Where the numbers live.** Modules M0 (ingest and QC) · producers
+`scripts/run_qc.py` · results `results/qc_metrics.csv` · figures
+`figures/fig13_level_scheme.png`. The line labels, the 6S lifetime and the
+natural width are held in `rb5s6s/constants.py`.
+
+**What would falsify this.** A hyperfine assignment that put a different
+$F\to F$ pair behind one of the four wavemeter labels. The readings are
+uncalibrated, so the assignment and not the reading is what identifies a line,
+and the spacings between the four are the check on it.
 
 [← methods index](../methods.md) · [The lineshape, kernel by kernel →](02_the_lineshape.md)

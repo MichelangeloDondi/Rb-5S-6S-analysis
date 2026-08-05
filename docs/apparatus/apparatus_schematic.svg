@@ -90,7 +90,7 @@
   <text x="212" y="624" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">4</tspan> · f = 150 mm</text>
 
   <rect x="152" y="456" width="36" height="78" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
-  <text x="196" y="520" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">5</tspan> · pipe</text>
+  <text x="140" y="500" text-anchor="end" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">5</tspan> · pipe</text>
 
   <g transform="rotate(3 170 394)">
     <rect x="104" y="318" width="132" height="152" rx="12" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
@@ -125,35 +125,51 @@
   <circle cx="188" cy="72" r="2.8" fill="none" stroke="#6b6b69" stroke-width="1.2"/>
   <text x="212" y="90" font-size="12" fill="#2b2b2a" font-weight="bold">9 · flat mirror (self-imaging retro)</text>
 
-  <!-- ===================== detection: the f18 at 25 mm, through the oven aperture ===================== -->
-  <polygon points="170,440 188,416 240,416 240,464 188,464" fill="#d62728" opacity="0.6"/>
-  <rect x="188" y="410" width="46" height="60" rx="4" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
-  <path d="M 200 416 C 209 426 209 454 200 464 C 191 454 191 426 200 416 Z" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
-  <rect x="216" y="416" width="6" height="48" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="211" y="486" text-anchor="middle" font-size="10.5" fill="#d62728" font-weight="bold">795 nm</text>
+  <!-- ===================== detection: the f18 at 25 mm, through the oven aperture =====================
+       Corrected on the experimenter's delivery, 2026-08-05: the collection
+       cone opens from the fluorescence spot to the EDGE of the f18 lens and
+       is re-imaged, converging through the half-inch 795 nm filter to a
+       focus on the side window of the PMT. The PMT tube's AXIS IS PARALLEL
+       TO THE BEAM (the experimenter's "vertical" means beam-parallel, not
+       along gravity: on the bench the tube lies horizontal in the bench
+       plane, window toward the cell, as the 2025-07-18 detection photograph
+       shows, with the heat sink on the holder beside the tube). The page
+       draws the beam axis vertically, so the tube is drawn tall.
+       Half-inch optics drawn to the axis scale (12.7 mm = 15 px).
+       The electronics keep the amplifier triangle (the standard symbol) and
+       a scope box sized like the other instrument boxes, no longer the
+       largest thing on the bench. -->
+  <polygon points="170,440 200,432 200,448" fill="#d62728" opacity="0.6"/>
+  <polygon points="200,432 200,448 258,441 258,439" fill="#d62728" opacity="0.6"/>
+  <rect x="190" y="427" width="62" height="26" rx="3" fill="none" stroke="#6b6b69" stroke-width="1.5"/>
+  <path d="M 200 431 C 206 435 206 445 200 449 C 194 445 194 435 200 431 Z" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="215" y="432.5" width="5" height="15" fill="none" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="225" y="468" text-anchor="middle" font-size="10.5" fill="#d62728" font-weight="bold">795 nm</text>
 
-  <rect x="240" y="408" width="188" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="334" y="435" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">13 · PMT (R636-10, side-on)</text>
-  <text x="334" y="454" text-anchor="middle" font-size="10.5" fill="#6b6b69">in <tspan font-weight="bold" fill="#2b2b2a">12</tspan> · holder, Thorlabs PXT1/M</text>
+  <rect x="258" y="356" width="46" height="184" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <rect x="258" y="424" width="5" height="32" fill="#e8e8e6" stroke="#6b6b69" stroke-width="1"/>
+  <circle cx="262" cy="440" r="1.8" fill="#d62728"/>
   <g stroke="#6b6b69" stroke-width="2">
-    <line x1="262" y1="408" x2="262" y2="394"/><line x1="272" y1="408" x2="272" y2="394"/>
-    <line x1="282" y1="408" x2="282" y2="394"/><line x1="292" y1="408" x2="292" y2="394"/>
-    <line x1="302" y1="408" x2="302" y2="394"/>
+    <line x1="304" y1="472" x2="318" y2="472"/><line x1="304" y1="482" x2="318" y2="482"/>
+    <line x1="304" y1="492" x2="318" y2="492"/><line x1="304" y1="502" x2="318" y2="502"/>
   </g>
-  <text x="282" y="384" text-anchor="middle" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">11</tspan> · heat sink</text>
+  <text x="324" y="500" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">11</tspan> · heat sink</text>
+  <text x="312" y="374" font-size="11.5" fill="#2b2b2a" font-weight="bold">13 · PMT (R636-10, side-on)</text>
+  <text x="312" y="390" font-size="10.5" fill="#6b6b69">axis parallel to the beam, in <tspan font-weight="bold" fill="#2b2b2a">12</tspan> · holder, Thorlabs PXT1/M</text>
+  <text x="312" y="404" font-size="10.5" fill="#6b6b69">focus on the side window</text>
 
-  <text x="334" y="494" text-anchor="middle" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">10</tspan> · 795 nm filter + f = 18 mm lens</text>
-  <text x="334" y="507" text-anchor="middle" font-size="10.5" fill="#6b6b69">in a tube on the PMT holder</text>
-  <text x="334" y="520" text-anchor="middle" font-size="10.5" fill="#6b6b69">6S → 5P₁/₂ → 5S cascade</text>
+  <text x="330" y="562" text-anchor="middle" font-size="10.5" fill="#6b6b69"><tspan font-weight="bold" fill="#2b2b2a">10</tspan> · f = 18 mm lens + 795 nm filter (Ø 12.7 mm)</text>
+  <text x="330" y="575" text-anchor="middle" font-size="10.5" fill="#6b6b69">in a tube on the PMT holder</text>
+  <text x="330" y="588" text-anchor="middle" font-size="10.5" fill="#6b6b69">6S → 5P₁/₂ → 5S cascade</text>
 
-  <line x1="428" y1="440" x2="442" y2="440" stroke="#a9a9a5" stroke-width="1.4"/>
-  <polygon points="442,420 442,460 498,440" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="470" y="478" text-anchor="middle" font-size="10.5" fill="#6b6b69">preamp</text>
-  <text x="470" y="491" text-anchor="middle" font-size="10.5" fill="#6b6b69">G = 10⁶</text>
-  <line x1="498" y1="440" x2="510" y2="440" stroke="#a9a9a5" stroke-width="1.4"/>
-  <rect x="510" y="408" width="220" height="64" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
-  <text x="620" y="435" text-anchor="middle" font-size="12" fill="#2b2b2a" font-weight="bold">Keysight DSO-X 3054A</text>
-  <text x="620" y="454" text-anchor="middle" font-size="10.5" fill="#6b6b69">ch1: scan ramp · ch2: PMT</text>
+  <line x1="304" y1="440" x2="318" y2="440" stroke="#a9a9a5" stroke-width="1.4"/>
+  <polygon points="318,424 318,456 356,440" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="337" y="472" text-anchor="middle" font-size="10.5" fill="#6b6b69">preamp</text>
+  <text x="337" y="485" text-anchor="middle" font-size="10.5" fill="#6b6b69">G = 10⁶</text>
+  <line x1="356" y1="440" x2="368" y2="440" stroke="#a9a9a5" stroke-width="1.4"/>
+  <rect x="368" y="414" width="170" height="50" rx="6" fill="#ffffff" stroke="#2b2b2a" stroke-width="1.5"/>
+  <text x="453" y="435" text-anchor="middle" font-size="11.5" fill="#2b2b2a" font-weight="bold">Keysight DSO-X 3054A</text>
+  <text x="453" y="453" text-anchor="middle" font-size="10" fill="#6b6b69">two channels: scan ramp, PMT signal</text>
 
   <!-- provenance -->
   <text x="780" y="818" text-anchor="end" font-size="9.5" fill="#a9a9a5">source: docs/APPARATUS.md · hand-drawn, no regenerate script</text>

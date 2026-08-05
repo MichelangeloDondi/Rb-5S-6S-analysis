@@ -1,4 +1,14 @@
-*Chapter 5 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 5 of 8 · [methods index](../methods.md)*
+
+**The question.** How does a record of volts against time become a frequency
+axis, and how well is that axis known?
+**Takes.** The measurement chapter, for the sweep and the apparatus. It needs
+none of the lineshape chapters, which is why it can be read early.
+**Gives.** The tooth spacing and the sweep rate that turn every millisecond in
+the archive into megahertz. Every width quoted anywhere in this set is
+denominated in this axis.
+**Skip if.** You are reading for the physics of the line rather than for the
+calibration. Nothing later re-derives the axis, it only spends it.
 
 ## 3. From volts-versus-time to a frequency axis (the EOM ruler)
 
@@ -18,8 +28,8 @@ $\nu_c=(\nu_0-k\Omega)/2$, i.e. a comb of line-copies spaced by
 
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
-— the same factor-2 as [§0 — conventions](../methods.md). Fitting the tooth spacing (in ms) per block gives
-the sweep rate; we measure $0.042524(51)$ MHz/ms on the laser axis, and the
+— the same factor-2 as [§0](../methods.md). Fitting the tooth spacing (in ms) per block gives
+the sweep rate. We measure $0.042524(51)$ MHz/ms on the laser axis, and the
 sweep is linear across the window to $<0.3$%.
 
 This spacing's exactness, assumed above to calibrate the sweep rate, is now
@@ -33,8 +43,15 @@ full derivation in the audit trail
 
 A half-wave-plate trick mixes in
 amplitude modulation on the ruler traces to suppress the carrier so the
-sidebands stand tall — so the tooth *spacing* is exact, but tooth *heights*
-carry no information about the modulation depth. *Code:* `ruler.py` (M2);
+sidebands stand tall. The tooth *spacing* is exact and is read from the tooth
+positions alone. The tooth *heights* are read for two other things, which
+tooth is which and how deep the drive is, and never for the spacing. Because
+the amplitude admixture is real, the pure-phase-modulation height law below
+is an approximation rather than a law here: the second-to-first height ratio
+still gives the modulation depth to a few per cent, while the carrier height
+carries the admixture and settles nothing
+([pre-registration](../notes/ruler_validity_and_trim_prereg.md), section A2
+and amendment 6). *Code:* `ruler.py` (M2);
 $\Omega/2$ locked by a permanent test in `test_constants.py`.
 
 **How many teeth the fit must include, and what it cost to get wrong
@@ -92,13 +109,17 @@ equally:
 
 ![a ruler trace and the sweep-linearity map](../../figures/fig8_ruler.png)
 
-*A representative ruler trace with its seven-tooth comb fit (left) and the
-pooled sweep-linearity map (right): the local rate never departs from the
-block rate by more than 0.3% in any well-sampled window. Six of the seven
-teeth stand above this trace's fit residual, and the panel states why the
-seventh does not: the third-order pair carries about 2% of the first-order
-power at this modulation depth, and the scan end clips the outermost window,
-as on every recorded ruler (pre-registration amendment 4).*
+*A representative ruler trace with its seven-tooth comb fit over its
+standardized residual strip (left) and the pooled sweep-linearity map
+(right): the local rate never departs from the block rate by more than 0.3%
+in any well-sampled window. Six of the seven teeth stand above this trace's
+fit residual, and the panel states why the seventh does not: the third-order
+pair carries about 2% of the first-order power at this modulation depth, and
+the scan end clips the outermost window, as on every recorded ruler
+(pre-registration
+[amendment 4](../notes/ruler_validity_and_trim_prereg.md)). The residual strip
+carries the standardized units of the statistics chapter's §4.1, and the climb
+at the scan end is the clipped window showing itself in the evidence.*
 
 ### The comb amplitudes — and the pure-phase-modulation null
 
@@ -122,15 +143,31 @@ This explains the 2025 design compromise and prescribes its fix:
   by coherent pair interference** — the two-photon analogue of carrier
   suppression — leaving a comb $0 : 1.00 : 0.69 : 0.15$ ($k=0,\pm1,\pm2,\pm3$)
   with the ruler light *identical* to the science light.
-- **The pattern is a built-in modulation diagnostic**: pure PM demands
-  $A_{+k}=A_{-k}$ exactly; the 2025 traces violate it (e.g. $1.00$ vs $0.90$
-  at $k=\pm1$ on a T-session ruler, with block-dependent central-tooth
-  suppression) — the fingerprint of the AM admixture, visible per block. A
-  fixed-lock session could monitor modulation purity live from the tooth
-  asymmetry alone.
+- **The pattern is a built-in modulation diagnostic.** Pure phase modulation
+  demands $A_{+k}=A_{-k}$ exactly, and the 2025 traces violate it, for example
+  $1.00$ against $0.90$ at $k=\pm1$ on a T-session ruler. The carrier is where
+  the admixture concentrates: across the clean combs its height runs from
+  $0.360$ to $1.188$ of the first order and on ten of the 41 it stands *taller*
+  than the first order, while the second-to-first ratio holds to four per cent.
+  That contrast localises the residual amplitude modulation to the carrier and
+  is why the carrier height settles nothing about the labelling. A fixed-lock
+  session could monitor modulation purity live from the tooth asymmetry alone.
 
 ---
 
----
+**Where the numbers live.** Modules M2 · producers `scripts/run_ruler.py` ·
+results `results/ruler_campaign.csv`, `results/ruler_blocks.csv`,
+`results/ruler_traces.csv`, `results/ruler_nlmap.csv` · figures
+`figures/fig8_ruler.png`. Library code: `rb5s6s/ruler.py`, with $\Omega/2$
+locked by a permanent test in `tests/test_constants.py`. The validity and
+trimming rules are pre-registered in
+[the ruler specification](../notes/ruler_validity_and_trim_prereg.md), and the
+provenance of the combs themselves is [`DATA.md`](../DATA.md) §7.
 
-[← The composite model (and what does not enter it)](04_the_composite_model.md) · [The statistics →](06_the_statistics.md)
+**What would falsify this.** A comb whose teeth were spaced $\Omega$ rather
+than $\Omega/2$. Every frequency in this repository would then be a factor of
+two out, which is why the factor is held by three independent things: a
+permanent test, the five-tooth amplitude pattern, and the spacings between the
+four hyperfine labels.
+
+[← The composite model](04_the_composite_model.md) · [The statistics →](06_the_statistics.md)

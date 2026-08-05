@@ -216,7 +216,7 @@ Both conditions hold by many orders of magnitude across the full 70-130 C
 sweep, so the impact approximation's own validity is not in question for
 this system, at any density this campaign reaches. What remains open is not
 Baranger's theorem but the Lindholm-Foley $C_6\to\sigma$ conversion layered on
-top of it in M18 -- consistent with the archival bound sitting 8-14x above the
+top of it in M18 -- consistent with the archival bound sitting 8-15x above the
 $C_6$-anchored expectation (`docs/lit/zameroski2014.md`): a gap in an
 unverified prefactor and a still-non-constraining bound, not a violation of
 anything Baranger proved.

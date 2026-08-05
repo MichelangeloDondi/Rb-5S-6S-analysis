@@ -51,7 +51,7 @@ summary: >
   measured analogue of what this programme attempts: ac Stark
   -49 +- 5 Hz/(W/cm^2) (Delta_alpha = 1045 +- 107 a.u.) against our predicted
   51.23 Hz/(W/cm^2) (1093 a.u.) in an identical convention, and self-broadening
-  4.18 kHz per 1e12 cm^-3 against our beta_self(6S) anchor of 3.5. They had a
+  4.18 kHz per 1e12 cm^-3 against our beta_self(6S) anchor of 3.4. They had a
   trustworthy frequency axis and therefore never needed the lineshape.
 loci: []
 section: prior-art
@@ -82,7 +82,7 @@ mean-collapse count drops from five instances to four.
 |---|---|---|
 | ac Stark, measured | **−49 ± 5 Hz/(W/cm²)** → Δα = 1045 ± 107 a.u. | never measured |
 | ac Stark, calculated | −54 → Δα = 1152 a.u. | −51.23 → Δα = 1093 a.u. |
-| self-broadening | 99(6) kHz/mTorr @135 °C → **4.18 kHz per 10¹² cm⁻³** | β_self(6S) = 3.5 ± 0.3 (expectation) |
+| self-broadening | 99(6) kHz/mTorr @135 °C → **4.18 kHz per 10¹² cm⁻³** | β_self(6S) = 3.4 ± 0.3 (expectation) |
 | self-shift | −32.6 ± 2.0 kHz/mTorr → **−1.38 kHz per 10¹² cm⁻³** | never constrained |
 
 Their convention is *identical* to ours — 1152 a.u. reproduces 54.0 Hz/(W/cm²)

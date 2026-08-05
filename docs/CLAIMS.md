@@ -28,7 +28,7 @@ two-photon sum frequency, twice the laser frequency.
   resolved collisions, and that observation is what licenses the bound
   framing.
 - Light shift at the campaign maximum of 225 mW:
-  S₀(225 mW) < 0.27 MHz, from a joint three-session fit of every point
+  S₀(225 mW) < 0.26 MHz, from a joint three-session fit of every point
   of every power profile, minimum consistent with zero shift. The bound
   itself uses only the width-versus-power data, so it does not depend on
   the waist. The prediction it is compared against does: 0.35 MHz
@@ -36,7 +36,7 @@ two-photon sum frequency, twice the laser frequency.
   retro ratio. The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
   but not a comfortable one, and the most conservative data subset's
-  bound rises marginally above the central prediction (0.355 against
+  bound rises marginally above the central prediction (0.366 against
   0.348), so it excludes none of it. The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
@@ -59,7 +59,8 @@ two-photon sum frequency, twice the laser frequency.
   between-block scatter.
 - The two-photon amplitude laws hold within stated exceptions: peak
   amplitude scales as P² at fixed density (log-log slopes 1.83-2.12,
-  the one low slope unresolved between SNR bias and real saturation)
+  the one low slope unresolved between a fitting bias at low signal and
+  real saturation)
   and linearly with density at fixed power (slopes 0.85-1.02).
 
 **Calculated** (anchored, not fitted to this data):
@@ -147,7 +148,7 @@ under every absolute coefficient below, conditional on the knife-edge
 and the camera agreeing with the transit difference before any
 coefficient is quoted in physical units.
 
-**A fixed-lock cell session** (the specified follow-up, [PLAN.md](PLAN.md) §8)
+**A fixed-lock cell session** (the specified follow-up, [PLAN.md](PLAN.md))
 would add:
 
 - The first measured AC-Stark coefficient of the 993 nm line, from the
@@ -170,7 +171,7 @@ would add:
   150-170 °C points interleaved against the block scatter that
   co-limits the archival lever. The projection, on five temperature
   blocks per peak reaching 170 °C with the block scatter cut fourfold,
-  is the expected 3.5 kHz per 10¹² cm⁻³ rate resolved at about 10 sigma,
+  is the expected 3.4 kHz per 10¹² cm⁻³ rate resolved at about 10 sigma,
   and 3 sigma if the block scatter is not cut, so the interleaving and
   the temperature reach are co-limiting rather than one refining the
   other. Resolving the rate is not the same as knowing it: the
@@ -179,7 +180,8 @@ would add:
   measures the density directly.
 - A demonstration of the drift-immune third-cumulant readout, under a
   named condition: the ramp asymmetry reaches detection only with the
-  small-waist option (a tighter focus raises S₀ about tenfold), which
+  small-waist option (a tighter focus raises S₀ about sixteenfold over
+  the archival 64 µm waist, fourteenfold over the planned 60 µm), which
   the plan carries as a second-tier item, and the cumulant's sign
   depends on collection geometry that would have to be measured in the
   same session. The fixed lock alone does not reach this.
@@ -305,12 +307,28 @@ known intensity geometry onto a shift distribution and reading its
 cumulants, and one result closes analytically on the new geometry: the
 trap's own inhomogeneous shift is set by the atom temperature alone,
 with the trap depth and waist cancelling out of it. Two envelope figures
-size it. A hot fill would deliver of order 2.8e5 counts per second at
+size it. A hot fill would deliver of order 2.8×10⁵ counts per second at
 the usable drive power, subject to the note's own unclosed factor of 16
 to 47 between the first-principles rate and the archive's detected
 photons, and the light shift rather than the available power would set
 that drive power at about 51 mW, which is where the shift reaches the
 natural width. None of this family is claimable from the 2025 data.
+
+One further conversion needs no Ti:Sapph time at all. The differential
+polarizability of the clock pair has a steep zero crossing at 1297.5 nm,
+0.745 nm from the 6S to 7P resonance at the dipole computation's central
+inputs (multipole terms bounded below a hundredth of a picometre, the
+dipole inputs themselves worth about 75 pm per ten per cent), in the
+telecom O band where
+stabilized diodes are commodity. An auxiliary beam scanned across that
+crossing while the 993 nm lineshape is read gives a null measurement of
+the 6S to 7P matrix element at about the 3 per cent level at the
+projected campaign shift precision, a sign-reversal test of the
+asymmetry channel, and a calibrated shift injector at 3.6 kHz per
+picometre. The design and its envelope numbers are section 5.1 of
+[FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md). Not
+claimable from the 2025 data, and the crossing is deliberately absent
+from the magic-wavelength list, whose criterion is usability as a trap.
 
 The dependency map, which measurement unlocks which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).
@@ -370,6 +388,18 @@ it at, with the condition attached:
   times the session length before it can catch even a convention error.
   That audience is served by a longer session or a looser focus, not by
   the design as it stands.
+- The O-band null at 1297.5 nm would deliver the 6S to 7P matrix element
+  by frequency metrology, at about the 3 per cent level at the projected
+  campaign shift precision, in a channel where no measurement exists,
+  since a 7P lifetime sums its decay channels and ground-state
+  absorption never reaches it. The audience is the all-order
+  atomic-structure methods, which run unbenchmarked on
+  excited-to-excited channels, and the same dataset would carry the
+  sign-reversal test of this archive's asymmetry channel. The condition
+  is one commodity diode and the fixed-lock session's shift precision,
+  with the design and its envelope in
+  [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
+  section 5.1.
 - Three or more rungs together would turn per-line coefficients into
   scaling laws in the principal quantum number, which discriminate a
   calculation more sharply than any single value. The audience is the

@@ -58,12 +58,19 @@ PRIVATE_GLOBS = ["private/*", "private/**/*", "CLAUDE.md", "docs/brief_*", "docs
                  # carrying literal [X] placeholders and "once the headline
                  # framing is agreed" is a working draft, not a result
                  "docs/PAPER1_SKELETON.md", "docs/paper1/*",
-                 "docs/reference_setup/NOTES.md"]
+                 "docs/reference_setup/*", "docs/reference_setup/**/*",
+                 "docs/*.tex"]
 # docs/reference_setup/NOTES.md joined the globs on 2026-08-02 after a broad
 # `git add docs/` re-tracked it twice in one night past the restore-staged
-# discipline. Whether the notes are ever published stays an open decision;
+# discipline. Whether the notes are ever published stays an open decision, and
 # until it is decided, tracking them is an error this test makes loud. The
-# photos were always excluded (serials and a name).
+# photos were always excluded (serials and a name). 2026-08-05: the entry became
+# the whole directory, because the one tracked file under it was an operator
+# instruction sheet in photos/ that advertised what was being withheld.
+# docs/*.tex joined the same day. Three private files sat in docs/ held out by
+# filename globs alone, which is the failure mode this list already records
+# once, and they now live under private/ with the glob as the second line of
+# defence.
 
 
 def test_no_private_documents_tracked():
@@ -518,6 +525,33 @@ def test_module_range_glosses_are_not_stale():
             if hi < top and not historical:
                 stale.append(f"{path.relative_to(ROOT)}: 'M0-M{hi}' but modules run to M{top}")
     assert not stale, "\n".join(stale)
+
+
+def test_every_module_code_in_methods_is_in_the_module_grid():
+    """Every `M<n>` written anywhere in `docs/methods.md` must appear in the
+    module grid table.
+
+    The guard above reads the MAXIMUM code, so it cannot see a hole, and the
+    grid heading writes `M0 ... M24 ...` with an ellipsis, which defeats that
+    guard's range regex besides. Neither notices a module that ships, gets
+    named in the script map, and never reaches the grid a reader consults.
+    Membership is the check that works.
+
+    Sub-stage codes (M4b, M4e) are deliberately outside the pattern: the word
+    boundary after the digits excludes them, exactly as in the range guard.
+    """
+    text = (ROOT / "docs" / "methods.md").read_text(encoding="utf-8")
+    grid = {int(n) for line in text.splitlines()
+            if line.lstrip().startswith("|")
+            for n in re.findall(r"\bM(\d+)\b", line)}
+    assert grid, "no module grid table found in docs/methods.md"
+    used = {int(n) for n in re.findall(r"\bM(\d+)\b", text)}
+    missing = sorted(used - grid)
+    assert not missing, (
+        "modules named in docs/methods.md but absent from its module grid: "
+        + ", ".join(f"M{n}" for n in missing)
+        + ". Add a grid row for each, and widen the grid heading's range to "
+          "match.")
 
 
 def test_sigma_sharing_producer_does_not_overclaim():

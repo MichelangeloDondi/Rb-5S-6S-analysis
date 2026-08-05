@@ -27,15 +27,16 @@ __pycache__/
 # source-literature PDFs (possibly copyrighted): keep the index + bib, not the PDFs
 PDF_papers/
 
-# reference-setup lab photos (carry equipment serials + a purchaser name): keep
-# the transcription/notes, not the images, out of the public repo
-# The setup notes: publication is an open decision (they name a colleague in
-# a process role). Twice in one night a broad `git add docs/` re-tracked them
-# past the restore-staged discipline, so the guard is now structural. To
-# publish later: delete this line and curate the content first.
-docs/reference_setup/NOTES.md
-docs/reference_setup/photos/*
-!docs/reference_setup/photos/DROP_PHOTOS_HERE.md
+# The reference-setup working directory, excluded whole. The photos carry
+# equipment serials and a purchaser name, and the transcription beside them
+# names a colleague in a process role, so publication is an open decision.
+# Twice in one night a broad `git add docs/` re-tracked the notes past the
+# restore-staged discipline, so the guard is structural rather than per file.
+# 2026-08-05: the one tracked file under it, an operator instruction sheet in
+# photos/, was untracked too. It told a reader what was being withheld and
+# pointed at a file this list excludes, and the path the figure code reads is
+# in the code. To publish later: delete this line and curate the content first.
+docs/reference_setup/
 
 # Personal / correspondence working files kept in the tree for convenience but
 # never published. These were previously protected only by .git/info/exclude,
@@ -86,8 +87,13 @@ docs/linkedin*
 docs/apparatus/*.pdf
 docs/*.pdf
 .venv/
+# 2026-08-05: two application drafts sat in docs/ held out by `docs/brief_*` and
+# `docs/CV_*` alone, one of them naming a colleague. They moved to private/, and
+# this glob is the second line of defence for the next one.
+docs/*.tex
 
 # local tool scratch and nested checkouts. Nothing here has ever been tracked,
 # and a stray worktree underneath would otherwise be swept up by the broad
 # `git add -A` this repo commits with.
 .claude/
+docs/reference_setup/photos/

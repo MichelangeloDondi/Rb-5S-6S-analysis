@@ -1,53 +1,53 @@
 quantity,key,value,err,unit,status
 kappa_min,primary,0.00,,"MHz per W; profile minimum, four-point priors, dir -1; NOT a detection (see dchi2_kappa0)",DIAGNOSTIC
 dchi2_kappa0,primary,0.00,,chi2(kappa=0) - chi2(min); the strength of the kappa>0 preference,DIAGNOSTIC
-kappa_ub95,primary,0.943,,MHz per W; 95% one-sided profile-likelihood bound over the FULL archive (negative kappa is flat by construction: the ramp model only broadens red),BOUND
+kappa_ub95,primary,0.944,,MHz per W; 95% one-sided profile-likelihood bound over the FULL archive (negative kappa is flat by construction: the ramp model only broadens red),BOUND
 S0_225mW_ub95,primary,0.212,,"MHz, transition axis; full-archive bound at the campaign's maximum power",BOUND
-S0_270mW_ub95,primary,0.254,,MHz; at the rehearsal's maximum power,BOUND
+S0_270mW_ub95,primary,0.255,,MHz; at the rehearsal's maximum power,BOUND
 kappa_pred,prediction,1.545,,"MHz per W; the PREDICTED coefficient at the current priors (w0 = 64 um, rho = 0.94), computed from constants",CALIB
 S0_225mW_pred,prediction,0.348,,"MHz, transition axis; the prediction at 225 mW",CALIB
-kappa_ub95_camponly,robustness,0.639,,"MHz per W; campaign rows of the same profile (power AND temperature ladders), so the bound does not lean on the rehearsal's soft rate anchor",BOUND
-kappa_ub95_pladder,robustness,0.696,,"MHz per W; campaign POWER-ladder rows only -- the M23 trace set inside this fit, so the difference from the primary is what the temperature ladder adds",BOUND
+kappa_ub95_camponly,robustness,0.864,,"MHz per W; campaign rows of the same profile (power AND temperature ladders), so the bound does not lean on the rehearsal's soft rate anchor",BOUND
+kappa_ub95_pladder,robustness,0.874,,"MHz per W; campaign POWER-ladder rows only -- the M23 trace set inside this fit, so the difference from the primary is what the temperature ladder adds",BOUND
 kappa_min_wing,robustness,0.00,,MHz per W; minimum with the red-wing nuisance free,DIAGNOSTIC
-kappa_ub95_wing,robustness,0.951,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
-direction_dchi2_max,robustness,8.66,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,DIAGNOSTIC
-basin_gap_max,robustness,0.78,,"chi2; worst (best cold chain - best seeded chain) over the families that have both. Large = a cold chain parked, and the pointwise minimum already discarded it",DIAGNOSTIC
-kappa_ub95_drop4192,robustness,1.423,,"MHz per W; 95% bound with peak 4192 dropped, which removes the ENTIRE pilot session -- the most conservative subset",BOUND
+kappa_ub95_wing,robustness,0.959,,"MHz per W; bound with the wing marginalized -- quote alongside the primary, the gap IS the wing systematic",BOUND
+direction_dchi2_max,robustness,8.35,,max |chi2 difference| between rehearsal axis directions across the profile; small = indifferent,DIAGNOSTIC
+basin_gap_max,robustness,0.82,,"chi2; worst (best cold chain - best seeded chain) over the families that have both. Large = a cold chain parked, and the pointwise minimum already discarded it",DIAGNOSTIC
+kappa_ub95_drop4192,robustness,1.421,,"MHz per W; 95% bound with peak 4192 dropped, which removes the ENTIRE pilot session -- the most conservative subset",BOUND
 S0_225mW_ub95_drop4192,robustness,0.320,,MHz; the drop-4192 bound at 225 mW,BOUND
-lopo_dchi2_pred,4121,+11.52,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4121,+36.37,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
+lopo_dchi2_pred,4121,+11.48,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4121,+36.33,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
 lopo_dchi2_pred,4154,+3.92,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4154,+14.80,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
-lopo_dchi2_pred,4192,+3.15,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4192,+11.22,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
+lopo_dchi2_262,4154,+14.84,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
+lopo_dchi2_pred,4192,+3.17,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
+lopo_dchi2_262,4192,+11.28,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
 lopo_dchi2_pred,4207,+3.56,,chi2(kappa_pred) - min with this peak dropped; all positive and similar = no single peak drives it,DIAGNOSTIC
-lopo_dchi2_262,4207,+13.64,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
-beta_self_post,4121,0.01791,2.29,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01553+/-0.00104 (err column: the tension in prior sigmas),PRELIM
-gamma_coll_post_130C,4121,0.527,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
+lopo_dchi2_262,4207,+13.66,,chi2(kappa=2.62) - min with this peak dropped,DIAGNOSTIC
+beta_self_post,4121,0.01794,2.24,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01561+/-0.00104 (err column: the tension in prior sigmas),PRELIM
+gamma_coll_post_130C,4121,0.528,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
 reh_rate,4121,0.01275,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-beta_self_post,4154,0.01847,0.75,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01803+/-0.00059 (err column: the tension in prior sigmas),PRELIM
+beta_self_post,4154,0.01847,0.71,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01805+/-0.00059 (err column: the tension in prior sigmas),PRELIM
 gamma_coll_post_130C,4154,0.544,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
 reh_rate,4154,0.01356,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-beta_self_post,4192,0.01565,3.77,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01307+/-0.00068 (err column: the tension in prior sigmas),PRELIM
+beta_self_post,4192,0.01566,3.78,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01307+/-0.00068 (err column: the tension in prior sigmas),PRELIM
 gamma_coll_post_130C,4192,0.461,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
 reh_rate,4192,0.01252,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
-beta_self_post,4207,0.01897,1.19,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01792+/-0.00088 (err column: the tension in prior sigmas),PRELIM
-gamma_coll_post_130C,4207,0.558,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
+beta_self_post,4207,0.01893,1.29,MHz per 1e12 cm^-3; posterior under the four-point prior 0.01780+/-0.00088 (err column: the tension in prior sigmas),PRELIM
+gamma_coll_post_130C,4207,0.557,,"MHz; the same posterior expressed as a collisional width at 130 C, comparable with M23's row",PRELIM
 reh_rate,4207,0.01204,,"MHz per ms, transition; fitted rehearsal scan rate",CALIB
 sigma_laser_s,camp70,2.031,,"MHz, transition axis; session-block population mean",PRELIM
 sigma_laser_s,camp90,2.198,,"MHz, transition axis; session-block population mean",PRELIM
 sigma_laser_s,camp110,2.102,,"MHz, transition axis; session-block population mean",PRELIM
 sigma_laser_s,camp130,1.782,,"MHz, transition axis; session-block population mean",PRELIM
-sigma_laser_s,reh,2.417,,"MHz, transition axis; session-block population mean",PRELIM
+sigma_laser_s,reh,2.418,,"MHz, transition axis; session-block population mean",PRELIM
 sigma_laser_s,pil,1.417,,"MHz, transition axis; session-block population mean",PRELIM
 sigma_laser_sp,camp110_4121,2.093,-0.009,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp110 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp110_4154,1.964,-0.138,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp110 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp110_4192,2.134,+0.031,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp110 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp110_4207,2.219,+0.116,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp110 mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,camp130_4121,1.759,-0.023,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,camp130_4121,1.758,-0.024,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp130_4154,1.704,-0.078,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,camp130_4192,1.844,+0.062,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,camp130_4207,1.821,+0.039,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,camp130_4192,1.843,+0.061,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,camp130_4207,1.823,+0.041,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp130 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp70_4121,2.069,+0.038,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp70 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp70_4154,1.901,-0.130,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp70 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp70_4192,2.079,+0.048,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp70 mean (err column: the deviation from it)",PRELIM
@@ -57,10 +57,10 @@ sigma_laser_sp,camp90_4154,2.219,+0.021,"MHz, transition axis; per-(block, peak)
 sigma_laser_sp,camp90_4192,2.288,+0.089,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp90 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,camp90_4207,1.984,-0.214,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the camp90 mean (err column: the deviation from it)",PRELIM
 sigma_laser_sp,pil_4192,1.417,-0.000,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the pil mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,reh_4121,2.747,+0.331,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,reh_4154,3.068,+0.651,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,reh_4192,2.222,-0.194,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
-sigma_laser_sp,reh_4207,1.630,-0.787,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,reh_4121,2.748,+0.331,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,reh_4154,3.069,+0.651,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,reh_4192,2.222,-0.195,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
+sigma_laser_sp,reh_4207,1.631,-0.787,"MHz, transition axis; per-(block, peak) sigma_laser under a 150 kHz shrinkage prior toward the reh mean (err column: the deviation from it)",PRELIM
 Vsat_agilent,nuisance,403.4,,"V; detector saturation, campaign and pilot -- large = linear",DIAGNOSTIC
 Vsat_lecroy,nuisance,403.4,,"V; detector saturation, rehearsal",DIAGNOSTIC
 pilot_rate_scale,nuisance,0.9992,,"pilot axis = campaign 4192 bracket rate x this factor, box = measured M26 value +/- 5 sigma",CALIB
@@ -70,32 +70,32 @@ qc_gate_a2_dropped,count,0,,condition groups dropped for fewer than 3 admitted r
 railed_expected,nuisance,2,,"shared parameters railed where railing is the EXPECTED answer rather than a fault (a saturation ceiling means the detector ran linear): Vsat_agilent=6 at its hi bound, Vsat_lecroy=6 at its hi bound",DIAGNOSTIC
 railed_flagged,nuisance,0,,"shared nuisances railed, reported and not stopped: none",DIAGNOSTIC
 gate_B1_census,PASS,231,exactly 231,STOP CLASS. trace count entering the fit; a silent loader change is what this catches,DIAGNOSTIC
-gate_B2_chi2_per_point,PASS,0.667465,"[0.3, 3.0]",chi2 at the profile minimum per fitted point,DIAGNOSTIC
+gate_B2_chi2_per_point,PASS,0.667464,"[0.3, 3.0]",chi2 at the profile minimum per fitted point,DIAGNOSTIC
 gate_B3_railed_physics,PASS,0,zero,"STOP CLASS. beta_self, sigma_laser or rehearsal-rate parameters on a bound: none",DIAGNOSTIC
-gate_B4_prior_tension,FAIL,3.76984,< 3.0 sigma,largest |posterior - prior| / prior error over the four peaks,DIAGNOSTIC
-gate_B5_ub95_in_grid,PASS,0.942516,finite,"STOP CLASS. the 95% crossing must exist inside the kappa grid, not beyond it",DIAGNOSTIC
-gate_B6_basin_gap,PASS,0.782172,<= 1000.0,"best cold chain minus best seeded chain; the pointwise minimum keeps the profile safe either way, so this is a flag and not a stop",DIAGNOSTIC
-gate_B7_direction_delta,PASS,8.66051,< 1000.0,"max |chi2 difference| between rehearsal axis directions; thousands means a parked chain, not a physical preference",DIAGNOSTIC
+gate_B4_prior_tension,FAIL,3.78017,< 3.0 sigma,largest |posterior - prior| / prior error over the four peaks,DIAGNOSTIC
+gate_B5_ub95_in_grid,PASS,0.943929,finite,"STOP CLASS. the 95% crossing must exist inside the kappa grid, not beyond it",DIAGNOSTIC
+gate_B6_basin_gap,PASS,0.817405,<= 1000.0,"best cold chain minus best seeded chain; the pointwise minimum keeps the profile safe either way, so this is a flag and not a stop",DIAGNOSTIC
+gate_B7_direction_delta,PASS,8.35086,< 1000.0,"max |chi2 difference| between rehearsal axis directions; thousands means a parked chain, not a physical preference",DIAGNOSTIC
 gate_B8_dchi2_kappa0,PASS,0,< 9.0,"above this the profile prefers a positive shift at better than 3 sigma, which is a detection claim and needs a decision",DIAGNOSTIC
-profile_point,0.00,198202.95,43303.99,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.25,198203.11,43302.84,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.50,198203.68,43304.98,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,0.75,198204.57,43306.00,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.00,198205.98,43307.34,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.50,198210.25,43309.81,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,1.54,198210.72,43312.68,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.00,198216.55,43311.30,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,2.62,198228.70,43321.50,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,3.50,198255.77,43338.22,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point,5.00,198346.19,43386.70,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
-profile_point_pladder,0.00,31345.04,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,0.25,31344.04,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,0.50,31345.97,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,0.75,31346.96,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,1.00,31348.28,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,1.50,31350.86,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,1.54,31353.45,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,2.00,31352.75,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,2.62,31362.70,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,3.50,31379.36,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
-profile_point_pladder,5.00,31426.85,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point,0.00,198202.87,43303.83,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.25,198203.03,43302.84,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.50,198203.59,43304.88,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,0.75,198204.48,43304.21,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.00,198205.89,43307.15,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.50,198210.13,43311.61,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,1.54,198210.62,43311.92,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.00,198216.41,43312.41,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,2.62,198228.61,43326.84,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,3.50,198255.77,43338.69,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point,5.00,198346.15,43386.42,"chi2 total (value) and campaign-only (err column), primary settings",DIAGNOSTIC
+profile_point_pladder,0.00,31344.88,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,0.25,31344.03,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,0.50,31345.85,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,0.75,31345.38,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,1.00,31348.09,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,1.50,31352.42,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,1.54,31352.73,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,2.00,31353.69,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,2.62,31367.32,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,3.50,31379.70,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC
+profile_point_pladder,5.00,31426.57,,chi2 of the campaign power-ladder rows alone at the same primary settings,DIAGNOSTIC

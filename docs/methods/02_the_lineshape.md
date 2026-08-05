@@ -1,4 +1,16 @@
-*Chapter 2 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 2 of 8 · [methods index](../methods.md)*
+
+**The question.** What sets the width of a line this narrow, mechanism by
+mechanism, and which of those mechanisms the archive can actually separate.
+**Takes.** The measurement chapter for the apparatus and the Doppler
+cancellation. It forward-references the AC-Stark ramp and the results chapter
+inside the transit section.
+**Gives.** The four kernels the composite model convolves, the Voigt
+degeneracy the statistics chapter has to manage, and the waist prior every
+absolute number is conditional on.
+**Skip if.** You want the results rather than their derivation. The one thing
+to carry away is that transit and laser width trade against each other through
+$w_0$.
 
 ## 2. The lineshape, derived mechanism by mechanism
 
@@ -53,7 +65,7 @@ Two features matter later: the Lorentzian has slowly-decaying **wings**
 precisely — the $6S\to5P\to5S$ cascade adds **no** width to *this* line. The
 natural linewidth of the $5S\to6S$ transition is set by the lifetime of the
 excited $6S$ state; that measured $6S$ lifetime already includes *all* of its
-radiative decay channels ([§1 — The measurement](01_the_measurement.md)), so the subsequent $5P\to5S$ decay affects only
+radiative decay channels ([the measurement chapter](01_the_measurement.md)), so the subsequent $5P\to5S$ decay affects only
 the linewidth of the *emitted* 795 nm fluorescence, not that of the excitation
 resonance. Put differently: the transition whose frequency is scanned (the
 $5S\to6S$ two-photon resonance) determines the measured linewidth, not the
@@ -97,7 +109,7 @@ correlation); $\gamma_\text{coll}$ enters the fits in `linefit.py`/`beta.py`.
 ### 2.3 Laser linewidth — and why it enters *twice*
 
 Let the instantaneous laser frequency be $\nu_L(t)=\bar\nu_L+\delta(t)$, with
-$\delta$ the frequency jitter. Unlike the Doppler shift ([§1.1 — The measurement](01_the_measurement.md)), which has
+$\delta$ the frequency jitter. Unlike the Doppler shift ([§1.1](01_the_measurement.md)), which has
 opposite signs for the two counter-propagating photons and therefore cancels,
 the laser-frequency fluctuation is common to both photons — the same source,
 retro-reflected onto itself — and therefore adds. For the counter-propagating
@@ -120,10 +132,11 @@ nanofibre study on this same line ([Gokhroo 2022](../lit/gokhroo2022.md), J. Phy
 same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
 linewidth rather than to the 2025 lock's behaviour — but it is consistent with
-the shape-based bound $\sigma_\text{laser} < 1.1$ MHz (laser axis) found here, and it
+the shape-based bound $\sigma_\text{laser} < 1.2$ MHz (laser axis) found here, and it
 is the only published number for this laser on this line. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
-**upper bound** (it is degenerate with the transit width; see §2.5 and [§5 — What we found (2025 archive)](07_what_we_found.md)).
+**upper bound** (it is degenerate with the transit width; see §2.5 and
+[what we found](07_what_we_found.md)).
 A direct beam-profile measurement of $w_0$ turns this into a measurement by removing the
 transit degeneracy, not by adding an independent check on the laser itself —
 $\sigma_\text{laser}$ stays a lineshape-fit result throughout. *Code:*
@@ -184,7 +197,11 @@ $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 and module **M9** (`transit_mc.py`) computes the kernel for *our* exact
 conditions — a Monte-Carlo of 3D Maxwell–Boltzmann atoms crossing the full
 $w(z)$ with $I^2$ weighting and the collection profile, i.e. it *builds in*
-objections (1) and (2) above (which the analytic forms idealize away). Two lessons come out of it. First, the real kernel is *more cusped*
+the two idealizations the analytic forms make. The first is a beam of constant
+waist crossed in a plane, where a real atom moves in three dimensions through
+the full $w(z)$. The second is an unweighted average over trajectories, where
+the two-photon signal weights each atom by $I^2$ and the collection optics see
+only part of the beam. Two lessons come out of it. First, the real kernel is *more cusped*
 than a Gaussian (excess kurtosis $\sim3$, close to the two-sided exponential's
 value) — a **finite** cusp once the crossing-flux weight is included (an earlier
 version omitted it, weighting $\propto1/v$ near $v=0$, and produced a spurious
@@ -196,16 +213,18 @@ $64\ \mu$m prior (it was $\sim1.2$ MHz at the superseded $50\ \mu$m prior). At
 32 µm that is large enough that
 natural$\otimes$transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
-through $w_0$ ([§5 — What we found (2025 archive)](07_what_we_found.md)).
+through $w_0$ ([what we found](07_what_we_found.md)).
 
 **Independent corroboration.** The same 993 nm beamline was measured directly by
 [Nieddu](../lit/nieddu2019.md) (2019, Opt. Express and OIST thesis) and by [Rajasree-KP](../lit/rajasree2020.md) (2020, OIST
 thesis), both reporting a $1/e^2$ beam diameter of 128 µm with the same $f=150$
 mm focusing lens — i.e. $w_0=64$ µm, with the same 3 mm EOM aperture truncating
 the input beam that the naive (untruncated) estimate misses. That direct
-measurement lands at the top of the transit-inferred 45–70 µm band and
-independently excludes 32 µm, agreeing with the corrected transit physics on
-$w_0\approx50$–64 µm. [Nieddu](../lit/nieddu2019.md) additionally reports the same four two-photon peaks
+measurement lands at the top of the transit-inferred band and independently
+excludes 32 µm, agreeing with the corrected transit physics. The adopted prior
+is $w_0=64$ µm with a 60–70 µm band, and the wider 45–70 µm and 50–64 µm bands
+this section reached on the way there are superseded by it.
+[Nieddu](../lit/nieddu2019.md) additionally reports the same four two-photon peaks
 at 2.43–2.60 MHz FWHM (laser axis, $\approx5$ MHz transition axis) with a
 locked laser — consistent with the archival $\approx5.25$ MHz line.
 
@@ -252,7 +271,7 @@ distort the mode. The trade-off is real, though: the knife-edge *assumes* a
 Gaussian, returning a best-fit $w$ whether or not the beam is one. A camera
 image is the natural complement, since it shows astigmatism, ellipticity, and
 any diffraction structure from aperture clipping — the very effect that makes
-the archival $w_0$ uncertain — and [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
+the archival $w_0$ uncertain — and [§2.6](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
 $I(r)$, so confirming Gaussianity would be a useful check rather than an
 assumption. The planned $z$-scan (PLAN §4) already covers part of this for
 free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
@@ -263,12 +282,13 @@ error without an independent image.
 
 Why $w_0$ matters most here: $w_0$ sets the **transit width**
 ($\propto 1/w_0$, §2.5) *and* every AC-Stark magnitude ($\propto 1/w_0^2$,
-[§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md)), and it is **degenerate with $\sigma_\text{laser}$** in the fits (§2.4,
-[§5 — What we found (2025 archive)](07_what_we_found.md)) — so as long as $w_0$ is only the clipped-beam prior, the transit/laser
+[§2.6](03_the_ac_stark_ramp.md)), and it is **degenerate with $\sigma_\text{laser}$** in the fits (§2.4,
+[what we found](07_what_we_found.md)) — so as long as $w_0$ is only the clipped-beam prior, the transit/laser
 split and all absolute coefficients stay PRELIMINARY. Measuring $w_0$ directly
 in a fixed-lock session would collapse that degeneracy: transit becomes fixed, the leftover
-Gaussian is then unambiguously the laser (turning the [§5 — What we found (2025 archive)](07_what_we_found.md) $\sigma_\text{laser}$
-*bound* into a measurement, retroactively for the 2025 data too), and $\beta_\text{self}$
+Gaussian is then unambiguously the laser (turning the $\sigma_\text{laser}$
+*bound* of [what we found](07_what_we_found.md) into a measurement,
+retroactively for the 2025 data too), and $\beta_\text{self}$
 and the Stark coefficient acquire their absolute scale. It constrains more
 downstream numbers than any other single measurement, which is why the
 specification in PLAN §3 puts it at the top of the priority order — and why it
@@ -276,5 +296,18 @@ is worth doing even on its own: it needs the beam, not the full session, and it
 retroactively sharpens the existing archive.
 
 ---
+
+**Where the numbers live.** Modules M3, M5, M9, M18 · producers
+`scripts/run_linefit.py`, `scripts/run_laser_epoch.py`,
+`scripts/run_transit_mc.py` · results `results/linefit_conditions.csv`,
+`results/laser_epoch.csv`, `results/transit_mc.csv` · figures: none of its own,
+the kernels are seen in the fit panels of later chapters. Library code:
+`rb5s6s/lineshape.py`, `rb5s6s/transit_mc.py`, `rb5s6s/density.py`,
+`rb5s6s/vanderwaals.py`.
+
+**What would falsify this.** A direct beam-profile measurement of $w_0$ that
+disagreed with the transit width the fits return at the adopted prior. Every
+absolute width in this chapter is conditional on that one number, and the
+measurement can fall either side of it.
 
 [← The measurement](01_the_measurement.md) · [The AC-Stark ramp →](03_the_ac_stark_ramp.md)

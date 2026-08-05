@@ -1,4 +1,14 @@
-*Chapter 6 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 6 of 8 · [methods index](../methods.md)*
+
+**The question.** What makes a width taken from this archive an honest number
+rather than a confident one?
+**Takes.** The lineshape, AC-Stark and composite-model chapters, whose
+parameters are the ones being fitted.
+**Gives.** The pre-registered rule that decides measurement against bound, and
+the error budget every result in the next chapter carries.
+**Skip if.** You are reading for the physics rather than the inference. This is
+the longest chapter in the set at over four hundred lines, and §4.5 alone
+carries the rule the headline results turn on.
 
 ## 4. The statistics, from first principles
 
@@ -13,6 +23,11 @@ $$\sigma^2(V)=a^2+bV$$
 per condition and use it as the weights. Unweighted fitting would let the
 bright peak dominate and would misstate every error bar; using the measured
 $\sigma(V)$ is what makes the reported uncertainties meaningful.
+
+That law also sets the unit of every residual panel in this repository. A
+residual strip is plotted in units of each point's own $\sigma(V)$ under its
+block's noise law, so a value of one is a one-sigma miss wherever on the trace
+it sits.
 
 ### 4.2 Hierarchical fitting — share what physics shares, free what drifts
 
@@ -92,7 +107,7 @@ results ledger (`docs/RESULTS.md`).
 
 ### 4.3 The degeneracy and the full covariance
 
-Because of the Voigt near-degeneracy ([§2.4 — The lineshape, kernel by kernel](02_the_lineshape.md)), a single-condition fit returns
+Because of the Voigt near-degeneracy ([§2.4](02_the_lineshape.md)), a single-condition fit returns
 $\sigma_\text{laser}$ and $\gamma_\text{coll}$ with correlation
 $\approx-0.85$: individually shaky, sum robust. We therefore (i) always report
 the full covariance, and (ii) design $\beta_\text{self}$ to ride on the
@@ -119,7 +134,7 @@ $\sigma^2=a^2+bV$ then gives $a$ (electronics/dark floor) and $b$ (the
 shot-noise, "Fano", term). Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
 $\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in
-$T$ (the trapping test of [§2.7 — The composite model (and what does not enter it)](04_the_composite_model.md)) and $\tau_\text{int}$ small. *Code:*
+$T$ (the trapping test of [§2.7](04_the_composite_model.md)) and $\tau_\text{int}$ small. *Code:*
 `noise.py`.
 
 ### 4.5 Statistics versus systematics — the measurement-vs-bound rule
@@ -141,14 +156,14 @@ model-independent:
    otherwise report a **bound**.
 
 Deciding this rule *before* looking is what separates a supported answer from
-the overconfident one (see [§5 — What we found (2025 archive)](07_what_we_found.md)). *Code:* `beta.collisional_slope()`,
+the overconfident one (see [what we found](07_what_we_found.md)). *Code:* `beta.collisional_slope()`,
 `scripts/run_beta_self.py`.
 
 ### 4.6 Validation on synthetic data before real data
 
 No fitter is allowed near real data until it recovers *known* injected truths
-from campaign-like synthetics — checking bias, error coverage, and the
-degeneracy — across 113 tests. Then every headline conclusion is re-derived by
+from campaign-like synthetics, checking bias, error coverage, and the
+degeneracy. Then every headline conclusion is re-derived by
 an **independent method** (e.g. the sweep rate by FFT and autocorrelation; the
 noise law by differencing sibling repeats). Several of our own bugs were caught
 exactly this way; the verification records live in the module docstrings.
@@ -160,19 +175,19 @@ quoted intervals cover, the degeneracies behave, all of it **under the
 simulated generative model**. It cannot validate the model itself: whether
 the physical lineshape is the right one, whether a mechanism is missing, or
 whether the real noise matches the simulated law. Those questions need
-different evidence, and in this analysis they get it from the nested
-model ladder (§4.9) lets the data reject or demand each component, the
-model-form comparison (M15) asks whether the archive can even distinguish
-competing kernels (it cannot, and that limit is reported rather than
-resolved by assumption), the noise law is *measured* from sibling repeats
-(§4.4) rather than assumed, and the residual audits look for structure no
-fitted component absorbs. Closure certifies the machinery. The physics has
+different evidence, and in this analysis they get it
+elsewhere. The nested model ladder (§4.9) lets the data reject or demand each
+component. The model-form comparison asks whether the archive can even
+distinguish competing kernels, and it cannot, which is reported rather than
+resolved by assumption. The noise law is *measured* from sibling repeats
+(§4.4) rather than assumed. The residual audits look for structure no fitted
+component absorbs. Closure certifies the machinery. The physics has
 to earn its place separately.
 
 ### 4.7 Choosing between competing lineshapes — the BIC
 
 To ask *which* model form the data prefer — a smooth Gaussian extra-broadening
-(a Voigt) versus the cusped transit exponential (the Lehmann shape, [§2.5 — The lineshape, kernel by kernel](02_the_lineshape.md)) — we
+(a Voigt) versus the cusped transit exponential (the Lehmann shape, [§2.5](02_the_lineshape.md)) — we
 compare the **Bayesian information criterion**
 
 $$\text{BIC}=\chi^2+k\ln N$$
@@ -183,7 +198,7 @@ the better fit worth its extra parameters?". Lower BIC wins; on the
 Kass–Raftery scale $|\Delta\text{BIC}|<2$ is "indistinguishable" and $>10$ is
 "decisive". Voigt and Lehmann have the *same* $k$, so their comparison is
 essentially which shape fits better. This is the tool for the Lehmann-cusp
-test (module M8; [§5 — What we found (2025 archive)](07_what_we_found.md)). *Code:* `modelform.py`.
+test, and [what we found](07_what_we_found.md) reports what it returned.
 
 ### 4.8 Restricting the fit window — the off-center-sweep mirror
 
@@ -196,11 +211,29 @@ line fits are restricted to a window around each trace's peak, wide enough to
 keep the fat Lorentzian wings (where $\gamma_\text{coll}$ lives — cutting too
 tight would bias it) but tight enough to exclude the mirror: $\pm3.5\times$ the
 trace's own measured FWHM, clipped to $[9,25]$ MHz. The rulers need no such cut
-— a symmetric-triangle fold preserves the tooth *spacing*, so the ruler rate is
-intrinsically fold-robust (only a single line, which literally appears twice,
-is at risk). *Code:* `linefit.adaptive_halfwidth()`.
+on the same grounds. A symmetric triangle has the same rate magnitude on both
+ramps, so a fold preserves the tooth *spacing* of a correctly labelled comb,
+while a single line simply appears twice. That argument covers the spacing and
+not the labelling. A mirror landing in an outer slot is fitted as a tooth, and
+because it lands at a radius smaller than the slot it occupies the rigid grid
+contracts to reach it, which is the separate failure the tooth-numbering ladder
+and the excision rung address
+([the ruler specification](../notes/ruler_validity_and_trim_prereg.md) §1, and
+[`DATA.md`](../DATA.md) §7). Its disposition lands with the recompute's
+addendum and is not settled here.
 
-### 4.9 Is each component warranted? — the nested model ladder (M11)
+The window and the residual-tail trimmer are two guards against the same
+contamination, and the window gets there first. The trimmer walks outward only
+within the fitted samples, so a trim census reading zero on line fits is a fact
+about the order of the guards and not about the data. Line traces with a rising
+tail exist: three of the five repeats of the 993.4207 nm line at 130 °C and
+25 mW carry an unmistakable one. Whether the window sits in the right place is
+open. The cap that excludes the retrace is a fixed number of megahertz while
+the crossing moves with the sweep rate the ruler work has just re-measured, and
+the frequency-calibration red team owns that check. *Code:*
+`linefit.adaptive_halfwidth()`.
+
+### 4.9 Is each component warranted? The nested model ladder
 
 §4.7's BIC compares two *shapes* with the same parameter count. A stricter
 question is whether each physical *component* is warranted, or
@@ -232,7 +265,7 @@ archive is a property of the drift, not of the method: a fixed-lock session
 would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`;
 closure `tests/test_model_ladder.py`; numbers `results/model_ladder.csv`.
 
-### 4.10 Is the decomposition identifiable? — covariance, condition number, and the profile-likelihood map (M12)
+### 4.10 Is the decomposition identifiable? Covariance, condition number, and the profile-likelihood map
 
 The degeneracy asserted throughout — that $\gamma_\text{coll}$,
 $\sigma_\text{laser}$ and transit all broaden the same line, so the main fit
@@ -304,7 +337,7 @@ propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
 `run_identifiability.py`; closure `tests/test_identifiability.py`; numbers
 `results/identifiability.csv`.
 
-### 4.11 Does the 95% bound actually cover? — an injection-recovery study (M13)
+### 4.11 Does the 95% bound actually cover? An injection-recovery study
 
 The collisional bound's 95% is built from a between-block scatter estimated on
 a small number of residual degrees of freedom, so it uses the Student-t
@@ -369,7 +402,7 @@ variant is seeded from its solution in addition to running cold, the
 pointwise minimum over chains is what enters the profile, and no cold-start
 profile is quoted without a seeded twin (docs/RESEARCH_DECISIONS.md §11).
 
-### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? — a BIC, and a cautionary one (M14)
+### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? A BIC, and a cautionary one
 
 The hierarchical fit (§4.2) shares one $\sigma_\text{laser}(T)$ across the four
 peaks at each temperature (Model A, per-$T$); the conservative alternative frees
@@ -412,6 +445,25 @@ detects real sharing structure when the data carry the power the archive lacks.
 
 ---
 
----
+**Where the numbers live.** Modules M1, M4b, M4c, M4d, M8, M11, M12, M13, M14 ·
+producers `scripts/run_noise.py`, `scripts/run_global_fit.py`,
+`scripts/run_lever_crosscheck.py`, `scripts/run_modelform.py`,
+`scripts/run_model_ladder.py`, `scripts/run_identifiability.py`,
+`scripts/run_coverage.py`, `scripts/run_sharing_bic.py` · results
+`results/noise_model.csv`, `results/global_fit.csv`,
+`results/lever_crosscheck.csv`, `results/modelform.csv`,
+`results/model_ladder.csv`, `results/identifiability.csv`,
+`results/identifiability_profile.csv`, `results/coverage.csv`,
+`results/sharing_bic.csv` · figures
+`figures/fig7_identifiability_profile.png`. Library code: `rb5s6s/noise.py`,
+`rb5s6s/linefit.py`, `rb5s6s/beta.py`, `rb5s6s/fitutil.py`,
+`rb5s6s/modelform.py`, `rb5s6s/model_ladder.py`, `rb5s6s/identifiability.py`,
+`rb5s6s/coverage.py`, `rb5s6s/sharing_bic.py`.
 
-[← From volts to a frequency axis](05_the_frequency_ruler.md) · [What we found (2025 archive) →](07_what_we_found.md)
+**What would falsify this.** A coverage study that failed to cover. The bound
+this chapter licenses is only worth its frequentist coverage, so a
+higher-statistics injection run in which the Student-t upper limit missed the
+injected $\beta$ more often than five times in a hundred would retire the rule
+rather than qualify it.
+
+[← From volts to a frequency axis](05_the_frequency_ruler.md) · [What we found →](07_what_we_found.md)

@@ -10,6 +10,26 @@ Producers: [`rb5s6s/ruler.py`](../../rb5s6s/ruler.py) and
 `results/ruler_traces.csv`, `results/ruler_blocks.csv`,
 `results/ruler_campaign.csv`, `results/ruler_nlmap.csv`.
 
+## Where each rule now stands
+
+The sections below are the specification as first written. Seven amendments
+follow it, each dated and each recording what the rule returned when it ran.
+Where an amendment changed a rule, the amendment governs and the original
+text is left in place rather than edited, so the record shows what was fixed
+in advance of the data and what was fixed after it. A reader who wants only
+the current state can read this table and the amendment named in it.
+
+| rule | where it is fixed | what it now says |
+|---|---|---|
+| tooth-labelling verdict | section 2, amendment 5, correction gate in amendment 6 section F4 | both first-order teeth must rank in the top three by height. It is diagnostic and does not gate the spacing, on the measurement of section E2. It is not the gate on the drawn numbering either: a panel corrects its numbering when the second-to-first height ratio the fit produced is unphysical or displaced and a whole-slot shift brings that ratio into the measured band, with the recorded numbering shown alongside |
+| the modulation index | amendment A2, criterion sharpened in amendment 5 section E5, measured cleanly in amendment 6 section F1 | a tooth height is a two-photon signal, so it goes as J_k(2 beta) squared, and inverting the second-to-first height ratio through that law gives 2 beta = 1.569 median over the 41 correctly numbered well-resolved combs, standard deviation 0.058, range 2 beta = 1.449 to 2 beta = 1.730. One drive depth to four per cent, and second-order teeth at 0.159 to 0.249 of the first order across it. Any depth below the crossing at 2 beta = 2.630 makes a second-order tooth taller than a first-order tooth impossible, which identifies 54 displaced grids. What varies instead is the carrier, from 0.360 to 1.188 of the first order, which is residual amplitude modulation and identifies nothing |
+| the re-index ladder | section 3, amendment A4 | a relabelled fit is accepted only if it passes the verdict and its chi-squared stays inside a noise-aware ceiling. The ceiling was too tight by a factor of thirty in the first version and rejected correct relabellings |
+| the residual-tail trimmer | section 5, amendments B1 and B5.2, read correctly in amendment 7 section G1 | a one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to quarantine rather than eating signal. It acted on two calibration traces and on no line fit. That census is a fact about the order of the guards, not about the data: the line fit sets its own window inside the retrace crossing, so a rising tail is already outside the fitted samples before the trimmer is asked. Line traces with such a tail exist |
+| the outlier rule | amendment B4, recalibrated in amendment 3 | median and median absolute deviation, thresholds calibrated against forty million null draws rather than a t-quantile. It removes three calibration traces and no lines |
+| the rate error | amendment B2 | 0.2046 per cent, from an eight-member estimator family rather than one estimator's formal error |
+| eligibility for the ruler figure | section 7, amendment 4 | six of the seven teeth standing above the fit residual with none railed, after the original all-seven demand proved unsatisfiable for two measured reasons |
+| licensing for the width-against-rate figure | section 8 | the 130 C block enters the fit, the morning pilot enters marked and outside it, the rehearsal and the calibration combs stay out with their reasons on the panel |
+
 ## 1. The defect this specification answers
 
 The comb fit places seven tooth centres on a rigid grid at t0 plus k times
@@ -1368,6 +1388,18 @@ way. `tests/test_results_fresh.py::test_committed_csvs_still_match_their_produce
 is the test that says so, it compares against HEAD rather than the working tree,
 and it stays red until the recompute lands and is committed.
 
+**Update, 2026-08-05.** All three entries above are discharged.
+`results/amplitude_ratios.csv` and `results/sharing_bic.csv` were re-run and
+committed in `0bf2502`, where `dBIC_eff_block_minus_T` reads 61.3, and both
+stand unmodified in the working tree. `results/linefit_conditions.csv` is being
+re-run by the Phase 5 recompute along with the four tables that fold it,
+`resolving_power`, `projections`, `lever_crosscheck` and `sigma_laser_sharing`,
+so the exception this section opened for it closes when that recompute is
+committed. The deliberate staleness that remains is the historical record only:
+the superseded values inside the earlier addenda, each of which carries its own
+date, and the tooth-count docstring in `rb5s6s/ruler.py`, which quotes the
+five-against-seven refit as it was measured on the day.
+
 # Amendment 4, 2026-08-04: the empty set fired, and the height clause is relaxed to six standing
 
 ## D1. What section 7 returned
@@ -1442,3 +1474,302 @@ enough to hold seven full tooth windows with margin, and a drive deep enough
 to lift the third-order pair above the residual. That is a statement about the
 next campaign, and it is recorded in the campaign-planning documents rather
 than argued here.
+
+# Amendment 5, 2026-08-04: the labelling gate, decided on the within-bracket test
+
+## E1. The owner's objection
+
+The inspection gallery drew a comb whose fitted grid is displaced by one
+slot and titled it the fit of record, while the same panel printed that the
+labelling verdict had failed and was not acting. The owner rejected it. A
+record that computes the correct answer, prints that it has it, and then
+uses the other one is not a diagnostic.
+
+## E2. What gating the ladder would do to the calibration
+
+Measured on the recomputed table, over the 52 combs whose recorded
+labelling fails the verdict. Forty four of them land on a different tooth
+spacing when the ladder's relabelled solution is taken instead, mean
+difference -0.044 per cent, largest 1.49 per cent. On the campaign mean the
+substitution moves the rate by +0.019 per cent, inside the 0.205 per cent
+rate error already carried.
+
+The decisive test is within a bracket group, where every trace shares one
+physical scan rate, so a change that recovers the truth must tighten the
+group. Over the eighteen groups holding at least one relabelled trace the
+mean spread goes from 0.378 to 0.381 per cent, tighter in eight groups and
+wider in nine. Relabelling is a coin flip on the spacing.
+
+## E3. The decision
+
+The spacing stays the fit of record, because the measurement above shows the
+pitch does not know about the labelling and no case exists for disturbing
+the calibration. The tooth NUMBERING is corrected wherever the verdict
+fails, on every panel that draws a comb, with the recorded numbering shown
+alongside so the picture never hides the table. The correction is a display
+of the amplitude evidence, not a refit.
+
+This separates two things the earlier amendments ran together. Which slot is
+the carrier is settled by the sideband amplitudes at the measured modulation
+index and is not in doubt. What the pitch is, is a fit result, and the
+relabelled fits do not measure it better. Gating the ladder for the pitch
+stays refused, on the evidence of section E2 rather than on the earlier
+reasoning.
+
+## E4. What is not decided here
+
+Whether the fit of record should be seeded to land on the correct labelling
+in the first place, so that the two never disagree, is a question for the
+frequency-calibration red team. It is the difference between a fit that is
+right by construction and one that is right after inspection, and it is
+worth a session of its own rather than a change made while a recompute is
+running.
+
+## E5. The criterion that identifies a displaced grid, stated exactly
+
+Section E3 left the identification to the labelling verdict. Two independent
+reviews of the rendered inspection panels showed that the verdict is the
+wrong gate for it, in both directions, so the criterion is fixed here.
+
+At 2 beta = 1.62 the Bessel weights are 0.444 for the carrier, 0.572 for the
+first order, 0.262 for the second and 0.075 for the third. The expected
+height ordering of a correctly labelled comb is therefore
+
+    first order above carrier above second order above third order.
+
+Two consequences, and the second is the one that was being got wrong.
+
+A carrier weaker than its first-order pair is EXPECTED at this depth. It
+identifies nothing. One reviewer, an expert reading the panels cold, flagged
+a correctly labelled comb as defective on exactly that reading, because no
+panel said the suppressed carrier was the physics of the drive. The panels
+now say it.
+
+What a displaced grid shows is a SECOND-order tooth taller than a
+FIRST-order tooth, which the ordering above forbids. Applied to the
+persisted heights this identifies 54 combs of 104, not the 52 the verdict
+marks. The two the verdict misses are recorded as marginal passes,
+`rulers_t/4121nm_eom_070c5.csv` and `rulers_t/4154nm_eom_070c5.csv`, and
+both were inside the calibration with the wrong first-order pair drawn and
+no note. Both carry a clean one-slot signature, and shifting them by one
+slot returns a textbook pattern.
+
+The numbering correction is gated on this amplitude test rather than on the
+verdict string. The verdict keeps its own job, which is to say whether the
+recorded fit named the teeth correctly. The amplitude test says which
+naming is right. Nothing here touches the spacing, and the count of combs
+whose spacing is taken from the record is unchanged at 104.
+
+# Amendment 6, 2026-08-05: the modulation depth measured cleanly, and what varies instead
+
+## F0. A first draft of this amendment was circular, and was caught in review
+
+The first draft inverted the second-to-first height ratio over every
+well-resolved comb, including the 54 whose grids the amplitude test flags as
+displaced. On a displaced comb the recorded second-order slot holds a
+first-order tooth, so the recorded ratio is inflated by the very defect
+under study, and feeding it into the Bessel inversion returned depths
+reaching 2.9 that were the mislabelling reflected back, not the drive. A
+review pass caught the loop before this note was committed, and the
+measurement below is the corrected one. The draft's conclusion that the
+depth spans 1.45 to 2.92 is withdrawn and appears nowhere else.
+
+## F1. The measurement, on correctly numbered combs only
+
+The height law first, because two computations of the depth disagreed until
+it was pinned down, and because the depth is always to be written as
+`2 beta = ...` rather than as a bare depth in radians. A reviewer read one of
+those bare statements as beta and got half the answer.
+
+The comb-amplitude derivation of
+[the frequency ruler](../methods/05_the_frequency_ruler.md) sums every
+sideband pair m plus m prime equal to k and returns, by Neumann's addition
+theorem, a two-photon AMPLITUDE of J_k(2 beta) for the tooth at k. A tooth
+height is a two-photon SIGNAL, so the drawn height is the modulus squared of
+that amplitude,
+
+    h_k proportional to J_k(2 beta) squared,
+
+with the Bessel weights taken at 2 beta and not at beta. The comb fit in
+`ruler.py` reads those heights straight out of the recorded fluorescence with
+no square root in between, so the persisted heights carry the square. The
+second-to-first HEIGHT ratio at depth 2 beta is therefore J_2(2 beta) squared
+over J_1(2 beta) squared, and that is the function inverted below. The
+synthetic combs the ladder is calibrated on in `tests/test_ruler.py` are built
+from that same law, so the only place in the repository that read the heights
+otherwise was one gallery constant.
+
+Take the combs whose recorded labelling passes the verdict cleanly, 41 of
+them with the first-order pair above five times the fit residual, and invert
+each one's second-to-first height ratio through that law on the unique branch
+below the crossing. The implied depth is
+
+    2 beta = 1.569 median, 2 beta = 1.579 mean, standard deviation 0.058,
+    range 2 beta = 1.449 to 2 beta = 1.730.
+
+The drive depth is one number to within four per cent. Amendment A2's pooled
+2 beta = 1.62 sits at the upper edge of this band, and nothing downstream
+that used it moves by more than its own quoted error. Across the range the
+second-order teeth stand between 0.159 and 0.249 of the first order, and at
+0.194 of it at the median. That band is what the numbering-correction gate of
+section F4 holds a recorded ratio against.
+
+Nothing but the law moves this answer. The resolution cut returns the same 41
+combs whether it is applied to the smaller first-order member or to the pair
+mean, the two marginal verdicts are not well resolved and never enter under
+either cut, three different inversion brackets return the same roots because
+no comb sits near an endpoint, and seven definitions of the ratio move the
+median by at most 0.017. Reading the heights as the bare amplitude instead,
+and at beta rather than at 2 beta, returns 2 beta = 1.511 median with
+standard deviation 0.137 and range 2 beta = 1.251 to 2 beta = 1.914. That is
+the number an earlier gallery constant carried. It lands close to the right
+one because its two errors run opposite ways and nearly cancel, which is why
+the disagreement went unseen.
+
+The archive cannot arbitrate the law on its own, and saying so is better than
+implying a test that does not exist. With the carrier excluded the fit sees
+four teeth, k equal to minus two, minus one, plus one and plus two, and a
+law with a free depth and a free amplitude fitting a pattern symmetric in k
+can set only an overall scale and one second-to-first ratio. Both readings
+sweep that ratio over the same range, so both reach the identical chi-squared
+of 67.6 on 82 degrees of freedom, each at its own depth. That comparison
+re-parametrises rather than discriminates. The third-order pair would break
+the degeneracy and is not there to do it: its mean stands above the fit
+residual on 2 of the 41 combs and above three times it on none, the ramp
+clips the outermost window on every recorded ruler, and eight of the 41 rail
+a height at zero. Admitting it moves the chi-squared by 3.25 over 164 degrees
+of freedom, which is noise. The derivation settles the law. The one place the
+data speak is the carrier, and they agree with the derivation: at
+2 beta = 1.569 the signal law puts the carrier at 0.696 of the first order,
+which is where the measured carriers sit and scatter, while the amplitude
+reading would put it at 2.45 and demand that every recorded trace be
+suppressed by more than a factor of two.
+
+## F2. The displaced-grid criterion is safe, twice over
+
+Section E5's test needs a second-order tooth taller than a first-order one
+to be impossible, which requires the depth to stay below 2 beta = 2.630. The
+largest correctly numbered depth is 2 beta = 1.730, a margin of 0.90. The
+crossing does not depend on which reading of the height law is taken, since
+both are monotone in the same J_2 over J_1 and both put the ratio at one
+where the two weights are equal, so section E5 is untouched by section F1's
+settlement, and so is the census below. Independently: on the combs the test
+flags, 40 have a first-order pair whose MEAN stands above five times the fit
+residual (the resolution cut here is on the mean of the pair, where section
+F1's cut on the smaller member gives its 41), and the recorded ratio is
+UNPHYSICAL on 34 of those 40, meaning no depth below the crossing reproduces
+it at all, and the remaining six sit within 0.18 of the crossing, at
+2 beta = 2.451 to 2 beta = 2.612. A mislabelled grid does not merely shift the
+implied depth, it pushes the recorded ratio outside what phase modulation
+can produce, which is a second, independent signature of displacement.
+
+## F3. What actually varies is the carrier, and that is amplitude modulation
+
+At 2 beta = 1.569 pure phase modulation predicts a carrier-to-first height
+ratio of 0.696. On the same 41 clean combs the measured ratio runs 0.360 to
+1.188, and on ten of them the carrier stands TALLER than the first-order
+mean. The fig8 winner, `rulers_p/4192nm_eom_after1.csv`, is one of the ten,
+carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The
+second-to-first ratio is tight while the carrier ratio is wide, which is the
+signature of residual amplitude modulation at the carrier, the imperfection
+of the carrier-suppression setting that the methods note already lists. The
+owner's record that the input polarisation angle changed between sessions is
+consistent with this, since the suppression working point depends on that
+angle while the drive depth evidently did not.
+
+Two withdrawals follow. The claim that a suppressed carrier is expected on
+every trace is withdrawn, because the carrier height carries amplitude
+modulation and can stand above the first order on a correctly numbered comb.
+And any use of the CARRIER height as labelling evidence is withdrawn with
+it. The first-order pair and the second-order ratio remain the reliable
+amplitude evidence.
+
+## F4. What follows for the panels and the gallery
+
+The panel sentence states the measured depth with its four per cent spread,
+states that the carrier height varies with residual amplitude modulation and
+identifies nothing, and derives the tooth ordering from the first and second
+orders only.
+
+The population the gate acts on is stated here so that no count below floats
+free, and there are two populations, one inside the other. The counts in
+this note are over the 104 fitted combs persisted in the calibration table.
+The gallery draws 115 combs, the same 104 plus ten from the aborted first
+session and one whose export is too short for a table row, so its printed
+census reads 55 flagged where this note reads 54, and its recorded-offset
+count sits one higher for the same reason. Section E5's amplitude test
+identifies 54 displaced grids among the 104 fitted combs. On 44 of the 54
+the slot offset is the one the calibration record already carries, from the
+trial that rescued the labelling, and on the remaining 10 the record carries
+none and the offset is read off the tooth heights the panel itself draws.
+Both routes end in the same test below.
+
+The numbering-correction gate changes from a carrier test to a ratio test. A
+correction is accepted when the corrected numbering brings the recorded
+second-to-first ratio from unphysical or displaced into the measured band of
+0.159 to 0.249, and the carrier height plays no part.
+
+A draft of this section reported that five of the 54 corrections drew a tall
+carrier at the centre, which read as a property of the data. It was a
+property of the heuristic that produced it. That earlier gate chose the slot
+offset that put a suppressed tooth between the two tallest teeth, so it
+manufactured its own disagreements, and the five are an artefact of it rather
+than a census of anything. Rebuilt on the ratio test, exactly one accepted
+correction draws a carrier taller than its own first-order pair. That one is
+accepted on its ratio like every other, because on the evidence of section F3
+a tall carrier is residual amplitude modulation and says nothing about the
+numbering in either direction.
+
+Whether the residual amplitude modulation is large enough to bias the tooth
+SPACING rather than only the heights stays with the frequency-calibration
+red team. Nothing here touches the spacing, which is measured from tooth
+positions and not from heights.
+
+# Amendment 7, 2026-08-05: why the trimmer never fires on a line
+
+## G1. The reading the census invites, and why it is wrong
+
+Amendment B5.2 reports the trim census as two calibration traces trimmed and
+zero line fits trimmed. Read plainly, zero line fits trimmed says the line
+traces carry no rising residual tail. They do. On the five repeats of the
+993.4207 nm line at 130 C and 25 mW, three carry an unmistakable one.
+
+The tails are real and the census is right at the same time, because the
+trimmer never sees them. The line fit sets its own window per trace, at three
+and a half times that trace's own measured width, capped so that the sweep
+retrace crossing about 40 MHz away is always outside it. On those five traces
+the recorded sweep runs to about +58 MHz while the fitted window ends between
++30 and +35 MHz. The rising tail sits beyond the window edge, so it is
+already excluded before the trimmer is asked, and the trimmer, which walks
+outward only within the fitted samples, correctly finds nothing to cut.
+
+## G2. What follows
+
+Nothing changes in the pipeline. The window and the trimmer are two guards
+against the same contamination and the window gets there first, which is the
+order they should act in, since a fixed rule that excludes the retrace
+by construction is better than a detector that has to notice it.
+
+What changes is the statement. The census line means the window left the
+trimmer nothing to do on any line, not that no line has a tail. Written the
+first way it is a fact about the guards. Written the second way it is a
+false claim about the data, and it was one sentence away from being made.
+
+The inspection pages now mark the window explicitly, with a dashed vertical at
+each edge of the span the model covers and a legend entry naming it, so a
+reader can see which samples the fit was asked about. Drawing the unfitted
+samples in a paler tone as well would say it more directly and has not been
+done. A page that draws a model across samples the model was never fitted to
+makes a sound fit look like a failing one, which is exactly how this was
+found.
+
+## G3. The open question this leaves
+
+Whether the window is in the right place is a separate question from whether
+the trimmer works, and it is not settled here. The cap that excludes the
+retrace is a fixed number of megahertz, and the retrace crossing moves with
+the sweep rate, which the six-tooth correction has just re-measured. A cap
+that is comfortable at one rate is not automatically comfortable at another.
+The frequency-calibration red team owns this, and the check is cheap: for
+every canonical trace, the distance from the window edge to the nearest
+recorded retrace crossing, in units of the fitted width.

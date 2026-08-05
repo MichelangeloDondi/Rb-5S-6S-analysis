@@ -1,4 +1,14 @@
-*Chapter 4 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 4 of 8 · [methods index](../methods.md)*
+
+**The question.** How do the separate kernels become one profile in code, and
+what is deliberately kept out of it?
+**Takes.** The lineshape chapter and the AC-Stark chapter, whose kernels it
+assembles.
+**Gives.** `model_profile()` and `composite_profile()`, the two functions every
+fit in the statistics and results chapters calls.
+**Skip if.** You are not going to read the code. Most of this chapter is
+radiation trapping, the mechanism that moves amplitudes without moving the
+lineshape, and the trapping result itself is reported in the results chapter.
 
 ### 2.7 Radiation trapping — why it moves amplitudes, not the lineshape
 
@@ -19,7 +29,7 @@ $\epsilon(\tau_\text{opt})$ is a constant multiplier across the scan: trapping
 does **not** distort the two-photon lineshape. Onset is at
 $\tau_\text{opt}\sim1$, i.e. $N\sim1/(\sigma_{795}L)\sim10^{12}$–$10^{13}$
 cm$^{-3}$, straddled by our T-sweep. We tested the statistics route: the
-shot-noise coefficient $b$ in the noise law ([§4.4 — The statistics](06_the_statistics.md)) is **flat in temperature**
+shot-noise coefficient $b$ in the noise law ([§4.4](06_the_statistics.md)) is **flat in temperature**
 (no growth of the Fano factor 70→130 °C), so trapping, if it shows anywhere,
 shows in *amplitude ratios* versus density (module M7, against [Nieddu's 2019](../lit/nieddu2019.md)
 same-channel baseline), never in the width. *Code:* the $b(T)$ table from
@@ -39,19 +49,32 @@ is exactly the discriminator M7 now runs.
 
 ### 2.8 The composite model in code
 
-`model_profile()` assembles [§2.1 — The lineshape, kernel by kernel](02_the_lineshape.md)–2.6 on a common fine grid (homogeneous
+`model_profile()` assembles every kernel of
+[the lineshape chapter](02_the_lineshape.md) and the ramp of
+[the AC-Stark chapter](03_the_ac_stark_ramp.md) on a common fine grid (homogeneous
 Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
-per-trace nuisances of [§4.2 — The statistics](06_the_statistics.md). It uses the pure triangular ramp
+per-trace nuisances of [§4.2](06_the_statistics.md). It uses the pure triangular ramp
 (`stark_ramp()`); the archival fits keep it because $S_0$ is fixed per power
 and the geometry correction sits far below the 2025 noise. A proposed fixed-lock session's
-center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of [§2.6 — The AC-Stark ramp](03_the_ac_stark_ramp.md))
+center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of
+[§2.6](03_the_ac_stark_ramp.md))
 once the collection profile is measured. The no-Stark composite shared by the
 $\beta_\text{self}$ and global fits is `composite_profile()` in the same
 module.
 
 ---
 
----
+**Where the numbers live.** Modules M3, M7, M10 · producers
+`scripts/run_amplitude_trapping.py`, `scripts/run_amplitude_ratios.py` ·
+results `results/amplitude_trapping.csv`, `results/amplitude_ratios.csv` ·
+figures: none of its own. Library code: `rb5s6s/lineshape.py`, for
+`model_profile()` and `composite_profile()`, and the $b(T)$ table from
+`rb5s6s/noise.py`.
+
+**What would falsify this.** A width that moved with density the way the
+amplitudes do. The argument here is that trapping is constant across a scan, so
+it can rescale a peak but cannot broaden it, and a density-ordered width change
+surviving the between-block drift would break that.
 
 [← The AC-Stark ramp](03_the_ac_stark_ramp.md) · [From volts to a frequency axis →](05_the_frequency_ruler.md)

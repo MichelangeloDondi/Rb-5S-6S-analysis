@@ -62,7 +62,7 @@ elision of the authors' text -->
 That is a stated decision rule for a situation this programme is in. The
 $\beta_{\rm self}$ determination has exactly this character: the collisional
 term is not cleanly separable from the drift, and the archival bound (the
-four-point 70/90/110/130 °C headline, 2026-08-02) sits 8–14× above the
+four-point 70/90/110/130 °C headline, 2026-08-02) sits 8–15× above the
 expected value precisely because the two are entangled -- was 57–113× on the
 earlier three-point headline. PTB's
 answer is neither to force a separation nor to quote a statistical-only bar, but

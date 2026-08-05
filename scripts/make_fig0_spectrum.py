@@ -37,8 +37,11 @@ GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
 FIG.mkdir(exist_ok=True)
 PEAK_COLOR = {"4121": "#0072B2", "4154": "#D55E00", "4192": "#009E73", "4207": "#E69F00"}
-_ISO = {"4121": "$^{87}$Rb F1", "4154": "$^{85}$Rb F2",
-        "4192": "$^{85}$Rb F3", "4207": "$^{87}$Rb F2"}
+# "F1" read as a label code rather than a quantum number, so the hyperfine
+# level is written out. Kept identical to the _ISO registry in
+# scripts/make_figures.py: the two move together.
+_ISO = {"4121": "$^{87}$Rb F = 1", "4154": "$^{85}$Rb F = 2",
+        "4192": "$^{85}$Rb F = 3", "4207": "$^{87}$Rb F = 2"}
 PLOT_HALFWIDTH_MHZ = 15.0  # detuning window shown (excludes the ~40 MHz mirror)
 
 plt.rcParams.update({"figure.dpi": 130, "font.size": 10, "axes.grid": True,
@@ -130,10 +133,10 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     y = (v[win] - base) / peakV
     ymod = (A * shape[win]) / peakV
     resid = y - ymod
-    # standardized residuals: per-point M1 noise on the normalized axis. (A flat
-    # a flat +-1 band is valid here; the raw noise grows with signal near the peak, so
+    # standardized residuals: per-point M1 noise on the normalized axis. A flat
+    # +-1 band is valid here, whereas the raw noise grows with signal near the peak, so
     # a single median-sigma band would understate it exactly where resid is
-    # largest -- hence resid/sigma, which also visualizes chi2_red ~ 1 directly.)
+    # largest -- hence resid/sigma, which also visualizes chi2_red ~ 1 directly.
     lev, _ = signal_level(v)
     sig = sigma_of_v(np.maximum(lev, 0.0), law)[win] / peakV
     rstd = resid / np.maximum(sig, 1e-9)
@@ -150,31 +153,43 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
                                   constrained_layout=True)
     ax.plot(x, y, "o", ms=3.2, color=col, alpha=0.7, label="data (one of 5 repeats)")
     ax.plot(xf, yf, "-", color="k", lw=1.6,
-            label=r"fit: natural $\otimes$ transit $\otimes$ laser")
+            label="fit: natural and collisional widths,\n"
+                  "convolved with transit and laser")
     ax.axhline(0.0, color="0.6", lw=0.8, ls=":")
     ax.set_ylabel("normalized fluorescence")
     ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line: {T} $^{{\\circ}}$C, {P} mW\n"
-                 f"total FWHM {total_fwhm:.2f} $\\pm$ {total_fwhm_err:.2f} MHz "
-                 "(transition axis)", fontsize=9.5)
-    ax.legend(fontsize=8, loc="upper right")
+                 f"total width at half maximum {total_fwhm:.2f} $\\pm$ "
+                 f"{total_fwhm_err:.2f} MHz, from the joint fit to the repeats",
+                 fontsize=9.5)
+    # Upper left: the line rises at centre and the right shoulder carries the
+    # legend into the data. The left corner is baseline at this window.
+    ax.legend(fontsize=8, loc="upper left")
     ax.set_ylim(-0.10, 1.12)
 
-    # width-budget box: the four components the fit convolves (natural is fixed
-    # by the 6S lifetime; transit rides on the OPEN w0 prior)
-    ax.annotate(f"$\\Gamma_\\mathrm{{nat}}$ = {GNAT:.2f} MHz\n"
-                f"$\\gamma_\\mathrm{{coll}}$ = {gc:.2f} MHz\n"
-                f"transit = {transit:.2f} MHz ($w_0$ prior)\n"
-                f"$\\sigma_\\mathrm{{laser}}$ = {sl:.2f} MHz\n"
-                f"$\\chi^2_\\nu$ = {fit['chi2_red']:.2f}",
+    # The four components the fit convolves. All four are full widths at half
+    # maximum (rb5s6s.lineshape takes an FWHM for every kernel, the Gaussian
+    # laser term included), and the box now says so, because a reader who reads
+    # sigma_laser as a standard deviation cannot reproduce the total above.
+    # The natural width is fixed by the 6S lifetime; the transit width rides on
+    # the assumed waist, whose value is read from the constant of record rather
+    # than typed.
+    ax.annotate(f"natural width {GNAT:.2f} MHz\n"
+                f"collisional width {gc:.2f} MHz\n"
+                f"transit-time width {transit:.2f} MHz,\n"
+                f"  from a beam waist of {C.W0_PRIOR_M * 1e6:.0f} $\\mu$m\n"
+                "  that has not been measured\n"
+                f"laser width {sl:.2f} MHz\n"
+                "all four are widths at half maximum\n"
+                f"reduced chi-squared {fit['chi2_red']:.2f}",
                 xy=(0.02, 0.97), xycoords="axes fraction", va="top", ha="left",
                 fontsize=7.5, color="0.25",
                 bbox=dict(boxstyle="round", fc="white", ec="0.8", alpha=0.85))
 
-    axr.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, label=r"$\pm1\sigma$")
+    axr.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, label="band of one point error")
     axr.plot(x, rstd, "o", ms=2.6, color=col, alpha=0.7)
     axr.axhline(0.0, color="k", lw=0.9)
-    axr.set_ylabel(r"resid. / $\sigma$")
-    axr.set_xlabel("detuning from line centre  (MHz, transition axis)")
+    axr.set_ylabel("residual, in units\nof the point error", fontsize=8.5)
+    axr.set_xlabel("detuning from line centre (MHz at the two-photon transition frequency)")
     axr.legend(fontsize=7, loc="upper right")
     rmax = min(max(float(np.max(np.abs(rstd))) * 1.2, 3.0), 8.0)
     axr.set_ylim(-rmax, rmax)

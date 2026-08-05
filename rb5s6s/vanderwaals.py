@@ -32,7 +32,11 @@ And the broadening prefactor is quoted, not derived. The Lindholm-Foley impact
 result for a -C6/R^6 potential is used as stated in the literature; its
 convention (FWHM, angular units, C6 entering as C6/hbar) is the most likely
 place for an error, so it is written out in `beta_self_vdw` rather than
-buried. The primary source for this whole construction is Lewis, Phys. Rep.
+buried. The C6 that enters that formula is the DIFFERENCE of the upper- and
+lower-state interactions with the perturber, not the upper state's alone. That
+was got wrong until 2026-08-05 and is adjudicated in `beta_self_vdw` below and
+in docs/notes/vdw_difference_potential_and_4d_channel.md. The primary source
+for this whole construction is Lewis, Phys. Rep.
 58, 1-71 (1980) (docs/lit/lewis1980.md), section 4.2: the scalar
 Anderson/phase-shift cross-section for a -C6/R^6 potential, eq. (4.15)-(4.17),
 specialized to n=6 gives exactly the (C6/hbar)^0.4 * v^0.6 powers used below,
@@ -41,7 +45,7 @@ error bound on the Lindholm-Foley approximation (~4%, section 4.3.2) is for a
 J=1 excited-state ANGULAR average that our S-S pair does not have (S states
 carry no such tensor to average over, so the scalar formula is exact in that
 respect); it is quoted here only to note that it is far smaller than the
-~17% gap between this module's corrected 7S prediction and Zameroski's
+~18% gap between this module's corrected 7S prediction and Zameroski's
 measured rate (see `beta_self_anchored` below), and so cannot explain that
 gap either -- the gap is attributed to the dropped core/tail and the mean-
 speed approximation, both already named above.
@@ -124,7 +128,11 @@ def c6_5s5s() -> float:
 
 
 def c6_5s6s() -> float:
-    """C6 for the Rb(5S)+Rb(6S) asymptote. No literature value exists."""
+    """C6 for the Rb(5S)+Rb(6S) asymptote. No literature value exists.
+
+    This is the pair coefficient, not the broadening input: what enters
+    `beta_self_vdw` is this minus `c6_5s5s`.
+    """
     return c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
 
 
@@ -135,12 +143,13 @@ def mean_relative_speed(T_K: float) -> float:
 
 def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     """beta_self(6S) anchored on Zameroski's MEASURED 7S rate, using this
-    module only for the RATIO of C6 coefficients.
+    module only for the RATIO of van der Waals coefficients -- of their
+    DIFFERENCES against the ground pair, for the reason set out below.
 
     Why not just call beta_self_vdw for 6S: run against the one state where a
-    measurement exists, this module gives beta_self(7S) = 4.45 kHz per
-    1e12 cm^-3 where Zameroski measured 5.4 -- 17% low, close to (a bit past)
-    the +-10-15% envelope the dropped core/tail and the mean-speed-vs-full-
+    measurement exists, this module gives beta_self(7S) = 4.40 kHz per
+    1e12 cm^-3 where Zameroski measured 5.4 -- 18% low, just past the
+    +-10-15% envelope the dropped core/tail and the mean-speed-vs-full-
     Boltzmann-average approximation already predict (see module docstring).
     An earlier version of this module double-applied the HWHM->FWHM
     conversion in `beta_self_vdw` and reported this as "high by 1.67x";
@@ -152,33 +161,73 @@ def beta_self_anchored(T_K: float = 403.15, n_cm3: float = 1e12) -> dict:
     Whatever that error is, it is COMMON to 6S and 7S -- same prefactor, same
     law, same units. It cancels in the ratio:
 
-        beta(6S) = beta(7S)_measured * [C6(6S) / C6(7S)]^(2/5)
+        beta(6S) = beta(7S)_measured * [Delta_C6(6S) / Delta_C6(7S)]^(2/5)
 
-    which uses this module for the part it does well (a ratio of two sums over
-    the same matrix elements) and takes the absolute scale from an experiment.
-    Returns ~3.5 kHz per 1e12 cm^-3, between the raw 5.9 and the ~1 kHz that an
-    older n*^7 Rydberg scaling of a MISATTRIBUTED self-shift used to give.
+    which uses this module for the part it does well (a ratio of sums over the
+    same matrix elements) and takes the absolute scale from an experiment.
+
+    Delta_C6(nS) = C6(5S+nS) - C6(5S+5S), because the impact phase is set by
+    the difference of the upper- and lower-state interactions with the
+    ground-state perturber (`beta_self_vdw` carries the adjudication and its
+    Lewis 1980 sources). The ground-state term is this module's own 4180 a.u.
+    rather than the 4691 a.u. literature value, so that both rungs are built
+    from the same truncated sum and the truncation partly cancels. Using 4691
+    instead moves the answer to 3.36, half a per cent, far inside the envelope.
+
+    Returns ~3.38 kHz per 1e12 cm^-3. Before the difference correction of
+    2026-08-05 this read 3.53, a 4.1 per cent shift and inside the +-0.30
+    quoted error. Both sit between the raw 5.9 and the ~1 kHz that an older
+    n*^7 Rydberg scaling of a MISATTRIBUTED self-shift used to give.
     """
     from .polarizability import LINES_5S, LINES_6S, LINES_7S, E_6S_CM, E_7S_CM
+    c6_5 = c6_coefficient(LINES_5S, 0.0, LINES_5S, 0.0)
     c6_6 = c6_coefficient(LINES_5S, 0.0, LINES_6S, E_6S_CM)
     c6_7 = c6_coefficient(LINES_5S, 0.0, LINES_7S, E_7S_CM)
+    dc6_6, dc6_7 = c6_6 - c6_5, c6_7 - c6_5
     n_per_mtorr = (1e-3 * 133.322) / (KB * T_K) * 1e-6      # cm^-3 per mTorr
     beta7_meas = ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR / (n_per_mtorr / n_cm3)
     err7 = ZAMEROSKI_7S_BROADENING_ERR / (n_per_mtorr / n_cm3)
-    scale = (c6_6 / c6_7) ** 0.4
+    scale = (dc6_6 / dc6_7) ** 0.4
     return {"beta6_khz": beta7_meas * scale,
             "beta6_err_khz": err7 * scale,
             "beta7_measured_khz": beta7_meas,
-            "beta7_predicted_khz": beta_self_vdw(c6_7, T_K, n_cm3) / 1e3,
+            "beta7_predicted_khz": beta_self_vdw(dc6_7, T_K, n_cm3) / 1e3,
+            "dc6_ratio": dc6_6 / dc6_7,
             "c6_ratio": c6_6 / c6_7,
-            "prefactor_discrepancy": (beta_self_vdw(c6_7, T_K, n_cm3) / 1e3) / beta7_meas}
+            "prefactor_discrepancy": (beta_self_vdw(dc6_7, T_K, n_cm3) / 1e3) / beta7_meas}
 
 
-def beta_self_vdw(c6_au: float, T_K: float, n_cm3: float = 1e12,
+def beta_self_vdw(delta_c6_au: float, T_K: float, n_cm3: float = 1e12,
                   prefactor: float = LINDHOLM_FOLEY_PREFACTOR) -> float:
     """Impact-broadening FWHM (Hz) from a van der Waals C6, at density n_cm3.
 
-    Written out because the unit conventions are the failure mode:
+    WHICH C6. The argument is the DIFFERENCE of the two levels' interactions
+    with the perturber,
+
+        Delta_C6 = C6(upper state + perturber) - C6(lower state + perturber)
+
+    not the upper state's coefficient alone. A referee raised this on
+    2026-08-04 and it is adjudicated here, on the module's own primary source.
+    Lewis 1980 carries it in three places. His eq. (2.39) gives the impact
+    width and shift as w + i*d = <1 - S_ii * S_ff^*>, a product over the UPPER
+    and LOWER state S-matrices, which for a central potential is
+    exp{-(i/hbar) * integral [V_i(R(t)) - V_f(R(t))] dt}. His eq. (4.13), the
+    phase-shift cross-section this function specializes, therefore integrates
+    [1 - cos(Phi_i - Phi_f)] and sin(Phi_i - Phi_f), never a single-level
+    phase. And section 4.2 says it in words: the sign of the shift
+    cross-section depends on the overall sign of "the difference in the
+    interactions for the two levels involved".
+
+    Passing the upper state's C6 alone is the correct limit when the lower
+    state is a spectator, which is the usual excited-to-ground case in the
+    broadening literature and is NOT this one. Here the lower level is a
+    ground-state Rb atom facing a ground-state Rb perturber, and
+    C6(5S+5S) = 4180 a.u. is 14 per cent of C6(5S+6S) and 5 per cent of
+    C6(5S+7S). It does not cancel in the 6S-over-7S anchor ratio either,
+    because the two rungs subtract the same term from different-sized
+    numbers. See docs/notes/vdw_difference_potential_and_4d_channel.md.
+
+    Written out because the unit conventions are the other failure mode:
       * C6 enters as C6/hbar, i.e. rad/s * m^6, NOT as an energy;
       * the prefactor gives the FULL width at half maximum in ANGULAR units
         (LINDHOLM_FOLEY_PREFACTOR is already 2x the bare eq.(4.17) half-width
@@ -188,7 +237,7 @@ def beta_self_vdw(c6_au: float, T_K: float, n_cm3: float = 1e12,
         already folded into the prefactor -- that double-count was the M18
         bug (see docs/PREREGISTRATION_RESULTS.md Addendum 23).
     """
-    c6_si = c6_au * HARTREE_J * BOHR_M ** 6          # J m^6
+    c6_si = delta_c6_au * HARTREE_J * BOHR_M ** 6    # J m^6
     c6_rate = c6_si / HBAR                            # rad/s m^6
     v = mean_relative_speed(T_K)
     n = n_cm3 * 1e6                                   # m^-3

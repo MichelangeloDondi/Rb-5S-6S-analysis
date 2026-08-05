@@ -22,7 +22,7 @@ fitted traces across 70–130 °C and 25–225 mW, three bounds at 95%:
 collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
 four peaks (geometry-robust), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm waist prior, and the AC-Stark coefficient
-S₀(225 mW) < 0.27 MHz (waist-free, only its prediction rides the prior).
+S₀(225 mW) < 0.26 MHz (waist-free, only its prediction rides the prior).
 The full claim ledger, including what is deliberately not claimed, is
 [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
@@ -228,7 +228,7 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the waist prior, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.27 MHz (95%, joint three-session profile likelihood with the threshold widened for block-to-block over-dispersion. Below the 0.35 predicted at the adopted waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood with the threshold widened for block-to-block over-dispersion. Below the 0.35 predicted at the adopted waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |

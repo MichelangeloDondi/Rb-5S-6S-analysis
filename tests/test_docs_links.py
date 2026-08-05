@@ -105,3 +105,64 @@ def test_doc_references_resolve(doc):
                     problems.append(f"command -> {script} (not found from cwd)")
 
     assert not problems, f"{rel}: unresolved references:\n  " + "\n  ".join(problems)
+
+
+# ---------------------------------------------------------------------------
+# Bare section pointers.
+#
+# The gate above resolves `](path)` links and `#anchor` fragments. It says
+# nothing about `PLAN §7` or `DATA §5`, which are how the three long planning
+# documents are cited throughout, and which no machinery checked at all: a
+# methods chapter cited PLAN §7 for the wavemeter shots, which live in §11,
+# and nothing noticed. These three files are the ones cited this way often
+# enough to drift.
+
+_POINTER_TARGETS = {
+    "PLAN": "docs/PLAN.md",
+    "DATA": "docs/DATA.md",
+    "THEORY_NOTE": "docs/THEORY_NOTE.md",
+}
+_SECTION_NUMBER = r"[0-9]+(?:\.[0-9]+)*[a-z]?"
+_HEADING = re.compile(rf"^(#{{1,6}})\s+({_SECTION_NUMBER})[.)\s]", re.M)
+
+
+def _sections_offered(text: str) -> set:
+    """Every section label a document can be cited by.
+
+    Three shapes are in use. Numbered headings (`## 7. The width and collision
+    program`). Bold run-in sub-items, which PLAN §7 uses instead of headings
+    (`**7d. The matched-PM ruler ...**`). And plain numbered list items inside
+    a section, which DATA §3 uses and which are cited as `§3.4`.
+    """
+    out = {m.group(2) for m in _HEADING.finditer(text)}
+    out |= set(re.findall(rf"^\*\*({_SECTION_NUMBER})[.)]", text, re.M))
+    marks = [(m.start(), m.group(2)) for m in _HEADING.finditer(text)]
+    for i, (pos, num) in enumerate(marks):
+        end = marks[i + 1][0] if i + 1 < len(marks) else len(text)
+        for item in re.findall(r"^ {0,3}(\d+)\.\s", text[pos:end], re.M):
+            out.add(f"{num}.{item}")
+    return out
+
+
+_OFFERED = {
+    name: _sections_offered((ROOT / rel).read_text(encoding="utf-8"))
+    for name, rel in _POINTER_TARGETS.items()
+}
+_POINTER = re.compile(
+    rf"\b(PLAN|DATA|THEORY_NOTE)(?:\.md)?`?\s*§\s*({_SECTION_NUMBER})")
+
+# Only the documents that carry a pointer are parametrised. Running this over
+# the other ninety would add ninety cases that check nothing.
+_CITING = [p for p in DOCS if _POINTER.search(p.read_text(encoding="utf-8"))]
+
+
+@pytest.mark.parametrize("doc", _CITING, ids=lambda p: str(p.relative_to(ROOT)))
+def test_bare_section_pointers_resolve(doc):
+    text = doc.read_text(encoding="utf-8")
+    dead = []
+    for name, num in _POINTER.findall(text):
+        if num not in _OFFERED[name]:
+            dead.append(f"{name} §{num} (no such section in "
+                        f"{_POINTER_TARGETS[name]})")
+    assert not dead, (f"{doc.relative_to(ROOT)}: section pointers that resolve "
+                      "to nothing:\n  " + "\n  ".join(sorted(set(dead))))

@@ -1,14 +1,15 @@
 # Transit-width tension: RESOLVED — one flux bug, w₀ re-centred 32 → 50 → 64 µm
 
-**Status: RESOLVED 2026-07-13, and the prior moved again at v3.0.0
-(2026-08-01) to the adopted 64 µm lineage measurement — see the v3.0.0 block
-below, which supersedes the 50 µm conclusion this note originally reached.**
-The M9 transit MC (`rb5s6s/transit_mc.py`) had
-**one** real bug — a missing crossing-flux factor — now fixed. The corrected
-transit re-centres the beam-waist prior from 32 µm to **~50 µm** and has been
-propagated through every fit. An earlier draft of this note claimed the MC had
-**two** bugs and inferred **w₀ ≈ 90 µm**; that was wrong by a factor of 2 (see
-"What the earlier note got wrong" below), and is retracted.
+**Status: RESOLVED 2026-07-13. The beam-waist prior in force is the adopted
+64 µm**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
+v3.0.0 block below, which supersedes the 50 µm conclusion this note originally
+reached. How it got there: the M9 transit MC (`rb5s6s/transit_mc.py`) had
+**one** real bug, a missing crossing-flux factor, now fixed. The corrected
+transit re-centred the beam-waist prior from 32 µm to **~50 µm** and was
+propagated through every fit, and the lineage measurement then moved it again
+to 64 µm. An earlier draft of this note claimed the MC had **two** bugs and
+inferred **w₀ ≈ 90 µm**, which was wrong by a factor of 2 (see "What the
+earlier note got wrong" below) and is retracted.
 
 ## The one real bug (flux), and the fix
 

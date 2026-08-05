@@ -14,7 +14,7 @@ active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S w
 reports *null* AC-Stark and density shifts at ~6 MHz resolution — so it is the
 clean **demonstrator** of the drift-immune method. The **far more actively worked line is one
 transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (NIST/Andeweg,
-Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li–Dou) suppresses the AC-Stark
+Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li) suppresses the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
@@ -223,16 +223,30 @@ and has not been asked to do.
 The archive's *expected* self-broadening of the 993 nm line is neither measured
 nor purely computed. It is one external measurement carried across one rung by a
 computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
-(2026-08-03):
+(2026-08-05):
 
-    beta_self(6S) = beta_self(7S)_measured * [C6(5S+6S) / C6(5S+7S)]^(2/5)
-                  = 5.386 * 0.3473^0.4
-                  = 3.53 +- 0.30 kHz per 1e12 cm^-3
+    beta_self(6S) = beta_self(7S)_measured * [DC6(5S+6S) / DC6(5S+7S)]^(2/5)
+                  = 5.386 * 0.3128^0.4
+                  = 3.38 +- 0.29 kHz per 1e12 cm^-3
 
-with C₆(5S+6S) = 28908 a.u. and C₆(5S+7S) = 83228 a.u. from the module's own
-Casimir-Polder integrals, and 5.386 kHz per 10¹² cm⁻³ being Zameroski's measured
-129 ± 11 kHz/mTorr converted at 403 K. Exactly one number in that chain comes
-from outside. The archival bound sits 8 to 14 times above that expectation.
+    DC6(5S+nS)    = C6(5S+nS) - C6(5S+5S)
+
+with C₆(5S+6S) = 28908 a.u., C₆(5S+7S) = 83228 a.u. and C₆(5S+5S) = 4180 a.u.
+from the module's own Casimir-Polder integrals, and 5.386 kHz per 10¹² cm⁻³
+being Zameroski's measured 129 ± 11 kHz/mTorr converted at 403 K. Exactly one
+number in that chain comes from outside. The archival bound sits 8.5 to 14.6
+times above that expectation. The rounded 8 to 14 quoted elsewhere in the
+portfolio predates the correction below and is due to become 8 to 15.
+
+**Why the subtraction.** The impact phase is set by the difference between the
+upper- and lower-state interactions with the ground-state perturber, not by the
+upper state's coefficient alone, so the ground-pair term enters both rungs and
+does not cancel between them. That was corrected on 2026-08-05 after a referee
+raised it, and it moved the anchor from 3.53 to 3.38, 4.1 per cent and inside
+the quoted error. `rb5s6s/vanderwaals.py` carries the adjudication and its
+Lewis 1980 sources, and
+[the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md)
+carries the working.
 
 **That one external number is contested.** Wang *et al.* (2026) measure
 self-broadening on the same 760 nm 5S→7S line at 0.32 ± 0.01 MHz/mTorr, about
@@ -251,13 +265,13 @@ is the part the van der Waals module does well: the Lindholm-Foley prefactor,
 the mean-speed approximation and the dropped core and tail are common to the two
 states and cancel in it. The module predicts
 
-    beta(6S) / beta(7S) = 0.3473^0.4 = 0.655
+    beta(6S) / beta(7S) = 0.3128^0.4 = 0.628
 
 A measured ratio would test the C₆ machinery. A 6S measurement on its own keeps
 leaning on it. The absolute check already on record is of a different kind and
-is weaker: run on 7S the module predicts 4.50 against the measured 5.39 kHz per
-10¹² cm⁻³, 17% low, which the dropped core and tail plus the mean-speed step
-account for at the 10 to 15% level. That tests the absolute scale at one n. A
+is weaker: run on 7S the module predicts 4.40 against the measured 5.39 kHz per
+10¹² cm⁻³, 18% low, just past the 10 to 15% level the dropped core and tail
+plus the mean-speed step account for. That tests the absolute scale at one n. A
 ratio tests the n dependence.
 
 **7S may also be the cheapest rung on this bench rather than the second
@@ -284,8 +298,10 @@ phase-shift cross-section, Lewis 1980 §4.2 eq. (4.15) to (4.17), written out in
 Between the 6S and 7S rungs the module's own Casimir-Polder integrals give
 C₆(5S+nS) growing as **n\*^3.5** (28908 to 83228 a.u., with n\* = 2.845 and
 3.856 from the NIST term energies and the Rb ionization limit, or 3.54 if a
-fixed quantum defect of 3.131 is used instead), so β_self would grow as
-**n\*^1.4** across the same step. Two points give a local slope. A third
+fixed quantum defect of 3.131 is used instead). The quantity the broadening
+law reads is the difference against the ground pair, which grows a little
+faster because the same 4180 a.u. is subtracted from both, **n\*^3.8** (24728
+to 79048 a.u.), so β_self would grow as **n\*^1.5** across the same step. Two points give a local slope. A third
 measured rung would turn it into a fitted exponent with an error bar, and that
 is the whole difference.
 
@@ -473,6 +489,7 @@ the assumption set behind each figure carried in
 | fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, at 0.68 of the 993 nm ceiling of 332 mW, so this is the one rung the ceiling does not make it unnecessary. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
 | 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the archive's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
 | 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the archive's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
+| O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
 | wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design pins the temperature in about 1.9 hours to where the vapour curve's 22-fold leverage keeps the implied density inside the 20 percent scale systematic, and reaches the adopted retro ratio in about 2.1 hours, both on the four-pedestal comb and both about sixteen times longer on a single component | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
 | doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
 
@@ -656,92 +673,246 @@ If only one item were approved, PLAN's own ranking puts the beam profile
 first, because it is the only one of the five that improves a result already
 in hand.
 
-## 4. The papers this enables (ranked)
+## 4. The paper portfolio (ranked)
 
-### Paper A — *Reference-free light shift & magic wavelength on the 778 nm 5S→5D clock line, via lineshape asymmetry* — **the topical extension (methodological, not a precision competitor)**
+Four papers could be written out of the material above. The ranking criterion is
+risk-adjusted distinctiveness per unit bench cost: how far a result would sit
+from anything another group could produce, divided by the bench time and the
+hardware it would take, discounted by the chance of returning nothing. That
+criterion prefers a cheap measurement of a quantity nobody has published to an
+expensive measurement of a quantity several groups have already published well,
+so the order below is not the order of headline appeal.
 
-> **Caveat up front (2026-07-13).** This is a *reference-free, orthogonal-
-> systematics, no-extra-hardware* determination — a complementary cross-check and a
-> clean demonstration of the inverted-nuisance idea. It will **not** out-precision the
-> active schemes (NIST/Adelaide), and must not claim to. Its value is method + physics,
-> not a smaller error bar. The shape handles are weak (width ∝S₀², skew ∝S₀³) and the
-> skew is contamination-prone (shot noise, instrument asymmetry), so it needs the
-> *large-S₀* small-waist regime to be a measurement at all — see the scope note in
-> the vapour-cell framing. That inherits a further dependency: at small waist the
-> ramp skew is itself conditional on the axial collection geometry, which is
-> unmeasured — the axial average can suppress it or reverse its sign
-> (PLAN §6 #4). So this proposal is gated on the same collection-profile
-> measurement, not only on reaching small waist. The reason "nobody does this" is not an oversight: with a
-> stable reference the pull (∝S₀) is strictly better, so the passive shape route is
-> preferable only where reference-freedom or orthogonal systematics are required.
+Every entry carries the same seven fields in the same order. The claim the paper
+would make. Who would read it and why. What stands against it in the published
+record. What data it would need beyond the 2025 archive. The projected precision
+and where that projection comes from. The principal way it could come back
+empty. Its rank and the reason.
 
-- **Why now.** 5S→5D at 778 nm is *the* vapor-cell two-photon clock transition, and
-  the 2024–2026 leaders (Andeweg 2026 ×1000 power-modulation suppression; Ahern 2025
-  two-color 6×10⁻¹⁴/√τ; Feng 2026; Gerginov 2018; Li–Dou 2024) all fight the AC-Stark
-  shift with **active** methods. Our drift-immune **ramp/asymmetry** channel is a
-  *passive, reference-free, low-complexity* alternative — a real methodological
-  differentiator on a maximally topical transition (Bandi 2025 is the review to cite
-  for the benchmark landscape).
-- **The measurement the tunability enables.** The ramp asymmetry (third-moment/skew observable)
-  scales as S₀ ∝ Δα(λ). Hamilton 2023 puts a **magic wavelength at 776.179 nm**, right
-  beside the transition. Tune the Ti:Sapph across it and the asymmetry **crosses zero
-  and flips sign** as Δα→0 — a **passive determination of the magic wavelength /
-  differential-polarizability zero-crossing**, with no reference cavity and no active
-  feedback. That would be a reference-free determination of the differential-polarizability zero crossing.
-  **Read §3.1 before this bullet.** In Hamilton's own apparatus the scan across
-  776.179 nm is run with a *separate* tunable Ti:Sapph perturbing a clock that
-  is driven by fixed 780 and 776 nm lasers, and a single-colour 778.104 nm drive
-  cannot be tuned at all, so the field being scanned here is the perturbing one.
-- **Magic wavelengths for our own 5S–6S pair now exist as computed candidates**
-  (M16, `results/polarizability.csv`; unpublished elsewhere to the depth searched
-  2026-07-17): α₅S = α₆S crossings at **≈1203.9 nm** (the clean one, far from every
-  6S resonance; α ≈ +547 a.u., trapping both states; 16–84% band ±0.8 nm),
-  ≈1287.9 nm and ≈1339.6 nm (both wedged near the 6S–7P / between the 6S–5P lines,
-  where vector shifts need their own treatment). A trap at the 1203.9 nm crossing
-  would hold atoms without perturbing the 993 nm line — the state-insensitive-trap
-  ingredient for any trapped-atom version of this spectroscopy.
-  Scalar only; a vector/tensor treatment and a
-  blue-side crossing search are the follow-up.
-- **Novelty (three claims).** (i) The *inversion* of lineshape asymmetry from
-  nuisance-to-eliminate (Wieman 1987; Antypas–Budker 2018) into a self-calibrating
-  observable, realized on a *focused* two-photon transition; (ii) magic-λ from an
-  asymmetry sign-flip; (iii) reference-free complement to the active-suppression
-  mainstream. The literature sweep found no passive-asymmetry light-shift measurement on any
-  focused two-photon line, and none on 5D.
-- **Feasibility flags (to decide at the bench).** 778 nm is easy for the Ti:Sapph. BUT: (a)
-  detection moves to 420 nm (filter + blue PMT); (b) the **near-resonant 5P₃/₂
-  intermediate (1 THz)** distorts the two-photon lineshape — the transit/ramp model
-  needs the Bjorkholm–Liao intermediate-state term (this is exactly Paper C, so it
-  reduces the risk on A); (c) verify the EOM/retro/waveplates behave at 778 vs 993 nm.
+Three conventions hold throughout. The letters are the labels of record used in
+[LITERATURE.md](LITERATURE.md) §5 and §8, so they are identifiers rather than
+positions. The decision-maker table above holds the numbers for the rungs it
+prices and this section holds the narrative, so the two point at each other once
+rather than restating each other. And nothing here is scheduled, agreed or
+assigned, which is why every verb below is conditional. §5 sequences the same
+four papers by scientific impact if the whole programme ran, which puts A and C
+first. The two orders differ because the criteria differ, and this one is the
+order to read when only part of the programme is affordable.
 
-### Paper C — *The near-resonant intermediate state and the two-photon transit/AC-Stark lineshape: a clean-vs-resonant comparison (6S, 7S, 5D)* — **the engine-room companion to A**
+### 4.1 Rank 1, Paper D (the cheapest new number)
 
-- The intermediate-detuning **ladder** — 6S (75 THz, clean) → 9S (70) → 8S (46) →
-  7S (10) → 5D (1 THz, near-resonant) — is a controlled **five-rung, ~68× sweep**
-  of intermediate-state admixture **in one apparatus, one method** (8S/9S added
-  2026-07-13; they are blue-edge/short-wave-optics reach but fill the gap
-  between the clean 6S anchor and the resonant 5D). Walk it with the Ti:Sapph.
-- Test Bjorkholm–Liao 1976 + our transit (Lehmann/Biraben) + ramp model: *how* the
-  near-resonant intermediate reshapes the line and the intensity-shift ramp, and
-  *where* the clean-case approximation (validated at 6S) breaks.
-- This is the intermediate-state correction Paper A needs at 5D — so it can be the
-  methods §of A, or a short standalone that A leans on. Either way it converts the
-  993 nm work from "one transition" into "the clean anchor of a validated model."
+*The 6S to 7P matrix elements by a differential null in a hot cell.* The design
+is §5.1.
 
-### Paper B — *Self-broadening and drift-immune differential polarizability across the Rb 5S→nS/nD ladder (6S, 7S, 5D)* — **series / completeness (a strong thesis capstone)**
+**Claim.** That the 6S to 7P reduced dipole matrix elements can be read from the
+position of the differential-polarizability zero crossing at 1297.5 nm, located
+by scanning one auxiliary beam across it and watching the induced shift pass
+through zero in the lineshape channel this archive already extracts. The chain
+would contain no intensity calibration and no absolute frequency reference.
 
-- Same rig, Ti:Sapph tuned to 993/760/778 nm: measure β_self, transit(w₀), and the
-  drift-immune Δα for each upper state with **one** method.
-- **Completes a real series.** Zameroski 2014 measured *foreign-gas* broadening of
-  5D & 7S; Weber–Niemax the nS/nD self-broadening series; we add **self** rates +
-  the drift-immune AC-Stark Δα(n), tested against the n-scaling (β ∝ C₆^{2/5},
-  and the C₆ growth in n that §3.3 computes rather than assumes: the "C₆ ~ n*⁷"
-  this bullet used to carry is the scaling of the *polarizability*, not of C₆
-  for a ground-plus-excited pair) and the Safronova matrix elements. We find **no modern 6S dynamic
-  polarizability at 993 nm exists** — a gap this fills.
-- Feasibility: β_self is ~kHz at 6S (needs the fixed-lock session high-T, same-session shot-list
-  upgrade already in PLAN §7); 5D/7S sit closer to resonance so *may* broaden more
-  and be easier. Lower risk than A, lower ceiling.
+**Readers.** The all-order atomic-structure methods, which run unbenchmarked on
+excited-to-excited channels because a 7P lifetime sums over every decay channel
+and ground-state absorption never reaches 6S to 7P. Separately, anyone weighing
+this archive's asymmetry channel, since the same dataset would carry the
+sign-reversal test of it.
+
+**Prior art.** The logic is the tune-out family's, transplanted from a
+single-state zero to a differential one. Herold et al., *Phys. Rev. Lett.* 109,
+243003 (2012) is the nearest example and is also the source of the 5S to 6P
+matrix elements [rb5s6s/polarizability.py](../rb5s6s/polarizability.py) uses,
+so the method is already load-bearing here. No measurement of the 7P
+fine-structure ratio exists for this doublet, which is what the companion null
+at 1287.9 nm would push toward.
+
+**Data beyond the archive.** One telecom O-band diode and its wavemeter, riding
+any session that runs at all, plus the fixed-lock campaign's shift precision.
+No Ti:Sapph time.
+
+**Projected precision.** §5.1 puts the root at about 26 pm at the fixed-lock
+campaign's projected shift precision, which would read the 7P residue against
+the 496-atomic-unit background at about the 3 per cent level, and at about 18 pm
+and 2.4 per cent at the two-day cadence. The shift precision those conversions
+ride on is the one carried in
+[results/projections.csv](../results/projections.csv) for a day of randomized
+power cycling.
+
+**How it could come back empty.** The delivered perturber intensity at the cell
+could undershoot, which stretches the localization beyond the range where it
+reads a matrix element. Every conversion also rides the adopted waist, so these
+are envelope numbers and would sharpen with the beam profile.
+
+**Rank and reason.** First. Lowest bench cost of the four by a wide margin, and
+the only one whose measurand has no published value at all, so the numerator of
+the criterion is large and the denominator is one commodity source.
+
+### 4.2 Rank 2, Paper B (the series capstone)
+
+*Self-broadening and drift-immune differential polarizability across the Rb 5S to
+nS and nD ladder, at 6S, 7S and 5D.*
+
+**Claim.** That β_self, the transit width at a measured waist, and the
+drift-immune Δα can be measured for each upper state with one method on one
+bench, and that the resulting ratio β(6S)/β(7S) tests the van der Waals
+machinery where a single rung can only be compared against it. §3.3 gives the
+scaling this would test and corrects the parenthetical this entry used to carry.
+
+**Readers.** The collision-rate series, which currently has one measured
+self-broadening rate for an nS state in rubidium. The group advancing 7S as a
+frequency standard. The theory groups on either side of the differential
+polarizability sign, as [CLAIMS.md](CLAIMS.md) §4 sets out.
+
+**Prior art.** [zameroski2014](lit/zameroski2014.md) measured foreign-gas
+broadening and shift of the 5S to 5D₅/₂ and 5S to 7S₁/₂ two-photon lines by the
+noble gases and N₂, and measured the 5S to 7S self-broadening rate directly.
+Weber and Niemax, *Z. Phys. A* 307, 13 (1982) is the Rb nS and nD
+self-broadening series that makes a completeness claim quotable, and
+[LITERATURE.md](LITERATURE.md) §2 records it as not yet held, so it can be cited
+for the series existing and for nothing further until it is read.
+[wang2025](lit/wang2025.md) disagrees with Zameroski on the 7S rate by a factor
+of 2.6 with no half-width convention stated. LITERATURE.md §8 records that no
+dedicated modern 6S dynamic polarizability at 993 nm exists.
+
+**Data beyond the archive.** The fixed-lock 993 nm session. A 760 nm retune,
+with the two datasheet questions of §3.2 deciding whether a blue detection path
+is needed. The 778 nm rung would additionally need the detection change.
+
+**Projected precision.** The decision-maker table above prices the 7S and 778 nm
+rows, with the assumption set behind each figure in
+[results/projections.csv](../results/projections.csv). The 7S adjudication
+carries a fourfold margin at the archive's own drive power and holds at the
+light-shift ceiling.
+
+**How it could come back empty.** β_self is intrinsically a few kHz per 10¹²
+cm⁻³ and could stay a bound, which would still separate the two published 7S
+values if the bound landed below the higher of them. The 778 nm rung is the
+exposed one, because its light-shift ceiling leaves the factor-two test short
+and [CLAIMS.md](CLAIMS.md) §4 states the consequence, that at this waist the
+calibration would need about seventy times the session length before it could
+catch even a convention error.
+
+**Rank and reason.** Second. The 6S and 7S core is a laser retune away from a
+number with a stated audience and a margin over what the adjudication needs. The
+5D rung is what pulls the entry down, and dropping it would leave a shorter
+series rather than no paper.
+
+### 4.3 Rank 3, Paper C (the model validation A depends on)
+
+*The near-resonant intermediate state in the two-photon transit and AC-Stark
+lineshape, a clean against resonant comparison.*
+
+**Claim.** That walking the intermediate-detuning ladder in one apparatus and
+with one method would show how a near-resonant intermediate reshapes both the
+line and the intensity-shift ramp, and where the clean-case approximation
+validated at 6S stops holding. §2 gives the ladder, 6S at 75 THz down to 5D at
+1.1 THz, a sweep of about 68 in intermediate-state admixture.
+
+**Readers.** Anyone applying a passive lineshape method to a line with a nearby
+intermediate state, who currently has to assume the clean case or model it from
+scratch. Also the referee of Paper A, since this is the correction Paper A needs
+at 5D and could be its methods section instead of a standalone.
+
+**Prior art.** [bjorkholm1976](lit/bjorkholm1976.md) is the closed-form
+two-photon lineshape with a resonant or nearly resonant intermediate state, and
+its note records that it is not prior art for reading a light shift off the
+line, because AC-Stark effects are excluded there by construction and its one
+distortion effect comes from Doppler-velocity integration rather than from
+spatial intensity structure. The transit side is
+[biraben1979](lit/biraben1979.md) and [lehmann2021](lit/lehmann2021.md).
+
+**Data beyond the archive.** Two rungs would do for a first result, 6S and 7S,
+which is a sweep of about 7.5 and needs no new detection path if §3.2's
+datasheet questions answer favourably. The resonant end at 5D needs everything
+Paper A needs. 8S and 9S would fill the middle and require the blue optics set.
+
+**Projected precision.** Not projected.
+[results/projections.csv](../results/projections.csv) carries no row for it,
+because the discriminating quantity is a comparison
+between two lineshape models rather than a coefficient with an error bar, and
+sizing it would need the model comparison run on synthetic traces first.
+
+**How it could come back empty.** The intermediate-state term could sit below
+the per-trace fit residual at 7S, in which case the affordable half of the
+sweep would return the clean-case approximation holding everywhere it can be
+tested, and the informative end would be the expensive rung.
+
+**Rank and reason.** Third. Cheap at the 6S and 7S end and it lowers Paper A's
+risk, which is why it ranks above A. Its own distinctive result lives at the 5D
+end, which carries Paper A's cost, which is why it ranks below B.
+
+### 4.4 Rank 4, Paper A (the topical extension)
+
+*Reference-free light shift and magic wavelength on the 778 nm 5S to 5D clock
+line, by lineshape asymmetry.*
+
+**Claim.** That the differential-polarizability zero crossing beside the 778 nm
+line could be located from the sign flip of the lineshape asymmetry as Δα passes
+through zero, with no reference cavity and no active feedback in the chain. The
+claim is methodological. It would not out-precision the active schemes and must
+not be written as though it could. The same machinery gives computed 5S to 6S
+crossings (§3.3), which are a trapped-atom follow-up on a different state pair
+rather than part of this paper.
+
+**Readers.** The 778 nm clock groups, whose published AC-Stark handling is
+active throughout: [andeweg2026](lit/andeweg2026.md) suppresses by power
+modulation at a factor of a thousand, [ahern2025](lit/ahern2025.md) runs
+two-colour at 6×10⁻¹⁴/√τ and is light-shift limited in the long term,
+[feng2026](lit/feng2026.md) chooses a sub-transition with a smaller tensor
+shift, [li2024b](lit/li2024b.md) nulls by dual interrogation, and
+[gerginov2018](lit/gerginov2018.md) is the suppress-the-shift stance this
+programme contrasts with. [bandi2025](lit/bandi2025.md) is the review that
+frames the benchmark landscape.
+
+**Prior art, and it is the field that most constrains this entry.**
+[delone1980](lit/delone1980.md), a 1980 review, already carries the
+lineshape-as-map frame, the multiphoton intensity weight and the
+shift-dominated asymmetric limit, and this repository's closed form is its Eq.
+(5.3) evaluated for the intensity distribution of a focused Gaussian beam.
+[camparo1992](lit/camparo1992.md) states the mapping for a two-photon line.
+[wieman1987](lit/wieman1987.md) and [antypas2018](lit/antypas2018.md) own
+asymmetry from a distributed AC-Stark shift and its elimination.
+[slepkov2010](lit/slepkov2010.md) and [wall2014](lit/wall2014.md) both keep the
+shift distribution rather than averaging it away, and Wall carries the
+two-photon intensity weighting too. LITERATURE.md §5.1 and §5.2a fix what
+survives that: the closed form with its analytic cumulants, the inversion of the
+lineshape for the shift where the frequency reference is unusable, which Slepkov
+and Wall do not perform, and the third cumulant as a drift-immune channel. The
+closest external precedent to the inversion is a 2015 nanofibre-trap analysis
+recorded in LITERATURE.md §8 as reported and not held, so the wording stays
+scoped until it is read. No passive-asymmetry determination on the 778 nm line
+appears anywhere in the swept landscape.
+
+**Data beyond the archive.** A 778 nm drive, detection at 420 nm unless the 5D
+cascade channels the near-IR path already passes turn out to be sufficient, and
+a second source for the scan, because §3.1 shows the single-colour drive is
+pinned at 778.104 nm and the field scanned across the crossing is the perturbing
+one. The closed-form shift distribution holds only where the two beams are mode
+matched over the collection volume. The asymmetry channel needs the large-S₀
+tighter-waist regime to be a measurement at all, and at that waist the axial
+average over the collection window sets both the size and the sign of the ramp
+skew, so the collection geometry would have to be measured in the same session.
+[PLAN.md](PLAN.md) §6 item 4 gives the closed form for that average and shows
+the sign flip holding across the plausible magnification range.
+
+**Projected precision.** The decision-maker table above prices the 778 nm row
+and §3 sizes the scan, at nine points across the usable half span the
+neighbouring 5P₃/₂ to 5D₅/₂ pole leaves on the blue side, each point good to
+about 8 per cent of the shift at the edge of that span. The limitation is the
+per-point precision on the shift observable rather than the wavelength axis.
+
+**How it could come back empty.** The most exposed of the four. The light-shift
+ceiling at this rung leaves the factor-two test short, so on the design as it
+stands the calibration would need about seventy times the session length before
+it could catch even a convention error, and [CLAIMS.md](CLAIMS.md) §4 states
+that the audience is served by a longer session or a looser focus rather than by
+this design. The skew is contamination-prone, from shot noise and from
+instrument asymmetry, and it would have to be separated from both.
+
+**Rank and reason.** Fourth. The most distinctive result on the list and the
+most expensive to reach, on the most actively worked transition, with the
+narrowest surviving novelty claim of the four and the largest number of
+conditions that all have to hold at once. On this criterion that combination
+ranks last. On §5's impact ordering it ranks first, and the difference between
+the two orderings is the whole content of the criterion.
 
 ## 5. Recommendation & sequencing
 
@@ -749,17 +920,25 @@ in hand.
 papers below is scheduled, agreed, or assigned. The ordering is what the
 physics argues for if the programme is pursued at all.*
 
-1. **Finish this analysis (993 nm 5S→6S)** as the clean method demonstrator, then reframe
-   its Intro: the *passive, reference-free inversion* of Wieman/Antypas,
-   explicitly contrasted with the active 778 nm suppression schemes, on a line no other group is currently working
-   transition (quote the USAFA nulls). (This is a vapour-cell Intro edit. It is cheap,
-   do it in the vapour-cell pass. The refs are in `LITERATURE.md` §8.)
-2. **Paper A + C together** are the high-impact next step: carry the method to the
-   778 nm clock line and turn the Ti:Sapph tunability into a magic-wavelength /
-   Δα(λ) measurement, with the intermediate-state lineshape (C) as the validated
-   bridge from the clean 6S anchor. This is where the tunable laser pays off most.
-3. **Paper B** is the completeness capstone — it reuses the exact rig and
-   method across the ladder.
+1. **Finish this analysis (993 nm 5S→6S)** as the clean method
+   demonstrator, and reframe its introduction around the scoped novelty
+   section 4.4's prior-art field states: the closed form, its cumulants,
+   and the reference-free extraction, against the active 778 nm
+   suppression schemes and the USAFA nulls. A vapour-cell introduction
+   edit, cheap, with the references in `LITERATURE.md` §8.
+2. **Paper D** rides whichever cell session runs first, because it costs
+   one commodity diode and no Ti:Sapph time (§5.1, and rank 1 of §4 on
+   exactly that ground). Impact-wise it is the one new number nobody
+   else has, so it belongs in the sequence wherever a cell session does.
+3. **Paper A + C together** are the high-impact Ti:Sapph step: carry the
+   method to the 778 nm clock line, with the intermediate-state
+   lineshape study (C) as the validated bridge from the clean 6S anchor.
+   The tunability argument is for the SCAN across the magic point, not
+   for reaching 778 nm as such, which the decision-maker table prices
+   with a fibre-amplifier alternative that makes the Ti:Sapph
+   unnecessary for a fixed-wavelength run.
+4. **Paper B** is the completeness capstone, reusing the rig and method
+   across the ladder.
 
 **The most distinctive experiment the Ti:Sapph enables** (distinctive, not
 necessarily most precise): scanning the 776 nm magic wavelength on 5S→5D and watching
@@ -770,6 +949,115 @@ small-waist regime to work at all (§Paper A caveat). The lower-risk
 complement is **Paper B** (the β_self / Δα ladder), which reuses the exact
 rig and method.
 
+### 5.1 The steep root at 1297.5 nm: useless as a trap, precious as a lever
+
+The differential polarizability of the 5S and 6S clock states has a fourth
+zero crossing at 1297.533 nm, sitting 0.745 nm (133 GHz) from the 6S to
+7P resonance, between the two 7P fine-structure poles. Both numbers are the
+electric-dipole valence computation at its central inputs, and the
+multipole scrutiny below bounds what the neglected terms can do to them. As a trap wavelength
+it is disqualified three times over: the crossing is 915 times steeper than
+the tamest reported magic wavelength (11.3 atomic units per picometre), the
+band where the differential stays within ten atomic units is under two
+picometres wide, and the near-resonant scattering closes the case. Those
+same three numbers, read as an instrument rather than a trap, are the
+opportunity, and it is one this repository's machinery is already built for.
+
+**A matrix-element measurement by a null, on the vapour cell, drift-immune.**
+Add one auxiliary beam near 1297.5 nm to the existing cell experiment and
+scan its wavelength across the root while reading the light shift it induces
+on the 993 nm line through the lineshape channel this archive already
+extracts. The induced shift crosses zero at the root and its asymmetry
+changes sign there, so the null is identified from the SHAPE of the line,
+needing no absolute frequency reference, which is the property this whole
+programme is built on. The position of the null is set by the 6S to 7P line
+strength, so locating it measures that matrix element by frequency metrology
+instead of intensity calibration, the same logic as the tune-out
+measurements of Herold and co-workers, transplanted to a differential zero.
+The steepness is the whole budget: at the fixed-lock campaign's projected
+shift precision of 92 kHz, the root localizes to 26 pm, which reads the 6S
+to 7P residue at about the 3 per cent level (18 pm and about 2.4 per cent at
+the two-day cadence). The tamest root would localize to 23 nanometres at the
+same precision and measures nothing. Every conversion here rides the
+campaign intensity and the adopted waist, so these are envelope numbers in
+the sense of the projections table, and they sharpen with the waist
+measurement like everything else.
+
+**A sign-reversal test of the asymmetry channel.** The archive's asymmetry
+observable is claimed as a light-shift channel. Sweeping the auxiliary
+beam's wavelength through the root drives the induced shift distribution
+through zero and out the other side, so the asymmetry must flip sign at the
+null while every instrumental confound stays put. That is the cleanest
+falsifiable test the asymmetry claim can be given, and it is a test the
+2025 campaign could not perform at fixed wavelength.
+
+**A dial-a-shift knob.** Off the null, one picometre of wavelength is 3.6
+kilohertz of controllable differential shift at campaign intensity, with
+either sign available within a few picometres. That is a calibrated shift
+injector for rehearsing the fixed-lock campaign's analysis on data with a
+KNOWN light shift, which no other knob on the bench provides.
+
+**And the practicality is the punchline**: 1297.5 nm sits in the telecom O
+band, where stabilized diode lasers and calibrated wavemeters are commodity
+items. The steep root is the one zero crossing of the four that needs no
+Ti:Sapph time at all. It is a crossing and not a magic wavelength: the reported
+list has three, on the criterion of usability as a trap, and this one fails
+that criterion for the three reasons above.
+
+**What the paper actually is: the electric-dipole inputs become the
+measurand.** The theory envelope paragraph below says the root's predicted
+position is good to about a tenth of a nanometre because of the
+electric-dipole inputs. Measuring the root to 26 pm therefore does not
+test the prediction so much as replace it, and the paper this makes is a
+matrix-element paper. Between two excited states the dipole matrix
+elements are the least measured numbers in the alkali tables: a 7P
+lifetime sums over every decay channel and cannot isolate 6S to 7P, and
+absorption from the ground state never reaches it, which is why these
+channels are where the all-order atomic-structure methods run
+unbenchmarked. The null position reads the ratio of the 7P residue to the
+496-atomic-unit background the clock pair balances at, by frequency
+metrology against a spectroscopically exact pole, with no intensity
+calibration anywhere in the chain. And the doublet offers a second
+handle: a companion null at 1287.87 nm sits 4.5 nm below the 7P 3/2 pole
+(shallower, 0.64 atomic units per picometre, so localized to about half a
+nanometre at the same shift precision), and the pair of nulls bracketing
+the fine-structure doublet separates the two 7P residues from the shared
+background, pushing toward the fine-structure ratio with the background
+dependence reduced. That ratio is the classic observable of the tune-out
+literature, and no measurement of it exists for this doublet.
+
+**What the neglected multipoles can and cannot do to the root.** The
+computation behind the crossing is electric-dipole and valence-only, so the
+question of whether quadrupole or octupole terms move a root quoted to
+0.745 nm from a pole has to be answered rather than waved at. Two facts
+answer it. First, no multipole-allowed one-photon resonance of either clock
+state falls inside the 1292.4 to 1298.3 nm gap the root lives in: the
+nearest electric-quadrupole channels are 6S to 6D at 1169 nm and 6S to 5D
+at 1796 nm, the nearest magnetic-dipole channels are 6S to 8S at 1122 nm
+and 6S to 7S at 1618 nm, the nearest electric-octupole channel is 6S to 4F
+at 1502 nm, and on the ground state everything sits below 520 nm. So the
+neglected terms contribute background, never a local pole. Second, that
+background is generically suppressed by the square of the wavenumber times
+the Bohr radius, 6.6 times ten to the minus eight here, and granting the
+radial matrix elements two orders of magnitude of enhancement still leaves
+the multipole background below ten to the minus five of the
+8400-atomic-unit electric-dipole background the root balances against,
+which moves the root by under a hundredth of a picometre. The octupole
+family enters at the fourth power of the same small parameter and is beyond
+consideration. What actually limits the theory position is the
+electric-dipole inputs themselves: a ten per cent error on the 7P residue
+or on the background moves the root by about 75 pm, and the 7P hyperfine
+substructure smears the pole by under half a picometre at this detuning.
+The measurement is insensitive to all of it in the direction that matters,
+because the proposal is to MEASURE the root against the spectroscopically
+exact pole position, and the theory envelope on its location is precisely
+why a 26 pm localization buys a matrix element.
+
+The root stays out of the reported magic-wavelength list, where the
+criterion is usability as a trap, and the polarizability module's search
+guard stays. The disposition note in the calibration record carries the
+slope table behind these numbers.
+
 ## 6. Open feasibility questions for the experimenter (Michelangelo)
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?
 - Is the 420 nm detection path (filter + blue-sensitive PMT) available, or a build?
@@ -779,7 +1067,7 @@ rig and method.
 - Cell/oven: 5D/7S may want *lower* density than 6S (they are stronger / closer to
   resonance) — the fixed-lock session shot-list temperature range would differ per transition.
 - The ruler comb itself: in the archive the scan clips one third-order tooth window on
-  every recorded trace, and at the fitted drive depth (2β = 1.62) a fully covered
+  every recorded trace, and at the measured drive depth (2β = 1.57 median across the combs) a fully covered
   third-order tooth still sits below the per-trace fit residual (pre-registration
   amendment 4). Widening the scan by about one tooth spacing per side and deepening the
   EOM drive until J₃² clears the noise would give every calibration trace seven standing

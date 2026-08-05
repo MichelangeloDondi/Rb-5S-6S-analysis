@@ -17,12 +17,17 @@ AST walk over every string literal in the figure-drawing scripts
 (scripts/make_figures.py and scripts/make_fig0_spectrum.py), skipping only
 docstrings (developer documentation, not rendered), comments (not part of the
 AST at all), the STATUS_WORD translation table (its keys are necessarily the
-codes being translated AWAY from), any string passed to _footer(...) (the
-one licensed on-figure exception), and strings that leave through the console
+codes being translated AWAY from), and strings that leave through the console
 or the exception channel (print(...) arguments and raise statements), which
 are developer-facing and never drawn. Every string literal that survives that
 exclusion is a candidate for being drawn on a figure, and none of them may
 carry a banned token.
+
+Strings passed to _footer(...) are the partial exception. The footer may carry
+file paths, module names and pipeline vocabulary, because that line exists for
+reproducibility. It may not carry the banned punctuation: the footer is drawn
+on the same canvas as everything else, so the em-dash, spaced-double-hyphen and
+semicolon rules apply to it too.
 """
 
 from __future__ import annotations
@@ -61,17 +66,51 @@ BANNED_TOKENS = [
     # audit found five figures carrying it). Unspaced "--" stays legal: it is
     # matplotlib's dashed-linestyle format string.
     ("double hyphen standing in for a dash", re.compile(r"\s--\s")),
+    # The 2026-08-04 fig19 incident: a panel box cited results/ruler_traces.csv
+    # by path, a title carried "dof=2, t=2.92", an axis label carried a
+    # semicolon, and the word "headline" named a construction only this
+    # repository calls that. All of it passed, because none of it was on this
+    # list. File paths belong in the footer alone, statistics shorthand is
+    # spelled out or dropped, and prose punctuation follows the same register
+    # as the documents.
+    # Directory-prefixed only: bare "name.csv" literals are how the module
+    # BUILDS its Path objects, which the AST walk cannot tell from drawn text.
+    # The leak this catches is the prefixed form ("results/ruler_traces.csv"),
+    # which is what a reader-facing panel would quote.
+    ("repository file path in figure text", re.compile(
+        r"\b(results|data_raw|docs|scripts|private|tests)/", re.I)),
+    ("the word 'headline'", re.compile(r"\bheadline\b", re.I)),
+    ("t-quantile shorthand t(p,dof)", re.compile(r"\bt\(0\.\d+\s*,\s*\d+\)")),
+    ("the shorthand 'dof'", re.compile(r"\bdof\b")),
+    ("the abbreviation SNR", re.compile(r"\bSNR\b")),
+    ("semicolon in figure prose", re.compile(r";\s")),
 ]
+
+# The footer's exemption is about VOCABULARY: it is the one line licensed to
+# carry file paths, module names and function names, because it exists for
+# reproducibility. It was never meant to license typography. An em-dash, a
+# spaced double hyphen and a semicolon render on the canvas wherever they sit,
+# and the footer is on the canvas, so those three rules follow the footer in.
+# Added 2026-08-05, after a pass removed semicolons from four footers and left
+# them in three, with the guard structurally unable to see any of the seven.
+TYPOGRAPHY_LABELS = {"em-dash", "double hyphen standing in for a dash",
+                     "semicolon in figure prose"}
+TYPOGRAPHY_TOKENS = [r for r in BANNED_TOKENS if r[0] in TYPOGRAPHY_LABELS]
 
 _BODY_NODES = (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
 
 
-def _excluded_ids(tree: ast.AST) -> set[int]:
-    """id()s of Constant/JoinedStr nodes that are exempt: docstrings, the
-    STATUS_WORD lookup table, every argument of a _footer(...) or print(...)
-    call, and every string inside a raise statement (console and exception
-    text is developer-facing, never drawn on a figure)."""
+def _excluded_ids(tree: ast.AST) -> tuple[set[int], set[int]]:
+    """Two sets of Constant/JoinedStr node id()s.
+
+    The first is fully exempt: docstrings, the STATUS_WORD lookup table, every
+    argument of a print(...) call, and every string inside a raise statement
+    (console and exception text is developer-facing, never drawn on a figure).
+
+    The second is the _footer(...) arguments, which are exempt from the
+    vocabulary rules only and are still held to TYPOGRAPHY_TOKENS."""
     excluded: set[int] = set()
+    footer_only: set[int] = set()
 
     for node in ast.walk(tree):
         # docstrings: the first statement of a module/function/class body,
@@ -93,14 +132,16 @@ def _excluded_ids(tree: ast.AST) -> set[int]:
 
         # any string literal handed to _footer(...) -- the one place file
         # paths and pipeline vocabulary are allowed on the figure -- or to
-        # print(...), which goes to the console, not the canvas.
+        # print(...), which goes to the console, not the canvas. The footer
+        # keeps its vocabulary licence and loses its typography one.
         if isinstance(node, ast.Call):
             fname = (node.func.id if isinstance(node.func, ast.Name)
                      else node.func.attr if isinstance(node.func, ast.Attribute) else None)
             if fname in ("_footer", "print"):
+                sink = excluded if fname == "print" else footer_only
                 for arg in list(node.args) + [kw.value for kw in node.keywords]:
                     for sub in ast.walk(arg):
-                        excluded.add(id(sub))
+                        sink.add(id(sub))
 
         # raise SystemExit("...") and kin: exception text reaches the
         # terminal, never a rendered figure.
@@ -108,23 +149,40 @@ def _excluded_ids(tree: ast.AST) -> set[int]:
             for sub in ast.walk(node):
                 excluded.add(id(sub))
 
-    return excluded
+        # data-plumbing string literals that name fields rather than carry
+        # prose: dict keys ({"dof": dof}), subscript indices (row["headline"])
+        # and the first argument of a .get(...) lookup. Added 2026-08-04 when
+        # the token list grew words that legitimately appear as column names.
+        if isinstance(node, ast.Dict):
+            for k in node.keys:
+                if isinstance(k, ast.Constant):
+                    excluded.add(id(k))
+        if isinstance(node, ast.Subscript) and isinstance(node.slice, ast.Constant):
+            excluded.add(id(node.slice))
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "get" and node.args
+                and isinstance(node.args[0], ast.Constant)):
+            excluded.add(id(node.args[0]))
+
+    return excluded, footer_only
 
 
 def _figure_facing_string_nodes(tree: ast.AST):
-    excluded = _excluded_ids(tree)
+    """Yields (node, rules): the token list each surviving string is held to."""
+    excluded, footer_only = _excluded_ids(tree)
     for node in ast.walk(tree):
         if (isinstance(node, ast.Constant) and isinstance(node.value, str)
                 and id(node) not in excluded):
-            yield node
+            yield node, (TYPOGRAPHY_TOKENS if id(node) in footer_only
+                         else BANNED_TOKENS)
 
 
 @pytest.mark.parametrize("target", TARGETS, ids=lambda p: p.name)
 def test_figure_text_carries_no_pipeline_dialect(target):
     tree = ast.parse(target.read_text(encoding="utf-8"), filename=str(target))
     violations = []
-    for node in _figure_facing_string_nodes(tree):
-        for label, pat in BANNED_TOKENS:
+    for node, rules in _figure_facing_string_nodes(tree):
+        for label, pat in rules:
             m = pat.search(node.value)
             if m:
                 violations.append(

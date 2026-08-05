@@ -192,3 +192,48 @@ def test_tau_inflation_covers_ar1_noise():
     assert abs(fit["sigma_laser"] - sigma_true) < 3 * fit["sigma_laser_err"] + 0.2, fit
     for p in ("gamma_coll_err", "sigma_laser_err"):
         assert fit[p] > 1.5 * white[p], (p, fit[p], white[p])
+
+
+def test_fit_condition_profile_default_bitwise():
+    # The light-geometry seam: fit_condition's `profile` defaults to
+    # stark_ramp, and the default must be the identical code path -- every
+    # committed fit predates the argument, so omitting it has to reproduce
+    # passing it explicitly, bit for bit.
+    from rb5s6s.lineshape import stark_ramp
+    freqs, volts = synth_condition(gamma_coll=1.5, sigma_laser=1.2, s0=2.0)
+    base = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0)
+    same = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0,
+                         profile=stark_ramp)
+    for k in ("gamma_coll", "sigma_laser", "gamma_coll_err", "chi2_red"):
+        assert base[k] == same[k], (k, base[k], same[k])
+    assert base["centers"] == same["centers"]
+
+
+def test_fit_condition_adapted_geometry_closure():
+    # An adapted geometry through the plumbed seam, end to end: build the
+    # condition with the n=1 flat shift density (a closure over
+    # stark_from_intensity_profile, the geometry a single-photon detection
+    # channel would give), fit with the SAME profile, and recover the
+    # injected width -- the seam an adapted light geometry uses to reach
+    # the joint fit without touching linefit.py.
+    from rb5s6s.lineshape import stark_from_intensity_profile
+    r = np.linspace(0.0, 5.0, 20001)
+    inten = np.exp(-2.0 * r ** 2)
+
+    def flat(g, s0):
+        return stark_from_intensity_profile(g, s0, inten, r, n_photon=1)
+
+    rng = np.random.default_rng(C.RNG_SEED)
+    freqs, volts = [], []
+    for i in range(5):
+        c = rng.normal(0.0, 1.0)
+        prof = model_profile(NU - c, gamma_coll=1.5, sigma_laser_fwhm=1.2,
+                             transit_fwhm=0.9, s0=2.0, profile=flat)
+        v = prof / prof.max()
+        sig = np.sqrt((3e-3) ** 2 + 2e-5 * np.maximum(v, 0.0))
+        volts.append(v + rng.normal(0.0, 1.0, len(v)) * sig)
+        freqs.append(NU.copy())
+    fit = fit_condition(freqs, volts, T_C=110.0, transit_fwhm=0.9, s0=2.0,
+                        profile=flat)
+    assert abs(fit["gamma_coll"] - 1.5) < 3 * fit["gamma_coll_err"] + 0.15, fit
+    assert abs(fit["sigma_laser"] - 1.2) < 3 * fit["sigma_laser_err"] + 0.2, fit

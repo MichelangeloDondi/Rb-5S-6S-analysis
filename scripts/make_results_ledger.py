@@ -549,7 +549,9 @@ def main() -> int:
           f"limit: $\\kappa$ is scanned upward with the per-peak cores re-minimized "
           f"at each point, and the limit sits where $\\chi^2$ rises by $2.706\\times"
           f"\\chi^2_\\text{{red}}$. That threshold scaling carries the "
-          f"over-dispersion ($\\chi^2_\\text{{red}}\\approx{c2:.0f}$, block-to-block "
+          # one decimal, not zero: the same cell is quoted to 1 dp in the
+          # methods results chapter, and a 0 dp render cannot agree with it.
+          f"over-dispersion ($\\chi^2_\\text{{red}}\\approx{c2:.1f}$, block-to-block "
           f"width scatter) into the bound conservatively, though as one global "
           f"factor: it treats the over-dispersion as homogeneous across the width "
           f"points, while the scatter is block-level. A block bootstrap of the "

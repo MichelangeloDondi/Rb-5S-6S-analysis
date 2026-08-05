@@ -1,11 +1,11 @@
 kind,observable,signal,noise,ratio,units,verdict,status
 observable,total_fwhm,0.091818,0.0153006,6.00095,ln_range_vs_rel_scatter,MARGINAL,DIAGNOSTIC
-observable,gamma_coll,0.407819,0.148846,2.73988,ln_range_vs_rel_scatter,CANNOT_RESOLVE,DIAGNOSTIC
+observable,gamma_coll,0.418403,0.148846,2.81098,ln_range_vs_rel_scatter,CANNOT_RESOLVE,DIAGNOSTIC
 observable,sigma_laser,0.37754,0.15222,2.48022,ln_range_vs_rel_scatter,CANNOT_RESOLVE,DIAGNOSTIC
 observable,amplitude,4.22658,0.093702,45.1066,ln_range_vs_rel_scatter,RESOLVES,DIAGNOSTIC
-projection,archival,0.02,0.0821378,0.243493,MHz,PLAN_8_projection,DIAGNOSTIC
-projection,hot_only_low,0.07,0.0821378,0.852227,MHz,PLAN_8_projection,DIAGNOSTIC
-projection,hot_only_high,0.25,0.0821378,3.04367,MHz,PLAN_8_projection,DIAGNOSTIC
-projection,both_low,0.07,0.0205344,3.40891,MHz,PLAN_8_projection,DIAGNOSTIC
-projection,both_high,0.25,0.0205344,12.1747,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,archival,0.02,0.0821315,0.243512,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,hot_only_low,0.07,0.0821315,0.852291,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,hot_only_high,0.25,0.0821315,3.0439,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,both_low,0.07,0.0205329,3.40916,MHz,PLAN_8_projection,DIAGNOSTIC
+projection,both_high,0.25,0.0205329,12.1756,MHz,PLAN_8_projection,DIAGNOSTIC
 assumption,s0_block_scatter_averages_down,1.54232,1.90381,0.2119,variance_reduction_vs_permutation_null,UNTESTABLE_HERE,DIAGNOSTIC

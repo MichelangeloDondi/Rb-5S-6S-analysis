@@ -56,7 +56,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   [`docs/RESULTS.md`](RESULTS.md): C1 collisional self-broadening
   $\beta_\text{self}$; C2 the 2025 laser-epoch width $\sigma_\text{laser}$; C3
   the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient  bound $S_0$. Each is a **bound or null** in the 2025 archive.
-- **M0 … M24 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M26 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each; the fitting core has lettered
   sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -69,7 +69,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
-  | M24 wing check (null) |  |  |  |
+  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest

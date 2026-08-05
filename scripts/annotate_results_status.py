@@ -68,6 +68,10 @@ FILE_STATUS = {
     # what the photograph contains rather than what the unsaved log held, so it
     # is a diagnostic of the apparatus record, never an input to a fit.
     "wavemeter_reconstruction.csv": "DIAGNOSTIC",
+    # the IMG_2508 cavity-scan spike integrals (rb5s6s/cavity_scan.py): same
+    # standing as M22 -- it measures the photographed display, identifying the
+    # scan's hyperfine reading (APPARATUS.md sec. 6); never an input to a fit.
+    "cavity_scan_integrals.csv": "DIAGNOSTIC",
     "resolving_power.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise

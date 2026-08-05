@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). It runs 24 analysis
+# already-committed data_raw/ (see README.md "Reproduce"). It runs 25 analysis
 # stages, then the figures, the results ledger and the CSV status column. It is
-# not the whole repository. Eleven committed CSVs are written by ten scripts
+# not the whole repository. Twelve committed CSVs are written by eleven scripts
 # this file never calls, listed in README.md "Reproduce". Five of those need
-# the rehearsal, quarantine or pilot trees, which stay outside the repository:
+# the prehistory or pilot trees, which stay outside the repository (the
+# rehearsal traces sit inside the prehistory tree, and data_raw/quarantine/ is
+# a committed directory, not one of these):
 # run_stark_joint.py, run_global_archive_fit.py, _m25_norulers.py,
-# run_pilot_ruler.py and run_full_archive_fit.py. The other five do run from a clone and are left out for
+# run_pilot_ruler.py and run_full_archive_fit.py. The other six do run from a clone and are left out for
 # runtime or because they are diagnostics: run_wing_check.py loads raw traces
 # and takes about 6 min, run_wavemeter_reconstruction.py digitises a tracked
-# photograph, run_laser_history.py reads the committed acquisition clock, and
-# run_stark_centres.py and run_centre_stark.py read committed CSVs. Run from
+# photograph, run_cavity_scan.py integrates the tracked cavity-scan
+# digitisation, run_laser_history.py reads the committed acquisition clock,
+# and run_stark_centres.py and run_centre_stark.py read committed CSVs. Run from
 # the repo root with the project's virtualenv active. annotate_results_status.py
 # must run LAST: it appends the machine-readable status column read by every
 # other consumer of results/*.csv.

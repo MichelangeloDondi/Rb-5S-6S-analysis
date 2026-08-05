@@ -23,7 +23,7 @@ verified_date: 2026-07-27
 summary: >
   Measures the Rb 5S->7S self-BROADENING rate, 129 +- 11 kHz/mTorr = 5.39 kHz
   per 1e12 cm^-3 -- the only measured self-broadening rate for an nS state in
-  Rb, and the anchor for this programme's expected beta_self(6S) = 3.5 kHz per
+  Rb, and the anchor for this programme's expected beta_self(6S) = 3.4 kHz per
   1e12 cm^-3. Its 7S self-SHIFT could not be extracted; the -17.8 kHz/mTorr
   often attributed here is Morzynski 2013's, on the laser axis.
 loci:
@@ -71,7 +71,7 @@ and takes the absolute scale from this measurement:
 
     beta_self(6S) = 5.39 * 0.347^(2/5) = **3.53 +- 0.30 kHz per 1e12 cm^-3**
 
-**Consequences.** The archival bound sits **8-14x above** this (the four-point
+**Consequences.** The archival bound sits **8-15x above** this (the four-point
 70/90/110/130 C headline, 2026-08-02, ~0.03-0.05 MHz per 1e12 cm^-3) -- was
 57-113x above on the earlier three-point 70-110 C headline (~0.2-0.4 MHz),
 which was itself tighter than the ~40-100x the old misattributed chain gave,
@@ -81,8 +81,8 @@ anchored on a measurement of the same observable on the neighbouring state.
 
 The old entry's forward-looking point stands and is worth keeping, just at a
 tighter margin: even the full 70-130 C archival lever cannot MEASURE a beta
-of this size (Delta-N ~ 2e13 cm^-3 gives Delta-gamma ~ 70 kHz at 3.5 kHz per
-1e12, still under the width budget); a real
+of this size. Delta-N ~ 2.9e13 cm^-3 gives Delta-gamma ~ 0.10 MHz at
+3.4 kHz per 1e12, still under the width budget, and a real
 measurement needs 150-170 C points.
 
 Also measured here, and not used by this programme: broadening and shift rates

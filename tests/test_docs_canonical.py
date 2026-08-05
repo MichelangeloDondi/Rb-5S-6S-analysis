@@ -158,15 +158,26 @@ CANONICAL = [
         value=lambda: f"{float(_cell('stark_joint.csv', 'S0_225mW_ub95')):.2f}",
         find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*[<≲]\s*([0-9.]+)\s*MHz"),
         mode="all",
+        # docs/PLAN.md joined 2026-08-05: it quotes the bound twice in its
+        # referee-risk section and was in no docs= list at all, which is the
+        # gap that let its permutation p go stale at the retired 0.11.
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
               "docs/THEORY_NOTE.md", "private/manuscripts/paper1/drafts/VI-CD_power_stark.md",
-              "results/README.md", "docs/CLAIMS.md"],
+              "results/README.md", "docs/CLAIMS.md", "docs/PLAN.md"],
     ),
     dict(
+        # The find regex must look like an S0 VALUE, not merely like the word
+        # "predicted" followed by a number. The old `pred[a-z.]*\s+([0-9.]+)`
+        # matched README's fig13 caption ("against the predicted 7/5 = 1.40"),
+        # captured the "7" of the degeneracy ratio and failed the entry on a
+        # sentence that has nothing to do with the light shift. Requiring the
+        # capture to be a decimal followed by "MHz", within a short window of
+        # the word, keeps every real citation ("the predicted 0.35 MHz") and
+        # drops the parameter-free area ratios, which carry no unit.
         name="AC-Stark predicted S0(225mW)",
         value=lambda: f"{float(_cell('stark_sweep.csv', 'S0_225mW_pred')):.2f}",
-        find=re.compile(r"pred[a-z.]*\s+([0-9.]+)"),
+        find=re.compile(r"pred[a-z.]*[^0-9]{0,24}?([0-9]+\.[0-9]+)\s*MHz"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md"],
     ),
@@ -178,7 +189,7 @@ CANONICAL = [
         find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2}) MHz per 10"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
-              "docs/CLAIMS.md"],
+              "docs/CLAIMS.md", "docs/PLAN.md"],
     ),
     dict(
         # COMPUTED since 2026-08-01, previously the literal "271". The bracket
@@ -201,7 +212,10 @@ CANONICAL = [
         value=lambda: f"{int(_const('W0_PRIOR_M') * 1e6)}",
         find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*\(prior|~([0-9]+) µm;"),
         mode="any",
-        docs=["README.md", "docs/BIG_PICTURE.md"],
+        # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
+        # configuration table writes the waist as "w₀" with a subscript zero,
+        # which the first alternate cannot see.
+        docs=["README.md", "docs/BIG_PICTURE.md", "docs/PLAN.md"],
     ),
     dict(
         # The M16 recompute -- distinct from Orson's fixed 1093 (which stays
@@ -251,7 +265,8 @@ CANONICAL = [
         value=lambda: f"{float(_cell('projections.csv', 'proj_pull_S0_sigma', '24 per day, 1 day')):.2f}",
         find=re.compile(r"([0-9.]+)\s*MHz on S(?:₀|_?0)\(225"),
         mode="all",
-        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+        docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md",
+              "docs/PLAN.md"],
     ),
     dict(
         name="projected beta_self detection significance, five interleaved blocks",
@@ -348,7 +363,9 @@ CANONICAL = [
         value=lambda: f"{float(_cell('polarizability.csv', 'magic_5s6s', '1204nm')):.1f}",
         find=re.compile(r"(120[0-9]\.[0-9])\s*/"),
         mode="all",
-        docs=["README.md", "docs/RESULTS.md"],
+        # BIG_PICTURE added 2026-08-05: its 1.2 section cites the crossing in
+        # four places that were hand-typed and unpinned until this line.
+        docs=["README.md", "docs/RESULTS.md", "docs/BIG_PICTURE.md"],
     ),
 ]
 
@@ -587,7 +604,12 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
         "free per-condition sigma_laser left the 1.4-1.8 band; requote fig5's "
         "title and methods/07")
     fig_src = (ROOT / "scripts" / "make_figures.py").read_text(encoding="utf-8")
-    assert "flat (~1.6," in fig_src, "fig5 title no longer quotes ~1.6"
+    # The panel used to carry a typed "~1.6". It now formats the same
+    # inverse-variance mean this test recomputes, so the pin is on the
+    # construction rather than on a literal a recompute could strand.
+    assert "% (float(np.mean(freeS)), T_dip)" in fig_src, (
+        "fig5's right-hand title no longer reads its flat free-fit value from "
+        "the plotted means; a typed number there can go stale silently")
     m07 = (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8")
     assert "2.1/2.2/1.5" in m07 and "$1.5$–$1.75$" in m07
 

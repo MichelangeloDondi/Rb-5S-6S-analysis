@@ -1,4 +1,16 @@
-*Chapter 3 of 8 · [methods index](../methods.md) · assumes only the chapters before it.*
+*Chapter 3 of 8 · [methods index](../methods.md)*
+
+**The question.** What does a focused beam do to the light shift, once you
+notice that the atoms it shifts sit at every intensity in the beam rather than
+at one?
+**Takes.** The lineshape chapter, for the symmetric kernels the ramp is
+convolved with, and the measurement chapter for the retro geometry.
+**Gives.** The triangular ramp law and its cumulants, the diverging-beam closed
+form and its sign flip, which the collection geometry sets (the axial window
+crossing 1.12 of the Rayleigh range), and the pinned intensity convention
+behind $S_0$.
+**Skip if.** You want the archival result rather than the physics. The ramp is
+not resolved in the 2025 data and its bound is in the results chapter.
 
 ### 2.6 AC-Stark shift — derivation of the triangular "ramp law"
 
@@ -65,7 +77,8 @@ convolution untouched — the *whole line's* first-moment pull is
 $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 **exactly**, independent of the (unknown) laser/transit widths. These two
 odd cumulants are the clean, apparatus-independent handles, and the mean
-pull is the primary fixed-lock-session observable ([§7 — Assumptions, and where this can go](08_assumptions_and_outlook.md)).
+pull is the primary fixed-lock-session observable
+([where this can go](08_assumptions_and_outlook.md)).
 (The archive's centre channel supplies no bound of its own. A peak position is
 a frequency only within a run of traces taken at one scope horizontal setting,
 so each run carries a free offset, and the pull comes out unidentifiable rather
@@ -279,7 +292,7 @@ condition holds to within tens of centimetres, and residual sensitivity is
 dominated by mirror *tilt*, not longitudinal placement. (The 2019 reference
 measurement on this line achieves the same self-imaging with a concave mirror
 at $2f$ instead of a lens plus flat mirror — a different implementation of the
-identical idea; `LITERATURE.md` [§6 — Assumptions, and where this can go](08_assumptions_and_outlook.md)a.) Note the design must be *re-established
+identical idea, `LITERATURE.md` §6a.) Note the design must be *re-established
 per waist* in a fixed-lock session: L2 has to sit a focal length from the new waist, and the
 intermediate beam grows to $\approx3$ mm at $w_0=16\ \mu$m, so return-path
 clipping is the thing to watch (PLAN §4).
@@ -288,7 +301,8 @@ How much would a departure from the assumed $\rho$ actually cost? Less than
 one might fear, and the archive's own signal quality provides indirect
 evidence. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.18 and 0.36 MHz — a factor
-of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.27$ MHz, [§5 — What we found (2025 archive)](07_what_we_found.md))
+of two end-to-end, and the archival bound ($S_0(225\ \text{mW})<0.26$ MHz,
+[what we found](07_what_we_found.md))
 brackets the whole range, so no archival conclusion turns on it. Better, the
 Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
@@ -332,4 +346,16 @@ question are in [`docs/THEORY_NOTE.md`](../THEORY_NOTE.md).
 
 ---
 
-[← The lineshape, kernel by kernel](02_the_lineshape.md) · [The composite model (and what does not enter it) →](04_the_composite_model.md)
+**Where the numbers live.** Modules M16, M19 · producers
+`scripts/run_ramp_geometry.py`, `scripts/run_polarizability.py` · results
+`results/polarizability.csv` · figures: none of its own. Library code:
+`rb5s6s/lineshape.py`, for `stark_ramp()`, `stark_ramp_axial()` and
+`stark_shift_S0_mhz()`, with the independent closed forms held as tests.
+
+**What would falsify this.** A measured skewness of the same sign at both beam
+configurations. The sign flip is set by $Z_c/z_R$ and by nothing an
+experimenter can tune independently, so a sign-preserving pair would refute the
+diverging-beam form, and a skew magnitude away from the tabulated one at a
+measured $Z_c$ would refute the $n=2$ weighting the whole law rests on.
+
+[← The lineshape, kernel by kernel](02_the_lineshape.md) · [The composite model →](04_the_composite_model.md)

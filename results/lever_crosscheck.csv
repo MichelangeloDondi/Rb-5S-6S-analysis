@@ -1,48 +1,48 @@
 quantity,key,value,err,unit,status
-beta_crosscheck,85Rb,0.0535,0.0043,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
+beta_crosscheck,85Rb,0.0534,0.0043,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
 beta_err_modelform,85Rb,0.0142,,model-form grid spread (max-min),BOUND
 beta_err_transit,85Rb,0.0142,,transit axis (|Voigt - Lehmann|),BOUND
 beta_err_sharing,85Rb,0.0009,,sigma-sharing axis (|per_T - per_block|),BOUND
-beta_w0_band,85Rb,0.0498,0.0574,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
-beta_loo_peak,85Rb,0.0067,,largest |dbeta| dropping one PEAK -- robustness (peak 4192),DIAGNOSTIC
-beta_loo_temp,85Rb,0.1356,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
-beta_lever_probe_130,85Rb,0.0198,-0.0336,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
-beta_crosscheck,87Rb,0.0528,0.0047,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
-beta_err_modelform,87Rb,0.0158,,model-form grid spread (max-min),BOUND
+beta_w0_band,85Rb,0.0497,0.0573,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_loo_peak,85Rb,0.0070,,largest |dbeta| dropping one PEAK -- robustness (peak 4192),DIAGNOSTIC
+beta_loo_temp,85Rb,0.1338,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
+beta_lever_probe_130,85Rb,0.0198,-0.0335,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
+beta_crosscheck,87Rb,0.0534,0.0047,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep, Lehmann exp, per_T)",BOUND
+beta_err_modelform,87Rb,0.0160,,model-form grid spread (max-min),BOUND
 beta_err_transit,87Rb,0.0140,,transit axis (|Voigt - Lehmann|),BOUND
-beta_err_sharing,87Rb,0.0019,,sigma-sharing axis (|per_T - per_block|),BOUND
-beta_w0_band,87Rb,0.0492,0.0566,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
-beta_loo_peak,87Rb,0.0022,,largest |dbeta| dropping one PEAK -- robustness (peak 4207),DIAGNOSTIC
-beta_loo_temp,87Rb,0.0749,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
-beta_lever_probe_130,87Rb,0.0219,-0.0309,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
-beta_grid_exp_per_T,85Rb,0.0535,0.0043,chi2_red=0.857,PRELIM
-beta_grid_exp_per_T,87Rb,0.0528,0.0047,chi2_red=0.857,PRELIM
-beta_grid_gaussian_per_T,85Rb,0.0677,0.0044,chi2_red=0.863,PRELIM
-beta_grid_gaussian_per_T,87Rb,0.0667,0.0047,chi2_red=0.863,PRELIM
+beta_err_sharing,87Rb,0.0020,,sigma-sharing axis (|per_T - per_block|),BOUND
+beta_w0_band,87Rb,0.0499,0.0573,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_loo_peak,87Rb,0.0040,,largest |dbeta| dropping one PEAK -- robustness (peak 4207),DIAGNOSTIC
+beta_loo_temp,87Rb,0.0745,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
+beta_lever_probe_130,87Rb,0.0219,-0.0315,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
+beta_grid_exp_per_T,85Rb,0.0534,0.0043,chi2_red=0.857,PRELIM
+beta_grid_exp_per_T,87Rb,0.0534,0.0047,chi2_red=0.857,PRELIM
+beta_grid_gaussian_per_T,85Rb,0.0676,0.0044,chi2_red=0.863,PRELIM
+beta_grid_gaussian_per_T,87Rb,0.0674,0.0047,chi2_red=0.863,PRELIM
 beta_grid_exp_per_block,85Rb,0.0543,0.0051,chi2_red=0.854,PRELIM
-beta_grid_exp_per_block,87Rb,0.0509,0.0068,chi2_red=0.854,PRELIM
-beta_loo_drop,4121|85Rb,0.0528,-0.0006,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
-beta_loo_drop,4121|87Rb,0.0542,+0.0015,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_grid_exp_per_block,87Rb,0.0514,0.0068,chi2_red=0.854,PRELIM
+beta_loo_drop,4121|85Rb,0.0527,-0.0007,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4121|87Rb,0.0560,+0.0025,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
 sigma_loo_drop,4121|70C,2.039,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4121|90C,2.181,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4121|110C,1.554,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-beta_loo_drop,4154|85Rb,0.0548,+0.0013,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
-beta_loo_drop,4154|87Rb,0.0522,-0.0005,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4121|90C,2.172,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4121|110C,1.556,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4154|85Rb,0.0547,+0.0014,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4154|87Rb,0.0529,-0.0005,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
 sigma_loo_drop,4154|70C,2.108,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4154|90C,2.145,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4154|110C,1.555,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-beta_loo_drop,4192|85Rb,0.0468,-0.0067,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
-beta_loo_drop,4192|87Rb,0.0526,-0.0002,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
-sigma_loo_drop,4192|70C,1.987,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4192|90C,2.073,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4192|110C,1.556,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-beta_loo_drop,4207|85Rb,0.0549,+0.0014,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
-beta_loo_drop,4207|87Rb,0.0505,-0.0022,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4154|90C,2.144,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4154|110C,1.557,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4192|85Rb,0.0464,-0.0070,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4192|87Rb,0.0532,-0.0002,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+sigma_loo_drop,4192|70C,1.986,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4192|90C,2.058,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4192|110C,1.559,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+beta_loo_drop,4207|85Rb,0.0549,+0.0015,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
+beta_loo_drop,4207|87Rb,0.0494,-0.0040,beta with this peak dropped; err=shift vs headline,DIAGNOSTIC
 sigma_loo_drop,4207|70C,2.046,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
-sigma_loo_drop,4207|90C,2.222,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
+sigma_loo_drop,4207|90C,2.215,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
 sigma_loo_drop,4207|110C,1.495,,sigma_laser(T) with this peak dropped (MHz transition),DIAGNOSTIC
 gamma_coll_mean_vs_T,70C,0.404,0.56,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
-gamma_coll_mean_vs_T,90C,0.394,2.45,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
-gamma_coll_mean_vs_T,110C,0.442,9.10,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_coll_mean_vs_T,90C,0.390,2.45,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
+gamma_coll_mean_vs_T,110C,0.444,9.10,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
 gamma_coll_mean_vs_T,130C,0.594,29.43,value=mean gamma_coll over 4 peaks (MHz); err=density N (1e12 cm^-3),MEASURED
 gamma_rise_factor,70to130,1.47,52.5,"value=gamma(130)/gamma(70); err=density ratio -- far sub-linear => floor, beta is a BOUND",MEASURED
