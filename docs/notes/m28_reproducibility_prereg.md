@@ -70,3 +70,18 @@ About five hours on this machine, sequential with nothing. It launches after
 the v3.4.0 push so that a failure cannot entangle the release, and its
 outcome feeds the frequency-calibration red team's RT6 (block combination)
 and the M28 documentation, not the release itself.
+
+## Postscript, 2026-08-06: adjudicated, branch one
+
+The identical-input rerun completed 07:12 after a 5.1 hour run. Every
+tracked quantity reproduces to the printed digit: the primary kappa
+bound 0.9440 to 0.9440, campaign-only 0.8640 to 0.8640, power-ladder
+0.8740 to 0.8740, wing-marginalized 0.9590 to 0.9590, drop-4192 1.4210
+to 1.4210, and S0(225 mW) 0.2120 to 0.2120, every move 0.00 per cent
+against the 3 per cent threshold. Branch one holds: the movement of the
+subset variants between the 2026-08-04 and 2026-08-05 recomputes was
+input-driven, the recalibration genuinely changed what those subsets
+constrain, and it was not chain variance. The subset variants keep
+their committed point values and the robustness framing stands. The
+seeded-twin discipline gap on the variants, recorded in section 1,
+loses its urgency by this result but stays open as written.
