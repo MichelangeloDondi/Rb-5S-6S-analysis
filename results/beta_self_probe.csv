@@ -3,3 +3,14 @@ peak,variant,headline,beta_eff,formal_err,syst_err,resid_rms,snr,dof,t95,bound95
 4154,"70-130C (headline, four-point, same configuration, 52.5x lever)",yes,0.00818127104953284,0.0014408068114430792,0.011282201210812684,0.2523377936526753,0.7251484791542309,2,2.919985580355516,0.04112513589977542,0.2,0.0493501630797305,BOUND,False,BOUND
 4192,"70-130C (headline, four-point, same configuration, 52.5x lever)",yes,0.005255704672118389,0.0017711548308014925,0.006401189445905189,0.13771344124425516,0.8210512618839048,2,2.919985580355516,0.023947085551285458,0.2,0.028736502661542547,BOUND,True,BOUND
 4207,"70-130C (headline, four-point, same configuration, 52.5x lever)",yes,0.015713469377549305,0.001630314491507666,0.008267369522423806,0.18382802607378904,1.9006613088878204,2,2.919985580355516,0.03985406917049748,0.2,0.04782488300459698,BOUND,False,BOUND
+pooled_slope,"70-130C pooled across the four lines (shared slope, per-line floors, prereg beta_self_pooling)",no,0.012284557831220469,0.0014630458424868017,0.0043064241532488785,0.09857866944918557,2.852612142710717,2.0,2.919985580355516,0.024859254261601908,0.2,0.02983110511392229,BOUND,True,BOUND
+pooled_s_c,"condition-common width scatter (MHz), REML on the sixteen points",no,0.07270190295332929,,,,,,,,,,,,BOUND
+pooled_s_ind,"per-line width scatter (MHz), REML on the sixteen points, subsumes the within-block error",no,0.1331493503902514,,,,,,,,,,,,BOUND
+pooled_rms_within,"rms within-block width error (MHz), the repeat and rate error that s_ind subsumes",no,0.07745841067578176,,,,,,,,,,,,BOUND
+pooled_f_common,common-mode fraction s_c^2/(s_c^2+s_ind^2),no,0.2296642944572224,,,,,,,,,,,,BOUND
+pooled_f_common_lo,"common-mode fraction, low end of the 95% profile range (dchi2 < 3.841)",no,0.0,,,,,,,,,,,,BOUND
+pooled_f_common_hi,"common-mode fraction, high end of the 95% profile range (dchi2 < 3.841)",no,0.9118,,,,,,,,,,,,BOUND
+pooled_gain_vs_worst_perline,worst per-line 95% bound (4154) over the pooled one,no,1.6543189697889735,,,,,,,,,,,,BOUND
+pooled_share_70C,share of the pooled slope carried by the 70 C low-SNR narrowing,no,0.1534288042716795,,,,,,,,,,,,BOUND
+pooled_isotope_split,"87 minus 85 Rb pooled slope, an expected null (note section 1)",no,0.0033896982607753423,0.0058166496029401805,,,0.582757857558057,,,,,,,,BOUND
+pooled_perline_chi2,"four per-line slopes against the shared slope, chi2 per dof on their own total errors",no,0.5592071511901778,,,,,3,,,,,,,BOUND

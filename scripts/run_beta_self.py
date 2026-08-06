@@ -70,12 +70,13 @@ import pathlib
 from pathlib import Path
 
 import numpy as np
+from scipy.stats import t as student_t
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C
 from rb5s6s import rate_model as RM
 from rb5s6s import constants as _CONST  # noqa: E402
-from rb5s6s.density import density_units  # noqa: E402
+from rb5s6s.density import density_units, N_SCALE_FRAC_SYST  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
 from rb5s6s.qc import (trace_metrics, hard_flags, ingest_flags,  # noqa: E402
@@ -113,16 +114,15 @@ def raw_fwhm_mhz(recs, rate, rate_relerr=0.0):
     return W, float(np.hypot(sem, W * rate_relerr))
 
 
-def width_vs_density_probe(rows, peak, trates, prates, include_130=False):
-    """P0 (decisive): fit raw FWHM(N) = W0 + beta_eff*N. The RMS residual
-    about that line is the BETWEEN-BLOCK systematic (laser-width drift AND
-    ruler-rate uncertainty, both block-coherent) — the error the global fit's
-    shared-sigma_laser assumption omits. Optionally extends the lever arm with
-    the 130 C point (the 225 mW power-session files): N(130)/N(110) ~ 3.2, at
-    the price of reaching the extreme end of the lever, with a rate from the
-    bracket combination (its before/after half-difference carried as
-    uncertainty). Not a cross-session comparison: the recovered clock puts the
-    130 C block 2.3 h from the 110 C dwell, inside one campaign."""
+def condition_widths(rows, peak, trates, prates, include_130=False):
+    """One line's model-independent width per condition: (N, W, E) lists.
+
+    Split out of width_vs_density_probe (2026-08-06) so the per-line probe and
+    the pooled construction below read the SAME widths by construction rather
+    than by two copies of the same selection agreeing. Nothing about the
+    selection changed: canonical t_sweep traces at 70/90/110 C, each block on
+    its own session rate, optionally extended by the 130 C point (the 225 mW
+    power-session files, on the bracket-combination rate)."""
     byT = defaultdict(list)
     for r in rows:
         if (r["flag"] == "canonical" and r["role"] == "t_sweep"
@@ -141,6 +141,20 @@ def width_vs_density_probe(rows, peak, trates, prates, include_130=False):
             rate, relerr = prates[peak]
             m, e = raw_fwhm_mhz(recs, rate, relerr)
             N.append(density_units(130.0)); W.append(m); E.append(e)
+    return N, W, E
+
+
+def width_vs_density_probe(rows, peak, trates, prates, include_130=False):
+    """P0 (decisive): fit raw FWHM(N) = W0 + beta_eff*N. The RMS residual
+    about that line is the BETWEEN-BLOCK systematic (laser-width drift AND
+    ruler-rate uncertainty, both block-coherent) — the error the global fit's
+    shared-sigma_laser assumption omits. Optionally extends the lever arm with
+    the 130 C point (the 225 mW power-session files): N(130)/N(110) ~ 3.2, at
+    the price of reaching the extreme end of the lever, with a rate from the
+    bracket combination (its before/after half-difference carried as
+    uncertainty). Not a cross-session comparison: the recovered clock puts the
+    130 C block 2.3 h from the 110 C dwell, inside one campaign."""
+    N, W, E = condition_widths(rows, peak, trates, prates, include_130)
     if len(N) < 3:
         return None
     return collisional_slope(N, W, E)
@@ -287,6 +301,339 @@ def load_conditions(rows, peak, trates, prates=None):
     return conds
 
 
+# ---------------------------------------------------------------------------
+# POOLING THE WIDTH SLOPE ACROSS THE FOUR LINES
+# ---------------------------------------------------------------------------
+# Pre-registered in docs/notes/beta_self_pooling_prereg.md (2026-08-04), and
+# implemented only afterwards, which is the order that note fixes. What it
+# licenses, and what this code therefore assumes:
+#
+#   * ONE shared slope with per-line floors, decided by physics and not by fit
+#     statistics (note section 1). The four 993 nm lines are hyperfine
+#     components of one dipole-forbidden transition, there is no first-order
+#     resonant exchange term of the D-line type, and the R^-6 physics that
+#     remains is isotope-blind to three orders below this sensitivity.
+#   * The per-isotope split and the per-line spread are CHECKS with an expected
+#     null, never the fit structure (note section 1).
+#   * The verdict is frozen at BOUND for this release whatever the pooled
+#     signal-to-noise turns out to be (note section 3). Temperature is monotone
+#     in time across the campaign and the four lines of one condition sit
+#     within about an hour of each other, so a slow drift enters all four with
+#     the same sign and pooling divides that term by exactly one. A verdict
+#     flip bought that way would be noise dressed as physics.
+#   * Scope (note section 4): this pools the model-independent width-slope
+#     probe, results/beta_self_probe.csv. The per-line model fit in
+#     results/beta_self.csv, which the M23 and M28 joint fits consume as a
+#     fixed prior at fit time, is untouched by this release.
+POOL_CONDITIONS_C = (70.0, 90.0, 110.0, 130.0)
+POOLED_ANCHOR_C = 70.0        # the coldest, weakest-trace end of the lever
+POOLED_VARIANT = ("70-130C pooled across the four lines (shared slope, "
+                  "per-line floors, prereg beta_self_pooling)")
+
+
+def pooled_width_table(rows, peaks, trates, prates):
+    """The sixteen model-independent widths as a (line, condition) table.
+
+    Returns (peaks_used, N, W, E) with W and E shaped (n_line, n_cond), or None
+    when the design is not balanced. Balance is a precondition rather than a
+    detail: the collapse identity below, and the variance-component algebra
+    that rides on it, hold because every line is measured at every condition.
+    An unbalanced table has to fall back to the per-line construction rather
+    than be pooled with a formula that no longer describes it."""
+    N_ref, W, E, used = None, [], [], []
+    for peak in peaks:
+        N, w, e = condition_widths(rows, peak, trates, prates, include_130=True)
+        if len(N) != len(POOL_CONDITIONS_C):
+            return None
+        if N_ref is None:
+            N_ref = N
+        elif not np.allclose(N, N_ref):
+            return None
+        used.append(peak); W.append(w); E.append(e)
+    if len(used) < 2:
+        return None
+    return used, np.asarray(N_ref, float), np.asarray(W, float), np.asarray(E, float)
+
+
+def profile_f_range(ss_cond, df_cond, ss_int, df_int, n_line, dchi2=3.841):
+    """The 95 per cent profile range of the common-mode fraction f.
+
+    Four conditions cannot pin f (note section 2), so the bound quotes the REML
+    point value and this range is printed beside it. Reparametrizing to (f,
+    total) with total = s_c^2 + s_ind^2 and profiling the total out of the
+    restricted deviance at each f leaves a one-parameter curve, and the range
+    is where that curve sits within the house's one-parameter 95 per cent
+    threshold of 3.841. f = 1 is excluded by construction: it sends the
+    per-line component to zero, and the measured interaction scatter is not
+    zero."""
+    f = np.linspace(0.0, 1.0, 20001)[:-1]
+    k1 = f + (1.0 - f) / n_line              # V as a fraction of the total
+    k2 = 1.0 - f                             # s_ind^2 as a fraction of the total
+    total = (ss_cond / k1 + ss_int / k2) / (df_cond + df_int)
+    dev = (df_cond * np.log(k1 * total) + ss_cond / (k1 * total)
+           + df_int * np.log(k2 * total) + ss_int / (k2 * total))
+    inside = dev <= dev.min() + dchi2
+    return float(f[inside].min()), float(f[inside].max())
+
+
+def pooled_width_slope(N, W, E=None, n_frac_syst=N_SCALE_FRAC_SYST):
+    """Pooled floor-plus-slope fit of a balanced (line, condition) width table.
+
+    THE COLLAPSE. With per-line floors, one shared slope, and errors that are
+    exchangeable across lines within a condition, the generalized-least-squares
+    slope on the whole table is EXACTLY the floor-plus-slope fit of the
+    condition-mean widths. The mean-over-lines directions carry the slope and
+    nothing else, the contrast directions carry the per-line floors and nothing
+    else, and under this error model the two sets are uncorrelated, so the
+    slope reads off the means alone. tests/test_beta.py checks the identity
+    numerically against an explicit GLS on the sixteen points.
+
+    THE ERROR MODEL. Each width is a per-line floor plus the shared slope plus
+    a condition-common departure (variance s_c^2, one draw per condition shared
+    by all four lines) plus a per-line departure (variance s_ind^2). A
+    condition mean therefore has variance
+
+        V = s_c^2 + s_ind^2 / n_line
+
+    and that is the only variance the pooled slope sees. s_ind^2 SUBSUMES the
+    within-block repeat and rate errors rather than sitting on top of them: it
+    is the total independent scatter of a line about the shared law, so the two
+    are never added. The returned rms_within lets that be checked instead of
+    assumed, since s_ind falling below the quoted within-block error would mean
+    the table is quieter than its own error bars and the decomposition is not
+    describing the data.
+
+    REML. The design is balanced, so restricted maximum likelihood on the
+    sixteen points is closed form. Rotating to the mean and contrast subspaces
+    separates the restricted deviance into
+
+        D = df_cond*log V + SS_cond/V + df_int*log s_ind^2 + SS_int/s_ind^2
+
+    with SS_cond the residual sum of squares of the condition means about the
+    fitted line (df_cond = n_cond - 2) and SS_int the two-way interaction sum
+    of squares (df_int = (n_line-1)(n_cond-1)). Unconstrained this gives
+    V = MS_cond and s_ind^2 = MS_int outright. Where the implied s_c^2 would go
+    negative it is held at zero and the one remaining component is re-estimated
+    from the constrained deviance.
+
+    DEGREES OF FREEDOM. V is a linear combination g_cond*MS_cond +
+    g_int*MS_int of two independent mean squares, so its effective dof is the
+    Satterthwaite value V^2 / ((g_cond*MS_cond)^2/df_cond +
+    (g_int*MS_int)^2/df_int). At the interior solution g = (1, 0) and dof_eff
+    is exactly df_cond, the four condition means constraining a line, which is
+    the same dof the per-line construction already quotes. At the boundary the
+    per-line component carries the estimate and dof_eff rises toward df_int.
+    The one-sided 95 per cent bound is t(0.95, dof_eff) on the pooled slope
+    error, and the density-scale systematic rides on top of it exactly as it
+    does per line (rb5s6s.beta.collisional_slope).
+
+    The verdict is BOUND unconditionally, by note section 3."""
+    N = np.asarray(N, float)
+    W = np.asarray(W, float)
+    n_line, n_cond = W.shape
+    df_cond, df_int = n_cond - 2, (n_line - 1) * (n_cond - 1)
+    if df_cond < 1 or df_int < 1:
+        raise ValueError("pooled slope needs >= 3 conditions and >= 2 lines")
+
+    # the condition means and the line they define. `lever` is the fixed linear
+    # functional that turns those four means into the slope, and it is reused
+    # below for the anchor-narrowing share and the per-line slopes, so the
+    # three quantities cannot drift apart.
+    wbar_cond = W.mean(axis=0)
+    Nc = N - N.mean()
+    S_NN = float(np.sum(Nc ** 2))
+    lever = Nc / S_NN
+    slope = float(lever @ wbar_cond)
+    floor = float(np.mean(wbar_cond) - slope * float(np.mean(N)))
+    resid_cond = wbar_cond - (floor + slope * N)
+    ss_cond = float(np.sum(resid_cond ** 2))
+
+    # The interaction residual: what is left of a width once its own line's
+    # mean and its own condition's mean are both removed. It is blind to the
+    # condition-common departure, which is exactly why it isolates s_ind.
+    inter = W - W.mean(axis=1, keepdims=True) - wbar_cond[None, :] + W.mean()
+    ss_int = float(np.sum(inter ** 2))
+    ms_cond, ms_int = ss_cond / df_cond, ss_int / df_int
+
+    s_ind2, V = ms_int, ms_cond
+    s_c2 = V - s_ind2 / n_line
+    at_bound = bool(s_c2 < 0.0)
+    if at_bound:
+        # constrained REML with s_c^2 = 0: one component, both subspaces
+        s_c2 = 0.0
+        s_ind2 = (n_line * ss_cond + ss_int) / (df_cond + df_int)
+        V = s_ind2 / n_line
+        g_cond = df_cond / (df_cond + df_int)
+        g_int = df_int / (n_line * (df_cond + df_int))
+    else:
+        g_cond, g_int = 1.0, 0.0
+    dof_eff = float(V ** 2 / ((g_cond * ms_cond) ** 2 / df_cond
+                              + (g_int * ms_int) ** 2 / df_int))
+
+    se = float(np.sqrt(V / S_NN))
+    t95 = float(student_t.ppf(0.95, dof_eff))
+    bound95 = abs(slope) + t95 * se
+    f_common = float(s_c2 / (s_c2 + s_ind2)) if (s_c2 + s_ind2) > 0 else 0.0
+    f_lo, f_hi = profile_f_range(ss_cond, df_cond, ss_int, df_int, n_line)
+
+    # The within-block-only slope error, the pooled counterpart of the per-line
+    # `formal_err`. It is reported for the same reason it is per line: to show
+    # how far the honest error sits above the one the repeat scatter alone
+    # would give.
+    formal_err, rms_within = float("nan"), float("nan")
+    if E is not None:
+        E = np.asarray(E, float)
+        var_mean = np.sum(E ** 2, axis=0) / n_line ** 2
+        formal_err = float(np.sqrt(np.sum(lever ** 2 * var_mean)))
+        rms_within = float(np.sqrt(np.mean(E ** 2)))
+
+    return {
+        "beta_eff": slope, "floor": floor,
+        "formal_err": formal_err, "syst_err": se,
+        "resid_rms": float(np.sqrt(V)), "snr": abs(slope) / se if se > 0 else 0.0,
+        "dof": dof_eff, "t95": t95, "bound95": bound95,
+        "n_frac_syst": n_frac_syst,
+        "bound95_nscale": bound95 * (1.0 + n_frac_syst),
+        # frozen by note section 3, whatever snr says
+        "verdict": "BOUND",
+        "monotonic": bool(np.all(np.diff(wbar_cond[np.argsort(N)]) > 0)),
+        "s_c": float(np.sqrt(s_c2)), "s_ind": float(np.sqrt(s_ind2)),
+        "s_c2": float(s_c2), "s_ind2": float(s_ind2), "V": float(V),
+        "f_common": f_common, "f_lo": f_lo, "f_hi": f_hi,
+        "ms_cond": ms_cond, "ms_int": ms_int,
+        "df_cond": df_cond, "df_int": df_int,
+        "g_cond": g_cond, "g_int": g_int, "reml_at_bound": at_bound,
+        "rms_within": rms_within, "S_NN": S_NN, "lever": lever,
+        "wbar_cond": wbar_cond, "resid_cond": resid_cond,
+        # every width's residual under the shared slope with its own line's
+        # floor, which is what "how many lines sit low there" is counted on
+        "resid_line_cond": W - W.mean(axis=1, keepdims=True) - slope * Nc[None, :],
+        # the per-line slopes of the SAME construction (equal weights), whose
+        # mean is the pooled slope identically
+        "slopes_line": W @ lever,
+    }
+
+
+def pooled_group_split(N, W, groups, s_ind2):
+    """Two groups of lines against each other under the shared-slope model.
+
+    The per-isotope split of note section 1, an expected null reported as a
+    check and never as fit structure. The condition-common departure is shared
+    by every line, so it cancels exactly in the difference of two group slopes
+    and the error of the split is set by the per-line component alone,
+
+        Var(slope_a - slope_b) = s_ind^2 * (1/n_a + 1/n_b) / S_NN.
+
+    That cancellation is why the split tests the sharing more sharply than
+    either group's own slope does."""
+    N = np.asarray(N, float)
+    W = np.asarray(W, float)
+    groups = list(groups)
+    Nc = N - N.mean()
+    S_NN = float(np.sum(Nc ** 2))
+    lever = Nc / S_NN
+    labels = sorted(set(groups))
+    slopes = {g: float(lever @ W[[i for i, x in enumerate(groups) if x == g]].mean(axis=0))
+              for g in labels}
+    counts = {g: sum(1 for x in groups if x == g) for g in labels}
+    out = {"slopes": slopes, "counts": counts}
+    if len(labels) == 2:
+        lo, hi = labels
+        diff = slopes[hi] - slopes[lo]
+        se = float(np.sqrt(s_ind2 * (1.0 / counts[hi] + 1.0 / counts[lo]) / S_NN))
+        out.update({"label": f"{hi} minus {lo}", "diff": diff, "se": se,
+                    "sigma": abs(diff) / se if se > 0 else float("inf")})
+    return out
+
+
+def anchor_narrowing_share(pooled, N, T_C, anchor_C=POOLED_ANCHOR_C):
+    """The share of the pooled slope carried by the coldest point's narrowing.
+
+    raw_fwhm_mhz records the bias in its own docstring: a half-maximum width
+    read off a weak trace comes out narrow, about 6 per cent at the 70 C end.
+    It narrows the lowest-density anchor, which STEEPENS the fitted slope, so
+    it can only make the bound more conservative. The size is computed here
+    rather than asserted. The pooled slope is a fixed linear functional of the
+    four condition means, so lifting the anchor mean onto the fitted line
+    changes the slope by lever * residual, and the share is that change over
+    the slope itself. Taking the anchor's MEASURED departure from the line as
+    the narrowing is the conservative reading of it: it credits the narrowing
+    with less of the slope than injecting a nominal 6 per cent would, because
+    the fitted line follows a depressed anchor part of the way down. It also
+    keeps the number computed rather than typed, which the nominal figure
+    would not. Reported with it: the fractional depth of the shortfall,
+    for comparison with the documented 6 per cent, and how many lines sit low
+    at the anchor under their own floor."""
+    T_C = np.asarray(T_C, float)
+    i = int(np.argmin(np.abs(T_C - anchor_C)))
+    resid = float(pooled["resid_cond"][i])
+    d_slope = float(pooled["lever"][i]) * resid
+    return {
+        "anchor_C": float(T_C[i]),
+        "share": d_slope / pooled["beta_eff"] if pooled["beta_eff"] else float("nan"),
+        "shortfall_mhz": -resid,
+        "shortfall_frac": -resid / float(pooled["wbar_cond"][i]),
+        "slope_without": pooled["beta_eff"] - d_slope,
+        "n_lines_low": int(np.sum(pooled["resid_line_cond"][:, i] < 0.0)),
+    }
+
+
+def pooled_probe_rows(fields, pooled, split, anchor, chi2_line, gain, worst_peak):
+    """The pooled construction as rows of results/beta_self_probe.csv.
+
+    They carry the per-line rows' fields exactly, so the file stays one table,
+    and they carry headline='no'. Every consumer of this file selects the
+    headline rows (the ledger, fig19's quoted bound, the coverage and
+    canonical-doc tests), and promoting the pooled bound to the quoted headline
+    is the owner's decision and a separate change, not a side effect of
+    computing it. The quantity lives in the `peak` column behind a pooled_
+    prefix, and columns that do not apply to a scalar diagnostic are left empty
+    rather than filled with a zero that would read as a measured value."""
+    def row(name, variant, **vals):
+        r = {k: "" for k in fields}
+        r["peak"], r["variant"], r["headline"] = name, variant, "no"
+        r.update(vals)
+        return r
+
+    head = row("pooled_slope", POOLED_VARIANT,
+               **{k: pooled[k] for k in
+                  ("beta_eff", "formal_err", "syst_err", "resid_rms", "snr",
+                   "dof", "t95", "bound95", "n_frac_syst", "bound95_nscale",
+                   "verdict", "monotonic")})
+    return [
+        head,
+        row("pooled_s_c", "condition-common width scatter (MHz), REML on the "
+            "sixteen points", beta_eff=pooled["s_c"]),
+        row("pooled_s_ind", "per-line width scatter (MHz), REML on the sixteen "
+            "points, subsumes the within-block error", beta_eff=pooled["s_ind"]),
+        # written so the subsumption can be checked from the table alone: this
+        # must sit BELOW pooled_s_ind, or the sixteen widths are quieter than
+        # their own error bars and the decomposition is not describing them
+        row("pooled_rms_within", "rms within-block width error (MHz), the "
+            "repeat and rate error that s_ind subsumes",
+            beta_eff=pooled["rms_within"]),
+        row("pooled_f_common", "common-mode fraction s_c^2/(s_c^2+s_ind^2)",
+            beta_eff=pooled["f_common"]),
+        row("pooled_f_common_lo", "common-mode fraction, low end of the 95% "
+            "profile range (dchi2 < 3.841)", beta_eff=pooled["f_lo"]),
+        row("pooled_f_common_hi", "common-mode fraction, high end of the 95% "
+            "profile range (dchi2 < 3.841)", beta_eff=pooled["f_hi"]),
+        row("pooled_gain_vs_worst_perline",
+            f"worst per-line 95% bound ({worst_peak}) over the pooled one",
+            beta_eff=gain),
+        row("pooled_share_70C",
+            f"share of the pooled slope carried by the {anchor['anchor_C']:.0f} C "
+            "low-SNR narrowing", beta_eff=anchor["share"]),
+        row("pooled_isotope_split",
+            f"{split['label']} Rb pooled slope, an expected null (note section 1)",
+            beta_eff=split["diff"], formal_err=split["se"], snr=split["sigma"]),
+        row("pooled_perline_chi2",
+            "four per-line slopes against the shared slope, chi2 per dof on "
+            "their own total errors", beta_eff=chi2_line,
+            dof=len(pooled["slopes_line"]) - 1),
+    ]
+
+
 def main() -> int:
     rows = load_manifest()
     # Sibling outliers leave the density fits entirely. A trace whose own
@@ -411,10 +758,107 @@ def main() -> int:
               + (f" (<{pr['bound95_nscale']:.3f} @95%; t({pr['dof']})="
                  f"{pr['t95']:.2f}, x{1 + pr['n_frac_syst']:.1f} N-scale)"
                  if pr['verdict'] == 'BOUND' else ""))
+    # ---- the pooled construction: ONE shared slope for the four lines -----
+    # docs/notes/beta_self_pooling_prereg.md, written and committed before this
+    # code existed. The per-line rows above are untouched by it: pooling adds
+    # rows, it does not restate theirs.
+    pooled_rows = []
+    perline = {r["peak"]: r for r in probe_rows}
+    table = pooled_width_table(rows, PEAKS, trates, prates)
+    if table is None or len(perline) < len(PEAKS):
+        print("\n(POOLED) the four-by-four design is not balanced in this "
+              "checkout, so the collapse identity does not apply -- pooling "
+              "skipped and the per-line rows stand alone")
+    else:
+        used, Npool, Wpool, Epool = table
+        pooled = pooled_width_slope(Npool, Wpool, Epool)
+        split = pooled_group_split(Npool, Wpool,
+                                   [_CONST.PEAKS[p]["isotope"] for p in used],
+                                   pooled["s_ind2"])
+        anchor = anchor_narrowing_share(pooled, Npool, POOL_CONDITIONS_C)
+        # Prediction 2's first half: each per-line slope against the shared one
+        # on its OWN total error, which is the error that line's own bound is
+        # built from. A check on the data, never the licence for sharing.
+        pulls = {p: (float(perline[p]["beta_eff"]) - pooled["beta_eff"])
+                 / float(perline[p]["syst_err"]) for p in used}
+        chi2_line = sum(v ** 2 for v in pulls.values()) / max(len(used) - 1, 1)
+        worst_peak = max(perline, key=lambda p: float(perline[p]["bound95_nscale"]))
+        worst = float(perline[worst_peak]["bound95_nscale"])
+        gain = worst / pooled["bound95_nscale"]
+        pooled_rows = pooled_probe_rows(list(probe_rows[0].keys()), pooled, split,
+                                        anchor, chi2_line, gain, worst_peak)
+
+        print(f"\n{'-'*74}\n(POOLED) one shared slope, per-line floors "
+              "[docs/notes/beta_self_pooling_prereg.md]:")
+        print(f"  design: {Wpool.shape[0]} lines x {Wpool.shape[1]} conditions "
+              f"({', '.join(f'{t:.0f}' for t in POOL_CONDITIONS_C)} C), "
+              f"lever x{Npool.max() / Npool.min():.1f}, "
+              f"lines {', '.join(used)}")
+        print(f"  pooled slope = {pooled['beta_eff']:+.5f} +/- {pooled['syst_err']:.5f} "
+              f"MHz per 1e12 cm^-3   (within-block only: {pooled['formal_err']:.5f})")
+        print(f"  95% BOUND    < {pooled['bound95_nscale']:.5f}   "
+              f"(|b| + t95*err = {pooled['bound95']:.5f}, then "
+              f"x{1 + pooled['n_frac_syst']:.1f} N-scale, with "
+              f"t(0.95, {pooled['dof']:.2f}) = {pooled['t95']:.2f})")
+        print(f"  variance: s_c = {pooled['s_c']:.4f} MHz (condition-common), "
+              f"s_ind = {pooled['s_ind']:.4f} MHz (per line), "
+              f"rms within-block {pooled['rms_within']:.4f} MHz")
+        print(f"            f = {pooled['f_common']:.3f} "
+              f"[{pooled['f_lo']:.3f}, {pooled['f_hi']:.3f}] 95% profile, "
+              f"V = {pooled['V']:.5f} MHz^2, dof_eff = {pooled['dof']:.2f}"
+              + ("  (REML at the s_c = 0 boundary)" if pooled["reml_at_bound"] else ""))
+        # The collapse identity at run time as well as in the tests: the
+        # equal-weight per-line slopes average to the pooled slope exactly.
+        ident = abs(float(np.mean(pooled["slopes_line"])) - pooled["beta_eff"])
+        print(f"  collapse identity: the equal-weight per-line slopes average to "
+              f"the pooled slope to {ident:.1e} MHz per 1e12 cm^-3")
+        print("  CHECK per-line slopes vs the shared slope (own total errors): "
+              + ", ".join(f"{p} {pulls[p]:+.1f}s" for p in used)
+              + f"  chi2/dof = {chi2_line:.2f}")
+        print(f"  CHECK per-isotope split {split['label']} Rb = "
+              f"{split['diff']:+.5f} +/- {split['se']:.5f} "
+              f"({split['sigma']:.1f} sigma from zero, and the common mode "
+              f"cancels in the difference, so this error is the per-line "
+              f"component alone)")
+        print(f"  {anchor['anchor_C']:.0f} C low-SNR narrowing: the condition mean "
+              f"sits {-100 * anchor['shortfall_frac']:+.1f}% "
+              f"({-anchor['shortfall_mhz']:+.3f} MHz) off the fitted line, "
+              f"{anchor['n_lines_low']}/{Wpool.shape[0]} lines low there, and it "
+              f"carries {100 * anchor['share']:+.1f}% of the pooled slope "
+              f"(without it {anchor['slope_without']:+.5f})")
+        print(f"  worst per-line bound {worst:.5f} ({worst_peak}) -> pooled "
+              f"{pooled['bound95_nscale']:.5f}, gain x{gain:.2f}")
+
+        # ---- note section 5: the pre-registered predictions ---------------
+        # Checked here rather than by eye, and printed pass or fail. Section 5
+        # also fixes what happens on a failure, so it is printed with it.
+        p1 = 0.25 * worst < pooled["bound95_nscale"] < worst
+        p2 = chi2_line < 3.0 and split["sigma"] < 2.0
+        p3 = 1.1 <= gain <= 1.8
+        print("  PREREGISTERED PREDICTIONS (note section 5):")
+        print(f"    1 pooled bound below the worst per-line bound and above a "
+              f"quarter of it: {'HOLDS' if p1 else 'FAILS'} "
+              f"({0.25 * worst:.5f} < {pooled['bound95_nscale']:.5f} < {worst:.5f})")
+        print(f"    2 per-line slopes consistent with the shared slope "
+              f"(chi2/dof {chi2_line:.2f} < 3) and the isotope split consistent "
+              f"with zero ({split['sigma']:.1f} < 2 sigma): "
+              f"{'HOLDS' if p2 else 'FAILS'}")
+        print(f"    3 fractional gain inside the pre-stated 1.1 to 1.8 bracket: "
+              f"{'HOLDS' if p3 else 'FAILS'} (x{gain:.2f})")
+        if not (p1 and p3):
+            print("    -> section 5: STOP and escalate to the owner before "
+                  "anything is written on this.")
+        if not p2:
+            print("    -> section 5: a finding about a per-line systematic. It "
+                  "goes to the owner with the pooling left unadopted.")
+        print("  The verdict is BOUND by note section 3 whatever the pooled "
+              "signal-to-noise says, and these rows are headline='no': "
+              "adopting the pooled bound is the owner's decision.")
+
     with open(C.RESULTS_DIR / "beta_self_probe.csv", "w", newline="") as f:
         if probe_rows:
             w = csv.DictWriter(f, fieldnames=list(probe_rows[0].keys()))
-            w.writeheader(); w.writerows(probe_rows)
+            w.writeheader(); w.writerows(probe_rows + pooled_rows)
 
     n_nonmono = sum(1 for p in probe_rows if not p["monotonic"])
     print(f"\nVERDICT: {n_nonmono}/{len(probe_rows)} peaks are NON-MONOTONIC in density"

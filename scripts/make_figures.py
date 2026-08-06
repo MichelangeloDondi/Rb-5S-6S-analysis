@@ -1501,7 +1501,7 @@ def fig_level_scheme():
     ax.hlines(y6s, 0.10, 0.36, color="0.15", lw=2.2)
     ax.hlines(yv, 0.15, 0.31, color="0.55", lw=1.2, ls=(0, (4, 3)))
     ax.text(0.23, y6s + 0.035, r"$6S_{1/2}$", ha="center", fontsize=11)
-    ax.text(0.23, y5s - 0.055, r"$5S_{1/2}$", ha="center", fontsize=11)
+    ax.text(0.23, y5s - 0.042, r"$5S_{1/2}$", ha="center", fontsize=11)
     # P column (fine-structure splitting enlarged for visibility)
     ax.hlines(y5p12, 0.50, 0.74, color="0.15", lw=2.2)
     ax.hlines(y5p32, 0.58, 0.82, color="0.15", lw=2.2)
@@ -1538,7 +1538,7 @@ def fig_level_scheme():
                 arrowprops=dict(arrowstyle="-|>", color="0.55", lw=1.4))
     ax.text(0.545, 0.275, "780 nm", rotation=62, fontsize=7.5, color="0.45",
             ha="center", va="center")
-    ax.text(0.45, -0.12, "The 795 nm fluorescence is detected. The 780 nm channel is "
+    ax.text(0.45, -0.145, "The 795 nm fluorescence is detected. The 780 nm channel is "
             "suppressed by about 50 dB.\nThe 5P fine-structure splitting is not drawn "
             "to scale.", fontsize=7.5,
             color="0.45", ha="center")
@@ -2556,6 +2556,13 @@ def fig_width_trends():
     trates, prates = _rbp.load_t_rates()
     P_anchor, T_anchor = BETA_ANCHOR_130
     ymin_p1, ymax_p1 = 1e9, 0.0
+    # The shared slope and its error, from the pooled construction's row of
+    # record (results/beta_self_probe.csv, adopted per its preregistration).
+    import csv as _csv
+    _pooled = next(r for r in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
+                   if r["peak"] == "pooled_slope")
+    pooled_slope = float(_pooled["beta_eff"])
+    pooled_slope_err = float(_pooled["syst_err"])
     for peak in ("4121", "4154", "4192", "4207"):
         byT = defaultdict(list)
         for r in manifest_rows:
@@ -2590,16 +2597,21 @@ def fig_width_trends():
         # a subtraction, since gamma_coll is never split out of this raw
         # width at all).
         cs = collisional_slope(N, W, E)
-        A = np.vstack([np.ones_like(N), N]).T
-        Winv = np.diag(1.0 / E ** 2)
-        floor, slope = np.linalg.solve(A.T @ Winv @ A, A.T @ Winv @ W)
         Esys = np.sqrt(E ** 2 + cs["resid_rms"] ** 2)
+
+        # One SHARED slope across the four lines (the pooled construction of
+        # the pooling preregistration, adopted 2026-08-06), with this line's
+        # own floor refit at that fixed slope. The physics licence is in the
+        # prereg: no resonant exchange by parity, the R^-6 exchange is
+        # isotope-blind, so the model ladder gives one slope and four floors.
+        Winv_d = 1.0 / Esys ** 2
+        floor = float(np.sum(Winv_d * (W - pooled_slope * N)) / np.sum(Winv_d))
 
         ax1.errorbar(N, W, yerr=Esys, fmt="o", color=PEAK_COLOR[peak], ms=5.5, lw=1.4,
                      capsize=2, label=PEAK_LABEL[peak], zorder=4)
         Nfit = np.linspace(N.min(), N.max(), 60)
-        line = floor + slope * Nfit
-        band = cs["syst_err"] * (Nfit - N[0])  # zero at the anchor point, by construction
+        line = floor + pooled_slope * Nfit
+        band = pooled_slope_err * (Nfit - N[0])  # zero at the anchor point, by construction
         ax1.plot(Nfit, line, "-", color=PEAK_COLOR[peak], lw=1.1, alpha=0.85, zorder=2)
         ax1.fill_between(Nfit, line - band, line + band, color=PEAK_COLOR[peak],
                          alpha=0.14, lw=0, zorder=1)
@@ -2633,11 +2645,12 @@ def fig_width_trends():
     ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, logarithmic)")
     ax1.set_ylabel("half-maximum width measured directly from each trace\n"
                    "(MHz at the two-photon transition frequency)")
-    ax1.set_title("A floor plus slope fit to the measured line width against density, over "
-                 "the four\ntemperatures the quoted bound is built from (70 to 130 °C), "
-                 "each with the scan rate\nmeasured in its own session. The slope is the "
-                 "self-broadening coefficient. The fitted\nslope is smaller than twice its "
-                 "own uncertainty, so this is a bound and not a measurement.",
+    ax1.set_title("The measured line width against density, over the four temperatures "
+                 "the quoted bound\nis built from (70 to 130 °C), each with the scan rate "
+                 "measured in its own session. One\nshared slope across the four lines, "
+                 "the self-broadening coefficient, with per-line floors:\nthe hyperfine "
+                 "components share one collision physics. The shared slope is smaller "
+                 "than\ntwice its own uncertainty, so this is a bound and not a measurement.",
                  fontsize=8.2)
     # Compact honesty note (private/reviews/digest/fig19_trend_audit.md): the bars on
     # this panel are the repeat + between-block scatter that FEEDS the reported 95%

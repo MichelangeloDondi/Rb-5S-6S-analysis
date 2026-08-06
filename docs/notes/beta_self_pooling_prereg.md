@@ -125,3 +125,37 @@ floors it already shows.
   a candidate for any measured slope above the elastic anchor. It is
   isotope-blind and cannot break the sharing. A literature and modelling
   note, not a pipeline change.
+
+## Postscript, 2026-08-06: the predictions, adjudicated on the implementation
+
+All three predictions of section 5 HOLD, and the construction is adopted.
+Numbers below are read from the implementation's output, not typed from
+memory.
+
+1. HOLDS. The pooled 95 per cent bound is 0.0298 MHz per 10^12 cm^-3,
+   between one quarter of the worst per-line bound (0.0123) and the worst
+   itself (0.0494). Stated plainly beside it: the pooled bound beats three
+   of the four per-line bounds and sits 3.7 per cent above the tightest
+   (4192 at 0.0287). The prediction was written against the worst and
+   holds as written.
+2. HOLDS. Per-line slopes against the shared slope, on their own total
+   errors: -0.41, -0.36, -1.10 and +0.41 sigma, chi-squared per dof 0.56.
+   The per-isotope split is +0.0034 +/- 0.0058, 0.58 sigma from zero, with
+   the condition-common mode cancelling exactly in the difference.
+3. HOLDS, by a different mechanism than this note predicted. The gain is
+   1.654, inside the pre-stated 1.1 to 1.8. But the measured common-mode
+   fraction is f = 0.230 (95 per cent profile range 0.000 to 0.912), far
+   below the near-unity fraction argued from the +0.98 residual
+   correlations, and the Satterthwaite effective dof is exactly 2.00, the
+   same as per-line, so there is no t relief at all. The whole gain is
+   variance reduction (pooled slope error 0.0043 against the worst
+   per-line 0.0113). The bracket was right and the reasoning behind it
+   was not, which is recorded here because a bracket that survives on the
+   wrong mechanism is a bracket that was too wide, not a validated model.
+   Four conditions cannot pin f, exactly as section 2 warned.
+
+The 70 C narrowing's share of the pooled slope, computed by the
+implementation: the 70 C condition mean sits 2.0 per cent (0.10 MHz)
+below the fitted line, three of four lines low there, and it carries
++15.3 per cent of the pooled slope, in the conservative direction as
+stated in section 3. The verdict stays BOUND by section 3's freeze.
