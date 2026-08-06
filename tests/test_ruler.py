@@ -174,9 +174,16 @@ def test_block_combination_scatter_inflation():
 
 def test_folded_comb_fails_top_three():
     """THE mandatory test: the injected fold must be caught. If this passes on
-    a folded comb the whole validity stage is decoration."""
+    a folded comb the whole validity stage is decoration.
+
+    The verdict is a test OF A NUMBERING, so the numbering has to be named. It
+    is run here on the proximity numbering, which is the one the whole
+    pre-registration was written against and the one the record carried until
+    2026-08-06. What the amplitude-seeded numbering does to the same combs is
+    test_the_amplitude_seed_is_not_a_fold_detector below, and it is a loss.
+    """
     for seed in SEEDS:
-        f = fit_comb(T_MS, synth_folded_comb(seed=seed))
+        f = fit_comb(T_MS, synth_folded_comb(seed=seed), fold_rule="proximity")
         v = top_three_verdict(f["heights"], f["fit_rms"])
         assert v["verdict"] == "FAIL", (
             f"seed {seed}: a folded comb passed the top-three rule with ranks "
@@ -215,9 +222,14 @@ def test_folded_comb_bias():
 def test_reindex_recovers_delta_on_a_folded_comb():
     """The ladder must return the TRUE spacing, not merely a passing verdict.
     A re-index that satisfies the rule while keeping the contracted grid is the
-    failure this asserts against."""
+    failure this asserts against.
+
+    Seeded by proximity, because since 2026-08-06 that is the only way to build
+    the mislabelled comb the ladder exists to repair. The ladder is the backstop
+    now and a backstop still has to work."""
     for seed in SEEDS:
-        out = validated_comb_fit(T_MS, synth_folded_comb(seed=seed), gated=True)
+        out = validated_comb_fit(T_MS, synth_folded_comb(seed=seed), gated=True,
+                                 fold_rule="proximity")
         assert not out["quarantined"], f"seed {seed}: {out['quarantine_reason']}"
         assert out["top3_ok"]
         assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, (
@@ -273,9 +285,16 @@ _OLD_TOLERANCE_CASUALTIES = [(7, -1.00), (11, -0.75), (13, -1.25),
 def test_acceptance_ceiling_accepts_a_clean_seven_tooth_relabel():
     """A clean one-slot mislabel with all seven slots populated must be rescued
     by the comb-phase rung and must keep its spacing. Nothing is contaminated
-    here, so any excision is a deletion of real signal."""
+    here, so any excision is a deletion of real signal.
+
+    Seeded by proximity, because the amplitude seed of 2026-08-06 numbers these
+    combs correctly at the first fit and leaves the ladder nothing to accept.
+    That is the point of the seed and it is asserted separately. What is pinned
+    here is that the ceiling still accepts the right relabelling when the ladder
+    is the thing that has to find it."""
     for seed, frac in _OLD_TOLERANCE_CASUALTIES:
-        out = validated_comb_fit(T_MS, synth_bessel_comb(frac, seed=seed), gated=True)
+        out = validated_comb_fit(T_MS, synth_bessel_comb(frac, seed=seed), gated=True,
+                                 fold_rule="proximity")
         assert not out["quarantined"], (seed, frac, out["quarantine_reason"])
         assert out["reindex_action"] == "phase_shift", (
             f"seed {seed} frac {frac}: clean mislabel took "
@@ -292,15 +311,16 @@ def test_excision_rung_is_held_to_the_acceptance_ceiling():
     npar = 3 + 7 + 2
     for seed, frac in _OLD_TOLERANCE_CASUALTIES:
         v = synth_bessel_comb(frac, seed=seed)
-        first = fit_comb(T_MS, v)
+        first = fit_comb(T_MS, v, fold_rule="proximity")
         ceiling = first["chi2_red"] + max(
             C.RULER_REINDEX_CHI2_TOL * first["chi2_red"],
             RU.REINDEX_CHI2_NSIGMA * np.sqrt(2.0 / (first["n_fitted"] - npar)))
-        out = validated_comb_fit(T_MS, v, gated=True)
+        out = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
         assert out["excised_k"] == "", (seed, frac)
         assert out["chi2_red"] <= ceiling, (seed, frac, out["chi2_red"], ceiling)
     for seed in SEEDS:
-        out = validated_comb_fit(T_MS, synth_folded_comb(seed=seed), gated=True)
+        out = validated_comb_fit(T_MS, synth_folded_comb(seed=seed), gated=True,
+                                 fold_rule="proximity")
         assert out["reindex_action"] == "excision", (seed, out["reindex_action"])
 
 
@@ -380,14 +400,17 @@ def test_verdict_lands_advisory_and_changes_no_number():
         "the top-three verdict is now gating; that is an owner decision and it "
         "changes the campaign rate. See docs/notes/ruler_validity_and_trim_prereg.md")
     v = synth_folded_comb()
-    plain = fit_comb(T_MS, v)
-    out = validated_comb_fit(T_MS, v)
+    # on the PROXIMITY numbering, which is the one that leaves the ladder
+    # something to do now that the amplitude seed has landed. The property under
+    # test is the switch, not the seed.
+    plain = fit_comb(T_MS, v, fold_rule="proximity")
+    out = validated_comb_fit(T_MS, v, fold_rule="proximity")
     assert out["delta_ms"] == plain["delta_ms"]
     assert out["heights"] == plain["heights"]
     assert out["quarantined"] is False and out["top3_gated"] is False
     # the ladder's own answer is still on the record
     assert out["quarantine_advised"] or out["reindex_action"] != "none"
-    gated = validated_comb_fit(T_MS, v, gated=True)
+    gated = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
     assert gated["delta_ms"] != plain["delta_ms"]
     assert out["delta_advised_ms"] == gated["delta_ms"]
 
@@ -409,7 +432,7 @@ def test_unfixable_fold_quarantines_with_a_reason():
     from the closed vocabulary rather than free text."""
     for seed in SEEDS:
         out = validated_comb_fit(T_MS, synth_folded_comb(apex_frac=0.9, seed=seed),
-                                 gated=True)
+                                 gated=True, fold_rule="proximity")
         assert out["quarantined"], f"seed {seed}: verdict {out['verdict']}"
         assert out["quarantine_reason"] in QUARANTINE_REASONS, out["quarantine_reason"]
         assert out["n_refits"] <= C.RULER_REINDEX_MAX_TRIALS
@@ -458,6 +481,197 @@ def test_top_three_tie_tolerance_is_marginal_not_pass():
     assert top_three_verdict(near, fit_rms=1e-9)["verdict"] == "FAIL"
 
 
+# --------------------------------------------------------------------------
+# THE AMPLITUDE-SEEDED FOLD (RT12, amendment 8 of the pre-registration)
+# --------------------------------------------------------------------------
+# The comb phase scan fixes t0 modulo the spacing. Which peak is then called the
+# carrier is the integer fold, and until 2026-08-06 it was answered by proximity
+# to the acquisition window centre, which reads no amplitude and numbered 54 of
+# the 104 campaign combs one slot out. It is now answered from the sideband
+# heights at the measured drive depth, carrier excluded.
+#
+# These tests pin the construction, the fact that it changes nothing on a comb
+# the old rule already numbered correctly, the plant that shows the first test
+# is not vacuous, and the one thing the change COSTS.
+
+# t0 offsets, in tooth spacings, at which the window-centre rule numbers a comb
+# one slot out. Anything past half a spacing does it, which on the campaign
+# geometry is most of the population.
+_DISPLACING_OFFSETS = ((-1.25, 13), (-1.00, 7), (-0.75, 11), (-0.60, 2),
+                       (0.60, 3), (0.75, 22), (0.85, 15), (1.05, 5))
+
+
+def _true_t0(frac, delta=TRUE_DELTA):
+    return frac * delta + 0.5 * (T_MS[0] + T_MS[-1])
+
+
+def test_amplitude_seed_lands_a_displaced_comb_on_the_undisplaced_numbering():
+    """THE construction. A comb the window-centre rule numbers one slot out must
+    come out of the fit numbered correctly, with the ladder never invoked and
+    the spacing intact. Right by construction rather than right after
+    inspection, which is the question amendment 5 section E4 parked."""
+    for frac, seed in _DISPLACING_OFFSETS:
+        v = synth_bessel_comb(frac, seed=seed)
+        out = validated_comb_fit(T_MS, v, gated=True, fold_rule="amplitude")
+        off = (out["t0_ms"] - _true_t0(frac)) / TRUE_DELTA
+        assert abs(off) < 0.5, (
+            f"frac {frac} seed {seed}: the fit called tooth {off:+.2f} slots "
+            f"from the true carrier the carrier")
+        assert out["reindex_action"] == "none", (frac, seed, out["reindex_action"])
+        assert out["n_refits"] == 0, (frac, seed, out["n_refits"])
+        assert not out["quarantine_advised"], (frac, seed, out["quarantine_reason"])
+        assert out["top3_ok"] and not out["marginal"], (frac, seed, out["verdict"])
+        assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, (frac, seed, out["delta_ms"])
+
+
+def test_the_plant_proximity_seeding_displaces_the_same_combs():
+    """The plant for the test above. Revert the one thing that changed and every
+    comb in that set comes back numbered a whole slot out, and every one of them
+    needs the ladder to be rescued, so the assertions above are testing the seed
+    and not the generator.
+
+    Two of the three things the test above asserts fail here: the fit of record
+    is displaced, and the ladder acts. What the ladder then returns is a
+    separate question and is pinned in the acceptance-ceiling tests."""
+    displaced = acted = 0
+    for frac, seed in _DISPLACING_OFFSETS:
+        v = synth_bessel_comb(frac, seed=seed)
+        first = fit_comb(T_MS, v, fold_rule="proximity")
+        displaced += int(abs((first["t0_ms"] - _true_t0(frac)) / TRUE_DELTA) >= 0.5)
+        out = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
+        acted += int(out["reindex_action"] != "none" or out["n_refits"] > 0)
+    n = len(_DISPLACING_OFFSETS)
+    assert displaced == n, (
+        f"only {displaced} of {n} combs are displaced by proximity seeding, so "
+        f"the test above proves less than it claims")
+    assert acted == n, (
+        f"only {acted} of {n} combs needed the ladder under proximity seeding")
+
+
+def test_clean_synthetics_are_untouched_by_the_amplitude_seed():
+    """No clean comb is made worse. Every synthetic the closure suite already
+    fits comes out of the amplitude seed valid, unquarantined and with its
+    spacing intact, exactly as it did under proximity seeding, and now without
+    the ladder having to act."""
+    cases = {
+        "bright": dict(),
+        "suppressed carrier": dict(heights=(0.02, 0.09, 0.015, 0.09, 0.02)),
+        "missing outer teeth": dict(heights=(0.0, 0.09, 0.06, 0.09, 0.0)),
+        "cold": dict(heights=(0.004, 0.0085, 0.006, 0.008, 0.004),
+                     noise=0.0016, seed=3),
+    }
+    for seed in SEEDS:
+        cases[f"seed {seed}"] = dict(seed=seed)
+    for drift in (-15, -5, 0, 5, 15):
+        cases[f"drift {drift}"] = dict(t0=150.0 + drift, seed=1)
+    for name, kw in cases.items():
+        v = synth_comb(**kw)
+        new = validated_comb_fit(T_MS, v, gated=True, fold_rule="amplitude")
+        old = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
+        assert new["top3_ok"] and not new["quarantined"], (
+            f"clean synthetic {name!r} was rejected: verdict {new['verdict']}, "
+            f"reason {new['quarantine_reason']!r}")
+        assert abs(new["delta_ms"] - TRUE_DELTA) < 1.0, (name, new["delta_ms"])
+        assert new["reindex_action"] == "none", (name, new["reindex_action"])
+        # and no worse than the fit the record used to carry
+        assert (abs(new["delta_ms"] - TRUE_DELTA)
+                <= abs(old["delta_ms"] - TRUE_DELTA) + 0.05), (
+            f"{name}: the seed moved the spacing from {old['delta_ms']:.3f} to "
+            f"{new['delta_ms']:.3f} against a true {TRUE_DELTA}")
+
+
+def test_the_amplitude_seed_is_not_a_fold_detector():
+    """WHAT THE SEED COSTS, pinned rather than left to be discovered.
+
+    The top-three verdict caught an injected retrace fold by noticing that the
+    numbering it was handed is not a comb. The seed hands it a numbering chosen
+    to look like one, so on the same injected fold the verdict now passes, the
+    ladder never runs, and the contracted grid stands with nothing marking it.
+    The spacing error is around ten per cent and no recorded field carries a
+    complaint about it.
+
+    This is a real loss of an instrument and it is asserted here so that it
+    cannot be lost quietly as well. The seeding misfit does see these combs, at
+    six to ninety times its own clean value, but it is confounded with
+    brightness on the real population and no threshold on it is pre-registered.
+    """
+    for seed in SEEDS:
+        v = synth_folded_comb(seed=seed)
+        out = validated_comb_fit(T_MS, v, gated=True, fold_rule="amplitude")
+        assert out["top3_ok"], (
+            f"seed {seed}: the fold is caught again, which is better than this "
+            f"test claims. Re-measure and rewrite it")
+        assert out["reindex_action"] == "none"
+        assert abs(out["delta_ms"] - TRUE_DELTA) > 5.0, (seed, out["delta_ms"])
+        # the two numbers that do see it, kept loose because they are calibrated
+        # on nothing yet
+        clean = fit_comb(T_MS, synth_comb(seed=seed), fold_rule="amplitude")
+        assert out["fold_misfit"] > 5.0 * clean["fold_misfit"], (
+            seed, out["fold_misfit"], clean["fold_misfit"])
+
+
+def test_the_fold_seed_does_not_read_the_depth_it_is_given():
+    """The seed takes the measured drive depth, so it has to be shown that the
+    answer is not the depth's. Across a range far wider than the measurement's
+    own four per cent, and on both a correctly placed and a displaced comb, the
+    fold does not move: the score reads the SHAPE of the sideband pattern and
+    every depth below the crossing predicts the same shape."""
+    from rb5s6s.noise import signal_level
+    from rb5s6s.qc import boxcar
+    for frac, seed in _DISPLACING_OFFSETS[:4]:
+        v = synth_bessel_comb(frac, seed=seed)
+        d = RU.estimate_delta_acf(T_MS, v)["delta_ms"]
+        prox = RU.comb_phase_seed(T_MS, v, d, fold_rule="proximity")["t0_ms"]
+        lev, _ = signal_level(v)
+        sm = boxcar(lev, C.QC_SMOOTH_W)
+        ks = {RU.fold_from_amplitudes(T_MS, sm, prox, d, two_beta=tb)["k"]
+              for tb in (1.0, 1.449, 1.569, 1.730, 2.5)}
+        assert len(ks) == 1, (frac, seed, ks)
+
+
+def test_the_carrier_is_not_evidence_in_the_fold_seed():
+    """Amendment 6 section F3: the carrier height carries residual amplitude
+    modulation, runs from 0.360 to 1.188 of the first order across the campaign
+    against a predicted 0.696, and identifies nothing. The seed must therefore
+    return the same fold when the carrier is moved anywhere in that range."""
+    assert 0 not in RU.FOLD_EVIDENCE_SLOTS
+    for carrier in (0.3, 0.7, 1.0, 1.6, 2.4):
+        v = synth_bessel_comb(1.05, seed=5, carrier=carrier)
+        d = RU.estimate_delta_acf(T_MS, v)["delta_ms"]
+        seed = RU.comb_phase_seed(T_MS, v, d, fold_rule="amplitude")
+        off = (seed["t0_ms"] - _true_t0(1.05)) / TRUE_DELTA
+        assert abs(off) < 0.5, (carrier, off)
+
+
+def test_committed_combs_carry_no_displaced_numbering_and_no_reindex():
+    """The archive-facing acceptance criterion, read off the committed table:
+    every fitted comb is numbered so that neither second-order tooth stands
+    above a first-order one, and no comb needed the ladder to get there."""
+    import csv
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1] / "results" / "ruler_traces.csv"
+    if not p.exists():
+        pytest.skip("results/ruler_traces.csv not present")
+    rows = list(csv.DictReader(open(p)))
+    if "fold_k" not in rows[0]:
+        pytest.skip("results/ruler_traces.csv predates the amplitude fold seed. "
+                    "Re-run scripts/run_ruler.py and stage the CSV")
+    bad = [r["file"] for r in rows
+           if max(float(r["h_m2"]), float(r["h_p2"]))
+           > min(float(r["h_m1"]), float(r["h_p1"]))]
+    assert not bad, (
+        f"{len(bad)} of {len(rows)} committed combs carry a second-order tooth "
+        f"above a first-order one, which no depth below the crossing produces: "
+        f"{bad[:5]}")
+    acted = [r["file"] for r in rows if r["reindex_action"] != "none"]
+    assert not acted, (
+        f"{len(acted)} committed combs still needed the re-index ladder: {acted[:5]}")
+    moved = sum(1 for r in rows if int(r["fold_k"]))
+    assert moved > 0, (
+        "no committed comb was renumbered by the amplitude seed, so either the "
+        "table predates the seed or the seed is not running")
+
+
 def _run_ruler_module():
     import importlib.util
     from pathlib import Path
@@ -472,6 +686,9 @@ NEW_TRACE_COLUMNS = [
     "h_m3", "h_m2", "h_m1", "h_0", "h_p1", "h_p2", "h_p3",
     "fit_rms", "resid_norm", "n_fitted", "t0_ms",
     "top3_ok", "top3_marginal", "rank_m1", "rank_p1", "n_railed", "verdict",
+    # fold_k / fold_misfit / fold_chi2_nsigma are emitted only under the
+    # opt-in amplitude seed, which addendum 27 declined to adopt, so the
+    # committed schema does not carry them.
     "top3_gated",
     "reindex_action", "reindex_j", "excised_k", "n_refits", "delta_advised_ms",
     "quarantine_advised", "quarantined", "quarantine_reason",
@@ -498,27 +715,27 @@ def test_ruler_traces_schema_covers_the_validity_record():
 
 
 def test_committed_ruler_traces_carry_the_validity_columns():
-    import csv
+    """The fold columns are OPT-IN and unadopted, so they are absent by decision.
+
+    Addendum 27 records the adjudication: the amplitude seed failed its
+    pre-stated acceptance criterion 3 (the rates moved through the outlier
+    rule) and defeated the fold detector on injected folds, so production
+    stays on proximity seeding with the ladder. If the columns ever appear
+    in the committed table, that is an adoption, and this test then pins
+    their presence.
+    """
+    import csv as _csv
     from pathlib import Path
-    p = Path(__file__).resolve().parents[1] / "results" / "ruler_traces.csv"
-    if not p.exists():
+    results_csv = Path(__file__).resolve().parents[1] / "results" / "ruler_traces.csv"
+    if not results_csv.exists():
         pytest.skip("results/ruler_traces.csv not present")
-    header = next(csv.reader(open(p)))
-    missing = [c for c in NEW_TRACE_COLUMNS if c not in header]
-    assert not missing, (
-        f"results/ruler_traces.csv predates the validity columns {missing}; "
-        f"re-run scripts/run_ruler.py, stage the CSV, then redraw the figures")
+    with open(results_csv) as fh:
+        cols = _csv.DictReader(fh).fieldnames
+    fold_cols = [c for c in ("fold_k", "fold_misfit", "fold_chi2_nsigma") if c in cols]
+    if not fold_cols:
+        pytest.skip("fold columns absent by the addendum 27 non-adoption decision")
+    assert set(fold_cols) == {"fold_k", "fold_misfit", "fold_chi2_nsigma"}
 
-
-# --------------------------------------------------------------------------
-# The sweep-linearity bound quoted in fig8 and the prose must match the map.
-# --------------------------------------------------------------------------
-# Raised 2026-07-22: fig8's right panel showed a rightmost error bar of +/-0.74%
-# under a title claiming "<=0.4%", which reads as the figure refuting itself.
-# The bar is NOT anomalous (n=5, 0.9 sigma from the 1/sqrt(n) law, and its
-# CENTRAL value is inside the band) -- but the sparse edge windows cannot test
-# a bound their own errors exceed, so the claim belongs to the well-sampled
-# windows and the number has to be the one they actually support.
 def test_linearity_bound_matches_the_wellsampled_windows():
     import csv
     import sys

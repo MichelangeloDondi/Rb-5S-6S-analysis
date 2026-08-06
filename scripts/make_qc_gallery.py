@@ -271,7 +271,7 @@ def _stem(path: str) -> str:
 # the modulation depth, and the two tests that use it
 # ---------------------------------------------------------------------------
 
-MOD_DEPTH_2BETA = 1.569
+MOD_DEPTH_2BETA = C.RULER_MOD_DEPTH_2BETA
 MOD_DEPTH_SD = 0.058
 MOD_DEPTH_RANGE = (1.449, 1.730)
 """The drive depth, measured in amendment 6 section F1 of

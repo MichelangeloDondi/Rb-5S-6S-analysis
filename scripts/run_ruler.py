@@ -83,6 +83,20 @@ TRACE_HEADER = [
     # only recorded, which is the difference between a diagnostic and a gate.
     "top3_ok", "top3_marginal", "rank_m1", "rank_p1", "n_railed", "verdict",
     "top3_gated",
+    # how the teeth were numbered. fold_k is how many slots the sideband
+    # amplitudes moved the numbering off the old window-centre rule, so 0 means
+    # the two rules agree and the fit is the one the record always carried.
+    # fold_misfit is how far the chosen fold's four-slot pattern still sits from
+    # the Bessel law, which is the seed's own evidence and the one number that
+    # sees a comb no numbering can rescue. fold_chi2_nsigma is the demoted
+    # chi-squared comparison: how much worse, in standard deviations of the fit's
+    # own reduced chi-squared, the amplitude fold fits than the proximity fold.
+    # Both are recorded and neither decides anything.
+    # The three fold columns are emitted only when the amplitude rule is the
+    # active seed. It is an unadopted opt-in (addendum 27), so under the
+    # production proximity rule the committed table keeps its schema.
+    *(("fold_k", "fold_misfit", "fold_chi2_nsigma")
+      if C.RULER_FOLD_SEED == "amplitude" else ()),
     # what the re-index ladder decided. delta_advised_ms is the spacing the
     # ladder would have returned, so the size of the effect is on the record
     # even while the verdict is advisory. quarantine_advised is the ladder's
@@ -113,7 +127,10 @@ def trace_row(r, session, peak, T, bracket, f, rate, outlier=False):
            "acf_score": f["acf_score"]}
     row.update(dict(zip(_H_COLS, f["heights"])))
     for k in ("fit_rms", "resid_norm", "n_fitted", "t0_ms", "rank_m1", "rank_p1",
-              "n_railed", "verdict", "top3_gated", "reindex_action", "reindex_j",
+              "n_railed", "verdict", "top3_gated",
+              *(("fold_k", "fold_misfit", "fold_chi2_nsigma")
+                if C.RULER_FOLD_SEED == "amplitude" else ()),
+              "reindex_action", "reindex_j",
               "excised_k", "n_refits", "delta_advised_ms", "quarantine_advised",
               "quarantined", "quarantine_reason", "trimmed",
               "trim_start_ms", "trim_end_ms", "trim_reason"):
@@ -445,6 +462,23 @@ def main() -> int:
         f"{v} {verdicts.get(v, 0)}" for v in ("PASS", "MARGINAL", "FAIL")))
     print("  ladder action:     " + ", ".join(
         f"{a} {actions.get(a, 0)}" for a in ("none", "phase_shift", "excision")))
+    if C.RULER_FOLD_SEED == "amplitude":
+        folds = Counter(int(r["fold_k"]) for r in trace_out)
+        moved = [r for r in trace_out if int(r["fold_k"])]
+        cost = [r["fold_chi2_nsigma"] for r in moved
+                if np.isfinite(r["fold_chi2_nsigma"])]
+        print(f"  fold seed:         {len(moved)} of {len(trace_out)} numbered off "
+              f"the window-centre rule (" + ", ".join(
+                  f"k {k:+d} on {n}" for k, n in sorted(folds.items()) if k) + ")")
+        if cost:
+            print(f"    consistency check: the amplitude fold costs "
+                  f"{min(cost):+.2f} to {max(cost):+.2f} sigma of chi2_red against "
+                  f"the proximity fold, median {float(np.median(cost)):+.2f}, and "
+                  f"{sum(1 for c in cost if c > 1.0)} exceed one sigma")
+        mis = [r["fold_misfit"] for r in trace_out if np.isfinite(r["fold_misfit"])]
+        if mis:
+            print(f"    seed misfit against the Bessel law: {min(mis):.4f} to "
+                  f"{max(mis):.4f}, median {float(np.median(mis)):.4f}")
     print(f"  largest spacing the ladder would have moved: {max(shifts):.2f} ms "
           f"({sum(1 for s in shifts if s > 0.01)} traces would move at all)")
     if gated:

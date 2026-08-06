@@ -49,6 +49,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | That disturbance is **one transient re-armed by every re-lock**: B = 103 [78, 139] ms, τ = 97 [87, 118] min | addendum 12 |
 | A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |
 | The ruler’s tooth indexing was unprotected against the retrace. 54 of 104 combs carried a one-slot mislabelling, corrected display-side on a ratio test. The recomputed calibration is byte-identical and the primary bounds stand. The 4207 nm separation prediction FAILED and stands as a measured campaign property | addendum 26 |
+| An **amplitude-seeded fold** for the comb fit, evaluated against three pre-stated criteria: it lands all 104 combs undisplaced with no ladder, but the campaign rate moves +61.5 ppm through the group-outlier rule, and on injected folds the seed defeats the fold detector. Not adopted. Production stays on proximity seeding, the rule stays as an explicit opt-in diagnostic | addendum 27 |
 | The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
 | The detection chain carries a **61 Hz mains line at ~0.2 % of peak** — averaged over by a 60 ms line, harmless here | addendum 13 |
 | The **P² two-photon law** holds in a third epoch (slopes 1.87–2.36) | addendum 14 |
@@ -132,6 +133,7 @@ re-open a fitted result.
 - [Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data](#addendum-24-2026-08-03-the-light-shift-bound-was-reading-a-starting-point-not-the-data)
 - [Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations](#addendum-25-2026-08-03-the-wavemeter-record-is-a-sawtooth-not-a-sequence-of-relaxations)
 - [Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute](#addendum-26-2026-08-05-the-six-tooth-defect-the-recalibration-and-the-full-recompute)
+- [Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not adopted](#addendum-27-2026-08-06-the-amplitude-seeded-fold-evaluated-and-not-adopted)
 
 ---
 
@@ -2734,3 +2736,73 @@ figure-eligibility clause returned the empty set and was relaxed to six
 standing teeth by owner decision with two measured causes recorded
 (amendment 4). Fired and standing: the 4207 separation prediction,
 recorded as FAILED above.
+
+
+## Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not adopted
+
+Amendment 8 of the ruler specification recorded RT12's demonstration that
+seeding the comb fit's integer fold from the sideband amplitudes lands
+all 104 recorded combs on the undisplaced numbering with no re-index
+ladder. This addendum records the production evaluation of that
+construction against three pre-stated acceptance criteria, and the
+decision.
+
+**The construction.** The fold is chosen by scoring every candidate
+integer offset against the Bessel amplitude pattern J_k(2 beta) squared
+on the four evidence slots k in {-2, -1, +1, +2}. The carrier is
+excluded because it carries residual amplitude modulation and identifies
+nothing (amendment 6 F3). The third order is excluded because the ramp
+clips it on every trace. The chi-squared comparison is demoted to a
+recorded consistency number. The implementation lives in rb5s6s/ruler.py
+behind a configuration switch and its tests exercise it explicitly.
+
+**Criterion 1, all combs undisplaced with no ladder: PASS.** 104 of 104,
+the ladder fires on none, and the 54 renumbered are exactly the 54 the
+displacement criterion flags.
+
+**Criterion 2, no good comb made worse: PASS with a finding.** The 50
+combs the rule leaves alone are byte-identical on every pre-existing
+column. Eight combs pay a fit cost between one and nineteen sigma, the
+population RT12's own adjudication predicted, and it is disjoint from
+the eight combs the ratio gate declines to decide.
+
+**Criterion 3, the physics is label-invariant: FAIL, and the failure
+decomposes.** The campaign rate moves by +61.5 parts per million, the
+block reduced chi-squared rises from 7.977 to 8.216 and the scatter
+rises, which are two of section 9's stop conditions. Decomposed over
+the four combinations of numbering and downstream guards: the seeding
+itself moves the rate by only -1.9 parts per million, reproducing
+RT12's demonstration, and the entire remaining movement enters through
+the group-outlier rule, because one renumbered comb stops being its
+block's outlier and the removal count changes. The label-invariance
+premise is also false for this window geometry: seven slots in a window
+that holds 6.8 means a renumbering slides the grid by one spacing, a
+slot leaves the window, and the railed count rises from 30 to 35.
+
+**The disqualifying finding.** On synthetic combs carrying an injected
+retrace fold, the amplitude seed selects the numbering that makes the
+folded trace look like a valid comb. The validity verdict then passes
+on eight of eight seeds, the ladder never runs, and a spacing error of
+about ten per cent stands with no recorded field marking it. Under
+proximity seeding the same combs fail the verdict and the ladder's
+excision rung recovers them. The construction would therefore
+reintroduce the vulnerability class this specification exists to
+prevent, in a quieter form. This is pinned as a test.
+
+**Decision, by the pre-stated criteria.** Not adopted. Production stays
+on proximity seeding with the validity verdict and the re-index ladder.
+The committed tables are unchanged. The amplitude rule remains in the
+code as an explicit opt-in diagnostic, its fold-misfit statistic is
+persisted nowhere because it is not yet an instrument (it is confounded
+with brightness on the real traces and fires on the benign
+apex-on-a-tooth case), and the specification's E4 question is answered:
+a fit that lands on the correct labelling by construction is achievable
+for clean combs and unsafe for folded ones, so the layered
+fit-then-validate design stands on measurement, not on caution.
+
+**What the evaluation bought anyway.** The fold choice is depth-robust
+(no comb flips for 2 beta anywhere in 1.0 to 2.5), the ladder and the
+amplitude rule agree on all 44 combs the ladder had corrected, and the
+demoted chi-squared confirms the fit is indifferent to the numbering on
+the eight coldest combs, which is the measured content behind the ratio
+gate's refusal to decide them.

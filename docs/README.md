@@ -18,7 +18,7 @@ exclusion register, the frequency ruler, and the bound history.
 provenance.
 
 **The process.** [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)
-holds the preregistrations and their twenty-six dated addenda, including
+holds the preregistrations and their twenty-seven dated addenda, including
 what failed. [RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md) records the
 decisions and the mistakes they answer. [PLAN.md](PLAN.md) is the
 forward plan. [STYLE.md](STYLE.md) is the writing contract this

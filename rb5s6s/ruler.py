@@ -17,9 +17,12 @@ ladder and free-center diagnostic extend it):
      audit, 2026-07-11). Weak-carrier traces are handled for free — the
      autocorrelation uses all teeth at once.
    * comb phase t0 from a direct grid scan of the summed smoothed signal at
-     the 7 predicted tooth positions. The scan folds t0 to the tooth nearest
-     the WINDOW centre, which is proximity indexing and is exactly what the
-     validity stage below exists to check.
+     the 7 predicted tooth positions. The scan fixes the phase modulo the
+     spacing. Which peak is then CALLED the carrier is a separate choice, the
+     integer fold, and it is made from the sideband amplitudes at the measured
+     drive depth with the carrier excluded (stage 1b). Until 2026-08-06 the
+     fold was made by proximity to the window centre, which reads no amplitude
+     at all and numbered 54 of the 104 campaign combs one slot out.
 2. CONSTRAINED SIMULTANEOUS FIT — one model for the whole trace: centers
    t0 + n*Δ (n = -3..+3), ONE shared Lorentzian tooth shape (all teeth are
    the same physical line excited via different photon pairs), free
@@ -84,10 +87,37 @@ def estimate_delta_acf(t_ms: np.ndarray, v: np.ndarray) -> Dict:
             "score": float(np.max(seg)), "fallback": False}
 
 
-def estimate_t0(t_ms: np.ndarray, v: np.ndarray, delta_ms: float) -> float:
-    """Comb phase by brute-force scan: t0 maximizing the summed smoothed
-    signal at the predicted tooth positions (teeth outside the window
-    simply do not contribute)."""
+def estimate_t0(t_ms: np.ndarray, v: np.ndarray, delta_ms: float, *,
+                fold_rule: Optional[str] = None) -> float:
+    """Comb phase, folded onto the tooth the sideband amplitudes call the
+    carrier. The full seeding record is `comb_phase_seed`; this returns only
+    the phase, which is what a caller that just wants a seed needs."""
+    return comb_phase_seed(t_ms, v, delta_ms, fold_rule=fold_rule)["t0_ms"]
+
+
+def comb_phase_seed(t_ms: np.ndarray, v: np.ndarray, delta_ms: float, *,
+                    fold_rule: Optional[str] = None) -> Dict:
+    """Comb phase and its integer fold, with the evidence each rests on.
+
+    The phase MODULO the spacing comes from a brute-force scan: the t0
+    maximizing the summed smoothed signal at the predicted tooth positions
+    (teeth outside the window simply do not contribute). That scan cannot say
+    which of the peaks it found is the carrier, because every fold of the same
+    phase scores the same peaks.
+
+    The fold is the second choice and it is where the numbering comes from.
+    `fold_rule` selects it and defaults to config.RULER_FOLD_SEED:
+
+    amplitude
+        stage 1b, from the sideband heights at the measured drive depth.
+    proximity
+        the tooth nearest the window centre, which is what this function did
+        until 2026-08-06 and which reads no amplitude at all.
+
+    Returns t0_ms, fold_k (slots moved off the proximity answer, so 0 means the
+    two rules agree), fold_misfit, fold_prox_t0_ms and fold_rule.
+    """
+    rule = str(C.RULER_FOLD_SEED if fold_rule is None else fold_rule)
     lev, _ = signal_level(v)
     sm = boxcar(lev, C.QC_SMOOTH_W)
     best_t0, best_score = t_ms[0], -np.inf
@@ -99,10 +129,127 @@ def estimate_t0(t_ms: np.ndarray, v: np.ndarray, delta_ms: float) -> float:
         score = float(np.sum(np.interp(pos[inside], t_ms, sm)))
         if score > best_score:
             best_score, best_t0 = score, float(t0)
-    # fold t0 to the tooth nearest the window center for identifiability
     center = 0.5 * (t_ms[0] + t_ms[-1])
-    k = round((center - best_t0) / delta_ms)
-    return float(best_t0 + k * delta_ms)
+    prox = float(best_t0 + round((center - best_t0) / delta_ms) * delta_ms)
+    if rule == "proximity":
+        return {"t0_ms": prox, "fold_k": 0, "fold_misfit": float("nan"),
+                "fold_prox_t0_ms": prox, "fold_rule": rule}
+    if rule != "amplitude":
+        raise ValueError(f"unknown fold rule {rule!r}")
+    fold = fold_from_amplitudes(t_ms, sm, prox, delta_ms)
+    return {"t0_ms": fold["t0_ms"], "fold_k": fold["k"],
+            "fold_misfit": fold["misfit"], "fold_prox_t0_ms": prox,
+            "fold_rule": rule}
+
+
+# ---------------------------------------------------------------------------
+# stage 1b: the integer fold, seeded from the sideband amplitudes
+# ---------------------------------------------------------------------------
+# Adjudicated action RT12 of the frequency-calibration red team, amendment 8 of
+# docs/notes/ruler_validity_and_trim_prereg.md, answering the question amendment
+# 5 section E4 parked: whether the fit should be seeded to land on the correct
+# labelling rather than corrected after inspection.
+#
+# The phase scan fixes t0 modulo the spacing. The fold is the remaining freedom,
+# and it is the whole of the numbering: fold the phase one slot over and the
+# same peaks are called by different names. Proximity to the window centre
+# answered it until now, which is a statement about where the comb sits in the
+# acquisition window and not about the comb.
+#
+# The drive is what does know. Phase modulation at depth 2 beta gives the tooth
+# at k a two-photon height going as J_k(2 beta) squared, so below the crossing
+# the first-order pair stands above the second-order pair and the pattern is
+# symmetric about the carrier. Reading that pattern at each candidate fold and
+# taking the one it matches is the construction.
+
+FOLD_EVIDENCE_SLOTS = (-2, -1, 1, 2)
+"""The slots the fold seed reads, and the two it does not.
+
+The CARRIER is excluded, on amendment 6 section F3: its height carries residual
+amplitude modulation, it runs from 0.360 to 1.188 of the first order across the
+campaign against a predicted 0.696, and a slot that varies by a factor of three
+for reasons outside the drive identifies nothing.
+
+The THIRD order is excluded because it is not measured. The ramp clips one outer
+window on every recorded ruler, and at the measured depth J_3 squared over J_1
+squared is 1.7 per cent, which sits below the fit residual on all but two of the
+41 clean combs (amendment 4).
+
+What is left is the four teeth amendment 6 section F1 also works on, k of
+magnitude one and two, which are the reliable amplitude evidence."""
+
+
+def bessel_tooth_weights(two_beta: float,
+                         slots: Sequence[int] = FOLD_EVIDENCE_SLOTS) -> np.ndarray:
+    """Relative tooth HEIGHTS a phase modulation of depth 2 beta produces.
+
+    A tooth height is a two-photon signal, so it goes as J_k(2 beta) squared
+    and not as the bare amplitude, and the argument is 2 beta rather than beta.
+    Amendment 6 section F1 sets the law out, and records that an earlier
+    constant got both of those wrong in directions that nearly cancelled.
+    """
+    from scipy.special import jv
+    return np.array([float(jv(int(k), two_beta)) ** 2 for k in slots])
+
+
+def fold_amplitude_misfit(amps: Sequence[float], weights: Sequence[float]) -> float:
+    """How far an observed slot pattern sits from the pattern the law predicts.
+
+    One minus the squared cosine between the two vectors, so 0 is a pattern
+    parallel to the law and 1 is a pattern orthogonal to it. The overall scale
+    is divided out rather than fitted, because a comb's brightness says nothing
+    about which slot is the carrier and a misfit that read it would prefer
+    whichever fold sits over the quietest part of the window.
+    """
+    a = np.asarray(amps, dtype=float)
+    w = np.asarray(weights, dtype=float)
+    na, nw = float(a @ a), float(w @ w)
+    if na <= 0.0 or nw <= 0.0:
+        return 1.0
+    return float(1.0 - (a @ w) ** 2 / (na * nw))
+
+
+def fold_from_amplitudes(t_ms: np.ndarray, sm: np.ndarray, t0_ms: float,
+                         delta_ms: float, *,
+                         two_beta: Optional[float] = None) -> Dict:
+    """The integer fold whose sideband pattern matches the Bessel law best.
+
+    `sm` is the smoothed signal above baseline, read at the four evidence slots
+    of each candidate fold. A candidate is only considered when all four of its
+    evidence slots were recorded: a slot outside the acquisition window is not
+    weak evidence, it is no evidence, and scoring it against an interpolated
+    edge value would let a fold that hangs off the window win on a number the
+    instrument never measured.
+
+    Ties break toward the window centre, so with no amplitude evidence at all
+    this returns exactly the fold the old proximity rule returned.
+
+    Returns t0_ms, k (slots moved off the phase handed in), misfit, the
+    runner-up's misfit and the number of candidates scored.
+    """
+    two_beta = C.RULER_MOD_DEPTH_2BETA if two_beta is None else float(two_beta)
+    w = bessel_tooth_weights(two_beta)
+    centre = 0.5 * (t_ms[0] + t_ms[-1])
+    reach = int(np.ceil((t_ms[-1] - t_ms[0]) / delta_ms)) + 1
+    scored = []
+    for k in range(-reach, reach + 1):
+        c = t0_ms + k * delta_ms
+        pos = c + delta_ms * np.asarray(FOLD_EVIDENCE_SLOTS, dtype=float)
+        if pos.min() < t_ms[0] or pos.max() > t_ms[-1]:
+            continue
+        amps = np.clip(np.interp(pos, t_ms, sm), 0.0, None)
+        scored.append((fold_amplitude_misfit(amps, w), abs(c - centre), k))
+    if not scored:
+        # No fold puts all four evidence slots inside the window, so there is
+        # nothing to read and the phase stands where the scan left it.
+        return {"t0_ms": float(t0_ms), "k": 0, "misfit": float("nan"),
+                "alt_misfit": float("nan"), "n_candidates": 0}
+    scored.sort()
+    best = scored[0]
+    return {"t0_ms": float(t0_ms + best[2] * delta_ms), "k": int(best[2]),
+            "misfit": float(best[0]),
+            "alt_misfit": float(scored[1][0]) if len(scored) > 1 else float("nan"),
+            "n_candidates": len(scored)}
 
 
 # ---------------------------------------------------------------------------
@@ -151,7 +298,8 @@ _PIN_CAP = 1e-12
 def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
              t0_seed: Optional[float] = None,
              mask: Optional[np.ndarray] = None,
-             pin_zero: Sequence[int] = ()) -> Dict:
+             pin_zero: Sequence[int] = (),
+             fold_rule: Optional[str] = None) -> Dict:
     """Weighted constrained comb fit of one ruler trace.
 
     Returns delta_ms, delta_err_ms (tau_int- and chi2-inflated), t0_ms,
@@ -176,10 +324,20 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
         Tooth orders whose height is capped at zero. Excising a slot's samples
         is not enough on its own: the freed height would otherwise absorb the
         wings of its neighbours and re-create the pull it was excised for.
+    fold_rule
+        Which rule numbers the teeth, `amplitude` or `proximity`. Defaults to
+        config.RULER_FOLD_SEED. Ignored when `t0_seed` is given, since a caller
+        that hands in a phase has already made that choice.
     """
     init = estimate_delta_acf(t_ms, v)
     d0 = init["delta_ms"]
-    t00 = estimate_t0(t_ms, v, d0) if t0_seed is None else float(t0_seed)
+    if t0_seed is None:
+        seed = comb_phase_seed(t_ms, v, d0, fold_rule=fold_rule)
+    else:
+        seed = {"t0_ms": float(t0_seed), "fold_k": 0,
+                "fold_misfit": float("nan"),
+                "fold_prox_t0_ms": float("nan"), "fold_rule": "seeded"}
+    t00 = seed["t0_ms"]
 
     sel = np.ones(len(v), dtype=bool) if mask is None else np.asarray(mask, dtype=bool)
     if sel.shape != np.shape(v):
@@ -243,6 +401,10 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
         "n_fitted": n_fitted,
         "init_fallback": init["fallback"],
         "acf_score": init["score"],
+        "fold_k": seed["fold_k"],
+        "fold_misfit": seed["fold_misfit"],
+        "fold_prox_t0_ms": seed["fold_prox_t0_ms"],
+        "fold_rule": seed["fold_rule"],
     }
 
 
@@ -251,7 +413,7 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
 # ---------------------------------------------------------------------------
 # Pre-registered in docs/notes/ruler_validity_and_trim_prereg.md, 2026-08-04.
 #
-# Tooth INDEXING had no protection at all. Slot k is assigned by proximity to
+# Tooth INDEXING had no protection at all. Slot k was assigned by proximity to
 # the window centre, so when the triangular sweep's apex falls inside the
 # acquisition window, the retrace mirror of a real tooth can occupy an outer
 # slot and be fitted as if it were a tooth. The mirror of an inner tooth lands
@@ -261,6 +423,11 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
 # every existing check.
 #
 # The remedy reads AMPLITUDE, which proximity indexing never consults.
+#
+# Since 2026-08-06 the first fit reads it too, at seed time (stage 1b), so the
+# ladder is the backstop for a comb the amplitudes cannot number rather than the
+# route by which a correctly numbered comb is reached. Everything below is
+# unchanged and still runs.
 
 QUARANTINE_REASONS = (
     "top_three_unrecoverable",   # the full ladder ran, the rule still fails
@@ -396,7 +563,8 @@ def comb_residual(t_ms: np.ndarray, v: np.ndarray, fit: Dict) -> np.ndarray:
 
 def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None,
                        *, allow_trim: bool = True,
-                       gated: Optional[bool] = None) -> Dict:
+                       gated: Optional[bool] = None,
+                       fold_rule: Optional[str] = None) -> Dict:
     """One ruler trace through the fixed-order validity ladder.
 
         1. fit
@@ -426,10 +594,22 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
     the ladder's fit is the fit of record and a failing trace is quarantined.
     The reason the default is off is in the constant's own note.
 
+    THE FOLD, from 2026-08-06. The first fit is numbered from the sideband
+    amplitudes rather than by proximity to the window centre (stage 1b), so on
+    a comb the drive explains the ladder has nothing to repair and does not
+    fire. What the ladder used to do with the chi-squared, which was to search
+    the four neighbouring folds and let the chi-squared pick among those that
+    rescued the verdict, is now a CONSISTENCY CHECK: where the amplitude fold
+    and the old proximity fold disagree, the same fit is run at the proximity
+    fold and the two reduced chi-squareds are compared. The comparison is
+    recorded as fold_chi2_nsigma and decides nothing. The ladder stays in place
+    below it as the backstop for a comb the amplitudes cannot number.
+
     Returns the fit dict of record plus the verdict fields and: top3_gated,
     reindex_action (none / phase_shift / excision), reindex_j, excised_k,
     n_refits, delta_advised_ms, quarantine_advised, quarantined,
-    quarantine_reason, trimmed, trim_start_ms, trim_end_ms, trim_reason.
+    quarantine_reason, trimmed, trim_start_ms, trim_end_ms, trim_reason,
+    fold_k, fold_chi2_nsigma.
     RuntimeError from the FIRST fit propagates unchanged, so a trace that
     cannot be fitted at all still reaches the caller as it always did; only
     failures inside the ladder become a quarantine.
@@ -441,7 +621,28 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
            "trimmed": False, "trim_start_ms": float("nan"),
            "trim_end_ms": float("nan"), "trim_reason": ""}
 
-    fit = fit_comb(t_ms, v, law)                                   # 1
+    fit = fit_comb(t_ms, v, law, fold_rule=fold_rule)              # 1
+    rec["fold_k"] = int(fit["fold_k"])
+    rec["fold_misfit"] = float(fit["fold_misfit"])
+    rec["fold_chi2_nsigma"] = float("nan")
+    if rec["fold_k"]:
+        # The chi-squared comparison, kept and demoted. Positive means the fold
+        # the amplitudes chose fits WORSE than the fold proximity would have
+        # chosen, in standard deviations of a reduced chi-squared on this fit's
+        # own degrees of freedom, which is the scale on which "worse" is
+        # answerable at all (see REINDEX_CHI2_NSIGMA). It is recorded and acted
+        # on by nothing: the amplitudes say which slot is the carrier and a
+        # rigid grid displaced by whole slots measures the same pitch either
+        # way, so a fit that prefers the other fold is telling the reader the
+        # comb is ambiguous rather than telling the pipeline to renumber it.
+        try:
+            alt = fit_comb(t_ms, v, law, t0_seed=fit["fold_prox_t0_ms"])
+        except RuntimeError:
+            pass
+        else:
+            dof = max(fit["n_fitted"] - _N_PARAMS, 1)
+            rec["fold_chi2_nsigma"] = float(
+                (fit["chi2_red"] - alt["chi2_red"]) / np.sqrt(2.0 / dof))
 
     # 2. trim, core-guarded. The core is the fitted comb span widened by one
     # fitted tooth width on each side, so only ground the seven-tooth model

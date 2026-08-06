@@ -259,6 +259,34 @@ RULER_NLMAP_NBINS = 12
 """Window-position bins for the pooled sweep-nonlinearity map ν(t)."""
 
 # --- ruler fit VALIDITY (pre-registered in docs/notes/ruler_validity_and_trim_prereg.md) ---
+RULER_FOLD_SEED = "proximity"
+"""Which rule numbers the teeth of a comb fit: `amplitude` or `proximity`.
+
+The comb phase scan fixes t0 modulo the tooth spacing. Which of the peaks it
+found is then CALLED the carrier is the integer fold, and it is the whole of the
+numbering. `proximity` answers it with the tooth nearest the acquisition window
+centre, which is a fact about where the comb sits in the window rather than
+about the comb, and it numbered 54 of the 104 campaign combs one slot out.
+`amplitude` answers it from the sideband heights at the measured drive depth,
+with the carrier left out because its height carries residual amplitude
+modulation (amendment 6 section F3).
+
+Landed 2026-08-06 as the adjudicated action RT12 of the frequency-calibration
+red team, answering the question amendment 5 section E4 parked. `proximity` is
+kept because the re-index ladder is calibrated on combs that are mislabelled to
+begin with, and the only honest way to build one is to number it the old way."""
+
+RULER_MOD_DEPTH_2BETA = 1.569
+"""The drive depth, written as 2 beta and never as a bare depth in radians.
+
+Measured in amendment 6 section F1 on the 41 combs whose numbering the verdict
+passes cleanly and whose first-order pair stands above five times the fit
+residual: median 2 beta = 1.569, standard deviation 0.058, range 1.449 to 1.730,
+so one depth to four per cent. The fold seed reads it through the tooth height
+law, J_k(2 beta) squared, and only through the SHAPE of the resulting pattern.
+Nothing in the seed reads the depth's absolute value, which is why moving it
+anywhere inside the measured band does not change a fold."""
+
 RULER_TOP3_GATED = False
 """Whether the top-three amplitude verdict is allowed to ACT on the
 calibration, or is only recorded.

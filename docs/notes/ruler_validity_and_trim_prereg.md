@@ -1831,8 +1831,14 @@ standing rule. What binds here:
 Six CONFIRMED, five REFUTED, one OPEN (42 per cent refuted). Three verdicts moved. RT3 and RT6 fall from CONFIRMED to REFUTED, and RT1 from CONFIRMED to REFUTED. RT10 rises from REFUTED to CONFIRMED. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's SPREAD separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4, and my attack on it failed twice over and produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.
 
 The confirmed actions are implemented as of this date with one
-exception, the amplitude-seeded fold construction (RT12), which lands
-with its own addendum. The RT6 statistic was re-derived at
+exception, the amplitude-seeded fold construction (RT12), which was
+evaluated and not adopted (addendum 27 of
+[PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md): the
+seeding reproduces RT12's demonstration, but the campaign rate moves
++61.5 ppm through the group-outlier rule, and the seed defeats the
+fold detector on injected folds, so production stays on proximity
+seeding and the rule stays as an explicit opt-in diagnostic). The RT6
+statistic was re-derived at
 implementation: the per-session reduced chi-squared ratio is 9.45 with
 a two-sided F test on 7 and 11 degrees of freedom giving p = 0.0014,
 and the ledger generator computes both from the committed block tables.

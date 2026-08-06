@@ -98,7 +98,7 @@ two-photon sum frequency, twice the laser frequency.
   velocity-symmetry argument.
 - A validation discipline: model ladder, identifiability profiles,
   coverage tested on synthetic truth, and a preregistered audit trail
-  in which twenty-six dated addenda record every claim that was
+  in which twenty-seven dated addenda record every claim that was
   withdrawn, corrected, or downgraded, including the basin retraction
   of this archive's own headline light-shift bound.
 
