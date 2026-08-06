@@ -154,8 +154,10 @@ is that it would be followed. The session also degrades gracefully. The pull is
 a differential measurement needing minutes of stability. The pre-registered
 bracket veto (§7a) cuts drift-jump blocks instead of averaging them. The
 sentinel condition (§10.6) monitors residual drift directly. Ayachitula (2024)
-held a lock on this same transition to < 0.5 kHz over 50 min, so a stable lock
-is demonstrated rather than hoped for. Worst case, the D1 beam-profile and ρ
+held a lock on this same transition to < 0.5 kHz over 50 min, an existence
+proof from a high-finesse cavity apparatus rather than from this bench, and
+the plan's own thresholds rest on the archive's measured held-lock rate
+rather than on that borrowed figure. Worst case, the D1 beam-profile and ρ
 measurements retroactively sharpen the 2025 archive and stand alone.
 
 The strongest argument against the observable this plan ranks first sits in the

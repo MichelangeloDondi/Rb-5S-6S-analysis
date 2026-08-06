@@ -1941,12 +1941,13 @@ def fig_drift_story():
          f"bounded above, at between {min(bvals):.2f} and {max(bvals):.2f} MHz\n"
          r"per $10^{12}$ cm$^{-3}$"),
         (ayachitula_mhz_per_min,
-         "a fixed lock has been demonstrated on\nthis transition at below 0.5 kHz of\n"
-         "drift over 50 minutes (Ayachitula 2024)",
-         "line centres are usable here, so the light\n"
-         "shift, the self-shift and the collisional\n"
-         "coefficient can all be measured, the last\n"
-         "of them at between 3 and 12 standard\ndeviations"),
+         "a lock of this class exists on this\ntransition in the literature "
+         "(Ayachitula\n2024, a high-finesse cavity apparatus),\n"
+         "and is not demonstrated on this bench",
+         "line centres would become usable, and the\n"
+         "light shift, the self-shift and the collisional\n"
+         "coefficient measurable, the last at between\n"
+         "3 and 12 standard deviations, conditional\non reaching that lock class here"),
     ]
     ys = [2, 1, 0]
     for y, (rate, left, right) in zip(ys, regimes):
@@ -3336,8 +3337,11 @@ def fig_joint_fit_five():
             axr.set_xlabel("detuning from this repeat's fitted centre "
                            "(MHz on the laser frequency)", fontsize=8.5)
 
+    status = next(r["status"] for r in _rows("global_archive_fit")
+                  if r["quantity"] == "beta_self_joint")
     _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum "
-                 "and its errors) + data_raw archive (per-trace data, local "
+                 f"and its errors, {STATUS_WORD.get(status, status.lower())}) "
+                 "+ data_raw archive (per-trace data, local "
                  "nuisance refits only). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig21_joint_fit_five.png")
 
@@ -3453,7 +3457,10 @@ def fig_joint_fit_twenty():
              f"signal is\nweakest in the {int(round(min(POWERS) * 1000))} mW column, the "
              "lowest drive power of the sweep.",
              ha="center", va="top", fontsize=7.6, color="0.35")
-    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum) "
+    status = next(r["status"] for r in _rows("global_archive_fit")
+                  if r["quantity"] == "beta_self_joint")
+    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum, "
+                 f"{STATUS_WORD.get(status, status.lower())}) "
                  "+ data_raw archive (per-trace data, local nuisance refits "
                  "only). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig22_joint_fit_twenty.png")

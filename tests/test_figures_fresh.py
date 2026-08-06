@@ -143,3 +143,30 @@ def test_figure_text_does_not_overlap():
         mf._save = original
         plt.close("all")
     assert not problems, "overlapping figure labels:\n  " + "\n  ".join(problems)
+
+
+def test_result_printing_captions_carry_a_status_word():
+    """A caption is part of the record, and captions are where the status
+    discipline drifted. The 2026-08-06 falsification pass found fig21 and
+    fig22 printing the shared collisional, laser and transit widths with no
+    status word while fig16 and fig18 carried it from the same context, and
+    the fig15 panel (c) defect failed at the same seam: hand-maintained
+    caption text drifts exactly where the carriage is not mechanical. Any
+    figure function that interpolates a shared fitted width into caption
+    text must also reference STATUS_WORD, so the status travels with the
+    number the reader actually sees."""
+    import re
+
+    src = (C.REPO_ROOT / "scripts" / "make_figures.py").read_text(encoding="utf-8")
+    offenders = []
+    for chunk in re.split(r"\ndef ", src):
+        name = chunk.split("(", 1)[0].strip()
+        if not name.startswith("fig_"):
+            continue
+        prints_width = re.search(
+            r"\{[^{}]*\['(?:gc|sl|transit|fwhm)'\][^{}]*\}", chunk)
+        if prints_width and "STATUS_WORD" not in chunk:
+            offenders.append(name)
+    assert not offenders, (
+        "figure functions print a fitted width with no status word "
+        "(the caption-seam failure of 2026-08-06):\n  " + "\n  ".join(offenders))
