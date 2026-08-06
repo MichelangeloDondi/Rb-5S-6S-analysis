@@ -23,6 +23,7 @@ Motivation, in order of severity:
 
 from __future__ import annotations
 
+import ast
 import re
 import subprocess
 from pathlib import Path
@@ -610,3 +611,72 @@ def test_no_tracked_artifact_schedules_the_fixed_lock_session():
     assert not offenders, (
         "a tracked artifact schedules the fixed-lock session; PLAN assumes no "
         "date:\n  " + "\n  ".join(offenders))
+
+
+# Names whose values are NOT bit-reproducible across platforms: special
+# functions and iterative solvers, where two scipy builds legitimately differ
+# in the last few ulp. Plain IEEE arithmetic (add, multiply, sqrt, dot) is
+# reproducible and is deliberately not listed.
+_PLATFORM_SENSITIVE = {
+    "ppf", "isf", "cdf", "sf", "logcdf", "logsf", "interval",
+    "gammaln", "erf", "erfc", "betainc", "gammainc", "wofz", "voigt_profile",
+    "minimize", "least_squares", "curve_fit", "root_scalar", "brentq",
+    "quad", "solve_ivp", "eig", "eigh", "svd", "lstsq",
+}
+_TOLERANCE_FLOOR = 1e-9
+
+
+def test_no_test_pins_a_platform_sensitive_value_below_the_floor():
+    """Comparisons against special functions stay at 1e-9 or looser.
+
+    The mirror's Linux scipy computed a Student-t quantile 1.8e-12 from the
+    value the committing Mac had written into the results table, so a 1e-12
+    assertion passed the local gate and failed the only CI that publishes.
+    A test that pins such a value tighter than the floor is measuring which
+    scipy build produced the table, not whether the number reproduces.
+    Plain arithmetic is exempt because IEEE guarantees it.
+    """
+    offenders = []
+    for path in (ROOT / "tests").glob("test_*.py"):
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        for fn in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]:
+            tainted = set()
+            for node in ast.walk(fn):
+                if not isinstance(node, ast.Call):
+                    continue
+                called = (node.func.attr if isinstance(node.func, ast.Attribute)
+                          else getattr(node.func, "id", ""))
+                if called not in _PLATFORM_SENSITIVE:
+                    continue
+                parent = getattr(node, "_assign_targets", None)
+                if parent:
+                    tainted.update(parent)
+            # second pass: assignment targets fed by a sensitive call
+            for node in ast.walk(fn):
+                if isinstance(node, ast.Assign) and any(
+                        (c.func.attr if isinstance(c.func, ast.Attribute)
+                         else getattr(c.func, "id", "")) in _PLATFORM_SENSITIVE
+                        for c in ast.walk(node.value) if isinstance(c, ast.Call)):
+                    tainted.update(t.id for t in ast.walk(node)
+                                   if isinstance(t, ast.Name)
+                                   and isinstance(t.ctx, ast.Store))
+            for cmp_node in [n for n in ast.walk(fn) if isinstance(n, ast.Compare)]:
+                if not cmp_node.comparators:
+                    continue
+                rhs = cmp_node.comparators[-1]
+                if not (isinstance(rhs, ast.Constant)
+                        and isinstance(rhs.value, float)
+                        and rhs.value < _TOLERANCE_FLOOR):
+                    continue
+                used = {n.id for n in ast.walk(cmp_node.left)
+                        if isinstance(n, ast.Name)}
+                calls = {(c.func.attr if isinstance(c.func, ast.Attribute)
+                          else getattr(c.func, "id", ""))
+                         for c in ast.walk(cmp_node.left) if isinstance(c, ast.Call)}
+                if (used & tainted) or (calls & _PLATFORM_SENSITIVE):
+                    offenders.append(
+                        f"{path.name}:{cmp_node.lineno} pins a platform-sensitive "
+                        f"value at {rhs.value:g}, tighter than the {_TOLERANCE_FLOOR:g} floor")
+    assert not offenders, (
+        "tolerance below the cross-platform floor:\n  " + "\n  ".join(offenders)
+        + "\nRelax to 1e-9, or recompute both sides in the same process.")
