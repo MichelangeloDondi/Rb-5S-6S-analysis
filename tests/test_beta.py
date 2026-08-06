@@ -369,9 +369,13 @@ def test_pooled_bound_reproduces_on_the_committed_table():
 
     dof = float(head["dof"])
     t95 = float(student_t.ppf(0.95, dof))
-    assert abs(t95 - float(head["t95"])) < 1e-12
+    # 1e-9, not 1e-12: scipy's t quantile differs across platforms at the
+    # 2e-12 level (the mirror CI's Linux build against the committing Mac),
+    # and this test pins reproduction of the committed value, not the
+    # bitness of one scipy build.
+    assert abs(t95 - float(head["t95"])) < 1e-9
     bound = abs(float(head["beta_eff"])) + t95 * se
-    assert abs(bound - float(head["bound95"])) < 1e-12
+    assert abs(bound - float(head["bound95"])) < 1e-9
     assert abs(float(head["n_frac_syst"]) - N_SCALE_FRAC_SYST) < 1e-12
     assert abs(bound * (1 + N_SCALE_FRAC_SYST)
                - float(head["bound95_nscale"])) < 1e-12
