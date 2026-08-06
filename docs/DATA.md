@@ -645,7 +645,7 @@ conclusions:
   calibration systematic for 4207 power points. The fine-scan sweep is
   **linear to <0.3% across the well-sampled windows** (the bound is the
   well-sampled-window family's value, gate-dependent outside it, see the
-  phase 7 red-team note — no piezo nonlinearity: the
+  ruler specification, amendment 8 — no piezo nonlinearity: the
   ruler-in-fine-scan design worked). Cold 70 °C rulers calibrate fine with
   correctly inflated errors (~2.5 ms vs ~0.3 ms warm).
 - **β_self (2026-07-11). The archival temperature sweep bounds it, it does not
@@ -917,7 +917,7 @@ Whether the window sits in the right place was a separate question, left open
 here because the cap that excludes the retrace is a fixed number of megahertz
 while the retrace crossing moves with the sweep rate, which the ruler
 re-adjudication had just re-measured. It is now measured (RT10 of
-`docs/notes/frequency_calibration_red_team.md`, 2026-08-06). Neither clip is
+the ruler specification, amendment 8, 2026-08-06). Neither clip is
 active on the archive: the 25 MHz cap binds on 0 of 159 canonical traces and
 the 9 MHz floor on 0 of 159, so every canonical window is the plain 3.5 fitted
 widths. The recorded crossing separations run 39.2 to 43.0 MHz, that is 7.64 to
