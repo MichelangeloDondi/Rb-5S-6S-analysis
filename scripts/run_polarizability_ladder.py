@@ -123,9 +123,9 @@ def main() -> None:
     BLUE, ORANGE, GREEN = "#0072B2", "#D55E00", "#009E73"
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.4))
     for ax, (lo, hi, drive, fn, title, magics) in zip(axes, [
-        (980, 1400, 993, P.delta_alpha, r"5S$\to$6S: the crossings sit far to "
+        (980, 1400, 993, P.delta_alpha, r"(a) 5S$\to$6S: the crossings sit far to "
          "the red of the 993 nm drive", m6),
-        (720, 800, 760, P.delta_alpha_7s, r"5S$\to$7S: the crossings bracket "
+        (720, 800, 760, P.delta_alpha_7s, r"(b) 5S$\to$7S: the crossings bracket "
          "the 760 nm drive, between poles", [x for x, _ in magic7]),
     ]):
         g = np.linspace(lo, hi, 2000)

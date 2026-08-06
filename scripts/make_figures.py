@@ -287,7 +287,7 @@ def fig_power_sweep():
     # unlabelled "FWHM" on both invites the reader to compare them directly.
     a1.set_ylabel("half-maximum width measured directly from each trace\n"
                   "(MHz at the two-photon transition frequency)")
-    a1.set_title("The width shows no trend with power. The point-to-point scatter\n"
+    a1.set_title("(a) the width shows no trend with power. The point-to-point scatter\n"
                  "is 3 to 8 percent, above the 2 percent or less a light-shift\n"
                  "gradient alone predicts. The rest is scatter between blocks.",
                  fontsize=9)
@@ -312,7 +312,7 @@ def fig_power_sweep():
                       "with only its offset fitted"
                 if i == 0 else None)
     a2.set_xlabel("power (mW)"); a2.set_ylabel("peak fluorescence signal (V)")
-    a2.set_title("Amplitude against power, with the square-of-power rate law\n"
+    a2.set_title("(b) amplitude against power, with the square-of-power rate law\n"
                  "drawn as a reference of fixed slope", fontsize=9)
     a2.legend(fontsize=8)
     fig.suptitle("The total line width does not move with drive power. The fluorescence "
@@ -531,7 +531,7 @@ def fig_pooled_width():
         sep = ("\nThe two isotopic coefficients printed below differ by %.4f MHz\n"
                r"per $10^{12}$cm$^{-3}$, against a combined uncertainty of %.4f."
                % (gap, unc))
-    a1.set_title("The pooled width grows with Rb density while the individual\n"
+    a1.set_title("(a) the pooled width grows with Rb density while the individual\n"
                  "peaks scatter non-monotonically within their own uncertainties."
                  + sep, fontsize=8)
     a1.legend(fontsize=7.5, loc="upper left", frameon=True, framealpha=1.0)
@@ -564,7 +564,7 @@ def fig_pooled_width():
     # was written as "110 °C" while the panel plotted whatever the global fit
     # had most recently produced.
     T_dip = min(sl, key=lambda x: x[1])[0]
-    a2.set_title("The fitted laser line width depends on the model. Fitting each\n"
+    a2.set_title("(b) the fitted laser line width depends on the model. Fitting each\n"
                  "condition freely gives a flat %.1f MHz within the plotted\n"
                  "uncertainties. Tying the collisional term to the density forces the\n"
                  "laser width down to its lowest value at %g °C, which is the trade-off\n"
@@ -749,11 +749,11 @@ def fig_identifiability_profile():
                         ls, color="k", lw=1.1,
                         label=("covariance ellipse, 68 and 95 percent (black)"
                                if c == 2.30 else None))
-            ax.set_title("Detail near the minimum, comparing the profile\n"
+            ax.set_title("(b) detail near the minimum, comparing the profile\n"
                          "contours in white with the covariance ellipse in black",
                          fontsize=9)
         else:
-            ax.set_title("The full width of the degeneracy valley. White curves are\n"
+            ax.set_title("(a) the full width of the degeneracy valley. White curves are\n"
                          "the joint 68 and 95 percent contours",
                          fontsize=9)
         ax.set_xlabel("collisional width (MHz at the two-photon transition frequency)")
@@ -1001,7 +1001,7 @@ def fig_ruler():
     ax.tick_params(labelbottom=False)
     axres.set_xlabel("scan time (ms)")
     ax.set_ylabel("fluorescence (V)")
-    ax.set_title("The scan carries its own calibration. Sidebands from the\n"
+    ax.set_title("(a) the scan carries its own calibration. Sidebands from the\n"
                  f"electro-optic modulator place {len(TEETH)} copies of the same line in "
                  f"one\nsweep, {TOOTH_SPACING_LASER_HZ / 1e6:.2f} MHz apart in laser "
                  "frequency",
@@ -1086,7 +1086,7 @@ def fig_ruler():
     ax2.set_xlabel("centre of the window, in scan time (ms)")
     ax2.set_ylabel("sweep rate in this window, divided by\n"
                    "the rate fitted for that group of traces")
-    ax2.set_title("Sweep non-linearity and any\n"
+    ax2.set_title("(b) sweep non-linearity and any\n"
                   "tooth-dependent pull together stay\n"
                   "within %.1f%%, set by the well-sampled windows"
                   % (100 * RULER_LINEARITY_BOUND), fontsize=8.5)
@@ -1162,7 +1162,7 @@ def fig_degeneracy_vs_observable():
     ax1.text(gg[-1], 0.02, "unphysical below", fontsize=6, color="0.3",
              ha="right", va="bottom")
     ax1.set_ylim(min(-0.25, ss[0]), ss[-1])
-    ax1.set_title("The split between the two components slides freely along a grey line\n"
+    ax1.set_title("(a) the split between the two components slides freely along a grey line\n"
                   "of constant total width in MHz. The two are anticorrelated, with a\n"
                   f"median correlation coefficient of {np.median(corr):+.2f}, and several "
                   "of the one-sigma\nellipses reach negative Gaussian width", fontsize=8.5)
@@ -1188,7 +1188,7 @@ def fig_degeneracy_vs_observable():
     # Two claims, not one: the per-condition precision is a property of each
     # point, and the absence of a power trend rests on the scatter between
     # measurement blocks, which is several times larger than these bars.
-    ax2.set_title("The quantity actually measured is the total width, known to "
+    ax2.set_title("(b) the quantity actually measured is the total width, known to "
                   f"{100 * np.median(twe) / np.median(tw):.1f}%\n"
                   "within a condition. No trend with laser power survives the scatter\n"
                   "between measurement blocks", fontsize=9)
@@ -1264,7 +1264,7 @@ def fig_laser_history():
     ax.set_ylabel("line centre within one oscilloscope window setting\n"
                   "(MHz on the laser frequency)")
     n_ep = len({r["_e"] for r in rows})
-    ax.set_title(f"{len(rows)} traces in {n_ep} segments of unchanged oscilloscope\n"
+    ax.set_title(f"(a) {len(rows)} traces in {n_ep} segments of unchanged oscilloscope\n"
                  "window setting. Each segment is referenced to itself. Across a\n"
                  "change of that setting the offset is unknown, so the record breaks.",
                  fontsize=8.5)
@@ -1310,7 +1310,7 @@ def fig_laser_history():
         ax.set_xlabel("minutes into the segment")
         ax.set_ylabel("line centre within one oscilloscope window setting\n"
                       "(MHz on the laser frequency)")
-        ax.set_title(f"the quietest well-sampled segment: 993.{pk} nm,\n"
+        ax.set_title(f"(b) the quietest well-sampled segment: 993.{pk} nm,\n"
                      f"{len(g)} traces over {dur:.1f} min held to "
                      f"{pp:.2f} MHz peak-to-peak", fontsize=8.5)
         ax.grid(alpha=0.25, lw=0.5)
@@ -1335,7 +1335,7 @@ def fig_laser_history():
         ax.set_xlabel("size of the change in line centre between consecutive\n"
                       "traces in the same segment (MHz on the laser frequency)")
         ax.set_ylabel("number of steps (logarithmic scale)")
-        ax.set_title(f"Half the steps are smaller than {med:.2f} MHz, and a separate\n"
+        ax.set_title(f"(c) half the steps are smaller than {med:.2f} MHz, and a separate\n"
                      f"group runs out to {s.max():.1f} MHz. The record does not say what\n"
                      "produced them, though a re-lock of the reference cavity\n"
                      "would look like this.", fontsize=8.5)
