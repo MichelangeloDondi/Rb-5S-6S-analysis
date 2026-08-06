@@ -272,7 +272,7 @@ def test_pooled_reml_matches_a_numerical_restricted_likelihood():
     assert abs(s_ind2 - pooled["s_ind2"]) < 1e-5 * pooled["s_ind2"]
     assert abs(s_c2 + s_ind2 / n_line - pooled["V"]) < 1e-5 * pooled["V"]
     # the interior solution puts every degree of freedom of V in the
-    # condition-mean mean square, which is the four means constraining a line
+    # the mean square of the condition means, four means constraining a line
     assert not pooled["reml_at_bound"]
     assert abs(pooled["dof"] - (n_cond - 2)) < 1e-12
 

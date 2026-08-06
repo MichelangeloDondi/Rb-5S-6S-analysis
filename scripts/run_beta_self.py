@@ -478,7 +478,7 @@ def pooled_width_slope(N, W, E=None, n_frac_syst=N_SCALE_FRAC_SYST):
 
     # The within-block-only slope error, the pooled counterpart of the per-line
     # `formal_err`. It is reported for the same reason it is per line: to show
-    # how far the honest error sits above the one the repeat scatter alone
+    # how far the full error sits above the one the repeat scatter alone
     # would give.
     formal_err, rms_within = float("nan"), float("nan")
     if E is not None:
