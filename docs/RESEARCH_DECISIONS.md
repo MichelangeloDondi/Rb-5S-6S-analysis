@@ -192,7 +192,7 @@ untouched:
 
 Both bounds are recorded. (The specific pair quoted in that comment, 2.04 →
 1.92 MHz, predates the switch to a profile-likelihood construction; the current
-archival bound is **0.633 MHz** at 225 mW, `results/stark_sweep.csv`. The
+archival bound is **0.63 MHz** at 225 mW, `results/stark_sweep.csv`. The
 comment's numbers need refreshing, the decision does not.)
 
 A pre-registered prediction was voided rather than scored when its corroborating

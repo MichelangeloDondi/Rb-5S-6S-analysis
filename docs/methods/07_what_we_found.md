@@ -158,7 +158,7 @@ in the CSV as superseded diagnostics). The quoted limit is therefore a
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=5.5$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
-elsewhere). It gives a 95% profile-likelihood bound of 0.636 MHz from the
+elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
 widths alone. The joint three-session full-profile fit
 (`run_stark_joint`, RESULTS C3f), over 100 campaign, 46 rehearsal and 26 pilot
 traces, sharpens the same channel to
@@ -174,7 +174,7 @@ therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}=5.5$, block-to-block drift),
-so it does not cleanly resolve or exclude $\kappa$. The $0.636$ MHz limit uses the
+so it does not cleanly resolve or exclude $\kappa$. The $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
 coefficient's scale. There is no second channel behind it. The centre channel
 was worked and yields nothing: the fitted pull reverses sign between drift

@@ -75,7 +75,7 @@ absolute scale above rests.
 would be capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
 ($I\propto P/w_0^2$; a telescope unclips the EOM aperture and two working
-waists, 60 µm and 16 µm, span a $\times16$ intensity range at fixed power).
+waists, 60 µm and 16 µm, span a $\times14$ intensity range at fixed power).
 Headline shots would be: the AC-Stark shift coefficient with the intensity axis
 anchored by the *differential transit width* (independent of any beam-profile measurement); the
 ramp-law **moment hierarchy** ([§2.6](03_the_ac_stark_ramp.md)) including the predicted **skewness sign
