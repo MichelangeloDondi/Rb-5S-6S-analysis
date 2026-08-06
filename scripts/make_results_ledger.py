@@ -892,6 +892,42 @@ def main() -> int:
         # different data cannot leave a stale number behind.
         dev = np.abs(rate - mean) / err
         i = int(np.argmax(dev))
+        # RT6 of docs/notes/frequency_calibration_red_team.md: a single
+        # sqrt(chi2_red) factor is the wrong shape for this dispersion, and
+        # the attribution the prose used to assert was untested. Both are
+        # measured here, from the same committed block table, so neither can
+        # go stale behind the sentence that quotes it.
+        from scipy import stats  # local: only this bullet needs it
+        wts = 1.0 / err ** 2
+        sess = np.array([r["session"] for r in rb])
+
+        def _disp(mask):
+            """chi2_red of one subset about its own inverse-variance mean."""
+            mu = float(np.sum(wts[mask] * rate[mask]) / np.sum(wts[mask]))
+            return float(np.sum(wts[mask] * (rate[mask] - mu) ** 2)
+                         / max(int(mask.sum()) - 1, 1))
+
+        def _absorbed(labels):
+            """chi2_red left after each group carries its own rate offset,
+            with the F test of that nesting against one common rate."""
+            groups = sorted(set(labels))
+            resid = sum(_disp(labels == g) * (int((labels == g).sum()) - 1)
+                        for g in groups)
+            dof = len(rb) - len(groups)
+            common = float(np.sum(wts * (rate - mean) ** 2))
+            f = ((common - resid) / (len(groups) - 1)) / (resid / dof)
+            return (resid / dof, f, float(stats.f.sf(f, len(groups) - 1, dof)),
+                    len(groups) - 1, dof)
+
+        d_p, d_t = _disp(sess == "P"), _disp(sess == "T")
+        n_p, n_t = int((sess == "P").sum()), int((sess == "T").sum())
+        p_split = float(2 * min(stats.f.sf(d_p / d_t, n_p - 1, n_t - 1),
+                                stats.f.cdf(d_p / d_t, n_p - 1, n_t - 1)))
+        peak_red, peak_f, peak_p, peak_k, peak_dof = _absorbed(
+            np.array([r["peak"] for r in rb]))
+        sess_red = _absorbed(sess)[0]
+        tot_pct = 100 * float(c["rate_err_total"]) / mean
+        tot_ratio = float(c["rate_err_total"]) / float(c["rate_laser_err"])
         w = 1.0 / np.delete(err, i) ** 2
         drop_mean = float(np.sum(w * np.delete(rate, i)) / np.sum(w))
         drop_chi2 = float(np.sum(w * (np.delete(rate, i) - drop_mean) ** 2)
@@ -903,11 +939,22 @@ def main() -> int:
         W(f"- **Frequency axis:** {mean:.5f}({float(c['rate_laser_err'])*1e5:.0f}) "
           f"MHz/ms laser axis. The 20 ruler blocks disagree by more than their own "
           f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1f}$), and the quoted error "
-          f"is PDG-inflated by $\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1f}\\times$ to "
-          f"cover it. The scatter is block level: before/after brackets drift within a "
-          f"session rather than the peaks moving in step, so it widens the common axis "
-          f"error without biasing a cross-peak comparison such as $\\beta_{{85}}$ against "
-          f"$\\beta_{{87}}$. Each science block uses its own condition's rate, and the "
+          f"carries one PDG scale factor of "
+          f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1f}\\times$ for it. A single "
+          f"scale factor is the wrong shape for this scatter, and the blocks reject it: "
+          f"the {n_p} power blocks over-disperse at "
+          f"$\\chi^2_\\text{{red}}={d_p:.1f}$ against {d_t:.1f} on the {n_t} temperature "
+          f"blocks, {d_p / d_t:.1f}× more, at F p = {p_split:.4f}. The error that covers "
+          f"the axis is `rate_err_total` at {tot_pct:.3f}% of the rate, {tot_ratio:.1f}× "
+          f"the campaign statistical error alone, and that is what a consumer of the "
+          f"rate carries. The scatter is block level: before/after brackets drift within "
+          f"a session, and the measured attribution is per peak rather than common-mode. "
+          f"Per-peak offsets absorb half of it ($\\chi^2_\\text{{red}}$ {chi2:.1f} to "
+          f"{peak_red:.1f}, F({peak_k},{peak_dof}) = {peak_f:.1f}, p = {peak_p:.4f}) "
+          f"while per-session offsets absorb none ({chi2:.1f} to {sess_red:.1f}), so the "
+          f"peaks move apart rather than in step. What protects a cross-peak comparison "
+          f"such as $\\beta_{{85}}$ against $\\beta_{{87}}$ is each science block using "
+          f"its own condition's rate, not the scatter being common-mode. The "
           f"sweep is linear across the window to $<0.3$%. The single largest outlier is "
           f"{out_label} at {out_dev:+.1f}% from the campaign mean. Dropping it moves the "
           f"campaign rate by {drop_shift:+.2f}% ({abs(drop_sigma):.1f}$\\sigma$) and "

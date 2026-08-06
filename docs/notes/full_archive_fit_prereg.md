@@ -1,4 +1,4 @@
-# The cross-campaign full-archive joint fit (M28): specification of record
+# The cross-campaign full-archive joint fit: specification of record
 
 **Status: pre-registered 2026-08-03, before the code was written and before any
 number came out of it.** Nothing below is chosen after seeing a fit. The

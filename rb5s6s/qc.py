@@ -378,6 +378,16 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
         # sweep's retrace re-crossing the SAME line near the window edge —
         # i.e. real signal, handled by masking at fit time (M3), not by
         # discarding the trace. Flag surfaces it for the mask bookkeeping.
+        #
+        # RF-off only, and here is the measured reason (2026-08-06, RT9 of
+        # docs/notes/frequency_calibration_red_team.md): a comb stands three
+        # structures above half maximum by construction, so run on rulers this
+        # threshold fires on 104 of 104 fitted combs (44/44 power, 60/60
+        # temperature, n_major 3 on 88 and 2 on 16) and separates nothing. The
+        # exclusion costs no fold sensitivity, since a comb-scaled threshold
+        # (n_major > 3.5) is what sees an injected fold, catching 39 of 48 and
+        # firing on none of the 104.
+
         flags.append(
             f"second structure in RF-off trace (n={int(m['n_major'])}; "
             "likely sweep-retrace crossing — mask at fit time)")

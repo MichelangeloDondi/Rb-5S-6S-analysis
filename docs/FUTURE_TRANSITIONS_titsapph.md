@@ -1,11 +1,11 @@
 # Exploiting the tunable Ti:Sapph — future transitions and the papers they enable
 
-**Status: physics options / food-for-thought (2026-07-13).** Not a plan of record. The
+**Status: a survey of physics options, not a plan of record (2026-07-13).** The
 premise (recorded 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
 measurement session is not locked to 993 nm — it can reach *other* Rb two-photon
 transitions, "as long as we can reach the frequency and the optics is fine at the
 next frequency." This note maps what that buys us, grounded in the 2024–2026
-landscape (local literature-intake note, untracked).
+landscape collected in [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-landscape).
 
 ## 1. The one-sentence picture
 
@@ -1074,5 +1074,6 @@ slope table behind these numbers.
   teeth instead of six: one more spacing constraint per trace, and outer-slot checks
   that no longer run at the ramp edge.
 
-*References for §4 are collected in `docs/LITERATURE.md` §8 (2024–2026 landscape).
-Source: the local literature-intake landscape note (untracked).*
+*References for §4 are collected in
+[`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-landscape), which is where
+the 2024–2026 landscape is held and is the citable source for every claim above.*

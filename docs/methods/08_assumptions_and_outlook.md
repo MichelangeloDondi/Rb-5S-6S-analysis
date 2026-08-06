@@ -82,8 +82,11 @@ ramp-law **moment hierarchy** ([§2.6](03_the_ac_stark_ramp.md)) including the p
 flip** between the two waists (conditional on the collection geometry, which is
 unmeasured — PLAN §6 #4); $\beta_\text{self}$ measured rather than bounded —
 which the collision-rate literature says would require the **150–170 °C**
-extension (expected $\beta\sim1$ kHz per $10^{12}$cm$^{-3}$, see
-`docs/LITERATURE.md`); the Lehmann cusp in the cold-dim small-waist corner;
+extension (expected $\beta_\text{self}(6S) = 3.4 \pm 0.3$ kHz per
+$10^{12}$cm$^{-3}$, the anchor `docs/LITERATURE.md` scales from Zameroski's
+measured 7S rate through the computed C₆ difference ratio, and the value
+`rb5s6s.vanderwaals.beta_self_anchored` returns); the Lehmann cusp in the
+cold-dim small-waist corner;
 the beam-profile $w_0$ itself. Wavemeter calibration is folded in as a
 byproduct (PLAN §11): the atoms ($\sim$ kHz) calibrate the wavemeter
 ($\sim$ 10 MHz), not the reverse.

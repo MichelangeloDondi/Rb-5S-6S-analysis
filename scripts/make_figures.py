@@ -2205,7 +2205,8 @@ def fig_fit_gallery():
         xd = x - cc
         ax_main.plot(xd, v, ".", ms=2.2, color="0.4", alpha=0.5, label="data")
         ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=1.7,
-                     label="joint fit of all campaign traces")
+                     label="joint fit of all campaign traces\n(amplitude, centre "
+                           "and background refit here)")
         ax_main.set_ylabel("signal (V)")
         ax_main.set_title(f"({letter[peak]})  {PEAK_LABEL[peak]}, 225 mW at 130 °C, the "
                            f"highest-signal repeat\nof the power sweep. Width at half "
@@ -2239,9 +2240,11 @@ def fig_fit_gallery():
         "The scatter near line centre grows with the peak height in the way shot noise "
         "does, so it is not an asymmetry of the line. A separate\n"
         "symmetric excess at line centre, largest on 993.4192 nm where it reaches 1.4 "
-        "percent of the peak height, sits below the noise level\n"
-        "and is not reproduced by the model. The inflated uncertainties absorb it, so it "
-        "does not enter any quoted error, and what it is remains open.\n"
+        "percent of the peak height, sits below the inflated\n"
+        "noise while standing at 3.7 standard deviations against the uninflated per-point "
+        "errors, and is not reproduced by the model. The\n"
+        "inflated uncertainties absorb it, so it does not enter any quoted error, and what "
+        "it is remains open.\n"
         "Where the reduced chi-squared is below one, the per-point noise used in the fit "
         "is conservative, so the uncertainties from it are upper bounds.",
         fontsize=8.6, y=0.995)
@@ -2302,12 +2305,13 @@ def fig_single_peak_fits():
         xd = x - cc
         ax_main.plot(xd, v, ".", ms=3.0, color="0.4", alpha=0.5, label="data")
         ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=2.0,
-                     label="joint fit of all campaign traces")
+                     label="joint fit of all campaign traces\n(amplitude, centre "
+                           "and background\nrefit here)")
         ax_main.set_ylabel("signal (V)")
         ax_main.set_title(f"{PEAK_LABEL[peak]}: the data against the joint fit\n"
                           "225 mW at 130 °C, the highest-signal repeat of the power sweep",
                           fontsize=10)
-        ax_main.legend(fontsize=8, loc="upper right", frameon=True, framealpha=0.9)
+        ax_main.legend(fontsize=8, loc="upper left", frameon=True, framealpha=0.9)
         ax_main.tick_params(labelbottom=False)
 
         # ---- residual panel, in the house convention (fig0/fig21/fig22):
@@ -2872,6 +2876,10 @@ def fig_magic_wavelengths():
         m = re.search(r"16-84% band ([\d.]+)\.\.([\d.]+) nm", r["unit"])
         lo, hi = (float(m.group(1)), float(m.group(2))) if m else (lam, lam)
         crossings.append((lam, lo, hi))
+    # The three bands differ by more than an order of magnitude in width, so
+    # one status word cannot describe all three uncertainties. Their sizes are
+    # read off the committed rows here and stated on the figure instead.
+    band_hw = [0.5 * (hi - lo) for _, lo, hi in crossings] or [0.0]
 
     lo_nm, hi_nm = 1050.0, 1420.0
     CLIP = 2500.0                                  # a.u.; masks the 6S->nP poles
@@ -2984,7 +2992,12 @@ def fig_magic_wavelengths():
         "The bracket under each crossing is the range\n"
         "over which it moves when the contributing\n"
         "matrix elements are varied over their\n"
-        "quoted uncertainties.",
+        f"quoted uncertainties: plus and minus {max(band_hw):.2f} nm\n"
+        f"at the widest and {min(band_hw):.3f} nm at the tightest,\n"
+        "so the three are not one uncertainty. What is\n"
+        f"{STATUS_WORD.get(status, status.lower())} is the calculation\n"
+        "behind them, unpublished to the depth searched,\n"
+        "and that is not what the brackets measure.",
         fontsize=7.4, color="0.3", ha="left", va="top")
     ax_top.set_ylabel("difference in polarizability, 6S minus 5S\n(atomic units)")
     ax_top.set_ylim(-CLIP * 1.05, CLIP * 1.05)
@@ -3018,7 +3031,7 @@ def fig_magic_wavelengths():
         "vanishes: a trap held\nthere shifts both equally, so it does not move the "
         r"transition. Here that is Rb 5S$_{1/2}$-6S$_{1/2}$, the 993 nm line."
         "\nScalar-only, exact for $J=1/2$ under linear polarization. The uncertainty on "
-        f"each crossing is {STATUS_WORD.get(status, status.lower())}.",
+        "each crossing is its own printed bracket.",
         fontsize=9.0, y=0.995)
 
     if unlisted:

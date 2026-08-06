@@ -49,9 +49,22 @@ repository quotes inherits it.
 
 Three properties of the current pipeline let this through. Tooth indexing has
 no amplitude check. Rulers are excluded from the second-structure quality flag,
-which is the one flag that would see a retrace crossing. The fitted tooth
-heights were never written to disk, so no reader could audit the indexing after
-the fact.
+which was written here as the one flag that would see a retrace crossing and is
+not (corrected 2026-08-06, below). The fitted tooth heights were never written
+to disk, so no reader could audit the indexing after the fact.
+
+**The second-structure flag, corrected 2026-08-06.** A comb stands three
+structures above half maximum by construction, so at the flag's single-peak
+threshold of 1.5 it fires on 104 of 104 fitted rulers, 44 of 44 power and 60 of
+60 temperature, and identifies nothing. Excluding rulers from it is the right
+call, not the opening this section first called it, and no hard flag reads a
+metric that would have seen the crossing. The metric underneath the flag does
+separate a fold once it is scaled to a comb: `n_major` above 3.5 fires on zero
+of those same 104 rulers, whose n_major is 3 on 88 and 2 on 16, and catches 39
+of 48 injected folds while staying blind at apex 0.8, which is a second
+instrument agreeing with amendment A6. The reason now sits beside the exclusion
+in `rb5s6s/qc.py`. Measured in RT9 of
+[the frequency-calibration red team](frequency_calibration_red_team.md).
 
 What this specification is not. It is not a claim that the campaign rate is
 wrong by any stated amount. It fixes the tests and the remedies. What they
@@ -255,7 +268,10 @@ amplitude law does not close on the power-session ruler population, and
 licensing calibration traces as lineshape data inside the release that found
 their indexing broken would invert the burden of proof. The seven fitted
 heights are persisted for the first time by this work, which is the dataset a
-future amplitude model would be tested against, and the panel says so.
+future amplitude model would be tested against, and the panel says so. The same
+refusal is what keeps all 105 canonical ruler traces out of the census in
+[the full-archive fit specification](full_archive_fit_prereg.md), so the two
+notes stand or fall together on it.
 
 ## 9. Predictions, and the conditions that stop the work
 
@@ -1763,13 +1779,42 @@ done. A page that draws a model across samples the model was never fitted to
 makes a sound fit look like a failing one, which is exactly how this was
 found.
 
-## G3. The open question this leaves
+## G3. The question this left, answered 2026-08-06
 
 Whether the window is in the right place is a separate question from whether
-the trimmer works, and it is not settled here. The cap that excludes the
+the trimmer works, and it was not settled here. The cap that excludes the
 retrace is a fixed number of megahertz, and the retrace crossing moves with
-the sweep rate, which the six-tooth correction has just re-measured. A cap
+the sweep rate, which the six-tooth correction had just re-measured. A cap
 that is comfortable at one rate is not automatically comfortable at another.
-The frequency-calibration red team owns this, and the check is cheap: for
+The frequency-calibration red team owned this, and the check was cheap: for
 every canonical trace, the distance from the window edge to the nearest
 recorded retrace crossing, in units of the fitted width.
+
+It has now been run, in RT10 of
+[the frequency-calibration red team](frequency_calibration_red_team.md), and
+it names a different constant than the one this section worried about.
+
+Neither clip is active on the archive. The 25 MHz cap binds on 0 of 159
+canonical traces and the 9 MHz floor on 0 of 159, so every canonical window is
+the plain 3.5 fitted widths. The measured crossing separations run 39.2 to
+43.0 MHz, which is 7.64 to 8.54 fitted widths against a window edge at 3.50,
+a minimum clearance of 4.14 widths.
+
+The cap also cannot become the unsafe element. Under a re-measured rate on
+fixed recorded traces, the cap is active only when 3.5 window-times of sweep
+exceed 25 MHz, and the window is unsafe only when the crossing time falls
+inside 25 MHz. Since 3.5 window-times is 3.50 widths against the crossing's
+7.64, a factor 2.18 of margin, the two conditions are disjoint at every rate
+calibration, and the clip can only narrow the window and so only improve the
+clearance. The floor is the direction that widens, and there the two
+conditions do overlap. Reaching it takes a rate of 0.0184 MHz/ms against the
+measured 0.085 MHz/ms on the transition axis, a calibration wrong by 78 per
+cent, which is why this is recorded and not acted on. The rate-sensitive
+element in the widening direction is the 9 MHz floor, not the 25 MHz cap.
+
+One residual sits outside what a clearance metric can see. On the
+mirror-bearing traces the mirror's own Lorentzian wing leaks into the fitted
+window at +0.0048 +/- 0.0023 of line height, against -0.0010 +/- 0.0063 on the
+traces with no mirror, which is the size a Lorentzian at 4.2 widths standoff
+predicts. Clearance in widths says the crossing is outside the window. It does
+not say the crossing contributes nothing inside it.

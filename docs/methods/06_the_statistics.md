@@ -227,11 +227,14 @@ contamination, and the window gets there first. The trimmer walks outward only
 within the fitted samples, so a trim census reading zero on line fits is a fact
 about the order of the guards and not about the data. Line traces with a rising
 tail exist: three of the five repeats of the 993.4207 nm line at 130 °C and
-25 mW carry an unmistakable one. Whether the window sits in the right place is
-open. The cap that excludes the retrace is a fixed number of megahertz while
-the crossing moves with the sweep rate the ruler work has just re-measured, and
-the frequency-calibration red team owns that check. *Code:*
-`linefit.adaptive_halfwidth()`.
+25 mW carry an unmistakable one. Whether the window sits in the right place was
+open until the red team measured it: neither clip is active on the archive (the
+25 MHz cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159),
+the recorded crossings sit 7.64 to 8.54 fitted widths out against a window edge
+at 3.50, and the constant that is sensitive to the sweep rate in the widening
+direction is the 9 MHz floor rather than the cap
+([DATA](../DATA.md) §7, [the ruler specification](../notes/ruler_validity_and_trim_prereg.md)
+§G3). *Code:* `linefit.adaptive_halfwidth()`.
 
 ### 4.9 Is each component warranted? The nested model ladder
 
@@ -283,7 +286,11 @@ $\sigma_\text{laser}\approx0.51$, transit $\approx1.43$ MHz, i.e. the transit
 width the $w_0\approx43$ µm geometry predicts — at $\chi^2 = 4548$, a
 $\Delta\chi^2\approx476$ preference. The local analysis is therefore anchored
 by a **two-start fit** at the deeper branch, and both branches plus their gap
-are committed (`branch`, `branch_gap` rows). Taken at face value the shape data
+are committed (`branch`, `branch_gap` rows). Set beside the adopted prior that
+is a tension the archive owns rather than resolves: the shape prefers
+$w_0\approx43$ µm where the beamline-lineage measurement puts it at the adopted
+**64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
+Taken at face value the shape data
 *prefer* the physical decomposition (real transit cusp, narrow laser); but
 $\Delta\chi^2 = 476$ over $\sim$4400 points is a $\sim$10% $\chi^2$ change
 ($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel

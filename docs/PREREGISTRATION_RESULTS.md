@@ -2698,13 +2698,33 @@ separation was never fold contamination. On signal to noise: 4207's
 bracket errors are already the largest of the set and it is still 3.7
 sigma apart, so the excursion is real, and worst signal-to-noise means the
 line is least able to diagnose itself, not that the excursion is noise. No
-pipeline change ships in this release: combine_block's square-root
-chi-squared inflation already prices the inconsistency into 4207's rate
-error and its power-session widths. Forward, the calibration red team
-tests per-block interpolated rates against the bracket mean (whether
-4207's width scatter drops), and a fixed-lock session kills the class
-outright, which the plan's Tier 0 may cite this excursion as motivation
-for.
+pipeline change ships in this release, and a fixed-lock session kills the
+class outright, which the plan's Tier 0 may cite this excursion as
+motivation for.
+
+**Amended 2026-08-06 (RT11 of the frequency-calibration red team).** The
+two supporting statements this paragraph first carried are both wrong, and
+the conclusion is unchanged. The first was that combine_block's
+square-root chi-squared inflation already prices the inconsistency into
+4207's rate error and its power-session widths. It cannot: the inflation
+enters as one block-coherent multiplier on a line's five widths while the
+excursion is a gradient across them, and `_apply_rate_models` folds the
+rate spread block-coherently for the same reason. The second was the
+forward test, per-block interpolated rates against the bracket mean, read
+out as whether 4207's width scatter drops. That observable is null by
+construction rather than open. Both interpolations reconstructible from
+committed data are linear in time, the power ladder ran 225 to 25 mW
+monotonically in time, and a monotone multiplier over a monotone schedule
+aliases into a slope against power and never into scatter. The measured
+change in 4207's width scatter is -0.1 to -1.0 per cent, which is the
+null it has to be. The observable that does move is the 225 minus 25 mW
+width difference. Its consequence comes with its own cancellation: the
+four per-line aliases carry incoherent signs, the shared-kappa fit floats
+a per-line core width that absorbs the common part, and a read-only rerun
+moves the 95 per cent upper bound on S0 at 225 mW from 0.632 to 0.627 MHz,
+0.8 per cent, against a documented subset spread of 26 to 35 per cent.
+Answering this took reading the construction rather than taking a
+measurement, which is why it was forwarded as an open test at all.
 
 **Gates, reported whether they fired.** Stop conditions: block reduced
 chi-squared rising (did not fire, 8.078 to 7.977), scatter rising (did not

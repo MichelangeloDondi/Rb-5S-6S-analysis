@@ -22,8 +22,10 @@ two-photon sum frequency, twice the laser frequency.
   β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the four hyperfine
   components, from a 52.5-fold density lever at four temperatures. This is
   the model-independent, geometry-robust construction: it does not lean
-  on the beam waist, and the 20% density-scale systematic is folded in
-  on the conservative side. The fitted collisional width grows only 1.47
+  on the beam waist, and the 20% density-scale systematic is applied in
+  the direction that raises the bound, since the cold-spot direction of
+  the vapour-pressure spread makes the fitted β an underestimate. The
+  fitted collisional width grows only 1.47
   times across that 52.5-fold span, so it is read as a floor, not as
   resolved collisions, and that observation is what licenses the bound
   framing.

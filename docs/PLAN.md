@@ -37,8 +37,16 @@ data), **Empty** (what it looks like if the block returns nothing), and
 the block rather than left to the author's memory.
 
 **What becomes reusable regardless of these sessions.** The analysis pipeline
-ingests session data unchanged, so a session buys shots and not software. The
-adaptation seams for another line or species are named in
+ingests session data unchanged as long as the export keeps the 2025 shape, a
+two-column InfiniiVision CSV of exactly 2000 rows, which `rb5s6s/ingest.py`
+requires and rejects anything else against. On that path a session buys shots
+and not software. Two of the blocks below deliberately leave it: the native
+`.h5` export of §7g, which carries the per-scan timestamp and which no reader
+in this package reads today, and any segmented or longer acquisition. Each of
+those costs a loader, which is priced with the block that asks for it and is
+not a hidden cost of the session.
+
+The adaptation seams for another line or species are named in
 [`ADAPTING.md`](ADAPTING.md), the archival data products and their provenance
 tags in [`RESULTS.md`](RESULTS.md) and [`results/README.md`](../results/README.md),
 and the register below marks which blocks would produce a community-facing
@@ -149,6 +157,21 @@ sentinel condition (§10.6) monitors residual drift directly. Ayachitula (2024)
 held a lock on this same transition to < 0.5 kHz over 50 min, so a stable lock
 is demonstrated rather than hoped for. Worst case, the D1 beam-profile and ρ
 measurements retroactively sharpen the 2025 archive and stand alone.
+
+The strongest argument against the observable this plan ranks first sits in the
+same apparatus record, and belongs here rather than only there. With the
+re-lock steps and the per-interval ramps removed, the 2025-06-11 reconstruction
+leaves a **settled floor of 0.62 MHz** of unmodelled laser motion
+(`results/wavemeter_reconstruction.csv`, [`APPARATUS.md`](APPARATUS.md) §6).
+That floor sits above both of this archive's light-shift bounds carried to the
+laser axis, 0.13 MHz from the joint fit and 0.32 MHz from the width-only
+construction, so a single block's centre cannot beat what the averaged shape
+bounds already deliver. Averaging reaches it only in numbers: about 24 blocks
+to bring 0.62 MHz below the joint-fit pull and about 4 to bring it below the
+width-only one, and only if the residual is independent from block to block.
+The floor is what a fixed lock has to beat, and it is the number the go/no-go
+of Tier 0 should be read against, not the 0.19 MHz/min straight line the same
+record was once read as.
 
 ![the drift problem, what was extracted, and what a fixed lock buys](../figures/fig15_drift_story.png)
 
@@ -867,6 +890,9 @@ time-orders the interleaved blocks.
 **Needs.** The scope of record. On the Agilent, save the native `.h5`, whose
 metadata carries the time, or take repeats as segmented acquisitions with
 per-segment trigger times (`APPARATUS.md` §4.1 identifies the export signature).
+Either path also needs a loader, since `rb5s6s/ingest.py` reads only the
+two-column 2000-row CSV export and has no `.h5` reader. That is the one place
+this programme knowingly buys software as well as shots.
 **Shots.** Every science trace. **Go/no-go.** Set the scope clock at session
 start and note block starts independently, so that the external log can
 reconstruct the order if the metadata path fails. **Empty.** If neither path
@@ -954,7 +980,9 @@ without which none of them clears the wander.
    the cold spot is plausibly a larger systematic than w₀. This is the single
    highest-value hardware addition of the session.
    **Needs.** A weak D-line probe source and a photodiode, neither on the bench
-   today. **Shots.** Transmission against 1/T across the full grid, including
+   today. The one non-PMT detector the apparatus record does list, the New Focus
+   2153 infrared receiver (`APPARATUS.md` §3), is item 5's cascade detector and
+   does not serve this block. **Shots.** Transmission against 1/T across the full grid, including
    the 150–170 °C points of 7c. **Go/no-go.** The probe must be weak enough not
    to perturb the ground-state population that the two-photon rate reads.
    **Empty.** The cold spot may not flatten enough at the high end for the offset
@@ -1014,9 +1042,14 @@ days runs.
 
 ## 10. Spending rules from the 2025 post-mortem
 
-### 10.1 The measured 2025 failure modes
+### 10.1 The 2025 failure modes
 
-| # | what bit | measured size | consequence | cure |
+Seven of the ten sizes below are measured on the archive. The three that are
+not say so in the cell, with the assumption they rest on, because a reader who
+takes row 8 for a measurement of these cell windows would be reading a worked
+example as a bench fact.
+
+| # | what bit | size, measured unless the cell says otherwise | consequence | cure |
 |---|---|---|---|---|
 | 1 | between-block width scatter (drifting lock) | σ_B ≈ 0.12 MHz vs within-block SEM ≈ 0.05 | widths drift-limited, σ_laser a bound | fixed lock, brackets and veto (§7a) |
 | 2 | only 3 densities, 1 residual DOF | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (the 2026-08-02 headline), and five or more T blocks tighten further (§7b) |
@@ -1024,9 +1057,9 @@ days runs.
 | 4 | archival lever short at ×16.2 (three T points) | joint β collapses 0.036 → 0.014 once the ×52.5 (130 °C) anchor is folded in | the fitted floor responding correctly to a near-flat gamma_coll(T), folded into the headline 2026-08-02 | same-session 150–170 °C (§7c), to reach densities where a ~kHz effect could clear the block-noise floor |
 | 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable, and the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes plus hardware timestamps (§7f, §7g) |
 | 6 | ruler light differed from science light (HWP trick) | monitor reliability ≈ 0 | no drift compensator | matched-PM ruler (§7d) |
-| 7 | w₀ never measured | tens-of-% prior | every absolute number conditional | beam profile first (§3 item 1) |
-| 8 | ρ(T) never measured | ~8% S₀ drift from window filming | optics drift reads as physics | T_win before and after, per condition (§3 item 2), with the pedestal cross-check of §5 |
-| 9 | P sweep at a single T | trapping immunity untested across density | discriminators data-starved | mini-P excursion per dwell (§10.4) |
+| 7 | w₀ never measured | *not measured*, a tens-of-% prior, from the 64 µm beamline-lineage value | every absolute number conditional | beam profile first (§3 item 1) |
+| 8 | ρ(T) never measured | *not measured*, ~8% S₀ drift, computed in §3 item 2 for an assumed film taking per-pass transmission 0.99 to 0.90, not observed on these windows | optics drift reads as physics | T_win before and after, per condition (§3 item 2), with the pedestal cross-check of §5 |
+| 9 | P sweep at a single T | *not measured*, the trapping immunity is untested across density, so this row is a gap rather than a size | discriminators data-starved | mini-P excursion per dwell (§10.4) |
 | 10 | between-block amplitude wander | 30–50% | amplitude observables dead | polarization defined plus tomography (§4.4), 12–16 repeats (§7f) |
 
 Items 1 to 3 share one root cause: 2025 spent statistics against a

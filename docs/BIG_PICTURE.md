@@ -611,9 +611,11 @@ running alongside, is an independent drift diary for free.
 
 **An absorption channel for the rubidium density N(T).** It converts an
 adopted vapour density into a measured one, needs a weak D-line probe and a
-photodiode, and could come back empty if the cold spot will not flatten enough
-at the high end to be read ([`PLAN.md`](PLAN.md) §8 item 3). The collisional
-bound is denominated in a density the archive takes from a vapour-pressure
+photodiode of its own, neither of which the apparatus record lists, and could
+come back empty if the cold spot will not flatten enough at the high end to be
+read ([`PLAN.md`](PLAN.md) §8 item 3). The infrared receiver named below is on
+the bench and is not that detector. The collisional bound is denominated in a
+density the archive takes from a vapour-pressure
 curve rather than measures, and the cold-spot audit puts that scale at ×1.4 to
 ×7 leverage on the headline collisional number, which is plausibly a larger
 systematic than the beam waist. It also gates item 3 above, because the

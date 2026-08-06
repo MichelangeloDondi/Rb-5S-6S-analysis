@@ -120,3 +120,16 @@ Verdict: CONFIRMED at investigation, **CONFIRMED** after adjudication. Severity:
 - [note] RT10: Close G3 in docs/notes/ruler_validity_and_trim_prereg.md and the matching paragraph in docs/DATA.md section 7 with the measured answer rather than leaving the question open: the cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159. measured crossing separations are 39.2 to 43.0 MHz, that is 7.64 to 8.54 fitted widths against a window edge at 3.50 widths, minimum clearance 4.14 widths. and the cap cannot be simultaneously active and unsafe at any rate calibration, so the rate-sensitive element in the widening direction is the 9 MHz FLOOR, not the 25 MHz cap. Record the measured mirror-side wing leakage as the residual the clearance metric does not capture.
 - [note] RT11: Amend addendum 26's forward paragraph. Record that the forwarded observable is null by construction (a linear-in-time rate over a monotone power schedule aliases into a slope, not into scatter, and the measured change in 4207's width scatter is -0.1 to -1.0 per cent), that the observable which does move is the 225-minus-25 mW width difference, and that the square-root chi-squared inflation cannot price it because it is block-coherent while the excursion is a gradient. State the consequence with its cancellation: the four per-line aliases have incoherent signs and the shared-kappa bound moves 0.8 per cent, from 0.632 to 0.627 MHz. Keep the conclusion that no pipeline change ships, and keep the fixed-lock session as the thing that kills the class.
 - [should_fix] RT12: Answer E4 in the note with this result and its limits: seed estimate_t0's integer fold from the sideband amplitudes (carrier excluded, per F3) instead of by proximity to the window centre, so the fit lands on the undisplaced numbering by construction. keep the chi-squared comparison but demote it from the search that currently has to find the right fold to a refusal that quarantines the ambiguous combs, which is the 8 where the constructed fold costs 1.0 to 19.2 standard deviations. Record that the campaign rate moves -1.9 ppm and the block chi-squared 8.078 to 8.117, that the '0 of 104 displaced' outcome is a tautology of the selection and the independent evidence is the chi-squared cost, the ladder's 44-of-44 agreement and the depth-free variant's 102-of-104 agreement, and correct 'ten' to 'eight' so the two populations of amendment 6 F4 are not conflated.
+
+## Implementation postscript, 2026-08-06
+
+The collected actions above are implemented as of this date, with one
+reconciliation. RT6's action quotes F p = 0.0017, which reproduces only
+from a variance-ratio form whose statistic is 9.00, not the 9.5 ratio the
+same action quotes. The implementation uses the single coherent statistic,
+the per-session reduced chi-squared ratio of 9.45 with its own two-sided
+F test on 7 and 11 degrees of freedom, which prints p = 0.0014. The
+headline ratio matches this note, the p value differs in the third
+decimal, and the ledger generator computes both from the committed block
+tables rather than carrying either as text. RT12's construction remains
+the one unimplemented action, deliberately, priced as addendum 27 work.

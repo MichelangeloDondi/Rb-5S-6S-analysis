@@ -913,13 +913,24 @@ being written that way (amendment 7 §G2). The window and the trimmer are two
 guards against the same contamination, and the window gets there first, which
 is the order they should act in.
 
-Whether the window sits in the right place is a separate question and is not
-settled here. The cap that excludes the retrace is a fixed number of megahertz,
+Whether the window sits in the right place was a separate question, left open
+here because the cap that excludes the retrace is a fixed number of megahertz
 while the retrace crossing moves with the sweep rate, which the ruler
-re-adjudication has just re-measured. A cap that is comfortable at one rate
-would not automatically be comfortable at another. The check would be cheap,
-the distance from each window edge to the nearest recorded retrace crossing in
-units of the fitted width, and the frequency-calibration red team owns it.
+re-adjudication had just re-measured. It is now measured (RT10 of
+`docs/notes/frequency_calibration_red_team.md`, 2026-08-06). Neither clip is
+active on the archive: the 25 MHz cap binds on 0 of 159 canonical traces and
+the 9 MHz floor on 0 of 159, so every canonical window is the plain 3.5 fitted
+widths. The recorded crossing separations run 39.2 to 43.0 MHz, that is 7.64 to
+8.54 fitted widths against a window edge at 3.50, a minimum clearance of 4.14
+widths. The cap cannot be active and unsafe at the same rate calibration, since
+being capped needs a rate high enough to push 3.5 widths past 25 MHz while
+being unsafe needs one low enough to pull 7.64 widths inside it, so the element
+that is sensitive to the rate in the widening direction is the 9 MHz floor and
+not the 25 MHz cap. Reaching the floor takes a rate 78% below the measured one.
+What clearance in widths does not capture is the mirror's Lorentzian wing:
+it leaks into the fitted window at +0.0048 ± 0.0023 of line height on
+mirror-bearing traces, against -0.0010 ± 0.0063 on the rest, matching a
+Lorentzian at 4.2 widths standoff.
 
 ## 8. The bound history
 
