@@ -210,7 +210,7 @@ def fig_width_vs_density():
         ax.errorbar(N, W, yerr=We, fmt="o", color=PEAK_COLOR[peak],
                     label=PEAK_LABEL[peak], ms=5, capsize=2, lw=1.3, zorder=3)
     ax.set_xscale("log")
-    ax.set_ylim(4.48, 5.95)
+    ax.set_ylim(4.36, 5.95)
     ax.set_xticks([density_units(T) for T in (70.0, 90.0, 110.0, 130.0)])
     ax.set_xticklabels(["0.56", "2.4", "9.1", "29"])
     ax.minorticks_off()
@@ -376,11 +376,8 @@ def fig_transit_mc():
                 "\nwould already exceed\nthe observed width",
                 (w0_cross - 7.0, 4.65), fontsize=8, color="#009E73",
                 ha="center", va="top")
-    ax.annotate("the laser and collisional widths\nare not in this curve, so the true"
-                "\nwaist is larger still", (w0_cross + 6.0, 4.2), fontsize=8,
-                color="0.3")
-    ax.set_xlabel("beam waist (µm). This has not been measured. The knife-edge scan "
-                  "is pending.")
+    ax.set_xlabel("beam waist (µm). This has not been measured.\n"
+                  "The knife-edge scan is pending.")
     ax.set_ylabel("predicted width at half maximum\n"
                   "(MHz at the two-photon transition frequency)")
     ax.set_title("Transit-time broadening grows as the beam narrows, because a faster\n"
@@ -537,7 +534,7 @@ def fig_pooled_width():
     a1.set_title("The pooled width grows with Rb density while the individual\n"
                  "peaks scatter non-monotonically within their own uncertainties."
                  + sep, fontsize=8)
-    a1.legend(fontsize=7.5, loc="upper left")
+    a1.legend(fontsize=7.5, loc="upper left", frameon=True, framealpha=1.0)
     # panel B: σ_laser(T) is MODEL-DEPENDENT -> the "anomaly" is degeneracy, not drift
     gf = _rows("global_fit")
     sl = sorted((float(r["key"][:-1]), float(r["value"]), float(r["err"]))
@@ -762,11 +759,12 @@ def fig_identifiability_profile():
         ax.set_xlabel("collisional width (MHz at the two-photon transition frequency)")
         if k == 0:
             ax.set_ylabel("laser line width at half maximum\n"
-                          "(MHz at the two-photon transition frequency)")
+                          "(MHz at the two-photon\n"
+                          "transition frequency)", fontsize=8)
         cb = fig.colorbar(pc, ax=ax, shrink=0.9)
         cb.set_label("base ten logarithm of the rise in chi squared\n"
                      "above its lowest value on this map", fontsize=7)
-        ax.legend(fontsize=7, loc="upper right")
+        ax.legend(fontsize=7, loc="upper right", frameon=True, framealpha=1.0)
     fig.suptitle("The collisional and laser widths are not separately identifiable at this "
                  "condition. The likelihood has a long valley\nalong which the two widths "
                  "trade, so the split is set by the fit model rather than by the data. "
@@ -978,7 +976,7 @@ def fig_ruler():
                     va="bottom", fontsize=6.4, color="0.3")
     for n in TEETH:
         tc = fit["t0_ms"] + n * fit["delta_ms"]
-        ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5)
+        ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5, ymax=0.86)
         ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
                     color="#D55E00")
     # The residual strip under the trace: each sample minus the drawn comb,
@@ -1158,8 +1156,8 @@ def fig_degeneracy_vs_observable():
     for pk, c in PEAK_COLOR.items():
         if pk in peaks:
             ax1.plot([], [], "o-", color=c, ms=3.5, lw=0.8, label=f"993.{pk} nm")
-    ax1.set_xlabel("collisional width, the Lorentzian component (MHz)")
-    ax1.set_ylabel("laser width, the Gaussian component (MHz)")
+    ax1.set_xlabel("collisional width, the Lorentzian component\n(MHz at the two-photon transition frequency)")
+    ax1.set_ylabel("laser width, the Gaussian component\n(MHz at the two-photon transition frequency)")
     ax1.axhline(0.0, color="0.3", lw=0.8, ls=":")
     ax1.text(gg[-1], 0.02, "unphysical below", fontsize=6, color="0.3",
              ha="right", va="bottom")
@@ -1335,7 +1333,7 @@ def fig_laser_history():
         ax.axvline(med, color="0.15", lw=1.4, ls="--")
         ax.set_yscale("log")
         ax.set_xlabel("size of the change in line centre between consecutive\n"
-                      "traces in the same segment (MHz)")
+                      "traces in the same segment (MHz on the laser frequency)")
         ax.set_ylabel("number of steps (logarithmic scale)")
         ax.set_title(f"Half the steps are smaller than {med:.2f} MHz, and a separate\n"
                      f"group runs out to {s.max():.1f} MHz. The record does not say what\n"
@@ -1431,7 +1429,7 @@ def fig_ramp_construction():
     ax[3].plot(g, sym / sym.max(), color="0.5", lw=1.4, label="$S_0=0$")
     ax[3].plot(g, ramped / ramped.max(), color="#D55E00", lw=1.9,
                label="$S_0=3$ MHz")
-    ax[3].set_xlabel("detuning (MHz)")
+    ax[3].set_xlabel("detuning\n(MHz at the two-photon\ntransition frequency)")
     ax[3].set_ylabel("normalised signal")
     # Three lines, like (b) and (c). On two, the first ran wider than the
     # panel and, being centred, took its last words off the right edge of the
@@ -1611,12 +1609,12 @@ def fig_level_scheme():
              "Each of the four components is crossed once per sweep direction, so the "
              "down-sweep repeats them mirrored about the ramp apex. Their relative\n"
              "strengths are set by the ground-state populations, abundance times "
-             f"$(2F+1)/G_\\mathrm{{iso}}$: ⁸⁵Rb F = 3 predicted at "
+             f"$(2F+1)/G_\\mathrm{{iso}}$: $^{{85}}$Rb F = 3 predicted at "
              f"{2 * F85[1] + 1}/{2 * F85[0] + 1} = {ratio_85:.2f} times F = 2 (the digitised "
              f"record integrates\nto {scan.ratio_85_up:.2f} on the up-sweep, "
              f"{scan.ratio_85_up_band[0]:.2f}–{scan.ratio_85_up_band[1]:.2f} across "
-             f"integration rules), and the ⁸⁵Rb pair at the abundance ratio "
-             f"{iso_pred:.2f} times the ⁸⁷Rb pair (measured {scan.iso_pair_up:.2f}).\n"
+             f"integration rules), and the $^{{85}}$Rb pair at the abundance ratio "
+             f"{iso_pred:.2f} times the $^{{87}}$Rb pair (measured {scan.iso_pair_up:.2f}).\n"
              "The display compresses the tallest spikes and the down-sweep, so peak "
              "heights are not read for ratios. Rules and caveats in APPARATUS sec. 6.",
              ha="center", va="top", fontsize=7.8, color="0.25")
@@ -2344,6 +2342,7 @@ def fig_single_peak_fits():
             "    (no separate uncertainty is quoted for it)",
             f"  Stark coefficient = {ctx['kappa']:.3f} MHz per W",
             f"    = a light shift of {fr['s0']:.3f} MHz at this power",
+            "    (the joint fit's own optimum, not a value fixed by hand)",
             f"  transit width, at half maximum = {fr['transit']:.3f} MHz",
             "    (held fixed at the value the assumed geometry",
             "    implies, because the beam waist has not been",
@@ -2352,6 +2351,13 @@ def fig_single_peak_fits():
             "From the fit shown at left:",
             f"  width at half maximum = {fr['fwhm']:.3f} MHz",
             f"  reduced chi-squared = {fr['chi2_red']:.2f} over {len(x)} points",
+        ]
+        if fr["chi2_red"] < 1.0:
+            lines += [
+                "    (below one, so the per-point noise assumed in the fit",
+                "    is conservative and the uncertainties below are upper bounds)",
+            ]
+        lines += [
             "",
             "This trace only (refit individually):",
             # The fitted coefficient multiplies a chain of area-normalized
@@ -2640,7 +2646,7 @@ def fig_width_trends():
         ymax_p1 = max(ymax_p1, Wp + Ep)
 
     pad1 = 0.08 * (ymax_p1 - ymin_p1)
-    ax1.set_ylim(ymin_p1 - pad1, ymax_p1 + pad1)
+    ax1.set_ylim(ymin_p1 - pad1, ymax_p1 + pad1 + 0.62 * (ymax_p1 - ymin_p1))
     ax1.set_xscale("log")
     ax1.set_xlabel(r"Rb density $N$  ($10^{12}\,\mathrm{cm^{-3}}$, logarithmic)")
     ax1.set_ylabel("half-maximum width measured directly from each trace\n"
@@ -2677,12 +2683,15 @@ def fig_width_trends():
              "rather than a measurement, and the calibration-comb traces, whose\n"
              "widths would need a sideband amplitude model. The fitted comb\n"
              f"heights of all {n_ruler_traces} calibration traces are archived (see below) "
-             "so such\na model can be tested.",
+             "so such\na model can be tested.\n"
+             "\n"
+             "the shaded band on each line is the shared slope's uncertainty,\n"
+             "pivoted on that line's lowest-density point, so it opens with density.",
              transform=ax1.transAxes, ha="left", va="top", fontsize=6.3, color="0.3",
              bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="0.7", lw=0.5))
-    # lower right: the fit lines rise with N, and the low-N data (left) carry
-    # the largest error bars, so the low-W / high-N corner stays clear
-    ax1.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True)
+    # lower right, with reserved headroom above keeping the top-left text box
+    # clear of the whiskers
+    ax1.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True, bbox_to_anchor=(1.0, -0.01))
     # Through the shared helper, which pins the ticks to the archive's own
     # oven settings and writes them as plain degrees. Left to itself the
     # secondary axis inherited the log formatter below it and printed the
@@ -2759,7 +2768,7 @@ def fig_width_trends():
     # lower right: at P>150 mW the four traces converge to a tight 5.28-5.45
     # MHz band, well clear of the axis floor -- the only corner free of both
     # data and the top-left annotation below.
-    ax2.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True)
+    ax2.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True, bbox_to_anchor=(1.0, -0.01))
     # the bound's claim as a plain annotation, not a legend entry (an
     # exclusion wedge is not a data series): upper right, where the highest
     # data point (P=25 mW, up to ~5.57 MHz) does not reach.

@@ -181,7 +181,7 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
                 f"laser width {sl:.2f} MHz\n"
                 "all four are widths at half maximum\n"
                 f"reduced chi-squared {fit['chi2_red']:.2f}",
-                xy=(0.02, 0.97), xycoords="axes fraction", va="top", ha="left",
+                xy=(0.98, 0.97), xycoords="axes fraction", va="top", ha="right",
                 fontsize=7.5, color="0.25",
                 bbox=dict(boxstyle="round", fc="white", ec="0.8", alpha=0.85))
 
