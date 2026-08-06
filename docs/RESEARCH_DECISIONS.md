@@ -25,6 +25,11 @@ The decisions at a glance, each argued in full in its numbered section:
 | The 130 °C density point? | Promoted from diagnostic to the headline four-point lever | same configuration as the temperature ladder, session receipts checked (§9) |
 | The joint-refit choices (2026-08-03)? | Measured priors over seeded ones, per-session widths, no robustness row | each argued from the fits' own receipts (§10) |
 | Can a cold-start profile be quoted? | Not without a seeded twin, and the basin-finder variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
+| Why pool the four lines into one slope? | Adopted by a preregistered probe, scored after the pooled number existed | its predictions held, one by a different mechanism than the note argued (§12) |
+| Why does the ruler figure show six teeth, not seven? | The all-seven clause returned the empty set and was relaxed by amendment, in the open | two measured causes, recorded in the ruler specification (§12) |
+| Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this archive's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
+| Where are the raw traces? | Held privately, with the manifest and every certifying check shipped | what runs here certifies the analysis, and what cannot is stated (§12) |
+| Was the residual width collisional? | Treated as a residual floor, with the inelastic channel a recorded candidate | the evidence spans four documents, indexed in §12 |
 
 ---
 
@@ -395,6 +400,51 @@ never entered a document, and the incident's full account, including what
 the corrected numbers turn out to be and whether the earlier three-point
 primary needs the same correction, goes to the results report as addendum
 24 when that run lands.
+
+---
+
+## 12. Decisions argued in their home documents
+
+Five load-bearing judgement calls live where their evidence lives. An
+external review found that a reader of the table above would not learn
+they exist, which was true. This section is the missing index, and each
+entry stays short because the argument is already written elsewhere.
+
+**The pooled slope.** Whether the four lines share one self-broadening
+slope was decided by a preregistered probe
+([notes/beta_self_pooling_prereg.md](notes/beta_self_pooling_prereg.md)):
+predictions stated before the pooled number existed, scored after it
+did, all holding, one of them by a different mechanism than the note
+had argued. The note's postscript carries both the adoption and the
+surprise.
+
+**The six-tooth ruler figure.** The figure's original eligibility
+clause demanded all seven comb teeth standing and returned the empty
+set. Amendment 4 of
+[notes/ruler_validity_and_trim_prereg.md](notes/ruler_validity_and_trim_prereg.md)
+records what the clause returned, the two measured causes, the options
+put to the owner, and the relaxation to six standing.
+
+**The fixed-lock session.** Proposed, not run: [PLAN.md](PLAN.md) is
+the full protocol, and §8 above shows the recurring pattern that a
+descoped item names a fixed-lock condition as what would revive it.
+The deferral is a scope decision of this archive, not a gap in it.
+
+**The raw traces.** Held privately, with the manifest and every
+certifying check shipped. The repository [README](../README.md) section
+on the raw traces and the manifest row of [DATA.md](DATA.md) state
+exactly what reproduces without them and what cannot.
+
+**The collision question.** Whether the fitted collisional width is
+resolved collisions is answered across four documents, and this entry
+exists so a reader finds all four:
+[methods/06](methods/06_the_statistics.md) shows the near-flat trend
+against the linear scaling a real binary-collision width requires,
+[RESULTS.md](RESULTS.md) item C3g closes the collisional wing with the
+density lever, the difference-potential note
+([notes/vdw_difference_potential_and_4d_channel.md](notes/vdw_difference_potential_and_4d_channel.md))
+records the open inelastic channel as a candidate mechanism rather
+than a claim, and §8 above lists what staying unmodelled costs.
 
 ---
 
