@@ -2627,7 +2627,9 @@ the fitted heights of all combs are persisted for the first time.
 
 **Scale of the labelling defect.** Under the sharpened criterion (a
 second-order tooth taller than its first-order partner marks a displaced
-grid), 54 of 104 recorded combs carry a one-slot displaced numbering, and
+grid), 54 of 104 recorded combs carry a one-slot displaced numbering (of which
+the ratio gate corrects 45, refuses 1, and declines to decide 8, the
+coldest), and
 the modulation-depth measurement on the 41 clean combs (2 beta = 1.569,
 standard deviation 0.058) shows the drive depth is one number across the
 campaign, so the displaced grids are mislabelled, not physically different.
@@ -2663,8 +2665,10 @@ argument (a symmetric triangle preserves tooth spacing under a fold) is
 true of the ramp and false of a rigid-grid fit, whose window assignment is
 exactly what a fold displaces. The bounded form survives: an apex landing
 on a tooth is benign, and the validity layer's tests pin that case. The
-section of `docs/DATA.md` that carried the claim now carries the corrected
-reading under the same anchor.
+section of `docs/DATA.md` that carried the claim carries the corrected
+reading under the same anchor since 2026-08-06 (the phase 7 red team
+found this sentence written before the edit it describes, and the edit
+is now made).
 
 **Relation to addendum 19.** Addendum 19 corrected a five-tooth fit to
 seven and withdrew an earlier retrace claim as a threshold-finder artifact.

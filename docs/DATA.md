@@ -643,7 +643,9 @@ conclusions:
   4207 nm power session shows a coherent 3.7σ before→after spacing shift
   (146.4 → 144.8 ms) — a real ~1.1% in-session rate change, its own
   calibration systematic for 4207 power points. The fine-scan sweep is
-  **linear to <0.3% across the window** (no piezo nonlinearity — the
+  **linear to <0.3% across the well-sampled windows** (the bound is the
+  well-sampled-window family's value, gate-dependent outside it, see the
+  phase 7 red-team note — no piezo nonlinearity: the
   ruler-in-fine-scan design worked). Cold 70 °C rulers calibrate fine with
   correctly inflated errors (~2.5 ms vs ~0.3 ms warm).
 - **β_self (2026-07-11). The archival temperature sweep bounds it, it does not
@@ -849,7 +851,13 @@ with the recompute's addendum.*
 
 ### Fold robustness of the ruler fits
 
-- **RF-on rulers are fold-robust (checked 2026-07-11, do not re-litigate).**
+- **SUPERSEDED 2026-08-05 by addendum 26, corrected reading first.** The
+  structural argument below is true of the ramp and false of a rigid-grid
+  fit, whose window assignment is exactly what a fold displaces. The
+  bounded form survives: an apex landing on a tooth (or, immaterially, on
+  a half-tooth) is the benign case, and the validity layer's tests pin it.
+  The original bullet is preserved beneath for the record.
+- **RF-on rulers are fold-robust (checked 2026-07-11, superseded above).**
   The rulers were taken with the same sweeps as their blocks, so one might
   worry the off-center-sweep fold (below) also corrupts the tooth-spacing
   fits — it does not, for a structural reason. The sweep is a symmetric
