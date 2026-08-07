@@ -21,7 +21,9 @@ The scope and the headline numbers, up front. Four hyperfine components, 159 lin
 collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
 four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm waist prior, and the AC-Stark coefficient
-S₀(225 mW) < 0.26 MHz (waist-free, only its prediction rides the prior).
+S₀(225 mW) < 0.26 MHz against 0.35 predicted at the adopted waist (the
+prediction rides the prior directly, the bound only weakly, through its
+transit kernel).
 The full claim ledger, including what is deliberately not claimed, is
 [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
@@ -69,16 +71,11 @@ adapting it to your line → [`docs/ADAPTING.md`](docs/ADAPTING.md).
 
 ## How the measurement works
 
-A 993 nm beam is retro-reflected through a hot Rb cell. An atom with axial
-velocity $v_z$ sees the two beams Doppler-shifted in opposite senses, so
-absorbing one photon from each direction drives 5S₁/₂ → 6S₁/₂ at
-
-$$\nu\left(1 + \tfrac{v_z}{c}\right) + \nu\left(1 - \tfrac{v_z}{c}\right) = 2\nu$$
-
-with the first-order Doppler shift cancelling for every atom at once. The
-thermal smear, roughly half a GHz per photon, collapses to a line a few MHz
-wide. The surviving second-order term is of order 0.4 kHz here, four orders
-below the linewidth.
+A 993 nm beam is retro-reflected through a hot Rb cell, and an atom absorbs
+one photon from each direction, cancelling the first-order Doppler shift for
+every atom at once: the half-GHz thermal smear collapses to a line a few MHz
+wide. The surviving second-order term, of order 0.4 kHz here, sits four
+orders below the linewidth.
 
 <p align="center">
   <img src="figures/fig13_level_scheme.png" width="760" alt="Left, the 5S to 6S term diagram with the virtual level below 5P. Right, the photographed cavity scan with the four hyperfine components labelled on the up-sweep">
@@ -402,21 +399,10 @@ data_recovered/  the backup-recovered layer: the acquisition clock
 results/    the committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
 tests/      full test battery, run by CI on the minimum and latest numpy
-docs/       the documentation tree. The ones to read first:
+docs/       the documentation tree, indexed by its own README. Read first:
             CLAIMS.md (the claim ledger) · BIG_PICTURE.md (goals, prior art,
-            what each future measurement would add) · ADAPTING.md (the seams
-            for another line) · methods.md (index) + methods/ (8 ordered
-            chapters: the full derivations) · PLAN.md (measurement plan) ·
-            RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
-            APPARATUS.md (hardware of record + provenance) + apparatus/
-            (the dated photographs and the bench schematic) ·
-            THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work)
-            + LITERATURE_INDEX.md (generated index of the per-paper notes)
-            + lit/ (one note per paper) + references.bib ·
-            PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
-            (the timestamp audit: frozen predictions, results, dated addenda) ·
-            RESEARCH_DECISIONS.md (why the analysis stops where it does) ·
-            notes/ (working notes) · STYLE.md
+            what each future measurement would add) · methods/ (8 ordered
+            chapters, the full derivations)
 private/    local working folder, excluded by .gitignore and enforced by
             tests/test_repo_hygiene.py
 ```
