@@ -224,19 +224,9 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the waist prior, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood with the threshold widened for block-to-block over-dispersion. Below the 0.35 predicted at the adopted waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
-| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
-| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization; a trapped-atom experiment |
-
-The last row of the table, drawn. The lower panel shows why the crossings
-exist where they do: the flat 5S polarizability threads the 6S curve's
-nearby resonances.
-
-<p align="center">
-  <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
-</p>
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must
@@ -330,6 +320,25 @@ glance").
 - **Optical nanofibre.** The same ramp law tested in the evanescent field at
   a fibre surface, where an atom–surface potential and the "pushing dip"
   (Gokhroo et al., 2022) ride on the lineshape.
+
+## Calculated quantities
+
+Two numbers in this archive are computed, not measured, and they sit
+here rather than in the results table so the table stays a record of
+what the data itself established.
+
+| quantity | value and status | provenance | what would settle it |
+|---|---|---|---|
+| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
+| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization; a trapped-atom experiment |
+
+The second row, drawn. The lower panel shows why the crossings exist
+where they do: the flat 5S polarizability threads the 6S curve's
+nearby resonances.
+
+<p align="center">
+  <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
+</p>
 
 ## Reproduce
 
@@ -431,7 +440,7 @@ line takes when a focused standing wave shifts each atom differently.
 
 The dataset is from a six-month research visit to OIST in 2025, an
 independent project alongside my work there on atom-nanofibre interfaces.
-The analysis was written after the campaign. A manuscript is in preparation.
+The analysis was written after the campaign.
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·

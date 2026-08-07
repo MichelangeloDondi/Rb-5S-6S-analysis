@@ -367,6 +367,42 @@ CANONICAL = [
         # four places that were hand-typed and unpinned until this line.
         docs=["README.md", "docs/RESULTS.md", "docs/BIG_PICTURE.md"],
     ),
+    # --- Trace-census counts, read live from the manifest. Added
+    # 2026-08-07 after the "39 committed CSVs" incident (actual 42, a
+    # fifteen-second catch for any reader): hand-typed counts are the
+    # silently-rotting class, so the ones the front door states are
+    # pinned to data_raw/MANIFEST.csv here.
+    dict(
+        name="trace census: 297 total",
+        value=lambda: str(sum(1 for _ in csv.DictReader(open(ROOT / "data_raw/MANIFEST.csv")))),
+        find=re.compile(r"\b(297)\b(?=[^.]{0,40}traces)"),
+        mode="all",
+        docs=["README.md", "docs/DATA.md"],
+    ),
+    dict(
+        name="trace census: canonical line traces",
+        value=lambda: str(sum(1 for r in csv.DictReader(open(ROOT / "data_raw/MANIFEST.csv"))
+                              if r["role"] in ("p_sweep", "t_sweep") and r["flag"] == "canonical")),
+        find=re.compile(r"\b(159)\b(?=[^.]{0,30}(?:composite-)?line)"),
+        mode="all",
+        docs=["README.md"],
+    ),
+    dict(
+        name="trace census: ruler traces",
+        value=lambda: str(sum(1 for r in csv.DictReader(open(ROOT / "data_raw/MANIFEST.csv"))
+                              if r["role"].startswith("ruler"))),
+        find=re.compile(r"\b(105)\b(?=[^.]{0,40}(?:frequency-)?ruler)"),
+        mode="all",
+        docs=["README.md"],
+    ),
+    dict(
+        name="trace census: excluded files",
+        value=lambda: str(sum(1 for r in csv.DictReader(open(ROOT / "data_raw/MANIFEST.csv"))
+                              if r["flag"] != "canonical")),
+        find=re.compile(r"\b(33)\b(?=\s*(?:files|excluded|are\b))"),
+        mode="all",
+        docs=["README.md", "docs/DATA.md"],
+    ),
 ]
 
 

@@ -32,8 +32,9 @@ two-photon sum frequency, twice the laser frequency.
 - Light shift at the campaign maximum of 225 mW:
   S₀(225 mW) < 0.26 MHz, from a joint three-session fit of every point
   of every power profile, minimum consistent with zero shift. The bound
-  itself uses only the width-versus-power data, so it does not depend on
-  the waist. The prediction it is compared against does: 0.35 MHz
+  depends on the waist only weakly, through the transit kernel in its
+  lineshape. The prediction it is compared against rides the waist
+  prior directly: 0.35 MHz
   central, with a 0.28-0.40 MHz band over the waist prior band and the
   retro ratio. The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
