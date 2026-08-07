@@ -5,22 +5,21 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂**
-two-photon transition at **993 nm**: Doppler-free spectroscopy in a hot vapour
-cell. The data were taken at OIST in 2025. A fixed-lock follow-up session is
-proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the machinery is
-written to be pointed at other transitions
+two-photon transition at **993 nm**, from Doppler-free spectroscopy in a hot
+vapour cell. The data were taken at OIST in 2025. A fixed-lock follow-up
+session is proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the
+machinery is written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
 
-> **In one sentence:** from a 2025 dataset taken with a drifting laser lock, we
-> extract what lives in the *shape* of the line — collisional
-> broadening, laser width, the power-dependent light shift — as **bounds**,
-> and lay out a proposed set of fixed-lock measurements that would turn each
-> bound into a number.
+> **In one sentence:** when the lock drifts, the position of a line is lost but
+> its shape is not, so this archive reads collisional broadening, laser width
+> and the power-dependent light shift out of the *shape* as **bounds**, and
+> specifies the fixed-lock measurements that would turn each bound into a
+> number.
 
-The scope and the headline numbers, up front. Four hyperfine components, 264
-fitted traces across 70–130 °C and 25–225 mW, three bounds at 95%:
+The scope and the headline numbers, up front. Four hyperfine components, 159 line traces and 105 ruler traces across 70–130 °C and 25–225 mW, three bounds at 95%:
 collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
-four peaks (geometry-robust), the 2025 laser width below 1.2 MHz per photon
+four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm waist prior, and the AC-Stark coefficient
 S₀(225 mW) < 0.26 MHz (waist-free, only its prediction rides the prior).
 The full claim ledger, including what is deliberately not claimed, is
@@ -43,11 +42,11 @@ compact-clock community already uses. On natural linewidth it starts behind
 it, by about an order of magnitude, and nothing here suggests otherwise
 ([`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) §1).
 
-**What each piece buys.** A beam-profile measurement of the waist sharpens
+**What each piece would buy.** A beam-profile measurement of the waist would sharpen
 every archival bound with no new physics run. A fixed-lock cell session
-turns the light-shift and collisional bounds into measurements. A nanofibre
-session reads the same ramp law in an evanescent field, against the cell as
-its reference. The dependency map is the first thing in
+would turn the light-shift and collisional bounds into measurements. A
+nanofibre session would test the same light-shift law in an evanescent field,
+against the cell as its reference. The dependency map is the first thing in
 [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md).
 
 <p align="center">
@@ -120,9 +119,10 @@ fixed condition; [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 *The whole constraint. Top: the problem as photographed on a preliminary
 session, a wavemeter record of cavity re-locks and relaxations. Middle: the
 campaign reconstructed from its own traces. Each vertical stroke is one
-trace's own scan ramp, offsets are comparable only between traces taken at
-the same scope setting, and the held lock moves by 0.016 MHz/min in magnitude
-over three hours. Shapes survive, centres do not. Bottom: what each drift
+trace's own frequency sweep, offsets are comparable only between traces taken at
+the same scope setting, and the held lock's drift is bounded at order
+0.02 MHz/min over three hours, sign undetermined. Shapes survive, centres do
+not. Bottom: what each drift
 regime licenses, from the 2025 bounds to the fixed-lock session that would
 convert them.*
 
@@ -143,9 +143,8 @@ target a follow-up session would need to beat. The width-only AC-Stark bound
 brackets its prediction rather than resolving it (the predicted effect is
 about one block's width scatter, so the bound rests on averaging), while the
 joint three-session fit lands below the predicted band, the tension the
-results table quotes. The 95% constructions are validated by
-injection-recovery ([methods §4.11](docs/methods/06_the_statistics.md)), not
-assumed.
+results table quotes. The 95% constructions are checked by
+injection-recovery ([methods §4.11](docs/methods/06_the_statistics.md)).
 
 The chain from raw trace to quoted bound, each stage a runnable script, each
 output a committed CSV:
@@ -232,7 +231,7 @@ measurement that would lift it.
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
-| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization; a trapped-atom platform |
+| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization; a trapped-atom experiment |
 
 The last row of the table, drawn. The lower panel shows why the crossings
 exist where they do: the flat 5S polarizability threads the 6S curve's
@@ -321,9 +320,9 @@ glance").
 
 ## What a follow-up session would add
 
-- **A proposed fixed-lock session.** A stable lock returns the absolute
-  centres, and a direct beam-profile measurement pins w₀, turning the bounds
-  above into the first measured 5S–6S AC-Stark and collisional self-shift
+- **A proposed fixed-lock session.** A stable lock would return the absolute
+  centres, and a direct beam-profile measurement would pin w₀, turning the
+  bounds above into the first measured 5S–6S AC-Stark and collisional self-shift
   coefficients. With power capped at 225 mW, the intensity axis would come
   from the waist instead: a telescope gives two working waists spanning a
   ×16 intensity range. Points at 150–170 °C in the same session would give
@@ -400,7 +399,7 @@ examples/   your_line.ipynb, the pipeline pointed at a different line by
 data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 data_recovered/  the backup-recovered layer: the acquisition clock
             (CLOCK.csv), backup-only discards, degradation lineage
-results/    the 39 committed output CSVs (the documented run)
+results/    the committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
 tests/      full test battery, run by CI on the minimum and latest numpy
 docs/       the documentation tree. The ones to read first:
@@ -437,17 +436,16 @@ private/    local working folder, excluded by .gitignore and enforced by
 ## About
 
 I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
-the University of Bologna (EU H2020 project CRYST³), working on the transport
-and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal fibres —
-a platform where the inhomogeneous light shifts of a structured optical field
-govern cooling and coherence. This repository reads the same distribution
-physics from a different observable: the shape of a two-photon line in a
-focused standing wave.
+the University of Bologna, on the EU project CRYST³. My work there is the
+transport and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal
+fibres, where the light shifts of the guided mode vary across the atoms and
+set what can be cooled and how long it stays coherent. This repository looks
+at the same physics through a different observable: the shape a two-photon
+line takes when a focused standing wave shifts each atom differently.
 
-The dataset was taken during a six-month research visit to OIST (Japan) in
-2025, as an independent project alongside my main work there on
-atom–nanofibre interfaces; the analysis package was developed after the
-campaign. A manuscript based on it is in preparation.
+The dataset is from a six-month research visit to OIST in 2025, an
+independent project alongside my work there on atom-nanofibre interfaces.
+The analysis was written after the campaign. A manuscript is in preparation.
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·
