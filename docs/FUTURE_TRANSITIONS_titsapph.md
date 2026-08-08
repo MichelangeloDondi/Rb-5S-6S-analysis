@@ -1059,6 +1059,69 @@ criterion is usability as a trap, and the polarizability module's search
 guard stays. The disposition note in the calibration record carries the
 slope table behind these numbers.
 
+
+#### 5.1.1 Amendment (2026-08-08): the other five roots, computed, and why this one was the right choice
+
+Section 5.1 chose 1297.5 nm because it is the steepest crossing, and everything
+it says about that root stands. What it did not do is compute the same budget
+for the other five. Doing so confirms the choice and replaces the reason.
+
+Three quantities decide what a crossing can measure, and section 5.1 used only
+the first.
+
+**Steepness** sets how precisely a crossing can be LOCATED from a measured
+shift. **Position sensitivity** sets what that location MEASURES, and it runs
+opposite to steepness: a flat crossing is hard to find, but its position moves
+a long way when an element changes, because a small change in a nearly
+cancelling difference travels far along a shallow curve. Their ratio is the
+fractional precision the crossing would deliver on the element it reads. On
+those two alone, 1339.6 nm looks like the better lever, at 1.6 per cent against
+1.8 for the steep root.
+
+**The third quantity is what the element is already known to**, and it reverses
+that reading. The line lists carry their own quoted uncertainties, so the
+comparison needs no judgement. `rb5s6s.hyperpolarizability.lever_table()`
+computes all of it, and the last column is the one that matters, the currently
+quoted uncertainty divided by what the crossing would deliver:
+
+| crossing (nm) | steepness (a.u./pm) | locates to (pm) | reads | would give | already known | gain |
+|---|---|---|---|---|---|---|
+| 1297.5 | −11.3 | 26 | 6S–7P₁/₂ | 1.8% | 1.81% | **1.03** |
+| 1287.9 | −0.64 | 447 | 6S–7P₃/₂ | 4.5% | 1.62% | 0.36 |
+| 1029.7 | −2.2 | 133 | 6S–8P₃/₂ | 9.2% | 1.53% | 0.17 |
+| 1339.6 | +0.77 | 374 | 6S–5P₃/₂ | 1.6% | 0.21% | 0.13 |
+| 1203.9 | +0.012 | 23400 | 6S–5P₃/₂ | 11% | 0.21% | 0.02 |
+| 1031.9 | −0.54 | 529 | 6S–6P₃/₂ | 24% | 0.26% | 0.01 |
+
+One crossing out of six would tell anyone anything they do not already know,
+and it is the one section 5.1 picked. The apparent better lever at 1339.6 nm
+reads an element the 6S lifetime already pins eight times more tightly than the
+measurement could, so its 1.6 per cent buys nothing.
+
+**Why steepness was the right proxy after all, which is the part worth
+keeping.** Steepness and ignorance are not independent. A crossing is steep
+because it sits close to a resonance. The resonances the crossings sit near are
+the weak, high-lying ones, and those are precisely the transitions whose matrix
+elements nobody has measured well, because a weak line is hard to measure by
+any method. So the steepest crossing automatically reads the least known
+element. Section 5.1 selected on the property it could see and got the right
+answer for a reason it did not state.
+
+**A correction to something this amendment first claimed.** An earlier version
+of this section argued that a crossing reading 6S–5P₃/₂ would settle the
+differential-polarizability sign question, since that dispute turns on a
+revision of the 6S–5P strength of about a third. It would not, and the reason
+is the same third column: 6S–5P₃/₂ is already known to 0.21 per cent, so a
+third-order revision is already excluded by a very large margin, which is the
+same conclusion the archive reaches from the measured 6S lifetime. The sign
+question was already decided by existing data. Nothing here adds to it.
+
+**What this does not claim.** The sensitivities are one element at a time, so
+they name the element each crossing speaks to rather than delivering a joint
+error budget, which needs the covariance of the whole set. The conversion from
+shift precision to wavelength rides the campaign intensity and the adopted
+waist, like every other projection here, and sharpens with the waist
+measurement.
 ## 6. Open feasibility questions for the experimenter (Michelangelo)
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?
 - Is the 420 nm detection path (filter + blue-sensitive PMT) available, or a build?

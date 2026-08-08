@@ -183,7 +183,17 @@ crossings lying between the 6S–5P resonances are usable only in strictly linea
 light. Trap photons scatter off the 6S state a few times per second per
 megahertz of depth at 1203.9 nm and ten to sixty times faster at the other
 long-wavelength crossings, which is what leaves 1203.9 nm as the one practical
-operating point.
+operating point. The crossings also read backwards. Where one sits is fixed by
+the matrix elements that build the two polarizabilities, so measuring a
+crossing constrains them, which is how the 5S–5D magic wavelength was turned
+into a 5P–5D matrix element by [Hamilton 2023](lit/hamilton2023.md). The lever
+is best where the trap is worst, but the quantity that decides whether a
+measurement is worth making is what the element is already known to.
+`lever_table()` in the same module ranks all six on all three counts, and
+exactly one crossing, the steep root at 1297.5 nm, would improve on the present
+state of knowledge. [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
+§5.1.1 carries the table and the reason steepness turned out to be the right
+thing to have selected on.
 
 ![the polarizability ladder and the magic crossings](../figures/fig9_polarizability_ladder.png)
 

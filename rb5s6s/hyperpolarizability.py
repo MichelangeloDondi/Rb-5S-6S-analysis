@@ -278,6 +278,13 @@ def _rspt4(g: str, lam_nm: float, u_mhz: float = 1.0, nmax: int = 3):
     return e2 * HARTREE_HZ, e4 * HARTREE_HZ
 
 
+_BRACKETS = {
+    "1203.9": (1195.0, 1210.0), "1287.9": (1281.0, 1291.5),
+    "1339.6": (1332.0, 1348.0), "1297.5": (1296.6, 1298.05),
+    "1029.7": (1028.75, 1030.55), "1031.9": (1030.80, 1033.00),
+}
+
+
 def crossings():
     """All six polarizability crossings, as (name, wavelength_nm).
     The three long-wavelength entries are the published magic list.
@@ -388,6 +395,111 @@ def scattering_rates(lam_nm: float):
     return tuple(out)
 
 
+# ------------------------------------------------------ the inverse use
+# A crossing can be read backwards. Its POSITION is fixed by the
+# matrix elements that build the two polarizabilities, so measuring
+# where it sits constrains them. That is the logic of the published
+# tune-out and magic-wavelength measurements (Herold 2012 on the Rb
+# 5s-6p elements, Hamilton 2023 on the 5P-5D element from the 5S-5D
+# magic wavelength, which is the row this module keeps in preference
+# to all-order theory). The two functions below say which crossing
+# constrains which element, and how well.
+
+def steepness(lam_nm: float, h: float = 1e-4):
+    """d(alpha_5S - alpha_6S)/d(lambda) in atomic units per picometre.
+
+    This is the lever arm. It sets how precisely a crossing can be
+    LOCATED from a measured shift, and it runs opposite to what makes
+    a crossing a good trap: a flat crossing is insensitive to the
+    trap laser's wavelength, which is why it traps well and locates
+    badly."""
+    return (delta_alpha(lam_nm + h) - delta_alpha(lam_nm - h)) \
+        / (2.0 * h) * 1e-3
+
+
+def position_sensitivity(name: str, lam_nm: float, bracket, frac: float = 0.01):
+    """How far the crossing moves when one reduced matrix element is
+    scaled by `frac`, in picometres, for every S-P line of both
+    states. Returns a list of (shift_pm, state, line_label), largest
+    first.
+
+    ONE AT A TIME, which is a sensitivity and not an error budget: a
+    real inversion needs the joint covariance of the element set, and
+    the leading entry here names the element a measurement would
+    speak to rather than delivering its uncertainty."""
+    import rb5s6s.polarizability as _p
+    keep5, keep6 = _p.LINES_5S, _p.LINES_6S
+    lam0 = brentq(delta_alpha, *bracket, xtol=1e-11)
+    out = []
+    try:
+        for state, src in (("5S", keep5), ("6S", keep6)):
+            for i in range(min(8, len(src))):
+                rows = [list(r) for r in src]
+                rows[i][1] *= 1.0 + frac
+                new = tuple(tuple(r) for r in rows)
+                if state == "5S":
+                    _p.LINES_5S = new
+                else:
+                    _p.LINES_6S = new
+                try:
+                    lam1 = brentq(delta_alpha, *bracket, xtol=1e-11)
+                    out.append(((lam1 - lam0) * 1e3, state, _PN[i]))
+                except ValueError:
+                    pass
+                _p.LINES_5S, _p.LINES_6S = keep5, keep6
+    finally:
+        _p.LINES_5S, _p.LINES_6S = keep5, keep6
+    out.sort(key=lambda r: -abs(r[0]))
+    return out
+
+
+def lever_table(shift_precision_hz: float = 92e3,
+                khz_per_pm_at_ref: float = 3.6,
+                ref_steepness: float = 11.27):
+    """What each crossing would measure, given a shift precision.
+
+    The conversion is anchored on the worked case in
+    FUTURE_TRANSITIONS section 5.1: at the campaign intensity a
+    picometre of wavelength at the 1297.5 nm root is 3.6 kHz of
+    induced differential shift, and that root runs at 11.27 atomic
+    units per picometre. Both scale with the same intensity, so the
+    kHz per picometre at any other crossing follows from its own
+    steepness, and the localisation is the shift precision divided by
+    that. Dividing the localisation by the position sensitivity gives
+    the fractional precision on the element the crossing speaks to.
+
+    THE THIRD FACTOR, and it decides everything. A precision is
+    worth nothing on its own. What matters is the precision against
+    what is ALREADY known about that element, and the line lists
+    carry their own quoted uncertainties, so the comparison is
+    available here rather than in someone's judgement. The `gain`
+    field is the quoted fractional uncertainty divided by what the
+    crossing would deliver: above one the measurement improves on
+    the present state, below one it does not.
+
+    Yields dicts with the crossing, its steepness, the localisation
+    in picometres, the leading element, the fractional precision on
+    it, the currently quoted uncertainty and the gain."""
+    rows = []
+    for name, lam in crossings():
+        b = _BRACKETS[name]
+        s = steepness(lam)
+        khz_per_pm = khz_per_pm_at_ref * abs(s) / ref_steepness
+        loc_pm = (shift_precision_hz / 1e3) / khz_per_pm
+        sens = position_sensitivity(name, lam, b)
+        lead_pm, lead_state, lead_line = sens[0]
+        prec = loc_pm / abs(lead_pm) * 0.01
+        src = LINES_5S if lead_state == "5S" else LINES_6S
+        i = _PN.index(lead_line)
+        e_l, d_l, sig_l = src[i]
+        known = sig_l / d_l
+        rows.append(dict(
+            crossing=name, lam_nm=lam, steepness_au_per_pm=s,
+            localisation_pm=loc_pm, element=f"{lead_state}-{lead_line}",
+            frac_precision=prec, known_frac=known, gain=known / prec))
+    return rows
+
+
 if __name__ == "__main__":
     cs = quartic_coefficients()
     print("crossing   lambda_nm   C(Hz/MHz^2)   V1(Hz/MHz/S3)   "
@@ -397,3 +509,13 @@ if __name__ == "__main__":
         r5, r6 = scattering_rates(lam)
         print(f"{name:>8s}  {lam:10.4f}  {cs[name]:+11.4f}  {v1:+13.0f}  "
               f"{r5:7.3f} {r6:9.3f}")
+
+    print("\nRead backwards: what each crossing would measure, at the "
+          "projected shift precision")
+    print(f"{'crossing':>9s} {'a.u./pm':>9s} {'locate/pm':>10s} "
+          f"{'element':>12s} {'would give':>11s} {'known':>8s} {'gain':>6s}")
+    for r in lever_table():
+        print(f"{r['crossing']:>9s} {r['steepness_au_per_pm']:+9.3f} "
+              f"{r['localisation_pm']:10.0f} {r['element']:>12s} "
+              f"{r['frac_precision']*100:10.1f}% {r['known_frac']*100:7.2f}% "
+              f"{r['gain']:6.2f}")

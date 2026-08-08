@@ -108,3 +108,54 @@ def test_scattering_rates_pinned():
     r5, r6 = hp.scattering_rates(1203.886285673291)
     assert abs(r5 - 0.228) < 0.005
     assert abs(r6 - 5.757) < 0.02
+
+
+def test_steepness_matches_the_worked_case():
+    """FUTURE_TRANSITIONS section 5.1 computed the 1297.5 nm root by
+    hand at 11.3 atomic units per picometre. The module must agree,
+    since the whole lever budget there rides on it."""
+    s = hp.steepness(1297.5332)
+    assert abs(abs(s) - 11.3) / 11.3 < 0.02, s
+
+
+def test_the_trap_crossing_is_the_flattest():
+    """The practical crossing is the flattest of the six, which is
+    the same fact as its being the best trap and the worst lever."""
+    flat = min(hp.crossings(), key=lambda c: abs(hp.steepness(c[1])))
+    assert flat[0] == "1203.9"
+
+
+@pytest.mark.slow
+def test_lever_table_names_the_element_each_crossing_speaks_to():
+    """Pins the inverse-use result: the two best levers reach about
+    two per cent, they are NOT the same crossing as the best trap,
+    and the crossings that read the 6S-5P3/2 element are the ones
+    that bear on the differential-polarizability sign question."""
+    rows = {r["crossing"]: r for r in hp.lever_table()}
+    assert rows["1339.6"]["frac_precision"] < 0.02
+    assert rows["1297.5"]["frac_precision"] < 0.02
+    # the trap crossing is an order of magnitude worse as a lever
+    assert rows["1203.9"]["frac_precision"] > 0.10
+    # and the element each speaks to
+    assert rows["1339.6"]["element"] == "6S-5P3/2"
+    assert rows["1297.5"]["element"] == "6S-7P1/2"
+    assert rows["1203.9"]["element"] == "6S-5P3/2"
+    # THE POINT, and the thing an earlier version of this test missed:
+    # precision is worthless without the comparison to what is already
+    # known. Exactly one crossing would improve on the present state,
+    # and it is the steep root, because steepness and ignorance are
+    # correlated through proximity to a weak high-lying line.
+    gains = {k: v["gain"] for k, v in rows.items()}
+    assert gains["1297.5"] > 1.0
+    assert max(g for k, g in gains.items() if k != "1297.5") < 0.5
+    # and the apparent better lever reads an already-tight element
+    assert rows["1339.6"]["known_frac"] < 0.005
+
+
+def test_position_sensitivity_restores_the_line_lists():
+    """The sensitivity scan mutates module state and must put it
+    back, or every later computation in the session is wrong."""
+    import rb5s6s.polarizability as p
+    before5, before6 = p.LINES_5S, p.LINES_6S
+    hp.position_sensitivity("1203.9", 1203.886285673291, (1195.0, 1210.0))
+    assert p.LINES_5S is before5 and p.LINES_6S is before6
