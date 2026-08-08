@@ -80,7 +80,14 @@ two-photon sum frequency, twice the laser frequency.
 - The first scalar magic wavelengths for the 5S-6S pair, near 1203.9,
   1287.9 and 1339.6 nm, the 1204 nm crossing being the practically
   usable one. Its 16 to 84 percent band runs 1203.06 to 1204.73 nm. No
-  published values were found to the depth searched.
+  published values were found to the depth searched. The trap-design
+  corrections at the crossings are calculated at envelope grade (a
+  factor of two) in rb5s6s/hyperpolarizability.py: the fourth-order
+  differential shift at the 1204 nm crossing is +0.87 Hz for every
+  squared megahertz of trap depth, the vector shift is 280 kHz per
+  megahertz of depth per unit circularity, and trap-photon scattering
+  disqualifies every pole-adjacent crossing, which fixes 1203.9 nm as
+  the single design point.
 
 **Method:**
 
@@ -122,6 +129,11 @@ two-photon sum frequency, twice the laser frequency.
   778 nm value section 3 quotes is anchored on a published magic
   wavelength and shaped by one near-resonant term, scalar only, so it
   sizes a drive-power ceiling and does not stand as a polarizability.
+- No measured trap-design coefficient. The quartic, vector and
+  scattering numbers at the magic crossings are calculated at a
+  factor-of-two envelope, their higher even states and two-photon
+  continuum are estimated to order of magnitude only, and no crossing
+  has been measured.
 - No claim that the multi-line projections of section 3 hold at the
   archive's own drive power on every rung. Two of the three ceil below
   it, and the delivered precisions are quoted at both readings.
@@ -354,7 +366,8 @@ blocked waiting for these bounds, and this section does not soften that.
   disagreement comes with a clean discriminant (the published sign would
   require a 6S lifetime the measurement excludes at about 210 sigma),
   and the scalar magic wavelengths are unpublished values a trapping
-  proposal can test.
+  proposal can test, now with the crossing-by-crossing quartic, vector
+  and scattering comparison a trap design would start from.
 - The collision-rate literature. Two published measurements of the 7S
   self-broadening rate disagree beyond their stated errors under any
   convention reading, a comparison assembled in

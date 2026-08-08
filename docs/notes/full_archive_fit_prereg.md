@@ -267,7 +267,7 @@ more peaks, or a basin gap that survives seeding.
 4. **Runtime and cost.** Five families with seeded twins plus leave-one-peak-out
    is more chains than M23's 382 minutes bought.
 5. **Documentation on landing.** Done on 2026-08-05: the pipeline line now
-   names M27 and M28 and the gloss now reads M0–M28, so the range quoted in the
+   names M27 and M28 and the gloss now reads M0–M29, so the range quoted in the
    pre-registered text that follows is historical. As written:
    `docs/methods.md`'s pipeline line and the
    `M0-M26` gloss in `docs/methods/08_assumptions_and_outlook.md` both move when

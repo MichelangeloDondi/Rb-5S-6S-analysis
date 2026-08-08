@@ -56,6 +56,16 @@ def _vdw_beta7():
     return r["beta7_predicted_khz"]
 
 
+def _hyp_c1204():
+    from rb5s6s import hyperpolarizability as _h
+    return _h.quartic_coefficients()["1203.9"]
+
+
+def _hyp_v1_khz():
+    from rb5s6s import hyperpolarizability as _h
+    return abs(_h.vector_coefficient(1203.886285673291)) / 1e3
+
+
 def _cell(fname, quantity, key=None, col="value"):
     for r in csv.DictReader(open(RESULTS / fname)):
         if r["quantity"] == quantity and (key is None or r["key"] == key):
@@ -441,6 +451,26 @@ CANONICAL = [
         # The note is absent here too: it carries the number only in
         # its before/after table, next to the retired 4.50.
         docs=["docs/BIG_PICTURE.md"],
+    ),
+    # ---- trap-design coefficients (2026-08-08): computed live by
+    # rb5s6s/hyperpolarizability, quoted in BIG_PICTURE, CLAIMS and,
+    # on this public tree, the README calculated-quantities table.
+    # find regexes use \s+ between words because the docs hard-wrap.
+    dict(
+        name="hyperpolarizability: quartic coefficient at the 1204 crossing",
+        value=lambda: f"{_hyp_c1204():+.2f}",
+        find=re.compile(r"([+-][0-9]\.[0-9]{2})\s+Hz\s+for\s+every\s+"
+                        r"squared\s+megahertz"),
+        mode="all",
+        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md", "README.md"],
+    ),
+    dict(
+        name="hyperpolarizability: vector-shift coefficient at 1204",
+        value=lambda: f"{_hyp_v1_khz():.0f}",
+        find=re.compile(r"([0-9]{3})\s+kHz\s+per\s+megahertz\s+of\s+depth"
+                        r"\s+per\s+unit\s+circularity"),
+        mode="all",
+        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md", "README.md"],
     ),
 ]
 

@@ -56,7 +56,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   [`docs/RESULTS.md`](RESULTS.md): C1 collisional self-broadening
   $\beta_\text{self}$; C2 the 2025 laser-epoch width $\sigma_\text{laser}$; C3
   the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient  bound $S_0$. Each is a **bound or null** in the 2025 archive.
-- **M0 … M26 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M29 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each; the fitting core has lettered
   sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -69,7 +69,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
-  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) |  |
+  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M29 trap-design corrections at the magic crossings |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -139,9 +139,11 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           lever_crosscheck(M4d) stark(M4e) modelform(M8) transit_mc(M9)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
-          vanderwaals(M18) ramp_transit(M19) fitutil _compat
-          (M18 and M19 are library-and-test only: they have no CSV product, so
-           grepping results/ for them finds nothing -- see their test files)
+          vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          fitutil _compat
+          (M18, M19 and M29 are library-and-test only: they have no CSV
+           product, so grepping results/ for them finds nothing -- see their
+           test files)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)

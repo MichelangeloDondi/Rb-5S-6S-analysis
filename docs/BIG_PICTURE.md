@@ -165,15 +165,25 @@ confined between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂ resonances 
 these states is less of a caveat than it sounds: the tensor polarizability
 vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
-approximation. What remains is the vector term. Vector shifts
-near the 6S–5P lines would need their own treatment before anyone designs a
-trap. None of the three crossings has been measured. The list is also
+approximation. None of the three crossings has been measured. The list is also
 deliberately incomplete: three more crossings exist hard against poles, one at
 1297.5 nm sitting 0.7 nm from the 6s₁/₂–7p₁/₂ resonance at 1298.3 nm and two
 hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
-magic in name only.
+magic in name only. That pricing is computed rather than asserted, in
+`rb5s6s/hyperpolarizability.py` (calculated, an envelope at a factor of two).
+The fourth-order differential shift at the 1204 nm crossing is +0.87 Hz for
+every squared megahertz of trap depth (h × 1 MHz of depth is 48 µK), so even a
+trap half a millikelvin deep moves the line by about a hundred hertz, four
+orders below the natural width. The vector term is the sharp requirement: a
+stretched-state atom sees 280 kHz per megahertz of depth per unit circularity
+of the trap light, so kilohertz accuracy needs polarization pure at the few
+10⁻⁴ level, and the two crossings that sit between the 6s–5p resonances are
+usable only in strictly linear light. Trap photons scatter off the 6S state a
+few times per second per megahertz of depth at 1204 nm and ten to sixty times
+faster at the other long-wavelength crossings, which makes 1203.9 nm the
+operating point among the six crossings the module prices.
 
 ![the polarizability ladder and the magic crossings](../figures/fig9_polarizability_ladder.png)
 

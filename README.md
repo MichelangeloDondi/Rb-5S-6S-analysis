@@ -323,14 +323,15 @@ glance").
 
 ## Calculated quantities
 
-Two numbers in this archive are computed, not measured, and they sit
+Three numbers in this archive are computed, not measured, and they sit
 here rather than in the results table so the table stays a record of
 what the data itself established.
 
 | quantity | value and status | provenance | what would settle it |
 |---|---|---|---|
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
-| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization; a trapped-atom experiment |
+| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm — a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one; the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | a trapped-atom experiment (the corrections a design needs are the row below) |
+| **Trap-design corrections** at the crossings | at 1204 nm the fourth-order differential shift is +0.87 Hz for every squared megahertz of trap depth, the vector shift on a stretched state is 280 kHz per megahertz of depth per unit circularity of the trap light, and trap-photon scattering plus these two terms disqualify every other crossing ([rb5s6s/hyperpolarizability.py](rb5s6s/hyperpolarizability.py)) | calculated (envelope, factor of two) | a trapped-atom measurement of shift against depth and polarization |
 
 The second row, drawn. The lower panel shows why the crossings exist
 where they do: the flat 5S polarizability threads the 6S curve's
