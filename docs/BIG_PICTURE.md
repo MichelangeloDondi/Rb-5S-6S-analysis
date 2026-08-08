@@ -171,19 +171,19 @@ deliberately incomplete: three more crossings exist hard against poles, one at
 hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
-magic in name only. That pricing is computed rather than asserted, in
-`rb5s6s/hyperpolarizability.py` (calculated, an envelope at a factor of two).
-The fourth-order differential shift at the 1204 nm crossing is +0.87 Hz for
-every squared megahertz of trap depth (h × 1 MHz of depth is 48 µK), so even a
-trap half a millikelvin deep moves the line by about a hundred hertz, four
-orders below the natural width. The vector term is the sharp requirement: a
-stretched-state atom sees 280 kHz per megahertz of depth per unit circularity
-of the trap light, so kilohertz accuracy needs polarization pure at the few
-10⁻⁴ level, and the two crossings that sit between the 6s–5p resonances are
-usable only in strictly linear light. Trap photons scatter off the 6S state a
-few times per second per megahertz of depth at 1204 nm and ten to sixty times
-faster at the other long-wavelength crossings, which makes 1203.9 nm the
-operating point among the six crossings the module prices.
+magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all three, to within a factor
+of two. The fourth-order differential shift at the 1203.9 nm crossing is
++0.87 Hz per megahertz squared of trap depth, where a depth of h × 1 MHz is
+48 µK, so a trap half a millikelvin deep moves the line by about a hundred
+hertz against the transition's 3.49 MHz natural width. The vector shift is the
+sharper requirement: at that same depth a stretched-state atom sees 280 kHz per
+megahertz of depth per unit circularity of the trap light, so holding the trap
+shift under a kilohertz needs the circularity below about 3 × 10⁻⁴, and the two
+crossings lying between the 6S–5P resonances are usable only in strictly linear
+light. Trap photons scatter off the 6S state a few times per second per
+megahertz of depth at 1203.9 nm and ten to sixty times faster at the other
+long-wavelength crossings, which is what leaves 1203.9 nm as the one practical
+operating point.
 
 ![the polarizability ladder and the magic crossings](../figures/fig9_polarizability_ladder.png)
 

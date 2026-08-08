@@ -459,8 +459,8 @@ CANONICAL = [
     dict(
         name="hyperpolarizability: quartic coefficient at the 1204 crossing",
         value=lambda: f"{_hyp_c1204():+.2f}",
-        find=re.compile(r"([+-][0-9]\.[0-9]{2})\s+Hz\s+for\s+every\s+"
-                        r"squared\s+megahertz"),
+        find=re.compile(r"([+-][0-9]\.[0-9]{2})\s+Hz\s+per\s+megahertz\s+"
+                        r"squared"),
         mode="all",
         docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md", "README.md"],
     ),
