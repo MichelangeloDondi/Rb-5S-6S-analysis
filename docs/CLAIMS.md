@@ -337,8 +337,9 @@ dipole inputs themselves worth about 75 pm per ten per cent), in the
 telecom O band where
 stabilized diodes are commodity. An auxiliary beam scanned across that
 crossing while the 993 nm lineshape is read gives a null measurement of
-the 6S to 7P matrix element at the two to three per cent level at the
-projected campaign shift precision, a sign-reversal test of the
+the 6S to 7P line's residue at about the 3 per cent level at the projected
+campaign shift precision, which is about 1.8 per cent on the reduced
+matrix element itself, a sign-reversal test of the
 asymmetry channel, and a calibrated shift injector at 3.6 kHz per
 picometre. The design and its envelope numbers are section 5.1 of
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md). Not
@@ -405,9 +406,10 @@ it at, with the condition attached:
   times the session length before it can catch even a convention error.
   That audience is served by a longer session or a looser focus, not by
   the design as it stands.
-- The O-band null at 1297.5 nm would deliver the 6S to 7P matrix element
-  by frequency metrology, at the two to three per cent level at the projected
-  campaign shift precision, in a channel where no measurement exists,
+- The O-band null at 1297.5 nm would deliver the 6S to 7P residue
+  by frequency metrology, at about the 3 per cent level at the projected
+  campaign shift precision and about 1.8 per cent on the matrix element
+  behind it, in a channel where no measurement exists,
   since a 7P lifetime sums its decay channels and ground-state
   absorption never reaches it. The audience is the all-order
   atomic-structure methods, which run unbenchmarked on

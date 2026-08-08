@@ -1066,21 +1066,26 @@ Section 5.1 chose 1297.5 nm because it is the steepest crossing, and everything
 it says about that root stands. What it did not do is compute the same budget
 for the other five. Doing so confirms the choice and replaces the reason.
 
-Three quantities decide what a crossing can measure, and section 5.1 used only
-the first.
+Two quantities decide what a crossing can measure, and steepness, which is
+what section 5.1 selected on, is neither of them.
 
-**Steepness** sets how precisely a crossing can be LOCATED from a measured
-shift. **Position sensitivity** sets what that location MEASURES, and it runs
-opposite to steepness: a flat crossing is hard to find, but its position moves
-a long way when an element changes, because a small change in a nearly
-cancelling difference travels far along a shallow curve. The precision a
-crossing delivers on the element it reads is its location precision, which
-steepness sets, divided by its position sensitivity, so the two pull in
-opposite directions. On those two alone, 1339.6 nm looks like the better
-lever, at 1.6 per cent against 1.76 for the steep root.
+**Steepness** sets how precisely a crossing can be LOCATED in wavelength from
+a measured shift. **Position sensitivity** sets how far the crossing moves in
+wavelength when an element changes. Both scale as one over the steepness, the
+first because a steep root turns a shift precision into a short wavelength
+interval and the second because the same steep curve absorbs an element change
+in a short distance, so steepness cancels out of their ratio exactly.
+`lever_table()` shows the cancellation to six figures across a factor of nine
+hundred in steepness. What a crossing measures is the differential
+polarizability itself, to 288 atomic units at the campaign intensity and a
+shift precision of 92 kHz, and the precision it delivers on an element is that
+288 divided by how strongly the differential responds to the element, which is
+176 atomic units per per cent at 1339.6 nm against 163 at the steep root. On
+the response alone, 1339.6 nm looks like the better lever, at 1.6 per cent
+against 1.76 for the steep root.
 
-**The third quantity is what the element is already known to**, and it reverses
-that reading. The line lists carry their own quoted uncertainties, so the
+**The quantity that decides the case is what the element is already known
+to**, and it reverses that reading. The line lists carry their own quoted uncertainties, so the
 comparison needs no judgement. `rb5s6s.hyperpolarizability.lever_table()`
 computes all of it, and the last column is the one that matters, the currently
 quoted uncertainty divided by what the crossing would deliver:
@@ -1095,23 +1100,30 @@ quoted uncertainty divided by what the crossing would deliver:
 | 1031.9 | −0.54 | 529 | 6S–6P₃/₂ | 24% | 0.26% | 0.01 |
 
 One crossing out of six would tell anyone anything they do not already know,
-and it is the one section 5.1 picked, though at 1.03 the gain is break-even
-rather than an advance: what the measurement adds is an independent
-determination by frequency metrology in a channel where none exists, not a
-smaller error bar. The apparent better lever at 1339.6 nm
+and it is the one section 5.1 picked, though at 1.03 the improvement is three
+per cent on the error bar and no more, so what the measurement would add is an
+independent determination by frequency metrology in a channel that has none
+rather than a materially tighter number. The apparent better lever at 1339.6 nm
 reads an element the 6S lifetime already pins eight times more tightly than the
 measurement could, so its 1.6 per cent buys nothing.
 
-**Why steepness was the right proxy after all, which is the part worth
-keeping.** Steepness and ignorance are not independent. A crossing is steep
-because it sits close to a resonance. The resonances the crossings sit near are
+**Why steepness was the right thing to select on even though it cancels, which
+is the part worth keeping.** Steepness and ignorance are not independent. A
+crossing is steep because it sits close to a resonance. The resonances the crossings sit near are
 the weak, high-lying ones, and those are precisely the transitions whose matrix
 elements nobody has measured well, because a weak line is hard to measure by
 any method. So the steepest crossing automatically reads the least known
 element. Section 5.1 selected on the property it could see and got the right
 answer for a reason it did not state.
 
-**A correction to something this amendment first claimed.** An earlier version
+**Two corrections to what this amendment first claimed.** The first version
+presented steepness as one of three quantities that set the precision a
+crossing delivers. It sets none of it. The table's arithmetic was never
+affected, since the code divides one steepness-scaled quantity by another, but
+the account of what the number rests on was wrong, and the paragraph above now
+states the cancellation.
+
+Second, an earlier version
 of this section argued that a crossing reading 6S–5P₃/₂ would settle the
 differential-polarizability sign question, since that dispute turns on a
 revision of the 6S–5P strength of about a third. It would not, and the reason

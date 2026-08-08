@@ -409,7 +409,9 @@ def steepness(lam_nm: float, h: float = 1e-4):
     """d(alpha_6S - alpha_5S)/d(lambda) in atomic units per picometre.
 
     This is the lever arm. It sets how precisely a crossing can be
-    LOCATED from a measured shift, and it runs opposite to what makes
+    LOCATED IN WAVELENGTH from a measured shift, and it cancels out of
+    what the crossing then measures (see lever_table). It runs
+    opposite to what makes
     a crossing a good trap: a flat crossing is insensitive to the
     trap laser's wavelength, which is why it traps well and locates
     badly."""
@@ -468,8 +470,14 @@ def lever_table(shift_precision_hz: float = 92e3,
     steepness, and the localisation is the shift precision divided by
     that. Dividing the localisation by the position sensitivity gives
     the fractional precision on the element the crossing speaks to.
+    Steepness cancels in that division, since the localisation and the
+    sensitivity both scale as one over it. What is left is the
+    differential polarizability measured to 288 atomic units at this
+    shift precision, divided by the element's response in the same
+    units, so wavelength is the unit the measurement is expressed in
+    and not a term in it.
 
-    THE THIRD FACTOR, and it decides everything. A precision is
+    THE OTHER FACTOR, and it decides everything. A precision is
     worth nothing on its own. What matters is the precision against
     what is ALREADY known about that element, and the line lists
     carry their own quoted uncertainties, so the comparison is

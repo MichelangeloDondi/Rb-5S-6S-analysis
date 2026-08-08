@@ -174,8 +174,8 @@ hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
 magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all six crossings, the
-pole-hugging ones included, pricing three trap-design quantities at each to
-within a factor of two. The fourth-order differential shift, the hyperpolarizability term, is
+pole-hugging ones included, pricing three trap-design quantities at each, the
+two shifts to within a factor of two. The fourth-order differential shift, the hyperpolarizability term, is
 +0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
 by somewhere between fifty and two hundred hertz against the transition's
@@ -198,7 +198,7 @@ is best where the trap is worst, but the quantity that decides whether a
 measurement is worth making is what the element is already known to.
 `lever_table()` in the same module ranks all six on all three counts, and
 exactly one crossing, the steep root at 1297.5 nm, would improve on the present
-state of knowledge. [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
+state of knowledge at all, by three per cent. [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
 §5.1.1 carries the table and the reason steepness turned out to be the right
 thing to have selected on.
 

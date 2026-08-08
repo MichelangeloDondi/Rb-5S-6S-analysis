@@ -152,6 +152,32 @@ def test_lever_table_names_the_element_each_crossing_speaks_to():
     assert rows["1339.6"]["known_frac"] < 0.005
 
 
+@pytest.mark.slow
+def test_steepness_cancels_out_of_the_delivered_precision():
+    """The correction of 2026-08-09. Section 5.1 selected crossings on
+    steepness and the first amendment called it one of three deciding
+    quantities. It decides none of it: the localisation and the
+    position sensitivity both scale as one over the steepness, so it
+    cancels exactly. Pinned two ways, since the whole account of what
+    the lever measures rests on it."""
+    rows = hp.lever_table()
+    # the localisation is a fixed differential polarizability, in a.u.
+    prods = [r["localisation_pm"] * abs(r["steepness_au_per_pm"])
+             for r in rows]
+    assert max(prods) - min(prods) < 1e-6 * prods[0]
+    assert abs(prods[0] - 288.011) < 0.01, prods[0]
+    # and so the delivered precision times the element's response is
+    # the same constant at every crossing, over a factor of 900 in
+    # steepness
+    resp = [r["localisation_pm"] / (r["frac_precision"] / 0.01)
+            * abs(r["steepness_au_per_pm"]) for r in rows]
+    consts = [p * rr for p, rr in
+              zip((r["frac_precision"] for r in rows), resp)]
+    assert max(consts) - min(consts) < 1e-6 * consts[0]
+    steeps = [abs(r["steepness_au_per_pm"]) for r in rows]
+    assert max(steeps) / min(steeps) > 500.0
+
+
 def test_position_sensitivity_restores_the_line_lists():
     """The sensitivity scan mutates module state and must put it
     back, or every later computation in the session is wrong."""
