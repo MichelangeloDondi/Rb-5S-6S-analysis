@@ -159,9 +159,11 @@ before it had none. The state pair has to be said out loud: Zang *et al.* 2012
 report six magic wavelengths between 1200 and 1600 nm for the **6s–5p₁/₂,₃/₂**
 pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
 1339.6 here. They are a different state pair and a different magic condition,
-and the crowding is expected: every 6S-involving root in the infrared is
-confined between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂ resonances at 1323.88 and
-1366.87 nm, a 43 nm window. These are an envelope, and scalar only, which for
+and the crowding is expected: between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂
+resonances at 1323.88 and 1366.87 nm the 6S polarizability runs from one pole
+to the other through every value, so any pair built on 6S tends to put a root
+somewhere in that 43 nm window, theirs at 1336 and 1342 nm and this archive's
+at 1339.6 nm included. These are an envelope, and scalar only, which for
 these states is less of a caveat than it sounds: the tensor polarizability
 vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
@@ -171,19 +173,24 @@ deliberately incomplete: three more crossings exist hard against poles, one at
 hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
-magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all three, to within a factor
-of two. The fourth-order differential shift, the hyperpolarizability term, is
+magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all six crossings, the
+pole-hugging ones included, pricing three trap-design quantities at each to
+within a factor of two. The fourth-order differential shift, the hyperpolarizability term, is
 +0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
-by about a hundred hertz against the transition's 3.49 MHz natural width. The vector shift is the
+by somewhere between fifty and two hundred hertz against the transition's
+3.49 MHz natural width. The vector shift is the
 sharper requirement: at that same depth a stretched-state atom sees 280 kHz per
 megahertz of depth per unit circularity of the trap light, so holding the trap
-shift under a kilohertz needs the circularity below about 3 × 10⁻⁴, and the two
-crossings lying between the 6S–5P resonances are usable only in strictly linear
-light. Trap photons scatter off the 6S state a few times per second per
-megahertz of depth at 1203.9 nm and ten to sixty times faster at the other
-long-wavelength crossings, which is what leaves 1203.9 nm as the one practical
-operating point. The crossings also read backwards. Where one sits is fixed by
+shift under a kilohertz needs the circularity below about 3 × 10⁻⁴. At the 1297.5 and 1339.6 nm
+crossings the same coefficient is nearly ninety times larger, so those two are
+usable only in strictly linear light. Trap photons scatter off the 6S state a few times per second per
+megahertz of depth at 1203.9 nm and ten to sixty times faster at the 1287.9,
+1297.5 and 1339.6 nm crossings. The pair near 1030 nm shows lower rates on
+this line list, but there the module flags its upward entries as several-fold
+understatements, and holding a trap wavelength against the adjacent 6s–8p
+doublet would put the trap laser's own stability into the error budget. That
+leaves 1203.9 nm as the one practical operating point. The crossings also read backwards. Where one sits is fixed by
 the matrix elements that build the two polarizabilities, so measuring a
 crossing constrains them, which is how the 5S–5D magic wavelength was turned
 into a 5P–5D matrix element by [Hamilton 2023](lit/hamilton2023.md). The lever
@@ -215,12 +222,12 @@ is the soluble half of the objection. Recorded as an observation about the
 numbers, not a design: they remain unvalidated, scalar-only envelopes, and the
 band edges are an external convention rather than anything this repo computes.
 
-**A fourth O-band crossing is a lever rather than a trap, and it is the map's
-cheapest arrow.** The three above are wavelengths where the 5S and 6S
-polarizabilities are *equal*, which is what a trap needs. The differential
-polarizability of the same pair also passes through *zero* on a steep root at
-1297.5 nm, 0.745 nm from the 6S to 7P resonance, and a zero is useless for
-trapping and precise for metrology: an auxiliary diode scanned across it while
+**A third O-band crossing is a lever rather than a trap, and it is the map's
+cheapest arrow.** The three above cleared the pole guard. The same differential
+polarizability also crosses zero on a steep root at 1297.5 nm, 0.745 nm from
+the 6S to 7P resonance, trapping in sign like the other five but priced out as
+a trap by that proximity, and the proximity that ruins it as a trap is what
+makes it precise for metrology: an auxiliary diode scanned across it while
 the 993 nm lineshape is read locates the root, and the root's position gives
 the 6S to 7P reduced dipole matrix elements with no intensity calibration and
 no absolute frequency reference in the chain. The same beam is a sign-reversal

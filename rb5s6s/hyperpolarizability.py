@@ -406,7 +406,7 @@ def scattering_rates(lam_nm: float):
 # constrains which element, and how well.
 
 def steepness(lam_nm: float, h: float = 1e-4):
-    """d(alpha_5S - alpha_6S)/d(lambda) in atomic units per picometre.
+    """d(alpha_6S - alpha_5S)/d(lambda) in atomic units per picometre.
 
     This is the lever arm. It sets how precisely a crossing can be
     LOCATED from a measured shift, and it runs opposite to what makes
@@ -419,9 +419,10 @@ def steepness(lam_nm: float, h: float = 1e-4):
 
 def position_sensitivity(name: str, lam_nm: float, bracket, frac: float = 0.01):
     """How far the crossing moves when one reduced matrix element is
-    scaled by `frac`, in picometres, for every S-P line of both
-    states. Returns a list of (shift_pm, state, line_label), largest
-    first.
+    scaled by `frac`, in picometres, for the eight lines up through
+    8P of each state (the eight higher lines the 5S list carries are
+    left out). Returns a list of (shift_pm, state, line_label),
+    largest in magnitude first.
 
     ONE AT A TIME, which is a sensitivity and not an error budget: a
     real inversion needs the joint covariance of the element set, and

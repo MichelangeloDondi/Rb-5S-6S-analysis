@@ -1073,10 +1073,11 @@ the first.
 shift. **Position sensitivity** sets what that location MEASURES, and it runs
 opposite to steepness: a flat crossing is hard to find, but its position moves
 a long way when an element changes, because a small change in a nearly
-cancelling difference travels far along a shallow curve. Their ratio is the
-fractional precision the crossing would deliver on the element it reads. On
-those two alone, 1339.6 nm looks like the better lever, at 1.6 per cent against
-1.8 for the steep root.
+cancelling difference travels far along a shallow curve. The precision a
+crossing delivers on the element it reads is its location precision, which
+steepness sets, divided by its position sensitivity, so the two pull in
+opposite directions. On those two alone, 1339.6 nm looks like the better
+lever, at 1.6 per cent against 1.76 for the steep root.
 
 **The third quantity is what the element is already known to**, and it reverses
 that reading. The line lists carry their own quoted uncertainties, so the
@@ -1086,7 +1087,7 @@ quoted uncertainty divided by what the crossing would deliver:
 
 | crossing (nm) | steepness (a.u./pm) | locates to (pm) | reads | would give | already known | gain |
 |---|---|---|---|---|---|---|
-| 1297.5 | −11.3 | 26 | 6S–7P₁/₂ | 1.8% | 1.81% | **1.03** |
+| 1297.5 | −11.3 | 26 | 6S–7P₁/₂ | 1.76% | 1.81% | **1.03** |
 | 1287.9 | −0.64 | 447 | 6S–7P₃/₂ | 4.5% | 1.62% | 0.36 |
 | 1029.7 | −2.2 | 133 | 6S–8P₃/₂ | 9.2% | 1.53% | 0.17 |
 | 1339.6 | +0.77 | 374 | 6S–5P₃/₂ | 1.6% | 0.21% | 0.13 |
@@ -1094,7 +1095,10 @@ quoted uncertainty divided by what the crossing would deliver:
 | 1031.9 | −0.54 | 529 | 6S–6P₃/₂ | 24% | 0.26% | 0.01 |
 
 One crossing out of six would tell anyone anything they do not already know,
-and it is the one section 5.1 picked. The apparent better lever at 1339.6 nm
+and it is the one section 5.1 picked, though at 1.03 the gain is break-even
+rather than an advance: what the measurement adds is an independent
+determination by frequency metrology in a channel where none exists, not a
+smaller error bar. The apparent better lever at 1339.6 nm
 reads an element the 6S lifetime already pins eight times more tightly than the
 measurement could, so its 1.6 per cent buys nothing.
 
@@ -1112,7 +1116,7 @@ of this section argued that a crossing reading 6S–5P₃/₂ would settle the
 differential-polarizability sign question, since that dispute turns on a
 revision of the 6S–5P strength of about a third. It would not, and the reason
 is the same third column: 6S–5P₃/₂ is already known to 0.21 per cent, so a
-third-order revision is already excluded by a very large margin, which is the
+revision of that size is excluded by a factor of roughly 150, which is the
 same conclusion the archive reaches from the measured 6S lifetime. The sign
 question was already decided by existing data. Nothing here adds to it.
 
