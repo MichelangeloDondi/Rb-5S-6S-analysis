@@ -272,8 +272,8 @@ continued to imaginary frequency: C₆ = (3/π)∫α_5S(iω)α_6S(iω)dω. That 
 
 That absolute value should not be used on its own, and the reason is worth
 stating. Run on 7S, the one nS state in Rb whose self-broadening has been
-measured at all, the same code returns 4.5 kHz per 10¹² cm⁻³ against
-Zameroski 2014's measured 5.4 (129 ± 11 kHz/mTorr, converted at 403 K), 17%
+measured at all, the same code returns 4.40 kHz per 10¹² cm⁻³ against
+Zameroski 2014's measured 5.4 (129 ± 11 kHz/mTorr, converted at 403 K), 18%
 low. That is close to (a bit past) the
 ±10–15% the valence-only truncation and the mean-speed approximation explain
 (addendum 23 of [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)
@@ -283,16 +283,23 @@ records an earlier, larger gap and the coding error behind it). The
 potential, specialised from his eq. (4.15)–(4.18). His own quoted ~4%
 Lindholm-Foley error bound is for a different comparison (a J=1 excited-state
 angular average our S–S pair does not have) and is far too small to be the
-17% seen here, so it rules that approximation out as the cause of the
+18% seen here, so it rules that approximation out as the cause of the
 residual gap.
 
-The prefactor is common to 6S and 7S, so it cancels in a ratio regardless of
-its absolute accuracy. The ratio enters through the (C₆/ħ)^0.4 scaling stated
-above rather than as a plain factor, so the computed C₆(6S)/C₆(7S) = 0.347
-scales the *measured* 7S rate of 5.386 kHz per 10¹² cm⁻³ as 5.386 × 0.347^0.4
-and gives
+The input to the phase shift is the difference potential, not the pair
+coefficient: what dephases the line is ΔC₆ = C₆(5S+nS) − C₆(5S+5S), the
+excited pair against the ground pair (a 2026-08-04 referee point the
+archive adopted, [notes/vdw_difference_potential_and_4d_channel.md](notes/vdw_difference_potential_and_4d_channel.md)).
+The Lindholm-Foley prefactor, the mean-speed step and the dropped core
+and tail are common to the 6S and 7S rungs and divide out of the ratio.
+The ground-pair subtraction is not that kind of error and does not
+cancel, which is why the adopted ratio is a ratio of differences: with
+ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., the ratio 0.3128 enters
+through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
+5.386 kHz per 10¹² cm⁻³ by 0.3128^0.4 = 0.628, giving
 
-**β_self(6S) = 3.5 ± 0.3 kHz per 10¹² cm⁻³**,
+**β_self(6S) = 3.4 kHz per 10¹² cm⁻³** (±0.29 from the anchor
+measurement alone, envelope ±10–15% overall),
 
 an expectation anchored on a measurement of the same observable on the
 neighbouring state. That anchor is contested, and the number above is the
@@ -311,7 +318,14 @@ folding the 130 °C point into the headline extends the density lever from
 The identical machinery gives C₆(5S+5S) = 4180 a.u. against the literature
 Rb₂ value of ~4691, 11% low, in
 the direction and roughly the size the deliberately-dropped core predicts.
-Everything in this subsection is an envelope, good to 10–15%. The impact
+Everything in this subsection is an envelope, good to 10–15%, and the
+±0.29 above is the anchor measurement's error alone, not a total. The
+same note records the two open items larger than anything inside that
+envelope: an R⁻⁶ exchange contribution estimated at a substantial
+fraction of the direct term, which is not obviously common to the two
+rungs and could move the ratio, and the 6S→4D inelastic channel, which
+sits above the elastic anchor and never below, making the expectation
+one-sided upward. The impact
 prefactor is quoted from the pressure-broadening literature rather than derived.
 
 That expectation also has an upper anchor from measurement. [Weller 2011](lit/weller2011.md) measures the Rb **D1**
