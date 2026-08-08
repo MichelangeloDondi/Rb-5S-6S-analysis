@@ -20,6 +20,13 @@ complete for the downward 6S-5P channels (5P decays only to 5S,
 which is in the lists), a lower bound for upward channels (the
 partner's other decay paths are not in the lists).
 
+Naming, since three words are in use for one coefficient. The
+literature calls it the hyperpolarizability, which is why the file
+carries that name. The documents call the quantity the fourth-order
+differential shift, which is what it is. The code says `quartic`,
+which is how it enters the field expansion. They are the same
+number.
+
 Grade. Everything here is CALCULATED and carries an envelope grade
 of a factor of two, set by the P-D matrix elements and checked by
 the anchors in tests/test_hyperpolarizability.py: the machinery

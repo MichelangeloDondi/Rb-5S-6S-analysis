@@ -366,8 +366,9 @@ blocked waiting for these bounds, and this section does not soften that.
   disagreement comes with a clean discriminant (the published sign would
   require a 6S lifetime the measurement excludes at about 210 sigma),
   and the scalar magic wavelengths are unpublished values a trapping
-  proposal can test, now with the crossing-by-crossing quartic, vector
-  and scattering comparison a trap design would start from.
+  proposal can test, now with the crossing-by-crossing comparison of
+  fourth-order shift, vector shift and scattering a trap design
+  would start from.
 - The collision-rate literature. Two published measurements of the 7S
   self-broadening rate disagree beyond their stated errors under any
   convention reading, a comparison assembled in

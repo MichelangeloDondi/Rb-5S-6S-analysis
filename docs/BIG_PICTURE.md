@@ -172,10 +172,10 @@ hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
 magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all three, to within a factor
-of two. The fourth-order differential shift at the 1203.9 nm crossing is
-+0.87 Hz per megahertz squared of trap depth, where a depth of h × 1 MHz is
-48 µK, so a trap half a millikelvin deep moves the line by about a hundred
-hertz against the transition's 3.49 MHz natural width. The vector shift is the
+of two. The fourth-order differential shift, the hyperpolarizability term, is
++0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
+depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
+by about a hundred hertz against the transition's 3.49 MHz natural width. The vector shift is the
 sharper requirement: at that same depth a stretched-state atom sees 280 kHz per
 megahertz of depth per unit circularity of the trap light, so holding the trap
 shift under a kilohertz needs the circularity below about 3 × 10⁻⁴, and the two
