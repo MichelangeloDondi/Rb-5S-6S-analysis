@@ -167,7 +167,13 @@ vanishes identically for $J=1/2$
 (triangle rule), so with linear polarization the scalar term is exact, not an
 approximation. What remains is the vector term. Vector shifts
 near the 6S–5P lines would need their own treatment before anyone designs a
-trap. None of the three crossings has been measured.
+trap. None of the three crossings has been measured. The list is also
+deliberately incomplete: three more crossings exist hard against poles, one at
+1297.5 nm sitting 0.7 nm from the 6s₁/₂–7p₁/₂ resonance at 1298.3 nm and two
+hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
+in `magic_wavelengths()` drops them by construction. That close to a resonance,
+photon scattering and the sensitivity to trap-laser frequency make a crossing
+magic in name only.
 
 ![the polarizability ladder and the magic crossings](../figures/fig9_polarizability_ladder.png)
 

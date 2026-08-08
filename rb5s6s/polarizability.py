@@ -199,7 +199,14 @@ def _crossings(f, lo, hi, poles, guard=1.5, n=400):
 
 def magic_wavelengths(lo: float = 950.0, hi: float = 1500.0):
     """All alpha_5S = alpha_6S crossings in [lo, hi] nm, searched between the
-    5S->nP and 6S->nP poles. Returns a list of (lambda_nm, alpha_au)."""
+    5S->nP and 6S->nP poles. Returns a list of (lambda_nm, alpha_au).
+
+    The 1.5 nm pole guard drops three pole-hugging crossings on purpose
+    (near 1297.5 nm, 0.7 nm from the 6S-7P1/2 resonance, and near 1029.7
+    and 1031.9 nm inside and beside the 6S-8P doublet): that close to a
+    resonance, scattering and trap-laser frequency sensitivity make a
+    crossing unusable as a trap, so the published list carries only the
+    crossings a trap design could use."""
     poles = sorted(set(_POLES_5S_NM) | set(_POLES_6S_NM))
     xs = _crossings(delta_alpha, lo, hi, poles)
     return [(x, float(alpha_5s(x))) for x in xs]
