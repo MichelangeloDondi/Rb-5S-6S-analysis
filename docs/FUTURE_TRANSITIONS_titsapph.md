@@ -603,7 +603,8 @@ published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
 against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
 in the second. A rate measured here, with the convention stated, would
 replace the choice between them, and a measured β(6S)/β(7S) would test the
-C₆ ratio the module predicts at 0.655 rather than assume it. If 7S returned
+rate ratio the module predicts at 0.628, the ΔC₆ ratio 0.3128 to the
+power 0.4, rather than assume it. If 7S returned
 only a bound it would still separate the two published values, provided the
 bound landed below the higher one. If the filter answer goes the other way,
 7S needs the 420 nm path and the blue chain's noise model would have to be

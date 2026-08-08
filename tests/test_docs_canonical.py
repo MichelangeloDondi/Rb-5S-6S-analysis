@@ -44,6 +44,18 @@ RESULTS = ROOT / "results"
 # --------------------------------------------------------------------------- #
 # SSOT readers                                                                 #
 # --------------------------------------------------------------------------- #
+def _vdw_ratio():
+    from rb5s6s import vanderwaals as _v
+    r = _v.beta_self_anchored()
+    return r["dc6_ratio"]
+
+
+def _vdw_beta7():
+    from rb5s6s import vanderwaals as _v
+    r = _v.beta_self_anchored()
+    return r["beta7_predicted_khz"]
+
+
 def _cell(fname, quantity, key=None, col="value"):
     for r in csv.DictReader(open(RESULTS / fname)):
         if r["quantity"] == quantity and (key is None or r["key"] == key):
@@ -402,6 +414,33 @@ CANONICAL = [
         find=re.compile(r"\b(33)\b(?=\s*(?:files|excluded|are\b))"),
         mode="all",
         docs=["README.md", "docs/DATA.md"],
+    ),
+    # --- The van der Waals anchor numbers, computed live from the
+    # module. Added 2026-08-08 after the difference-form correction of
+    # 2026-08-05 was found unpropagated in BIG_PICTURE (the pair ratio
+    # 0.347 and its 3.5/4.5/17% satellites survived there for three
+    # days) and its scale factor survived mislabeled in
+    # FUTURE_TRANSITIONS. The adjudication note kept a hand-written
+    # list of sites to update, and that list missed both. These entries
+    # read the numbers from the code, so the next adjudication
+    # propagates by test failure rather than by memory.
+    dict(
+        name="vdW anchor: the delta-C6 ratio (difference form)",
+        value=lambda: f"{_vdw_ratio():.4f}",
+        find=re.compile(r"ratio (0\.3[0-9]{3}) (?:enters|to the)"),
+        mode="all",
+        # The adjudication note is deliberately absent: its
+        # before/after table legitimately shows the retired 0.3473.
+        docs=["docs/BIG_PICTURE.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+    ),
+    dict(
+        name="vdW anchor: the predicted 7S rate",
+        value=lambda: f"{_vdw_beta7():.2f}",
+        find=re.compile(r"\b(4\.[0-9]{2}) kHz per 10"),
+        mode="all",
+        # The note is absent here too: it carries the number only in
+        # its before/after table, next to the retired 4.50.
+        docs=["docs/BIG_PICTURE.md"],
     ),
 ]
 
