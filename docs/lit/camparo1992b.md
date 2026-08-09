@@ -32,8 +32,8 @@ section: prior-art
 
 # camparo1992b
 
-**Read 2026-07-29** from the PDF supplied by the experimenter. Opt. Commun.
-**91**, 343 (1992), received February 1992 — the same year and group as
+**Read from the held PDF.** Opt. Commun.
+**91**, 343 (1992), received February 1992, the same year and group as
 [Camparo & Lambropoulos](camparo1992.md), and a distinct mechanism.
 
 **The mechanism.** A field with **correlated** amplitude and frequency

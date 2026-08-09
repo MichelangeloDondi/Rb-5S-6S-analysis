@@ -470,9 +470,9 @@ the file. No doubling stage is on the bench, none of these wavelengths has been
 produced here, and the feasibility questions of §6 apply to each of them
 separately.
 
-## What the decision-maker needs
+## The same items priced
 
-Everything above is a physics menu. The host PI deciding bench time reads
+Everything above is a physics menu. Deciding bench time takes
 cost, yield and risk instead, so this section restates the same items in
 those columns, with the last naming the source class that reaches each rung's light-shift ceiling. Nothing below is scheduled, agreed or assigned. Every
 duration is [PLAN.md](PLAN.md)'s own where PLAN.md prices the block, and is
@@ -1139,7 +1139,7 @@ error budget, which needs the covariance of the whole set. The conversion from
 shift precision to wavelength rides the campaign intensity and the adopted
 waist, like every other projection here, and sharpens with the waist
 measurement.
-## 6. Open feasibility questions for the experimenter (Michelangelo)
+## 6. Open feasibility questions, to be settled at the bench
 - Ti:Sapph output power and lock quality at 760–778 nm vs the 993 nm red edge?
 - Is the 420 nm detection path (filter + blue-sensitive PMT) available, or a build?
 - Do the EOM (ruler), retro-mirror coatings, and waveplates cover 778 nm as well as

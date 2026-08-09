@@ -41,4 +41,4 @@ The nearest prior art for our specific CONSTRUCTION, and geometrically closer th
 - their signal is a two-colour PRODUCT I_780*I_776 (near-resonant ladder), not the degenerate single-colour I^2 of the 993 nm 5S->6S virtual-state two-photon;
 - they do not treat the axial standing-wave fringes at all (transverse-profile average only) — fringe-*ignored*, not fringe-*averaged*, which reinforces rather than threatens our fringe delineation.
 
-MUST be delineated in the paper's introduction: a referee who knows Hamilton will see the integral parallel immediately, so we state up front what we add. Their **776.179 nm magic wavelength** on the 5D_5/2 clock transition is also the target of a proposed Ti:Sapph asymmetry scan (`FUTURE_TRANSITIONS_titsapph.md`).
+MUST be delineated in the paper's introduction: the integral parallel is immediate, so the introduction states what this work adds. Their **776.179 nm magic wavelength** on the 5D_5/2 clock transition is also the target of a proposed Ti:Sapph asymmetry scan (`FUTURE_TRANSITIONS_titsapph.md`).

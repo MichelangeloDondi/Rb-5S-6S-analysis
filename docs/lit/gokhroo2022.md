@@ -20,7 +20,7 @@ routing: []
 verify_flags: []
 verified_date: 2026-07-16
 summary: >
-  Read in full 2026-07-16: cold ⁸⁷Rb in a MOT around the fibre (NOT a
+  Read in full: cold ⁸⁷Rb in a MOT around the fibre (NOT a
   warm vapour, as an earlier draft of ours said), driving 5S₁/₂
   (F=2) → 6S₁/₂ (F″=2) at 993 nm — our exact line — with an M
   Squared SolsTis Ti:Sapph quoted at sub-MHz linewidth, and a

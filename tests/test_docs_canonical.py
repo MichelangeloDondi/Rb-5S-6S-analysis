@@ -178,7 +178,18 @@ CANONICAL = [
         # cites it avoids the S0(225)< pattern so this guard stays sharp
         name="AC-Stark bound S0(225mW), 95% profile",
         value=lambda: f"{float(_cell('stark_joint.csv', 'S0_225mW_ub95')):.2f}",
-        find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*[<≲]\s*([0-9.]+)\s*MHz"),
+        # "below" joined `<` and `≲` on 2026-08-09. The math-render sweep
+        # rewrote `$S_0(225\ \text{mW})<0.26$` as `... $ below 0.26`, because
+        # a `<` inside a math span is entity-escaped before MathJax sees it
+        # and the whole span renders as raw source. The relation had moved out
+        # of the maths into the prose in README and methods/03, where this
+        # regex could no longer see it, and methods/03 failed the presence
+        # check with the correct value on the page. Same value pinned, one
+        # more spelling of the relation. Note for the width-only 0.63: the
+        # prose that cites it must now avoid "S0(225 mW) below" as well as
+        # "S0(225 mW) <", or it will be read as a citation of this bound.
+        find=re.compile(r"S(?:₀|_?0)\s*\(225[^)]*\)[^0-9]*(?:[<≲]|below)\s*"
+                        r"([0-9.]+)\s*MHz"),
         mode="all",
         # docs/PLAN.md joined 2026-08-05: it quotes the bound twice in its
         # referee-risk section and was in no docs= list at all, which is the
@@ -484,13 +495,12 @@ def _tokens(entry):
 def test_canonical_registry_entries_are_well_formed(entry):
     """(A) The registry token is DERIVED live from the CSV or constant, so this
     checks only that the derivation produced something usable -- non-empty and
-    not a stringified NaN. It is not the value<->source tie and was renamed
-    because its old name (`..._value_matches_source`) claimed to be
-    (red-team, 2026-07-29).
+    not a stringified NaN. It is not the value<->source tie, which is what its
+    old name (`..._value_matches_source`) claimed for it.
 
     The real protection is the next test: corrupting
     results/stark_sweep.csv fails test_docs_cite_canonical_value, verified by
-    planting 0.633 -> 999.999. Keep both -- this one catches a producer that
+    substituting 0.633 -> 999.999. Keep both -- this one catches a producer that
     silently emits NaN, which the citation check would then happily match
     against equally-NaN prose."""
     toks = _tokens(entry)
@@ -555,8 +565,8 @@ def test_no_superseded_value_in_front_door(val, pat, label):
 #   * C3a linewidth    "<=2%"   -- observed spread is 3-8% (the 2% is the
 #                                  ramp-law PREDICTION, not the observation)
 #   * fig8 title claimed a bound while drawing an error bar twice its size
-# The lesson is that a PREDICTION and an OBSERVATION must not be quoted in the
-# same breath, and that boundary-hugging numbers need pinning to their source.
+# A PREDICTION and an OBSERVATION must not be quoted in the same breath, and
+# boundary-hugging numbers need pinning to their source.
 def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
     import csv
     from collections import defaultdict
@@ -716,7 +726,12 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
         "fig5's right-hand title no longer reads its flat free-fit value from "
         "the plotted means; a typed number there can go stale silently")
     m07 = (ROOT / "docs" / "methods" / "07_what_we_found.md").read_text(encoding="utf-8")
-    assert "2.1/2.2/1.5" in m07 and "$1.5$–$1.75$" in m07
+    # The band was written `$1.5$–$1.75$`. The math-render sweep (2026-08-09)
+    # rewrote it as plain `1.5–1.75`, because GitHub opens an inline span only
+    # where the `$` follows a line start, whitespace, `(` or `*`, so the `$`
+    # after the en-dash never opened one and the range reached the page as raw
+    # source. Same two numbers pinned, one less punctuation between them.
+    assert "2.1/2.2/1.5" in m07 and "1.5–1.75" in m07
 
 
 # --------------------------------------------------------------------------
@@ -753,8 +768,8 @@ def test_power_ladder_documented_descending():
                 continue
             # SAME LINE only. A +/-4-line window was too permissive: it was
             # satisfied by the very correction note explaining the reversal,
-            # so a planted ascending order passed. The exemption must ride on
-            # the claim itself.
+            # so an ascending order two lines above it passed. The exemption
+            # must ride on the claim itself.
             if not _DESC_OK.search(line):
                 bad.append(f"{rel}:{i}: {line.strip()[:100]}")
     assert not bad, (

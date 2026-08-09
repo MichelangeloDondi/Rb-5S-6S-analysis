@@ -183,7 +183,8 @@ dropping out during the etalon thermal transient, each recapture landing
 MHz-scale off (`APPARATUS.md` §6; results report addenda 4–7) — so
 **absolute trace positions carry no meaning across saves**; each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
 usually left alone** — a tendency rather than a protocol
-(experimenter-confirmed, 2026-07-22), and the archive shows the exceptions:
+(confirmed at the bench, 2026-07-22), and the exceptions are visible in the
+record:
 24 of 32 RF-off science blocks scatter about a common position (median
 1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
 them by ~1 s — larger than the trace window, so the axis offset itself moved.
@@ -479,7 +480,7 @@ and its brackets, and they are set out below.
   previously-cut, drift-flagged data *because* it tightens a bound is the mirror
   image of cherry-picking (both are results-driven exclusion calls, which the
   pre-registration exists to prevent). The tightening is marginal and the
-  conclusion ($S_0 < \sim2$ MHz) is unchanged, so nothing is lost by holding the
+  conclusion (S₀ below about 2 MHz) is unchanged, so nothing is lost by holding the
   clean decision. That 2 MHz is this re-examination's own 2026-07-12 value,
   recorded in `qc_reason` as 2.04 tightening to 1.92. It is not a row of §8's
   bound history, which starts at 3.1 MHz and runs to 0.14. The `qc_reason`
@@ -541,9 +542,10 @@ because the minimum of noisy one-degree-of-freedom estimates is the
 down-fluctuated one.
 
 The 130 °C lever variant (dof = 2) barely moves, 0.03 to 0.05, and keeps a
-caveat — promoted to the sole headline 2026-08-02 (Michelangelo, firsthand:
-the 130 °C session shares the same apparatus/optical configuration as the
-T-sweep; see the four-point entry below and [RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md) §9). The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
+caveat, and it was promoted to the sole headline on 2026-08-02 on firsthand
+knowledge of the bench: the 130 °C session shares the same apparatus and
+optical configuration as the temperature sweep. See the four-point entry below
+and [RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md) §9. The clock puts it 2.3 h from the 110 °C dwell inside the same campaign,
 so the objection is not a session boundary but that it is an extreme lever
 point, with T confounded against elapsed time across the whole campaign. The
 hierarchical global-fit β gains a `beta_nscale_syst` row at ±20%. A constant
@@ -663,7 +665,7 @@ conclusions:
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   overconfident. They assume one shared σ_laser across blocks and so omit the
   between-block drift the model-independent probe exposes.
-  **Superseded 2026-08-02 (Michelangelo, firsthand apparatus authority):** the
+  **Superseded 2026-08-02, on firsthand knowledge of the bench:** the
   three-point 70–110 °C headline above is retired. The 130 °C power-sweep
   session's 225 mW block ran in the SAME optical/cell configuration as this
   T-sweep, so the "different configuration" reason for excluding it no

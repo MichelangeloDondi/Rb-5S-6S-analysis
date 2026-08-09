@@ -24,4 +24,4 @@ section: collision-series
 
 # mindrup2024
 
-**Held 2026-07-29** (86 pp; front matter and scope read). Named by the external audit as Priority-4 context. The mechanism is electron-impact broadening, which requires a plasma or discharge and so does not act in this programme's sealed thermal cell -- it neither competes with nor constrains the beta_self bound. Held so the collision-series citation trail is complete and so the distinction is on record.
+**Held** (86 pp, front matter and scope read). The mechanism is electron-impact broadening, which requires a plasma or discharge and so does not act in this programme's sealed thermal cell -- it neither competes with nor constrains the beta_self bound. Held so the collision-series citation trail is complete and so the distinction is on record.

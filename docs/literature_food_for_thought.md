@@ -12,7 +12,9 @@ papers + the snippets in each section.
 **Confirmed by cross-checking against Lehmann's worked example.** Lehmann 2021 works a numerical example (NNO, m=44 u,
 w₀=0.90 mm, T=300 K → transit HWHM **41.2 kHz**, vrms 335 m/s). My analytic
 transit formula
+
 $$\text{HWHM}_\text{laser}=\frac{v_\text{th}\ln 2}{2\pi w_0},\quad v_\text{th}=\sqrt{2k_BT/m}$$
+
 gives **41.3 kHz** and vrms 337 m/s — a match to 0.2%. So the analytic form is
 right, and two independent things follow:
 
@@ -40,7 +42,7 @@ right, and two independent things follow:
 - The dominant systematic's central value moves from ~32 µm to **~50 µm** (~1.5×).
 - $S_0\propto 1/w_0^2$, so the predicted AC-Stark shift drops by
   $(32/50)^2\approx2.4\times$: $S_0(225\text{ mW})\approx1.43\to0.59$ MHz (not ÷8).
-  The archival bound (re-run: 95% $<\sim$0.64 MHz, profile likelihood) still brackets it, now narrowly.
+  The archival bound (re-run: 95% ≲0.64 MHz, profile likelihood) still brackets it, now narrowly.
 - `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm); every fit was re-run.
 
@@ -55,7 +57,9 @@ moved (β central ~0.056 → 0.036, σ_laser bound 1.1 → 1.0 laser axis, S₀ 
 
 Zameroski 2014 measures the **7S self-broadening rate = 129 kHz/mTorr** (p.11).
 Converting: at 393 K, 1 mTorr ↔ 24.5×10¹² cm⁻³, so
+
 $$\beta_\text{self}(7S)\approx 129/24.5 \approx 5\ \text{kHz per }10^{12}\ \text{cm}^{-3}.$$
+
 Our archival β_self **bound** is 0.2–0.4 MHz = 200–440 kHz per 10¹² cm⁻³ (95%,
 t-corrected for the 1-DOF scatter + the 20% density-scale systematic), so it
 sits ~40–90× above the 7S self-broadening scale (6S should be similar or a bit

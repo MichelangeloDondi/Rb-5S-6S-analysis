@@ -34,12 +34,12 @@ section: prior-art
 
 # fendel2007
 
-**The closest experimental analogue found anywhere, and the paper a referee is
-most likely to cite back.** Single-colour two-photon nS->n'S in a hot alkali
+**The closest experimental analogue in this record.** Single-colour two-photon
+nS->n'S in a hot alkali
 vapour cell with fluorescence detection: this programme's experiment, in
 caesium.
 
-**Why it is a threat.** The framing used here is that the field collapses the
+**Where the overlap bites.** The framing used here is that the field collapses the
 light-shift distribution to a mean without justification. Fendel *et al.* did
 not merely collapse it -- they **tested peak against average and published the
 result**, measuring -0.21 Hz/(mW/cm^2) against average single-beam intensity,
@@ -48,7 +48,7 @@ that "the average, rather than the peak power must be used for its evaluation".
 That is prior art on the specific peak-versus-average question, and a much
 stronger position than "nobody considered it".
 
-**The counter, which must be made explicitly rather than left implicit.** They
+**Where their result stops.** They
 used an **unfocused** beam -- Gaussian waist **0.72 mm** -- chosen precisely to
 minimise the effect. Their finding is therefore *in a near-collimated beam,
 where the intensity distribution is narrow, the average suffices*. It says
@@ -58,19 +58,16 @@ programme's premise**: a first-rate group met the focused-beam distribution
 problem and engineered around it rather than modelling it, which is the gap
 claimed here.
 
-**A coincidence worth checking before it is noticed for us.** Fendel quote a
+**A coincidence worth recording.** Fendel quote a
 2.9 kHz shift for **225 mW** incident on the cell -- the same power figure as
 this archive's S_0(225 mW) < 0.64 MHz bound. Whether that is coincidence or a
 convention inherited from this literature, it makes the two numbers directly
-comparable and a reviewer will see it.
+comparable.
 
 **ACTION: cite in the framing paragraph and draw the focused/unfocused
-distinction in one sentence.** Per the audit this is the single largest
-remaining referee risk in the light-shift argument. Obtain the PDF: the waist,
-the intensity definition (single-beam vs total) and the 225 mW figure all need
-reading first-hand before the comparison is put in print.
+distinction in one sentence.**
 
-**Read in full 2026-07-29** from the PDF supplied by the experimenter; the
+**Read in full from the held PDF.** The
 key numbers verify verbatim (-0.21 Hz/(mW/cm^2) against average single-beam
 intensity; unfocused 0.72 mm 1/e^2 waist; 2.9 kHz shift at 225 mW incident).
 

@@ -34,8 +34,7 @@ summary: >
   against. Combined experiment (two-step laser and rf spectroscopy) and
   relativistic all-order theory for the RATIO of the 6p_1/2-8s and 6p_3/2-8s
   reduced matrix elements in Cs: experimental 1.423(2) against theoretical
-  1.425(2). Fetched 2026-07-30 -- this is the one that never landed on an
-  earlier attempt, closing a gap that had been open since it was first cited.
+  1.425(2).
 loci:
   - THEORY
 section: method-anchors
@@ -43,15 +42,14 @@ section: method-anchors
 
 # sieradzan2004
 
-**Read 2026-07-30** from the held arXiv preprint (physics/0308092), fetched
-after an earlier attempt to obtain it did not land.
+**Read from the held arXiv preprint (physics/0308092).**
 
 ## What it is
 
 A. Sieradzan (Central Michigan), M. D. Havey (Old Dominion), M. S. Safronova
 (NIST Gaithersburg). Combined experimental and theoretical study of the
-**relative** transition matrix elements $\langle 6p~^2P_j \Vert r \Vert
-8s~^2S_{1/2}\rangle$ in atomic caesium — the ratio between the $j=1/2$ and
+**relative** transition matrix elements $\langle 6p~^2P_j \Vert r \Vert 8s~^2S_{1/2}\rangle$
+in atomic caesium — the ratio between the $j=1/2$ and
 $j=3/2$ legs, not their absolute values.
 
 ## The number

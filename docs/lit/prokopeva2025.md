@@ -117,8 +117,8 @@ part reproduces the absorption lineshape directly, $\hat\chi_i''(\omega)$ maps
 onto $G_i(\omega\mp\Omega_i)$, Kramers-Kronig consistency is automatic because
 the imaginary part is by construction the Hilbert transform of the real part,
 and causality of $\chi_i(t)$ follows as long as $\chi_i^0(t)$ is causal
-(Section 2.2). The amplitude, phase and resonance parameters $[a,\phi_i,
-\Omega_i]$ toggle between an oscillator ($\phi=0$), a relaxation
+(Section 2.2). The amplitude, phase and resonance parameters $[a,\phi_i,\Omega_i]$
+toggle between an oscillator ($\phi=0$), a relaxation
 ($\phi=-\pi/2$, $\Omega=0$) and a conductivity (same phase, $\chi\to\sigma$),
 so one formula covers Lorentz, Debye and Drude dispersion plus their
 disorder-broadened generalizations.
@@ -139,7 +139,7 @@ frequency-domain fits current ellipsometry software uses (pseudo-Voigt, Kim's
 $\alpha$-switch model), which are not Kramers-Kronig-derived from a genuine
 convolution and so do not cleanly separate the two contributions, and with the
 classical Brendel-Bormann (BB) model, corrected here (Appendix B) because the
-BB integral is not causal ($\chi_{BB}(t) \neq 0$ for $t<0$) and therefore
+BB integral is not causal ($\chi_{BB}(t) \neq 0$ for negative $t$) and therefore
 unusable in a time-domain solver at all.
 
 **MiMOSA is the numerical machine that makes the retrieval practical.** The
@@ -206,8 +206,8 @@ BB) instead specializes $G(x)$ to a Gaussian of known variance $\sigma^2$, a
 *known parametric family*, and evaluates the resulting integral in closed
 form rather than inverting it from data. The genuinely nonparametric,
 data-driven case is future work (their own stated next step is extending to
-asymmetric families such as Fermi-Dirac). This repository's $f(s) \propto
-|s|^{n-1}$ is exactly that same move, one level down: the intensity
+asymmetric families such as Fermi-Dirac). This repository's $f(s) \propto |s|^{n-1}$
+is exactly that same move, one level down: the intensity
 distribution $P(I) \propto 1/I$ of a focused Gaussian beam is derived from
 geometry, not fit to data, and is substituted into Delone's Eq. (5.3), the
 atomic-physics analogue of Prokopeva-Kildishev's Eq. (5), to obtain a closed

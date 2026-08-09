@@ -43,12 +43,10 @@ section: landscape-24-26
 
 # bandi2025
 
-MDPI open access (not yet held as PDF; MDPI and preprints.org both refuse
-automated fetch -- download by hand from the DOI page). The single best
+MDPI open access. The single best
 landscape/systematics-benchmark review for the Rb two-photon clock.
 
-**Full text read 2026-07-26** (44 pp; PDF supplied by the experimenter after
-MDPI and preprints.org both refused automated fetch).
+**Full text read** (44 pp).
 
 **What it actually ranks.** The abstract lists three limiters without ordering
 them, but the body does order them:

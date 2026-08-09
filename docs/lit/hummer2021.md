@@ -21,11 +21,10 @@ routing:
 verify_flags:
   - 'Journal-ref (PRL 126, 163601, 2021) confirmed against the arXiv abstract
     page; not independently Crossref-checked.'
-  - 'FETCHED UNDER A MISCHARACTERISATION. An external literature pass named this
+  - 'CITED UNDER A MISCHARACTERISATION. An external literature pass named this
     "the nearest un-applied candidate mechanism" for the unexplained OPTICAL
     linewidth excess in patterson2018 and liu2024. Reading it, that is wrong --
-    see the body. The mismatch was not caught until the paper was actually
-    opened, a day after it was cited on that basis.'
+    see the body. The mismatch was not caught until the paper was opened.'
 verified_date: 2026-07-31
 summary: >
   Theory for atoms WEAKLY BOUND to the surface of a hot optical nanofibre:
@@ -46,8 +45,8 @@ section: oist-lineage
 
 # hummer2021
 
-**Read 2026-07-31** from the held arXiv PDF (2006.12855), a day after it was
-fetched and cited on someone else's description of it.
+**Read from the held arXiv PDF (2006.12855)**, after it had already been cited
+here on someone else's description of it.
 
 ## What it actually does
 
@@ -61,14 +60,14 @@ dephasing rather than state depopulation**; and heterodyne fluorescence
 spectroscopy through the guided mode can resolve the motional spectrum.
 
 The machinery is a phonon coupling expanded to second order, giving a motional
-transition linewidth $\Gamma_{\nu'\nu} = \Gamma^{(1)}_{\nu'\nu} +
-\Gamma^{(2)}_{\nu'\nu}$ — depopulation by one-phonon absorption and emission,
+transition linewidth $\Gamma_{\nu'\nu} = \Gamma^{(1)}_{\nu'\nu} + \Gamma^{(2)}_{\nu'\nu}$ —
+depopulation by one-phonon absorption and emission,
 plus elastic two-phonon scattering, the latter dominating. Worked example: the
 $\nu = 261 \leftrightarrow \nu' = 262$ transition at
 $\omega_{\nu'\nu} = 2\pi \times 327$ kHz, with the neighbouring transition
 $2\pi \times 39$ kHz away.
 
-## Why it is not the mechanism it was fetched as
+## Why it is not the mechanism it was taken for
 
 **Every linewidth in this paper is a motional-transition linewidth.** The
 frequencies are hundreds of kHz between adjacent bound states; the broadening

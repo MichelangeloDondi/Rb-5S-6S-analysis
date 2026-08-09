@@ -66,7 +66,9 @@ cold-spot-vs-reading offset its first empirical handle.
 
 Requires the pilot/prehistory quarantines (private). Exits cleanly without
 them; the committed numbers above are the record, addendum 11 the writeup.
-Nothing here enters results/.
+Nothing here enters results/. RB5S6S_PILOT_DIR and RB5S6S_PREHISTORY_DIR are
+needed only to re-run this script against those private working copies, and the
+committed CSVs are what the repository ships.
 """
 
 from __future__ import annotations
@@ -84,8 +86,10 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-QP = Path(os.path.expanduser("~/Documents/RawDataPilot_QUARANTINE_2026-07-24"))
-QH = Path(os.path.expanduser("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24"))
+QP = Path(os.environ.get(
+    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser()
+QH = Path(os.environ.get(
+    "RB5S6S_PREHISTORY_DIR", "~/rb-2025-quarantine/prehistory")).expanduser()
 TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
 RATE_MHZ_MS = float(next(csv.DictReader(
     open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])

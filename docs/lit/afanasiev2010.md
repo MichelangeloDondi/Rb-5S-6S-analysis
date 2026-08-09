@@ -31,7 +31,7 @@ verify_flags:
 verified_date: 2026-07-31
 summary: >
   The concave counterpart of frawley2012, by Minogin with Afanasiev, held and
-  read 2026-07-31. Closed analytical equations, electrostatic approximation, for
+  read. Closed analytical equations, electrostatic approximation, for
   an atom inside a metal or dielectric hollow cylinder. Same factorised form
   U = -(C_3/x_0^3) mu, with an internal cylindrical surface factor mu that goes
   to 1 at the wall and rises to 4 near the axis -- so a flat-surface C_3/x^3 is
@@ -50,8 +50,7 @@ section: method-anchors
 
 # afanasiev2010
 
-**Held and read 2026-07-31**, supplied by the experimenter the same day it was
-identified as the top outstanding want. Institute of Spectroscopy, Troitsk.
+**Held and read.** Institute of Spectroscopy, Troitsk.
 
 ## Why it was wanted
 
@@ -69,8 +68,8 @@ the point, since the two then compose into one consistent treatment:
 
 $$U = -\frac{C_3}{x_0^3} \mu \qquad \text{(their Eq. 19)}$$
 
-with $\mu$ the **internal** cylindrical surface factor (Eq. 20), a
-sum-over-$m$ Bessel integral, and $\rho_0 = R - x_0$ the distance from the axis.
+with $\mu$ the **internal** cylindrical surface factor (Eq. 20), a Bessel
+integral summed over $m$, and $\rho_0 = R - x_0$ the distance from the axis.
 Metal or dielectric; for a dielectric of permittivity $\varepsilon$ the same
 equations hold with $C_3$ from their Eq. (10).
 

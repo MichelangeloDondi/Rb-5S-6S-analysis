@@ -41,14 +41,12 @@ section: collision-series
 
 # baranger1958
 
-**Read 2026-08-03 from the held PDF, in full (11 pp).** The previous version
-of this note had `held: false` even though `PDF_papers/baranger1958.pdf`
-existed in the repository; that was a bookkeeping gap, not a missing source.
+**Read in full from the held PDF (11 pp).**
 Bibliographic metadata (title, journal, volume 112, number 3, pages 855-865,
-November 1, 1958) all check out exactly against the printed masthead. Nothing
-in the metadata was wrong. The body text, however, was written from a
-secondary-source paraphrase, and it undersold the paper in one place worth
-flagging below.
+November 1, 1958) all check out exactly against the printed masthead. The body
+text below was originally written from a
+secondary-source paraphrase, and it undersold the paper in one place, flagged
+below.
 
 ## Abstract (verbatim)
 
@@ -129,8 +127,8 @@ of a more general formula.
 
 ## Validity conditions (Sec. 2)
 
-Defining the collision time $\tau$ (via the "collision volume" $U=\tfrac12
-v\sigma\tau$, Eqs. 19-20 -- the time/volume over which a perturber's
+Defining the collision time $\tau$ (via the "collision volume" $U=\tfrac12 v\sigma\tau$,
+Eqs. 19-20 -- the time/volume over which a perturber's
 wavefunction differs appreciably from a free plane wave), the impact
 approximation requires
 
@@ -195,8 +193,8 @@ still cancels the quoted (not derived) prefactor in a $C_6(6S)/C_6(7S)$
 ratio rather than trust the absolute value, independent of this fix.
 
 **Validity check for our regime.** The vapour-cell density runs from about
-$5.6\times10^{11} \text{cm}^{-3}$ at 70 C to about $2.9\times10^{13} 
-\text{cm}^{-3}$ at 130 C (`rb5s6s/density.py`, Nesmeyanov/Steck), i.e. of
+$5.6\times10^{11} \text{cm}^{-3}$ at 70 C to about $2.9\times10^{13} \text{cm}^{-3}$
+at 130 C (`rb5s6s/density.py`, Nesmeyanov/Steck), i.e. of
 order $10^{13} \text{cm}^{-3}$ at the top of the sweep. Checking Baranger's
 conditions there (worst case, 130 C, where the margins are smallest):
 
@@ -210,7 +208,7 @@ conditions there (worst case, 130 C, where the margins are smallest):
   grows at lower $T$, where the density is smaller).
 - **Energy condition (43a)/(43b).** $kT/h\approx8.4 \text{THz}$ at 130 C,
   versus widths of order kHz-MHz ($\beta_\text{self}$ itself and the archival
-  bound alike): a margin of $10^7$-$10^9$.
+  bound alike): a margin of $10^7$ to $10^9$.
 
 Both conditions hold by many orders of magnitude across the full 70-130 C
 sweep, so the impact approximation's own validity is not in question for

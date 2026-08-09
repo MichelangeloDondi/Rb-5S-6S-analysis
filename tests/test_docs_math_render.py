@@ -28,6 +28,31 @@ text group or as ASCII.
 `\ ` (backslash-space) is NOT flagged: space is not punctuation, so the
 backslash survives and MathJax reads it as an explicit space — which is why the
 `225\ \text{mW}` spacing used throughout renders fine.
+
+Two further failure modes, both measured against GitHub's own renderer rather
+than assumed. The public `POST /markdown` endpoint returns the HTML that goes
+to the page before MathJax runs, so what the math pass is handed can be read
+off directly.
+
+ADJACENCY. GitHub opens an inline span only where the `$` follows a line start,
+whitespace, `(` or `*`, and closes it only where the `$` is followed by
+something other than a letter or a digit. Where either side fails, the whole
+span is emitted as raw source: `$^{171}$Yb` stays literally that on the page,
+which is how a lit note can carry two dozen isotope labels and still look right
+in a local editor. Read off the renderer case by case: `2$\Delta$`,
+`a-$\kappa$`, `en–$\mu$`, `m$d$`, `]$b$`, `/$c$`, `"$a$"` and `$p$4` all came
+back raw, while a line start, a space, `($y$)` and `**$z$**` all rendered. The
+`*` allowance is deliberately loose. `**$z$**` renders but `*$b$*` does not, so
+single-asterisk emphasis wrapped tight around math is one break this check lets
+through.
+
+ANGLE BRACKETS. The markdown pass turns `<` and `>` into HTML entities before
+MathJax sees the span, and on the inline path it escapes twice, so `$a < b$`
+reaches MathJax as the entity text rather than as `<`. Write `\lt` and `\gt`.
+A `$$…$$` block standing as its own paragraph escapes only once and does
+survive today. The check covers it anyway, because a `$$` line takes the inline
+path the moment the blank line above it goes away, and the repository already
+had one `$$` span sitting inside a paragraph for exactly that reason.
 """
 
 from __future__ import annotations
@@ -57,6 +82,40 @@ _TEXTGRP = re.compile(r"\\(?:text|mathrm|mathbf|textrm)\{([^{}]*)\}")
 _FIX = {"%": "move % outside the math span (bare % is a MathJax comment)",
         ",": "drop it", ";": "drop it", ":": "drop it", "!": "drop it",
         "{": "\\lbrace", "}": "\\rbrace", "\\": "\\cr", "|": "\\Vert"}
+_ANGLE = re.compile(r"[<>]")
+_ALNUM = re.compile(r"[A-Za-z0-9]")
+_OPEN_OK = "(*"                                      # besides a line start and whitespace
+
+
+def _blank(m: re.Match) -> str:
+    """Spaces in place of the match, newlines kept, so line numbers stay exact."""
+    return re.sub(r"[^\n]", " ", m.group(0))
+
+
+def _spans_in_context(text: str):
+    """Every span GitHub will hand to MathJax, with the characters around it.
+
+    Fenced code AND inline `code` are blanked out. A `$…$` written between
+    backticks documents the syntax instead of being an equation, which is how
+    STYLE.md and this module's own docstring write it, and it never reaches the
+    math pass.
+
+    Yields (body, line, char before, char after, quoted fragment). A display
+    span reports newlines for the two characters, because `$$` sits on its own
+    line by design and the adjacency rule does not apply to it.
+    """
+    text = re.sub(r"```.*?```", _blank, text, flags=re.S)
+    text = re.sub(r"`[^`\n]*`", _blank, text)
+    out = [(m.group(1), text[:m.start()].count("\n") + 1, "\n", "\n",
+            m.group(0)[:70])
+           for m in re.finditer(r"\$\$(.+?)\$\$", text, re.S)]
+    rest = re.sub(r"\$\$.+?\$\$", _blank, text, flags=re.S)
+    for m in re.finditer(r"\$([^$\n]+)\$", rest):
+        out.append((m.group(1), rest[:m.start()].count("\n") + 1,
+                    rest[m.start() - 1] if m.start() else "\n",
+                    rest[m.end()] if m.end() < len(rest) else "\n",
+                    rest[max(0, m.start() - 12):m.end() + 12].strip()))
+    return out
 
 
 def _math_spans(text: str):
@@ -92,6 +151,37 @@ def test_math_renders_on_github(doc):
             if bad:
                 problems.append(f"{rel}:~{ln}: non-ASCII {bad!r} inside \\text{{}} — may not render on GitHub")
 
+    lines = raw.split("\n")
+    for body, ln, before, after, frag in _spans_in_context(raw):
+        # A quotation is reproduced as the source wrote it. Where a quoted
+        # symbol cannot render on this platform, the platform loses: altering
+        # the characters inside quotation marks to satisfy a rendering rule
+        # would make the quote no longer a quote. The exemption is the span
+        # whose opening $ sits against the quotation mark on a marked verbatim
+        # line, and nothing else on that line: an early version skipped the
+        # whole line, and a planted `cm$^{-3}$` beside a quotation went
+        # unreported.
+        if (before in "“\"" and 0 < ln <= len(lines)
+                and "Verbatim:" in lines[ln - 1]):
+            continue
+        # (e) adjacency: GitHub opens an inline span only after a line start,
+        #     whitespace, `(` or `*`, and closes it only before a non-alphanumeric
+        if not (before.isspace() or before in _OPEN_OK):
+            problems.append(f"{rel}:{ln}: {frag!r}: {before!r} sits before the opening $, "
+                            "so GitHub leaves the whole span as raw source on the page "
+                            "(measured against its renderer, not assumed). Put a space, "
+                            "a `(` or a `**` in front of it, or move the character inside the math.")
+        if _ALNUM.match(after):
+            problems.append(f"{rel}:{ln}: {frag!r}: {after!r} follows the closing $, "
+                            "so GitHub leaves the whole span as raw source on the page "
+                            "(measured against its renderer, not assumed). Pull the character "
+                            "into the math, as in $^{171}\\text{Yb}$.")
+        # (f) < or > anywhere in math: entity-escaped before MathJax sees it
+        if _ANGLE.search(body):
+            problems.append(f"{rel}:{ln}: {frag!r}: < or > inside math. Markdown escapes it to an "
+                            "HTML entity before the math pass, so MathJax is handed the entity "
+                            "text rather than the sign. Use \\lt and \\gt.")
+
     # (d) a bare | inside math on a markdown table row — eaten as a column separator
     for n, line in enumerate(raw.split("\n"), 1):
         if line.lstrip().startswith("|") and any("|" in m for m in re.findall(r"\$([^$\n]+)\$", line)):
@@ -115,17 +205,28 @@ def test_no_inline_math_span_wraps_a_line():
                          capture_output=True, text=True)
     if out.returncode != 0:
         pytest.skip("not a git checkout")
+    # The blanket docs/lit/ exemption is gone. It carried no reason, and it hid
+    # eight wrapped spans in seven lit notes, which was every wrapped span the
+    # repository had. Exactly one line under docs/lit/ is odd-parity without
+    # being a math span at all: biraben1974.md's provenance note, where a lone
+    # `$` sits inside an HTML comment quoting the scan's garbled OCR ("3S-5S"
+    # reads as "3$-5S"). An HTML comment reaches no renderer, so the narrow
+    # replacement is to skip comments in every file rather than one directory.
     bad = []
     for rel in [p for p in out.stdout.split("\n") if p]:
-        if rel.startswith("docs/lit/"):
-            continue
         text = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
-        in_fence = False
+        in_fence = in_comment = False
         for i, line in enumerate(text.split("\n"), 1):
             if line.lstrip().startswith("```"):
                 in_fence = not in_fence
                 continue
             if in_fence:
+                continue
+            if in_comment:
+                in_comment = "-->" not in line
+                continue
+            if "<!--" in line and "-->" not in line:
+                in_comment = True
                 continue
             # display math ($$) opens and closes on its own lines by design
             if line.strip().startswith("$$") or line.strip().endswith("$$"):

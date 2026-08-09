@@ -491,8 +491,8 @@ def test_top_three_tie_tolerance_is_marginal_not_pass():
 # heights at the measured drive depth, carrier excluded.
 #
 # These tests pin the construction, the fact that it changes nothing on a comb
-# the old rule already numbered correctly, the plant that shows the first test
-# is not vacuous, and the one thing the change COSTS.
+# the old rule already numbered correctly, the control that shows the first
+# test is not vacuous, and the one thing the change COSTS.
 
 # t0 offsets, in tooth spacings, at which the window-centre rule numbers a comb
 # one slot out. Anything past half a spacing does it, which on the campaign
@@ -525,10 +525,10 @@ def test_amplitude_seed_lands_a_displaced_comb_on_the_undisplaced_numbering():
 
 
 def test_the_plant_proximity_seeding_displaces_the_same_combs():
-    """The plant for the test above. Revert the one thing that changed and every
-    comb in that set comes back numbered a whole slot out, and every one of them
-    needs the ladder to be rescued, so the assertions above are testing the seed
-    and not the generator.
+    """The control for the test above. Revert the one thing that changed and
+    every comb in that set comes back numbered a whole slot out, and every one
+    of them needs the ladder to be rescued, so the assertions above are testing
+    the seed and not the generator.
 
     Two of the three things the test above asserts fail here: the fit of record
     is displaced, and the ladder acts. What the ladder then returns is a

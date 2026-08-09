@@ -27,7 +27,7 @@ verify_flags:
     preprint exists or is needed.'
 verified_date: 2026-07-30
 summary: >
-  A Rb two-photon optical clock (AFRL/Space Dynamics Lab), fetched 2026-07-30 to
+  A Rb two-photon optical clock (AFRL/Space Dynamics Lab), read to
   pin down a beam-waist convention in bandi2025's Table 1. States their waist
   EXPLICITLY as an intensity radius (1/e^2), w0 = 2.1(3) mm, at 10(1) mW one-way
   power giving a calculated light shift of -183 Hz (55 Hz uncertainty). Also
@@ -42,7 +42,7 @@ section: method-anchors
 
 # lemke2022
 
-**Read (relevant sections) 2026-07-30** from the held PDF, fetched to resolve a
+**Read (relevant sections) from the held PDF**, to resolve a
 waist-convention question in [bandi2025](bandi2025.md)'s Table 1 review. See
 that note for the full M9 comparison.
 

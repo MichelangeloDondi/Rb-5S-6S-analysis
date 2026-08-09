@@ -39,7 +39,7 @@ section: prior-art
 
 # lahad2019
 
-**Read here 2026-08-03, in full.** Identification: Ohr Lahad and Ran
+**Read in full.** Identification: Ohr Lahad and Ran
 Finkelstein contributed equally, with Omri Davidson, Ohad Michel, Eilon Poem
 and Ofer Firstenberg, Department of Physics of Complex Systems, Weizmann
 Institute of Science. Physical Review Letters 123, 173203 (2019), received
@@ -143,15 +143,13 @@ problem to regularise. The task solved is a forward design problem, choose
 Omega_r and Delta_r so that an already known sigma and sigma_r cancel, which
 is the opposite operation from reading an unknown distribution off data.
 
-This corrects an earlier, second hand characterization of this paper inside
-this repository's own literature reconnaissance (private/claude_literature.md,
-its Hunt 2), which filed it as "a light-shift-based scheme to invert an
-inhomogeneous frequency distribution... a modern forward-analogue of the
-Delone-Krainov map." That description was drawn from the title rather than
-from the mechanism, and does not survive a full reading. It is the second
-instance inside this repository of the same failure mode documented in
-[hummer2021](hummer2021.md)'s verify_flags, a reconnaissance summary that
-turned out wrong only once the source itself was opened.
+This corrects an earlier, second hand characterization of this paper as "a
+light-shift-based scheme to invert an inhomogeneous frequency distribution, a
+modern forward-analogue of the Delone-Krainov map." That description was drawn
+from the title rather than from the mechanism, and does not survive a full
+reading. It is the second instance here of the failure mode recorded in
+[hummer2021](hummer2021.md)'s verify_flags, a description that turned out wrong
+only once the source itself was opened.
 
 **What does survive as kinship, and it is narrow.** Both this paper and this
 repository's construction start from the same first order light-shift
@@ -176,12 +174,10 @@ and spin echo, all suppression techniques that engage the whole ensemble
 without reading anything off it. That is a different lineage from delone1980,
 Efimov and Khitrov 1979, and Prokopeva and Kildishev 2025, which all read an
 unknown distribution off a measured profile. [delone1980](delone1980.md) is
-updated to say so explicitly: this paper is not a member of that family, and
-is recorded here only as a checked and corrected identification rather than
-an added one.
+updated to say so explicitly: this paper is not a member of that family.
 
-**One thing from the reconnaissance survives.** Its opening paragraph is
-citable on its own, separate from the inversion question. Verbatim: "Inhomogeneous
+**The introduction is citable on its own**, separate from the inversion
+question. Verbatim: "Inhomogeneous
 broadening of spectral lines is a prevalent limiting factor in experiments and
 applications involving light-matter interactions in ensembles. This common
 impediment occurs for various atomic and atomlike absorbers, including quantum

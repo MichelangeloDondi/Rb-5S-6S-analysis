@@ -148,13 +148,13 @@ assumption. The manufacturer's own "Standard Characteristics" table for the
 EOM-01/EOM-02 series (Photonics Technologies, `photonicstechnologies.com`,
 confirmed 2026-08-01) states **Aperture Diameter 3 mm** for both crystal
 variants, so it applies to our EOM-02-12.5-V. This is the same 3 mm the
-naive Gaussian-optics $w_0\approx32\ \mu$m estimate in `constants.py` used.
+naive Gaussian-optics w₀ ≈ 32 µm estimate in `constants.py` used.
 It was previously carried as an inferred number chosen to make the clipping
 story work, and is now grounded in a manufacturer spec plus an experimenter recollection
 of the clipping itself. See `constants.py`'s `W0_PRIOR_M` docstring and
 `docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
-($w_0=64\ \mu$m) on the same lens and the same-model SolsTiS laser, which
+(w₀ = 64 µm) on the same lens and the same-model SolsTiS laser, which
 remains the better-evidenced comparison since a recollected clipping event
 does not by itself fix how much of the beam was clipped.
 
@@ -307,7 +307,7 @@ controller's scan-monitor output, but that is an inference, not a record,
 and the trigger source, level and slope of the acquisition are likewise
 unrecorded.
 
-**Verdict for a future session: low priority.** The EOM comb already carries
+**For a future session this is low priority.** The EOM comb already carries
 the frequency axis per trace, RF-exact, which a ramp voltage cannot improve on
 — so the ramp channel buys nothing for calibration. Its one real use is that
 `DATA.md` §5 has to *infer* where each window sits on the triangle, and records
@@ -452,7 +452,7 @@ acquisition drift, which the archive puts two orders below.*
 >
 > **The result is the settled floor: 0.62 MHz.** That is the laser motion left
 > once the re-lock steps and the per-interval ramps are removed. It is the one
-> number that survived the 2026-08-03 replacement of the model, which moved it
+> number the 2026-08-03 replacement of the model left in place, which moved it
 > only from 0.63 to 0.62 while retiring everything else the module reported.
 > The scatter settles on a timescale near 1.3 min, so the floor is a
 > settled-state number and the first minute of the record is several times

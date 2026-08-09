@@ -33,9 +33,8 @@ section: prior-art
 
 # camparo1992
 
-**Read in full 2026-07-26**, from the PDF supplied by the experimenter. This
-replaces an abstract-level entry that carried the action "obtain the PDF" —
-and the full text changes the reading in the programme's favour, while adding
+**Read in full from the held PDF.** Earlier readings here ran on the abstract
+alone. The full text changes the reading, and adds
 one objection the abstract did not contain.
 
 ## What the abstract already gave
@@ -65,10 +64,10 @@ average ac Stark shift** seen by the atoms... for the asymmetry to develop in
 the strong-field regime, the line shape's first moment must be larger (in an
 absolute-value sense) than the line shape's peak position."
 
-## Why this is not a scoop, and where it does bite
+## What does not overlap, and where it does bite
 
-Not a scoop, for the reason the earlier entry already gave and the full text
-confirms: their distribution is over a **stochastic field in time**, ours over
+The mechanisms are distinct, and the full text
+confirms it: their distribution is over a **stochastic field in time**, ours over
 **position in a structured beam**. Theirs is Monte Carlo over a model field's
 coherence functions; ours is a closed form over a measured profile. Their
 asymmetry needs the strong-field/adiabatic regime; ours arises in the weak,
@@ -76,7 +75,7 @@ unsaturated field purely from the I² weighting of a two-photon rate.
 
 **Two things it does bite on.**
 
-*First, it supplies a referee's objection to the ramp itself, and a sharp one.*
+*First, it raises a sharp objection to the ramp itself.*
 If a distribution of shifts only skews a line when it is sampled adiabatically,
 then an atom **flying through** the beam — which sweeps its own shift from zero
 to the on-axis maximum and back within a transit time comparable to 1/Γ — might
@@ -93,7 +92,7 @@ shifts. This paper is what prompted the check; cite it where the check is
 reported.
 
 *Second, their sublinearity does not threaten the ramp law here, and the
-distinction is worth stating before a referee draws it the wrong way.* The
+distinction is worth stating explicitly.* The
 archival prediction is a pull **linear** in S₀ and hence in power. Camparo's
 sublinear peak arises in the strong-field adiabatic regime through saturation
 between intensity spikes; in the weak-field regime they report the linear

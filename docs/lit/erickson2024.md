@@ -20,13 +20,13 @@ verify_flags:
     (which is paywalled and has no arXiv preprint -- checked 2026-07-30 by
     author search, title search and topic search). The dissertation covers the
     same experiment and states the same measured linewidth budget.'
-  - 'Fetched from the College of Optical Sciences alumni page
+  - 'Obtained from the College of Optical Sciences alumni page
     (wp.optics.arizona.edu), an institutional host of the author''s own work,
     not a publisher copy.'
 verified_date: 2026-07-30
 summary: >
-  A Rb 778 nm two-photon optical clock (University of Arizona), fetched
-  2026-07-30 to pin down a beam-waist convention in bandi2025's Table 1. States
+  A Rb 778 nm two-photon optical clock (University of Arizona), read to
+  pin down a beam-waist convention in bandi2025's Table 1. States
   a COMPLETE, term-by-term linewidth budget rather than a total: 762 kHz
   observed FWHM (cw) = natural 330 kHz + transit-time 310 kHz (for a 230 um
   beam DIAMETER at 100 C) + helium collisional 200 kHz (4 mTorr He) + Rb
@@ -45,7 +45,7 @@ section: method-anchors
 
 # erickson2024
 
-**Read (relevant sections) 2026-07-30** from the held PDF, fetched to resolve an
+**Read (relevant sections) from the held PDF**, to resolve an
 apparent anomaly in [bandi2025](bandi2025.md)'s Table 1 review of Rb two-photon
 clocks. See that note for the full M9 comparison; this note carries the
 bibliographic record and the passage it depends on.

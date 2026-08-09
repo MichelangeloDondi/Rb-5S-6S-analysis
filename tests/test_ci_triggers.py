@@ -1,26 +1,12 @@
-"""The two repositories need OPPOSITE CI triggers, and a cherry-pick nearly
-erased the difference.
+"""The two checkouts need opposite CI triggers: the public mirror runs the full
+battery on every push and is the reference green check, while the private
+archive runs its workflow by hand only.
 
-The private archive's Actions are billing-blocked: every job fails in 2-3 seconds
-without starting. Scheduling them produced a red run and a failure email per
-push, so on 2026-07-30 its workflow became `workflow_dispatch` only. The public
-mirror is the opposite case -- public repos get free Actions, and it is the
-reference green check, so it must run on every push.
-
-That change propagated to the mirror silently. `.github/workflows/tests.yml` is
-on `sync_public.sh`'s DIVERGENT list, but that list only tells a human to expect
-a conflict; git conflicts on differing REGIONS, and the two `on:` blocks were
-identical before the edit, so the cherry-pick applied cleanly and left the mirror
-with a header promising "the full battery runs on EVERY push" above triggers that
-said otherwise. The mirror would have gone quiet with nothing red to notice.
-
-So the invariant is asserted here rather than trusted to a conflict:
-
-    public mirror  ->  `on:` MUST include push
-    private archive ->  `on:` must NOT include push (while billing is blocked)
-
-Which repo a checkout is decides itself from the raw traces: the archive has
-data_raw/p_sweep, the mirror deliberately does not.
+A cherry-pick between them once erased that difference, because the two `on:`
+blocks were identical beforehand and so the patch applied without a conflict.
+This test asserts the invariant directly instead of trusting a conflict to
+raise it, and a checkout identifies itself by whether the raw traces are
+present.
 """
 
 from __future__ import annotations
@@ -64,16 +50,16 @@ def test_ci_triggers_match_the_repository_they_are_in():
     assert trig, f"could not parse an `on:` block from {WORKFLOW}"
     if IS_ARCHIVE:
         assert "push" not in trig, (
-            f"the ARCHIVE workflow has a push trigger ({trig}). Its Actions are "
-            "billing-blocked, so every push emails a failure for jobs that never "
-            "start. Remove push/pull_request, or -- if billing is now cleared -- "
-            "delete this branch of the assertion deliberately.")
+            f"the ARCHIVE workflow has a push trigger ({trig}). Its Actions do "
+            "not run, so every push reports a failure for jobs that never "
+            "start. Remove push/pull_request, or -- once the archive can run "
+            "Actions -- delete this branch of the assertion deliberately.")
         assert "workflow_dispatch" in trig, (
             f"the archive workflow must stay runnable by hand ({trig})")
     else:
         assert "push" in trig, (
             f"the PUBLIC mirror workflow lost its push trigger ({trig}). It is "
-            "the reference green check while the archive is billing-blocked, and "
-            "its own header promises the battery runs on every push. This is "
-            "what a cherry-pick from the archive does when the `on:` blocks "
-            "happen to match -- restore push and pull_request.")
+            "the reference green check, and its own header promises the battery "
+            "runs on every push. This is what a cherry-pick from the archive "
+            "does when the `on:` blocks happen to match -- restore push and "
+            "pull_request.")

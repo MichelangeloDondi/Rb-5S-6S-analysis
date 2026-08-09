@@ -2,18 +2,16 @@
 SVG CANONICAL: physics numbers on hand-authored drawings, checked against the
 same SSOT discipline as test_docs_canonical.
 
-Why this file exists. The 2026-08-03 red-team of the bench schematic
-(private/reviews/digest/apparatus_schematic_redteam.md) found the drawing
-quoting w0 ~ 50 um, a value matching neither the superseded 32 um naive
-estimate nor the adopted 64 um prior, and asserting rho ~ 1 where the analysis
-of record assumes 0.94 +- 0.04. Both stale numbers sat on the drawing of the
-bench because a hand-authored SVG is invisible to every existing guard:
+Why this file exists. A hand-authored SVG is invisible to every other guard:
 test_figure_register and test_figures_fresh cover only scripts/make_figures.py
-outputs, and test_docs_canonical scans only markdown. This file closes the
-class. Every tracked *.svg under docs/ is scanned for the quantities a drawing
-is likely to quote (the waist, the retro ratio rho, MHz comb frequencies,
-MHz/min drift rates), and every number found must equal the canonical value
-derived live from rb5s6s.constants.
+outputs, and test_docs_canonical scans only markdown. So numbers drawn on the
+bench schematic went stale unseen. It quoted w0 ~ 50 um, a value matching
+neither the superseded 32 um naive estimate nor the adopted 64 um prior, and
+asserted rho ~ 1 where the analysis of record assumes 0.94 +- 0.04. This file
+closes the class. Every tracked *.svg under docs/ is scanned for the quantities
+a drawing is likely to quote (the waist, the retro ratio rho, MHz comb
+frequencies, MHz/min drift rates), and every number found must equal the
+canonical value derived live from rb5s6s.constants.
 
 Scope mirrors the registry note in test_docs_canonical: guarded here are the
 adopted analysis inputs a re-analysis can move. Fixed bench hardware labels
@@ -147,7 +145,7 @@ def test_the_scan_reaches_the_schematic_and_reads_its_waist():
     svgs = _tracked_svgs()
     assert SCHEMATIC in svgs, (
         f"{SCHEMATIC} is no longer a tracked SVG. If the drawing moved, update "
-        f"SCHEMATIC here and the red-team record it answers to.")
+        f"SCHEMATIC here too.")
     runs = _svg_text_runs(SCHEMATIC)
     hits = [m for r in runs for m in _BY_NAME["beam waist (µm)"]["find"].finditer(r)]
     assert hits, (
@@ -162,15 +160,15 @@ def test_svg_numbers_match_the_canonical_registry():
         bad += [f"{rel}: {v}" for v in _violations(_svg_text_runs(rel))]
     assert not bad, (
         "a hand-authored SVG quotes a physics number the SSOT does not "
-        "support, the exact failure mode of the 2026-08-03 schematic red-team "
-        "(w0 ~ 50 um, rho ~ 1). Fix the drawing, or register a genuinely new "
+        "support, which is how the schematic came to carry w0 ~ 50 um and "
+        "rho ~ 1. Fix the drawing, or register a genuinely new "
         "quantity in SVG_QUANTITIES with its SSOT source:\n  "
         + "\n  ".join(bad))
 
 
 # --------------------------------------------------------------------------- #
-# Targeted tripwire: the incident's own values must not reappear even WITHOUT   #
-# a w0/waist label to anchor the registry regex ("beam focused to 50 µm").      #
+# Targeted tripwire: a superseded waist must not reappear even WITHOUT a       #
+# w0/waist label to anchor the registry regex ("beam focused to 50 µm").        #
 # Mirrors the SUPERSEDED tripwire of test_docs_canonical.                       #
 # --------------------------------------------------------------------------- #
 _STALE_WAIST = re.compile(r"\b(?:50|32)\s*µm")
@@ -189,15 +187,15 @@ def test_no_superseded_waist_value_in_any_svg():
 
 
 # --------------------------------------------------------------------------- #
-# Plant self-tests: the exact strings of the incident (and near variants) must  #
-# raise a violation, and the corrected labels must not. These keep the regexes  #
-# honest against notation drift without touching the tracked drawing.           #
+# Self-tests: a stale label must raise a violation in every notation a drawing #
+# might use, and the corrected labels must not. These keep the regexes honest   #
+# against notation drift without touching the tracked drawing.                  #
 # --------------------------------------------------------------------------- #
 @pytest.mark.parametrize("planted", [
-    "w₀ ~ 50 µm",              # the incident's waist label, as drawn
+    "w₀ ~ 50 µm",              # the stale waist label, as drawn
     "w0 ~ 50 um",                   # ascii variant
     "waist 32 µm",                  # the superseded naive estimate
-    "ρ ~ 1",                        # the incident's retro assertion
+    "ρ ~ 1",                        # rho asserted rather than assumed
     "rho = 1",
     "(ρ 0.94 ± 0.05 assumed)",      # right value, wrong uncertainty
     "teeth every 6.3 MHz",
@@ -205,7 +203,7 @@ def test_no_superseded_waist_value_in_any_svg():
 ])
 def test_planted_stale_value_is_caught(planted):
     assert _violations([_normalize(planted)]), (
-        f"the registry no longer catches the planted stale label {planted!r}")
+        f"the registry no longer catches the stale label {planted!r}")
 
 
 def test_planted_canonical_labels_pass():

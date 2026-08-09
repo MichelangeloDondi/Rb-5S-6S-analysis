@@ -21,9 +21,9 @@ the current state can read this table and the amendment named in it.
 
 | rule | where it is fixed | what it now says |
 |---|---|---|
-| tooth-labelling verdict | section 2, amendment 5, correction gate in amendment 6 section F4 | both first-order teeth must rank in the top three by height. It is diagnostic and does not gate the spacing, on the measurement of section E2. It is not the gate on the drawn numbering either: a panel corrects its numbering when the second-to-first height ratio the fit produced is unphysical or displaced and a whole-slot shift brings that ratio into the measured band, with the recorded numbering shown alongside |
+| tooth-labelling test | section 2, amendment 5, correction gate in amendment 6 section F4 | both first-order teeth must rank in the top three by height. It is diagnostic and does not gate the spacing, on the measurement of section E2. It is not the gate on the drawn numbering either: a panel corrects its numbering when the second-to-first height ratio the fit produced is unphysical or displaced and a whole-slot shift brings that ratio into the measured band, with the recorded numbering shown alongside |
 | the modulation index | amendment A2, criterion sharpened in amendment 5 section E5, measured cleanly in amendment 6 section F1 | a tooth height is a two-photon signal, so it goes as J_k(2 beta) squared, and inverting the second-to-first height ratio through that law gives 2 beta = 1.569 median over the 41 correctly numbered well-resolved combs, standard deviation 0.058, range 2 beta = 1.449 to 2 beta = 1.730. One drive depth to four per cent, and second-order teeth at 0.159 to 0.249 of the first order across it. Any depth below the crossing at 2 beta = 2.630 makes a second-order tooth taller than a first-order tooth impossible, which identifies 54 displaced grids. What varies instead is the carrier, from 0.360 to 1.188 of the first order, which is residual amplitude modulation and identifies nothing |
-| the re-index ladder | section 3, amendment A4 | a relabelled fit is accepted only if it passes the verdict and its chi-squared stays inside a noise-aware ceiling. The ceiling was too tight by a factor of thirty in the first version and rejected correct relabellings |
+| the re-index ladder | section 3, amendment A4 | a relabelled fit is accepted only if it passes the test and its chi-squared stays inside a noise-aware ceiling. The ceiling was too tight by a factor of thirty in the first version and rejected correct relabellings |
 | the residual-tail trimmer | section 5, amendments B1 and B5.2, read correctly in amendment 7 section G1 | a one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to quarantine rather than eating signal. It acted on two calibration traces and on no line fit. That census is a fact about the order of the guards, not about the data: the line fit sets its own window inside the retrace crossing, so a rising tail is already outside the fitted samples before the trimmer is asked. Line traces with such a tail exist |
 | the outlier rule | amendment B4, recalibrated in amendment 3 | median and median absolute deviation, thresholds calibrated against forty million null draws rather than a t-quantile. It removes three calibration traces and no lines |
 | the rate error | amendment B2 | 0.2046 per cent, from an eight-member estimator family rather than one estimator's formal error |
@@ -64,7 +64,7 @@ of those same 104 rulers, whose n_major is 3 on 88 and 2 on 16, and catches 39
 of 48 injected folds while staying blind at apex 0.8, which is a second
 instrument agreeing with amendment A6. The reason now sits beside the exclusion
 in `rb5s6s/qc.py`. Measured in RT9 of
-the frequency-calibration red team (amendment 8).
+the frequency-calibration review (amendment 8).
 
 What this specification is not. It is not a claim that the campaign rate is
 wrong by any stated amount. It fixes the tests and the remedies. What they
@@ -105,18 +105,18 @@ so the count is a diagnostic and not a pass criterion.
 ## 3. The re-index ladder and its cap
 
 Applied in this fixed order, per trace. Each step runs only if the step before
-it left the verdict failing.
+it left the labelling test failing.
 
 1. **Fit.** The existing constrained comb fit, unchanged.
 2. **Trim.** Reserved for the residual-tail trimmer of section 5. Until that
    module lands, this step is a no-op and the trace passes through untouched.
-3. **Verdict.** The top-three rule of section 2.
+3. **Labelling test.** The top-three rule of section 2.
 4. **Phase shifts.** Refit with the comb phase seeded at t0 plus j times Delta
    for j in minus two, minus one, plus one, plus two. A shift is accepted only
-   if the refit passes the verdict AND does not raise the reduced chi-squared
+   if the refit passes the test AND does not raise the reduced chi-squared
    by more than `RULER_REINDEX_CHI2_TOL = 1e-3` of its own value. Among the
    accepted shifts the lowest reduced chi-squared wins. Both conditions are
-   required because a re-index that rescues the verdict while worsening the fit
+   required because a re-index that rescues the test while worsening the fit
    has moved the labelling to a different wrong answer, which is the failure
    mode this ladder is most likely to produce.
 
@@ -140,13 +140,13 @@ it left the verdict failing.
    tooth spacing of that slot centre and pin the slot height to zero, so the
    excised region can be neither fitted nor absorbed into a neighbouring
    tooth's wings, then refit and re-test.
-6. **Quarantine.** If the verdict still fails, the trace is quarantined with a
+6. **Quarantine.** If the test still fails, the trace is quarantined with a
    reason from section 4.
 
 Whether the ladder's answer is APPLIED or merely recorded is a single switch,
 `RULER_TOP3_GATED`, which lands off. Section 10 says why and what would settle
 it. Everything in this section runs either way, so the population can be
-studied without the verdict touching a number.
+studied without the test touching a number.
 
 **The cap.** `RULER_REINDEX_MAX_TRIALS = 5`. Four phase shifts plus one
 excision is five refits, which is the full ladder, so the cap forbids any
@@ -178,7 +178,7 @@ token is a change to this note first.
 | token | meaning |
 |---|---|
 | `top_three_unrecoverable` | the full ladder ran and the top-three rule still fails |
-| `no_excision_candidate` | the verdict fails and no outer slot qualifies as a mirror, so there is nothing to excise |
+| `no_excision_candidate` | the test fails and no outer slot qualifies as a mirror, so there is nothing to excise |
 | `refit_failed` | the optimizer failed inside the ladder, so no re-indexed fit exists to judge |
 
 ## 5. The residual-tail trimmer, proposed
@@ -229,7 +229,7 @@ deviation. That rule rewards exactly the pathology of section 1, because a
 mirror in an outer slot raises an outer height. It is to be deleted.
 
 The replacement, fixed here. A trace is eligible only if all of the following
-hold: the top-three verdict passes and is not marginal, the ladder took no
+hold: the top-three test passes and is not marginal, the ladder took no
 action, the trace is not quarantined, all seven fitted heights stand strictly
 above the fit residual standard deviation with none railed, and the reduced
 chi-squared is at most `RULER_FIG_CHI2_MAX = 2.0`. Eligible traces are ranked
@@ -238,32 +238,32 @@ deviation. A mirror cannot raise the smallest of seven heights, so the ranking
 cannot be gamed by the defect the figure is being fixed for.
 
 If the eligible set is empty, the figure is skipped and the reason is printed.
-An empty set would be a finding about the ruler population and would go to the
-owner rather than being worked around by loosening a threshold.
+An empty set would be a finding about the ruler population, to be recorded
+rather than worked around by loosening a threshold.
 
 The empty set fired. Amendment 4 records the finding, the two measured causes,
-and the owner's decision to relax the height clause to six standing teeth. The
+and the decision to relax the height clause to six standing teeth. The
 text above stands as written.
 
 ## 8. Licensing for the width-against-rate figure
 
 Each point on that figure needs a licensed scan rate and a licensed width. The
-verdicts, fixed before the rebuild:
+decisions, fixed before the rebuild:
 
-| source | rate | width | verdict |
+| source | rate | width | disposition |
 |---|---|---|---|
 | campaign 130 C, 20 traces | bracket rulers of its own session | retrace-safe contiguous span | enters the panel |
 | morning pilot, 26 traces | its own 27 rulers, measured scale 1.0022(12) | single peak, contiguous | enters as a separately marked point with a horizontal count error bar, outside the fitted slope |
 | rehearsal, 46 traces | fitted inside the joint fits, not measured | would inherit a fitted rate | stays out, with the reason printed on the panel |
 | EOM ruler traces as lineshape data | measured | would need an amplitude model | stay out for this release |
 
-The rehearsal verdict follows the licensing rule rather than the instruction to
-use all available data, and the owner may overrule it. A width derived from a
+The rehearsal decision follows the licensing rule rather than the instruction to
+use all available data, and it stays open to revision. A width derived from a
 rate that was fitted inside the same model is not model-independent, and the
 rehearsal already enters the shift bounds where its rate is properly
 marginalized.
 
-The ruler verdict keeps the standing refusal of addendum 22: the tooth
+The ruler decision keeps the standing refusal of addendum 22: the tooth
 amplitude law does not close on the power-session ruler population, and
 licensing calibration traces as lineshape data inside the release that found
 their indexing broken would invert the burden of proof. The seven fitted
@@ -276,7 +276,7 @@ notes stand or fall together on it.
 ## 9. Predictions, and the conditions that stop the work
 
 Each prediction is checked against the outcome before any number is written
-into any document. They apply to a run in which the verdict is gating. While it
+into any document. They apply to a run in which the test is gating. While it
 is recorded only, the calibration is unchanged by construction and there is
 nothing to check.
 
@@ -307,8 +307,8 @@ statement about one corner of the parameter space presented as a statement
 about the effect. It is withdrawn here rather than quietly relaxed later, and
 no number produced under it is quoted anywhere.
 
-**Stop conditions.** If `block_chi2_red` rises, the work stops and goes to the
-owner, because a validity filter that makes the blocks agree less has removed
+**Stop conditions.** If `block_chi2_red` rises, the work stops, because a
+validity filter that makes the blocks agree less has removed
 information rather than a defect. The same applies if `scatter_pct` rises, or
 if the rate moves by more than the 0.2% bound above.
 
@@ -316,7 +316,7 @@ Nothing here is conditional on the beam waist, which stands open. The rate is a
 frequency-axis calibration and does not read the waist. Every absolute width
 downstream of it remains conditional on the waist exactly as before.
 
-## 10. The open question the owner has to settle
+## 10. The open question
 
 **Is the top-three rule the right instrument, and should it gate?** It lands
 switched off, as `RULER_TOP3_GATED = False`. The full ladder runs, every
@@ -343,9 +343,9 @@ chi-squared condition of section 3, because on real data a relabelling is not
 as degenerate as it is on a synthetic. The excision step then ran and removed a
 real first-order tooth. That ordering is safe only while the phase-shift step
 reliably catches a relabelling, so the excision step and the chi-squared
-tolerance would both be revisited before the verdict is allowed to gate.
+tolerance would both be revisited before the test is allowed to gate.
 
-Three courses are open, and the choice is the owner's: keep the rule and gate
+Three courses are open: keep the rule and gate
 on it, replace the gating instrument with one that separates a relabelling from
 a mirror, or proceed as originally specified. Nothing in this landing forecloses
 any of them.
@@ -355,16 +355,17 @@ any of them.
 # Amendment, 2026-08-04: the modulation index, and the ladder's acceptance ceiling
 
 Everything above this line is the note as it landed. Nothing in it has been
-edited. This amendment records a hypothesis the owner raised after reading the
+edited. This amendment records a hypothesis raised after reading the
 census, the measurements that test it, one code change it warranted, and the
 gated trial rerun under that change. Where it contradicts the body, this
 amendment is the later record and says so explicitly.
 
 ## A1. The hypothesis
 
-The owner's reading of the census in section 10 is that the population is not
-telling us about amplitudes at all. With the RF drive power fixed for the whole
-campaign, the modulation index is one campaign constant. The second-order teeth
+The reading of the census in section 10 that this amendment tests is that the
+population is not telling us about amplitudes at all. With the RF drive power
+fixed for the whole campaign, the modulation index is one campaign constant.
+The second-order teeth
 can outrank the first only above the first crossing of the two Bessel weights.
 If the campaign index sits below that crossing, then the 26 traces whose
 tallest fitted tooth lands in a slot of order two are not combs with unusual
@@ -400,7 +401,7 @@ rather than below it. That is recorded as a measurement and is not interpreted
 here, since the half-wave-plate trick suppressed the optical carrier of the
 ruler light and the two-photon k equal to zero tooth is not the same quantity.
 
-**Verdict on the J2 question: J_2 cannot outrank J_1 at the campaign
+**On the J2 question: J_2 cannot outrank J_1 at the campaign
 modulation index.** The measured index is a factor of 1.6 to 1.8 below the
 crossing, and the gap is 30 or more bootstrap standard errors. The section 10
 objection that the rule "fails clean synthetic combs once 2 beta exceeds about
@@ -428,8 +429,8 @@ one and plus two, and the amplitude rule was applied to each refit.
 | tallest tooth at order one | 0 | 24 |
 | tallest tooth at order two | 26 | 0 |
 | tallest tooth at order three | 0 | 2 |
-| top-three verdict PASS | 0 | 26 |
-| top-three verdict FAIL or MARGINAL | 26 | 0 |
+| top-three test PASS | 0 | 26 |
+| top-three test FAIL or MARGINAL | 26 | 0 |
 
 Every one of the 26 is rescued by a phase shift, and every accepted shift is by
 exactly one slot, 21 at j equal to plus one and 5 at j equal to minus one, with
@@ -596,8 +597,8 @@ columns. `reindex_action` and `delta_advised_ms` change on 18 rows,
 `reindex_j`, `excised_k` and `n_refits` on 14, `quarantine_advised` and
 `quarantine_reason` on 8. `ruler_blocks.csv`, `ruler_campaign.csv`,
 `ruler_nlmap.csv` and `ruler_rate_model.csv` are unchanged in every cell,
-which is the check that the fix moves no physics while the verdict is advisory.
-Regenerating the tables is a commit the owner makes, not one this work makes on
+which is the check that the fix moves no physics while the test is advisory.
+Regenerating the tables is a separate commit, not one this work makes on
 its own account.
 
 ## A5. The gated trial, rerun
@@ -620,7 +621,7 @@ improves, and the block rate spread falls instead of rising. The scatter rise
 that stopped the earlier trial goes away exactly when the excision rung stops
 firing. The two runs differ in no other mechanism, and on the one case examined
 in detail the excision deleted a first-order tooth of 36.5 fit residual RMS, so
-the rise is read here as the excisions and not as the verdict.
+the rise is read here as the excisions and not as the labelling test.
 
 **The fourth prediction fails, and it is the one tied to the defect.** Section 9
 predicted the 4207 before-against-after separation would shrink, on the ground
@@ -639,7 +640,7 @@ removed, and it moves the number the wrong way.
 land regardless.** These are separate decisions and the reasons differ.
 
 The ladder fix lands because it is a correctness fix to a destructive rung, it
-is calibrated on synthetics with known answers, and while the verdict is not
+is calibrated on synthetics with known answers, and while the test is not
 gating it changes no number in the repository. That was verified rather than
 assumed.
 
@@ -685,7 +686,7 @@ because the synthetics it was measured on cannot exhibit the cost. The number
 1e-3 was not wrong by preference, it was measured on a case where the answer is
 zero.
 
-Section 10's first two reasons for landing the verdict ungated are withdrawn in
+Section 10's first two reasons for landing the test ungated are withdrawn in
 A6. Both were about the top-three rule firing too often, and both dissolve once
 the modulation index is measured and the ladder stops mistaking relabellings
 for mirrors.
@@ -695,8 +696,8 @@ reinterpreted. It was not a stop condition and the work does not stop on it,
 but a prediction that fails is a prediction that failed.
 
 Section 10's request that "the excision step and the chi-squared tolerance
-would both be revisited before the verdict is allowed to gate" is discharged by
-A4. The tolerance was revised, the excision step was guarded, and the verdict
+would both be revisited before the test is allowed to gate" is discharged by
+A4. The tolerance was revised, the excision step was guarded, and the test
 is still not gating.
 
 ---
@@ -733,11 +734,11 @@ is the property the spike test pins.
 The three integration points.
 
 1. **The ruler ladder.** Inside `validated_comb_fit`, between the first fit and
-   the verdict, exactly where section 3 reserved rung 2. The core is the fitted
+   the labelling test, exactly where section 3 reserved rung 2. The core is the fitted
    comb span, meaning the outermost fitted tooth centres, widened by
    `TRIM_CORE_GUARD_FWHM_MULT` fitted widths on each side. A trim triggers one
    refit through `fit_comb(mask=...)` and the trimmed fit becomes the fit the
-   verdict judges.
+   test judges.
 2. **The condition fit.** `fit_condition` gains `trim_tails`, applied as a
    single second pass after the existing per-trace residual loop, with one
    refit. The adaptive fit window is unchanged, and the mirror-exclusion test
@@ -996,8 +997,8 @@ and it was not sufficient. No threshold was touched.
 `rate_laser_err` is 5.098e-5, which is 0.120 per cent. `rate_err_total` is
 8.699e-5, which is 0.205 per cent and 1.71 times the statistical error alone.
 
-**The family reproduces the private red-team finding RT6 and implements its
-recommendation.** RT6 measured five of these estimators against the previous
+**The family reproduces the unpublished review's finding RT6 and implements
+its recommendation.** RT6 measured five of these estimators against the previous
 committed rate, found the choice of estimator moving the central value by up to
 0.23 per cent while the scatter inflation widened only the error bar, and
 concluded that the right remedy is to quote the estimator spread as a systematic
@@ -1060,7 +1061,7 @@ blocks, all of them temperature-session dwells.
 that block spread over 146.49 to 147.08 ms, so the block's own scaled median
 absolute deviation is 0.414 ms and the trace is 3.37 deviations out against a
 threshold of 4.60. The rule does not see it. Amendment A5 reached the same trace
-by a different instrument, the top-three amplitude verdict, which does flag it.
+by a different instrument, the top-three amplitude test, which does flag it.
 Two instruments disagreeing about one trace is the useful part of this result.
 
 **The rule fires about twice as often as its nominal level, measured.** The
@@ -1077,8 +1078,8 @@ top three of the five and drop the other two.
 
 This is left as measured rather than corrected, because correcting a
 pre-registered threshold after seeing which traces it removed is the move this
-note exists to prevent. What the correction would be is stated above so the
-owner can make it deliberately.
+note exists to prevent. What the correction would be is stated above so that
+it can be made deliberately.
 
 ### B5.8 What moved in the calibration
 
@@ -1099,7 +1100,7 @@ The block-to-block spread of the rates is what a removal is supposed to reduce,
 and removing the most deviant member of five blocks made it larger, because each
 of those blocks then combines four traces instead of five and its mean moves.
 Section 9's stop condition on `scatter_pct` is written for a run in which the
-top-three verdict gates, which this is not, so it does not formally bind here.
+top-three test gates, which this is not, so it does not formally bind here.
 It is reported as a stop-condition-shaped result anyway, because a filter that
 makes the blocks agree less about the rate has not obviously removed a defect.
 Amendment A5 read the same signal the same way when the excision rung raised
@@ -1294,7 +1295,7 @@ deviation and the pathology is back.
 The value is carried as the null returns it rather than capped, which leaves the
 rule inert at n of 4 for population B. The archive has one such group. Whether
 groups of four should be tested on a sibling scaling at all is a policy question
-and it is the owner's, not this amendment's, because raising a minimum group
+that this amendment does not settle, because raising a minimum group
 size is a change to the rule and not to its calibration.
 
 ## C6. The census, both populations, under the calibrated rule
@@ -1325,7 +1326,7 @@ description.
 The trace B4 named in advance, `rulers_p/4207nm_eom_before5.csv`, is still not
 caught. It sits at 3.37 deviations against 7.926, further outside the rule than
 it was against 4.604. The failed prediction of B5.7 fails harder and is recorded
-again rather than reinterpreted. The top-three amplitude verdict still flags it,
+again rather than reinterpreted. The top-three amplitude test still flags it,
 so the two instruments still disagree about that one trace.
 
 **Population B, the lines.** No traces removed, against three under the retired
@@ -1340,7 +1341,7 @@ table.
 All three stand. The first of them is the n=4 group of C5, where the rule is
 inert, and it would stand at 19.884 as well.
 
-## C7. The three observables, and the verdict on acting
+## C7. The three observables, and what to act on
 
 The removals-off column is a real run with the rule disabled, written to a
 scratch directory. The committed tables were hashed before and after it and are
@@ -1421,7 +1422,7 @@ five-against-seven refit as it was measured on the day.
 ## D1. What section 7 returned
 
 Zero of the 104 fitted rulers are eligible under the rule as written. The
-census by first failing clause: 54 fail the tooth-labelling verdict, 37 have a
+census by first failing clause: 54 fail the tooth-labelling test, 37 have a
 tooth below the fit residual, 13 have a slot railed on its zero bound. The
 height clause is not merely selective, it is unsatisfiable. The tallest
 weakest tooth in the whole population stands at 0.706 of its own fit residual
@@ -1439,7 +1440,7 @@ is covered in full by the kept samples and its tooth still stands at only 0.63
 of the fit residual. The amplitude cause binds even where the span cause does
 not.
 
-The second cause is the ramp span, raised by the owner and confirmed by
+The second cause is the ramp span, raised by the experimenter and confirmed by
 measurement. For every fitted ruler, take the kept sample interval after any
 recorded trim, the recorded `t0_ms` and `delta_ms`, and ask whether each outer
 tooth window, centre plus or minus half a spacing, lies inside that interval.
@@ -1452,15 +1453,15 @@ that a fully covered third-order tooth still sits below the noise.
 
 ## D3. The decision
 
-The finding went to the owner as section 7 requires, with three options: relax
-the clause to six standing, relax it and overlay the fitted Bessel envelope,
-or drop the figure. The owner chose six standing with no envelope, with the
-caption stating why the third order is below the noise. The owner also named
-the span cause before the measurement confirmed it.
+The finding was put up for decision as section 7 requires, with three options:
+relax the clause to six standing, relax it and overlay the fitted Bessel
+envelope, or drop the figure. Six standing with no envelope was chosen, with
+the caption stating why the third order is below the noise. The experimenter
+also named the span cause before the measurement confirmed it.
 
 The amended clause: at least six of the seven fitted heights stand strictly
 above the fit residual standard deviation, none railed. Every other clause is
-unchanged, the clean-pass verdict, the ladder having taken no action, no
+unchanged, the clean pass on the labelling test, the ladder having taken no action, no
 quarantine, the chi-squared ceiling, the ranking by the smallest of the seven
 heights over the residual, and the untrimmed preference. The ranking keeps the
 property the rule was built for, since a mirror in an outer slot cannot raise
@@ -1471,13 +1472,13 @@ measured on the displayed trace.
 
 Seven traces are eligible under the amended clause. The winner is
 `rulers_p/4192nm_eom_after1.csv`, six teeth standing, weakest tooth at 0.63 of
-the fit residual, reduced chi-squared 1.01, clean verdict, no ladder action,
+the fit residual, reduced chi-squared 1.01, clean labelling test, no ladder action,
 no railed slot, untrimmed. On this trace the standing k = +3 tooth sits in a
 window the scan end clips, and the fully covered k = -3 tooth is the one below
 the residual, so the two causes of section D2 are both visible on the panel
 itself. The trace with the tallest weakest tooth, 0.71 on
 `rulers_p/4154nm_eom_before_1.csv`, stands on six teeth and is still not the
-winner, because it fails the tooth-labelling verdict and the ladder had to
+winner, because it fails the tooth-labelling test and the ladder had to
 re-index it, the one-slot mislabelling signature of amendment A2. The clause
 the relaxation touched is not the clause holding that trace out. `tests/test_ruler.py` holds the amended clause the same way it
 held the original, both directions, and the seven-standing assertion is
@@ -1493,18 +1494,18 @@ than argued here.
 
 # Amendment 5, 2026-08-04: the labelling gate, decided on the within-bracket test
 
-## E1. The owner's objection
+## E1. The objection
 
 The inspection gallery drew a comb whose fitted grid is displaced by one
 slot and titled it the fit of record, while the same panel printed that the
-labelling verdict had failed and was not acting. The owner rejected it. A
+labelling test had failed and was not acting. That was rejected. A
 record that computes the correct answer, prints that it has it, and then
 uses the other one is not a diagnostic.
 
 ## E2. What gating the ladder would do to the calibration
 
 Measured on the recomputed table, over the 52 combs whose recorded
-labelling fails the verdict. Forty four of them land on a different tooth
+labelling fails the test. Forty four of them land on a different tooth
 spacing when the ladder's relabelled solution is taken instead, mean
 difference -0.044 per cent, largest 1.49 per cent. On the campaign mean the
 substitution moves the rate by +0.019 per cent, inside the 0.205 per cent
@@ -1520,7 +1521,7 @@ wider in nine. Relabelling is a coin flip on the spacing.
 
 The spacing stays the fit of record, because the measurement above shows the
 pitch does not know about the labelling and no case exists for disturbing
-the calibration. The tooth NUMBERING is corrected wherever the verdict
+the calibration. The tooth NUMBERING is corrected wherever the labelling test
 fails, on every panel that draws a comb, with the recorded numbering shown
 alongside so the picture never hides the table. The correction is a display
 of the amplitude evidence, not a refit.
@@ -1536,15 +1537,15 @@ reasoning.
 
 Whether the fit of record should be seeded to land on the correct labelling
 in the first place, so that the two never disagree, is a question for the
-frequency-calibration red team. It is the difference between a fit that is
+frequency-calibration review. It is the difference between a fit that is
 right by construction and one that is right after inspection, and it is
 worth a session of its own rather than a change made while a recompute is
 running.
 
 ## E5. The criterion that identifies a displaced grid, stated exactly
 
-Section E3 left the identification to the labelling verdict. Two independent
-reviews of the rendered inspection panels showed that the verdict is the
+Section E3 left the identification to the labelling test. Two independent
+reviews of the rendered inspection panels showed that the test is the
 wrong gate for it, in both directions, so the criterion is fixed here.
 
 At 2 beta = 1.62 the Bessel weights are 0.444 for the carrier, 0.572 for the
@@ -1563,32 +1564,33 @@ now say it.
 
 What a displaced grid shows is a SECOND-order tooth taller than a
 FIRST-order tooth, which the ordering above forbids. Applied to the
-persisted heights this identifies 54 combs of 104, not the 52 the verdict
-marks. The two the verdict misses are recorded as marginal passes,
+persisted heights this identifies 54 combs of 104, not the 52 the labelling
+test marks. The two the test misses are recorded as marginal passes,
 `rulers_t/4121nm_eom_070c5.csv` and `rulers_t/4154nm_eom_070c5.csv`, and
 both were inside the calibration with the wrong first-order pair drawn and
 no note. Both carry a clean one-slot signature, and shifting them by one
 slot returns a textbook pattern.
 
 The numbering correction is gated on this amplitude test rather than on the
-verdict string. The verdict keeps its own job, which is to say whether the
+recorded `verdict` string. The labelling test keeps its own job, which is to
+say whether the
 recorded fit named the teeth correctly. The amplitude test says which
 naming is right. Nothing here touches the spacing, and the count of combs
 whose spacing is taken from the record is unchanged at 104.
 
 # Amendment 6, 2026-08-05: the modulation depth measured cleanly, and what varies instead
 
-## F0. A first draft of this amendment was circular, and was caught in review
+## F0. Inverting over every comb is circular, and its depth range is withdrawn
 
-The first draft inverted the second-to-first height ratio over every
-well-resolved comb, including the 54 whose grids the amplitude test flags as
-displaced. On a displaced comb the recorded second-order slot holds a
+Inverting the second-to-first height ratio over every well-resolved comb,
+including the 54 whose grids the amplitude test flags as displaced, is
+circular. On a displaced comb the recorded second-order slot holds a
 first-order tooth, so the recorded ratio is inflated by the very defect
-under study, and feeding it into the Bessel inversion returned depths
-reaching 2.9 that were the mislabelling reflected back, not the drive. A
-review pass caught the loop before this note was committed, and the
-measurement below is the corrected one. The draft's conclusion that the
-depth spans 1.45 to 2.92 is withdrawn and appears nowhere else.
+under study, and feeding it into the Bessel inversion returns depths
+reaching 2.9 that are the mislabelling reflected back, not the drive. The
+measurement below therefore excludes the displaced grids. The earlier
+conclusion that the depth spans 1.45 to 2.92 is withdrawn and appears
+nowhere else.
 
 ## F1. The measurement, on correctly numbered combs only
 
@@ -1615,7 +1617,7 @@ synthetic combs the ladder is calibrated on in `tests/test_ruler.py` are built
 from that same law, so the only place in the repository that read the heights
 otherwise was one gallery constant.
 
-Take the combs whose recorded labelling passes the verdict cleanly, 41 of
+Take the combs whose recorded labelling passes the labelling test cleanly, 41 of
 them with the first-order pair above five times the fit residual, and invert
 each one's second-to-first height ratio through that law on the unique branch
 below the crossing. The implied depth is
@@ -1632,7 +1634,7 @@ section F4 holds a recorded ratio against.
 
 Nothing but the law moves this answer. The resolution cut returns the same 41
 combs whether it is applied to the smaller first-order member or to the pair
-mean, the two marginal verdicts are not well resolved and never enter under
+mean, the two marginal cases are not well resolved and never enter under
 either cut, three different inversion brackets return the same roots because
 no comb sits near an endpoint, and seven definitions of the ratio move the
 median by at most 0.017. Reading the heights as the bare amplitude instead,
@@ -1689,7 +1691,7 @@ carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The
 second-to-first ratio is tight while the carrier ratio is wide, which is the
 signature of residual amplitude modulation at the carrier, the imperfection
 of the carrier-suppression setting that the methods note already lists. The
-owner's record that the input polarisation angle changed between sessions is
+experimenter's record that the input polarisation angle changed between sessions is
 consistent with this, since the suppression working point depends on that
 angle while the drive depth evidently did not.
 
@@ -1738,7 +1740,7 @@ numbering in either direction.
 
 Whether the residual amplitude modulation is large enough to bias the tooth
 SPACING rather than only the heights stays with the frequency-calibration
-red team. Nothing here touches the spacing, which is measured from tooth
+review. Nothing here touches the spacing, which is measured from tooth
 positions and not from heights.
 
 # Amendment 7, 2026-08-05: why the trimmer never fires on a line
@@ -1786,12 +1788,12 @@ the trimmer works, and it was not settled here. The cap that excludes the
 retrace is a fixed number of megahertz, and the retrace crossing moves with
 the sweep rate, which the six-tooth correction had just re-measured. A cap
 that is comfortable at one rate is not automatically comfortable at another.
-The frequency-calibration red team owned this, and the check was cheap: for
+The frequency-calibration review took this on, and the check was cheap: for
 every canonical trace, the distance from the window edge to the nearest
 recorded retrace crossing, in units of the fitted width.
 
 It has now been run, in RT10 of
-the frequency-calibration red team (amendment 8), and
+the frequency-calibration review (amendment 8), and
 it names a different constant than the one this section worried about.
 
 Neither clip is active on the archive. The 25 MHz cap binds on 0 of 159
@@ -1821,14 +1823,14 @@ not say the crossing contributes nothing inside it.
 
 ## Amendment 8, 2026-08-06: the phase 7 adjudication, summarised
 
-The frequency-calibration red team ran against v3.4.0: twelve pre-scoped
+The frequency-calibration review ran against v3.4.0: twelve pre-scoped
 targets, each finding adversarially adjudicated with re-derivation from
 the committed tables. Six confirmed, five refuted, one open, a 42 per
 cent refutation rate. The working note with full instruments and
-adjudications is a red-team document and stays unpublished by the
+adjudications is an internal review document and stays unpublished by the
 standing rule. What binds here:
 
-Six CONFIRMED, five REFUTED, one OPEN (42 per cent refuted). Three verdicts moved. RT3 and RT6 fall from CONFIRMED to REFUTED, and RT1 from CONFIRMED to REFUTED. RT10 rises from REFUTED to CONFIRMED. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's SPREAD separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4, and my attack on it failed twice over and produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.
+Six CONFIRMED, five REFUTED, one OPEN (42 per cent refuted). Three findings moved. RT3 and RT6 fall from CONFIRMED to REFUTED, and RT1 from CONFIRMED to REFUTED. RT10 rises from REFUTED to CONFIRMED. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's SPREAD separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4. Two attempts to refute it both failed, and each produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.
 
 The confirmed actions are implemented as of this date with one
 exception, the amplitude-seeded fold construction (RT12), which was

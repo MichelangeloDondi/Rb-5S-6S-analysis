@@ -136,7 +136,7 @@ the difference in frequencies is being measured, the systematic errors get
 cancelled." The apparatus and analysis are built specifically so that
 density- and intensity-dependent shifts do not need to be characterised.
 
-**Verdict on the deep-research claim.** The claim that S-S environmental
+**Where this leaves the scoping claim.** The claim that S-S environmental
 coefficients are largely unmeasured across the alkalis holds up against
 this paper's actual content. Even the nearest same-family alkali S-S
 two-photon measurement, whose only job is isotope shift and hyperfine

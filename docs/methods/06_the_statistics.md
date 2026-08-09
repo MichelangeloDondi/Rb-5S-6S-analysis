@@ -46,12 +46,12 @@ temperatures — `fit_beta_self()` ties $\gamma_\text{coll}(T)=\beta_\text{self}
 with a single shared $\beta_\text{self}$, turning four widths into one slope.
 Treating $\beta_\text{self}$ as $T$-independent here is an approximation.
 [Lewis 1980](../lit/lewis1980.md) Table 4.1 predicts an additional $T^{0.3}$
-coefficient scaling for an $n=6$ potential, a $\sim$5% rise from 70 to
+coefficient scaling for an $n=6$ potential, a rise of about 5% from 70 to
 130 °C, checked directly by refitting each peak's four raw widths with that
-scaling folded into the density axis. The result shifts $\chi^2$ by $<0.4$
+scaling folded into the density axis. The result shifts $\chi^2$ by less than 0.4
 against a between-block scatter of 140–250 kHz, roughly an order of
 magnitude larger than the predicted effect, so today's archive has no power
-to test the exponent. The flat-$\beta_\text{self}$ assumption is unresolved,
+to test the exponent. The assumption of a flat $\beta_\text{self}$ is unresolved,
 not confirmed.
 
 **The full hierarchy** (`fit_global()`, module M4b) fits *all* peaks and
@@ -67,7 +67,7 @@ temperatures at once, sharing each parameter at the level the physics licenses
   detection; see §4.5. For a stable lock, global sharing becomes
   correct.)
 - $\beta_\text{self}$ is shared **per isotope**, not globally: collision
-  cross-sections need not be equal for $^{85}$Rb and $^{87}$Rb, so we *test*
+  cross-sections need not be equal for ⁸⁵Rb and ⁸⁷Rb, so we *test*
   $\beta_{85}$ vs $\beta_{87}$ rather than assume them equal.
 - the transit width is shared globally (same beam, same $\sqrt T$ law);
   amplitude, center, baseline stay per-trace.
@@ -81,12 +81,12 @@ parameter. *Code:* `fit_condition()`, `fit_beta_self()`, `fit_global()`.
 this hierarchy — the value and the *full error budget* the paper quotes. Its
 headline is the **internally-consistent 70/90/110 °C cooling sweep** (one
 session, monotonic cooling), fit across a model-form grid — transit cusp
-(Lehmann) vs no-cusp (Voigt) $\times$ $\sigma_\text{laser}$ shared-per-$T$
+(Lehmann) vs no-cusp (Voigt) $\times$ $\sigma_\text{laser}$ shared per $T$
 (Model A) vs per-block (Model B). The spread of $\beta$ across those cells *is*
 the model-form error bar; with the $w_0$-band and a leave-one-**peak** /
 leave-one-**temperature** robustness scan it returns **one $\beta$ per isotope
 carrying three separately-sourced error bars** (statistical, model-form,
-confound/$w_0$). A synthetic-injection closure test (`tests/test_lever_crosscheck`)
+$\text{confound}/w_0$). A synthetic-injection closure test (`tests/test_lever_crosscheck`)
 recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
 itself is validated by that recovery, not assumed.
 
@@ -195,7 +195,7 @@ $$\text{BIC}=\chi^2+k\ln N$$
 with $k$ the number of free parameters and $N$ the data points. The $\chi^2$
 rewards fit quality; the $k\ln N$ term penalizes complexity, so BIC asks "is
 the better fit worth its extra parameters?". Lower BIC wins; on the
-Kass–Raftery scale $|\Delta\text{BIC}|<2$ is "indistinguishable" and $>10$ is
+Kass–Raftery scale $|\Delta\text{BIC}|$ below 2 is "indistinguishable" and above 10 is
 "decisive". Voigt and Lehmann have the *same* $k$, so their comparison is
 essentially which shape fits better. This is the tool for the Lehmann-cusp
 test, and [what we found](07_what_we_found.md) reports what it returned.
@@ -228,7 +228,7 @@ within the fitted samples, so a trim census reading zero on line fits is a fact
 about the order of the guards and not about the data. Line traces with a rising
 tail exist: three of the five repeats of the 993.4207 nm line at 130 °C and
 25 mW carry an unmistakable one. Whether the window sits in the right place was
-open until the red team measured it: neither clip is active on the archive (the
+open until it was measured directly: neither clip is active on the archive (the
 25 MHz cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159),
 the recorded crossings sit 7.64 to 8.54 fitted widths out against a window edge
 at 3.50, and the constant that is sensitive to the sweep rate in the widening
@@ -292,7 +292,7 @@ $w_0\approx43$ µm where the beamline-lineage measurement puts it at the adopted
 **64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
 Taken at face value the shape data
 *prefer* the physical decomposition (real transit cusp, narrow laser); but
-$\Delta\chi^2 = 476$ over $\sim$4400 points is a $\sim$10% $\chi^2$ change
+$\Delta\chi^2 = 476$ over about 4400 points is a $\chi^2$ change of about 10%
 ($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel
 model-form imperfection also lives — a **consistency indication, not a
 shape-based $w_0$ measurement**; a direct beam-profile measurement stays the arbiter, and the
@@ -325,7 +325,7 @@ $\sigma_\text{laser}\to0$**: the line *shape* alone cannot exclude a
 near-zero laser width at this condition. `figures/fig7` shows both maps with
 the ellipse overlaid.
 
-So the archive constrains the total width to $\sim$0.1% but the split
+So the archive constrains the total width to about 0.1% but the split
 twenty-fold worse — now as a certified-global statement, not a local one: the
 individual widths are genuinely $w_0$-conditional bounds, not measurements,
 and a measured $w_0$ **collapses** the degeneracy — it fixes transit to
@@ -359,7 +359,7 @@ mimicking the drift wander plus the small within-block SEM — run the
 bias, coverage, and the false-detection rate. The result:
 
 - the point estimate is **unbiased** (bias $\approx-0.0001$ MHz per $10^{12}$
-  cm$^{-3}$, i.e. $\ll$ the bound);
+  cm⁻³, i.e. $\ll$ the bound);
 - the Student-t 95% upper bound **covers the true $\beta$ $\approx100$% of the
   time** — valid and, on 2 DOF, conservative (the safe direction for a bound;
   the Gaussian-2 bound this replaced would *under*-cover, which is the whole
@@ -412,27 +412,27 @@ profile is quoted without a seeded twin (docs/RESEARCH_DECISIONS.md §11).
 ### 4.13 How much evidence for the $\sigma_\text{laser}$ sharing? A BIC, and a cautionary one
 
 The hierarchical fit (§4.2) shares one $\sigma_\text{laser}(T)$ across the four
-peaks at each temperature (Model A, per-$T$); the conservative alternative frees
+peaks at each temperature (Model A, per $T$); the conservative alternative frees
 it per (peak, $T$) block (Model B, per-block, 9 more parameters). §4.5 and the
 M4c check argue the sharing is *consistent* but *underpowered*; this puts a number
 on it. Both models are fit with the same machinery (`fit_global`) and scored by
 $\text{BIC}=\chi^2+k\ln N$, with $\Delta\text{BIC}=\text{BIC}_\text{block}-\text{BIC}_T$
-($>0$ favours the shared model).
+($\Delta\text{BIC}$ above 0 favours the shared model).
 
 The result depends on how the sample size is counted. Each trace is a smooth
-line sampled at $\sim$2000 **correlated** points, so the $\sim$49k raw samples are
+line sampled at about 2000 **correlated** points, so the roughly 49k raw samples are
 not 49k independent observations. Counting them as such over-weights the per-block
 fit's tiny $\chi^2$ gain and returns $\Delta\text{BIC}\approx-46$ ("per-block
 wins"). But the noise model already whitens each residual by $\sqrt{\tau_\text{int}}$
 ($\tau\approx3.5$); the **matching** effective size $N_\text{eff}=N/\tau$ with the
 whitened $\chi^2$ gives $\Delta\text{BIC}\approx+62$ ("shared wins, decisively").
-The effective-$N$ BIC is the statistically correct one — correlated samples are not
+The $N_\text{eff}$ BIC is the statistically correct one — correlated samples are not
 independent — so the shared model is favoured: **the archive cannot pay for
 per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
 
 - it is **parsimony, not physics** — four peaks that co-drifted between
   acquisitions would look shared too (§4.2, M4c), and no in-sample score recovers
-  the timing; $\Delta\text{BIC}>0$ means "the alternative is not warranted", not
+  the timing; a positive $\Delta\text{BIC}$ means "the alternative is not warranted", not
   "the sharing is real". The recovered clock sharpens this from "unlogged" to
   *dated and unfavourable*: the four peak-blocks of a dwell are **54–76 minutes
   apart**, not minutes ([RESULTS.md](../RESULTS.md) C1). Their widths show no
@@ -445,7 +445,7 @@ per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
   bound (C1), not the sharing-dependent hierarchical value.
 
 *Closure* (`tests/test_sharing_bic.py`, clean synthetics where $\tau=1$ so the two
-$N$s coincide): the score correctly favours per-$T$ when the peaks truly share one
+$N$ values coincide): the score correctly favours per $T$ when the peaks truly share one
 $\sigma_\text{laser}$ and per-block when they carry grossly different ones — it
 detects real sharing structure when the data carry the power the archive lacks.
 *Code:* `rb5s6s/sharing_bic.py`, `run_sharing_bic.py`; numbers `results/sharing_bic.csv`.

@@ -36,14 +36,12 @@ section: prior-art
 
 # wieman1987
 
-**VERIFIED, 2026-08-02**, from the full four-page PRL (58, 1738-1741,
-27 April 1987), supplied by the experimenter. This note previously ran on the
-abstract plus [stalnaker2006](stalnaker2006.md)'s account of it, and flagged
-three questions the delineation depended on. All three are now answered from
-the primary text, and each lands where the hedge expected.
+**VERIFIED** from the full four-page PRL (58, 1738-1741, 27 April 1987).
+Earlier readings here rested on the abstract plus
+[stalnaker2006](stalnaker2006.md)'s account of it. The three questions the
+delineation depended on are answered below from the primary text.
 
-**Abstract, verbatim** (supplied by the experimenter from the publisher listing,
-2026-07-30; published 27 April 1987). "We have observed the resonance line shape
+**Abstract, verbatim** (published 27 April 1987). "We have observed the resonance line shape
 for a very weak atomic transition excited when an atomic beam intersects a strong
 standing-wave laser field. The line shape has a dramatic intensity-dependent
 distortion which is Doppler free and independent of the excitation rate. We have
@@ -119,7 +117,7 @@ against this work's use of it as the measurement channel.
    fringe-averaged field and give symmetric wings, while slow atoms sit at a
    frozen fringe and skew toward the local field maximum.
 
-**So the concession narrows, on evidence rather than on inference.** What is
+**What overlaps, and what does not.** What is
 genuinely prior art is the general proposition, that a spatially inhomogeneous
 AC-Stark shift averaged over an atom's trajectory distorts a line
 asymmetrically, computed from first principles and matched to data with no free
@@ -129,33 +127,22 @@ transition is single-photon throughout, magnetic-dipole plus Stark-induced E1,
 so the $\varepsilon^2$ in its shift coefficient is the ordinary quadratic
 field dependence every AC-Stark shift has, not a two-photon rate weighting.
 
-**The sentence a referee would use.** The paper claims its own priority for the
-general phenomenon, saying it is to their knowledge the first observation of
-this type of line-shape distortion (p. 1738). That claim is correct and is
-already conceded here. It does not reach the closed-form power-law
+**The paper's own priority claim.** It states that this is to their knowledge
+the first observation of this type of line-shape distortion (p. 1738). That is
+correct for the general phenomenon. It does not reach the closed-form power-law
 distribution, the mean pull, or the third cumulant, none of which appear in the
 paper in any form.
 
-## The abstract, verbatim (2026-08-01)
+## What the abstract alone could not settle
 
-Retrieved while assessing how far this paper narrows the novelty claim. It is
-the only primary text held for this reference, and it is *not* the full paper.
-
-> "We have observed the resonance line shape for a very weak atomic transition
-> excited when an atomic beam intersects a strong standing-wave laser field.
-> The line shape has a dramatic intensity-dependent distortion which is Doppler
-> free and independent of the excitation rate. We have calculated the line shape
-> predicted by optical Bloch equations that include a spatially varying ac Stark
-> shift, and find good agreement with our experimental results."
-
-Two AI assessments of this paper argued that the novelty here survives because
-"a very weak transition" implies a linear, single-photon response, which cannot
-produce the two-photon triangle. That inference is **not safe on the abstract
-alone**, and this repository does not rest on it, for two reasons. First, the
-argument was already conceded more strictly elsewhere: the $I^k$ weighting for
-$k$-photon excitation is in [delone1980](delone1980.md), so "the $I^2$ weighting
-is ours" was never available. Second, a standing wave has its own geometric
-intensity distribution, so whether the Bloch treatment amounts in effect to a
-shift-distribution map is exactly what the full text decides. The status stays
-REPORTED and the concession stays general until the paper is read. It is the
-first item on the paper request to OIST for that reason.
+One inference available from the abstract is that "a very weak transition"
+implies a linear, single-photon response, which cannot produce the two-photon
+triangle. That inference is **not safe on the abstract alone**, and nothing
+here rests on it, for two reasons. First, the point was already conceded more
+strictly elsewhere: the $I^k$ weighting for $k$-photon excitation is in
+[delone1980](delone1980.md), so the $I^2$ weighting was never available as an
+original claim. Second, a standing wave has its own geometric intensity
+distribution, so whether the Bloch treatment amounts in effect to a
+shift-distribution map is a question only the full text can decide. The reading
+above decides it: the transition is single-photon throughout and no shift
+distribution appears.

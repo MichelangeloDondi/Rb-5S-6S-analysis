@@ -1,8 +1,8 @@
 # The big picture
 
 *Three readers act on this page, and each should start somewhere different. A
-host or panel deciding whether the bench time is worth spending reads the
-dependency map below, then §5 and §6 for what each further measurement would
+reader weighing whether a further measurement earns its bench time reads the
+dependency map below, then §5 and §6 for what each one would
 convert. A reader judging what has actually been delivered reads §4, where the
 results are collected, and follows the chapter links there into
 [`methods.md`](methods.md), which owns every derivation behind them. A researcher with their own transition reads §1
@@ -70,7 +70,6 @@ natural linewidth it is worse than the 778 nm standard. The
 magic wavelengths are calculated and unvalidated. The method is demonstrated
 on this dataset as a bound. What has actually been delivered is in §4.*
 
-<!-- OWNER-PENDING: this routing paragraph stands in for the owner's own opening. -->
 Stated at the size the evidence supports, in four parts. §1.1 is the case for
 the line. §1.2 is the trapped-atom route, and the one O-band crossing that is a
 lever rather than a trap. §1.3 is the method. §1.4 is the size the collisional
@@ -561,7 +560,7 @@ narrower three and that request is still open, so the count here follows
 §5.2a. The invariance is the bridge §6 below is built on, and dropping it from
 this list drops it as a novelty claim, not as a result.
 
-The archive turned a drifted-lock dataset into a validated model, one
+This work turned a drifted-lock dataset into a validated model, one
 near-prediction bound, one demonstrated-necessary bound, and a method, but no
 coefficients.
 

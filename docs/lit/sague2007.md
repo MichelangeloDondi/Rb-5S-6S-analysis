@@ -48,11 +48,11 @@ section: oist-lineage
 
 # sague2007
 
-**Read 2026-07-30** from the held arXiv v4, fetched at the experimenter's
-request. Bonn (Meschede/Rauschenbeutel) — the origin of the whole optical
-nanofibre cold-atom line, and the paper `patterson2018` cites as its ref [8].
+**Read from the held arXiv v4.** Bonn (Meschede/Rauschenbeutel), the origin of
+the whole optical nanofibre cold-atom line, and the paper `patterson2018` cites
+as its ref [8].
 
-## Why it was worth fetching
+## What reading it settles
 
 Two claims about this paper were sitting in this repository as **REPORTED**,
 from an external literature pass, and both were doing real work: that its model
@@ -155,7 +155,7 @@ absent from Patterson's width.
 [klimovducloy2004](klimovducloy2004.md)"; that was too quick, and is corrected
 here rather than dropped (2026-07-31).** That paper's closed form is
 quasistatic, and its own Conclusion bounds the quasistatic regime at
-$ka < 1/\varepsilon$ — 0.473 for silica, against $ka = 1.844$ for *this* fibre
+$ka$ below $1/\varepsilon$ — 0.473 for silica, against $ka = 1.844$ for *this* fibre
 and 0.967 for Patterson's (CALCULATED). Computable it is, but from that paper's
 full electrodynamic Section IV, not from its Eq. (29). Sagué's own
 $\gamma = \gamma_{\rm free} + \gamma_{\rm guid}$ split is the tell: a separate

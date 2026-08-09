@@ -8,7 +8,7 @@ dress rehearsal, the pilot morning (ruler commissioning → Def → 0.65 A sweep
 and the campaign itself with its power ladders, temperature dwells, the
 9.6 h break, and the evidence-backed etalon-transient windows shaded.
 
-Regenerate with:  .venv/bin/python scripts/make_timeline_figure.py
+Regenerate with:  python3 scripts/make_timeline_figure.py
 Deterministic input; matplotlib output (byte-identity across matplotlib
 versions is not guaranteed, so the guard checks existence + freshness of the
 embed, not bytes).

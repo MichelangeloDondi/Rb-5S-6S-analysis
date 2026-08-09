@@ -51,7 +51,6 @@ Schlossberger, Daniel F. Hammerland, Nikunjkumar Prajapati, Tate McDonald,
 Samuel Berweger, Rajavardhan Talashila, Alexandra B. Artusio-Glimpse and
 Christopher L. Holloway (Univ. of Colorado Boulder and NIST, Boulder). Dated
 12 February 2025 on the preprint, DARPA SAVaNT and NIST-on-a-Chip funded.
-Read here 2026-08-03.
 
 **Verbatim abstract:** "We demonstrate the imaging of localized surface
 electric (E) field effects on the atomic spectrum in a vapor cell used in

@@ -258,9 +258,9 @@ def _condition(mirror=None, mirror_amp=0.6, gamma=1.5, ntr=5, seed=C.RNG_SEED):
 
 
 def test_a_known_mirror_is_trimmed_and_the_width_comes_back():
-    """The plant. A mirror at plus 28 MHz sits inside the adaptive fit window,
-    which is the case that window cannot handle, and it drags the collisional
-    width 0.6 MHz below truth. The trim must find it and give the width back.
+    """A mirror at plus 28 MHz sits inside the adaptive fit window, which is
+    the case that window cannot handle, and it drags the collisional width
+    0.6 MHz below truth. The trim must find it and give the width back.
     """
     truth = 1.5
     f, v = _condition(mirror=28.0)

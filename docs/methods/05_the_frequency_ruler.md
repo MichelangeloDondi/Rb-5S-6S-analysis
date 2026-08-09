@@ -30,7 +30,7 @@ $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} 
 
 — the same factor-2 as [§0](../methods.md). Fitting the tooth spacing (in ms) per block gives
 the sweep rate. We measure $0.042524(51)$ MHz/ms on the laser axis, and the
-sweep is linear across the window to $<0.3$%.
+sweep is linear across the window to better than 0.3%.
 
 This spacing's exactness, assumed above to calibrate the sweep rate, is now
 a derived property rather than a design assumption: a velocity-symmetry
@@ -91,9 +91,9 @@ equally:
   phase $t_0$, never into the spacing. The genuine second-order effect —
   **edge teeth have only one neighbour**, so overlapping *asymmetric* wings
   pull the comb ends differently — is why the fit is a *constrained
-  simultaneous* comb (one shared tooth shape, free heights; at $\sim$147 ms
-  spacing and $\sim$60 ms width a strong tooth's wing under a weak neighbour
-  is $\sim$20% of the weak peak, and single-tooth fits pull centres by O(ms)),
+  simultaneous* comb (one shared tooth shape, free heights; at about 147 ms
+  spacing and about 60 ms width a strong tooth's wing under a weak neighbour
+  is about 20% of the weak peak, and single-tooth fits pull centres by O(ms)),
   and why the free-centres nonlinearity map exists: it bounds *any*
   tooth-dependent pull — scan nonlinearity and differential shape effects
   together — **empirically at $\lesssim0.3$% per position**

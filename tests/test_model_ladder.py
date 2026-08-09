@@ -1,8 +1,9 @@
 """
-Adversarial validation of the nested model ladder (rb5s6s/model_ladder.py).
+Validation of the nested model ladder (rb5s6s/model_ladder.py), in both
+directions.
 
-This is the test that answers the referee's "could your pipeline invent a
-signal?" -- and its converse. On synthetic spectra built with a KNOWN AC-Stark
+These tests answer "could the pipeline invent a signal?" and its converse. On
+synthetic spectra built with a KNOWN AC-Stark
 shift the ladder must decide D (+Stark) is warranted; on spectra built with
 S0 = 0 it must STOP at C, i.e. it must not add an AC-Stark parameter the data
 do not support. Both use BIC on the same nested models the real analysis uses.

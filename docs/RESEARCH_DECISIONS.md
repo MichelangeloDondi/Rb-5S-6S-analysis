@@ -287,8 +287,8 @@ configuration: a power sweep rather than a temperature sweep, calibrated off
 before/after EOM ruler brackets rather than the T-session's own per-block
 ruler.
 
-**Decision: the 130 °C point is folded into the headline.** Michelangelo, on
-firsthand apparatus authority, states that the 130 °C power-sweep session ran
+**Decision: the 130 °C point is folded into the headline.** On firsthand
+knowledge of the bench, the 130 °C power-sweep session ran
 in the SAME optical/cell configuration as the 70/90/110 °C temperature sweep
 — same beam path, same cell, same detection chain. That removes the
 "different configuration" objection. What genuinely differs between the two

@@ -37,7 +37,7 @@ summary: >
   Two-photon spectroscopy of THERMAL Rb vapour in a hollow-core fibre
   (Adelaide/Luiten with Benabid), 5S1/2 -> 5D5/2, linewidths as narrow as
   10 MHz, >90% nonlinear absorption, absorption sustained to 9 GHz of
-  intermediate-state detuning. Held from 2026-07-31 via the first author's
+  intermediate-state detuning. Held via the first author's
   open-access PhD thesis, which reprints the paper. TWO CORRECTIONS TO THIS
   NOTE followed: the excitation is TWO-COLOUR (780 + 776 nm, an ECDL and a
   Ti:sapphire), as the 9 GHz detuning scale had suggested; and the fibre is a
@@ -54,12 +54,11 @@ section: oist-lineage
 
 # perrella2013
 
-**VERIFIED 2026-07-31, via the thesis.** The APS article is paywalled and has no
-arXiv preprint, but the first author's open-access UWA PhD thesis — *Non-Linear
-Spectroscopy of Rubidium in Hollow-Core Fibres*, 235 pp — reprints it in full,
-and is what is held. The record itself came from Crossref (authoritative for the
-DOI, confirming every field the experimenter supplied) and the abstract was
-supplied verbatim by the experimenter from the publisher listing.
+**VERIFIED via the thesis.** The APS article is paywalled and has no
+arXiv preprint, but the first author's open-access UWA PhD thesis, *Non-Linear
+Spectroscopy of Rubidium in Hollow-Core Fibres*, 235 pp, reprints it in full,
+and is what is held. The bibliographic record came from Crossref, authoritative
+for the DOI, and the abstract verbatim from the publisher listing.
 
 **Abstract, verbatim.** "We present two-photon spectroscopy of a thermal rubidium
 vapor confined to the hollow core of a photonic-crystal fiber. Linewidths as
@@ -129,10 +128,10 @@ about it in both directions.** The scaling is $1/w_0$. A first version called it
 flat "factor of ten"; a correction then put the repository's own candidate at
 3.3 MHz — a factor of 2.8 — on the strength of an **18 µm mode field** attributed
 to [saha2010](saha2010.md) and [slepkov2010](slepkov2010.md). **Both attributions
-were wrong** (checked 2026-07-30): neither paper contains an 18 µm figure. The
-description that replaced them — "an apparatus value for a *prospective*
-collaboration" — was **also wrong**, and was retracted in
-[saha2010](saha2010.md): the CRYST³ fibre is the experimenter's **own operating
+were wrong**: neither paper contains an 18 µm figure. The
+description that replaced them, "an apparatus value for a *prospective*
+collaboration", was **also wrong**, and was retracted in
+[saha2010](saha2010.md): the CRYST³ fibre is an **operating
 apparatus** at Bologna, not a prospect. It is now sourced to
 [nasoni2026](nasoni2026.md).
 
@@ -150,23 +149,23 @@ correspondingly much worse (CALCULATED at 100 °C with the repo's own function):
 So Perrella's 10 MHz is narrower than transit alone would give in any of the
 *published* hollow cores — but **that follows from their fibre, which is now
 known, not from their line**. The thesis states a 45 µm kagomé core, putting the
-mode radius near 15 µm by the $0.65a$–$0.70a$ convention, seven to eight times
+mode radius near 15 µm by the $0.65a$ to $0.70a$ convention, seven to eight times
 looser than Saha's or Slepkov's. *An earlier version of this sentence said the
 10 MHz "implies a looser mode than Saha's or Slepkov's" — that is the
 reading-the-geometry-backwards-out-of-the-linewidth move this note already
 retracted once, and it is withdrawn here too.* The penalty across *that
 literature* is roughly **15–30×**.
 
-**But the relevant fibre is not one of theirs.** The experimenter's own CRYST³
-hollow core (EU H2020 GA 964531, the Bologna apparatus behind their doctoral
-work) runs an ~18 µm injection waist, giving **3.1–3.4 MHz**. So there are two
+**But the relevant fibre is not one of theirs.** The CRYST³
+hollow core (EU H2020 GA 964531, the Bologna apparatus) runs an ~18 µm
+injection waist, giving **3.1–3.4 MHz**. So there are two
 different statements and they must not be run together: *published* hollow cores
 in the Rb two-photon literature are tight and cost 15–30×; *this programme's*
 fibre is much larger and costs about 3×.
 
-**The 18 µm was an apparatus fact with no source in this repository, and was
-sourced 2026-07-31** — a held master's thesis on that apparatus
-([nasoni2026](nasoni2026.md), co-supervised by the experimenter). It is an **injection beam waist**, hence a **RADIUS**, so
+**The 18 µm was an apparatus fact with no source in this repository, and is now
+sourced** to a held master's thesis on that apparatus,
+[nasoni2026](nasoni2026.md). It is an **injection beam waist**, hence a **RADIUS**, so
 the 3.3 MHz reading was the right one and the 6.6 MHz alternative is dead. It is
 also *measured*: 17.1 ± 0.7 µm by 19.3 ± 0.4 µm, slightly elliptical, against an
 18 µm design target and a 13.6 ± 0.1 µm ideal thin-lens value. **The live caveat
@@ -185,11 +184,11 @@ transit was less than half the width. Any guided-geometry experiment on this
 line should budget separately for mode structure. That remains true whether or
 not such an experiment is ever run, and at present none is planned: the
 Bologna hollow-core fibre is headed for 780 nm EIT cooling, and a two-photon
-line in it is speculative (experimenter, 2026-07-31).
+line in it is speculative.
 
 *The residual inference.* The vapour temperature quoted here is the thesis's
 90 °C, but the mode radius is not measured in the reprint as read — the 14.6 and
-15.8 µm entries are the conventional $0.65a$–$0.70a$ fractions of the stated
+15.8 µm entries are the conventional $0.65a$ to $0.70a$ fractions of the stated
 45 µm core, not a published mode field. And the 10 MHz may still include laser
 width and power broadening, which would leave even less of it for anything
 positional.
@@ -205,7 +204,7 @@ manufactured component rather than of a daily alignment.
 
 **That is an argument, not a result, and nothing in Perrella's abstract supports
 it** — the abstract says only that the vapour is confined to a hollow core. It
-also should not be overstated into "$w_0$ no longer needs measuring": a mode
+also should not be overstated into "w₀ no longer needs measuring": a mode
 field diameter still has to be characterised, and
 [slepkov2010](slepkov2010.md) is a standing reminder that guided modes have
 their own intensity structure to model. The defensible version is that the

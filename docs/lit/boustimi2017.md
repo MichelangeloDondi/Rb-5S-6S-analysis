@@ -37,7 +37,7 @@ summary: >
   Open-access conference paper by the same author as the paywalled boustimi2002,
   presenting the same susceptibility-tensor framework for van der Waals
   dispersion energy and covering "sphere, cylinder and plane" geometries -- its
-  section 2.2 treats an atom near a nanowire explicitly. Held 2026-07-31 as a
+  section 2.2 treats an atom near a nanowire explicitly. Held as a
   possible free substitute for the method that sague2007 used to compute its own
   van der Waals shift. Carries the same limitation as the 2002 paper: the
   worked nanowire case is metallic, with the dispersion coefficients written to
@@ -53,8 +53,8 @@ section: method-anchors
 
 # boustimi2017
 
-**Held and skimmed 2026-07-31**, supplied by the experimenter while chasing the
-paywalled [boustimi2002] — which it does not replace, but may make unnecessary.
+**Held and skimmed**, while chasing the
+paywalled [boustimi2002], which it does not replace, but may make unnecessary.
 
 ## Why it matters: what Sagué actually needed from Boustimi
 
@@ -86,7 +86,7 @@ before treating this as a drop-in.
 ## Status for the refit: superseded, later the same day
 
 **This paper is no longer needed, and neither is `boustimi2002`.**
-[frawley2012](frawley2012.md) was supplied by the experimenter the same night:
+[frawley2012](frawley2012.md) is held and read:
 same electrostatic approximation, the right **cylindrical** geometry, and
 explicitly **metal *and* dielectric** rather than metal only. It also gives the
 answer in the directly usable form $U = -(C_3/x_0^3)\mu$, a flat-surface result

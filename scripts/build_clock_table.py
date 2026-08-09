@@ -26,7 +26,9 @@ guard tests/test_recovered_layer.py.
 
 Requires the quarantine copies (private, read-only). Without them the
 committed CLOCK.csv is the record; this script is how it was made and how it
-is verified.
+is verified. The four RB5S6S_*_DIR environment variables below are needed only
+to re-run this script against those private working copies, and the committed
+CSVs are what the repository ships.
 """
 
 from __future__ import annotations
@@ -39,10 +41,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 SOURCES = {
-    "main": "~/Documents/RawDataBackUp_QUARANTINE_2026-07-23",
-    "rawdata2": "~/Documents/RawData2_QUARANTINE_2026-07-24",
-    "pilot": "~/Documents/RawDataPilot_QUARANTINE_2026-07-24",
-    "prehistory": "~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24",
+    "main": Path(os.environ.get(
+        "RB5S6S_BACKUP_DIR", "~/rb-2025-quarantine/backup")).expanduser(),
+    "rawdata2": Path(os.environ.get(
+        "RB5S6S_RAWDATA2_DIR", "~/rb-2025-quarantine/rawdata2")).expanduser(),
+    "pilot": Path(os.environ.get(
+        "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser(),
+    "prehistory": Path(os.environ.get(
+        "RB5S6S_PREHISTORY_DIR", "~/rb-2025-quarantine/prehistory")).expanduser(),
 }
 
 
@@ -55,8 +61,7 @@ def _md5(path: Path) -> str:
 
 
 def main() -> int:
-    missing = [k for k, v in SOURCES.items()
-               if not Path(os.path.expanduser(v)).is_dir()]
+    missing = [k for k, v in SOURCES.items() if not v.is_dir()]
     if missing:
         print(f"quarantine(s) not on this machine: {missing} -- the committed "
               f"CLOCK.csv is the record; nothing to do.")
@@ -68,8 +73,7 @@ def main() -> int:
             by_md5[r["md5"]] = r["file"]
 
     rows = []
-    for source, base in SOURCES.items():
-        basep = Path(os.path.expanduser(base))
+    for source, basep in SOURCES.items():
         for p in sorted(basep.rglob("*")):
             if not p.is_file():
                 continue

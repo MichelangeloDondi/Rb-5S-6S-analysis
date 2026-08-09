@@ -1,7 +1,7 @@
 """Anchors and regression pins for rb5s6s/hyperpolarizability.py.
 
-The anchor set mirrors the adversarial reviews that produced the
-module (2026-08-08): the linear shift must reproduce the module
+The anchor set covers what the module can get wrong: the linear
+shift must reproduce the module
 polarizabilities at every crossing, the Einstein-A chain must
 reproduce the measured D2 width and 6S lifetime, the radial-sign
 table's physical content is pinned through a gauge-invariant loop

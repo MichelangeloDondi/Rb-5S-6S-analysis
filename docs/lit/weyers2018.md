@@ -44,8 +44,8 @@ section: method-anchors
 
 # weyers2018
 
-**Skimmed 2026-07-30** for metrological practice, at the experimenter's
-direction, alongside [gerginov2025](gerginov2025.md). **Not read in full.**
+**Skimmed for metrological practice**, alongside
+[gerginov2025](gerginov2025.md). **Not read in full.**
 Caesium microwave fountains; no physics input here.
 
 ## The rule for an inseparable systematic

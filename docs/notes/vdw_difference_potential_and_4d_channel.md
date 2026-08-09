@@ -18,7 +18,7 @@ with a ground-state perturber. Their numbers: the scale factor moves from 0.6551
 to 0.6282 and the 6S anchor from 3.53 to 3.38 kHz per 10¹² cm⁻³, a 4.1 per cent
 shift and inside the quoted ±0.30.
 
-## 2. Verdict: the referee is right
+## 2. The referee is right
 
 The module's own primary source settles it. Lewis, *Phys. Rep.* **58**, 1 (1980)
 ([note](../lit/lewis1980.md), held and read in full) says the same thing three

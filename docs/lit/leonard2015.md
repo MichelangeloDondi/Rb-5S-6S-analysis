@@ -58,8 +58,8 @@ section: method-anchors
 
 # leonard2015
 
-**Read (relevant sections) 2026-07-31** from the held arXiv PDF (1507.07898),
-fetched after an audit found the repository had been citing a tune-out value
+**Read (relevant sections) from the held arXiv PDF (1507.07898)**, after an
+audit found the repository had been citing a tune-out value
 that appears in no published source.
 
 ## Why this note exists
@@ -95,10 +95,9 @@ a provenance fix, not a physics one.
 
 ## The erratum, now HELD and VERIFIED
 
-**Superseded 2026-07-31.** This section used to say the erratum was REPORTED
-from an external literature pass, "has not been verified here", and "should be
-obtained". It has been: see [leonard2017](leonard2017.md), held and read from
-the APS PDF. Everything the external pass reported was right —
+The erratum is now held and read from the APS PDF, see
+[leonard2017](leonard2017.md). It had been carried here as REPORTED from a
+secondary literature pass. Everything that pass reported was right —
 **790.032326(32)** and R = 1.99217(3), from a ground-state Zeeman shift omitted
 from $\omega'$ — and the erratum adds a corrected theory value, 790.0315(7) nm,
 plus the resolution of the apparent Lamporesi conflict (an $F=1$ versus $F=2$

@@ -41,9 +41,7 @@ verified_date: 2026-07-31
 summary: >
   Closed analytical equations, in the electrostatic approximation, for the van
   der Waals potential and force of an atom outside a nanocylinder -- metal and
-  dielectric. Supplied by the experimenter on 2026-07-31 after being named as
-  the top outstanding want; a claim in this note that it had been held all along
-  was itself wrong and is corrected in the body. Writes the result as the flat-surface form times a dimensionless
+  dielectric. Writes the result as the flat-surface form times a dimensionless
   surface factor, U = -(C_3/x_0^3) mu, with mu given by a Bessel integral. The
   operationally important fact is the opposite of what this repo briefly
   recorded from a paraphrase: mu -> 1 at short range (x_0 << R), where "the
@@ -61,7 +59,7 @@ section: method-anchors
 
 # frawley2012
 
-**Held and read 2026-07-31.** University College Cork / Tyndall National
+**Held and read.** University College Cork / Tyndall National
 Institute, with Minogin at Troitsk. Síle Nic Chormaic is now at **OIST**.
 
 ## What it gives
@@ -74,7 +72,7 @@ factorises the answer into the flat-surface result times a dimensionless
 
 $$U = -\frac{C_3}{x_0^3} \mu$$
 
-with $\mu$ (their Eq. 20) a sum-over-$m$ integral of modified Bessel functions,
+with $\mu$ (their Eq. 20) an integral of modified Bessel functions summed over $m$,
 and a matching force factor $\nu$ (Eqs. 22–23) with $F = -3C_3\nu/x_0^4$. That
 factorisation is what makes the paper usable: an existing $C_3/x^3$ model is
 corrected by multiplying by one position-dependent scalar.
@@ -98,7 +96,7 @@ $\nu$ behaves the same way — unity near the surface, ~0.5 by $x_0 \simeq 10R$.
 | $x_0/R$ | $\mu$ |
 |---|---|
 | $\ll 1$ | $\to 1$ |
-| 1 | $< 0.75$ |
+| 1 | below $0.75$ |
 | 5 | $\approx 0.5$ |
 | 100 | $\approx 0.2$ |
 
@@ -110,7 +108,7 @@ a 120 nm fibre, so $x_0/R \lesssim 1$ and $\mu$ is between 0.75 and 1. The
 flat-surface form is good there to tens of percent.
 
 (The abstract is the source of the confusion: it puts the halving "at distances
-of the order of a cylinder radius", where the body says $x_0 = R$ gives $<0.75$
+of the order of a cylinder radius", where the body says $x_0 = R$ gives less than $0.75$
 and $0.5$ arrives around $x_0 = 5R$. Where they differ, the body governs.)
 
 ## Where its own derivation is licensed — and it is not unconditional
@@ -123,12 +121,13 @@ electrostatic route replaces the full QED problem:
 > atom and the nanobody is of the same order of magnitude, the van der Waals
 > energy can be determined using a relatively simple electrostatic approach"
 
-The size condition is $a < \lambda/2\pi$, i.e. **$ka < 1$** — the same $ka$ that
-governs [klimovducloy2004](klimovducloy2004.md), just with a looser threshold
-(Klimov's quasistatic bound is the stricter $ka < 1/\varepsilon = 0.473$).
+The size condition is $a$ below $\lambda/2\pi$, i.e. **$ka$ below 1** — the same
+$ka$ that governs [klimovducloy2004](klimovducloy2004.md), just with a looser
+threshold (Klimov's quasistatic bound is the stricter $ka$ below
+$1/\varepsilon = 0.473$).
 Evaluated (CALCULATED 2026-07-31):
 
-| fibre | $\lambda/2\pi$ | $a$ | $ka$ | Frawley ($ka<1$) | Klimov ($ka<0.473$) |
+| fibre | $\lambda/2\pi$ | $a$ | $ka$ | Frawley ($ka$ below 1) | Klimov ($ka$ below 0.473) |
 |---|---|---|---|---|---|
 | [patterson2018](patterson2018.md) | 124.1 nm | 120 nm | **0.967** | inside, **marginally** | violated |
 | [sague2007](sague2007.md) | 135.6 nm | 250 nm | **1.844** | **violated** | violated |
@@ -153,9 +152,8 @@ That is asymmetry-of-a-line attributed to a distance-dependent surface
 potential, proposed in 2012 — **six years before**
 [patterson2018](patterson2018.md) measured it and named it. It is a
 *suggestion*, not a derivation: there is no lineshape, no moment, no fit to
-data here, and the paper does not develop it. But it belongs in the priority
-discussion alongside [delone1980](delone1980.md), and it should be cited rather
-than discovered by a referee. **Recorded for the the nanofibre extension novelty audit.**
+data here, and the paper does not develop it. But it belongs in the prior-art
+discussion alongside [delone1980](delone1980.md), and it should be cited.
 
 It also draws the trapping consequence — Eq. (24) puts $\mu$ into an effective
 potential with the centrifugal term, giving "expanded atomic orbits around the

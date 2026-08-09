@@ -56,6 +56,11 @@ SECTION_TITLES = dict(SECTION_ORDER)
 SECTION_SLUGS = [s for s, _ in SECTION_ORDER]
 
 
+def _note_files(d):
+    """Per-paper notes only: the directory README carries no frontmatter."""
+    return [p for p in sorted(d.glob("*.md")) if p.name != "README.md"]
+
+
 def _by_section(entries: list[dict]) -> dict:
     """Group entries by their `section` slug; unknown/missing -> 'unsorted'."""
     groups: dict = {}
@@ -339,7 +344,7 @@ def bootstrap(overwrite=False) -> int:
 
 def load_lit() -> list[dict]:
     out = []
-    for p in sorted(LIT_DIR.glob("*.md")):
+    for p in sorted(_note_files(LIT_DIR)):
         fm = _parse_frontmatter(p.read_text())
         out.append(fm)
     return out

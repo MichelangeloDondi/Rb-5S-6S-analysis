@@ -35,8 +35,7 @@ The critically-evaluated Rb ns/np/nd matrix elements and scalar/tensor static
 polarizabilities, the lineage this programme's polarizability elements descend
 from, and an independent check on the M16 static values.
 
-**Held and read in full, 2026-08-02.** The PDF was paywalled until the
-experimenter supplied it. What it contains, and the limits of what it can
+**Held and read in full.** What it contains, and the limits of what it can
 settle here:
 
 **Reduced E1 matrix elements** (Table II, "recommended values", atomic units),

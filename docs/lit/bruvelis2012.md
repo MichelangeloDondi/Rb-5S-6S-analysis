@@ -23,7 +23,7 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'HELD AND READ 2026-07-31, supplied by the experimenter. The exact-
+  - 'HELD AND READ. The exact-
     compensation claim in the abstract is confirmed verbatim. But reading the
     paper WEAKENED the transfer to this programme rather than strengthening it,
     reversing what this note previously said -- see the body. Their geometry is
@@ -59,11 +59,9 @@ section: prior-art
 
 # bruvelis2012
 
-**REPORTED, 2026-07-30.** Bibliographic record from Crossref, which is
-authoritative for the DOI; **full abstract supplied by the experimenter from the
-publisher listing the same day**, which confirms the author list and the
-correction below. Not held and not read in full — APS returns 403 without a
-subscription.
+**Bibliographic record from Crossref**, which is authoritative for the DOI. The
+full abstract from the publisher listing confirms the author list and the
+citekey correction below.
 
 **Abstract, verbatim.** "We revisit transit time broadening for one of the
 typical experiment designs in molecular spectroscopy, that of a collimated
@@ -81,7 +79,7 @@ the size of the laser beam waist. The analytical model is validated by comparing
 it with numerical simulations of density-matrix equations of motion using a split
 propagation technique and with experimental results."
 
-**Read 2026-07-31, and it weakens the transfer rather than strengthening it.**
+**Read in full, and it weakens the transfer rather than strengthening it.**
 This note previously argued from the abstract that the geometry is "the same
 class as this programme's, not merely a general ladder result, which
 strengthens the transfer considerably". The excitation scheme is indeed the

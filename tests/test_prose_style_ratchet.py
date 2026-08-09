@@ -1,10 +1,10 @@
-"""A ratchet on the prose tics that make writing read as machine-drafted.
+"""A ratchet on two punctuation marks the house style does not use.
 
-Why a ratchet and not a ban. The house style forbids em-dashes and semicolons
-in prose: where a sentence wants one, it should end and the next should begin.
-But the repository has 3063 of them across 112 files, accumulated over months
-of AI-assisted drafting, and a hard ban would fail on day one and be disabled
-by day two. A guard that cannot pass is not a guard.
+Why a ratchet and not a ban. The style rule is that where a sentence wants an
+em-dash or a semicolon, it should end and the next should begin. The corpus
+began with 3063 of them across 112 files, so a hard ban would have failed on
+the first run and been switched off on the second. A guard that cannot pass is
+not a guard.
 
 So this records a per-file budget and fails only when a file gets WORSE. Every
 cleanup pass lowers a number and locks the gain in. The budget can only fall,

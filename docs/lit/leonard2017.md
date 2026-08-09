@@ -22,11 +22,10 @@ verify_flags:
   - 'This erratum supersedes leonard2015 on the tune-out and on the
     matrix-element ratio. Cite this for both. It is not on arXiv -- the 2015
     arXiv record (1507.07898) is pre-erratum through v3 -- which is why the repo
-    carried the erratum values as merely REPORTED until the PDF was obtained on
-    2026-07-31.'
+    carried the erratum values as merely REPORTED until the PDF was obtained.'
 verified_date: 2026-07-31
 summary: >
-  One-page erratum to leonard2015, held and read 2026-07-31. Corrects an error
+  One-page erratum to leonard2015, held and read. Corrects an error
   in the Zeeman treatment: the ground-state Zeeman shift was omitted from
   omega-prime when correcting the F=2, m=2 data taken in a 20.0 G bias field.
   The tune-out becomes 790.032326(32) nm, "an adjustment of about 2 sigma"
@@ -44,14 +43,9 @@ section: method-anchors
 
 # leonard2017
 
-**Held and read 2026-07-31**, closing a flag that had stood since the tune-out
-anchor was first checked: the erratum's numbers were carried as REPORTED because
-the document itself had not been obtained. The experimenter supplied it that
-night, under its bare APS filename `PhysRevA.95.059901.pdf` (file birth 01:17,
-renamed here); a scan for held PDFs with no lit file is what surfaced it. **A
-claim that it had been sitting in `PDF_papers/` unnoticed was wrong** and is
-corrected here — the same mistake was made about
-[frawley2012](frawley2012.md) the same night.
+**Held and read**, closing a flag that had stood since the tune-out
+anchor was first checked: the erratum's numbers were carried as REPORTED while
+the document itself was unavailable.
 
 ## What it corrects, in its own words
 

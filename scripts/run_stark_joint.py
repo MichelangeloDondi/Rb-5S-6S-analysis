@@ -132,6 +132,9 @@ see _shared_profile_grid -- equivalence tested). The quarantine prehistory
 tree must be present for the rehearsal arm; without it this module prints
 what is missing and exits 0, and the committed CSV remains the record
 (build_clock_table pattern). Raw traces never enter the repository.
+RB5S6S_PREHISTORY_DIR and RB5S6S_PILOT_DIR are needed only to re-run this
+script against those private working copies, and the committed CSVs are what
+the repository ships.
 
 Writes results/stark_joint.csv. Reads results/beta_self.csv (run M4 first)
 and the M2 bracket rates.
@@ -142,6 +145,7 @@ from __future__ import annotations
 import csv
 import datetime
 import glob
+import os
 import re
 import sys
 import time
@@ -165,7 +169,8 @@ from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
 
-PREHISTORY = Path("~/Documents/RawDataPrehistory_QUARANTINE_2026-07-24").expanduser()
+PREHISTORY = Path(os.environ.get(
+    "RB5S6S_PREHISTORY_DIR", "~/rb-2025-quarantine/prehistory")).expanduser()
 PEAKS = ("4121", "4154", "4192", "4207")
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
@@ -180,7 +185,8 @@ KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
 NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 reh rates, 1 pilot rate-scale
-PILOT = Path("~/Documents/RawDataPilot_QUARANTINE_2026-07-24/4192nm91c650ma").expanduser()
+PILOT = Path(os.environ.get(
+    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser() / "4192nm91c650ma"
 
 
 # ---------------------------------------------------------------------------

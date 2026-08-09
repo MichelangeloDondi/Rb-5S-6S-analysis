@@ -46,10 +46,9 @@ section: oist-lineage
 
 # rajasree2020thesis
 
-**Held and read in part 2026-07-31.** Created to fix a citekey conflation, not
-because a new document arrived: the thesis has been in `PDF_papers/theses/`
-without a lit file, while the claim that depends on it was filed under
-[rajasree2020](rajasree2020.md) — a different paper.
+**Held and read in part.** This note separates the thesis from
+[rajasree2020](rajasree2020.md), a different document, against which the claim
+that actually depends on the thesis had been filed.
 
 ## What it supplies, and why it is [FEED]
 

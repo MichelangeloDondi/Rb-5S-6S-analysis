@@ -86,8 +86,8 @@ grows linearly with collision rate, i.e. linearly with density:
 $$\gamma_\text{coll}=\beta_\text{self}N$$
 
 Baranger's own dilute-gas/binary-collision validity condition (his interaction
-volume $U\ll n^{-1}$) holds by a margin of $\sim$140× at our densest point,
-130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$), so this Lorentzian-and-linear-in-$N$
+volume $U\ll n^{-1}$) holds by a margin of about 140× at our densest point,
+130 °C ($2.9\times10^{13}\ \text{cm}^{-3}$), so this Lorentzian, $N$-linear
 form is not in question anywhere in our sweep. What remains open is only the
 separate, later step from a $-C_6/R^6$ potential to a cross-section
 ([Lewis 1980](../lit/lewis1980.md), `rb5s6s/vanderwaals.py`, M18), a step
@@ -132,7 +132,7 @@ nanofibre study on this same line ([Gokhroo 2022](../lit/gokhroo2022.md), J. Phy
 same laser system (M Squared SolsTis) as having sub-MHz linewidth. That is a quoted
 figure, not a recorded diagnostic, and it speaks to the laser's intrinsic
 linewidth rather than to the 2025 lock's behaviour — but it is consistent with
-the shape-based bound $\sigma_\text{laser} < 1.2$ MHz (laser axis) found here, and it
+the shape-based bound $\sigma_\text{laser}$ below 1.2 MHz (laser axis) found here, and it
 is the only published number for this laser on this line. The 2025 lock was misconfigured; one deliverable (C2) is
 to characterize that epoch's $\sigma_\text{laser}$ — from the archival data an
 **upper bound** (it is degenerate with the transit width; see §2.5 and
@@ -207,11 +207,11 @@ value) — a **finite** cusp once the crossing-flux weight is included (an earli
 version omitted it, weighting $\propto1/v$ near $v=0$, and produced a spurious
 log-divergence; fixed 2026-07-13, validated against [Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO
 example). We quote the width the kernel *adds to the natural line* once
-convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32\ \mu$m and
-$\sim0.88$ MHz at $65\ \mu$m, the Monte-Carlo grid point beside the adopted
-$64\ \mu$m prior (it was $\sim1.2$ MHz at the superseded $50\ \mu$m prior). At
+convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32$ µm and
+$\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the adopted
+64 µm prior (it was $\sim1.2$ MHz at the superseded 50 µm prior). At
 32 µm that is large enough that
-natural$\otimes$transit already exceeds the observed $\sim5.25$ MHz line, which
+natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([what we found](07_what_we_found.md)).
 
@@ -230,10 +230,10 @@ locked laser — consistent with the archival $\approx5.25$ MHz line.
 
 The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a
-Voigt against a Lorentzian$\otimes$exponential can detect it — to our
+Voigt against a Lorentzian⊗exponential can detect it — to our
 knowledge not cleanly resolved as a *cusp* in a thermal two-photon line (a
 target for a fixed-lock session with a narrow laser). Caveat: $w_0$
-is only a prior, $64\ \mu$m with a 60–70 µm band, adopted from the beamline
+is only a prior, 64 µm with a 60–70 µm band, adopted from the beamline
 lineage measurement above rather than measured on this beam (it was re-centred
 from 32 to 50 µm when the transit physics was corrected, then from 50 to 64 µm
 when that measurement was adopted, and the beam is clipped by a 3 mm aperture,
@@ -256,7 +256,7 @@ $$\frac{dP}{dx} \propto \exp \Big(-\frac{2x^2}{w^2}\Big)$$
 
 whose width gives the local radius $w$. Repeating at several positions along
 the propagation axis $z$ near the focus and finding the minimum locates the
-waist $w_0$. It is direct, needs no lineshape model, and is good to $\sim\mu$m.
+waist $w_0$. It is direct, needs no lineshape model, and is good to about a µm.
 
 **Why a knife-edge rather than a camera?** Both are beam-profile measurements
 that end in a Gaussian fit; they differ only in the transducer, so this is a
@@ -277,7 +277,7 @@ assumption. The planned $z$-scan (PLAN §4) already covers part of this for
 free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
 since $z_R=\pi w_0^2/(M^2\lambda)$, the ratio $(\pi w_0^2/\lambda)/z_R$ is
 exactly $M^2$ — so the $z_R=\pi w_0^2/\lambda$ consistency test is also a
-beam-quality test, albeit one that cannot separate $M^2>1$ from a stage-scale
+beam-quality test, albeit one that cannot separate an $M^2$ above 1 from a stage-scale
 error without an independent image.
 
 Why $w_0$ matters most here: $w_0$ sets the **transit width**

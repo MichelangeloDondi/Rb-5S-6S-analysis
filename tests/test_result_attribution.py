@@ -9,14 +9,11 @@ three-session bound (C3f, 0.26 MHz), which fits full profiles at the
 unscaled 2.706 threshold and depends on the waist weakly through the
 transit kernel in its lineshape.
 
-The incidents: 2026-08-04, the widening attributed to C3f in RESULTS
-(caught by review); 2026-08-07, the README headline called the 0.26
-bound "waist-free"; 2026-08-07 again, CLAIMS said the joint bound
-"uses only the width-versus-power data, so it does not depend on the
-waist"; and the README results-table row carried the widening wording
-until the same day. Two instances survived earlier fixes because the
-phrasing wraps across the 72-column line breaks, which is why this
-test collapses whitespace before matching anything.
+Both directions have occurred in the prose: the over-dispersion
+widening attributed to C3f, and the joint bound described as
+"waist-free" or as using only the width-versus-power data. The wording
+wraps across the 72-column line breaks, which defeated hand fixes and
+is why this test collapses whitespace before matching anything.
 
 Scope is the paragraph, bullet or table row, not a character window:
 the CLAIMS instance spans two sentences inside one bullet, while
@@ -34,11 +31,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 # Known deferral: the archive README's S0 table row still carries the
-# widening wording. That file is owned by the live cavity-scan session
-# and is fixed at its reconciliation (the reconcile list in
-# private/run_logs/phase5/WAVE_CHECKLIST.md carries the item, dated
-# 2026-08-07). The mirror's row is already corrected, so this entry
-# never fires there. Remove it when the reconciliation lands.
+# widening wording and is corrected there separately. The mirror's row
+# is already correct, so this entry never fires here. Remove it once
+# the archive row is fixed.
 DEFERRED = [
     ("README.md", "joint three-session profile likelihood with the threshold widened"),
 ]

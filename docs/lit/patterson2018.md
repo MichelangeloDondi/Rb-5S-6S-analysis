@@ -48,9 +48,8 @@ section: oist-lineage
 
 # patterson2018
 
-**Read 2026-07-30** from the held arXiv v1. Joint Quantum Institute (Maryland /
-NIST). Surfaced the previous day as ref [25] of
-[sadeghi2026](sadeghi2026.md); the PDF was supplied by the experimenter.
+**Read from the held arXiv v1.** Joint Quantum Institute (Maryland /
+NIST). Reached through ref [25] of [sadeghi2026](sadeghi2026.md).
 
 ## The system
 
@@ -124,7 +123,7 @@ collapsed into one: the primary fit holds $b_o$ at its calculated 0.142 and free
 only an amplitude and the exponent, giving $g = 2.26 \pm 0.05$; a second fit
 frees $b_o$ as well and gives $b_o = 0.156 \pm 0.019$ with
 $g = 2.15 \pm 0.136$, which they note is consistent within errors. The
-expectation is $g < 3$.
+expectation is $g$ below 3.
 
 ## The concession the nanofibre extension must make
 
@@ -136,7 +135,7 @@ parameter and fitted with a shift-distribution convolution, is done.** And unlik
 [antypas2018](antypas2018.md) — whose title is asymmetry *elimination* — Patterson
 *use* the asymmetry as an information channel about the spatial distribution,
 which is exactly this programme's stance. That similarity should be stated
-plainly rather than discovered by a referee.
+plainly.
 
 ## Where it differs, and the difference is real
 
@@ -277,7 +276,7 @@ either way, and not attempted here.**
 This was called "cheap" on the assumption that the free-space modification came
 ready-made in closed form from [klimovducloy2004](klimovducloy2004.md). It does
 not, at this fibre. That paper proves its quasistatic closed form valid only for
-$ka < 1/\varepsilon = 0.473$ (VERIFIED, its Conclusion), while Patterson's
+$ka$ below $1/\varepsilon = 0.473$ (VERIFIED, its Conclusion), while Patterson's
 $a = 120$ nm at 780 nm gives $ka = 0.967$ (CALCULATED) — twice the bound, and
 inside the band where Klimov says guided-mode influence is *substantial*. The
 term must come from his Section IV, the full electrodynamic treatment, which is
@@ -288,7 +287,7 @@ first, not an afternoon's fitting.
 **The second unexplained case is now held, and it is larger than Patterson's
 (2026-07-30).** Liu *et al.*, *Ferromagnetic Traps for Quasi-Continuous
 Operation of Optical Nanofiber Interfaces* (arXiv:2412.20734), fit
-$\tilde\Gamma/2\pi \approx 9.5$–$10.5$ MHz on the ⁸⁷Rb D2 line and say it "is
+$\tilde\Gamma/2\pi \approx$ 9.5–10.5 MHz on the ⁸⁷Rb D2 line and say it "is
 substantially larger than one might expect from the $\Gamma = 2\pi \times 6.1$
 MHz natural linewidth of the D2 transition, **even after accounting for the
 ONF-enhanced emission and the surface interactions**" — so an excess of
@@ -321,7 +320,7 @@ quasistatic section and its Conclusion were read 2026-07-31. **Two claims that
 stood here are withdrawn**: that only its abstract and regime statements had
 been read, and that it "supplies the analytic subwavelength decay rates the
 refit needs". The closed form is there and is elementary, but *subwavelength is
-not its criterion* — the paper licenses it only for $ka < 1/\varepsilon$, and
+not its criterion* — the paper licenses it only for $ka$ below $1/\varepsilon$, and
 this fibre misses that by a factor of two. What the refit needs from that paper
 is its **Section IV**, held and unread.
 The second theory input, the van der Waals shift near a cylinder, **is no longer
@@ -335,29 +334,28 @@ equations for **metal *and* dielectric** nanocylinders in the electrostatic
 approximation. `boustimi2002` and [boustimi2017](boustimi2017.md) both work the
 *metallic* wire and are the wrong material for a silica fibre either way.
 
-**Two clauses that stood here are struck (2026-07-31).** "It is not held;
-**FETCH** it" — the fetch happened: the experimenter supplied it that night
-(file birth 01:21), and it is held and read. And "the same quasistatic footing
-as Klimov's Eq. (29), so the two compose" — Klimov's Eq. (29) is out of range at
+**Two clauses that stood here are struck.** [frawley2012](frawley2012.md) is
+held and read, so the standing instruction to obtain it is spent. And it does
+not sit on "the same quasistatic footing
+as Klimov's Eq. (29), so the two compose": Klimov's Eq. (29) is out of range at
 this fibre (see above), so there is nothing for Frawley to compose *with* until
 Section IV is worked through. Frawley's own electrostatic derivation is
-separately licensed and stands; the two simply are not a matched pair the way
+separately licensed and stands, but the two are not a matched pair the way
 this sentence claimed.
 
-**And frawley2012 was supplied and read the same day** — which
-which corrected a claim this note carried for a few hours. Curvature does weaken
+**And reading frawley2012 corrected a claim this note carried.** Curvature does weaken
 the potential, but **not at the distances that matter here**. Frawley writes
 $U = -(C_3/x_0^3)\mu$ and states that for $x_0 \ll R$ the factor "is close to
 unity and therefore the curvature of the surface is of no importance"; $\mu$ is
-$<0.75$ only by $x_0 = R$ and reaches ~0.5 near $x_0 = 5R$. With $R = 120$ nm
+less than $0.75$ only by $x_0 = R$ and reaches ~0.5 near $x_0 = 5R$. With $R = 120$ nm
 here, the near-surface atoms carrying the asymmetry sit at $x_0/R \lesssim 1$,
 where $\mu \approx 0.75$–1. **A flat-surface $C_3/x^3$ is therefore adequate to
 tens of percent for this fibre** — the "overestimates by about a factor of two"
 that stood here briefly was read off a paraphrase of Frawley's abstract and is
 withdrawn.
 
-**[hummer2021](hummer2021.md) is NOT a candidate mechanism for this, and was
-listed as one here until it was read (2026-07-31).** It was fetched on an
+**[hummer2021](hummer2021.md) is NOT a candidate mechanism for this**, though it
+was listed as one here before it was read. It entered on an
 external description of it as "the nearest un-applied candidate mechanism" for
 the excess. It is not: every linewidth in that paper is the width of a
 transition *between motional states* of an adsorbed atom — a few hundred kHz,

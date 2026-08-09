@@ -1,7 +1,7 @@
 # Pooling the self-broadening slope: specification before code
 
 Status: pre-registered 2026-08-04, before any pooled number was computed.
-Owner's question of record: "are you sure that we should have 4 different
+The question of record: "are you sure that we should have 4 different
 fits? I would do only one joint fit, or at most one for each isotope."
 The construction below was fixed after a three-referee verification
 (collision physics, estimator statistics, dependency plumbing) and before
@@ -60,7 +60,7 @@ above among three of them). Four conditions cannot pin f, so the quoted
 bound uses the REML point value and the profile range of f is printed
 beside it.
 
-## 3. The verdict is frozen at bound
+## 3. The reading is frozen at bound
 
 The measurement-versus-bound rule asks whether the drift probes bound the
 drift contribution to at most one third of the observed trend. Temperature
@@ -68,8 +68,8 @@ is monotone in time across the campaign and the four lines of one condition
 sit within about an hour of each other, so a slow drift enters all four with
 the same sign and nearly the same size. Pooling divides that term by exactly
 one. A pooled signal-to-noise may therefore cross thresholds that the
-confound analysis has not moved at all, and any verdict flip produced that
-way would be noise dressed as physics. The pooled result is quoted as a
+confound analysis has not moved at all, and a bound turning into a
+measurement that way would be noise dressed as physics. The pooled result is quoted as a
 BOUND for this release regardless of its signal-to-noise, by this amendment.
 The known weak-trace narrowing of the 70 C points steepens the pooled slope
 in the conservative direction and its share of the pooled slope is computed
@@ -98,10 +98,10 @@ Two products exist and only one changes.
 3. The pooled bound's fractional gain over the worst per-line bound falls
    inside the pre-stated 1.1 to 1.8 bracket.
 
-If prediction 1 or 3 fails, stop and escalate to the owner before anything
-is written. If prediction 2 fails, that is a finding about a per-line
+If prediction 1 or 3 fails, stop, and nothing is written until that failure
+has been settled. If prediction 2 fails, that is a finding about a per-line
 systematic (the cross-line consistency probe exists for exactly this) and
-it goes to the owner with the pooling left unadopted.
+the pooling stays unadopted while the question is open.
 
 ## 6. Sequencing
 
@@ -110,7 +110,7 @@ first, and its pre-registered predictions are checked on that construction,
 so the pooling never contaminates the six-tooth correction's own audit
 trail. This note is committed with that recompute. The pooled construction
 is implemented and run only after both, in its own commit, and fig19's first
-panel then draws one shared line per the owner's decision with the per-line
+panel then draws one shared line, once that is decided, with the per-line
 floors it already shows.
 
 ## Adjacent findings recorded for separate adjudication, not acted on here
@@ -158,4 +158,4 @@ The 70 C narrowing's share of the pooled slope, computed by the
 implementation: the 70 C condition mean sits 2.0 per cent (0.10 MHz)
 below the fitted line, three of four lines low there, and it carries
 +15.3 per cent of the pooled slope, in the conservative direction as
-stated in section 3. The verdict stays BOUND by section 3's freeze.
+stated in section 3. The reading stays BOUND by section 3's freeze.

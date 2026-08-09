@@ -31,11 +31,17 @@ the three. To cite a not-yet-held paper: add its key to KNOWN_DANGLING here.
 
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import re
 from pathlib import Path
 
 import pytest
+
+# The names that belong in citation context and nowhere else live in the
+# hygiene module as truncated digests. Reuse that set and its tokenizer rather
+# than restating either here.
+from test_repo_hygiene import _NAME_DIGESTS, _WORD
 
 ROOT = Path(__file__).resolve().parents[1]
 LIT_DIR = ROOT / "docs" / "lit"
@@ -130,8 +136,15 @@ _LOCI_RE = re.compile(r"^(P1|P2|THEORY|constants|methods/\d{2}|M\d+[a-z]?)(:.+)?
 _PDFS_PRESENT = any(PDF_DIR.glob("*.pdf"))  # True locally, False on CI (gitignored)
 
 
+def _lit_notes(d):
+    """The per-paper notes under docs/lit, which is every markdown file there
+    except its README. The README is a door into the directory and carries no
+    citekey frontmatter, so every check that reads frontmatter must skip it."""
+    return [p for p in sorted(d.glob("*.md")) if p.name != "README.md"]
+
+
 def _lit_keys():
-    return {p.stem for p in LIT_DIR.glob("*.md")}
+    return {p.stem for p in _lit_notes(LIT_DIR)}
 
 
 def _manuscript_docs():
@@ -155,6 +168,10 @@ def _cited_keys():
 
 def _fm(key):
     return bli._parse_frontmatter((LIT_DIR / f"{key}.md").read_text())
+
+
+def _digest(word: str) -> str:
+    return hashlib.sha256(word.lower().encode()).hexdigest()[:16]
 
 
 # --------------------------------------------------------------------------- #
@@ -366,14 +383,25 @@ def test_no_process_language_in_lit_notes(key):
     """docs/lit/ is exempt from the repo-wide phrase guards so that published
     titles and quoted abstract wording survive verbatim. That exemption must
     not become a hiding place for drafting-process language or for naming
-    colleagues in a working role."""
+    someone in a working role.
+
+    Whoever wrote the paper may be named anywhere in its note, so the note's
+    own `authors:` list is exempt. Everyone else is matched through the shared
+    digest set, which keeps the rule enforceable without any file carrying a
+    list of people in the clear.
+    """
     pat = re.compile(
         r"\buser(?:'s)?\b|digestion turn|\bas discussed\b|\bper your\b"
-        r"|\bchatgpt\b|\bclaude\b|\banthropic\b|\bZohreh\b|\bEtienne\b",
+        r"|\bchatgpt\b|\bclaude\b|\banthropic\b",
         re.I,
     )
-    bad = [f"{key}.md:{i}: {l.strip()[:100]}"
-           for i, l in enumerate(_lit_lines(key), 1) if pat.search(l)]
+    authors = " ".join(str(a) for a in (_fm(key).get("authors") or []))
+    watched = _NAME_DIGESTS - {_digest(w) for w in _WORD.findall(authors)}
+    bad = []
+    for i, line in enumerate(_lit_lines(key), 1):
+        named = any(_digest(w) in watched for w in _WORD.findall(line))
+        if pat.search(line) or named:
+            bad.append(f"{key}.md:{i}: {line.strip()[:100]}")
     assert not bad, "process language in a literature note:\n  " + "\n  ".join(bad)
 
 
@@ -390,15 +418,15 @@ def test_narrative_docs_do_not_argue_from_unverified_papers():
     import re
 
     reported = set()
-    for note in (ROOT / "docs" / "lit").glob("*.md"):
+    for note in _lit_notes(ROOT / "docs" / "lit"):
         t = note.read_text(encoding="utf-8", errors="replace")
         m = re.search(r"^status:\s*(\S+)", t, re.M)
         if m and m.group(1).strip() == "REPORTED":
             reported.add(note.stem)
     if not reported:
         # Every one of the 72 notes is currently VERIFIED, so this guard has
-        # been executing zero comparisons -- dormant, not passing (red-team,
-        # 2026-07-29). That is the intended end state and not a defect: a paper
+        # been executing zero comparisons: dormant, not passing. That is the
+        # intended end state and not a defect, because a paper
         # nobody has read normally has no note at all, it sits in the dangling
         # list. Say so out loud rather than returning silently, so an empty
         # population reads as a deliberate state in `-rs` output and anyone
@@ -449,7 +477,7 @@ def test_verified_status_requires_a_real_bibliographic_record():
     import re
 
     offenders = []
-    for note in sorted((ROOT / "docs" / "lit").glob("*.md")):
+    for note in sorted(_lit_notes(ROOT / "docs" / "lit")):
         txt = note.read_text(encoding="utf-8")
         if not txt.startswith("---"):
             continue
@@ -505,7 +533,7 @@ def test_verified_notes_carry_a_verification_date():
     import re
 
     missing, stale = [], []
-    for note in sorted((ROOT / "docs" / "lit").glob("*.md")):
+    for note in sorted(_lit_notes(ROOT / "docs" / "lit")):
         txt = note.read_text(encoding="utf-8")
         if not txt.startswith("---"):
             continue
@@ -567,7 +595,7 @@ def test_citekey_matches_its_first_author():
         return re.sub(r"[^a-z]", "", s.lower())
 
     bad, undocumented = [], []
-    for note in sorted(LIT_DIR.glob("*.md")):
+    for note in sorted(_lit_notes(LIT_DIR)):
         fm = bli._parse_frontmatter(note.read_text(encoding="utf-8"))
         authors = fm.get("authors") or []
         if not authors:

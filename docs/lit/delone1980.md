@@ -19,8 +19,8 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'The held file is the English translation in Sov. Phys. Usp. 23(8), Aug 1980,
-    supplied by the experimenter. Its OCR text layer is poor -- equations and
+  - 'The held file is the English translation in Sov. Phys. Usp. 23(8), Aug 1980.
+    Its OCR text layer is poor -- equations and
     Greek are mangled -- so everything below was read from the RENDERED pages,
     not from text extraction, and equation numbers are as printed on the page.'
   - 'The DOI above is the standard IOP record for this article and was NOT
@@ -48,10 +48,10 @@ section: prior-art
 
 # delone1980
 
-**Read 2026-07-30** from the rendered pages of the held translation, fetched by
-the experimenter after [camparo1992](camparo1992.md) was found to attribute the
-lineshape-mapping idea to it. It costs the novelty claim more than the
-attribution suggested.
+**Read from the rendered pages of the held translation**, after
+[camparo1992](camparo1992.md) was found to attribute the
+lineshape-mapping idea to it. It overlaps this programme's construction more
+than that attribution suggested.
 
 **A gap this note has to declare.** <!-- not-from-pdf: OCR text layer is
 unusable; all quotations here were transcribed by eye from the rendered pages. -->
@@ -68,7 +68,7 @@ any of them reaches a manuscript.
 
 **§4b, nonresonance perturbation, narrow spectrum.** Their Eq. (4.5):
 
-$$K(\Omega) \sim P\left(-\frac{\omega_{n1}-\Omega}{\alpha_{1f}\hbar}\right), \qquad \frac{\Omega-\omega_{n1}}{\alpha_{1f}\hbar} > 0$$
+$$K(\Omega) \sim P\left(-\frac{\omega_{n1}-\Omega}{\alpha_{1f}\hbar}\right), \qquad \frac{\Omega-\omega_{n1}}{\alpha_{1f}\hbar} \gt 0$$
 
 with the text: "Just as in the case of resonance perturbation, the shape of the
 line reflects the set of positions of the atomic level that are realized in the
@@ -146,10 +146,10 @@ So the defensible claim is not the machinery and not the mapping. It is:
   have;
 - everything experimental, and the fringe-averaging result (M19).
 
-**the introduction here should cite this paper early and concede all four
-points above explicitly.** A referee who knows the Soviet nonlinear-optics
-literature will otherwise find it, and the claim as previously worded would not
-survive that.
+**The introduction here should cite this paper early and concede all four
+points above explicitly.** The overlap is on the public record in the Soviet
+nonlinear-optics literature, and the claim as previously worded does not survive
+it.
 
 ## The change of variable, carried out — and it is exact
 
@@ -200,9 +200,9 @@ measured lineshape, correcting the Brendel-Bormann noncausality along the
 way, for dielectric-function models in nanophotonic materials (Gauss-Lorentz,
 Gauss-Debye, Gauss-Drude).
 
-**A candidate for this family, now held and read, and rejected.**
-[lahad2019](lahad2019.md), Phys. Rev. Lett. 123, 173203 (2019), was flagged
-during reconnaissance as a further cousin on the strength of its title,
+**A candidate for this family, read and rejected.**
+[lahad2019](lahad2019.md), Phys. Rev. Lett. 123, 173203 (2019), looked like a
+further cousin on the strength of its title,
 "Recovering the Homogeneous Absorption of Inhomogeneous Media." A full
 reading shows the opposite. Its spread parameter delta is a Doppler shift
 whose width is taken as GIVEN from the temperature, never extracted from a

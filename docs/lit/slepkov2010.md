@@ -28,8 +28,8 @@ section: prior-art
 
 # slepkov2010
 
-**Read here 2026-07-26** (PDF supplied). The external audit's report is
-confirmed verbatim.
+**Read from the held PDF**, which confirms the second-hand account of it
+verbatim.
 
 **The precedent, in their own words.** Fig. 3 caption: "The effect of guided
 mode nonuniformity on the ac Stark shift. (a) Radial mode profiles for 10 mW
@@ -71,10 +71,10 @@ comparison to Slepkov. The fibre sizes this paper actually names are its own
 lineage's: a **6 um core** HC-PBGF for their earlier Rb/acetylene EIT work, and
 a **10 um core** for the acetylene saturation results they cite. Those are the
 realistic hollow-core scales *in the published Rb two-photon literature*, and
-they are far tighter than the ~18 um of the experimenter's own CRYST3 fibre —
+they are far tighter than the ~18 um of the CRYST3 hollow-core fibre,
 which is a different apparatus with a different mode, not a competing reading of
-this paper. (That 18 um was sourced 2026-07-31 from a held master's thesis on
-the apparatus, Nasoni 2026: it is the **injection beam waist** of the 1064 nm
+this paper. (That 18 um is sourced to a held master's thesis on
+that apparatus, Nasoni 2026: it is the **injection beam waist** of the 1064 nm
 dipole-trap beam, hence a RADIUS -- an 18 um design target, an ideal thin-lens
 value of 13.6 +/- 0.1 um, and a measured 17.1 +/- 0.7 um by 19.3 +/- 0.4 um.
 Note it is the ODT beam, NOT a two-photon probe, so using it as a probe waist

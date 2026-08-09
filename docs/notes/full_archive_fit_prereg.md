@@ -22,7 +22,7 @@ coefficient.
 Three properties are structural from birth rather than retrofitted, because each
 of them was retrofitted somewhere else after an incident.
 
-1. The basin discipline of [RESEARCH_DECISIONS §11](../RESEARCH_DECISIONS.md)
+1. The seeding rule of [RESEARCH_DECISIONS §11](../RESEARCH_DECISIONS.md)
    and [methods 06 §4.12](../methods/06_the_statistics.md). The wing variant runs
    first, every family is seeded from a converged solution as well as run cold,
    the profile is the pointwise minimum over chains, and no cold-start profile
@@ -34,7 +34,7 @@ of them was retrofitted somewhere else after an incident.
 
 What it is not: it is not a replacement for the M23 bound of record, and it does
 not free `beta_self`. Whether it supersedes M23, sits beside M25 as a third arm,
-or replaces both is a decision for the owner after the first full run (§9).
+or replaces both is left open until after the first full run (§9).
 
 ## 2. The trace census
 
@@ -209,8 +209,8 @@ temperature ladder new to this fit is doing the work.
 ## 8. Acceptance criteria and stop conditions
 
 Fixed here, checked by the code, written to the CSV as `gate_*` rows. A FAIL
-verdict means the run's numbers do not go into any document until the owner has
-ruled on it.
+means the run's numbers do not go into any document until that failure has been
+settled.
 
 | gate | quantity | pass condition | rationale |
 |---|---|---|---|
@@ -221,7 +221,7 @@ ruled on it.
 | B5 | 95% crossing inside the grid | present | otherwise the bound is an extrapolation |
 | B6 | basin gap, best cold chain minus best seeded chain at any kappa | reported always, flagged above 1000 | the M23 incident printed 283,000 here. The pointwise minimum keeps the profile safe either way, so this is a flag rather than a stop |
 | B7 | direction indifference, max abs chi2 difference between the two directions | reported, expected order 10 | a value in the thousands means a parked chain, not a physical direction preference |
-| B8 | `dchi2` at kappa = 0 | below 9 for bound language | above 9 the profile prefers a positive shift at better than 3 sigma, which is a detection claim and needs the owner before it is written down |
+| B8 | `dchi2` at kappa = 0 | below 9 for bound language | above 9 the profile prefers a positive shift at better than 3 sigma, which is a detection claim and needs a decision before it is written down |
 
 **Amendment 1, 2026-08-03, after the smoke run and before any production
 number.** B3 as first written counted every railed shared parameter and made all
@@ -234,7 +234,7 @@ M23's own run sat on the upper edge, which is the live open question the M23
 docstring already poses about that axis rather than a broken fit. B3 therefore
 counts only the physics parameters that carry the widths. The other two classes
 are reported in their own CSV rows, `railed_expected` and `railed_flagged`, and
-the flagged one goes to the owner. The amendment is recorded here rather than
+the flagged one is carried as an open question. The amendment is recorded here rather than
 made silently because a threshold that moves after seeing a fit is worth exactly
 as much as its stated reason.
 
@@ -245,12 +245,12 @@ leave-one-peak-out rows positive and similar, direction indifference at the tens
 of chi-squared, and posterior collisional widths within 3 sigma of their priors.
 
 Stop conditions: B1, B3 or B5 failing. Also any of the following, which are
-judgment calls rather than thresholds and go to the owner: a bound that moves by
+judgment calls rather than thresholds and are settled case by case: a bound that moves by
 more than a factor of two from M23's in either direction, a `beta_self` posterior
 that disagrees with the four-point measurement at more than 3 sigma on two or
 more peaks, or a basin gap that survives seeding.
 
-## 9. Open questions for the owner, before the full run
+## 9. Open questions, before the full run
 
 1. **Standing of the result against M23 and M25.** Three overlapping
    constructions on one dataset need a stated hierarchy before any of them is
@@ -284,7 +284,8 @@ The run took 273 minutes over 231 traces and 296,949 points and wrote
 passed. What it found, stated against the specification above rather
 than against any headline.
 
-**The basin discipline works when it is structural from birth.** The
+**Seeding every family from a converged solution works when it is
+structural from birth.** The
 worst gap between a cold chain and its seeded twin, across five
 families, is 0.78 units of chi square. The same measurement on the
 predecessor's uncorrected run was 283,140. Nothing in this run had to

@@ -30,7 +30,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 | $\Gamma_\text{nat}$ | natural FWHM of the transition |
 | $\gamma_\text{coll}$ | collisional (pressure) broadening FWHM |
 | $\sigma_\text{laser}$ | laser-jitter contribution to the FWHM |
-| $N$ | rubidium vapour number density (atoms cm$^{-3}$) |
+| $N$ | rubidium vapour number density (atoms cm⁻³) |
 | $\beta_\text{self}$ | collisional **self-broadening coefficient**, $\gamma_\text{coll}=\beta_\text{self}N$ |
 | $w_0$ | laser beam waist (radius at which intensity falls to $1/e^2$) |
 | $\rho$ | retro-reflection power ratio (returning/forward intensity at the atoms); $S_0\propto(1+\rho)$, so $\rho=1$ is a perfect retro. This bench assumes $0.94\pm0.04$ |

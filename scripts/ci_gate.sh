@@ -11,6 +11,10 @@
 # battery with the slow closure tests, on this environment's python.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-.venv/bin/python -m ruff check rb5s6s scripts tests
-.venv/bin/python -m pytest -q --runslow
+# The checkout's own interpreter where there is one, the ambient python
+# otherwise, which is the case in CI. Hard-coding either breaks the other:
+# the bare python3 on a development machine need not carry ruff or pytest.
+if [ -x .venv/bin/python ]; then PY=.venv/bin/python; else PY=python3; fi
+"$PY" -m ruff check rb5s6s scripts tests
+"$PY" -m pytest -q --runslow
 echo "ci_gate: clean"

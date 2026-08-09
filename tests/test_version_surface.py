@@ -8,8 +8,8 @@ who opens the landing page and clicks Releases.
    1.1.0 while CITATION.cff and the tags had advanced to 1.4.0, caught
    2026-07-25). That catch added a two-file comparison to
    tests/test_repo_hygiene.py. rb5s6s/__init__.py carries a third copy of the
-   same string and was in neither the incident nor the guard, so the surface
-   was two thirds covered.
+   same string and was in neither that divergence nor the guard, so the
+   surface was two thirds covered.
 
 2. The metadata here reached 3.4.0 on 2026-08-06 and the newest tag
    stayed v3.2.0, thirty-one commits behind it. The installed package
@@ -33,10 +33,10 @@ raw-trace and not-a-git-checkout skips make. It also means the tag half is
 load-bearing where the full clone is: the scripts/ci_gate.sh run before a
 push. For CI to carry it as well, the pytest job's checkout needs
 `fetch-depth: 0`. A checkout that has SOME version tags but not this one is
-not an environment limitation, it is the incident, and it fails.
+not an environment limitation, it is the defect this module is for, and it
+fails.
 
-WHAT THIS DOES NOT CATCH, established by attacking the first version of it on
-2026-08-09 and left in place rather than papered over.
+WHAT THIS DOES NOT CATCH. These limits are stated rather than papered over.
 
 * It cannot block the omission at the moment it happens. The release sequence
   is bump, gate, commit, push, tag, so at gate time the new version is not yet

@@ -29,6 +29,8 @@ was a seed; this module supersedes it with the constrained comb fit.
 
 Needs the pilot quarantine tree (private, read in place, never copied).
 Without it the committed results/pilot_ruler.csv is the record; exits 0.
+RB5S6S_PILOT_DIR is needed only to re-run this script against that private
+working copy, and the committed CSVs are what the repository ships.
 
 Writes results/pilot_ruler.csv.
 """
@@ -50,7 +52,8 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s.ruler import fit_comb  # noqa: E402
 from run_ruler import MHZ_PER_TOOTH, combine_rates  # noqa: E402
 
-QP = Path(os.path.expanduser("~/Documents/RawDataPilot_QUARANTINE_2026-07-24"))
+QP = Path(os.environ.get(
+    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser()
 GROUPS = {
     "def": QP / "EOM ruler" / "Def",
     "initial": QP / "EOM ruler" / "Initial attempts",

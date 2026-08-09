@@ -27,8 +27,8 @@ the 993 nm frequency scan**. So the photon escape probability
 $\epsilon(\tau_\text{opt})$ is a constant multiplier across the scan: trapping
 **rescales the amplitude** (and can alter photon-counting *statistics*) but
 does **not** distort the two-photon lineshape. Onset is at
-$\tau_\text{opt}\sim1$, i.e. $N\sim1/(\sigma_{795}L)\sim10^{12}$–$10^{13}$
-cm$^{-3}$, straddled by our T-sweep. We tested the statistics route: the
+$\tau_\text{opt}\sim1$, i.e. $N\sim1/(\sigma_{795}L)\sim10^{12}$ to $10^{13}$
+cm⁻³, straddled by our T-sweep. We tested the statistics route: the
 shot-noise coefficient $b$ in the noise law ([§4.4](06_the_statistics.md)) is **flat in temperature**
 (no growth of the Fano factor 70→130 °C), so trapping, if it shows anywhere,
 shows in *amplitude ratios* versus density (module M7, against [Nieddu's 2019](../lit/nieddu2019.md)
@@ -40,8 +40,8 @@ There is one further subtlety that connects trapping to the **degeneracy law**
 but it is **not** the same *across* peaks: the emitted 795 nm photon's frequency
 is set by which $5P_{1/2}F'$ and $5SF''$ the cascade uses, so different
 hyperfine paths and the two isotopes overlap the ground-state D1 absorption
-differently. $^{85}$Rb carries $\sim 2.6\times$ the ground-state
-D1 absorbers of $^{87}$Rb (its 72 % abundance), so at equal density it is
+differently. ⁸⁵Rb carries $\sim 2.6\times$ the ground-state
+D1 absorbers of ⁸⁷Rb (its 72 % abundance), so at equal density it is
 trapped harder. Differential trapping is therefore a candidate mechanism for
 breaking the pure population ratios (5/3, 7/5, 2.42) — and, unlike the
 between-block drift, it is **monotonic in density and isotope-ordered**, which

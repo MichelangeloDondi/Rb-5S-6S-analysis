@@ -26,9 +26,9 @@ which the first-order Doppler shifts cancel (§1.1). The excited $6S_{1/2}$
 state can decay through several channels; here we detect only the
 $6S\to 5P_{1/2}\to 5S$ cascade, collecting the emitted 795 nm photons on a PMT
 behind 50 dB of 795 nm filtering. Four hyperfine components are measured,
-labelled by wavelength: 993.4207 nm ($^{87}$Rb $F{=}2\to2$), 993.4192 nm
-($^{85}$Rb $F{=}3\to3$), 993.4154 nm ($^{85}$Rb $F{=}2\to2$), 993.4121 nm
-($^{87}$Rb $F{=}1\to1$). Throughout we write these full labels; in code and
+labelled by wavelength: 993.4207 nm (⁸⁷Rb $F{=}2\to2$), 993.4192 nm
+(⁸⁵Rb $F{=}3\to3$), 993.4154 nm (⁸⁵Rb $F{=}2\to2$), 993.4121 nm
+(⁸⁷Rb $F{=}1\to1$). Throughout we write these full labels; in code and
 filenames the last four digits ("4207") are the key, and `constants.peak_label()`
 renders the full form for all output. The readings come from an uncalibrated
 wavemeter, so they identify the lines rather than measure them; the hyperfine

@@ -19,8 +19,8 @@ that says what the other seven are conditional on.
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). The model-form study ([§4.7](06_the_statistics.md)) confirms the 2025
    data cannot distinguish these forms — so the *shape* assumption is untested
-   by the archival data and is a genuine attack surface until a fixed-lock session is run.
-4. The beam waist $w_0=64\ \mu$m is **adopted from the lineage measurement,
+   by the archival data and is among the assumptions most exposed to being wrong until a fixed-lock session is run.
+4. The beam waist $w_0=64$ µm is **adopted from the lineage measurement,
    not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
    diameter with a beam profiler on the same laser model, the same $f=150$ mm
    lens, the same 130 °C cell and the same $2f$ retro geometry, and Nieddu
@@ -34,7 +34,7 @@ that says what the other seven are conditional on.
    ([§2.6](03_the_ac_stark_ramp.md)) is an **assumption**.
    Until v3.0.0 the code asserted $\rho=1$ on a geometric design argument: the
    2025 retro is self-imaging, L2 ($f=150$ mm) maps the cell waist to a
-   $\sim$0.7 mm intermediate waist and a flat mirror at that flat wavefront
+   about 0.7 mm intermediate waist and a flat mirror at that flat wavefront
    time-reverses the beam, re-forming the original waist, so the
    forward/return *mode match* is by construction. That argument covers mode
    matching and not *loss* (two extra L2 passes, two extra window passes,
@@ -83,7 +83,7 @@ flip** between the two waists (conditional on the collection geometry, which is
 unmeasured — PLAN §6 #4); $\beta_\text{self}$ measured rather than bounded —
 which the collision-rate literature says would require the **150–170 °C**
 extension (expected $\beta_\text{self}(6S) = 3.4 \pm 0.3$ kHz per
-$10^{12}$cm$^{-3}$, the anchor `docs/LITERATURE.md` scales from Zameroski's
+10¹² cm⁻³, the anchor `docs/LITERATURE.md` scales from Zameroski's
 measured 7S rate through the computed C₆ difference ratio, and the value
 `rb5s6s.vanderwaals.beta_self_anchored` returns); the Lehmann cusp in the
 cold-dim small-waist corner;

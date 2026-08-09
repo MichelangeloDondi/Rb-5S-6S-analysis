@@ -1,18 +1,18 @@
 """
 Pytest configuration: the ``slow`` marker and ``--runslow`` gate.
 
-A handful of closure tests carry the statistical weight of the whole suite —
+A handful of closure tests carry the statistical weight of the whole suite:
 the full-campaign synthetic global-fit recoveries and the transit Monte-Carlo
 scaling/convergence checks. They need large trace counts and 10^5 MC atoms to
 be *thorough* rather than *flaky*, so they dominate the wall-clock (~90 s of a
 ~105 s run).
 
-Rather than under-sample them (which trades rigor for speed and invites
-intermittent failures on the very tests meant to certify correctness), they
-are marked ``slow`` and skipped by default (93 fast tests, ~20 s, vs the full
+Under-sampling them would trade rigor for speed and invite intermittent
+failures on the very tests meant to certify correctness, so instead they are
+marked ``slow`` and skipped by default (93 fast tests, ~20 s, vs the full
 101 at ~105 s). **CI always runs them** (``pytest --runslow``, see
-``.github/workflows/tests.yml``), so full statistical coverage is never lost —
-it just moves off the inner loop. Every module still keeps at least one fast
+``.github/workflows/tests.yml``), so full statistical coverage is never lost.
+It just moves off the inner loop. Every module still keeps at least one fast
 test in the default run, so no code path goes completely unexercised locally.
 
 Run the full suite locally with:  ``pytest --runslow``

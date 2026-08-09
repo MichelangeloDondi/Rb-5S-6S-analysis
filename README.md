@@ -12,16 +12,16 @@ machinery is written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
 
 > **In one sentence:** when the lock drifts, the position of a line is lost but
-> its shape is not, so this archive reads collisional broadening, laser width
-> and the power-dependent light shift out of the *shape* as **bounds**, and
-> specifies the fixed-lock measurements that would turn each bound into a
-> number.
+> its shape is not, so collisional broadening, laser width and the
+> power-dependent light shift are read out of the *shape* as **bounds**, and
+> the fixed-lock measurements that would turn each bound into a number are
+> specified here.
 
 The scope and the headline numbers, up front. Four hyperfine components, 159 line traces and 105 ruler traces across 70–130 °C and 25–225 mW, three bounds at 95%:
-collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
-four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
+collisional self-broadening β_self below 0.03 to 0.05 MHz per 10¹² cm⁻³ across
+the four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm waist prior, and the AC-Stark coefficient
-S₀(225 mW) < 0.26 MHz against 0.35 predicted at the adopted waist (the
+S₀(225 mW) below 0.26 MHz against 0.35 predicted at the adopted waist (the
 prediction rides the prior directly, the bound only weakly, through its
 transit kernel).
 The full claim ledger, including what is deliberately not claimed, is
@@ -35,7 +35,7 @@ The full claim ledger, including what is deliberately not claimed, is
 its residuals: total FWHM 5.37 ± 0.02 MHz, reduced χ² 1.09. This is the raw material
 everything below is built from.*
 
-**Why the line is worth the trouble.** The environmental coefficients of the
+**Why this line is worth measuring.** The environmental coefficients of the
 993 nm 5S→6S line have only ever been bounded, and coarsely. Those
 coefficients set how tightly an environment must be controlled to reach any
 given stability, so they are worth knowing for a line nobody has measured them
@@ -92,7 +92,7 @@ measured against 1.40 predicted, from the digitised record.*
 The 6S₁/₂ population is read out through the 795 nm fluorescence of the
 6S₁/₂ → 5P₁/₂ → 5S₁/₂ cascade. Four hyperfine components are recorded across
 a temperature sweep (70–130 °C at 225 mW, spanning N = 0.56–29 × 10¹² cm⁻³)
-and a power sweep (25–225 mW at 130 °C). The archive holds 297 traces:
+and a power sweep (25–225 mW at 130 °C). There are 297 traces in all:
 159 composite-line traces and 105 frequency-ruler calibration traces enter
 the fits, and the remaining 33 files from the same nights are excluded before
 any fit. Those 33 are an aborted first attempt at one power sweep, its
@@ -133,8 +133,8 @@ was the hand re-centring after lock dropouts, not the drift. The full trail,
 including the retraction of a headline that turned out to be the knob, is in
 [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
-The archive therefore reports what the *shape* of a line carries (widths,
-power-law scalings, asymmetry) as bounds, nulls and consistency checks, while
+What the *shape* of a line carries (widths, power-law scalings, asymmetry) is
+therefore reported as bounds, nulls and consistency checks, while
 the absolute shifts wait for a stable lock. Each bound sets the sensitivity
 target a follow-up session would need to beat. The width-only AC-Stark bound
 brackets its prediction rather than resolving it (the predicted effect is

@@ -116,8 +116,8 @@ def test_collection_range_matters():
 # fit ever being asked. Two limits are diagnostic rather than tautological:
 # they fail loudly if any construction step has introduced an additive width
 # floor (a grid resolution, a minimum-width guard, a smoothing kernel).
-# Added 2026-07-25 after an external red-team review named the w0 -> infinity
-# limit "an extremely powerful asymptotic test" and it was found untested.
+# The w0 -> infinity limit is the more powerful of the two, and it went
+# untested until 2026-07-25.
 
 @pytest.mark.slow
 def test_wide_beam_limit_transit_collapses_toward_a_delta():

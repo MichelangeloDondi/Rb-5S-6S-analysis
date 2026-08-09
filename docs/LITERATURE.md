@@ -917,8 +917,8 @@ differential to about half a percent, from two directions:
 - `sieradzan2004`, Sieradzan, Havey & Safronova, *PRA* **69**, 022502 (2004),
   "Combined experimental and theoretical study of the $6p~^2P_j \to 8s~^2S_{1/2}$
   relative transition matrix elements in atomic Cs" (record confirmed via
-  Crossref 2026-07-30). The experimental check on the $8s$–$6p_j$ matrix
-  elements, 17.78(7) and 24.56(10) $ea_0$, that feed $\alpha_{8s}$.
+  Crossref 2026-07-30). The experimental check on the matrix elements between
+  $8s$ and $6p_j$, 17.78(7) and 24.56(10) $ea_0$, that feed $\alpha_{8s}$.
   **Not held**: an attempt to add it on 2026-07-30 did not reach
   `PDF_papers/`. **[CITE]**
 
@@ -1004,7 +1004,7 @@ the reference against which ONF surface/pushing effects are read.
 - **The theory inputs a refit needs.** [Klimov & Ducloy
   2004](lit/klimovducloy2004.md), held, derives analytical transition rates
   in the subwavelength regime but licenses the closed form only for
-  $ka < 1/\varepsilon$ (0.473 for fused silica), while Patterson sits at
+  $ka$ below $1/\varepsilon$ (0.473 for fused silica), while Patterson sits at
   $ka = 0.967$ and Sagué at 1.844 (CALCULATED), both in the band where
   guided-mode influence is substantial, so the closed form cannot simply be
   coded and the refit needs the paper's unread Section IV. For the van der
@@ -1015,7 +1015,7 @@ the reference against which ONF surface/pushing effects are read.
   papers are metallic while these fibres are silica). Frawley's correction
   factor μ tends to unity close to the surface and falls to about 0.5 at 5
   fibre radii, but its own electrostatic derivation is licensed only for
-  $ka<1$, which Patterson's fibre meets marginally and Sagué's fails.
+  $ka$ below 1, which Patterson's fibre meets marginally and Sagué's fails.
   **[OPEN]** Its concave counterpart
   [Afanasiev & Minogin 2010](lit/afanasiev2010.md) covers the hollow-core
   interior in the same factorised form, μ rising to 4 near the axis, and
@@ -1023,7 +1023,7 @@ the reference against which ONF surface/pushing effects are read.
   [schmidt2011](lit/schmidt2011.md) had been carrying (the cylinder figure is
   4, not the sphere's 6). The concave enhancement costs a hollow-core
   geometry nothing, since it multiplies an on-axis $C_3/x_0^3$ that is
-  already $10^{-4}$–$10^{-10}$ of the near-wall value for realistic bores.
+  already $10^{-4}$ to $10^{-10}$ of the near-wall value for realistic bores.
 - **[Perrella et al. 2013](lit/perrella2013.md)** (*PRA* **87**, 013818),
   two-photon spectroscopy of thermal Rb in a hollow-core photonic-crystal
   fibre, 10 MHz linewidths. Its true geometry, from the first author's

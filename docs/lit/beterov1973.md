@@ -32,8 +32,8 @@ section: prior-art
 
 # beterov1973
 
-**Read 2026-07-26** (introduction, contents and section scan), from the PDF
-supplied by the experimenter. I. M. Beterov and R. I. Sokolovskiĭ, Institute of
+**Read from the held PDF** (introduction, contents and section scan).
+I. M. Beterov and R. I. Sokolovskiĭ, Institute of
 Semiconductor Physics, Siberian Division, USSR Academy of Sciences,
 Novosibirsk, and the Moscow Institute of Steel and Alloys. Sov. Phys. Usp.
 **16**, 339 (1973), translated from Usp. Fiz. Nauk **110**, 169–190 (June
@@ -64,7 +64,7 @@ a strong field. A scan of the text for spatial field structure — beam profile,
 transverse intensity distribution, Gaussian mode — returns nothing; the
 standing wave is treated the classical way, decomposed into two travelling
 waves with opposite Doppler shifts. So the mechanism that generates the ramp
-here is absent, and there is no scoop risk.
+here is absent.
 
 It is also **one-photon** throughout (a probe transition adjacent to a
 strongly-driven one, in He–Ne and Ne discharge lines), so the I² weighting that

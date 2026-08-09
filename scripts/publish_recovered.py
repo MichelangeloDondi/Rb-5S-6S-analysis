@@ -20,6 +20,9 @@ name; RECOVERED_MANIFEST.csv maps both.
 
 data_raw/ itself stays byte-frozen; this is a separate, labelled layer.
 Requires the quarantines; without them the committed tree is the record.
+RB5S6S_BACKUP_DIR and RB5S6S_RAWDATA2_DIR are needed only to re-run this
+script against those private working copies, and the committed CSVs are what
+the repository ships.
 """
 
 from __future__ import annotations
@@ -31,8 +34,10 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-QMAIN = Path(os.path.expanduser("~/Documents/RawDataBackUp_QUARANTINE_2026-07-23"))
-QR2 = Path(os.path.expanduser("~/Documents/RawData2_QUARANTINE_2026-07-24"))
+QMAIN = Path(os.environ.get(
+    "RB5S6S_BACKUP_DIR", "~/rb-2025-quarantine/backup")).expanduser()
+QR2 = Path(os.environ.get(
+    "RB5S6S_RAWDATA2_DIR", "~/rb-2025-quarantine/rawdata2")).expanduser()
 VARIANT_STEM = "4192nm_225mw1"
 
 

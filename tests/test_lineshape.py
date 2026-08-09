@@ -228,10 +228,10 @@ def test_composite_transit_kind_voigt_vs_lehmann():
 
 
 def test_axial_ramp_matches_the_independent_closed_form():
-    """An external review (private/reviews/Claude_literature_chat, 2026-07-26)
-    derived the z-integrated ramp weight in closed form, by hand and with its
-    own quadrature -- different author, different code, different
-    parametrisation. In the long-cell limit it gets
+    """The z-integrated ramp weight also has a closed form, derived by hand
+    and integrated with its own quadrature, so it holds this module against a
+    different parametrisation and a different implementation. In the long-cell
+    limit it gives
 
         w(u) propto sqrt((1-u)/u) (1+2u),
         mean S0/3,  variance 11 S0^2/144,  |skew| (5/432)/(11/144)^1.5 = 0.5482
@@ -250,7 +250,7 @@ def test_axial_ramp_matches_the_independent_closed_form():
     hi = stark_ramp_axial_moments(1.0, 1.13)["skew_standardized"]
     assert lo * hi < 0, f"skew does not change sign in [1.10, 1.13]: {lo}, {hi}"
 
-    # spot-check the interpolation against the review's table
+    # spot-check the interpolation against the closed form's own table
     for z, mean_note, skew_note in ((0.5, 0.6209, 0.4793), (2.0, 0.4538, -0.3016),
                                     (5.0, 0.3800, -0.4460)):
         mm = stark_ramp_axial_moments(1.0, z)

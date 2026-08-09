@@ -45,8 +45,8 @@ section: method-anchors
 
 # gerginov2025
 
-**Skimmed 2026-07-30** for metrological practice, at the experimenter's
-direction. **Not read in full**, and deliberately not mined for physics: this is
+**Skimmed for metrological practice.** **Not read in full**, and deliberately
+not mined for physics: this is
 a caesium *microwave* fountain, and nothing in it bears on Rb two-photon
 lineshapes, nanofibres, or the polarizabilities this programme computes. What it
 offers is a worked example of how a primary standard states what it does not
@@ -101,8 +101,8 @@ use.**
 ## What is not transferable
 
 The blackbody section is a Stark shift of the caesium *hyperfine* clock
-transition — $\Delta f_{\rm BBR}/\nu_0 = k_0 E_{300}^2/\nu_0 \cdot (T/T_0)^4
-[1 + \epsilon (T/T_0)^2]$ with $E_{300} = 831.9$ V/m — and the 0.2 K temperature
+transition — $\Delta f_{\rm BBR}/\nu_0 = k_0 E_{300}^2/\nu_0 \cdot (T/T_0)^4 [1 + \epsilon (T/T_0)^2]$
+with $E_{300} = 831.9$ V/m — and the 0.2 K temperature
 uncertainty propagates to $0.6 \times 10^{-16}$. That is a differential
 polarizability known to great precision, but it is the microwave one, not the
 $6s \to 7s$ optical differential in the Cs validation triangle

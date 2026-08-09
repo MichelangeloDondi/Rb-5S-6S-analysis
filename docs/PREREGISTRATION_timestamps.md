@@ -49,7 +49,7 @@ risk here.
 
 | # | Gate | Pass criterion | If it fails |
 |---|---|---|---|
-| T1 | **Content identity** | SHA-256 of every backup file matches `data_raw/MANIFEST.csv` for basenames present in both | STOP. Red-team before any interpretation: a content difference means the backup is not the analysed data |
+| T1 | **Content identity** | SHA-256 of every backup file matches `data_raw/MANIFEST.csv` for basenames present in both | STOP. Adversarial review before any interpretation: a content difference means the backup is not the analysed data |
 | T2 | **Clock plausibility** | mtimes fall inside the 2025 research-visit window | Timestamps are backup-copy times, not acquisition times. The audit is **void**; report that and stop |
 | T3 | **Mass-copy signature** | no single mtime shared by an implausible fraction of files | Same as T2 — copy artifact, not acquisition clock |
 | T4 | **Granularity** | record the quantisation (1 s, 2 s FAT, sub-second) | Not a failure; the spacing predictions (P5) are scored against the measured granularity, not against an assumed one |
@@ -308,8 +308,8 @@ does and does not prove.
 
 The ordering is the evidence: the predictions were public nine days before the
 backup surfaced (2026-07-22), and the scorer was public before it was run. Both
-facts are checkable by anyone against GitHub's own commit timeline, which the
-repository owner cannot backdate.
+facts are checkable by anyone against GitHub's own commit timeline, which no one
+with push access to this repository can backdate.
 
 What is weaker than before: a release object is a more conspicuous, harder-to-
 overlook timestamp than a commit, and there is no longer one that predates the

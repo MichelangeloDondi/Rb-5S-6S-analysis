@@ -1,10 +1,10 @@
 # A fixed-lock session for Rb 5S₁/₂→6S₁/₂: proposal and measurement protocol
 
-**What this document is, and who decides with it.** It specifies a vapour-cell
-session that would convert three archival bounds on the 993 nm two-photon line
-into measured coefficients, and it is written for two readers who act on it: a
-host deciding whether the bench time is worth spending, who reads section 3 and
-the block register below, and an operator running the session, who reads
+**What this document is.** It specifies a vapour-cell
+session that would convert three bounds on the 993 nm two-photon line
+into measured coefficients, and it is written for two readers: one weighing
+whether the session earns its bench time, who reads section 3 and
+the block register below, and one running it, who reads
 sections 4 to 11 as the protocol. Nothing here is scheduled, no date is
 assumed, and the specification names no operator. It is a specification, not a
 booking.
@@ -186,7 +186,7 @@ offsets are meaningful only within one scope-knob epoch, the spikes are re-lock
 events, and the held-lock drift is bounded at order 0.02 MHz/min on the laser
 axis with the sign undetermined, which is why shapes survive and centres do
 not. Bottom: what each drift regime licenses. The 2025 lock supported the
-shape-only bounds this archive reports. A fixed lock of the class already
+shape-only bounds reported here. A fixed lock of the class already
 demonstrated on this transition would make the centre channel usable,
 converting the bounds into the measured pull, the collisional self-shift, and a
 3–12σ β_self.*

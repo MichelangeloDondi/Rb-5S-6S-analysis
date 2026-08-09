@@ -39,7 +39,7 @@ summary: >
   analytical expressions for the transition rates are derived for different
   dipole orientations, the dominant contribution is the QUASISTATIC interaction
   of the atomic dipole with the fibre, and guided-mode contributions are
-  exponentially small in that regime. Section III READ 2026-07-31: their
+  exponentially small in that regime. Section III READ: their
   Eq. (29) gives gamma_rad/gamma_0 in closed form for rho-, phi- and
   z-oriented dipoles, depending on position only through a^2/rho'^2, with the
   z rate unmodified and the rho and phi rates moving in OPPOSITE directions.
@@ -60,7 +60,7 @@ section: method-anchors
 
 # klimovducloy2004
 
-**Held 2026-07-30; Section III and the Conclusion read 2026-07-31.** Lebedev
+**Held, with Section III and the Conclusion read.** Lebedev
 Physical Institute (Moscow) and Laboratoire de Physique des Lasers, Université
 Paris-Nord. The quasistatic section carrying the closed form is read, as is
 Section VII, which is where the regime of validity is stated. The bodies of
@@ -98,7 +98,7 @@ regime:
 with a negligible guided-mode part — and that this "makes the refit tractable".
 That was wrong, and the paper's own Conclusion says so; see the validity bound
 below.** Subwavelength is not the criterion. The criterion is
-$ka < 1/\varepsilon$, and Patterson's fibre misses it by a factor of two.
+$ka$ below $1/\varepsilon$, and Patterson's fibre misses it by a factor of two.
 
 **One caution the paper states itself:** the decay rate of a *radially* oriented
 dipole "tends to infinity when cylinder radius tends to zero" for an ideally
@@ -132,30 +132,30 @@ trivially insertable into a fit.
 
 ## The validity bound — which BOTH fibres of interest violate
 
-**Read 2026-07-31 from the Conclusion, and it overturns the plan above.** The
+**Read from the Conclusion, and it overturns the plan above.** The
 paper states its own regime of validity explicitly:
 
 > "It is proved that quasistatic approximation works well for a nanofiber with
-> $ka < 1/\varepsilon$."
+> $ka$ < $1/\varepsilon$."
 
-> "For large enough nanofiber, $1/\varepsilon < ka < 2.4/\sqrt{\varepsilon-1}$,
+> "For large enough nanofiber, $1/\varepsilon$ < $ka$ < $2.4/\sqrt{\varepsilon-1}$,
 > the influence of guided modes on the decay rate is **substantial**."
 
 Evaluated for fused silica, $n = 1.4537$, $\varepsilon = 2.1132$, so
 $1/\varepsilon = 0.473$ and $2.4/\sqrt{\varepsilon-1} = 2.275$
 (CALCULATED 2026-07-31):
 
-| fibre | $a$ | $\lambda$ | $ka$ | quasistatic ($ka<0.473$)? | guided modes substantial? |
+| fibre | $a$ | $\lambda$ | $ka$ | quasistatic ($ka$ below 0.473)? | guided modes substantial? |
 |---|---|---|---|---|---|
 | [patterson2018](patterson2018.md), 240 ± 20 nm **diameter** | 120 nm | 780 nm | **0.967** | **NO — violated by 2×** | **yes** |
 | [sague2007](sague2007.md), 500 nm diameter | 250 nm | 852 nm | **1.844** | **NO — violated by 3.9×** | **yes** |
 
-Both are inside the nanofibre regime overall ($ka < 2.275$), so the paper
+Both are inside the nanofibre regime overall ($ka$ below 2.275), so the paper
 applies — but **both are in the band where the closed form is not sufficient on
 its own**, and guided modes have to be added. The "comfortably subwavelength,
 so there is a closed form" claim made earlier in this note was wrong: it treated
 "subwavelength" as the criterion when the paper's criterion is
-$ka < 1/\varepsilon$, which is roughly twice as strict.
+$ka$ below $1/\varepsilon$, which is roughly twice as strict.
 
 **Consequence for the refit.** Eq. (29) cannot simply be coded and used. Either
 the full electrodynamic treatment of Section IV is needed, or Eq. (29) has to be

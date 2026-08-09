@@ -347,7 +347,7 @@ guided mode collects **38 times less** than the bulk lens it would replace, and
 a 15 µm mode 85 times less. Only a mode radius near 2 µm would match the lens,
 and no fibre in this discussion has one.
 
-| scheme | what it measures | verdict |
+| scheme | what it measures | assessment |
 |---|---|---|
 | 1. Guided D-line counting | 795 / 780 nm out the ends | **Dead.** Axial OD 100 to 1041. Not an efficiency problem, an opacity one. |
 | 2. Hyperfine shelving read by guided absorption | ground-state population imbalance | **Loses in a hot fill, wins for trapped atoms.** See below. |
@@ -363,7 +363,7 @@ state survives. On bare silica it does not: the mean thermal speed at 100 °C is
 accumulation into a steady-state imbalance and costs a factor 3.5e3 in the
 minimum detectable per-atom excitation rate, 1.22 /s against 3.5e-4 /s for
 side-collected fluorescence. The break-even hyperfine memory time would be
-0.526 ms, short by the same factor. **The verdict inverts for trapped atoms**,
+0.526 ms, short by the same factor. **The comparison inverts for trapped atoms**,
 because a trapped sample never touches the wall. The per-atom optical depth in
 the guided mode is `sigma_0/A_eff` with `sigma_0 = 3 lambda²/2pi` = 3.018e-13 m²
 at 795 nm, giving 4.27e-4 for a 15 µm mode and 9.6e-4 for a 10 µm mode with

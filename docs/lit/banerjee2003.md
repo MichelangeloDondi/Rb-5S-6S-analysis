@@ -44,9 +44,9 @@ published 1 August 2003. Correspondence: V. Natarajan.
 The paper is about **ytterbium**, not rubidium. It measures the 398.8 nm
 $^1S_0 \leftrightarrow {}^1P_1$ line of atomic Yb: isotope shifts of all seven
 stable isotopes and the excited-state hyperfine structure of the two odd
-isotopes, $^{171}$Yb and $^{173}$Yb. Rubidium enters only as the frequency
+isotopes, ¹⁷¹Yb and ¹⁷³Yb. Rubidium enters only as the frequency
 reference that makes the measurement absolute: a diode laser locked to the
-$D_2$ line of $^{87}$Rb sets the length of a ring-cavity resonator, and a
+$D_2$ line of ⁸⁷Rb sets the length of a ring-cavity resonator, and a
 tunable Ti:sapphire laser (frequency-doubled to reach the UV) is read off
 against that cavity.
 
@@ -67,32 +67,32 @@ among earlier measurements."
 
 A frequency-doubled Ti:sapphire laser scans across the Yb atomic-beam
 fluorescence spectrum while a piezo-locked ring cavity, itself calibrated
-against the $^{87}$Rb $D_2$ line, reads out the absolute frequency of every
+against the ⁸⁷Rb $D_2$ line, reads out the absolute frequency of every
 peak. The free spectral range of the cavity is pinned to 30 kHz by comparing
 two Rb hyperfine lock points 6622.887 MHz apart and counting the resulting
 shift in cavity mode number, which fixes the mode number uniquely against a
 20 MHz wavemeter reading. Two badly blended features get resolved by
 constrained multi-Lorentzian fits with a shared linewidth across peaks,
-including a three-peak fit that separates $^{173}$Yb ($F=3/2$), $^{172}$Yb
-and $^{173}$Yb ($F=7/2$), lines that lie within 50 MHz of each other and had
+including a three-peak fit that separates ¹⁷³Yb ($F=3/2$), ¹⁷²Yb
+and ¹⁷³Yb ($F=7/2$), lines that lie within 50 MHz of each other and had
 never been separated before. Hyperfine coupling constants for the two odd
 isotopes are extracted from the measured level intervals.
 
 ## Key numbers
 
-- Absolute frequency reference: the $^{87}$Rb $D_2$ line, known to 10 kHz
+- Absolute frequency reference: the ⁸⁷Rb $D_2$ line, known to 10 kHz
   (cited from Ye, Swartz, Jungner and Hall, Opt. Lett. 21, 1280, 1996).
 - Cavity free spectral range determined to 30 kHz, AOM offset to a typical
   100 kHz, individual Lorentzian peak centres to 50 kHz.
 - Natural linewidth of the 398.8 nm Yb line: 28 MHz, against an observed
   45 MHz with 20 mW of UV light in a 1 cm beam.
-- Isotope shifts from $^{174}$Yb (MHz): $^{176}$Yb $-509.98 \pm 0.75$,
-  $^{173}$Yb($F=5/2$) $-254.67 \pm 0.63$, $^{173}$Yb($F=3/2$)
-  $516.26 \pm 0.90$, $^{172}$Yb $533.90 \pm 0.70$, $^{173}$Yb($F=7/2$)
-  $589.00 \pm 0.45$, $^{171}$Yb($F=3/2$) $833.24 \pm 0.75$,
-  $^{171}$Yb($F=1/2$) $1152.86 \pm 0.60$, $^{170}$Yb $1192.48 \pm 0.90$,
-  $^{168}$Yb $1886.57 \pm 1.00$.
-- First direct measurement of the $^{173}$Yb($F=3/2$)-$^{172}$Yb separation:
+- Isotope shifts from ¹⁷⁴Yb (MHz): ¹⁷⁶Yb $-509.98 \pm 0.75$,
+  ¹⁷³Yb($F=5/2$) $-254.67 \pm 0.63$, ¹⁷³Yb($F=3/2$)
+  $516.26 \pm 0.90$, ¹⁷²Yb $533.90 \pm 0.70$, ¹⁷³Yb($F=7/2$)
+  $589.00 \pm 0.45$, ¹⁷¹Yb($F=3/2$) $833.24 \pm 0.75$,
+  ¹⁷¹Yb($F=1/2$) $1152.86 \pm 0.60$, ¹⁷⁰Yb $1192.48 \pm 0.90$,
+  ¹⁶⁸Yb $1886.57 \pm 1.00$.
+- First direct measurement of the ¹⁷³Yb($F=3/2$)-¹⁷²Yb separation:
   $17.64 \pm 0.90$ MHz, averaged over about 30 spectra.
 - Hyperfine constants: $A_{171} = -213.08(47)$ MHz, $A_{173} = 57.91(12)$ MHz,
   $B_{173} = 610.47(84)$ MHz. A derived $g_J = 1.034(7)$ agrees with the
@@ -102,7 +102,7 @@ isotopes are extracted from the measured level intervals.
   each other by up to 10 sigma on some lines.
 - The refractive index of air limits absolute-frequency accuracy to about
   3 MHz. Frequency differences are unaffected, which is why the paper reports
-  shifts relative to $^{174}$Yb rather than absolute frequencies.
+  shifts relative to ¹⁷⁴Yb rather than absolute frequencies.
 
 ## Bridge to this programme
 
@@ -110,17 +110,17 @@ No bridge. This is a ytterbium hyperfine and isotope-shift paper. It carries
 no polarizability, no magic-wavelength, no self-broadening and no 5S-6S
 number, and nothing in it constrains $\Delta\alpha = 1093$ a.u., the
 1204/1288/1340 nm magic wavelengths, or the $\beta_\text{self}$ bound. Rubidium
-appears only as an off-the-shelf frequency standard, the same role $^{87}$Rb
+appears only as an off-the-shelf frequency standard, the same role ⁸⁷Rb
 $D_2$ plays in a great many unrelated metrology papers.
 
 The methodological point is closer but still not a transfer. Banerjee's
-technique locks a diode laser to $^{87}$Rb $D_2$ and uses it, plus a
+technique locks a diode laser to ⁸⁷Rb $D_2$ and uses it, plus a
 free-running ring cavity, to give the scanning laser an absolute frequency
 good to sub-MHz. This programme's own apparatus does the opposite: the
 wavemeter is uncalibrated, and the measured hyperfine peaks are what identify
 its readings after the fact, atoms calibrating the wavemeter rather than the
 wavemeter calibrating the atoms (`docs/methods/01_the_measurement.md`,
-`docs/methods/08_assumptions_and_outlook.md`). The two setups use $^{87}$Rb
+`docs/methods/08_assumptions_and_outlook.md`). The two setups use ⁸⁷Rb
 for opposite purposes, so this paper is not a precedent for this repository's
 wavemeter handling, only a demonstration that a Rb-referenced ring cavity can
 do the job this repo's own apparatus does not attempt. Filed as a method

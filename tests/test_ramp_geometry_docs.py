@@ -169,8 +169,8 @@ def test_sign_flip_claims_carry_the_condition(relpath):
     ("the flip is intrinsic and has nothing to do with Z_c") passed. Later
     mentions may legitimately be shorthand once the condition has been stated.
 
-    (Red-team pass 2026-07-29. The docstring also used to sit below the skip
-    guard, where Python discards it as a statement rather than binding it.)"""
+    (This docstring also used to sit below the skip guard, where Python
+    discards it as a statement rather than binding it.)"""
     if not (ROOT / relpath).exists():
         pytest.skip(f"{relpath} absent (unpublished manuscript draft)")
     paras = re.split(r"\n\s*\n", (ROOT / relpath).read_text(encoding="utf-8"))

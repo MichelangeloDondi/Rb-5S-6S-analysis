@@ -56,6 +56,29 @@ two-photon sum frequency, twice the laser frequency.
   absorbs the first-order shift, which leaves the pull uninformative
   about S₀ in the 2025 data by construction.
 
+![line width against Rb density at four temperatures, with the four hyperfine components separated](../figures/fig1_width_vs_density.png)
+
+*The evidence behind the first bound. The density rises 52.5-fold across the
+four temperatures while the fitted width rises 1.47-fold, which is what makes
+the collisional coefficient a bound and a floor rather than a resolved slope.
+The absolute widths ride the beam waist, which has not been measured, so a
+smaller waist would lower every point together.*
+
+![fitted width and peak signal against drive power at fixed temperature](../figures/fig2_power_sweep.png)
+
+*Where the light-shift bound comes from, and where it does not. No power trend
+survives the between-block scatter in these summary widths, which is why the
+bound is taken from a joint fit over every point of every profile instead.*
+
+![the four components averaged against density, and the fitted laser width under two models](../figures/fig5_pooled_width.png)
+
+*Two readings of the same fits. Panel (a) averages the four components and
+prints the two isotopic coefficients, which come out equal to well inside their
+combined uncertainty, so this data does not separate the isotopes. Panel (b)
+shows the fitted laser width moving with the choice of model rather than with
+temperature, which is why the per-block laser widths are quoted as a working
+range and not as a result.*
+
 **Nulls and scaling laws:**
 
 - No power trend in the linewidth at fixed temperature, against 3-8%

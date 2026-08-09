@@ -95,14 +95,19 @@ relabels the axis and wrong if the operator moved it to follow a drifted line;
 the licensing regression (1.005 over 15 moves) has 99.5% of its leverage on two
 moves above 800 ms, while the 13 moves the dispute concerns give 1.06 [0.75,
 1.19]. Both readings predict a ratio of 1 to ~0.002 against 11.5 ms of scatter,
-so the test has no power. The fix is hardware and is now Tier-0 item 0 in
-PLAN §3: export the ramp monitor, which was already on scope CH1.
+so the test has no power. The fix is hardware and is now item 0 of the
+systematic floor in PLAN §3: export the ramp monitor, which was already on
+scope CH1.
 
 Until then the addenda quote bands, not numbers -- see the standing frame caveat
 at the head of addendum 4 in PREREGISTRATION_RESULTS.md. This script is left
 computing the raw-frame values it always computed, because half of a band is
 still one end of it, and because rewriting it to privilege the other frame would
 assert exactly the thing that is not established.
+
+RB5S6S_BACKUP_DIR is needed only to re-run this script against the private
+working copy of the recovered backup, and the committed CSVs are what the
+repository ships.
 """
 
 from __future__ import annotations
@@ -120,9 +125,8 @@ from scipy import optimize
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-QUARANTINE = Path(
-    os.environ.get("RB5S6S_BACKUP_DIR",
-                   os.path.expanduser("~/Documents/RawDataBackUp_QUARANTINE_2026-07-23")))
+QUARANTINE = Path(os.environ.get(
+    "RB5S6S_BACKUP_DIR", "~/rb-2025-quarantine/backup")).expanduser()
 RATE_MHZ_MS = float(next(csv.DictReader(
     open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])  # laser axis, M2
 JUMP_MS = 10.0                      # same step-block screen as run_intrablock_trend

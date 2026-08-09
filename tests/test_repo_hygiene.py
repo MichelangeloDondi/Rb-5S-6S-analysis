@@ -24,6 +24,7 @@ Motivation, in order of severity:
 from __future__ import annotations
 
 import ast
+import hashlib
 import re
 import subprocess
 from pathlib import Path
@@ -44,30 +45,20 @@ def _tracked(*globs: str) -> list[str]:
 # --------------------------------------------------------------------------
 # 1. Private material must never be tracked
 # --------------------------------------------------------------------------
-PRIVATE_GLOBS = ["private/*", "private/**/*", "CLAUDE.md", "docs/brief_*", "docs/*audit*", "docs/*red_team*",
-                 # the underscore-free spelling: external critiques of the
-                 # APPLICATION (PI named, referees, career strategy). Three
-                 # such files were unignored on 2026-07-27 because every
-                 # private glob here assumed "red_team".
-                 "docs/*redteam*", "docs/ChatGPT*", "ChatGPT*",
+#
+# Working material that is not part of the published record: the local working
+# folder, personal and correspondence documents, unpublished drafts, and the
+# reference-setup notes and photographs, which carry equipment serials. Both
+# spellings of each pattern are listed, because a glob that assumed one
+# spelling let three files through once.
+PRIVATE_GLOBS = ["private/*", "private/**/*", "CLAUDE.md", "docs/brief_*",
+                 "docs/*audit*", "docs/*red_team*", "docs/*redteam*",
+                 "docs/ChatGPT*", "ChatGPT*",
                  "docs/CV_*", "docs/*inquiry*", "docs/linkedin*", "*.docx",
-                 # publication-strategy planning: process, unpublished
-                 # 2026-07-23 (assigns collaborators roles and labs on an
-                 # unagreed paper -- internal planning, not for outside eyes)
                  "docs/PAPERS_PORTFOLIO.md",
-                 # manuscript drafts, unpublished 2026-07-23: an abstract
-                 # carrying literal [X] placeholders and "once the headline
-                 # framing is agreed" is a working draft, not a result
                  "docs/PAPER1_SKELETON.md", "docs/paper1/*",
                  "docs/reference_setup/*", "docs/reference_setup/**/*",
                  "docs/*.tex"]
-# docs/reference_setup/NOTES.md joined the globs on 2026-08-02 after a broad
-# `git add docs/` re-tracked it twice in one night past the restore-staged
-# discipline. Whether the notes are ever published stays an open decision, and
-# until it is decided, tracking them is an error this test makes loud. The
-# photos were always excluded (serials and a name). 2026-08-05: the entry became
-# the whole directory, because the one tracked file under it was an operator
-# instruction sheet in photos/ that advertised what was being withheld.
 # docs/*.tex joined the same day. Three private files sat in docs/ held out by
 # filename globs alone, which is the failure mode this list already records
 # once, and they now live under private/ with the glob as the second line of
@@ -262,26 +253,35 @@ def test_retired_no_timestamps_claim_stays_retired():
 # --------------------------------------------------------------------------
 # 3. Names: citation context only
 # --------------------------------------------------------------------------
-# Surnames that must not appear in the published tree in a process role.
-# To cite one of these authors, add the citekey file under docs/lit/ and cite
-# it — that path is exempt, which is exactly the distinction being enforced.
-PROCESS_NAMES = [r"\bZohreh\b", r"\bEtienne\b", r"\bSíle\b", r"\bSile\b",
-                 r"\bBrion\b", r"\bLan\b"]
+# Names that belong in citation context and nowhere else. They are held as
+# truncated digests rather than in the clear, so that enforcing the rule does
+# not require this file to publish a list of people, which would be the same
+# disclosure by another route. To cite one of these authors, add the citekey
+# file under docs/lit/ and cite it: that path is exempt, which is exactly the
+# distinction being enforced. To add a name, append the first sixteen hex
+# characters of the sha256 of its lowercased form.
+_NAME_DIGESTS = frozenset({
+    "cc221ffa81c06c3e", "1a30ed961f81b1d8", "5bf8920cae2ee242",
+    "9a2806fa28fa2490", "7008a96aa67d858a", "094a367b026246fb",
+})
+
+_WORD = re.compile(r"[A-Z][\wÀ-ÿ'’-]{1,20}")
 
 
 def test_no_colleagues_named_in_process_roles():
-    pats = [re.compile(p) for p in PROCESS_NAMES]
     hits = []
     for rel in _prose_files():
         txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
         for i, line in enumerate(txt.split("\n"), 1):
-            for pat in pats:
-                if pat.search(line):
+            for word in _WORD.findall(line):
+                d = hashlib.sha256(word.lower().encode()).hexdigest()[:16]
+                if d in _NAME_DIGESTS:
                     hits.append(f"{rel}:{i}: {line.strip()[:90]}")
+                    break
     assert not hits, (
-        "colleague named in a published working document:\n  "
+        "a person is named in a published working document:\n  "
         + "\n  ".join(hits)
-        + "\n(roles are for the people involved to agree; cite via docs/lit/ instead)"
+        + "\n(cite via docs/lit/ instead, which is the exempt path)"
     )
 
 
@@ -345,12 +345,10 @@ def test_no_lecroy_attribution_for_the_archive():
 # docs/lit/ is exempt from every other guard above (published titles/abstracts
 # are quoted verbatim there and must not be edited to satisfy a style rule --
 # see SKIP_PREFIXES). That exemption is a blind spot for anything that ISN'T
-# a citation: one note (pache2026, 2026-07-25) carried "(the strongest
-# Lan-pitch match)" -- editorial commentary revealing the literature review
-# had been calibrated to one specific reader, which is precisely what the
-# project ruled out (every reader sees the same pages). PROCESS_NAMES cannot
-# catch this because names ARE legitimate here (author lists); this guards
-# the TAILORING WORDS instead, name-independent.
+# a citation. A literature note states why a paper matters to this work, the
+# same way for every reader, and must not be written for a particular reader.
+# The name guard above cannot catch that, because names ARE legitimate here
+# (author lists). This guards the TAILORING WORDS instead, name-independent.
 _TAILORING_WORDS = re.compile(
     r"\bpitch\b|\bsell(?:s|ing)?\s+(?:to|the)\b|\bappeals?\s+to\b|"
     r"\bwould\s+resonate\b|\bfor\s+(?:the\s+)?(?:target\s+reader|PI)\b",

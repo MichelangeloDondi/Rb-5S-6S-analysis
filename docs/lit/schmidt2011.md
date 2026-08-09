@@ -52,7 +52,7 @@ section: method-anchors
 
 # schmidt2011
 
-**Held and abstract read 2026-07-31**, supplied by the experimenter alongside
+**Held, abstract read.** Consulted alongside
 [boustimi2017](boustimi2017.md) while chasing the paywalled `boustimi2002`.
 
 ## The geometry is wrong, and the cylinder papers are the ones to use

@@ -39,7 +39,7 @@ natural place for a contribution.
 
 Let the two-photon excitation rate be $\propto I^{n}$ with $n=2$ (one power of
 $I$ per photon), and the light shift of the transition be $s = -\kappa I$ with
-$\kappa>0$ (red shift, sign discussed in §5). In a Gaussian beam
+positive $\kappa$ (red shift, sign discussed in §5). In a Gaussian beam
 $I(r)=I_0 e^{-2r^2/w_0^2}$, put $u \equiv I/I_0 \in (0,1]$. The signal from the
 annulus $[r,r+dr]$ is
 
@@ -239,7 +239,7 @@ free-centre fit, so the linear sweep warp lands in the fitted width and only
 the residual curvature can skew. At the archival within-scan drift the fitted
 ramp coefficient shifts by well under a fifth of its SNR-limited statistical
 error, a few $\times 10^{-3}$ on $S_0$ for the dominant linear part, and
-reaches order-$S_0$ only at tens of times the archival rate. The within-scan
+reaches order $S_0$ only at tens of times the archival rate. The within-scan
 skew is therefore bounded and small, not unmodelled.
 
 **Status.** In the 2025 sweep the fitted asymmetry coefficient is consistent
@@ -297,9 +297,9 @@ likelihood). The fitted value is consistent with zero, so the archive
 for the same two-epoch reason as everything else here. The drifted lock
 destroys the centres, the pull $\propto S_0$ is absorbed by each trace's free
 centre, and only the ramp's $\propto S_0^2$ width broadening survives (a
-$0.6$ MHz $S_0$ inflates a $5$ MHz line by $<0.1$ MHz).
+$0.6$ MHz $S_0$ inflates a $5$ MHz line by less than $0.1$ MHz).
 
-M23 (`run_stark_joint`) tightens the same channel to $S_0(225$ mW$) < 0.26$ MHz
+M23 (`run_stark_joint`) tightens the same channel to $S_0(225\ \text{mW})$ below 0.26 MHz
 by fitting every point of every profile across the sessions instead of 20
 summary widths. The 20-summary-width construction is kept as the independent
 simpler bracket, so there are two constructions of one physical channel and
@@ -312,7 +312,7 @@ carries a free offset, and of the 26 epochs covering the power sweep only three
 contrast two powers, none spanning two lines. The pull is then unidentifiable
 rather than imprecise. Its sign reverses between drift models ($+3.44$ against
 $-3.25$ MHz/W) and the limit degrades as the drift model gains freedom,
-$|S_0(225$ mW$)| < 9.49$, $14.57$, $17.65$ MHz for linear, one-exponential and
+$|S_0(225\ \text{mW})|$ below $9.49$, $14.57$, $17.65$ MHz for linear, one-exponential and
 two-exponential drift. Tagged NULL. Earlier versions of this bound ($3.5$ MHz
 in addendum 6, $5.4$ MHz under addendum 7's mixture, $7.3$ MHz in M20) were
 tighter only because they differenced centres across horizontal-position moves,
@@ -320,7 +320,7 @@ and are withdrawn. The width-and-shape channel is the archive's only
 light-shift channel.
 
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
-the computed $1093$ at the adopted $w_0=64\ \mu$m, so the archive constrains
+the computed $1093$ at the adopted $w_0=64$ µm, so the archive constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than an
 inference pointing at an external number. Two documented effects push the
@@ -370,17 +370,17 @@ node-to-antinode arcsine. That is a fringe-resolved tail (weight
 $f_\text{res}$) which keeps the mean but, because the fringe *multiplies* the
 shift $s\to s(1+x)$ with $x$ arcsine, suppresses the ramp skew:
 $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
-fractional leverage $\propto$ contrast$^2$, of which only
-$P=f_\text{res}\sigma_x^2$ is observable. It is negligible at $w_0=64\ \mu$m
-($\sim$9–14% of an already-below-noise skew, `results/fringe_tail.csv`) and
-$\sim$26–28% at $16\ \mu$m, where it is same-sign-additive to the larger §7
+fractional leverage $\propto$ contrast², of which only
+$P=f_\text{res}\sigma_x^2$ is observable. It is negligible at $w_0=64$ µm
+(≈9–14% of an already-below-noise skew, `results/fringe_tail.csv`) and
+≈26–28% at 16 µm, where it is same-sign-additive to the larger §7
 divergence correction, so the two must be fit jointly at small waist
 (quantified and coherence-window-bracketed in `fringe_tail`).
 
 **The predicted magnitude.** With $\Delta\alpha = 1093$ a.u. ([Orson *et
 al.*](lit/orson2021.md) 2021, sourced below) this gives $S_0 = 0.35$ MHz
-(transition) at $P=225$ mW, $w_0=64\ \mu$m, $\rho=0.94$. It grows to $5.6$ MHz
-at $w_0=16\ \mu$m, which is why a small waist would lift the ramp asymmetry to
+(transition) at $P=225$ mW, $w_0=64$ µm, $\rho=0.94$. It grows to $5.6$ MHz
+at $w_0=16$ µm, which is why a small waist would lift the ramp asymmetry to
 a detection, though *not* by the on-axis $S_0^3$ cube of the intensity gain,
 since the axial average over the collection window changes the third cumulant's
 magnitude and, past $Z_c/z_R\approx1.12$, its sign (§7).
@@ -391,9 +391,10 @@ $\Delta\alpha$ is [Orson *et al.*](lit/orson2021.md) 2021's published value
 (*J. Phys. B* **54**, 175001, prior art on this exact 5S–6S line). They compute
 $\alpha_{56}=\alpha_{5S}-\alpha_{6S}=-1093$ a.u. "in a manner similar to
 [Martin 2019](lit/martin2019.md)", so our
-$\Delta\alpha=\alpha_{6S}-\alpha_{5S} =+1093>0$ (6S pulled down more than 5S,
-hence red shift, hence $S_0>0$). This was formerly flagged as the number most
-wanting a theorist's check. It is now (a) a **cited** value on our exact
+$\Delta\alpha=\alpha_{6S}-\alpha_{5S} =+1093$ is positive (6S pulled down more
+than 5S, hence red shift, hence positive $S_0$). This was formerly flagged as
+the number most wanting a theorist's check. It is now (a) a **cited** value on
+our exact
 transition and (b) **cross-checked**, in that our `stark_shift_S0_mhz`
 reproduces Orson's own $-0.66$ MHz shift prediction (0.8 W, 63 µm) to the digit
 (`test_stark_S0_reproduces_orson2021`).
@@ -407,8 +408,8 @@ $\alpha_{6S}=5167(22)$. It **confirms the magnitude**,
 $|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093, **but finds the
 opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and
-push 6S *up* while 5S is pushed *down*. So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}<0$
-and the light shift of the transition is **blue**, not red. Every archival
+push 6S *up* while 5S is pushed *down*. So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$
+is negative and the light shift of the transition is **blue**, not red. Every archival
 result is sign-immune (C3c is a symmetric null, and C3d and the prediction band
 use $|\Delta\alpha|$), but the fixed-lock *pull direction* and the ramp's
 stated side depend on it. The discrepancy with Orson's printed
@@ -461,7 +462,7 @@ polarizability far below resonance is also required physically. Orson reports
 only the difference, which cannot be checked this way.
 
 $\alpha_{5S}(993)=+834$ a.u. is unanimous: 993 nm is red of every strong 5S
-line, so every term is positive (D2 $+533$, D1 $+290$, the rest $<+2$). No
+line, so every term is positive (D2 $+533$, D1 $+290$, the rest below $+2$). No
 matrix-element revision can make it negative.
 
 $\alpha_{6S}(993)=-312$ a.u. is a partial cancellation, and that is the
@@ -546,10 +547,10 @@ $4.6$ in a group of terms, the magnitude spread between this work and Orson is
 Multipole corrections enter at $10^{-5}$% and $10^{-3}$%.
 
 **Nor is any multipole channel resonantly enhanced out of that suppression.**
-The nearest $S$–$D$ (E2) and $S$–$S$ (M1) channels from either state sit
-thousands of cm⁻¹ from the 10066 cm⁻¹ drive: $5S$–$4D$ at 516.7 nm (detuned
-9289 cm⁻¹), $5S$–$6S$ M1 at 496.7 nm (10066), $6S$–$5D$ at 1796 nm (4497),
-$6S$–$4D$ at 12.9 µm (9289). A near-degeneracy could in principle lift a
+The nearest S–D (E2) and S–S (M1) channels from either state sit
+thousands of cm⁻¹ from the 10066 cm⁻¹ drive: 5S–4D at 516.7 nm (detuned
+9289 cm⁻¹), 5S–6S M1 at 496.7 nm (10066), 6S–5D at 1796 nm (4497),
+6S–4D at 12.9 µm (9289). A near-degeneracy could in principle lift a
 suppressed channel into relevance. None is available. (That last interval, 6S
 to 4D, is closed to dipole radiation and so is invisible in the 6S lifetime,
 but it is open to a collision, and it is examined as a candidate inelastic
@@ -643,7 +644,7 @@ $$f(s) \propto |s|^{n-1}\left[\zeta_m + \frac{\zeta_m^3}{3}\right],\qquad
 
 which we evaluate numerically (`lineshape.stark_ramp_axial`). The standardised
 skewness **changes sign** with the collection window, $g_1 \approx +0.56$ at
-$w_0=60\ \mu$m ($Z_c/z_R=0.18$) but $\approx -0.35$ at $w_0=16\ \mu$m
+$w_0=60$ µm ($Z_c/z_R=0.18$) but $\approx -0.35$ at $w_0=16$ µm
 ($Z_c/z_R=2.5$), crossing zero at $Z_c/z_R\approx1.12$, because a long window
 piles weight at weak out-of-focus shifts.
 

@@ -24,9 +24,10 @@ from the existing record.
 
 The first is that the subsets genuinely respond to the calibration in a way
 the full archive does not. The second is optimizer chain variation: these
-are profile likelihoods whose hysteresis is the reason the seeded-twin
-basin discipline exists, a subset has fewer points holding the chain in
-place, and the subset variants run outside that discipline.
+are profile likelihoods whose hysteresis is the reason no cold-start profile
+is quoted without a twin seeded from the best known basin, a subset has fewer
+points holding the chain in place, and the subset variants run without such a
+seed.
 
 ## 2. The test
 
@@ -49,12 +50,12 @@ across the existing runs.
 * Either subset variant fails to reproduce: chain variation is established
   on identical inputs. The subset variants are then quoted as the spread of
   the available runs rather than as points, their description as robustness
-  checks is withdrawn until they run under the same seeded-twin basin
-  discipline as the primary, and extending that discipline to the subset
-  profiles becomes a pre-registered code change of its own.
+  checks is withdrawn until they run with the same seeded twin as the
+  primary, and extending that seeding rule to the subset profiles becomes a
+  pre-registered code change of its own.
 * The primary fails to reproduce: stop. That is a finding about the whole
-  fit, it supersedes both branches above, and it goes to the owner before
-  anything else runs.
+  fit, it supersedes both branches above, and nothing else runs until it is
+  settled.
 
 ## 4. What is recorded
 
@@ -68,7 +69,7 @@ direction indifference) for both runs side by side.
 
 About five hours on this machine, sequential with nothing. It launches after
 the v3.4.0 push so that a failure cannot entangle the release, and its
-outcome feeds the frequency-calibration red team's RT6 (block combination)
+outcome feeds the frequency-calibration review's RT6 (block combination)
 and the M28 documentation, not the release itself.
 
 ## Postscript, 2026-08-06: adjudicated, branch one
