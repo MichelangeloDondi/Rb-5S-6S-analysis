@@ -304,7 +304,10 @@ prefer a positive shift.
 **Three constructions now bound the same quantity** and this note does
 not adjudicate between them. The predecessor's three-session fit gives
 0.268 MHz, the free-coefficient archive fit gives 0.217, and this run
-gives 0.212. They differ in trace set, in whether the collisional
+gives 0.212. (The 0.268 was the committed value when this note was
+written. The six-tooth recompute of addendum 26 moved it to 0.258, and
+the comparison the paragraph draws is unchanged by the difference.
+Noted 2026-08-09.) They differ in trace set, in whether the collisional
 coefficient is a prior or free, and in whether the rulers are excluded.
 Which is the number of record is a judgement about what the archive
 claims, not an outcome of any single fit, and it is left open.
