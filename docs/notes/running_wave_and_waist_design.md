@@ -180,8 +180,8 @@ contained piece of work: `stark_ramp_axial` takes an integer photon exponent, an
 what the saturated case needs is the excited-fraction weight instead, with the
 exponent emerging rather than being set.
 
-Until that lands, the honest statement about the small-waist session is that its
-predicted skew is uncertain at the factor-of-three level for a reason that has
+Until that lands, the small-waist session's predicted skew is uncertain at the
+factor-of-three level for a reason that has
 nothing to do with the fringe tail or the beam divergence already in the budget.
 
 ## What this note does not settle
