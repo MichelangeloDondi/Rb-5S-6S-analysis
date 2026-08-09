@@ -470,6 +470,120 @@ the file. No doubling stage is on the bench, none of these wavelengths has been
 produced here, and the feasibility questions of §6 apply to each of them
 separately.
 
+### 3.5 The one-colour three-photon rung, and the parabolic ramp
+
+Proposed by the experimenter on 2026-08-09. Three photons of ONE colour from
+5S reach an odd-parity state, and the reason to want that is not a new
+coefficient but a new SHAPE. This archive's signal-weighted shift distribution
+is $f(s)\propto|s|^{n-1}$ on $[-S_0,0]$ with $n$ the number of photons, so
+$n=2$ gives the triangle the 993 nm work fits and $n=3$ gives a PARABOLA,
+$f(s)=3s^2/S_0^3$. Its cumulants follow by the same direct integration:
+
+$$\langle s\rangle=-\tfrac34 S_0,\qquad \mathrm{Var}=\tfrac{3}{80}S_0^2,\qquad
+\kappa_3=+\tfrac{1}{160}S_0^3,\qquad g_1=\tfrac{2\sqrt{15}}{9}=0.861$$
+
+so the intrinsic standardised skew is **1.52 times the triangle's 0.566**, on a
+distribution that is simultaneously more concentrated (relative variance 0.0375
+against 0.0556). A larger shape asymmetry on a tighter distribution is exactly
+what the passive method wants, and `rb5s6s.lineshape.stark_ramp_axial_moments`
+already takes `n_photon`, reproducing all three numbers at `n_photon=3` to
+better than $10^{-3}$ (pinned in `tests/test_lineshape.py`).
+
+**This does not contradict the doubled-beam paragraph above.** That paragraph
+rules out the collinear $k+k-2k$ combination because its energy sum is
+$4\hbar\omega$, which clears the ionization limit for any fundamental blue of
+1187.3 nm. A one-colour scheme sums to $3\hbar\omega$ instead, which stays bound
+across the whole useful band: for a fundamental between 950 and 1120 nm the sum
+runs 26786 to 31579 cm^-1, below the 33690.81 cm^-1 limit by 2112 to 6905 cm^-1,
+and only crosses it blue of about 890 nm.
+
+**The candidate table.** Term energies from the committed line list where it has them, which already
+carries 8P, 9P and 10P, and from NIST ASD otherwise, verified 2026-08-09. The
+F-state quantum defect runs with $n$ rather than sitting at its asymptote, so a
+fixed-defect estimate is 17 cm^-1 out at 4F and converges by 7F. The column that decides the rate is where the
+TWO-photon virtual level $2E/3$ falls relative to a real state that couples to
+the target, since that detuning is the second energy denominator.
+
+| target | $E$ (cm^-1) | $\lambda_3$ (nm) | $2E/3$ from 6S | $2E/3$ from 4D | natural width |
+|---|---|---|---|---|---|
+| 8P1/2 | 29834.94 | 1005.53 | **-242** | +534 | 302 kHz |
+| **8P3/2** | 29853.79 | **1004.90** | **-230** | +547 | 327 kHz |
+| **5F** | 29277.78 | **1024.67** | -614 | **+163** | 1.51 MHz |
+| 6F | 30627.97 | 979.50 | +286 | +1063 | |
+| 9P3/2 | 30970.19 | 968.67 | +514 | +1291 | |
+| 7F | 31441.72 | 954.15 | +829 | +1606 | |
+| 10P3/2 | 31661.16 | 947.53 | +975 | +1752 | |
+| 4F | 26792.10 | 1119.73 | -2271 | -1494 | |
+
+Every candidate above sits inside the 950 to 1050 nm set this laser already
+carries, so none of them needs the doubling stage. 4F needs a redder set.
+
+**5F is the stronger target, and it is not the one the question named.** For 8P
+the chain is 5S to 5P to 6S to 8P, and the near resonance is with the 6S state
+this archive characterises, 230 cm^-1 away. For 5F the chain is 5S to 5P to 4D
+to 5F, near resonant with 4D at 163 cm^-1, and BOTH upper dipoles are far
+larger: 5P3/2-4D5/2 is the committed 10.90 a.u. against 6S-8P3/2 at 0.629, and
+4D-5F is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
+of merit $|d_1d_2d_3|/(\Delta_1\Delta_2)$ puts 5F ahead by a factor of about
+**21**, on an honest range of 10 to 40 once the unmeasured element and the choice
+of 4D fine-structure partner are both allowed to move. A first pass here quoted
+38 to 76, from a coarser treatment of the same two freedoms.
+
+The trade is real and runs the other way on quality. 5F's natural width is
+1.51 MHz against 8P3/2's 327 kHz, a factor 4.6, and the ramp is measured as a
+distortion of the observed line, so 8P needs 4.6 times less $S_0$ for the same
+fractional asymmetry. Reading the two together: **5F first, because a
+three-photon rate is the thing most likely to make the experiment impossible,
+and 8P3/2 as the precision follow-up once a signal exists.** 8P also carries a
+programmatic advantage worth naming, that its second denominator is set by the
+very state this archive has already measured, so the existing 6S numbers feed
+its prediction directly.
+
+**The Doppler problem, and it has a demonstrated answer.** A one-colour
+three-photon line in a hot cell is Doppler broadened at three times the
+one-photon width, about 1.38 GHz at 130 C, against natural widths of 0.3 to
+1.5 MHz. Collinear geometry in a cell is therefore useless for shape work. The
+fix is the STAR: three coplanar beams of equal $|k|$ at 120 degrees, whose wave
+vectors sum to zero exactly, so the $(1,1,1)$ absorption channel is
+first-order-Doppler-free AND recoil-free, the recoil vanishing because the net
+momentum transfer is zero rather than merely small. The other channels are the
+cost: $(2,1,0)$ leaves net $|k|=\sqrt3 k$ and $(3,0,0)$ leaves $3k$, so a sharp
+Doppler-free peak sits on a pedestal 1.7 and 3 times the one-photon Doppler
+width, which is the three-beam version of the same-beam pedestal the
+retro-reflected two-photon geometry already has.
+
+This is not speculative. Grynberg and Cagnac gave the general
+$\sum \mathbf{k}_i\cdot\mathbf{v}=0$ theory (Rep. Prog. Phys. 40, 791, 1977),
+Ryabtsev and co-workers proposed the star geometry for three-photon Rydberg
+excitation (Phys. Rev. A 84, 053409, 2011), and a 2025 warm-vapour experiment
+measured the narrowing directly, 4.36(6) MHz collinear against 1.18(8) MHz in
+the tailored geometry with three times the excited density
+(arXiv:2506.04504). All of that work is THREE-COLOUR through real stepwise
+intermediates. **A one-colour three-photon 5S to nP or nF measurement in Rb was
+not found in the literature**, and the difference is structural rather than
+cosmetic: at 1005 nm the single-photon detuning from 5P is tens of terahertz, so
+this is a genuinely virtual-intermediate process with no real intermediate
+population, which is what the shape method needs and what the stepwise schemes
+do not provide.
+
+**The cold-atom route is the alternative, and it is weaker than it looks.** At
+10 microkelvin the one-dimensional rms speed is 3.1 cm/s, so a COLLINEAR
+one-colour scheme keeps a residual three-photon Doppler width of about 92 kHz
+at one sigma, 215 kHz full width. Against 8P3/2's 327 kHz that is a 20 per cent
+broadening rather than a negligible one, and collinear geometry also carries a
+net recoil shift $(3\hbar k)^2/2M = 20.4$ kHz that the star geometry does not
+have at all. For 5F, whose 1.51 MHz width dominates, the cold-atom residual is
+negligible. So cold atoms alone suffice for 5F and do not quite suffice for 8P,
+while the star geometry suffices for both and works in a cell.
+
+**What is not settled here.** The 4D-5F dipole is an estimate rather than a
+value, and it carries the whole factor-of-two spread in the ranking. The
+detection path for each target is unexamined, and it decides feasibility as much
+as the excitation rate does. Whether a fourth photon ionizes the excited state
+fast enough to matter for detection is unasked. And the pedestal changes the
+fitting problem the shape method solves, since the archive's own machinery
+assumes a Doppler-free line with no broad background under it.
+
 ## The same items costed
 
 Everything above is a physics menu. Deciding bench time takes

@@ -145,6 +145,48 @@ def test_axial_ramp_one_photon_has_zero_skew():
     assert abs(m["skew_standardized"]) < 1e-3
 
 
+def test_axial_ramp_three_photon_is_the_parabola():
+    """n=3 at zero window is the PARABOLIC ramp f(s) = 3 s^2 / s0^3.
+
+    Exact cumulants by direct integration: mean -3/4 s0, variance 3/80 s0^2,
+    third central moment + s0^3/160, standardised skew 2 sqrt(15)/9 = 0.8607.
+    Added 2026-08-09 when a one-colour three-photon rung entered the future
+    programme: a three-photon rate goes as intensity cubed, so the same
+    machinery that gives the two-photon triangle gives this parabola with
+    n_photon=3, and its intrinsic skew is 1.52 times the triangle's 0.566,
+    which is what makes the rung interesting for the shape method.
+    """
+    from math import sqrt
+    from rb5s6s.lineshape import stark_ramp_axial_moments
+    m = stark_ramp_axial_moments(3.0, 1e-4, n_photon=3)
+    assert abs(m["mean"] / 3.0 + 0.75) < 1e-3
+    assert abs(m["var"] / 9.0 - 3.0 / 80.0) < 1e-3
+    assert abs(m["skew_standardized"] - 2.0 * sqrt(15.0) / 9.0) < 1e-3
+
+
+def test_the_ramp_cumulants_follow_the_general_n_law():
+    """The closed forms in THEORY_NOTE section 2, checked at n = 1, 2, 3.
+
+        mean = -n/(n+1) S0,  Var = n/((n+1)^2 (n+2)) S0^2,
+        g1   = +2(n-1)/(n+3) sqrt((n+2)/n)
+
+    The sign of g1 is the part worth pinning: substituting u = -s/S0 gives a
+    Beta(n,1) law whose own skew is NEGATIVE, and the reflection flips it, so
+    the ramp's standardised skew is positive. A first write-up of the general
+    law on 2026-08-09 had it negative, and this test is what would have caught
+    that.
+    """
+    from math import sqrt
+    from rb5s6s.lineshape import stark_ramp_axial_moments
+    s0 = 2.0
+    for n in (1, 2, 3):
+        m = stark_ramp_axial_moments(s0, 1e-4, n_photon=n)
+        assert abs(m["mean"] / s0 + n / (n + 1)) < 1e-3
+        assert abs(m["var"] / s0**2 - n / ((n + 1) ** 2 * (n + 2))) < 1e-3
+        g1 = 2.0 * (n - 1) / (n + 3) * sqrt((n + 2) / n)
+        assert abs(m["skew_standardized"] - g1) < 1e-3
+
+
 def test_axial_ramp_dilutes_mean_pull_monotonically():
     # a longer collection window mixes in weaker-shift regions: |mean|
     # must decrease monotonically with z_ratio.

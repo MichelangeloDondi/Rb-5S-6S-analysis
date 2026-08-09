@@ -78,7 +78,27 @@ $$g_1 = \frac{\kappa_3}{\mathrm{Var}^{3/2}} = \frac{18^{3/2}}{135} \approx +0.56
 
 independent of $S_0$. It is a property of the ramp component's shape and a
 diagnostic, not a standardised skewness of the observed line, which is
-ill-defined (see §3). The one-photon case $n=1$, a Stark-induced forbidden line
+ill-defined (see §3).
+
+**The law is general in $n$, and the next rung up is worth naming** (added
+2026-08-09 when a one-colour three-photon target entered the future programme,
+`FUTURE_TRANSITIONS_titsapph.md` §3.5). Direct integration of
+$f(s)\propto|s|^{n-1}$ gives
+
+$$\langle s\rangle=-\frac{n}{n+1}S_0,\qquad
+\mathrm{Var}(s)=\frac{n}{(n+1)^2(n+2)}S_0^2,\qquad
+g_1=+\frac{2(n-1)}{n+3}\sqrt{\frac{n+2}{n}}$$
+
+The sign is positive because the substitution $u=-s/S_0$ maps the density onto
+a Beta distribution with parameters $(n,1)$ on the unit interval, whose own skew
+is negative, and the reflection
+$s=-S_0u$ flips it. The magnitude rises with $n$: zero at $n=1$, 0.566 at $n=2$, and 0.861 at
+$n=3$, where the distribution is the PARABOLA $f(s)=3s^2/S_0^3$ with
+$\langle s\rangle=-\tfrac34 S_0$ and $\mathrm{Var}=\tfrac{3}{80}S_0^2$. So a
+three-photon rung would carry a shape asymmetry 1.52 times this one's on a
+relatively tighter distribution, which is the reason to want it. The moment
+machinery already accepts the photon order, and
+`tests/test_lineshape.py` pins $n=1$, 2 and 3. The one-photon case $n=1$, a Stark-induced forbidden line
 for instance, gives the uniform distribution, $\langle s\rangle=-S_0/2$ and
 $\kappa_3=0$, exactly zero skew. The skewness observable therefore exists *only
 because the two-photon rate goes as $I^2$*, which is the sharpest statement of
