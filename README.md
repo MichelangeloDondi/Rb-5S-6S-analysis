@@ -22,8 +22,8 @@ collisional self-broadening β_self below 0.03 to 0.05 MHz per 10¹² cm⁻³ ac
 the four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm measured waist, and the AC-Stark coefficient
 S₀(225 mW) below 0.26 MHz against 0.35 predicted at the measured waist (the
-prediction rides the prior directly, the bound only weakly, through its
-transit kernel).
+prediction rides the measured waist directly, the bound only weakly, through
+its transit kernel).
 The full claim ledger, including what is deliberately not claimed, is
 [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
@@ -303,7 +303,7 @@ signature, the skew ∝ S₀³, is below detection in the archive (a bound). The
 coefficient itself waits for a fixed-lock session. The S₀ bound and its
 prediction are independent by construction: the bound uses only the
 width-vs-power data (no w₀ enters), while the predicted 0.35 MHz is the
-computed polarizability at the beam geometry's w₀ prior, with the retro
+computed polarizability at the measured w₀, with the retro
 ratio ρ=0.94±0.04 (its in-situ measurement is a fixed-lock-session task),
 fixed before the fit and never an input to it.
 
@@ -354,8 +354,8 @@ archive cannot separate them: a tighter waist means more transit broadening
 and less room for laser width, and vice versa. The observed ≈ 5.3 MHz line is
 reproduced anywhere from w₀ ≈ 38 µm (the hard floor, where the laser width
 goes to zero) upward, and the data alone set no ceiling. The 64 µm working
-value is a prior from two direct profile measurements on the same-lineage
-beamline (Nieddu 2019, Rajasree 2020), not a fit result. Only a direct
+value comes from two direct profile measurements on the same-lineage
+beamline (Nieddu 2019, Rajasree 2020), not from a fit. Only a direct
 beam-profile measurement (a knife-edge scan, a camera profiler, or both)
 collapses the degeneracy. Every absolute number above is w₀-conditional, and
 the beam profile is the first thing a proposed fixed-lock session would fix.

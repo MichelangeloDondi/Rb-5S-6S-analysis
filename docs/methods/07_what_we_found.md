@@ -108,9 +108,9 @@ a bound, not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5](02_the_lineshape.md), M9)
 now makes the degeneracy quantitative: the corrected transit adds $\sim2.1$ MHz
 at $w_0=32$ µm (which OVERSHOOTS the observed line, excluding 32 µm) but only
-$\sim0.93$ MHz at the 64 µm prior, so below $w_0\approx38$ µm transit
+$\sim0.93$ MHz at the 64 µm measured waist, so below $w_0\approx38$ µm transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
-adopted 64 µm prior the laser carries $\sim1.09$ MHz laser-axis, close to the
+measured 64 µm waist the laser carries $\sim1.09$ MHz laser-axis, close to the
 bound itself: widening the waist hands width from transit to laser. The
 archival data cannot locate that crossover; only a direct beam-profile $w_0$
 can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)

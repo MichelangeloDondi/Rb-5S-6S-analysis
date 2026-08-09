@@ -728,15 +728,17 @@ rides the ground-state density.
 **Addendum, 2026-08-09, from an adversarial pass on the paragraph above.** Three
 corrections, and the first reverses the direction the paragraph assumed.
 
-*The confinement factor is probably too small, not too large.* The paragraph
-offers two candidates for the link that overestimates, the peak-rate-everywhere
-assumption or the confinement time, and the confinement time is the wrong
-suspect. Taking the paragraph's own line-centre opacity of 160 per centimetre,
-which does reproduce `density.d1_optical_depth_per_cm` at 130 C, and the standard
-Doppler-limited escape factor for a cylinder, the trapping factor is about 400
-natural lifetimes at a 1 cm radius and 1100 at 2.5 cm. Reproducing 64 needs a
-radius near 2 mm, an order of magnitude below the few-centimetre path
-`density.py` itself assumes. So that link makes the estimate WORSE, and by
+*The confinement factor is too small, not too large, and the cell geometry now
+says so.* The paragraph offers two candidates for the link that overestimates,
+the peak-rate-everywhere assumption or the confinement time, and the confinement
+time is the wrong suspect. Taking the paragraph's own line-centre opacity of 160
+per centimetre, which does reproduce `density.d1_optical_depth_per_cm` at 130 C,
+the standard Doppler-limited escape factor for a cylinder, and the cell's
+dimensions as APPARATUS.md section 5 now records them, about 25 mm across and
+100 mm long, the transverse escape path is a 1.25 cm radius and the trapping
+factor is **about 500 natural lifetimes at 130 C and 140 at 110 C**, against the
+64 quoted. Reproducing 64 would need a 2 mm radius. So that link makes the
+estimate eight times WORSE at the campaign's hottest condition, and by
 elimination the overestimate sits in the excitation-rate assumption, which is
 where a Gaussian beam column is being treated as a uniform one at peak rate.
 
@@ -748,19 +750,29 @@ or a bath intensity. Its intermediate arithmetic could not be reconstructed on
 review. Until it is code, read it as an order-of-magnitude marker rather than a
 computed quantity.
 
-*The uncertainty is dominated by the geometry, not by the temperature.* The
-instinct is that a bath estimate is dominated by the ground-state density, which
-runs exponentially in temperature. It is not. The density carries the documented
-20 per cent correlation systematic and the cold-spot offset, a factor of a few at
-worst, while the escape factor spans six to thirty over the undocumented cell
-radius alone and the excitation-profile assumption plausibly spans ten to a
-hundred. Two orders of magnitude, therefore, and sitting in the geometry.
+*The uncertainty is dominated by the excitation profile, not by the temperature
+and no longer by the radius.* The instinct is that a bath estimate is dominated by
+the ground-state density, which runs exponentially in temperature. It is not. The
+density carries the documented 20 per cent correlation systematic and the
+cold-spot offset, a factor of a few at worst. The escape factor was the largest
+term while the cell radius was unknown, and with the radius recorded it
+contributes only the recollection's ten per cent, amplified logarithmically. What
+is left, and what now dominates, is the excitation-profile assumption, plausibly a
+factor of ten to a hundred on its own. So the bath term carries one to two orders
+of magnitude, and closing it means computing the excitation properly rather than
+measuring anything.
 
-*Which needs a bench fact this repository does not hold.* Neither
-`docs/APPARATUS.md` nor anything else records the cell's length or diameter.
-Nothing else in the record needs them, which is why their absence went unnoticed,
-but no rigorous trapping calculation can be written without them and they are now
-the blocking input.
+*The bench fact this needed is now recorded, and it is approximate.* Nothing in
+this repository held the cell's length or diameter until 2026-08-09, because
+nothing else needed them. APPARATUS.md section 5 now carries them, about 25 mm
+across and 100 mm long, tagged as an experimenter recollection rather than a
+datasheet reading, so the trapping numbers above inherit a ten per cent geometry
+uncertainty on top of everything else. A supplier record or a photograph with a
+scale would upgrade them, and neither is on hand: a search of this repository's
+history, the quarantine trees and the wider filesystem found no primary record,
+and the one close-up cell photograph carries no scale. The escape factor is only
+logarithmically sensitive to the radius, so the recollection is good enough for
+the order of magnitude and not for a shift budget.
 
 *One channel the section does not consider at all.* The drive inverts a
 measurable fraction of the cell on the 6S to 5P transitions, whose photons at

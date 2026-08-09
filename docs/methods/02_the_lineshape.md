@@ -209,7 +209,7 @@ log-divergence; fixed 2026-07-13, validated against [Lehmann's](../lit/lehmann20
 example). We quote the width the kernel *adds to the natural line* once
 convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32$ µm and
 $\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the adopted
-64 µm prior (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
+64 µm measured waist (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
 32 µm that is large enough that
 natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
