@@ -327,6 +327,36 @@ _BRACKETS = {
 }
 
 
+def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
+    """The scalar 5S-6S two-photon matrix element T, atomic units.
+
+    T = (1/6) sum_p sign(5S,p) sign(p,6S) |d_5Sp| |d_p6S| / (E_p - E_5S - w),
+    over the eight committed P levels, with the module's own radial signs and
+    the same 1/(3(2J+1)) = 1/6 scalar prefactor as the polarizabilities. The
+    effective coupling at field e0 is M = (e0^2/4) T, and the two-photon Rabi
+    frequency is Omega/2pi = 2M with M in frequency units.
+
+    Two facts this function pins, both verified independently on 2026-08-09.
+    The two fine-structure paths through one nP doublet ALWAYS add, because
+    both legs of a path traverse the same P level, so the angular sign enters
+    squared and the radial pair sign is shared. The interference that does
+    exist is between nP FAMILIES: with these signs the 6P, 7P and 8P families
+    oppose the dominant 5P pair and reduce |T| by a few per cent.
+
+    The field-independent ratio to the light shift is 2T/|Delta_alpha|
+    = 1.237 at 993.4192 nm. The saturation companion note first carried 1.294,
+    which normalised M at one field by the committed PREDICTED S0 at another
+    convention; the consistent same-field ratio is this one, 4.6 per cent
+    lower, inside that note's stated robustness band.
+    """
+    w = (1e7 / lam_nm) / CM
+    tot = 0.0
+    for nm, (e5, d5, _), (e6, d6, _) in zip(_PN, LINES_5S[:8], LINES_6S):
+        s = _RADIAL_SIGN[("5S", nm[:2])] * _RADIAL_SIGN[("6S", nm[:2])]
+        tot += s * abs(d5) * abs(d6) / (e5 / CM - w)
+    return tot / 6.0
+
+
 def crossings():
     """All six polarizability crossings, as (name, wavelength_nm).
     The three long-wavelength entries are the published magic list.

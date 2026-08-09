@@ -634,6 +634,84 @@ experiment cannot reach.
 computed above: 18% of $\alpha_{6S}$ and 4.9% of the differential, which is a
 term to keep and the reason 8P appears in the line lists at all.
 
+**The cascade's own photons, asked and quantified (2026-08-09).** Each excitation
+ends in a cascade that emits one infrared photon, 1323.9 or 1366.9 nm on
+6S to 5P, then one D-line photon, 795.0 or 780.2 nm on 5P to 5S, so the cell
+contains four more wavelengths than the drive, and the atom passes through a
+real 5P transient of 27.7 ns on every count. From the committed term energies,
+none of the re-excitation channels these open comes near a resonance.
+
+From the real 5P transient, one more 993 nm photon lands 2513 to 2750 cm^-1
+from the nearest even level, and two more fall 742 to 979 cm^-1 short of the
+ionization limit. From a real 6S atom, its own infrared photon reaches
+149 cm^-1 short of 7P1/2, and a D-line photon lands 742 to 979 cm^-1 below the
+limit, inside the high-nP Rydberg ladder whose spacing there is about
+190 cm^-1. The closest coincidence in the whole family is a trapped D2 photon
+on a 5P3/2 atom, which lands 67 cm^-1 from 5D because 780 nm sits near the
+776 nm second step of the well-known two-step ladder. Every one of these needs
+a real excited atom to meet a cascade photon, and the steady-state populations
+at the campaign's brightest point are $1.2\times10^{-3}$ for 6S and
+$7.4\times10^{-4}$ for 5P of the illuminated atoms, so the rates are doubly
+negligible before any detuning suppression is counted.
+
+**Every pairwise two-photon combination of the five wavelengths, from 5S.** The
+sums of {993.4, 780.2, 795.0, 1323.9, 1366.9} nm photon pairs land as follows
+against the even-parity levels: the drive pair on 6S exactly, which is the
+signal. Two mixed pairs, 780.2 with 1366.9 and 795.0 with 1323.9, land on 6S
+**exactly**, and must, because each is the cascade's own photon pair and energy
+conservation closes the loop. The D2 pair lands 69 cm^-1 from 5D, the familiar
+proximity of 780 nm to the 778 nm two-photon line. Everything else is 238 cm^-1
+or farther from any even level, and the infrared pairs land thousands of
+wavenumbers from anything.
+
+**The exactly resonant pairs are a two-step echo, and its rate is small with a
+distinctive scaling.** The first step is D-line reabsorption, which is the
+known radiation trapping and makes a real 5P atom. The second is an infrared
+cascade photon driving that atom 5P to 6S resonantly. At the campaign maximum,
+with the peak-rate envelope below, the second step runs at about
+$2.6\times10^{4}$ per second on a 5P atom against its $3.6\times10^{7}$ per
+second decay, so the echo re-excites 6S at a fraction of order $10^{-3}$ of the
+direct rate, and it scales as the fourth power of the drive power, since both
+the photon bath and the 5P population scale as the second. That is invisible
+under the measured amplitude slopes of 1.83 to 2.12 and adds nothing a width or
+centre channel can see. ENVELOPE grade.
+
+**The light shift from the bath fields, which is the sharper question.** Four
+new wavelengths fill the cell, so the levels are shifted by more than the
+drive. The infrared bath is ballistic, of order $10^{3}$ photons per cubic
+centimetre at the campaign maximum, an equivalent intensity below a microwatt
+per square centimetre, and its shift is sub-millihertz. The D-line bath is
+trapped and is the one that needs numbers. An a-priori chain, the beam-column
+excitation rate at the record's peak-rate figure, one D photon per cascade, and
+a Holstein confinement of about 64 natural lifetimes at the record's line-centre
+opacity of 160 per centimetre, gives an equivalent bath intensity of order
+$10^{2}$ milliwatts per square centimetre. That chain refutes itself at the top:
+such a bath would saturate the D lines and put a visible fraction of the cell in
+5P, which the data exclude on sight, so at least one link, the
+peak-rate-everywhere assumption or the confinement time, overestimates by an
+order or more. What bounds the effect honestly is structure and data rather
+than the chain. The trapped spectrum is redistributed roughly symmetrically
+about the D-line centres, and a symmetric near-resonant spectrum cancels its
+dispersive shift at first order. What survives scales as the square of the
+drive power, like the excitation rate that sources it, and the width and centre
+channels cap any such term empirically: the width shows no power trend under
+3 to 8 per cent block scatter (C3a), and the window-referenced centre analysis
+bounds power-correlated centre motion at the few-hundred-kilohertz level (C3e).
+So for this dataset the bath shift is bounded well below the drive's own
+$S_0$, but it is NOT dismissible a priori at the precision a fixed-lock centre
+campaign aims for, and it is common-mode across the four peaks. Recorded OPEN:
+a fixed-lock session that reads absolute centres should either estimate the
+trapped-light shift properly, Holstein geometry and measured fluorescence in
+hand, or take a cell-temperature lever against it, since the trapping factor
+rides the ground-state density.
+
+What the cascade photons do measurably in this dataset is the D-line radiation
+trapping already carried by the record: the trapping factor is set by the
+ground-state density, so it is power-independent at fixed temperature and
+rescales the amplitude without bending the power law, which is C3b's stated
+immunity argument. The infrared pair is not trapped at all, since its only
+absorbers are the 5P transients themselves.
+
 **And the standard treatment is already in the prior art.** Section 6c of
 [delone1980](lit/delone1980.md) is the resonance-enhanced $k = k_1 + k_2$
 problem, which is exactly this 2+1, and it names the three field-induced

@@ -229,3 +229,23 @@ def test_the_two_photon_pole_is_the_delta_n_two_sector_alone():
 def _rspt4_e4(mod, state, lam, u, nmax):
     """E4 alone, so the pole tests read as arithmetic on one number."""
     return mod._rspt4(state, lam, u_mhz=u, nmax=nmax)[1]
+
+
+def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
+    """T = +707.75 a.u. and 2T/|Delta_alpha| = 1.237 at the drive wavelength.
+
+    Verified independently on 2026-08-09: a sum without the radial signs gives
+    4588/6 = 765 a.u., 8 per cent high, because the 6P, 7P and 8P families
+    oppose the 5P pair. The ratio is the saturation companion note's input, and
+    its first value, 1.294, mixed two field conventions, so this pin also
+    records the corrected number.
+    """
+    from rb5s6s.polarizability import delta_alpha
+    T = hp.two_photon_matrix_element(993.4192)
+    assert abs(T - 707.75) < 0.5
+    ratio = 2.0 * abs(T) / abs(delta_alpha(993.4192))
+    assert abs(ratio - 1.2367) < 0.002
+    # the fine-structure paths through 5P must ADD (the sign theorem)
+    from rb5s6s.hyperpolarizability import _RADIAL_SIGN
+    s12 = _RADIAL_SIGN[("5S", "5P")] * _RADIAL_SIGN[("6S", "5P")]
+    assert s12 > 0

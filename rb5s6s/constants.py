@@ -108,11 +108,19 @@ What that costs is nothing measurable, for three separate reasons.
    ms of scan time, which is differential. Every width, the density lever, the
    collisional bound and the light-shift bound inherit that axis and not these
    labels.
-3. THE OFFSET IS SMALL AND THE LABELS MEASURE IT. Doubled and compared with
-   the NIST centroid E_6S_CM, the four labels give -1575 to +3650 MHz, most of
-   which is genuine hyperfine structure. The common-mode residue is about
-   +292 +/- 10 MHz, roughly 1 ppm, and the four-label mean sits +765 MHz or
-   2.53 ppm from the centroid. In wavelength that is a few picometres.
+3. THE OFFSET IS SMALL AND THE LABELS MEASURE IT, and the right comparison is
+   per hyperfine component, not against the centroid (recomputed 2026-08-09,
+   label_offset_mhz below). Comparing a component to the centroid mixes real
+   hyperfine structure into the residual, which is how an earlier reading got
+   -1575 to +3650 MHz. Against the component each label names, the four
+   offsets are +284 to +303 MHz, mean +292 MHz, spread 19 MHz, and the labels'
+   own four-decimal quantisation is 61 MHz, so the four measure ONE wavemeter
+   calibration offset of about 0.48 ppm, half a picometre. The NIST entry does
+   not state which isotope's centroid it is: taking 87Rb instead of 85Rb moves
+   the mean to +391 MHz by exactly the isotope shift and moves the spread not
+   at all, so the ambiguity is common-mode too. The centroid property itself
+   is not assumed: the (2F+1)-weighted hyperfine shifts summing to zero is
+   pinned in tests/test_constants.py.
 
 The air-against-vacuum trap is excluded rather than assumed. Had these been
 air readings treated as vacuum, doubling them would miss the NIST interval by
@@ -155,6 +163,65 @@ def peak_label(key: str, isotope: bool = False, line: bool = False) -> str:
     if line:
         extra.append(info["line"])
     return s + (f" ({' '.join(extra)})" if extra else "")
+
+def hyperfine_shift_hz(A_hz: float, I2: int, F: int) -> float:
+    """Hyperfine shift of a J=1/2 level, Hz, for nuclear spin I = I2/2.
+
+    E(F) = (A/2)[F(F+1) - I(I+1) - J(J+1)], the standard J=1/2 form. Weighted
+    by (2F+1) the two shifts sum to zero, which is what makes the unshifted
+    term energy the CENTROID and is checked in tests/test_constants.py.
+    """
+    I = I2 / 2.0
+    return 0.5 * A_hz * (F * (F + 1) - I * (I + 1) - 0.75)
+
+
+def two_photon_frequency_hz(key: str, centroid_isotope: int = 85) -> float:
+    """Predicted two-photon transition frequency of one hyperfine component, Hz.
+
+    Built from the NIST centroid interval and the measured hyperfine constants,
+    so a campaign LABEL can be compared against the component it actually
+    names rather than against the centroid. Comparing a component to the
+    centroid mixes real hyperfine structure into what is meant to be a
+    calibration residual: it gives a -1575 to +3650 MHz spread, of which almost
+    all is physics. Per component the spread collapses to 19 MHz.
+
+    centroid_isotope names which isotope's centroid the NIST term energy is,
+    which the NIST entry does not state. The two choices differ by exactly the
+    99.189 MHz isotope shift and shift all four components together, so the
+    choice moves the mean offset and not the spread. 85 is the default as the
+    abundant isotope.
+    """
+    from .polarizability import E_6S_CM
+    info = PEAKS[key]
+    iso, F = info["isotope"], info["F"]
+    I2 = 3 if iso == 87 else 5
+    A6 = A_6S_RB87_HZ if iso == 87 else A_6S_RB85_HZ
+    # ground A from the measured total splitting: dE = A*(I + 1/2)
+    split = HFS_GROUND_RB87_HZ if iso == 87 else HFS_GROUND_RB85_HZ
+    A5 = split / (I2 / 2.0 + 0.5)
+    centroid = E_6S_CM * 100.0 * C_M_PER_S
+    if iso != centroid_isotope:
+        centroid += ISOTOPE_SHIFT_85_87_HZ * (1 if iso == 85 else -1)
+    return (centroid
+            + hyperfine_shift_hz(A6, I2, F)
+            - hyperfine_shift_hz(A5, I2, F))
+
+
+def label_offset_mhz(key: str, centroid_isotope: int = 85) -> float:
+    """How far a campaign label sits from the component it names, MHz.
+
+    Positive means the label reads high. The four offsets are common-mode to
+    19 MHz, which is inside the labels' own 61 MHz quantisation at four decimal
+    places, so they measure one wavemeter calibration offset and not four.
+    """
+    lam_m = PEAKS[key]["lambda_nm"] * 1e-9
+    return (2.0 * C_M_PER_S / lam_m - two_photon_frequency_hz(key, centroid_isotope)) / 1e6
+
+
+ISOTOPE_SHIFT_85_87_HZ = -99.189e6
+"""5S-6S isotope shift, 85 minus 87, -99.189(3) MHz. ESTABLISHED (Ayachitula
+et al., Phys. Rev. A 110, 022803 (2024))."""
+
 
 # --------------------------------------------------------------------------
 # Hyperfine constants (used ONLY for the identification cross-check)

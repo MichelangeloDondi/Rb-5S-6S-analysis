@@ -126,3 +126,48 @@ def test_preregistered_drift_rate_band(block_s, lo, hi):
     rate = INTRA_BLOCK_SCATTER_MHZ / (block_s * SPACING_FACTOR) * 60
     assert lo <= rate <= hi
     assert rate < K.DRIFT_RATE_LASER_HZ_PER_MIN / 1e6
+
+
+def test_the_unshifted_term_energy_really_is_the_hyperfine_centroid():
+    """The (2F+1)-weighted hyperfine shifts must sum to zero.
+
+    Added 2026-08-09 because the wavemeter-offset statement had ASSUMED that
+    the NIST term energy is a centroid rather than checked it. If the weighted
+    shifts did not cancel, every per-component prediction below would carry a
+    hidden offset.
+    """
+    from rb5s6s.constants import (A_6S_RB85_HZ, A_6S_RB87_HZ,
+                                  HFS_GROUND_RB85_HZ, HFS_GROUND_RB87_HZ,
+                                  hyperfine_shift_hz)
+    for I2, A6, split in ((3, A_6S_RB87_HZ, HFS_GROUND_RB87_HZ),
+                          (5, A_6S_RB85_HZ, HFS_GROUND_RB85_HZ)):
+        A5 = split / (I2 / 2.0 + 0.5)
+        for A in (A5, A6):
+            lo, hi = (I2 - 1) // 2, (I2 + 1) // 2
+            s = sum((2 * F + 1) * hyperfine_shift_hz(A, I2, F) for F in (lo, hi))
+            assert abs(s) < 1.0, f"I2={I2} A={A}: weighted shifts sum to {s} Hz"
+
+
+def test_the_label_offsets_are_one_common_mode_wavemeter_error():
+    """Each label against the component it names, not against the centroid.
+
+    The four offsets must agree to well inside the labels' own quantisation,
+    which is what shows them to be one calibration error rather than four
+    independent mistakes. Pinned so a change to a label or a hyperfine constant
+    cannot quietly turn a calibration statement into a physics statement.
+    """
+    from rb5s6s.constants import PEAKS, C_M_PER_S, label_offset_mhz
+    offs = [label_offset_mhz(k) for k in sorted(PEAKS)]
+    mean = sum(offs) / len(offs)
+    spread = max(offs) - min(offs)
+    # the labels carry four decimal places in nm; that step is ~61 MHz here
+    lam = 993.4192e-9
+    quantum_mhz = 2.0 * C_M_PER_S * 1e-13 / lam**2 / 1e6
+    assert spread < quantum_mhz, (
+        f"spread {spread:.1f} MHz exceeds the label quantisation "
+        f"{quantum_mhz:.1f} MHz, so the offsets are not common-mode")
+    assert 250.0 < mean < 340.0, f"mean label offset {mean:.1f} MHz moved"
+    # and the isotope-centroid choice must be a pure common-mode shift
+    alt = [label_offset_mhz(k, centroid_isotope=87) for k in sorted(PEAKS)]
+    assert abs((max(alt) - min(alt)) - spread) < 0.1
+    assert abs((sum(alt) / len(alt) - mean) - 99.189) < 0.01

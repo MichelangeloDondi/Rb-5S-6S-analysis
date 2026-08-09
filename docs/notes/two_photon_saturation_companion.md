@@ -22,8 +22,14 @@ campaign maximum of 225 mW with the measured 64 um waist and rho = 0.94, is
     Omega_2ph / 2pi = 450 kHz   on axis
 
 tethered to an already-validated quantity rather than to a fresh normalisation:
-the ratio Omega_2ph/2pi to S0 is 1.294 and is field-independent, so the 450 kHz
-inherits whatever confidence the 0.348 MHz predicted light shift has.
+the ratio Omega_2ph/2pi to S0 is field-independent, so the 450 kHz inherits
+whatever confidence the predicted light shift has. (Corrected 2026-08-09 on
+independent verification: the consistent same-field ratio is 2T/|Delta_alpha|
+= 1.237, from `hyperpolarizability.two_photon_matrix_element`, T = 707.75 a.u.
+The 1.294 first used here normalised M at one field by the committed predicted
+S0 at another convention, 4.6 per cent high, inside the robustness band the
+probe scanned. The matrix element itself, M = 225 kHz at the campaign maximum,
+was confirmed to 0.04 per cent.)
 
 Against the 3.4925 MHz natural width that is a saturation parameter s = 0.033 on
 axis and 0.0146 signal-weighted. The atom reaches steady state, since the 456 ns
@@ -113,7 +119,7 @@ committed bound at 0.6325 MHz, which is the check that it is running production.
 
 The injected physics is the homogeneous law Gamma to Gamma\*sqrt(1+s) with
 s = 2\*Omega^2/Gamma^2, applied with the two-photon Rabi frequency through the
-field-independent ratio Omega_2ph/2pi = 1.294\*S0. Folding the increment into
+field-independent ratio Omega_2ph/2pi = 1.237\*S0 (as corrected above). Folding the increment into
 gamma_coll is exact rather than convenient, because power broadening of a
 homogeneous line is Lorentzian and Lorentzian widths add.
 
@@ -140,7 +146,7 @@ at the boundary, which is a different and better situation than a railed fit.
 The fit quality is untouched, chi2_red moving 3.7047 to 3.7599, as expected when
 the added effect is far below the block-to-block scatter that dominates chi2.
 
-**Robustness to the one number not independently re-derived.** The 1.294 ratio came
+**Robustness to the one number not independently re-derived at the time.** The ratio came
 from the two-photon matrix element and the lead did not rebuild that sum. The bound
 scales roughly inversely with it: 0.3732 MHz at half the ratio, 0.2231 at the
 adopted value, 0.1479 at 1.5 times it. So even a factor-of-two error in the Rabi
