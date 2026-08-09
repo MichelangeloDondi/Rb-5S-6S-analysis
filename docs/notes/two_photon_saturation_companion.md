@@ -99,3 +99,58 @@ itself a fixed multiple of S0.
 
 Until that is run, the committed bounds stand as quoted and are conservative in
 the direction that matters.
+
+## Postscript, 2026-08-09: the probe was run, and the prediction half held
+
+The adjudication above asked for the saturation term to be added to the width
+model and kappa re-profiled. That was done the same day, as an opt-in probe that
+modified no committed file: `stark._fwhm_of` was wrapped so the saturation
+increment enters through the model's own Lorentzian argument, and the real
+`fit_stark_sweep` was then called, so the shared kappa, the per-peak core
+re-minimization, the profile scan and the over-dispersion rescaling are all the
+shipped code rather than a reimplementation. Unpatched, the probe reproduces the
+committed bound at 0.6325 MHz, which is the check that it is running production.
+
+The injected physics is the homogeneous law Gamma to Gamma\*sqrt(1+s) with
+s = 2\*Omega^2/Gamma^2, applied with the two-photon Rabi frequency through the
+field-independent ratio Omega_2ph/2pi = 1.294\*S0. Folding the increment into
+gamma_coll is exact rather than convenient, because power broadening of a
+homogeneous line is Lorentzian and Lorentzian widths add.
+
+| | kappa (MHz/W) | S0(225) bound | chi2_red |
+|---|---|---|---|
+| production, ramp only | 0.0000 +/- 5.9562 | 0.6325 MHz | 3.7047 |
+| with saturation | +0.4490 +/- 1.8196 | **0.2231 MHz** | 3.7599 |
+
+**The bound tightens by 65 per cent**, from 0.6325 to 0.2231 MHz, which is the
+direction this note predicted and a larger move than it suggested. The mechanism
+is transparent: both models agree at kappa = 0, where S0 and therefore the
+saturation increment both vanish, but the with-saturation model broadens faster as
+kappa rises, so it reaches any observed broadening at a smaller kappa.
+
+**The other half of the prediction is wrong, and this is the part worth keeping.**
+The note said the minimum stays at zero. It does not. Production rails at exactly
+kappa = 0 because the width response goes as S0^2 and has no gradient there.
+Adding a companion term 3.7 times larger gives the width a resolvable response, so
+the minimum un-rails to +0.4490 MHz/W. That is 0.25 sigma from zero and entirely
+consistent with no shift, so the substance of the claim survives while its letter
+does not. What actually changed is that the parameter stopped being unidentifiable
+at the boundary, which is a different and better situation than a railed fit.
+
+The fit quality is untouched, chi2_red moving 3.7047 to 3.7599, as expected when
+the added effect is far below the block-to-block scatter that dominates chi2.
+
+**Robustness to the one number not independently re-derived.** The 1.294 ratio came
+from the two-photon matrix element and the lead did not rebuild that sum. The bound
+scales roughly inversely with it: 0.3732 MHz at half the ratio, 0.2231 at the
+adopted value, 0.1479 at 1.5 times it. So even a factor-of-two error in the Rabi
+frequency leaves the bound well below the committed 0.6325, and the qualitative
+result is robust while the digits are not.
+
+**What is still not licensed.** The functional form is the two-level homogeneous
+law used with a two-photon Rabi frequency. That is standard and the steady-state
+condition holds here, the beam chord being about ten natural lifetimes, but it is
+an approximation rather than a derivation for a two-photon transition, and no
+committed bound should move on it without that step. **The committed C3d bound
+therefore stands at 0.63 MHz and remains conservative**, now by a measured factor
+of 2.8 rather than by argument.
