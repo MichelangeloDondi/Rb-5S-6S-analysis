@@ -148,13 +148,13 @@ assumption. The manufacturer's own "Standard Characteristics" table for the
 EOM-01/EOM-02 series (Photonics Technologies, `photonicstechnologies.com`,
 confirmed 2026-08-01) states **Aperture Diameter 3 mm** for both crystal
 variants, so it applies to our EOM-02-12.5-V. This is the same 3 mm the
-naive Gaussian-optics w₀ ≈ 32 µm estimate in `constants.py` used.
+naive Gaussian-optics $w_0\approx32\ \mu\mathrm{m}$ estimate in `constants.py` used.
 It was previously carried as an inferred number chosen to make the clipping
 story work, and is now grounded in a manufacturer spec plus an experimenter recollection
 of the clipping itself. See `constants.py`'s `W0_MEASURED_M` docstring and
 `docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
-(w₀ = 64 µm) on the same lens and the same-model SolsTiS laser, which
+($w_0=64\ \mu\mathrm{m}$) on the same lens and the same-model SolsTiS laser, which
 remains the better-evidenced comparison since a recollected clipping event
 does not by itself fix how much of the beam was clipped.
 
@@ -307,7 +307,7 @@ controller's scan-monitor output, but that is an inference, not a record,
 and the trigger source, level and slope of the acquisition are likewise
 unrecorded.
 
-**For a future session this is low priority.** The EOM comb already carries
+**Verdict for a future session: low priority.** The EOM comb already carries
 the frequency axis per trace, RF-exact, which a ramp voltage cannot improve on
 — so the ramp channel buys nothing for calibration. Its one real use is that
 `DATA.md` §5 has to *infer* where each window sits on the triangle, and records
@@ -452,22 +452,14 @@ acquisition drift, which the archive puts two orders below.*
 >
 > **The result is the settled floor: 0.62 MHz.** That is the laser motion left
 > once the re-lock steps and the per-interval ramps are removed. It is the one
-> number the 2026-08-03 replacement of the model left in place, which moved it
+> number that survived the 2026-08-03 replacement of the model, which moved it
 > only from 0.63 to 0.62 while retiring everything else the module reported.
 > The scatter settles on a timescale near 1.3 min, so the floor is a
 > settled-state number and the first minute of the record is several times
 > worse. Against the campaign's AC-Stark bounds carried to the laser axis
 > (0.13 MHz from the joint fit, 0.32 MHz from the width-only construction)
 > the floor sits above both, which says single-block centres cannot beat the
-> averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`. Panel (b)
-> of that figure draws the sawtooth against the digitised record, with the census
-> below and the shared 2.6 s rise at each step. Panel (c) removes the model and
-> puts the two records side by side: the residual of this one settling to
-> 0.62 MHz on the left, and on the right the same quantity on a campaign segment
-> five weeks later, whose standard deviation of 5.4 MHz is about nine times
-> worse. The 0.62 MHz is therefore the floor a fixed lock has to aim at, and the
-> two halves count minutes from their own origins, so the axis is split rather
-> than shared.
+> averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`.
 >
 > **The event census.** The kick finder flags 12 candidates. The first falls
 > inside the opening 0.4 min the likelihood excludes, so 11 are testable. Of
@@ -522,25 +514,50 @@ acquisition drift, which the archive puts two orders below.*
 > relaxation with no re-locks, a different regime from the June record.
 >
 > **The 2025-06-12 cavity-scan photograph now carries a physical reading
-> (2026-08-03).** IMG_2508's two channels are digitised in
-> [`2025-06-12_cavity_scan_IMG_2508_digitised.csv`](apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv).
-> Channel 1 is the 5.00 s triangular cavity ramp, apex at t = 2.62 s (52% of
-> the period). Channel 2, unlabelled on the scope, reads as the four 5S→6S
-> hyperfine components crossed once per sweep direction. Two computed facts
-> license that reading: the eight narrow spikes form four mirror pairs about
-> the ramp apex (pair midpoints 2.58 to 2.66 s against the apex at 2.618 s),
-> and the spike strengths follow the ground-state population weights,
-> abundance × (2F+1), with the ⁸⁵Rb pair strongest and the two
-> apex-straddling ⁸⁷Rb F=1 crossings weakest (relative weights
-> 1.00 / 1.67 / 2.88 / 4.03). The up-sweep ⁸⁵ pair's integral ratio is 1.31
-> against the predicted 7/5 = 1.40. The tallest spikes compress in the
-> photographed display, so integrals carry the ratios better than peak
-> heights, and the component sequence is fixed only up to the scan's
-> frequency direction (the observed order matches an up-sweep running from
-> ⁸⁷ F=2 to ⁸⁷ F=1). The level-scheme figure
-> (`figures/fig13_level_scheme.png`) draws the reading, and masks 62 of the
-> 700 digitised channel-1 points as trace cross-talk against a stated
-> flank-fit rule.
+> (2026-08-03, integrals under a committed rule since 2026-08-05).**
+> IMG_2508's two channels are digitised in
+> [`2025-06-12_cavity_scan_IMG_2508_digitised.csv`](apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv),
+> and every number in this paragraph is computed from that file by
+> `rb5s6s/cavity_scan.py` (`python scripts/run_cavity_scan.py` writes them to
+> `results/cavity_scan_integrals.csv`). The rules are module constants: a
+> spike is a run of samples more than 5 channel-2 median absolute deviations
+> above the channel-2 median, its integral the trapezoid over the run, and
+> the ramp apex comes from iterative straight-line fits to the channel-1
+> flanks. Channel 1 is the 5.00 s triangular cavity ramp, apex at t = 2.62 s
+> by sample argmax (52% of the period), 2.59 s by the flank fit, which masks
+> 70 of 547 flank points as trace cross-talk. Channel 2, unlabelled on the
+> scope, reads as the four 5S→6S hyperfine components crossed once per sweep
+> direction. Three computed facts license that reading. The eight narrow
+> spikes form four mirror pairs about the ramp apex, pair midpoints 2.58 to
+> 2.65 s. The up-sweep integrals come out in the order the ground-state
+> populations predict. The population of level F is
+> abundance × (2F+1)/G_iso with G₈₇ = 8 and G₈₅ = 12 (the M10 law,
+> `rb5s6s/amplitudes.py`), predicting relative weights
+> 1.00 / 1.67 / 2.88 / 4.03 for ⁸⁷ F=1 / ⁸⁷ F=2 / ⁸⁵ F=2 / ⁸⁵ F=3, and the
+> measured integrals rank in exactly that order, the two apex-straddling
+> ⁸⁷ F=1 crossings weakest. And the two ratios the record can carry come back
+> at the prediction: the up-sweep ⁸⁵ pair integrates to 1.42 times against
+> the predicted 7/5 = 1.40 (moving 1.34 to 1.42 as the spike threshold
+> varies over 5 to 8 MAD), and the up-sweep ⁸⁵ pair carries 2.45 times the
+> ⁸⁷ pair's area (2.43 to 2.64 across the same rules) against the predicted
+> abundance ratio 2.59. The (2F+1) sum to G_iso within each isotope, so the
+> pair ratio predicts the bare abundance ratio rather than the 3.9 that
+> abundance × (2F+1) without the normalisation would give. The individual
+> weights are not quantitatively recovered, and the causes are in the
+> record: the display compresses the tallest spikes (the two ⁸⁵ up-sweep
+> peaks read equal heights to about 1% where the populations put them 1.4
+> apart), the ⁸⁷ F=1 crossings span only three samples each at the 7 ms
+> digitisation pitch (its up-sweep integral reads 1/5 of ⁸⁷ F=2's against a
+> predicted 0.6), and the down-sweep is compressed outright, its ⁸⁵ ratio
+> reading 0.65. That is why the level-scheme figure
+> (`figures/fig13_level_scheme.png`) draws the photograph with the up-sweep
+> annotated and quotes only the up-sweep ratios, computed by the same module
+> at draw time. Until 2026-08-05 this paragraph quoted an up-sweep ⁸⁵ ratio
+> of 1.31 from a rule that was never committed, and stated the law as
+> abundance × (2F+1) while the weights beside it carried the /G_iso
+> normalisation. The committed rule and the stated law replace both. The
+> component sequence remains fixed only up to the scan's frequency direction
+> (the observed order matches an up-sweep running from ⁸⁷ F=2 to ⁸⁷ F=1).
 >
 > **Still open.** The 06-19 etalon-only records are not digitised, so the factor
 > 2 to 5 below rests on eye-read numbers on both sides.

@@ -56,7 +56,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   [`docs/RESULTS.md`](RESULTS.md): C1 collisional self-broadening
   $\beta_\text{self}$; C2 the 2025 laser-epoch width $\sigma_\text{laser}$; C3
   the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient  bound $S_0$. Each is a **bound or null** in the 2025 archive.
-- **M0 … M29 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M30 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each; the fitting core has lettered
   sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -140,6 +140,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           amplitudes(M10) model_ladder(M11) identifiability(M12) coverage(M13)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
+          cavity_scan(M30: the 2025-06-12 cavity-scan photograph, integrated)
           fitutil _compat
           (M18, M19 and M29 are library-and-test only: they have no CSV
            product, so grepping results/ for them finds nothing -- see their
@@ -147,7 +148,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 tests/    1570-test battery (1537 fast ~2 min + 33 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e

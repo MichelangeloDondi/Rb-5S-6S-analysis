@@ -63,7 +63,7 @@ that says what the other seven are conditional on.
 
 ## 7. Where this can go next
 
-*Archival: done conditional on $w_0$.* Every archival module (M0–M29) is built,
+*Archival: done conditional on $w_0$.* Every archival module (M0–M30) is built,
 tested, and reported in [what we found](07_what_we_found.md) — collisional bound + isotope test, laser-epoch
 bound, power/ramp-law predictions, trapping, and the cusp model-form study.
 What is left is not more archival analysis but the measurements the 2025 data
@@ -97,7 +97,7 @@ test.
 
 ---
 
-**Where the numbers live.** Modules M0–M29, the whole archival pipeline ·
+**Where the numbers live.** Modules M0–M30, the whole archival pipeline ·
 producers every `scripts/run_*.py` that writes a committed CSV · results the
 full `results/` set, indexed in [`docs/RESULTS.md`](../RESULTS.md) · figures:
 none of its own. Each assumption is sourced from the chapter that makes it,

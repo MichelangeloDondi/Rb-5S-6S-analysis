@@ -118,7 +118,7 @@ campaign maximum: saturation 57.5 kHz on axis and 25.4 signal-weighted, pumping
 
 Three consequences.
 
-1. The companion-to-ramp ratio quoted below as 3.7 becomes **4.9 to 6.2** once
+1. The companion-to-ramp ratio quoted above as 3.7 becomes **4.9 to 6.2** once
    this term is in it, because the two companions carry the identical P-squared
    signature and add.
 2. The direction is unchanged and the effect on the argument is to strengthen it:
