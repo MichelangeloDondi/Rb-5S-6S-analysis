@@ -264,7 +264,15 @@ suppresses the **mean** shift.
 *The method in one picture: which physical parameters each lineshape
 observable responds to. The mean shift, the width and the asymmetry read
 different projections of the same shift distribution, which is why nulling
-the mean leaves the spread untouched.*
+the mean leaves the spread untouched. At the twenty conditions drawn, all at
+130 °C, the total width is measured but its decomposition into components is not.
+In the left panel the split between the two components slides freely along a grey
+line of constant total width in MHz, the two are anticorrelated with a median
+correlation coefficient of −0.90, and several of the one-sigma ellipses reach
+negative Gaussian width. In the right panel the quantity actually measured, the
+fitted total, is known to 1.0 per cent within a condition, and no trend with
+laser power survives the scatter between measurement blocks, which is several
+times larger than those bars.*
 
 But the mean is not the distribution. [Hamilton 2023](lit/hamilton2023.md)
 builds the very same focus-average integral this analysis does and then

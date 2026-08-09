@@ -64,7 +64,12 @@ errors are one fact, not two.
 *Left: each condition's 1σ error ellipse from its own covariance, over contours
 of constant total FWHM. The ellipses are elongated along the contours, two of
 the twenty reaching unphysical negative widths, and the centres scatter in the
-same direction. Right: the quantity actually measured.*
+same direction, with a median correlation coefficient of −0.90 between the two
+widths. Right: the quantity actually measured, the fitted total width, known to
+1.0 per cent within a condition. No trend with laser power survives the scatter
+between measurement blocks, which is several times larger than the plotted bars.
+All twenty conditions are at 130 °C, so what the figure shows is that the total
+is measured while its decomposition is not.*
 
 **Decision: the estimator uses only the informative direction.** `beta_self`
 rides on the *difference* in `gamma_coll` across temperature — the headline

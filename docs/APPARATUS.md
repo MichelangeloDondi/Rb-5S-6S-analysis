@@ -459,7 +459,15 @@ acquisition drift, which the archive puts two orders below.*
 > worse. Against the campaign's AC-Stark bounds carried to the laser axis
 > (0.13 MHz from the joint fit, 0.32 MHz from the width-only construction)
 > the floor sits above both, which says single-block centres cannot beat the
-> averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`.
+> averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`. Panel (b)
+> of that figure draws the sawtooth against the digitised record, with the census
+> below and the shared 2.6 s rise at each step. Panel (c) removes the model and
+> puts the two records side by side: the residual of this one settling to
+> 0.62 MHz on the left, and on the right the same quantity on a campaign segment
+> five weeks later, whose standard deviation of 5.4 MHz is about nine times
+> worse. The 0.62 MHz is therefore the floor a fixed lock has to aim at, and the
+> two halves count minutes from their own origins, so the axis is split rather
+> than shared.
 >
 > **The event census.** The kick finder flags 12 candidates. The first falls
 > inside the opening 0.4 min the likelihood excludes, so 11 are testable. Of

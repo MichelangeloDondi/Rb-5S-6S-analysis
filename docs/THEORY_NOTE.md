@@ -150,13 +150,16 @@ not this one's.
 
 ![the ramp construction](../figures/fig12_ramp_construction.png)
 
-*From a Gaussian beam to a triangular shift distribution. (a) the intensity
-profile sets each atom's shift, from zero at the dim edge to $-S_0$ on axis.
-(b) the two weights that compete, many atoms sit at low intensity but each
-contributes only $I^2$ of signal, and the product is linear in $u$. (c) hence
-$f(s)\propto|s|$, a triangle with mean $-\tfrac{2}{3}S_0$ and intrinsic skew
-$+0.566$, which exists at all only because the rate goes as $I^2$. (d) the line
-it produces, with $S_0$ exaggerated so the asymmetry is visible.*
+*From a Gaussian beam to a triangular shift distribution. A focused beam does not
+apply one light shift, it applies a distribution of them. (a) the intensity
+profile sets each atom's shift, from zero at the dim edge to $-S_0$ on axis, with
+radius in units of the beam radius $w$ at which the intensity has fallen to
+$1/e^2$ of its on-axis value. (b) the two weights that compete, many atoms sit at
+low intensity but each contributes only $I^2$ of signal, and the product is
+linear in $u$. (c) hence $f(s)\propto|s|$, a triangle with mean
+$-\tfrac{2}{3}S_0$ and intrinsic skew $+0.566$, which exists at all only because
+the rate goes as $I^2$, drawn as a density normalised to unit area. (d) the line
+it produces, drawn at $S_0=3$ MHz so the asymmetry is visible.*
 
 ## 3. The drift-immune method
 

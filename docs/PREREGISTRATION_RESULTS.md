@@ -2593,7 +2593,11 @@ likelihood. `figures/fig14_wavemeter_reconstruction.png` panel (b) now
 describes steps and ramps and prints the real event count, and panel (c) prints
 the new floor. `figures/fig15_drift_story.png` panel (a) draws the same model
 through its overlay and its label follows. `docs/APPARATUS.md` section 6
-carries the new reading, the census and the floor.
+carries the new reading, the census and the floor. (Later, on 2026-08-09, the
+label pass moved the printed census out of panel (b)'s title, on the rule that a
+figure label carries a quantity and a unit. The census is unchanged and reads
+from `docs/APPARATUS.md` section 6, which is now its only prose home. The floor
+stays drawn on panel (c) in the noise model's own legend entry.)
 
 **What does not move.** Nothing else in the repository. This record is a
 photograph of a preliminary session five weeks before the campaign, it is

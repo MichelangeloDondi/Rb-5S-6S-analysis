@@ -260,6 +260,12 @@ roughly 30–50% systematics (per-peak, within-block analyses like M7 are
 unaffected), and the clean degeneracy-law test is a task for a fixed-lock session — measure
 the four peaks **interleaved**, with power logging.
 
+`figures/fig4_amplitude_ratios.png` draws the two measured area ratios against
+those two predictions, each on its own dashed line, over cell temperature. Its
+bars combine the scatter over repeats with the drift between measurement blocks,
+and that combination is far larger than the difference the prediction would
+show, which is the sense in which this dataset cannot test the law.
+
 ### 5.8 Foundational results underpinning the above
 
 The sweep rate is

@@ -40,8 +40,18 @@ assignments are what fix which line is which.
 drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the real 5P₁/₂;
 taking one photon from each beam is what cancels the first-order Doppler shift.
 The state is detected not directly but on the 795 nm arm of the 6S → 5P₁/₂ → 5S
-cascade. Right: the four hyperfine components measured, two per isotope, all
-F → F, labelled by uncalibrated wavemeter reading.*
+cascade, the 780 nm arm being suppressed by about 50 dB. The 5P fine-structure
+splitting is enlarged for legibility rather than drawn to scale. Right: the four
+hyperfine components measured, two per isotope, all F → F, labelled by
+uncalibrated wavemeter reading. Each is crossed once per sweep direction, so the
+down-sweep repeats the same four mirrored about the ramp apex. Their relative
+strengths follow the ground-state populations, abundance × (2F+1)/G_iso, which
+predicts ⁸⁵Rb F = 3 at 7/5 = 1.40 times F = 2 against 1.42 integrated from the
+digitised record on the up-sweep, 1.34 to 1.42 across integration rules, and the
+⁸⁵Rb pair at the bare abundance ratio 2.59 times the ⁸⁷Rb pair against 2.45
+measured. The photographed display compresses the tallest spikes and the whole
+down-sweep, so peak heights are not read for ratios. The integration rules and
+their caveats are [APPARATUS §6](../APPARATUS.md).*
 
 ### 1.1 Why two counter-propagating photons kill the Doppler width
 

@@ -59,25 +59,53 @@ two-photon sum frequency, twice the laser frequency.
 ![line width against Rb density at four temperatures, with the four hyperfine components separated](../figures/fig1_width_vs_density.png)
 
 *The evidence behind the first bound. The density rises 52.5-fold across the
-four temperatures while the fitted width rises 1.47-fold, which is what makes
-the collisional coefficient a bound and a floor rather than a resolved slope.
-The absolute widths ride the beam waist, which has not been measured, so a
-smaller waist would lower every point together.*
+four temperatures while the total width plotted here rises by at most
+12 per cent on any one component. The fitted collisional part of that total
+rises 1.47-fold over the same range, which fig6 draws, and between them that is
+what makes the collisional coefficient a bound and a floor rather than a
+resolved slope. The density axis is logarithmic, and the four oven settings happen to
+fall at nearly equal spacing on it, which reads as categorical unless the scale
+is stated. It also carries a 20 per cent scale systematic from the
+vapour-pressure model, the largest single uncertainty on the figure, and it is
+common to every point, so it slides the abscissa bodily. The 6S natural width
+is 3.49 MHz, below the bottom of the ordinate, so most of the width shown here
+is instrumental. The pale vertical band at 130 °C is the spread over the five
+drive powers measured at that temperature. The absolute widths ride the beam
+waist, which has not been measured, so a smaller waist would lower every point
+together.*
 
 ![fitted width and peak signal against drive power at fixed temperature](../figures/fig2_power_sweep.png)
 
 *Where the light-shift bound comes from, and where it does not. No power trend
 survives the between-block scatter in these summary widths, which is why the
-bound is taken from a joint fit over every point of every profile instead.*
+bound is taken from a joint fit over every point of every profile instead. The
+point-to-point scatter in panel (a) is 3 to 8 per cent, above the 2 per cent or
+less that a light-shift gradient alone would produce, and the remainder is
+scatter between blocks. The widths are measured directly off each trace, not
+taken from the joint per-condition fit whose fitted totals fig10 draws, and the
+two estimators are not compared point by point. In panel (b) each dashed line is
+the square-of-power rate law with only its offset fitted to its own component,
+so it is a reference of fixed slope rather than a fit to the amplitudes.*
 
 ![the four components averaged against density, and the fitted laser width under two models](../figures/fig5_pooled_width.png)
 
 *Two readings of the same fits. Panel (a) averages the four components and
-prints the two isotopic coefficients, which come out equal to well inside their
-combined uncertainty, so this data does not separate the isotopes. Panel (b)
-shows the fitted laser width moving with the choice of model rather than with
+prints the two isotopic coefficients, which differ by 0.0000 MHz per
+10¹² cm⁻³ against a combined uncertainty of 0.0064, so this data does not
+separate the isotopes. The pooled width grows with density while the individual
+components scatter non-monotonically within their own uncertainties, which is
+the whole reason for pooling them. The dashed line is not a fit either: it is the
+smallest total-width growth there would be if the coefficient printed beside it
+were linear in density, evaluated at the smallest Voigt slope, so a pooled trend
+falling below it is what makes the coefficient lever-dependent. Panel (b) shows
+the fitted laser width moving with the choice of model rather than with
 temperature, which is why the per-block laser widths are quoted as a working
-range and not as a result.*
+range and not as a result. Fitting each condition freely gives a flat 1.6 MHz
+within the plotted uncertainties. Tying the collisional term to the density
+instead forces the laser width down to its lowest value at 110 °C, and that is
+the trade-off between the two widths inside the fit rather than a change in the
+laser. The density axis is logarithmic and carries the same 20 per cent scale
+systematic as fig1.*
 
 **Nulls and scaling laws:**
 

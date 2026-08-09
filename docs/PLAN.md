@@ -185,7 +185,12 @@ campaign itself). Middle: the campaign, reconstructed from its own traces. Line
 offsets are meaningful only within one scope-knob epoch, the spikes are re-lock
 events, and the held-lock drift is bounded at order 0.02 MHz/min on the laser
 axis with the sign undetermined, which is why shapes survive and centres do
-not. Bottom: what each drift regime licenses. The 2025 lock supported the
+not. The oscilloscope window was moved 58 times over the campaign and each move
+re-zeroes the offset axis, so only the widths and shapes of the individual traces
+carry information. Each vertical stroke is that trace's own scan ramp drawn to
+scale, which is a sweep extent and not an uncertainty. The inset is drawn for
+scale rather than as a measurement, and because the sign is not established it
+draws both directions. Bottom: what each drift regime licenses. The 2025 lock supported the
 shape-only bounds reported here. A fixed lock of the class already
 demonstrated on this transition would make the centre channel usable,
 converting the bounds into the measured pull, the collisional self-shift, and a
@@ -546,7 +551,12 @@ does.
 *The physics behind the anchor: the Monte-Carlo transit width against waist
 and collection geometry. The S−L width difference reads ~2.7 MHz off the
 steep part of this curve, which is what makes it an intensity calibration
-independent of the knife-edge stage.*
+independent of the knife-edge stage. The abscissa is not a measured quantity:
+the beam waist has not been measured and the knife-edge scan is pending, which
+is what this section's anchor exists to work around. The shaded region is
+excluded, because waists below about 40 µm would put the transit and natural
+widths together above the observed total on their own. The laser and collisional
+contributions are not in the curve, so the true waist is higher still.*
 
 **The block that delivers the anchor, and the corner it runs in.** The anchor
 and the composite model's transit-kernel choice come off the same data, taken
@@ -625,8 +635,15 @@ goes as I².
 
 *The object under test: the intensity distribution of a focused Gaussian
 beam, weighted by the I² two-photon rate, maps to the triangular shift
-distribution f(s) ∝ |s| whose moments the session measures. Every item below
-is a functional of this one construction.*
+distribution f(s) ∝ |s| whose moments the session measures. A focused beam does
+not apply one light shift, it applies a distribution of them, and that is the
+whole content of the construction. Radius is in units of the beam radius w, where
+the intensity has fallen to 1/e² of its on-axis value. In (b) the number of atoms
+diverges towards low intensity while the two-photon rate suppresses them faster,
+and the product is linear in intensity. The density in (c) is normalised to unit
+area and its standardized skew is +0.566, which exists at all because of the I²
+weighting. Panel (d) is drawn at a light shift of 3 MHz so the asymmetry is
+visible. Every item below is a functional of this one construction.*
 
 The four items are tested in order of statistical cost. All four share one
 prerequisite that is not itself an item: the collection rebuild at the end of
@@ -762,10 +779,18 @@ with their directions, the veto census, and the difference.
 
 ![the archival width-vs-density floor](../figures/fig6_gamma_floor.png)
 
-*The archival floor this program upgrades: the fitted collisional width
-rises only ×1.47 while the density rises ×52.5, so the 2025 slope is a
-bound. The session's levers are the two the figure lacks: densities at
-150–170 °C, and block noise cut 4× by interleaving.*
+*The archival floor this program upgrades: the mean of the four fitted
+collisional widths rises only ×1.47 while the density rises ×52.5, so the 2025
+slope is a bound. A binary-collision width would be proportional to density, so
+these four points bound the coefficient rather than measure it, and the bound
+moves with the density range used, which is why the figure draws two of them.
+Neither straight line is a fit: each is what the width would do if the
+coefficient took the value fitted over the range named beside it. The dashed one
+reaches 1.9 MHz at the highest density shown, where the measured mean of the four
+peaks is 0.59 MHz. The density axis is logarithmic and carries the vapour-pressure
+model's 20 per cent scale systematic, common to every point. The session's levers
+are the two the figure lacks: densities at 150–170 °C, and block noise cut 4× by
+interleaving.*
 
 **7b. At least five temperature blocks per peak.** The archival headline runs
 on four points and two residual degrees of freedom, so its error multiplier is
@@ -815,8 +840,19 @@ cell temperature, and the cold-spot offset per condition.
 ![the EOM comb and its nonlinearity map](../figures/fig8_ruler.png)
 
 *The ruler as it worked in 2025: line replicas 6.25 MHz apart on the laser
-axis, and the empirical sweep-linearity map they stitch. The session keeps the
-comb and fixes its two hardware mismatches, below.*
+axis, and the empirical sweep-linearity map they stitch. Six of the seven
+labelled slots carry a tooth standing above the fit residual. The seventh does
+not, because the third-order pair carries about 2% of the first-order power at
+this drive depth and the scan clips an outer window, which is the case on every
+recorded ruler and is why the seven-standing clause was relaxed to six
+([the ruler specification](notes/ruler_validity_and_trim_prereg.md) amendment 4).
+The trace drawn is the one that clears every clause of §7 of the same note, with
+the weakest of its seven heights at 0.63 of the fit residual and a reduced χ² of
+1.01 against the ceiling of 2.0. In the right panel the sweep non-linearity and
+any tooth-dependent pull together stay within 0.3%, and that bound is set by the
+well-sampled windows alone. The open markers at the scan edges have an
+uncertainty larger than the bound, so they do not constrain it. The session keeps
+the comb and fixes its two hardware mismatches, below.*
 
 **7d. The matched-PM ruler, and the two knobs a seven-tooth comb needs.** In
 2025 the ruler light differed from the science light (the half-wave-plate

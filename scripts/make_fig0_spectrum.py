@@ -157,29 +157,26 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
                   "convolved with transit and laser")
     ax.axhline(0.0, color="0.6", lw=0.8, ls=":")
     ax.set_ylabel("normalized fluorescence")
-    ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line: {T} $^{{\\circ}}$C, {P} mW\n"
-                 f"total width at half maximum {total_fwhm:.2f} $\\pm$ "
-                 f"{total_fwhm_err:.2f} MHz, from the joint fit to the repeats",
-                 fontsize=9.5)
+    ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line: "
+                 f"{T} $^{{\\circ}}$C, {P} mW", fontsize=9.5)
     # Upper left: the line rises at centre and the right shoulder carries the
     # legend into the data. The left corner is baseline at this window.
     ax.legend(fontsize=8, loc="upper left")
     ax.set_ylim(-0.10, 1.12)
 
-    # The four components the fit convolves. All four are full widths at half
-    # maximum (rb5s6s.lineshape takes an FWHM for every kernel, the Gaussian
-    # laser term included), and the box now says so, because a reader who reads
-    # sigma_laser as a standard deviation cannot reproduce the total above.
-    # The natural width is fixed by the 6S lifetime; the transit width rides on
-    # the assumed waist, whose value is read from the constant of record rather
-    # than typed.
-    ax.annotate(f"natural width {GNAT:.2f} MHz\n"
-                f"collisional width {gc:.2f} MHz\n"
-                f"transit-time width {transit:.2f} MHz,\n"
-                f"  from a beam waist of {C.W0_PRIOR_M * 1e6:.0f} $\\mu$m\n"
-                "  that has not been measured\n"
-                f"laser width {sl:.2f} MHz\n"
-                "all four are widths at half maximum\n"
+    # The four components the fit convolves, one value row each. All four are
+    # full widths at half maximum (rb5s6s.lineshape takes an FWHM for every
+    # kernel, the Gaussian laser term included), so every row says FWHM: a
+    # reader who reads sigma_laser as a standard deviation cannot reproduce the
+    # total. The total FWHM of record moved here out of the panel title. The
+    # waist is the constant of record rather than a typed number, and that it
+    # has not been measured is now the caption's statement.
+    ax.annotate(f"natural FWHM {GNAT:.2f} MHz\n"
+                f"collisional FWHM {gc:.2f} MHz\n"
+                f"transit-time FWHM {transit:.2f} MHz\n"
+                f"assumed beam waist {C.W0_PRIOR_M * 1e6:.0f} $\\mu$m\n"
+                f"laser FWHM {sl:.2f} MHz\n"
+                f"total FWHM {total_fwhm:.2f} $\\pm$ {total_fwhm_err:.2f} MHz\n"
                 f"reduced chi-squared {fit['chi2_red']:.2f}",
                 xy=(0.98, 0.97), xycoords="axes fraction", va="top", ha="right",
                 fontsize=7.5, color="0.25",
@@ -188,10 +185,14 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     axr.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, label="band of one point error")
     axr.plot(x, rstd, "o", ms=2.6, color=col, alpha=0.7)
     axr.axhline(0.0, color="k", lw=0.9)
-    axr.set_ylabel("residual, in units\nof the point error", fontsize=8.5)
-    axr.set_xlabel("detuning from line centre (MHz at the two-photon transition frequency)")
+    axr.set_ylabel(r"residual / $\sigma$", fontsize=8.5)
+    axr.set_xlabel("two-photon detuning (MHz)")
     axr.legend(fontsize=7, loc="upper right")
-    rmax = min(max(float(np.max(np.abs(rstd))) * 1.2, 3.0), 8.0)
+    # Headroom for the band's own label: at x1.2 the top of the panel sat only
+    # just above the largest residual, and the frameless legend printed through
+    # the scatter (a point near +12 MHz touched its text). The factor is set so
+    # the strip the legend occupies is empty of points at every window.
+    rmax = min(max(float(np.max(np.abs(rstd))) * 1.55, 3.2), 8.0)
     axr.set_ylim(-rmax, rmax)
     _footer(fig, "Sources: the data_raw archive (this trace, re-fit end to end) + "
                  "results/ruler_blocks.csv (frequency axis)\n"

@@ -33,7 +33,12 @@ The full claim ledger, including what is deliberately not claimed, is
 
 *One 993.4192 nm (⁸⁵Rb) line at 130 °C and 225 mW, with the composite fit and
 its residuals: total FWHM 5.37 ± 0.02 MHz, reduced χ² 1.09. This is the raw material
-everything below is built from.*
+everything below is built from. Every width in the box on the panel is a full
+width at half maximum, the laser term included, so the four add up to the total
+the same box prints. The transit-time width is the one that is not measured: it
+rides on the assumed 64 µm beam waist, whose knife-edge scan is still pending.
+The lower strip divides each residual by that point's own uncertainty, and the
+shaded band is one such unit.*
 
 **Why this line is worth measuring.** The environmental coefficients of the
 993 nm 5S→6S line have only ever been bounded, and coarsely. Those
@@ -83,11 +88,19 @@ orders below the linewidth.
 
 *Left: two 993 nm photons, one from each direction, drive 5S₁/₂ → 6S₁/₂
 through a virtual level that lies below the real 5P₁/₂. The atom returns by
-the 6S → 5P → 5S cascade and the bench detects the 795 nm arm. Right: the
-cavity scan's up-sweep carries the laser across all four hyperfine
-components, two per isotope, all F → F. Their spike integrals track the
-ground-state populations, (2F+1) × isotope abundance: ⁸⁵Rb ratio 1.31
-measured against 1.40 predicted, from the digitised record.*
+the 6S → 5P → 5S cascade and the bench detects the 795 nm arm. The 780 nm
+channel of the same cascade is suppressed by about 50 dB, and the 5P
+fine-structure splitting is enlarged in the drawing rather than drawn to scale.
+Right: the cavity scan's up-sweep carries the laser across all four hyperfine
+components, two per isotope, all F → F, and the down-sweep repeats the same
+four mirrored about the ramp apex. Their spike integrals track the
+ground-state populations, abundance × (2F+1)/G_iso. Within ⁸⁵Rb that predicts
+F = 3 at 7/5 = 1.40 times F = 2, and the digitised record integrates to 1.42
+on the up-sweep, 1.34 to 1.42 across integration rules. Between isotopes the
+(2F+1) factors sum away and the prediction is the bare abundance ratio, 2.59,
+against 2.45 measured. The display compresses the tallest spikes and the whole
+down-sweep, so peak heights are not read for ratios. The integration rules and
+their caveats are [APPARATUS §6](docs/APPARATUS.md).*
 
 The 6S₁/₂ population is read out through the 795 nm fluorescence of the
 6S₁/₂ → 5P₁/₂ → 5S₁/₂ cascade. Four hyperfine components are recorded across
@@ -114,12 +127,17 @@ fixed condition; [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 </p>
 
 *The whole constraint. Top: the problem as photographed on a preliminary
-session, a wavemeter record of cavity re-locks and relaxations. Middle: the
-campaign reconstructed from its own traces. Each vertical stroke is one
-trace's own frequency sweep, offsets are comparable only between traces taken at
-the same scope setting, and the held lock's drift is bounded at order
-0.02 MHz/min over three hours, sign undetermined. Shapes survive, centres do
-not. Bottom: what each drift
+session, a wavemeter record of cavity re-locks and relaxations. No frequency log
+survives from the campaign itself, which is why the middle panel has to be
+reconstructed. Middle: the campaign reconstructed from its own traces. Each
+vertical stroke is one trace's own frequency sweep drawn to scale, which is a
+sweep extent and not an uncertainty. The oscilloscope window was moved 58 times
+and each move re-zeroes the offset axis, so every segment floats and offsets are
+comparable only between traces taken at the same scope setting. Only the widths
+and shapes of the individual traces carry information. The inset is drawn for
+scale rather than as a measurement: the held lock's drift is bounded at order
+0.02 MHz/min over three hours and the sign is not established, so both
+directions are drawn. Shapes survive, centres do not. Bottom: what each drift
 regime licenses, from the 2025 bounds to the fixed-lock session that would
 convert them.*
 
@@ -193,11 +211,20 @@ lineshape asymmetry ([methods §3](docs/methods/05_the_frequency_ruler.md)):
 </p>
 
 *Left: one ruler trace with its seven-tooth comb fit, six teeth standing above
-the trace's own fit residual. The panel states why the seventh is below it: at
-this modulation depth the third-order pair carries about 2% of the first-order
-power, and the scan end clips the outermost window. Right: the sweep-linearity
-check, local rate against block rate, flat to within 0.3% in the well-sampled
-windows.*
+the trace's own fit residual. Why the seventh is below it: at this modulation
+depth the third-order pair carries about 2% of the first-order power, and the
+scan end clips the outermost window, as on every recorded ruler. This trace is
+the one drawn because it meets conditions fixed before the analysis, the
+selection rule of
+[the ruler specification](docs/notes/ruler_validity_and_trim_prereg.md) §7 and
+amendment 4: the two first-order teeth are among the three tallest without
+relabelling, six of the seven teeth stand above the scatter of the fit residual
+with the weakest at 0.63 of it, and the reduced χ² is 1.01 against a ceiling of
+2.0. Seven of the 104 recorded rulers clear every clause. Right: the
+sweep-linearity check, local rate against block rate. Sweep non-linearity and
+any tooth-dependent pull together stay within 0.3%, and that bound is set by
+the well-sampled windows. The open markers at the scan edges carry an
+uncertainty larger than the bound itself, so they do not constrain it.*
 
 ## Results at a glance
 
@@ -214,6 +241,17 @@ reported values.
 <p align="center">
   <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global archive model over one trace per peak, with residual panels">
 </p>
+
+*One panel per component, each the highest-signal repeat of the 225 mW, 130 °C
+power sweep. The collisional width, the laser linewidth, the Stark coefficient
+and the transit width are common to every campaign trace and held fixed here,
+and the fitted Stark coefficient sits at zero, so no Stark broadening is drawn.
+Only each trace's own amplitude, centre and background are refit. Each residual
+strip divides by that point's own uncertainty. Where a reduced χ² falls below
+one, the per-point noise assumed in the fit is conservative and the
+uncertainties read off it are upper bounds. The four traces' own fitted widths,
+reduced χ² and detector-saturation bounds are printed on the full-page versions,
+`figures/fig18_single_*.png`.*
 
 The dominant shared systematic for every absolute number is the beam waist
 **w₀** (density scale, model form and block scatter contribute at a lower
@@ -240,6 +278,18 @@ not on record).
   <img src="figures/fig6_gamma_floor.png" width="560" alt="The lever test: the collisional width is a floor">
 </p>
 
+*The four components faint, their mean in black. The mean of the four fitted
+collisional widths is nearly constant: it rises by a factor 1.47 while the Rb
+density rises by a factor 52.5. A binary-collision width would be proportional
+to density, so these data bound the coefficient rather than measure it, and the
+bound depends on which density range is used. The two straight lines are that
+comparison drawn: each is what the width would do if the coefficient took the
+value fitted over the range named beside it, not a fit to the points. The
+dashed one reaches 1.9 MHz at the highest density shown, where the mean of the
+four peaks is 0.59 MHz. The density axis is logarithmic and carries a
+20 per cent scale systematic from the vapour-pressure model, common to every
+point, so it slides the whole abscissa rather than scattering it.*
+
 **The power sweep bears out the ramp's power-law predictions.** At fixed
 temperature only the AC-Stark shift varies with power, and both predictions
 hold: the linewidth stays flat (the shift broadens the line only as S₀²,
@@ -257,6 +307,15 @@ fixed before the fit and never an input to it.
 <p align="center">
   <img src="figures/fig2_power_sweep.png" width="720" alt="Power sweep: width flat, amplitude proportional to P squared">
 </p>
+
+*(a) the width shows no trend with power. The point-to-point scatter is 3 to
+8 per cent, above the 2 per cent or less a light-shift gradient alone would
+predict, and the rest of it is scatter between measurement blocks. (b) the
+amplitude, with the square-of-power rate law drawn as a reference of fixed
+slope: each dashed line has only its offset fitted to its own component, so it
+is a reference and not a fit to the points. Widths here are measured directly
+off each trace, which runs below the fitted total width of the joint
+per-condition fit in fig10, and the two are not read against each other.*
 
 ## The lineshape, mechanism by mechanism
 
@@ -305,6 +364,16 @@ glance").
   <img src="figures/fig3_transit_mc.png" width="560" alt="Line width versus beam waist: the transit/laser degeneracy">
 </p>
 
+*Transit-time broadening grows as the beam narrows, because a faster crossing
+gives a larger frequency spread. The shaded region is excluded: waists below
+about 40 µm would already put the transit and natural widths together above the
+observed total. The laser and collisional contributions are not in the curve, so
+the true waist is higher still. The waist itself has not been measured. The
+knife-edge scan is pending, and until it runs this axis is a hypothesis being
+scanned rather than a measured quantity. The excluded region is drawn at the
+interpolated crossing, and 40 µm is that crossing rounded to the spacing of the
+two sampled waists that bracket it.*
+
 ## What a follow-up session would add
 
 - **A proposed fixed-lock session.** A stable lock would return the absolute
@@ -340,6 +409,29 @@ nearby resonances.
 <p align="center">
   <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
 </p>
+
+*A magic wavelength is where the differential light shift between two states
+vanishes, so a trap held there shifts both equally and does not move the
+transition. Here that is Rb 5S₁/₂–6S₁/₂, the 993 nm line. Scalar only, which is
+exact for J = 1/2 under linear polarization. The bracket printed under each
+crossing is the range over which that crossing moves when the contributing
+matrix elements are varied over their quoted uncertainties: ±0.84 nm at the
+widest and ±0.065 nm at the tightest, so the three are not one uncertainty and
+no single status word covers them. What is unpublished, to the depth searched,
+is the calculation behind them, and that is a different thing from what the
+brackets measure. In the lower panel the 5S polarizability varies slowly here
+because the D lines are far away, while the 6S polarizability diverges at each
+nearby 6S→nP resonance, and that contrast is why the crossings fall where they
+do. Both panels are truncated at ±2500 a.u. The grey dotted line marks a
+further crossing, at 1297.53 nm, which is not one of the three reported values:
+the search that produced those stepped over a guard strip on each side of every
+resonance, and this crossing falls inside such a strip. A crossing is a sign
+change of the difference, and no rule puts one in every gap between resonances,
+because the 6S→5P transitions run downward and their resonances carry the
+opposite sign. Of the five gaps drawn here, two change sign end to end, and four
+crossings fall in the window. A crossing this close to a resonance is unusable
+as a trap and is exactly what a null measurement of the matrix element wants,
+which the planning documents take up.*
 
 ## Reproduce
 

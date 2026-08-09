@@ -112,14 +112,24 @@ equally:
 *A representative ruler trace with its seven-tooth comb fit over its
 standardized residual strip (left) and the pooled sweep-linearity map
 (right): the local rate never departs from the block rate by more than 0.3%
-in any well-sampled window. Six of the seven teeth stand above this trace's
-fit residual, and the panel states why the seventh does not: the third-order
-pair carries about 2% of the first-order power at this modulation depth, and
-the scan end clips the outermost window, as on every recorded ruler
+in any well-sampled window, and that bound is set by the well-sampled windows
+alone. The open markers at the scan edges carry an uncertainty larger than the
+bound itself, so they do not constrain it, and what the right panel bounds is
+sweep non-linearity and any tooth-dependent pull together. Six of the seven teeth
+stand above this trace's fit residual, and the seventh does not because the
+third-order pair carries about 2% of the first-order power at this modulation
+depth, and the scan end clips the outermost window, as on every recorded ruler
 (pre-registration
-[amendment 4](../notes/ruler_validity_and_trim_prereg.md)). The residual strip
-carries the standardized units of the statistics chapter's §4.1, and the climb
-at the scan end is the clipped window showing itself in the evidence.*
+[amendment 4](../notes/ruler_validity_and_trim_prereg.md)). This trace is the one
+drawn because it meets the conditions fixed before the analysis, §7 of the same
+note, every clause required: the two first-order teeth are among the three
+tallest without relabelling, six of the seven teeth stand above the scatter of
+the fit residual with the weakest at 0.63 of it and none railed on its zero
+bound, the ladder took no re-index action, the trace is not quarantined, and the
+reduced χ² is 1.01 against a ceiling of 2.0. Seven of the 104 recorded rulers
+clear all of it. The residual strip carries the standardized units of the
+statistics chapter's §4.1, and the climb at the scan end is the clipped window
+showing itself in the evidence.*
 
 ### The comb amplitudes — and the pure-phase-modulation null
 
