@@ -6,4 +6,4 @@ constants live in :mod:`rb5s6s.constants`; tunable choices in
 :mod:`rb5s6s.config`. Nothing numeric is hard-coded anywhere else.
 """
 
-__version__ = "3.4.0"
+__version__ = "3.5.0"

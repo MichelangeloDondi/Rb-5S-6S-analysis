@@ -1080,7 +1080,8 @@ hundred in steepness. What a crossing measures is the differential
 polarizability itself, to 288 atomic units at the campaign intensity and a
 shift precision of 92 kHz, and the precision it delivers on an element is that
 288 divided by how strongly the differential responds to the element, which is
-176 atomic units per per cent at 1339.6 nm against 163 at the steep root. On
+176 atomic units for a one per cent change at 1339.6 nm against 163 at the
+steep root. On
 the response alone, 1339.6 nm looks like the better lever, at 1.6 per cent
 against 1.76 for the steep root.
 

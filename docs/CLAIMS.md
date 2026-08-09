@@ -129,11 +129,12 @@ two-photon sum frequency, twice the laser frequency.
   778 nm value section 3 quotes is anchored on a published magic
   wavelength and shaped by one near-resonant term, scalar only, so it
   sizes a drive-power ceiling and does not stand as a polarizability.
-- No measured trap-design coefficient. The fourth-order, vector and
-  scattering coefficients at the magic crossings are calculated to
-  within a factor of two, and the contributions from higher
-  even-parity states and from the two-photon continuum are carried at
-  order of magnitude only.
+- No measured trap-design coefficient. At the magic crossings the
+  fourth-order and vector shifts are calculated to within a factor of
+  two, and the scattering rate to the same margin except at the two
+  crossings near 1030 nm, where the upward channels make it a lower
+  bound. The contributions from higher even-parity states and from the
+  two-photon continuum are carried at order of magnitude only.
 - No claim that the multi-line projections of section 3 hold at the
   archive's own drive power on every rung. Two of the three ceil below
   it, and the delivered precisions are quoted at both readings.

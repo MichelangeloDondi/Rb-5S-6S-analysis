@@ -1,10 +1,10 @@
 # CI: the full pytest battery.
 #
 # This repository is PUBLIC, so GitHub Actions minutes are free here and the
-# full battery runs on EVERY push. That is deliberate: the private archive
-# (MichelangeloDondi/Rb-5S-6S-analysis-archive) is billed per minute and had
-# its matrix cut back to tags and dispatch on 2026-07-29, so this repo is the
-# reference green check for the slow closure tests.
+# full battery runs on EVERY push. That is deliberate: the private tree the
+# ports come from is billed per minute and has run on manual dispatch alone
+# since 2026-07-30, so this repo is the reference green check for the slow
+# closure tests.
 #
 # It did not start out that way. The cost-gated workflow was copied here
 # verbatim along with its cost note, which left THIS repo skipping --runslow on
@@ -25,28 +25,10 @@
 # here certifies the CODE; dataset integrity is certified in the archive.
 name: tests
 
-# TRIGGERS: manual only, from 2026-07-30.
-#
-# This repository is PRIVATE, so its Actions are billed, and the account's
-# Actions are blocked: every job fails in 2-3 seconds without starting, with
-# "The job was not started because recent account payments have failed or your
-# spending limit needs to be increased". `lint` is `pip install ruff && ruff
-# check` and cannot fail on content, so a 3-second lint failure is proof the job
-# never ran. Nothing here is broken.
-#
-# Pushing therefore produced one red run and one failure email per commit, for
-# CI that cannot execute. The owner has decided not to pay, so the honest
-# configuration is not to schedule work that cannot run: push and pull_request
-# are removed and the workflow is manual only. If the billing state is ever
-# cleared, add them back -- nothing else needs changing.
-#
-# Coverage is unaffected. The full battery runs locally before every commit
-# (house rule), and the PUBLIC mirror runs the three-way --runslow matrix on
-# every push for free; it is the reference green check.
 # TRIGGERS: every push, and that is the point -- this repo is the reference
-# green check while the private archive's Actions are billing-blocked. On
-# 2026-07-30 the archive was set to workflow_dispatch-only to stop it emailing
-# failures for jobs that never start, and that change PROPAGATED HERE silently:
+# green check, because the private tree the ports come from runs its Actions on
+# manual dispatch alone. On 2026-07-30 that tree was set to
+# workflow_dispatch-only, and the change PROPAGATED HERE silently:
 # the `on:` blocks were identical in the two repos, so the cherry-pick applied
 # cleanly even though this file is on the sync script's DIVERGENT list. That list
 # predicts conflicts; it does not prevent merges. Guarded now by
@@ -65,6 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # tests/test_version_surface.py's tag half needs the tags.
+          # A default checkout fetches none and the test skips.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -88,6 +74,8 @@ jobs:
             deps: latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}

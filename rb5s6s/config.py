@@ -14,6 +14,7 @@ the apparatus. Rules:
   scans re-run the pipeline over knob ranges).
 """
 
+import os
 from pathlib import Path
 
 # W0_PRIOR_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
@@ -31,12 +32,13 @@ DATA_RAW_DIR = REPO_ROOT / "data_raw"        # frozen dataset, committed to git
 MANIFEST_CSV = DATA_RAW_DIR / "MANIFEST.csv" # one row per unique trace
 RESULTS_DIR = REPO_ROOT / "results"          # all generated outputs; git-ignored
 
-ARCHIVE_SOURCE_DIR = Path(
-    "/Users/michelangelodondi/Documents/GitHub/Rb-5S-to-6S-broadening/data"
-)
+ARCHIVE_SOURCE_DIR = Path(os.environ.get(
+    "RB5S6S_ARCHIVE_SOURCE_DIR", "~/rb-2025-archive/data")).expanduser()
 """Machine-specific location of the ORIGINAL 2025 archive (old repository).
-Only needed to (re)run scripts/import_data.py on Michelangelo's machine.
-Everyone else: data_raw/ ships inside this repository — you never need this."""
+Only needed to (re)run scripts/import_data.py on the machine that holds
+that archive, and read from RB5S6S_ARCHIVE_SOURCE_DIR when that variable
+is set. Everyone else: data_raw/ ships inside this repository, so you
+never need this."""
 
 
 def results_fingerprint(results_dir=None):

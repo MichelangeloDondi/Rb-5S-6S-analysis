@@ -128,7 +128,7 @@ from pathlib import Path
 import numpy as np
 from scipy.optimize import least_squares
 
-REPO = Path("/Users/michelangelodondi/Documents/GitHub/Rb-5S-6S-analysis")
+REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from rb5s6s import config as C  # noqa: E402

@@ -226,6 +226,13 @@ QUANTITY_STATUS = {
     "projections.csv": {
         "input_": "CALIB",
         "proj_": "ENVELOPE",
+        # The one exception to the two prefixes, and it is deliberate. A source
+        # headroom is a delivered laser power taken from a held demonstration or
+        # from the archive's own bench, divided by a ceiling computed here. The
+        # row's content is a carried instrument fact rather than a projection of
+        # reach, so it is tagged CALIB and the longest-prefix rule below picks
+        # this entry over the generic `proj_`.
+        "proj_source_": "CALIB",
     },
     "fringe_tail.csv": {
         # fringe-tail leverage on the Stark ramp: the sign and magnitude at the

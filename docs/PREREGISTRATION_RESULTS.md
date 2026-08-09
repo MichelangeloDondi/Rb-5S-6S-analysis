@@ -137,7 +137,7 @@ re-open a fitted result.
 
 ---
 
-Backup (quarantine copy): `/Users/michelangelodondi/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
+Backup (quarantine copy): `~/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
 Backup files seen: 325 (325 distinct basenames)
 
 Manifest rows matched to backup: 282; missing: 15
@@ -159,7 +159,7 @@ Manifest rows matched to backup: 282; missing: 15
 
 # Timestamp audit — POST-HOC content-matched pass (NO pre-registered standing)
 
-Backup (quarantine copy): `/Users/michelangelodondi/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
+Backup (quarantine copy): `~/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
 Backup files seen: 325 (325 distinct basenames)
 
 Manifest rows matched to backup: 296; missing: 1
@@ -1078,13 +1078,14 @@ backup that *is* the clock) is resolved in four moves, all shipped:
    degradation chain, addendum 8), all hash-suffixed against the nine name
    collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
    untouched.
-3. **The full timestamped backup is preserved publicly**: release
-   [`raw-backup-2026-07-24`](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases/tag/raw-backup-2026-07-24)
-   carries the complete tree verbatim (`tar.gz`, mtimes intact — verified
-   inside the archive; 753 CSVs, ~460 MB unpacked, 77 MB packed), sha256
+3. **The full timestamped backup is preserved, and it is not published
+   here**: the complete tree is held verbatim as a `tar.gz` with mtimes
+   intact, 753 CSVs, about 460 MB unpacked and 77 MB packed, sha256
    `58d5315d8bde5fae0c3c0989e5b96c76e24f02645d546791878ba650f9cc08d1`.
-   Anyone can now re-run the audit from first principles, hashing included;
-   and the clock no longer lives on a single disk.
+   The raw traces are outside this repository, as
+   [DATA.md](DATA.md) states, so the audit is reproducible here against the
+   manifest and the recorded hashes rather than against the files
+   themselves, and the clock no longer lives on a single disk.
 4. **The folder roles are documented** (`DATA.md` §3a) and guarded
    (`tests/test_recovered_layer.py`): the clock's manifest identities must
    agree with `MANIFEST.csv` by hash, campaign rows must sit inside the
