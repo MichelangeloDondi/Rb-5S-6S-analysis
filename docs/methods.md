@@ -70,6 +70,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
   | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M29 trap-design corrections at the magic crossings |
+  | M30 cavity-scan photograph, integrated |  |  |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
