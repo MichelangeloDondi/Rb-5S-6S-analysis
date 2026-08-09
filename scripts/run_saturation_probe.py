@@ -11,7 +11,7 @@ the note's headline (the width-channel bound tightens from 0.6325 to about
 by anyone, including its author. Everything the note quotes about the probe comes
 from here now.
 
-WHAT IT DOES, in three stages.
+WHAT IT DOES, in four stages, the last opt-in.
 
 Stage 1 rebuilds the two-photon Rabi frequency from bench quantities, printing
 every intermediate, so the chain power -> intensity -> field -> coupling is
@@ -27,10 +27,15 @@ first runs UNPATCHED, which must reproduce the committed bound: that is the
 check that the probe is driving production code and not a reimplementation.
 
 Stage 3 reports on C3f, the joint three-session bound that outside documents
-quote, and records that it cannot be run here: the joint fit needs the two
-quarantine data trees, which are not on this machine. It prints the analytic
-comparison at C3f's own bound instead, which fixes the DIRECTION of the move
-without inventing its size.
+quote, and prints the analytic comparison at C3f's own bound, which fixes the
+DIRECTION of the move without needing the fit.
+
+Stage 4 runs it, behind --joint, because the joint fit reads two quarantine data
+trees from outside the repository and takes hours. Point RB5S6S_PREHISTORY_DIR
+and RB5S6S_PILOT_DIR at them. On 2026-08-09 this stage was reported as
+impossible on the strength of the script's fallback path being empty, without
+looking for the folders under their real names. They were present the whole
+time.
 
 THE INJECTED PHYSICS, stated so it can be attacked. The homogeneous
 power-broadening law
@@ -46,6 +51,7 @@ two-photon transition. It is standard, and the steady-state condition holds here
 no committed bound moves on it.
 
     ./.venv/bin/python scripts/run_saturation_probe.py
+    ./.venv/bin/python scripts/run_saturation_probe.py --joint
 """
 
 from __future__ import annotations
@@ -55,7 +61,8 @@ import math
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s import stark  # noqa: E402
 from rb5s6s.constants import (C_M_PER_S, DELTA_ALPHA_AU,  # noqa: E402
@@ -252,10 +259,76 @@ def stage3(band: dict) -> None:
           "inventing one.")
 
 
+# ---------------------------------------------------------------- stage 4
+def stage4(band: dict) -> None:
+    """The joint three-session bound, re-profiled with the saturation term.
+
+    Stage 3 explains why this needs the two quarantine trees. When they are
+    reachable it runs here, patching `_shared_profile_grid` in the joint fit's
+    own namespace, which is the single place that fit turns a shift into a
+    profile, so the shared kappa, the per-peak priors, the per-trace centres and
+    the chain seeding are all production code. It writes nothing: the committed
+    results/stark_joint.csv is untouched, because only the two chains the primary
+    bound needs are run and `main()` is never called.
+
+    Two chains, the wing-variant minimum search and the primary seeded from it,
+    are the fit's own documented order. Expect hours.
+    """
+    print()
+    print("=" * 78)
+    print("STAGE 4  C3f re-profiled with the companion (opt-in, hours)")
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import run_stark_joint as rsj
+    if not (rsj.PREHISTORY.is_dir() and rsj.PILOT.is_dir()):
+        print(f"  quarantine trees not reachable at\n    {rsj.PREHISTORY}\n"
+              f"    {rsj.PILOT}\n  Set RB5S6S_PREHISTORY_DIR and "
+              f"RB5S6S_PILOT_DIR and re-run.")
+        return
+    ratio = band["ratio_lo"]        # the conservative end, as stage 2 uses
+    original = rsj._shared_profile_grid
+
+    def patched(gc, sl, transit, s0, *a, **k):
+        return original(gc + saturation_increment_mhz(s0, ratio), sl,
+                        transit, s0, *a, **k)
+
+    priors = rsj.gc_priors()
+    camp = rsj.load_campaign()
+    reh, _ = rsj.load_rehearsal()
+    _, prates = rsj.load_t_rates()
+    pil = rsj.load_pilot(prates["4192"][0])
+    traces = camp + reh + pil
+    print(f"  {len(camp)} campaign + {len(reh)} rehearsal + {len(pil)} pilot "
+          f"traces, ratio {ratio:.4f}")
+    out = {}
+    for label, inject in (("production", False), ("with saturation", True)):
+        rsj._shared_profile_grid = patched if inject else original
+        try:
+            _, _, q_wing = rsj.bidi_profile(traces, priors, -1, True,
+                                            f"{label[:4]}-C")
+            prof, kmin, _ = rsj.bidi_profile(traces, priors, -1, False,
+                                             f"{label[:4]}-A",
+                                             seed=rsj.strip_wing(q_wing))
+        finally:
+            rsj._shared_profile_grid = original
+        k_ub = rsj.ub95(prof)
+        out[label] = (kmin, k_ub, k_ub * 0.225)
+        print(f"  {label:18s} min kappa {kmin:6.2f}, 95% bound "
+              f"{k_ub:6.3f} MHz/W -> S0(225) < {k_ub*0.225:.3f} MHz")
+    if len(out) == 2:
+        a, b = out["production"][2], out["with saturation"][2]
+        print(f"\n  the joint bound moves {a:.3f} -> {b:.3f} MHz, a factor "
+              f"{a/b:.2f}\n  (C3d moved by 2.8, and this one is expected to be "
+              f"smaller because the\n  joint fit's gamma_coll prior can absorb "
+              f"part of an added Lorentzian width)")
+    print("  Nothing was written. results/stark_joint.csv is untouched.")
+
+
 def main() -> int:
     band = stage1()
     stage2(band)
     stage3(band)
+    if "--joint" in sys.argv:
+        stage4(band)
     print()
     print("=" * 78)
     print("Nothing was written. docs/notes/two_photon_saturation_companion.md "
