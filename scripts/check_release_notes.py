@@ -63,9 +63,19 @@ def _fallback_math(text: str) -> list[str]:
     before the math pass and can never render.
     """
     out = []
+    fenced = False
     for i, line in enumerate(text.split("\n"), 1):
         if line.lstrip().startswith("```"):
+            fenced = not fenced
             continue
+        if fenced:
+            continue
+        # Inline code spans are quoted source, and GitHub renders no math inside
+        # one, so a `cm$^{-3}$` written as an example of the defect is correct
+        # usage. Strip the spans before looking. Found 2026-08-09 by running this
+        # script on the rendering protocol, whose whole job is to quote the
+        # broken forms: it reported nine defects that were all worked examples.
+        line = re.sub(r"`[^`]*`", "", line)
         for m in re.finditer(r"(?<!\\)\$([^$\n]{1,200}?)(?<!\\)\$", line):
             before = line[m.start() - 1] if m.start() else " "
             after = line[m.end()] if m.end() < len(line) else " "
