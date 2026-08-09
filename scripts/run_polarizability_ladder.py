@@ -149,10 +149,8 @@ def main() -> None:
     axes[1].annotate("5D magic 776.18 nm\n(Hamilton 2023, adopted)", (776, 0),
                      xytext=(730, 3500), fontsize=8, color="0.3",
                      arrowprops=dict(arrowstyle="->", color="0.5"))
-    fig.suptitle("A magic wavelength is where a trap shifts both states of a "
-                 "transition equally, so the transition itself does not move.\n"
-                 "Instance: two ladders from the Rb ground state, the 993 nm "
-                 "line and the 760 nm line, with their crossings.",
+    fig.suptitle("Polarizability ladders from the Rb ground state, with the\n"
+                 "5S-6S and 5S-7S crossings",
                  fontsize=9.5, y=0.985)
     fig.tight_layout(rect=(0, 0.055, 1, 0.945))
     _footer(fig, "Source: rb5s6s/polarizability.py (sum over states, Safronova 2004 "

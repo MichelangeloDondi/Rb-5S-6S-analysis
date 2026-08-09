@@ -242,3 +242,71 @@ def test_footer_helper_is_the_only_provenance_route(target):
             stray.append(f"{target.name}:{node.lineno}: fig.text(...) carries a "
                          "regenerate line outside _footer(...)")
     assert not stray, "\n  ".join(stray)
+
+
+# --------------------------------------------------------------------------
+# An axis label is a quantity and a unit (protocol section 12.1)
+# --------------------------------------------------------------------------
+# The census of 2026-08-09 found 156 of 235 label strings carrying caption
+# material: one x label read "beam waist (um). This has not been measured. The
+# knife-edge scan is pending.", five residual axes read "residual, in units of
+# the point error", and one suptitle ran to seven lines and argued its own
+# conclusion. The rule had been written in the protocol for months and was not
+# kept, which is why it is a test now. Titles are held to a longer limit than
+# axis labels, because a title may name the conditions.
+_AXIS_SETTERS = {"set_xlabel", "set_ylabel"}
+_TITLE_SETTERS = {"set_title", "suptitle"}
+_AXIS_MAX = 62
+_TITLE_MAX = 110
+# A sentence inside a label: a full stop or a semicolon followed by a space and
+# a word. The lookbehind keeps a decimal out of it, which matters because an
+# f-string flattens "993.{pk} nm" to "993. nm" and that is a wavelength, not a
+# sentence. Found by this guard's own first run.
+_LABEL_SENTENCE = re.compile(r"(?<!\d)[.;]\s+[A-Za-z]")
+# Words that state a status, a judgement or an argument rather than a quantity.
+_LABEL_PROSE = [
+    r"\bnot been measured\b", r"\bis pending\b", r"\bin units of\b",
+    r"\bremains open\b", r"\bmeasured directly\b", r"\bconservative\b",
+    r"\bupper bounds?\b", r"\brather than\b", r"\bwhich is\b",
+    r"\bso that\b", r"\bbecause\b",
+]
+
+
+def _label_calls(tree: ast.AST):
+    """Yields (attr, literal, lineno) for every axis-label and title call."""
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)):
+            continue
+        attr = node.func.attr
+        if attr not in _AXIS_SETTERS | _TITLE_SETTERS:
+            continue
+        for arg in node.args[:1]:
+            if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                yield attr, arg.value, arg.lineno
+            elif isinstance(arg, ast.JoinedStr):
+                lit = "".join(v.value for v in arg.values
+                              if isinstance(v, ast.Constant)
+                              and isinstance(v.value, str))
+                yield attr, lit, arg.lineno
+
+
+@pytest.mark.parametrize("target", TARGETS, ids=lambda p: p.name)
+def test_axis_labels_are_a_quantity_and_a_unit(target):
+    tree = ast.parse(target.read_text(encoding="utf-8"), filename=str(target))
+    bad = []
+    for attr, lit, ln in _label_calls(tree):
+        flat = " ".join(lit.split())
+        limit = _AXIS_MAX if attr in _AXIS_SETTERS else _TITLE_MAX
+        if len(flat) > limit:
+            bad.append(f"{target.name}:{ln}: {attr} is {len(flat)} characters, "
+                       f"over {limit}: {flat[:70]!r}. An axis label is a "
+                       f"quantity and a unit. The rest belongs in the caption "
+                       f"of the document that shows the figure.")
+        if attr in _AXIS_SETTERS and _LABEL_SENTENCE.search(flat):
+            bad.append(f"{target.name}:{ln}: {attr} contains a sentence: "
+                       f"{flat[:70]!r}. Caveats go in the caption.")
+        for pat in _LABEL_PROSE:
+            if re.search(pat, flat, re.I):
+                bad.append(f"{target.name}:{ln}: {attr} carries prose "
+                           f"({pat}): {flat[:70]!r}")
+    assert not bad, "figure labels carrying caption material:\n  " + "\n  ".join(bad)

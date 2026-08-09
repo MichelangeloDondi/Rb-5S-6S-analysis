@@ -816,6 +816,17 @@ def fig_ruler():
     figure bug: the figure is skipped, the census is printed, and
     tests/test_ruler.py::test_fig8_candidate_set_is_not_empty says so out
     loud."""
+    # This panel rebuilds a block law from the raw traces, which travel with
+    # the working record rather than with every checkout. Without them the
+    # loader used to raise FileNotFoundError from inside the block rebuild,
+    # which killed the whole run and left every figure after this one in
+    # main()'s order undrawn. Since the footer on every figure tells a reader
+    # to run this script, that traceback was the first thing a fresh clone saw.
+    # Skip the way fig13 skips its photograph, and keep the committed PNG.
+    if not (C.DATA_RAW_DIR / "rulers_p").is_dir():
+        print("  (raw ruler traces not in this checkout, keeping the "
+              "existing fig8 PNG)")
+        return
     from rb5s6s.ruler import _comb, TEETH
 
     def _sixth(r):
@@ -1039,8 +1050,8 @@ def fig_degeneracy_vs_observable():
     ax1.text(gg[-1], 0.02, "unphysical below", fontsize=6, color="0.3",
              ha="right", va="bottom")
     ax1.set_ylim(min(-0.25, ss[0]), ss[-1])
-    ax1.set_title("(a) the fitted collisional and laser FWHM, with one-sigma\n"
-                  "ellipses, over grey contours of constant total FWHM in MHz",
+    ax1.set_title("(a) fitted collisional and laser FWHM, one-sigma ellipses\n"
+                  "over contours of constant total FWHM (MHz)",
                   fontsize=8.5)
     ax1.legend(fontsize=7, framealpha=1.0, frameon=True)
     ax1.grid(alpha=0.25, lw=0.5)
@@ -1691,8 +1702,8 @@ def fig_drift_story():
         ax.axvline(tk, color="0.55", lw=0.7, alpha=0.6)
     ax.set_xlabel("time (min)")
     ax.set_ylabel("laser detuning (MHz)")
-    ax.set_title("(a) the laser frequency during the 2025-06-11 preliminary session,\n"
-                 "digitised from a photograph of the wavemeter display",
+    ax.set_title("(a) laser frequency, 2025-06-11 preliminary session,\n"
+                 "digitised from the wavemeter display",
                  fontsize=9)
     ax.legend(fontsize=7, loc="lower right", framealpha=1.0, frameon=True)
 
@@ -1765,8 +1776,8 @@ def fig_drift_story():
     ins.patch.set_alpha(0.95)
     ax.set_xlabel("time into campaign (h)")
     ax.set_ylabel("laser detuning (MHz)", fontsize=8.5)
-    ax.set_title("(b) line centre within each oscilloscope window setting, through\n"
-                 "the campaign, reconstructed from its own traces",
+    ax.set_title("(b) line centre per oscilloscope window setting,\n"
+                 "reconstructed across the campaign",
                  fontsize=9)
     # The opaque legend used to cut the tops off the very bars its first entry
     # describes: the scan ramps reach the top of the autoscaled panel wherever
@@ -2362,6 +2373,14 @@ def fig_width_trends():
     if not (manifest_fp.exists() and ruler_fp.exists() and probe_fp.exists()
             and pw_fp.exists() and stark_fp.exists()):
         print("  (a source file for fig19 is absent -- skipping)")
+        return
+    # The left panel reproduces the headline estimator from the raw contiguous
+    # widths, so it needs the traces themselves and not only the CSVs above.
+    # Checking the CSVs alone let this raise FileNotFoundError out of the probe
+    # in a checkout without them, which ended the run.
+    if not (C.DATA_RAW_DIR / "t_sweep").is_dir():
+        print("  (raw traces not in this checkout, keeping the existing "
+              "fig19 PNG)")
         return
 
     from rb5s6s.stark import _fwhm_of
