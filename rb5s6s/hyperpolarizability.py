@@ -48,6 +48,7 @@ from math import factorial, sqrt
 import numpy as np
 from scipy.optimize import brentq
 
+from .constants import C_M_PER_S, EPS0_F_PER_M
 from .polarizability import (
     LINES_5S, LINES_6S, LINES_7S, TAIL_5S, TAIL_6S, CORE_5S, CORE_6S,
     E_6S_CM, E_7S_CM, CM_PER_HARTREE, alpha_5s, alpha_6s, delta_alpha,
@@ -56,6 +57,7 @@ from .polarizability import (
 HARTREE_HZ = 6.579683920502e15      # Hartree in Hz (CODATA)
 ALPHA_FS = 1.0 / 137.035999084      # fine-structure constant (CODATA)
 AU_RATE_HZ = 4.134137e16            # atomic unit of angular rate, rad/s
+ATOMIC_FIELD_V_PER_M = 5.14220674763e11   # atomic unit of electric field, V/m
 CM = CM_PER_HARTREE
 _H, _TH, _FH = Fr(1, 2), Fr(3, 2), Fr(5, 2)
 
@@ -343,11 +345,27 @@ def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
     exist is between nP FAMILIES: with these signs the 6P, 7P and 8P families
     oppose the dominant 5P pair and reduce |T| by a few per cent.
 
-    The field-independent ratio to the light shift is 2T/|Delta_alpha|
-    = 1.237 at 993.4192 nm. The saturation companion note first carried 1.294,
-    which normalised M at one field by the committed PREDICTED S0 at another
-    convention; the consistent same-field ratio is this one, 4.6 per cent
-    lower, inside that note's stated robustness band.
+    The ratio to the light shift is 2T/|Delta_alpha| and is field-independent,
+    but it is NOT single-valued, because this project holds two values of
+    |Delta_alpha| that differ by a documented 4.7 per cent: the cited 1093 a.u.
+    that constants.DELTA_ALPHA_AU carries and every committed S0 uses, and this
+    package's own sum-over-states recompute of 1145 a.u. (the magnitude side of
+    the sign dispute, THEORY_NOTE section 5). So
+
+        2T/1093 = 1.2951      converts a S0 written with the CITED value
+        2T/1145 = 1.2367      converts a S0 written with THIS package's value
+
+    so the ratio is a 1.24 to 1.30 band whose width is the Delta_alpha
+    discrepancy, not a convention error. Corrected 2026-08-09 on a
+    second reading: the saturation companion note first used 1.294, then
+    recorded 1.237 as a correction of "two field conventions". That diagnosis
+    was wrong. Both numbers are right about different denominators, and 1.2367
+    is the CONSERVATIVE end for the saturation probe, which injects more
+    broadening per unit fitted kappa as the ratio grows.
+
+    Nothing here is needed to get the Rabi frequency itself: use
+    two_photon_rabi_hz(), which goes from power to field to M without passing
+    through Delta_alpha at all.
     """
     w = (1e7 / lam_nm) / CM
     tot = 0.0
@@ -355,6 +373,55 @@ def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
         s = _RADIAL_SIGN[("5S", nm[:2])] * _RADIAL_SIGN[("6S", nm[:2])]
         tot += s * abs(d5) * abs(d6) / (e5 / CM - w)
     return tot / 6.0
+
+
+def two_photon_rabi_hz(power_w: float, w0_m: float, rho: float = 1.0,
+                       lam_nm: float = 993.4192) -> float:
+    """Doppler-free two-photon Rabi frequency Omega/2pi in Hz, on axis.
+
+    The whole chain from bench quantities, with no Delta_alpha in it:
+
+        I_arm = 2 P / (pi w0^2)             one arm, peak on-axis intensity
+        E_arm^2 = 2 I_arm / (eps0 c)        that arm's field amplitude squared
+        e0^2 = 2 sqrt(rho) E_arm^2          the k-SUM-ZERO combination
+        M = (e0^2 / 4) T                    effective coupling (atomic units)
+        Omega / 2pi = 2 M
+
+    WHY 2 sqrt(rho) AND NOT (1 + rho). This is the one place where the
+    two-photon coupling and the AC-Stark shift take DIFFERENT combinations of
+    the same two arms, and the difference is worth stating because the
+    surrounding code and prose use the other one. Write the complex amplitude of
+    the retroreflected field as
+
+        Ecal(z) = E_f exp(+ikz) + E_r exp(-ikz),      E_r = sqrt(rho) E_f.
+
+    The light shift is linear in |Ecal|^2 = E_f^2 + E_r^2 + 2 E_f E_r cos(2kz),
+    whose fringe mean is the ARITHMETIC combination (1 + rho) E_f^2. That is
+    what lineshape.stark_shift_S0_mhz uses, and the cos(2kz) term it drops is
+    the fringe-resolved tail that constants.DELTA_ALPHA_AU documents.
+
+    A two-photon amplitude is instead linear in Ecal^2, which expands into three
+    terms of total wavevector +2k, -2k and 0. Only the last is Doppler-free, and
+    its coefficient is 2 E_f E_r = 2 sqrt(rho) E_f^2, the GEOMETRIC combination,
+    the factor 2 being the two orderings of the two photons. Two consequences:
+
+    * the correction to using the arithmetic combination is exactly the fringe
+      CONTRAST 2 sqrt(rho) / (1 + rho) that the DELTA_ALPHA_AU docstring already
+      defines, worth 0.05 per cent at rho = 0.94 and 0.9 per cent at rho = 0.75,
+      so it moves no committed digit but it is the right formula to carry;
+    * the Doppler-free coupling has NO z dependence at all, so the RATE is
+      fringe-immune while the SHIFT is not. That asymmetry is what makes a
+      running-wave geometry attractive: it removes the fringe from the shift
+      without touching the rate.
+
+    At 225 mW, w0 = 64 um, rho = 0.94 this returns 449.9 kHz, which is the
+    450 kHz the saturation companion note quotes.
+    """
+    i_arm = 2.0 * power_w / (np.pi * w0_m ** 2)
+    e_arm_sq = 2.0 * i_arm / (EPS0_F_PER_M * C_M_PER_S)
+    e0_sq_au = 2.0 * sqrt(rho) * e_arm_sq / ATOMIC_FIELD_V_PER_M ** 2
+    m_hz = (e0_sq_au / 4.0) * two_photon_matrix_element(lam_nm) * HARTREE_HZ
+    return 2.0 * m_hz
 
 
 def crossings():

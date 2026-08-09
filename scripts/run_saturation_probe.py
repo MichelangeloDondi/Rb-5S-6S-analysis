@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+"""
+Atomic saturation as a companion to the width-channel light-shift bound: the
+probe that docs/notes/two_photon_saturation_companion.md is written from.
+
+OPT-IN BY CONSTRUCTION. This script is not in run_all.sh, it writes no
+results/*.csv and it changes no committed number. It exists because the note it
+feeds was first produced by an in-session monkeypatch that was not preserved, so
+the note's headline (the width-channel bound tightens from 0.6325 to about
+0.23 MHz once saturation broadening is in the forward model) could not be re-run
+by anyone, including its author. Everything the note quotes about the probe comes
+from here now.
+
+WHAT IT DOES, in three stages.
+
+Stage 1 rebuilds the two-photon Rabi frequency from bench quantities, printing
+every intermediate, so the chain power -> intensity -> field -> coupling is
+inspectable rather than asserted. It also prints the two combinations of the
+forward and retro arms that the standing wave admits, because the shift and the
+coupling take DIFFERENT ones (hyperpolarizability.two_photon_rabi_hz explains
+why), and the two ratios of Omega to S0 that this project's two values of
+Delta_alpha generate.
+
+Stage 2 re-runs the C3d width-only bound with the saturation increment folded
+into the model's own Lorentzian argument, at both ends of that ratio band. It
+first runs UNPATCHED, which must reproduce the committed bound: that is the
+check that the probe is driving production code and not a reimplementation.
+
+Stage 3 reports on C3f, the joint three-session bound that outside documents
+quote, and records that it cannot be run here: the joint fit needs the two
+quarantine data trees, which are not on this machine. It prints the analytic
+comparison at C3f's own bound instead, which fixes the DIRECTION of the move
+without inventing its size.
+
+THE INJECTED PHYSICS, stated so it can be attacked. The homogeneous
+power-broadening law
+
+    Gamma -> Gamma sqrt(1 + s),      s = 2 (Omega/2pi)^2 / Gamma^2
+
+is used with the two-photon Rabi frequency and the natural FWHM, both as
+frequencies, and the increment is added to gamma_coll. Folding it there is exact
+rather than convenient: power broadening of a homogeneous line is Lorentzian and
+Lorentzian widths add. What is NOT derived is the use of a two-level law for a
+two-photon transition. It is standard, and the steady-state condition holds here
+(the beam chord is about ten natural lifetimes), but it is an approximation, so
+no committed bound moves on it.
+
+    ./.venv/bin/python scripts/run_saturation_probe.py
+"""
+
+from __future__ import annotations
+
+import csv
+import math
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from rb5s6s import config as C  # noqa: E402
+from rb5s6s import stark  # noqa: E402
+from rb5s6s.constants import (C_M_PER_S, DELTA_ALPHA_AU,  # noqa: E402
+                              EPS0_F_PER_M, GAMMA_NAT_HZ)
+from rb5s6s.hyperpolarizability import (ATOMIC_FIELD_V_PER_M,  # noqa: E402
+                                        HARTREE_HZ,
+                                        two_photon_matrix_element,
+                                        two_photon_rabi_hz)
+from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
+from rb5s6s.linefit import transit_fwhm_at_T  # noqa: E402
+from rb5s6s.polarizability import delta_alpha  # noqa: E402
+
+LAM_NM = 993.4192
+P_MAX_W = 0.225
+GAMMA_MHZ = GAMMA_NAT_HZ / 1e6
+
+# C3f's committed numbers, read from the CSV rather than typed, so stage 3
+# cannot quote a stale bound.
+_C3F = "stark_joint.csv"
+
+
+def _committed(name: str, quantity: str, key: str) -> float:
+    for r in csv.DictReader(open(C.RESULTS_DIR / name)):
+        if r["quantity"] == quantity and r["key"] == key:
+            return float(r["value"])
+    raise KeyError(f"{quantity}/{key} not in {name}")
+
+
+def saturation_increment_mhz(s0_mhz: float, ratio: float) -> float:
+    """The extra Lorentzian FWHM, in MHz, at a shift of s0_mhz.
+
+    ratio converts the shift to the Rabi frequency and is field-independent
+    (stage 1 prints where its two values come from). Returns 0 at s0 = 0, which
+    is why both models agree where the production fit rails.
+    """
+    om_mhz = ratio * max(s0_mhz, 0.0)
+    s = 2.0 * (om_mhz / GAMMA_MHZ) ** 2
+    return GAMMA_MHZ * (math.sqrt(1.0 + s) - 1.0)
+
+
+def ramp_increment_mhz(s0_mhz: float, gamma_coll: float, sigma_laser: float,
+                       transit: float) -> float:
+    """The ramp's own broadening at the same shift, through the fit's own code."""
+    import numpy as np
+    nu = np.arange(-45.0, 45.0, 0.01)
+    return (stark._fwhm_of(gamma_coll, sigma_laser, transit, s0_mhz, nu)
+            - stark._fwhm_of(gamma_coll, sigma_laser, transit, 0.0, nu))
+
+
+# ---------------------------------------------------------------- stage 1
+def stage1() -> dict:
+    print("=" * 78)
+    print("STAGE 1  the two-photon Rabi frequency, from the bench numbers up")
+    w0 = C.W0_MEASURED_M
+    rho = C.RHO_RETRO
+    i_arm = 2.0 * P_MAX_W / (math.pi * w0 ** 2)
+    e_arm_sq = 2.0 * i_arm / (EPS0_F_PER_M * C_M_PER_S)
+    t_au = two_photon_matrix_element(LAM_NM)
+    print(f"  P = {P_MAX_W*1e3:.0f} mW, w0 = {w0*1e6:.0f} um (measured), "
+          f"rho = {rho}")
+    print(f"  one arm, peak on axis:  I = {i_arm/1e4:.1f} W/cm^2, "
+          f"E = {math.sqrt(e_arm_sq)/1e3:.1f} kV/m")
+    print(f"  two-photon matrix element T = {t_au:.2f} a.u.")
+    print()
+    print("  the two combinations the retroreflected standing wave admits:")
+    for label, e_sq, used_by in (
+            ("arithmetic  (1+rho) E^2", (1.0 + rho) * e_arm_sq,
+             "the AC-Stark shift (fringe mean of |E|^2)"),
+            ("geometric  2 sqrt(rho) E^2", 2.0 * math.sqrt(rho) * e_arm_sq,
+             "the Doppler-free coupling (the k-sum-zero term of E^2)")):
+        m_hz = (e_sq / ATOMIC_FIELD_V_PER_M ** 2 / 4.0) * t_au * HARTREE_HZ
+        print(f"    {label:26s} -> Omega/2pi = {2*m_hz/1e3:7.2f} kHz   {used_by}")
+    contrast = 2.0 * math.sqrt(rho) / (1.0 + rho)
+    print(f"    their ratio is the fringe contrast {contrast:.6f}, so at this "
+          f"rho the\n    difference is {100*(1/contrast-1):.3f} per cent and no "
+          f"digit moves. At rho = 0.75 it is\n    "
+          f"{100*((1+0.75)/(2*math.sqrt(0.75))-1):.1f} per cent, which is why "
+          f"the formula carries it.")
+    om = two_photon_rabi_hz(P_MAX_W, w0, rho, LAM_NM)
+    s0 = stark_shift_S0_mhz(P_MAX_W, w0, rho=rho)
+    print()
+    print(f"  ADOPTED  Omega/2pi = {om/1e3:.1f} kHz at the campaign maximum")
+    print(f"  saturation parameter on axis s = "
+          f"{2*(om/1e6/GAMMA_MHZ)**2:.4f} against Gamma = {GAMMA_MHZ:.4f} MHz")
+    print()
+    print("  the ratio of Omega to S0 is field-independent but NOT "
+          "single-valued,\n  because two values of |Delta_alpha| are in play:")
+    r_cited = 2.0 * t_au / DELTA_ALPHA_AU
+    r_module = 2.0 * t_au / abs(delta_alpha(LAM_NM))
+    print(f"    cited  {DELTA_ALPHA_AU:.0f} a.u. (constants.DELTA_ALPHA_AU, and "
+          f"every committed S0) -> {r_cited:.4f}")
+    print(f"    this package's own sum-over-states "
+          f"{abs(delta_alpha(LAM_NM)):.1f} a.u.          -> {r_module:.4f}")
+    print(f"    the gap is the documented {100*(abs(delta_alpha(LAM_NM))/DELTA_ALPHA_AU-1):.1f} "
+          f"per cent Delta_alpha discrepancy, not a\n    convention error. "
+          f"Stage 2 runs both ends. Direct check: Omega/S0 = "
+          f"{om/(s0*1e6):.4f}.")
+    return {"omega_hz": om, "s0_mhz": s0,
+            "ratio_lo": min(r_cited, r_module), "ratio_hi": max(r_cited, r_module)}
+
+
+# ---------------------------------------------------------------- stage 2
+def _grid():
+    grid = {}
+    for r in csv.DictReader(open(C.RESULTS_DIR / "power_sweep.csv")):
+        grid[(r["peak"], float(r["power_mW"]) / 1000.0)] = (
+            float(r["fwhm"]), float(r["fwhm_err"]))
+    return grid
+
+
+def _run(grid, ratio: float | None):
+    """fit_stark_sweep, optionally with the saturation term in the model.
+
+    The patch wraps stark._fwhm_of, which is the single place the fit turns a
+    shift into a width, so the shared kappa, the per-peak core re-minimization,
+    the profile scan and the over-dispersion rescaling are all production code.
+    """
+    original = stark._fwhm_of
+    if ratio is not None:
+        def patched(gamma_coll, sigma_laser, transit, s0, nu):
+            return original(gamma_coll + saturation_increment_mhz(s0, ratio),
+                            sigma_laser, transit, s0, nu)
+        stark._fwhm_of = patched
+    try:
+        return stark.fit_stark_sweep(grid)
+    finally:
+        stark._fwhm_of = original
+
+
+def stage2(band: dict) -> None:
+    print()
+    print("=" * 78)
+    print("STAGE 2  C3d, the width-only bound, with and without the companion")
+    grid = _grid()
+    committed = _committed("stark_sweep.csv", "S0_225mW_ub95_profile", "shared")
+    rows = [("production, ramp only", None)]
+    rows += [(f"with saturation, ratio {r:.4f}", r)
+             for r in (band["ratio_lo"], band["ratio_hi"])]
+    print(f"  committed S0(225) bound = {committed:.4f} MHz\n")
+    print(f"  {'variant':34s} {'kappa (MHz/W)':>22s} {'S0(225) bound':>14s} "
+          f"{'chi2_red':>9s}")
+    base = None
+    for label, ratio in rows:
+        res = _run(grid, ratio)
+        b = res["S0_225_ub95_profile"]
+        if ratio is None:
+            base = b
+            # the CSV carries three decimals, so compare at the printed digit
+            flag = "  <- matches the committed value" if abs(
+                round(b, 3) - committed) < 1e-9 else (
+                "  <- MISMATCH, probe is not production")
+        else:
+            flag = f"  {base/b:.2f}x tighter"
+        print(f"  {label:34s} {res['kappa']:+10.4f} +/- {res['kappa_err']:8.4f} "
+              f"{b:14.4f} {res['chi2_red']:9.4f}{flag}")
+
+
+# ---------------------------------------------------------------- stage 3
+def stage3(band: dict) -> None:
+    print()
+    print("=" * 78)
+    print("STAGE 3  C3f, the joint three-session bound: why it is not re-run here")
+    try:
+        k_ub = _committed(_C3F, "kappa_ub95", "primary")
+        k_min = _committed(_C3F, "kappa_min", "primary")
+    except (KeyError, FileNotFoundError) as exc:
+        print(f"  cannot read the committed joint result: {exc}")
+        return
+    print("  The joint fit reads the 2025-07-04 rehearsal and the campaign-"
+          "morning pilot\n  from two quarantine trees outside this repository. "
+          "run_stark_joint.py exits\n  early when they are absent, which they "
+          "are on this machine, so the C3f\n  bound cannot be re-profiled with "
+          "the saturation term here. The rerun is\n  owner-side work, not a "
+          "result.")
+    print()
+    print("  What CAN be said without the data is the direction, because the "
+          "mechanism\n  is arithmetic at C3f's own numbers. At its bound:")
+    transit = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
+    for name, kap in (("profile minimum", k_min), ("95% bound", k_ub)):
+        s0 = kap * P_MAX_W
+        ramp = ramp_increment_mhz(s0, 0.60, 1.50, transit)
+        for ratio in (band["ratio_lo"], band["ratio_hi"]):
+            sat = saturation_increment_mhz(s0, ratio)
+            print(f"    {name:16s} kappa = {kap:5.2f} MHz/W, S0(225) = "
+                  f"{s0:.3f} MHz: ramp {ramp*1e3:6.1f} kHz, "
+                  f"saturation {sat*1e3:6.1f} kHz, ratio {sat/ramp:5.2f}")
+    print()
+    print("  So the companion outgrows the ramp at C3f's bound as well, and by "
+          "the same\n  factor stage 2 sees, which fixes the sign of the move: "
+          "the joint bound must\n  TIGHTEN. Its SIZE will be smaller than "
+          "stage 2's, because the joint fit\n  carries a gamma_coll prior that "
+          "can absorb part of an added Lorentzian\n  width where the width-only "
+          "fit cannot. Quoting a number for it before the\n  fit runs would be "
+          "inventing one.")
+
+
+def main() -> int:
+    band = stage1()
+    stage2(band)
+    stage3(band)
+    print()
+    print("=" * 78)
+    print("Nothing was written. docs/notes/two_photon_saturation_companion.md "
+          "records\nwhat this probe licenses and what it does not.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

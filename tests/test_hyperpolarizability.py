@@ -232,20 +232,69 @@ def _rspt4_e4(mod, state, lam, u, nmax):
 
 
 def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
-    """T = +707.75 a.u. and 2T/|Delta_alpha| = 1.237 at the drive wavelength.
+    """T = +707.75 a.u., and the ratio to the light shift is a BAND, not a value.
 
     Verified independently on 2026-08-09: a sum without the radial signs gives
     4588/6 = 765 a.u., 8 per cent high, because the 6P, 7P and 8P families
-    oppose the 5P pair. The ratio is the saturation companion note's input, and
-    its first value, 1.294, mixed two field conventions, so this pin also
-    records the corrected number.
+    oppose the 5P pair.
+
+    The ratio 2T/|Delta_alpha| is the saturation companion note's input, and it
+    took two passes to get right. The note first used 1.294, then recorded 1.237
+    as a correction of "two field conventions". That diagnosis was wrong: 1.294
+    divides by the CITED 1093 a.u. that constants.DELTA_ALPHA_AU carries and
+    every committed S0 uses, 1.237 divides by this package's own 1145 a.u., and
+    the 4.7 per cent between them is the documented Delta_alpha discrepancy. So
+    this test pins BOTH ends and the fact that they bracket the same physics.
     """
+    from rb5s6s.constants import DELTA_ALPHA_AU
     from rb5s6s.polarizability import delta_alpha
     T = hp.two_photon_matrix_element(993.4192)
     assert abs(T - 707.75) < 0.5
     ratio = 2.0 * abs(T) / abs(delta_alpha(993.4192))
     assert abs(ratio - 1.2367) < 0.002
+    ratio_cited = 2.0 * abs(T) / DELTA_ALPHA_AU
+    assert abs(ratio_cited - 1.2951) < 0.002
+    # the band is the Delta_alpha gap and nothing else
+    assert abs(ratio_cited / ratio - abs(delta_alpha(993.4192)) / DELTA_ALPHA_AU) < 1e-12
     # the fine-structure paths through 5P must ADD (the sign theorem)
     from rb5s6s.hyperpolarizability import _RADIAL_SIGN
     s12 = _RADIAL_SIGN[("5S", "5P")] * _RADIAL_SIGN[("6S", "5P")]
     assert s12 > 0
+
+
+def test_two_photon_rabi_uses_the_geometric_arm_combination():
+    """Omega/2pi = 450 kHz at the campaign maximum, and the retro enters as
+    2 sqrt(rho), not (1 + rho).
+
+    This is the one place the coupling and the shift take different combinations
+    of the same two arms: the shift is linear in |E|^2, whose fringe mean is the
+    arithmetic (1 + rho), while a two-photon amplitude is linear in E^2 and only
+    its wavevector-cancelling term is Doppler-free, with the geometric
+    2 sqrt(rho). Their ratio is the fringe contrast, so at rho = 0.94 the two
+    agree to 0.05 per cent and nothing published moves, which is exactly why the
+    difference would never be caught by a number check. The test therefore pins
+    the FORM, at a rho where the two differ visibly.
+    """
+    import math
+    from rb5s6s.lineshape import stark_shift_S0_mhz
+    om = hp.two_photon_rabi_hz(0.225, 64e-6, 0.94)
+    assert abs(om / 1e3 - 449.9) < 0.5
+
+    # the form: at rho = 0.36 the geometric and arithmetic combinations differ
+    # by 11.8 per cent, so a regression to (1 + rho) cannot hide here
+    rho = 0.36
+    got = hp.two_photon_rabi_hz(0.225, 64e-6, rho)
+    one_arm = hp.two_photon_rabi_hz(0.225, 64e-6, 0.5) / (2.0 * math.sqrt(0.5))
+    assert abs(got / (one_arm * 2.0 * math.sqrt(rho)) - 1.0) < 1e-12
+    assert abs(got / (one_arm * (1.0 + rho)) - 1.0) > 0.1
+
+    # Omega is linear in power and goes as 1/w0^2, both because it is linear in
+    # intensity: a two-photon RABI FREQUENCY is first order in I, not second
+    assert abs(hp.two_photon_rabi_hz(0.450, 64e-6, 0.94) / om - 2.0) < 1e-12
+    assert abs(hp.two_photon_rabi_hz(0.225, 32e-6, 0.94) / om - 4.0) < 1e-12
+
+    # and the ratio to the committed S0 is the cited-Delta_alpha end of the band
+    # times the contrast, which is the whole content of the correction
+    contrast = 2.0 * math.sqrt(0.94) / 1.94
+    ratio = om / (stark_shift_S0_mhz(0.225, 64e-6, rho=0.94) * 1e6)
+    assert abs(ratio - 1.2951 * contrast) < 1e-3

@@ -326,7 +326,33 @@ excitation with two IDENTICAL photons the effective operator is purely
 SCALAR (rank K=2 cannot connect J=1/2 -> J=1/2), so the per-atom rate is the
 same for every F and m_F, and the line strength is pure POPULATION:
 abundance x (2F+1)/G_iso with G_87=8, G_85=12 ground sublevels. Predicted
-area ratios: 5/3 within 87Rb, 7/5 within 85Rb, 2.42 for 4192/4207."""
+area ratios: 5/3 within 87Rb, 7/5 within 85Rb, 2.42 for 4192/4207.
+
+Two footnotes added 2026-08-09 after this argument was checked with exact 3j
+and 6j arithmetic rather than taken on trust.
+
+TWO RANKS DROP OUT, FOR TWO DIFFERENT REASONS, and only one of them is the
+selection rule named above. K = 2 is forbidden by the triangle rule between
+J = 1/2 states, which is atomic. K = 1 is allowed by angular momentum and
+vanishes instead because two photons sharing one polarization vector give a
+symmetric polarization tensor, which is geometric. The argument therefore needs
+the beamline to hold: a single linear polarization axis shared by the forward
+and retro arms, which is what the apparatus has (one polarizer and one half-wave
+plate ahead of the EOM, a plain flat retro mirror, no quarter-wave plate in the
+retro path).
+
+CIRCULAR POLARIZATION DOES NOT MAKE IT SCALAR, IT MAKES IT ZERO. For two
+same-helicity photons the scalar contraction vanishes as well, so with K = 1
+absent and K = 2 forbidden the whole amplitude is identically zero: the familiar
+statement that Delta m = +/-2 is impossible for J = 1/2. Worth stating because
+"purely scalar" reads as though circular light would merely rescale the rate.
+
+The hyperfine factor is exactly 1 between lines, not approximately: the K = 0
+matrix element evaluates to the same multiple of the J-reduced element for
+85Rb F=3, 85Rb F=2, 87Rb F=2 and 87Rb F=1 alike, so the four lines share one
+Rabi frequency at equal field. The area ratios above are the downstream check
+on that, and they reproduce to five digits from population weighting alone,
+which they could not do if a hidden F-dependent factor existed."""
 
 SIGMA_D1_CM2 = 1.5e-11
 """Doppler-broadened peak absorption cross-section of the Rb D1 line
