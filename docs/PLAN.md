@@ -340,6 +340,16 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    directly with no symmetry assumption. The wide-scan pedestal of §5 would give
    a second, in-situ ρ on the same traces, by a route that shares no optic with
    the pick-off.
+   **Added 2026-08-09.** A third route exists and it measures a better quantity.
+   Offsetting the retro arm in frequency makes the two arms beat, and the beat
+   amplitude reads the MODE-OVERLAP-WEIGHTED ρ, which is what enters S₀, where a
+   pick-off reads power. It also makes the fringe mean exact for every velocity
+   class instead of the fast ones, which is the fringe-resolved tail's only
+   remedy. It is not cheap: the offset has to outrun the axial thermal spread
+   rather than the linewidth, so it is 800 MHz and above, and the present
+   self-imaging retro would have to be rebuilt double-pass.
+   [notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
+   has the criterion, the numbers and the costs.
 
 **stage 1, enablers. The measurement does not exist without them.**
 
@@ -376,6 +386,21 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    sign-flip test rides on the collection geometry: the flip happens where the
    axial window Z_c crosses 1.12 z_R, which the small waist puts within reach
    (§6 item 4). **60 µm is the clean-κ width workhorse.**
+   **Added 2026-08-09, and it bears on the number this item quotes.** Item 7
+   below already notes that 16 µm is saturated at 225 mW and treats that as a
+   statement about power headroom. It is also a statement about the SKEW, which
+   this item does not make. The ramp weights each shift by the signal it
+   produces, and that weighting is the intensity squared only while the drive is
+   weak, so at a saturation parameter of 8.5 the effective exponent falls and the
+   predicted skew at 16 µm moves from −0.36 to −1.07, a factor of three, in the
+   same direction as the sign flip rather than against it. The committed axial
+   machinery cannot see this, since it takes an integer photon exponent. So the
+   sign-flip test stands and the magnitude does not, and the middle of the range
+   is worth costing: 32 µm keeps the sign positive at a saturation of 0.5 and
+   carries a shot-noise figure of merit 24 times the present waist.
+   [notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
+   has the table, the identity that a smaller waist buys no shift at matched
+   intensity, and what the machinery needs before 16 µm is chosen deliberately.
 7. **Power.** The 2025 ceiling of 225 mW is almost certainly an assumption, not
    physics. Photoionization is excluded (993 nm, 1.25 eV, is below the 6S
    threshold at 1.68 eV). Two-photon saturation at 50–60 µm leaves 1–2 W of

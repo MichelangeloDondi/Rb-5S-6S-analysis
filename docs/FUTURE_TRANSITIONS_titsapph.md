@@ -584,6 +584,73 @@ fast enough to matter for detection is unasked. And the pedestal changes the
 fitting problem the shape method solves, since the archive's own machinery
 assumes a Doppler-free line with no broad background under it.
 
+### Addendum, 2026-08-09: four things this section was silent about
+
+Written after an adversarial pass over the section. Two of the four change what
+the rung is for, so they are here rather than in a note.
+
+**The drive's own light shift is not a small distortion, and this reframes the
+rung.** The section motivates a one-colour three-photon transition partly because
+its shift distribution is parabolic where the two-photon one is linear, and it
+treats that as a subtle asymmetry to be measured on a natural-width line. The
+scaling forbids it. A three-photon Rabi frequency goes as the intensity to the
+three halves while an AC Stark shift goes as the first power, so the ratio of rate
+to shift is fixed by the atom and not by a knob: the shift can be made small only
+by making the rate smaller still. And the near resonance that makes the rate
+viable is the same small denominator that makes the shift large, so the two are
+locked. Computed here from the ARC reduced elements and this section's own
+detunings, the level repulsion between target and near-resonant intermediate
+reaches the target's natural width at 740 W/cm^2 for 5F and 1.85e4 W/cm^2 for
+8P3/2, against the 3497 W/cm^2 per arm the present 993 nm drive already runs at.
+**The 5F target's own shift therefore exceeds its natural width at one fifth of
+today's intensity, and a three-photon rate needs far more intensity than a
+two-photon one, not less.** So the rung does not deliver a delicate parabolic
+skew. It delivers the cliff regime by construction, the one PLAN.md item 6
+describes as the shift greatly exceeding the linewidth and the ramp directly
+visible. That is a legitimate and arguably easier measurement of a shift. It is
+not the measurement this section proposed, and anything wanting a narrow line
+from these levels, a frequency reference above all, is excluded rather than
+merely degraded.
+
+**The star geometry's ranking carries no geometric factor, and the missing factor
+is asymmetric.** The figure of merit that puts 5F ahead by 21 is built from
+reduced matrix elements alone. Because 5S has zero orbital angular momentum, the
+matrix element to a target of orbital angular momentum L is carried entirely by
+the rank-L part of the three-photon operator, and reaching L = 3 admits exactly
+one path, the monotonic one through P and D. Three coplanar beams cannot all be
+circularly polarized about the one distinguished axis, so in-plane linear
+polarizations reach the maximally coupled route only through each photon's
+circular component, an amplitude factor per photon and a rate suppression of
+about eight. Nothing comparable bites the 8P channel, which is reachable at rank
+one by two different intermediate sequences. An eightfold handicap alone would
+take the 21 to about 2.6. Whether it inverts needs the full recoupling
+calculation, which is not done here, but treating the geometric factor as one is
+not defensible and the ranking should be read as an upper bound on 5F's advantage
+until it is done.
+
+**The quoted natural widths are 0 K values, and both targets have hyperfine
+structure wider than them.** The 302, 327 and 1510 kHz in the table are
+spontaneous-decay widths at zero temperature. At the cell's 110 to 130 C,
+blackbody transfer widens them by 2.0 per cent for 5F and 4.2 to 5.2 per cent for
+8P, small but worth labelling since everything else in this document runs at cell
+temperature. The hyperfine structure is not small: 8P1/2 splits by exactly twice
+its dipole constant, 64.2 MHz, and 8P3/2 spreads its four levels over some tens
+of megahertz, both two orders of magnitude above the widths tabulated as though a
+single line were being driven. Rb-85 adds its own manifold in a natural-abundance
+cell. So 8P is a resolved multiplet to be assigned, not a line, which is a
+detection and fitting problem rather than a rate problem. For 5F no measured
+hyperfine constant appears in ARC's compilation or in the literature searched,
+and the F-state trend in n suggests sub-megahertz to a few megahertz, which is
+comparable to the 1.5 MHz natural width. That is an unmeasured input, and it is
+now listed among them.
+
+**The star geometry needs an alignment tolerance nobody has stated.** Closing the
+three wavevectors to zero only cancels the first-order Doppler shift to the
+accuracy of the closure. Keeping the residual below a tenth of the natural width
+at the cell's 400 K needs the 120 degree vertices held to roughly 24 arcseconds
+for 8P3/2 and 115 for 5F. Achievable, and a specification rather than an
+afterthought.
+
 ## The same items costed
 
 Everything above is a physics menu. Deciding bench time takes

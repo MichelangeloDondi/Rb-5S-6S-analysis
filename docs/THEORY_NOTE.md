@@ -725,6 +725,53 @@ trapped-light shift properly, Holstein geometry and measured fluorescence in
 hand, or take a cell-temperature lever against it, since the trapping factor
 rides the ground-state density.
 
+**Addendum, 2026-08-09, from an adversarial pass on the paragraph above.** Three
+corrections, and the first reverses the direction the paragraph assumed.
+
+*The confinement factor is probably too small, not too large.* The paragraph
+offers two candidates for the link that overestimates, the peak-rate-everywhere
+assumption or the confinement time, and the confinement time is the wrong
+suspect. Taking the paragraph's own line-centre opacity of 160 per centimetre,
+which does reproduce `density.d1_optical_depth_per_cm` at 130 C, and the standard
+Doppler-limited escape factor for a cylinder, the trapping factor is about 400
+natural lifetimes at a 1 cm radius and 1100 at 2.5 cm. Reproducing 64 needs a
+radius near 2 mm, an order of magnitude below the few-centimetre path
+`density.py` itself assumes. So that link makes the estimate WORSE, and by
+elimination the overestimate sits in the excitation-rate assumption, which is
+where a Gaussian beam column is being treated as a uniform one at peak rate.
+
+*The number has no code behind it, which is unlike the rest of this section.*
+Every other figure in section 5.2 names the function that produced it. The
+equivalent bath intensity of order 100 milliwatts per square centimetre names
+none, and no module, script or test in the repository computes a Holstein factor
+or a bath intensity. Its intermediate arithmetic could not be reconstructed on
+review. Until it is code, read it as an order-of-magnitude marker rather than a
+computed quantity.
+
+*The uncertainty is dominated by the geometry, not by the temperature.* The
+instinct is that a bath estimate is dominated by the ground-state density, which
+runs exponentially in temperature. It is not. The density carries the documented
+20 per cent correlation systematic and the cold-spot offset, a factor of a few at
+worst, while the escape factor spans six to thirty over the undocumented cell
+radius alone and the excitation-profile assumption plausibly spans ten to a
+hundred. Two orders of magnitude, therefore, and sitting in the geometry.
+
+*Which needs a bench fact this repository does not hold.* Neither
+`docs/APPARATUS.md` nor anything else records the cell's length or diameter.
+Nothing else in the record needs them, which is why their absence went unnoticed,
+but no rigorous trapping calculation can be written without them and they are now
+the blocking input.
+
+*One channel the section does not consider at all.* The drive inverts a
+measurable fraction of the cell on the 6S to 5P transitions, whose photons at
+1324 and 1367 nm are not trapped and leave along the beam axis, which is the long
+dimension. A gain-length estimate at the excited fractions this section already
+quotes lands of order unity, so amplified spontaneous emission on those lines
+cannot be dismissed by inspection. It is not quantified here, since the net
+inversion needs the 5P population subtracted properly and the geometry above is
+missing, and it is recorded as the one candidate that could rival the trapped
+D-line bath.
+
 What the cascade photons do measurably in this dataset is the D-line radiation
 trapping already carried by the record: the trapping factor is set by the
 ground-state density, so it is power-independent at fixed temperature and
