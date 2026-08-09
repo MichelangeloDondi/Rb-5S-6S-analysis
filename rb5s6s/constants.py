@@ -88,9 +88,41 @@ PEAKS = {
 }
 """ESTABLISHED (campaign file labels). Identification is independently locked:
 the label spacings reproduce (Delta_HFS_ground - Delta_HFS_6S)/2 for both
-isotopes to ~1% — encoded as a permanent test in tests/test_constants.py.
+isotopes to ~1% - encoded as a permanent test in tests/test_constants.py.
 The short keys ('4192') are the manifest/filename keys; use peak_label() for
-all human-facing output (full '993.4192 nm ...' form)."""
+all human-facing output (full '993.4192 nm ...' form).
+
+WHAT THESE NUMBERS ARE, and it matters for what may be claimed with them
+(recorded 2026-08-09 after the experimenter noted the wavemeter was not
+calibrated). They are READINGS of an uncalibrated HighFinesse WS-8, recorded
+in the campaign filenames. They are NOT absolute wavelength measurements and
+no result here treats them as one.
+
+What that costs is nothing measurable, for three separate reasons.
+
+1. IDENTIFICATION USES SPACINGS, and an additive calibration offset cancels
+   from a difference exactly. A multiplicative scale error enters the ~2 GHz
+   spacings only in proportion, so at the offset measured below it is four
+   orders below the 1% the identification test allows.
+2. THE FREQUENCY AXIS NEVER USES THEM. It comes from the EOM ruler in MHz per
+   ms of scan time, which is differential. Every width, the density lever, the
+   collisional bound and the light-shift bound inherit that axis and not these
+   labels.
+3. THE OFFSET IS SMALL AND THE LABELS MEASURE IT. Doubled and compared with
+   the NIST centroid E_6S_CM, the four labels give -1575 to +3650 MHz, most of
+   which is genuine hyperfine structure. The common-mode residue is about
+   +292 +/- 10 MHz, roughly 1 ppm, and the four-label mean sits +765 MHz or
+   2.53 ppm from the centroid. In wavelength that is a few picometres.
+
+The air-against-vacuum trap is excluded rather than assumed. Had these been
+air readings treated as vacuum, doubling them would miss the NIST interval by
+5.42 cm^-1, which is 162 GHz. It does not, so they are vacuum-consistent, as
+a WS-8 reports by default.
+
+What may NOT be claimed: that this work measures the absolute transition
+wavelength. It does not, and it does not need to. The absolute frequencies are
+Orson 2021 to MHz and Ayachitula 2024 to kHz, and the resonance those fix,
+2e7/E_6S_CM = 993.4181 nm in vacuum, is an input here rather than an output."""
 
 
 def peak_label(key: str, isotope: bool = False, line: bool = False) -> str:
