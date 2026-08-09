@@ -1,11 +1,11 @@
 # Transit-width tension: RESOLVED — one flux bug, w₀ re-centred 32 → 50 → 64 µm
 
-**Status: RESOLVED 2026-07-13. The beam-waist prior in force is the adopted
+**Status: RESOLVED 2026-07-13. The beam-measured waist in force is the adopted
 64 µm**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
-v3.0.0 block below, which supersedes the 50 µm conclusion this note originally
+v3.0.0 block below, which replaces the 50 µm conclusion this note originally
 reached. How it got there: the M9 transit MC (`rb5s6s/transit_mc.py`) had
 **one** real bug, a missing crossing-flux factor, now fixed. The corrected
-transit re-centred the beam-waist prior from 32 µm to **~50 µm** and was
+transit re-centred the beam-measured waist from 32 µm to **~50 µm** and was
 propagated through every fit, and the lineage measurement then moved it again
 to 64 µm. An earlier draft of this note claimed the MC had **two** bugs and
 inferred **w₀ ≈ 90 µm**, which was wrong by a factor of 2 (see "What the
@@ -42,7 +42,7 @@ rests on the direct waist measurement as much as on the line. Matching the obser
 
     w₀ ≈ 45–70 µm  (central ~50 µm, hard floor ~38 µm),
 
-i.e. **~1.5× the old nominal, not ~3×**. `W0_PRIOR_M` is re-centred to 50 µm and
+i.e. **~1.5× the old nominal, not ~3×**. `W0_MEASURED_M` is re-centred to 50 µm and
 `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from it (≈1.20 MHz at 110 °C).
 
 **Independent corroboration — a direct beam measurement (2026-07-13).** The group's

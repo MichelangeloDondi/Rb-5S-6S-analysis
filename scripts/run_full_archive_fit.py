@@ -47,14 +47,14 @@ with-and-without gap as a stated systematic. This module does not reopen that.
 When the amplitude model lands, the rulers join here as a fifth session with
 their own sigma block, not as a variant of the existing four.
 
-THE BASIN DISCIPLINE IS STRUCTURAL FROM BIRTH, not retrofitted after an
+THE STARTING-POINT DISCIPLINE IS STRUCTURAL FROM BIRTH, not retrofitted after an
 incident. RESEARCH_DECISIONS section 11 and methods 06 section 4.12: the wing
-variant runs FIRST because a cold start finds the true basin reliably there,
+variant runs FIRST because a cold start finds the true local minimum reliably there,
 every other family is seeded from a converged solution in addition to running
 cold, the profile is the POINTWISE MINIMUM over chains (so a seed can only
 improve a profile, never inflate one), and no cold-start profile is quoted
 without a seeded twin. That last clause is why this module runs FIVE families
-where M23 runs four: M23's own basin-finder, the cold wing variant, is quoted
+where M23 runs four: M23's own minimum search, the cold wing variant, is quoted
 from cold chains alone, which is the one place its rule is not yet satisfied
 here. The order is
 
@@ -154,7 +154,7 @@ at camp130 is 147.5 kHz, rounded to 150 kHz (RESEARCH_DECISIONS section 10). It
 is the scale a real per-peak effect is expected to sit at, not a value tuned to
 this fit's outcome."""
 
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_PRIOR_M, rho=C.RHO_RETRO)
+KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
@@ -471,13 +471,13 @@ def strip_wing(q, n_sp):
 
     The two shared wing entries sit at q indices NS-1+n_sp and NS+n_sp (q
     excludes kappa). Everything else transplants one to one, which is what
-    makes seeding the primary from the basin-finder legitimate."""
+    makes seeding the primary from the minimum search legitimate."""
     return np.delete(q, [NS - 1 + n_sp, NS + n_sp])
 
 
 def insert_wing(q, n_sp, f_w=0.005, log_w=np.log(6.0)):
     """The inverse: a no-wing solution re-cut for the wing layout, with the
-    wing entries at their own seed values. Used for the basin-finder's seeded
+    wing entries at their own seed values. Used for the minimum search's seeded
     twin, so that no cold-start profile is quoted without one."""
     return np.insert(q, NS - 1 + n_sp, [f_w, log_w])
 
@@ -511,7 +511,7 @@ def bidi_profile(traces, priors, direction, wing, tag, seeds=(),
     `seeds` are converged parameter vectors from other families, already
     re-cut for this layout. A seeded chain runs IN ADDITION to the cold pair,
     so a seed can only improve the profile. `cold=False` runs the seeded
-    chains alone, which is how the basin-finder gets its twin without paying
+    chains alone, which is how the minimum search gets its twin without paying
     for a second cold pair.
 
     Returns (profile array [kappa, total, campaign, power-ladder], kappa at the
@@ -695,19 +695,19 @@ def main(argv=None) -> int:
         print("  QC gate A1: no canonical RF-off trace carries a hard flag.")
 
     t0 = time.time()
-    print("  wing robustness (dir -1, cold; the basin-finder):")
+    print("  wing robustness (dir -1, cold; the minimum search):")
     prof_c, kmin_c, q_c, _ = bidi_profile(traces, priors, -1, True, "C-",
                                           kappas=kappas, nfev=nfev)
     print("  primary profile (four-point priors, rehearsal dir -1, seeded from C-):")
     prof_a, kmin_a, q_a, gap_a = bidi_profile(
         traces, priors, -1, False, "A-", seeds=(strip_wing(q_c, n_sp),),
         kappas=kappas, nfev=nfev)
-    print("  wing basin-finder's seeded twin (from A-; no cold profile is quoted alone):")
+    print("  wing minimum search's seeded twin (from A-; no cold profile is quoted alone):")
     prof_c2, kmin_c2, q_c2, _ = bidi_profile(
         traces, priors, -1, True, "C-t", seeds=(insert_wing(q_a, n_sp),),
         kappas=kappas, nfev=nfev, cold=False)
     gap_c = float(np.max(prof_c[:, 1] - prof_c2[:, 1]))
-    if prof_c2[:, 1].min() < prof_c[:, 1].min():   # the twin found a better basin
+    if prof_c2[:, 1].min() < prof_c[:, 1].min():   # the twin found a better local minimum
         kmin_c, q_c = kmin_c2, q_c2
     prof_c = np.column_stack([prof_c[:, 0],
                               np.minimum(prof_c[:, 1:], prof_c2[:, 1:])])
@@ -779,7 +779,7 @@ def main(argv=None) -> int:
     print(f"  power-ladder-only UB: kappa < {ka_pld:.3f}")
     print(f"  wing-marginalized: min {kmin_c}, UB kappa < {kc:.3f}")
     print(f"  direction indifference: max |dchi2| between dirs = {dir_delta:.2f}")
-    print(f"  basin gap (cold minus seeded, worst family) = {basin_gap:.2f}")
+    print(f"  local minimum gap (cold minus seeded, worst family) = {basin_gap:.2f}")
     for pk in PEAKS:
         print(f"  beta_self {pk}: post {q_a[I_BETA + PK_IX[pk] - 1]:.5f} vs prior "
               f"{priors[pk][0]:.5f}+/-{priors[pk][1]:.5f} "
@@ -814,7 +814,7 @@ def main(argv=None) -> int:
                     "MHz; at the rehearsal's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W; the PREDICTED coefficient at the current "
-                    f"priors (w0 = {C.W0_PRIOR_M * 1e6:.0f} um, rho = "
+                    f"priors (w0 = {C.W0_MEASURED_M * 1e6:.0f} um, rho = "
                     f"{C.RHO_RETRO}), computed from constants"])
         w.writerow(["S0_225mW_pred", "prediction", f"{KAPPA_PRED * 0.225:.3f}", "",
                     "MHz, transition axis; the prediction at 225 mW"])

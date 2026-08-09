@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.constants import GAMMA_NAT_HZ  # noqa: E402
+from rb5s6s.constants import GAMMA_NAT_HZ, peak_title  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model, signal_level, sigma_of_v  # noqa: E402
 from rb5s6s.qc import trace_metrics, hard_flags, ingest_flags  # noqa: E402
@@ -157,27 +157,29 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
                   "convolved with transit and laser")
     ax.axhline(0.0, color="0.6", lw=0.8, ls=":")
     ax.set_ylabel("normalized fluorescence")
-    ax.set_title(f"993.{peak} nm ({_ISO[peak]}) two-photon line: "
-                 f"{T} $^{{\\circ}}$C, {P} mW", fontsize=9.5)
+    ax.set_title(peak_title(peak) + f" ({T} $^{{\\circ}}$C, {P} mW)",
+                 fontsize=9.5)
     # Upper left: the line rises at centre and the right shoulder carries the
     # legend into the data. The left corner is baseline at this window.
     ax.legend(fontsize=8, loc="upper left")
     ax.set_ylim(-0.10, 1.12)
 
-    # The four components the fit convolves, one value row each. All four are
-    # full widths at half maximum (rb5s6s.lineshape takes an FWHM for every
-    # kernel, the Gaussian laser term included), so every row says FWHM: a
-    # reader who reads sigma_laser as a standard deviation cannot reproduce the
-    # total. The total FWHM of record moved here out of the panel title. The
-    # waist is the constant of record rather than a typed number, and that it
-    # has not been measured is now the caption's statement.
-    ax.annotate(f"natural FWHM {GNAT:.2f} MHz\n"
-                f"collisional FWHM {gc:.2f} MHz\n"
-                f"transit-time FWHM {transit:.2f} MHz\n"
-                f"assumed beam waist {C.W0_PRIOR_M * 1e6:.0f} $\\mu$m\n"
-                f"laser FWHM {sl:.2f} MHz\n"
-                f"total FWHM {total_fwhm:.2f} $\\pm$ {total_fwhm_err:.2f} MHz\n"
-                f"reduced chi-squared {fit['chi2_red']:.2f}",
+    # The parameter box, in the trace-figure standard (2026-08-09). One header
+    # says every row is an FWHM, so no row carries the awkward compound
+    # "natural FWHM". Fitted values wear their one-sigma error from this
+    # condition's fit; fixed inputs are marked for what fixes them, and the
+    # waist itself is caption material, never canvas material. The two flags
+    # the fit publishes (a parameter at its zero rail wears a symmetric error
+    # where the truth is one-sided) belong to the caption too.
+    gc_err = fit.get("gamma_coll_err", 0.0)
+    sl_err = fit.get("sigma_laser_err", 0.0)
+    ax.annotate("fit components, FWHM\n"
+                f"natural {GNAT:.2f} MHz (fixed, 6S lifetime)\n"
+                f"collisional {gc:.2f} $\\pm$ {gc_err:.2f} MHz\n"
+                f"transit {transit:.2f} MHz (fixed, from $w_0$)\n"
+                f"laser {sl:.2f} $\\pm$ {sl_err:.2f} MHz\n"
+                f"total {total_fwhm:.2f} $\\pm$ {total_fwhm_err:.2f} MHz\n"
+                f"reduced $\\chi^2$ {fit['chi2_red']:.2f}",
                 xy=(0.98, 0.97), xycoords="axes fraction", va="top", ha="right",
                 fontsize=7.5, color="0.25",
                 bbox=dict(boxstyle="round", fc="white", ec="0.8", alpha=0.85))

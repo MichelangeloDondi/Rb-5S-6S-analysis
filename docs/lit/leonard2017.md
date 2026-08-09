@@ -19,7 +19,7 @@ status: VERIFIED
 routing:
   - CITE
 verify_flags:
-  - 'This erratum supersedes leonard2015 on the tune-out and on the
+  - 'This erratum replaces leonard2015 on the tune-out and on the
     matrix-element ratio. Cite this for both. It is not on arXiv -- the 2015
     arXiv record (1507.07898) is pre-erratum through v3 -- which is why the repo
     carried the erratum values as merely REPORTED until the PDF was obtained.'

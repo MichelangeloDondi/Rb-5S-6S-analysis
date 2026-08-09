@@ -151,7 +151,7 @@ variants, so it applies to our EOM-02-12.5-V. This is the same 3 mm the
 naive Gaussian-optics w₀ ≈ 32 µm estimate in `constants.py` used.
 It was previously carried as an inferred number chosen to make the clipping
 story work, and is now grounded in a manufacturer spec plus an experimenter recollection
-of the clipping itself. See `constants.py`'s `W0_PRIOR_M` docstring and
+of the clipping itself. See `constants.py`'s `W0_MEASURED_M` docstring and
 `docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
 (w₀ = 64 µm) on the same lens and the same-model SolsTiS laser, which

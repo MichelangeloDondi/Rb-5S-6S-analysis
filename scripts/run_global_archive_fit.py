@@ -188,7 +188,7 @@ from run_stark_joint import PEAKS, PILOT, PREHISTORY, load_pilot, load_rehearsal
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_PRIOR_M, rho=C.RHO_RETRO)
+KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        2.0, 2.62, 3.5, 5.0}))
 
@@ -627,7 +627,7 @@ def main() -> int:
         w.writerow(["dchi2_kappa0", "primary", f"{prof[0.0]-min(cs):.2f}", "",
                     "chi2(kappa=0) - chi2(min)"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
-                    f"MHz per W at w0={C.W0_PRIOR_M*1e6:.0f} um, "
+                    f"MHz per W at w0={C.W0_MEASURED_M*1e6:.0f} um, "
                     f"rho={C.RHO_RETRO}"])
         w.writerow(["beta_self_joint", "primary", f"{beta_fit:.4f}", "",
                     "MHz per 1e12 cm^-3; fitted JOINTLY with kappa over the "

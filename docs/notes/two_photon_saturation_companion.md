@@ -17,7 +17,7 @@ different reason.
 ## The number
 
 The two-photon Rabi frequency for 5S(1/2) to 6S(1/2) at 993.4192 nm, at the
-campaign maximum of 225 mW with the adopted 64 um waist and rho = 0.94, is
+campaign maximum of 225 mW with the measured 64 um waist and rho = 0.94, is
 
     Omega_2ph / 2pi = 450 kHz   on axis
 
@@ -46,7 +46,7 @@ predicted S0 = 0.3476 MHz the ramp broadens the line by 6.58 kHz, computed with
 the fit's own `rb5s6s.stark._fwhm_of` at the campaign's representative widths
 (collisional 0.60, laser 1.50, transit 0.96 MHz, unshifted FWHM 5.3737 MHz, which
 reproduces the observed 5.37). Saturation contributes 24 to 25 kHz at the same
-field. The ratio is **about 3.7**, and it is stable across the waist prior band
+field. The ratio is **about 3.7**, and it is stable across the waist measurement band
 because both terms scale as the inverse fourth power of the waist.
 
 Two consequences follow.

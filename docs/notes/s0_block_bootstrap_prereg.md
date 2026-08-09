@@ -73,7 +73,7 @@ before the predictions are scored.
 ## What is NOT claimed
 
 The bootstrap does not replace the committed bound in this
-preregistration. Whether it becomes a companion number, a superseding
+preregistration. Whether it becomes a companion number, a replacing
 construction, or a recorded diagnostic is the postscript's decision,
 taken against P1-P3 with the numbers on the table.
 

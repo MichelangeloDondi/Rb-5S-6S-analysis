@@ -246,7 +246,7 @@ from the frame: tunnelling character, intermediate resonances arising, and the
 inapplicability of a rate description at long pulse duration.
 
 This bears directly on the archive rather than only on the theory. At the
-adopted waist the ramp edge is 0.348 MHz against a 3.4925 MHz natural width, so
+measured waist the ramp edge is 0.348 MHz against a 3.4925 MHz natural width, so
 the condition holds with about a factor of ten to spare, and the power-law frame
 is licensed. It would stop being licensed at the tighter focus the fixed-lock
 plan wants, which is the same place two other approximations already fail, and
@@ -274,7 +274,7 @@ the continuum (Eq. 6.8). The prescription is to use the weak-field Lorentzian of
 Eq. (6.5) with $\Gamma$ replaced by a combination of $\Gamma_f$ and $\Gamma_i$.
 
 So the correct citation for the third-photon question is Section 6c, and the
-right way to price it is their $\Gamma_i$, not a fresh derivation. For this
+right way to quantify it is their $\Gamma_i$, not a fresh derivation. For this
 experiment all three terms are far below the natural width. The measured numbers
 are in [THEORY_NOTE](../THEORY_NOTE.md) section 5.2: the third photon lands
 345 cm^-1 above the real 6S to 8P3/2 transition, its 8P admixture is 1.7e-9 at

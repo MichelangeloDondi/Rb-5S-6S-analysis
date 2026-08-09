@@ -6,7 +6,7 @@ A referee's sharpest statistical question about the composite line is not "what
 are gamma_coll, sigma_laser, transit?" but "are they *separately* identifiable,
 or does the data only constrain some combination of them?". The three widths all
 broaden the same ~5 MHz line, so they are near-degenerate -- which is exactly why
-the main analysis FIXES transit from the w0 prior and reports sigma_laser as a
+the main analysis FIXES transit from the measured w0 and reports sigma_laser as a
 bound. This module makes that degeneracy quantitative instead of asserted.
 
 It fits ONE condition with all three homogeneous/quasi-homogeneous widths free
@@ -222,7 +222,7 @@ def width_profile_2d(freqs: List[np.ndarray], volts: List[np.ndarray],
 
     # serpentine walk: consecutive points are always grid-adjacent (within a row,
     # or vertically at the turn), so ONE running seed warm-starts every fit. A
-    # single warm lineage can still drag a trapped basin along the walk, so
+    # single warm lineage can still drag a trapped local minimum along the walk, so
     # every cell (beyond the first row) is ALSO fit from the solution directly
     # above -- an independent warm lineage -- and the better chi2 kept: a trap
     # must now fool two lineages coherently, and the fresh-seed audit below

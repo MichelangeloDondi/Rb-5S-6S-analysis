@@ -278,10 +278,10 @@ profile-likelihood map that first corrected and then certified it. Both on one
 bright condition (993.4192 nm, 130 °C, 225 mW), all three widths free plus the
 per-trace nuisances.
 
-**The map found the fit's second basin first.** A single-start three-width fit
-lands in a Gaussian-dominated basin ($\sigma_\text{laser}\approx2.4$ MHz,
+**The map found the fit's second local minimum first.** A single-start three-width fit
+lands in a Gaussian-dominated local minimum ($\sigma_\text{laser}\approx2.4$ MHz,
 transit railed at zero, $\chi^2 = 5024$). The profile map exposed a **deeper,
-cusp-dominated basin** — $\gamma_\text{coll}\approx0.22$,
+cusp-dominated local minimum** — $\gamma_\text{coll}\approx0.22$,
 $\sigma_\text{laser}\approx0.51$, transit $\approx1.43$ MHz, i.e. the transit
 width the $w_0\approx43$ µm geometry predicts — at $\chi^2 = 4548$, a
 $\Delta\chi^2\approx476$ preference. The local analysis is therefore anchored
@@ -349,7 +349,7 @@ propagated as an explicit band. *Code:* `rb5s6s/identifiability.py`,
 The collisional bound's 95% is built from a between-block scatter estimated on
 a small number of residual degrees of freedom, so it uses the Student-t
 quantile rather than the Gaussian 2 (§4.5): $t(0.95,2)=2.92$ for the current
-four-point headline (70/90/110/130 °C, since 2026-08-02; the superseded
+four-point headline (70/90/110/130 °C, since 2026-08-02; the replaced
 three-point 70–110 °C headline used $t(0.95,1)=6.31$). A bound is only worth
 its coverage, so we check it by simulation rather than assert it: at a grid
 of *known* true $\beta$ we generate 2000 synthetic four-point cooling+130 °C
@@ -397,14 +397,14 @@ Three features of this dataset drive the choice:
 Bayesian machinery is used where it is the right tool — model *selection* — as
 the BIC ladder of §4.9.
 
-**A profile is only as good as its basin.** A profile scan inherits every
+**A profile is only as good as its local minimum.** A profile scan inherits every
 weakness of the optimizer that walks it: a chain that starts cold and parks
 in a false minimum produces a smooth, confident, wrong curve, and nothing
 in the profile itself reveals the parking. This analysis learned that twice
 on the joint fit, first on a direction variant and then on the primary
 itself (a 283,000-unit false direction signal whose excess sat outside the
 campaign data, the campaign column moving by only four units of it). The working discipline, now structural in the fitter:
-the variant that finds the true basin most reliably runs first, every other
+the variant that finds the true local minimum most reliably runs first, every other
 variant is seeded from its solution in addition to running cold, the
 pointwise minimum over chains is what enters the profile, and no cold-start
 profile is quoted without a seeded twin (docs/RESEARCH_DECISIONS.md §11).

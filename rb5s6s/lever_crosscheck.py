@@ -45,7 +45,7 @@ from __future__ import annotations
 from typing import Dict, List
 
 from .global_fit import fit_global
-from .constants import W0_BAND_M, W0_PRIOR_M, transit_fwhm_from_w0
+from .constants import W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 # the 2x2 model-form matrix axes
@@ -60,7 +60,7 @@ GRID_CELLS = (("exp", "per_T"), ("gaussian", "per_T"), ("exp", "per_block"))
 # the wide edge / central prior / tight edge. DERIVED from the constants since
 # v3.0.0 (was a parallel hard-coded (65,50,40) that had to be edited by hand
 # whenever the prior moved, and silently went stale when it did).
-W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_PRIOR_M * 1e6, W0_BAND_M[0] * 1e6)
+W0_BAND_UM = (W0_BAND_M[1] * 1e6, W0_MEASURED_M * 1e6, W0_BAND_M[0] * 1e6)
 W0_BAND_MHZ = tuple(round(transit_fwhm_from_w0(w * 1e-6, 110.0), 3) for w in W0_BAND_UM)
 
 
@@ -89,7 +89,7 @@ def lever_crosscheck_beta(blocks: List[Dict], *,
     # ~50x more expensive (one sigma_laser per block = dozens of free widths)
     # and the two axes are near-independent, so the L-shaped 3-cell design
     # (share the exp/per_T corner) measures the transit axis AND the sharing
-    # axis for the price of one per_block fit. (gaussian, per_block) is dropped.
+    # axis for the quantify of one per_block fit. (gaussian, per_block) is dropped.
     grid = {cell: _fit(blocks, cell[0], cell[1], transit_ref_mhz, T_ref_C)
             for cell in GRID_CELLS}
     prim = grid[PRIMARY]

@@ -63,7 +63,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The fit gallery shows a **symmetric centre excess on the brightest lines** (1.4% of peak, 3.7 sigma on 993.4192 nm), absorbed by the noise inflation. Saturation, width sharing, hyperfine and pedestal all ruled out. Open, moves nothing | addendum 21 |
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
 | The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-15x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
-| The v3.2.0 light-shift bound 0.151 MHz was **basin-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units (0.27 was the bound when this row was written. The six-tooth recompute of addendum 26 moved it to 0.258, which the results ledger rounds to 0.26. Noted 2026-08-09, the row left as written) | addendum 24 |
+| The v3.2.0 light-shift bound 0.151 MHz was **cold-start-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units (0.27 was the bound when this row was written. The six-tooth recompute of addendum 26 moved it to 0.258, which the results ledger rounds to 0.26. Noted 2026-08-09, the row left as written) | addendum 24 |
 | The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 ACF 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
@@ -597,7 +597,7 @@ block the within-block slope disagrees with the fitted rate at ~3σ. The
 within-block bounds, not the joint fit, own the pure-drift claim; τ
 describes drift and forced re-centrings jointly.
 
-> **Superseded — final value in addendum 7:** the state-space refinement
+> **Replaced — final value in addendum 7:** the state-space refinement
 > first found a constant +0.032 MHz/min laser and called these floors low
 > (addendum 5); the residual audit then showed that number was biased by
 > unmodelled moves, and the adequate model lands at
@@ -675,7 +675,7 @@ settles?" becomes a 2×2 model comparison:
 intervention settling is decisive (ΔAIC +17.1). The claim addendum 4
 declined is now made, in both directions:
 
-> **Superseded by addendum 7:** the residual audit found this noise model
+> **Replaced by addendum 7:** the residual audit found this noise model
 > inadequate (three real end-of-ladder moves absorbed as drift, kurtosis +7);
 > under the mixture model c = +0.38 [+0.17, +0.59] ms/min — a ~2σ indication,
 > not a 3σ detection. The paragraph stands as written; the audit is below.
@@ -701,8 +701,8 @@ consistent with it matching the wavemeter's post-retune scale, since re-lock
 transients are exactly when the operator re-centres hardest. The earlier
 "settled floor" of 0.013–0.023 MHz/min sits 1–1.5σ below the constant
 because those decompositions leaked early drift into their exponentials;
-**+0.032 [+0.023, +0.040] MHz/min laser supersedes it** *(a claim addendum 7
-itself supersedes: under the adequate noise model the constant is +0.016
+**+0.032 [+0.023, +0.040] MHz/min laser replaces it** *(a claim addendum 7
+itself replaces: under the adequate noise model the constant is +0.016
 [+0.007, +0.025], agreeing with those floors — the leak ran the other way)*.
 The within-block
 bounds (|r| ≲ 4 ms/min) contain the constant comfortably and stay the
@@ -824,7 +824,7 @@ observation and profiling q:
   unbiased; only the recapture-noise floor limits it.
 - The width-channel archival bound (M4e, profile likelihood) is
   S₀(225) < 0.64 MHz — so the centre channel is **~5.5× looser**, and the
-  first draft of this addendum quoted the superseded Wald diagnostic
+  first draft of this addendum quoted the replaced Wald diagnostic
   (3.1) beside it until the canonical-value gate caught the stale citation.
   The two channels **corroborate each other through disjoint systematics** —
   ramp broadening in the widths, centroid displacement in the centres. The
@@ -891,7 +891,7 @@ the block MADs; and the filter flags exactly three posterior-certain moves —
 all at 25 mW ladder ends, the same events the diagnostics fingered.
 Within-block moves were rare, as remembered: 3 events in 78 transitions.
 
-**The revised numbers, superseding addendum 5's:**
+**The revised numbers, replacing addendum 5's:**
 
 - **Drift: c = +0.38 [+0.17, +0.59] ms/min (68%), [−0.07, +0.83] (95%)
   = +0.0163 [+0.0073, +0.0252] MHz/min laser.** A **~2σ positive
@@ -1756,7 +1756,7 @@ legitimate, because width is power-independent, the C3 null — gives
 | 110 °C | 2.629 MHz | +0.010 ± 0.053 | +0.2σ |
 | 130 °C | 2.693 MHz | −0.054 ± 0.047 | −1.2σ |
 
-*(Superseded. Two errors: the widths are crude QC FWHMs, and the 1.7%
+*(Replaced. Two errors: the widths are crude QC FWHMs, and the 1.7%
 cross-day figure is the rate DIFFERENCE, which the pilot's own ruler already
 removes — the term that actually dominates, block-to-block reproducibility,
 was missing.)*
@@ -2419,7 +2419,7 @@ more free parameters, escaped from the identical cold start and settled
 at 186,370.45. The extra freedom opens a path out that the tighter layout
 does not have.
 
-**The measurement that proves it is a basin and not physics.** Seeding
+**The measurement that proves it is a local minimum and not physics.** Seeding
 the primary layout from the wing solution, with the two wing entries
 deleted so the vector fits the narrower layout, reaches 186,370.03 at
 kappa = 0. Same data, same priors, same objective, same number of free
@@ -2436,32 +2436,32 @@ not been formally decomposed session by session and this record does not
 claim it has.
 
 **The structural fix.** The wing variant now runs first, because a cold
-start finds the true basin reliably there, and every other family is
+start finds the true local minimum reliably there, and every other family is
 seeded: the primary from the wing solution with the wing entries deleted,
 the flipped direction from the converged primary, the flipped wing
 variant from the wing solution. Each seeded chain runs in addition to the
 cold ones and the pointwise minimum is kept, so a seed can only improve a
 profile, never inflate one. The rule is recorded in RESEARCH_DECISIONS
 section 11 and methods 06 section 4.12: no cold-start profile is quoted
-without a seeded twin. A profile is only as good as its basin. The
+without a seeded twin. A profile is only as good as its local minimum. The
 corrected production run demonstrated the fix live: its cold primary
 chains parked at 469,510 again, and its seeded twin walked straight to
 186,370, so the artifact appeared and was disarmed in the same run.
 
 **How far v3.2.0 was off.** The same disease was present in v3.2.0 at an
 amplitude small enough to look like convergence. Its committed profile
-point at kappa = 0 was 189,761.79. Re-profiling in the true basin under
+point at kappa = 0 was 189,761.79. Re-profiling in the true local minimum under
 v3.2.0's own priors, same direction and same layout, gives 186,360.89 at
 the same kappa. v3.2.0 was mis-parked by 3,401 units, about one part in
 fifty of its own chi square, which is why nothing flagged it.
 
-**The discriminant: basin against priors.** The four-point refit changed
-the collision priors at the same time as the basin fix, so the two
-effects were separated by re-profiling in the true basin under v3.2.0's
+**The discriminant: local minimum against priors.** The four-point refit changed
+the collision priors at the same time as the local minimum fix, so the two
+effects were separated by re-profiling in the true local minimum under v3.2.0's
 own priors. That gives kappa < 0.982, which is S_0(225 mW) < 0.221 MHz.
 Against the 0.151 MHz that shipped, the bound at the old priors is
 46% looser, or equivalently v3.2.0's number was 32% tighter than its own
-data and its own priors support. The basin effect dominates the change.
+data and its own priors support. The starting-point effect dominates the change.
 The prior update accounts only for the remaining step from 0.221 to the
 production bound.
 
@@ -2478,13 +2478,13 @@ removes the entire pilot session) gives 0.355 MHz, and the rehearsal
 direction row sits at 10.5 units of chi square across the whole grid,
 indifference where the artifact printed 283,135. No single peak drives
 the result (all leave-one-peak-out rows positive and similar). Two
-features of the corrected basin are logged as observations: the joint
+features of the corrected local minimum are logged as observations: the joint
 bound sits looser than its own campaign-only column, because the
 rehearsal data mildly prefer a positive shift and drag the profile's
 rise, and the pilot peak's collision width settles 4.7 prior sigmas
 above its four-point prior.
 
-**What the margin is.** The prediction at the adopted waist is
+**What the margin is.** The prediction at the measured waist is
 0.348 MHz at 225 mW. The primary bound sits 1.3x below it, against the
 2.3x v3.2.0 claimed. The drop-4192 subset now reaches 0.355 MHz, slightly
 above the predicted central value, so the statement that every subset
@@ -2503,7 +2503,7 @@ left there.
 
 **Lesson.** An optimiser's starting point is an input. The failure was
 not caught by any residual plot, any coverage test, or any robustness
-row, because all of them lived inside the same basin. It was caught by a
+row, because all of them lived inside the same local minimum. It was caught by a
 number that could not be physical, and only because a robustness check
 was re-armed that compared two chains which happened to have parked in
 different places.
@@ -2667,7 +2667,7 @@ identical-input reproduction of M28 is pre-registered at a three per cent
 threshold in `docs/notes/m28_reproducibility_prereg.md` and launches with
 this release.
 
-**The fold-robustness paragraph is superseded in place.** Its structural
+**The fold-robustness paragraph is replaced in place.** Its structural
 argument (a symmetric triangle preserves tooth spacing under a fold) is
 true of the ramp and false of a rigid-grid fit, whose window assignment is
 exactly what a fold displaces. The bounded form survives: an apex landing
@@ -2712,7 +2712,7 @@ motivation for.
 **Amended 2026-08-06 (RT11 of the frequency-calibration review).** The
 two supporting statements this paragraph first carried are both wrong, and
 the conclusion is unchanged. The first was that combine_block's
-square-root chi-squared inflation already prices the inconsistency into
+square-root chi-squared inflation already folds the inconsistency into
 4207's rate error and its power-session widths. It cannot: the inflation
 enters as one block-coherent multiplier on a line's five widths while the
 excursion is a gradient across them, and `_apply_rate_models` folds the

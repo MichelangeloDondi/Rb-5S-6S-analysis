@@ -176,7 +176,7 @@ PK_IX = {p: i for i, p in enumerate(PEAKS)}
 TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
 DNU_FLOOR = 2e-2          # see _shared_profile_grid's docstring
 NU0_WING = 2.0            # MHz standoff of the wing nuisance
-KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_PRIOR_M, rho=C.RHO_RETRO)
+KAPPA_PRED = stark_shift_S0_mhz(1.0, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 """The predicted coefficient, COMPUTED from the constants rather than typed.
 It moved 2.62 -> 1.55 MHz/W at v3.0.0 when the priors became w0 = 64 um and
 rho = 0.94; the grid below keeps 2.62 as a legacy checkpoint so the older
@@ -473,11 +473,11 @@ def bidi_profile(traces, priors, direction, wing, tag, seed=None):
     """seed (2026-08-02): a converged parameter vector from another variant.
 
     The direction check flips only the rehearsal x axis, but a cold start on
-    the flipped axis can park the 46 rehearsal centres in the wrong basin and
+    the flipped axis can park the 46 rehearsal centres in the wrong local minimum and
     stay there for the WHOLE chain, forward and backward: the 2026-08-02 run
     left the dir +1 priors variant 17,779 chi2 above the dir -1 primary at
     every kappa, while the wing variant of the same direction found the true
-    basin (chi2 189,580) -- so the gap was warm-up, not physics. Seeding each
+    local minimum (chi2 189,580) -- so the gap was warm-up, not physics. Seeding each
     direction variant from its converged opposite-direction twin removes the
     failure mode; the seeded chain is run IN ADDITION to the cold one and the
     pointwise minimum is kept, so a seed can only improve the profile."""
@@ -538,16 +538,16 @@ def main() -> int:
           f"{len(pil)} pilot traces, {npts} points")
 
     # Chain order (2026-08-03): the wing variant goes FIRST because a cold
-    # start finds the true basin reliably there, and every other family is
+    # start finds the true local minimum reliably there, and every other family is
     # seeded from its solution (in addition to its own cold chains; the
     # pointwise minimum keeps whichever wins). The 2026-08-03 four-point run
     # demonstrated the warm-up failure mode striking the PRIMARY variant:
-    # its cold chains parked 283k above the basin every seeded and wing
+    # its cold chains parked 283k above the local minimum every seeded and wing
     # chain found, and the direction row then compared a stuck profile
     # against a converged one. Seeding the primary from the wing solution
     # (wing entries stripped) closes that mode for every family at once.
     t0 = time.time()
-    print("  wing robustness (dir -1, cold; the basin-finder):")
+    print("  wing robustness (dir -1, cold; the minimum search):")
     prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
     print("  primary profile (priors, rehearsal dir -1, seeded from C-):")
     prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-",
@@ -616,7 +616,7 @@ def main() -> int:
                     "MHz; at the rehearsal's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W; the PREDICTED coefficient at the current "
-                    f"priors (w0 = {C.W0_PRIOR_M*1e6:.0f} um, rho = "
+                    f"priors (w0 = {C.W0_MEASURED_M*1e6:.0f} um, rho = "
                     f"{C.RHO_RETRO}), computed from constants -- what the "
                     f"bound is compared against"])
         w.writerow(["S0_225mW_pred", "prediction",

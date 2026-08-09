@@ -30,7 +30,7 @@ analogue for.
 ### 1.1 The intensity is delivered differently
 
 In the cell the working point is 225 mW into a waist of
-`constants.W0_PRIOR_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
+`constants.W0_MEASURED_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
 travelling wave and, with `rho` = 0.94, an on-axis maximum shift
 
     lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94, 1093.0) = 0.3476 MHz

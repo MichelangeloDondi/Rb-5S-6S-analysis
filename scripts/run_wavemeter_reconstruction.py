@@ -43,14 +43,14 @@ ramp rates, 1 rise time, 3 noise parameters.
 How it is fitted. Profiled likelihood. With the rise time fixed, the mean is
 LINEAR in its 24 levels and ramp rates, so those are solved in closed form by
 weighted least squares inside the objective and the outer optimiser searches
-only four numbers: the rise time and the three noise parameters. The superseded
+only four numbers: the rise time and the three noise parameters. The replaced
 fit threw all 19 of its parameters at L-BFGS-B at once, and that was the single
 largest source of uncertainty in the number it published: its best-of-20-restart
 likelihood moved by 19.8 units across five seeds, which is far more than the
 difference between the models it was being used to choose between. The
 four-dimensional search is stable to the last digits printed here.
 
-Why the relaxation model was replaced (2026-08-03). The superseded form (one
+Why the relaxation model was replaced (2026-08-03). The replaced form (one
 shared relaxation time constant per kick on a shared quadratic background, 19
 parameters, 20-restart L-BFGS-B) was tested against fourteen alternatives on
 the same 481 points and the same noise model, with whiteness as the gate rather
@@ -82,7 +82,7 @@ evaluated back over the full record for the returned arrays, and the figures
 draw the model only where it was fitted.
 
 THE RESULT, and it is one number: sigma_inf, the settled floor on unmodelled
-laser motion, 0.62 MHz. That is essentially where the superseded model left it
+laser motion, 0.62 MHz. That is essentially where the replaced model left it
 (0.63 MHz), which is the useful part of this replacement: the floor is the one
 quantity that survived a mean-model change large enough to retire everything
 else the module used to report. Against the campaign's AC-Stark bound of
@@ -96,7 +96,7 @@ DOWN by 1.1 MHz, and 2 do not step at all within 0.2 MHz: the kick finder
 flagged a fast excursion there that the sawtooth explains as the end of a
 steep ramp. The ramp rates fall monotonically in magnitude through the record,
 from -8.9 MHz/min in the first fitted interval to -0.4 MHz/min in the last,
-which is the thermal settle the superseded model was fitting with a single
+which is the thermal settle the replaced model was fitting with a single
 record-wide quadratic. Reading it interval by interval is what removes the need
 for that background term.
 
@@ -150,14 +150,14 @@ EDGE_CUT_MIN = 0.4        # pre-first-kick opening: a digitisation edge effect,
                           # still evaluated back over the full record on return
 
 # Boxes on the mean's linear coefficients. The level box is the one the
-# superseded fit used; the ramp box is wider than its shared-drift box because
+# replaced fit used; the ramp box is wider than its shared-drift box because
 # the record's own within-interval slopes reach -8 MHz/min.
 LEVEL_MHZ = 60.0
 RAMP_MHZ_PER_MIN = 20.0
 # The rise time runs from well under one digitised pixel (0.037 min) to half a
 # minute, searched logarithmically.
 RISE_BOUNDS_MIN = (0.004, 0.5)
-# sigma_inf, A, tau_sigma: unchanged from the superseded fit.
+# sigma_inf, A, tau_sigma: unchanged from the replaced fit.
 NOISE_BOUNDS = ((0.05, 5.0), (0.0, 20.0), (0.5, 120.0))
 # A step smaller than this is not called a re-lock. It is one third of the kick
 # finder's own 1.59 MHz detection threshold, so a flagged event that the
@@ -232,7 +232,7 @@ def _seg_weights(tt, tk, rise):
     A hard indicator would step the mean instantaneously, but the trace takes
     two to six pixels to climb, so the boundary between consecutive intervals
     is a logistic of width `rise`. The model then climbs over the same few
-    pixels the record does, which is where the superseded fit's largest
+    pixels the record does, which is where the replaced fit's largest
     residual spikes lived.
     """
     K = len(tk)
@@ -433,7 +433,7 @@ if __name__ == "__main__":
                     "see the module docstring"])
         w.writerow(["noise_settling_time", "2025-06-11", f"{r['tau_sigma']:.2f}",
                     "min; the scatter itself settles on this timescale. much "
-                    "shorter than the superseded model's 9.1 min because the "
+                    "shorter than the replaced model's 9.1 min because the "
                     "ramps now carry the early structure the noise term used "
                     "to absorb"])
         w.writerow(["n_relock_events", "2025-06-11", r["n_kicks"],
@@ -450,7 +450,7 @@ if __name__ == "__main__":
                     "re-locks proper"])
         w.writerow(["n_downward_steps", "2025-06-11", r["n_down"],
                     f"count; modelled steps below -{STEP_MHZ:.0f} MHz. the "
-                    "superseded model could not express one: its amplitudes "
+                    "replaced model could not express one: its amplitudes "
                     "were bounded non-negative"])
         w.writerow(["n_null_events", "2025-06-11", r["n_null"],
                     f"count; flagged events whose modelled step is within "
@@ -464,7 +464,7 @@ if __name__ == "__main__":
         w.writerow(["ramp_rate_first_interval", "2025-06-11",
                     f"{r['ramp_mhz_per_min'][0]:.2f}",
                     "MHz/min; the fitted ramp of the first fitted inter-lock "
-                    "interval. these per-interval ramps replace the superseded "
+                    "interval. these per-interval ramps replace the replaced "
                     "model's record-wide drift and curvature"])
         w.writerow(["ramp_rate_last_interval", "2025-06-11",
                     f"{r['ramp_mhz_per_min'][-1]:.2f}",
@@ -477,15 +477,15 @@ if __name__ == "__main__":
                     "kick-free scatter of 0.55 MHz"])
         w.writerow(["residual_runs_z", "2025-06-11", f"{r['resid_runs_z']:.2f}",
                     "dimensionless; Wald-Wolfowitz runs statistic on the "
-                    "residual signs. the superseded relaxation model sat at "
+                    "residual signs. the replaced relaxation model sat at "
                     "-6.3, which is what retired it"])
         w.writerow(["residual_acf1", "2025-06-11", f"{r['resid_acf1']:.3f}",
                     "dimensionless; lag-1 autocorrelation of the residual, "
-                    "0.68 under the superseded relaxation model"])
+                    "0.68 under the replaced relaxation model"])
         w.writerow(["nll", "2025-06-11", f"{r['nll']:.3f}",
                     f"dimensionless; negative log-likelihood at the optimum, "
                     f"{r['n_par']} parameters on {r['n_fit_points']} points. "
-                    "not comparable to the superseded model's 259.3 as a "
+                    "not comparable to the replaced model's 259.3 as a "
                     "number to prefer, since the parameter counts differ; the "
                     "whiteness of the residual is what decided between them"])
     for k in ("record_min", "band_mhz", "n_kicks", "sigma_inf", "tau_sigma",

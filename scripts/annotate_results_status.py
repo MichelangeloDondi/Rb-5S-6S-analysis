@@ -17,7 +17,7 @@ Controlled vocabulary:
              degeneracy-law ratios the archive's drift makes untestable).
   MEASURED   a genuine measurement from this data (the frequency rate; the
              P^2 amplitude scaling; the density-flat gamma floor).
-  PRELIM     a model-dependent cross-check, superseded by a BOUND headline
+  PRELIM     a model-dependent cross-check, replaced by a BOUND headline
              (the per-peak/per-cell beta fits; per-condition linefits).
   ARTIFACT   an identified statistical/instrumental artifact, not physics.
   DIAGNOSTIC a fit-quality or intermediate quantity (chi^2, noise law, LOO).

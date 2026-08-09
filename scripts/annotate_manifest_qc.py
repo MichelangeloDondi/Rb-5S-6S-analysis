@@ -46,7 +46,7 @@ REASON_DISCARDED = {
         "curation discard: supernumerary 6th repeat, content clean -- "
         "stays excluded by pre-registration (DATA.md)"),
     "4207nm_025mw2.csv": (
-        "curation discard: duplicate-name save superseded by canonical "
+        "curation discard: duplicate-name save replaced by canonical "
         "p_sweep/4207nm_025mw2.csv; the retrace-crossing structure is "
         "block-wide, not this trace's own defect (DATA.md)"),
     "4207nm_070c2.csv": (

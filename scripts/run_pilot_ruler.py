@@ -25,7 +25,7 @@ CROSS-DAY CAUTION, inherited from run_epoch_checks check 3: a ruler measures
 its OWN day's scan configuration. These traces are the pilot day's, which is
 exactly why they are usable for the pilot axis and would not be for anything
 else. The earlier ACF estimate on the Def combs (tooth period 144.2(11) ms)
-was a seed; this module supersedes it with the constrained comb fit.
+was a seed; this module replaces it with the constrained comb fit.
 
 Needs the pilot quarantine tree (private, read in place, never copied).
 Without it the committed results/pilot_ruler.csv is the record; exits 0.

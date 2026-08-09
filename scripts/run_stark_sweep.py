@@ -14,7 +14,7 @@ directly (and at a smaller waist, S0 ~16x larger: 0.35 -> 5.56 MHz at
 
 Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
 
-SUPERSEDED AS THE TIGHTEST BOUND (2026-08-01): M23 (run_stark_joint) fits the
+REPLACED AS THE TIGHTEST BOUND (2026-08-01): M23 (run_stark_joint) fits the
 FULL profiles of both sessions -- 20 summary widths here against ~220k points
 there -- and lands ~3x tighter. This module stays as the independent,
 simpler construction on committed summary numbers: it needs no quarantine
@@ -79,15 +79,15 @@ def main() -> int:
         w.writerow(["S0_225mW_ub95_profile", "shared", f"{res['S0_225_ub95_profile']:.3f}", "",
                     "95% upper bound on S0 at 225 mW (MHz, transition), profile likelihood -- the archival BOUND"])
         w.writerow(["kappa_ub95", "shared", f"{res['kappa_ub95']:.3f}", "",
-                    "SUPERSEDED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage"])
+                    "REPLACED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage"])
         w.writerow(["S0_225mW_fit", "shared", f"{res['S0_225_fit']:.3f}", "",
                     "fitted on-axis AC-Stark shift at 225 mW (MHz, transition)"])
         w.writerow(["S0_225mW_ub95", "shared", f"{res['S0_225_ub95']:.3f}", "",
-                    "SUPERSEDED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead"])
+                    "REPLACED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead"])
         w.writerow(["S0_225mW_ub95_raw", "shared", f"{res['S0_225_ub95_raw']:.3f}", "",
-                    "SUPERSEDED diagnostic: un-inflated Wald bound (MHz)"])
+                    "REPLACED diagnostic: un-inflated Wald bound (MHz)"])
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
-                    f"predicted S0 at 225 mW (w0={C.W0_PRIOR_M*1e6:.0f}um prior, rho={C.RHO_RETRO}) for comparison"])
+                    f"predicted S0 at 225 mW (w0={C.W0_MEASURED_M*1e6:.0f}um prior, rho={C.RHO_RETRO}) for comparison"])
         w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",
                     f"predicted S0 at 225 mW, w0={C.W0_BAND_M[1]*1e6:.0f}um, rho={C.RHO_RETRO-C.RHO_RETRO_ERR:.2f} (band LOW edge)"])
         w.writerow(["S0_225mW_pred_hi", "shared", f"{res['S0_225_pred_hi']:.3f}", "",

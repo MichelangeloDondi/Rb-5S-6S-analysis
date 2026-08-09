@@ -27,13 +27,13 @@ of them was retrofitted somewhere else after an incident.
    first, every family is seeded from a converged solution as well as run cold,
    the profile is the pointwise minimum over chains, and no cold-start profile
    reaches the CSV without a seeded twin. M28 closes the one gap M23 still has,
-   which is that M23's own basin-finder is quoted from cold chains alone.
+   which is that M23's own minimum search is quoted from cold chains alone.
 2. The QC gates of §5, evaluated mechanically at load time and reported whether
    they fire or not.
 3. The rulers stay out (§2), per addendum 22's refusal.
 
 What it is not: it is not a replacement for the M23 bound of record, and it does
-not free `beta_self`. Whether it supersedes M23, sits beside M25 as a third arm,
+not free `beta_self`. Whether it replaces M23, sits beside M25 as a third arm,
 or replaces both is left open until after the first full run (§9).
 
 ## 2. The trace census
@@ -103,7 +103,7 @@ The physics enters as
     transit(T)          = transit(110 C) x sqrt(T / 110 C)
     S0(P)               = kappa x P
 
-with `transit(110 C)` computed from the adopted waist, which stays OPEN and
+with `transit(110 C)` computed from the measured waist, which stays OPEN and
 which every absolute number here remains conditional on.
 
 **Every centre is free and no centre is interpreted.** M21 established that the
@@ -163,7 +163,7 @@ z-scores are printed so a reader can see them, the largest today being
 
     0, 0.25, 0.5, 0.75, 1.0, KAPPA_PRED, 1.5, 2.0, 2.62, 3.5, 5.0
 
-Eleven points. `KAPPA_PRED` is computed from the constants at the adopted waist
+Eleven points. `KAPPA_PRED` is computed from the constants at the measured waist
 and retro ratio, which currently gives 1.545 MHz per W. The value 2.62 is kept as
 a legacy checkpoint so profiles from before the v3.0.0 reprior stay comparable.
 The grid is identical to M23's, which is deliberate: the two profiles must be
@@ -180,7 +180,7 @@ is extended to 10 and 20 before anything is quoted (gate B5).
 
 ## 7. The profile families and the seeding order
 
-Five families. The order is load-bearing and is the whole of the basin
+Five families. The order is load-bearing and is the whole of the local minimum
 discipline.
 
 | order | family | wing | rehearsal direction | chains |
@@ -194,7 +194,7 @@ discipline.
 Every quoted profile is the pointwise minimum over that family's chains, so a
 seed can only improve a profile and never inflate one. Step 3 exists because the
 rule says no cold-start profile is quoted without a seeded twin, and the
-basin-finder is a quoted profile too. M23 quotes its wing row from cold chains
+minimum search is a quoted profile too. M23 quotes its wing row from cold chains
 alone, which is the one place its own rule is not yet satisfied.
 
 Leave-one-peak-out runs at the primary settings, seeded from the primary
@@ -219,7 +219,7 @@ settled.
 | B3 | railed shared PHYSICS parameters, meaning `beta_self`, `sigma_laser` and the rehearsal rates (amended, see below) | zero | a railed parameter carries no information and biases everything sharing its budget, which is the lesson the five-tooth ruler truncation taught M25. `beta_self` railed at 0 is a hard stop |
 | B4 | prior tension per peak, abs(post minus prior) over prior error | below 3 | above 3 the fit and the four-point measurement disagree about the same quantity, which is reported and not averaged away |
 | B5 | 95% crossing inside the grid | present | otherwise the bound is an extrapolation |
-| B6 | basin gap, best cold chain minus best seeded chain at any kappa | reported always, flagged above 1000 | the M23 incident printed 283,000 here. The pointwise minimum keeps the profile safe either way, so this is a flag rather than a stop |
+| B6 | local minimum gap, best cold chain minus best seeded chain at any kappa | reported always, flagged above 1000 | the M23 incident printed 283,000 here. The pointwise minimum keeps the profile safe either way, so this is a flag rather than a stop |
 | B7 | direction indifference, max abs chi2 difference between the two directions | reported, expected order 10 | a value in the thousands means a parked chain, not a physical direction preference |
 | B8 | `dchi2` at kappa = 0 | below 9 for bound language | above 9 the profile prefers a positive shift at better than 3 sigma, which is a detection claim and needs a decision before it is written down |
 
@@ -248,7 +248,7 @@ Stop conditions: B1, B3 or B5 failing. Also any of the following, which are
 judgment calls rather than thresholds and are settled case by case: a bound that moves by
 more than a factor of two from M23's in either direction, a `beta_self` posterior
 that disagrees with the four-point measurement at more than 3 sigma on two or
-more peaks, or a basin gap that survives seeding.
+more peaks, or a local minimum gap that survives seeding.
 
 ## 9. Open questions, before the full run
 

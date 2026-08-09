@@ -103,7 +103,7 @@ missing log, which has since been found.
 > ([PREREGISTRATION_timestamps.md](PREREGISTRATION_timestamps.md)).
 >
 > *Standing, 2026-07-22:* recollection, not yet checked against a clock.
-> *Superseded 2026-07-23:* the clock arrived. The audit opened with an
+> *Replaced 2026-07-23:* the clock arrived. The audit opened with an
 > integrity void at T1 and its predictions unscored, but the clock window was
 > confirmed and the JST clock reading was later instrument-validated against
 > in-file LeCroy trigger times to seconds (addendum 11,
@@ -581,7 +581,7 @@ single-block width scatter, so the bound comes entirely from averaging, an
 assumption the width-sharing check finds untested. Anything far above the prediction is excluded,
 while the prediction itself and zero both remain allowed.
 
-The superseded Wald rows stay in `stark_sweep.csv` as labelled diagnostics.
+The replaced Wald rows stay in `stark_sweep.csv` as labelled diagnostics.
 Downstream, the $\Delta\alpha$ bracket tightens from ~5800 to ~1200 a.u.
 
 **Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
@@ -665,7 +665,7 @@ conclusions:
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   overconfident. They assume one shared σ_laser across blocks and so omit the
   between-block drift the model-independent probe exposes.
-  **Superseded 2026-08-02, on firsthand knowledge of the bench:** the
+  **Replaced 2026-08-02, on firsthand knowledge of the bench:** the
   three-point 70–110 °C headline above is retired. The 130 °C power-sweep
   session's 225 mW block ran in the SAME optical/cell configuration as this
   T-sweep, so the "different configuration" reason for excluding it no
@@ -722,12 +722,12 @@ the brief, and they moved no headline number.
   An external audit of the excluded traces was verified against the
   repo; its two central factual claims did NOT survive, in opposite directions
   (do not re-litigate either):
-  (i) *"the four discards are MD5-superseded duplicate exports, not real
+  (i) *"the four discards are MD5-replaced duplicate exports, not real
   discards"*. False for 3 of 4: `4154nm_070c4`, `4192nm_090c3`,
   `4207nm_070c2` have no same-name canonical twin (their same-repeat matches
   are EOM *ruler* files, a role collision rather than a duplicate), and e.g.
   4154 70 °C has only 4 canonical repeats *because* 070c4 was excluded as a
-  shot. Only `4207nm_025mw2` is a genuine duplicate-name save superseded by a
+  shot. Only `4207nm_025mw2` is a genuine duplicate-name save replaced by a
   canonical twin (md5 26bf… vs 7ec1…). The committed curation audit
   (above) stands: four real excluded shots, one objective defect
   (070c4, zsib_height=−3.1), three kept-excluded by pre-registration.
@@ -853,13 +853,13 @@ with the recompute's addendum.*
 
 ### Fold robustness of the ruler fits
 
-- **SUPERSEDED 2026-08-05 by addendum 26, corrected reading first.** The
+- **REPLACED 2026-08-05 by addendum 26, corrected reading first.** The
   structural argument below is true of the ramp and false of a rigid-grid
   fit, whose window assignment is exactly what a fold displaces. The
   bounded form survives: an apex landing on a tooth (or, immaterially, on
   a half-tooth) is the benign case, and the validity layer's tests pin it.
   The original bullet is preserved beneath for the record.
-- **RF-on rulers are fold-robust (checked 2026-07-11, superseded above).**
+- **RF-on rulers are fold-robust (checked 2026-07-11, replaced above).**
   The rulers were taken with the same sweeps as their blocks, so one might
   worry the off-center-sweep fold (below) also corrupts the tooth-spacing
   fits — it does not, for a structural reason. The sweep is a symmetric
@@ -938,7 +938,7 @@ Lorentzian at 4.2 widths standoff.
 
 Three quantities have moved repeatedly, and their histories are collected here
 so that a reader can tell which value is live. A row's value is as this file
-recorded it on the row's date, which is why superseded numbers appear. A
+recorded it on the row's date, which is why replaced numbers appear. A
 history table is the one place they are licensed.
 
 The live value of anything marked current is the one in
@@ -950,19 +950,19 @@ the citation.
 
 | quantity | value | date | construction | what moved it | standing |
 |---|---|---|---|---|---|
-| β_self, MHz per 10¹² cm⁻³ | 0.07–0.15 | before 2026-07-16 | between-block scatter with a hard-coded 2σ multiplier | the multiplier hid its own assumption about degrees of freedom | superseded |
-| β_self | 0.2–0.4 | 2026-07-16 | the same scatter at the Student-t quantile *t*(0.95,1) = 6.31 on one residual degree of freedom | interval construction, not new data | superseded as the headline 2026-08-02 |
+| β_self, MHz per 10¹² cm⁻³ | 0.07–0.15 | before 2026-07-16 | between-block scatter with a hard-coded 2σ multiplier | the multiplier hid its own assumption about degrees of freedom | replaced |
+| β_self | 0.2–0.4 | 2026-07-16 | the same scatter at the Student-t quantile *t*(0.95,1) = 6.31 on one residual degree of freedom | interval construction, not new data | replaced as the headline 2026-08-02 |
 | β_self, per peak, 95% | < 0.21–0.44 | 2026-07-11 | model-independent raw widths across the three-point 70–110 °C cooling sweep | the 130 °C session was found to share the optical and cell configuration | retired 2026-08-02 |
 | β_self, per peak, 95% | ≲0.03–0.05 | 2026-08-02 | four-point 70/90/110/130 °C construction, dof = 2, ×52.5 lever | the owner's firsthand apparatus authority on the configuration | **current headline** |
 | β_self, joint hierarchical fit | 0.036 → 0.014 | 2026-07-12 | the same fit with and without the ×53 130 °C anchor | lengthening the lever, which is the lever test itself | a cross-check estimator, never the headline |
-| AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | superseded, kept in `stark_sweep.csv` as a labelled diagnostic |
+| AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | replaced, kept in `stark_sweep.csv` as a labelled diagnostic |
 | AC-Stark S₀ at 225 mW | 0.63 MHz | 2026-07-16 | profile likelihood on the width channel, over-dispersion scaled | interval construction, not new data | the independent width-only bracket |
 | AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, campaign, rehearsal and pilot morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | the tighter of the two, as quoted here since 2026-08-01. Requote from RESULTS.md |
-| AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm waist prior | the waist prior moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
+| AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm measured waist | the measured waist moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
 | Δα archival bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
 | beam waist w₀ | 32 µm | nominal | the design value | the transit Monte Carlo's missing crossing-flux factor, fixed 2026-07-13 | excluded |
 | beam waist w₀ | ~90 µm | before 2026-07-13 | a note that carried a factor-of-2 error | arithmetic | retracted |
-| beam waist w₀ | ~50 µm | 2026-07-13 | the corrected transit Monte Carlo, validated against Lehmann's 41.2 kHz example | a direct measurement became available | superseded |
+| beam waist w₀ | ~50 µm | 2026-07-13 | the corrected transit Monte Carlo, validated against Lehmann's 41.2 kHz example | a direct measurement became available | replaced |
 | beam waist w₀ | 64 µm | 2026-08-01 | Rajasree 2020's direct measurement on the same laser | nothing yet | **the adopted prior**, and still open |
 
 Each row's argument, and what it taught, is in §6.

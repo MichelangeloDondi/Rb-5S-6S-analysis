@@ -54,7 +54,7 @@ risk here.
 | T3 | **Mass-copy signature** | no single mtime shared by an implausible fraction of files | Same as T2 — copy artifact, not acquisition clock |
 | T4 | **Granularity** | record the quantisation (1 s, 2 s FAT, sub-second) | Not a failure; the spacing predictions (P5) are scored against the measured granularity, not against an assumed one |
 | T5 | **Timezone discipline** | all comparisons in raw epoch seconds | Not a failure; a fixed convention recorded once. JST acquisition read on a CET machine displaces displayed times by 7–8 h — never compare rendered local strings |
-| T6 | **Clock of record** | if native Agilent/Keysight `.h5` acquisitions are present, their embedded acquisition time supersedes mtime and is used instead | Not a failure; the choice is recorded per prediction, since an embedded time survives copying and an mtime may not. *Corrected 2026-07-23, still pre-data: the traces were taken on the InfiniiVision DSO-X 3054A, not the LeCroy this gate originally named, so `.trc`/WAVEDESC does not apply* |
+| T6 | **Clock of record** | if native Agilent/Keysight `.h5` acquisitions are present, their embedded acquisition time replaces mtime and is used instead | Not a failure; the choice is recorded per prediction, since an embedded time survives copying and an mtime may not. *Corrected 2026-07-23, still pre-data: the traces were taken on the InfiniiVision DSO-X 3054A, not the LeCroy this gate originally named, so `.trc`/WAVEDESC does not apply* |
 
 ## 4. Predictions
 
@@ -98,7 +98,7 @@ can return pass / fail / ambiguous with no judgement call at scoring time.
 | All pass | The chronology becomes **timestamp-verified** rather than experimenter-confirmed; limitation row 5 changes status and the $\sigma_\text{laser}$ epoch-sharing assumption becomes testable for the first time |
 
 Whatever the outcome, `PLAN.md`'s "no timestamps exist anywhere" is already
-superseded and has been corrected to describe what was available to the
+replaced and has been corrected to describe what was available to the
 archival analysis, with this audit named as pending.
 
 ---

@@ -16,7 +16,7 @@ So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is NOT the culprit (~0.01 MHz within a
 scan). The knife-edge measurement w0 turns this bound into a measurement. (w0 was
 re-centred 32 -> 50 um 2026-07-12 when the transit physics was corrected; 32 um
-now OVERSHOOTS the observed line and is excluded -- see constants.W0_PRIOR_M.)
+now OVERSHOOTS the observed line and is excluded -- see constants.W0_MEASURED_M.)
 
 We also report the block-to-block scatter of the fitted sigma_laser -- the
 block-to-block drift record of the bad-lock epoch -- the starting linewidth the ONF work
@@ -52,7 +52,7 @@ def w0_band():
         return a[-1] - a[0]
     band = []
     _lo_um, _hi_um = C.W0_BAND_M[0] * 1e6, C.W0_BAND_M[1] * 1e6
-    _pr_um = C.W0_PRIOR_M * 1e6
+    _pr_um = C.W0_MEASURED_M * 1e6
     for w0_um, w0 in ((_hi_um, f"~{_hi_um:.0f}um"),
                       (_pr_um, f"{_pr_um:.0f}um prior"),
                       (_lo_um, f"~{_lo_um:.0f}um")):
@@ -91,7 +91,7 @@ def main() -> int:
           + ", ".join(f"{r['peak']}@{r['T'] if r['role']=='t_sweep' else '130/'+r['P']+'mw'}"
                       for r in degen))
     print(f"  well-constrained sigma_laser (transition axis, at the "
-          f"w0={C.W0_PRIOR_M*1e6:.0f}um prior):")
+          f"w0={C.W0_MEASURED_M*1e6:.0f}um prior):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
           f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
@@ -121,10 +121,10 @@ def main() -> int:
         # would be false. It is a bound, not a measurement.
         w.writerow(["quantity", "value_MHz", "axis", "status"])
         w.writerow(["sigma_laser_bound", f"<{bound:.1f}", "laser",
-                    f"upper bound over the w0 prior band "
+                    f"upper bound over the measured w0 band "
                     f"({C.W0_BAND_M[0]*1e6:.0f}-{C.W0_BAND_M[1]*1e6:.0f}um), "
                     f"rising with w0; =0 at w0~16um; conditional on the "
-                    f"adopted w0={C.W0_PRIOR_M*1e6:.0f}um until a beam profile "
+                    f"adopted w0={C.W0_MEASURED_M*1e6:.0f}um until a beam profile "
                     f"is measured on this bench"])
         for tr, w0, sl in band:
             w.writerow([f"sigma_laser_at_transit_{tr}", f"{sl:.3f}", "laser", f"w0_{w0}"])

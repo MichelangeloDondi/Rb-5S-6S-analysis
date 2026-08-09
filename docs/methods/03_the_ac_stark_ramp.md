@@ -247,7 +247,7 @@ form is fair and the *width* is the only unknown. Geometry permitting, a
 proposed session's skew program is then a **sign-flip test between beam
 configurations** — $g_1$ positive at the large waist, $g_1$ negative at the small one —
 a signature no instrumental asymmetry can mimic, because the instrument
-depends on $z_R$. At the adopted 64 µm archival waist the
+depends on $z_R$. At the measured 64 µm archival waist the
 coefficients above carry only a few-% geometry caveat (its longer $z_R$ makes
 the ramp nearly the pure-triangle $Z_c\to0$ limit, $g_1\approx+0.56$; it was
 10–40% at the old 32 µm nominal, and the wider waist only strengthens the
@@ -327,7 +327,7 @@ $$S_0=\frac{\Delta\alpha\ I_\text{eff}}{2\varepsilon_0 c h},\qquad
 I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
 With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.35$ MHz (transition) at 225 mW,
-$w_0=64$ µm (the adopted prior; it read 0.59 at the superseded 50 µm and
+$w_0=64$ µm (the adopted prior; it read 0.59 at the replaced 50 µm and
 1.43 at the 32 µm nominal before that),
 $\rho=0.94$, growing to 5.6 MHz at $w_0=16$ µm. The on-axis $\propto S_0^3$
 scaling above is the *pure transverse triangle*; at a small waist the axial

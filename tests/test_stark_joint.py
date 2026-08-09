@@ -69,8 +69,8 @@ def test_campaign_only_and_joint_bounds_are_same_order():
     """A subset bound need not be weaker than the joint bound: adding
     sessions tightens a profile bound only when the added data disfavour
     kappa, and the rehearsal mildly PREFERS a positive shift, so in the
-    true basin the joint bound sits looser than the campaign-only column
-    (addendum 24 logs it). The stuck-basin record had the opposite
+    true local minimum the joint bound sits looser than the campaign-only column
+    (addendum 24 logs it). The stuck-chain record had the opposite
     ordering, and an earlier version of this test asserted it as if it
     were a law. What must actually hold is that the two constructions
     describe the same physics: within a factor 4 of each other, in
@@ -146,7 +146,7 @@ def test_gc_posterior_within_prior():
     to prevent) nor wander far above its prior. Peak 4192 carries the 26
     pilot traces on top of its campaign rows, so its likelihood is the
     one entitled to pull against a campaign-derived prior: in the true
-    basin it settles 4.7 prior sigmas high (addendum 24 logs it), and it
+    local minimum it settles 4.7 prior sigmas high (addendum 24 logs it), and it
     gets a wider leash for that stated reason. The other three peaks
     stay on the campaign-only leash."""
     import re

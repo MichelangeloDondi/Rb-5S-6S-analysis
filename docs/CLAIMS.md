@@ -35,7 +35,7 @@ two-photon sum frequency, twice the laser frequency.
   depends on the waist only weakly, through the transit kernel in its
   lineshape. The prediction it is compared against rides the waist
   prior directly: 0.35 MHz
-  central, with a 0.28-0.40 MHz band over the waist prior band and the
+  central, with a 0.28-0.40 MHz band over the waist measurement band and the
   retro ratio. The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
   but not a comfortable one, and the most conservative data subset's
@@ -43,7 +43,7 @@ two-photon sum frequency, twice the laser frequency.
   0.348), so it excludes none of it. The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
-- The 2025 laser linewidth: below 1.2 MHz per photon at the waist prior,
+- The 2025 laser linewidth: below 1.2 MHz per photon at the measured waist,
   rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz
   on the transition axis, are preliminary: their block-to-block
   variation is partly the collision-laser degeneracy rather than
@@ -158,7 +158,7 @@ systematic as fig1.*
 - A validation discipline: model ladder, identifiability profiles,
   coverage tested on synthetic truth, and a preregistered audit trail
   in which twenty-seven dated addenda record every claim that was
-  withdrawn, corrected, or downgraded, including the basin retraction
+  withdrawn, corrected, or downgraded, including the local minimum retraction
   of this archive's own headline light-shift bound.
 
 ## 2. What is not claimed
@@ -249,7 +249,7 @@ would add:
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about sixteenfold over
   the archival 64 µm waist, fourteenfold over the planned 60 µm), which
-  the plan carries as a second-tier item, and the cumulant's sign
+  the plan carries as a second-stage item, and the cumulant's sign
   depends on collection geometry that would have to be measured in the
   same session. The fixed lock alone does not reach this.
 
@@ -312,7 +312,7 @@ conservative reading of a scatter averaged over a whole ladder. The
 ceiling goes as the square of the waist, so a looser focus raises it
 and buys back signal at the cost of transit width and of the density
 lever, which is the trade the 778 nm rung would have to make and which
-this projection does not price.
+this projection does not quantify.
 
 For the bench owner choosing a source rather than a line, those
 ceilings decide the hardware. At 993 nm the ceiling sits above what

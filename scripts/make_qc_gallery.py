@@ -388,7 +388,7 @@ CARRIER_WORD = {
 }
 
 DISCARD_WORD = (
-    ("duplicate-name save", "the second save of one recording, superseded by the "
+    ("duplicate-name save", "the second save of one recording, replaced by the "
                             "copy that was kept"),
     ("dimmer than its repeat", "about a quarter dimmer than the repeats taken "
                                "beside it"),

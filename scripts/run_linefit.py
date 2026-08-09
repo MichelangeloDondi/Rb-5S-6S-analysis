@@ -11,7 +11,7 @@ PRELIMINARY by construction — read before using any number:
   * The DEGENERACY-ROBUST observable is the TOTAL Voigt FWHM per condition
     and its temperature trend — reported first. gamma_coll(T) is shown but
     is preliminary; beta_self proper (with the confound program, N(T), and
-    the w0 prior) is module M4.
+    the measured w0) is module M4.
 
 Rate assignment (per condition -> its M2 block rate, transition axis):
   * T-sweep line (peak, T)  -> ruler_t block (peak, T)

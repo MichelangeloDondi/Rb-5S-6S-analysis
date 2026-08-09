@@ -7,7 +7,7 @@ simpler model just as good? Fit a ladder of nested models of increasing
 physics and compare by BIC:
 
     A  Voigt            Lorentz(Gamma_nat) (x) Gaussian(sigma_laser)
-    B  + transit        A (x) transit(FIXED at the w0 prior)
+    B  + transit        A (x) transit(FIXED at the measured w0)
     C  + collisions     Lorentz(Gamma_nat + gamma_coll) (x) Gaussian (x) transit
     D  + AC-Stark ramp  C (x) triangular ramp(S0)
 

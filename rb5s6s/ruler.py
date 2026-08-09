@@ -145,7 +145,7 @@ def comb_phase_seed(t_ms: np.ndarray, v: np.ndarray, delta_ms: float, *,
 # ---------------------------------------------------------------------------
 # stage 1b: the integer fold, seeded from the sideband amplitudes
 # ---------------------------------------------------------------------------
-# Adjudicated action RT12 of the frequency-calibration red team, amendment 8 of
+# Adjudicated action RT12 of the frequency-calibration adversarial review, amendment 8 of
 # docs/notes/ruler_validity_and_trim_prereg.md, answering the question amendment
 # 5 section E4 parked: whether the fit should be seeded to land on the correct
 # labelling rather than corrected after inspection.

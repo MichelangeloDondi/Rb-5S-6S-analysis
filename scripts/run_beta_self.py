@@ -12,7 +12,7 @@ apparatus authority). The beta_self headline is now the FOUR-POINT
 construction: 70/90/110/130 C, dof=2, the x52.5 density lever (N(130)/N(70)),
 built from the T-sweep (70/90/110 C) plus the 130 C power-sweep session's
 225 mW block. There is no separate three-point (70/90/110 C, dof=1, x16.2
-lever) headline kept alongside it; that construction is superseded, not
+lever) headline kept alongside it; that construction is replaced, not
 demoted to a robustness row -- one licensed construction, one bound, per
 peak. The prior version of this module (and of docs/DATA.md, README.md and
 the ledger) treated 130 C as an optional extra lever point excluded from the
@@ -150,7 +150,7 @@ def width_vs_density_probe(rows, peak, trates, prates, include_130=False):
     ruler-rate uncertainty, both block-coherent) — the error the global fit's
     shared-sigma_laser assumption omits. Optionally extends the lever arm with
     the 130 C point (the 225 mW power-session files): N(130)/N(110) ~ 3.2, at
-    the price of reaching the extreme end of the lever, with a rate from the
+    the quantify of reaching the extreme end of the lever, with a rate from the
     bracket combination (its before/after half-difference carried as
     uncertainty). Not a cross-session comparison: the recovered clock puts the
     130 C block 2.3 h from the 110 C dwell, inside one campaign."""
@@ -278,7 +278,7 @@ def load_conditions(rows, peak, trates, prates=None):
     headline (2026-08-02) is the 70/90/110 C T-sweep plus the 130 C P-sweep
     225 mW block, one shared density axis, each block calibrated by its own
     session's rate (see the module docstring). Pass prates=None to get the
-    T-sweep-only (superseded) three-point list, e.g. for a diagnostic."""
+    T-sweep-only (replaced) three-point list, e.g. for a diagnostic."""
     byT = defaultdict(list)
     for r in rows:
         if (r["flag"] == "canonical" and r["role"] == "t_sweep"
@@ -669,7 +669,7 @@ def main() -> int:
     # The weights come from the measured sigma(V) law (M1). If beta depended
     # strongly on that choice, the noise model would be doing physics work it
     # was never validated for. Refit every peak with law=None (uniform) and
-    # record the shift; a red-team review named this swap as untested (2026-07-25).
+    # record the shift; an adversarial review named this swap as untested (2026-07-25).
     swap_rows = []
     for peak, (fit_w, conds) in fits.items():
         uni = fit_beta_self([dict(c, law=None) for c in conds],

@@ -4,7 +4,7 @@ The g1 sign-flip discussion (PLAN section 8.3 #4, methods/03, the
 run_ramp_geometry docstring, config's Z_c envelope note) quotes specific
 moment coefficients and the crossover location. A stale-number incident
 (2026-07-22: PLAN still quoted "g1 +0.40, 10-40% modified" for the archival
-geometry, a leftover of the superseded 32 um waist that contradicted both
+geometry, a leftover of the replaced 32 um waist that contradicted both
 methods/03 and the script output) motivated pinning every quoted value to
 the function that produces it. If lineshape.stark_ramp_axial_moments or the
 config geometry changes, these tests name the documents that must move with
@@ -61,8 +61,8 @@ DOC_TOKENS = [
                       "+0.402", "−0.421"]),
     # "$+0.558$" was replaced by "$+0.565$" on 2026-08-04: the archival row of
     # methods/03's geometry table and its reading paragraph were still computed
-    # at the superseded 50 um waist, which printed a LARGER Z_c/z_R than the
-    # 60 um row directly above it. Recomputed at the adopted 64 um prior.
+    # at the replaced 50 um waist, which printed a LARGER Z_c/z_R than the
+    # 60 um row directly above it. Recomputed at the measured 64 um prior.
     ("docs/methods/03_the_ac_stark_ramp.md",
      ["$+0.565$", "$-0.354$", "$+0.564$", "1.12"]),
     ("scripts/run_ramp_geometry.py", ["1.12", "Z_c > ~0.9 mm"]),
@@ -94,7 +94,7 @@ def test_tabulated_g1_match_computation(w0_um, doc_g1):
 # magnitude and, past the crossover, its sign. PLAN itself retracts x64 as
 # "wrong in sign", yet four documents still carried it (found 2026-07-22).
 _X64 = re.compile(r"(×64|x64|64\\times|64\s*×)")
-_RETRACTED = re.compile(r"naive|supersed|wrong in sign|not by the", re.I)
+_RETRACTED = re.compile(r"naive|supersed|replaced|wrong in sign|not by the", re.I)
 # ...and the same claim survives WITHOUT the literal x64, as "the small waist
 # makes the propto S_0^3 skew a detection" (found in PAPER1_SKELETON and
 # methods/03 after the x64 sweep was declared complete). Flag an S_0^3 that is
@@ -115,7 +115,7 @@ _AXIAL = re.compile(r"axial|sign[- ]flip|flips? sign|1\.12|cumulant|"
 # the generator it comes from. The first version of this list watched only the
 # hand-written docs, and the three files it omitted (docs/RESULTS.md, its
 # generator, and FUTURE_TRANSITIONS) were exactly the three that still carried
-# the superseded x64 a commit later.
+# the replaced x64 a commit later.
 SKEW_DOCS = ["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
              "docs/THEORY_NOTE.md", "docs/PLAN.md",
              "docs/methods/03_the_ac_stark_ramp.md",
@@ -420,14 +420,14 @@ def test_cathode_geometry_is_flagged_as_assumed():
 
 def test_small_waist_S0_factor_tracks_the_waist_prior():
     """The "small waist makes S0 N-times larger" factor is not a constant: it is
-    S0(16 um)/S0(W0_PRIOR_M), so it moves whenever the waist prior moves. It once
+    S0(16 um)/S0(W0_MEASURED_M), so it moves whenever the measured waist moves. It once
     said 4x, which is exactly (32/16)^2 -- the ratio at the 32 um nominal that
     constants.py itself marks excluded. Recompute it and require the docs to
     quote the current value, so the factor cannot outlive the prior again."""
     import re
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    from rb5s6s.constants import W0_PRIOR_M
-    ratio = stark_shift_S0_mhz(0.225, 16e-6) / stark_shift_S0_mhz(0.225, W0_PRIOR_M)
+    from rb5s6s.constants import W0_MEASURED_M
+    ratio = stark_shift_S0_mhz(0.225, 16e-6) / stark_shift_S0_mhz(0.225, W0_MEASURED_M)
     stale = round(stark_shift_S0_mhz(0.225, 16e-6)
                   / stark_shift_S0_mhz(0.225, 32e-6))          # the 4 that was there
     assert ratio > stale + 1, "prior moved; this guard's premise needs revisiting"
@@ -439,5 +439,5 @@ def test_small_waist_S0_factor_tracks_the_waist_prior():
             if re.search(rf"(^|[^0-9]){stale}\s*(×|\\times|x larger)", seg):
                 bad.append(f"{rel}: {seg[:70]!r}")
     assert not bad, (
-        f"the superseded x{stale} waist factor is back; the current ratio is "
-        f"x{ratio:.1f} at w0={W0_PRIOR_M * 1e6:.0f} um:\n  " + "\n  ".join(bad))
+        f"the replaced x{stale} waist factor is back; the current ratio is "
+        f"x{ratio:.1f} at w0={W0_MEASURED_M * 1e6:.0f} um:\n  " + "\n  ".join(bad))

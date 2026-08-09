@@ -57,7 +57,7 @@ def main() -> int:
       "64 µm waist measurement (Nieddu/Rajasree) is what makes the exclusion "
       "safe. "
       f"Since v3.0.0 that measurement is the prior: $w_0$ is **"
-      f"{C.W0_PRIOR_M*1e6:.0f} µm** (band {C.W0_BAND_M[0]*1e6:.0f}–"
+      f"{C.W0_MEASURED_M*1e6:.0f} µm** (band {C.W0_BAND_M[0]*1e6:.0f}–"
       f"{C.W0_BAND_M[1]*1e6:.0f}), adopted from the lineage rather than "
       "inferred from our own line, and the retro ratio is "
       f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$ rather than an asserted 1. "
@@ -346,7 +346,7 @@ def main() -> int:
     W("- Degenerate with $w_0$ through the transit kernel: the transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which overshoots the observed line, so 32 µm is excluded) and "
       f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2f} MHz at the "
-      f"{C.W0_PRIOR_M*1e6:.0f} µm prior. More transit leaves less width for "
+      f"{C.W0_MEASURED_M*1e6:.0f} µm prior. More transit leaves less width for "
       "the laser.")
     # Axis discipline: laser_epoch.csv is on the LASER axis, every fit below is
     # on the transition axis (= 2x laser). All four numbers are read from the
@@ -384,7 +384,7 @@ def main() -> int:
           f"the free ones, and that spread is the "
           f"$\\beta\\leftrightarrow\\sigma_\\text{{laser}}$ degeneracy under the "
           f"density constraint rather than a physical laser drift. The archive's "
-          f"own central value at the adopted waist is {cv:.2f} MHz on the laser "
+          f"own central value at the measured waist is {cv:.2f} MHz on the laser "
           f"axis ({2 * cv:.2f} transition). Every committed CSV carries the axis "
           f"in its unit string.\n")
     W("*Lifted by:* a beam-profile $w_0$ (knife-edge and/or camera) plus a direct "
@@ -426,12 +426,12 @@ def main() -> int:
     swp = {(r["quantity"], r["key"]): r for r in rows("stark_sweep")}
     s0p = swp.get(("S0_225mW_pred", "shared"))
     gain = (stark_shift_S0_mhz(0.225, W0_SMALL_M)
-            / stark_shift_S0_mhz(0.225, C.W0_PRIOR_M))
+            / stark_shift_S0_mhz(0.225, C.W0_MEASURED_M))
     skew_gain = (f"$S_0$ {float(s0p['value']):.2f} → "
                  f"{float(s0p['value']) * gain:.1f} MHz at 225 mW, "
                  f"{gain:.0f} times larger at the {W0_SMALL_M * 1e6:.0f} µm "
                  f"configuration than at the adopted "
-                 f"{C.W0_PRIOR_M * 1e6:.0f} µm") if s0p else "a larger $S_0$"
+                 f"{C.W0_MEASURED_M * 1e6:.0f} µm") if s0p else "a larger $S_0$"
     # worst low-power residual skew, read from the CSV rather than typed: the
     # same figure was quoted as ~10 sigma and then as 9 sigma in one bullet
     lowp = [r for r in ps if int(r["power_mW"]) == min(int(x["power_mW"])
@@ -486,7 +486,7 @@ def main() -> int:
       "un-absorbs the large first-order pull, and the small waist "
       f"({skew_gain}) "
       "makes the ramp asymmetry a detection. The naive $S_0^3$ reading is "
-      "superseded, because the axial average changes the third cumulant's magnitude "
+      "replaced, because the axial average changes the third cumulant's magnitude "
       "and, "
       "past $Z_c/z_R\\approx1.12$, its sign (see `docs/PLAN.md`). Which side of that "
       "crossover each configuration sits on is set by $Z_c = L_\\parallel/2M$, and "
@@ -534,7 +534,7 @@ def main() -> int:
           f"measurement. It **brackets** the prediction. The bound and the "
           f"prediction are independent by construction: the bound uses only the "
           f"width-against-power data (no $w_0$ enters), while the prediction is the "
-          f"computed polarizability at the $w_0$ prior, fixed before the fit and "
+          f"computed polarizability at the measured $w_0$, fixed before the fit and "
           f"never an input to it, so their agreement is a genuine consistency check. "
           f"That independence is from the density lever and the polarizability, "
           f"**not** from the lineshape model. Like the $\\beta$ *fit* (rather than the "
@@ -542,10 +542,10 @@ def main() -> int:
           f"forward-models each line through `model_profile`, so this bound is "
           f"conditional on that spectral model. "
           f"The prediction is not a point but a **band**: the {plo:.2f}–{phi:.2f} "
-          f"MHz spread is $S_0$ over the $w_0$ prior band "
+          f"MHz spread is $S_0$ over the measured $w_0$ band "
           f"{C.W0_BAND_M[0]*1e6:.0f}–{C.W0_BAND_M[1]*1e6:.0f} µm "
           f"($\\propto 1/w_0^2$, central {pr:.2f} at the adopted "
-          f"{C.W0_PRIOR_M*1e6:.0f} µm) folded with "
+          f"{C.W0_MEASURED_M*1e6:.0f} µm) folded with "
           f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$, the retro ratio now "
           f"assumed rather than asserted at 1 ($S_0\\propto(1+\\rho)$, and the "
           f"in-situ $\\rho$ is a fixed-lock-session task, see `docs/PLAN.md`), under "
@@ -555,7 +555,7 @@ def main() -> int:
           f"95% is load-bearing and documented:** the best fit rails at $\\kappa=0$, "
           f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
           f"linearized (Wald) $\\kappa+1.645\\sigma$ bound has no valid coverage "
-          f"there, its $\\sigma$ being a finite-difference artifact (the superseded "
+          f"there, its $\\sigma$ being a finite-difference artifact (the replaced "
           f"Wald numbers, {float(sv['S0_225mW_ub95_raw']['value']):.1f} raw and "
           f"{float(sv['S0_225mW_ub95']['value']):.1f} inflated MHz, stay in the CSV "
           f"as diagnostics). The quoted bound is instead a **profile-likelihood** "
@@ -618,7 +618,7 @@ def main() -> int:
           f"consequence is "
           f"the deliverable:** cycle or randomise the power ordering so drift is "
           f"orthogonal to the pull, *and* leave the horizontal position alone, or "
-          f"log it, because every move severs the centre record. A superseded "
+          f"log it, because every move severs the centre record. A replaced "
           f"version of this bound, below 7.3 MHz, was tighter only because it "
           f"differenced positions across those moves. "
           f"**A second, stronger attempt failed on the signal's own shape.** "
@@ -651,7 +651,7 @@ def main() -> int:
     if sj and ("S0_225mW_pred", "prediction") not in sj:
         # The joint fit has not been re-run since the priors moved, so its CSV
         # predates the kappa_pred and drop4192 rows this section reads. Skip
-        # rather than print numbers computed against a superseded prior.
+        # rather than print numbers computed against a replaced prior.
         print("  [C3f skipped] results/stark_joint.csv predates the current "
               "priors. Re-run scripts/run_stark_joint.py, then regenerate.")
         sj = {}
@@ -696,11 +696,11 @@ def main() -> int:
           f"{v('dchi2_kappa0','primary'):.1f}$ below $\\kappa=0$, consistent "
           f"with no shift at all. Every quoted profile is the pointwise "
           f"minimum over a cold forward chain, a backward chain, and a chain "
-          f"seeded from the basin-finder (addendum 24: a cold-start chain "
-          f"parked 283,000 units above the basin in this very run, and the "
+          f"seeded from the minimum search (addendum 24: a cold-start chain "
+          f"parked 283,000 units above the local minimum in this very run, and the "
           f"seeded twin is what disarms that failure mode). "
           f"Against $S_0(225) = {v('S0_225mW_pred','prediction'):.2f}$ MHz "
-          f"predicted at the adopted $w_0={C.W0_PRIOR_M*1e6:.0f}$ µm with "
+          f"predicted at the measured $w_0={C.W0_MEASURED_M*1e6:.0f}$ µm with "
           f"$\\rho={C.RHO_RETRO}$, the fit gives "
           f"{pred_ratio:.1f}× less. The spread across data subsets is the "
           f"dominant systematic: {v('S0_225mW_ub95','primary'):.2f} MHz from all "
@@ -719,7 +719,7 @@ def main() -> int:
           f"subset does not, so the margin is read from the primary alone: "
           f"the predicted $\\kappa$ lies above the 95% limit with "
           f"$\\Delta\\chi^2\\approx4$, a two-sigma-level exclusion, not a "
-          f"comfortable one. The waist prior is the lineage measurement, since "
+          f"comfortable one. The measured waist is the lineage measurement, since "
           f"[Rajasree 2020](lit/rajasree2020thesis.md) recorded 128 µm "
           f"diameter on the same laser model, lens and geometry, so the "
           f"comparison is a direct test of it. Further robustness: dropping "
@@ -1057,7 +1057,7 @@ def main() -> int:
           f"($S_0$ bounds and the asymmetry null use $|\\Delta\\alpha|$). "
           f"Validation against anchors the model does not use: the measured 5S "
           f"tune-out 790.032326(32) nm (Leonard 2015 as corrected by their 2017 "
-          f"erratum, PRA 95 059901(E), both now held, and the superseded 2015 value "
+          f"erratum, PRA 95 059901(E), both now held, and the replaced 2015 value "
           f"was 790.032388(32), 0.062 pm away) is "
           f"reproduced at {to:.4f} nm (≈1.6 pm), "
           f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2f}, and the "

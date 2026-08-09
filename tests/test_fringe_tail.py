@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Frozen ANCHOR geometries, not the live configuration: 50 um / 0.6 MHz is the
 # waist the earlier direct Monte-Carlo was run at, kept so the estimator can be
 # checked against it to the digit. The committed CSV is produced at
-# config.W0_PRIOR_M (64 um) -- see scripts/run_fringe_tail.py.
+# config.W0_MEASURED_M (64 um) -- see scripts/run_fringe_tail.py.
 _ARCHIVAL = dict(w0_m=50e-6, s0_mhz=0.6)
 _SMALL = dict(w0_m=16e-6, s0_mhz=5.7)
 
@@ -128,7 +128,7 @@ def _suppression_pct(prefix: str) -> str:
     return f"{min(v):.0f}-{max(v):.0f}%"
 
 
-# (document, regime key prefixes it quotes: "2025_" = the w0 prior, "S_" = 16 um)
+# (document, regime key prefixes it quotes: "2025_" = the measured w0, "S_" = 16 um)
 SUPPRESSION_SITES = [
     ("docs/RESULTS.md", ("S_",)),
     ("docs/PLAN.md", ("S_",)),

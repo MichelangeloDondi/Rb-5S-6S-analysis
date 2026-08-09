@@ -19,7 +19,7 @@ provenance. Where a number in this file disagrees with the table or the map,
 the table and the map win on numbers and this file wins on procedure. Where it
 disagrees with `APPARATUS.md` the split is by kind rather than by number:
 hardware facts are APPARATUS's and priorities are PLAN's, so a channel that
-document records as available and prices low can still sit in Tier 0 here, and
+document records as available and costs low can still sit in stage 0 here, and
 a session that wanted the priority changed would have to argue it in this file.
 Projected precisions
 are not restated here beyond two headline figures: they live in
@@ -27,7 +27,7 @@ are not restated here beyond two headline figures: they live in
 from the archive's own measured precision and the session parameters this
 document states.
 
-**The schema, applied to every priced block below.** Each block states, in
+**The schema, applied to every costed block below.** Each block states, in
 this order and in these words: **Needs** (its prerequisites, with hardware
 facts cited to [`APPARATUS.md`](APPARATUS.md) rather than restated), **Shots**
 (what to acquire, or the section that holds the list of record), **Go/no-go**
@@ -43,7 +43,7 @@ requires and rejects anything else against. On that path a session buys shots
 and not software. Two of the blocks below deliberately leave it: the native
 `.h5` export of §7g, which carries the per-scan timestamp and which no reader
 in this package reads today, and any segmented or longer acquisition. Each of
-those costs a loader, which is priced with the block that asks for it and is
+those costs a loader, which is costed with the block that asks for it and is
 not a hidden cost of the session.
 
 The adaptation seams for another line or species are named in
@@ -67,20 +67,20 @@ executed archival analysis plan is summarised in Appendix A and documented in
 
 ## The block register
 
-Every block this document prices, with its address, what it converts, its cost,
+Every block this document costs, with its address, what it converts, its cost,
 its empty case, and whether its output is community-facing. Durations are this
-document's own where a block is priced and are marked otherwise. Sections 5 to
+document's own where a block is costed and are marked otherwise. Sections 5 to
 8 and 12 hold the blocks. Section 3 ranks them for a shrinking budget, and each
 of its items points at the block that executes it.
 
 | block | address | what it converts | bench cost | could come back empty | output |
 |---|---|---|---|---|---|
-| the fixed lock | §3 Tier 0 lead, run first in §9 D1 | a shape-only epoch into one whose centres carry metrological meaning | half an hour before the first science block, no new hardware | no empty case, the held-drift record selects which protocol the day runs under | internal |
+| the fixed lock | §3 stage 0 lead, run first in §9 D1 | a shape-only epoch into one whose centres carry metrological meaning | half an hour before the first science block, no new hardware | no empty case, the held-drift record selects which protocol the day runs under | internal |
 | ramp-monitor export | §3 item 0, run in §9 D1 | the dead centre channel into a time axis independent of the scope knob | one spare channel, no bench time of its own | nothing, the column is either saved or it is not | internal |
 | beam profile w₀ | §3 item 1, §4.2, run in §9 D1 and D4 | every w₀-conditional absolute number into a measured one | an afternoon per configuration, no atoms | the number may describe the present bench rather than the 2025 one | community |
 | retro ratio ρ in situ | §3 item 2, §4.2, run in §9 D1 and D4 | an assumed ρ into a measured one, per configuration and per temperature | inside the metrology afternoon | a pick-off that does not separate outgoing from returning light | internal |
 | transit-difference anchor and model-form closure | §5, run in §9 D6 | a knife-edge-conditional intensity axis into one anchored on thermal physics, and an assumed transit kernel into a tested one | one cold, low-power day at S and L | the cusp may sit under the detection bandwidth, leaving the model comparison without a preference | community |
-| wide-scan Doppler pedestal | §5 | an adopted gas temperature and retro ratio into in-situ measurements | a wider scan setting on dwells already priced, no new hardware and no lock quality | the pedestal may not separate from scattered light, and the area ratio is flat in ρ near one | community |
+| wide-scan Doppler pedestal | §5 | an adopted gas temperature and retro ratio into in-situ measurements | a wider scan setting on dwells already costed, no new hardware and no lock quality | the pedestal may not separate from scattered light, and the area ratio is flat in ρ near one | community |
 | mean pull against P | §6 item 1 | the AC-Stark bound into the first measured light shift on this line | one morning of randomized power cycling | the lock may not hold minutes-scale stability | community |
 | excess variance against P² | §6 item 2 | a second, independent functional of the same S₀ | rides the same blocks as item 1 | the second moment may stay under its own floor | community |
 | skew hunt at S | §6 item 3 | a bound on the third cumulant into a detection, or a meaningful bound | the deep-integration day, §9 D5 | not a promised result, sized for the pessimistic end | community |
@@ -172,7 +172,7 @@ bounds already deliver. Averaging reaches it only in numbers: about 24 blocks
 to bring 0.62 MHz below the joint-fit pull and about 4 to bring it below the
 width-only one, and only if the residual is independent from block to block.
 The floor is what a fixed lock has to beat, and it is the number the go/no-go
-of Tier 0 should be read against, not the 0.19 MHz/min straight line the same
+of stage 0 should be read against, not the 0.19 MHz/min straight line the same
 record was once read as.
 
 ![the drift problem, what was extracted, and what a fixed lock buys](../figures/fig15_drift_story.png)
@@ -239,7 +239,7 @@ with its cause ([`PREREGISTRATION_RESULTS.md`](PREREGISTRATION_RESULTS.md)).
 The session's job is bounds to measurements. Rank effort by which bound becomes
 a measurement and how absolute. If a day is lost, cut from the bottom, never
 the top. This section ranks observables and points each item at the block that
-runs it. §10 prices the sampling currencies against the measured 2025 failure
+runs it. §10 costs the sampling currencies against the measured 2025 failure
 modes.
 
 [`BIG_PICTURE.md`](BIG_PICTURE.md) §5 also ranks new vapour-cell measurements,
@@ -250,7 +250,7 @@ items. The ramp-monitor export and the retro ratio are absent from that list
 because they are instrument repairs rather than new physics, which is exactly
 why they sit at the top of this one.
 
-**Tier 0, the systematic floor. Protect first. None of these is a
+**stage 0, the systematic floor. Protect first. None of these is a
 more-data knob.**
 
 **The fixed lock, the epoch condition, which the cut rule cannot reach.** Every
@@ -305,13 +305,13 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    leave the horizontal position alone, or log it, because every move severs the
    centre record.
    **Needs.** One spare scope channel, and the ramp monitor already available on
-   the bench. `APPARATUS.md` §4.2 records that channel as present and prices it
+   the bench. `APPARATUS.md` §4.2 records that channel as present and costs it
    low, calling it the first thing to drop if channels are contended, and this
    plan disagrees with that priority rather than with the hardware fact. The
    verdict there was written before the window-reference retraction and weighs
    the ramp against the EOM comb, which is the wrong comparison: the comb fixes
    the scale and the ramp export fixes the origin, and the origin is what the
-   centre channel lost. That is what lifts it to Tier 0 here. **Shots.** The
+   centre channel lost. That is what lifts it to stage 0 here. **Shots.** The
    triangle drive co-recorded on
    every science trace, not sampled. **Go/no-go.** Confirm on the first exported
    file that the ramp column is present and that its apex times reconstruct the
@@ -341,7 +341,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    a second, in-situ ρ on the same traces, by a route that shares no optic with
    the pick-off.
 
-**Tier 1, enablers. The measurement does not exist without them.**
+**stage 1, enablers. The measurement does not exist without them.**
 
 3. **150–170 °C, same session, interleaved T order.** 70–130 °C gives
    Δγ ≈ 20 kHz (invisible), while 150–170 °C gives 0.07–0.25 MHz. In 2025
@@ -364,11 +364,11 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    number, plausibly a larger systematic than the beam waist and cheap to bound
    in the same session, which is why it recommends moving this item near the top
    of this ranking ([`PREREGISTRATION_RESULTS.md`](PREREGISTRATION_RESULTS.md)
-   addendum 15). It sits in Tier 1 rather than lower because §7c cannot run the
+   addendum 15). It sits in stage 1 rather than lower because §7c cannot run the
    high-temperature grid until the lag is characterised, so it enables rather
    than refines. Runs as §8 item 3.
 
-**Tier 2, handle strength (S₀ ∝ (1+ρ)P/w₀²), served by two waists.**
+**stage 2, handle strength (S₀ ∝ (1+ρ)P/w₀²), served by two waists.**
 
 6. **Small waist (16 µm), the Stark, skew and lineshape-form configuration**:
    ~14× more S₀ than 60 µm, so the skew (∝ S₀³) becomes measurable, and at the
@@ -380,7 +380,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    physics. Photoionization is excluded (993 nm, 1.25 eV, is below the 6S
    threshold at 1.68 eV). Two-photon saturation at 50–60 µm leaves 1–2 W of
    headroom. The predicted on-axis shift at 225 mW is 0.35 MHz at the adopted
-   waist prior, with a band of 0.285 to 0.404 MHz across the waist and retro
+   measured waist, with a band of 0.285 to 0.404 MHz across the waist and retro
    priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the archival
    amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the line is already
    saturated at 225 mW, so power is not the knob there. The one in-beam part
@@ -390,7 +390,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    limit, the point at which the light shift itself exceeds a tenth of the line
    width, and the projections table carries it per rung.
 
-**Tier 3, sampling and precision. Refines, does not enable.**
+**stage 3, sampling and precision. Refines, does not enable.**
 
 8. More power points: a 6–8 point log grid into the cliff plus a linearity
    check beats crowded points.
@@ -466,7 +466,7 @@ ellipticity and M² from the camera, the pixel scale, and the disagreement
 between the three length rulers.
 
 **The retro ratio ρ, measured in the same afternoon.** §3 item 2 states why ρ
-matters and how it drifts. This is the block that delivers it, priced inside the
+matters and how it drifts. This is the block that delivers it, costed inside the
 metrology afternoon above because it uses the same access to the beam path.
 **Needs.** A pick-off that reads the outgoing and the returning beam separately,
 so no symmetry between the two passes has to be assumed, and a power meter good
@@ -597,7 +597,7 @@ under the narrow line as a pedestal. Its width goes as the square root of the
 temperature and its area against the narrow line's area is 4ρ/(1 + ρ²), so one
 wide trace measures the gas temperature and the retro power ratio together.
 Both are quantities the archive adopts rather than measures, and both are
-quantities this session otherwise spends Tier-0 effort on by other routes
+quantities this session otherwise spends stage 0 effort on by other routes
 (§3 item 2 for ρ) or adopts outright (temperature). The 2025 windows span a
 tenth of the pedestal, so every archival trace samples its flat top and the
 linear baseline absorbs it as an offset. The archive can therefore bound ρ
@@ -608,8 +608,8 @@ session.
 megahertz of lock drift, so the block needs no lock quality, no new source and
 no new detection path (`FUTURE_TRANSITIONS_titsapph.md`, the decision-maker
 table). As a rider it costs only the wider scan setting on dwells this document
-already prices, which is what the register row means by no bench time of its
-own, and the dedicated four-pedestal thermometry comb the same document prices
+already costs, which is what the register row means by no bench time of its
+own, and the dedicated four-pedestal thermometry comb the same document costs
 at about 1.9 plus 2.1 hours is that document's own standalone design rather than
 this block. **Shots.** Wide scans over several GHz on the laser axis, stacked, run
 as an acquisition setting on whatever else the session is doing. **Go/no-go.**
@@ -1065,7 +1065,7 @@ conversions done.
 
 | day | content | deliverable |
 |---|---|---|
-| D1 | Setup and metrology at configuration L. In order: the fixed lock of §3 Tier 0, engaged and held thirty minutes against its go/no-go before anything else, since it selects which protocol the rest of the session runs under. Then the ramp-monitor export of §3 item 0, configured before any data. Wavemeter-link characterisation, how tightly the laser holds a set point and its calibration drift, which is this system's only outer loop, needs no new hardware, and decides whether shifts are measurable at all. Telescope install. Collection rebuild, the relay and slit of §6, landscape. Configuration L metrology, an afternoon: knife-edge, camera, calipers, ρ, polarization with tomography and the extinction null. While the oven settles, the drift-characterization block that freezes the RF cadence (§10.5). | the held-drift record and the protocol it selects, a time axis independent of the scope knob, the outer-loop characterisation, the measured w₀ and ρ at L, and a frozen bracket cadence |
+| D1 | Setup and metrology at configuration L. In order: the fixed lock of §3 stage 0, engaged and held thirty minutes against its go/no-go before anything else, since it selects which protocol the rest of the session runs under. Then the ramp-monitor export of §3 item 0, configured before any data. Wavemeter-link characterisation, how tightly the laser holds a set point and its calibration drift, which is this system's only outer loop, needs no new hardware, and decides whether shifts are measurable at all. Telescope install. Collection rebuild, the relay and slit of §6, landscape. Configuration L metrology, an afternoon: knife-edge, camera, calipers, ρ, polarization with tomography and the extinction null. While the oven settles, the drift-characterization block that freezes the RF cadence (§10.5). | the held-drift record and the protocol it selects, a time axis independent of the scope knob, the outer-loop characterisation, the measured w₀ and ρ at L, and a frozen bracket cadence |
 | D2 | Temperature grid day A at L, ascending, four peaks interleaved plus a mini-P excursion per dwell, sentinel three times, 150/170 °C if the oven allows. | the ascending grid |
 | D3 | Temperature grid day B at L, descending, sentinel three times. | with D2: β_self or a tighter bound, the fixed-lock σ_laser, and the measured drift residual |
 | D4 | Power grid at L, randomized, about 8 powers, morning. Reconfigure to S, an afternoon: knife-edge, camera, ρ. | the mean pull and the excess variance, the four-line common slope, and the measured w₀ and ρ at S |
@@ -1157,7 +1157,7 @@ few-trace SEM, and freeze it before the first science block.
 Pick one condition (say 90 °C, 125 mW, peak 4192, configuration L) and
 re-measure it at the start, middle and end of every day, identically. Three
 short blocks a day buy a within-day drift series at fixed physics, the
-day-to-day reproducibility number that §3 Tier 3 demands before days are
+day-to-day reproducibility number that §3 stage 3 demands before days are
 averaged, and the common level that ties the two opposite-order grids together.
 Every 2025 drift statement is an inference through the lineshape model because
 no condition was ever revisited. The sentinel makes drift a direct observable.

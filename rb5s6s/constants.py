@@ -125,6 +125,24 @@ Orson 2021 to MHz and Ayachitula 2024 to kHz, and the resonance those fix,
 2e7/E_6S_CM = 993.4181 nm in vacuum, is an input here rather than an output."""
 
 
+def peak_title(key: str) -> str:
+    """The standard trace-figure title stem: the physical transition, stated
+    fully, with the label wavelength. One helper so every trace figure agrees:
+
+        $^{85}$Rb $5S_{1/2}$ F=3 $\\rightarrow$ $6S_{1/2}$ F'=3 at 993.4192 nm
+
+    The hyperfine line is Delta F = 0 (S to S two-photon), so F' equals F.
+    Part of the trace-figure standard adopted 2026-08-09 (RENDERING_PROTOCOL
+    section 12.3 in the working notes): the title carries the transition and
+    the condition, the parameter box carries fitted values with uncertainties
+    and marks fixed inputs, the beam waist lives in the caption, never on the
+    canvas."""
+    info = PEAKS[key]
+    F = info["F"]
+    return (f"$^{{{info['isotope']}}}$Rb $5S_{{1/2}}$ F={F} "
+            f"$\\rightarrow$ $6S_{{1/2}}$ F$'$={F} at 993.{key} nm")
+
+
 def peak_label(key: str, isotope: bool = False, line: bool = False) -> str:
     """Human-facing label for a peak key: '993.4192 nm' by default, optionally
     '993.4192 nm (85Rb F=3->3)'. The bare 4-digit key is for files/columns
@@ -147,7 +165,7 @@ A_6S_RB87_HZ = 807.355e6
 """87Rb 6S1/2 magnetic-dipole constant, 807.355(2) MHz. ESTABLISHED
 (Ayachitula, Anderson, McLaughlin, Knize, Mungan, Lindsay, Phys. Rev. A 110,
 022803 (2024) — Doppler-free two-photon spectroscopy, the kHz-precision
-remeasurement. SWAPPED IN 2026-07-13, superseding A. Perez Galvan, Y. Zhao,
+remeasurement. SWAPPED IN 2026-07-13, replacing A. Perez Galvan, Y. Zhao,
 L. A. Orozco, Phys. Rev. A 78, 012502 (2008), which gave 807.66(8) MHz — a
 0.3 MHz shift, negligible for peak ID). 6S splitting = 2A = 1614.709(3) MHz
 (I=3/2). Isotope shift (85-87) = -99.189(3) MHz [same ref]. The
@@ -156,7 +174,7 @@ tests/test_constants.py peak-ID test is a labels<->constants CONSISTENCY LOCK
 predicted gap, vs the test's 1% tolerance)."""
 A_6S_RB85_HZ = 239.065e6
 """85Rb 6S1/2 magnetic-dipole constant, 239.065(2) MHz. ESTABLISHED (Ayachitula
-et al., Phys. Rev. A 110, 022803 (2024); SWAPPED IN 2026-07-13, superseding Perez
+et al., Phys. Rev. A 110, 022803 (2024); SWAPPED IN 2026-07-13, replacing Perez
 Galvan et al. 2008's 239.18(3) MHz). 6S splitting F=3-F=2 = 3A = 717.195(3) MHz
 (I=5/2)."""
 
@@ -170,7 +188,7 @@ calculate the differential polarizability alpha_56 = alpha(5S) - alpha(6S) =
 -1093 a.u. (= -1.80e-38 J m^2/V^2) "in a manner similar to Martin et al. 2019"
 (the 5S-5D method paper, Phys. Rev. A 100, 023417). Our Delta_alpha =
 alpha(6S) - alpha(5S) = -alpha_56 = +1093 a.u. (SAME number, opposite sign by
-definition). This supersedes the earlier "CALCULATED (provisional), refine
+definition). This replaces the earlier "CALCULATED (provisional), refine
 with theory" tag -- the value was right and is now a CITED number that
 cross-checks our Stark code THREE ways (all verified 2026-07-13):
   (i)   SI: 1093 * ATOMIC_POLARIZABILITY_SI = 1.80e-38 J m^2/V^2 = Orson exactly;
@@ -192,8 +210,8 @@ The two-photon transition (sum axis) therefore shifts by
 with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
 (forward + retro, NO coherent x2 -- the fringe-averaging argument below).
 => S0(225 mW, w0=64 um, rho=0.94) = 0.35 MHz transition (0.17 laser axis)
-   [the v3.0.0 prior; was 0.59 at the superseded 50 um / rho=1, and 1.43 at the
-   32 um nominal before that -- see W0_PRIOR_M and RHO_RETRO];
+   [the v3.0.0 prior; was 0.59 at the replaced 50 um / rho=1, and 1.43 at the
+   32 um nominal before that -- see W0_MEASURED_M and RHO_RETRO];
    S0(225 mW, w0=16 um, rho=0.94) = 5.56 MHz transition (why the fixed-lock
    session's small waist makes the skew, ~S0^3, measurable). See
    stark_shift_S0_mhz().
@@ -263,9 +281,23 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # --------------------------------------------------------------------------
 # Beam geometry
 # --------------------------------------------------------------------------
-W0_PRIOR_M = 64e-6
-"""Beam waist PRIOR (central value), OPEN until the knife-edge measurement. Enters
-the transit width (~1/w0) and all Stark magnitudes (~1/w0^2).
+W0_MEASURED_M = 64e-6
+"""Beam waist, 64 um. ESTABLISHED: measured on this apparatus lineage, twice,
+in this configuration. Enters the transit width (~1/w0) and all Stark
+magnitudes (~1/w0^2), so it is quoted without hedging and used as measured.
+
+THE MEASUREMENT, stated first because it is the reason this is not a prior.
+Rajasree-KP 2020 (OIST thesis section 5.2) recorded the focused 993 nm cell
+beam at a 1/e^2 DIAMETER of 128 um, so w0 = 64 um, on a Thorlabs BC106VIS
+profiler, through L1 at f = 150 mm, at 130 C, in the same 2 f_CM retro
+geometry, on the same laser model this campaign used (M Squared SolsTiS).
+Nieddu 2019 quotes the identical 128 um on the previous laser, a Coherent
+MBR 110. Two profiler measurements, one configuration, agreeing.
+
+What this dataset does NOT do is re-measure it. The transit-against-laser-width
+degeneracy means the archival line cannot pin w0 on its own, which is a
+statement about this dataset and not about the value. The knife-edge scan of a
+fixed-lock session would measure it here as well as in the lineage.
 
 Re-centred 32 -> 50 um (2026-07-12) after the transit-broadening physics was
 corrected: transit_fwhm_from_w0 (below), validated against Lehmann 2021's NNO
@@ -273,8 +305,8 @@ worked example to 0.2%, gives a BARE transit FWHM of ~1.87 MHz at w0 = 32 um,
 110 C (transition axis). Convolved with the 3.49 MHz natural Lorentzian that
 already OVERSHOOTS the observed ~5.25 MHz line (natural(x)transit = 5.64 > 5.25)
 BEFORE any laser or collisional width -- so w0 = 32 um is EXCLUDED. The observed
-width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um is adopted as
-the central corrected-physics prior. NOTE this is still a PRIOR, not a
+width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um was the central value before the lineage measurement was found. That
+intermediate step was an inference from our own line rather than a
 measurement: the transit<->sigma_laser degeneracy means the archival line cannot
 pin w0 on its own -- that is exactly what the knife-edge measurement settles. (The
 Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, attributed to
@@ -293,15 +325,15 @@ recollected clipping EVENT does not by itself fix how MUCH of the beam was
 clipped, which is why this stays a Gaussian-optics estimate and not a
 measurement.)
 
-ADOPTED FROM THE LINEAGE MEASUREMENT (2026-08-01, v3.0.0). The prior is now
-the value the group MEASURED on this apparatus lineage, not a value inferred
-from our own line. The Rajasree-KP 2020 OIST thesis section 5.2 records the
+THE LINEAGE MEASUREMENT, in full (2026-08-01, v3.0.0). This is the value the
+group MEASURED on this apparatus lineage, not a value inferred from our own
+line. The Rajasree-KP 2020 OIST thesis section 5.2 records the
 focused 993 nm cell beam as a 1/e^2 DIAMETER of 128 um, i.e. w0 = 64 um, with
 a Thorlabs BC106VIS profiler, through L1 with f = 150 mm, at 130 C, in the
 same 2 f_CM retro geometry -- and on the SAME LASER MODEL this campaign used,
 the M Squared SolsTiS. Nieddu 2019 quotes the identical 128 um on the older
 Coherent MBR 110. That is this campaign's configuration in every documented
-respect, which is why 64 um is adopted rather than merely cited.
+respect, which is why 64 um is used as measured rather than merely cited.
 
 It is an ADOPTED prior, NOT a measurement of this beam. Two known effects sit
 between Rajasree's bench and ours, and BOTH push the EFFECTIVE waist ABOVE
@@ -322,13 +354,13 @@ remains the way to measure THIS beam; it is now confirmatory rather than the
 sole route to a sane value."""
 
 W0_BAND_M = (60e-6, 70e-6)
-"""Prior band on w0 (m) around the adopted 64 um central value.
+"""Prior band on w0 (m) around the measured 64 um central value.
 
 NOT the old transit-inferred range: since v3.0.0 the central value comes from
-an external lineage measurement (see W0_PRIOR_M), so this band expresses
+an external lineage measurement (see W0_MEASURED_M), so this band expresses
 confidence in transferring that measurement to this bench, not the width of
 what our own line can accommodate. It leans high because the two residual
-effects named in W0_PRIOR_M (EOM clipping, imperfect retro superposition)
+effects named in W0_MEASURED_M (EOM clipping, imperfect retro superposition)
 both bias the EFFECTIVE waist upward. Single source for w0-conditional
 prediction bands (e.g. stark.fit_stark_sweep), so the band is never
 hand-typed downstream."""

@@ -130,7 +130,7 @@ the current near-IR path does not pass. So:
   420 nm upper-ladder swap — this is a 6S-detection refinement, not an enabler.
 
 Net: the filter swap is required once to reach the upper ladder, and it is a
-*cheap, one-time* price (one blue detection path) for a *large* payoff (four new
+*cheap, one-time* cost (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
 **But "cheap" describes the hardware, not the risk — and the risk is the noise
@@ -363,7 +363,7 @@ uncapped precision back. On the 778 nm rung it goes from about 8 to about
 which is the one result in this file the ceiling takes away. About 66 repeats would
 restore its power. The ceiling goes as the square of the waist, so a looser
 focus raises it, at the cost of transit width and of the density lever, and this
-file does not price that trade.
+file does not cost that trade.
 
 **Magic wavelengths: a family that moves along the ladder.** The way the zero
 crossings of Δα move with n is a map in its own right, and the three rungs this
@@ -470,12 +470,12 @@ the file. No doubling stage is on the bench, none of these wavelengths has been
 produced here, and the feasibility questions of §6 apply to each of them
 separately.
 
-## The same items priced
+## The same items costed
 
 Everything above is a physics menu. Deciding bench time takes
 cost, yield and risk instead, so this section restates the same items in
 those columns, with the last naming the source class that reaches each rung's light-shift ceiling. Nothing below is scheduled, agreed or assigned. Every
-duration is [PLAN.md](PLAN.md)'s own where PLAN.md prices the block, and is
+duration is [PLAN.md](PLAN.md)'s own where PLAN.md costs the block, and is
 marked as an estimate with its basis where PLAN.md does not. Every entry in
 the last column is a projection rather than a result, computed in
 [scripts/run_projections.py](../scripts/run_projections.py) from the
@@ -505,7 +505,7 @@ archive currently adopts rather than measures.
 
 The cost is an acquisition setting. A gigahertz-wide feature does not care about
 a megahertz of lock drift, so the scan needs no lock quality, no new source and
-no new detection path, which is why the table above prices it against any
+no new detection path, which is why the table above costs it against any
 session that runs at all rather than against a session of its own. What it does
 cost is time on the stack: the design pins the temperature in about 1.9 hours
 and reaches the adopted retro ratio in about 2.1 hours, both on the comb of four
@@ -523,7 +523,7 @@ where its slope in ρ vanishes, so it is a weak lever on the very quantity it
 measures and is symmetric under ρ to 1/ρ. Computed in
 [scripts/run_projections.py](../scripts/run_projections.py).
 
-**The beam profile.** `PLAN.md` §3 puts w₀ in Tier 0, the systematic floor,
+**The beam profile.** `PLAN.md` §3 puts w₀ in stage 0, the systematic floor,
 because S₀ ∝ 1/w₀² and the transit width rides on w₀, so a 10% waist error is
 20% on Δα. The afternoon quoted above is PLAN's own allocation: §9 gives an
 afternoon of D4 to a metrology block of knife-edge, camera and retro ratio,
@@ -536,21 +536,21 @@ number describes the present bench rather than the 2025 one. Carrying it
 back needs the config-M spot check of `PLAN.md` §4.1, the archival geometry
 plus one 130 °C point. If that bridge did not hold, nothing would be
 retracted, because the archival statements are already published as
-conditional on the waist prior.
+conditional on the measured waist.
 
 **The fixed-lock cell session.** This is the full ask. `PLAN.md` §9 sizes it
 at about eight days at the cell and orders it so that a truncation at any
-point leaves the higher-priority conversions done, and the tiers of §3 are
-what a shortened session would fall back through. Tier 0 is the systematic
+point leaves the higher-priority conversions done, and the grades of §3 are
+what a shortened session would fall back through. stage 0 is the systematic
 floor, which is the ramp-monitor export, the beam profile and the retro ratio
 measured in situ, and it converts the archival bounds whether or not a later
-block runs. Tier 1 is the fixed lock itself plus same-session 150 to 170 °C
+block runs. stage 1 is the fixed lock itself plus same-session 150 to 170 °C
 points in interleaved temperature order, which is what would turn β_self from
 a bound into a rate. `PLAN.md` §1 names the smallest tranche that converts
 even one bound: a geometry-setup block plus the two opposite-order
 temperature-grid days, D1 to D3, returning β_self or a much tighter bound
-along with the first fixed-lock laser width. Tier 2 buys handle strength
-through a second and tighter waist. Tier 3 is sampling that refines without
+along with the first fixed-lock laser width. stage 2 buys handle strength
+through a second and tighter waist. stage 3 is sampling that refines without
 enabling, and it is the first thing to cut. The analysis end carries no
 development risk: the archival pipeline ingests session data unchanged, so
 what a session buys is shots rather than software.
@@ -596,7 +596,7 @@ channels are the D-line terminals the present near-IR chain already works
 in, so if the installed passband passes the 741 and 728 nm direct decays and
 blocks a 760 nm drive, 7S would need a laser retune and no new detection
 path. Both are datasheet questions rather than physics, and they are the
-first thing to settle. `PLAN.md` prices no session beyond 993 nm, so no
+first thing to settle. `PLAN.md` costs no session beyond 993 nm, so no
 duration is quoted for this row. The yield is an adjudication. The archive's
 expected β_self at 6S rides on one external number, and that number has two
 published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
@@ -659,7 +659,7 @@ demonstrate.
 
 **The doubling-stage options.** Exploratory, and last in priority. No
 doubling stage is on the bench and none of these wavelengths has been
-produced here, so the cost is new hardware and `PLAN.md` prices none of it.
+produced here, so the cost is new hardware and `PLAN.md` costs none of it.
 A second-harmonic stage would not be a lineshape target: a single-photon line
 out of the ground state is Doppler broadened to about 1.10 GHz at 400 K,
 against the 3.49 MHz natural width the 993 nm work fits. Two secondary uses
@@ -693,7 +693,7 @@ empty. Its rank and the reason.
 Three conventions hold throughout. The letters are the labels of record used in
 [LITERATURE.md](LITERATURE.md) §5 and §8, so they are identifiers rather than
 positions. The decision-maker table above holds the numbers for the rungs it
-prices and this section holds the narrative, so the two point at each other once
+costs and this section holds the narrative, so the two point at each other once
 rather than restating each other. And nothing here is scheduled, agreed or
 assigned, which is why every verb below is conditional. §5 sequences the same
 four papers by scientific impact if the whole programme ran, which puts A and C
@@ -739,7 +739,7 @@ power cycling.
 
 **How it could come back empty.** The delivered perturber intensity at the cell
 could undershoot, which stretches the localization beyond the range where it
-reads a matrix element. Every conversion also rides the adopted waist, so these
+reads a matrix element. Every conversion also rides the measured waist, so these
 are envelope numbers and would sharpen with the beam profile.
 
 **Rank and reason.** First. Lowest bench cost of the four by a wide margin, and
@@ -777,7 +777,7 @@ dedicated modern 6S dynamic polarizability at 993 nm exists.
 with the two datasheet questions of §3.2 deciding whether a blue detection path
 is needed. The 778 nm rung would additionally need the detection change.
 
-**Projected precision.** The decision-maker table above prices the 7S and 778 nm
+**Projected precision.** The decision-maker table above costs the 7S and 778 nm
 rows, with the assumption set behind each figure in
 [results/projections.csv](../results/projections.csv). The 7S adjudication
 carries a fourfold margin at the archive's own drive power and holds at the
@@ -894,7 +894,7 @@ skew, so the collection geometry would have to be measured in the same session.
 [PLAN.md](PLAN.md) §6 item 4 gives the closed form for that average and shows
 the sign flip holding across the plausible magnification range.
 
-**Projected precision.** The decision-maker table above prices the 778 nm row
+**Projected precision.** The decision-maker table above costs the 778 nm row
 and §3 sizes the scan, at nine points across the usable half span the
 neighbouring 5P₃/₂ to 5D₅/₂ pole leaves on the blue side, each point good to
 about 8 per cent of the shift at the edge of that span. The limitation is the
@@ -935,7 +935,7 @@ physics argues for if the programme is pursued at all.*
    method to the 778 nm clock line, with the intermediate-state
    lineshape study (C) as the validated bridge from the clean 6S anchor.
    The tunability argument is for the SCAN across the magic point, not
-   for reaching 778 nm as such, which the decision-maker table prices
+   for reaching 778 nm as such, which the decision-maker table costs
    with a fibre-amplifier alternative that makes the Ti:Sapph
    unnecessary for a fixed-wavelength run.
 4. **Paper B** is the completeness capstone, reusing the rig and method
@@ -980,7 +980,7 @@ shift precision of 92 kHz, the root localizes to 26 pm, which reads the 6S
 to 7P residue at about the 3 per cent level (18 pm and about 2.4 per cent at
 the two-day cadence). The tamest root would localize to 23 nanometres at the
 same precision and measures nothing. Every conversion here rides the
-campaign intensity and the adopted waist, so these are envelope numbers in
+campaign intensity and the measured waist, so these are envelope numbers in
 the sense of the projections table, and they sharpen with the waist
 measurement like everything else.
 

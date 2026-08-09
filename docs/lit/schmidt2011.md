@@ -42,7 +42,7 @@ summary: >
   afanasiev2010 (concave) -- both have their surface factor tending to unity AT
   the wall, with curvature biting only at distances comparable to the radius. So
   a flat-surface C_3/r^3 is adequate near a surface of either curvature, and the
-  extreme factors apply far from it. This sphere paper is superseded for both
+  extreme factors apply far from it. This sphere paper is replaced for both
   geometries by those two; keep it as the method anchor and for the fact that
   curvature sign matters at all.
 loci:

@@ -47,7 +47,7 @@ provenance for.*
 Each arrow is independently valuable, and nothing below the archive is
 required for the archive's own results to stand. §5 ranks four of these arrows
 by leverage on the physics: the beam profile, the pull that a fixed lock brings
-alive, the hot points, and the small waist. It then prices three acquisition
+alive, the hot points, and the small waist. It then quantifies three acquisition
 changes on the same four points. One of those is the absorption channel drawn
 above, and another, reading the 6S→5P 1.3 µm cascade, rides any cell session
 rather than standing as an arrow of its own. Two arrows drawn above are
@@ -57,7 +57,7 @@ physics, which is exactly why [`PLAN.md`](PLAN.md) §3 puts them at the top of
 its own order. The O-band diode is absent for a different reason: it is
 costed in §1.2 and ranked against the other candidate lines in
 [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md) §4.1 rather
-than against the cell arrows. The nanofibre arrow is §6. [`PLAN.md`](PLAN.md) prices each of them as a
+than against the cell arrows. The nanofibre arrow is §6. [`PLAN.md`](PLAN.md) quantifies each of them as a
 block, with its cost and its empty case, and ranks them again by what a
 shrinking budget should cut.
 
@@ -173,7 +173,7 @@ hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
 magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all six crossings, the
-pole-hugging ones included, pricing three trap-design quantities at each, the
+pole-hugging ones included, quantifying three trap-design quantities at each, the
 two shifts to within a factor of two. The fourth-order differential shift, the hyperpolarizability term, is
 +0.87 Hz per megahertz squared of trap depth at the 1203.9 nm crossing, where a
 depth of h × 1 MHz is 48 µK, so a trap half a millikelvin deep moves the line
@@ -224,7 +224,7 @@ band edges are an external convention rather than anything this repo computes.
 **A third O-band crossing is a lever rather than a trap, and it is the map's
 cheapest arrow.** The three above cleared the pole guard. The same differential
 polarizability also crosses zero on a steep root at 1297.5 nm, 0.745 nm from
-the 6S to 7P resonance, trapping in sign like the other five but priced out as
+the 6S to 7P resonance, trapping in sign like the other five but quantified out as
 a trap by that proximity, and the proximity that ruins it as a trap is what
 makes it precise for metrology: an auxiliary diode scanned across it while
 the 993 nm lineshape is read locates the root, and the root's position gives
@@ -472,7 +472,7 @@ as a bound. Concretely:
   ramp at zero, and the shared ramp coefficient of the width-versus-power
   fit rails at zero, so the ramp is a component the archive bounds rather
   than one these fits resolve. The beam waist
-  is **adopted, not measured here**: 64 µm (prior), the value
+  is **measured on this apparatus lineage**: 64 µm (prior), the value
   [Rajasree 2020](lit/rajasree2020thesis.md) measured on the same laser model,
   the same f = 150 mm lens and the same retro geometry. The 32 µm figure this
   work started from was a Gaussian-optics estimate that cannot account for how
@@ -484,7 +484,7 @@ as a bound. Concretely:
 - **The light-shift bound sits just below its own prediction.** S₀(225 mW)
   < 0.26 MHz (95%, from a joint full-profile fit of three sessions, every
   trace with a free centre so the drifting laser costs nothing. An earlier,
-  tighter figure was basin-inflated and is retracted, preregistration
+  tighter figure was cold-start-inflated and is retracted, preregistration
   addendum 24). The predicted 0.35 MHz at the adopted geometry puts the
   bound **1.3× below it**, equivalently Δα ≲ 810 a.u. against the 1093 a.u.
   the prediction is built on, which is [Orson 2021](lit/orson2021.md)'s
@@ -519,7 +519,7 @@ as a bound. Concretely:
 - **The ramp's power laws hold.** The width shows no power trend, a null
   under 3–8% block scatter, and the amplitude is consistent with P². The
   laser width is bounded at ≲1.2 MHz on the laser axis, with a central value
-  of 1.088 MHz at the adopted waist, against the sub-MHz figure quoted for the
+  of 1.088 MHz at the measured waist, against the sub-MHz figure quoted for the
   same laser in [Gokhroo 2022](lit/gokhroo2022.md). The drift-immune skew
   observable is derived and bounded, and detecting it requires a tighter
   focus. The premise
@@ -577,7 +577,7 @@ coefficients.
 A cell session with a stable lock (the laser's locking has since been
 improved) would convert the bounds into the first measured environmental
 coefficients for this line. None of it is scheduled or agreed. Every item
-below opens with the same four things, so that the pricing lives in one place:
+below opens with the same four things, so that the quantifying lives in one place:
 what it would convert, what it would cost, how it could come back empty, and
 which block of [`PLAN.md`](PLAN.md) runs it. In order of leverage on the
 physics:
@@ -637,7 +637,7 @@ physics:
    configuration), and the third cumulant grows
    faster still, though not by the naive $S_0^3$ cube of that gain, a reading
    that [THEORY_NOTE.md](THEORY_NOTE.md) §3 and [RESULTS.md](RESULTS.md) C3c
-   both record as superseded. The axial average over the
+   both record as replaced. The axial average over the
    collection window changes both its size and, if the window is long enough,
    its sign ([`PLAN.md`](PLAN.md) §6 item 4: the sign flip is secured by the
    landscape cathode for any plausible magnification, while its size still

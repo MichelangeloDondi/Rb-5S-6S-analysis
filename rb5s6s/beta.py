@@ -74,7 +74,7 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     COVERAGE of the bound (corrected 2026-07-16): the between-block scatter
     that dominates syst_err is estimated on only dof = n - 2 degrees of
     freedom (2 for the four-point headline variant, 70/90/110/130 C, since
-    2026-08-02; 1 for the superseded 3-point 70/90/110 C variant), so a
+    2026-08-02; 1 for the replaced 3-point 70/90/110 C variant), so a
     one-sided 95% limit needs the Student-t quantile t(0.95, dof) -- 6.31 at
     dof=1, 2.92 at dof=2 -- NOT the Gaussian-asymptotic 2 that was hard-coded
     before. This
@@ -107,7 +107,7 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
     # Between-block scatter estimate: divide the summed squared residuals by
     # the DEGREES OF FREEDOM (n - p, p=2), not by n. np.mean would divide by n
     # and bias the scatter LOW by sqrt(n/(n-p)) -- for a 3-point fit (the
-    # superseded headline) that is sqrt(3) ~ 1.7, tightening the "conservative"
+    # replaced headline) that is sqrt(3) ~ 1.7, tightening the "conservative"
     # bound by ~40% (2026-07-12). With n-p = 1-2 this estimate is itself very noisy;
     # that used to be a prose caveat ("~factor-2 own-uncertainty") and is now
     # FORMALIZED by the Student-t multiplier below (2026-07-16).

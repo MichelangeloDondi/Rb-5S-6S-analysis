@@ -61,7 +61,7 @@ import numpy as np
 
 from . import config as C
 from .constants import (K_B_J_PER_K, M_RB87_KG, M_RB85_KG, LAMBDA_LASER_M,
-                        W0_PRIOR_M)
+                        W0_MEASURED_M)
 
 
 def _sigma_v(T_C: float, isotope: int, mass_kg: float | None = None) -> float:
@@ -71,7 +71,7 @@ def _sigma_v(T_C: float, isotope: int, mass_kg: float | None = None) -> float:
     return float(np.sqrt(K_B_J_PER_K * (T_C + 273.15) / m))
 
 
-def transit_lineshape_mc(nu_mhz: np.ndarray, *, w0_m: float = W0_PRIOR_M,
+def transit_lineshape_mc(nu_mhz: np.ndarray, *, w0_m: float = W0_MEASURED_M,
                          T_C: float = 110.0, isotope: int = 87,
                          mass_kg: float | None = None,
                          z_half_range_m: float = 6e-3,

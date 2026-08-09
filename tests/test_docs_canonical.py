@@ -22,8 +22,8 @@ MUST cite it. Three checks then run:
       would have caught the 3.1 lingering in eight files.
   (C) docs cite it AT ALL:  each listed doc contains at least one citation.
 
-Plus a targeted tripwire (D) that forbids the specific superseded values from
-reappearing in the front-door docs except where explicitly marked superseded.
+Plus a targeted tripwire (D) that forbids the specific replaced values from
+reappearing in the front-door docs except where explicitly marked replaced.
 
 To change a headline number after a re-run: update its `value` source if needed,
 run the producers, and this test tells you exactly which docs still disagree.
@@ -85,7 +85,7 @@ def _beta_bound_range():
     """min/max of the model-independent per-peak 95% bound (the headline
     variant), rounded to 2 dp. Since the 2026-08-02 promotion of the
     four-point (70/90/110/130 C, dof=2) construction to the sole headline,
-    the bound is roughly an order of magnitude tighter than the superseded
+    the bound is roughly an order of magnitude tighter than the replaced
     three-point '0.2-0.4' headline, so 1 dp (which rounded the new range to
     '0.0-0.0') is no longer enough resolution to say anything -- 2 dp gives
     the '0.03-0.05' headline."""
@@ -151,7 +151,7 @@ def _rate_laser_tokens():
     value are canonical because three are in use and each is legitimate at its
     own precision: 5 dp with a parenthesised error (the ledger's own format),
     6 dp (the methods chapters and the literature table), and 7 dp (methods/05,
-    which writes the superseded value and the current one side by side to the
+    which writes the replaced value and the current one side by side to the
     digit that separates them). Every rounding is derived from the CSV, so a
     stale value fails all three."""
     r = float(_cell_first("ruler_campaign.csv", "rate_laser"))
@@ -241,9 +241,9 @@ CANONICAL = [
         docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
-        name="beam waist w0 prior",
-        value=lambda: f"{int(_const('W0_PRIOR_M') * 1e6)}",
-        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*\(prior|~([0-9]+) µm;"),
+        name="beam waist w0",
+        value=lambda: f"{int(_const('W0_MEASURED_M') * 1e6)}",
+        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured)|~([0-9]+) µm;"),
         mode="any",
         # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
         # configuration table writes the waist as "w₀" with a subscript zero,
@@ -532,27 +532,27 @@ def test_docs_cite_canonical_value(entry):
 
 
 # --------------------------------------------------------------------------- #
-# (D) targeted tripwire: the specific SUPERSEDED values must not reappear in    #
-# the front-door docs except on a line that explicitly marks them superseded.   #
+# (D) targeted tripwire: the specific REPLACED values must not reappear in    #
+# the front-door docs except on a line that explicitly marks them replaced.   #
 # This guards the exact regression this file was written for.                   #
 # --------------------------------------------------------------------------- #
-SUPERSEDED = [
+REPLACED = [
     ("3.1", re.compile(r"S(?:₀|_?0).{0,40}3\.1\b"), "AC-Stark bound (was the Wald 3.1 MHz)"),
     ("5800", re.compile(r"5800"), "Delta-alpha bracket (was ~5800 a.u.)"),
     ("0.07-0.15", re.compile(r"0\.07-0\.15|0\.07.{0,6}0\.15"), "beta bound (was 0.07-0.15)"),
     ("0.2-0.4", re.compile(r"0\.2-0\.4|0\.2.{0,6}0\.4"),
-     "beta bound (was the three-point/dof=1 headline 0.2-0.4, superseded "
+     "beta bound (was the three-point/dof=1 headline 0.2-0.4, replaced "
      "2026-08-02 by the four-point/dof=2 0.03-0.05 headline)"),
 ]
-_ALLOW_SUPERSEDED = re.compile(r"supersed|earlier|Wald|was |before |old ", re.I)
+_ALLOW_SUPERSEDED = re.compile(r"supersed|replaced|earlier|Wald|was |before |old ", re.I)
 
 
-@pytest.mark.parametrize("val,pat,label", SUPERSEDED, ids=lambda x: x if isinstance(x, str) else "")
+@pytest.mark.parametrize("val,pat,label", REPLACED, ids=lambda x: x if isinstance(x, str) else "")
 def test_no_superseded_value_in_front_door(val, pat, label):
     for doc in ("README.md", "docs/BIG_PICTURE.md"):
         for ln in _read(doc).splitlines():
             if pat.search(ln) and not _ALLOW_SUPERSEDED.search(ln):
-                pytest.fail(f"{doc}: superseded {label} reappears: {ln.strip()[:90]}")
+                pytest.fail(f"{doc}: replaced {label} reappears: {ln.strip()[:90]}")
 
 
 # --------------------------------------------------------------------------

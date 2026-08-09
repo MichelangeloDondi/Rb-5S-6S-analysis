@@ -50,7 +50,7 @@ def test_minimum_detectable_effect_is_below_the_quoted_bound():
     # sane scale for this lever arm -- tightened 2026-08-02 with the
     # four-point headline lever (70/90/110/130 C, dof=2): the wider density
     # span makes the estimator more sensitive, so the MDE shrank along with
-    # the quoted bound (was 0.05-0.30 under the superseded three-point lever)
+    # the quoted bound (was 0.05-0.30 under the replaced three-point lever)
     assert 0.02 < m95 < 0.10, m95
 
     probe = Path(_C.RESULTS_DIR) / "beta_self_probe.csv"

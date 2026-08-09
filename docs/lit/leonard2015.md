@@ -22,7 +22,7 @@ verify_flags:
   - 'THE 2017 ERRATUM IS NOW HELD AND READ -- see leonard2017, whose PDF is
     PDF_papers/Leonard_2017_ERRATUM_Rb87-D-line-tune-out-wavelength.pdf (it was
     held under the bare APS filename PhysRevA.95.059901.pdf and renamed
-    2026-07-31). It SUPERSEDES this paper''s headline. The
+    2026-07-31). It REPLACES this paper''s headline. The
     tune-out becomes 790.032326(32) nm, the ratio R = 1.99217(3), and theory
     790.0315(7). Quote the ERRATUM values, not this paper''s. The erratum is not
     on arXiv -- the arXiv record (1507.07898) is pre-erratum through v3 -- which
@@ -43,7 +43,7 @@ summary: >
   (n>12) tails, 0.022(22) for P_1/2 plus 0.075(75) for P_3/2 -- both verified
   against the held PDF. (3) CORE_5S = 8.709(93), their "Core + vc" row, also
   verified. Also gives the matrix-element ratio |<5P3/2||d||5S1/2> /
-  <5P1/2||d||5S1/2>|^2 = 1.99221(3) -- ALSO SUPERSEDED, the erratum making it
+  <5P1/2||d||5S1/2>|^2 = 1.99221(3) -- ALSO REPLACED, the erratum making it
   1.99217(3) -- a 100-fold improvement on previous experiment, and the 5P-12P
   energies the module uses. A further erratum result worth keeping: the
   apparent conflict with Lamporesi et al.'s 790.018(2) nm is not a discrepancy
@@ -73,7 +73,7 @@ was nowhere for the correct one to be checked against.
 
 | module constant | Leonard source | verified |
 |---|---|---|
-| tune-out anchor | 790.032388(32) nm (abstract; constrained fit) — **superseded**; the module's anchor is the erratum's 790.032326(32), see [leonard2017](leonard2017.md) | yes, and the erratum value verified against its own held PDF |
+| tune-out anchor | 790.032388(32) nm (abstract; constrained fit) — **replaced**; the module's anchor is the erratum's 790.032326(32), see [leonard2017](leonard2017.md) | yes, and the erratum value verified against its own held PDF |
 | `TAIL_5S = 0.097` | Table II, (n>12)P₁∕₂ **0.022(22)** + (n>12)P₃∕₂ **0.075(75)** | yes, sums exactly |
 | `CORE_5S = 8.709`, σ 0.093 | Table II, "Core + vc" **8.709(93)** | yes |
 | 9P–12P energies | Table II | yes |

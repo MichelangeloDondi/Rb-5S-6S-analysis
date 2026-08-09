@@ -148,7 +148,7 @@ def delta_alpha(lam_nm: float, **kw) -> float:
 def tuneout_5s(lo: float = 781.0, hi: float = 794.0) -> float:
     """The 5S scalar tune-out between the D lines (nm) -- the validation
     anchor: 790.032326(32) nm, Leonard et al. as CORRECTED BY THEIR 2017
-    ERRATUM [VERIFIED]. The 2015 paper's 790.032388(32) is superseded.
+    ERRATUM [VERIFIED]. The 2015 paper's 790.032388(32) is replaced.
 
     Both are now read from held PDFs (erratum obtained and read 2026-07-31;
     PRA 95, 059901(E)). Its own words: the F=2 Zeeman correction was applied

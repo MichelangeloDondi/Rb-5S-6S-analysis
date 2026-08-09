@@ -7,7 +7,7 @@ bright line, plus the GLOBAL profile-likelihood map in the
 per-trace nuisance at each grid point).
 
 The three widths all broaden the same ~5 MHz line, so the analysis FIXES transit
-(from the w0 prior) and reports sigma_laser as a bound. This driver quantifies
+(from the measured w0) and reports sigma_laser as a bound. This driver quantifies
 why, twice over: the covariance shows the archive constrains the TOTAL width
 well but the SPLIT poorly; the profile map shows that local picture is the
 whole picture -- a single valley, straight (no 'banana'), whose 95% region runs
@@ -76,12 +76,12 @@ def main() -> int:
         freqs.append(to_frequency(t, rate)); volts.append(v)
 
     law = condition_noise_model(volts)
-    # the (gamma_coll, sigma_laser, transit) chi2 surface carries TWO basins --
+    # the (gamma_coll, sigma_laser, transit) chi2 surface carries TWO local minima --
     # a Gaussian-dominated one (large sigma_laser, transit railed at 0) and a
     # cusp-dominated one (transit near the w0-prior value, narrow laser). A
     # single-start fit can land in either, so the local analysis is anchored at
     # the DEEPER one and the branch gap is reported as its own diagnostic (the
-    # profile maps below are what established the second basin).
+    # profile maps below are what established the second local minimum).
     r_gauss = width_identifiability(freqs, volts, law=law)
     r_cusp = width_identifiability(freqs, volts, law=law, seeds=(0.21, 0.60, 1.45))
     r = r_cusp if r_cusp["chi2"] <= r_gauss["chi2"] else r_gauss
@@ -134,7 +134,7 @@ def main() -> int:
           + (f"  (open edges: {', '.join(wide['edges_open'])})" if wide["edges_open"] else ""))
     print(f"    transit railed (<0.02 MHz) on {wide['transit_railed'].mean() * 100:.0f}% of cells")
     # is the free fit the GLOBAL optimum, or just a local one? the map's retries
-    # explore basins the single free fit cannot; a positive gap means the map
+    # explore local minima the single free fit cannot; a positive gap means the map
     # found deeper chi2 elsewhere -- the strongest possible argument that the
     # split is a bound, not a measurement
     gap_wide = r["chi2"] - wide["chi2_min"]
@@ -210,7 +210,7 @@ def main() -> int:
                         f"sl={rb['fit']['sigma_laser']:.3f}, tr={rb['fit']['transit']:.3f} MHz "
                         f"(two-start local fit; the analysis anchors at the deeper branch)"])
         w.writerow(["branch_gap", "local", f"{branch_gap:.1f}",
-                    "chi2 gap between the Gaussian- and cusp-dominated local basins "
+                    "chi2 gap between the Gaussian- and cusp-dominated local minima "
                     "(the branch choice was invisible to a single-start fit)"])
         w.writerow(["wide_free_gap", "wide_profile", f"{gap_wide:.1f}",
                     "free-fit chi2 minus the wide-map chi2_min; >6 means the free fit "

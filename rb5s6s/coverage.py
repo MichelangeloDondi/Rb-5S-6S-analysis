@@ -38,7 +38,7 @@ from .beta import collisional_slope
 from .density import density_units
 
 # the four-point headline lever (70/90/110/130 C, dof=2, since 2026-08-02;
-# the prior three-point 70/90/110 C, dof=1 construction is superseded)
+# the prior three-point 70/90/110 C, dof=1 construction is replaced)
 _TEMPS = (70.0, 90.0, 110.0, 130.0)
 _N = np.array([density_units(t) for t in _TEMPS])
 _NPTS = len(_TEMPS)

@@ -36,7 +36,7 @@ summary: >
   The 7s value agrees with quirk2024's MEASURED 6207.9(2.4) within the theory
   bar (0.7 sigma), a validation target for the repository's sum-over-states
   machinery. NOTE the complication in the body: their own Expt. column carries
-  6238(6) from the older Bennett Stark-shift lineage, which quirk2024 supersedes
+  6238(6) from the older Bennett Stark-shift lineage, which quirk2024 replaces
   and disagrees with at about 4.6 sigma, so the target is a ~0.5% BAND, not a
   four-figure number. Also carries the 8s-6pj matrix elements that
   sieradzan2004 measured and the alpha(8s) that sets the scale of lee2010's
@@ -105,7 +105,7 @@ theory agrees with the *pre-2024* experiment to four figures. Quirk's measuremen
 moves the experimental value **down** by 30 against a stated ±6, so Quirk and the
 older determination sit about 4.6σ apart on the combined bar. Quirk say as much:
 their $k$ is about 0.5% smaller than Bennett's with an uncertainty more than
-twice smaller, and they present it as superseding.
+twice smaller, and they present it as replacing.
 
 Two consequences. First, the theory–experiment comparison in Table VIII is **less
 independent than it looks**: the scaling that assigns the theoretical uncertainty

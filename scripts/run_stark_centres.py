@@ -144,7 +144,7 @@ RATE = float(next(csv.DictReader(
 WIDTH_BOUND = float(next(
     r["value"] for r in csv.DictReader(open(REPO / "results/stark_sweep.csv"))
     if r["quantity"] == "S0_225mW_ub95_profile"))   # MHz, width channel 95%
-PREDICTED = stark_shift_S0_mhz(0.225, C.W0_PRIOR_M, rho=C.RHO_RETRO)  # MHz
+PREDICTED = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)  # MHz
 
 rows = [r for r in csv.DictReader(open(REPO / "results/laser_history.csv"))]
 sci = [r for r in rows if r["role"] == "p_sweep" and r["flag"] == "canonical"]

@@ -310,7 +310,7 @@ explanation and must be read properly before either is preferred** — a magneti
 origin would also be broadly symmetric and would also survive Sagué's
 corrections. Reading their Appendix C is the next step on this thread.
 
-**Where the rest of the thread now stands (superseding the paragraph this
+**Where the rest of the thread now stands (replacing the paragraph this
 replaces, which described Sagué, Liu and the two theory inputs as unread
 externally-reported material — all four are now held).**
 [sague2007](sague2007.md) is read: no fitted width parameter, position-dependent

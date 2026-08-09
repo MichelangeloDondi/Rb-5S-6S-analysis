@@ -8,7 +8,7 @@ pure the polarization has to be, and how often the trapped atom
 scatters trap photons. This module computes all three for every
 polarizability crossing of the 5S-6S pair, including the
 pole-adjacent crossings that magic_wavelengths() deliberately
-excludes, so the exclusion is priced rather than asserted.
+excludes, so the exclusion is quantified rather than asserted.
 
 Method. Fourth-order Rayleigh-Schroedinger perturbation theory in
 the Floquet (atom plus photon number) basis over the bound levels
@@ -331,7 +331,7 @@ def crossings():
     """All six polarizability crossings, as (name, wavelength_nm).
     The three long-wavelength entries are the published magic list.
     The other three hug poles and exist here so the design
-    comparison can price them: 1297.5 nm sits 0.7 nm from the
+    comparison can quantify them: 1297.5 nm sits 0.7 nm from the
     6S-7P1/2 line and the two near 1030 nm hug the 8P doublet."""
     return [
         ("1203.9", brentq(delta_alpha, 1195.0, 1210.0, xtol=1e-9)),

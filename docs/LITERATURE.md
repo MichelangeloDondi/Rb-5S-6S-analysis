@@ -261,7 +261,7 @@ rather than in the order they were found:
 - **[5.1](#51-narrowed-by-the-adversarial-audit-2026-07-26)** the precedents an
   external audit surfaced, which cost the first version of claim 1.
 - **[5.2a](#52a-the-concession-runs-to-1980-and-the-closed-form-is-not-new-either)**
-  the 1980 review that supersedes even what 5.1 left standing. This is the
+  the 1980 review that replaces even what 5.1 left standing. This is the
   binding precedent, and the later word on claim 1.
 - **[5.3](#53-the-nearest-analogue-experiment-and-what-it-costs-claim-1)** the
   closest published experiment, which owns the phenomenon.
@@ -314,7 +314,7 @@ A number here is an identifier, not a position.
    core, which is checkable by BIC and the M8 cusp fit. See
    [THEORY_NOTE](THEORY_NOTE.md) §3.
    *And the width channel is not a weaker alternative. It is blind.* At 225 mW
-   and the adopted $w_0 = 64$ µm the ramp kernel is 0.20 MHz FWHM, which added
+   and the measured $w_0 = 64$ µm the ramp kernel is 0.20 MHz FWHM, which added
    in quadrature to the observed 5.2 MHz line is **0.004 MHz**, a part in
    1400. No width measurement reaches this signal at any precision.
    The same arithmetic settles a loose end in [lee2010](lit/lee2010.md): their
@@ -422,7 +422,7 @@ describe the asymmetry qualitatively, keep the frequency axis intact, and never
 invert the lineshape for the shift. Cite all three up front rather than let a
 referee find them.
 
-> **SUPERSEDED by §5.2a (2026-07-30). The closed form does not survive
+> **REPLACED by §5.2a (2026-07-30). The closed form does not survive
 > either.** [delone1980](lit/delone1980.md) carries it, and this repository's
 > $f(s)\propto|s|^{n-1}$ is their Eq. (5.3) evaluated for the intensity
 > distribution of a focused Gaussian beam. What is left standing is §5.2a's
@@ -664,7 +664,7 @@ two-epoch design turns those nulls into measured coefficients.
 - **[Ayachitula 2024](lit/ayachitula2024.md)** (Phys. Rev. A **110**, 022803)
   is the kHz-precision Doppler-free two-photon remeasurement of the 6S₁/₂
   hyperfine structure, both isotopes, now the source of `A_6S_RB87/85_HZ` in
-  `constants.py`, superseding Perez Galván 2008. **[CITE, ESTABLISHED]**
+  `constants.py`, replacing Perez Galván 2008. **[CITE, ESTABLISHED]**
   Their line-center drift control (<0.5 kHz over 50 min) is the benchmark
   for what a fixed lock buys.
 - **[Orson 2021](lit/orson2021.md)** (J. Phys. B **54**, 175001, same USAFA
@@ -740,7 +740,7 @@ given, so a reader checking a number ends up here rather than in a module.
   its [2017 erratum](lit/leonard2017.md), which moves the measured tune-out to
   790.032326(32) nm and the matrix-element ratio to 1.99217(3). The erratum is
   the value `polarizability.py` validates against, and the pair is the worked
-  example of why a superseded number has to be chased into every file that
+  example of why a replaced number has to be chased into every file that
   quotes it. **[CITE]**
 - **An independent matrix-element set.** [Arora & Sahoo
   2012](lit/arora2012.md), coupled-cluster 6s-5p reduced elements and a 6S

@@ -212,13 +212,13 @@ core-model dependence above, and it is checkable by BIC and the M8 cusp fit,
 which is why those exist.
 
 **And the width channel is not merely worse, it is blind.** At the campaign's
-maximum 225 mW with the adopted $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
+maximum 225 mW with the measured $w_0 = 64$ µm prior, `stark_shift_S0_mhz` gives
 $S_0 = 0.348$ MHz, so the ramp kernel is 0.20 MHz FWHM. Added in quadrature to
 the observed 5.2 MHz line that is **0.004 MHz** of extra width, a part in 1400,
 far below the width budget's own systematics. No width measurement of any
 precision reaches this signal. The asymmetry channel is not a refinement of the
 width channel but the only channel there is. CALCULATED 2026-07-30, requoted
-2026-08-02 at the adopted waist.
+2026-08-02 at the measured waist.
 
 The reference moments the fit encodes,
 
@@ -323,12 +323,12 @@ and are withdrawn. The width-and-shape channel is the archive's only
 light-shift channel.
 
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
-the computed $1093$ at the adopted $w_0=64$ µm, so the archive constrains
+the computed $1093$ at the measured $w_0=64$ µm, so the archive constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than an
 inference pointing at an external number. Two documented effects push the
 *effective* intensity below even that prior: residual clipping at the 3 mm EOM
-aperture, and imperfect superposition of the retro beam. The superseded
+aperture, and imperfect superposition of the retro beam. The replaced
 readings of this bracket (271 a.u. at the old 50 µm prior, about 1200 from the
 width-only bound, about 5800 from a Wald interval with no coverage at the rail)
 live in the audit record. The archive does not adjudicate $\Delta\alpha$
@@ -432,7 +432,7 @@ rescue Orson's sign, since a $1\sigma$ move of both 8P elements shifts
 $\alpha_{6S}$ by 1.68 a.u. and the predicted coefficient by 0.15%. And it is
 why 8P is worth naming at all: it supplies 4.9% of the differential
 $\Delta\alpha$ that sets the light shift, so it is a term to keep rather than a
-term to neglect. Section 5.2 prices the rest of what a third 993 nm photon does.
+term to neglect. Section 5.2 quantifies the rest of what a third 993 nm photon does.
 
 So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$
 is negative and the light shift of the transition is **blue**, not red. Every archival
@@ -569,7 +569,7 @@ at $k=2\pi/993.4$ nm. Against $\alpha_{6S}(993)=-312$ a.u. that is
 $3.5\times10^{-5}$ and $1.7\times10^{-2}$ a.u. The comparison that matters is
 with the questions actually open on this line. The sign dispute is a factor
 $4.6$ in a group of terms, the magnitude spread between this work and Orson is
-4.7%, and the $w_0$ prior is $\pm20$% and gates every absolute result.
+4.7%, and the measured $w_0$ is $\pm20$% and gates every absolute result.
 Multipole corrections enter at $10^{-5}$% and $10^{-3}$%.
 
 **Nor is any multipole channel resonantly enhanced out of that suppression.**
@@ -598,7 +598,7 @@ on the dipole inputs themselves moves it by about 75 pm, four orders of
 magnitude further. Slope table in
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md) §5.1.
 
-### 5.2 What a third 993 nm photon does, priced
+### 5.2 What a third 993 nm photon does, quantified
 
 Asked 2026-08-09 and answered here because the polarizability breakdown above
 raises it: the field that drives the two-photon transition is still present once
@@ -615,7 +615,7 @@ width. The next candidates are farther: 8P1/2 at 364 cm^-1, then 9P and 6F at
 several hundred more. A single-colour three-photon resonance to 8P3/2 would need
 1004.90 nm, 11.5 nm from where this laser runs.
 
-**It is not a loss channel.** At 225 mW and the adopted waist the 8P admixture of
+**It is not a loss channel.** At 225 mW and the measured waist the 8P admixture of
 6S is $1.7\times10^{-9}$, and the 6S to 8P scattering rate is $8.5\times10^{-4}$
 per second. Every channel together, from `hyperpolarizability.scattering_rates`
 rescaled to the campaign field, reaches 0.122 per second and is dominated by the
@@ -638,7 +638,7 @@ term to keep and the reason 8P appears in the line lists at all.
 [delone1980](lit/delone1980.md) is the resonance-enhanced $k = k_1 + k_2$
 problem, which is exactly this 2+1, and it names the three field-induced
 perturbations with their intensity scalings, including an ionization broadening
-$\Gamma_i$ from the resonant state to the continuum. The right way to price a
+$\Gamma_i$ from the resonant state to the continuum. The right way to quantify a
 third photon here is their $\Gamma_i$, not a fresh derivation, and all three of
 their terms sit far below the natural width at this intensity.
 

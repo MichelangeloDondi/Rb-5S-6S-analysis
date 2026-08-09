@@ -325,9 +325,9 @@ def project_pull(rows, inp) -> dict:
     sigma_s0_cycle = QUOTE_P_W * sigma_slope / pull_coeff
 
     s0_pred = lineshape.stark_shift_S0_mhz(
-        QUOTE_P_W, K.W0_PRIOR_M, K.RHO_RETRO, K.DELTA_ALPHA_AU)
+        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, K.DELTA_ALPHA_AU)
     s0_pred_recompute = lineshape.stark_shift_S0_mhz(
-        QUOTE_P_W, K.W0_PRIOR_M, K.RHO_RETRO, inp["da_recompute"])
+        QUOTE_P_W, K.W0_MEASURED_M, K.RHO_RETRO, inp["da_recompute"])
     sign_gap = s0_pred + s0_pred_recompute
 
     _add(rows, "input_centre_precision_per_trace", "archive", 2.0 * inp["sigma_centre_laser"],
@@ -349,7 +349,7 @@ def project_pull(rows, inp) -> dict:
          f"half-window {PLAN_ZC_CONFIG_L_M * 1e3:.2f} mm, PLAN 4.1 and PLAN 6",
          "rb5s6s.lineshape.ramp_moment_contributions")
     _add(rows, "input_S0_predicted", "225 mW", s0_pred, None, "MHz, transition axis",
-         "stark_shift_S0_mhz at the committed waist prior and retro ratio",
+         "stark_shift_S0_mhz at the committed measured waist and retro ratio",
          "the prediction the archival bound is compared against",
          "rb5s6s.constants, rb5s6s.lineshape")
     _add(rows, "input_intensity_axis_systematic", "differential transit anchor",
@@ -384,7 +384,7 @@ def project_pull(rows, inp) -> dict:
         _add(rows, "proj_pull_S0_over_prediction", label, s0_pred / sigma, None,
              "sigma",
              "predicted S0(225 mW) divided by the projected uncertainty",
-             common + "; prediction at the committed waist prior",
+             common + "; prediction at the committed measured waist",
              "results/stark_joint.csv S0_225mW_pred")
         _add(rows, "proj_deltaalpha_frac", label, frac_da, None, "fraction, 1 sigma",
              "quadrature sum of the fractional shift uncertainty and the "
@@ -395,7 +395,7 @@ def project_pull(rows, inp) -> dict:
         _add(rows, "proj_deltaalpha_sign_separation", label, sign_gap / sigma, None,
              "sigma",
              "|S0(+Delta-alpha) - S0(-Delta-alpha)| divided by the projected "
-             "uncertainty, both evaluated at the committed waist prior",
+             "uncertainty, both evaluated at the committed measured waist",
              common + "; the two signs are the pinned +1093 a.u. and the "
              "recomputed -1145 a.u., both evaluated at the committed waist "
              "prior, so a common intensity-scale error moves the separation "
@@ -536,11 +536,11 @@ def project_ceilings(rows, inp) -> dict:
         lam = rung_wavelength_nm(e_upper_cm)
         d_alpha = abs(float(d_alpha_fn(lam)))
         s0_per_w = lineshape.stark_shift_S0_mhz(
-            1.0, K.W0_PRIOR_M, K.RHO_RETRO, d_alpha)
+            1.0, K.W0_MEASURED_M, K.RHO_RETRO, d_alpha)
         ceiling_w = CEILING_WIDTH_FRACTION * width / s0_per_w
         derate = max(1.0, QUOTE_P_W / ceiling_w)
         geometry = (f"free space at the archive geometry, waist "
-                    f"{K.W0_PRIOR_M * 1e6:.0f} um and retro ratio "
+                    f"{K.W0_MEASURED_M * 1e6:.0f} um and retro ratio "
                     f"{K.RHO_RETRO:.2f}, counter-propagating drive")
 
         _add(rows, "input_rung_delta_alpha", label, d_alpha, None, "a.u.",
@@ -1107,7 +1107,7 @@ def main() -> int:
           f"S0(225 mW), against a predicted {pull['s0_pred']:.3f}")
     print(f"  beta_self, five blocks       {beta['sigma_beta_mhz'] * 1e3:.3f} kHz "
           f"per 1e12, a {beta['detect']:.1f} sigma reach on the expected 3.5")
-    print(f"  light-shift ceilings at w0 = {K.W0_PRIOR_M * 1e6:.0f} um, S0 at "
+    print(f"  light-shift ceilings at w0 = {K.W0_MEASURED_M * 1e6:.0f} um, S0 at "
           f"{CEILING_WIDTH_FRACTION:.0%} of the width")
     for label, c in ceilings.items():
         print(f"    {label:<22} {c['ceiling_w'] * 1e3:7.1f} mW  "

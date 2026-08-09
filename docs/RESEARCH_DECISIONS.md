@@ -24,7 +24,7 @@ The decisions at a glance, each argued in full in its numbered section:
 | What is left unmodelled? | Named mechanisms, each with the condition that would revive it | silence would read as completeness (§8) |
 | The 130 °C density point? | Promoted from diagnostic to the headline four-point lever | same configuration as the temperature ladder, session receipts checked (§9) |
 | The joint-refit choices (2026-08-03)? | Measured priors over seeded ones, per-session widths, no robustness row | each argued from the fits' own receipts (§10) |
-| Can a cold-start profile be quoted? | Not without a seeded twin, and the basin-finder variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
+| Can a cold-start profile be quoted? | Not without a seeded twin, and the minimum search variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
 | Why pool the four lines into one slope? | Adopted by a preregistered probe, scored after the pooled number existed | its predictions held, one by a different mechanism than the note argued (§12) |
 | Why does the ruler figure show six teeth, not seven? | The all-seven clause returned the empty set and was relaxed by amendment, in the open | two measured causes, recorded in the ruler specification (§12) |
 | Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this archive's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
@@ -235,12 +235,12 @@ Most of the suite's guards are regression guards for mistakes that were made:
 - a freshness guard, because a physics fix moved `beta` from 0.056 to 0.036 and
   stale figures survived it, "found only by accident"
   ([test_figures_fresh.py:4](../tests/test_figures_fresh.py#L4));
-- a canonical-value guard, because one superseded number lingered "in eight
+- a canonical-value guard, because one replaced number lingered "in eight
   files" ([test_docs_canonical.py:21](../tests/test_docs_canonical.py#L21));
 - that guard's ±4-line window was widened after a planted violation was
   "satisfied by the very correction note explaining the reversal"
   ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428));
-- an asymptotic w0 → ∞ test, after an external red-team review found it untested
+- an asymptotic w0 → ∞ test, after an external adversarial review found it untested
   ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).
 - an SVG canonical-number guard, because the hand-authored bench schematic
   quoted a waist matching no value in the record and asserted the retro ratio
@@ -372,7 +372,7 @@ the question the module docstring poses, stays open.
 
 ---
 
-## 11. A profile is only as good as its basin, so the basin-finder now leads (2026-08-03)
+## 11. A profile is only as good as its local minimum, so the minimum search now leads (2026-08-03)
 
 The four-point joint refit's primary chain, started cold, parked in a false
 minimum 283,000 chi-squared units above the solution every other chain in
@@ -385,7 +385,7 @@ from an earlier run, striking the primary variant this time. Two structural
 decisions follow.
 
 **Decision: the wing variant runs first and seeds every other family.** A
-cold start finds the true basin reliably only with the wing free, so the
+cold start finds the true local minimum reliably only with the wing free, so the
 chain order in [run_stark_joint.py](../scripts/run_stark_joint.py) now puts
 the wing variant first and seeds the primary from its solution with the
 wing entries stripped, in addition to the primary's own cold chains, with
@@ -396,9 +396,9 @@ variant it last struck.
 **Decision: no cold-start profile is quoted without a seeded twin.** The
 previous run's direction row compared a stuck profile against a converged
 one and printed 283,135 where the physics answer, measured in the true
-basin, is indifference. Any future variant added to the fit inherits the
+local minimum, is indifference. Any future variant added to the fit inherits the
 same rule: its profile enters the CSV only after a seeded chain from the
-best known basin has confirmed or improved its minimum.
+best known local minimum has confirmed or improved its minimum.
 
 The corrected rerun produces the CSV of record. The invalid run's numbers
 never entered a document, and the incident's full account, including what

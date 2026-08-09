@@ -102,7 +102,7 @@ budget is in the results ledger (`docs/RESULTS.md`).
 ### 5.3 The 2025 laser width
 
 $\sigma_\text{laser}(2025)\lesssim2.2$ MHz (transition axis; below 1.2 MHz
-laser axis; it is $\sim1.09$ MHz laser-axis at the adopted $w_0=64$ µm
+laser axis; it is $\sim1.09$ MHz laser-axis at the measured $w_0=64$ µm
 prior) —
 a bound, not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5](02_the_lineshape.md), M9)
@@ -153,7 +153,7 @@ the bound needs care: at $\kappa=0$ the width handle has *zero gradient*, so a
 linearized (Wald) $\kappa+1.645\sigma$ interval is evaluated where the Jacobian
 column vanishes and its "sigma" is a finite-difference artifact with no 95%
 coverage (that route reads 1.0 MHz un-inflated and 2.4 MHz inflated, both kept
-in the CSV as superseded diagnostics). The quoted limit is therefore a
+in the CSV as replaced diagnostics). The quoted limit is therefore a
 **profile likelihood** — scan $\kappa$ upward, re-minimizing the per-peak cores,
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=5.5$,
@@ -162,12 +162,12 @@ elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
 widths alone. The joint three-session full-profile fit
 (`run_stark_joint`, RESULTS C3f), over 100 campaign, 46 rehearsal and 26 pilot
 traces, sharpens the same channel to $S_0(225\ \text{mW})$ below 0.26 MHz,
-under the 0.35 MHz predicted at the adopted waist, so the $\Delta\alpha$
+under the 0.35 MHz predicted at the measured waist, so the $\Delta\alpha$
 bracket sits under both values on the table (Orson's published 1093 and this
 work's recomputed 1145,
 [§2.6](03_the_ac_stark_ramp.md)). The constraint
 therefore lands on the (Δα, intensity) pair rather than adjudicating the
-theory, and since the waist prior is now itself the lineage measurement, the
+theory, and since the measured waist is now itself the lineage measurement, the
 comparison is a direct test of it. The comparison is on magnitude and is
 therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).

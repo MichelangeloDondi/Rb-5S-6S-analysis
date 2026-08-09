@@ -32,7 +32,7 @@ perform on itself, plus one honest non-result:
    WIDTH test is a NULL -- refitted with the archive's composite model the
    pilot is within 0.7 sigma of every dwell from 90 to 130 C. The first
    version of this check used the crude QC FWHM, which inflates the low-SNR
-   end and manufactured a 1.9 sigma that is not there. QC metrics triage
+   end and manufactured a 1.9 sigma that is not there. QC metrics worked list
    traces; they do not measure widths.
 
 6. PILOT ch1 IDENTITY -- the pilot rulers' 1.92 V second channel

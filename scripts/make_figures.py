@@ -30,7 +30,8 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
-from rb5s6s.constants import (  # noqa: E402
+from rb5s6s.constants import (
+    peak_title,  # noqa: E402
     GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S,
     TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
 
@@ -2094,7 +2095,7 @@ def fig_fit_gallery():
         pull = (v - model_at(sol.x, x)) / fr["sg"]
         ax_res.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, lw=0)
         ax_res.plot(xd, pull, ".", ms=2.0, color=PEAK_COLOR[peak], alpha=0.6)
-        ax_res.axhline(0.0, color="#8f1f1f", lw=0.9, ls=(0, (4, 3)))
+        ax_res.axhline(0.0, color="k", lw=0.9)
         lim = 4.0 * float(np.std(pull)) if len(pull) else 4.0
         ax_res.set_ylim(-lim, lim)
         ax_res.set_xlabel("two-photon detuning (MHz)")
@@ -2159,13 +2160,15 @@ def fig_single_peak_fits():
 
         # ---- main panel: data + model, centred on the fitted line centre ----
         xd = x - cc
-        ax_main.plot(xd, v, ".", ms=3.0, color="0.4", alpha=0.5, label="data")
-        ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color=PEAK_COLOR[peak], lw=2.0,
+        # Trace standard (2026-08-09): data wear the peak's own colour so the
+        # entity keeps one colour across every figure, and the fit is black.
+        ax_main.plot(xd, v, ".", ms=3.0, color=PEAK_COLOR[peak], alpha=0.5,
+                     label="data")
+        ax_main.plot(xf - cc, model_at(sol.x, xf), "-", color="k", lw=1.8,
                      label="joint fit of all campaign traces\n(amplitude, centre "
                            "and background\nrefit here)")
         ax_main.set_ylabel("signal (V)")
-        ax_main.set_title(f"{PEAK_LABEL[peak]}: the data against the joint fit, "
-                          "225 mW at 130 °C", fontsize=10)
+        ax_main.set_title(peak_title(peak) + " (130 °C, 225 mW)", fontsize=10)
         ax_main.legend(fontsize=8, loc="upper left", frameon=True, framealpha=0.9)
         ax_main.tick_params(labelbottom=False)
 
@@ -2174,7 +2177,7 @@ def fig_single_peak_fits():
         pull = (v - model_at(sol.x, x)) / fr["sg"]
         ax_res.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, lw=0)
         ax_res.plot(xd, pull, ".", ms=2.6, color=PEAK_COLOR[peak], alpha=0.6)
-        ax_res.axhline(0.0, color="#8f1f1f", lw=0.9, ls=(0, (4, 3)))
+        ax_res.axhline(0.0, color="k", lw=0.9)
         lim = 4.0 * float(np.std(pull)) if len(pull) else 4.0
         ax_res.set_ylim(-lim, lim)
         ax_res.set_xlabel("two-photon detuning (MHz)")
@@ -2194,17 +2197,17 @@ def fig_single_peak_fits():
             f"993.{peak} nm: 225 mW, 130 °C",
             "",
             "Shared across every campaign trace:",
-            f"  laser FWHM = {fr['sl']:.3f} MHz",
-            f"  collisional FWHM = {fr['gc']:.3f} MHz",
+            f"  laser width = {fr['sl']:.3f} MHz (FWHM)",
+            f"  collisional width = {fr['gc']:.3f} MHz (FWHM)",
             f"  self-broadening rate = {ctx['beta']:.4f} MHz per",
             r"      $10^{12}\,\mathrm{cm^{-3}}$",
             f"  number density = {N_here:.2f} " r"$\times\,10^{12}\,\mathrm{cm^{-3}}$",
             f"  Stark coefficient = {ctx['kappa']:.3f} MHz per W",
             f"  light shift at this power = {fr['s0']:.3f} MHz",
-            f"  transit FWHM = {fr['transit']:.3f} MHz",
+            f"  transit width = {fr['transit']:.3f} MHz (FWHM, from $w_0$)",
             "",
             "From the fit shown at left:",
-            f"  FWHM = {fr['fwhm']:.3f} MHz",
+            f"  total width = {fr['fwhm']:.3f} MHz (FWHM)",
             f"  reduced chi-squared = {fr['chi2_red']:.2f} over {len(x)} points",
             "",
             "This trace only:",
@@ -2229,7 +2232,7 @@ def fig_single_peak_fits():
                              edgecolor="0.6", lw=0.8))
 
         fig.suptitle(
-            "The 993 nm 5S-6S line: the fitted model, its residual and its parameters",
+            "The fitted model, its residual and its parameters",
             fontsize=9.2, y=0.995)
         _footer(fig, "Source: results/global_archive_fit.csv (shared parameters, "
                      f"{STATUS_WORD.get(status, status.lower())}) + the data_raw archive "

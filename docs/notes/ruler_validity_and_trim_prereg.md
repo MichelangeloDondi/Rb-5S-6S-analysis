@@ -523,7 +523,7 @@ fit worse" is answerable at all, and one of it is the whole of it.
 
 `rb5s6s/config.py` was outside the scope of this amendment, so
 `RULER_REINDEX_CHI2_TOL` keeps its value of 1e-3 and its docstring still
-describes the superseded ceiling. That docstring needs correcting and is left
+describes the replaced ceiling. That docstring needs correcting and is left
 flagged rather than silently fixed.
 
 ### Its calibration, on synthetics only
@@ -680,7 +680,7 @@ keep running and keep recording, which is what it does.
 
 ## A7. What changed in this note, and why
 
-Section 3's justification for `RULER_REINDEX_CHI2_TOL` is superseded by A4. The
+Section 3's justification for `RULER_REINDEX_CHI2_TOL` is replaced by A4. The
 degeneracy argument in it is correct and the calibration behind it is not,
 because the synthetics it was measured on cannot exhibit the cost. The number
 1e-3 was not wrong by preference, it was measured on a case where the answer is
@@ -1382,7 +1382,7 @@ The campaign rate moved again, from 0.04252431 to 0.04252426, and the tokens
 they would become, so the propagation B5.9 deferred is the propagation this
 landing performs. The six registry-guarded sites now carry the working-tree
 values and `tests/test_docs_canonical.py` is green. The historical addenda and
-the tooth-count docstring keep their superseded values, which carry their own
+the tooth-count docstring keep their replaced values, which carry their own
 context and which the registry does not guard.
 
 `results/linefit_conditions.csv` is a special case worth naming. B5.9 recorded
@@ -1413,7 +1413,7 @@ re-run by the Phase 5 recompute along with the four tables that fold it,
 `resolving_power`, `projections`, `lever_crosscheck` and `sigma_laser_sharing`,
 so the exception this section opened for it closes when that recompute is
 committed. The deliberate staleness that remains is the historical record only:
-the superseded values inside the earlier addenda, each of which carries its own
+the replaced values inside the earlier addenda, each of which carries its own
 date, and the tooth-count docstring in `rb5s6s/ruler.py`, which quotes the
 five-against-seven refit as it was measured on the day.
 

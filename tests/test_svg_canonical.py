@@ -6,7 +6,7 @@ Why this file exists. A hand-authored SVG is invisible to every other guard:
 test_figure_register and test_figures_fresh cover only scripts/make_figures.py
 outputs, and test_docs_canonical scans only markdown. So numbers drawn on the
 bench schematic went stale unseen. It quoted w0 ~ 50 um, a value matching
-neither the superseded 32 um naive estimate nor the adopted 64 um prior, and
+neither the replaced 32 um naive estimate nor the measured 64 um prior, and
 asserted rho ~ 1 where the analysis of record assumes 0.94 +- 0.04. This file
 closes the class. Every tracked *.svg under docs/ is scanned for the quantities
 a drawing is likely to quote (the waist, the retro ratio rho, MHz comb
@@ -83,8 +83,8 @@ _NUM = r"([0-9]+(?:\.[0-9]+)?)"
 SVG_QUANTITIES = [
     dict(
         name="beam waist (µm)",
-        canonical=lambda: [K.W0_PRIOR_M * 1e6],
-        source="rb5s6s.constants.W0_PRIOR_M, the adopted Rajasree-lineage prior",
+        canonical=lambda: [K.W0_MEASURED_M * 1e6],
+        source="rb5s6s.constants.W0_MEASURED_M, the adopted Rajasree-lineage prior",
         find=re.compile(rf"(?:\bw0\b|waist)[^0-9]{{0,12}}{_NUM}\s*µm", re.I),
     ),
     dict(
@@ -139,7 +139,7 @@ def _violations(runs):
 
 def test_the_scan_reaches_the_schematic_and_reads_its_waist():
     """Vacuity guard doubling as an extraction self-test. If the schematic is
-    moved, renamed or stops quoting the waist prior (the one number every
+    moved, renamed or stops quoting the measured waist (the one number every
     absolute result rides on), or if the text extraction silently breaks, the
     whole file would otherwise pass while checking nothing."""
     svgs = _tracked_svgs()
@@ -167,9 +167,9 @@ def test_svg_numbers_match_the_canonical_registry():
 
 
 # --------------------------------------------------------------------------- #
-# Targeted tripwire: a superseded waist must not reappear even WITHOUT a       #
+# Targeted tripwire: a replaced waist must not reappear even WITHOUT a       #
 # w0/waist label to anchor the registry regex ("beam focused to 50 µm").        #
-# Mirrors the SUPERSEDED tripwire of test_docs_canonical.                       #
+# Mirrors the REPLACED tripwire of test_docs_canonical.                       #
 # --------------------------------------------------------------------------- #
 _STALE_WAIST = re.compile(r"\b(?:50|32)\s*µm")
 _ALLOW_STALE = re.compile(r"supersed|naive|was |earlier|excluded|not ", re.I)
@@ -182,8 +182,8 @@ def test_no_superseded_waist_value_in_any_svg():
             if _STALE_WAIST.search(run) and not _ALLOW_STALE.search(run):
                 hits.append(f"{rel}: {run[:80]!r}")
     assert not hits, (
-        "a superseded waist value (the stale 50 or the naive 32) reappears on "
-        "a drawing without being marked superseded:\n  " + "\n  ".join(hits))
+        "a replaced waist value (the stale 50 or the naive 32) reappears on "
+        "a drawing without being marked replaced:\n  " + "\n  ".join(hits))
 
 
 # --------------------------------------------------------------------------- #
@@ -194,7 +194,7 @@ def test_no_superseded_waist_value_in_any_svg():
 @pytest.mark.parametrize("planted", [
     "w₀ ~ 50 µm",              # the stale waist label, as drawn
     "w0 ~ 50 um",                   # ascii variant
-    "waist 32 µm",                  # the superseded naive estimate
+    "waist 32 µm",                  # the replaced naive estimate
     "ρ ~ 1",                        # rho asserted rather than assumed
     "rho = 1",
     "(ρ 0.94 ± 0.05 assumed)",      # right value, wrong uncertainty

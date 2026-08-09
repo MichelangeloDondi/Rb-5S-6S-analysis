@@ -20,8 +20,8 @@ machinery is written to be pointed at other transitions
 The scope and the headline numbers, up front. Four hyperfine components, 159 line traces and 105 ruler traces across 70–130 °C and 25–225 mW, three bounds at 95%:
 collisional self-broadening β_self below 0.03 to 0.05 MHz per 10¹² cm⁻³ across
 the four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
-at the 64 µm waist prior, and the AC-Stark coefficient
-S₀(225 mW) below 0.26 MHz against 0.35 predicted at the adopted waist (the
+at the 64 µm measured waist, and the AC-Stark coefficient
+S₀(225 mW) below 0.26 MHz against 0.35 predicted at the measured waist (the
 prediction rides the prior directly, the bound only weakly, through its
 transit kernel).
 The full claim ledger, including what is deliberately not claimed, is
@@ -31,14 +31,17 @@ The full claim ledger, including what is deliberately not claimed, is
   <img src="figures/fig0_spectrum.png" width="560" alt="A representative fitted line">
 </p>
 
-*One 993.4192 nm (⁸⁵Rb) line at 130 °C and 225 mW, with the composite fit and
-its residuals: total FWHM 5.37 ± 0.02 MHz, reduced χ² 1.09. This is the raw material
-everything below is built from. Every width in the box on the panel is a full
-width at half maximum, the laser term included, so the four add up to the total
-the same box prints. The transit-time width is the one that is not measured: it
-rides on the assumed 64 µm beam waist, whose knife-edge scan is still pending.
-The lower strip divides each residual by that point's own uncertainty, and the
-shaded band is one such unit.*
+*One ⁸⁵Rb 5S₁/₂ F=3 → 6S₁/₂ F′=3 line at 130 °C and 225 mW, with the
+composite fit and its residuals: total FWHM 5.37 ± 0.03 MHz, reduced χ² 1.09.
+This is the raw material everything below is built from. Every width in the
+panel is a full width at half maximum, and the fitted ones carry the one-sigma
+error of this condition's fit. The two marked fixed are inputs: the natural
+width from the measured 6S lifetime, and the transit width computed from the
+beam waist, 64 µm, measured on this apparatus lineage by Rajasree 2020 (128 µm
+1/e² diameter on a profiler, same lens, temperature, geometry and laser model,
+and a knife-edge scan on this bench would confirm it here). In the lower strip,
+σ is each point's own error from the fit's signal-dependent noise model, which
+is why the ±1 band is flat here while the raw noise grows with signal.*
 
 **Why this line is worth measuring.** The environmental coefficients of the
 993 nm 5S→6S line have only ever been bounded, and coarsely. Those
@@ -261,10 +264,10 @@ measurement that would lift it.
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
-| 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the waist prior, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
+| 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the measured waist, rising with w₀ | bound | beam-profile w₀ |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
-| Beam waist **w₀** | 64 µm (prior, adopted from Rajasree 2020 on the same-lineage apparatus; not measured on this bench) | open | beam-profile measurement |
+| Beam waist **w₀** | 64 µm, measured. Rajasree 2020 recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must

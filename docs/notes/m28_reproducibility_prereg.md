@@ -25,7 +25,7 @@ from the existing record.
 The first is that the subsets genuinely respond to the calibration in a way
 the full archive does not. The second is optimizer chain variation: these
 are profile likelihoods whose hysteresis is the reason no cold-start profile
-is quoted without a twin seeded from the best known basin, a subset has fewer
+is quoted without a twin seeded from the best known local minimum, a subset has fewer
 points holding the chain in place, and the subset variants run without such a
 seed.
 
@@ -54,7 +54,7 @@ across the existing runs.
   primary, and extending that seeding rule to the subset profiles becomes a
   pre-registered code change of its own.
 * The primary fails to reproduce: stop. That is a finding about the whole
-  fit, it supersedes both branches above, and nothing else runs until it is
+  fit, it replaces both branches above, and nothing else runs until it is
   settled.
 
 ## 4. What is recorded
@@ -62,7 +62,7 @@ across the existing runs.
 The run writes its usual table to a scratch path, never over the release's
 `results/full_archive_fit.csv`. The comparison lands in this note as a dated
 amendment with all three columns, run one, run two, and the fractional
-moves, plus the gate values (census, chi-squared per point, basin gap,
+moves, plus the gate values (census, chi-squared per point, local minimum gap,
 direction indifference) for both runs side by side.
 
 ## 5. Cost and placement

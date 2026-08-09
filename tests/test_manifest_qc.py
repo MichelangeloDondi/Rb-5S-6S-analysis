@@ -38,7 +38,7 @@ def test_discard_reasons_match_curation_audit():
     rows = {r["file"].split("/")[-1]: r for r in _rows() if r["flag"] == "discarded"}
     assert rows["4154nm_070c4.csv"]["qc_reason"].startswith("curation discard: ~27% dimmer")
     assert "supernumerary" in rows["4192nm_090c3.csv"]["qc_reason"]
-    assert "superseded by canonical" in rows["4207nm_025mw2.csv"]["qc_reason"]
+    assert "replaced by canonical" in rows["4207nm_025mw2.csv"]["qc_reason"]
     assert "block-wide" in rows["4207nm_070c2.csv"]["qc_reason"]
 
 

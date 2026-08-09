@@ -6,7 +6,7 @@ mechanism, and which of those mechanisms the archive can actually separate.
 cancellation. It forward-references the AC-Stark ramp and the results chapter
 inside the transit section.
 **Gives.** The four kernels the composite model convolves, the Voigt
-degeneracy the statistics chapter has to manage, and the waist prior every
+degeneracy the statistics chapter has to manage, and the measured waist every
 absolute number is conditional on.
 **Skip if.** You want the results rather than their derivation. The one thing
 to carry away is that transit and laser width trade against each other through
@@ -209,7 +209,7 @@ log-divergence; fixed 2026-07-13, validated against [Lehmann's](../lit/lehmann20
 example). We quote the width the kernel *adds to the natural line* once
 convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32$ µm and
 $\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the adopted
-64 µm prior (it was $\sim1.2$ MHz at the superseded 50 µm prior). At
+64 µm prior (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
 32 µm that is large enough that
 natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
@@ -223,7 +223,7 @@ the input beam that the naive (untruncated) estimate misses. That direct
 measurement lands at the top of the transit-inferred band and independently
 excludes 32 µm, agreeing with the corrected transit physics. The adopted prior
 is $w_0=64$ µm with a 60–70 µm band, and the wider 45–70 µm and 50–64 µm bands
-this section reached on the way there are superseded by it.
+this section reached on the way there are replaced by it.
 [Nieddu](../lit/nieddu2019.md) additionally reports the same four two-photon peaks
 at 2.43–2.60 MHz FWHM (laser axis, $\approx5$ MHz transition axis) with a
 locked laser — consistent with the archival $\approx5.25$ MHz line.

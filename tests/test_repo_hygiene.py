@@ -105,6 +105,24 @@ FORBIDDEN = {
         r"\bchatgpt\b", r"\bclaude\b", r"\banthropic\b", r"\bopenai\b",
         r"\bcopilot\b", r"\bas an ai\b", r"\blanguage model\b",
     ],
+    # Named by the owner on 2026-08-09 and swept the same day. The common
+    # thread is vocabulary that belongs to how the work was managed rather
+    # than to what it found: an internal review exercise, a
+    # project-management metaphor, an optimiser's jargon, a ranking label.
+    # "wave" is deliberately NOT here. Every bare occurrence in this tree is
+    # physics (four-wave-mixing, matter-wave, millimetre-wave) and the
+    # process sense was already removed, so a pattern for it would fire only
+    # on standing waves and wavelengths.
+    "internal process vocabulary": [
+        r"red[- ]?team",
+        r"\bprice[sd]?\b", r"\bpricing\b",
+        r"supersed",
+        r"\bbasins?\b", r"\bbasin-\w+",
+        r"\btiers?\b", r"\bTier\s+\d",
+        r"\blong pole\b",
+        r"\btrouble", r"\btriage",
+        r"\bknown-red\b", r"plant[- ]verif",
+    ],
     "aphoristic register": [
         r"is itself an?\b", r"is itself the\b",
         r"a test passed, not a tuning",
@@ -134,7 +152,15 @@ SKIP_PREFIXES = ("docs/lit/",)
 # the specification, not instances of the problem. Any new file that encodes
 # the rules belongs here too.
 SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
-              "tests/test_lit_consistency.py"}
+              "tests/test_lit_consistency.py",
+              # These three detect stale and replaced values in the documents
+              # and the figures, so their patterns and their test names must
+              # name the vocabulary of supersession. Added 2026-08-09 with the
+              # internal-process bank: they are the specification again, the
+              # same reason the two above are here.
+              "tests/test_docs_canonical.py",
+              "tests/test_ramp_geometry_docs.py",
+              "tests/test_svg_canonical.py"}
 
 
 def _prose_files() -> list[str]:

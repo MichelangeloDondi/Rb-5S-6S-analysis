@@ -86,7 +86,7 @@ Two products exist and only one changes.
   release. Changing it after the poles finish would silently stale both
   (the plumbing referee confirmed neither pole reads the probe file, and
   M25 frees the coefficient itself and depends on neither). Sharing the
-  slope inside the model fit is legitimate future work priced at a full
+  slope inside the model fit is legitimate future work quantified at a full
   pole re-run, and it is recorded here as not done.
 
 ## 5. Predictions

@@ -17,12 +17,12 @@ the apparatus. Rules:
 import os
 from pathlib import Path
 
-# W0_PRIOR_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
+# W0_MEASURED_M and transit_fwhm_from_w0 are used below; RHO_RETRO,
 # RHO_RETRO_ERR and W0_BAND_M are deliberate RE-EXPORTS so the scripts, which
 # already import config as C, can reach every prior through one namespace
 # instead of importing constants separately.
 from .constants import (  # noqa: F401
-    RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_PRIOR_M, transit_fwhm_from_w0)
+    RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0)
 
 # --------------------------------------------------------------------------
 # Paths
@@ -274,7 +274,7 @@ with the carrier left out because its height carries residual amplitude
 modulation (amendment 6 section F3).
 
 Landed 2026-08-06 as the adjudicated action RT12 of the frequency-calibration
-red team, answering the question amendment 5 section E4 parked. `proximity` is
+adversarial review, answering the question amendment 5 section E4 parked. `proximity` is
 kept because the re-index ladder is calibrated on combs that are mislabelled to
 begin with, and the only honest way to build one is to number it the old way."""
 
@@ -489,10 +489,10 @@ FIT_HALFWIDTH_MAX_MHZ = 25.0
 ~40 MHz mirror separation so the window always excludes it, even if a
 condition is anomalously broad."""
 
-TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_PRIOR_M, 110.0)
+TRANSIT_FWHM_PLACEHOLDER_MHZ = transit_fwhm_from_w0(W0_MEASURED_M, 110.0)
 """Central transit FWHM at 110 C (transition axis, bare kernel), scaled sqrt(T)
 elsewhere. DERIVED from the corrected transit<->w0 physics
-(constants.transit_fwhm_from_w0, Lehmann-validated) at the W0_PRIOR central
+(constants.transit_fwhm_from_w0, Lehmann-validated) at the W0_MEASURED central
 (64 um) => ~0.93 MHz. This rides on w0, which is an ADOPTED prior until the
 fixed-lock session
 knife-edge, so every M3 absolute width that uses this is PRELIMINARY; the
@@ -503,17 +503,17 @@ History: was a hand-set 0.9 (tied to the OLD buggy transit MC, which was ~2x
 too narrow); re-derived 2026-07-12 when the MC flux bug was fixed and w0
 re-centred 32 -> 50 um; re-derived again 2026-08-01 (v3.0.0) when w0 moved
 50 -> 64 um on the adopted lineage measurement, narrowing this to ~0.93 MHz.
-See constants.W0_PRIOR_M."""
+See constants.W0_MEASURED_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {
     "L (60 um, config)": 60.0,
     # the archival entry tracks the prior, so it can never drift from it
-    f"M ({W0_PRIOR_M * 1e6:.0f} um, archival)": W0_PRIOR_M * 1e6,
+    f"M ({W0_MEASURED_M * 1e6:.0f} um, archival)": W0_MEASURED_M * 1e6,
     "S (16 um, config)": 16.0,
 }
 """Beam-waist configurations for the ramp-geometry predictions (PLAN §4;
 run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
-2026-07-12, see constants.W0_PRIOR_M); L and S are target for a fixed-lock sessions, all
+2026-07-12, see constants.W0_MEASURED_M); L and S are target for a fixed-lock sessions, all
 pending knife-edge measurement (OPEN)."""
 
 RAMP_COLLECTION_HALFLENGTH_MM_ENVELOPE = (1.0, 2.0, 4.0)

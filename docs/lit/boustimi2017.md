@@ -42,7 +42,7 @@ summary: >
   van der Waals shift. Carries the same limitation as the 2002 paper: the
   worked nanowire case is metallic, with the dispersion coefficients written to
   "carry the nonlocal behavior of the metal". So it supplies the framework, not
-  a dielectric result. Superseded for the refit later the same day: frawley2012
+  a dielectric result. Replaced for the refit later the same day: frawley2012
   was found to be held, and is cylindrical, dielectric-capable and in a directly
   usable factorised form. Keep this only as an independent cross-check of the
   framework.
@@ -83,7 +83,7 @@ be evaluated for a dielectric $\varepsilon$ — which is what Sagué must have d
 — is **not established here**, and is the thing to check on the rendered pages
 before treating this as a drop-in.
 
-## Status for the refit: superseded, later the same day
+## Status for the refit: replaced, later the same day
 
 **This paper is no longer needed, and neither is `boustimi2002`.**
 [frawley2012](frawley2012.md) is held and read:

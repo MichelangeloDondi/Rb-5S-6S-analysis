@@ -35,7 +35,7 @@ from scipy.optimize import least_squares
 
 from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
-from .constants import RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_PRIOR_M
+from .constants import RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_MEASURED_M
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
@@ -58,7 +58,7 @@ def _fwhm_of(gamma_coll: float, sigma_laser: float, transit: float, s0: float,
 def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
                     T_C: float = 130.0,
                     transit_ref_mhz: float = TRANSIT_FWHM_PLACEHOLDER_MHZ,
-                    gamma_coll: float = 0.6, w0_um: float = W0_PRIOR_M * 1e6,
+                    gamma_coll: float = 0.6, w0_um: float = W0_MEASURED_M * 1e6,
                     rho: float = RHO_RETRO, profile: bool = True,
                     nu_step: float = 0.01) -> Dict:
     """Bound the AC-Stark coefficient kappa from FWHM-vs-power at fixed T.
@@ -94,7 +94,7 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # seeds: per-peak sigma_laser ~1.6, kappa ~ predicted
     kpred = stark_shift_S0_mhz(1.0, w0_um * 1e-6, rho=rho)   # MHz per W (S0 at 1 W)
     p0 = np.array([1.6] * npk + [kpred], float)
-    # S0 prediction BAND over the w0 prior band AND the rho uncertainty. S0 ~
+    # S0 prediction BAND over the measured w0 band AND the rho uncertainty. S0 ~
     # (1+rho)/w0^2, so the widest credible interval pairs the tight-waist edge
     # with the high rho and the wide-waist edge with the low rho. Both bands
     # come from constants (W0_BAND_M, RHO_RETRO +/- RHO_RETRO_ERR) so no edge
