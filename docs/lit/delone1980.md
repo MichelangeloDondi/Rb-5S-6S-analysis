@@ -227,3 +227,57 @@ using the **third** cumulant as a drift-immune measurement channel, which
 answers an experimental problem (an untrustworthy frequency centre) that does
 not arise in Delone's setting at all. That is a real contribution and a much
 smaller one than "a new lineshape law".
+
+## Sections 3, 5 and 6c: what this note had not read, and why they matter
+
+Added 2026-08-09, prompted by asking what a *third* 993 nm photon does in this
+experiment. The answer turned out to be partly printed in this same review, in
+sections the note had not reached. This is a reading gap rather than a
+literature gap, which is the worse kind to leave open: the paper is held, cited
+and marked VERIFIED, so anything in it is already ours to be responsible for.
+
+**The frame has a stated validity condition, and the note did not carry it.**
+Section 5 bounds the whole $F^k$ power-law picture: it holds if the
+field-induced shifts and widths of the atomic levels are *smaller than the
+natural widths*. In the opposite case, $\delta\omega(F)$ and $\Gamma(F)$ larger
+than $\Gamma$, the induced shift and width govern the process and it is
+explicitly **not of power-law type**. Section 3 closes with three named exits
+from the frame: tunnelling character, intermediate resonances arising, and the
+inapplicability of a rate description at long pulse duration.
+
+This bears directly on the archive rather than only on the theory. At the
+adopted waist the ramp edge is 0.348 MHz against a 3.4925 MHz natural width, so
+the condition holds with about a factor of ten to spare, and the power-law frame
+is licensed. It would stop being licensed at the tighter focus the fixed-lock
+plan wants, which is the same place two other approximations already fail, and
+it should be checked there rather than assumed.
+
+**Equation (5.3) carries three conditions and this note quoted one.** Alongside
+$\delta\omega(F) \gg \Gamma(F)$, which the note had, the printed conditions are
+that resonance with the *shifted* level be realised, sign condition
+$(\omega_f - k\omega_0)/(\alpha_{1f}\hbar) \gt 0$, and that
+$|\omega_f - k\omega_0| \gg \Gamma(F)$. The reduction of this repository's
+$f(s)\propto|s|^{n-1}$ to Eq. (5.3) is unaffected, because that reduction is an
+identity between two closed forms and does not depend on which regime either is
+used in.
+
+**Section 6c is the resonance-enhanced multiphoton problem, written out.** It
+treats $k = k_1 + k_2$ with a real intermediate resonance, which is exactly the
+2+1 process a third 993 nm photon would drive from the real 6S population, and
+it names all three field-induced perturbations of the resonant state with their
+intensity scalings: a field width from the mixing of ground and resonant states,
+$\Gamma_f = d_{01}F^{k_1/2}$ (Eq. 6.6), a nonresonance shift
+$\delta\omega_{01} = \tfrac14\alpha F$ (Eq. 6.7, which is this repository's own
+$\Delta E = -\tfrac14\alpha E_0^2$ convention arrived at independently), and an
+ionization broadening $\Gamma_i = \alpha_{1E}F^{k_2}$ from the resonant state to
+the continuum (Eq. 6.8). The prescription is to use the weak-field Lorentzian of
+Eq. (6.5) with $\Gamma$ replaced by a combination of $\Gamma_f$ and $\Gamma_i$.
+
+So the correct citation for the third-photon question is Section 6c, and the
+right way to price it is their $\Gamma_i$, not a fresh derivation. For this
+experiment all three terms are far below the natural width. The measured numbers
+are in [THEORY_NOTE](../THEORY_NOTE.md) section 5.2: the third photon lands
+345 cm^-1 above the real 6S to 8P3/2 transition, its 8P admixture is 1.7e-9 at
+the campaign field, and every scattering channel together reaches 0.122 per
+second against a 6S decay rate of 2.194e7 per second. The fourth-order shift
+channel is of order 1e-3 Hz, eight orders below the light-shift bound.

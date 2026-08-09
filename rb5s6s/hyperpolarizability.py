@@ -225,7 +225,49 @@ def _rspt4(g: str, lam_nm: float, u_mhz: float = 1.0, nmax: int = 3):
     h times 1 MHz, which is 48 uK), exact fourth-order perturbation
     theory in the Floquet basis. Tail and core enter as one far
     fictitious channel per S state so the linear shift reproduces
-    the full module polarizability."""
+    the full module polarizability.
+
+    PRECONDITION, and it is not optional: lam_nm must stay away from a
+    TWO-PHOTON resonance between the two S states. The Floquet basis
+    contains |partner, n-2>, whose energy denominator is the two-photon
+    detuning, so E4 carries a pole wherever 2*h*nu equals a real S-to-S
+    interval. For 5S-6S that pole sits at 993.4181 nm, which is the
+    wavelength this experiment actually drives.
+
+    What that costs, measured 2026-08-09, and the demonstration is
+    better than the diagnosis. Fed one of the campaign's peak labels,
+    _rspt4 returns a differential E4 of order 100 Hz, of which 99.995 per
+    cent is the single |6S, n-2> term. It is not a hyperpolarizability:
+    it is the second-order two-photon level repulsion, |M|^2 / D with
+    |M| of order 2e5 Hz. Three checks pin that. nmax=1 drops the
+    delta-n = 2 sector and leaves -5.2e-4 Hz, while nmax=2 through 5
+    agree identically. Dropping the partner S state leaves -3.4e-3 Hz.
+    A wavelength scan holds E4 times D constant and flips its sign
+    through the resonance.
+
+    THE DENOMINATOR IS NOT EVEN A PHYSICAL DETUNING, which is what makes
+    the number unusable rather than merely large. The peak labels are
+    fitted hyperfine positions, so the drive sits ON the component it
+    addresses; D is the offset between twice a label and E_6S_CM, which
+    is the NIST hyperfine-CENTROID term. So D is a bookkeeping residue,
+    part genuine hyperfine offset from the centroid and part a
+    common-mode calibration offset shared by all four labels, and E4
+    accordingly swings from -27.75 to +152.73 Hz and CHANGES SIGN across
+    the four measured lines. A physical shift does not do that.
+
+    The genuine non-resonant differential fourth-order shift at 993 nm
+    is of order 1e-3 Hz (the two pole removals bracket it between 5e-4
+    and 5e-3, sign negative, under the module's own factor-of-two
+    envelope). That is about 5e7 below the second-order differential
+    shift at the same field and eight orders below the archive's
+    light-shift bound, so a third photon contributes nothing measurable
+    through this channel.
+
+    No committed result is affected, which is why this is a precondition
+    and not a correction. The nearest of the six crossings the module is
+    evaluated at, 1029.7 nm, sits 354 cm^-1 clear of the pole, and the
+    farthest is 2601 cm^-1 clear. tests/test_hyperpolarizability.py pins
+    both the clearance and the pole's structure."""
     z = _zmat()
     om = 1e7 / lam_nm
     a_m = 0.5 * (alpha_5s(lam_nm) + alpha_6s(lam_nm))

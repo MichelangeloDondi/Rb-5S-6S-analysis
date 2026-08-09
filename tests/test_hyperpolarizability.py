@@ -185,3 +185,47 @@ def test_position_sensitivity_restores_the_line_lists():
     before5, before6 = p.LINES_5S, p.LINES_6S
     hp.position_sensitivity("1203.9", 1203.886285673291, (1195.0, 1210.0))
     assert p.LINES_5S is before5 and p.LINES_6S is before6
+
+
+def test_every_crossing_stays_clear_of_the_two_photon_pole():
+    """_rspt4 has a pole where two photons hit the partner S state.
+
+    The Floquet basis carries |partner, n-2>, so E4 diverges wherever
+    2*h*nu equals a real S-to-S interval. For 5S-6S that is 993.4181 nm,
+    which is the wavelength the 2025 campaign drove. Every crossing the
+    module publishes coefficients at must stay far from it, and this
+    pins that clearance so a future crossing cannot quietly land on it.
+    """
+    pole_cm = E_6S_CM / 2.0
+    clearances = [abs(1e7 / lam - pole_cm) for _, lam in hp.crossings()]
+    assert min(clearances) > 300.0, (
+        f"a crossing sits {min(clearances):.1f} cm^-1 from the two-photon "
+        "pole, where E4 is level repulsion and not hyperpolarizability")
+    # and the drive really is on the pole, which is why this test exists
+    assert abs(1e7 / 993.4192 - pole_cm) < 0.05
+
+
+def test_the_two_photon_pole_is_the_delta_n_two_sector_alone():
+    """At the drive wavelength E4 is one Floquet term, not a coefficient.
+
+    Diagnosed 2026-08-09. nmax=1 excludes the delta-n = 2 sector and
+    leaves the genuine non-resonant remainder, which is five orders of
+    magnitude smaller. Pinned so nobody reads the resonant number as a
+    hyperpolarizability, and so a change to the Floquet truncation that
+    silently altered this is caught.
+    """
+    lam, u = 993.4192, 0.08271
+    d4 = (_rspt4_e4(hp, "6S", lam, u, 3) - _rspt4_e4(hp, "5S", lam, u, 3))
+    d4_no2 = (_rspt4_e4(hp, "6S", lam, u, 1) - _rspt4_e4(hp, "5S", lam, u, 1))
+    assert abs(d4) > 100.0                    # the pole term dominates
+    assert abs(d4_no2) < 0.01                 # the non-resonant remainder
+    assert abs(d4) / abs(d4_no2) > 1e4
+    # the truncation above the two-photon sector changes nothing
+    for n in (2, 4, 5):
+        dn = (_rspt4_e4(hp, "6S", lam, u, n) - _rspt4_e4(hp, "5S", lam, u, n))
+        assert abs(dn - d4) < 1e-3 * abs(d4)
+
+
+def _rspt4_e4(mod, state, lam, u, nmax):
+    """E4 alone, so the pole tests read as arithmetic on one number."""
+    return mod._rspt4(state, lam, u_mhz=u, nmax=nmax)[1]

@@ -412,7 +412,29 @@ $\alpha_{6S}=5167(22)$. It **confirms the magnitude**,
 $|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093, **but finds the
 opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and
-push 6S *up* while 5S is pushed *down*. So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$
+push 6S *up* while 5S is pushed *down*.
+
+The per-line breakdown is worth printing, because the one-line story above names
+only the largest term and the runner-up is not the one a reader would guess.
+Computed line by line through `polarizability._alpha` (2026-08-09): the 5P pair
+contributes $+214.6$ and $+409.5$ a.u., positive because 6S–5P runs *downward*.
+The 6P pair gives $-279.8$ and $-567.0$, the 7P pair $-13.2$ and $-32.4$, and the
+8P pair $-15.3$ and $-41.2$, for a line sum of $-324.7$ and $-312.2$ after tail
+and core. So the 8P pair, at $-56.5$ a.u., is **18% of $\alpha_{6S}$ and the second
+largest upward group**, ahead of 7P. The reason is that 993 nm sits only
+345 cm^-1 blue of the *real* 6S–8P3/2 transition at 1028.67 nm, which is the
+closest real coupling this field has to 6S, 6.8 times closer than 7P and
+18.8 times closer than 6P. Proximity still loses: the 8P matrix elements are
+about twenty times smaller than 6P's and enter squared.
+
+That matters for two questions and settles both. It is why the 8P pair cannot
+rescue Orson's sign, since a $1\sigma$ move of both 8P elements shifts
+$\alpha_{6S}$ by 1.68 a.u. and the predicted coefficient by 0.15%. And it is
+why 8P is worth naming at all: it supplies 4.9% of the differential
+$\Delta\alpha$ that sets the light shift, so it is a term to keep rather than a
+term to neglect. Section 5.2 prices the rest of what a third 993 nm photon does.
+
+So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$
 is negative and the light shift of the transition is **blue**, not red. Every archival
 result is sign-immune (C3c is a symmetric null, and C3d and the prediction band
 use $|\Delta\alpha|$), but the fixed-lock *pull direction* and the ramp's
@@ -575,6 +597,74 @@ which moves the root by under a hundredth of a picometre. A ten per cent error
 on the dipole inputs themselves moves it by about 75 pm, four orders of
 magnitude further. Slope table in
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md) §5.1.
+
+### 5.2 What a third 993 nm photon does, priced
+
+Asked 2026-08-09 and answered here because the polarizability breakdown above
+raises it: the field that drives the two-photon transition is still present once
+the atom is in 6S, so what does the next photon do? The short answer is almost
+nothing, and the arithmetic is worth keeping because it closes three questions
+at once.
+
+**It reaches no resonance.** From 6S a third photon lands at 30198.75 cm^-1.
+Selection rules allow only $n\mathrm{P}$ from a real S state, and the nearest odd-parity
+level of any kind is 8P3/2 at 29853.79 cm^-1, so the photon arrives
+**345 cm^-1 above it**. That is 10.34 THz, about 23000 Doppler widths of the
+1028.67 nm transition at 130 C, and roughly $2\times10^{7}$ times the 8P natural
+width. The next candidates are farther: 8P1/2 at 364 cm^-1, then 9P and 6F at
+several hundred more. A single-colour three-photon resonance to 8P3/2 would need
+1004.90 nm, 11.5 nm from where this laser runs.
+
+**It is not a loss channel.** At 225 mW and the adopted waist the 8P admixture of
+6S is $1.7\times10^{-9}$, and the 6S to 8P scattering rate is $8.5\times10^{-4}$
+per second. Every channel together, from `hyperpolarizability.scattering_rates`
+rescaled to the campaign field, reaches 0.122 per second and is dominated by the
+*downward* 6S to 5P Raman channels rather than by 8P at all. Against the 6S decay
+rate $2.194\times10^{7}$ per second that is a branching of $6\times10^{-9}$, and
+the width it adds is 0.04 Hz against a 3.4925 MHz natural width. No power law in
+the data can see it.
+
+**It cannot ionize, and the fourth photon can.** 6S sits 13558.30 cm^-1 below the
+33690.81 cm^-1 limit, and one photon falls 3492.06 cm^-1 short. A fourth clears
+threshold by 6574 cm^-1, which `FUTURE_TRANSITIONS_titsapph.md` already records
+for this laser. So the open process is 2+1+1 rather than 2+1, at a rate this
+experiment cannot reach.
+
+**The one footprint it does leave** is the 8P contribution to the light shift
+computed above: 18% of $\alpha_{6S}$ and 4.9% of the differential, which is a
+term to keep and the reason 8P appears in the line lists at all.
+
+**And the standard treatment is already in the prior art.** Section 6c of
+[delone1980](lit/delone1980.md) is the resonance-enhanced $k = k_1 + k_2$
+problem, which is exactly this 2+1, and it names the three field-induced
+perturbations with their intensity scalings, including an ionization broadening
+$\Gamma_i$ from the resonant state to the continuum. The right way to price a
+third photon here is their $\Gamma_i$, not a fresh derivation, and all three of
+their terms sit far below the natural width at this intensity.
+
+**A caution about the fourth-order machinery, recorded where it will be found.**
+`hyperpolarizability._rspt4` must not be evaluated at this wavelength. Its
+Floquet basis contains the partner S state two photons down, so it carries a pole
+wherever $2h\nu$ equals a real S-to-S interval, and for 5S-6S that is here. Fed a
+campaign peak label it returns a differential fourth-order shift of order 100 Hz,
+of which 99.995% is that single term: it is the two-photon level repulsion,
+$|M|^2/D$ with $|M|$ of order $2\times10^{5}$ Hz, not a hyperpolarizability.
+
+The cleanest proof that the number is meaningless is that **it changes sign across
+the four measured lines**, swinging from $-27.75$ to $+152.73$ Hz. The reason is
+that $D$ is not a physical detuning at all. The peak labels are fitted hyperfine
+positions, so the drive sits *on* the component it addresses, while `E_6S_CM` is
+the NIST hyperfine **centroid**. $D$ is the residue between them, part genuine
+hyperfine offset and part a common-mode calibration offset shared by all four
+labels. The genuine non-resonant value is of order $10^{-3}$ Hz, about
+$5\times10^{7}$ below the second-order differential shift at the same field and
+eight orders below the light-shift bound of record.
+
+No published coefficient is affected, because the nearest crossing the module is
+evaluated at sits 354 cm^-1 clear of the pole, and
+`tests/test_hyperpolarizability.py` now pins both that clearance and the pole's
+structure.
+
 
 ## 6. Novelty position relative to prior art
 
