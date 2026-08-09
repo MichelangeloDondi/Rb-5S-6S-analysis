@@ -181,11 +181,16 @@ fringe-RESOLVED tail. It is NOT benign: the fringe MULTIPLIES the shift,
 s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ramp
 skew -- kappa3 -> S0^3 (1/135 - f_res*sigma_x^2/5) (= 1/135 - f_res/10 at rho=1),
 a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
-the product P = f_res*sigma_x^2 is observable). Negligible at the w0=64 um prior (~5-8% of an
-already-below-noise skew) but ~25% at w0=16 um, and SAME-SIGN-additive to the
-larger beam-divergence correction (stark_ramp_axial) -- the two must be fit
-JOINTLY at the small waist. Quantified, bracketed by the coherence window, in
-rb5s6s/fringe_tail.py. Remaining measured input
+the product P = f_res*sigma_x^2 is observable). It is negligible at the w0=64 um
+prior, where the whole ramp skew is below the archival noise anyway, and material
+at w0=16 um, where it is SAME-SIGN-additive to the larger beam-divergence
+correction (stark_ramp_axial) -- the two must be fit JOINTLY at the small waist.
+Its SIZE is not restated here. rb5s6s/fringe_tail.py computes it and
+results/fringe_tail.csv commits it, as d_skew: the change in the standardized
+skew, per waist, retro ratio and coherence-window end. The percentages the prose
+quotes (RESULTS.md C3c, THEORY_NOTE.md section 5, LITERATURE.md) are that
+|d_skew| over the intrinsic triangular-ramp skew g1 = 18^1.5/135 = +0.566, and
+that is the only normalisation any of them use. Remaining measured input
 before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
 and docs/THEORY_NOTE.md."""

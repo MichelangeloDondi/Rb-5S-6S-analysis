@@ -74,7 +74,8 @@ Their FM framework (Sec. IV/Fig. 6) settles our ⟨E²⟩ convention: at
 fringe-averaged intensity with no coherent ×2 enhancement. The fringe-resolved
 tail is not benign, though: near-transverse atoms sample the node/antinode
 arcsine, and because the fringe multiplies the shift it SUPPRESSES the ramp
-skew, κ₃ → S₀³(1/135 − f_res/10) at ρ=1, negligible at w₀=64 µm (~9–14% of an
+skew, κ₃ → S₀³(1/135 − f_res/10) at ρ=1. As a fraction of the intrinsic +0.566
+triangle skew that is negligible at w₀=64 µm (~7–14% of an
 already-below-noise skew) but ~26–28% at w₀=16 µm, additive to the
 beam-divergence correction (`rb5s6s/fringe_tail.py`). CALCULATED.
 

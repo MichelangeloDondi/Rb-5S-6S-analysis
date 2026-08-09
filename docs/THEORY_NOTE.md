@@ -374,8 +374,9 @@ $f_\text{res}$) which keeps the mean but, because the fringe *multiplies* the
 shift $s\to s(1+x)$ with $x$ arcsine, suppresses the ramp skew:
 $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
 fractional leverage $\propto$ contrast², of which only
-$P=f_\text{res}\sigma_x^2$ is observable. It is negligible at $w_0=64$ µm
-(≈9–14% of an already-below-noise skew, `results/fringe_tail.csv`) and
+$P=f_\text{res}\sigma_x^2$ is observable. Measured as the change in standardized
+skew over the intrinsic +0.566 of the triangle, it is negligible at $w_0=64$ µm
+(≈7–14% of an already-below-noise skew, `results/fringe_tail.csv`) and
 ≈26–28% at 16 µm, where it is same-sign-additive to the larger §7
 divergence correction, so the two must be fit jointly at small waist
 (quantified and coherence-window-bracketed in `fringe_tail`).

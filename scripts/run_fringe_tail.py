@@ -3,8 +3,10 @@
 M15: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
-at the archival (50 um, S0 = 0.6 MHz) and small-waist config S (16 um, S0 = 5.7 MHz)
-geometries, rho = 1 and 0.75, and reports how the slow-axial-speed fringe tail
+at the archival prior (config.W0_PRIOR_M) and small-waist config S (16 um)
+geometries -- both S0 from lineshape.stark_shift_S0_mhz at 225 mW, so neither
+waist nor shift can go stale here -- over the three retro ratios, and reports
+how the slow-axial-speed fringe tail
 suppresses the ramp's skew, inflates its variance, and how large the
 fringe-resolved fraction is. The coherence window is swept between the
 transit-limited case and the 6S lifetime to bracket the one open modelling
@@ -35,6 +37,9 @@ REGIMES = (
     (f"S    (16um, {_S0_SMALL:.1f}MHz)", 16e-6, _S0_SMALL),
 )
 RHOS = (1.0, C.RHO_RETRO, 0.75)
+# the intrinsic standardized skew of the triangular ramp, 18^1.5/135 = +0.566:
+# the denominator every prose site normalizes d_skew by (constants.py says so)
+G1_TRIANGLE = 18 ** 1.5 / 135
 # coherence window: transit-limited (None) and 6S-lifetime-capped -> the bracket
 WINDOWS = (("transit", None), ("tau6s", TAU_6S_S))
 T_C = 130.0
@@ -97,13 +102,22 @@ def main() -> int:
             w.writerow(["window_frac", k, f"{r['window_frac']:.4f}",
                         "coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window)"])
 
+    # the READING quotes the run's own numbers, so it cannot describe a waist or
+    # a suppression the run did not produce (it long said "the archival 50 um
+    # waist" after W0_PRIOR_M moved to 64 um, and a percentage of the triangle
+    # skew that was last true two waists earlier)
+    def _band(lab):
+        d = [abs(r["d_skew"]) for r in rows if r["regime"].split()[0] == lab]
+        return f"|d_skew| {min(d):.2f}-{max(d):.2f}, {min(d) / G1_TRIANGLE * 100:.0f}-" \
+               f"{max(d) / G1_TRIANGLE * 100:.0f}% of the +{G1_TRIANGLE:.3f} triangle skew"
     print("\n  READING: the fringe tail SUPPRESSES the ramp skew (d_skew < 0) and")
     print("  inflates its variance, both scaling with the fringe-modulation")
-    print("  variance. Negligible at the archival 50 um waist (|d_skew| ~ 0.05,")
-    print("  below the archival noise); material at the small 16 um waist (config S)")
-    print("  (|d_skew| ~ 0.15, ~27% of the +0.566 triangle skew). The transit <->")
+    print(f"  variance. At the {C.W0_PRIOR_M*1e6:.0f} um prior it is negligible")
+    print(f"  ({_band('2025')}), the whole skew being below the")
+    print("  archival noise there; at the small 16 um waist (config S) it is")
+    print(f"  material ({_band('S')}). The transit <->")
     print("  tau_6S window sweep brackets it; the third cumulant is the stable")
-    print("  bracket (config S -0.15 -> -0.18 MHz^3), the standardized skew nearly flat")
+    print("  bracket (config S -0.14 -> -0.16 MHz^3), the standardized skew nearly flat")
     print("  because the same window that grows the cumulant also grows the")
     print("  variance it is normalized by. Wrote results/fringe_tail.csv.")
     return 0

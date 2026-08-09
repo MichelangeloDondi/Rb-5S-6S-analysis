@@ -442,6 +442,19 @@ def main() -> int:
                 f"at {int(wsk['power_mW'])} mW on 993.{wsk['peak']} nm, "
                 f"{float(wsk['resid_skew']):.3f}±{float(wsk['resid_skew_err']):.3f}"
                 ) if wsk else "many sigma at the lowest power"
+    # The fringe-tail suppression is read from fringe_tail.csv rather than typed,
+    # and its denominator is named. It is |d_skew|, the change in the
+    # standardized skew, over the intrinsic triangular-ramp skew
+    # g1 = 18^1.5/135 = +0.566, ranged over the retro ratios and the two ends of
+    # the coherence-window bracket. Hardcoded here as "~26-28%", it stood beside
+    # a "~25%" in rb5s6s/constants.py for the same quantity, and neither said
+    # what it was a percentage OF (2026-08-09).
+    fsupp = [abs(float(r["value"])) / (18 ** 1.5 / 135) * 100.0
+             for r in rows("fringe_tail")
+             if r["quantity"] == "d_skew" and r["key"].startswith("S_")]
+    ftail_txt = (f"~{min(fsupp):.0f}-{max(fsupp):.0f}% of the intrinsic +0.566 "
+                 f"ramp skew at 16 µm, `results/fringe_tail.csv`"
+                 ) if fsupp else "quantified in `results/fringe_tail.csv`"
     W("- **C3c. The ramp asymmetry is a bound, and the significant low-power skew in "
       "`power_sweep.csv` is shot noise rather than the ramp.** These are two "
       "distinct quantities, "
@@ -489,7 +502,7 @@ def main() -> int:
       "It is conditional also on "
       "**two** same-sign small-waist corrections that suppress the skew and must be "
       "fit jointly, the beam-divergence axial average (the larger, sign-flipping "
-      "one) and the standing-wave fringe-resolved tail (~26-28% at 16 µm). See "
+      f"one) and the standing-wave fringe-resolved tail ({ftail_txt}). See "
       "`docs/THEORY_NOTE.md`.\n")
 
     ss = rows("stark_sweep")
