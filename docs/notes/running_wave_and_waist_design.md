@@ -184,6 +184,63 @@ Until that lands, the small-waist session's predicted skew is uncertain at the
 factor-of-three level for a reason that has
 nothing to do with the fringe tail or the beam divergence already in the budget.
 
+## Addendum, 2026-08-09: the collection region is smaller than assumed, and the crossing is inside reach
+
+Written after the experimenter stated that the 993 nm focus sits close to the
+collection lens rather than at the cell's mid-plane, chosen to raise the collected
+solid angle. The tables above used Z_c = 2.0 mm, the middle of the envelope
+`config.py` records for a source at a nominal object distance. That envelope is
+too generous at the near end and the consequence runs both ways.
+
+Z_c = L_parallel / 2M with the cathode's 12 mm axis along the beam, and M rises
+steeply as the source approaches the f = 18 mm lens:
+
+| object distance | M | Z_c | solid angle, relative |
+|---|---|---|---|
+| 25.2 mm | 2.5 | 2.40 mm | 1.00 |
+| 24.0 mm | 3.0 | 2.00 mm | 1.10 |
+| 22.0 mm | 4.5 | 1.33 mm | 1.31 |
+| 21.0 mm | 6.0 | 1.00 mm | 1.44 |
+| 20.5 mm | 7.2 | 0.83 mm | 1.51 |
+| 20.0 mm | 9.0 | 0.67 mm | 1.59 |
+| 19.5 mm | 12.0 | 0.50 mm | 1.67 |
+
+So the choice made for signal also shrinks the axial average that suppresses the
+skew. Those are not two knobs, they are one, and it happens to be turned the right
+way. The axial-averaged skew across that band:
+
+| w0 | z_R | Z_c = 2.40 | 2.00 | 1.33 | 1.00 | 0.83 | 0.67 | 0.50 mm |
+|---|---|---|---|---|---|---|---|---|
+| 64 um | 12.95 mm | +0.563 | +0.565 | +0.565 | +0.566 | +0.566 | +0.566 | +0.566 |
+| 32 um | 3.24 mm | +0.301 | +0.402 | +0.521 | +0.550 | +0.558 | +0.562 | +0.565 |
+| 24 um | 1.82 mm | -0.113 | +0.013 | +0.309 | +0.450 | +0.501 | +0.536 | +0.555 |
+| 16 um | 0.81 mm | -0.386 | -0.354 | -0.231 | -0.071 | +0.062 | +0.230 | +0.402 |
+| 12 um | 0.46 mm | -0.451 | -0.434 | -0.384 | -0.327 | -0.273 | -0.174 | +0.013 |
+
+**Two results, and the second is a trap.**
+
+First, a tight collection region removes the axial penalty almost entirely. At
+Z_c below about 0.7 mm the skew is positive and within a few per cent of its
+intrinsic +0.566 at every waist from 64 down to 16 um. That is the configuration
+the earlier sections were looking for and did not find: the small waist's shift
+gain with no axial suppression, which moves the binding constraint back onto
+saturation where the second section left it.
+
+Second, **the small-waist configuration's own zero sits inside the achievable
+range.** The sign changes at Z_c/z_R = 1.12, which at 16 um is Z_c = 0.90 mm,
+squarely inside the 0.5 to 2.4 mm band. Read the 16 um row: -0.071 at 1.00 mm and
++0.062 at 0.83 mm. A session that lands there measures nothing at all, whichever
+sign it set out to confirm. The record's existing statement that the two-waist
+sign flip survives every plausible magnification is correct on the sign and
+carries the magnitude as still geometry-dependent, and this is what that
+dependence looks like when the numbers are put in: the magnitude can vanish.
+
+So the design instruction is not to pick a sign. It is to pick Z_c away from
+1.12 z_R, and since the same parameter sets the photon budget, the sensible end is
+the tight one. That makes the standoff from the near window, and hence the object
+distance, a quantity to set deliberately and record rather than to discover
+afterwards. It is currently not recorded at all.
+
 ## What this note does not settle
 
 The collection half-length is an envelope, not a measurement: `config.py` gives

@@ -223,12 +223,42 @@ generator as well as a different tank.
 | Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
+| Focus position in the cell | **not the cell's mid-plane**. The 993 nm waist was placed close to the collection lens deliberately, to raise the collected solid angle. The standoff from the near window is not recorded | EXPERIMENTER 2026-08-09 |
 | Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA — the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
 **OPEN: the PMT's high-voltage supply and setting are not on record**
 (2026-08-03 audit). No photograph or note names the supply that biased the
 R636-10 or its voltage. A bench fact only the experimenter can assert.
+
+**The off-centre focus is not a detail, and it moves two numbers the analysis
+uses** (added 2026-08-09 when the experimenter stated it). Both follow from the
+same geometry, that the source sits close to the collection lens rather than at
+the cell's mid-plane.
+
+*The collected axial half-length $Z_c$ is smaller than the record assumes, and
+that is good for the skew.* $Z_c = L_\parallel/2M$ with the cathode's 12 mm axis
+along the beam, and $M$ rises steeply as the source approaches the f = 18 mm
+lens. At an object distance of 25.2 mm, $M = 2.5$ and $Z_c = 2.4$ mm, which is
+the estimate the record carries. At 21 mm, $M = 6$ and $Z_c = 1.0$ mm, with 1.44
+times the solid angle. At 19.5 mm, $M = 12$ and $Z_c = 0.50$ mm at 1.67 times the
+solid angle. So the same choice that was made for signal also shrinks the axial
+average that suppresses the ramp skew, and the two gains are not independent
+knobs but one.
+
+*And it puts the small-waist configuration's own zero inside the achievable
+range, which is a trap worth naming.* The axial-averaged skew changes sign at
+$Z_c/z_R = 1.12$. At $w_0 = 16$ µm that is $Z_c = 0.90$ mm, squarely inside the
+0.5 to 2.4 mm band above. The skew there runs $-0.386$ at $Z_c = 2.4$ mm, $-0.071$
+at 1.0 mm, $+0.062$ at 0.83 mm and $+0.402$ at 0.50 mm. So a small-waist session
+that lands near $Z_c = 0.9$ mm measures **nothing**, whichever sign it expected.
+The way out is not to aim for a sign but to aim away from the crossing: at
+$Z_c \lesssim 0.7$ mm the skew is positive and close to its intrinsic $+0.566$ at
+every waist from 64 down to 16 µm, so a tight collection region buys the
+small-waist shift without the axial penalty. That makes the standoff distance,
+and hence $u$, a quantity the session has to set on purpose and record.
+[notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
+carries the tables.
 
 > **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
 > citing *Nieddu 2019 — the nanofibre experiment, not this bench* — and the only

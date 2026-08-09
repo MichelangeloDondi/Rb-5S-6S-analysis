@@ -766,13 +766,25 @@ measuring anything.
 this repository held the cell's length or diameter until 2026-08-09, because
 nothing else needed them. APPARATUS.md section 5 now carries them, about 25 mm
 across and 100 mm long, tagged as an experimenter recollection rather than a
-datasheet reading, so the trapping numbers above inherit a ten per cent geometry
-uncertainty on top of everything else. A supplier record or a photograph with a
-scale would upgrade them, and neither is on hand: a search of this repository's
-history, the quarantine trees and the wider filesystem found no primary record,
-and the one close-up cell photograph carries no scale. The escape factor is only
-logarithmically sensitive to the radius, so the recollection is good enough for
-the order of magnitude and not for a shift budget.
+datasheet reading. A supplier record or a photograph with a scale would upgrade
+them, and neither is on hand: a search of this repository's history, the
+quarantine trees and the wider filesystem found no primary record, and the one
+close-up cell photograph carries no scale.
+
+*Second correction, same day: the correction above is itself conditional on a
+centred source, and the source is not centred.* The experimenter then stated that
+the 993 nm focus was placed close to the collection lens rather than at the cell's
+mid-plane, to raise the collected solid angle (APPARATUS.md section 3). That
+changes the escape geometry, because a trapped photon leaves by the shortest
+optically thick path and the shortest path is now the standoff to the near window,
+not the 12.5 mm radius. At 130 C the factor runs 508 lifetimes for a centred
+source, 185 at a 5 mm standoff, 66 at 2 mm and 29 at 1 mm, and at 110 C from 138
+down to 7 over the same range. **So the 64 the paragraph quotes is defensible
+after all, and corresponds to a standoff of about 2 mm.** The claim that the
+confinement link makes the estimate eight times worse holds only for a source at
+the cell's mid-plane, which this apparatus does not have. What survives is that
+the factor is not 64 by derivation, it is 64 by coincidence with an unrecorded
+standoff, and the span over the plausible geometry is thirty to five hundred. The standoff is now the bench fact that matters, not the diameter.
 
 *One channel the section does not consider at all.* The drive inverts a
 measurable fraction of the cell on the 6S to 5P transitions, whose photons at
