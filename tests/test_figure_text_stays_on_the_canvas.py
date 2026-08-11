@@ -23,6 +23,12 @@ COVER = 0.20          # same floor the sibling overlap guard uses
 
 
 _CACHE = None
+# figures that RAISED, as opposed to figures that returned without drawing.
+# The difference is the whole point: a figure whose input is absent in this
+# checkout returns early and keeps its committed PNG, which is correct in the
+# public mirror where the traces and the bench photograph do not exist. A
+# figure that raises is broken, and on 2026-08-11 one had been for a day.
+_RAISED: dict = {}
 
 
 def _drawn():
@@ -57,12 +63,16 @@ def _draw_all():
             # twenty-eight figures pass rect, so the first version of this
             # guard silently skipped half the repository and reported a pass.
             mf._save = lambda fig, nm, _c=captured, **kw: _c.__setitem__("fig", fig)
+            raised = None
             try:
                 fn()
-            except Exception:
-                continue                      # inputs absent in this checkout
+            except Exception as exc:          # noqa: BLE001 - recorded, not hidden
+                raised = f"{type(exc).__name__}: {exc}"
             finally:
                 mf._save = original
+            if raised is not None:
+                _RAISED[name] = raised
+                continue
             fig = captured.get("fig")
             if fig is not None:
                 fig.canvas.draw()
@@ -90,16 +100,20 @@ def test_the_guard_sees_most_of_the_repository():
               and c.func.id == "_save"}
     drawn = {n for n, _f in _drawn()}
     missing = sorted(savers - drawn)
-    # EVERY figure, not a fraction. A three-quarters floor was the first
-    # version and it let a single broken figure through: make_figures.py
-    # raised on one of them for a day, because a results file had been
-    # normalised and its reader had not, and 27 of 28 clears 75 per cent
-    # comfortably. If a checkout genuinely cannot draw one, name it here with
-    # the reason rather than widening the floor.
-    assert not missing, (
-        f"{len(missing)} of {len(savers)} figures did not draw, so nothing "
-        "here checked them. Run scripts/make_figures.py to see why:\n  "
-        + "\n  ".join(missing))
+    # NOTHING MAY RAISE. Not drawing is allowed and raising is not, and the
+    # two were the same thing here until 2026-08-11. A figure whose input is
+    # absent returns early and keeps its committed PNG, which is what the
+    # public mirror does for the seven that need the raw traces or the bench
+    # photograph. A figure that RAISES is broken: one had been for a day,
+    # because a results file was normalised and its reader was not, and a
+    # three-quarters coverage floor could not see it either.
+    assert not _RAISED, (
+        "these figures RAISED rather than returning, so they are broken and "
+        "nothing here checked them:\n  "
+        + "\n  ".join(f"{k}: {v}" for k, v in sorted(_RAISED.items())))
+    if missing:
+        print(f"\n  {len(missing)} figures returned without drawing, which is "
+              "the absent-input path, not a failure: " + ", ".join(missing))
 
 
 def test_no_figure_text_runs_off_the_canvas():

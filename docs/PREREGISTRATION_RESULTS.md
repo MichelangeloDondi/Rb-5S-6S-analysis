@@ -32,7 +32,7 @@ it, predictions were committed about what it would contain
 SHA-256+MD5+size+epoch manifest and scored once.
 
 **The audit voided.** Its own integrity gate, content identity between
-archive and backup, failed at T1. That finding stands unedited, and
+archive and backup, failed at T1. That verdict stands unedited, and
 everything after it is labelled **post-hoc**, with no pre-registered
 standing. The gate did its job: it stopped a favourable-looking result from
 being reported as a confirmed one.
@@ -50,6 +50,9 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |
 | The ruler’s tooth indexing was unprotected against the retrace. 54 of 104 combs carried a one-slot mislabelling, corrected display-side on a ratio test. The recomputed calibration is byte-identical and the primary bounds stand. The 4207 nm separation prediction FAILED and stands as a measured campaign property | addendum 26 |
 | An **amplitude-seeded fold** for the comb fit, evaluated against three pre-stated criteria: it lands all 104 combs undisplaced with no ladder, but the campaign rate moves +61.5 ppm through the group-outlier rule, and on injected folds the seed defeats the fold detector. Not adopted. Production stays on proximity seeding, the rule stays as an explicit opt-in diagnostic | addendum 27 |
+| A committed **95 per cent interval had zero width**, both edges landing on one grid point of a membership test that should have been a likelihood crossing. Fixed by interpolating both edges, and fixed TWICE because the no-rulers arm is a deliberate second copy carrying the same code. The end-to-end refit changed exactly one value in 137, the broken edge itself, so the module's byte-stability survives with one named exception | addendum 28 |
+| The **centre channel's bound was built on a drift prior whose sign had already been withdrawn** by the 2026-07-30 window-reference correction. Refitting on the sign-undetermined prior loosens the bound from 8.653 to 12.213 MHz/W, so the error runs the unfavourable way. The verdict and every downstream reading are unchanged, because the channel is closed on grounds that do not involve the prior | addendum 29 |
+| The interval that **replaced** the zero-width one was wrong too, and in the same direction: linear interpolation of a quadratic profile understated it by 14.4x, and a grid ten times too coarse put it somewhere the file's own best fit does not lie. Both arms now refine the grid until the interval spans it, the edges interpolate in sqrt(dchi2), and a third guard refuses any interval that excludes its own point estimate. The headline kappa bound moves 0.5 per cent | addendum 30 |
 | The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
 | The detection chain carries a **61 Hz mains line at ~0.2 % of peak** — averaged over by a 60 ms line, harmless here | addendum 13 |
 | The **P² two-photon law** holds in a third epoch (slopes 1.87–2.36) | addendum 14 |
@@ -134,6 +137,9 @@ re-open a fitted result.
 - [Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations](#addendum-25-2026-08-03-the-wavemeter-record-is-a-sawtooth-not-a-sequence-of-relaxations)
 - [Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute](#addendum-26-2026-08-05-the-six-tooth-defect-the-recalibration-and-the-full-recompute)
 - [Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not adopted](#addendum-27-2026-08-06-the-amplitude-seeded-fold-evaluated-and-not-adopted)
+- [Addendum 28, 2026-08-10: a 95 per cent interval of zero width, and the second copy that carried it](#addendum-28-2026-08-10-a-95-per-cent-interval-of-zero-width-and-the-second-copy-that-carried-it)
+- [Addendum 29, 2026-08-10: the centre channel's bound was built on a prior whose sign had already been withdrawn](#addendum-29-2026-08-10-the-centre-channels-bound-was-built-on-a-prior-whose-sign-had-already-been-withdrawn)
+- [Addendum 30, 2026-08-10: the interval that replaced the zero-width one was also wrong, in the same direction](#addendum-30-2026-08-10-the-interval-that-replaced-the-zero-width-one-was-also-wrong-in-the-same-direction)
 
 ---
 
@@ -530,7 +536,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > the alternative. Both readings predict a ratio of 1 to within ~0.002, against a
 > per-move scatter of 11.5 ms. The test has no power. Nothing decides it because
 > the triangle ramp was on scope **CH1 and only CH2 was exported** — the omission
-> now recorded as item 0 of the systematic floor in [PLAN](PLAN.md) §3.
+> now recorded as stage 0 item 0 in [PLAN](PLAN.md) §3.
 >
 > **Therefore: no quantity below that depends on a between-block position
 > difference is a single number.** Each is a band spanned by the two frames.
@@ -611,7 +617,7 @@ three estimators**: joint fit **+0.30 [+0.19, +0.37]**, pair median
 one, i.e. **0.013–0.023 MHz/min on the laser axis (0.03–0.05 transition)**.
 Over a 32 s block that is ~0.2–0.3 ms of centre walk, below the 1.8 ms
 jitter, which is why the pre-registered intra-block test rightly returned
-JITTER (§8.4's reading stands untouched).
+JITTER (§8.4's verdict stands untouched).
 
 **The intervention census falls out of the same fit**: 13 segments over four
 ladders — hour-1 hunting on 4192 (steps of −1.6 and +1.0 MHz laser within
@@ -636,7 +642,7 @@ re-kick smaller than that. Not confirmed, not refuted, bounded.
 **D0 postscript.** D0 — declared genuinely uncertain before the backup was
 opened — is post-hoc satisfied in every epoch probed: settled 0.05, early
 ≲ 0.34 (transition axis), envelope 4 MHz/min *[correction, same day: the
-envelope constant is laser-axis — the mislabel does not change the conclusion,
+envelope constant is laser-axis — the mislabel does not change the verdict,
 the margin is ~60× either way]*.
 
 No shipped number moves: widths are per-trace, and centre steps do not enter
@@ -1078,14 +1084,14 @@ backup that *is* the clock) is resolved in four moves, all shipped:
    degradation chain, addendum 8), all hash-suffixed against the nine name
    collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
    untouched.
-3. **The full timestamped backup is preserved, and it is not published
-   here**: the complete tree is held verbatim as a `tar.gz` with mtimes
-   intact, 753 CSVs, about 460 MB unpacked and 77 MB packed, sha256
+3. **The full timestamped backup is preserved** as a release asset of the
+   working repository, `raw-backup-2026-07-24`, which
+   carries the complete tree verbatim (`tar.gz`, mtimes intact, verified
+   against the working record, 753 CSVs, about 460 MB unpacked and 77 MB
+   packed), sha256
    `58d5315d8bde5fae0c3c0989e5b96c76e24f02645d546791878ba650f9cc08d1`.
-   The raw traces are outside this repository, as
-   [DATA.md](DATA.md) states, so the audit is reproducible here against the
-   manifest and the recorded hashes rather than against the files
-   themselves, and the clock no longer lives on a single disk.
+   The audit can be re-run from first principles, hashing included, and the
+   clock no longer lives on a single disk.
 4. **The folder roles are documented** (`DATA.md` §3a) and guarded
    (`tests/test_recovered_layer.py`): the clock's manifest identities must
    agree with `MANIFEST.csv` by hash, campaign rows must sit inside the
@@ -1338,7 +1344,7 @@ lineshape fit could absorb. Chasing it in 120 archive baselines:
   displacing the centroid** — it cannot bias a centre, and at ~0.2 % it sits
   far below the width systematics that dominate every C1/C3 bound.
 
-**Identified, quantified, negligible.** Nothing in `results/` moves.
+**Verdict: identified, quantified, negligible.** Nothing in `results/` moves.
 
 > **Correction, 2026-07-25 (the day after this addendum was written).** The
 > paragraph that stood here concluded that "the archive's chain suppressed
@@ -1771,7 +1777,7 @@ and one decade of transimpedance gain (the rehearsal's own files record
 **corroborating, not independent** — it agrees, and it would also agree if
 the gain happened to differ by a decade in the convenient direction.
 
-**The reading** (as corrected). **Two** strands, not three: the filename
+**Verdict** (as corrected). **Two** strands, not three: the filename
 structure, and an amplitude ratio that is gain-dependent but same-day. They
 agree that the pilot ran at the rehearsal's oven setting, internal
 ~110–130 °C, and that its `91 °C` is a variac set point exactly as addendum
@@ -1946,7 +1952,7 @@ the null survives the change of estimator out of sample.
 **Net effect on the archive: none.** No `results/` value moves; the pilot
 sits outside the frozen archive, and its two laws remain internal ratios.
 What changes is one strand of one argument, and a lesson that generalises —
-**QC metrics are for screening, not for physics.** `trace_metrics` exists to
+**QC metrics are for worked list, not for physics.** `trace_metrics` exists to
 flag bad traces, and it is good at that; the moment a number of its was
 carried into a quantitative comparison it brought a 6% systematic with it.
 Where the repo compares widths for physics it uses the fitted composite, and
@@ -2012,8 +2018,8 @@ headline. Against the measured floor of 0.086 MHz on a 5.3 MHz line:
 
 **Hot points alone do not deliver a measurement.** They move β_self from
 invisible to marginal. The noise half is co-limiting, not a refinement of the
-temperature half, and the enablers group of `PLAN.md` §3 now says so with these
-numbers attached.
+temperature half, and `PLAN.md` §3 stage 1 now says so with these numbers
+attached.
 
 The one caveat to carry: the 0.07–0.25 MHz signal is itself derived from a
 bounded β_self, so the projection inherits that range rather than resolving
@@ -2058,7 +2064,7 @@ entirely common.
 | independence null (median, 90% band) | 1.89× [1.29, 4.04] |
 | p(≤ observed \| independence) | **0.11** |
 
-**The statistic is a shrug, and the shrug is the finding.** A common component
+**The verdict is a shrug, and the shrug is the finding.** A common component
 is not established — p = 0.11 clears nothing. It is equally **not excluded**:
 the null's own 90% band runs from 1.29 to 4.04, so the statistic is wildly
 uncertain, and the observed 1.39 sits comfortably inside it. Four peaks by
@@ -2272,10 +2278,10 @@ coherent structure at ±6.25 or ±12.5 MHz, all sixteen peak-offset points
 below 1.4σ with incoherent signs, bounded under 0.4% of peak, and the ruler
 rate's immunity to any such leak was verified in the code rather than
 asserted. The time-resolved sweep-rate correction moves the excess by less
-than its error bar in either direction. Twelve candidate explanations have now
-been checked against the unexplained half and none accounts for it, every
-branch closed with a number, and it stays exactly as stated above: open, below
-the inflation, moving nothing. The fixed-lock session inherits it as a target, not a debt.
+than its error bar in either direction. The unexplained half has now
+survived a twelve-candidate elimination, every branch closed with a number,
+and it stays exactly as stated above: open, below the inflation, moving
+nothing. The fixed-lock session inherits it as a target, not a debt.
 
 **Third postscript, 2026-08-03.** The per-(session, peak) sigma_laser layer
 recommended above ran inside the full joint refit, each cell pulled toward
@@ -2593,11 +2599,7 @@ likelihood. `figures/fig14_wavemeter_reconstruction.png` panel (b) now
 describes steps and ramps and prints the real event count, and panel (c) prints
 the new floor. `figures/fig15_drift_story.png` panel (a) draws the same model
 through its overlay and its label follows. `docs/APPARATUS.md` section 6
-carries the new reading, the census and the floor. (Later, on 2026-08-09, the
-label pass moved the printed census out of panel (b)'s title, on the rule that a
-figure label carries a quantity and a unit. The census is unchanged and reads
-from `docs/APPARATUS.md` section 6, which is now its only prose home. The floor
-stays drawn on panel (c) in the noise model's own legend entry.)
+carries the new reading, the census and the floor.
 
 **What does not move.** Nothing else in the repository. This record is a
 photograph of a preliminary session five weeks before the campaign, it is
@@ -2620,7 +2622,7 @@ what it did once it was applied.
 
 ## Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute
 
-**What was found.** The frequency ruler's showcase trace was fit and displayed
+**What was found.** The frequency ruler's example trace was fit and displayed
 as a seven-tooth comb while one displayed tooth was the retrace mirror of a
 real tooth, reflected about the scan ramp's apex. The fitted height at the
 k = -2 slot railed at exactly zero and the selection rule then in force
@@ -2628,7 +2630,7 @@ actively rewarded the pathology. Nothing in the pipeline protected tooth
 indexing against retrace contamination. The full account, the validity layer
 that now exists, and its seven amendments are in
 `docs/notes/ruler_validity_and_trim_prereg.md`. The corrected pipeline
-re-fits every comb under a top-three height test, a re-index ladder, a
+re-fits every comb under a top-three verdict, a re-index ladder, a
 core-guarded residual-tail trimmer, and a pre-registered outlier rule, and
 the fitted heights of all combs are persisted for the first time.
 
@@ -2697,7 +2699,7 @@ campaign property, not a 4207 defect. The four signed pair separations are
 +2.65, -0.06, +2.56 and -3.67 sigma (pair-family reduced chi-squared about
 6.9, the same scale as the block over-dispersion of 7.98 the archive
 documents). The signs are incoherent across lines, so this is not
-common-mode session drift. The separation persists through the six-tooth
+common-mode session drift. The separation survived the six-tooth
 correction, so it is not mislabelling. What remains is genuine per-line
 scan-rate wandering between brackets, of which 4207's -1.1 per cent swing
 is the extreme case. The failed prediction carries information: the
@@ -2706,10 +2708,10 @@ bracket errors are already the largest of the set and it is still 3.7
 sigma apart, so the excursion is real, and worst signal-to-noise means the
 line is least able to diagnose itself, not that the excursion is noise. No
 pipeline change ships in this release, and a fixed-lock session kills the
-class outright, which the plan's systematic floor may cite this excursion as
+class outright, which the plan's stage 0 may cite this excursion as
 motivation for.
 
-**Amended 2026-08-06 (RT11 of the frequency-calibration review).** The
+**Amended 2026-08-06 (RT11 of the frequency-calibration adversarial review).** The
 two supporting statements this paragraph first carried are both wrong, and
 the conclusion is unchanged. The first was that combine_block's
 square-root chi-squared inflation already folds the inconsistency into
@@ -2738,7 +2740,7 @@ chi-squared rising (did not fire, 8.078 to 7.977), scatter rising (did not
 fire), the M28 primary moving beyond noise (did not fire, unchanged),
 census departing 231 (did not fire). Fired and acted on: the seven-tooth
 figure-eligibility clause returned the empty set and was relaxed to six
-standing teeth by the experimenter's decision with two measured causes recorded
+standing teeth by owner decision with two measured causes recorded
 (amendment 4). Fired and standing: the 4207 separation prediction,
 recorded as FAILED above.
 
@@ -2786,16 +2788,16 @@ slot leaves the window, and the railed count rises from 30 to 35.
 
 **The disqualifying finding.** On synthetic combs carrying an injected
 retrace fold, the amplitude seed selects the numbering that makes the
-folded trace look like a valid comb. The validity test then passes
+folded trace look like a valid comb. The validity verdict then passes
 on eight of eight seeds, the ladder never runs, and a spacing error of
 about ten per cent stands with no recorded field marking it. Under
-proximity seeding the same combs fail the test and the ladder's
+proximity seeding the same combs fail the verdict and the ladder's
 excision rung recovers them. The construction would therefore
 reintroduce the vulnerability class this specification exists to
 prevent, in a quieter form. This is pinned as a test.
 
 **Decision, by the pre-stated criteria.** Not adopted. Production stays
-on proximity seeding with the validity test and the re-index ladder.
+on proximity seeding with the validity verdict and the re-index ladder.
 The committed tables are unchanged. The amplitude rule remains in the
 code as an explicit opt-in diagnostic, its fold-misfit statistic is
 persisted nowhere because it is not yet an instrument (it is confounded
@@ -2811,3 +2813,145 @@ amplitude rule agree on all 44 combs the ladder had corrected, and the
 demoted chi-squared confirms the fit is indifferent to the numbering on
 the eight coldest combs, which is the measured content behind the ratio
 gate's refusal to decide them.
+
+## Addendum 28, 2026-08-10: a 95 per cent interval of zero width, and the second copy that carried it
+
+An uncertainty audit found that the joint region's collisional interval was
+committed as
+
+    beta_self_min   0.0150
+    beta_self_lo95  0.0150
+    beta_self_hi95  0.0150
+
+described in its own units as a one-parameter 95 per cent interval at
+`dchi2 < 3.841`. The two edges were identical, so the interval had zero width.
+
+**The cause was a membership test standing in for a crossing.** The edges were
+taken as the smallest and largest GRID POINTS whose profile sat under the
+threshold, on a beta grid of step 0.01. Where exactly one grid point qualified,
+both edges landed on it. An interval narrower than the grid that resolves it is
+the tell, and nothing had ever compared the two edges to each other. The
+coefficient bound computed two functions away in the same file already
+interpolated, which is what makes this an oversight rather than a choice.
+
+Both edges now interpolate to the threshold crossing, and where a crossing falls
+outside the scanned range the edge is returned as the range end, since an
+unbounded edge is not the same thing as a coincident one.
+
+**The fix had to be made twice.** `scripts/_m25_norulers.py` is not a wrapper
+around the primary module but a deliberate second copy, arm B of the two-arm
+design, carrying its own duplicate of the same interval code and therefore the
+same defect. It was found only by re-reading the second file after the first was
+fixed and rerun. A defect can be fixed and still ship when the code that carries
+it exists twice.
+
+**The refit is otherwise byte-stable, which is the useful part.** Rerunning the
+rulers-on arm end to end, 10.1 hours, changed exactly ONE value out of 137:
+`beta_self_hi95`, from 0.0150 to 0.0151. Every other number, including the
+headline `kappa < 0.963` MHz/W, `S0(225) < 0.217` MHz and the joint slope
+0.0183, reproduced exactly. So the correction is localised to the quantity it
+was aimed at, and addendum 26's byte-stability claim for this module survives
+with one named exception.
+
+**What it does not change.** No published bound moves, and the interval was not
+quoted with its degenerate value in any reader-facing document, which is why
+this is a correction to the ledger rather than a retraction. `tests/
+test_interval_sanity.py` now refuses any committed interval whose upper edge does
+not exceed its lower, and any interval narrower than the grid that could resolve
+it, so the shape of this defect cannot ship again silently.
+
+## Addendum 29, 2026-08-10: the centre channel's bound was built on a prior whose sign had already been withdrawn
+
+The centre-channel module M27 (`scripts/run_centre_stark.py`) marginalises a
+laser-drift prior inside each epoch of unchanged scope window, and it takes
+that prior as **+0.016 ± 0.009 MHz/min**, a directional value with a sign. The
+2026-07-30 window-reference correction had already withdrawn the licence for
+that sign, leaving a two-sided bound of about 0.02 MHz/min on the same
+quantity. M27 postdates the correction and did not pick it up, so a committed
+bound rests on a stronger prior than the record supports.
+
+**What the corrected prior does.** Replacing the prior with a zero-centred one
+of width 0.020 MHz/min and refitting all three epochs moves the combined
+estimate from +4.752 ± 2.371 to +6.629 ± 3.395 MHz/W. The significance is
+essentially unchanged, 1.95 σ against 2.00 σ, and the verdict is unchanged:
+case 3, not robust, reported as a bound. The bound itself **loosens**, from
+8.653 to 12.213 MHz/W on the same one-sided Wald construction, which is 10.6
+times the width channel's 1.147 rather than 7.5 times.
+
+**So the direction of the error is the unfavourable one, and it is recorded
+rather than absorbed.** The quoted centre bound is not conservative with
+respect to the correction. Both readings now live in
+`results/centre_stark.csv`, the corrected one as
+`diag_kappa_ub95_centre_sign_undetermined`, and `fit_epoch` takes the prior
+centre as an argument so neither reading is hard-coded into the other.
+
+**What it does not change.** Nothing downstream, and this is why the primary
+row is left as it stands rather than being rebuilt on the corrected prior. The
+centre channel is closed for this archive on grounds that do not involve the
+drift prior at all: the campaign ran its powers in monotonic order, the pilot
+moves its own recorded frame with power at eleven times the statistical error
+the extra lever would buy, and the rehearsal cannot fix a frequency origin
+(`docs/notes/centre_channel_cannot_be_revived.md`). Under either prior the
+channel is several times weaker than the width channel, and no reader-facing
+number is derived from it. Reopening the channel needs a ramp-monitor export,
+and a session that had one would set its own drift prior from the monitor
+rather than inheriting either of these.
+
+## Addendum 30, 2026-08-10: the interval that replaced the zero-width one was also wrong, in the same direction
+
+Addendum 28 replaced a grid-membership test with an interpolated crossing, and
+the guard written in the same pass then refused the result. The new interval
+read **[0.0150, 0.0151]**, a width of 0.0001 on a grid whose step is 0.01. An
+interval one hundred times narrower than the grid that resolved it is not a
+measurement of anything.
+
+**Two causes, both of them the standard trap.**
+
+The first is the interpolation. A profile likelihood is quadratic about its
+minimum, so χ² rises as the *square* of the distance, and a straight line drawn
+between two grid points reaches the threshold far too early. Here the
+neighbouring grid point sat 561 above the threshold, and linear interpolation
+put the crossing 0.6 per cent of the way into the cell where the quadratic puts
+it at 8.3 per cent. Measured on the committed profile, the understatement is a
+factor of **14.4**. The quantity that is locally *linear* is $\sqrt{\Delta\chi^2}$,
+so both edges are now interpolated in that variable. The same question was asked
+of the headline κ bound, which uses the same arithmetic: there the grid resolves
+the crossing well, the bracketing cell straddles the threshold at Δχ² of 1.37
+and 2.94, and the bound moves from 0.9627 to 0.9680 MHz/W, **0.5 per cent**. So
+the defect is specific to the β grid and the headline is not affected in
+substance.
+
+The second is resolution, and it is the larger of the two. The β grid steps by
+0.01 while the interval it is asked to report is about 0.001 wide, so the grid
+is ten times too coarse to see its own answer and the reported minimum is
+whichever grid point happened to sit lowest, not the minimum. **The symptom that
+makes this unarguable: the same file reports a free joint fit of
+`beta_self_joint = 0.0183` three rows above an interval of [0.0150, 0.0151].**
+The interval excludes the file's own best fit.
+
+**What changed.** Both arms now refine the β grid about the running minimum,
+dividing the step by eight per round, until the interval spans at least four
+steps of the grid that resolved it, which is the criterion the guard applies to
+the committed CSV. The producer therefore targets what the guard checks instead
+of being caught by it afterwards. The resolved step is written to the CSV as
+`beta_grid_step` and the profile curve itself as `beta_profile` rows, so a
+reader can redraw the crossing rather than take it. Where the free fit still
+falls outside the profiled interval the run says so on stdout, because the two
+constructions differ (κ free against κ profiled on its grid) and that is a
+difference to report rather than to average away.
+
+**A third guard.** `tests/test_interval_sanity.py` now also refuses any
+committed interval that does not contain its own point estimate at the same key
+in the same file, and its width check reads the producer's recorded grid step
+rather than a hard-coded 0.01. Both are checked against a planted defect and
+against its absence. This
+check needs no knowledge of either cause above, which is why it is the one worth
+having.
+
+**The duplication tax, paid a second time.** `scripts/_m25_norulers.py` is arm B
+of the two-arm design and a deliberate copy, so all three changes were made
+twice. Addendum 28 recorded the same fact about the same pair of files. Two
+consecutive corrections needing two edits each is the argument for the shared
+module the design deliberately does not have, and it is recorded here rather
+than acted on, because merging the arms mid-correction would make the two
+results incomparable.

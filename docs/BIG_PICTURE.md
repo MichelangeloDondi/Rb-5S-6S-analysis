@@ -11,6 +11,28 @@ on 5S–6S, §1.3 for the method, and §4 for what of the method is new. Everyth
 quantitative below traces to [`RESULTS.md`](RESULTS.md) and the CSVs it carries
 provenance for.*
 
+**The question.** What is this line, why is it worth measuring, and what
+would each further measurement actually buy?
+**Takes.** Nothing.
+**Gives.** The dependency map at the top, the prior art, the method, what the
+2025 dataset delivered, and what a cell or a nanofibre session would add.
+**Skip if.** You want the numbers rather than the argument, in which case
+[RESULTS.md](RESULTS.md) is the ledger and [CLAIMS.md](CLAIMS.md) the register.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
+![the loop from raw traces through the model to the bounds and back to the limitations](../figures/fig20_method_loop.png)
+
+*The shape of the whole undertaking, before any of the sections that walk
+through it. The bounds and the limitations here are not two lists but one loop:
+what the apparatus could not do sets which observable survives, the surviving
+observable sets which model can be fitted, and the fit's own failures name the
+next measurement. That is why this page ends on what a further session would
+convert rather than on what has been achieved, and why the map below reads
+downward from the 2025 dataset rather than upward from a result.*
+
 ## What each piece buys
 
 ```
@@ -114,7 +136,7 @@ measuring it:
 |---|---|---|---|
 | 5S→5D₃/₂ ([Cao 2025](lit/cao2025.md)) | 40 ± 0.54 kHz/mTorr | ≈ 0.0018 | FWHM, stated |
 | 5S→7S ([Wang 2025](lit/wang2025.md)) | 0.32 ± 0.01 MHz/mTorr | ≈ 0.014 | not stated |
-| **5S→6S, this work** | — | **bound 0.03–0.05** | FWHM |
+| **5S→6S, this work** | not measured | **bound 0.03–0.05** | FWHM |
 
 Converted at 423 K, the temperature both papers use. The 7S paper never says
 whether its linewidth is a half width or a full width, so the factor of eight
@@ -205,11 +227,17 @@ thing to have selected on.
 
 *Where the magic wavelengths come from: the 5S and 6S dynamic polarizabilities
 cross three times between 1200 and 1340 nm, and each crossing is a wavelength
-where a trap would hold both states without pulling the 993 nm line.*
+where a trap would hold both states without pulling the 993 nm line. The shaded
+band is the 16 to 84 per cent Monte-Carlo spread over the input matrix
+elements, so it is the uncertainty of the calculation and not of a measurement,
+and it is why the crossings below are quoted with theirs. Nothing here has been
+checked against a trap.*
 
 Where they landed was not designed for. **Two of the three sit inside the
-telecom O-band** (1260–1360 nm, ITU), 1287.9 and
-1339.6 nm, so a trap at either could in principle be built from datacom-grade
+telecom O-band** (1260–1360 nm, ITU), 1287.9 ± 0.2 and
+1339.6 ± 0.1 nm over the same Monte-Carlo band
+(`results/polarizability.csv`), so a trap at either could in principle be built
+from datacom-grade
 diodes, which are cheap, fibre-coupled by default and available space-qualified.
 Those two are not the practical pair, though, and the reason is not the diode.
 Both lie hard against 6S→nP resonances, where trap-photon scattering is high,
@@ -297,6 +325,103 @@ The cell is simply where that is cheap to validate, which is why it was built
 here first. **What is demonstrated so far is a bound, on one line, in one
 geometry.** The claim is that the observable exists and is drift-immune, not
 that it has yet beaten anything.
+
+### 1.3a Why measuring the light shift is harder than it looks, in plain terms
+
+Five findings from 2026-08-09 and 10 sit behind the numbers in section 4, and
+none of them needs the machinery to follow. They are put here in the order a
+reader meets the difficulty.
+
+**1. Shining more light on the atoms stops helping, and it stops sooner at a
+tight focus.** The signal is a two-photon event, so at low power it grows as
+the square of the intensity. That square is what makes the whole method work:
+it is the reason the distribution of light shifts across the atoms comes out
+lopsided in a calculable way. But an atom that is already excited cannot be
+excited again, so past some drive strength the square law flattens out. How
+close the experiment is to that point is measured by one number, the saturation
+parameter. The awkward part is how it scales. Focusing the beam tighter raises
+the shift as the square of the inverse spot size, but it raises the saturation
+parameter as the **fourth** power, because the two-photon coupling itself is
+quadratic in the field. So tightening the focus leaves the safe regime twice as
+fast as it gains signal. At the 64 µm spot of the 2025 sitting the parameter is
+0.033 and the square law is safe. At the 16 µm a future sitting proposes it is
+8.5, and the predicted lopsidedness changes by a factor of three
+([fig24](../figures/fig24_weak_field_limit.png)).
+
+**2. An atom can fall out of the experiment mid-flight, and not come back.**
+The rubidium ground state is split in two by the interaction with the nucleus,
+and the laser is tuned to one half of it. An excited atom returns to the ground
+state through an intermediate level, and that intermediate decay does not care
+which half it lands in. If it lands in the other one, it is off resonance by
+thousands of times the linewidth, which is to say it is gone: this dataset
+resolves the two halves as two of its own four lines. Between 8 and 17 per cent
+of atoms decay at least once while crossing the beam, so a real fraction of
+them leave the line while being measured. That shortens the effective time an
+atom spends contributing, and a shorter time means a broader line
+([fig23](../figures/fig23_hyperfine_pumping.png)).
+
+**3. Those two effects broaden the line in exactly the same way the light shift
+does, and nothing this dataset can vary tells them apart.** All three grow as
+the square of the drive power. All three also grow as the fourth power of the
+inverse spot size. A power sweep cannot separate them and neither can a change
+of focus, because they move together under both knobs. This is not a
+statistical problem that more data would fix. It is structural. What does
+separate them is that the two companions broaden the line **without moving
+it**, while the light shift also drags the line centre. So the way out is to
+measure the centre, which needs a laser lock that holds still, which the 2025
+sitting did not have. That is the single most valuable thing a further sitting
+would add, and section 5 costs it.
+
+The consequence for the published numbers is stated plainly wherever they
+appear: the light-shift bounds are **loose by a measured factor**, 2.8 on one
+construction and 2.21 on the other, because the model behind them contains the
+light shift and neither companion. They are quoted as they stand, with the
+looseness and its size attached, rather than tightened by injecting a
+saturation law that is standard practice but not derived for this level
+structure.
+
+**4. The mirror behind the cell is read differently by the two things it
+does.** The beam is sent through the vapour and reflected straight back, so the
+atoms sit in a standing wave. The light shift follows the local brightness, and
+an atom crossing many bright and dark fringes feels their average. The
+two-photon excitation is different: only the pairing of one photon from each
+direction is free of Doppler broadening, so the rate depends on the product of
+the two beams rather than on their sum. The two combinations differ by exactly
+the fringe contrast, which at this bench's 94 per cent return is a correction
+in the fourth digit and at a poorer return is not. The useful half of the
+asymmetry is that the rate does not care where the fringes sit and the shift
+does, which is what a future design exploits by making the fringes move
+([fig25](../figures/fig25_retro_combination.png)).
+
+**5. Three more things could have done the same damage, and were computed
+rather than waved away.** Each was a real candidate and each came out small, but
+the sizes are the point, because "negligible" without a number is not a result.
+
+The atoms radiate on two infrared lines as well as the one we detect, at 1324
+and 1367 nm, and those lines absorb just as strongly per atom as the detected
+one does. Inside the driven column they cannot pump atoms back up, because the
+upper level is kept fuller than the lower one by the drive itself. Outside it
+they can, in a halo the trapped light creates, and there it feeds the signal
+back at about one per cent at the hottest condition, somewhere between a half
+and two depending on a distance nobody wrote down, and nothing at the coldest.
+It rescales the brightness rather than the shape, so it lands on the amplitude
+comparisons and not on the widths.
+
+The cell is hot, so it glows, and thermal light could in principle drive the
+same transitions. It cannot, by twelve orders of magnitude, and the reason is a
+single mismatch: the glow peaks near 7 µm while every line in the cascade sits
+below 3 µm. The one channel that is not astronomically small is a transfer out
+of the excited state at 2.7 µm, worth two parts in a million, which is worth
+naming only because it rises steeply if the cell is run hotter. The same
+thermal field shifts the line by about 160 Hz at the hottest condition, which
+matters to nobody measuring widths and will matter to whoever measures centres.
+
+And the two isotopes in the cell do not have the same mass, so they do not cross
+the beam at the same speed: ⁸⁵Rb is 1.2 per cent faster, and every fit here uses
+one crossing width for both. That misassigns 11 kHz. It is almost entirely a
+constant offset rather than something that grows with density, and the fits let
+each line find its own width, so it never reaches the collisional number the
+experiment is for. It reaches 0.4 per cent of one error bar.
 
 ### 1.4 The expected size of the collisional coefficient
 
@@ -478,7 +603,7 @@ as a bound. Concretely:
   work started from was a Gaussian-optics estimate that cannot account for how
   much of the beam the 3 mm EOM aperture removed, and transit physics excludes
   it. Residual clipping and imperfect retro overlap both push the *effective*
-  waist above 64 µm, so the working band is 60–70 µm and ρ = 0.94 ± 0.04.
+  waist above 64 µm, so the working band is 62–68 µm and ρ = 0.94 ± 0.04.
   Derived in [the lineshape chapter](methods/02_the_lineshape.md) and
   assembled in [the composite model](methods/04_the_composite_model.md).
 - **The light-shift bound sits just below its own prediction.** S₀(225 mW)
@@ -499,8 +624,31 @@ as a bound. Concretely:
   the adopted geometry implies, or |Δα| is slightly smaller than
   computed. A beam-profile measurement decides which. More than twenty times
   below Orson's ~6 MHz null, from shape alone.
+  There is a third candidate, and it is the reason the bound is quoted where
+  it is rather than lower. Two effects broaden the line with the same
+  square-of-power signature as the ramp and are absent from the forward model
+  that produced the bound: atomic saturation, and hyperfine pumping through
+  the real cascade, which sends 7 to 15 percent of transiting atoms into the
+  other ground state mid-flight. Injecting the saturation term and
+  re-profiling tightens this bound by 2.21, which would widen the bracket
+  from 1.3× to about 3× rather than relieving it. The committed bound does
+  not move, because the injected law is the two-level homogeneous form used
+  with a two-photon Rabi frequency, which is standard practice and not a
+  derivation for this level structure, so the effect is carried as a stated
+  conservatism with a measured size
+  ([notes](notes/two_photon_saturation_companion.md)).
   Derived in [the AC-Stark ramp chapter](methods/03_the_ac_stark_ramp.md) and
   reported in [what we found](methods/07_what_we_found.md) §5.4.
+
+  ![the hyperfine branch, how often it fires, and the three terms it competes with](../figures/fig23_hyperfine_pumping.png)
+
+  *The third candidate, drawn. The bound is built on the AC-Stark ramp, which
+  is the smallest of the three terms that broaden the line as the square of the
+  power. The other two are absent from the model that produced it, and the
+  second of them is the one worth a picture: the 5P decay does not preserve
+  $F$, so an atom that decays while crossing the beam can land in the other
+  ground state, hundreds of linewidths away, and is gone from the line rather
+  than merely detuned.*
 - **β_self is bounded, and the bound's necessity is demonstrated.** The
   fitted collisional width rises ×1.47 while the density rises ×52.5, a
   residual floor rather than resolved collisions, so a naive fit's "4–10σ
