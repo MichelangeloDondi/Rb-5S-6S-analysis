@@ -216,6 +216,17 @@ systematic as fig1.*
   Rabi frequency, which is standard practice and not a derivation for
   this level structure
   ([docs/notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)).
+- No bound on the size of the hyperfine-pumping companion, and none is
+  obtainable from this archive. The construction that would separate it
+  from the other two, a joint fit over the four lines with the branching
+  fractions held fixed and one free scale, was preregistered and run. It
+  returns nothing, because that scale enters only as a multiple of the
+  light shift and this archive bounds the light shift rather than
+  measuring it, so the fit switches the companion off and reports the
+  same chi-squared at every scale. The precondition for spending the
+  per-line lever is therefore a positive detection of the shift, not a
+  smaller block scatter
+  ([the refit's postscript](notes/companion_inclusive_refit_prereg.md)).
 - No claim on the line centre. The channel that would read the shift
   directly off the peak position is closed for this archive and the
   closure is quantified rather than asserted, because the campaign ran

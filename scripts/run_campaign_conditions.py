@@ -23,6 +23,17 @@ recommends.
      survives both, because the lever is linear in the saturation term while the
      total width is a quadrature sum with a fixed natural core in it.
 
+     A PRECONDITION THE FIRST VERSION OF THIS DID NOT STATE, added 2026-08-11
+     after the preregistered refit ran. Closing the factor of thirty is not
+     sufficient. The per-line scale enters the model only as a multiple of the
+     saturation width, which is proportional to S0, and on this archive the fit
+     drives S0 to zero and returns the same chi-squared at every scale, so there
+     is no bound to quote whatever the block scatter does. The shift has to be
+     DETECTED, not bounded, before the lever means anything. The 16 um row
+     satisfies that by itself (S0 = 5.561 MHz against a 3.493 MHz natural
+     width), which is why the recommendation is unchanged and only its reason
+     is now complete. See docs/notes/companion_inclusive_refit_prereg.md.
+
   2. THE HOT EXTENSION IS WHERE TRAPPING STOPS BEING A FOOTNOTE. The record
      proposes 150 to 170 C to reach densities where a collisional effect could
      clear the block-noise floor. The infrared halo re-excitation runs 1.1 per

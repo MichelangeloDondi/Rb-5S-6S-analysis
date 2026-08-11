@@ -901,6 +901,27 @@ the weak-field ramp law is least valid, since the saturation parameter reaches
 rather than carry it as a companion, which is the construction the refit
 preregisters.
 
+**There is a second catch, and it is a precondition rather than a caution.** The
+refit ran, and it found that the per-line scale is not merely poorly determined
+on this archive but *unidentifiable*
+([postscript](notes/companion_inclusive_refit_prereg.md)). The pumping companion
+enters the model only as a multiple of the saturation width, which is itself
+proportional to $S_0=\kappa P$, and this archive **bounds $\kappa$ from above
+rather than measuring it**. Profiling over $\kappa$ instead of holding it, the
+fit sets $\hat\kappa=0$ for every nonzero scale, the companion vanishes
+identically, and $\chi^2$ comes back the same to four decimals across a factor
+of thirty in the scale. There is no bound to quote.
+
+So the ordering the plan needs is explicit: **a positive detection of $\kappa$
+comes first, and the per-line lever is spendable only afterwards.** The 16 µm
+row above satisfies that on its own, since $S_0$ there is 5.56 MHz against a
+natural width of 3.49 and cannot be confused with zero. The point is that the
+factor of thirty in the table is not the whole requirement, and a session
+designed to close only that factor would return the same empty profile this one
+did. The general form is worth carrying into any future separation of this kind:
+a term entering only as a multiple of another constrains nothing until the term
+it multiplies is measured.
+
 ## 7. The width and collision program
 
 **7a. Temperature grid at L only, twice, on different days, in opposite

@@ -1243,10 +1243,20 @@ def fig_ramp_construction():
     ax[0].fill_between(r, 0, u, color="#0072B2", alpha=0.12)
     # Above the peak, not beside it: at dy = -12 the label ran along the top of
     # the Gaussian and the curve passed through its second word.
-    for rr, lab, dx, dy in ((0.0, "on axis the shift is $-S_0$", 14, 7),
-                            (1.18, "far from the axis the shift goes to zero", 10, 6)):
+    # The second label is SHORT, and that is the fix rather than a placement.
+    # As "far from the axis the shift goes to zero" it ran out of this panel
+    # entirely and landed on panel (b)'s rotated y label, which neither the
+    # canvas guard nor the sibling overlap guard could see: it was inside the
+    # figure, and the two texts belong to different axes so nothing compared
+    # them. Right aligning it clipped it on the left instead, and wrapping it
+    # to two lines put the curve through both. The panel is 298 px wide and
+    # that sentence is 244 of them, so no placement was ever going to work.
+    # The title already says s = -S_0 u, so the marker only needs naming.
+    for rr, lab, dx, dy, ha in (
+            (0.0, "on axis the shift is $-S_0$", 14, 7, "left"),
+            (1.18, r"$s \to 0$ far out", 8, 8, "left")):
         ax[0].plot([rr], [np.exp(-2 * rr ** 2)], "o", color="#D55E00", ms=6)
-        ax[0].annotate(lab, (rr, np.exp(-2 * rr ** 2)), fontsize=7,
+        ax[0].annotate(lab, (rr, np.exp(-2 * rr ** 2)), fontsize=7, ha=ha,
                        textcoords="offset points", xytext=(dx, dy))
     ax[0].set_ylim(-0.03, 1.12)
     # Set smaller than the other three x labels because it is a definition
@@ -1588,7 +1598,7 @@ def fig_hyperfine_pumping():
 
     # ---- (a) the cascade, fine structure resolved -----------------------
     ax.axis("off")
-    ax.set_xlim(0.0, 1.0)
+    ax.set_xlim(0.0, 1.08)
     ax.set_ylim(-0.30, 1.16)
     yF, yFp, y5p12, y5p32, y6s, yv = 0.0, 0.15, 0.56, 0.63, 1.0, 0.50
     DRIVE, LOST = "#a63430", "#111111"
@@ -1608,6 +1618,10 @@ def fig_hyperfine_pumping():
     ax.hlines(y5p32, 0.64, 0.94, color="0.15", lw=2.4)
     ax.text(0.875, y5p12 - 0.012, r"$5P_{1/2}$", ha="left", fontsize=9)
     ax.text(0.955, y5p32 - 0.012, r"$5P_{3/2}$", ha="left", fontsize=9)
+    # This label starts at 0.955 and is wider than the 0.045 left to the old
+    # xlim of 1.0, so it hung outside the panel and into the gap before the
+    # right panel. Widening the canvas rather than shrinking the type keeps
+    # every element in the same place relative to every other one.
     ax.hlines(yv, 0.135, 0.29, color="0.55", lw=1.1, ls=(0, (4, 3)))
     ax.text(0.30, yv, "virtual level", fontsize=6.8, color="0.45", va="center")
     for y0, y1 in ((yF, yv), (yv, y6s)):
@@ -1738,7 +1752,9 @@ def fig_hyperfine_pumping():
             transform=cx.transAxes, fontsize=7.8, color="0.25", ha="center",
             va="top")
 
-    fig.text(0.045, 0.155,
+    # 0.155 left a 3 px gap to the footer once this caption grew to five
+    # lines, which is a collision waiting for the next sentence.
+    fig.text(0.045, 0.175,
              "Panel (b) retires the 1/3 to 2/3 bracket the companion note "
              "carried, and does not merely narrow it: the lower two lines fall "
              "OUTSIDE it, so the pumping companion is smaller than that "
@@ -1747,8 +1763,12 @@ def fig_hyperfine_pumping():
              "while the pumping is not, so the three terms are degenerate in "
              "power and in waist but NOT\nacross the line index. The lever is "
              "4 kHz between the extreme lines against an 88 kHz per-block "
-             "width scatter, so this dataset cannot spend it. A session with "
-             "the scatter under control could.",
+             "width scatter, so this dataset cannot spend it.\nControlling "
+             "that scatter is not by itself enough either. The preregistered "
+             "refit found the per-line scale UNIDENTIFIABLE here, because it "
+             "enters only as a multiple of the light\nshift, and this dataset "
+             "bounds that shift rather than measuring it. The shift has to be "
+             "detected before the lever means anything.",
              fontsize=7.6, color="0.3", va="top")
     _footer(fig, "figure 23 | rb5s6s.polarizability line data (the two cascade "
                  "legs and their branching), rb5s6s.stark._fwhm_of, "
@@ -3908,8 +3928,14 @@ def fig_radiation_environment():
     bx.set_xlim(1e-14, 1e13)
     bx.set_xlabel(r"rate per atom (s$^{-1}$)"
                   f"  ·  130 °C, 225 mW, {W0*1e6:.0f} µm")
-    bx.set_title("(b)  and the rates span nineteen decades",
-                 fontsize=10.5, loc="left")
+    # the decade span is DERIVED, not typed. It was written out as "nineteen"
+    # and happened to be right, which is the failure mode protocol 12.9 names:
+    # a hand-typed physical fact survives every change to the numbers under it.
+    _sp = math.log10(max(b[1] for b in bars) / min(b[1] for b in bars))
+    _words = {17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty",
+              21: "twenty-one", 22: "twenty-two"}
+    bx.set_title(f"(b)  and the rates span {_words.get(round(_sp), f'{_sp:.0f}')}"
+                 " decades", fontsize=10.5, loc="left")
     bx.grid(axis="x", alpha=0.25, which="both")
     bx.text(0.985, 0.06,
             "the bar on the trapped-infrared row is the\n"
@@ -4128,8 +4154,14 @@ def fig_isotope_transit():
             label="the isotope gap, against density")
     bx.plot(dens, gap, "o", color="#D55E00", ms=8, mec="0.15", mew=1.0,
             zorder=4)
+    # ABOVE the markers, not below. Placed below, these four labels fell
+    # outside the axes and the bottom spine cut them in half. The canvas guard
+    # did not fire because they were still inside the FIGURE, which is the gap
+    # between "on the canvas" and "inside its own panel". The space above is
+    # clear at every point, since the one sigma line runs above the markers
+    # everywhere except the leftmost, where it runs below them.
     for d, g, t in zip(dens, gap, sweep):
-        bx.annotate(f"{t:.0f} °C", xy=(d, g), xytext=(0, -14),
+        bx.annotate(f"{t:.0f} °C", xy=(d, g), xytext=(0, 11),
                     textcoords="offset points", fontsize=8.0, color="0.35",
                     ha="center")
     bx.plot(dl, gap[0] + sigma_beta_khz_per_1e12 * (dl - dens[0]), "--",

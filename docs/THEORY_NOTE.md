@@ -550,6 +550,16 @@ an 88 kHz single-block scatter. It cannot be spent at any of the three. It is st
 a lock, and because it retires the $1/3$ to $2/3$ bracket §4.1 was carrying,
 downward: the lower two lines fall below that bracket.
 
+The separation was preregistered and run, and it returns **less than the
+scatter argument predicts**. Comparing the lever against 88 kHz treats $S_0$ as
+though it sat at one of those three values. It does not. This archive bounds
+$S_0$ from above, zero is inside the bound, and the companion is proportional to
+it, so a fit that is free to choose sets $S_0$ to zero and switches the
+companion off. The scale it multiplies is then unidentifiable rather than
+loosely bounded, and $\chi^2$ is flat along its axis to four decimals. The
+factor of thirty is real, and it is not the binding constraint. See the
+[postscript to the refit's preregistration](notes/companion_inclusive_refit_prereg.md).
+
 ## 5. The coefficient (the field-intensity convention, pinned)
 
 The shape and centred moments above are convention-free. The **magnitude** of

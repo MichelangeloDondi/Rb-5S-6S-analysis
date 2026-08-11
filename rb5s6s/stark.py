@@ -62,6 +62,8 @@ from __future__ import annotations
 
 from typing import Dict, Tuple
 
+import math
+
 import numpy as np
 from scipy.optimize import least_squares
 
@@ -69,6 +71,61 @@ from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
 from .constants import RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_MEASURED_M
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
+
+
+# --- the two width companions, OFF unless a caller turns them on -----------
+#
+# Preregistered at docs/notes/companion_inclusive_refit_prereg.md. Three effects
+# broaden the Doppler-free core with the same P^2 signature as the AC-Stark
+# ramp, and only the ramp is in the fitted model. This is the committed,
+# opt-in form of the wrappers scripts/run_saturation_probe.py used as
+# monkeypatches, promoted so the refit is reproducible.
+#
+# DEFAULT IS None AND THAT IS LOAD-BEARING: every committed bound was produced
+# without these terms and is quoted with its looseness stated. Turning them on
+# retires that framing, which is an owner decision and not a code path.
+#
+# The saturation term is line-independent and the pumping term is not, so the
+# per-line factor is applied where the peak is known, at the two call sites
+# below, rather than threaded through _fwhm_of, whose signature three scripts
+# import and one of them replaces.
+COMPANIONS: dict | None = None
+
+# from run_zeeman_depletion checks 3 and 7, verified two independent ways
+F_PER_LINE = {"4121": 0.372478, "4154": 0.347646,
+              "4192": 0.248319, "4207": 0.223487}
+_GAMMA_MHZ = 3.4925377022579625      # the natural width, transition axis
+
+
+def companion_gamma_mhz(s0: float, peak: str) -> float:
+    """Extra HOMOGENEOUS width from saturation and hyperfine pumping, in MHz.
+
+    Added to gamma_coll, which is where the probe put it and where it belongs:
+    both broaden the homogeneous core rather than the whole profile. Returns
+    zero when COMPANIONS is None, and zero at s0 = 0 whatever it is, which is
+    why the two models agree exactly where the production fit rails.
+    """
+    if COMPANIONS is None:
+        return 0.0
+    om = COMPANIONS.get("ratio", 1.2367) * max(s0, 0.0)
+    sat = _GAMMA_MHZ * (math.sqrt(1.0 + 2.0 * (om / _GAMMA_MHZ) ** 2) - 1.0)
+    return sat * (1.0 + COMPANIONS.get("scale", 1.0) * F_PER_LINE[peak])
+
+
+def companion_transit_mhz(transit: float, s0: float, peak: str) -> float:
+    """Transit width after depletion, in MHz.
+
+    Pumping shortens the interaction time, and a shorter time is a wider
+    transit kernel, so this DIVIDES rather than adding a Lorentzian. Off with
+    COMPANIONS, and off unless COMPANIONS asks for it, because the depletion
+    rests on a cascade rate this record carries as an envelope.
+    """
+    if COMPANIONS is None or not COMPANIONS.get("deplete"):
+        return transit
+    om = COMPANIONS.get("ratio", 1.2367) * max(s0, 0.0)
+    s = 2.0 * (om / _GAMMA_MHZ) ** 2
+    lost = F_PER_LINE[peak] * (s / 2.0) / (1.0 + s) * COMPANIONS.get("cycles", 1.0)
+    return transit / max(1.0 - lost, 0.05)
 
 
 def _fwhm_of(gamma_coll: float, sigma_laser: float, transit: float, s0: float,
@@ -142,7 +199,10 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
         out = []
         for (peak, P), (f, ferr) in items:
             si = peaks.index(peak)
-            fm = _fwhm_of(gamma_coll, sl[si], transit, kappa * P, nu)
+            fm = _fwhm_of(gamma_coll + companion_gamma_mhz(kappa * P, peak),
+                          sl[si],
+                          companion_transit_mhz(transit, kappa * P, peak),
+                          kappa * P, nu)
             out.append((fm - f) / ferr)
         return np.array(out)
 
@@ -182,8 +242,11 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
             def r(sl):
                 out = []
                 for (peak, P), (f, ferr) in items:
-                    fm = _fwhm_of(gamma_coll, sl[idx[peak]], transit,
-                                  kappa_fixed * P, nu)
+                    fm = _fwhm_of(
+                        gamma_coll + companion_gamma_mhz(kappa_fixed * P, peak),
+                        sl[idx[peak]],
+                        companion_transit_mhz(transit, kappa_fixed * P, peak),
+                        kappa_fixed * P, nu)
                     out.append((fm - f) / ferr)
                 return np.array(out)
             s = least_squares(r, sl_seed, bounds=(np.zeros(npk),

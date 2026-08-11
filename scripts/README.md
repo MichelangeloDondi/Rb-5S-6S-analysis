@@ -73,6 +73,7 @@ diagnostic rather than write a table.
 | `run_s0_block_bootstrap.py` | the block bootstrap of the power-lever limit, one row per resample, under `private/run_logs/` rather than `results/` |
 | `run_cavity_scan.py` (M30) | the cavity-scan photograph digitised and integrated into `cavity_scan_integrals.csv`, the one result whose input is an image |
 | `run_campaign_conditions.py` | what a next campaign's waist, power, temperature and choice of transition do to the six effects this record has measured, printed rather than written. Its three answers are the per-line lever becoming spendable at a tighter waist, the infrared halo growing thirtyfold over the hot extension the collisional programme wants, and the blackbody test that orders the transition menu |
+| `run_companion_refit.py` | the preregistered refit with the two width companions inside the fitted model rather than beside it, scored against `docs/notes/companion_inclusive_refit_prereg.md`. Writes nothing, and checks the option is inert before reading any result. Its answer is that the per-line scale is unidentifiable on this dataset, because it enters only as a multiple of a light shift the dataset bounds rather than measures |
 
 ## Figures and documents
 

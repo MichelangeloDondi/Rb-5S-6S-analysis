@@ -433,3 +433,28 @@ touch it.
 Stating that in advance is what makes the eventual run informative. A separation
 that appears anyway is then a finding about something else, and the record
 already names the candidates.
+
+## Postscript, 2026-08-11: the refit ran, and it failed in a different way
+
+The prediction above was that the archive would see the pumping companion at
+0.02 to 0.05 sigma and return a bound 31 to 69 times too loose. **It returned no
+bound at all**, and the reason is more basic than the lever being small.
+
+The scale enters the model only as a multiple of the saturation width, which is
+proportional to $S_0=\kappa P$. This archive does not measure $\kappa$, it bounds
+it from above, and zero is inside that bound. Profiling over $\kappa$ rather than
+holding it, the fit sets $\hat\kappa=0$ for every nonzero scale, which switches
+the companion off, and $\chi^2$ returns 55.5712 identically from a scale of 0.5
+to a scale of 16. Against the right null, which is the saturation term alone,
+$\Delta\chi^2$ is exactly zero at every one of those scales, so there is nothing
+to interpolate a bound from.
+
+The power calculation quoted above is not wrong arithmetic. It evaluated the
+lever **at the committed $S_0$ bound**, which treats $\kappa$ as though it were
+known to sit there. It is not, and that is the whole distance between a standard
+error of 19 to 42 and no standard error at all.
+
+Full scoring of all five predictions, including the two that this run did not
+test and the two defects it found in the preregistration's own wording, is in
+the [postscript to the preregistration](companion_inclusive_refit_prereg.md).
+Producer: `scripts/run_companion_refit.py`, which writes nothing.
