@@ -66,11 +66,25 @@ flux and the Gaussian crossing time), exactly the transit_mc convention.
 
 COHERENCE WINDOW. tau_c is the ONE open modelling choice. The coherent
 excitation amplitude lives at most one 6S lifetime (tau_6S ~ 46 ns), but the
-beam crossing may be shorter or longer: at the archival 50 um waist the transit
-is ~0.2 us (transit-limited, tau_c -> inf is the right cap), at the small
+beam crossing may be shorter or longer: at the MEASURED 64 um waist the transit
+is ~260 ns (transit-limited, tau_c -> inf is the right cap), at the small
 16 um waist it is ~65 ns, comparable to tau_6S, so the two bracket the fringe
-survival. fringe_tail_mc SWEEPS tau_c between the transit-limited case and
-tau_6S to report that bracket. The fringe-survival moments are
+survival. Both are w0/v at the 2D Maxwell-Boltzmann mean transverse speed,
+246 m/s at 130 C. This line quoted the retired 50 um estimate until 2026-08-10;
+the cap is unchanged, since 260 ns is further above tau_6S than 200 ns was.
+fringe_tail_mc SWEEPS tau_c between the transit-limited case and tau_6S to
+report that bracket.
+
+WHAT FRACTION OF ATOMS THAT IS (2026-08-10). Worked out over the 3D
+Maxwell-Boltzmann spread in docs/notes/running_wave_and_waist_design.md design
+3, computed by scripts/run_geometry_design.fringe_velocity_classes: 2.21 per
+cent of atoms at the lifetime cap, 0.19 at the 64 um transit cap, 0.78 at
+16 um. The factor of eleven between the ends of that bracket is a modelling
+choice and not a measurement, which is the whole reason this is swept rather
+than corrected for. That section also settles what a frequency-shifted arm
+would do, and it is NOT to remove the frozen class: it moves it to the atoms
+co-moving with the running pattern, so the suppression is the
+Maxwell-Boltzmann weight at the pattern speed and the criterion is thermal. The fringe-survival moments are
 temperature-independent (F depends only on vz/v_perp, whose distribution is set
 by the Maxwell-Boltzmann isotropy, not by T); T enters only the axial-speed
 threshold of the coherence-window fraction, through the transit time.
@@ -147,15 +161,26 @@ def _one_block(w0_m: float, s0_mhz: float, rho: float, T_C: float,
 
     p_f = _power_sums(s_signed, W)
     p_n = _power_sums(s_env, W)
-    _, _, _, skew_f = _moments_from_sums(p_f)
-    _, _, _, skew_n = _moments_from_sums(p_n)
+    _, var_f, mu3_f, skew_f = _moments_from_sums(p_f)
+    _, var_n, mu3_n, skew_n = _moments_from_sums(p_n)
+    w_tot_blk = float(W.sum())
+    w_res_blk = float(W[F > 0.5].sum())
     return {
         "p_f": p_f, "p_n": p_n,
-        "w_tot": float(W.sum()),
-        "w_resolved": float(W[F > 0.5].sum()),
+        "w_tot": w_tot_blk,
+        "w_resolved": w_res_blk,
         "w_fvar": float((W * 0.5 * (contrast * F) ** 2).sum()),
         "w_kappa": float((W * kappa_path).sum()),
         "block_d_skew": skew_f - skew_n,
+        # Added 2026-08-10: the other three quantities this block also
+        # measures, so d_skew is not the only one with a reported error. Each
+        # is this SAME block's independent draw of the pooled-sum quantity
+        # fringe_tail_mc reports, so its across-block scatter is that
+        # quantity's own Monte-Carlo error, by the identical construction
+        # block_d_skew already used.
+        "block_d_kappa3": mu3_f - mu3_n,
+        "block_excess_var_frac": (var_f - var_n) / var_f if var_f > 0 else 0.0,
+        "block_frac_resolved": w_res_blk / w_tot_blk if w_tot_blk > 0 else 0.0,
         "sigma_v": sv,
     }
 
@@ -187,14 +212,27 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
       kappa3, kappa3_nofringe, d_kappa3 : third cumulant (MHz^3) with/without
                                           the fringe and its change (the primary,
                                           well-converged leverage);
+      d_kappa3_mc_err                   : block-to-block standard error on
+                                          d_kappa3, same construction as
+                                          d_skew_mc_err;
       skew, skew_nofringe, d_skew       : standardized skewness and its change;
       d_skew_mc_err                     : block-to-block standard error on d_skew;
       var, var_nofringe, excess_var_frac: variance and the fringe fraction of it;
+      excess_var_frac_mc_err            : its block-to-block standard error;
       f_res_var                         : signal-weighted fringe modulation
                                           variance Var(x) (the leverage f_res/2);
       frac_resolved                     : signal-weighted fraction with F > 0.5;
+      frac_resolved_mc_err              : its block-to-block standard error;
       window_frac                       : coherence-window axial-speed estimate
                                           P(|vz| < (lambda/2)/T_window).
+
+    Every _mc_err field is the SAME construction: each of the n_blocks
+    independent blocks is its own draw of the pooled quantity, so the
+    across-block standard deviation over sqrt(n_blocks) is that quantity's own
+    Monte-Carlo standard error, not a formal propagation from the per-atom
+    weights. Zero at n_blocks = 1, since a single block has no across-block
+    scatter to measure (added 2026-08-10, alongside three siblings d_skew_mc_err
+    already had no company for).
     """
     rng = np.random.default_rng(C.RNG_SEED if seed is None else seed)
     inv2tau = 0.0 if coherence_s is None else 1.0 / (2.0 * coherence_s ** 2)
@@ -203,7 +241,7 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
     p_f = np.zeros(4)
     p_n = np.zeros(4)
     w_tot = w_res = w_fvar = w_kappa = 0.0
-    block_dskew = []
+    block_dskew, block_dkappa3, block_evf, block_fres = [], [], [], []
     sv = _sigma_v1d(T_C)
     for _ in range(n_blocks):
         blk = _one_block(w0_m, s0_mhz, rho, T_C, inv2tau, contrast,
@@ -215,11 +253,21 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         w_fvar += blk["w_fvar"]
         w_kappa += blk["w_kappa"]
         block_dskew.append(blk["block_d_skew"])
+        block_dkappa3.append(blk["block_d_kappa3"])
+        block_evf.append(blk["block_excess_var_frac"])
+        block_fres.append(blk["block_frac_resolved"])
 
     mean, var, mu3, skew = _moments_from_sums(p_f)
     mean_n, var_n, mu3_n, skew_n = _moments_from_sums(p_n)
-    bd = np.array(block_dskew)
-    d_skew_mc_err = float(bd.std(ddof=1) / sqrt(n_blocks)) if n_blocks > 1 else 0.0
+
+    def _mc_err(vals):
+        v = np.array(vals)
+        return float(v.std(ddof=1) / sqrt(n_blocks)) if n_blocks > 1 else 0.0
+
+    d_skew_mc_err = _mc_err(block_dskew)
+    d_kappa3_mc_err = _mc_err(block_dkappa3)
+    excess_var_frac_mc_err = _mc_err(block_evf)
+    frac_resolved_mc_err = _mc_err(block_fres)
 
     vbar = sqrt(pi / 2.0) * sv
     t_window = w0_m / vbar if coherence_s is None else coherence_s
@@ -237,8 +285,11 @@ def fringe_tail_mc(*, w0_m: float, s0_mhz: float, rho: float = 1.0,
         "excess_var_frac": (var - var_n) / var if var > 0 else 0.0,
         "f_res_var": w_fvar / w_tot,
         "kappa3": mu3, "kappa3_nofringe": mu3_n, "d_kappa3": mu3 - mu3_n,
+        "d_kappa3_mc_err": d_kappa3_mc_err,
         "skew": skew, "skew_nofringe": skew_n, "d_skew": skew - skew_n,
         "d_skew_mc_err": d_skew_mc_err,
+        "excess_var_frac_mc_err": excess_var_frac_mc_err,
         "frac_resolved": w_res / w_tot,
+        "frac_resolved_mc_err": frac_resolved_mc_err,
         "window_frac": window_frac,
     }

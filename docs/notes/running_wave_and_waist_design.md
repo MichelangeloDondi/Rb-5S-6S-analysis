@@ -5,6 +5,19 @@ number changes. Both calculations are in `scripts/run_geometry_design.py`, which
 writes nothing, and both are reported with the first pass that was wrong beside
 the answer, because in each case the error was the interesting part.
 
+**The question.** Two geometry choices for a future session: should one arm be
+frequency-shifted so the fringes run, and how tight should the focus be?
+**Takes.** [methods/03_the_ac_stark_ramp.md](../methods/03_the_ac_stark_ramp.md).
+**Gives.** Both designs computed, each with the first pass that was wrong
+printed beside the answer, because in both cases the wrong criterion was the
+obvious one.
+**Skip if.** You want the archival result rather than the next session's
+design.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 The two questions come from the same worry. The ramp skew is the observable that
 would turn the light-shift bound into a coefficient, and two features of the
 present geometry attack it: the standing wave leaves a fringe-resolved tail that
@@ -144,6 +157,15 @@ saturation increment, without which the deeply saturated rows are flattered.
 
 ### Three results, in order of consequence
 
+![the weak-field limit and what leaving it costs the predicted skewness](../../figures/fig24_weak_field_limit.png)
+
+*The table above, in two panels, redrawn from this note's own `ramp_moments`.
+Left is why the weak-field assumption fails at a tight focus rather than at a
+high power: the saturation parameter carries the two-photon Rabi frequency
+squared and so grows as the fourth power of the inverse waist, while the shift
+grows only as the second, and the limit is left long before the shift becomes
+large. Right is the last two columns of the table as a curve.*
+
 **The weak-field skew is wrong by a factor of three at the waist the record plans
 to use.** Read the two skew columns together. Saturation shrinks the skew where it
 is positive and grows it where it is negative, because flattening the weight
@@ -183,6 +205,121 @@ exponent emerging rather than being set.
 Until that lands, the small-waist session's predicted skew is uncertain at the
 factor-of-three level for a reason that has
 nothing to do with the fringe tail or the beam divergence already in the budget.
+
+## Design 3, 2026-08-10: which atoms resolve the fringes, over the 3D distribution
+
+Design 1 above argues the running wave in terms of one modulation frequency
+against one linewidth. That is the right shape of argument and the wrong
+variable, and doing it properly over the three-dimensional Maxwell-Boltzmann
+spread changes what the design has to achieve. Everything below is printed by
+`scripts/run_geometry_design.py`, section DESIGN 3.
+
+### Three velocity questions, three different components
+
+The velocity distribution is three independent Gaussians of the same width,
+196.4 m/s per component at 130 °C, and the three things that matter here read
+different components of it.
+
+**Along the beam, $v_z$, decides whether an atom sees fringes at all.** The
+standing wave has period $\lambda/2$ = 496.7 nm, so an atom moving axially
+sweeps through intensity maxima and minima at $2v_z/\lambda$. Fast atoms see a
+modulation far above anything they can respond to and feel the time average.
+Slow ones sit in a nearly fixed intensity and feel the local value, anywhere
+from $(1-\sqrt{\rho})^2$ to $(1+\sqrt{\rho})^2$ times one arm.
+
+**Across the beam, the two transverse components, decide how long an atom
+interacts**, and through that the transit width, the excitation probability and
+the pumping loss. Their combination is a Rayleigh distribution with mean
+246.1 m/s.
+
+**And the Doppler-free geometry selects on neither.** That is the whole point
+of counter-propagating photons: the first-order shifts cancel for every atom at
+once, so the narrow line is not a velocity-selected subset. The second-order
+term is 0.4 kHz and is ignored throughout.
+
+### The frozen class is small, and how small depends on a modelling choice
+
+An atom sees a frozen fringe if it moves less than a quarter period while its
+excitation stays coherent, so $|v_z| \lt \lambda/4\tau_c$. The coherence window
+$\tau_c$ is the one open choice, and `rb5s6s.fringe_tail` sweeps it between the
+excited-state lifetime and the crossing time. The fraction is then the
+one-dimensional marginal of the three-dimensional distribution:
+
+| cap on $\tau_c$ | $\tau_c$ | $v^*$ | fraction of atoms |
+|---|---|---|---|
+| excited-state lifetime | 46 ns | 5.45 m/s | 2.214 % |
+| crossing time at 64 µm | 520 ns | 0.48 m/s | 0.194 % |
+| crossing time at 16 µm | 130 ns | 1.91 m/s | 0.776 % |
+
+The spread between the top and bottom rows is a factor of eleven, and it is a
+modelling choice rather than a measurement, which is exactly why the fringe
+tail is carried as a bracket rather than a correction.
+
+### The running wave does not remove that class, it moves it
+
+This is the part Design 1 got qualitatively right and quantitatively wrong.
+Shifting one arm by $\Delta$ makes the pattern travel at
+$v_\text{fringe} = \Delta\lambda/2$. An atom then sees the pattern pass at
+$|v_\text{fringe} - v_z|$, so the atoms that still see a frozen fringe are the
+ones **co-moving with it**, at $v_z \approx v_\text{fringe}$. The population
+of that class is whatever the Maxwell-Boltzmann weight is there:
+
+| $\Delta$ | $v_\text{fringe}$ | weight at that $v_z$ | residual Doppler |
+|---|---|---|---|
+| 40 MHz | 19.9 m/s | 0.995 | 62 Hz |
+| 80 MHz | 39.7 m/s | 0.980 | 123 Hz |
+| 200 MHz | 99.3 m/s | 0.880 | 309 Hz |
+| 400 MHz | 198.7 m/s | 0.600 | 617 Hz |
+| 800 MHz | 397.4 m/s | 0.129 | 1234 Hz |
+| 1600 MHz | 794.7 m/s | 0.0003 | 2468 Hz |
+
+So at the 80 MHz of a common AOM, 98 per cent of the frozen-fringe atoms are
+still frozen. They are simply a different 2 per cent of the ensemble, sitting
+at 39.7 m/s instead of at rest. **The criterion is thermal**: $\Delta$ has to
+push $v_\text{fringe}$ into the tail of the distribution, not merely past a
+linewidth. It becomes useful around $2\sigma_v/\lambda$ = 395 MHz, which is
+where $v_\text{fringe}$ equals one standard deviation, and it is decisive an
+octave above that.
+
+### What that costs, and why the trade is comfortable
+
+With the two arms at different frequencies the first-order Doppler no longer
+cancels exactly. The residue is $\Delta v_z/c$, which smears the line by
+$\Delta\sigma_v/c$, and the last column above is its full width. It grows
+**linearly** in $\Delta$ while the fringe suppression improves as a **Gaussian**
+in $\Delta$, so there is a wide window rather than a knife edge. At 800 MHz the
+suppression is nearly eightfold and the residue is 1.2 kHz, which is 0.035 per
+cent of the natural width. The design is not limited by this.
+
+### And the contributing atoms are not a thermal sample
+
+The last piece is the one the pumping finding of the same day forces, and it
+belongs here because it is the same kind of selection.
+
+The atoms contributing to the line are not the ensemble. A two-photon crossing
+excites with a probability falling as $1/v_\perp^2$ while atoms arrive at a
+rate rising as $v_\perp$, so the contributing weight goes as $1/v_\perp$ and the
+mean contributing transverse speed is 157.3 m/s rather than the thermal
+246.1 m/s. Slow atoms are over-represented.
+
+Hyperfine pumping then removes preferentially the very atoms that weighting
+favours, because the chance of decaying into the other ground state grows with
+the dwell time. Over the unresolved branching bracket:
+
+| branching $f$ | mean contributing $v_\perp$ | change | weight removed |
+|---|---|---|---|
+| 1/3 | 176.7 m/s | +12.3 % | 18.6 % |
+| 2/3 | 188.2 m/s | +19.6 % | 29.6 % |
+
+**A fifth to a third of the contributing weight is removed, and what remains is
+biased fast by 12 to 20 per cent.** A faster contributing population means a
+shorter effective dwell and a wider transit kernel, so this is the mechanism
+behind the pumping width rather than a separate effect.
+
+One thing it does *not* do, and the independence of the Cartesian components is
+why: $v_z$ is uncorrelated with the transverse pair, so pumping biases the
+transit width and leaves the frozen-fringe fraction alone. The two selections
+are orthogonal, which is convenient and is not obvious in advance.
 
 ## Addendum, 2026-08-09: the collection region is smaller than assumed, and the crossing is inside reach
 

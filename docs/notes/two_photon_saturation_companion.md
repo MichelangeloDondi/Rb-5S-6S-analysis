@@ -6,6 +6,19 @@ signature as the one the C3d and C3f width lever is built on, and several times
 larger, is absent from the forward model. The direction of the bias is favourable,
 which is why this is a note rather than a correction.
 
+**The question.** Is the power-squared broadening the light-shift bound rests
+on really the light shift?
+**Takes.** [methods/04_the_composite_model.md](../methods/04_the_composite_model.md).
+**Gives.** Two effects with the same power signature that are absent from that
+model, their sizes measured rather than argued, and what they do and do not
+license.
+**Skip if.** You are not reading the light-shift bound closely. The short
+version is that both bounds stand and are loose by a stated factor.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## How it came up
 
 From a question about what a third 993 nm photon does. That answer is in
@@ -28,6 +41,15 @@ Delta_alpha does not appear in the chain. That matters because the tether was
 where the error was.
 
 **Two corrections from the 2026-08-09 second reading, in order of size.**
+
+![the standing wave, its mean and its fringe amplitude, and the gap between them](../../figures/fig25_retro_combination.png)
+
+*The paragraph below in one picture. One field, two readings: the shift follows
+the fringe MEAN because it is linear in intensity, and the Doppler-free
+coupling takes the fringe AMPLITUDE because only the wavevector-cancelling term
+survives. The right panel is the size of the difference against the retro
+return fraction, which is why the formula carries the distinction even though
+it moves no digit at this bench's own rho.*
 
 *The retro enters the coupling as a geometric mean, not an arithmetic one.* The
 shift is linear in |E|^2, whose fringe mean is (1 + rho) times one arm, and that
@@ -116,11 +138,98 @@ independent of power, waist, retro ratio and Rabi frequency. Numerically, at the
 campaign maximum: saturation 57.5 kHz on axis and 25.4 signal-weighted, pumping
 18.7 to 37.4 kHz on axis and 8.4 to 16.8 signal-weighted over f = 1/3 to 2/3.
 
+**f IS NOT A BRACKET, it is four numbers (2026-08-10).** The 1/3 to 2/3 range
+below was a placeholder for an unresolved branching, and the branching resolves.
+
+The two-photon operator here is SCALAR, K = 0 only (the ABUNDANCE_RB85 note), so
+6S is populated in ONE hyperfine level F and not statistically. f is then the
+product of the two cascade steps, 6S(F) to 5P_J(F'') and 5P_J(F'') to 5S, with
+6j symbols throughout. Each J leg scales the naive degeneracy weight of the
+undriven level by a clean fraction, 8/9 through 5P1/2 and 4/9 through 5P3/2, so
+the combination is 0.596 and is the SAME for all four lines:
+
+| line | isotope, driven F | naive weight | f | pumping width at 225 mW |
+|---|---|---|---|---|
+| 993.4121 nm | 87Rb, F = 1 | 5/8 | 0.372 | 10.5 kHz |
+| 993.4154 nm | 85Rb, F = 2 | 7/12 | 0.348 | 9.8 kHz |
+| 993.4192 nm | 85Rb, F = 3 | 5/12 | 0.248 | 7.0 kHz |
+| 993.4207 nm | 87Rb, F = 2 | 3/8 | 0.223 | 6.3 kHz |
+
+**Where the 8/9 and the 4/9 come from, added 2026-08-10 after the obvious
+objection was put.** They are not a smoothing. Level by level the branching is
+nothing like the naive weight, and every one of the four lines has an
+intermediate level that is populated and **cannot reach the undriven ground
+level at all**: 5P3/2 F=0 for the 4121 line, F=1 for 4154, F=4 for 4192, F=3 for
+4207, carrying between 0.17 and 0.70 of the flux through that leg. A J=1 photon
+cannot connect F=0 to F=2, so those paths return the atom to the level it came
+from and are not losses. Check 6 of `scripts/run_zeeman_depletion.py` prints the
+whole cascade resolved by intermediate F with those zeros in it.
+
+The leg totals come out at the naive weight times 8/9 and 4/9 anyway, for both
+isotopes and every driven level, and that is a sum rule rather than an accident.
+A spontaneous decay evolves the density matrix as
+$\rho\to\sum_q D_q\rho D_q^\dagger$, which is basis-free, and neither dipole
+operator touches the nucleus, so evaluating it in $(m_J, m_I)$ makes the nuclear
+spin a spectator and the answer factorises into a purely electronic two-step
+transfer and a projection back onto the $F$ basis. The closed form is
+
+$$\text{leg ratio} = 2(1-p), \qquad p = P(m_J \text{ unchanged over the cascade})$$
+
+with $p = 5/9$ through $5P_{1/2}$ and $7/9$ through $5P_{3/2}$, giving 8/9 and
+4/9 with no nuclear spin anywhere in the derivation. The blocked paths are real
+and they cancel exactly against the paths that are enhanced.
+
+**One step of that argument was stated too strongly at first and is corrected
+here.** A sum of PROBABILITIES over an intermediate basis is not basis-free, so
+"the hyperfine sum equals the $(m_J,m_I)$ sum" is not something the completeness
+of the basis gives you. What licenses dropping the hyperfine coherences is that
+the $5P$ splitting far exceeds the linewidth, so they dephase within the
+intermediate lifetime, and what licenses dropping the $m$ coherences is that the
+prepared state is unpolarised. Rather than rest on either, check 7 of
+`scripts/run_zeeman_depletion.py` evaluates
+$\rho\to\sum_q D_q\rho D_q^\dagger$ twice in the $|m_J,m_I\rangle$ basis with
+every coherence kept, in exact rational arithmetic, never mentioning hyperfine
+structure in the evolution. It returns 5/9, 14/27, 10/27, 1/3 and 5/18, 7/27,
+5/27, 1/6, which are exactly 8/9 and 4/9 of the naive weights. So the coherences
+a density-matrix treatment keeps make no difference to this observable, and that
+is a computed fact rather than an argument.
+
+A FIRST PASS ASSUMED A STATISTICAL 6S POPULATION and gave the naive column as f.
+That was wrong by exactly the 0.596, and it is recorded because the error had a
+direction: it made the pumping companion LARGER than it is. The lower two lines
+fall outside the retired 1/3 to 2/3 bracket, so this does not merely narrow the
+bracket, it moves the answer down. Drawn in
+figures/fig23_hyperfine_pumping.png panel (b).
+
+**AND THIS BREAKS THE DEGENERACY, in the one variable nobody was varying.** The
+AC-Stark ramp and the saturation are the SAME on all four lines, because the
+two-photon Rabi frequency is F-independent here (the hyperfine factor is
+exactly 1, constants.ABUNDANCE_RB85). The pumping is not. So the three
+same-signature terms are degenerate in power and in waist, as stated
+everywhere, and are NOT degenerate across the line index. The lever between the
+extreme lines is 0.625/0.375 = 1.67, which is 7 kHz of width at the campaign
+maximum against an 88 kHz single-block width scatter. This archive cannot spend
+it. A session that controls the block scatter can, and it is the only handle
+found so far that separates the pumping companion without a fixed lock.
+
 Three consequences.
 
 1. The companion-to-ramp ratio quoted above as 3.7 becomes **4.9 to 6.2** once
    this term is in it, because the two companions carry the identical P-squared
    signature and add.
+
+   ![the hyperfine branch, how often it fires, and the three terms it competes with](../../figures/fig23_hyperfine_pumping.png)
+
+   *This paragraph and the one above it, drawn. Figure 23 recomputes every
+   number here at draw time and states the convention the prose above leaves
+   implicit: the signal weighting runs over the collection volume at the
+   record's own Z_c = 2.2 mm half-length, which is where its 28.2 kHz for the
+   weighted saturation comes from against the 25.4 quoted above at an
+   unstated Z_c. The ratio moves with it, 5.7 to 7.2 rather than 4.9 to 6.2.
+   Quote the figure's numbers with the half-length attached, and read the
+   prose ones as the same statement without it. Nothing downstream turns on
+   the difference, since both say the companions dominate the ramp by rather
+   more than a factor of four.*
 2. The direction is unchanged and the effect on the argument is to strengthen it:
    more P-squared broadening from non-Stark sources means the true Stark limit is
    tighter still.
@@ -251,14 +360,47 @@ term. At C3f's 95 per cent bound, kappa = 1.15 MHz/W, the ramp gives 3.9 kHz and
 saturation 29 to 32 kHz, a ratio of 7.5 to 8.2. The companion therefore outgrows
 the ramp exactly where the bound is set, so the joint bound must tighten as well.
 
-Its SIZE is deliberately not quoted. The joint fit carries a gamma_coll prior that
-can absorb part of an added Lorentzian width where the width-only fit cannot, so
-the tightening will be smaller than C3d's factor 2.8, and by how much is a
-property of that fit rather than of this arithmetic. Running it needs the
-quarantine trees mounted, which is owner-side work.
+Its SIZE was left unquoted here, pending the run. **The run has since happened, and
+the paragraph above is replaced by the postscript below.**
 
-Until then C3f stands at 0.26 MHz as quoted, and is conservative in the same
-direction C3d is.
+## Postscript, 2026-08-10: the joint bound was re-profiled, and it tightens by 2.2
+
+The quarantine trees were on the machine the whole time, under names the script's
+fallback path does not reach, so this was never owner-side work. Stage 4 of
+`scripts/run_saturation_probe.py` now runs it: 100 campaign, 46 rehearsal and 26
+pilot traces, the wing chain then the primary seeded from it, patching the joint
+fit's own profile builder so the shared coefficient, the per-peak priors, the free
+per-trace centres and the chain seeding all stay production code. It writes
+nothing, and `results/stark_joint.csv` is untouched.
+
+| | minimum kappa | 95% bound | S0(225 mW) |
+|---|---|---|---|
+| production, ramp only | 0.25 MHz/W | 1.147 MHz/W | 0.258 MHz |
+| with saturation, ratio 1.2367 | 0.00 MHz/W | 0.519 MHz/W | **0.117 MHz** |
+
+**The unpatched chain reproduces the committed C3f bound exactly**, 1.147 MHz/W
+and 0.258 MHz against the committed 0.26, which is the check that the probe is
+driving the shipped fit rather than a reimplementation of it.
+
+**The joint bound tightens by a factor 2.21**, from 0.258 to 0.117 MHz. That is
+smaller than C3d's 2.8, which is what this note predicted before the run and for
+the reason it gave: the joint fit carries a collisional-width prior that can absorb
+part of an added Lorentzian width where the width-only fit cannot.
+
+One behaviour runs opposite to C3d's and is worth recording rather than smoothing.
+In the width-only fit, adding the companion UN-RAILED the minimum, from exactly
+zero to +0.449 MHz/W, because it gave the width a resolvable gradient where the
+ramp alone had none. In the joint fit the minimum moves the other way, from
++0.25 MHz/W to exactly zero. Both are consistent with no shift, and the difference
+is that the joint fit already had a gradient from its other channels, so the extra
+broadening is absorbed by lowering kappa rather than by raising it.
+
+**The committed C3f bound does not move.** The injected law is still the two-level
+homogeneous form used with a two-photon Rabi frequency, standard and steady-state
+here but an approximation rather than a derivation, and no committed bound should
+move on it. What changes is that C3f, like C3d, is now known to be conservative by
+a measured factor rather than by argument: 2.21 for the joint construction and
+2.8 for the width-only one.
 
 **What is still not licensed.** The functional form is the two-level homogeneous
 law used with a two-photon Rabi frequency. That is standard and the steady-state
@@ -267,3 +409,27 @@ an approximation rather than a derivation for a two-photon transition, and no
 committed bound should move on it without that step. **The committed C3d bound
 therefore stands at 0.63 MHz and remains conservative**, now by a measured factor
 of 2.8 rather than by argument.
+
+## Postscript, 2026-08-10: the refit is specified, and it is predicted to fail
+
+The obvious next step is to put both companions inside the fitted model rather
+than around it, and the owner asked for exactly that. It is preregistered at
+[companion_inclusive_refit_prereg.md](companion_inclusive_refit_prereg.md),
+which fixes the construction and the acceptance criteria before any code was
+written, and the reason it is worth reading is that **the central prediction is
+a prediction of failure, made in advance and with its arithmetic shown.**
+
+The pumping term is the only one of the three that differs across the four
+hyperfine lines, so a joint fit with the four branching fractions held fixed and
+one free scale is the only construction that separates it without a fixed lock.
+The lever is 0.149 of the saturation width, 3.06 kHz at 225 mW. A least-squares
+power calculation on the actual design, four lines by five powers with the core
+widths free, gives a standard error on that scale of 19 to 42 depending on
+whether the block scatter is taken per width point or reduced by the five
+repeats in a block. So this archive would see its own computed companion at
+0.02 to 0.05 sigma and would return a bound between 31 and 69 times too loose to
+touch it.
+
+Stating that in advance is what makes the eventual run informative. A separation
+that appears anyway is then a finding about something else, and the record
+already names the candidates.

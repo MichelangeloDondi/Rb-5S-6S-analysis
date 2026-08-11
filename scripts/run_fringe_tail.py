@@ -3,7 +3,7 @@
 M15: fringe-tail imprint on the standing-wave AC-Stark ramp.
 
 Samples the 3D Maxwell-Boltzmann + fringe-phase ensemble (rb5s6s.fringe_tail)
-at the archival prior (config.W0_MEASURED_M) and small-waist config S (16 um)
+at the measured waist (config.W0_MEASURED_M) and small-waist config S (16 um)
 geometries -- both S0 from lineshape.stark_shift_S0_mhz at 225 mW, so neither
 waist nor shift can go stale here -- over the three retro ratios, and reports
 how the slow-axial-speed fringe tail
@@ -28,7 +28,7 @@ from rb5s6s.constants import TAU_6S_S  # noqa: E402
 from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
-# (label, w0 in m, S0 in MHz): archival prior and the small-waist (config S) target
+# (label, w0 in m, S0 in MHz): the measured waist and the small-waist (config S) target
 _S0_ARCHIVAL = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 _S0_SMALL = stark_shift_S0_mhz(0.225, 16e-6, rho=C.RHO_RETRO)
 REGIMES = (
@@ -95,10 +95,18 @@ def main() -> int:
                         "block-to-block standard error on d_skew"])
             w.writerow(["d_kappa3", k, f"{r['d_kappa3']:.4f}",
                         "third-cumulant change MHz^3 (with - without fringe)"])
+            w.writerow(["d_kappa3_mc_err", k, f"{r['d_kappa3_mc_err']:.4f}",
+                        "block-to-block standard error on d_kappa3"])
             w.writerow(["excess_var_frac", k, f"{r['excess_var_frac']:.4f}",
                         "fraction of the shift variance contributed by the fringe"])
+            w.writerow(["excess_var_frac_mc_err", k,
+                        f"{r['excess_var_frac_mc_err']:.4f}",
+                        "block-to-block standard error on excess_var_frac"])
             w.writerow(["frac_resolved", k, f"{r['frac_resolved']:.4f}",
                         "signal-weighted fraction with fringe survival F > 0.5"])
+            w.writerow(["frac_resolved_mc_err", k,
+                        f"{r['frac_resolved_mc_err']:.4f}",
+                        "block-to-block standard error on frac_resolved"])
             w.writerow(["window_frac", k, f"{r['window_frac']:.4f}",
                         "coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window)"])
 
@@ -112,7 +120,7 @@ def main() -> int:
                f"{max(d) / G1_TRIANGLE * 100:.0f}% of the +{G1_TRIANGLE:.3f} triangle skew"
     print("\n  READING: the fringe tail SUPPRESSES the ramp skew (d_skew < 0) and")
     print("  inflates its variance, both scaling with the fringe-modulation")
-    print(f"  variance. At the {C.W0_MEASURED_M*1e6:.0f} um prior it is negligible")
+    print(f"  variance. At the measured {C.W0_MEASURED_M*1e6:.0f} um it is negligible")
     print(f"  ({_band('2025')}), the whole skew being below the")
     print("  archival noise there; at the small 16 um waist (config S) it is")
     print(f"  material ({_band('S')}). The transit <->")

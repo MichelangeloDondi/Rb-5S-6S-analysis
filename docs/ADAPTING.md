@@ -1,8 +1,21 @@
 # Adapting this pipeline
 
-This page is for a reader with their own transition, their own cell or fibre,
-and their own detector, deciding whether this machinery is worth pointing at
-them. It names every seam: what to change, where it lives, what getting it
+**The question.** You have your own transition, your own cell or fibre, and your
+own detector. Which parts of this machinery transfer, which need editing, and
+what does getting each one wrong do to your answer?
+**Takes.** Nothing. This page is a door, not a chapter.
+**Gives.** Every seam named, with the file it lives in, the failure it causes,
+and the test that catches it. Then the three radiation fields, the branching
+fraction, and the two-mass correction, each as a test you can run on your own
+numbers before writing code.
+**Skip if.** You only want this repository's own results, which are in
+[RESULTS.md](RESULTS.md) and [CLAIMS.md](CLAIMS.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
+This page names every seam: what to change, where it lives, what getting it
 wrong does to the answer, and the check that catches it.
 
 The fastest way in: [examples/your_line.ipynb](../examples/your_line.ipynb)
@@ -27,7 +40,7 @@ silently.
 |---|---|---|---|---|
 | the transition or species | [`rb5s6s/constants.py`](../rb5s6s/constants.py) | line frequencies, hyperfine constants, natural width from the upper-state lifetime, polarizability inputs. Every value carries a provenance tag and a source | fits that converge on widths meaning something else. Nothing downstream re-derives a constant | [`tests/test_constants.py`](../tests/test_constants.py), which holds the peak identification and the two frequency axes apart |
 | the vapour and its density | [`rb5s6s/density.py`](../rb5s6s/density.py) | the vapour-pressure chain N(T) and its stated systematics | a clean multiplier on every collisional coefficient, with no fit residual to show it | [`tests/test_density.py`](../tests/test_density.py). A molecular beam or a buffer-gas cell replaces the file outright, and nothing else reads the vapour law |
-| the apparatus | [`rb5s6s/config.py`](../rb5s6s/config.py) | waists, powers, temperatures, file layouts, directory roots. No physics | the peak light shift quoted at the wrong intensity, since it goes as the inverse square of the waist | [`tests/test_ramp_geometry_docs.py`](../tests/test_ramp_geometry_docs.py), which recomputes the geometry tables the documents print |
+| the apparatus | [`rb5s6s/config.py`](../rb5s6s/config.py) for file layouts, directory roots, fit windows and QC thresholds; [`rb5s6s/constants.py`](../rb5s6s/constants.py) for the beam itself, since `W0_MEASURED_M`, `W0_BAND_M`, `RHO_RETRO` and `RHO_RETRO_ERR` are measured quantities with provenance tags and live there. `config.py` re-exports those four by name, so a script importing them from either module gets the same value, and only `constants.py` is the place to change one | the peak light shift quoted at the wrong intensity, since it goes as the inverse square of the waist | [`tests/test_ramp_geometry_docs.py`](../tests/test_ramp_geometry_docs.py), which recomputes the geometry tables the documents print |
 | the light geometry | [`rb5s6s/lineshape.py`](../rb5s6s/lineshape.py) | the composite line model and the shift-distribution machinery. The deep seam, below | a symmetric fit to an asymmetric line, with the shift absorbed into a width | [`tests/test_lineshape.py`](../tests/test_lineshape.py) |
 | the detection noise | [`rb5s6s/noise.py`](../rb5s6s/noise.py) | the noise law measured from the traces themselves, used as fit weights everywhere | error bars wrong by a factor, and a model comparison that then picks its model with confidence | [`tests/test_noise.py`](../tests/test_noise.py) |
 | the frequency axis | [`rb5s6s/ruler.py`](../rb5s6s/ruler.py) and [`rb5s6s/trim.py`](../rb5s6s/trim.py) | the sideband-ruler calibration, its validity layer, and the residual-tail trimmer | one scale error on every width and every shift at once | [`tests/test_ruler.py`](../tests/test_ruler.py), [`tests/test_trim.py`](../tests/test_trim.py) |
@@ -202,6 +215,88 @@ under `private/qc_gallery/`, rebuilt from the repository alone.
 [`DATA.md`](DATA.md) section 4 describes it as the inspection instrument for
 this archive.
 
+## Three radiation fields, and the tests that say whether yours matter
+
+Any hot cell has three, and this repository checked all three only after being
+asked about them one at a time. Each has a one-line test you can run on your own
+transition before writing any code.
+
+**The light you detect, trapped.** Compute the optical depth over the shortest
+path out, $\tau = n\sigma L$, using the distance from your excitation region to
+the nearest exit rather than the cell's radius, which is the correction this
+record had to make. Below $\tau\approx1$ ignore it. Above it, trapping rescales
+your amplitude and leaves your lineshape alone, because the escape probability
+is the same at every point of a frequency scan. It stops being harmless when it
+differs *between* your lines, which happens as soon as two lines overlap the
+ground-state absorption differently.
+
+**The other colours of your own cascade.** If your upper state decays through an
+intermediate, those legs are radiating too, and the reflex that they are
+negligible because they are infrared is wrong: at 1324 and 1367 nm here they
+absorb as strongly per lower-state atom as the detected 795 nm line does. What
+saves you is population, not wavelength. The test is an inversion check: if your
+drive refills the upper state faster than the intermediate empties, those legs
+are inverted where the atoms are and cannot pump anything back up.
+`scripts/run_trapping_channels.py` is the worked version.
+
+**The cell's own thermal glow.** One number decides it, and it decides it
+brutally. Compare $h\nu/kT$ for each transition of your cascade against the
+blackbody peak, which sits near 7.2 µm at 400 K. Here every line is between 0.79
+and 2.8 µm, so $h\nu/kT$ runs 26 to 45, the occupation numbers are $10^{-12}$ to
+$10^{-20}$, and thermal light does nothing at all. **This is the test that
+flips** if your levels are higher: a transition with a 10 µm neighbour has an
+occupation number of order 1 and lives in a different regime. Watch the smallest
+gap out of your upper state, not the one you drive.
+`scripts/run_blackbody_channels.py` is the worked version, and it also computes
+the blackbody AC-Stark shift, which is hundreds of hertz here rather than the
+~1 Hz a ground state alone would give, because the excited state's own
+resonances sit inside the thermal band.
+
+## Getting the branching fraction for your cascade
+
+If your upper state can decay into a ground level you are not driving, atoms
+leave your line mid-transit and your effective interaction time shortens. The
+fraction that does is one number per line, and **the naive answer is wrong**.
+
+The naive answer is the degeneracy weight of the undriven level,
+$(2F'+1)/\sum_F(2F+1)$. This repository used it, published it, and corrected it:
+it is too large, here by a factor 0.596. The correction is a closed form and
+costs nothing to evaluate:
+
+$$f = \frac{2F'+1}{\sum_F (2F+1)} \times \sum_J b_J \cdot 2(1-p_J)$$
+
+where $b_J$ is the branching into each fine-structure leg and $p_J$ is the
+probability that the ELECTRON's $m_J$ survives the two-step cascade through that
+leg. For $S\to P\to S$ it is $5/9$ through $J=1/2$ and $7/9$ through $J=3/2$,
+giving $8/9$ and $4/9$. No nuclear spin appears in the derivation, so the same
+two fractions serve any isotope and any driven level, which is worth checking
+rather than trusting: `scripts/run_zeeman_depletion.py` verifies it on the full
+Zeeman manifold and again as an exact-rational density matrix.
+
+Two traps this record fell into and you can skip. **The intermediate levels that
+cannot reach your undriven ground state at all** are real and are not a
+correction you may drop: a $J=1$ photon cannot change $F$ by two, so some
+populated intermediate levels return the atom to where it started. They cancel
+against the enhanced paths exactly, but only once you sum them all. And **the
+per-line spread is the only thing in the width budget that differs between your
+lines**, so it is the one handle that can separate pumping from saturation and
+from the light shift without a stable frequency reference. Whether you can spend
+it is arithmetic: here the spread is 3 kHz, at the light shift this archive can
+actually bound, against an 88 kHz block scatter, so
+the answer was no by a factor of twenty to forty.
+
+## Two masses in one cell
+
+If your species has two abundant isotopes, or you run an isotopologue mixture,
+they do not share a transit width: it goes as the thermal speed, so it goes as
+$1/\sqrt{m}$. Here that is 1.169 per cent, worth 11.4 kHz.
+`linefit.transit_fwhm_at_T(..., isotope=)` shows the shape of the fix, and its
+default is deliberately the shared behaviour, because against a density lever
+the split is almost all a constant offset that a free per-line core width
+absorbs. What reached the collisional coefficient here was 0.41 per cent of one
+standard error. Where it does not hide is any observable that resolves the
+Doppler pedestal, where the same fraction is megahertz and separable.
+
 ## What transfers with no edits at all
 
 The statistical machinery holds nothing about rubidium: the noise-law
@@ -210,6 +305,34 @@ ladder, the profile-likelihood bound constructions, and the repository
 guards (the canonical-value test, the figure fingerprint, the results status
 tags). [`methods/06_the_statistics.md`](methods/06_the_statistics.md)
 derives each one.
+
+## The eighteen names you can import
+
+`import rb5s6s` gives an eighteen-name public surface, and it is deliberately
+small: every name on it is **pure**, meaning it computes and does not read the
+repository, so it works from an installed wheel with no data alongside it. That
+is checked by [`tests/test_package_surface.py`](../tests/test_package_surface.py),
+which also checks that importing the physics does not drag in a module that
+reads from disk.
+
+```python
+from rb5s6s import (
+    # the lineshape and the light-shift distribution
+    model_profile, composite_profile, stark_ramp, stark_ramp_axial_moments,
+    stark_shift_S0_mhz,
+    # the atomic inputs, recomputed rather than tabulated
+    delta_alpha, alpha_5s, alpha_6s, two_photon_matrix_element,
+    two_photon_rabi_hz,
+    # the constants a caller most often needs to override
+    W0_MEASURED_M, RHO_RETRO, GAMMA_NAT_HZ, TAU_6S_S, LAMBDA_LASER_M,
+    DELTA_ALPHA_AU, transit_fwhm_from_w0, __version__,
+)
+```
+
+Everything else is reached through its module. The six modules that read from
+disk (`config`, `ingest`, `qc`, `rate_model`, `ruler`, `cavity_scan`) raise
+`config.RepoDataMissing` naming what needs cloning, rather than resolving a
+path into site-packages and failing somewhere stranger later.
 
 ## Two worked examples
 

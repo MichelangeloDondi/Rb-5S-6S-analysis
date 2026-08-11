@@ -12,7 +12,7 @@ calibration. Nothing later re-derives the axis, it only spends it.
 
 ## 3. From volts-versus-time to a frequency axis (the EOM ruler)
 
-The scope records fluorescence versus *time* while the laser sweeps; we need
+The scope records fluorescence versus *time* while the laser sweeps, and we need
 $\nu$ versus time. The sweep is nonlinear and its rate unknown, so a ruler was
 built into the scan: an EOM phase-modulates the light at exactly
 $\Omega=12.5$ MHz, adding sidebands at $\nu_c\pm n\Omega$ around the carrier
@@ -28,7 +28,7 @@ $\nu_c=(\nu_0-k\Omega)/2$, i.e. a comb of line-copies spaced by
 
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
-— the same factor-2 as [§0](../methods.md). Fitting the tooth spacing (in ms) per block gives
+with the same factor-2 as [§0](../methods.md). Fitting the tooth spacing (in ms) per block gives
 the sweep rate. We measure $0.042524(51)$ MHz/ms on the laser axis, and the
 sweep is linear across the window to better than 0.3%.
 
@@ -51,7 +51,7 @@ is an approximation rather than a law here: the second-to-first height ratio
 still gives the modulation depth to a few per cent, while the carrier height
 carries the admixture and settles nothing
 ([pre-registration](../notes/ruler_validity_and_trim_prereg.md), section A2
-and amendment 6). *Code:* `ruler.py` (M2);
+and amendment 6). *Code:* `ruler.py` (M2), with
 $\Omega/2$ locked by a permanent test in `test_constants.py`.
 
 **How many teeth the fit must include, and what it cost to get wrong
@@ -72,38 +72,38 @@ corrected rather than absorbed into an error bar. The same truncation was
 railing the collisional width at zero in the M25 comb fits, which is how it
 surfaced.
 
-### Why the ruler is a clean number — the common-mode rejections
+### Why the ruler is a clean number: the common-mode rejections
 
 The rate is a *differential* measurement across five copies of the **same
 physical line**, and everything that afflicts the line afflicts every copy
 equally:
 
-- **The AC-Stark shift.** The atom sees the *total* field — carrier plus all
-  sidebands, both beams — at every instant, regardless of which tooth is
-  resonant, so the light shift translates the whole comb **rigidly**: the
-  spacing is untouched. The residual is second-order — a power drift *within*
+- **The AC-Stark shift.** The atom sees the *total* field, carrier plus all
+  sidebands and both beams, at every instant, regardless of which tooth is
+  resonant, so the light shift translates the whole comb **rigidly** and the
+  spacing is untouched. The residual is second-order: a power drift *within*
   one trace shifts teeth differentially by $S_0\times$(fractional drift per
-  spacing) $\lesssim10^{-4}$ at the archival $S_0\lesssim0.6$ MHz — below the
-  quoted precision.
+  spacing), which is $\lesssim10^{-4}$ at the archival $S_0\lesssim0.6$ MHz and
+  below the quoted precision.
 - **The line asymmetry** (the ramp skew of [§2.6](03_the_ac_stark_ramp.md),
   or any other shape distortion). Same line, same intensity, same shape on
   every tooth ⇒ the same centre pull on every tooth ⇒ absorbed into the comb
-  phase $t_0$, never into the spacing. The genuine second-order effect —
+  phase $t_0$, never into the spacing. The genuine second-order effect is that
   **edge teeth have only one neighbour**, so overlapping *asymmetric* wings
-  pull the comb ends differently — is why the fit is a *constrained
-  simultaneous* comb (one shared tooth shape, free heights; at about 147 ms
-  spacing and about 60 ms width a strong tooth's wing under a weak neighbour
-  is about 20% of the weak peak, and single-tooth fits pull centres by O(ms)),
-  and why the free-centres nonlinearity map exists: it bounds *any*
-  tooth-dependent pull — scan nonlinearity and differential shape effects
-  together — **empirically at $\lesssim0.3$% per position**
+  pull the comb ends differently, and that is why the fit is a *constrained
+  simultaneous* comb (one shared tooth shape and free heights, where at about
+  147 ms spacing and about 60 ms width a strong tooth's wing under a weak
+  neighbour is about 20% of the weak peak, and single-tooth fits pull centres by
+  O(ms)), and why the free-centres nonlinearity map exists: it bounds *any*
+  tooth-dependent pull, scan nonlinearity and differential shape effects
+  together, **empirically at $\lesssim0.3$% per position**
   (`results/ruler_nlmap.csv`), already inside the quoted error through the
   PDG block-scatter inflation.
 - **Sideband amplitude imbalance** (residual AM from the carrier-suppression
-  trick): absorbed by the free per-tooth heights — amplitude never enters the
+  trick): absorbed by the free per-tooth heights, so amplitude never enters the
   spacing.
 - **Laser drift during a trace** is not a bias but part of the *measured*
-  effective rate, and the line fits use their own block's rate — the drift is
+  effective rate, and the line fits use their own block's rate, so the drift is
   self-consistently calibrated out by a per-block
   ruler under a drifting lock.
 
@@ -131,7 +131,7 @@ clear all of it. The residual strip carries the standardized units of the
 statistics chapter's §4.1, and the climb at the scan end is the clipped window
 showing itself in the evidence.*
 
-### The comb amplitudes — and the pure-phase-modulation null
+### The comb amplitudes, and the pure-phase-modulation null
 
 For *pure* phase modulation at index $\beta$ on both counter-propagating
 beams, the two-photon tooth amplitudes obey an exact closed law: the tooth at
@@ -142,16 +142,16 @@ $$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2 .$$
 This explains the 2025 design compromise and prescribes its fix:
 
 - **At small $\beta$ the sidebands are buried**: $J_k(2\beta)^2$ gives
-  $1 : 0.10 : 0.002$ at $\beta=0.3$ — the outer teeth drown in the central
+  $1 : 0.10 : 0.002$ at $\beta=0.3$, so the outer teeth drown in the central
   tooth's tails. The 2025 workaround rotated a half-wave plate to admix
-  amplitude modulation and suppress the optical carrier — which worked, but
+  amplitude modulation and suppress the optical carrier. It worked, but it
   put the ruler light at a **different polarization and power than the science
-  light** (the reason the ruler traces cannot serve as a hardware-matched
-  width monitor for the archive; PLAN §7).
+  light**, which is the reason the ruler traces cannot serve as a
+  hardware-matched width monitor for the archive (PLAN §7).
 - **The fix needs no polarizer**: drive the EOM at
   $\beta \approx 1.202$ (where $J_0(2\beta)=0$) and the central tooth **nulls
-  by coherent pair interference** — the two-photon analogue of carrier
-  suppression — leaving a comb $0 : 1.00 : 0.69 : 0.15$ ($k=0,\pm1,\pm2,\pm3$)
+  by coherent pair interference**, the two-photon analogue of carrier
+  suppression, leaving a comb $0 : 1.00 : 0.69 : 0.15$ ($k=0,\pm1,\pm2,\pm3$)
   with the ruler light *identical* to the science light.
 - **The pattern is a built-in modulation diagnostic.** Pure phase modulation
   demands $A_{+k}=A_{-k}$ exactly, and the 2025 traces violate it, for example

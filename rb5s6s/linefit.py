@@ -34,8 +34,8 @@ SNR before any real number is trusted.
 
 CONSEQUENCES OF THE DEGENERACY (closure-measured at SNR~130, 5 repeats):
 corr(sigma_laser, gamma_coll) ~ -0.9. So:
-  * the TOTAL Voigt width (their combination) is robust; the individual
-    split is not — never quote a single-condition sigma_laser or gamma_coll
+  * the TOTAL Voigt width (their combination) is robust and the individual
+    split is not, so never quote a single-condition sigma_laser or gamma_coll
     as physics without its error and this correlation.
   * beta_self must ride on the gamma_coll DIFFERENCE across temperature
     (density lever arm), where the shared/systematic laser contribution
@@ -117,10 +117,44 @@ def adaptive_halfwidth(freqs: np.ndarray, volts: np.ndarray) -> float:
     return float(min(max(hw, C.FIT_HALFWIDTH_MIN_MHZ), C.FIT_HALFWIDTH_MAX_MHZ))
 
 
-def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0) -> float:
+def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0,
+                      isotope: int | None = None) -> float:
     """Transit FWHM at temperature T from a reference value, enforcing the
-    sqrt(T) thermal scaling (T in kelvin)."""
-    return transit_ref_mhz * np.sqrt((T_C + 273.15) / (T_ref_C + 273.15))
+    sqrt(T) thermal scaling (T in kelvin).
+
+    ISOTOPE (added 2026-08-10, owner instruction, OPT-IN). The transit width
+    goes as the thermal speed, which goes as 1/sqrt(mass), so the two isotopes
+    do not share it: 85Rb is 1.169 per cent faster than 87Rb at the same
+    temperature and its transit kernel is wider by the same fraction, 11 kHz at
+    130 C. Passing isotope=85 or 87 applies that, referenced to the
+    abundance-weighted mean so a shared reference value keeps its meaning.
+
+    THE DEFAULT IS None, WHICH REPRODUCES THE SHARED BEHAVIOUR BYTE FOR BYTE,
+    and that is deliberate. Every committed fit shares one transit width across
+    both isotopes, and the misassignment that causes is almost entirely a
+    constant OFFSET rather than a density slope: the gap runs 10.53 to
+    11.42 kHz across the 52-fold density lever, so a straight line through it
+    has a slope of 0.000026 MHz per 1e12 cm^-3, which is 0.4 per cent of one
+    sigma on the measured beta85 minus beta87. The offset is absorbed by the
+    per-peak core width, which is free in every construction here. So the
+    isotope split does NOT move the collisional coefficients and switching it
+    on silently would produce a diff with no physics in it.
+
+    Where it does matter, and why the argument exists: the quoted transit width
+    itself, which is stated to 0.01 MHz; the transit TIME, 1.17 per cent
+    shorter for 85Rb, which sets the hyperfine-pumping depletion of
+    scripts/run_zeeman_depletion.py; and the Doppler pedestal a wide scan would
+    measure, where 1.17 per cent of 942 MHz is 11 MHz and is resolvable, which
+    makes the mass difference a handle rather than a nuisance.
+    """
+    scaled = transit_ref_mhz * np.sqrt((T_C + 273.15) / (T_ref_C + 273.15))
+    if isotope is None:
+        return scaled
+    from .constants import (ABUNDANCE_RB85, ABUNDANCE_RB87, M_RB85_KG,
+                            M_RB87_KG)
+    ratio = np.sqrt(M_RB87_KG / M_RB85_KG)          # v(85) / v(87)
+    mean = ABUNDANCE_RB85 * ratio + ABUNDANCE_RB87  # keeps the shared value's meaning
+    return scaled * (ratio if int(isotope) == 85 else 1.0) / mean
 
 
 def _profile_fwhm(g: np.ndarray, prof: np.ndarray) -> float:

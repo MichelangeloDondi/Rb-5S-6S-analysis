@@ -48,89 +48,122 @@ profile_point,2.000,214506.85,,"chi2 at this kappa, beta and all nuisances re-mi
 profile_point,2.620,214519.08,,"chi2 at this kappa, beta and all nuisances re-minimized",PRELIM
 profile_point,3.500,214546.04,,"chi2 at this kappa, beta and all nuisances re-minimized",PRELIM
 profile_point,5.000,214636.24,,"chi2 at this kappa, beta and all nuisances re-minimized",PRELIM
-beta_self_min,joint_region,0.0150,,MHz per 1e12 cm^-3; beta at the 2D profile minimum,PRELIM
-beta_self_lo95,joint_region,0.0150,,"MHz per 1e12 cm^-3; 1-parameter 95% (dchi2 < 3.841), kappa profiled out at each beta",PRELIM
-beta_self_hi95,joint_region,0.0150,,MHz per 1e12 cm^-3; upper edge of the same interval,PRELIM
-joint_chi2,k0.000_b0.0050,+2025.682,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0150,+0.545,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0250,+564.466,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0350,+5622.438,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0450,+22934.738,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0550,+53469.667,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0650,+95104.479,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.000_b0.0750,+145983.645,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0050,+2025.868,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0150,+0.000,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0250,+560.816,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0350,+5621.152,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0450,+22943.459,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0550,+53482.713,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0650,+95123.353,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.250_b0.0750,+145999.958,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0050,+2027.113,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0150,+0.542,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0250,+561.299,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0350,+5626.506,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0450,+22985.229,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0550,+53508.324,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0650,+95156.798,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.500_b0.0750,+146047.117,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0050,+2029.318,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0150,+1.312,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0250,+562.313,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0350,+5634.108,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0450,+23057.737,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0550,+53551.064,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0650,+95209.880,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k0.750_b0.0750,+146104.565,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0050,+2032.481,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0150,+2.720,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0250,+563.297,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0350,+5645.545,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0450,+23025.146,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0550,+53613.626,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0650,+95288.683,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.000_b0.0750,+146197.314,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0050,+2042.961,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0150,+7.166,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0250,+567.681,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0350,+5688.499,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0450,+23150.280,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0550,+53807.620,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0650,+95542.020,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k1.545_b0.0750,+146496.981,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0050,+2055.768,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0150,+13.131,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0250,+573.360,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0350,+5731.523,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0450,+23298.606,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0550,+54038.945,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0650,+95837.683,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.000_b0.0750,+146840.992,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0050,+2079.899,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0150,+25.210,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0250,+584.608,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0350,+5816.440,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0450,+23563.812,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0550,+54444.469,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0650,+96359.070,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k2.620_b0.0750,+147523.229,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0050,+2130.375,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0150,+53.480,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0250,+614.045,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0350,+5987.241,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0450,+24065.038,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0550,+55230.215,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0650,+97351.376,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k3.500_b0.0750,+148618.000,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0050,+2275.009,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0150,+146.915,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0250,+695.730,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0350,+6445.648,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0450,+25361.448,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0550,+57098.233,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0650,+99730.558,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
-joint_chi2,k5.000_b0.0750,+151398.579,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+beta_self_min,joint_region,0.01828,,"MHz per 1e12 cm^-3; beta at the 2D profile minimum, on the refined grid of step 0.00016",PRELIM
+beta_self_lo95,joint_region,0.01774,,"MHz per 1e12 cm^-3; 1-parameter 95% (dchi2 < 3.841), kappa profiled out at each beta, edges interpolated in sqrt(dchi2) on a grid refined until the interval spans it",PRELIM
+beta_self_hi95,joint_region,0.01873,,MHz per 1e12 cm^-3; upper edge of the same interval,PRELIM
+beta_grid_step,joint_region,0.00016,,"MHz per 1e12 cm^-3; the spacing the interval above was resolved on, refined down from 0.01000 by the loop of addendum 30 -- quote it whenever the interval is quoted",PRELIM
+joint_chi2,k0.000_b0.0050,+2158.126,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0150,+132.990,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0250,+696.911,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0350,+5754.883,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0450,+23067.183,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0550,+53602.112,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0650,+95236.923,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.000_b0.0750,+146116.090,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0050,+2158.313,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0150,+132.444,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0250,+693.261,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0350,+5753.596,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0450,+23075.903,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0550,+53615.157,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0650,+95255.798,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.250_b0.0750,+146132.402,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0050,+2159.557,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0150,+132.986,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0250,+693.743,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0350,+5758.950,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0450,+23117.674,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0550,+53640.769,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0650,+95289.243,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.500_b0.0750,+146179.562,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0050,+2161.762,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0150,+133.756,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0250,+694.758,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0350,+5766.552,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0450,+23190.181,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0550,+53683.508,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0650,+95342.324,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k0.750_b0.0750,+146237.009,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0050,+2164.925,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0150,+135.165,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0250,+695.741,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0350,+5777.989,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0450,+23157.591,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0550,+53746.070,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0650,+95421.127,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.000_b0.0750,+146329.758,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0050,+2175.406,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0150,+139.610,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0250,+700.126,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0350,+5820.943,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0450,+23282.724,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0550,+53940.065,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0650,+95674.464,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k1.545_b0.0750,+146629.426,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0050,+2188.213,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0150,+145.575,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0250,+705.805,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0350,+5863.967,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0450,+23431.050,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0550,+54171.389,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0650,+95970.127,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.000_b0.0750,+146973.437,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0050,+2212.343,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0150,+157.655,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0250,+717.052,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0350,+5948.885,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0450,+23696.256,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0550,+54576.914,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0650,+96491.514,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k2.620_b0.0750,+147655.673,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0050,+2262.820,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0150,+185.925,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0250,+746.489,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0350,+6119.686,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0450,+24197.482,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0550,+55362.660,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0650,+97483.821,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k3.500_b0.0750,+148750.444,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0050,+2407.454,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0150,+279.359,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0250,+828.175,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0350,+6578.093,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0450,+25493.893,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0550,+57230.677,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0650,+99863.003,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+joint_chi2,k5.000_b0.0750,+151531.023,,"dchi2 above the joint minimum on the (kappa, beta) grid -- the confidence REGION, not two separate bounds",PRELIM
+beta_profile,0.00500,+2158.126,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.00750,+1418.738,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.00875,+1108.314,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01000,+836.067,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01125,+602.168,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01250,+406.747,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01375,+248.100,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01500,+132.444,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01625,+56.815,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01750,+9.004,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01781,+2.694,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01797,+1.050,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01812,+0.137,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01828,+0.000,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01844,+0.665,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01859,+2.055,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01875,+4.149,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01891,+6.881,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01906,+10.318,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01922,+14.609,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01937,+19.413,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01953,+24.949,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.01969,+31.426,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.02000,+46.404,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.02125,+135.836,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.02250,+273.217,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.02500,+693.261,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.03500,+5753.596,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.04500,+23067.183,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.05500,+53602.112,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.06500,+95236.923,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
+beta_profile,0.07500,+146116.090,,"dchi2 above the beta profile minimum, kappa profiled out on the kappa grid -- the curve the 95% interval is read off, coarse and refined points together",PRELIM
 w0_scan,56um,1.087,0.0154,"value=95% kappa bound, err=beta_self, at transit_ref 1.067 MHz -- how both coefficients depend on the ASSUMED waist, which the archive cannot pin",PRELIM
 w0_scan,60um,1.058,0.0170,"value=95% kappa bound, err=beta_self, at transit_ref 0.996 MHz -- how both coefficients depend on the ASSUMED waist, which the archive cannot pin",PRELIM
 w0_scan,64um,1.050,0.0181,"value=95% kappa bound, err=beta_self, at transit_ref 0.933 MHz -- how both coefficients depend on the ASSUMED waist, which the archive cannot pin",PRELIM

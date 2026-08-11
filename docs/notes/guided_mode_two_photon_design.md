@@ -9,6 +9,20 @@ had to be assumed, the assumption is labelled and its basis stated. Provenance
 tags follow `docs/STYLE.md` (MEASURED-HERE / CALCULATED / ESTABLISHED /
 ENVELOPE / OPEN).
 
+**The question.** What would it take to move this measurement out of the
+vapour cell and into a hollow-core fibre?
+**Takes.** [BIG_PICTURE.md](../BIG_PICTURE.md) §6, for why a guided mode is
+interesting at all.
+**Gives.** The optical budget, the expected signal, the surface and collision
+terms a guided mode adds, and every assumption labelled where it had to be
+made.
+**Skip if.** You want the cell result. Nothing here is scheduled, agreed or
+costed.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 The reader addressed throughout is a guided-mode platform, a hollow-core fibre
 experiment holding either a warm fill or a trapped sample. No apparatus outside
 this repository is assumed to exist.

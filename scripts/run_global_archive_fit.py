@@ -496,6 +496,56 @@ def chain(resid, Sf, lo, hi, q0, kappas, tag, nfev=2500):
     return res
 
 
+def _crossings(x, c, thresh):
+    """Both edges of a profile interval, INTERPOLATED to the threshold crossing.
+
+    WHY THIS EXISTS (2026-08-10). The two-parameter region's beta interval used to
+    be reported as the set of GRID POINTS under the threshold, min(bl) to max(bl),
+    on a grid of step 0.01. When exactly one grid point sat under it, both edges
+    landed on that point and the committed CSV reported a 95 per cent interval of
+    ZERO WIDTH: beta_self_lo95, beta_self_hi95 and beta_self_min all read 0.0150.
+    An interval narrower than the grid that produced it is the tell, and it went
+    unnoticed because nothing compared the two edges to each other.
+
+    The kappa bound two functions below, ub95(), already interpolated. This is the
+    same arithmetic applied to both edges, so the interval is a crossing of the
+    likelihood rather than a membership test on a grid. Where a crossing falls
+    outside the scanned range the edge is returned as the range end, because an
+    unbounded edge is not the same as a coincident one.
+
+    THE SECOND CORRECTION (also 2026-08-10, addendum 30). Interpolating chi2
+    LINEARLY is wrong in a known direction. A profile is locally quadratic about
+    its minimum, so chi2 rises as the square of the distance and a straight line
+    drawn between two grid points reaches the threshold far too early. On the
+    committed beta profile, whose neighbouring grid point sat 561 above the
+    threshold, that understated the interval by a factor of 14. The quantity that
+    IS locally linear is sqrt(chi2 - chi2_min), so the interpolation is done in
+    that variable and squared back. For a parabola sampled anywhere on one side
+    of its minimum this is exact, and it degrades gracefully when it is not one.
+    Note the remaining approximation: the minimum is taken at a grid point, so a
+    true minimum lying between two points still biases both edges. That is what
+    the resolution loop in the caller exists to make small.
+    """
+    x = np.asarray(x, float)
+    c = np.asarray(c, float) - float(np.min(c))
+    i = int(np.argmin(c))
+    root = np.sqrt(np.maximum(c, 0.0))
+    root_t = float(np.sqrt(thresh))
+
+    def edge(idxs, fallback):
+        prev = i
+        for j in idxs:
+            if c[j] > thresh:
+                return float(np.interp(root_t, [root[prev], root[j]],
+                                       [x[prev], x[j]]))
+            prev = j
+        return float(fallback)
+
+    lo = edge(range(i - 1, -1, -1), x[0])
+    hi = edge(range(i + 1, len(x)), x[-1])
+    return lo, hi
+
+
 def ub95(k, c):
     c = np.asarray(c) - np.min(c)
     k = np.asarray(k)
@@ -598,12 +648,60 @@ def main() -> int:
     # 1-parameter and 2-parameter thresholds
     beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in betas}
     bmin = min(beta_prof, key=beta_prof.get)
-    bl = [b for b in betas if beta_prof[b] - min(beta_prof.values()) < 3.841]
+    b_lo95, b_hi95 = _crossings(sorted(beta_prof),
+                                [beta_prof[b] for b in sorted(beta_prof)], 3.841)
+
+    # ---- resolve that interval instead of asserting it (addendum 30) ------
+    # The coarse grid above steps by 0.01 and the interval it reports is about
+    # 0.001 wide, so the grid is ten times too coarse to see its own answer and
+    # the reported minimum is whichever grid point happened to sit lowest. The
+    # symptom that made it visible: the committed interval did not contain this
+    # same file's own free-fit beta_self. Refine around the running minimum
+    # until the interval spans at least MIN_SPAN_STEPS steps of the grid that
+    # resolves it, which is the same criterion tests/test_interval_sanity.py
+    # applies to the committed CSV, so the fit now targets what the guard checks.
+    MIN_SPAN_STEPS, MAX_ROUNDS = 4.0, 4
+    step = float(betas[1] - betas[0])
+    for rnd in range(1, MAX_ROUNDS + 1):
+        if (b_hi95 - b_lo95) >= MIN_SPAN_STEPS * step:
+            break
+        step /= 8.0
+        centre = min(beta_prof, key=beta_prof.get)
+        fresh = tuple(sorted({round(centre + j * step, 6)
+                              for j in range(-6, 7)} - set(beta_prof)))
+        fresh = tuple(b for b in fresh if b > 0)
+        if not fresh:
+            break
+        print(f"    refine round {rnd}: {len(fresh)} betas at step {step:.5f} "
+              f"about {centre:.4f}", flush=True)
+        g2.update(profile2d(resid, Sf, lo, hi, best_q, KAPPAS, fresh,
+                            tag=f"2D-r{rnd}"))
+        for b in fresh:
+            beta_prof[b] = min(g2[(k, b)] for k in KAPPAS)
+        bs_sorted = sorted(beta_prof)
+        b_lo95, b_hi95 = _crossings(bs_sorted,
+                                    [beta_prof[b] for b in bs_sorted], 3.841)
+    beta_grid_step = step
+    c2min = min(g2.values())
+    beta_prof = {b: min(g2[(k, b)] for k in KAPPAS) for b in sorted(beta_prof)}
+    bmin = min(beta_prof, key=beta_prof.get)
     print(f"    beta_self profile minimum {bmin:.4f}, "
-          f"95% (1-par, dchi2<3.84) range [{min(bl):.4f}, {max(bl):.4f}]")
+          f"95% (1-par, dchi2<3.84) range [{b_lo95:.4f}, {b_hi95:.4f}] "
+          f"at grid step {beta_grid_step:.5f}")
+    if not (b_lo95 <= beta_fit <= b_hi95):
+        print(f"    NOTE: the free-fit beta_self {beta_fit:.4f} lies OUTSIDE "
+              f"this interval, which the two constructions differing "
+              f"(kappa free vs profiled on the kappa grid) can produce and "
+              f"which is reported rather than reconciled", flush=True)
 
     # ---- how the answer depends on the assumed waist ------------------
     print("\n  w0 dependence (the conditionality, mapped):")
+    # DELIBERATELY WIDER THAN constants.W0_BAND_M, and left literal for that
+    # reason (noted 2026-08-10, when the band narrowed to 62-68 um and a
+    # different hard-coded band in run_global_fit.py turned out to be two
+    # generations stale). This is a SENSITIVITY scan: its job is to show how
+    # the answer moves outside the band as well as inside it, so tying it to
+    # the band would destroy what it is for. The band sits inside this range.
     w0rows = w0_scan(traces, offsets, (56e-6, 60e-6, 64e-6, 68e-6, 72e-6),
                      KAPPAS)
 
@@ -660,18 +758,32 @@ def main() -> int:
         for k in KAPPAS:
             w.writerow(["profile_point", f"{k:.3f}", f"{prof[k]:.2f}", "",
                         "chi2 at this kappa, beta and all nuisances re-minimized"])
-        w.writerow(["beta_self_min", "joint_region", f"{bmin:.4f}", "",
-                    "MHz per 1e12 cm^-3; beta at the 2D profile minimum"])
-        w.writerow(["beta_self_lo95", "joint_region", f"{min(bl):.4f}", "",
+        w.writerow(["beta_self_min", "joint_region", f"{bmin:.5f}", "",
+                    "MHz per 1e12 cm^-3; beta at the 2D profile minimum, on the "
+                    f"refined grid of step {beta_grid_step:.5f}"])
+        w.writerow(["beta_self_lo95", "joint_region", f"{b_lo95:.5f}", "",
                     "MHz per 1e12 cm^-3; 1-parameter 95% (dchi2 < 3.841), "
-                    "kappa profiled out at each beta"])
-        w.writerow(["beta_self_hi95", "joint_region", f"{max(bl):.4f}", "",
+                    "kappa profiled out at each beta, edges interpolated in "
+                    "sqrt(dchi2) on a grid refined until the interval spans it"])
+        w.writerow(["beta_self_hi95", "joint_region", f"{b_hi95:.5f}", "",
                     "MHz per 1e12 cm^-3; upper edge of the same interval"])
+        w.writerow(["beta_grid_step", "joint_region", f"{beta_grid_step:.5f}", "",
+                    "MHz per 1e12 cm^-3; the spacing the interval above was "
+                    "resolved on, refined down from 0.01000 by the loop of "
+                    "addendum 30 -- quote it whenever the interval is quoted"])
         for (kk, bb), cc in sorted(g2.items()):
+            if bb not in betas:
+                continue
             w.writerow(["joint_chi2", f"k{kk:.3f}_b{bb:.4f}",
                         f"{cc - c2min:+.3f}", "",
                         "dchi2 above the joint minimum on the (kappa, beta) "
                         "grid -- the confidence REGION, not two separate bounds"])
+        for bb in sorted(beta_prof):
+            w.writerow(["beta_profile", f"{bb:.5f}",
+                        f"{beta_prof[bb] - min(beta_prof.values()):+.3f}", "",
+                        "dchi2 above the beta profile minimum, kappa profiled "
+                        "out on the kappa grid -- the curve the 95% interval "
+                        "is read off, coarse and refined points together"])
         for w0, tr_ref, kub, kmn, bfit in w0rows:
             w.writerow(["w0_scan", f"{w0*1e6:.0f}um",
                         f"{kub:.3f}", f"{bfit:.4f}",

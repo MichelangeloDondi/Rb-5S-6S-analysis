@@ -5,6 +5,18 @@ number came out of it.** Every threshold below is fixed here, with its
 justification, so that the run can only confirm or fail it. No value in this
 note was chosen after seeing a fit.
 
+**The question.** How can the frequency ruler be wrong in a way the data can
+detect, and what rule catches each way?
+**Takes.** [methods/05_the_frequency_ruler.md](../methods/05_the_frequency_ruler.md).
+**Gives.** The validity rules, the residual-tail trimmer, the quarantine
+vocabulary and the amendments that record what each rule returned when run.
+**Skip if.** You are not auditing the frequency axis. The opening table is the
+current state of every rule if you want only that.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 Producers: [`rb5s6s/ruler.py`](../../rb5s6s/ruler.py) and
 [`scripts/run_ruler.py`](../../scripts/run_ruler.py). Outputs:
 `results/ruler_traces.csv`, `results/ruler_blocks.csv`,
@@ -31,6 +43,14 @@ the current state can read this table and the amendment named in it.
 | licensing for the width-against-rate figure | section 8 | the 130 C block enters the fit, the morning pilot enters marked and outside it, the rehearsal and the calibration combs stay out with their reasons on the panel |
 
 ## 1. The defect this specification answers
+
+![the modulated comb on one trace, with the fitted tooth grid over it](../../figures/fig8_ruler.png)
+
+*The object this whole specification is about. Seven modulation sidebands at a
+known spacing turn the oscilloscope's time axis into a frequency axis, one
+trace at a time. Everything below is about the ways the fit that places them
+can be right about the spacing and wrong about which tooth is which, and about
+which of those ways the data can detect.*
 
 The comb fit places seven tooth centres on a rigid grid at t0 plus k times
 Delta, for k from minus three to plus three, and assigns k by proximity to the

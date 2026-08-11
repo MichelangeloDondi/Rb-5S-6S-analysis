@@ -30,7 +30,44 @@ from .constants import (  # noqa: F401
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_RAW_DIR = REPO_ROOT / "data_raw"        # frozen dataset, committed to git
 MANIFEST_CSV = DATA_RAW_DIR / "MANIFEST.csv" # one row per unique trace
-RESULTS_DIR = REPO_ROOT / "results"          # all generated outputs; git-ignored
+RESULTS_DIR = REPO_ROOT / "results"          # all generated outputs, tracked in git
+
+
+class RepoDataMissing(RuntimeError):
+    """Raised when a data-reading function is called without the repository beside it.
+
+    WHY THIS EXISTS. Every path above is resolved from this file's own location,
+    two directories up. That is right in a checkout and silently wrong in an
+    installed wheel, where it points inside site-packages and the directories
+    simply do not exist: a caller then gets an empty glob or a
+    FileNotFoundError naming a path they have never heard of. The pure-physics
+    surface re-exported from rb5s6s/__init__.py needs no data and works from a
+    wheel, so the failure only reaches the six modules that read from disk
+    (config, ingest, qc, rate_model, ruler, cavity_scan). This exception is what they raise
+    instead, and it names the cause rather than the resolved path.
+    """
+
+
+def require_repo_data(what: str = "data_raw") -> Path:
+    """Return the named repository data directory, or raise RepoDataMissing.
+
+    `what` is one of "data_raw" or "results". Call this at the top of any
+    function that reads committed data, so a caller without the repository
+    beside it is told what is missing instead of getting a stack trace about
+    site-packages.
+    """
+    target = {"data_raw": DATA_RAW_DIR, "results": RESULTS_DIR}[what]
+    if target.is_dir():
+        return target
+    raise RepoDataMissing(
+        f"rb5s6s needs the repository's {what}/ directory, and it is not at "
+        f"{target}. The pure-physics functions re-exported from `rb5s6s` work "
+        f"without it, but anything that reads committed traces or results needs "
+        f"the repository itself: clone "
+        f"https://github.com/MichelangeloDondi/Rb-5S-6S-analysis and run from "
+        f"inside it, or set RB5S6S_ARCHIVE_SOURCE_DIR if you are re-importing "
+        f"the original archive."
+    )
 
 ARCHIVE_SOURCE_DIR = Path(os.environ.get(
     "RB5S6S_ARCHIVE_SOURCE_DIR", "~/rb-2025-archive/data")).expanduser()

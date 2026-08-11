@@ -68,12 +68,24 @@ def coverage_study(beta_true: float, *, block_sigma: float = 0.12,
         if r["verdict"] == "MEASUREMENT":
             called_meas += 1
     betas = np.array(betas)
+    cov = covered / n_trials
+    fm = called_meas / n_trials
+    # Monte-Carlo errors. Added 2026-08-10: this function exists to certify that a
+    # stated 95% bound covers at 95%, and it returned the coverage with nothing to
+    # say how well 2000 trials pin it, so a reader could not tell a real shortfall
+    # from sampling noise. Coverage and the false-measurement rate are binomial in
+    # n_trials; the bias is the standard error of a mean; the scatter's own error is
+    # the large-sample sd/sqrt(2(n-1)).
     return {
         "beta_true": beta_true, "n_trials": n_trials, "block_sigma": block_sigma,
         "bias": float(betas.mean() - beta_true),
+        "bias_se": float(betas.std(ddof=1) / np.sqrt(n_trials)),
         "scatter": float(betas.std(ddof=1)),
-        "coverage": covered / n_trials,
-        "false_measurement_rate": called_meas / n_trials,
+        "scatter_se": float(betas.std(ddof=1) / np.sqrt(2.0 * (n_trials - 1))),
+        "coverage": cov,
+        "coverage_se": float(np.sqrt(max(cov * (1.0 - cov), 0.0) / n_trials)),
+        "false_measurement_rate": fm,
+        "false_measurement_rate_se": float(np.sqrt(max(fm * (1.0 - fm), 0.0) / n_trials)),
     }
 
 

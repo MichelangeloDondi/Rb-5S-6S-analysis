@@ -149,7 +149,7 @@ def _excluded_ids(tree: ast.AST) -> tuple[set[int], set[int]]:
             for sub in ast.walk(node):
                 excluded.add(id(sub))
 
-        # data-plumbing string literals that name fields rather than carry
+        # data-handling string literals that name fields rather than carry
         # prose: dict keys ({"dof": dof}), subscript indices (row["headline"])
         # and the first argument of a .get(...) lookup. Added 2026-08-04 when
         # the token list grew words that legitimately appear as column names.

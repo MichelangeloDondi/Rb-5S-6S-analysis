@@ -5,18 +5,21 @@ M5: 2025 laser-epoch characterization (deliverable C2 -- the ONF baseline).
 Reports the 2025 laser width sigma_laser as an UPPER BOUND (house rule: it is
 NOT a clean measurement), because the non-Lorentzian Gaussian broadening the
 fits attribute to the laser is degenerate with the transit width, which rides
-on the OPEN w0 prior. Concretely (README section 2.5): to reach the observed
+on the w0, which this archive does not itself re-measure. Concretely (README
+section 2.5): to reach the observed
 ~5.25 MHz total from the 3.49 MHz natural Lorentzian, the extra broadening is
 split between the transit kernel (which rides on the OPEN w0) and the laser, and
 the fit cannot say how much is which --
     transit 0.85 MHz (w0~70um)       => sigma_laser ~ 1.1 MHz (laser axis)
-    transit 0.93 MHz (w0=64um prior) => sigma_laser ~ 1.1 MHz
+    transit 0.93 MHz (w0=64um measured) => sigma_laser ~ 1.1 MHz
     transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.4 MHz (laser could be narrow)
 So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
 w0-degeneracy band, and note slow drift is NOT the culprit (~0.01 MHz within a
-scan). The knife-edge measurement w0 turns this bound into a measurement. (w0 was
-re-centred 32 -> 50 um 2026-07-12 when the transit physics was corrected; 32 um
-now OVERSHOOTS the observed line and is excluded -- see constants.W0_MEASURED_M.)
+scan). A knife-edge measurement of w0 on this bench, fixing the transit term,
+turns this bound into a measurement. (History: w0 was re-centred 32 -> 50 um on
+2026-07-12 when the transit physics was corrected, and later to the measured
+64 um; 32 um OVERSHOOTS the observed line and is excluded -- see
+constants.W0_MEASURED_M.)
 
 We also report the block-to-block scatter of the fitted sigma_laser -- the
 block-to-block drift record of the bad-lock epoch -- the starting linewidth the ONF work
@@ -42,7 +45,7 @@ from rb5s6s.constants import transit_fwhm_from_w0  # noqa: E402
 
 def w0_band():
     """sigma_laser (laser axis) needed to reach 5.25 MHz total at each transit
-    prior -- the w0 degeneracy band."""
+    width across the w0 degeneracy band."""
     from scipy.optimize import brentq
     nu = np.arange(-40, 40, 0.005)
 
@@ -54,7 +57,7 @@ def w0_band():
     _lo_um, _hi_um = C.W0_BAND_M[0] * 1e6, C.W0_BAND_M[1] * 1e6
     _pr_um = C.W0_MEASURED_M * 1e6
     for w0_um, w0 in ((_hi_um, f"~{_hi_um:.0f}um"),
-                      (_pr_um, f"{_pr_um:.0f}um prior"),
+                      (_pr_um, f"{_pr_um:.0f}um measured"),
                       (_lo_um, f"~{_lo_um:.0f}um")):
         tr = transit_fwhm_from_w0(w0_um * 1e-6, 110.0)
         if fwhm(1e-3, tr) >= 5.25:
@@ -90,8 +93,8 @@ def main() -> int:
     print("    where sigma<->gamma is unconstrained): "
           + ", ".join(f"{r['peak']}@{r['T'] if r['role']=='t_sweep' else '130/'+r['P']+'mw'}"
                       for r in degen))
-    print(f"  well-constrained sigma_laser (transition axis, at the "
-          f"w0={C.W0_MEASURED_M*1e6:.0f}um prior):")
+    print(f"  well-constrained sigma_laser (transition axis, at the measured "
+          f"w0={C.W0_MEASURED_M*1e6:.0f}um):")
     print(f"     median {np.median(sl_t):.1f}, range {sl_t.min():.1f}-{sl_t.max():.1f} MHz "
           f"transition (= {np.median(sl_l):.1f} laser axis; block scatter = drift record)")
 
@@ -101,14 +104,16 @@ def main() -> int:
         note = "  <- laser could be NARROW" if sl < 0.05 else ""
         print(f"     transit {tr:.1f} MHz ({w0:>10s}): sigma_laser = {sl:.2f} MHz laser axis{note}")
 
-    # Upper bound over the OPEN w0: sigma_laser rises with w0 (bigger
-    # waist -> less transit -> more room for laser), so the bound is the band
-    # MAXIMUM (the largest plausible w0), not the value at the 50 um prior --
-    # which is ~0.8. Reporting the prior value as the bound understates it.
+    # Upper bound over the w0 BAND: sigma_laser rises with w0 (bigger waist
+    # -> less transit -> more room for laser), so the bound is the band
+    # MAXIMUM, at the widest plausible waist, not the value at the band centre.
+    # Reporting the central value as the bound would understate it.
     bound = max(sl_l.max(), max(s for _, _, s in band))
-    print(f"\n  HEADLINE (C2): sigma_laser(2025) <~ {bound:.1f} MHz (laser axis) over the open"
-          f" w0 band; ~{np.median(sl_l):.1f} at the 50 um prior.")
-    print("    - degenerate with w0: if w0 < 50um the true laser is narrower (possibly << 1 MHz)")
+    print(f"\n  HEADLINE (C2): sigma_laser(2025) <~ {bound:.1f} MHz (laser axis) over the"
+          f" w0 band; ~{np.median(sl_l):.1f} at the measured "
+          f"{C.W0_MEASURED_M*1e6:.0f} um.")
+    print(f"    - degenerate with w0: below the measured "
+          f"{C.W0_MEASURED_M*1e6:.0f}um the true laser is narrower (possibly << 1 MHz)")
     print("    - slow drift is NOT the cause (~0.01 MHz within a 1 s scan)")
     print("    - a well-locked SolsTiS reaches ~0.05-0.1 MHz laser axis; the fixed-lock session")
     print("      knife-edge w0 (fixing transit) converts this bound into a measurement")
@@ -119,15 +124,33 @@ def main() -> int:
         # one significant figure only: the quantity is formally UNCONSTRAINED
         # (it reaches 0 at w0~=16um, see the band below), so 3-digit precision
         # would be false. It is a bound, not a measurement.
-        w.writerow(["quantity", "value_MHz", "axis", "status"])
-        w.writerow(["sigma_laser_bound", f"<{bound:.1f}", "laser",
-                    f"upper bound over the measured w0 band "
-                    f"({C.W0_BAND_M[0]*1e6:.0f}-{C.W0_BAND_M[1]*1e6:.0f}um), "
-                    f"rising with w0; =0 at w0~16um; conditional on the "
-                    f"adopted w0={C.W0_MEASURED_M*1e6:.0f}um until a beam profile "
-                    f"is measured on this bench"])
+        # Schema normalised 2026-08-10. This file used to carry its own header
+        # (quantity, value_MHz, axis, status), a prose paragraph in the field
+        # every other file uses for a status WORD, an inequality string "<1.2"
+        # in a numeric column, and the transit width baked into the quantity
+        # NAME to fifteen digits. It now matches the ledger's shape: the value
+        # is a number, the bound's one-sidedness is carried by the BOUND status
+        # where a reader looks for it, and the transit width and waist label
+        # move into the key and the unit.
+        w.writerow(["quantity", "key", "value", "err", "unit", "status"])
+        w.writerow(["sigma_laser_bound", "over_w0_band", f"{bound:.1f}", "",
+                    f"MHz, LASER axis. One-sided UPPER limit, so the value is "
+                    f"the limit itself and carries no plus-or-minus. Taken over "
+                    f"the measured w0 band "
+                    f"({C.W0_BAND_M[0]*1e6:.0f}-{C.W0_BAND_M[1]*1e6:.0f}um) and "
+                    f"rising with w0, reaching zero near w0=16um, so it is "
+                    f"formally unconstrained below and quoted to one significant "
+                    f"figure for that reason. Conditional on "
+                    f"w0={C.W0_MEASURED_M*1e6:.0f}um, which is measured on this "
+                    f"apparatus lineage but not re-measured by this archive",
+                    "BOUND"])
         for tr, w0, sl in band:
-            w.writerow([f"sigma_laser_at_transit_{tr}", f"{sl:.3f}", "laser", f"w0_{w0}"])
+            w.writerow(["sigma_laser_at_w0", f"w0_{w0}", f"{sl:.3f}", "",
+                        f"MHz, LASER axis. The laser width left over when the "
+                        f"transit contribution is {tr:.3f} MHz at this waist, "
+                        f"which is the degeneracy this bound rides on rather "
+                        f"than a measurement of either term",
+                        "DIAGNOSTIC"])
     print(f"\nwrote {C.RESULTS_DIR / 'laser_epoch.csv'}")
     return 0
 

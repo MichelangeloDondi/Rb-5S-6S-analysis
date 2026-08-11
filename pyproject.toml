@@ -19,8 +19,27 @@ dependencies = [
     "matplotlib>=3.6",
 ]
 
+keywords = [
+    "atomic physics", "spectroscopy", "two-photon", "rubidium",
+    "lineshape", "AC Stark", "light shift", "vapour cell",
+]
+
+# Trove classifiers. Kept deliberately short: only ones that are TRUE. There is
+# no "Development Status" claim because this is an analysis of a finished
+# campaign rather than software on a maturity track, and no OS classifier
+# because nothing here is platform-specific.
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
 [project.urls]
 Repository = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis"
+Documentation = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/blob/main/docs/README.md"
+"Results ledger" = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/blob/main/docs/RESULTS.md"
+"How to read an uncertainty" = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/blob/main/docs/UNCERTAINTY.md"
 
 [project.optional-dependencies]
 # pypdf is used ONLY by tests/test_lit_quotes_are_verbatim.py, which checks that
@@ -28,6 +47,14 @@ Repository = "https://github.com/MichelangeloDondi/Rb-5S-6S-analysis"
 # PDFs are gitignored, so that test skips in CI and pypdf is optional there --
 # but it must be installed locally for the guard to actually guard.
 dev = ["pytest>=7", "pypdf>=3"]
+# sympy is used by exactly ONE script, scripts/run_zeeman_depletion.py, which
+# evaluates Wigner 3j and 6j symbols and a small density matrix in EXACT
+# rational arithmetic. Nothing in the library, in run_all.sh, or in the test
+# battery needs it, which is why it is an extra rather than a dependency, and
+# why it went undeclared until 2026-08-10: it was installed in the development
+# environment and nothing in CI or in a clean clone ever asked for it. The
+# script now says so and exits rather than raising ImportError.
+cascade = ["sympy>=1.12"]
 
 [tool.setuptools]
 packages = ["rb5s6s"]

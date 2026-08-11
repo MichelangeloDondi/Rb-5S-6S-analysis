@@ -17,7 +17,8 @@ What it does that the exploratory M4b `run_global_fit` does not:
   * assembles the three error bars into one object:
         [1] statistical  -- the primary fit's joint covariance,
         [2] model-form   -- the 2x2 spread (transit axis + sharing axis),
-        [3] confound/w0  -- the w0-band refit (the OPEN beam waist, dominant)
+        [3] confound/w0  -- the w0-band refit (the waist measurement band,
+                           dominant)
                             plus a leave-one-block-out robustness scan;
   * is PURE: it takes already-built blocks and only calls `fit_global`, so it
     is unit-testable on synthetic data (tests/test_lever_crosscheck.py injects a

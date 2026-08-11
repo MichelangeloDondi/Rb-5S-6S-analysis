@@ -105,14 +105,26 @@ FORBIDDEN = {
         r"\bchatgpt\b", r"\bclaude\b", r"\banthropic\b", r"\bopenai\b",
         r"\bcopilot\b", r"\bas an ai\b", r"\blanguage model\b",
     ],
-    # Named by the owner on 2026-08-09 and swept the same day. The common
-    # thread is vocabulary that belongs to how the work was managed rather
-    # than to what it found: an internal review exercise, a
-    # project-management metaphor, an optimiser's jargon, a ranking label.
+    # PORTED FROM THE MIRROR 2026-08-10. This bank was added to the public
+    # repository on 2026-08-09 by owner instruction and the sweep ran on both
+    # trees, but only the mirror got the BANK, so for a day the archive was not
+    # enforcing a rule the mirror enforced, in the repository where writing
+    # happens first. The two banks are now identical and any addition goes into
+    # both in the same pass. The common thread is vocabulary that belongs to
+    # how the work was managed rather than to what it found.
+    #
     # "wave" is deliberately NOT here. Every bare occurrence in this tree is
-    # physics (four-wave-mixing, matter-wave, millimetre-wave) and the
-    # process sense was already removed, so a pattern for it would fire only
-    # on standing waves and wavelengths.
+    # physics (four-wave-mixing, matter-wave, millimetre-wave) and the process
+    # sense was already removed, so a pattern for it would fire only on
+    # standing waves and wavelengths.
+    #
+    # NAMED 2026-08-10 and NOT YET HERE, because each needs a sweep first and
+    # the two largest need the owner to choose the replacement term: prehistory
+    # (58 occurrences), plumbing (5), archive and archival (947), quarantine
+    # (282), win/wins/winning (58), prize (3). The rule is in the rendering
+    # protocol section 2.1 with the counts and the replacements, and it governs
+    # anything newly written from that date. Moving a word from that list to
+    # this bank is the last step of its sweep, not the first.
     "internal process vocabulary": [
         r"red[- ]?team",
         r"\bprice[sd]?\b", r"\bpricing\b",

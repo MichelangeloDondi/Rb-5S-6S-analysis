@@ -2,7 +2,18 @@
 
 Why the analysis has the shape it has: which questions this archive can answer,
 which it cannot, and what was done about the gap. The methods pages say what the
-pipeline computes; this one says why it stops where it does.
+pipeline computes, and this one says why it stops where it does.
+
+**The question.** Why does the analysis stop where it stops?
+**Takes.** Nothing.
+**Gives.** One entry per decision, each pointing at the code or document that
+carries it, and each stating the alternative that was rejected.
+**Skip if.** You want what the pipeline computes rather than why it computes
+that and not something else, which is [methods.md](methods.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
 
 Every entry points at the code or document that carries the decision.
 
@@ -33,7 +44,7 @@ The decisions at a glance, each argued in full in its numbered section:
 
 ---
 
-## 1. The total width is the observable; the split is reported with its error and correlation
+## 1. The total width is the observable, and the split carries its error and correlation
 
 The composite line is a Lorentzian (natural + collisional, `gamma_coll`)
 convolved with Gaussian-like components (laser width `sigma_laser`, transit).
@@ -41,8 +52,8 @@ A single-condition fit returns both, strongly anti-correlated at
 `corr(sigma_laser, gamma_coll) ~ -0.9`, closure-measured at SNR ~ 130
 ([linefit.py:37](../rb5s6s/linefit.py#L37)):
 
-> the TOTAL Voigt width (their combination) is robust; the individual split is
-> not — never quote a single-condition sigma_laser or gamma_coll as physics
+> the TOTAL Voigt width (their combination) is robust and the individual split
+> is not, so never quote a single-condition sigma_laser or gamma_coll as physics
 > without its error and this correlation.
 
 From `results/linefit_conditions.csv`, 20 conditions at one temperature (four
@@ -55,7 +66,7 @@ peaks × five powers), where the width was measured flat against power (C3a):
 | `sigma_laser` (a component) | 0.216 – 2.056 MHz (9.5×) | 0.222 MHz | 1.11 MHz |
 
 The extremes of both component ranges come from the 25 mW conditions, whose own
-errors run three to five times the median — the largest `sigma_laser` error,
+errors run three to five times the median. The largest `sigma_laser` error,
 1.11 MHz, exceeds that column's median *value*. The wide ranges and the large
 errors are one fact, not two.
 
@@ -72,10 +83,10 @@ All twenty conditions are at 130 °C, so what the figure shows is that the total
 is measured while its decomposition is not.*
 
 **Decision: the estimator uses only the informative direction.** `beta_self`
-rides on the *difference* in `gamma_coll` across temperature — the headline
+rides on the *difference* in `gamma_coll` across temperature, the headline
 bound uses the ×52.5 lever of the four-point 70/90/110/130 °C construction
-(since 2026-08-02; was the ×16.2 lever of the 70–110 °C three-point
-construction — see §9) — and not on any absolute per-condition value
+(since 2026-08-02, where it was the ×16.2 lever of the 70 to 110 °C three-point
+construction, see §9) and not on any absolute per-condition value
 ([linefit.py:40](../rb5s6s/linefit.py#L40)).
 
 [M12](../rb5s6s/identifiability.py) maps the degeneracy: the χ² surface is
@@ -83,13 +94,13 @@ profiled over the (`gamma_coll`, `sigma_laser`) plane with every other parameter
 re-minimised at each point ([fig7](../figures/fig7_identifiability_profile.png)),
 giving
 
-> the archive constrains the TOTAL width well but the SPLIT poorly — so the
+> the archive constrains the TOTAL width well but the SPLIT poorly, so the
 > individual coefficients are w0-conditional bounds, not measurements
 > ([identifiability.py:37](../rb5s6s/identifiability.py#L37))
 
 The local covariance is a quadratic approximation at the optimum and so
 "cannot exclude a curved ('banana') valley or a second minimum"
-([identifiability.py:27](../rb5s6s/identifiability.py#L27)); the global map
+([identifiability.py:27](../rb5s6s/identifiability.py#L27)), and the global map
 tests whether the free fit is one of several near-degenerate optima
 ([run_identifiability.py:265](../scripts/run_identifiability.py#L265)).
 
@@ -106,7 +117,7 @@ The constrained fit then produces a `sigma_laser(T)` rising to 1.5–1.6 MHz at
 flat at 1.0–1.2. The rise is not a measured laser drift:
 
 > that σ_laser(T) trend is the **β↔σ_laser degeneracy** under the density
-> constraint, NOT a physical laser drift — so the trend is a model artifact,
+> constraint, NOT a physical laser drift, so the trend is a model artifact,
 > not a stale block ([RESULTS.md](RESULTS.md) M4c)
 
 A smooth curve from a constrained fit is not better evidence than a scattered
@@ -118,7 +129,7 @@ constrained fit is a cross-check.
 
 ---
 
-## 2. The model-independent bound is the headline; the global fit is a cross-check
+## 2. The model-independent bound is the headline, and the global fit is a cross-check
 
 Two estimates of `beta_self` exist: a model-independent width-versus-density
 slope, and the hierarchical global fit, which is tighter. The tighter one is not
@@ -131,7 +142,7 @@ the headline.
 M4's own producer says the same about its error bars, and gives the mechanism:
 
 > the archival four-point lever BOUNDS beta_self (it does not measure it). The
-> global-fit sigmas above are OVERCONFIDENT — they assume one shared sigma_laser
+> global-fit sigmas above are OVERCONFIDENT, since they assume one shared sigma_laser
 > across blocks and so omit exactly this between-block drift.
 > ([run_beta_self.py:396](../scripts/run_beta_self.py#L396))
 
@@ -142,7 +153,7 @@ itself.
 The per-temperature `sigma_laser` sharing was originally justified by the four
 peaks having been acquired close together in time. A recovered acquisition clock
 measured the blocks **54–76 minutes apart** ([RESULTS.md](RESULTS.md)). The
-sharing may still hold; that justification does not.
+sharing may still hold, and that justification does not.
 
 ## 3. The model ladder declines the AC-Stark parameter
 
@@ -151,7 +162,7 @@ data the ladder rejects it
 ([06_the_statistics.md](methods/06_the_statistics.md)):
 
 > **A→B ≈ +1700** (transit decisively warranted), **B→C ≈ +435** … and **C→D
-> ≈ −100** — *the free AC-Stark parameter is decisively NOT warranted*
+> ≈ −100**, so *the free AC-Stark parameter is decisively NOT warranted*
 
 > A model-comparison that *declined* to add the AC-Stark term is the statement
 > of "we do not claim to have measured it here."
@@ -167,7 +178,7 @@ the ramp's pull.
 
 [M14](../rb5s6s/sharing_bic.py) scores shared against independent `sigma_laser`
 by BIC. Counting the ~49k correlated samples as independent favours the free
-model (ΔBIC ≈ −46); the effective sample size favours the shared one
+model (ΔBIC ≈ −46), and the effective sample size favours the shared one
 (ΔBIC ≈ +62). The effective-N version is the statistically correct one and is
 the primary number. The sign flip bounds what the archive can settle: it does
 not robustly resolve shared against independent
@@ -179,7 +190,7 @@ A favourable score would not have meant much either:
 > underpowered data), NOT "the sharing is confirmed"
 > ([sharing_bic.py:36](../rb5s6s/sharing_bic.py#L36))
 
-The in-sample check (M4c) returns χ²/dof of 0.19/0.58/0.33 — all *below* one,
+The in-sample check (M4c) returns χ²/dof of 0.19/0.58/0.33, all *below* one,
 so the error bars are too large for the test to discriminate.
 [RESULTS.md](RESULTS.md) records the sharing as "**untested**, not merely
 unverifiable."
@@ -189,9 +200,10 @@ unverifiable."
 A first attempt at the 993.4154 nm 130 °C power sweep was aborted and redone in
 full. Three reasons keep it out
 ([annotate_manifest_qc.py:62](../scripts/annotate_manifest_qc.py#L62)): it is
-**redundant** — the canonical sweep covers all five powers and the partial retry
-only 25/125/225 mW; its 225 mW set "carries a ~80x steeper baseline slope
-(high-power drift, the likely abort cause)"; and it was cut before unblinding.
+**redundant**, because the canonical sweep covers all five powers and the
+partial retry only 25/125/225 mW. Its 225 mW set "carries a ~80x steeper
+baseline slope (high-power drift, the likely abort cause)". And it was cut
+before unblinding.
 
 The lines are individually clean, matching the redo in height and width to
 within 2%, and re-admitting them tightens the S0 bound while leaving `beta`
@@ -201,13 +213,13 @@ untouched:
 > declined
 
 Both bounds are recorded. (The specific pair quoted in that comment, 2.04 →
-1.92 MHz, predates the switch to a profile-likelihood construction; the current
+1.92 MHz, predates the switch to a profile-likelihood construction, and the current
 archival bound is **0.63 MHz** at 225 mW, `results/stark_sweep.csv`. The
 comment's numbers need refreshing, the decision does not.)
 
 A pre-registered prediction was voided rather than scored when its corroborating
 wavemeter photographs turned out to lie outside the campaign window
-([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)); the audit script
+([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)), and the audit script
 enforces the void on the integrity gate
 ([run_timestamp_audit.py:23](../scripts/run_timestamp_audit.py#L23)).
 
@@ -219,13 +231,13 @@ direction of the error ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)
 
 Novelty claims have retreated twice. The prior-art assessment of Wall 2014 was
 downgraded from "scooped" to "distinct" after the paper was read in full, and
-the entry lists five specific distinctions — purely numerical treatment,
+the entry lists five specific distinctions: purely numerical treatment,
 inference running the opposite direction, longitudinal rather than transverse
 geometry, per-plane lines peaking at the maximum shift, and a regime where the
 shift far exceeds the linewidth ([lit/wall2014.md](lit/wall2014.md)).
 
 An earlier note claimed the transit Monte Carlo had two bugs and inferred
-w0 ≈ 90 µm; that inference is retracted in place
+w0 ≈ 90 µm, and that inference is retracted in place
 ([notes/transit_width_resolved.md](notes/transit_width_resolved.md)).
 
 ## 7. Guards added after specific failures
@@ -234,12 +246,12 @@ Most of the suite's guards are regression guards for mistakes that were made:
 
 - a freshness guard, because a physics fix moved `beta` from 0.056 to 0.036 and
   stale figures survived it, "found only by accident"
-  ([test_figures_fresh.py:4](../tests/test_figures_fresh.py#L4));
+  ([test_figures_fresh.py:4](../tests/test_figures_fresh.py#L4)).
 - a canonical-value guard, because one replaced number lingered "in eight
-  files" ([test_docs_canonical.py:21](../tests/test_docs_canonical.py#L21));
+  files" ([test_docs_canonical.py:21](../tests/test_docs_canonical.py#L21)).
 - that guard's ±4-line window was widened after a planted violation was
   "satisfied by the very correction note explaining the reversal"
-  ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428));
+  ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428)).
 - an asymptotic w0 → ∞ test, after an external adversarial review found it untested
   ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).
 - an SVG canonical-number guard, because the hand-authored bench schematic
@@ -255,14 +267,15 @@ times 1/Γ (~45 ns), and the ramp/transit factorisation had assumed the answer.
 M19 propagates the weak-excitation amplitude along each trajectory with no
 quasi-static step: the first two moments reproduce the static triangle to ~0.1%
 across S₀/transit-FWHM = 0.09–7.6, and the result holds under the retro standing
-wave and a thermal spread of speeds. **κ₃ is not resolved** — the ν³-weighted
-FFT noise floor swamps it — and κ₃ is the moment the asymmetry claim rests on.
+wave and a thermal spread of speeds. **κ₃ is not resolved**, because the
+ν³-weighted FFT noise floor swamps it, and κ₃ is the moment the asymmetry claim
+rests on.
 
 ## 8. What is not modelled, and what would revive it
 
 Eight load-bearing assumptions are listed as a numbered attack surface
 ([08_assumptions_and_outlook.md](methods/08_assumptions_and_outlook.md) §6), and
-individual assumptions are also flagged at the point of use — the retro ratio
+individual assumptions are also flagged at the point of use. The retro ratio
 is assumed at ρ = 0.94 ± 0.04 rather than asserted at the design value 1, and the transit
 kernel's *shape* is "untested by the archival data and … a genuine attack
 surface."
@@ -271,19 +284,20 @@ Descoped items carry the condition under which they return: the EOM modulation
 index is dropped because the 2025 drive voltage was never recorded, and revives
 in a fixed-lock session ([beta.py:8](../rb5s6s/beta.py#L8),
 [PLAN.md](PLAN.md)). The waist w0 remains **OPEN**, and the config module warns
-at the point of use — "Do not quote a number built on this without the w0
+at the point of use, at "Do not quote a number built on this without the w0
 caveat" ([config.py:286](../rb5s6s/config.py#L286)). Every absolute result is
 conditional on it.
 
 Two negative results: no Rb 6S self-broadening coefficient exists in the
 literature after four independent search framings, and Russian-language coverage
-could not be closed with the tools available — a limitation, not an absence
+could not be closed with the tools available, which is a limitation rather than
+an absence
 ([lit/beterov1973.md](lit/beterov1973.md)).
 
 ## 9. The 130 °C point moves from a diagnostic to the headline (2026-08-02)
 
 Through 2026-08-01 the `beta_self` headline used only the 70/90/110 °C
-temperature sweep — three points, dof=1, a ×16.2 density lever — and treated
+temperature sweep, three points at dof=1 with a ×16.2 density lever, and treated
 the 130 °C power-sweep session's 225 mW block as an optional fourth lever
 point, folded in only inside a separate, non-headline probe
 (the fig19 trend audit, an internal working note). The
@@ -295,7 +309,8 @@ ruler.
 **Decision: the 130 °C point is folded into the headline.** On firsthand
 knowledge of the bench, the 130 °C power-sweep session ran
 in the SAME optical/cell configuration as the 70/90/110 °C temperature sweep
-— same beam path, same cell, same detection chain. That removes the
+with the same beam path, the same cell and the same detection chain. That
+removes the
 "different configuration" objection. What genuinely differs between the two
 sessions is the acquisition epoch and the axis calibration, and the
 calibration difference is already handled PER SESSION: `load_t_rates()`
@@ -304,7 +319,7 @@ P-sweep rate from the P-session's before/after bracket combination
 independently, so combining the two onto one shared density axis carries no
 unhandled calibration mismatch. There is no remaining reason to keep 130 °C
 out of the headline, and no separate three-point construction is kept
-alongside it — one licensed construction, one bound, per peak
+alongside it, so it is one licensed construction and one bound per peak
 ([run_beta_self.py](../scripts/run_beta_self.py), module docstring).
 
 The four-point construction (70/90/110/130 °C, dof=2, ×52.5 density lever)
@@ -312,12 +327,12 @@ tightens the per-peak 95% bound by roughly an order of magnitude, from
 ≲0.2–0.4 to ≲0.03–0.05 MHz per 10¹² cm⁻³, and the physics reading gets
 stronger with it: `rb5s6s/lever_crosscheck.py` had already noted that folding
 in the 130 °C anchor pulls the fitted slope down because `gamma_coll(T)`
-barely grows across the full lever — a residual floor, not resolved
-collisions — and that is a cleaner demonstration with the full ×52.5 span
+barely grows across the full lever, which is a residual floor rather than
+resolved collisions, and that is a cleaner demonstration with the full ×52.5 span
 than with the ×16.2 one. What does NOT change: the bound still sits an order
 of magnitude above the ~3.5 kHz expectation anchored on the measured 7S
 self-broadening rate ([BIG_PICTURE.md](BIG_PICTURE.md) §1), so a same-session
-150–170 °C extension remains worth doing — not to combine extreme lever
+150 to 170 °C extension remains worth doing, not to combine extreme lever
 points at all (that objection is retired), but because a purpose-built
 within-session lever removes the cross-epoch calibration step this fold-in
 relies on, and reaches densities where a genuine collisional effect could

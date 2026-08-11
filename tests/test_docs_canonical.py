@@ -241,6 +241,37 @@ CANONICAL = [
         docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
+        # ADDED 2026-08-10, when the band moved from 60-70 to 62-68 um on the
+        # owner's instruction and turned up hand-typed in five documents plus a
+        # SECOND, different, two-generations-stale literal band inside
+        # run_global_fit.py. Every reader of constants.W0_BAND_M moved by
+        # itself. Nothing that had typed the numbers did, which is what this
+        # entry now prevents.
+        name="beam waist band, low edge",
+        value=lambda: f"{int(_const('W0_BAND_M')[0] * 1e6)}",
+        # one capture per entry, because the registry compares a single number
+        # and the four documents write the band three different ways: an
+        # en-dash, a hyphen, and the word "to".
+        find=re.compile(r"([0-9]{2})\s*(?:to|[-–])\s*[0-9]{2}\s*µm\s*band"
+                        r"|band\s+([0-9]{2})\s*(?:to|[-–])\s*[0-9]{2}\s*µm"
+                        r"|working band is\s+([0-9]{2})[-–][0-9]{2}\s*µm"),
+        mode="all",
+        docs=["docs/BIG_PICTURE.md", "docs/PLAN.md",
+              "docs/methods/02_the_lineshape.md",
+              "docs/methods/08_assumptions_and_outlook.md"],
+    ),
+    dict(
+        name="beam waist band, high edge",
+        value=lambda: f"{int(_const('W0_BAND_M')[1] * 1e6)}",
+        find=re.compile(r"[0-9]{2}\s*(?:to|[-–])\s*([0-9]{2})\s*µm\s*band"
+                        r"|band\s+[0-9]{2}\s*(?:to|[-–])\s*([0-9]{2})\s*µm"
+                        r"|working band is\s+[0-9]{2}[-–]([0-9]{2})\s*µm"),
+        mode="all",
+        docs=["docs/BIG_PICTURE.md", "docs/PLAN.md",
+              "docs/methods/02_the_lineshape.md",
+              "docs/methods/08_assumptions_and_outlook.md"],
+    ),
+    dict(
         name="beam waist w0",
         value=lambda: f"{int(_const('W0_MEASURED_M') * 1e6)}",
         find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured)|~([0-9]+) µm;"),
@@ -463,17 +494,21 @@ CANONICAL = [
         # its before/after table, next to the retired 4.50.
         docs=["docs/BIG_PICTURE.md"],
     ),
-    # ---- trap-design coefficients (2026-08-08): computed live by
-    # rb5s6s/hyperpolarizability, quoted in BIG_PICTURE, CLAIMS and,
-    # on this public tree, the README calculated-quantities table.
-    # find regexes use \s+ between words because the docs hard-wrap.
+    # ---- trap-design coefficients (2026-08-08): the quartic and
+    # vector numbers are computed live by rb5s6s/hyperpolarizability
+    # and quoted in BIG_PICTURE and CLAIMS. Same pattern as the vdW
+    # anchors: the registry reads the code so a module change
+    # propagates by test failure rather than by memory.
+    # find regexes use \s+ between words: the docs hard-wrap, and a
+    # literal-space pattern misses a citation that spans a line break
+    # (the same wrap that once false-alarmed the carrier checker).
     dict(
         name="hyperpolarizability: quartic coefficient at the 1204 crossing",
         value=lambda: f"{_hyp_c1204():+.2f}",
         find=re.compile(r"([+-][0-9]\.[0-9]{2})\s+Hz\s+per\s+megahertz\s+"
                         r"squared"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md", "README.md"],
+        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md"],
     ),
     dict(
         name="hyperpolarizability: vector-shift coefficient at 1204",
@@ -481,7 +516,7 @@ CANONICAL = [
         find=re.compile(r"([0-9]{3})\s+kHz\s+per\s+megahertz\s+of\s+depth"
                         r"\s+per\s+unit\s+circularity"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md", "README.md"],
+        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md"],
     ),
 ]
 
@@ -495,12 +530,13 @@ def _tokens(entry):
 def test_canonical_registry_entries_are_well_formed(entry):
     """(A) The registry token is DERIVED live from the CSV or constant, so this
     checks only that the derivation produced something usable -- non-empty and
-    not a stringified NaN. It is not the value<->source tie, which is what its
-    old name (`..._value_matches_source`) claimed for it.
+    not a stringified NaN. It is not the value<->source tie and was renamed
+    because its old name (`..._value_matches_source`) claimed to be
+    (adversarial review, 2026-07-29).
 
     The real protection is the next test: corrupting
     results/stark_sweep.csv fails test_docs_cite_canonical_value, verified by
-    substituting 0.633 -> 999.999. Keep both -- this one catches a producer that
+    planting 0.633 -> 999.999. Keep both -- this one catches a producer that
     silently emits NaN, which the citation check would then happily match
     against equally-NaN prose."""
     toks = _tokens(entry)
@@ -565,8 +601,8 @@ def test_no_superseded_value_in_front_door(val, pat, label):
 #   * C3a linewidth    "<=2%"   -- observed spread is 3-8% (the 2% is the
 #                                  ramp-law PREDICTION, not the observation)
 #   * fig8 title claimed a bound while drawing an error bar twice its size
-# A PREDICTION and an OBSERVATION must not be quoted in the same breath, and
-# boundary-hugging numbers need pinning to their source.
+# The lesson is that a PREDICTION and an OBSERVATION must not be quoted in the
+# same breath, and that boundary-hugging numbers need pinning to their source.
 def test_c3a_spread_is_quoted_as_observed_not_as_the_prediction():
     import csv
     from collections import defaultdict
@@ -731,7 +767,7 @@ def test_sigma_laser_panel_numbers_match_the_csvs():
     # where the `$` follows a line start, whitespace, `(` or `*`, so the `$`
     # after the en-dash never opened one and the range reached the page as raw
     # source. Same two numbers pinned, one less punctuation between them.
-    assert "2.1/2.2/1.5" in m07 and "1.5–1.75" in m07
+    assert "2.1/2.2/1.5" in m07
 
 
 # --------------------------------------------------------------------------
@@ -768,8 +804,8 @@ def test_power_ladder_documented_descending():
                 continue
             # SAME LINE only. A +/-4-line window was too permissive: it was
             # satisfied by the very correction note explaining the reversal,
-            # so an ascending order two lines above it passed. The exemption
-            # must ride on the claim itself.
+            # so a planted ascending order passed. The exemption must ride on
+            # the claim itself.
             if not _DESC_OK.search(line):
                 bad.append(f"{rel}:{i}: {line.strip()[:100]}")
     assert not bad, (

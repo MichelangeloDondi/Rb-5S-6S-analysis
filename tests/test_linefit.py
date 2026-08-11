@@ -237,3 +237,28 @@ def test_fit_condition_adapted_geometry_closure():
                         profile=flat)
     assert abs(fit["gamma_coll"] - 1.5) < 3 * fit["gamma_coll_err"] + 0.15, fit
     assert abs(fit["sigma_laser"] - 1.2) < 3 * fit["sigma_laser_err"] + 0.2, fit
+
+
+def test_transit_isotope_split_is_neutral_by_default_and_correct_when_asked():
+    """The isotope-aware transit width, added 2026-08-10.
+
+    Two properties, and the first is what lets it be added to a repository
+    whose every committed fit shares one transit width. Omitting the argument
+    must reproduce the shared value exactly, so no result moves until somebody
+    asks for the split. And the abundance-weighted mean of the two isotope
+    values must equal that shared value, so the reference number keeps its
+    meaning rather than silently redefining itself.
+    """
+    from rb5s6s.constants import ABUNDANCE_RB85, ABUNDANCE_RB87, M_RB85_KG, M_RB87_KG
+    from rb5s6s.linefit import transit_fwhm_at_T
+
+    shared = transit_fwhm_at_T(130.0, 0.96)
+    assert transit_fwhm_at_T(130.0, 0.96, isotope=None) == shared
+
+    w85 = transit_fwhm_at_T(130.0, 0.96, isotope=85)
+    w87 = transit_fwhm_at_T(130.0, 0.96, isotope=87)
+    assert w85 > w87, "85Rb is lighter, so faster, so its transit kernel is wider"
+    assert abs(ABUNDANCE_RB85 * w85 + ABUNDANCE_RB87 * w87 - shared) < 1e-12
+
+    # the ratio is set by the masses alone
+    assert abs(w85 / w87 - np.sqrt(M_RB87_KG / M_RB85_KG)) < 1e-12

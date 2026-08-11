@@ -1,32 +1,60 @@
-# Exploiting the tunable Ti:Sapph — future transitions and the papers they enable
+# Exploiting the tunable Ti:Sapph: future transitions and the papers they enable
 
 **Status: a survey of physics options, not a plan of record (2026-07-13).** The
 premise (recorded 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
-measurement session is not locked to 993 nm — it can reach *other* Rb two-photon
+measurement session is not locked to 993 nm. It can reach *other* Rb two-photon
 transitions, "as long as we can reach the frequency and the optics is fine at the
 next frequency." This note maps what that buys us, grounded in the 2024–2026
 landscape collected in [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-landscape).
 
+**The question.** The drive laser tunes, so what else could this bench measure,
+and what would each option be worth?
+**Takes.** [BIG_PICTURE.md](BIG_PICTURE.md) §1, for why this class of line is
+worth the effort at all.
+**Gives.** The candidate rubidium two-photon lines ranked, the computed magic
+wavelengths, the one-colour three-photon rung and the scaling argument that
+makes it the cliff regime rather than the delicate measurement it was proposed
+as.
+**Skip if.** You want the 2025 result. Nothing in this document is a
+measurement, and several of its options are here because working them out was
+the only way to find out they do not work.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
+
+![computed differential polarizability against wavelength, with the magic crossings marked](../figures/fig17_magic_wavelengths.png)
+
+*The survey's own object, before the survey. Every option below is a different
+rung of the same ladder, reached by tuning one laser, and this is the quantity
+that decides whether a rung is worth reaching: the computed differential
+polarizability, whose zero crossings are the wavelengths where a trap would
+hold both states equally. The shaded band is the 16 to 84 per cent
+Monte-Carlo spread over the input matrix elements, so it is the uncertainty of
+a calculation and not of a measurement. The same figure appears again in
+section 4 with the published measurement this document reads against it.*
+
 ## 1. The one-sentence picture
 
-Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere** — the only
+Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere**. The only
 active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
-reports *null* AC-Stark and density shifts at ~6 MHz resolution — so it is the
+reports *null* AC-Stark and density shifts at ~6 MHz resolution, so it is the
 clean **demonstrator** of the drift-immune method. The **far more actively worked line is one
 transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (NIST/Andeweg,
 Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li) suppresses the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
-that hot transition — so wavelength scans across the magic point become the measurement.
+that hot transition, so wavelength scans across the magic point become the measurement.
 
 ## 2. The transition menu the Ti:Sapph opens (verified)
 
-Two-photon from 5S₁/₂; wavelength = 2×10⁷ / E_upper[cm⁻¹]. "Intermediate detuning"
+Two-photon from 5S₁/₂, with wavelength = 2×10⁷ / E_upper[cm⁻¹]. "Intermediate detuning"
 = how far the virtual one-photon level sits from the nearest real 5P (the physics
 that sets how much a near-resonant intermediate distorts the two-photon lineshape,
 Bjorkholm–Liao 1976). **Reachability is set by the installed SolsTiS optics set, not
-a single continuous range** — see the laser-specific §below; the M-Squared datasheet
+a single continuous range**. See the laser-specific section below. The M-Squared datasheet
 lists discrete sets 670–710 / 725–875 / 725–975 / 700–1000 / 950–1050 nm (custom
 <700 or >1000 on enquiry), each ≤300 nm wide.
 
@@ -39,58 +67,90 @@ lists discrete sets 670–710 / 725–875 / 725–975 / 700–1000 / 950–1050 
 | **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + USAFA) |
 | 4D_J | 1033 nm | 87 THz | clean | (5D→…) | 950–1050 / custom >1000 | 4D_J clock (2024) |
 
-The blunt consequence: **no single set covers everything.** The pivotal question is
+### A selection criterion the menu was choosing without: the thermal field
+
+Added 2026-08-10, after the blackbody environment was computed for 6S. What
+couples an upper state to the cell's own thermal radiation is not the drive
+wavelength but **the gap to the nearest nP level**, and that gap SHRINKS as
+the upper state climbs. So the occupation number at the coupling wavelength
+spans five orders of magnitude across a menu whose entries differ by less than a
+factor of two in drive wavelength:
+
+| upper | 2-photon | nearest nP gap | hν/kT at 130 °C | occupation number | verdict |
+|---|---|---|---|---|---|
+| 4D_J | 1033 nm | 2.30 µm | 15.5 | 1.8e−7 | negligible |
+| **6S₁/₂** | **993 nm** | **2.79 µm** | **12.8** | **2.8e−6** | **negligible** |
+| 5D₅/₂ | 778 nm | 5.22 µm | 6.8 | 1.1e−3 | watch |
+| 7S₁/₂ | 760 nm | 6.58 µm | 5.4 | 4.4e−3 | watch |
+| 8S₁/₂ | 697 nm | 12.13 µm | 2.9 | 5.6e−2 | **matters** |
+| 9S₁/₂ | 660 nm | 22.26 µm | 1.6 | 2.5e−1 | **matters** |
+
+Upper-state energies are the verified two-photon wavelengths of the table above,
+and the nP ladder is this package's own `LINES_5S`
+(`scripts/run_campaign_conditions.py`). A quarter of a photon per mode at 9S
+means blackbody transfer out of the upper state at a fair fraction of its own
+decay rate, which is a systematic rather than a footnote, and it grows with cell
+temperature exactly where the collisional programme wants to go. On 6S it is two
+parts per million and stays there.
+
+The reading for the menu: **6S and 4D are the two lines this consideration is
+silent on, and the climb up the S ladder buys a shorter drive wavelength at the
+cost of entering the thermal field.** That is not a reason to avoid 8S or 9S,
+which have their own strong arguments above, but it is a term their budgets have
+to carry and a reason to prefer a cooler cell for them.
+
+The blunt consequence: **no single set covers everything.** The question is
 which set is in *your* SolsTiS. If it is **700–1000 nm**, then 6S (993, near the red
-edge), 5D (778) and 7S (760) are all reachable with **the same optics** — the whole
+edge), 5D (778) and 7S (760) are all reachable with **the same optics**, so the whole
 near-IR program needs no laser-optics swap, only the 420 nm detection change. If it
 is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set swap.
-8S needs the dedicated 670–710 blue set; 9S (660) and any >1000 work are custom.
+8S needs the dedicated 670–710 blue set. 9S (660) and any >1000 work are custom.
 
 ### Your laser (M-Squared SolsTiS + Coherent Verdi V18 @ 18.5 A)
 
-- **Pump is not the limiter — the optics set is.** The Verdi V18 delivers up to
+- **Pump is not the limiter, the optics set is.** The Verdi V18 delivers up to
   **18 W at 532 nm** (datasheet-confirmed). Whether 18.5 A is your full-power point
   or a set-point, that is a *generous* pump for a SolsTiS (which needs far less), so
   tuning range is fixed by the installed BRF/mirror set, not by pump. Ample pump is
-  exactly what buys usable power at a set's *edges* — which is how you reach 993 nm
+  exactly what buys usable power at a set's *edges*, which is how you reach 993 nm
   at the top of a 700–1000 set, and what the large-S₀ regime Paper A needs.
 - **Tuning mechanism** (why "within a set it's continuous"): motorized
   birefringent filter (coarse, spans the whole set) + a 320 GHz-FSR etalon +
-  cavity PZT (fine) — continuous within the set, no realignment.
+  cavity PZT (fine), continuous within the set and with no realignment.
 - **Two things to check on the actual unit** (they decide the whole plan):
-  1. **Which optics set is installed** — read the config label / M-Squared sheet,
+  1. **Which optics set is installed.** Read the config label or M-Squared sheet,
      or just tune to the bluest and reddest points it will lase. If the blue end
-     reaches ≲780 nm, 5D/7S are same-set (only a detection swap); if it starts at
+     reaches ≲780 nm, 5D/7S are same-set (only a detection swap). If it starts at
      ~950 nm, 5D/7S need an optics-set change (M-Squared swap, non-trivial).
   2. **Output power at 760–778 nm vs at 993 nm.** A 700–1000 set gives *more* power
-     mid-band (760–778) than at the 993 edge — good news: the 5D/7S work would run
+     mid-band (760–778) than at the 993 edge, which is good news, since the 5D/7S work would run
      with *more* S₀ headroom than the current 6S work, which is what the asymmetry
      signal (∝S₀³) needs.
 - You already reach **993 nm** with this pump, so your set reaches at least to 993
-  (consistent with 700–1000 or 950–1050); running the V18 near max at 18.5 A is
+  (consistent with 700–1000 or 950–1050). Running the V18 near max at 18.5 A is
   consistent with holding that red edge.
 
 Three things fall out. (i) **5D and 7S sit in the Ti:Sapph sweet spot** (more power,
 easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares ONE
-detection channel** — 420 nm (6P→5S blue fluorescence) serves 5D, 7S, 8S *and* 9S,
-because they all cascade through 6P; only 6S is the near-IR (795 nm) outlier. So
+detection channel**, 420 nm (6P→5S blue fluorescence), which serves 5D, 7S, 8S *and* 9S,
+because they all cascade through 6P. Only 6S is the near-IR (795 nm) outlier. So
 the detection swap noted above (the 795 nm filters → a 420 nm bandpass + a
 blue-sensitive PMT) is a **prerequisite for every upper-ladder transition**, and one
 swap serves all four (see §Detection below). (iii) The intermediate
-detuning now spans **~68×** across a five-rung ladder 5D→7S→8S→9S→6S (1 → 75 THz) —
+detuning now spans **~68×** across a five-rung ladder 5D→7S→8S→9S→6S (1 → 75 THz),
 a controlled sweep of intermediate-state admixture in one apparatus (§Paper C).
 
-### Detection — how much does changing the 795 nm filters help?
+### Detection: how much does changing the 795 nm filters help?
 
 A lot, but as an **enabler rather than an optimisation**. The 6S work detects the
 6S→5P→5S cascade at **795/780 nm** (near-IR). Every *upper* transition (5D, 7S, 8S,
-9S) instead cascades **through 6P**, emitting **420 nm** (6P→5S, blue) — a channel
+9S) instead cascades **through 6P**, emitting **420 nm** (6P→5S, blue), a channel
 the current near-IR path does not pass. So:
 
 - To see *any* of the upper-ladder transitions at all, the detection filters must
   change to a **420 nm bandpass** (plus a PMT/APD with useful blue quantum
-  efficiency — many near-IR-optimised detectors are poor at 420 nm). This is a
-  hard requirement; it cannot be trimmed or optimised around.
+  efficiency, since many near-IR-optimised detectors are poor at 420 nm). This is a
+  hard requirement. It cannot be trimmed or optimised around.
 - **Corrected 2026-08-03 (see §3.2): the requirement above is not hard for 7S,
   and probably not for 5D either.** Wang *et al.* (2026) read the 5S→7S cascade on
   five channels at once and measure the branching, normalised to 780 nm, as
@@ -105,51 +165,51 @@ the current near-IR path does not pass. So:
   installed 795 nm passband passes those lines, and whether it blocks a 760 nm
   drive.
 - The payoff is broad: **one 420 nm path serves 5D, 7S, 8S and 9S together** (all
-  via 6P→5S), so a single detection upgrade unlocks the whole upper program.
+  via 6P→5S), so a single detection upgrade reaches the whole upper program.
 - Caveat on signal: the 420 nm branching ratio is favourable for 5D and 7S but
   **dilutes for 8S/9S** (more open decay channels), compounding their blue-edge
-  Ti:Sapph disadvantage — so 5D/7S are the high-yield targets, 8S/9S the reach.
+  Ti:Sapph disadvantage, so 5D/7S are the high-yield targets and 8S/9S the reach.
 - Practical check, now answered (experimenter-confirmed): the present 795 nm
   optics are a **passband stack**
-  (~50 dB, `DATA.md`), not a pump-rejection notch — so this is the simple branch:
+  (~50 dB, `DATA.md`), not a pump-rejection notch, so this is the simple branch:
   the stack is swapped wholesale for a 420 nm bandpass, and no separate
   760–778 nm pump-blocking edge has to be sourced, provided the replacement's
   out-of-band blocking at 993 nm is specified (check the datasheet, don't assume:
   a visible bandpass is not obliged to block deep IR).
 
 - **A note for the 6S line itself: a trapping-free 1.3 µm option.** The 6S cascade's
-  *first* step, 6S→5P, emits at **1.32/1.37 µm** — and unlike the 780/795 nm D-line
+  *first* step, 6S→5P, emits at **1.32/1.37 µm**, and unlike the 780/795 nm D-line
   photons (ground-resonant, hence radiation-trapped in the dense cell), the 1.3 µm
   photon is resonant with nothing populated and escapes freely. Detecting it (an
-  **InGaAs** detector — single-photon sensitivity below a Si PMT, plus hot-cell
+  **InGaAs** detector, whose single-photon sensitivity is below a Si PMT's, plus hot-cell
   IR-background filtering) is a **trapping-free** amplitude channel, and the
   **795-vs-1.3 µm ratio discriminates a real degeneracy-law/amplitude deviation from
   a radiation-trapping artifact** (`PLAN.md` §8). The IR-cascade-to-beat-trapping
-  trick is established on the sibling line — Hassanin et al. 2023 (5D→5P) and Beard
-  et al. 2024 (5D→6P, 776 nm) — so it is proven, not speculative. Orthogonal to the
-  420 nm upper-ladder swap — this is a 6S-detection refinement, not an enabler.
+  trick is established on the sibling line by Hassanin et al. 2023 (5D→5P) and Beard
+  et al. 2024 (5D→6P, 776 nm), so it is proven rather than speculative. Orthogonal to the
+  420 nm upper-ladder swap, this is a 6S-detection refinement and not an enabler.
 
 Net: the filter swap is required once to reach the upper ladder, and it is a
 *cheap, one-time* cost (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
-**But "cheap" describes the hardware, not the risk — and the risk is the noise
+**But "cheap" describes the hardware and not the risk. The risk is the noise
 floor, which has to be measured rather than assumed** (2026-07-26). M1's fitted
 law is σ² = a² + b·V: a detector floor plus a Poisson term. Which of the two
 dominates sets how signal-to-noise responds to a *fainter* line, and the two
 answers differ by a square:
 
-- above the crossover V\* = a²/b the line is **shot-limited**, SNR ∝ √S — so a
-  10× weaker signal costs only ~3× in SNR;
-- below it the line is **floor-limited**, SNR ∝ S — the same 10× deficit costs
+- above the crossover V\* = a²/b the line is **shot-limited**, SNR ∝ √S, so a
+  10× weaker signal costs only ~3× in SNR.
+- below it the line is **floor-limited**, SNR ∝ S, and the same 10× deficit costs
   the full 10×.
 
 That distinction decides feasibility for any dimmer configuration, and it is not
 a small effect: across the 32 archival conditions **V\* spans 2–258 mV**
 (median ≈ 9 mV, `results/noise_model.csv`), so even one detection chain
 straddles both regimes. The 795 nm path happened to land shot-limited over the
-whole archival range — the faintest line, 20 mV, still sits above the median
-crossover — which is *why* the archive's dimmest 70 °C dwells were fittable at
+whole archival range. The faintest line, 20 mV, still sits above the median
+crossover, which is *why* the dimmest 70 °C dwells were fittable at
 SNR ≈ 16. **A blue chain inherits none of that.** Blue-sensitive photocathodes,
 different dark rates and a different filter stack move both a and b, and a
 420 nm path landing at the high end of that V\* range would be floor-limited
@@ -157,8 +217,8 @@ exactly where an upper-ladder line is faintest.
 
 **The check is a re-run of M1 on the new path, not new analysis:**
 `rb5s6s.noise.condition_noise_model` fits a and b from a handful of repeats, so
-the blue chain's V\* can be measured on the bench — a lamp, the filter, and the
-detector — before any transition is attempted. Doing it first converts the
+the blue chain's V\* can be measured on the bench with a lamp, the filter and the
+detector, before any transition is attempted. Doing it first converts the
 detection swap from an assumption into a number, and it is the cheapest
 derisking step on this page.
 
@@ -193,6 +253,16 @@ better than 2%. A method that reproduced 40 kHz/mTorr and 776.179 nm would have
 been calibrated against the field's own numbers. One that did not would have
 been caught. Neither outcome needs a new coefficient, which is what separates
 this from Paper B.
+
+![computed differential polarizability against wavelength, with the magic crossings marked](../figures/fig17_magic_wavelengths.png)
+
+*What a magic wavelength is, and what this repository can and cannot say about
+one. The curve is the computed differential polarizability of the 993 nm
+transition, and a crossing of zero is a wavelength at which a trap shifts both
+levels equally. The crossings here are calculated and unvalidated, which is the
+whole reason the section below reads one published measurement so carefully.
+That measurement is on the 778 nm line rather than this one, so it validates
+the method of getting such a number against a bench and not these crossings.*
 
 **What the wavelength scan actually is, from the held Hamilton PDF.** The scan
 is real and it is not a scan of the drive. Hamilton's clock is driven by *fixed*
@@ -671,8 +741,15 @@ the assumption set behind each figure carried in
 | 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the archive's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
 | 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the archive's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
 | O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
-| wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design pins the temperature in about 1.9 hours to where the vapour curve's 22-fold leverage keeps the implied density inside the 20 percent scale systematic, and reaches the adopted retro ratio in about 2.1 hours, both on the four-pedestal comb and both about sixteen times longer on a single component | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
+| wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
 | doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
+
+**How long the pedestal row takes, since the cell above only gives the total.**
+The design pins the temperature in about 1.9 hours, to where the vapour curve's
+22-fold leverage keeps the implied density inside the 20 percent scale
+systematic, and it reaches the adopted retro ratio in about 2.1 hours. Both
+figures are for the four-pedestal comb, and both are about sixteen times longer
+on a single component.
 
 **The wide-scan pedestal, and what the archive can already say about it.** The
 retro-reflected drive makes two kinds of two-photon event. One photon from each
@@ -1124,7 +1201,7 @@ physics argues for if the programme is pursued at all.*
 
 **The most distinctive experiment the Ti:Sapph enables** (distinctive, not
 necessarily most precise): scanning the 776 nm magic wavelength on 5S→5D and watching
-the ramp asymmetry flip sign — a reference-free magic-wavelength determination, on the
+the ramp asymmetry flip sign, a reference-free magic-wavelength determination, on the
 most actively worked transition, by a method those groups do not use. Its systematics
 are orthogonal and it needs no active hardware, and it needs the large-S₀
 small-waist regime to work at all (§Paper A caveat). The lower-risk
@@ -1327,7 +1404,7 @@ measurement.
   993 nm, or need swaps? (The intensity-anchor / retro-ratio ρ must be re-characterised
   per wavelength.)
 - Cell/oven: 5D/7S may want *lower* density than 6S (they are stronger / closer to
-  resonance) — the fixed-lock session shot-list temperature range would differ per transition.
+  resonance). The fixed-lock session shot-list temperature range would differ per transition.
 - The ruler comb itself: in the archive the scan clips one third-order tooth window on
   every recorded trace, and at the measured drive depth (2β = 1.57 median across the combs) a fully covered
   third-order tooth still sits below the per-trace fit residual (pre-registration

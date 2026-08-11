@@ -1503,6 +1503,591 @@ def fig_level_scheme():
 
 
 
+def fig_hyperfine_pumping():
+    """The second width companion: why a real decay ends an atom's
+    participation in the line, what the branching actually is, and what the
+    omission costs.
+
+    REDRAWN 2026-08-10 on the owner's reading. The first version drew 5P as one
+    level, and its middle and right panels were not readable: two abstract bars
+    of a decay probability, and three bars whose relation to the fit was in a
+    text box. What the panels needed was the arithmetic itself.
+
+    Panel (a) resolves the fine structure the way fig13 does, with the 5P
+    splitting enlarged for visibility and said so, because the two legs carry
+    different branchings and different cascade wavelengths. Panel (b) is the
+    branching computation, per isotope, which turns out to be exact rather than
+    bracketed: with the 5P hyperfine sublevels populated statistically the
+    return to a ground level is the pure degeneracy weight (2F+1)/sum(2F+1),
+    identical from 5P1/2 and 5P3/2, verified against explicit 6j symbols. So f
+    is a number per line and not a factor-of-two bracket. Panel (c) draws what
+    the fit sees against what it attributes, which is the actual claim.
+
+    THE CONSEQUENCE THAT CHANGED A CLAIM. f differs across the four lines,
+    0.375 to 0.625, while the ramp and the saturation do not, because the
+    two-photon Rabi frequency is F-independent here (constants.ABUNDANCE_RB85
+    note). So the three same-signature terms are NOT degenerate across the line
+    index, only across power and waist. The lever is 7 kHz between the extreme
+    lines against an 88 kHz per-block width scatter, so this archive cannot
+    spend it, but it is a real handle for a session that can.
+    """
+    import math
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_geometry_design import ramp_moments            # noqa: E402
+    from rb5s6s import stark                                # noqa: E402
+    from rb5s6s.constants import GAMMA_NAT_HZ               # noqa: E402
+    from rb5s6s.polarizability import E_6S_CM, LINES_6S     # noqa: E402
+
+    G_MHZ = GAMMA_NAT_HZ / 1e6
+    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    GC, SL, TR = 0.60, 1.50, 0.96
+    NU = np.linspace(-40.0, 40.0, 200001)
+
+    # the two cascade legs, from the same NIST elements fig13 reads
+    A0_M, E_C_SI = 5.29177210903e-11, 1.602176634e-19
+    HBAR, EPS0, CL = 1.054571817e-34, 8.8541878128e-12, 2.99792458e8
+
+    def _leg(e_cm, d_au):
+        lam = 1e7 / (E_6S_CM - e_cm) * 1e-9
+        w = 2.0 * math.pi * CL / lam
+        d = d_au * E_C_SI * A0_M
+        return lam, w ** 3 * d ** 2 / (3.0 * math.pi * EPS0 * HBAR * CL ** 3 * 2)
+
+    lam12, a12 = _leg(*LINES_6S[0][:2])
+    lam32, a32 = _leg(*LINES_6S[1][:2])
+    b12 = a12 / (a12 + a32)
+
+    m = ramp_moments(W0, P_MAX, ZC_M)
+    ramp_khz = 1e3 * (stark._fwhm_of(GC, SL, TR, m["s0"], NU)
+                      - stark._fwhm_of(GC, SL, TR, 0.0, NU))
+    sat_khz = 1e3 * G_MHZ * (math.sqrt(1.0 + m["sat_w"]) - 1.0)
+
+    # f per line, from the TWO-STEP cascade. The two-photon operator is
+    # scalar (K = 0 only), so 6S is populated in ONE hyperfine level and
+    # not statistically, and the branching is the product of the two
+    # cascade steps weighted by the legs' Einstein A shares. Each leg
+    # scales the naive degeneracy weight by a clean fraction, 8/9 through
+    # 5P1/2 and 4/9 through 5P3/2, so the combination is uniform across the
+    # four lines: the LEVER is unchanged and the SCALE is not. Computed
+    # with explicit 6j symbols. The first pass here assumed a statistical
+    # 6S population and was wrong by exactly this factor.
+    LEG_RATIO = {0.5: 8.0 / 9.0, 1.5: 4.0 / 9.0}
+    corr = b12 * LEG_RATIO[0.5] + (1.0 - b12) * LEG_RATIO[1.5]
+    LINES = [("993.4121", "$^{87}$Rb", 1, (1, 2)), ("993.4154", "$^{85}$Rb", 2, (2, 3)),
+             ("993.4192", "$^{85}$Rb", 3, (2, 3)), ("993.4207", "$^{87}$Rb", 2, (1, 2))]
+    fvals = []
+    for lam_nm, iso, f_driven, fs in LINES:
+        other = [x for x in fs if x != f_driven][0]
+        stat = (2 * other + 1) / sum(2 * x + 1 for x in fs)
+        fvals.append((lam_nm, iso, f_driven, other, stat * corr))
+
+    fig = plt.figure(figsize=(14.2, 5.0))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1.15, 1.05, 0.95], wspace=0.32,
+                          left=0.045, right=0.985, top=0.88, bottom=0.26)
+    ax, bx, cx = (fig.add_subplot(gs[0, i]) for i in range(3))
+
+    # ---- (a) the cascade, fine structure resolved -----------------------
+    ax.axis("off")
+    ax.set_xlim(0.0, 1.0)
+    ax.set_ylim(-0.30, 1.16)
+    yF, yFp, y5p12, y5p32, y6s, yv = 0.0, 0.15, 0.56, 0.63, 1.0, 0.50
+    DRIVE, LOST = "#a63430", "#111111"
+    ax.hlines(yF, 0.10, 0.455, color="0.15", lw=2.4)
+    ax.hlines(yFp, 0.10, 0.455, color="0.15", lw=2.4)
+    ax.text(0.235, yF - 0.055, r"$5S_{1/2}$, $F$", ha="center", fontsize=9)
+    ax.text(0.235, yFp + 0.035, r"$5S_{1/2}$, $F'$", ha="center", fontsize=9)
+    ax.annotate("", (0.455, yFp), (0.455, yF),
+                arrowprops=dict(arrowstyle="<->", color="0.45", lw=1.0))
+    ax.text(0.60, -0.02,
+            "ground splitting\n3.04 GHz ($^{85}$Rb)\n6.83 GHz ($^{87}$Rb)",
+            ha="left", va="top", fontsize=7.0, color="0.35")
+    ax.hlines(y6s, 0.07, 0.42, color="0.15", lw=2.4)
+    ax.text(0.245, y6s + 0.05, r"$6S_{1/2}$", ha="center", fontsize=10)
+    # the two 5P levels, splitting enlarged as fig13 does
+    ax.hlines(y5p12, 0.56, 0.86, color="0.15", lw=2.4)
+    ax.hlines(y5p32, 0.64, 0.94, color="0.15", lw=2.4)
+    ax.text(0.875, y5p12 - 0.012, r"$5P_{1/2}$", ha="left", fontsize=9)
+    ax.text(0.955, y5p32 - 0.012, r"$5P_{3/2}$", ha="left", fontsize=9)
+    ax.hlines(yv, 0.135, 0.29, color="0.55", lw=1.1, ls=(0, (4, 3)))
+    ax.text(0.30, yv, "virtual level", fontsize=6.8, color="0.45", va="center")
+    for y0, y1 in ((yF, yv), (yv, y6s)):
+        ax.annotate("", (0.205, y1), (0.205, y0),
+                    arrowprops=dict(arrowstyle="-|>", color=DRIVE, lw=2.3))
+    ax.text(0.185, 0.5 * (yF + y6s), "993 nm, twice", rotation=90, fontsize=8.2,
+            color=DRIVE, ha="right", va="center", fontweight="bold")
+    ax.annotate("", (0.585, y5p12 + 0.02), (0.35, y6s - 0.02),
+                arrowprops=dict(arrowstyle="-|>", color="0.45", lw=1.5,
+                                ls=(0, (4, 3))))
+    ax.annotate("", (0.665, y5p32 + 0.02), (0.40, y6s - 0.02),
+                arrowprops=dict(arrowstyle="-|>", color="0.45", lw=1.5,
+                                ls=(0, (4, 3))))
+    ax.text(0.40, 0.855, f"{lam12*1e9:.0f} nm\n{100*b12:.0f}%", fontsize=7.2,
+            color="0.35", ha="center", va="center",
+            bbox=dict(boxstyle="square,pad=0.12", fc="white", ec="none"))
+    ax.text(0.585, 0.90, f"{lam32*1e9:.0f} nm\n{100*(1-b12):.0f}%", fontsize=7.2,
+            color="0.35", ha="center", va="center")
+    ax.annotate("", (0.40, yF + 0.02), (0.60, y5p12 - 0.02),
+                arrowprops=dict(arrowstyle="-|>", color=DRIVE, lw=1.6))
+    ax.annotate("", (0.40, yFp + 0.02), (0.70, y5p32 - 0.02),
+                arrowprops=dict(arrowstyle="-|>", color=LOST, lw=2.6))
+    ax.text(0.62, 0.30, "to $F'$: out of\nthe line for good",
+            fontsize=7.6, color=LOST, ha="left", va="bottom", fontweight="bold")
+    ax.text(0.62, 0.09, "back to $F$:\nstill in the line",
+            fontsize=7.4, color=DRIVE, ha="left", va="bottom")
+    ax.set_title("(a)  the cascade, and where an atom can be lost",
+                 fontsize=10.5, loc="left")
+    ax.text(0.0, -0.255, "$5P$ splitting enlarged for visibility, as in fig13",
+            fontsize=6.9, color="0.45", ha="left", transform=ax.transData)
+
+    # ---- (b) the branching, computed per line ---------------------------
+    bx.axis("off")
+    bx.set_xlim(0, 1); bx.set_ylim(0, 1)
+    bx.set_title("(b)  so $f$ is a number, not a bracket", fontsize=10.5,
+                 loc="left")
+    bx.text(0.0, 0.96,
+            "The two-photon operator is scalar, so $6S$ is populated in ONE\n"
+            "hyperfine level, not statistically. $f$ is then the product of the\n"
+            "two cascade steps, with 6j symbols throughout:",
+            fontsize=8.0, color="0.15", va="top")
+    bx.text(0.5, 0.735,
+            r"$f = \dfrac{2F'+1}{\sum_F (2F+1)}\;\times\;"
+            r"\left(\dfrac{8}{9}b_{1/2}+\dfrac{4}{9}b_{3/2}\right)$",
+            fontsize=11.5, ha="center", va="center")
+    bx.text(0.0, 0.615, "The first factor is the naive weight of the level NOT\n"
+                        "driven. The second is what the cascade costs it, "
+                        f"{corr:.3f},\nthe same for all four lines:",
+            fontsize=8.0, color="0.15", va="top")
+    rows = []
+    for lam, iso, fd, oth, fv in fvals:
+        stat_num = 2 * oth + 1
+        stat_den = int(round(stat_num / (fv / corr)))
+        rows.append((f"{lam} nm", iso, f"$F$ = {fd}",
+                     f"{stat_num}/{stat_den}", f"{fv:.3f}",
+                     f"{fv*sat_khz:.1f} kHz"))
+    y0 = 0.405
+    bx.text(0.02, y0 + 0.050, "line", fontsize=7.6, fontweight="bold")
+    bx.text(0.30, y0 + 0.050, "driven", fontsize=7.6, fontweight="bold")
+    bx.text(0.47, y0 + 0.050, "naive", fontsize=7.6, fontweight="bold")
+    bx.text(0.60, y0 + 0.050, "$f$", fontsize=7.6, fontweight="bold")
+    bx.text(0.76, y0 + 0.050, "pumping", fontsize=7.6, fontweight="bold")
+    for k, (lam, iso, fd, frac, fv, wid) in enumerate(rows):
+        y = y0 - 0.058 * k
+        bx.text(0.02, y, f"{lam} {iso}", fontsize=7.8, va="center")
+        bx.text(0.30, y, fd, fontsize=7.8, va="center")
+        bx.text(0.47, y, frac, fontsize=7.8, va="center")
+        bx.text(0.60, y, fv, fontsize=7.8, va="center")
+        bx.text(0.76, y, wid, fontsize=7.8, va="center")
+    # The blocked level per line, derived from the selection rules at draw
+    # time rather than looked up. Of the 5P3/2 levels a driven 6S level can
+    # feed (|dF| <= 1), the one more than one step from the UNDRIVEN ground
+    # level cannot decay to it at all, because a J = 1 photon cannot change F
+    # by two. It returns the atom to the level it came from, so it is not a
+    # loss, and every one of the four lines has one.
+    blocked = []
+    for lam, iso, fd, oth, _ in fvals:
+        for fp in (fd - 1, fd, fd + 1):
+            if fp >= 0 and abs(fp - oth) > 1:
+                blocked.append(str(fp))
+    bx.text(0.0, 0.02,
+            "This retires the 1/3 to 2/3 bracket: the lower two fall below it.\n"
+            "The 8/9 and 4/9 are no smoothing either. Every line feeds one\n"
+            "$5P_{3/2}$ level that cannot reach the undriven level AT ALL\n"
+            "($F$ = " + ", ".join(blocked) + " by row), and those blocks cancel "
+            "exactly.",
+            fontsize=7.8, color="0.25", va="bottom")
+
+    # ---- (c) what the fit sees against what it attributes ---------------
+    f_lo, f_hi = min(v[4] for v in fvals), max(v[4] for v in fvals)
+    pump_lo, pump_hi = f_lo * sat_khz, f_hi * sat_khz
+    cx.bar([0], [ramp_khz], width=0.55, color="#a63430", edgecolor="0.2", lw=0.8)
+    cx.bar([1], [ramp_khz], width=0.55, color="#a63430", edgecolor="0.2", lw=0.8)
+    cx.bar([1], [sat_khz], bottom=[ramp_khz], width=0.55, color="#0072B2",
+           edgecolor="0.2", lw=0.8)
+    cx.bar([1], [pump_hi], bottom=[ramp_khz + sat_khz], width=0.55,
+           color="#009E73", edgecolor="0.2", lw=0.8)
+    cx.errorbar([1], [ramp_khz + sat_khz + 0.5 * (pump_lo + pump_hi)],
+                yerr=[[0.5 * (pump_hi - pump_lo)], [0.5 * (pump_hi - pump_lo)]],
+                fmt="none", ecolor="0.15", elinewidth=1.5, capsize=4)
+    total = ramp_khz + sat_khz + pump_hi
+    cx.set_xticks([0, 1])
+    cx.set_xticklabels(["what the model\ncontains", "what the line\nactually does"],
+                       fontsize=8.6)
+    cx.set_ylabel(f"added linewidth at {P_MAX*1e3:.0f} mW (kHz)")
+    cx.set_ylim(0, total * 1.62)
+    cx.grid(axis="x", visible=False)
+    cx.set_title("(c)  and the fit gives the ramp all of it", fontsize=10.5,
+                 loc="left")
+    cx.text(0, ramp_khz + 0.8, f"{ramp_khz:.1f}", ha="center", fontsize=9,
+            fontweight="bold")
+    cx.text(1, total + 0.8, f"{total:.0f}", ha="center", fontsize=9,
+            fontweight="bold")
+    cx.annotate("the AC-Stark ramp", xy=(1, ramp_khz * 0.5),
+                xytext=(1.42, ramp_khz * 0.5), fontsize=7.6, color="#a63430",
+                va="center", ha="left")
+    cx.annotate("atomic saturation", xy=(1, ramp_khz + sat_khz * 0.5),
+                xytext=(1.42, ramp_khz + sat_khz * 0.5), fontsize=7.6,
+                color="#0072B2", va="center", ha="left")
+    cx.annotate("hyperfine pumping", xy=(1, ramp_khz + sat_khz + pump_hi * 0.5),
+                xytext=(1.42, ramp_khz + sat_khz + pump_hi * 0.5), fontsize=7.6,
+                color="#009E73", va="center", ha="left")
+    cx.set_xlim(-0.55, 2.35)
+    cx.text(0.5, 0.965,
+            f"the fit assigns the whole right-hand bar\n"
+            f"to the left-hand one, so the bound comes\n"
+            f"out {total/ramp_khz:.1f} times too loose",
+            transform=cx.transAxes, fontsize=7.8, color="0.25", ha="center",
+            va="top")
+
+    fig.text(0.045, 0.155,
+             "Panel (b) retires the 1/3 to 2/3 bracket the companion note "
+             "carried, and does not merely narrow it: the lower two lines fall "
+             "OUTSIDE it, so the pumping companion is smaller than that "
+             "bracket assumed.\nWhat matters beyond the bookkeeping is that "
+             "the ramp and the saturation are identical on all four lines "
+             "while the pumping is not, so the three terms are degenerate in "
+             "power and in waist but NOT\nacross the line index. The lever is "
+             "4 kHz between the extreme lines against an 88 kHz per-block "
+             "width scatter, so this dataset cannot spend it. A session with "
+             "the scatter under control could.",
+             fontsize=7.6, color="0.3", va="top")
+    _footer(fig, "figure 23 | rb5s6s.polarizability line data (the two cascade "
+                 "legs and their branching), rb5s6s.stark._fwhm_of, "
+                 "scripts/run_geometry_design.ramp_moments | "
+                 "docs/notes/two_photon_saturation_companion.md | "
+                 "python scripts/make_figures.py")
+    _save(fig, "fig23_hyperfine_pumping.png", rect=(0, 0.185, 1, 1))
+
+
+def fig_weak_field_limit():
+    """Where the ramp law's own assumption stops holding, and what it costs
+    the session that would exploit it.
+
+    WHY THIS FIGURE EXISTS. The whole ramp construction rests on the detected
+    signal going as the SQUARE of the intensity, which is what makes the shift
+    distribution triangular and its skewness non-zero. That is the leading
+    term of the excited fraction and not the fraction itself: the real weight
+    is (s/2)/(1+s), which is quadratic in intensity only while s is small.
+    The archive sits comfortably inside that regime. The small-waist session
+    the record reaches for does not, and the reason is a scaling accident
+    worth drawing: s carries the two-photon Rabi frequency squared, so it goes
+    as the FOURTH power of the inverse waist, while the shift itself goes only
+    as the second. Tightening the focus therefore leaves the weak-field limit
+    four times faster than it buys shift.
+
+    Panel (a) is the weight against the approximation it replaces. Panel (b)
+    is the consequence the plan cares about: the predicted third-cumulant
+    skewness against waist, computed both ways. The sign flip survives, the
+    magnitude does not, so the tight-focus prediction is a factor-of-three
+    statement whose uncertainty is a modelling assumption rather than an
+    unmeasured input.
+
+    Both panels come from scripts/run_geometry_design.ramp_moments, whose
+    weak-field branch is the one already checked against
+    lineshape.stark_ramp_axial_moments.
+    """
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_geometry_design import ramp_moments            # noqa: E402
+
+    ZC_M, P_MAX = 2.2e-3, 0.225
+    W0 = C.W0_MEASURED_M
+    waists_um = np.array([64, 56, 48, 40, 36, 32, 28, 24, 20, 18, 16], float)
+    rows = [(w, ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=True),
+             ramp_moments(w * 1e-6, P_MAX, ZC_M, saturate=False))
+            for w in waists_um]
+    g1_sat = np.array([r[1]["g1"] for r in rows])
+    g1_weak = np.array([r[2]["g1"] for r in rows])
+    s_axis = np.array([r[1]["sat00"] for r in rows])
+    s0_here = rows[0][1]["s0"]
+    s_here, s_tight = s_axis[0], s_axis[-1]
+
+    fig = plt.figure(figsize=(12.2, 4.6))
+    gs = fig.add_gridspec(1, 2, wspace=0.26, left=0.065, right=0.985,
+                          top=0.88, bottom=0.27)
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    # ---- (a) the weight, against the square law it replaces -------------
+    ss = np.logspace(-3, 1.2, 400)
+    ax.plot(ss, (ss / 2.0) / (1.0 + ss), color="#0072B2", lw=2.4,
+            label=r"what the atom does, $(s/2)/(1+s)$")
+    ax.plot(ss, ss / 2.0, color="0.35", lw=1.8, ls=(0, (5, 3)),
+            label=r"the ramp law's assumption, $\propto I^2$")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("saturation parameter $s$ on the beam axis")
+    ax.set_ylabel("excited fraction")
+    ax.set_title("(a)  the square law is the weak-field corner of a curve",
+                 fontsize=10.5, loc="left")
+    ax.legend(fontsize=8.2, loc="upper left")
+    # the archive marker sits low (the legend owns the top left) and the
+    # proposed one high (the text block owns the bottom right), so neither
+    # label lands on the legend, the curves or the other annotation
+    for x, lab, col, y, va in (
+            (s_here, f"the archive\n{W0*1e6:.0f} µm, $s$ = {s_here:.3f}",
+             "#009E73", 1.6e-3, "top"),
+            (s_tight, f"the proposed\n{waists_um[-1]:.0f} µm, "
+                      f"$s$ = {s_tight:.1f}", "#D55E00", 7.0, "top")):
+        ax.axvline(x, color=col, lw=1.5, ls=":")
+        ax.text(x * 0.86, y, lab, fontsize=8.0, color=col, ha="right", va=va)
+    # raised off the floor: at y = 0.05 this block's left edge reached the
+    # archive marker's label and covered a fifth of it, which the overlap guard
+    # could not see until 2026-08-11 because it was skipping this figure
+    ax.text(0.985, 0.20,
+            f"$s$ goes as the inverse FOURTH power of the waist and the\n"
+            f"shift only as the second, so the four-fold tightening between\n"
+            f"the two markers is {s_tight/s_here:.0f}-fold in $s$ against "
+            f"{(W0*1e6/waists_um[-1])**2:.0f}-fold in the shift.\n"
+            "The limit is left long before the shift becomes large.",
+            transform=ax.transAxes, fontsize=7.8, color="0.25",
+            ha="right", va="bottom")
+
+    # ---- (b) what it does to the observable ----------------------------
+    bx.axhline(0.0, color="0.5", lw=1.0)
+    bx.plot(waists_um, g1_weak, "o-", color="0.35", lw=1.8, ms=4.5,
+            label="predicted with the square law")
+    bx.plot(waists_um, g1_sat, "o-", color="#0072B2", lw=2.4, ms=5,
+            label="predicted with the real weight")
+    bx.fill_between(waists_um, g1_weak, g1_sat, color="#0072B2", alpha=0.16, lw=0)
+    bx.invert_xaxis()
+    bx.set_xlabel("beam waist $w_0$ (µm), tightening to the right")
+    bx.set_ylabel("predicted skewness $g_1$ of the ramp")
+    bx.set_title("(b)  the sign survives it, the size does not",
+                 fontsize=10.5, loc="left")
+    bx.legend(fontsize=8.2, loc="center left")
+    bx.annotate(f"{g1_weak[-1]:+.2f} against {g1_sat[-1]:+.2f}\n"
+                f"at {waists_um[-1]:.0f} µm: a factor "
+                f"{abs(g1_sat[-1]/g1_weak[-1]):.1f}",
+                xy=(waists_um[-1], 0.5 * (g1_sat[-1] + g1_weak[-1])),
+                xytext=(0.42, 0.30), textcoords="axes fraction", fontsize=8.2,
+                arrowprops=dict(arrowstyle="-|>", color="0.4", lw=1.0))
+    bx.text(0.025, 0.05,
+            f"at the archive's own {W0*1e6:.0f} µm the two agree to "
+            f"{100*abs(g1_sat[0]/g1_weak[0]-1):.0f} per cent,\n"
+            f"so no result of this archive is affected",
+            transform=bx.transAxes, fontsize=7.8, color="0.25",
+            ha="left", va="bottom")
+
+    fig.text(0.065, 0.155,
+             f"Both panels are at the campaign's own {P_MAX*1e3:.0f} mW and the "
+             f"record's collection half-length $Z_c$ = {ZC_M*1e3:.1f} mm, with "
+             f"$S_0$ = {s0_here:.3f} MHz at the measured waist.\n"
+             "The skewness in (b) is the third cumulant of the axially "
+             "averaged shift distribution, so it already carries the "
+             "diverging-beam average that flips\nits sign near "
+             "$Z_c/z_R \\approx 1.12$. What the saturated weight changes is "
+             "how much of the beam contributes, not where the flip is.",
+             fontsize=7.8, color="0.3", va="top")
+    _footer(fig, "figure 24 | scripts/run_geometry_design.ramp_moments "
+                 "(weak-field branch checked against "
+                 "rb5s6s.lineshape.stark_ramp_axial_moments) | "
+                 "docs/THEORY_NOTE.md sec 2.0a, "
+                 "docs/notes/running_wave_and_waist_design.md | "
+                 "python scripts/make_figures.py")
+    _save(fig, "fig24_weak_field_limit.png", rect=(0, 0.185, 1, 1))
+
+
+def fig_retro_combination():
+    """Why the shift and the rate take DIFFERENT combinations of the two arms.
+
+    WHY THIS FIGURE EXISTS. The beam is retroreflected, so the atom sits in a
+    standing wave of contrast set by the return fraction rho. Two observables
+    are read off that same field and they do not take the same combination of
+    the two arms, which is easy to state and easy to get wrong.
+
+    The AC-Stark shift is linear in the intensity, so an atom crossing many
+    fringes feels the FRINGE MEAN, and that is the arithmetic combination
+    (1 + rho). A Doppler-free two-photon amplitude is linear in E squared and
+    only the term whose two wavevectors cancel is Doppler-free, so it takes the
+    cross term alone, the GEOMETRIC combination 2 sqrt(rho). Their ratio is
+    exactly the fringe contrast.
+
+    Two consequences the panels carry. The correction is invisible at the
+    archive's own rho and is not at a poorer one, which is why the formula
+    carries it rather than assuming it away. And the Doppler-free RATE is
+    fringe-immune, having no z dependence at all, while the SHIFT is not, which
+    is the asymmetry the running-wave design note exploits.
+    """
+    import math
+    RHO = C.RHO_RETRO
+    RHO_POOR = 0.75
+
+    fig = plt.figure(figsize=(12.2, 4.5))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.15, 1.0], wspace=0.24,
+                          left=0.065, right=0.985, top=0.88, bottom=0.28)
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    # ---- (a) the standing wave and its two readings ---------------------
+    z = np.linspace(0.0, 2.0, 1200)          # in units of the wavelength
+    for rho, col, lab in ((RHO, "#0072B2", f"$\\rho$ = {RHO:.2f}, the archive"),
+                          (RHO_POOR, "#D55E00", f"$\\rho$ = {RHO_POOR:.2f}")):
+        # |E|^2 for two counter-propagating arms of amplitude 1 and sqrt(rho)
+        inten = 1.0 + rho + 2.0 * math.sqrt(rho) * np.cos(4.0 * np.pi * z)
+        ax.plot(z, inten, color=col, lw=2.0, label=lab)
+        ax.axhline(1.0 + rho, color=col, lw=1.2, ls=(0, (5, 3)))
+    ax.set_xlabel("position along the beam ($z$, in wavelengths)")
+    ax.set_ylabel("intensity (one arm = 1)")
+    ax.set_title("(a)  one field, two readings", fontsize=10.5, loc="left")
+    ax.legend(fontsize=8.2, loc="lower right")
+    ax.set_ylim(-0.25, 4.4)
+    ax.annotate("the fringe MEAN, $1+\\rho$:\nwhat the light shift feels,\n"
+                "because the shift is linear in intensity",
+                xy=(1.87, 1.0 + RHO), xytext=(0.985, 0.985),
+                textcoords="axes fraction", fontsize=8.0, color="0.2",
+                ha="right", va="top",
+                arrowprops=dict(arrowstyle="-|>", color="0.4", lw=1.0))
+    ax.annotate("the fringe AMPLITUDE, $2\\sqrt{\\rho}$:\nwhat the Doppler-free "
+                "coupling takes, because\nonly the cross term cancels the two "
+                "wavevectors",
+                xy=(0.50, 1.0 + RHO + 2.0 * math.sqrt(RHO)),
+                xytext=(0.02, 0.30), textcoords="axes fraction", fontsize=8.0,
+                color="0.2", ha="left", va="top",
+                bbox=dict(boxstyle="square,pad=0.25", fc="white", ec="none",
+                          alpha=0.88),
+                arrowprops=dict(arrowstyle="-|>", color="0.4", lw=1.0))
+
+    # ---- (b) the two combinations, and where they part -------------------
+    rr = np.linspace(0.30, 1.0, 400)
+    bx.plot(rr, 100.0 * ((1.0 + rr) / (2.0 * np.sqrt(rr)) - 1.0),
+            color="#0072B2", lw=2.4)
+    bx.set_xlabel("retro return fraction $\\rho$")
+    bx.set_ylabel("arithmetic over geometric (%)")
+    bx.set_title("(b)  and the gap between them is the fringe contrast",
+                 fontsize=10.5, loc="left")
+    for rho, col, lab in ((RHO, "#009E73", "the archive"),
+                          (RHO_POOR, "#D55E00", "a poorer retro")):
+        gap = 100.0 * ((1.0 + rho) / (2.0 * math.sqrt(rho)) - 1.0)
+        bx.plot([rho], [gap], "o", color=col, ms=8, zorder=5)
+        bx.annotate(f"{lab}\n$\\rho$ = {rho:.2f}: {gap:.2f}%",
+                    xy=(rho, gap), xytext=(-14, 46 if rho == RHO else 74),
+                    textcoords="offset points", fontsize=8.2, color=col,
+                    ha="right",
+                    arrowprops=dict(arrowstyle="-", color=col, lw=0.9))
+    bx.text(0.97, 0.94,
+            "No published digit moves at the archive's own $\\rho$.\n"
+            "The formula carries the distinction anyway, because\n"
+            "the correction grows fast as the retro degrades and\n"
+            "a future session may not have this one.",
+            transform=bx.transAxes, fontsize=7.8, color="0.25",
+            ha="right", va="top")
+
+    fig.text(0.065, 0.175,
+             "The asymmetry between the two panels is the point. The "
+             "Doppler-free RATE has no $z$ dependence at all, since the cross "
+             "term is the same at every fringe, so it is immune to how the "
+             "standing wave sits\nagainst the atoms. The SHIFT is not: it "
+             "follows the local intensity, and an atom that crosses few "
+             "fringes samples that structure rather than averaging it away. "
+             "That is the residual a\nfrequency-shifted retro arm removes by "
+             "making the fringes run, which the running-wave design note "
+             "works out.",
+             fontsize=7.8, color="0.3", va="top")
+    _footer(fig, "figure 25 | rb5s6s.config.RHO_RETRO, "
+                 "rb5s6s.hyperpolarizability.two_photon_rabi_hz and the "
+                 "DELTA_ALPHA_AU note in rb5s6s/constants.py | "
+                 "docs/THEORY_NOTE.md | python scripts/make_figures.py")
+    _save(fig, "fig25_retro_combination.png", rect=(0, 0.205, 1, 1))
+
+
+def fig_lineshape_kernels():
+    """What the observed line is made of, kernel by kernel.
+
+    WHY THIS FIGURE EXISTS. `model_profile()` is the most-used object in the
+    repository and the lineshape chapter describes it in prose alone. Four
+    kernels convolve into one line, they have different SHAPES rather than
+    merely different widths, and the shapes are the reason the fit can tell
+    some of them apart and not others: two Lorentzians of any widths add to a
+    Lorentzian, which is why the natural and collisional parts are combined
+    analytically and why the collisional width is degenerate with anything else
+    homogeneous. The Gaussian and the two-sided exponential are not
+    interchangeable either, and the exponential's central cusp is the transit
+    signature the chapter names.
+
+    Panel (a) is the four kernels at the campaign's own representative widths.
+    Panel (b) builds the line up one convolution at a time, so the reader can
+    see where the width comes from: the natural width is about two thirds of
+    the observed line and everything above it is apparatus.
+
+    Drawn from rb5s6s.lineshape directly, at the same representative widths the
+    saturation companion note uses, so the total reproduces the observed 5.37
+    MHz rather than being tuned to it.
+    """
+    from rb5s6s import lineshape as L                      # noqa: E402
+    from rb5s6s.stark import _fwhm_of                      # noqa: E402
+
+    GC, SL, TR = 0.60, 1.50, 0.96          # collisional, laser, transit (MHz)
+    nu = np.linspace(-14.0, 14.0, 40001)
+    dnu = float(nu[1] - nu[0])
+
+    def fwhm_of_curve(y):
+        pk = y.max()
+        above = np.where(y >= 0.5 * pk)[0]
+        return float(nu[above[-1]] - nu[above[0]])
+
+    fig = plt.figure(figsize=(12.6, 4.7))
+    gs = fig.add_gridspec(1, 2, wspace=0.22, left=0.06, right=0.985,
+                          top=0.88, bottom=0.27)
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    # ---- (a) the four kernels, each normalised to unit peak --------------
+    kernels = (("natural (Lorentzian)", L.lorentzian(nu, GNAT), GNAT, "#a63430"),
+               ("collisional (Lorentzian)", L.lorentzian(nu, GC), GC, "#D55E00"),
+               ("laser (Gaussian)", L.gaussian(nu, SL), SL, "#0072B2"),
+               ("transit (2-sided exp.)",
+                L.two_sided_exponential(nu, TR), TR, "#009E73"))
+    for lab, y, w, col in kernels:
+        ax.plot(nu, y / y.max(), color=col, lw=2.1,
+                label=f"{lab}, {w:.2f} MHz")
+    ax.set_xlim(-7.0, 7.0)
+    ax.set_xlabel("detuning from line centre (MHz, transition axis)")
+    ax.set_ylabel("kernel, peak normalised")
+    ax.set_title("(a)  four kernels, four shapes", fontsize=10.5, loc="left")
+    ax.legend(fontsize=8.0, loc="upper right")
+    ax.annotate("the transit kernel's central cusp,\nwhich is what lets the fit "
+                "tell it\nfrom a Gaussian of the same width",
+                xy=(0.30, 0.62), xytext=(-6.6, 0.72), fontsize=7.8, color="0.25",
+                arrowprops=dict(arrowstyle="-|>", color="0.4", lw=1.0))
+
+    # ---- (b) the line, built one convolution at a time -------------------
+    steps = [("natural alone", L.lorentzian(nu, GNAT), "#a63430"),
+             ("+ collisional", L.lorentzian(nu, GNAT + GC), "#D55E00")]
+    y = L._conv(L.lorentzian(nu, GNAT + GC), L.gaussian(nu, SL), dnu)
+    steps.append(("+ the laser", y, "#0072B2"))
+    y2 = L._conv(y, L.two_sided_exponential(nu, TR), dnu)
+    steps.append(("+ transit: the observed line", y2, "#009E73"))
+    for lab, yy, col in steps:
+        bx.plot(nu, yy / yy.max(), color=col, lw=2.1,
+                label=f"{lab}, {fwhm_of_curve(yy):.2f} MHz")
+    bx.set_xlim(-7.0, 7.0)
+    bx.set_xlabel("detuning from line centre (MHz, transition axis)")
+    bx.set_ylabel("profile, peak normalised")
+    bx.set_title("(b)  and where the width comes from", fontsize=10.5,
+                 loc="left")
+    bx.legend(fontsize=8.0, loc="upper right")
+    total = _fwhm_of(GC, SL, TR, 0.0, np.linspace(-40.0, 40.0, 200001))
+    natural_pct = 100.0 * GNAT / total
+
+    fig.text(0.06, 0.165,
+             f"The natural width is {natural_pct:.0f} per cent of the "
+             f"{total:.2f} MHz total, and everything above it is apparatus. The "
+             "AC-Stark ramp adds a few kHz on top of that, far below the width "
+             "of this line, which is why the light-shift lever is a\nbound "
+             "rather than a measurement. "
+             "Two Lorentzians of any widths convolve to a Lorentzian, which is "
+             "why the first two curves of (b) are one step in the code, and why "
+             "the\ncollisional width cannot be separated from anything else "
+             "homogeneous by shape alone. It is separated by its density "
+             "dependence instead, which is what\nthe temperature sweep is for. "
+             "The two remaining kernels are not interchangeable: a Gaussian and "
+             "a two-sided exponential of equal width differ in\nthe core and in "
+             "the wings, and that difference is the whole handle the fit has on "
+             "the laser-transit split.",
+             fontsize=7.8, color="0.3", va="top")
+    _footer(fig, "figure 26 | rb5s6s.lineshape.lorentzian, .gaussian, "
+                 ".two_sided_exponential and .model_profile, at the campaign's "
+                 "representative widths | docs/methods/02_the_lineshape.md | "
+                 "python scripts/make_figures.py")
+    _save(fig, "fig26_lineshape_kernels.png", rect=(0, 0.195, 1, 1))
+
+
 def fig_wavemeter_reconstruction():
     """The wavemeter record, its model, and the same quantity from our traces (M22).
 
@@ -1679,7 +2264,11 @@ def fig_drift_story():
                     if x["quantity"] == "S0_225mW_ub95"))
     bvals = [float(x["bound95_nscale"]) for x in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
              if x.get("headline") == "yes"]
-    sl = float(next(x["value_MHz"].lstrip("<") for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_epoch.csv"))
+    # laser_epoch.csv was normalised on 2026-08-10: value_MHz became value and
+    # the inequality left the numeric column for the unit field. This reader
+    # was not updated, so this figure raised for a day and nothing said so,
+    # because every guard that draws figures catches and continues.
+    sl = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_epoch.csv"))
                     if x["quantity"] == "sigma_laser_bound"))
 
     # Panel (c) is now as tall as the two data panels, and the gaps are wider.
@@ -3181,6 +3770,399 @@ def fig_joint_fit_twenty():
     _save(fig, "fig22_joint_fit_twenty.png")
 
 
+def fig_radiation_environment():
+    """The three radiation fields a hot cell puts on these atoms, on one axis.
+
+    WHY THIS FIGURE EXISTS. Three separate questions were put at the bench over
+    two days, each about a different colour of light in the same cell, and each
+    was answered with its own table. The answers span nineteen orders of
+    magnitude in rate, which no table makes legible and a log axis does in one
+    look. The left panel says why: the occupation number of a thermal mode
+    falls off exponentially in h*nu/kT, and every line of this cascade sits far
+    to the blue of where the thermal photons actually are. The right panel is
+    the consequence, every channel scored against the drive that produces the
+    signal.
+
+    THE READING. Trapped light on the cascade's own infrared legs is a per-cent
+    effect and worth carrying. Blackbody light on the same legs is twelve orders
+    below it. The one blackbody channel that is not negligible-squared, 6S to
+    6P at 2.7 um, is visible here as the single thermal bar that clears the
+    floor, and it is still two parts per million of the natural decay.
+
+    Everything is computed at draw time from the same functions the two
+    scripts use, so the figure cannot drift from the record it illustrates.
+    """
+    import math
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    import run_blackbody_channels as BB                     # noqa: E402
+    import run_trapping_channels as TR                      # noqa: E402
+    from run_geometry_design import ramp_moments            # noqa: E402
+    from rb5s6s.constants import (GAMMA_NAT_HZ, TAU_5P12_S,  # noqa: E402
+                                  TAU_6S_S)
+    from rb5s6s.polarizability import E_6S_CM               # noqa: E402
+
+    W0, ZC_M, P_MAX = C.W0_MEASURED_M, 2.2e-3, 0.225
+    t_c = 130.0
+    t_k = t_c + 273.15
+    h, kb, cl = 6.62607015e-34, 1.380649e-23, 2.99792458e8
+
+    # the lines this cascade actually has, computed not typed
+    lam12, a12 = TR._leg(*TR.LINES_6S[0][:2])
+    lam32, a32 = TR._leg(*TR.LINES_6S[1][:2])
+    b12 = a12 / (a12 + a32)
+    lines = [("D1, detected", 794.979e-9, 1.0 / TAU_5P12_S, "#a63430"),
+             ("6S to 5P$_{1/2}$", lam12, a12, "#0072B2"),
+             ("6S to 5P$_{3/2}$", lam32, a32, "#0072B2")]
+    for e_cm, d_au, tag in ((23715.081, 9.72, "6S to 6P$_{3/2}$"),
+                            (23792.591, 13.645, "6S to 6P$_{1/2}$")):
+        lam = 1e7 / (e_cm - E_6S_CM) * 1e-9
+        lines.append((tag, lam, BB.einstein_a(lam, d_au), "#009E73"))
+
+    fig = plt.figure(figsize=(12.6, 4.9))
+    gs = fig.add_gridspec(1, 2, wspace=0.30, left=0.075, right=0.955,
+                          top=0.88, bottom=0.30)
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    # ---- (a) the occupation number, and where the thermal photons are ----
+    lam_um = np.logspace(np.log10(0.5), np.log10(60.0), 700)
+    x = h * cl / (lam_um * 1e-6 * kb * t_k)
+    nbar = 1.0 / np.expm1(np.clip(x, 1e-9, 700.0))
+    # the photon spectral density peaks near 7.2 um at this temperature; shade
+    # where it is within a decade of that peak, which is where the photons are
+    dens = (lam_um * 1e-6) ** -4 / np.expm1(np.clip(x, 1e-9, 700.0))
+    band = lam_um[dens > 0.1 * dens.max()]
+    ax.axvspan(band.min(), band.max(), color="0.88", zorder=0)
+    # inside the band and BELOW the curve, which is the only empty region
+    # there: the curve rises through the top of the band and struck this
+    # label out when it sat above it
+    # far right of the band, well below the curve and well clear of the 2.7 um
+    # annotation. The first placement put it at the band's geometric centre,
+    # which overlapped that annotation by 82 per cent, and I read it as
+    # adjacent. The guard measured it.
+    ax.text(band.max() * 0.75, 1e-5,
+            "where the thermal\nphotons actually are", fontsize=8.0,
+            color="0.4", ha="center", va="center")
+    ax.plot(lam_um, nbar, color="0.2", lw=2.2, zorder=3)
+    for tag, lam, _a, col in lines:
+        lu = lam * 1e6
+        nb = 1.0 / math.expm1(h * cl / (lam * kb * t_k))
+        ax.plot([lu], [nb], "o", color=col, ms=7, zorder=5)
+    # label the two ends only, so five markers do not become five labels
+    for tag, lam, col, dy, ha in (
+            ("the line we detect,\n795 nm", 794.979e-9, "#a63430", 6.0, "left"),
+            ("the cascade legs,\n1324 and 1367 nm", lam12, "#0072B2", 0.06, "left"),
+            ("6S to 6P, 2.7 µm\nthe one thermal channel\nthat is not nothing",
+             1e7 / (23715.081 - E_6S_CM) * 1e-9, "#009E73", 4e-4, "left")):
+        lu, nb = lam * 1e6, 1.0 / math.expm1(h * cl / (lam * kb * t_k))
+        ax.annotate(tag, xy=(lu, nb), xytext=(lu * 1.5, nb * dy),
+                    fontsize=8.2, color=col, ha=ha, va="top",
+                    arrowprops=dict(arrowstyle="-", color=col, lw=1.0))
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(0.5, 60.0)
+    ax.set_ylim(1e-22, 30.0)
+    ax.set_xlabel("wavelength (µm)")
+    ax.set_ylabel(f"thermal occupation number at {t_c:.0f} °C")
+    ax.set_title("(a)  every line of this cascade is far from the heat",
+                 fontsize=10.5, loc="left")
+    ax.grid(alpha=0.25, which="both")
+
+    # ---- (b) the rates that follow, against the drive itself -------------
+    m = ramp_moments(W0, P_MAX, ZC_M)
+    f_ex = (m["sat_w"] / 2.0) / (1.0 + m["sat_w"])
+    primary = 2.0 * math.pi * GAMMA_NAT_HZ * f_ex
+    s12 = TR._sigma_peak_cm2(lam12, a12, 2, 2)
+    z_r = math.pi * W0 ** 2 / 993.4e-9
+    v_beam = math.pi * W0 ** 2 * (2.0 * z_r) * 1e6
+    halo_pct = TR.halo_reexcitation(t_c, TR.STANDOFF_CM, f_ex, b12, s12,
+                                    v_beam)[2]
+    lo_pct, hi_pct = TR.halo_band(t_c, f_ex, b12, s12, v_beam)
+    bbr_up = sum(BB.nbar(lam, t_k) * BB.einstein_a(lam, d) * g
+                 for lam, d, g in
+                 ((1e7 / (23715.081 - E_6S_CM) * 1e-9, 9.72, 2.0),
+                  (1e7 / (23792.591 - E_6S_CM) * 1e-9, 13.645, 1.0)))
+    bars = [
+        ("natural 6S decay", 1.0 / TAU_6S_S, "0.45", None),
+        ("the two-photon drive", primary, "#a63430", None),
+        ("trapped infrared,\nre-exciting 5P to 6S", primary * halo_pct / 100.0,
+         "#0072B2", (primary * lo_pct / 100.0, primary * hi_pct / 100.0)),
+        ("blackbody, 6S to 6P", bbr_up, "#009E73", None),
+        ("blackbody,\nre-exciting 5P to 6S",
+         BB.nbar(lam32, t_k) * a32 * 0.5, "#009E73", None),
+        ("blackbody, stimulating D1",
+         BB.nbar(794.979e-9, t_k) / TAU_5P12_S, "#009E73", None),
+    ]
+    ypos = np.arange(len(bars))[::-1]
+    for y, (lab, val, col, band_lohi) in zip(ypos, bars):
+        bx.barh([y], [val], height=0.62, color=col, edgecolor="0.2", lw=0.8)
+        if band_lohi is not None:
+            bx.plot(band_lohi, [y, y], color="0.15", lw=1.6, zorder=4)
+            bx.plot([band_lohi[0]], [y], "|", color="0.15", ms=9, zorder=4)
+            bx.plot([band_lohi[1]], [y], "|", color="0.15", ms=9, zorder=4)
+        bx.text(val * 2.2, y, f"{val:.3g}" + (r"  s$^{-1}$" if val > 1e-3
+                                              else r"  s$^{-1}$"),
+                fontsize=8.0, va="center", color="0.2")
+    bx.set_yticks(ypos)
+    bx.set_yticklabels([b[0] for b in bars], fontsize=8.4)
+    bx.set_xscale("log")
+    bx.set_xlim(1e-14, 1e13)
+    bx.set_xlabel(r"rate per atom (s$^{-1}$)"
+                  f"  ·  130 °C, 225 mW, {W0*1e6:.0f} µm")
+    bx.set_title("(b)  and the rates span nineteen decades",
+                 fontsize=10.5, loc="left")
+    bx.grid(axis="x", alpha=0.25, which="both")
+    bx.text(0.985, 0.06,
+            "the bar on the trapped-infrared row is the\n"
+            "standoff band, which is the only quantity here\n"
+            "with a geometric rather than an atomic error",
+            transform=bx.transAxes, fontsize=7.6, color="0.35",
+            ha="right", va="bottom")
+
+    _footer(fig, "figure 27 | rb5s6s.polarizability line data, "
+                 "run_trapping_channels (halo + standoff band), "
+                 "run_blackbody_channels (thermal), "
+                 "run_geometry_design.ramp_moments (the drive)\n"
+                 "results/trapping_channels.csv, "
+                 "results/blackbody_channels.csv | "
+                 "python scripts/make_figures.py")
+    _save(fig, "fig27_radiation_environment.png", rect=(0, 0.055, 1, 1))
+
+
+def fig_cascade_resolved():
+    """Why the cascade branching is not the degeneracy weight, resolved.
+
+    WHY THIS FIGURE EXISTS. The pumping branching f is quoted everywhere as the
+    naive degeneracy weight of the undriven ground level times 8/9 or 4/9, and
+    a reader who knows the hyperfine selection rules will immediately object:
+    those two fractions look like an averaging over structure that has real
+    exceptions in it. The objection is correct and the answer is not a
+    paragraph. EVERY one of the four lines feeds one 5P3/2 level that cannot
+    reach the undriven ground level at all, because a J = 1 photon cannot
+    change F by two, and those levels are different per line and carry between
+    0.17 and 0.70 of that leg.
+
+    Panel (a) draws one line's cascade resolved by intermediate F, with the
+    blocked path marked. Panel (b) is the point: the individual intermediate
+    contributions scatter over the whole range, and their sums land on exactly
+    two values for all four lines and both isotopes. That is a sum rule, and
+    scripts/run_zeeman_depletion.py derives it as 2(1-p) with p the purely
+    ELECTRONIC non-flip probability, then checks it again as an exact-rational
+    density matrix with every coherence kept.
+
+    Read from results/cascade_branching.csv rather than recomputed, because
+    that producer needs sympy for exact Wigner symbols and sympy is an optional
+    extra here: make_figures must draw in an environment without it.
+    """
+    import csv as _csv
+    rows = list(_csv.DictReader(
+        open(C.RESULTS_DIR / "cascade_branching.csv", newline="")))
+
+    def pick(q, key):
+        for r in rows:
+            if r["quantity"] == q and r["key"] == key:
+                return float(r["value"])
+        raise KeyError(f"{q} {key}")
+
+    def resolved(leg, lam):
+        out = []
+        for r in rows:
+            if r["quantity"] == f"resolved_weight_{leg}" and r["key"].startswith(lam):
+                f_int = int(r["key"].split("_F")[1])
+                out.append((f_int, float(r["value"]),
+                            pick(f"resolved_branch_{leg}", r["key"])))
+        return sorted(out)
+
+    lams = ["993.4121", "993.4154", "993.4192", "993.4207"]
+    iso = {"993.4121": "$^{87}$Rb", "993.4154": "$^{85}$Rb",
+           "993.4192": "$^{85}$Rb", "993.4207": "$^{87}$Rb"}
+
+    fig = plt.figure(figsize=(12.6, 5.0))
+    gs = fig.add_gridspec(1, 2, wspace=0.30, left=0.075, right=0.975,
+                          top=0.87, bottom=0.42, width_ratios=[1.0, 1.0])
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    # ---- (a) one line's cascade, resolved -------------------------------
+    # A flow diagram was tried first and abandoned: every intermediate level
+    # feeds both ground levels, so the lines cross by construction and the
+    # blocked path was lost in the tangle. Stacked bars carry the same two
+    # numbers per level, the weight and the split, and nothing crosses.
+    lam = "993.4121"
+    rws = resolved("5P32", lam)
+    ypos = np.arange(len(rws))[::-1]
+    for y, (f_int, w, b) in zip(ypos, rws):
+        back, lost = w * (1.0 - b), w * b
+        ax.barh([y], [back], height=0.55, color="#9ecae1", edgecolor="0.25",
+                lw=0.8)
+        ax.barh([y], [lost], left=[back], height=0.55, color="#a63430",
+                edgecolor="0.25", lw=0.8)
+        ax.text(w + 0.012, y, f"{w:.2f} of the leg", fontsize=8.2,
+                color="0.3", va="center")
+        if lost < 1e-12:
+            ax.text(back + 0.006, y - 0.34, "nothing lost here", fontsize=8.0,
+                    color="#a63430", va="center", ha="left")
+    ax.set_yticks(ypos)
+    ax.set_yticklabels([f"$F'$ = {f_int}" for f_int, _w, _b in rws],
+                       fontsize=10)
+    ax.set_xlim(0, 0.62)
+    ax.set_xlabel("share of the atoms taking this leg")
+    ax.set_title(f"(a)  {lam} nm, {iso[lam]} $F$ = 1 driven, through "
+                 r"$5P_{3/2}$", fontsize=10.5, loc="left")
+    ax.grid(axis="x", alpha=0.25)
+    # direct labels on the widest bar rather than a legend box, which covered
+    # a value label wherever it was placed
+    widest = max(range(len(rws)), key=lambda k: rws[k][1])
+    wy = ypos[widest]
+    _f, ww, wb = rws[widest]
+    ax.text(ww * (1.0 - wb) / 2.0, wy, "back to $F$ = 1,\nstill in the line",
+            fontsize=8.0, color="0.15", ha="center", va="center")
+    ax.text(ww * (1.0 - wb) + ww * wb / 2.0, wy + 0.42, "to $F$ = 2,\ngone",
+            fontsize=8.0, color="#a63430", ha="center", va="bottom")
+    ax.text(0.0, -0.235,
+            r"$F'$ = 0 takes " f"{rws[0][1]:.2f}" r" of this leg and loses NONE of it: a "
+            r"$J=1$ photon cannot" "\n"
+            r"change $F$ by two, so $F'=0$ cannot reach $F=2$ at all. Every one of the"
+            "\nfour lines feeds one such level, and they are different levels: "
+            r"$F'$ = 0, 1, 4, 3." "\n"
+            f"The three bars sum to {sum(w*b for _f, w, b in rws):.4f} lost, "
+            "which is exactly 4/9 of the\ndegeneracy weight 5/8, and panel (b) "
+            "is why that is not a coincidence.",
+            transform=ax.transAxes, fontsize=8.2, color="0.25", va="top")
+
+    # ---- (b) the parts scatter, the sums do not --------------------------
+    for k, (leg, col, mk) in enumerate((("5P12", "#0072B2", "o"),
+                                        ("5P32", "#009E73", "s"))):
+        for j, lam in enumerate(lams):
+            naive = pick("naive_weight", lam)
+            parts = [w * b / naive for _f, w, b in resolved(leg, lam)]
+            xj = j + (-0.13 if k == 0 else 0.13)
+            bx.plot([xj] * len(parts), parts, mk, color=col, ms=4.5,
+                    alpha=0.45, mew=0)
+            bx.plot([xj], [pick(f"leg_ratio_{leg}", lam)], mk, color=col,
+                    ms=11, mec="0.15", mew=1.0,
+                    label=None)
+    for y, lab, col in ((8.0 / 9.0, "8/9\nvia $5P_{1/2}$", "#0072B2"),
+                        (4.0 / 9.0, "4/9\nvia $5P_{3/2}$", "#009E73")):
+        bx.axhline(y, color=col, lw=1.3, ls=(0, (5, 3)), zorder=0)
+        bx.text(3.46, y, lab, fontsize=8.8, color=col, va="center", ha="left")
+    bx.set_xticks(range(4))
+    bx.set_xticklabels([f"{lam}\n{iso[lam]}" for lam in lams], fontsize=8.4)
+    bx.set_xlim(-0.45, 4.12)
+    # headroom for the two-line reference labels, which were clipped at the top
+    bx.set_ylim(-0.06, 1.08)
+    bx.set_ylabel("branching, over its degeneracy weight")
+    bx.set_title("(b)  the parts scatter, the sums are two numbers",
+                 fontsize=10.5, loc="left")
+    bx.grid(axis="y", alpha=0.25)
+    bx.text(0.5, 0.055,
+            "small markers: each intermediate $F$ on its own.  large: the leg's sum.",
+            transform=bx.transAxes, fontsize=8.0, color="0.35", ha="center")
+
+    _footer(fig, "figure 28 | results/cascade_branching.csv, written by "
+                 "scripts/run_zeeman_depletion.py (Wigner 3j and 6j symbols, "
+                 "and the same branching again as an exact-rational density "
+                 "matrix)\npython scripts/make_figures.py")
+    _save(fig, "fig28_cascade_resolved.png", rect=(0, 0.055, 1, 1))
+
+
+def fig_isotope_transit():
+    """The two isotopes do not share a transit width, and why that is stated
+    rather than corrected.
+
+    WHY THIS FIGURE EXISTS. The transit kernel goes as the thermal speed, so it
+    goes as one over the square root of the mass, and this cell holds two
+    masses. 85Rb is 1.169 per cent faster and its kernel is wider by the same
+    fraction, which is 11.4 kHz at 130 C on a width quoted to 0.01 MHz. Every
+    fit in this record nevertheless shares one transit width between the
+    isotopes, and the reason is the second panel rather than the first.
+
+    THE READING. Against DENSITY, which is the lever the collisional
+    coefficient is read from, the misassignment is almost entirely a constant
+    OFFSET: it runs 10.53 to 11.42 kHz across a 52-fold change in density,
+    while the per-line core width, which is free in every construction here,
+    absorbs any constant. What reaches beta is the SLOPE, and the second panel
+    draws it against what one standard error on the measured difference between
+    the isotopes would look like on the same axes. The two are a factor of 240
+    apart, which is why the isotope argument exists in the code as an opt-in
+    whose default is the shared behaviour.
+    """
+    from rb5s6s.density import number_density_cm3
+    from rb5s6s.linefit import transit_fwhm_at_T
+
+    temps = np.linspace(60.0, 140.0, 200)
+    ref = 0.96                       # the record's own transit width at 110 C
+    w85 = np.array([transit_fwhm_at_T(t, ref, isotope=85) for t in temps])
+    w87 = np.array([transit_fwhm_at_T(t, ref, isotope=87) for t in temps])
+    sweep = [70.0, 90.0, 110.0, 130.0]
+    dens = np.array([number_density_cm3(t) / 1e12 for t in sweep])
+    gap = np.array([1e3 * (transit_fwhm_at_T(t, ref, isotope=85)
+                           - transit_fwhm_at_T(t, ref, isotope=87))
+                    for t in sweep])
+    slope, icpt = np.polyfit(dens, gap, 1)
+    sigma_beta_khz_per_1e12 = 6.4    # one sigma on the measured beta85-beta87
+
+    fig = plt.figure(figsize=(12.2, 4.7))
+    gs = fig.add_gridspec(1, 2, wspace=0.28, left=0.07, right=0.98,
+                          top=0.88, bottom=0.38)
+    ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
+
+    ax.plot(temps, w85, color="#D55E00", lw=2.2, label=r"$^{85}$Rb, lighter")
+    ax.plot(temps, w87, color="#0072B2", lw=2.2, label=r"$^{87}$Rb")
+    for t in sweep:
+        ax.axvline(t, color="0.85", lw=0.9, zorder=0)
+    ax.set_xlabel("cell temperature (°C)")
+    ax.set_ylabel("transit FWHM (MHz, transition axis)")
+    ax.set_title("(a)  two masses, two crossing speeds, two kernels",
+                 fontsize=10.5, loc="left")
+    ax.legend(fontsize=9, loc="upper left")
+    ax.grid(alpha=0.25)
+    xg = 136.0
+    ax.plot([xg, xg], [w87[-1], w85[-1]], "-", color="0.25", lw=1.4)
+    for yv in (w87[-1], w85[-1]):
+        ax.plot([xg - 1.2, xg + 1.2], [yv, yv], "-", color="0.25", lw=1.4)
+    ax.text(xg - 2.2, 0.5 * (w85[-1] + w87[-1]),
+            f"{1e3*(w85[-1]-w87[-1]):.0f} kHz\nat 140 °C", fontsize=8.6,
+            color="0.25", ha="right", va="center")
+
+    dl = np.logspace(np.log10(dens.min() * 0.7), np.log10(dens.max() * 1.4), 50)
+    bx.plot(dl, icpt + slope * dl, "-", color="#D55E00", lw=2.0,
+            label="the isotope gap, against density")
+    bx.plot(dens, gap, "o", color="#D55E00", ms=8, mec="0.15", mew=1.0,
+            zorder=4)
+    for d, g, t in zip(dens, gap, sweep):
+        bx.annotate(f"{t:.0f} °C", xy=(d, g), xytext=(0, -14),
+                    textcoords="offset points", fontsize=8.0, color="0.35",
+                    ha="center")
+    bx.plot(dl, gap[0] + sigma_beta_khz_per_1e12 * (dl - dens[0]), "--",
+            color="0.35", lw=1.8,
+            label=r"what ONE $\sigma$ on $\beta_{85}-\beta_{87}$ looks like")
+    bx.set_xscale("log")
+    bx.set_yscale("log")
+    bx.set_xlabel(r"density ($10^{12}$ cm$^{-3}$), the lever $\beta$ is read from")
+    bx.set_ylabel("misassigned width (kHz)")
+    bx.set_title("(b)  and against the lever, almost all of it is offset",
+                 fontsize=10.5, loc="left")
+    bx.legend(fontsize=8.4, loc="upper left")
+    bx.grid(alpha=0.25, which="both")
+    # every number here computed, and the lines kept short enough to sit
+    # inside the panel: a first version hard-coded the two ends of the gap and
+    # ran off the right edge
+    bx.text(0.0, -0.235,
+            f"The gap runs {gap.min():.2f} to {gap.max():.2f} kHz across a "
+            f"{dens.max()/dens.min():.0f}-fold change in density,\n"
+            f"so a line through it has a slope of {slope:.4f} kHz per "
+            r"$10^{12}$ cm$^{-3}$, which is" "\n"
+            f"{100*slope/sigma_beta_khz_per_1e12:.2f} per cent of one "
+            r"$\sigma$ on $\beta_{85}-\beta_{87}$. The free per-line core"
+            "\nwidth absorbs the offset, so what the shared transit width "
+            "costs the\ncollisional coefficient is measured and small.",
+            transform=bx.transAxes, fontsize=8.2, color="0.25", va="top")
+
+    _footer(fig, "figure 29 | rb5s6s.linefit.transit_fwhm_at_T (isotope=), "
+                 "rb5s6s.constants masses, rb5s6s.density.number_density_cm3\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig29_isotope_transit.png", rect=(0, 0.055, 1, 1))
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -3194,6 +4176,7 @@ def main() -> int:
     fig_laser_history()
     fig_ramp_construction()
     fig_level_scheme()
+    fig_hyperfine_pumping()
     fig_wavemeter_reconstruction()
     fig_drift_story()
     fig_fit_gallery()
@@ -3203,6 +4186,17 @@ def main() -> int:
     fig_method_loop()
     fig_joint_fit_five()
     fig_joint_fit_twenty()
+    # Added 2026-08-10. These three were written on 2026-08-10, drawn once by
+    # calling them directly, and never added here, so `make_figures.py` did not
+    # reproduce them and `run_all.sh` could not either. They were committed
+    # PNGs with no live producer. tests/test_figures_have_a_producer.py now
+    # fails if that happens again.
+    fig_weak_field_limit()
+    fig_retro_combination()
+    fig_lineshape_kernels()
+    fig_radiation_environment()
+    fig_cascade_resolved()
+    fig_isotope_transit()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

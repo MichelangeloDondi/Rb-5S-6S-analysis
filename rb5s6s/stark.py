@@ -16,6 +16,38 @@ skew handle (~S0^3) is weaker still and shot-noise-dominated (M6 C3c). A fixed
 lock would measure the pull ~S0 directly, and at a smaller waist (S0 several-fold
 larger) -- that is the actual measurement; this archival bound brackets it.
 
+AND THE P^2 BROADENING THIS FITS IS NOT ONLY THE RAMP (2026-08-10). Two other
+effects broaden the line with the identical P^2 signature and are absent from
+the forward model here, so whatever P^2 growth the fit sees, it attributes all
+of it to kappa and the bound comes out LOOSE. They are atomic saturation, the
+larger at about 3.7 times the ramp at the predicted S0, and hyperfine pumping
+through the real 5P cascade, whose decay does not preserve F. Injecting the
+saturation term and re-profiling moves this width-only bound from 0.6325 to
+about 0.23 MHz (factor 2.8) and the joint C3f bound by 2.21. NEITHER COMMITTED
+BOUND MOVES, because the injected law is the two-level homogeneous form used
+with a two-photon Rabi frequency, standard practice rather than a derivation
+for this level structure, so the looseness is carried with its size stated.
+
+The degeneracy is complete in both CONTINUOUS knobs this module has. All three
+terms go as P^2, and all three go as the inverse fourth power of the waist (the
+ramp because its increment goes as S0^2 and S0 goes as w0^-2, the companions
+because the saturation parameter carries Omega^2 and Omega is two-photon). So
+neither a power sweep nor a change of focus separates them.
+
+TWO THINGS DO. The centroid pull, because the companions broaden the line
+without moving it. And the LINE INDEX (2026-08-10): this module fits ONE shared
+kappa across the four peaks, which is right for the ramp and for the saturation
+since both are F-independent, and wrong for the pumping, whose branching runs
+0.223, 0.248, 0.348, 0.372 across 4207, 4192, 4154 and 4121. Those come from
+the two-step cascade with 6j symbols, not from a degeneracy weight, because the
+scalar two-photon operator leaves 6S in a single hyperfine level. A per-line
+pumping term with those FIXED coefficients and one free scale would be
+separable from the shared kappa in principle. In practice the spread is 4 kHz
+against an 88 kHz single-block width scatter, so this archive cannot resolve
+it, and the sharing stays. Reproduce with scripts/run_saturation_probe.py; write-up in
+docs/notes/two_photon_saturation_companion.md, drawn in
+figures/fig23_hyperfine_pumping.png.
+
 One kappa is SHARED across the four peaks (the Stark coefficient is an
 atomic+beam property, ~common to the hyperfine components), while each peak
 floats its own power-INDEPENDENT core width -- so kappa is constrained purely by

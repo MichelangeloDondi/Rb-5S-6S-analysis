@@ -47,18 +47,28 @@ def main() -> int:
 
     with open(C.RESULTS_DIR / "coverage.csv", "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["quantity", "key", "value", "unit"])
+        w.writerow(["quantity", "key", "value", "err", "unit", "status"])
         for t, b in mde.items():
-            w.writerow(["mde_beta", f"detect_{int(t*100)}pct", f"{b:.3f}",
+            w.writerow(["mde_beta", f"detect_{int(t*100)}pct", f"{b:.3f}", "",
                         "MHz/1e12; true beta this analysis would CALL a measurement "
-                        "at this probability (the sensitivity behind the null)"])
+                        "at this probability (the sensitivity behind the null); read "
+                        "off a grid, so its resolution is the grid step", "DIAGNOSTIC"])
         for r in rows:
             k = f"beta_true_{r['beta_true']:.2f}"
-            w.writerow(["bias", k, f"{r['bias']:.4f}", "MHz/1e12; mean(beta_eff)-beta_true"])
-            w.writerow(["coverage95", k, f"{r['coverage']:.3f}",
-                        "fraction bound95_nscale >= beta_true (>=0.95 = valid)"])
+            w.writerow(["bias", k, f"{r['bias']:.4f}", f"{r['bias_se']:.4f}",
+                        "MHz/1e12; mean(beta_eff)-beta_true; err is the Monte-Carlo "
+                        "standard error over n_trials", "DIAGNOSTIC"])
+            w.writerow(["scatter", k, f"{r['scatter']:.4f}", f"{r['scatter_se']:.4f}",
+                        "MHz/1e12; sd of beta_eff across trials; err is its own "
+                        "Monte-Carlo standard error", "DIAGNOSTIC"])
+            w.writerow(["coverage95", k, f"{r['coverage']:.3f}", f"{r['coverage_se']:.3f}",
+                        "fraction bound95_nscale >= beta_true (>=0.95 = valid); err is "
+                        "binomial over n_trials, so a shortfall inside it is sampling "
+                        "noise rather than a coverage failure", "DIAGNOSTIC"])
             w.writerow(["false_measurement_rate", k, f"{r['false_measurement_rate']:.3f}",
-                        "fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive)"])
+                        f"{r['false_measurement_rate_se']:.3f}",
+                        "fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive); err is binomial",
+                        "DIAGNOSTIC"])
 
     print("\n  READING: the point estimate is unbiased (bias ~ 0); the Student-t 95%")
     print("  bound COVERS the truth at >= 95% (conservative, the safe direction for a")

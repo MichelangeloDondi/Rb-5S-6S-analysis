@@ -7,6 +7,7 @@ combined_kappa_transition,primary,4.7519,2.3714,"MHz per W, transition axis; inv
 kappa_ub95_m23,reference,1.1470,,MHz per W; echoed from results/stark_joint.csv for comparison,DIAGNOSTIC
 kappa_pred,reference,1.5450,,MHz per W; echoed from results/stark_joint.csv for comparison,DIAGNOSTIC
 diag_double_drift_prior,primary,4.4114,2.8837,MHz per W; drift prior sigma doubled to 0.018 MHz/min and refit,DIAGNOSTIC
+diag_sign_undetermined_drift_prior,primary,6.6287,3.3946,"MHz per W; drift prior replaced by 0 +/- 0.020 MHz/min, the sign-undetermined form the 2026-07-30 window-reference correction leaves licensed",DIAGNOSTIC
 diag_leave_one_out,drop_23,4.1874,3.6043,MHz per W; combined kappa_transition with epoch 23 dropped,DIAGNOSTIC
 diag_leave_one_out,drop_28,8.7598,2.5744,MHz per W; combined kappa_transition with epoch 28 dropped,DIAGNOSTIC
 diag_leave_one_out,drop_33,3.6096,1.8356,MHz per W; combined kappa_transition with epoch 33 dropped,DIAGNOSTIC
@@ -16,4 +17,5 @@ control_epoch,14_993.4192nm,0.0492,4.2686,"MHz per W; single-power epoch, synthe
 control_epoch,34_993.4121nm,2.9715,3.1058,"MHz per W; single-power epoch, synthetic -50 mW step injected at true Delta-power=0 -- estimator false-positive check",DIAGNOSTIC
 control_epoch,29_993.4154nm,-4.8129,1.7905,"MHz per W; single-power epoch, synthetic -50 mW step injected at true Delta-power=0 -- estimator false-positive check",DIAGNOSTIC
 kappa_ub95_centre,primary,8.6529,,"MHz per W; one-sided 95% Wald bound on the combined centre-channel kappa (same construction as stark_joint.csv's kappa_ub95); quote this, not the combined point estimate -- see the verdict row",BOUND
+diag_kappa_ub95_centre_sign_undetermined,primary,12.2129,,"MHz per W; the same one-sided 95% Wald bound rebuilt on the sign-undetermined drift prior. It LOOSENS relative to the quoted bound, so the quoted bound is not conservative with respect to the 2026-07-30 window-reference correction, and the channel stays several times weaker than the width channel under both",DIAGNOSTIC
 verdict,case_3,3,,"case 3: not robust. Leave-one-out pulls range 1.16-3.40 sigma depending on which epoch is dropped, and a genuinely zero-signal control epoch reproduces a comparable (2.69 sigma) spurious pull from an injected fake power step. Reported as a BOUND, not a pull.",BOUND

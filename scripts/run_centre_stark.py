@@ -129,6 +129,13 @@ OUT_CSV = C.RESULTS_DIR / "centre_stark.csv"
 DRIFT_PRIOR_MEAN = 0.016     # MHz/min
 DRIFT_PRIOR_SIGMA = (0.025 - 0.007) / 2.0   # 0.009, from the quoted 68% band
 
+# The same drift after the 2026-07-30 window-reference correction, which
+# withdrew the licence for its SIGN and left a two-sided bound of about
+# 0.02 MHz/min. Carried as a diagnostic refit rather than as the primary,
+# because the primary's own controls already show the prior is not what
+# sets the answer (see the DIAGNOSTICS block).
+DRIFT_PRIOR_SIGMA_UNDETERMINED = 0.020   # MHz/min, two-sided, zero-centred
+
 # Ramp geometry, archival configuration -- same literal run_stark_centres.py
 # (M21) uses, cited there to methods/03; kept identical across both
 # centre-channel modules rather than independently recomputed.
@@ -164,6 +171,7 @@ def _epochs(rows):
 
 
 def fit_epoch(rs: list[dict], *, drift_sigma: float = DRIFT_PRIOR_SIGMA,
+              drift_mean: float = DRIFT_PRIOR_MEAN,
               fake_delta_p_w: float | None = None) -> dict:
     """Delta-centre = kappa_eff * Delta-power + drift * Delta-t, drift-prior
     marginalised, on every individual trace of one epoch.
@@ -171,6 +179,11 @@ def fit_epoch(rs: list[dict], *, drift_sigma: float = DRIFT_PRIOR_SIGMA,
     `fake_delta_p_w`: for the zero-signal control -- ignore the (constant)
     real power and inject a synthetic step at the temporal midpoint instead,
     so the true kappa_eff is zero by construction.
+
+    `drift_mean`: the prior centre. The default is the directional value
+    this module was built on. The sign-undetermined refit of addendum 29
+    passes 0 with the bound as the width, which is the licensed state of
+    knowledge after the 2026-07-30 window-reference correction.
     """
     rs = sorted(rs, key=lambda r: int(r["t_epoch"]))
     t0 = min(int(r["t_epoch"]) for r in rs)
@@ -196,7 +209,7 @@ def fit_epoch(rs: list[dict], *, drift_sigma: float = DRIFT_PRIOR_SIGMA,
     # pseudo-observation -- exact for a linear-Gaussian model, no
     # profiling needed.
     x_aug = np.vstack([x, [0.0, 0.0, 1.0]])
-    y_aug = np.concatenate([y, [DRIFT_PRIOR_MEAN]])
+    y_aug = np.concatenate([y, [drift_mean]])
     w = np.concatenate([np.full(n, 1.0 / sigma_hat ** 2), [1.0 / drift_sigma ** 2]])
     a_mat = x_aug.T @ (w[:, None] * x_aug)
     b_vec = x_aug.T @ (w * y_aug)
@@ -213,7 +226,7 @@ def fit_epoch(rs: list[dict], *, drift_sigma: float = DRIFT_PRIOR_SIGMA,
     # form silently wrong, not a search for local minima.
     def penalised_resid(theta_):
         r = (x @ theta_ - y) / sigma_hat
-        rd = (theta_[2] - DRIFT_PRIOR_MEAN) / drift_sigma
+        rd = (theta_[2] - drift_mean) / drift_sigma
         return np.concatenate([r, [rd]])
 
     rng = np.random.default_rng(20260802)
@@ -329,6 +342,28 @@ def main() -> int:
         f"MHz per W; drift prior sigma doubled to {2*DRIFT_PRIOR_SIGMA:.3f} MHz/min and refit",
         "DIAGNOSTIC")
 
+    # Sign-undetermined drift prior (amendment 29). The directional prior
+    # above predates the 2026-07-30 window-reference correction, which
+    # withdrew the licence for the drift's SIGN while leaving its size at
+    # about 0.02 MHz/min. This refit replaces the prior with a zero-centred
+    # one of that width, which is what the corrected record supports.
+    undet = {}
+    for ep in per_epoch:
+        r = fit_epoch(by_epoch[ep], drift_sigma=DRIFT_PRIOR_SIGMA_UNDETERMINED,
+                      drift_mean=0.0)
+        undet[ep] = (r["kappa_transition"], r["kappa_transition_err"])
+    uks = np.array([v[0] for v in undet.values()])
+    uke = np.array([v[1] for v in undet.values()])
+    u_mean, u_err, u_chi2 = combine_rates(uks, uke)
+    print(f"    sign-undetermined drift prior (0 +/- "
+          f"{DRIFT_PRIOR_SIGMA_UNDETERMINED:.3f}): combined "
+          f"{u_mean:+.3f} +/- {u_err:.3f} MHz/W ({abs(u_mean)/u_err:.2f} sigma)")
+    add("diag_sign_undetermined_drift_prior", "primary", u_mean, u_err,
+        f"MHz per W; drift prior replaced by 0 +/- "
+        f"{DRIFT_PRIOR_SIGMA_UNDETERMINED:.3f} MHz/min, the sign-undetermined "
+        f"form the 2026-07-30 window-reference correction leaves licensed",
+        "DIAGNOSTIC")
+
     loo = {}
     for drop in per_epoch:
         remaining = {k: v for k, v in per_epoch.items() if k != drop}
@@ -396,6 +431,23 @@ def main() -> int:
         "MHz per W; one-sided 95% Wald bound on the combined centre-channel kappa "
         "(same construction as stark_joint.csv's kappa_ub95); quote this, not the "
         "combined point estimate -- see the verdict row", "BOUND")
+
+    # The same bound under the sign-undetermined drift prior. It LOOSENS,
+    # so the quoted bound above is not conservative with respect to the
+    # 2026-07-30 correction. Nothing downstream turns on it: the channel is
+    # already several times weaker than the width channel either way, and
+    # the verdict is a bound under both priors.
+    kappa_bound_undet = u_mean + 1.645 * u_err
+    print(f"  centre-channel kappa_ub95, sign-undetermined prior = "
+          f"{kappa_bound_undet:.3f} MHz/W "
+          f"({kappa_bound_undet/kappa_ub95_m23:.1f}x the M23 width-channel bound)")
+    add("diag_kappa_ub95_centre_sign_undetermined", "primary", kappa_bound_undet, "",
+        "MHz per W; the same one-sided 95% Wald bound rebuilt on the "
+        "sign-undetermined drift prior. It LOOSENS relative to the quoted "
+        "bound, so the quoted bound is not conservative with respect to the "
+        "2026-07-30 window-reference correction, and the channel stays "
+        "several times weaker than the width channel under both",
+        "DIAGNOSTIC")
     add("verdict", f"case_{case}", case, "", verdict, "PRELIM" if case == 1 else "BOUND")
 
     C.RESULTS_DIR.mkdir(exist_ok=True)

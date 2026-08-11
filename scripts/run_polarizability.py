@@ -57,6 +57,19 @@ def main() -> int:
     a6_1064 = alpha_6s(1064.0)
     magic = magic_wavelengths()
 
+    # Monte-Carlo bands on the six quantities that used to ship without one.
+    # Added 2026-08-10: the same mc_band() the file already uses for
+    # Delta_alpha, alpha_6S(1064) and the magic crossings, applied to the
+    # rest of the model's outputs so every quantity in this file carries the
+    # same uncertainty machinery rather than four of ten having none.
+    b_a5s = mc_band(lambda k5, k6: _a5(k5, 0.0))
+    b_a6s = mc_band(lambda k5, k6: _a6(k6, 0.0))
+    b_t0 = mc_band(lambda k5, k6: brentq(lambda x: _a5(k5, x), 781.0, 794.0,
+                                         xtol=1e-6))
+    b_a5_993 = mc_band(lambda k5, k6: _a5(k5, 993.0))
+    b_a6_993 = mc_band(lambda k5, k6: _a6(k6, 993.0))
+    b_a6_1064 = mc_band(lambda k5, k6: _a6(k6, 1064.0))
+
     print("\n  VALIDATION (anchors the model does not use):")
     print(f"    alpha_5S(0)  = {a5s:8.2f} au   (measured 318.79(1.42))")
     print(f"    alpha_6S(0)  = {a6s:8.1f} au   (Safronova-group 5167(22); tail calibrated)")
@@ -82,16 +95,23 @@ def main() -> int:
               f"[band {cb['lo']:.2f} .. {cb['hi']:.2f}; {cb['failed']} of "
               f"{cb['n'] + cb['failed']} draws left the window]")
 
+    # every entry below is a 1500-draw 16-84% Monte-Carlo band now, so one
+    # already-computed pair of columns carries all of them, not a substring
+    # inside "unit" that only four of ten rows ever had.
     with open(C.RESULTS_DIR / "polarizability.csv", "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["quantity", "key", "value", "unit"])
+        w.writerow(["quantity", "key", "value", "err_lo16", "err_hi84", "unit",
+                    "status"])
         w.writerow(["alpha_5s_static", "model", f"{a5s:.2f}",
-                    "au; validation vs measured 318.79(1.42) (Holmgren 2010)"])
+                    f"{b_a5s['lo']:.2f}", f"{b_a5s['hi']:.2f}",
+                    "au; validation vs measured 318.79(1.42) (Holmgren 2010)", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_static", "model", f"{a6s:.1f}",
-                    "au; tail calibrated to the Safronova-group 5167(22)"])
+                    f"{b_a6s['lo']:.1f}", f"{b_a6s['hi']:.1f}",
+                    "au; tail calibrated to the Safronova-group 5167(22)", "DIAGNOSTIC"])
         w.writerow(["tuneout_5s", "model", f"{t0:.4f}",
+                    f"{b_t0['lo']:.4f}", f"{b_t0['hi']:.4f}",
                     "nm; validation vs measured 790.032326(32) "
-                    "(Leonard 2015 as corrected by the 2017 erratum)"])
+                    "(Leonard 2015 as corrected by the 2017 erratum)", "DIAGNOSTIC"])
         # The two states SEPARATELY at 993 nm. These carry the sign argument:
         # 993 nm lies in the gap between the 6S->5P cascade (1324/1367 nm) and
         # the 5S D lines (780/795 nm), so it is BLUE of 6S's nearest strong
@@ -99,26 +119,29 @@ def main() -> int:
         # polarizability signs => the difference cannot come out positive,
         # whatever the matrix elements do.
         w.writerow(["alpha_5s_993", "model", f"{alpha_5s(993.0):.1f}",
-                    "au; POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm)"])
+                    f"{b_a5_993['lo']:.1f}", f"{b_a5_993['hi']:.1f}",
+                    "au; POSITIVE -- 993 nm is red of the D1/D2 lines (795/780 nm)", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_993", "model", f"{alpha_6s(993.0):.1f}",
+                    f"{b_a6_993['lo']:.1f}", f"{b_a6_993['hi']:.1f}",
                     "au; NEGATIVE -- 993 nm is blue of the 6S->5P cascade "
-                    "(1324/1367 nm), the dominant 6S term"])
+                    "(1324/1367 nm), the dominant 6S term", "DIAGNOSTIC"])
         w.writerow(["delta_alpha_993", "model", f"{da993:.0f}",
-                    f"au (alpha_6S - alpha_5S); band {b['lo']:.0f}..{b['hi']:.0f}; "
-                    f"|value| within ~5% of Orson 2021's 1093 but OPPOSITE sign "
-                    f"(6S pushed up at 993 nm => blue shift) -- flagged, archival "
-                    f"results sign-immune"])
+                    f"{b['lo']:.0f}", f"{b['hi']:.0f}",
+                    "au (alpha_6S - alpha_5S); |value| within ~5% of Orson "
+                    "2021's 1093 but OPPOSITE sign (6S pushed up at 993 nm "
+                    "=> blue shift) -- flagged, archival results sign-immune", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_1064", "model", f"{a6_1064:.1f}",
+                    f"{b_a6_1064['lo']:.1f}", f"{b_a6_1064['hi']:.1f}",
                     "au; small and negative -- a 1064 nm trap arm adds nearly the "
-                    "full alpha_5S(1064) ~ +687 au to the differential shift"])
+                    "full alpha_5S(1064) ~ +687 au to the differential shift", "ENVELOPE"])
         for lam, aval in magic:
             cb = bands[lam]
             w.writerow(["magic_5s6s", f"{lam:.0f}nm", f"{lam:.2f}",
+                        f"{cb['lo']:.2f}", f"{cb['hi']:.2f}",
                         f"nm; alpha there {aval:.0f} au (trapping both states); "
-                        f"16-84% band {cb['lo']:.2f}..{cb['hi']:.2f} nm; "
                         f"unpublished (searched 2026-07-17); scalar only -- "
                         f"vector shifts near the 6S-5P lines need their own "
-                        f"treatment before a trap design"])
+                        f"treatment before a trap design", "ENVELOPE"])
     print("\n  Wrote results/polarizability.csv.")
     return 0
 

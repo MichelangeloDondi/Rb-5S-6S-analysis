@@ -9,6 +9,21 @@ sections 4 to 11 as the protocol. Nothing here is scheduled, no date is
 assumed, and the specification names no operator. It is a specification, not a
 booking.
 
+**The question.** What would a next session measure, what would it cost, and
+what does each block return if the effect is not there?
+**Takes.** [CLAIMS.md](CLAIMS.md), for what is bounded rather than measured
+today.
+**Gives.** The session blocks with their instruments, their durations and their
+empty cases, ranked again by what a shrinking budget should cut.
+**Skip if.** You want what has been delivered rather than what is proposed.
+Every verb here is conditional on a session that is not scheduled.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
+
+
 **Roles, so that four documents do not have to be reconciled by the reader.**
 This file owns procedure: what would be set up, in what order, against which
 go/no-go criteria. [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md)
@@ -26,6 +41,15 @@ are not restated here beyond two headline figures: they live in
 [`results/projections.csv`](../results/projections.csv), which is computed
 from the archive's own measured precision and the session parameters this
 document states.
+
+![the drift problem, what was extracted from it, and what a fixed lock buys](../figures/fig15_drift_story.png)
+
+*The reason this document exists, before any of its procedure. The 2025 lock
+was re-centred by hand between blocks, so the line's absolute position carries
+no meaning across a step and every result here is a bound read out of the line
+SHAPE. The right-hand panel is what a fixed lock converts, and each block below
+is costed against exactly that. The same figure appears again in §2 with the
+drift analysis it comes from.*
 
 **The schema, applied to every costed block below.** Each block states, in
 this order and in these words: **Needs** (its prerequisites, with hardware
@@ -163,7 +187,8 @@ measurements retroactively sharpen the 2025 archive and stand alone.
 The strongest argument against the observable this plan ranks first sits in the
 same apparatus record, and belongs here rather than only there. With the
 re-lock steps and the per-interval ramps removed, the 2025-06-11 reconstruction
-leaves a **settled floor of 0.62 MHz** of unmodelled laser motion
+leaves a **settled floor of 0.62 +/- 0.03 MHz** of unmodelled laser motion, the
+error a residual bootstrap over 400 replicates
 (`results/wavemeter_reconstruction.csv`, [`APPARATUS.md`](APPARATUS.md) §6).
 That floor sits above both of this archive's light-shift bounds carried to the
 laser axis, 0.13 MHz from the joint fit and 0.32 MHz from the width-only
@@ -212,6 +237,39 @@ pair. What it cannot do is split the pair: either the intensity or |Δα| sits
 modestly below the adopted values, and the most conservative data subset
 reaches the prediction itself and needs no headroom at all. A beam-profile
 measurement decides which. The measured coefficient needs the session.
+
+**"That bound is looser than you think."** Correct, and by a measured factor
+rather than by argument. Two effects broaden the line with the ramp's own
+square-of-power signature and are absent from the forward model behind both
+bounds: atomic saturation, and hyperfine pumping through the real 5P cascade,
+whose decay does not preserve F, so an atom that decays in flight can land in
+the other ground state and leave the line
+([fig23](../figures/fig23_hyperfine_pumping.png),
+[notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)).
+Injecting the saturation term and re-profiling tightens the width-only bound by
+2.8 and the joint one by 2.21, which would widen the tension above rather than
+relieve it. Neither number moves in the record, because the injected law is the
+two-level homogeneous form used with a two-photon Rabi frequency, which is
+standard practice and not a derivation for this level structure. For this plan
+the consequence is a session requirement rather than a caveat, and it points at
+the same item this plan already ranks first. The three terms are degenerate in
+every knob the width channel has: all three grow as the square of the power,
+and all three grow as the inverse fourth power of the waist, the ramp because
+its increment goes as the square of a shift that goes as the inverse square,
+and the companions because the saturation parameter carries the two-photon Rabi
+frequency squared. So neither a power sweep nor a change of focus separates
+them. Two things do. The centroid pull, on which the companions do not act at
+all because they broaden the line without moving it, and that needs the fixed
+lock. And the LINE INDEX, found 2026-08-10: the ramp and the saturation are
+identical on all four lines while the pumping is not, since its branching runs
+0.223 to 0.372 across the four (a two-step cascade product, not a degeneracy
+weight, because the scalar two-photon operator leaves 6S in one hyperfine
+level). That is a lever of 1.67 on the pumping term, 3.1 kHz of width at the
+committed $S_0$ bound and 7.8 kHz at the predicted one, against an
+88 kHz single-block scatter, so it is real and this archive cannot spend it. A session that controls the block scatter gets a second
+separation without needing a lock.
+Until then the width channel yields a bound with a known direction of error,
+which is what it is quoted as.
 
 **"Your own recompute flips the sign of Δα against the published computation.
 Bug?"** Not a bug. The recompute is validated on anchors it does not fit (the
@@ -361,6 +419,23 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    block, and cutting that floor 4× (interleaving plus per-trace power logging)
    takes the same signal to ~3–12σ (`results/resolving_power.csv`). Both halves
    are load-bearing. Runs as §7c.
+
+   **What the hot end costs, added 2026-08-10 and not previously carried.** The
+   infrared halo of [methods 4](methods/04_the_composite_model.md) re-excites
+   5P to 6S at 1.1 per cent of the primary rate at 130 °C, **8.9 at 150 and
+   30.6 at 170** (`scripts/run_campaign_conditions.py`, and it is ENVELOPE with
+   a standoff band of 21 to 34 per cent at the top). **β_self is read from
+   widths and none of this reaches it.** What it reaches is every amplitude
+   comparison taken in the same session, which is where M7 and M10 live, and at
+   a third of the primary rate the argument that the halo merely rescales the
+   amplitude is being asked to hold well past where it was derived. Two
+   consequences for the session plan, neither of which costs drive time: take
+   the **amplitude** work at the cold end and the **width** work at the hot end,
+   and **vary the standoff deliberately at one hot condition**, since that is
+   the measurement that turns this envelope into a number and it costs one
+   translation stage. Blackbody over the same extension stays negligible: the
+   6S to 6P transfer runs 2.0 to 6.5 parts per million and the thermal shift
+   161 to 245 Hz, neither of which a width measurement can see.
 4. **The pull the fixed lock resurrects.** The lock itself is the epoch
    condition above, not a ranked item. What the ranking contains is the
    observable it brings back, the line centre against power, which is the
@@ -442,7 +517,7 @@ by design):
   16 µm it is ~1.3, so this is where a referee should ask for the convolution's
   validity range and where a Bloch-equation cross-check earns its time. A caveat
   to state and test, not a reason to retreat.
-- **M (the archival geometry, 64 µm (prior), band 60 to 70 µm).** Half-day spot
+- **M (the archival geometry, 64 µm, measured, band 62 to 68 µm).** Half-day spot
   check: knife-edge, camera, P grid, one 130 °C point, for direct 2025-epoch
   continuity.
 
@@ -786,6 +861,46 @@ the true optimum's χ² and read as physics for two days
 observable, since saturation bends the n = 2 magnitudes. The magnitudes belong
 to L and M.
 
+### The per-line lever, and the waist that makes it spendable
+
+Three effects broaden the line with the same square-of-power signature: the
+AC-Stark ramp, atomic saturation, and hyperfine pumping. They are degenerate in
+**both** continuous knobs, since all three go as $P^2$ and all three go as
+$w_0^{-4}$, so neither a power sweep nor a change of focus separates them. Only
+one of the three differs between the four hyperfine lines, because the two-photon
+operator is scalar and the ramp and saturation are therefore $F$-independent
+while the pumping branching is not. A joint fit over the four peaks with those
+branchings held fixed and one free scale is the only separation this method
+admits **without a stable frequency reference**.
+
+On the 2025 archive that lever is 3.1 kHz at the committed $S_0(225)$ bound of
+0.217 MHz, against an 88 kHz block scatter, short by
+a factor of thirty, which is why it is stated and not spent
+([the refit's preregistration](notes/companion_inclusive_refit_prereg.md)). It
+grows as the saturation width, so it grows as $P^2/w_0^{-4}$, and
+`scripts/run_campaign_conditions.py` projects it:
+
+| $w_0$ | P | saturation width | lever | vs 88 kHz | vs the same *fractional* stability |
+|---|---|---|---|---|---|
+| 64 µm | 225 mW | 53 kHz | 8 kHz | 0.09 | 0.09 |
+| 40 µm | 500 mW | 1.42 MHz | 212 kHz | 2.4 | 1.7 |
+| 32 µm | 500 mW | 2.94 MHz | 438 kHz | 5.0 | 2.6 |
+| **16 µm** | **225 mW** | **6.84 MHz** | **1.02 MHz** | **11.6** | **3.5** |
+
+The last column is the one to plan against: 88 kHz is 1.68 per cent of the
+5.25 MHz line it was measured on, and a wider line will not hold 88 kHz, so the
+lever is scored against the same fractional stability applied to the width each
+condition actually produces. It still clears three at 16 µm **and at today's
+power**. So the separation this archive misses by thirty is bought by the waist
+rather than by the laser, and that is a second and independent reason for the
+small-waist configuration, alongside the shift gain §5 argues from.
+
+The catch is the one the skew already has: the lever is spendable exactly where
+the weak-field ramp law is least valid, since the saturation parameter reaches
+1.0 at 16 µm. A session that intends to spend it must fit the saturation term
+rather than carry it as a companion, which is the construction the refit
+preregisters.
+
 ## 7. The width and collision program
 
 **7a. Temperature grid at L only, twice, on different days, in opposite
@@ -1090,7 +1205,7 @@ conversions done.
 
 | day | content | deliverable |
 |---|---|---|
-| D1 | Setup and metrology at configuration L. In order: the fixed lock of §3 stage 0, engaged and held thirty minutes against its go/no-go before anything else, since it selects which protocol the rest of the session runs under. Then the ramp-monitor export of §3 item 0, configured before any data. Wavemeter-link characterisation, how tightly the laser holds a set point and its calibration drift, which is this system's only outer loop, needs no new hardware, and decides whether shifts are measurable at all. Telescope install. Collection rebuild, the relay and slit of §6, landscape. Configuration L metrology, an afternoon: knife-edge, camera, calipers, ρ, polarization with tomography and the extinction null. While the oven settles, the drift-characterization block that freezes the RF cadence (§10.5). | the held-drift record and the protocol it selects, a time axis independent of the scope knob, the outer-loop characterisation, the measured w₀ and ρ at L, and a frozen bracket cadence |
+| D1 | Setup and metrology at configuration L, in the order given below the table, because the first item selects which protocol the rest of the session runs under. | the held-drift record and the protocol it selects, a time axis independent of the scope knob, the outer-loop characterisation, the measured w₀ and ρ at L, and a frozen bracket cadence |
 | D2 | Temperature grid day A at L, ascending, four peaks interleaved plus a mini-P excursion per dwell, sentinel three times, 150/170 °C if the oven allows. | the ascending grid |
 | D3 | Temperature grid day B at L, descending, sentinel three times. | with D2: β_self or a tighter bound, the fixed-lock σ_laser, and the measured drift residual |
 | D4 | Power grid at L, randomized, about 8 powers, morning. Reconfigure to S, an afternoon: knife-edge, camera, ρ. | the mean pull and the excess variance, the four-line common slope, and the measured w₀ and ρ at S |
@@ -1098,6 +1213,22 @@ conversions done.
 | D6 | The cold, low-power blocks at S and L specified in §5: the transit kernel of Lehmann 2021 against a Voigt, on the same data that anchor the differential-transit intensity calibration. | the model-form closure and the absolute intensity axis, hence Δα in physical units |
 | D7 | Configuration M spot check, half a day: knife-edge, camera, power grid, one 130 °C point. Wavemeter GHz-linearity shots (§11). | the 2025-epoch bridge, and the wavemeter's own frequency scale |
 | D8 | Contingency: re-run whatever the bracket veto excluded. | the recovered blocks, or unused |
+
+**D1 in order.** The sequence matters, so it is a list rather than a cell:
+
+1. The fixed lock of §3 stage 0, engaged and held thirty minutes against its
+   go/no-go, before anything else. It selects which protocol the rest of the
+   session runs under, so nothing else can start until it has passed or failed.
+2. The ramp-monitor export of §3 item 0, configured before any data is taken.
+3. Wavemeter-link characterisation: how tightly the laser holds a set point,
+   and its calibration drift. This is the system's only outer loop, it needs no
+   new hardware, and it decides whether shifts are measurable at all.
+4. Telescope install.
+5. Collection rebuild, the relay and slit of §6, landscape.
+6. Configuration L metrology, an afternoon: knife-edge, camera, calipers, ρ,
+   and polarization with tomography and the extinction null.
+7. While the oven settles, the drift-characterization block that freezes the RF
+   cadence (§10.5).
 
 The interleaved blocks of §7f run inside D2 to D5 and carry the degeneracy-law
 and trapping tests of §8. The wide-scan pedestal of §5 rides whichever of these
@@ -1268,7 +1399,7 @@ and the multipole scrutiny behind the predicted position are in
 The from-scratch analysis plan that produced the current results was versioned
 here until 2026-08-02 and lives in git history. Its content is now where a
 reader needs it: the module map and derivations in [`methods.md`](methods.md),
-the data census, chronology and quarantine policy in [`DATA.md`](DATA.md), the
+the data census, chronology and exclusion policy in [`DATA.md`](DATA.md), the
 per-trace table in `data_raw/MANIFEST.csv`, the verification battery in
 `tests/` (synthetic closure before real data, end-to-end injected-truth
 recovery), and the results with provenance tags in [`RESULTS.md`](RESULTS.md).

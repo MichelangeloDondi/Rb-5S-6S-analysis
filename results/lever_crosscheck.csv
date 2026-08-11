@@ -3,7 +3,7 @@ beta_crosscheck,85Rb,0.0534,0.0043,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep,
 beta_err_modelform,85Rb,0.0142,,model-form grid spread (max-min),BOUND
 beta_err_transit,85Rb,0.0142,,transit axis (|Voigt - Lehmann|),BOUND
 beta_err_sharing,85Rb,0.0009,,sigma-sharing axis (|per_T - per_block|),BOUND
-beta_w0_band,85Rb,0.0497,0.0573,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_w0_band,85Rb,0.0517,0.0561,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
 beta_loo_peak,85Rb,0.0070,,largest |dbeta| dropping one PEAK -- robustness (peak 4192),DIAGNOSTIC
 beta_loo_temp,85Rb,0.1338,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
 beta_lever_probe_130,85Rb,0.0198,-0.0335,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND
@@ -11,7 +11,7 @@ beta_crosscheck,87Rb,0.0534,0.0047,"MHz per 1e12 cm^-3 (HEADLINE: cooling sweep,
 beta_err_modelform,87Rb,0.0160,,model-form grid spread (max-min),BOUND
 beta_err_transit,87Rb,0.0140,,transit axis (|Voigt - Lehmann|),BOUND
 beta_err_sharing,87Rb,0.0020,,sigma-sharing axis (|per_T - per_block|),BOUND
-beta_w0_band,87Rb,0.0499,0.0573,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
+beta_w0_band,87Rb,0.0518,0.0561,"value=lo err=hi over transit_ref 0.92-1.49 (~w0 65-40 um, the OPEN w0)",BOUND
 beta_loo_peak,87Rb,0.0040,,largest |dbeta| dropping one PEAK -- robustness (peak 4207),DIAGNOSTIC
 beta_loo_temp,87Rb,0.0745,,largest |dbeta| dropping one TEMPERATURE -- lever leverage (110 C),DIAGNOSTIC
 beta_lever_probe_130,87Rb,0.0219,-0.0315,value=joint beta with the x53 130C lever; err=shift vs x16 cooling (lever-dependence),BOUND

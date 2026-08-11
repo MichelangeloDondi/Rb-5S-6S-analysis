@@ -9,6 +9,19 @@ for context, [PLAN.md](PLAN.md) for the proposed session,
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) for everything
 that was withdrawn along the way and why.
 
+**The question.** What does this archive claim, what does it refuse to claim,
+and what would a further campaign convert?
+**Takes.** Nothing, though [BIG_PICTURE.md](BIG_PICTURE.md) supplies the
+context each claim sits in.
+**Gives.** Every claim with its status and its conditionality, then a section
+of things deliberately not claimed, which is the more useful half.
+**Skip if.** You are checking one number rather than the claim set, in which
+case [RESULTS.md](RESULTS.md) reads it from its producing CSV.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 Terms used throughout: S₀ is the peak light shift on the beam axis at a
 stated power, the "ramp" is the closed-form distribution of light shifts a
 focused beam imprints on a two-photon line, and the transition axis is the
@@ -35,7 +48,7 @@ two-photon sum frequency, twice the laser frequency.
   depends on the waist only weakly, through the transit kernel in its
   lineshape. The prediction it is compared against rides the waist
   prior directly: 0.35 MHz
-  central, with a 0.28-0.40 MHz band over the waist measurement band and the
+  central, with a 0.30-0.38 MHz band over the waist measurement band and the
   retro ratio. The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
   but not a comfortable one, and the most conservative data subset's
@@ -117,6 +130,32 @@ systematic as fig1.*
   real saturation)
   and linearly with density at fixed power (slopes 0.85-1.02).
 
+**Bounded rather than assumed** (ENVELOPE, computed 2026-08-10):
+
+- The radiation environment is audited on all three channels a photon
+  can act through here, not only the detected one. Trapped light on the
+  two infrared cascade legs cannot re-excite inside the driven column,
+  where both lines are inverted by about five, and re-excites in the
+  halo outside it at 1.07 per cent of the primary rate at 130 °C, with a
+  0.49 to 1.85 band over the standoff range the record brackets, and at
+  nothing by 70 °C. The cell's own thermal field drives those same legs
+  at 1e-12 of that, because it peaks near 7 µm while the cascade lies
+  below 3 µm, and its largest channel is a two-parts-per-million
+  transfer at 2.7 µm. Both are amplitude effects rather than lineshape
+  effects, so they bear on the amplitude-against-density comparisons and
+  not on the widths. The thermal field also shifts the transition by
+  79.9 to 161.0 Hz across the sweep, a converged principal value through
+  the 6S to 6P poles, which no width-derived number can see
+  ([methods 4](methods/04_the_composite_model.md),
+  `results/blackbody_channels.csv`).
+- The shared transit width between the isotopes costs 11.4 kHz at
+  130 °C, and almost all of it is a constant offset that the free
+  per-line core width absorbs. What reaches the collisional coefficient
+  is 0.41 per cent of one standard error on the measured difference
+  between the isotopes, so the shared width is an approximation whose
+  cost is measured rather than an assumption
+  ([methods 2](methods/02_the_lineshape.md)).
+
 **Calculated** (anchored, not fitted to this data):
 
 - Differential polarizability Δα(993 nm) recomputed at −1145 a.u.,
@@ -166,6 +205,25 @@ systematic as fig1.*
 - No environmental coefficient of the 993 nm line is measured here.
   The coefficients are bounds, and the collisional floor is not read as
   a detection of Rb-Rb collisions.
+- No claim that the light-shift bounds are tight. They are known to be
+  conservative by a measured factor rather than by argument, because two
+  effects carry the same square-of-power signature as the ramp and were
+  absent from the forward model that produced them, atomic saturation and
+  hyperfine pumping through the real cascade. Injecting the saturation
+  term and re-profiling tightens the width-only bound by 2.8 and the
+  joint bound by 2.21. Neither committed bound is moved, because the
+  injected law is the two-level homogeneous form used with a two-photon
+  Rabi frequency, which is standard practice and not a derivation for
+  this level structure
+  ([docs/notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)).
+- No claim on the line centre. The channel that would read the shift
+  directly off the peak position is closed for this archive and the
+  closure is quantified rather than asserted, because the campaign ran
+  its powers in monotonic order, the pilot's own frame moves with power
+  at nine times the statistical error, and the rehearsal has no mirror
+  pair to calibrate against. Reopening it needs a ramp-monitor export
+  and not a better estimator
+  ([docs/notes/centre_channel_cannot_be_revived.md](notes/centre_channel_cannot_be_revived.md)).
 - No claim that 993 nm competes with the 778 nm two-photon reference.
   On natural linewidth it starts an order of magnitude behind.
 - No claim to the lineshape frame itself, which is 1980 review
@@ -251,7 +309,24 @@ would add:
   the archival 64 µm waist, fourteenfold over the planned 60 µm), which
   the plan carries as a second-stage item, and the cumulant's sign
   depends on collection geometry that would have to be measured in the
-  same session. The fixed lock alone does not reach this.
+  same session. The fixed lock alone does not reach this. The size of
+  the asymmetry at the tight focus is itself uncertain at the
+  factor-of-three level, and for a modelling reason rather than an
+  unmeasured input: the square-of-intensity weighting it rests on is a
+  weak-field statement, the saturation parameter runs as the fourth
+  power of the inverse waist, and re-integrating the moments with the
+  saturated weight moves the predicted axial skew at 16 µm from −0.36 to
+  −1.07. The sign survives that and the magnitude does not
+  ([THEORY_NOTE.md](THEORY_NOTE.md) §2.0a).
+
+  ![the weak-field limit and what leaving it costs the predicted skewness](../figures/fig24_weak_field_limit.png)
+
+  *Why the caveat is about the focus rather than the power. The saturation
+  parameter carries the two-photon Rabi frequency squared, so it grows as the
+  fourth power of the inverse waist while the shift grows only as the second,
+  and the weak-field limit is left long before the shift becomes large. The
+  archive's own configuration, on the left of each panel, sits where the two
+  treatments agree to a couple of per cent.*
 
 **A tunable-drive campaign (options map, not a plan)**, mapped in
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md): the drive
@@ -398,7 +473,7 @@ picometre. The design and its envelope numbers are section 5.1 of
 claimable from the 2025 data, and the crossing is deliberately absent
 from the magic-wavelength list, whose criterion is usability as a trap.
 
-The dependency map, which measurement unlocks which claim, is the first
+The dependency map, which measurement converts which claim, is the first
 section of [BIG_PICTURE.md](BIG_PICTURE.md).
 
 ## 4. Who this serves, now and after a campaign

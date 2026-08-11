@@ -8,6 +8,10 @@ conditional, which the assumptions chapter then turns into what to challenge.
 **Skip if.** You have read [`docs/RESULTS.md`](../RESULTS.md), the generated
 ledger of the same numbers with its full audit trail.
 
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## 5. What we found (2025 archival data)
 
 ### 5.1 $\beta_\text{self}$: the T-sweep bounds it
@@ -101,10 +105,10 @@ budget is in the results ledger (`docs/RESULTS.md`).
 
 ### 5.3 The 2025 laser width
 
-$\sigma_\text{laser}(2025)\lesssim2.2$ MHz (transition axis; below 1.2 MHz
-laser axis; it is $\sim1.09$ MHz laser-axis at the measured $w_0=64$ µm
-prior) —
-a bound, not a measurement, because that non-Lorentzian Gaussian
+$\sigma_\text{laser}(2025)\lesssim2.2$ MHz on the transition axis, which is
+below 1.2 MHz on the laser axis and $\sim1.09$ MHz laser-axis at the measured
+$w_0=64$ µm prior.
+It is a bound and not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5](02_the_lineshape.md), M9)
 now makes the degeneracy quantitative: the corrected transit adds $\sim2.1$ MHz
 at $w_0=32$ µm (which OVERSHOOTS the observed line, excluding 32 µm) but only
@@ -112,49 +116,53 @@ $\sim0.93$ MHz at the 64 µm measured waist, so below $w_0\approx38$ µm transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 measured 64 µm waist the laser carries $\sim1.09$ MHz laser-axis, close to the
 bound itself: widening the waist hands width from transit to laser. The
-archival data cannot locate that crossover; only a direct beam-profile $w_0$
-can. (Slow drift is *not* the culprit — only $\sim0.01$ MHz within a scan.)
-A measured $w_0$ (fixing transit) would turn this bound into a measurement; meanwhile it is the
-ONF starting linewidth for the nanofibre extension.
+archival data cannot locate that crossover, and only a direct beam-profile $w_0$
+can. (Slow drift is *not* the culprit, at only $\sim0.01$ MHz within a scan.)
+A measured $w_0$, by fixing transit, would turn this bound into a measurement.
+Until then it is the ONF starting linewidth for the nanofibre extension.
 
 ### 5.4 The power sweep against the ramp law
 
 At fixed
 130 °C only the AC-Stark $S_0$ varies, so the ramp law ([§2.6](03_the_ac_stark_ramp.md)) predicts, and the
-data confirm: (C3a) the linewidth is **flat** — no monotonic power broadening,
-with 3–8% block scatter that is the same between-block wander seen elsewhere;
-(C3b) the amplitude is **consistent with $P^2$** (log-log slopes 1.83–2.12,
-clustered on the two-photon rate law; 993.4121 nm sits below at 1.83). We say
+data confirm.
+
+(C3a) The linewidth is **flat**, with no monotonic power broadening, and its
+3 to 8% block scatter is the same between-block wander seen elsewhere.
+
+(C3b) The amplitude is **consistent with $P^2$** (log-log slopes 1.83 to 2.12,
+clustered on the two-photon rate law, with 993.4121 nm below at 1.83). We say
 *consistent with*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
 a slope below 2 could be genuine saturation OR a weak power-dependence of the
 trapping collection efficiency through the saturating emitter profile, and the
-single-temperature archival sweep cannot separate the two — the 4121 low slope
-is the visible symptom of that degeneracy, resolvable only by the fixed-lock session's
-multi-temperature sweeps;
-(C3c) the **ramp** skew (growing as $P^3$) is below detection, a bound — but the
-committed residual skew is emphatically *not* zero: it is large and positive at
+single-temperature archival sweep cannot separate the two. The 4121 low slope
+is the visible symptom of that degeneracy, resolvable only by the fixed-lock
+session's multi-temperature sweeps.
+
+(C3c) The **ramp** skew, growing as $P^3$, is below detection and is therefore a
+bound. The committed residual skew is *not* zero: it is large and positive at
 low power (up to about 10 sigma at 25 mW, e.g. 993.4154 nm $0.345\pm0.036$)
 and *falls* with amplitude as $\sim\text{amp}^{-0.5}$. That is the Poisson
 **shot-noise skewness** (the noise is right-skewed $\propto1/\sqrt{\text{counts}}$,
-vanishing as the line brightens) — a statistical artifact with the *opposite*
-sign and power dependence to the ramp, not a physical asymmetry. So the ramp is
-the genuine null; the significant low-power skew is identified, not unexplained.
-The old "power null" thus resolves into a typed suite — a null (width), a
-consistency check ($P^2$), a bound (skew) — with the residual skew attributed
-to shot noise rather than reported as zero.
+vanishing as the line brightens), a statistical artifact with the *opposite*
+sign and power dependence to the ramp rather than a physical asymmetry. So the
+ramp is the genuine null, and the significant low-power skew is identified
+rather than unexplained. The old "power null" resolves into a typed suite, a
+null (width) and a consistency check ($P^2$) and a bound (skew), with the
+residual skew attributed to shot noise rather than reported as zero.
 
 (C3d) the same width-vs-power data **bound the AC-Stark coefficient itself**
 (module M4e, `run_stark_sweep`): one shared $\kappa$ ($S_0=\kappa P$) fit to the
 four peaks' FWHM-vs-power, each floating its power-independent core. In the
 drifted archive the *shift* (the pull $\propto S_0$) is dead, so $\kappa$ is
-constrained only through the ramp's $\propto S_0^2$ width broadening — a weak,
-one-sided handle, so the best fit **rails at $\kappa=0$**. That boundary is why
+constrained only through the ramp's $\propto S_0^2$ width broadening, a weak
+and one-sided handle, so the best fit **rails at $\kappa=0$**. That boundary is why
 the bound needs care: at $\kappa=0$ the width handle has *zero gradient*, so a
 linearized (Wald) $\kappa+1.645\sigma$ interval is evaluated where the Jacobian
 column vanishes and its "sigma" is a finite-difference artifact with no 95%
 coverage (that route reads 1.0 MHz un-inflated and 2.4 MHz inflated, both kept
 in the CSV as replaced diagnostics). The quoted limit is therefore a
-**profile likelihood** — scan $\kappa$ upward, re-minimizing the per-peak cores,
+**profile likelihood**: scan $\kappa$ upward, re-minimizing the per-peak cores,
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
 threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=5.5$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
@@ -175,7 +183,15 @@ The reading is a conservative bound, not a sensitivity claim: the width
 channel is over-dispersed ($\chi^2_\text{red}=5.5$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$. The $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
-coefficient's scale. There is no second channel behind it. The centre channel
+coefficient's scale. It is also loose by a measured factor, because the model
+behind it carries no saturation and no hyperfine pumping and both broaden with
+the ramp's own $P^2$ signature
+([§2.8](04_the_composite_model.md)): injecting the saturation term and
+re-profiling gives $0.23$ MHz here and $0.117$ MHz on the joint fit, factors of
+$2.8$ and $2.21$. Neither committed bound moves, because the injected law is
+the two-level homogeneous form used with a two-photon Rabi frequency, so the
+looseness is stated with its size rather than taken. There is no second channel
+behind it. The centre channel
 was worked and yields nothing: the fitted pull reverses sign between drift
 models, and the limit loosens as the drift model gains freedom,
 $|S_0(225\ \text{mW})|$ below $9.49$, $14.57$ and $17.65$ MHz for linear,
@@ -183,6 +199,25 @@ one-exponential and two-exponential drift, so the pull is unidentifiable in
 this archive rather than merely imprecise. The tighter centre bounds earlier
 releases carried are withdrawn, because they differenced centres across changes
 of the scope horizontal position ([`THEORY_NOTE.md`](../THEORY_NOTE.md) §3).
+A second attempt worked the channel the other way round, fitting inside each
+maximal run of unchanged scope window (module M27, `run_centre_stark`), where
+the lock is untouched and a constant offset cannot bias a slope. It returns a
+bound of $8.65$ MHz/W, seven times weaker than the width channel's $1.147$
+and $12.21$ once its drift prior is corrected to the sign-undetermined form
+the 2026-07-30 window-reference correction leaves licensed (addendum 29),
+and it measures its own false-positive floor by injecting a power step into
+epochs where the true power difference is zero: those controls return spurious
+pulls of several MHz/W, comparable to the signal. Extending it to the other two
+sessions was then tested and closed, and the closure is arithmetic rather than
+a preference. The campaign ran its powers in monotonic order, so any drift the
+epoch model does not capture is confounded with power by construction. The
+pilot, which has three and a half times the lever and would otherwise be the
+best of the three, moves its own recorded frame with power at $9.25$ MHz/W,
+eleven times the statistical error the extra lever would buy. The rehearsal has
+no bracketing pair to calibrate a frame against. What would reopen it is not a
+better estimator but an export of the ramp monitor, which would supply a
+frequency reference independent of the scope window
+([`docs/notes/centre_channel_cannot_be_revived.md`](../notes/centre_channel_cannot_be_revived.md)).
 Width and shape are the archive's only light-shift channel, and the two
 constructions above are two readings of that one channel, not two channels. A
 fixed-lock session's stable lock would resurrect the pull
@@ -192,29 +227,29 @@ several-fold larger, which would turn this bracket into a measured coefficient.
 ### 5.5 Radiation trapping
 
 Thick cell, near-linear signal, drift-dominated ratios. Peak amplitude scales roughly *linearly* with density: log-log
-slopes $0.94(13)$, $0.91(5)$, $0.85(15)$, $1.02(8)$ across $\times52$ in $N$ —
-all consistent with slope 1 within about 1–2 sigma, so any
+slopes $0.94(13)$, $0.91(5)$, $0.85(15)$, $1.02(8)$ across $\times52$ in $N$,
+all consistent with slope 1 within about 1 to 2 sigma, so any
 trapping/993-absorption rollover is weak and not resolved, consistent with
 M1's temperature-flat shot-noise coefficient. This is at first sight *surprising*: the
 D1 optical depth ([§2.7](04_the_composite_model.md)) is $\tau/\text{cm}\approx1$ to $60$ (⁸⁷Rb) and
 $3$ to $160$ (⁸⁵Rb) across the sweep, so over the few-cm path the cell is
 optically **thick** and naive trapping should bite hard. The resolution is a
 real physical statement about the geometry: a thick cell without quenching
-still emits nearly one collected 795 nm photon per excitation — trapping
-*redistributes* the photons (a random walk to the walls) rather than destroying
-them, and the wide $f18$ mm collection captures the diffuse re-emission — so the
+still emits nearly one collected 795 nm photon per excitation. Trapping
+*redistributes* the photons in a random walk to the walls rather than destroying
+them, and the wide $f18$ mm collection captures the diffuse re-emission, so the
 collected signal stays $\propto N$. The near-linearity thus **bounds
 non-radiative quenching to be weak** over the trapping random-walk.
 
 Trapping's degeneracy-breaking (peak-differential) effect ([§2.7](04_the_composite_model.md)) is then sought
 three ways, all model-independent. (i) The isotope-averaged slope difference is
 the cleanest fingerprint: ⁸⁷Rb $\langle s\rangle=1.00(7)$ vs ⁸⁵Rb
-$\langle s\rangle=0.91(5)$, i.e. ⁸⁵Rb is $0.09(8)$ *more* sublinear — the
-sign trapping predicts (⁸⁵Rb has $2.6\times$ the absorbers), but only
-$\sim1\sigma$: a hint, not a detection. (ii) The peak-*height* ratios are
+$\langle s\rangle=0.91(5)$, so ⁸⁵Rb is $0.09(8)$ *more* sublinear, which is the
+sign trapping predicts (⁸⁵Rb has $2.6\times$ the absorbers) but only at
+$\sim1\sigma$, a hint rather than a detection. (ii) The peak-*height* ratios are
 **non-monotonic** in density (e.g. 993.4207/993.4121 nm runs
-$1.09\to1.01\to2.48\to1.94$), whereas trapping would bend them *monotonically* —
-so the 30–50% degeneracy-law disagreement (module M10, on the *areas*) is
+$1.09\to1.01\to2.48\to1.94$), whereas trapping would bend them *monotonically*,
+so the 30 to 50% degeneracy-law disagreement (module M10, on the *areas*) is
 between-block **drift**, not trapping. (iii) A one-parameter trapping model does not improve
 the fit over pure $\propto N$ (both $\chi^2_\text{red}\gg1$, dominated by the
 drift scatter). *Conclusion:* trapping is physically present and expected-large by
@@ -230,12 +265,12 @@ baseline (not loaded here).
 At the
 cold-dim 70 °C corner the BIC comparison ([§4.7](06_the_statistics.md)) gives
 $\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.6/-0.1$ across
-peaks — a **statistical null**: three of four have $|\Delta\text{BIC}|$ below 2
+peaks, a **statistical null**: three of four have $|\Delta\text{BIC}|$ below 2
 (the "not worth a mention" band) and the fourth is 3.6 (weak, and it is the
 same peak, 993.4192 nm, whose fits are noisiest elsewhere), against a claim gate of
 $\Delta\text{BIC}\gtrsim10$. The statement is that **the archival data
-cannot distinguish a cusped (Lehmann) from a smooth (Voigt) extra-broadening**
-— exactly as the two-epoch design anticipated, since the $\sim2$ MHz bad-lock
+cannot distinguish a cusped (Lehmann) from a smooth (Voigt) extra-broadening**,
+exactly as the two-epoch design anticipated, since the $\sim2$ MHz bad-lock
 laser Gaussian smears the cusp and the transit/laser split is itself
 unresolved ([§2.5](02_the_lineshape.md)). No lean is claimed. The decisive cusp test is the fixed-lock session's
 narrow-laser data, for which this module (closure-tested to prefer the right
@@ -246,19 +281,19 @@ form when a cusp *is* present) is validated infrastructure.
 A parameter-free prediction the archive cannot yet test. For two *identical* photons the
 $S\to S$ two-photon operator is purely **scalar** (rank 2 cannot connect
 $J=\tfrac12\to\tfrac12$), so every $F,m_F$ has the same per-atom rate and the
-line *areas* (not heights — heights confound with width) must be pure initial
+line *areas* (not heights, which confound with width) must be pure initial
 population: $S\propto\text{abundance}\times(2F{+}1)$, i.e. within-isotope
 ratios of exactly $5/3$ (⁸⁷Rb) and $7/5$ (⁸⁵Rb). Measured: the
 within-block repeatability is 1–3%, but the area ratios swing
 30–50% *between* temperatures, non-monotonically (the 993.4207/993.4121 nm
-*area* ratio runs $1.10\to0.98\to2.53\to1.97$ against a constant $5/3$; the
+*area* ratio runs $1.10\to0.98\to2.53\to1.97$ against a constant $5/3$, and the
 slightly different height ratios in the trapping paragraph above tell the
-same drift story) — that is between-block power/alignment drift, not physics
-(real differential trapping would be smooth in density).
+same drift story). That is between-block power and alignment drift rather than
+physics, because real differential trapping would be smooth in density.
 Two consequences: cross-peak amplitude comparisons in this archive carry
 roughly 30–50% systematics (per-peak, within-block analyses like M7 are
-unaffected), and the clean degeneracy-law test is a task for a fixed-lock session — measure
-the four peaks **interleaved**, with power logging.
+unaffected), and the clean degeneracy-law test is a task for a fixed-lock
+session: measure the four peaks **interleaved**, with power logging.
 
 `figures/fig4_amplitude_ratios.png` draws the two measured area ratios against
 those two predictions, each on its own dashed line, over cell temperature. Its
@@ -279,14 +314,15 @@ flag, so the two instruments disagree about that one trace, see
 [`DATA.md`](../DATA.md) §5 and
 [the ruler specification](../notes/ruler_validity_and_trim_prereg.md)
 amendment 3 C6),
-**not** a peak-ordered trend (bracket-resolved rates are non-monotonic) — and
+**not** a peak-ordered trend (bracket-resolved rates are non-monotonic), and
 the quoted error is already $\sqrt{\chi^2_\text{red}}$-inflated (≈2.8×)
-to absorb it, so it is a symmetric common-axis uncertainty, not a cross-peak
-bias; the fits use each condition's own block rate. Total
-line widths are 4.8–5.7 MHz, sitting on the [lineshape chapter](02_the_lineshape.md) budget; and the dataset
-is decoded and frozen (722 files → **297 unique traces**, every anomaly —
-double-saves, renames, discards, off-center-sweep mirrors — explained and
-either quarantined or handled).
+to absorb it, so it is a symmetric common-axis uncertainty rather than a
+cross-peak bias, and the fits use each condition's own block rate. Total
+line widths are 4.8 to 5.7 MHz, sitting on the
+[lineshape chapter](02_the_lineshape.md) budget. The dataset
+is decoded and frozen: 722 files became **297 unique traces**, and every anomaly
+(double-saves, renames, discards, off-center-sweep mirrors) is explained and
+either quarantined or handled.
 
 ---
 

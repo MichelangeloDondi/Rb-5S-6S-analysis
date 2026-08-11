@@ -47,7 +47,15 @@ VOCAB = {"BOUND", "NULL", "MEASURED", "PRELIM", "ARTIFACT", "DIAGNOSTIC",
 SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # M27 writes its own per-row statuses (the bound and the case
         # verdict are BOUND, every diagnostic row says so itself)
-        "centre_stark.csv"}
+        "centre_stark.csv",
+        # the two radiation-environment producers, same reason: their rows
+        # are a mix of exact line-data quantities and geometry-dominated
+        # envelopes, and only the producer knows which is which. They also
+        # carry an err_kind column, which nothing else here does yet.
+        "trapping_channels.csv", "blackbody_channels.csv",
+        # the cascade branching, same reason, and its producer needs the
+        # optional sympy extra so it is not in run_all.sh either
+        "cascade_branching.csv"}
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
@@ -200,6 +208,10 @@ QUANTITY_STATUS = {
         # the minimum detectable effect: a property of THIS analysis at the
         # archive's own noise, simulated rather than measured on the data
         "mde_beta": "DIAGNOSTIC",
+        # 2026-08-10: the sd of beta_eff across trials, computed all along
+        # and only reported once its own Monte-Carlo error existed to quote
+        # beside it
+        "scatter": "DIAGNOSTIC",
     },
     "polarizability.csv": {
         # M16: validation anchors are diagnostics; the unpublished design
@@ -243,6 +255,10 @@ QUANTITY_STATUS = {
         "d_skew": "ENVELOPE", "d_kappa3": "ENVELOPE",
         "excess_var_frac": "ENVELOPE", "frac_resolved": "ENVELOPE",
         "d_skew_mc_err": "DIAGNOSTIC", "window_frac": "DIAGNOSTIC",
+        # 2026-08-10: the three siblings d_skew_mc_err had none of, same
+        # construction and same tag.
+        "d_kappa3_mc_err": "DIAGNOSTIC", "excess_var_frac_mc_err": "DIAGNOSTIC",
+        "frac_resolved_mc_err": "DIAGNOSTIC",
     },
 }
 # CALIB is a valid tag for a prediction row; extend VOCAB check accordingly.

@@ -52,14 +52,30 @@ def _tracked_markdown() -> list[str]:
 
 
 def _prose(text: str) -> str:
-    """Drop code fences, tables and display maths: only running prose counts."""
-    kept, in_fence = [], False
+    """Drop code fences, tables and display maths: only running prose counts.
+
+    THE $$ FIX (2026-08-10). This used to skip only lines that START with $$,
+    which drops the delimiters of a display block and keeps everything between
+    them. A multi-line equation therefore had its interior counted as prose,
+    and LaTeX argument separators were counted as semicolons: the composite
+    line in methods/02 contributed four that no rewrite could remove without
+    breaking the mathematics. $$ now toggles a mode the way ``` does, and a
+    line carrying an odd number of them flips it.
+    """
+    kept, in_fence, in_math = [], False, False
     for line in text.splitlines():
         stripped = line.lstrip()
         if stripped.startswith("```"):
             in_fence = not in_fence
             continue
-        if in_fence or stripped.startswith("|") or stripped.startswith("$$"):
+        n_delim = line.count("$$")
+        if n_delim:
+            # a line with one $$ opens or closes; with two it is a whole
+            # one-line display and is dropped either way
+            if n_delim % 2:
+                in_math = not in_math
+            continue
+        if in_fence or in_math or stripped.startswith("|"):
             continue
         kept.append(line)
     return "\n".join(kept)
@@ -129,6 +145,51 @@ def test_the_baseline_itself_only_ever_shrinks():
     "importantly,",
     "needless to say",
     "at the end of the day",
+    # Added 2026-08-10, owner instruction, after measuring all of them against
+    # the tree. EVERY phrase below was already at zero, which is why they can
+    # be banned outright at no cost. The measurement is the point: of
+    # forty-nine candidates tested, thirty-seven were already absent, five were
+    # genuine filler and were removed in the same pass, and the rest turned out
+    # to be technical usage and were KEPT. Those keepers are named in the
+    # rendering protocol section 2.3 with the reason, because a word list that
+    # bans "leverage" in a project with a density lever, or "underscore" in a
+    # project whose filenames turn on one, would be worse than no list.
+    "delve",
+    "deep dive",
+    "dive into",
+    "shed light on",
+    "sheds light on",
+    "pave the way",
+    "paves the way",
+    "unleash",
+    "harness the",
+    "game-changer",
+    "game changer",
+    "showcase",
+    "boasts",
+    "seamless",
+    "tapestry",
+    "ever-evolving",
+    "a testament to",
+    "highlights the importance",
+    "navigate the complexities",
+    "at its core",
+    "key takeaway",
+    "empower",
+    "meticulous",
+    "utilize",
+    "utilise",
+    "myriad",
+    "plethora",
+    "when it comes to",
+    "in conclusion",
+    "to summarize",
+    "to summarise",
+    "double-edged sword",
+    "in the realm of",
+    "cutting-edge",
+    "in today's",
+    "pivotal",
 ])
 def test_filler_openers_stay_absent(phrase):
     """Phrases that announce importance instead of demonstrating it.
@@ -136,8 +197,14 @@ def test_filler_openers_stay_absent(phrase):
     These are at zero. Unlike the punctuation above they can be banned
     outright, so they are, before they get a foothold.
     """
+    # docs/lit/ holds one note per paper and quotes published titles and
+    # abstracts VERBATIM, so a phrase there is the source's word and not this
+    # project's. Two of the phrases added on 2026-08-10 turned up only there,
+    # in a paper title and in an abstract, which is what surfaced the gap:
+    # tests/test_repo_hygiene.py has skipped that directory for this reason
+    # since it was written, and this guard never learned to.
     hits = [rel for rel in _tracked_markdown()
-            if (ROOT / rel).exists()
+            if not rel.startswith("docs/lit/") and (ROOT / rel).exists()
             and phrase in (ROOT / rel).read_text(encoding="utf-8").lower()]
     assert not hits, f"{phrase!r} appears in: {', '.join(hits)}"
 

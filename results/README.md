@@ -9,19 +9,22 @@ included, which is what lets the drift path reproduce from a clone.
 
 **Every row carries a machine-readable `status` column** (`scripts/annotate_results_status.py`,
 run last in the pipeline) so the caveat travels *with the number* into any plot
-or table — a bound never reads as a measurement. The controlled vocabulary:
-**`BOUND`** (a limit, NOT a measurement — β_self, σ_laser, S₀; conditional on the
-OPEN beam waist w₀. A 2026-07-13 fix to the transit Monte Carlo first re-centred
-it from a 32 µm nominal to ~50 µm; since 2026-08-01 the working prior is
-**64 µm, adopted from Rajasree 2020's direct measurement** on the same laser
-model, lens and retro geometry. See `docs/notes/transit_width_resolved.md`);
+or table, so a bound never reads as a measurement. The controlled vocabulary:
+**`BOUND`** (a limit and not a measurement, so β_self, σ_laser and S₀ each sit
+conditional on the beam waist w₀, which is **64 µm, measured** on this apparatus
+lineage by Rajasree 2020 on the same laser model, lens and retro geometry, and
+which this archive cannot re-measure because transit and laser width are
+degenerate through it. A 2026-07-13 fix to the transit Monte Carlo first
+re-centred it from a 32 µm nominal to about 50 µm, before the lineage
+measurement replaced the estimate. See `docs/notes/transit_width_resolved.md`).
 **`NULL`**
-(below detection / no model preference); **`MEASURED`** (a fitted value with
-no open systematic — the frequency rate, the P² scaling, the γ-floor);
-**`PRELIM`** (a model-dependent
-cross-check replaced by a BOUND headline); **`ARTIFACT`** (identified noise,
-not physics); **`DIAGNOSTIC`** / **`CALIB`** (fit-quality / calibration
-intermediates); **`ENVELOPE`** (order-of-magnitude / w₀-parametric estimate).
+(below detection, or no model preference). **`MEASURED`** (a fitted value with
+no open systematic, which is the frequency rate, the P² scaling and the
+γ-floor). **`PRELIM`** (a model-dependent
+cross-check replaced by a BOUND headline). **`ARTIFACT`** (identified noise,
+not physics). **`DIAGNOSTIC`** and **`CALIB`** (fit-quality and calibration
+intermediates). **`ENVELOPE`** (order-of-magnitude, or w₀-parametric,
+estimate).
 `laser_epoch.csv` and `qc_metrics.csv` carry their own `status`/`flag` instead.
 
 | file | produced by | holds |
@@ -31,18 +34,18 @@ intermediates); **`ENVELOPE`** (order-of-magnitude / w₀-parametric estimate).
 | `ruler_campaign.csv` | `run_ruler.py` (M2) | the authoritative campaign rate (inverse-variance + PDG scatter inflation) — the ledger reads this rather than re-averaging the blocks. Since 2026-08-04 it also carries `rate_est_spread` (half the range of eight legitimate estimators of the same blocks), `position_mismatch_relerr` (the rulers and the lines sit at different places in the acquisition window, read against `ruler_nlmap.csv`) and `rate_err_total` (the statistical error and the estimator spread in quadrature). The two FRACTIONAL terms are folded into the block-coherent rate error every width carries. `rate_laser_err` is not folded again, since the per-block statistical error already is it. |
 | `trim_report.csv` | `run_trim_report.py` | DIAGNOSTIC. Every residual-tail trim and every outlier removal the pipeline made, one row per trace per stage (`qc`, `ruler`, `linefit`, `outlier`), collected from the tables that made them. A record of what was cut, never an input to anything. The `linefit` rows leave `trimmed` EMPTY: the condition fit runs the trimmer but `run_linefit.py` does not persist a per-trace record, and an empty cell is not a claim that nothing was cut. That producer prints the count it took. |
 | `linefit_conditions.csv` | `run_linefit.py` (M3) | per-condition joint-fit widths |
-| `beta_self.csv`, `beta_self_probe.csv` | `run_beta_self.py` (M4, C1) | two DIFFERENT quantities (mind the names): `beta_self.csv` = per-peak model fits; **`beta_self_probe.csv` = the model-independent width-slope bound `bound95` — the C1 HEADLINE.** Since 2026-08-02 BOTH are the four-point 70/90/110/130 °C construction (dof=2, ×52.5 lever) — the earlier three-point 70–110 °C headline is replaced, see the module docstring. ("probe" here = the width-vs-density *probe*, NOT `lever_crosscheck.csv`'s own separate 130 °C anchor test — that is `beta_lever_probe_130`, a different computation that happens to use the same 130 °C block.) **Axis note:** the `sigma_laser` column is the fitted Gaussian FWHM on the **transition axis** (halve for laser axis) and is CONDITIONAL on the transit prior (transit is a separate fixed kernel, degenerate with σ_laser via w₀). So per-peak 1.69–2.03 MHz transition = 0.85–1.01 MHz laser, consistent with the C2 headline bound (<1.2 MHz laser); it is NOT transit-subtracted and is an upper end, not a measurement. **β error columns here (and in `global_fit.csv`) are STAT-only** — the dominant C1 uncertainty is the ~factor-2 spread ACROSS estimators (this fit vs the hierarchical fit vs the model-independent bound), which is not a per-fit column; script against the bound in `beta_self_probe.csv` (`bound95`), not these central values, if you need the conservative headline. |
-| `global_fit.csv` | `run_global_fit.py` (M4b) | **AUTHORITATIVE hierarchical β** (shared σ_laser per-T across peaks, β per isotope). This REPLACES the per-peak `beta_self.csv` for the isotope question: the per-peak fits let σ_laser float per line and so absorb per-peak systematics — the 1.6σ ⁸⁷Rb internal spread (β 0.019 vs 0.034) and the unphysical σ_laser spread (1.82–2.08; the laser cannot differ per hyperfine line) — whereas the global fit constrains σ_laser jointly and finds β₈₅=β₈₇ (no isotope difference). **σ_laser(T) caveat (updated by M4c, `sigma_laser_sharing.csv`):** the per-T sharing across peaks is **untested, not validated** — at each T the four peak-blocks agree on one σ_laser only within error bars that are themselves inflated (χ²/dof < 1), which is an in-sample check that cannot discriminate; and the recovered clock since showed the peaks were acquired 54–76 min apart, so the close-in-time justification was never true. The 2.054/2.166/1.540 *trend* is NOT a physical laser drift: the free per-condition σ_laser is ~flat (1.53–1.71), so the tied fit's inflation-then-drop is the β↔σ_laser degeneracy under the density constraint. STAT-only errors; not clean per-temperature laser-width measurements. |
-| `lever_crosscheck.csv` | `run_lever_crosscheck.py` (M4d) | **a lever-limited cross-check ESTIMATOR — NOT the headline β** (that stays the model-independent width-slope bound in `beta_self_probe.csv`). The cooling-sweep (70/90/110 °C) joint fit with its statistical precision and systematics: `beta_crosscheck` (value=β, err=statistical — **read as this estimator's precision, not β's**: the lever test below moves the central value ~8σ, so β is a bound, and `beta_lever_probe_130` + `gamma_rise_factor` show why), `beta_err_transit`/`beta_err_sharing`/`beta_err_modelform` (the model-form grid), `beta_w0_band` (value=lo err=hi over the OPEN w₀), `beta_loo_peak`/`beta_loo_temp` (drop-a-peak robustness vs drop-a-temperature lever-leverage), and `beta_grid_*` (the three model cells). **`beta_lever_probe_130` + `gamma_coll_mean_vs_T` + `gamma_rise_factor` are the lever test:** the joint β collapses 0.036→0.014 when the ×53 130 °C anchor is added, because γ_coll rises only ×1.85 across a ×52 density span (a residual floor, not resolved collisions) → β is a lever-dependent **BOUND**. The `beta_crosscheck` value REPLACES `global_fit.csv` (same headline, byte-stable) by adding the auditable budget; the model-independent bound in `beta_self_probe.csv` remains the archival headline. |
+| `beta_self.csv`, `beta_self_probe.csv` | `run_beta_self.py` (M4, C1) | two different quantities despite the similar names. `beta_self.csv` holds the per-peak model fits. **`beta_self_probe.csv` holds the model-independent width-slope bound `bound95`, which is the C1 headline.** Four things travel with these columns and are set out below, under [beta_self.csv and beta_self_probe.csv](#beta_selfcsv-and-beta_self_probecsv) |
+| `global_fit.csv` | `run_global_fit.py` (M4b) | the **authoritative hierarchical β**, with σ_laser shared per temperature across peaks and β fitted per isotope. It replaces the per-peak file for the isotope question, and its σ_laser trend is not a physical laser drift. See [global_fit.csv](#global_fitcsv) |
+| `lever_crosscheck.csv` | `run_lever_crosscheck.py` (M4d) | **a lever-limited cross-check estimator, not the headline β**, with the systematic budget as separate columns and the lever test that makes β a bound. Column by column in [lever_crosscheck.csv](#lever_crosscheckcsv) |
 | `sigma_laser_sharing.csv` | `run_sigma_laser_sharing.py` (M4c) | the σ_laser Model-A-vs-B test: per-T χ²/dof of the 4 peak-blocks (χ²<1: an in-sample check that cannot discriminate, not a validation) + free vs β·N-tied common σ_laser (the trend is degeneracy, not drift) |
 | `laser_epoch.csv` | `run_laser_epoch.py` (M5, C2) | σ_laser upper bound + w₀ band |
 | `power_sweep.csv` | `run_power_sweep.py` (M6, C3) | FWHM/amplitude/skew vs power. **`resid_skew` is the residual skew of a SYMMETRIC fit** — large & positive at low power (up to ~10σ) but it is shot-noise skewness (∝1/√counts, falls with power), NOT the AC-Stark ramp (which would grow as P³); see RESULTS.md C3c. |
 | `stark_sweep.csv` | `run_stark_sweep.py` (M4e, C3d) | the AC-Stark coefficient BOUND from the power lever: one shared κ (S₀=κP) fit to the 130 °C FWHM-vs-power (from `power_sweep.csv`). **`S0_225mW_ub95_profile`** is a 95% profile-likelihood upper bound of 0.64 MHz on S₀ at 225 mW, just above `S0_225mW_pred` (0.35); replaced as the headline by `stark_joint.csv` (three sessions, < 0.26 MHz) and kept as the independent width-only bracket. (The Wald `S0_225mW_ub95`=3.1 / `_ub95_raw`=1.5 are REPLACED diagnostics: the fit rails at κ=0, where a linearized error has no coverage.) A BOUND, not a measurement: the shift is dead in the 2025 drift, so only the ramp's width broadening (∝S₀²) constrains κ; `chi2_red`≈4 (block-to-block width scatter) is folded into the bound. a fixed lock would measure the pull ∝S₀ directly. |
-| `stark_joint.csv` | `run_stark_joint.py` (M23, C3f) | **the headline light-shift BOUND: S₀(225 mW) < 0.26 MHz** (95%, one-sided profile likelihood; `S0_270mW_ub95` at the rehearsal's top rung; the earlier 0.15 was cold-start-inflated and is retracted, preregistration addendum 24). Joint ML fit of the FULL profiles of 100 campaign + 46 LeCroy-rehearsal + 26 pilot traces with one shared κ, per-peak widths under the β_self×N(130 °C) prior, per-trace free centres (drift profiled out exactly), per-session σ_laser and detector-saturation nuisances (both fit linear). Every quoted profile is the pointwise minimum over cold, backward and search-seeded chains (`kappa_min`/`dchi2_kappa0` show the minimum is consistent with zero — NOT a detection). Robustness rows: campaign-only 0.15 MHz at 225 mW (`kappa_ub95_camponly`), the red-wing nuisance marginalized 0.24 MHz (`kappa_ub95_wing`), dropping peak 4192 (which removes the entire pilot) 0.37 — that 0.15-to-0.37 spread across subsets is the dominant systematic, the primary and campaign-only subsets sit below the 0.35 MHz nominal prediction and the drop-4192 subset does not, no single peak drives it (`lopo_dchi2_pred`). The rehearsal axis-direction row is converged and indifferent (max |Δχ²| = 8.6). Producer needs the private prehistory tree (raw traces never enter the repo); without it the committed CSV is the record. |
+| `stark_joint.csv` | `run_stark_joint.py` (M23, C3f) | **the headline light-shift bound, S₀(225 mW) < 0.26 MHz**, from a joint fit over the full profiles of 172 traces in three sessions. The construction, the robustness spread that is its dominant systematic, and the conservatism since measured on it are in [stark_joint.csv](#stark_jointcsv) |
 | `amplitude_trapping.csv` | `run_amplitude_trapping.py` (M7) | amplitude vs density |
 | `pilot_ruler.csv` | `run_pilot_ruler.py` (M26) | the pilot day's own frequency axis, from 27 recovered EOM rulers no analysis had opened: Def-group rate 0.042538(51) MHz/ms → a **measured** `pilot_rate_scale` = 1.0022(12) against the campaign 4192 rate, replacing the fitted [0.9, 1.1]-boxed nuisance both joint fits put at 1.02–1.03. The 17σ gap between measured and fitted is an open question the next joint re-run answers: either the pilot science scan differed from its own rulers, or the fitted scale was absorbing width physics. Nine pre-adjustment traces rail at the fit bound and are flagged, never averaged. Producer needs the private pilot tree; the committed CSV is the record. |
 | `modelform.csv` | `run_modelform.py` (M8) | Voigt-vs-Lehmann BIC |
-| `transit_mc.csv` | `run_transit_mc.py` (M9) | Monte-Carlo transit-broadening FWHM vs (w₀, T, collection geometry), with the crossing-flux factor (fixed 2026-07-13; validated against Lehmann's 41.2 kHz NNO example): the transit kernel adds ~2.1 MHz at w₀=32 µm in the thin single-waist limit, but only ~1.6 MHz over a realistic multi-mm collection column (the beam defocuses across it), so the line alone does not decisively exclude 32 µm — that exclusion now rests on the direct waist measurement instead (w₀≈64 µm, Rajasree 2020). The grid's nearest point, 65 µm, gives transit ≈0.88 MHz; at the measured 64 µm prior `TRANSIT_FWHM_PLACEHOLDER_MHZ` (`constants.py`) gives 0.93 MHz — degenerate with σ_laser through the OPEN w₀. Seeded on `C.RNG_SEED`, so byte-reproducible. |
+| `transit_mc.csv` | `run_transit_mc.py` (M9) | Monte-Carlo transit-broadening FWHM vs (w₀, T, collection geometry), with the crossing-flux factor (fixed 2026-07-13; validated against Lehmann's 41.2 kHz NNO example): the transit kernel adds ~2.1 MHz at w₀=32 µm in the thin single-waist limit, but only ~1.6 MHz over a realistic multi-mm collection column (the beam defocuses across it), so the line alone does not decisively exclude 32 µm — that exclusion now rests on the direct waist measurement instead (w₀≈64 µm, Rajasree 2020). The grid's nearest point, 65 µm, gives transit ≈0.88 MHz; at the measured 64 µm `TRANSIT_FWHM_PLACEHOLDER_MHZ` (`constants.py`) gives 0.93 MHz, and it stays degenerate with σ_laser through w₀, which this archive cannot re-measure even though the apparatus lineage did. Seeded on `C.RNG_SEED`, so byte-reproducible. |
 | `amplitude_ratios.csv` | `run_amplitude_ratios.py` (M10) | degeneracy-law area ratios: measured vs predicted abundance×(2F+1), with `pull_sigma`. The measured ratios swing 30–50% between blocks (common-mode drift), so the law is **untestable in the archive** — a cross-peak systematic that interleaving in a fixed-lock session would fix; per-peak/within-block analyses are unaffected. |
 | `model_ladder.csv` | `run_model_ladder.py` (M11) | DIAGNOSTIC. Nested-model ΔBIC ladder — which kernels the data actually demand. |
 | `identifiability.csv`, `identifiability_profile.csv` | `run_identifiability.py` (M12) | DIAGNOSTIC. The σ_laser↔transit↔β degeneracy made explicit: correlation structure and 1-D profile-likelihood curves. `identifiability_profile.csv` is the dense profile scan (~1.9k rows), not a results table — read the summary file first. |
@@ -53,7 +56,143 @@ intermediates); **`ENVELOPE`** (order-of-magnitude / w₀-parametric estimate).
 | `resolving_power.csv` | `run_resolving_power.py` (M17) | DIAGNOSTIC. Whether each observable can answer the density question at all: dynamic range over the 70–130 °C sweep divided by block-to-block scatter at fixed conditions. Amplitude clears its floor ~45×, the widths 1.5–5.3 — which reproduces this ledger's own MEASURED-vs-BOUND assignments. Also carries the fixed-lock projection and a permutation test of the averaging assumption under the S₀ bound (p = 0.11: untested, not contradicted). |
 | `noise_law_swap.csv` | `run_beta_self.py` (M1/M4) | DIAGNOSTIC. Robustness of the headline bound to swapping the M1 noise law — a sensitivity check, not a separate measurement. |
 | `projections.csv` | `run_projections.py` | ENVELOPE and CALIB only, never a result. What a further campaign would buy, computed from the archive's own measured precision and the session parameters `docs/PLAN.md` states: the fixed-lock pull channel, β_self, the 7S adjudication, the 778 nm calibration rung, the magic-wavelength scan, and the guided-mode option. `proj_*` rows are the projections, `input_*` rows the archive quantities they are built from, and every row carries its own formula, assumption set and source. Every input quoted in MHz rides on the current sweep-rate calibration, so re-running the producer after the ruler re-validation re-derives the whole table with no edit. |
+| `global_archive_fit.csv`, `global_archive_fit_norulers.csv` | `run_global_archive_fit.py`, `_m25_norulers.py` (M25) | BOUND. The two arms of the same construction over every canonical trace, with both the AC-Stark coefficient and `beta_self` free rather than one held under a prior. The no-rulers arm is a deliberate duplicate rather than a wrapper, which is the point: a defect fixed in one has to be fixed in the other, and one was. Each carries `beta_grid_step` and a `beta_profile` scan, and the 95% edges are interpolated in sqrt(dchi2) on a grid refined until the interval spans four steps (PREREGISTRATION_RESULTS addendum 30). Quote the step whenever the interval is quoted. |
+| `full_archive_fit.csv` | `run_full_archive_fit.py` (M28) | BOUND. The third corner of the same triangle: the full archive in one likelihood, the collisional term under this repository's own four-point measurement as a prior, and one profiled coefficient. Its contract is preregistered at `docs/notes/full_archive_fit_prereg.md`. |
+| `centre_stark.csv` | `run_centre_stark.py` (M27) | BOUND, and self-statused. The AC-Stark coefficient from the line CENTRE inside single display epochs, which is the channel the archive's frame problem closes. It reports a bound rather than its own point estimate, and its five control epochs, where the true power difference is zero, are its own false-positive floor. |
+| `stark_centres.csv` | `run_stark_joint.py` (M23) | DIAGNOSTIC. The per-trace centres the joint fit reads, kept so the frame argument can be checked against the numbers rather than the prose. |
+| `laser_history.csv`, `laser_history_structure.csv` | `run_laser_history.py` (M20) | DIAGNOSTIC. The laser's behaviour across the campaign and whether that behaviour has structure in it. Both are read under the 2026-07-30 window-reference correction, which withdrew the licence for either knob frame, so they bound within-block behaviour and not between-block motion. |
+| `wavemeter_reconstruction.csv` | `run_wavemeter_reconstruction.py` (M22) | CALIB. What the wavemeter readings can and cannot carry, with a settled noise floor of 0.62 ± 0.03 MHz from a 400-replicate residual bootstrap. The Hessian was rejected deliberately, since the profiled surface is piecewise smooth by that module's own docstring. |
+| `wing_check.csv` | `run_wing_check.py` (M24) | NULL. Whether the fitted line has structure in its wings that the composite model does not contain. It does not. |
+| `ruler_rate_model.csv` | `run_ruler.py` (M2) | CALIB. The rate model behind the frequency axis, kept separately from the per-block table so the model and the blocks it was fitted to can be compared without re-running either. |
+| `cavity_scan_integrals.csv` | `run_cavity_scan.py` (M30) | DIAGNOSTIC. The digitised cavity-scan photograph, integrated. It is the one result in this directory whose input is an image rather than a trace, and APPARATUS section 6 records what that costs. |
+| `trapping_channels.csv` | `run_trapping_channels.py` | DIAGNOSTIC and ENVELOPE, self-statused with its own `err_kind`. Radiation trapping on the two infrared cascade legs at 1324 and 1367 nm, which absorb as strongly per lower-state atom as the detected D1 line does. Inside the driven volume both are inverted and cannot re-excite; outside it they do, at about one per cent of the primary rate at 130 °C. The halo rows carry `err_kind = geometry`, because the standoff they ride on was never recorded and the band over the plausible range is the error rather than a repeatability. |
+| `blackbody_channels.csv` | `run_blackbody_channels.py` | DIAGNOSTIC and ENVELOPE, self-statused with its own `err_kind`. The cell's own thermal field, on the cascade and at the detector. Every line of this cascade sits far to the blue of where the thermal photons are, so the occupation numbers run 1e-12 to 1e-20 and nothing is driven. The two rows that are not negligible are the 6S to 6P transfer at 2.7 µm and the thermal AC-Stark shift, which is a converged principal value through those poles and carries the committed `alpha_6s_static` band as its `err_kind = polarizability`. |
+| `cascade_branching.csv` | `run_zeeman_depletion.py` | DIAGNOSTIC, self-statused. The hyperfine pumping branching per line, resolved by intermediate F, with the levels that cannot reach the undriven ground level at all appearing as exact zeros. Its producer needs the optional `cascade` extra for exact Wigner symbols, so it is not in `run_all.sh` and this file is committed and read rather than recomputed. |
 
 All values are PRELIMINARY where they carry an absolute scale: they ride on
-the OPEN beam waist w₀ (see the top-level README). The headline β_self is a
+the beam waist w₀, measured on this apparatus lineage rather than by this
+archive (see the top-level README). The headline β_self is a
 bound, not a measurement.
+
+## Four files that need more than a table cell
+
+These four rows carried between a hundred and fifty and two hundred words each,
+which is a wall inside a table and unreadable at any window width. Nothing
+stated in them has been dropped. It is set out here instead, in sentences.
+
+### `beta_self.csv` and `beta_self_probe.csv`
+
+**The names are close and the quantities are not.** `beta_self.csv` holds the
+per-peak model fits. `beta_self_probe.csv` holds the model-independent
+width-slope bound in its `bound95` column, and that bound is the C1 headline.
+Since 2026-08-02 both are built on the four-point 70/90/110/130 °C
+construction, two degrees of freedom over a 52.5-fold density lever. The
+earlier three-point 70 to 110 °C headline is replaced, and the module docstring
+records why.
+
+The word "probe" here means the width-against-density probe. It is not
+`lever_crosscheck.csv`'s separate 130 °C anchor test, which is called
+`beta_lever_probe_130` and is a different computation that happens to use the
+same 130 °C block.
+
+**The axis, which is the easiest column here to misread.** `sigma_laser` is the
+fitted Gaussian FWHM on the transition axis, so halve it for the laser axis. It
+is conditional on the transit prior, transit being a separate fixed kernel that
+is degenerate with σ_laser through the waist. The per-peak values run 1.69 to
+2.03 MHz on the transition axis, which is 0.85 to 1.01 MHz on the laser axis
+and consistent with the C2 headline bound of under 1.2 MHz. It is not
+transit-subtracted, and it is an upper end rather than a measurement.
+
+**The β error columns here and in `global_fit.csv` are statistical only.** The
+dominant C1 uncertainty is the roughly twofold spread across estimators, this
+fit against the hierarchical fit against the model-independent bound, and that
+spread is not a column in any per-fit file. Script against `bound95` in
+`beta_self_probe.csv` rather than against these central values if what you want
+is the conservative headline.
+
+### `global_fit.csv`
+
+**The authoritative hierarchical β**, fitted with σ_laser shared per
+temperature across peaks and β free per isotope. It replaces the per-peak
+`beta_self.csv` for the isotope question, and the reason is mechanical: the
+per-peak fits let σ_laser float per line, so they absorb per-peak systematics
+into it. Two symptoms of that show in the per-peak file, a 1.6σ internal spread
+in ⁸⁷Rb between β of 0.019 and 0.034, and a σ_laser spread of 1.82 to 2.08 MHz
+that cannot be physical because the laser does not differ per hyperfine line.
+Constraining σ_laser jointly, the global fit finds β₈₅ equal to β₈₇ and so no
+isotope difference.
+
+**The σ_laser(T) caveat, updated by M4c in `sigma_laser_sharing.csv`.** The
+per-temperature sharing across peaks is untested rather than validated. At each
+temperature the four peak-blocks agree on one σ_laser only within error bars
+that are themselves inflated, χ² per degree of freedom below one, which is an
+in-sample check that cannot discriminate. The recovered acquisition clock then
+showed the peaks were taken 54 to 76 minutes apart, so the close-in-time
+justification for sharing was never true in the first place.
+
+**The 2.054, 2.166, 1.540 MHz trend is not a laser drift.** Fitting each
+condition freely gives a flat 1.53 to 1.71 MHz, so the tied fit's rise and drop
+is the β against σ_laser degeneracy working under the density constraint. The
+errors are statistical only, and these are not clean per-temperature
+laser-width measurements.
+
+### `lever_crosscheck.csv`
+
+**A lever-limited cross-check estimator, and not the headline β.** The headline
+stays the model-independent width-slope bound in `beta_self_probe.csv`. This
+file is the cooling-sweep joint fit over 70, 90 and 110 °C with its statistical
+precision and its systematic budget broken out.
+
+Reading the columns: `beta_crosscheck` carries the value and a statistical
+error, and that error is this estimator's precision rather than β's, because
+the lever test below moves the central value by about 8σ.
+`beta_err_transit`, `beta_err_sharing` and `beta_err_modelform` are the
+model-form grid. `beta_w0_band` carries the low value and the high value over
+the waist measurement band. `beta_loo_peak` and `beta_loo_temp` separate
+drop-a-peak robustness from drop-a-temperature lever leverage, which are
+different questions. `beta_grid_*` are the three model cells.
+
+**The lever test is `beta_lever_probe_130` with `gamma_coll_mean_vs_T` and
+`gamma_rise_factor`.** The joint β collapses from 0.036 to 0.014 when the
+52.5-fold 130 °C anchor is added, because the collisional width rises only
+1.85-fold across a 52-fold density span. That is a residual floor rather than
+resolved collisions, and it is what makes β a lever-dependent bound rather than
+a measurement.
+
+The `beta_crosscheck` value replaces `global_fit.csv`, reproducing the same
+headline byte for byte while adding the auditable budget. The
+model-independent bound remains the archival headline.
+
+### `stark_joint.csv`
+
+**The headline light-shift bound, S₀(225 mW) below 0.26 MHz** at 95 per cent
+from a one-sided profile likelihood, with `S0_270mW_ub95` giving the same
+construction at the rehearsal's top rung. An earlier 0.15 was cold-start
+inflated and is retracted in preregistration addendum 24.
+
+**The construction.** A joint maximum-likelihood fit of the full profiles of
+100 campaign, 46 LeCroy-rehearsal and 26 pilot traces under one shared κ, with
+per-peak widths under the β_self times N(130 °C) prior, per-trace free centres
+so the drift is profiled out exactly, and per-session σ_laser and
+detector-saturation nuisances, both fitted linear. Every quoted profile is the
+pointwise minimum over cold, backward and search-seeded chains, and
+`kappa_min` with `dchi2_kappa0` show the minimum is consistent with zero rather
+than a detection.
+
+**The robustness rows are the dominant systematic.** Campaign-only gives
+0.15 MHz at 225 mW in `kappa_ub95_camponly`, marginalising the red-wing
+nuisance gives 0.24 in `kappa_ub95_wing`, and dropping peak 4192, which removes
+the entire pilot session with it, gives 0.37. That 0.15 to 0.37 spread across
+subsets is larger than any single fit's error. The primary and campaign-only
+subsets sit below the 0.35 MHz nominal prediction and the drop-4192 subset does
+not, and `lopo_dchi2_pred` shows no single peak driving the result. The
+rehearsal axis-direction row is converged and indifferent, at a maximum
+absolute Δχ² of 8.6.
+
+**Two things to know before quoting it.** The producer needs the private
+prehistory tree, since raw traces never enter the repository, and without that
+tree the committed CSV is the record. And the bound is loose by a measured
+factor rather than by argument, because two effects broaden the line with the
+ramp's own square-of-power signature and are absent from the model behind it.
+Injecting the saturation term and re-profiling tightens it by 2.21
+(`docs/notes/two_photon_saturation_companion.md`).

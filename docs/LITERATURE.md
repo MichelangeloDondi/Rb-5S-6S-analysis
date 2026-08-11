@@ -6,6 +6,19 @@ this file changes is what an introduction on the 993 nm 5S–6S line may claim,
 and whom it must delineate against. Section 5 is the answer and the rest is the
 evidence for it.
 
+**The question.** What may a paper on this line claim as new, and whose work
+must it position itself against?
+**Takes.** Nothing.
+**Gives.** Every external number this analysis leans on with its source, and
+the delineation from the nearest prior art, which is closer than it first
+looked.
+**Skip if.** You are not writing or refereeing a claim of priority. Section 5
+is the answer if you want only that.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 Two clicks to the status of any statement. The map below routes to a section,
 and the section names the paper with what it costs or supports.
 [`LITERATURE_INDEX.md`](LITERATURE_INDEX.md) then gives every paper's status,

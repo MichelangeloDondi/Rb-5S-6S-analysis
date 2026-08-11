@@ -5,6 +5,19 @@ number came out of it.** Nothing below is chosen after seeing a fit. The
 thresholds, the grid, the trace census and the stop conditions are fixed here so
 that the run can only confirm or fail them.
 
+**The question.** What will the cross-campaign joint fit do, decided before it
+was written?
+**Takes.** [methods/06_the_statistics.md](../methods/06_the_statistics.md), for
+the fitting machinery this specialises.
+**Gives.** The trace census, the parameter hierarchy, the priors, the grid, the
+QC gates and the stop conditions, each fixed in advance so the run can only
+confirm or fail them.
+**Skip if.** You want the result rather than the contract it was run under.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 Producer: `scripts/run_full_archive_fit.py`. Output: `results/full_archive_fit.csv`.
 
 ## 1. What this module is, and what it is not
@@ -205,6 +218,23 @@ Two partial chi-squared columns are carried alongside the total at every kappa,
 one for the campaign traces and one for the power ladder alone. They answer
 whether the bound leans on the rehearsal's soft rate anchor, and whether the
 temperature ladder new to this fit is doing the work.
+
+![five repeats of one condition under a single shared line shape](../../figures/fig21_joint_fit_five.png)
+
+*What "one shared shape" means in practice, at one condition. The line shape is
+identical in all five panels and only the centre, the height, the background
+and the detector saturation are refitted, because the lock drifts between
+repeats and the detector does not sit still either. If the shared shape were
+wrong it would be wrong in the same direction in every panel, which is what the
+residual strips are there to show.*
+
+![the same shared shape across all twenty campaign power-sweep conditions](../../figures/fig22_joint_fit_twenty.png)
+
+*And across the whole power sweep, nothing retuned per panel beyond the same
+four per-trace nuisances. Each panel is scaled to its own trace, so the heights
+cannot be compared across the grid. The point is that one line shape survives a
+ninefold change in drive power, which is the assumption every number in this
+note rests on.*
 
 ## 8. Acceptance criteria and stop conditions
 

@@ -1,15 +1,19 @@
-quantity,key,value,unit,status
-mde_beta,detect_50pct,0.015,MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null),DIAGNOSTIC
-mde_beta,detect_95pct,0.038,MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null),DIAGNOSTIC
-bias,beta_true_0.00,-0.0001,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
-coverage95,beta_true_0.00,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
-false_measurement_rate,beta_true_0.00,0.037,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
-bias,beta_true_0.05,-0.0001,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
-coverage95,beta_true_0.05,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
-false_measurement_rate,beta_true_0.05,1.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
-bias,beta_true_0.10,-0.0001,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
-coverage95,beta_true_0.10,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
-false_measurement_rate,beta_true_0.10,1.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
-bias,beta_true_0.20,-0.0001,MHz/1e12; mean(beta_eff)-beta_true,DIAGNOSTIC
-coverage95,beta_true_0.20,1.000,fraction bound95_nscale >= beta_true (>=0.95 = valid),DIAGNOSTIC
-false_measurement_rate,beta_true_0.20,1.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive),DIAGNOSTIC
+quantity,key,value,err,unit,status
+mde_beta,detect_50pct,0.015,,"MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null); read off a grid, so its resolution is the grid step",DIAGNOSTIC
+mde_beta,detect_95pct,0.038,,"MHz/1e12; true beta this analysis would CALL a measurement at this probability (the sensitivity behind the null); read off a grid, so its resolution is the grid step",DIAGNOSTIC
+bias,beta_true_0.00,-0.0001,0.0001,MHz/1e12; mean(beta_eff)-beta_true; err is the Monte-Carlo standard error over n_trials,DIAGNOSTIC
+scatter,beta_true_0.00,0.0056,0.0001,MHz/1e12; sd of beta_eff across trials; err is its own Monte-Carlo standard error,DIAGNOSTIC
+coverage95,beta_true_0.00,1.000,0.000,"fraction bound95_nscale >= beta_true (>=0.95 = valid); err is binomial over n_trials, so a shortfall inside it is sampling noise rather than a coverage failure",DIAGNOSTIC
+false_measurement_rate,beta_true_0.00,0.037,0.004,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive); err is binomial,DIAGNOSTIC
+bias,beta_true_0.05,-0.0001,0.0001,MHz/1e12; mean(beta_eff)-beta_true; err is the Monte-Carlo standard error over n_trials,DIAGNOSTIC
+scatter,beta_true_0.05,0.0056,0.0001,MHz/1e12; sd of beta_eff across trials; err is its own Monte-Carlo standard error,DIAGNOSTIC
+coverage95,beta_true_0.05,1.000,0.000,"fraction bound95_nscale >= beta_true (>=0.95 = valid); err is binomial over n_trials, so a shortfall inside it is sampling noise rather than a coverage failure",DIAGNOSTIC
+false_measurement_rate,beta_true_0.05,1.000,0.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive); err is binomial,DIAGNOSTIC
+bias,beta_true_0.10,-0.0001,0.0001,MHz/1e12; mean(beta_eff)-beta_true; err is the Monte-Carlo standard error over n_trials,DIAGNOSTIC
+scatter,beta_true_0.10,0.0056,0.0001,MHz/1e12; sd of beta_eff across trials; err is its own Monte-Carlo standard error,DIAGNOSTIC
+coverage95,beta_true_0.10,1.000,0.000,"fraction bound95_nscale >= beta_true (>=0.95 = valid); err is binomial over n_trials, so a shortfall inside it is sampling noise rather than a coverage failure",DIAGNOSTIC
+false_measurement_rate,beta_true_0.10,1.000,0.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive); err is binomial,DIAGNOSTIC
+bias,beta_true_0.20,-0.0001,0.0001,MHz/1e12; mean(beta_eff)-beta_true; err is the Monte-Carlo standard error over n_trials,DIAGNOSTIC
+scatter,beta_true_0.20,0.0056,0.0001,MHz/1e12; sd of beta_eff across trials; err is its own Monte-Carlo standard error,DIAGNOSTIC
+coverage95,beta_true_0.20,1.000,0.000,"fraction bound95_nscale >= beta_true (>=0.95 = valid); err is binomial over n_trials, so a shortfall inside it is sampling noise rather than a coverage failure",DIAGNOSTIC
+false_measurement_rate,beta_true_0.20,1.000,0.000,fraction the SNR>=3 rule calls MEASUREMENT (the detection power / at beta=0 the false-positive); err is binomial,DIAGNOSTIC

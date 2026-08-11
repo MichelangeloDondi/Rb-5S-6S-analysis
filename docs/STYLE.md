@@ -20,7 +20,8 @@ data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
   dependency and the threshold. See the g1 sign-flip discussion in PLAN §6
   #4, which is conditional on a collection geometry that has not been measured.
 - **Numbers live in one place.** Headline values are generated from the
-  committed CSVs; prose quotes them, never restates them independently.
+  committed CSVs, and prose quotes them rather than restating them
+  independently.
   `tests/test_docs_canonical.py` and `tests/test_ramp_geometry_docs.py` fail if
   a document and its producing code disagree.
 
@@ -44,7 +45,7 @@ Name people in **citation context only**, citing via `docs/lit/<citekey>.md`.
 
 Do not assign colleagues roles in published documents ("X must be able to take
 over", "ask X", "lead on the fibre side"). Roles are for the people involved to
-agree between themselves; a public repository is not the place to announce
+agree between themselves, and a public repository is not the place to announce
 them. Write "a new operator", "the group", "an external theory check".
 
 ## Generated files: edit the generator, not the output
@@ -87,7 +88,7 @@ Editing these directly is lost on the next run, and the freshness tests fail.
   `855--865`) because they feed `references.bib`. Author names use Unicode
   accents (Síle, Bordé, Wcisło), which modern LaTeX takes and which are
   correct on the page.
-- **No thin-space macros** (`\,`, `\;`, `\!`) in Markdown maths. GitHub's
+- **No thin-space macros** (`\,` and its siblings) in Markdown maths. GitHub's
   renderer eats the backslash. `tests/test_docs_math_render.py` catches these.
 - **Quote arXiv IDs** in YAML (`arxiv: '2201.06000'`), or a trailing zero is
   lost to float parsing.
@@ -118,6 +119,61 @@ Editing these directly is lost on the next run, and the freshness tests fail.
   working tree, so drawing while another session holds uncommitted CSVs stamps
   its numbers into a published PNG. Use a detached worktree at HEAD and confirm
   the fingerprint matches the tree you are publishing from.
+- **Compute every drawn number at draw time, from the function that produces
+  it.** Never copy it from the document the figure illustrates. When a figure
+  recomputed a companion width it came out at 28.2 kHz against the note's 25.4,
+  and the difference was a collection half-length the note had never stated. The
+  recomputation did not disagree with the note. It found the missing parameter.
+- **Where a figure and a document give the same quantity, one of them is the
+  authority and says so.** Two numbers of one name in two places is the defect,
+  whether or not they currently agree.
+- **Choose the form that is honest at both ends.** Three broadenings that all
+  grow as the square of the power are drawn as three bars at one power, not as
+  three curves, because at low power the smallest falls under the resolution of
+  the frequency grid it is computed on and the curve would be drawing its own
+  rounding. Where the obvious form was rejected, the reason goes in the
+  generator's docstring, or the next pass restores it.
+- **Look at the rendered image at every iteration, not once at the end.** Of
+  four figures drawn on 2026-08-10, three had a defect visible only in the
+  pixels: a legend over a curve, a clipped panel title, a caption past the right
+  margin. All three passed every automated check first.
+- **A figure embedded in no document is a defect at both ends**, the document
+  reading as an unbroken wall and the figure as decoration.
+  `figures/README.md` names, for each figure, the document it supports. If it
+  can name one, the figure belongs in it.
+
+## Document structure
+
+Long documents are the main thing that makes this repository hard to enter, and
+the fixes are cheap and were repeatedly not applied, so they are rules now
+rather than habits. `tests/test_docs_structure.py` checks the first two.
+
+**Any document over 2500 words opens with the four-line reader header.** The
+methods chapters set the pattern and it is the most useful thing here for
+somebody arriving without context:
+
+```
+**The question.** What this document answers, as a question.
+**Takes.** What a reader should have read first, or "Nothing".
+**Gives.** What they leave with.
+**Skip if.** When not to read it. Say this honestly, including when the
+answer is that a shorter document already covers it.
+```
+
+**Any document over 2500 words carries the glossary pointer**, as a blockquote
+near the top, because a reader who lands in the middle of the repository from a
+search result has no front door.
+
+**A document over about 4000 words should show something before it argues.**
+A figure in the first screen is worth more than a better paragraph, and there
+are usually one already drawn: `figures/README.md` names, for every figure, the
+document it supports. A figure embedded nowhere is a defect at both ends, the
+document reading as an unbroken wall and the figure as decoration.
+
+**Every embedded figure carries a caption in italics under it**, saying what
+the reader should take from it rather than restating the axis labels. The
+caption is the document's, not the figure's: on-canvas text stays to what the
+axes cannot say (see Figures, above).
 
 ## Private material
 

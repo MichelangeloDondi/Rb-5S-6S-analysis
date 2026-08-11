@@ -17,10 +17,11 @@ PHYSICS. In the weak-excitation (low-saturation) limit the two-photon excited
 amplitude for one atom is the Fourier transform of its two-photon coupling
 along its trajectory, and the two-photon Rabi frequency is proportional to the
 INTENSITY, Omega_2ph(t) ∝ I(r(t)). For a straight-line crossing of a Gaussian
-beam (w ~ constant during the ~0.2 us transit, since an atom moves only
-~30 um in z << zR ~ 3 mm; and the crossing is collisionless -- even at the
-densest 130 C the Rb-Rb mean free path ~1-2 cm dwarfs the ~50 um waist, so an
-atom crosses the beam ~300x before a velocity-changing collision), the
+beam (w ~ constant during the ~260 ns transit at the measured 64 um waist,
+since an atom moves only tens of um in z << zR ~ 13 mm; and the crossing is
+collisionless -- even at the densest 130 C the Rb-Rb mean free path ~1-2 cm
+dwarfs the waist by more than two orders, so an atom crosses the beam hundreds
+of times before a velocity-changing collision), the
 intensity envelope is Gaussian in time, so the per-atom lineshape is analytic:
 
     P_atom(nu) = I_pk^2 * (pi w^2 / (2 v_perp^2)) * exp(-(2 pi nu)^2 w^2 / (4 v_perp^2)),
@@ -46,7 +47,10 @@ nominal w0 = 32 um it gives a bare transit of ~1.87 MHz (110 C, transition axis)
 -- convolved with the 3.49 MHz natural Lorentzian that ALREADY exceeds the
 observed ~5.25 MHz line, so 32 um is EXCLUDED and w0 must be larger (~50 um
 central, 45-70 um). i.e. the observed line is natural-plus-transit dominated and
-the 2025 laser was NARROW; the MC settles this without a fit.
+the 2025 laser was NARROW; the MC settles this without a fit. That band is what
+the LINE alone says and it is left as it stood, because it is an independent
+statement: the apparatus lineage's direct measurement, 64 um, was adopted later
+and falls inside it, which is a consistency check rather than a correction.
 
 HISTORY (2026-07-12). An earlier version omitted the crossing-flux factor,
 weighting the ensemble by ~1/v; that produced a spurious log-divergent cusp

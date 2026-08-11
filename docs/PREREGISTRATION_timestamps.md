@@ -4,6 +4,19 @@
 `fd45da6`. Nothing in this document may be edited after the backup is first
 read; corrections go in the results report that follows it.*
 
+**The question.** Before the recovered backup was opened, what was predicted
+to be in it?
+**Takes.** Nothing.
+**Gives.** The predictions, the scoring rules and the falsifiers, all fixed
+before first contact with the data.
+**Skip if.** You want how it scored, which is
+[PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md). This document is
+frozen by its own terms and is not edited when it turns out to be wrong.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ---
 
 ## 1. What happened, and why this document exists

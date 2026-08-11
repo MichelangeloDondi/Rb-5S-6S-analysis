@@ -206,6 +206,105 @@ def waist_table() -> None:
     print("    axial average. That is the whole trade, stated as an identity.")
 
 
+# --------------------------------------------------------------- design 3
+def fringe_velocity_classes() -> None:
+    """Which atoms resolve the fringes, over the 3D Maxwell-Boltzmann spread,
+    in the standing wave and in the running one.
+
+    The three velocity questions are separate and are answered by separate
+    components of the same distribution, which is the point of doing this in
+    3D rather than with one speed. The components are independent Gaussians of
+    the same width, so:
+
+      * v_z, ALONG the beam, sets how fast an atom crosses fringes and so
+        whether it sees a modulated intensity or a time-averaged one;
+      * the two transverse components set the crossing time, and through it
+        the transit width, the excitation probability and the pumping loss;
+      * the Doppler-free geometry does NOT select on v_z at first order, which
+        is exactly what makes the line narrow. Second-order Doppler is 0.4 kHz
+        and is ignored here.
+
+    THE FROZEN CLASS. An atom sees a frozen fringe if it moves less than a
+    quarter period during the window over which its excitation stays coherent,
+    so |v_z| < lambda / (4 tau_c). tau_c is the open modelling choice that
+    rb5s6s.fringe_tail sweeps: the excited-state lifetime at one end, the
+    crossing time at the other. The fraction is then the 1D marginal of the
+    3D distribution, erf(v* / sqrt(2) sigma_v), and it is small because
+    sigma_v is 196 m/s and v* is metres per second.
+
+    THE RUNNING WAVE DOES NOT REMOVE THAT CLASS, IT MOVES IT. Shifting one arm
+    by Delta makes the pattern travel at v_fringe = Delta lambda / 2. An atom
+    now sees the pattern go past at |v_fringe - v_z|, so the atoms that still
+    see a frozen fringe are the ones co-moving with it, v_z near v_fringe.
+    Their number is the Maxwell-Boltzmann weight there, exp(-v_fringe^2 /
+    2 sigma_v^2), which is why the criterion is THERMAL and not spectroscopic:
+    Delta has to put v_fringe out in the tail of the distribution, not merely
+    beyond a linewidth.
+
+    WHAT IT COSTS. With the two arms at different frequencies the first-order
+    Doppler no longer cancels exactly. The residue is Delta v_z / c, which
+    smears the line by Delta sigma_v / c. It grows LINEARLY in Delta while the
+    fringe suppression improves as a Gaussian in Delta, so the trade has a
+    comfortable window rather than a knife edge, and both numbers are printed.
+    """
+    sigma_v = math.sqrt(K_B_J_PER_K * (T_C + 273.15) / M_RB87_KG)
+    v_perp = sigma_v * math.sqrt(math.pi / 2.0)      # 2D Rayleigh mean
+    tau_6s = 1.0 / (2.0 * math.pi * GAMMA_NAT_HZ)
+    print()
+    print("=" * 78)
+    print("DESIGN 3  which atoms resolve the fringes, over the 3D "
+          "Maxwell-Boltzmann spread")
+    print(f"  sigma_v per component {sigma_v:.1f} m/s at {T_C:.0f} C, mean "
+          f"transverse speed {v_perp:.1f} m/s")
+    print(f"  fringe period {LAMBDA_LASER_M/2*1e9:.1f} nm, 6S lifetime "
+          f"{tau_6s*1e9:.1f} ns")
+    print()
+    print("  STANDING WAVE, the frozen class |v_z| < lambda/(4 tau_c):")
+    for label, tau in (("lifetime-capped", tau_6s),
+                       ("transit-capped, 64 um", 2 * C.W0_MEASURED_M / v_perp),
+                       ("transit-capped, 16 um", 2 * 16e-6 / v_perp)):
+        vstar = LAMBDA_LASER_M / (4.0 * tau)
+        frac = math.erf(vstar / (sigma_v * math.sqrt(2.0)))
+        print(f"    {label:22s} tau_c {tau*1e9:6.0f} ns  v* {vstar:6.2f} m/s "
+              f" -> {100*frac:6.3f} % of atoms")
+    print()
+    print("  RUNNING WAVE, the frozen class moves to v_z = v_fringe:")
+    print(f"    {'Delta':>8} {'v_fringe':>9} {'MB weight':>10} "
+          f"{'Doppler residue':>16}")
+    for delta_hz in (40e6, 80e6, 200e6, 400e6, 800e6, 1600e6):
+        v_fringe = delta_hz * LAMBDA_LASER_M / 2.0
+        weight = math.exp(-v_fringe ** 2 / (2.0 * sigma_v ** 2))
+        # FWHM of the residual first-order term Delta v_z / c over the spread
+        resid = 2.0 * math.sqrt(2.0 * math.log(2.0)) * delta_hz * sigma_v / 2.998e8
+        print(f"    {delta_hz/1e6:7.0f}M {v_fringe:8.1f} m/s {weight:10.4f} "
+              f"{resid:11.0f} Hz = {100*resid/GAMMA_NAT_HZ:.3f}% of Gamma")
+    crit = 2.0 * sigma_v / LAMBDA_LASER_M
+    print(f"    the thermal criterion is 2 sigma_v / lambda = "
+          f"{crit/1e6:.0f} MHz, which is where v_fringe = sigma_v")
+    print()
+    print("  AND THE CONTRIBUTING POPULATION IS NOT THERMAL, because pumping")
+    print("  removes the atoms that dwell longest, which are the ones the")
+    print("  transit weighting favours most:")
+    m = ramp_moments(C.W0_MEASURED_M, P_MAX_W, ZC_M)
+    rate = 2.0 * math.pi * GAMMA_NAT_HZ * (m["sat00"] / 2.0) / (1.0 + m["sat00"])
+    v = np.linspace(1.0, 900.0, 4000)
+    ray = (v / sigma_v ** 2) * np.exp(-v ** 2 / (2.0 * sigma_v ** 2))
+    w_transit = ray / v          # crossing flux (v) times excitation (1/v^2)
+    dwell = 2.0 * C.W0_MEASURED_M / v
+    base_v = trapezoid(w_transit * v, v) / trapezoid(w_transit, v)
+    print(f"    mean contributing transverse speed, transit weighting alone: "
+          f"{base_v:.1f} m/s")
+    for f_branch in (1.0 / 3.0, 2.0 / 3.0):
+        w = w_transit * np.exp(-f_branch * rate * dwell)
+        mv = trapezoid(w * v, v) / trapezoid(w, v)
+        lost = 1.0 - trapezoid(w, v) / trapezoid(w_transit, v)
+        print(f"    with pumping at f = {f_branch:.2f}: {mv:.1f} m/s "
+              f"({100*(mv/base_v-1):+.1f} %), and {100*lost:.1f} % of the "
+              f"weight removed")
+    print("    v_z and the transverse components are independent, so this")
+    print("    biases the transit width and NOT which atoms resolve fringes.")
+
+
 def cross_check() -> None:
     print()
     print("=" * 78)
@@ -226,6 +325,7 @@ def cross_check() -> None:
 def main() -> int:
     running_wave_table()
     waist_table()
+    fringe_velocity_classes()
     cross_check()
     print()
     print("=" * 78)

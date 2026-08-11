@@ -1,0 +1,12 @@
+quantity,key,value,err,err_lo,err_hi,err_kind,unit,status
+ir_branching,5P1/2,0.340921,,,,,fraction of 6S decays through the 1324 nm leg,DIAGNOSTIC
+ir_branching,5P3/2,0.659079,,,,,fraction of 6S decays through the 1367 nm leg,DIAGNOSTIC
+line_data_closure,sum_A_times_tau6S,1.00327,,,,,dimensionless; 6S has no allowed decay to 5S so this closes the line data against an independently measured lifetime,DIAGNOSTIC
+sigma_peak,1324nm,1.40764e-11,,,,,cm^2; Doppler-broadened at 130 C,DIAGNOSTIC
+sigma_peak,1367nm,1.49756e-11,,,,,cm^2; Doppler-broadened at 130 C,DIAGNOSTIC
+inversion_in_beam,1324nm,4.80981,,,,,degeneracy-weighted population ratio; above 1 means trapped light stimulates 6S down and cannot re-excite 5P,DIAGNOSTIC
+inversion_in_beam,1367nm,5.26082,,,,,degeneracy-weighted population ratio,DIAGNOSTIC
+halo_reexcitation,T70C,0,,0,4.287e-06,geometry,"per cent of the primary two-photon rate, at a 2 mm standoff; err_lo and err_hi are the distances to the ends of the 1 to 5 mm standoff band, which is a range over a geometric unknown and not a sigma",ENVELOPE
+halo_reexcitation,T90C,0.00265292,,0.002653,5.636e-05,geometry,"per cent of the primary two-photon rate, at a 2 mm standoff; err_lo and err_hi are the distances to the ends of the 1 to 5 mm standoff band, which is a range over a geometric unknown and not a sigma",ENVELOPE
+halo_reexcitation,T110C,0.0802985,,0.04064,0.04162,geometry,"per cent of the primary two-photon rate, at a 2 mm standoff; err_lo and err_hi are the distances to the ends of the 1 to 5 mm standoff band, which is a range over a geometric unknown and not a sigma",ENVELOPE
+halo_reexcitation,T130C,1.06867,,0.5789,0.784,geometry,"per cent of the primary two-photon rate, at a 2 mm standoff; err_lo and err_hi are the distances to the ends of the 1 to 5 mm standoff band, which is a range over a geometric unknown and not a sigma",ENVELOPE

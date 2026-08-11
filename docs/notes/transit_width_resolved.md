@@ -1,4 +1,4 @@
-# Transit-width tension: RESOLVED — one flux bug, w₀ re-centred 32 → 50 → 64 µm
+# Transit-width tension: RESOLVED, one flux bug, w₀ re-centred 32 → 50 → 64 µm
 
 **Status: RESOLVED 2026-07-13. The beam-measured waist in force is the adopted
 64 µm**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
@@ -17,10 +17,10 @@ The signal is a steady-state excitation **rate** = (atom crossing **flux**) ×
 (excitation probability per crossing). Lehmann 2021 eq. 6 carries the flux factor
 `v` explicitly. The MC sampled transverse speeds from the 2-D Maxwell–Boltzmann
 speed density (Rayleigh, ∝ v) and weighted the per-atom amplitude by
-`|c_e|² ∝ 1/v²`, but **omitted the flux `v`** — net weight ∝ 1/v, a spurious
+`|c_e|² ∝ 1/v²`, but **omitted the flux `v`**, giving a net weight ∝ 1/v, a spurious
 log-divergent, n_atoms-dependent cusp that ran the transit **~2× too narrow**.
 Adding the one factor of `v` (`transit_mc.py`, `amp *= v_perp`) makes the net
-v-power 0 — a **finite** two-sided-exponential peak (the Biraben–Cagnac cusp).
+v-power 0, which is a **finite** two-sided-exponential peak (the Biraben–Cagnac cusp).
 
 **Validation.** The closed form is `constants.transit_fwhm_from_w0` =
 `ln2·v_th/(π w0)`, `v_th=√(2k_BT/m)`. For Lehmann's NNO worked example (m = 44 u,
@@ -32,11 +32,11 @@ flux-fixed MC reproduces it (40 kHz) and the analytic Rb value (1.87 MHz at 32 �
 
 The corrected **bare** transit at the old 32 µm nominal is **1.87 MHz** (110 °C,
 transition axis). Convolved with the 3.49 MHz natural Lorentzian this already
-gives **5.64 MHz > the observed ~5.25 MHz** line — *before* any laser or
-collisional width — so **w₀ = 32 µm is excluded in the thin single-waist
+gives **5.64 MHz > the observed ~5.25 MHz** line, *before* any laser or
+collisional width, so **w₀ = 32 µm is excluded in the thin single-waist
 limit**. Over a realistic multi-mm collection column the beam defocuses and the
 added transit drops to ~1.6 MHz, which the line alone no longer decisively
-excludes (`results/README.md`, `transit_mc.csv`); the ~50 µm prior therefore
+excludes (`results/README.md`, `transit_mc.csv`), and the ~50 µm prior therefore
 rests on the direct waist measurement as much as on the line. Matching the observed width
 (with a plausible laser) puts
 
@@ -45,12 +45,12 @@ rests on the direct waist measurement as much as on the line. Matching the obser
 i.e. **~1.5× the old nominal, not ~3×**. `W0_MEASURED_M` is re-centred to 50 µm and
 `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from it (≈1.20 MHz at 110 °C).
 
-**Independent corroboration — a direct beam measurement (2026-07-13).** The group's
+**Independent corroboration, a direct beam measurement (2026-07-13).** The group's
 own 993 nm lineage measured the focused cell beam directly: **Nieddu 2019** (his
 Opt. Express paper *and* OIST thesis, "measured to be 128 µm") and the
 **Rajasree-KP 2020** OIST thesis both quote a **1/e² beam diameter of 128 µm →
 w₀ = 64 µm**, with the same f = 150 mm lens. That measured value lands at the top
-of the transit-inferred 45–70 µm band and **independently excludes 32 µm** — the
+of the transit-inferred 45–70 µm band and **independently excludes 32 µm**. The
 naive Gaussian estimate assumed a 3 mm input beam diameter clipped by "the EOM
 aperture". That attribution is now sourced rather than inferred (2026-08-01,
 APPARATUS.md §1.2/§2): no lens or telescope sits between the SolsTiS and the
@@ -84,19 +84,19 @@ would measure the 2025 beam directly, and is now confirmatory rather than the
 only route to a sane value.
 
 Corroboration also on the *width* itself: Nieddu 2019 fits the same four two-photon
-peaks at FWHM 2.43–2.60 MHz on the **laser axis** = ~5 MHz transition axis —
-consistent with our archival ~5.25 MHz, and with a locked-laser linewidth of
+peaks at FWHM 2.43–2.60 MHz on the **laser axis**, which is ~5 MHz transition
+axis, consistent with our archival ~5.25 MHz and with a locked-laser linewidth of
 ~100 kHz (vs the drifted 2025 lock).
 
 Cascade on the AC-Stark prediction (S₀ ∝ (1+ρ)/w₀²): the predicted on-axis
 shift at 225 mW dropped **1.43 → 0.59 MHz** at the 50 µm re-centring, and
 again to **0.35 MHz** at v3.0.0 with w₀ = 64 µm and ρ = 0.94. The M4e width
-bound (0.64 MHz, profile likelihood) brackets it; the M23 three-session bound
+bound (0.64 MHz, profile likelihood) brackets it, and the M23 three-session bound
 sits below it, which is the v3.0.0 result.
 
 ## What the propagation changed (all re-run 2026-07-13)
 
-The observed total width is data-anchored and unchanged; the correction re-splits
+The observed total width is data-anchored and unchanged. The correction re-splits
 it and re-centres w₀:
 
 | quantity | old (w₀ 32 µm, transit 0.9) | 2026-07-13 (w₀ 50 µm, transit ~1.2) | v3.0.0 (w₀ 64 µm, ρ 0.94) |
@@ -116,17 +116,17 @@ for the tied-fit σ_laser(T) values. Neither is a new degeneracy, just this
 one moving along the curve the earlier columns already describe.
 
 Every result stays **w₀-conditional and PRELIMINARY**: the transit↔σ_laser
-degeneracy means the archival line cannot pin w₀ on its own — the fixed-lock session
-a direct beam-profile measurement does. The re-pin corrects the central prior and excludes 32 µm; it is
-not a w₀ measurement.
+degeneracy means the archival line cannot pin w₀ on its own, and the fixed-lock
+session's direct beam-profile measurement does. The re-pin corrects the central
+prior and excludes 32 µm, and it is not a w₀ measurement.
 
 ## What the earlier note got wrong (retracted)
 
 The earlier "DIAGNOSED (decisive), w₀ ≈ 90 µm" claim had two errors:
-1. It claimed a **second** bug — a laser-vs-transition "factor of 2" in the
+1. It claimed a **second** bug, a laser-vs-transition "factor of 2" in the
    per-atom Gaussian. That was spurious: the MC's `(2π ν_T)²` transition-axis
-   convention is correct (δ = 2π ν_T is the transition detuning; the per-atom
-   population is `exp(-δ²w²/4v²)`). There is only **one** bug (flux).
+   convention is correct (δ = 2π ν_T is the transition detuning, and the
+   per-atom population is `exp(-δ²w²/4v²)`). There is only **one** bug (flux).
 2. Consequently it doubled the transit (3.85 instead of 1.87 MHz at 32 µm) and
    inferred w₀ ≈ 90 µm. The note was internally inconsistent by exactly this 2×:
    its own Lehmann-validated HWHM formula `ln2·v_th/(2π w0)` implies FWHM ≈ 1.9,

@@ -24,7 +24,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
-from rb5s6s.constants import PEAKS as PEAKINFO, transit_fwhm_from_w0  # noqa: E402
+from rb5s6s.constants import (PEAKS as PEAKINFO,  # noqa: E402
+                              W0_BAND_M, W0_MEASURED_M, transit_fwhm_from_w0)
 from rb5s6s.density import density_units, N_SCALE_FRAC_SYST  # noqa: E402
 from rb5s6s.ingest import load_manifest, load_trace, trace_path  # noqa: E402
 from rb5s6s.noise import condition_noise_model  # noqa: E402
@@ -147,15 +148,23 @@ def main() -> int:
                     "symmetric Gaussian error is one-sided in truth"])
 
     # ---- w0 systematic band on beta ----
-    # transit_ref comes from the OPEN w0 prior (central 50 um; the old 32 um is
-    # EXCLUDED by the corrected transit physics). Every absolute beta rides on it,
-    # so refit across the corrected-physics w0 band (65/50/40 um, bracketing the
-    # inferred 45-70) and report the beta SPREAD as the w0 systematic, so the OPEN
-    # quantity does not silently enter the quoted number.
-    print(f"\n{'-'*74}\nw0 SYSTEMATIC on beta (transit_ref band from the OPEN w0 prior):")
+    # transit_ref comes from the waist, which every absolute beta rides on, so
+    # refit across the band and report the beta SPREAD as the w0 systematic
+    # rather than letting one waist enter the quoted number silently.
+    #
+    # THE BAND IS READ FROM constants.W0_BAND_M (2026-08-10). It used to be the
+    # literal (65, 50, 40) um, which was two generations stale: it predated both
+    # the lineage measurement that put the central value at 64 um and the band
+    # that replaced the line-only inference, and its own comment still called
+    # the waist OPEN with a central 50 um. A hand-typed band beside a constant
+    # whose whole purpose is to be the single source is the shape of defect
+    # this file now cannot carry again. lever_crosscheck.py already did it this
+    # way, which is why its number was current and this one was not.
+    _band_um = (W0_BAND_M[1] * 1e6, W0_MEASURED_M * 1e6, W0_BAND_M[0] * 1e6)
+    print(f"\n{'-'*74}\nw0 SYSTEMATIC on beta (transit_ref band from constants.W0_BAND_M):")
     print(f"  {'transit':>8s} {'~w0':>6s} " + "  ".join(f"beta_{iso}" for iso in fit["beta_keys"]))
     band = {iso: [] for iso in fit["beta_keys"]}
-    for w0_um in (65.0, 50.0, 40.0):
+    for w0_um in _band_um:
         tr = transit_fwhm_from_w0(w0_um * 1e-6, 110.0)
         fb = fit_global(blocks, transit_ref_mhz=tr)
         for iso in fb["beta_keys"]:

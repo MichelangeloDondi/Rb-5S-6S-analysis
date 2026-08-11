@@ -4,7 +4,7 @@ Status: pre-registered 2026-08-04, before any pooled number was computed.
 The question of record: "are you sure that we should have 4 different
 fits? I would do only one joint fit, or at most one for each isotope."
 The construction below was fixed after a three-referee verification
-(collision physics, estimator statistics, dependency plumbing) and before
+(collision physics, estimator statistics, dependency wiring) and before
 `scripts/run_beta_self.py` was touched. The pooled code runs only after this
 note is committed.
 
@@ -84,7 +84,7 @@ Two products exist and only one changes.
 * `results/beta_self.csv`, the per-line model fit whose values the M23 and
   M28 joint fits consume as a fixed prior at fit time: UNTOUCHED this
   release. Changing it after the poles finish would silently stale both
-  (the plumbing referee confirmed neither pole reads the probe file, and
+  (the dependency referee confirmed neither pole reads the probe file, and
   M25 frees the coefficient itself and depends on neither). Sharing the
   slope inside the model fit is legitimate future work quantified at a full
   pole re-run, and it is recorded here as not done.

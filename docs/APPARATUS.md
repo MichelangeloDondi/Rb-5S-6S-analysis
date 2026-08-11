@@ -1,18 +1,33 @@
-# Apparatus — hardware of record and its provenance
+# Apparatus: hardware of record and its provenance
 
 *What the 2025 measurement was actually made with, and how each item is known.
 Compiled 2026-07-23 from dated setup photographs (2025-06-07 → 2025-07-29).
 A curated, metadata-stripped subset is published in [`apparatus/`](apparatus/)
-and embedded below (2026-07-24); the remainder stays private — some frames
-carry equipment serials and a purchaser's name — and this page still records
+and embedded below (2026-07-24). The remainder stays private, since some frames
+carry equipment serials and a purchaser's name, and this page still records
 every technical fact and its date in text.*
+
+**The question.** What was the 2025 measurement made with, and how is each
+piece of that known?
+**Takes.** Nothing.
+**Gives.** Every hardware fact with a provenance tag and a date, from the laser
+to the oven to the detector, including the ones that are experimenter
+recollection rather than photograph and are labelled as such.
+**Skip if.** You are working on the analysis rather than the bench. The one
+section worth reading anyway is the lock, because its misconfiguration is what
+shapes every result in this repository.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 
 <img src="apparatus/apparatus_schematic.svg" width="95%" alt="Apparatus schematic: full beam path from pump to detection">
 
 *The bench in one drawing, components numbered 1–13 following the annotated
 bench photograph (defense presentation, slide 9), which also fixes the
 drawing's handedness.
-Every box is established below with its provenance; the photographs embedded
+Every box is established below with its provenance, and the photographs embedded
 through this page show the same elements in the flesh.*
 
 Provenance tags: **PHOTO** (read off a dated setup photograph), **DATA**
@@ -41,7 +56,7 @@ SolsTiS modules (left), and the Verdi front panel at its campaign set point,
 The scan-mode reading matters: `DATA.md` §5 *infers* a triangular sweep with a
 fold from the traces themselves. The SolsTiS control page states it directly.
 
-### 1.1 Lock configuration — the concrete candidate for "misconfigured"
+### 1.1 Lock configuration: the concrete candidate for "misconfigured"
 
 `DATA.md` §1 says only that "the 2025 lock was misconfigured". Three dated
 photographs of the SolsTiS control page show which locks were engaged:
@@ -54,21 +69,21 @@ photographs of the SolsTiS control page show which locks were engaged:
 
 <img src="apparatus/2025-06-11_solstis_lock_page.jpg" width="80%" alt="SolsTiS control page: Etalon lock Locked, Ref cav lock Locked, ECD lock Not Locked, scan Cavity triangular">
 
-*The SolsTiS control page (2025-06-11, 23:33): **Etalon — Locked; Ref cav —
-Locked; ECD — Not Locked**, scan "Cavity triangular". Two locks hold the
+*The SolsTiS control page (2025-06-11, 23:33): **Etalon Locked, Ref cav
+Locked, ECD Not Locked**, scan "Cavity triangular". Two locks hold the
 laser short-term, which is why shapes survive.*
 
-> **Correction, 2026-07-25 — what "ECD" is.** This section previously read
+> **Correction, 2026-07-25, on what "ECD" is.** This section previously read
 > the ECD row as the laser's *absolute* reference lock and called checking it
 > "the cheapest highest-leverage test a future session could open with".
 > **That was wrong.** On the M Squared system **ECD is the External Cavity
-> Doubler** — the resonant second-harmonic stage — and its lock is the
+> Doubler**, the resonant second-harmonic stage, and its lock is the
 > doubling cavity's, not a frequency reference (a laser-side colleague, via
 > the experimenter, 2026-07-25: *"ECD is for second harmonic generation"*).
 > It reads *Not Locked* in every photograph for the simple reason that this
 > experiment uses the **993 nm fundamental** and never needed the doubler.
-> Nothing about the archive's limitation changes — the frequency axis still
-> has no absolute zero, for the reasons below — but the *remedy* named here
+> Nothing about the archive's limitation changes, since the frequency axis still
+> has no absolute zero, for the reasons below, but the *remedy* named here
 > was the wrong hardware. **The actual outer loop available on this system is
 > the wavemeter link**: the same colleague reports that the improved locking
 > of the later period came from coupling the laser output directly to the
@@ -77,12 +92,12 @@ laser short-term, which is why shapes survive.*
 
 **For the campaign itself** the experimenter confirms (2026-07-23) that the
 **reference cavity was locked**, with its **set point moved from time to time
-to follow the drift** —
+to follow the drift**,
 which is what `DATA.md` §2 records as "cavity-reference recenters". A further
 recollection (EXPERIMENTER, 2026-07-23, given *after* the state-space fit
 below was already committed): **the cavity lock was dropping out on its own,
 typically within a few tens of minutes, especially while the etalon
-temperature transient — about 2 h of lock-on after ≥3 h of lock-off — had not
+temperature transient, about 2 h of lock-on after at least 3 h of lock-off, had not
 yet passed.** So the between-block steps are not only deliberate re-centrings:
 many are drop-and-recapture events, small when the recapture returns to an
 unchanged set point, MHz-large when the drop happens mid-transient with the
@@ -91,7 +106,7 @@ etalon still walking.
 That completes the account of "misconfigured". Etalon + reference cavity hold
 the laser *short-term*, which is why shapes survive and intra-block positions
 are stable. What is missing is any **outer loop against an absolute
-reference** — and because the cavity set point was re-defined by hand
+reference**, and because the cavity set point was re-defined by hand
 whenever drift pushed the line out of the window, the zero of the frequency
 axis is re-chosen arbitrarily between blocks. Hence: centres carry no
 metrological meaning, shapes do. The two halves of the archive's central
@@ -102,9 +117,9 @@ piece of glass whose length wanders, so "locked to fringe N" is stable only
 relative to something drifting. Closing that outer loop is what would convert
 the archive's shape-only limitation into an absolute-frequency capability,
 and on this system the instrument for it is the **HighFinesse wavemeter link**
-(the control page's `Wavemeter link: On`), not the doubler — see the
-correction above. **Characterising that link — how tightly the laser can be
-held to a wavemeter set point, and with what long-term calibration drift — is
+(the control page's `Wavemeter link: On`) and not the doubler, per the
+correction above. **Characterising that link, meaning how tightly the laser can be
+held to a wavemeter set point and with what long-term calibration drift, is
 the cheapest high-leverage test a future session could open with**, since it
 needs no new hardware and decides whether AC-Stark pulls and collisional
 shifts become measurable at all.
@@ -171,12 +186,12 @@ wrap. EXPERIMENTER, 2026-08-03.
 
 ---
 
-## 2. Frequency ruler — the EOM chain
+## 2. Frequency ruler: the EOM chain
 
-The comb ruler underwrites the whole frequency axis — and its history is
+The comb ruler underwrites the whole frequency axis, and its history is
 now dated: first trials 2025-07-04, 03:37 JST (four scans, verbose
-filenames, 80 °C); final commissioning on the morning of the campaign
-(2025-07-17, 04:18–06:33 JST — `Initial attempts` → adjusted → `Def`), with
+filenames, 80 °C). Final commissioning came on the morning of the campaign
+(2025-07-17, 04:18–06:33 JST, `Initial attempts` → adjusted → `Def`), with
 the `Def` configuration bracketing a pilot power sweep twenty-one minutes
 later (results report, addendum 9). Assumption 1 of
 [methods §6](methods/08_assumptions_and_outlook.md) records that everything
@@ -202,8 +217,8 @@ certificates' own 100%-modulation traces show the same comb pattern the
 archive rulers show.
 
 **Modulation headroom.** The campaign ran at 10.00 Vpp, which the certificates
-place at **≈54–60% of full modulation**; full scale is ≈1.6× higher in drive
-voltage. `PLAN.md` §7 asks whether the 12.5 MHz tank can reach β ≈ 1.2 — that
+place at **≈54–60% of full modulation**, and full scale is ≈1.6× higher in drive
+voltage. `PLAN.md` §7 asks whether the 12.5 MHz tank can reach β ≈ 1.2, and that
 headroom is the first quantitative input to the question. Note the certificates
 were taken at 780 nm, and phase-modulation index scales as 1/λ, so the index at
 993 nm is ≈0.79× the 780 nm figure at equal drive.
@@ -219,6 +234,7 @@ generator as well as a different tank.
 | item | value | provenance |
 |---|---|---|
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
+| Photocathode spectral response | GaAs, roughly 300 to 900 nm. DATASHEET, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 7.2 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 7 µm | DATASHEET + ASSUMED |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
@@ -261,13 +277,13 @@ and hence $u$, a quantity the session has to set on purpose and record.
 carries the tables.
 
 > **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
-> citing *Nieddu 2019 — the nanofibre experiment, not this bench* — and the only
+> citing *Nieddu 2019, the nanofibre experiment and not this bench*, and the only
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
 > contradiction. The experimenter confirms the PXT1/M **houses** the R636-10, so
 > the attribution was right by luck rather than by sourcing. The 3 × 12 mm
 > cathode and the landscape-vs-portrait install decision in `PLAN.md` §6 #4
 > therefore stand. One practical rider: the tube sits in a commercial housing,
-> so orientation is set by rotating the *module* — worth checking its mounting
+> so orientation is set by rotating the *module*, worth checking its mounting
 > before assuming both orientations are equally easy to realise.
 
 The IR receiver is the instrument [BIG_PICTURE](BIG_PICTURE.md) refers to as
@@ -304,8 +320,8 @@ is not.
 
 The archive was taken on the Agilent, not either LeCroy: the LeCroy would not
 trigger reliably (experimenter, 2026-07-23). That is independently confirmed by
-the files — every archival CSV opens `x-axis,N` / `second,Volt`, the Keysight
-InfiniiVision export signature (398 of 400 sampled; the other two carry a
+the files. Every archival CSV opens `x-axis,N` / `second,Volt`, the Keysight
+InfiniiVision export signature (398 of 400 sampled, and the other two carry a
 corrupted first line already tracked as `header_variant`). LeCroy writes a
 different header block entirely, so the format alone settles it.
 
@@ -313,21 +329,21 @@ This matters beyond attribution: `PLAN.md` §7's advice for recovering
 per-scan timestamps was written for LeCroy `.trc`/WAVEDESC files, which this
 scope does not produce. Rewritten for InfiniiVision `.h5`, and integrity gate
 T6 of the [timestamp pre-registration](PREREGISTRATION_timestamps.md) corrected
-the same way — before the backup was opened.
+the same way, before the backup was opened.
 
-### 4.2 The ramp-monitor channel — available, not saved, and not worth much
+### 4.2 The ramp-monitor channel: available, not saved, and not worth much
 
 <img src="apparatus/2025-06-10_agilent_ramp_and_hyperfine_peaks.jpg" width="90%" alt="Agilent DSO-X 3054A: triangle ramp on channel 1 and the hyperfine fluorescence peaks on channel 2, with fold-mirror echoes at the ramp apex">
 
 *The acquisition in one frame (2025-06-10): the Agilent DSO-X 3054A of
-record, channel 1 the cavity triangle, channel 2 the fluorescence — four
+record, channel 1 the cavity triangle, channel 2 the fluorescence, so four
 hyperfine peaks riding Doppler pedestals, and their mirror images folding at
 the ramp apex, the very effect the analysis's adaptive fit window exists to
 handle. Averaging 32, 12.5 kSa/s.*
 
 A 2025-06-10 photograph of the Agilent shows **two channels**: a clean
 triangular sweep-ramp monitor on Ch1 and the fluorescence on Ch2, with the
-fluorescence peaks mirrored about the ramp apex — the fold, directly visible.
+fluorescence peaks mirrored about the ramp apex, which is the fold made directly visible.
 It was **not saved** with the archival traces (experimenter, 2026-07-23).
 
 **OPEN: which output fed Ch1, and the Agilent's trigger settings, are not
@@ -339,7 +355,7 @@ unrecorded.
 
 **Verdict for a future session: low priority.** The EOM comb already carries
 the frequency axis per trace, RF-exact, which a ramp voltage cannot improve on
-— so the ramp channel buys nothing for calibration. Its one real use is that
+so the ramp channel buys nothing for calibration. Its one real use is that
 `DATA.md` §5 has to *infer* where each window sits on the triangle, and records
 that "window ≈ one up-ramp" holds **for most blocks, not all**, with fits
 masking the retrace region. A recorded ramp would make the apex position a
@@ -361,18 +377,18 @@ calibrates every block's sweep.*
 
 <img src="apparatus/2025-07-29_lecroy_ws3104z.jpg" width="60%" alt="Teledyne LeCroy WaveSurfer 3104z with SiP FY24-06 asset tag">
 
-*The LeCroy WaveSurfer 3104z (2025-07-29) — the scope of the 2025-07-04
-dress rehearsal (addendum 9), not of the archive; both attributions rest on
+*The LeCroy WaveSurfer 3104z (2025-07-29), the scope of the 2025-07-04
+dress rehearsal (addendum 9) and not of the archive. Both attributions rest on
 file signatures.*
 
 A 2025-07-15 photograph shows the five-tooth comb on the **LeCroy** reading
-"Trig'd", three days before the campaign — consistent with the LeCroy being
+"Trig'd", three days before the campaign, consistent with the LeCroy being
 tried and then abandoned for the Agilent. It says nothing about A1, since it
-is not the scope the archive came from; an earlier version of this page cited
+is not the scope the archive came from. An earlier version of this page cited
 it as weak A1 evidence, which was wrong. The LeCroy's role is now
 instrument-native fact, not inference: the 2025-07-04 dress rehearsal (50
-traces, results report addendum 9) carries `LECROYWS3104z` headers — so the
-rehearsal ran on the LeCroy and the campaign did **not**; the recollection
+traces, results report addendum 9) carries `LECROYWS3104z` headers, so the
+rehearsal ran on the LeCroy and the campaign did **not**. The recollection
 this page corrected was a memory of the rehearsal epoch, and both
 attributions now rest on file signatures.
 
@@ -405,8 +421,8 @@ campaign has only FAT mtimes at 2 s granularity.
 
 <img src="apparatus/2025-07-01_cell_thermocouples.jpg" width="70%" alt="Unwrapped cell in its copper block, thermocouple positions 3 and 4 annotated, Rb condensation visible on the window">
 
-*The cell unwrapped (2025-07-01): copper block, Kapton-taped thermocouples —
-positions 3 and 4 annotated on the frame itself — and Rb condensation
+*The cell unwrapped (2025-07-01): copper block, Kapton-taped thermocouples,
+with positions 3 and 4 annotated on the frame itself, and Rb condensation
 visible on the window. In operation the assembly is foil-wrapped.*
 
 Assumption 7 of [methods §6](methods/08_assumptions_and_outlook.md) allows for
@@ -430,7 +446,7 @@ paperwork ever surfaces.
 
 ---
 
-## 6. Laser drift — eight wavemeter records, and what the cavity lock buys
+## 6. Laser drift: eight wavemeter records, and what the cavity lock buys
 
 None of the long-term wavemeter logs were saved to disk, so these are read off
 dated screen photographs (±20%, and the band centre of a swept trace is an
@@ -454,15 +470,15 @@ into a comparison:
 <img src="apparatus/2025-06-11_wavemeter_drift_23min.jpg" width="49%" alt="WLM LongTerm 23-minute record, 2025-06-11 22:52"> <img src="apparatus/2025-06-11_wavemeter_drift_53min.jpg" width="49%" alt="WLM LongTerm 53-minute two-regime record, 2025-06-11 23:22">
 
 *The two 2025-06-11 records (22:52 and 23:22): scan-modulated bands whose
-envelope drift reads ±0.19 MHz/min — the cavity-locked figure the archive's
+envelope drift reads ±0.19 MHz/min, the cavity-locked figure the archive's
 within-block bound independently matches.*
 
-<img src="apparatus/2025-07-18_wavemeter_relock_settling.jpg" width="80%" alt="WLM LongTerm settling record, 2025-07-18 17:03 — the post-break re-lock transient; StdDev 100 kHz in the settled tail">
+<img src="apparatus/2025-07-18_wavemeter_relock_settling.jpg" width="80%" alt="WLM LongTerm settling record, 2025-07-18 17:03, the post-break re-lock transient, with StdDev 100 kHz in the settled tail">
 
-*The one in-campaign record — and its taskbar clock reads **17:03,
+*The one in-campaign record, and its taskbar clock reads **17:03,
 7/18/2025**: eighteen minutes before the 90 °C dwell resumed. This is the
 re-lock transient after the daytime break (addenda 4–7), settling toward the
-100 kHz short-term StdDev visible in the statistics panel; not steady
+100 kHz short-term StdDev visible in the statistics panel, and not steady
 acquisition drift, which the archive puts two orders below.*
 
 > **The 2025-06-11 record has since been digitised, and it measures something
@@ -481,13 +497,18 @@ acquisition drift, which the archive puts two orders below.*
 > −8.9 MHz/min in the first fitted interval to −0.4 MHz/min in the last, which
 > is the thermal settle itself.
 >
-> **The result is the settled floor: 0.62 MHz.** That is the laser motion left
-> once the re-lock steps and the per-interval ramps are removed. It is the one
-> number that survived the 2026-08-03 replacement of the model, which moved it
-> only from 0.63 to 0.62 while retiring everything else the module reported.
-> The scatter settles on a timescale near 1.3 min, so the floor is a
-> settled-state number and the first minute of the record is several times
-> worse. Against the campaign's AC-Stark bounds carried to the laser axis
+> **The result is the settled floor: 0.62 +/- 0.03 MHz.** That is the laser
+> motion left once the re-lock steps and the per-interval ramps are removed.
+> It is the one number that survived the 2026-08-03 replacement of the model,
+> which moved the point estimate only from 0.63 to 0.62 while retiring
+> everything else the module reported. The error is a residual bootstrap,
+> added 2026-08-10: four hundred replicates resample the fit's own
+> standardized residuals through the fitted heteroscedastic noise shape and
+> refit, since the four-parameter profiled likelihood is only piecewise
+> smooth and a numeric Hessian would be unreliable on it. The scatter settles
+> on a timescale near 1.3 min, so the floor is a settled-state number and the
+> first minute of the record is several times worse. Against the campaign's
+> AC-Stark bounds carried to the laser axis
 > (0.13 MHz from the joint fit, 0.32 MHz from the width-only construction)
 > the floor sits above both, which says single-block centres cannot beat the
 > averaged bounds. See `figures/fig14_wavemeter_reconstruction.png`.
@@ -626,53 +647,53 @@ acquisition drift, which the archive puts two orders below.*
 > different failure.
 
 **The reference-cavity lock is worth roughly a factor 2–5.** With it engaged the
-laser holds ±0.19 MHz/min; on etalon lock alone it drifts 0.4–1.0 MHz/min. The
+laser holds ±0.19 MHz/min, and on etalon lock alone it drifts 0.4–1.0 MHz/min. The
 06-11 attribution rests on timing rather than a caption: the two drift records
 were photographed at 22:52 and 23:22 and the control page showing *etalon
-Locked, reference cavity Locked, ECD Not Locked* at 23:33 — eleven minutes
+Locked, reference cavity Locked, ECD Not Locked* at 23:33, eleven minutes
 after the second. Circumstantial, but tight. The 06-19 state
 (etalon on, cavity off, thermally settled) is experimenter-confirmed and
 matches the configuration photographed on 06-10.
 
 **A within-record control.** The 06-19 record runs unswept for its first
-~11 minutes and then with the scan active, under one unchanged lock state —
+~11 minutes and then with the scan active, under one unchanged lock state.
 which is exactly the comparison needed to separate genuine laser drift from any
 apparent drift introduced by scanning. Reading it off a photograph is not
 precise enough to settle the question, but the measurement exists and the
-design is right; a repeat with the log saved would answer it outright.
+design is right, and a repeat with the log saved would answer it outright.
 
 **Synthesis.** After a tuning change the laser settles through tens of GHz over
-roughly 1.5 h (the 06-16 curve); thermally settled, it drifts at ~1 MHz/min on
+roughly 1.5 h (the 06-16 curve). Thermally settled, it drifts at ~1 MHz/min on
 etalon lock alone and ~0.2 MHz/min with the reference cavity added, with a sign
 that varies between sessions. The single in-campaign record is a settling tail,
 not a steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
-therefore stands as a genuine **envelope** — it bounds every record here —
+therefore holds as a genuine **envelope**, bounding every record here,
 while the settled rate is several times smaller.
 
 **The archive's own numbers, recovered 2026-07-23.** Differencing block
-positions against the recovered clock (estimator: experimenter;
-`scripts/run_drift_settling.py`; results report addendum 4) gives the
-campaign's in-situ figures — resting on a clock reading that is now
+positions against the recovered clock (estimator: experimenter,
+`scripts/run_drift_settling.py`, results report addendum 4) gives the
+campaign's in-situ figures, resting on a clock reading that is now
 instrument-validated: the LeCroy rehearsal files embed wall-clock trigger
 times, and mtime(JST) − TrigTime = +4…+9 s across 47 files (results report,
 addendum 11). The held-lock drift is **bounded at
 order 0.02 MHz/min on the laser axis** across the five-hour power session
 the fit sees (the earlier one-constant +0.016 reading did not survive the
-window-reference audit: two of three estimators change sign —
-results report addendum 4 and its retraction postscript); the T-session
+window-reference audit, where two of three estimators change sign,
+results report addendum 4 and its retraction postscript). The T-session
 yields bounds that contain it.
-Persisting, ~20 MHz over the 20.5 hours — with the drop-and-recapture
-excursions, the scale that forced the all-night re-centring — well inside the first-hour within-block bound (≲0.17 MHz/min,
+Persisting, ~20 MHz over the 20.5 hours, with the drop-and-recapture
+excursions being the scale that forced the all-night re-centring, well inside the first-hour within-block bound (≲0.17 MHz/min,
 itself matching the photographed cavity-locked ±0.19 MHz/min independently).
-A drift-settling term adds nothing (ΔAIC +4); **what settles is the
-operator** — per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
+A drift-settling term adds nothing (ΔAIC +4). **What settles is the
+operator**, with per-gap re-centring RMS ~1–4 MHz laser in hour 1 decaying with
 τ ≈ 1–2.5 h to ≲0.2 MHz, plus two large scan-window repositionings.
 *Corrected 2026-07-30:* those two were quoted here as "~25–50 MHz", which is the
-window travel multiplied by the EOM rate — the retracted arithmetic (M20). A
+window travel multiplied by the EOM rate, the retracted arithmetic (M20). A
 repositioning moves the scope's horizontal setting, not the laser, and the
 exported time axis is referenced to that setting, so it carries no
 frequency content at all. The two events are **+564 ms and −1151 ms of
-`window_start_ms`**; the second is the 1134 ms move inside a single 175 mW block
+`window_start_ms`**. The second is the 1134 ms move inside a single 175 mW block
 during which the line's position *within the display* moved 6 ms (0.26 MHz). The
 per-gap re-centring figures above are also not clean: the >100 ms threshold that
 freed "repositionings" in that fit catches only 19 of the 58 recorded window
@@ -682,7 +703,7 @@ That operator settling is what matches the post-retune photographs' scale,
 as it should: re-lock transients are when the re-centring works hardest. The
 mechanism arrived after the fit, in the right order to count as
 corroboration: the model found τ ≈ 86 [70, 104] min blind, and the
-experimenter then independently recalled the ~2 h etalon thermal transient —
+experimenter then independently recalled the ~2 h etalon thermal transient,
 same scale. Fitting the disturbance as a transient that **restarts at each
 re-lock** (results report addendum 12) sharpens both numbers and beats a
 single session-long decay by ΔAIC +16: **B = 103 [78, 139] ms = 4.4 MHz
@@ -691,7 +712,7 @@ amplitudes are consistent with equal, p = 0.29). One thermal transient,
 re-armed by every re-acquisition. The timeline agrees in detail: the P session opened inside a
 transient (hour-1 chaos, 4 of 10 blocks stepped), its late ladders sat past
 one (quiet), and after the 9.6 h daytime break the re-lock at ~17:03
-(IMG_2896) restarted the clock — **both evening dwells ran inside or at the
+(IMG_2896) restarted the clock, so **both evening dwells ran inside or at the
 edge of that fresh transient**, which is why the 70 °C dwell (118–195 min
 after re-lock) never calmed to late-P quietness. σ_gap(t) then reads
 physically: the typical frequency excursion per drop-and-recapture cycle,
@@ -699,15 +720,15 @@ decaying as the etalon thermalises. Individual steps stay unresolvable into
 drop vs deliberate move from mtimes alone. The clock also
 explains the one in-campaign wavemeter record: IMG_2896 (17:03) was shot
 eighteen minutes before the 90 °C dwell resumed (17:21), i.e. during the
-re-lock after the daytime break — its ~4.35 MHz/min is the re-tune transient
+re-lock after the daytime break, and its ~4.35 MHz/min is the re-tune transient
 the envelope exists to bound, not the acquisition-time drift, which the
 archive puts two orders below.
 
 **What this implies for the campaign.** The campaign ran with the reference
 cavity locked (experimenter, 2026-07-23), i.e. the 06-11 regime, so the settled
-expectation is **≈0.2 MHz/min** — not the ~1 MHz/min of etalon-only operation.
+expectation is **≈0.2 MHz/min**, not the ~1 MHz/min of etalon-only operation.
 The Ti:Sapph ran continuously through the 24 h ([DATA.md](DATA.md) §2), so most
-acquisition sat in the settled regime; each manual set-point move re-zeroed the
+acquisition sat in the settled regime, and each manual set-point move re-zeroed the
 accumulated offset rather than restarting a thermal transient, since the laser
 was neither retuned nor restarted.
 
@@ -717,11 +738,11 @@ p = 0.33). At ≈0.2 MHz/min, drift would reach the observed 0.08 MHz scatter
 only after ~70 s, so its absence bounds the block:
 
 > **The MEDIAN 5-repeat block spans less than ~70 s** (under ~14 s per saved
-> trace). **Scored 2026-07-23: PASS** — median 34 s, range 20–148 s
+> trace). **Scored 2026-07-23: PASS**, median 34 s, range 20–148 s
 > ([PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md)).
 
 That replaces the voided D4 and inverts its logic: D4 divided the scatter *by*
-a drift rate, assuming the scatter *was* drift; this uses the **absence** of
+a drift rate, assuming the scatter *was* drift. This uses the **absence** of
 drift, together with a drift rate now known from the lock state, as an upper
 bound. It was a genuine pre-data prediction about the recovered timestamps, and it held.
 

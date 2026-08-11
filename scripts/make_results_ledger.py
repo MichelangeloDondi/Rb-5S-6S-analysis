@@ -76,6 +76,14 @@ def main() -> int:
 
     # ---- C1: beta_self ----
     W("## C1. Collisional self-broadening $\\beta_\\text{self}$\n")
+    W("![fitted width against density for every peak and every "
+      "condition](../figures/fig19_width_trends.png)\n")
+    W("*Every width this bound is built from, on one pair of axes. The "
+      "density lever runs 52.5-fold across the plot while the widths "
+      "move by very little, and the scatter within one density is "
+      "between blocks rather than within them. That relation, not any "
+      "single fit, is what makes the coefficient below a bound and a "
+      "floor rather than a resolved slope.*\n")
     # every number in this intro is READ from the CSVs -- a hand-written bound
     # here once went stale (3x tight) against the corrected construction below
     pr = {r["peak"]: r for r in rows("beta_self_probe") if r.get("headline") == "yes"}
@@ -342,9 +350,15 @@ def main() -> int:
     le = {r["quantity"]: r for r in lerows}
     b = le.get("sigma_laser_bound")
     if b:
-        # the CSV's own caveat string, with its splice punctuation normalized
-        W(f"- **{b['value_MHz']} MHz ({b['axis']} axis)**, "
-          f"{b['status'].replace(';', ',')}.")
+        # The caveat is the CSV's `unit` field. Until 2026-08-10 it was read out
+        # of `status`, which that file was using to hold a prose paragraph while
+        # every other file uses it for a status word; the schema was normalised
+        # and this reader follows it. The value is the one-sided limit itself,
+        # which is why it is rendered with a "<".
+        # the unit field opens with its own axis statement, which this sentence
+        # has already made, so quote only the caveat that follows it
+        _caveat = b["unit"].split(".", 1)[1].strip() if "." in b["unit"] else b["unit"]
+        W(f"- **< {b['value']} MHz (laser axis)**. {_caveat.replace(';', ',')}")
     W("- Degenerate with $w_0$ through the transit kernel: the transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which overshoots the observed line, so 32 µm is excluded) and "
       f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2f} MHz at the "
@@ -368,11 +382,13 @@ def main() -> int:
         fk = [k for k in ("70", "90", "110") if k in fsig]
         tied = "/".join(f"{gsig[k]:.2f}" for k in tk)
         free = "/".join(f"{fsig[k]:.2f}" for k in fk)
-        bnd = float(b["value_MHz"].lstrip("<≲ "))
-        cv = float(cen["value_MHz"])
+        # same normalisation as above: value_MHz -> value, and the bound's
+        # inequality now lives in the unit field rather than in the number
+        bnd = float(b["value"])
+        cv = float(cen["value"])
         W(f"\n> **The laser width is quoted on two axes, and the factor of two "
           f"between them is where it goes wrong.** The bound above is "
-          f"{b['value_MHz']} MHz on the **laser** axis, which is below {2 * bnd:.1f} "
+          f"{b['value']} MHz on the **laser** axis, which is below {2 * bnd:.1f} "
           f"MHz on the **transition** axis every fit below works on. At "
           f"70/90/110 °C the per-temperature tied widths are {tied} MHz "
           f"transition, the free per-condition widths are {free} MHz "
@@ -504,8 +520,18 @@ def main() -> int:
       "It is conditional also on "
       "**two** same-sign small-waist corrections that suppress the skew and must be "
       "fit jointly, the beam-divergence axial average (the larger, sign-flipping "
-      f"one) and the standing-wave fringe-resolved tail ({ftail_txt}). See "
-      "`docs/THEORY_NOTE.md`.\n")
+      f"one) and the standing-wave fringe-resolved tail ({ftail_txt}). "
+      "**And on a third, found 2026-08-10, which is the largest of them at the "
+      "small waist:** the $\\propto I^2$ signal weighting the whole ramp law rests "
+      "on is a weak-field statement, and the saturation parameter scales as the "
+      "fourth power of the inverse waist, so it runs from 0.033 at the measured "
+      "64 µm to 8.5 at 16 µm. Re-integrating the moments with the saturated weight "
+      "moves the predicted axial skew at 16 µm from $-0.36$ to $-1.07$. The sign "
+      "flip survives that, and the magnitude does not, so the small-waist "
+      "prediction is uncertain at the factor-of-three level for a reason that is a "
+      "modelling assumption rather than an unmeasured input. See "
+      "`docs/THEORY_NOTE.md` §2.0a and "
+      "`docs/notes/running_wave_and_waist_design.md`.\n")
 
     ss = rows("stark_sweep")
     if ss:
@@ -586,7 +612,17 @@ def main() -> int:
           f"0.088 MHz, so the bound is produced entirely by averaging over blocks, "
           f"and the resolving-power check finds that averaging assumption untested "
           f"(permutation "
-          f"{perm_p}, neither established nor excluded). *Lifted by:* a fixed lock "
+          f"{perm_p}, neither established nor excluded). **The bound is also known "
+          f"to be conservative by a measured factor, not by argument:** two effects "
+          f"carry the same $P^2$ signature as the ramp and were absent from this "
+          f"forward model, atomic saturation (the larger, about 3.7 times the ramp "
+          f"at the predicted $S_0$) and hyperfine pumping by the real cascade. "
+          f"Injecting the saturation term and re-profiling moves this bound from "
+          f"0.6325 to about 0.23 MHz, a factor 2.8, and the joint C3f bound by 2.21. "
+          f"Neither committed bound moves, because the injected law is the "
+          f"two-level homogeneous form used with a two-photon Rabi frequency, which "
+          f"is standard but an approximation rather than a derivation here "
+          f"(`docs/notes/two_photon_saturation_companion.md`). *Lifted by:* a fixed lock "
           f"would measure the pull $\\sim S_0$ directly, and the small waist would make $S_0$ "
           f"several-fold larger, turning this bound into the coefficient.\n")
 
@@ -1043,7 +1079,10 @@ def main() -> int:
     pol = rows("polarizability")
     if pol:
         by = {(r["quantity"], r["key"]): r for r in pol}
-        da = float(by[("delta_alpha_993", "model")]["value"])
+        da_row = by[("delta_alpha_993", "model")]
+        da = float(da_row["value"])
+        da_lo = float(da_row["err_lo16"])
+        da_hi = float(da_row["err_hi84"])
         to = float(by[("tuneout_5s", "model")]["value"])
         a5 = float(by[("alpha_5s_static", "model")]["value"])
         a6 = float(by[("alpha_6s_static", "model")]["value"])
@@ -1052,7 +1091,9 @@ def main() -> int:
         mtxt = " / ".join(f"{m:.1f}" for m in magic)
         W(f"- **Dynamic polarizabilities:** an independent sum-over-states "
           f"recompute of $\\Delta\\alpha(993)=\\alpha_{{6S}}-\\alpha_{{5S}}$ gives "
-          f"**{da:.0f} a.u.**, putting $|\\Delta\\alpha|$ within ~5% of Orson et "
+          f"**{da:.0f} a.u.** (16-84% Monte-Carlo band {da_lo:.0f} to {da_hi:.0f}, "
+          f"matrix-element and tail uncertainties propagated), putting "
+          f"$|\\Delta\\alpha|$ within ~5% of Orson et "
           f"al.'s 1093 but with the **opposite sign** (a blue transition shift). The "
           f"sign is an open theory item flagged for external adjudication "
           f"(`docs/THEORY_NOTE.md`), and every archival result is sign-immune "

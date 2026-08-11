@@ -1,0 +1,57 @@
+quantity,key,value,err,err_kind,unit,status
+branching_f,993.4121,0.372478177,,,"87Rb, driven F=1; cascade branching into the undriven ground level F=2",DIAGNOSTIC
+naive_weight,993.4121,0.625,,,"87Rb; degeneracy weight of F=2, which is what the branching is NOT",DIAGNOSTIC
+leg_ratio_5P12,993.4121,0.888888889,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P12,993.4121_F1,0.166666667,,,share of this leg that passes through intermediate F=1,DIAGNOSTIC
+resolved_branch_5P12,993.4121_F1,0.833333333,,,"from intermediate F=1, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P12,993.4121_F2,0.833333333,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P12,993.4121_F2,0.5,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+leg_ratio_5P32,993.4121,0.444444444,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P32,993.4121_F0,0.166666667,,,share of this leg that passes through intermediate F=0,DIAGNOSTIC
+resolved_branch_5P32,993.4121_F0,0,,,"from intermediate F=0, the branch into the undriven ground level. BLOCKED: a J=1 photon cannot change F by two, so this level returns the atom to the level it came from",DIAGNOSTIC
+resolved_weight_5P32,993.4121_F1,0.416666667,,,share of this leg that passes through intermediate F=1,DIAGNOSTIC
+resolved_branch_5P32,993.4121_F1,0.166666667,,,"from intermediate F=1, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4121_F2,0.416666667,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P32,993.4121_F2,0.5,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+branching_f,993.4154,0.347646298,,,"85Rb, driven F=2; cascade branching into the undriven ground level F=3",DIAGNOSTIC
+naive_weight,993.4154,0.583333333,,,"85Rb; degeneracy weight of F=3, which is what the branching is NOT",DIAGNOSTIC
+leg_ratio_5P12,993.4154,0.888888889,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P12,993.4154_F2,0.222222222,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P12,993.4154_F2,0.777777778,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P12,993.4154_F3,0.777777778,,,share of this leg that passes through intermediate F=3,DIAGNOSTIC
+resolved_branch_5P12,993.4154_F3,0.444444444,,,"from intermediate F=3, the branch into the undriven ground level.",DIAGNOSTIC
+leg_ratio_5P32,993.4154,0.444444444,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P32,993.4154_F1,0.3,,,share of this leg that passes through intermediate F=1,DIAGNOSTIC
+resolved_branch_5P32,993.4154_F1,0,,,"from intermediate F=1, the branch into the undriven ground level. BLOCKED: a J=1 photon cannot change F by two, so this level returns the atom to the level it came from",DIAGNOSTIC
+resolved_weight_5P32,993.4154_F2,0.388888889,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P32,993.4154_F2,0.222222222,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4154_F3,0.311111111,,,share of this leg that passes through intermediate F=3,DIAGNOSTIC
+resolved_branch_5P32,993.4154_F3,0.555555556,,,"from intermediate F=3, the branch into the undriven ground level.",DIAGNOSTIC
+branching_f,993.4192,0.248318784,,,"85Rb, driven F=3; cascade branching into the undriven ground level F=2",DIAGNOSTIC
+naive_weight,993.4192,0.416666667,,,"85Rb; degeneracy weight of F=2, which is what the branching is NOT",DIAGNOSTIC
+leg_ratio_5P12,993.4192,0.888888889,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P12,993.4192_F2,0.555555556,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P12,993.4192_F2,0.222222222,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P12,993.4192_F3,0.444444444,,,share of this leg that passes through intermediate F=3,DIAGNOSTIC
+resolved_branch_5P12,993.4192_F3,0.555555556,,,"from intermediate F=3, the branch into the undriven ground level.",DIAGNOSTIC
+leg_ratio_5P32,993.4192,0.444444444,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P32,993.4192_F2,0.0793650794,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P32,993.4192_F2,0.777777778,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4192_F3,0.277777778,,,share of this leg that passes through intermediate F=3,DIAGNOSTIC
+resolved_branch_5P32,993.4192_F3,0.444444444,,,"from intermediate F=3, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4192_F4,0.642857143,,,share of this leg that passes through intermediate F=4,DIAGNOSTIC
+resolved_branch_5P32,993.4192_F4,0,,,"from intermediate F=4, the branch into the undriven ground level. BLOCKED: a J=1 photon cannot change F by two, so this level returns the atom to the level it came from",DIAGNOSTIC
+branching_f,993.4207,0.223486906,,,"87Rb, driven F=2; cascade branching into the undriven ground level F=1",DIAGNOSTIC
+naive_weight,993.4207,0.375,,,"87Rb; degeneracy weight of F=1, which is what the branching is NOT",DIAGNOSTIC
+leg_ratio_5P12,993.4207,0.888888889,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P12,993.4207_F1,0.5,,,share of this leg that passes through intermediate F=1,DIAGNOSTIC
+resolved_branch_5P12,993.4207_F1,0.166666667,,,"from intermediate F=1, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P12,993.4207_F2,0.5,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P12,993.4207_F2,0.5,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+leg_ratio_5P32,993.4207,0.444444444,,,leg branching divided by the naive weight; exactly 8/9 and 4/9 for every line and isotope,DIAGNOSTIC
+resolved_weight_5P32,993.4207_F1,0.05,,,share of this leg that passes through intermediate F=1,DIAGNOSTIC
+resolved_branch_5P32,993.4207_F1,0.833333333,,,"from intermediate F=1, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4207_F2,0.25,,,share of this leg that passes through intermediate F=2,DIAGNOSTIC
+resolved_branch_5P32,993.4207_F2,0.5,,,"from intermediate F=2, the branch into the undriven ground level.",DIAGNOSTIC
+resolved_weight_5P32,993.4207_F3,0.7,,,share of this leg that passes through intermediate F=3,DIAGNOSTIC
+resolved_branch_5P32,993.4207_F3,0,,,"from intermediate F=3, the branch into the undriven ground level. BLOCKED: a J=1 photon cannot change F by two, so this level returns the atom to the level it came from",DIAGNOSTIC

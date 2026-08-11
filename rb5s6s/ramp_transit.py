@@ -20,8 +20,12 @@ on whether the field varies slowly or quickly compared with the atomic
 response -- slow (adiabatic) fluctuations give an asymmetric line, fast ones
 average away to a symmetric line at the mean shift. Their variation is in
 time and ours is in space, but an atom in flight converts one into the other,
-and in this cell the two timescales are comparable: the transit across a
-~50 um waist takes ~0.2 us while the natural response time is 1/Gamma ~ 45 ns.
+and in this cell the two timescales are comparable. At the MEASURED 64 um
+waist (constants.W0_MEASURED_M; this line said ~50 um until 2026-08-10, from
+the estimate the lineage measurement replaced) an atom takes w0/v ~ 260 ns to
+cross one waist radius, or 520 ns for the full beam diameter, against a natural
+response time of 1/(2 pi Gamma_FWHM) = 45.6 ns. The transverse speed here is
+the 2D Maxwell-Boltzmann mean, sigma_v sqrt(pi/2) = 246 m/s at 130 C.
 That is not a comfortable separation, and "the asymmetry survives motion" is
 therefore an assumption, not an obvious truth.
 

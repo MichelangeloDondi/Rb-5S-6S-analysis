@@ -13,32 +13,33 @@ start at the lineshape chapter.
 
 A hot Rb vapour cell is illuminated by a 993 nm laser beam retro-reflected onto
 itself, forming two counter-propagating fields. The beam is focused into the
-cell by a lens (L1, $f=150$ mm); a second identical lens (L2) after the cell and
-a flat mirror behind it return the beam along its own path — a self-imaging
+cell by a lens (L1, $f=150$ mm). A second identical lens (L2) after the cell and
+a flat mirror behind it return the beam along its own path, a self-imaging
 arrangement that re-forms the same waist at the atoms on the return pass
 ([§2.6](03_the_ac_stark_ramp.md)). The laser frequency is slowly
 swept across the two-photon $5S_{1/2}\to 6S_{1/2}$ transition while the
-resulting fluorescence is recorded versus time — one such record is a
+resulting fluorescence is recorded versus time, and one such record is a
 "trace" (mapped onto a frequency axis in
 [the frequency-ruler chapter](05_the_frequency_ruler.md)). The observed narrow resonance
 arises from atoms absorbing one photon from each counter-propagating beam, for
 which the first-order Doppler shifts cancel (§1.1). The excited $6S_{1/2}$
-state can decay through several channels; here we detect only the
+state can decay through several channels, and here we detect only the
 $6S\to 5P_{1/2}\to 5S$ cascade, collecting the emitted 795 nm photons on a PMT
 behind 50 dB of 795 nm filtering. Four hyperfine components are measured,
 labelled by wavelength: 993.4207 nm (⁸⁷Rb $F{=}2\to2$), 993.4192 nm
 (⁸⁵Rb $F{=}3\to3$), 993.4154 nm (⁸⁵Rb $F{=}2\to2$), 993.4121 nm
-(⁸⁷Rb $F{=}1\to1$). Throughout we write these full labels; in code and
+(⁸⁷Rb $F{=}1\to1$). Throughout we write these full labels, and in code and
 filenames the last four digits ("4207") are the key, and `constants.peak_label()`
 renders the full form for all output. The readings come from an uncalibrated
-wavemeter, so they identify the lines rather than measure them; the hyperfine
-assignments are what fix which line is which.
+wavemeter, so they identify the lines rather than measure them, and the
+hyperfine assignments are what fix which line is which.
 
 ![the level scheme](../../figures/fig13_level_scheme.png)
 
 *Left: two 993 nm photons, one from each direction of the retro-reflected beam,
-drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the real 5P₁/₂;
-taking one photon from each beam is what cancels the first-order Doppler shift.
+drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the real 5P₁/₂,
+and taking one photon from each beam is what cancels the first-order Doppler
+shift.
 The state is detected not directly but on the 795 nm arm of the 6S → 5P₁/₂ → 5S
 cascade, the 780 nm arm being suppressed by about 50 dB. The 5P fine-structure
 splitting is enlarged for legibility rather than drawn to scale. Right: the four
@@ -64,10 +65,10 @@ $$\nu\Big(1+\tfrac{v}{c}\Big) + \nu\Big(1-\tfrac{v}{c}\Big) = 2\nu$$
 
 and the velocity term cancels **exactly to first order in $v/c$, for every
 atom**. Without this trick the line would be Doppler-broadened to
-$\sim 500$ MHz (the thermal spread); with it, the ~500 MHz smear collapses
+$\sim 500$ MHz (the thermal spread). With it, the ~500 MHz smear collapses
 and we are left with a line only a few MHz wide, whose residual width is the
 stack of mechanisms below. (A second-order Doppler term $\propto (v/c)^2$
-survives but is $\sim$ kHz here — negligible.)
+survives but is $\sim$ kHz here, which is negligible.)
 
 This is the same cancellation condition that
 [Biraben, Cagnac and Grynberg](../lit/biraben1974.md) first demonstrated

@@ -3,13 +3,13 @@ kappa,shared,0.000,5.956,"MHz per W (S0 = kappa*P, transition axis); err is chi2
 kappa_err_raw,shared,3.094,1.92,value=un-inflated kappa error; err=inflation factor sqrt(chi2_red) applied to get kappa_err,DIAGNOSTIC
 kappa_ub95_profile,shared,2.811,,"one-sided 95% upper bound on kappa (MHz per W), profile likelihood: Dchi2 = 2.706 x max(chi2_red,1) with per-peak cores re-minimized at each kappa -- THE quoted construction (the fit rails at kappa=0 where the Wald error has no coverage)",BOUND
 S0_225mW_ub95_profile,shared,0.632,,"95% upper bound on S0 at 225 mW (MHz, transition), profile likelihood -- the archival BOUND",BOUND
-kappa_ub95,shared,9.798,,"SUPERSEDED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage",DIAGNOSTIC
+kappa_ub95,shared,9.798,,"REPLACED diagnostic: linearized (Wald) bound from the chi2-inflated error; evaluated at the kappa=0 rail where the width handle's gradient vanishes, so its sigma is a finite-difference artifact without 95% coverage",DIAGNOSTIC
 S0_225mW_fit,shared,0.000,,"fitted on-axis AC-Stark shift at 225 mW (MHz, transition)",BOUND
-S0_225mW_ub95,shared,2.205,,SUPERSEDED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead,DIAGNOSTIC
-S0_225mW_ub95_raw,shared,1.145,,SUPERSEDED diagnostic: un-inflated Wald bound (MHz),DIAGNOSTIC
+S0_225mW_ub95,shared,2.205,,REPLACED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead,DIAGNOSTIC
+S0_225mW_ub95_raw,shared,1.145,,REPLACED diagnostic: un-inflated Wald bound (MHz),DIAGNOSTIC
 S0_225mW_pred,shared,0.348,,"predicted S0 at 225 mW (w0=64um prior, rho=0.94) for comparison",CALIB
-S0_225mW_pred_lo,shared,0.285,,"predicted S0 at 225 mW, w0=70um, rho=0.90 (band LOW edge)",CALIB
-S0_225mW_pred_hi,shared,0.404,,"predicted S0 at 225 mW, w0=60um, rho=0.98 (band HIGH edge)",CALIB
+S0_225mW_pred_lo,shared,0.302,,"predicted S0 at 225 mW, w0=68um, rho=0.90 (band LOW edge)",CALIB
+S0_225mW_pred_hi,shared,0.378,,"predicted S0 at 225 mW, w0=62um, rho=0.98 (band HIGH edge)",CALIB
 chi2_red,fit,3.705,,over 20 width points,DIAGNOSTIC
 core_sigma_laser,993.4121nm,1.509,,"per-peak power-independent core width (MHz, transition)",PRELIM
 core_sigma_laser,993.4154nm,1.519,,"per-peak power-independent core width (MHz, transition)",PRELIM

@@ -446,7 +446,7 @@ intensity) produces. The knife-edge measurement in a fixed-lock session
 remains the way to measure THIS beam; it is now confirmatory rather than the
 sole route to a sane value."""
 
-W0_BAND_M = (60e-6, 70e-6)
+W0_BAND_M = (62e-6, 68e-6)
 """Prior band on w0 (m) around the measured 64 um central value.
 
 NOT the old transit-inferred range: since v3.0.0 the central value comes from
@@ -454,9 +454,18 @@ an external lineage measurement (see W0_MEASURED_M), so this band expresses
 confidence in transferring that measurement to this bench, not the width of
 what our own line can accommodate. It leans high because the two residual
 effects named in W0_MEASURED_M (EOM clipping, imperfect retro superposition)
-both bias the EFFECTIVE waist upward. Single source for w0-conditional
-prediction bands (e.g. stark.fit_stark_sweep), so the band is never
-hand-typed downstream."""
+both bias the EFFECTIVE waist upward, and -2/+4 um about 64 keeps that lean.
+Single source for w0-conditional prediction bands (e.g. stark.fit_stark_sweep),
+so the band is never hand-typed downstream.
+
+NARROWED 2026-08-10, owner instruction, from (60, 70) um. Every quantity that
+reads this constant moves with it, which is the point of there being one
+source: the S0 prediction band, the laser-epoch band and the beta w0
+systematic in lever_crosscheck all recompute. It does NOT touch the central
+value, so no headline bound moves. The transit-inferred 45-70 um quoted in
+W0_MEASURED_M's note above and in transit_mc is a DIFFERENT quantity, what the
+archive's own line can accommodate with no external input, and it is kept as
+the historical inference it is rather than overwritten by this band."""
 
 RHO_RETRO = 0.94
 """Retro-reflection power ratio (returning/forward intensity at the atoms).

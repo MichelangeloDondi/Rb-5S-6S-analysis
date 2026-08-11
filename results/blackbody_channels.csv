@@ -1,0 +1,12 @@
+quantity,key,value,err,err_kind,unit,status
+nbar,1324nm,1.96127e-12,,,Planck occupation number at 130 C,DIAGNOSTIC
+nbar,1367nm,4.57923e-12,,,Planck occupation number at 130 C,DIAGNOSTIC
+nbar,795nm,3.18827e-20,,,"Planck occupation number at 130 C, the detected line",DIAGNOSTIC
+bbr_reexcitation,5P3/2_to_6S,3.32229e-05,,,"per second at 130 C, the larger of the two legs; the trapped-infrared halo does the same job at about 1.9e3",DIAGNOSTIC
+bbr_transfer,6S_to_6P,44.2953,,,"per second at 130 C, summed over both fine-structure levels; the largest blackbody channel out of 6S",DIAGNOSTIC
+bbr_stark_shift,T70C,-79.9349,0.3396,polarizability,"Hz on the transition axis, principal value through the 6S to 6P poles; err is the committed alpha_6s_static band carried through",ENVELOPE
+bbr_stark_shift,T90C,-101.983,0.4332,polarizability,"Hz on the transition axis, principal value through the 6S to 6P poles; err is the committed alpha_6s_static band carried through",ENVELOPE
+bbr_stark_shift,T110C,-128.738,0.5469,polarizability,"Hz on the transition axis, principal value through the 6S to 6P poles; err is the committed alpha_6s_static band carried through",ENVELOPE
+bbr_stark_shift,T130C,-160.963,0.6838,polarizability,"Hz on the transition axis, principal value through the 6S to 6P poles; err is the committed alpha_6s_static band carried through",ENVELOPE
+bbr_detector_background,T70C,2994.39,,,"photons per second from the whole cell wall in the band the photocathode can respond to, before any collection solid angle, so an upper bound",ENVELOPE
+bbr_detector_background,T130C,3.63682e+06,,,"photons per second from the whole cell wall in the band the photocathode can respond to, before any collection solid angle, so an upper bound",ENVELOPE

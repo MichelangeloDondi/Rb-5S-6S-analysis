@@ -5,6 +5,19 @@ backing pipeline and data live in this repository. Nothing here depends on
 reading the code. Notation follows the README, and every frequency is on the
 two-photon **transition axis** (twice the laser frequency) unless stated.*
 
+**The question.** What does a focused beam do to the shape of a two-photon
+line, and how much of that is new?
+**Takes.** Nothing. The note is self-contained and does not require the code.
+**Gives.** The ramp law and its cumulants, the diverging-beam form and its sign
+flip, the two width companions, the open sign disagreement on the
+polarizability, and an explicit position against the nearest prior art.
+**Skip if.** You want the archival result. This is the theory behind it, and
+its central quantity is below the 2025 noise floor.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## 1. What this note asks
 
 We drive the Doppler-free $5S_{1/2}\to 6S_{1/2}$ two-photon transition in a Rb
@@ -19,8 +32,8 @@ distribution is set by beam geometry rather than by laser statistics, which is
 where their integral closes and ours does not stay formal. It gives that
 evaluation, its moments, the drift-immune way we extract it from a lock too
 unstable to hold a line centre, and the field-intensity convention that fixes
-its coefficient. It closes with **one genuinely open theoretical question** — the
-survival of the closed form under the real collection geometry — which is the
+its coefficient. It closes with **one genuinely open theoretical question**, the
+survival of the closed form under the real collection geometry, which is the
 natural place for a contribution.
 
 
@@ -103,6 +116,55 @@ for instance, gives the uniform distribution, $\langle s\rangle=-S_0/2$ and
 $\kappa_3=0$, exactly zero skew. The skewness observable therefore exists *only
 because the two-photon rate goes as $I^2$*, which is the sharpest statement of
 what is specific here.
+
+**The three-photon case costs more than that paragraph makes it sound**
+(added 2026-08-10). A three-photon Rabi frequency goes as $I^{3/2}$ while a
+light shift goes as $I$, so the ratio of rate to shift is fixed by the atom and
+not by a knob, and the near resonance that makes such a rate viable at all is
+the same small denominator that makes the shift large. Computed from published
+elements, the target's own shift reaches its natural width at a fifth of the
+intensity this experiment already runs. So the parabola is real but it does not
+arrive as a delicate asymmetry on a natural-width line: it arrives in the
+cliff regime, where the shift greatly exceeds the linewidth. That is a
+legitimate measurement of a shift and a poor one of anything needing a narrow
+line. `FUTURE_TRANSITIONS_titsapph.md` section 3.5 carries the numbers.
+
+### 2.0a The exponent is a weak-field statement, and the archive is near its edge
+
+![the weak-field limit and what leaving it costs the predicted skewness](../figures/fig24_weak_field_limit.png)
+
+*The whole section in one picture. On the left, the weight the atom actually
+carries against the square law that replaces it, with the archive and the
+proposed tight focus marked. The two markers are a fourfold change in waist,
+which is a 256-fold change in the saturation parameter against a 16-fold change
+in the shift, because one goes as the fourth power of the inverse waist and the
+other only as the second. On the right, what that does to the observable the
+tight focus is wanted for. The flip in the sign of $g_1$ there is not a
+saturation effect at all: it is the axial average over the collection window
+crossing $Z_c/z_R\approx1.12$, which the right panel already carries, and the
+saturated weight moves how much of the beam contributes rather than where the
+crossing sits. So the sign survives and the magnitude does not.*
+
+Everything above takes the signal weight to be exactly $I^{n}$. That is the
+first Born-order rate, and it holds while the drive is weak. Once the
+saturation parameter $s=2\Omega^2/\Gamma^2$ is not negligible the per-atom
+weight is the steady-state excited fraction $(s/2)/(1+s)$, whose logarithmic
+slope in intensity falls below $n$, and **the whole family above moves with it**:
+$g_1$ shrinks toward its $n=1$ value of zero.
+
+This matters because $s$ scales as the FOURTH power of the inverse waist. At
+the archive's measured 64 µm and 225 mW it is 0.033, so the weak-field law is
+good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
+session proposes it is 8.5, and integrating the moments with the saturated
+weight instead moves the predicted axial skew from $-0.36$ to $-1.07$. So the
+committed axial machinery, which takes an integer photon order, is being asked
+a question outside its range at exactly the configuration that was chosen to
+make the skew large.
+
+The archival results are unaffected and the design conclusion is not.
+[notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
+carries the table and what the machinery needs before that waist is chosen
+deliberately.
 
 The same $dS\propto dI/I \cdot I^{n}$ argument holds for any monotonic $I$
 profile that is flat in one coordinate, including the exponential evanescent
@@ -342,6 +404,22 @@ tighter only because they differenced centres across horizontal-position moves,
 and are withdrawn. The width-and-shape channel is the archive's only
 light-shift channel.
 
+That was re-examined in full on 2026-08-10, since the centre carries the pull
+linearly and is worth several tries. It cannot be recovered from this archive,
+and each session refuses for its own reason. The campaign's three multi-power
+epochs run strictly downward in power with time, so drift and pull share one
+regression column. The pilot's power order *is* scrambled and would forecast
+0.87 MHz/W, but its window setting moves at exactly the transition carrying the
+lever, which projects to a frame systematic eleven times the statistical error.
+And the rehearsal, whose alternating ladders are the design the campaign lacked,
+cannot fix its own frequency origin, because each 5 s record contains one
+crossing of the line and not the mirror pair a self-referenced apex would need.
+Every obstruction is the same shape, no frequency reference independent of the
+knobs, which promotes the unexported ramp-monitor channel from a convenience to
+the precondition for this channel existing.
+[notes/centre_channel_cannot_be_revived.md](notes/centre_channel_cannot_be_revived.md)
+carries the forecasts and the arithmetic.
+
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
 the computed $1093$ at the measured $w_0=64$ µm, so the archive constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
@@ -355,6 +433,122 @@ live in the audit record. The archive does not adjudicate $\Delta\alpha$
 itself, since the mapping inherits $w_0$. A fixed lock would measure the pull
 $\propto S_0$ directly at a small waist, turning this bracket into the
 coefficient.
+
+### 4.1 The width channel has two companions with the same power signature
+
+![the hyperfine branch, how often it fires, and the three terms it competes with](../figures/fig23_hyperfine_pumping.png)
+
+*The second companion is the one that needs a picture. Every real 6S decay
+cascades through 5P, and the 5P decay does not preserve $F$, so an atom that
+decays mid-crossing can land in the other ground state. It is then off
+resonance by the ground hyperfine splitting, which this archive resolves as two
+of its own four lines, so the branch is an exit rather than a detuning. The
+middle panel is how often that happens on one crossing. The right panel is the
+point of the section: of the three terms that grow as the square of the power,
+the one the bound is built on is the smallest.*
+
+Added 2026-08-10, and it bears on how both bounds above should be read. The
+ramp broadens the line as $S_0^2\propto P^2$, which is the signature the width
+fit attributes to the light shift. **Two other effects carry the identical
+$P^2$ signature and were absent from the forward model.**
+
+*Power broadening.* The two-photon Rabi frequency is 450 kHz at the campaign
+maximum, which the repository had never computed, giving a saturation parameter
+$s=2\Omega^2/\Gamma^2$ of 0.033 on axis. The homogeneous width then goes as
+$\Gamma\sqrt{1+s}$. At the predicted $S_0$ the ramp contributes 6.6 kHz where
+saturation contributes 24 to 25 kHz, so **the companion is the larger term by
+about 3.7**, and $s\propto I^2\propto P^2$ makes the two degenerate at this
+order.
+
+*Hyperfine pumping.* The excited state cascades through $5P$, whose decay does
+not preserve $F$, so an atom that cycles during its transit can land in the
+other ground hyperfine level and leave the resonance 3 GHz behind. Seven to
+fifteen per cent of transiting atoms decay at least once. In the weak-drive
+limit the added width is **exactly the branching fraction times the saturation
+width**, everything else cancelling because $\Gamma_{6S}/2\pi$ *is*
+$\Gamma_\text{FWHM}$, which takes the companion-to-ramp ratio to 4.9–6.2. The
+two-level saturation law assumes a closed system. This is the correction for
+its being open.
+
+**The direction is favourable, which is why no bound moves.** If the observed
+$P^2$ broadening is mostly companion rather than ramp, the true limit on the
+Stark coefficient is *tighter* than quoted. Adding the saturation term to the
+forward model and re-profiling confirms it: the width-only bound moves from
+0.6325 to about 0.23 MHz, and the joint bound from 0.258 to 0.117, factors of
+2.8 and 2.21. The joint fit moves less, as predicted in advance, because its
+collisional-width prior absorbs part of an added Lorentzian width.
+
+Both committed bounds therefore stand as quoted and are now known to be
+**conservative by a measured factor rather than by argument**. They do not move
+because the injected law is the two-level homogeneous form used with a
+two-photon Rabi frequency: standard, and the steady-state condition holds here
+since the beam chord is about ten natural lifetimes, but an approximation
+rather than a derivation for a two-photon transition.
+[notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)
+carries the derivation, the probe and what it does not license.
+
+**And the degeneracy is complete in both of the width channel's CONTINUOUS
+knobs, which is why no sweep can break it.** All three terms grow as $P^2$, and all three
+also grow as the inverse fourth power of the waist: the ramp because its width
+increment goes as $S_0^2$ and $S_0$ goes as $w_0^{-2}$, the companions because
+$s$ carries $\Omega^2$ and $\Omega$ is two-photon. So neither a power sweep
+nor a change of focus can separate them, and the archive's inability to do so
+is structural rather than a matter of statistics. What does separate them is a
+channel the companions do not feed: they broaden the line without moving it,
+while the ramp pulls the centroid by $\tfrac23 S_0$. That channel is the
+centroid pull, and reaching it is the fixed lock's job, which is the same
+conclusion §3 reaches from the other direction.
+
+**There is a second separator, and it is a discrete one (2026-08-10).** The
+ramp and the saturation are identical on all four archive lines, because the
+two-photon Rabi frequency is $F$-independent here and the hyperfine factor is
+exactly 1 (`constants.ABUNDANCE_RB85`). The pumping is not. Its branching is
+the branching of the cascade into the ground level NOT being driven. Because
+the two-photon operator is scalar, 6S sits in ONE hyperfine level, so this is a
+two-step product rather than a degeneracy weight, and each leg scales that
+weight by a clean fraction:
+
+$$f = \frac{2F'+1}{\sum_F (2F+1)}\left(\tfrac89 b_{1/2}+\tfrac49 b_{3/2}\right)
+= 0.372,\ 0.348,\ 0.248,\ 0.223
+\ \text{ for } 993.4121,\ 4154,\ 4192,\ 4207\ \text{nm}$$
+
+with $b$ the two legs' branching, 0.341 and 0.659, and the bracket evaluating to
+0.596 for every line. The $8/9$ and $4/9$ are not an averaging over hyperfine
+structure, and the obvious objection is worth answering here rather than leaving
+to the reader: every line feeds one $5P_{3/2}$ level that cannot decay to the
+undriven ground level at all, since a $J=1$ photon cannot change $F$ by two, and
+those levels differ per line ($F=0,1,4,3$ across 4121, 4154, 4192, 4207) and
+carry between 0.17 and 0.70 of that leg. They are in the calculation, and they
+cancel against the enhanced paths exactly. The reason is that a spontaneous
+decay evolves the density matrix as $\rho\to\sum_q D_q\rho D_q^\dagger$, which
+is basis-free, and neither dipole operator touches the nucleus, so evaluating it
+in $|m_J,m_I\rangle$ makes the nuclear spin a spectator and the leg ratio
+reduces to $2(1-p)$ with $p$ the purely electronic non-flip probability, $5/9$
+and $7/9$. **A sum of probabilities over an intermediate basis is not itself
+basis-free**, so that argument does not on its own license the hyperfine sum.
+What does is that the $5P$ hyperfine splitting far exceeds the linewidth, so
+those coherences dephase, and that the prepared state is unpolarised, so the
+$m$ coherences are absent. Neither has to be taken on trust: check 7 of
+`scripts/run_zeeman_depletion.py` runs the full density matrix with every
+coherence kept, in exact rationals, and lands on the same $8/9$ and $4/9$ in all
+eight cases. Check 6 prints the cascade resolved by intermediate $F$.
+
+![the cascade resolved by intermediate F, and the sum rule](../figures/fig28_cascade_resolved.png)
+
+*The objection and the answer in one figure. On the left, one line's cascade
+resolved by intermediate $F$: the level fed with 0.17 of that leg loses none of
+it, because it cannot reach the undriven ground level at all. On the right, why
+that leaves no per-line correction behind: the individual intermediate
+contributions scatter from 0 to 0.67 and their sums land on exactly two values,
+for all four lines and both isotopes.*
+
+So the pumping companion carries a per-line signature that
+neither of the other two has, a lever of 1.67 between the extreme lines. In this
+archive it is 3.1 kHz of width at the committed $S_0(225)$ bound of 0.217 MHz,
+rising to 4.4 kHz at the joint bound and 7.8 kHz at the predicted $S_0$, against
+an 88 kHz single-block scatter. It cannot be spent at any of the three. It is stated because it is the only separation found that does not require
+a lock, and because it retires the $1/3$ to $2/3$ bracket §4.1 was carrying,
+downward: the lower two lines fall below that bracket.
 
 ## 5. The coefficient (the field-intensity convention, pinned)
 
@@ -396,7 +590,10 @@ $\kappa_3\to S_0^3(1/135-f_\text{res}/10)$ at $\rho=1$, a $-13.5 f_\text{res}$
 fractional leverage $\propto$ contrast², of which only
 $P=f_\text{res}\sigma_x^2$ is observable. Measured as the change in standardized
 skew over the intrinsic +0.566 of the triangle, it is negligible at $w_0=64$ µm
-(≈7–14% of an already-below-noise skew, `results/fringe_tail.csv`) and
+(≈7–14% of an already-below-noise skew, `results/fringe_tail.csv`, whose
+7–14% spread is the open coherence-window choice, not Monte-Carlo noise: the
+block-to-block error on the underlying standardized skew, `d_skew_mc_err` in
+the same file, is 2 to 4% of the value it accompanies) and
 ≈26–28% at 16 µm, where it is same-sign-additive to the larger §7
 divergence correction, so the two must be fit jointly at small waist
 (quantified and coherence-window-bracketed in `fringe_tail`).

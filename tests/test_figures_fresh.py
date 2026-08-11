@@ -114,7 +114,11 @@ def test_figure_text_does_not_overlap():
         for name, fn in drawers:
             plt.close("all")
             captured = {}
-            mf._save = lambda fig, nm, _c=captured: _c.__setitem__("fig", fig)
+            # **kw: _save takes rect=, and a two-argument stub raises
+            # TypeError, which the except below swallows. Thirteen of the
+            # twenty-eight figures pass rect, so this guard was skipping
+            # them silently from 2026-07-29 until 2026-08-10.
+            mf._save = lambda fig, nm, _c=captured, **kw: _c.__setitem__("fig", fig)
             try:
                 fn()
             except Exception:

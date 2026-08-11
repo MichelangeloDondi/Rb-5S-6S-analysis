@@ -100,6 +100,19 @@ def stark_ramp(nu: np.ndarray, s0: float) -> np.ndarray:
     s0 > 0 is the on-axis (maximum) red shift in MHz. Returns a delta-like
     unit spike at nu=0 when s0 <= 0 (no shift).
 
+    THE I^2 IS A WEAK-FIELD STATEMENT (2026-08-10). The signal weight above is
+    the leading term of the excited fraction, not the fraction, and the real
+    weight (s/2)/(1+s) reduces to I^2 only while the saturation parameter s is
+    small. That is safe here and not safe everywhere: s carries the two-photon
+    Rabi frequency squared, so it scales as the FOURTH power of the inverse
+    waist while s0 scales only as the second. At the archive's measured 64 um
+    and 225 mW s is 0.033. At the 16 um a future session proposes it is 8.5,
+    and re-integrating the moments with the saturated weight moves the
+    predicted axial skew from -0.36 to -1.07. The sign flip survives, the
+    magnitude does not. scripts/run_geometry_design.ramp_moments computes both
+    branches and its weak-field branch reproduces stark_ramp_axial_moments;
+    docs/THEORY_NOTE.md sec 2.0a and figures/fig24_weak_field_limit.png.
+
     IMPLEMENTATION (fix, 2026-07-11): the original code dropped a
     grid-point spike for any s0 <= dnu, so the shape switched DISCONTINUOUSLY
     from ramp to spike — a false-minimum trap for any fit that floats s0
@@ -336,6 +349,30 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp
                   ) -> np.ndarray:
     """Area-normalized composite line on the transition axis (MHz).
+
+    TWO BROADENERS ARE DELIBERATELY ABSENT, and both share the ramp's own P^2
+    signature, so a fit that omits them lets s0 absorb what they would have
+    taken and the light-shift bound comes out LOOSE. They are atomic
+    saturation, which widens the homogeneous core by sqrt(1+s) and is the
+    larger, and hyperfine pumping through the real 5P cascade, whose decay does
+    not preserve F, so a transiting atom can leave the driven ground state
+    mid-flight. Their ratio is exactly the branching fraction f, which is not
+    resolved here beyond 1/3 to 2/3. Both are left out because injecting them
+    means committing to the two-level homogeneous saturation law with a
+    two-photon Rabi frequency, standard practice rather than a derivation for
+    this level structure. The consequence is measured rather than argued, a
+    factor 2.8 on the width-only bound and 2.21 on the joint, and all three
+    terms are degenerate in both of the width channel's CONTINUOUS knobs (P
+    and w0), so no sweep separates them. Two things do. The centroid pull,
+    because the companions broaden without moving the line. And the LINE INDEX
+    (2026-08-10): the ramp and the saturation are F-independent here while the
+    pumping branching runs 0.223 to 0.372 across the four archive lines, a
+    two-step cascade product rather than a degeneracy weight, so the pumping
+    term alone differs between the lines by 1.67. That is 4 kHz of width
+    against an 88 kHz single-block scatter, so it is real and unspendable here.
+    Reproduce with scripts/run_saturation_probe.py, write-up in
+    docs/notes/two_photon_saturation_companion.md, drawn in
+    figures/fig23_hyperfine_pumping.png.
 
     Parameters (all MHz, all on the transition axis):
       gamma_coll        collisional Lorentzian FWHM (adds to Gamma_nat)

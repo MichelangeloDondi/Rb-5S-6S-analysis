@@ -71,6 +71,8 @@ diagnostic rather than write a table.
 | `run_epoch_checks.py` | the pilot and prehistory cross-checks of the clock, the disturbance model and the cross-day calibration, printed, with nothing entering `results/` |
 | `run_polarizability_ladder.py` | the three-transition polarizability ladder, printed, plus `figures/fig9_polarizability_ladder.png` |
 | `run_s0_block_bootstrap.py` | the block bootstrap of the power-lever limit, one row per resample, under `private/run_logs/` rather than `results/` |
+| `run_cavity_scan.py` (M30) | the cavity-scan photograph digitised and integrated into `cavity_scan_integrals.csv`, the one result whose input is an image |
+| `run_campaign_conditions.py` | what a next campaign's waist, power, temperature and choice of transition do to the six effects this record has measured, printed rather than written. Its three answers are the per-line lever becoming spendable at a tighter waist, the infrared halo growing thirtyfold over the hot extension the collisional programme wants, and the blackbody test that orders the transition menu |
 
 ## Figures and documents
 
@@ -94,6 +96,7 @@ diagnostic rather than write a table.
 | `verify_results_fresh.py` | re-runs each producer into `results/`, diffs what appears against what was committed, and restores the committed files afterwards. `--all` widens the set to the producers that need raw traces |
 | `import_data.py` | the one-time, idempotent import of the 2025 archive into `data_raw/`, deduplicating by MD5 and writing `MANIFEST.csv` |
 | `annotate_manifest_qc.py` | refreshes the `qc_reason` provenance column of `data_raw/MANIFEST.csv` in place, leaving the other columns untouched |
+| `check_release_notes.py` | the register checks applied to a release body or any other untracked prose, since a release body is not a tracked file and nothing else looks at it |
 | `publish_recovered.py` | copies the backup-recovered acquisitions into `data_recovered/` under hash-suffixed names, since nine of the original names collide with different bytes |
 | `run_timestamp_audit.py` | scores the preregistered timestamp criteria against a quarantined copy of the recovered backup and the committed manifest |
 
@@ -111,6 +114,30 @@ They are `run_qc.py`, `run_noise.py`, `run_ruler.py`,
 `run_identifiability.py`, `run_wing_check.py`, `make_fig0_spectrum.py`,
 `make_qc_gallery.py` and `annotate_manifest_qc.py`, which is most of
 `run_all.sh`.
+
+Five write nothing at all and exist so a published number can be re-derived
+rather than taken. `run_saturation_probe.py` reproduces the light-shift bound
+with the saturation companion in the model, in four stages, the last of which
+needs the two outside trees. `run_geometry_design.py` computes the two
+geometry designs of `docs/notes/running_wave_and_waist_design.md`, the
+frequency-shifted retro arm and the waist, and its weak-field branch
+reproduces `lineshape.stark_ramp_axial_moments`, which is what licenses the
+saturated branch beside it. `run_zeeman_depletion.py` does the hyperfine
+pumping on the full Zeeman manifold, every Clebsch-Gordan coefficient present,
+and its seven checks include the transit depletion per isotope, the blocked
+cascade paths, and the same branching recomputed as a density matrix in exact
+rational arithmetic.
+
+Two more began as questions put at the bench and became producers when their
+numbers reached the documents. `run_trapping_channels.py` does radiation
+trapping on the two infrared cascade legs and writes
+`results/trapping_channels.csv`. `run_blackbody_channels.py` does the cell's own
+thermal field, on the cascade and at the detector, and writes
+`results/blackbody_channels.csv`. Both carry their own `status` and `err_kind`
+columns, so `annotate_results_status.py` skips them, and both are in
+`run_all.sh`. They write because `docs/STYLE.md` requires prose to quote a
+committed CSV rather than restate a number independently, and once those numbers
+appeared in CLAIMS and the methods chapters, not writing them was the defect.
 
 Six need more than the traces. `run_stark_joint.py`,
 `run_global_archive_fit.py`, `_m25_norulers.py`, `run_full_archive_fit.py` and
