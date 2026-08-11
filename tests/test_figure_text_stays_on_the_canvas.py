@@ -31,6 +31,27 @@ _CACHE = None
 _RAISED: dict = {}
 
 
+def _renderer(fig):
+    """A renderer for this figure, on any matplotlib the CI matrix runs.
+
+    `fig.canvas.get_renderer()` exists on the Agg canvas and NOT on
+    FigureCanvasBase, and a Figure built without pyplot carries the base class.
+    Locally that never showed, because this repository pins one interpreter and
+    one matplotlib; the mirror's CI runs four combinations and the 3.11-latest
+    job raised AttributeError on 2026-08-11 while the same commit's gate was
+    clean on this machine. Attaching an Agg canvas is the portable fix and
+    changes nothing about what is measured.
+    """
+    fig.canvas.draw()
+    get = getattr(fig.canvas, "get_renderer", None)
+    if get is not None:
+        return get()
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    FigureCanvasAgg(fig)
+    fig.canvas.draw()
+    return fig.canvas.get_renderer()
+
+
 def _drawn():
     """Every figure drawn in-process, once, as [(name, fig)].
 
@@ -121,7 +142,7 @@ def test_no_figure_text_runs_off_the_canvas():
     assert figs, "no figures drawn, so this guard is vacuous"
     bad = []
     for name, fig in figs:
-        r = fig.canvas.get_renderer()
+        r = _renderer(fig)
         w, h = fig.canvas.get_width_height()
         for ax in list(fig.axes) + [fig]:
             for t in getattr(ax, "texts", []):
@@ -141,7 +162,7 @@ def test_no_legend_sits_on_a_label():
     assert figs, "no figures drawn, so this guard is vacuous"
     bad = []
     for name, fig in figs:
-        r = fig.canvas.get_renderer()
+        r = _renderer(fig)
         for ax in fig.axes:
             leg = ax.get_legend()
             if leg is None:
@@ -158,3 +179,57 @@ def test_no_legend_sits_on_a_label():
                     bad.append(f"{name}: the legend covers "
                                f"{t.get_text()[:34]!r} by {100*ov/area:.0f}%")
     assert not bad, "a legend is sitting on a label:\n  " + "\n  ".join(bad)
+
+
+def test_no_data_anchored_label_leaves_its_own_axes():
+    """A label anchored to a data point must stay inside the panel holding it.
+
+    Added 2026-08-11. fig29's four temperature labels were offset 14 points
+    BELOW markers that sat near the bottom of a log axis, so all four fell
+    outside the axes and the bottom spine cut them through the middle. The
+    guard above did not fire and was right not to: they were inside the FIGURE
+    the whole time. On the canvas and inside its own panel are two different
+    questions and only the first was ever asked.
+
+    The two constructs are distinguishable, which is what keeps this from
+    firing on every caption. Text anchored in DATA coordinates is a label on
+    something and belongs in the panel. Text placed with transform=ax.transAxes
+    is deliberate furniture, and several figures legitimately put caption prose
+    below their panels that way. Only the first kind is checked.
+    """
+    figs = _drawn()
+    assert figs, "no figures drawn, so this guard is vacuous"
+    bad = []
+    for name, fig in figs:
+        r = _renderer(fig)
+        for ax in fig.axes:
+            for t in ax.texts:
+                if not t.get_text().strip():
+                    continue
+                if not _is_data_anchored(t, ax):
+                    continue
+                b, box = t.get_window_extent(renderer=r), ax.bbox
+                if (b.x0 < box.x0 - TOL_PX or b.y0 < box.y0 - TOL_PX
+                        or b.x1 > box.x1 + TOL_PX or b.y1 > box.y1 + TOL_PX):
+                    bad.append(
+                        f"{name}: {t.get_text()[:34]!r} is anchored to a data "
+                        f"point but its box ({b.x0:.0f},{b.y0:.0f})-"
+                        f"({b.x1:.0f},{b.y1:.0f}) leaves its axes "
+                        f"({box.x0:.0f},{box.y0:.0f})-({box.x1:.0f},{box.y1:.0f})")
+    assert not bad, (
+        "data-anchored labels outside their own panel. Put the label on the "
+        "other side of its marker, or make it caption text with "
+        "transform=ax.transAxes if it belongs outside:\n  " + "\n  ".join(bad))
+
+
+def _is_data_anchored(t, ax):
+    """True when this text is positioned FROM a data point.
+
+    Annotations carry xycoords, which says it directly. A plain Text is data
+    anchored when its transform is the axes' transData, which is matplotlib's
+    default for ax.text and is exactly what transform=ax.transAxes overrides.
+    """
+    from matplotlib.text import Annotation
+    if isinstance(t, Annotation):
+        return getattr(t, "xycoords", "data") == "data"
+    return t.get_transform() is ax.transData
