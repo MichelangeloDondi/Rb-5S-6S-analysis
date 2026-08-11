@@ -7,8 +7,20 @@ This page is that place. It states what each tag licenses, which errors are
 statistical and which are not, and where a stated uncertainty is deliberately
 absent.
 
-It is a reading guide, not a results page. The numbers themselves live in
-[`RESULTS.md`](RESULTS.md) and the claim register in [`CLAIMS.md`](CLAIMS.md).
+**The question.** What does a tag or an error column on a number in this
+project actually license, and where is a stated uncertainty deliberately
+absent rather than merely missing?
+**Takes.** Nothing. This page is the reference the rest of the repository
+points readers at.
+**Gives.** The two provenance vocabularies, the five bound constructions and
+when each is valid, what is mechanised, and what is not covered.
+**Skip if.** You want the numbers themselves rather than what licenses them:
+those live in [`RESULTS.md`](RESULTS.md) and the claim register in
+[`CLAIMS.md`](CLAIMS.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
 
 ## 1. Physical inputs: the provenance tags in `constants.py`
 
@@ -142,6 +154,20 @@ each site names it.
   Wald number in the ledger sits beside the profile number that replaced it.
 * **Bootstrap percentile**, used to score the constructions above rather than to
   produce a headline.
+* **No bound at all, when the parameter is unidentifiable.** Not a fifth
+  construction so much as the failure mode the other four share: every one of
+  them assumes the profile has *some* slope in the parameter, and a parameter
+  that enters the model only as a multiple of another parameter has none once
+  that other parameter is itself consistent with zero. The preregistered
+  companion refit hit this directly. Profiling the per-line pumping scale over
+  the light shift it multiplies returns $\Delta\chi^2$ **exactly zero** at
+  every scale from 0.5 to 16, because the fit sets the shift to zero and
+  switches the scale's own effect off with it. There is no crossing to find,
+  interpolate, or read off a grid, and reporting a bound anyway (by pinning the
+  multiplying parameter at a value the data does not prefer) understates the
+  problem rather than solving it. See
+  [the refit's postscript](notes/companion_inclusive_refit_prereg.md) for the
+  full profile and the general form of the failure.
 
 ### 4a. Reading a crossing off a grid, which is where two defects came from
 
