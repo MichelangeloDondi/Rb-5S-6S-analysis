@@ -1054,7 +1054,12 @@ def fig_degeneracy_vs_observable():
     ax1.set_title("(a) fitted collisional and laser FWHM, one-sigma ellipses\n"
                   "over contours of constant total FWHM (MHz)",
                   fontsize=8.5)
-    ax1.legend(fontsize=7, framealpha=1.0, frameon=True)
+    # Pinned rather than "best": auto-placement put the legend over the 6.00
+    # and 6.20 contour labels in the panel's open upper-right corner, which
+    # cleared locally by a few pixels and did not on the CI runner's slightly
+    # different font metrics. The lower-left corner has no contour label at
+    # any campaign condition.
+    ax1.legend(fontsize=7, framealpha=1.0, frameon=True, loc="lower left")
     ax1.grid(alpha=0.25, lw=0.5)
 
     # --- RIGHT: the observable ------------------------------------------
@@ -2429,8 +2434,16 @@ def fig_drift_story():
     ys = [2, 1, 0]
     for y, (rate, left, right) in zip(ys, regimes):
         ax.plot([rate], [y], "o", ms=9, color="#0072B2")
-        ax.annotate(left, xy=(rate, y), xytext=(0, 12), textcoords="offset points",
-                    ha="center", fontsize=7.5)
+        # Centred, except for the point nearest the right spine (the envelope
+        # rate sits at 86% of the log axis), which centred a wide label into
+        # the spine: it cleared by 2 px on this machine's font metrics and did
+        # not on the CI runner's. Anchoring that one's right edge to the point
+        # gives it the open decade to its left instead of the closed edge to
+        # its right.
+        near_right_edge = rate > 1.0
+        ax.annotate(left, xy=(rate, y), xytext=(-4 if near_right_edge else 0, 12),
+                    textcoords="offset points",
+                    ha="right" if near_right_edge else "center", fontsize=7.5)
         ax.annotate(right.replace("\\n", "\n"), xy=(rate, y), xytext=(0, -13),
                     textcoords="offset points", ha="center", va="top", fontsize=7.5)
     ax.set_xscale("log")
