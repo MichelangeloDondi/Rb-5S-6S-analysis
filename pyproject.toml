@@ -13,7 +13,7 @@ authors = [
     { name = "Michelangelo Dondi" },
 ]
 dependencies = [
-    # THE FLOOR IS DERIVED, NOT CHOSEN (2026-08-13). numpy 2.5 replaced
+    # THE FLOOR IS DERIVED, NOT CHOSEN (2026-08-12). numpy 2.5 replaced
     # np.convolve and is ten times faster on the 9000-point convolution
     # this lineshape model is built from, which is why it is the floor.
     # Everything else follows: numpy 2.5.2 declares requires-python

@@ -562,7 +562,7 @@ def ub95(k, c):
 # q = q0.copy() before its warm-started beta sweep, so no row reads another's
 # state. The forward/backward chains are NOT parallelisable, because chain()
 # deliberately carries q across kappas; leave them alone. Measured on rows
-# sized like production (2026-08-13): x3.58 on 8 workers, x4.66 on 10, with
+# sized like production (2026-08-12): x3.58 on 8 workers, x4.66 on 10, with
 # results bit-identical to the sequential path.
 #
 # DEFAULT OFF. The committed CSVs were produced by the sequential path, and

@@ -1029,7 +1029,7 @@ def fig_ruler():
                 axres.axvspan(lo, hi, color="0.75", alpha=0.35, lw=0, zorder=0)
     lim8 = 4.0 * float(np.std(pull_t))
     # THE RESIDUALS ARE NOT WHITE, AND THE PANEL NOW SAYS SO (owner reading,
-    # 2026-08-13: "the residuals still have some structure"). Measured on this
+    # 2026-08-12: "the residuals still have some structure"). Measured on this
     # trace at draw time rather than asserted, because a reduced chi-squared
     # near 1 says only that the SCALE is right and says nothing about
     # correlation, and this panel previously showed a scatter that looked
@@ -1517,7 +1517,7 @@ def fig_level_scheme():
     780 nm is real but filtered out (~50 dB, docs/APPARATUS.md sec. 3).
 
     Every arrow carries the fraction of the cascade it takes, computed at draw
-    time from the Einstein A coefficients (owner request, 2026-08-13). The
+    time from the Einstein A coefficients (owner request, 2026-08-12). The
     reading that matters is that THE DETECTED ARM IS THE MINORITY ONE: the
     6S->5P_3/2 leg is twice as strong as 6S->5P_1/2 (A ratio 1.93), so 66 per
     cent of every 6S decay leaves through 1367 nm and then 780 nm, which the
@@ -1547,7 +1547,7 @@ def fig_level_scheme():
     LAM_6S_5P12_NM = 1.0e7 / (E_6S_CM - E_5P12_CM)   # 1324 nm, detected arm
     LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
 
-    # HOW MUCH OF THE CASCADE EACH ARM CARRIES (owner request, 2026-08-13).
+    # HOW MUCH OF THE CASCADE EACH ARM CARRIES (owner request, 2026-08-12).
     # The figure named the four wavelengths and left the reader to assume the
     # split, which matters because the detected arm is the MINORITY one: the
     # 780 nm arm is not merely filtered, it is also the larger half.
