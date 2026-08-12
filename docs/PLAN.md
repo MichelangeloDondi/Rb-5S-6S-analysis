@@ -47,7 +47,7 @@ document states.
 *The reason this document exists, before any of its procedure. The 2025 lock
 was re-centred by hand between blocks, so the line's absolute position carries
 no meaning across a step and every result here is a bound read out of the line
-SHAPE. The right-hand panel is what a fixed lock converts, and each block below
+SHAPE. The bottom panel is what a fixed lock converts, and each block below
 is costed against exactly that. The same figure appears again in §2 with the
 drift analysis it comes from.*
 

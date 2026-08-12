@@ -32,8 +32,7 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.constants import (
     peak_title,  # noqa: E402
-    GAMMA_NAT_HZ, TRACE_N_POINTS, TRACE_DT_S,
-    TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
+    GAMMA_NAT_HZ, TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
 
 GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
@@ -1029,6 +1028,52 @@ def fig_ruler():
             if hi > lo:
                 axres.axvspan(lo, hi, color="0.75", alpha=0.35, lw=0, zorder=0)
     lim8 = 4.0 * float(np.std(pull_t))
+    # THE RESIDUALS ARE NOT WHITE, AND THE PANEL NOW SAYS SO (owner reading,
+    # 2026-08-13: "the residuals still have some structure"). Measured on this
+    # trace at draw time rather than asserted, because a reduced chi-squared
+    # near 1 says only that the SCALE is right and says nothing about
+    # correlation, and this panel previously showed a scatter that looked
+    # acceptable while carrying both defects below.
+    #
+    #   correlation: lag-1 autocorrelation ~+0.20 against a white-noise
+    #   expectation of 0 +- 1/sqrt(n), which is a nine-sigma statement, and it
+    #   is still +0.18 at lag 10, so the misfit is smooth over about ten
+    #   samples rather than sample-to-sample noise.
+    #
+    #   weighting: NOT a defect, and checked here because it was the first
+    #   suspicion. The standardised scatter is 1.00 in the dimmest third of
+    #   the trace against 0.99 in the brightest, so the block noise law's
+    #   signal-level dependence is doing its job. A first check of this
+    #   reported 0.5 against 1.4 and was wrong: it divided by a CONSTANT
+    #   sigma instead of the level-dependent law the fit actually weighted
+    #   with, which manufactures exactly that trend out of shot noise.
+    #
+    # So the one real finding is the correlation. What it costs: a correlated
+    # residual makes the per-trace tooth-spacing error optimistic, in the same
+    # direction as the block-to-block over-dispersion for which the campaign
+    # rate already carries a PDG scale factor. It does not bias the spacing
+    # itself, which is why the frequency axis stands.
+    _z = pull_t[np.isfinite(pull_t)]
+    _n = _z.size
+    _a1 = float(np.corrcoef(_z[:-1], _z[1:])[0, 1])
+    _a10 = float(np.corrcoef(_z[:-10], _z[10:])[0, 1])
+    _ord = np.argsort(model_t[np.isfinite(pull_t)])
+    _lo = float(np.std(_z[_ord[: _n // 3]]))
+    _hi = float(np.std(_z[_ord[2 * _n // 3:]]))
+    # Two short lines INSIDE the strip. One long line ran off both edges of
+    # the canvas, which the canvas guard reports and which is the same defect
+    # this file has now hit four times: a sentence sized for prose put into a
+    # panel sized for numbers.
+    axres.text(0.012, 0.94,
+               f"correlated, not white: lag-1 {_a1:+.2f}, lag-10 {_a10:+.2f}\n"
+               f"(white noise: 0 $\\pm$ {1 / np.sqrt(_n):.2f})",
+               transform=axres.transAxes, fontsize=5.8, color="#8f1f1f",
+               ha="left", va="top")
+    axres.text(0.988, 0.94,
+               f"scatter {_lo:.2f} dim third, {_hi:.2f} bright:\n"
+               "the noise law's level dependence holds",
+               transform=axres.transAxes, fontsize=5.8, color="0.35",
+               ha="right", va="top")
     axres.set_ylim(-lim8, lim8)
     axres.set_ylabel(r"residual / $\sigma$", fontsize=7.5)
     axres.tick_params(labelsize=7.5)
@@ -1063,27 +1108,41 @@ def fig_ruler():
     # one sets the bound. (The long bar is NOT anomalous: at n=5 it sits 0.9
     # sigma from the 1/sqrt(n) law, and its CENTRAL value, +0.24%, is inside
     # the band. Only its precision is poor.)
+    # PERCENT DEVIATION, not a ratio near 1.000 (owner: this panel was not
+    # clear at all). The quantity is the same; a ratio of 0.9983 asks the
+    # reader to do the arithmetic, and the bound it is compared against is
+    # quoted in per cent everywhere else in the record.
+    dev = 100.0 * (rr - 1.0)
+    dev_err = 100.0 * er
     well = n_win >= N_WELL_SAMPLED
     sizes = 12 + 38 * (n_win / n_win.max())
     for m, ec, alpha, z in ((well, "#009E73", 1.0, 2), (~well, "#8FBFB0", 0.9, 1)):
-        ax2.errorbar(pos[m], rr[m], yerr=er[m], fmt="none", ecolor=ec,
+        ax2.errorbar(pos[m], dev[m], yerr=dev_err[m], fmt="none", ecolor=ec,
                      elinewidth=1, capsize=2, alpha=alpha, zorder=z)
-    ax2.scatter(pos[well], rr[well], s=sizes[well], color="#009E73",
+    ax2.scatter(pos[well], dev[well], s=sizes[well], color="#009E73",
                 edgecolor="none", zorder=3,
                 label=f"{N_WELL_SAMPLED} or more traces contribute")
-    ax2.scatter(pos[~well], rr[~well], s=sizes[~well], facecolor="white",
+    ax2.scatter(pos[~well], dev[~well], s=sizes[~well], facecolor="white",
                 edgecolor="#009E73", linewidth=1.0, zorder=3,
                 label=f"fewer than {N_WELL_SAMPLED} traces, at the scan edges")
-    ax2.axhline(1.0, color="k", lw=0.8)
+    ax2.axhline(0.0, color="k", lw=0.8)
     # The band IS the quoted bound: it was drawn at +-0.45% under a title
     # quoting 0.3%, so the only visual reference on the panel disagreed with
     # the number above it. The well-sampled windows reach 0.25%.
-    ax2.axhspan(1.0 - RULER_LINEARITY_BOUND, 1.0 + RULER_LINEARITY_BOUND,
+    ax2.axhspan(-100 * RULER_LINEARITY_BOUND, 100 * RULER_LINEARITY_BOUND,
                 color="#009E73", alpha=0.10,
                 label=f"the quoted bound, $\\pm${100 * RULER_LINEARITY_BOUND:.1f}%")
     ax2.set_xlabel("centre of the window, in scan time (ms)")
-    ax2.set_ylabel("sweep rate / group-fitted rate")
-    ax2.set_title("(b) local sweep rate against\nwindow position", fontsize=8.5)
+    ax2.set_ylabel("local rate, deviation from the whole-scan rate (%)")
+    # The title now asks the question the panel answers. "local sweep rate
+    # against window position" named the axes and left the reader to guess
+    # what a good answer would look like.
+    _wspread = float(np.max(np.abs(dev[well])))
+    # The title asks the question and answers it, which is what a reader of a
+    # calibration panel needs. Flat means one MHz/ms converts the whole scan.
+    ax2.set_title("(b) is the sweep rate the same across the scan?\n"
+                  f"yes, to {_wspread:.2f}% where the sampling is good",
+                  fontsize=8.5)
     # One cue, not two: the legend already carries the n split, and the old
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower center", framealpha=1.0, frameon=True)
@@ -1454,8 +1513,17 @@ def fig_level_scheme():
     the left column, P levels on the right; the 993 nm virtual level is a
     dash at half the two-photon energy, BELOW the real 5P_1/2. The 5P
     fine-structure splitting (237.6 cm^-1, 1.2% of the span) is enlarged for
-    visibility and the panel says so. 795 nm is the detected cascade arm;
+    visibility and the panel says so. 795 nm is the detected cascade arm and
     780 nm is real but filtered out (~50 dB, docs/APPARATUS.md sec. 3).
+
+    Every arrow carries the fraction of the cascade it takes, computed at draw
+    time from the Einstein A coefficients (owner request, 2026-08-13). The
+    reading that matters is that THE DETECTED ARM IS THE MINORITY ONE: the
+    6S->5P_3/2 leg is twice as strong as 6S->5P_1/2 (A ratio 1.93), so 66 per
+    cent of every 6S decay leaves through 1367 nm and then 780 nm, which the
+    filters reject, and the 795 nm the detector counts is the remaining 34 per
+    cent. That factor sits in front of every absolute rate this record quotes
+    and was previously stated nowhere on the figure.
 
     Right panels: the real cavity scan, digitised from a photograph
     (docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv). Only the
@@ -1478,6 +1546,24 @@ def fig_level_scheme():
     from rb5s6s.polarizability import E_6S_CM, E_5P12_CM, E_5P32_CM
     LAM_6S_5P12_NM = 1.0e7 / (E_6S_CM - E_5P12_CM)   # 1324 nm, detected arm
     LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
+
+    # HOW MUCH OF THE CASCADE EACH ARM CARRIES (owner request, 2026-08-13).
+    # The figure named the four wavelengths and left the reader to assume the
+    # split, which matters because the detected arm is the MINORITY one: the
+    # 780 nm arm is not merely filtered, it is also the larger half.
+    #
+    # Computed from the same Einstein A coefficients the trapping study uses
+    # (scripts/run_trapping_channels._leg on rb5s6s.polarizability line data),
+    # not typed. 5P is the lowest excited state, so each first leg reaches the
+    # ground state with unit probability and the SAME fraction labels the
+    # second leg: 1324 with 795, and 1367 with 780. That identity is why one
+    # number can sit on both arrows of a cascade arm.
+    sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
+    from run_trapping_channels import _leg as _leg_A, LINES_6S as _L6S
+    _a12 = _leg_A(*_L6S[0][:2])[1]
+    _a32 = _leg_A(*_L6S[1][:2])[1]
+    _b12 = 100.0 * _a12 / (_a12 + _a32)
+    _b32 = 100.0 * _a32 / (_a12 + _a32)
 
     fig = plt.figure(figsize=(13.0, 6.2))
     # bottom reserves the strip the caption and the footer share: the caption
@@ -1521,24 +1607,26 @@ def fig_level_scheme():
     # the dashes crossed the digits of this one. The white patch behind it
     # breaks the line where the label sits, which is what its sibling below
     # achieves by standing clear of its own arrow.
-    ax.text(0.365, 0.86, f"{LAM_6S_5P12_NM:.0f} nm", rotation=-54,
+    ax.text(0.365, 0.86, f"{LAM_6S_5P12_NM:.0f} nm, {_b12:.0f}%", rotation=-54,
             fontsize=7.5, color="0.45",
             ha="center", va="center",
             bbox=dict(boxstyle="square,pad=0.22", fc="white", ec="none"))
     ax.annotate("", (0.66, y5p32 + 0.008), (0.335, y6s - 0.008),
                 arrowprops=dict(arrowstyle="-|>", color="0.5", lw=1.3,
                                  ls=(0, (4, 3))))
-    ax.text(0.50, 0.885, f"{LAM_6S_5P32_NM:.0f} nm", rotation=-44,
+    ax.text(0.50, 0.885, f"{LAM_6S_5P32_NM:.0f} nm, {_b32:.0f}%", rotation=-44,
             fontsize=7.5, color="0.45",
             ha="center", va="center")
     # cascade, second legs: 795 detected (red), 780 filtered out (grey)
     ax.annotate("", (0.295, y5s + 0.008), (0.545, y5p12 - 0.008),
                 arrowprops=dict(arrowstyle="-|>", color="#d62728", lw=2.2))
-    ax.text(0.365, 0.295, "795 nm", rotation=64, fontsize=9, color="#d62728",
+    ax.text(0.365, 0.295, f"795 nm, {_b12:.0f}%", rotation=64, fontsize=9,
+            color="#d62728",
             ha="center", va="center", fontweight="bold")
     ax.annotate("", (0.335, y5s + 0.008), (0.625, y5p32 - 0.008),
                 arrowprops=dict(arrowstyle="-|>", color="0.55", lw=1.4))
-    ax.text(0.545, 0.275, "780 nm", rotation=62, fontsize=7.5, color="0.45",
+    ax.text(0.545, 0.275, f"780 nm, {_b32:.0f}%", rotation=62, fontsize=7.5,
+            color="0.45",
             ha="center", va="center")
     # The two statements this panel used to carry under the term diagram (which
     # arm is detected and by how much the other is suppressed, and that the 5P
@@ -2349,24 +2437,30 @@ def fig_wavemeter_reconstruction():
 
 def fig_drift_story():
     """The drift problem, what the archive extracted despite it, and what a
-    fixed lock buys (fig15). Three panels.
+    fixed lock buys (fig15). Three panels, rebuilt 2026-08-12 on the owner's
+    reading of the previous version.
 
     (a) The problem, photographed: the 2025-06-11 wavemeter record, digitised
-        by M22 -- a sawtooth of re-lock steps and ramping intervals, not a
-        drift. Not campaign data; the campaign saved no wavemeter log at all,
-        which is the point of panel (b).
-    (b) The campaign, reconstructed from its own traces (M20): line offsets
-        within each scope-knob epoch. Absolute frequency is unknowable across
-        epoch boundaries (the knob moved 58 times), so each segment floats;
-        within a segment the excursion is ~1 MHz. The held-lock drift
-        MAGNITUDE, 0.016 [0.007, 0.025] MHz/min (state-space fit on the
-        recovered clock, audit addendum 5), is drawn as a symmetric wedge in
-        an inset -- off the data axes, both signs, because the sign is not
-        established.
-    (c) The consequence ladder: what each drift regime licenses, with the
-        archive's extracted bounds and the fixed-lock conversions annotated.
-        The fixed-lock benchmark is Ayachitula 2024 on this same transition:
-        < 0.5 kHz over 50 min.
+        by M22. Re-lock markers are drawn ONLY where the sawtooth fit returns
+        a real upward step. The kick finder proposed three more candidates
+        (near 16, 28 and 31 min); their fitted steps are -1.1, -0.05 and
+        -0.15 MHz, the end of a steep ramp rather than a re-lock, and the
+        experimenter's own recollection of the session agrees, so they are
+        named on the panel and not drawn as re-locks. An earlier version drew
+        a grey line at every candidate, which invented kicks the record does
+        not contain.
+    (b) The campaign's central bookkeeping fact, shown as one comparison:
+        between consecutive oscilloscope window settings, the move of the
+        fitted peak position against the move of the window itself. The
+        points lie on the identity line, so the centre record follows the
+        instrument's own display frame, not the atom. This replaces a
+        per-epoch offset plot with a drift-wedge inset that read as a
+        measured trend; the held-lock drift SIGN is deliberately not drawn
+        anywhere (owner call, 2026-08-12: the record does not establish it
+        and the figure should not appear to).
+    (c) The consequence ladder, decluttered: three lock regimes on a log
+        axis, two short annotations each. The prose that used to live on the
+        canvas belongs to the documents that cite the figure.
     """
     import csv as _csv
 
@@ -2376,214 +2470,146 @@ def fig_drift_story():
     t, f, band = r["t"], r["f"], r["band"]
     tf, mu = r["t_fit"], r["mu"]
 
-    # campaign side: within-epoch offsets from the committed laser history
     rows = [x for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_history.csv"))
             if x["flag"] == "canonical" and x["offset_mhz"]]
-    t0 = min(float(x["t_epoch"]) for x in rows)
 
-    # Each row IS a recorded trace: a 2000-point, fixed-duration Agilent scan
-    # (module M0/ingest.py), so its clock time carries a real scan span, not
-    # just a fitted centre. duration x the trace's own session rate
-    # (results/ruler_blocks.csv, before/after brackets averaged for the P
-    # sessions) is that span; falls back to the campaign-wide rate only if a
-    # (session, peak, T) combination is somehow absent from ruler_blocks.
-    trace_duration_ms = TRACE_N_POINTS * TRACE_DT_S * 1e3   # 1000 ms, fixed format
-    rate_sum, rate_n = defaultdict(float), defaultdict(int)
-    for rb in _csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv")):
-        key = (rb["session"], rb["peak"], rb["T"])
-        rate_sum[key] += float(rb["rate"])
-        rate_n[key] += 1
-    rate_by_key = {k: rate_sum[k] / rate_n[k] for k in rate_sum}
-    campaign_rate = float(next(iter(
-        _csv.DictReader(open(C.RESULTS_DIR / "ruler_campaign.csv"))))["rate_laser"])
-
-    def _span_mhz(x):
-        session = "P" if x["role"] in ("p_sweep", "ruler_p") else "T"
-        rate = rate_by_key.get((session, x["peak"], x["temperature_C"]), campaign_rate)
-        return trace_duration_ms * rate
-
-    by_ep = {}
-    for x in rows:
-        by_ep.setdefault(int(x["display_epoch"]), []).append(
-            ((float(x["t_epoch"]) - t0) / 3600.0, float(x["offset_mhz"]), _span_mhz(x)))
-
-    # the extracted-vs-gain numbers, read from the committed CSVs
     s0 = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "stark_joint.csv"))
                     if x["quantity"] == "S0_225mW_ub95"))
     bvals = [float(x["bound95_nscale"]) for x in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
              if x.get("headline") == "yes"]
     # laser_epoch.csv was normalised on 2026-08-10: value_MHz became value and
-    # the inequality left the numeric column for the unit field. This reader
-    # was not updated, so this figure raised for a day and nothing said so,
-    # because every guard that draws figures catches and continues.
+    # the inequality left the numeric column for the unit field.
     sl = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_epoch.csv"))
                     if x["quantity"] == "sigma_laser_bound"))
 
-    # Panel (c) is now as tall as the two data panels, and the gaps are wider.
-    # This figure carries an inset and an explicitly spaced grid, so
-    # tight_layout skips it and these numbers are the layout: at the old
-    # heights panel (c)'s lowest annotations ran out through the bottom spine
-    # and printed over the tick labels, and panel (b)'s title printed over
-    # panel (a)'s time axis.
     fig = plt.figure(figsize=(8.6, 10.6))
-    gs = fig.add_gridspec(3, 1, height_ratios=[1.4, 1.4, 1.7], hspace=0.50)
+    gs = fig.add_gridspec(3, 1, height_ratios=[1.4, 1.4, 1.2], hspace=0.52)
 
-    # (a) the photographed record, digitised
+    # ---- (a) the photographed record, digitised -------------------------
     ax = fig.add_subplot(gs[0])
     ax.fill_between(t, f - band / 2, f + band / 2, color="#0072B2", alpha=0.25,
                     lw=0, label="scan band, the laser sweep")
     ax.plot(t, f, color="#0072B2", lw=0.9, label="band centre = laser frequency")
     mclip = tf > 0.4     # the pre-first-kick baseline is a fit artifact
     ax.plot(tf[mclip], mu[mclip], color="#D55E00", lw=1.6, ls="--",
-            label="fitted model: a step at each re-lock, a ramp in between")
-    for tk in r["kick_times"]:
-        ax.axvline(tk, color="0.55", lw=0.7, alpha=0.6)
+            label="fitted model: a step at each confirmed\nre-lock, a ramp in between")
+    confirmed = [s_ for s_ in r["steps"] if s_["step_mhz"] > 1.0]
+    rejected = [s_ for s_ in r["steps"] if s_["step_mhz"] <= 1.0]
+    for s_ in confirmed:
+        ax.axvline(s_["t_kick"], color="0.55", lw=0.7, alpha=0.6)
+    # The three named rather than drawn, with their fitted steps, computed at
+    # draw time so the panel cannot disagree with the fit it shows.
+    _times = ", ".join(f"{s_['t_kick']:.0f}" for s_ in rejected)
+    _amps = ", ".join(f"{s_['step_mhz']:+.2f}" for s_ in rejected)
+    ax.text(0.985, 0.03,
+            f"the finder flagged {len(rejected)} more candidates, near "
+            f"{_times} min.\nTheir fitted steps ({_amps} MHz) rule them out:\n"
+            "ramp ends, not re-locks. The bench record agrees.",
+            transform=ax.transAxes, fontsize=6.8, color="0.35",
+            ha="right", va="bottom")
     ax.set_xlabel("time (min)")
     ax.set_ylabel("laser detuning (MHz)")
     ax.set_title("(a) laser frequency, 2025-06-11 preliminary session,\n"
                  "digitised from the wavemeter display",
                  fontsize=9)
-    ax.legend(fontsize=7, loc="lower right", framealpha=1.0, frameon=True)
+    # Blank strip above the data for the legend, rather than the legend over
+    # the scan band it is describing. Same treatment the other panels of this
+    # file use where an opaque legend would sit on data.
+    _lo, _hi = ax.get_ylim()
+    ax.set_ylim(_lo, _lo + (_hi - _lo) * 1.34)
+    ax.legend(fontsize=7, loc="upper left", framealpha=1.0, frameon=True)
 
-    # (b) the campaign, reconstructed from its own traces
+    # ---- (b) the centre record follows the window -----------------------
     ax = fig.add_subplot(gs[1])
-    drift = 0.016   # MHz/min, laser; audit addendum 5 (state-space, recovered clock)
-    dlo, dhi = 0.007, 0.025
-    first = True
-    first_band = True
-    for ep, pts in sorted(by_ep.items()):
-        if len(pts) < 2:
-            continue
-        pts.sort()
-        th = [p[0] for p in pts]
-        off = [p[1] for p in pts]
-        span = [p[2] for p in pts]
-        # texture, not decoration: each segment is one recorded trace's own
-        # piezo scan ramp (duration x that session's ruler rate), centred on
-        # its fitted centre -- the like-for-like counterpart of panel (a)'s
-        # photographed scan band, drawn low-alpha so the smooth centre
-        # line/points (plotted next, on top) stay legible.
-        lbl = None
-        if first_band:
-            lbl = (f"each trace's own scan ramp, about {span[0]:.0f} MHz,\n"
-                   "drawn to scale")
-        ax.vlines(th, [o - s / 2 for o, s in zip(off, span)],
-                  [o + s / 2 for o, s in zip(off, span)],
-                  color="#009E73", lw=0.7, alpha=0.10, zorder=1, label=lbl)
-        first_band = False
-        ax.plot(th, off, "-", color="#009E73", lw=0.8, alpha=0.85, zorder=2)
-        ax.plot(th, off, ".", color="#009E73", ms=2.5, zorder=3,
-                label="line offset within one oscilloscope window setting"
-                if first else None)
-        first = False
-    # The held-lock drift, drawn OFF the data axes and with BOTH signs.
-    #
-    # It used to be one signed dashed segment lying on the data, over a band
-    # from the lower to the upper end of the interval, with a legend entry
-    # admitting that the sign is not established. Two things were wrong with
-    # that. A single downward line on the same axes as the measured offsets is
-    # read as a measured downward trend, whatever the legend says; and the
-    # magnitude has two sign branches, so what it licenses is a wedge that
-    # opens both ways. Both are fixed by moving it into its own inset, where
-    # it is visibly a scale drawing and not a series, and by drawing the
-    # wedge symmetric about zero.
-    # Placed in the one stretch of this panel that carries no data at any
-    # height: no epoch runs between about 7.5 and 17.5 h into the campaign.
-    # Its own axis labels then sit clear of the parent's tick labels too.
-    ins = ax.inset_axes([0.41, 0.22, 0.40, 0.30])
-    tmin = np.linspace(0.0, 180.0, 20)          # 3 h, in minutes
-    for sgn in (+1.0, -1.0):
-        ins.fill_between(tmin / 60.0, sgn * dlo * tmin, sgn * dhi * tmin,
-                         color="#D55E00", alpha=0.25, lw=0)
-        ins.plot(tmin / 60.0, sgn * drift * tmin, color="#D55E00", lw=1.4,
-                 ls="--")
-    ins.axhline(0.0, color="0.45", lw=0.7)
-    ins.set_xlim(0.0, 3.0)
-    ins.set_ylim(-dhi * 180.0 * 1.15, dhi * 180.0 * 1.15)
-    ins.set_xticks([0, 1, 2, 3])
-    ins.tick_params(labelsize=6.5, length=2)
-    ins.set_xlabel("time under a held lock (h)", fontsize=6.5, labelpad=1.5)
-    ins.set_ylabel("accumulated drift (MHz)", fontsize=6.5, labelpad=1.5)
-    ins.set_title(f"a held lock at {drift:.3f} MHz per minute,\nboth signs drawn",
-                  fontsize=6.5, color="#D55E00", pad=2.5)
-    ins.grid(alpha=0.2, lw=0.4)
-    for s in ins.spines.values():
-        s.set_color("#D55E00")
-        s.set_linewidth(0.8)
-    ins.set_facecolor("white")
-    ins.patch.set_alpha(0.95)
-    ax.set_xlabel("time into campaign (h)")
-    ax.set_ylabel("laser detuning (MHz)", fontsize=8.5)
-    ax.set_title("(b) line centre per oscilloscope window setting,\n"
-                 "reconstructed across the campaign",
+    # THE POWER SESSION'S OWN BLOCKS, which is the construction the record
+    # uses (PREREGISTRATION_RESULTS addendum on the window frame, DATA.md):
+    # contiguous runs of one (peak, power) condition, then the step between
+    # consecutive blocks. Grouping matters and is stated rather than assumed:
+    # this panel's absolute RMS values differ from the addendum's 145.2 and
+    # 6.3 ms because that addendum groups its 99 traces into 17 blocks and
+    # this groups them into 20, but the VARIANCE FRACTION both give is the
+    # same 99.8 per cent, and the fraction is the claim. A first version of
+    # this panel differenced display-epoch means across the whole campaign,
+    # which mixed two sessions and is a different quantity again.
+    import itertools as _it
+    P = sorted((x for x in rows if x["role"] == "p_sweep"
+                and x["peak_pos_ms"] and x["window_start_ms"]),
+               key=lambda x: float(x["t_epoch"]))
+    blocks = []
+    for _k, _g in _it.groupby(P, key=lambda x: (x["peak"], x["power_mW"])):
+        _g = list(_g)
+        blocks.append((np.mean([float(x["peak_pos_ms"]) for x in _g]),
+                       np.mean([float(x["window_start_ms"]) for x in _g])))
+    dpos = np.diff([b[0] for b in blocks])
+    dwin = np.diff([b[1] for b in blocks])
+    lim = 1.10 * max(np.abs(dwin).max(), np.abs(dpos).max())
+    ax.plot([-lim, lim], [-lim, lim], "-", color="0.6", lw=1.0,
+            label="identity: the position moved exactly\nas the window moved")
+    ax.plot(dwin, dpos, "o", ms=5.0, color="#009E73", mec="0.2", mew=0.5,
+            label=f"steps between the power sweep's\n{len(dpos)} condition blocks")
+    _resid = float(np.sqrt(np.mean((dpos - dwin) ** 2)))
+    _frac = 1.0 - _resid ** 2 / float(np.mean(dpos ** 2))
+    _knob = int(np.sum(np.abs(dwin) > 1e-9))
+    ax.text(0.035, 0.965,
+            "the centre record follows the window, not the atom:\n"
+            f"{100 * _frac:.1f}% of the between-block position variance\n"
+            f"is the window setting. {_knob} of the {len(dpos)} steps carry\n"
+            f"a knob move. The residual scatter is {_resid:.0f} ms.",
+            transform=ax.transAxes, fontsize=7.6, color="0.30", va="top")
+    ax.set_xlabel("window-setting move between blocks (ms, scope axis)")
+    ax.set_ylabel("peak-position move (ms)")
+    ax.set_title("(b) peak-position move against window-setting move,\n"
+                 "between consecutive power-sweep blocks",
                  fontsize=9)
-    # The opaque legend used to cut the tops off the very bars its first entry
-    # describes: the scan ramps reach the top of the autoscaled panel wherever
-    # there are data. The panel now carries a blank strip above the data for it
-    # to sit in, rather than the legend sitting on the data.
-    lo, hi = ax.get_ylim()
-    ax.set_ylim(lo, lo + (hi - lo) * 1.55)
-    ax.legend(fontsize=7, loc="upper right", framealpha=1.0, frameon=True)
+    ax.legend(fontsize=7, loc="lower right", framealpha=1.0, frameon=True)
+    ax.grid(alpha=0.25, lw=0.5)
 
-    # (c) the consequence ladder
+    # ---- (c) the consequence ladder, decluttered -------------------------
     ax = fig.add_subplot(gs[2])
     envelope_mhz_per_min = DRIFT_RATE_LASER_HZ_PER_MIN / 1e6  # rb5s6s.constants ENVELOPE
     ayachitula_mhz_per_min = 0.5e-3 / 50.0  # <0.5 kHz / 50 min (Ayachitula et al. 2024)
-    # Line lengths are the layout here. The three blocks sit side by side on a
-    # logarithmic axis and each is centred on its own rate, so a block wider
-    # than the space between its neighbour's rate and its own runs into that
-    # neighbour's words. The two left blocks used to do exactly that. Wrapped
-    # at about 40 and 52 characters they stand clear of each other.
+    drift = 0.016   # MHz/min, laser; audit addendum 5 (state-space, recovered clock)
+    # MARKERS CARRY THE SPACING, A LEGEND CARRIES THE TEXT. Two earlier
+    # layouts put multi-line prose beside each marker on the axis: centred, it
+    # left the axes at both ends; anchored inward, the left block grew into the
+    # middle one. Both were caught by looking. A legend cannot collide with
+    # anything, and what this panel has to show is that the three regimes sit
+    # five decades apart, which the markers do on their own.
     regimes = [
-        (envelope_mhz_per_min, "planning envelope adopted in 2025",
-         "any drift slower than this\nwas treated as usable"),
-        (drift, "2025 held lock, bounded not measured",
-         "line shapes are usable here but line centres\n"
-         "are not, so this regime yields upper bounds\n"
-         f"only. The on-axis light shift is below {s0:.2f} MHz,\n"
-         f"the laser contribution to the line width is\n"
-         f"below {sl:.1f} MHz, and the collisional coefficient is\n"
-         f"bounded above, at between {min(bvals):.2f} and {max(bvals):.2f} MHz\n"
-         r"per $10^{12}$ cm$^{-3}$"),
-        (ayachitula_mhz_per_min,
-         "a lock of this class exists on this\ntransition in the literature "
-         "(Ayachitula\n2024, a high-finesse cavity apparatus),\n"
-         "and is not demonstrated on this bench",
-         "line centres would become usable, and the\n"
-         "light shift, the self-shift and the collisional\n"
-         "coefficient measurable, the last at between\n"
-         "3 and 12 standard deviations, conditional\non reaching that lock class here"),
+        (envelope_mhz_per_min, "#B0B0B0",
+         "planning envelope adopted in 2025:\nany slower drift was treated as usable"),
+        (drift, "#0072B2",
+         "2025 held lock, the measured bound:\nline shapes usable, so the coefficients are\n"
+         f"upper bounds ($S_0<{s0:.2f}$ MHz, "
+         f"$\\sigma_\\mathrm{{laser}}<{sl:.1f}$ MHz,\n"
+         f"$\\beta$ between {min(bvals):.2f} and {max(bvals):.2f} MHz per "
+         "$10^{12}$ cm$^{-3}$)"),
+        (ayachitula_mhz_per_min, "#009E73",
+         "cavity-lock class, shown on this transition\nin the literature: "
+         "line centres become usable,\nso those coefficients turn into measurements"),
     ]
-    ys = [2, 1, 0]
-    for y, (rate, left, right) in zip(ys, regimes):
-        ax.plot([rate], [y], "o", ms=9, color="#0072B2")
-        # Centred, except for the point nearest the right spine (the envelope
-        # rate sits at 86% of the log axis), which centred a wide label into
-        # the spine: it cleared by 2 px on this machine's font metrics and did
-        # not on the CI runner's. Anchoring that one's right edge to the point
-        # gives it the open decade to its left instead of the closed edge to
-        # its right.
-        near_right_edge = rate > 1.0
-        ax.annotate(left, xy=(rate, y), xytext=(-4 if near_right_edge else 0, 12),
-                    textcoords="offset points",
-                    ha="right" if near_right_edge else "center", fontsize=7.5)
-        ax.annotate(right.replace("\\n", "\n"), xy=(rate, y), xytext=(0, -13),
-                    textcoords="offset points", ha="center", va="top", fontsize=7.5)
+    for rate, col, lab in regimes:
+        ax.plot([rate], [0.0], "o", ms=11, color=col, mec="0.25", mew=0.8,
+                zorder=3, label=lab)
+    ax.legend(fontsize=7.6, loc="upper center", frameon=True, framealpha=1.0,
+              handletextpad=0.8, labelspacing=0.9, borderpad=0.7)
     ax.set_xscale("log")
-    # The axis runs a decade further left than any point, so the block under
-    # the slowest regime has somewhere to sit: centred on its own rate it used
-    # to start outside the left spine.
-    ax.set_xlim(3e-7, 60)
-    ax.set_ylim(-2.4, 3.0)
+    ax.set_xlim(2e-6, 300.0)
+    # room above the markers for the legend, which sits over empty axis
+    ax.set_ylim(-0.35, 2.6)
     ax.set_yticks([])
     ax.set_xlabel("laser drift rate (MHz/min)")
     ax.set_title("(c) what each laser drift rate allows a measurement to claim",
                  fontsize=9)
     ax.grid(axis="y", visible=False)
-    _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (panel a) + "
-                 "results/laser_history.csv, results/ruler_blocks.csv,\n"
-                 "results/ruler_campaign.csv (panel b) + results/stark_joint.csv, "
-                 "results/beta_self_probe.csv, results/laser_epoch.csv (panel c). "
+    # Wrapped. As one line this ran 193 px past the right edge of the canvas
+    # and the guard reported it; the provenance is the same, the line breaks
+    # are the fix.
+    _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (panel a).\n"
+                 "results/laser_history.csv, power-sweep condition blocks "
+                 "(panel b).\n"
+                 "results/stark_joint.csv, results/beta_self_probe.csv, "
+                 "results/laser_epoch.csv (panel c).\n"
                  "Regenerate: python scripts/make_figures.py.", fontsize=5.9)
     _save(fig, "fig15_drift_story.png")
 

@@ -41,7 +41,15 @@ drive 5S₁/₂ → 6S₁/₂ through a virtual level that lies **below** the re
 and taking one photon from each beam is what cancels the first-order Doppler
 shift.
 The state is detected not directly but on the 795 nm arm of the 6S → 5P₁/₂ → 5S
-cascade, the 780 nm arm being suppressed by about 50 dB. The 5P fine-structure
+cascade, the 780 nm arm being suppressed by about 50 dB. **That arm is the
+minority one**, which is worth stating because the factor multiplies every
+absolute rate here: the 6S → 5P₃/₂ leg is the stronger of the two by an Einstein
+A ratio of 1.93, so 66 per cent of 6S decays leave by 1367 nm and then 780 nm,
+and the 795 nm the detector counts is the remaining 34 per cent. Since 5P is the
+lowest excited state, each first leg reaches the ground state with unit
+probability, so the same fraction labels both photons of an arm. The branching
+is drawn on every arrow of fig13 and computed there from the line data rather
+than quoted. The 5P fine-structure
 splitting is enlarged for legibility rather than drawn to scale. Right: the four
 hyperfine components measured, two per isotope, all F → F, labelled by
 uncalibrated wavemeter reading. Each is crossed once per sweep direction, so the
