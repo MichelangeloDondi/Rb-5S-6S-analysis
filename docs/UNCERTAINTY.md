@@ -198,6 +198,47 @@ than left to the producer.
   because the file reported a best fit outside the interval three rows below it.
   That is now a guard.
 
+### 4b. Reproducing a number is a question about an environment
+
+The committed CSVs are checked against a fresh run of their producers. That
+check had a flat tolerance until 2026-08-11, when raising the tested Python
+version pulled in numpy 2.5 and four of sixteen files stopped matching. numpy
+2.5 replaced the `np.convolve` implementation this whole lineshape model is
+built on, and a different algorithm rounds differently.
+
+**The committed digits were reproducible only near the numpy version that
+produced them.** They still matched on 2.0 to 2.4 and failed on both 1.26 and
+2.5. That is worth stating plainly rather than quietly widening a tolerance
+until it stops complaining.
+
+What the measurement showed is more reassuring than the failure suggested.
+Re-running all sixteen producers and recording **every** differing column, 2421
+moved at all and only six moved by more than 2 per cent. Those six are not
+scattered: they are the Gaussian and exponential widths of the three-component
+model form, and $\Delta\text{BIC}$. Both are quantities this record already refuses to
+quote. The widths are the degenerate split that
+[RESEARCH_DECISIONS.md](RESEARCH_DECISIONS.md) section 1 and
+[fig10](../figures/fig10_degeneracy_vs_observable.png) exist to argue is not
+physics, and $\Delta\text{BIC}$ is a difference of two BICs of order $10^4$, where
+cancellation multiplies a $10^{-15}$ perturbation by $10^4$. Their
+well-conditioned siblings, the total width and $\chi^2$, move by under 0.5 per
+cent in the same runs, and every conclusion is unchanged.
+
+**So the arithmetic is unstable exactly where the physics was already declared
+unidentifiable**, and stable everywhere a number is quoted. The guard now
+carries per-column tolerances that say which class each quantity is in and why,
+rather than one constant that has to be loose enough for the worst case and is
+therefore blind to the rest.
+
+Two narrower lessons came out of the same pass. Whether a value counts as zero
+is a question about its **column**, not an absolute threshold: the comb-tooth
+amplitudes run from $10^{-37}$ to 0.3 and the ones below $10^{-10}$ are teeth
+that are absent, whose remaining digits are optimizer noise, while the
+blackbody channel rates are genuinely of order $10^{-12}$ and must not be
+rounded away. And a number stored inside a text field cannot be compared as a
+number: one file embedded its own effective sample size in a unit string, so a
+count that moved by 2 in 13853 read as a changed label.
+
 ## 5. What is mechanised
 
 Uncertainty handling is guarded, not merely documented.
