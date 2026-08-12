@@ -4,19 +4,29 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rb5s6s"
-version = "3.6.0"
+version = "3.7.0"
 description = "Physics-based forward-model analysis of the Rb 5S->6S two-photon lineshape (2025 OIST archival campaign)"
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 authors = [
     { name = "Michelangelo Dondi" },
 ]
 dependencies = [
-    "numpy>=1.24",
-    "scipy>=1.10",
-    "pandas>=2.0",
-    "matplotlib>=3.7",
+    # THE FLOOR IS DERIVED, NOT CHOSEN (2026-08-13). numpy 2.5 replaced
+    # np.convolve and is ten times faster on the 9000-point convolution
+    # this lineshape model is built from, which is why it is the floor.
+    # Everything else follows: numpy 2.5.2 declares requires-python
+    # >=3.12, and scipy caps numpy from above (1.15 declares numpy<2.5,
+    # excluding 2.5 exactly), so numpy>=2.5 forces scipy>=1.16 and
+    # Python >=3.12. pandas and matplotlib are at the oldest versions
+    # built against the numpy 2 ABI. Every floor here is the version the
+    # minimum CI leg actually pins and runs, so the manifest promises
+    # exactly what is exercised.
+    "numpy>=2.5",
+    "scipy>=1.16",
+    "pandas>=2.2.3",
+    "matplotlib>=3.9.4",
 ]
 
 keywords = [
@@ -32,6 +42,9 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Physics",
 ]
 
