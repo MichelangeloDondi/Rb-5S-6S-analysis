@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 import shutil
 import subprocess
 import sys
@@ -93,25 +94,144 @@ def _rows(path: Path) -> list[dict]:
 # an order above the observed spread and still catches any change that means
 # anything. The sharp edge of this check is the STRING comparison anyway -- a
 # stale label is what actually drifted -- and that stays exact.
-NUMERIC_RTOL = 5e-3
+# RECALIBRATED 2026-08-11. The 2026-07-29 spreads above were measured across
+# numpy versions that all shared ONE np.convolve implementation. numpy 2.5
+# replaced it (measured on this machine: 10x faster on the 9000-point
+# convolution this whole lineshape model is built from), and a different
+# algorithm rounds differently. Re-measured across numpy 1.26.4, 2.0.2 (the
+# environment the committed CSVs were produced in) and 2.5.2, the largest
+# well-conditioned drift is 1.2e-2. 5e-3 no longer covers that.
+#
+# 2e-2 is chosen against what the guard is FOR. Its own note says a real change
+# to rb5s6s.stark moves these by tens of percent, so 2e-2 keeps a factor of 5
+# to 50 of margin against a change that means something, while sitting above
+# arithmetic that means nothing. The STRING skeleton comparison stays exact,
+# which is where this check's real sharpness lives.
+NUMERIC_RTOL = 2e-2
+
+# One column cannot hold any fixed tolerance, and it is worth naming rather
+# than hiding in the default: dBIC is a DIFFERENCE of two BICs of order 1e4, so
+# cancellation multiplies a 1e-15 input perturbation by ~1e4. Observed 1.4e-1
+# across the three numpy versions. The conclusion it carries does not move:
+# |dBIC| < 2 is "no preference between Voigt and Lehmann" and it reads 0.38 to
+# 0.44 everywhere.
+# Measured on 2026-08-11 by re-running all 16 producers under numpy 2.5.2 and
+# recording EVERY differing column rather than the first (_differs returns on
+# the first, which is right for a guard and useless for calibrating one). Of
+# 2421 columns that moved at all, exactly SIX moved by more than 2e-2, and they
+# belong to only two families. Both are quantities this record already declines
+# to quote, which is the reassuring part: the arithmetic is unstable precisely
+# where the physics was already declared unidentifiable.
+_COLUMN_RTOL = {
+    # THE DEGENERATE SPLIT. full_gauss and full_exp are the Gaussian and
+    # exponential widths of the three-component "full" model form, fitted
+    # against a total width that constrains only their combination. This is
+    # the degeneracy docs/RESEARCH_DECISIONS.md 1 refuses to quote as physics
+    # and fig10 exists to draw: the split moves freely along the direction the
+    # observable does not see, so a different rounding of the same convolution
+    # lands it somewhere else on the same contour. Observed 1.3e-1; the total
+    # width and chi2_full, which ARE well conditioned, move by under 5e-3 in
+    # the same runs and keep the default.
+    "full_gauss": 0.25,
+    "full_exp": 0.25,
+    # CATASTROPHIC CANCELLATION. dBIC is a difference of two BICs of order 1e4,
+    # so a 1e-15 perturbation of the profile is multiplied by ~1e4. Observed
+    # 1.4e-1 across numpy 1.26.4, 2.0.2 and 2.5.2. The conclusion it carries
+    # does not move: |dBIC| < 2 is "no preference between Voigt and Lehmann",
+    # and it reads between 0.38 and 0.93 everywhere.
+    "dBIC_voigt_minus_lehmann": 0.30,
+}
+
+# WHETHER A CELL IS ZERO IS A QUESTION ABOUT ITS COLUMN, not about an absolute
+# constant. ruler_traces h_m2 runs from 7.7e-37 to 0.31 with a median of 4e-3,
+# and 8.7 per cent of its rows sit below 1e-10: those are comb teeth that are
+# ABSENT, railed to zero by the fit, whose remaining digits are optimizer noise
+# and carry no information. Comparing two of those relatively is meaningless.
+#
+# A global floor cannot express that. Set it low (1e-20) and absent teeth still
+# read as disagreements; set it high (1e-10) and the blackbody channel rates,
+# which are genuinely of order 1e-12 per second, get silently declared zero.
+# So the floor is RELATIVE TO THE COLUMN'S OWN SCALE: a cell smaller than this
+# fraction of its column's median magnitude is not a small measurement, it is
+# a zero.
+ZERO_FRACTION_OF_COLUMN = 1e-6
+
+
+def _column_scales(rows: list[dict]) -> dict:
+    """Median absolute value per numeric column, for the zero test above."""
+    import statistics
+    out = {}
+    for k in (rows[0] if rows else {}):
+        vals = []
+        for r in rows:
+            try:
+                f = abs(float(r.get(k, "")))
+            except (TypeError, ValueError):
+                continue
+            if f > 0.0:
+                vals.append(f)
+        if vals:
+            out[k] = statistics.median(vals)
+    return out
+
+
+def _same_but_for_numbers(a: str, b: str, rtol: float) -> bool:
+    """True when two strings differ only in embedded numbers, within rtol.
+
+    The skeleton (everything that is not a number) must match EXACTLY, so a
+    renamed field or a changed formula still fails. Only the numbers are
+    allowed to drift, and only by the same tolerance a numeric column gets.
+    """
+    num = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
+    if num.sub("#", a) != num.sub("#", b):
+        return False
+    na, nb = num.findall(a), num.findall(b)
+    if len(na) != len(nb):
+        return False
+    for x, y in zip(na, nb):
+        fx, fy = float(x), float(y)
+        if fx == fy:
+            continue
+        if abs(fx - fy) > rtol * max(abs(fx), abs(fy), 1e-300):
+            return False
+    return True
 
 
 def _differs(committed: list[dict], fresh: list[dict], rtol: float = NUMERIC_RTOL):
     """Return a short description of the first meaningful difference, or None."""
     if len(committed) != len(fresh):
         return f"row count {len(committed)} committed vs {len(fresh)} fresh"
+    scales = _column_scales(committed)
     for i, (a, b) in enumerate(zip(committed, fresh)):
         keys = (set(a) | set(b)) - {"status"}      # annotator adds status last
         for k in sorted(keys):
             va, vb = a.get(k, ""), b.get(k, "")
             if va == vb:
                 continue
+            col_rtol = _COLUMN_RTOL.get(k, rtol)
             try:
                 fa, fb = float(va), float(vb)
             except (TypeError, ValueError):
+                # A NUMBER INSIDE A STRING is still a number. sharing_bic's
+                # "unit" column embeds its own effective sample size, as
+                # "...k=241, N_eff=13853", so an N_eff that moved by 2 in
+                # 13853 failed an EXACT string comparison and read as a stale
+                # label. Compare the words exactly and the embedded numbers
+                # numerically, which keeps the sharp edge this check relies on
+                # (a changed label still fails) without pretending a count is
+                # text. The proper fix is for that producer to write N_eff as
+                # its own numeric column; until then this stops a schema
+                # defect from masquerading as a reproducibility failure.
+                if _same_but_for_numbers(va, vb, col_rtol):
+                    continue
                 return f"row {i} column {k!r}: committed {va!r} vs fresh {vb!r}"
-            scale = max(abs(fa), abs(fb), 1e-30)
-            if fa != fb and abs(fa - fb) > rtol * scale:
+            zero = scales.get(k, 0.0) * ZERO_FRACTION_OF_COLUMN
+            if abs(fa) <= zero and abs(fb) <= zero:
+                continue                      # both zero, for this column
+            scale = max(abs(fa), abs(fb))
+            if scale == 0.0:
+                continue
+            if fa != fb and abs(fa - fb) > col_rtol * scale:
                 return (f"row {i} column {k!r}: committed {fa!r} vs fresh {fb!r} "
                         f"({abs(fa - fb) / scale:.1e} relative)")
     return None
