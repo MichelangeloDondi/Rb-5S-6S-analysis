@@ -4,6 +4,12 @@
 [![release](https://img.shields.io/github/v/release/MichelangeloDondi/Rb-5S-6S-analysis)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+> **New here? [START_HERE.md](START_HERE.md)** is the short front door: a
+> working setup in five minutes, then a reading order that depends on why you
+> came. This page is the full account. If the vocabulary is unfamiliar,
+> [docs/GLOSSARY.md](docs/GLOSSARY.md) explains the measurement in six
+> sentences and then defines every term and symbol used anywhere here.
+
 A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂**
 two-photon transition at **993 nm**, from Doppler-free spectroscopy in a hot
 vapour cell. The data were taken at OIST in 2025. A fixed-lock follow-up

@@ -4,8 +4,11 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-# no trailing slash, so a symlinked .venv is matched too
-.venv
+# no trailing slash, so a symlinked .venv is matched too, and a glob so a
+# RENAMED venv is matched as well: on 2026-08-13 the archive's dev venv was
+# renamed .venv-py39 during the Python migration and `git add -A` staged
+# 14233 files of it, because the pattern was an exact name.
+.venv*
 
 # macOS
 .DS_Store
