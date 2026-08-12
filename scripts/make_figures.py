@@ -256,6 +256,48 @@ def fig_power_sweep():
                     color=PEAK_COLOR[peak], label=PEAK_LABEL[peak], ms=4, lw=1.3, capsize=2)
         a2.errorbar(P, [x[3] for x in d], yerr=[x[4] for x in d], fmt="o",
                     color=PEAK_COLOR[peak], ms=4, capsize=2)
+    # THE MODEL'S OWN PREDICTION, drawn rather than only asserted (2026-08-12,
+    # owner reading of the outbound note built from this figure: the left panel
+    # carried data and a caption claiming the ramp law, with nothing of the law
+    # on the canvas). Two objects, because the fit and the bound are different
+    # claims. The fitted model has S0 railed at ZERO (S0_225mW_fit in the
+    # committed CSV), so its prediction is a FLAT line at each peak's
+    # weighted-mean width: that is the fit, offset fitted, testing only the
+    # shape exactly as panel (b)'s slope-2 reference tests only the exponent.
+    # The grey envelope above the pooled mean is the ramp increment at the
+    # committed 95 per cent PROFILE bound on S0: the largest ramp the data
+    # allow, not an expectation. Both computed at draw time from rb5s6s.stark
+    # and the committed CSV, never typed (protocol 12.9).
+    #
+    # ROW DISCIPLINE, learned here: a first version selected the quantity
+    # "S0_225mW_ub95", which is the REPLACED Wald diagnostic at 2.205 MHz and
+    # says "quote the profile row instead" in its own unit field. The quoted
+    # construction is S0_225mW_ub95_profile, 0.632 MHz, status BOUND. Filter
+    # on the status column, which exists for exactly this.
+    from rb5s6s import stark as _stark
+    _s0_ub = next(float(x["value"]) for x in _rows("stark_sweep")
+                  if x["quantity"] == "S0_225mW_ub95_profile"
+                  and x["key"] == "shared" and x["status"].lower() == "bound")
+    _gc, _sl, _tr = 0.60, 1.50, 0.96
+    _nu = np.arange(-45.0, 45.0, 0.01)
+    _pgrid = np.linspace(20.0, 230.0, 22)
+    _base = _stark._fwhm_of(_gc, _sl, _tr, 0.0, _nu)
+    _inc = np.array([_stark._fwhm_of(_gc, _sl, _tr, _s0_ub * p / 225.0, _nu)
+                     for p in _pgrid]) - _base
+    _wbars = []
+    for i, peak in enumerate(("4121", "4154", "4192", "4207")):
+        d = sorted(by[peak])
+        w = np.array([x[1] for x in d]); e = np.array([x[2] for x in d])
+        wbar = float(np.sum(w / e ** 2) / np.sum(1.0 / e ** 2))
+        _wbars.append(wbar)
+        a1.plot([_pgrid[0], _pgrid[-1]], [wbar, wbar], "--",
+                color=PEAK_COLOR[peak], lw=1.0,
+                label="fitted model, flat because $S_0$\n"
+                      "rails at zero (offset fitted)" if i == 0 else None)
+    _wm = float(np.mean(_wbars))
+    a1.fill_between(_pgrid, _wm, _wm + _inc, color="0.55", alpha=0.25, lw=0,
+                    label="ramp increment allowed at the\n"
+                          r"95% bound on $S_0$ (over the mean)")
     a1.set_xlabel("power (mW)")
     # Estimator named on the axis: this panel's widths are the raw
     # half-maximum widths of results/power_sweep.csv, averaged over repeats.
