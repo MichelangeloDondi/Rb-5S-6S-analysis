@@ -557,10 +557,112 @@ def ub95(k, c):
     return float(np.interp(2.706, [c[j - 1], c[j]], [k[j - 1], k[j]]))
 
 
+# ------------------------------------------------------------- parallel ----
+# The kappa rows of profile2d are independent BY CONSTRUCTION: each row does
+# q = q0.copy() before its warm-started beta sweep, so no row reads another's
+# state. The forward/backward chains are NOT parallelisable, because chain()
+# deliberately carries q across kappas; leave them alone. Measured on rows
+# sized like production (2026-08-13): x3.58 on 8 workers, x4.66 on 10, with
+# results bit-identical to the sequential path.
+#
+# DEFAULT OFF. The committed CSVs were produced by the sequential path, and
+# this producer writes the record, so the parallel path stays opt-in
+# (RB5S6S_WORKERS=N) until a full run has reproduced
+# results/global_archive_fit.csv to the printed digit. Flip the default only
+# after that run, and record it in the CSV's own status notes.
+#
+# macOS spawns workers, so the worker rebuilds the residual from the loaders
+# once per worker (closures over the trace arrays do not survive pickling),
+# and each task then carries only (kappa, betas, q0, nfev).
+_W: dict = {}
+
+
+def _load_everything():
+    """The exact trace assembly main() performs, factored for the workers.
+
+    Any change to main()'s assembly MUST land here too, or the parallel path
+    fits a different dataset from the sequential one. The smoke test in
+    scripts/_m25_parallel_smoke.py exists to catch exactly that: it compares
+    the two paths on a small grid and fails on any difference.
+    """
+    camp = load_campaign_all()
+    reh, _ = load_rehearsal()
+    _, prates = load_t_rates()
+    pil = load_pilot(prates["4192"][0])
+    rul = load_rulers_t() if USE_RULERS else []
+    for t in reh:
+        t["T"] = 130.0
+        t["sl"] = "reh"
+    for t in pil:
+        t["T"] = 130.0
+        t["sl"] = "pil"
+    traces = camp + reh + pil + rul
+    p0, lo, hi, offsets = build(traces)
+    resid = make_resid(traces, offsets)
+    Sf = sparsity(traces, offsets, len(p0))[:, 1:]
+    return resid, Sf, lo, hi
+
+
+def _init_worker():
+    import os as _os
+    # One BLAS thread per worker. Measured a non-issue at this problem size
+    # (x3.58 unpinned against x3.60 pinned), kept because it is free and it
+    # protects a future larger grid from oversubscription.
+    for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
+              "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        _os.environ.setdefault(v, "1")
+    _W["resid"], _W["Sf"], _W["lo"], _W["hi"] = _load_everything()
+
+
+def _p2d_row(args):
+    """One kappa row of the 2D grid: the warm-started beta sweep, verbatim."""
+    kap, betas, q0, nfev = args
+    resid, Sf, lo, hi = _W["resid"], _W["Sf"], _W["lo"], _W["hi"]
+    q = np.asarray(q0, float).copy()
+    out = {}
+    for b in betas:
+        def fn(z, _k=kap, _b=b):
+            z = z.copy()
+            z[I_BETA - 1] = _b
+            return resid(np.concatenate([[0.0], z]), kappa=_k)
+        sol = least_squares(fn, q, bounds=(lo[1:], hi[1:]), jac_sparsity=Sf,
+                            max_nfev=nfev, x_scale="jac", ftol=1e-11, xtol=1e-11)
+        q = sol.x.copy()
+        r = fn(q)
+        out[(kap, b)] = float(np.sum(r * r))
+    print(f"    [2Dp] kappa={kap:5.2f} done", flush=True)
+    return out
+
+
+def n_workers() -> int:
+    """0 means sequential, which is the default and the path of record."""
+    import os as _os
+    try:
+        return max(0, int(_os.environ.get("RB5S6S_WORKERS", "0")))
+    except ValueError:
+        return 0
+
+
 def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
     """chi2 on a (kappa, beta) grid, warm-started along each row. Gives the
     JOINT confidence region instead of a bound on one coefficient with the
-    other profiled away silently."""
+    other profiled away silently.
+
+    With RB5S6S_WORKERS=N set, the kappa rows run in N processes; each row's
+    beta sweep stays sequential inside its worker because the warm start is
+    what makes it converge quickly. The two paths are interchangeable by
+    construction and the smoke test asserts it."""
+    nw = n_workers()
+    if nw > 0:
+        import multiprocessing as _mp
+        jobs = [(kap, tuple(betas), np.asarray(q0, float).copy(), 800)
+                for kap in kappas]
+        with _mp.get_context("spawn").Pool(nw, initializer=_init_worker) as pool:
+            rows = pool.map(_p2d_row, jobs)
+        out = {}
+        for r in rows:
+            out.update(r)
+        return out
     out = {}
     for kap in kappas:
         q = q0.copy()

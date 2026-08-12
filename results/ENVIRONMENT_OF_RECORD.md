@@ -67,6 +67,20 @@ constant. The reasoning, including the two mistakes that produced it, is in
 that file's header and in
 [`docs/UNCERTAINTY.md`](../docs/UNCERTAINTY.md) section 4b.
 
+## When this file stops being necessary
+
+The two environments converge on their own at the next full run of the heavy
+producers. That run is already scheduled for a different reason: the archive
+fit is gaining a parallel path over its kappa grid, and the acceptance test
+for that path is a full run reproducing `global_archive_fit.csv` to the
+printed digit. It will execute on the supported floor, so if it reproduces
+within the tolerances the guard states, its output is committed and the
+environment of record becomes the floor. Nothing needs migrating separately.
+
+Until then the versions above are a fact about how the committed files were
+produced, and this file records it rather than leaving a reader to discover
+it from a diff.
+
 ## What this file is not
 
 It is not a claim that the analysis requires these versions. The code runs, and

@@ -116,8 +116,11 @@ They are `run_qc.py`, `run_noise.py`, `run_ruler.py`,
 `make_qc_gallery.py` and `annotate_manifest_qc.py`, which is most of
 `run_all.sh`.
 
-Five write nothing at all and exist so a published number can be re-derived
-rather than taken. `run_saturation_probe.py` reproduces the light-shift bound
+Six write nothing at all and exist so a published number can be re-derived
+rather than taken. `_m25_parallel_smoke.py` is the acceptance check for
+`RB5S6S_WORKERS`: it runs a small grid of the M25 profile through both the
+sequential and the parallel path and demands that every chi-squared match
+exactly, since the two paths have no licence to differ. `run_saturation_probe.py` reproduces the light-shift bound
 with the saturation companion in the model, in four stages, the last of which
 needs the two outside trees. `run_geometry_design.py` computes the two
 geometry designs of `docs/notes/running_wave_and_waist_design.md`, the
