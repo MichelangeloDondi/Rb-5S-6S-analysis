@@ -1,17 +1,30 @@
 # CI: the full pytest battery.
 #
-# This repository is PUBLIC, so GitHub Actions minutes are free here and the
-# full battery runs on EVERY push. That is deliberate: the private tree the
-# ports come from is billed per minute and has run on manual dispatch alone
-# since 2026-07-30, so this repo is the reference green check for the slow
-# closure tests.
+# This repository is PUBLIC, so GitHub Actions minutes are free here. The
+# private tree the ports come from is billed per minute and has run on manual
+# dispatch alone since 2026-07-30, so this repo is the reference green check
+# for the slow closure tests.
 #
-# It did not start out that way. The cost-gated workflow was copied here
+# WHAT RUNS WHEN (owner instruction, 2026-08-12). The full two-leg battery
+# runs on TAGS, pull requests and manual dispatch: it is the RELEASE gate.
+# An ordinary push gets lint plus the fast suite, about three minutes.
+#
+# The reason is WALL CLOCK, not minutes, and the distinction matters because
+# the previous note in this position got it wrong in the other direction. The
+# full matrix measured 46 to 60 minutes across its last five runs, and the
+# release sequence blocks on it. Minutes are free here; an hour of waiting is
+# not. What did NOT change is the real gate: scripts/ci_gate.sh runs locally,
+# unpiped, on the exact tree being pushed, every time. The per-push CI was
+# always a redundancy check on top of that, never the primary gate, which is
+# why narrowing it is safe.
+#
+# A PROMISE THIS FILE ONCE BROKE ABOUT ITSELF, kept here because the failure
+# mode outlives the policy: the cost-gated workflow was copied from the archive
 # verbatim along with its cost note, which left THIS repo skipping --runslow on
-# push while its own comment claimed the public mirror ran it on every push --
-# a promise the file broke about itself. Found by a skip audit, 2026-07-29. If
-# the gates below ever grow an `if:` on the matrix job again, check that the
-# claim above is still true.
+# push while its own comment claimed the mirror ran it on every push. Found by
+# a skip audit, 2026-07-29. The matrix job now carries an `if:` again, by
+# intent, and the header above was rewritten in the same commit to say so.
+# Whoever changes the gates next: change the words in the same edit.
 #
 # THREE jobs, not one (fix, 2026-07-11): the original single
 # latest-deps job silently installed numpy 2.x while pyproject declared
@@ -36,6 +49,7 @@ name: tests
 on:
   push:
     branches: [main]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -57,10 +71,25 @@ jobs:
       - run: pip install ruff
       - run: ruff check rb5s6s scripts tests
 
-  # Every push gets this instead of the matrix: the fast suite on one
-  # interpreter, ~2 minutes. The slow closures and the numpy-floor job run on
-  # tags and on demand.
+  # Every ordinary push gets this instead of the matrix: the fast suite on one
+  # interpreter, about two minutes, enough to catch a break within a minute of
+  # a push. The slow closures and the numpy-floor leg run on tags and on demand.
+  fast:
+    if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: pytest -q          # fast suite only; --runslow runs on tags
+
+  # The release gate: tags, pull requests and manual dispatch only.
   pytest:
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
