@@ -178,6 +178,7 @@ def fig_width_vs_density():
     rows = _rows("linefit_conditions")
     fig, ax = plt.subplots(figsize=(7.8, 5.3))
     N130 = density_units(130.0)
+    _series = {}
     for peak in ("4121", "4154", "4192", "4207"):
         pts, p130 = [], []
         for r in rows:
@@ -208,6 +209,24 @@ def fig_width_vs_density():
         # reads the segment slopes as rates. Colour carries the series.
         ax.errorbar(N, W, yerr=We, fmt="o", color=PEAK_COLOR[peak],
                     label=PEAK_LABEL[peak], ms=5, capsize=2, lw=1.3, zorder=3)
+        _series[peak] = (np.array(N), np.array(W), np.array(We))
+    # THE MODEL THE RECORD FITS, drawn over the data it was fitted to
+    # (2026-08-12, owner audit: this figure showed data with no model on it).
+    # One shared collisional slope with a floor per line is the construction
+    # the headline bound comes from (results/beta_self_probe.csv, the pooled
+    # row), so that is the line to draw: slope from the CSV, floor re-anchored
+    # per line at draw time, testing the slope claim only, exactly as fig2's
+    # flat lines test only the shape.
+    _bpool = next(float(r["beta_eff"]) for r in _rows("beta_self_probe")
+                  if r["peak"] == "pooled_slope")
+    _ngrid = np.linspace(0.4, 33.0, 60)
+    for _i, (_pk, (_N, _W, _We)) in enumerate(sorted(_series.items())):
+        _off = float(np.sum((_W - _bpool * _N) / _We ** 2)
+                     / np.sum(1.0 / _We ** 2))
+        ax.plot(_ngrid, _off + _bpool * _ngrid, "--", color=PEAK_COLOR[_pk],
+                lw=1.0, zorder=2,
+                label="the pooled fit behind the bound: one\n"
+                      "shared slope, floor per line" if _i == 0 else None)
     ax.set_xscale("log")
     ax.set_ylim(4.36, 5.95)
     ax.set_xticks([density_units(T) for T in (70.0, 90.0, 110.0, 130.0)])
@@ -238,7 +257,9 @@ def fig_power_sweep():
     The observed FWHM spread (3-8%) EXCEEDS the <=2% the ramp law predicts,
     so the title must not present the prediction as the observation -- it is
     between-block scatter, and no peak keeps a significant slope once that
-    over-dispersion is absorbed (worst 1.7 sigma). Titling this "flat" read
+    over-dispersion is absorbed. The panel computes and prints both numbers
+    at draw time (the spread and the worst slope significance), so this
+    docstring carries no second copy of either. Titling this "flat" read
     as a claim the plotted points do not support."""
     rows = _rows("power_sweep")
     by = defaultdict(list)
@@ -284,20 +305,63 @@ def fig_power_sweep():
     _base = _stark._fwhm_of(_gc, _sl, _tr, 0.0, _nu)
     _inc = np.array([_stark._fwhm_of(_gc, _sl, _tr, _s0_ub * p / 225.0, _nu)
                      for p in _pgrid]) - _base
-    _wbars = []
-    for i, peak in enumerate(("4121", "4154", "4192", "4207")):
+    # THE WANDER IS BETWEEN-BLOCK SCATTER, AND THE PANEL NOW SAYS SO
+    # (2026-08-12, owner reading: the points move by more than their bars, so
+    # the flat model looked contradicted). The bars are repeat scatter within
+    # a block; each power is its own block, re-centred by hand after lock
+    # dropouts, and that between-block motion is not in the bars. Two objects
+    # carry the adjudication on the canvas rather than in a docstring: a band
+    # of the pooled fractional between-block scatter around each flat line,
+    # and the worst per-peak slope significance once that over-dispersion is
+    # absorbed, computed here at draw time.
+    # Both numbers on the canvas are the LEDGER'S OWN metrics (RESULTS C3a),
+    # recomputed here at draw time rather than restated: the observed spread
+    # is each peak's max-minus-min over the five power blocks as a fraction of
+    # its mean, quoted as the range across peaks, and the slope test inflates
+    # the slope error by the flat model's own over-dispersion (the PDG scale
+    # factor, the record's treatment elsewhere), which is what "absorbed"
+    # means. A first version computed a pooled RMS and a line-model inflation
+    # instead, which gave 1.9 per cent and 2.5 sigma beside a ledger that says
+    # 3 to 8 and 1.7: not wrong, just DIFFERENT metrics wearing the same
+    # words, which is the drift the canonical-number rule exists to stop.
+    _wbars, _spreads, _tworst, _rms_p = [], [], 0.0, []
+    for peak in ("4121", "4154", "4192", "4207"):
         d = sorted(by[peak])
+        Pv = np.array([x[0] for x in d], float)
         w = np.array([x[1] for x in d]); e = np.array([x[2] for x in d])
-        wbar = float(np.sum(w / e ** 2) / np.sum(1.0 / e ** 2))
+        Wt = 1.0 / e ** 2
+        wbar = float(np.sum(w * Wt) / np.sum(Wt))
         _wbars.append(wbar)
+        _spreads.append((w.max() - w.min()) / wbar)
+        _rms_p.append(float(np.sqrt(np.mean((w - wbar) ** 2))))
+        chi2r_flat = float(np.sum(Wt * (w - wbar) ** 2) / (w.size - 1))
+        xm = np.sum(Wt * Pv) / np.sum(Wt); ym = np.sum(Wt * w) / np.sum(Wt)
+        bslope = float(np.sum(Wt * (Pv - xm) * (w - ym))
+                       / np.sum(Wt * (Pv - xm) ** 2))
+        sb = float(np.sqrt(1.0 / np.sum(Wt * (Pv - xm) ** 2)))
+        _tworst = max(_tworst, abs(bslope) / (sb * np.sqrt(max(chi2r_flat, 1.0))))
+    for i, (peak, wbar, rms) in enumerate(zip(("4121", "4154", "4192", "4207"),
+                                              _wbars, _rms_p)):
         a1.plot([_pgrid[0], _pgrid[-1]], [wbar, wbar], "--",
                 color=PEAK_COLOR[peak], lw=1.0,
                 label="fitted model, flat because $S_0$\n"
                       "rails at zero (offset fitted)" if i == 0 else None)
+        a1.fill_between(_pgrid, wbar - rms, wbar + rms,
+                        color=PEAK_COLOR[peak], alpha=0.08, lw=0,
+                        label="between-block scatter, the part\n"
+                              "the per-point bars do not carry"
+                        if i == 0 else None)
     _wm = float(np.mean(_wbars))
     a1.fill_between(_pgrid, _wm, _wm + _inc, color="0.55", alpha=0.25, lw=0,
                     label="ramp increment allowed at the\n"
                           r"95% bound on $S_0$ (over the mean)")
+    a1.text(0.03, 0.97,
+            f"observed spread {100 * min(_spreads):.0f}\u2013"
+            f"{100 * max(_spreads):.0f}% across the five blocks.\n"
+            "worst per-peak slope, with that\n"
+            f"over-dispersion absorbed: {_tworst:.1f}$\\sigma$",
+            transform=a1.transAxes, fontsize=7.4, color="0.30", va="top")
+    a1.legend(fontsize=8, loc="lower right")
     a1.set_xlabel("power (mW)")
     # Estimator named on the axis: this panel's widths are the raw
     # half-maximum widths of results/power_sweep.csv, averaged over repeats.
@@ -306,7 +370,6 @@ def fig_power_sweep():
     # unlabelled "FWHM" on both invites the reader to compare them directly.
     a1.set_ylabel("measured FWHM (MHz)")
     a1.set_title("(a) measured FWHM against drive power", fontsize=9)
-    a1.legend(fontsize=8)
     # amplitude log-log: a slope-2 REFERENCE anchored to each peak's own data,
     # so the guide tracks the points instead of floating beside them. The slope
     # is held at 2 and only the offset is fitted, so the line cannot test the
@@ -1114,6 +1177,24 @@ def fig_degeneracy_vs_observable():
         # other into a trend the panel's own title says is not there.
         ax2.errorbar(P[m][o], tw[m][o], yerr=twe[m][o], fmt="o", ms=4,
                      lw=1.0, capsize=2, color=PEAK_COLOR[pk], label=f"993.{pk} nm")
+    # The same flat-model overlay and between-block band fig2's left panel
+    # carries (2026-08-12 audit: this was the last data panel with no model on
+    # it). Same construction, this estimator's own numbers: flat line at each
+    # peak's weighted mean, band at that peak's RMS about it.
+    _pg = np.array([20.0, 230.0])
+    for _i, _pk in enumerate(PEAK_COLOR):
+        _m = [i for i, p in enumerate(peaks) if p == _pk]
+        if not _m:
+            continue
+        _w = tw[_m]; _e = twe[_m]
+        _wt = 1.0 / _e ** 2
+        _wb = float(np.sum(_w * _wt) / np.sum(_wt))
+        _rm = float(np.sqrt(np.mean((_w - _wb) ** 2)))
+        ax2.plot(_pg, [_wb, _wb], "--", color=PEAK_COLOR[_pk], lw=0.9,
+                 label="flat fitted model, offset fitted" if _i == 0 else None)
+        ax2.fill_between(_pg, _wb - _rm, _wb + _rm, color=PEAK_COLOR[_pk],
+                         alpha=0.08, lw=0,
+                         label="between-block scatter" if _i == 0 else None)
     ax2.set_xlabel("power (mW)")
     # Estimator named: this is the fitted total width of the joint
     # per-condition fit, which runs above fig2's raw half-maximum widths on
