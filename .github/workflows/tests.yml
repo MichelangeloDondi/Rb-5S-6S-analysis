@@ -65,12 +65,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # TWO legs, not three (2026-08-11). The old matrix ran 3.9 twice and
+        # 3.11 once, which spent two thirds of its time on an interpreter that
+        # reached end of life in October 2025 and whose 'latest' leg was nearly
+        # a duplicate of the maintainer's own machine (3.9.6). What each leg is
+        # FOR, so a future change does not collapse them by accident:
+        #   minimum -- the declared floor, and the only check that a new
+        #              annotation or stdlib call has not silently raised it.
+        #   latest  -- a current interpreter with current dependencies, which
+        #              is deliberately UNLIKE the development machine. This is
+        #              the leg that caught every real defect on 2026-08-11:
+        #              a matplotlib API absent on one canvas class, and two
+        #              figures whose labels cleared a guard locally by two
+        #              pixels and not under a different font stack.
+        #
+        # The ceiling is PINNED, not floated to "3". scipy lags the newest
+        # interpreter: at the time of writing numpy already ships cp315 wheels
+        # and scipy does not, so a floating ceiling that resolved to 3.15 would
+        # find no scipy wheel and fall back to a source build, which fails
+        # slowly and with no code change to blame it on. Bump this by hand when
+        # the whole dependency set has wheels for the next version.
+        #
+        # 3.14 rather than 3.13 because the maintainer's machine has 3.14, so
+        # this leg can be reproduced locally when it disagrees with the gate.
         include:
-          - python-version: "3.9"
-            deps: minimum   # the declared floor: numpy 1.24 / scipy 1.10
-          - python-version: "3.9"
-            deps: latest
           - python-version: "3.11"
+            deps: minimum   # the declared floor: numpy 1.24 / scipy 1.10
+          - python-version: "3.14"
             deps: latest
     steps:
       - uses: actions/checkout@v5
@@ -83,9 +104,9 @@ jobs:
       - name: pin declared minimum dependencies
         if: matrix.deps == 'minimum'
         run: pip install "numpy==1.24.4" "scipy==1.10.1"
-      # FRESHNESS_CHECK on one leg only: the committed-CSV-vs-fresh-run check
-      # takes ~4 min and its answer cannot differ between interpreters, so
-      # running it three times costs ~8 minutes of Actions time for nothing.
+      # FRESHNESS_CHECK on the latest leg only: the committed-CSV-vs-fresh-run
+      # check takes ~4 min and its answer cannot differ between interpreters,
+      # so running it on both costs ~4 minutes of Actions time for nothing.
       - run: pytest -q --runslow   # CI runs the full battery incl. slow closure tests
         env:
-          FRESHNESS_CHECK: ${{ (matrix.python-version == '3.11' && matrix.deps == 'latest') && '1' || '0' }}
+          FRESHNESS_CHECK: ${{ (matrix.deps == 'latest') && '1' || '0' }}
