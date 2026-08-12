@@ -90,7 +90,7 @@ jobs:
         # this leg can be reproduced locally when it disagrees with the gate.
         include:
           - python-version: "3.11"
-            deps: minimum   # the declared floor: numpy 1.24 / scipy 1.10
+            deps: minimum   # every declared floor pinned; see the step note below
           - python-version: "3.14"
             deps: latest
     steps:
@@ -101,9 +101,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[dev]"
+      # ALL FOUR floors, not two. The first two-leg run failed here
+      # (2026-08-12): on 3.11 the editable install resolves LATEST matplotlib
+      # (requires numpy>=1.25) and pandas (numpy-2 ABI), and pinning numpy to
+      # the floor afterwards breaks both underneath. The old 3.9 leg only
+      # worked because 3.9 itself capped pandas and matplotlib at versions
+      # that tolerated numpy 1.24, which also means the DECLARED pandas 1.5
+      # and matplotlib 3.6 floors were never actually tested. The floors in
+      # pyproject were raised to match what this leg pins, so the manifest
+      # promises exactly the oldest combination CI exercises.
       - name: pin declared minimum dependencies
         if: matrix.deps == 'minimum'
-        run: pip install "numpy==1.24.4" "scipy==1.10.1"
+        run: pip install "numpy==1.24.4" "scipy==1.10.1" "pandas==2.0.3" "matplotlib==3.7.5"
       # FRESHNESS_CHECK on the latest leg only: the committed-CSV-vs-fresh-run
       # check takes ~4 min and its answer cannot differ between interpreters,
       # so running it on both costs ~4 minutes of Actions time for nothing.
