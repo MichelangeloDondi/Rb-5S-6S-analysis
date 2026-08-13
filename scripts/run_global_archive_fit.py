@@ -571,11 +571,30 @@ def ub95(k, c):
 # overall, not the 2.1 that doing both would give. Stated here because the
 # in-function figure of 3.58 invites the wrong end-to-end conclusion.
 #
-# DEFAULT OFF. The committed CSVs were produced by the sequential path, and
-# this producer writes the record, so the parallel path stays opt-in
-# (RB5S6S_WORKERS=N) until a full run has reproduced
-# results/global_archive_fit.csv to the printed digit. Flip the default only
-# after that run, and record it in the CSV's own status notes.
+# DEFAULT OFF, AND THE REASON IS NO LONGER THE PARALLEL PATH (updated
+# 2026-08-14). The equivalence question is CLOSED: on 2026-08-13 a smoke test
+# compared the sequential and parallel paths on one interpreter and one numpy
+# and returned exact equality, 4 of 4 profile2d cells and 2 of 2 w0_scan rows,
+# bit for bit, and a 7.8 hour production run exercised the parallel path end
+# to end against a 10 hour sequential baseline.
+#
+# What is NOT satisfied is reproduction of THE RECORD, and that is an
+# environment fact rather than a code fact: the committed CSVs were produced
+# under numpy 2.0.2, this checkout's interpreter carries numpy 2.5.2, and on
+# that interpreter NOTHING reproduces the record, sequential or parallel. Two
+# quoted bounds move by 0.4 per cent in their last digit.
+#
+# SO DO NOT LAUNCH A LONG RUN HOPING TO SATISFY THE OLD WORDING OF THIS
+# COMMENT, which said "until a full run has reproduced ... to the printed
+# digit" and read as though the parallel path were the open question. It is
+# not, and such a run cannot pass on this machine for reasons that have
+# nothing to do with these two code paths.
+#
+# Flipping the default is therefore gated on the RECORD MIGRATION decision,
+# which is the owner's and is parked post-send: whether a 0.4 per cent move in
+# the last digit of two 95 per cent upper bounds is worth migrating for. If it
+# is taken, flip the default and record it in the CSV's own status notes.
+# Evidence: private/reviews/ACCEPTANCE_RUN_2026-08-13.md.
 #
 # macOS spawns workers, so the worker rebuilds the residual from the loaders
 # once per worker (closures over the trace arrays do not survive pickling),
