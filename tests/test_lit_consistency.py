@@ -144,6 +144,19 @@ def _lit_notes(d):
 
 
 def _lit_keys():
+    """The citekeys, as a SORTED TUPLE rather than a set.
+
+    A set here was a real defect, not a style point. Four of this file's
+    parametrize sites passed it unsorted, and Python randomises string
+    hashing per process, so every process enumerated the same 123 keys in a
+    different order. One process never notices. Under pytest-xdist the
+    workers disagreed about the ORDER of 492 collected tests and the run
+    died at collection before a single test executed, on 2026-08-13.
+
+    It stays a SET, because three call sites do set algebra on it, and
+    every parametrize site sorts. If a new parametrize site is added,
+    sort there too.
+    """
     return {p.stem for p in _lit_notes(LIT_DIR)}
 
 
@@ -320,7 +333,7 @@ def _lit_lines(key):
     return (LIT_DIR / f"{key}.md").read_text(encoding="utf-8").split("\n")
 
 
-@pytest.mark.parametrize("key", _lit_keys())
+@pytest.mark.parametrize("key", sorted(_lit_keys()))
 def test_author_names_are_unicode_not_latex(key):
     """Author fields must be readable on the page: unicode accents, no macros."""
     bad, in_authors = [], False
@@ -339,7 +352,7 @@ def test_author_names_are_unicode_not_latex(key):
     )
 
 
-@pytest.mark.parametrize("key", _lit_keys())
+@pytest.mark.parametrize("key", sorted(_lit_keys()))
 def test_arxiv_ids_survive_yaml_parsing(key):
     """An unquoted NNNN.NNNN0 is a float to YAML and loses its trailing zero."""
     for i, line in enumerate(_lit_lines(key), 1):
@@ -358,7 +371,7 @@ def test_arxiv_ids_survive_yaml_parsing(key):
             )
 
 
-@pytest.mark.parametrize("key", _lit_keys())
+@pytest.mark.parametrize("key", sorted(_lit_keys()))
 def test_summary_has_no_inline_math(key):
     """`summary` feeds both the rendered note and the generated holdings
     table; GitHub shows inline $...$ literally in both."""
@@ -378,7 +391,7 @@ def test_summary_has_no_inline_math(key):
     )
 
 
-@pytest.mark.parametrize("key", _lit_keys())
+@pytest.mark.parametrize("key", sorted(_lit_keys()))
 def test_no_process_language_in_lit_notes(key):
     """docs/lit/ is exempt from the repo-wide phrase guards so that published
     titles and quoted abstract wording survive verbatim. That exemption must

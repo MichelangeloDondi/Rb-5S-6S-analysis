@@ -141,6 +141,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import functools
 import numpy as np
 from PIL import Image
 from scipy.optimize import lsq_linear, minimize
@@ -462,7 +463,16 @@ def bootstrap_sigma_inf(t, f, tk, res, mu_all, sg_all, n_boot: int = 400,
             for k, v in draws.items()}, {k: len(v) for k, v in draws.items()}
 
 
+@functools.lru_cache(maxsize=1)
 def reconstruct() -> dict:
+    # MEMOISED 2026-08-13. This runs a 400-replicate bootstrap and takes
+    # about 112 s. scripts/make_figures.py calls it TWICE, once for
+    # fig14 and once for fig15, and the second call recomputed the whole
+    # thing: 112 of the 236 s the full figure set costs was a duplicate.
+    # It takes no arguments and reads only committed files, so the result
+    # is a pure function of the tree, and neither caller mutates the dict
+    # it returns. Profiled before touching it, because the two figures
+    # taking within 0.2 s of each other was the tell.
     t, f, width, px_min, px_tick = extract()
     tk = find_kicks(t, f)
     res, mu_s, sg_s, _ = fit(t[::DECIMATE], f[::DECIMATE], tk)
