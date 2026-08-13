@@ -105,7 +105,7 @@ it and re-centres w₀:
 | σ_laser (linefit, transition, median) | ~2.0 | ~1.3 (0.64 laser axis) | **1.74** (0.87 laser axis) |
 | σ_laser(2025) bound (C2, laser axis) | <~1.1 | <~1.0 | **<1.2** (1.09 at the 64 µm point, rising with w₀) |
 | β (global fit, central) | ~0.056 | 0.036(4); w₀-band [0.004, 0.055] | **0.0535(43) / 0.0528(47)** (⁸⁵Rb/⁸⁷Rb) |
-| β lever probe (+130 °C) | ~0.02 | 0.014; γ_coll rises ×1.85 over ×53 | **0.020/0.022**; γ_coll rises ×1.47 over ×52.5 |
+| β lever probe (+130 °C) | ~0.02 | 0.014, while γ_coll rises ×1.85 over ×53 | **0.020/0.022**; γ_coll rises ×1.47 over ×52.5 |
 | S₀(225 mW) predicted | 1.43 | 0.59 | **0.35** |
 | S₀(225 mW) 95% bound | ~2.0 | 0.63 (M4e profile likelihood) | M23 joint fit, see RESULTS C3f |
 

@@ -11,7 +11,7 @@ addenda 1–9):
 | item | what it is |
 |---|---|
 | `CLOCK.csv` | the acquisition clock: content hash → FAT mtime for all 438 files across the four backup source trees (main / RawData2 / pilot / prehistory), with the manifest identity where content matches the archive. Epochs are integers (FAT 2 s granularity); interpret in JST (UTC+9) for acquisition-local time. Built by `scripts/build_clock_table.py`; byte-deterministic. |
-| `discarded_backup/` | the 16 discarded acquisitions that survive only in the backup — the evidence behind the curation test (addendum 3). **None ever entered a fit.** |
+| `discarded_backup/` | the 16 discarded acquisitions that survive only in the backup, the evidence behind the curation test (addendum 3). **None ever entered a fit.** |
 | `lineage_4192nm_225mw1/` | the four variants of the archive's one degraded trace, whose dated degradation chain addendum 8 closed. |
 | `RECOVERED_MANIFEST.csv` | file → original name, source, role, md5, bytes for everything above. Built by `scripts/publish_recovered.py`. |
 

@@ -15,11 +15,11 @@ here changes what can be run, not what can be checked:
 
 | | runs in this repository |
 |---|---|
-| the analysis library and its full test suite | **yes** — the injection-recovery closures, the coverage study and minimum detectable effect, the transit-kernel asymptotics, identifiability, model comparison: all synthetic |
-| the committed results, figures and ledger | **yes** — they are committed, and the docs↔code number locks check every quoted value against them |
-| the lock-drift arc (audit addenda 4–7, 12) | **yes** — it runs off `data_recovered/CLOCK.csv`, which is hashes and timestamps rather than measurement data |
-| the raw→results pipeline (`scripts/run_all.sh`) | **no** — it reads the traces |
-| the four tests that re-hash traces against this manifest | **no** — they skip, with a stated reason |
+| the analysis library and its full test suite | **yes**, the injection-recovery closures, the coverage study and minimum detectable effect, the transit-kernel asymptotics, identifiability, model comparison: all synthetic |
+| the committed results, figures and ledger | **yes**, they are committed, and the docs↔code number locks check every quoted value against them |
+| the lock-drift arc (audit addenda 4–7, 12) | **yes**, it runs off `data_recovered/CLOCK.csv`, which is hashes and timestamps rather than measurement data |
+| the raw→results pipeline (`scripts/run_all.sh`) | **no**, it reads the traces |
+| the four tests that re-hash traces against this manifest | **no**, they skip, with a stated reason |
 
 With the traces restored to this directory, everything above runs and each
 stage reproduces its committed CSV byte-for-byte; nothing else changes.

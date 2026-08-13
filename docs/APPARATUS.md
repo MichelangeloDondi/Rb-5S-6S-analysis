@@ -205,9 +205,9 @@ documented in hardware:
 | EOM | Photonics Technologies **EOM-02-12.5-V**, ×2 units | PHOTO (certificates) |
 | EOM resonance | **12.5 MHz** (both units) | PHOTO |
 | EOM 3 dB bandwidth | 550 kHz / 546 kHz | PHOTO |
-| EOM AR coating | **650–1000 nm** — covers 993.4 nm | PHOTO |
+| EOM AR coating | **650–1000 nm**, covers 993.4 nm | PHOTO |
 | EOM impedance / SWR | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 | PHOTO |
-| EOM clear aperture | **3 mm** (both crystal variants, EOM-01 and EOM-02) | manufacturer's "Standard Characteristics" table, `photonicstechnologies.com`, confirmed 2026-08-01 — not on the test certificates §1.2 |
+| EOM clear aperture | **3 mm** (both crystal variants, EOM-01 and EOM-02) | manufacturer's "Standard Characteristics" table, `photonicstechnologies.com`, confirmed 2026-08-01, not on the test certificates §1.2 |
 | Drive for 100% modulation | 15.4 V / 16.0 V pk-pk | PHOTO |
 
 So Ω = 12.5 MHz is set to 0.1 Hz resolution on the generator *and* is the
@@ -236,11 +236,11 @@ generator as well as a different tank.
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
 | Photocathode spectral response | GaAs, roughly 300 to 900 nm. DATASHEET, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 7.2 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 7 µm | DATASHEET + ASSUMED |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
-| Cathode orientation (2025) | **landscape** — 12 mm axis along the beam | EXPERIMENTER |
+| Cathode orientation (2025) | **landscape**, 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
 | Focus position in the cell | **not the cell's mid-plane**. The 993 nm waist was placed close to the collection lens deliberately, to raise the collected solid angle. The standoff from the near window is not recorded | EXPERIMENTER 2026-08-09 |
-| Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA — the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
+| Signal chain | PMT → **pre-amplifier, G = 10⁶** → scope | DATA, the rehearsal filenames record `G=10^6` (addendum 9); the only known record of the gain |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
 **OPEN: the PMT's high-voltage supply and setting are not on record**
@@ -413,7 +413,7 @@ campaign has only FAT mtimes at 2 s granularity.
 |---|---|---|
 | Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation | PHOTO 2025-07-01, 07-18 |
 | Cell dimensions | about **25 mm diameter, 100 mm long**. Approximate and recalled, not read off a datasheet or a purchase record, so treat both figures as ±10% until the primary record surfaces | EXPERIMENTER 2026-08-09 |
-| Temperature controller | 2-channel; the rehearsal filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: EXPERIMENTER did not recognise it) | PHOTO 2025-07-18 |
+| Temperature controller | 2-channel. The rehearsal filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: EXPERIMENTER did not recognise it) | PHOTO 2025-07-18 |
 | Operating range | 70–130 °C across the campaign's condition grid | DATA (MANIFEST) |
 | Thermocouple/heater positions | **four**, marked 1, 2 (one end) and 3, 4 (the other) | PHOTO 2025-07-01 |
 | Rb condensation | visible on the cell windows when unwrapped | PHOTO 2025-07-01 |
@@ -457,14 +457,14 @@ into a comparison:
 
 | date | span | lock state | reading |
 |---|---|---|---|
-| 2025-06-16 | 1 h 50 min | — | **~85 GHz of settling** after a tuning change; asymptotes to StdDev 400 kHz |
+| 2025-06-16 | 1 h 50 min | — | **~85 GHz of settling** after a tuning change, asymptoting to StdDev 400 kHz |
 | 2025-06-11 | 53 min | etalon **+ reference cavity** | **±0.19 MHz/min** |
 | 2025-06-18 | 2 min, unswept | **cavity error** (scan stopped) | RMS 0.05 MHz, drift −0.05 MHz/min (digitised, see below) |
 | 2025-06-19 | 11 min, unswept | **etalon only** (cavity lock off) | **+1.0 MHz/min** |
 | 2025-06-19 | 27 min | etalon only | ~0.4 MHz/min |
 | 2025-06-19 | 6 min | etalon only | +0.5 MHz/min |
 | 2025-07-02 | 5.5 min, unswept | **cavity error** (scan stopped) | RMS 0.04 MHz, drift −0.005 MHz/min (digitised, see below) |
-| **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg** — **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
+| **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg**, **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
 | 2025-07-23 | 3 h 30 min | — | −0.17 MHz/min |
 
 <img src="apparatus/2025-06-11_wavemeter_drift_23min.jpg" width="49%" alt="WLM LongTerm 23-minute record, 2025-06-11 22:52"> <img src="apparatus/2025-06-11_wavemeter_drift_53min.jpg" width="49%" alt="WLM LongTerm 53-minute two-regime record, 2025-06-11 23:22">

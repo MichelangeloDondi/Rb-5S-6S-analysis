@@ -340,9 +340,9 @@ hash**:
 
 | where | what | status |
 |---|---|---|
-| `data_raw/` (this repo) | the frozen analysis archive: 297 curated traces + MANIFEST.csv. Every fitted number regenerates from it. | **frozen** — never edited |
+| `data_raw/` (this repo) | the frozen analysis archive: 297 curated traces + MANIFEST.csv. Every fitted number regenerates from it. | **frozen**, never edited |
 | `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only |
-| release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes; sha256 in the release notes and addendum 10) — campaign, pilot, prehistory, LeCroy rehearsal | preserved public archive |
+| release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes, sha256 in the release notes and addendum 10), campaign, pilot, prehistory, LeCroy rehearsal | preserved public archive |
 | Desktop `RawDataBackUp` (private) | the provenance root, as found | never touched |
 | `~/Documents/*_QUARANTINE_*` (private) | read-only working copies the audit ran on. Two of them, the prehistory tree and the pilot tree, are also read in place by `run_stark_joint.py` as the second and third sessions of the joint light-shift fit | never modified |
 | `private/qc_gallery/` (this repo, untracked) | the per-condition inspection panels of §4, rebuilt on demand from `data_raw/` | regenerated, never cited |
@@ -359,8 +359,8 @@ layer.
 
 | Folder | Content | Count |
 |---|---|---|
-| `t_sweep/` | RF-off lines, 70/90/110 °C × 4 peaks × 5 repeats | 59 (4154@70 °C has 4 — §3) |
-| `p_sweep/` | RF-off lines, 130 °C, 5 powers × 4 peaks × 5 repeats; 225 mW rows carry `serves_t130=True` | 100 |
+| `t_sweep/` | RF-off lines, 70/90/110 °C × 4 peaks × 5 repeats | 59 (4154@70 °C has 4, §3) |
+| `p_sweep/` | RF-off lines, 130 °C, 5 powers × 4 peaks × 5 repeats. 225 mW rows carry `serves_t130=True` | 100 |
 | `rulers_t/` | RF-on comb traces per temperature block | 61 |
 | `rulers_p/` | RF-on bracket blocks (`before`/`after`) per peak | 44 |
 | `quarantine/` | the aborted 4154 power attempt + its plausible rulers (§5) | 29 |

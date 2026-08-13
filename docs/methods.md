@@ -25,7 +25,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 
 | symbol / term | meaning |
 |---|---|
-| $\nu$ | frequency; **transition axis** = the two-photon sum frequency (see §0) |
+| $\nu$ | frequency. **Transition axis** = the two-photon sum frequency (see §0) |
 | FWHM | full width at half maximum of a lineshape |
 | $\Gamma_\text{nat}$ | natural FWHM of the transition |
 | $\gamma_\text{coll}$ | collisional (pressure) broadening FWHM |
@@ -104,9 +104,9 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 | # | chapter | what it adds |
 |---|---|---|
 | **1** | [The measurement](methods/01_the_measurement.md) | the apparatus, the cascade we detect, and why two counter-propagating photons cancel the Doppler width |
-| **2** | [The lineshape, kernel by kernel](methods/02_the_lineshape.md) | natural, collisional, laser and transit-time broadening — each derived, and why the transit kernel is a cusp rather than a Gaussian |
+| **2** | [The lineshape, kernel by kernel](methods/02_the_lineshape.md) | natural, collisional, laser and transit-time broadening, each derived, and why the transit kernel is a cusp rather than a Gaussian |
 | **3** | [The AC-Stark ramp](methods/03_the_ac_stark_ramp.md) | the analysis's novel core: a focused beam makes the light shift a *distribution*, closed-form and triangular for a two-photon rate, with a drift-immune skew |
-| **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code — and radiation trapping, the mechanism that moves amplitudes but not shapes |
+| **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code, and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, and the pre-registered measurement-vs-bound rule |
 | **7** | [What we found](methods/07_what_we_found.md) | the 2025 archive's results: the bounds, the nulls, and the consistency checks |

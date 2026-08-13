@@ -31,7 +31,7 @@ module's own house rules, restated here so a reader need not open the source.
 |---|---|---|
 | `ESTABLISHED` | a published or cited value, or an apparatus fact the experimenter verified from photographs, datasheets or direct confirmation | quotable as an input without further defence |
 | `MEASURED-HERE` | extracted from the 2025 archival traces by this pipeline | quotable, but it inherits every conditionality of the fit that produced it |
-| `CALCULATED` | derived; the derivation is stated where the value is first used | quotable if the derivation is quoted with it |
+| `CALCULATED` | derived, and the derivation is stated where the value is first used | quotable if the derivation is quoted with it |
 | `ENVELOPE` | order of magnitude only | may bound an argument, must never carry a published digit |
 | `OPEN` | not settled | must never reach a published number |
 
