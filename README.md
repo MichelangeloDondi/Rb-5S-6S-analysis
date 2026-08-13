@@ -12,7 +12,14 @@
 
 A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂**
 two-photon transition at **993 nm**, from Doppler-free spectroscopy in a hot
-vapour cell. The data were taken at OIST in 2025. A fixed-lock follow-up
+vapour cell. The data were taken at OIST in 2025.
+
+The physics is the one that limits cold atoms in structured light. When a
+field varies across the atoms that sample it, every atom shifts by a
+different amount and the line carries that whole distribution rather than one
+number. The same object sets what can be cooled inside a hollow-core fibre,
+and for how long it stays coherent, which is the apparatus work this analysis
+sits beside (see [About](#about)). A fixed-lock follow-up
 session is proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the
 machinery is written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
