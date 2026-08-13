@@ -43,14 +43,135 @@ FIG.mkdir(exist_ok=True)
 _DATA_FP = C.results_fingerprint()
 
 
-def _save(fig, name, rect=None):
-    """tight_layout + savefig with the data fingerprint embedded, then close.
+def _renderer(fig):
+    """A renderer for this figure, on any matplotlib the CI matrix runs.
 
-    rect is passed through to tight_layout: the footer is drawn with fig.text,
-    which the layout engine cannot see, so a figure whose axis label would
-    otherwise land on the footer reserves the bottom strip explicitly
-    (fig3 does)."""
+    Same portable construction as the canvas guard uses, and for the same
+    reason: `fig.canvas.get_renderer()` exists on the Agg canvas and not on
+    FigureCanvasBase, which raised on one CI leg while the local gate was
+    clean.
+    """
+    fig.canvas.draw()
+    get = getattr(fig.canvas, "get_renderer", None)
+    if get is not None:
+        return get()
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    FigureCanvasAgg(fig)
+    fig.canvas.draw()
+    return fig.canvas.get_renderer()
+
+
+def _footer_rect(fig):
+    """The tight_layout rect that keeps the axes off the source footer.
+
+    MEASURED, NOT GUESSED, per protocol 12.9: the footer's height depends on
+    whether the source list wrapped to a second line, so a constant reserve is
+    right for one figure and wrong for the next. This renders once, takes the
+    footer's actual top edge in figure coordinates, and adds one footer-height
+    of padding.
+
+    WHY IT IS A DEFAULT AND NOT A PER-FIGURE ARGUMENT. This function's own
+    docstring used to say that a figure whose axis label would land on the
+    footer "reserves the bottom strip explicitly (fig3 does)", which is the
+    class of defect fixed on one instance. On 2026-08-13 the new footer
+    collision guard found twelve overlaps across eight figures, the worst
+    printing an axis label straight through the source line at 78 per cent
+    coverage. Every one of them was a figure that had not been told to
+    reserve. So the reserve is computed for every figure that carries a
+    footer, and an explicit rect from the caller still wins.
+    """
+    texts = [t for t in fig.texts if t.get_text().strip()]
+    if not texts:
+        return None
+    foot = min(texts, key=lambda t: (t.get_position()[1], t.get_position()[0]))
+    r = _renderer(fig)
+    bb = foot.get_window_extent(renderer=r).transformed(
+        fig.transFigure.inverted())
+    return (0.0, min(0.30, bb.y1 + bb.height), 1.0, 1.0)
+
+
+def _layout(fig, rect=None):
+    """Apply the shipping layout to a figure, without saving it.
+
+    SPLIT OUT OF _save ON 2026-08-13, and the reason matters more than the
+    refactor. The canvas guards capture figures by stubbing _save, and the
+    stub only recorded the figure: it never ran tight_layout. So every one of
+    those guards was measuring a PRE-LAYOUT figure while the shipped PNG is a
+    laid-out one, which is the same class of defect as measuring the right
+    thing on the wrong quantity. The stub now calls this function, so the
+    guards and the saved file see identical geometry by construction."""
+    measured = _footer_rect(fig)
+    if rect is None:
+        rect = measured
+    elif measured is not None:
+        # A CALLER'S RECT NEVER SHRINKS THE MEASURED RESERVE. The hand-set
+        # rects predate this measurement and were chosen by eye: fig8 asked
+        # for 0.03 of the canvas when its two-line footer needs more, and its
+        # x-axis label printed straight through the source line at 78 per
+        # cent coverage. So the caller keeps its left, right and top, which
+        # it may have set for reasons of its own, and the bottom becomes
+        # whichever of the two is larger.
+        rect = (rect[0], max(rect[1], measured[1]), rect[2], rect[3])
     fig.tight_layout(rect=rect)
+    _lift_off_the_footer(fig)
+
+
+def _lift_off_the_footer(fig):
+    """After tight_layout, move anything still sitting on the footer.
+
+    tight_layout cannot help two cases, and both exist here. A figure with
+    manually positioned axes is skipped by the layout engine entirely, which
+    matplotlib says out loud in a warning nobody was reading: fig8 pins its
+    axes at y0 = 0.12 while its two-line footer reaches 0.0587 and its x-axis
+    label ran from 0.0353, printing the words "scan time (ms)" straight
+    through the source line. And a figure-level caption is not an axes at all,
+    so no rect moves it.
+
+    So this measures what remains and moves it, by the SMALLEST amount that
+    clears: every axes lifts by one shortfall, uniformly, because lifting one
+    panel of a row would misalign the row; a fig-level text lifts on its own,
+    since it has no neighbours to stay level with.
+    """
+    texts = [t for t in fig.texts if t.get_text().strip()]
+    if not texts or not fig.axes:
+        return
+    r = _renderer(fig)
+    inv = fig.transFigure.inverted()
+    foot = min(texts, key=lambda t: (t.get_position()[1], t.get_position()[0]))
+    top = foot.get_window_extent(renderer=r).transformed(inv).y1
+    pad = 0.012
+
+    need = 0.0
+    for ax in fig.axes:
+        lab = ax.xaxis.label
+        if lab.get_text().strip():
+            y0 = lab.get_window_extent(renderer=r).transformed(inv).y0
+            need = max(need, top + pad - y0)
+    if need > 1e-4:
+        for ax in fig.axes:
+            b = ax.get_position()
+            ax.set_position([b.x0, b.y0 + need, b.width,
+                             max(0.05, b.height - need)])
+
+    r = _renderer(fig)
+    for t in texts:
+        if t is foot:
+            continue
+        b = t.get_window_extent(renderer=r).transformed(inv)
+        if b.y0 < top + pad and b.y1 > foot.get_window_extent(
+                renderer=r).transformed(inv).y0:
+            x, y = t.get_position()
+            t.set_position((x, y + (top + pad - b.y0)))
+
+
+def _save(fig, name, rect=None):
+    """The shipping layout, then savefig with the data fingerprint embedded.
+
+    The footer is drawn with fig.text, which the layout engine cannot see, so
+    the bottom strip is reserved for it. That reserve is COMPUTED for every
+    figure by _footer_rect rather than passed by hand for the few that were
+    noticed; an explicit rect from the caller still overrides."""
+    _layout(fig, rect)
     fig.savefig(FIG / name, metadata={"DataFingerprint": _DATA_FP})
     plt.close(fig)
 
@@ -1872,7 +1993,7 @@ def fig_hyperfine_pumping():
     # ---- (b) the branching, computed per line ---------------------------
     bx.axis("off")
     bx.set_xlim(0, 1); bx.set_ylim(0, 1)
-    bx.set_title("(b)  so $f$ is a number, not a bracket", fontsize=10.5,
+    bx.set_title("(b)  the branching factor $f$, line by line", fontsize=10.5,
                  loc="left")
     bx.text(0.0, 0.96,
             "The two-photon operator is scalar, so $6S$ is populated in ONE\n"
@@ -1919,11 +2040,8 @@ def fig_hyperfine_pumping():
             if fp >= 0 and abs(fp - oth) > 1:
                 blocked.append(str(fp))
     bx.text(0.0, 0.02,
-            "This retires the 1/3 to 2/3 bracket: the lower two fall below it.\n"
-            "The 8/9 and 4/9 are no smoothing either. Every line feeds one\n"
-            "$5P_{3/2}$ level that cannot reach the undriven level AT ALL\n"
-            "($F$ = " + ", ".join(blocked) + " by row), and those blocks cancel "
-            "exactly.",
+            "Blocked $5P_{3/2}$ levels ($F$ = " + ", ".join(blocked)
+            + " by row).",
             fontsize=7.8, color="0.25", va="bottom")
 
     # ---- (c) what the fit sees against what it attributes ---------------
@@ -1945,7 +2063,7 @@ def fig_hyperfine_pumping():
     cx.set_ylabel(f"added linewidth at {P_MAX*1e3:.0f} mW (kHz)")
     cx.set_ylim(0, total * 1.62)
     cx.grid(axis="x", visible=False)
-    cx.set_title("(c)  and the fit gives the ramp all of it", fontsize=10.5,
+    cx.set_title("(c)  the width budget at 225 mW", fontsize=10.5,
                  loc="left")
     cx.text(0, ramp_khz + 0.8, f"{ramp_khz:.1f}", ha="center", fontsize=9,
             fontweight="bold")
@@ -1971,20 +2089,8 @@ def fig_hyperfine_pumping():
     # 0.155 left a 3 px gap to the footer once this caption grew to five
     # lines, which is a collision waiting for the next sentence.
     fig.text(0.045, 0.175,
-             "Panel (b) retires the 1/3 to 2/3 bracket the companion note "
-             "carried, and does not merely narrow it: the lower two lines fall "
-             "OUTSIDE it, so the pumping companion is smaller than that "
-             "bracket assumed.\nWhat matters beyond the bookkeeping is that "
-             "the ramp and the saturation are identical on all four lines "
-             "while the pumping is not, so the three terms are degenerate in "
-             "power and in waist but NOT\nacross the line index. The lever is "
-             "4 kHz between the extreme lines against an 88 kHz per-block "
-             "width scatter, so this dataset cannot spend it.\nControlling "
-             "that scatter is not by itself enough either. The preregistered "
-             "refit found the per-line scale UNIDENTIFIABLE here, because it "
-             "enters only as a multiple of the light\nshift, and this dataset "
-             "bounds that shift rather than measuring it. The shift has to be "
-             "detected before the lever means anything.",
+             "Lever 4 kHz between the extreme lines, against 88 kHz of "
+             "per-block width scatter.",
              fontsize=7.6, color="0.3", va="top")
     _footer(fig, "figure 23 | rb5s6s.polarizability line data (the two cascade "
                  "legs and their branching), rb5s6s.stark._fwhm_of, "
@@ -2063,16 +2169,17 @@ def fig_weak_field_limit():
             (s_tight, f"the proposed\n{waists_um[-1]:.0f} µm, "
                       f"$s$ = {s_tight:.1f}", "#D55E00", 7.0, "top")):
         ax.axvline(x, color=col, lw=1.5, ls=":")
-        ax.text(x * 0.86, y, lab, fontsize=8.0, color=col, ha="right", va=va)
+        # boxed: the proposed-waist label is drawn across the dashed square-law
+        # line, which stays legible only with the surface behind it
+        ax.text(x * 0.86, y, lab, fontsize=8.0, color=col, ha="right", va=va,
+                bbox=dict(facecolor="white", edgecolor="none", alpha=0.82,
+                          pad=1.2))
     # raised off the floor: at y = 0.05 this block's left edge reached the
     # archive marker's label and covered a fifth of it, which the overlap guard
     # could not see until 2026-08-11 because it was skipping this figure
     ax.text(0.985, 0.20,
-            f"$s$ goes as the inverse FOURTH power of the waist and the\n"
-            f"shift only as the second, so the four-fold tightening between\n"
-            f"the two markers is {s_tight/s_here:.0f}-fold in $s$ against "
-            f"{(W0*1e6/waists_um[-1])**2:.0f}-fold in the shift.\n"
-            "The limit is left long before the shift becomes large.",
+            f"Four-fold tightening: {s_tight/s_here:.0f}x in $s$, "
+            f"{(W0*1e6/waists_um[-1])**2:.0f}x in the shift.",
             transform=ax.transAxes, fontsize=7.8, color="0.25",
             ha="right", va="bottom")
 
@@ -2103,14 +2210,9 @@ def fig_weak_field_limit():
             ha="left", va="bottom")
 
     fig.text(0.065, 0.155,
-             f"Both panels are at the campaign's own {P_MAX*1e3:.0f} mW and the "
-             f"record's collection half-length $Z_c$ = {ZC_M*1e3:.1f} mm, with "
-             f"$S_0$ = {s0_here:.3f} MHz at the measured waist.\n"
-             "The skewness in (b) is the third cumulant of the axially "
-             "averaged shift distribution, so it already carries the "
-             "diverging-beam average that flips\nits sign near "
-             "$Z_c/z_R \\approx 1.12$. What the saturated weight changes is "
-             "how much of the beam contributes, not where the flip is.",
+             f"{P_MAX*1e3:.0f} mW, $Z_c$ = {ZC_M*1e3:.1f} mm, "
+             f"$S_0$ = {s0_here:.2f} MHz at the measured waist. Sign flip at "
+             "$Z_c/z_R \\approx 1.12$.",
              fontsize=7.8, color="0.3", va="top")
     _footer(fig, "figure 24 | scripts/run_geometry_design.ramp_moments "
                  "(weak-field branch checked against "
@@ -2186,7 +2288,7 @@ def fig_retro_combination():
             color="#0072B2", lw=2.4)
     bx.set_xlabel("retro return fraction $\\rho$")
     bx.set_ylabel("arithmetic over geometric (%)")
-    bx.set_title("(b)  and the gap between them is the fringe contrast",
+    bx.set_title("(b)  the shift and the coupling against retro ratio",
                  fontsize=10.5, loc="left")
     for rho, col, lab in ((RHO, "#009E73", "the archive"),
                           (RHO_POOR, "#D55E00", "a poorer retro")):
@@ -2199,28 +2301,18 @@ def fig_retro_combination():
                     arrowprops=dict(arrowstyle="-", color=col, lw=0.9))
     bx.text(0.97, 0.94,
             "No published digit moves at the archive's own $\\rho$.\n"
-            "The formula carries the distinction anyway, because\n"
-            "the correction grows fast as the retro degrades and\n"
-            "a future session may not have this one.",
+            "The correction grows fast as the retro degrades.",
             transform=bx.transAxes, fontsize=7.8, color="0.25",
             ha="right", va="top")
 
     fig.text(0.065, 0.175,
-             "The asymmetry between the two panels is the point. The "
-             "Doppler-free RATE has no $z$ dependence at all, since the cross "
-             "term is the same at every fringe, so it is immune to how the "
-             "standing wave sits\nagainst the atoms. The SHIFT is not: it "
-             "follows the local intensity, and an atom that crosses few "
-             "fringes samples that structure rather than averaging it away. "
-             "That is the residual a\nfrequency-shifted retro arm removes by "
-             "making the fringes run, which the running-wave design note "
-             "works out.",
+             "Rate: no $z$ dependence. Shift: follows the local intensity.",
              fontsize=7.8, color="0.3", va="top")
     _footer(fig, "figure 25 | rb5s6s.config.RHO_RETRO, "
                  "rb5s6s.hyperpolarizability.two_photon_rabi_hz and the "
                  "DELTA_ALPHA_AU note in rb5s6s/constants.py | "
                  "docs/THEORY_NOTE.md | python scripts/make_figures.py")
-    _save(fig, "fig25_retro_combination.png", rect=(0, 0.205, 1, 1))
+    _save(fig, "fig25_retro_combination.png", rect=(0, 0.10, 1, 1))
 
 
 def fig_lineshape_kernels():
@@ -2295,33 +2387,21 @@ def fig_lineshape_kernels():
     bx.set_xlim(-7.0, 7.0)
     bx.set_xlabel("detuning from line centre (MHz, transition axis)")
     bx.set_ylabel("profile, peak normalised")
-    bx.set_title("(b)  and where the width comes from", fontsize=10.5,
+    bx.set_title("(b)  the line, one convolution at a time", fontsize=10.5,
                  loc="left")
     bx.legend(fontsize=8.0, loc="upper right")
     total = _fwhm_of(GC, SL, TR, 0.0, np.linspace(-40.0, 40.0, 200001))
     natural_pct = 100.0 * GNAT / total
 
     fig.text(0.06, 0.165,
-             f"The natural width is {natural_pct:.0f} per cent of the "
-             f"{total:.2f} MHz total, and everything above it is apparatus. The "
-             "AC-Stark ramp adds a few kHz on top of that, far below the width "
-             "of this line, which is why the light-shift lever is a\nbound "
-             "rather than a measurement. "
-             "Two Lorentzians of any widths convolve to a Lorentzian, which is "
-             "why the first two curves of (b) are one step in the code, and why "
-             "the\ncollisional width cannot be separated from anything else "
-             "homogeneous by shape alone. It is separated by its density "
-             "dependence instead, which is what\nthe temperature sweep is for. "
-             "The two remaining kernels are not interchangeable: a Gaussian and "
-             "a two-sided exponential of equal width differ in\nthe core and in "
-             "the wings, and that difference is the whole handle the fit has on "
-             "the laser-transit split.",
+             f"Natural width {natural_pct:.0f} per cent of the "
+             f"{total:.2f} MHz total. The rest is apparatus.",
              fontsize=7.8, color="0.3", va="top")
     _footer(fig, "figure 26 | rb5s6s.lineshape.lorentzian, .gaussian, "
                  ".two_sided_exponential and .model_profile, at the campaign's "
                  "representative widths | docs/methods/02_the_lineshape.md | "
                  "python scripts/make_figures.py")
-    _save(fig, "fig26_lineshape_kernels.png", rect=(0, 0.195, 1, 1))
+    _save(fig, "fig26_lineshape_kernels.png", rect=(0, 0.09, 1, 1))
 
 
 def fig_wavemeter_reconstruction():
@@ -2551,10 +2631,9 @@ def fig_drift_story():
     _frac = 1.0 - _resid ** 2 / float(np.mean(dpos ** 2))
     _knob = int(np.sum(np.abs(dwin) > 1e-9))
     ax.text(0.035, 0.965,
-            "the centre record follows the window, not the atom:\n"
-            f"{100 * _frac:.1f}% of the between-block position variance\n"
-            f"is the window setting. {_knob} of the {len(dpos)} steps carry\n"
-            f"a knob move. The residual scatter is {_resid:.0f} ms.",
+            f"{100 * _frac:.1f}% of the between-block position variance is "
+            f"the window setting.\n{_knob} of {len(dpos)} steps carry a knob "
+            f"move. Residual scatter {_resid:.0f} ms.",
             transform=ax.transAxes, fontsize=7.6, color="0.30", va="top")
     ax.set_xlabel("window-setting move between blocks (ms, scope axis)")
     ax.set_ylabel("peak-position move (ms)")
@@ -2599,7 +2678,7 @@ def fig_drift_story():
     ax.set_ylim(-0.35, 2.6)
     ax.set_yticks([])
     ax.set_xlabel("laser drift rate (MHz/min)")
-    ax.set_title("(c) what each laser drift rate allows a measurement to claim",
+    ax.set_title("(c) claimable precision against laser drift rate",
                  fontsize=9)
     ax.grid(axis="y", visible=False)
     # Wrapped. As one line this ran 193 px past the right edge of the canvas
@@ -4096,7 +4175,7 @@ def fig_radiation_environment():
     _sp = math.log10(max(b[1] for b in bars) / min(b[1] for b in bars))
     _words = {17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty",
               21: "twenty-one", 22: "twenty-two"}
-    bx.set_title(f"(b)  and the rates span {_words.get(round(_sp), f'{_sp:.0f}')}"
+    bx.set_title(f"(b)  the rates, spanning {_words.get(round(_sp), f'{_sp:.0f}')}"
                  " decades", fontsize=10.5, loc="left")
     bx.grid(axis="x", alpha=0.25, which="both")
     bx.text(0.985, 0.06,
@@ -4165,8 +4244,11 @@ def fig_cascade_resolved():
            "993.4192": "$^{85}$Rb", "993.4207": "$^{87}$Rb"}
 
     fig = plt.figure(figsize=(12.6, 5.0))
+    # bottom was 0.42 when the caption below panel (a) ran to 75 words. That
+    # block is 20 words now, and the reserve went with it: at 0.42 a quarter
+    # of the canvas was empty white below the panels.
     gs = fig.add_gridspec(1, 2, wspace=0.30, left=0.075, right=0.975,
-                          top=0.87, bottom=0.42, width_ratios=[1.0, 1.0])
+                          top=0.87, bottom=0.24, width_ratios=[1.0, 1.0])
     ax, bx = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
 
     # ---- (a) one line's cascade, resolved -------------------------------
@@ -4205,15 +4287,11 @@ def fig_cascade_resolved():
             fontsize=8.0, color="0.15", ha="center", va="center")
     ax.text(ww * (1.0 - wb) + ww * wb / 2.0, wy + 0.42, "to $F$ = 2,\ngone",
             fontsize=8.0, color="#a63430", ha="center", va="bottom")
-    ax.text(0.0, -0.235,
-            r"$F'$ = 0 takes " f"{rws[0][1]:.2f}" r" of this leg and loses NONE of it: a "
-            r"$J=1$ photon cannot" "\n"
-            r"change $F$ by two, so $F'=0$ cannot reach $F=2$ at all. Every one of the"
-            "\nfour lines feeds one such level, and they are different levels: "
-            r"$F'$ = 0, 1, 4, 3." "\n"
-            f"The three bars sum to {sum(w*b for _f, w, b in rws):.4f} lost, "
-            "which is exactly 4/9 of the\ndegeneracy weight 5/8, and panel (b) "
-            "is why that is not a coincidence.",
+    # offset in axes fractions, so it tracks the panel height above
+    ax.text(0.0, -0.145,
+            r"$F'$ = 0 takes " f"{rws[0][1]:.2f}" r" of this leg, blocked." "\n"
+            f"Bars sum to {sum(w*b for _f, w, b in rws):.4f}, which is 4/9 of "
+            "the degeneracy weight 5/8.",
             transform=ax.transAxes, fontsize=8.2, color="0.25", va="top")
 
     # ---- (b) the parts scatter, the sums do not --------------------------
@@ -4231,7 +4309,11 @@ def fig_cascade_resolved():
     for y, lab, col in ((8.0 / 9.0, "8/9\nvia $5P_{1/2}$", "#0072B2"),
                         (4.0 / 9.0, "4/9\nvia $5P_{3/2}$", "#009E73")):
         bx.axhline(y, color=col, lw=1.3, ls=(0, (5, 3)), zorder=0)
-        bx.text(3.46, y, lab, fontsize=8.8, color=col, va="center", ha="left")
+        # boxed for the same reason fig24's markers are: the reference line the
+        # label names runs straight through the label
+        bx.text(3.46, y, lab, fontsize=8.8, color=col, va="center", ha="left",
+                bbox=dict(facecolor="white", edgecolor="none", alpha=0.85,
+                          pad=1.0))
     bx.set_xticks(range(4))
     bx.set_xticklabels([f"{lam}\n{iso[lam]}" for lam in lams], fontsize=8.4)
     bx.set_xlim(-0.45, 4.12)
@@ -4241,9 +4323,12 @@ def fig_cascade_resolved():
     bx.set_title("(b)  the parts scatter, the sums are two numbers",
                  fontsize=10.5, loc="left")
     bx.grid(axis="y", alpha=0.25)
-    bx.text(0.5, 0.055,
+    # below the axes, not inside them: at axes y = 0.055 this key sat at data
+    # y = 0.003 and the zero-weight markers were drawn straight through it
+    bx.text(0.5, -0.175,
             "small markers: each intermediate $F$ on its own.  large: the leg's sum.",
-            transform=bx.transAxes, fontsize=8.0, color="0.35", ha="center")
+            transform=bx.transAxes, fontsize=8.0, color="0.35", ha="center",
+            va="top")
 
     _footer(fig, "figure 28 | results/cascade_branching.csv, written by "
                  "scripts/run_zeeman_depletion.py (Wigner 3j and 6j symbols, "
@@ -4333,7 +4418,7 @@ def fig_isotope_transit():
     bx.set_yscale("log")
     bx.set_xlabel(r"density ($10^{12}$ cm$^{-3}$), the lever $\beta$ is read from")
     bx.set_ylabel("misassigned width (kHz)")
-    bx.set_title("(b)  and against the lever, almost all of it is offset",
+    bx.set_title("(b)  the isotope gap decomposed against density",
                  fontsize=10.5, loc="left")
     bx.legend(fontsize=8.4, loc="upper left")
     bx.grid(alpha=0.25, which="both")
@@ -4341,14 +4426,11 @@ def fig_isotope_transit():
     # inside the panel: a first version hard-coded the two ends of the gap and
     # ran off the right edge
     bx.text(0.0, -0.235,
-            f"The gap runs {gap.min():.2f} to {gap.max():.2f} kHz across a "
-            f"{dens.max()/dens.min():.0f}-fold change in density,\n"
-            f"so a line through it has a slope of {slope:.4f} kHz per "
-            r"$10^{12}$ cm$^{-3}$, which is" "\n"
+            f"Gap {gap.min():.2f} to {gap.max():.2f} kHz over "
+            f"{dens.max()/dens.min():.0f}x in density. Slope {slope:.4f} kHz "
+            r"per $10^{12}$ cm$^{-3}$," "\n"
             f"{100*slope/sigma_beta_khz_per_1e12:.2f} per cent of one "
-            r"$\sigma$ on $\beta_{85}-\beta_{87}$. The free per-line core"
-            "\nwidth absorbs the offset, so what the shared transit width "
-            "costs the\ncollisional coefficient is measured and small.",
+            r"$\sigma$ on $\beta_{85}-\beta_{87}$.",
             transform=bx.transAxes, fontsize=8.2, color="0.25", va="top")
 
     _footer(fig, "figure 29 | rb5s6s.linefit.transit_fwhm_at_T (isotope=), "

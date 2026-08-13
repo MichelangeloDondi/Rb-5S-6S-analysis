@@ -175,8 +175,33 @@ SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
               "tests/test_svg_canonical.py"}
 
 
+def _about_to_be_tracked(*globs: str) -> list[str]:
+    """Files git would add on the next `git add -A`, i.e. untracked and not ignored.
+
+    WHY THIS EXISTS. On 2026-08-13 a gate passed on a tree, the new test file
+    in it was then staged, and the commit that shipped FAILED this very guard:
+    the phrase it banned sat in a file the guard could not see, because
+    `git ls-files` lists tracked files only and the file was still untracked
+    when the gate ran. The gated tree and the pushed tree differed by exactly
+    the visibility of that file.
+
+    A guard has to read what is about to ship, not what already shipped, so
+    the prose sweep now covers both. This is the same fault as the canvas
+    guard that measured pre-layout figures: the artifact examined was not the
+    artifact delivered.
+    """
+    out = subprocess.run(
+        ["git", "-C", str(ROOT), "ls-files", "--others",
+         "--exclude-standard", *globs],
+        capture_output=True, text=True)
+    if out.returncode != 0:
+        return []
+    return [p for p in out.stdout.split("\n") if p]
+
+
 def _prose_files() -> list[str]:
-    return [p for p in _tracked("*.md", "*.py")
+    candidates = _tracked("*.md", "*.py") + _about_to_be_tracked("*.md", "*.py")
+    return [p for p in candidates
             if not p.startswith(SKIP_PREFIXES) and p not in SKIP_EXACT]
 
 

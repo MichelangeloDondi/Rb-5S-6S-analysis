@@ -565,6 +565,12 @@ def ub95(k, c):
 # sized like production (2026-08-12): x3.58 on 8 workers, x4.66 on 10, with
 # results bit-identical to the sequential path.
 #
+# WHAT THAT IS AND IS NOT WORTH END TO END. profile2d is 36.8 per cent of the
+# run. w0_scan, another 34.5 per cent, is independent over its five waists and
+# is NOT parallelised here, so Amdahl gives 1/(0.632 + 0.368/3.58) = 1.36
+# overall, not the 2.1 that doing both would give. Stated here because the
+# in-function figure of 3.58 invites the wrong end-to-end conclusion.
+#
 # DEFAULT OFF. The committed CSVs were produced by the sequential path, and
 # this producer writes the record, so the parallel path stays opt-in
 # (RB5S6S_WORKERS=N) until a full run has reproduced
@@ -600,7 +606,13 @@ def _load_everything():
     p0, lo, hi, offsets = build(traces)
     resid = make_resid(traces, offsets)
     Sf = sparsity(traces, offsets, len(p0))[:, 1:]
-    return resid, Sf, lo, hi
+    # A DICT, not a tuple, because the two worker kinds need different
+    # subsets: profile2d wants the prebuilt residual at the default transit
+    # reference, w0_scan has to rebuild one PER WAIST and so needs the raw
+    # traces. A tuple grew a fifth element the day the second worker landed,
+    # which is how a positional contract becomes a bug.
+    return {"traces": traces, "offsets": offsets, "p0": p0,
+            "lo": lo, "hi": hi, "resid": resid, "Sf": Sf}
 
 
 def _init_worker():
@@ -611,7 +623,7 @@ def _init_worker():
     for v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS",
               "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
         _os.environ.setdefault(v, "1")
-    _W["resid"], _W["Sf"], _W["lo"], _W["hi"] = _load_everything()
+    _W.update(_load_everything())
 
 
 def _p2d_row(args):
@@ -632,6 +644,29 @@ def _p2d_row(args):
         out[(kap, b)] = float(np.sum(r * r))
     print(f"    [2Dp] kappa={kap:5.2f} done", flush=True)
     return out
+
+
+def _w0_row(args):
+    """One assumed waist of the w0 scan: its own residual, its own chain.
+
+    The five waists are independent for a different reason from the kappa
+    rows: each one REBUILDS the residual against its own transit reference,
+    so they share no state at all, not even a starting vector. The chain
+    INSIDE a waist stays sequential, because that is where the warm start
+    lives and it is what makes each waist converge quickly.
+    """
+    w0, kappas, nfev = args
+    traces, offsets = _W["traces"], _W["offsets"]
+    tr_ref = C.transit_fwhm_from_w0(w0, 110.0)
+    resid = make_resid(traces, offsets, transit_ref=tr_ref)
+    p0, lo, hi, _ = build(traces)
+    Sf = sparsity(traces, offsets, len(p0))[:, 1:]
+    res = chain(resid, Sf, lo, hi, p0[1:], kappas, f"w{w0 * 1e6:.0f}",
+                nfev=nfev)
+    ks = np.array(kappas)
+    cs = np.array([res[k][0] for k in kappas])
+    kmin = float(ks[int(np.argmin(cs))])
+    return (w0, tr_ref, ub95(ks, cs), kmin, float(res[kmin][1][I_BETA - 1]))
 
 
 def n_workers() -> int:
@@ -686,6 +721,18 @@ def w0_scan(traces, offsets, w0s, kappas):
     """kappa and beta as functions of the ASSUMED waist. The archive cannot
     pin w0 (transit and sigma_laser are degenerate), so the statement of
     record is not one bound but the bound's dependence on the assumption."""
+    nw = n_workers()
+    if nw > 0:
+        import multiprocessing as _mp
+        jobs = [(w0, tuple(kappas), 1200) for w0 in w0s]
+        with _mp.get_context("spawn").Pool(min(nw, len(jobs)),
+                                           initializer=_init_worker) as pool:
+            rows = pool.map(_w0_row, jobs)
+        for r in rows:
+            print(f"  w0={r[0] * 1e6:.0f}um transit={r[1]:.3f}: "
+                  f"kappa<{r[2]:.3f} beta={r[4]:.4f}", flush=True)
+        return rows
+
     rows = []
     for w0 in w0s:
         tr_ref = C.transit_fwhm_from_w0(w0, 110.0)
@@ -704,11 +751,48 @@ def w0_scan(traces, offsets, w0s, kappas):
     return rows
 
 
+def _preflight() -> str | None:
+    """Every path this run needs, tested before the first expensive step.
+
+    Lesson 44: three hours of a run were lost when the operating system
+    withdrew access to the input tree mid-flight, and the failure surfaced
+    six frames deep inside multiprocessing's spawn preparation as a bare
+    "Operation not permitted". A run measured in hours should find out in
+    seconds, and should say which path in a sentence a reader can act on.
+    Returns the complaint, or None when everything is reachable.
+    """
+    import os as _os
+    for label, d in (("prehistory tree", PREHISTORY), ("pilot tree", PILOT),
+                     ("results directory", C.RESULTS_DIR)):
+        try:
+            if not d.is_dir():
+                return f"{label} is not a directory: {d}"
+            _os.listdir(d)
+        except OSError as exc:
+            return (f"{label} cannot be read: {d}\n  {exc}\n"
+                    f"  On macOS this is usually the Files-and-Folders "
+                    f"permission for the terminal application.")
+    try:
+        _os.getcwd()
+    except OSError as exc:
+        return f"the working directory cannot be read: {exc}"
+    return None
+
+
 def main() -> int:
     if not (PREHISTORY.is_dir() and PILOT.is_dir()):
         print(f"quarantine trees absent ({PREHISTORY}, {PILOT}) -- the "
               f"committed results/global_archive_fit.csv is the record.")
         return 0
+    complaint = _preflight()
+    if complaint is not None:
+        print(f"PREFLIGHT FAILED, nothing has been computed:\n  {complaint}")
+        return 2
+    # Said once, at the top, because at the moment of a crash the difference
+    # between an expensive annoyance and a damaged record should be readable
+    # rather than deduced from the source.
+    print("  writes nothing until the end, into "
+          "results/global_archive_fit.csv")
     camp = load_campaign_all()
     reh, n_corrupt = load_rehearsal()
     _, prates = load_t_rates()

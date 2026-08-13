@@ -1,4 +1,4 @@
-# `data_raw/` — the dataset manifest
+# `data_raw/`, the dataset manifest
 
 This directory holds **`MANIFEST.csv`** and not the traces it describes.
 

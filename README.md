@@ -50,7 +50,7 @@ This is the raw material everything below is built from. Every width in the
 panel is a full width at half maximum, and the fitted ones carry the one-sigma
 error of this condition's fit. The two marked fixed are inputs: the natural
 width from the measured 6S lifetime, and the transit width computed from the
-beam waist, 64 µm, measured on this apparatus lineage by Rajasree 2020 (128 µm
+beam waist, 64 µm, measured on this apparatus lineage in Rajasree's 2020 OIST thesis (128 µm
 1/e² diameter on a profiler, same lens, temperature, geometry and laser model,
 and a knife-edge scan on this bench would confirm it here). In the lower strip,
 σ is each point's own error from the fit's signal-dependent noise model, which
@@ -280,7 +280,7 @@ measurement that would lift it.
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the measured waist, rising with w₀ | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
-| Beam waist **w₀** | 64 µm, measured. Rajasree 2020 recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
+| Beam waist **w₀** | 64 µm, measured. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must
@@ -368,7 +368,7 @@ and less room for laser width, and vice versa. The observed ≈ 5.3 MHz line is
 reproduced anywhere from w₀ ≈ 38 µm (the hard floor, where the laser width
 goes to zero) upward, and the data alone set no ceiling. The 64 µm working
 value comes from two direct profile measurements on the same-lineage
-beamline (Nieddu 2019, Rajasree 2020), not from a fit. Only a direct
+beamline (Nieddu 2019, and Rajasree's 2020 OIST thesis), not from a fit. Only a direct
 beam-profile measurement (a knife-edge scan, a camera profiler, or both)
 collapses the degeneracy. Every absolute number above is w₀-conditional, and
 the beam profile is the first thing a proposed fixed-lock session would fix.

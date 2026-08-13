@@ -23,7 +23,8 @@ verify_flags:
   - DOI VERIFY at submission
 verified_date: null
 summary: >
-  Confirms the 128 um beam + Steck N(T) chain.
+  Cold Rydberg atoms near an optical nanofibre. The 128 um beam and the
+  Steck N(T) chain belong to the OIST thesis, not to this paper.
 loci:
   - constants
   - methods/02
@@ -32,9 +33,12 @@ section: oist-lineage
 
 # rajasree2020
 
-(+ OIST thesis). Confirms the 128 um beam + Steck N(T) chain. DOI VERIFY.
+Cold Rydberg atoms at submicron distances from an optical nanofibre. This
+paper carries no warm vapour cell, so the 128 um beam and the Steck N(T)
+chain belong to the OIST thesis at
+[rajasree2020thesis](rajasree2020thesis.md), not here.
 
-**This paragraph described the wrong document and is corrected here
+**The paragraph that stood here described the wrong document and is corrected
 (2026-07-31).** It opened "Rajasree-KP's OIST PhD thesis repeats the same 993 nm
 cell setup…" — but *this* file is the **PRR 2, 012038 paper**, a cold-atom
 nanofibre experiment with no warm vapour cell and no 993 nm cell setup. The

@@ -109,6 +109,44 @@ narrower than the 3.4925 MHz natural width, so it cannot be an atomic line at al
 The 5 s record therefore contains ONE crossing, and the archive's own segmentation
 rule, which keeps the widest excursion, was right to keep one.
 
+## Addendum, 2026-08-13: the pilot's own EOM rulers cannot be that reference
+
+The programme notes parked one specific hope against the pilot: the pilot tree
+carries its own EOM ruler folder, twenty-seven recovered rulers, and a ruler
+bracketing a power step would supply exactly the knob-independent frequency
+reference the section above says is missing, precisely where the frame problem
+bites. Establishing whether one does was listed as the unlock. It does not.
+
+Reading the acquisition clock off both folders:
+
+| | span |
+|---|---|
+| the 27 rulers | 21:18:22 to 23:33:36 |
+| the 26 power traces | 23:54:26 to 00:11:12 |
+
+EVERY RULER PRECEDES THE ENTIRE POWER SWEEP, the last of them by 21 minutes.
+Not one falls inside the sweep, so none brackets any of the three power steps,
+whose gaps are 388 s at 210 to 35 mW, 170 s at 35 to 70, and 184 s at 70 to
+105. The step that carries nearly all the lever, and whose window moves by
+14.0 ms, has no ruler anywhere near it.
+
+The file times are load-bearing here, so the check that they are acquisition
+times rather than copy artifacts: within a power block the traces are 4 to 18 s
+apart and between blocks 170 to 388 s, and the blocks appear in the order 210,
+35, 70, 105. A bulk copy would order them by filename, which would put 035
+first. It does not, so the clock survives the copy.
+
+The rehearsal fails the same test for a different reason. Its 47 readable
+power traces are single-channel, `Time,Ampl`, so no ramp monitor was recorded
+alongside them, and the three that do not parse are the three already known to
+be 0xff-corrupted on disk. The ramp channel exists in this programme only on
+the EOM trial traces of the previous day, at 80 C and 0.80 A, whose scan
+configuration the record already shows differs from the rehearsal's by a
+factor of 2.2, so nothing transfers.
+
+So the conclusion below is not merely unrefuted, it is now checked against the
+one candidate reference the archive still contained.
+
 ## What would reopen it, and it is one thing
 
 Every one of the three obstructions is the same shape: there is no frequency

@@ -1,8 +1,8 @@
-# data_recovered/ — the backup-recovered layer
+# data_recovered/, the backup-recovered layer
 
 The frozen analysis archive is `data_raw/` and nothing here changes it. This
 layer holds what the timestamped backup added *after* the archive was frozen
-(recovered 2026-07-22/24; audited under pre-registration — see
+(recovered 2026-07-22/24 and audited under pre-registration, see
 [docs/PREREGISTRATION_timestamps.md](../docs/PREREGISTRATION_timestamps.md)
 and the results report
 [docs/PREREGISTRATION_RESULTS.md](../docs/PREREGISTRATION_RESULTS.md),
@@ -16,12 +16,12 @@ addenda 1–9):
 | `RECOVERED_MANIFEST.csv` | file → original name, source, role, md5, bytes for everything above. Built by `scripts/publish_recovered.py`. |
 
 **Match by hash, never by name**: nine of the recovered names collide with
-*different* bytes in `data_raw/` — that collision is how an entire re-take
+*different* bytes in `data_raw/`. That collision is how an entire re-take
 series stayed hidden until content hashing exposed it. Filenames here carry
 an `__<md5-8>` suffix for that reason.
 
 The complete timestamped backup (438 files including the pilot and
 prehistory sessions and the LeCroy dress rehearsal) is preserved verbatim as
-a release asset — see the release notes and addendum 10 for the archive
+a release asset, so see the release notes and addendum 10 for the archive
 hash. The results that *use* this layer: `scripts/run_drift_settling.py`
 (reads `CLOCK.csv`) and the curation test of addendum 3.

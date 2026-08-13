@@ -7,6 +7,12 @@ scripts in order (see the top-level README "Reproduce" section). Every output th
 pipeline writes is committed, the per-trace QC dump `results/qc_metrics.csv`
 included, which is what lets the drift path reproduce from a clone.
 
+Reproducing them to the printed digit also takes a stated environment, and
+that statement is [`ENVIRONMENT_OF_RECORD.md`](ENVIRONMENT_OF_RECORD.md) in
+this directory. The supported floor and the environment these files were
+produced in are two different claims, and only the second reproduces the
+digits the CSVs store.
+
 **Every row carries a machine-readable `status` column** (`scripts/annotate_results_status.py`,
 run last in the pipeline) so the caveat travels *with the number* into any plot
 or table, so a bound never reads as a measurement. The controlled vocabulary:
