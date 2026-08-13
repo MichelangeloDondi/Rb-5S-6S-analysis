@@ -13,6 +13,31 @@ pip install -e ".[dev]"
 pytest -q
 ```
 
+Then the smallest thing that is actually the physics. This runs from the
+installed package, needs no data from this repository, and the numbers it
+prints are the ones the analysis is built on:
+
+```python
+import numpy as np, rb5s6s as r
+
+nu = np.linspace(-20, 20, 4001)                      # MHz, laser axis
+profile = r.model_profile(nu, gamma_coll=0.5,        # collisional FWHM, MHz
+                          sigma_laser_fwhm=1.0,      # laser width, MHz
+                          transit_fwhm=r.transit_fwhm_from_w0(
+                              r.W0_MEASURED_M, 130.0),
+                          s0=r.stark_shift_S0_mhz(0.225, r.W0_MEASURED_M))
+print(profile.sum() * (nu[1] - nu[0]))               # 1.000017, normalised
+```
+
+The last digits are the finite window and the discrete sum, not the model.
+Integrate over a wider axis and they go away.
+
+Two names are easy to confuse and worth stating once. `model_profile` takes
+the frequency axis and keyword arguments, and is the one you want.
+`composite_profile` builds the kernel from its widths and does NOT take an
+axis. And `stark_shift_S0_mhz` needs the waist as well as the power, because
+the light shift depends on both.
+
 That should end green in about two minutes. The 2025 dataset ships inside the
 repository in `data_raw/`, so nothing needs downloading and no bench is
 involved. If the fast suite passes, everything below will work.
