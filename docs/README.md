@@ -31,6 +31,8 @@ forward plan. [STYLE.md](STYLE.md) is the writing contract this
 documentation is held to, mechanically.
 
 Reference layers: [GLOSSARY.md](GLOSSARY.md) for every term and symbol,
+[REPRODUCING.md](REPRODUCING.md) for what runs from a clone and what needs
+the raw traces,
 [LITERATURE.md](LITERATURE.md) with its
 [index](LITERATURE_INDEX.md) and per-paper notes under [lit/](lit/),
 working notes under [notes/](notes/),
