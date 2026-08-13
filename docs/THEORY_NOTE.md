@@ -916,7 +916,7 @@ $10^{2}$ milliwatts per square centimetre. That chain refutes itself at the top:
 such a bath would saturate the D lines and put a visible fraction of the cell in
 5P, which the data exclude on sight, so at least one link, the
 peak-rate-everywhere assumption or the confinement time, overestimates by an
-order or more. What bounds the effect honestly is structure and data rather
+order or more. What bounds the effect is structure and data rather
 than the chain. The trapped spectrum is redistributed roughly symmetrically
 about the D-line centres, and a symmetric near-resonant spectrum cancels its
 dispersive shift at first order. What survives scales as the square of the

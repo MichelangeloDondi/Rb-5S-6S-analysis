@@ -276,7 +276,7 @@ rests on.
 Eight load-bearing assumptions are listed as a numbered attack surface
 ([08_assumptions_and_outlook.md](methods/08_assumptions_and_outlook.md) §6), and
 individual assumptions are also flagged at the point of use. The retro ratio
-is assumed at ρ = 0.94 ± 0.04 rather than asserted at the design value 1, and the transit
+is assumed at ρ = 0.94 ± 0.04 rather than at the design value 1, and the transit
 kernel's *shape* is "untested by the archival data and … a genuine attack
 surface."
 

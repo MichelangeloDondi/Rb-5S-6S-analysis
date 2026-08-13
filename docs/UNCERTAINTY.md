@@ -214,8 +214,7 @@ also states plainly that the SUPPORTED environment and the environment OF
 RECORD are two different claims: the suite passes on the declared floor and on
 the current stack, and only the environment of record reproduces the committed
 digits to the precision the files store. They still matched on 2.0 to 2.4 and failed on both 1.26 and
-2.5. That is worth stating plainly rather than quietly widening a tolerance
-until it stops complaining.
+2.5.
 
 What the measurement showed is more reassuring than the failure suggested.
 Re-running all sixteen producers and recording **every** differing column, 2421
@@ -312,3 +311,4 @@ is a number, its one-sidedness is carried by the `BOUND` status where a reader
 looks for it, and the waist label and transit width moved into the key and the
 unit. It remains skipped by the status annotator because it writes its own
 statuses, which are now drawn from the vocabulary in section 2.
+

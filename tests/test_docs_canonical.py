@@ -849,8 +849,12 @@ def test_advertised_test_counts_match_the_real_suite():
     # checkout can be held to it. CI, which has neither the private drafts nor
     # (in the public mirror) the archive-only tests, is not the reference.
     import pytest as _p
-    if not (ROOT / "private" / "manuscripts").is_dir():
-        _p.skip("not a full working checkout: collected count is not comparable")
+    # This compares THIS checkout's documented number against THIS checkout's
+    # collected count, so there is nothing cross-checkout about it and no
+    # reason to skip on the mirror. It used to skip whenever
+    # private/manuscripts was absent, which is always true in the public
+    # copy, so the number a reader actually sees was the one number never
+    # checked: on 2026-08-13 the mirror advertised 1570 against a real 1872.
     total = collected([])
     slow = collected(["-m", "slow"])
     if total is None or slow is None:

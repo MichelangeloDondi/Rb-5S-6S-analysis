@@ -125,6 +125,25 @@ FORBIDDEN = {
     # protocol section 2.1 with the counts and the replacements, and it governs
     # anything newly written from that date. Moving a word from that list to
     # this bank is the last step of its sweep, not the first.
+    "care performed rather than exercised": [
+        # Announcing an improvement over a previous, sloppier state tells a
+        # reader nothing about the physics and everything about the author's
+        # self-image. Owner instruction, 2026-08-13, on the retro-fraction
+        # assumption: state it, say it will be measured, do not explain how
+        # honest we are to flag it.
+        #
+        # NOT banned, and the distinction is the whole difficulty: "measured
+        # rather than assumed" and "deliberately not claimed" carry real
+        # content, the first a provenance and the second the difference
+        # between a choice and an oversight. Only the self-regarding forms
+        # are listed.
+        r"rather than asserted at",
+        r"now (?:carried|assumed|stated|treated)[^.]{0,40}rather than asserted",
+        r"rather than hoped for",
+        r"rather than quietly \w+ing",
+        r"\bwe are (?:careful|honest|transparent) (?:to|about|in)",
+        r"worth stating plainly rather than",
+    ],
     "internal process vocabulary": [
         r"red[- ]?team",
         r"\bprice[sd]?\b", r"\bpricing\b",

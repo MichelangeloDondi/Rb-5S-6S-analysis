@@ -21,6 +21,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+import math
 import numpy as np
 from scipy.optimize import least_squares
 import matplotlib
@@ -59,6 +60,109 @@ def _renderer(fig):
     FigureCanvasAgg(fig)
     fig.canvas.draw()
     return fig.canvas.get_renderer()
+
+
+def pm(value, err, unit=""):
+    """Format a value and its uncertainty per the two-significant-digit rule.
+
+    The uncertainty carries exactly two significant digits and the value is
+    rounded to the same decimal place, so the pair reads as one statement.
+    This is deliberately not a fixed `:.4f`: for an uncertainty of 0.0304 a
+    fixed two decimals gives 0.03, which is one digit, and for 24.09 it gives
+    four.
+
+    Above 100 the two digits cannot be written in plain decimal, since 2600
+    reads as four digits while carrying two, so both numbers are divided by
+    the uncertainty's own decade. A bare integer ending in zero is ambiguous
+    the same way and takes the same route: 24 says two digits, 10 does not.
+
+    Checked against 20000 random pairs spanning fourteen decades, every one
+    printing exactly two significant digits on the uncertainty with the value
+    on the same decimal place.
+    """
+    if err is None or not math.isfinite(err) or err <= 0:
+        # 8a.1 admits a value with no uncertainty only alongside an explicit
+        # statement of why. Printing the bare number was the silent form of
+        # exactly the fault this convention exists to prevent, and a
+        # non-finite error is a real fit failure rather than a hypothetical.
+        why = "uncertainty not returned by the fit"
+        if err is not None and math.isfinite(err) and err == 0:
+            why = "uncertainty returned as zero"
+        return f"{value:g}{(' ' + unit) if unit else ''} ({why})"
+
+    exp = math.floor(math.log10(abs(err)))
+    dp = -(exp - 1)
+    err_r = round(err, dp)
+    if err_r > 0 and math.floor(math.log10(abs(err_r))) != exp:
+        exp = math.floor(math.log10(abs(err_r)))
+        dp = -(exp - 1)
+        err_r = round(err, dp)
+
+    tail = f" {unit}" if unit else ""
+    # Plain decimal only where it is both unambiguous and readable.
+    #
+    # It is AMBIGUOUS when the uncertainty is a bare integer ending in zero,
+    # since 2600 reads as four significant digits while carrying two, and 10
+    # cannot say whether it carries one or two while 24 can.
+    #
+    # It is UNREADABLE once the pair needs leading zeros to reach its digits.
+    # 0.000026 +/- 0.000034 spends four characters per number saying nothing,
+    # and the convention everywhere in this field is to factor the decade out
+    # instead. The scale is taken from max(|value|, err) rather than from the
+    # value, because a value consistent with zero carries no scale of its own.
+    # Leading zeros appear only when BOTH numbers are small, so the small
+    # test uses the larger of the two. There is deliberately no matching
+    # large test: a big value with a small error, 1000000.00 +/- 0.50, is
+    # perfectly readable in plain decimal, and an earlier `magnitude >= 1e5`
+    # clause sent exactly that case into the decade form while the scale
+    # still came from the uncertainty, printing (10000000.0 +/- 5.0) x 10^-1.
+    # The genuinely large case is the ambiguity test below, not a magnitude.
+    magnitude = max(abs(value), err_r)
+    unreadable = magnitude < 1e-3
+    ambiguous = dp <= 0 and round(err_r) % 10 == 0
+    if not unreadable and not ambiguous and dp >= 0:
+        return f"{value:.{dp}f} ± {err_r:.{dp}f}{tail}"
+    scale = 10.0 ** exp
+    return (f"({value / scale:.1f} ± {err_r / scale:.1f})"
+            r"$\,\times\,10^{" f"{exp}" r"}$" f"{tail}")
+
+
+def bound(value, dp=2, kind="upper", unit=""):
+    """Format a one-sided bound, rounding AWAY from the allowed region.
+
+    Protocol 8a.3. An upper limit rounds UP and a lower limit rounds DOWN,
+    always, because rounding toward the excluded region silently tightens
+    the claim.
+
+    This exists because a plain `:.2f` did exactly that on 2026-08-13:
+    the record's 95 per cent upper bound on the AC-Stark coefficient is
+    0.963 MHz/W and the figure printed "< 0.96", which claims a tighter
+    limit than the data support. The direction of that error is the one
+    this whole record is built on not making.
+    """
+    scale = 10.0 ** dp
+    if kind == "upper":
+        rounded = math.ceil(value * scale - 1e-9) / scale
+    else:
+        rounded = math.floor(value * scale + 1e-9) / scale
+    tail = f" {unit}" if unit else ""
+    sign = "<" if kind == "upper" else ">"
+    return f"{sign} {rounded:.{dp}f}{tail}"
+
+
+def pm_row(name, value, err, unit=""):
+    """One parameter-box row, marking a quantity the fit does not resolve.
+
+    When the magnitude of a fitted value is below twice its own uncertainty
+    the fit has not separated it from zero, and printing a central value to
+    two significant digits invites the reader to treat it as measured. This
+    record's whole argument is that a number the data do not identify is not
+    reported as though it were, so the row says so where it is true.
+    """
+    text = f"  {name} = {pm(value, err, unit)}"
+    if err and math.isfinite(err) and err > 0 and abs(value) < 2.0 * err:
+        text += ", consistent with zero"
+    return text
 
 
 def _footer_rect(fig):
@@ -2717,6 +2821,25 @@ def _gallery_context():
 
     status = next(r["status"] for r in rows if r["quantity"] == "beta_self_joint")
     kappa = val("kappa_min")
+    # The profile minimum is what the DRAWN MODEL uses, and it sits at the
+    # boundary, zero. It is not the result: the CSV row for it says in so
+    # many words that it is not a detection, so the box states this fit's
+    # 95 per cent bound instead.
+    #
+    # WHICH BOUND, and the distinction is load-bearing. These are M25's own
+    # numbers, from global_archive_fit.csv, status PRELIM. They are NOT the
+    # figures README.md and CLAIMS.md headline, which are the three-session
+    # joint construction in stark_joint.csv, status BOUND, giving
+    # S0(225 mW) < 0.26 MHz against this fit's 0.217. The preregistration
+    # deliberately leaves open which construction is of record, so this box
+    # labels its own provenance rather than implying agreement. An earlier
+    # version of this comment claimed the reader-facing documents report
+    # these numbers, which is false.
+    kappa_ub95 = val("kappa_ub95")
+    s0_ub95 = val("S0_225mW_ub95")
+    # these two sit under a different key from the primary block
+    beta_lo95 = val("beta_self_lo95", "joint_region")
+    beta_hi95 = val("beta_self_hi95", "joint_region")
     beta = val("beta_self_joint")
     sl_blocks = {r["key"]: float(r["value"]) for r in rows if r["quantity"] == "sigma_laser"}
 
@@ -2745,7 +2868,10 @@ def _gallery_context():
               "skipping the fit-gallery figures)")
         return None
 
-    return {"status": status, "kappa": kappa, "beta": beta, "sl_blocks": sl_blocks,
+    return {"status": status, "kappa": kappa, "beta": beta,
+           "kappa_ub95": kappa_ub95, "s0_ub95": s0_ub95,
+           "beta_lo95": beta_lo95, "beta_hi95": beta_hi95,
+           "sl_blocks": sl_blocks,
            "reps": reps, "peaks": peaks, "traces": traces, "DNU_FLOOR": DNU_FLOOR,
            "_shared_profile_grid": _shared_profile_grid,
            "transit_fwhm_at_T": transit_fwhm_at_T}
@@ -2861,8 +2987,7 @@ def _saturation_display(fr, z95=1.645):
     if c_hat > z95 * sigma_c:                 # compression detected above the 95% floor
         pct = 100.0 * c_hat * fr["lin_peak"]
         pct_err = 100.0 * sigma_c * fr["lin_peak"]
-        return (f"  saturation compression at peak signal = {pct:.1f} ± "
-                f"{pct_err:.1f} %")
+        return f"  saturation compression at peak signal = {pm(pct, pct_err, '%')}"
     vsat_lb95 = 1.0 / (c_hat + z95 * sigma_c)  # one-sided 95% lower bound on Vsat
     return f"  saturation voltage > {vsat_lb95:.0f} V (95 percent confidence)"
 
@@ -3050,10 +3175,13 @@ def fig_single_peak_fits():
             f"  laser width = {fr['sl']:.3f} MHz (FWHM)",
             f"  collisional width = {fr['gc']:.3f} MHz (FWHM)",
             f"  self-broadening rate = {ctx['beta']:.4f} MHz per",
-            r"      $10^{12}\,\mathrm{cm^{-3}}$",
+            r"      $10^{12}\,\mathrm{cm^{-3}}$"
+            f", 95 per cent {ctx['beta_lo95']:.4f} to {ctx['beta_hi95']:.4f}",
             f"  number density = {N_here:.2f} " r"$\times\,10^{12}\,\mathrm{cm^{-3}}$",
-            f"  Stark coefficient = {ctx['kappa']:.3f} MHz per W",
-            f"  light shift at this power = {fr['s0']:.3f} MHz",
+            f"  Stark coefficient {bound(ctx['kappa_ub95'], 2, 'upper', 'MHz per W')}"
+            " (95 per cent, this fit)",
+            f"  light shift at this power "
+            f"{bound(ctx['s0_ub95'], 2, 'upper', 'MHz')} (95 per cent, this fit)",
             f"  transit width = {fr['transit']:.3f} MHz (FWHM, from $w_0$)",
             "",
             "From the fit shown at left:",
@@ -3067,11 +3195,11 @@ def fig_single_peak_fits():
             # height, on a panel whose data peak near 1 V while the number
             # printed 7.7. The drawn peak height is given beneath it, the
             # same quantity fig21 prints.
-            f"  line area = {fr['A']:.4f} ± {fr['A_err']:.4f} V × MHz",
+            pm_row("line area", fr["A"], fr["A_err"], "V × MHz"),
             f"  peak height = {peak_height:.3f} V",
-            f"  centre = {fr['cc']:.3f} ± {fr['cc_err']:.3f} MHz",
-            f"  background level = {fr['b0']:.4f} ± {fr['b0_err']:.4f} V",
-            f"  background slope = {fr['b1']:.5f} ± {fr['b1_err']:.5f} V/MHz",
+            pm_row("centre", fr["cc"], fr["cc_err"], "MHz"),
+            pm_row("background level", fr["b0"], fr["b0_err"], "V"),
+            pm_row("background slope", fr["b1"], fr["b1_err"], "V/MHz"),
             _saturation_display(fr),
         ]
         # 6.6 pt, not 7.0: the longest row reached the frame at 7.0 and the
@@ -3897,7 +4025,7 @@ def fig_joint_fit_five():
         h_drawn = fr["Vs"] * (1.0 - np.exp(-fr["lin_peak"] / fr["Vs"]))
         axf.text(0.985, 0.94,
                  f"peak height {h_drawn:.2f} V\n"
-                 f"centre {fr['cc'] - cc0:+.2f} ± {fr['cc_err']:.2f} MHz "
+                 f"centre {pm(fr['cc'] - cc0, fr['cc_err'], 'MHz')} "
                  "from the five-repeat mean\n"
                  f"reduced chi-squared {fr['chi2_red']:.2f}",
                  transform=axf.transAxes, fontsize=7.2, va="top", ha="right",
@@ -3925,8 +4053,11 @@ def fig_joint_fit_five():
 
     status = next(r["status"] for r in _rows("global_archive_fit")
                   if r["quantity"] == "beta_self_joint")
-    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum "
-                 f"and its errors, {STATUS_WORD.get(status, status.lower())}) "
+    # "and its errors" stood here and was not true: the shared block carries
+    # no per-parameter uncertainty on this figure, and the sibling galleries
+    # fig16 and fig22 correctly do not claim one.
+    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum, "
+                 f"{STATUS_WORD.get(status, status.lower())}) "
                  "+ data_raw archive (per-trace data, local "
                  "nuisance refits only). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig21_joint_fit_five.png")
@@ -4481,3 +4612,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

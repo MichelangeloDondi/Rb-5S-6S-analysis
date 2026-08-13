@@ -10,7 +10,8 @@ the form CODATA, NIST and the field's journals use:
 
         6.7 ± 2.9        right
         6.744 ± 2.9      wrong, the value claims a thousandth the pair denies
-        6.74 ± 2.94      right
+        6.74 ± 2.94      ALSO WRONG, 2.94 is three digits (corrected
+                         2026-08-13, having stood here as "right")
         4.8 ± 2.4        wrong here, one digit on the uncertainty
 
 WHY THIS IS A BUDGET AND NOT A BAN. Measured 2026-08-13: 74 pairs in the
@@ -48,12 +49,26 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE = Path(__file__).with_name("_uncertainty_baseline.json")
 SKIP = ("PREREGISTRATION", "/lit/")
+
+# An uncertainty a PERSON CHOSE keeps the precision they chose (protocol
+# 8a.5). RHO_RETRO_ERR = 0.04 is a declared one-sigma on an assumed retro
+# return fraction, so printing 0.040 would claim the assumption is known to
+# two digits. The test is provenance, not size. `check_carriers.py` holds
+# the same exemption, and the two lists must agree or the repository and its
+# outbound documents disagree about the same number.
+DECLARED = {("0.94", "0.04")}
 PAIR = re.compile(r"(-?\d+\.?\d*)\s*(?:±|\+/-)\s*(\d+\.?\d*)")
 
 
 def _sig(text: str) -> int:
+    """A trailing zero AFTER a decimal point is significant.
+
+    This counted them backwards until 2026-08-13, the same inversion the
+    sibling formatter test documents as fixed. Fixing it there and not here
+    is why a live three-digit uncertainty went unreported by this guard.
+    """
     digits = text.replace(".", "").lstrip("0")
-    return len(digits.rstrip("0")) if "." in text else (len(digits.rstrip("0")) or 1)
+    return len(digits) if "." in text else (len(digits.rstrip("0")) or 1)
 
 
 def _dec(text: str) -> int:
@@ -61,8 +76,16 @@ def _dec(text: str) -> int:
 
 
 def _violations() -> list[str]:
-    out = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
-                         capture_output=True, text=True).stdout.split()
+    # Tracked AND about-to-be-tracked, protocol 14.1a. Scanning only
+    # `git ls-files` made this guard blind to any newly written file until
+    # it was staged, which is the fault repaired in test_repo_hygiene the
+    # same day and not ported here at the time.
+    tracked = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
+                             capture_output=True, text=True).stdout.split()
+    fresh = subprocess.run(["git", "ls-files", "--others",
+                            "--exclude-standard", "*.md"], cwd=ROOT,
+                           capture_output=True, text=True).stdout.split()
+    out = tracked + fresh
     bad = []
     for rel in out:
         if any(k in rel for k in SKIP):
@@ -73,6 +96,8 @@ def _violations() -> list[str]:
         for n, line in enumerate(path.read_text().splitlines(), 1):
             for m in PAIR.finditer(line):
                 value, unc = m.group(1), m.group(2)
+                if (value, unc) in DECLARED:
+                    continue
                 if _sig(unc) != 2:
                     bad.append(f"{rel}:{n} {m.group(0)!r} uncertainty has "
                                f"{_sig(unc)} significant digits, not 2")
