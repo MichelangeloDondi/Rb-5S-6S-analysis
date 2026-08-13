@@ -57,6 +57,12 @@ SKIP = ("PREREGISTRATION", "/lit/")
 # the same exemption, and the two lists must agree or the repository and its
 # outbound documents disagree about the same number.
 DECLARED = {("0.94", "0.04")}
+
+# Another author's published value, quoted as they published it (8a.5). Not
+# ours to reformat: tidying someone else's paper is a different fault from
+# the one this guard exists to catch.
+OTHERS = {("40", "0.54"),        # Cao 2025, 5S-5D3/2 self-broadening
+          ("588", "387")}        # Lee et al. 2010, Cs 6S-8S pressure shift
 PAIR = re.compile(r"(-?\d+\.?\d*)\s*(?:±|\+/-)\s*(\d+\.?\d*)")
 
 
@@ -96,7 +102,7 @@ def _violations() -> list[str]:
         for n, line in enumerate(path.read_text().splitlines(), 1):
             for m in PAIR.finditer(line):
                 value, unc = m.group(1), m.group(2)
-                if (value, unc) in DECLARED:
+                if (value, unc) in DECLARED or (value, unc) in OTHERS:
                     continue
                 if _sig(unc) != 2:
                     bad.append(f"{rel}:{n} {m.group(0)!r} uncertainty has "

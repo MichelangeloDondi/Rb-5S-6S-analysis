@@ -29,10 +29,10 @@ above baseline over the whole record, settles it:
 
 | peak | before | after | ratio | implied power ratio |
 |---|---|---|---|---|
-| 4121 | 26.98 +/- 4.56 | 28.16 +/- 2.47 | 0.96 | 0.98 |
-| 4154 | 74.52 +/- 11.64 | 70.26 +/- 14.23 | 1.06 | 1.03 |
-| 4192 | 84.55 +/- 19.23 | 135.70 +/- 36.30 | 0.62 | 0.79 |
-| 4207 | 44.34 +/- 7.15 | 36.64 +/- 5.28 | 1.21 | 1.10 |
+| 4121 | 27.0 +/- 4.6 | 28.2 +/- 2.5 | 0.96 | 0.98 |
+| 4154 | 75 +/- 12 | 70 +/- 14 | 1.06 | 1.03 |
+| 4192 | 85 +/- 19 | 136 +/- 36 | 0.62 | 0.79 |
+| 4207 | 44.3 +/- 7.2 | 36.6 +/- 5.3 | 1.21 | 1.10 |
 
 Three of four agree inside one standard error and the fourth at about 1.3, so
 **the rulers were recorded at the same power before and after the ladder**, not at

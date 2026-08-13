@@ -52,7 +52,7 @@ One correction to M27 was found while writing this note and is recorded as
 addendum 29. Its drift prior is directional, +0.016 +/- 0.009 MHz/min, and the
 2026-07-30 window-reference correction had already withdrawn the licence for
 that sign, leaving a two-sided bound of about 0.02 MHz/min. Refitting on the
-sign-undetermined prior gives +6.63 +/- 3.40 rather than +4.75 +/- 2.37 MHz/W,
+sign-undetermined prior gives +6.6 +/- 3.4 rather than +4.8 +/- 2.4 MHz/W,
 so the significance is unchanged at 1.95 sigma against 2.00 and the bound
 LOOSENS to 12.21 MHz/W, 10.6 times weaker than the width channel. The
 direction is the unfavourable one and it strengthens rather than weakens

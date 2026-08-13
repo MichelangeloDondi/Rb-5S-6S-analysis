@@ -248,7 +248,7 @@ already-fitted 0.96 MHz. It matters because of its power signature, not its size
 The archive's own data do carry a P-squared width feature, fitted at
 c = -138 +/- 32 kHz with per-peak cores and one shared coefficient. **That is not
 read here as saturation, and the sign is wrong for it.** It fails every stability
-check (+180 +/- 117 kHz on the 25 to 125 mW subset against -152 +/- 30 kHz on 75
+check (+180 +/- 120 kHz on the 25 to 125 mW subset against -152 +/- 30 kHz on 75
 to 225 mW, a subset spread five to seven times the prediction), and the two peaks
 carrying it, 993.4154 and 993.4192, are exactly the two that addendum 21's
 postscript reports as pulled by -287 +/- 197 kHz when the Gaussian width is freed
@@ -305,9 +305,9 @@ broadening of a homogeneous line is Lorentzian and Lorentzian widths add.
 
 | | kappa (MHz/W) | S0(225) bound | chi2_red |
 |---|---|---|---|
-| production, ramp only | 0.0000 +/- 5.9562 | 0.6325 MHz | 3.7047 |
-| with saturation, ratio 1.2367 | +0.4490 +/- 1.8484 | **0.2299 MHz** | 3.7491 |
-| with saturation, ratio 1.2951 | +0.4490 +/- 1.8190 | **0.2230 MHz** | 3.7601 |
+| production, ramp only | 0.0 +/- 6.0 | 0.6325 MHz | 3.7047 |
+| with saturation, ratio 1.2367 | +0.4 +/- 1.8 | **0.2299 MHz** | 3.7491 |
+| with saturation, ratio 1.2951 | +0.4 +/- 1.8 | **0.2230 MHz** | 3.7601 |
 
 **The bound tightens by a factor 2.8**, from 0.6325 to 0.23 MHz across the ratio
 band, which is the direction this note predicted and a larger move than it
