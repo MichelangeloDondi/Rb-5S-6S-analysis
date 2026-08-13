@@ -147,6 +147,23 @@ def transit_fwhm_at_T(T_C: float, transit_ref_mhz: float, T_ref_C: float = 110.0
     measure, where 1.17 per cent of 942 MHz is 11 MHz and is resolvable, which
     makes the mass difference a handle rather than a nuisance.
     """
+    # transit_ref_mhz is a WIDTH IN MHZ, not a waist. The distinction needs
+    # a guard because the wrong call is the natural one and it did not raise:
+    # `transit_fwhm_at_T(130.0, W0_MEASURED_M)` accepted a waist of 6.4e-5 m
+    # and returned 0.0001 MHz, four orders of magnitude low, silently. Found
+    # by the clean-install-from-GitHub gate on 2026-08-13, where it was the
+    # first thing a reader of the public surface tried.
+    #
+    # The band separates the two quantities rather than pinning the physics:
+    # every transit width in the committed record lies between 0.0026 and
+    # 5.65 MHz, while a waist in metres is of order 1e-5. Anything outside
+    # [1e-3, 1e3) MHz is a unit error, not an unusual apparatus.
+    if not (1e-3 <= float(transit_ref_mhz) < 1e3):
+        raise ValueError(
+            f"transit_ref_mhz={transit_ref_mhz!r} is not a transit width in "
+            f"MHz. Values of order 1e-5 are a beam waist in metres passed "
+            f"where a width was wanted: use transit_fwhm_from_w0(w0, T_C) "
+            f"for that. The committed record spans 0.0026 to 5.65 MHz.")
     scaled = transit_ref_mhz * np.sqrt((T_C + 273.15) / (T_ref_C + 273.15))
     if isotope is None:
         return scaled

@@ -99,6 +99,10 @@ def pm(value, err, unit=""):
         err_r = round(err, dp)
 
     tail = f" {unit}" if unit else ""
+    # A negative value that rounds to zero printed "-0.000", a minus sign on
+    # a quantity the same row calls consistent with zero.
+    if value < 0 and abs(value) < 0.5 * 10.0 ** (-dp):
+        value = 0.0
     # Plain decimal only where it is both unambiguous and readable.
     #
     # It is AMBIGUOUS when the uncertainty is a bare integer ending in zero,

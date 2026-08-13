@@ -36,7 +36,40 @@ Two names are easy to confuse and worth stating once. `model_profile` takes
 the frequency axis and keyword arguments, and is the one you want.
 `composite_profile` builds the kernel from its widths and does NOT take an
 axis. And `stark_shift_S0_mhz` needs the waist as well as the power, because
-the light shift depends on both.
+the light shift depends on both. A third pair sits one level down:
+`transit_fwhm_from_w0` takes a waist in metres, while `linefit`'s
+`transit_fwhm_at_T` scales an existing width in MHz. Passing a waist to the
+second used to return a number four orders of magnitude small without
+complaining, and now raises.
+
+That should end green in about two minutes. The 2025 dataset ships inside the
+repository in `data_raw/`, so nothing needs downloading and no bench is
+involved. If the fast suite passes, everything below will work.
+
+To regenerate the analysis rather than just check it:
+
+```bash
+bash scripts/run_all.sh
+```
+
+That runs the analysis stages in dependency order, then the figures, the
+results ledger and the status column. **Re-running any stage reproduces its
+committed CSV byte for byte**, which is the property the whole repository is
+built to keep, so a diff after a run is a finding rather than noise.
+
+Two things are worth knowing before you wonder why something fails:
+
+* `pytest -q --runslow` is the full battery and is what CI runs. Run it before
+  pushing, not the fast subset, because several guards live only in it.
+* Eight scripts read two data trees that are not in the repository, the
+  2025-07-04 rehearsal and the campaign-morning pilot. Five name the trees
+  themselves and three reach them by importing `run_stark_joint`'s loaders.
+  They exit 0 with a message naming the missing tree rather than failing, and
+  the committed CSVs are the record for those stages, so nothing you need is
+  missing. If you do have the trees, point `RB5S6S_PREHISTORY_DIR` and
+  `RB5S6S_PILOT_DIR` at them rather than relying on the fallback path, which
+  is not where they live.
+
 
 That should end green in about two minutes. The 2025 dataset ships inside the
 repository in `data_raw/`, so nothing needs downloading and no bench is
