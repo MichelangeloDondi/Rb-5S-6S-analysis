@@ -50,12 +50,20 @@ Three of those rows need more than a row. They are the next three sections.
 
 One gap in the seam is worth naming rather than leaving to be found.
 `fit_stark_sweep`, the stage that turns measured widths against power into the
-AC-Stark bound this archive quotes, is NOT on the geometry seam. Its `profile`
+width-channel AC-Stark bound, is NOT on the geometry seam. Its `profile`
 argument is a boolean switch and not the geometry callable of the same name
 that `model_profile` and `fit_condition` accept, and its `_fwhm_of` helper has
 no override point. Pointing that stage at another geometry means editing it
 rather than passing it something, and the shared parameter name hides that
 from anyone reading the signature alone.
+
+The gap is wider than that one function. `run_stark_joint`, the stage behind
+the joint three-session bound the front page quotes, names its geometry with
+the literal string `"gaussian"` rather than taking a callable. So neither
+production inference stage sits on the seam: one takes a boolean that shares
+its name, the other takes a string. The seam is real and tested where this
+section describes it, and the two stages that turn measured data into
+committed bounds sit beside it rather than on it.
 
 ## The deep seam: the light-shift distribution
 

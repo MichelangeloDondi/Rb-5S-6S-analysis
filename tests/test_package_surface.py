@@ -144,6 +144,12 @@ def test_the_required_data_loaders_name_the_cause(tmp_path, monkeypatch):
         ("ingest.load_manifest", ingest.load_manifest),
         ("rate_model.load_clock", rate_model.load_clock),
         ("cavity_scan.load_scan", cavity_scan.load_scan),
+        # science_times is here because the first version of this test was not
+        # exercising it, and that is exactly where the hole survived: it
+        # resolves the default root itself before calling load_clock, so
+        # load_clock's guard could not fire through it. Test the entry point
+        # callers use, not only the helper underneath it.
+        ("rate_model.science_times", lambda: rate_model.science_times("p_sweep")),
     ):
         with pytest.raises(cfg.RepoDataMissing) as exc:
             call()
@@ -164,6 +170,17 @@ def test_the_graceful_loaders_stay_graceful(tmp_path, monkeypatch):
     import rb5s6s.qc as qc
     import rb5s6s.ruler as ruler
 
+    # Called with NO argument on purpose. The first version of this test
+    # patched RESULTS_DIR and then passed an explicit results_dir anyway, and
+    # both functions consult the module default only when the argument is
+    # None, so the patch was inert and the branch under test was the wrong
+    # one. The default path is the one a wheel install takes.
+    #
+    # Only the ruler assertion discriminates. This tree has no outlier files,
+    # so `outlier_files()` returns an empty set with or without the patch and
+    # that line proves only that it does not raise. `campaign_rate_relsyst()`
+    # returns 0.0029 here and 0.0 under the patch, so it is the one that would
+    # go red if the default stopped being consulted.
     monkeypatch.setattr(cfg, "RESULTS_DIR", tmp_path / "nope_results")
-    assert qc.outlier_files(results_dir=tmp_path / "nope_results") == set()
-    assert ruler.campaign_rate_relsyst(results_dir=tmp_path / "nope_results") == 0.0
+    assert qc.outlier_files() == set()
+    assert ruler.campaign_rate_relsyst() == 0.0

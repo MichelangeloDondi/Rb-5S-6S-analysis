@@ -865,9 +865,21 @@ def test_advertised_test_counts_match_the_real_suite():
     # every test added.
     stale = [n for n in re.findall(r"\b(\d{3,5})[- ]test", txt)
              if abs(int(n) - total) / total > 0.05]
+    # A count does not have to sit beside the word "test" to mislead a reader.
+    # The runnable block in methods.md carried "# 1160 fast tests" and "full
+    # 1293 incl. slow closures" until 2026-08-15, by which time both had
+    # drifted by a factor of 1.8, and neither matched the pattern above: one
+    # puts an adjective between the number and the noun, the other names no
+    # noun at all. Any number on a line that runs pytest is advertising what
+    # that command prints, so check those lines whatever words surround them.
+    # Matching on proximity instead was tried and rejected: it flags the 560
+    # in an image width whose alt text happens to say "test".
+    stale += [n for line in txt.splitlines() if "pytest" in line
+              for n in re.findall(r"\b(\d{3,5})\b", line)
+              if abs(int(n) - total) / total > 0.05]
     assert not stale, (
-        f"documented test counts {stale} are more than 5% from the real {total} "
-        f"({slow} slow). Update docs/methods.md and README.md.")
+        f"documented test counts {sorted(set(stale))} are more than 5% from the "
+        f"real {total} ({slow} slow). Update docs/methods.md and README.md.")
 
 
 def test_peak_labels_are_not_presented_as_measured_wavelengths():

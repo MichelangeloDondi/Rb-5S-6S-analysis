@@ -55,9 +55,12 @@ bash scripts/run_all.sh
 ```
 
 That runs the analysis stages in dependency order, then the figures, the
-results ledger and the status column. **Re-running any stage reproduces its
-committed CSV within the tolerance `scripts/verify_results_fresh.py` states**,
-which is the property the whole repository is built to keep. The standard is a
+results ledger and the status column. The stages that read raw traces need the
+traces, so which of them run at all depends on the copy you have, and
+[data_raw/README.md](data_raw/README.md) states what this one carries.
+**Where a stage runs, it reproduces its committed CSV within the tolerance
+`scripts/verify_results_fresh.py` states**, which is the property the whole
+repository is built to keep. The standard is a
 stated tolerance rather than byte equality for a measured reason: the
 committed digits were produced under numpy 2.0.2 and hold across numpy 2.0 to
 2.4, and outside that band four files drift, in the two quantity families this

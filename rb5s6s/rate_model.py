@@ -200,6 +200,14 @@ def rate_at(model: dict, epoch: float) -> tuple[float, float]:
 
 def science_times(role_dir: str, root: Path | None = None) -> dict[str, float]:
     """Basename -> epoch for the canonical science traces of one role."""
+    # The same contract as load_clock, and it has to be stated HERE too: this
+    # function resolves the default root before calling load_clock, so
+    # load_clock's own `root is None` guard can never fire through this path.
+    # Without this line a wheel install still raised a bare FileNotFoundError
+    # from the public entry point while the documented behaviour held only for
+    # a direct load_clock() call, which is the one the test happened to make.
+    if root is None:
+        C.require_repo_data("data_raw")
     root = root or C.REPO_ROOT
     clock = load_clock(root)
     out = {}

@@ -19,10 +19,11 @@ re-running any stage reproduces its committed CSV within the tolerance
 
 That comparison is a stated tolerance rather than byte equality because the
 arithmetic depends on the numerical environment. The committed digits were
-produced under numpy 2.0.2 and hold across numpy 2.0 to 2.4. On the declared
-floor of numpy 2.5 the two quoted bounds move in their last digit, 0.963 to
-0.959 MHz/W and 0.217 to 0.216 MHz, while every quantity read as physics is
-identical to the printed digit.
+produced under numpy 2.0.2 and hold across numpy 2.0 to 2.4. A full rerun on
+the declared numpy 2.5 floor moved two of the global archive fit's preliminary
+values in their last digit, 0.963 to 0.959 MHz/W and 0.217 to 0.216 MHz, while
+the collisional coefficient and the predicted light shift stayed identical to
+the printed digit.
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
 gives the versions, the per-column sizes and the reasoning.
 

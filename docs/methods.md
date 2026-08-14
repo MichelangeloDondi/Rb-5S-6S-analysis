@@ -151,7 +151,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
           · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_archive_fit(M28, M23's construction over M25's data: the full archive in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    2064-test battery (2028 fast ~2 min + 36 `slow` high-statistics
+tests/    2066-test battery (2030 fast ~2 min + 36 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -175,18 +175,19 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 1160 fast tests (~2 min)
-pytest -q --runslow                           # full 1293 incl. slow closures (what CI runs)
-# reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
-# (already in git; import_data.py only re-imports from the old archive):
+pip install -e ".[dev]" && pytest -q          # 2030 fast tests (~2 min)
+pytest -q --runslow                           # full 2066 incl. slow closures (what CI runs)
+# reproduce every committed CSV, figure, and docs/RESULTS.md, where the copy
+# you have carries the raw traces (see data_raw/README.md):
 bash scripts/run_all.sh
 ```
 
 `run_all.sh` runs every stage in dependency order, then `make_figures`,
 `make_results_ledger`, and `annotate_results_status` (which appends the
-machine-readable `status` provenance column and must run last) — regenerating
-every committed `results/*.csv`, the figures, and the ledger within the
-tolerance `scripts/verify_results_fresh.py` states.
+machine-readable `status` provenance column and must run last). Where the raw
+traces are present it regenerates every committed `results/*.csv`, the figures
+and the ledger within the tolerance `scripts/verify_results_fresh.py` states.
+`data_raw/README.md` states what the copy you are reading carries.
 
 Raw-data source and history: the 2025 dataset comes from the earlier
 `Rb-5S-to-6S-broadening` project; this repository is a clean reimplementation, and
