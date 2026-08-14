@@ -213,8 +213,10 @@ def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
     # covariance from the Jacobian. The fit is over-dispersed (chi2_red > 1,
     # block-to-block width scatter), so we CONSERVATIVELY inflate the parameter
     # error by sqrt(chi2_red) -- the standard over-dispersion rescale. This is
-    # load-bearing: the inflated bound BRACKETS the predicted ~0.6 MHz (w0 = 50 um;
-    # was 1.43 at the old 32 um nominal), while the raw (un-inflated) bound would be
+    # load-bearing: the inflated bound BRACKETS the predicted 0.35 MHz at the
+    # adopted w0 = 64 um (constants.W0_MEASURED_M). It was quoted here against
+    # ~0.6 MHz while the central waist was 50 um, and 1.43 at the older 32 um
+    # nominal; both are retired. The raw (un-inflated) bound would be
     # tighter, so we surface both (kappa_err_raw, chi2_inflation) for verifiability.
     infl = float(max(chi2_red, 1.0) ** 0.5)
     J = sol.jac

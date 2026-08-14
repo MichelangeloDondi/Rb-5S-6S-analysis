@@ -375,17 +375,33 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # Beam geometry
 # --------------------------------------------------------------------------
 W0_MEASURED_M = 64e-6
-"""Beam waist, 64 um. ESTABLISHED: measured on this apparatus lineage, twice,
-in this configuration. Enters the transit width (~1/w0) and all Stark
-magnitudes (~1/w0^2), so it is quoted without hedging and used as measured.
+"""Beam waist, 64 um. ESTABLISHED: measured once on this apparatus lineage, in
+this configuration, and stated with its convention in a peer-reviewed paper.
+Enters the transit width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is
+the dominant systematic and is used as measured.
 
 THE MEASUREMENT, stated first because it is the reason this is not a prior.
-Rajasree-KP 2020 (OIST thesis section 5.2) recorded the focused 993 nm cell
-beam at a 1/e^2 DIAMETER of 128 um, so w0 = 64 um, on a Thorlabs BC106VIS
-profiler, through L1 at f = 150 mm, at 130 C, in the same 2 f_CM retro
-geometry, on the same laser model this campaign used (M Squared SolsTiS).
-Nieddu 2019 quotes the identical 128 um on the previous laser, a Coherent
-MBR 110. Two profiler measurements, one configuration, agreeing.
+Nieddu et al., Opt. Express 27, 6528 (2019), page 6530, describing the
+identical focused-and-retro-reflected 993 nm cell geometry: "A plano-convex
+lens (L1), with focal length f1 = 150 mm, is placed after the optical isolator
+to focus the beam in the cell. THE 1/e^2 BEAM DIAMETER IS 128 um." So
+w0 = 64 um, and the 1/e^2 convention is the source's own word rather than our
+reading of a bare "diameter".
+
+CORRECTED 2026-08-14, and the correction WEAKENS the provenance without moving
+the value. This docstring previously said the waist was measured TWICE, once by
+Rajasree-KP 2020 on the SolsTiS and once by Nieddu on a Coherent MBR 110, "two
+profiler measurements, one configuration, agreeing". That is not what the
+sources say. The thesis footnote opening its section 5.1 (page 65) reads: "The
+data shown in Section 5.2 were collected by T. Nieddu and plotted by K.P.
+Subramonian Rajasree. The paper is given in Appendix B.2." So the thesis
+section is Nieddu's data replotted, not an independent re-measurement, and its
+own sentence quotes the 128 um WITHOUT the convention, which the paper it
+reprints in Appendix B.2 supplies. ONE profiler measurement, reported in two
+documents, on the predecessor laser rather than on this campaign's. It is
+still a direct measurement of this geometry with its convention stated, which
+is why it stands as the adopted value, but it is not corroborated by a second
+independent measurement and this file no longer says it is.
 
 What this dataset does NOT do is re-measure it. The transit-against-laser-width
 degeneracy means the 2025 line cannot pin w0 on its own, which is a
@@ -418,15 +434,25 @@ recollected clipping EVENT does not by itself fix how MUCH of the beam was
 clipped, which is why this stays a Gaussian-optics estimate and not a
 measurement.)
 
-THE LINEAGE MEASUREMENT, in full (2026-08-01, v3.0.0). This is the value the
-group MEASURED on this apparatus lineage, not a value inferred from our own
-line. The Rajasree-KP 2020 OIST thesis section 5.2 records the
-focused 993 nm cell beam as a 1/e^2 DIAMETER of 128 um, i.e. w0 = 64 um, with
-a Thorlabs BC106VIS profiler, through L1 with f = 150 mm, at 130 C, in the
-same 2 f_CM retro geometry -- and on the SAME LASER MODEL this campaign used,
-the M Squared SolsTiS. Nieddu 2019 quotes the identical 128 um on the older
-Coherent MBR 110. That is this campaign's configuration in every documented
-respect, which is why 64 um is used as measured rather than merely cited.
+THE LINEAGE MEASUREMENT, in full (2026-08-01, v3.0.0, PROVENANCE CORRECTED
+2026-08-14). This is the value the group MEASURED on this apparatus lineage,
+not a value inferred from our own line. Nieddu et al., Opt. Express 27, 6528
+(2019), page 6530, states it with its own convention: "The 1/e^2 beam diameter
+is 128 um", i.e. w0 = 64 um, through L1 with f = 150 mm in the same 2 f_CM
+retro geometry. The Rajasree-KP 2020 OIST thesis section 5.2 records the same
+128 um with the Thorlabs BC106VIS profiler named and the cell at 130 C, but it
+is the SAME measurement rather than a second one: the thesis footnote at its
+section 5.1 says the section 5.2 data "were collected by T. Nieddu and plotted
+by K.P. Subramonian Rajasree", and reprints the paper as Appendix B.2.
+
+So this is ONE profiler measurement of this geometry, stated with its
+convention, on the PREDECESSOR laser rather than on the M Squared SolsTiS this
+campaign used. This block previously said the measurement was made on the same
+laser model as this campaign with Nieddu as a separate confirmation on the
+older Coherent MBR 110. That was wrong in both halves and is corrected here.
+The geometry (lens, focal length, retro, cell temperature) is this campaign's
+in every documented respect, which is why 64 um is used as measured rather
+than merely cited, but the laser is not, and there is no second measurement.
 
 It is an ADOPTED prior, NOT a measurement of this beam. Two known effects sit
 between Rajasree's bench and ours, and BOTH push the EFFECTIVE waist ABOVE

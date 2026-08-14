@@ -72,7 +72,7 @@ def main() -> int:
                     "nat_conv_transit_err": err})
         print(f"  {w0:>4d}u {add:>+9.2f} {natx:>14.2f} +/-{err:.3f}  {note}")
 
-    print("\n  collection-range dependence (w0=50 um, 110 C) -- objection #1:")
+    print("\n  collection-range dependence (w0=50 um, the RETIRED central value,\n    kept so the committed CSV is not rewritten. 110 C) -- objection #1:")
     for Z in (0.3, 1.0, 3.0, 6.0):
         add, err = _add_and_err(50e-6, Z * 1e-3)
         out.append({"w0_um": 50, "T_C": 110, "collection": f"{Z}mm",
@@ -91,12 +91,14 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
 
     print(f"\n{'-'*74}\nWHAT IT MEANS (transit physics corrected 2026-07-12 -- flux factor):")
-    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um.")
+    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um,\n    both RETIRED waists. At the adopted 64 um it is ~0.93 MHz.")
     print("    At 32 um, natural (x) transit already EXCEEDS the observed 5.25 MHz line,")
-    print("    so 32 um is EXCLUDED; the observed width is consistent with w0 ~ 45-70 um")
-    print("    (central ~50). transit and the laser Gaussian remain DEGENERATE via w0:")
+    print("    so 32 um is EXCLUDED. The line ALONE can accommodate w0 ~ 45-70 um,")
+    print("    which is a DIFFERENT quantity from the adopted prior. The band of")
+    print("    record is 62-68 um, constants.W0_BAND_M. transit and the laser")
+    print("    Gaussian remain DEGENERATE via w0:")
     print("      - w0 ~< 40 um: transit alone ~fills the 5.25 MHz => laser NARROW/none;")
-    print("      - w0 = 50 um (prior): transit ~1.2, leaving ~0.8 MHz laser axis for laser.")
+    print("      - w0 = 50 um (RETIRED, not the prior): transit ~1.2, leaving ~0.8 MHz.")
     print("    The MC does NOT settle narrow-vs-not by itself -- it QUANTIFIES the w0")
     print("    degeneracy; the fixed-lock session's knife-edge w0 is the decisive measurement.")
     print("  * objection #1 (collection over many mm): a real tens-of-% effect on the")

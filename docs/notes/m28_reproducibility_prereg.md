@@ -116,9 +116,10 @@ seeding and the pointwise-minimum discipline protect the TOTAL, and what has
 no protection of its own is the SPLIT of that total between sessions. Section
 1's instinct was right and its mechanism was loose.
 
-Identical data, changed code, primaries exact, unseeded subsets moved by a
-third. A changed constant or a changed model would have moved the primary too.
-What moves only the poorly conditioned quantities is the optimizer path.
+Identical data, changed code, the total exact, the split between sessions
+moved by a third. A changed constant or a changed model would have moved the
+primary too. What moves only the poorly conditioned quantities is the
+optimizer path.
 
 So section 1's seeded-twin discipline gap, which the first postscript said had
 lost its urgency, HAS ITS URGENCY BACK, and on a second axis: the variants are

@@ -42,13 +42,13 @@ right, and two independent things follow:
 - The dominant systematic's central value moves from ~32 µm to **~50 µm** (~1.5×).
 - $S_0\propto 1/w_0^2$, so the predicted AC-Stark shift drops by
   $(32/50)^2\approx2.4\times$: $S_0(225\text{ mW})\approx1.43\to0.59$ MHz (not ÷8).
-  The archival bound (re-run: 95% ≲0.64 MHz, profile likelihood) still brackets it, now narrowly.
+  The recorded bound (re-run: 95% ≲0.64 MHz, profile likelihood) still brackets it, now narrowly.
 - `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm), and every fit was re-run.
 
 **This propagation is DONE** (`docs/notes/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
-headline archival results are unchanged in *kind* (model-independent bounds and
+headline results are unchanged in *kind* (model-independent bounds and
 nulls, gated on a direct beam-profile measurement), and only the w₀-conditional central values
 moved (β central ~0.056 → 0.036, σ_laser bound 1.1 → 1.0 laser axis, S₀ pred
 1.43 → 0.59).
@@ -60,7 +60,7 @@ Converting: at 393 K, 1 mTorr ↔ 24.5×10¹² cm⁻³, so
 
 $$\beta_\text{self}(7S)\approx 129/24.5 \approx 5\ \text{kHz per }10^{12}\ \text{cm}^{-3}.$$
 
-Our archival β_self **bound** is 0.2–0.4 MHz = 200–440 kHz per 10¹² cm⁻³ (95%,
+Our β_self **bound** is 0.2–0.4 MHz = 200–440 kHz per 10¹² cm⁻³ (95%,
 t-corrected for the 1-DOF scatter + the 20% density-scale systematic), so it
 sits ~40–90× above the 7S self-broadening scale (6S should be similar or a bit
 smaller). Refinement for the paper: quote the **self-broadening** coefficient
@@ -95,7 +95,7 @@ which is one less systematic to worry about.)
 ---
 
 ### Bottom line
-The papers did what the archive's own numbers couldn't: they **caught a real bug
+The papers did what the dataset's own numbers couldn't: they **caught a real bug
 in the transit MC** (a missing crossing-flux factor) **and re-centred the dominant
 systematic** (w₀ ~50 µm, not the 32 µm nominal, which the corrected transit
 excludes), with a clean downstream consequence (the predicted AC-Stark shift is

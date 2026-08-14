@@ -14,7 +14,7 @@ stage reproduces its committed CSV in `results/` within the tolerance
 That comparison is a stated tolerance rather than byte equality because the
 arithmetic depends on the numerical environment. The committed digits were
 produced under numpy 2.0.2 and hold across numpy 2.0 to 2.4. A full rerun on
-the declared numpy 2.5 floor moved two of the global archive fit's preliminary
+the declared numpy 2.5 floor moved two of the global dataset fit's preliminary
 values in their last digit, 0.963 to 0.959 MHz/W and 0.217 to 0.216 MHz, while
 the collisional coefficient and the predicted light shift stayed identical to
 the printed digit.
@@ -28,8 +28,8 @@ have their own script, held out for one of two reasons.
 
 These do not run from a clone: `run_stark_joint.py` (`stark_joint.csv`, the
 joint three-session AC-Stark bound, a long profile-likelihood run that also
-reads the raw rehearsal and pilot trees), `run_full_dataset_fit.py`
-(`full_dataset_fit.csv`, the same construction over the full archive),
+reads the raw 4 July and campaign-morning trees), `run_full_dataset_fit.py`
+(`full_dataset_fit.csv`, the same construction over the full dataset),
 `run_global_dataset_fit.py` (`global_dataset_fit.csv`), `_m25_norulers.py`
 (`global_dataset_fit_norulers.csv`) and `run_morning_ruler.py`
 (`morning_ruler.csv`).

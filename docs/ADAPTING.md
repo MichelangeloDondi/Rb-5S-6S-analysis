@@ -217,7 +217,7 @@ The tooth-labelling defect the section above guards against was found by
 looking at a picture rather than by reading a number, and no fitting stage
 draws the traces it does not fit.
 [`scripts/make_qc_gallery.py`](../scripts/make_qc_gallery.py) closes that
-gap by drawing every trace in the archive once. The unit of presentation is
+gap by drawing every trace in the dataset once. The unit of presentation is
 the condition: one page per condition, every repeat of it as a row, on one
 shared vertical scale for the whole page. Each row carries the signal with
 the drawn model, the fitted window marked at both edges, and a residual
@@ -230,7 +230,7 @@ new system's first surprises arrive as pictures instead of as numbers. It
 gates nothing, carries no data fingerprint, and its output is untracked
 under `private/qc_gallery/`, rebuilt from the repository alone.
 [`DATA.md`](DATA.md) section 4 describes it as the inspection instrument for
-this archive.
+this dataset.
 
 ## Three radiation fields, and the tests that say whether yours matter
 
@@ -298,7 +298,7 @@ against the enhanced paths exactly, but only once you sum them all. And **the
 per-line spread is the only thing in the width budget that differs between your
 lines**, so it is the one handle that can separate pumping from saturation and
 from the light shift without a stable frequency reference. Whether you can spend
-it is arithmetic: here the spread is 3 kHz, at the light shift this archive can
+it is arithmetic: here the spread is 3 kHz, at the light shift this dataset can
 actually bound, against an 88 kHz block scatter, so
 the answer was no by a factor of twenty to forty.
 

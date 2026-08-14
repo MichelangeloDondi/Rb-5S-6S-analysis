@@ -45,12 +45,18 @@ rests on the direct waist measurement as much as on the line. Matching the obser
 i.e. **~1.5× the old nominal, not ~3×**. `W0_MEASURED_M` is re-centred to 50 µm and
 `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from it (≈1.20 MHz at 110 °C).
 
-**Independent corroboration, a direct beam measurement (2026-07-13).** The group's
-own 993 nm lineage measured the focused cell beam directly: **Nieddu 2019** (his
-Opt. Express paper *and* OIST thesis, "measured to be 128 µm") and the
-**Rajasree-KP 2020** OIST thesis both quote a **1/e² beam diameter of 128 µm →
-w₀ = 64 µm**, with the same f = 150 mm lens. That measured value lands at the top
-of the transit-inferred 45–70 µm band and **independently excludes 32 µm**. The
+**A direct beam measurement (2026-07-13, provenance corrected 2026-08-14).**
+The group's own 993 nm lineage measured the focused cell beam directly.
+**Nieddu 2019** (Opt. Express 27, 6528, page 6530) states it with its
+convention: "The 1/e² beam diameter is 128 µm", with the same f = 150 mm lens,
+so **w₀ = 64 µm**. The **Rajasree-KP 2020** OIST thesis quotes the same 128 µm
+in its section 5.2, and that is the SAME measurement rather than a second one:
+the thesis footnote at section 5.1 records that the section 5.2 data "were
+collected by T. Nieddu and plotted by K.P. Subramonian Rajasree", with the
+paper reprinted as Appendix B.2. This note previously called the pair
+independent corroboration. It is one measurement reported twice, which still
+carries its convention from the paper, and still **independently excludes
+32 µm**, but it is not two. The
 naive Gaussian estimate assumed a 3 mm input beam diameter clipped by "the EOM
 aperture". That attribution is now sourced rather than inferred (2026-08-01,
 APPARATUS.md §1.2/§2): no lens or telescope sits between the SolsTiS and the
@@ -85,7 +91,7 @@ only route to a sane value.
 
 Corroboration also on the *width* itself: Nieddu 2019 fits the same four two-photon
 peaks at FWHM 2.43–2.60 MHz on the **laser axis**, which is ~5 MHz transition
-axis, consistent with our archival ~5.25 MHz and with a locked-laser linewidth of
+axis, consistent with our measured ~5.25 MHz and with a locked-laser linewidth of
 ~100 kHz (vs the drifted 2025 lock).
 
 Cascade on the AC-Stark prediction (S₀ ∝ (1+ρ)/w₀²): the predicted on-axis
@@ -116,7 +122,7 @@ for the tied-fit σ_laser(T) values. Neither is a new degeneracy, just this
 one moving along the curve the earlier columns already describe.
 
 Every result stays **w₀-conditional and PRELIMINARY**: the transit↔σ_laser
-degeneracy means the archival line cannot pin w₀ on its own, and the fixed-lock
+degeneracy means the 2025 line cannot pin w₀ on its own, and the fixed-lock
 session's direct beam-profile measurement does. The re-pin corrects the central
 prior and excludes 32 µm, and it is not a w₀ measurement.
 

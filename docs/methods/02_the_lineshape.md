@@ -233,13 +233,19 @@ natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([what we found](07_what_we_found.md)).
 
-**Independent corroboration.** The same 993 nm beamline was measured directly by
-[Nieddu](../lit/nieddu2019.md) (2019, Opt. Express and OIST thesis) and by [Rajasree-KP](../lit/rajasree2020.md) (2020, OIST
-thesis), both reporting a $1/e^2$ beam diameter of 128 µm with the same $f=150$
-mm focusing lens, which is $w_0=64$ µm, with the same 3 mm EOM aperture truncating
-the input beam that the naive (untruncated) estimate misses. That direct
-measurement lands at the top of the transit-inferred band and independently
-excludes 32 µm, agreeing with the corrected transit physics. The adopted prior
+**A direct beam measurement, made once.** The same 993 nm beamline was measured
+directly by [Nieddu](../lit/nieddu2019.md) (2019, Opt. Express 27, 6528, page
+6530), which states the convention in its own words: "The $1/e^2$ beam diameter
+is 128 µm", with the same $f=150$ mm focusing lens, so $w_0=64$ µm, with the
+same 3 mm EOM aperture truncating the input beam that the naive (untruncated)
+estimate misses. The [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis
+reports the same number in its section 5.2, but that is the SAME measurement
+rather than a second one: the thesis footnote at its section 5.1 says the
+section 5.2 data "were collected by T. Nieddu and plotted by K.P. Subramonian
+Rajasree", and reprints the paper as its Appendix B.2 (corrected 2026-08-14,
+having previously been described here as two independent measurements). That
+direct measurement lands at the top of the transit-inferred band and
+independently excludes 32 µm, agreeing with the corrected transit physics. The adopted prior
 is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from
 60 and 70 on 2026-08-10), and the wider ranges this section reached on the way
 there, 45 to 70 and then 50 to 64 µm, are replaced by it for that purpose.

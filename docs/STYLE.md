@@ -6,7 +6,7 @@ data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
 
 ## Claims and certainty
 
-- **A bound is reported as a bound.** Where the archive constrains rather than
+- **A bound is reported as a bound.** Where the dataset constrains rather than
   measures, say so in the sentence that gives the number, not in a footnote.
   Every headline value carries a provenance tag (MEASURED-HERE / CALCULATED /
   ESTABLISHED / ENVELOPE / OPEN / DESCOPED).
@@ -24,6 +24,30 @@ data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
   independently.
   `tests/test_docs_canonical.py` and `tests/test_ramp_geometry_docs.py` fail if
   a document and its producing code disagree.
+- **Name the construction whenever you quote a number.** Five committed
+  constructions in this repository produce a quantity called "S0(225 mW)", and
+  three of them also carry rows that are REPLACED diagnostics kept for
+  continuity. A bare "the bound" is ambiguous, and on 2026-08-14 a reader of
+  this repository (the author) quoted `stark_sweep.csv`'s replaced Wald row
+  2.205 in place of its actual bound, `S0_225mW_ub95_profile` = 0.632, whose own
+  note says "quote the profile row". Say which file, and check the `status`
+  column before quoting the row.
+- **A number cited from a paper carries the sentence that states it.** Quote
+  the source's own words, with page, wherever a result depends on the value.
+  A summary that is not anchored to a quote drifts toward what the writer
+  expected: the waist provenance survived for weeks as a "measured 1/e^2
+  diameter" claim with no quote behind it, correct as it happened, beside a
+  claim of independent corroboration that was not.
+- **Before calling two sources independent, ask who collected the data.** Two
+  documents reporting one measurement are not two measurements. The thesis and
+  the paper that both give this apparatus's beam diameter are the same dataset,
+  which the thesis says in a footnote, and the record claimed corroboration
+  until 2026-08-14.
+- **A retired value is marked as retired at every site that still names it.**
+  When a constant is re-pinned, the edit is not finished at the constant: grep
+  the OLD value across the tree and decide per site whether it is history or a
+  live claim. `tests/test_repo_hygiene.py` now fails on a retired beam waist
+  quoted beside a live claim, and the same discipline applies to any re-pin.
 
 ## Register
 
@@ -55,8 +79,32 @@ them. Write "a new operator", "the group", "an external theory check".
 | `docs/RESULTS.md` | `scripts/make_results_ledger.py` |
 | `docs/LITERATURE_INDEX.md` (+ a local, untracked `PDF_papers/README.md`) | `scripts/build_lit_index.py` |
 | `docs/references.bib` | `scripts/build_lit_index.py` |
+| `figures/*.png` | `scripts/make_figures.py` |
+| `figures/fig0_spectrum.png` | `scripts/make_fig0_spectrum.py` |
+| `docs/apparatus/program_timeline.png` | `scripts/make_timeline_figure.py` |
 
 Editing these directly is lost on the next run, and the freshness tests fail.
+
+**Redraw with the generator you edited, by name, and then LOOK at the output.**
+`scripts/run_all.sh` calls `make_fig0_spectrum`, `make_figures` and
+`make_results_ledger`. It does NOT call `make_timeline_figure`, so a text edit
+to that generator leaves a stale published PNG that every test passes over: the
+figure-freshness guard hashes the RESULTS CSVs and asks whether a figure was
+drawn from stale RESULTS, and a wording change moves no result. On 2026-08-14 a
+panel title kept a retired word through a full sweep, two gates and two
+commits, and was caught only by opening the image. Before relying on a runner,
+check which generators it actually calls.
+
+**A guard keyed to data freshness says nothing about text freshness.** Whenever
+a pass changes words rather than numbers, name what will detect it.
+
+**Editing a SOURCE regenerates its artifacts too.** The table above reads in
+one direction, generator to output, and the trap runs the other way: the
+literature notes under `docs/lit/` are hand-written SOURCES from which
+`build_lit_index.py` generates `docs/LITERATURE_INDEX.md`, `docs/references.bib`
+and a local `PDF_papers/README.md`. Editing one note therefore makes three
+tracked files stale, and the gate is where that surfaces. After editing any
+file, ask what is generated FROM it, not only what generates it.
 
 ## Markdown and maths
 

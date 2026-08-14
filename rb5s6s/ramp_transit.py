@@ -121,7 +121,7 @@ def moving_atom_moments(s0: float, *, n_b: int = 501, n_t: int = 60001,
     rate set by v_z. 0 is the frozen-fringe limit (a near-transverse atom parked
     at one point of the node-antinode pattern, sampled over the arcsine); the
     experiment's fast-axial atoms sit near ~113 (2 v_z/lambda ~ 0.56 GHz against
-    a ~5 MHz transit rate at w0 = 50 um). Both limits preserve the mean, which
+    a ~4 MHz transit rate at the adopted w0 = 64 um). Both limits preserve the mean, which
     is the fringe-immunity that `constants` asserts and M15 quantifies.
 
     `speeds` supplies a distribution of transverse speeds to mix over -- pass a

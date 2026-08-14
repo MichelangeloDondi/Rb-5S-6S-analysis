@@ -11,7 +11,7 @@ frequency-shifted so the fringes run, and how tight should the focus be?
 **Gives.** Both designs computed, each with the first pass that was wrong
 printed beside the answer, because in both cases the wrong criterion was the
 obvious one.
-**Skip if.** You want the archival result rather than the next session's
+**Skip if.** You want the recorded result rather than the next session's
 design.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)

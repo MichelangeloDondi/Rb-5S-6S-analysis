@@ -73,7 +73,7 @@ the others ([methods 2](methods/02_the_lineshape.md)).
 
 **Collisional self-broadening, $\beta_\text{self}$.** How much wider the line
 gets per unit of rubidium density, because atoms perturb each other. Measured
-in MHz per 10¹² cm⁻³. This archive reports a **bound** on it and explains why
+in MHz per 10¹² cm⁻³. This record reports a **bound** on it and explains why
 ([RESULTS.md](RESULTS.md) C1).
 
 **Transit broadening.** An atom crosses the beam in a finite time, and a wave
@@ -123,7 +123,7 @@ regime faster than it gains signal
 
 **AC-Stark shift, or light shift.** Intense light moves atomic energy levels,
 so the drive laser shifts the very transition it is measuring. This is the
-central difficulty of the whole method and the quantity the archive bounds.
+central difficulty of the whole method and the quantity the dataset bounds.
 
 **$S_0$.** The size of that shift for an atom sitting at the brightest point of
 the beam, at a stated drive power. Quoted here at the campaign maximum of
@@ -141,7 +141,7 @@ $P$ the drive power. Bounding $\kappa$ is bounding the light shift.
 
 **$\Delta\alpha$, the differential polarizability.** The atomic property that
 sets how big the light shift is. Calculated rather than measured here, and its
-*sign* is under an open disagreement that no archival result depends on
+*sign* is under an open disagreement that no result here depends on
 ([THEORY_NOTE](THEORY_NOTE.md) section 5).
 
 **Skewness, $g_1$, and the third cumulant $\kappa_3$.** Numbers describing how
@@ -152,7 +152,7 @@ is built around, and in the 2025 data the effect sits below the noise.
 
 **The centre channel, or the pull.** The other way to measure a light shift:
 watch the line's centre move as the power changes. It needs a frequency
-reference that holds still, which the 2025 lock did not, so this archive cannot
+reference that holds still, which the 2025 lock did not, so this dataset cannot
 use it ([notes](notes/centre_channel_cannot_be_revived.md)).
 
 ## Three things that make the light shift hard to measure
@@ -229,11 +229,15 @@ governs most of the uncertainty analysis here.
 **Epoch.** A run of traces sharing one oscilloscope horizontal setting, which
 is the best available proxy for the lock not having been touched.
 
-**The three sessions.** The **campaign** is the main 2025 dataset, and its
-manifest is committed here in every copy of the repository. The **rehearsal**
-and the **pilot** are two earlier sittings that some fits also use, and their
-raw files stay outside the repository in every copy, with the committed CSVs
-as the record for those stages. Whether the campaign's own traces sit beside
+**The sessions, named by date.** The **campaign** is the 24 hour run of 17 to
+18 July 2025 and the main dataset, and its manifest is committed here in every
+copy of the repository. The **campaign-morning session** of 17 July
+commissioned the frequency ruler and took its own four-power sweep, and the
+**4 July evening session** carries an independent power dependence at an
+internal 130 degrees C. Some fits use all three. The raw files of the two
+earlier sessions stay outside the repository in every copy, with the committed
+CSVs as the record for them. DATA.md section 0 names all four sessions,
+including the 4 July first trials that fix the start of the clock. Whether the campaign's own traces sit beside
 the manifest depends on the copy you are reading, and
 [data_raw/README.md](../data_raw/README.md) says which this one is
 ([DATA.md](DATA.md)).

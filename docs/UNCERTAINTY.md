@@ -30,7 +30,7 @@ module's own house rules, restated here so a reader need not open the source.
 | tag | means | what it licenses |
 |---|---|---|
 | `ESTABLISHED` | a published or cited value, or an apparatus fact the experimenter verified from photographs, datasheets or direct confirmation | quotable as an input without further defence |
-| `MEASURED-HERE` | extracted from the 2025 archival traces by this pipeline | quotable, but it inherits every conditionality of the fit that produced it |
+| `MEASURED-HERE` | extracted from the 2025 traces by this pipeline | quotable, but it inherits every conditionality of the fit that produced it |
 | `CALCULATED` | derived, and the derivation is stated where the value is first used | quotable if the derivation is quoted with it |
 | `ENVELOPE` | order of magnitude only | may bound an argument, must never carry a published digit |
 | `OPEN` | not settled | must never reach a published number |
@@ -48,10 +48,10 @@ a new quantity cannot ship untagged.
 
 | status | means |
 |---|---|
-| `MEASURED` | a value with an error, from data, that the archive supports |
+| `MEASURED` | a value with an error, from data, that the dataset supports |
 | `BOUND` | a one-sided limit. Not a measurement, and the construction matters, see section 4 |
 | `NULL` | tested and not found, at a stated sensitivity |
-| `PRELIM` | a real fit whose headline is not this file's to own, or which is conditional on an input the archive cannot pin |
+| `PRELIM` | a real fit whose headline is not this file's to own, or which is conditional on an input the dataset cannot pin |
 | `CALIB` | an instrument calibration rather than a physics result |
 | `DIAGNOSTIC` | an internal check, a count, a flag, or an error on another row. Never a result |
 | `ENVELOPE` | as in section 1: an order of magnitude, re-derive before publication |
@@ -190,7 +190,7 @@ than left to the producer.
 * **The grid has to be fine enough to see its own answer.** A step of 0.01
   cannot report an interval of width 0.001, and the minimum it reports is
   whichever grid point sat lowest rather than the minimum. Both arms of the
-  archive fit now refine about the running minimum until the interval spans
+  dataset fit now refine about the running minimum until the interval spans
   several steps, and write the step they resolved on into the CSV beside the
   interval.
 * **The tell that needs no theory: an interval must contain its own point
@@ -291,7 +291,7 @@ carries an uncertainty, but a downstream reader parsing the column numerically
 will meet them, so they are named here rather than discovered.
 
 **Two files run their own status vocabulary and are outside the ledger's.**
-`qc_metrics.csv` tags each trace with its role in the archive, `canonical` and
+`qc_metrics.csv` tags each trace with its role in the dataset, `canonical` and
 its siblings, which answers a different question from the eight words above, and
 `laser_epoch.csv` likewise. Both sit in `annotate_results_status.py`'s skip list
 by design, so a census of status words across the whole directory will report

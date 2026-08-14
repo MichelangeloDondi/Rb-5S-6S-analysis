@@ -853,3 +853,79 @@ def test_the_retired_words_are_gone_from_code_identifiers():
         "retired vocabulary survives in code identifiers:\n  "
         + "\n  ".join(offenders[:40])
         + f"\n({len(offenders)} total). Stage 1 renamed these; see docs/STYLE.md.")
+
+
+# --------------------------------------------------------------------------
+# The retired beam waists
+# --------------------------------------------------------------------------
+#
+# w0 has been re-pinned three times: a 32 um Gaussian-optics nominal, a ~50 um
+# transit inference, and the adopted 64 um lineage measurement (Nieddu 2019's
+# explicit 1/e^2 diameter of 128 um). Each move left statements behind that
+# quoted the value of their day, and on 2026-08-14 one of them cost real time:
+# a 45-70 um range that four files correctly mark as the superseded LINE-ONLY
+# inference was read as a live constraint on the waist. The value is in one
+# place, constants.W0_MEASURED_M, and prose that repeats a retired number
+# beside a live claim is what this guard is for.
+_RETIRED_WAISTS_UM = ("32", "50", "90")
+
+# Legitimate uses of those numbers next to a waist word, each for a reason:
+_WAIST_EXEMPT = {
+    # frozen by the experimenter's rule: rename the file, freeze the body
+    "docs/PREREGISTRATION_RESULTS.md",
+    "docs/PREREGISTRATION_timestamps.md",
+    # the note whose SUBJECT is the re-pin, and the chapter that narrates it
+    "docs/notes/transit_width_resolved.md",
+    "docs/methods/02_the_lineshape.md",
+    # other groups' geometries, quoted from their papers
+    "docs/lit/biraben1979.md",
+    "docs/lit/perrella2013.md",
+    "docs/lit/rajasree2020thesis.md",
+    # the constant's own docstring, which must be able to narrate its history
+    "rb5s6s/constants.py",
+    # design scans that sweep a range of waists on purpose
+    "scripts/run_geometry_design.py",
+    # this file, which has to name the numbers to guard them
+    "tests/test_repo_hygiene.py",
+}
+
+
+def test_no_live_claim_quotes_a_retired_waist():
+    """A retired waist beside a live claim is how a stale number gets believed.
+
+    2026-08-14: `rb5s6s/stark.py` said the inflated bound "BRACKETS the
+    predicted ~0.6 MHz (w0 = 50 um)" long after the adopted waist moved to
+    64 um and the prediction to 0.35, and `ramp_transit.py` illustrated a
+    transit rate "at w0 = 50 um". Neither was wrong when written. Both read as
+    current."""
+    import re
+    pat = re.compile(
+        r"(w_?0|waist)\D{0,40}\b(" + "|".join(_RETIRED_WAISTS_UM) + r")\s*(um|µm)"
+        r"|\b(" + "|".join(_RETIRED_WAISTS_UM) + r")\s*(um|µm)\D{0,40}(w_?0|waist)",
+        re.I)
+    # a line that says so is history, not a live claim. The marker may sit on
+    # the neighbouring line, because prose wraps and a comment explaining a
+    # past defect often opens a line above the number it is explaining, so the
+    # window is three lines rather than one.
+    hist = re.compile(r"(?i)retir|retract|supersed|replac|no longer|former|"
+                      r"\bwas\b|old |until |before |histor|EXCLUD|disfavou|"
+                      r"previous|nominal|RETIRED|inference")
+    offenders = []
+    for rel in _tracked("*.md", "docs/*.md", "docs/methods/*.md",
+                        "docs/notes/*.md", "scripts/*.py", "rb5s6s/*.py",
+                        "results/*.md"):
+        if rel in _WAIST_EXEMPT or rel.endswith("_prereg.md"):
+            continue
+        lines = (ROOT / rel).read_text(encoding="utf-8",
+                                       errors="ignore").splitlines()
+        for n, line in enumerate(lines, 1):
+            if not pat.search(line):
+                continue
+            window = " ".join(lines[max(0, n - 2):n + 1])
+            if hist.search(window):
+                continue
+            offenders.append(f"{rel}:{n}: {line.strip()[:88]}")
+    assert not offenders, (
+        "a retired waist (32/50/90 um) is quoted beside a live claim. The "
+        "adopted value is constants.W0_MEASURED_M = 64 um. Say that, or mark "
+        "the sentence as history:\n  " + "\n  ".join(offenders[:20]))

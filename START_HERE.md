@@ -74,7 +74,7 @@ Two things are worth knowing before you wonder why something fails:
 * `pytest -q --runslow` is the full battery and is what CI runs. Run it before
   pushing, not the fast subset, because several guards live only in it.
 * Eight scripts read two data trees that are not in the repository, the
-  2025-07-04 rehearsal and the campaign-morning pilot. Five name the trees
+  4 July evening session and the campaign-morning session. Five name the trees
   themselves and three reach them by importing `run_stark_joint`'s loaders.
   They exit 0 with a message naming the missing tree rather than failing, and
   the committed CSVs are the record for those stages, so nothing you need is
@@ -93,7 +93,7 @@ Two things are worth knowing before you wonder why something fails:
 | here for the lineshape theory | [docs/THEORY_NOTE.md](docs/THEORY_NOTE.md) |
 | going to work on the code | section 3 below |
 | pointing this at a different transition | [docs/ADAPTING.md](docs/ADAPTING.md), which names every seam, and `examples/your_line.ipynb`. Start with its three radiation tests and its branching-fraction recipe, since those decide whether the machinery applies to your line at all before any of the fitting does |
-| designing the next campaign | `scripts/run_campaign_conditions.py`, which projects every effect this archive measured onto a waist, a power, a temperature and a choice of transition, then [docs/PLAN.md](docs/PLAN.md) section 6 for the light-shift programme and [docs/FUTURE_TRANSITIONS_titsapph.md](docs/FUTURE_TRANSITIONS_titsapph.md) section 2 for the menu |
+| designing the next campaign | `scripts/run_campaign_conditions.py`, which projects every effect this dataset measured onto a waist, a power, a temperature and a choice of transition, then [docs/PLAN.md](docs/PLAN.md) section 6 for the light-shift programme and [docs/FUTURE_TRANSITIONS_titsapph.md](docs/FUTURE_TRANSITIONS_titsapph.md) section 2 for the menu |
 | looking for the apparatus | [docs/APPARATUS.md](docs/APPARATUS.md), every fact tagged with its provenance |
 | wondering what happens next | [docs/PLAN.md](docs/PLAN.md) |
 
