@@ -3,8 +3,8 @@
 The layer's contract: CLOCK.csv is the serialized acquisition clock
 (hash -> mtime, manifest identity by content); RECOVERED_MANIFEST.csv maps
 every published recovered file; nothing in the layer duplicates the frozen
-archive, and identity is always by hash (nine recovered names collide with
-different archive bytes).
+dataset, and identity is always by hash (nine recovered names collide with
+different dataset bytes).
 """
 
 from __future__ import annotations
@@ -72,7 +72,7 @@ def test_recovered_files_match_their_manifest_and_stay_out_of_the_record():
     """Every published recovered file: exists, hashes to its recorded md5
     (and to the __hash suffix in its own name), and its content is ABSENT
     from data_raw/MANIFEST.csv -- the layer holds only what the frozen
-    archive does not."""
+    dataset does not."""
     archive = {r["md5"] for r in
                csv.DictReader(open(ROOT / "data_raw" / "MANIFEST.csv"))}
     rows = list(csv.DictReader(open(BASE / "RECOVERED_MANIFEST.csv")))
@@ -85,7 +85,7 @@ def test_recovered_files_match_their_manifest_and_stay_out_of_the_record():
         assert d.startswith(p.stem.rsplit("__", 1)[1]), (
             f"{r['file']}: name-suffix does not match content hash")
         assert d not in archive, (
-            f"{r['file']}: duplicates the frozen archive -- does not belong here")
+            f"{r['file']}: duplicates the frozen dataset -- does not belong here")
 
 
 def test_every_recovered_file_has_a_clock_row():

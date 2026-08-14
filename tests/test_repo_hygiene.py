@@ -690,6 +690,16 @@ def test_no_tracked_artifact_schedules_the_fixed_lock_session():
             # are fine; a bare month naming the FUTURE session is not
             if re.search(r"\d{4}", ctx) or "campaign" in ctx.lower():
                 continue
+            # 2026-08-14: a day number against the month is also a DATE and not
+            # a schedule. The sessions are now named by date ("the 4 July
+            # evening session"), which is the same dated-provenance case the
+            # year test already exempts, reached by a different spelling. A
+            # bare "October" still fires, which is the whole point of the rule.
+            before = txt[max(0, m.start() - 12):m.start()]
+            after = txt[m.end():m.end() + 12]
+            if (re.search(r"\b([1-9]|[12]\d|3[01])(st|nd|rd|th)?[\s\-]+$", before)
+                    or re.match(r"[\s\-]+([1-9]|[12]\d|3[01])\b", after)):
+                continue
             offenders.append(f"{rel}:{line}: {m.group(0)} in {ctx[-70:]!r}")
     assert not offenders, (
         "a tracked artifact schedules the fixed-lock session; PLAN assumes no "

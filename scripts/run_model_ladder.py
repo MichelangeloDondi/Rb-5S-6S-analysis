@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-M11: the nested model ladder on the real archive -- is each component warranted?
+M11: the nested model ladder on the real dataset -- is each component warranted?
 
 Fits the T-sweep conditions under A(Voigt) < B(+transit) < C(+collisions) <
 D(+AC-Stark ramp) and sums the BIC across conditions (BIC is additive over
-independent data), so the per-rung dBIC is an archive-wide statement of which
+independent data), so the per-rung dBIC is a dataset-wide statement of which
 physics the 2025 data statistically require.
 
 Expected outcome (the drifted lock is the reason): transit
 is decisively warranted, but the free collisional and AC-Stark parameters are
-NOT -- the archive brackets them, it does not measure them. That the SAME ladder
+NOT -- the dataset brackets them, it does not measure them. That the SAME ladder
 decisively warrants an injected Stark shift under a stable lock (closure test
 tests/test_model_ladder.py) is what makes this a null result, not blindness.
 
@@ -66,7 +66,7 @@ def main() -> int:
     summed = defaultdict(float)   # model -> summed BIC
     per_cond = []
     print("=" * 74)
-    print("(M11) NESTED MODEL LADDER: which components does the archive warrant?")
+    print("(M11) NESTED MODEL LADDER: which components does the dataset warrant?")
     print("  A Voigt  <  B +transit  <  C +collisions  <  D +AC-Stark ramp")
     print("  (BIC summed over the T-sweep conditions; dBIC>0 favours the richer model)\n")
     for peak in PEAKS:
@@ -84,7 +84,7 @@ def main() -> int:
             per_cond.append((peak, T, res))
 
     order = [m[0] for m in LADDER]
-    print(f"  archive-wide summed BIC ({len(per_cond)} conditions):")
+    print(f"  dataset-wide summed BIC ({len(per_cond)} conditions):")
     for name in order:
         print(f"    {name:15s} BIC = {summed[name]:12.1f}")
     print("\n  per-rung dBIC (BIC[simpler] - BIC[richer]; Kass-Raftery verdict):")
@@ -107,10 +107,10 @@ def main() -> int:
                         f"BIC[simpler]-BIC[richer]; {v}; {warr} (>10 decisive)"])
 
     print("\n  READING: transit is decisively warranted; the free collisional and")
-    print("  AC-Stark parameters are NOT -- on the drifted archive the free per-scan")
+    print("  AC-Stark parameters are NOT -- on the drifted dataset the free per-scan")
     print("  centres absorb the ramp's pull and sigma_laser absorbs its width, so BIC")
     print("  will not buy the extra parameters. This is the two-epoch design as a")
-    print("  model comparison: the archive BOUNDS these, a fixed-lock session would measure")
+    print("  model comparison: the dataset BOUNDS these, a fixed-lock session would measure")
     print("  them (the closure test warrants an injected Stark under a stable lock).")
     print("\n  Wrote results/model_ladder.csv.")
     return 0

@@ -1,4 +1,4 @@
-# Why the centre channel cannot be revived on this archive
+# Why the centre channel cannot be revived on this record
 
 Status: RECORD, 2026-08-10. Nothing here retracts a committed number. It closes a
 question that had been left open in the shape "the centres are excluded" without
@@ -9,7 +9,7 @@ reopen it.
 
 The line CENTRE is the strongest of the three AC-Stark channels: the pull goes as
 the shift itself, where the width goes as its square and the skew as its cube. The
-archive reports a width-channel bound and treats the centre channel as dead,
+record reports a width-channel bound and treats the centre channel as dead,
 because the 2025 lock drifted and was re-centred by hand. The question put in
 2026-08-10 was whether restricting to intervals between lock interventions, using
 the recovered timestamps and the measured drift, and fitting the three sessions
@@ -20,17 +20,18 @@ reasons are now numbers rather than statements.
 
 ## The forecast, so the obstructions can be weighed against what it would buy
 
-A Fisher calculation on the estimator the archive already uses, offset =
-a + kappa*P + drift*t with the drift under its measured prior, at the archive's own
-within-block centre jitter of 1.8 ms converted at the committed sweep rate:
+A Fisher calculation on the estimator the record already uses, offset =
+a + kappa*P + drift*t with the drift under its measured prior, at the
+dataset's own within-block centre jitter of 1.8 ms converted at the
+committed sweep rate:
 
 | configuration | forecast sigma(kappa) |
 |---|---|
 | one campaign epoch, 50 mW contrast, 10 traces | 3.39 MHz/W |
-| pilot, the two powers whose window setting matches | 4.87 |
-| **pilot, all 26 traces, 175 mW contrast** | **0.87** |
-| pilot, all 26, with a free offset per window setting | 4.83 |
-| rehearsal, 46 traces, 180 mW contrast | 1.35 |
+| campaign morning, the two powers whose window setting matches | 4.87 |
+| **campaign morning, all 26 traces, 175 mW contrast** | **0.87** |
+| campaign morning, all 26, with a free offset per window setting | 4.83 |
+| 4 July evening session, 46 traces, 180 mW contrast | 1.35 |
 
 The width channel's bound is 1.147 MHz/W and the prediction is 1.545, so two of
 those configurations would be worth having. The model is calibrated: it forecasts
@@ -59,13 +60,13 @@ direction is the unfavourable one and it strengthens rather than weakens
 everything below, since the channel is closed here on grounds that never
 involve the prior.
 
-## The pilot: the power order IS scrambled, and the frame eats it
+## The campaign morning: the power order IS scrambled, and the frame eats it
 
-Recovering the pilot's clock from its file times shows a power sequence of
-**210, then 35, then 70, then 105 mW** across 16.8 minutes. That is not monotone,
-power and time correlate at only -0.61 rather than the -1 that kills the campaign
-epochs, and the variance inflation is a mere 1.6. Hence the 0.87 MHz/W forecast,
-better than the width bound.
+Recovering the campaign morning's clock from its file times shows a power
+sequence of **210, then 35, then 70, then 105 mW** across 16.8 minutes. That
+is not monotone, power and time correlate at only -0.61 rather than the -1
+that kills the campaign epochs, and the variance inflation is a mere 1.6.
+Hence the 0.87 MHz/W forecast, better than the width bound.
 
 Two things spend it.
 
@@ -84,13 +85,14 @@ costly but unidentifiable: the offsets and the power contrast are the same
 columns. Allowing one offset per window setting already takes the forecast from
 0.87 to 4.83.
 
-## The rehearsal: no trace can fix its own frequency origin
+## The 4 July evening session: no trace can fix its own frequency origin
 
-The rehearsal is the one session whose ladders ran in ALTERNATING directions,
-which is exactly the design the campaign lacked, and it carries an
-instrument-native trigger clock rather than a recovered file time. Its centres are
-excluded for a reason unrelated to either: the scope auto-triggered, so the ramp
-phase is random from trace to trace and an absolute position carries no frequency.
+The 4 July evening session is the one session whose ladders ran in
+ALTERNATING directions, which is exactly the design the campaign lacked, and
+it carries an instrument-native trigger clock rather than a recovered file
+time. Its centres are excluded for a reason unrelated to either: the scope
+auto-triggered, so the ramp phase is random from trace to trace and an
+absolute position carries no frequency.
 
 There is a way around that in principle, and the repository already uses it
 elsewhere: a record containing BOTH the up-sweep and the down-sweep crossing of one
@@ -103,19 +105,21 @@ got it wrong.** A naive count of excursions above six sigma finds two features i
 46 of the 50 records, which looks like the mirror pair. Measuring them settles it:
 one feature is 330 to 405 ms wide, and the other is 5 to 8 ms wide at about
 60 per cent of the amplitude. A genuine second crossing of the same line by the
-same ramp must match in both width and height. It does not. At the rehearsal's
-sweep rate a 6 ms feature is some tens of kilohertz across, more than fifty times
-narrower than the 3.4925 MHz natural width, so it cannot be an atomic line at all.
-The 5 s record therefore contains ONE crossing, and the archive's own segmentation
-rule, which keeps the widest excursion, was right to keep one.
+same ramp must match in both width and height. It does not. At the 4 July
+evening session's sweep rate a 6 ms feature is some tens of kilohertz
+across, more than fifty times narrower than the 3.4925 MHz natural width, so
+it cannot be an atomic line at all. The 5 s record therefore contains ONE
+crossing, and the record's own segmentation rule, which keeps the widest
+excursion, was right to keep one.
 
-## Addendum, 2026-08-13: the pilot's own EOM rulers cannot be that reference
+## Addendum, 2026-08-13: the campaign morning's own EOM rulers cannot be that reference
 
-The programme notes parked one specific hope against the pilot: the pilot tree
-carries its own EOM ruler folder, twenty-seven recovered rulers, and a ruler
-bracketing a power step would supply exactly the knob-independent frequency
-reference the section above says is missing, precisely where the frame problem
-bites. Establishing whether one does was listed as the unlock. It does not.
+The programme notes parked one specific hope against the campaign morning:
+its tree carries its own EOM ruler folder, twenty-seven recovered rulers,
+and a ruler bracketing a power step would supply exactly the
+knob-independent frequency reference the section above says is missing,
+precisely where the frame problem bites. Establishing whether one does was
+listed as the unlock. It does not.
 
 Reading the acquisition clock off both folders:
 
@@ -136,32 +140,34 @@ apart and between blocks 170 to 388 s, and the blocks appear in the order 210,
 35, 70, 105. A bulk copy would order them by filename, which would put 035
 first. It does not, so the clock survives the copy.
 
-The rehearsal fails the same test for a different reason. Its 47 readable
-power traces are single-channel, `Time,Ampl`, so no ramp monitor was recorded
-alongside them, and the three that do not parse are the three already known to
-be 0xff-corrupted on disk. The ramp channel exists in this programme only on
-the EOM trial traces of the previous day, at 80 C and 0.80 A, whose scan
-configuration the record already shows differs from the rehearsal's by a
-factor of 2.2, so nothing transfers.
+The 4 July evening session fails the same test for a different reason. Its
+47 readable power traces are single-channel, `Time,Ampl`, so no ramp
+monitor was recorded alongside them, and the three that do not parse are
+the three already known to be 0xff-corrupted on disk. The ramp channel
+exists in this programme only on the EOM trial traces of the previous day,
+at 80 C and 0.80 A, whose scan configuration the record already shows
+differs from the 4 July evening session's by a factor of 2.2, so nothing
+transfers.
 
 So the conclusion below is not merely unrefuted, it is now checked against the
-one candidate reference the archive still contained.
+one candidate reference the dataset still contained.
 
 ## What would reopen it, and it is one thing
 
 Every one of the three obstructions is the same shape: there is no frequency
-reference that is independent of the knobs. The campaign needs one because its
-power order is monotone, the pilot needs one because its window moved where its
-lever is, and the rehearsal needs one because its trigger phase is random.
+reference that is independent of the knobs. The campaign needs one because
+its power order is monotone, the campaign morning needs one because its
+window moved where its lever is, and the 4 July evening session needs one
+because its trigger phase is random.
 
 **The ramp-monitor channel is that reference, and it exists on the instrument but
 was never exported.** `docs/PLAN.md` already lists its export among the fixed-lock
-session's needs. This note upgrades it from a convenience to a precondition: with a
-recorded ramp there is an apex in every trace, every centre becomes a frequency
-rather than a position, and the pilot's own scrambled power order would deliver the
-coefficient at the 0.9 MHz/W level from twenty-six traces and seventeen minutes of
-bench time. Without it, no re-analysis of the 2025 archive can do better than the
-bound M27 already reports.
+session's needs. This note upgrades it from a convenience to a precondition: with
+a recorded ramp there is an apex in every trace, every centre becomes a frequency
+rather than a position, and the campaign morning's own scrambled power order
+would deliver the coefficient at the 0.9 MHz/W level from twenty-six traces
+and seventeen minutes of bench time. Without it, no re-analysis of the 2025
+dataset can do better than the bound M27 already reports.
 
 ## Two things this leaves for the record to fix
 

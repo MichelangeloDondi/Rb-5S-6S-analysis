@@ -5,7 +5,7 @@ What a further measurement campaign would buy, as computed projections.
 WHO ACTS ON THIS AND WHAT CHANGES FOR THEM. The reader is the host deciding
 bench time. Today the case for a session is carried by prose ("converts bounds
 into measurements", "3 to 12 sigma"). This script replaces each of those
-sentences with a number derived from the archive's own measured precision and
+sentences with a number derived from the dataset's own measured precision and
 the design parameters `docs/PLAN.md` already states, so the decision is read off
 a table instead of off an adjective. Eight families are projected: the fixed-lock
 pull channel, beta_self, the per-rung light-shift ceiling and the sources that
@@ -13,12 +13,12 @@ reach it, the Doppler pedestal as a wide-scan add-on, the 7S adjudication, the
 778 nm calibration rung, the magic-wavelength scan, and the guided-mode option.
 
 THE CEILING AND THE SECOND READING OF EVERY MULTI-LINE ROW. The 7S and 778 nm
-projections were first written at the archive's own drive power. That power is
+projections were first written at the dataset's own drive power. That power is
 not available on every rung: the differential polarizability differs by a factor
 of twenty-five across the three, so the power at which the light shift stops
 being a correction to the width differs by the same factor. Section 3 computes
 that ceiling per rung and sections 4 and 5 then carry a second reading of their
-delivered precision, taken at the ceiling rather than at the archive's power.
+delivered precision, taken at the ceiling rather than at the dataset's power.
 Both readings ship, because the first says what the instrument can do and the
 second says what the physics of the line allows it to do.
 
@@ -38,7 +38,7 @@ number: the per-trace centre precision, the block-to-block width scatter, the
 per-block ruler spacing precision and the ruler linearity bound are all read
 live from the committed CSVs at run time. Re-running this script after the
 recompute lands therefore re-derives every projection at the corrected
-calibration, with no edit to this file. That re-run is the owner's second pass
+calibration, with no edit to this file. That re-run is the author's second pass
 and is the only action the correction requires here.
 
 INPUTS, all committed:
@@ -93,15 +93,15 @@ PLAN_N_POWERS = 8                 # PLAN 9 D4, "randomized, ~8 powers"
 PLAN_N_PEAKS = 4                  # PLAN 7, four peaks interleaved per block
 PLAN_BLOCK_NOISE_CUT = 4.0        # PLAN 3 item 3, interleaving plus power logging
 PLAN_T_GRID_C = (70, 90, 110, 130, 170)   # PLAN 7, five blocks reaching 150-170
-PLAN_COLD_SPOT_LAG_K = 20         # PLAN 8 item 3, the archive's face-value lag
+PLAN_COLD_SPOT_LAG_K = 20         # PLAN 8 item 3, the dataset's face-value lag
 PLAN_INTENSITY_AXIS_FRAC = 0.15   # PLAN 5, the differential-transit anchor
 PLAN_MORNING_CYCLES = 24          # PLAN 9 D4, a four-hour morning at PLAN_CYCLE_MIN
 
-# The archive's own power ladder, which sets the span of the projected grid.
+# The dataset's own power ladder, which sets the span of the projected grid.
 RECORD_P_MIN_W, RECORD_P_MAX_W = 0.025, 0.225
 QUOTE_P_W = 0.225                 # the campaign maximum every bound is quoted at
 
-# The density-scale systematic the archival bound already folds in.
+# The density-scale systematic the recorded bound already folds in.
 N_SCALE_FRAC = 0.20               # results/beta_self_probe.csv, n_frac_syst
 
 # Published rates the projections are measured against. Each is the value its
@@ -133,24 +133,24 @@ CEILING_WIDTH_FRACTION = 0.10
 # The Doppler pedestal: the wide-scan add-on and its two observables.           #
 #                                                                               #
 # The retro-reflected drive makes two kinds of two-photon event. One photon      #
-# from each beam gives the Doppler-free line the archive fits. Two photons from  #
+# from each beam gives the Doppler-free line the dataset fits. Two photons from  #
 # the SAME beam give a line first-order Doppler broadened at 2 k v, which is     #
 # near a gigahertz here and sits under the narrow line as a pedestal. The        #
-# pedestal is not a nuisance. It carries two numbers this archive currently      #
+# pedestal is not a nuisance. It carries two numbers this record currently       #
 # assumes: its width is a thermometer for the atoms actually in the beam, and    #
 # its area against the narrow line's area measures the retro ratio.              #
 #                                                                               #
 # The design below is one acquisition change and no new hardware: the same       #
-# 2000-point, one-second trace the archive already takes, swept over a wide      #
+# 2000-point, one-second trace the dataset already takes, swept over a wide      #
 # span instead of a narrow one. No lock quality is required, because a width     #
 # of a gigahertz does not care about a megahertz of drift.                       #
 # --------------------------------------------------------------------------- #
 WIDE_SCAN_SPAN_LASER_GHZ = 5.0    # laser axis, so 10 GHz on the transition axis
-WIDE_SCAN_T_C = 130               # the archive's own top block, where the SNR is quoted
+WIDE_SCAN_T_C = 130               # the dataset's own top block, where the SNR is quoted
 WIDE_SCAN_ISOTOPE_KG = K.M_RB85_KG   # the abundant isotope sets the design pedestal
 
 # Delivered drive power of record for each named source class. The bench's own
-# figure is QUOTE_P_W, the archive's ladder maximum through the cell. The 778 nm
+# figure is QUOTE_P_W, the dataset's ladder maximum through the cell. The 778 nm
 # figure is what a held demonstration of the fibre-amplifier architecture puts
 # on its cell, which is a floor under the class and not its maximum.
 FENG_778_DELIVERED_W = 0.030      # docs/lit/feng2026.md
@@ -177,7 +177,7 @@ def _add(rows, quantity, key, value, err, unit, formula, assumptions, source):
 
 
 # --------------------------------------------------------------------------- #
-# Inputs read live from the committed archive                                   #
+# Inputs read live from the committed record                                    #
 # --------------------------------------------------------------------------- #
 def read_inputs() -> dict:
     centres = pd.read_csv(C.RESULTS_DIR / "stark_centres.csv")
@@ -227,7 +227,7 @@ def density_lever(grid_c, lag_k: int) -> float:
 
 def power_lever(n_points: int) -> float:
     """sqrt(sum of squared deviations of P about its mean) over a log grid
-    spanning the archive's own ladder, in W. The denominator of the pull slope."""
+    spanning the dataset's own ladder, in W. The denominator of the pull slope."""
     p = np.geomspace(RECORD_P_MIN_W, RECORD_P_MAX_W, n_points)
     return float(np.sqrt(((p - p.mean()) ** 2).sum()))
 
@@ -339,7 +339,7 @@ def project_pull(rows, inp) -> dict:
     _add(rows, "input_lock_drift_rate", "held lock", 2.0 * PLAN_LOCK_DRIFT_LASER_MHZ_PER_MIN,
          None, "MHz per min, transition axis",
          "2 x the held-lock bound of PLAN 2",
-         "the archive's own held-lock bound, not the borrowed cavity figure of "
+         "the record's own held-lock bound, not the borrowed cavity figure of "
          "Ayachitula 2024 and not the photographed cavity-locked rate",
          "docs/PLAN.md 2, docs/APPARATUS.md 6")
     _add(rows, "input_ramp_pull_coefficient", "config L", pull_coeff, None,
@@ -350,7 +350,7 @@ def project_pull(rows, inp) -> dict:
          "rb5s6s.lineshape.ramp_moment_contributions")
     _add(rows, "input_S0_predicted", "225 mW", s0_pred, None, "MHz, transition axis",
          "stark_shift_S0_mhz at the committed measured waist and retro ratio",
-         "the prediction the archival bound is compared against",
+         "the prediction the recorded bound is compared against",
          "rb5s6s.constants, rb5s6s.lineshape")
     _add(rows, "input_intensity_axis_systematic", "differential transit anchor",
          PLAN_INTENSITY_AXIS_FRAC, None, "fraction",
@@ -360,7 +360,7 @@ def project_pull(rows, inp) -> dict:
          "docs/PLAN.md 5")
     _add(rows, "input_density_scale_systematic", "archival", N_SCALE_FRAC, None,
          "fraction",
-         "the density-scale systematic the archival bound already folds in",
+         "the density-scale systematic the recorded bound already folds in",
          "carried unchanged, and it is what the absorption channel of PLAN 8 "
          "would replace with a measurement",
          "results/beta_self_probe.csv n_frac_syst")
@@ -372,10 +372,10 @@ def project_pull(rows, inp) -> dict:
         frac_da = np.sqrt((sigma / s0_pred) ** 2 + PLAN_INTENSITY_AXIS_FRAC ** 2)
         common = (
             f"{cycles} randomized power cycles of {PLAN_CYCLE_MIN:.0f} min, "
-            f"{PLAN_N_POWERS} rungs log spaced over the archive's own "
+            f"{PLAN_N_POWERS} rungs log spaced over the dataset's own "
             f"{RECORD_P_MIN_W * 1e3:.0f}-{RECORD_P_MAX_W * 1e3:.0f} mW ladder, "
             f"one trace per rung, {PLAN_N_PEAKS} peaks interleaved, config L, "
-            "centre precision at the archival per-trace value, lock drift at "
+            "centre precision at the dataset's per-trace value, lock drift at "
             "the held-lock bound and common to the four peaks of a cycle")
         _add(rows, "proj_pull_S0_sigma", label, sigma, None, "MHz, transition axis",
              "0.225 x sqrt(sigma_centre^2 / (4 Spp) + sigma_drift^2 / Spp) "
@@ -429,7 +429,7 @@ def project_beta(rows, inp) -> dict:
          "results/linefit_conditions.csv, reproduced in results/resolving_power.csv")
     _add(rows, "input_block_width_scatter_interleaved", "projected", sigma_w_cut,
          None, "MHz",
-         f"the archival block scatter divided by {PLAN_BLOCK_NOISE_CUT:.0f}",
+         f"the dataset's block scatter divided by {PLAN_BLOCK_NOISE_CUT:.0f}",
          "the cut PLAN 3 item 3 attributes to interleaving plus per-trace power "
          "logging, adopted rather than re-derived",
          "docs/PLAN.md 3")
@@ -451,7 +451,7 @@ def project_beta(rows, inp) -> dict:
          "sqrt of the summed squared deviations of N about its mean over the "
          "five-block T grid, densities read at T minus the lag",
          f"grid {PLAN_T_GRID_C} C, cold-spot lag {PLAN_COLD_SPOT_LAG_K} K, "
-         "which is the archive's own face-value preference",
+         "which is the dataset's own face-value preference",
          "rb5s6s.density, docs/PLAN.md 7 and 8")
     _add(rows, "input_density_lever", "no lag", lever_nolag, None, "1e12 cm^-3",
          "the same sum with densities read at the nominal set points",
@@ -515,7 +515,7 @@ def project_beta(rows, inp) -> dict:
 # --------------------------------------------------------------------------- #
 def project_ceilings(rows, inp) -> dict:
     """The drive power at which the on-axis shift reaches CEILING_WIDTH_FRACTION
-    of the line width, in free space at the archive's own geometry, one value
+    of the line width, in free space at the dataset's own geometry, one value
     per rung. S0 is linear in power, so the ceiling is one division."""
     width = inp["width_mean"]
 
@@ -539,7 +539,7 @@ def project_ceilings(rows, inp) -> dict:
             1.0, K.W0_MEASURED_M, K.RHO_RETRO, d_alpha)
         ceiling_w = CEILING_WIDTH_FRACTION * width / s0_per_w
         derate = max(1.0, QUOTE_P_W / ceiling_w)
-        geometry = (f"free space at the archive geometry, waist "
+        geometry = (f"free space at the dataset geometry, waist "
                     f"{K.W0_MEASURED_M * 1e6:.0f} um and retro ratio "
                     f"{K.RHO_RETRO:.2f}, counter-propagating drive")
 
@@ -562,14 +562,14 @@ def project_ceilings(rows, inp) -> dict:
              "rb5s6s.lineshape.stark_shift_S0_mhz, results/linefit_conditions.csv")
         _add(rows, "proj_ceiling_signal_derating", label, derate, None,
              "dimensionless",
-             "the archive's quoted drive power divided by the ceiling, floored "
+             "the dataset's quoted drive power divided by the ceiling, floored "
              "at one",
              "the two-photon rate goes as the square of the intensity and a "
              "shot-noise-limited width uncertainty goes as the inverse square "
-             "root of the rate, so a width precision measured at the archive's "
+             "root of the rate, so a width precision measured at the dataset's "
              "own power degrades by exactly this factor at the ceiling. The "
              f"reference power is the ladder maximum of {QUOTE_P_W * 1e3:.0f} "
-             "mW, which is the conservative end, because the archive's block "
+             "mW, which is the conservative end, because the dataset's block "
              "scatter is an average over a ladder whose lower rungs deliver "
              "less signal than that",
              "results/linefit_conditions.csv")
@@ -595,7 +595,7 @@ def project_sources(rows, ceilings) -> None:
         ("993 nm, 5S to 6S",
          "the titanium sapphire on the bench, or a diode-seeded ytterbium "
          "fibre amplifier at its band edge",
-         QUOTE_P_W, "the archive's own delivered ladder maximum",
+         QUOTE_P_W, "the dataset's own delivered ladder maximum",
          "The ceiling sits above what the bench delivers, so power still buys "
          "signal here and the titanium sapphire is not made unnecessary. The "
          "ytterbium fibre alternative would run at the short-wavelength edge "
@@ -605,7 +605,7 @@ def project_sources(rows, ceilings) -> None:
          "docs/PLAN.md 9 D4, results/linefit_conditions.csv"),
         ("760 nm, 5S to 7S",
          "an extended-cavity diode with a tapered amplifier",
-         QUOTE_P_W, "the archive's own delivered ladder maximum",
+         QUOTE_P_W, "the dataset's own delivered ladder maximum",
          "The bench's existing delivery already exceeds this ceiling by the "
          "headroom below, so the ceiling and not the source sets the power, "
          "and the titanium sapphire is unnecessary on this rung. The named "
@@ -725,11 +725,11 @@ def project_pedestal(rows, inp, ceilings) -> None:
         f"{WIDE_SCAN_SPAN_LASER_GHZ:.0f} GHz on the laser axis, which is "
         f"{span_mhz / 1e3:.0f} GHz on the transition axis and covers the "
         "hyperfine comb with about one pedestal width of clean wing on each "
-        "side, at the archive's own per-point dwell and at its quoted drive "
+        "side, at the dataset's own per-point dwell and at its quoted drive "
         f"power, which sits at "
         f"{QUOTE_P_W / ceilings['993 nm, 5S to 6S']['ceiling_w']:.2f} of the "
         "993 nm light-shift ceiling and so needs no derating. White noise at "
-        "the archive's own per-trace level and nothing else: a broad low "
+        "the dataset's own per-trace level and nothing else: a broad low "
         "feature also has to be separated from the scattered-light background, "
         "which this projection does not model")
 
@@ -737,7 +737,7 @@ def project_pedestal(rows, inp, ceilings) -> None:
          "MHz, transition axis",
          "2 sqrt(8 ln2 kT / m) / lambda, the full 2 k v first-order Doppler "
          "width of the co-propagating two-photon line",
-         "the abundant isotope at the archive's own top temperature block. The "
+         "the abundant isotope at the dataset's own top temperature block. The "
          "width goes as the square root of the temperature, which is what makes "
          "it a thermometer",
          "rb5s6s.constants")
@@ -745,9 +745,9 @@ def project_pedestal(rows, inp, ceilings) -> None:
          2e3 * inp["rate_laser_mhz_per_ms"] * K.TRACE_N_POINTS * K.TRACE_DT_S,
          None, "MHz, transition axis",
          "twice the campaign sweep rate times the one-second acquisition window",
-         "this is why the archive cannot do either measurement. The window is a "
-         "small fraction of the pedestal width, so the archive samples only the "
-         "pedestal's flat top, which its linear baseline absorbs. The archive "
+         "this is why the dataset cannot do either measurement. The window is a "
+         "small fraction of the pedestal width, so the dataset samples only the "
+         "pedestal's flat top, which its linear baseline absorbs. The dataset "
          "can bound the retro ratio through that offset and cannot fit the "
          "width at all",
          "results/ruler_campaign.csv, rb5s6s.constants")
@@ -841,7 +841,7 @@ def project_7s(rows, inp, beta_out, ceilings) -> None:
     capped = delivered_rate(inp, beta_out, derate, ZAMEROSKI_CM3_PER_MTORR)
     at_ceiling = (
         f"the same design run at the {ceiling_mw:.0f} mW light-shift ceiling of "
-        "this rung rather than at the archive's own drive power, with the "
+        "this rung rather than at the dataset's own drive power, with the "
         "signal-limited part of the per-block width uncertainty scaled by the "
         f"derating of {derate:.2f} and the ruler axis term held")
 
@@ -883,7 +883,7 @@ def project_7s(rows, inp, beta_out, ceilings) -> None:
          "the projected beta_self uncertainty converted at Zameroski's own "
          "403 K density scale",
          "the same five-block interleaved design as the 993 nm projection, with "
-         "the archive's absolute per-block width scatter and per-block ruler "
+         "the dataset's absolute per-block width scatter and per-block ruler "
          "spacing precision carried over unchanged to the 760 nm line, and the "
          "20 K cold-spot lag applied",
          "results/ruler_blocks.csv, results/linefit_conditions.csv, "
@@ -907,7 +907,7 @@ def project_778(rows, inp, beta_out, ceilings) -> None:
     capped = delivered_rate(inp, beta_out, derate, CAO_CM3_PER_MTORR)
     at_ceiling = (
         f"the same design run at the {ceiling_mw:.0f} mW light-shift ceiling of "
-        "this rung rather than at the archive's own drive power, with the "
+        "this rung rather than at the dataset's own drive power, with the "
         "signal-limited part of the per-block width uncertainty scaled by the "
         f"derating of {derate:.1f} and the ruler axis term held")
 
@@ -962,7 +962,7 @@ def project_778(rows, inp, beta_out, ceilings) -> None:
          "the projected beta_self uncertainty converted at Cao's own 423 K "
          "density scale",
          "the same five-block interleaved design as the 993 nm projection, with "
-         "the archive's demonstrated per-condition width precision carried over "
+         "the dataset's demonstrated per-condition width precision carried over "
          "unchanged to the 778 nm line, and the 20 K cold-spot lag applied",
          "results/linefit_conditions.csv, docs/lit/cao2025.md")
     _add(rows, "proj_778_precision_delivered_frac", "same-instrument session",
@@ -1002,7 +1002,7 @@ def project_magic(rows, inp) -> None:
     _add(rows, "proj_magic_776_axis_term", "ruler axis", axis_rel, None, "fraction",
          "per-block ruler spacing precision and the committed linearity bound "
          "in quadrature",
-         "this scales any detuning read on the archive's own axis, so at the "
+         "this scales any detuning read on the dataset's own axis, so at the "
          "megahertz scale of a line it is tens of kilohertz and cannot reach "
          "the gigahertz scale of the 5 pm target",
          "results/ruler_blocks.csv, results/ruler_campaign.csv")
@@ -1039,7 +1039,7 @@ def project_magic(rows, inp) -> None:
 
     _add(rows, "proj_magic_776_record_width_precision", "per block",
          inp["rel_block"], None, "fraction",
-         "the archive's demonstrated per-condition relative width precision",
+         "the dataset's demonstrated per-condition relative width precision",
          "the closest committed analogue to a per-point precision on a shift "
          "observable, and a different observable, so it bounds the comparison "
          "rather than settling it",
@@ -1098,7 +1098,7 @@ def main() -> int:
     print("PROJECTIONS. What a further campaign would buy, at the current "
           "calibration.\n")
     print(f"  per-trace centre precision   {inp['sigma_centre_transition']:.3f} MHz "
-          "transition, from the archive's own epoch-offset fit")
+          "transition, from the dataset's own epoch-offset fit")
     print(f"  block width scatter          {inp['sigma_width_block']:.4f} MHz, "
           f"cut to {inp['sigma_width_block'] / PLAN_BLOCK_NOISE_CUT:.4f} by "
           "interleaving")

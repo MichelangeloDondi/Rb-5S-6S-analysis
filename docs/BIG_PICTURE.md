@@ -6,7 +6,7 @@ dependency map below, then §5 and §6 for what each one would
 convert. A reader judging what has actually been delivered reads §4, where the
 results are collected, and follows the chapter links there into
 [`methods.md`](methods.md), which owns every derivation behind them. A researcher with their own transition reads §1
-for why this class of line repays the effort, §3 for what is already published
+for why this class of line is worth the work, §3 for what is already published
 on 5S–6S, §1.3 for the method, and §4 for what of the method is new. Everything
 quantitative below traces to [`RESULTS.md`](RESULTS.md) and the CSVs it carries
 provenance for.*
@@ -36,7 +36,7 @@ downward from the 2025 dataset rather than upward from a result.*
 ## What each piece buys
 
 ```
-  2025 archive (done)          model + bounds + method, w0-conditional
+  2025 dataset (done)          model + bounds + method, w0-conditional
         │
         ├── beam-profile w0 ───────► every intensity-denominated bound
         │                            sharpens (no new physics run)
@@ -66,8 +66,8 @@ downward from the 2025 dataset rather than upward from a result.*
                                       read against the cell reference
 ```
 
-Each arrow is independently valuable, and nothing below the archive is
-required for the archive's own results to stand. §5 ranks four of these arrows
+Each arrow is independently valuable, and nothing below the 2025 dataset is
+required for the 2025 dataset's own results to stand. §5 ranks four of these arrows
 by leverage on the physics: the beam profile, the pull that a fixed lock brings
 alive, the hot points, and the small waist. It then quantifies three acquisition
 changes on the same four points. One of those is the absorption channel drawn
@@ -115,7 +115,7 @@ quotes the 5S→5D two-photon working linewidth as **≈330 kHz**, about an orde
 magnitude narrower. On natural quality factor alone, 993 nm starts *behind* the
 line the compact-clock community already uses, and that
 community is at 6×10⁻¹⁴/√τ ([Ahern 2025](lit/ahern2025.md)). Nothing in this
-archive suggests 993 nm would overtake it, and this page should not be read as
+record suggests 993 nm would overtake it, and this page should not be read as
 claiming so.
 
 What is true is narrower and worth stating on its own: the environmental
@@ -150,15 +150,15 @@ factor of 2.6
 one quantity the expectation in §1.4 rides on therefore has two published
 values and no adjudication.
 
-This archive's bound sits 2.1 to 3.6 times above the 7S
+This record's bound sits 2.1 to 3.6 times above the 7S
 entry, so it is consistent with the neighbouring rung without yet reaching
 it. The per-peak *fitted* values here, 0.013 to 0.018, straddle
 the 7S rung: three of the four are above 0.014 and the fourth just under it, even
 though 6S is the more compact state. That is independent
-support, from outside this archive, for the reading its own lever test already
+support, from outside this record, for the reading its own lever test already
 forces: those fitted widths are a floor, not resolved collisions. Inside the
-archive the evidence is that the width rises only ×1.47 across a ×52.5 density
-span. The neighbouring rung says the same thing from the other direction.
+2025 dataset the evidence is that the width rises only ×1.47 across a ×52.5
+density span. The neighbouring rung says the same thing from the other direction.
 
 [Wang 2025](lit/wang2025.md) closes by
 proposing 5S→7S as the basis for an optical frequency standard. The 5S→6S line
@@ -168,7 +168,7 @@ is not being characterised in an empty field.
 
 The awkwardness of a cell reference is that the atoms are hot, colliding and
 moving through the beam. Those are the transit and collisional terms this
-archive spends its effort bounding. Trapping fixes that, but a trap normally
+record spends its work bounding. Trapping fixes that, but a trap normally
 shifts the very line you are measuring. A *magic* wavelength does not: both states shift equally, and
 the transition frequency is untouched. That is the trick behind lattice
 clocks (Sr at 813 nm). The polarizability recompute here gives the **first
@@ -183,7 +183,7 @@ pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
 and the crowding is expected: between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂
 resonances at 1323.88 and 1366.87 nm the 6S polarizability runs from one pole
 to the other through every value, so any pair built on 6S tends to put a root
-somewhere in that 43 nm window, theirs at 1336 and 1342 nm and this archive's
+somewhere in that 43 nm window, theirs at 1336 and 1342 nm and this record's
 at 1339.6 nm included. These are an envelope, and scalar only, which for
 these states is less of a caveat than it sounds: the tensor polarizability
 vanishes identically for $J=1/2$
@@ -283,7 +283,8 @@ variations "and vapor-cell temperature variations predominantly limit
 performance for medium- to long-term averaging", against a field target of
 better than 10⁻¹⁵ at a day. Note *both* halves of that pair: the light shift is
 what the shape method reads, and the cell-temperature term is the
-density-coefficient territory this archive bounds. The effort goes into suppressing it: shift cancellation
+density-coefficient territory this record bounds. The work goes into
+suppressing it: shift cancellation
 ([Gerginov 2018](lit/gerginov2018.md)), active power modulation at ×1000
 (Yudin 2020, [Andeweg 2026](lit/andeweg2026.md)), magic
 wavelengths ([Hamilton 2023](lit/hamilton2023.md)). Every one of those
@@ -456,7 +457,7 @@ residual gap.
 The input to the phase shift is the difference potential, not the pair
 coefficient: what dephases the line is ΔC₆ = C₆(5S+nS) − C₆(5S+5S), the
 excited pair against the ground pair (a 2026-08-04 referee point the
-archive adopted, [notes/vdw_difference_potential_and_4d_channel.md](notes/vdw_difference_potential_and_4d_channel.md)).
+record adopted, [notes/vdw_difference_potential_and_4d_channel.md](notes/vdw_difference_potential_and_4d_channel.md)).
 The Lindholm-Foley prefactor, the mean-speed step and the dropped core
 and tail are common to the 6S and 7S rungs and divide out of the ratio.
 The ground-pair subtraction is not that kind of error and does not
@@ -475,9 +476,9 @@ line at 0.32 ± 0.01 MHz/mTorr, about 0.014 in these units against Zameroski's
 0.0054, a factor of 2.6, with no half-width or full-width convention stated on
 either side ([FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
 §3.2). On Wang's value the anchor is near 9 kHz instead, and every standoff
-quoted from it loosens by that factor. The archival bound of 0.03–0.05 MHz per 10¹² cm⁻³
-(four-point, 70/90/110/130 °C) sits **8–15× above it** on the Zameroski anchor
-and about 3 to 6 times above it on Wang's, tighter
+quoted from it loosens by that factor. The recorded bound of 0.03–0.05 MHz per
+10¹² cm⁻³ (four-point, 70/90/110/130 °C) sits **8–15× above it** on the
+Zameroski anchor and about 3 to 6 times above it on Wang's, tighter
 than the earlier three-point bound (was 0.2–0.4 MHz, 57–113× above), because
 folding the 130 °C point into the headline extends the density lever from
 ×16.2 to ×52.5 (`scripts/run_beta_self.py`).
@@ -502,15 +503,15 @@ mechanism, because its two states are dipole-coupled to each other. 5S–6S
 cannot work that way: both states are S, so there is no resonant dipole
 coupling and the interaction is van der Waals, which should sit well below
 that figure. So 69 kHz is a ceiling the 6S coefficient should fall far
-under, consistent with the ~kHz expectation, and it makes the archival bound
-above loose by a factor one can now name rather than guess. The archive already
+under, consistent with the ~kHz expectation, and it makes the bound recorded
+above loose by a factor one can now name rather than guess. The record already
 has the design for this one, and it needs only the higher-density points of §5.
 
 ## 2. What we would like to do
 
 The rubidium 5S₁/₂ → 6S₁/₂ two-photon transition at 993 nm is a narrow,
 Doppler-free line that has been remarkably little studied. The field's
-two-photon effort sits almost entirely on the neighbouring 778 nm 5S → 5D
+two-photon work sits almost entirely on the neighbouring 778 nm 5S → 5D
 clock line. The long-term goal is to turn 993 nm into a properly
 characterised metrological line by measuring the coefficients that couple its
 shape and position to the environment:
@@ -548,7 +549,8 @@ the 6S–5P dipole elements ×2.15, which drives the 6S lifetime from 45.4 ns to
 that resonance and those terms are negative by construction. So one side is
 anchored to a measured lifetime and the other is not
 ([THEORY_NOTE §5](THEORY_NOTE.md), which also records a candidate mechanism as
-a hypothesis). Every archival result here uses |Δα| and is sign-immune. So on this line the *constants* are measured, but
+a hypothesis). Every result reported here uses |Δα| and is sign-immune. So on
+this line the *constants* are measured, but
 the *environmental coefficients* are only bounded, coarsely.
 
 **In the group.** OIST has its own 993 nm lineage. [Nieddu 2019](lit/nieddu2019.md) demonstrated
@@ -597,7 +599,7 @@ as a bound. Concretely:
   fitted conditions, mean 0.89. Why those sit below one is stated once,
   beside the fit gallery in the README. The per-condition fits hold the
   ramp at zero, and the shared ramp coefficient of the width-versus-power
-  fit rails at zero, so the ramp is a component the archive bounds rather
+  fit rails at zero, so the ramp is a component the record bounds rather
   than one these fits resolve. The beam waist
   is **measured on this apparatus lineage**: 64 µm (prior), the value
   [Rajasree 2020](lit/rajasree2020thesis.md) measured on the same laser model,
@@ -621,9 +623,9 @@ as a bound. Concretely:
   read from `results/stark_joint.csv` and `results/stark_sweep.csv`. The
   in-repo recompute of §3 is a different number, −1145 a.u., and it is not
   what the prediction uses. The tension is modest, and the most conservative
-  data subset (dropping the peak that carries the pilot session) reaches
-  the prediction itself. Either the intensity sits slightly lower than
-  the adopted geometry implies, or |Δα| is slightly smaller than
+  data subset (dropping the peak that carries the campaign-morning
+  session) reaches the prediction itself. Either the intensity sits
+  slightly lower than the adopted geometry implies, or |Δα| is slightly smaller than
   computed. A beam-profile measurement decides which. More than twenty times
   below Orson's ~6 MHz null, from shape alone.
   There is a third candidate, and it is the reason the bound is quoted where
@@ -679,7 +681,7 @@ as a bound. Concretely:
   per-scan free centres, and a synthetic closure test
   (`tests/test_intrascan_drift.py`) bounds the leftover *within*-scan effect at
   well under a fifth of the statistical error on the recovered asymmetry at the
-  archival envelope rate of 4 MHz/min on the laser axis, which is far above any
+  recorded envelope rate of 4 MHz/min on the laser axis, which is far above any
   rate the campaign itself showed. It reaches order-S₀ only at tens of times
   the envelope. The power laws come from
   [the AC-Stark ramp chapter](methods/03_the_ac_stark_ramp.md), and the laser
@@ -736,7 +738,7 @@ which block of [`PLAN.md`](PLAN.md) runs it. In order of leverage on the
 physics:
 
 1. **A direct beam-waist measurement**, knife-edge and camera profiler.
-   Converts every waist-conditional absolute number in the archive into a
+   Converts every waist-conditional absolute number in the record into a
    measured one, for an afternoon per configuration and no atoms. It could
    come back describing the present bench rather than the 2025 one. Runs as
    the beam-profile block, [`PLAN.md`](PLAN.md) §4.2.
@@ -759,11 +761,11 @@ physics:
    shape-based method against the same data.
 3. **Same-session high-density points (150–170 °C).**
    Converts reach on the density lever, rather than combinability, which the
-   archive has already settled. It rides the temperature-grid days if the oven
+   record has already settled. It rides the temperature-grid days if the oven
    allows, and could come back empty if the oven will not reach or hold the
    top of the range. Runs as [`PLAN.md`](PLAN.md) §7c.
 
-   Folding the archive's own 130 °C point into the headline already stretched
+   Folding the dataset's own 130 °C point into the headline already stretched
    the 2025 lever from ×16.2 to ×52.5 and tightened the bound an order of
    magnitude (was 0.2–0.4, now 0.03–0.05 MHz per 10¹² cm⁻³). Even at ×52.5 the
    bound sits only 8–15× above the ~3.5 kHz expectation of §1.4, on the
@@ -786,8 +788,8 @@ physics:
    pessimistic end and is not a promised result. Runs as
    [`PLAN.md`](PLAN.md) §6 items 3 and 4.
 
-   S₀ grows ~16× over the archival 64 µm waist (×14 against the planned 60 µm
-   configuration), and the third cumulant grows
+   S₀ grows ~16× over the 2025 dataset's 64 µm waist (×14 against the planned
+   60 µm configuration), and the third cumulant grows
    faster still, though not by the naive $S_0^3$ cube of that gain, a reading
    that [THEORY_NOTE.md](THEORY_NOTE.md) §3 and [RESULTS.md](RESULTS.md) C3c
    both record as replaced. The axial average over the
@@ -799,7 +801,7 @@ physics:
    a demonstration, cross-checked against the simultaneously measured pull.
 
 Three acquisition changes would make those four *trustworthy*, not merely
-*possible*. Each closes a gap the 2025 archive could only bound around, and
+*possible*. Each closes a gap the 2025 dataset could only bound around, and
 each is stated on the same four points as the items above.
 
 **Interleaving the four peaks within minutes, with a logged per-scan
@@ -822,7 +824,7 @@ photodiode of its own, neither of which the apparatus record lists, and could
 come back empty if the cold spot will not flatten enough at the high end to be
 read ([`PLAN.md`](PLAN.md) §8 item 3). The infrared receiver named below is on
 the bench and is not that detector. The collisional bound is denominated in a
-density the archive takes from a vapour-pressure
+density the record takes from a vapour-pressure
 curve rather than measures, and the cold-spot audit puts that scale at ×1.4 to
 ×7 leverage on the headline collisional number, which is plausibly a larger
 systematic than the beam waist. It also gates item 3 above, because the
@@ -839,8 +841,8 @@ already on the bench, a New Focus 2153 femtowatt photoreceiver with gain to
 2×10¹¹ V/A over DC–750 Hz ([APPARATUS.md](APPARATUS.md) §3). It would support
 the density and amplitude work at the higher temperatures item 3 needs.
 
-None of the three is new physics, and each removes a systematic the archive had
-to live with. None of it is scheduled or assigned. The specification
+None of the three is new physics, and each removes a systematic the 2025
+dataset had to live with. None of it is scheduled or assigned. The specification
 ([`PLAN.md`](PLAN.md)) is written so that any prefix of it can be run, whenever
 that becomes possible.
 [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md) §4 ranks the
@@ -860,7 +862,7 @@ puts the O-band null of §1.2 first of the four.
 The evanescent field of an optical nanofibre is, in one sense, the natural
 home of the ramp physics: the intensity gradient is steep and exponential,
 so the local light-shift distribution is large and strongly shaped. What
-carries over is the operation the archive is built on, mapping a known
+carries over is the operation the record is built on, mapping a known
 intensity geometry onto a shift distribution and reading its cumulants. The
 closed-form ramp weight itself does not. It is derived for atoms **crossing** a
 focused beam, and a trapped sample sits concentrated where the intensity is

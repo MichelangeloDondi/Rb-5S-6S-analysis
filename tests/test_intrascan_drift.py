@@ -20,13 +20,13 @@ the widths take up a symmetric stretch), reading the ramp coefficient s0
 trace, so they stay finite and window-independent).
 
 Result (this seed and geometry): the fitted asymmetry is biased by only a few
-x 1e-3 at the archival within-scan drift -- about 1% of the SNR~130 statistical
+x 1e-3 at the record within-scan drift -- about 1% of the SNR~130 statistical
 error on s0 -- and the bias grows ~linearly with the drift rate, reaching
-order-s0 only at tens of times the archival value, a rate the lock never
+order-s0 only at tens of times the record value, a rate the lock never
 approached. The ~0.1 MHz within-scan claim is therefore backed by a measured
 coverage number, not just timescale separation. If a future geometry surfaced a
-real bias at the archival rate it would become a stated systematic in RESULTS.md
-/ THEORY_NOTE §3; at the archival geometry it does not.
+real bias at the record rate it would become a stated systematic in RESULTS.md
+/ THEORY_NOTE §3; at the record geometry it does not.
 """
 
 from __future__ import annotations
@@ -40,8 +40,8 @@ from rb5s6s.constants import (
     DRIFT_RATE_LASER_HZ_PER_MIN, TRACE_DT_S, TRACE_N_POINTS)
 from rb5s6s.lineshape import model_profile, ramp_moment_contributions
 
-# Archival composite line (transition axis, MHz): natural + a modest collisional
-# Lorentzian, a narrow laser kernel, the ~50 um transit cusp, and an archival-
+# Record composite line (transition axis, MHz): natural + a modest collisional
+# Lorentzian, a narrow laser kernel, the ~50 um transit cusp, and a record-
 # scale AC-Stark ramp (s0 = 0.6 MHz, as in test_fringe_tail).
 _TRUE = dict(gamma_coll=0.3, sigma_laser_fwhm=0.2, transit_fwhm=1.2, s0=0.6)
 _S0_TRUE = _TRUE["s0"]
@@ -49,7 +49,7 @@ _W_MHZ = 15.0                 # +-analysis / acquisition window (a few FWHM)
 _N = TRACE_N_POINTS           # 2000 samples across the scan
 _SNR = 130.0                  # THEORY_NOTE peak-SNR floor at <=225 mW
 
-# Archival within-scan drift on the TRANSITION axis. The lock drifts on the
+# Record within-scan drift on the TRANSITION axis. The lock drifts on the
 # LASER axis at DRIFT_RATE_LASER_HZ_PER_MIN; the two-photon resonance moves at
 # twice that, and one scan lasts TRACE_N_POINTS * TRACE_DT_S = 1.000 s:
 #   2 * 4 MHz/min * (1 s / 60 s) ~ 0.133 MHz  (~the §3 "<=0.1 MHz within-scan").
@@ -118,7 +118,7 @@ def test_clean_fit_recovers_injected_asymmetry():
 
 
 def test_record_linear_drift_leaves_asymmetry_unbiased():
-    """The dominant archival drift is ~linear over 1 s. The centroid shifts (the
+    """The dominant record drift is ~linear over 1 s. The centroid shifts (the
     pull the per-trace free centre absorbs) but the fitted asymmetry is unbiased:
     a linear sweep warp is a near-affine stretch the floating width takes up, not
     a spurious skew. Measured bias ~ -3e-3 on s0 = 0.6."""
@@ -132,10 +132,10 @@ def test_record_linear_drift_leaves_asymmetry_unbiased():
 
 def test_bias_grows_with_drift_rate():
     """The asymmetry bias grows monotonically with the within-scan drift rate:
-    negligible at the archival rate, order-s0 only at tens of times it."""
+    negligible at the record rate, order-s0 only at tens of times it."""
     b = {k: abs(_bias(k * _DRIFT_RECORD_MHZ)) for k in (1, 10, 30)}
     assert b[1] < b[10] < b[30], b
-    assert b[1] < 8e-3, b            # archival: << s0
+    assert b[1] < 8e-3, b            # record: << s0
     assert b[30] > 0.05, b           # 30x stress: a material fraction of s0
 
 
@@ -152,10 +152,10 @@ def test_byte_reproducible_at_fixed_seed():
 # --------------------------------------------------------------------------- #
 @pytest.mark.slow
 def test_record_bias_is_within_the_noise_error():
-    """Coverage number. The deterministic drift bias at the archival within-scan
+    """Coverage number. The deterministic drift bias at the record within-scan
     drift -- linear plus an equal accelerating quadratic bow (a conservative
     curvature) -- is a small fraction of the SNR~130 statistical error on the
-    fitted asymmetry. So at the archival rate the asymmetry is 'unbiased within
+    fitted asymmetry. So at the record rate the asymmetry is 'unbiased within
     its error'. Measured: bias ~0.02-0.03, sigma_s0 ~0.3 => ratio ~0.1."""
     bias = abs(_bias(_DRIFT_RECORD_MHZ, quad_mhz=_DRIFT_RECORD_MHZ))
     draws = np.array([_fit_s0(*_scan(0.0, noise=True, seed=s)) for s in range(60)])
@@ -168,14 +168,14 @@ def test_record_bias_is_within_the_noise_error():
 @pytest.mark.slow
 def test_bias_is_scan_direction_dependent_at_stress():
     """THEORY_NOTE §3: within-scan drift smears the line in a scan-direction-
-    dependent way. Negligibly so at the archival rate, but at a stress rate the
+    dependent way. Negligibly so at the record rate, but at a stress rate the
     two sweep directions leave a measurably different residual asymmetry -- the
     fingerprint that this is a genuine within-scan (not between-scan) effect."""
     stress = 30.0 * _DRIFT_RECORD_MHZ
     fwd = _bias(0.0, quad_mhz=stress, direction=+1)
     rev = _bias(0.0, quad_mhz=stress, direction=-1)
     assert abs(fwd - rev) > 0.02, (fwd, rev)
-    # at the archival rate the direction split is negligible
+    # at the record rate the direction split is negligible
     a_fwd = _bias(0.0, quad_mhz=_DRIFT_RECORD_MHZ, direction=+1)
     a_rev = _bias(0.0, quad_mhz=_DRIFT_RECORD_MHZ, direction=-1)
     assert abs(a_fwd - a_rev) < 8e-3, (a_fwd, a_rev)

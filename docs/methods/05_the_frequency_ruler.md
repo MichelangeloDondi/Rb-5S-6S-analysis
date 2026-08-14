@@ -5,7 +5,7 @@ axis, and how well is that axis known?
 **Takes.** The measurement chapter, for the sweep and the apparatus. It needs
 none of the lineshape chapters, which is why it can be read early.
 **Gives.** The tooth spacing and the sweep rate that turn every millisecond in
-the archive into megahertz. Every width quoted anywhere in this set is
+the dataset into megahertz. Every width quoted anywhere in this set is
 denominated in this axis.
 **Skip if.** You are reading for the physics of the line rather than for the
 calibration. Nothing later re-derives the axis, it only spends it.
@@ -83,7 +83,7 @@ equally:
   resonant, so the light shift translates the whole comb **rigidly** and the
   spacing is untouched. The residual is second-order: a power drift *within*
   one trace shifts teeth differentially by $S_0\times$(fractional drift per
-  spacing), which is $\lesssim10^{-4}$ at the archival $S_0\lesssim0.6$ MHz and
+  spacing), which is $\lesssim10^{-4}$ at the 2025 $S_0\lesssim0.6$ MHz and
   below the quoted precision.
 - **The line asymmetry** (the ramp skew of [§2.6](03_the_ac_stark_ramp.md),
   or any other shape distortion). Same line, same intensity, same shape on
@@ -152,7 +152,7 @@ This explains the 2025 design compromise and prescribes its fix:
   amplitude modulation and suppress the optical carrier. It worked, but it
   put the ruler light at a **different polarization and power than the science
   light**, which is the reason the ruler traces cannot serve as a
-  hardware-matched width monitor for the archive (PLAN §7).
+  hardware-matched width monitor for the dataset (PLAN §7).
 - **The fix needs no polarizer**: drive the EOM at
   $\beta \approx 1.202$ (where $J_0(2\beta)=0$) and the central tooth **nulls
   by coherent pair interference**, the two-photon analogue of carrier

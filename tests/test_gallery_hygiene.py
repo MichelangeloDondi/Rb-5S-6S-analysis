@@ -1,7 +1,7 @@
 """The inspection gallery is allowed to write in exactly one place.
 
 `scripts/make_qc_gallery.py` renders 297 panels, 13 contact sheets and an index
-from the raw archive. None of that is publishable: the panels are pictures of
+from the raw dataset. None of that is publishable: the panels are pictures of
 raw traces, the index names excluded and discarded files, and the whole set
 is regenerated whenever anybody wants to look at it. It therefore lives under
 `private/`, which this repository gitignores wholesale by DIRECTORY rather than
@@ -181,7 +181,7 @@ def test_gallery_is_not_a_figure_register_target():
 
 def test_gallery_is_not_wired_into_the_gate():
     """Do-not three. The gallery is an audit that can trigger a recompute, not
-    a gate that blocks one. It needs the raw archive, which a fresh clone does
+    a gate that blocks one. It needs the raw dataset, which a fresh clone does
     not have, and it takes minutes rather than seconds."""
     offenders = []
     for rel in ("scripts/ci_gate.sh", "scripts/run_all.sh",
@@ -194,7 +194,7 @@ def test_gallery_is_not_wired_into_the_gate():
 
 # Shorthand two external reviewers found on the rendered panels and could not
 # read. Each one is a phrase the pipeline uses among its own tests and tables and
-# that means nothing to a physicist meeting the archive for the first time.
+# that means nothing to a physicist meeting the record for the first time.
 BANNED_ON_A_PANEL = (
     "the tail test",
     "the fit of record",

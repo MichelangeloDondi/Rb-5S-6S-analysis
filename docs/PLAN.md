@@ -39,7 +39,7 @@ a session that wanted the priority changed would have to argue it in this file.
 Projected precisions
 are not restated here beyond two headline figures: they live in
 [`results/projections.csv`](../results/projections.csv), which is computed
-from the archive's own measured precision and the session parameters this
+from the dataset's own measured precision and the session parameters this
 document states.
 
 ![the drift problem, what was extracted from it, and what a fixed lock buys](../figures/fig15_drift_story.png)
@@ -71,7 +71,7 @@ those costs a loader, which is costed with the block that asks for it and is
 not a hidden cost of the session.
 
 The adaptation seams for another line or species are named in
-[`ADAPTING.md`](ADAPTING.md), the archival data products and their provenance
+[`ADAPTING.md`](ADAPTING.md), the record's data products and their provenance
 tags in [`RESULTS.md`](RESULTS.md) and [`results/README.md`](../results/README.md),
 and the register below marks which blocks would produce a community-facing
 number (a coefficient, a table, a magic point) rather than a calibration
@@ -86,8 +86,8 @@ signal-against-noise verdicts, and
 eleven session parameters from the sections named in its own header and writes
 [`results/projections.csv`](../results/projections.csv). Changing a parameter
 this document states moves that table, so the two are edited together. The
-executed archival analysis plan is summarised in Appendix A and documented in
-[`methods.md`](methods.md).*
+analysis plan of record, as executed, is summarised in Appendix A and
+documented in [`methods.md`](methods.md).*
 
 ## The block register
 
@@ -116,7 +116,7 @@ of its items points at the block that executes it.
 | matched-PM ruler | §7d | a monitor that was uncorrelated with the science light into a drift compensator | interleaved with science blocks, unpriced separately | the tank may not reach the modulation index the null needs, which is an open item | community |
 | returned-to block | §7e | an assumption that block scatter averages down into a test of it | one short block per day | one block settles the direction, not the magnitude | internal |
 | interleaved peaks and timestamps | §7f, §7g | cross-peak systematics of 30–50% into 2–4%, and block order into a clock | inside every dwell | the scope may not export per-trace times, in which case the external log carries it | internal |
-| etalon thermal discipline | §7h | dropouts inside the thermal transient into a bounded held-lock drift | two hours before first data, and again after any long pause | the transient may be longer on the day than the archive measured | internal |
+| etalon thermal discipline | §7h | dropouts inside the thermal transient into a bounded held-lock drift | two hours before first data, and again after any long pause | the transient may be longer on the day than the dataset measured | internal |
 | σ_laser at L | §7i | a drifting-lock bound into a fixed-lock measurement, with the collision prior stated | falls out of the T grid | it stays a bound if the collision prior cannot be tightened | community |
 | width-to-shift ratio | §7j | a van der Waals anchor into an independent test | needs the centre channel, so it rides the fixed lock | the pressure shift may stay under the block scatter | community |
 | degeneracy-law test | §8 item 1 | area ratios into a parameter-free check at the interleaved floor | inside every interleaved block | PMT nonlinearity may swamp the 1–3% floor | community |
@@ -128,7 +128,7 @@ of its items points at the block that executes it.
 
 ## 1. Aim
 
-The 2025 archive delivers a method and bounds: the drift-immune lineshape
+The 2025 record delivers a method and bounds: the drift-immune lineshape
 framework, the self-calibrating EOM ruler, the identifiability and coverage
 analyses, and the computed 5S–6S dynamic polarizabilities and magic
 wavelengths ([`THEORY_NOTE.md`](THEORY_NOTE.md) §5). That result stands on its
@@ -137,7 +137,7 @@ would convert three named bounds into measured coefficients:
 
 1. **The AC-Stark coefficient Δα.** The strongest observable: under a fixed
    lock the pull (∝ S₀) comes alive, and a small waist raises S₀ several-fold.
-   This is where the intensity effort points.
+   This is where raising the intensity pays off most.
 2. **β_self and the collisional self-shift.** Intrinsically ~kHz per
    10¹² cm⁻³, so the deliverable is a modest first measurement or a much
    tighter bound, completing the 5D/7S self-broadening series
@@ -156,12 +156,12 @@ plus the fixed-lock σ_laser. A single same-direction day does not: the
 bound-to-measurement guarantee needs the opposite-order pair (§7a). Value is
 monotone in shots. A session truncated at any point still leaves the
 higher-priority conversions done (§3), and if no session is ever run the
-archival result stands unchanged.
+record stands unchanged.
 
 ## 2. Risks a referee would raise
 
 **"Orson (2021) already published nulls on this line. Your bounds say 'we also
-saw nothing', slower."** True as pure numbers: the archival bounds are
+saw nothing', slower."** True as pure numbers: this record's bounds are
 confirmatory of Orson's nulls, same direction, tighter. The increment is by
 channel. The method (a closed-form two-photon ramp lineshape law plus a
 reference-free moment readout) is not pursued elsewhere. The S₀ bound
@@ -180,9 +180,9 @@ bracket veto (§7a) cuts drift-jump blocks instead of averaging them. The
 sentinel condition (§10.6) monitors residual drift directly. Ayachitula (2024)
 held a lock on this same transition to < 0.5 kHz over 50 min, an existence
 proof from a high-finesse cavity apparatus rather than from this bench, and
-the plan's own thresholds rest on the archive's measured held-lock rate
+the plan's own thresholds rest on the dataset's measured held-lock rate
 rather than on that borrowed figure. Worst case, the D1 beam-profile and ρ
-measurements retroactively sharpen the 2025 archive and stand alone.
+measurements retroactively sharpen the 2025 record and stand alone.
 
 The strongest argument against the observable this plan ranks first sits in the
 same apparatus record, and belongs here rather than only there. With the
@@ -190,7 +190,7 @@ re-lock steps and the per-interval ramps removed, the 2025-06-11 reconstruction
 leaves a **settled floor of 0.62 +/- 0.03 MHz** of unmodelled laser motion, the
 error a residual bootstrap over 400 replicates
 (`results/wavemeter_reconstruction.csv`, [`APPARATUS.md`](APPARATUS.md) §6).
-That floor sits above both of this archive's light-shift bounds carried to the
+That floor sits above both of this record's light-shift bounds carried to the
 laser axis, 0.13 MHz from the joint fit and 0.32 MHz from the width-only
 construction, so a single block's centre cannot beat what the averaged shape
 bounds already deliver. Averaging reaches it only in numbers: about 24 blocks
@@ -239,7 +239,7 @@ unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 **"A Δα bracket that wide discriminates nothing."** Partly answered by the
 joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
 0.35 MHz at the adopted geometry (`results/stark_joint.csv`,
-`results/stark_sweep.csv`), so the archive constrains the (Δα, intensity)
+`results/stark_sweep.csv`), so the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits
 modestly below the adopted values, and the most conservative data subset
 reaches the prediction itself and needs no headroom at all. A beam-profile
@@ -273,7 +273,7 @@ identical on all four lines while the pumping is not, since its branching runs
 weight, because the scalar two-photon operator leaves 6S in one hyperfine
 level). That is a lever of 1.67 on the pumping term, 3.1 kHz of width at the
 committed $S_0$ bound and 7.8 kHz at the predicted one, against an
-88 kHz single-block scatter, so it is real and this archive cannot spend it. A session that controls the block scatter gets a second
+88 kHz single-block scatter, so it is real and this record cannot spend it. A session that controls the block scatter gets a second
 separation without needing a lock.
 Until then the width channel yields a bound with a known direction of error,
 which is what it is quoted as.
@@ -282,7 +282,7 @@ which is what it is quoted as.
 Bug?"** Not a bug. The recompute is validated on anchors it does not fit (the
 measured 5S tune-out to ~2 pm, the static polarizabilities) and agrees with
 Orson's magnitude within 5%. The sign disagreement has an identified mechanism,
-every archival result is sign-immune (bounds and the asymmetry null use |Δα|),
+every result in this record is sign-immune (bounds and the asymmetry null use |Δα|),
 and the item is flagged for external theory adjudication
 ([`THEORY_NOTE.md`](THEORY_NOTE.md) §5). It blocks nothing.
 
@@ -301,7 +301,7 @@ with its cause ([`PREREGISTRATION_RESULTS.md`](PREREGISTRATION_RESULTS.md)).
 
 ## 3. Priorities if the budget shrinks
 
-The session's job is bounds to measurements. Rank effort by which bound becomes
+The session's job is bounds to measurements. Rank the work by which bound becomes
 a measurement and how absolute. If a day is lost, cut from the bottom, never
 the top. This section ranks observables and points each item at the block that
 runs it. §10 costs the sampling currencies against the measured 2025 failure
@@ -331,7 +331,7 @@ rather than a frequency reference. So the deficiency those photographs
 establish, and the one this session exists to fix, is the missing outer loop:
 no lock against an absolute reference was ever closed, and the cavity set point
 was moved by hand whenever drift walked the line out of the window, which is
-why archival centres carry no metrological meaning. The instrument for closing
+why the dataset's centres carry no metrological meaning. The instrument for closing
 that loop on this system is the wavemeter link.
 **Needs.** The etalon and reference-cavity locks engaged and past the thermal
 transient of §7h, the wavemeter link engaged, and a spare channel carrying the
@@ -340,12 +340,12 @@ One continuous wavemeter record at a fixed set point before the first science
 block, and another after any pause long enough to reopen the transient.
 **Go/no-go.** Engage the lock chain and hold it thirty minutes. It passes if
 the held drift magnitude over that half hour stays below 0.025 MHz per minute,
-the upper edge of the archive's own held-lock band. The fig15 record puts that
+the upper edge of the dataset's own held-lock band. The fig15 record puts that
 band at 0.016 MHz per minute in magnitude, 0.007 to 0.025, fitted across the
 campaign's five-hour power session with the sign undetermined, so the criterion
 asks the new epoch to be no worse than the old one at its worst. On fail the
 session falls back to the drifting-lock protocol and every block keeps its
-per-block ruler calibration, which is the archive's own licensed mode, so the
+per-block ruler calibration, which is the record's own licensed mode, so the
 day is degraded and not lost. **Empty.** No empty case. The half-hour record
 either meets the criterion or it does not, and either way it selects which of
 the two protocols the day runs under. **Record.** The half-hour wavemeter
@@ -363,7 +363,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    extra column fixes the time origin independently of both knob and laser.
    Rahaman & Dutta (2022)
    co-record exactly this on the sister Cs line. Two design rules travel with
-   it, both learned on the archive. Cycle or randomise the power ordering so
+   it, both learned on the 2025 dataset. Cycle or randomise the power ordering so
    that drift is orthogonal to the pull, which in particular rules out putting
    the lowest power last in a descending ladder, where it is the most drifted,
    lowest-SNR rung and the only one whose sweep retrace re-crosses the line. And
@@ -422,7 +422,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    Δγ ≈ 20 kHz (invisible), while 150–170 °C gives 0.07–0.25 MHz. In 2025
    temperature ran monotonically down with elapsed time, so T and drift were
    confounded, and that is what turned β into a bound. The hot points alone are
-   not sufficient: at the archival block-noise floor they reach only ~1–3σ per
+   not sufficient: at the dataset's block-noise floor they reach only ~1–3σ per
    block, and cutting that floor 4× (interleaving plus per-trace power logging)
    takes the same signal to ~3–12σ (`results/resolving_power.csv`). Both halves
    are load-bearing. Runs as §7c.
@@ -451,7 +451,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    minutes-scale stability rather than all-night stability, which makes it the
    least exposed of the three conversions. Runs as §6 item 1.
 5. **An absorption channel for N(T).** The collisional bound is denominated in
-   a density the archive adopts rather than measures, and the audit that
+   a density the record adopts rather than measures, and the audit that
    quantified the cold spot puts it at ×1.4 to ×7 leverage on the headline C1
    number, plausibly a larger systematic than the beam waist and cheap to bound
    in the same session, which is why it recommends moving this item near the top
@@ -488,10 +488,11 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    threshold at 1.68 eV). Two-photon saturation at 50–60 µm leaves 1–2 W of
    headroom. The predicted on-axis shift at 225 mW is 0.35 MHz at the adopted
    measured waist, with a band of 0.285 to 0.404 MHz across the waist and retro
-   priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the archival
-   amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the line is already
-   saturated at 225 mW, so power is not the knob there. The one in-beam part
-   with a plausible sub-watt limit is the EOM: check its damage rating before
+   priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the 2025
+   dataset's amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the
+   line is already saturated at 225 mW, so power is not the knob there. The
+   one in-beam part with a plausible sub-watt limit is the EOM: check its
+   damage rating before
    lifting the ceiling, and watch the P² bend at 60 µm rather than assuming 1 W
    is clean. There is also a physics ceiling on drive power that is not a damage
    limit, the point at which the light shift itself exceeds a tenth of the line
@@ -502,8 +503,8 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
 8. More power points: a 6–8 point log grid into the cliff plus a linearity
    check beats crowded points.
 9. More days: the value is earning the day-to-day systematic error bar, plus
-   the archival-waist epoch bridge. Budget 1–2 days. Never trade the high-T
-   lever or the beam profile for averaging days.
+   the epoch bridge to the 2025 dataset's own waist. Budget 1–2 days. Never
+   trade the high-T lever or the beam profile for averaging days.
 
 ## 4. Configurations and optics protocol
 
@@ -520,11 +521,12 @@ by design):
   drive power (§5).
   One model caveat is specific to it: the composite lineshape convolves transit
   with the natural Lorentzian, which is rigorous when the crossing time is long
-  against the 6S lifetime (45 ns). At the archival waist the ratio is ~4. At
-  16 µm it is ~1.3, so this is where a referee should ask for the convolution's
-  validity range and where a Bloch-equation cross-check earns its time. A caveat
+  against the 6S lifetime (45 ns). At the 2025 dataset's waist the ratio is
+  ~4. At 16 µm it is ~1.3, so this is where a referee should ask for the
+  convolution's validity range and where a Bloch-equation cross-check earns
+  its time. A caveat
   to state and test, not a reason to retreat.
-- **M (the archival geometry, 64 µm, measured, band 62 to 68 µm).** Half-day spot
+- **M (the 2025 dataset's geometry, 64 µm, measured, band 62 to 68 µm).** Half-day spot
   check: knife-edge, camera, P grid, one 130 °C point, for direct 2025-epoch
   continuity.
 
@@ -610,7 +612,7 @@ the two-photon operator, with amplitude ∝ ε_f·ε_b. Rajasree (2020) measured
 on this line that the rate scales as the squared degree of linear
 polarization and vanishes for circular. The configuration table (Nieddu 2019,
 verified from the paper): parallel linear (π–π) gives the Doppler-free peak
-on a Doppler pedestal and is the archival default. Crossed linear kills the
+on a Doppler pedestal and is the 2025 dataset's default. Crossed linear kills the
 peak, same-handed circular is forbidden, and opposite-circular (σ–σ′, quarter
 waveplates before both the cell and the mirror) gives a background-free peak
 at half height.
@@ -623,7 +625,7 @@ Prescriptions:
 - **Characterize the retro-path retardance** by Stokes tomography of the
   returning beam. Double-passed birefringence in window, lens and mirror
   pulls ε_f·ε_b below 1 and lets it drift as optics warm: a concrete
-  candidate for the archival 30–50% amplitude wander.
+  candidate for the 2025 dataset's 30–50% amplitude wander.
 - **Fit removable QWP slots before the lens and before the mirror**, so σ–σ′
   is available on demand. It is valuable as a diagnostic, never as the
   default: it removes the Doppler pedestal (a pedestal-subtraction
@@ -706,17 +708,19 @@ between the transit kernel and the Voigt.
 
 **The wide-scan Doppler pedestal, an in-situ thermometer and an in-situ ρ.**
 The retro-reflected drive makes two kinds of two-photon event. One photon from
-each beam gives the Doppler-free line every archival number is fitted to. Two
-photons from the same beam give a line broadened at the full 2kv, which sits
-under the narrow line as a pedestal. Its width goes as the square root of the
-temperature and its area against the narrow line's area is 4ρ/(1 + ρ²), so one
-wide trace measures the gas temperature and the retro power ratio together.
-Both are quantities the archive adopts rather than measures, and both are
-quantities this session otherwise spends stage 0 effort on by other routes
+each beam gives the Doppler-free line every number in the record is
+fitted to. Two photons from the same beam give a line broadened at the
+full 2kv, which sits under the narrow line as a pedestal. Its width goes
+as the square root of the temperature and its area against the narrow
+line's area is 4ρ/(1 + ρ²), so one wide trace measures the gas
+temperature and the retro power ratio together. Both are quantities the
+record adopts rather than measures, and both are quantities this
+session otherwise spends stage 0 time on by other routes
 (§3 item 2 for ρ) or adopts outright (temperature). The 2025 windows span a
-tenth of the pedestal, so every archival trace samples its flat top and the
-linear baseline absorbs it as an offset. The archive can therefore bound ρ
-through that offset and can say nothing about the width, which needs the
+tenth of the pedestal, so every trace in the 2025 dataset samples its flat
+top and the linear baseline absorbs it as an offset. The record can
+therefore bound ρ through that offset and can say nothing about the width,
+which needs the
 session.
 
 **Needs.** Nothing new. A gigahertz-wide feature does not care about a
@@ -769,14 +773,14 @@ this section, which has to be in place before any of them runs.
    **Needs.** The fixed lock, the ramp-monitor export of §3 item 0, and the
    randomized power ordering it prescribes. **Shots.** Randomized power cycles
    of about 10 minutes each with the four lines interleaved, on a log grid of
-   about 8 rungs over the archive's own 25 to 225 mW ladder, run as the morning
+   about 8 rungs over the dataset's own 25 to 225 mW ladder, run as the morning
    block of §9 D4. **Go/no-go.** The sentinel condition of §10.6 must reproduce
    within the day's own scatter, and a bracket tooth moving more than 0.2 MHz
    within a block excludes the block (§7a). **Empty.** If the lock does not hold
    minutes-scale stability the centres stay unusable and the block returns the
    2025 outcome. **Record.** Per-trace centres with their acquisition times, the
    per-rung power log, and the fitted pull. One morning of this would give
-   0.09 MHz on S₀(225 mW), against a prediction of 0.35 MHz, at the archive's own
+   0.09 MHz on S₀(225 mW), against a prediction of 0.35 MHz, at the dataset's own
    measured per-trace centre precision and its bounded held-lock drift rate
    ([`results/projections.csv`](../results/projections.csv)).
 2. **Excess variance against P²** (configuration L or M). Second order in S₀,
@@ -806,7 +810,7 @@ this section, which has to be in place before any of them runs.
    over the collection window has the closed form
    f(s) ∝ |s|^(n−1)·[ζₘ + ζₘ³/3] with ζₘ = min(Z_c/z_R, √(S₀/|s|−1))
    (`lineshape.stark_ramp_axial`). At configuration L the ramp stays clean
-   (g₁ ≈ +0.56), and the archival M geometry carries only a few-percent
+   (g₁ ≈ +0.56), and the 2025 dataset's M geometry carries only a few-percent
    correction (g1 +0.558). At configuration S the skew flips sign, with the
    crossover at Z_c/z_R ≈ 1.12. The flip condition is Z_c > 1.12 z_R ≈ 0.9 mm at
    S, while at L it would need Z_c > 12.7 mm, beyond any achievable field of
@@ -888,7 +892,7 @@ while the pumping branching is not. A joint fit over the four peaks with those
 branchings held fixed and one free scale is the only separation this method
 admits **without a stable frequency reference**.
 
-On the 2025 archive that lever is 3.1 kHz at the committed $S_0(225)$ bound of
+On the 2025 dataset that lever is 3.1 kHz at the committed $S_0(225)$ bound of
 0.217 MHz, against an 88 kHz block scatter, short by
 a factor of thirty, which is why it is stated and not spent
 ([the refit's preregistration](notes/companion_inclusive_refit_prereg.md)). It
@@ -906,7 +910,7 @@ The last column is the one to plan against: 88 kHz is 1.68 per cent of the
 5.25 MHz line it was measured on, and a wider line will not hold 88 kHz, so the
 lever is scored against the same fractional stability applied to the width each
 condition actually produces. It still clears three at 16 µm **and at today's
-power**. So the separation this archive misses by thirty is bought by the waist
+power**. So the separation this record misses by thirty is bought by the waist
 rather than by the laser, and that is a second and independent reason for the
 small-waist configuration, alongside the shift gain §5 argues from.
 
@@ -918,10 +922,10 @@ preregisters.
 
 **There is a second catch, and it is a precondition rather than a caution.** The
 refit ran, and it found that the per-line scale is not merely poorly determined
-on this archive but *unidentifiable*
+on this dataset but *unidentifiable*
 ([postscript](notes/companion_inclusive_refit_prereg.md)). The pumping companion
 enters the model only as a multiple of the saturation width, which is itself
-proportional to $S_0=\kappa P$, and this archive **bounds $\kappa$ from above
+proportional to $S_0=\kappa P$, and this record **bounds $\kappa$ from above
 rather than measuring it**. Profiling over $\kappa$ instead of holding it, the
 fit sets $\hat\kappa=0$ for every nonzero scale, the companion vanishes
 identically, and $\chi^2$ comes back the same to four decimals across a factor
@@ -950,15 +954,16 @@ plus an EOM ruler per block. **Go/no-go.** A pre-registered bracket veto: a
 bracket tooth moving more than 0.2 MHz within a block excludes the block.
 **Empty.** The residual between the two directions may exceed the physics. That
 outcome is the deliverable rather than a failure, since the residual is the
-systematic error bar the 2025 archive had to assume. **Record.** Both grids
+systematic error bar the 2025 record had to assume. **Record.** Both grids
 with their directions, the veto census, and the difference.
 
-![the archival width-vs-density floor](../figures/fig6_gamma_floor.png)
+![the 2025 dataset's width-vs-density floor](../figures/fig6_gamma_floor.png)
 
-*The archival floor this program upgrades: the mean of the four fitted
-collisional widths rises only ×1.47 while the density rises ×52.5, so the 2025
-slope is a bound. A binary-collision width would be proportional to density, so
-these four points bound the coefficient rather than measure it, and the bound
+*The floor in the 2025 dataset that this program upgrades: the mean of
+the four fitted collisional widths rises only ×1.47 while the density
+rises ×52.5, so the 2025 slope is a bound. A binary-collision width
+would be proportional to density, so these four points bound the
+coefficient rather than measure it, and the bound
 moves with the density range used, which is why the figure draws two of them.
 Neither straight line is a fit: each is what the width would do if the
 coefficient took the value fitted over the range named beside it. The dashed one
@@ -968,7 +973,7 @@ model's 20 per cent scale systematic, common to every point. The session's lever
 are the two the figure lacks: densities at 150–170 °C, and block noise cut 4× by
 interleaving.*
 
-**7b. At least five temperature blocks per peak.** The archival headline runs
+**7b. At least five temperature blocks per peak.** The record's headline runs
 on four points and two residual degrees of freedom, so its error multiplier is
 t(0.95,2) = 2.92 (the three-point construction it replaced paid ×6.31 on one).
 Five blocks give t(0.95,3) = 2.35, a further tightening before any drift
@@ -976,7 +981,7 @@ compensation, and the cheapest statistical buy on the page.
 **Needs.** Nothing beyond 7a. **Shots.** Five conditions per peak on the grid
 rather than four. **Go/no-go.** None of its own. **Empty.** No empty case, the
 blocks either run or they do not. **Record.** The block census per peak.
-**Open item for this block.** The archival headline fits the four lines
+**Open item for this block.** The record's headline fits the four lines
 separately. A pooled estimator with one shared slope and per-line floors is
 pre-registered in
 [`docs/notes/beta_self_pooling_prereg.md`](notes/beta_self_pooling_prereg.md),
@@ -987,19 +992,19 @@ be settled before the shot list is frozen, since a pooled slope changes what a
 fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
-narrower reason than the 2025 post-mortem gave it. The archival lever test
+narrower reason than the 2025 post-mortem gave it. The 2025 dataset's lever test
 shows the joint β collapses 0.036 → 0.014 when the ×53 anchor (the 130 °C
 block) is folded in. That collapse is not a session artifact. It is the correct
 least-squares response to a line that barely moves across a 52.5× density span
 (gamma_coll rises only ×1.47–1.9), which is what makes "residual floor, not
 resolved collisions" a demonstrated conclusion rather than an assumption. The
-2026-08-02 decision that promoted the four-point fold-in to the archival
+2026-08-02 decision that promoted the four-point fold-in to the record's
 headline, and the reasoning behind it, are recorded in
 [`PREREGISTRATION_RESULTS.md`](PREREGISTRATION_RESULTS.md). What a same-session
 150–170 °C extension still buys, on top of that fold-in: it removes the
 cross-epoch calibration step entirely rather than relying on it being handled
 correctly after the fact, and it is the only route to densities where a genuine
-~kHz collisional effect could clear the block-noise floor. The archive's
+~kHz collisional effect could clear the block-noise floor. The record's
 four-point bound (≲0.03–0.05 MHz per 10¹² cm⁻³) is still roughly an order of
 magnitude above the ~3.5 kHz expectation (§1,
 [`BIG_PICTURE.md`](BIG_PICTURE.md) §1), so the case for the session is about
@@ -1010,7 +1015,7 @@ locked session as the rest of it, in interleaved temperature order. **Go/no-go.*
 The oven must hold each set point long enough for the dwell without the cold
 spot lagging outside the band §8 item 3 measures. **Empty.** The oven may not
 reach or hold the top of the range, in which case the grid stops where it stops
-and the bound stays where the archive has it. **Record.** Set point, measured
+and the bound stays where the record has it. **Record.** Set point, measured
 cell temperature, and the cold-spot offset per condition.
 
 ![the EOM comb and its nonlinearity map](../figures/fig8_ruler.png)
@@ -1044,7 +1049,7 @@ eight-member estimator family, and the per-block relative rate errors run from
 ([`ruler_validity_and_trim_prereg.md`](notes/ruler_validity_and_trim_prereg.md)),
 which is the spread an interleaved ruler would resolve rather than carry.
 
-The archive also settles what the current settings can and cannot deliver, and
+The dataset also settles what the current settings can and cannot deliver, and
 this block asks for the two changes that would lift them. The measured drive
 depth across the campaign is 2β ≈ 1.57 median, so β ≈ 0.79, against the β ≈ 1.202
 this block prescribes. `APPARATUS.md` §6 places the campaign drive at 54 to 60
@@ -1063,7 +1068,7 @@ inside its own frequency ceiling, and a ramp about one tooth spacing wider per
 side. **Shots.** Ruler blocks interleaved with science blocks at the cadence
 §10.5 measures, at science polarization and power. **Go/no-go.** Monitor
 modulation purity live through the A₊ₖ = A₋ₖ symmetry. Fit the comb to ±3 orders
-where the scan covers them, since truncating at five biased the archival rate by
+where the scan covers them, since truncating at five biased the 2025 rate by
 0.1% ([audit addendum 19](PREREGISTRATION_RESULTS.md)), and record the coverage
 per trace rather than assuming it. Calibrate any control-variate coefficient on
 dedicated dither data, and freeze all decision rules before first data. A
@@ -1112,8 +1117,9 @@ start and note block starts independently, so that the external log can
 reconstruct the order if the metadata path fails. **Empty.** If neither path
 works the block order is again the only time coordinate, which is the 2025
 outcome. **Record.** A wall-clock per trace. The LeCroy's per-trace
-TRIGGER_TIME is demonstrated on the 2025 rehearsal files, but its ~250× file
-weight buys nothing for a 60 ms feature, so choose it only if the external time
+TRIGGER_TIME is demonstrated on the 4 July evening session's files, but
+its ~250× file weight buys nothing for a 60 ms feature, so choose it
+only if the external time
 log fails in practice.
 
 **7h. Etalon-lock thermal discipline.** The 2025 disturbance was not drift but
@@ -1125,7 +1131,7 @@ held-lock rate a 43 MHz window lasts ~40 h.
 **Needs.** The etalon lock engaged early enough, and a spare channel for the
 lock state. **Shots.** One long off-resonance capture for the noise spectrum.
 **Go/no-go.** No science block starts inside the transient. **Empty.** The
-transient may run longer on the day than the archive measured, which costs
+transient may run longer on the day than the dataset measured, which costs
 setup time rather than data. **Record.** The lock state on its spare channel,
 and the noise spectrum. The 2025 chain carried a 61 Hz line at 0.2% of peak,
 harmless on a 60 ms line and not harmless on the narrower lines this session is
@@ -1142,13 +1148,13 @@ cannot be tightened. **Record.** The fitted core width, the subtracted transit
 term, and the prior with its source.
 
 **7j. The width-to-shift ratio, a fixed-lock-only check.** A drifting lock
-cannot measure a pressure *shift*. Only widths survive the 2025 archive, so the
+cannot measure a pressure *shift*. Only widths survive the 2025 dataset, so the
 session's centre channel is what would let this run. Lewis (1980, Table 4.1)
 predicts $2\gamma/\beta = 2.75$ for a pure $n=6$ van der Waals potential, a
 second and independent test of the van der Waals anchor beyond the $T^{0.3}$
 width-scaling check of
 [`methods/06_the_statistics.md`](methods/06_the_statistics.md) §4.2, and one the
-archive has no route to at all.
+dataset has no route to at all.
 **Needs.** The fixed lock and the density lever of 7c. **Shots.** Rides the T
 grid, with centres retained. **Go/no-go.** The centre channel must survive the
 §10.6 sentinel at the densities in question. **Empty.** The pressure shift may
@@ -1189,7 +1195,7 @@ without which none of them clears the wander.
 3. **An absorption channel for N(T).** A weak D-line probe plus photodiode:
    transmission is immune to PMT gain, and its log-slope against 1/T returns the
    vapour-pressure curve. A cold spot flattens the high-T end, so the offset
-   measures the cold-spot lag directly. The archive prefers ΔT_cs ≈ 20 K at face
+   measures the cold-spot lag directly. The record prefers ΔT_cs ≈ 20 K at face
    value (0–30 K unexcluded), and at 1.4× to 7× leverage on the collisional bound
    the cold spot is plausibly a larger systematic than w₀. This is the single
    highest-value hardware addition of the session.
@@ -1200,10 +1206,10 @@ without which none of them clears the wander.
    the 150–170 °C points of 7c. **Go/no-go.** The probe must be weak enough not
    to perturb the ground-state population that the two-photon rate reads.
    **Empty.** The cold spot may not flatten enough at the high end for the offset
-   to be read, leaving the lag where the archive has it. **Record.** Transmission
+   to be read, leaving the lag where the record has it. **Record.** Transmission
    against 1/T, the fitted vapour curve, and the cold-spot offset. This is the
-   measurement that would replace the density-scale systematic the archival
-   bound currently carries.
+   measurement that would replace the density-scale systematic the
+   record's bound currently carries.
 4. **Fluorescence over absorption.** Absorption sees true N, fluorescence the
    trapping-distorted emission. Their within-block ratio cancels N and isolates
    the trapping-modified collection efficiency, sharpest at 150–170 °C. Real
@@ -1274,7 +1280,7 @@ days runs.
 
 ### 10.1 The 2025 failure modes
 
-Seven of the ten sizes below are measured on the archive. The three that are
+Seven of the ten sizes below are measured on the dataset. The three that are
 not say so in the cell, with the assumption they rest on, because a reader who
 takes row 8 for a measurement of these cell windows would be reading a worked
 example as a bench fact.
@@ -1284,7 +1290,7 @@ example as a bench fact.
 | 1 | between-block width scatter (drifting lock) | σ_B ≈ 0.12 MHz vs within-block SEM ≈ 0.05 | widths drift-limited, σ_laser a bound | fixed lock, brackets and veto (§7a) |
 | 2 | only 3 densities, 1 residual DOF | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (the 2026-08-02 headline), and five or more T blocks tighten further (§7b) |
 | 3 | T monotonic in time | density slope collinear with drift | a guard had to carry the claim | opposite-order days (§7a) |
-| 4 | archival lever short at ×16.2 (three T points) | joint β collapses 0.036 → 0.014 once the ×52.5 (130 °C) anchor is folded in | the fitted floor responding correctly to a near-flat gamma_coll(T), folded into the headline 2026-08-02 | same-session 150–170 °C (§7c), to reach densities where a ~kHz effect could clear the block-noise floor |
+| 4 | 2025 lever short at ×16.2 (three T points) | joint β collapses 0.036 → 0.014 once the ×52.5 (130 °C) anchor is folded in | the fitted floor responding correctly to a near-flat gamma_coll(T), folded into the headline 2026-08-02 | same-session 150–170 °C (§7c), to reach densities where a ~kHz effect could clear the block-noise floor |
 | 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable, and the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes plus hardware timestamps (§7f, §7g) |
 | 6 | ruler light differed from science light (HWP trick) | monitor reliability ≈ 0 | no drift compensator | matched-PM ruler (§7d) |
 | 7 | w₀ never measured | *not measured*, a tens-of-% prior, from the 64 µm beamline-lineage value | every absolute number conditional | beam profile first (§3 item 1) |
@@ -1303,9 +1309,9 @@ the design consequence only.
 ### 10.2 The variance budget, and a stopping rule
 
 Var(mean) = σ_w²/n + σ_B², and repetition divides only the first term. At the
-archive numbers, doubling the repeats buys 4% for 100% more time. The same
+2025 numbers, doubling the repeats buys 4% for 100% more time. The same
 hour on one more T block divides σ_B by √N and buys a residual degree of
-freedom, and the t ladder is where the archive bled: 6.31, 2.92, 2.35, 2.13,
+freedom, and the t ladder is where the record bled: 6.31, 2.92, 2.35, 2.13,
 2.02 for one to five DOF. Freeze the stopping rule in the run notebook:
 repeat a condition until σ_w/√n < σ_B/2, then stop, since past that point
 infinite repeats recover at most 12%. With 2025-like noise that is n ≈ 4–5.
@@ -1356,7 +1362,7 @@ no condition was ever revisited. The sentinel makes drift a direct observable.
 
 ### 10.7 The currency table
 
-| currency | attacks | marginal value at archive numbers | verdict |
+| currency | attacks | marginal value at 2025 numbers | verdict |
 |---|---|---|---|
 | beam profile, ρ, same-session high T | the systematic floor | converts bounds to absolute measurements | never cut |
 | second day, opposite T order | time-monotone bias | removes what no averaging can, and measures the residual | mandatory |
@@ -1405,13 +1411,13 @@ reversal across Hamilton 2023's 776 nm magic wavelength.
 computed differential polarizability of the 5S and 6S clock states has a steep
 zero crossing at 1297.5 nm, useless as a trap and precise as a lever. One
 auxiliary telecom-band beam, scanned across the crossing while the light shift
-it induces is read out through the lineshape channel this archive already
+it induces is read out through the lineshape channel this record already
 extracts, would locate the crossing and thereby measure the 6S to 7P matrix
 element by frequency metrology rather than by intensity calibration. The same
 scan drives the induced shift through zero and out the other side, which is a
 sign-reversal test of the asymmetry channel with every instrumental confound
 held still, and off the crossing it is a calibrated shift injector for
-rehearsing the §6 analysis on data with a known light shift. It needs no
+exercising the §6 analysis on data with a known light shift. It needs no
 Ti:Sapph time, because it rides whatever the session is already doing on the
 993 nm line.
 **Needs.** One stabilized O-band diode and a calibrated wavemeter, both
@@ -1430,7 +1436,7 @@ projected shift precision, about 26 pm and a 6S to 7P residue near 3 per cent,
 and the multipole scrutiny behind the predicted position are in
 [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md) §5.1.
 
-## Appendix A. The archival analysis plan (executed)
+## Appendix A. The analysis plan of record (executed)
 
 The from-scratch analysis plan that produced the current results was versioned
 here until 2026-08-02 and lives in git history. Its content is now where a

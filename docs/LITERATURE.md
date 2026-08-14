@@ -48,7 +48,7 @@ been done to a paper, never about how good it is.
 | section | what it settles |
 |---|---|
 | [1. Nearest prior art](#1-nearest-prior-art) | the three papers a referee reaches for first, each with the axis that separates it |
-| [2. Collision-rate series](#2-collision-rate-series) | what β_self(6S) should be, and why the archival bound cannot measure it |
+| [2. Collision-rate series](#2-collision-rate-series) | what β_self(6S) should be, and why the dataset's bound cannot measure it |
 | [3. Transit-time lineshape](#3-transit-time-lineshape) | that the transit kernel is a published analytic form, not an assumption |
 | [4. Anchors still at REPORTED](#4-anchors-still-at-reported-status) | what is quoted from a summary and must be read before it is cited |
 | [5. What may be claimed](#5-what-may-be-claimed-and-what-may-not) | the novelty law: the concessions, the survivors, and the searches that found nothing |
@@ -132,13 +132,13 @@ correction landed 2026-08-05 and moved the anchor from 3.53 to 3.38 kHz per
 [the difference-potential note](notes/vdw_difference_potential_and_4d_channel.md).
 
 Consequences (calibration against the theoretical expectation):
-- The archival bound (0.03–0.05 MHz per 10¹² cm⁻³, the four-point
+- The dataset's bound (0.03–0.05 MHz per 10¹² cm⁻³, the four-point
   70/90/110/130 °C headline since 2026-08-02, and 0.2–0.4 MHz on the
   earlier three-point 70–110 °C headline) sits **8–15× above
   the expected value**, consistent but not constraining. Paper wording must
   say exactly that. The value of the bound is methodological, since it
   quantifies the drift confound rather than constraining β.
-- **Even the full 70–130 °C archival lever cannot MEASURE the expected β.**
+- **Even the full 70–130 °C lever in the dataset cannot MEASURE the expected β.**
   The lever is ΔN = 2.9×10¹³ cm⁻³ and the swing it buys is
   β_self·ΔN = 0.10 MHz on a 5.2 MHz line, which is why the bound sits an order
   of magnitude above the expectation rather than on it. A real measurement
@@ -205,7 +205,7 @@ recomputed here.
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
 | [Weller et al. 2011](lit/weller2011.md) | Rb 5S→5P₁/₂ (D1, self) | (0.69 ± 0.04)×10⁻⁷ Hz cm³ = 69 kHz per 10¹² cm⁻³ | VERIFIED | resonant dipole–dipole on an allowed line, the largest self-broadening mechanism there is, so a ceiling rather than an estimate for an S–S pair |
 | [Orson et al. 2021](lit/orson2021.md) | Rb 5S→6S (this exact transition) | null, no AC-Stark or density shift at 6 MHz resolution, N = 3×10¹¹–5×10¹³ cm⁻³ | VERIFIED | the only prior measurement attempt on this line, three orders of magnitude coarser than the bound below |
-| This work | Rb 5S→6S (self) | 0.03–0.05 MHz per 10¹² cm⁻³ bound, four-point 70–130 °C archive | BOUND, not a measurement | 8–15× above the 3.4 ± 0.3 kHz per 10¹² cm⁻³ expectation, consistent but not constraining |
+| This work | Rb 5S→6S (self) | 0.03–0.05 MHz per 10¹² cm⁻³ bound, four-point 70–130 °C dataset | BOUND, not a measurement | 8–15× above the 3.4 ± 0.3 kHz per 10¹² cm⁻³ expectation, consistent but not constraining |
 
 ## 3. Transit-time lineshape
 
@@ -311,7 +311,7 @@ A number here is an identifier, not a position.
    relationship". Using a lineshape to read a shift distribution is theirs.
    *What is claimed, and it is two separate properties.* **(i) Translation
    immunity:** the ramp's first-order effect is a centroid pull, which a
-   per-scan free centre absorbs, so in a drifted archive the pull is degenerate
+   per-scan free centre absorbs, so in a drifted dataset the pull is degenerate
    with the drift. The asymmetry is not a translation and survives. That is the
    response to an unstable reference, a problem Delone do not have, and one
    precision groups solved the other way (Stalnaker fit full shapes against a
@@ -338,7 +338,7 @@ A number here is an identifier, not a position.
    PRELIMINARY: the span covers the retro and transition-vs-laser-axis
    conventions their text leaves open. **[OPEN]**
 3. **β_self(6S)**: completes the measured 5D/7S self-rate series, a
-   modest addition to the measured series rather than a headline result. In the archive it is a bound 8–15×
+   modest addition to the measured series rather than a headline result. In the dataset it is a bound 8–15×
    above expectation (four-point, 2026-08-02, was 57–113× on the earlier
    three-point construction). A measurement requires the high-T extension.
 4. **EOM-comb-in-fine-scan** frequency axis (0.042524(51) MHz/ms laser-axis,
@@ -631,7 +631,7 @@ Two distinct lineages measured our exact transition before us: the **OIST**
 apparatus lineage (Nieddu and Rajasree, the direct provenance for the cell and
 beam) and the **USAF Academy** precision-metrology lineage (Orson 2021 and
 Ayachitula 2024, hyperfine and isotope-shift metrology, and the prior AC-Stark
-and density-shift NULLS the archival bounds refine).
+and density-shift NULLS this dataset's bounds refine).
 
 ### 6a. OIST apparatus lineage, the provenance of the cell and beam
 
@@ -639,14 +639,14 @@ and density-shift NULLS the archival bounds refine).
   group's 993 nm two-photon *frequency-reference* demonstration on our exact
   line. **[CITE, ESTABLISHED]** They measured **w₀ = 64 µm** (f₁ = 150 mm
   L1), the direct beam measurement corroborating our transit-physics w₀
-  re-pin (32 µm excluded, archival w₀ ~ 50–64 µm, see
+  re-pin (32 µm excluded, dataset w₀ ~ 50–64 µm, see
   `docs/notes/transit_width_resolved.md`). Their four two-photon peaks
-  (FWHM ~5 MHz transition axis) are consistent with our archival ~5.25 MHz.
+  (FWHM ~5 MHz transition axis) are consistent with our dataset's ~5.25 MHz.
   Their retro is a self-imaging concave mirror (f = 75 mm) at 2f. Ours (MD,
   2026-07-14) is the lens-based equivalent, L1/L2 at f = 150 mm with a flat
   mirror at the ~1 mm intermediate waist, so ρ ≈ 1 is a design property in
   both. Their detection is the 780+795 nm cascades together, unlike our
-  795-only archival stack, so amplitude/trapping comparisons must not assume
+  795-only dataset stack, so amplitude/trapping comparisons must not assume
   the same collection channel.
 - **[Rajasree-KP 2020, OIST PhD thesis](lit/rajasree2020thesis.md)** (held)
   repeats the same 993 nm cell setup in its §5.2 (a measured 128 µm beam
@@ -671,7 +671,7 @@ and density-shift NULLS the archival bounds refine).
 
 This group did the precision hyperfine/isotope-shift metrology on our line
 and looked for the AC-Stark and collisional shifts, reporting NULLS at
-MHz-scale resolution. Our archival bounds sit below their resolution, and our
+MHz-scale resolution. Our dataset's bounds sit below their resolution, and our
 two-epoch design turns those nulls into measured coefficients.
 
 - **[Ayachitula 2024](lit/ayachitula2024.md)** (Phys. Rev. A **110**, 022803)
@@ -683,7 +683,7 @@ two-epoch design turns those nulls into measured coefficients.
 - **[Orson 2021](lit/orson2021.md)** (J. Phys. B **54**, 175001, same USAFA
   group), absolute hyperfine energy levels and isotope shift of the 5S–6S
   transition. **[CITE]** Their prior AC-Stark and density-shift nulls (on our
-  C3d and C1 channels) are consistent with, and refined by, our archival
+  C3d and C1 channels) are consistent with, and refined by, our dataset's
   bounds (S₀ < 0.64 MHz by profile likelihood, β_self a bound). They are also
   the source of `DELTA_ALPHA_AU = +1093` (opposite sign by definition), and
   our `stark_shift_S0_mhz` reproduces their predicted shift to the digit
@@ -707,7 +707,7 @@ is about.
   the frontier of the "internal ruler tracks a drifting axis" idea the EOM
   ruler here embodies. **[FEED]**
 
-**Detection channels.** The 795 nm channel this archive was taken on is
+**Detection channels.** The 795 nm channel this dataset was taken on is
 reabsorbed at high density, so the infrared cascades are the route to the
 same line at temperatures the self-broadening measurement needs.
 - **The 1.3 µm trapping-free channel.** [Hassanin et al.

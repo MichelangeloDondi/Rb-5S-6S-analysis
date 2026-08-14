@@ -72,14 +72,14 @@ def require_repo_data(what: str = "data_raw") -> Path:
         f"the repository itself: clone "
         f"https://github.com/MichelangeloDondi/Rb-5S-6S-analysis and run from "
         f"inside it, or set RB5S6S_SOURCE_DATA_DIR if you are re-importing "
-        f"the original archive."
+        f"the original dataset."
     )
 
 SOURCE_DATA_DIR = Path(os.environ.get(
     "RB5S6S_SOURCE_DATA_DIR", "~/rb-2025-archive/data")).expanduser()
-"""Machine-specific location of the ORIGINAL 2025 archive (old repository).
+"""Machine-specific location of the ORIGINAL 2025 dataset (old repository).
 Only needed to (re)run scripts/import_data.py on the machine that holds
-that archive, and read from RB5S6S_SOURCE_DATA_DIR when that variable
+that dataset, and read from RB5S6S_SOURCE_DATA_DIR when that variable
 is set. Everyone else never needs this: `data_raw/MANIFEST.csv` ships in
 every copy of the repository, and whether the traces themselves sit beside
 it depends on the copy, which `data_raw/README.md` states."""
@@ -108,7 +108,7 @@ def results_fingerprint(results_dir=None):
         out = subprocess.run(["git", "-C", str(REPO_ROOT), "ls-files", "results/*.csv"],
                              capture_output=True, text=True, check=True).stdout
         rels = sorted(out.split())
-    except Exception:                                   # no git (e.g. a tarball): best effort
+    except Exception:                                   # no git (e.g. a tarball): fallback
         rels = sorted(str(p.relative_to(REPO_ROOT)) for p in d.glob("*.csv"))
     h = hashlib.sha256()
     for rel in rels:
@@ -348,7 +348,7 @@ is not yet a gate. The whole ladder still runs and every outcome is written to
 results/ruler_traces.csv as a diagnostic, so the population can be studied
 without any of it touching a block, the campaign rate or the nonlinearity map.
 
-Setting this True is a decision for the owner, and it changes numbers."""
+Setting this True is a decision for the author, and it changes numbers."""
 
 RULER_TOP3_TIE_SIGMA = 1.0
 """Tie allowance for the top-three tooth-amplitude rule, in units of the fit's
@@ -388,7 +388,7 @@ TRIM_SMOOTH_W = 21
 """Boxcar width (samples) the trimmer smooths residuals with. ADOPTED from
 QC_SMOOTH_W rather than tuned: the quality module already decided what width
 keeps a ~60 ms line intact while killing sample noise, and a second answer to
-the same question would be a knob with no owner."""
+the same question would be a knob nobody has decided on."""
 
 TRIM_CUSUM_DRIFT = 0.5
 """Allowance subtracted from each normalized residual sample before it
@@ -481,7 +481,7 @@ as high, and at n=4 the scale is a three-point median absolute deviation and
 the tail is heavy enough that no useful threshold exists. Those two cells are
 carried at the value the null returns rather than being capped, which leaves
 the rule inert at n=4 for population B. Whether to test groups of four on a
-sibling scaling at all is a policy question amendment 3 puts to the owner.
+sibling scaling at all is a policy question amendment 3 puts to the author.
 
 The null omits the QC_SIBLING_MAD_FLOOR_FRAC floor, which can only shrink a
 deviation, so the calibrated thresholds cannot fire more often than five per
@@ -551,12 +551,12 @@ See constants.W0_MEASURED_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {
     "L (60 um, config)": 60.0,
-    # the archival entry tracks the prior, so it can never drift from it
-    f"M ({W0_MEASURED_M * 1e6:.0f} um, archival)": W0_MEASURED_M * 1e6,
+    # the M entry is drawn from the record, so it can never drift from the prior
+    f"M ({W0_MEASURED_M * 1e6:.0f} um, recorded)": W0_MEASURED_M * 1e6,
     "S (16 um, config)": 16.0,
 }
 """Beam-waist configurations for the ramp-geometry predictions (PLAN §4;
-run_ramp_geometry.py). M is the 2025 archival prior (re-centred 32 -> 50 um
+run_ramp_geometry.py). M is the 2025 recorded prior (re-centred 32 -> 50 um
 2026-07-12, see constants.W0_MEASURED_M); L and S are target for a fixed-lock sessions, all
 pending knife-edge measurement (OPEN)."""
 
@@ -598,7 +598,7 @@ experiment, and happened to be right; it was flagged as unverified on
 2026-07-23 and confirmed the same day.)
 
 Which axis lies along the beam image is the install decision: L_par = 12 mm
-('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. The 2025 archive was
+('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. The 2025 dataset was
 taken in LANDSCAPE (experimenter-confirmed 2026-07-23), which is also the
 recommendation for a future session (PLAN §6 #4) -- portrait puts Z_c below the 0.90 mm flip
 threshold at every plausible M and forfeits the sign-flip test, while its

@@ -14,7 +14,7 @@ Controlled vocabulary:
   BOUND      an upper/lower limit, conditional on the OPEN w0 and/or the model;
              NOT a measurement (beta_self, sigma_laser, S0/kappa).
   NULL       below detection, or no model preference (ramp skew, BIC, the
-             degeneracy-law ratios the archive's drift makes untestable).
+             degeneracy-law ratios the dataset's drift makes untestable).
   MEASURED   a genuine measurement from this data (the frequency rate; the
              P^2 amplitude scaling; the density-flat gamma floor).
   PRELIM     a model-dependent cross-check, replaced by a BOUND headline
@@ -64,18 +64,18 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 FILE_STATUS = {
     "beta_self.csv": "PRELIM",            # per-peak model fits; headline is the BOUND
     "beta_self_probe.csv": "BOUND",       # the model-independent width-slope bound = C1 headline
-    "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in archive
+    "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset
     "amplitude_trapping.csv": "MEASURED", # amp ~ N, slopes 0.85-1.02, no rollover
     "modelform.csv": "NULL",              # Voigt-vs-Lehmann BIC below the gate -> no preference
     "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "ruler_rate_model.csv": "MEASURED",
-    "morning_ruler.csv": "CALIB",           # M26: the pilot day's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
-    "global_dataset_fit.csv": "PRELIM",   # M25 joint archive fit, rulers-on arm; headline stays with M23
+    "morning_ruler.csv": "CALIB",           # M26: the campaign morning's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "global_dataset_fit.csv": "PRELIM",   # M25 joint dataset fit, rulers-on arm; headline stays with M23
     "global_dataset_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
-    # M22: digitised from a screen photograph, not from the archive. It measures
+    # M22: digitised from a screen photograph, not from the dataset. It measures
     # what the photograph contains rather than what the unsaved log held, so it
     # is a diagnostic of the apparatus record, never an input to a fit.
     "wavemeter_reconstruction.csv": "DIAGNOSTIC",
@@ -89,7 +89,7 @@ FILE_STATUS = {
     "stark_centres.csv": "NULL",  # measures the experiment's sensitivity, not the atom
     # M20: a reconstruction of the laser's frequency history, conditional on the
     # ruler rate and on mtime standing in for acquisition time. Not a measured
-    # frequency -- the absolute scale is exactly what the archive cannot supply.
+    # frequency -- the absolute scale is exactly what the dataset cannot supply.
     "laser_history.csv": "DIAGNOSTIC",
     "laser_history_structure.csv": "DIAGNOSTIC",
 
@@ -147,7 +147,7 @@ QUANTITY_STATUS = {
         "Vsat_reh": "DIAGNOSTIC", "n_traces": "DIAGNOSTIC",
         "profile_point": "DIAGNOSTIC",
     },
-    # M28: the cross-campaign full-archive joint fit. Same construction as M23
+    # M28: the cross-campaign full-dataset joint fit. Same construction as M23
     # (one profiled kappa, the collisional term under a prior), over M25's
     # trace set with the rulers excluded. The gate_* rows are the
     # pre-registered acceptance checks of docs/notes/full_dataset_fit_prereg.md
@@ -209,7 +209,7 @@ QUANTITY_STATUS = {
         "bias": "DIAGNOSTIC", "coverage95": "DIAGNOSTIC",
         "false_measurement_rate": "DIAGNOSTIC",
         # the minimum detectable effect: a property of THIS analysis at the
-        # archive's own noise, simulated rather than measured on the data
+        # dataset's own noise, simulated rather than measured on the data
         "mde_beta": "DIAGNOSTIC",
         # 2026-08-10: the sd of beta_eff across trials, computed all along
         # and only reported once its own Monte-Carlo error existed to quote
@@ -233,7 +233,7 @@ QUANTITY_STATUS = {
     # What a further campaign would buy. Every row is a projection of an
     # instrument's reach, never a measurement, so nothing here may be tagged
     # MEASURED or BOUND. The two prefixes are the whole map: `input_` rows are
-    # the archive's own measured quantities carried in as calibration for the
+    # the dataset's own measured quantities carried in as calibration for the
     # arithmetic, and `proj_` rows are the model estimates built on them. This
     # file is keyed by quantity rather than registered whole in FILE_STATUS
     # because its rows are not homogeneous, and FILE_STATUS carries one status
@@ -243,7 +243,7 @@ QUANTITY_STATUS = {
         "proj_": "ENVELOPE",
         # The one exception to the two prefixes, and it is deliberate. A source
         # headroom is a delivered laser power taken from a held demonstration or
-        # from the archive's own bench, divided by a ceiling computed here. The
+        # from this project's own bench, divided by a ceiling computed here. The
         # row's content is a carried instrument fact rather than a projection of
         # reach, so it is tagged CALIB and the longest-prefix rule below picks
         # this entry over the generic `proj_`.

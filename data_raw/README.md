@@ -3,7 +3,7 @@
 This directory holds the 297 recorded traces of the 2025 dataset and
 **`MANIFEST.csv`**, the census that says what the dataset is. The traces are
 withheld from the published mirror, where this file says so and lists what can
-still be run without them.
+still be run without them. They are available on request.
 
 `MANIFEST.csv` carries one row per unique acquisition: its path, peak, role,
 temperature, power, curation flag, QC reason, the source filenames it was

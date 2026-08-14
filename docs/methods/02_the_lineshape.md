@@ -1,7 +1,7 @@
 *Chapter 2 of 8 · [methods index](../methods.md)*
 
 **The question.** What sets the width of a line this narrow, mechanism by
-mechanism, and which of those mechanisms the archive can actually separate.
+mechanism, and which of those mechanisms the dataset can actually separate.
 **Takes.** The measurement chapter for the apparatus and the Doppler
 cancellation. It forward-references the AC-Stark ramp and the results chapter
 inside the transit section.
@@ -150,7 +150,7 @@ linewidth rather than to the 2025 lock's behaviour, but it is consistent with
 the shape-based bound $\sigma_\text{laser}$ below 1.2 MHz (laser axis) found
 here, and it is the only published number for this laser on this line. The 2025
 lock was misconfigured, and one deliverable (C2) is to characterize that epoch's
-$\sigma_\text{laser}$, which from the archival data is an **upper bound**,
+$\sigma_\text{laser}$, which from the 2025 data is an **upper bound**,
 because it is degenerate with the transit width (see §2.5 and
 [what we found](07_what_we_found.md)).
 A direct beam-profile measurement of $w_0$ turns this into a measurement by
@@ -244,14 +244,14 @@ is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from
 60 and 70 on 2026-08-10), and the wider ranges this section reached on the way
 there, 45 to 70 and then 50 to 64 µm, are replaced by it for that purpose.
 Those ranges are a different quantity and are left standing where they are
-stated as such: they are what this archive's own line can accommodate with no
+stated as such: they are what this dataset's own line can accommodate with no
 external input, while the band here expresses confidence in transferring a
 measurement made on the beamline lineage to this bench. Only the band is
 read from the constant, and only the band is what any prediction here rides
 on.
 [Nieddu](../lit/nieddu2019.md) additionally reports the same four two-photon peaks
 at 2.43–2.60 MHz FWHM (laser axis, $\approx5$ MHz transition axis) with a
-locked laser, consistent with the archival $\approx5.25$ MHz line.
+locked laser, consistent with the 2025 $\approx5.25$ MHz line.
 
 The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 (where transit is the largest fraction of a narrow line) a BIC comparison of a
@@ -277,7 +277,7 @@ the misassignment is almost all constant offset, and a constant is what the free
 per-line core width absorbs. The dashed line is one standard error on the
 measured difference between the isotopes, drawn on the same axes.*
 
-The $\sqrt T$ law above is really a law in $\sqrt{T/m}$, and the archive has two
+The $\sqrt T$ law above is really a law in $\sqrt{T/m}$, and the dataset has two
 masses in the same cell. $^{85}\text{Rb}$ is the lighter, so at any temperature it
 crosses the beam faster by $\sqrt{m_{87}/m_{85}}=1.011693$ and its transit
 kernel is wider by that same 1.169 per cent. Every fit in this record shares one
@@ -343,7 +343,7 @@ distort the mode. The trade-off is real, though: the knife-edge *assumes* a
 Gaussian, returning a best-fit $w$ whether or not the beam is one. A camera
 image is the natural complement, since it shows astigmatism, ellipticity, and
 any diffraction structure from aperture clipping, which is the very effect that
-makes the archival $w_0$ uncertain, and [§2.6](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
+makes the 2025 $w_0$ uncertain, and [§2.6](03_the_ac_stark_ramp.md) derives the ramp law from a Gaussian
 $I(r)$, so confirming Gaussianity would be a useful check rather than an
 assumption. The planned $z$-scan (PLAN §4) already covers part of this for
 free: fitting the $w(z)$ hyperbola returns $w_0$ and $z_R$ *separately*, and
@@ -365,7 +365,7 @@ and the Stark coefficient acquire their absolute scale. It constrains more
 downstream numbers than any other single measurement, which is why the
 specification in PLAN §3 puts it at the top of the priority order, and why it
 is worth doing even on its own: it needs the beam, not the full session, and it
-retroactively sharpens the existing archive.
+retroactively sharpens the existing record.
 
 ---
 

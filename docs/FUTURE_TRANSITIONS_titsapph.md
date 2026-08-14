@@ -10,7 +10,7 @@ landscape collected in [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-l
 **The question.** The drive laser tunes, so what else could this bench measure,
 and what would each option be worth?
 **Takes.** [BIG_PICTURE.md](BIG_PICTURE.md) §1, for why this class of line is
-worth the effort at all.
+worth the work at all.
 **Gives.** The candidate rubidium two-photon lines ranked, the computed magic
 wavelengths, the one-colour three-photon rung and the scaling argument that
 makes it the cliff regime rather than the delicate measurement it was proposed
@@ -208,10 +208,10 @@ answers differ by a square:
   the full 10×.
 
 That distinction decides feasibility for any dimmer configuration, and it is not
-a small effect: across the 32 archival conditions **V\* spans 2–258 mV**
+a small effect: across the 2025 dataset's 32 conditions **V\* spans 2–258 mV**
 (median ≈ 9 mV, `results/noise_model.csv`), so even one detection chain
 straddles both regimes. The 795 nm path happened to land shot-limited over the
-whole archival range. The faintest line, 20 mV, still sits above the median
+whole 2025 dataset's range. The faintest line, 20 mV, still sits above the median
 crossover, which is *why* the dimmest 70 °C dwells were fittable at
 SNR ≈ 16. **A blue chain inherits none of that.** Blue-sensitive photocathodes,
 different dark rates and a different filter stack move both a and b, and a
@@ -291,9 +291,9 @@ beams are mode-matched over the collection volume. Otherwise the map has to be
 recomputed for the overlap of two profiles, which the machinery here supports
 and has not been asked to do.
 
-### 3.2 7S closes the anchor loop this archive currently leans on
+### 3.2 7S closes the anchor loop this record currently leans on
 
-The archive's *expected* self-broadening of the 993 nm line is neither measured
+The record's *expected* self-broadening of the 993 nm line is neither measured
 nor purely computed. It is one external measurement carried across one rung by a
 computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
 (2026-08-05):
@@ -307,7 +307,7 @@ computed ratio. Verified by running `rb5s6s.vanderwaals.beta_self_anchored`
 with C₆(5S+6S) = 28908 a.u., C₆(5S+7S) = 83228 a.u. and C₆(5S+5S) = 4180 a.u.
 from the module's own Casimir-Polder integrals, and 5.386 kHz per 10¹² cm⁻³
 being Zameroski's measured 129 ± 11 kHz/mTorr converted at 403 K. Exactly one
-number in that chain comes from outside. The archival bound sits 8.5 to 14.6
+number in that chain comes from outside. The recorded bound sits 8.5 to 14.6
 times above that expectation. The rounded 8 to 14 quoted elsewhere in the
 portfolio predates the correction below and is due to become 8 to 15.
 
@@ -327,7 +327,7 @@ self-broadening on the same 760 nm 5S→7S line at 0.32 ± 0.01 MHz/mTorr, about
 ([wang2025](lit/wang2025.md)). Wang states no HWHM/FWHM convention anywhere in
 the paper, so a factor of two of that gap may be bookkeeping rather than
 physics, which still leaves two published values disagreeing by far more than
-their quoted errors. The quantity this archive's expected β_self rides on
+their quoted errors. The quantity this record's expected β_self rides on
 therefore has two numbers and no adjudication. Measuring 7S here, with the
 convention stated, would replace the choice between them with a rate from the
 same instrument that measured 6S.
@@ -422,12 +422,12 @@ assumption set in [results/projections.csv](../results/projections.csv).
 **What the three differentials cost in drive power.** They span a factor of
 twenty-five, and the light shift is what limits the drive long before the
 available power does. Fixing the ceiling at the power where the on-axis shift
-reaches one tenth of the width the archive measures, at the archive's own 64 µm
+reaches one tenth of the width the dataset measures, at the dataset's own 64 µm
 waist and 0.94 retro ratio, gives the 993 nm ceiling of 332 mW, the 760 nm
 ceiling of 87 mW and the 778 nm ceiling of 13 mW. The 993 nm figure sits above
 the campaign's own 225 mW maximum, so that rung is not capped at all. The other
 two are, and because the two-photon rate goes as the square of the intensity, a
-width precision measured at the archive's power degrades in proportion when the
+width precision measured at the dataset's power degrades in proportion when the
 drive is capped. On the 760 nm rung the projected self-broadening precision goes
 from about 8 to about 18 kHz per mTorr and the adjudication keeps a ceiling
 margin of 2.0, so it still holds and 6.7 repeats of the design would buy the
@@ -493,7 +493,7 @@ What the UV would and would not be for:
 
 - **Not a lineshape target in the sense used elsewhere in this file.** A
   single-photon line is Doppler broadened. At 400 K, near the top of the
-  archive's 70–130 °C range, the 5S→6P₃/₂ Doppler FWHM is **1.10 GHz** and the
+  dataset's 70–130 °C range, the 5S→6P₃/₂ Doppler FWHM is **1.10 GHz** and the
   5S→7P₃/₂ is **1.28 GHz**, against the 3.49 MHz natural width the 993 nm work
   fits. The passive shape method assumes a Doppler-free line and does not carry
   over without a sub-Doppler scheme.
@@ -520,7 +520,7 @@ What the UV would and would not be for:
   cell, which is the source that measurement wants.
 - **A resonant density handle.** Both external self-broadening entries of §3.1
   and §3.2 infer density from a vapour-pressure curve rather than measuring it,
-  and the archive's own density scale carries a 20% systematic. Resonant UV
+  and the dataset's own density scale carries a 20% systematic. Resonant UV
   absorption on the same cell would be an independent column-density read.
 
 Two-colour ladder options, from the same term energies:
@@ -547,7 +547,7 @@ separately.
 
 Proposed by the experimenter on 2026-08-09. Three photons of ONE colour from
 5S reach an odd-parity state, and the reason to want that is not a new
-coefficient but a new SHAPE. This archive's signal-weighted shift distribution
+coefficient but a new SHAPE. This record's signal-weighted shift distribution
 is $f(s)\propto|s|^{n-1}$ on $[-S_0,0]$ with $n$ the number of photons, so
 $n=2$ gives the triangle the 993 nm work fits and $n=3$ gives a PARABOLA,
 $f(s)=3s^2/S_0^3$. Its cumulants follow by the same direct integration:
@@ -593,7 +593,7 @@ carries, so none of them needs the doubling stage. 4F needs a redder set.
 
 **5F is the stronger target, and it is not the one the question named.** For 8P
 the chain is 5S to 5P to 6S to 8P, and the near resonance is with the 6S state
-this archive characterises, 230 cm^-1 away. For 5F the chain is 5S to 5P to 4D
+this record characterises, 230 cm^-1 away. For 5F the chain is 5S to 5P to 4D
 to 5F, near resonant with 4D at 163 cm^-1, and BOTH upper dipoles are far
 larger: 5P3/2-4D5/2 is the committed 10.90 a.u. against 6S-8P3/2 at 0.629, and
 4D-5F is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
@@ -609,7 +609,7 @@ fractional asymmetry. Reading the two together: **5F first, because a
 three-photon rate is the thing most likely to make the experiment impossible,
 and 8P3/2 as the precision follow-up once a signal exists.** 8P also carries a
 programmatic advantage worth naming, that its second denominator is set by the
-very state this archive has already measured, so the existing 6S numbers feed
+very state this dataset has already measured, so the existing 6S numbers feed
 its prediction directly.
 
 **The Doppler problem, and it has a demonstrated answer.** A one-colour
@@ -654,7 +654,7 @@ value, and it carries the whole factor-of-two spread in the ranking. The
 detection path for each target is unexamined, and it decides feasibility as much
 as the excitation rate does. Whether a fourth photon ionizes the excited state
 fast enough to matter for detection is unasked. And the pedestal changes the
-fitting problem the shape method solves, since the archive's own machinery
+fitting problem the shape method solves, since the record's own machinery
 assumes a Doppler-free line with no broad background under it.
 
 ### Addendum, 2026-08-09: four things this section was silent about
@@ -733,16 +733,16 @@ duration is [PLAN.md](PLAN.md)'s own where PLAN.md costs the block, and is
 marked as an estimate with its basis where PLAN.md does not. Every entry in
 the last column is a projection rather than a result, computed in
 [scripts/run_projections.py](../scripts/run_projections.py) from the
-archive's own measured precision and PLAN.md's own session parameters, with
+dataset's own measured precision and PLAN.md's own session parameters, with
 the assumption set behind each figure carried in
 [results/projections.csv](../results/projections.csv).
 
 | item | bench cost | what it would return | what could come back empty | projected precision | source that reaches the ceiling |
 |---|---|---|---|---|---|
-| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the archive, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in | no line is driven, so no source question |
+| beam profile w₀ | about an afternoon, no physics run (`PLAN.md` §9 D4, §4.1) | measured geometry under every absolute number in the record, applied retroactively | nothing, but the number may not carry back to the 2025 bench | an intensity axis good to about 15 percent once the differential transit width is folded in | no line is driven, so no source question |
 | fixed-lock cell session | about eight days at the cell, ordered so any prefix is useful (`PLAN.md` §9) | three bounds converted into measured coefficients (`PLAN.md` §1) | β_self may stay a bound, and the shape channel may stay below noise | 0.09 MHz on S₀(225 mW) from one morning of power cycling, and the expected β_self resolved at about 10 sigma | the Ti:Sapph on the bench, at 0.68 of the 993 nm ceiling of 332 mW, so this is the one rung the ceiling does not make it unnecessary. A diode-seeded ytterbium fibre amplifier would be at its band edge and that reach is unconfirmed here |
-| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the archive's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
-| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the archive's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
+| 7S rung, 760 nm | a laser retune, and no new detection path if two datasheet questions answer favourably (§3.2) | a self-broadening rate that adjudicates two published values differing by 2.6 | a bound rather than a rate, and a blue detection build if the filter answer goes the other way | about 8 kHz per mTorr at the dataset's own drive power, a fourfold margin over what the adjudication needs, and about 18 at the light-shift ceiling where the adjudication keeps a ceiling margin of 2.0 | an extended-cavity diode laser with a tapered amplifier clears the 760 nm ceiling of 87 mW, so the Ti:Sapph is unnecessary. No note in `lit/` states that amplifier's output at 760 nm, so the class is established practice rather than a held citation |
+| 778 nm rung | a detection change plus a second source for the scan (§3.1) | the method tested against coefficients published to better than 2% | no new coefficient by design, and the scan needs two mode-matched beams | about 8 kHz per mTorr at the dataset's own drive power, which is 20 percent of the published coefficient, and about 108 at the light-shift ceiling where the factor-two test drops to a ceiling margin of 0.12 | a 1556 nm fibre amplifier with second-harmonic generation, the compact-clock architecture of [feng2026](lit/feng2026.md) and [li2024b](lit/li2024b.md), at 2.3 times the 778 nm ceiling on that demonstration's own 30 mW, so the Ti:Sapph is unnecessary |
 | O-band null at 1297.5 nm | one telecom-band diode and its wavemeter, no Ti:Sapph time, riding any cell session (§5.1, Paper D) | the 6S to 7P matrix element by frequency metrology where no measurement exists, a sign-reversal test of the asymmetry channel, and a calibrated shift injector | the delivered perturber intensity at the cell could undershoot, stretching the localization beyond the useful range | root located to about 26 pm at the projected 92 kHz shift precision, reading the 7P residue near 3% | a commodity O-band diode, no ceiling issue at these powers |
 | wide-scan Doppler pedestal | an acquisition setting on any session that runs at all, no hardware and no lock quality | an in-situ gas thermometer and an in-situ retro ratio, on the same traces | the pedestal may not separate from the scattered-light background, and the area ratio is flat in ρ near one | the design reaches both in about two hours each, and section 8 gives the arithmetic and the assumptions | the drive itself, swept wide. The pedestal is 942 MHz wide on the transition axis at 130 °C, so no new source and no lock is involved |
 | doubling stage | new hardware, none on the bench, unpriced | a resonant 420 nm source and an independent density read (§3.4) | nothing publishable on its own | not projected, since nothing here models its rates | the doubling stage is its own source, and a one-photon line carries no two-photon light-shift ceiling |
@@ -754,7 +754,7 @@ systematic, and it reaches the adopted retro ratio in about 2.1 hours. Both
 figures are for the four-pedestal comb, and both are about sixteen times longer
 on a single component.
 
-**The wide-scan pedestal, and what the archive can already say about it.** The
+**The wide-scan pedestal, and what the record can already say about it.** The
 retro-reflected drive makes two kinds of two-photon event. One photon from each
 beam gives the Doppler-free line every number in this repository is fitted to.
 Two photons from the same beam give a line broadened at the full 2kv, 942 MHz
@@ -762,7 +762,7 @@ wide on the transition axis at 130 °C, which sits under the narrow line as a
 pedestal. Its width goes as the square root of the temperature and its area
 against the narrow line's area is 4ρ/(1 + ρ²), so one wide trace measures the
 gas temperature and the retro power ratio together. Both are quantities this
-archive currently adopts rather than measures.
+record currently adopts rather than measures.
 
 The cost is an acquisition setting. A gigahertz-wide feature does not care about
 a megahertz of lock drift, so the scan needs no lock quality, no new source and
@@ -773,9 +773,9 @@ and reaches the adopted retro ratio in about 2.1 hours, both on the comb of four
 hyperfine pedestals, and both about sixteen times longer if only one component
 is fitted.
 
-The archive-side honesty. The 2025 windows span 85 MHz on the transition
-axis, a tenth of the pedestal, so every archival trace samples the pedestal's
-flat top and the linear baseline absorbs it as an offset. The archive can
+Honesty about the 2025 dataset. The 2025 windows span 85 MHz on the transition
+axis, a tenth of the pedestal, so every recorded trace samples the pedestal's
+flat top and the linear baseline absorbs it as an offset. The 2025 dataset can
 therefore bound the retro ratio through that offset and can say nothing at all
 about the width, which needs the session. Two further conditions travel with the
 projection. The pedestal has to be separated from the scattered-light
@@ -788,23 +788,23 @@ measures and is symmetric under ρ to 1/ρ. Computed in
 because S₀ ∝ 1/w₀² and the transit width rides on w₀, so a 10% waist error is
 20% on Δα. The afternoon quoted above is PLAN's own allocation: §9 gives an
 afternoon of D4 to a metrology block of knife-edge, camera and retro ratio,
-and §4.1 gives half a day to the archival-geometry spot check. No atoms are
+and §4.1 gives half a day to the 2025-geometry spot check. No atoms are
 needed for it. What it returns is retroactive. Every waist-conditional
-statement in the 2025 archive would sharpen in place, and the degeneracy
+statement in the 2025 dataset would sharpen in place, and the degeneracy
 between transit width and laser width would collapse. The risk is not that
 the measurement fails, since a knife-edge returns a number, but that the
 number describes the present bench rather than the 2025 one. Carrying it
-back needs the config-M spot check of `PLAN.md` §4.1, the archival geometry
+back needs the config-M spot check of `PLAN.md` §4.1, the 2025 geometry
 plus one 130 °C point. If that bridge did not hold, nothing would be
-retracted, because the archival statements are already published as
-conditional on the measured waist.
+retracted, because the statements already published are conditional
+on the measured waist.
 
 **The fixed-lock cell session.** This is the full ask. `PLAN.md` §9 sizes it
 at about eight days at the cell and orders it so that a truncation at any
 point leaves the higher-priority conversions done, and the grades of §3 are
 what a shortened session would fall back through. stage 0 is the systematic
 floor, which is the ramp-monitor export, the beam profile and the retro ratio
-measured in situ, and it converts the archival bounds whether or not a later
+measured in situ, and it converts the recorded bounds whether or not a later
 block runs. stage 1 is the fixed lock itself plus same-session 150 to 170 °C
 points in interleaved temperature order, which is what would turn β_self from
 a bound into a rate. `PLAN.md` §1 names the smallest tranche that converts
@@ -813,27 +813,27 @@ temperature-grid days, D1 to D3, returning β_self or a much tighter bound
 along with the first fixed-lock laser width. stage 2 buys handle strength
 through a second and tighter waist. stage 3 is sampling that refines without
 enabling, and it is the first thing to cut. The analysis end carries no
-development risk: the archival pipeline ingests session data unchanged, so
+development risk: the existing pipeline ingests session data unchanged, so
 what a session buys is shots rather than software.
 
 What could come back empty there. β_self is intrinsically a few kHz per
 10¹² cm⁻³, and `PLAN.md` §1 states the deliverable as a modest first
 measurement or a much tighter bound rather than a precision number. At the
-archival block-noise floor the hot points reach only about 1 to 3σ per block,
-and only the interleaving and the per-trace power logging take the same
+block-noise floor already measured, the hot points reach only about 1 to 3σ per
+block, and only the interleaving and the per-trace power logging take the same
 signal to about 3 to 12σ, so both halves have to work. The third cumulant
 would reach detection only at the tighter waist and only with the collection
 geometry measured in the same session, because the axial average over the
 collection window sets both its size and its sign. A lock that dropped out
 would repeat 2025. Even then the geometry blocks would still convert the
-archival bounds, the fixed-lock laser width would be a number the archive
+recorded bounds, the fixed-lock laser width would be a number the dataset
 does not contain, and the centre pull needs minutes-scale lock stability
 rather than all-night stability, which makes it the least exposed of the
 three conversions.
 
-What that reads as, projected on the archive's own numbers. One morning
+What that reads as, projected on the dataset's own numbers. One morning
 of randomized power cycling with the four lines interleaved, at the
-per-trace centre precision the archive measured and the held-lock drift
+per-trace centre precision the dataset measured and the held-lock drift
 rate it bounded, would give 0.09 MHz on S₀(225 mW). That detects a shift
 of the predicted 0.35 MHz size at 3.8 sigma, and separates the two
 disputed polarizability signs at 8 sigma if the shift is that size. Which
@@ -846,7 +846,7 @@ scatter cut fourfold would put the expected β_self resolved at about
 10 sigma, against 3 sigma with the scatter uncut, which is the
 quantitative form of the claim that both halves of the prescription are
 load-bearing. Every figure here is conditional on the cold-spot lag the
-archive prefers at face value, and the coefficient itself would still
+record prefers at face value, and the coefficient itself would still
 carry the 20 percent density scale until the absorption channel measures
 the density directly.
 
@@ -858,7 +858,7 @@ in, so if the installed passband passes the 741 and 728 nm direct decays and
 blocks a 760 nm drive, 7S would need a laser retune and no new detection
 path. Both are datasheet questions rather than physics, and they are the
 first thing to settle. `PLAN.md` costs no session beyond 993 nm, so no
-duration is quoted for this row. The yield is an adjudication. The archive's
+duration is quoted for this row. The yield is an adjudication. The record's
 expected β_self at 6S rides on one external number, and that number has two
 published values disagreeing by a factor 2.6, Zameroski's 129 ± 11 kHz/mTorr
 against Wang's 0.32 ± 0.01 MHz/mTorr, with no HWHM or FWHM convention stated
@@ -876,7 +876,7 @@ rates at five sigma needs 37 kHz per mTorr once the larger of their own
 errors is folded in, and 102 if Wang's unstated convention turns out to
 be half-width, so the harder of the two readings is the one quoted.
 Running the same five-block density design on the 760 nm line, with the
-archive's own per-block width scatter and per-block ruler spacing
+dataset's own per-block width scatter and per-block ruler spacing
 precision carried over unchanged, would deliver about 8 kHz per mTorr.
 The margin is fourfold, which is why the row is worth its retune even if
 the rate lands between the two published values.
@@ -912,7 +912,7 @@ would need 9 points at a step of 0.045 nm across the 0.18 nm of half span
 the neighbouring 5P₃/₂ to 5D₅/₂ pole leaves usable on the blue side, with
 each point good to 8 percent of the shift at the edge of that span. The
 wavelength axis
-is not the limitation there. The archive's ruler axis carries 0.4 percent,
+is not the limitation there. The dataset's ruler axis carries 0.4 percent,
 and the wavemeter of `PLAN.md` §11 places 5 pm to a fraction of a percent
 of itself, so what the scan would be limited by is the per-point precision
 on the shift observable, which is the quantity a session would have to
@@ -927,7 +927,7 @@ against the 3.49 MHz natural width the 993 nm work fits. Two secondary uses
 would survive that. A 420.3 nm source would put light of exactly the
 detection wavelength into the same cell, which is what the blue-chain noise
 measurement of §2 asks for, and resonant absorption on the same cell would be
-an independent column-density read against the archive's 20% density-scale
+an independent column-density read against the dataset's 20% density-scale
 systematic. Neither would be publishable on its own, which is why the row
 sits last.
 
@@ -947,7 +947,7 @@ so the order below is not the order of headline appeal.
 
 Every entry carries the same seven fields in the same order. The claim the paper
 would make. Who would read it and why. What stands against it in the published
-record. What data it would need beyond the 2025 archive. The projected precision
+record. What data it would need beyond the 2025 dataset. The projected precision
 and where that projection comes from. The principal way it could come back
 empty. Its rank and the reason.
 
@@ -969,13 +969,13 @@ is §5.1.
 **Claim.** That the 6S to 7P reduced dipole matrix elements can be read from the
 position of the differential-polarizability zero crossing at 1297.5 nm, located
 by scanning one auxiliary beam across it and watching the induced shift pass
-through zero in the lineshape channel this archive already extracts. The chain
+through zero in the lineshape channel this record already extracts. The chain
 would contain no intensity calibration and no absolute frequency reference.
 
 **Readers.** The all-order atomic-structure methods, which run unbenchmarked on
 excited-to-excited channels because a 7P lifetime sums over every decay channel
 and ground-state absorption never reaches 6S to 7P. Separately, anyone weighing
-this archive's asymmetry channel, since the same dataset would carry the
+this record's asymmetry channel, since the same dataset would carry the
 sign-reversal test of it.
 
 **Prior art.** The logic is the tune-out family's, transplanted from a
@@ -986,7 +986,7 @@ so the method is already load-bearing here. No measurement of the 7P
 fine-structure ratio exists for this doublet, which is what the companion null
 at 1287.9 nm would push toward.
 
-**Data beyond the archive.** One telecom O-band diode and its wavemeter, riding
+**Data beyond the 2025 dataset.** One telecom O-band diode and its wavemeter, riding
 any session that runs at all, plus the fixed-lock campaign's shift precision.
 No Ti:Sapph time.
 
@@ -1034,14 +1034,14 @@ for the series existing and for nothing further until it is read.
 of 2.6 with no half-width convention stated. LITERATURE.md §8 records that no
 dedicated modern 6S dynamic polarizability at 993 nm exists.
 
-**Data beyond the archive.** The fixed-lock 993 nm session. A 760 nm retune,
+**Data beyond the 2025 dataset.** The fixed-lock 993 nm session. A 760 nm retune,
 with the two datasheet questions of §3.2 deciding whether a blue detection path
 is needed. The 778 nm rung would additionally need the detection change.
 
 **Projected precision.** The decision-maker table above costs the 7S and 778 nm
 rows, with the assumption set behind each figure in
 [results/projections.csv](../results/projections.csv). The 7S adjudication
-carries a fourfold margin at the archive's own drive power and holds at the
+carries a fourfold margin at the dataset's own drive power and holds at the
 light-shift ceiling.
 
 **How it could come back empty.** β_self is intrinsically a few kHz per 10¹²
@@ -1081,7 +1081,7 @@ distortion effect comes from Doppler-velocity integration rather than from
 spatial intensity structure. The transit side is
 [biraben1979](lit/biraben1979.md) and [lehmann2021](lit/lehmann2021.md).
 
-**Data beyond the archive.** Two rungs would do for a first result, 6S and 7S,
+**Data beyond the 2025 dataset.** Two rungs would do for a first result, 6S and 7S,
 which is a sweep of about 7.5 and needs no new detection path if §3.2's
 datasheet questions answer favourably. The resonant end at 5D needs everything
 Paper A needs. 8S and 9S would fill the middle and require the blue optics set.
@@ -1143,7 +1143,7 @@ recorded in LITERATURE.md §8 as reported and not held, so the wording stays
 scoped until it is read. No passive-asymmetry determination on the 778 nm line
 appears anywhere in the swept landscape.
 
-**Data beyond the archive.** A 778 nm drive, detection at 420 nm unless the 5D
+**Data beyond the 2025 dataset.** A 778 nm drive, detection at 420 nm unless the 5D
 cascade channels the near-IR path already passes turn out to be sufficient, and
 a second source for the scan, because §3.1 shows the single-colour drive is
 pinned at 778.104 nm and the field scanned across the crossing is the perturbing
@@ -1228,7 +1228,7 @@ opportunity, and it is one this repository's machinery is already built for.
 **A matrix-element measurement by a null, on the vapour cell, drift-immune.**
 Add one auxiliary beam near 1297.5 nm to the existing cell experiment and
 scan its wavelength across the root while reading the light shift it induces
-on the 993 nm line through the lineshape channel this archive already
+on the 993 nm line through the lineshape channel this record already
 extracts. The induced shift crosses zero at the root and its asymmetry
 changes sign there, so the null is identified from the SHAPE of the line,
 needing no absolute frequency reference, which is the property this whole
@@ -1245,7 +1245,7 @@ campaign intensity and the measured waist, so these are envelope numbers in
 the sense of the projections table, and they sharpen with the waist
 measurement like everything else.
 
-**A sign-reversal test of the asymmetry channel.** The archive's asymmetry
+**A sign-reversal test of the asymmetry channel.** The record's asymmetry
 observable is claimed as a light-shift channel. Sweeping the auxiliary
 beam's wavelength through the root drives the induced shift distribution
 through zero and out the other side, so the asymmetry must flip sign at the
@@ -1256,7 +1256,7 @@ falsifiable test the asymmetry claim can be given, and it is a test the
 **A dial-a-shift knob.** Off the null, one picometre of wavelength is 3.6
 kilohertz of controllable differential shift at campaign intensity, with
 either sign available within a few picometres. That is a calibrated shift
-injector for rehearsing the fixed-lock campaign's analysis on data with a
+injector for exercising the fixed-lock campaign's analysis on data with a
 KNOWN light shift, which no other knob on the bench provides.
 
 **And the practicality is the punchline**: 1297.5 nm sits in the telecom O
@@ -1391,7 +1391,7 @@ differential-polarizability sign question, since that dispute turns on a
 revision of the 6S–5P strength of about a third. It would not, and the reason
 is the same third column: 6S–5P₃/₂ is already known to 0.21 per cent, so a
 revision of that size is excluded by a factor of roughly 150, which is the
-same conclusion the archive reaches from the measured 6S lifetime. The sign
+same conclusion the record reaches from the measured 6S lifetime. The sign
 question was already decided by existing data. Nothing here adds to it.
 
 **What this does not claim.** The sensitivities are one element at a time, so
@@ -1408,7 +1408,7 @@ measurement.
   per wavelength.)
 - Cell/oven: 5D/7S may want *lower* density than 6S (they are stronger / closer to
   resonance). The fixed-lock session shot-list temperature range would differ per transition.
-- The ruler comb itself: in the archive the scan clips one third-order tooth window on
+- The ruler comb itself: in the 2025 dataset the scan clips one third-order tooth window on
   every recorded trace, and at the measured drive depth (2β = 1.57 median across the combs) a fully covered
   third-order tooth still sits below the per-trace fit residual (pre-registration
   amendment 4). Widening the scan by about one tooth spacing per side and deepening the

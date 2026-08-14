@@ -1,63 +1,70 @@
 #!/usr/bin/env python3
 """
-Cross-epoch checks from the pilot and prehistory sessions.  (addendum 11)
+Cross-epoch checks from the campaign-morning and 4 July sessions.
+(addendum 11)
 
-The recovered pilot (2025-07-16 folder) and prehistory (2025-07-03/04) are
-OUTSIDE the frozen archive, but they carry six checks the archive cannot
-perform on itself, plus one honest non-result:
+The recovered campaign-morning session (2025-07-16 folder) and the 4 July
+sessions (2025-07-03/04) are OUTSIDE the frozen dataset, but they carry six
+checks the dataset cannot perform on itself, plus one honest non-result:
 
-1. CLOCK VALIDATION -- the LeCroy dress-rehearsal files embed wall-clock
-   trigger times. mtime(JST) - TrigTime = +4..+9 s (median +6 s, one +145 s
-   operator delay): the audit's JST reading of the FAT mtimes is confirmed
-   by an independent clock INSIDE the data.
-2. OUT-OF-SAMPLE TEST of the etalon-transient disturbance model -- the pilot
-   science ran ~2.9 h after its morning lock-on, i.e. past the ~2 h
-   transient; the model predicts recapture steps at the settled scale
-   (<~20 ms). Measured: +14.0 / -5.8 / +0.2 ms. PASS.
-3. CROSS-DAY CALIBRATION -- the pilot-day Def rulers give an ACF comb period
-   of 144.2(11) ms vs the campaign's 146.97 ms: the sweep rate agrees to
-   1.9% across days and re-preparations, which is precisely why M2
-   calibrates every block with its own rulers (per-block scatter 0.6%).
+1. CLOCK VALIDATION -- the LeCroy files from the 4 July evening session
+   embed wall-clock trigger times. mtime(JST) - TrigTime = +4..+9 s
+   (median +6 s, one +145 s operator delay): the audit's JST reading of
+   the FAT mtimes is confirmed by an independent clock INSIDE the data.
+2. OUT-OF-SAMPLE TEST of the etalon-transient disturbance model -- the
+   campaign-morning science ran ~2.9 h after its morning lock-on, i.e.
+   past the ~2 h transient; the model predicts recapture steps at the
+   settled scale (<~20 ms). Measured: +14.0 / -5.8 / +0.2 ms. PASS.
+3. CROSS-DAY CALIBRATION -- the campaign-morning Def rulers give an ACF
+   comb period of 144.2(11) ms vs the campaign's 146.97 ms: the sweep rate
+   agrees to 1.9% across days and re-preparations, which is precisely why
+   M2 calibrates every block with its own rulers (per-block scatter 0.6%).
 4. SESSION_20250717 LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null);
    amplitude x34 vs x36 predicted P^2 over the 6x span. Both are INTERNAL
-   ratios, so both are immune to what the pilot's oven label means -- which
-   is just as well, because check 5 shows it does not mean what it seems.
-5. SESSION_20250717 THERMOMETRY (addendum 17 + its postscript) -- the pilot's
-   `91c650ma` pairs a temperature with a CURRENT, which is the rehearsal
-   parenthetical's structure, not the campaign's, so that `91 C` should be a
-   variac SET POINT and the pilot should have run at the rehearsal's internal
-   ~130 C. It did: amplitude/P^2 sits within 30% of the 130 C ladder, where
-   an internal-90 C pilot would be ~12x lower, and the pilot ran the MORNING
-   of the campaign's own day so an unlogged gain change is unlikely. The
-   WIDTH test is a NULL -- refitted with the archive's composite model the
-   pilot is within 0.7 sigma of every dwell from 90 to 130 C. The first
-   version of this check used the crude QC FWHM, which inflates the low-SNR
-   end and manufactured a 1.9 sigma that is not there. QC metrics worked list
+   ratios, so both are immune to what the campaign-morning's oven label
+   means -- which is just as well, because check 5 shows it does not mean
+   what it seems.
+5. SESSION_20250717 THERMOMETRY (addendum 17 + its postscript) -- the
+   campaign-morning's `91c650ma` pairs a temperature with a CURRENT, which
+   is the 4 July evening session's parenthetical structure, not the
+   campaign's, so that `91 C` should be a variac SET POINT and the
+   campaign-morning session should have run at the 4 July evening
+   session's internal ~130 C. It did: amplitude/P^2 sits within 30% of the
+   130 C ladder, where an internal-90 C campaign-morning run would be
+   ~12x lower, and the campaign-morning session shared the campaign's own
+   day so an unlogged gain change is unlikely. The WIDTH test is a NULL --
+   refitted with the record's composite model the campaign-morning session
+   is within 0.7 sigma of every dwell from 90 to 130 C. The first version
+   of this check used the crude QC FWHM, which inflates the low-SNR end
+   and manufactured a 1.9 sigma that is not there. QC metrics worked list
    traces; they do not measure widths.
 
-6. SESSION_20250717 ch1 IDENTITY -- the pilot rulers' 1.92 V second channel
-   is the frequency SWEEP, not a power monitor: it ramps linearly in every
-   record, its slope ALTERNATES SIGN at fixed magnitude (successive legs of
-   the triangle sweep), and the implied calibration ~4.7 MHz/mV reproduces
-   the EOM comb's own rate. It wanders 5-9% from straight, well above the
-   sweep's own 0.3% nonlinearity bound, so it monitors the scan rather than
-   calibrating it -- which is why the comb ruler exists. Which actuator it
-   is (piezo vs elsewhere in the scan chain) the trace cannot say.
+6. SESSION_20250717 ch1 IDENTITY -- the campaign-morning rulers' 1.92 V
+   second channel is the frequency SWEEP, not a power monitor: it ramps
+   linearly in every record, its slope ALTERNATES SIGN at fixed magnitude
+   (successive legs of the triangle sweep), and the implied calibration
+   ~4.7 MHz/mV reproduces the EOM comb's own rate. It wanders 5-9% from
+   straight, well above the sweep's own 0.3% nonlinearity bound, so it
+   monitors the scan rather than calibrating it -- which is why the comb
+   ruler exists. Which actuator it is (piezo vs elsewhere in the scan
+   chain) the trace cannot say.
 
-7. REHEARSAL CHRONOLOGY (non-result, stated) -- envelope centres of the
-   dual-scan captures scatter most in the first block (649 ms) and settle
-   mid-session (17-131 ms), consistent with a fresh-lock transient, but the
-   final peak's blocks are noisy again (~200-380 ms) and the observable
-   rests on an unverified trigger-sync assumption: no claim either way.
+7. 4 JULY EVENING SESSION CHRONOLOGY (non-result, stated) -- envelope
+   centres of the dual-scan captures scatter most in the first block
+   (649 ms) and settle mid-session (17-131 ms), consistent with a
+   fresh-lock transient, but the final peak's blocks are noisy again
+   (~200-380 ms) and the observable rests on an unverified trigger-sync
+   assumption: no claim either way.
 
 The extraction list this opened is now CLOSED (addenda 13-14): the noise
 spectrum measured the detection chain over four decades and found a 61 Hz
-mains line at 14.6x the floor, chased into the archive at 1.9x / 0.14% of
-peak -- negligible; and the rehearsal power sweep confirmed the P^2 law
-(slopes 1.87-2.36) while its WIDTH test proved impossible to port, the
-dual-scan envelope being ~120x the linewidth. The "~32 ms satellites" were a
-peak-finding artifact (ACF shows no coherent companion in either epoch), and
-the three binary 4192@270 files are 0xFF never-written placeholders.
+mains line at 14.6x the floor, chased into the dataset at 1.9x / 0.14% of
+peak -- negligible; and the 4 July evening session's power sweep confirmed
+the P^2 law (slopes 1.87-2.36) while its WIDTH test proved impossible to
+port, the dual-scan envelope being ~120x the linewidth. The "~32 ms
+satellites" were a peak-finding artifact (ACF shows no coherent companion
+in either epoch), and the three binary 4192@270 files are 0xFF
+never-written placeholders.
 
 The double-temperature notation 130C(90C-0.65A) is resolved -- the
 parenthetical is the variac set point, the campaign temperature is the
@@ -94,7 +101,8 @@ TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
 RATE_MHZ_MS = float(next(csv.DictReader(
     open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])
 CAMPAIGN_TOOTH_MS = TOOTH_SPACING_LASER_MHZ / RATE_MHZ_MS
-PILOT_TOOTH_MS = 144.2      # the pilot day's own Def-comb ACF period (check 3)
+# the campaign-morning day's own Def-comb ACF period (check 3)
+PILOT_TOOTH_MS = 144.2
 
 
 def trigtime_check() -> None:
@@ -148,7 +156,7 @@ def morning_ruler_rate() -> None:
         periods.append((lo + int(np.argmax(ac[lo:hi]))) * dtm)
     per = np.array(periods)
     ratio = np.median(per) / CAMPAIGN_TOOTH_MS
-    print(f"\n3. CROSS-DAY CALIBRATION: pilot Def-comb ACF period "
+    print(f"\n3. CROSS-DAY CALIBRATION: campaign-morning Def-comb ACF period "
           f"{np.median(per):.1f} ms (n={len(per)}, spread {per.std(ddof=1):.1f})")
     print(f"   vs campaign {CAMPAIGN_TOOTH_MS} ms -> sweep-rate ratio {ratio:.4f} "
           f"({100*(1-ratio):+.1f}%): per-block rulers vindicated.")
@@ -157,16 +165,18 @@ def morning_ruler_rate() -> None:
     print("    postscript to addendum 11)")
 
 def pilot_thermometry() -> None:
-    """Which campaign dwell does the pilot's oven setting correspond to?
+    """Which campaign dwell does the campaign-morning's oven setting
+    correspond to?
 
-    The pilot filenames pair a temperature with a CURRENT (`91c650ma`) --
-    structurally the rehearsal's parenthetical (`90C-0.65A`), which addendum
-    15 identified as the variac set point. If that reading is right the pilot
-    ran at the same oven setting as the rehearsal, whose headline records an
+    The campaign-morning filenames pair a temperature with a CURRENT
+    (`91c650ma`) -- structurally the 4 July evening session's parenthetical
+    (`90C-0.65A`), which addendum 15 identified as the variac set point. If
+    that reading is right the campaign-morning session ran at the same oven
+    setting as the 4 July evening session, whose headline records an
     internal 130 C -- NOT at the campaign's internal 90 C.
 
     Two observables were put to it. The WIDTH test is a NULL: fitted with the
-    archive's own composite model it cannot tell 90 from 130 C (postscript to
+    record's own composite model it cannot tell 90 from 130 C (postscript to
     addendum 17). It is computed here anyway, because the first version of
     this check used the crude QC FWHM, got a spurious 1.9 sigma, and the
     correction is worth being able to re-run. What carries the conclusion is
@@ -193,7 +203,8 @@ def pilot_thermometry() -> None:
         right = nu[hi] + (prof[hi] - h) / (prof[hi] - prof[hi + 1]) * (nu[hi + 1] - nu[hi])
         return float(right - left)
 
-    RATE_T = 2 * 6.25 / PILOT_TOOTH_MS      # transition axis, pilot's own comb
+    # transition axis, the campaign-morning's own comb
+    RATE_T = 2 * 6.25 / PILOT_TOOTH_MS
     blocks, amps = {}, []
     for p in sorted((QP / "4192nm91c650ma").glob("*.csv")):
         mw = int(p.stem.split("650ma")[1].rstrip("0123456789").replace("mw", ""))
@@ -222,8 +233,10 @@ def pilot_thermometry() -> None:
     # five power blocks, and width is power-independent (the C3 null)
     blk = float(g.loc[130, "sd"] / g.loc[130, "w"])
 
-    print("\n5. SESSION_20250717 THERMOMETRY -- the pilot's oven setting, from physics")
-    print(f"   pilot 4192, archive composite fit: {pm:.3f} +- {pse:.3f}(block SE)"
+    print("\n5. SESSION_20250717 THERMOMETRY -- the campaign-morning's oven "
+          "setting, from physics")
+    print(f"   campaign-morning 4192, record composite fit: {pm:.3f} "
+          f"+- {pse:.3f}(block SE)"
           f" +- {pm*blk:.3f}(reproducibility {100*blk:.1f}%) MHz")
     for T, r in g.iterrows():
         dd = pm - r.w
@@ -241,16 +254,19 @@ def pilot_thermometry() -> None:
     q = q[q.peak == 4192]
     gp = q[(q.role == "p_sweep") & (q.temperature_C == 130)].dropna(subset=["power_mW"])
     cp = float(np.median(gp.height_v / (gp.power_mW / 100.0) ** 2))
-    print(f"   amplitude/P^2: pilot {pl:.3f} V vs campaign 130 C ladder {cp:.3f} V "
-          f"(x{pl/cp:.2f});")
-    print(f"   an internal-90 C pilot would sit ~12x lower, i.e. x{12*cp/pl:.0f} below")
-    print("   what is measured. Gain is untokened on both sides, but the pilot ran")
-    print("   the MORNING of the campaign's own day -- so this carries the verdict,")
+    print(f"   amplitude/P^2: campaign-morning {pl:.3f} V vs campaign 130 C "
+          f"ladder {cp:.3f} V (x{pl/cp:.2f});")
+    print(f"   an internal-90 C campaign-morning run would sit ~12x lower, "
+          f"i.e. x{12*cp/pl:.0f} below")
+    print("   what is measured. Gain is untokened on both sides, but the")
+    print("   session ran earlier the same day as the campaign -- so this")
+    print("   carries the verdict,")
     print("   together with the filename structure. See addendum 17.")
 
 
 def pilot_ch1_identity() -> None:
-    """What is the pilot rulers' second channel? (was: "1.92 V DC, power monitor?")
+    """What is the campaign-morning rulers' second channel? (was: "1.92 V DC,
+    power monitor?")
 
     The experimenter's recollection was that it is the piezo sweeping the laser
     frequency. The data agree, and the discriminator is the SIGN. A power
@@ -305,7 +321,8 @@ def main() -> int:
     morning_ruler_rate()
     pilot_thermometry()
     pilot_ch1_identity()
-    print("\n4. and 7.: pilot laws and the rehearsal chronology non-result -- see the")
+    print("\n4. and 7.: campaign-morning laws and the 4 July evening session")
+    print("   chronology non-result -- see the")
     print("   docstring and addendum 11 (envelope analysis needs no re-run).")
     return 0
 

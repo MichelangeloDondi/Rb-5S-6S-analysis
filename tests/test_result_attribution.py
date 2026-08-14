@@ -30,10 +30,10 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Known deferral: the archive README's S0 table row still carries the
+# Known deferral: the record README's S0 table row still carries the
 # widening wording and is corrected there separately. The mirror's row
 # is already correct, so this entry never fires here. Remove it once
-# the archive row is fixed.
+# the record row is fixed.
 DEFERRED = [
     ("README.md", "joint three-session profile likelihood with the threshold widened"),
 ]

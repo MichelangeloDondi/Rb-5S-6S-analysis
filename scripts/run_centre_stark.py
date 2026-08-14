@@ -23,9 +23,9 @@ an informative PRIOR instead of a free, degenerate parameter. That is the
 whole idea: trade M21's flat-prior, many-epoch, unidentifiable fit for a
 tight-prior, single-epoch, identified one.
 
-THE EPOCH COUNT IN THE TASK BRIEF DOES NOT MATCH THE ARCHIVE. The brief
+THE EPOCH COUNT IN THE TASK BRIEF DOES NOT MATCH THE DATASET. The brief
 asserts five display epochs contrast two power_mW values for the same peak
-and temperature_C. The archive has THREE: epoch 23 (993.4207 nm, 75/125 mW),
+and temperature_C. The dataset has THREE: epoch 23 (993.4207 nm, 75/125 mW),
 epoch 28 (993.4154 nm, 175/225 mW), epoch 33 (993.4121 nm, 175/225 mW) --
 each ten p_sweep traces, five per power, all at 130 C. This is exactly the
 "only THREE of 26 epochs contrast two powers" that M21's own docstring
@@ -67,14 +67,14 @@ points.
 
 kappa_eff is laser-axis and RAMP-MEAN (a swept trace's apparent centre moves
 by MEAN_OVER_S0 * S0 on average across the triangular ramp, not by the full
-on-axis S0). Converting to the archive's standard kappa (S0 = kappa*P,
+on-axis S0). Converting to the record's standard kappa (S0 = kappa*P,
 TRANSITION axis, on-axis peak, the convention in rb5s6s/stark.py and
 results/stark_joint.csv):
 
     kappa_transition = 2 * kappa_eff / MEAN_OVER_S0
 
 the same "laser-to-transition is a factor of 2" (lineshape.stark_shift_S0_mhz:
-"Laser-axis value is S0/2") and the same MEAN_OVER_S0 = -0.653 (archival ramp
+"Laser-axis value is S0/2") and the same MEAN_OVER_S0 = -0.653 (recorded ramp
 geometry, methods/03) that run_stark_centres.py already uses -- kept as the
 same literal for consistency between the two centre-channel modules rather
 than recomputed from ramp_transit.moving_atom_moments, which would drift the
@@ -136,7 +136,7 @@ DRIFT_PRIOR_SIGMA = (0.025 - 0.007) / 2.0   # 0.009, from the quoted 68% band
 # sets the answer (see the DIAGNOSTICS block).
 DRIFT_PRIOR_SIGMA_UNDETERMINED = 0.020   # MHz/min, two-sided, zero-centred
 
-# Ramp geometry, archival configuration -- same literal run_stark_centres.py
+# Ramp geometry, recorded configuration -- same literal run_stark_centres.py
 # (M21) uses, cited there to methods/03; kept identical across both
 # centre-channel modules rather than independently recomputed.
 MEAN_OVER_S0 = -0.653
@@ -268,7 +268,7 @@ def main() -> int:
                   if len({r["power_mW"] for r in rs if r["power_mW"]}) > 1)
     print(f"  {n_multi} p_sweep display epochs contrast two power_mW values for the "
           f"same peak+temperature")
-    print("  (the task brief asserted 5; the archive has 3 -- see module docstring)\n")
+    print("  (the task brief asserted 5; the dataset has 3 -- see module docstring)\n")
 
     out_rows = []
 
@@ -406,7 +406,7 @@ def main() -> int:
         case = 1
         verdict = ("case 1: the pull sits inside the M23 width-channel bound -- the two "
                    "channels are consistent. Reported as a PRELIM centre-channel indication, "
-                   "not a detection; a fixed-lock session (not this archival one) is needed "
+                   "not a detection; a fixed-lock session (not this retrospective one) is needed "
                    "to confirm or reject it directly.")
     elif loo_unstable or control_comparable:
         case = 3

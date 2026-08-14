@@ -196,7 +196,7 @@ def make(role="p_sweep", peak="4192", T="130", P="225"):
     # the strip the legend occupies is empty of points at every window.
     rmax = min(max(float(np.max(np.abs(rstd))) * 1.55, 3.2), 8.0)
     axr.set_ylim(-rmax, rmax)
-    _footer(fig, "Sources: the data_raw archive (this trace, re-fit end to end) + "
+    _footer(fig, "Sources: the data_raw traces (this trace, re-fit end to end) + "
                  "results/ruler_blocks.csv (frequency axis)\n"
                  "+ results/linefit_conditions.csv (the total width and its error). "
                  "Regenerate: python scripts/make_fig0_spectrum.py.")

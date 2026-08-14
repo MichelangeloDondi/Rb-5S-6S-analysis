@@ -1,7 +1,7 @@
 # Running the two-photon measurement in a hollow-core fibre
 
 **Status: DESIGN NOTE, 2026-08-04. Nothing here is scheduled, agreed or
-costed.** It sets out options and budgets for taking the archive's
+costed.** It sets out options and budgets for taking the record's
 5S → 6S two-photon measurement out of the vapour cell and into a guided mode,
 and it is written so that a reader can recompute every number. Where a number
 comes from this repository's own modules the call is given. Where a parameter
@@ -36,7 +36,7 @@ here (`rb5s6s.constants`, `rb5s6s.polarizability`, `rb5s6s.lineshape`,
 
 ## 1. What changes from the cell
 
-The archive's line is built out of free atoms flying through a focused beam
+The record's line is built out of free atoms flying through a focused beam
 inside a glass cell. Three of the four things that set its shape stop being
 true in a guided mode, and one new mechanism appears that the cell has no
 analogue for.
@@ -59,7 +59,7 @@ not buy collection, which section 3 quantifies.
 
 ### 1.2 Free atoms cross the beam. Trapped atoms do not.
 
-**This is the one thing from the archive that does not transplant, stated
+**This is the one thing from the record that does not transplant, stated
 plainly.** The closed-form ramp weight `lineshape.stark_ramp`, density
 `f(s) ∝ |s|` on `s ∈ [-S0, 0]`, is derived for atoms **crossing a focused
 beam**. Its derivation, quoted in the module docstring, is that the two-photon
@@ -77,10 +77,10 @@ Working it through in the harmonic limit. Write the shift deficit of an atom as
 bottom of the well. For a three-dimensional harmonic well and a classical
 thermal sample, `U_rel/k_B T` is a chi-squared variable on three degrees of
 freedom divided by two, that is a gamma distribution of shape 3/2. That gives,
-against the archive's ramp (both expressed as the positive deficit `d`, both
+against the record's ramp (both expressed as the positive deficit `d`, both
 verified numerically against `lineshape.stark_ramp` itself):
 
-| | archive ramp, free atoms | trapped thermal sample |
+| | record ramp, free atoms | trapped thermal sample |
 |---|---|---|
 | mean deficit | `(2/3) S0` | `(3/2) (k_B T/U0) S0` |
 | sd / mean | 0.3536 (`= 1/sqrt(18) ÷ 2/3`) | 0.8165 (`= sqrt(2/3)`) |
@@ -144,11 +144,11 @@ deeper does not help. Only colder atoms, or a different trap wavelength, would.
 | 100 µK | 3.655 MHz |
 | 556 µK | 20.3 MHz (ENVELOPE, past the harmonic limit) |
 
-For scale, the archive's whole ramp edge is 0.348 MHz and the natural width is
-`constants.GAMMA_NAT_HZ` = 3.4925 MHz. A 1064 nm trap reaches the archive's
+For scale, the record's whole ramp edge is 0.348 MHz and the natural width is
+`constants.GAMMA_NAT_HZ` = 3.4925 MHz. A 1064 nm trap reaches the record's
 ramp edge at **9.5 µK** and the natural width at **95.6 µK**. A sample at the
 few-hundred-µK temperature that a fibre load without further cooling would
-plausibly deliver would be dominated by this term, not by anything the archive
+plausibly deliver would be dominated by this term, not by anything the dataset
 measures.
 
 **The way out is a magic wavelength, and this repository already computes
@@ -262,9 +262,9 @@ being used: an independent rebuild of `polarizability.alpha_5s` agreeing to
 6S → 5P1/2 branch of 0.341 against the 34/66 split held in `docs/lit/`, and
 `lineshape.stark_shift_S0_mhz` reproducing the C3d value of 0.348 MHz.
 
-Backing the same chain out of the archive's own detected photons does **not**
+Backing the same chain out of the dataset's own detected photons does **not**
 agree with it. The first-principles peak rate at the cell's working point is
-2.68e4 per atom per second against 5.7e2 to 1.7e3 implied by the archive, a
+2.68e4 per atom per second against 5.7e2 to 1.7e3 implied by the dataset, a
 shortfall of 16x to 47x. The atomic side validates to sub-percent on three
 anchors and cannot absorb that. It sits in the detection chain, where the
 photomultiplier high voltage and gain are unrecorded (`docs/APPARATUS.md` §3
@@ -275,7 +275,7 @@ collection efficiency is not the geometric one.
 
 **Every count rate below is therefore quoted from the validated first-principles
 rate, and dividing it by 16 to 47 gives the floor implied by taking the
-archive's own detected photons at face value.** That factor is the single
+dataset's own detected photons at face value.** That factor is the single
 largest uncertainty in the table and it would be closed by one afternoon of
 bench work, not by any calculation (section 6).
 
@@ -420,7 +420,7 @@ is 3.93 MHz in a 15 µm mode against 16.84 MHz in a 3.5 µm mode at 100 °C
 (`constants.transit_fwhm_from_w0`), so a small core would destroy the lineshape
 the programme exists to measure. The 1367 nm cross-check channel closes above
 about 11 mW. And at 11.45 mW in a 15 µm mode the shift edge would be 0.348 MHz,
-matching what the archive already carries rather than exceeding it.
+matching what the record already carries rather than exceeding it.
 
 ---
 
@@ -690,11 +690,11 @@ anti-resonant condition `lambda_m = (2t/m) sqrt(n²-1)`, and the Gaussian
 mode divergence `NA = lambda/(pi w)`).
 
 Numbers taken from outside those modules and carried here rather than
-recomputed: the archive's fitted peak amplitude and total width at the 225 mW,
+recomputed: the record's fitted peak amplitude and total width at the 225 mW,
 130 °C working point, the shot-noise coefficient behind the anchor route, the
 two-photon amplitudes and cascade branching ratios built from the module line
 lists, the published kagome mode-ratio, strut thickness, differential-loss and
 32 mm-column results, and the assumed detector quantum efficiencies. Each is
 labelled where it appears.
 
-Nothing in this note is a result. The archive measures a vapour cell.
+Nothing in this note is a result. The dataset measures a vapour cell.

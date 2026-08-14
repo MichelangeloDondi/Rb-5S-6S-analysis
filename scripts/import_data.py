@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-One-time (idempotent) import of the 2025 archival CSVs into data_raw/.
+One-time (idempotent) import of the 2025 CSV dataset into data_raw/.
 =======================================================================
 
 WHY THIS SCRIPT EXISTS
 ----------------------
-The original archive (old repo, ``Rb-5S-to-6S-broadening/data/``) holds 722
+The original dataset (old repo, ``Rb-5S-to-6S-broadening/data/``) holds 722
 CSVs that are ~2x duplicated across six directories, with three structural
 facts that were only decoded on 2026-07-11 (hash comparison + experimenter
 answers; full story in docs/DATA.md):
@@ -95,7 +95,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s.config import SOURCE_DATA_DIR, DATA_RAW_DIR, MANIFEST_CSV  # noqa: E402
 
-# Filename grammar of the whole archive:  <peak>nm_<rest><index>.csv
+# Filename grammar of the whole dataset:  <peak>nm_<rest><index>.csv
 # e.g. 4154nm_110c3.csv / 4207nm_eom_before2.csv / 4154nm_eom_before_7.csv /
 #      4154nm_130c_125mw8.csv.  Lazy <rest> + greedy trailing digits handles
 # two-digit indices (…130c10.csv -> rest='eom_130c', idx=10) correctly.
@@ -197,12 +197,12 @@ def classify(peak: str, rest: str):
 def main() -> int:
     src = SOURCE_DATA_DIR
     if not src.is_dir():
-        print(f"ERROR: archive source not found: {src}\n"
+        print(f"ERROR: dataset source not found: {src}\n"
               "(This script only runs on the machine holding the old repo; "
               "everyone else already has data_raw/ in git.)")
         return 1
 
-    # ---- 1. hash every CSV in the old archive --------------------------------
+    # ---- 1. hash every CSV in the old dataset --------------------------------
     all_csvs = sorted(src.rglob("*.csv"))
     by_hash = defaultdict(list)
     for p in all_csvs:
@@ -299,7 +299,7 @@ def main() -> int:
         for r in review:
             print(f"   {r['file']}  <- {r['source_paths']}")
     # Design-grid sanity: the canonical grid the analysis expects.
-    # t_sweep is 59, not 60: the curated archive double-saved one 4154@70C
+    # t_sweep is 59, not 60: the curated dataset double-saved one 4154@70C
     # repeat (two filenames, identical bytes), so that condition has only 4
     # unique curated repeats (a distinct 5th shot exists but was discarded by
     # the experimenter => that condition runs on N=4). Documented in

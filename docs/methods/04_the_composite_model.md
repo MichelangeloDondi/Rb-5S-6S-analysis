@@ -180,7 +180,7 @@ integration shows is that it agrees with it.
 Lorentzians combined analytically, the rest convolved numerically), returns an
 area-normalized profile, and `fit_condition()` fits it to data with the
 per-trace nuisances of [§4.2](06_the_statistics.md). It uses the pure triangular ramp
-(`stark_ramp()`), and the archival fits keep it because $S_0$ is fixed per power
+(`stark_ramp()`), and the 2025 fits keep it because $S_0$ is fixed per power
 and the geometry correction sits far below the 2025 noise. A proposed fixed-lock session's
 center-fits would swap in `stark_ramp_axial()` (the diverging-beam kernel of
 [§2.6](03_the_ac_stark_ramp.md))

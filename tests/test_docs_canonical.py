@@ -219,7 +219,7 @@ CANONICAL = [
         # was the three-point (70-110C, dof=1) '0.2-0.4' range before
         name="beta_self model-independent bound range (four-point headline, 95%)",
         value=_beta_range_token,
-        find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2}) MHz per 10"),
+        find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2})\s+MHz\s+per\s+10"),
         mode="all",
         docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/CLAIMS.md", "docs/PLAN.md"],
@@ -231,7 +231,7 @@ CANONICAL = [
         # the priors move -- and the literal had already drifted ~4% (the
         # formula gives 261 at the values that produced it). A hand-typed
         # number here defeats the point of the registry.
-        name="Delta-alpha archival bracket (was ~1200, before that ~5800)",
+        name="Delta-alpha record bracket (was ~1200, before that ~5800)",
         value=lambda: str(int(round(
             _const("DELTA_ALPHA_AU")
             * float(_cell("stark_joint.csv", "S0_225mW_ub95", "primary"))
@@ -242,7 +242,7 @@ CANONICAL = [
     ),
     dict(
         # ADDED 2026-08-10, when the band moved from 60-70 to 62-68 um on the
-        # owner's instruction and turned up hand-typed in five documents plus a
+        # experimenter's instruction and turned up hand-typed in five documents plus a
         # SECOND, different, two-generations-stale literal band inside
         # run_global_fit.py. Every reader of constants.W0_BAND_M moved by
         # itself. Nothing that had typed the numbers did, which is what this
@@ -274,7 +274,7 @@ CANONICAL = [
     dict(
         name="beam waist w0",
         value=lambda: f"{int(_const('W0_MEASURED_M') * 1e6)}",
-        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured)|~([0-9]+) µm;"),
+        find=re.compile(r"w.?0\s*[≈=]\s*([0-9]+)\s*µm|([0-9]+)\s*µm\s*(?:\((?:prior|measured)|,\s*measured)|~([0-9]+)\s+µm;"),
         mode="any",
         # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
         # configuration table writes the waist as "w₀" with a subscript zero,
@@ -315,7 +315,7 @@ CANONICAL = [
         # bookkeeping cannot drift away from its own source.
         name="M2 campaign sweep rate, transition axis",
         value=_rate_transition_token,
-        find=re.compile(r"transition axis ([0-9]\.[0-9]{4,7})"),
+        find=re.compile(r"transition\s+axis\s+([0-9]\.[0-9]{4,7})"),
         mode="all",
         docs=["docs/DATA.md"],
     ),
@@ -327,7 +327,7 @@ CANONICAL = [
         # arithmetic no longer supports. Same registry, same mechanism.
         name="projected S0(225 mW) uncertainty, one fixed-lock morning",
         value=lambda: f"{float(_cell('projections.csv', 'proj_pull_S0_sigma', '24 per day, 1 day')):.2f}",
-        find=re.compile(r"([0-9.]+)\s*MHz on S(?:₀|_?0)\(225"),
+        find=re.compile(r"([0-9.]+)\s*MHz\s+on\s+S(?:₀|_?0)\(225"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md",
               "docs/PLAN.md"],
@@ -335,7 +335,7 @@ CANONICAL = [
     dict(
         name="projected beta_self detection significance, five interleaved blocks",
         value=lambda: f"{float(_cell('projections.csv', 'proj_beta_self_detection_sigma', 'interleaved, 20 K cold-spot lag')):.0f}",
-        find=re.compile(r"resolved at about ([0-9]+) sigma"),
+        find=re.compile(r"resolved\s+at\s+about\s+([0-9]+)\s+sigma"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),
@@ -351,11 +351,11 @@ CANONICAL = [
     dict(
         # The per-rung light-shift ceilings and the two readings that hang off
         # them. Same reason as the block above: each is quoted in the claims
-        # ledger and in the transitions map, and each rides on the archive's
+        # ledger and in the transitions map, and each rides on the dataset's
         # measured line width and on a differential polarizability, so a
         # recompute of either moves all three and a stale copy would read as a
         # drive power the physics does not allow.
-        name="993 nm light-shift ceiling at the archive geometry",
+        name="993 nm light-shift ceiling at the dataset geometry",
         value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '993 nm, 5S to 6S')):.0f}",
         # \s+ throughout: the docs wrap, so a hard space would miss a
         # citation that happens to straddle a line break
@@ -364,14 +364,14 @@ CANONICAL = [
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),
     dict(
-        name="760 nm light-shift ceiling at the archive geometry",
+        name="760 nm light-shift ceiling at the dataset geometry",
         value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '760 nm, 5S to 7S')):.0f}",
         find=re.compile(r"760\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),
     dict(
-        name="778 nm light-shift ceiling at the archive geometry",
+        name="778 nm light-shift ceiling at the dataset geometry",
         value=lambda: f"{float(_cell('projections.csv', 'proj_light_shift_ceiling', '778 nm, 5S to 5D5/2')):.0f}",
         find=re.compile(r"778\s+nm\s+ceiling\s+of\s+([0-9]+)\s+mW"),
         mode="all",
@@ -400,7 +400,7 @@ CANONICAL = [
     ),
     dict(
         # The wide-scan pedestal add-on. Quoted in the ledger and in the
-        # transitions map, and every figure rides on the archive's own measured
+        # transitions map, and every figure rides on the dataset's own measured
         # signal to noise, so a re-run of the QC layer moves all three.
         name="Doppler pedestal width at the design temperature",
         value=lambda: f"{float(_cell('projections.csv', 'input_pedestal_width', '130 C, 85Rb')):.0f}",
@@ -479,7 +479,7 @@ CANONICAL = [
     dict(
         name="vdW anchor: the delta-C6 ratio (difference form)",
         value=lambda: f"{_vdw_ratio():.4f}",
-        find=re.compile(r"ratio (0\.3[0-9]{3}) (?:enters|to the)"),
+        find=re.compile(r"ratio\s+(0\.3[0-9]{3})\s+(?:enters|to\s+the)"),
         mode="all",
         # The adjudication note is deliberately absent: its
         # before/after table legitimately shows the retired 0.3473.
@@ -488,7 +488,7 @@ CANONICAL = [
     dict(
         name="vdW anchor: the predicted 7S rate",
         value=lambda: f"{_vdw_beta7():.2f}",
-        find=re.compile(r"\b(4\.[0-9]{2}) kHz per 10"),
+        find=re.compile(r"\b(4\.[0-9]{2})\s+kHz\s+per\s+10"),
         mode="all",
         # The note is absent here too: it carries the number only in
         # its before/after table, next to the retired 4.50.
@@ -652,7 +652,7 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
     -- and STYLE.md says bounds stay bounds), and amplitude ~ P^2 is a
     CONFIRMED prediction -- the README's own results table says so three
     sections later. A reader who trusts the diagram would mis-state two of the
-    archive's four headline outcomes."""
+    record's four headline outcomes."""
     txt = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "→ nulls]" not in txt, (
         "the README diagram again folds distinct outcome types into 'nulls'; "
@@ -847,7 +847,7 @@ def test_advertised_test_counts_match_the_real_suite():
     # manuscript drafts most of all -- so the number depends on what is present.
     # The documented figure is the FULL working checkout's, so only that
     # checkout can be held to it. CI, which has neither the private drafts nor
-    # (in the public mirror) the archive-only tests, is not the reference.
+    # (in the public mirror) the record-only tests, is not the reference.
     import pytest as _p
     # This compares THIS checkout's documented number against THIS checkout's
     # collected count, so there is nothing cross-checkout about it and no

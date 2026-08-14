@@ -1,4 +1,4 @@
-# The 2025 archive: provenance, decoding, and exclusions
+# The 2025 dataset: provenance, decoding, and exclusions
 
 This is the provenance record for the curated traces listed in
 [`data_raw/MANIFEST.csv`](../data_raw/MANIFEST.csv): what was acquired, in what
@@ -23,9 +23,9 @@ here the moment a specific number looks wrong.
 | what this is | |
 |---|---|
 | the measurement | Doppler-free two-photon spectroscopy of the rubidium 5S to 6S transition at 993.4 nm, four hyperfine components, in a hot vapour cell |
-| the sessions | one campaign of about 24 hours on 17 to 18 July 2025, preceded by a pilot morning and by a prehistory that is kept outside the frozen archive |
+| the sessions | four, named by date in section 0: the 24 hour campaign of 17 to 18 July 2025, the campaign-morning session that commissioned the frequency ruler, and two sessions of 4 July 2025. The last three are kept outside the frozen record |
 | the census | 297 curated traces in seven roles, 264 of them canonical and 33 excluded with a recorded reason, listed in `MANIFEST.csv` |
-| what is in the repository | the manifest of the 297 curated traces, the acquisition clock and every fitted result, in every copy. Whether the traces themselves sit beside the manifest under `data_raw/` depends on the copy, and `data_raw/README.md` says which this one is. The trees that stay outside either copy are the rehearsal, the pilot and the prehistory, and section 3a lists them |
+| what is in the repository | the manifest of the 297 curated traces, the acquisition clock and every fitted result, in every copy. Whether the traces themselves sit beside the manifest under `data_raw/` depends on the copy, and `data_raw/README.md` says which this one is. The trees that stay outside either copy hold the campaign-morning session and the two sessions of 4 July, and section 3a lists them |
 
 | if you are | your question | where it is answered |
 |---|---|---|
@@ -34,7 +34,7 @@ here the moment a specific number looks wrong.
 | rebuilding the census from a clone | whether the counts regenerate without any private folder | section 4, and `tests/test_manifest.py`, whose file-level re-hash runs in a copy that carries the traces and skips, with a stated reason, in one that does not |
 | after data products | which tables exist, what produced each one, and how far each is checked | [`results/README.md`](../results/README.md) and [`data_recovered/README.md`](../data_recovered/README.md), with the folder roles in section 3a |
 
-<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: dress rehearsal, pilot, and campaign panels with every acquisition marked, etalon-transient windows shaded, and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The whole record on one axis, before the census that describes it. Three
 sittings, every acquisition at its recovered time, the etalon-transient windows
@@ -47,17 +47,37 @@ appears there with the provenance of the clock that dates it.*
 [`scripts/annotate_manifest_qc.py`](../scripts/annotate_manifest_qc.py) and
 pinned by `tests/test_manifest_qc.py`. The acquisition clock is
 [`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv). Every trace in the
-archive is drawn for the eye by
+dataset is drawn for the eye by
 [`scripts/make_qc_gallery.py`](../scripts/make_qc_gallery.py), described in
 section 4.
 
-**The sessions, named once.** The *campaign* is the 24 hour run of 17 to 18 July
-2025, and it is the frozen archive. The *pilot morning* is the ruler
-commissioning and four-power sweep taken on the campaign morning. The *dress
-rehearsal* is the 50-trace LeCroy session of the evening of 4 July 2025,
-thirteen days before the campaign, running 22:31 to 01:38 JST on the recovered
-clock. The *EOM first trials* are the earliest traces of all, taken at 03:37 JST
-earlier that same 4 July. *Prehistory* is the umbrella for the last two. The
+**The sessions, named once, by their dates.** Four measurement sessions stand
+behind this repository. Each is named here for when it ran and for what it
+measured, because each contributes a result and none of them is a warm-up for
+another.
+
+The *campaign* is the 24 hour run of 17 to 18 July 2025, and it is the frozen
+record. It holds the 297 curated traces and every result that carries an
+absolute number.
+
+The *campaign-morning session* of 17 July 2025 ran the frequency ruler's final
+commissioning at 04:18 to 06:33 and then a four-power sweep at 06:54 to 07:11.
+The commissioning is the reason the campaign's frequency axis has a scale, and
+the sweep is a second measurement of the power dependence, taken hours before
+the campaign's own.
+
+The *4 July evening session* is 50 LeCroy traces taken 22:31 to 01:38 JST,
+thirteen days before the campaign, at four peaks and 90/180/270 mW with
+`G=10^6`. It is the only session at an internal 130 °C, and its power dependence
+is one of the three arms the joint AC-Stark bound fits together.
+
+The *4 July first trials* are the earliest traces of all, at 03:37 JST that same
+day, when the EOM was first put on the beam. They set the origin of the
+program's recovered clock.
+
+The three sessions other than the campaign stay outside both copies of the
+repository, in two trees that section 3a locates: the campaign-morning session
+in one, and the two sessions of 4 July in the other. The
 aborted first attempt at the 4154 power sweep is a *preliminary attempt*, and it
 sits inside the campaign rather than before it. The manifest names the campaign's
 own divisions in its `session` column, in one-letter codes: `P` is the power
@@ -65,7 +85,7 @@ session (145 traces), `T` the temperature session (123), and `Q` the preliminary
 attempt held in excluded (29).
 
 *The chronology and the identities below were established on 2026-07-10 and
-2026-07-11 by hash comparison against the original archive, with the design
+2026-07-11 by hash comparison against the original dataset, with the design
 answered directly by the experimenter. The file has been extended since by the
 recovered acquisition clock (2026-07-23), the folder consolidation
 (2026-07-24), and the ruler re-adjudication of 2026-08-04 and 2026-08-05. Every
@@ -107,13 +127,13 @@ that could not be are withdrawn.*
 Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an
 **Agilent/Keysight InfiniiVision DSO-X 3054A** (500 MHz, 4 GSa/s). The LeCroy
 on the same bench would not trigger reliably (experimenter, 2026-07-23), and
-the export signature confirms which instrument wrote the files. Every archival
-CSV opens `x-axis,N` and `second,Volt`, which is the InfiniiVision format and
-not LeCroy's.
+the export signature confirms which instrument wrote the files. Every CSV in
+the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision
+format and not LeCroy's.
 
 ## 2. Campaign design and chronology (experimenter-confirmed)
 
-**When.** The whole archive was acquired in a single run of about **24 hours,
+**When.** The whole campaign was acquired in a single run of about **24 hours,
 17–18 July 2025**, with the Ti:Sapph **left running throughout**
 (experimenter-confirmed, 2026-07-22). Continuous operation matters beyond
 provenance: it removes warm-up transients between blocks, and it is the
@@ -143,12 +163,12 @@ missing log, which has since been found.
 > provenance rests on commit history rather than on a release object
 > ([PREREGISTRATION §9](PREREGISTRATION_timestamps.md)).
 
-<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: dress rehearsal, pilot, and campaign panels with every acquisition marked, etalon-transient windows shaded, and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The program on its recovered clock. Every acquisition in
 [`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv), drawn by
 [`scripts/make_timeline_figure.py`](../scripts/make_timeline_figure.py):
-the LeCroy dress rehearsal (in-file trigger times), the pilot morning
+the LeCroy session of 4 July (in-file trigger times), the campaign morning
 (ruler commissioning → `Def` → the 0.65 A sweep), and the campaign with its
 four power ladders, three temperature dwells, the 9.6 h break, and the
 evidence-backed etalon-transient windows shaded (addenda 4–7 and 12, where the
@@ -171,25 +191,27 @@ empty for all 62 `t_sweep` rows, which
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) records as never having
 been logged, so the cooling blocks' drive power rests on this file alone.
 
-The campaign had a prehistory, surfaced 2026-07-24 and kept outside the frozen archive:
-EOM first trials 2025-07-04 03:37 JST, then a 50-trace LeCroy dress rehearsal
-that evening, at four peaks, 90/180/270 mW, `G=10^6`, double-temperature
-notation. Then on the campaign morning the ruler's final commissioning
-04:18–06:33, `Initial attempts` → `Def`, and a four-power pilot sweep at
+Three sessions precede the campaign, surfaced 2026-07-24 and kept outside the
+frozen record: the EOM first trials at 2025-07-04 03:37 JST, then the 50-trace
+LeCroy session that evening, at four peaks, 90/180/270 mW, `G=10^6`,
+double-temperature notation. Then on the campaign morning the ruler's final
+commissioning 04:18–06:33, `Initial attempts` → `Def`, and a four-power sweep at
 06:54–07:11, results report addendum 9. Its files say `91c650ma`, but that
 `91 °C` is a **variac set point**, not a cell temperature comparable to the
-campaign's dwell labels: the same 0.65 A is what the rehearsal records as an
-internal 130 °C, and the pilot's amplitude agrees, sitting ~15× above what an
-internal-90 °C pilot would give, addendum 17. Its linewidth cannot tell the
-dwells apart either way, which took two attempts to establish. **Since
-2026-08-01 the rehearsal is no longer analysis-untouched:**
-`run_stark_joint.py` reads its traces in place from the private prehistory tree,
+campaign's dwell labels: the same 0.65 A is what the 4 July evening session
+records as an internal 130 °C, and the morning session's amplitude agrees,
+sitting ~15× above what an internal-90 °C session would give, addendum 17. Its
+linewidth cannot tell the dwells apart either way, which took two attempts to
+establish. **Since 2026-08-01 the 4 July evening session is no longer
+analysis-untouched:**
+`run_stark_joint.py` reads its traces in place from its private tree,
 never copying them into the repository, because its 270 mW rung and alternating
 ladder directions add leverage the campaign lacks. 46 of the 50 traces enter.
 Three are 0xff-corrupted on disk and one has no line in the window. That fit
 runs on **three** sessions, not two: 100 canonical campaign `p_sweep` traces,
-those 46 rehearsal traces, and the pilot morning's 26, which the same script
-reads from a second private tree (`results/stark_joint.csv`, row `n_traces`).
+those 46 traces of the 4 July evening, and the campaign morning's 26, which the
+same script reads from a second private tree (`results/stark_joint.csv`, row
+`n_traces`).
 Those private copies themselves remain read-only and unmodified. The EOM
 trial traces, whose folder is labelled `2025-07-03` while the clock reads
 2025-07-04 03:37 JST, turned out to carry the **piezo ramp on their second
@@ -198,7 +220,7 @@ same line crossed twice near a sweep turnaround reads the same ramp
 voltage to 0.1 mV on a 13 mV sweep, and a sideband satellite at a constant
 voltage offset calibrates that axis at 5.24 MHz/mV, under which the line
 width comes out 5.1 MHz at 80 °C, on the physical budget. The measured
-EOM-day scan rate, 0.024 MHz/ms, differs 2.2× from the rehearsal's fitted
+EOM-day scan rate, 0.024 MHz/ms, differs 2.2× from the 4 July evening's fitted
 rate, so the two days' scan configurations differ and no calibration
 transfers. The full account is in `run_stark_joint.py`.
 
@@ -215,7 +237,7 @@ dropping out during the etalon thermal transient, each recapture landing
 MHz-scale off (`APPARATUS.md` §6, results report addenda 4–7), so
 **absolute trace positions carry no meaning across saves**, and each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
 usually left alone**, a tendency rather than a protocol
-(experimenter-confirmed, 2026-07-22), and the archive shows the exceptions:
+(experimenter-confirmed, 2026-07-22), and the dataset shows the exceptions:
 24 of 32 RF-off science blocks scatter about a common position (median
 1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
 them by ~1 s, larger than the trace window, so the axis offset itself moved.
@@ -232,7 +254,7 @@ them by ~1 s, larger than the trace window, so the axis offset itself moved.
 > reading of the licensing question and so needs no correction at all. The two
 > longest knob-untouched segments give −0.022 and −0.018 MHz/min, bracketing the
 > quoted value. The shorter segments (3–6 min) scatter to ±1.5 MHz/min, which is
-> what a 0.27 MHz per-trace scatter produces over such baselines. The archive
+> what a 0.27 MHz per-trace scatter produces over such baselines. The dataset
 > simply has no long intervention-free stretch.
 >
 > *Sharpened 2026-07-30, after recomputing the whole fit in both frames.* Across
@@ -340,11 +362,11 @@ hash**:
 
 | where | what | status |
 |---|---|---|
-| `data_raw/` (this repo) | the frozen analysis archive: MANIFEST.csv in every copy, and the 297 curated traces in the copy that carries them. Every fitted number regenerates from the traces. | **frozen**, never edited |
+| `data_raw/` (this repo) | the frozen analysis record: MANIFEST.csv in every copy, and the 297 curated traces in the copy that carries them. Every fitted number regenerates from the traces. | **frozen**, never edited |
 | `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only |
-| release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes, sha256 in the release notes and addendum 10), campaign, pilot, prehistory, LeCroy rehearsal | preserved public archive |
+| release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes, sha256 in the release notes and addendum 10), covering all four sessions | preserved public record |
 | Desktop `RawDataBackUp` (private) | the provenance root, as found | never touched |
-| `~/Documents/*_QUARANTINE_*` (private) | read-only working copies the audit ran on. Two of them, the prehistory tree and the pilot tree, are also read in place by `run_stark_joint.py` as the second and third sessions of the joint light-shift fit | never modified |
+| `~/Documents/*_QUARANTINE_*` (private) | read-only working copies the audit ran on, still carrying the folder names they were given in 2026-07. Two of them, the 4 July tree and the campaign-morning tree, are also read in place by `run_stark_joint.py` as the second and third sessions of the joint light-shift fit | never modified |
 | `private/qc_gallery/` (this repo, untracked) | the per-condition inspection panels of §4, rebuilt on demand from `data_raw/` | regenerated, never cited |
 
 The drift analysis (`run_drift_settling.py`) reads `CLOCK.csv`, so a clone
@@ -367,7 +389,7 @@ layer.
 | `discarded/` | shots the experimenter rejected at curation (§3, item 4) | 4 |
 | `review/` | anything that failed pattern classification | 0 |
 
-Total: **297 unique traces** (from 722 archive files). The census is pinned by
+Total: **297 unique traces** (from 722 dataset files). The census is pinned by
 `tests/test_manifest.py`, whose file-level re-hash runs on the full battery in
 a copy that carries the traces and skips, with a stated reason, in one that
 does not.
@@ -404,7 +426,7 @@ trace's quality-control metrics, its hard flags and any trim applied to it, and
 comb's fitted spacing, its labelling verdict and any renumbering. Both are
 committed, so a clone can follow one trace from its bytes to its fitted record.
 
-**The inspection instrument.** Every trace in the archive is drawn once by
+**The inspection instrument.** Every trace in the dataset is drawn once by
 [`scripts/make_qc_gallery.py`](../scripts/make_qc_gallery.py), regenerated with
 `python scripts/make_qc_gallery.py`. The unit of presentation is the condition:
 one page per condition, every repeat of it as a row, on one shared vertical
@@ -437,16 +459,16 @@ criterion, and what it changes downstream. Counts trace to one of three places:
 [the ruler specification](notes/ruler_validity_and_trim_prereg.md) named in the
 row, or
 [`data_recovered/RECOVERED_MANIFEST.csv`](../data_recovered/RECOVERED_MANIFEST.csv)
-for the backup-only discards, which are not in the frozen archive at all.
+for the backup-only discards, which are not in the frozen record at all.
 **Only `canonical` rows may enter headline fits.**
 
 | what | count | decided | by whom | criterion | effect |
 |---|---|---|---|---|---|
 | curation discards, `data_raw/discarded/` | 4 | 2026-07-11, audited 2026-07-12 and re-audited 2026-07-23 | the experimenter at curation time, blind to any fitted physics | acquisitions that "seemed quite bad" at the bench, then held out by pre-registration | none on any headline. All four sit inside their conditions' kept linewidth spread. One condition drops to four repeats (§3 item 4) |
 | session excluded, `data_raw/excluded/` | 29 | 2026-07-12, re-examined the same day | pre-registration, on a curation fact rather than a per-trace defect | the aborted first 4154 130 °C power attempt and its ten ruler brackets, redundant against a complete retake | none on any headline. Folding it into the power fit moves the light-shift bound within that bound's own scatter (below) |
-| backup-only discards, `data_recovered/discarded_backup/` | 16 | discarded at curation, recovered from the backup and assessed 2026-07-23, published here 2026-07-24 | the experimenter at curation time | discarded at the bench and absent from the frozen archive, published for inspection only | none. They enter no fit |
+| backup-only discards, `data_recovered/discarded_backup/` | 16 | discarded at curation, recovered from the backup and assessed 2026-07-23, published here 2026-07-24 | the experimenter at curation time | discarded at the bench and absent from the frozen record, published for inspection only | none. They enter no fit |
 | hard-flagged ruler export | 1 | 2026-07-11 | mechanical rule, at first strict-parse contact | interior dropouts leaving 1047 valid samples (§3 item 5(ii)) | the fitted ruler population is 104 rather than 105 |
-| rehearsal traces not entering the joint light-shift fit | 4 of 50 | 2026-08-01 | mechanical rule | three are 0xff-corrupted on disk and one has no line in the window (§2) | 46 of the 50 enter |
+| 4 July evening traces not entering the joint light-shift fit | 4 of 50 | 2026-08-01 | mechanical rule | three are 0xff-corrupted on disk and one has no line in the window (§2) | 46 of the 50 enter |
 | ruler traces removed by the spacing outlier rule | 3 | 2026-08-04 | pre-registered rule, threshold calibrated against nulls rather than a quantile | median and median absolute deviation against the calibrated threshold (amendment 3 §C6) | three temperature-block combs leave the frequency calibration |
 | line traces removed by the spacing outlier rule | 0 | 2026-08-04 | the same rule | the same | none |
 | residual-tail trims, ruler ladder | 2 trimmed, 2 refused, 100 untouched | 2026-08-04 | pre-registered trimmer | one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to excluded rather than eating signal (amendment B5.2) | two ruler spacings move up, in the direction removing contamination predicts |
@@ -473,8 +495,8 @@ and its brackets, and they are set out below.
 - **`4154nm_130c_{025,125,225}mw*`** (19 unique traces): a preliminary attempt
   at the power sweep, taken 22:48 to 23:16 JST on 17 July, twenty-five minutes
   before the campaign proper began on a different peak. Excluded as a matter of
-  course: it is a rehearsal, it covers three power levels rather than five, and
-  the campaign retook the point it was meant to measure. Kept in the archive
+  course: it is a preliminary attempt, it covers three power levels rather than
+  five, and the campaign retook the point it was meant to measure. Kept in the record
   because it is a same-condition, different-hour probe if one is ever wanted.
 
   It was stopped because the baseline would not stay flat, and the traces show
@@ -657,7 +679,7 @@ conclusions:
   3.49 natural + ~1.2 transit + collisions + laser). All absolute σ/γ values
   from the old pipeline are void (wrong axis scale, and a Lorentzian part below the
   natural floor). Its *trends* may survive a single global rescale.
-- **Power dependence**: the archival "FWHM null vs power" is the *predicted*
+- **Power dependence**: the record's "FWHM null vs power" is the *predicted*
   behaviour (ramp-law inflation ≤2% across 25→225 mW). The third-moment and skew
   observable proposed in the brief is unmeasurable (≈1×10⁻⁴ vs noise floor
   ≈1×10⁻³), so power-shift physics moves to the fixed-lock session.
@@ -682,7 +704,7 @@ conclusions:
   ruler specification, amendment 8, and no piezo nonlinearity: the
   ruler-in-fine-scan design worked). Cold 70 °C rulers calibrate fine with
   correctly inflated errors (~2.5 ms vs ~0.3 ms warm).
-- **β_self (2026-07-11). The archival temperature sweep bounds it, it does not
+- **β_self (2026-07-11). The dataset's temperature sweep bounds it, it does not
   measure it.** Model-independent raw line widths (smoothed half-max × the
   verified per-block rate, no fitting) rise only ~0.2–0.4 MHz across 70→110 °C
   and are **non-monotonic in density for 3 of 4 peaks** (e.g. 4207: 5.11→4.87→
@@ -692,7 +714,7 @@ conclusions:
   culprit is **laser-width (σ_laser) drift between the cooling-session blocks
   (~0.06–0.16 MHz)**, comparable to the whole collisional trend. Result:
   β_self < 0.21–0.44 MHz per 10¹² cm⁻³ (95%, per peak, headline ≲0.2–0.4). A clean measurement
-  needs a fixed-lock session, which is the archival data showing that the
+  needs a fixed-lock session, which is this dataset itself showing that the
   two-epoch design was necessary. Note: the
   global Voigt fit (rb5s6s/beta.py) reports 4–10σ "detections" but those σ are
   overconfident. They assume one shared σ_laser across blocks and so omit the
@@ -712,7 +734,7 @@ conclusions:
 ### Audit and curation decisions
 
 Kept because each one settles a question a reader of `MANIFEST.csv` could
-otherwise reopen. They are decisions about the archive, not corrections to
+otherwise reopen. They are decisions about the dataset, not corrections to
 the brief, and they moved no headline number.
 
 - Curation audit outcome (objective quality control plus the systematic curation audit, 2026-07-11,
@@ -748,7 +770,7 @@ the brief, and they moved no headline number.
   ≥0.55 MHz minimum a linear β=0.036 demands (Voigt slope ≥0.5346). See
   fig5 panel A and fig6. ⇒ the fitted "collisional" width is a residual floor
   (transit/laser model + block scatter), the apparent β shrinks as the lever
-  lengthens, and the archival β is a *bound*, which reinforces rather than adds to the
+  lengthens, and this record's β is a *bound*, which reinforces rather than adds to the
   model-independent headline. A fixed-lock session: the 150–170 °C points must be taken
   inside *one* locked session (PLAN §7). RETRACTED framings (do not
   re-litigate): (i) "between-session systematic, the sessions cannot be
@@ -800,7 +822,7 @@ the brief, and they moved no headline number.
   Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm, adopted since
   2026-08-01 as the working prior) and the resolution
   of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
-  `docs/LITERATURE.md` §6a, both external corroborations of the archival w₀ re-pin
+  `docs/LITERATURE.md` §6a, both external corroborations of the record's w₀ re-pin
   and the observed line width, not raised here to avoid duplicating that entry.
   **N(T) chain confirmed:** `rb5s6s/density.py` uses the Steck/Nesmeyanov liquid-Rb correlation
   + ideal gas, exactly the T→P→N chain the theses use (Rajasree cites Steck). No
@@ -843,8 +865,8 @@ the specification of record and carries every count below in its amendments.
 
 The comb fit places seven tooth centres on a rigid grid and assigns each an
 order by proximity to the window centre alone. Nothing in that assignment
-checks that the peak sitting in a slot is the tooth that belongs there, and on
-this archive many of them are not.
+checks that the peak sitting in a slot is the tooth that belongs there, and in
+this dataset many of them are not.
 
 The population is 104 fitted combs: the 105 ruler traces of §4, less the one
 hard-flagged export of §3 item 5(ii). A tooth height is a two-photon signal, so
@@ -935,7 +957,7 @@ brief-numbers entry in §6, the whole-dataset scan above, and amendment 7 of the
 ruler specification each give a different one. They are measured on different
 observables, an in-window mirror height against a rising residual tail beyond
 the window edge, and over populations that differ by the discarded shot. Which
-of them a caption should quote is open and belongs to the owner.
+of them a caption should quote is open and belongs to the author.
 
 ### What the trim census means
 
@@ -960,7 +982,7 @@ here because the cap that excludes the retrace is a fixed number of megahertz
 while the retrace crossing moves with the sweep rate, which the ruler
 re-adjudication had just re-measured. It is now measured (RT10 of
 the ruler specification, amendment 8, 2026-08-06). Neither clip is
-active on the archive: the 25 MHz cap binds on 0 of 159 canonical traces and
+active on the dataset: the 25 MHz cap binds on 0 of 159 canonical traces and
 the 9 MHz floor on 0 of 159, so every canonical window is the plain 3.5 fitted
 widths. The recorded crossing separations run 39.2 to 43.0 MHz, that is 7.64 to
 8.54 fitted widths against a window edge at 3.50, a minimum clearance of 4.14
@@ -993,13 +1015,13 @@ the citation.
 | β_self, MHz per 10¹² cm⁻³ | 0.07–0.15 | before 2026-07-16 | between-block scatter with a hard-coded 2σ multiplier | the multiplier hid its own assumption about degrees of freedom | replaced |
 | β_self | 0.2–0.4 | 2026-07-16 | the same scatter at the Student-t quantile *t*(0.95,1) = 6.31 on one residual degree of freedom | interval construction, not new data | replaced as the headline 2026-08-02 |
 | β_self, per peak, 95% | < 0.21–0.44 | 2026-07-11 | model-independent raw widths across the three-point 70–110 °C cooling sweep | the 130 °C session was found to share the optical and cell configuration | retired 2026-08-02 |
-| β_self, per peak, 95% | ≲0.03–0.05 | 2026-08-02 | four-point 70/90/110/130 °C construction, dof = 2, ×52.5 lever | the owner's firsthand apparatus authority on the configuration | **current headline** |
+| β_self, per peak, 95% | ≲0.03–0.05 | 2026-08-02 | four-point 70/90/110/130 °C construction, dof = 2, ×52.5 lever | the experimenter's firsthand apparatus authority on the configuration | **current headline** |
 | β_self, joint hierarchical fit | 0.036 → 0.014 | 2026-07-12 | the same fit with and without the ×53 130 °C anchor | lengthening the lever, which is the lever test itself | a cross-check estimator, never the headline |
 | AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | replaced, kept in `stark_sweep.csv` as a labelled diagnostic |
 | AC-Stark S₀ at 225 mW | 0.63 MHz | 2026-07-16 | profile likelihood on the width channel, over-dispersion scaled | interval construction, not new data | the independent width-only bracket |
-| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, campaign, rehearsal and pilot morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | the tighter of the two, as quoted here since 2026-08-01. Requote from RESULTS.md |
+| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | the tighter of the two, as quoted here since 2026-08-01. Requote from RESULTS.md |
 | AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm measured waist | the measured waist moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
-| Δα archival bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
+| Δα bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
 | beam waist w₀ | 32 µm | nominal | the design value | the transit Monte Carlo's missing crossing-flux factor, fixed 2026-07-13 | excluded |
 | beam waist w₀ | ~90 µm | before 2026-07-13 | a note that carried a factor-of-2 error | arithmetic | retracted |
 | beam waist w₀ | ~50 µm | 2026-07-13 | the corrected transit Monte Carlo, validated against Lehmann's 41.2 kHz example | a direct measurement became available | replaced |

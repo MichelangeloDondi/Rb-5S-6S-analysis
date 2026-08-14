@@ -164,7 +164,7 @@ def test_block_combination_scatter_inflation():
 # tooth and the rigid grid distorts to reach it, moving the spacing and with it
 # every MHz-denominated number in the repository. These tests pin the
 # detection, the bias sign at each apex phase, the recovery, the absence of
-# false positives, the case the archive's fold-robustness argument is right
+# false positives, the case the record's fold-robustness argument is right
 # about, and the known limitation that keeps the verdict from gating today.
 #
 # The verdict lands NOT GATING (config.RULER_TOP3_GATED is False), so tests
@@ -397,7 +397,7 @@ def test_verdict_lands_advisory_and_changes_no_number():
     byte, and nothing is excluded. If this test fails, a diagnostic has
     silently become a gate and every MHz in the repository moved with it."""
     assert C.RULER_TOP3_GATED is False, (
-        "the top-three verdict is now gating; that is an owner decision and it "
+        "the top-three verdict is now gating; that is the author's decision and it "
         "changes the campaign rate. See docs/notes/ruler_validity_and_trim_prereg.md")
     v = synth_folded_comb()
     # on the PROXIMITY numbering, which is the one that leaves the ladder
@@ -450,7 +450,7 @@ def test_railed_height_is_reported():
 
 
 def test_apex_on_a_tooth_is_not_flagged():
-    """The bounded-claim case. The archive's fold-robustness paragraph argues a
+    """The bounded-claim case. The record's fold-robustness paragraph argues a
     fold preserves tooth SPACING. That argument is right exactly when the apex
     lands on a tooth, because every mirror then lands on another tooth slot.
     The rule must not fire there, or it would contradict a true statement."""
@@ -644,7 +644,7 @@ def test_the_carrier_is_not_evidence_in_the_fold_seed():
 
 
 def test_committed_combs_carry_no_displaced_numbering_and_no_reindex():
-    """The archive-facing acceptance criterion, read off the committed table:
+    """The record-facing acceptance criterion, read off the committed table:
     every fitted comb is numbered so that neither second-order tooth stands
     above a first-order one, and no comb needed the ladder to get there."""
     import csv
@@ -862,14 +862,14 @@ def test_fig8_prefers_an_untrimmed_trace():
 
 
 def test_fig8_candidate_set_is_not_empty():
-    """THE loud one. If no ruler in the archive can be shown under the
+    """THE loud one. If no ruler in the dataset can be shown under the
     pre-registered rule, that is a finding about the ruler population and it
-    goes to the owner. It is not a threshold to loosen, and it must not pass
+    goes to the author. It is not a threshold to loosen, and it must not pass
     quietly as a skipped figure.
 
     It fired once, 2026-08-04: the original all-seven height clause was
     unsatisfiable, for the two measured reasons amendment 4 of the note
-    records, and the owner relaxed the clause to six standing."""
+    records, and the author relaxed the clause to six standing."""
     mf = _make_figures()
     rows = mf._rows("ruler_traces")
     ranked, census = mf.ruler_fig_candidates(rows)
@@ -886,8 +886,8 @@ def test_fig8_candidate_set_is_not_empty():
         f"at {sixth(best):.2f} of its own fit residual ({best['file']}), against "
         f"the 1.0 the six-standing clause requires, so no trace can satisfy the "
         f"rule as amended. Section 7 and amendment 4 of "
-        f"docs/notes/ruler_validity_and_trim_prereg.md are the rule and the "
-        f"owner owns any further amendment to it.")
+        f"docs/notes/ruler_validity_and_trim_prereg.md are the rule and any "
+        f"further amendment to it is the author's.")
 
 
 def test_fig8_shows_a_trace_standing_on_at_least_six_teeth():

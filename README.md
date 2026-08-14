@@ -25,7 +25,7 @@ written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
 
 > **In one sentence:** when the lock drifts, the position of a line is lost but
-> its shape is not, so this archive reads collisional broadening, laser width
+> its shape is not, so this record reads collisional broadening, laser width
 > and the power-dependent light shift out of the *shape* as **bounds**, and
 > specifies the fixed-lock measurements that would turn each bound into a
 > number.
@@ -64,7 +64,7 @@ it, by about an order of magnitude, and nothing here suggests otherwise
 ([`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) §1).
 
 **What each piece would buy.** A beam-profile measurement of the waist would sharpen
-every archival bound with no new physics run. A fixed-lock cell session
+every bound already in the record, with no new physics run. A fixed-lock cell session
 turns the light-shift and collisional bounds into measurements. A nanofibre
 session reads the same ramp law in an evanescent field, against the cell as
 its reference. The dependency map is the first thing in
@@ -133,7 +133,7 @@ section 6).*
 The 6S₁/₂ population is read out through the 795 nm fluorescence of the
 6S₁/₂ → 5P₁/₂ → 5S₁/₂ cascade. Four hyperfine components are recorded across
 a temperature sweep (70–130 °C at 225 mW, spanning N = 0.56–29 × 10¹² cm⁻³)
-and a power sweep (25–225 mW at 130 °C). The archive holds 297 traces:
+and a power sweep (25–225 mW at 130 °C). The dataset holds 297 traces:
 159 composite-line traces and 105 frequency-ruler calibration traces enter
 the fits, and the remaining 33 files from the same nights are excluded before
 any fit. Those 33 are an aborted first attempt at one power sweep, its
@@ -174,7 +174,7 @@ including the retraction of a drift headline that turned out to track the
 oscilloscope's own window setting rather than the laser, is in
 [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
-The archive therefore reports what the *shape* of a line carries (widths,
+The record therefore reports what the *shape* of a line carries (widths,
 power-law scalings, asymmetry) as bounds, nulls and consistency checks, while
 the absolute shifts wait for a stable lock. Each bound sets the sensitivity
 target a follow-up session would need to beat. The width-only AC-Stark bound
@@ -248,7 +248,7 @@ the well-sampled windows.*
 ## Results at a glance
 
 The model these numbers rest on, shown against one representative trace per
-line: the global archive fit at its best-fit parameters, residuals below each
+line: the global dataset fit at its best-fit parameters, residuals below each
 panel. The sub-unity reduced χ² reflect the conservative per-block noise
 inflation (1.2–2.2×), not an over-fit. The antisymmetric near-centre residual
 structure is shot noise (it falls as amplitude^-0.5 on both the power and
@@ -258,7 +258,7 @@ uninflated errors and absorbed by the inflation. It changes none of the
 reported values.
 
 <p align="center">
-  <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global archive model over one trace per peak, with residual panels">
+  <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global dataset model over one trace per peak, with residual panels">
 </p>
 
 The dominant shared systematic for every absolute number is the beam waist
@@ -268,7 +268,7 @@ measurement that would lift it.
 
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
-| Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
+| Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the measured waist, rising with w₀ | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md). Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
@@ -302,7 +302,7 @@ hold: the linewidth stays flat (the shift broadens the line only as S₀²,
 negligible here) and the amplitude follows the two-photon rate law, ∝ P².
 These are *consistent with* the light-shift model, not proof of it. A flat
 width is equally what zero shift would give, and the ramp's *distinctive*
-signature, the skew ∝ S₀³, is below detection in the archive (a bound). The
+signature, the skew ∝ S₀³, is below detection in the dataset (a bound). The
 coefficient itself waits for a fixed-lock session. The S₀ bound and its
 prediction are independent by construction: the bound uses only the
 width-vs-power data (no w₀ enters), while the predicted 0.35 MHz is the
@@ -344,7 +344,7 @@ and [`docs/THEORY_NOTE.md`](docs/THEORY_NOTE.md).
 ## The dominant systematic: the beam waist w₀
 
 The transit width and the laser width both depend on the beam waist, and the
-archive cannot separate them: a tighter waist means more transit broadening
+dataset cannot separate them: a tighter waist means more transit broadening
 and less room for laser width, and vice versa. The observed ≈ 5.3 MHz line is
 reproduced anywhere from w₀ ≈ 38 µm (the hard floor, where the laser width
 goes to zero) upward, and the data alone set no ceiling. The 64 µm working
@@ -370,7 +370,7 @@ glance").
   from the waist instead: a telescope gives two working waists spanning a
   ×16 intensity range. Points at 150–170 °C in the same session would give
   β_self a density lever without borrowing a temperature point from another
-  epoch. The archive's own 130 °C point already stretches the lever to
+  epoch. The dataset's own 130 °C point already stretches the lever to
   ×52.5, but reach alone is not enough while the between-block scatter is
   co-limiting. Full specification: [`docs/PLAN.md`](docs/PLAN.md) §8.
 - **Optical nanofibre.** The same ramp law tested in the evanescent field at
@@ -453,7 +453,7 @@ two pre-registrations of record under `docs/notes/`: the ruler fit validity and
 residual-tail trimming
 [specification](docs/notes/ruler_validity_and_trim_prereg.md), whose opening
 table carries the current state of every ruler rule, and the
-[full-archive fit specification](docs/notes/full_dataset_fit_prereg.md).
+[full-dataset fit specification](docs/notes/full_dataset_fit_prereg.md).
 
 ## Conventions
 

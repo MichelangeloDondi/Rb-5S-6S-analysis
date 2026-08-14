@@ -5,7 +5,7 @@ epoch of data lift?
 **Takes.** All seven chapters before it, since each assumption belongs to one
 of them.
 **Gives.** The list a referee should attack first, and the measurements that
-would turn the archive's bounds into values.
+would turn the record's bounds into values.
 **Skip if.** Nothing. This is the shortest chapter in the set and it is the one
 that says what the other seven are conditional on.
 
@@ -20,7 +20,7 @@ that says what the other seven are conditional on.
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). The model-form study ([§4.7](06_the_statistics.md)) confirms the 2025
    data cannot distinguish these forms, so the *shape* assumption is untested
-   by the archival data and is among the assumptions most exposed to being wrong until a fixed-lock session is run.
+   by the dataset and is among the assumptions most exposed to being wrong until a fixed-lock session is run.
 4. The beam waist $w_0=64$ µm is **adopted from the lineage measurement,
    not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
    diameter with a beam profiler on the same laser model, the same $f=150$ mm
@@ -40,11 +40,11 @@ that says what the other seven are conditional on.
    forward/return *mode match* is by construction. That argument covers mode
    matching and not *loss* (two extra L2 passes, two extra window passes,
    mirror reflectivity), and it does not cover alignment-imperfect
-   superposition either. Neither was characterized for the archive, so a
+   superposition either. Neither was characterized for the dataset, so a
    modest departure is now assumed instead of a perfect retro. The exposure is
    bounded either way: $S_0\propto(1+\rho)$ confines the prediction to
    0.18–0.36 MHz for any $\rho$, and the Doppler-free rate's own
-   $\propto\rho$ scaling means the archive's strong lines already argue
+   $\propto\rho$ scaling means the dataset's strong lines already argue
    $\rho$ is not small. What no static bound covers is a *drifting* overlap
    within a scan (mirror tilt is the sensitive axis, and the longitudinal
    placement is forgiving to tens of cm), which is skew-like. A fixed-lock
@@ -64,13 +64,13 @@ that says what the other seven are conditional on.
 
 ## 7. Where this can go next
 
-*Archival: done conditional on $w_0$.* Every archival module (M0–M30) is built,
+*The 2025 dataset, done conditional on $w_0$.* Every 2025 module (M0–M30) is built,
 tested, and reported in [what we found](07_what_we_found.md): the collisional
 bound and isotope test, the laser-epoch bound, the power and ramp-law
 predictions, trapping, and the cusp model-form study.
-What is left is not more archival analysis but the measurements the 2025 data
-physically cannot yield, first among them the beam-profile $w_0$ on which every
-absolute scale above rests.
+What is left is not more analysis of the record but the measurements the 2025
+data physically cannot yield, first among them the beam-profile $w_0$ on which
+every absolute scale above rests.
 
 *A proposed fixed-lock session, the measurements that would lift the bounds*
 (not yet scheduled or agreed, with the full time-budgeted design at
@@ -104,7 +104,7 @@ kill test.
 
 ---
 
-**Where the numbers live.** Modules M0–M30, the whole archival pipeline ·
+**Where the numbers live.** Modules M0–M30, the whole 2025 pipeline ·
 producers every `scripts/run_*.py` that writes a committed CSV · results the
 full `results/` set, indexed in [`docs/RESULTS.md`](../RESULTS.md) · figures:
 none of its own. Each assumption is sourced from the chapter that makes it,

@@ -9,7 +9,7 @@ convolved with, and the measurement chapter for the retro geometry.
 form and its sign flip, which the collection geometry sets (the axial window
 crossing 1.12 of the Rayleigh range), and the pinned intensity convention
 behind $S_0$.
-**Skip if.** You want the archival result rather than the physics. The ramp is
+**Skip if.** You want the record's result rather than the physics. The ramp is
 not resolved in the 2025 data and its bound is in the results chapter.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -23,7 +23,7 @@ proportional to the local intensity $I$. This chapter takes the shift toward the
 **red** (lower frequency), following [Orson *et al.*](../lit/orson2021.md) 2021's
 published $\Delta\alpha$ for this line. An independent recompute here
 returns the same magnitude but the *opposite* sign, an open question flagged for
-adjudication in [`THEORY_NOTE.md`](../THEORY_NOTE.md) §5. Nothing in the archival
+adjudication in [`THEORY_NOTE.md`](../THEORY_NOTE.md) §5. Nothing in the record's
 results depends on the choice, because the shape below and every bound drawn
 from it are sign-immune ("The coefficient", below). Different atoms sit at
 different radii in the beam and so feel different shifts. What does the *line*
@@ -84,10 +84,10 @@ $-\tfrac23 S_0$ and its third cumulant is $\kappa_3^{\text{tot}}=S_0^3/135$,
 odd cumulants are the clean, apparatus-independent handles, and the mean
 pull is the primary fixed-lock-session observable
 ([where this can go](08_assumptions_and_outlook.md)).
-(The archive's centre channel supplies no bound of its own. A peak position is
+(The dataset's centre channel supplies no bound of its own. A peak position is
 a frequency only within a run of traces taken at one scope horizontal setting,
 so each run carries a free offset, and the pull comes out unidentifiable rather
-than merely imprecise. The width-and-shape channel is the archive's only
+than merely imprecise. The width-and-shape channel is the dataset's only
 light-shift channel: see [the results chapter](07_what_we_found.md) and
 [`THEORY_NOTE.md`](../THEORY_NOTE.md) §3.)
 
@@ -106,10 +106,10 @@ since $S_0\propto$ power $P$. (No contradiction with the fixed $0.566$: that
 is the standardized skew of the ramp *alone*, where here the same $\kappa_3$ is
 divided by a much larger and nearly fixed symmetric width.)
 
-**Two consequences for the archival data.** First, the ramp predicts the FWHM
-should move $\lesssim2$% across our power sweep, and the archive shows no
+**Two consequences for the 2025 data.** First, the ramp predicts the FWHM
+should move $\lesssim2$% across our power sweep, and the dataset shows no
 significant power trend. The observed 3 to 8% spread is non-monotonic block
-scatter, an order above the predicted ramp contribution, so the archive cannot
+scatter, an order above the predicted ramp contribution, so the dataset cannot
 resolve the ramp term. The old "power null" is therefore a null the ramp law is
 *consistent with*, not a confirmation of it. Second, the observed asymmetry
 $\propto P^3$ is $\sim10^{-4}$ against a $\sim10^{-3}$ noise floor, which is
@@ -139,13 +139,13 @@ AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
 the $n=1$, fringe-resolved regime, with the full delineation in
 `docs/LITERATURE.md`).
 
-#### $n=2$ is a weak-field statement, and the archive sits near its edge
+#### $n=2$ is a weak-field statement, and the dataset sits near its edge
 
 ![the weak-field limit and what leaving it costs the predicted skewness](../../figures/fig24_weak_field_limit.png)
 
 *Left, the weight the atom carries against the square law that stands in for
-it, with this archive and the proposed tight focus marked. Right, the
-consequence for the observable the tight focus is wanted for. The archive's own
+it, with this dataset and the proposed tight focus marked. Right, the
+consequence for the observable the tight focus is wanted for. The dataset's own
 configuration sits where the two agree to a couple of per cent.*
 
 The $I^2$ weight is the leading term of the excited fraction, not the fraction
@@ -153,7 +153,7 @@ itself. What the atom actually contributes goes as $(s/2)/(1+s)$ with
 $s=2\Omega^2/\Gamma^2$, which reduces to $I^2$ only while $s\ll1$, since
 $\Omega$ itself is two-photon and quadratic in the field. That matters here
 because $s$ scales as the *fourth* power of the inverse waist while $S_0$
-scales only as the second, so the two do not move together. At the archive's
+scales only as the second, so the two do not move together. At the dataset's
 measured 64 µm and 225 mW, $s=0.033$ and the weak-field law is safe to well
 under a percent. At the 16 µm the small-waist session proposes, $s=8.5$, the
 weight is nearly flat in intensity, and re-integrating the moments with the
@@ -214,7 +214,7 @@ measurement:
 |---|---|---|---|---|
 | pure triangle | 0 | $-0.667$ | 0.125 | $+0.566$ |
 | 60 µm (proposed config L) | 0.18 | $-0.660$ | 0.125 | $+0.564$ |
-| 64 µm (2025 archival) | 0.15 | $-0.661$ | 0.125 | $+0.565$ |
+| 64 µm (2025 dataset) | 0.15 | $-0.661$ | 0.125 | $+0.565$ |
 | 16 µm (proposed config S) | 2.47 | $-0.431$ | 0.333 | $-0.354$ * |
 
 \* At 225 mW config S is already saturated (PLAN §3), so the effective
@@ -271,9 +271,9 @@ $M=2.5$–3 puts the lens 24–25 mm from the beam and the photocathode 63–72 
 behind it, an ordinary side-viewing layout. Three consequences:
 
 1. **The $Z_c = 2$ mm placeholder this chapter has been carrying was right.**
-   The estimate lands at 2.0–2.4 mm, so the archival numbers computed with it
+   The estimate lands at 2.0–2.4 mm, so the record's numbers computed with it
    stand rather than needing revision.
-2. **The archival configuration sits at $\zeta = 0.15$ to $0.19$**, i.e. well
+2. **The dataset's configuration sits at $\zeta = 0.15$ to $0.19$**, i.e. well
    inside the transverse-only regime, with $g_1 = +0.563$ to $+0.565$ and mean
    $0.659$ to $0.661$ $S_0$, within 1.5% of the pure-triangle values.
 3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 60 µm
@@ -286,7 +286,7 @@ fair and the *width* is the only unknown. Geometry permitting, a proposed
 session's skew program is then a **sign-flip test between beam
 configurations**, $g_1$ positive at the large waist and negative at the small
 one, a signature no instrumental asymmetry can mimic because the instrument
-depends on $z_R$. At the measured 64 µm archival waist the coefficients above
+depends on $z_R$. At the measured 64 µm 2025 waist the coefficients above
 carry only a few-% geometry caveat: its longer $z_R$ makes the ramp nearly the
 pure-triangle $Z_c\to0$ limit at $g_1\approx+0.56$, where it was 10 to 40% at
 the old 32 µm nominal, and the wider waist only strengthens the
@@ -347,16 +347,16 @@ intermediate beam grows to $\approx3$ mm at $w_0=16$ µm, so return-path
 clipping is the thing to watch (PLAN §4).
 
 How much would a departure from the assumed $\rho$ actually cost? Less than
-one might fear, and the archive's own signal quality provides indirect
+one might fear, and the dataset's own signal quality provides indirect
 evidence. Since $S_0\propto(1+\rho)$, *any*
 $\rho\in[0,1]$ moves the prediction only between 0.18 and 0.36 MHz, a factor
-of two end-to-end, and the archival bound ($S_0(225\ \text{mW})$ below 0.26 MHz,
+of two end-to-end, and the recorded bound ($S_0(225\ \text{mW})$ below 0.26 MHz,
 [what we found](07_what_we_found.md))
-brackets the whole range, so no archival conclusion turns on it. Better, the
+brackets the whole range, so no conclusion in the record turns on it. Better, the
 Doppler-free *rate* scales as $\rho$ itself (it needs one photon from each
 direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
 a badly mismatched retro would have destroyed the signal long before it
-appreciably moved the shift, so the archive's strong, clean lines are
+appreciably moved the shift, so the dataset's strong, clean lines are
 evidence that $\rho$ is not small. The asymmetry is worth
 remembering: the retro is a *signal* risk far more than a *coefficient* risk.
 It matters for a fixed-lock session precisely because the coefficient is then the point:
@@ -387,7 +387,7 @@ convention-independent, set by $\text{sign}(\Delta\alpha)$, red for Orson's
 published positive $\Delta\alpha$. That sign is itself under adjudication: an
 independent sum-over-states recompute here agrees on magnitude to within 5% but
 returns a negative $\Delta\alpha$, which is a **blue** shift
-([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5). Every archival result quoted in this
+([`THEORY_NOTE.md`](../THEORY_NOTE.md) §5). Every recorded result quoted in this
 repository is unaffected, because the asymmetry null is symmetric and both the
 $S_0$ bound and its prediction band use $|\Delta\alpha|$. *Code:* `lineshape.stark_shift_S0_mhz()`. The full
 theorist-facing derivation, novelty position, and the open diverging-beam

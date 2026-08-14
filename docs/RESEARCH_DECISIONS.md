@@ -1,6 +1,6 @@
 # Research decisions
 
-Why the analysis has the shape it has: which questions this archive can answer,
+Why the analysis has the shape it has: which questions this dataset can answer,
 which it cannot, and what was done about the gap. The methods pages say what the
 pipeline computes, and this one says why it stops where it does.
 
@@ -27,7 +27,7 @@ The decisions at a glance, each argued in full in its numbered section:
 |---|---|---|
 | Can the width be split into collisional and laser parts? | The total width is the observable, and the split ships with its error and correlation | γ_coll and σ_laser are strongly correlated through the transit kernel (§1) |
 | What heads the β_self result? | The model-independent width-slope bound. The global fit is a cross-check | model-form differences reach the coefficient's own scale (§2) |
-| Does the archive fit carry an AC-Stark term? | No: the nested ladder declines it | the width channel supports a bound, not a component (§3) |
+| Does the dataset's fit carry an AC-Stark term? | No: the nested ladder declines it | the width channel supports a bound, not a component (§3) |
 | Are core widths shared across conditions? | Both verdicts reported | the answer flips with how repeats are counted, so neither is asserted (§4) |
 | The aborted power block? | Stays excluded | the cut predates the fits, so re-admitting it now would be post hoc (§5) |
 | What happens to claims that fail? | They stay on the page, marked | the record of a withdrawal is part of the result (§6) |
@@ -38,7 +38,7 @@ The decisions at a glance, each argued in full in its numbered section:
 | Can a cold-start profile be quoted? | Not without a seeded twin, and the minimum search variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
 | Why pool the four lines into one slope? | Adopted by a preregistered probe, scored after the pooled number existed | its predictions held, one by a different mechanism than the note argued (§12) |
 | Why does the ruler figure show six teeth, not seven? | The all-seven clause returned the empty set and was relaxed by amendment, in the open | two measured causes, recorded in the ruler specification (§12) |
-| Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this archive's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
+| Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this record's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
 | Where are the raw traces? | Held privately, with the manifest and every certifying check shipped | what runs here certifies the analysis, and what cannot is stated (§12) |
 | Was the residual width collisional? | Treated as a residual floor, with the inelastic channel a recorded candidate | the evidence spans four documents, indexed in §12 |
 
@@ -94,7 +94,7 @@ profiled over the (`gamma_coll`, `sigma_laser`) plane with every other parameter
 re-minimised at each point ([fig7](../figures/fig7_identifiability_profile.png)),
 giving
 
-> the archive constrains the TOTAL width well but the SPLIT poorly, so the
+> the dataset constrains the TOTAL width well but the SPLIT poorly, so the
 > individual coefficients are w0-conditional bounds, not measurements
 > ([identifiability.py:37](../rb5s6s/identifiability.py#L37))
 
@@ -141,7 +141,7 @@ the headline.
 
 M4's own producer says the same about its error bars, and gives the mechanism:
 
-> the archival four-point lever BOUNDS beta_self (it does not measure it). The
+> the dataset's four-point lever BOUNDS beta_self (it does not measure it). The
 > global-fit sigmas above are OVERCONFIDENT, since they assume one shared sigma_laser
 > across blocks and so omit exactly this between-block drift.
 > ([run_beta_self.py:396](../scripts/run_beta_self.py#L396))
@@ -157,8 +157,8 @@ sharing may still hold, and that justification does not.
 
 ## 3. The model ladder declines the AC-Stark parameter
 
-The AC-Stark ramp is this programme's own proposed component. On the archival
-data the ladder rejects it
+The AC-Stark ramp is this programme's own proposed component. On the dataset
+the ladder rejects it
 ([06_the_statistics.md](methods/06_the_statistics.md)):
 
 > **A→B ≈ +1700** (transit decisively warranted), **B→C ≈ +435** … and **C→D
@@ -170,7 +170,7 @@ data the ladder rejects it
 
 On synthetic data under a stable lock the same ladder decisively warrants an
 injected Stark shift ([run_model_ladder.py:12](../scripts/run_model_ladder.py#L12)),
-so the null is a property of the drifted archive and not of the ladder's
+so the null is a property of the drifted dataset and not of the ladder's
 sensitivity: the free per-scan centres, which the drifting lock forces, absorb
 the ramp's pull.
 
@@ -180,13 +180,13 @@ the ramp's pull.
 by BIC. Counting the ~49k correlated samples as independent favours the free
 model (ΔBIC ≈ −46), and the effective sample size favours the shared one
 (ΔBIC ≈ +62). The effective-N version is the statistically correct one and is
-the primary number. The sign flip bounds what the archive can settle: it does
+the primary number. The sign flip bounds what the dataset can settle: it does
 not robustly resolve shared against independent
 ([sharing_bic.py:37](../rb5s6s/sharing_bic.py#L37)).
 
 A favourable score would not have meant much either:
 
-> dBIC > 0 reads "the archive cannot justify per-block freedom" (Occam on
+> dBIC > 0 reads "the dataset cannot justify per-block freedom" (Occam on
 > underpowered data), NOT "the sharing is confirmed"
 > ([sharing_bic.py:36](../rb5s6s/sharing_bic.py#L36))
 
@@ -214,7 +214,7 @@ untouched:
 
 Both bounds are recorded. (The specific pair quoted in that comment, 2.04 →
 1.92 MHz, predates the switch to a profile-likelihood construction, and the current
-archival bound is **0.63 MHz** at 225 mW, `results/stark_sweep.csv`. The
+dataset's bound is **0.63 MHz** at 225 mW, `results/stark_sweep.csv`. The
 comment's numbers need refreshing, the decision does not.)
 
 A pre-registered prediction was voided rather than scored when its corroborating
@@ -277,7 +277,7 @@ Eight load-bearing assumptions are listed as a numbered attack surface
 ([08_assumptions_and_outlook.md](methods/08_assumptions_and_outlook.md) §6), and
 individual assumptions are also flagged at the point of use. The retro ratio
 is assumed at ρ = 0.94 ± 0.04 rather than at the design value 1, and the transit
-kernel's *shape* is "untested by the archival data and … a genuine attack
+kernel's *shape* is "untested by the dataset and … a genuine attack
 surface."
 
 Descoped items carry the condition under which they return: the EOM modulation
@@ -373,11 +373,11 @@ independent fit constrained by it.
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) addendum 21's third
 postscript carries the full comparison.
 
-**Decision: the pilot-axis nuisance takes the measured prior in place of the
-assumption box.** `pilot_rate_scale` used to float inside a flat [0.9, 1.1]
-box and had drifted to 1.02–1.03 in earlier fits. M26's own ruler day
-measures it directly, at 1.0022(12) from 27 rulers, and the refit now uses a
-tight ±5σ box around that number, [0.9962, 1.0081], in its place
+**Decision: the campaign-morning axis nuisance takes the measured prior in
+place of the assumption box.** `pilot_rate_scale` used to float inside a
+flat [0.9, 1.1] box and had drifted to 1.02–1.03 in earlier fits. M26's own
+ruler day measures it directly, at 1.0022(12) from 27 rulers, and the refit
+now uses a tight ±5σ box around that number, [0.9962, 1.0081], in its place
 ([run_global_dataset_fit.py:312](../scripts/run_global_dataset_fit.py#L312)).
 The posterior comes out at 1.0081, indistinguishable at this precision from
 that box's own upper edge. The measurement is doing the constraining now,
@@ -394,9 +394,10 @@ minimum 283,000 chi-squared units above the solution every other chain in
 the same run found, and its headline row and direction row were computed on
 that stuck profile. The run's own campaign-only column moves by four units
 of that 283,000 between the stuck solution and the true one, so the excess
-sits outside the campaign data, consistent with the rehearsal free centres,
-the exact warm-up failure mode the fitter's own docstring had documented
-from an earlier run, striking the primary variant this time. Two structural
+sits outside the campaign data, consistent with the 4 July evening
+session's free centres, the exact warm-up failure mode the fitter's own
+docstring had documented from an earlier run, striking the primary variant
+this time. Two structural
 decisions follow.
 
 **Decision: the wing variant runs first and seeds every other family.** A
@@ -443,12 +444,12 @@ clause demanded all seven comb teeth standing and returned the empty
 set. Amendment 4 of
 [notes/ruler_validity_and_trim_prereg.md](notes/ruler_validity_and_trim_prereg.md)
 records what the clause returned, the two measured causes, the options
-put to the owner, and the relaxation to six standing.
+put to the author, and the relaxation to six standing.
 
 **The fixed-lock session.** Proposed, not run: [PLAN.md](PLAN.md) is
 the full protocol, and §8 above shows the recurring pattern that a
 descoped item names a fixed-lock condition as what would revive it.
-The deferral is a scope decision of this archive, not a gap in it.
+The deferral is a scope decision of this record, not a gap in it.
 
 **The raw traces.** Held privately, with the manifest and every
 certifying check shipped. The repository [README](../README.md) section

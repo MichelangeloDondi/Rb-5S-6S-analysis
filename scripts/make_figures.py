@@ -362,7 +362,7 @@ def _temperature_top_axis(ax, ticks):
     """A cell-temperature axis across the top of a density plot.
 
     The density axis is the physical one (a collisional rate multiplies N),
-    but every condition in the archive is named by its oven temperature, so
+    but every condition in the dataset is named by its oven temperature, so
     a reader needs both. fig1 and fig6 share this mapping."""
     T_grid = np.linspace(55.0, 140.0, 4000)
     N_grid = density_units(T_grid)
@@ -380,7 +380,7 @@ def _temperature_top_axis(ax, ticks):
     sec = ax.secondary_xaxis("top", functions=(N_to_T, T_to_N))
     if ticks is not None:
         # the parent axis is log, so the secondary inherits a log locator and
-        # formatter: pin the ticks to the archive's own oven settings and
+        # formatter: pin the ticks to the dataset's own oven settings and
         # write them as plain degrees.
         sec.set_xticks(list(ticks))
         sec.set_xticklabels([f"{T:g}" for T in ticks])
@@ -393,14 +393,14 @@ def fig_width_vs_density():
 
     Both axes are named: density on the bottom because a collisional rate
     multiplies N, cell temperature on the top because that is what the
-    archive's conditions are called. The 130 C column is the power sweep's
+    dataset's conditions are called. The 130 C column is the power sweep's
     225 mW anchor (`serves_t130`), and the spread of the other four powers
     at that same density is drawn behind it, so the reader sees the width
     that one curated choice carries.
 
     The headline claim is the one the four points support: the widths rise,
     and they rise by a few percent while the density rises fifty-three fold,
-    which is why the self-broadening coefficient comes out of this archive as
+    which is why the self-broadening coefficient comes out of this dataset as
     a bound. The earlier title claimed non-monotonicity, which the error bars
     do not support (every downward step is at or below 1 sigma)."""
     rows = _rows("linefit_conditions")
@@ -433,13 +433,13 @@ def fig_width_vs_density():
                     color=PEAK_COLOR[peak], lw=4, alpha=0.16,
                     solid_capstyle="butt", zorder=1)
         # Markers only. Nothing was measured between the four conditions, so a
-        # joining line would draw a trend the archive does not have: the eye
+        # joining line would draw a trend the dataset does not have: the eye
         # reads the segment slopes as rates. Colour carries the series.
         ax.errorbar(N, W, yerr=We, fmt="o", color=PEAK_COLOR[peak],
                     label=PEAK_LABEL[peak], ms=5, capsize=2, lw=1.3, zorder=3)
         _series[peak] = (np.array(N), np.array(W), np.array(We))
     # THE MODEL THE RECORD FITS, drawn over the data it was fitted to
-    # (2026-08-12, owner audit: this figure showed data with no model on it).
+    # (2026-08-12, experimenter audit: this figure showed data with no model on it).
     # One shared collisional slope with a floor per line is the construction
     # the headline bound comes from (results/beta_self_probe.csv, the pooled
     # row), so that is the line to draw: slope from the CSV, floor re-anchored
@@ -506,7 +506,7 @@ def fig_power_sweep():
         a2.errorbar(P, [x[3] for x in d], yerr=[x[4] for x in d], fmt="o",
                     color=PEAK_COLOR[peak], ms=4, capsize=2)
     # THE MODEL'S OWN PREDICTION, drawn rather than only asserted (2026-08-12,
-    # owner reading of the outbound note built from this figure: the left panel
+    # experimenter reading of the outbound note built from this figure: the left panel
     # carried data and a caption claiming the ramp law, with nothing of the law
     # on the canvas). Two objects, because the fit and the bound are different
     # claims. The fitted model has S0 railed at ZERO (S0_225mW_fit in the
@@ -534,7 +534,7 @@ def fig_power_sweep():
     _inc = np.array([_stark._fwhm_of(_gc, _sl, _tr, _s0_ub * p / 225.0, _nu)
                      for p in _pgrid]) - _base
     # THE WANDER IS BETWEEN-BLOCK SCATTER, AND THE PANEL NOW SAYS SO
-    # (2026-08-12, owner reading: the points move by more than their bars, so
+    # (2026-08-12, experimenter reading: the points move by more than their bars, so
     # the flat model looked contradicted). The bars are repeat scatter within
     # a block; each power is its own block, re-centred by hand after lock
     # dropouts, and that between-block motion is not in the bars. Two objects
@@ -1079,7 +1079,7 @@ def ruler_fig_candidates(rows=None):
     NOT one of the clauses. The list above was fixed before that rule existed,
     and adding a clause to a pre-registered filter after seeing the population
     is the move the note exists to prevent. Whether an outlier trace should be
-    allowed to stand as the example is a question for the owner.
+    allowed to stand as the example is a question for the experimenter.
 
     Returns (ranked, census). ranked is a list of (score, row), best first.
     census maps the first clause each rejected trace failed to a count.
@@ -1193,7 +1193,7 @@ def fig_ruler():
         print("   The eligibility rule is section 7 of "
               "docs/notes/ruler_validity_and_trim_prereg.md. An empty set is a "
               "finding about the population, not a threshold to loosen: take it "
-              "to the owner. See tests/test_ruler.py::"
+              "to the experimenter. See tests/test_ruler.py::"
               "test_fig8_candidate_set_is_not_empty.)")
         return
     score, row = ranked[0]
@@ -1267,7 +1267,7 @@ def fig_ruler():
             if hi > lo:
                 axres.axvspan(lo, hi, color="0.75", alpha=0.35, lw=0, zorder=0)
     lim8 = 4.0 * float(np.std(pull_t))
-    # THE RESIDUALS ARE NOT WHITE, AND THE PANEL NOW SAYS SO (owner reading,
+    # THE RESIDUALS ARE NOT WHITE, AND THE PANEL NOW SAYS SO (experimenter reading,
     # 2026-08-12: "the residuals still have some structure"). Measured on this
     # trace at draw time rather than asserted, because a reduced chi-squared
     # near 1 says only that the SCALE is right and says nothing about
@@ -1347,7 +1347,7 @@ def fig_ruler():
     # one sets the bound. (The long bar is NOT anomalous: at n=5 it sits 0.9
     # sigma from the 1/sqrt(n) law, and its CENTRAL value, +0.24%, is inside
     # the band. Only its precision is poor.)
-    # PERCENT DEVIATION, not a ratio near 1.000 (owner: this panel was not
+    # PERCENT DEVIATION, not a ratio near 1.000 (experimenter: this panel was not
     # clear at all). The quantity is the same; a ratio of 0.9983 asks the
     # reader to do the arithmetic, and the bound it is compared against is
     # quoted in per cent everywhere else in the record.
@@ -1386,7 +1386,7 @@ def fig_ruler():
     # free-floating "marker area ~ n" note collided with it.
     ax2.legend(fontsize=6, loc="lower center", framealpha=1.0, frameon=True)
     _footer(fig, "Source: results/ruler_traces.csv (the eligibility and ranking, section 7 of "
-                 "docs/notes/ruler_validity_and_trim_prereg.md) + data_raw archive\n"
+                 "docs/notes/ruler_validity_and_trim_prereg.md) + data_raw traces\n"
                  "(rb5s6s.ingest, rb5s6s.ruler, the plotted trace, refit under its own block's "
                  "noise law) + results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py "
                  "&& python scripts/make_figures.py.")
@@ -1589,8 +1589,8 @@ def fig_laser_history():
     # NOT the longest: the longest (75 min) is two bursts 75 min apart with
     # ~13 MHz of internal scatter, so a line through it measures a cavity
     # re-centring between the clusters, not a drift rate. Drawing it is what
-    # exposed that. No epoch in the archive gives a long intervention-free
-    # stretch, so the archive does NOT measure a drift rate; what it does
+    # exposed that. No epoch in the dataset gives a long intervention-free
+    # stretch, so the dataset does NOT measure a drift rate; what it does
     # measure is how still the laser sat when nobody touched it.
     ax = axes[1]
     segs = defaultdict(list)
@@ -1756,7 +1756,7 @@ def fig_level_scheme():
     780 nm is real but filtered out (~50 dB, docs/APPARATUS.md sec. 3).
 
     Every arrow carries the fraction of the cascade it takes, computed at draw
-    time from the Einstein A coefficients (owner request, 2026-08-12). The
+    time from the Einstein A coefficients (experimenter request, 2026-08-12). The
     reading that matters is that THE DETECTED ARM IS THE MINORITY ONE: the
     6S->5P_3/2 leg is twice as strong as 6S->5P_1/2 (A ratio 1.93), so 66 per
     cent of every 6S decay leaves through 1367 nm and then 780 nm, which the
@@ -1786,7 +1786,7 @@ def fig_level_scheme():
     LAM_6S_5P12_NM = 1.0e7 / (E_6S_CM - E_5P12_CM)   # 1324 nm, detected arm
     LAM_6S_5P32_NM = 1.0e7 / (E_6S_CM - E_5P32_CM)   # 1367 nm, rejected arm
 
-    # HOW MUCH OF THE CASCADE EACH ARM CARRIES (owner request, 2026-08-12).
+    # HOW MUCH OF THE CASCADE EACH ARM CARRIES (experimenter request, 2026-08-12).
     # The figure named the four wavelengths and left the reader to assume the
     # split, which matters because the detected arm is the MINORITY one: the
     # 780 nm arm is not merely filtered, it is also the larger half.
@@ -1877,7 +1877,7 @@ def fig_level_scheme():
     # CSV stays committed as the quantitative backing for the integral
     # statement; it is cited in the footer, not drawn, because the
     # digitisation undersamples the peaks and misstates their heights.
-    # The bench photographs travel with the archive, not the public
+    # The bench photographs travel with the record, not the public
     # mirror, so a checkout without them keeps its committed PNG.
     import matplotlib.patheffects as pe
     photo_path = (C.REPO_ROOT / "docs" / "reference_setup" / "photos"
@@ -1973,7 +1973,7 @@ def fig_hyperfine_pumping():
     participation in the line, what the branching actually is, and what the
     omission costs.
 
-    REDRAWN 2026-08-10 on the owner's reading. The first version drew 5P as one
+    REDRAWN 2026-08-10 on the experimenter's reading. The first version drew 5P as one
     level, and its middle and right panels were not readable: two abstract bars
     of a decay probability, and three bars whose relation to the fit was in a
     text box. What the panels needed was the arithmetic itself.
@@ -1993,7 +1993,7 @@ def fig_hyperfine_pumping():
     two-photon Rabi frequency is F-independent here (constants.ABUNDANCE_RB85
     note). So the three same-signature terms are NOT degenerate across the line
     index, only across power and waist. The lever is 7 kHz between the extreme
-    lines against an 88 kHz per-block width scatter, so this archive cannot
+    lines against an 88 kHz per-block width scatter, so this dataset cannot
     spend it, but it is a real handle for a session that can.
     """
     import math
@@ -2227,7 +2227,7 @@ def fig_weak_field_limit():
     distribution triangular and its skewness non-zero. That is the leading
     term of the excited fraction and not the fraction itself: the real weight
     is (s/2)/(1+s), which is quadratic in intensity only while s is small.
-    The archive sits comfortably inside that regime. The small-waist session
+    The dataset sits comfortably inside that regime. The small-waist session
     the record reaches for does not, and the reason is a scaling accident
     worth drawing: s carries the two-photon Rabi frequency squared, so it goes
     as the FOURTH power of the inverse waist, while the shift itself goes only
@@ -2278,11 +2278,11 @@ def fig_weak_field_limit():
     ax.set_title("(a)  the square law is the weak-field corner of a curve",
                  fontsize=10.5, loc="left")
     ax.legend(fontsize=8.2, loc="upper left")
-    # the archive marker sits low (the legend owns the top left) and the
+    # the dataset marker sits low (the legend owns the top left) and the
     # proposed one high (the text block owns the bottom right), so neither
     # label lands on the legend, the curves or the other annotation
     for x, lab, col, y, va in (
-            (s_here, f"the archive\n{W0*1e6:.0f} µm, $s$ = {s_here:.3f}",
+            (s_here, f"this dataset\n{W0*1e6:.0f} µm, $s$ = {s_here:.3f}",
              "#009E73", 1.6e-3, "top"),
             (s_tight, f"the proposed\n{waists_um[-1]:.0f} µm, "
                       f"$s$ = {s_tight:.1f}", "#D55E00", 7.0, "top")):
@@ -2293,7 +2293,7 @@ def fig_weak_field_limit():
                 bbox=dict(facecolor="white", edgecolor="none", alpha=0.82,
                           pad=1.2))
     # raised off the floor: at y = 0.05 this block's left edge reached the
-    # archive marker's label and covered a fifth of it, which the overlap guard
+    # dataset marker's label and covered a fifth of it, which the overlap guard
     # could not see until 2026-08-11 because it was skipping this figure
     ax.text(0.985, 0.20,
             f"Four-fold tightening: {s_tight/s_here:.0f}x in $s$, "
@@ -2321,9 +2321,9 @@ def fig_weak_field_limit():
                 xytext=(0.42, 0.30), textcoords="axes fraction", fontsize=8.2,
                 arrowprops=dict(arrowstyle="-|>", color="0.4", lw=1.0))
     bx.text(0.025, 0.05,
-            f"at the archive's own {W0*1e6:.0f} µm the two agree to "
+            f"at this dataset's own {W0*1e6:.0f} µm the two agree to "
             f"{100*abs(g1_sat[0]/g1_weak[0]-1):.0f} per cent,\n"
-            f"so no result of this archive is affected",
+            f"so no result of this dataset is affected",
             transform=bx.transAxes, fontsize=7.8, color="0.25",
             ha="left", va="bottom")
 
@@ -2357,7 +2357,7 @@ def fig_retro_combination():
     exactly the fringe contrast.
 
     Two consequences the panels carry. The correction is invisible at the
-    archive's own rho and is not at a poorer one, which is why the formula
+    dataset's own rho and is not at a poorer one, which is why the formula
     carries it rather than assuming it away. And the Doppler-free RATE is
     fringe-immune, having no z dependence at all, while the SHIFT is not, which
     is the asymmetry the running-wave design note exploits.
@@ -2373,7 +2373,7 @@ def fig_retro_combination():
 
     # ---- (a) the standing wave and its two readings ---------------------
     z = np.linspace(0.0, 2.0, 1200)          # in units of the wavelength
-    for rho, col, lab in ((RHO, "#0072B2", f"$\\rho$ = {RHO:.2f}, the archive"),
+    for rho, col, lab in ((RHO, "#0072B2", f"$\\rho$ = {RHO:.2f}, this dataset"),
                           (RHO_POOR, "#D55E00", f"$\\rho$ = {RHO_POOR:.2f}")):
         # |E|^2 for two counter-propagating arms of amplitude 1 and sqrt(rho)
         inten = 1.0 + rho + 2.0 * math.sqrt(rho) * np.cos(4.0 * np.pi * z)
@@ -2408,7 +2408,7 @@ def fig_retro_combination():
     bx.set_ylabel("arithmetic over geometric (%)")
     bx.set_title("(b)  the shift and the coupling against retro ratio",
                  fontsize=10.5, loc="left")
-    for rho, col, lab in ((RHO, "#009E73", "the archive"),
+    for rho, col, lab in ((RHO, "#009E73", "this dataset"),
                           (RHO_POOR, "#D55E00", "a poorer retro")):
         gap = 100.0 * ((1.0 + rho) / (2.0 * math.sqrt(rho)) - 1.0)
         bx.plot([rho], [gap], "o", color=col, ms=8, zorder=5)
@@ -2418,7 +2418,7 @@ def fig_retro_combination():
                     ha="right",
                     arrowprops=dict(arrowstyle="-", color=col, lw=0.9))
     bx.text(0.97, 0.94,
-            "No published digit moves at the archive's own $\\rho$.\n"
+            "No published digit moves at this dataset's own $\\rho$.\n"
             "The correction grows fast as the retro degrades.",
             transform=bx.transAxes, fontsize=7.8, color="0.25",
             ha="right", va="top")
@@ -2611,7 +2611,7 @@ def fig_wavemeter_reconstruction():
                                  f"deviation, settling to {floor:.2f} MHz")
     ax2.plot(tf[mfit], (f[::3] - mu)[mfit], color="#666666", lw=0.6,
              label="residual of the record above")
-    # markers only: the archive samples in bursts, not continuously
+    # markers only: the dataset samples in bursts, not continuously
     ax2b.plot(tt, oo, "o", color="#009E73", ms=5,
               label=f"campaign traces, standard deviation {oo.std():.1f} MHz")
     # The left half is the narrower of the two and its legend the wider, and at
@@ -2621,7 +2621,7 @@ def fig_wavemeter_reconstruction():
     for a, fs in ((ax2, 6.1), (ax2b, 7.0)):
         a.axhline(0, color="k", lw=0.5)
         a.set_ylim(-9, 12)        # held fixed so the two records share a
-                                  # scale, and the archive markers set the range
+                                  # scale, and the dataset markers set the range
         a.legend(loc="upper right", fontsize=fs, frameon=True, framealpha=1.0)
     ax2b.tick_params(labelleft=False)
     ax2.set_xlabel("time from the start of the 2025-06-11 record (min)", fontsize=8.5)
@@ -2640,8 +2640,8 @@ def fig_wavemeter_reconstruction():
 
 
 def fig_drift_story():
-    """The drift problem, what the archive extracted despite it, and what a
-    fixed lock buys (fig15). Three panels, rebuilt 2026-08-12 on the owner's
+    """The drift problem, what the analysis extracted despite it, and what a
+    fixed lock buys (fig15). Three panels, rebuilt 2026-08-12 on the experimenter's
     reading of the previous version.
 
     (a) The problem, photographed: the 2025-06-11 wavemeter record, digitised
@@ -2660,7 +2660,7 @@ def fig_drift_story():
         instrument's own display frame, not the atom. This replaces a
         per-epoch offset plot with a drift-wedge inset that read as a
         measured trend; the held-lock drift SIGN is deliberately not drawn
-        anywhere (owner call, 2026-08-12: the record does not establish it
+        anywhere (experimenter call, 2026-08-12: the record does not establish it
         and the figure should not appear to).
     (c) The consequence ladder, decluttered: three lock regimes on a log
         axis, two short annotations each. The prose that used to live on the
@@ -2823,7 +2823,7 @@ def fig_drift_story():
 
 def _gallery_context():
     """Shared M25 single-trace context for fig16 and fig18: the committed
-    global-archive-fit shared optimum, plus the brightest 225 mW / 130 C
+    global-dataset-fit shared optimum, plus the brightest 225 mW / 130 C
     campaign repeat per peak. Returns None (after printing why) if a required
     input is missing, so callers degrade the same way fig7/10/11 do.
 
@@ -2872,7 +2872,7 @@ def _gallery_context():
         from run_global_dataset_fit import DNU_FLOOR, load_campaign_all
         from rb5s6s.linefit import _shared_profile_grid, transit_fwhm_at_T
         traces = load_campaign_all()
-    except Exception as e:  # missing/changed raw archive: degrade like fig7/10/11
+    except Exception as e:  # missing/changed raw traces: degrade like fig7/10/11
         print(f"  (could not load campaign traces for the fit gallery: {e} -- skipping)")
         return None
 
@@ -3022,7 +3022,7 @@ def fig_fit_gallery():
     Picks the single highest-SNR campaign trace per peak (the 225 mW, 130 C
     p_sweep condition, the brightest combination of power and temperature the
     campaign ran, per fig2's P^2 amplitude law, taking the largest-amplitude
-    repeat of the five) and overlays the M25 global archive model at the
+    repeat of the five) and overlays the M25 global dataset model at the
     COMMITTED shared optimum read from results/global_dataset_fit.csv:
     kappa_min, beta_self_joint, sigma_laser (per session/T block) and the
     transit reference. This does not re-run the global fit.
@@ -3106,7 +3106,7 @@ def fig_fit_gallery():
         fontsize=8.6, y=0.995)
     _footer(fig, "Source: results/global_dataset_fit.csv (shared parameters, "
                  f"{STATUS_WORD.get(status, status.lower())}) + the "
-                 "data_raw archive (per-trace data, local refit only). "
+                 "data_raw traces (per-trace data, local refit only). "
                  "Regenerate: python scripts/run_global_dataset_fit.py && "
                  "python scripts/make_figures.py.")
     _save(fig, "fig16_fit_gallery.png")
@@ -3237,7 +3237,7 @@ def fig_single_peak_fits():
             "The fitted model, its residual and its parameters",
             fontsize=9.2, y=0.995)
         _footer(fig, "Source: results/global_dataset_fit.csv (shared parameters, "
-                     f"{STATUS_WORD.get(status, status.lower())}) + the data_raw archive "
+                     f"{STATUS_WORD.get(status, status.lower())}) + the data_raw traces "
                      "(this trace, refit individually). Regenerate: "
                      "python scripts/run_global_dataset_fit.py && "
                      "python scripts/make_figures.py.", y=0.015)
@@ -3290,7 +3290,7 @@ def _pilot_width_point(prates):
 
 def fig_width_trends():
     """M4 / M4e physics-trend panels (fig19): the two width-broadening laws
-    the archive tests, side by side.
+    the dataset tests, side by side.
 
     GENERIC LAW, panel 1: pressure (collisional) broadening adds width
     linearly in the perturber density, W = floor + beta*N -- measured here
@@ -3300,7 +3300,7 @@ def fig_width_trends():
     not resolve collisions point-by-point). RB INSTANCE: this panel does
     NOT plot that free-fit gamma_coll against an unrelated line -- the two
     constructions are not comparable (RESULTS_C-chain, docs/RESULTS.md
-    C1). It instead reproduces the archive's own HEADLINE beta_self
+    C1). It instead reproduces the dataset's own HEADLINE beta_self
     estimator verbatim: the model-independent P0 confound probe in
     scripts/run_beta_self.py (collisional_slope, results/beta_self_probe.csv),
     which fits RAW contiguous FWHM (no lineshape split) vs N as
@@ -3331,7 +3331,7 @@ def fig_width_trends():
         box inside the joint fits. A width built on a rate fitted inside the
         same model is not model-independent, which is the one thing this
         panel's construction is for. STAYS OUT, with the reason on the panel.
-        It is not excluded from the archive: it carries the light-shift
+        It is not excluded from the dataset: it carries the light-shift
         bounds, where its rate is properly marginalized.
       * EOM ruler traces as lineshape data: STAY OUT for this release. The
         tooth-amplitude law does not close on the power-session ruler
@@ -3340,7 +3340,7 @@ def fig_width_trends():
         would invert the burden of proof. The 7 fitted heights per trace now
         recorded in results/ruler_traces.csv are the dataset an amplitude
         model would be tested against, and the panel says so.
-    Both refusals are the owner's to overrule.
+    Both refusals are the experimenter's to overrule.
 
     Retroactive honesty pass, private/reviews/digest/fig19_trend_audit.md
     (2026-08-02): the construction was independently reproduced to float
@@ -3511,14 +3511,14 @@ def fig_width_trends():
     # not, the quantified low-signal narrowing at the 70 °C anchor and which way
     # it pushes the bound, which two sources were weighed and refused (the
     # rehearsal session's fitted scan rate, and the calibration combs, whose
-    # archived heights are the dataset an amplitude model would be tested
+    # recorded heights are the data an amplitude model would be tested
     # against), and what the shaded band on each line is pivoted on. All of it
     # is caption material and all of it is section 8 of
     # docs/notes/ruler_validity_and_trim_prereg.md.
     # lower right, with reserved headroom above keeping the top-left text box
     # clear of the whiskers
     ax1.legend(fontsize=6.6, loc="lower right", ncol=1, framealpha=0.95, frameon=True, bbox_to_anchor=(1.0, -0.01))
-    # Through the shared helper, which pins the ticks to the archive's own
+    # Through the shared helper, which pins the ticks to the dataset's own
     # oven settings and writes them as plain degrees. Left to itself the
     # secondary axis inherited the log formatter below it and printed the
     # temperatures as 7x10^1, 8x10^1, 9x10^1, 10^2.
@@ -3599,7 +3599,7 @@ def fig_width_trends():
         fontsize=9.2, y=0.995)
     _footer(fig, "Source: data_raw/MANIFEST.csv + results/ruler_blocks.csv (left panel "
                  "widths, reproducing the results/beta_self_probe.csv construction), "
-                 "results/ruler_traces.csv (the archived comb heights),\n"
+                 "results/ruler_traces.csv (the recorded comb heights),\n"
                  "results/morning_ruler.csv + the held-aside session tree (its point, read "
                  "in place), results/power_sweep.csv, results/stark_sweep.csv (right panel). "
                  "Regenerate: python scripts/run_beta_self.py && python "
@@ -3643,7 +3643,7 @@ def fig_magic_wavelengths():
     curve. In this window that is the root at 1297.533 nm, 0.745 nm from the
     6S->7P resonance at 1298.278 nm. It is real (brentq confirms it to 1e-9)
     and it was being drawn, unlabelled, beside three labelled ones. Whether
-    the guard is right is a question for the owner: a crossing that close to
+    the guard is right is a question for the experimenter: a crossing that close to
     a resonance is useless for a trap, which is an argument for reporting it
     with that caveat rather than for dropping it silently.
 
@@ -3855,7 +3855,7 @@ def fig_method_loop():
     it names the dominant limitation, which points at a targeted
     measurement, which buys a new capability -- and that capability changes
     what the NEXT observation can resolve, so the diagram closes into a
-    loop rather than a dead end. Two worked examples from this archive sit
+    loop rather than a dead end. Two worked examples from this dataset sit
     underneath, both instances of the degenerate branch, because that is
     the branch every headline number in this repository currently sits on.
     """
@@ -4109,7 +4109,7 @@ def fig_joint_fit_five():
     # fig16 and fig22 correctly do not claim one.
     _footer(fig, "Sources: results/global_dataset_fit.csv (the shared optimum, "
                  f"{STATUS_WORD.get(status, status.lower())}) "
-                 "+ data_raw archive (per-trace data, local "
+                 "+ data_raw traces (per-trace data, local "
                  "nuisance refits only). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig21_joint_fit_five.png")
 
@@ -4208,7 +4208,7 @@ def fig_joint_fit_twenty():
                   if r["quantity"] == "beta_self_joint")
     _footer(fig, "Sources: results/global_dataset_fit.csv (the shared optimum, "
                  f"{STATUS_WORD.get(status, status.lower())}) "
-                 "+ data_raw archive (per-trace data, local nuisance refits "
+                 "+ data_raw traces (per-trace data, local nuisance refits "
                  "only). Regenerate: python scripts/make_figures.py.")
     _save(fig, "fig22_joint_fit_twenty.png")
 

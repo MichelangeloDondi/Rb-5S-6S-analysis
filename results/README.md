@@ -19,7 +19,7 @@ or table, so a bound never reads as a measurement. The controlled vocabulary:
 **`BOUND`** (a limit and not a measurement, so β_self, σ_laser and S₀ each sit
 conditional on the beam waist w₀, which is **64 µm, measured** on this apparatus
 lineage by Rajasree 2020 on the same laser model, lens and retro geometry, and
-which this archive cannot re-measure because transit and laser width are
+which this dataset cannot re-measure because transit and laser width are
 degenerate through it. A 2026-07-13 fix to the transit Monte Carlo first
 re-centred it from a 32 µm nominal to about 50 µm, before the lineage
 measurement replaced the estimate. See `docs/notes/transit_width_resolved.md`).
@@ -49,10 +49,10 @@ estimate).
 | `stark_sweep.csv` | `run_stark_sweep.py` (M4e, C3d) | the AC-Stark coefficient BOUND from the power lever: one shared κ (S₀=κP) fit to the 130 °C FWHM-vs-power (from `power_sweep.csv`). **`S0_225mW_ub95_profile`** is a 95% profile-likelihood upper bound of 0.64 MHz on S₀ at 225 mW, just above `S0_225mW_pred` (0.35); replaced as the headline by `stark_joint.csv` (three sessions, < 0.26 MHz) and kept as the independent width-only bracket. (The Wald `S0_225mW_ub95`=3.1 / `_ub95_raw`=1.5 are REPLACED diagnostics: the fit rails at κ=0, where a linearized error has no coverage.) A BOUND, not a measurement: the shift is dead in the 2025 drift, so only the ramp's width broadening (∝S₀²) constrains κ, and `chi2_red`≈4 (block-to-block width scatter) is folded into the bound. a fixed lock would measure the pull ∝S₀ directly. |
 | `stark_joint.csv` | `run_stark_joint.py` (M23, C3f) | **the headline light-shift bound, S₀(225 mW) < 0.26 MHz**, from a joint fit over the full profiles of 172 traces in three sessions. The construction, the robustness spread that is its dominant systematic, and the conservatism since measured on it are in [stark_joint.csv](#stark_jointcsv) |
 | `amplitude_trapping.csv` | `run_amplitude_trapping.py` (M7) | amplitude vs density |
-| `morning_ruler.csv` | `run_morning_ruler.py` (M26) | the pilot day's own frequency axis, from 27 recovered EOM rulers no analysis had opened: Def-group rate 0.042538(51) MHz/ms → a **measured** `pilot_rate_scale` = 1.0022(12) against the campaign 4192 rate, replacing the fitted [0.9, 1.1]-boxed nuisance both joint fits put at 1.02–1.03. The 17σ gap between measured and fitted is an open question the next joint re-run answers: either the pilot science scan differed from its own rulers, or the fitted scale was absorbing width physics. Nine pre-adjustment traces rail at the fit bound and are flagged, never averaged. Producer needs the private pilot tree, so the committed CSV is the record. |
+| `morning_ruler.csv` | `run_morning_ruler.py` (M26) | the campaign-morning session's own frequency axis, from 27 recovered EOM rulers no analysis had opened: Def-group rate 0.042538(51) MHz/ms → a **measured** `pilot_rate_scale` = 1.0022(12) against the campaign 4192 rate, replacing the fitted [0.9, 1.1]-boxed nuisance both joint fits put at 1.02–1.03. The 17σ gap between measured and fitted is an open question the next joint re-run answers: either the campaign-morning science scan differed from its own rulers, or the fitted scale was absorbing width physics. Nine pre-adjustment traces rail at the fit bound and are flagged, never averaged. Producer needs the private campaign-morning tree, so the committed CSV is the record. |
 | `modelform.csv` | `run_modelform.py` (M8) | Voigt-vs-Lehmann BIC |
-| `transit_mc.csv` | `run_transit_mc.py` (M9) | Monte-Carlo transit-broadening FWHM vs (w₀, T, collection geometry), with the crossing-flux factor (fixed 2026-07-13, validated against Lehmann's 41.2 kHz NNO example): the transit kernel adds ~2.1 MHz at w₀=32 µm in the thin single-waist limit, but only ~1.6 MHz over a realistic multi-mm collection column (the beam defocuses across it), so the line alone does not decisively exclude 32 µm, that exclusion now rests on the direct waist measurement instead (w₀≈64 µm, Rajasree 2020). The grid's nearest point, 65 µm, gives transit ≈0.88 MHz, and at the measured 64 µm `TRANSIT_FWHM_PLACEHOLDER_MHZ` (`constants.py`) gives 0.93 MHz, and it stays degenerate with σ_laser through w₀, which this archive cannot re-measure even though the apparatus lineage did. Seeded on `C.RNG_SEED`, so byte-reproducible. |
-| `amplitude_ratios.csv` | `run_amplitude_ratios.py` (M10) | degeneracy-law area ratios: measured vs predicted abundance×(2F+1), with `pull_sigma`. The measured ratios swing 30–50% between blocks (common-mode drift), so the law is **untestable in the archive**, a cross-peak systematic that interleaving in a fixed-lock session would fix. Per-peak and within-block analyses are unaffected. |
+| `transit_mc.csv` | `run_transit_mc.py` (M9) | Monte-Carlo transit-broadening FWHM vs (w₀, T, collection geometry), with the crossing-flux factor (fixed 2026-07-13, validated against Lehmann's 41.2 kHz NNO example): the transit kernel adds ~2.1 MHz at w₀=32 µm in the thin single-waist limit, but only ~1.6 MHz over a realistic multi-mm collection column (the beam defocuses across it), so the line alone does not decisively exclude 32 µm, that exclusion now rests on the direct waist measurement instead (w₀≈64 µm, Rajasree 2020). The grid's nearest point, 65 µm, gives transit ≈0.88 MHz, and at the measured 64 µm `TRANSIT_FWHM_PLACEHOLDER_MHZ` (`constants.py`) gives 0.93 MHz, and it stays degenerate with σ_laser through w₀, which this dataset cannot re-measure even though the apparatus lineage did. Seeded on `C.RNG_SEED`, so byte-reproducible. |
+| `amplitude_ratios.csv` | `run_amplitude_ratios.py` (M10) | degeneracy-law area ratios: measured vs predicted abundance×(2F+1), with `pull_sigma`. The measured ratios swing 30–50% between blocks (common-mode drift), so the law is **untestable in the dataset**, a cross-peak systematic that interleaving in a fixed-lock session would fix. Per-peak and within-block analyses are unaffected. |
 | `model_ladder.csv` | `run_model_ladder.py` (M11) | DIAGNOSTIC. Nested-model ΔBIC ladder, which kernels the data actually demand. |
 | `identifiability.csv`, `identifiability_profile.csv` | `run_identifiability.py` (M12) | DIAGNOSTIC. The σ_laser↔transit↔β degeneracy made explicit: correlation structure and 1-D profile-likelihood curves. `identifiability_profile.csv` is the dense profile scan (~1.9k rows), not a results table, read the summary file first. |
 | `coverage.csv` | `run_coverage.py` (M13) | DIAGNOSTIC. Injection-recovery coverage of the 95% constructions (are the bounds honest?), plus the minimum detectable β. Validates the intervals, and is not itself a physical result. |
@@ -61,10 +61,10 @@ estimate).
 | `polarizability.csv` | `run_polarizability.py` (M16) | DIAGNOSTIC/ENVELOPE. Independent Δα(993 nm) recompute (−1145 a.u.; \|Δα\| within ~5% of Orson 2021 but OPPOSITE sign, under external adjudication, THEORY_NOTE §5), validated against tune-out and static-polarizability anchors the model does not use, plus the first 5S–6S magic wavelengths (scalar only, ENVELOPE). |
 | `resolving_power.csv` | `run_resolving_power.py` (M17) | DIAGNOSTIC. Whether each observable can answer the density question at all: dynamic range over the 70–130 °C sweep divided by block-to-block scatter at fixed conditions. Amplitude clears its floor ~45×, the widths 1.5–5.3, which reproduces this ledger's own MEASURED-vs-BOUND assignments. Also carries the fixed-lock projection and a permutation test of the averaging assumption under the S₀ bound (p = 0.11: untested, not contradicted). |
 | `noise_law_swap.csv` | `run_beta_self.py` (M1/M4) | DIAGNOSTIC. Robustness of the headline bound to swapping the M1 noise law, a sensitivity check, not a separate measurement. |
-| `projections.csv` | `run_projections.py` | ENVELOPE and CALIB only, never a result. What a further campaign would buy, computed from the archive's own measured precision and the session parameters `docs/PLAN.md` states: the fixed-lock pull channel, β_self, the 7S adjudication, the 778 nm calibration rung, the magic-wavelength scan, and the guided-mode option. `proj_*` rows are the projections, `input_*` rows the archive quantities they are built from, and every row carries its own formula, assumption set and source. Every input quoted in MHz rides on the current sweep-rate calibration, so re-running the producer after the ruler re-validation re-derives the whole table with no edit. |
+| `projections.csv` | `run_projections.py` | ENVELOPE and CALIB only, never a result. What a further campaign would buy, computed from the dataset's own measured precision and the session parameters `docs/PLAN.md` states: the fixed-lock pull channel, β_self, the 7S adjudication, the 778 nm calibration rung, the magic-wavelength scan, and the guided-mode option. `proj_*` rows are the projections, `input_*` rows the dataset quantities they are built from, and every row carries its own formula, assumption set and source. Every input quoted in MHz rides on the current sweep-rate calibration, so re-running the producer after the ruler re-validation re-derives the whole table with no edit. |
 | `global_dataset_fit.csv`, `global_dataset_fit_norulers.csv` | `run_global_dataset_fit.py`, `_m25_norulers.py` (M25) | BOUND. The two arms of the same construction over every canonical trace, with both the AC-Stark coefficient and `beta_self` free rather than one held under a prior. The no-rulers arm is a deliberate duplicate rather than a wrapper, which is the point: a defect fixed in one has to be fixed in the other, and one was. Each carries `beta_grid_step` and a `beta_profile` scan, and the 95% edges are interpolated in sqrt(dchi2) on a grid refined until the interval spans four steps (PREREGISTRATION_RESULTS addendum 30). Quote the step whenever the interval is quoted. |
-| `full_dataset_fit.csv` | `run_full_dataset_fit.py` (M28) | BOUND. The third corner of the same triangle: the full archive in one likelihood, the collisional term under this repository's own four-point measurement as a prior, and one profiled coefficient. Its contract is preregistered at `docs/notes/full_dataset_fit_prereg.md`. |
-| `centre_stark.csv` | `run_centre_stark.py` (M27) | BOUND, and self-statused. The AC-Stark coefficient from the line CENTRE inside single display epochs, which is the channel the archive's frame problem closes. It reports a bound rather than its own point estimate, and its five control epochs, where the true power difference is zero, are its own false-positive floor. |
+| `full_dataset_fit.csv` | `run_full_dataset_fit.py` (M28) | BOUND. The third corner of the same triangle: the full dataset in one likelihood, the collisional term under this repository's own four-point measurement as a prior, and one profiled coefficient. Its contract is preregistered at `docs/notes/full_dataset_fit_prereg.md`. |
+| `centre_stark.csv` | `run_centre_stark.py` (M27) | BOUND, and self-statused. The AC-Stark coefficient from the line CENTRE inside single display epochs, which is the channel the dataset's frame problem closes. It reports a bound rather than its own point estimate, and its five control epochs, where the true power difference is zero, are its own false-positive floor. |
 | `stark_centres.csv` | `run_stark_joint.py` (M23) | DIAGNOSTIC. The per-trace centres the joint fit reads, kept so the frame argument can be checked against the numbers rather than the prose. |
 | `laser_history.csv`, `laser_history_structure.csv` | `run_laser_history.py` (M20) | DIAGNOSTIC. The laser's behaviour across the campaign and whether that behaviour has structure in it. Both are read under the 2026-07-30 window-reference correction, which withdrew the licence for either knob frame, so they bound within-block behaviour and not between-block motion. |
 | `wavemeter_reconstruction.csv` | `run_wavemeter_reconstruction.py` (M22) | CALIB. What the wavemeter readings can and cannot carry, with a settled noise floor of 0.62 ± 0.03 MHz from a 400-replicate residual bootstrap. The Hessian was rejected deliberately, since the profiled surface is piecewise smooth by that module's own docstring. |
@@ -77,7 +77,7 @@ estimate).
 
 All values are PRELIMINARY where they carry an absolute scale: they ride on
 the beam waist w₀, measured on this apparatus lineage rather than by this
-archive (see the top-level README). The headline β_self is a
+dataset (see the top-level README). The headline β_self is a
 bound, not a measurement.
 
 ## Four files that need more than a table cell
@@ -167,17 +167,18 @@ a measurement.
 
 The `beta_crosscheck` value replaces `global_fit.csv`, reproducing the same
 headline byte for byte while adding the auditable budget. The
-model-independent bound remains the archival headline.
+model-independent bound remains the headline of record.
 
 ### `stark_joint.csv`
 
 **The headline light-shift bound, S₀(225 mW) below 0.26 MHz** at 95 per cent
 from a one-sided profile likelihood, with `S0_270mW_ub95` giving the same
-construction at the rehearsal's top rung. An earlier 0.15 was cold-start
+construction at the 4 July evening session's top rung. An earlier 0.15 was cold-start
 inflated and is retracted in preregistration addendum 24.
 
 **The construction.** A joint maximum-likelihood fit of the full profiles of
-100 campaign, 46 LeCroy-rehearsal and 26 pilot traces under one shared κ, with
+100 campaign, 46 4 July evening-session (LeCroy) and 26 campaign-morning
+traces under one shared κ, with
 per-peak widths under the β_self times N(130 °C) prior, per-trace free centres
 so the drift is profiled out exactly, and per-session σ_laser and
 detector-saturation nuisances, both fitted linear. Every quoted profile is the
@@ -188,16 +189,16 @@ than a detection.
 **The robustness rows are the dominant systematic.** Campaign-only gives
 0.15 MHz at 225 mW in `kappa_ub95_camponly`, marginalising the red-wing
 nuisance gives 0.24 in `kappa_ub95_wing`, and dropping peak 4192, which removes
-the entire pilot session with it, gives 0.37. That 0.15 to 0.37 spread across
+the entire campaign-morning session with it, gives 0.37. That 0.15 to 0.37 spread across
 subsets is larger than any single fit's error. The primary and campaign-only
 subsets sit below the 0.35 MHz nominal prediction and the drop-4192 subset does
 not, and `lopo_dchi2_pred` shows no single peak driving the result. The
-rehearsal axis-direction row is converged and indifferent, at a maximum
+4 July evening-session axis-direction row is converged and indifferent, at a maximum
 absolute Δχ² of 8.6.
 
 **Two things to know before quoting it.** The producer needs the private
-prehistory tree, since raw traces never enter the repository, and without that
-tree the committed CSV is the record. And the bound is loose by a measured
+source trees, since raw traces never enter the repository, and without them
+the committed CSV is the record. And the bound is loose by a measured
 factor rather than by argument, because two effects broaden the line with the
 ramp's own square-of-power signature and are absent from the model behind it.
 Injecting the saturation term and re-profiling tightens it by 2.21

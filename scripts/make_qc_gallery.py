@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-The inspection gallery: every trace in the archive, drawn once, for the eye.
+The inspection gallery: every trace in the dataset, drawn once, for the eye.
 
 The tooth-indexing defect that motivated the validity ladder was found by
 looking at a picture, not by reading a number. Nothing in the pipeline draws the
@@ -68,7 +68,7 @@ display correction and only that: the spacing and the drawn curve stay the comb
 fit exactly as it stands, because a relabelling does not move the pitch.
 
 WHO READS IT. Two external physicists with no knowledge of this repository, plus
-the owner. The page body is therefore held to the same register as the citable
+the author. The page body is therefore held to the same register as the citable
 figures: spelled-out quantities with units, no column names, no status codes, no
 internal vocabulary. Everything needed to trace a page back to the tables lives
 in the grey footer line and in the index's per-trace fold-outs.
@@ -87,7 +87,7 @@ THREE DO-NOTS, each of them a decision rather than a preference.
    guard in `tests/test_gallery_hygiene.py`.
 
 3. Never wire this into `scripts/ci_gate.sh`. The gallery is an audit that can
-   trigger a recompute, not a gate that blocks one. It needs the raw archive, it
+   trigger a recompute, not a gate that blocks one. It needs the raw dataset, it
    takes minutes rather than seconds, and a red gate here would say nothing
    about whether the analysis is correct.
 
@@ -306,7 +306,7 @@ def _second_to_first(two_beta: float) -> float:
     SQUARE of the Bessel weights, taken at 2 beta and not at half of it. An
     earlier version of this function did neither, and the two errors nearly
     cancelled, which is what kept it out of sight. Amendment 6 section F1 sets
-    the law out and states what the archive can and cannot say about it.
+    the law out and states what the record can and cannot say about it.
     """
     return float(jv(2, two_beta) ** 2 / jv(1, two_beta) ** 2)
 
@@ -412,7 +412,7 @@ def trace_class(row: dict) -> str:
 
 def power_w(row: dict) -> float:
     """Power in watts. A blank cell is a temperature sweep trace, taken at the
-    dwell's 225 mW exactly as the archive fit takes it."""
+    dwell's 225 mW exactly as the global fit takes it."""
     return int(row["power_mW"]) / 1e3 if row["power_mW"] else 0.225
 
 
@@ -469,7 +469,7 @@ def _num(x, default=float("nan")) -> float:
 # ---------------------------------------------------------------------------
 
 def line_records(rows, ctx, prates):
-    """Radio frequency off traces, built the way the global archive fit builds
+    """Radio frequency off traces, built the way the global fit builds
     them so that the drawn curve is the shared optimum and not a local one.
 
     One noise law per condition, from that condition's own traces, then the
@@ -517,7 +517,7 @@ def line_records(rows, ctx, prates):
             m = np.abs(nu - c0) <= hw
             block = f"camp{int(float(r['temperature_C']))}"
             if block not in ctx["sl_blocks"]:
-                rec["fit_note"] = ("the archive fit carries no laser line width at "
+                rec["fit_note"] = ("the global fit carries no laser line width at "
                                    "this temperature, so the trace is drawn without "
                                    "a model")
                 out.append(rec)
@@ -846,7 +846,7 @@ def _condition_title(rec) -> str:
     """The observation a page is of, in the words a physicist would use to ask
     for it, with the class on it.
 
-    Four names are used twice in the archive, once for a trace that was kept and
+    Four names are used twice in the dataset, once for a trace that was kept and
     once for a trace that was removed, so a title without the class names two
     different pictures. On a bracket comb the class is folded into the bracket,
     because "closing the session, power session" says the session twice.
@@ -934,12 +934,12 @@ def _discard_reason(row) -> str:
 
 
 def record_census(manifest) -> dict:
-    """How many traces the archive holds at each condition and how many of them
+    """How many traces the dataset holds at each condition and how many of them
     the analysis keeps.
 
     Every number a page prints about curation is counted here from the manifest
     rather than typed into a sentence, so a curation note cannot drift away from
-    the archive it describes.
+    the dataset it describes.
     """
     by_cond = defaultdict(Counter)
     for r in manifest:
@@ -959,7 +959,7 @@ def _curation_sentence(rec, census) -> str:
     if n_all:
         said += (f" Of the {n_all} traces recorded at this wavelength, temperature and "
                  f"power, {n_all - n_gone} were kept and {n_gone} removed.")
-    said += " The recording itself is still in the archive, and it is drawn here."
+    said += " The recording itself is still in the dataset, and it is drawn here."
     return said
 
 
@@ -1015,7 +1015,7 @@ def annotate(rec, qc_rows, ruler_rows, census):
     rec["marks"] = marks
 
     # A curve is FITTED HERE when it was fitted to this trace. A comb fit always
-    # is. A line drawn outside the canonical population is the shared archive
+    # is. A line drawn outside the canonical population is the shared global
     # model with three nuisances matched to it, which is a different thing and is
     # said once on the page rather than three times.
     rec["fitted_here"] = f is not None and (is_comb or rec["cls"] == "canonical")
@@ -1527,11 +1527,11 @@ def build_page(cls, cond, recs, census, version):
                   ("transit broadening", f"{fits[0]['transit']:.2f} MHz")]
                  if fits else [("shared fit", "no model available here")])
     else:
-        right_label = "what the archive model gives here"
+        right_label = "what the global model gives here"
         right = ([("collisional width", f"{fits[0]['gc']:.2f} MHz"),
                   ("laser line width", f"{fits[0]['sl']:.2f} MHz"),
                   ("transit broadening", f"{fits[0]['transit']:.2f} MHz")]
-                 if fits else [("archive model", "not available here")])
+                 if fits else [("global model", "not available here")])
 
     title = _condition_title(head)
     where = SESSION_WORD.get(row["session"], "session not recorded")
@@ -1549,7 +1549,7 @@ def build_page(cls, cond, recs, census, version):
                       "fit."))
     if (not is_comb) and any(r["fit"] is not None and not r["fitted_here"]
                              for r in recs):
-        notes.append(("excluded", "The curve drawn on each row is the shared archive "
+        notes.append(("excluded", "The curve drawn on each row is the shared global "
                       "line model with only its height, centre and background matched "
                       "to that trace, so no goodness of fit is quoted for it."))
     # A note every repeat carries is a note about the page. Printed once per row

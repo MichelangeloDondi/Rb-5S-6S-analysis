@@ -5,7 +5,7 @@ M23: the joint Stark fit -- every lineshape from every session, one kappa.
 THE QUESTION. The AC-Stark programme had three channels and two of them are
 dead: the centres are unidentifiable (M21 -- power descends with time inside
 every display epoch, so drift and pull are one regression column), and the
-third cumulant is ~150x below this archive's noise at the predicted S0. What
+third cumulant is ~150x below this dataset's noise at the predicted S0. What
 remained was the width-and-shape channel, which M4e used through 20 summary
 FWHM numbers. This module uses everything instead: a joint maximum-likelihood
 fit of the FULL PROFILES of all canonical power-sweep traces, with a single
@@ -13,13 +13,13 @@ shared kappa (S0 = kappa * P, transition axis), per-peak physical widths, and
 every trace keeping a free centre -- so laser drift and re-locks are profiled
 out exactly rather than modelled.
 
-THE SECOND SESSION. The 2025-07-04 LeCroy dress rehearsal (results report
-addendum 9; prehistory excluded tree) joins the fit: 46 usable traces of 50
+THE SECOND SESSION. The 2025-07-04 LeCroy 4 July evening session (results
+report addendum 9; excluded tree) joins the fit: 46 usable traces of 50
 (three are 0xff-corrupted, one has no line), at 90/180/270 mW -- the 270 mW
 rung carries 1.44x the campaign's maximum S0^2 lever. Its ladders were run in
 ALTERNATING directions (4192 descending, 4207 and 4121 ascending, each ladder
 complete inside 6-13 min), which is exactly the design M21 demanded and the
-campaign lacked. Two facts blunt what the rehearsal can say on its own: the
+campaign lacked. Two facts blunt what the evening session can say on its own: the
 LeCroy auto-triggered, so the triangle phase is random per trace and absolute
 positions carry no frequency (repeat centres jump ~0.45 s within 84 s, which
 would be 4 MHz/min as drift -- impossible); and its scan is ~4x slower than
@@ -33,15 +33,15 @@ WHAT THE FIT CONTAINS, and what died on the way in (each kept a CSV row or a
 docstring sentence because the wrong version ran first):
 
   * Per-session noise via the M1 law (condition_noise_model on each 5-repeat
-    block, both sessions). v1 gave the rehearsal a constant per-trace sigma;
+    block, both sessions). v1 gave the evening session a constant per-trace sigma;
     its pull widths then grew 1.0 -> 3.5 with power, which was the noise
     model, not physics.
   * Per-session sigma_laser (different days, no shared laser width) and per
     peak. v1 shared it across sessions and the campaign pull widths exploded
     to 4.4 at 225 mW; v2's flat 0.44-0.69 is what unmasked everything else.
-  * gamma_coll per peak under a Gaussian prior from the archive's own chain,
+  * gamma_coll per peak under a Gaussian prior from the record's own chain,
     beta_self x N(130 C) (0.55/0.46/0.56/1.01 +/- 0.23/0.23/0.12/0.19 MHz).
-    Without the prior the rehearsal's rate-width degeneracy rails gamma_coll
+    Without the prior the evening session's rate-width degeneracy rails gamma_coll
     at zero, which contradicts the repo's own beta_self measurement.
   * A detector saturation nuisance Vsat per session. Both sessions fit
     essentially LINEAR (tens to hundreds of volts against ~1 V signals) --
@@ -51,7 +51,7 @@ docstring sentence because the wrong version ran first):
     campaign's power-dependent residual skew is not a detector time constant.
   * A red-side WING nuisance (standoff 2 MHz, scale 2-60 MHz, amplitude
     free): the one residual structure left is a same-physical-side wing
-    excess in BOTH sessions (campaign skew +0.33 falling with P; rehearsal
+    excess in BOTH sessions (campaign skew +0.33 falling with P; evening session
     -0.28 under its flipped axis -- the same side of the line). The wing row
     reports how the kappa bound moves when that structure is absorbed; the
     wedge and the wing both live on the red side, so this is the fit's
@@ -63,7 +63,7 @@ campaign's internal ~130 C (addendum 17 established it ran hot), on the
 Agilent in campaign trace format, ~20 minutes after the ruler's final
 commissioning. Its axis borrows the campaign 4192 bracket rate through a
 rate-scale nuisance bounded to +/-10% -- licensed by the raw widths: the
-pilot 210 mW line is 60.8 +/- 0.4 ms against the campaign 225 mW line's
+campaign-morning 210 mW line is 60.8 +/- 0.4 ms against the campaign 225 mW line's
 62.6 +/- 0.3, ratio 0.971, which equal rates and near-equal physics
 predict. Its ladder ran 210 -> 35 -> 70 -> 105, non-monotone in time --
 the ordering M21 asked for -- but its CENTRES still stay out of the fit:
@@ -71,7 +71,7 @@ the recorded window starts step with the power changes, in the same
 direction and at the same scale as the expected pull (-478 ms at 210 mW,
 -464 at 35, -468 at 70/105), which is M21's response-versus-relabel
 ambiguity in miniature. Shape and width only, like everything else here.
-THE PIEZO-RAMP CHANNEL of the 2025-07-03 EOM prehistory traces, and what
+THE PIEZO-RAMP CHANNEL of the 2025-07-03 EOM traces, and what
 it settles (an earlier version of this note dismissed it as a near-DC
 monitor; the experimenter's memory said piezo ramp, and the data agree).
 The signal channel's two equal peaks are the SAME line crossed twice near
@@ -84,11 +84,11 @@ the 12.5 MHz EOM tooth it gives 5.24 MHz/mV, under which the line's
 0.98 +/- 0.03 mV width is 5.1 MHz at 80 C -- on the physical budget --
 while the 25 MHz reading gives an unphysical 10.3. The EOM-day scan rate
 at the crossings is therefore MEASURED: 4.5 mV/s x 5.24 = 0.024 MHz/ms
-(transition). That is 2.2x the rehearsal's width-fitted 0.0107, so the
+(transition). That is 2.2x the evening session's width-fitted 0.0107, so the
 07-03 and 07-04 scan configurations genuinely differ and no rate
-transfers: the rehearsal's anchor stays width-tied as a measured
+transfers: the evening session's anchor stays width-tied as a measured
 conclusion, not an assumption. No usable in-trace ruler exists for the
-rehearsal itself.
+evening session itself.
 
 THE PRIORS MOVED AT v3.0.0 (2026-08-01), which is why the numbers in this
 docstring's history differ from the CSV. w0 went 50 -> 64 um (adopted from
@@ -102,11 +102,11 @@ that enters this fit's lineshape rides on w0.
 
 SIGMA GRANULARITY, verified 2026-08-02 against the measured-prior re-run's
 requirement. `build()`/`make_resid()` already carry sigma_laser per PEAK,
-separately for the campaign+pilot session (`p[7+k]`, indices 7-10) and the
-rehearsal session (`p[11+k]`, indices 11-14) -- 8 parameters, no coarser
-pooling above the peak axis to shrink from. The pilot traces reuse the
+separately for the campaign+morning session (`p[7+k]`, indices 7-10) and the
+evening session (`p[11+k]`, indices 11-14) -- 8 parameters, no coarser
+pooling above the peak axis to shrink from. The morning traces reuse the
 campaign's peak-4192 slot rather than getting a dedicated one, which is not
-a pooling gap: the pilot only ever touches peak 4192, so there is nothing
+a pooling gap: the morning session only ever touches peak 4192, so there is nothing
 else its own slot could resolve, and sharing it with the campaign's
 best-measured peak is a data-availability choice, not an averaging-away of
 distinct physics. private/reviews/digest/fig16_residual_asymmetry.md
@@ -128,8 +128,8 @@ quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles
 ftol = xtol = 1e-12.
 
 RUNTIME: ~5 h single process (three sessions, 172 traces) (the profile builder runs at dnu_floor = 2e-2,
-see _shared_profile_grid -- equivalence tested). The excluded prehistory
-tree must be present for the rehearsal arm; without it this module prints
+see _shared_profile_grid -- equivalence tested). The excluded 2025-07-04
+tree must be present for the evening-session arm; without it this module prints
 what is missing and exits 0, and the committed CSV remains the record
 (build_clock_table pattern). Raw traces never enter the repository.
 RB5S6S_SESSION_20250704_DIR and RB5S6S_SESSION_20250717_DIR are needed only to re-run this
@@ -184,7 +184,7 @@ profiles stay comparable."""
 KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
-NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 reh rates, 1 pilot rate-scale
+NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 evening-session rates, 1 campaign-morning rate-scale
 SESSION_20250717 = Path(os.environ.get(
     "RB5S6S_SESSION_20250717_DIR", "~/rb-2025-sessions/pilot")).expanduser() / "4192nm91c650ma"
 
@@ -234,7 +234,7 @@ def load_campaign():
 
 
 def load_session_20250704():
-    """Reduce the LeCroy rehearsal in place: header TrigTime, 50 ms boxcar
+    """Reduce the LeCroy evening session in place: header TrigTime, 50 ms boxcar
     segmentation, window +/-1.6 FWHM, 0.5 ms sampling. Never writes."""
     files = sorted(glob.glob(str(SESSION_20250704 / "2025-07-04" / "C2L=*.csv")))
     out, n_corrupt = [], 0
@@ -281,7 +281,7 @@ def load_session_20250704():
 
 
 def load_session_20250717(rate_4192):
-    """The 2025-07-18 morning pilot: 26 traces, peak 4192 only, powers
+    """The 2025-07-18 campaign-morning session: 26 traces, peak 4192 only, powers
     35/70/105/210 mW at the campaign's internal ~130 C (addendum 17), on the
     Agilent in campaign format, ~20 min after the ruler's final
     commissioning. Its frequency axis is the campaign 4192 bracket rate
@@ -344,7 +344,7 @@ def build(traces, priors, wing):
         p0[19] = np.log(_m)
         lo[19] = np.log(_m - 5 * _e); hi[19] = np.log(_m + 5 * _e)
     else:
-        p0[19] = 0.0; lo[19] = np.log(0.9); hi[19] = np.log(1.1)   # pilot rate scale
+        p0[19] = 0.0; lo[19] = np.log(0.9); hi[19] = np.log(1.1)   # campaign-morning rate scale
     if wing:
         p0[NS] = 0.005; lo[NS] = 0.0; hi[NS] = 0.5
         p0[NS + 1] = np.log(6.0); lo[NS + 1] = np.log(2.0); hi[NS + 1] = np.log(60.0)
@@ -453,9 +453,10 @@ def chain(resid, Sf, lo, hi, q0, kappas, ncamp, tag, nfev=1500):
 def measured_pilot_scale():
     """The M26 measured pilot_rate_scale, if the committed CSV carries it.
 
-    Returns (mean, err) or None. When present, the pilot axis scale becomes a
-    tight box around the MEASURED value instead of the [0.9, 1.1] assumption
-    box: the pilot day's own 27 rulers beat a fitted nuisance. The 2026-08-02
+    Returns (mean, err) or None. When present, the campaign-morning axis
+    scale becomes a tight box around the MEASURED value instead of the
+    [0.9, 1.1] assumption box: the campaign-morning session's own 27 rulers
+    beat a fitted nuisance. The 2026-08-02
     fits put the fitted scale at 1.023-1.029 while the rulers measure
     1.0022(12); imposing the measurement is the experiment that decides
     whether that gap was the axis or absorbed width physics."""
@@ -472,8 +473,8 @@ def measured_pilot_scale():
 def bidi_profile(traces, priors, direction, wing, tag, seed=None):
     """seed (2026-08-02): a converged parameter vector from another variant.
 
-    The direction check flips only the rehearsal x axis, but a cold start on
-    the flipped axis can park the 46 rehearsal centres in the wrong local minimum and
+    The direction check flips only the evening-session x axis, but a cold start on
+    the flipped axis can park the 46 evening-session centres in the wrong local minimum and
     stay there for the WHOLE chain, forward and backward: the 2026-08-02 run
     left the dir +1 priors variant 17,779 chi2 above the dir -1 primary at
     every kappa, while the wing variant of the same direction found the true
@@ -534,8 +535,8 @@ def main() -> int:
     traces = camp + reh + pil
     npts = sum(len(t["x"]) for t in traces)
     print(f"(M23) JOINT THREE-SESSION STARK FIT: {len(camp)} campaign + "
-          f"{len(reh)} rehearsal ({n_corrupt} files unusable) + "
-          f"{len(pil)} pilot traces, {npts} points")
+          f"{len(reh)} evening-session ({n_corrupt} files unusable) + "
+          f"{len(pil)} campaign-morning traces, {npts} points")
 
     # Chain order (2026-08-03): the wing variant goes FIRST because a cold
     # start finds the true local minimum reliably there, and every other family is
@@ -549,7 +550,7 @@ def main() -> int:
     t0 = time.time()
     print("  wing robustness (dir -1, cold; the minimum search):")
     prof_c, kmin_c, q_c = bidi_profile(traces, priors, -1, True, "C-")
-    print("  primary profile (priors, rehearsal dir -1, seeded from C-):")
+    print("  primary profile (priors, evening-session dir -1, seeded from C-):")
     prof_a, kmin_a, q_a = bidi_profile(traces, priors, -1, False, "A-",
                                        seed=strip_wing(q_c))
     print("  direction check (dir +1, seeded from the dir -1 solution):")
@@ -564,7 +565,7 @@ def main() -> int:
 
     # LOPO at the primary settings, seeded from the full solution. Peak 4192
     # gets the FULL kappa grid rather than the short one, because dropping it
-    # removes the entire pilot session -- so that subset deserves a real
+    # removes the entire campaign-morning session -- so that subset deserves a real
     # profile bound, which the ledger used to hand-type as "0.34".
     lopo, lopo_prof = {}, {}
     for drop in PEAKS:
@@ -613,7 +614,7 @@ def main() -> int:
         w.writerow(["S0_225mW_ub95", "primary", f"{ka*0.225:.3f}", "",
                     "MHz, transition axis; joint three-session bound at the "                    "campaign's maximum power"])
         w.writerow(["S0_270mW_ub95", "primary", f"{ka*0.270:.3f}", "",
-                    "MHz; at the rehearsal's maximum power"])
+                    "MHz; at the evening session's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W; the PREDICTED coefficient at the current "
                     f"priors (w0 = {C.W0_MEASURED_M*1e6:.0f} um, rho = "
@@ -624,21 +625,21 @@ def main() -> int:
                     "MHz, transition axis; the prediction at 225 mW"])
         w.writerow(["kappa_ub95_drop4192", "robustness", f"{ka_d4192:.3f}", "",
                     "MHz per W; 95% bound with peak 4192 dropped, which "
-                    "removes the ENTIRE pilot session -- the most "
+                    "removes the ENTIRE campaign-morning session -- the most "
                     "conservative subset"])
         w.writerow(["S0_225mW_ub95_drop4192", "robustness",
                     f"{ka_d4192 * 0.225:.3f}", "",
                     "MHz; the drop-4192 bound at 225 mW"])
         w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
                     "MHz per W; campaign rows of the same profile -- the "
-                    "bound does not lean on the rehearsal's soft rate anchor"])
+                    "bound does not lean on the evening session's soft rate anchor"])
         w.writerow(["kappa_min_wing", "robustness", f"{kmin_c:.2f}", "",
                     "MHz per W; minimum with the red-wing nuisance free"])
         w.writerow(["kappa_ub95_wing", "robustness", f"{kc:.3f}", "",
                     "MHz per W; bound with the wing marginalized -- quote "
                     "alongside the primary, the gap IS the wing systematic"])
         w.writerow(["direction_dchi2_max", "robustness", f"{dir_delta:.2f}", "",
-                    "max |chi2 difference| between rehearsal axis directions "
+                    "max |chi2 difference| between evening-session axis directions "
                     "across the profile; small = indifferent"])
         for pk in PEAKS:
             w.writerow(["lopo_dchi2_pred", pk,
@@ -653,18 +654,18 @@ def main() -> int:
                         f"MHz; posterior under the beta_self prior "
                         f"{priors[pk][0]:.3f}+/-{priors[pk][1]:.3f}"])
             w.writerow(["reh_rate", pk, f"{np.exp(q_a[14 + k]):.5f}", "",
-                        "MHz per ms, transition; fitted rehearsal scan rate"])
+                        "MHz per ms, transition; fitted evening-session scan rate"])
         w.writerow(["Vsat_camp", "nuisance", f"{np.exp(q_a[0]):.1f}", "",
                     "V; detector saturation, campaign -- large = linear"])
         w.writerow(["Vsat_reh", "nuisance", f"{np.exp(q_a[1]):.1f}", "",
-                    "V; detector saturation, rehearsal"])
+                    "V; detector saturation, evening session"])
         w.writerow(["n_traces", "camp/reh/pil", f"{len(camp)}/{len(reh)}/{len(pil)}", "",
-                    f"canonical p_sweep / usable rehearsal ({n_corrupt} files "
-                    f"corrupt or lineless) / pilot morning sweep"])
+                    f"canonical p_sweep / usable evening session ({n_corrupt} files "
+                    f"corrupt or lineless) / campaign-morning sweep"])
         _box = ("box = measured M26 value +/- 5 sigma"
                 if measured_pilot_scale() else "bounded [0.9, 1.1]")
         w.writerow(["pilot_rate_scale", "nuisance", f"{np.exp(q_a[18]):.4f}", "",
-                    "pilot axis = campaign 4192 bracket rate x this factor, "
+                    "campaign-morning axis = campaign 4192 bracket rate x this factor, "
                     + _box + "; the raw 210 vs 225 mW width ratio "
                     "0.971 justified the tight band"])
         for kap, c2, cc in prof_a:

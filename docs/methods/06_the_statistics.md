@@ -1,6 +1,6 @@
 *Chapter 6 of 8 · [methods index](../methods.md)*
 
-**The question.** What makes a width taken from this archive an honest number
+**The question.** What makes a width taken from this dataset an honest number
 rather than a confident one?
 **Takes.** The lineshape, AC-Stark and composite-model chapters, whose
 parameters are the ones being fitted.
@@ -54,7 +54,7 @@ coefficient scaling for an $n=6$ potential, a rise of about 5% from 70 to
 130 °C, checked directly by refitting each peak's four raw widths with that
 scaling folded into the density axis. The result shifts $\chi^2$ by less than 0.4
 against a between-block scatter of 140–250 kHz, roughly an order of
-magnitude larger than the predicted effect, so today's archive has no power
+magnitude larger than the predicted effect, so today's dataset has no power
 to test the exponent. The assumption of a flat $\beta_\text{self}$ is unresolved,
 not confirmed.
 
@@ -94,7 +94,7 @@ $\text{confound}/w_0$). A synthetic-injection closure test (`tests/test_lever_cr
 recovers a known $\beta$ through the whole 20-trace machinery, so the pipeline
 itself is validated by that recovery, not assumed.
 
-The archive's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
+The dataset's curated 130 °C anchor (the `serves_t130` traces, 225 mW) would
 triple the density lever ($N{\times}16.2\to{\times}52.5$), and the lever cross-check
 uses it as a **lever test**: adding it pulls the joint $\beta$ far below the
 cooling-sweep value. The lesson is not "bad block". It is that
@@ -181,7 +181,7 @@ the physical lineshape is the right one, whether a mechanism is missing, or
 whether the real noise matches the simulated law. Those questions need
 different evidence, and in this analysis they get it
 elsewhere. The nested model ladder (§4.9) lets the data reject or demand each
-component. The model-form comparison asks whether the archive can even
+component. The model-form comparison asks whether the dataset can even
 distinguish competing kernels, and it cannot, which is reported rather than
 resolved by assumption. The noise law is *measured* from sibling repeats
 (§4.4) rather than assumed. The residual audits look for structure no fitted
@@ -232,7 +232,7 @@ within the fitted samples, so a trim census reading zero on line fits is a fact
 about the order of the guards and not about the data. Line traces with a rising
 tail exist: three of the five repeats of the 993.4207 nm line at 130 °C and
 25 mW carry an unmistakable one. Whether the window sits in the right place was
-open until it was measured directly: neither clip is active on the archive (the
+open until it was measured directly: neither clip is active on the dataset (the
 25 MHz cap binds on 0 of 159 canonical traces and the 9 MHz floor on 0 of 159),
 the recorded crossings sit 7.64 to 8.54 fitted widths out against a window edge
 at 3.50, and the constant that is sensitive to the sweep rate in the widening
@@ -252,15 +252,15 @@ $$
 \text{A: Voigt} \subset \text{B: +transit} \subset \text{C: +collisional width} \subset \text{D: +AC-Stark ramp}.
 $$
 
-On the T-sweep archive the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
+On the T-sweep dataset the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
 Lorentzian width beyond natural is warranted, and the line genuinely needs both a
 Lorentzian and a Gaussian component), and **C→D $\approx -100$**, *the free
 AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design
 stated as a model comparison, and it answers "is
 your novel AC-Stark component an unnecessary parameter?": on the *drifted*
-archive it **is**, because the free per-scan centres absorb the ramp's pull and
+dataset it **is**, because the free per-scan centres absorb the ramp's pull and
 $\sigma_\text{laser}$ its width, so BIC declines to buy it, which is precisely
-why the archival AC-Stark result is a **bound**, not a measurement (§4.5).
+why the recorded AC-Stark result is a **bound**, not a measurement (§4.5).
 
 Two checks qualify this result. The B→C rung warrants a free
 homogeneous *width*, not resolved collisions: that width is separately shown
@@ -268,7 +268,7 @@ homogeneous *width*, not resolved collisions: that width is separately shown
 regardless. And the *same* ladder, on synthetic data built with a stable lock
 (no per-scan drift), **decisively warrants the AC-Stark rung and recovers the
 injected $S_0$**, while on $S_0=0$ data it declines it. So the null on the real
-archive is a property of the drift, not of the method: a fixed-lock session
+dataset is a property of the drift, not of the method: a fixed-lock session
 would flip C→D positive. *Code:* `rb5s6s/model_ladder.py`, `run_model_ladder.py`,
 closure `tests/test_model_ladder.py`, numbers `results/model_ladder.csv`.
 
@@ -291,7 +291,7 @@ width the $w_0\approx43$ µm geometry predicts, at $\chi^2 = 4548$, a
 $\Delta\chi^2\approx476$ preference. The local analysis is therefore anchored
 by a **two-start fit** at the deeper branch, and both branches plus their gap
 are committed (`branch`, `branch_gap` rows). Set beside the adopted prior that
-is a tension the archive owns rather than resolves: the shape prefers
+is a tension the dataset owns rather than resolves: the shape prefers
 $w_0\approx43$ µm where the beamline-lineage measurement puts it at the adopted
 **64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
 Taken at face value the shape data
@@ -340,7 +340,7 @@ say. The valley staying open toward zero laser width is the statement that the
 line shape alone cannot exclude a narrow laser, and it is why the individual
 widths are bounds conditional on the beam waist rather than measurements.*
 
-So the archive constrains the total width to about 0.1% but the split
+So the dataset constrains the total width to about 0.1% but the split
 twenty-fold worse, now as a certified-global statement rather than a local one: the
 individual widths are genuinely $w_0$-conditional bounds, not measurements,
 and a measured $w_0$ **collapses** the degeneracy, because it fixes transit to
@@ -368,7 +368,7 @@ four-point headline (70/90/110/130 °C, since 2026-08-02, and the replaced
 three-point 70–110 °C headline used $t(0.95,1)=6.31$). A bound is only worth
 its coverage, so we check it by simulation rather than assert it: at a grid
 of *known* true $\beta$ we generate 2000 synthetic four-point cooling+130 °C
-sweeps each, with the archive's own structure, a between-block scatter
+sweeps each, with the dataset's own structure, a between-block scatter
 mimicking the drift wander plus the small within-block SEM, run the
 **shipped** estimator `beta.collisional_slope` on every one, and measure
 bias, coverage, and the false-detection rate. The result:
@@ -442,7 +442,7 @@ wins"). But the noise model already whitens each residual by $\sqrt{\tau_\text{i
 ($\tau\approx3.5$). The **matching** effective size $N_\text{eff}=N/\tau$ with the
 whitened $\chi^2$ gives $\Delta\text{BIC}\approx+62$ ("shared wins, decisively").
 The $N_\text{eff}$ BIC is the statistically correct one, since correlated samples are not
-independent, so the shared model is favoured: **the archive cannot pay for
+independent, so the shared model is favoured: **the dataset cannot pay for
 per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
 
 - it is **parsimony and not physics**, since four peaks that co-drifted between
@@ -454,7 +454,7 @@ per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
   correlation with that elapsed time ($r=+0.18$, $p=0.6$, n=12), so sharing is
   not refuted, but the design gave the test no power, which is why the fixed-lock
   session interleaves the peaks within minutes.
-- the sign **flips** with the sample-counting, so the archive does not *robustly*
+- the sign **flips** with the sample-counting, so the dataset does not *robustly*
   resolve shared-vs-independent, which is exactly the M4c reading, now
   quantitative. The headline therefore stays the model-independent width-slope
   bound (C1), not the sharing-dependent hierarchical value.
@@ -462,7 +462,7 @@ per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:
 *Closure* (`tests/test_sharing_bic.py`, clean synthetics where $\tau=1$ so the two
 $N$ values coincide): the score correctly favours per $T$ when the peaks truly share one
 $\sigma_\text{laser}$ and per-block when they carry grossly different ones, so it
-detects real sharing structure when the data carry the power the archive lacks.
+detects real sharing structure when the data carry the power the dataset lacks.
 *Code:* `rb5s6s/sharing_bic.py`, `run_sharing_bic.py`, numbers `results/sharing_bic.csv`.
 
 ---

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M25: the global archive fit -- every canonical trace, one likelihood.
+M25: the global dataset fit -- every canonical trace, one likelihood.
 
 WHY THIS EXISTS. M23 fits the POWER lever (S0 = kappa*P) across three
 sessions and takes each peak's collisional width from a Gaussian prior built
@@ -20,7 +20,7 @@ coefficients free:
     transit(T)    = transit(T_ref) * sqrt(T/T_ref)   fixed form, rides on w0
     sigma_laser   free per (session, temperature block)
 
-WHAT THE ARCHIVE ACTUALLY OFFERS, and why the two levers separate. The
+WHAT THE DATASET ACTUALLY OFFERS, and why the two levers separate. The
 campaign ran a POWER ladder at fixed 130 C (5 powers, 4 peaks) and a
 TEMPERATURE ladder at fixed 225 mW (70/90/110 C, 4 peaks). Those are
 orthogonal in exactly the right way:
@@ -102,9 +102,10 @@ constrain a power law on its own. In a joint fit it does not need to: it
 anchors the core the power ladder is trying to see past.
 
 SESSIONS. Campaign p_sweep (100) + campaign t_sweep (59) + the 2025-07-04
-LeCroy rehearsal (46) + the 2025-07-18 morning pilot (26) = 231 traces. The
-rehearsal keeps its per-peak fitted rate and the pilot its bounded rate
-scale, exactly as M23 established; neither contributes centres.
+LeCroy evening session (46) + the 2025-07-18 campaign-morning session (26) =
+231 traces. The evening session keeps its per-peak fitted rate and the
+campaign-morning session its bounded rate scale, exactly as M23 established;
+neither contributes centres.
 
 WHAT THIS MODULE DOES NOT CLAIM. It is still bounded by the same open beam
 waist: transit rides on w0, so beta_self and kappa remain w0-conditional and
@@ -115,13 +116,14 @@ ARM B of the two-arm M25 design: this copy runs with USE_RULERS = False, so
 the ruler combs contribute no lineshape information and beta_self is set by
 the RF-off traces alone. The gap between this arm and the rulers-on arm in
 run_global_dataset_fit.py is reported as a stated systematic rather than
-resolved, because the two disagree on the collisional core and the archive
+resolved, because the two disagree on the collisional core and the dataset
 cannot say which is right.
 
 SIGMA GRANULARITY UPGRADE (2026-08-02), the measured-prior re-run's second
 change, applied identically to both M25 arms. Until now sigma_laser was
 pooled per SL_BLOCKS entry only (one value per campaign temperature, plus
-one each for the rehearsal and pilot sessions, 6 total), which POOLS ALL
+one each for the evening-session and campaign-morning sessions, 6 total),
+which POOLS ALL
 FOUR PEAKS inside every block. Free-Gaussian-sigma probes on the single
 brightest trace per peak at 225 mW/130 C (private/reviews/digest/
 fig16_residual_asymmetry.md, "Seventh addition") found that pooling too
@@ -139,8 +141,9 @@ Implementation: the SL_BLOCKS parameters (indices I_SL..I_SL+5) are KEPT
 UNCHANGED as session/block-level population means sigma_s. A new block of
 sigma_sp parameters is appended at index NS, one per (SL_BLOCKS entry, peak)
 combination actually realized in the loaded traces -- 21 in the full
-archive (4 campaign temperatures x 4 peaks = 16, rehearsal 4 peaks, pilot
-1 peak, since the pilot only ever touches 4192). Each trace's lineshape
+dataset (4 campaign temperatures x 4 peaks = 16, evening session 4 peaks,
+campaign-morning 1 peak, since the campaign-morning session only ever
+touches 4192). Each trace's lineshape
 uses its own sigma_sp directly (not the pooled sigma_s); a soft Gaussian
 prior residual (sigma_sp - sigma_s) / SIGMA_SP_PRIOR_MHZ is added for every
 sp parameter, tying it back to its block's mean. The prior width, 150 kHz,
@@ -164,8 +167,8 @@ key f"{block}_{peak}" (e.g. "camp130_4192"); the existing "sigma_laser" rows
 are unchanged and still report the pooled sigma_s means.
 
 Writes results/global_dataset_fit_norulers.csv, NOT the rulers-on arm's
-global_dataset_fit.csv. Needs the excluded prehistory and
-pilot trees; without them it prints what is missing and exits 0.
+global_dataset_fit.csv. Needs the excluded 2025-07-04 and
+campaign-morning trees; without them it prints what is missing and exits 0.
 Runtime: long (many hours). Run it in the background.
 """
 
@@ -209,11 +212,11 @@ KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
 # at index NS.
 SL_BLOCKS = ["camp70", "camp90", "camp110", "camp130", "reh", "pil"]
 SL_IX = {b: i for i, b in enumerate(SL_BLOCKS)}
-NS = 2 + len(SL_BLOCKS) + 2 + len(PEAKS) + 1   # kappa,beta + sl + Vsat*2 + rates + pilot
+NS = 2 + len(SL_BLOCKS) + 2 + len(PEAKS) + 1   # kappa,beta + sl + Vsat*2 + rates + campaign-morning
 I_KAPPA, I_BETA = 0, 1
 I_SL = 2
-I_VSAT_AG = I_SL + len(SL_BLOCKS)          # Agilent (campaign + pilot)
-I_VSAT_LC = I_VSAT_AG + 1                  # LeCroy (rehearsal)
+I_VSAT_AG = I_SL + len(SL_BLOCKS)          # Agilent (campaign + campaign-morning)
+I_VSAT_LC = I_VSAT_AG + 1                  # LeCroy (evening session)
 I_REHRATE = I_VSAT_LC + 1
 I_PILSCALE = I_REHRATE + len(PEAKS)
 
@@ -323,9 +326,10 @@ def load_rulers_t():
 def measured_pilot_scale():
     """The M26 measured pilot_rate_scale, if the committed CSV carries it.
 
-    Returns (mean, err) or None. When present, the pilot axis scale becomes a
-    tight box around the MEASURED value instead of the [0.9, 1.1] assumption
-    box: the pilot day's own 27 rulers beat a fitted nuisance. The 2026-08-02
+    Returns (mean, err) or None. When present, the campaign-morning axis
+    scale becomes a tight box around the MEASURED value instead of the
+    [0.9, 1.1] assumption box: the campaign-morning session's own 27 rulers
+    beat a fitted nuisance. The 2026-08-02
     fits put the fitted scale at 1.023-1.029 while the rulers measure
     1.0022(12); imposing the measurement is the experiment that decides
     whether that gap was the axis or absorbed width physics."""
@@ -582,7 +586,7 @@ def profile2d(resid, Sf, lo, hi, q0, kappas, betas, tag="2D"):
 
 
 def w0_scan(traces, offsets, w0s, kappas):
-    """kappa and beta as functions of the ASSUMED waist. The archive cannot
+    """kappa and beta as functions of the ASSUMED waist. The dataset cannot
     pin w0 (transit and sigma_laser are degenerate), so the statement of
     record is not one bound but the bound's dependence on the assumption."""
     rows = []
@@ -620,9 +624,9 @@ def main() -> int:
     traces = camp + reh + pil + rul
     npts = sum(len(t["x"]) for t in traces)
     nT = sum(1 for t in camp if t["T"] != 130.0)
-    print(f"(M25) GLOBAL ARCHIVE FIT: {len(traces)} traces "
+    print(f"(M25) GLOBAL DATASET FIT: {len(traces)} traces "
           f"({len(camp)-nT} campaign p_sweep + {nT} campaign t_sweep + "
-          f"{len(reh)} rehearsal + {len(pil)} pilot + {len(rul)} ruler "
+          f"{len(reh)} evening-session + {len(pil)} campaign-morning + {len(rul)} ruler "
           f"combs = ~{len(rul)*N_TEETH} tooth replicas), {npts} points")
 
     p0, lo, hi, offsets = build(traces)
@@ -739,13 +743,13 @@ def main() -> int:
                         f"mean (err column: deviation from that mean)"])
         for k, pk in enumerate(PEAKS):
             w.writerow(["reh_rate", pk, f"{np.exp(best_q[I_REHRATE + k - 1]):.5f}",
-                        "", "MHz per ms, transition; fitted rehearsal scan rate"])
+                        "", "MHz per ms, transition; fitted evening-session scan rate"])
         w.writerow(["pilot_rate_scale", "nuisance",
                     f"{np.exp(best_q[I_PILSCALE - 1]):.4f}", "",
-                    "pilot axis = campaign 4192 rate x this, bounded [0.9,1.1]"])
+                    "campaign-morning axis = campaign 4192 rate x this, bounded [0.9,1.1]"])
         w.writerow(["n_traces", "camp_p/camp_t/reh/pil/ruler",
                     f"{len(camp)-nT}/{nT}/{len(reh)}/{len(pil)}/{len(rul)}", "",
-                    f"{npts} points total ({n_corrupt} rehearsal files "
+                    f"{npts} points total ({n_corrupt} evening-session files "
                     f"unusable); rulers enter as five-tooth combs with free "
                     f"tooth amplitudes"])
         for k in KAPPAS:
@@ -782,7 +786,7 @@ def main() -> int:
                         f"{kub:.3f}", f"{bfit:.4f}",
                         f"value=95% kappa bound, err=beta_self, at transit_ref "
                         f"{tr_ref:.3f} MHz -- how both coefficients depend on "
-                        f"the ASSUMED waist, which the archive cannot pin"])
+                        f"the ASSUMED waist, which the dataset cannot pin"])
     print("\n  Wrote results/global_dataset_fit_norulers.csv.")
     return 0
 

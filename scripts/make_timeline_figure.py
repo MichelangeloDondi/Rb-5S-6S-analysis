@@ -4,8 +4,8 @@ The program on its recovered clock — docs/apparatus/program_timeline.png.
 
 Three panels, one per session, every mark an actual acquisition from
 data_recovered/CLOCK.csv (the committed clock; addenda 1–11): the LeCroy
-dress rehearsal, the pilot morning (ruler commissioning → Def → 0.65 A sweep),
-and the campaign itself with its power ladders, temperature dwells, the
+session of 4 July, the campaign morning (ruler commissioning → Def → 0.65 A
+sweep), and the campaign itself with its power ladders, temperature dwells, the
 9.6 h break, and the evidence-backed etalon-transient windows shaded.
 
 Regenerate with:  python3 scripts/make_timeline_figure.py
@@ -109,7 +109,7 @@ def main() -> int:
     r1 = dt.datetime(2025, 7, 5, 1, 55, tzinfo=JST)
     reh = [e for e in ev["rehearsal"] if e[0] >= r0]
     panel(ax, reh, r0, r1,
-          "2025-07-04 → 05 · dress rehearsal — LeCroy, 4 peaks × 90/180/270 mW"
+          "2025-07-04 → 05 · evening session — LeCroy, 4 peaks × 90/180/270 mW"
           " (in-file trigger clock)")
     label(ax, dt.datetime(2025, 7, 4, 22, 33, tzinfo=JST), 0.04,
           "22:31 first trigger", ha="left")
@@ -124,7 +124,7 @@ def main() -> int:
     p0 = dt.datetime(2025, 7, 17, 4, 0, tzinfo=JST)
     p1 = dt.datetime(2025, 7, 17, 7, 30, tzinfo=JST)
     panel(ax, ev["pilot"], p0, p1,
-          "2025-07-17 morning · pilot — ruler commissioning, then 4192 nm @ 0.65 A "
+          "2025-07-17 · campaign morning — ruler commissioning, then 4192 nm @ 0.65 A "
           "(variac 91 °C = internal ~110–130 °C, addendum 17)")
     for when, txt in ((dt.datetime(2025, 7, 17, 4, 21, tzinfo=JST), "Initial attempts"),
                       (dt.datetime(2025, 7, 17, 6, 18, tzinfo=JST), "adjusted"),
@@ -138,7 +138,7 @@ def main() -> int:
     c0 = dt.datetime(2025, 7, 17, 23, 15, tzinfo=JST)
     c1 = dt.datetime(2025, 7, 18, 20, 55, tzinfo=JST)
     panel(ax, ev["campaign"], c0, c1,
-          "2025-07-17 → 18 · the campaign — the frozen archive’s 297 traces")
+          "2025-07-17 → 18 · the campaign — the frozen record’s 297 traces")
     ax.xaxis.set_major_locator(mdates.HourLocator(interval=2, tz=JST))
 
     # evidence-backed etalon-transient windows
@@ -182,9 +182,9 @@ def main() -> int:
                  "from data_recovered/CLOCK.csv (times JST)",
                  x=0.01, ha="left", fontsize=11.5, color=INK, fontweight="bold")
     fig.text(0.01, 0.005,
-             "Sessions: LeCroy dress rehearsal (in-file trigger times) · pilot "
-             "(FAT mtimes) · campaign (FAT mtimes, instrument-validated to "
-             "seconds — addendum 11). The archive was take four.",
+             "Sessions: LeCroy 4 July evening (in-file trigger times) · campaign "
+             "morning (FAT mtimes) · campaign (FAT mtimes, instrument-validated "
+             "to seconds — addendum 11). The record was take four.",
              fontsize=7.5, color=INK2)
     fig.savefig(OUT, dpi=150, bbox_inches="tight", facecolor=SURFACE)
     print(f"wrote {OUT.relative_to(ROOT)}")

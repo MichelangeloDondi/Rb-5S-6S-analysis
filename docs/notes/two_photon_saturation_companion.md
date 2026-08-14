@@ -208,7 +208,7 @@ exactly 1, constants.ABUNDANCE_RB85). The pumping is not. So the three
 same-signature terms are degenerate in power and in waist, as stated
 everywhere, and are NOT degenerate across the line index. The lever between the
 extreme lines is 0.625/0.375 = 1.67, which is 7 kHz of width at the campaign
-maximum against an 88 kHz single-block width scatter. This archive cannot spend
+maximum against an 88 kHz single-block width scatter. This dataset cannot spend
 it. A session that controls the block scatter can, and it is the only handle
 found so far that separates the pumping companion without a fixed lock.
 
@@ -245,7 +245,7 @@ already-fitted 0.96 MHz. It matters because of its power signature, not its size
 
 ## What it does not claim
 
-The archive's own data do carry a P-squared width feature, fitted at
+The dataset's own data do carry a P-squared width feature, fitted at
 c = -138 +/- 32 kHz with per-peak cores and one shared coefficient. **That is not
 read here as saturation, and the sign is wrong for it.** It fails every stability
 check (+180 +/- 120 kHz on the 25 to 125 mW subset against -152 +/- 30 kHz on 75
@@ -349,7 +349,7 @@ C3d is the width-only bound. The number outside documents quote is C3f, the join
 three-session bound at S0(225 mW) below 0.26 MHz, and the obvious question is
 whether the companion tightens that one too. **It was not re-run, and the reason
 is a data-access fact rather than a modelling one:** the joint fit reads the
-2025-07-04 rehearsal and the campaign-morning pilot from two excluded trees
+4 July evening session and the campaign-morning session from two excluded trees
 outside the repository, and `run_stark_joint.py` exits early when they are absent,
 which they are on the machine this probe ran on.
 
@@ -366,9 +366,10 @@ the paragraph above is replaced by the postscript below.**
 ## Postscript, 2026-08-10: the joint bound was re-profiled, and it tightens by 2.2
 
 The excluded trees were on the machine the whole time, under names the script's
-fallback path does not reach, so this was never owner-side work. Stage 4 of
-`scripts/run_saturation_probe.py` now runs it: 100 campaign, 46 rehearsal and 26
-pilot traces, the wing chain then the primary seeded from it, patching the joint
+fallback path does not reach, so this was never manual work. Stage 4 of
+`scripts/run_saturation_probe.py` now runs it: 100 campaign traces, 46 from the
+4 July evening session and 26 from the campaign-morning session, the wing chain
+then the primary seeded from it, patching the joint
 fit's own profile builder so the shared coefficient, the per-peak priors, the free
 per-trace centres and the chain seeding all stay production code. It writes
 nothing, and `results/stark_joint.csv` is untouched.
@@ -413,7 +414,7 @@ of 2.8 rather than by argument.
 ## Postscript, 2026-08-10: the refit is specified, and it is predicted to fail
 
 The obvious next step is to put both companions inside the fitted model rather
-than around it, and the owner asked for exactly that. It is preregistered at
+than around it, and the author asked for exactly that. It is preregistered at
 [companion_inclusive_refit_prereg.md](companion_inclusive_refit_prereg.md),
 which fixes the construction and the acceptance criteria before any code was
 written, and the reason it is worth reading is that **the central prediction is
@@ -426,7 +427,7 @@ The lever is 0.149 of the saturation width, 3.06 kHz at 225 mW. A least-squares
 power calculation on the actual design, four lines by five powers with the core
 widths free, gives a standard error on that scale of 19 to 42 depending on
 whether the block scatter is taken per width point or reduced by the five
-repeats in a block. So this archive would see its own computed companion at
+repeats in a block. So this dataset would see its own computed companion at
 0.02 to 0.05 sigma and would return a bound between 31 and 69 times too loose to
 touch it.
 
@@ -436,12 +437,12 @@ already names the candidates.
 
 ## Postscript, 2026-08-11: the refit ran, and it failed in a different way
 
-The prediction above was that the archive would see the pumping companion at
+The prediction above was that the dataset would see the pumping companion at
 0.02 to 0.05 sigma and return a bound 31 to 69 times too loose. **It returned no
 bound at all**, and the reason is more basic than the lever being small.
 
 The scale enters the model only as a multiple of the saturation width, which is
-proportional to $S_0=\kappa P$. This archive does not measure $\kappa$, it bounds
+proportional to $S_0=\kappa P$. This dataset does not measure $\kappa$, it bounds
 it from above, and zero is inside that bound. Profiling over $\kappa$ rather than
 holding it, the fit sets $\hat\kappa=0$ for every nonzero scale, which switches
 the companion off, and $\chi^2$ returns 55.5712 identically from a scale of 0.5

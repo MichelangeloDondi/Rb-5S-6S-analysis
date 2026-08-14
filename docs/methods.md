@@ -56,7 +56,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   [`docs/RESULTS.md`](RESULTS.md). C1 is collisional self-broadening
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
-  bound $S_0$. Each is a **bound or null** in the 2025 archive.
+  bound $S_0$. Each is a **bound or null** in the 2025 dataset.
 - **M0 … M30, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
@@ -70,8 +70,8 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
-  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
-  | M28 full archive in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
+  | M24 wing check (null) | M25 global dataset fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
+  | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -110,7 +110,7 @@ it. The frequency-axis convention above (§0) is assumed by all of them.
 | **4** | [The composite model](methods/04_the_composite_model.md) | the assembled profile in code, and radiation trapping, the mechanism that moves amplitudes but not shapes |
 | **5** | [From volts to a frequency axis](methods/05_the_frequency_ruler.md) | the EOM sideband ruler that calibrates every scan |
 | **6** | [The statistics](methods/06_the_statistics.md) | measured weights, hierarchical sharing, the σ_laser↔γ_coll degeneracy, and the pre-registered measurement-vs-bound rule |
-| **7** | [What we found](methods/07_what_we_found.md) | the 2025 archive's results: the bounds, the nulls, and the consistency checks |
+| **7** | [What we found](methods/07_what_we_found.md) | the 2025 dataset's results: the bounds, the nulls, and the consistency checks |
 | **8** | [Assumptions, and where this can go](methods/08_assumptions_and_outlook.md) | the load-bearing assumptions to challenge, and what a fixed-lock session would lift |
 
 For the project's goals, the prior art, and what each future measurement would
@@ -150,7 +150,7 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_dataset_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_morning_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_dataset_fit(M28, M23's construction over M25's data: the full archive in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · annotate_results_status(status column, after every producer and before every reader) · make_figures · make_results_ledger
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_dataset_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_morning_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_dataset_fit(M28, M23's construction over M25's data: the full dataset in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · annotate_results_status(status column, after every producer and before every reader) · make_figures · make_results_ledger
           Two more write no CSV and are run by hand, so a published number
           can be re-derived rather than taken: run_saturation_probe (the
           light-shift bounds re-profiled with the saturation companion in
@@ -164,7 +164,7 @@ tests/    2093-test battery (2040 fast ~2 min + 53 `slow` high-statistics
           docs-consistency gates: canonical numbers, links+anchors, math
           rendering, figure freshness, images, recovered-layer contract);
           CI runs the full set on numpy-minimum AND latest
-docs/     PLAN.md (fixed-lock proposal + protocol) · DATA.md (archive provenance) · RESULTS.md (auto-generated ledger)
+docs/     PLAN.md (fixed-lock proposal + protocol) · DATA.md (dataset provenance) · RESULTS.md (auto-generated ledger)
           · THEORY_NOTE.md (ramp theory, written for a theorist reader) · LITERATURE.md (prior-art ledger)
           · APPARATUS.md (hardware of record, with photographs + schematic)
           · PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md (the
@@ -185,7 +185,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]" && pytest -q          # 2040 fast tests (~2 min)
 pytest -q --runslow                           # full 2093 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
-# (already in git; import_data.py only re-imports from the old archive):
+# (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh
 ```
 

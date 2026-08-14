@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-M28: the cross-campaign full-archive joint fit -- M23's construction, M25's data.
+M28: the cross-campaign full-dataset joint fit -- M23's construction, M25's data.
 
 THE SPECIFICATION IS THE RECORD. This module was written against
 docs/notes/full_dataset_fit_prereg.md, which was written first: the census, the
@@ -15,7 +15,7 @@ the POWER-sweep traces of three sessions. M25 (run_global_dataset_fit.py) reads
 every canonical trace and frees beta_self alongside kappa, which buys a joint
 (kappa, beta) region and spends the temperature ladder on a second free
 coefficient in the same width budget. This module takes the third corner: the
-FULL archive, the collisional term under the repo's own FOUR-POINT measurement
+FULL dataset, the collisional term under the repo's own FOUR-POINT measurement
 as a prior, and one profiled coefficient.
 
     gamma_coll(peak, T) = beta_self(peak) * N(T)      beta_self per peak, prior
@@ -25,16 +25,17 @@ as a prior, and one profiled coefficient.
 so the 59 campaign t_sweep traces anchor the CORE the power ladder is trying to
 see past, while the four-point beta_self prior (70/90/110/130 C, dof 2, the
 x52.5 density lever of RESEARCH_DECISIONS section 9) keeps the collisional term
-tied to the archive's own measurement instead of floating free.
+tied to the dataset's own measurement instead of floating free.
 
 THE HIERARCHY is campaign x session x peak. The campaign level carries no free
-parameter today, because the archive is one campaign. It exists as a key on
+parameter today, because the dataset is one campaign. It exists as a key on
 every trace and as the outer grouping of the sigma block so that a second
 campaign folds in without restructuring the model. Below it: Vsat per
-campaign-instrument (Agilent for campaign and pilot, LeCroy for rehearsal),
-beta_self per peak under its prior, sigma_laser per (session-block, peak) with a
-150 kHz hierarchical shrinkage prior toward its block's population mean, the
-rehearsal scan rate per peak, the pilot rate scale under M26's measured box, and
+campaign-instrument (Agilent for campaign and campaign-morning, LeCroy for the
+evening session), beta_self per peak under its prior, sigma_laser per
+(session-block, peak) with a 150 kHz hierarchical shrinkage prior toward its
+block's population mean, the evening-session scan rate per peak, the
+campaign-morning rate scale under M26's measured box, and
 four free parameters per trace. Every centre is free and NO centre is
 interpreted, per M21.
 
@@ -58,7 +59,7 @@ where M23 runs four: M23's own minimum search, the cold wing variant, is quoted
 from cold chains alone, which is the one place its rule is not yet satisfied
 here. The order is
 
-    1. W-  wing free, rehearsal direction -1, cold forward and backward
+    1. W-  wing free, evening-session direction -1, cold forward and backward
     2. P-  no wing, direction -1, cold pair PLUS a chain seeded from W-
     3. W-  twin, seeded from P- with the wing entries re-inserted
     4. P+  no wing, direction +1, cold pair PLUS a chain seeded from P-
@@ -75,7 +76,8 @@ eight acceptance gates, thresholds fixed in the note, written to the CSV as
 gate_* rows. A stop-class failure (census, a railed shared parameter, a missing
 95% crossing) returns exit code 1 and the numbers do not enter a document.
 
-REUSE. The rehearsal and pilot loaders, the measured pilot scale, the peak list,
+REUSE. The evening-session and campaign-morning loaders, the measured
+campaign-morning scale, the peak list,
 the excluded paths, the profile-grid floor, the wing standoff and ub95 are
 IMPORTED from run_stark_joint, which is untouched by this module. The campaign
 loader is M25's, extended with the QC gate, the role tag and the manifest file
@@ -83,7 +85,7 @@ key that the gate needs. The chain, bidirectional-profile, strip_wing and
 sparsity patterns follow M23's, re-cut for this layout.
 
 RUNTIME: long, hours, single process. Run it in the background. The excluded
-prehistory and pilot trees must be present; without them the module prints what
+2025-07-04 and campaign-morning trees must be present; without them the module prints what
 is missing and exits 0 (the build_clock_table pattern). Raw traces never enter
 the repository.
 
@@ -128,7 +130,7 @@ from run_stark_joint import (DNU_FLOOR, NU0_WING, PEAKS, SESSION_20250717,  # no
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 CAMPAIGN = "camp2025"
-"""The archive's single campaign. Every trace carries it so that a second
+"""The dataset's single campaign. Every trace carries it so that a second
 campaign folds into the same loaders, the same sigma blocks and the same CSV
 without restructuring the model."""
 
@@ -138,11 +140,11 @@ without restructuring the model."""
 SL_BLOCKS = ["camp70", "camp90", "camp110", "camp130", "reh", "pil"]
 SL_IX = {b: i for i, b in enumerate(SL_BLOCKS)}
 I_KAPPA = 0
-I_VSAT_AG = 1                 # Agilent: campaign + pilot
-I_VSAT_LC = 2                 # LeCroy: rehearsal
+I_VSAT_AG = 1                 # Agilent: campaign + campaign-morning
+I_VSAT_LC = 2                 # LeCroy: evening session
 I_BETA = 3                    # 4, one per peak, under the four-point prior
 I_SL = I_BETA + len(PEAKS)    # 6 block-level population means
-I_REHRATE = I_SL + len(SL_BLOCKS)   # 4 rehearsal scan rates (log)
+I_REHRATE = I_SL + len(SL_BLOCKS)   # 4 evening-session scan rates (log)
 I_PILSCALE = I_REHRATE + len(PEAKS)
 NS = I_PILSCALE + 1           # 18; the per-(block, peak) sigma_sp block starts here
 N_UNIT = 1e12
@@ -164,7 +166,7 @@ KAPPAS_EXTENDED = tuple(sorted(set(KAPPAS) | {10.0, 20.0}))
 # ---------------------------------------------------------------------------
 # the acceptance gates (see the note, section 8). Fixed before the run.
 # ---------------------------------------------------------------------------
-GATE_N_TRACES = 231           # 100 p_sweep + 59 t_sweep + 46 rehearsal + 26 pilot
+GATE_N_TRACES = 231           # 100 p_sweep + 59 t_sweep + 46 evening-session + 26 campaign-morning
 GATE_CHI2_LO, GATE_CHI2_HI = 0.3, 3.0
 GATE_PRIOR_TENSION = 3.0
 GATE_BASIN_GAP = 1000.0
@@ -487,7 +489,7 @@ def chain(resid, Sf, lo, hi, q0, kappas, ncamp, npld, tag, nfev=1500):
 
     Returns kappa -> (chi2 total, chi2 campaign rows, chi2 power-ladder rows,
     parameter vector). The two partial sums answer whether the bound leans on
-    the rehearsal's soft rate anchor and whether the temperature ladder that is
+    the evening session's soft rate anchor and whether the temperature ladder that is
     new to this fit is doing the work."""
     res, q = {}, q0.copy()
     for kap in kappas:
@@ -576,7 +578,7 @@ def split_railings(railed):
     not a defect: it says the detector ran linear, which is exactly what M23
     reports from the same box (Vsat_camp 402.8 V against a 403.4 V ceiling).
     A physics parameter on either edge is a stop. Everything else, which today
-    means the pilot axis scale against M26's measured box, is reported and
+    means the campaign-morning axis scale against M26's measured box, is reported and
     flagged, because that gap is a live open question rather than a fault."""
     expected, stop, flagged = [], [], []
     for name, val, edge in railed:
@@ -613,7 +615,7 @@ def gate_rows(*, n_traces, n_points, chi2_min, railed, tensions, ub, basin_gap,
         f"[{GATE_CHI2_LO}, {GATE_CHI2_HI}]", False,
         "chi2 at the profile minimum per fitted point")
     add("gate_B3_railed_physics", len(railed), not railed, "zero", True,
-        "beta_self, sigma_laser or rehearsal-rate parameters on a bound: "
+        "beta_self, sigma_laser or evening-session-rate parameters on a bound: "
         + _rail_str(railed))
     worst = max(tensions.values()) if tensions else 0.0
     add("gate_B4_prior_tension", worst, worst < GATE_PRIOR_TENSION,
@@ -627,7 +629,7 @@ def gate_rows(*, n_traces, n_points, chi2_min, railed, tensions, ub, basin_gap,
         "the profile safe either way, so this is a flag and not a stop")
     add("gate_B7_direction_delta", dir_delta, dir_delta < GATE_BASIN_GAP,
         f"< {GATE_BASIN_GAP}", False,
-        "max |chi2 difference| between rehearsal axis directions; thousands "
+        "max |chi2 difference| between evening-session axis directions; thousands "
         "means a parked chain, not a physical preference")
     add("gate_B8_dchi2_kappa0", dchi2_0, dchi2_0 < GATE_DCHI2_DETECT,
         f"< {GATE_DCHI2_DETECT}", False,
@@ -682,10 +684,10 @@ def main(argv=None) -> int:
     n_sp = len(sp_keys)
     p0_shape, _, _ = build(traces, priors, False)
 
-    print(f"(M28){' SMOKE' if smoke else ''} CROSS-CAMPAIGN FULL-ARCHIVE JOINT "
+    print(f"(M28){' SMOKE' if smoke else ''} CROSS-CAMPAIGN FULL-DATASET JOINT "
           f"FIT: {len(camp_p)} campaign p_sweep + {len(camp_t)} campaign "
-          f"t_sweep + {len(reh)} rehearsal ({n_corrupt} files unusable) + "
-          f"{len(pil)} pilot traces, {npts} points, {len(p0_shape)} parameters, "
+          f"t_sweep + {len(reh)} evening-session ({n_corrupt} files unusable) + "
+          f"{len(pil)} campaign-morning traces, {npts} points, {len(p0_shape)} parameters, "
           f"{n_sp} sigma cells")
     for f, verdict in qc_examined:
         print(f"  QC gate A1: {f}: {verdict}")
@@ -698,7 +700,7 @@ def main(argv=None) -> int:
     print("  wing robustness (dir -1, cold; the minimum search):")
     prof_c, kmin_c, q_c, _ = bidi_profile(traces, priors, -1, True, "C-",
                                           kappas=kappas, nfev=nfev)
-    print("  primary profile (four-point priors, rehearsal dir -1, seeded from C-):")
+    print("  primary profile (four-point priors, evening-session dir -1, seeded from C-):")
     prof_a, kmin_a, q_a, gap_a = bidi_profile(
         traces, priors, -1, False, "A-", seeds=(strip_wing(q_c, n_sp),),
         kappas=kappas, nfev=nfev)
@@ -728,7 +730,7 @@ def main(argv=None) -> int:
 
     # leave-one-peak-out at the primary settings, seeded from the primary
     # solution. Peak 4192 gets the full grid because dropping it removes the
-    # ENTIRE pilot session, so that subset deserves a real profile bound.
+    # ENTIRE campaign-morning session, so that subset deserves a real profile bound.
     lopo, lopo_prof = {}, {}
     if not args.no_lopo:
         for drop in PEAKS:
@@ -805,13 +807,13 @@ def main(argv=None) -> int:
                     "preference"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
                     "MHz per W; 95% one-sided profile-likelihood bound over "
-                    "the FULL archive (negative kappa is flat by construction: "
+                    "the FULL dataset (negative kappa is flat by construction: "
                     "the ramp model only broadens red)"])
         w.writerow(["S0_225mW_ub95", "primary", f"{ka * 0.225:.3f}", "",
-                    "MHz, transition axis; full-archive bound at the "
+                    "MHz, transition axis; full-dataset bound at the "
                     "campaign's maximum power"])
         w.writerow(["S0_270mW_ub95", "primary", f"{ka * 0.270:.3f}", "",
-                    "MHz; at the rehearsal's maximum power"])
+                    "MHz; at the evening session's maximum power"])
         w.writerow(["kappa_pred", "prediction", f"{KAPPA_PRED:.3f}", "",
                     f"MHz per W; the PREDICTED coefficient at the current "
                     f"priors (w0 = {C.W0_MEASURED_M * 1e6:.0f} um, rho = "
@@ -821,7 +823,7 @@ def main(argv=None) -> int:
         w.writerow(["kappa_ub95_camponly", "robustness", f"{ka_camp:.3f}", "",
                     "MHz per W; campaign rows of the same profile (power AND "
                     "temperature ladders), so the bound does not lean on the "
-                    "rehearsal's soft rate anchor"])
+                    "evening session's soft rate anchor"])
         w.writerow(["kappa_ub95_pladder", "robustness", f"{ka_pld:.3f}", "",
                     "MHz per W; campaign POWER-ladder rows only -- the M23 "
                     "trace set inside this fit, so the difference from the "
@@ -832,7 +834,7 @@ def main(argv=None) -> int:
                     "MHz per W; bound with the wing marginalized -- quote "
                     "alongside the primary, the gap IS the wing systematic"])
         w.writerow(["direction_dchi2_max", "robustness", f"{dir_delta:.2f}", "",
-                    "max |chi2 difference| between rehearsal axis directions "
+                    "max |chi2 difference| between evening-session axis directions "
                     "across the profile; small = indifferent"])
         w.writerow(["basin_gap_max", "robustness", f"{basin_gap:.2f}", "",
                     "chi2; worst (best cold chain - best seeded chain) over "
@@ -841,7 +843,7 @@ def main(argv=None) -> int:
         if np.isfinite(ka_d4192):
             w.writerow(["kappa_ub95_drop4192", "robustness", f"{ka_d4192:.3f}", "",
                         "MHz per W; 95% bound with peak 4192 dropped, which "
-                        "removes the ENTIRE pilot session -- the most "
+                        "removes the ENTIRE campaign-morning session -- the most "
                         "conservative subset"])
             w.writerow(["S0_225mW_ub95_drop4192", "robustness",
                         f"{ka_d4192 * 0.225:.3f}", "",
@@ -867,7 +869,7 @@ def main(argv=None) -> int:
                         "MHz; the same posterior expressed as a collisional "
                         "width at 130 C, comparable with M23's row"])
             w.writerow(["reh_rate", pk, f"{np.exp(q_a[I_REHRATE + k - 1]):.5f}", "",
-                        "MHz per ms, transition; fitted rehearsal scan rate"])
+                        "MHz per ms, transition; fitted evening-session scan rate"])
         for b in SL_BLOCKS:
             w.writerow(["sigma_laser_s", b, f"{q_a[I_SL + SL_IX[b] - 1]:.3f}", "",
                         "MHz, transition axis; session-block population mean"])
@@ -880,20 +882,20 @@ def main(argv=None) -> int:
                         f"prior toward the {blk} mean (err column: the "
                         f"deviation from it)"])
         w.writerow(["Vsat_agilent", "nuisance", f"{np.exp(q_a[I_VSAT_AG - 1]):.1f}", "",
-                    "V; detector saturation, campaign and pilot -- large = linear"])
+                    "V; detector saturation, campaign and campaign-morning -- large = linear"])
         w.writerow(["Vsat_lecroy", "nuisance", f"{np.exp(q_a[I_VSAT_LC - 1]):.1f}", "",
-                    "V; detector saturation, rehearsal"])
+                    "V; detector saturation, evening session"])
         _box = ("box = measured M26 value +/- 5 sigma"
                 if measured_pilot_scale() else "bounded [0.9, 1.1]")
         w.writerow(["pilot_rate_scale", "nuisance",
                     f"{np.exp(q_a[I_PILSCALE - 1]):.4f}", "",
-                    "pilot axis = campaign 4192 bracket rate x this factor, "
+                    "campaign-morning axis = campaign 4192 bracket rate x this factor, "
                     + _box])
         w.writerow(["n_traces", "camp_p/camp_t/reh/pil",
                     f"{len(camp_p)}/{len(camp_t)}/{len(reh)}/{len(pil)}", "",
                     f"{npts} points; canonical p_sweep / canonical t_sweep / "
-                    f"usable rehearsal ({n_corrupt} files corrupt or lineless) "
-                    f"/ pilot morning sweep. Rulers excluded (addendum 22)"])
+                    f"usable evening session ({n_corrupt} files corrupt or lineless) "
+                    f"/ campaign-morning sweep. Rulers excluded (addendum 22)"])
         w.writerow(["qc_gate_a1_examined", "count", f"{len(qc_examined)}", "",
                     "canonical RF-off traces carrying a hard QC flag, each "
                     "re-checked on its own fit window: "

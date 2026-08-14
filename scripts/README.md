@@ -48,12 +48,12 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | `run_fringe_tail.py` (M15) | the fringe-resolved tail of the standing-wave AC-Stark ramp into `fringe_tail.csv` |
 | `run_polarizability.py` (M16) | 5S and 6S dynamic polarizabilities, the independent difference recompute, and the first magic wavelengths, into `polarizability.csv` |
 | `run_resolving_power.py` (M17) | each observable's dynamic range over the temperature sweep divided by its scatter at fixed conditions, into `resolving_power.csv` |
-| `run_projections.py` | what a further campaign would buy, computed from the archive's own precision, into `projections.csv` |
+| `run_projections.py` | what a further campaign would buy, computed from the record's own precision, into `projections.csv` |
 
 ## Run on their own
 
 These are not in `run_all.sh`, either because they take too long, or because
-they read a session outside the frozen archive, or because they print a
+they read a session outside the frozen record, or because they print a
 diagnostic rather than write a table.
 
 | script | writes |
@@ -62,7 +62,7 @@ diagnostic rather than write a table.
 | `run_global_dataset_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_dataset_fit.csv` |
 | `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_dataset_fit_norulers.csv` |
 | `run_full_dataset_fit.py` (M28) | the M23 construction on the M25 data, into `full_dataset_fit.csv` |
-| `run_morning_ruler.py` (M26) | the pilot day's own frequency axis, from 27 recovered EOM traces, into `morning_ruler.csv` |
+| `run_morning_ruler.py` (M26) | the campaign morning's own frequency axis, from 27 recovered EOM traces, into `morning_ruler.csv` |
 | `run_wing_check.py` (M24) | whether the near-core asymmetry is a collisional wing, into `wing_check.csv`. Loads raw traces and takes several minutes |
 | `run_laser_history.py` (M20) | the laser frequency within each display epoch into `laser_history.csv` and `laser_history_structure.csv` |
 | `run_stark_centres.py` (M21) | what the line centres can and cannot say about the light shift, one row per drift form, into `stark_centres.csv` |
@@ -70,7 +70,7 @@ diagnostic rather than write a table.
 | `run_wavemeter_reconstruction.py` (M22) | the 2025-06-11 wavemeter record, digitised from its tracked photograph, into `wavemeter_reconstruction.csv` |
 | `run_drift_settling.py` | the lock disturbance against time, off the committed clock, printed rather than written |
 | `run_intrablock_trend.py` | whether the position scatter within a block is drift or jitter, printed rather than written |
-| `run_epoch_checks.py` | the pilot and prehistory cross-checks of the clock, the disturbance model and the cross-day calibration, printed, with nothing entering `results/` |
+| `run_epoch_checks.py` | the campaign-morning and 4 July cross-checks of the clock, the disturbance model and the cross-day calibration, printed, with nothing entering `results/` |
 | `run_polarizability_ladder.py` | the three-transition polarizability ladder, printed, plus `figures/fig9_polarizability_ladder.png` |
 | `run_s0_block_bootstrap.py` | the block bootstrap of the power-lever limit, one row per resample, under `private/run_logs/` rather than `results/` |
 | `run_cavity_scan.py` (M30) | the cavity-scan photograph digitised and integrated into `cavity_scan_integrals.csv`, the one result whose input is an image |
@@ -97,7 +97,7 @@ diagnostic rather than write a table.
 | `run_all.sh` | the whole chain: the twenty-five stages in dependency order, then the figures, the ledger and the status column |
 | `ci_gate.sh` | the pre-push checks, in the order and on the content continuous integration uses: `ruff` over the library, the scripts and the tests, then the full battery with the slow tests |
 | `verify_results_fresh.py` | re-runs each producer into `results/`, diffs what appears against what was committed, and restores the committed files afterwards. `--all` widens the set to the producers that need raw traces |
-| `import_data.py` | the one-time, idempotent import of the 2025 archive into `data_raw/`, deduplicating by MD5 and writing `MANIFEST.csv` |
+| `import_data.py` | the one-time, idempotent import of the 2025 dataset into `data_raw/`, deduplicating by MD5 and writing `MANIFEST.csv` |
 | `annotate_manifest_qc.py` | refreshes the `qc_reason` provenance column of `data_raw/MANIFEST.csv` in place, leaving the other columns untouched |
 | `check_release_notes.py` | the register checks applied to a release body or any other untracked prose, since a release body is not a tracked file and nothing else looks at it |
 | `publish_recovered.py` | copies the backup-recovered acquisitions into `data_recovered/` under hash-suffixed names, since nine of the original names collide with different bytes |
@@ -147,9 +147,9 @@ appeared in CLAIMS and the methods chapters, not writing them was the defect.
 
 Six need more than the traces. `run_stark_joint.py`,
 `run_global_dataset_fit.py`, `_m25_norulers.py`, `run_full_dataset_fit.py` and
-`run_epoch_checks.py` read the prehistory and pilot sessions, which sit outside
-the frozen archive and outside the repository, and `run_morning_ruler.py` reads
-the pilot tree. Given a missing tree each of them prints what it cannot find
+`run_epoch_checks.py` read the campaign-morning and 4 July sessions, which sit outside
+the frozen record and outside the repository, and `run_morning_ruler.py` reads
+the campaign-morning tree. Given a missing tree each of them prints what it cannot find
 and exits 0, so the committed CSV stays the record. `publish_recovered.py`,
 `build_clock_table.py` and `run_timestamp_audit.py` want the excluded backup
 copies in the same way.

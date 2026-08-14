@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-The pilot day's own frequency ruler, from 27 never-used EOM traces (M26).
+The campaign-morning day's own frequency ruler, from 27 never-used EOM
+traces (M26).
 
-WHY THIS EXISTS. The pilot session (2025-07-16) enters M23 and M25 through a
-frequency axis borrowed from the campaign: pilot rate = campaign 4192 rate
-times a fitted scale, boxed to [0.9, 1.1]. Both fits put the scale near 1.02
-anyway, but a fitted nuisance is an assumption wearing a posterior. The
-recovered pilot excluded holds 27 EOM ruler traces from the pilot day
-itself that no analysis had ever opened: two groups, "Def" (10 traces,
-three columns, the 1.92 V piezo ramp co-recorded beside the signal) and
-"Initial attempts" (17 traces, two columns, a coarser 1 ms time base). They
-are Agilent-format 2000-point files, so the archive's own seven-tooth comb
-machinery (M2, `rb5s6s.ruler.fit_comb`) fits them unchanged.
+WHY THIS EXISTS. The campaign-morning session (2025-07-16) enters M23 and
+M25 through a frequency axis borrowed from the campaign: campaign-morning
+rate = campaign 4192 rate times a fitted scale, boxed to [0.9, 1.1]. Both
+fits put the scale near 1.02 anyway, but a fitted nuisance is an assumption
+wearing a posterior. The recovered campaign-morning excluded holds 27 EOM
+ruler traces from the campaign-morning day itself that no analysis had ever
+opened: two groups, "Def" (10 traces, three columns, the 1.92 V piezo ramp
+co-recorded beside the signal) and "Initial attempts" (17 traces, two
+columns, a coarser 1 ms time base). They are Agilent-format 2000-point
+files, so the record's own seven-tooth comb machinery (M2,
+`rb5s6s.ruler.fit_comb`) fits them unchanged.
 
 WHAT IT MEASURES. Per trace: the comb spacing Delta and the laser-axis rate
 6.25/Delta. Per group: the inverse-variance rate with PDG scatter inflation,
@@ -22,12 +24,14 @@ and not used for the scale: its name, its different time base, and its "adj"
 subseries all say the configuration was still being adjusted.
 
 CROSS-DAY CAUTION, inherited from run_epoch_checks check 3: a ruler measures
-its OWN day's scan configuration. These traces are the pilot day's, which is
-exactly why they are usable for the pilot axis and would not be for anything
-else. The earlier ACF estimate on the Def combs (tooth period 144.2(11) ms)
-was a seed; this module replaces it with the constrained comb fit.
+its OWN day's scan configuration. These traces are the campaign-morning
+day's, which is exactly why they are usable for the campaign-morning axis
+and would not be for anything else. The earlier ACF estimate on the Def
+combs (tooth period 144.2(11) ms) was a seed; this module replaces it with
+the constrained comb fit.
 
-Needs the pilot excluded tree (private, read in place, never copied).
+Needs the campaign-morning excluded tree (private, read in place, never
+copied).
 Without it the committed results/morning_ruler.csv is the record; exits 0.
 RB5S6S_SESSION_20250717_DIR is needed only to re-run this script against that private
 working copy, and the committed CSVs are what the repository ships.
@@ -70,8 +74,9 @@ def load_trace(path: Path):
 
 
 def campaign_4192_rate() -> float:
-    """The campaign 4192 P-session rate the pilot axis is scaled against,
-    combined from its two brackets exactly as load_t_rates does (laser axis)."""
+    """The campaign 4192 P-session rate the campaign-morning axis is scaled
+    against, combined from its two brackets exactly as load_t_rates does
+    (laser axis)."""
     rows = [r for r in csv.DictReader(open(C.RESULTS_DIR / "ruler_blocks.csv"))
             if r["session"] == "P" and r["peak"] == CAMPAIGN_4192_KEY]
     rates = [float(r["rate"]) for r in rows]
@@ -80,8 +85,9 @@ def campaign_4192_rate() -> float:
 
 def main() -> int:
     if not QP.is_dir():
-        print(f"pilot excluded not on this machine ({QP}) -- the committed "
-              f"results/morning_ruler.csv is the record; nothing to do.")
+        print(f"campaign-morning excluded not on this machine ({QP}) -- "
+              f"the committed results/morning_ruler.csv is the record; "
+              f"nothing to do.")
         return 0
 
     out_rows = []

@@ -7,7 +7,7 @@ RETRACTED AND REBUILT, 2026-07-29. The first version of this module referenced
 peak positions to a PER-SESSION mean and reported a ~22-hour, 65 MHz
 peak-to-peak reconstruction of the laser's frequency. That number was the scope's
 HORIZONTAL KNOB, not the laser. Two measurements settle it, both from the
-archive alone:
+dataset alone:
 
 1. The exported time axis is WINDOW-referenced, not trigger-referenced. Each
    file's first sample time (now recorded as qc's window_start_ms) is a discrete
@@ -73,7 +73,7 @@ WHAT THIS IS FOR, and it is not decoration.
 3. AND THAT ROLL-OFF IS A SYSTEMATIC, not just a curiosity. If the optical span
    depends on sweep speed, then MHz/ms depends on sweep speed, and any campaign
    that changes the sweep rate while assuming one frequency calibration
-   mis-scales every linewidth it reports. This archive is protected by accident
+   mis-scales every linewidth it reports. This dataset is protected by accident
    -- the EOM ruler measured the rate per block rather than assuming it -- but
    the protection is invisible until the roll-off is characterised, and a future
    experimenter has no way to know how fast is too fast.
@@ -93,7 +93,7 @@ IS THE RECONSTRUCTION REAL? Yes, and it is tested here rather than asserted. A
 curve like this could be nothing but per-trace scatter dressed up as history, so
 `structure_function` measures how the disagreement between two traces of the
 SAME line grows with the time between them. Per-trace noise would give a flat
-curve. The archive gives:
+curve. The dataset gives:
 
     < 30 s   5.0 MHz        2-10 min  11.6 MHz       > 1 h   10.7 MHz
     30-120 s 8.5 MHz        10-60 min 13.5 MHz
@@ -108,7 +108,7 @@ Two consequences fall out of it, neither of which was available before.
   DIFFERENT lines never agree better than ~10 MHz however close in time
   (1.06x growth across every separation bin). That is not a defect: the closest
   any two lines were ever acquired is 6.6 minutes, which is already past the
-  correlation time above. The archive simply cannot cross-check itself this way.
+  correlation time above. The dataset simply cannot cross-check itself this way.
 * The blocks are 54-76 minutes apart, so the laser was FULLY DECORRELATED
   between them. That is an independent, physical justification for the M4b
   choice not to share sigma_laser across temperature -- previously argued from
@@ -146,7 +146,7 @@ Stark pull and the centre channel becomes independent evidence rather than a
 weaker copy of the width channel. It costs nothing but the order of the knob
 turns.
 
-WHAT THE ARCHIVE ALREADY SETTLES ABOUT THAT ROLL-OFF: nothing, and the null is
+WHAT THE DATASET ALREADY SETTLES ABOUT THAT ROLL-OFF: nothing, and the null is
 worth recording. The 2025 campaign used one sweep speed. Across the +-6% of rate
 actually sampled, rate shows no correlation with the sideband width
 (corr = -0.07, p = 0.49), so the corner frequency is not inside that range.
@@ -260,7 +260,7 @@ def structure_function(rows: list[dict], same_peak: bool = True,
     The test that separates a real frequency history from per-trace scatter: a
     reconstruction that is only noise gives a FLAT curve, while a genuine drift
     gives one that rises and then saturates at the full excursion. `same_peak`
-    compares traces of one line (probing short lags, where the archive has
+    compares traces of one line (probing short lags, where the dataset has
     ~10 s bursts); False compares different lines, which the acquisition
     pattern leaves no closer than 6.6 minutes.
 
@@ -272,7 +272,7 @@ def structure_function(rows: list[dict], same_peak: bool = True,
     same scale. This test cannot distinguish drift from intervention, so it is
     now only asked the question it can answer -- whether the WITHIN-epoch
     reconstruction is time-correlated rather than per-trace scatter. That costs
-    the long-lag bins, which is honest: nothing in the archive constrains them.
+    the long-lag bins, which is honest: nothing in the dataset constrains them.
     """
     import itertools
     out = []

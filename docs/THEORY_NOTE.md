@@ -11,7 +11,7 @@ line, and how much of that is new?
 **Gives.** The ramp law and its cumulants, the diverging-beam form and its sign
 flip, the two width companions, the open sign disagreement on the
 polarizability, and an explicit position against the nearest prior art.
-**Skip if.** You want the archival result. This is the theory behind it, and
+**Skip if.** You want the recorded result. This is the theory behind it, and
 its central quantity is below the 2025 noise floor.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
@@ -41,7 +41,7 @@ natural place for a contribution.
 |---|---|
 | the derivation and its moments | §2 |
 | whether atomic motion destroys it | §2.1 |
-| why a light shift is measurable from a drifted archive | §3 |
+| why a light shift is measurable from a drifted dataset | §3 |
 | what the 2025 data actually returned | §4 |
 | the intensity convention, and the $\Delta\alpha$ sign dispute | §5 |
 | what is new here and what is not | §6 |
@@ -129,12 +129,12 @@ cliff regime, where the shift greatly exceeds the linewidth. That is a
 legitimate measurement of a shift and a poor one of anything needing a narrow
 line. `FUTURE_TRANSITIONS_titsapph.md` section 3.5 carries the numbers.
 
-### 2.0a The exponent is a weak-field statement, and the archive is near its edge
+### 2.0a The exponent is a weak-field statement, and the dataset is near its edge
 
 ![the weak-field limit and what leaving it costs the predicted skewness](../figures/fig24_weak_field_limit.png)
 
 *The whole section in one picture. On the left, the weight the atom actually
-carries against the square law that replaces it, with the archive and the
+carries against the square law that replaces it, with the dataset and the
 proposed tight focus marked. The two markers are a fourfold change in waist,
 which is a 256-fold change in the saturation parameter against a 16-fold change
 in the shift, because one goes as the fourth power of the inverse waist and the
@@ -153,7 +153,7 @@ slope in intensity falls below $n$, and **the whole family above moves with it**
 $g_1$ shrinks toward its $n=1$ value of zero.
 
 This matters because $s$ scales as the FOURTH power of the inverse waist. At
-the archive's measured 64 µm and 225 mW it is 0.033, so the weak-field law is
+the dataset's measured 64 µm and 225 mW it is 0.033, so the weak-field law is
 good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
 weight instead moves the predicted axial skew from $-0.36$ to $-1.07$. So the
@@ -161,7 +161,7 @@ committed axial machinery, which takes an integer photon order, is being asked
 a question outside its range at exactly the configuration that was chosen to
 make the skew large.
 
-The archival results are unaffected and the design conclusion is not.
+The recorded results are unaffected and the design conclusion is not.
 [notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
 carries the table and what the machinery needs before that waist is chosen
 deliberately.
@@ -245,7 +245,7 @@ it produces, drawn at $S_0=3$ MHz so the asymmetry is visible.*
 
 ## 3. The drift-immune method
 
-The 2025 archival line walked at the MHz scale between scans, with hand
+The 2025 recorded line walked at the MHz scale between scans, with hand
 re-centrings riding a held-lock drift bounded at order 0.02 MHz/min on the
 laser axis, sign undetermined (`APPARATUS.md` §6). Absolute line **centres**
 are therefore dead, and a fit must give each scan its own free centre to absorb
@@ -253,7 +253,7 @@ that motion.
 
 That has a sharp consequence for the ramp. Its first-order effect is a shift of
 the line, the centroid pull $-\tfrac23 S_0$, and a shift is exactly what a
-per-scan free centre absorbs. In the drifted archive the pull is degenerate
+per-scan free centre absorbs. In the drifted dataset the pull is degenerate
 with the drift and is not a usable handle on $S_0$. What survives is the ramp's
 **shape asymmetry**, which no free centre can absorb because it is not a
 translation. That is the drift-immune observable and the methodologically
@@ -282,7 +282,7 @@ component cannot produce asymmetry at any width. The ramp is the *only*
 asymmetric factor in the model, so the fitted asymmetry coefficient does not
 trade against $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or
 the transit width, which is the four-way degeneracy that dominates the width
-channel and that M9 and M4c spend their effort on. (Stated as symmetry rather
+channel and that M9 and M4c work on. (Stated as symmetry rather
 than as $\kappa_3 = 0$. Cumulants are additive under convolution and vanish for
 symmetric factors, but a Lorentzian has no finite third moment, so symmetry is
 the property the fit actually uses. This is the same reason the extraction is a
@@ -321,10 +321,10 @@ this is small, but because the asymmetry is itself small it must be
 than the timescale argument alone (`tests/test_intrascan_drift.py`). The drift
 is injected into a synthetic scan and the asymmetry recovered through the same
 free-centre fit, so the linear sweep warp lands in the fitted width and only
-the residual curvature can skew. At the archival within-scan drift the fitted
+the residual curvature can skew. At the dataset's within-scan drift the fitted
 ramp coefficient shifts by well under a fifth of its SNR-limited statistical
 error, a few $\times 10^{-3}$ on $S_0$ for the dominant linear part, and
-reaches order $S_0$ only at tens of times the archival rate. The within-scan
+reaches order $S_0$ only at tens of times the dataset's rate. The within-scan
 skew is therefore bounded and small, not unmodelled.
 
 **Status.** In the 2025 sweep the fitted asymmetry coefficient is consistent
@@ -332,7 +332,7 @@ with zero. At $\le225$ mW its significance (the skew grows only as $S_0^3$)
 sits below the SNR $\approx130$ floor, so the estimator, correct as it is,
 returns an **upper bound, not a detection**. A fit always returns *some* value
 with an error bar, and the discipline is to report a bound unless it clears
-that bar, which at archival intensity it does not.
+that bar, which at the dataset's intensity it does not.
 
 A fixed-lock session would change this two ways. The fixed lock would recover
 the first-order pull ($-\tfrac23 S_0 \propto P$, a shift of order MHz against a
@@ -365,19 +365,19 @@ variance and skew are jointly consistent with one triangular ramp of amplitude
 $S_0(P)$". The extraction stays single: one fitted profile per condition and
 three functionals of it, never several estimators of one moment.
 
-## 4. What the archive returns
+## 4. What the dataset returns
 
-At fixed density the archive tests the *convention-free* content, and is
+At fixed density the dataset tests the *convention-free* content, and is
 consistent with it. Across a $9\times$ power sweep the linewidth is flat to
 $\lesssim2$% (the ramp adds variance $\propto S_0^2$, negligible against the
 5 MHz budget), and the amplitude scales as $P^{2}$ (log-log slopes 1.83 to
-2.12). The asymmetry is predicted below the archival noise and is not detected,
+2.12). The asymmetry is predicted below the dataset's noise and is not detected,
 as designed.
 
 That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the
 four peaks' width-against-power (`stark.fit_stark_sweep`, M4e) turns it into a
 quantitative upper bound of $0.64$ MHz on $S_0$ at 225 mW (95%, profile
-likelihood). The fitted value is consistent with zero, so the archive
+likelihood). The fitted value is consistent with zero, so the dataset
 *brackets* the predicted $0.35$ MHz (§5) without resolving it. It is a bound
 for the same two-epoch reason as everything else here. The drifted lock
 destroys the centres, the pull $\propto S_0$ is absorbed by each trace's free
@@ -401,19 +401,20 @@ $|S_0(225\ \text{mW})|$ below $9.49$, $14.57$, $17.65$ MHz for linear, one-expon
 two-exponential drift. Tagged NULL. Earlier versions of this bound ($3.5$ MHz
 in addendum 6, $5.4$ MHz under addendum 7's mixture, $7.3$ MHz in M20) were
 tighter only because they differenced centres across horizontal-position moves,
-and are withdrawn. The width-and-shape channel is the archive's only
+and are withdrawn. The width-and-shape channel is the dataset's only
 light-shift channel.
 
 That was re-examined in full on 2026-08-10, since the centre carries the pull
-linearly and is worth several tries. It cannot be recovered from this archive,
+linearly and is worth several tries. It cannot be recovered from this dataset,
 and each session refuses for its own reason. The campaign's three multi-power
 epochs run strictly downward in power with time, so drift and pull share one
-regression column. The pilot's power order *is* scrambled and would forecast
-0.87 MHz/W, but its window setting moves at exactly the transition carrying the
-lever, which projects to a frame systematic eleven times the statistical error.
-And the rehearsal, whose alternating ladders are the design the campaign lacked,
-cannot fix its own frequency origin, because each 5 s record contains one
-crossing of the line and not the mirror pair a self-referenced apex would need.
+regression column. The campaign-morning session's power order *is* scrambled
+and would forecast 0.87 MHz/W, but its window setting moves at exactly the
+transition carrying the lever, which projects to a frame systematic eleven
+times the statistical error. And the 4 July evening session, whose
+alternating ladders are the design the campaign lacked, cannot fix its own
+frequency origin, because each 5 s record contains one crossing of the line
+and not the mirror pair a self-referenced apex would need.
 Every obstruction is the same shape, no frequency reference independent of the
 knobs, which promotes the unexported ramp-monitor channel from a convenience to
 the precondition for this channel existing.
@@ -421,7 +422,7 @@ the precondition for this channel existing.
 carries the forecasts and the arithmetic.
 
 Through the §5 convention the M23 bound maps to a $\Delta\alpha$ bracket below
-the computed $1093$ at the measured $w_0=64$ µm, so the archive constrains
+the computed $1093$ at the measured $w_0=64$ µm, so the dataset constrains
 the $(\Delta\alpha,\ \text{intensity})$ pair rather than either alone. The
 prior is now the lineage measurement itself (§5), a direct test rather than an
 inference pointing at an external number. Two documented effects push the
@@ -429,7 +430,7 @@ inference pointing at an external number. Two documented effects push the
 aperture, and imperfect superposition of the retro beam. The replaced
 readings of this bracket (271 a.u. at the old 50 µm prior, about 1200 from the
 width-only bound, about 5800 from a Wald interval with no coverage at the rail)
-live in the audit record. The archive does not adjudicate $\Delta\alpha$
+live in the audit record. The dataset does not adjudicate $\Delta\alpha$
 itself, since the mapping inherits $w_0$. A fixed lock would measure the pull
 $\propto S_0$ directly at a small waist, turning this bracket into the
 coefficient.
@@ -441,7 +442,7 @@ coefficient.
 *The second companion is the one that needs a picture. Every real 6S decay
 cascades through 5P, and the 5P decay does not preserve $F$, so an atom that
 decays mid-crossing can land in the other ground state. It is then off
-resonance by the ground hyperfine splitting, which this archive resolves as two
+resonance by the ground hyperfine splitting, which this dataset resolves as two
 of its own four lines, so the branch is an exit rather than a detuning. The
 middle panel is how often that happens on one crossing. The right panel is the
 point of the section: of the three terms that grow as the square of the power,
@@ -492,7 +493,7 @@ knobs, which is why no sweep can break it.** All three terms grow as $P^2$, and 
 also grow as the inverse fourth power of the waist: the ramp because its width
 increment goes as $S_0^2$ and $S_0$ goes as $w_0^{-2}$, the companions because
 $s$ carries $\Omega^2$ and $\Omega$ is two-photon. So neither a power sweep
-nor a change of focus can separate them, and the archive's inability to do so
+nor a change of focus can separate them, and the dataset's inability to do so
 is structural rather than a matter of statistics. What does separate them is a
 channel the companions do not feed: they broaden the line without moving it,
 while the ramp pulls the centroid by $\tfrac23 S_0$. That channel is the
@@ -500,7 +501,7 @@ centroid pull, and reaching it is the fixed lock's job, which is the same
 conclusion §3 reaches from the other direction.
 
 **There is a second separator, and it is a discrete one (2026-08-10).** The
-ramp and the saturation are identical on all four archive lines, because the
+ramp and the saturation are identical on all four dataset lines, because the
 two-photon Rabi frequency is $F$-independent here and the hyperfine factor is
 exactly 1 (`constants.ABUNDANCE_RB85`). The pumping is not. Its branching is
 the branching of the cascade into the ground level NOT being driven. Because
@@ -544,7 +545,7 @@ for all four lines and both isotopes.*
 
 So the pumping companion carries a per-line signature that
 neither of the other two has, a lever of 1.67 between the extreme lines. In this
-archive it is 3.1 kHz of width at the committed $S_0(225)$ bound of 0.217 MHz,
+dataset it is 3.1 kHz of width at the committed $S_0(225)$ bound of 0.217 MHz,
 rising to 4.4 kHz at the joint bound and 7.8 kHz at the predicted $S_0$, against
 an 88 kHz single-block scatter. It cannot be spent at any of the three. It is stated because it is the only separation found that does not require
 a lock, and because it retires the $1/3$ to $2/3$ bracket §4.1 was carrying,
@@ -552,7 +553,7 @@ downward: the lower two lines fall below that bracket.
 
 The separation was preregistered and run, and it returns **less than the
 scatter argument predicts**. Comparing the lever against 88 kHz treats $S_0$ as
-though it sat at one of those three values. It does not. This archive bounds
+though it sat at one of those three values. It does not. This dataset bounds
 $S_0$ from above, zero is inside the bound, and the companion is proportional to
 it, so a fit that is free to choose sets $S_0$ to zero and switches the
 companion off. The scale it multiplies is then unidentifiable rather than
@@ -667,10 +668,10 @@ $\Delta\alpha$ that sets the light shift, so it is a term to keep rather than a
 term to neglect. Section 5.2 quantifies the rest of what a third 993 nm photon does.
 
 So $\Delta\alpha=\alpha_{6S}-\alpha_{5S}$
-is negative and the light shift of the transition is **blue**, not red. Every archival
-result is sign-immune (C3c is a symmetric null, and C3d and the prediction band
-use $|\Delta\alpha|$), but the fixed-lock *pull direction* and the ramp's
-stated side depend on it. The discrepancy with Orson's printed
+is negative and the light shift of the transition is **blue**, not red. Every
+recorded result is sign-immune (C3c is a symmetric null, and C3d and the
+prediction band use $|\Delta\alpha|$), but the fixed-lock *pull direction*
+and the ramp's stated side depend on it. The discrepancy with Orson's printed
 $\alpha_{56}=-1093$ is flagged for adjudication, and the decisive check is one
 line for a theorist: the sign of $\alpha_{6S}$ at 993 nm.
 
@@ -773,7 +774,7 @@ Recorded because it is testable.
 
 ### 5.0.4 What resolves it
 
-Every archival result uses $|\Delta\alpha|$ and is unaffected either way.
+Every recorded result uses $|\Delta\alpha|$ and is unaffected either way.
 Orson's own AC-Stark measurement was a null at 6 MHz resolution, so the sign
 has never been set by experiment. A fixed-lock pull measurement (the sign of
 the shift-versus-power slope) settles it outright, and until then the

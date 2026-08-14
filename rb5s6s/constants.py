@@ -13,7 +13,7 @@ House rules
 
   - ``ESTABLISHED``   published/cited value, or an apparatus fact verified by
                       the experimenter (photos, datasheets, direct confirmation)
-  - ``MEASURED-HERE`` extracted from the 2025 archival CSVs by this pipeline
+  - ``MEASURED-HERE`` extracted from the 2025 dataset's CSVs by this pipeline
   - ``CALCULATED``    derived; the derivation is stated where first used
   - ``ENVELOPE``      order-of-magnitude; must be re-derived before publication
   - ``OPEN``          not yet settled; must never reach a published number
@@ -246,7 +246,7 @@ Galvan et al. 2008's 239.18(3) MHz). 6S splitting F=3-F=2 = 3A = 717.195(3) MHz
 (I=5/2)."""
 
 # --------------------------------------------------------------------------
-# AC-Stark / polarizability (fixed-lock physics; archival *prediction* only)
+# AC-Stark / polarizability (fixed-lock physics; 2025 *prediction* only)
 # --------------------------------------------------------------------------
 DELTA_ALPHA_AU = 1093.0
 """alpha(6S) - alpha(5S) at 993 nm, atomic units. SOURCED (2026-07-13) to Orson
@@ -282,7 +282,7 @@ with I_eff = (1+rho) * 2P/(pi w0^2) the TIME-AVERAGED on-axis intensity
    S0(225 mW, w0=16 um, rho=0.94) = 5.56 MHz transition (why the fixed-lock
    session's small waist makes the skew, ~S0^3, measurable). See
    stark_shift_S0_mhz().
-The archival ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
+The 2025 ramp SHAPE is convention-free regardless: f(s) ∝ |s| on [-S0,0];
 mean pull -(2/3) S0; third cumulant +S0^3/135 (the fringe-mean, focal Z->0 limit;
 the small-waist collection geometry and the fringe tail below both modify the
 skew -- see stark_ramp_axial and fringe_tail).
@@ -299,7 +299,7 @@ s -> s(1+x) with x arcsine (mean 0), so it leaves the mean but SUPPRESSES the ra
 skew -- kappa3 -> S0^3 (1/135 - f_res*sigma_x^2/5) (= 1/135 - f_res/10 at rho=1),
 a -13.5*f_res*contrast^2 fractional leverage (contrast = 2 sqrt(rho)/(1+rho); only
 the product P = f_res*sigma_x^2 is observable). It is negligible at the w0=64 um
-prior, where the whole ramp skew is below the archival noise anyway, and material
+prior, where the whole ramp skew is below the 2025 noise anyway, and material
 at w0=16 um, where it is SAME-SIGN-additive to the larger beam-divergence
 correction (stark_ramp_axial) -- the two must be fit JOINTLY at the small waist.
 Its SIZE is not restated here. rb5s6s/fringe_tail.py computes it and
@@ -388,7 +388,7 @@ Nieddu 2019 quotes the identical 128 um on the previous laser, a Coherent
 MBR 110. Two profiler measurements, one configuration, agreeing.
 
 What this dataset does NOT do is re-measure it. The transit-against-laser-width
-degeneracy means the archival line cannot pin w0 on its own, which is a
+degeneracy means the 2025 line cannot pin w0 on its own, which is a
 statement about this dataset and not about the value. The knife-edge scan of a
 fixed-lock session would measure it here as well as in the lineage.
 
@@ -400,7 +400,7 @@ already OVERSHOOTS the observed ~5.25 MHz line (natural(x)transit = 5.64 > 5.25)
 BEFORE any laser or collisional width -- so w0 = 32 um is EXCLUDED. The observed
 width is consistent with w0 ~= 45-70 um (hard floor ~38 um); 50 um was the central value before the lineage measurement was found. That
 intermediate step was an inference from our own line rather than a
-measurement: the transit<->sigma_laser degeneracy means the archival line cannot
+measurement: the transit<->sigma_laser degeneracy means the 2025 line cannot
 pin w0 on its own -- that is exactly what the knife-edge measurement settles. (The
 Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, attributed to
 "the EOM aperture" clipping the beam. That attribution is now sourced rather
@@ -440,7 +440,7 @@ Five years of possible realignment separate the two benches as well. Hence
 W0_BAND_M below is centred on 64 um and the residual effects are recorded
 as biasing the effective value high rather than low.
 
-The archive's own light-shift data agree: the three-session bound (M23) sits
+The dataset's own light-shift data agree: the three-session bound (M23) sits
 BELOW the prediction at every subset, which is what a larger waist (lower
 intensity) produces. The knife-edge measurement in a fixed-lock session
 remains the way to measure THIS beam; it is now confirmatory rather than the
@@ -458,13 +458,13 @@ both bias the EFFECTIVE waist upward, and -2/+4 um about 64 keeps that lean.
 Single source for w0-conditional prediction bands (e.g. stark.fit_stark_sweep),
 so the band is never hand-typed downstream.
 
-NARROWED 2026-08-10, owner instruction, from (60, 70) um. Every quantity that
+NARROWED 2026-08-10, experimenter instruction, from (60, 70) um. Every quantity that
 reads this constant moves with it, which is the point of there being one
 source: the S0 prediction band, the laser-epoch band and the beta w0
 systematic in lever_crosscheck all recompute. It does NOT touch the central
 value, so no headline bound moves. The transit-inferred 45-70 um quoted in
 W0_MEASURED_M's note above and in transit_mc is a DIFFERENT quantity, what the
-archive's own line can accommodate with no external input, and it is kept as
+dataset's own line can accommodate with no external input, and it is kept as
 the historical inference it is rather than overwritten by this band."""
 
 RHO_RETRO = 0.94

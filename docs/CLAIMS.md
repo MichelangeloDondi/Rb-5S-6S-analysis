@@ -1,6 +1,6 @@
 # Claims
 
-What this archive establishes, what it deliberately does not claim, and what
+What this record establishes, what it deliberately does not claim, and what
 a further measurement campaign would convert or add. The bound values quoted
 here sit under the same canonical-number guard that checks the front door
 against the committed CSVs. Details and derivations:
@@ -9,7 +9,7 @@ for context, [PLAN.md](PLAN.md) for the proposed session,
 [PREREGISTRATION_RESULTS.md](PREREGISTRATION_RESULTS.md) for everything
 that was withdrawn along the way and why.
 
-**The question.** What does this archive claim, what does it refuse to claim,
+**The question.** What does this record claim, what does it refuse to claim,
 and what would a further campaign convert?
 **Takes.** Nothing, though [BIG_PICTURE.md](BIG_PICTURE.md) supplies the
 context each claim sits in.
@@ -27,7 +27,7 @@ stated power, the "ramp" is the closed-form distribution of light shifts a
 focused beam imprints on a two-photon line, and the transition axis is the
 two-photon sum frequency, twice the laser frequency.
 
-## 1. What the 2025 archive establishes
+## 1. What the 2025 record establishes
 
 **Bounds** (95%, each with its own conditionality stated):
 
@@ -63,7 +63,7 @@ two-photon sum frequency, twice the laser frequency.
   resolved laser physics, and they are quoted as the working range, not
   as a result.
 - The ramp asymmetry: the skew channel sits below the noise floor at the
-  campaign maximum of 225 mW, so what the archive carries is an upper
+  campaign maximum of 225 mW, so what the record carries is an upper
   bound consistent with zero rather than a quoted interval. The centroid
   pull is a separate channel, and every scan carrying a free centre
   absorbs the first-order shift, which leaves the pull uninformative
@@ -183,8 +183,8 @@ systematic as fig1.*
 
 - The lineshape-as-shift-map frame is not new: it is the 1980
   multifrequency-field review of Delone, Kovarskii, Masalov and
-  Perel'man, and this archive's core relation reduces exactly to their
-  Eq. (5.3). What this archive adds is the closure of that frame for a
+  Perel'man, and this record's core relation reduces exactly to their
+  Eq. (5.3). What this record adds is the closure of that frame for a
   focused beam, where the shift distribution is fixed by geometry
   rather than by unknown field statistics: a closed-form distribution,
   analytic cumulants on bounded support, and a third cumulant that a
@@ -198,7 +198,7 @@ systematic as fig1.*
   coverage tested on synthetic truth, and a preregistered audit trail
   in which twenty-seven dated addenda record every claim that was
   withdrawn, corrected, or downgraded, including the local minimum retraction
-  of this archive's own headline light-shift bound.
+  of this record's own headline light-shift bound.
 
 ## 2. What is not claimed
 
@@ -217,23 +217,23 @@ systematic as fig1.*
   this level structure
   ([docs/notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)).
 - No bound on the size of the hyperfine-pumping companion, and none is
-  obtainable from this archive. The construction that would separate it
+  obtainable from this dataset. The construction that would separate it
   from the other two, a joint fit over the four lines with the branching
   fractions held fixed and one free scale, was preregistered and run. It
   returns nothing, because that scale enters only as a multiple of the
-  light shift and this archive bounds the light shift rather than
+  light shift and this record bounds the light shift rather than
   measuring it, so the fit switches the companion off and reports the
   same chi-squared at every scale. The precondition for spending the
   per-line lever is therefore a positive detection of the shift, not a
   smaller block scatter
   ([the refit's postscript](notes/companion_inclusive_refit_prereg.md)).
 - No claim on the line centre. The channel that would read the shift
-  directly off the peak position is closed for this archive and the
+  directly off the peak position is closed for this dataset and the
   closure is quantified rather than asserted, because the campaign ran
-  its powers in monotonic order, the pilot's own frame moves with power
-  at nine times the statistical error, and the rehearsal has no mirror
-  pair to calibrate against. Reopening it needs a ramp-monitor export
-  and not a better estimator
+  its powers in monotonic order, the campaign-morning session's own
+  frame moves with power at nine times the statistical error, and the
+  4 July evening session has no mirror pair to calibrate against.
+  Reopening it needs a ramp-monitor export and not a better estimator
   ([docs/notes/centre_channel_cannot_be_revived.md](notes/centre_channel_cannot_be_revived.md)).
 - No claim that 993 nm competes with the 778 nm two-photon reference.
   On natural linewidth it starts an order of magnitude behind.
@@ -256,11 +256,11 @@ systematic as fig1.*
   bound. The contributions from higher even-parity states and from the
   two-photon continuum are carried at order of magnitude only.
 - No claim that the multi-line projections of section 3 hold at the
-  archive's own drive power on every rung. Two of the three ceil below
+  dataset's own drive power on every rung. Two of the three ceil below
   it, and the delivered precisions are quoted at both readings.
 - No temperature and no retro ratio measured from the Doppler pedestal
   here. The 2025 windows are a tenth of the pedestal width, so the
-  archive holds a flat offset and not a shape, and section 3's pedestal
+  dataset holds a flat offset and not a shape, and section 3's pedestal
   figures are projections for a wide scan nobody has taken.
 
 ## 3. What another campaign would convert or add
@@ -269,7 +269,7 @@ Everything in this section is proposed, not scheduled. Verbs are
 conditional on the sessions happening. Each figure below is a
 projection, not a result. They are computed in
 [scripts/run_projections.py](../scripts/run_projections.py) from the
-archive's own measured precision and the session parameters
+dataset's own measured precision and the session parameters
 [PLAN.md](PLAN.md) states, and every one of them travels with its
 assumption set in [results/projections.csv](../results/projections.csv).
 
@@ -277,7 +277,7 @@ assumption set in [results/projections.csv](../results/projections.csv).
 run) would collapse the transit-laser degeneracy, sharpen the
 waist-conditional statements in place, and put the laser-width range on
 a measured geometry. It is the cheapest single improvement to the
-existing archive, specified in [PLAN.md](PLAN.md). Combined with the
+existing record, specified in [PLAN.md](PLAN.md). Combined with the
 differential transit width of [PLAN.md](PLAN.md) §5, the projection is
 an intensity axis good to about 15 percent, which is then the floor
 under every absolute coefficient below, conditional on the knife-edge
@@ -295,7 +295,7 @@ would add:
   is 0.09 MHz on S₀(225 mW), which would detect a shift of the predicted
   size at 3.8 sigma and separate the two disputed polarizability signs at
   8 sigma if the shift is that size, conditional on the lock holding to
-  the archive's own measured held-lock rate rather than to any borrowed
+  the dataset's own measured held-lock rate rather than to any borrowed
   cavity figure. Which sign the pull has needs no intensity calibration
   at all. How far apart the two signs sit does, since a common scale
   error moves both predictions together. One hour rather than one morning
@@ -305,9 +305,10 @@ would add:
   channel across density.
 - β_self as a measurement rather than a bound, from same-session
   150-170 °C points interleaved against the block scatter that
-  co-limits the archival lever. The projection, on five temperature
-  blocks per peak reaching 170 °C with the block scatter cut fourfold,
-  is the expected 3.4 kHz per 10¹² cm⁻³ rate resolved at about 10 sigma,
+  co-limits the dataset's density lever. The projection, on five
+  temperature blocks per peak reaching 170 °C with the block scatter
+  cut fourfold, is the expected 3.4 kHz per 10¹² cm⁻³ rate resolved
+  at about 10 sigma,
   and 3 sigma if the block scatter is not cut, so the interleaving and
   the temperature reach are co-limiting rather than one refining the
   other. Resolving the rate is not the same as knowing it: the
@@ -317,7 +318,7 @@ would add:
 - A demonstration of the drift-immune third-cumulant readout, under a
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about sixteenfold over
-  the archival 64 µm waist, fourteenfold over the planned 60 µm), which
+  the dataset's 64 µm waist, fourteenfold over the planned 60 µm), which
   the plan carries as a second-stage item, and the cumulant's sign
   depends on collection geometry that would have to be measured in the
   same session. The fixed lock alone does not reach this. The size of
@@ -336,7 +337,7 @@ would add:
   parameter carries the two-photon Rabi frequency squared, so it grows as the
   fourth power of the inverse waist while the shift grows only as the second,
   and the weak-field limit is left long before the shift becomes large. The
-  archive's own configuration, on the left of each panel, sits where the two
+  dataset's own configuration, on the left of each panel, sits where the two
   treatments agree to a couple of per cent.*
 
 **A tunable-drive campaign (options map, not a plan)**, mapped in
@@ -353,7 +354,7 @@ Across three or more rungs the per-line coefficients would become scaling
 laws in the principal quantum number, which discriminate a calculation
 more sharply than any single coefficient does.
 
-Three projections size that campaign, each conditional on the archive's
+Three projections size that campaign, each conditional on the dataset's
 own per-block width precision and ruler axis carrying over unchanged to
 the new line. Separating the two published 7S rates at five sigma needs
 37 kHz per mTorr, and the same five-block design that converts β_self
@@ -370,19 +371,19 @@ of that span,
 and it would need the perturbing beam mode matched to the drive before
 the closed-form shift distribution applies at all.
 
-Those three projections assume the drive can run at the archive's own
+Those three projections assume the drive can run at the dataset's own
 225 mW, and on two of the three rungs it cannot. The differential
 polarizability that sets the light shift is 1145 atomic units at
 993 nm, 4372 at 760 nm and about 28600 at 778 nm, so the power at
 which the shift stops being a correction to the width and becomes a
 feature of the lineshape differs by a factor of twenty-five across the
 ladder. Reading that ceiling as the power where the on-axis shift
-reaches one tenth of the measured width, at the archive's own waist
+reaches one tenth of the measured width, at the dataset's own waist
 and retro ratio, gives the 993 nm ceiling of 332 mW, the 760 nm
 ceiling of 87 mW and the 778 nm ceiling of 13 mW. The first sits above
 the campaign maximum, so nothing above it changes. The other two do
 not, and the two-photon rate falls as the square of the intensity, so
-a width precision measured at the archive's power degrades in
+a width precision measured at the dataset's power degrades in
 proportion once the drive is capped. On the 7S rung the delivered
 precision goes from about 8 to about 18 kHz per mTorr and the
 adjudication keeps a ceiling margin of 2.0, which needs no extra
@@ -392,7 +393,7 @@ goes from about 8 to about 108 kHz per mTorr and the factor-two test
 drops to a ceiling margin of 0.12, so the calibration rung loses the
 one test it had power for. Recovering that power needs about
 66 repeats of the design, and recovering the uncapped precision needs
-about 288. All of this is envelope class, conditional on the archive's
+about 288. All of this is envelope class, conditional on the dataset's
 block scatter being signal limited at the ladder maximum, which is the
 conservative reading of a scatter averaged over a whole ladder. The
 ceiling goes as the square of the waist, so a looser focus raises it
@@ -400,7 +401,7 @@ and buys back signal at the cost of transit width and of the density
 lever, which is the trade the 778 nm rung would have to make and which
 this projection does not quantify.
 
-For the bench owner choosing a source rather than a line, those
+For the experimenter choosing a source rather than a line, those
 ceilings decide the hardware. At 993 nm the ceiling sits above what
 the bench delivers, so the titanium sapphire stays necessary, and the
 diode-seeded ytterbium fibre alternative would be working at the
@@ -419,7 +420,7 @@ as demonstrated operating points rather than as class maxima.
 **A wide-scan add-on**, which costs an acquisition setting and no
 hardware. Two photons taken from the same beam drive a two-photon line
 that is first-order Doppler broadened, 942 MHz wide on the transition
-axis at 130 °C, sitting under the narrow line the archive fits. Its
+axis at 130 °C, sitting under the narrow line the record fits. Its
 width is a thermometer for the atoms actually in the beam, and its area
 against the narrow line's area is 4ρ/(1 + ρ²) in the retro power ratio,
 so one wide trace carries both. For everyone using the
@@ -438,7 +439,7 @@ area ratio peaks at ρ equal to one where its slope vanishes, so it is a
 weak lever on exactly the quantity it measures. The thermometer measures
 the temperature of the atoms in the beam and not the cold spot, so it
 pins the temperature the density curve is evaluated at and leaves the
-cold-spot lag to the absorption channel. The 2025 archive cannot do
+cold-spot lag to the absorption channel. The 2025 dataset cannot do
 either measurement, because its own scan window is 85 MHz on the
 transition axis, a tenth of the pedestal width, so it samples the
 pedestal's flat top and its linear baseline absorbs it.
@@ -455,14 +456,14 @@ describe trapped atoms, whose shift distribution is set by their
 vibrational energies and carries the opposite skewness. Fluorescence
 cannot leave along the fibre at any density that gives signal. The
 light shift rather than the available power sets the usable drive. What
-does carry over is the operation the archive is built on, mapping a
+does carry over is the operation the record is built on, mapping a
 known intensity geometry onto a shift distribution and reading its
 cumulants, and one result closes analytically on the new geometry: the
 trap's own inhomogeneous shift is set by the atom temperature alone,
 with the trap depth and waist cancelling out of it. Two envelope figures
 size it. A hot fill would deliver of order 2.8×10⁵ counts per second at
 the usable drive power, subject to the note's own unclosed factor of 16
-to 47 between the first-principles rate and the archive's detected
+to 47 between the first-principles rate and the dataset's detected
 photons, and the light shift rather than the available power would set
 that drive power at about 51 mW, which is where the shift reaches the
 natural width. None of this family is claimable from the 2025 data.
@@ -490,7 +491,7 @@ section of [BIG_PICTURE.md](BIG_PICTURE.md).
 ## 4. Who this serves, now and after a campaign
 
 Stating the audience is part of stating the claim, so this section names
-who has a reason to read the archive today and who would gain from each
+who has a reason to read the record today and who would gain from each
 possible campaign. Section 2 already concedes the complement: nobody is
 blocked waiting for these bounds, and this section does not soften that.
 
@@ -523,15 +524,15 @@ would gain, and section 3 gives the projected precision they would gain
 it at, with the condition attached:
 
 - A beam profile alone would sharpen every waist-conditional statement
-  in the existing archive retroactively. The audience is whoever uses
-  the archive at all, since it upgrades the record without new physics.
+  in the existing record retroactively. The audience is whoever uses
+  the record at all, since it upgrades the record without new physics.
 - The 993 nm line under a fixed lock would yield the first measured
   AC-Stark and collisional self-shift coefficients of this transition,
   and with the waist measured it would let experiment adjudicate the
   sign dispute. The audience is the precision-spectroscopy tables and
   the theory groups on either side of that sign.
 - The 760 nm 7S line would adjudicate the two conflicting published
-  rates with the convention stated, and would re-anchor this archive's
+  rates with the convention stated, and would re-anchor this record's
   own expected self-broadening from the same instrument. The audience is
   the collision series and the group advancing 7S as a frequency
   standard, and the result is publishable whichever value wins.
@@ -552,7 +553,7 @@ it at, with the condition attached:
   absorption never reaches it. The audience is the all-order
   atomic-structure methods, which run unbenchmarked on
   excited-to-excited channels, and the same dataset would carry the
-  sign-reversal test of this archive's asymmetry channel. The condition
+  sign-reversal test of this record's asymmetry channel. The condition
   is one commodity diode and the fixed-lock session's shift precision,
   with the design and its envelope in
   [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md)
@@ -563,7 +564,7 @@ it at, with the condition attached:
   polarizability and collision theory the single-line results can only
   poke at.
 - The wide-scan pedestal rows serve everyone who uses a
-  density-conditioned number in this archive, which is every collisional
+  density-conditioned number in this record, which is every collisional
   coefficient and every rate quoted per 10¹² cm⁻³, and separately
   everyone who uses the light-shift prediction, since the retro ratio it
   rides on is adopted here and would become measured. The add-on rides
@@ -572,6 +573,6 @@ it at, with the condition attached:
 - The guided-mode family is section 3's last entry, and none of it is
   claimable from the 2025 data.
 
-Each audience above maps to a claim this archive either makes now or
+Each audience above maps to a claim this record either makes now or
 names as conditional. Where no audience could be named, the claim is not
 in this ledger.
