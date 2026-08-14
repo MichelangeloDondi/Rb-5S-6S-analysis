@@ -42,9 +42,11 @@ the light shift depends on both. A third pair sits one level down:
 second used to return a number four orders of magnitude small without
 complaining, and now raises.
 
-That should end green in about two minutes. The 2025 dataset ships inside the
-repository in `data_raw/`, so nothing needs downloading and no bench is
-involved. If the fast suite passes, everything below will work.
+That should end green in about two minutes, and it needs no data beyond what
+this checkout carries. What `data_raw/` holds in the copy you are reading, and
+how to obtain the original traces, is stated in
+[data_raw/README.md](data_raw/README.md). If the fast suite passes, everything
+below will work.
 
 To regenerate the analysis rather than just check it:
 
@@ -54,37 +56,15 @@ bash scripts/run_all.sh
 
 That runs the analysis stages in dependency order, then the figures, the
 results ledger and the status column. **Re-running any stage reproduces its
-committed CSV byte for byte**, which is the property the whole repository is
-built to keep, so a diff after a run is a finding rather than noise.
-
-Two things are worth knowing before you wonder why something fails:
-
-* `pytest -q --runslow` is the full battery and is what CI runs. Run it before
-  pushing, not the fast subset, because several guards live only in it.
-* Eight scripts read two data trees that are not in the repository, the
-  2025-07-04 rehearsal and the campaign-morning pilot. Five name the trees
-  themselves and three reach them by importing `run_stark_joint`'s loaders.
-  They exit 0 with a message naming the missing tree rather than failing, and
-  the committed CSVs are the record for those stages, so nothing you need is
-  missing. If you do have the trees, point `RB5S6S_PREHISTORY_DIR` and
-  `RB5S6S_PILOT_DIR` at them rather than relying on the fallback path, which
-  is not where they live.
-
-
-That should end green in about two minutes. The 2025 dataset ships inside the
-repository in `data_raw/`, so nothing needs downloading and no bench is
-involved. If the fast suite passes, everything below will work.
-
-To regenerate the analysis rather than just check it:
-
-```bash
-bash scripts/run_all.sh
-```
-
-That runs the analysis stages in dependency order, then the figures, the
-results ledger and the status column. **Re-running any stage reproduces its
-committed CSV byte for byte**, which is the property the whole repository is
-built to keep, so a diff after a run is a finding rather than noise.
+committed CSV within the tolerance `scripts/verify_results_fresh.py` states**,
+which is the property the whole repository is built to keep. The standard is a
+stated tolerance rather than byte equality for a measured reason: the
+committed digits were produced under numpy 2.0.2 and hold across numpy 2.0 to
+2.4, and outside that band four files drift, in the two quantity families this
+record already declines to read as physics.
+[results/ENVIRONMENT_OF_RECORD.md](results/ENVIRONMENT_OF_RECORD.md) gives the
+versions, the measured sizes and the reasoning. So a difference the verifier
+rejects is a finding. A difference it accepts is the arithmetic.
 
 Two things are worth knowing before you wonder why something fails:
 

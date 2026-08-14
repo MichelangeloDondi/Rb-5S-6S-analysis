@@ -25,13 +25,13 @@ here the moment a specific number looks wrong.
 | the measurement | Doppler-free two-photon spectroscopy of the rubidium 5S to 6S transition at 993.4 nm, four hyperfine components, in a hot vapour cell |
 | the sessions | one campaign of about 24 hours on 17 to 18 July 2025, preceded by a pilot morning and by a prehistory that is kept outside the frozen archive |
 | the census | 297 curated traces in seven roles, 264 of them canonical and 33 excluded with a recorded reason, listed in `MANIFEST.csv` |
-| what is in the repository | the 297 curated traces themselves, about 16 MB under `data_raw/`, together with the manifest, the acquisition clock and every fitted result. The trees that stay outside are the rehearsal, the pilot and the prehistory, and section 3a lists them |
+| what is in the repository | the manifest of the 297 curated traces, the acquisition clock and every fitted result, in every copy. Whether the traces themselves sit beside the manifest under `data_raw/` depends on the copy, and `data_raw/README.md` says which this one is. The trees that stay outside either copy are the rehearsal, the pilot and the prehistory, and section 3a lists them |
 
 | if you are | your question | where it is answered |
 |---|---|---|
 | tracing one trace | which file, which condition, which block, and what the record did to it | section 4, which lists every column of the manifest, then section 5 for anything excluded |
 | auditing an exclusion | what was cut, when, by whom, under which criterion, and how many | section 5, one row per exclusion class |
-| rebuilding the census from a clone | whether the counts regenerate without any private folder | section 4, and `tests/test_manifest.py`, which re-hashes every file on every push |
+| rebuilding the census from a clone | whether the counts regenerate without any private folder | section 4, and `tests/test_manifest.py`, whose file-level re-hash runs in a copy that carries the traces and skips, with a stated reason, in one that does not |
 | after data products | which tables exist, what produced each one, and how far each is checked | [`results/README.md`](../results/README.md) and [`data_recovered/README.md`](../data_recovered/README.md), with the folder roles in section 3a |
 
 <img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: dress rehearsal, pilot, and campaign panels with every acquisition marked, etalon-transient windows shaded, and the 9.6 h break annotated">
@@ -340,7 +340,7 @@ hash**:
 
 | where | what | status |
 |---|---|---|
-| `data_raw/` (this repo) | the frozen analysis archive: 297 curated traces + MANIFEST.csv. Every fitted number regenerates from it. | **frozen**, never edited |
+| `data_raw/` (this repo) | the frozen analysis archive: MANIFEST.csv in every copy, and the 297 curated traces in the copy that carries them. Every fitted number regenerates from the traces. | **frozen**, never edited |
 | `data_recovered/` (this repo) | the backup-recovered layer: `CLOCK.csv` (the acquisition clock, hash→mtime for all 438 backup files), the 16 backup-only discards, the 4-variant lineage of the one degraded trace. See its README. | additive only |
 | release asset `raw-backup-2026-07-24` | the complete timestamped backup tree, verbatim (`tar.gz` preserving mtimes, sha256 in the release notes and addendum 10), campaign, pilot, prehistory, LeCroy rehearsal | preserved public archive |
 | Desktop `RawDataBackUp` (private) | the provenance root, as found | never touched |
@@ -368,7 +368,9 @@ layer.
 | `review/` | anything that failed pattern classification | 0 |
 
 Total: **297 unique traces** (from 722 archive files). The census is pinned by
-`tests/test_manifest.py`. CI re-hashes every file on every push.
+`tests/test_manifest.py`, whose file-level re-hash runs on the full battery in
+a copy that carries the traces and skips, with a stated reason, in one that
+does not.
 
 The `flag` column takes values `canonical` / `discarded` / `quarantined` /
 `review`, and §5 is the register of every exclusion behind them.

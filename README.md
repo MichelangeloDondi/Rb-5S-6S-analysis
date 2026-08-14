@@ -470,8 +470,10 @@ bash scripts/run_all.sh   # every stage in dependency order, then the figures,
                           # docs/RESULTS.md, and the CSV status column
 ```
 
-Re-running any stage reproduces its committed CSV in `results/`
-byte-for-byte. One committed number sits outside `run_all.sh`, the joint
+Re-running any stage reproduces its committed CSV in `results/` within the
+tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
+in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
+records. One committed number sits outside `run_all.sh`, the joint
 three-session AC-Stark bound, which needs the raw rehearsal and pilot trees.
 The lock-drift measurement and its audit trail go the other way and reproduce
 from a clone with no raw traces at all, off the committed acquisition clock.
@@ -550,8 +552,8 @@ taken at OIST and are held privately; they are available on request
 - **What cannot run here** is the raw→results pipeline itself, and the four
   tests that re-hash the traces against the manifest; those skip with a stated
   reason rather than failing. With the traces in place they all run, and each
-  stage reproduces its committed CSV byte-for-byte (the `run_all.sh` command
-  under **Reproduce**).
+  stage reproduces its committed CSV within the stated tolerance (the
+  `run_all.sh` command under **Reproduce**).
 
 **Adapting it to your own line.** The analysis is a library with its
 physics, apparatus, and statistics kept behind separate seams.

@@ -379,8 +379,8 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
         # i.e. real signal, handled by masking at fit time (M3), not by
         # discarding the trace. Flag surfaces it for the mask bookkeeping.
         #
-        # RF-off only, and here is the measured reason (2026-08-06, RT9 of
-        # docs/notes/frequency_calibration_red_team.md): a comb stands three
+        # RF-off only, and here is the measured reason (2026-08-06, RT9 of the
+        # frequency-calibration review, amendment 8): a comb stands three
         # structures above half maximum by construction, so run on rulers this
         # threshold fires on 104 of 104 fitted combs (44/44 power, 60/60
         # temperature, n_major 3 on 88 and 2 on 16) and separates nothing. The

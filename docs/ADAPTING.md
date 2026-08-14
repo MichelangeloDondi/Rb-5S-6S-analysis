@@ -48,6 +48,15 @@ silently.
 
 Three of those rows need more than a row. They are the next three sections.
 
+One gap in the seam is worth naming rather than leaving to be found.
+`fit_stark_sweep`, the stage that turns measured widths against power into the
+AC-Stark bound this archive quotes, is NOT on the geometry seam. Its `profile`
+argument is a boolean switch and not the geometry callable of the same name
+that `model_profile` and `fit_condition` accept, and its `_fwhm_of` helper has
+no override point. Pointing that stage at another geometry means editing it
+rather than passing it something, and the shared parameter name hides that
+from anyone reading the signature alone.
+
 ## The deep seam: the light-shift distribution
 
 The pipeline's central object is the map from an intensity distribution to
@@ -329,10 +338,15 @@ from rb5s6s import (
 )
 ```
 
-Everything else is reached through its module. The six modules that read from
-disk (`config`, `ingest`, `qc`, `rate_model`, `ruler`, `cavity_scan`) raise
-`config.RepoDataMissing` naming what needs cloning, rather than resolving a
-path into site-packages and failing somewhere stranger later.
+Everything else is reached through its module. Six modules read from disk
+(`config`, `ingest`, `qc`, `rate_model`, `ruler`, `cavity_scan`), and from an
+installed wheel their paths resolve inside site-packages, where the
+directories are not. `config.require_repo_data()` exists to fail there with
+the cause named, and `config` calls it. THE OTHER FIVE DO NOT YET: `ingest`
+and `rate_model` raise a bare `FileNotFoundError` on the resolved path, and
+`qc` and `ruler` return an empty or zero default instead of failing at all.
+So treat the pure surface above as the wheel-safe one, and clone the
+repository for anything that reads committed data.
 
 ## Two worked examples
 

@@ -4,8 +4,13 @@ Integrity tests of the frozen dataset (data_raw/ + MANIFEST.csv).
 These certify that the dataset committed to git is exactly the one decoded and
 imported on 2026-07-11 (full story: docs/DATA.md): every unique trace present
 and byte-identical (MD5), correctly role-classified, with the known archive
-anomalies pinned so they can never silently change. Because data_raw/ ships in
-the repository, a green CI run certifies code AND dataset together.
+anomalies pinned so they can never silently change.
+
+WHAT A GREEN RUN CERTIFIES DEPENDS ON THE COPY. Where data_raw/ carries the
+traces, it certifies code and dataset together. Where it carries only the
+manifest, the byte-identity test below skips through `requires_raw_traces`,
+with its reason stated, and a green run certifies the code while the dataset
+stays certified in the copy that holds it.
 """
 
 import csv

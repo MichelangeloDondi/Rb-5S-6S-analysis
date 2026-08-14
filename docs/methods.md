@@ -69,8 +69,8 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M12 identifiability | M13 coverage study | M14 $\sigma$-sharing BIC | M15 fringe tail |
   | M16 polarizabilities | M17 resolving power | M18 van der Waals $C_6$ | M19 ramp vs motion |
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
-  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M29 trap-design corrections at the magic crossings |
-  | M30 cavity-scan photograph, integrated |  |  |  |
+  | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
+  | M28 full archive in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
 
 - **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -149,9 +149,9 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
-data_raw/ frozen 2025 dataset (297 unique traces) + MANIFEST.csv
-tests/    1872-test battery (1836 fast ~2 min + 36 `slow` high-statistics
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_archive_fit(M28, M23's construction over M25's data: the full archive in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · make_figures · make_results_ledger · annotate_results_status(status column, runs LAST)
+data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
+tests/    2064-test battery (2028 fast ~2 min + 36 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -185,7 +185,8 @@ bash scripts/run_all.sh
 `run_all.sh` runs every stage in dependency order, then `make_figures`,
 `make_results_ledger`, and `annotate_results_status` (which appends the
 machine-readable `status` provenance column and must run last) — regenerating
-every committed `results/*.csv`, the figures, and the ledger byte-for-byte.
+every committed `results/*.csv`, the figures, and the ledger within the
+tolerance `scripts/verify_results_fresh.py` states.
 
 Raw-data source and history: the 2025 dataset comes from the earlier
 `Rb-5S-to-6S-broadening` project; this repository is a clean reimplementation, and

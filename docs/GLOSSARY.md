@@ -229,10 +229,13 @@ governs most of the uncertainty analysis here.
 **Epoch.** A run of traces sharing one oscilloscope horizontal setting, which
 is the best available proxy for the lock not having been touched.
 
-**The three sessions.** The **campaign** is the main 2025 dataset and ships
-inside this repository. The **rehearsal** and the **pilot** are two earlier
-sittings that some fits also use. Their raw files stay outside the repository
-and the committed CSVs are the record for those stages
+**The three sessions.** The **campaign** is the main 2025 dataset, and its
+manifest is committed here in every copy of the repository. The **rehearsal**
+and the **pilot** are two earlier sittings that some fits also use, and their
+raw files stay outside the repository in every copy, with the committed CSVs
+as the record for those stages. Whether the campaign's own traces sit beside
+the manifest depends on the copy you are reading, and
+[data_raw/README.md](../data_raw/README.md) says which this one is
 ([DATA.md](DATA.md)).
 
 **Module, M1 to M30.** One analysis stage, with its script, its result file and

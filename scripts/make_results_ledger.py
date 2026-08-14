@@ -946,7 +946,7 @@ def main() -> int:
         # different data cannot leave a stale number behind.
         dev = np.abs(rate - mean) / err
         i = int(np.argmax(dev))
-        # RT6 of docs/notes/frequency_calibration_red_team.md: a single
+        # RT6 of the frequency-calibration review (amendment 8): a single
         # sqrt(chi2_red) factor is the wrong shape for this dispersion, and
         # the attribution the prose used to assert was untested. Both are
         # measured here, from the same committed block table, so neither can

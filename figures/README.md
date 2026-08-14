@@ -16,6 +16,12 @@ shared parameters from `results/global_archive_fit.csv` and the traces
 themselves from [`data_raw/`](../data_raw/README.md), refitting only each
 trace's own amplitude, centre, background and detector saturation.
 
+Two of those paths need the traces themselves: `make_fig0_spectrum.py` and the
+fig16, fig18, fig21 and fig22 galleries inside `make_figures.py`. They run in a
+copy of the repository that carries `data_raw/`'s traces and not in one that
+carries only the manifest, where the committed PNGs are the record instead.
+[`data_raw/README.md`](../data_raw/README.md) says which copy this is.
+
 To redraw them:
 
 ```

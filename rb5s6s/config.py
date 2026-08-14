@@ -43,8 +43,11 @@ class RepoDataMissing(RuntimeError):
     FileNotFoundError naming a path they have never heard of. The pure-physics
     surface re-exported from rb5s6s/__init__.py needs no data and works from a
     wheel, so the failure only reaches the six modules that read from disk
-    (config, ingest, qc, rate_model, ruler, cavity_scan). This exception is what they raise
-    instead, and it names the cause rather than the resolved path.
+    (config, ingest, qc, rate_model, ruler, cavity_scan). This exception names
+    the cause rather than the resolved path, and require_repo_data() below
+    raises it. TODAY ONLY THIS MODULE CALLS THAT FUNCTION: the other five still
+    fail on the resolved path or return an empty default, which is tracked
+    rather than described as done.
     """
 
 
@@ -74,8 +77,9 @@ ARCHIVE_SOURCE_DIR = Path(os.environ.get(
 """Machine-specific location of the ORIGINAL 2025 archive (old repository).
 Only needed to (re)run scripts/import_data.py on the machine that holds
 that archive, and read from RB5S6S_ARCHIVE_SOURCE_DIR when that variable
-is set. Everyone else: data_raw/ ships inside this repository, so you
-never need this."""
+is set. Everyone else never needs this: `data_raw/MANIFEST.csv` ships in
+every copy of the repository, and whether the traces themselves sit beside
+it depends on the copy, which `data_raw/README.md` states."""
 
 
 def results_fingerprint(results_dir=None):

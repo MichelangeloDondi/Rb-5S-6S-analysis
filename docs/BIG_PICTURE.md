@@ -682,8 +682,11 @@ as a bound. Concretely:
   the envelope. The power laws come from
   [the AC-Stark ramp chapter](methods/03_the_ac_stark_ramp.md), and the laser
   bound from [the lineshape chapter](methods/02_the_lineshape.md) §2.3.
-- **A reproducible pipeline.** Every number regenerates byte-for-byte from
-  the frozen raw data. Every CSV row carries a status tag (bound, null,
+- **A reproducible pipeline.** Every number regenerates from the frozen raw
+  data, within the tolerance `scripts/verify_results_fresh.py` states and to
+  the printed digit in the environment
+  [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
+  records. Every CSV row carries a status tag (bound, null,
   measured and so on), and the documentation is written to be picked up by
   whoever works on this next. The pipeline itself is walked through in
   [`methods.md`](methods.md).

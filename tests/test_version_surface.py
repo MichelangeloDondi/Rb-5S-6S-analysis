@@ -253,3 +253,37 @@ def test_the_metadata_version_is_the_released_version():
         f"{newest} until the release is cut. The grace window is "
         f"{_BUMP_GRACE_COMMITS} commits, which covers the bump commit and the "
         f"regeneration that follows it.")
+
+def test_the_citation_date_moves_with_the_citation_version():
+    """`date-released` is the third field of the same shape as the first two.
+
+    Found 2026-08-15. `version` had advanced 3.6.0, 3.7.0, 3.8.0 across three
+    tagged releases while `date-released` sat at '2026-08-09' throughout, so
+    the field GitHub's "Cite this repository" panel shows, and any harvester
+    reads, described the wrong day for two of them. Nothing compared the two
+    fields, exactly as nothing compared pyproject and CITATION before the
+    2026-07-25 incident above.
+
+    The check is against the TAG, because that is what makes a version a
+    released thing, and it skips rather than guesses when the tag does not
+    exist yet, which is the sanctioned pre-release state this module already
+    models for the metadata itself.
+    """
+    version = _metadata_versions()["CITATION.cff"]
+    if _key(version) < _TAG_METADATA_FROM:
+        pytest.skip(f"v{version} predates the tagged-metadata convention")
+    text = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    m = re.search(r"^date-released: '?(\d{4}-\d{2}-\d{2})'?", text, re.M)
+    assert m, "CITATION.cff carries no date-released field"
+    stated = m.group(1)
+
+    tagged = _git("log", "-1", "--format=%cs", f"v{version}")
+    if tagged is None or not tagged.strip():
+        pytest.skip(f"v{version} is not tagged in this checkout yet")
+    tagged = tagged.strip()
+
+    assert stated == tagged, (
+        f"CITATION.cff says version {version} was released on {stated}, and "
+        f"the v{version} tag was cut on {tagged}. The citation panel and every "
+        f"harvester read date-released verbatim, so it has to move whenever "
+        f"version does.")

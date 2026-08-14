@@ -84,8 +84,8 @@ common to every point, so it slides the abscissa bodily. The 6S natural width
 is 3.49 MHz, below the bottom of the ordinate, so most of the width shown here
 is instrumental. The pale vertical band at 130 °C is the spread over the five
 drive powers measured at that temperature. The absolute widths ride the beam
-waist, which has not been measured, so a smaller waist would lower every point
-together.*
+waist, a lineage measurement that this campaign did not re-measure, so a
+smaller waist would lower every point together.*
 
 ![fitted width and peak signal against drive power at fixed temperature](../figures/fig2_power_sweep.png)
 

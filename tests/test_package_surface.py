@@ -7,11 +7,17 @@ site-packages, where data_raw/ and results/ do not exist, so anything reading
 committed data fails on a path the caller has never heard of.
 
 The split the package promises is therefore: the names re-exported from
-`rb5s6s` are PURE and work from a wheel, and the six modules that read from
-disk raise `RepoDataMissing` naming the cause. A wheel build on 2026-08-10
-confirmed both on Python 3.14 in a clean venv outside the repository. These are
-the in-process checks that keep it true, since a full wheel-install test needs
-network and a build step that the fast suite cannot afford.
+`rb5s6s` are PURE and work from a wheel, and a data-reading call fails with the
+cause named rather than a site-packages path. A wheel build on 2026-08-10
+confirmed the pure half on Python 3.14 in a clean venv outside the repository.
+These are the in-process checks that keep it true, since a full wheel-install
+test needs network and a build step that the fast suite cannot afford.
+
+WHAT IS NOT COVERED HERE, stated because a test that overstates its reach is
+worse than one that admits its edge: the check below exercises
+`config.require_repo_data()` itself, and NOT the five other disk-reading
+modules. Those five do not call it yet, so nothing in this file would notice
+if they never did.
 """
 from __future__ import annotations
 

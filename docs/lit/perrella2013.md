@@ -143,7 +143,8 @@ correspondingly much worse (CALCULATED at 100 °C with the repo's own function):
 | Saha's Crystal Fiber AIR-6-800, **6 µm core** | ~2.1 µm | **28 MHz** |
 | Slepkov's stated area $10^{-7}$ cm² | ~1.8 µm | **33 MHz** |
 | a 10 µm core (Slepkov's acetylene citation) | ~3.5 µm | **17 MHz** |
-| free-space campaign prior | 50 µm | 1.2 MHz |
+| free-space campaign waist, superseded value (pre-2026-08-01, see [DATA.md](../DATA.md)) | 50 µm | 1.2 MHz |
+| free-space campaign waist, current | 64 µm | 0.92 MHz |
 | CRYST³ 1064 nm ODT injection waist, a RADIUS ([nasoni2026](nasoni2026.md)) | 18 µm target; 17.1×19.3 µm measured | *3.1–3.4 MHz* |
 
 So Perrella's 10 MHz is narrower than transit alone would give in any of the

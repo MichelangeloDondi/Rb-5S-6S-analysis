@@ -22,7 +22,8 @@ here changes what can be run, not what can be checked:
 | the four tests that re-hash traces against this manifest | **no**, they skip, with a stated reason |
 
 With the traces restored to this directory, everything above runs and each
-stage reproduces its committed CSV byte-for-byte; nothing else changes.
+stage reproduces its committed CSV within the tolerance
+`scripts/verify_results_fresh.py` states, and nothing else changes.
 
 Provenance, decoding, curation history and the quarantine policy:
 [`../docs/DATA.md`](../docs/DATA.md).
