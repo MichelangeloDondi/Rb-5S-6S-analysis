@@ -19,22 +19,23 @@ field varies across the atoms that sample it, every atom shifts by a
 different amount and the line carries that whole distribution rather than one
 number. The same object sets what can be cooled inside a hollow-core fibre,
 and for how long it stays coherent, which is the apparatus work this analysis
-sits beside (see [About](#about)). A fixed-lock follow-up
-session is proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the
-machinery is written to be pointed at other transitions
+sits beside (see [About](#about)). A fixed-lock follow-up session is
+proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the machinery is
+written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
 
 > **In one sentence:** when the lock drifts, the position of a line is lost but
-> its shape is not, so collisional broadening, laser width and the
-> power-dependent light shift are read out of the *shape* as **bounds**, and
-> the fixed-lock measurements that would turn each bound into a number are
-> specified here.
+> its shape is not, so this archive reads collisional broadening, laser width
+> and the power-dependent light shift out of the *shape* as **bounds**, and
+> specifies the fixed-lock measurements that would turn each bound into a
+> number.
 
-The scope and the headline numbers, up front. Four hyperfine components, 159 line traces and 105 ruler traces across 70–130 °C and 25–225 mW, three bounds at 95%:
-collisional self-broadening β_self below 0.03 to 0.05 MHz per 10¹² cm⁻³ across
-the four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
+The scope and the headline numbers, up front. Four hyperfine components, 264
+fitted traces across 70–130 °C and 25–225 mW, three bounds at 95%:
+collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
+four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
 at the 64 µm measured waist, and the AC-Stark coefficient
-S₀(225 mW) below 0.26 MHz against 0.35 predicted at the measured waist (the
+S₀(225 mW) < 0.26 MHz against 0.35 predicted at the measured waist (the
 prediction rides the measured waist directly, the bound only weakly, through
 its transit kernel).
 The full claim ledger, including what is deliberately not claimed, is
@@ -46,17 +47,14 @@ The full claim ledger, including what is deliberately not claimed, is
 
 *One ⁸⁵Rb 5S₁/₂ F=3 → 6S₁/₂ F′=3 line at 130 °C and 225 mW, with the
 composite fit and its residuals: total FWHM 5.37 ± 0.03 MHz, reduced χ² 1.09.
-This is the raw material everything below is built from. Every width in the
-panel is a full width at half maximum, and the fitted ones carry the one-sigma
-error of this condition's fit. The two marked fixed are inputs: the natural
-width from the measured 6S lifetime, and the transit width computed from the
-beam waist, 64 µm, measured on this apparatus lineage in Rajasree's 2020 OIST thesis (128 µm
-1/e² diameter on a profiler, same lens, temperature, geometry and laser model,
-and a knife-edge scan on this bench would confirm it here). In the lower strip,
-σ is each point's own error from the fit's signal-dependent noise model, which
-is why the ±1 band is flat here while the raw noise grows with signal.*
+This is the raw material everything below is built from. Fitted widths in the
+panel carry the one-sigma error of this condition's fit, and the two marked
+fixed are inputs: the natural width from the measured 6S lifetime, and the
+transit width computed from the beam waist, 64 µm, measured on this apparatus
+lineage in Rajasree's 2020 OIST thesis. In the lower strip, σ is each point's own error from
+the fit's signal-dependent noise model, which is why the ±1 band is flat.*
 
-**Why this line is worth measuring.** The environmental coefficients of the
+**Why the line is worth the difficulty.** The environmental coefficients of the
 993 nm 5S→6S line have only ever been bounded, and coarsely. Those
 coefficients set how tightly an environment must be controlled to reach any
 given stability, so they are worth knowing for a line nobody has measured them
@@ -67,9 +65,9 @@ it, by about an order of magnitude, and nothing here suggests otherwise
 
 **What each piece would buy.** A beam-profile measurement of the waist would sharpen
 every archival bound with no new physics run. A fixed-lock cell session
-would turn the light-shift and collisional bounds into measurements. A
-nanofibre session would test the same light-shift law in an evanescent field,
-against the cell as its reference. The dependency map is the first thing in
+turns the light-shift and collisional bounds into measurements. A nanofibre
+session reads the same ramp law in an evanescent field, against the cell as
+its reference. The dependency map is the first thing in
 [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md).
 
 <p align="center">
@@ -79,6 +77,20 @@ against the cell as its reference. The dependency map is the first thing in
 *The bench, components numbered 1–13 as in the annotated photograph. Every
 element is established in [`docs/APPARATUS.md`](docs/APPARATUS.md), which
 also carries the dated photographs behind each box.*
+
+**On this page**, in order, so you can jump rather than scroll:
+[how the measurement works](#how-the-measurement-works) ·
+[shapes without centres](#shapes-without-centres), the limitation everything
+else follows from ·
+[results at a glance](#results-at-a-glance) ·
+[the lineshape, mechanism by mechanism](#the-lineshape-mechanism-by-mechanism) ·
+[the dominant systematic](#the-dominant-systematic-the-beam-waist-w₀) ·
+[what a follow-up session would add](#what-a-follow-up-session-would-add) ·
+[**reproduce it**](#reproduce), which is the section to start from if you would
+rather run the thing than read about it ·
+[repository map](#repository-map) ·
+[conventions](#conventions) ·
+[about](#about).
 
 **Where to go next:** the big picture (goals, prior art, what each future
 measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
@@ -92,11 +104,16 @@ adapting it to your line → [`docs/ADAPTING.md`](docs/ADAPTING.md).
 
 ## How the measurement works
 
-A 993 nm beam is retro-reflected through a hot Rb cell, and an atom absorbs
-one photon from each direction, cancelling the first-order Doppler shift for
-every atom at once: the half-GHz thermal smear collapses to a line a few MHz
-wide. The surviving second-order term, of order 0.4 kHz here, sits four
-orders below the linewidth.
+A 993 nm beam is retro-reflected through a hot Rb cell. An atom with axial
+velocity $v_z$ sees the two beams Doppler-shifted in opposite senses, so
+absorbing one photon from each direction drives 5S₁/₂ → 6S₁/₂ at
+
+$$\nu\left(1 + \tfrac{v_z}{c}\right) + \nu\left(1 - \tfrac{v_z}{c}\right) = 2\nu$$
+
+with the first-order Doppler shift cancelling for every atom at once. The
+thermal smear, roughly half a GHz per photon, collapses to a line a few MHz
+wide. The surviving second-order term is of order 0.4 kHz here, four orders
+below the linewidth.
 
 <p align="center">
   <img src="figures/fig13_level_scheme.png" width="760" alt="Left, the 5S to 6S term diagram with the virtual level below 5P. Right, the photographed cavity scan with the four hyperfine components labelled on the up-sweep">
@@ -104,24 +121,19 @@ orders below the linewidth.
 
 *Left: two 993 nm photons, one from each direction, drive 5S₁/₂ → 6S₁/₂
 through a virtual level that lies below the real 5P₁/₂. The atom returns by
-the 6S → 5P → 5S cascade and the bench detects the 795 nm arm. The 780 nm
-channel of the same cascade is suppressed by about 50 dB, and the 5P
-fine-structure splitting is enlarged in the drawing rather than drawn to scale.
-Right: the cavity scan's up-sweep carries the laser across all four hyperfine
-components, two per isotope, all F → F, and the down-sweep repeats the same
-four mirrored about the ramp apex. Their spike integrals track the
-ground-state populations, abundance × (2F+1)/G_iso. Within ⁸⁵Rb that predicts
-F = 3 at 7/5 = 1.40 times F = 2, and the digitised record integrates to 1.42
-on the up-sweep, 1.34 to 1.42 across integration rules. Between isotopes the
-(2F+1) factors sum away and the prediction is the bare abundance ratio, 2.59,
-against 2.45 measured. The display compresses the tallest spikes and the whole
-down-sweep, so peak heights are not read for ratios. The integration rules and
-their caveats are [APPARATUS §6](docs/APPARATUS.md).*
+the 6S → 5P → 5S cascade and the bench detects the 795 nm arm. Right: the
+cavity scan's up-sweep carries the laser across all four hyperfine
+components, two per isotope, all F → F. Their spike integrals track the
+ground-state populations, abundance × (2F+1)/G_iso: the up-sweep ⁸⁵Rb ratio
+reads 1.42 against the predicted 7/5 = 1.40, and the isotope pairs 2.45
+against the abundance ratio 2.59, from the digitised record
+(`rb5s6s/cavity_scan.py` and [`docs/APPARATUS.md`](docs/APPARATUS.md)
+section 6).*
 
 The 6S₁/₂ population is read out through the 795 nm fluorescence of the
 6S₁/₂ → 5P₁/₂ → 5S₁/₂ cascade. Four hyperfine components are recorded across
 a temperature sweep (70–130 °C at 225 mW, spanning N = 0.56–29 × 10¹² cm⁻³)
-and a power sweep (25–225 mW at 130 °C). There are 297 traces in all:
+and a power sweep (25–225 mW at 130 °C). The archive holds 297 traces:
 159 composite-line traces and 105 frequency-ruler calibration traces enter
 the fits, and the remaining 33 files from the same nights are excluded before
 any fit. Those 33 are an aborted first attempt at one power sweep, its
@@ -133,7 +145,7 @@ each exclusion with its stated reason in [`docs/DATA.md`](docs/DATA.md).
 
 The 2025 data were taken with a drifting, hand-re-centred lock, with MHz-scale
 re-centrings between blocks (a block is one set of back-to-back repeats at a
-fixed condition; [APPARATUS §6](docs/APPARATUS.md)). The consequence:
+fixed condition, [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 
 - absolute line **centres are lost** (drift moves them scan to scan), but
 - line **shapes are preserved**.
@@ -143,17 +155,11 @@ fixed condition; [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 </p>
 
 *The whole constraint. Top: the problem as photographed on a preliminary
-session, a wavemeter record of cavity re-locks and relaxations. No frequency log
-survives from the campaign itself, which is why the middle panel has to be
-reconstructed. Middle: the campaign reconstructed from its own traces. Each
-vertical stroke is one trace's own frequency sweep drawn to scale, which is a
-sweep extent and not an uncertainty. The oscilloscope window was moved 58 times
-and each move re-zeroes the offset axis, so every segment floats and offsets are
-comparable only between traces taken at the same scope setting. Only the widths
-and shapes of the individual traces carry information. The inset is drawn for
-scale rather than as a measurement: the held lock's drift is bounded at order
-0.02 MHz/min over three hours and the sign is not established, so both
-directions are drawn. Shapes survive, centres do not. Bottom: what each drift
+session, a wavemeter record of cavity re-locks and relaxations. Middle: the
+campaign reconstructed from its own traces. Each vertical stroke is one
+trace's own scan ramp, offsets are comparable only between traces taken at
+the same scope setting, and the held lock moves by 0.016 MHz/min in magnitude
+over three hours. Shapes survive, centres do not. Bottom: what each drift
 regime licenses, from the 2025 bounds to the fixed-lock session that would
 convert them.*
 
@@ -164,18 +170,20 @@ at order 0.02 MHz/min on the laser axis (per-photon frequency, half the
 transition axis every linewidth here is quoted on), with the sign
 undetermined once the scope offsets are accounted for. The megahertz motion
 was the hand re-centring after lock dropouts, not the drift. The full trail,
-including the retraction of a headline that turned out to be the knob, is in
+including the retraction of a drift headline that turned out to track the
+oscilloscope's own window setting rather than the laser, is in
 [`docs/PREREGISTRATION_RESULTS.md`](docs/PREREGISTRATION_RESULTS.md).
 
-What the *shape* of a line carries (widths, power-law scalings, asymmetry) is
-therefore reported as bounds, nulls and consistency checks, while
+The archive therefore reports what the *shape* of a line carries (widths,
+power-law scalings, asymmetry) as bounds, nulls and consistency checks, while
 the absolute shifts wait for a stable lock. Each bound sets the sensitivity
 target a follow-up session would need to beat. The width-only AC-Stark bound
 brackets its prediction rather than resolving it (the predicted effect is
 about one block's width scatter, so the bound rests on averaging), while the
 joint three-session fit lands below the predicted band, the tension the
-results table quotes. The 95% constructions are checked by
-injection-recovery ([methods §4.11](docs/methods/06_the_statistics.md)).
+results table quotes. The 95% constructions are validated by
+injection-recovery ([methods §4.11](docs/methods/06_the_statistics.md)), not
+assumed.
 
 The chain from raw trace to quoted bound, each stage a runnable script, each
 output a committed CSV:
@@ -223,24 +231,19 @@ differential across identical lines, immune to the light shift and to the
 lineshape asymmetry ([methods §3](docs/methods/05_the_frequency_ruler.md)):
 
 <p align="center">
-  <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its seven-tooth comb fit, and the sweep-linearity check, flat to within 0.3 percent in the well-sampled windows">
+  <img src="figures/fig8_ruler.png" width="720" alt="A ruler trace with its seven-tooth comb fit over a standardized residual strip, and the sweep-linearity check, flat to within 0.3 percent in the well-sampled windows">
 </p>
 
 *Left: one ruler trace with its seven-tooth comb fit, six teeth standing above
-the trace's own fit residual. Why the seventh is below it: at this modulation
-depth the third-order pair carries about 2% of the first-order power, and the
-scan end clips the outermost window, as on every recorded ruler. This trace is
-the one drawn because it meets conditions fixed before the analysis, the
-selection rule of
-[the ruler specification](docs/notes/ruler_validity_and_trim_prereg.md) §7 and
-amendment 4: the two first-order teeth are among the three tallest without
-relabelling, six of the seven teeth stand above the scatter of the fit residual
-with the weakest at 0.63 of it, and the reduced χ² is 1.01 against a ceiling of
-2.0. Seven of the 104 recorded rulers clear every clause. Right: the
-sweep-linearity check, local rate against block rate. Sweep non-linearity and
-any tooth-dependent pull together stay within 0.3%, and that bound is set by
-the well-sampled windows. The open markers at the scan edges carry an
-uncertainty larger than the bound itself, so they do not constrain it.*
+the trace's own fit residual. The panel states why the seventh is below it: at
+this modulation depth the third-order pair carries about 2% of the first-order
+power, and the scan end clips the outermost window, as on every recorded ruler
+([pre-registration amendment 4](docs/notes/ruler_validity_and_trim_prereg.md)).
+The strip below is the
+residual in units of each point's own error, the same convention as the fit
+above, and the climb at the scan end is that clipped window. Right: the
+sweep-linearity check, local rate against block rate, flat to within 0.3% in
+the well-sampled windows.*
 
 ## Results at a glance
 
@@ -258,17 +261,6 @@ reported values.
   <img src="figures/fig16_fit_gallery.png" width="760" alt="Fit-quality gallery: the global archive model over one trace per peak, with residual panels">
 </p>
 
-*One panel per component, each the highest-signal repeat of the 225 mW, 130 °C
-power sweep. The collisional width, the laser linewidth, the Stark coefficient
-and the transit width are common to every campaign trace and held fixed here,
-and the fitted Stark coefficient sits at zero, so no Stark broadening is drawn.
-Only each trace's own amplitude, centre and background are refit. Each residual
-strip divides by that point's own uncertainty. Where a reduced χ² falls below
-one, the per-point noise assumed in the fit is conservative and the
-uncertainties read off it are upper bounds. The four traces' own fitted widths,
-reduced χ² and detector-saturation bounds are printed on the full-page versions,
-`figures/fig18_single_*.png`.*
-
 The dominant shared systematic for every absolute number is the beam waist
 **w₀** (density scale, model form and block scatter contribute at a lower
 level, see RESULTS), so each is reported as a bound together with the
@@ -278,9 +270,19 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the archival 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the measured waist, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md)) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md). Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
 | Beam waist **w₀** | 64 µm, measured. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
+| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
+| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization, and a trapped-atom experiment |
+
+The last row of the table, drawn. The lower panel shows why the crossings
+exist where they do: the flat 5S polarizability threads the 6S curve's
+nearby resonances.
+
+<p align="center">
+  <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
+</p>
 
 **The fitted collisional width behaves like a floor, not a measurement.** It
 barely grows with density (below), while a real binary-collision width must
@@ -294,18 +296,6 @@ not on record).
   <img src="figures/fig6_gamma_floor.png" width="560" alt="The lever test: the collisional width is a floor">
 </p>
 
-*The four components faint, their mean in black. The mean of the four fitted
-collisional widths is nearly constant: it rises by a factor 1.47 while the Rb
-density rises by a factor 52.5. A binary-collision width would be proportional
-to density, so these data bound the coefficient rather than measure it, and the
-bound depends on which density range is used. The two straight lines are that
-comparison drawn: each is what the width would do if the coefficient took the
-value fitted over the range named beside it, not a fit to the points. The
-dashed one reaches 1.9 MHz at the highest density shown, where the mean of the
-four peaks is 0.59 MHz. The density axis is logarithmic and carries a
-20 per cent scale systematic from the vapour-pressure model, common to every
-point, so it slides the whole abscissa rather than scattering it.*
-
 **The power sweep bears out the ramp's power-law predictions.** At fixed
 temperature only the AC-Stark shift varies with power, and both predictions
 hold: the linewidth stays flat (the shift broadens the line only as S₀²,
@@ -316,22 +306,13 @@ signature, the skew ∝ S₀³, is below detection in the archive (a bound). The
 coefficient itself waits for a fixed-lock session. The S₀ bound and its
 prediction are independent by construction: the bound uses only the
 width-vs-power data (no w₀ enters), while the predicted 0.35 MHz is the
-computed polarizability at the measured w₀, with the retro
+computed polarizability at the beam geometry's w₀ prior, with the retro
 ratio ρ=0.94±0.04 (its in-situ measurement is a fixed-lock-session task),
 fixed before the fit and never an input to it.
 
 <p align="center">
   <img src="figures/fig2_power_sweep.png" width="720" alt="Power sweep: width flat, amplitude proportional to P squared">
 </p>
-
-*(a) the width shows no trend with power. The point-to-point scatter is 3 to
-8 per cent, above the 2 per cent or less a light-shift gradient alone would
-predict, and the rest of it is scatter between measurement blocks. (b) the
-amplitude, with the square-of-power rate law drawn as a reference of fixed
-slope: each dashed line has only its offset fitted to its own component, so it
-is a reference and not a fit to the points. Widths here are measured directly
-off each trace, which runs below the fitted total width of the joint
-per-condition fit in fig10, and the two are not read against each other.*
 
 ## The lineshape, mechanism by mechanism
 
@@ -367,8 +348,8 @@ archive cannot separate them: a tighter waist means more transit broadening
 and less room for laser width, and vice versa. The observed ≈ 5.3 MHz line is
 reproduced anywhere from w₀ ≈ 38 µm (the hard floor, where the laser width
 goes to zero) upward, and the data alone set no ceiling. The 64 µm working
-value comes from two direct profile measurements on the same-lineage
-beamline (Nieddu 2019, and Rajasree's 2020 OIST thesis), not from a fit. Only a direct
+value is a prior from two direct profile measurements on the same-lineage
+beamline (Nieddu 2019, and Rajasree's 2020 OIST thesis), not a fit result. Only a direct
 beam-profile measurement (a knife-edge scan, a camera profiler, or both)
 collapses the degeneracy. Every absolute number above is w₀-conditional, and
 the beam profile is the first thing a proposed fixed-lock session would fix.
@@ -380,21 +361,11 @@ glance").
   <img src="figures/fig3_transit_mc.png" width="560" alt="Line width versus beam waist: the transit/laser degeneracy">
 </p>
 
-*Transit-time broadening grows as the beam narrows, because a faster crossing
-gives a larger frequency spread. The shaded region is excluded: waists below
-about 40 µm would already put the transit and natural widths together above the
-observed total. The laser and collisional contributions are not in the curve, so
-the true waist is higher still. The waist itself has not been measured. The
-knife-edge scan is pending, and until it runs this axis is a hypothesis being
-scanned rather than a measured quantity. The excluded region is drawn at the
-interpolated crossing, and 40 µm is that crossing rounded to the spacing of the
-two sampled waists that bracket it.*
-
 ## What a follow-up session would add
 
-- **A proposed fixed-lock session.** A stable lock would return the absolute
-  centres, and a direct beam-profile measurement would pin w₀, turning the
-  bounds above into the first measured 5S–6S AC-Stark and collisional self-shift
+- **A proposed fixed-lock session.** A stable lock returns the absolute
+  centres, and a direct beam-profile measurement pins w₀, turning the bounds
+  above into the first measured 5S–6S AC-Stark and collisional self-shift
   coefficients. With power capped at 225 mW, the intensity axis would come
   from the waist instead: a telescope gives two working waists spanning a
   ×16 intensity range. Points at 150–170 °C in the same session would give
@@ -406,49 +377,6 @@ two sampled waists that bracket it.*
   a fibre surface, where an atom–surface potential and the "pushing dip"
   (Gokhroo et al., 2022) ride on the lineshape.
 
-## Calculated quantities
-
-Three numbers in this archive are computed, not measured, and they sit
-here rather than in the results table so the table stays a record of
-what the data itself established.
-
-| quantity | value and status | provenance | what would settle it |
-|---|---|---|---|
-| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
-| First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | a trapped-atom experiment (the corrections a design needs are the row below) |
-| **Trap-design corrections** at the crossings | at 1203.9 nm the fourth-order differential shift is +0.87 Hz per megahertz squared of trap depth, the vector shift on a stretched state is 280 kHz per megahertz of depth per unit circularity of the trap light, and those two terms together with trap-photon scattering disqualify every other crossing ([rb5s6s/hyperpolarizability.py](rb5s6s/hyperpolarizability.py)) | calculated, to within a factor of two | a trapped-atom measurement of shift against depth and polarization |
-
-The second row, drawn. The lower panel shows why the crossings exist
-where they do: the flat 5S polarizability threads the 6S curve's
-nearby resonances.
-
-<p align="center">
-  <img src="figures/fig17_magic_wavelengths.png" width="760" alt="Magic wavelengths: the differential scalar polarizability crossing zero at 1204, 1288 and 1340 nm">
-</p>
-
-*A magic wavelength is where the differential light shift between two states
-vanishes, so a trap held there shifts both equally and does not move the
-transition. Here that is Rb 5S₁/₂–6S₁/₂, the 993 nm line. Scalar only, which is
-exact for J = 1/2 under linear polarization. The bracket printed under each
-crossing is the range over which that crossing moves when the contributing
-matrix elements are varied over their quoted uncertainties: ±0.84 nm at the
-widest and ±0.065 nm at the tightest, so the three are not one uncertainty and
-no single status word covers them. What is unpublished, to the depth searched,
-is the calculation behind them, and that is a different thing from what the
-brackets measure. In the lower panel the 5S polarizability varies slowly here
-because the D lines are far away, while the 6S polarizability diverges at each
-nearby 6S→nP resonance, and that contrast is why the crossings fall where they
-do. Both panels are truncated at ±2500 a.u. The grey dotted line marks a
-further crossing, at 1297.53 nm, which is not one of the three reported values:
-the search that produced those stepped over a guard strip on each side of every
-resonance, and this crossing falls inside such a strip. A crossing is a sign
-change of the difference, and no rule puts one in every gap between resonances,
-because the 6S→5P transitions run downward and their resonances carry the
-opposite sign. Of the five gaps drawn here, two change sign end to end, and four
-crossings fall in the window. A crossing this close to a resonance is unusable
-as a trap and is exactly what a null measurement of the matrix element wants,
-which the planning documents take up.*
-
 ## Reproduce
 
 ```bash
@@ -458,25 +386,26 @@ pytest -q                 # fast test suite (~2 min)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
-The dataset's manifest is committed
-([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv)). The 297 raw traces are
-held privately, and **On the raw traces**, below, says exactly what that
-leaves runnable from a clone (the certification suite and the
-clock-dependent results, which is the bulk of the battery). With the traces
-in place, each stage reads the previous stages' output in `results/`:
+The 2025 dataset is already in `data_raw/`, so the pipeline runs directly.
+The analysis is a library with its physics, apparatus, and statistics kept
+behind separate seams. [docs/ADAPTING.md](docs/ADAPTING.md) names them for
+anyone pointing the machinery at a different transition, species, or light
+geometry, and [examples/your_line.ipynb](examples/your_line.ipynb) lets you
+try it on your own line by editing one dictionary. Each stage reads the
+previous stages' output in `results/`:
 
 ```bash
-bash scripts/run_all.sh   # every stage in dependency order, then the figures,
-                          # docs/RESULTS.md, and the CSV status column
+bash scripts/run_all.sh   # 25 analysis stages in dependency order, then the
+                          # figures, docs/RESULTS.md, and the CSV status column
 ```
 
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. One committed number sits outside `run_all.sh`, the joint
-three-session AC-Stark bound, which needs the raw rehearsal and pilot trees.
-The lock-drift measurement and its audit trail go the other way and reproduce
-from a clone with no raw traces at all, off the committed acquisition clock.
+records. The runner writes 31 of the 43 committed CSVs, and the other
+twelve have their own scripts, five of which need raw trees that stay outside
+the repository. The lock-drift measurement and its audit trail reproduce from
+a clone with no raw traces at all, off the committed acquisition clock.
 [`docs/REPRODUCING.md`](docs/REPRODUCING.md) says which script writes what,
 and how each quoted number is held to the file that produces it.
 
@@ -489,30 +418,52 @@ rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
 examples/   your_line.ipynb, the pipeline pointed at a different line by
             editing one dictionary
-data_raw/   MANIFEST.csv, the frozen 2025 dataset's index (the 297 traces
-            themselves are held privately, see On the raw traces)
+data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 data_recovered/  the backup-recovered layer: the acquisition clock
             (CLOCK.csv), backup-only discards, degradation lineage
 results/    the committed output CSVs (the documented run)
 figures/    publication figures produced by make_figures.py
 tests/      full test battery, run by CI on the minimum and latest numpy
-docs/       the documentation tree, indexed by its own README. Read first:
+docs/       the documentation tree. The ones to read first:
             CLAIMS.md (the claim ledger) · BIG_PICTURE.md (goals, prior art,
-            what each future measurement would add) · methods/ (8 ordered
-            chapters, the full derivations)
+            what each future measurement would add) · ADAPTING.md (the seams
+            for another line) · methods.md (index) + methods/ (8 ordered
+            chapters: the full derivations) · PLAN.md (measurement plan) ·
+            RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
+            REPRODUCING.md (what runs from a clone, and what does not) ·
+            APPARATUS.md (hardware of record + provenance) + apparatus/
+            (the dated photographs and the bench schematic) ·
+            THEORY_NOTE.md (AC-Stark ramp theory) · LITERATURE.md (prior work)
+            + LITERATURE_INDEX.md (generated index of the per-paper notes)
+            + lit/ (one note per paper) + references.bib ·
+            PREREGISTRATION_timestamps.md + PREREGISTRATION_RESULTS.md
+            (the timestamp audit: frozen predictions, results, dated addenda) ·
+            RESEARCH_DECISIONS.md (why the analysis stops where it does) ·
+            notes/ (the pre-registrations of record, and working notes) · STYLE.md
 private/    local working folder, excluded by .gitignore and enforced by
             tests/test_repo_hygiene.py
 ```
 
+The map above is a picture, so the documents that appear only in it are linked
+here: [`RESEARCH_DECISIONS.md`](docs/RESEARCH_DECISIONS.md),
+[`STYLE.md`](docs/STYLE.md),
+[`LITERATURE_INDEX.md`](docs/LITERATURE_INDEX.md),
+[`PREREGISTRATION_timestamps.md`](docs/PREREGISTRATION_timestamps.md), and the
+two pre-registrations of record under `docs/notes/`: the ruler fit validity and
+residual-tail trimming
+[specification](docs/notes/ruler_validity_and_trim_prereg.md), whose opening
+table carries the current state of every ruler rule, and the
+[full-archive fit specification](docs/notes/full_dataset_fit_prereg.md).
+
 ## Conventions
 
-- **Transition-frequency axis everywhere** — the two-photon sum frequency, i.e.
-  twice the laser frequency. Per-photon quantities carry a `_LASER` suffix in code.
-- **Every number carries a provenance tag** (measured here / calculated /
-  established / open); the same tags drive the machine-readable `status`
-  column on every results CSV.
-- **Physics constants and analysis choices are separated** (`constants.py` vs
-  `config.py`); repeat counts are read from `MANIFEST.csv` rather than
+- **Transition-frequency axis everywhere**, meaning the two-photon sum
+  frequency, which is twice the laser frequency. Per-photon quantities carry a `_LASER` suffix in code.
+- **Every number carries a provenance tag**, one of measured here, calculated,
+  established or open. The same tags drive the status field on every results
+  CSV.
+- **Physics constants and analysis choices are separated** (`constants.py`
+  against `config.py`). Repeat counts are read from `MANIFEST.csv` rather than
   inferred from filenames, and data-quality cuts are fixed before fitting
   rather than chosen afterward.
 
@@ -526,38 +477,11 @@ set what can be cooled and how long it stays coherent. This repository looks
 at the same physics through a different observable: the shape a two-photon
 line takes when a focused standing wave shifts each atom differently.
 
-The dataset is from a six-month research visit to OIST in 2025, an
-independent project alongside my work there on atom-nanofibre interfaces.
-The analysis was written after the campaign.
+The dataset was taken during a six-month research visit to OIST (Japan) in
+2025, an independent project alongside my work there on atom-nanofibre
+interfaces. The analysis was written after the campaign. A manuscript is in
+preparation.
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·
 citation metadata in [`CITATION.cff`](CITATION.cff) · MIT license.
-
-**On the raw traces.** This repository ships the analysis, the committed
-results, the figures, and the dataset's manifest
-([`data_raw/MANIFEST.csv`](data_raw/MANIFEST.csv) — every trace's filename,
-condition, role and MD5), but **not the 297 raw traces themselves**. They were
-taken at OIST and are held privately; they are available on request
-(michelangelo.dondi@unibo.it). What that means concretely:
-
-- **Everything that certifies the analysis runs here.** The injection-recovery
-  closures, the coverage study and minimum-detectable-effect, the transit-kernel
-  asymptotics, the identifiability and model-comparison machinery — all of it is
-  synthetic and needs no archive. That is the bulk of the suite.
-- **The clock-dependent results also reproduce from a clone**, because the
-  acquisition clock is committed as
-  [`data_recovered/CLOCK.csv`](data_recovered/CLOCK.csv) (hashes → timestamps,
-  not measurement data).
-- **What cannot run here** is the raw→results pipeline itself, and the four
-  tests that re-hash the traces against the manifest; those skip with a stated
-  reason rather than failing. With the traces in place they all run, and each
-  stage reproduces its committed CSV within the stated tolerance (the
-  `run_all.sh` command under **Reproduce**).
-
-**Adapting it to your own line.** The analysis is a library with its
-physics, apparatus, and statistics kept behind separate seams.
-[docs/ADAPTING.md](docs/ADAPTING.md) names them for anyone pointing the
-machinery at a different transition, species, or light geometry, and
-[examples/your_line.ipynb](examples/your_line.ipynb) lets you try it on
-your own line by editing one dictionary. Neither needs the raw traces.

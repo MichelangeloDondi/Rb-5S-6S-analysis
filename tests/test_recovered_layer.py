@@ -68,7 +68,7 @@ def test_clock_is_sorted_and_unique():
 
 
 @requires_raw_traces
-def test_recovered_files_match_their_manifest_and_stay_out_of_the_archive():
+def test_recovered_files_match_their_manifest_and_stay_out_of_the_record():
     """Every published recovered file: exists, hashes to its recorded md5
     (and to the __hash suffix in its own name), and its content is ABSENT
     from data_raw/MANIFEST.csv -- the layer holds only what the frozen

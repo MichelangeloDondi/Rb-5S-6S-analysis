@@ -22,7 +22,7 @@ is the one seam this construction has.
 
 Prints PASS or the first differing cell, exits nonzero on any difference.
 Writes nothing. The full-scale acceptance (reproducing the committed
-results/global_archive_fit.csv end to end with workers on) is a separate,
+results/global_dataset_fit.csv end to end with workers on) is a separate,
 deliberate run recorded in its own right, not this smoke.
 
     ./.venv/bin/python scripts/_m25_parallel_smoke.py
@@ -40,7 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import numpy as np  # noqa: E402
 
-import run_global_archive_fit as G  # noqa: E402
+import run_global_dataset_fit as G  # noqa: E402
 
 KAPPAS = (0.0, 0.5)
 BETAS = (0.005, 0.035)
@@ -73,8 +73,8 @@ def _same(a, b) -> bool:
 
 
 def main() -> int:
-    if not (G.PREHISTORY.is_dir() and G.PILOT.is_dir()):
-        print("quarantine trees absent: this smoke needs the full assembly.")
+    if not (G.SESSION_20250704.is_dir() and G.SESSION_20250717.is_dir()):
+        print("excluded trees absent: this smoke needs the full assembly.")
         return 0
 
     t0 = time.time()

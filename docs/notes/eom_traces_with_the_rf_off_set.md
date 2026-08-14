@@ -14,7 +14,7 @@ is not built.
 | ruler_t | 61 | 70 / 90 / 110 C | **not recorded** | RF on |
 | ruler_p | 44 | 130 C | **not recorded** | RF on |
 
-`run_global_archive_fit.py` says "ruler_p stays out: its power setting was never
+`run_global_dataset_fit.py` says "ruler_p stays out: its power setting was never
 recorded", which is true, but ruler_t's is not recorded either. ruler_t is usable
 because the temperature ladder ran at one fixed power, so its power is fixed by
 the ladder rather than by its own row. ruler_p sits at 130 C, which is exactly

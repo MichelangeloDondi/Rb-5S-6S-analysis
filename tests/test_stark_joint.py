@@ -1,9 +1,9 @@
 """M23 joint two-session Stark fit: the committed record and its premises.
 
-The module itself needs the quarantine prehistory tree and ~1 h, so these
+The module itself needs the excluded prehistory tree and ~1 h, so these
 tests check (1) the committed results CSV is internally consistent, (2) the
 dnu_floor coarsening the module relies on is harmless, (3) the module
-degrades gracefully without the quarantine, and (4) the gamma_coll prior it
+degrades gracefully without the excluded, and (4) the gamma_coll prior it
 uses reproduces the archive's own beta_self x N chain.
 """
 
@@ -39,7 +39,7 @@ def val(quantity, key):
 # ---------------------------------------------------------------------------
 
 def test_csv_exists_and_has_headline():
-    assert CSV.exists(), "run scripts/run_stark_joint.py (needs quarantine)"
+    assert CSV.exists(), "run scripts/run_stark_joint.py (needs excluded)"
     ub = val("kappa_ub95", "primary")
     assert 0.0 < ub < 60.0
     assert abs(val("S0_225mW_ub95", "primary") - ub * 0.225) < 1e-3
@@ -133,7 +133,7 @@ def test_pilot_rate_scale_in_band():
     assert 0.905 < s < 1.095, s
 
 
-def test_rehearsal_rates_sane():
+def test_session_20250704_rates_sane():
     """~4x slower than the campaign's ~0.0426 MHz/ms, consistent across
     peaks (same generator setting; the spread is the anchor's softness)."""
     r = [val("reh_rate", pk) for pk in ("4121", "4154", "4192", "4207")]
@@ -177,11 +177,11 @@ def test_dnu_floor_equivalence():
         assert d < 5e-5, (gc, sl, s0, d)
 
 
-def test_graceful_without_quarantine(tmp_path, monkeypatch):
+def test_graceful_without_the_outside_trees(tmp_path, monkeypatch):
     """Without the prehistory tree the module must exit 0 and change
     nothing (the committed CSV is the record)."""
     import run_stark_joint as M
-    monkeypatch.setattr(M, "PREHISTORY", tmp_path / "absent")
+    monkeypatch.setattr(M, "SESSION_20250704", tmp_path / "absent")
     assert M.main() == 0
 
 

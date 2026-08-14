@@ -1,6 +1,6 @@
 """M26: the pilot day's own ruler. Production-shape checks on the committed CSV.
 
-The producer needs the private pilot quarantine; these tests hold the
+The producer needs the private pilot excluded; these tests hold the
 committed record to its own construction: the Def group carries the scale,
 the pre-adjustment railed traces are excluded from every mean, and the
 measured scale sits in the physically sane band around 1.
@@ -12,12 +12,12 @@ import pytest
 
 from rb5s6s import config as C
 
-CSV = C.RESULTS_DIR / "pilot_ruler.csv"
+CSV = C.RESULTS_DIR / "morning_ruler.csv"
 
 
 def rows():
     if not CSV.exists():
-        pytest.skip("results/pilot_ruler.csv not generated")
+        pytest.skip("results/morning_ruler.csv not generated")
     return list(csv.DictReader(open(CSV)))
 
 

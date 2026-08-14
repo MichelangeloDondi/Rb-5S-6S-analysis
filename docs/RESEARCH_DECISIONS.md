@@ -364,7 +364,7 @@ found the pooled-per-block `sigma_laser` too coarse at camp130: −85 kHz
 (4121), −121 kHz (4154), −287 kHz (4192) and +97 kHz (4207). Their mean
 absolute size, 147.5 kHz, rounded to the 150 kHz prior width that now pulls
 every `sigma_sp` cell back toward its block's mean
-([run_global_archive_fit.py:211](../scripts/run_global_archive_fit.py#L211)).
+([run_global_dataset_fit.py:211](../scripts/run_global_dataset_fit.py#L211)).
 The joint refit reproduces the probe's own ordering at camp130 (−14, −36,
 −57 and +107 kHz across the same four peaks), at the smaller amplitude the
 prior was built to allow, which is the validation the probe alone could not
@@ -378,7 +378,7 @@ assumption box.** `pilot_rate_scale` used to float inside a flat [0.9, 1.1]
 box and had drifted to 1.02–1.03 in earlier fits. M26's own ruler day
 measures it directly, at 1.0022(12) from 27 rulers, and the refit now uses a
 tight ±5σ box around that number, [0.9962, 1.0081], in its place
-([run_global_archive_fit.py:312](../scripts/run_global_archive_fit.py#L312)).
+([run_global_dataset_fit.py:312](../scripts/run_global_dataset_fit.py#L312)).
 The posterior comes out at 1.0081, indistinguishable at this precision from
 that box's own upper edge. The measurement is doing the constraining now,
 not an assumption, and the fit still wants a rate above what the

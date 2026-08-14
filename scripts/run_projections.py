@@ -98,7 +98,7 @@ PLAN_INTENSITY_AXIS_FRAC = 0.15   # PLAN 5, the differential-transit anchor
 PLAN_MORNING_CYCLES = 24          # PLAN 9 D4, a four-hour morning at PLAN_CYCLE_MIN
 
 # The archive's own power ladder, which sets the span of the projected grid.
-ARCHIVE_P_MIN_W, ARCHIVE_P_MAX_W = 0.025, 0.225
+RECORD_P_MIN_W, RECORD_P_MAX_W = 0.025, 0.225
 QUOTE_P_W = 0.225                 # the campaign maximum every bound is quoted at
 
 # The density-scale systematic the archival bound already folds in.
@@ -228,7 +228,7 @@ def density_lever(grid_c, lag_k: int) -> float:
 def power_lever(n_points: int) -> float:
     """sqrt(sum of squared deviations of P about its mean) over a log grid
     spanning the archive's own ladder, in W. The denominator of the pull slope."""
-    p = np.geomspace(ARCHIVE_P_MIN_W, ARCHIVE_P_MAX_W, n_points)
+    p = np.geomspace(RECORD_P_MIN_W, RECORD_P_MAX_W, n_points)
     return float(np.sqrt(((p - p.mean()) ** 2).sum()))
 
 
@@ -373,7 +373,7 @@ def project_pull(rows, inp) -> dict:
         common = (
             f"{cycles} randomized power cycles of {PLAN_CYCLE_MIN:.0f} min, "
             f"{PLAN_N_POWERS} rungs log spaced over the archive's own "
-            f"{ARCHIVE_P_MIN_W * 1e3:.0f}-{ARCHIVE_P_MAX_W * 1e3:.0f} mW ladder, "
+            f"{RECORD_P_MIN_W * 1e3:.0f}-{RECORD_P_MAX_W * 1e3:.0f} mW ladder, "
             f"one trace per rung, {PLAN_N_PEAKS} peaks interleaved, config L, "
             "centre precision at the archival per-trace value, lock drift at "
             "the held-lock bound and common to the four peaks of a cycle")
@@ -741,7 +741,7 @@ def project_pedestal(rows, inp, ceilings) -> None:
          "width goes as the square root of the temperature, which is what makes "
          "it a thermometer",
          "rb5s6s.constants")
-    _add(rows, "input_archive_scan_span", "one archival trace",
+    _add(rows, "input_record_scan_span", "one archival trace",
          2e3 * inp["rate_laser_mhz_per_ms"] * K.TRACE_N_POINTS * K.TRACE_DT_S,
          None, "MHz, transition axis",
          "twice the campaign sweep rate times the one-second acquisition window",
@@ -1037,7 +1037,7 @@ def project_magic(rows, inp) -> None:
              "single-pole shape is no longer a safe stand-in",
              "docs/FUTURE_TRANSITIONS_titsapph.md 3.3")
 
-    _add(rows, "proj_magic_776_archive_width_precision", "per block",
+    _add(rows, "proj_magic_776_record_width_precision", "per block",
          inp["rel_block"], None, "fraction",
          "the archive's demonstrated per-condition relative width precision",
          "the closest committed analogue to a per-point precision on a shift "

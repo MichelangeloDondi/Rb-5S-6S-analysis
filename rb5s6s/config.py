@@ -71,15 +71,15 @@ def require_repo_data(what: str = "data_raw") -> Path:
         f"without it, but anything that reads committed traces or results needs "
         f"the repository itself: clone "
         f"https://github.com/MichelangeloDondi/Rb-5S-6S-analysis and run from "
-        f"inside it, or set RB5S6S_ARCHIVE_SOURCE_DIR if you are re-importing "
+        f"inside it, or set RB5S6S_SOURCE_DATA_DIR if you are re-importing "
         f"the original archive."
     )
 
-ARCHIVE_SOURCE_DIR = Path(os.environ.get(
-    "RB5S6S_ARCHIVE_SOURCE_DIR", "~/rb-2025-archive/data")).expanduser()
+SOURCE_DATA_DIR = Path(os.environ.get(
+    "RB5S6S_SOURCE_DATA_DIR", "~/rb-2025-archive/data")).expanduser()
 """Machine-specific location of the ORIGINAL 2025 archive (old repository).
 Only needed to (re)run scripts/import_data.py on the machine that holds
-that archive, and read from RB5S6S_ARCHIVE_SOURCE_DIR when that variable
+that archive, and read from RB5S6S_SOURCE_DATA_DIR when that variable
 is set. Everyone else never needs this: `data_raw/MANIFEST.csv` ships in
 every copy of the repository, and whether the traces themselves sit beside
 it depends on the copy, which `data_raw/README.md` states."""
@@ -369,7 +369,7 @@ heights describe the same peaks, and the only difference is which slots fall
 outside the acquisition window. Measured on the closure synthetics, the correct
 relabelling changes chi2_red by ~1e-4 relative, with the sign set by numerical
 noise, so a strict-improvement test decides the right answer by coin flip and
-quarantines clean combs. The tolerance must also stay tight enough to REJECT a
+excludes clean combs. The tolerance must also stay tight enough to REJECT a
 relabelling of a contaminated grid, which passes the amplitude rule while
 keeping the contracted spacing that caused the failure. Measured on the folded
 synthetics, that false rescue costs 4e-3 relative and the excision rung then
@@ -380,7 +380,7 @@ RULER_REINDEX_MAX_TRIALS = 5
 """Cap on refits per trace inside the re-index ladder: four comb-phase shifts
 (j = -2, -1, +1, +2) plus one excision refit. The cap equals the full ladder,
 so it forbids a wider search rather than truncating the ladder. A trace needing
-more is quarantined with a recorded reason instead."""
+more is excluded with a recorded reason instead."""
 
 # --- residual-tail trimmer (rb5s6s/trim.py, pre-registered in the same note,
 # section 5 for the parameters and section 6 for the calibration) ---

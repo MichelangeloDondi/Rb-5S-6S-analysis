@@ -7,7 +7,7 @@ For each ruler block (per-T rulers, and per-peak before/after brackets):
      signal-blind, so it works on multi-tooth rulers too);
   2. constrained comb fit each trace, through the tooth-indexing VALIDITY
      ladder (ruler.validated_comb_fit: top-three amplitude rule, comb-phase
-     re-index, mirror excision, quarantine) -> per-trace Δ (ms);
+     re-index, mirror excision, excluded) -> per-trace Δ (ms);
   3. test each block for ONE spacing outlier (the group rule of the
      pre-registration's amendment 2) and record the block both ways;
   4. combine per block with scatter inflation -> block Δ, rate = 6.25/Δ MHz/ms
@@ -35,7 +35,7 @@ results/ruler_blocks.csv    one row per block: Δ, Δ_err, rate, block_chi2_red,
 results/ruler_traces.csv    one row per trace (for auditing / the map),
                             carrying the seven fitted tooth heights, the
                             top-three verdict, the ladder action, the trim
-                            record, the quarantine record and the outlier mark
+                            record, the excluded record and the outlier mark
 results/ruler_campaign.csv  the campaign rate, its statistical error, the
                             estimator-family spread, the ruler-against-line
                             position mismatch and the total error
@@ -99,14 +99,14 @@ TRACE_HEADER = [
       if C.RULER_FOLD_SEED == "amplitude" else ()),
     # what the re-index ladder decided. delta_advised_ms is the spacing the
     # ladder would have returned, so the size of the effect is on the record
-    # even while the verdict is advisory. quarantine_advised is the ladder's
-    # recommendation; quarantined is what actually happened.
+    # even while the verdict is advisory. excluded_advised is the ladder's
+    # recommendation; excluded is what actually happened.
     "reindex_action", "reindex_j", "excised_k", "n_refits", "delta_advised_ms",
-    "quarantine_advised", "quarantined", "quarantine_reason",
+    "excluded_advised", "excluded", "excluded_reason",
     # the trim record written by the residual-tail trimmer (rb5s6s/trim.py)
     "trimmed", "trim_start_ms", "trim_end_ms", "trim_reason",
     # the group outlier rule of the pre-registration's amendment 2 B4. An
-    # outlier keeps its row and enters nothing, exactly like a quarantine.
+    # outlier keeps its row and enters nothing, exactly like a excluded.
     "outlier", "outlier_reason",
 ]
 _H_COLS = ["h_m3", "h_m2", "h_m1", "h_0", "h_p1", "h_p2", "h_p3"]
@@ -131,8 +131,8 @@ def trace_row(r, session, peak, T, bracket, f, rate, outlier=False):
               *(("fold_k", "fold_misfit", "fold_chi2_nsigma")
                 if C.RULER_FOLD_SEED == "amplitude" else ()),
               "reindex_action", "reindex_j",
-              "excised_k", "n_refits", "delta_advised_ms", "quarantine_advised",
-              "quarantined", "quarantine_reason", "trimmed",
+              "excised_k", "n_refits", "delta_advised_ms", "excluded_advised",
+              "excluded", "excluded_reason", "trimmed",
               "trim_start_ms", "trim_end_ms", "trim_reason"):
         row[k] = f[k]
     row["top3_ok"] = f["top3_ok"]
@@ -295,7 +295,7 @@ def main() -> int:
         # is a trace whose spacing its own block does not share, and the block
         # is printed both ways below so the size of the removal is on the record
         # next to the number it changed.
-        cand = [i for i, (_, _, _, f) in enumerate(recs) if not f["quarantined"]]
+        cand = [i for i, (_, _, _, f) in enumerate(recs) if not f["excluded"]]
         iout, dev, thr = group_outlier([recs[i][3]["delta_ms"] for i in cand],
                                        floor_frac=C.OUTLIER_MAD_FLOOR_FRAC, m=1)
         drop = cand[iout] if iout is not None else None
@@ -309,10 +309,10 @@ def main() -> int:
             rate, _ = rate_of(f["delta_ms"], f["delta_err_ms"])
             trace_out.append(trace_row(r, session, peak, T, bracket, f, rate,
                                        outlier=(i == drop)))
-            # A quarantined or outlier trace keeps its row and contributes
+            # A excluded or outlier trace keeps its row and contributes
             # NOTHING: not to the block spacing, not to the campaign rate, not
             # to the nonlinearity map.
-            if f["quarantined"]:
+            if f["excluded"]:
                 continue
             fits_all.append(f)
             if i == drop:
@@ -437,7 +437,7 @@ def main() -> int:
     # measurement of the rate, and rate(t) is a rate model.
     trace_dicts = [{k: str(row[k]) for k in TRACE_HEADER}
                    for row in trace_out
-                   if not row["quarantined"] and not row["outlier"]]
+                   if not row["excluded"] and not row["outlier"]]
     models = RMOD.fit_rate_models(trace_dicts, RMOD.load_clock())
     if models:
         RMOD.write_models(models)
@@ -451,10 +451,10 @@ def main() -> int:
     gated = bool(C.RULER_TOP3_GATED)
     verdicts = Counter(r["verdict"] for r in trace_out)
     actions = Counter(r["reindex_action"] for r in trace_out)
-    reasons = Counter(r["quarantine_reason"] for r in trace_out
-                      if r["quarantine_advised"])
-    nq = sum(1 for r in trace_out if r["quarantined"])
-    nadv = sum(1 for r in trace_out if r["quarantine_advised"])
+    reasons = Counter(r["excluded_reason"] for r in trace_out
+                      if r["excluded_advised"])
+    nq = sum(1 for r in trace_out if r["excluded"])
+    nadv = sum(1 for r in trace_out if r["excluded_advised"])
     shifts = [abs(r["delta_advised_ms"] - r["delta_ms"]) for r in trace_out]
     print(f"\n{'-'*70}\nTOOTH-INDEXING VALIDITY over {len(trace_out)} fitted ruler traces "
           f"({'ACTING' if gated else 'RECORDED ONLY, config.RULER_TOP3_GATED is False'}):")
@@ -486,11 +486,11 @@ def main() -> int:
               f"from the campaign rate and from the nonlinearity map")
     else:
         print(f"  QUARANTINE CENSUS: {nq} excluded. {nadv} trace(s) would be "
-              f"quarantined if the verdict were gating, and are NOT:")
+              f"excluded if the verdict were gating, and are NOT:")
     for reason, n in sorted(reasons.items()):
         print(f"    {n:>3d}  {reason}")
         for r in trace_out:
-            if r["quarantine_reason"] == reason:
+            if r["excluded_reason"] == reason:
                 print(f"         {r['file']}  (delta {r['delta_ms']:.2f} ms, "
                       f"ranks {r['rank_m1']}/{r['rank_p1']}, "
                       f"{r['n_railed']} railed, {r['n_refits']} refits)")

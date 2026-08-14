@@ -14,7 +14,7 @@ every trace keeping a free centre -- so laser drift and re-locks are profiled
 out exactly rather than modelled.
 
 THE SECOND SESSION. The 2025-07-04 LeCroy dress rehearsal (results report
-addendum 9; prehistory quarantine tree) joins the fit: 46 usable traces of 50
+addendum 9; prehistory excluded tree) joins the fit: 46 usable traces of 50
 (three are 0xff-corrupted, one has no line), at 90/180/270 mW -- the 270 mW
 rung carries 1.44x the campaign's maximum S0^2 lever. Its ladders were run in
 ALTERNATING directions (4192 descending, 4207 and 4121 ascending, each ladder
@@ -58,7 +58,7 @@ docstring sentence because the wrong version ran first):
     hardest robustness test, not a formality.
 
 THE THIRD SESSION (added 2026-08-01, the module's v2). The 2025-07-18
-MORNING PILOT: 26 traces on peak 4192 alone, powers 35/70/105/210 mW at the
+MORNING SESSION_20250717: 26 traces on peak 4192 alone, powers 35/70/105/210 mW at the
 campaign's internal ~130 C (addendum 17 established it ran hot), on the
 Agilent in campaign trace format, ~20 minutes after the ruler's final
 commissioning. Its axis borrows the campaign 4192 bracket rate through a
@@ -113,7 +113,7 @@ distinct physics. private/reviews/digest/fig16_residual_asymmetry.md
 ("Seventh addition", Granularity recommendation) reads this same code and
 reaches the same conclusion: "M23's peak-resolved choice is closer to what
 T=130 supports" and names it the baseline the M25 re-run should match. No
-change made here; M25 (`run_global_archive_fit.py`, `_m25_norulers.py`) is
+change made here; M25 (`run_global_dataset_fit.py`, `_m25_norulers.py`) is
 the one that needed the upgrade, since it pools sigma_laser across all four
 peaks per campaign temperature block -- see its own docstring's SIGMA
 GRANULARITY UPGRADE section for the hierarchical-shrinkage fix applied
@@ -128,11 +128,11 @@ quoted; every number comes from warm-chained BIDIRECTIONAL kappa profiles
 ftol = xtol = 1e-12.
 
 RUNTIME: ~5 h single process (three sessions, 172 traces) (the profile builder runs at dnu_floor = 2e-2,
-see _shared_profile_grid -- equivalence tested). The quarantine prehistory
+see _shared_profile_grid -- equivalence tested). The excluded prehistory
 tree must be present for the rehearsal arm; without it this module prints
 what is missing and exits 0, and the committed CSV remains the record
 (build_clock_table pattern). Raw traces never enter the repository.
-RB5S6S_PREHISTORY_DIR and RB5S6S_PILOT_DIR are needed only to re-run this
+RB5S6S_SESSION_20250704_DIR and RB5S6S_SESSION_20250717_DIR are needed only to re-run this
 script against those private working copies, and the committed CSVs are what
 the repository ships.
 
@@ -169,8 +169,8 @@ from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
 
-PREHISTORY = Path(os.environ.get(
-    "RB5S6S_PREHISTORY_DIR", "~/rb-2025-quarantine/prehistory")).expanduser()
+SESSION_20250704 = Path(os.environ.get(
+    "RB5S6S_SESSION_20250704_DIR", "~/rb-2025-sessions/prehistory")).expanduser()
 PEAKS = ("4121", "4154", "4192", "4207")
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 TRANSIT = transit_fwhm_at_T(130.0, C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
@@ -185,8 +185,8 @@ KAPPAS = tuple(sorted({0.0, 0.25, 0.5, 0.75, 1.0, round(KAPPA_PRED, 3),
                        1.5, 2.0, 2.62, 3.5, 5.0}))
 KAPPAS_LOPO = tuple(sorted({0.0, 0.25, 1.0, round(KAPPA_PRED, 3), 2.0, 2.62}))
 NS = 20                   # kappa, 2 Vsat, 4 gc, 8 sl, 4 reh rates, 1 pilot rate-scale
-PILOT = Path(os.environ.get(
-    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser() / "4192nm91c650ma"
+SESSION_20250717 = Path(os.environ.get(
+    "RB5S6S_SESSION_20250717_DIR", "~/rb-2025-sessions/pilot")).expanduser() / "4192nm91c650ma"
 
 
 # ---------------------------------------------------------------------------
@@ -233,10 +233,10 @@ def load_campaign():
     return out
 
 
-def load_rehearsal():
+def load_session_20250704():
     """Reduce the LeCroy rehearsal in place: header TrigTime, 50 ms boxcar
     segmentation, window +/-1.6 FWHM, 0.5 ms sampling. Never writes."""
-    files = sorted(glob.glob(str(PREHISTORY / "2025-07-04" / "C2L=*.csv")))
+    files = sorted(glob.glob(str(SESSION_20250704 / "2025-07-04" / "C2L=*.csv")))
     out, n_corrupt = [], 0
     raw_traces = {}
     for f in files:
@@ -280,7 +280,7 @@ def load_rehearsal():
     return out, n_corrupt
 
 
-def load_pilot(rate_4192):
+def load_session_20250717(rate_4192):
     """The 2025-07-18 morning pilot: 26 traces, peak 4192 only, powers
     35/70/105/210 mW at the campaign's internal ~130 C (addendum 17), on the
     Agilent in campaign format, ~20 min after the ruler's final
@@ -293,7 +293,7 @@ def load_pilot(rate_4192):
     is exactly M21's response-versus-relabel ambiguity. Shape and width
     only, like every other trace here. NaN rows in the raw files (the
     header-variant quirk) are masked."""
-    files = sorted(glob.glob(str(PILOT / "*mw*.csv")))
+    files = sorted(glob.glob(str(SESSION_20250717 / "*mw*.csv")))
     out = []
     bycond = {}
     for f in files:
@@ -460,7 +460,7 @@ def measured_pilot_scale():
     1.0022(12); imposing the measurement is the experiment that decides
     whether that gap was the axis or absorbed width physics."""
     import csv as _csv
-    path = REPO / "results" / "pilot_ruler.csv"
+    path = REPO / "results" / "morning_ruler.csv"
     if not path.exists():
         return None
     for r in _csv.DictReader(open(path)):
@@ -521,16 +521,16 @@ def strip_wing(q):
 
 
 def main() -> int:
-    if not (PREHISTORY.is_dir() and PILOT.is_dir()):
-        print(f"quarantine tree(s) not on this machine "
-              f"({PREHISTORY}, {PILOT}) -- the committed "
+    if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
+        print(f"excluded tree(s) not on this machine "
+              f"({SESSION_20250704}, {SESSION_20250717}) -- the committed "
               f"results/stark_joint.csv is the record; nothing to do.")
         return 0
     priors = gc_priors()
     camp = load_campaign()
-    reh, n_corrupt = load_rehearsal()
+    reh, n_corrupt = load_session_20250704()
     _, prates = load_t_rates()
-    pil = load_pilot(prates["4192"][0])
+    pil = load_session_20250717(prates["4192"][0])
     traces = camp + reh + pil
     npts = sum(len(t["x"]) for t in traces)
     print(f"(M23) JOINT THREE-SESSION STARK FIT: {len(camp)} campaign + "

@@ -100,35 +100,35 @@ p_sweep/4207nm_075mw2.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
 p_sweep/4207nm_075mw3.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
 p_sweep/4207nm_075mw4.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
 p_sweep/4207nm_075mw5.csv,qc,p_sweep,4207,130,75,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_eom_after1.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_after2.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_after3.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_after4.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_after5.csv,qc,quarantine,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_before1.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_before2.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_before3.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_before4.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_eom_before5.csv,qc,quarantine,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw1.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw2.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw3.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw4.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw5.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw6.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw7.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_125mw8.csv,qc,quarantine,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw1.csv,qc,quarantine,4154,130,225,,1,-406.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw2.csv,qc,quarantine,4154,130,225,,1,-396.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw3.csv,qc,quarantine,4154,130,225,,1,-394.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw4.csv,qc,quarantine,4154,130,225,,1,-465.5,462.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw6.csv,qc,quarantine,4154,130,225,,1,-393.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_225mw7.csv,qc,quarantine,4154,130,225,,1,-397.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
-quarantine/4154nm_130c_025mw1.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_025mw2.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_025mw3.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_025mw4.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
-quarantine/4154nm_130c_025mw5.csv,qc,quarantine,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_eom_after1.csv,qc,excluded,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_after2.csv,qc,excluded,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_after3.csv,qc,excluded,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_after4.csv,qc,excluded,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_after5.csv,qc,excluded,4154,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_before1.csv,qc,excluded,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_before2.csv,qc,excluded,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_before3.csv,qc,excluded,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_before4.csv,qc,excluded,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_eom_before5.csv,qc,excluded,4154,130,,before,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw1.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw2.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw3.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw4.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw5.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw6.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw7.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_125mw8.csv,qc,excluded,4154,130,125,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw1.csv,qc,excluded,4154,130,225,,1,-406.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw2.csv,qc,excluded,4154,130,225,,1,-396.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw3.csv,qc,excluded,4154,130,225,,1,-394.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw4.csv,qc,excluded,4154,130,225,,1,-465.5,462.5,"sustained positive residual, upper tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw6.csv,qc,excluded,4154,130,225,,1,-393.0,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_225mw7.csv,qc,excluded,4154,130,225,,1,-397.5,533.5,"sustained positive residual, lower tail",0,,DIAGNOSTIC
+excluded/4154nm_130c_025mw1.csv,qc,excluded,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_025mw2.csv,qc,excluded,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_025mw3.csv,qc,excluded,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_025mw4.csv,qc,excluded,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
+excluded/4154nm_130c_025mw5.csv,qc,excluded,4154,130,25,,0,nan,nan,,0,,DIAGNOSTIC
 rulers_p/4121nm_eom_after1.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
 rulers_p/4121nm_eom_after2.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC
 rulers_p/4121nm_eom_after3.csv,qc,ruler_p,4121,130,,after,0,nan,nan,"not applicable, multi-peak trace",0,,DIAGNOSTIC

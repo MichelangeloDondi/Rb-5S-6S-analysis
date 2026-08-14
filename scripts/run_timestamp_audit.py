@@ -4,7 +4,7 @@ Score the pre-registered timestamp audit (docs/PREREGISTRATION_timestamps.md).
 
 WRITTEN AND COMMITTED BEFORE FIRST CONTACT WITH THE BACKUP (pre-registration
 §5: one run, script committed first, everything reported). The script reads
-only (a) the quarantine copy of the recovered backup and (b) the committed
+only (a) the excluded copy of the recovered backup and (b) the committed
 data_raw/MANIFEST.csv; every criterion is the pre-registered one, hard-coded.
 
 Deviations from the pre-registration wording, declared here rather than
@@ -17,7 +17,7 @@ discovered later:
     local clock; the analysis machine runs CET).
 
 Usage:
-    run_timestamp_audit.py --backup /path/to/quarantine/copy [--report out.md]
+    run_timestamp_audit.py --backup /path/to/excluded/copy [--report out.md]
 
 Exit codes: 0 scored (whatever the outcomes), 2 integrity-void (T1-T3 failed;
 predictions deliberately NOT scored, per the gate table).
@@ -114,7 +114,7 @@ def main() -> int:
     else:
         W("# Timestamp-audit report (pre-registered)")
     W("")
-    W(f"Backup (quarantine copy): `{args.backup}`  ·  manifest rows: {len(rows)}")
+    W(f"Backup (excluded copy): `{args.backup}`  ·  manifest rows: {len(rows)}")
     W(f"Backup files seen: {sum(len(v) for v in by_name.values())} "
       f"({len(by_name)} distinct basenames)")
     W("")

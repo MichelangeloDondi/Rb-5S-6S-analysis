@@ -5,10 +5,10 @@
 # not the whole repository. Twelve committed CSVs are written by eleven scripts
 # this file never calls, listed in README.md "Reproduce". Five of those need
 # the prehistory or pilot trees, which stay outside the repository (the
-# rehearsal traces sit inside the prehistory tree, and data_raw/quarantine/ is
+# rehearsal traces sit inside the prehistory tree, and data_raw/excluded/ is
 # a committed directory, not one of these):
-# run_stark_joint.py, run_global_archive_fit.py, _m25_norulers.py,
-# run_pilot_ruler.py and run_full_archive_fit.py. The other six do run from a clone and are left out for
+# run_stark_joint.py, run_global_dataset_fit.py, _m25_norulers.py,
+# run_morning_ruler.py and run_full_dataset_fit.py. The other six do run from a clone and are left out for
 # runtime or because they are diagnostics: run_wing_check.py loads raw traces
 # and takes about 6 min, run_wavemeter_reconstruction.py digitises a tracked
 # photograph, run_cavity_scan.py integrates the tracked cavity-scan

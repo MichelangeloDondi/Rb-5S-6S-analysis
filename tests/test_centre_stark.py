@@ -1,7 +1,7 @@
 """M27: the centre-channel Stark coefficient from held-lock epochs.
 
 Production-shape checks on the committed CSV, in the spirit of
-test_pilot_ruler.py: hold the record to its own construction rather than
+test_morning_ruler.py: hold the record to its own construction rather than
 re-deriving the numbers. This module's headline is a NEGATIVE finding (the
 apparent pull is not robust -- case 3, reported as a bound), so most of these
 tests pin the DIAGNOSTICS that earned that verdict, not a point estimate.
@@ -33,7 +33,7 @@ def _one(quantity, key=None):
     return matches[0]
 
 
-def test_epoch_count_matches_the_archive_not_the_brief():
+def test_epoch_count_matches_the_record_not_the_brief():
     """The task brief asserted 5 multi-power epochs; the archive has 3 (the
     same 3 M21's docstring already reports). If this ever becomes 5, the
     archive changed and every downstream number here needs re-deriving."""

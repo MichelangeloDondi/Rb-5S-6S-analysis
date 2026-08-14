@@ -1,20 +1,14 @@
 # Reproducing the committed results
 
-What runs from a clone, what needs the raw traces, and how the committed
-numbers are held to the files that produce them. The short version is on the
-front page under Reproduce. This is the detail behind it.
+What runs from a clone, what needs data that is not in it, and how the
+committed numbers are held to the files that produce them. The short version
+is on the front page under Reproduce. This is the detail behind it.
 
-## What a clone can run
+## The runner, and the twelve scripts outside it
 
-The dataset's manifest is committed, and the 297 raw traces are held
-privately. Most of the battery does not need them: the certification suite
-and the clock-dependent results run from a clone as they stand. **On the raw
-traces** in the README says exactly where the boundary falls.
-
-With the traces in place, `bash scripts/run_all.sh` executes every stage in
-dependency order, then the figures, `docs/RESULTS.md`, and the CSV status
-column. Each stage reads the previous stages' output in `results/`, and
-re-running any stage reproduces its committed CSV within the tolerance
+`bash scripts/run_all.sh` executes 25 analysis stages in dependency order,
+then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any
+stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
 
 That comparison is a stated tolerance rather than byte equality because the
@@ -27,10 +21,44 @@ the printed digit.
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
 gives the versions, the per-column sizes and the reasoning.
 
-One committed number sits outside `run_all.sh`. The joint three-session
-AC-Stark bound is a long profile-likelihood run with its own script,
-`python scripts/run_stark_joint.py`, and it also needs the raw rehearsal and
-pilot trees, which stay outside the repository.
+The runner's stages write 31 of the 43 committed CSVs. The other twelve each
+have their own script, held out for one of two reasons.
+
+### Five need trees that stay outside the repository
+
+These do not run from a clone: `run_stark_joint.py` (`stark_joint.csv`, the
+joint three-session AC-Stark bound, a long profile-likelihood run that also
+reads the raw rehearsal and pilot trees), `run_full_dataset_fit.py`
+(`full_dataset_fit.csv`, the same construction over the full archive),
+`run_global_dataset_fit.py` (`global_dataset_fit.csv`), `_m25_norulers.py`
+(`global_dataset_fit_norulers.csv`) and `run_morning_ruler.py`
+(`morning_ruler.csv`).
+
+Three of those five reach the trees indirectly, importing `run_stark_joint`'s
+`load_session_20250704` and `load_session_20250717` rather than reading the environment
+variables themselves, which is worth knowing if you are grepping for what
+depends on them. Three further scripts outside this twelve also need the trees
+and write no CSV: `build_clock_table.py`, `run_epoch_checks.py`, and
+`run_saturation_probe.py` in its opt-in `--joint` stage.
+
+Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the trees if you have
+them. The fallback path the scripts fall back to is not where they live.
+
+### Six run from a clone, held out for runtime or as diagnostics
+
+`run_wing_check.py` (`wing_check.csv`, about 6 minutes over the raw traces),
+`run_wavemeter_reconstruction.py` (`wavemeter_reconstruction.csv`, digitised
+from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
+`laser_history_structure.csv`), `run_stark_centres.py` (`stark_centres.csv`),
+`run_centre_stark.py` (`centre_stark.csv`) and `run_cavity_scan.py`
+(`cavity_scan_integrals.csv`). The last three read only committed files (the
+cavity-scan one integrates the tracked digitisation
+`docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv`).
+
+Four of the twelve are still checked without being in the runner:
+`tests/test_results_fresh.py` re-runs `run_laser_history.py` and
+`run_stark_centres.py` and diffs what they produce against what is committed,
+and `tests/test_cavity_scan.py` does the same for `run_cavity_scan.py`.
 
 ## The clock-dependent results reproduce from a clone
 
@@ -46,8 +74,8 @@ python scripts/run_laser_history.py   # laser frequency, within each display epo
 
 print the full report, because the per-trace QC metrics they read
 (`results/qc_metrics.csv`) are committed. The complete timestamped raw backup
-behind the clock is preserved verbatim with the traces, its sha256 recorded
-in the audit report.
+behind the clock is preserved verbatim as the release asset
+`raw-backup-2026-07-24` (sha256 in its notes).
 
 ## How a quoted number is held to its source
 

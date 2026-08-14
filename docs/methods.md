@@ -1,7 +1,7 @@
 # Rb 5S→6S two-photon lineshape analysis
 
 Analysis of the rubidium $5S_{1/2}\to 6S_{1/2}$ two-photon transition at
-993 nm (data taken at OIST in 2025; a fixed-lock follow-up session is proposed, not yet scheduled). This
+993 nm (data taken at OIST in 2025, with a fixed-lock follow-up session proposed and not yet scheduled). This
 document doubles as the **methods draft** for the paper: every broadening
 mechanism and every statistical choice is derived rather than asserted, and
 then tied to its implementation in the code. It is written to be read
@@ -30,7 +30,7 @@ assumed beyond undergraduate quantum mechanics and statistics.
 | $\Gamma_\text{nat}$ | natural FWHM of the transition |
 | $\gamma_\text{coll}$ | collisional (pressure) broadening FWHM |
 | $\sigma_\text{laser}$ | laser-jitter contribution to the FWHM |
-| $N$ | rubidium vapour number density (atoms cm⁻³) |
+| $N$ | rubidium vapour number density (atoms $\mathrm{cm}^{-3}$) |
 | $\beta_\text{self}$ | collisional **self-broadening coefficient**, $\gamma_\text{coll}=\beta_\text{self}N$ |
 | $w_0$ | laser beam waist (radius at which intensity falls to $1/e^2$) |
 | $\rho$ | retro-reflection power ratio (returning/forward intensity at the atoms); $S_0\propto(1+\rho)$, so $\rho=1$ is a perfect retro. This bench assumes $0.94\pm0.04$ |
@@ -46,19 +46,20 @@ All width symbols above ($\Gamma_\text{nat}$, $\gamma_\text{coll}$,
 $\sigma_\text{laser}$) are **FWHM**, for direct comparison with measured
 linewidths. The one exception is $\sigma_\text{eff}$ in §2.6, which is a
 **standard deviation** ($\sqrt{\kappa_2}$) because it sits in a cumulant
-ratio — flagged again where it appears.
+ratio, and it is flagged again where it appears.
 
-### The label schemes — C-results, M-modules, and CI (not the same counter)
+### The label schemes: C-results, M-modules, and CI (not the same counter)
 
 Three separate labels recur throughout the repo and are easy to conflate:
 
-- **C1, C2, C3, C3d — the paper's *results*** (the deliverables), indexed in
-  [`docs/RESULTS.md`](RESULTS.md): C1 collisional self-broadening
-  $\beta_\text{self}$; C2 the 2025 laser-epoch width $\sigma_\text{laser}$; C3
-  the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient  bound $S_0$. Each is a **bound or null** in the 2025 archive.
-- **M0 … M30 — the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
-  file and one `scripts/run_*.py` driver each; the fitting core has lettered
-  sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
+- **C1, C2, C3, C3d, the paper's *results*** (the deliverables), indexed in
+  [`docs/RESULTS.md`](RESULTS.md). C1 is collisional self-broadening
+  $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
+  C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
+  bound $S_0$. Each is a **bound or null** in the 2025 archive.
+- **M0 … M30, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+  file and one `scripts/run_*.py` driver each, where the fitting core has
+  lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
   |  |  |  |  |
   |---|---|---|---|
@@ -72,10 +73,10 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M24 wing check (null) | M25 global archive fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
   | M28 full archive in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
 
-- **CI — Continuous Integration** (*not* C1): the GitHub Actions workflow that
+- **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
-  numpy. It is software infrastructure, not a physics result — the resemblance
-  to "C1" is a coincidence worth naming.
+  numpy. It is software infrastructure rather than a physics result, and the
+  resemblance to "C1" is a coincidence worth naming.
 
 ---
 
@@ -129,7 +130,7 @@ same design carries over to the beam waist: PLAN §4.2 gives it two instruments
 with different failure modes, and a measurement would either reproduce the
 fitted transit width or falsify the transit-laser decomposition ·
 physics constants vs analysis choices split across `constants.py` / `config.py`
-· count repeats from `MANIFEST.csv`, never filenames · quarantine and outlier
+· count repeats from `MANIFEST.csv`, never filenames · excluded and outlier
 rejection pre-registered and QC-based, never result-based.
 
 ```
@@ -144,14 +145,20 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           cavity_scan(M30: the 2025-06-12 cavity-scan photograph, integrated)
           fitutil _compat
           (M18, M19 and M29 are library-and-test only: they have no CSV
-           product, so grepping results/ for them finds nothing -- see their
-           test files)
+           product, so grepping results/ for them finds nothing -- see
+           their test files)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
-          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_archive_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_pilot_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_archive_fit(M28, M23's construction over M25's data: the full archive in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · annotate_results_status(status column, after every producer and before every reader) · make_figures · make_results_ledger
+          · run_laser_epoch(C2,M5) · run_power_sweep(C3,M6) · run_stark_sweep(C3d,M4e) · run_amplitude_trapping(M7) · run_modelform(M8) · run_transit_mc(M9) · run_amplitude_ratios(M10) · run_sigma_laser_sharing(M4c) · run_model_ladder(M11) · run_identifiability(M12) · run_coverage(M13) · run_sharing_bic(M14) · run_fringe_tail(M15) · run_polarizability(M16) · run_resolving_power(M17) · run_laser_history(M20, laser frequency within each display epoch) · run_stark_centres(M21, the centre channel cannot measure the pull) · run_wavemeter_reconstruction(M22, digitises the 2025-06-11 wavemeter photograph) · run_stark_joint(M23, the joint three-session profile-likelihood Stark bound) · run_wing_check(M24, the residual asymmetry is not a collisional wing) · run_global_dataset_fit(M25, every canonical trace in one likelihood, both coefficients free) · run_morning_ruler(M26, the pilot day's own rate from its 27 recovered rulers) · run_centre_stark(M27, the centre-channel AC-Stark coefficient from the held-lock epochs) · run_full_dataset_fit(M28, M23's construction over M25's data: the full archive in one likelihood) · run_ramp_geometry(§2.6/PLAN §6 predictions) · run_cavity_scan(M30, integrates the 2025-06-12 cavity-scan digitisation) · annotate_results_status(status column, after every producer and before every reader) · make_figures · make_results_ledger
+          Two more write no CSV and are run by hand, so a published number
+          can be re-derived rather than taken: run_saturation_probe (the
+          light-shift bounds re-profiled with the saturation companion in
+          the model, four stages, the last needing the outside trees) and
+          run_geometry_design (the running-wave and waist designs, whose
+          weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    2070-test battery (2034 fast ~2 min + 36 `slow` high-statistics
+tests/    2093-test battery (2040 fast ~2 min + 53 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -171,14 +178,14 @@ figures/  paper figures from make_figures.py (C1 width-vs-density, C3 power
 ```
 
 The first six scripts form the pipeline (each reads the previous ones'
-`results/`); the rest are the physics analyses keyed to the deliverables.
+`results/`), and the rest are the physics analyses keyed to the deliverables.
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 2034 fast tests (~2 min)
-pytest -q --runslow                           # full 2070 incl. slow closures (what CI runs)
-# reproduce every committed CSV, figure, and docs/RESULTS.md, where the copy
-# you have carries the raw traces (see data_raw/README.md):
+pip install -e ".[dev]" && pytest -q          # 2040 fast tests (~2 min)
+pytest -q --runslow                           # full 2093 incl. slow closures (what CI runs)
+# reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
+# (already in git; import_data.py only re-imports from the old archive):
 bash scripts/run_all.sh
 ```
 
@@ -191,5 +198,5 @@ and the ledger within the tolerance `scripts/verify_results_fresh.py` states.
 `data_raw/README.md` states what the copy you are reading carries.
 
 Raw-data source and history: the 2025 dataset comes from the earlier
-`Rb-5S-to-6S-broadening` project; this repository is a clean reimplementation, and
+`Rb-5S-to-6S-broadening` project. This repository is a clean reimplementation, and
 `docs/DATA.md` documents the provenance and every change made here.

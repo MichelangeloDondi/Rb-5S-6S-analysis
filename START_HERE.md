@@ -78,8 +78,8 @@ Two things are worth knowing before you wonder why something fails:
   themselves and three reach them by importing `run_stark_joint`'s loaders.
   They exit 0 with a message naming the missing tree rather than failing, and
   the committed CSVs are the record for those stages, so nothing you need is
-  missing. If you do have the trees, point `RB5S6S_PREHISTORY_DIR` and
-  `RB5S6S_PILOT_DIR` at them rather than relying on the fallback path, which
+  missing. If you do have the trees, point `RB5S6S_SESSION_20250704_DIR` and
+  `RB5S6S_SESSION_20250717_DIR` at them rather than relying on the fallback path, which
   is not where they live.
 
 ## 2. Read it, depending on why you are here

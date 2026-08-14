@@ -1054,7 +1054,7 @@ def ruler_fig_candidates(rows=None):
 
       * the top-three verdict PASSES and is not marginal,
       * the re-index ladder took no action,
-      * the trace is not quarantined,
+      * the trace is not excluded,
       * at least six of the seven fitted heights stand strictly above the fit
         residual standard deviation, with none railed on its zero bound
         (amendment 4: the original all-seven clause is unsatisfiable in this
@@ -1094,8 +1094,8 @@ def ruler_fig_candidates(rows=None):
             census["tooth-labelling verdict is not a clean pass"] += 1
         elif r["reindex_action"] != "none":
             census["the ladder had to re-index it"] += 1
-        elif r["quarantined"] == "True":
-            census["quarantined"] += 1
+        elif r["excluded"] == "True":
+            census["excluded"] += 1
         elif int(r["n_railed"]):
             census["a slot is railed on its zero bound"] += 1
         elif sum(1 for h in heights if h > fit_rms) < 6:
@@ -2830,15 +2830,15 @@ def _gallery_context():
     Refactored out of fig_fit_gallery (2026-08) so fig18 (fig_single_peak_fits)
     computes identical numbers from one code path -- no duplicated fit logic.
     """
-    fp = C.RESULTS_DIR / "global_archive_fit.csv"
+    fp = C.RESULTS_DIR / "global_dataset_fit.csv"
     if not fp.exists():
-        print("  (global_archive_fit.csv absent -- skipping the fit-gallery figures)")
+        print("  (global_dataset_fit.csv absent -- skipping the fit-gallery figures)")
         return None
     if not (C.DATA_RAW_DIR / "MANIFEST.csv").exists():
         print("  (data_raw/MANIFEST.csv absent -- skipping the fit-gallery figures)")
         return None
 
-    rows = _rows("global_archive_fit")
+    rows = _rows("global_dataset_fit")
 
     def val(q, k="primary"):
         return float(next(r["value"] for r in rows if r["quantity"] == q and r["key"] == k))
@@ -2851,7 +2851,7 @@ def _gallery_context():
     # 95 per cent bound instead.
     #
     # WHICH BOUND, and the distinction is load-bearing. These are M25's own
-    # numbers, from global_archive_fit.csv, status PRELIM. They are NOT the
+    # numbers, from global_dataset_fit.csv, status PRELIM. They are NOT the
     # figures README.md and CLAIMS.md headline, which are the three-session
     # joint construction in stark_joint.csv, status BOUND, giving
     # S0(225 mW) < 0.26 MHz against this fit's 0.217. The preregistration
@@ -2869,7 +2869,7 @@ def _gallery_context():
 
     sys.path.insert(0, str(C.REPO_ROOT / "scripts"))
     try:
-        from run_global_archive_fit import DNU_FLOOR, load_campaign_all
+        from run_global_dataset_fit import DNU_FLOOR, load_campaign_all
         from rb5s6s.linefit import _shared_profile_grid, transit_fwhm_at_T
         traces = load_campaign_all()
     except Exception as e:  # missing/changed raw archive: degrade like fig7/10/11
@@ -3023,7 +3023,7 @@ def fig_fit_gallery():
     p_sweep condition, the brightest combination of power and temperature the
     campaign ran, per fig2's P^2 amplitude law, taking the largest-amplitude
     repeat of the five) and overlays the M25 global archive model at the
-    COMMITTED shared optimum read from results/global_archive_fit.csv:
+    COMMITTED shared optimum read from results/global_dataset_fit.csv:
     kappa_min, beta_self_joint, sigma_laser (per session/T block) and the
     transit reference. This does not re-run the global fit.
 
@@ -3104,10 +3104,10 @@ def fig_fit_gallery():
         "The joint fit of all campaign traces, against the highest-signal trace "
         "at each of the four peaks",
         fontsize=8.6, y=0.995)
-    _footer(fig, "Source: results/global_archive_fit.csv (shared parameters, "
+    _footer(fig, "Source: results/global_dataset_fit.csv (shared parameters, "
                  f"{STATUS_WORD.get(status, status.lower())}) + the "
                  "data_raw archive (per-trace data, local refit only). "
-                 "Regenerate: python scripts/run_global_archive_fit.py && "
+                 "Regenerate: python scripts/run_global_dataset_fit.py && "
                  "python scripts/make_figures.py.")
     _save(fig, "fig16_fit_gallery.png")
 
@@ -3236,10 +3236,10 @@ def fig_single_peak_fits():
         fig.suptitle(
             "The fitted model, its residual and its parameters",
             fontsize=9.2, y=0.995)
-        _footer(fig, "Source: results/global_archive_fit.csv (shared parameters, "
+        _footer(fig, "Source: results/global_dataset_fit.csv (shared parameters, "
                      f"{STATUS_WORD.get(status, status.lower())}) + the data_raw archive "
                      "(this trace, refit individually). Regenerate: "
-                     "python scripts/run_global_archive_fit.py && "
+                     "python scripts/run_global_dataset_fit.py && "
                      "python scripts/make_figures.py.", y=0.015)
         _save(fig, f"fig18_single_{peak}.png")
 
@@ -3256,11 +3256,11 @@ def _pilot_width_point(prates):
 
     The rate is the pilot day's OWN, not a borrowed one: the campaign bracket
     rate for the pilot's peak times the measured scale in
-    results/pilot_ruler.csv, which the pilot day's 27 rulers fix at 1.0022(12).
+    results/morning_ruler.csv, which the pilot day's 27 rulers fix at 1.0022(12).
     That measurement is why this point can be drawn at all, and it is what
     replaced a scale fitted inside the joint fits.
 
-    The traces live in the pilot quarantine tree and are read in place, never
+    The traces live in the pilot excluded tree and are read in place, never
     copied, so a checkout without that tree gets no pilot point and the rest of
     the panel is unchanged. Returns (width_MHz, err_MHz, n_traces, peak) or
     None.
@@ -3270,9 +3270,9 @@ def _pilot_width_point(prates):
     import run_stark_joint as _rsj
 
     peak, scale = "4192", _rsj.measured_pilot_scale()
-    if scale is None or peak not in prates or not _rsj.PILOT.is_dir():
+    if scale is None or peak not in prates or not _rsj.SESSION_20250717.is_dir():
         return None
-    files = sorted(_rsj.PILOT.glob("*mw*.csv"))
+    files = sorted(_rsj.SESSION_20250717.glob("*mw*.csv"))
     if len(files) < 3:
         return None
     rate, relerr = prates[peak]
@@ -3322,7 +3322,7 @@ def fig_width_trends():
         bound (2026-08-02, run_beta_self.py's headline decision), so the
         drawn construction and the reported one disagreed. They now match.
       * Morning pilot, 26 traces on one peak: rate from the pilot day's own
-        27 rulers as the measured scale in results/pilot_ruler.csv, width
+        27 rulers as the measured scale in results/morning_ruler.csv, width
         contiguous like the rest. ENTERS as a separately marked point OUTSIDE
         the fitted slope, with a horizontal error bar over the density its
         oven label leaves open (addendum 17: its 91 C is a variac set point,
@@ -3600,7 +3600,7 @@ def fig_width_trends():
     _footer(fig, "Source: data_raw/MANIFEST.csv + results/ruler_blocks.csv (left panel "
                  "widths, reproducing the results/beta_self_probe.csv construction), "
                  "results/ruler_traces.csv (the archived comb heights),\n"
-                 "results/pilot_ruler.csv + the held-aside session tree (its point, read "
+                 "results/morning_ruler.csv + the held-aside session tree (its point, read "
                  "in place), results/power_sweep.csv, results/stark_sweep.csv (right panel). "
                  "Regenerate: python scripts/run_beta_self.py && python "
                  "scripts/run_stark_sweep.py && python scripts/make_figures.py.",
@@ -4102,12 +4102,12 @@ def fig_joint_fit_five():
             axf.set_xlabel("laser detuning (MHz)", fontsize=8.5)
             axr.set_xlabel("laser detuning (MHz)", fontsize=8.5)
 
-    status = next(r["status"] for r in _rows("global_archive_fit")
+    status = next(r["status"] for r in _rows("global_dataset_fit")
                   if r["quantity"] == "beta_self_joint")
     # "and its errors" stood here and was not true: the shared block carries
     # no per-parameter uncertainty on this figure, and the sibling galleries
     # fig16 and fig22 correctly do not claim one.
-    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum, "
+    _footer(fig, "Sources: results/global_dataset_fit.csv (the shared optimum, "
                  f"{STATUS_WORD.get(status, status.lower())}) "
                  "+ data_raw archive (per-trace data, local "
                  "nuisance refits only). Regenerate: python scripts/make_figures.py.")
@@ -4196,7 +4196,7 @@ def fig_joint_fit_twenty():
     # the residual strips are divided by and why the reduced chi-squared falls
     # below one, and which column carries the weakest signal. All four are
     # caption material. The shared widths are in
-    # results/global_archive_fit.csv, which the footer cites.
+    # results/global_dataset_fit.csv, which the footer cites.
     fig.suptitle("The joint fit across twenty conditions at 130 °C, four hyperfine "
                  "components by five laser powers", fontsize=12, y=0.978, va="top")
     fig.text(0.018, 0.48, "signal above background (V)",
@@ -4204,9 +4204,9 @@ def fig_joint_fit_twenty():
              fontsize=8.5, color="0.35")
     fig.text(0.5, 0.105, "laser detuning (MHz)",
              ha="center", va="top", fontsize=7.6, color="0.35")
-    status = next(r["status"] for r in _rows("global_archive_fit")
+    status = next(r["status"] for r in _rows("global_dataset_fit")
                   if r["quantity"] == "beta_self_joint")
-    _footer(fig, "Sources: results/global_archive_fit.csv (the shared optimum, "
+    _footer(fig, "Sources: results/global_dataset_fit.csv (the shared optimum, "
                  f"{STATUS_WORD.get(status, status.lower())}) "
                  "+ data_raw archive (per-trace data, local nuisance refits "
                  "only). Regenerate: python scripts/make_figures.py.")

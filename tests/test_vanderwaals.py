@@ -126,7 +126,7 @@ def test_anchored_beta_is_bracketed_by_its_two_inputs():
     assert r["beta6_khz"] == pytest.approx(3.38, rel=0.05)
 
 
-def test_archival_bound_still_sits_well_above_the_anchored_expectation():
+def test_record_bound_still_sits_well_above_the_anchored_expectation():
     """The conclusion that survives every route to an expected value: the
     archival bound (0.2-0.4 MHz per 1e12 cm^-3) is orders above it."""
     from rb5s6s.vanderwaals import beta_self_anchored

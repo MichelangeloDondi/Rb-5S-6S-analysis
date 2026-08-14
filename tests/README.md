@@ -89,7 +89,7 @@ Some producers cannot run from a clone, because they read raw material that is
 held privately and take tens of minutes or hours. Their tests hold the
 committed CSV to its own construction instead of re-deriving the number:
 internal consistency, the exclusions the construction declares, and the
-premises the argument rests on. `test_stark_joint.py`, `test_pilot_ruler.py`,
+premises the argument rests on. `test_stark_joint.py`, `test_morning_ruler.py`,
 `test_centre_stark.py`, `test_stark_centres.py`, `test_wing_check.py`,
 `test_laser_history.py` and `test_wavemeter_reconstruction.py` work this way.
 

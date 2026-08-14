@@ -17,7 +17,7 @@ Writes results/stark_sweep.csv. Reads results/power_sweep.csv (run M6 first).
 REPLACED AS THE TIGHTEST BOUND (2026-08-01): M23 (run_stark_joint) fits the
 FULL profiles of both sessions -- 20 summary widths here against ~220k points
 there -- and lands ~3x tighter. This module stays as the independent,
-simpler construction on committed summary numbers: it needs no quarantine
+simpler construction on committed summary numbers: it needs no excluded
 tree, runs in seconds, and brackets M23 from above, which is exactly what a
 cross-check should do.
 """

@@ -29,11 +29,11 @@ from rb5s6s.fringe_tail import fringe_tail_mc  # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 
 # (label, w0 in m, S0 in MHz): the measured waist and the small-waist (config S) target
-_S0_ARCHIVAL = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
+_S0_RECORD = stark_shift_S0_mhz(0.225, C.W0_MEASURED_M, rho=C.RHO_RETRO)
 _S0_SMALL = stark_shift_S0_mhz(0.225, 16e-6, rho=C.RHO_RETRO)
 REGIMES = (
-    (f"2025 ({C.W0_MEASURED_M*1e6:.0f}um, {_S0_ARCHIVAL:.2f}MHz)",
-     C.W0_MEASURED_M, _S0_ARCHIVAL),
+    (f"2025 ({C.W0_MEASURED_M*1e6:.0f}um, {_S0_RECORD:.2f}MHz)",
+     C.W0_MEASURED_M, _S0_RECORD),
     (f"S    (16um, {_S0_SMALL:.1f}MHz)", 16e-6, _S0_SMALL),
 )
 RHOS = (1.0, C.RHO_RETRO, 0.75)

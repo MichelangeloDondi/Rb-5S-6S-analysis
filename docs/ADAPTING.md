@@ -155,10 +155,10 @@ pre-registered in
   first-order one. That makes it a diagnostic rather than a gate.
 - **A re-index ladder.** Relabelling a rigid grid by whole slots is nearly
   degenerate in chi-squared, so a strict-improvement test decides the right
-  answer by coin flip and quarantines clean combs.
+  answer by coin flip and excludes clean combs.
   `RULER_REINDEX_CHI2_TOL` is the tolerance separating a correct relabelling
   from the false rescue of a contaminated grid, set on synthetics with known
-  answers. What the ladder cannot fix is quarantined with a recorded reason
+  answers. What the ladder cannot fix is excluded with a recorded reason
   rather than passed through.
 - **A residual-tail trimmer.** [`rb5s6s/trim.py`](../rb5s6s/trim.py) cuts
   unmodelled mirror signal out of the fit sample with a one-sided cumulative

@@ -5,7 +5,7 @@ from which docs/references.bib and docs/LITERATURE_INDEX.md are GENERATED.
 Why this file exists. The literature metadata used to live in three hand-kept
 stores keyed by the same citekey -- LITERATURE.md prose, references.bib, and the
 PDF_papers holdings table -- with nothing keeping them in step, and it had
-drifted: 11 citekeys were cited with no bib entry, one quarantined key was still
+drifted: 11 citekeys were cited with no bib entry, one excluded key was still
 cited, the bib header said "31 entries" over 53, and a near-duplicate pair
 (rajasree2020 / rajasree2020spin) was unguarded. The fix makes docs/lit/<key>.md
 the one place a paper's facts live and regenerates the other two views from it
@@ -101,7 +101,7 @@ QUARANTINE = {
     "drago2026",
     # bevilacqua2012: a MISATTRIBUTION, not a bad paper. PRA 86, 012501 (2012)
     # is Bruvelis et al. (docs/lit/bruvelis2012.md); there is no Bevilacqua
-    # among the authors. The key is quarantined rather than aliased so that
+    # among the authors. The key is excluded rather than aliased so that
     # the only place it may appear is the correction that retires it.
     "bevilacqua2012",
 }
@@ -200,7 +200,7 @@ def test_cited_keys_resolve():
         + "\n  ".join(f"{k}  (in {', '.join(v)})" for k, v in sorted(unresolved.items())))
 
 
-def test_quarantine_has_no_lit_file():
+def test_excluded_set_has_no_lit_file():
     lit = _lit_keys()
     leaked = sorted(QUARANTINE & lit)
     assert not leaked, (
@@ -209,7 +209,7 @@ def test_quarantine_has_no_lit_file():
 
 
 def test_allowlists_are_not_stale():
-    """A dangling/quarantined key that has since gained a lit file must leave the
+    """A dangling/excluded key that has since gained a lit file must leave the
     allowlist, so the exceptions never quietly outlive their reason."""
     lit = _lit_keys()
     stale_dangling = sorted(KNOWN_DANGLING & lit)

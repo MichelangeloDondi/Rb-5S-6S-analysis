@@ -322,7 +322,7 @@ line widths are 4.8 to 5.7 MHz, sitting on the
 [lineshape chapter](02_the_lineshape.md) budget. The dataset
 is decoded and frozen: 722 files became **297 unique traces**, and every anomaly
 (double-saves, renames, discards, off-center-sweep mirrors) is explained and
-either quarantined or handled.
+either excluded or handled.
 
 ---
 

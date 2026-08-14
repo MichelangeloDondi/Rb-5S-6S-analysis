@@ -130,7 +130,7 @@ drawn because it meets the conditions fixed before the analysis, §7 of the same
 note, every clause required: the two first-order teeth are among the three
 tallest without relabelling, six of the seven teeth stand above the scatter of
 the fit residual with the weakest at 0.63 of it and none railed on its zero
-bound, the ladder took no re-index action, the trace is not quarantined, and the
+bound, the ladder took no re-index action, the trace is not excluded, and the
 reduced χ² is 1.01 against a ceiling of 2.0. Seven of the 104 recorded rulers
 clear all of it. The residual strip carries the standardized units of the
 statistics chapter's §4.1, and the climb at the scan end is the clipped window

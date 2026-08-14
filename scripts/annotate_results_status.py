@@ -70,9 +70,9 @@ FILE_STATUS = {
     "power_sweep.csv": "MEASURED",        # width null + amp~P^2 consistency check (resid_skew=ARTIFACT, RESULTS C3c)
     "ruler_campaign.csv": "MEASURED",     # the frequency rate (axis-independent)
     "ruler_rate_model.csv": "MEASURED",
-    "pilot_ruler.csv": "CALIB",           # M26: the pilot day's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
-    "global_archive_fit.csv": "PRELIM",   # M25 joint archive fit, rulers-on arm; headline stays with M23
-    "global_archive_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
+    "morning_ruler.csv": "CALIB",           # M26: the pilot day's own rate from its 27 recovered rulers   # per-(session,peak) rate(t): a real drift, resolved (rate_model.py)
+    "global_dataset_fit.csv": "PRELIM",   # M25 joint archive fit, rulers-on arm; headline stays with M23
+    "global_dataset_fit_norulers.csv": "PRELIM",  # M25 rulers-off arm; the pair's gap is a stated systematic
     "linefit_conditions.csv": "PRELIM",   # per-condition joint fits, degenerate split
     "noise_model.csv": "DIAGNOSTIC",
     # M22: digitised from a screen photograph, not from the archive. It measures
@@ -150,9 +150,9 @@ QUANTITY_STATUS = {
     # M28: the cross-campaign full-archive joint fit. Same construction as M23
     # (one profiled kappa, the collisional term under a prior), over M25's
     # trace set with the rulers excluded. The gate_* rows are the
-    # pre-registered acceptance checks of docs/notes/full_archive_fit_prereg.md
+    # pre-registered acceptance checks of docs/notes/full_dataset_fit_prereg.md
     # and are diagnostics of the RUN, not of the atom.
-    "full_archive_fit.csv": {
+    "full_dataset_fit.csv": {
         "kappa_ub95": "BOUND", "S0_225mW_ub95": "BOUND",
         "S0_270mW_ub95": "BOUND",
         "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",

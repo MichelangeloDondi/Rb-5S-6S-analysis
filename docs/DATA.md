@@ -62,7 +62,7 @@ aborted first attempt at the 4154 power sweep is a *preliminary attempt*, and it
 sits inside the campaign rather than before it. The manifest names the campaign's
 own divisions in its `session` column, in one-letter codes: `P` is the power
 session (145 traces), `T` the temperature session (123), and `Q` the preliminary
-attempt held in quarantine (29).
+attempt held in excluded (29).
 
 *The chronology and the identities below were established on 2026-07-10 and
 2026-07-11 by hash comparison against the original archive, with the design
@@ -363,7 +363,7 @@ layer.
 | `p_sweep/` | RF-off lines, 130 °C, 5 powers × 4 peaks × 5 repeats. 225 mW rows carry `serves_t130=True` | 100 |
 | `rulers_t/` | RF-on comb traces per temperature block | 61 |
 | `rulers_p/` | RF-on bracket blocks (`before`/`after`) per peak | 44 |
-| `quarantine/` | the aborted 4154 power attempt + its plausible rulers (§5) | 29 |
+| `excluded/` | the aborted 4154 power attempt + its plausible rulers (§5) | 29 |
 | `discarded/` | shots the experimenter rejected at curation (§3, item 4) | 4 |
 | `review/` | anything that failed pattern classification | 0 |
 
@@ -372,7 +372,7 @@ Total: **297 unique traces** (from 722 archive files). The census is pinned by
 a copy that carries the traces and skips, with a stated reason, in one that
 does not.
 
-The `flag` column takes values `canonical` / `discarded` / `quarantined` /
+The `flag` column takes values `canonical` / `discarded` / `excluded` /
 `review`, and §5 is the register of every exclusion behind them.
 
 **Every column of the manifest.** Sixteen, in file order. This is the table the
@@ -382,7 +382,7 @@ analyst tracing one trace needs.
 |---|---|
 | `file` | the path inside `data_raw/` |
 | `md5` | the content hash, which is the identity. Names collide across folders, bytes do not |
-| `role` | the acquisition role, one of `p_sweep` (101), `t_sweep` (62), `ruler_t` (61), `ruler_p` (44), `quarantine` (29). There is no `discarded` or `review` value: a discard keeps the role of the folder it came from, which is why these five counts exceed the folder counts above by exactly the four discards |
+| `role` | the acquisition role, one of `p_sweep` (101), `t_sweep` (62), `ruler_t` (61), `ruler_p` (44), `excluded` (29). There is no `discarded` or `review` value: a discard keeps the role of the folder it came from, which is why these five counts exceed the folder counts above by exactly the four discards |
 | `peak` | the hyperfine component, by its wavelength label |
 | `temperature_C` | the cell temperature, read from the four thermocouples inside the oven |
 | `power_mW` | the drive power where the record carries one |
@@ -390,7 +390,7 @@ analyst tracing one trace needs.
 | `bracket` | `before` or `after`, for the power-session ruler brackets |
 | `repeat_idx` | position within the repeat block, which is the time order |
 | `serves_t130` | marks the 225 mW rows that double as the 130 °C density point |
-| `flag` | the status: `canonical`, `discarded`, `quarantined` or `review` |
+| `flag` | the status: `canonical`, `discarded`, `excluded` or `review` |
 | `session` | which acquisition session the trace belongs to, `P`, `T` or `Q`, decoded in the glossary above |
 | `block_seq` | the block's position within its session |
 | `n_source_copies` | how many names in the original tree carry these bytes |
@@ -443,13 +443,13 @@ for the backup-only discards, which are not in the frozen archive at all.
 | what | count | decided | by whom | criterion | effect |
 |---|---|---|---|---|---|
 | curation discards, `data_raw/discarded/` | 4 | 2026-07-11, audited 2026-07-12 and re-audited 2026-07-23 | the experimenter at curation time, blind to any fitted physics | acquisitions that "seemed quite bad" at the bench, then held out by pre-registration | none on any headline. All four sit inside their conditions' kept linewidth spread. One condition drops to four repeats (§3 item 4) |
-| session quarantine, `data_raw/quarantine/` | 29 | 2026-07-12, re-examined the same day | pre-registration, on a curation fact rather than a per-trace defect | the aborted first 4154 130 °C power attempt and its ten ruler brackets, redundant against a complete retake | none on any headline. Folding it into the power fit moves the light-shift bound within that bound's own scatter (below) |
+| session excluded, `data_raw/excluded/` | 29 | 2026-07-12, re-examined the same day | pre-registration, on a curation fact rather than a per-trace defect | the aborted first 4154 130 °C power attempt and its ten ruler brackets, redundant against a complete retake | none on any headline. Folding it into the power fit moves the light-shift bound within that bound's own scatter (below) |
 | backup-only discards, `data_recovered/discarded_backup/` | 16 | discarded at curation, recovered from the backup and assessed 2026-07-23, published here 2026-07-24 | the experimenter at curation time | discarded at the bench and absent from the frozen archive, published for inspection only | none. They enter no fit |
 | hard-flagged ruler export | 1 | 2026-07-11 | mechanical rule, at first strict-parse contact | interior dropouts leaving 1047 valid samples (§3 item 5(ii)) | the fitted ruler population is 104 rather than 105 |
 | rehearsal traces not entering the joint light-shift fit | 4 of 50 | 2026-08-01 | mechanical rule | three are 0xff-corrupted on disk and one has no line in the window (§2) | 46 of the 50 enter |
 | ruler traces removed by the spacing outlier rule | 3 | 2026-08-04 | pre-registered rule, threshold calibrated against nulls rather than a quantile | median and median absolute deviation against the calibrated threshold (amendment 3 §C6) | three temperature-block combs leave the frequency calibration |
 | line traces removed by the spacing outlier rule | 0 | 2026-08-04 | the same rule | the same | none |
-| residual-tail trims, ruler ladder | 2 trimmed, 2 refused, 100 untouched | 2026-08-04 | pre-registered trimmer | one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to quarantine rather than eating signal (amendment B5.2) | two ruler spacings move up, in the direction removing contamination predicts |
+| residual-tail trims, ruler ladder | 2 trimmed, 2 refused, 100 untouched | 2026-08-04 | pre-registered trimmer | one-sided cumulative sum on signed smoothed residuals, with a hard core guard and a refusal that routes to excluded rather than eating signal (amendment B5.2) | two ruler spacings move up, in the direction removing contamination predicts |
 | residual-tail trims, line fits | 0 trimmed, 1 refused, 158 untouched of 159 canonical lines | 2026-08-04 | the same trimmer | the same | none. Read §7 before reading this row, because it is a fact about the guards and not about the data |
 | residual-tail trims, quality pass | 34 of 182 non-ruler traces | 2026-08-04 | the same trimmer, diagnostic only | the same | none. This stage acts on no number and exists to be read beside the trace in the gallery |
 | retrace masking at fit time | 8 canonical traces | 2026-07-11 | mechanical rule, applied per trace | the down-ramp re-crosses the line inside the acquisition window, so the fit window adapts to exclude the mirror (§7) | it un-pinned one condition's collisional width and removed the one cross-peak consistency outlier |
@@ -457,7 +457,7 @@ for the backup-only discards, which are not in the frozen archive at all.
 Every non-canonical row carries its own reason in the manifest's `qc_reason`
 column. What the column holds is the criterion and the standing decision, not
 the date, the count or the downstream effect, which are the table above's job.
-The nineteen lines of the aborted attempt read, in part, "session quarantine:
+The nineteen lines of the aborted attempt read, in part, "session excluded:
 aborted first 4154 130 C power attempt, redone in full ... Kept excluded by
 pre-registration". Canonical rows leave the column empty.
 
@@ -495,7 +495,7 @@ and its brackets, and they are set out below.
   into the canonical rulers runs at 03:25 and 03:53, bracketing the campaign's
   own 4154 block. Excluded with the sweep they belong to.
 
-- **Re-examined the 4154 130 °C quarantine on request (2026-07-12), and kept
+- **Re-examined the 4154 130 °C excluded on request (2026-07-12), and kept
   excluded.** The question was whether the aborted
   first attempt is usable. Findings, all verified: (a) it is **redundant**, since the
   canonical p_sweep already covers all five powers (25/75/125/175/225 mW), the
@@ -509,7 +509,7 @@ and its brackets, and they are set out below.
   few-% level (it *tightens* slightly, well within the bound's own scatter),
   leaves $\kappa$
   unchanged, and cannot touch $\beta$ (the headline uses the 70/90/110 cooling
-  sweep, never this session). **Decision: keep quarantined.** Re-admitting
+  sweep, never this session). **Decision: keep excluded.** Re-admitting
   previously-cut, drift-flagged data *because* it tightens a bound is the mirror
   image of cherry-picking (both are results-driven exclusion calls, which the
   pre-registration exists to prevent). The tightening is marginal and the
@@ -758,7 +758,7 @@ the brief, and they moved no headline number.
   (ii) A corr(γ, log N) > corr(γ, N) argument, which is fragile (993.4121 nm is
   non-monotonic and the pooled means reverse it). The robust metric is the
   rise factor ×1.85 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
-- **Discard/quarantine audit adjudicated + `qc_reason` column added (2026-07-12).**
+- **Discard/excluded audit adjudicated + `qc_reason` column added (2026-07-12).**
   An external audit of the excluded traces was verified against the
   repo, and its two central factual claims did NOT survive, in opposite directions
   (do not re-litigate either):
@@ -775,13 +775,13 @@ the brief, and they moved no headline number.
   (margin 0 ms)', snr=inf, independently confirmed"* does NOT reproduce:
   recomputing `hard_flags` on all 29 gives zero flags (spot: edge_margin
   333 ms, snr=61), agreeing with the committed `qc_metrics.csv`. The
-  quarantine is legitimate but session-grain (the aborted first 4154 130 °C
+  excluded is legitimate but session-grain (the aborted first 4154 130 °C
   power attempt, redone in full, plus its 10 EOM ruler brackets), a curation
   fact, not a per-trace mechanical defect, and therefore not recomputable
   from the data. That is exactly why the audit's one *procedural* point was
   right and is now implemented: `MANIFEST.csv` carries a **`qc_reason`
   column** (`scripts/annotate_manifest_qc.py`, idempotent, self-checking: it
-  re-verifies the discard map and the quarantine cleanliness before writing,
+  re-verifies the discard map and the excluded cleanliness before writing,
   guarded by `tests/test_manifest_qc.py`). Canonical rows are empty, and all 33
   non-canonical rows carry their recorded reason. Also for the record: the
   manifest has no `status` column and never did (`flag` is the status). The

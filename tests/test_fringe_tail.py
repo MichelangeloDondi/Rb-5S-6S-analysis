@@ -30,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # waist the earlier direct Monte-Carlo was run at, kept so the estimator can be
 # checked against it to the digit. The committed CSV is produced at
 # config.W0_MEASURED_M (64 um) -- see scripts/run_fringe_tail.py.
-_ARCHIVAL = dict(w0_m=50e-6, s0_mhz=0.6)
+_RECORD = dict(w0_m=50e-6, s0_mhz=0.6)
 _SMALL = dict(w0_m=16e-6, s0_mhz=5.7)
 
 # The intrinsic standardized skew of the triangular ramp, 18^1.5/135 = +0.566.
@@ -40,7 +40,7 @@ G1_TRIANGLE = 18 ** 1.5 / 135
 def test_reproduces_reference_direct_mc_at_the_anchor_draw():
     # one 3e5-atom block at the reference seed reproduces the earlier direct MC:
     # d_skew -0.038 (archival) and -0.143 (config S).
-    a = fringe_tail_mc(**_ARCHIVAL, rho=1.0, seed=7, n_atoms=300_000)
+    a = fringe_tail_mc(**_RECORD, rho=1.0, seed=7, n_atoms=300_000)
     o = fringe_tail_mc(**_SMALL, rho=1.0, seed=7, n_atoms=300_000)
     assert a["d_skew"] == pytest.approx(-0.0382, abs=1e-3), a
     assert o["d_skew"] == pytest.approx(-0.1429, abs=1e-3), o
@@ -60,7 +60,7 @@ def test_mean_pull_preserved_by_the_symmetric_fringe():
 
 @pytest.mark.slow
 def test_skew_suppressed_and_scales_with_waist():
-    a = fringe_tail_mc(**_ARCHIVAL, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
+    a = fringe_tail_mc(**_RECORD, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
     o = fringe_tail_mc(**_SMALL, rho=1.0, n_atoms=10 ** 6, n_blocks=8, seed=1)
     # suppression is negative (same sign as the divergence rider), and larger at
     # the small (config S) waist than at the archival waist

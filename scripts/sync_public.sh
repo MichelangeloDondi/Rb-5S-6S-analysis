@@ -13,13 +13,13 @@
 # therefore never simply track each other; changes are carried across as
 # patches (cherry-pick), which keeps the public history append-only rather
 # than force-pushed. A port that cannot be a clean cherry-pick says which
-# archive commits it carried, in its own message, as "(archive <sha>)" or
-# "(archive <sha>, <sha>)" or "archive commits <sha> through <sha>". Writing
+# source commits it carried, in its own message, as "(source <sha>)" or
+# "(source <sha>, <sha>)" or "source commits <sha> through <sha>". Writing
 # that line is what lets --check below tell a delivered commit from a missing
 # one, so a port message without it is a port that will be re-reported for ever.
 #
 # Usage:
-#   scripts/sync_public.sh              # carry every archive commit the public repo lacks
+#   scripts/sync_public.sh              # carry every source commit the public repo lacks
 #   scripts/sync_public.sh <sha>...     # carry only these
 #   scripts/sync_public.sh --check      # report drift, change nothing
 #
@@ -30,7 +30,7 @@
 
 set -euo pipefail
 
-ARCHIVE="$HOME/Documents/GitHub/Rb-5S-6S-analysis"
+SOURCE_REPO="$HOME/Documents/GitHub/Rb-5S-6S-analysis"
 PUBLIC="$HOME/Documents/GitHub/Rb-5S-6S-public"
 
 # Files deliberately different between the two repos (the raw-trace honesty
@@ -49,16 +49,16 @@ DIVERGENT=(
   "docs/methods.md"
   "docs/PREREGISTRATION_RESULTS.md"
   "data_raw/README.md"
-  # Added 2026-07-29. The archive is a PRIVATE repo billed per Actions minute,
+  # Added 2026-07-29. The source repository is a PRIVATE repo billed per Actions minute,
   # so its matrix is gated to tags and dispatch; the mirror is public and free,
   # so it runs the full --runslow battery on every push and is the reference
-  # green check. Carrying the archive's gates across silently disabled the slow
+  # green check. Carrying the source repository's gates across silently disabled the slow
   # tests in BOTH repos, which is how the gate came to be justified by a mirror
   # that was no longer doing the job. Keep the public version on conflict.
   ".github/workflows/tests.yml"
   # Added 2026-07-30, after it conflicted for the first time. The two ignore
   # files differ in ONE line and the difference is load-bearing: in the mirror
-  # .venv is a SYMLINK into the archive checkout, so the rule there is `.venv`
+  # .venv is a SYMLINK into the source repository checkout, so the rule there is `.venv`
   # with NO trailing slash -- a directory-only pattern does not match a symlink,
   # and `git add -A` staged it once on 2026-07-29. Resolve by keeping the
   # mirror's `.venv` line and porting any NEW rules across by hand.
@@ -72,23 +72,23 @@ DIVERGENT=(
   # mirror's numbers and re-record rather than merging them by hand.
   "tests/_style_baseline.json"
   # Added 2026-08-05, after the two copies were found to have diverged with
-  # nothing here saying so. The archive's `cdc1f82` added the
+  # nothing here saying so. The source repository's `cdc1f82` added the
   # `proj_source_ -> CALIB` override to the status map. The mirror's port of
   # that commit, `c0d2ff4`, left the override out, and `127e430` then added the
   # mirror's own M28 status block and recorded the exclusion as durable. A sync
   # that carries this file across either reinstates the override the mirror
-  # dropped or reports the archive's edits as permanently missing. Resolve by
+  # dropped or reports the source repository's edits as permanently missing. Resolve by
   # keeping the mirror's map and porting any NEW quantity block by hand.
   "scripts/annotate_results_status.py"
 )
 
 # Paths that must never be carried across, whatever a commit touches.
 NEVER=(
-  # this script itself: maintenance tooling that names the private archive
+  # this script itself: maintenance tooling that names the private source repo
   # and carries local paths -- removed from the public tree 2026-07-25
   "scripts/sync_public.sh"
   "data_raw/traces" "data_raw/t_sweep" "data_raw/p_sweep" "data_raw/rulers_t"
-  "data_raw/rulers_p" "data_raw/discarded" "data_raw/quarantine"
+  "data_raw/rulers_p" "data_raw/discarded" "data_raw/excluded"
   "data_recovered/discarded_backup" "data_recovered/lineage_4192nm_225mw1"
 )
 
@@ -97,23 +97,23 @@ die() { echo "sync_public: $*" >&2; exit 1; }
 [ -d "$PUBLIC/.git" ] || die "public clone not found at $PUBLIC"
 cd "$PUBLIC"
 # Guard: origin here MUST be the public repository. (On 2026-07-25 the
-# archive clone's origin still pointed at the pre-rename URL, which the rename
+# source clone's origin still pointed at the pre-rename URL, which the rename
 # had handed to the PUBLIC repo -- a push from there would have sent the full
 # raw-data history public. It was refused only by a non-fast-forward. Never
 # rely on that a second time.)
 _origin="$(git remote get-url origin)"
 case "$_origin" in
-  *Rb-5S-6S-analysis-archive*) die "origin is the ARCHIVE ($_origin) -- refusing" ;;
+  *Rb-5S-6S-analysis-archive*) die "origin is the SOURCE repository ($_origin) -- refusing" ;;
   *Rb-5S-6S-analysis*)         : ;;
   *) die "origin is not the expected public repo: $_origin" ;;
 esac
 
-git remote get-url archive >/dev/null 2>&1 || git remote add archive "$ARCHIVE"
-# --no-tags matters: the archive carries tags (raw-backup-2026-07-24, the
+git remote get-url source >/dev/null 2>&1 || git remote add source "$SOURCE_REPO"
+# --no-tags matters: the source repository carries tags (raw-backup-2026-07-24, the
 # msg-rewrite backup) that point at UNFILTERED commits, i.e. at the raw
 # traces. A plain fetch drags them into the public clone. (Observed and
 # cleaned 2026-07-25.)
-git fetch --quiet --no-tags archive
+git fetch --quiet --no-tags source
 
 # --- what does the public repo not have yet? -------------------------------
 # Hashes differ between the two histories, so delivery has to be inferred from
@@ -121,16 +121,16 @@ git fetch --quiet --no-tags archive
 # all three have to be read, because reading only the first reported 51 already
 # delivered commits as missing on 2026-08-04.
 #
-#   1. SUBJECT. A clean cherry-pick keeps the archive subject verbatim.
+#   1. SUBJECT. A clean cherry-pick keeps the source repository subject verbatim.
 #   2. NAMED SHA. A hand-resolved or batched port renames the subject and names
-#      its source: "Port the ruler validity layer (archive 50ea29d)", "(archive
-#      c74a0cc, 0bf2502)", "archive commits 871415c through 9962074",
+#      its source: "Port the ruler validity layer (source 50ea29d)", "(source
+#      c74a0cc, 0bf2502)", "source commits 871415c through 9962074",
 #      "(cherry picked from commit <full sha>)". Every hex token in the mirror's
-#      messages that resolves to a commit on archive/main is read as delivered,
+#      messages that resolves to a commit on source/main is read as delivered,
 #      and a "A through B" pair expands to the whole range.
-#   3. WHOLE-TREE PORT. "(archive HEAD)" and "direct-copied" mark a port that
-#      replaced the mirror's tree with the archive's tree of that moment, so it
-#      delivers the CONTENT of every archive commit up to its own date, whatever
+#   3. WHOLE-TREE PORT. "(source HEAD)" and "direct-copied" mark a port that
+#      replaced the mirror's tree with the source repository's tree of that moment, so it
+#      delivers the CONTENT of every source commit up to its own date, whatever
 #      the subjects were. The latest such port therefore clears everything
 #      behind it. This is about content and not about commits, which is the
 #      right question for a drift detector: the DIVERGENT and NEVER lists below
@@ -144,17 +144,17 @@ _pubref=origin/main
 git rev-parse --verify --quiet "$_pubref" >/dev/null 2>&1 || _pubref=HEAD
 git log --format='%s' "$_pubref" > "$_pubsubj"
 git log --format='%s%n%b' "$_pubref" > "$_pubmsg"
-git log --format='%H %s' archive/main | sed '1!G;h;$!d' > "$_arch"   # reverse: oldest first
+git log --format='%H %s' source/main | sed '1!G;h;$!d' > "$_arch"   # reverse: oldest first
 
 # (2) every hex token the mirror's messages name, kept when it resolves to a
-# commit that is actually on archive/main. The ancestor test is what keeps the
+# commit that is actually on source/main. The ancestor test is what keeps the
 # mirror's own hashes and stray words out.
 : > "$_delivered"
 grep -oE '[0-9a-f]{7,40}' "$_pubmsg" | sort -u > "$_toks" || true
 while IFS= read -r _tok; do
   [ -z "$_tok" ] && continue
   _full="$(git rev-parse --verify --quiet "${_tok}^{commit}" 2>/dev/null)" || continue
-  if git merge-base --is-ancestor "$_full" archive/main 2>/dev/null; then
+  if git merge-base --is-ancestor "$_full" source/main 2>/dev/null; then
     echo "$_full" >> "$_delivered"
   fi
 done < "$_toks"
@@ -168,9 +168,9 @@ done >> "$_delivered"
 # because a body spans lines and the date has to stay attached to it.
 _whole="$(git log --format='%cI%x09%s %b%x00' "$_pubref" \
           | tr '\n' ' ' | tr '\0' '\n' \
-          | grep -Ei 'archive HEAD|direct[- ]cop(y|ied)' | cut -f1 | sort | tail -1)" || true
+          | grep -Ei '(archive|source) HEAD|direct[- ]cop(y|ied)' | cut -f1 | sort | tail -1)" || true
 if [ -n "${_whole:-}" ]; then
-  git rev-list archive/main --before="$_whole" >> "$_delivered"
+  git rev-list source/main --before="$_whole" >> "$_delivered"
 fi
 sort -u "$_delivered" -o "$_delivered"
 
@@ -179,7 +179,7 @@ while IFS= read -r line; do
   sha="${line%% *}"; subj="${line#* }"
   grep -Fxq "$subj" "$_pubsubj" && continue        # (1) carried under its own subject
   grep -qx "$sha" "$_delivered" && continue        # (2) and (3) named or whole-tree
-  # A commit that touches ONLY archive-private paths has no public effect --
+  # A commit that touches ONLY source-private paths has no public effect --
   # carrying it would produce an empty cherry-pick and it would then be
   # reported as "missing" for ever. Treat it as delivered.
   _touched="$(git show --pretty=format: --name-only "$sha" | sed '/^$/d')"
@@ -187,7 +187,7 @@ while IFS= read -r line; do
   while IFS= read -r f; do
     [ -z "$f" ] && continue
     # A DIVERGENT file is resolved keeping the PUBLIC wording every time, so an
-    # archive-side change to one is never carried. A commit touching ONLY such
+    # source-side change to one is never carried. A commit touching ONLY such
     # files therefore cherry-picks empty and would be re-reported for ever --
     # which is exactly what the 2026-07-29 CI-trigger commit did on 2026-07-30.
     _is_divergent=0
@@ -196,9 +196,9 @@ while IFS= read -r line; do
     done
     [ "$_is_divergent" -eq 1 ] && continue
     case "$f" in
-      scripts/sync_public.sh) ;;                   # archive-only tooling
+      scripts/sync_public.sh) ;;                   # source-only tooling
       data_raw/t_sweep/*|data_raw/p_sweep/*|data_raw/rulers_*/*|\
-      data_raw/discarded/*|data_raw/quarantine/*|\
+      data_raw/discarded/*|data_raw/excluded/*|\
       data_recovered/discarded_backup/*|data_recovered/lineage_*/*) ;;
       *) _public_effect=1; break ;;
     esac
@@ -208,7 +208,7 @@ done < "$_arch"
 
 if [ "${1:-}" = "--check" ]; then
   if [ ${#missing[@]} -eq 0 ]; then
-    echo "sync_public: in step -- the public repo has every archive commit."
+    echo "sync_public: in step -- the public repo has every source commit."
   else
     echo "sync_public: ${#missing[@]} commit(s) not yet in the public repo:"
     for s in "${missing[@]}"; do git --no-pager log -1 --format='  %h %s' "$s"; done
@@ -266,10 +266,10 @@ $PY -m pytest -q || die "tests failed in the public repo -- not pushing"
 git push origin main
 
 # Do not leave raw-data objects sitting in the public clone: fetching the
-# archive brings them in via remote-tracking refs, where a careless
+# source repository brings them in via remote-tracking refs, where a careless
 # `git push --all/--mirror` could leak them. Drop the remote and prune.
-git remote remove archive >/dev/null 2>&1 || true
+git remote remove source >/dev/null 2>&1 || true
 git reflog expire --expire=now --all >/dev/null 2>&1 || true
 git gc --prune=now --quiet >/dev/null 2>&1 || true
 
-echo "sync_public: public repo updated and pushed; archive objects pruned."
+echo "sync_public: public repo updated and pushed; source objects pruned."

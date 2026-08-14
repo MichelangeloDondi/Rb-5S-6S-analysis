@@ -72,7 +72,7 @@ that file's header and in
 The two environments converge on their own at the next full run of the heavy
 producers. That run is already scheduled for a different reason: the archive
 fit is gaining a parallel path over its kappa grid, and the acceptance test
-for that path is a full run reproducing `global_archive_fit.csv` to the
+for that path is a full run reproducing `global_dataset_fit.csv` to the
 printed digit. It will execute on the supported floor, so if it reproduces
 within the tolerances the guard states, its output is committed and the
 environment of record becomes the floor. Nothing needs migrating separately.

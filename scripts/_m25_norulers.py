@@ -114,7 +114,7 @@ instead of a chain of three.
 ARM B of the two-arm M25 design: this copy runs with USE_RULERS = False, so
 the ruler combs contribute no lineshape information and beta_self is set by
 the RF-off traces alone. The gap between this arm and the rulers-on arm in
-run_global_archive_fit.py is reported as a stated systematic rather than
+run_global_dataset_fit.py is reported as a stated systematic rather than
 resolved, because the two disagree on the collisional core and the archive
 cannot say which is right.
 
@@ -163,8 +163,8 @@ M22, and found unsupported). New CSV rows carry quantity "sigma_laser_sp",
 key f"{block}_{peak}" (e.g. "camp130_4192"); the existing "sigma_laser" rows
 are unchanged and still report the pooled sigma_s means.
 
-Writes results/global_archive_fit_norulers.csv, NOT the rulers-on arm's
-global_archive_fit.csv. Needs the quarantine prehistory and
+Writes results/global_dataset_fit_norulers.csv, NOT the rulers-on arm's
+global_dataset_fit.csv. Needs the excluded prehistory and
 pilot trees; without them it prints what is missing and exits 0.
 Runtime: long (many hours). Run it in the background.
 """
@@ -193,7 +193,7 @@ from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
-from run_stark_joint import PEAKS, PILOT, PREHISTORY, load_pilot, load_rehearsal  # noqa: E402
+from run_stark_joint import PEAKS, SESSION_20250717, SESSION_20250704, load_session_20250717, load_session_20250704  # noqa: E402
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
@@ -330,7 +330,7 @@ def measured_pilot_scale():
     1.0022(12); imposing the measurement is the experiment that decides
     whether that gap was the axis or absorbed width physics."""
     import csv as _csv
-    path = C.RESULTS_DIR.parent / "results" / "pilot_ruler.csv"
+    path = C.RESULTS_DIR.parent / "results" / "morning_ruler.csv"
     if not path.exists():
         return None
     for r in _csv.DictReader(open(path)):
@@ -509,7 +509,7 @@ def _crossings(x, c, thresh):
     """Both edges of a profile interval, INTERPOLATED to the threshold crossing.
 
     WHY THIS EXISTS (2026-08-10). This file is ARM B of the two-arm M25 design,
-    a deliberate second copy of run_global_archive_fit.py rather than a shared
+    a deliberate second copy of run_global_dataset_fit.py rather than a shared
     import, so a fix to the primary copy does not reach it automatically. The
     primary copy's beta interval used to be reported as the set of GRID POINTS
     under the threshold, min(bl) to max(bl) on a grid of step 0.01, and where
@@ -604,14 +604,14 @@ def w0_scan(traces, offsets, w0s, kappas):
 
 
 def main() -> int:
-    if not (PREHISTORY.is_dir() and PILOT.is_dir()):
-        print(f"quarantine trees absent ({PREHISTORY}, {PILOT}) -- the "
-              f"committed results/global_archive_fit_norulers.csv is the record.")
+    if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
+        print(f"excluded trees absent ({SESSION_20250704}, {SESSION_20250717}) -- the "
+              f"committed results/global_dataset_fit_norulers.csv is the record.")
         return 0
     camp = load_campaign_all()
-    reh, n_corrupt = load_rehearsal()
+    reh, n_corrupt = load_session_20250704()
     _, prates = load_t_rates()
-    pil = load_pilot(prates["4192"][0])
+    pil = load_session_20250717(prates["4192"][0])
     rul = load_rulers_t() if USE_RULERS else []
     for t in reh:
         t["T"] = 130.0; t["sl"] = "reh"
@@ -704,7 +704,7 @@ def main() -> int:
           f"MHz per 1e12 cm^-3")
     print(f"  ({(time.time()-t0)/3600:.1f} h)")
 
-    with open(C.RESULTS_DIR / "global_archive_fit_norulers.csv", "w", newline="") as fh:
+    with open(C.RESULTS_DIR / "global_dataset_fit_norulers.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
@@ -783,7 +783,7 @@ def main() -> int:
                         f"value=95% kappa bound, err=beta_self, at transit_ref "
                         f"{tr_ref:.3f} MHz -- how both coefficients depend on "
                         f"the ASSUMED waist, which the archive cannot pin"])
-    print("\n  Wrote results/global_archive_fit_norulers.csv.")
+    print("\n  Wrote results/global_dataset_fit_norulers.csv.")
     return 0
 
 

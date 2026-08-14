@@ -36,7 +36,7 @@ ladder and free-center diagnostic extend it):
 2b. FIT VALIDITY (added 2026-08-04) — the rigid grid labels slots by
    proximity alone, so a retrace mirror can be fitted as a tooth. The
    top-three amplitude rule tests the labelling, a fixed-order ladder
-   re-indexes what it can, and what it cannot is quarantined with a recorded
+   re-indexes what it can, and what it cannot is excluded with a recorded
    reason. Pre-registered in docs/notes/ruler_validity_and_trim_prereg.md.
    This stage extends the plan rather than implementing one of its numbered
    stages.
@@ -429,7 +429,7 @@ def fit_comb(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = None, *,
 # route by which a correctly numbered comb is reached. Everything below is
 # unchanged and still runs.
 
-QUARANTINE_REASONS = (
+EXCLUSION_REASONS = (
     "top_three_unrecoverable",   # the full ladder ran, the rule still fails
     "no_excision_candidate",     # rule fails, no outer slot qualifies as a mirror
     "refit_failed",              # the optimizer failed inside the ladder
@@ -572,7 +572,7 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
         3. verdict
         4. comb-phase shifts, j = -2, -1, +1, +2
         5. excision of the suspect outer slot
-        6. quarantine, with a reason from QUARANTINE_REASONS
+        6. excluded, with a reason from EXCLUSION_REASONS
 
     A refit is accepted only if it PASSES the verdict AND does not worsen
     chi2_red past a ceiling of REINDEX_CHI2_NSIGMA standard deviations of the
@@ -582,16 +582,16 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
     now governs the excision rung as well as the phase rung, so the destructive
     rung is not the loosest one; see REINDEX_CHI2_NSIGMA.
 
-    A quarantined trace keeps every fitted quantity so that its removal can be
+    A excluded trace keeps every fitted quantity so that its removal can be
     audited. The caller is responsible for excluding it from the calibration.
 
     GATING. `gated` defaults to C.RULER_TOP3_GATED, which is False. Ungated, the
     ladder still runs in full and every outcome is returned, but the fit OF
-    RECORD is the first fit, `quarantined` is False, and nothing the verdict
+    RECORD is the first fit, `excluded` is False, and nothing the verdict
     decided touches the calibration. The ladder's own answer is returned
-    alongside as `quarantine_advised`, `reindex_action` and `delta_advised_ms`,
+    alongside as `excluded_advised`, `reindex_action` and `delta_advised_ms`,
     so the size of the effect is on the record without being applied. Gated,
-    the ladder's fit is the fit of record and a failing trace is quarantined.
+    the ladder's fit is the fit of record and a failing trace is excluded.
     The reason the default is off is in the constant's own note.
 
     THE FOLD, from 2026-08-06. The first fit is numbered from the sideband
@@ -607,17 +607,17 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
 
     Returns the fit dict of record plus the verdict fields and: top3_gated,
     reindex_action (none / phase_shift / excision), reindex_j, excised_k,
-    n_refits, delta_advised_ms, quarantine_advised, quarantined,
-    quarantine_reason, trimmed, trim_start_ms, trim_end_ms, trim_reason,
+    n_refits, delta_advised_ms, excluded_advised, excluded,
+    excluded_reason, trimmed, trim_start_ms, trim_end_ms, trim_reason,
     fold_k, fold_chi2_nsigma.
     RuntimeError from the FIRST fit propagates unchanged, so a trace that
     cannot be fitted at all still reaches the caller as it always did; only
-    failures inside the ladder become a quarantine.
+    failures inside the ladder become a excluded.
     """
     if gated is None:
         gated = bool(C.RULER_TOP3_GATED)
     rec = {"reindex_action": "none", "reindex_j": 0, "excised_k": "",
-           "n_refits": 0, "quarantine_advised": False, "quarantine_reason": "",
+           "n_refits": 0, "excluded_advised": False, "excluded_reason": "",
            "trimmed": False, "trim_start_ms": float("nan"),
            "trim_end_ms": float("nan"), "trim_reason": ""}
 
@@ -727,16 +727,16 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
                     reason = "no_excision_candidate"
                 else:
                     reason = "top_three_unrecoverable"
-                rec["quarantine_advised"], rec["quarantine_reason"] = True, reason
+                rec["excluded_advised"], rec["excluded_reason"] = True, reason
 
     rec["delta_advised_ms"] = fit["delta_ms"]
     if gated:
-        rec["quarantined"] = rec["quarantine_advised"]
+        rec["excluded"] = rec["excluded_advised"]
     else:
         # ADVISORY ONLY: the ladder ran and its answer is recorded, but the fit
         # of record is the first fit and no trace is excluded. Nothing the
         # verdict decided reaches a block, the campaign rate or the map.
-        fit, verdict, rec["quarantined"] = first, first_verdict, False
+        fit, verdict, rec["excluded"] = first, first_verdict, False
     rec["top3_gated"] = bool(gated)
 
     out = dict(fit)

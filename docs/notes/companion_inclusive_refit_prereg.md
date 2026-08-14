@@ -10,7 +10,7 @@ purpose. What happens when they go inside it?
 **Takes.** [notes/two_photon_saturation_companion.md](two_photon_saturation_companion.md)
 for the two companions and their measured sizes,
 [methods/06_the_statistics.md](../methods/06_the_statistics.md) for the fitting
-machinery, and [notes/full_archive_fit_prereg.md](full_archive_fit_prereg.md)
+machinery, and [notes/full_archive_fit_prereg.md](full_dataset_fit_prereg.md)
 for the trace census this reuses unchanged.
 **Gives.** The model change, the construction that could separate the pumping
 term from the other two, five numbered predictions, and the stop conditions.

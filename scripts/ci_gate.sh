@@ -28,7 +28,7 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
     echo "ci_gate: this checkout tracks the raw traces, reachability check skipped"
   else
     reach=$(git rev-list --all --objects 2>/dev/null \
-      | grep -cE 'data_raw/(p_sweep|t_sweep|rulers_|discarded|quarantine)/' || true)
+      | grep -cE 'data_raw/(p_sweep|t_sweep|rulers_|discarded|excluded)/' || true)
     if [ "${reach:-0}" -gt 0 ]; then
       echo "ci_gate: FAIL. $reach raw-trace paths are reachable from a ref in a" >&2
       echo "  checkout that does not track them. Find the ref with:" >&2

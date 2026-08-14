@@ -50,7 +50,7 @@ FLAGS
                     curated dirs. Stored under ``data_raw/discarded/``; NEVER
                     enters a headline fit. The M0 objective QC runs on these
                     only as a consistency check on the curation (appendix).
-* ``quarantined`` — see above
+* ``excluded`` — see above
 * ``review``      — did not match any known naming pattern; needs a human
 
 CHRONOLOGY ENCODING
@@ -93,7 +93,7 @@ from pathlib import Path
 
 # Allow running as a plain script from the repo root without installation.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from rb5s6s.config import ARCHIVE_SOURCE_DIR, DATA_RAW_DIR, MANIFEST_CSV  # noqa: E402
+from rb5s6s.config import SOURCE_DATA_DIR, DATA_RAW_DIR, MANIFEST_CSV  # noqa: E402
 
 # Filename grammar of the whole archive:  <peak>nm_<rest><index>.csv
 # e.g. 4154nm_110c3.csv / 4207nm_eom_before2.csv / 4154nm_eom_before_7.csv /
@@ -106,7 +106,7 @@ ROLE_DIRS = {
     "p_sweep": "p_sweep",
     "ruler_t": "rulers_t",
     "ruler_p": "rulers_p",
-    "quarantine": "quarantine",
+    "excluded": "excluded",
     "review": "review",
 }
 
@@ -133,7 +133,7 @@ def _pref_key(path: Path):
         score -= 40
     if re.search(r"nm_\d{3}mw\d+\.csv$", name):
         # plain power names like 4154nm_225mw3.csv (the combined 130c_XXXmw
-        # quarantine names have 'nm_130c_' in between and do not match)
+        # excluded names have 'nm_130c_' in between and do not match)
         score -= 30
     score += _DIR_RANK.get(path.parent.name, 0)
     return (score, name)
@@ -170,16 +170,16 @@ def classify(peak: str, rest: str):
     m = re.fullmatch(r"eom_(before|after)(_?)", rest)
     if m:
         bracket, underscore = m.group(1), m.group(2)
-        # 4154 has two bracket sets; the NON-underscore one is quarantined
+        # 4154 has two bracket sets; the NON-underscore one is excluded
         # (plausibly belongs to the aborted power attempt — see module docstring).
-        role = "quarantine" if (peak == "4154" and underscore == "") else "ruler_p"
+        role = "excluded" if (peak == "4154" and underscore == "") else "ruler_p"
         d.update(role=role, temperature_C=130, rf_on=True, bracket=bracket,
                  session="P" if role == "ruler_p" else "Q",
                  block_seq={"before": 0, "after": 6}[bracket] if role == "ruler_p" else "")
         return d
     m = re.fullmatch(r"130c_(025|125|225)mw", rest)
     if m:
-        d.update(role="quarantine", temperature_C=130, power_mW=int(m.group(1)),
+        d.update(role="excluded", temperature_C=130, power_mW=int(m.group(1)),
                  session="Q")
         return d
     if rest == "eom_130c":
@@ -195,7 +195,7 @@ def classify(peak: str, rest: str):
 
 
 def main() -> int:
-    src = ARCHIVE_SOURCE_DIR
+    src = SOURCE_DATA_DIR
     if not src.is_dir():
         print(f"ERROR: archive source not found: {src}\n"
               "(This script only runs on the machine holding the old repo; "
@@ -236,8 +236,8 @@ def main() -> int:
         curated = any(p.parent.name != "raw" for p in paths)
         if info["role"] in ("t_sweep", "p_sweep", "ruler_t", "ruler_p") and not curated:
             flag = "discarded"
-        elif info["role"] == "quarantine":
-            flag = "quarantined"
+        elif info["role"] == "excluded":
+            flag = "excluded"
         elif info["role"] == "review":
             flag = "review"
         else:

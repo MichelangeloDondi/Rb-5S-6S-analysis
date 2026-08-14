@@ -290,7 +290,7 @@ their indexing broken would invert the burden of proof. The seven fitted
 heights are persisted for the first time by this work, which is the dataset a
 future amplitude model would be tested against, and the panel says so. The same
 refusal is what keeps all 105 canonical ruler traces out of the census in
-[the full-archive fit specification](full_archive_fit_prereg.md), so the two
+[the full-archive fit specification](full_dataset_fit_prereg.md), so the two
 notes stand or fall together on it.
 
 ## 9. Predictions, and the conditions that stop the work

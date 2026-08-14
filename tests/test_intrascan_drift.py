@@ -54,7 +54,7 @@ _SNR = 130.0                  # THEORY_NOTE peak-SNR floor at <=225 mW
 # twice that, and one scan lasts TRACE_N_POINTS * TRACE_DT_S = 1.000 s:
 #   2 * 4 MHz/min * (1 s / 60 s) ~ 0.133 MHz  (~the §3 "<=0.1 MHz within-scan").
 _SCAN_S = TRACE_N_POINTS * TRACE_DT_S
-_DRIFT_ARCHIVAL_MHZ = 2.0 * (DRIFT_RATE_LASER_HZ_PER_MIN / 1e6) * (_SCAN_S / 60.0)
+_DRIFT_RECORD_MHZ = 2.0 * (DRIFT_RATE_LASER_HZ_PER_MIN / 1e6) * (_SCAN_S / 60.0)
 
 
 def _peak0() -> float:
@@ -117,12 +117,12 @@ def test_clean_fit_recovers_injected_asymmetry():
     assert m["kappa3"] == pytest.approx(_S0_TRUE ** 3 / 135.0, rel=2e-3), m
 
 
-def test_archival_linear_drift_leaves_asymmetry_unbiased():
+def test_record_linear_drift_leaves_asymmetry_unbiased():
     """The dominant archival drift is ~linear over 1 s. The centroid shifts (the
     pull the per-trace free centre absorbs) but the fitted asymmetry is unbiased:
     a linear sweep warp is a near-affine stretch the floating width takes up, not
     a spurious skew. Measured bias ~ -3e-3 on s0 = 0.6."""
-    nu, y = _scan(_DRIFT_ARCHIVAL_MHZ)
+    nu, y = _scan(_DRIFT_RECORD_MHZ)
     # the line centroid HAS moved (drift is active, not a no-op) ...
     centroid = float((nu * y).sum() / y.sum())
     assert abs(centroid) > 0.02, centroid
@@ -133,16 +133,16 @@ def test_archival_linear_drift_leaves_asymmetry_unbiased():
 def test_bias_grows_with_drift_rate():
     """The asymmetry bias grows monotonically with the within-scan drift rate:
     negligible at the archival rate, order-s0 only at tens of times it."""
-    b = {k: abs(_bias(k * _DRIFT_ARCHIVAL_MHZ)) for k in (1, 10, 30)}
+    b = {k: abs(_bias(k * _DRIFT_RECORD_MHZ)) for k in (1, 10, 30)}
     assert b[1] < b[10] < b[30], b
     assert b[1] < 8e-3, b            # archival: << s0
     assert b[30] > 0.05, b           # 30x stress: a material fraction of s0
 
 
 def test_byte_reproducible_at_fixed_seed():
-    a = _fit_s0(*_scan(_DRIFT_ARCHIVAL_MHZ, quad_mhz=_DRIFT_ARCHIVAL_MHZ,
+    a = _fit_s0(*_scan(_DRIFT_RECORD_MHZ, quad_mhz=_DRIFT_RECORD_MHZ,
                        noise=True, seed=3))
-    b = _fit_s0(*_scan(_DRIFT_ARCHIVAL_MHZ, quad_mhz=_DRIFT_ARCHIVAL_MHZ,
+    b = _fit_s0(*_scan(_DRIFT_RECORD_MHZ, quad_mhz=_DRIFT_RECORD_MHZ,
                        noise=True, seed=3))
     assert a == b, (a, b)
 
@@ -151,13 +151,13 @@ def test_byte_reproducible_at_fixed_seed():
 # slow (high-statistics coverage)                                             #
 # --------------------------------------------------------------------------- #
 @pytest.mark.slow
-def test_archival_bias_is_within_the_noise_error():
+def test_record_bias_is_within_the_noise_error():
     """Coverage number. The deterministic drift bias at the archival within-scan
     drift -- linear plus an equal accelerating quadratic bow (a conservative
     curvature) -- is a small fraction of the SNR~130 statistical error on the
     fitted asymmetry. So at the archival rate the asymmetry is 'unbiased within
     its error'. Measured: bias ~0.02-0.03, sigma_s0 ~0.3 => ratio ~0.1."""
-    bias = abs(_bias(_DRIFT_ARCHIVAL_MHZ, quad_mhz=_DRIFT_ARCHIVAL_MHZ))
+    bias = abs(_bias(_DRIFT_RECORD_MHZ, quad_mhz=_DRIFT_RECORD_MHZ))
     draws = np.array([_fit_s0(*_scan(0.0, noise=True, seed=s)) for s in range(60)])
     sigma = float(draws.std(ddof=1))
     assert bias / sigma < 0.25, (bias, sigma)
@@ -171,13 +171,13 @@ def test_bias_is_scan_direction_dependent_at_stress():
     dependent way. Negligibly so at the archival rate, but at a stress rate the
     two sweep directions leave a measurably different residual asymmetry -- the
     fingerprint that this is a genuine within-scan (not between-scan) effect."""
-    stress = 30.0 * _DRIFT_ARCHIVAL_MHZ
+    stress = 30.0 * _DRIFT_RECORD_MHZ
     fwd = _bias(0.0, quad_mhz=stress, direction=+1)
     rev = _bias(0.0, quad_mhz=stress, direction=-1)
     assert abs(fwd - rev) > 0.02, (fwd, rev)
     # at the archival rate the direction split is negligible
-    a_fwd = _bias(0.0, quad_mhz=_DRIFT_ARCHIVAL_MHZ, direction=+1)
-    a_rev = _bias(0.0, quad_mhz=_DRIFT_ARCHIVAL_MHZ, direction=-1)
+    a_fwd = _bias(0.0, quad_mhz=_DRIFT_RECORD_MHZ, direction=+1)
+    a_rev = _bias(0.0, quad_mhz=_DRIFT_RECORD_MHZ, direction=-1)
     assert abs(a_fwd - a_rev) < 8e-3, (a_fwd, a_rev)
 
 

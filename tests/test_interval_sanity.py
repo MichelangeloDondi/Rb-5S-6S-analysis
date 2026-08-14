@@ -1,7 +1,7 @@
 """Committed intervals must actually be intervals.
 
 WHY THIS EXISTS. On 2026-08-10 an uncertainty audit found that
-results/global_archive_fit.csv reported
+results/global_dataset_fit.csv reported
 
     beta_self_min   0.0150
     beta_self_lo95  0.0150
@@ -15,7 +15,7 @@ under the threshold, and where exactly one grid point qualified both edges lande
 on it. The kappa bound in the same file already interpolated. Nothing noticed for
 two releases because no check ever compared the two edges to each other.
 
-The producer is fixed to interpolate both edges (run_global_archive_fit._crossings).
+The producer is fixed to interpolate both edges (run_global_dataset_fit._crossings).
 This is the check that keeps it fixed, and it is deliberately a check on the
 COMMITTED CSVs rather than on the code, because the defect was in a shipped number
 and a reader reads the CSV.

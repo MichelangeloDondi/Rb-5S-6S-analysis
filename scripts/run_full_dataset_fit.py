@@ -3,7 +3,7 @@
 M28: the cross-campaign full-archive joint fit -- M23's construction, M25's data.
 
 THE SPECIFICATION IS THE RECORD. This module was written against
-docs/notes/full_archive_fit_prereg.md, which was written first: the census, the
+docs/notes/full_dataset_fit_prereg.md, which was written first: the census, the
 hierarchy, the priors, the QC gates and their thresholds, the kappa grid, the
 seeding order and every acceptance criterion are fixed there, before any number
 came out of the fit. Read that file before this one. Where the two disagree the
@@ -11,7 +11,7 @@ note is right and the code is a defect.
 
 WHAT IT IS. M23 (run_stark_joint.py) profiles the AC-Stark coefficient kappa
 with each peak's collisional width held under a Gaussian prior, and reads only
-the POWER-sweep traces of three sessions. M25 (run_global_archive_fit.py) reads
+the POWER-sweep traces of three sessions. M25 (run_global_dataset_fit.py) reads
 every canonical trace and frees beta_self alongside kappa, which buys a joint
 (kappa, beta) region and spends the temperature ladder on a second free
 coefficient in the same width budget. This module takes the third corner: the
@@ -76,23 +76,23 @@ gate_* rows. A stop-class failure (census, a railed shared parameter, a missing
 95% crossing) returns exit code 1 and the numbers do not enter a document.
 
 REUSE. The rehearsal and pilot loaders, the measured pilot scale, the peak list,
-the quarantine paths, the profile-grid floor, the wing standoff and ub95 are
+the excluded paths, the profile-grid floor, the wing standoff and ub95 are
 IMPORTED from run_stark_joint, which is untouched by this module. The campaign
 loader is M25's, extended with the QC gate, the role tag and the manifest file
 key that the gate needs. The chain, bidirectional-profile, strip_wing and
 sparsity patterns follow M23's, re-cut for this layout.
 
-RUNTIME: long, hours, single process. Run it in the background. The quarantine
+RUNTIME: long, hours, single process. Run it in the background. The excluded
 prehistory and pilot trees must be present; without them the module prints what
 is missing and exits 0 (the build_clock_table pattern). Raw traces never enter
 the repository.
 
-    python scripts/run_full_archive_fit.py            # the production run
-    python scripts/run_full_archive_fit.py --smoke    # every code path, minutes
+    python scripts/run_full_dataset_fit.py            # the production run
+    python scripts/run_full_dataset_fit.py --smoke    # every code path, minutes
 
-Writes results/full_archive_fit.csv and runs annotate_results_status.py. Reads
+Writes results/full_dataset_fit.csv and runs annotate_results_status.py. Reads
 results/beta_self.csv (run M4 first), results/qc_metrics.csv (run M0 first),
-results/pilot_ruler.csv (M26) and the M2 bracket rates.
+results/morning_ruler.csv (M26) and the M2 bracket rates.
 """
 
 from __future__ import annotations
@@ -122,8 +122,8 @@ from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from rb5s6s.qc import trace_metrics  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
-from run_stark_joint import (DNU_FLOOR, NU0_WING, PEAKS, PILOT,  # noqa: E402
-                             PREHISTORY, load_pilot, load_rehearsal,
+from run_stark_joint import (DNU_FLOOR, NU0_WING, PEAKS, SESSION_20250717,  # noqa: E402
+                             SESSION_20250704, load_session_20250717, load_session_20250704,
                              measured_pilot_scale, ub95)
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
@@ -650,10 +650,10 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     smoke = args.smoke
 
-    if not (PREHISTORY.is_dir() and PILOT.is_dir()):
-        print(f"quarantine tree(s) not on this machine "
-              f"({PREHISTORY}, {PILOT}) -- the committed "
-              f"results/full_archive_fit.csv is the record; nothing to do.")
+    if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
+        print(f"excluded tree(s) not on this machine "
+              f"({SESSION_20250704}, {SESSION_20250717}) -- the committed "
+              f"results/full_dataset_fit.csv is the record; nothing to do.")
         return 0
 
     kappas = KAPPAS_SMOKE if smoke else KAPPAS
@@ -663,9 +663,9 @@ def main(argv=None) -> int:
 
     priors = beta_priors()
     camp, qc_examined, qc_dropped = load_campaign_full(smoke=smoke)
-    reh, n_corrupt = load_rehearsal()
+    reh, n_corrupt = load_session_20250704()
     _, prates = load_t_rates()
-    pil = load_pilot(prates["4192"][0])
+    pil = load_session_20250717(prates["4192"][0])
     for t in reh:
         t.update(campaign=CAMPAIGN, T=130.0, sl="reh", role="p_sweep_reh", file="")
     for t in pil:
@@ -793,7 +793,7 @@ def main(argv=None) -> int:
     print(f"  ({(time.time() - t0) / 60:.0f} min)")
 
     # ---- the CSV -------------------------------------------------------
-    path = C.RESULTS_DIR / "full_archive_fit.csv"
+    path = C.RESULTS_DIR / "full_dataset_fit.csv"
     with open(path, "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])

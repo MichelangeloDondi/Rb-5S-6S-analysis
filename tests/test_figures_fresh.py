@@ -46,7 +46,7 @@ DATA_DRIVEN = [
     "fig8_ruler",
     # Added 2026-08-04, when the licensing rebuild put the 130 C anchor and the
     # pilot point on it. Its first panel is drawn from data_raw/MANIFEST.csv,
-    # results/ruler_blocks.csv and results/pilot_ruler.csv and its second from
+    # results/ruler_blocks.csv and results/morning_ruler.csv and its second from
     # results/power_sweep.csv and results/stark_sweep.csv, so it moves whenever
     # they do. It was unguarded until now, which is how a figure goes stale
     # without anything saying so.

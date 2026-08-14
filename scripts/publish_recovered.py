@@ -2,7 +2,7 @@
 """
 Publish the backup-recovered files into data_recovered/ (addenda 3, 8).
 
-Two groups, from the quarantined backup copies:
+Two groups, from the excluded backup copies:
 
   discarded_backup/       the 16 discarded acquisitions that survive only in
                           the backup (results report, addendum 3) -- the
@@ -19,7 +19,7 @@ re-take series until content hashing exposed it. Match by hash, never by
 name; RECOVERED_MANIFEST.csv maps both.
 
 data_raw/ itself stays byte-frozen; this is a separate, labelled layer.
-Requires the quarantines; without them the committed tree is the record.
+Requires the outside session trees; without them the committed tree is the record.
 RB5S6S_BACKUP_DIR and RB5S6S_RAWDATA2_DIR are needed only to re-run this
 script against those private working copies, and the committed CSVs are what
 the repository ships.
@@ -35,9 +35,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 QMAIN = Path(os.environ.get(
-    "RB5S6S_BACKUP_DIR", "~/rb-2025-quarantine/backup")).expanduser()
+    "RB5S6S_BACKUP_DIR", "~/rb-2025-sessions/backup")).expanduser()
 QR2 = Path(os.environ.get(
-    "RB5S6S_RAWDATA2_DIR", "~/rb-2025-quarantine/rawdata2")).expanduser()
+    "RB5S6S_RAWDATA2_DIR", "~/rb-2025-sessions/rawdata2")).expanduser()
 VARIANT_STEM = "4192nm_225mw1"
 
 
@@ -51,7 +51,7 @@ def _md5(path: Path) -> str:
 
 def main() -> int:
     if not (QMAIN.is_dir() and QR2.is_dir()):
-        print("quarantines not on this machine -- the committed tree is the "
+        print("outside session trees not on this machine -- the committed tree is the "
               "record; nothing to do.")
         return 0
 

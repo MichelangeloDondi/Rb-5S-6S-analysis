@@ -23,7 +23,7 @@ Producer: `scripts/run_full_archive_fit.py`. Output: `results/full_archive_fit.c
 ## 1. What this module is, and what it is not
 
 It is [M23](../../scripts/run_stark_joint.py)'s construction over
-[M25](../../scripts/run_global_archive_fit.py)'s trace set. M23 profiles the
+[M25](../../scripts/run_global_dataset_fit.py)'s trace set. M23 profiles the
 AC-Stark coefficient kappa with the collisional width held under a Gaussian
 prior, and reads only the power-sweep traces of three sessions. M25 reads every
 canonical trace and frees `beta_self` alongside kappa, which buys a joint

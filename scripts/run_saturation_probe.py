@@ -30,9 +30,9 @@ Stage 3 reports on C3f, the joint three-session bound that outside documents
 quote, and prints the analytic comparison at C3f's own bound, which fixes the
 DIRECTION of the move without needing the fit.
 
-Stage 4 runs it, behind --joint, because the joint fit reads two quarantine data
-trees from outside the repository and takes hours. Point RB5S6S_PREHISTORY_DIR
-and RB5S6S_PILOT_DIR at them. On 2026-08-09 this stage was reported as
+Stage 4 runs it, behind --joint, because the joint fit reads two excluded data
+trees from outside the repository and takes hours. Point RB5S6S_SESSION_20250704_DIR
+and RB5S6S_SESSION_20250717_DIR at them. On 2026-08-09 this stage was reported as
 impossible on the strength of the script's fallback path being empty, without
 looking for the folders under their real names. They were present the whole
 time.
@@ -232,7 +232,7 @@ def stage3(band: dict) -> None:
         print(f"  cannot read the committed joint result: {exc}")
         return
     print("  The joint fit reads the 2025-07-04 rehearsal and the campaign-"
-          "morning pilot\n  from two quarantine trees outside this repository. "
+          "morning pilot\n  from two excluded trees outside this repository. "
           "run_stark_joint.py exits\n  early when they are absent, which they "
           "are on this machine, so the C3f\n  bound cannot be re-profiled with "
           "the saturation term here. The rerun is\n  owner-side work, not a "
@@ -263,7 +263,7 @@ def stage3(band: dict) -> None:
 def stage4(band: dict) -> None:
     """The joint three-session bound, re-profiled with the saturation term.
 
-    Stage 3 explains why this needs the two quarantine trees. When they are
+    Stage 3 explains why this needs the two excluded trees. When they are
     reachable it runs here, patching `_shared_profile_grid` in the joint fit's
     own namespace, which is the single place that fit turns a shift into a
     profile, so the shared kappa, the per-peak priors, the per-trace centres and
@@ -279,10 +279,10 @@ def stage4(band: dict) -> None:
     print("STAGE 4  C3f re-profiled with the companion (opt-in, hours)")
     sys.path.insert(0, str(ROOT / "scripts"))
     import run_stark_joint as rsj
-    if not (rsj.PREHISTORY.is_dir() and rsj.PILOT.is_dir()):
-        print(f"  quarantine trees not reachable at\n    {rsj.PREHISTORY}\n"
-              f"    {rsj.PILOT}\n  Set RB5S6S_PREHISTORY_DIR and "
-              f"RB5S6S_PILOT_DIR and re-run.")
+    if not (rsj.SESSION_20250704.is_dir() and rsj.SESSION_20250717.is_dir()):
+        print(f"  excluded trees not reachable at\n    {rsj.SESSION_20250704}\n"
+              f"    {rsj.SESSION_20250717}\n  Set RB5S6S_SESSION_20250704_DIR and "
+              f"RB5S6S_SESSION_20250717_DIR and re-run.")
         return
     ratio = band["ratio_lo"]        # the conservative end, as stage 2 uses
     original = rsj._shared_profile_grid
@@ -293,9 +293,9 @@ def stage4(band: dict) -> None:
 
     priors = rsj.gc_priors()
     camp = rsj.load_campaign()
-    reh, _ = rsj.load_rehearsal()
+    reh, _ = rsj.load_session_20250704()
     _, prates = rsj.load_t_rates()
-    pil = rsj.load_pilot(prates["4192"][0])
+    pil = rsj.load_session_20250717(prates["4192"][0])
     traces = camp + reh + pil
     print(f"  {len(camp)} campaign + {len(reh)} rehearsal + {len(pil)} pilot "
           f"traces, ratio {ratio:.4f}")

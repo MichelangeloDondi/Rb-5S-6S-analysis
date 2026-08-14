@@ -1,6 +1,4 @@
 {
- "README.md": 8,
- "data_raw/README.md": 1,
  "docs/PREREGISTRATION_RESULTS.md": 499,
  "docs/PREREGISTRATION_timestamps.md": 45,
  "docs/lit/afanasiev2010.md": 5,
@@ -90,6 +88,5 @@
  "docs/lit/wieman1987.md": 8,
  "docs/lit/yang2025.md": 2,
  "docs/lit/zameroski2014.md": 3,
- "docs/lit/zang2012.md": 6,
- "docs/methods.md": 12
+ "docs/lit/zang2012.md": 6
 }

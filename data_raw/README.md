@@ -1,29 +1,33 @@
-# `data_raw/`, the dataset manifest
+# `data_raw/`: the traces and their manifest
 
-This directory holds **`MANIFEST.csv`** and not the traces it describes.
+This directory holds the 297 recorded traces of the 2025 dataset and
+**`MANIFEST.csv`**, the census that says what the dataset is. The traces are
+withheld from the published mirror, where this file says so and lists what can
+still be run without them.
 
-`MANIFEST.csv` is the frozen census of the 2025 archive: one row per unique
-acquisition — its path, peak, role (`t_sweep` / `p_sweep` / `ruler_t` /
-`ruler_p` / `quarantine`), temperature, power, curation flag, QC reason, the
-source filenames it was merged from, and its MD5. 297 rows. It is the record
-that fixes what the dataset *is*, and several tests in `tests/test_manifest.py`
-check its internal consistency without needing the traces at all.
+`MANIFEST.csv` carries one row per unique acquisition: its path, peak, role,
+temperature, power, curation flag, QC reason, the source filenames it was
+merged from, and its MD5. 297 rows. `tests/test_manifest.py` checks the
+manifest's internal consistency, and four further tests re-hash every trace in
+this directory against it, which is the check the mirror cannot run.
 
-**The 297 raw traces themselves are held privately and available on request**
-(michelangelo.dondi@unibo.it). They were taken at OIST in 2025. Their absence
-here changes what can be run, not what can be checked:
+The subdirectories are the roles the manifest names:
 
-| | runs in this repository |
+| directory | what is in it |
 |---|---|
-| the analysis library and its full test suite | **yes**, the injection-recovery closures, the coverage study and minimum detectable effect, the transit-kernel asymptotics, identifiability, model comparison: all synthetic |
-| the committed results, figures and ledger | **yes**, they are committed, and the docs↔code number locks check every quoted value against them |
-| the lock-drift arc (audit addenda 4–7, 12) | **yes**, it runs off `data_recovered/CLOCK.csv`, which is hashes and timestamps rather than measurement data |
-| the raw→results pipeline (`scripts/run_all.sh`) | **no**, it reads the traces |
-| the four tests that re-hash traces against this manifest | **no**, they skip, with a stated reason |
+| `t_sweep/` | the temperature ladder, 70 to 130 °C at 225 mW |
+| `p_sweep/` | the power ladder, 25 to 225 mW at 130 °C |
+| `rulers_t/`, `rulers_p/` | the EOM frequency-ruler calibration traces bracketing each ladder |
+| `excluded/` | acquisitions held out of every fit, each with its reason in the manifest |
+| `discarded/` | files replaced before any fit, kept so the exclusion is auditable |
 
-With the traces restored to this directory, everything above runs and each
-stage reproduces its committed CSV within the tolerance
-`scripts/verify_results_fresh.py` states, and nothing else changes.
+A file's presence here is not what admits it to a fit. The manifest's curation
+flag decides that, and `docs/DATA.md` carries the provenance, the decoding, the
+curation history and the excluded policy, including why each excluded
+acquisition was excluded.
 
-Provenance, decoding, curation history and the quarantine policy:
-[`../docs/DATA.md`](../docs/DATA.md).
+Nothing in this directory is edited. A correction enters as a new acquisition
+with its own manifest row, so that what was analysed stays recoverable.
+
+Provenance and exclusions: [`../docs/DATA.md`](../docs/DATA.md). The dataset's
+own census: [`MANIFEST.csv`](MANIFEST.csv).

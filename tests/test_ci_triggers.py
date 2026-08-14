@@ -17,7 +17,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "tests.yml"
-IS_ARCHIVE = (ROOT / "data_raw" / "p_sweep").is_dir()
+HAS_RAW_TRACES = (ROOT / "data_raw" / "p_sweep").is_dir()
 
 
 def _triggers():
@@ -48,7 +48,7 @@ def _triggers():
 def test_ci_triggers_match_the_repository_they_are_in():
     trig = _triggers()
     assert trig, f"could not parse an `on:` block from {WORKFLOW}"
-    if IS_ARCHIVE:
+    if HAS_RAW_TRACES:
         assert "push" not in trig, (
             f"the ARCHIVE workflow has a push trigger ({trig}). Its Actions do "
             "not run, so every push reports a failure for jobs that never "

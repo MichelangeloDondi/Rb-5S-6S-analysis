@@ -18,11 +18,11 @@ perform on itself, plus one honest non-result:
    of 144.2(11) ms vs the campaign's 146.97 ms: the sweep rate agrees to
    1.9% across days and re-preparations, which is precisely why M2
    calibrates every block with its own rulers (per-block scatter 0.6%).
-4. PILOT LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null);
+4. SESSION_20250717 LAWS -- width flat 60.5-61.5 ms across 35-210 mW (the power null);
    amplitude x34 vs x36 predicted P^2 over the 6x span. Both are INTERNAL
    ratios, so both are immune to what the pilot's oven label means -- which
    is just as well, because check 5 shows it does not mean what it seems.
-5. PILOT THERMOMETRY (addendum 17 + its postscript) -- the pilot's
+5. SESSION_20250717 THERMOMETRY (addendum 17 + its postscript) -- the pilot's
    `91c650ma` pairs a temperature with a CURRENT, which is the rehearsal
    parenthetical's structure, not the campaign's, so that `91 C` should be a
    variac SET POINT and the pilot should have run at the rehearsal's internal
@@ -35,7 +35,7 @@ perform on itself, plus one honest non-result:
    end and manufactured a 1.9 sigma that is not there. QC metrics worked list
    traces; they do not measure widths.
 
-6. PILOT ch1 IDENTITY -- the pilot rulers' 1.92 V second channel
+6. SESSION_20250717 ch1 IDENTITY -- the pilot rulers' 1.92 V second channel
    is the frequency SWEEP, not a power monitor: it ramps linearly in every
    record, its slope ALTERNATES SIGN at fixed magnitude (successive legs of
    the triangle sweep), and the implied calibration ~4.7 MHz/mV reproduces
@@ -64,9 +64,9 @@ parenthetical is the variac set point, the campaign temperature is the
 internal-thermocouple reading -- see addendum 15, which also gives the
 cold-spot-vs-reading offset its first empirical handle.
 
-Requires the pilot/prehistory quarantines (private). Exits cleanly without
+Requires the two outside session trees, 2025-07-04 and the 2025-07-17 morning (private). Exits cleanly without
 them; the committed numbers above are the record, addendum 11 the writeup.
-Nothing here enters results/. RB5S6S_PILOT_DIR and RB5S6S_PREHISTORY_DIR are
+Nothing here enters results/. RB5S6S_SESSION_20250717_DIR and RB5S6S_SESSION_20250704_DIR are
 needed only to re-run this script against those private working copies, and the
 committed CSVs are what the repository ships.
 """
@@ -87,9 +87,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 QP = Path(os.environ.get(
-    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser()
+    "RB5S6S_SESSION_20250717_DIR", "~/rb-2025-sessions/pilot")).expanduser()
 QH = Path(os.environ.get(
-    "RB5S6S_PREHISTORY_DIR", "~/rb-2025-quarantine/prehistory")).expanduser()
+    "RB5S6S_SESSION_20250704_DIR", "~/rb-2025-sessions/prehistory")).expanduser()
 TOOTH_SPACING_LASER_MHZ = 6.25   # EOM 12.5 MHz tank, laser axis = Omega/2
 RATE_MHZ_MS = float(next(csv.DictReader(
     open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])
@@ -126,7 +126,7 @@ def pilot_steps() -> None:
     order = sorted(blocks.items(), key=lambda kv: min(x[0] for x in kv[1]))
     B = [(np.mean([x[0] for x in g]), float(np.median([x[1] for x in g])), mw)
          for mw, g in order]
-    print("\n2. PILOT OUT-OF-SAMPLE TEST (science ~2.9 h after lock-on =")
+    print("\n2. SESSION_20250717 OUT-OF-SAMPLE TEST (science ~2.9 h after lock-on =")
     print("   post-transient; model predicts steps <~ 20 ms):")
     for a, b in zip(B, B[1:]):
         print(f"   {a[2]}->{b[2]}: step {b[1]-a[1]:+7.1f} ms "
@@ -135,7 +135,7 @@ def pilot_steps() -> None:
     print(f"   -> {'PASS' if ok else 'FAIL'}")
 
 
-def pilot_ruler_rate() -> None:
+def morning_ruler_rate() -> None:
     periods = []
     for p in sorted((QP / "EOM ruler" / "Def").glob("eom_def_*.csv")):
         d = np.genfromtxt(p, delimiter=",", skip_header=2)
@@ -222,7 +222,7 @@ def pilot_thermometry() -> None:
     # five power blocks, and width is power-independent (the C3 null)
     blk = float(g.loc[130, "sd"] / g.loc[130, "w"])
 
-    print("\n5. PILOT THERMOMETRY -- the pilot's oven setting, from physics")
+    print("\n5. SESSION_20250717 THERMOMETRY -- the pilot's oven setting, from physics")
     print(f"   pilot 4192, archive composite fit: {pm:.3f} +- {pse:.3f}(block SE)"
           f" +- {pm*blk:.3f}(reproducibility {100*blk:.1f}%) MHz")
     for T, r in g.iterrows():
@@ -280,7 +280,7 @@ def pilot_ch1_identity() -> None:
                      TOOTH_SPACING_LASER_MHZ / mv_tooth if mv_tooth else np.nan))
     a = np.array(rows)
     sgn = "".join("+" if x > 0 else "-" for x in a[:, 0])
-    print("\n6. PILOT ch1 IDENTITY -- the 1.92 V channel is the frequency SWEEP")
+    print("\n6. SESSION_20250717 ch1 IDENTITY -- the 1.92 V channel is the frequency SWEEP")
     print(f"   {len(a)} ruler records; ch1 is a linear ramp in every one")
     print(f"   |slope| {np.abs(a[:, 0]).mean():.5f} mV/ms, spread "
           f"{100*np.abs(a[:, 0]).std()/np.abs(a[:, 0]).mean():.0f}%")
@@ -297,12 +297,12 @@ def pilot_ch1_identity() -> None:
 
 def main() -> int:
     if not (QP.is_dir() and QH.is_dir()):
-        print("pilot/prehistory quarantines not on this machine -- the committed "
+        print("outside session trees not on this machine -- the committed "
               "numbers in this docstring and addendum 11 are the record.")
         return 0
     trigtime_check()
     pilot_steps()
-    pilot_ruler_rate()
+    morning_ruler_rate()
     pilot_thermometry()
     pilot_ch1_identity()
     print("\n4. and 7.: pilot laws and the rehearsal chronology non-result -- see the")

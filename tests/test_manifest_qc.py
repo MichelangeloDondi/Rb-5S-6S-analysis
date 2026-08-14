@@ -1,7 +1,7 @@
 """
 Guards on the MANIFEST.csv `qc_reason` provenance column (audit commission,
 2026-07-12): every excluded trace carries its recorded reason; the reasons
-match the committed curation audit; and the quarantine's "individually clean"
+match the committed curation audit; and the excluded's "individually clean"
 claim stays TRUE against the actual data (the session-grain fact that makes
 the recorded reason -- not a recomputed flag -- the only possible provenance).
 """
@@ -24,14 +24,14 @@ def test_qc_reason_column_complete_and_consistent():
     rows = _rows()
     assert len(rows) == 297
     assert "qc_reason" in rows[0]
-    flags = {"canonical": 0, "quarantined": 0, "discarded": 0}
+    flags = {"canonical": 0, "excluded": 0, "discarded": 0}
     for r in rows:
         flags[r["flag"]] += 1
         if r["flag"] == "canonical":
             assert r["qc_reason"] == "", r["file"]
         else:
             assert r["qc_reason"].strip(), f"missing reason: {r['file']}"
-    assert flags == {"canonical": 264, "quarantined": 29, "discarded": 4}
+    assert flags == {"canonical": 264, "excluded": 29, "discarded": 4}
 
 
 def test_discard_reasons_match_curation_audit():
@@ -42,23 +42,23 @@ def test_discard_reasons_match_curation_audit():
     assert "block-wide" in rows["4207nm_070c2.csv"]["qc_reason"]
 
 
-def test_quarantine_reasons_are_session_grain():
-    q = [r for r in _rows() if r["flag"] == "quarantined"]
+def test_exclusion_reasons_are_session_grain():
+    q = [r for r in _rows() if r["flag"] == "excluded"]
     assert len(q) == 29
     rulers = [r for r in q if "eom" in r["file"]]
     powers = [r for r in q if "eom" not in r["file"]]
     assert len(rulers) == 10 and len(powers) == 19
-    assert all(r["qc_reason"].startswith("session quarantine: EOM ruler") for r in rulers)
-    assert all(r["qc_reason"].startswith("session quarantine: aborted") for r in powers)
+    assert all(r["qc_reason"].startswith("session excluded: EOM ruler") for r in rulers)
+    assert all(r["qc_reason"].startswith("session excluded: aborted") for r in powers)
 
 
 @requires_raw_traces
-def test_quarantined_traces_really_are_individually_clean():
+def test_excluded_traces_really_are_individually_clean():
     # The recorded reason asserts "trace individually clean (no hard flags)".
     # Pin that against the data on a sample of both kinds, so the manifest can
     # never silently claim a cleanliness the QC would contradict.
     rows = load_manifest()
-    q = [r for r in rows if r["flag"] == "quarantined"]
+    q = [r for r in rows if r["flag"] == "excluded"]
     sample = ([r for r in q if "eom" in r["file"]][:2]
               + [r for r in q if "eom" not in r["file"]][:3])
     for r in sample:

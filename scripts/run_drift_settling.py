@@ -62,7 +62,7 @@ None of this moves a shipped number: widths are per-trace and centre steps do
 not enter them. It characterises the instrument, and it post-hoc answers the
 question D0 asked: every epoch probed sits far inside the 4 MHz/min envelope.
 
-Requires the timestamp backup (quarantine copy). Without it this script -- like
+Requires the timestamp backup (excluded copy). Without it this script -- like
 the audit -- has no clock, and exits cleanly saying so.
 
 Outputs: stdout only (a diagnostic of archival data, not a new result
@@ -126,7 +126,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 QUARANTINE = Path(os.environ.get(
-    "RB5S6S_BACKUP_DIR", "~/rb-2025-quarantine/backup")).expanduser()
+    "RB5S6S_BACKUP_DIR", "~/rb-2025-sessions/backup")).expanduser()
 RATE_MHZ_MS = float(next(csv.DictReader(
     open(ROOT / "results" / "ruler_campaign.csv")))["rate_laser"])  # laser axis, M2
 JUMP_MS = 10.0                      # same step-block screen as run_intrablock_trend
@@ -149,7 +149,7 @@ def clock() -> dict:
 
     Prefers the committed table data_recovered/CLOCK.csv (so a clone
     reproduces the drift arc with no private folder); falls back to hashing
-    a live quarantine when the table is absent."""
+    a live excluded when the table is absent."""
     table = ROOT / "data_recovered" / "CLOCK.csv"
     if table.is_file():
         out: dict[str, float] = {}

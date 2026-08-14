@@ -33,7 +33,7 @@ already reports, so it is not a new disagreement, just the same fact
 restated. Every number below is computed from these three; the discrepancy
 is recorded here rather than papered over by inventing two more.
 
-ROLE FILTER. The brief says roles != quarantine; this module narrows that to
+ROLE FILTER. The brief says roles != excluded; this module narrows that to
 role == "p_sweep". ruler_p and ruler_t carry blank power_mW (so they can
 never join a multi-power group and the epoch count above is unaffected), but
 they DO have entries in laser_history.csv with wildly different offset_mhz
@@ -82,7 +82,7 @@ two analyses apart for no physical reason.
 
 COMBINING AND COMPARING. The three per-epoch kappa_transition values combine
 by inverse-variance with PDG scatter inflation (run_ruler.combine_rates,
-exactly the pattern run_pilot_ruler.py already reuses). The combined value is
+exactly the pattern run_morning_ruler.py already reuses). The combined value is
 checked against results/stark_joint.csv's kappa_ub95 (M23, the width-channel
 95% bound) and kappa_pred (the priors' prediction), per three cases fixed in
 advance: (1) inside the M23 bound -> report as a PRELIM indication, never a

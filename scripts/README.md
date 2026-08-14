@@ -59,10 +59,10 @@ diagnostic rather than write a table.
 | script | writes |
 |---|---|
 | `run_stark_joint.py` (M23) | the joint light-shift fit over all three sessions with one shared coefficient, into `stark_joint.csv`. A long profile-likelihood run |
-| `run_global_archive_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_archive_fit.csv` |
-| `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_archive_fit_norulers.csv` |
-| `run_full_archive_fit.py` (M28) | the M23 construction on the M25 data, into `full_archive_fit.csv` |
-| `run_pilot_ruler.py` (M26) | the pilot day's own frequency axis, from 27 recovered EOM traces, into `pilot_ruler.csv` |
+| `run_global_dataset_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_dataset_fit.csv` |
+| `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_dataset_fit_norulers.csv` |
+| `run_full_dataset_fit.py` (M28) | the M23 construction on the M25 data, into `full_dataset_fit.csv` |
+| `run_morning_ruler.py` (M26) | the pilot day's own frequency axis, from 27 recovered EOM traces, into `morning_ruler.csv` |
 | `run_wing_check.py` (M24) | whether the near-core asymmetry is a collisional wing, into `wing_check.csv`. Loads raw traces and takes several minutes |
 | `run_laser_history.py` (M20) | the laser frequency within each display epoch into `laser_history.csv` and `laser_history_structure.csv` |
 | `run_stark_centres.py` (M21) | what the line centres can and cannot say about the light shift, one row per drift form, into `stark_centres.csv` |
@@ -87,7 +87,7 @@ diagnostic rather than write a table.
 | `make_qc_gallery.py` | the per-trace inspection gallery, all of it under `private/qc_gallery/` and none of it tracked |
 | `make_results_ledger.py` | `docs/RESULTS.md`, with every headline number read from the CSV that produced it |
 | `build_lit_index.py` | `docs/references.bib` from the per-paper files in `docs/lit/`, plus the holdings index for the paper collection kept outside this repository. `--check` regenerates in memory and diffs against what is committed |
-| `build_clock_table.py` | `data_recovered/CLOCK.csv`, the acquisition clock serialised out of the quarantined backup copies |
+| `build_clock_table.py` | `data_recovered/CLOCK.csv`, the acquisition clock serialised out of the excluded backup copies |
 | `annotate_results_status.py` | the `status` column, appended to every file in `results/` |
 
 ## Utilities
@@ -101,7 +101,7 @@ diagnostic rather than write a table.
 | `annotate_manifest_qc.py` | refreshes the `qc_reason` provenance column of `data_raw/MANIFEST.csv` in place, leaving the other columns untouched |
 | `check_release_notes.py` | the register checks applied to a release body or any other untracked prose, since a release body is not a tracked file and nothing else looks at it |
 | `publish_recovered.py` | copies the backup-recovered acquisitions into `data_recovered/` under hash-suffixed names, since nine of the original names collide with different bytes |
-| `run_timestamp_audit.py` | scores the preregistered timestamp criteria against a quarantined copy of the recovered backup and the committed manifest |
+| `run_timestamp_audit.py` | scores the preregistered timestamp criteria against a excluded copy of the recovered backup and the committed manifest |
 
 ## What runs from a clone
 
@@ -146,12 +146,12 @@ committed CSV rather than restate a number independently, and once those numbers
 appeared in CLAIMS and the methods chapters, not writing them was the defect.
 
 Six need more than the traces. `run_stark_joint.py`,
-`run_global_archive_fit.py`, `_m25_norulers.py`, `run_full_archive_fit.py` and
+`run_global_dataset_fit.py`, `_m25_norulers.py`, `run_full_dataset_fit.py` and
 `run_epoch_checks.py` read the prehistory and pilot sessions, which sit outside
-the frozen archive and outside the repository, and `run_pilot_ruler.py` reads
+the frozen archive and outside the repository, and `run_morning_ruler.py` reads
 the pilot tree. Given a missing tree each of them prints what it cannot find
 and exits 0, so the committed CSV stays the record. `publish_recovered.py`,
-`build_clock_table.py` and `run_timestamp_audit.py` want the quarantined backup
+`build_clock_table.py` and `run_timestamp_audit.py` want the excluded backup
 copies in the same way.
 
 Three run in part. `make_figures.py` draws everything its committed inputs

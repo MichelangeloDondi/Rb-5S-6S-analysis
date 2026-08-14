@@ -92,7 +92,7 @@ THREE DO-NOTS, each of them a decision rather than a preference.
    about whether the analysis is correct.
 
 Reads: data_raw/MANIFEST.csv and the raw traces, results/qc_metrics.csv,
-results/ruler_traces.csv, results/global_archive_fit.csv.
+results/ruler_traces.csv, results/global_dataset_fit.csv.
 """
 
 from __future__ import annotations
@@ -176,13 +176,13 @@ def pipeline_version() -> str:
 # the five classes
 # ---------------------------------------------------------------------------
 
-CLASSES = ("canonical", "ruler_p", "ruler_t", "quarantine", "discarded")
+CLASSES = ("canonical", "ruler_p", "ruler_t", "excluded", "discarded")
 
 CLASS_TITLE = {
     "canonical": "Lines",
     "ruler_p": "Calibration combs, power session",
     "ruler_t": "Calibration combs, temperature session",
-    "quarantine": "The aborted first session",
+    "excluded": "The aborted first session",
     "discarded": "Curation discards",
 }
 
@@ -191,7 +191,7 @@ CLASS_BLURB = {
                  "analysis is built on",
     "ruler_p": "the combs that open and close the power session",
     "ruler_t": "one comb per temperature of the temperature session",
-    "quarantine": "traces of the aborted first attempt, excluded a whole session "
+    "excluded": "traces of the aborted first attempt, excluded a whole session "
                   "at a time",
     "discarded": "traces removed one at a time during curation",
 }
@@ -200,7 +200,7 @@ CLASS_TAG = {
     "canonical": "in the analysed set",
     "ruler_p": "power session",
     "ruler_t": "temperature session",
-    "quarantine": "from the aborted first session",
+    "excluded": "from the aborted first session",
     "discarded": "removed during curation",
 }
 """The class, in words, on the title of every page. Four names collide across
@@ -213,7 +213,7 @@ SESSION_WORD = {"P": "power session", "T": "temperature session",
 PEAK_COLOR = {"4121": "#0072B2", "4154": "#D55E00",
               "4192": "#009E73", "4207": "#E69F00"}
 
-MARK_COLOR = {"outlier": "#c51b7d", "quarantined": "#54278f",
+MARK_COLOR = {"outlier": "#c51b7d", "uncalibrated": "#54278f",
               "advised": "#9970ab", "excluded": "#4d4d4d"}
 """Note colours, drawn from a magenta to purple to grey family that shares no
 member with the four wavelength colours above."""
@@ -403,8 +403,8 @@ DISCARD_WORD = (
 def trace_class(row: dict) -> str:
     if row["flag"] == "discarded":
         return "discarded"
-    if row["flag"] == "quarantined":
-        return "quarantine"
+    if row["flag"] == "excluded":
+        return "excluded"
     if row["role"] in ("ruler_p", "ruler_t"):
         return row["role"]
     return "canonical"
@@ -601,7 +601,7 @@ def comb_records(rows):
             rec["raw_resid"] = v - rec["model"]
             rec["resid"] = rec["raw_resid"] / sg
             rec["used"] = np.ones(len(v), dtype=bool)
-            if key[0] == "quarantine":
+            if key[0] == "excluded":
                 rec["fit_note"] = (rec["fit_note"] + ", and " if rec["fit_note"]
                                    else "") + ("the seven tooth fit drawn beside each "
                                                "of these traces was made to that trace "
@@ -933,7 +933,7 @@ def _discard_reason(row) -> str:
     return ""
 
 
-def archive_census(manifest) -> dict:
+def record_census(manifest) -> dict:
     """How many traces the archive holds at each condition and how many of them
     the analysis keeps.
 
@@ -953,7 +953,7 @@ def _curation_sentence(rec, census) -> str:
     why = _discard_reason(rec["row"])
     counts = census["by_condition"].get((rec["row"]["session"], rec["cond"]), Counter())
     n_all = sum(counts.values())
-    n_gone = counts["discarded"] + counts["quarantine"]
+    n_gone = counts["discarded"] + counts["excluded"]
     said = "The curator removed this trace from the analysis by hand before any fit ran"
     said += f", because it is {why}." if why else "."
     if n_all:
@@ -985,24 +985,29 @@ def annotate(rec, qc_rows, ruler_rows, census):
 
     rec["outlier"] = _truthy(qc.get("outlier")) or _truthy(rl.get("outlier"))
     rec["outlier_reason"] = (rl.get("outlier_reason") or qc.get("outlier_reason") or "")
-    rec["quarantined"] = _truthy(rl.get("quarantined"))
-    rec["quarantine_advised"] = _truthy(rl.get("quarantine_advised"))
-    rec["quarantine_reason"] = rl.get("quarantine_reason", "")
+    # The ruler CSV's `excluded` column means OUT OF THE FREQUENCY
+    # CALIBRATION. The MANIFEST's `excluded` flag means a whole session that
+    # enters no fit. Two different statements that the 2026-08-14 vocabulary
+    # sweep gave the same word, so the record key here is `uncalibrated` and
+    # the two can never collide in the note dictionaries again.
+    rec["uncalibrated"] = _truthy(rl.get("excluded"))
+    rec["uncalibrated_advised"] = _truthy(rl.get("excluded_advised"))
+    rec["uncalibrated_reason"] = rl.get("excluded_reason", "")
 
     marks = []
     if rec["outlier"]:
         marks.append(("outlier", "Left out of its group average: "
                       + (OUTLIER_WORD.get(rec["outlier_reason"])
                          or rec["outlier_reason"] or "no reason recorded") + "."))
-    if rec["quarantined"]:
-        marks.append(("quarantined", "Out of the frequency calibration: "
-                      + (CARRIER_WORD.get(rec["quarantine_reason"])
-                         or rec["quarantine_reason"] or "no reason recorded") + "."))
-    elif rec["quarantine_advised"]:
+    if rec["uncalibrated"]:
+        marks.append(("uncalibrated", "Out of the frequency calibration: "
+                      + (CARRIER_WORD.get(rec["uncalibrated_reason"])
+                         or rec["uncalibrated_reason"] or "no reason recorded") + "."))
+    elif rec["excluded_advised"]:
         marks.append(("advised", "Marked for removal from the frequency calibration "
                       "and still inside it: "
-                      + (CARRIER_WORD.get(rec["quarantine_reason"])
-                         or rec["quarantine_reason"] or "no reason recorded") + "."))
+                      + (CARRIER_WORD.get(rec["excluded_reason"])
+                         or rec["excluded_reason"] or "no reason recorded") + "."))
     if rec["cls"] == "discarded":
         marks.append(("excluded", _curation_sentence(rec, census)))
     if rec["fit_note"]:
@@ -1077,8 +1082,8 @@ def annotate(rec, qc_rows, ruler_rows, census):
             f"reindex_action={rl.get('reindex_action', '-')} "
             f"reindex_j={rl.get('reindex_j', '-')} "
             f"delta_advised_ms={_num(rl.get('delta_advised_ms')):.6f} "
-            f"quarantine_advised={rl.get('quarantine_advised', '-')} "
-            f"quarantine_reason={rl.get('quarantine_reason') or '-'}")
+            f"excluded_advised={rl.get('excluded_advised', '-')} "
+            f"excluded_reason={rl.get('excluded_reason') or '-'}")
     if rec["tooth"]:
         codes.append(f"drawn_tooth_shift={rec['tooth']['shift']:+d} "
                      f"shift_source={rec['tooth']['source']}")
@@ -1482,7 +1487,7 @@ def draw_page(page, version: str, dest_dir: str, dest_name: str) -> None:
 
 
 GUTTER_WORD = {"outlier": "out of its group average",
-               "quarantined": "out of the calibration",
+               "uncalibrated": "out of the calibration",
                "advised": "marked for removal",
                "excluded": "enters no fit"}
 
@@ -1537,10 +1542,10 @@ def build_page(cls, cond, recs, census, version):
                 else f"{where}, {n} {plural}")
 
     notes = []
-    if cls == "quarantine":
+    if cls == "excluded":
         notes.append(("excluded", "Every trace on this page belongs to the aborted "
                       "first session, which is set aside whole: all "
-                      f"{census['by_class']['quarantine']} of its traces enter no "
+                      f"{census['by_class']['excluded']} of its traces enter no "
                       "fit."))
     if (not is_comb) and any(r["fit"] is not None and not r["fitted_here"]
                              for r in recs):
@@ -1742,7 +1747,7 @@ def main() -> int:
     lines = [r for r in manifest if r["rf_on"] != "True"]
     combs = [r for r in manifest if r["rf_on"] == "True"]
     print(f"  fitting {len(lines)} lines and {len(combs)} combs ...")
-    census = archive_census(manifest)
+    census = record_census(manifest)
     records = line_records(lines, ctx, prates) + comb_records(combs)
     records = [annotate(rec, qc_rows, ruler_rows, census) for rec in records]
 

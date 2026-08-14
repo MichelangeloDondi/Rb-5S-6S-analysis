@@ -56,11 +56,11 @@ REASON_DISCARDED = {
 }
 
 REASON_Q_RULER = (
-    "session quarantine: EOM ruler bracket of the aborted first 4154 130 C "
+    "session excluded: EOM ruler bracket of the aborted first 4154 130 C "
     "power attempt -- a ruler for an aborted block is meaningless, excluded "
     "session-grain with it (DATA.md; trace individually clean, no hard flags)")
 REASON_Q_POWER = (
-    "session quarantine: aborted first 4154 130 C power attempt, redone in full "
+    "session excluded: aborted first 4154 130 C power attempt, redone in full "
     "(the canonical p_sweep covers all 5 powers; this partial retry only 25/125/"
     "225 mW, so REDUNDANT and not a serves_t130 anchor). Lines individually clean "
     "-- height/width match the redo to <2% -- but the 225 mW set carries a ~80x "
@@ -75,7 +75,7 @@ def reason_for(row: dict) -> str:
         return ""
     if row["flag"] == "discarded":
         return REASON_DISCARDED[Path(row["file"]).name]
-    # quarantined: ruler brackets vs power traces
+    # excluded: ruler brackets vs power traces
     return REASON_Q_RULER if "eom" in Path(row["file"]).name else REASON_Q_POWER
 
 
@@ -91,11 +91,11 @@ def main() -> int:
         raise SystemExit(f"discard map mismatch: manifest {disc} vs map "
                          f"{set(REASON_DISCARDED)} -- update REASON_DISCARDED")
 
-    # self-check 2: the 'individually clean' claim written for quarantined rows
-    # must be TRUE -- recompute hard flags on every quarantined trace now.
+    # self-check 2: the 'individually clean' claim written for excluded rows
+    # must be TRUE -- recompute hard flags on every excluded trace now.
     dirty = []
     for r in rows:
-        if r["flag"] != "quarantined":
+        if r["flag"] != "excluded":
             continue
         t, v, info = load_trace(trace_path(r), with_info=True)
         m = trace_metrics(t, v)
@@ -103,7 +103,7 @@ def main() -> int:
         if hf:
             dirty.append((r["file"], hf))
     if dirty:
-        raise SystemExit(f"quarantined traces DO hard-flag -- fix the reason "
+        raise SystemExit(f"excluded traces DO hard-flag -- fix the reason "
                          f"text before writing: {dirty[:3]}")
 
     for r in rows:
@@ -116,7 +116,7 @@ def main() -> int:
     n = sum(1 for r in rows if r["qc_reason"])
     print(f"wrote qc_reason for {n} non-canonical rows "
           f"({len(rows)} total) to {MANIFEST_CSV}")
-    print("self-checks passed: discard map exact; all 29 quarantined traces "
+    print("self-checks passed: discard map exact; all 29 excluded traces "
           "individually clean (no hard flags) -- the recorded reasons are true.")
     return 0
 

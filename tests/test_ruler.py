@@ -15,7 +15,7 @@ import pytest
 
 from rb5s6s import config as C
 from rb5s6s import ruler as RU
-from rb5s6s.ruler import (QUARANTINE_REASONS, combine_block, estimate_delta_acf,
+from rb5s6s.ruler import (EXCLUSION_REASONS, combine_block, estimate_delta_acf,
                           fit_comb, fit_comb_free_centers, top_three_verdict,
                           validated_comb_fit)
 
@@ -230,7 +230,7 @@ def test_reindex_recovers_delta_on_a_folded_comb():
     for seed in SEEDS:
         out = validated_comb_fit(T_MS, synth_folded_comb(seed=seed), gated=True,
                                  fold_rule="proximity")
-        assert not out["quarantined"], f"seed {seed}: {out['quarantine_reason']}"
+        assert not out["excluded"], f"seed {seed}: {out['excluded_reason']}"
         assert out["top3_ok"]
         assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, (
             f"seed {seed}: ladder returned {out['delta_ms']:.2f} ms against a "
@@ -295,7 +295,7 @@ def test_acceptance_ceiling_accepts_a_clean_seven_tooth_relabel():
     for seed, frac in _OLD_TOLERANCE_CASUALTIES:
         out = validated_comb_fit(T_MS, synth_bessel_comb(frac, seed=seed), gated=True,
                                  fold_rule="proximity")
-        assert not out["quarantined"], (seed, frac, out["quarantine_reason"])
+        assert not out["excluded"], (seed, frac, out["excluded_reason"])
         assert out["reindex_action"] == "phase_shift", (
             f"seed {seed} frac {frac}: clean mislabel took "
             f"{out['reindex_action']!r} instead of a comb-phase relabel")
@@ -339,7 +339,7 @@ def test_acceptance_ceiling_can_only_widen_the_original_tolerance():
 def test_clean_combs_all_pass_top_three():
     """Zero false positives. Every synthetic the closure suite already fits --
     bright, suppressed carrier, missing outer teeth, cold, and drifted phase --
-    must come out of the ladder valid and unquarantined, with its spacing
+    must come out of the ladder valid and kept, with its spacing
     intact."""
     cases = {
         "bright": dict(),
@@ -354,9 +354,9 @@ def test_clean_combs_all_pass_top_three():
         cases[f"drift {drift}"] = dict(t0=150.0 + drift, seed=1)
     for name, kw in cases.items():
         out = validated_comb_fit(T_MS, synth_comb(**kw), gated=True)
-        assert out["top3_ok"] and not out["quarantined"], (
+        assert out["top3_ok"] and not out["excluded"], (
             f"clean synthetic {name!r} was rejected: verdict {out['verdict']}, "
-            f"reason {out['quarantine_reason']!r}")
+            f"reason {out['excluded_reason']!r}")
         assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, (name, out["delta_ms"])
 
 
@@ -394,7 +394,7 @@ def test_bessel_comb_below_modulation_index_passes_top_three():
 def test_verdict_lands_advisory_and_changes_no_number():
     """The switch that makes this landing safe. Ungated, the ladder still runs
     and records everything, but the fit OF RECORD is the plain fit, byte for
-    byte, and nothing is quarantined. If this test fails, a diagnostic has
+    byte, and nothing is excluded. If this test fails, a diagnostic has
     silently become a gate and every MHz in the repository moved with it."""
     assert C.RULER_TOP3_GATED is False, (
         "the top-three verdict is now gating; that is an owner decision and it "
@@ -407,9 +407,9 @@ def test_verdict_lands_advisory_and_changes_no_number():
     out = validated_comb_fit(T_MS, v, fold_rule="proximity")
     assert out["delta_ms"] == plain["delta_ms"]
     assert out["heights"] == plain["heights"]
-    assert out["quarantined"] is False and out["top3_gated"] is False
+    assert out["excluded"] is False and out["top3_gated"] is False
     # the ladder's own answer is still on the record
-    assert out["quarantine_advised"] or out["reindex_action"] != "none"
+    assert out["excluded_advised"] or out["reindex_action"] != "none"
     gated = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
     assert gated["delta_ms"] != plain["delta_ms"]
     assert out["delta_advised_ms"] == gated["delta_ms"]
@@ -427,14 +427,14 @@ def test_suppressed_carrier_passes_top_three():
     assert out["top3_ok"] and out["reindex_action"] == "none", out["verdict"]
 
 
-def test_unfixable_fold_quarantines_with_a_reason():
-    """A fold the ladder cannot re-index is quarantined, and the reason comes
+def test_unfixable_fold_excludes_with_a_reason():
+    """A fold the ladder cannot re-index is excluded, and the reason comes
     from the closed vocabulary rather than free text."""
     for seed in SEEDS:
         out = validated_comb_fit(T_MS, synth_folded_comb(apex_frac=0.9, seed=seed),
                                  gated=True, fold_rule="proximity")
-        assert out["quarantined"], f"seed {seed}: verdict {out['verdict']}"
-        assert out["quarantine_reason"] in QUARANTINE_REASONS, out["quarantine_reason"]
+        assert out["excluded"], f"seed {seed}: verdict {out['verdict']}"
+        assert out["excluded_reason"] in EXCLUSION_REASONS, out["excluded_reason"]
         assert out["n_refits"] <= C.RULER_REINDEX_MAX_TRIALS
 
 
@@ -464,7 +464,7 @@ def test_apex_on_a_tooth_is_not_flagged():
                 f"{verdict['verdict']} with ranks "
                 f"{verdict['rank_m1']}/{verdict['rank_p1']}")
             out = validated_comb_fit(T_MS, v, gated=True)
-            assert out["reindex_action"] == "none" and not out["quarantined"]
+            assert out["reindex_action"] == "none" and not out["excluded"]
             assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, out["delta_ms"]
 
 
@@ -519,7 +519,7 @@ def test_amplitude_seed_lands_a_displaced_comb_on_the_undisplaced_numbering():
             f"from the true carrier the carrier")
         assert out["reindex_action"] == "none", (frac, seed, out["reindex_action"])
         assert out["n_refits"] == 0, (frac, seed, out["n_refits"])
-        assert not out["quarantine_advised"], (frac, seed, out["quarantine_reason"])
+        assert not out["excluded_advised"], (frac, seed, out["excluded_reason"])
         assert out["top3_ok"] and not out["marginal"], (frac, seed, out["verdict"])
         assert abs(out["delta_ms"] - TRUE_DELTA) < 1.0, (frac, seed, out["delta_ms"])
 
@@ -550,7 +550,7 @@ def test_the_plant_proximity_seeding_displaces_the_same_combs():
 
 def test_clean_synthetics_are_untouched_by_the_amplitude_seed():
     """No clean comb is made worse. Every synthetic the closure suite already
-    fits comes out of the amplitude seed valid, unquarantined and with its
+    fits comes out of the amplitude seed valid, kept and with its
     spacing intact, exactly as it did under proximity seeding, and now without
     the ladder having to act."""
     cases = {
@@ -568,9 +568,9 @@ def test_clean_synthetics_are_untouched_by_the_amplitude_seed():
         v = synth_comb(**kw)
         new = validated_comb_fit(T_MS, v, gated=True, fold_rule="amplitude")
         old = validated_comb_fit(T_MS, v, gated=True, fold_rule="proximity")
-        assert new["top3_ok"] and not new["quarantined"], (
+        assert new["top3_ok"] and not new["excluded"], (
             f"clean synthetic {name!r} was rejected: verdict {new['verdict']}, "
-            f"reason {new['quarantine_reason']!r}")
+            f"reason {new['excluded_reason']!r}")
         assert abs(new["delta_ms"] - TRUE_DELTA) < 1.0, (name, new["delta_ms"])
         assert new["reindex_action"] == "none", (name, new["reindex_action"])
         # and no worse than the fit the record used to carry
@@ -691,7 +691,7 @@ NEW_TRACE_COLUMNS = [
     # committed schema does not carry them.
     "top3_gated",
     "reindex_action", "reindex_j", "excised_k", "n_refits", "delta_advised_ms",
-    "quarantine_advised", "quarantined", "quarantine_reason",
+    "excluded_advised", "excluded", "excluded_reason",
     "trimmed", "trim_start_ms", "trim_end_ms", "trim_reason",
     "outlier", "outlier_reason",
 ]
@@ -795,7 +795,7 @@ def _candidate_row(mf, heights, **over):
     """One results/ruler_traces.csv row, as strings, eligible unless overridden."""
     row = {c: repr(h) for c, h in zip(mf.RULER_HEIGHT_COLS, heights)}
     row.update(file="rulers_t/synthetic.csv", fit_rms="0.004", top3_ok="True",
-               top3_marginal="False", reindex_action="none", quarantined="False",
+               top3_marginal="False", reindex_action="none", excluded="False",
                n_railed="0", chi2_red="1.0", trimmed="False")
     row.update(over)
     return row
@@ -812,7 +812,7 @@ def test_fig8_eligibility_bites_on_every_clause():
         {"top3_ok": "False"},                       # the verdict failed
         {"top3_marginal": "True"},                  # ... or only just passed
         {"reindex_action": "phase_shift"},          # the ladder had to act
-        {"quarantined": "True"},
+        {"excluded": "True"},
         {"n_railed": "1"},
         {"chi2_red": repr(mf.RULER_FIG_CHI2_MAX + 0.1)},
     ]

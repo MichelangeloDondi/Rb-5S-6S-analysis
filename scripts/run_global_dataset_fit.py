@@ -155,7 +155,7 @@ M22, and found unsupported). New CSV rows carry quantity "sigma_laser_sp",
 key f"{block}_{peak}" (e.g. "camp130_4192"); the existing "sigma_laser" rows
 are unchanged and still report the pooled sigma_s means.
 
-Writes results/global_archive_fit.csv. Needs the quarantine prehistory and
+Writes results/global_dataset_fit.csv. Needs the excluded prehistory and
 pilot trees; without them it prints what is missing and exits 0.
 Runtime: long (many hours). Run it in the background.
 """
@@ -184,7 +184,7 @@ from rb5s6s.linefit import (_shared_profile_grid, adaptive_halfwidth,  # noqa: E
 from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 from rb5s6s.noise import condition_noise_model, sigma_of_v, signal_level  # noqa: E402
 from run_beta_self import load_t_rates  # noqa: E402
-from run_stark_joint import PEAKS, PILOT, PREHISTORY, load_pilot, load_rehearsal  # noqa: E402
+from run_stark_joint import PEAKS, SESSION_20250717, SESSION_20250704, load_session_20250717, load_session_20250704  # noqa: E402
 
 PK_IX = {p: i for i, p in enumerate(PEAKS)}
 DNU_FLOOR = 2e-2
@@ -321,7 +321,7 @@ def measured_pilot_scale():
     1.0022(12); imposing the measurement is the experiment that decides
     whether that gap was the axis or absorbed width physics."""
     import csv as _csv
-    path = C.RESULTS_DIR.parent / "results" / "pilot_ruler.csv"
+    path = C.RESULTS_DIR.parent / "results" / "morning_ruler.csv"
     if not path.exists():
         return None
     for r in _csv.DictReader(open(path)):
@@ -611,9 +611,9 @@ def _load_everything():
     the two paths on a small grid and fails on any difference.
     """
     camp = load_campaign_all()
-    reh, _ = load_rehearsal()
+    reh, _ = load_session_20250704()
     _, prates = load_t_rates()
-    pil = load_pilot(prates["4192"][0])
+    pil = load_session_20250717(prates["4192"][0])
     rul = load_rulers_t() if USE_RULERS else []
     for t in reh:
         t["T"] = 130.0
@@ -781,7 +781,7 @@ def _preflight() -> str | None:
     Returns the complaint, or None when everything is reachable.
     """
     import os as _os
-    for label, d in (("prehistory tree", PREHISTORY), ("pilot tree", PILOT),
+    for label, d in (("prehistory tree", SESSION_20250704), ("pilot tree", SESSION_20250717),
                      ("results directory", C.RESULTS_DIR)):
         try:
             if not d.is_dir():
@@ -799,9 +799,9 @@ def _preflight() -> str | None:
 
 
 def main() -> int:
-    if not (PREHISTORY.is_dir() and PILOT.is_dir()):
-        print(f"quarantine trees absent ({PREHISTORY}, {PILOT}) -- the "
-              f"committed results/global_archive_fit.csv is the record.")
+    if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
+        print(f"excluded trees absent ({SESSION_20250704}, {SESSION_20250717}) -- the "
+              f"committed results/global_dataset_fit.csv is the record.")
         return 0
     complaint = _preflight()
     if complaint is not None:
@@ -811,11 +811,11 @@ def main() -> int:
     # between an expensive annoyance and a damaged record should be readable
     # rather than deduced from the source.
     print("  writes nothing until the end, into "
-          "results/global_archive_fit.csv")
+          "results/global_dataset_fit.csv")
     camp = load_campaign_all()
-    reh, n_corrupt = load_rehearsal()
+    reh, n_corrupt = load_session_20250704()
     _, prates = load_t_rates()
-    pil = load_pilot(prates["4192"][0])
+    pil = load_session_20250717(prates["4192"][0])
     rul = load_rulers_t() if USE_RULERS else []
     for t in reh:
         t["T"] = 130.0; t["sl"] = "reh"
@@ -916,7 +916,7 @@ def main() -> int:
           f"MHz per 1e12 cm^-3")
     print(f"  ({(time.time()-t0)/3600:.1f} h)")
 
-    with open(C.RESULTS_DIR / "global_archive_fit.csv", "w", newline="") as fh:
+    with open(C.RESULTS_DIR / "global_dataset_fit.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_ub95", "primary", f"{ka:.3f}", "",
@@ -995,7 +995,7 @@ def main() -> int:
                         f"value=95% kappa bound, err=beta_self, at transit_ref "
                         f"{tr_ref:.3f} MHz -- how both coefficients depend on "
                         f"the ASSUMED waist, which the archive cannot pin"])
-    print("\n  Wrote results/global_archive_fit.csv.")
+    print("\n  Wrote results/global_dataset_fit.csv.")
     return 0
 
 

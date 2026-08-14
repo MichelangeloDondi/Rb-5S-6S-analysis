@@ -6,7 +6,7 @@ WHY THIS EXISTS. The pilot session (2025-07-16) enters M23 and M25 through a
 frequency axis borrowed from the campaign: pilot rate = campaign 4192 rate
 times a fitted scale, boxed to [0.9, 1.1]. Both fits put the scale near 1.02
 anyway, but a fitted nuisance is an assumption wearing a posterior. The
-recovered pilot quarantine holds 27 EOM ruler traces from the pilot day
+recovered pilot excluded holds 27 EOM ruler traces from the pilot day
 itself that no analysis had ever opened: two groups, "Def" (10 traces,
 three columns, the 1.92 V piezo ramp co-recorded beside the signal) and
 "Initial attempts" (17 traces, two columns, a coarser 1 ms time base). They
@@ -27,12 +27,12 @@ exactly why they are usable for the pilot axis and would not be for anything
 else. The earlier ACF estimate on the Def combs (tooth period 144.2(11) ms)
 was a seed; this module replaces it with the constrained comb fit.
 
-Needs the pilot quarantine tree (private, read in place, never copied).
-Without it the committed results/pilot_ruler.csv is the record; exits 0.
-RB5S6S_PILOT_DIR is needed only to re-run this script against that private
+Needs the pilot excluded tree (private, read in place, never copied).
+Without it the committed results/morning_ruler.csv is the record; exits 0.
+RB5S6S_SESSION_20250717_DIR is needed only to re-run this script against that private
 working copy, and the committed CSVs are what the repository ships.
 
-Writes results/pilot_ruler.csv.
+Writes results/morning_ruler.csv.
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ from rb5s6s.ruler import fit_comb  # noqa: E402
 from run_ruler import MHZ_PER_TOOTH, combine_rates  # noqa: E402
 
 QP = Path(os.environ.get(
-    "RB5S6S_PILOT_DIR", "~/rb-2025-quarantine/pilot")).expanduser()
+    "RB5S6S_SESSION_20250717_DIR", "~/rb-2025-sessions/pilot")).expanduser()
 GROUPS = {
     "def": QP / "EOM ruler" / "Def",
     "initial": QP / "EOM ruler" / "Initial attempts",
@@ -80,8 +80,8 @@ def campaign_4192_rate() -> float:
 
 def main() -> int:
     if not QP.is_dir():
-        print(f"pilot quarantine not on this machine ({QP}) -- the committed "
-              f"results/pilot_ruler.csv is the record; nothing to do.")
+        print(f"pilot excluded not on this machine ({QP}) -- the committed "
+              f"results/morning_ruler.csv is the record; nothing to do.")
         return 0
 
     out_rows = []
@@ -143,11 +143,11 @@ def main() -> int:
               f"(fitted nuisance was 1.023-1.029)")
 
     C.RESULTS_DIR.mkdir(exist_ok=True)
-    with open(C.RESULTS_DIR / "pilot_ruler.csv", "w", newline="") as fh:
+    with open(C.RESULTS_DIR / "morning_ruler.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerows(out_rows)
-    print("  Wrote results/pilot_ruler.csv.")
+    print("  Wrote results/morning_ruler.csv.")
     return 0
 
 

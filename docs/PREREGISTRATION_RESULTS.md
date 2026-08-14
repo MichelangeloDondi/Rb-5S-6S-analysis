@@ -13,7 +13,7 @@ before its code and each holding the amendments that record what the rules
 returned: the frequency ruler's fit validity and residual-tail trimming
 ([`notes/ruler_validity_and_trim_prereg.md`](notes/ruler_validity_and_trim_prereg.md),
 where amendments 4 to 7 govern the current tooth rules) and the full-archive
-fit ([`notes/full_archive_fit_prereg.md`](notes/full_archive_fit_prereg.md)).
+fit ([`notes/full_dataset_fit_prereg.md`](notes/full_dataset_fit_prereg.md)).
 A reader who wants the current state of a ruler rule should go to the first of
 those and read its opening table.*
 
@@ -1084,8 +1084,8 @@ backup that *is* the clock) is resolved in four moves, all shipped:
    degradation chain, addendum 8), all hash-suffixed against the nine name
    collisions, mapped in `RECOVERED_MANIFEST.csv`. `data_raw/` itself is
    untouched.
-3. **The full timestamped backup is preserved** as a release asset of the
-   working repository, `raw-backup-2026-07-24`, which
+3. **The full timestamped backup is preserved**: release
+   [`raw-backup-2026-07-24`](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis-archive/releases/tag/raw-backup-2026-07-24)
    carries the complete tree verbatim (`tar.gz`, mtimes intact, verified
    against the working record, 753 CSVs, about 460 MB unpacked and 77 MB
    packed), sha256

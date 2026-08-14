@@ -15,7 +15,7 @@ stdout                   the audit:
                              does objective QC agree they are bad?
                          (b) canonical traces failing hard QC or standing out
                              vs siblings — did curation miss anything?
-                         (c) quarantine set summary
+                         (c) excluded set summary
                          (d) RF-state consistency check (comb vs label)
 
 Policy reminder (docs/PLAN.md): hard-QC failures may exclude canonical traces
@@ -204,14 +204,14 @@ def main() -> int:
             print(f"   {r['file']}: keeps {m['trim_start_ms']:.0f} to "
                   f"{m['trim_end_ms']:.0f} ms ({m['trim_reason']})")
 
-    # ---- audit (c): quarantine summary ----
+    # ---- audit (c): excluded summary ----
     print("\n" + "=" * 78)
     print("(c) QUARANTINE set (aborted 4154 attempt): hard-flag summary")
-    qrows = [r for r in rows if r["flag"] == "quarantined"]
+    qrows = [r for r in rows if r["flag"] == "excluded"]
     nbad = sum(1 for r in qrows if metrics[r["file"]]["hard_flags"])
     print(f"   {len(qrows)} traces, {nbad} with hard flags (note: trace-level QC "
           f"cannot detect condition-level problems such as a wrong power "
-          f"calibration — quarantine stays regardless)")
+          f"calibration — excluded stays regardless)")
     for r in qrows:
         if metrics[r["file"]]["hard_flags"]:
             print(f"     {r['file']}: {metrics[r['file']]['hard_flags']}")

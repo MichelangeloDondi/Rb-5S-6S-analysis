@@ -349,7 +349,7 @@ C3d is the width-only bound. The number outside documents quote is C3f, the join
 three-session bound at S0(225 mW) below 0.26 MHz, and the obvious question is
 whether the companion tightens that one too. **It was not re-run, and the reason
 is a data-access fact rather than a modelling one:** the joint fit reads the
-2025-07-04 rehearsal and the campaign-morning pilot from two quarantine trees
+2025-07-04 rehearsal and the campaign-morning pilot from two excluded trees
 outside the repository, and `run_stark_joint.py` exits early when they are absent,
 which they are on the machine this probe ran on.
 
@@ -365,7 +365,7 @@ the paragraph above is replaced by the postscript below.**
 
 ## Postscript, 2026-08-10: the joint bound was re-profiled, and it tightens by 2.2
 
-The quarantine trees were on the machine the whole time, under names the script's
+The excluded trees were on the machine the whole time, under names the script's
 fallback path does not reach, so this was never owner-side work. Stage 4 of
 `scripts/run_saturation_probe.py` now runs it: 100 campaign, 46 rehearsal and 26
 pilot traces, the wing chain then the primary seeded from it, patching the joint

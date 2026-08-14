@@ -2,7 +2,7 @@
 
 `scripts/make_qc_gallery.py` renders 297 panels, 13 contact sheets and an index
 from the raw archive. None of that is publishable: the panels are pictures of
-raw traces, the index names quarantined and discarded files, and the whole set
+raw traces, the index names excluded and discarded files, and the whole set
 is regenerated whenever anybody wants to look at it. It therefore lives under
 `private/`, which this repository gitignores wholesale by DIRECTORY rather than
 by filename glob, precisely so that nothing lands in the tracked tree by being

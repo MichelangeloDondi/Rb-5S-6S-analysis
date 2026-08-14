@@ -980,7 +980,7 @@ nothing else needed them. APPARATUS.md section 5 now carries them, about 25 mm
 across and 100 mm long, tagged as an experimenter recollection rather than a
 datasheet reading. A supplier record or a photograph with a scale would upgrade
 them, and neither is on hand: a search of this repository's history, the
-quarantine trees and the wider filesystem found no primary record, and the one
+excluded trees and the wider filesystem found no primary record, and the one
 close-up cell photograph carries no scale.
 
 *Second correction, same day: the correction above is itself conditional on a

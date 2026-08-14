@@ -32,7 +32,7 @@ EXPECTED_CENSUS = {
     ("t_sweep", "discarded"): 3,         # shots rejected at curation ("seemed quite bad")
     ("ruler_t", "canonical"): 61,        # per-T ruler blocks (4192@90C block has a double-save)
     ("ruler_p", "canonical"): 44,        # before/after bracket blocks (4154: underscore set)
-    ("quarantine", "quarantined"): 29,   # aborted 4154 power attempt + its plausible rulers
+    ("excluded", "excluded"): 29,   # aborted 4154 power attempt + its plausible rulers
 }
 EXPECTED_TOTAL = 297
 
@@ -123,11 +123,11 @@ def test_flags_match_folders(rows):
     # the canonical role folders where a loop over files might pick it up.
     role_dirs = {"t_sweep": "t_sweep", "p_sweep": "p_sweep",
                  "ruler_t": "rulers_t", "ruler_p": "rulers_p",
-                 "quarantine": "quarantine", "review": "review"}
+                 "excluded": "excluded", "review": "review"}
     for r in rows:
         top = r["file"].split("/")[0]
-        if r["flag"] == "quarantined":
-            assert top == "quarantine", r["file"]
+        if r["flag"] == "excluded":
+            assert top == "excluded", r["file"]
         elif r["flag"] == "discarded":
             assert top == "discarded", r["file"]
         else:

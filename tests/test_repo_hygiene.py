@@ -118,13 +118,16 @@ FORBIDDEN = {
     # sense was already removed, so a pattern for it would fire only on
     # standing waves and wavelengths.
     #
-    # NAMED 2026-08-10 and NOT YET HERE, because each needs a sweep first and
-    # the two largest need the owner to choose the replacement term: prehistory
-    # (58 occurrences), plumbing (5), archive and archival (947), quarantine
-    # (282), win/wins/winning (58), prize (3). The rule is in the rendering
-    # protocol section 2.1 with the counts and the replacements, and it governs
-    # anything newly written from that date. Moving a word from that list to
-    # this bank is the last step of its sweep, not the first.
+    # NAMED 2026-08-10 and NOT YET HERE, because each needs a sweep first.
+    # Moving a word from that list to this bank is the last step of its
+    # sweep, not the first. UPDATE 2026-08-14: the replacement terms are now
+    # decided (record/dataset for the former self-description, date-based
+    # session names, the experimenter/the author for the editorial voice) and
+    # the sweep runs in two stages. Stage 1, DONE, renamed every tracked
+    # FILENAME and code identifier off the banned stems, and the filename
+    # guard below holds that. Stage 2 is the prose sweep, and the prose
+    # patterns for archiv/prehistor/effort/rehears/pilot join THIS bank in
+    # the same commit as that sweep, per the rule above.
     "care performed rather than exercised": [
         # Announcing an improvement over a previous, sloppier state tells a
         # reader nothing about the physics and everything about the author's
@@ -760,3 +763,83 @@ def test_no_test_pins_a_platform_sensitive_value_below_the_floor():
     assert not offenders, (
         "tolerance below the cross-platform floor:\n  " + "\n  ".join(offenders)
         + "\nRelax to 1e-9, or recompute both sides in the same process.")
+
+
+# --------------------------------------------------------------------------
+# Filenames and identifiers carry the same vocabulary rule as prose
+# --------------------------------------------------------------------------
+
+# Stage 1 of the 2026-08-14 vocabulary sweep renamed every tracked path off
+# these stems, and this guard is what stops them coming back. Prose is NOT
+# checked here: that is stage 2, and its patterns join the FORBIDDEN bank
+# above in the same commit as the sweep, per the rule stated there.
+#
+# WHY FILENAMES NEED THEIR OWN GUARD. A path is the one piece of text a
+# reader meets before opening anything, it appears in every link and every
+# error message, and unlike prose it cannot be softened by context. It is
+# also the form the prose ratchet and the register guards never see, because
+# both read file CONTENTS.
+_BANNED_PATH_STEMS = (
+    "archiv",       # -> record (the thing) / dataset (the data)
+    "owner",        # -> the experimenter (bench) / the author (editorial)
+    "prehistor",    # -> the dated session that it actually names
+    "rehears",      # -> likewise: sessions are named by their date
+    "quarantin",    # -> excluded
+    "trouble",
+    "effort",
+)
+
+# The GitHub URL of the private source repository is still literally
+# `Rb-5S-6S-analysis-archive` until the owner renames it on GitHub, so a
+# script that names it is stating a fact, not using the word. Same for the
+# two guard files that must spell the stems to forbid them.
+_PATH_STEM_EXEMPT_CONTENT = {
+    "scripts/sync_public.sh",
+    "tests/test_repo_hygiene.py",
+    "docs/STYLE.md",
+}
+
+
+def test_no_tracked_path_carries_a_retired_word():
+    """Filenames are the surface a reader meets first."""
+    offenders = [p for p in _tracked() + _about_to_be_tracked()
+                 if any(s in p.lower() for s in _BANNED_PATH_STEMS)]
+    assert not offenders, (
+        "tracked paths still carry retired vocabulary:\n  "
+        + "\n  ".join(sorted(offenders))
+        + "\nRename the path and reroute every inbound link; the replacement "
+          "terms are recorded in docs/STYLE.md.")
+
+
+def test_the_retired_words_are_gone_from_code_identifiers():
+    """Prose is stage 2; identifiers are stage 1 and are held here.
+
+    Checks Python and shell SOURCE for the stems in identifier position
+    (a stem touching a word character on either side, e.g. `archive_dir`,
+    `PREHISTORY_DIR`, `load_rehearsal`) rather than every occurrence, so
+    ordinary prose inside a docstring does not fail this test before its
+    own sweep lands. That split is deliberate: it lets stage 1 be guarded
+    the moment it is done instead of waiting for stage 2.
+    """
+    import re as _re
+    pat = _re.compile(
+        r"(?:\w[_.]?(?:" + "|".join(_BANNED_PATH_STEMS) + r")"
+        r"|(?:" + "|".join(_BANNED_PATH_STEMS) + r")\w*[_(])", _re.I)
+    offenders = []
+    for rel in _tracked("*.py", "*.sh") + _about_to_be_tracked("*.py", "*.sh"):
+        if rel in _PATH_STEM_EXEMPT_CONTENT:
+            continue
+        try:
+            text = (ROOT / rel).read_text()
+        except (OSError, UnicodeDecodeError):
+            continue
+        for i, line in enumerate(text.splitlines(), 1):
+            if line.lstrip().startswith("#"):
+                continue                      # comments are stage 2's prose
+            m = pat.search(line)
+            if m:
+                offenders.append(f"{rel}:{i}: {m.group(0)}")
+    assert not offenders, (
+        "retired vocabulary survives in code identifiers:\n  "
+        + "\n  ".join(offenders[:40])
+        + f"\n({len(offenders)} total). Stage 1 renamed these; see docs/STYLE.md.")
