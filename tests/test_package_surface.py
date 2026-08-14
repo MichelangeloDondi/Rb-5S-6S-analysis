@@ -13,11 +13,17 @@ confirmed the pure half on Python 3.14 in a clean venv outside the repository.
 These are the in-process checks that keep it true, since a full wheel-install
 test needs network and a build step that the fast suite cannot afford.
 
-WHAT IS NOT COVERED HERE, stated because a test that overstates its reach is
-worse than one that admits its edge: the check below exercises
-`config.require_repo_data()` itself, and NOT the five other disk-reading
-modules. Those five do not call it yet, so nothing in this file would notice
-if they never did.
+THE SIX DISK-READING MODULES SPLIT INTO TWO CONTRACTS, and the tests below
+keep both. `ingest.load_manifest`, `rate_model.load_clock` and
+`cavity_scan.load_scan` on its default path REQUIRE the repository and raise
+`RepoDataMissing` naming the cause. `qc.outlier_files` and
+`ruler.campaign_rate_relsyst` DEGRADE ON PURPOSE, returning an empty set and
+0.0, which each says in its own docstring so that a checkout without a
+quality or ruler run behaves as it did before.
+
+Until 2026-08-15 `RepoDataMissing` had no call site outside `config` at all,
+while three documents said otherwise, and the only test here exercised
+`require_repo_data` in isolation, so nothing would have noticed.
 """
 from __future__ import annotations
 
@@ -107,3 +113,57 @@ def test_the_pure_modules_import_without_the_data_modules():
         for m, mod in saved.items():
             if mod is not None:
                 sys.modules[m] = mod
+
+
+def test_the_required_data_loaders_name_the_cause(tmp_path, monkeypatch):
+    """The three loaders that genuinely need the repository say so when it is absent.
+
+    Added 2026-08-15. Until then `RepoDataMissing` had no call site outside
+    `config` itself, so `ingest.load_manifest` and `rate_model.load_clock`
+    raised a bare FileNotFoundError naming a path inside site-packages, which
+    is the outcome that error class was written to prevent. The claim that
+    they did otherwise sat in three documents and in this file's own
+    docstring, and the only test for it exercised `require_repo_data` alone,
+    so nothing would have noticed.
+
+    NOT COVERED HERE ON PURPOSE: `qc.outlier_files` and
+    `ruler.campaign_rate_relsyst` return an empty set and 0.0 when their
+    tables are absent. That is a deliberate contract stated in each of their
+    own docstrings, so a checkout without a quality or ruler run behaves as
+    it did before, and turning it into a raise would break it.
+    """
+    import rb5s6s.config as cfg
+    import rb5s6s.ingest as ingest
+    import rb5s6s.rate_model as rate_model
+    import rb5s6s.cavity_scan as cavity_scan
+
+    monkeypatch.setattr(cfg, "DATA_RAW_DIR", tmp_path / "nope_data_raw")
+    monkeypatch.setattr(cfg, "RESULTS_DIR", tmp_path / "nope_results")
+
+    for label, call in (
+        ("ingest.load_manifest", ingest.load_manifest),
+        ("rate_model.load_clock", rate_model.load_clock),
+        ("cavity_scan.load_scan", cavity_scan.load_scan),
+    ):
+        with pytest.raises(cfg.RepoDataMissing) as exc:
+            call()
+        msg = str(exc.value)
+        assert "data_raw" in msg, f"{label} did not name which tree is missing"
+        assert "clone" in msg.lower(), f"{label} did not say how to fix it"
+
+
+def test_the_graceful_loaders_stay_graceful(tmp_path, monkeypatch):
+    """The two that degrade on purpose must keep degrading.
+
+    The counterpart to the test above, and the reason this pair exists rather
+    than one sweeping rule: wiring the guard into these two would silently
+    change what a partial checkout does, which is the opposite of the
+    stability their docstrings promise.
+    """
+    import rb5s6s.config as cfg
+    import rb5s6s.qc as qc
+    import rb5s6s.ruler as ruler
+
+    monkeypatch.setattr(cfg, "RESULTS_DIR", tmp_path / "nope_results")
+    assert qc.outlier_files(results_dir=tmp_path / "nope_results") == set()
+    assert ruler.campaign_rate_relsyst(results_dir=tmp_path / "nope_results") == 0.0

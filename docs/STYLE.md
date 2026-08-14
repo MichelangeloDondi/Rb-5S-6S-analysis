@@ -175,6 +175,35 @@ the reader should take from it rather than restating the axis labels. The
 caption is the document's, not the figure's: on-canvas text stays to what the
 axes cannot say (see Figures, above).
 
+## One sentence, two copies
+
+This project lives in two repositories with the same documents and different
+contents: one carries the 297 raw traces, the published one carries the
+manifest alone. So a sentence can be true where it is written and false where
+it is read, and the guards cannot tell, because both copies pass their own
+tests.
+
+A published sentence must be true in EVERY copy it appears in. Where a fact
+genuinely differs between copies, there are two honest resolutions and no
+third:
+
+- Say what depends on the copy and point at the one file that states it,
+  `data_raw/README.md`. `START_HERE.md` takes this route, because
+  `sync_public.sh` resolves a divergent file to the public version on
+  conflict, and putting the front door on the hand-carry list would be a
+  standing liability for one sentence.
+- Or let the file diverge deliberately and be true locally in each tree, each
+  copy acknowledging the other. `data_raw/README.md` is the worked example
+  and is the reason the first route has somewhere to point.
+
+A REPLACEMENT EARNS THE SAME TEST. On 2026-08-15 ten sentences of this kind
+were corrected at once, and the first replacement written for `START_HERE.md`
+said the fast suite needs no data because the tests that matter are synthetic.
+True in the published copy. False in the one with the traces, where the
+manifest re-hash is gated by trace presence alone and runs inside the
+two-minute suite. Ask in which copy a replacement is true before writing it,
+not after.
+
 ## Private material
 
 Correspondence and personal documents (CV, letters, briefs, reviewer notes)

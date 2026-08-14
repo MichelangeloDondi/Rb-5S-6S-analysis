@@ -86,6 +86,12 @@ def load_clock(root: Path | None = None) -> dict[str, float]:
     sent the dim 70 C blocks - exactly the ones the model helps most - down
     the fallback path. All sixteen are md5-identical to canonical traces, so
     the content check is decisive rather than a guess at a naming rule."""
+    # An explicit root is the caller's business. The DEFAULT root is this
+    # file's own two-directories-up guess, which is right in a checkout and
+    # points inside site-packages from a wheel, so that case is the one that
+    # needs the cause named rather than a bare FileNotFoundError.
+    if root is None:
+        C.require_repo_data("data_raw")
     root = root or C.REPO_ROOT
     clock: dict[str, float] = {}
     by_md5: dict[str, float] = {}

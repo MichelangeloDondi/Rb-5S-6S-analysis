@@ -341,12 +341,19 @@ from rb5s6s import (
 Everything else is reached through its module. Six modules read from disk
 (`config`, `ingest`, `qc`, `rate_model`, `ruler`, `cavity_scan`), and from an
 installed wheel their paths resolve inside site-packages, where the
-directories are not. `config.require_repo_data()` exists to fail there with
-the cause named, and `config` calls it. THE OTHER FIVE DO NOT YET: `ingest`
-and `rate_model` raise a bare `FileNotFoundError` on the resolved path, and
-`qc` and `ruler` return an empty or zero default instead of failing at all.
-So treat the pure surface above as the wheel-safe one, and clone the
-repository for anything that reads committed data.
+directories are not. Those six split into two contracts, and the split is
+deliberate.
+
+The ones that REQUIRE the repository raise `config.RepoDataMissing` naming
+what needs cloning, rather than resolving a path into site-packages and
+failing somewhere stranger later: `ingest.load_manifest`,
+`rate_model.load_clock`, `cavity_scan.load_scan` on its default path, and
+`config.require_repo_data` itself.
+
+The ones that DEGRADE raise nothing: `qc.outlier_files` returns an empty set
+and `ruler.campaign_rate_relsyst` returns 0.0 when their tables are absent,
+so a checkout without a quality or a ruler run behaves exactly as it did
+before. Each says so where it is defined.
 
 ## Two worked examples
 

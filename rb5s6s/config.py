@@ -45,9 +45,12 @@ class RepoDataMissing(RuntimeError):
     wheel, so the failure only reaches the six modules that read from disk
     (config, ingest, qc, rate_model, ruler, cavity_scan). This exception names
     the cause rather than the resolved path, and require_repo_data() below
-    raises it. TODAY ONLY THIS MODULE CALLS THAT FUNCTION: the other five still
-    fail on the resolved path or return an empty default, which is tracked
-    rather than described as done.
+    raises it. Called by ingest.load_manifest, rate_model.load_clock and
+    cavity_scan.load_scan on its default path, which is the set that genuinely
+    needs the repository. qc.outlier_files and ruler.campaign_rate_relsyst
+    deliberately do NOT call it: they return an empty set and 0.0 so that a
+    checkout without a quality or ruler run behaves as it did before, and each
+    says so at its own definition.
     """
 
 

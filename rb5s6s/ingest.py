@@ -28,7 +28,7 @@ from typing import List, Dict
 import numpy as np
 
 from .config import (MANIFEST_CSV, DATA_RAW_DIR, CSV_HEADER_LINES,
-                     TRACE_MIN_VALID_POINTS)
+                     TRACE_MIN_VALID_POINTS, require_repo_data)
 from .constants import TRACE_N_POINTS, TRACE_DT_S
 
 
@@ -140,7 +140,15 @@ def load_trace(path, with_info: bool = False):
 
 
 def load_manifest() -> List[Dict[str, str]]:
-    """The dataset manifest as a list of dict rows (strings, as stored)."""
+    """The dataset manifest as a list of dict rows (strings, as stored).
+
+    Raises `config.RepoDataMissing` when called without the repository
+    beside it, which is what an installed wheel looks like. Without this the
+    failure was a bare FileNotFoundError naming a site-packages path the
+    caller had never heard of, which is the exact outcome that error class
+    exists to prevent.
+    """
+    require_repo_data("data_raw")
     with open(MANIFEST_CSV, newline="") as f:
         return list(csv.DictReader(f))
 

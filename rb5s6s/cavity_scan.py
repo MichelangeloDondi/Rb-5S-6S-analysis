@@ -127,7 +127,14 @@ class ScanReading:
 
 
 def load_scan(path=SCAN_CSV):
-    """The digitised record as (t_s, ch1_div, ch2_div) arrays."""
+    """The digitised record as (t_s, ch1_div, ch2_div) arrays.
+
+    With the default path, raises `config.RepoDataMissing` when the
+    repository is not beside the package. An explicit path is the caller's
+    own and is opened as given.
+    """
+    if path is SCAN_CSV:
+        C.require_repo_data("data_raw")
     t, ch1, ch2 = [], [], []
     with open(path, newline="") as f:
         for row in csv.DictReader(f):
