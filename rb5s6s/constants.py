@@ -41,7 +41,7 @@ TAU_6S_S = 45.57e-9
 """6S1/2 lifetime, 45.57(17) ns. ESTABLISHED (Gomez et al., PRA 72, 012502 (2005))."""
 
 GAMMA_NAT_HZ = 1.0 / (2.0 * math.pi * TAU_6S_S)
-"""Natural Lorentzian FWHM of the two-photon line, ~3.4926 MHz on the
+"""Natural Lorentzian FWHM of the two-photon line, 3.4925 MHz on the
 TRANSITION axis (1.746 MHz if read on the laser axis). CALCULATED from
 TAU_6S_S. Note: the 6S->5P->5S cascade adds NO width to the 5S->6S resonance —
 the 6S total decay rate already includes the branch; the 5P width belongs to

@@ -908,9 +908,15 @@ def main() -> int:
                 per_iso.setdefault(r["isotope"], []).append(abs(float(r["shift"])))
             m85 = max(per_iso.get("85", [float("nan")]))
             m87 = max(per_iso.get("87", [float("nan")]))
+            # The peak name is READ OFF THE ROWS, not typed. It used to be
+            # hardcoded as 993.4207, which is the peak with the SMALLEST shift
+            # of the four (-0.0003); the largest is 993.4154 at -0.0046. The
+            # two maxima on the same line were always computed, so the table
+            # printed correct numbers beside a wrong name.
+            worst = max(nls, key=lambda r: abs(float(r["shift"])))
             W(f"| the measured noise law (σ(V) ↔ uniform weights) | "
               f"≤ {m85:.3f} · ≤ {m87:.3f} | the weights are not doing physics, "
-              f"and the largest shift is on the 993.4207 nm suspect peak |")
+              f"and the largest shift is on the 993.{worst['peak']} nm peak |")
         W(f"| drop any one peak | ≤ {lp[0]:.3f} · ≤ {lp[1]:.3f} | no single "
           f"line drives the result |")
         W(f"| drop one temperature | up to {lt[0]:.2f} · {lt[1]:.2f} | lever "

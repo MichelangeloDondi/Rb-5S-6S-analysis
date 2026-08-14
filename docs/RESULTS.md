@@ -78,7 +78,7 @@ The referee question, *what moves if an assumption moves*, in one table, generat
 | the unmeasured w₀ (transit band, ~65→40 µm) | spans 0.052–0.056 · 0.052–0.056 | the dominant systematic, which a beam-profile measurement collapses |
 | transit model-form (Lehmann cusp ↔ Voigt) | 0.014 · 0.016 | comparable to β_self itself, part of why the headline is a bound |
 | σ_laser sharing (per-temperature ↔ per-block) | 0.001 · 0.002 | negligible next to the other two rows |
-| the measured noise law (σ(V) ↔ uniform weights) | ≤ 0.005 · ≤ 0.002 | the weights are not doing physics, and the largest shift is on the 993.4207 nm suspect peak |
+| the measured noise law (σ(V) ↔ uniform weights) | ≤ 0.005 · ≤ 0.002 | the weights are not doing physics, and the largest shift is on the 993.4154 nm peak |
 | drop any one peak | ≤ 0.007 · ≤ 0.004 | no single line drives the result |
 | drop one temperature | up to 0.13 · 0.07 | lever leverage with three densities, expected rather than fragility |
 | add the ×53 130 °C lever | -0.034 · -0.032 | pulls β_self down, since the width is a floor rather than resolved collisions (C1) |

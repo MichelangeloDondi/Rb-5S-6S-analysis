@@ -25,8 +25,12 @@ def _label_gap_laser_hz(label_a: str, label_b: str) -> float:
 
 
 def test_natural_width_value():
-    # 1 / (2 pi * 45.57 ns) = 3.4926 MHz on the transition axis.
-    assert math.isclose(K.GAMMA_NAT_HZ, 3.4926e6, rel_tol=2e-4)
+    # 1 / (2 pi * 45.57 ns) = 3492537.7 Hz = 3.4925 MHz on the transition
+    # axis. This asserted 3.4926e6 until 2026-08-15, a rounding of the
+    # fourth decimal in the wrong direction, and the 2e-4 tolerance was
+    # loose enough to pass anyway, so the guard was pinning a value the
+    # code never produced. Tightened tenfold so it pins the real one.
+    assert math.isclose(K.GAMMA_NAT_HZ, 3.4925e6, rel_tol=2e-5)
 
 
 def test_tooth_spacing_axis_convention():

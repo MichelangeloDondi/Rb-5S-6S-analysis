@@ -14,9 +14,16 @@
 # photograph, run_cavity_scan.py integrates the tracked cavity-scan
 # digitisation, run_laser_history.py reads the committed acquisition clock,
 # and run_stark_centres.py and run_centre_stark.py read committed CSVs. Run from
-# the repo root with the project's virtualenv active. annotate_results_status.py
-# must run LAST: it appends the machine-readable status column read by every
-# other consumer of results/*.csv.
+# the repo root with the project's virtualenv active.
+#
+# annotate_results_status.py runs AFTER EVERY WRITER AND BEFORE EVERY READER,
+# which is not where it used to sit. It appends the status column, and
+# make_figures.py and make_results_ledger.py both READ that column, so running
+# it last meant a clean full run reached make_figures with a freshly written
+# results/stark_sweep.csv that had no status column yet and died on
+# KeyError: 'status'. Measured 2026-08-15 in an isolated worktree: the run
+# failed after 27 stages, which is why this order is now load-bearing and
+# guarded by tests/test_pipeline_order.py.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -31,7 +38,7 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
     python scripts/$s.py
 done
 
+python scripts/annotate_results_status.py
 python scripts/make_fig0_spectrum.py
 python scripts/make_figures.py
 python scripts/make_results_ledger.py
-python scripts/annotate_results_status.py

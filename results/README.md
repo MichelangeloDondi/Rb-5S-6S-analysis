@@ -14,7 +14,7 @@ produced in are two different claims, and only the second reproduces the
 digits the CSVs store.
 
 **Every row carries a machine-readable `status` column** (`scripts/annotate_results_status.py`,
-run last in the pipeline) so the caveat travels *with the number* into any plot
+run after every producer and before anything that reads the column) so the caveat travels *with the number* into any plot
 or table, so a bound never reads as a measurement. The controlled vocabulary:
 **`BOUND`** (a limit and not a measurement, so β_self, σ_laser and S₀ each sit
 conditional on the beam waist w₀, which is **64 µm, measured** on this apparatus
@@ -123,7 +123,7 @@ temperature across peaks and β free per isotope. It replaces the per-peak
 `beta_self.csv` for the isotope question, and the reason is mechanical: the
 per-peak fits let σ_laser float per line, so they absorb per-peak systematics
 into it. Two symptoms of that show in the per-peak file, a 1.6σ internal spread
-in ⁸⁷Rb between β of 0.019 and 0.034, and a σ_laser spread of 1.82 to 2.08 MHz
+in ⁸⁷Rb between β of 0.016 and 0.018, and a σ_laser spread of 1.69 to 2.03 MHz
 that cannot be physical because the laser does not differ per hyperfine line.
 Constraining σ_laser jointly, the global fit finds β₈₅ equal to β₈₇ and so no
 isotope difference.

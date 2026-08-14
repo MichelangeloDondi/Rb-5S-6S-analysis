@@ -11,8 +11,10 @@ figures, then `docs/RESULTS.md`, then the status column. `ci_gate.sh` runs the
 lint pass and the full test battery including the slow closure tests, in the
 order continuous integration runs them, and is meant to be run before a push.
 
-`annotate_results_status.py` runs last, because it appends the machine-readable
-`status` column that every later consumer of `results/*.csv` reads. The
+`annotate_results_status.py` runs after every producer and before every reader,
+because it appends the machine-readable `status` column that consumers of
+`results/*.csv` read. `make_figures.py` and `make_results_ledger.py` are two of
+those consumers, so it runs before them rather than last. The
 controlled vocabulary is set out in
 [`../results/README.md`](../results/README.md), which also lists what each
 committed table holds. The `M` codes below are the pipeline stage labels of

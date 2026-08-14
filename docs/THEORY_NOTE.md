@@ -631,11 +631,16 @@ reproduces Orson's own $-0.66$ MHz shift prediction (0.8 W, 63 µm) to the digit
 (`test_stark_S0_reproduces_orson2021`).
 
 **The independent recompute now exists in-repo** (`rb5s6s/polarizability.py`,
-M16), a sum-over-states model from Safronova-lineage matrix elements, validated
-on anchors it does not use. It reproduces the *measured* 5S scalar tune-out
-790.032326(32) nm to $\approx1.6$ pm, the measured static
-$\alpha_{5S}=318.79(1.42)$, and the Safronova-group static
-$\alpha_{6S}=5167(22)$. It **confirms the magnitude**,
+M16), a sum-over-states model from Safronova-lineage matrix elements. Two of
+its three anchors are held out and one is not, and the distinction is worth
+making rather than blurring. Held out, and therefore evidence: it reproduces
+the *measured* 5S scalar tune-out 790.032326(32) nm to $\approx1.6$ pm, and
+the measured static $\alpha_{5S}=318.79(1.42)$. NOT held out: the model also
+returns the Safronova-group static $\alpha_{6S}=5167(22)$, but its 6S tail term
+is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
+`results/polarizability.csv` records the row as tail-calibrated), so the
+agreement there is arithmetic rather than a test. It **confirms the
+magnitude**,
 $|\Delta\alpha(993)| = 1145$ a.u., within 5% of Orson's 1093, **but finds the
 opposite sign**: $\alpha_{6S}(993)\approx-312$ a.u., because the dominant 6S
 couplings, 6S–6P at 2.73 and 2.79 µm, are driven far blue-detuned at 993 nm and

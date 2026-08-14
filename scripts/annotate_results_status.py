@@ -27,8 +27,11 @@ Controlled vocabulary:
 
 Idempotent (re-run refreshes the column in place; all other columns are
 byte-preserved). `laser_epoch.csv` and `qc_metrics.csv` already carry their own
-status/flag column and are left untouched. Run LAST in the pipeline, after every
-producer and `make_results_ledger.py`. Guarded by tests/test_results_status.py.
+status/flag column and are left untouched. Runs after every PRODUCER and
+before every READER of the column, which is not the same as running last:
+`make_figures.py` and `make_results_ledger.py` both read `status`, so placing
+this script after them made a clean `run_all.sh` die on KeyError: 'status'.
+Guarded by tests/test_results_status.py and tests/test_pipeline_order.py.
 """
 
 from __future__ import annotations

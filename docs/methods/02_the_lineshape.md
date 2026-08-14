@@ -72,7 +72,7 @@ $$|\tilde E(\omega)|^2  \propto  \frac{1}{(\omega-\omega_0)^2+(1/2\tau)^2}$$
 a **Lorentzian** $L(\nu)$. Its FWHM in ordinary frequency is
 
 $$\boxed{ \Gamma_\text{nat}=\frac{1}{2\pi\tau} }
- = \frac{1}{2\pi(45.57\ \text{ns})}=3.4926\ \text{MHz}$$
+ = \frac{1}{2\pi(45.57\ \text{ns})}=3.4925\ \text{MHz}$$
 
 Two features matter later: the Lorentzian has slowly-decaying **wings**
 ($\propto 1/\nu^2$, far fatter than a Gaussian), and, as a subtlety worth

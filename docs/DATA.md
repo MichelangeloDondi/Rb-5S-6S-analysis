@@ -729,7 +729,15 @@ the brief, and they moved no headline number.
   the flags that survive are fit-time instructions (retrace masking, cold
   rulers → per-trace bright-tooth fits), and RF labels verified 297/297.
 - **The lever test, in which the fitted γ_coll is a floor and β_self is lever-dependent,
-  hence a *bound* (2026-07-12).** Per-condition fits (linefit_conditions):
+  hence a *bound* (2026-07-12).** THE FIGURES IN THIS ENTRY ARE AS MEASURED ON
+  ITS OWN DATE and the pipeline has been refit since, so read the current
+  values from `results/lever_crosscheck.csv` rather than from here. As of
+  2026-08-15 that file gives the 4-peak mean γ_coll as 0.404 / 0.390 / 0.444 /
+  0.594 MHz and the rise as ×1.47 over a density ratio of ×52.5, and the joint
+  β as 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) against a headline 0.0534. The direction
+  and the conclusion are unchanged, which is why the entry stands: ×1.47 across
+  ×52.5 is still far sub-linear. What follows is the 2026-07-12 record.
+  Per-condition fits (linefit_conditions):
   the 4-peak mean γ_coll is 0.245 / 0.231 / 0.289 / 0.454 MHz at 70/90/110/130 °C
   while the density rises ×52, a ×1.85 rise where a real binary-collision
   width must be *linear* in N. Consistently, the joint hierarchical β collapses
