@@ -20,7 +20,7 @@ are excluded from the count, and the threshold sits above the largest
 legitimate prose repeat measured across every tracked document rather than
 at some round number.
 
-MEASURED BEFORE CHOOSING THE THRESHOLD (2026-08-15, both repositories, 177
+MEASURED BEFORE CHOOSING THE THRESHOLD (2026-08-14, both repositories, 177
 tracked `.md` each): exactly three files contained a repeated block of four
 or more identical non-blank lines. START_HERE at twenty-two,
 PREREGISTRATION_RESULTS at eight, and the ruler preregistration at six, the

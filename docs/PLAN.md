@@ -206,11 +206,18 @@ record was once read as.
 a preliminary session, a wavemeter record read as a sawtooth of per-interval
 levels and ramps with one shared 2.6 s rise at each re-lock, the laser holding
 a reference that is itself still settling (no such log survives from the
-campaign itself). Middle: the campaign, reconstructed from its own traces. Line
-offsets are meaningful only within one scope-knob epoch, the spikes are re-lock
-events, and the held-lock drift is bounded at order 0.02 MHz/min on the laser
-axis with the sign undetermined, which is why shapes survive and centres do
-not. The oscilloscope window was moved 58 times over the campaign and each move
+campaign itself), with its twelve confirmed re-locks and the three candidates
+the finder rejected. Middle: peak-position move against window-setting move
+between consecutive power-sweep blocks, which is where the frame problem is
+visible: 99.8 per cent of the between-block position variance is the window
+setting, so line offsets are meaningful only within one scope-knob epoch. The
+held-lock drift is bounded at order 0.02 MHz/min on the laser axis with the
+sign undetermined, which is why shapes survive and centres do not. Bottom: the
+three lock regimes, three decades apart. At the 2025 held lock the line shapes
+stay usable and the coefficients are therefore upper bounds (S₀ < 0.26 MHz, β
+between 0.03 and 0.05 MHz per 10¹² cm⁻³). In the cavity-lock class shown on this
+transition in the literature, line centres become usable and those same
+coefficients would turn into measurements. The oscilloscope window was moved 58 times over the campaign and each move
 re-zeroes the offset axis, so only the widths and shapes of the individual traces
 carry information. Each vertical stroke is that trace's own scan ramp drawn to
 scale, which is a sweep extent and not an uncertainty. The inset is drawn for

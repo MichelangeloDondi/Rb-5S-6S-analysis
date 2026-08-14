@@ -21,7 +21,7 @@
 # make_figures.py and make_results_ledger.py both READ that column, so running
 # it last meant a clean full run reached make_figures with a freshly written
 # results/stark_sweep.csv that had no status column yet and died on
-# KeyError: 'status'. Measured 2026-08-15 in an isolated worktree: the run
+# KeyError: 'status'. Measured 2026-08-14 in an isolated worktree: the run
 # failed after 27 stages, which is why this order is now load-bearing and
 # guarded by tests/test_pipeline_order.py.
 set -euo pipefail

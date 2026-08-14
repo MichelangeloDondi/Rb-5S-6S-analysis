@@ -196,7 +196,7 @@ third:
   copy acknowledging the other. `data_raw/README.md` is the worked example
   and is the reason the first route has somewhere to point.
 
-A REPLACEMENT EARNS THE SAME TEST. On 2026-08-15 a batch of sentences of this
+A REPLACEMENT EARNS THE SAME TEST. On 2026-08-14 a batch of sentences of this
 kind was corrected, and the first replacement written for `START_HERE.md`
 said the fast suite needs no data because the tests that matter are synthetic.
 True in the published copy. False in the one with the traces, where the

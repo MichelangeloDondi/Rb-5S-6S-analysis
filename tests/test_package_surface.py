@@ -21,7 +21,7 @@ keep both. `ingest.load_manifest`, `rate_model.load_clock` and
 0.0, which each says in its own docstring so that a checkout without a
 quality or ruler run behaves as it did before.
 
-Until 2026-08-15 `RepoDataMissing` had no call site outside `config` at all,
+Until 2026-08-14 `RepoDataMissing` had no call site outside `config` at all,
 while three documents said otherwise, and the only test here exercised
 `require_repo_data` in isolation, so nothing would have noticed.
 """
@@ -118,7 +118,7 @@ def test_the_pure_modules_import_without_the_data_modules():
 def test_the_required_data_loaders_name_the_cause(tmp_path, monkeypatch):
     """The three loaders that genuinely need the repository say so when it is absent.
 
-    Added 2026-08-15. Until then `RepoDataMissing` had no call site outside
+    Added 2026-08-14. Until then `RepoDataMissing` had no call site outside
     `config` itself, so `ingest.load_manifest` and `rate_model.load_clock`
     raised a bare FileNotFoundError naming a path inside site-packages, which
     is the outcome that error class was written to prevent. The claim that

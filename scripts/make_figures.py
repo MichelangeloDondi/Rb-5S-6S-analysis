@@ -593,7 +593,7 @@ def fig_power_sweep():
     # anchored at axes-fraction 0.97 with no ylim set, so the axes autoscaled
     # to the data and the 993.4154 nm error bar at 25 mW (5.4927 +/- 0.0785,
     # so reaching 5.571) ran straight through the first line of it. Pixel
-    # inspection of the shipped PNG on 2026-08-15 found the whisker occupying
+    # inspection of the shipped PNG on 2026-08-14 found the whisker occupying
     # the same pixels as all three lines of the annotation. Three text lines at
     # 7.4 pt need roughly a fifth of this panel, so the top limit is lifted to
     # clear them instead of moving the text somewhere the data may grow into.
@@ -2575,6 +2575,12 @@ def fig_wavemeter_reconstruction():
     ax1.set_xlabel("time (min)")
     ax1.set_ylabel("laser detuning (MHz)")
     ax1.legend(loc="lower right", fontsize=7.5, frameon=True, framealpha=0.9)
+    # THE EVENT COUNT, computed at draw time from the drawn events. A frozen
+    # preregistration records that this panel prints it; it did not, and the
+    # frozen text is never edited, so the figure is what changes.
+    ax1.text(0.015, 0.03, f"{len(r['kick_times'])} confirmed re-locks",
+             transform=ax1.transAxes, fontsize=7.4, color="0.30",
+             ha="left", va="bottom")
     ax1.set_title("(b) the digitised record and the fitted sawtooth", fontsize=8.5)
 
     # Two records, two time origins, so two panels. They used to share one
@@ -2671,14 +2677,11 @@ def fig_drift_story():
     rows = [x for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_history.csv"))
             if x["flag"] == "canonical" and x["offset_mhz"]]
 
-    s0 = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "stark_joint.csv"))
-                    if x["quantity"] == "S0_225mW_ub95"))
-    bvals = [float(x["bound95_nscale"]) for x in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
-             if x.get("headline") == "yes"]
-    # laser_epoch.csv was normalised on 2026-08-10: value_MHz became value and
-    # the inequality left the numeric column for the unit field.
-    sl = float(next(x["value"] for x in _csv.DictReader(open(C.RESULTS_DIR / "laser_epoch.csv"))
-                    if x["quantity"] == "sigma_laser_bound"))
+    # S0, sigma_laser and the beta range were read here to be printed inside
+    # panel (c)'s legend. That legend is gone (it covered the very marker it
+    # described) and the three numbers now live in the caption, which quotes
+    # the same committed CSVs, so reading them here would be a computation
+    # with no consumer.
 
     fig = plt.figure(figsize=(8.6, 10.6))
     gs = fig.add_gridspec(3, 1, height_ratios=[1.4, 1.4, 1.2], hspace=0.52)
@@ -2772,24 +2775,31 @@ def fig_drift_story():
     # middle one. Both were caught by looking. A legend cannot collide with
     # anything, and what this panel has to show is that the three regimes sit
     # five decades apart, which the markers do on their own.
+    # SHORT labels only. Every number these used to carry ($S_0$, sigma_laser,
+    # beta) is committed in results/ and quoted by the caption, so nothing is
+    # lost by taking it off the canvas.
     regimes = [
-        (envelope_mhz_per_min, "#B0B0B0",
-         "planning envelope adopted in 2025:\nany slower drift was treated as usable"),
-        (drift, "#0072B2",
-         "2025 held lock, the measured bound:\nline shapes usable, so the coefficients are\n"
-         f"upper bounds ($S_0<{s0:.2f}$ MHz, "
-         f"$\\sigma_\\mathrm{{laser}}<{sl:.1f}$ MHz,\n"
-         f"$\\beta$ between {min(bvals):.2f} and {max(bvals):.2f} MHz per "
-         "$10^{12}$ cm$^{-3}$)"),
-        (ayachitula_mhz_per_min, "#009E73",
-         "cavity-lock class, shown on this transition\nin the literature: "
-         "line centres become usable,\nso those coefficients turn into measurements"),
+        (envelope_mhz_per_min, "#B0B0B0", "planning envelope,\n2025"),
+        (drift, "#0072B2", "2025 held lock,\nthe measured bound"),
+        (ayachitula_mhz_per_min, "#009E73", "cavity-lock class,\nin the literature"),
     ]
-    for rate, col, lab in regimes:
+    # THE LEGEND WAS THE COLLISION. The comment above said a legend cannot
+    # collide with anything; the shipped PNG showed otherwise, because three
+    # multi-line prose entries at upper-center grew into a box that covered
+    # the middle marker, which is the measured bound and the whole point of
+    # the panel. Prose in a legend is prose on the canvas. Replaced by three
+    # SHORT direct labels at ONE height, each over its own marker, with the
+    # full statement moved to the caption where a qualifier belongs. The
+    # markers are three decades apart on a log axis, so short labels centred
+    # on them cannot reach each other.
+    for rate, col, short in regimes:
         ax.plot([rate], [0.0], "o", ms=11, color=col, mec="0.25", mew=0.8,
-                zorder=3, label=lab)
-    ax.legend(fontsize=7.6, loc="upper center", frameon=True, framealpha=1.0,
-              handletextpad=0.8, labelspacing=0.9, borderpad=0.7)
+                zorder=3)
+        ax.annotate(short, xy=(rate, 0.0), xytext=(rate, 1.15),
+                    textcoords="data", ha="center", va="bottom",
+                    fontsize=7.6, color=col,
+                    arrowprops=dict(arrowstyle="-", color=col, lw=0.8,
+                                    alpha=0.55, shrinkA=1.0, shrinkB=5.0))
     ax.set_xscale("log")
     ax.set_xlim(2e-6, 300.0)
     # room above the markers for the legend, which sits over empty axis
@@ -3663,7 +3673,7 @@ def fig_magic_wavelengths():
     crossings = []
     for r in magic_rows:
         lam = float(r["value"])
-        # THE BAND COMES FROM ITS OWN COLUMNS. Until 2026-08-15 this parsed it
+        # THE BAND COMES FROM ITS OWN COLUMNS. Until 2026-08-14 this parsed it
         # out of the free-text `unit` field with
         #     re.search(r"16-84% band ([\d.]+)\.\.([\d.]+) nm", r["unit"])
         # and fell back to (lam, lam) when that failed. The uncertainty wave had

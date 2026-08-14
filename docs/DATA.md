@@ -732,7 +732,7 @@ the brief, and they moved no headline number.
   hence a *bound* (2026-07-12).** THE FIGURES IN THIS ENTRY ARE AS MEASURED ON
   ITS OWN DATE and the pipeline has been refit since, so read the current
   values from `results/lever_crosscheck.csv` rather than from here. As of
-  2026-08-15 that file gives the 4-peak mean γ_coll as 0.404 / 0.390 / 0.444 /
+  2026-08-14 that file gives the 4-peak mean γ_coll as 0.404 / 0.390 / 0.444 /
   0.594 MHz and the rise as ×1.47 over a density ratio of ×52.5, and the joint
   β as 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) against a headline 0.0534. The direction
   and the conclusion are unchanged, which is why the entry stands: ×1.47 across

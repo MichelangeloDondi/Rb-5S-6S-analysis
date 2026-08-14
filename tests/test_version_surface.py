@@ -257,7 +257,7 @@ def test_the_metadata_version_is_the_released_version():
 def test_the_citation_date_moves_with_the_citation_version():
     """`date-released` is the third field of the same shape as the first two.
 
-    Found 2026-08-15. `version` had advanced 3.6.0, 3.7.0, 3.8.0 across three
+    Found 2026-08-14. `version` had advanced 3.6.0, 3.7.0, 3.8.0 across three
     tagged releases while `date-released` sat at '2026-08-09' throughout, so
     the field GitHub's "Cite this repository" panel shows, and any harvester
     reads, described the wrong day for two of them. Nothing compared the two

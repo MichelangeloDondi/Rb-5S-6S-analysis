@@ -1,6 +1,6 @@
 """The one-command reproduction must be able to finish.
 
-WHY THIS EXISTS. On 2026-08-15 `bash scripts/run_all.sh` was run end to end in
+WHY THIS EXISTS. On 2026-08-14 `bash scripts/run_all.sh` was run end to end in
 an isolated worktree, from the committed traces, for the first time. It failed
 after 27 stages with `KeyError: 'status'` in `make_figures.py`, because the
 runner called the status annotator LAST while `make_figures.py` and
@@ -64,7 +64,7 @@ def test_the_annotator_runs_before_everything_that_reads_its_column():
             f"{ANNOTATOR} is invoked at position {ann} but {consumer} runs at "
             f"{idx[0]}, so a clean `bash scripts/run_all.sh` reaches {consumer} "
             f"with freshly written CSVs that have no status column yet. That is "
-            f"the KeyError: 'status' crash of 2026-08-15. Order:\n"
+            f"the KeyError: 'status' crash of 2026-08-14. Order:\n"
             + "\n".join(f"  {i}: {s}" for i, s in enumerate(lines)))
 
 

@@ -867,7 +867,7 @@ def test_advertised_test_counts_match_the_real_suite():
              if abs(int(n) - total) / total > 0.05]
     # A count does not have to sit beside the word "test" to mislead a reader.
     # The runnable block in methods.md carried "# 1160 fast tests" and "full
-    # 1293 incl. slow closures" until 2026-08-15, by which time both had
+    # 1293 incl. slow closures" until 2026-08-14, by which time both had
     # drifted by a factor of 1.8, and neither matched the pattern above: one
     # puts an adjective between the number and the noun, the other names no
     # noun at all. Any number on a line that runs pytest is advertising what
