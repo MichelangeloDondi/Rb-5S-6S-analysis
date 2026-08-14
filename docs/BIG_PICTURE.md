@@ -227,11 +227,13 @@ thing to have selected on.
 
 *Where the magic wavelengths come from: the 5S and 6S dynamic polarizabilities
 cross three times between 1200 and 1340 nm, and each crossing is a wavelength
-where a trap would hold both states without pulling the 993 nm line. The shaded
-band is the 16 to 84 per cent Monte-Carlo spread over the input matrix
-elements, so it is the uncertainty of the calculation and not of a measurement,
-and it is why the crossings below are quoted with theirs. Nothing here has been
-checked against a trap.*
+where a trap would hold both states without pulling the 993 nm line. This
+figure draws the curves and the crossing positions only. The 16 to 84 per cent
+Monte-Carlo spread over the input matrix elements is drawn on
+[fig17](../figures/fig17_magic_wavelengths.png) and committed in
+`results/polarizability.csv`, and it is the uncertainty of the calculation
+rather than of a measurement, which is why the crossings below are quoted with
+theirs. Nothing here has been checked against a trap.*
 
 Where they landed was not designed for. **Two of the three sit inside the
 telecom O-band** (1260–1360 nm, ITU), 1287.9 ± 0.2 and
@@ -296,7 +298,7 @@ the mean leaves the spread untouched. At the twenty conditions drawn, all at
 130 °C, the total width is measured but its decomposition into components is not.
 In the left panel the split between the two components slides freely along a grey
 line of constant total width in MHz, the two are anticorrelated with a median
-correlation coefficient of −0.90, and several of the one-sigma ellipses reach
+correlation coefficient of −0.90, and one of the twenty one-sigma ellipses reaches
 negative Gaussian width. In the right panel the quantity actually measured, the
 fitted total, is known to 1.0 per cent within a condition, and no trend with
 laser power survives the scatter between measurement blocks, which is several

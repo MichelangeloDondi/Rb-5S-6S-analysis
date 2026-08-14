@@ -113,8 +113,13 @@ equally:
 standardized residual strip (left) and the pooled sweep-linearity map
 (right): the local rate never departs from the block rate by more than 0.3%
 in any well-sampled window, and that bound is set by the well-sampled windows
-alone. The open markers at the scan edges carry an uncertainty larger than the
-bound itself, so they do not constrain it, and what the right panel bounds is
+alone. The open markers at the scan edges are the thinly-sampled windows, four
+to eleven traces each against nineteen or more elsewhere, and they are excluded
+on that ground rather than on their error bars: of the five, two carry an
+uncertainty above the 0.3% bound (0.40% and 0.68%) and three sit below it
+(0.18%, 0.18% and 0.29%), so the sentence this caption used to make, that they
+all carry an uncertainty larger than the bound, was true of two of them. What
+the right panel bounds is
 sweep non-linearity and any tooth-dependent pull together. Six of the seven teeth
 stand above this trace's fit residual, and the seventh does not because the
 third-order pair carries about 2% of the first-order power at this modulation

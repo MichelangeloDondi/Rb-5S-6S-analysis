@@ -646,10 +646,18 @@ and the transit difference must agree before any Stark coefficient is quoted in
 physical units. The ramp-law form tests never need the absolute axis. Only Δα
 does.
 
-![transit width vs waist and collection geometry](../figures/fig3_transit_mc.png)
+![transit width against beam waist, in the thin single-waist limit](../figures/fig3_transit_mc.png)
 
-*The physics behind the anchor: the Monte-Carlo transit width against waist
-and collection geometry. The S−L width difference reads ~2.7 MHz off the
+*The physics behind the anchor: the Monte-Carlo transit width against waist,
+in the THIN single-waist limit only. The producer filters
+`results/transit_mc.csv` to its `thin` rows, so the collection-geometry
+dependence that file also carries is not on this canvas, and it runs the
+direction that would soften the exclusion shaded here: at the one waist where
+that file computes it, 50 µm, the added transit falls from 1.254 MHz in the
+thin limit to 1.134 MHz over a 6 mm collection column. The file computes no
+collection variants at the small waists this figure excludes, so how far the
+boundary would move there is not settled by it. The S−L width difference reads
+~2.7 MHz off the
 steep part of this curve, which is what makes it an intensity calibration
 independent of the knife-edge stage. The abscissa is not a measured quantity:
 the beam waist has not been measured and the knife-edge scan is pending, which

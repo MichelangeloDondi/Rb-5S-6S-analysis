@@ -589,6 +589,16 @@ def fig_power_sweep():
             "worst per-peak slope, with that\n"
             f"over-dispersion absorbed: {_tworst:.1f}$\\sigma$",
             transform=a1.transAxes, fontsize=7.4, color="0.30", va="top")
+    # HEADROOM FOR THAT TEXT, measured rather than guessed. The block is
+    # anchored at axes-fraction 0.97 with no ylim set, so the axes autoscaled
+    # to the data and the 993.4154 nm error bar at 25 mW (5.4927 +/- 0.0785,
+    # so reaching 5.571) ran straight through the first line of it. Pixel
+    # inspection of the shipped PNG on 2026-08-15 found the whisker occupying
+    # the same pixels as all three lines of the annotation. Three text lines at
+    # 7.4 pt need roughly a fifth of this panel, so the top limit is lifted to
+    # clear them instead of moving the text somewhere the data may grow into.
+    _ylo, _yhi = a1.get_ylim()
+    a1.set_ylim(_ylo, _yhi + 0.26 * (_yhi - _ylo))
     a1.legend(fontsize=8, loc="lower right")
     a1.set_xlabel("power (mW)")
     # Estimator named on the axis: this panel's widths are the raw
@@ -3642,8 +3652,6 @@ def fig_magic_wavelengths():
     scalar-only). The vector term near the 6S-5P lines needs its own
     treatment before any trap design -- see rb5s6s/polarizability.py.
     """
-    import re
-
     from rb5s6s import polarizability as P
 
     rows = _rows("polarizability")
@@ -3655,8 +3663,29 @@ def fig_magic_wavelengths():
     crossings = []
     for r in magic_rows:
         lam = float(r["value"])
-        m = re.search(r"16-84% band ([\d.]+)\.\.([\d.]+) nm", r["unit"])
-        lo, hi = (float(m.group(1)), float(m.group(2))) if m else (lam, lam)
+        # THE BAND COMES FROM ITS OWN COLUMNS. Until 2026-08-15 this parsed it
+        # out of the free-text `unit` field with
+        #     re.search(r"16-84% band ([\d.]+)\.\.([\d.]+) nm", r["unit"])
+        # and fell back to (lam, lam) when that failed. The uncertainty wave had
+        # already moved the band into real err_lo16/err_hi84 columns and left no
+        # such text behind, so the regex matched NOTHING, the fallback fired for
+        # all three crossings, and the panel printed brackets of zero width:
+        # "[1203.89, 1203.89]" where the committed band is 1203.06 to 1204.73.
+        # A silent fallback turned a missing parse into a confident claim of
+        # perfect precision, which is the one thing this figure exists to deny.
+        # There is no fallback now: a magic row without its band is an error.
+        try:
+            lo, hi = float(r["err_lo16"]), float(r["err_hi84"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise SystemExit(
+                f"fig17: magic_5s6s row {r['key']!r} has no usable 16-84 band "
+                f"in err_lo16/err_hi84 ({exc}). Re-run "
+                f"scripts/run_polarizability.py rather than letting the figure "
+                f"draw a zero-width uncertainty.") from exc
+        if not (lo <= lam <= hi):
+            raise SystemExit(
+                f"fig17: magic_5s6s row {r['key']!r} has a band "
+                f"[{lo}, {hi}] that does not contain its own value {lam}.")
         crossings.append((lam, lo, hi))
     # The three bands differ by more than an order of magnitude in width, so
     # one status word cannot describe all three uncertainties. What each bracket
@@ -3743,6 +3772,14 @@ def fig_magic_wavelengths():
     # branch for the third.
     label_offsets = [(0, 40), (-108, -54), (62, 34)]
     for i, (lam, clo, chi) in enumerate(crossings):
+        # The band is DRAWN, not only printed. figures/README.md and
+        # FUTURE_TRANSITIONS_titsapph.md both told the reader to look for a
+        # shaded 16-84 per cent band and there was none on the canvas, because
+        # the only thing carrying the band was the bracket text, which was
+        # itself degenerate. The widths are genuinely unequal, 1.67 nm at the
+        # 1204 crossing against 0.13 nm at 1340, so the span also shows at a
+        # glance which crossing is actually pinned down.
+        ax_top.axvspan(clo, chi, color="#D55E00", alpha=0.16, lw=0, zorder=0)
         ax_top.axvline(lam, color="#D55E00", ls="--", lw=1.1)
         dx, dy = label_offsets[i] if i < len(label_offsets) else (0, 40)
         ax_top.annotate(

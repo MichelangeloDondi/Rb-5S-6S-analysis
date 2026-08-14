@@ -226,11 +226,13 @@ and that is the fixed lock's job.
 
 ![one peak fitted with the composite model, with its residual strip](../../figures/fig18_single_4192.png)
 
-*The model of this chapter against one peak, at every condition it was measured
-at. The shape is the same object in every panel and only the per-trace
-nuisances move. The residual strips are the useful part: a model that was
-missing a kernel would leave structure there, not noise, and the same structure
-in every panel.*
+*The model of this chapter against one peak at ONE condition, 130 degrees and
+225 mW, with its residual strip and the parameters it was given against the
+ones it fitted here. The shared shape comes from the joint fit over every
+campaign trace and only the per-trace nuisances are refitted for this panel.
+The residual strip is the useful part: a model missing a kernel would leave
+structure there rather than noise. The four peaks each have their own figure of
+this kind, fig18_single_4121 through fig18_single_4207.*
 
 ---
 

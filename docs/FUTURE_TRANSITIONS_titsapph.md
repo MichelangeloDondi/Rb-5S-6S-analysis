@@ -30,9 +30,12 @@ the only way to find out they do not work.
 rung of the same ladder, reached by tuning one laser, and this is the quantity
 that decides whether a rung is worth reaching: the computed differential
 polarizability, whose zero crossings are the wavelengths where a trap would
-hold both states equally. The shaded band is the 16 to 84 per cent
-Monte-Carlo spread over the input matrix elements, so it is the uncertainty of
-a calculation and not of a measurement. The same figure appears again in
+hold both states equally. The bracket printed under each crossing is its 16 to
+84 per cent Monte-Carlo spread over the input matrix elements, so it is the
+uncertainty of a calculation and not of a measurement. The spread is also
+shaded on the axis, but at this scale it is narrower than the line marking the
+crossing, so the bracket is what to read: 1.67 nm at the 1204 nm crossing
+against 0.13 nm at 1340. The same figure appears again in
 section 4 with the published measurement this document reads against it.*
 
 ## 1. The one-sentence picture
