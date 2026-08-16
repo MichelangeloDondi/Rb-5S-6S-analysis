@@ -120,4 +120,4 @@ a reader.
 
 ---
 
-[← Hyperfine structure](hyperfine-structure.md) · *Experimental spectroscopy, 2 of 9* · [Standing waves →](standing-waves.md)
+[← wiki index](README.md) · *Experimental spectroscopy, 1 of 8* · [Standing waves →](standing-waves.md)

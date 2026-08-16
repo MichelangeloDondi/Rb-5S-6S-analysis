@@ -209,6 +209,44 @@ def test_the_baseline_itself_only_ever_shrinks():
     "cutting-edge",
     "in today's",
     "pivotal",
+    # Added 2026-08-17, owner instruction: prose that narrates EDITING the
+    # document rather than reporting the science. The same measurement rule as
+    # the 2026-08-10 block above was applied, and it changed the answer twice.
+    #
+    # "reword" and its forms were NOT at zero: four markdown sites carried
+    # them, three in the literature ledger and one in a big-picture chapter,
+    # every one of them about a novelty claim losing scope. They were changed
+    # to say NARROWED, which is both bannable-compatible and more accurate,
+    # since a claim that lost scope did not merely change its words.
+    #
+    # KEPT DELIBERATELY, measured and rejected as candidates, for the reason
+    # section 2.3 of the rendering protocol gives: "tighten" appears in
+    # thirty-six files and is what one does to a bound or a focus, "polish" is
+    # a derivative-free refinement step in the wavemeter reconstruction,
+    # "rewrite" is what happens to a document when a preregistered condition
+    # fires and to code that changed format, and "leverage" is a lever arm in
+    # a project that has several. A list that banned those would be worse than
+    # no list.
+    "reword",
+    "re-word",
+    "rephrase",
+    "rephrasing",
+    "wordsmith",
+    "redraft",
+    "copy-edit",
+    "copyedit",
+    "streamline",
+    # The assistant self-reference is NOT repeated here. The forbidden-phrase
+    # bank in tests/test_repo_hygiene.py already owns that family, and adding
+    # it here as a literal made THAT bank fail on this file, twice: once for
+    # the entry and once for a comment explaining the entry. Two banks with
+    # overlapping scope is a design to avoid, and this is the cheap version of
+    # finding that out.
+    "i have updated",
+    "i've updated",
+    "let me know if",
+    "hope this helps",
+    "feel free to",
 ])
 def test_filler_openers_stay_absent(phrase):
     """Phrases that announce importance instead of demonstrating it.

@@ -284,7 +284,7 @@ rather than in the order they were found:
 The subsection labels are cited from other documents and are therefore fixed.
 A number here is an identifier, not a position.
 
-1. **REWORDED 2026-07-30 and much narrower than it was. Read §5.2a first.**
+1. **NARROWED 2026-07-30, and much narrower than it was. Read §5.2a first.**
    The old wording claimed the closed-form triangular ramp f(s) ∝ |s| and the
    |s|^(n−1) signal-exponent law as new. **They are not.** Both reduce exactly
    to Eq. (5.3) of [delone1980](lit/delone1980.md), a 1980 review, once the
@@ -303,7 +303,7 @@ A number here is an identifier, not a position.
    Stalnaker remains distinct on other axes (numerical, n = 1, fringe-resolved),
    but he is no longer the binding precedent for this claim. Delone is.
 2. **The asymmetry channel, claimed for SPECIFICITY rather than sensitivity.**
-   Reworded 2026-07-30 twice over: first because
+   Narrowed 2026-07-30 twice over: first because
    [delone1980](lit/delone1980.md) is closer here than Stalnaker, then because
    "drift-immune" named only half the argument.
    *What is conceded.* Delone frame the lineshape as a read-out channel,
@@ -483,7 +483,7 @@ therefore: evaluating a known general result for the geometry that actually
 occurs, its cumulants in closed form, and using the **third** cumulant as a
 drift-immune measurement channel, which answers an experimental problem (an
 untrustworthy centre) that does not arise in Delone's setting. **Claim 1 above
-should be reworded accordingly before the introduction is drafted.** **[OPEN]**
+should be narrowed accordingly before the introduction is drafted.** **[OPEN]**
 
 ### 5.3 The nearest analogue experiment, and what it costs claim 1
 

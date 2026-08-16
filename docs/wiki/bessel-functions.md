@@ -113,4 +113,4 @@ a reader.
 
 ---
 
-[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Optical techniques, 3 of 4* · [Blackbody radiation →](blackbody-radiation.md)
+[← Designing an acquisition](designing-an-acquisition.md) · *Driving, modulating and detecting, 7 of 8* · [Blackbody radiation →](blackbody-radiation.md)

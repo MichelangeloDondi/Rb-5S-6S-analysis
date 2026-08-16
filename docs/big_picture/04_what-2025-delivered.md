@@ -138,8 +138,8 @@ what makes a dataset with no usable line centres say anything at all.
 §5 claim 1 of the same document still enumerates four rather than three. The
 two it adds are the fringe-averaged treatment, with the M19 result that a
 retro standing wave does not move the mean, and the evanescent-geometry
-invariance of the dA ∝ dI/I step. §5.2a asks for claim 1 to be reworded to the
-narrower three and that request is still open, so the count here follows
+invariance of the dA ∝ dI/I step. §5.2a asks for claim 1 to be narrowed to the
+three and that request is still open, so the count here follows
 §5.2a. The invariance is the bridge §6 below is built on, and dropping it from
 this list drops it as a novelty claim, not as a result.
 

@@ -190,4 +190,4 @@ a reader.
 
 ---
 
-[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 3 of 9* · [The Voigt profile →](voigt-profile.md)
+[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 2 of 8* · [The Voigt profile →](voigt-profile.md)

@@ -98,6 +98,36 @@ Finally, a reporting failure. Selecting a model and then quoting its
 parameter uncertainties as though the model had been fixed in advance
 understates them, because the selection itself used the data.
 
+## The nested case, where an F-test is available instead
+
+An information criterion compares models that need not be related. When one
+model is a RESTRICTION of another, obtained by fixing or tying parameters
+rather than by changing the functional form, a sharper tool applies. The
+F-test compares the drop in the residual sum of squares against the number of
+parameters given up, referred to an F distribution with those two degrees of
+freedom, and it answers a different question from a criterion: not which model
+predicts better, but whether the extra freedom bought a statistically
+significant improvement.
+
+The distinction matters for a modulated spectrum. A comb of teeth can be
+fitted twice. The FORCED model shares one centre, the radio-exact tooth
+spacing and the Bessel amplitude law across the whole group, and has very few
+free parameters. The FREE model lets every tooth carry its own amplitude,
+centre and width. The second contains the first exactly, so the pair is
+nested, and the F-test asks whether releasing the constraints improved the fit
+by more than the parameters cost. A significant result does not say the comb
+model is wrong in general, it says the data see structure the constraints
+forbid, and the residuals then say which constraint: amplitude residuals
+against the Bessel law read saturation, centre residuals map the frequency
+axis tooth by tooth, and width residuals across teeth of different strength
+read power broadening within one trace.
+
+Two cautions carry over unchanged. The test assumes the larger model is
+correct and the weights are real uncertainties, so a poor overall fit
+invalidates the comparison rather than being reported by it. And an F-test on
+models that are not nested is not a smaller version of the same idea, it is
+undefined, which is where a criterion remains the only instrument.
+
 ## Try it
 
 The case where the criteria disagree. A gain of eight in chi-squared for one

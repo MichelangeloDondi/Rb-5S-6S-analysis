@@ -163,4 +163,4 @@ a reader.
 
 ---
 
-[← wiki index](README.md) · *Experimental spectroscopy, 1 of 9* · [Doppler-free two-photon spectroscopy →](doppler-free-two-photon.md)
+[← Multiphoton transitions](multiphoton-transitions.md) · *Atomic structure and selection rules, 3 of 6* · [Magnetic sublevels →](magnetic-sublevels.md)

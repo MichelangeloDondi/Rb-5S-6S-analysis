@@ -135,4 +135,4 @@ a reader.
 
 ---
 
-[← Bessel functions](bessel-functions.md) · *Optical techniques, 4 of 4* · [wiki index →](README.md)
+[← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 8 of 8* · [wiki index →](README.md)

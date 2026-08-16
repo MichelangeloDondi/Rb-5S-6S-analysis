@@ -115,4 +115,4 @@ a reader.
 
 ---
 
-[← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 7 of 9* · [Saturation →](saturation.md)
+[← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 6 of 8* · [Saturation →](saturation.md)
