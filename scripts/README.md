@@ -125,7 +125,13 @@ rather than taken. `_m25_parallel_smoke.py` is the acceptance check for
 sequential and the parallel path and demands that every chi-squared match
 exactly, since the two paths have no licence to differ. `run_saturation_probe.py` reproduces the light-shift bound
 with the saturation companion in the model, in four stages, the last of which
-needs the two outside trees. `run_geometry_design.py` computes the two
+needs the two outside trees. `update_test_counts.py` rewrites the three
+places `docs/methods.md` advertises the suite size, reading them from a
+pytest collection rather than from memory. It exists because that number went
+stale five times in three days: several tests are parametrized over
+documentation files, so adding a page changes the count, and one wiki wave
+moved it by more than a hundred. Run it after adding or removing tests or
+documents, or `--check` to ask whether the file is current. `run_geometry_design.py` computes the two
 geometry designs of `docs/notes/running_wave_and_waist_design.md`, the
 frequency-shifted retro arm and the waist, and its weak-field branch
 reproduces `lineshape.stark_ramp_axial_moments`, which is what licenses the
