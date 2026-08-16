@@ -76,7 +76,11 @@ _VERSION_FIELDS = (
     ("CITATION.cff", r"^version: (\S+)"),
 )
 
-_SEMVER = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+# MAJOR.MINOR.PATCH or MAJOR.MINOR. The two-part form was adopted at the 4.0
+# release, and every three-part tag cut before it must keep parsing or the
+# comparison against release history breaks. A missing patch reads as zero, so
+# 4.0 and 4.0.0 order identically and no tag in the history is skipped.
+_SEMVER = re.compile(r"^(\d+)\.(\d+)(?:\.(\d+))?$")
 
 
 def _git(*args: str) -> str | None:
@@ -89,7 +93,7 @@ def _git(*args: str) -> str | None:
 def _key(version: str) -> tuple[int, int, int]:
     m = _SEMVER.match(version)
     assert m, f"not a semantic version: {version!r}"
-    return tuple(int(g) for g in m.groups())  # type: ignore[return-value]
+    return (int(m.group(1)), int(m.group(2)), int(m.group(3) or 0))
 
 
 def _metadata_versions() -> dict[str, str]:
@@ -169,7 +173,8 @@ def test_the_three_metadata_versions_agree():
           "from 2026-07-25, rb5s6s/__init__.py was not.")
     only = distinct.pop()
     assert _SEMVER.match(only), (
-        f"the metadata version is {only!r}, which is not MAJOR.MINOR.PATCH. "
+        f"the metadata version is {only!r}, which is neither MAJOR.MINOR nor "
+        "MAJOR.MINOR.PATCH. "
         "The tag guard and the release naming both read it as one.")
 
 

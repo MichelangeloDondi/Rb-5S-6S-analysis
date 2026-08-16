@@ -74,7 +74,7 @@ the target of the form test below. What varies with power is the
 *observed line's* asymmetry, which we get by folding the ramp into the rest
 of the line.
 
-**Cumulants add under convolution** (the cumulant of a sum of independent
+**[Cumulants add under convolution](../wiki/third-cumulant.md)** (the cumulant of a sum of independent
 variables is the sum of the cumulants), and the symmetric kernels contribute
 nothing asymmetric: the Lorentzian, Gaussian and transit kernels all have
 $\kappa_1=\kappa_3=0$. So the ramp's odd cumulants pass through the
@@ -121,6 +121,9 @@ exactly 1 and the mean exactly $-\tfrac23 S_0$ even for shifts far below the
 grid step.
 
 #### The general law: the signal exponent sets the ramp shape
+
+*General framing: [the AC-Stark shift](../wiki/ac-stark-shift.md). The
+derivation below stays here.*
 
 Nothing in the change of variables above used $n=2$ except the weight
 $u^n$. For a signal $\propto I^n$ the same steps give
@@ -250,11 +253,11 @@ Landscape is the larger of the two cases, so it pushes $Z_c$ *towards* the
 crossover rather than away from it, and the two-waist flip survives it across
 the whole plausible range of magnification:
 
-| $M$ | $Z_c$ (mm) | $g_1$ at 60 µm | $g_1$ at 16 µm | flips |
+| $M$ | $Z_c$ (mm) | $g_1$ at 64 µm | $g_1$ at 16 µm | flips |
 |---|---|---|---|---|
-| 0.5 | 12.0 | $+0.044$ | $-0.510$ | yes |
-| 1.0 | 6.0 | $+0.464$ | $-0.476$ | yes |
-| 2.0 | 3.0 | $+0.557$ | $-0.416$ | yes |
+| 0.5 | 12.0 | $+0.142$ | $-0.510$ | yes |
+| 1.0 | 6.0 | $+0.498$ | $-0.476$ | yes |
+| 2.0 | 3.0 | $+0.560$ | $-0.416$ | yes |
 | 4.0 | 1.5 | $+0.565$ | $-0.277$ | yes |
 | 6.0 | 1.0 | $+0.566$ | $-0.071$ | yes |
 
@@ -276,7 +279,7 @@ behind it, an ordinary side-viewing layout. Three consequences:
 2. **The dataset's configuration sits at $\zeta = 0.15$ to $0.19$**, i.e. well
    inside the transverse-only regime, with $g_1 = +0.563$ to $+0.565$ and mean
    $0.659$ to $0.661$ $S_0$, within 1.5% of the pure-triangle values.
-3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 60 µm
+3. **The proposed flip is near the best the geometry allows**: $+0.56$ at 64 µm
    against $-0.35$ to $-0.39$ at 16 µm, a swing of $\approx0.92$ to $0.95$ in a
    quantity whose full range is $\pm0.57$.
 

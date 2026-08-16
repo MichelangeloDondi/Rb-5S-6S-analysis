@@ -2949,7 +2949,19 @@ def _fit_rec_nuisances(ctx, rec):
     n_local = 5
     chi2 = float(np.sum(resid(sol.x) ** 2))
     dof = max(len(x) - n_local, 1)
-    chi2_red = chi2 / dof
+    # UNDO THE CORRELATION INFLATION, the way linefit.py:321-323 does. The
+    # per-sample sigma carries a factor sqrt(tau_int) so the optimizer sees
+    # each trace's true information content, but the GOODNESS-OF-FIT
+    # diagnostic must be read on the unscaled sigma, for which E[chi2_red] = 1
+    # whatever the correlation (linefit.py:236-243 states that contract).
+    # Without this the panels printed 0.34 to 0.37 where the record's own
+    # per-condition fit reports 0.903 to 1.092 for the very same conditions:
+    # one name, two normalizations, and the figure's read as a badly
+    # over-weighted fit that is in fact almost exactly right. Found when the
+    # experimenter asked about the residual structure, 2026-08-15.
+    # The covariance rescale below is unaffected in practice, since it is
+    # one-sided and both normalizations sit at or below 1.
+    chi2_red = chi2 / dof * float(t.get("tau", 1.0))
 
     from rb5s6s.fitutil import cov_from_jac
     cov = cov_from_jac(sol.jac) * max(chi2_red, 1.0)
@@ -2975,8 +2987,14 @@ def _fit_rec_nuisances(ctx, rec):
     else:
         fwhm = float("nan")
 
+    # `sg` is the FITTING weight and carries the sqrt(tau_int) correlation
+    # inflation; `sg_raw` is the trace's actual per-sample noise. Residual
+    # DISPLAYS use sg_raw, so a band drawn at one point error means one point
+    # error and the scatter matches the printed chi-squared. Fits use `sg`.
     return {"t": t, "T": T, "P": P, "gc": gc, "sl": sl, "transit": transit, "s0": s0,
            "g": g, "prof": prof, "x": x, "v": v, "sg": sg, "xf": xf,
+           "tau": float(t.get("tau", 1.0)),
+           "sg_raw": sg / np.sqrt(float(t.get("tau", 1.0))),
            "model_at": model_at, "sol": sol,
            "A": A, "A_err": float(perr[0]), "cc": cc, "cc_err": float(perr[1]),
            "b0": b0, "b0_err": float(perr[2]), "b1": b1, "b1_err": float(perr[3]),
@@ -3088,10 +3106,12 @@ def fig_fit_gallery():
         ax_main.tick_params(labelbottom=False)
 
         # ---- residual panel, in the house convention (fig0/fig21/fig22):
-        # each point divided by the error the fit weighted it with, so the
-        # shot-noise bulge at line centre does not read as a model failure,
-        # and the shaded band makes "inside the noise" an area. ----
-        pull = (v - model_at(sol.x, x)) / fr["sg"]
+        # each point divided by ITS OWN MEASURED NOISE, so the shot-noise bulge
+        # at line centre does not read as a model failure, and the shaded band
+        # makes "inside the noise" an area. NOT the fitting weight, which
+        # carries the sqrt(tau_int) correlation inflation and would shrink the
+        # cloud to 0.6 of the band while the printed chi-squared said 1. ----
+        pull = (v - model_at(sol.x, x)) / fr["sg_raw"]
         ax_res.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, lw=0)
         ax_res.plot(xd, pull, ".", ms=2.0, color=PEAK_COLOR[peak], alpha=0.6)
         ax_res.axhline(0.0, color="k", lw=0.9)
@@ -3172,8 +3192,10 @@ def fig_single_peak_fits():
         ax_main.tick_params(labelbottom=False)
 
         # ---- residual panel, in the house convention (fig0/fig21/fig22):
-        # pulls against the fit's own point error, with the one-error band. ----
-        pull = (v - model_at(sol.x, x)) / fr["sg"]
+        # pulls against each point's own MEASURED noise, with the one-error
+        # band; not the fitting weight, which carries the correlation
+        # inflation (see the sibling panel above). ----
+        pull = (v - model_at(sol.x, x)) / fr["sg_raw"]
         ax_res.axhspan(-1.0, 1.0, color="0.5", alpha=0.15, lw=0)
         ax_res.plot(xd, pull, ".", ms=2.6, color=PEAK_COLOR[peak], alpha=0.6)
         ax_res.axhline(0.0, color="k", lw=0.9)
@@ -4270,8 +4292,11 @@ def fig_radiation_environment():
     lam_um = np.logspace(np.log10(0.5), np.log10(60.0), 700)
     x = h * cl / (lam_um * 1e-6 * kb * t_k)
     nbar = 1.0 / np.expm1(np.clip(x, 1e-9, 700.0))
-    # the photon spectral density peaks near 7.2 um at this temperature; shade
-    # where it is within a decade of that peak, which is where the photons are
+    # The photon spectral density peaks near 9.1 um at this temperature, and
+    # the band shaded below is computed from that density rather than from a
+    # constant, which is why the drawn figure was right while this comment
+    # said 7.2 um, the ENERGY peak, until 2026-08-16. Shade where the density
+    # is within a decade of its own maximum, which is where the photons are
     dens = (lam_um * 1e-6) ** -4 / np.expm1(np.clip(x, 1e-9, 700.0))
     band = lam_um[dens > 0.1 * dens.max()]
     ax.axvspan(band.min(), band.max(), color="0.88", zorder=0)
@@ -4621,6 +4646,548 @@ def fig_isotope_transit():
     _save(fig, "fig29_isotope_transit.png", rect=(0, 0.055, 1, 1))
 
 
+def fig_third_cumulant():
+    """The third cumulant, and why it is the one channel the width budget
+    cannot contaminate.
+
+    WHY THIS FIGURE EXISTS. Every symmetric broadening mechanism in this
+    experiment contributes to the SECOND cumulant and to nothing odd. The
+    natural width, the laser width, the transit kernel and the collisional
+    width all add variance and all leave the third cumulant exactly zero. The
+    AC-Stark ramp is the only term in the model that is asymmetric, so it is
+    the only term that reaches kappa_3.
+
+    That is worth a figure because the second cumulant is where this analysis
+    keeps getting stuck. gamma_coll and sigma_laser slide against each other at
+    a correlation of about -0.99 with the chi-squared nearly flat, and the
+    2026-08-15 width budget failed to close because two independent constraints
+    on that pair pulled in opposite directions. None of that reaches kappa_3.
+
+    THE READING, panel by panel. The first panel shows where the asymmetry
+    comes from: the shift distribution is the beam's intensity measure pushed
+    through the ramp, and for a ONE-photon process it is uniform and symmetric.
+    The two-photon weighting is what tilts it, so the skew exists at all only
+    because this is a two-photon transition. The second panel is the cumulant
+    ladder: three analytic functionals of the single parameter S0, which is
+    what makes the fixed-lock session's joint fit a consistency test rather
+    than three separate extractions. The third panel is the point of the
+    figure, a contribution table in which every symmetric kernel has an empty
+    third column. The fourth puts the campaign on it: at 225 mW the predicted
+    kappa_3 sits under the noise floor, which is why the record carries a bound
+    rather than a value, and it shows what a fixed-lock session buys.
+    """
+    from rb5s6s.lineshape import ramp_moment_contributions
+    from rb5s6s.linefit import _shared_profile_grid
+    from rb5s6s import constants as K
+
+    fig = plt.figure(figsize=(11.2, 4.3))
+    gs = fig.add_gridspec(2, 3, height_ratios=[2.2, 1.0], hspace=0.10,
+                          wspace=0.34)
+
+    # --- panel A: what the ramp does to the LINE, which is the observable --
+    axA = fig.add_subplot(gs[0, 0])
+    axD = fig.add_subplot(gs[1, 0], sharex=axA)
+    nu = np.linspace(-14.0, 14.0, 3001)
+    transit = K.transit_fwhm_from_w0(K.W0_MEASURED_M, 110.0) * math.sqrt(
+        403.15 / 383.15)
+    s0_demo = 3.0                    # exaggerated so the eye can see it
+    g0, p0 = _shared_profile_grid(0.58, 1.56, transit, 0.0, "gaussian")
+    g1_, p1_ = _shared_profile_grid(0.58, 1.56, transit, s0_demo, "gaussian")
+    a = np.interp(nu, g0, p0, left=0, right=0)
+    b = np.interp(nu, g1_, p1_, left=0, right=0)
+    a, b = a / a.max(), b / b.max()
+    axA.plot(nu, a, color="#888780", lw=1.5, ls="--", label="no ramp")
+    axA.plot(nu, b, color="#185FA5", lw=2.0,
+             label=f"with ramp, $S_0$ = {s0_demo:.0f} MHz")
+    axA.set_ylabel("line, peak-normalised")
+    axA.set_title("A. the ramp tilts the line itself",
+                  fontsize=10, loc="left")
+    axA.legend(fontsize=8, frameon=False, loc="upper left")
+    axA.tick_params(labelbottom=False)
+    axD.plot(nu, b - a, color="#993C1D", lw=1.5)
+    axD.axhline(0, color="#B4B2A9", lw=0.8)
+    axD.set_ylabel("difference", fontsize=8)
+    axD.set_xlabel("detuning  (MHz)")
+    axD.text(0.02, 0.10, "one lobe up, one down: that is the third cumulant",
+             fontsize=7.5, transform=axD.transAxes, color="#5F5E5A")
+
+    # --- panel B: three cumulants, one parameter ---------------------------
+    ax = fig.add_subplot(gs[:, 1])
+    S = np.linspace(0.05, 3.0, 160)
+    ax.plot(S, np.abs([ramp_moment_contributions(s)["pull"] for s in S]),
+            color="#185FA5", lw=1.8, label=r"$|\kappa_1| = \frac{2}{3}S_0$")
+    ax.plot(S, [ramp_moment_contributions(s)["excess_var"] for s in S],
+            color="#0F6E56", lw=1.8, label=r"$\kappa_2 = S_0^2/18$")
+    ax.plot(S, [ramp_moment_contributions(s)["kappa3"] for s in S],
+            color="#993C1D", lw=2.2, label=r"$\kappa_3 = S_0^3/135$")
+    ax.set_yscale("log")
+    ax.set_ylim(1e-6, 30)
+    ax.set_xlabel("$S_0$, the ramp depth  (MHz)")
+    ax.set_ylabel("cumulant contribution")
+    ax.set_title("B. three functionals of one $S_0$", fontsize=10,
+                 loc="left")
+    ax.legend(fontsize=8.5, frameon=False, loc="lower right")
+
+    # --- panel C: the contribution table -----------------------------------
+    ax = fig.add_subplot(gs[:, 2])
+    ax.axis("off")
+    rows = [("natural", 0, 1, 0), ("laser", 0, 1, 0), ("transit", 0, 1, 0),
+            (r"collisional $\gamma_{coll}$", 0, 1, 0),
+            ("AC-Stark ramp", 1, 1, 1)]
+    ax.text(0.0, 1.02, "C. what each mechanism reaches", fontsize=10,
+            transform=ax.transAxes, va="top")
+    xs = [0.0, 0.50, 0.68, 0.86]
+    for x, h in zip(xs, ["", r"$\kappa_1$", r"$\kappa_2$", r"$\kappa_3$"]):
+        ax.text(x, 0.86, h, fontsize=9.5, transform=ax.transAxes,
+                color="#5F5E5A")
+    ax.plot([0.0, 0.98], [0.83, 0.83], transform=ax.transAxes,
+            color="#D3D1C7", lw=0.8)
+    ax.add_patch(plt.Rectangle((0.825, 0.30), 0.155, 0.56,
+                               transform=ax.transAxes, fill=False,
+                               edgecolor="#993C1D", lw=1.5, zorder=5))
+    for i, (name, c1, c2, c3) in enumerate(rows):
+        y = 0.75 - 0.10 * i
+        strong = name.startswith("AC-Stark")
+        ax.text(xs[0], y, name, fontsize=9.5, transform=ax.transAxes,
+                color="#0b0b0b" if strong else "#52514e")
+        for x, c in zip(xs[1:], (c1, c2, c3)):
+            ax.text(x, y, "yes" if c else "zero", fontsize=9.5,
+                    transform=ax.transAxes,
+                    color="#993C1D" if c else "#B4B2A9")
+    ax.text(0.0, 0.19,
+            r"Every symmetric kernel is empty in $\kappa_3$, so the"
+            "\n"
+            r"$\gamma_{coll}$ against $\sigma_{laser}$ degeneracy, which"
+            "\n"
+            r"lives entirely in $\kappa_2$, cannot reach it.",
+            fontsize=8.5, transform=ax.transAxes, va="top", color="#5F5E5A")
+
+    _footer(fig, "figure 30 | rb5s6s.linefit._shared_profile_grid, "
+                 "rb5s6s.lineshape.ramp_moment_contributions\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig30_third_cumulant.png", rect=(0, 0.10, 1, 1))
+
+
+def fig_third_cumulant_measured():
+    """The third cumulant computed on real traces, and the size of the gap.
+
+    WHY THIS FIGURE EXISTS. Figure 30 argues that kappa_3 is the one channel
+    the symmetric width budget cannot contaminate. This one asks what the 2025
+    data actually say in that channel, and the answer is worth drawing because
+    it is not close.
+
+    THE READING. The first panel is a real trace at the campaign's maximum
+    power with the fitted profile through it, and beneath it the residual on a
+    magnified axis. An asymmetry of the predicted size would be invisible
+    there, which is the point. The second panel computes kappa_3 directly from
+    each condition's traces as the third central moment of the baseline-removed
+    profile, and plots it against power with its standard error across repeats.
+    The measurements straddle zero, the two peaks disagree in sign, and the
+    prediction at the record's own bound lies four orders of magnitude below
+    the error bars. The third panel converts that into the design number: what
+    would have to change for this channel to be measurable at all.
+
+    NOT A DETECTION AND NOT A NULL RESULT ABOUT PHYSICS. The uncertainty here
+    is dominated by the profile's own noise and by the free centre, so this
+    figure measures the INSTRUMENT's reach in this channel, not the ramp.
+
+    THE 25 mW CONDITION IS EXCLUDED FROM PANEL B and the panel says so. Its
+    standard error is an order of magnitude larger than any other point,
+    12.99 MHz^3 against 0.25 to 1.30, so including it compresses the four
+    informative conditions to a flat line. Its values are +0.12 +- 5.71 for
+    4154 and -1.42 +- 12.99 for 4192, both consistent with zero and with
+    anything else, so nothing is hidden by leaving it out.
+    """
+    from rb5s6s.ingest import load_manifest, load_trace, trace_path
+    from rb5s6s.linefit import to_frequency
+    from rb5s6s.lineshape import ramp_moment_contributions
+    from rb5s6s._compat import trapezoid
+
+    # This figure reads RAW TRACES, which the public mirror does not carry by
+    # design. Without this it raised rather than returning, and the guard that
+    # runs every producer reported it as broken. NOTE the manifest is NOT the
+    # right thing to test: the mirror carries data_raw/MANIFEST.csv and omits
+    # only the trace directories, so a manifest check passes there and the
+    # figure then fails on the first trace it opens.
+    if not (C.DATA_RAW_DIR / "p_sweep").is_dir():
+        print("  (raw traces absent -- skipping the measured "
+              "third-cumulant figure)")
+        return None
+
+    rate = {(r["peak"], r["T"], r["P"]): float(r["rate_t"])
+            for r in _rows("linefit_conditions")}
+    s0_bound = None
+    for r in _rows("stark_joint"):
+        if r["quantity"] == "S0_225mW_ub95":
+            s0_bound = float(r["value"])
+
+    def cumulants(x, y, half=18.0):
+        m = np.abs(x) <= half
+        x, y = x[m], y[m]
+        n = max(len(y) // 8, 5)
+        base = np.median(np.r_[y[:n], y[-n:]])
+        w = np.clip(y - base, 0, None)
+        if w.sum() <= 0:
+            return (np.nan,) * 3
+        w = w / trapezoid(w, x)
+        k1 = trapezoid(w * x, x)
+        k2 = trapezoid(w * (x - k1) ** 2, x)
+        k3 = trapezoid(w * (x - k1) ** 3, x)
+        return k1, k2, k3
+
+    def traces(peak, P):
+        out = []
+        for r in load_manifest():
+            if (r["flag"] == "canonical" and r["peak"] == peak
+                    and r["temperature_C"] == "130" and r["power_mW"] == str(P)
+                    and r["rf_on"] == "False"):
+                tm, v = load_trace(trace_path(r))
+                x = to_frequency(np.asarray(tm, float), rate[(peak, "130", str(P))])
+                v = np.asarray(v, float)
+                out.append((x - x[int(np.argmax(v))], v))
+        return out
+
+    fig = plt.figure(figsize=(11.0, 4.6))
+    gs = fig.add_gridspec(2, 3, height_ratios=[2.1, 1.0], hspace=0.08,
+                          wspace=0.32)
+
+    # --- panel A: a real trace, and its residual ---------------------------
+    axA = fig.add_subplot(gs[0, 0])
+    axR = fig.add_subplot(gs[1, 0], sharex=axA)
+    x, v = traces("4192", 225)[0]
+    k1, k2, k3 = cumulants(x, v)
+    x = x - k1                      # fold about the CENTROID, not the argmax
+    m = np.abs(x) <= 18.0
+    xs, vs = x[m], v[m]
+    n = max(len(vs) // 8, 5)
+    base = np.median(np.r_[vs[:n], vs[-n:]])
+    axA.plot(xs, vs - base, lw=0.9, color="#185FA5")
+    axA.axvline(0.0, color="#993C1D", lw=1.0, ls=":")
+    axA.set_ylabel("signal  (V)")
+    axA.set_title("A. one trace, 4192 nm at 225 mW", fontsize=10, loc="left")
+    axA.tick_params(labelbottom=False)
+    mirror = np.interp(-xs, xs, vs - base, left=np.nan, right=np.nan)
+    axR.plot(xs, (vs - base) - mirror, lw=0.9, color="#5F5E5A")
+    axR.axhline(0, color="#B4B2A9", lw=0.8)
+    axR.set_xlabel("detuning from the centroid  (MHz)")
+    axR.set_ylabel("signal minus\nits mirror  (V)", fontsize=8)
+    axR.text(0.02, 0.08, "folded about the centroid, so a pure shift cancels",
+             fontsize=7.5, transform=axR.transAxes, color="#5F5E5A")
+
+    # --- panel B: measured kappa_3 against power ---------------------------
+    ax = fig.add_subplot(gs[:, 1])
+    colours = {"4154": "#185FA5", "4192": "#0F6E56"}
+    for peak in ("4154", "4192"):
+        Ps, ks, es = [], [], []
+        for P in (225, 175, 125, 75):   # acquisition order; 25 mW excluded, see below
+            tr = traces(peak, P)
+            if not tr:
+                continue
+            k3s = [cumulants(xx, vv)[2] for xx, vv in tr]
+            k3s = [k for k in k3s if np.isfinite(k)]
+            if len(k3s) < 2:
+                continue
+            Ps.append(P)
+            ks.append(np.mean(k3s))
+            es.append(np.std(k3s, ddof=1) / np.sqrt(len(k3s)))
+        ax.errorbar(Ps, ks, yerr=es, fmt="o-", ms=4, lw=1.2, capsize=3,
+                    color=colours[peak], label=f"{peak} nm")
+    ax.axhline(0, color="#B4B2A9", lw=1.0)
+    # 25 mW IS EXCLUDED FROM THIS PANEL and the exclusion is stated on it. Its
+    # standard error is an order of magnitude larger than every other point
+    # (12.99 against 0.25 to 1.30 MHz^3), so plotting it compresses the four
+    # informative conditions into a line. It carries no information about this
+    # channel either way, and the docstring records the values.
+    ax.set_ylim(-1.6, 1.6)
+    Pg = np.linspace(20, 235, 100)
+    pred = [ramp_moment_contributions(s0_bound * pp / 225.0)["kappa3"]
+            for pp in Pg]
+    ax.plot(Pg, pred, color="#993C1D", lw=2.0,
+            label=r"prediction at the $S_0$ bound")
+    ax.set_xlabel("power at the cell  (mW)")
+    ax.set_ylabel(r"measured $\kappa_3$  (MHz$^3$)")
+    ax.set_title("B. what the 2025 data say in this channel", fontsize=10,
+                 loc="left")
+    ax.legend(fontsize=8, frameon=False, loc="lower right")
+    ax.text(0.50, 0.97,
+            "the two peaks disagree in SIGN, and both straddle zero\n"
+            "25 mW is excluded: its error is an order larger",
+            transform=ax.transAxes, ha="center", va="top", fontsize=8,
+            color="#5F5E5A")
+
+    # --- panel C: the gap, and what closes it ------------------------------
+    ax = fig.add_subplot(gs[:, 2])
+    k3_pred = ramp_moment_contributions(s0_bound)["kappa3"]
+    err225 = []
+    for peak in ("4154", "4192"):
+        k3s = [cumulants(xx, vv)[2] for xx, vv in traces(peak, 225)]
+        k3s = [k for k in k3s if np.isfinite(k)]
+        err225.append(np.std(k3s, ddof=1) / np.sqrt(len(k3s)))
+    noise = float(np.mean(err225))
+    gap = noise / k3_pred
+    ax.bar([0], [k3_pred], color="#993C1D", width=0.55)
+    ax.bar([1], [noise], color="#888780", width=0.55)
+    ax.set_yscale("log")
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(["predicted\nat the bound", "2025 error\non one condition"],
+                       fontsize=8)
+    ax.set_ylabel(r"$\kappa_3$  (MHz$^3$)")
+    ax.set_title("C. the gap is a factor of %.0f" % gap, fontsize=10,
+                 loc="left")
+    ax.text(0.06, 0.62,
+            r"$\kappa_3 \propto S_0^3 \propto (P/w_0^2)^3$"
+            "\n\n"
+            f"closing this needs {gap ** (1/3):.0f}x in $S_0$,"
+            f"\nso {gap ** (1/3):.0f}x the power or a\n"
+            f"waist smaller by {gap ** (1/6):.1f}x.",
+            transform=ax.transAxes, ha="left", va="center", fontsize=8.5,
+            color="#5F5E5A")
+
+    _footer(fig, "figure 31 | data_raw 130 C power sweep, "
+                 "rb5s6s.lineshape.ramp_moment_contributions, "
+                 "results/stark_joint.csv S0_225mW_ub95\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig31_third_cumulant_measured.png", rect=(0, 0.09, 1, 1))
+
+
+def fig_achieved_vs_achievable():
+    """What the 2025 data established beside what a designed session projects.
+
+    WHY THIS FIGURE EXISTS. The landing page states the achieved and the
+    achievable side by side in two tables, and a table cannot show how far
+    apart they are. Both panels put the limits the archive supports, the value
+    the physics predicts, and the precision a designed session projects on one
+    logarithmic axis of the same unit, so the distances are read rather than
+    computed.
+
+    A PRECISION IS DRAWN AS A LENGTH, NOT AS AN INTERVAL, and that choice is
+    the correction of a first version of this figure. That version drew each
+    projected one-sigma precision as an error bar centred on the predicted
+    value, which asserts a future measurement AT that value. In panel B the
+    archive's own limit sits below the prediction, so the drawing contradicted
+    itself: it placed a future result inside a region the same panel showed as
+    excluded. A one-sigma precision is a length in megahertz, the size of an
+    error bar and not a claim about where the centre falls, so it is plotted
+    as a magnitude on the same axis and the row label says what it is. Nothing
+    in the figure now assumes an outcome.
+
+    NO DISTRIBUTION IS DRAWN, deliberately. Each projected value is a single
+    envelope number attached to one session design, not a sample, so any
+    density-shaped mark here would render a spread the record does not carry.
+
+    THE TENSION IN PANEL B IS THE RESULT, not a blemish to smooth. The primary
+    joint bound sits below the predicted value, which is an exclusion at about
+    the two-sigma level rather than a comfortable one, and the robustness
+    subset that drops one peak does not sit below it. Both bounds are drawn,
+    because the distance between them is what makes the exclusion marginal.
+    """
+    from rb5s6s import constants as K
+
+    ARCHIVE = "#33322E"
+    PREDICT = "#A2582B"
+    DESIGN = "#2F5D50"
+
+    beta_rows = [r for r in _rows("beta_self_probe") if r.get("headline") == "yes"]
+    beta_rows.sort(key=lambda r: r["peak"])
+
+    # Only the rows drawn are converted: both files also carry rows whose
+    # value is descriptive text rather than a number.
+    wanted = ("proj_beta_self_sigma", "proj_beta_self_detection_sigma",
+              "input_beta_self_expected", "proj_pull_S0_sigma")
+    proj = {(r["quantity"], r["key"]): float(r["value"])
+            for r in _rows("projections") if r["quantity"] in wanted}
+    anchor = proj[("input_beta_self_expected", "vdW anchored")]
+
+    stark = {r["quantity"]: r["value"] for r in _rows("stark_joint")}
+    s0_ub = float(stark["S0_225mW_ub95"])
+    s0_drop = float(stark["S0_225mW_ub95_drop4192"])
+    s0_pred = float(stark["S0_225mW_pred"])
+
+    fig, axes = plt.subplots(1, 2, figsize=(11.6, 4.6))
+
+    def limit_row(ax, y, value, label):
+        ax.annotate("", xy=(value * 0.42, y), xytext=(value, y),
+                    arrowprops=dict(arrowstyle="->", color=ARCHIVE, lw=1.5))
+        ax.plot([value], [y], "|", color=ARCHIVE, markersize=12,
+                markeredgewidth=1.9)
+        ax.text(value * 1.14, y, label, va="center", ha="left", fontsize=7.9,
+                color=ARCHIVE, bbox=_LABEL_BOX)
+
+    def precision_row(ax, y, sigma, label):
+        ax.plot([sigma], [y], "D", color=DESIGN, markersize=6.0)
+        ax.annotate("", xy=(sigma, y), xytext=(sigma * 0.999, y),
+                    arrowprops=dict(arrowstyle="-", color=DESIGN, lw=0))
+        ax.text(sigma * 1.16, y, label, va="center", ha="left", fontsize=7.9,
+                color=DESIGN, bbox=_LABEL_BOX)
+
+    # ------------------------------- panel A -------------------------------
+    ax = axes[0]
+    labels, y = [], 0
+    for r in beta_rows:
+        v = 1e3 * float(r["bound95_nscale"])
+        limit_row(ax, y, v, bound(v, dp=0, kind="upper", unit="kHz"))
+        labels.append(K.peak_label(r["peak"]))
+        y += 1
+    n_limit_rows = y
+
+    ax.axvline(anchor, ls="--", lw=1.2, color=PREDICT)
+    ax.text(anchor * 1.22, -0.62, "van der Waals anchor",
+            fontsize=7.6, color=PREDICT, ha="left", va="center")
+
+    for key, label in (("interleaved, 20 K cold-spot lag", "interleaved session"),
+                       ("archival block noise, 20 K cold-spot lag",
+                        "at the archive noise level")):
+        s = proj[("proj_beta_self_sigma", key)]
+        sig = proj[("proj_beta_self_detection_sigma", key)]
+        precision_row(ax, y, s, f"{s:.2f} kHz, so {sig:.1f} sigma on the anchor")
+        labels.append(label)
+        y += 1
+
+    _ledger_axis(ax, labels, n_limit_rows, 0.04, 400,
+                 "collisional coefficient (kHz per $10^{12}$ cm$^{-3}$)",
+                 "A. the collision rate")
+
+    # ------------------------------- panel B -------------------------------
+    ax = axes[1]
+    labels, y = [], 0
+    limit_row(ax, y, s0_ub, bound(s0_ub, dp=2, kind="upper", unit="MHz"))
+    labels.append("all three sessions")
+    y += 1
+    limit_row(ax, y, s0_drop, bound(s0_drop, dp=2, kind="upper", unit="MHz"))
+    labels.append("the same fit, one peak dropped")
+    y += 1
+    n_limit_rows = y
+
+    ax.axvline(s0_pred, ls="--", lw=1.2, color=PREDICT)
+    ax.text(s0_pred * 1.1, -0.62, f"predicted {s0_pred:.2f} MHz", fontsize=7.6,
+            color=PREDICT, ha="left", va="center")
+
+    for key, label in (("6 per day, 1 day", "6 cycles, one day"),
+                       ("24 per day, 1 day", "24 cycles, one day"),
+                       ("24 per day, 2 days", "24 cycles, two days")):
+        s = proj[("proj_pull_S0_sigma", key)]
+        precision_row(ax, y, s, f"{s:.3f} MHz")
+        labels.append(label)
+        y += 1
+
+    _ledger_axis(ax, labels, n_limit_rows, 0.02, 4.0,
+                 "light-shift amplitude at the maximum drive power (MHz)",
+                 "B. the light shift")
+
+    fig.text(0.5, 0.95,
+             "arrows are limits the 2025 data support, diamonds are the "
+             "one-sigma precision a designed session projects",
+             ha="center", fontsize=8.3, color="#5F5E5A")
+
+    _footer(fig, "figure 32 | results/beta_self_probe.csv, "
+                 "results/stark_joint.csv, results/projections.csv\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig32_achieved_vs_achievable.png", rect=(0, 0.09, 1, 0.93))
+
+
+_LABEL_BOX = dict(facecolor="white", edgecolor="none", alpha=0.82, pad=1.2)
+"""Keeps a ledger label readable where it crosses the prediction line."""
+
+
+def _ledger_axis(ax, labels, split_after, xlo, xhi, xlabel, title):
+    """Shared axis dressing for the two ledger panels of figure 32."""
+    ax.set_yticks(range(len(labels)))
+    ax.set_yticklabels(labels, fontsize=8)
+    ax.set_ylim(-0.8, len(labels) - 0.3)
+    ax.invert_yaxis()
+    ax.set_xscale("log")
+    ax.set_xlim(xlo, xhi)
+    ax.set_xlabel(xlabel)
+    ax.set_title(title, fontsize=10, loc="left")
+    ax.grid(axis="x", alpha=0.18)
+    ax.axhline(split_after - 0.5, color="#BFBDB6", lw=0.8)
+
+
+def fig_identifiability_matrix():
+    """Which quantities each measurement configuration determines.
+
+    WHY THIS FIGURE EXISTS. The landing page states in prose that the archive
+    bounds several quantities without identifying them, and that specific
+    additions to the apparatus would change specific entries in that
+    statement. A matrix shows the change itself, which prose cannot: reading
+    down a column says what one quantity's status would become, and reading
+    across a row says what one configuration would buy.
+
+    THE TWO DIMENSIONS ARE KEPT SEPARATE, which is the whole design of the
+    drawing. The FILL is the epistemic status the configuration reaches for
+    that quantity. The HATCH is whether reaching it needs a new measurement
+    rather than a reanalysis of data already held. Those are different
+    questions, so a cell can honestly read bounded and requiring new data at
+    once, and collapsing them into one scale would hide exactly the
+    distinction the page is built on.
+
+    NOTHING BELOW THE FIRST ROW IS A RESULT. The first row is the archive and
+    is drawn from the diagnostics. Every other row is a configuration that has
+    not been run, so its cells are the status that configuration would reach
+    given the documented assumptions and the projected machinery, and the
+    caption says so.
+    """
+    import matplotlib.patches as mpatches
+
+    OBSERVED, INFERRED, BOUNDED, UNIDENT = 3, 2, 1, 0
+    FILL = {OBSERVED: "#2F5D50", INFERRED: "#7C9A6E", BOUNDED: "#D9C48A",
+            UNIDENT: "#EFEDE6"}
+    NAME = {OBSERVED: "measured", INFERRED: "identified",
+            BOUNDED: "bounded", UNIDENT: "not identified"}
+    TEXT = {OBSERVED: "white", INFERRED: "#2A2A26", BOUNDED: "#2A2A26",
+            UNIDENT: "#6B6A64"}
+
+    cols = ["collision\ncoefficient", "laser\nwidth", "light-shift\namplitude",
+            "beam\nwaist"]
+    # (row label, [(status, needs_new_data) per column])
+    rows = [
+        ("the 2025 archive",
+         [(BOUNDED, False), (BOUNDED, False), (BOUNDED, False), (UNIDENT, False)]),
+        ("plus an independent\nlaser-width measurement",
+         [(INFERRED, True), (OBSERVED, True), (BOUNDED, True), (UNIDENT, False)]),
+        ("plus a wide span with\nthe pedestal fitted",
+         [(INFERRED, True), (INFERRED, True), (BOUNDED, True), (UNIDENT, False)]),
+        ("plus a randomised\npower ladder",
+         [(INFERRED, True), (INFERRED, True), (OBSERVED, True), (UNIDENT, False)]),
+        ("plus a beam profile\nmeasured on the day",
+         [(INFERRED, True), (INFERRED, True), (INFERRED, True), (OBSERVED, True)]),
+    ]
+
+    fig, ax = plt.subplots(figsize=(9.2, 4.5))
+    for j, (label, cells) in enumerate(rows):
+        for i, (status, new) in enumerate(cells):
+            ax.add_patch(mpatches.Rectangle(
+                (i, -j), 0.94, 0.9, facecolor=FILL[status],
+                edgecolor="#9A9890", linewidth=0.8,
+                hatch="///" if new else None))
+            ax.text(i + 0.47, -j + 0.45, NAME[status], ha="center",
+                    va="center", fontsize=8, color=TEXT[status])
+
+    ax.set_xlim(-0.05, len(cols))
+    ax.set_ylim(-len(rows) + 0.75, 1.05)
+    ax.set_xticks([i + 0.47 for i in range(len(cols))])
+    ax.set_xticklabels(cols, fontsize=8.6)
+    ax.xaxis.set_ticks_position("top")
+    ax.set_yticks([-j + 0.45 for j in range(len(rows))])
+    ax.set_yticklabels([r[0] for r in rows], fontsize=8.4)
+    for s in ax.spines.values():
+        s.set_visible(False)
+    ax.tick_params(length=0)
+
+    handles = [mpatches.Patch(facecolor=FILL[s], edgecolor="#9A9890",
+                              label=NAME[s]) for s in (OBSERVED, INFERRED,
+                                                       BOUNDED, UNIDENT)]
+    handles.append(mpatches.Patch(facecolor="white", edgecolor="#9A9890",
+                                  hatch="///", label="needs new data"))
+    ax.legend(handles=handles, loc="lower center", ncol=5, frameon=False,
+              fontsize=8, bbox_to_anchor=(0.5, -0.19))
+
+    _footer(fig, "figure 33 | results/identifiability.csv, "
+                 "results/linefit_conditions.csv, docs/PLAN.md sections 10a to 10c\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig33_identifiability_matrix.png", rect=(0, 0.10, 1, 1))
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -4655,6 +5222,10 @@ def main() -> int:
     fig_radiation_environment()
     fig_cascade_resolved()
     fig_isotope_transit()
+    fig_third_cumulant()
+    fig_third_cumulant_measured()
+    fig_achieved_vs_achievable()
+    fig_identifiability_matrix()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")

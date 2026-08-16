@@ -25,8 +25,8 @@ Each page carries a header block placed in INCHES from the top, so it neither
 stretches nor collides when a page gains a row: the observation in plain words,
 then two labelled columns of small grey labels over large dark values. Each row
 carries a left gutter with the repeat number and the file stem, the signal with
-the drawn model, and the residual STANDARDIZED, every sample divided by the
-error the fit weighted it with, under a shaded band of one point error. The raw
+the drawn model, and the residual STANDARDIZED, every sample divided by its own
+measured noise, under a shaded band of one point error. The raw
 residual scatter in millivolts sits in the row's own stack of numbers, so
 magnitude is not lost. The reason for standardizing is the one
 `make_fig0_spectrum.py` states: the raw noise grows with signal level, so a raw
@@ -524,7 +524,8 @@ def line_records(rows, ctx, prates):
                 continue
             fitrec = dict(sess="camp", peak=pk, T=float(r["temperature_C"]),
                           P=power_w(r), x=nu[m], v=v[m], sg=sg[m], c0=c0,
-                          A0=float(lev.max()), b0=float(base), sl=block)
+                          A0=float(lev.max()), b0=float(base), sl=block,
+                          tau=tau)
             try:
                 fr = MF._fit_rec_nuisances(ctx, fitrec)
             except Exception:                            # a fit that will not run
@@ -545,7 +546,12 @@ def line_records(rows, ctx, prates):
             rec["used"] = m
             rec["model"] = fr["model_at"](fr["sol"].x, nu)
             rec["raw_resid"] = v - rec["model"]
-            rec["resid"] = rec["raw_resid"] / sg
+            # divided by each point's own MEASURED noise, not by the fitting
+            # weight: `sg` above carries the sqrt(tau_int) correlation
+            # inflation, and dividing the display by it shrank the cloud to
+            # 0.6 of the drawn one-error band. The comb panels below already
+            # use the uninflated sigma, so this also makes the two agree.
+            rec["resid"] = rec["raw_resid"] / (sg / np.sqrt(tau))
             out.append(rec)
     return out
 
@@ -1003,11 +1009,11 @@ def annotate(rec, qc_rows, ruler_rows, census):
         marks.append(("uncalibrated", "Out of the frequency calibration: "
                       + (CARRIER_WORD.get(rec["uncalibrated_reason"])
                          or rec["uncalibrated_reason"] or "no reason recorded") + "."))
-    elif rec["excluded_advised"]:
+    elif rec["uncalibrated_advised"]:
         marks.append(("advised", "Marked for removal from the frequency calibration "
                       "and still inside it: "
-                      + (CARRIER_WORD.get(rec["excluded_reason"])
-                         or rec["excluded_reason"] or "no reason recorded") + "."))
+                      + (CARRIER_WORD.get(rec["uncalibrated_reason"])
+                         or rec["uncalibrated_reason"] or "no reason recorded") + "."))
     if rec["cls"] == "discarded":
         marks.append(("excluded", _curation_sentence(rec, census)))
     if rec["fit_note"]:
@@ -1587,14 +1593,25 @@ def build_page(cls, cond, recs, census, version):
                       "frequency axis, which is what turns a spacing into a sweep "
                       "rate.")
     else:
-        footer.append("Each residual is standardized: every sample divided by the "
-                      "error the fit weighted it with, under a shaded band of one "
-                      "point error, because the raw noise grows with signal level and "
-                      "a raw strip bulges at the line centre for that reason alone. "
+        footer.append("Each residual is standardized: every sample divided by its "
+                      "own measured noise, under a shaded band of one point error, "
+                      "because the raw noise grows with signal level and a raw strip "
+                      "bulges at the line centre for that reason alone. That is the "
+                      "measured noise and not the fitting weight, which is larger by "
+                      "the square root of the correlation time and would shrink the "
+                      "cloud against the band. "
                       "Dashed lines mark the edges of the window the fit was asked "
-                      "about, set from each trace's own width, and the paler points "
-                      "outside it are recorded but not fitted, which is where the "
-                      "sweep retrace re-crosses the line.")
+                      "about, set from each trace's own width. The paler points "
+                      "outside it are recorded but NOT fitted, so the curve there is "
+                      "an extrapolation and nothing held it to the data. Two "
+                      "separate things live out there. On the eight traces the "
+                      "retrace census names, almost all of them 993.4207 nm (the "
+                      "edge peak, DATA.md section 7), the down-ramp re-crosses the "
+                      "line and leaves a mirror near 42 MHz reaching tens of per "
+                      "cent of peak. Separately, and on every peak, the model runs "
+                      "a few tenths of one per cent of peak BELOW the data through "
+                      "the whole outer region. That second one was first measured "
+                      "2026-08-15, it is not the retrace, and it is under study.")
     if any(r["trimmed"] for r in recs):
         footer.append("A shaded vertical band marks the stretch of sweep the search "
                       "for a drifting residual tail cut.")

@@ -1,6 +1,6 @@
 """Docs <-> computation sync for the diverging-beam ramp-geometry moments.
 
-The g1 sign-flip discussion (PLAN section 8.3 #4, methods/03, the
+The g1 sign-flip discussion (PLAN section 6 item 4, methods/03, the
 run_ramp_geometry docstring, config's Z_c envelope note) quotes specific
 moment coefficients and the crossover location. A stale-number incident
 (2026-07-22: PLAN still quoted "g1 +0.40, 10-40% modified" for the archival
@@ -56,9 +56,13 @@ DOC_TOKENS = [
     # loose stand-in from before the cathode rotation was known. With landscape
     # fixed, the flip condition is stated in the same L_par/2M that the rest of
     # the chain uses, and the half-aperture never appears on its own.
-    ("docs/PLAN.md", ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R",
-                      "3 × 12 mm", "two-lens relay", "landscape",
-                      "+0.402", "−0.421"]),
+    # PLAN split 2026-08-16: the optics token moved into the optics chapter and
+    # the seven geometry tokens into the light-shift chapter, which is the one
+    # file where all seven co-occur.
+    ("docs/plan/03_optics-protocol.md", ["3 × 12 mm"]),
+    ("docs/plan/04_intensity-and-light-shift.md",
+     ["g1 +0.558", "Z_c/z_R ≈ 1.12", "Z_c > 1.12 z_R", "two-lens relay",
+      "landscape", "+0.402", "−0.421"]),
     # "$+0.558$" was replaced by "$+0.565$" on 2026-08-04: the archival row of
     # methods/03's geometry table and its reading paragraph were still computed
     # at the replaced 50 um waist, which printed a LARGER Z_c/z_R than the
@@ -118,6 +122,13 @@ _AXIAL = re.compile(r"axial|sign[- ]flip|flips? sign|1\.12|cumulant|"
 # the replaced x64 a commit later.
 SKEW_DOCS = ["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
              "docs/THEORY_NOTE.md", "docs/PLAN.md",
+             # the split chapters that inherited the sign-flip passages, kept
+             # alongside the hubs because this guard is line-based and an
+             # empty hub passes it for free (2026-08-16)
+             "docs/big_picture/04_what-2025-delivered.md",
+             "docs/big_picture/05_next-vapour-cell.md",
+             "docs/big_picture/06_next-nanofibre.md",
+             "docs/plan/04_intensity-and-light-shift.md",
              "docs/methods/03_the_ac_stark_ramp.md",
              "docs/methods/08_assumptions_and_outlook.md",
              "docs/RESULTS.md", "scripts/make_results_ledger.py",
@@ -220,10 +231,12 @@ _BAD_EXTENT = re.compile(
 
 
 def test_no_document_asks_for_a_pmt_diameter():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    class _O:
+        pass
+    out = _O()
+    out.stdout = "\n".join(tracked_and_new("*.md", "*.py"))
+    if not out.stdout:
         pytest.skip("not a git checkout")
     hits = []
     for rel in [p for p in out.stdout.split("\n") if p]:
@@ -263,10 +276,12 @@ _NEGATED = re.compile(r"not an?\s+short-?pass|not\s+a\s+short-?pass", re.I)
 
 
 def test_shortpass_only_ever_attributed_to_others():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    class _O:
+        pass
+    out = _O()
+    out.stdout = "\n".join(tracked_and_new("*.md", "*.py"))
+    if not out.stdout:
         pytest.skip("not a git checkout")
     hits = []
     for rel in [p for p in out.stdout.split("\n") if p]:
@@ -389,10 +404,12 @@ def test_slit_scan_actually_crosses_zero_within_its_range():
 # experimenter reconciles the two, every document that builds on the 3 x 12 mm
 # cathode has to say the geometry is assumed, not measured.
 def test_cathode_geometry_is_flagged_as_assumed():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    class _O:
+        pass
+    out = _O()
+    out.stdout = "\n".join(tracked_and_new("*.md", "*.py"))
+    if not out.stdout:
         pytest.skip("not a git checkout")
     bad = []
     for rel in [p for p in out.stdout.split("\n") if p]:

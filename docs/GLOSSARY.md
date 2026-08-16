@@ -23,17 +23,22 @@ and emits 795 nm light, which a detector counts. Sweeping the laser across the
 resonance and recording that light is one **trace**, and every number in this
 repository comes from the shape of those traces.
 
+> **Want the full treatment of a term?** The [wiki](wiki/README.md) has one
+> page per concept, method, effect and technique: the general theory, where
+> this repository uses it, and how it fails. This page stays the quick
+> lookup.
+
 ## Words for the physics
 
 **Two-photon transition.** An excitation that takes two photons at once. The
 signal grows as the *square* of the intensity, because each photon contributes
 one factor, and that square is what gives the light-shift distribution its
-usable shape ([methods 3](methods/03_the_ac_stark_ramp.md)).
+usable shape ([methods 3](methods/03_the_ac_stark_ramp.md)). Full page: [doppler-free-two-photon](wiki/doppler-free-two-photon.md).
 
 **Doppler-free.** The property above: because the two photons come from
 opposite directions, the first-order Doppler shifts cancel and the line is not
 smeared by the atoms' thermal motion. It is the reason a hot cell can give a
-line a few MHz wide instead of a few hundred.
+line a few MHz wide instead of a few hundred. Full page: [doppler-free-two-photon](wiki/doppler-free-two-photon.md).
 
 **Transition axis and laser axis.** The transition is driven by two photons, so
 the transition frequency is exactly twice the laser frequency. Every frequency
@@ -74,7 +79,7 @@ the others ([methods 2](methods/02_the_lineshape.md)).
 **Collisional self-broadening, $\beta_\text{self}$.** How much wider the line
 gets per unit of rubidium density, because atoms perturb each other. Measured
 in MHz per 10¹² cm⁻³. This record reports a **bound** on it and explains why
-([RESULTS.md](RESULTS.md) C1).
+([RESULTS.md](RESULTS.md) C1). Full page: [self-broadening](wiki/self-broadening.md).
 
 **Transit broadening.** An atom crosses the beam in a finite time, and a wave
 observed for a finite time cannot have a sharp frequency. Its kernel is a
@@ -123,7 +128,7 @@ regime faster than it gains signal
 
 **AC-Stark shift, or light shift.** Intense light moves atomic energy levels,
 so the drive laser shifts the very transition it is measuring. This is the
-central difficulty of the whole method and the quantity the dataset bounds.
+central difficulty of the whole method and the quantity the dataset bounds. Full page: [ac-stark-shift](wiki/ac-stark-shift.md).
 
 **$S_0$.** The size of that shift for an atom sitting at the brightest point of
 the beam, at a stated drive power. Quoted here at the campaign maximum of
@@ -148,7 +153,7 @@ sets how big the light shift is. Calculated rather than measured here, and its
 lopsided a distribution is. The ramp is lopsided in a calculable way, so
 measuring the line's lopsidedness is a way to measure the light shift without
 needing to know where the line's centre is. That is the method this repository
-is built around, and in the 2025 data the effect sits below the noise.
+is built around, and in the 2025 data the effect sits below the noise. Full page: [third-cumulant](wiki/third-cumulant.md).
 
 **The centre channel, or the pull.** The other way to measure a light shift:
 watch the line's centre move as the power changes. It needs a frequency
@@ -169,8 +174,12 @@ gains signal.
 **Hyperfine pumping removes atoms mid-flight.** An excited atom returns through
 an intermediate level whose decay does not preserve which half of the ground
 state it lands in. Land in the wrong half and the atom is off resonance by
-hundreds of linewidths, so it is gone rather than detuned. Between 8 and 17 per
-cent of atoms crossing the beam decay at least once.
+hundreds of linewidths, so it is gone rather than detuned. Between 8 and 15 per
+cent of atoms crossing the beam decay at least once, signal-weighted to
+on-axis. Of those decays only a share lands in the wrong half, so the fraction
+actually pumped out is the smaller 2 to 6 per cent. The two numbers are
+separately derived in
+[the saturation companion](notes/two_photon_saturation_companion.md).
 
 **All three broaden the line identically.** The light shift and both effects
 above grow as the square of the power and as the fourth power of the inverse
@@ -257,7 +266,7 @@ would have had to have to be seen.
 **Profile likelihood.** The preferred way of building a bound here: scan the
 parameter, refit everything else at each step, and take the edge where the fit
 quality has degraded by an agreed amount. Its alternatives, and when each is
-valid, are in [UNCERTAINTY.md](UNCERTAINTY.md) section 4.
+valid, are in [UNCERTAINTY.md](UNCERTAINTY.md) section 4. Full page: [profile-likelihood](wiki/profile-likelihood.md).
 
 **Over-dispersion, $\chi^2_\text{red}$.** A measure of the data scattering more
 than its own error bars allow. Where it exceeds one, the bounds here are

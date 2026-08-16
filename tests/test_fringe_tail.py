@@ -131,7 +131,7 @@ def _suppression_pct(prefix: str) -> str:
 # (document, regime key prefixes it quotes: "2025_" = the measured w0, "S_" = 16 um)
 SUPPRESSION_SITES = [
     ("docs/RESULTS.md", ("S_",)),
-    ("docs/PLAN.md", ("S_",)),
+    ("docs/plan/04_intensity-and-light-shift.md", ("S_",)),
     ("results/README.md", ("S_",)),
     ("docs/THEORY_NOTE.md", ("2025_", "S_")),
     ("docs/LITERATURE.md", ("2025_", "S_")),

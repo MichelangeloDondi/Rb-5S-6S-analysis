@@ -26,7 +26,6 @@ SVG_QUANTITIES with a value derived from its SSOT, never to loosen a pattern.
 from __future__ import annotations
 
 import re
-import subprocess
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -39,11 +38,11 @@ SCHEMATIC = "docs/apparatus/apparatus_schematic.svg"
 
 
 def _tracked_svgs():
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "docs/*.svg"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
-        pytest.skip("not a git checkout")
-    return [p for p in out.stdout.split("\n") if p]
+    from _fileset import tracked_and_new
+    svgs = tracked_and_new("docs/*.svg")
+    if not svgs:
+        pytest.skip("not a git checkout, or no docs SVGs")
+    return svgs
 
 
 def _normalize(s: str) -> str:

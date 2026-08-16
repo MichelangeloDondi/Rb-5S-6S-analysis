@@ -63,7 +63,9 @@ def test_audit_report_warns_when_it_names_a_colliding_filename():
     report = Path("docs/PREREGISTRATION_RESULTS.md")
     text = report.read_text(encoding="utf-8")
     named = set(re.findall(r"`([0-9]{4}nm_[0-9a-z_]+\.csv)`", text))
-    in_repo = {p.name for p in Path("data_raw").rglob("*.csv")}
+    from _fileset import tracked_and_new
+    in_repo = {p.rsplit("/", 1)[-1]
+               for p in tracked_and_new("data_raw/**/*.csv", "data_raw/*.csv")}
     colliding = sorted(named & in_repo)
     if not colliding:
         return

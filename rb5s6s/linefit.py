@@ -74,7 +74,8 @@ def to_frequency(t_ms: np.ndarray, rate_transition_mhz_per_ms: float) -> np.ndar
 
 def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
                          dnu_floor: float = 1e-3,
-                         profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp):
+                         profile: Callable[[np.ndarray, np.ndarray], np.ndarray] = stark_ramp,
+                         transit_kind: str = "exp"):
     """Build the area-normalized shared line shape ONCE on a fine grid; the
     per-trace fit interpolates it at (nu - center). Returns (grid, profile).
 
@@ -87,6 +88,18 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     4 MHz (test_stark_joint has the equivalence test). The convolutions are
     FFT-based since 2026-08-01 -- identical to within float noise at any
     floor, and what makes the M23 corner cheap.
+
+    transit_kind selects the transit kernel's MODEL FORM, mirroring
+    lineshape.composite_profile: 'exp' is the Biraben-Cagnac two-sided
+    exponential (the cusp, the default, byte-identical to the behaviour
+    before this parameter existed, which test_transit_kind pins); 'gaussian'
+    is a Gaussian of the same FWHM, making the whole line a pure Voigt.
+    Threaded here 2026-08-15 so the global fits can run the same model-form
+    check the beta_self path already could. Measured that day on beta_self:
+    the Gaussian branch is rejected by the joint density-ladder test for this
+    dataset and configuration (delta chi2 +365 to +1851 at equal k and n), so
+    the 18-23 per cent beta shift it produces is a SENSITIVITY result, not a
+    model-form uncertainty (rule 19.25 and the transit-modelform finding).
     """
     homog = GNAT_MHZ + max(gamma_coll, 0.0)
     widths = [homog, max(sigma_laser, 1e-6), max(transit_fwhm, 1e-6)] + ([s0] if s0 > 0 else [])
@@ -97,7 +110,9 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     prof = lorentzian(g, homog)
     lk = gaussian(g, sigma_laser) if laser_kind == "gaussian" else lorentzian(g, sigma_laser)
     prof = fftconvolve(prof, lk, "same") * dnu
-    prof = fftconvolve(prof, two_sided_exponential(g, transit_fwhm), "same") * dnu
+    tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
+          else gaussian(g, transit_fwhm))
+    prof = fftconvolve(prof, tk, "same") * dnu
     if s0 > 0:
         prof = fftconvolve(prof, profile(g, s0), "same") * dnu
     area = trapezoid(prof, g)
@@ -189,6 +204,17 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
 
     Shared free params: gamma_coll, sigma_laser (+ transit_fwhm if fit_transit).
     Per-trace free params: A_i, center_i, b0_i, b1_i.
+
+    TWO CONVENTIONS A CALLER MUST KNOW, stated here because this is where they
+    are used rather than only where they are defined:
+      * `sigma_laser` IS A FWHM, not a standard deviation, despite the name.
+        The module docstring says so and the name does not, which is exactly
+        the trap protocol rule 19.18 exists for.
+      * `transit_fwhm` is the width of a TWO-SIDED EXPONENTIAL kernel by
+        default, the Biraben-Cagnac cusp, not a Gaussian. `transit_kind` on
+        `_shared_profile_grid` selects the form, and the Gaussian branch makes
+        the composite a pure Voigt. The two differ by 18 to 23 per cent on
+        beta_self for this dataset, so the choice is not cosmetic.
     Returns dict with shared values+errors, per-trace params, chi2_red, cov of
     the shared block, and the sigma_laser<->gamma_coll correlation.
 

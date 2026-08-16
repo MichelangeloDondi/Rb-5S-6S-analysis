@@ -467,6 +467,21 @@ density lever, the difference-potential note
 records the open inelastic channel as a candidate mechanism rather
 than a claim, and §8 above lists what staying unmodelled costs.
 
+**The model-selection panel.** How much model the data may buy was
+decided by BIC alone wherever it was decided at all, with no stated
+reason against the alternatives. As of 2026-08-15 every complexity
+comparison reports a panel of four criteria numerically (AIC, AICc,
+BIC over raw $N$, BIC over the effective sample size), preregistered in
+[notes/model_selection_prereg.md](notes/model_selection_prereg.md)
+before any recomputation. The judgement call is in the treatment of
+disagreement: a split panel is published as a fact about the data
+(the ranking is convention-sensitive at this sample size) and never
+broken by taste, and adopting a richer model on a split requires an
+independent predeclared basis. The reasoning that makes this a real
+choice here is the spread of $\ln N$ across the record's decision
+sites, from 2.3 to 12.9, worked in
+[methods/06](methods/06_the_statistics.md) §4.7a.
+
 ---
 
 ## Status vocabulary

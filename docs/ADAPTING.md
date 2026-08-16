@@ -258,7 +258,7 @@ are inverted where the atoms are and cannot pump anything back up.
 
 **The cell's own thermal glow.** One number decides it, and it decides it
 brutally. Compare $h\nu/kT$ for each transition of your cascade against the
-blackbody peak, which sits near 7.2 µm at 400 K. Here every line is between 0.79
+blackbody peak, which for photon number sits near 9.1 µm at 400 K. Here every line is between 0.79
 and 2.8 µm, so $h\nu/kT$ runs 26 to 45, the occupation numbers are $10^{-12}$ to
 $10^{-20}$, and thermal light does nothing at all. **This is the test that
 flips** if your levels are higher: a transition with a 10 µm neighbour has an

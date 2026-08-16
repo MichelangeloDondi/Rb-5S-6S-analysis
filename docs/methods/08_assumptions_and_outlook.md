@@ -78,7 +78,7 @@ every absolute scale above rests.
 would be capped at
 225 mW, so the intensity axis comes from the **beam waist instead**
 ($I\propto P/w_0^2$, since a telescope unclips the EOM aperture and two working
-waists, 60 µm and 16 µm, span a $\times14$ intensity range at fixed power).
+waists, 64 µm and 16 µm, span a $\times16$ intensity range at fixed power).
 The headline shots would be these.
 
 * The AC-Stark shift coefficient, with the intensity axis anchored by the

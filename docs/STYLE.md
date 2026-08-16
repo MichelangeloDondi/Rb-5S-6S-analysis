@@ -4,6 +4,21 @@ House rules for this repository's documents and code comments. They exist so
 that every page reads in one voice and states exactly as much certainty as the
 data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
 
+**The question.** How should a claim, a number or a figure in this repository
+be written, so that a reader can tell what it licenses without opening the code
+behind it?
+**Takes.** Nothing. This page is the convention the rest of the repository is
+written against.
+**Gives.** The rules for claims and certainty, for retired and superseded
+values, for register, for figures, and for which files are generated rather
+than edited.
+**Skip if.** You are reading for the physics or the results. This page governs
+how they are stated, not what they say.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## Claims and certainty
 
 - **A bound is reported as a bound.** Where the dataset constrains rather than
@@ -48,6 +63,61 @@ data support. `tests/test_repo_hygiene.py` enforces the mechanical ones.
   the OLD value across the tree and decide per site whether it is history or a
   live claim. `tests/test_repo_hygiene.py` now fails on a retired beam waist
   quoted beside a live claim, and the same discipline applies to any re-pin.
+- **A superseded number is REPLACED here and RECORDED in `HISTORY.md`.** That
+  file is the one place in this repository licensed to print a value the
+  record no longer believes. Every other document, this one included, states
+  only what is live, and refers to a superseded value by LINKING to
+  `HISTORY.md` rather than repeating the number. Where the number was COMPUTED
+  at the old value, recompute rather than relabel, since a relabelled table is
+  a new falsehood rather than a surviving one. Earned 2026-08-15, when a
+  pre-measurement stand-in for the beam waist survived a re-pin in three
+  forward-looking documents and outvoted the one page that was right, which
+  produced a wrong edit to the front page. The version history remains the
+  complete record, and `HISTORY.md` is the curated part a reader needs
+  without running `git log`.
+- **Two documents agreeing is not corroboration if they share an ancestor.**
+  Date a claim before counting the sites that repeat it, and resolve prose
+  against its SOURCE (a constant, a CSV, a measurement) rather than against
+  other prose. A consistency sweep with no source in it converges the tree onto
+  whichever value is most widely repeated.
+- **Do not carry a discrepancy you cannot adjudicate.** If two sites disagree
+  and the deciding evidence is not reachable, the honest move is to reach it,
+  by running the thing that prints it or by asking whoever knows. Recording
+  "these disagree" and moving on leaves both numbers live and the reader worse
+  off than before the discrepancy was noticed.
+
+- **A quantity carries its units and its convention where it is used**, not
+  only where it is defined. `sigma_laser` is a FWHM and its module docstring
+  says so, three hundred lines above every call site, and the name says
+  otherwise. The trace axis loaded from disk is a time in milliseconds and
+  becomes a frequency only after multiplication by the condition's own rate.
+  Both are documented and both were misread in one afternoon, so state the
+  convention beside the number rather than trusting a reader to have found the
+  definition.
+
+- **A reimplemented number is checked against the record BEFORE it is
+  reported.** Rebuild the fitted width and compare it with the committed one,
+  rebuild the reduced chi-squared and compare it with the committed one, and
+  only then read whatever new thing the reimplementation was built to measure.
+  The order carries the whole value: a plausible number that has already been
+  seen will be explained rather than doubted. Three checks against committed
+  values caught three separate defects on 2026-08-15 before any of them
+  reached a sentence.
+
+- **A number that will not move when its lever moves is a defect, not a
+  measurement.** A fraction of an amplitude that stays the same across a
+  hundredfold change in that amplitude is not measuring what its name says.
+  This tell is sharper than implausibility and available earlier, so where a
+  quantity should scale with power, density or amplitude, vary that thing and
+  show that it does.
+
+- **Whether an effect is additive or multiplicative is measurable, and the
+  answer changes what the effect is.** Regress it against the amplitude it
+  might be proportional to, with a free intercept, over the widest range the
+  data hold. An instrument artifact gives an intercept and no slope, and a
+  model-shape error gives the reverse. Applied to the residual outside the fit
+  window, this retired a description that had stood since the effect was first
+  seen.
 
 ## Register
 
@@ -82,6 +152,7 @@ them. Write "a new operator", "the group", "an external theory check".
 | `figures/*.png` | `scripts/make_figures.py` |
 | `figures/fig0_spectrum.png` | `scripts/make_fig0_spectrum.py` |
 | `docs/apparatus/program_timeline.png` | `scripts/make_timeline_figure.py` |
+| `docs/wiki/figures/*.png` | `scripts/make_wiki_figures.py` |
 
 Editing these directly is lost on the next run, and the freshness tests fail.
 

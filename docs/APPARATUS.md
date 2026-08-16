@@ -234,7 +234,7 @@ generator as well as a different tank.
 | item | value | provenance |
 |---|---|---|
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
-| Photocathode spectral response | GaAs, roughly 300 to 900 nm. DATASHEET, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 7.2 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 7 µm | DATASHEET + ASSUMED |
+| Photocathode spectral response | GaAs, roughly 300 to 900 nm. DATASHEET, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 9.1 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 9 µm | DATASHEET + ASSUMED |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Cathode orientation (2025) | **landscape**, 12 mm axis along the beam | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
@@ -447,13 +447,17 @@ paperwork ever surfaces.
 
 ---
 
-## 6. Laser drift: eight wavemeter records, and what the cavity lock buys
+## 6. Laser drift: ten wavemeter records, and what the cavity lock buys
 
 None of the long-term wavemeter logs were saved to disk, so these are read off
 dated screen photographs (±20%, and the band centre of a swept trace is an
-eyeball estimate). Only one falls inside the 17–18 July campaign.
+eyeball estimate). **Two fall inside the 17–18 July campaign**, and the second
+was added on 2026-08-16 when the owner pointed at three photographs this
+register had never taken in. The earlier count is in
+[HISTORY.md](HISTORY.md).
 
-Lock state is known for two of the sessions, which turns the table from a list
+Lock state is recorded on six of the ten records,
+across four separate dates, which turns the table from a list
 into a comparison:
 
 | date | span | lock state | reading |
@@ -465,7 +469,8 @@ into a comparison:
 | 2025-06-19 | 27 min | etalon only | ~0.4 MHz/min |
 | 2025-06-19 | 6 min | etalon only | +0.5 MHz/min |
 | 2025-07-02 | 5.5 min, unswept | **cavity error** (scan stopped) | RMS 0.04 MHz, drift −0.005 MHz/min (digitised, see below) |
-| **2025-07-18** | **8.5 min** | — | **~4.35 MHz/min avg**, **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
+| **2025-07-18 02:37** | **24 min** | not recorded | **in campaign, mid-acquisition.** StdDev 100 kHz, min-to-max 2 MHz over the whole record |
+| **2025-07-18 17:03** | **8.5 min** | — | **~4.35 MHz/min avg**, **in campaign**, a settling tail (local slope 9.0 → 2.4 MHz/min) |
 | 2025-07-23 | 3 h 30 min | — | −0.17 MHz/min |
 
 <img src="apparatus/2025-06-11_wavemeter_drift_23min.jpg" width="49%" alt="WLM LongTerm 23-minute record, 2025-06-11 22:52"> <img src="apparatus/2025-06-11_wavemeter_drift_53min.jpg" width="49%" alt="WLM LongTerm 53-minute two-regime record, 2025-06-11 23:22">
@@ -476,8 +481,8 @@ within-block bound independently matches.*
 
 <img src="apparatus/2025-07-18_wavemeter_relock_settling.jpg" width="80%" alt="WLM LongTerm settling record, 2025-07-18 17:03, the post-break re-lock transient, with StdDev 100 kHz in the settled tail">
 
-*The one in-campaign record, and its taskbar clock reads **17:03,
-7/18/2025**: eighteen minutes before the 90 °C dwell resumed. This is the
+*The later of the two in-campaign records, and its taskbar clock reads
+**17:03, 7/18/2025**: eighteen minutes before the 90 °C dwell resumed. This is the
 re-lock transient after the daytime break (addenda 4–7), settling toward the
 100 kHz short-term StdDev visible in the statistics panel, and not steady
 acquisition drift, which the dataset puts two orders below.*
@@ -561,7 +566,7 @@ acquisition drift, which the dataset puts two orders below.*
 > sub-MHz scale directly, so this bound is consistent with the expectation
 > rather than competitive with it.
 >
-> **The in-campaign record needs no digitising.** The 2025-07-18 photograph has
+> **The 17:03 in-campaign record needs no digitising.** The photograph has
 > the wavemeter's own statistics panel in shot: mean 301.7796130 THz, standard
 > deviation 100 kHz, a 38 MHz excursion across 8.5 minutes. It is one smooth
 > relaxation with no re-locks, a different regime from the June record.
@@ -666,8 +671,9 @@ design is right, and a repeat with the log saved would answer it outright.
 **Synthesis.** After a tuning change the laser settles through tens of GHz over
 roughly 1.5 h (the 06-16 curve). Thermally settled, it drifts at ~1 MHz/min on
 etalon lock alone and ~0.2 MHz/min with the reference cavity added, with a sign
-that varies between sessions. The single in-campaign record is a settling tail,
-not a steady rate. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
+that varies between sessions. The two in-campaign records say different things
+and neither is a steady acquisition rate: the 17:03 one is a settling tail, and
+the 02:37 one, taken mid-acquisition, holds StdDev 100 kHz across 24 minutes. `constants.DRIFT_RATE_LASER_HZ_PER_MIN = 4 MHz/min`
 therefore holds as a genuine **envelope**, bounding every record here,
 while the settled rate is several times smaller.
 
@@ -719,7 +725,7 @@ after re-lock) never calmed to late-P quietness. σ_gap(t) then reads
 physically: the typical frequency excursion per drop-and-recapture cycle,
 decaying as the etalon thermalises. Individual steps stay unresolvable into
 drop vs deliberate move from mtimes alone. The clock also
-explains the one in-campaign wavemeter record: IMG_2896 (17:03) was shot
+explains the 17:03 in-campaign wavemeter record: IMG_2896 was shot
 eighteen minutes before the 90 °C dwell resumed (17:21), i.e. during the
 re-lock after the daytime break, and its ~4.35 MHz/min is the re-tune transient
 the envelope exists to bound, not the acquisition-time drift, which the

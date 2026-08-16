@@ -33,7 +33,8 @@ def _rows(name):
 
 
 def test_every_result_csv_carries_provenance():
-    for path in glob.glob(str(RESULTS_DIR / "*.csv")):
+    from _fileset import tracked_and_new, ROOT as _R
+    for path in [str(_R / p) for p in tracked_and_new("results/*.csv")]:
         rows = list(csv.DictReader(open(path)))
         if not rows:
             continue

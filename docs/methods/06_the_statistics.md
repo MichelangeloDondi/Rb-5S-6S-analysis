@@ -192,17 +192,73 @@ to earn its place separately.
 
 To ask *which* model form the data prefer, a smooth Gaussian extra-broadening
 (a Voigt) against the cusped transit exponential (the Lehmann shape, [§2.5](02_the_lineshape.md)), we
-compare the **Bayesian information criterion**
+compare the **Bayesian information criterion**, $\text{BIC}=\chi^2+k\ln N$,
+whose definition and reading scale are in
+[information criteria](../wiki/information-criteria.md).
 
-$$\text{BIC}=\chi^2+k\ln N$$
-
-with $k$ the number of free parameters and $N$ the data points. The $\chi^2$
-rewards fit quality, and the $k\ln N$ term penalizes complexity, so BIC asks "is
-the better fit worth its extra parameters?". Lower BIC wins. On the
-Kass–Raftery scale $|\Delta\text{BIC}|$ below 2 is "indistinguishable" and above 10 is
-"decisive". Voigt and Lehmann have the *same* $k$, so their comparison is
+Voigt and Lehmann have the *same* $k$, so their comparison is
 essentially which shape fits better. This is the tool for the Lehmann-cusp
 test, and [what we found](07_what_we_found.md) reports what it returned.
+
+### 4.7a Which criterion, and why the answer depends on $N$
+
+BIC is not the only way to penalise a parameter, and the choice is not a matter of
+taste here because $N$ varies by four orders of magnitude across the places
+this record makes a complexity decision. The two standard criteria differ only in that penalty,
+$\text{AIC}=\chi^2+2k$ against $\text{BIC}=\chi^2+k\ln N$, so which is more
+conservative depends entirely on how much data there is
+([information criteria](../wiki/information-criteria.md)). In this repository
+that means:
+
+| where a complexity decision is made | $N$ | $\ln N$ | BIC penalty / AIC penalty |
+|---|---|---|---|
+| the noise variance law, over level bins | 10 | 2.30 | 1.15 |
+| one condition's line fit | ~4400 | 8.40 | 4.20 |
+| the global dataset fit | ~405000 | 12.91 | 6.46 |
+
+So on a single condition BIC demands four times the evidence AIC does before
+admitting a parameter, and on the global fit six times. A criterion that
+conservative on this much data will decline structure that is really present,
+and the cost of that is not neutral: an omitted component does not vanish, it
+is absorbed by whichever fitted parameter can imitate it, and the record then
+quotes that parameter as physics.
+
+Two consequences bound how much the choice can matter here, and the general
+form of both is in [information criteria](../wiki/information-criteria.md). A
+comparison between forms with **equal** $k$, such as Voigt against Lehmann in
+§4.7, is unaffected by the criterion entirely. And the criterion only decides
+an outcome when the fit improvement lands **between** the two penalties.
+
+The nested ladder of §4.9 is in the second category on the rung that matters:
+the free AC-Stark parameter buys a summed $\chi^2$ improvement of well under
+one unit across twelve conditions, so no penalty scheme can prefer it, and the
+"bound, not a measurement" conclusion is criterion-independent. That is worth
+knowing, because it is the conclusion a reader is most entitled to be
+suspicious of.
+
+A criterion is only as good as the fit it scores, and a violated nesting
+inequality measures the optimizer rather than the data.
+`rb5s6s.modelform.compare_ic` reports every criterion and
+refuses to interpret a comparison whose nesting inequality is violated.
+
+In practice this record reports a PANEL of four: AIC, AICc (its small-sample
+correction, which the drift-settling analysis already uses at $n=26$ with that
+stated reason), BIC over raw $N$, and BIC over the effective sample size
+$N_\text{eff}=N/\tau_\text{int}$, the last being this repository's own
+adjustment for correlated samples (§4.13) and labelled a sensitivity criterion
+rather than an established theorem. The four are a robustness check across
+selection conventions, not four independent votes, since each pair shares its
+motivation. Every comparison quotes the numerical difference under every
+member. Where all agree, the selection is robust across the panel. Where they
+split, the ranking is convention-sensitive at this sample size, that fact is
+itself reported, and a split alone never justifies adopting the richer model:
+adoption then needs an independent, predeclared basis. The one known split in
+this record is the $\sigma_\text{laser}$ sharing of §4.13, where the BIC taken
+over $N_\text{eff}$ favours sharing by $+61$ and AIC opposes it by $-6.6$, the
+record's own "underpowered data" caveat made quantitative.
+
+*Code:* `rb5s6s.modelform.info_criteria` and `compare_ic`, validated against
+hand-computed penalties in `tests/test_info_criteria.py`.
 
 ### 4.8 Restricting the fit window: the off-center-sweep mirror
 
@@ -252,7 +308,7 @@ $$
 \text{A: Voigt} \subset \text{B: +transit} \subset \text{C: +collisional width} \subset \text{D: +AC-Stark ramp}.
 $$
 
-On the T-sweep dataset the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +1700$** (transit decisively warranted), **B→C $\approx +435$** (a free
+On the T-sweep dataset the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +879$** (transit decisively warranted), **B→C $\approx +1091$** (a free
 Lorentzian width beyond natural is warranted, and the line genuinely needs both a
 Lorentzian and a Gaussian component), and **C→D $\approx -100$**, *the free
 AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design
@@ -284,11 +340,11 @@ per-trace nuisances.
 
 **The map found the fit's second local minimum first.** A single-start three-width fit
 lands in a Gaussian-dominated local minimum ($\sigma_\text{laser}\approx2.4$ MHz,
-transit railed at zero, $\chi^2 = 5024$). The profile map exposed a **deeper,
+transit railed at zero, $\chi^2 = 5026$). The profile map exposed a **deeper,
 cusp-dominated local minimum**, at $\gamma_\text{coll}\approx0.22$,
-$\sigma_\text{laser}\approx0.51$, transit $\approx1.43$ MHz, i.e. the transit
-width the $w_0\approx43$ µm geometry predicts, at $\chi^2 = 4548$, a
-$\Delta\chi^2\approx476$ preference. The local analysis is therefore anchored
+$\sigma_\text{laser}\approx0.46$, transit $\approx1.43$ MHz, i.e. the transit
+width the $w_0\approx43$ µm geometry predicts, at $\chi^2 = 4551$, a
+$\Delta\chi^2\approx475$ preference. The local analysis is therefore anchored
 by a **two-start fit** at the deeper branch, and both branches plus their gap
 are committed (`branch`, `branch_gap` rows). Set beside the adopted prior that
 is a tension the dataset owns rather than resolves: the shape prefers
@@ -296,7 +352,7 @@ $w_0\approx43$ µm where the beamline-lineage measurement puts it at the adopted
 **64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
 Taken at face value the shape data
 *prefer* the physical decomposition (real transit cusp, narrow laser). But
-$\Delta\chi^2 = 476$ over about 4400 points is a $\chi^2$ change of about 10%
+$\Delta\chi^2 = 475$ over about 4400 points is a $\chi^2$ change of about 10%
 ($\chi^2_\text{red}$ 1.15 → 1.04), the territory where transit-kernel
 model-form imperfection also lives, a **consistency indication and not a
 shape-based $w_0$ measurement**. A direct beam-profile measurement stays the arbiter, and the
@@ -307,22 +363,22 @@ At the anchored branch, the covariance (SVD of the Jacobian,
 
 - the strongest trade-off is $\gamma_\text{coll}\leftrightarrow$ transit
   ($\approx-0.96$): the two cusp-generating widths swap almost freely.
-- the **condition number** of the width-block *covariance* is $\approx480$,
+- the **condition number** of the width-block *covariance* is $\approx390$,
   which is strongly ill-conditioned.
 - the **eigen-directions**: the best-constrained combination (a
   total-width-like sum, mostly $\gamma_\text{coll}$ + transit) is pinned to
   $1\sigma\approx0.003$ MHz, while the worst-constrained direction (dominated
-  by $\sigma_\text{laser}$) is $\approx0.07$ MHz, about **22× looser**.
+  by $\sigma_\text{laser}$) is $\approx0.06$ MHz, about **20× looser**.
 
 **The global map** (the standard referee demand: profile, not just covariance)
 fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
 $\chi^2$ over transit and every per-trace nuisance at each point (variable
 projection, each cell fit from two independent warm-start lineages, with a
 fresh-seed audit on every fifth cell). Its certifications, all committed: audit
-gains $\le0.01$ (no warm-start trapping), map minimum equal to the anchored
+gains $\le0.05$ (no warm-start trapping), map minimum equal to the anchored
 free fit's, and a **straight** valley floor (RMS 0.003 MHz against a 0.020 MHz
-grid step) whose ridge slope (+0.074) **agrees** with the covariance ellipse's
-prediction (+0.108), since in the Gaussian limit the profile contours are exactly
+grid step) whose ridge slope (+0.073) **agrees** with the covariance ellipse's
+prediction (+0.080), since in the Gaussian limit the profile contours are exactly
 the marginal covariance ellipse, so that agreement is the trust test, and it
 passes. The joint-95% region closes inside the physical range **except toward
 $\sigma_\text{laser}\to0$**: the line *shape* alone cannot exclude a
@@ -437,10 +493,10 @@ $\text{BIC}=\chi^2+k\ln N$, with $\Delta\text{BIC}=\text{BIC}_\text{block}-\text
 The result depends on how the sample size is counted. Each trace is a smooth
 line sampled at about 2000 **correlated** points, so the roughly 49k raw samples are
 not 49k independent observations. Counting them as such over-weights the per-block
-fit's tiny $\chi^2$ gain and returns $\Delta\text{BIC}\approx-46$ ("per-block
+fit's tiny $\chi^2$ gain and returns $\Delta\text{BIC}\approx-52$ ("per-block
 wins"). But the noise model already whitens each residual by $\sqrt{\tau_\text{int}}$
 ($\tau\approx3.5$). The **matching** effective size $N_\text{eff}=N/\tau$ with the
-whitened $\chi^2$ gives $\Delta\text{BIC}\approx+62$ ("shared wins, decisively").
+whitened $\chi^2$ gives $\Delta\text{BIC}\approx+61$ ("shared wins, decisively").
 The $N_\text{eff}$ BIC is the statistically correct one, since correlated samples are not
 independent, so the shared model is favoured: **the dataset cannot pay for
 per-block $\sigma_\text{laser}$ freedom**. Two caveats apply:

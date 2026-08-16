@@ -72,10 +72,11 @@ ROOT = Path(__file__).resolve().parents[1]
 # when the advertised count fell by that much after one such copy was removed.
 # `private/` excluded for the same reason as in test_docs_links.py: it is
 # gitignored, so CI never sees it and local runs should not either.
-DOCS = [p for p in ROOT.rglob("*.md")
-        if ".venv" not in p.parts and "PDF_papers" not in p.parts
-        and "node_modules" not in p.parts and "private" not in p.parts
-        and not any(s.startswith(".") for s in p.parts)]
+# git-aware, so every ignored path is excluded without a list to maintain
+# (rule 19.24, tests/_fileset.py). PDF_papers stays excluded on its own merits:
+# it is tracked but is a vendored reprint area, not repository prose.
+from _fileset import tracked_and_new as _tan            # noqa: E402
+DOCS = [ROOT / p for p in _tan("*.md") if not p.startswith("PDF_papers/")]
 
 _PUNCT = re.compile(r"\\([!-/:-@\[-`{-~])")          # backslash + ASCII punctuation
 _TEXTGRP = re.compile(r"\\(?:text|mathrm|mathbf|textrm)\{([^{}]*)\}")
@@ -200,10 +201,12 @@ def test_math_renders_on_github(doc):
 # PAPER1_SKELETON.md. Seven spans were wrapped across the repo. The check is a
 # per-line dollar-parity test, which is exactly the condition.
 def test_no_inline_math_span_wraps_a_line():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    class _O:
+        pass
+    out = _O()
+    out.stdout = "\n".join(tracked_and_new("*.md"))
+    if not out.stdout:
         pytest.skip("not a git checkout")
     # The blanket docs/lit/ exemption is gone. It carried no reason, and it hid
     # eight wrapped spans in seven lit notes, which was every wrapped span the

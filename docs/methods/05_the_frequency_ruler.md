@@ -12,19 +12,10 @@ calibration. Nothing later re-derives the axis, it only spends it.
 
 ## 3. From volts-versus-time to a frequency axis (the EOM ruler)
 
-The scope records fluorescence versus *time* while the laser sweeps, and we need
-$\nu$ versus time. The sweep is nonlinear and its rate unknown, so a ruler was
-built into the scan: an EOM phase-modulates the light at exactly
-$\Omega=12.5$ MHz, adding sidebands at $\nu_c\pm n\Omega$ around the carrier
-$\nu_c$. Two-photon absorption picks any *pair* of sidebands whose frequencies
-sum to the transition $\nu_0$:
-
-$$(\nu_c+m\Omega)+(\nu_c+m'\Omega)=\nu_0
-  \Longrightarrow
-2\nu_c+(m+m')\Omega=\nu_0$$
-
-Writing $k=m+m'$, resonances occur at carrier frequencies
-$\nu_c=(\nu_0-k\Omega)/2$, i.e. a comb of line-copies spaced by
+An EOM phase-modulates the light, its sidebands pair up in the two-photon
+absorption, and the result is a comb of line copies spaced by half the
+modulation frequency. [EOM sidebands](../wiki/eom-sidebands.md) carries that
+derivation. Here $\Omega = 12.5$ MHz gives
 
 $$\boxed{ \Delta\nu_\text{tooth}=\frac{\Omega}{2}=6.25\ \text{MHz (laser axis)} }$$
 
@@ -138,13 +129,11 @@ showing itself in the evidence.*
 
 ### The comb amplitudes, and the pure-phase-modulation null
 
-For *pure* phase modulation at index $\beta$ on both counter-propagating
-beams, the two-photon tooth amplitudes obey an exact closed law: the tooth at
-$k$ sums every sideband pair $m+m'=k$, and by Neumann's addition theorem
-
-$$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2 .$$
-
-This explains the 2025 design compromise and prescribes its fix:
+For *pure* phase modulation the two-photon tooth amplitudes follow the exact
+closed law $A_k \propto J_k(2\beta)^2$, derived from Neumann's addition
+theorem in [EOM sidebands](../wiki/eom-sidebands.md) and resting on the
+[Bessel functions](../wiki/bessel-functions.md) that carry it. That law
+explains the 2025 design compromise and prescribes its fix:
 
 - **At small $\beta$ the sidebands are buried**: $J_k(2\beta)^2$ gives
   $1 : 0.10 : 0.002$ at $\beta=0.3$, so the outer teeth drown in the central

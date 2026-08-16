@@ -83,6 +83,7 @@ diagnostic rather than write a table.
 |---|---|
 | `make_figures.py` | the publication PNGs in `figures/`, from the committed CSVs, each stamped with a fingerprint of the tables it was drawn from |
 | `make_fig0_spectrum.py` | `figures/fig0_spectrum.png`, one representative fitted spectrum |
+| `make_wiki_figures.py` | the teaching panels in `docs/wiki/figures/`, drawn from closed forms and fixed-seed synthetics, reading no results |
 | `make_timeline_figure.py` | `docs/apparatus/program_timeline.png`, one panel per session off `data_recovered/CLOCK.csv` |
 | `make_qc_gallery.py` | the per-trace inspection gallery, all of it under `private/qc_gallery/` and none of it tracked |
 | `make_results_ledger.py` | `docs/RESULTS.md`, with every headline number read from the CSV that produced it |
@@ -128,7 +129,13 @@ needs the two outside trees. `run_geometry_design.py` computes the two
 geometry designs of `docs/notes/running_wave_and_waist_design.md`, the
 frequency-shifted retro arm and the waist, and its weak-field branch
 reproduces `lineshape.stark_ramp_axial_moments`, which is what licenses the
-saturated branch beside it. `run_zeeman_depletion.py` does the hyperfine
+saturated branch beside it. `run_widescan_design.py` sizes the wide-scan
+block of `docs/notes/widescan_block_design.md` and PLAN section 10a, deriving
+the span, record length and piezo shape from the 2025 acquisition it has to
+beat, forward-modelling the pedestal the settings would reveal, and printing
+the go/no-go checks for the day. It prints the naive detection significance
+beside the corrected one deliberately, because the naive count over-promises
+by two once correlated noise and the free background are taken out. `run_zeeman_depletion.py` does the hyperfine
 pumping on the full Zeeman manifold, every Clebsch-Gordan coefficient present,
 and its seven checks include the transit depletion per isotope, the blocked
 cascade paths, and the same branching recomputed as a density matrix in exact

@@ -998,33 +998,7 @@ Lorentzian at 4.2 widths standoff.
 
 ## 8. The bound history
 
-Three quantities have moved repeatedly, and their histories are collected here
-so that a reader can tell which value is live. A row's value is as this file
-recorded it on the row's date, which is why replaced numbers appear. A
-history table is the one place they are licensed.
+Moved to [HISTORY.md](HISTORY.md), the one file in this repository licensed to
+print a value the record no longer holds. This page, like every other, now
+states only what is live.
 
-The live value of anything marked current is the one in
-[RESULTS.md](RESULTS.md) and in the results tables it names. This file's copy is
-not yet mechanically checked against those tables for the light-shift bound, for
-its predicted coefficient, or for the polarizability bracket, so read those
-three from RESULTS.md and treat the rows below as the lineage rather than as
-the citation.
-
-| quantity | value | date | construction | what moved it | standing |
-|---|---|---|---|---|---|
-| β_self, MHz per 10¹² cm⁻³ | 0.07–0.15 | before 2026-07-16 | between-block scatter with a hard-coded 2σ multiplier | the multiplier hid its own assumption about degrees of freedom | replaced |
-| β_self | 0.2–0.4 | 2026-07-16 | the same scatter at the Student-t quantile *t*(0.95,1) = 6.31 on one residual degree of freedom | interval construction, not new data | replaced as the headline 2026-08-02 |
-| β_self, per peak, 95% | < 0.21–0.44 | 2026-07-11 | model-independent raw widths across the three-point 70–110 °C cooling sweep | the 130 °C session was found to share the optical and cell configuration | retired 2026-08-02 |
-| β_self, per peak, 95% | ≲0.03–0.05 | 2026-08-02 | four-point 70/90/110/130 °C construction, dof = 2, ×52.5 lever | the experimenter's firsthand apparatus authority on the configuration | **current headline** |
-| β_self, joint hierarchical fit | 0.036 → 0.014 | 2026-07-12 | the same fit with and without the ×53 130 °C anchor | lengthening the lever, which is the lever test itself | a cross-check estimator, never the headline |
-| AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | replaced, kept in `stark_sweep.csv` as a labelled diagnostic |
-| AC-Stark S₀ at 225 mW | 0.63 MHz | 2026-07-16 | profile likelihood on the width channel, over-dispersion scaled | interval construction, not new data | the independent width-only bracket |
-| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | the tighter of the two, as quoted here since 2026-08-01. Requote from RESULTS.md |
-| AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm measured waist | the measured waist moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
-| Δα bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
-| beam waist w₀ | 32 µm | nominal | the design value | the transit Monte Carlo's missing crossing-flux factor, fixed 2026-07-13 | excluded |
-| beam waist w₀ | ~90 µm | before 2026-07-13 | a note that carried a factor-of-2 error | arithmetic | retracted |
-| beam waist w₀ | ~50 µm | 2026-07-13 | the corrected transit Monte Carlo, validated against Lehmann's 41.2 kHz example | a direct measurement became available | replaced |
-| beam waist w₀ | 64 µm | 2026-08-01 | Rajasree 2020's direct measurement on the same laser | nothing yet | **the adopted prior**, and still open |
-
-Each row's argument, and what it taught, is in §6.

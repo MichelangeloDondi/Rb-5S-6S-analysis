@@ -79,7 +79,7 @@ def test_no_personal_contact_details_in_tracked_files():
     or a phone number in the published tree is not."""
     bad = re.compile(r"[\w.+-]+@gmail\.com|\+\d{2}[\s-]?\d{3}[\s-]?\d{6,}")
     hits = []
-    for rel in _tracked("*.md", "*.py", "*.toml", "*.cff", "*.yml", "*.yaml"):
+    for rel in _shipping("*.md", "*.py", "*.toml", "*.cff", "*.yml", "*.yaml"):
         try:
             txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
         except OSError:
@@ -97,6 +97,28 @@ def test_no_personal_contact_details_in_tracked_files():
 # bound, not a detection") are legitimate and must keep working — the bank
 # below is a list of specific removed sentences, not a pattern for "X, not Y".
 FORBIDDEN = {
+    # A retired value printed outside docs/HISTORY.md (2026-08-16). STYLE.md
+    # licenses exactly one file to print a value the record no longer believes,
+    # and that rule had no mechanical backing until this entry, so it held only
+    # for as long as someone remembered it. _FORBIDDEN_EXEMPT_FILES already
+    # exempts HISTORY.md by name, which is why this is a label here rather than
+    # a test of its own.
+    #
+    # THE TOKENS ARE PHRASES, NOT BARE NUMBERS, deliberately. A guard on "0.246"
+    # or "800 MHz" would fire on live physics: 800 MHz is a current design
+    # parameter for the running-wave arm. Each token below was checked against
+    # the whole published tree when this was written and occurs ONLY in
+    # HISTORY.md or nowhere, so the guard starts green with no exemptions. A
+    # future hit means either a retired value came back or a token is being
+    # reused for a live quantity, and the second is fixed by narrowing the
+    # token, never by adding an exemption.
+    "retired value outside HISTORY.md": [
+        r"shares no machinery",
+        r"three to eight times",
+        r"1\.6 mrad",
+        r"p ?= ?0\.0078",
+        r"\b7/7\b",
+    ],
     "drafting-process reference": [
         r"\buser(?:'s)?\b(?!name)", r"\bdigestion turn\b", r"\bas discussed\b",
         r"\bper your\b", r"\byou asked\b", r"\bas requested\b",
@@ -197,6 +219,18 @@ SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
               "tests/test_svg_canonical.py"}
 
 
+def _shipping(*globs: str) -> list[str]:
+    """What this commit would ship: tracked plus untracked-and-not-ignored.
+
+    The union lives in `_fileset` so the four checks below and the nine other
+    modules that had built it by hand cannot drift apart again (rule 19.24).
+    `_tracked` stays as it is, for the one check that genuinely means TRACKED,
+    namely that no private document is in the tracked set.
+    """
+    from _fileset import tracked_and_new
+    return tracked_and_new(*globs)
+
+
 def _about_to_be_tracked(*globs: str) -> list[str]:
     """Files git would add on the next `git add -A`, i.e. untracked and not ignored.
 
@@ -227,11 +261,20 @@ def _prose_files() -> list[str]:
             if not p.startswith(SKIP_PREFIXES) and p not in SKIP_EXACT]
 
 
+# The one file whose SUBJECT is superseded values, so it must be able to name
+# them, exactly as the protocol and the lessons file must print the vocabulary
+# they govern. Exempt BY DESIGN and by name, which is different from a file
+# drifting out of a guard's reach (2026-08-15, rule 19.16a).
+_FORBIDDEN_EXEMPT_FILES = {"docs/HISTORY.md"}
+
+
 @pytest.mark.parametrize("label", sorted(FORBIDDEN))
 def test_no_forbidden_phrases(label):
     pats = [re.compile(p, re.I) for p in FORBIDDEN[label]]
     hits = []
     for rel in _prose_files():
+        if rel in _FORBIDDEN_EXEMPT_FILES:
+            continue
         try:
             txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
         except OSError:
@@ -442,7 +485,7 @@ _TAILORING_WORDS = re.compile(
 
 def test_lit_notes_are_not_tailored_to_a_reader():
     hits = []
-    for rel in _tracked("docs/lit/*.md"):
+    for rel in _shipping("docs/lit/*.md"):
         try:
             lines = (ROOT / rel).read_text(encoding="utf-8",
                                            errors="replace").split("\n")
@@ -592,7 +635,8 @@ def test_module_range_glosses_are_not_stale():
     methods = (ROOT / "docs" / "methods.md").read_text(encoding="utf-8")
     top = max(int(n) for n in re.findall(r"\bM(\d+)\b", methods))
     stale = []
-    for path in list((ROOT / "docs").rglob("*.md")) + [ROOT / "README.md",
+    from _fileset import tracked_and_new as _tan
+    for path in [ROOT / p for p in _tan("docs/*.md", "docs/**/*.md")] + [ROOT / "README.md",
                                                         ROOT / "rb5s6s" / "__init__.py"]:
         text = path.read_text(encoding="utf-8")
         for m in re.finditer(r"M0\s*[–-]\s*M?(\d+)", text):
@@ -681,7 +725,7 @@ def test_no_tracked_artifact_schedules_the_fixed_lock_session():
     offenders = []
     months = re.compile(r"\b(January|February|March|April|May|June|July|August|"
                         r"September|October|November|December)\b")
-    for rel in _tracked("scripts/*.py", "rb5s6s/*.py", "results/README.md"):
+    for rel in _shipping("scripts/*.py", "rb5s6s/*.py", "results/README.md"):
         txt = (ROOT / rel).read_text(encoding="utf-8", errors="ignore")
         for m in months.finditer(txt):
             line = txt[:m.start()].count("\n") + 1
@@ -887,6 +931,10 @@ _WAIST_EXEMPT = {
     "scripts/run_geometry_design.py",
     # this file, which has to name the numbers to guard them
     "tests/test_repo_hygiene.py",
+    # THE history file, the one place a superseded value is licensed to appear
+    # (2026-08-15: history is confined there and every other page states only
+    # what is live, so this guard exempts it BY DESIGN rather than by accident)
+    "docs/HISTORY.md",
 }
 
 
@@ -911,7 +959,7 @@ def test_no_live_claim_quotes_a_retired_waist():
                       r"\bwas\b|old |until |before |histor|EXCLUD|disfavou|"
                       r"previous|nominal|RETIRED|inference")
     offenders = []
-    for rel in _tracked("*.md", "docs/*.md", "docs/methods/*.md",
+    for rel in _shipping("*.md", "docs/*.md", "docs/methods/*.md",
                         "docs/notes/*.md", "scripts/*.py", "rb5s6s/*.py",
                         "results/*.md"):
         if rel in _WAIST_EXEMPT or rel.endswith("_prereg.md"):
@@ -929,3 +977,118 @@ def test_no_live_claim_quotes_a_retired_waist():
         "a retired waist (32/50/90 um) is quoted beside a live claim. The "
         "adopted value is constants.W0_MEASURED_M = 64 um. Say that, or mark "
         "the sentence as history:\n  " + "\n  ".join(offenders[:20]))
+
+
+def test_history_is_confined_to_the_history_file():
+    """Superseded values live in HISTORY.md and nowhere else.
+
+    The compromise the experimenter set on 2026-08-15, after a stale beam
+    waist repeated across three forward-looking documents outvoted the one
+    page that was right: keep the history, because the reason a number moved
+    is often the most useful thing about it, but keep it in ONE file so no
+    reader can mistake it for a live value.
+
+    This checks the architecture rather than every number: the history file
+    exists, says what it is for, is reachable from the documents that used to
+    carry history, and no other document announces itself as a history table.
+    """
+    hist = ROOT / "docs" / "HISTORY.md"
+    assert hist.is_file(), (
+        "docs/HISTORY.md is missing, so superseded values have nowhere "
+        "licensed to live and will scatter back into the working documents")
+    text = hist.read_text(encoding="utf-8")
+    assert "superseded" in text.lower(), (
+        "HISTORY.md no longer says what it is for")
+
+    # the page that used to hold the bound history must point at it, or a
+    # reader following the old path finds nothing
+    data = (ROOT / "docs" / "DATA.md").read_text(encoding="utf-8")
+    assert "HISTORY.md" in data, (
+        "docs/DATA.md no longer points at HISTORY.md, so the bound history "
+        "is unreachable from where it used to live")
+
+    # and no OTHER document may declare itself a history table
+    offenders = []
+    for rel in [f"docs/{q.name}" for q in (ROOT / "docs").glob("*.md")] + ["README.md"]:
+        if rel == "docs/HISTORY.md":
+            continue
+        f = ROOT / rel
+        if not f.is_file():
+            continue
+        body = f.read_text(encoding="utf-8").lower()
+        for phrase in ("## the bound history", "# the bound history",
+                       "history table is the one place"):
+            if phrase in body:
+                offenders.append(f"{rel}: contains {phrase!r}")
+    assert not offenders, (
+        "history has escaped HISTORY.md:\n  " + "\n  ".join(offenders))
+
+
+# A docstring that names a function the code no longer has is stale in a way no
+# phrase list can catch: the prose was true when written and the machinery moved
+# underneath it. Added 2026-08-16 with the N6 sweep, which found zero hits, so
+# this guard starts green and its job is to keep it that way.
+def test_a_docstring_names_no_identifier_the_tree_lacks():
+    """A docstring that writes `name()` claims a callable of that name exists.
+
+    ONLY THE CALL FORM IS CHECKED, and that narrowing is the whole design. A
+    bare backquoted word in this repository is as likely to be a CSV column, a
+    module basename, a directory, a status label or a literature key as an
+    identifier: the first version of this guard checked those too and returned
+    39 hits, every one a false positive. Trailing parentheses are the one
+    unambiguous claim that something is callable.
+
+    The haystack is what the tree DEFINES or IMPORTS, never its raw text, since
+    a docstring is part of the source of its own file and searching the text
+    makes the test vacuous. Both failure modes were found by planting, not by
+    reading (2026-08-16).
+    """
+    import ast
+
+    files = [p for r in ("rb5s6s", "scripts", "tests")
+             for p in (ROOT / r).rglob("*.py")]
+    src = {p: p.read_text(encoding="utf-8", errors="replace") for p in files}
+
+    # The haystack is what the tree DEFINES or IMPORTS, never its raw text.
+    # Searching the raw text makes this test vacuous, since a docstring is part
+    # of the source of the file that contains it, so every name it mentions is
+    # trivially "present". Caught by planting a fake name and watching the
+    # first version of this guard pass (2026-08-16).
+    known: set[str] = set()
+    for text in src.values():
+        try:
+            tree = ast.parse(text)
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef,
+                                 ast.ClassDef)):
+                known.add(node.name)
+            elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
+                known.add(node.id)
+            elif isinstance(node, ast.arg):
+                known.add(node.arg)
+            elif isinstance(node, ast.Attribute):
+                known.add(node.attr)
+            elif isinstance(node, ast.keyword) and node.arg:
+                known.add(node.arg)
+            elif isinstance(node, ast.alias):
+                known.add((node.asname or node.name).split(".")[0])
+    bad = set()
+    for path, text in src.items():
+        try:
+            tree = ast.parse(text)
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.Module, ast.FunctionDef,
+                                     ast.AsyncFunctionDef, ast.ClassDef)):
+                continue
+            doc = ast.get_docstring(node)
+            if not doc:
+                continue
+            for tok in re.findall(r"`([A-Za-z_][A-Za-z0-9_]{3,})\(\)`", doc):
+                if tok not in known:
+                    bad.add(f"{path.relative_to(ROOT)}: `{tok}`")
+    assert not bad, ("a docstring names an identifier the tree does not "
+                     "contain:\n  " + "\n  ".join(sorted(bad)))

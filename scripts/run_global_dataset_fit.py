@@ -261,7 +261,7 @@ def load_campaign_all():
             m = np.abs(nu - c0) <= adaptive_halfwidth(nu, v)
             out.append(dict(sess="camp", peak=pk, T=T, P=P, x=nu[m], v=v[m],
                             sg=sg[m], c0=c0, A0=float(lev.max()), b0=float(base),
-                            sl=f"camp{int(T)}"))
+                            sl=f"camp{int(T)}", tau=tau))
     return out
 
 
@@ -308,7 +308,7 @@ def load_rulers_t():
             m = np.abs(nu - c0) <= RULER_HALFWIN_MHZ
             out.append(dict(sess="ruler", peak=pk, T=T, P=0.225, x=nu[m],
                             v=v[m], sg=sg[m], c0=c0, A0=float(lev.max()),
-                            b0=float(base), sl=f"camp{int(T)}"))
+                            b0=float(base), sl=f"camp{int(T)}", tau=tau))
     return out
 
 

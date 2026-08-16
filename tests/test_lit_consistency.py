@@ -140,7 +140,10 @@ def _lit_notes(d):
     """The per-paper notes under docs/lit, which is every markdown file there
     except its README. The README is a door into the directory and carries no
     citekey frontmatter, so every check that reads frontmatter must skip it."""
-    return [p for p in sorted(d.glob("*.md")) if p.name != "README.md"]
+    from _fileset import tracked_and_new
+    rel = str(d.relative_to(ROOT))
+    return [ROOT / p for p in tracked_and_new(f"{rel}/*.md")
+            if not p.endswith("/README.md")]
 
 
 def _lit_keys():
@@ -163,9 +166,17 @@ def _lit_keys():
 def _manuscript_docs():
     """The prose docs that cite the literature (NOT docs/lit/*, whose bodies
     reference sibling keys in free prose)."""
-    return ([p for p in (ROOT / "docs").glob("*.md")]
-            + [p for p in (ROOT / "docs" / "methods").glob("*.md")]
-            + [ROOT / "README.md"])
+    from _fileset import tracked_and_new
+    # :(glob) pathspecs, because a BARE git pathspec lets * cross slashes:
+    # "docs/*.md" matches 169 files recursively where this selector wants the
+    # 22 top-level ones. Verified 2026-08-15 by domain diff (31 both ways).
+    # docs/wiki/*.md joined 2026-08-16. The wiki pages cite the same
+    # literature the chapters do, so a citekey typo there has to fail here
+    # too. They sit one level down like the chapters, so the same explicit
+    # glob per directory is what includes them.
+    return [ROOT / p for p in
+            tracked_and_new(":(glob)docs/*.md", ":(glob)docs/methods/*.md",
+                            ":(glob)docs/wiki/*.md", "README.md")]
 
 
 def _cited_keys():
@@ -449,9 +460,8 @@ def test_narrative_docs_do_not_argue_from_unverified_papers():
                     "note at all and sits in the KNOWN_DANGLING allowlist)")
 
     CATALOGUES = {"docs/LITERATURE.md", "docs/LITERATURE_INDEX.md"}
-    import subprocess
-    tracked = subprocess.run(["git", "ls-files", "docs/*.md", "README.md"],
-                             cwd=ROOT, capture_output=True, text=True).stdout.split()
+    from _fileset import tracked_and_new
+    tracked = tracked_and_new("docs/*.md", "README.md")
     hits = []
     for rel in tracked:
         if rel in CATALOGUES or "/lit/" in rel:
@@ -526,7 +536,7 @@ UNDATED_VERIFIED = {
     "biraben2019", "borde1976", "chevrollier2012", "fioretti1998",
     "gerginov2018", "gomez2005", "grimm2000", "hamilton2023",
     "lehmann2021", "martin2018", "newman2021", "nieddu2019", "poulin2002",
-    "rajasree2020", "rajasree2020spin", "safronova2004", "safronova2006",
+    "rajasree2020", "safronova2004", "safronova2006",
     "sautenkov2026", "snadden1996", "spiegelman2022", "stalnaker2006",
 }
 

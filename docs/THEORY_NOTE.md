@@ -463,8 +463,10 @@ order.
 
 *Hyperfine pumping.* The excited state cascades through $5P$, whose decay does
 not preserve $F$, so an atom that cycles during its transit can land in the
-other ground hyperfine level and leave the resonance 3 GHz behind. Seven to
-fifteen per cent of transiting atoms decay at least once. In the weak-drive
+other ground hyperfine level and leave the resonance 3 GHz behind. Eight to
+fifteen per cent of transiting atoms decay at least once, the ends being the
+signal-weighted average and the on-axis value, and the smaller 2 to 6 per cent
+of them land in the other level and are actually lost. In the weak-drive
 limit the added width is **exactly the branching fraction times the saturation
 width**, everything else cancelling because $\Gamma_{6S}/2\pi$ *is*
 $\Gamma_\text{FWHM}$, which takes the companion-to-ramp ratio to 4.9–6.2. The

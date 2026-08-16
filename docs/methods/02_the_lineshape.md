@@ -90,14 +90,12 @@ $\Gamma_\text{nat}$ computed from $\tau$ in `constants.py`.
 ### 2.2 Collisional broadening: the same Lorentzian, grown by density
 
 In the **impact approximation** ([Baranger](../lit/baranger1958.md), *Phys. Rev.* **112**, 855 (1958)),
-a collision with another Rb atom randomizes the optical phase in a time much
-shorter than the mean time between collisions.
-Random phase interruptions at mean rate $1/\tau_c$ are, statistically,
-indistinguishable from an extra decay channel: they add a term $1/\tau_c$ to
-the coherence decay rate. The line therefore *stays Lorentzian* and its width
-grows linearly with collision rate, i.e. linearly with density:
+a collision randomizes the optical phase far faster than atoms collide, which
+keeps the line Lorentzian and grows its width linearly with density:
 
 $$\gamma_\text{coll}=\beta_\text{self}N$$
+
+The derivation is in [collisional self-broadening](../wiki/self-broadening.md).
 
 Baranger's own dilute-gas/binary-collision validity condition (his interaction
 volume $U\ll n^{-1}$) holds by a margin of about 140× at our densest point,
@@ -123,22 +121,13 @@ correlation), with $\gamma_\text{coll}$ entering the fits in
 
 ### 2.3 Laser linewidth, and why it enters *twice*
 
-Let the instantaneous laser frequency be $\nu_L(t)=\bar\nu_L+\delta(t)$, with
-$\delta$ the frequency jitter. Unlike the Doppler shift ([§1.1](01_the_measurement.md)), which has
-opposite signs for the two counter-propagating photons and therefore cancels,
-the laser-frequency fluctuation is common to both photons, being the same
-source retro-reflected onto itself, and therefore adds. For the counter-propagating
-pair the two-photon detuning is
-
-$$\big[\nu_L(1+\tfrac{v}{c})\big]+\big[\nu_L(1-\tfrac{v}{c})\big]-\nu_0
-=2\nu_L-\nu_0=2\big(\bar\nu_L-\tfrac{\nu_0}{2}\big)+2\delta(t)$$
-
-confirming the jitter appears as $2\delta$: the two-photon detuning is **twice
-as sensitive to laser-frequency noise** as a single pass. If $\delta$ is the
-sum of many small
-independent wander sources, the central-limit theorem makes its distribution
-Gaussian, so we model the laser kernel as a **Gaussian** $G(\nu)$ (a Lorentzian
-variant is retained as a model-form check, §2.5). **No independent diagnostic
+Because the two-photon detuning SUMS both photons, laser jitter enters twice
+where the Doppler shift cancels, so the line is twice as sensitive to
+laser-frequency noise as a single pass would be
+([Doppler-free two-photon spectroscopy](../wiki/doppler-free-two-photon.md)
+carries that derivation). The kernel is modelled as a **Gaussian** $G(\nu)$
+on central-limit grounds ([the Voigt profile](../wiki/voigt-profile.md)), with
+a Lorentzian variant retained as a model-form check, §2.5. **No independent diagnostic
 of the laser's jitter exists for either epoch.** No reference-cavity beat
 note or self-heterodyne measurement was recorded, so $\sigma_\text{laser}$ is
 inferred purely from the fitted lineshape, never benchmarked against a
@@ -162,53 +151,31 @@ factor 2.
 ### 2.4 The Voigt profile: Lorentzian $\otimes$ Gaussian
 
 Convolving the homogeneous Lorentzian with the Gaussian laser kernel gives the
-**Voigt profile**,
+**Voigt profile**, a Gaussian-like core with Lorentzian wings and no closed
+form, so we build it on a fine grid. Its definition, the Olivero-Longbothum
+width approximation used for seeds, and the reason the two widths trade
+against each other are in [the Voigt profile](../wiki/voigt-profile.md).
 
-$$V(\nu)=\int_{-\infty}^{\infty}L(\nu';\Gamma)G(\nu-\nu';\sigma)d\nu'$$
-
-a Gaussian-like core with Lorentzian wings and no closed form (we build it on
-a fine grid). For seeds and sanity we use the Olivero–Longbothum FWHM
-approximation
-
-$$f_V\approx 0.5346f_L+\sqrt{0.2166f_L^2+f_G^2}$$
-
-**The property that dominates the statistics:** near the line centre, modest
-increases in either the Gaussian or Lorentzian width produce very similar
-changes in the Voigt profile, so in any real fit $\sigma_\text{laser}$ and
-$\gamma_\text{coll}$ are strongly anti-correlated (we measure
-$\mathrm{corr}\approx-0.85$). The *total* width is well determined and the
-*split between the two* is fragile. Section 4 covers how this split is handled. *Code:* `model_profile()`, `voigt_fwhm()`.
+**The property that dominates the statistics** is that trade: in any real fit
+$\sigma_\text{laser}$ and $\gamma_\text{coll}$ are strongly anti-correlated,
+and here we measure $\mathrm{corr}\approx-0.85$. The *total* width is well
+determined and the *split between the two* is fragile. Section 4 covers how
+this split is handled. *Code:* `model_profile()`, `voigt_fwhm()`.
 
 ### 2.5 Transit-time broadening: the Lehmann cusp, not a Gaussian
 
-An atom crossing a beam of waist $w_0$ with transverse speed $v$ is
-illuminated for only
-
-$$\tau_t\sim \frac{w_0}{v}$$
-
-and a finite interaction time Fourier-broadens the response by
-$\Delta\nu_t\sim 1/(2\pi\tau_t)\sim v/(2\pi w_0)$. For a *single* speed the
-atom sees a Gaussian intensity envelope in time as it crosses, giving a
-roughly Gaussian frequency response of width $\propto v/w_0$. But we must
-average over the MB speed distribution. Since the mean speed scales as
-$\langle v\rangle\propto\sqrt{T/m}$, the **width scales as**
+A finite crossing time Fourier-broadens the line, and averaging over the
+Maxwell-Boltzmann speed distribution gives a width scaling as
 
 $$\boxed{ \Delta\nu_\text{transit} \propto \frac{\sqrt{T}}{w_0} }$$
 
-and our estimate is $\sim0.9$ MHz at 110 °C. The **shape** matters as much as
-the width. Averaging Gaussians whose widths span the whole thermal range (many
-narrow ones from slow atoms, a few broad ones from fast atoms) does *not* give a
-Gaussian. Slow atoms pile up sharp, narrow responses at line center → a
-**cusp** (a sharp point) at $\nu=0$, and fast atoms contribute broad tails → wings
-that fall off **exponentially**, far fatter than a Gaussian's. This is not a
-phenomenological guess: [Biraben, Bassini and Cagnac](../lit/biraben1979.md) (*J. Phys. (Paris)* **40**,
-445 (1979)) derived the finite-transit Doppler-free two-photon line as exactly
-a **Lorentzian convolved with a two-sided exponential** (the general treatment
-is [Bordé](../lit/borde1976.md), *C. R. Acad. Sci. B* **282**, 341 (1976), and
-the modern closed form in the transit-time limit is
-[Lehmann](../lit/lehmann2021.md), *J. Chem. Phys.* **154**, 104105 (2021), hence
-"Lehmann lineshape"). So our transit kernel is that established
-two-sided exponential,
+with our estimate $\sim0.9$ MHz at 110 °C. The **shape** matters as much as
+the width. The thermal average of many Gaussians is not a Gaussian: it is a cusped
+profile with exponential wings, derived as a Lorentzian convolved with a
+two-sided exponential, and
+[transit-time broadening](../wiki/transit-time-broadening.md) carries that
+derivation with its Biraben, Borde and Lehmann lineage. Our transit kernel is
+that established two-sided exponential,
 
 $$K_\text{transit}(\nu)\propto e^{-|\nu|/b},\qquad \text{FWHM}=2b\ln 2$$
 

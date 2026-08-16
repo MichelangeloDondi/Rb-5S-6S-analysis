@@ -58,8 +58,8 @@ vapour-cell result.
 The full fit ([§4.2](06_the_statistics.md),
 `fit_global`), which lets $\sigma_\text{laser}$ drift per temperature
 and weights each block by its own correlation time, returns
-$\beta_{85}=0.0535(43)$ and $\beta_{87}=0.0528(47)$ MHz per $10^{12}$ cm⁻³:
-**no isotope dependence**, the two differing by $0.0007$, well inside either
+$\beta_{85}=0.0534(43)$ and $\beta_{87}=0.0534(47)$ MHz per $10^{12}$ cm⁻³:
+**no isotope dependence**, the two differing by $0.0000$, well inside either
 error bar, and dropping any one peak moves the value by at most $0.007$. It is
 a *model-based* value, and it sits **above** both the per-peak model fits
 (0.013–0.018) and all four model-independent per-peak bounds
@@ -80,7 +80,7 @@ The paper must quote all four, not the optimistic $\pm0.004$ alone.
 So the conservative model-independent bound, not this value, stays the headline.
 Its real value is the isotope test, and the in-sample consistency check
 (`run_sigma_laser_sharing`) that the four peaks at each temperature agree on a
-single $\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.28/0.59/0.29,
+single $\sigma_\text{laser}$. That check is *passive*: χ²/dof = 0.28/0.59/0.32,
 all well below 1, so the peak-blocks are closer to the shared model than their
 own error bars, and the test cannot discriminate. It does not license the
 sharing, it merely fails to contradict it (RESULTS §σ_laser sharing). It also
@@ -164,7 +164,7 @@ coverage (that route reads 1.0 MHz un-inflated and 2.4 MHz inflated, both kept
 in the CSV as replaced diagnostics). The quoted limit is therefore a
 **profile likelihood**: scan $\kappa$ upward, re-minimizing the per-peak cores,
 to the one-sided crossing $\Delta\chi^2=2.706\times\chi^2_\text{red}$ (the
-threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=5.5$,
+threshold scaled by the block-to-block over-dispersion $\chi^2_\text{red}=3.7$,
 the same conservative rescale the $\sqrt{\chi^2_\text{red}}$ inflation applies
 elsewhere). It gives a 95% profile-likelihood bound of 0.63 MHz from the
 widths alone. The joint three-session full-profile fit
@@ -181,7 +181,7 @@ comparison is a direct test of it. The comparison is on magnitude and is
 therefore untouched by the sign disagreement between them
 ([THEORY_NOTE §5](../THEORY_NOTE.md)).
 The reading is a conservative bound, not a sensitivity claim: the width
-channel is over-dispersed ($\chi^2_\text{red}=5.5$, block-to-block drift),
+channel is over-dispersed ($\chi^2_\text{red}=3.7$, block-to-block drift),
 so it does not cleanly resolve or exclude $\kappa$. The $0.63$ MHz limit uses the
 inflated threshold and brackets the predicted $0.35$ without measuring it. It bounds the drift, not the
 coefficient's scale. It is also loose by a measured factor, because the model
@@ -266,7 +266,7 @@ baseline (not loaded here).
 
 At the
 cold-dim 70 °C corner the BIC comparison ([§4.7](06_the_statistics.md)) gives
-$\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.6/-0.1$ across
+$\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.7/-0.1$ across
 peaks, a **statistical null**: three of four have $|\Delta\text{BIC}|$ below 2
 (the "not worth a mention" band) and the fourth is 3.6 (weak, and it is the
 same peak, 993.4192 nm, whose fits are noisiest elsewhere), against a claim gate of

@@ -51,6 +51,11 @@ DATA_DRIVEN = [
     # they do. It was unguarded until now, which is how a figure goes stale
     # without anything saying so.
     "fig19_width_trends",
+    # Added 2026-08-16 with the landing-page ledger. Every value it draws comes
+    # from results/beta_self_probe.csv, results/stark_joint.csv and
+    # results/projections.csv, so it goes stale exactly when they move, which
+    # is the criterion this list encodes.
+    "fig32_achieved_vs_achievable",
 ]
 
 

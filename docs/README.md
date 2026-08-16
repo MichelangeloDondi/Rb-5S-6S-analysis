@@ -31,8 +31,10 @@ forward plan. [STYLE.md](STYLE.md) is the writing contract this
 documentation is held to, mechanically.
 
 Reference layers: [GLOSSARY.md](GLOSSARY.md) for every term and symbol,
+[wiki/](wiki/README.md) for one page per concept, method, effect and
+technique, with the theory, its use here and its failure modes,
 [REPRODUCING.md](REPRODUCING.md) for what runs from a clone and what needs
-the raw traces,
+data that is not in it,
 [LITERATURE.md](LITERATURE.md) with its
 [index](LITERATURE_INDEX.md) and per-paper notes under [lit/](lit/),
 working notes under [notes/](notes/),

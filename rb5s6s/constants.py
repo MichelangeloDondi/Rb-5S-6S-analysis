@@ -564,13 +564,15 @@ over 8.5 min, ~4.35 MHz/min average, i.e. CONSISTENT with this figure. The two
 records reading ~0.18 MHz/min are dated 2025-06-11 and 2025-07-23, five weeks
 before and five days after acquisition, and cannot speak for it. The retracted
 reading is recorded in docs/PREREGISTRATION_timestamps.md 8.2.
-Six wavemeter records are tabulated in docs/APPARATUS.md 6, with lock state
+Ten wavemeter records are tabulated in docs/APPARATUS.md 6, with lock state
 where known: the reference-cavity lock is worth a factor 2-5 (0.19 MHz/min
 with it, 0.4-1.0 without), and settled drift is ~1 MHz/min on etalon lock
 alone. This constant bounds all of them, which is what an envelope should do.
-Caveat on the in-campaign record: it is a smooth SETTLING TRANSIENT (local slope
-falls 9.0 -> 2.4 MHz/min across 8.5 min), so 4 MHz/min covers the post-tuning
-transient; the steady in-campaign rate is not established by any photograph.
+Caveat on the TWO in-campaign records, which say different things. The 17:03
+one is a smooth SETTLING TRANSIENT (local slope falls 9.0 -> 2.4 MHz/min across
+8.5 min), so 4 MHz/min covers the post-tuning transient. The 02:37 one, taken
+mid-acquisition, holds StdDev 100 kHz across 24 min with 2 MHz min-to-max.
+Neither establishes a steady in-campaign RATE, which no photograph does.
 
 RESOLVED 2026-07-23 (the "until then" above arrived): the recovered clock
 measured the in-campaign rate (scripts/run_drift_settling.py, results report

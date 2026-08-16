@@ -57,8 +57,8 @@ a new quantity cannot ship untagged.
 | `ENVELOPE` | as in section 1: an order of magnitude, re-derive before publication |
 | `ARTIFACT` | identified as an instrumental or statistical artifact, kept so the identification stays visible. In the vocabulary and currently carried by no row: the one identified artifact, the shot-noise residual skew, is discussed in `RESULTS.md` C3c rather than tagged |
 
-Counts across the ledger as of 2026-08-10: 3077 `DIAGNOSTIC`, 222 `PRELIM`, 208
-`CALIB`, 139 `ENVELOPE`, 121 `BOUND`, 55 `MEASURED`, 21 `NULL`. The
+Counts across the ledger as of 2026-08-15: 3150 `DIAGNOSTIC`, 425 `PRELIM`, 208
+`CALIB`, 149 `ENVELOPE`, 122 `BOUND`, 55 `MEASURED`, 21 `NULL`. The
 preponderance of `DIAGNOSTIC` is expected and is not a weakness: most rows in
 this ledger are checks, counts and errors-on-other-rows rather than results, and
 the results are deliberately few.

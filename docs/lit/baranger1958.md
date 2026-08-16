@@ -28,7 +28,8 @@ summary: >
   nondegenerate one-state line the width is w = (1/2) n v sigma via the
   optical theorem (Eq. 72c) -- explicitly linear in perturber density n. This
   is the specific result docs/methods/02_the_lineshape.md Sec. 2.2 invokes
-  for gamma_coll = beta_self * N, and it is also the n*v*sigma scaling
+  for gamma_coll = beta_self * N (the derivation now lives in
+  docs/wiki/self-broadening.md), and it is also the n*v*sigma scaling
   rb5s6s/vanderwaals.py (M18) uses to turn a computed C6 into a predicted
   beta_self(6S). Baranger does not supply the C6-to-sigma step itself; that
   is the module's separately-flagged Lindholm-Foley prefactor.
@@ -165,7 +166,8 @@ than something the lineshape itself must correct for.
 ## Bridges to this repo
 
 **What the repo's chain actually rests on.** `docs/methods/02_the_lineshape.md`
-Sec. 2.2 cites Baranger for $\gamma_\text{coll}=\beta_\text{self}N$: a
+Sec. 2.2 and `docs/wiki/self-broadening.md`, which carries the derivation,
+cite Baranger for $\gamma_\text{coll}=\beta_\text{self}N$: a
 Lorentzian collisional term whose width grows linearly with density. That is
 precisely the one-state, isolated-line result above, $w=(1/2)nv\sigma$ (Eq.
 72c) -- not a generic textbook approximation but this paper's Eq. (72c)

@@ -51,3 +51,6 @@ docs/*.tex
 # local tool scratch and nested checkouts
 .claude/
 docs/reference_setup/photos/
+
+# the gate's verdict sentinel: a local artefact, never committed
+.ci_gate_verdict

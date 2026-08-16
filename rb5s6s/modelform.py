@@ -43,6 +43,104 @@ SHAPES = {"voigt": ("gamma_coll", "gauss"),
           "lehmann": ("gamma_coll", "exp"),
           "full": ("gamma_coll", "gauss", "exp")}
 
+# which forms contain which, so a comparison can check its own arithmetic
+CONTAINS = {"full": ("voigt", "lehmann")}
+
+
+def info_criteria(chi2: float, k: int, n: int,
+                  effective_n: float | None = None) -> Dict:
+    """The criterion PANEL for a weighted-least-squares fit, on one convention.
+
+    Four members, a robustness check across plausible selection conventions
+    rather than four votes (AIC and AICc are near-kin, as are the two BIC
+    variants, so agreement between all four is two families agreeing):
+
+        AIC     = chi2 + 2k                targets predictive efficiency
+                                           under its assumptions
+        AICc    = AIC + 2k(k+1)/(n-k-1)    AIC's small-sample correction,
+                                           converging to AIC as n grows
+        BIC     = chi2 + k ln(n)           motivated by consistency UNDER a
+                                           true-model-in-the-candidate-set
+                                           interpretation, which this
+                                           repository's own misspecification
+                                           concerns do not grant; over-counts
+                                           evidence when samples correlate
+        BIC_eff = chi2 + k ln(effective_n) BIC with the repository's
+                                           effective-sample-size adjustment
+                                           (n/tau_int in practice), a
+                                           repository-defined SENSITIVITY
+                                           criterion and not an established
+                                           theorem
+
+    `effective_n` is a MODELLING CHOICE and must be passed explicitly by the
+    caller who can defend it (sharing_bic passes n/tau_int with tau measured
+    on the wing). When it is None, `bic_eff` is omitted from the result
+    rather than silently equalling `bic`, so no reader can mistake an
+    unadjusted number for an adjusted one.
+
+    Preconditions for COMPARING any of these across two fits: same likelihood
+    and data basis, same objective and weights, consistent parameter
+    accounting. Where those fail the panel is not comparable and should not
+    be quoted. At the sites in this tree ln(n) runs from 2.30 (the noise
+    law's ten level bins) to 12.91 (the global fit's 404615 points, where BIC
+    charges six times what AIC does), which is why the panel is reported
+    numerically everywhere instead of one member being quoted alone.
+    """
+    lnn = float(np.log(n)) if n > 1 else 0.0
+    aic = chi2 + 2.0 * k
+    denom = n - k - 1
+    aicc = aic + (2.0 * k * (k + 1) / denom if denom > 0 else np.inf)
+    out = {"chi2": float(chi2), "k": int(k), "n": int(n),
+           "aic": float(aic), "aicc": float(aicc), "bic": float(chi2 + k * lnn),
+           "penalty_per_param_aic": 2.0, "penalty_per_param_bic": lnn}
+    if effective_n is not None:
+        if effective_n <= 1:
+            raise ValueError(f"effective_n={effective_n} is not a sample size")
+        out["effective_n"] = float(effective_n)
+        out["bic_eff"] = float(chi2 + k * np.log(effective_n))
+    return out
+
+
+def compare_ic(simple: Dict, rich: Dict, nested: bool = True,
+               tol: float = 0.01) -> Dict:
+    """Compare two fitted forms, positive favouring `rich`.
+
+    `simple` and `rich` are dicts carrying chi2, k and n (what `fit_form`
+    returns). Differences are reported under every criterion, because which
+    one is used is a decision to be made in the open.
+
+    THE NESTING CHECK IS THE POINT. If `rich` contains `simple` as a special
+    case then its chi-squared CANNOT be larger at the true optimum, so a
+    positive `chi2_rich - chi2_simple` is a statement about the optimizer and
+    not about the data. Measured on the committed `results/modelform.csv`
+    2026-08-15, all four peaks violate it, by up to 3.23 for peak 4192, while
+    the voigt-against-lehmann differences being interpreted there run 0.44 to
+    3.70. The convergence residue and the signal are the same size, so the
+    comparison cannot be read until the fits converge. A criterion applied to
+    unconverged fits reports the optimizer's luck under a Greek letter.
+    """
+    out = {"dchi2": simple["chi2"] - rich["chi2"],
+           "dk": rich["k"] - simple["k"]}
+    crits = ["aic", "aicc", "bic"]
+    if "bic_eff" in simple and "bic_eff" in rich:
+        crits.append("bic_eff")
+    for crit in crits:
+        out["d" + crit] = simple[crit] - rich[crit]
+    # the numerical deltas are the output; agree/split as a categorical would
+    # flatten three different situations (marginal, moderate, large-but-
+    # opposed) into one label
+    signs = {np.sign(out["d" + c]) for c in crits if out["d" + c] != 0}
+    out["panel_split"] = bool(len(signs) > 1)
+    viol = nested and (rich["chi2"] - simple["chi2"]) > tol
+    out["nesting_violated"] = bool(viol)
+    out["interpretable"] = not viol
+    if viol:
+        out["note"] = (f"the richer form fits worse by "
+                       f"{rich['chi2'] - simple['chi2']:.2f} chi2, which it "
+                       f"cannot do at its own optimum: this is a convergence "
+                       f"failure and no criterion can be read off it")
+    return out
+
 
 def _profile(kind, shape, grid_pad=6.0):
     """Build (grid, area-normalized profile) for a model form from its shape
@@ -104,17 +202,36 @@ def fit_form(freqs: List[np.ndarray], volts: List[np.ndarray], kind: str,
         raise RuntimeError(f"{kind} fit failed: {sol.message}")
     n = sum(len(x) for x in wv); k = len(p0)
     chi2 = float(2.0 * sol.cost)
-    return {"kind": kind, "chi2": chi2, "k": k, "n": n,
-            "bic": chi2 + k * np.log(n),
-            "chi2_red": chi2 / max(n - k, 1),
-            "shape": {names[j]: float(sol.x[j]) for j in range(nshape)}}
+    out = {"kind": kind, "chi2_red": chi2 / max(n - k, 1),
+           "shape": {names[j]: float(sol.x[j]) for j in range(nshape)}}
+    # every criterion, from the one helper, so no site rolls its own penalty
+    out.update(info_criteria(chi2, k, n))
+    return out
 
 
 def compare_forms(freqs, volts, law=None, kinds=("voigt", "lehmann", "full")) -> Dict:
-    """Fit each form; return per-form results and the voigt-vs-lehmann dBIC
-    (positive => lehmann/cusp preferred)."""
+    """Fit each form; return per-form results, the voigt-vs-lehmann difference
+    under every criterion, and the nesting checks on the richer form.
+
+    Voigt and Lehmann carry the SAME parameter count (two shape parameters
+    each, SHAPES above), so every penalty term cancels in their difference and
+    that comparison is a bare chi-squared comparison whatever criterion is
+    named. It cannot be changed by moving from BIC to AIC, at any n. The
+    comparisons that DO respond to the criterion are the ones against `full`,
+    which carries one shape parameter more and contains both.
+    """
     res = {k: fit_form(freqs, volts, k, law) for k in kinds}
     out = {"forms": res}
     if "voigt" in res and "lehmann" in res:
+        # kept under its historical name, and it is a chi-squared difference
         out["dBIC_voigt_minus_lehmann"] = res["voigt"]["bic"] - res["lehmann"]["bic"]
+        out["voigt_vs_lehmann"] = compare_ic(res["voigt"], res["lehmann"],
+                                             nested=False)
+    for rich, simples in CONTAINS.items():
+        if rich not in res:
+            continue
+        for simple in simples:
+            if simple in res:
+                out[f"{simple}_vs_{rich}"] = compare_ic(res[simple], res[rich],
+                                                        nested=True)
     return out

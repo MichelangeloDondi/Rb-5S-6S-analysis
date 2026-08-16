@@ -18,10 +18,8 @@ IMG_HTML = re.compile(r"<img[^>]+src=\"([^\"]+)\"")
 
 
 def _tracked_docs():
-    import subprocess
-    out = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
-                         capture_output=True, text=True).stdout.split()
-    return [ROOT / f for f in out]
+    from _fileset import tracked_and_new
+    return [ROOT / f for f in tracked_and_new("*.md")]
 
 
 def _referenced_images():

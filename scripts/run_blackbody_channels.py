@@ -11,7 +11,7 @@ different answers, which is the reason for a script rather than a sentence.
   (b) Does it touch the 795 nm fluorescence we detect?
 
 WHAT SETS EVERY ANSWER is one number. At 403 K the blackbody PHOTON spectrum
-peaks near 7.2 um, and every line in this cascade is between 0.79 and 2.8 um.
+peaks near 9.1 um, and every line in this cascade is between 0.79 and 2.8 um.
 The occupation number goes as exp(-h nu / kT), so a factor of nine in
 wavelength is a factor of 1e-12 in photons.
 
@@ -30,7 +30,7 @@ wavelength is a factor of 1e-12 in photons.
       that came from Nieddu 2019 on a different bench and was reconciled with
       the in-campaign photograph only in 2026 (APPARATUS). Nothing here rests
       on it: a GaAs response ends near 900 nm, but ANY photocathode whose red
-      edge is below a couple of microns is blind to a 7.2 um peak, and no
+      edge is below a couple of microns is blind to a 9.1 um peak, and no
       photocathode has one above that. In the band it can respond to at all the whole
       cell wall emits 3.0e3 photons per second at 70 C and 3.6e6 at 130 C,
       before any collection solid angle and before the filters. That is a
@@ -101,6 +101,10 @@ from rb5s6s.polarizability import (E_6S_CM, LINES_6S, alpha_5s,  # noqa: E402
 H = 6.62607015e-34
 KB = 1.380649e-23
 CL = 2.99792458e8
+# Displacement constants, lambda times T at the peak. The two differ because
+# photon number is energy divided by h nu, which shifts the maximum.
+WIEN_ENERGY_UM_K = 2897.8          # energy per unit wavelength
+PHOTON_PEAK_UM_K = 3669.7          # photon number per unit wavelength
 EPS0 = 8.8541878128e-12
 A0 = 5.29177210903e-11
 E_C = 1.602176634e-19
@@ -112,7 +116,7 @@ CELL_D_M, CELL_L_M = 0.025, 0.100      # EXPERIMENTER, 10 per cent, see APPARATU
 # bench, and APPARATUS records how it was reconciled with the in-campaign
 # photograph), and DATASHEET for the band itself, not confirmed against the
 # sheet. Neither matters: any cathode whose red edge is below a couple of
-# microns is blind to a 7.2 um peak, so widening this band by an octave, or
+# microns is blind to a 9.1 um peak, so widening this band by an octave, or
 # swapping the tube, changes nothing that follows.
 CATHODE_NM = (300.0, 900.0)
 # The 6S to 6P resonances sit INSIDE the 403 K blackbody band, so the shift
@@ -242,8 +246,14 @@ def alpha6s_fractional_band() -> float:
 def main() -> int:
     print("=" * 78)
     print("WHAT SETS EVERY ANSWER")
+    # PHOTON number per unit wavelength peaks at hc/k divided by 3.9207,
+    # which is 3669.7 um K. Wien's familiar 2897.8 um K is the peak of the
+    # ENERGY spectrum and is a different quantity: this line quoted it and
+    # called it the photon peak until 2026-08-16. Nothing computed below
+    # depended on it, since every rate comes from h nu / k T line by line.
     print(f"  the blackbody photon spectrum at 130 C peaks near "
-          f"{2897.8/403.15:.1f} um (Wien)")
+          f"{PHOTON_PEAK_UM_K/403.15:.1f} um "
+          f"(the energy spectrum peaks at {WIEN_ENERGY_UM_K/403.15:.1f} um)")
     print("  every line of this cascade is between 0.79 and 2.8 um")
     print()
     print("OCCUPATION NUMBERS AND THE RATES THEY DRIVE, at 130 C")
@@ -292,9 +302,9 @@ def main() -> int:
     print("    is the photocathode rather than the filters. The R636-10 in its")
     print("    PXT1/M housing is GaAs and stops near "
           f"{CATHODE_NM[1]:.0f} nm, so it cannot")
-    print("    see the 7.2 um peak whatever the 50 dB of filtering does. That")
+    print("    see the 9.1 um peak whatever the 50 dB of filtering does. That")
     print("    tube attribution is ASSUMED rather than measured here, and it")
-    print("    does not matter: no photocathode of any kind responds at 7 um.")
+    print("    does not matter: no photocathode of any kind responds at 9 um.")
     area = math.pi * CELL_D_M * CELL_L_M + 2.0 * math.pi * (CELL_D_M / 2) ** 2
     print()
     print(f"    cell inner area {area*1e4:.1f} cm^2, whole-wall emission, no")

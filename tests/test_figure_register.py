@@ -44,7 +44,12 @@ TARGETS = [ROOT / "scripts" / "make_figures.py",
            # fig9's generator: it draws a tracked figure, so it is held to the
            # same register and the same footer rule as the other two. It was
            # structurally exempt from both until 2026-08-04.
-           ROOT / "scripts" / "run_polarizability_ladder.py"]
+           ROOT / "scripts" / "run_polarizability_ladder.py",
+           # The wiki teaching panels (2026-08-16). They draw no committed
+           # result and live under docs/wiki/figures/, but a reader meets
+           # their axis labels and titles exactly as they meet the gallery's,
+           # so they are held to the same register and the same footer rule.
+           ROOT / "scripts" / "make_wiki_figures.py"]
 
 # Kept as a module-level constant (not inline in the walker) so a future
 # addition to the register rule extends this list instead of re-deriving it.

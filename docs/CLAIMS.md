@@ -318,7 +318,7 @@ would add:
 - A demonstration of the drift-immune third-cumulant readout, under a
   named condition: the ramp asymmetry reaches detection only with the
   small-waist option (a tighter focus raises S₀ about sixteenfold over
-  the dataset's 64 µm waist, fourteenfold over the planned 60 µm), which
+  the dataset's 64 µm waist), which
   the plan carries as a second-stage item, and the cumulant's sign
   depends on collection geometry that would have to be measured in the
   same session. The fixed lock alone does not reach this. The size of

@@ -6,7 +6,7 @@ is on the front page under Reproduce. This is the detail behind it.
 
 ## The runner, and the twelve scripts outside it
 
-`bash scripts/run_all.sh` executes 25 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 27 analysis stages in dependency order,
 then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
@@ -21,7 +21,7 @@ the printed digit.
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
 gives the versions, the per-column sizes and the reasoning.
 
-The runner's stages write 31 of the 43 committed CSVs. The other twelve each
+The runner's stages write 31 of the 46 committed CSVs. The other twelve each
 have their own script, held out for one of two reasons.
 
 ### Five need trees that stay outside the repository

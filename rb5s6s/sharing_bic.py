@@ -25,10 +25,18 @@ the ln(N) penalty, and on this archive it flips the verdict: with raw N the per-
 block fit's tiny chi2 gain (the archive's noise model whitens by sqrt(tau_int),
 tau ~ 3.5) is inflated ~tau-fold and per_block "wins" (dBIC ~ -46); with the
 matching EFFECTIVE sample size N_eff = N/tau and the whitened chi2, per_T wins
-(dBIC ~ +62). The effective-N BIC is the statistically correct one -- you cannot
-treat correlated samples as independent -- so it is the primary number here; the
-raw-N value is reported only as the cautionary diagnostic it is. (This module
-returns both; `dBIC` is the effective one, `dBIC_raw` the naive one.)
+(dBIC ~ +62). N_eff = N/tau_int is this repository's effective-sample-size
+adjustment, intended to stop correlated samples being counted as independent
+evidence. It is a reasonable approximation and not a theorem: substituting
+N_eff into BIC does not make the result a theoretically established criterion
+for this likelihood, so read it as the repository-defined sensitivity
+criterion it is, primary here only because the raw-N alternative is
+demonstrably worse on correlated data. (This module returns both; `dBIC` is
+the effective one, `dBIC_raw` the naive one. Under AIC, whose penalty ignores
+N entirely, the nine extra parameters cost 18 against the 24.6 chi2 they buy
+and the verdict REVERSES, which is recorded in docs/notes/
+model_selection_prereg.md as the one criterion-sensitive comparison in the
+tree.)
 
 WHAT THIS DOES AND DOES NOT SETTLE. Even the effective-N dBIC scores PARSIMONY --
 whether the data can pay for 9 extra parameters -- not the PHYSICS of sharing.

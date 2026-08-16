@@ -116,7 +116,8 @@ repository until 2026-07-30.
 
 ## Bridges to this repository -- kernel-fidelity verdict
 
-Our `methods/02_the_lineshape.md` S2.5 states that Biraben, Bassini and
+Our `methods/02_the_lineshape.md` S2.5, with the derivation in
+`docs/wiki/transit-time-broadening.md`, states that Biraben, Bassini and
 Cagnac "derived the finite-transit Doppler-free two-photon line as exactly
 a Lorentzian convolved with a two-sided exponential," giving
 K_transit(nu) ~ exp(-|nu|/b), FWHM = 2b*ln2. That is a faithful, essentially

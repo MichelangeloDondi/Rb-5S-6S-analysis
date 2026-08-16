@@ -46,9 +46,28 @@ GENERATED = {
 
 
 def _tracked_markdown() -> list[str]:
-    out = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
-                         capture_output=True, text=True).stdout.split()
-    return sorted(f for f in out if f not in GENERATED)
+    """Markdown this commit would ship: tracked, PLUS untracked and not ignored.
+
+    WHY THE SECOND HALF EXISTS. `git ls-files` lists TRACKED files only, so a
+    brand new document is invisible here until it is staged. Write it, run the
+    gate, watch it pass, then add and commit, and the ratchet never saw the
+    file that shipped. That is exactly what happened on 2026-08-15: `0caf19a5`
+    was reported green while adding `docs/HISTORY.md`, which has failed this
+    guard from the moment it existed.
+
+    `test_repo_hygiene._about_to_be_tracked` had solved this for its own
+    guards two days earlier, on 2026-08-13, for the same reason. The remedy
+    was written into one guard and not into its sibling, which is the defect
+    class protocol rule 19.24 now states. A guard reads what is about to ship,
+    not what already shipped.
+    """
+    tracked = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
+                             capture_output=True, text=True).stdout.split()
+    new = subprocess.run(["git", "ls-files", "--others", "--exclude-standard",
+                          "*.md"], cwd=ROOT, capture_output=True, text=True)
+    untracked = new.stdout.split() if new.returncode == 0 else []
+    return sorted(f for f in set(tracked) | set(untracked)
+                  if f not in GENERATED)
 
 
 def _prose(text: str) -> str:

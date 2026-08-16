@@ -194,10 +194,10 @@ CANONICAL = [
         # docs/PLAN.md joined 2026-08-05: it quotes the bound twice in its
         # referee-risk section and was in no docs= list at all, which is the
         # gap that let its permutation p go stale at the retired 0.11.
-        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
+        docs=["README.md", "docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
               "docs/THEORY_NOTE.md", "private/manuscripts/paper1/drafts/VI-CD_power_stark.md",
-              "results/README.md", "docs/CLAIMS.md", "docs/PLAN.md"],
+              "results/README.md", "docs/CLAIMS.md", "docs/plan/01_aim-and-risks.md"],
     ),
     dict(
         # The find regex must look like an S0 VALUE, not merely like the word
@@ -212,7 +212,7 @@ CANONICAL = [
         value=lambda: f"{float(_cell('stark_sweep.csv', 'S0_225mW_pred')):.2f}",
         find=re.compile(r"pred[a-z.]*[^0-9]{0,24}?([0-9]+\.[0-9]+)\s*MHz"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md"],
+        docs=["README.md", "docs/big_picture/04_what-2025-delivered.md"],
     ),
     dict(
         # four-point headline (70/90/110/130 C, dof=2) since 2026-08-02;
@@ -221,8 +221,8 @@ CANONICAL = [
         value=_beta_range_token,
         find=re.compile(r"([0-9]\.[0-9]{1,2}-[0-9]\.[0-9]{1,2})\s+MHz\s+per\s+10"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md",
-              "docs/CLAIMS.md", "docs/PLAN.md"],
+        docs=["README.md", "docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md",
+              "docs/CLAIMS.md", "docs/plan/05_width-collision-amplitude.md"],
     ),
     dict(
         # COMPUTED since 2026-08-01, previously the literal "271". The bracket
@@ -238,7 +238,7 @@ CANONICAL = [
             / float(_cell("stark_sweep.csv", "S0_225mW_pred"))))),
         find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "private/manuscripts/PAPER1_SKELETON.md"],
+        docs=["docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),
     dict(
         # ADDED 2026-08-10, when the band moved from 60-70 to 62-68 um on the
@@ -256,7 +256,7 @@ CANONICAL = [
                         r"|band\s+([0-9]{2})\s*(?:to|[-–])\s*[0-9]{2}\s*µm"
                         r"|working band is\s+([0-9]{2})[-–][0-9]{2}\s*µm"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/PLAN.md",
+        docs=["docs/big_picture/04_what-2025-delivered.md", "docs/plan/03_optics-protocol.md",
               "docs/methods/02_the_lineshape.md",
               "docs/methods/08_assumptions_and_outlook.md"],
     ),
@@ -267,7 +267,7 @@ CANONICAL = [
                         r"|band\s+[0-9]{2}\s*(?:to|[-–])\s*([0-9]{2})\s*µm"
                         r"|working band is\s+[0-9]{2}[-–]([0-9]{2})\s*µm"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/PLAN.md",
+        docs=["docs/big_picture/04_what-2025-delivered.md", "docs/plan/03_optics-protocol.md",
               "docs/methods/02_the_lineshape.md",
               "docs/methods/08_assumptions_and_outlook.md"],
     ),
@@ -279,7 +279,7 @@ CANONICAL = [
         # docs/PLAN.md joined 2026-08-05 through the "(prior" alternate: its
         # configuration table writes the waist as "w₀" with a subscript zero,
         # which the first alternate cannot see.
-        docs=["README.md", "docs/BIG_PICTURE.md", "docs/PLAN.md"],
+        docs=["README.md", "docs/big_picture/04_what-2025-delivered.md", "docs/plan/03_optics-protocol.md"],
     ),
     dict(
         # The M16 recompute -- distinct from Orson's fixed 1093 (which stays
@@ -290,7 +290,8 @@ CANONICAL = [
         value=lambda: f"{abs(float(_cell('polarizability.csv', 'delta_alpha_993', 'model'))):.0f}",
         find=re.compile(r"[−-](1[0-9]{3})\s*a\.u"),
         mode="all",
-        docs=["README.md", "docs/BIG_PICTURE.md", "docs/RESULTS.md"],
+        docs=["README.md", "docs/big_picture/03_goals-and-prior-art.md",
+              "docs/big_picture/04_what-2025-delivered.md", "docs/RESULTS.md"],
     ),
     dict(
         # The frequency axis every MHz-denominated number in the repository is
@@ -330,7 +331,7 @@ CANONICAL = [
         find=re.compile(r"([0-9.]+)\s*MHz\s+on\s+S(?:₀|_?0)\(225"),
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md",
-              "docs/PLAN.md"],
+              "docs/plan/04_intensity-and-light-shift.md"],
     ),
     dict(
         name="projected beta_self detection significance, five interleaved blocks",
@@ -429,7 +430,7 @@ CANONICAL = [
         mode="all",
         # BIG_PICTURE added 2026-08-05: its 1.2 section cites the crossing in
         # four places that were hand-typed and unpinned until this line.
-        docs=["README.md", "docs/RESULTS.md", "docs/BIG_PICTURE.md"],
+        docs=["README.md", "docs/RESULTS.md", "docs/big_picture/01_why-this-line.md"],
     ),
     # --- Trace-census counts, read live from the manifest. Added
     # 2026-08-07 after the "39 committed CSVs" incident (actual 42, a
@@ -483,7 +484,7 @@ CANONICAL = [
         mode="all",
         # The adjudication note is deliberately absent: its
         # before/after table legitimately shows the retired 0.3473.
-        docs=["docs/BIG_PICTURE.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
+        docs=["docs/big_picture/02_the-method-and-its-limits.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),
     dict(
         name="vdW anchor: the predicted 7S rate",
@@ -492,7 +493,7 @@ CANONICAL = [
         mode="all",
         # The note is absent here too: it carries the number only in
         # its before/after table, next to the retired 4.50.
-        docs=["docs/BIG_PICTURE.md"],
+        docs=["docs/big_picture/02_the-method-and-its-limits.md"],
     ),
     # ---- trap-design coefficients (2026-08-08): the quartic and
     # vector numbers are computed live by rb5s6s/hyperpolarizability
@@ -508,7 +509,7 @@ CANONICAL = [
         find=re.compile(r"([+-][0-9]\.[0-9]{2})\s+Hz\s+per\s+megahertz\s+"
                         r"squared"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md"],
+        docs=["docs/big_picture/01_why-this-line.md", "docs/CLAIMS.md"],
     ),
     dict(
         name="hyperpolarizability: vector-shift coefficient at 1204",
@@ -516,7 +517,7 @@ CANONICAL = [
         find=re.compile(r"([0-9]{3})\s+kHz\s+per\s+megahertz\s+of\s+depth"
                         r"\s+per\s+unit\s+circularity"),
         mode="all",
-        docs=["docs/BIG_PICTURE.md", "docs/CLAIMS.md"],
+        docs=["docs/big_picture/01_why-this-line.md", "docs/CLAIMS.md"],
     ),
 ]
 
@@ -678,10 +679,12 @@ def test_readme_diagram_labels_outcomes_by_their_actual_type():
 
 
 def _tracked_prose():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    class _O:
+        pass
+    out = _O()
+    out.stdout = "\n".join(tracked_and_new("*.md", "*.py"))
+    if not out.stdout:
         import pytest as _pt
         _pt.skip("not a git checkout")
     return [p for p in out.stdout.split("\n")
@@ -785,13 +788,12 @@ _DESC_OK = re.compile(r"descend|reversed|ascending power|condition ladder|"
 
 
 def test_power_ladder_documented_descending():
-    import subprocess
-    out = subprocess.run(["git", "-C", str(ROOT), "ls-files", "*.md", "*.py"],
-                         capture_output=True, text=True)
-    if out.returncode != 0:
+    from _fileset import tracked_and_new
+    _shipping = tracked_and_new("*.md", "*.py")
+    if not _shipping:
         pytest.skip("not a git checkout")
     bad = []
-    for rel in [p for p in out.stdout.split("\n") if p]:
+    for rel in _shipping:
         if rel.startswith(("docs/lit/", "tests/")):
             continue
         # the pre-registration is a frozen pre-data document: its P2 row quotes
@@ -826,6 +828,44 @@ def test_block_seq_is_labelled_not_a_time_order():
         assert "block_seq" not in body, (
             f"{consumer} now reads block_seq; if it orders by it, that order is "
             f"reversed in time for the power session")
+
+
+def test_the_advertised_counts_agree_with_each_other():
+    """Sites that must agree exactly are compared to EACH OTHER, not to truth.
+
+    The guard below compares every advertised count to the real one under a 5
+    per cent tolerance, INDEPENDENTLY per site. That is a drift detector and
+    not a consistency checker, and the difference showed on 2026-08-16:
+    docs/methods.md carried 2148 and 2093 three lines apart, both within
+    tolerance of the truth at the time, so nothing failed while the page
+    contradicted itself. The stale one had survived two separate repairs of
+    the very same class, because each repair fixed the sites its author had
+    already read.
+
+    A percentage tolerance is right for the comparison against the suite,
+    which grows a test at a time. It is wrong for two sentences on one page
+    that describe the same number, and those have to be equal.
+    """
+    import re as _re
+
+    text = (ROOT / "docs" / "methods.md").read_text(encoding="utf-8")
+    # Every number on a line that runs pytest, plus the battery line, all of
+    # which describe the same suite from different angles.
+    full = set(_re.findall(r"(\d{3,5})-test battery", text))
+    full |= set(_re.findall(r"--runslow\s*#\s*full\s+(\d{3,5})", text))
+    fast = set(_re.findall(r"battery \((\d{3,5}) fast", text))
+    fast |= set(_re.findall(r"pytest -q\s+#\s*(\d{3,5}) fast", text))
+
+    bad = []
+    if len(full) > 1:
+        bad.append(f"the full-suite count is given as {sorted(full)}")
+    if len(fast) > 1:
+        bad.append(f"the fast-suite count is given as {sorted(fast)}")
+    assert not bad, (
+        "docs/methods.md contradicts itself about the size of its own test "
+        "suite:\n  " + "\n  ".join(bad)
+        + "\nThese describe one quantity each and must be equal, which a "
+          "percentage tolerance against the real count cannot enforce.")
 
 
 def test_advertised_test_counts_match_the_real_suite():
@@ -911,3 +951,134 @@ def test_peak_labels_are_not_presented_as_measured_wavelengths():
     assert "uncalibrated" in defining.lower(), (
         "docs/methods/01 defines the peak labels but no longer says the "
         "wavemeter was uncalibrated -- the caveat has been dropped")
+
+
+def test_pipeline_bookkeeping_counts_match_the_tree():
+    """Stage and CSV counts quoted in the front-door documents, derived live.
+
+    These are class (b) bookkeeping numbers rather than physics, so they get a
+    guard instead of a registry row, but they go stale exactly as fast: the
+    2026-08-15 sweep found README and REPRODUCING both quoting 25 stages and
+    43 CSVs against a tree with 27 and 46. Nothing had ever checked them.
+    """
+    import re
+    sh = (ROOT / "scripts" / "run_all.sh").read_text(encoding="utf-8")
+    loop = re.search(r"for\s+s\s+in\s+(.*?);\s*do", sh, re.S)
+    stages = len(set(re.findall(r"\b(run_\w+)\b", loop.group(1)))) if loop else 0
+    n_csv = len(list((ROOT / "results").glob("*.csv")))
+    assert stages > 10 and n_csv > 10, (
+        f"the counter itself is broken (stages={stages}, csvs={n_csv}), so an "
+        "empty result would mean 'no check ran' rather than 'clean'")
+
+    bad = []
+    for rel in ("README.md", "docs/REPRODUCING.md"):
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        for m in re.finditer(r"(\d+)\s+analysis stages", text):
+            if int(m.group(1)) != stages:
+                bad.append(f"{rel}: says {m.group(1)} analysis stages, "
+                           f"run_all.sh loops over {stages}")
+        for m in re.finditer(r"of the (\d+) committed CSVs", text):
+            if int(m.group(1)) != n_csv:
+                bad.append(f"{rel}: says {m.group(1)} committed CSVs, "
+                           f"results/ holds {n_csv}")
+    assert not bad, "pipeline bookkeeping has gone stale:\n  " + "\n  ".join(bad)
+
+
+def test_identifiability_prose_matches_its_csv():
+    """The §4.10 identifiability paragraph, checked against the row it describes.
+
+    A whole paragraph sat frozen at pre-2026-08-02 values while the CSV moved
+    under it: condition number 480 against 390, worst-constrained sigma 0.07
+    against 0.062, ridge slope and its predicted counterpart both stale. Every
+    number in it is derivable, so none of it needs to be typed twice.
+    """
+    import csv as _csv
+    vals = {}
+    with open(ROOT / "results" / "identifiability.csv", encoding="utf-8") as fh:
+        for r in _csv.DictReader(fh):
+            try:
+                vals[(r["quantity"], r["key"])] = float(r["value"])
+            except (ValueError, KeyError):
+                pass
+    text = (ROOT / "docs" / "methods" / "06_the_statistics.md").read_text(encoding="utf-8")
+    checks = [
+        ("condition number", vals[("condition_number", "width_block")], r"covariance\* is \$\\approx(\d+)\$", 0),
+        ("branch gap", vals[("branch_gap", "local")], r"\\Delta\\chi\^2\\approx(\d+)\$ preference", 0),
+        ("ridge slope", vals[("ridge_slope", "zoom_profile")], r"ridge slope \(\+([\d.]+)\)", 3),
+    ]
+    bad = []
+    for name, want, pat, places in checks:
+        m = re.search(pat, text)
+        if m is None:
+            bad.append(f"{name}: the prose pattern no longer matches, so this "
+                       "guard has stopped guarding")
+            continue
+        got = float(m.group(1))
+        if round(got, places) != round(want, places):
+            bad.append(f"{name}: prose says {got}, identifiability.csv says {want}")
+    assert not bad, "methods 4.10 has drifted from its CSV:\n  " + "\n  ".join(bad)
+
+
+# A prose count OF A TABLE IN ANOTHER FILE goes stale silently: the table grows,
+# the sentence does not, and no reader of either file is looking at both. Three
+# claims about the same table disagreed with it and with each other, the section
+# heading saying eight and constants.py saying six against a table of ten, and
+# the wrong ones had outlived several sweeps that read the documents, because
+# reading one file cannot catch it (2026-08-16, lesson 124).
+def test_the_advertised_wavemeter_record_count_matches_its_table():
+    """Both prose counts of the drift-record table equal the table's rows.
+
+    The table is found by walking forward from the section 6 heading, not by
+    matching its column header, because APPARATUS.md has more than one table
+    whose header names a lock state and an earlier version of this guard
+    silently counted the wrong one. If the section or either claim disappears
+    the test SKIPS loudly rather than passing, since a count guard that quietly
+    stops finding its subject is worse than no guard.
+    """
+    import pytest as _p
+
+    words = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+             "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11,
+             "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15}
+
+    lines = (ROOT / "docs" / "APPARATUS.md").read_text().splitlines()
+    heads = [i for i, l in enumerate(lines)
+             if l.startswith("## 6. Laser drift")]
+    if not heads:
+        _p.skip("the APPARATUS.md laser-drift section was not found, so this "
+                "guard cannot see what it is meant to check")
+    rows = 0
+    for i in range(heads[0], len(lines)):
+        if lines[i].startswith("|---"):
+            j = i + 1
+            while j < len(lines) and lines[j].startswith("|"):
+                rows += 1
+                j += 1
+            break
+    if not rows:
+        _p.skip("no table follows the laser-drift heading")
+
+    claims = []
+    m = re.search(r"## 6\. Laser drift: (\w+) wavemeter records", lines[heads[0]])
+    if m:
+        claims.append(("docs/APPARATUS.md heading", m.group(1)))
+    src = (ROOT / "rb5s6s" / "constants.py").read_text()
+    for c in re.findall(r"\b(\w+) wavemeter records are tabulated", src):
+        claims.append(("rb5s6s/constants.py", c))
+    if not claims:
+        _p.skip("neither site advertises a wavemeter record count any more")
+
+    bad = []
+    for where, c in claims:
+        n = words.get(c.lower())
+        if n is None:
+            try:
+                n = int(c)
+            except ValueError:
+                bad.append(f"{where}: unparsable count {c!r}")
+                continue
+        if n != rows:
+            bad.append(f"{where} says {c} ({n}), the table has {rows}")
+    assert not bad, ("an advertised wavemeter record count disagrees with the "
+                     "table in docs/APPARATUS.md section 6:\n  "
+                     + "\n  ".join(bad))

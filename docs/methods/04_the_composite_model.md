@@ -10,6 +10,10 @@ fit in the statistics and results chapters calls.
 radiation trapping, the mechanism that moves amplitudes without moving the
 lineshape, and the trapping result itself is reported in the results chapter.
 
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ### 2.7 Radiation trapping: why it moves amplitudes, not the lineshape
 
 At high density the cell becomes optically thick to the 795 nm detection
@@ -110,12 +114,20 @@ On the right, what follows, over nineteen decades of rate. Only the
 trapped-infrared row carries an error bar, because only its dominant unknown is
 a distance rather than an atomic quantity.*
 
+The cell's own thermal glow could in principle both re-drive the excited state
+and shift it, and [blackbody radiation](../wiki/blackbody-radiation.md) gives
+the general theory. Here neither reaches the measurement.
+
 The cell runs at 70 to 130 °C, so it sits inside its own thermal radiation, and
 the same two questions apply to it: does blackbody light re-drive 5P to 6S, and
 does it touch the 795 nm signal. `scripts/run_blackbody_channels.py` answers
 both, and one number decides almost all of it. At 403 K the blackbody **photon**
-spectrum peaks near 7.2 µm while every line of this cascade lies between 0.79
-and 2.8 µm, and the occupation number falls as $e^{-h\nu/kT}$.
+spectrum peaks near 9.1 µm while every line of this cascade lies between 0.79
+and 2.8 µm, and the occupation number falls as $e^{-h\nu/kT}$. (The familiar
+Wien figure, 7.2 µm here, is the peak of the ENERGY spectrum. Photon number
+peaks a quarter further out, and it is photon number an atomic rate follows.
+Nothing below depends on which is quoted, since every rate is computed from
+$h\nu/kT$ line by line.)
 
 **It does not re-drive 5P to 6S.** The occupation numbers are
 $2.0\times10^{-12}$ at 1324 nm and $4.6\times10^{-12}$ at 1367 nm, giving upward
@@ -129,7 +141,7 @@ lifetime. For the background, the photocathode's own red edge does the blocking,
 not the 50 dB of 795 nm filtering: the R636-10 is a GaAs tube whose response
 ends near 900 nm (DATASHEET, not confirmed against the sheet here), and the
 conclusion does not depend on that figure, because a cathode with a red edge
-anywhere below a couple of µm is blind to a 7.2 µm peak. In the band it can
+anywhere below a couple of µm is blind to a 9.1 µm peak. In the band it can
 respond to at all, the whole cell wall emits
 $3.0\times10^{3}$ photons per second at 70 °C and $3.6\times10^{6}$ at 130 °C,
 before any collection solid angle and before the filters. That background is
@@ -239,9 +251,10 @@ this kind, fig18_single_4121 through fig18_single_4207.*
 **Where the numbers live.** Modules M3, M7, M10 · producers
 `scripts/run_amplitude_trapping.py`, `scripts/run_amplitude_ratios.py`,
 `scripts/run_trapping_channels.py` (the infrared legs) and
-`scripts/run_blackbody_channels.py` (the thermal field), both opt-in and
-writing nothing ·
-results `results/amplitude_trapping.csv`, `results/amplitude_ratios.csv` ·
+`scripts/run_blackbody_channels.py` (the thermal field), both run by
+`scripts/run_all.sh` and each writing a committed CSV ·
+results `results/amplitude_trapping.csv`, `results/amplitude_ratios.csv`,
+`results/trapping_channels.csv`, `results/blackbody_channels.csv` ·
 figures: `fig23_hyperfine_pumping.png`, for the two broadeners this model
 deliberately leaves out. Library code: `rb5s6s/lineshape.py`, for
 `model_profile()` and `composite_profile()`, and the $b(T)$ table from

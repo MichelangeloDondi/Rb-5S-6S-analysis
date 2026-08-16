@@ -122,9 +122,35 @@ dark state, repump) returns nothing.
 
 The size is not negligible and the arithmetic is short. At the campaign maximum
 the steady-state excited fraction is s/2/(1+s) = 0.0161 on axis, so real decays
-occur at 3.5e5 per second, which is 0.16 cascades per 456 ns transit: **7 to 15
-per cent of atoms crossing the beam decay at least once on the way through**. A
-ground-state loss rate gamma_p adds gamma_p/2 to the coherence decay, hence
+occur at 3.5e5 per second, which is 0.16 cascades per 456 ns transit.
+
+**TWO DIFFERENT NUMBERS COME OUT OF THAT AND THEY ARE EASY TO SWAP.** Stated
+once here, since this note is where the arithmetic lives and every other
+document should carry these and say which is which.
+
+| quantity | signal-weighted | on axis | what its range spans |
+|---|---|---|---|
+| mean cascades per transit, n | 0.081 | 0.162 | the weighting only |
+| **decays AT LEAST ONCE**, 1 - exp(-n) | **7.8%** | **15.0%** | the weighting only |
+| **pumped into the OTHER ground state** | **1.8%** | **5.9%** | the weighting AND the per-line branching |
+
+The first two rows differ because 1 - exp(-n) is not n, an 8 per cent gap at
+this n, and quoting n while saying "decay at least once" is the specific error
+this table exists to prevent. The third row is smaller than the second because
+only a share f of cascades lands in the other hyperfine level, and its range is
+wider IN KIND: it runs over the four lines' branching fractions as well as over
+the weighting, so it is not a signal-weighted-to-axis span the way the row
+above it is.
+
+Recomputed 2026-08-15 from the repository's own `ramp_moments` at the
+collection half-length the figure states, Z_c = 2.2 mm, which gives a
+signal-weighted saturation parameter of 0.01624 against 0.03319 on axis, a
+weighting factor of 0.489. The earlier "7 to 15" in this paragraph was built on
+the 25.4 kHz weighted saturation quoted below, which carries no Z_c with it.
+Figure 23 computes the same quantity at a stated Z_c and gets 28.2 kHz, as the
+caption further down already records, and these rows use the figure's value.
+
+A ground-state loss rate gamma_p adds gamma_p/2 to the coherence decay, hence
 gamma_p/2pi to the Lorentzian FWHM.
 
 What makes it worth writing down is that the ratio to the saturation term is
