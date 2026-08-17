@@ -1,4 +1,4 @@
-*Chapter 7 of 7 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 7 of 8 of [the big picture](../BIG_PICTURE.md)*
 
 **The question.** What does this dataset fail to determine, why does each
 failure happen, and which measurement fixes which one?
@@ -191,12 +191,24 @@ one to fix.
 
 **The limitation.** There is a real, reproducible excess in the residuals
 outside the production fit window, between 0.10 and 0.29 per cent of the peak,
-and no mechanism accounts for it.
+and it is not attributed to a specific physical term.
 
-**The physical cause.** Unknown, which is the point. What is known is what it
-is not. The pedestal is excluded as its source by the ceiling test of chain 3.
-A linear-in-detuning contaminant reproduces its shape, and the shape does not
-by itself identify the mechanism.
+**The physical cause.** There is now a candidate, and it is the lineshape model
+rather than the atom. A joint fit over every canonical trace, each granted its
+own free polynomial baseline, leaves a shared excess standing at 3.6 sigma under
+per-trace CUBIC freedom. Regressed on both competing predictors at once, that
+excess tracks the model's own profile height inside the band at 8.65 sigma while
+vapour density is a null predictor at -0.75 sigma, and a band re-cut in units of
+each trace's own linewidth keeps the trend. A placebo band inside the fitted
+window carries structure too, which a general profile mismatch predicts and a
+far-wing collisional excess does not.
+[The full construction and its controls](../notes/band_excess_is_model_form.md).
+
+**This is a candidate mechanism and not an explanation**, so the limitation
+stands. Nothing in `results/` moved on it. What it does settle is what the
+excess is NOT: the pedestal is excluded as its source by the ceiling test of
+chain 3, and the excess is not evidence for a collisional far wing, which
+leaves that question open on theory rather than contaminated.
 
 **The change.** Polarisation isolation. The two-photon rate goes as the squared
 degree of linear polarisation and vanishes for circular light, which is

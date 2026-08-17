@@ -1,4 +1,4 @@
-*Chapter 3 of 7 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 3 of 8 of [the big picture](../BIG_PICTURE.md)*
 
 ## 2. What we would like to do
 

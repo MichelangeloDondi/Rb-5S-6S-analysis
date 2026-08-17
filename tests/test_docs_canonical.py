@@ -197,7 +197,11 @@ CANONICAL = [
         docs=["README.md", "docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md",
               "docs/methods/03_the_ac_stark_ramp.md", "docs/methods/07_what_we_found.md",
               "docs/THEORY_NOTE.md", "private/manuscripts/paper1/drafts/VI-CD_power_stark.md",
-              "results/README.md", "docs/CLAIMS.md", "docs/plan/01_aim-and-risks.md"],
+              "results/README.md", "docs/CLAIMS.md", "docs/plan/01_aim-and-risks.md",
+              # 08 joined 2026-08-17. It argues what the pooled construction
+              # assumes, so it is the one chapter that must never drift from the
+              # bound that construction produces.
+              "docs/big_picture/08_when-a-joint-fit-is-legitimate.md"],
     ),
     dict(
         # The find regex must look like an S0 VALUE, not merely like the word

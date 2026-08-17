@@ -99,6 +99,9 @@ rather run the thing than read about it ·
 
 **Where to go next:** the big picture (goals, prior art, what each future
 measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
+when pooling measurements adds information and when it only adds freedom, with
+six questions to ask of any joint fit →
+[`docs/big_picture/08`](docs/big_picture/08_when-a-joint-fit-is-legitimate.md) ·
 one page per concept, method, effect and technique, each with a worked example
 that runs → [`docs/wiki/`](docs/wiki/README.md) ·
 full derivations and statistics → [`docs/methods.md`](docs/methods.md) ·

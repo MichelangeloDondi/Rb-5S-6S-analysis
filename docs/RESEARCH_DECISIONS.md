@@ -41,6 +41,7 @@ The decisions at a glance, each argued in full in its numbered section:
 | Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this record's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
 | Where are the raw traces? | Held privately, with the manifest and every certifying check shipped | what runs here certifies the analysis, and what cannot is stated (§12) |
 | Was the residual width collisional? | Treated as a residual floor, with the inelastic channel a recorded candidate | the evidence spans four documents, indexed in §12 |
+| Is one light-shift coefficient across three sessions legitimate? | The pooled construction stays quoted, with the assumption recorded rather than asserted | the coefficient goes as one over the waist squared and no per-session waist was measured (§13) |
 
 ---
 
@@ -481,6 +482,55 @@ independent predeclared basis. The reasoning that makes this a real
 choice here is the spread of $\ln N$ across the record's decision
 sites, from 2.3 to 12.9, worked in
 [methods/06](methods/06_the_statistics.md) §4.7a.
+
+---
+
+## 13. One coefficient is shared across three sessions, and the geometry that licenses it is untested (2026-08-17)
+
+The joint light-shift fit pools 100 campaign traces with 46 from the 4 July
+rehearsal and 26 from the campaign-morning session of 17 July, and shares one
+coefficient across all three. Every other session difference in that fit has a
+nuisance assigned to it: a laser width per session per peak, a detector
+saturation per instrument, a fitted scan rate for the rehearsal, and a rate scale
+bounded to ten per cent for the campaign morning.
+
+**The decision is to keep the pooled construction as the quoted one, and to
+record what it assumes rather than to assert that the assumption holds.**
+
+The assumption is specific. The coefficient scales as one over the beam waist
+squared, so a session recorded at a different focus has a different coefficient,
+and none of the nuisances above is the waist. That the three sessions ran in
+different CONFIGURATIONS is established from their own receipts. That they shared
+a GEOMETRY is untested, because the archive holds no per-session waist
+measurement.
+
+Two committed diagnostics show the pooled surface behaving badly.
+`results/stark_joint.csv` records the largest disagreement between the two scan
+directions as 8.59 in chi-square, against the 2.706 at which the bound itself is
+read, so the convergence error is about three times the quantity being measured.
+And the rehearsal's 270 mW rung carries 1.44 times the campaign's largest
+squared-shift lever while the pooled bound sits looser than its own campaign-rows
+column, which is the opposite of what adding a longer lever to a measurement of
+one quantity does.
+
+**The rejected alternative was to promote a campaign-only construction on the
+strength of those diagnostics.** It was rejected for now because a badly behaved
+likelihood surface is a statement about the surface rather than proof that the
+sessions saw different coefficients, because no campaign-alone refit is in
+`results/`, and because replacing a published number with none is a loss. The
+reasoning, the six questions it generalises to, and the boundary of the claim are
+argued in
+[big_picture/08](big_picture/08_when-a-joint-fit-is-legitimate.md).
+
+The cross-peak half of the same question is settled differently and more
+comfortably. Sharing across the four hyperfine components is a physical statement
+because the light shift is blind to the hyperfine index, the one known peak
+difference is calculable at about 4 kHz against an 88 kHz scatter, and the fit
+statistics are reported as a check rather than as the licence, following the
+template of [the pooled-slope
+probe](notes/beta_self_pooling_prereg.md). Where those statistics are asked to
+decide, they do not: §4 above records the same verdict flipping with the sample
+counting.
 
 ---
 

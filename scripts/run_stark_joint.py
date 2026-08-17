@@ -57,8 +57,11 @@ docstring sentence because the wrong version ran first):
     wedge and the wing both live on the red side, so this is the fit's
     hardest robustness test, not a formality.
 
-THE THIRD SESSION (added 2026-08-01, the module's v2). The 2025-07-18
-MORNING SESSION_20250717: 26 traces on peak 4192 alone, powers 35/70/105/210 mW at the
+THE THIRD SESSION (added 2026-08-01, the module's v2). THE CAMPAIGN-MORNING
+SESSION OF 17 JULY 2025, directory SESSION_20250717 (this docstring said
+2025-07-18 until 2026-08-17 while naming the 20250717 directory in the same
+sentence; GLOSSARY.md and DATA.md both say 17 July and are the canonical
+naming): 26 traces on peak 4192 alone, powers 35/70/105/210 mW at the
 campaign's internal ~130 C (addendum 17 established it ran hot), on the
 Agilent in campaign trace format, ~20 minutes after the ruler's final
 commissioning. Its axis borrows the campaign 4192 bracket rate through a
@@ -521,6 +524,28 @@ def strip_wing(q):
     return np.delete(q, [NS - 1, NS])
 
 
+CAMPONLY = "--camponly" in sys.argv
+"""Fit the MAIN CAMPAIGN ALONE, opt-in, writing nothing into results/.
+
+WHY THIS EXISTS. The owner asked on 2026-08-17 whether the two pre-campaign
+sessions are safe to pool, since they were early attempts exploited afterwards.
+The record could not answer: `kappa_ub95_camponly` reads the campaign's chi2
+along the JOINT profile, with nuisances fitted on all three sessions, so it is
+not the campaign-alone bound its name suggests.
+
+WHAT IT CHANGES. One thing. The residual is built from campaign traces only.
+The parameter vector is UNCHANGED, so the dropped sessions' nuisances stay in it
+and sit at their seeds, contributing nothing. That is safe here because ub95()
+uses an UNSCALED 2.706 threshold, so no chi2_red bookkeeping enters the bound,
+and it is informative: a vector that converges while carrying those parameters
+proves the parameter COUNT is not what breaks the pooled fit.
+
+WHAT IT MAY NOT DO. Write results/stark_joint.csv. The committed file is the
+pooled record and this variant is a different construction, so the write is
+guarded below rather than left to discipline.
+"""
+
+
 def main() -> int:
     if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
         print(f"excluded tree(s) not on this machine "
@@ -532,11 +557,21 @@ def main() -> int:
     reh, n_corrupt = load_session_20250704()
     _, prates = load_t_rates()
     pil = load_session_20250717(prates["4192"][0])
-    traces = camp + reh + pil
+    traces = camp if CAMPONLY else camp + reh + pil
+    if CAMPONLY:
+        print(f"  --camponly: {len(reh)} evening and {len(pil)} "
+              f"campaign-morning traces LOADED and EXCLUDED. Every number "
+              f"below is campaign-only and NOTHING is written to results/.")
     npts = sum(len(t["x"]) for t in traces)
-    print(f"(M23) JOINT THREE-SESSION STARK FIT: {len(camp)} campaign + "
-          f"{len(reh)} evening-session ({n_corrupt} files unusable) + "
-          f"{len(pil)} campaign-morning traces, {npts} points")
+    if CAMPONLY:
+        print(f"(M23) CAMPAIGN-ONLY STARK FIT: {len(traces)} campaign traces "
+              f"fitted, {npts} points. The {len(reh)} evening "
+              f"({n_corrupt} unusable) and {len(pil)} campaign-morning traces "
+              f"were loaded and are NOT in the residual.")
+    else:
+        print(f"(M23) JOINT THREE-SESSION STARK FIT: {len(camp)} campaign + "
+              f"{len(reh)} evening-session ({n_corrupt} files unusable) + "
+              f"{len(pil)} campaign-morning traces, {npts} points")
 
     # Chain order (2026-08-03): the wing variant goes FIRST because a cold
     # start finds the true local minimum reliably there, and every other family is
@@ -598,7 +633,14 @@ def main() -> int:
     print(f"  direction indifference: max |dchi2| between dirs = {dir_delta:.2f}")
     print(f"  ({(time.time()-t0)/60:.0f} min)")
 
-    with open(C.RESULTS_DIR / "stark_joint.csv", "w", newline="") as fh:
+    _out = (C.RESULTS_DIR / "stark_joint.csv" if not CAMPONLY else
+            Path(__file__).resolve().parents[1] / "private" / "run_logs"
+            / "stark_camponly.csv")
+    if CAMPONLY:
+        _out.parent.mkdir(parents=True, exist_ok=True)
+    assert not (CAMPONLY and _out.name == "stark_joint.csv"), \
+        "--camponly must never write the pooled record"
+    with open(_out, "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["quantity", "key", "value", "err", "unit"])
         w.writerow(["kappa_min", "primary", f"{kmin_a:.2f}", "",
@@ -672,7 +714,7 @@ def main() -> int:
             w.writerow(["profile_point", f"{kap:.2f}", f"{c2:.2f}", f"{cc:.2f}",
                         "chi2 total (value) and campaign-only (err column), "
                         "primary settings"])
-    print("\n  Wrote results/stark_joint.csv.")
+    print(f"\n  Wrote {_out}.")
     return 0
 
 

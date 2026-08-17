@@ -1,4 +1,4 @@
-*Chapter 1 of 7 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 1 of 8 of [the big picture](../BIG_PICTURE.md)*
 
 ## 1. Why the line is worth characterising at all
 

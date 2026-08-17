@@ -1,4 +1,4 @@
-*Chapter 2 of 7 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 2 of 8 of [the big picture](../BIG_PICTURE.md)*
 
 **The question.** What is the drift-immune method, and what does it cost to
 use it?

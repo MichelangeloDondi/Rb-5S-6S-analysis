@@ -1,4 +1,4 @@
-*Chapter 6 of 7 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 6 of 8 of [the big picture](../BIG_PICTURE.md)*
 
 ## 6. What new nanofibre measurements would add
 

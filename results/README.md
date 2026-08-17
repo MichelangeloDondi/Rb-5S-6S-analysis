@@ -186,11 +186,21 @@ pointwise minimum over cold, backward and search-seeded chains, and
 `kappa_min` with `dchi2_kappa0` show the minimum is consistent with zero rather
 than a detection.
 
-**The robustness rows are the dominant systematic.** Campaign-only gives
-0.15 MHz at 225 mW in `kappa_ub95_camponly`, marginalising the red-wing
-nuisance gives 0.24 in `kappa_ub95_wing`, and dropping peak 4192, which removes
-the entire campaign-morning session with it, gives 0.37. That 0.15 to 0.37 spread across
-subsets is larger than any single fit's error. The primary and campaign-only
+**The robustness rows are the dominant systematic.** Marginalising the
+red-wing nuisance gives 0.24 MHz at 225 mW in `kappa_ub95_wing`, and dropping
+peak 4192, which removes the entire campaign-morning session with it, gives
+0.37. That spread across subsets is larger than any single fit's error.
+
+**`kappa_ub95_camponly` IS NOT THE CAMPAIGN-ALONE BOUND, despite its name.** It
+is the campaign's own chi-square read along the JOINT profile, whose nuisances
+were fitted using all three sessions, which is what its own description in the
+CSV says. It gives 0.15 MHz at 225 mW and an earlier version of this paragraph
+quoted that as the campaign-only result. A genuine campaign-only refit was run
+on 2026-08-17 and does not reproduce it: re-fitting the campaign with its own
+nuisances gives a LOOSER bound, so this row overstates what the campaign alone
+constrains. The refit's value is not quoted here because its adjudication is
+open. Treat this row as a decomposition of the joint profile and not as a
+subset bound. The primary and campaign-only
 subsets sit below the 0.35 MHz nominal prediction and the drop-4192 subset does
 not, and `lopo_dchi2_pred` shows no single peak driving the result. The
 4 July evening-session axis-direction row is converged and indifferent, at a maximum

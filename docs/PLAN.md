@@ -131,7 +131,7 @@ index maps each section to the chapter that now holds it.
 **4.3.** the collection arm and
 **4.4.** the modulator.
 **5.** The intensity axis, in [chapter 4](plan/04_intensity-and-light-shift.md).
-**6.** The light-shift program, in [chapter 4](plan/04_intensity-and-light-shift.md).
+**6.** The light-shift program, in [chapter 4](plan/04_intensity-and-light-shift.md), which now closes with a per-session waist requirement and the two analysis steps that run before the next session.
 **7.** The width and collision program, in [chapter 5](plan/05_width-collision-amplitude.md), whose blocks run
 **7a.** through
 **7j.**, including

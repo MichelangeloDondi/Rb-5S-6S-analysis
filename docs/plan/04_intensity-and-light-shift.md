@@ -314,6 +314,42 @@ did. The general form is worth carrying into any future separation of this kind:
 a term entering only as a multiple of another constrains nothing until the term
 it multiplies is measured.
 
+### Measure the waist in every session, and two analysis steps that come first
+
+**A design requirement this plan did not previously carry.** The light-shift
+coefficient goes as one over the beam waist squared, so pooling sessions asserts
+that they shared a focus. The 2025 archive cannot support that assertion, because
+no session measured its own waist, which is argued in
+[big_picture/08](../big_picture/08_when-a-joint-fit-is-legitimate.md). **Every
+block of a future session records a waist measurement**, and a session that
+cannot is analysed alone rather than pooled.
+
+Two analysis steps precede the next session and run on data already in hand, in
+this order.
+
+**First, resolve which model component carries the power dependence the fit
+cannot absorb.** The summary widths are concave in power, with an apex near 120 mW
+and a fall from there to the top of the ladder that is about fifty times the whole
+range the light-shift term can produce at its bound. The structure survives a
+model-free half-max width, so it is in the data rather than in the fit. Every
+component in the production model is pinned against power already, so that
+structure has nowhere to go and is sitting in the residual. The test frees ONE
+component at a time per condition with the other two held at their physical
+values, since all three at once is degenerate at a condition number of 390, and
+the three kernels have different shapes so the comparison identifies the missing
+term as well as locating it.
+
+**Second, and only afterwards, free the transit reference so the cusp measures
+the waist.** The transit kernel goes as the square root of temperature divided by
+the waist, and the repository currently sets its reference BY computing it from
+the waist, which spends the information rather than collecting it. Run the other
+way it becomes a waist measurement internal to the lineshape and independent of
+the apparatus lineage, and the transit kernel is separable by SHAPE rather than by
+width, since neither the Lorentzian nor the Gaussian beside it can imitate a cusp.
+The order matters: if the unexplained power dependence turns out to live in the
+transit kernel, freeing its reference first would let a power systematic
+contaminate the waist.
+
 ---
 
 *[Configurations and optics](03_optics-protocol.md) · [Width, collisions and amplitude](05_width-collision-amplitude.md)*

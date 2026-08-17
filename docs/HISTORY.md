@@ -54,7 +54,7 @@ the citation.
 | β_self, joint hierarchical fit | 0.036 → 0.014 | 2026-07-12 | the same fit with and without the ×53 130 °C anchor | lengthening the lever, which is the lever test itself | a cross-check estimator, never the headline |
 | AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | replaced, kept in `stark_sweep.csv` as a labelled diagnostic |
 | AC-Stark S₀ at 225 mW | 0.63 MHz | 2026-07-16 | profile likelihood on the width channel, over-dispersion scaled | interval construction, not new data | the independent width-only bracket |
-| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | the tighter of the two, as quoted here since 2026-08-01. Requote from RESULTS.md |
+| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | **superseded by later re-runs of the same construction, so this number is lineage and NOT the live bound.** Requote from RESULTS.md, never from this row |
 | AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm measured waist | the measured waist moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
 | Δα bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
 | beam waist w₀ | 32 µm | nominal | the design value | the transit Monte Carlo's missing crossing-flux factor, fixed 2026-07-13 | excluded |
@@ -111,3 +111,30 @@ What this section is for. Five of the six rows moved in the direction that had
 made the result look stronger, which is a measurement of the review rather than
 six coincidences, and the protocol's section 6 now requires the direction of a
 refutation tally to be recorded alongside its count.
+
+## The 2026-08-17 corrections
+
+Four values were retired in one day, and each was retired by a measurement
+rather than by an argument.
+
+| quantity | value | date | construction | what moved it | standing |
+|---|---|---|---|---|---|
+| the saturation companion's factor on the joint light-shift bound | 2.21 | 2026-08-09 | inferred from the width-only channel's factor, never run on the joint fit | the joint refit RAN, so the factor is measured rather than inferred | replaced by the measured value. Read `RESULTS.md` |
+| `kappa_ub95_camponly` read as a bound on the campaign alone | 0.674 MHz per W | 2026-08-01 | the campaign's chi-square along the POOLED profile, whose nuisances were fitted on all three sessions | a genuine campaign-alone refit was run and disagreed, so the row was never the campaign-alone answer | the row keeps its value and loses that reading. It is a subset column of the pooled profile |
+| the subset spread of the light-shift bound across constructions | a factor of 2.4 | 2026-08-17 | the pooled bound against the campaign-rows column, treating the latter as a campaign-alone bound | the campaign-rows column is not a campaign-alone bound, so it cannot be one end of the comparison | withdrawn. The committed rows support a leave-one-peak-out factor of 1.42 and nothing wider |
+| the excess outside the fit window | no candidate mechanism | 2026-08-16 | a per-trace baseline ladder that swung the offset by more than the offset | one joint fit over 79 traces with per-trace free polynomials, plus a regression of the amplitude on two competing predictors | replaced. The candidate is the lineshape model, and the limitation itself stands |
+
+**A scar about naming rather than about a value.** The second and third rows are
+one defect seen twice. A results row whose NAME implies a provenance its
+COMPUTATION does not have will be read as what its name says, including by the
+people who wrote it, and the arithmetic done on that reading enters documents
+downstream before anyone checks. The rule the record now applies is that a row
+identifies its quantity, its construction and its source, and that a name
+implying any of the three without carrying it is a defect rather than shorthand.
+The same rule was extended to module constants the same day, after one was found
+named for a placeholder while holding a value computed from a measurement.
+
+**One session date was inconsistent rather than wrong.** The campaign-morning
+session of 17 July 2025 was named 2025-07-18 in the joint fit's docstring, in
+the same sentence that named its `20250717` directory. `GLOSSARY.md` and
+`DATA.md` both say 17 July and are the canonical naming.

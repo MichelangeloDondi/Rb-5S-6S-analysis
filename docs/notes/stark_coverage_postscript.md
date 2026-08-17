@@ -110,13 +110,20 @@ afterwards, and they are not established as sharing the campaign's geometry.
 Since kappa scales as one over the waist squared, a different focus makes it a
 different parameter, which no per-session nuisance in that fit absorbs.
 
-The committed `results/stark_joint.csv` already shows the size of the exposure:
-the same joint construction gives a kappa bound of 0.674 on the campaign rows,
-1.147 pooled, and 1.626 with peak 4192 dropped, which removes the entire pilot.
-**That subset spread is a factor of 2.4**, and nothing in this coverage study
-touches it. Note also that `kappa_ub95_camponly` is the campaign's chi2 read
-along the JOINT profile rather than an independent campaign-only fit, so it is
-not the campaign-alone answer either.
+The committed `results/stark_joint.csv` shows part of the exposure and cannot
+show the rest. Among rows that ARE the same construction, the pooled kappa bound
+of 1.147 becomes 1.626 with peak 4192 dropped, which removes the entire pilot, so
+a leave-one-peak-out alone moves it by a factor of 1.42.
+
+**The spread cannot be widened using `kappa_ub95_camponly`.** Its value is the
+campaign's chi-square read along the JOINT profile rather than an independent
+campaign-only fit, and a row that is not a bound on the campaign alone cannot be
+one end of a campaign-against-pool comparison. An earlier version of this
+paragraph put it there and quoted a wider spread on the strength of it, which is
+the naming defect this record now treats as a class rather than a slip. Nothing
+in `results/` yet carries a campaign-alone refit, so the size of the session
+exposure is NOT established by the committed record, and nothing in this coverage
+study touches it.
 
 ## Standing
 
