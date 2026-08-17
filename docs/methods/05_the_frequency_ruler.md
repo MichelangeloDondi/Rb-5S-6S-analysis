@@ -102,15 +102,25 @@ equally:
 
 *A representative ruler trace with its seven-tooth comb fit over its
 standardized residual strip (left) and the pooled sweep-linearity map
-(right): the local rate never departs from the block rate by more than 0.3%
+(right): the local rate never departs from the block rate by more than 0.25%
 in any well-sampled window, and that bound is set by the well-sampled windows
-alone. The open markers at the scan edges are the thinly-sampled windows, four
-to eleven traces each against nineteen or more elsewhere, and they are excluded
-on that ground rather than on their error bars: of the five, two carry an
-uncertainty above the 0.3% bound (0.40% and 0.68%) and three sit below it
-(0.18%, 0.18% and 0.29%), so the sentence this caption used to make, that they
-all carry an uncertainty larger than the bound, was true of two of them. What
-the right panel bounds is
+alone. The strip beneath the map carries the number of traces each window
+draws on, so the split is visible rather than asserted.
+
+**The two leading-edge windows are not merely imprecise, they depart.** At
+-537 ms the local rate sits 1.75% below the whole-scan rate with an
+uncertainty of 0.40%, and at -412 ms it sits 0.73% above with an uncertainty
+of 0.18%, which are 4.4 and 4.0 standard deviations from flat. They are
+excluded from the bound on sample count, four and five traces against nineteen
+or more elsewhere, and an earlier version of this caption and of the figure
+justified that exclusion by saying such windows carry uncertainties larger
+than the bound. Of the five excluded windows two do (0.40% and 0.68%) and
+three do not (0.18%, 0.18% and 0.29%), so the justification was true of two of
+them and the leading edge needs a different statement: **the scan's
+first samples are where the ramp is turning, the conversion from scan time to
+frequency is not linear there, and the analysis windows do not reach into
+it.** The figure marks those two windows in red and names the worst of them on
+the canvas. What the right panel bounds is
 sweep non-linearity and any tooth-dependent pull together. Six of the seven teeth
 stand above this trace's fit residual, and the seventh does not because the
 third-order pair carries about 2% of the first-order power at this modulation

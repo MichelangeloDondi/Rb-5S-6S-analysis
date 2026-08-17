@@ -1221,12 +1221,17 @@ def fig_ruler():
     # reader to take the one thing it got wrong on trust.
     from matplotlib.gridspec import GridSpec
     fig = plt.figure(figsize=(9.8, 4.7))
-    gsp = GridSpec(2, 2, figure=fig, width_ratios=[2.1, 1.0],
+    gsp = GridSpec(2, 2, figure=fig, width_ratios=[1.8, 1.2],
                    height_ratios=[2.9, 1.0], hspace=0.09, wspace=0.24,
                    left=0.075, right=0.985, top=0.83, bottom=0.12)
     ax = fig.add_subplot(gsp[0, 0])
     axres = fig.add_subplot(gsp[1, 0], sharex=ax)
-    ax2 = fig.add_subplot(gsp[:, 1])
+    # The right column is split so the SAMPLE COUNT is drawn rather than
+    # asserted. The old panel classified windows by n in the legend text and
+    # asked the reader to trust it, which is what made a 4-sigma edge point
+    # read as contradicting the title (experimenter, 2026-08-17).
+    ax2 = fig.add_subplot(gsp[0, 1])
+    ax2n = fig.add_subplot(gsp[1, 1], sharex=ax2)
     ax.plot(t, v, ".", ms=1.6, color="0.55", label="ruler trace (raw)")
     tf = np.linspace(t[0], t[-1], 3000)
     ax.plot(tf, _comb(tf, fit["t0_ms"], fit["delta_ms"], fit["width_ms"],
@@ -1246,11 +1251,34 @@ def fig_ruler():
                     f"({fit['trim_reason']})",
                     xy=(0.5, 0.02), xycoords="axes fraction", ha="center",
                     va="bottom", fontsize=6.4, color="0.3")
+    # The third-order pair carries a few per mille of the first-order power and
+    # sits under this trace's noise, so k = +/-3 marked EMPTY CANVAS in exactly
+    # the style used for teeth the reader can see. Drawn faint and dashed now,
+    # and named once, so a reader is not hunting for a peak that is not there.
+    _kmax = max(abs(n) for n in TEETH)
     for n in TEETH:
         tc = fit["t0_ms"] + n * fit["delta_ms"]
-        ax.axvline(tc, color="#D55E00", lw=0.7, alpha=0.5, ymax=0.86)
-        ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center", fontsize=8,
-                    color="#D55E00")
+        _faint = abs(n) == _kmax
+        ax.axvline(tc, color="#D55E00", lw=0.7,
+                   alpha=0.22 if _faint else 0.5, ymax=0.86,
+                   ls=(0, (2, 2)) if _faint else "-")
+        ax.annotate(f"$k={n}$", xy=(tc, ymax * 1.08), ha="center",
+                    fontsize=8, color="#D55E00",
+                    alpha=0.45 if _faint else 1.0)
+
+    # The outermost teeth carry the note ONCE, in axes coordinates, in the
+    # empty upper right. Attaching it to the k = +3 tick pushed the label box
+    # past the right edge of the panel, which the canvas guard rejects and
+    # which is the same "sentence sized for prose in a slot sized for a
+    # number" defect this file keeps hitting.
+    # At 0.955 it overprinted the k = 0 to k = 2 labels, which the canvas
+    # guard cannot see because both are text. The band between the tooth
+    # lines' tops (0.86) and the label row is empty, and the note sits in it,
+    # anchored left where the k = -3 dashed line has no label neighbour.
+    ax.text(0.012, 0.565, "dashed teeth: third order,\nunder this trace's noise",
+            transform=ax.transAxes, ha="left", va="top", fontsize=6.0,
+            color="#D55E00", alpha=0.85)
+
     # The residual strip under the trace: each sample minus the drawn comb,
     # divided by the error the fit weighted it with (the block noise law, so
     # the division removes the known signal-level dependence of the noise).
@@ -1303,16 +1331,11 @@ def fig_ruler():
     # the canvas, which the canvas guard reports and which is the same defect
     # this file has now hit four times: a sentence sized for prose put into a
     # panel sized for numbers.
-    axres.text(0.012, 0.94,
-               f"correlated, not white: lag-1 {_a1:+.2f}, lag-10 {_a10:+.2f}\n"
-               f"(white noise: 0 $\\pm$ {1 / np.sqrt(_n):.2f})",
-               transform=axres.transAxes, fontsize=5.8, color="#8f1f1f",
-               ha="left", va="top")
-    axres.text(0.988, 0.94,
-               f"scatter {_lo:.2f} dim third, {_hi:.2f} bright:\n"
-               "the noise law's level dependence holds",
-               transform=axres.transAxes, fontsize=5.8, color="0.35",
-               ha="right", va="top")
+    # BOTH annotations moved OUT of the strip on 2026-08-17: they were drawn
+    # inside the axes at 94 per cent height and overprinted the residual
+    # points, which is the collision class this file already has a rule about.
+    # One line, below the strip, outside the data area, is enough.
+
     axres.set_ylim(-lim8, lim8)
     axres.set_ylabel(r"residual / $\sigma$", fontsize=7.5)
     axres.tick_params(labelsize=7.5)
@@ -1339,53 +1362,82 @@ def fig_ruler():
     rr = np.array([float(r["rate_rel"]) for r in nl])
     er = np.array([float(r["rate_rel_err"]) for r in nl])
     n_win = np.array([int(r["n"]) for r in nl])
-    # Edge windows have few contributing traces, so their errors (~1/sqrt(n))
-    # are LARGER THAN THE BOUND ITSELF -- the rightmost spans +/-0.74% against a
-    # 0.3% band. Scaling marker area with n was not enough: a reader still
-    # reads the long bar as an anomaly, or as contradicting the panel title.
-    # So the two populations are now drawn differently and the title says which
-    # one sets the bound. (The long bar is NOT anomalous: at n=5 it sits 0.9
-    # sigma from the 1/sqrt(n) law, and its CENTRAL value, +0.24%, is inside
-    # the band. Only its precision is poor.)
-    # PERCENT DEVIATION, not a ratio near 1.000 (experimenter: this panel was not
-    # clear at all). The quantity is the same; a ratio of 0.9983 asks the
-    # reader to do the arithmetic, and the bound it is compared against is
-    # quoted in per cent everywhere else in the record.
     dev = 100.0 * (rr - 1.0)
     dev_err = 100.0 * er
+    bnd = 100.0 * RULER_LINEARITY_BOUND
+
+    # REDESIGNED 2026-08-17, after the experimenter reported the panel looked
+    # wrong and unclear for the second time. Two defects, and the second is
+    # about the record rather than the drawing.
+    #
+    # First, the panel classified windows by SAMPLE COUNT in legend text while
+    # drawing every window the same way, so a reader saw a point at -1.75%
+    # under a title that said "flat to 0.25%" and had to take the exclusion on
+    # trust. The count is now DRAWN, in its own strip below, so the reader can
+    # see which windows the bound rests on.
+    #
+    # Second, the code justified the n < 19 exclusion by saying those windows
+    # "cannot test the bound, their errors exceed it". Checked against
+    # results/ruler_nlmap.csv that is false for three of the five excluded
+    # windows, and the two leading-edge windows are not imprecise at all:
+    # -1.75 +/- 0.40 and +0.73 +/- 0.18 per cent, which are 4.4 and 4.0 sigma
+    # from zero with error bars at or below the bound. They are precise
+    # measurements that FAIL the flatness bound, not vague ones that cannot
+    # test it. The panel now says so, because a calibration figure that hides
+    # its own worst points is not a calibration figure.
+    sig = np.abs(dev) / dev_err
     well = n_win >= N_WELL_SAMPLED
-    sizes = 12 + 38 * (n_win / n_win.max())
-    for m, ec, alpha, z in ((well, "#009E73", 1.0, 2), (~well, "#8FBFB0", 0.9, 1)):
-        ax2.errorbar(pos[m], dev[m], yerr=dev_err[m], fmt="none", ecolor=ec,
-                     elinewidth=1, capsize=2, alpha=alpha, zorder=z)
-    ax2.scatter(pos[well], dev[well], s=sizes[well], color="#009E73",
-                edgecolor="none", zorder=3,
-                label=f"{N_WELL_SAMPLED} or more traces contribute")
-    ax2.scatter(pos[~well], dev[~well], s=sizes[~well], facecolor="white",
-                edgecolor="#009E73", linewidth=1.0, zorder=3,
-                label=f"fewer than {N_WELL_SAMPLED} traces, at the scan edges")
-    ax2.axhline(0.0, color="k", lw=0.8)
-    # The band IS the quoted bound: it was drawn at +-0.45% under a title
-    # quoting 0.3%, so the only visual reference on the panel disagreed with
-    # the number above it. The well-sampled windows reach 0.25%.
-    ax2.axhspan(-100 * RULER_LINEARITY_BOUND, 100 * RULER_LINEARITY_BOUND,
-                color="#009E73", alpha=0.10,
-                label=f"the quoted bound, $\\pm${100 * RULER_LINEARITY_BOUND:.1f}%")
-    ax2.set_xlabel("centre of the window, in scan time (ms)")
-    ax2.set_ylabel("local rate, deviation from the whole-scan rate (%)")
-    # The title now asks the question the panel answers. "local sweep rate
-    # against window position" named the axes and left the reader to guess
-    # what a good answer would look like.
+    departs = (~well) & (np.abs(dev) > bnd) & (sig > 3.0)
+    quiet = (~well) & (~departs)
+
+    ax2.axhspan(-bnd, bnd, color="#009E73", alpha=0.10, zorder=0)
+    ax2.axhline(0.0, color="k", lw=0.8, zorder=1)
+    for m, col, face, lab in (
+            (well, "#009E73", "#009E73", f"interior, {N_WELL_SAMPLED}+ traces"),
+            (quiet, "#9ecae1", "white", "edge, consistent with flat"),
+            (departs, "#cb181d", "#cb181d", "edge, departs at 3 sigma or more")):
+        if not m.any():
+            continue
+        ax2.errorbar(pos[m], dev[m], yerr=dev_err[m], fmt="none", ecolor=col,
+                     elinewidth=1.1, capsize=2, zorder=2)
+        ax2.scatter(pos[m], dev[m], s=26, color=face, edgecolor=col,
+                    linewidth=1.1, zorder=3, label=lab)
+    # Name the worst point once, on the canvas, with its significance.
+    if departs.any():
+        j = int(np.argmax(np.abs(dev) * departs))
+        ax2.annotate(f"{dev[j]:+.2f}% $\pm$ {dev_err[j]:.2f},  {sig[j]:.1f}$\sigma$",
+                     xy=(pos[j], dev[j]), xytext=(0.17, 0.035),
+                     textcoords="axes fraction", fontsize=6.4, color="#cb181d",
+                     ha="left", va="bottom",
+                     arrowprops=dict(arrowstyle="-", color="#cb181d", lw=0.7))
     _wspread = float(np.max(np.abs(dev[well])))
-    # The title asks the question and answers it, which is what a reader of a
-    # calibration panel needs. Flat means one MHz/ms converts the whole scan.
-    ax2.set_title("(b) is the sweep rate the same across the scan?\n"
-                  f"yes, to {_wspread:.2f}% where the sampling is good",
-                  fontsize=8.5)
-    # One cue, not two: the legend already carries the n split, and the old
-    # free-floating "marker area ~ n" note collided with it.
-    ax2.legend(fontsize=6, loc="lower center", framealpha=1.0, frameon=True)
-    _footer(fig, "Source: results/ruler_traces.csv (the eligibility and ranking, section 7 of "
+    ax2.set_ylabel("local rate, deviation from\nthe whole-scan rate (%)", fontsize=7.5)
+    ax2.set_title("(b) where scan time converts linearly to frequency:\n"
+                  f"flat to {_wspread:.2f}% across the interior, "
+                  "not at the leading edge", fontsize=8.5)
+    # Placed in the empty band between the departing edge point and the
+    # interior cluster. Lower-left covered the -1.75% point and its label,
+    # upper-anything covers the tall edge error bars.
+    ax2.legend(fontsize=5.9, loc="lower left", bbox_to_anchor=(0.26, 0.30),
+               framealpha=1.0, frameon=True, handletextpad=0.4, borderpad=0.35)
+    ax2.tick_params(labelbottom=False, labelsize=7.5)
+    ax2.set_ylim(-2.35, 1.45)
+
+    # The counts strip: the reader sees WHY the edges are treated apart.
+    colr = np.where(well, "#009E73", np.where(departs, "#cb181d", "#9ecae1"))
+    ax2n.bar(pos, n_win, width=105, color=colr, alpha=0.85)
+    ax2n.axhline(N_WELL_SAMPLED, color="0.35", lw=0.8, ls=":")
+    ax2n.text(0.985, N_WELL_SAMPLED, f" {N_WELL_SAMPLED}", transform=
+              ax2n.get_yaxis_transform(), fontsize=6, color="0.35",
+              ha="right", va="bottom")
+    ax2n.set_ylabel("traces", fontsize=7.5)
+    ax2n.set_xlabel("centre of the window, in scan time (ms)")
+    ax2n.tick_params(labelsize=7.5)
+
+    _footer(fig, f"Residuals are correlated, not white: lag-1 {_a1:+.2f}, lag-10 {_a10:+.2f}, "
+                 f"against 0 +/- {1 / np.sqrt(_n):.2f} for white noise. Scatter {_lo:.2f} in the "
+                 f"dim third against {_hi:.2f} in the bright, so the noise law's level dependence holds.\n"
+                 "Source: results/ruler_traces.csv (the eligibility and ranking, section 7 of "
                  "docs/notes/ruler_validity_and_trim_prereg.md) + data_raw traces\n"
                  "(rb5s6s.ingest, rb5s6s.ruler, the plotted trace, refit under its own block's "
                  "noise law) + results/ruler_nlmap.csv. Regenerate: python scripts/run_ruler.py "
