@@ -1,5 +1,10 @@
 # The analysis library
 
+> The CONCEPTS these modules implement, one page each with a runnable
+> example, are in [`docs/wiki/`](../docs/wiki/README.md). Start there for
+> what a Voigt degeneracy or a profile likelihood is, and here for which
+> function computes it.
+
 The library computes and the scripts orchestrate. Every module in this package
 takes arrays, blocks or tables and returns numbers, and none of them decides
 where the data comes from or where a result goes. Those decisions belong to the

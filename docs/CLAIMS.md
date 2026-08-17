@@ -44,7 +44,12 @@ two-photon sum frequency, twice the laser frequency.
   framing.
 - Light shift at the campaign maximum of 225 mW:
   S₀(225 mW) < 0.26 MHz, from a joint three-session fit of every point
-  of every power profile, minimum consistent with zero shift. The bound
+  of every power profile, minimum consistent with zero shift. **The
+  disposition of this bound is under review**, because rerunning the same
+  construction on byte-identical inputs on 2026-08-14 moved a subset bound by
+  about a third, so the quoted digit is reproducible to about five per cent
+  rather than to the digit shown. [RESULTS.md](RESULTS.md) carries the
+  measurement and the open options. The bound
   depends on the waist only weakly, through the transit kernel in its
   lineshape. The prediction it is compared against rides the waist
   prior directly: 0.35 MHz
@@ -197,7 +202,7 @@ systematic as fig1.*
   velocity-symmetry argument.
 - A validation discipline: model ladder, identifiability profiles,
   coverage tested on synthetic truth, and a preregistered audit trail
-  in which twenty-seven dated addenda record every claim that was
+  in which thirty dated addenda record every claim that was
   withdrawn, corrected, or downgraded, including the local minimum retraction
   of this record's own headline light-shift bound.
 

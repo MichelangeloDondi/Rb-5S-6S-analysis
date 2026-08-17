@@ -15,6 +15,12 @@ numbers before writing code.
 > explains the measurement in six sentences, then defines every term
 > and symbol used anywhere in this repository.
 
+> **Want the concept rather than the seam?** [`docs/wiki/`](wiki/README.md)
+> carries one page per concept, method and effect, each with a worked
+> example that runs. Its router has a route for adapting this code to
+> another line, and nineteen of its pages record where this project got
+> that concept wrong first.
+
 This page names every seam: what to change, where it lives, what getting it
 wrong does to the answer, and the check that catches it.
 

@@ -17,8 +17,22 @@ import pathlib
 import subprocess
 import sys
 
+import pytest
+
 EX = pathlib.Path(__file__).resolve().parents[1] / "examples" / "synthetic_recovery.py"
 ROOT = EX.parents[1]
+
+# The sdist built from this repository ships tests/ but NOT examples/, so
+# these three tests met a missing file and raised FileNotFoundError rather
+# than skipping, and an extracted sdist failed its own suite. Measured
+# 2026-08-17 by building the distribution and running it. A distribution
+# that fails its own tests states something false about itself, and a
+# module-level skip states the situation: the example is not present, so
+# nothing about it is being established here.
+pytestmark = pytest.mark.skipif(
+    not EX.is_file(),
+    reason=("examples/synthetic_recovery.py is not beside this test, which "
+            "is the case in a built sdist. Run these from a git checkout."))
 
 
 def test_the_example_runs_and_recovers(tmp_path):

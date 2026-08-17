@@ -1,6 +1,6 @@
 # The working notes
 
-Five of the eight files here are preregistrations. A preregistration is a
+Eight of the sixteen files here are preregistrations. A preregistration is a
 specification written and committed before the run whose outcome it scores. The
 estimator, the thresholds, the trace census and the stop conditions are fixed in
 the record while the answer is still unknown, so the run can only confirm them

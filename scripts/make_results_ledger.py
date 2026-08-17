@@ -71,8 +71,9 @@ def main() -> int:
       "the beam-profile measurement's job. "
       "An earlier note inferred $w_0\\approx90$ µm from a second (spurious) "
       "factor-of-2. It is retracted, see "
-      "`docs/notes/transit_width_resolved.md` and "
-      "`literature_food_for_thought.md`.\n")
+      "[docs/notes/transit_width_resolved.md](notes/transit_width_resolved.md) "
+      "and [docs/literature_food_for_thought.md](literature_food_for_thought.md)"
+      ".\n")
 
     # ---- C1: beta_self ----
     W("## C1. Collisional self-broadening $\\beta_\\text{self}$\n")
