@@ -56,7 +56,8 @@ two-photon sum frequency, twice the laser frequency.
   0.348), so it excludes none of it. The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
-- The 2025 laser linewidth: below 1.2 MHz per photon at the measured waist,
+- The 2025 laser linewidth: below 1.2 MHz per photon, equivalently 2.4 MHz on
+  the transition axis, at the adopted lineage waist,
   rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz
   on the transition axis, are preliminary: their block-to-block
   variation is partly the collision-laser degeneracy rather than

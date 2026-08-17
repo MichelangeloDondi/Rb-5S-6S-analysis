@@ -33,11 +33,16 @@ written to be pointed at other transitions
 The scope and the headline numbers, up front. Four hyperfine components, 264
 fitted traces across 70–130 °C and 25–225 mW, three bounds at 95%:
 collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
-four peaks (holding across the waist band the data allow), the 2025 laser width below 1.2 MHz per photon
-at the 64 µm measured waist, and the AC-Stark coefficient
-S₀(225 mW) < 0.26 MHz against 0.35 predicted at the measured waist (the
-prediction rides the measured waist directly, the bound only weakly, through
-its transit kernel).
+four peaks (holding across the waist band the data allow), the 2025 laser
+width below 2.4 MHz on the two-photon transition axis, which is the axis the
+analysis works on, equivalently 1.2 MHz per photon, and the AC-Stark
+coefficient S₀(225 mW) < 0.26 MHz against 0.35 predicted (95%, current primary
+construction, whose robustness is under review, see
+[`docs/RESULTS.md`](docs/RESULTS.md)). The last two ride the beam waist, which
+is 64 µm ADOPTED FROM A DIRECT MEASUREMENT ON THE APPARATUS LINEAGE and not
+re-measured in this campaign: the prediction rides it directly, the bound only
+weakly through its transit kernel, and it is the largest open systematic in
+the record.
 The full claim ledger, including what is deliberately not claimed, is
 [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
@@ -94,6 +99,8 @@ rather run the thing than read about it ·
 
 **Where to go next:** the big picture (goals, prior art, what each future
 measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
+one page per concept, method, effect and technique, each with a worked example
+that runs → [`docs/wiki/`](docs/wiki/README.md) ·
 full derivations and statistics → [`docs/methods.md`](docs/methods.md) ·
 results table (auto-generated) → [`docs/RESULTS.md`](docs/RESULTS.md) ·
 measurement plan → [`docs/PLAN.md`](docs/PLAN.md) ·
@@ -269,10 +276,10 @@ measurement that would lift it.
 | Quantity | 2025 result | Type | Lifted by |
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
-| 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon at the measured waist, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the measured waist, see [RESULTS](docs/RESULTS.md). Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
+| 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon, equivalently 2.4 MHz on the transition axis, at the adopted lineage waist, rising with w₀ | bound | beam-profile w₀ |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted lineage waist, see [RESULTS](docs/RESULTS.md), which records that a later rerun moved a subset bound by about a third and that the disposition of this bound is under review. Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
-| Beam waist **w₀** | 64 µm, measured. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
+| Beam waist **w₀** | 64 µm, adopted from a direct measurement on the apparatus lineage and NOT re-measured in this campaign. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization, and a trapped-atom experiment |
 
@@ -409,6 +416,38 @@ a clone with no raw traces at all, off the committed acquisition clock.
 [`docs/REPRODUCING.md`](docs/REPRODUCING.md) says which script writes what,
 and how each quoted number is held to the file that produces it.
 
+## Framework or result: which part of this is reusable
+
+This repository holds two things with different lifetimes, and telling them
+apart is worth one paragraph before the map.
+
+**The framework** is the analysis machinery: line shapes, fitting, the noise
+model, the frequency ruler, the diagnostics. It is a RELEASE CANDIDATE. It
+imports and runs with no raw data present, and `examples/synthetic_recovery.py`
+demonstrates it end to end on synthetic data whose answer is known, reporting
+the recovery against the fit's own uncertainty rather than asserting the fit
+looks reasonable. Run it first:
+
+```
+python examples/synthetic_recovery.py
+```
+
+**The rubidium result** is experiment-specific and still under scientific
+adjudication. Every number in `results/` carries a status label (BOUND,
+PRELIM, DIAGNOSTIC, CALIB, ENVELOPE) and those labels are load-bearing: a
+PRELIM is not a result, and a BOUND is not a value. `docs/HISTORY.md` is the
+one place a retired number is licensed to appear, so a figure or a sentence
+anywhere else states the current position only.
+
+**Releasing the framework is not an endorsement of the result.** The two can
+move independently, and they do. Nothing in `rb5s6s/` asserts that the
+collisional coefficient or the light-shift bound is settled, and the framework
+would be equally correct if both changed tomorrow.
+
+WHAT IS NOT YET TRUE: no independent scientist has installed this and applied
+it to a dataset that is not ours, so this is a release candidate rather than a
+community release.
+
 ## Repository map
 
 ```
@@ -416,8 +455,9 @@ rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
             lineshape + fitting, density, collisional/global/AC-Stark fits,
             transit Monte-Carlo, amplitude analyses, shared utilities
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
-examples/   your_line.ipynb, the pipeline pointed at a different line by
-            editing one dictionary
+examples/   synthetic_recovery.py, the package's own known-truth check on
+            data it generates itself; your_line.ipynb, the pipeline pointed
+            at a different line by editing one dictionary
 data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 data_recovered/  the backup-recovered layer: the acquisition clock
             (CLOCK.csv), backup-only discards, degradation lineage
@@ -428,7 +468,8 @@ docs/       the documentation tree. The ones to read first:
             CLAIMS.md (the claim ledger) · BIG_PICTURE.md (goals, prior art,
             what each future measurement would add) · ADAPTING.md (the seams
             for another line) · methods.md (index) + methods/ (8 ordered
-            chapters: the full derivations) · PLAN.md (measurement plan) ·
+            chapters: the full derivations) · wiki/ (one page per concept,
+            method, effect and technique) · PLAN.md (measurement plan) ·
             RESULTS.md (auto-generated results table) · DATA.md (data provenance) ·
             REPRODUCING.md (what runs from a clone, and what does not) ·
             APPARATUS.md (hardware of record + provenance) + apparatus/
