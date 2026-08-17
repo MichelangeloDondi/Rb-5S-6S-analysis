@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** How to get a standard error, a bias estimate or a
+confidence interval for a statistic that has no closed-form sampling
+distribution.
+**Takes.** One sample in hand, or a fitted model to simulate from, and no
+closed-form formula for the statistic's variance.
+**Gives.** The nonparametric and parametric bootstrap, the jackknife,
+jackknife-after-bootstrap, and why a block or stratified draw is needed once
+the data are not individually exchangeable.
+**Skip if.** You want to know whether one observation drives a fit rather
+than how uncertain a statistic is. That is
+[influence diagnostics](influence-diagnostics.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A fitted quantity comes with a standard error, and the textbook formula for
@@ -224,6 +239,31 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What this repository got wrong once
+
+Before 2026-07-16, the headline interval on the collisional-slope parameter
+$\beta_\text{self}$ stood at 0.07-0.15 MHz per $10^{12}\text{cm}^{-3}$, built
+from the between-block scatter multiplied by a hard-coded 2σ, the standard
+large-sample Gaussian multiplier applied without checking whether the fit
+behind it had enough degrees of freedom to earn it.
+[HISTORY.md](../HISTORY.md) records what moved it: on 2026-07-16 the same
+scatter, read instead through the Student-t quantile $t(0.95,1) = 6.31$ on
+the single residual degree of freedom the fit actually carried, widened the
+interval to 0.2-0.4, roughly a factor of three, with no new data behind the
+change.
+
+Neither number is a resample in the sense the rest of this page describes,
+both are closed-form quantiles, but the mistake is the one this page's "What
+problem it solves" section names directly: a cutoff read off a table assumes
+the data resemble the table's large-sample case, and a fit with one residual
+degree of freedom does not. A hard-coded 2σ is exactly such a table cutoff
+wearing a constant's disguise. Building the null from the design actually in
+hand, whether by the Student-t quantile that construction owed the fit or by
+simulating from the fit directly the way this page's own methods do, is the
+same check either way, and asking how many degrees of freedom a stated
+multiplier stands in for, before quoting it, would have caught the
+0.07-0.15 interval before it shipped.
+
 ## Further reading
 
 - [Wikipedia: Bootstrapping (statistics)](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)),
@@ -247,6 +287,21 @@ a reader.
   is the question this page answers.
 - [The joint fit](joint-fit.md), whose leave-one-out checks are the jackknife
   described here.
+
+## See also
+
+- [Influence diagnostics](influence-diagnostics.md), the case-deletion idea
+  this page's jackknife generalizes, applied one point or one block at a
+  time.
+- [Robust fitting](robust-fitting.md), a loss-based alternative for the same
+  contamination problem, run beside a resampled interval rather than instead
+  of it.
+- [Heavy-tailed models](heavy-tailed-models.md), a likelihood-based
+  alternative to a hard threshold, for the same large-residual question this
+  page's parametric bootstrap addresses.
+- [Sensitivity analysis](sensitivity-analysis.md), another Monte Carlo
+  construction whose cost scales with the number of model evaluations rather
+  than with the number of data points.
 
 ---
 

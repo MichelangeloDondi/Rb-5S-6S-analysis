@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Does a fit's convergence flag mean it found the surface's
+true minimum, or only a stationary point somewhere nearby.
+**Takes.** A parameter fit and its optimiser's stopping report. No prior
+wiki page is required.
+**Gives.** The three defences against a trapped scan, starting from several
+places, chaining a scan in both directions, and a refitted audit, and why
+only the audit tests a finished result rather than the process that built
+it.
+**Skip if.** The reader wants the correlated-parameter valleys a fit gets
+trapped inside, ahead of the trapping mechanism itself. That is
+[identifiability](identifiability.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A fit reports success once its optimiser's own stopping rule is satisfied.
@@ -191,6 +206,20 @@ a reader.
 - [`docs/RESEARCH_DECISIONS.md`](../RESEARCH_DECISIONS.md), which records the
   run where an unseeded cold chain parked in a false minimum, and the
   structural fix that followed.
+
+## See also
+
+- [Identifiability](identifiability.md), the correlated-parameter valleys a
+  converged fit can be trapped inside.
+- [The profile likelihood](profile-likelihood.md), the chain of individual
+  fits whose overall trustworthiness reduces to exactly this question, one
+  grid point at a time.
+- [Grids and discretisation](grids-and-discretisation.md), the companion
+  question of whether the grid underneath a fit is resolved finely enough to
+  trust in the first place.
+- [Compute budgets and failure modes](compute-budgets-and-failure-modes.md),
+  the resource cost of running the multi-start and bidirectional defences
+  this page recommends.
 
 ---
 

@@ -2,6 +2,22 @@
 
 *[wiki index](README.md) · technique*
 
+**The question.** What separates an absolute frequency reference from a
+differential one, and why does the accuracy ordering run atoms first, a
+comb second and a wavemeter last.
+**Takes.** What a phase-modulated sideband comb is, from
+[EOM sidebands](eom-sidebands.md), the differential reference this page
+compares against a wavemeter.
+**Gives.** The ordering of reference types by what a systematic error does
+under a comparison, the four calibration practices for a nonlinear piezo
+scan, and where this repository's own wavemeter numbers sit outside any
+committed frequency axis.
+**Skip if.** Only the comb's own mechanics are wanted rather than how they
+compare to a wavemeter, a case covered by [EOM sidebands](eom-sidebands.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A spectroscopy trace does not arrive with a frequency axis attached. What
@@ -197,6 +213,17 @@ misleading a reader.
   repository's frequency axis is actually built on.
 - [Allan deviation](allan-deviation.md), the statistic a scan's
   reproducibility is quantified with.
+
+## See also
+
+- [EOM sidebands](eom-sidebands.md) for the comb mechanics this page treats
+  as the working differential reference.
+- [Allan deviation](allan-deviation.md) for the reproducibility statistic
+  the calibration design here relies on.
+- [Sweep rate and detection lag](sweep-rate-and-detection-lag.md), the next
+  page, a different way the scan itself can distort a measured line.
+- [The two-photon comb](the-two-photon-comb.md), the previous page, for why
+  the comb reaches only a couple of islands around each line.
 
 ---
 

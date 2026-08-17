@@ -2,6 +2,22 @@
 
 *[wiki index](README.md) · technique*
 
+**The question.** When does counting individual photons beat an analog
+voltage measurement, and when is a counter unavailable regardless of the
+crossover.
+**Takes.** The additive-plus-multiplicative noise law from
+[Weighted least squares](weighted-least-squares.md), restated here rather
+than re-derived.
+**Gives.** The crossover level computed from measured noise coefficients,
+the dead-time pile-up condition, and where this repository's own noise law
+and planned counter check live.
+**Skip if.** The noise law itself, and why it sets a fit's weights, is
+wanted rather than the counting decision built on it, a case covered by
+[Weighted least squares](weighted-least-squares.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A detector that turns incident light into a number can do it two ways.
@@ -150,6 +166,32 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A naive count that assumed independence twice
+
+On 2026-08-15 the pedestal detectability figure for the redesigned wide-scan
+block first stood at about 29σ per trace, a naive count over the off-line
+points scaled by an assumed background-degeneracy factor of 0.7 and an
+assumed correlation time τ of 2.0. Both assumed inputs were wrong at the
+reach the design settled on: the degeneracy factor is 0.645 at the new
+reach, not 0.7, and the record's own median τ_int is 3.81, not the assumed
+2.0. Correcting both moved the figure to about 31σ per trace, with 13σ at
+the record's worst τ. The same calculation moved again the next day, once
+the record length itself rose to meet a separate shape requirement, to
+about 61σ per trace and 27σ at the record's worst τ.
+[HISTORY.md](../HISTORY.md) carries both rows.
+
+The naive count treated every point of the record as an independent event,
+the same assumption this page's account of dead time rests on: a counted
+rate obeys the square-root scaling of shot noise only where successive
+events do not interfere with one another, and a discriminator's dead time
+$\tau_d$ is exactly the timescale past which that stops holding. τ_int
+plays the same role for this record's own correlated noise, a measured
+timescale rather than a round number to assume. Reading it from the record
+before quoting a significance is the same check this page asks of a
+dead-time fraction before trusting a peak count rate, and applied to the
+29σ figure before it was quoted, it would have caught both wrong inputs at
+once.
+
 ## Further reading
 
 - G. F. Knoll, *Radiation Detection and Measurement*, 4th ed. (Wiley, 2010),
@@ -160,6 +202,16 @@ a reader.
   electronic-noise budget of an analog receiver.
 - [Weighted least squares](weighted-least-squares.md), the noise law this
   page inverts and the fit the same coefficients ultimately weight.
+
+## See also
+
+- [Weighted least squares](weighted-least-squares.md) for the noise law
+  this page inverts and where its coefficients come from.
+- [Sweep rate and detection lag](sweep-rate-and-detection-lag.md), the
+  previous page, another way a detection chain's own behaviour can be
+  mistaken for the atoms'.
+- [Designing an acquisition](designing-an-acquisition.md), the next page,
+  for how record length and sampling interact with the noise floor here.
 
 ---
 

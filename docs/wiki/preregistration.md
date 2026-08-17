@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** What has to be written down and dated before a result
+exists for a criterion to mean anything.
+**Takes.** The idea of a statistical threshold and a detection claim. No
+other wiki page is required first.
+**Gives.** The criterion, census and analysis-chain framework, and the null
+test and ceiling test that bracket what a frozen criterion is allowed to
+claim.
+**Skip if.** You want the test that validates the estimator a criterion is
+built on, rather than the act of freezing the criterion itself. That is
+[injection-recovery testing](injection-recovery.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Preregistration is a written commitment, made and dated before a result is
@@ -176,6 +190,34 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## The band-holdout threshold that never entered the frozen script
+
+On 2026-08-15 a band-holdout replication was reported inside the private
+record as a clean sweep of the held-out conditions at a decisive p-value,
+built from "the calibration-sound subset of a sixteen-condition cohort". Two
+of those conditions were the pilot's own traces regrouped by peak, and the numeric soundness threshold that carved out
+the "calibration-sound subset" was never written into the frozen script, so
+the census that actually ran was not the census that had been committed. The
+result was replaced the same day by 11 of 14 fresh conditions, p = 0.029. A
+preregistered census, stated with its exclusion grounds before the run the way
+this page describes, would have fixed the soundness threshold and the
+pilot/fresh boundary in advance, leaving no room for a subset drawn after the
+traces were already visible.
+
+The same 2026-08-15 record closes on a stronger finding than any single row.
+Of six numbers corrected that day, five moved in the direction that had made
+the result look stronger, "which is a measurement of the review rather than
+six coincidences", and the protocol changed so that the direction of a
+refutation tally is recorded beside its count, not the count alone. That is a
+preregistration lesson in its own right: a null test scores whether a
+criterion's failure rate matches its stated threshold, and a review whose
+corrections run five-to-one toward the flattering answer is failing the same
+kind of test on itself. Recording the direction as well as the count is what
+lets a review catch that bias the way a preregistered null test catches a
+loose criterion, and it is the check this page's own null-test description
+would have called for first. See
+[HISTORY.md](../HISTORY.md) for both rows.
+
 ## Further reading
 
 - [Wikipedia: Preregistration (science)](https://en.wikipedia.org/wiki/Preregistration_(science)),
@@ -189,6 +231,16 @@ a reader.
   preregistrations, and
   [`docs/PREREGISTRATION_RESULTS.md`](../PREREGISTRATION_RESULTS.md) for how
   each one was scored.
+
+## See also
+
+- [Injection-recovery testing](injection-recovery.md), the estimator
+  validation a preregistered criterion still needs after it is frozen.
+- [Information criteria](information-criteria.md), the panel a
+  preregistered model-selection threshold is usually one vote within.
+- [Monte Carlo methods](monte-carlo-methods.md), the simulation technique
+  behind a null test's false-positive rate and a ceiling test's known
+  regime.
 
 ---
 

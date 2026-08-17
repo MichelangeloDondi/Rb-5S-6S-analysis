@@ -2,6 +2,16 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** What the beam waist is, why it stands between a measured
+power and the intensity an atom feels, and how confidently this repository
+knows its value.
+**Takes.** Nothing beyond the idea of a focused beam, and no fitted data of
+its own.
+**Gives.** The waist's defining relations, its opposite-signed pull on the
+light shift and the transit width, and the adopted value's provenance.
+**Skip if.** You want what the waist does to the line shape rather than the
+length itself, covered in [the AC-Stark shift](ac-stark-shift.md).
+
 ## What it is
 
 A beam brought to a focus by a lens narrows to a minimum radius before
@@ -181,6 +191,32 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What this repository got wrong, twice
+
+The waist this page states did not arrive as one number.
+[HISTORY.md](../HISTORY.md) records the design value at 32 µm, excluded
+once the transit Monte Carlo's own crossing-flux weighting for atoms
+crossing the beam was found missing, the same implementation trap
+[transit-time broadening](transit-time-broadening.md) names in its "What
+can go wrong" section. A separate note, carrying an unrelated
+factor-of-two arithmetic error, had put the figure at roughly 90 µm before
+2026-07-13 and was retracted outright. Fixing the Monte Carlo on
+2026-07-13, and validating it against Lehmann's 41.2 kHz worked example,
+moved the figure to roughly 50 µm. Rajasree 2020's direct measurement on
+the same laser then replaced that Monte-Carlo estimate with the 64 µm
+value this page calls ADOPTED, on 2026-08-01, still open.
+
+A second failure came from trusting repetition over provenance rather than
+from a bad number. A stand-in figure of 60 µm, chosen before the waist was
+stated as measured, was written into three forward-looking documents,
+while the correct 64 µm figure sat in a fourth. On 2026-08-15 a
+consistency sweep counted the three against the one and edited the page
+that was right. HISTORY.md states the lesson outright: "Corroboration
+between documents is not independent evidence when they share an
+ancestor." A reader who asked where each of the three 60 µm documents got
+its number, rather than counting how many agreed, would have caught the
+retraction before the sweep needed to.
+
 ## Further reading
 
 - [`../lit/nieddu2019.md`](../lit/nieddu2019.md), the paper measuring the
@@ -194,6 +230,15 @@ a reader.
   scale of.
 - [Transit-time broadening](transit-time-broadening.md) for the width that
   depends on the same length with the opposite sign.
+
+## See also
+
+- [The AC-Stark shift](ac-stark-shift.md) for the shift distribution this
+  length's intensity feeds directly.
+- [Saturation](saturation.md) for the fourth-power waist dependence that sets
+  the safe operating regime.
+- [Sensitivity analysis](sensitivity-analysis.md) for how much a projection
+  actually moves when an input like the waist is varied.
 
 ---
 

@@ -2,6 +2,18 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** How a single number can isolate a lineshape's asymmetry
+from every symmetric mechanism broadening it at the same time.
+**Takes.** A line already understood as a convolution of kernels, and no
+fitted data of its own.
+**Gives.** The additivity property that lets $\kappa_3$ single out one
+asymmetric mechanism, and the traps that forge a fake one.
+**Skip if.** You want the mechanism that produces the asymmetry rather than
+the statistic that reads it, covered in [the AC-Stark shift](ac-stark-shift.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Cumulants are an alternative to moments for describing a distribution. They
@@ -124,6 +136,17 @@ at one rate can.
   cumulant hierarchy as derived here.
 - [The AC-Stark shift](ac-stark-shift.md) for the mechanism this statistic
   isolates.
+
+## See also
+
+- [The AC-Stark shift](ac-stark-shift.md) for the mechanism whose asymmetry
+  this statistic isolates.
+- [The Voigt profile](voigt-profile.md) for the symmetric convolution this
+  statistic is blind to by construction.
+- [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) for the
+  instrumental asymmetry that can forge the same signature.
+- [Allan deviation](allan-deviation.md) for the wiki's other mathematical
+  descriptor, a statistic built to separate noise types instead of moments.
 
 ---
 

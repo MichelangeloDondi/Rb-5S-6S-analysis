@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Once a point is suspected of pulling a fit too far, which
+loss functions stop that pull without a person deciding by eye which points
+to trust.
+**Takes.** An ordinary weighted least-squares fit to compare against, and no
+assumption about which points, if any, are contaminated.
+**Gives.** Huber and Tukey's biweight losses, the breakdown point that
+separates them, and the rule that a robust fit runs beside the standard fit
+rather than in place of it.
+**Skip if.** You want to find which point is doing the pulling before
+choosing a loss. That is [influence diagnostics](influence-diagnostics.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An ordinary least-squares fit scores every residual by its square. The
@@ -272,6 +286,16 @@ a reader.
   trimming rule before the data it would affect are read.
 - [Collisional self-broadening](self-broadening.md), for the bound this
   page's leverage discussion explains.
+
+## See also
+
+- [Influence diagnostics](influence-diagnostics.md), for finding which point
+  is doing the pulling before a loss is chosen.
+- [Resampling](resampling.md), a different way to get an interval when no
+  closed-form one exists, and the block structure that trips up both.
+- [Heavy-tailed models](heavy-tailed-models.md), the same continuous
+  downweighting, produced by a fitted likelihood instead of a hand-chosen
+  loss.
 
 ---
 

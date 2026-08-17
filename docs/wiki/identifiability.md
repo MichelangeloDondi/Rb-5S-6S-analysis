@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Whether the data can actually separate two parameters, or
+only determine some combination of them.
+**Takes.** A fitted model and its parameter covariance. No new fitting, and
+nothing beyond what a standard fit already produces.
+**Gives.** The structural-versus-practical distinction, the three
+diagnostics that expose a degeneracy, and what breaking one by design or by
+an independent measurement is worth.
+**Skip if.** The question is how to build a confidence interval that already
+accounts for a nuisance parameter's freedom, rather than whether two
+parameters are separable in the first place. That is
+[the profile likelihood](profile-likelihood.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A parameter is identifiable if the data could, in principle, distinguish its
@@ -160,6 +175,23 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A haircut that was actually a degeneracy, 2026-08-15
+
+On 2026-08-15 the wide-scan span was set to 800 MHz, one Gaussian sigma of
+the Doppler pedestal, on the reasoning that fitting a free per-trace
+background over that window costs a fixed haircut of signal-to-noise, taken
+as 0.7. The free background and the pedestal amplitude were not two
+quantities that merely share a little signal: they form a near-degenerate
+pair, and the retained SNR is √(1 − ⟨g⟩²/⟨g²⟩), which evaluates to 0.140 at
+that span's one sigma of reach and not the assumed 0.7. The span was
+replaced by 2400 MHz, three sigma of reach, once the retained SNR was worked
+out properly. [docs/HISTORY.md](../HISTORY.md) carries the row.
+
+A parameter-correlation check between the free background and the pedestal
+amplitude, the first diagnostic this page names, would have shown the
+near-unit correlation and the true retained SNR before the span was chosen
+rather than after.
+
 ## Further reading
 
 - A. Raue et al., "Structural and practical identifiability analysis of
@@ -170,6 +202,17 @@ a reader.
   valley.
 - [Injection-recovery testing](injection-recovery.md), which shows whether the
   intervals a degenerate problem produces actually cover.
+
+## See also
+
+- [The profile likelihood](profile-likelihood.md), the tool that maps a
+  degenerate valley directly instead of approximating it by an ellipse.
+- [Injection-recovery testing](injection-recovery.md), for whether an
+  interval built on a degenerate problem actually covers.
+- [The joint fit](joint-fit.md), for what sharing a parameter across repeats
+  does and does not do to a degeneracy the whole dataset carries.
+- [Information criteria](information-criteria.md), for the separate question
+  of comparing models rather than separating a model's own parameters.
 
 ---
 

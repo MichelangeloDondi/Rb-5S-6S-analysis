@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · technique*
 
+**The question.** What frequency ruler does a phase-modulated sweep carry,
+and how does a two-photon transition change the arithmetic of that ruler.
+**Takes.** No prior background, since the sideband picture and the Bessel
+amplitudes are introduced from scratch.
+**Gives.** The one-photon and two-photon comb laws, the carrier-null depth
+for each, and where this repository's frequency ruler and its design
+compromise are implemented.
+**Skip if.** The sideband derivation is already familiar and only the
+two-photon consequences for reach and shape-fitting precision are wanted,
+a case covered by [The two-photon comb](the-two-photon-comb.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An electro-optic modulator is a crystal whose refractive index follows an
@@ -126,6 +140,16 @@ a reader.
   Jacobi-Anger identity behind them.
 - [Methods chapter 3](../methods/05_the_frequency_ruler.md) for this bench's
   numbers and its common-mode rejections.
+
+## See also
+
+- [The two-photon comb](the-two-photon-comb.md) for what the doubled
+  argument derived here costs in reach and shape-fitting precision.
+- [Bessel functions](bessel-functions.md) for the addition theorem and
+  power-conservation identity the two-photon collapse above relies on.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
+  for how this differential ruler compares against absolute references and
+  fits into the wider calibration stack.
 
 ---
 

@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** How a transition a single photon's parity rule forbids
+can still be driven by absorbing more than one photon, and what sets the
+required photon count.
+**Takes.** The one-photon parity and angular-momentum rules from
+[Selection rules](selection-rules.md), nothing else assumed.
+**Gives.** The virtual, non-resonant two-photon amplitude, its
+intensity-squared scaling, and the polarisation-dependent tensor
+decomposition that separates the Doppler-free line from its pedestal.
+**Skip if.** the reader wants the one-photon parity argument on its own
+rather than its extension to more than one photon, in which case
+[Selection rules](selection-rules.md) is the right page.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A transition between two atomic states can be driven by absorbing more than
@@ -215,6 +230,15 @@ a reader.
 - [Doppler-free geometries](doppler-free-geometries.md) for the same cross
   and same-beam terms derived from wavevector cancellation rather than from
   polarisation.
+
+## See also
+
+- [Selection rules](selection-rules.md), the one-photon parity and
+  angular-momentum rules this page extends to more than one photon.
+- [Saturation](saturation.md), for what the intensity-squared law becomes
+  once the drive is no longer weak.
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  beam geometry the cross and same-beam terms above belong to.
 
 ---
 

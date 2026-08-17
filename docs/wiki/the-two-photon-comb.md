@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · technique*
 
+**The question.** How far does a two-photon comb reach, and what does it
+cost once the same comb is asked to measure a line shape rather than a
+total rate.
+**Takes.** The two-photon Bessel-squared amplitude law derived in
+[EOM sidebands](eom-sidebands.md), taken here as given rather than
+re-derived.
+**Gives.** The carrier-null depth, why the comb sits as two small islands
+rather than a carpet, and the shape-weight sum a shape fit actually draws
+on.
+**Skip if.** The derivation of the two-photon law itself is wanted rather
+than its consequences, a case covered by [EOM sidebands](eom-sidebands.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 [EOM sidebands](eom-sidebands.md) derives what a two-photon transition does
@@ -176,6 +191,17 @@ a reader.
   the field as a pair of photons rather than one.
 - [Information criteria](information-criteria.md) for the forced-versus-free
   comparison this repository's comb-as-instrument plan relies on.
+
+## See also
+
+- [EOM sidebands](eom-sidebands.md) for the derivation of the two-photon
+  amplitude law this page treats as given.
+- [Bessel functions](bessel-functions.md) for the Jacobi-Anger and
+  power-conservation identities behind the rate and shape sums above.
+- [Information criteria](information-criteria.md) for how the
+  forced-versus-free tooth comparison is judged in a principled way.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
+  for how the comb's islands fit into the full frequency calibration.
 
 ---
 

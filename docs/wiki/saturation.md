@@ -2,6 +2,18 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** Where the two-photon I-squared law this analysis leans on
+stops holding, and what that costs a tightly focused beam.
+**Takes.** The two-photon Rabi frequency and the natural linewidth, and no
+fitted data of its own.
+**Gives.** The saturation parameter, its fourth-power waist scaling, and the
+size of the bound a saturation term would buy if folded into the fit.
+**Skip if.** You want the light shift itself rather than the ceiling on the
+drive that produces it, covered in [the AC-Stark shift](ac-stark-shift.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A two-photon transition is driven by absorbing two photons at once, so the
@@ -152,6 +164,35 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What a companion calculation found
+
+`docs/HISTORY.md` carries no row for saturation, because no committed bound
+has ever moved on it, but the calculation this page describes was run and is
+recorded in
+[`docs/notes/two_photon_saturation_companion.md`](../notes/two_photon_saturation_companion.md).
+Folding the homogeneous saturation increment into the forward model, using the
+two-photon Rabi frequency `scripts/run_saturation_probe.py` rebuilds from bench
+quantities, the width-channel light-shift bound $S_0$(225 mW) tightens from the
+committed 0.6325 MHz to about 0.23 MHz, a factor of 2.8. The mechanism is the
+first failure mode this page names, a model that omits saturation entirely
+returning a plausible answer whether or not the drive is actually weak: the
+ramp-only fit rails at exactly $\kappa = 0$ because its width response goes as
+$S_0^2$ and has no gradient there, and only once the saturation term supplies
+a comparable, larger power-signature term does the width get a resolvable
+gradient and the fit stop sitting on the boundary.
+
+The bound does not move in any committed result, and the note is explicit
+about why: the injected law, $\Gamma \to \Gamma\sqrt{1+s}$ with $s$ built from
+the two-photon Rabi frequency, is the standard two-level steady-state form
+carried over by analogy rather than derived for this apparatus's real cascade
+of hyperfine levels, which is the same caveat this page's fourth "What can go
+wrong" paragraph states. A calculation that tightens a number is not licensed
+to move it until that approximation is either derived properly for a
+two-photon transition or replaced. Reading this page's own caveat before
+reading the companion note's headline factor is what keeps the factor of 2.8,
+and the factor of 2.21 the note also records for the joint-fit analogue, as a
+measured conservatism rather than as a correction.
+
 ## Further reading
 
 - [`../lit/bjorkholm1976.md`](../lit/bjorkholm1976.md), the classic closed-form
@@ -164,6 +205,17 @@ a reader.
   on, and [Bessel functions](bessel-functions.md) for the law itself.
 - [The AC-Stark shift](ac-stark-shift.md) for the first-order effect this
   page's fourth-power scaling is contrasted against.
+
+## See also
+
+- [The beam waist](the-beam-waist.md) for the length whose fourth power this
+  page's spot-size argument turns on.
+- [EOM sidebands](eom-sidebands.md) for the comb whose tooth amplitudes a
+  saturating drive compresses.
+- [Bessel functions](bessel-functions.md) for the weak-field amplitude law
+  saturation is tested against.
+- [Identifiability](identifiability.md) for what it takes for a fit to tell a
+  saturation term apart from the mechanisms already in the model.
 
 ---
 

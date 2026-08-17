@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** What the $2F+1$ magnetic sublevels of a level are, and
+when averaging over them versus resolving one individually changes what a
+measurement reports.
+**Takes.** The $F$ levels [Hyperfine structure](hyperfine-structure.md)
+builds, nothing else assumed beyond that.
+**Gives.** The Zeeman splitting per sublevel and the scalar, vector and
+tensor decomposition of the light shift across them.
+**Skip if.** the reader wants the $F$ levels themselves rather than the
+$m_F$ structure inside each one, in which case
+[Hyperfine structure](hyperfine-structure.md) is the right page.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A level of total angular momentum $F$ is not one state but $2F+1$ of them,
@@ -198,6 +212,15 @@ a reader.
   splits further.
 - [The AC-Stark shift](ac-stark-shift.md), for the scalar shift a warm cell
   actually measures and the beam geometry that turns it into a lineshape.
+
+## See also
+
+- [Hyperfine structure](hyperfine-structure.md), the $F$ levels this
+  page's sublevels sit inside.
+- [Hyperfine populations and branching](hyperfine-populations-and-branching.md),
+  for how atoms distribute among the sublevels this page describes.
+- [Selection rules](selection-rules.md), for the angular-momentum rule
+  that fixes which $J$ combines with nuclear spin to build each $F$.
 
 ---
 

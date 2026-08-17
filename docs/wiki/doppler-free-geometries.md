@@ -2,6 +2,18 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** Which beam geometries cancel the first-order Doppler shift
+for every atom at once, and which only appear to.
+**Takes.** A wavevector and a velocity. No fitting, no data.
+**Gives.** The summing rule for multiphoton shifts, the two-photon
+counter-propagating case, why three equal-colour photons cannot close
+collinearly, and the harmonic pair that can.
+**Skip if.** You want the frequency axis rather than the geometry. That is
+[the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
+> every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An atom moving with velocity $\vec v$ sees a photon of wavevector $\vec k$
@@ -245,6 +257,27 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A tilt coefficient that counted the same wavevector twice, 2026-08-15
+
+On 2026-08-15 the residual Doppler width expected from a tilted retro-reflector
+was budgeted from the co-propagating pedestal's own
+coefficient. That pedestal is the same-beam pair this page describes above,
+two photons taken from one beam, whose wavevector sum is $2\vec k$, not
+$\vec k$. A retro tilted by angle $\theta$ instead drives a CROSS pair, one
+photon from each of the two nearly-antiparallel beams, whose sum is
+$|\vec k_1+\vec k_2| = 2k\sin(\theta/2) \approx k\theta$, half the pedestal's
+coefficient because the pedestal already carries the doubled wavevector. The
+budget was recomputed at 471 MHz per radian rather than 942, which LOOSENED
+the tilt tolerance by about a factor of two. Both tolerances, the first and
+the corrected one, are in [docs/HISTORY.md](../HISTORY.md), which is the one
+place this repository licenses a replaced number to appear.
+
+The rule stated above, that a multiphoton shift comes from SUMMING SIGNED
+WAVEVECTORS rather than counting photons, is exactly what this error skipped.
+Writing out $\sum_i \vec k_i$ for the two pairs separately, rather than
+carrying one coefficient across from a different pair by resemblance, would
+have shown the factor of two before it reached a design document.
+
 ## Further reading
 
 - G. Grynberg and B. Cagnac, Rep. Prog. Phys. 40, 791 (1977), the general
@@ -260,6 +293,17 @@ a reader.
   apparatus.
 - [Standing waves](standing-waves.md), for what the same retro-reflected
   geometry does to the uncancelled same-direction pairs.
+
+## See also
+
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  two-photon instance of the geometry rule stated here, worked out in full
+  for this apparatus.
+- [Standing waves](standing-waves.md), what the same retro-reflected
+  geometry does to the uncancelled same-direction pairs sitting under the
+  cancelled line.
+- [Multiphoton transitions](multiphoton-transitions.md), the broader
+  multiphoton framework this geometry rule sits inside.
 
 ---
 

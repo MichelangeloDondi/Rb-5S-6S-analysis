@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · technique*
 
+**The question.** What makes a two-photon transition immune to the
+first-order Doppler shift, and what that immunity costs.
+**Takes.** The general wavevector-closure rule from
+[Doppler-free geometries](doppler-free-geometries.md). No fitting, no data.
+**Gives.** The retro-reflected cancellation worked out for two photons, the
+same-beam pedestal it leaves behind, and the doubled laser-noise sensitivity
+that follows from summing both photons' detuning.
+**Skip if.** You want the general closure rule for any photon count and
+colour combination rather than this apparatus's two-photon case. That is
+[Doppler-free geometries](doppler-free-geometries.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 In a warm vapour, atoms move, and a moving atom sees a shifted laser
@@ -117,6 +131,17 @@ a reader.
   lineshape this technique actually produces.
 - [Transit-time broadening](transit-time-broadening.md) for what sets the
   width once the Doppler width is gone.
+
+## See also
+
+- [Doppler-free geometries](doppler-free-geometries.md), the general
+  closure rule this page specialises to two photons.
+- [Standing waves](standing-waves.md), what the same retro-reflected beams
+  do to the intensity pattern underneath the cancelled line.
+- [The Voigt profile](voigt-profile.md), where the doubled laser-noise
+  sensitivity enters the fitted line shape.
+- [Identifiability](identifiability.md), why the laser width cannot be
+  separated from the other widths on a single line.
 
 ---
 

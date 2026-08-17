@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · concept, supporting topic*
 
+**The question.** How do phase-modulation sideband heights map to Bessel
+function values, and why do a one-photon and a two-photon comb null the
+carrier at different modulation depths.
+**Takes.** Nothing beyond knowing what a phase modulator does. No prior
+wiki page is required.
+**Gives.** The Jacobi-Anger identity, the $J_n(\beta)$ sideband amplitude
+law, and the arithmetic that separates the one-photon carrier null from the
+two-photon one.
+**Skip if.** The reader wants the full two-photon amplitude law and
+derivation on a real bench rather than the identity underneath it. That is
+[EOM sidebands](eom-sidebands.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Bessel functions of the first kind, written $J_n(x)$, are the solutions of
@@ -110,6 +125,17 @@ a reader.
 - [Wikipedia: Jacobi-Anger expansion](https://en.wikipedia.org/wiki/Jacobi%E2%80%93Anger_expansion),
   the identity in one line.
 - [EOM sidebands](eom-sidebands.md) for what this becomes on a real bench.
+
+## See also
+
+- [EOM sidebands](eom-sidebands.md), the two-photon amplitude law and
+  derivation this page's identity feeds into.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
+  what the resulting sideband comb is used to build, a calibrated frequency
+  ruler.
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  transition where sideband pairs combine into the two-photon comb this
+  page's addition theorem describes.
 
 ---
 

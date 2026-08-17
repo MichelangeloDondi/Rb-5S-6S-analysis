@@ -2,6 +2,19 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** How should each measurement be weighted in a fit so that
+noisy points do not dominate and the resulting chi-squared means something.
+**Takes.** Familiarity with an ordinary least-squares fit and nothing more,
+since this page starts from that baseline and corrects it.
+**Gives.** The variance law that gives each point its weight, where the law
+comes from, and the correlation-time correction a real detector needs.
+**Skip if.** The question is how several repeats of the same measurement get
+combined into one estimate rather than how one measurement is weighted. That
+is [the joint fit](joint-fit.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An ordinary least-squares fit minimizes the sum of squared residuals between
@@ -209,6 +222,29 @@ either answer is trusted. This repository does not yet carry that
 comparison, and the robust and influence family gets its own pages in a
 later wiki wave.
 
+## What this repository got wrong once
+
+This page's principle, that a stated error bar has to earn its multiplier
+rather than assume one, was violated for the collisional-slope parameter
+$\beta_\text{self}$ before 2026-07-16, when the headline interval
+was built from the between-block scatter with a hard-coded 2-sigma
+multiplier. That multiplier silently assumed a large
+number of degrees of freedom. [HISTORY.md](../HISTORY.md) states plainly what
+moved it: "the multiplier hid its own assumption about degrees of freedom".
+
+The replacement, quoted from 2026-07-16, used the same between-block scatter
+but read the interval off the Student-t quantile $t(0.95,1) = 6.31$ on the
+single residual degree of freedom the data actually had, roughly a factor of
+three wider, moving the interval to 0.2-0.4. HISTORY labels the change
+"interval construction, not new data", the same measurement, correctly
+propagated for the first time. This is the same shape of failure this page's
+"What can go wrong" section names for correlated noise, an unexamined
+assumption sitting inside a quoted error bar and understating it: an error
+bar is only as honest as the assumption behind its multiplier, and a fixed
+"2σ" is such an assumption dressed as a constant. Asking, before quoting any
+multiplier, how many degrees of freedom it is standing in for would have
+caught the 0.07-0.15 interval before it was replaced.
+
 ## Further reading
 
 - P. R. Bevington and D. K. Robinson, *Data Reduction and Error Analysis for
@@ -223,6 +259,17 @@ later wiki wave.
   repeats.
 - [Identifiability](identifiability.md), for what a correctly weighted
   covariance still cannot tell apart.
+
+## See also
+
+- [The joint fit](joint-fit.md), for how these same per-point weights carry
+  across repeated traces of one condition.
+- [Identifiability](identifiability.md), for what a correctly weighted fit
+  still cannot separate.
+- [Robust fitting](robust-fitting.md), for the point a stated weight does not
+  cover, one that is wrong for a reason the noise law never modeled.
+- [Influence diagnostics](influence-diagnostics.md), for measuring how much a
+  single point moves the fitted answer.
 
 ---
 

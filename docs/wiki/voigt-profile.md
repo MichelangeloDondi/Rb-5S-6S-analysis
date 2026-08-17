@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** What line shape results when a homogeneous broadening
+mechanism and an inhomogeneous one act together, and why splitting the two
+is so fragile.
+**Takes.** Nothing beyond a Lorentzian and a Gaussian kernel. No fitting, no
+data.
+**Gives.** The convolution form, the Olivero-Longbothum width
+approximation, and the anti-correlation a free fit finds between the
+Gaussian and Lorentzian widths.
+**Skip if.** You want the specific non-Gaussian kernel transit time
+contributes rather than the two-kernel convolution itself. That is
+[Transit-time broadening](transit-time-broadening.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Real spectral lines are broadened by more than one mechanism at once, and
@@ -106,6 +121,24 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A collisional width that depended on which curve was assumed, 2026-08-15
+
+On 2026-08-15 the infinite-window collisional width was reported as
+γ(∞) = 0.246 MHz, from a 1/w extrapolation of the window scan on peak 4154.
+The frozen spec called for a spread across extrapolation forms rather than
+a single one, and the alternatives disagreed: 1/w² gives 0.446 MHz and an
+exponential approach gives 0.504 MHz, on the peak that is the lowest of the
+four. The number was retracted. Only the direction survived, since every
+physical form on every peak lands below the committed value.
+[docs/HISTORY.md](../HISTORY.md) carries the row.
+
+The trap is the same one named above for the Voigt form itself: a
+functional-form assumption that fits the data in hand can still be wrong,
+and a single extrapolation curve returns a number with no warning that a
+different, equally defensible curve returns something else. Running the
+spread of forms before quoting a value, rather than after a retraction,
+would have caught it at the point the number was first computed.
+
 ## Further reading
 
 - J. J. Olivero and R. L. Longbothum, "Empirical fits to the Voigt line
@@ -115,6 +148,18 @@ a reader.
   the Faddeeva-function form and its limits.
 - [Transit-time broadening](transit-time-broadening.md) for the kernel this
   experiment convolves in beyond the Voigt.
+
+## See also
+
+- [Transit-time broadening](transit-time-broadening.md), the non-Gaussian
+  kernel this experiment convolves in beyond the Voigt.
+- [Identifiability](identifiability.md), why the Gaussian and Lorentzian
+  split is the hard part of the inference.
+- [The joint fit](joint-fit.md), how sweeping density and sharing the
+  laser width across lines breaks the degeneracy.
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  technique that fixes the Gaussian's laser-noise coefficient at twice a
+  single-pass value.
 
 ---
 

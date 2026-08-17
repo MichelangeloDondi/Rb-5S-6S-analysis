@@ -2,6 +2,19 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** Whether the cell's own thermal glow drives or shifts the 5S
+to 6S cascade, and by how much.
+**Takes.** The cascade's transition wavelengths and the cell temperature, and
+no fitted data of its own.
+**Gives.** The two blackbody peaks and why they rarely matter here, plus the
+one channel and the one shift that do.
+**Skip if.** You want the light shift from the drive laser itself rather than
+from the cell's own thermal field, covered in
+[the AC-Stark shift](ac-stark-shift.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Any object at temperature $T$ glows. The spectrum of that glow is set by
@@ -132,6 +145,16 @@ a reader.
   the paper that put the effect on the map for frequency standards.
 - [Wikipedia: Planck's law](https://en.wikipedia.org/wiki/Planck%27s_law) for
   the spectrum and its two limits.
+
+## See also
+
+- [The AC-Stark shift](ac-stark-shift.md) for the other source of level shift
+  acting on the same states, driven by the beam rather than by the cell.
+- [Hyperfine populations and branching](hyperfine-populations-and-branching.md)
+  for the population bookkeeping a driving channel like this one feeds into.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
+  for another background effect that has to be bounded rather than measured
+  away.
 
 ---
 

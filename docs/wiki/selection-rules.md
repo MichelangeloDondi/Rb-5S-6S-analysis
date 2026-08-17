@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** What fixes which multipole order, and therefore roughly
+how strong or weak, connects two given atomic states.
+**Takes.** Only the notion of parity and total angular momentum $J$ as
+separate quantum numbers, nothing else assumed.
+**Gives.** The parity and angular-momentum rules that read a state pair's
+multipole order and transition strength directly off their quantum numbers.
+**Skip if.** the reader wants the two-photon mechanism a parity-forbidden
+line proceeds through rather than the multipole bookkeeping itself, in
+which case [Multiphoton transitions](multiphoton-transitions.md) is the
+right page.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An atom couples to a light field through its charges, and the coupling is not
@@ -188,6 +202,15 @@ a reader.
   parity-forbidden line actually proceeds through.
 - [Hyperfine structure](hyperfine-structure.md) for how nuclear spin
   combines with the electronic angular momentum these rules constrain.
+
+## See also
+
+- [Multiphoton transitions](multiphoton-transitions.md), the two-photon
+  mechanism a parity-forbidden line proceeds through.
+- [Hyperfine structure](hyperfine-structure.md), for how nuclear spin
+  extends the angular-momentum rule above from $J$ to $F$.
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  technique that measures the two-photon transition these rules permit.
 
 ---
 

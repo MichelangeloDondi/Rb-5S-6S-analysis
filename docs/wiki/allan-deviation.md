@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · concept, supporting topic*
 
+**The question.** How can a record's own wander identify which noise
+process produced it, and how long is worth averaging.
+**Takes.** An evenly sampled time series. No other wiki page is required
+first.
+**Gives.** The Allan variance definition, the slope that separates white
+noise from a random walk on a log-log plot, and why an ordinary standard
+deviation fails on a drifting record.
+**Skip if.** You want to know why this repository has no timestamped
+record to run this statistic on, rather than the statistic itself. That is
+[designing an acquisition](designing-an-acquisition.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 The Allan deviation measures how much a quantity wanders when you average it
@@ -118,6 +132,18 @@ a reader.
   reference for the variants and their confidence intervals.
 - [Wikipedia: Allan variance](https://en.wikipedia.org/wiki/Allan_variance)
   for the slope table at a glance.
+
+## See also
+
+- [Designing an acquisition](designing-an-acquisition.md), the per-sweep
+  timestamp channel this statistic needs and this repository's own record
+  lacks.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
+  the frequency record whose own stability this statistic would
+  characterise.
+- [The third cumulant](third-cumulant.md), the other mathematical
+  descriptor on this wiki, isolating a lineshape's asymmetry rather than a
+  noise process.
 
 ---
 

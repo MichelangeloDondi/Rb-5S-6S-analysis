@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** Why a finite-size beam broadens a line even though
+nothing perturbs the atom, and why the resulting kernel is not Gaussian.
+**Takes.** Nothing beyond the idea that a finite interaction time
+Fourier-broadens a response. No fitting, no data.
+**Gives.** The cusped-exponential transit kernel derived for Doppler-free
+two-photon spectroscopy, its dependence on beam waist and temperature, and
+its degeneracy with the laser width.
+**Skip if.** You want the Gaussian-plus-Lorentzian convolution this kernel
+is added to rather than the transit kernel itself. That is
+[The Voigt profile](voigt-profile.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An atom crossing a laser beam is illuminated only while it is inside. If the
@@ -102,6 +116,22 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What this repository got wrong once
+
+Before 2026-07-13, the transit Monte Carlo carried exactly the
+implementation trap the third bullet above names: an average over atomic
+trajectories that did not weight by the flux of atoms actually crossing the
+beam, the same unweighted average that produces a spuriously sharp cusp at
+zero speed. [HISTORY.md](../HISTORY.md) records that fixing the missing
+crossing-flux factor on 2026-07-13, and validating the corrected kernel
+against Lehmann's 41.2 kHz worked example, moved the beam waist this
+repository worked with from the 32 µm design nominal to roughly 50 µm.
+[The beam waist](the-beam-waist.md) carries the rest of that number's
+lineage, including the 64 µm value that later replaced it. A reader who
+checked the Monte Carlo's speed-averaging against the flux-weighting trap
+this page names, rather than trusting a run that completed without error,
+would have caught the 32 µm figure before the fix did.
+
 ## Further reading
 
 - [`../lit/biraben1979.md`](../lit/biraben1979.md), where the Doppler-free
@@ -110,6 +140,17 @@ a reader.
 - [`../lit/borde1976.md`](../lit/borde1976.md) for the general treatment.
 - [`../lit/lehmann2021.md`](../lit/lehmann2021.md) for the modern closed form
   in the transit-time limit.
+
+## See also
+
+- [The Voigt profile](voigt-profile.md), the two-kernel convolution this
+  transit kernel adds a third term to.
+- [The beam waist](the-beam-waist.md), the provenance of the waist this
+  kernel's width depends on.
+- [Identifiability](identifiability.md), why the transit width and the
+  laser width are degenerate through the waist.
+- [Monte Carlo methods](monte-carlo-methods.md), the trajectory average
+  that computes this kernel for the cell's exact conditions.
 
 ---
 

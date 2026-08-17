@@ -2,6 +2,22 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Which input actually drives an output's variance, at one
+point through a derivative or globally across the whole range every input
+could plausibly take.
+**Takes.** A model or a projection that can be evaluated repeatedly, or a fit
+whose Jacobian is already in hand, and no assumption about which input
+matters most.
+**Gives.** Local sensitivity through error propagation and the Jacobian, why
+one-at-a-time sweeps miss interactions, and the Sobol first-order and
+total-effect indices that catch them.
+**Skip if.** You want to know which single data point drives a result already
+fitted rather than which input drives a projection. That is
+[influence diagnostics](influence-diagnostics.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Sensitivity analysis asks how much an output changes when the inputs that
@@ -262,6 +278,16 @@ rather than sitting here misleading a reader.
   the local sensitivity this page contrasts against.
 - [`scripts/run_projections.py`](../../scripts/run_projections.py), the
   projection machinery a global sensitivity study would be run against.
+
+## See also
+
+- [Influence diagnostics](influence-diagnostics.md), the same which-input-
+  matters question, asked locally of a fit already run rather than globally
+  of a projection.
+- [Resampling](resampling.md), another Monte Carlo construction, and the
+  cost tradeoffs that decide when either one is affordable.
+- [Robust fitting](robust-fitting.md), for what to do once local sensitivity
+  flags a fit that depends too much on one input.
 
 ---
 

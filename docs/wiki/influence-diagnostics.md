@@ -2,6 +2,19 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Which observations is a fitted answer actually resting on,
+and how does that differ from which observations merely look surprising.
+**Takes.** A least-squares fit already run, weighted or not, and no further
+assumption about the shape of the noise law.
+**Gives.** The leverage and case-deletion machinery, Cook's distance and
+DFBETA among them, that separates an outlying point from an influential one.
+**Skip if.** You want the weighting a fit itself should carry rather than
+what to check after fitting. That is
+[weighted least squares](weighted-least-squares.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A least-squares fit turns a vector of measurements $d$ into a vector of
@@ -209,6 +222,20 @@ a reader.
   this page answers.
 - [Collisional self-broadening](self-broadening.md), the coefficient whose
   four-point construction motivated this audit.
+
+## See also
+
+- [Robust fitting](robust-fitting.md), the losses that discount a point once
+  diagnostics like these say it is not simply outlying.
+- [Resampling](resampling.md), for building a leverage or Cook's-distance
+  threshold from the design's own null distribution rather than a textbook
+  cutoff.
+- [Heavy-tailed models](heavy-tailed-models.md), for treating a whole
+  population of large residuals as a property of the noise rather than one
+  point at a time.
+- [Sensitivity analysis](sensitivity-analysis.md), the same which-input-
+  matters question asked of a projection's parameters instead of a fit
+  already run.
 
 ---
 

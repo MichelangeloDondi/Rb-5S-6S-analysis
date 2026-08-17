@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** How many grid points across a feature's own width are
+enough to recover that feature with a fit, rather than merely to draw it on
+a plot.
+**Takes.** Nothing beyond a general sense of what a grid and a fit are. No
+prior wiki page is required.
+**Gives.** The points-per-feature-width ratio that governs a fit's
+precision, and the simulation test that checks it rather than asserts it.
+**Skip if.** The reader wants the three-setting acquisition design problem
+this ratio feeds into. That is
+[designing an acquisition](designing-an-acquisition.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A grid step is a number with no meaning on its own. Reported alone, a
@@ -148,6 +162,33 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## The ratio that was asserted rather than tested once
+
+This page's own remedy for a coupled span-resolution-record trade is to test
+the points-across-the-feature ratio by simulation rather than assert it
+because a number sounds generous. On the wide-scan design in
+[chapter 7 of the plan](../plan/07_acquisition-settings.md), that remedy was
+skipped once and applied afterward, and [HISTORY.md](../HISTORY.md) dates
+both steps. On 2026-08-15 the span widened from 800 MHz to 2400 MHz, and the
+record length, previously 3000 points sized against a stated requirement of
+20 points across the line FWHM at the old span, rose to 10000 points to
+preserve that same 20-point ratio at the new one. Nothing in that move asked
+whether 20 was ever the right target for a fit to recover a width from, only
+whether the ratio matched a number nobody had checked.
+
+On 2026-08-16 the B5 and B6 runs asked that question directly, simulating
+the width recovery a 10000-point record delivers at the committed noise law.
+The ratio came out to about 22 points across the line, and 22 fails a frozen
+recovery criterion. The requirement was replaced by 90 points across the
+line, and the record length that delivers it, 40000 points, is the one this
+page's "Where this repository uses it" section above already names. The
+20-point figure had been carried through two design revisions as though
+restating it in a new form made it correct, when the ratio it named had
+never actually been run through the injection-recovery test this page
+recommends. Running that test before the number entered the design script,
+rather than after two revisions had already built on it, would have caught
+the shortfall at its first appearance instead of at its second.
+
 ## Further reading
 
 - P. R. Bevington and D. K. Robinson, *Data Reduction and Error Analysis for
@@ -163,6 +204,18 @@ a reader.
   a grid requirement is tested against rather than asserted.
 - [Chapter 7 of the plan](../plan/07_acquisition-settings.md), the record
   length case worked through in full, with the simulation that moved it.
+
+## See also
+
+- [Designing an acquisition](designing-an-acquisition.md), the three-setting
+  acquisition problem this same ratio resolves for a physical scan.
+- [Injection-recovery testing](injection-recovery.md), the general technique
+  a grid requirement is tested against rather than asserted.
+- [Optimiser convergence](optimiser-convergence.md), the second question a
+  fit built on a well-resolved grid still has to survive.
+- [Compute budgets and failure modes](compute-budgets-and-failure-modes.md),
+  the resource cost of testing a candidate grid density by simulation before
+  running it at full scale.
 
 ---
 

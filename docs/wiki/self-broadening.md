@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** Why an atom's radiating phase, interrupted by collisions,
+shows up as a linear, density-dependent Lorentzian width rather than a
+change of line shape.
+**Takes.** The impact approximation's regime, a collision duration far
+shorter than the interval between collisions. No fitting, no data.
+**Gives.** The self-broadening coefficient $\beta_\text{self}$, the
+linear-in-density law it sets, and why this repository reports a bound
+rather than a value.
+**Skip if.** You want the general Lorentzian-plus-Gaussian convolution this
+coefficient feeds into rather than the collisional mechanism itself. That
+is [The Voigt profile](voigt-profile.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An atom radiating in a gas is interrupted. When another atom passes close
@@ -100,6 +115,40 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What this repository got wrong once
+
+$\beta_\text{self}$ carries four entries in [HISTORY.md](../HISTORY.md), and
+most of the movement between them is interval construction and design, not
+new physics. Before 2026-07-16 the headline stood at 0.07-0.15 MHz per
+$10^{12}\text{cm}^{-3}$, the between-block scatter multiplied by a hard-coded
+2σ that silently assumed more degrees of freedom than the fit had. On
+2026-07-16 the same scatter, read instead off the Student-t quantile
+$t(0.95,1) = 6.31$ on the single residual degree of freedom the fit actually
+carried, widened it to 0.2-0.4.
+
+Separately, the per-peak, 95% bound stood on 2026-07-11 at < 0.21-0.44,
+model-independent raw widths across a three-point 70-110 °C cooling sweep.
+It was retired on 2026-08-02 once a fourth, 130 °C session was admitted, on
+the experimenter's own firsthand authority over the apparatus configuration
+rather than on an independently logged record, a provenance judgment rather
+than a new measurement of the physics. Folding that point in produced the
+current headline, ≲0.03-0.05, the four-point 70/90/110/130 °C construction
+at dof = 2 with a ×52.5 lever.
+
+That lever is exactly the mechanism this page opens with:
+$\gamma_\text{coll}=\beta_\text{self}N$ is measurable only by varying $N$,
+and a temperature sweep read as a density sweep is only as tight a lever as
+the density span it actually reaches. Adding the 130 °C point lengthens that
+span far more than it lengthens the point count, which is most of why the
+bound tightened by roughly an order of magnitude rather than by the modest
+factor a fourth point alone would buy. A reader who asked, before trusting
+the three-point bound, how much of the fit's leverage sat on its single
+hottest and hence least-populated end, the same question
+[Resampling](resampling.md)'s leave-one-out diagnostics now ask of the
+four-point fit, would have known the three-point number was starved of
+exactly the lever the current construction supplies, and would have asked
+for the provenance of a fourth point before quoting a bound that needed one.
+
 ## Further reading
 
 - [`../lit/baranger1958.md`](../lit/baranger1958.md), the impact-approximation
@@ -109,6 +158,18 @@ a reader.
   temperature dependence.
 - [Wikipedia: pressure broadening](https://en.wikipedia.org/wiki/Spectral_line_shape#Pressure_broadening)
   for the family of mechanisms this one belongs to.
+
+## See also
+
+- [The Voigt profile](voigt-profile.md), the Lorentzian kernel this
+  coefficient sets the width of.
+- [The joint fit](joint-fit.md), how sharing the laser width across lines
+  separates collisional broadening from the rest.
+- [Resampling](resampling.md), the leave-one-out diagnostic that asks how
+  much of the bound's leverage sits on one point.
+- [Transit-time broadening](transit-time-broadening.md), the
+  temperature-dependent mechanism most likely to be mistaken for
+  collisional broadening in a temperature sweep.
 
 ---
 

@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** How to build a confidence interval for one parameter that
+accounts honestly for every nuisance parameter still free in the fit.
+**Takes.** A model already fitted by chi-squared minimization, with the
+parameter of interest and its nuisances identified. No new data.
+**Gives.** The re-optimizing construction itself, why it beats a
+fixed-nuisance scan or a quadratic approximation, and what a flat profile
+means about the data rather than the parameter.
+**Skip if.** The question is whether two parameters can be separated at all
+before any interval is scanned. That is
+[identifiability](identifiability.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Most fits have one or two parameters of interest and a crowd of nuisance
@@ -119,6 +133,30 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## What this repository got wrong once
+
+Before 2026-07-16, the AC-Stark bound $S_0$ at 225 mW stood at 3.1 MHz, built
+from a Wald interval, the linearised, symmetric interval a covariance matrix
+gives. The best fit rails at $\kappa = 0$, a physical boundary, and there the
+width handle used to constrain $\kappa$ broadens as $S_0$ squared, so its
+gradient vanishes at the boundary. A Wald error computed by finite difference
+at a point of zero gradient is measuring numerical noise, not the likelihood,
+and the resulting sigma carried no 95% coverage at all. `rb5s6s/stark.py`
+still states this in its own docstring, next to the corrected construction.
+
+The replacement, quoted from 2026-07-16, was a profile bound: 0.63 MHz, built
+by scanning the width channel and re-optimising the nuisances at each point,
+with the $\Delta\chi^2$ threshold over-dispersion scaled rather than taken at
+its asymptotic value. [HISTORY.md](../HISTORY.md) labels that move "interval
+construction, not new data", the same number's shape read correctly rather
+than a new measurement changing it. The page above makes the mechanism
+explicit: a boundary is exactly the case where the standard $\Delta\chi^2$
+threshold does not apply and a one-sided profile is the construction that
+keeps its stated coverage,
+which is the calibration trap this page names in "What can go wrong". A
+reader who checked the fit against a physical boundary before trusting a
+symmetric error bar would have caught the 3.1 MHz number before it shipped.
+
 ## Further reading
 
 - W. A. Rolke, A. M. Lopez and J. Conrad, "Limits and confidence intervals in
@@ -127,6 +165,15 @@ a reader.
 - [Identifiability](identifiability.md) for what a flat profile means.
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   own construction and its coverage study.
+
+## See also
+
+- [Identifiability](identifiability.md), for the diagnostic that maps a flat
+  profile before an interval is scanned.
+- [Information criteria](information-criteria.md), for the model-selection
+  question profiling does not answer.
+- [Injection-recovery testing](injection-recovery.md), for the simulation
+  that checks a profile interval actually covers at the stated rate.
 
 ---
 

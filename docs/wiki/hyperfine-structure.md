@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** How nuclear spin splits one electronic level into
+several closely spaced $F$ sublevels, and why the pattern differs isotope
+to isotope.
+**Takes.** The electronic angular momentum $J$ and nuclear spin $I$ as
+separate quantum numbers, nothing else assumed.
+**Gives.** The interval formula for a $J=1/2$ hyperfine splitting and the
+isotope-and-sublevel identity of the four measured components.
+**Skip if.** the reader wants what a further applied field does to those
+sublevels rather than their zero-field structure, in which case
+[Magnetic sublevels](magnetic-sublevels.md) is the right page.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Many nuclei carry a nonzero angular momentum, nuclear spin $I$. That spin
@@ -160,6 +174,15 @@ a reader.
   only summarises.
 - [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
   technique that resolves these components against their Doppler width.
+
+## See also
+
+- [Selection rules](selection-rules.md), for the angular-momentum rule
+  this page extends from $J$ to $F$.
+- [Magnetic sublevels](magnetic-sublevels.md), for the further splitting
+  an applied field adds to each $F$ level.
+- [Hyperfine populations and branching](hyperfine-populations-and-branching.md),
+  for how atoms distribute among the sublevels this page describes.
 
 ---
 

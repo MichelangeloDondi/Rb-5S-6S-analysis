@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** What does it mean to compute a number by simulation
+instead of by a formula, and how fast does that number sharpen as more
+samples are drawn.
+**Takes.** A basic sense of sampling and averaging. No other wiki page is
+required first.
+**Gives.** The $1/\sqrt{N}$ convergence law, the distinction between
+simulating from a model and resampling data already in hand, and the seed
+discipline that makes a simulated result checkable.
+**Skip if.** You want to resample the data already collected rather than
+simulate from a fitted model. That is [resampling](resampling.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A Monte Carlo method computes a quantity by simulation instead of by a formula: draw random samples according to some rule, evaluate a function of interest on each one, and average. It earns its place precisely where the direct computation is hard, an integral with no closed form, a distribution with no known shape, or the sampling behaviour of an estimator that only algebra under restrictive assumptions can describe. Sample enough times from the process that generates the number, and the average of the samples converges to the number itself.
@@ -69,6 +83,12 @@ for n in sizes:
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`, so one that stops working fails the suite rather than sitting here misleading a reader.
 
+## What this repository got wrong once
+
+The transit-broadening Monte Carlo behind [`transit_mc.py`](../../rb5s6s/transit_mc.py) carried a real bug: the sampler weighted each atom by its excitation probability but omitted the atom-crossing flux factor the steady-state rate actually needs, which ran the simulated transit width about two times too narrow and pointed the fitted beam waist at a nominal 32 µm, a value [HISTORY.md](../HISTORY.md) now marks excluded. The flux factor was fixed on 2026-07-13. An earlier attempt at the same fix, before that date, concluded the waist was closer to 90 µm, and that conclusion itself carried an arithmetic error, a spurious factor of two, and was retracted. The corrected Monte Carlo settled on a beam waist of about 50 µm, later replaced by a direct measurement once one became available. HISTORY's beam-waist rows carry the full lineage.
+
+What separated the corrected simulation from the retracted one was not a closer read of the code, since the retracted 90 µm figure had already survived one such read. It was a comparison against an answer the repository did not have to derive: Lehmann's worked transit example, which the closed-form width formula reproduces to 41.2 kHz, the value the corrected Monte Carlo matched. This is the point the sections above make in the abstract, that a Monte Carlo result earns trust by being checked, and here the check that actually caught the error was not a rerun of the same code but a comparison against an independent, external known answer. A self-consistency check against the simulation's own earlier output would have carried the same bug both times.
+
 ## Further reading
 
 - [Wikipedia: Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method), for the general history and the family of variants.
@@ -78,6 +98,18 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`, s
 - [Resampling](resampling.md), for the case that draws new samples from the data already in hand rather than from an assumed model.
 - [Injection-recovery testing](injection-recovery.md), a parametric Monte Carlo applied to an estimator rather than to an integral or a null distribution.
 - [Preregistration](preregistration.md), which fixes what a simulated null test or ceiling test is scoring before any of it is run.
+
+## See also
+
+- [Resampling](resampling.md), for simulation built from the data already
+  collected rather than from a fitted model.
+- [Injection-recovery testing](injection-recovery.md), a parametric Monte
+  Carlo run on an estimator's bias and coverage rather than on an integral.
+- [Preregistration](preregistration.md), the discipline that fixes what a
+  simulated null test or ceiling test is allowed to claim before it runs.
+- [Grids and discretisation](grids-and-discretisation.md), the alternative
+  approach that fails once the sampled space grows past a handful of
+  dimensions.
 
 ---
 

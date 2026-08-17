@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Whether an extra parameter or model component is justified
+by the data, rather than merely by a lower chi-squared.
+**Takes.** Two or more fits already carried out on the same data, each with
+its own chi-squared and parameter count. No new fitting.
+**Gives.** The AIC and BIC penalties, when a comparison is
+criterion-independent, and the F-test for the narrower case of nested
+models.
+**Skip if.** The question is whether a single parameter is determined by the
+data at all rather than whether a model deserves an extra one. That is
+[identifiability](identifiability.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A richer model always fits better. Adding a parameter cannot increase the
@@ -159,6 +173,15 @@ a reader.
   indistinguishable and above 10 decisive.
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   panel and the one case where its members disagree.
+
+## See also
+
+- [Identifiability](identifiability.md), for the question of whether a
+  parameter is determined at all, which a criterion does not ask.
+- [The profile likelihood](profile-likelihood.md), for the interval
+  construction that shares this repository's likelihood machinery.
+- [Weighted least squares](weighted-least-squares.md), for the real weights
+  a criterion's chi-squared has to be built from.
 
 ---
 

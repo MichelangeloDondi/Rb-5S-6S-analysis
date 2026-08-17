@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** Is a large residual a mistake to remove, real structure the
+model has not captured yet, or evidence that the noise itself has heavier
+tails than assumed.
+**Takes.** A weighted fit under an assumed noise law, Gaussian in this
+repository, to serve as the baseline it is compared against.
+**Gives.** The Student-t likelihood as a continuous, fitted alternative to a
+hand-chosen loss, and the scale-mixture-of-normals framing behind it.
+**Skip if.** You want a hand-chosen loss applied by rule rather than a
+likelihood fitted to the tail shape. That is
+[robust fitting](robust-fitting.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A point that sits far from a fitted curve is usually read as one of two
@@ -234,6 +248,16 @@ rather than sitting here misleading a reader.
 - [Weighted least squares](weighted-least-squares.md), whose closing
   section this page answers, and the source of the noise law this
   repository fits instead of a heavy-tailed one.
+
+## See also
+
+- [Robust fitting](robust-fitting.md), the hand-chosen-loss version of the
+  same continuous downweighting this page gets from a likelihood instead.
+- [Influence diagnostics](influence-diagnostics.md), the audit that found no
+  single point behind the block-to-block scatter this page's open question
+  concerns.
+- [Resampling](resampling.md), for building a null distribution directly
+  rather than assuming a tail shape at all.
 
 ---
 

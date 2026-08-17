@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** What the same retro-reflected beam that cancels the
+Doppler shift does to the intensity pattern the atoms sit in, and how that
+splits between the fringe-resolved and fringe-averaged regimes.
+**Takes.** The retro-reflected two-photon geometry from
+[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). No
+fitting, no data.
+**Gives.** The fringe-resolved and fringe-averaged limits, the retro ratio,
+and the area ratio between the Doppler-free line and its same-beam pedestal.
+**Skip if.** You want the frequency cancellation itself rather than the
+spatial intensity pattern it rides on. That is
+[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 Retro-reflecting a laser beam back through itself sends two waves of the
@@ -173,6 +188,27 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A coefficient carried over from the wrong channel, 2026-08-15
+
+On 2026-08-15 a residual-Doppler tolerance for a tilted retro-reflector was
+first written using the same-beam pedestal's own width coefficient to scale a
+tilt angle into a frequency. That coefficient belongs
+to the SAME-BEAM term this page describes above, where both photons come
+from one beam and carry a wavevector sum of $2\vec k$. A retro tilt instead
+acts on the CROSS term, one photon from each of the two counter-propagating
+beams, whose sum for a small angle $\theta$ is $k\theta$, not $2k\theta$:
+half the pedestal's coefficient, because the pedestal already carries the
+doubled wavevector the tilt does not. Recomputed at 471 MHz per radian
+rather than 942, the tolerance loosened to **3.2 to 3.5 mrad**.
+[docs/HISTORY.md](../HISTORY.md) carries the row.
+
+The failure mode is the one named above under model failure: two things that
+look alike because the same two beams drive both were treated as sharing one
+coefficient. The cross term and the same-beam term are locked together by the
+retro ratio but are not the same channel, and keeping them separate, as the
+description above already does, is what would have caught the double
+counting before it reached a design document.
+
 ## Further reading
 
 - [`../lit/stalnaker2006.md`](../lit/stalnaker2006.md), which supplies the
@@ -187,6 +223,16 @@ a reader.
   behind.
 - [The AC-Stark shift](ac-stark-shift.md), for what the fringe-averaged
   mean feeds into once the standing wave is resolved as a beam geometry.
+
+## See also
+
+- [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md), the
+  frequency cancellation the cross term performs, which this page's
+  fringes ride on.
+- [The AC-Stark shift](ac-stark-shift.md), what the fringe-averaged mean
+  feeds once the standing wave is resolved.
+- [Doppler-free geometries](doppler-free-geometries.md), the general
+  wavevector-closure rule behind the retro-reflected geometry.
 
 ---
 

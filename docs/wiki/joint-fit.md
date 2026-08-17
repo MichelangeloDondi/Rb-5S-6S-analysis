@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Whether repeated measurements of the same quantity should
+be fitted together with the physics shared, or fitted separately and
+averaged.
+**Takes.** A per-point weight for each measurement, already in hand. That is
+the subject of [weighted least squares](weighted-least-squares.md).
+**Gives.** The shared-versus-per-trace structure, the physical claim each
+sharing level makes, and the over-sharing failure that looks like success.
+**Skip if.** The question is whether an extra parameter is justified by the
+data rather than how repeats of one condition are combined. That is
+[information criteria](information-criteria.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 When an experiment records the same physical quantity several times, the
@@ -131,6 +145,16 @@ a reader.
 - [Methods chapter 6](../methods/06_the_statistics.md) for this repository's
   hierarchy and the leave-one-out checks on it.
 - [Identifiability](identifiability.md) for what joint fitting cannot fix.
+
+## See also
+
+- [Weighted least squares](weighted-least-squares.md), for the per-point
+  weights a joint fit shares across every trace.
+- [Identifiability](identifiability.md), for the degeneracy that sharing a
+  parameter improves the precision of without ever resolving.
+- [Information criteria](information-criteria.md), for how the effective
+  sample size of correlated repeats affects a criterion built from the same
+  fit.
 
 ---
 

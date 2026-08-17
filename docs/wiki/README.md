@@ -7,6 +7,30 @@ methods chapters, a thesis and any future reusable package. Each page says
 what a thing is, what problem it solves, where this repository uses it, what
 can go wrong with it, and where to read more.
 
+## Where to start, by what you came for
+
+Forty pages is too many to read in order, and the clusters below are a
+taxonomy rather than a route. These are routes.
+
+| if you came for | start here, in order |
+|---|---|
+| **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md) |
+| **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
+| **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
+| **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [docs/ADAPTING.md](../ADAPTING.md) |
+| **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
+| **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md) |
+
+**Every page carries the same four lines at the top**, so the decision to read
+on takes five seconds: the question it answers, what it takes, what it gives,
+and when to skip it. Every page ends with a "See also".
+
+**Where a concept has a scar, the page shows it.** Nineteen of these pages
+carry a dated section describing where this project got that concept wrong,
+what the mistake was mechanically, and what caught it. The replaced values
+themselves stay in [HISTORY.md](../HISTORY.md), which is the only file in this
+repository licensed to print one.
+
 ## A. Atomic structure and selection rules
 
 *What does the atom allow, and why is this transition drivable at all?* The
@@ -20,7 +44,7 @@ change, and the geometry that makes a Doppler-free measurement possible.
 | [Hyperfine structure](hyperfine-structure.md) | concept | why one transition is four lines, and why a same-isotope pair is a frequency ruler |
 | [Magnetic sublevels](magnetic-sublevels.md) | concept | the structure a hot cell averages away and a trap can hold |
 | [Hyperfine populations and branching](hyperfine-populations-and-branching.md) | concept | counting sets the line amplitudes, and decay can remove an atom from the experiment |
-| [Doppler-free geometries](doppler-free-geometries.md) | concept | the wavevectors have to close, which two photons manage and three essentially cannot |
+| [Doppler-free geometries](doppler-free-geometries.md) | concept | the wavevectors have to close, which two photons manage, three equal-colour photons cannot collinearly, and a fundamental with its own second harmonic can |
 
 ## B. Experimental spectroscopy
 

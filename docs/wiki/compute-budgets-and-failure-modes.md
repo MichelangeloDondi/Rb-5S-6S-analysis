@@ -2,6 +2,20 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Will a planned parallel fit or scan fit inside the
+machine's memory, and can that be known before launch rather than by
+watching it crash.
+**Takes.** Nothing beyond arithmetic. No prior wiki page is required.
+**Gives.** The per-worker memory estimate, the arithmetic that multiplies it
+by worker count against a machine budget, and the discipline for what a
+killed run's partial output is and is not.
+**Skip if.** The reader wants the companion cost that scales with a trial
+count rather than a worker count. That is
+[Monte Carlo methods](monte-carlo-methods.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A scientific computation has a resource profile as real as its physics: how
@@ -208,6 +222,19 @@ a reader.
 - [Preregistration](preregistration.md), for the companion discipline of
   committing to what a run's outcome counts as before the run itself decides
   it by exhaustion rather than by design.
+
+## See also
+
+- [Optimiser convergence](optimiser-convergence.md), the multi-start and
+  bidirectional scans this page's memory arithmetic has to be run against
+  before either is launched at scale.
+- [Grids and discretisation](grids-and-discretisation.md), the point-count
+  side of the same product that sets a fit's Jacobian size.
+- [Monte Carlo methods](monte-carlo-methods.md), the companion computation
+  whose cost multiplies by a trial count rather than a worker count.
+- [Preregistration](preregistration.md), for committing to a run's stopping
+  condition before a memory or wall-time ceiling makes that decision by
+  exhaustion instead.
 
 ---
 

@@ -2,6 +2,22 @@
 
 *[wiki index](README.md) · physical effect*
 
+**The question.** How does a fast continuous sweep forge width and
+asymmetry that a slow one would not, and how is that instrumental
+component separated from the atoms' own.
+**Takes.** That a fit reads skew as light-shift information, established
+in [The third cumulant](third-cumulant.md) and assumed here rather than
+re-argued.
+**Gives.** The regression of apparent width against inverse sweep rate,
+the causal-kernel argument for why a lag forges asymmetry and not only
+width, and the two-rate design this repository specifies.
+**Skip if.** The question is how densely a line is sampled rather than how
+fast it can be crossed, a case covered by
+[Designing an acquisition](designing-an-acquisition.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A line can be measured two ways. STEP AND SETTLE parks the laser at one
@@ -221,6 +237,18 @@ a reader.
   question of how densely a line is sampled, including the raw-storage and
   per-sweep timestamp requirements a multi-rate regression of the kind
   described above needs in order to run at all.
+
+## See also
+
+- [The third cumulant](third-cumulant.md) for why skew is the channel a
+  light-shift fit reads, and the same lag mechanism developed there in
+  standardised-skew terms.
+- [Designing an acquisition](designing-an-acquisition.md), the companion
+  question of point density rather than sweep speed.
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
+  the previous page, for the calibration this convolution acts on top of.
+- [Photon counting](photon-counting.md), the next page, another
+  detection-chain property that can be mistaken for the atoms' own signal.
 
 ---
 

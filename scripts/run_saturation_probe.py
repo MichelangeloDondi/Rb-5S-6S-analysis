@@ -224,19 +224,29 @@ def stage2(band: dict) -> None:
 def stage3(band: dict) -> None:
     print()
     print("=" * 78)
-    print("STAGE 3  C3f, the joint three-session bound: why it is not re-run here")
+    print("STAGE 3  C3f, the joint three-session bound: its direction, "
+          "without the fit")
     try:
         k_ub = _committed(_C3F, "kappa_ub95", "primary")
         k_min = _committed(_C3F, "kappa_min", "primary")
     except (KeyError, FileNotFoundError) as exc:
         print(f"  cannot read the committed joint result: {exc}")
         return
+    # Ask the paths rather than assert them. Until 2026-08-17 this message
+    # stated the trees were absent on this machine as a fact, which is the same
+    # mistake the module docstring records from 2026-08-09: they were present
+    # under their real names the whole time.
+    import run_stark_joint as _rsj
+    _have = (_rsj.SESSION_20250704.is_dir() and _rsj.SESSION_20250717.is_dir())
     print("  The joint fit reads the 2025-07-04 rehearsal and the campaign-"
-          "morning pilot\n  from two excluded trees outside this repository. "
-          "run_stark_joint.py exits\n  early when they are absent, which they "
-          "are on this machine, so the C3f\n  bound cannot be re-profiled with "
-          "the saturation term here. The rerun is\n  owner-side work, not a "
-          "result.")
+          "morning pilot\n  from two excluded trees outside this repository, "
+          "and run_stark_joint.py\n  exits early when they are absent. On this "
+          "machine they are "
+          + ("PRESENT, so stage 4\n  can run: pass --joint.\n"
+             if _have else
+             "ABSENT, so the C3f bound\n  cannot be re-profiled here. Set "
+             "RB5S6S_SESSION_20250704_DIR and\n  RB5S6S_SESSION_20250717_DIR "
+             "and re-run.\n"))
     print()
     print("  What CAN be said without the data is the direction, because the "
           "mechanism\n  is arithmetic at C3f's own numbers. At its bound:")

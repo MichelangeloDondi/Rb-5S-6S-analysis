@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** How do span, resolution and record length trade against
+each other, and which acquisition choices cannot be revisited once a
+session has run.
+**Takes.** The idea of a digitized sweep, an oscilloscope trace or a
+lock-in scan. No other wiki page is required first.
+**Gives.** The single relation linking span, resolution and record length,
+points across the feature as the governing quantity, and the choices a
+later analysis can never repair.
+**Skip if.** You want the frequency axis a record's grid is calibrated
+against, rather than how densely that grid is sampled. That is
+[the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A digitizing scan (an oscilloscope trace, a lock-in sweep, anything that
@@ -189,6 +204,32 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## The requirement that was stated before it was tested
+
+The chapter 7 case study above reports that the adopted record length is
+40000 points, several times the number the requirement carried before it was
+tested, without dating the steps it passed through. [HISTORY.md](../HISTORY.md)
+carries the dates. On 2026-08-15 the wide-scan span moved from 800 MHz to
+2400 MHz, and the record length that had stood at 3000 points, sized against
+a shape requirement of 20 points across the line FWHM evaluated at the old
+span, moved to 10000 points to hold that same 20-point target at the new one.
+On 2026-08-16 the 20-point requirement itself was tested for the first time:
+the B5 and B6 runs measured the width recovery a 10000-point record actually
+delivers at the committed noise law, found about 22 points across the line,
+and found that 22 fails a frozen recovery criterion. The requirement was
+replaced by 90 points, the figure the adopted 40000-point record delivers.
+
+The mistake was not an error in dividing a span by a record length. It was
+treating "20 points across the line" as a specification rather than as an
+untested guess, a number moved twice to match a span before anyone asked
+whether it recovered a known width at all. This page's own distinction,
+between a record that draws a convincing curve and one that fits it, names
+exactly the gap the requirement fell into: a 22-point record can still plot
+smoothly, and nothing about the plot would have shown that the fit behind it
+needed four and a half times as many points. Testing the requirement by
+simulated recovery before it was written into a design script, rather than
+after, would have caught the factor of four before it reached the plan.
+
 ## Further reading
 
 - P. R. Bevington and D. K. Robinson, *Data Reduction and Error Analysis for
@@ -208,6 +249,17 @@ a reader.
   turning an acquired record's own grid into a calibrated frequency axis.
 - [Allan deviation](allan-deviation.md), the statistic a per-sweep timestamp
   channel makes possible.
+
+## See also
+
+- [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
+  turning an acquired record's grid into a calibrated frequency axis.
+- [Photon counting](photon-counting.md), the detection choice sized before
+  the same acquisition is designed.
+- [The joint fit](joint-fit.md), what an intact per-sweep record is kept
+  for downstream.
+- [Allan deviation](allan-deviation.md), the statistic a per-sweep
+  timestamp channel makes possible.
 
 ---
 

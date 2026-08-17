@@ -2,6 +2,21 @@
 
 *[wiki index](README.md) · concept*
 
+**The question.** How many atoms sit in each hyperfine sublevel at
+thermal equilibrium, and how decay through an intermediate level can pump
+an atom out of the one the laser addresses.
+**Takes.** The $F$ levels and their degeneracies from
+[Hyperfine structure](hyperfine-structure.md), nothing else assumed.
+**Gives.** The degeneracy-and-abundance counting law that predicts each
+line's relative strength, and the pumping mechanism that both reduces
+amplitude and broadens the line.
+**Skip if.** the reader wants the magnetic sublevel structure itself
+rather than how atoms populate it, in which case
+[Magnetic sublevels](magnetic-sublevels.md) is the right page.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A hyperfine level $F$ carries $2F+1$ magnetic sublevels, one for every
@@ -202,6 +217,16 @@ a reader.
 - [Transit-time broadening](transit-time-broadening.md), for the general
   relation between a shortened interaction time and a broader line that the
   pumping argument above uses.
+
+## See also
+
+- [Hyperfine structure](hyperfine-structure.md), the levels this page
+  puts populations on.
+- [Magnetic sublevels](magnetic-sublevels.md), the sublevel structure
+  this page counts.
+- [Transit-time broadening](transit-time-broadening.md), for the general
+  relation between a shortened interaction time and a broader line that
+  the pumping argument above uses.
 
 ---
 

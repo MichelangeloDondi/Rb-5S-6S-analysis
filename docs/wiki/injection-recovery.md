@@ -2,6 +2,19 @@
 
 *[wiki index](README.md) · method*
 
+**The question.** Can an analysis recover a truth it was handed in advance,
+and what does passing that test actually prove.
+**Takes.** A complete analysis pipeline, already built and ready to run
+start to finish. No other wiki page is required first.
+**Gives.** The bias, coverage and pull diagnostics a recovery test produces,
+and the boundary between what a closure test validates and what it cannot.
+**Skip if.** You want the general Monte Carlo machinery a recovery test is
+built from, rather than the closure test itself. That is
+[Monte Carlo methods](monte-carlo-methods.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 An injection-recovery test asks whether an analysis can find an answer it
@@ -119,6 +132,32 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## A held-out cohort that was not held out
+
+On 2026-08-15 a band-holdout replication was reported inside the private
+record as a clean sweep of the held-out conditions, at a p-value that would
+have been decisive, drawn from "the calibration-sound subset of a
+sixteen-condition cohort". Two of those conditions were not fresh at all. They were the pilot's own traces,
+regrouped by peak, counted a second time as if they were independent
+evidence. The numeric threshold that had carved out the "calibration-sound
+subset" was never written into the frozen script, so nothing on the page
+that produced the 7 of 7 tally recorded which conditions the pilot had
+already touched. Replaced the same day by a count built from 11 of 14 fresh
+conditions, the tally weakened to p = 0.029. [HISTORY.md](../HISTORY.md)
+carries both numbers.
+
+This is the same trap this page names above under "Two implementation
+traps", stated there for a synthetic injection reusing the real data's own
+fitted values as truth and here for a real-data holdout reusing the pilot's
+own traces as a fresh condition: a check that is not independent of the
+material used to build the thing it is checking passes more easily than it
+should, for a reason that has nothing to do with whether the underlying
+result is sound. An injection-recovery discipline that insists the recovery
+run on data no part of the analysis has already seen, the same discipline
+this page states for synthetic truths, applied equally to which real
+conditions were allowed into the confirmatory cohort would have flagged the
+two pilot-derived entries before the 7 of 7 count was ever reported.
+
 ## Further reading
 
 - [Methods chapter 6](../methods/06_the_statistics.md), sections 4.6 and 4.11,
@@ -127,6 +166,16 @@ a reader.
   which is a runnable version of everything on this page.
 - [Identifiability](identifiability.md) for the case where recovery fails not
   because the code is wrong but because the parameter was never determined.
+
+## See also
+
+- [Monte Carlo methods](monte-carlo-methods.md), the general simulation
+  technique a recovery test applies to an estimator's bias and coverage.
+- [Preregistration](preregistration.md), which freezes the criterion a
+  recovery test is later asked to validate.
+- [Identifiability](identifiability.md), for the case where recovery fails
+  because a parameter was never determined rather than because the code is
+  wrong.
 
 ---
 
