@@ -161,12 +161,14 @@ the pooled and campaign-only bounds cannot currently be compared at the size of
 their difference, and the comparison becomes meaningful only after the pooled
 construction passes a profile-reproducibility test, independent starts agreeing
 on the Delta chi-square curve and not merely on the fitted point. **That test has
-since been attempted and was inconclusive**: half the independent starts
-exhausted the production evaluation budget without converging, so the benign
-explanation is excluded while a second local optimum and an unfinished search
-are not yet separated, which needs a larger budget rather than a different design. The
-attempt and its per-start curves are in [the profile
-note](../notes/campaign_only_stark_profile.md), and no committed number moves on
+since run at two evaluation budgets, and the second run resolved it**: at the
+production budget half the starts never converged, and at four times the
+budget two complete curves still disagree by a factor of 2.13 while one start
+converged to a stationary point about 21,000 in chi-square above the best. The
+pooled surface carries more than one local optimum, the production warm-start
+chain is load-bearing rather than merely efficient, and both runs' per-start
+curves are in [the profile
+note](../notes/campaign_only_stark_profile.md). No committed number moves on
 it.
 
 A profile-likelihood interval means what it says only when the surface is the

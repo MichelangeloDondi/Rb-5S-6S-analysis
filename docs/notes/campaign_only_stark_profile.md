@@ -127,11 +127,21 @@ than a warm chain by construction, so a cold start failing to reproduce a warm
 chain's profile is expected in some measure. What was not expected is the size.
 No committed number moves on this, and none should.
 
-**The next step is a budget, not a new design.** The same test at a
-substantially larger evaluation cap, run in the environment of record, would
-separate the two surviving explanations. Until then the record's position is
-unchanged: the pooled and campaign-only bounds cannot be compared at the size
-of their difference.
+**The budgeted re-run separated the explanations, and the answer is both.**
+The identical test at four times the evaluation cap, changed in nothing else,
+halved the capped points from fifteen to seven, so part of the first run's
+spread was an unfinished search. What remains is not: two starts produced
+complete curves with no capped point and their bounds are 1.000 and 2.133 MHz
+per W, a factor of 2.13 between fully converged independent starts, and one
+start CONVERGED at three coefficient values to a stationary point about
+21,000 in chi-square above the best, which is a second local optimum and not a
+search that ran out. **The pooled likelihood surface carries more than one
+local optimum, and the production construction's warm-start chain is
+load-bearing rather than merely efficient.** One start still exhausted even
+the quadrupled budget at one point after thirty-one minutes, so the surface is
+also genuinely expensive. The record's position is unchanged and now rests on
+a completed test rather than an inconclusive one: the pooled and campaign-only
+bounds cannot be compared at the size of their difference.
 
 The thirty per-point curves are in
 [the CSV](campaign_only_stark_profile.csv) under construction
@@ -146,7 +156,8 @@ evaluation limit, so a reader can apply their own convergence filter.
 | pooled, diagnostic re-run 2026-08-17 | three passes, ascending, descending, seeded | bounds span a factor of 2.1 |
 | campaign-only, 2026-08-17 | three passes plus the reversed scan axis | agreement at the third decimal, direction indifference 0.00 |
 | campaign-only wing variant | cold descending and seeded ascending | chi-square at or below the primary's at every grid point, as nesting requires |
-| pooled, multi-start 2026-08-17 | five independent starts, no warm start | **ATTEMPTED, INCONCLUSIVE**: half the optimisations hit the evaluation cap and one start of five gave a complete curve, so a second local optimum and an unfinished search are not separated. See the section above |
+| pooled, multi-start at the production budget | five independent starts, no warm start | half the optimisations capped, one complete curve: a second optimum and an unfinished search not separated |
+| pooled, multi-start at four times the budget | identical starts, only the cap changed | **RESOLVED, both causes real**: caps halved, two complete curves disagree by a factor 2.13, and one start converged to a stationary point 21,000 above the best. More than one local optimum, and the warm-start chain is load-bearing |
 
 ## What this does and does not establish
 
