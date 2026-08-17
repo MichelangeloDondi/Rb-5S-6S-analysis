@@ -103,13 +103,25 @@ settled either way.
 Two committed diagnostics say the pooled construction is not behaving like a fit
 to one quantity.
 
-**The two scan directions disagree by more than the entire criterion.** The
-profile is scanned in both directions as a convergence check, and
-`results/stark_joint.csv` records the largest disagreement between them as 8.59
-in chi-square. The bound itself is read where the profile rises by 2.706. So the
-convergence error is about three times the whole quantity being measured. A
-profile-likelihood bound means what it says only when the surface is the same
-surface whichever way it is traversed.
+**The profile passes disagree about the bound itself, by a factor of two.** The
+profile is scanned in both directions and re-run from a seeded start, as a
+convergence check. Taken separately, the pooled fit's passes put the bound at
+1.007, 1.231 and 2.106 MHz per W. The campaign-only refit's passes agree to three
+decimals, at 1.024, 1.025 and 1.026.
+
+That is the statement worth making, and it is worth being careful about which
+number carries it. `results/stark_joint.csv` also records
+`direction_dchi2_max` as 8.59, the largest pointwise chi-square gap between the
+two direction variants, against the 2.706 at which the bound is read. **That
+comparison alone would not establish anything**, because each profile is
+normalised to its OWN minimum before the threshold is applied, so a gap that is a
+constant offset moves no bound at all. Only the part of the gap that VARIES along
+the profile can. Here it does vary, by 56 in chi-square across the range, which
+is why the passes land on different bounds. A large gap is a prompt to check the
+bounds, not a result by itself.
+
+A profile-likelihood interval means what it says only when the surface is the
+same surface whichever way it is traversed.
 
 **A longer lever loosens the bound.** The rehearsal contributes a 270 mW rung,
 which carries 1.44 times the campaign's largest squared-shift lever. Adding data
@@ -121,12 +133,37 @@ interpretation, in [the preregistration
 record](../PREREGISTRATION_RESULTS.md) and in [the full-dataset
 preregistration](../notes/full_dataset_fit_prereg.md).
 
-**The interpretation, which is the one step this chapter adds.** A longer lever
-that loosens a bound is evidence that the pooled data are not constraining a
-single parameter. Adding a group can only tighten an inference about a quantity
-the groups share. If the bound loosens, either the groups disagree about the
-quantity or the added freedom outweighs the added information, and the candidate
-mechanism for the first is already named in section 3.
+**The interpretation, which is the one step this chapter adds, stated as narrowly
+as the evidence allows.** A longer lever that loosens a bound means the pool is
+not ADDING INFORMATION about the shared parameter. That much follows: the pooled
+dataset contains the campaign, so it cannot know less about a genuinely shared
+quantity.
+
+It does NOT follow that the groups disagree about the quantity, and separating the
+candidates is the work. There are three, and they are distinguishable.
+
+  * **A genuine preference for a nonzero value** in the added group, which would
+    move the profile minimum and legitimately raise an upper bound. **Checked and
+    ruled out here.** Both constructions put the minimum at the same place, 0.25
+    MHz per W, and neither prefers a nonzero value at any strength worth quoting.
+    A loosening produced by a preference requires the minimum to move, and it does
+    not move.
+  * **Added nuisance freedom** absorbing structure the shared parameter was
+    reading. The extra sessions bring their own detector saturation, scan rates
+    and rate scale, and those are constrained by data in the pool while sitting
+    inert in a campaign-only fit. This is a real cost of pooling and is NOT
+    heterogeneity.
+  * **Imperfect convergence**, which is what the evidence in this case points at.
+    The pooled profile is shallower than the campaign-only profile through the
+    whole region that sets the bound, and it is locally non-monotonic, rising to
+    4.60 at 1.50 and falling to 4.36 at 1.54. Together with passes that disagree
+    about the answer by a factor of two, that is a statement about the optimiser
+    and the surface.
+
+So the diagnostic is a prompt and not a verdict. **What it establishes is that the
+pooled number should not be read as the better-constrained one merely because it
+uses more data.** Whether the sessions shared a geometry stays open, on apparatus
+grounds, and section 3 says why no nuisance in the fit could settle it.
 
 **What this does not establish, and the distinction matters.** A poorly behaved
 likelihood surface is a statement about the surface. It is not proof that the
@@ -140,9 +177,13 @@ contradiction.
 
 Each is answerable from artefacts this pipeline already writes.
 
-1. **Do the profile passes agree?** Scan the profiled parameter in both
-   directions and record the largest disagreement. Compare it against the
-   threshold that sets the interval, not against zero.
+1. **Do the profile passes agree about the ANSWER?** Scan the profiled parameter
+   in both directions and from a seeded start, then derive the interval
+   SEPARATELY from each pass and compare those. Do not compare the passes'
+   chi-square values, because each profile is normalised to its own minimum, so a
+   constant offset between two passes changes no interval while a gap that varies
+   along the profile changes it a great deal. The quantity that matters is the
+   spread of the answers, not the spread of the curves.
 2. **Does a longer lever tighten the bound?** If extending the lever loosens it,
    stop and find out why before quoting either number.
 3. **Does leaving one group out move the answer more than the systematic being
