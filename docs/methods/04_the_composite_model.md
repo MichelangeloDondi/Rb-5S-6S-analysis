@@ -102,6 +102,34 @@ factor are geometric estimates and the Holstein form assumes a Doppler line in
 a cylinder, so the isotope *ratio* is the robust part and the absolute scale is
 not.
 
+#### A fourth power-dependent channel, named late: the EOM as a thermal lens
+
+The mechanism sweep of 2026-08-17 found one channel with no treatment anywhere
+in this record, and it came from apparatus knowledge rather than from analysis:
+the EOM crystal clips the raw laser beam at its 3 mm aperture
+([APPARATUS](../APPARATUS.md), manufacturer-sourced) and sits BEFORE the
+focusing lens, so power absorbed at the crystal makes a thermal lens and the
+cell waist becomes a function of drive power. That candidate matters because it
+is the only proposed mechanism whose width signature can be NON-MONOTONE in
+power, through the focus walking along the cell, and a non-monotone width
+against power is what the summary widths show.
+
+What the archive could test, it has. A lens with a thermal time constant
+comparable to a block would drift WITHIN each five-repeat block as the crystal
+re-equilibrates after every power step, and the pooled within-block drift
+across all twenty campaign cells is minus 7.7 plus or minus 6.4 kHz per repeat,
+a null that kills the slow branch alone. The rehearsal session's
+alternating-direction ladders show no coherent direction signature either, so
+ladder-scale hysteresis is disfavoured too. **The fast branch, a lens that
+equilibrates within one sweep and makes a static w0(P), survives both nulls by
+construction** and is discriminated only by measuring the waist against power
+with the EOM in the beam, which [the plan](../plan/04_intensity-and-light-shift.md)
+now requires, or by the component-resolved power sweep locating the anomalous
+power dependence in the transit component. Until one of those runs, w0(P)
+stands beside rho(P) as the two open candidates for the width structure, and
+the composite model's constant-waist assumption is a stated assumption rather
+than a checked one.
+
 #### And the third radiation field: the cell's own blackbody
 
 ![the three radiation fields, and the rates they drive](../../figures/fig27_radiation_environment.png)

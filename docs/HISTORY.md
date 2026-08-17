@@ -134,6 +134,20 @@ implying any of the three without carrying it is a defect rather than shorthand.
 The same rule was extended to module constants the same day, after one was found
 named for a placeholder while holding a value computed from a measurement.
 
+**The sweep-linearity claim, corrected 2026-08-17 late.** The ruler figure and
+its caption said the local sweep rate never departs from the block rate by more
+than the bound in any well-sampled window, with the thinly-sampled edge windows
+excluded as carrying uncertainties larger than the bound. Checked against
+`results/ruler_nlmap.csv`, that justification was true of two of the five
+excluded windows, and the two leading-edge windows are PRECISE departures,
+minus 1.75 plus or minus 0.40 per cent and plus 0.73 plus or minus 0.18 per
+cent, which are 4.4 and 4.0 standard deviations from flat. The claim the record
+now makes is stronger and different: the conversion from scan time to frequency
+is linear to 0.25 per cent across the interior and is NOT linear at the leading
+edge, where the ramp is turning, and the analysis windows do not reach into it.
+The figure draws the sample count and marks the departing windows rather than
+hiding them behind a reason that did not apply.
+
 **One session date was inconsistent rather than wrong.** The campaign-morning
 session of 17 July 2025 was named 2025-07-18 in the joint fit's docstring, in
 the same sentence that named its `20250717` directory. `GLOSSARY.md` and

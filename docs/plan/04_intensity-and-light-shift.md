@@ -304,6 +304,17 @@ fit sets $\hat\kappa=0$ for every nonzero scale, the companion vanishes
 identically, and $\chi^2$ comes back the same to four decimals across a factor
 of thirty in the scale. There is no bound to quote.
 
+The skew channel's turn-on now has a MEASURED threshold rather than an assumed
+one. Pooling all one hundred campaign traces as one regression against the cube
+of the power, with per-trace skew errors taken from the repeats themselves,
+resolves a per-trace standardized skewness of about 0.01, while the ramp
+predicts 1.1e-5 at the current bound: a factor near one thousand, which the
+cube-root dependence of the coefficient compresses into a skew-channel bound
+only 9.5 times looser than the width channel's. The signal reaches the measured
+noise floor when $S_0$ exceeds about 2.5 MHz, and the 16 micron configuration's
+predicted 5.56 MHz clears that threshold by design, which is why the skew
+channel is dead in this archive and central to that proposal.
+
 So the ordering the plan needs is explicit: **a positive detection of $\kappa$
 comes first, and the per-line lever is spendable only afterwards.** The 16 µm
 row above satisfies that on its own, since $S_0$ there is 5.56 MHz against a
@@ -323,6 +334,23 @@ no session measured its own waist, which is argued in
 [big_picture/08](../big_picture/08_when-a-joint-fit-is-legitimate.md). **Every
 block of a future session records a waist measurement**, and a session that
 cannot is analysed alone rather than pooled.
+
+**The waist measurement is taken AT SEVERAL POWERS, with the EOM in the beam
+and thermalised at each.** The 2026-08-17 mechanism sweep left exactly two
+candidates able to produce the measured non-monotone width-against-power
+structure, and both are power-dependent geometry. The EOM crystal clips the raw
+laser beam at its 3 mm aperture and sits before the focusing lens
+([APPARATUS](../APPARATUS.md)), so absorbed power there makes a thermal lens
+and the cell waist becomes a function of drive power, with a focus that can
+walk through the cell and turn the transit width around. The archive tested the
+slow-thermalisation branch through the five consecutive repeats of every
+campaign block and found no within-block drift, minus 7.7 plus or minus 6.4 kHz
+per repeat, which kills the slow branch ONLY: a lens that equilibrates within
+one sweep is untouched by that null and is discriminated exactly by measuring
+w0 against power. The second candidate is the retro ratio rho drifting with
+power, which moves the standing-wave contrast and the pedestal-to-line ratio
+together, so **rho is measured against power in the same session**, closing the
+one loophole the pedestal analysis names.
 
 Two analysis steps precede the next session and run on data already in hand, in
 this order.
