@@ -103,8 +103,20 @@ uncertainty budget should be spent.
 
 ## Where this repository uses it
 
-No committed analysis in this repository runs a variance-based sensitivity
-study yet. Local sensitivity is already used, implicitly, every time a
+A variance-based study HAS been run here, on the projected precision of the
+next campaign rather than on a committed 2025 number. It decomposes the
+projection's variance across the plausible range of every design input and
+ranks them, and the ranking is in
+[plan chapter 5](../plan/05_width-collision-amplitude.md). The top temperature
+reached takes the largest share at 0.58 and the unmeasured cold-spot lag takes
+0.33, while the NUMBER of temperature blocks takes 0.002. The design
+consequence is the useful part: adding blocks buys almost nothing, and the
+campaign should argue for reach and for measuring the lag. That is the same
+fact [influence diagnostics](influence-diagnostics.md) reports from the other
+side, since the lever is the spread of densities about their mean and the
+hottest point dominates it.
+
+Local sensitivity is used besides, implicitly, every time a
 fitted quantity's uncertainty is propagated:
 [`rb5s6s/fitutil.py`](../../rb5s6s/fitutil.py)'s `cov_from_jac` turns a
 fit's own Jacobian, the matrix of partial derivatives at the point the
