@@ -179,4 +179,4 @@ two pilot-derived entries before the 7 of 7 count was ever reported.
 
 ---
 
-[← The profile likelihood](profile-likelihood.md) · *Statistical inference, 6 of 7* · [Preregistration →](preregistration.md)
+[← The profile likelihood](profile-likelihood.md) · *Statistical inference, 7 of 8* · [Preregistration →](preregistration.md)

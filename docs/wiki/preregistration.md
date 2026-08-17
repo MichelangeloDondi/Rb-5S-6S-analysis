@@ -244,4 +244,4 @@ would have called for first. See
 
 ---
 
-[← Injection-recovery testing](injection-recovery.md) · *Statistical inference, 7 of 7* · [wiki index →](README.md)
+[← Injection-recovery testing](injection-recovery.md) · *Statistical inference, 8 of 8* · [wiki index →](README.md)

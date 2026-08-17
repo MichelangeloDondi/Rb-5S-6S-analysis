@@ -9,7 +9,7 @@ can go wrong with it, and where to read more.
 
 ## Where to start, by what you came for
 
-Forty pages is too many to read in order, and the clusters below are a
+Forty-one pages is too many to read in order, and the clusters below are a
 taxonomy rather than a route. These are routes.
 
 | if you came for | start here, in order |
@@ -91,6 +91,7 @@ known truth, and freeze the criterion before reading the answer.
 |---|---|---|
 | [Weighted least squares](weighted-least-squares.md) | method | weights from a measured noise law, not from the residuals |
 | [The joint fit](joint-fit.md) | method | share what physics shares, free what drifts |
+| [Pooling across groups](pooling-across-groups.md) | method | when combining groups adds information, and when it only adds freedom |
 | [Information criteria](information-criteria.md) | method | when is a better fit worth its extra parameters |
 | [Identifiability](identifiability.md) | method | when does the data actually determine the parameter we want |
 | [The profile likelihood](profile-likelihood.md) | method | an interval that keeps its shape when nuisance parameters are degenerate |

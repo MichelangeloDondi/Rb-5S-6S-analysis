@@ -177,4 +177,4 @@ symmetric error bar would have caught the 3.1 MHz number before it shipped.
 
 ---
 
-[← Identifiability](identifiability.md) · *Statistical inference, 5 of 7* · [Injection-recovery testing →](injection-recovery.md)
+[← Identifiability](identifiability.md) · *Statistical inference, 6 of 8* · [Injection-recovery testing →](injection-recovery.md)

@@ -273,4 +273,4 @@ caught the 0.07-0.15 interval before it was replaced.
 
 ---
 
-[← wiki index](README.md) · *Statistical inference, 1 of 7* · [The joint fit →](joint-fit.md)
+[← wiki index](README.md) · *Statistical inference, 1 of 8* · [The joint fit →](joint-fit.md)

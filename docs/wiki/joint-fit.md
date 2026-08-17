@@ -89,7 +89,26 @@ blocks recorded hours apart, in a session where the laser was drifting, is
 exactly this failure, and this repository's guard against it is a
 model-independent rule fixed before the data were examined.
 
-The second failure is a correlated-data one. A joint fit assumes the repeats
+A sharper version of over-sharing, and the one hardest to see, is a shared
+parameter that DEPENDS on something the groups differ in and no nuisance
+represents. Over-sharing a drifting laser width is caught eventually because
+the width has an independently known scale. This is not, because nothing in
+the fit is out of range. Suppose the shared quantity scales as one over the
+square of a beam radius, and the groups were recorded at different focus
+settings that nobody logged. Each group then has its own true value of the
+shared parameter, the fit returns some average of them, the formal error is
+small, and no per-trace audit or goodness-of-fit reports anything, because
+every group is fitted well by its own free offset and its own gain.
+
+The test is mechanical rather than statistical. Write down what the shared
+parameter depends on, list the ways the groups differ, and look for a
+dependency that appears in the first list, differs between groups, and has no
+nuisance opposite it in the model. [Pooling across
+groups](pooling-across-groups.md) works this through with a runnable
+demonstration where adding a group with three times the leverage makes the
+answer WORSE.
+
+The next failure is a correlated-data one. A joint fit assumes the repeats
 contribute independent information, and repeats that share a systematic do
 not. The effective number of independent samples is then smaller than the
 number of points, which matters both for the error bars and for any
@@ -158,4 +177,4 @@ a reader.
 
 ---
 
-[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 7* · [Information criteria →](information-criteria.md)
+[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 8* · [Pooling across groups →](pooling-across-groups.md)

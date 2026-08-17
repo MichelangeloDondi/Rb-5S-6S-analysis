@@ -185,4 +185,4 @@ a reader.
 
 ---
 
-[← The joint fit](joint-fit.md) · *Statistical inference, 3 of 7* · [Identifiability →](identifiability.md)
+[← Pooling across groups](pooling-across-groups.md) · *Statistical inference, 4 of 8* · [Identifiability →](identifiability.md)

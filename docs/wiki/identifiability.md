@@ -122,6 +122,34 @@ The general recipe: when two parameters are degenerate, look for a control
 that enters them ASYMMETRICALLY. The fitting problem is unchanged and the
 experiment has been changed instead, which is usually the cheaper repair.
 
+## A parameter can be in a channel and carry almost none of it
+
+Identifiability asks whether the data determine a parameter. A question comes
+before it and is easy to skip: whether the OBSERVABLE being used is sensitive to
+the parameter at all. The two are different, and a parameter can be perfectly
+non-degenerate in a channel that barely responds to it.
+
+The number to compute is the derivative of the observable with respect to the
+parameter, expressed in units of the observable's own scatter. Call it the
+leverage. Appearing in the forward model is not leverage. A channel can be
+correctly modelled, well measured, and nearly empty of the parameter, in which
+case constraining that channel harder buys almost nothing.
+
+**Match the moment to the symmetry of the perturbation.** This is where the
+leverage usually hides. If a perturbation is one-sided, it moves the line's
+centre and its asymmetry strongly while barely changing its width, because a
+symmetric summary of an antisymmetric perturbation is insensitive by
+construction. A width can be the natural-seeming handle and the wrong one. In
+this repository the light-shift term moves the composite width by a few kilohertz
+at its bound while moving the line centre by a hundred and fifty kilohertz
+against an eighty-eight kilohertz block scatter, a factor of forty in the same
+fit, and the width is about two thirds a fixed natural linewidth that no lever
+moves at all.
+
+The practical order is therefore: build the component budget, compute the
+leverage in each available channel, and only then ask whether the parameter is
+identifiable in the channel that carries it.
+
 ## What can go wrong
 
 The failure that matters is mistaking a converged fit for a determined
@@ -216,4 +244,4 @@ rather than after.
 
 ---
 
-[← Information criteria](information-criteria.md) · *Statistical inference, 4 of 7* · [The profile likelihood →](profile-likelihood.md)
+[← Information criteria](information-criteria.md) · *Statistical inference, 5 of 8* · [The profile likelihood →](profile-likelihood.md)
