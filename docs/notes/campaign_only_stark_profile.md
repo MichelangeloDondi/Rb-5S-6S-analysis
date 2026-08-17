@@ -90,6 +90,54 @@ Every profile in this note is machine-readable in
 [campaign_only_stark_profile.csv](campaign_only_stark_profile.csv), one row per
 grid point, each variant's chi-square given relative to its own minimum.
 
+## The multi-start reproducibility test, run 2026-08-17, and what it did not settle
+
+The convergence-checks table below used to say that no construction had been
+given a profile-reproducibility test. One has now been attempted on the POOLED
+construction, and the result refines the question rather than answering it.
+
+**The design, frozen before the run.** Six coefficient values spanning the
+bound region, five starts each. Start zero is the production initial vector and
+the other four are jittered componentwise by five per cent, each jitter drawn
+once per START and applied at every coefficient value, so each start yields one
+coherent profile curve and therefore one bound. Every optimisation is
+independent, with no warm start from a neighbouring point, which is the single
+difference from the production construction and the point of the test.
+
+**Half the starts never converged.** Fifteen of the thirty optimisations hit
+the production evaluation cap of 1500 without meeting a convergence criterion,
+and **only one of the five starts produced a curve with no capped point**. Among
+the points that did converge, the across-start spread in chi-square runs from
+about 37 at the lower coefficient values to about 21000 at the upper ones,
+against the 2.706 that sets the interval.
+
+**What that establishes.** The pooled likelihood surface is expensive to reach
+from an independent start at the production budget, and the production
+construction's warm-start chain, which carries each solution to the next
+coefficient value, is doing essential work rather than merely saving time.
+Taken at face value the spread meets the preregistered threshold for the
+surface carrying more than one local optimum, **but with half the points
+unconverged the test cannot separate a genuinely different optimum from a
+search that stopped early**, and that separation was the purpose. What the run supports is narrower: the benign
+explanation is excluded and the two remaining ones are not yet distinguished.
+
+**What it does not establish, and this matters.** It says nothing about whether
+the committed profile is wrong. Cold independent starts are worse optimisations
+than a warm chain by construction, so a cold start failing to reproduce a warm
+chain's profile is expected in some measure. What was not expected is the size.
+No committed number moves on this, and none should.
+
+**The next step is a budget, not a new design.** The same test at a
+substantially larger evaluation cap, run in the environment of record, would
+separate the two surviving explanations. Until then the record's position is
+unchanged: the pooled and campaign-only bounds cannot be compared at the size
+of their difference.
+
+The thirty per-point curves are in
+[the CSV](campaign_only_stark_profile.csv) under construction
+`pooled_multistart`, each variant tagged `_CAPPED` where that point hit the
+evaluation limit, so a reader can apply their own convergence filter.
+
 ## Which convergence checks each construction has had
 
 | construction | checks run | outcome |
@@ -98,7 +146,7 @@ grid point, each variant's chi-square given relative to its own minimum.
 | pooled, diagnostic re-run 2026-08-17 | three passes, ascending, descending, seeded | bounds span a factor of 2.1 |
 | campaign-only, 2026-08-17 | three passes plus the reversed scan axis | agreement at the third decimal, direction indifference 0.00 |
 | campaign-only wing variant | cold descending and seeded ascending | chi-square at or below the primary's at every grid point, as nesting requires |
-| any construction | profile-reproducibility, independent starts agreeing on the Delta chi-square CURVE | **not yet run for any of them, and required before the pooled and campaign-only bounds can be compared** |
+| pooled, multi-start 2026-08-17 | five independent starts, no warm start | **ATTEMPTED, INCONCLUSIVE**: half the optimisations hit the evaluation cap and one start of five gave a complete curve, so a second local optimum and an unfinished search are not separated. See the section above |
 
 ## What this does and does not establish
 

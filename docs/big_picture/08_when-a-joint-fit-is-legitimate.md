@@ -160,7 +160,14 @@ across passes is not a resolved comparison.** What the numbers support is that
 the pooled and campaign-only bounds cannot currently be compared at the size of
 their difference, and the comparison becomes meaningful only after the pooled
 construction passes a profile-reproducibility test, independent starts agreeing
-on the Delta chi-square curve and not merely on the fitted point.
+on the Delta chi-square curve and not merely on the fitted point. **That test has
+since been attempted and was inconclusive**: half the independent starts
+exhausted the production evaluation budget without converging, so the benign
+explanation is excluded while a second local optimum and an unfinished search
+are not yet separated, which needs a larger budget rather than a different design. The
+attempt and its per-start curves are in [the profile
+note](../notes/campaign_only_stark_profile.md), and no committed number moves on
+it.
 
 A profile-likelihood interval means what it says only when the surface is the
 same surface whichever way it is traversed.
