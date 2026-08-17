@@ -331,7 +331,12 @@ this order.
 cannot absorb.** The summary widths are concave in power, with an apex near 120 mW
 and a fall from there to the top of the ladder that is about fifty times the whole
 range the light-shift term can produce at its bound. The structure survives a
-model-free half-max width, so it is in the data rather than in the fit. Every
+model-free half-max width, so it is in the data rather than in the fit. The
+model-free statistic is smoothing-dependent and is read only where its own
+validity control passes: stable in sign and size across a sixfold preregistered
+range of the smoothing setting, while at the narrowest setting the estimator
+fails its control for a measured reason, a single-sample level bias, and is not
+read. Every
 component in the production model is pinned against power already, so that
 structure has nowhere to go and is sitting in the residual. The test frees ONE
 component at a time per condition with the other two held at their physical

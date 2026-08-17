@@ -63,7 +63,10 @@ correction does two things at once, and naming both is what makes the flip
 unsurprising: it rescales the chi-square as well as the sample count, so the
 freer model's chi-square advantage shrinks roughly as the over-sampling factor
 while the parameter penalty shrinks only logarithmically, and the verdict moves
-toward the shared model. A
+toward the shared model. The decomposition from the committed numbers: the
+penalty change alone would move the verdict by about eleven units TOWARD the
+freer model, the chi-square whitening moves it by about one hundred and twenty
+the other way, and their sum is the observed flip of one hundred and thirteen. A
 dataset whose verdict flips with the counting convention does not resolve shared
 against independent, and the record's response is to keep the headline result
 model-independent, which is why the width-slope bound rather than the
@@ -137,18 +140,27 @@ before the threshold is applied, so a constant offset between passes moves no
 bound at all. The quantity that matters is the spread of the ANSWERS, and that is
 the factor of 2.1 above.
 
-**The noise scales and the signal, in one place.** The loosening this section
-interprets, the pooled 1.147 against the campaign-only 1.025, is twelve per cent.
-The pooled construction's pass spread is a factor of 2.1, its best-pass-to-
-committed movement is seven per cent, and its profile carries a local
-non-monotonicity of 0.24 in chi-square, rising to 4.60 at 1.50 and falling to
-4.36 at 1.54. **A twelve per cent difference read from a construction that
-reproduces itself to no better than a factor of two across passes is not a
-resolved comparison.** What the numbers support is that the pooled and campaign-only
-bounds cannot currently be compared at the size of their difference, and the
-comparison becomes meaningful only after the pooled construction passes a
-profile-reproducibility test, independent starts agreeing on the Delta
-chi-square curve and not merely on the fitted point.
+**The signal and every noise scale it must beat, in one table.** The loosening
+this section would like to interpret is the pooled 1.147 against the
+campaign-only 1.025.
+
+| effect | size | what it is |
+|---|---|---|
+| pooled against campaign-only bound | 12% | the difference under interpretation |
+| pooled pass-to-pass spread | factor 2.1 | reproducibility of the construction across scan passes |
+| best pass against the committed value | 7% | run-to-run movement of even the best-converged pass |
+| local profile non-monotonicity | 0.24 in chi-square | the optimiser noise scale, 4.60 at 1.50 falling to 4.36 at 1.54 |
+| leave-one-peak-out movement | factor 1.42 | concentration of leverage in one subset |
+| wing-conditioned movement | factor 7.3 | dependence on one model-construction choice |
+
+The question the table answers is whether the first row is resolvable against
+the rows below it, and at present it is not. **A twelve per cent difference read
+from a construction that reproduces itself to no better than a factor of two
+across passes is not a resolved comparison.** What the numbers support is that
+the pooled and campaign-only bounds cannot currently be compared at the size of
+their difference, and the comparison becomes meaningful only after the pooled
+construction passes a profile-reproducibility test, independent starts agreeing
+on the Delta chi-square curve and not merely on the fitted point.
 
 A profile-likelihood interval means what it says only when the surface is the
 same surface whichever way it is traversed.
@@ -179,7 +191,7 @@ comparable as constraints on one quantity**, and no ordering between them should
 be read as one construction knowing more than the other.
 
 It does NOT follow that the groups disagree about the quantity, and separating
-the candidates is the work. There are four.
+the candidates is the work. There are five.
 
   * **A genuine preference for a nonzero value** in the added group, which would
     move the profile minimum and legitimately raise an upper bound. **The
@@ -206,6 +218,12 @@ the candidates is the work. There are four.
     mechanism is absent here, and the class belongs on the list because the test
     that catches it, holding the error model fixed while the groups change, is
     cheap wherever it applies.
+  * **Per-group model misspecification**, distinct from added freedom: the
+    shared lineshape can describe one group better than another, and the band
+    work has already measured a shape misfit whose size varies with condition,
+    so a session-dependent misfit is plausible rather than hypothetical. A
+    group fitted by a slightly wrong model contributes a slightly wrong pull on
+    the shared parameter with every nuisance behaving normally.
   * **Imperfect convergence**, which most of the evidence points at. The pooled
     profile is shallower than the campaign-only profile through the whole region
     that sets the bound, it is locally non-monotonic at the 0.24 level, and its
@@ -225,7 +243,11 @@ bound by a factor of 1.42, and the chi-square cost of removing peak 4121 from
 the fit at the predicted coefficient is 8.75 against 1.12, 2.27 and 0.61 for the
 other three, so the constraint is substantially owned by one peak and one
 subset. That is why the record publishes the leave-one-out rows and treats their
-spread as the dominant reported sensitivity of this construction.
+spread as the dominant reported sensitivity of this construction. WHY one peak
+carries most of the leverage is a separate open question with several boring and
+one interesting answer, more data, lower noise, cleaner separation from its
+neighbour, a stronger model sensitivity, or a defect, and no adjudication
+between them has been run.
 
 **What this does not establish, and the distinction matters.** A poorly behaved
 likelihood surface is a statement about the surface. It is not proof that the
