@@ -266,6 +266,16 @@ absolute rather than relative. And the archive itself cannot be improved: these
 chains describe what a NEW session would determine, and the 2025 bounds stand
 as bounds whatever happens next.
 
+## A limitation this chapter does not carry
+
+Every chain above is about a quantity the data fail to determine. One limitation
+is about the CONSTRUCTION instead: whether the joint fit that produces the
+light-shift bound is entitled to share one coefficient across three measurement
+sessions, given that the coefficient goes as one over the beam waist squared and
+no session measured its own waist. That question has its own chapter, [when a
+joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md), which also
+generalises it into six questions to ask of any pooled fit.
+
 ---
 
-*[The next nanofibre session](06_next-nanofibre.md) · [the big picture](../BIG_PICTURE.md)*
+*[The next nanofibre session](06_next-nanofibre.md) · [When a joint fit is legitimate](08_when-a-joint-fit-is-legitimate.md) · [the big picture](../BIG_PICTURE.md)*
