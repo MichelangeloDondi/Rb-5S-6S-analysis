@@ -186,10 +186,20 @@ pointwise minimum over cold, backward and search-seeded chains, and
 `kappa_min` with `dchi2_kappa0` show the minimum is consistent with zero rather
 than a detection.
 
-**The robustness rows are the dominant systematic.** Marginalising the
-red-wing nuisance gives 0.24 MHz at 225 mW in `kappa_ub95_wing`, and dropping
-peak 4192, which removes the entire campaign-morning session with it, gives
-0.37. That spread across subsets is larger than any single fit's error.
+**The robustness rows are the dominant systematic, in one direction.** Dropping
+peak 4192, which removes the entire campaign-morning session with it, gives 0.37
+MHz at 225 mW against the primary's 0.26, and that looseness is larger than any
+single fit's error.
+
+**`kappa_ub95_wing` is TIGHTER than the primary, and it is a conditional bound
+rather than a looser alternative.** Marginalising the red-wing nuisance gives 0.24
+MHz at 225 mW. The wing and the light shift are competing explanations of the same
+red-side structure, so granting the wing freedom attributes that structure to the
+wing and leaves less to support a light shift, which steepens the profile and
+tightens the bound. Read it as what the light shift can be IF the red-side excess
+is instrumental, not as a bracket around the primary. The gap between the two is
+therefore not a systematic to be split: the primary is the construction that does
+not make that assumption, which is why it is the one quoted.
 
 **`kappa_ub95_camponly` IS NOT THE CAMPAIGN-ALONE BOUND, despite its name.** It
 is the campaign's own chi-square read along the JOINT profile, whose nuisances

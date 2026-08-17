@@ -168,6 +168,21 @@ one-sided, so the moment has to be matched to the symmetry of the perturbation.
 
 ## 6. What the record does about all of this
 
+**A converged construction is not automatically the better-supported one, and
+this dataset makes the point sharply.** The campaign alone is the construction
+whose profile passes agree, and it is also the construction most exposed to the
+one systematic that competes with the light shift. Granting the fit a free
+red-side wing, which is an alternative explanation of the same structure the light
+shift is read from, tightens the campaign-alone bound by a factor of about seven
+while tightening the pooled bound by about seven per cent. The campaign's
+red-side structure is almost entirely absorbable by that wing, so the campaign by
+itself can barely distinguish a light shift from an instrumental wing, and the
+extra sessions contribute structure the wing cannot absorb.
+
+Two desirable properties therefore point in opposite directions here. Adjudicating
+on either one alone would pick a different answer, which is the reason this chapter
+argues for a checklist rather than for a construction.
+
 The pooled bound stays the quoted construction, S₀(225 mW) below 0.26 MHz,
 because it is the one that has been run, checked and published, and because
 withdrawing it on the strength of a diagnostic would replace a documented number
