@@ -197,9 +197,14 @@ MHz at 225 mW. The wing and the light shift are competing explanations of the sa
 red-side structure, so granting the wing freedom attributes that structure to the
 wing and leaves less to support a light shift, which steepens the profile and
 tightens the bound. Read it as what the light shift can be IF the red-side excess
-is instrumental, not as a bracket around the primary. The gap between the two is
-therefore not a systematic to be split: the primary is the construction that does
-not make that assumption, which is why it is the one quoted.
+is instrumental, not as a bracket around the primary. Two things follow and they
+pull in different directions, so both are stated. The gap between the two bounds
+is not an ADDITIVE systematic to be split, because the two are answers to
+different questions rather than two estimates of one quantity. And the existence
+of the alternative construction is itself model dependence, which stays in the
+sensitivity record rather than being dismissed: the inference changes materially
+with the treatment of the red-side structure, and the primary is quoted because
+it is the construction that does not assume that structure away.
 
 **`kappa_ub95_camponly` IS NOT THE CAMPAIGN-ALONE BOUND, despite its name.** It
 is the campaign's own chi-square read along the JOINT profile, whose nuisances

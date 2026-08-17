@@ -191,9 +191,13 @@ target a follow-up session would need to beat. The width-only AC-Stark bound
 brackets its prediction rather than resolving it (the predicted effect is
 about one block's width scatter, so the bound rests on averaging), while the
 joint three-session fit lands below the predicted band, the tension the
-results table quotes. The 95% constructions are validated by
+results table quotes. The width-channel 95% construction is validated by
 injection-recovery ([methods §4.11](docs/methods/06_the_statistics.md)), not
-assumed.
+assumed, and its profile-bound coverage is measured in
+[a dedicated study](docs/notes/stark_coverage_postscript.md). The joint
+three-session construction has no coverage run of its own, and its profile
+passes disagree about the bound by a factor of two, a convergence question
+examined in [chapter 8](docs/big_picture/08_when-a-joint-fit-is-legitimate.md).
 
 The chain from raw trace to quoted bound, each stage a runnable script, each
 output a committed CSV:

@@ -55,11 +55,19 @@ decisive on the usual reading. Computed on raw sample counts it favours the free
 model by 51.9. The two models fit almost identically, at reduced chi-square 0.857
 against 0.854.
 
-That pair of numbers is the most useful thing in this section. **The archive does
-not resolve shared against independent**, and the direction of the answer is set
-by a bookkeeping convention rather than by the data. The record's response is to
-keep the headline result model-independent, which is why the width-slope bound
-rather than the hierarchical fit carries the collisional claim.
+That pair of numbers is the most useful thing in this section. **The
+model-selection verdict is set by the effective-sample convention used to account
+for correlation, not by the physics**, which is a statement about the dataset's
+information content rather than about whether the sharing is physically true. The
+correction does two things at once, and naming both is what makes the flip
+unsurprising: it rescales the chi-square as well as the sample count, so the
+freer model's chi-square advantage shrinks roughly as the over-sampling factor
+while the parameter penalty shrinks only logarithmically, and the verdict moves
+toward the shared model. A
+dataset whose verdict flips with the counting convention does not resolve shared
+against independent, and the record's response is to keep the headline result
+model-independent, which is why the width-slope bound rather than the
+hierarchical fit carries the collisional claim.
 
 ## 3. Across the three sessions
 
@@ -104,21 +112,43 @@ Two committed diagnostics say the pooled construction is not behaving like a fit
 to one quantity.
 
 **The profile passes disagree about the bound itself, by a factor of two.** The
-profile is scanned in both directions and re-run from a seeded start, as a
-convergence check. Taken separately, the pooled fit's passes put the bound at
-1.007, 1.231 and 2.106 MHz per W. The campaign-only refit's passes agree to three
-decimals, at 1.024, 1.025 and 1.026.
+numbers come from two runs and the provenance matters, so it is stated. The
+committed bound, 1.147 MHz per W, is the 2026-08-03 production run's
+pointwise-minimum construction over cold and seeded chains, interpolated between
+its 1.00 and 1.50 grid points. A diagnostic re-run of the same construction on
+2026-08-17 scanned the profile in both directions and from a seeded start, and
+taken separately its passes put the bound at 1.007, 1.231 and 2.106 MHz per W. So
+the passes span a factor of 2.1, and even the re-run's best-converged seeded pass
+sits seven per cent from the committed value. The campaign-only refit from the
+same day behaves oppositely: its passes agree to three decimals, at 1.024, 1.025
+and 1.026. The constructions and profiles are published in [the campaign-only
+profile note](../notes/campaign_only_stark_profile.md) so these sentences rest on
+evidence a reader can see.
 
-That is the statement worth making, and it is worth being careful about which
-number carries it. `results/stark_joint.csv` also records
-`direction_dchi2_max` as 8.59, the largest pointwise chi-square gap between the
-two direction variants, against the 2.706 at which the bound is read. **That
-comparison alone would not establish anything**, because each profile is
-normalised to its OWN minimum before the threshold is applied, so a gap that is a
-constant offset moves no bound at all. Only the part of the gap that VARIES along
-the profile can. Here it does vary, by 56 in chi-square across the range, which
-is why the passes land on different bounds. A large gap is a prompt to check the
-bounds, not a result by itself.
+Two different gap statistics exist and only one of them carries this claim.
+Within the diagnostic re-run, the chi-square gap between the ascending and
+descending passes varies by up to 56 along the profile, and a gap that varies is
+exactly what moves a bound, which is why those passes land answers a factor of
+two apart. The committed run separately records `direction_dchi2_max` as 8.59,
+the largest pointwise gap between its two direction variants, each of which is
+already a pointwise minimum over several chains. **Neither raw gap establishes
+anything by itself**, because each profile is normalised to its OWN minimum
+before the threshold is applied, so a constant offset between passes moves no
+bound at all. The quantity that matters is the spread of the ANSWERS, and that is
+the factor of 2.1 above.
+
+**The noise scales and the signal, in one place.** The loosening this section
+interprets, the pooled 1.147 against the campaign-only 1.025, is twelve per cent.
+The pooled construction's pass spread is a factor of 2.1, its best-pass-to-
+committed movement is seven per cent, and its profile carries a local
+non-monotonicity of 0.24 in chi-square, rising to 4.60 at 1.50 and falling to
+4.36 at 1.54. **A twelve per cent difference read from a construction that
+reproduces itself to no better than a factor of two across passes is not a
+resolved comparison.** What the numbers support is that the pooled and campaign-only
+bounds cannot currently be compared at the size of their difference, and the
+comparison becomes meaningful only after the pooled construction passes a
+profile-reproducibility test, independent starts agreeing on the Delta
+chi-square curve and not merely on the fitted point.
 
 A profile-likelihood interval means what it says only when the surface is the
 same surface whichever way it is traversed.
@@ -134,44 +164,74 @@ record](../PREREGISTRATION_RESULTS.md) and in [the full-dataset
 preregistration](../notes/full_dataset_fit_prereg.md).
 
 **The interpretation, which is the one step this chapter adds, stated as narrowly
-as the evidence allows.** A longer lever that loosens a bound means the pool is
-not ADDING INFORMATION about the shared parameter. That much follows: the pooled
+as the evidence allows.** Two objects have to be kept apart. The INFORMATION the
+data carry about a shared parameter is a property of the data under a correctly
+specified common model, and adding informative data cannot reduce it: the pooled
 dataset contains the campaign, so it cannot know less about a genuinely shared
-quantity.
+quantity. The REPORTED INTERVAL is a different object. It is the output of a
+particular model, nuisance structure and optimiser, and it is the thing observed
+to loosen. So a longer lever that loosens the bound does not say the added data
+destroyed information, which is impossible. It says the enlarged CONSTRUCTION
+changed the reported inference, and the question becomes which part of the
+construction did it. A further consequence follows and is the defensible
+headline: **the two bounds profile different parameter spaces, so they are not
+comparable as constraints on one quantity**, and no ordering between them should
+be read as one construction knowing more than the other.
 
-It does NOT follow that the groups disagree about the quantity, and separating the
-candidates is the work. There are three, and they are distinguishable.
+It does NOT follow that the groups disagree about the quantity, and separating
+the candidates is the work. There are four.
 
   * **A genuine preference for a nonzero value** in the added group, which would
-    move the profile minimum and legitimately raise an upper bound. **Checked and
-    ruled out here.** Both constructions put the minimum at the same place, 0.25
-    MHz per W, and neither prefers a nonzero value at any strength worth quoting.
-    A loosening produced by a preference requires the minimum to move, and it does
-    not move.
+    move the profile minimum and legitimately raise an upper bound. **The
+    available test has no power to decide this, and its one discriminating row
+    leans toward the preference rather than against it.** Both minima sit on the
+    same grid point at 0.25 MHz per W, but the grid is spaced 0.25, far coarser
+    than the shift a mild preference from lower-weight groups would produce. At
+    zero coefficient the pooled profile sits 0.12 above its minimum while the
+    campaign-only profile sits at 0.00, which is a displacement of the pooled
+    curve toward positive values, the signature the preregistration predicted
+    with "mildly prefer a positive shift and drag the profile's rise", and the
+    drag half of that prediction is confirmed by the profile table directly. The
+    0.12 is below the 0.24 optimiser noise floor demonstrated on the same curve,
+    so it is a lean and not a finding.
   * **Added nuisance freedom** absorbing structure the shared parameter was
     reading. The extra sessions bring their own detector saturation, scan rates
     and rate scale, and those are constrained by data in the pool while sitting
     inert in a campaign-only fit. This is a real cost of pooling and is NOT
     heterogeneity.
-  * **Imperfect convergence**, which is what the evidence in this case points at.
-    The pooled profile is shallower than the campaign-only profile through the
-    whole region that sets the bound, and it is locally non-monotonic, rising to
-    4.60 at 1.50 and falling to 4.36 at 1.54. Together with passes that disagree
-    about the answer by a factor of two, that is a statement about the optimiser
-    and the surface.
+  * **A group-dependent error model.** If the construction weighted groups by
+    their own misfit, adding a group that fits less well would flatten every
+    profile arithmetically, with no heterogeneity involved. Checked for this
+    fit: the producer applies no per-block error inflation, so the specific
+    mechanism is absent here, and the class belongs on the list because the test
+    that catches it, holding the error model fixed while the groups change, is
+    cheap wherever it applies.
+  * **Imperfect convergence**, which most of the evidence points at. The pooled
+    profile is shallower than the campaign-only profile through the whole region
+    that sets the bound, it is locally non-monotonic at the 0.24 level, and its
+    passes disagree about the answer by a factor of two. That is a statement
+    about the optimiser and the surface.
 
-So the diagnostic is a prompt and not a verdict. **What it establishes is that the
-pooled number should not be read as the better-constrained one merely because it
-uses more data.** Whether the sessions shared a geometry stays open, on apparatus
-grounds, and section 3 says why no nuisance in the fit could settle it.
+So the diagnostic is a prompt and not a verdict. **What it establishes is that
+the pooled number should not be read as the better-constrained one merely because
+it uses more data.** Whether the sessions shared a geometry stays open, on
+apparatus grounds, and section 3 says why no nuisance in the fit could settle it.
+
+One of this chapter's own checklist questions applies to these numbers and gets
+its answer here rather than being deflected. Question 3 asks whether leaving one
+group out moves the answer more than the systematic being claimed, and it does:
+dropping peak 4192, which removes the entire campaign-morning session, moves the
+bound by a factor of 1.42, and the chi-square cost of removing peak 4121 from
+the fit at the predicted coefficient is 8.75 against 1.12, 2.27 and 0.61 for the
+other three, so the constraint is substantially owned by one peak and one
+subset. That is why the record publishes the leave-one-out rows and treats their
+spread as the dominant reported sensitivity of this construction.
 
 **What this does not establish, and the distinction matters.** A poorly behaved
 likelihood surface is a statement about the surface. It is not proof that the
-sessions saw different coefficients. Leave-one-peak-out is similarly asymmetric
-rather than damning: removing peak 4121 costs 8.75 in chi-square against the
-prediction while the other three cost 1.12, 2.27 and 0.61, so one peak carries
-most of the constraint, which is a concentration of leverage and not a
-contradiction.
+sessions saw different coefficients, and concentrated ownership is not proof of a
+contradiction between the peaks. What the ownership numbers above DO establish is
+answered where question 3 is applied, not waved past.
 
 ## 5. Six questions to ask of any pooled fit
 
@@ -199,37 +259,59 @@ Each is answerable from artefacts this pipeline already writes.
    actually moves. A parameter can sit in a channel and carry almost none of it,
    in which case constraining that channel buys nothing.
 
-Question 6 is the one most often skipped. For this dataset the answer is that the
-composite width is about two thirds a fixed natural width, and the light-shift
-term moves it by a few kilohertz at the bound, while the same term moves the line
-centre by a hundred and fifty kilohertz against an eighty-eight kilohertz
-scatter. The width is the insensitive moment because the shift distribution is
-one-sided, so the moment has to be matched to the symmetry of the perturbation.
+Question 6 is the one most often skipped. For this dataset: the fixed natural
+Lorentzian width is 3.49 MHz, from the 6S lifetime known to four parts in a
+thousand, against an observed composite width near 5.4 MHz, a linear ratio of
+about 0.65. That is a ratio of two defined widths and not an additive share,
+since the width of a convolution does not decompose additively, and its meaning
+here is only that most of the observed width is a constant no lever moves. The
+leverage comparison is then per observable: the light-shift term moves the
+composite width by about 4 kHz at the bound, against a per-block width scatter
+of 88 kHz, while the same term pulls the line centre by about 150 kHz, nearly
+forty times its width effect. The width is the insensitive moment because the
+shift distribution is one-sided, so the moment has to be matched to the symmetry
+of the perturbation. **And the sensitive moment is not available to this
+archive**, which the comparison would otherwise leave as an obvious question:
+the laser lock drifted, absolute centres are lost, and reading widths instead of
+centres is the founding premise of the drift-immune method. The comparison
+therefore says what a fixed-lock session buys, which is why the plan carries
+one.
 [The identifiability page](../wiki/identifiability.md) carries the general form.
 
 ## 6. What the record does about all of this
 
 **A converged construction is not automatically the better-supported one, and
 this dataset makes the point sharply.** The campaign alone is the construction
-whose profile passes agree, and it is also the construction most exposed to the
-one systematic that competes with the light shift. Granting the fit a free
-red-side wing, which is an alternative explanation of the same structure the light
-shift is read from, tightens the campaign-alone bound by a factor of about seven
-while tightening the pooled bound by about seven per cent. The campaign's
-red-side structure is almost entirely absorbable by that wing, so the campaign by
-itself can barely distinguish a light shift from an instrumental wing, and the
-extra sessions contribute structure the wing cannot absorb.
+whose profile passes agree, and it is also the construction whose reported upper
+limit is by far the more sensitive to the one alternative model that competes
+with the light shift. The perturbation is controlled, since the only change is
+whether the fit carries a free red-side wing, an alternative explanation of the
+same structure the light shift is read from. Granting it moves the campaign-alone
+upper limit by a factor of about 7.3 and the pooled upper limit by a factor of
+about 1.07, stated that way because the two movements are the same kind of ratio
+and should read as one. That is a statement about the reported limits under two
+stated constructions, not a measured systematic error, and it is a REASSIGNMENT
+rather than a tightening: the wing's thirteen units of chi-square say real
+red-side structure exists, and the fit reassigns that structure from the light
+shift to the wing without any current test adjudicating which explanation is
+true. If the structure is instrumental the conditional bound applies,
+and if it is physical then absorbing it biases the coefficient low, so the
+tighter number is not a prize. What the comparison establishes is that the
+campaign by itself can barely distinguish a light shift from an instrumental
+wing, while the extra sessions contribute structure the wing cannot absorb.
 
 Two desirable properties therefore point in opposite directions here. Adjudicating
 on either one alone would pick a different answer, which is the reason this chapter
 argues for a checklist rather than for a construction.
 
 The pooled bound stays the quoted construction, S₀(225 mW) below 0.26 MHz,
-because it is the one that has been run, checked and published, and because
-withdrawing it on the strength of a diagnostic would replace a documented number
-with none. The two open items are recorded rather than resolved: a campaign-alone
-refit is not in `results/`, and no per-session waist measurement exists. Both
-appear in [the plan](../PLAN.md) as work, and the second is the reason
+because it is the one that has been run and published, with its convergence under
+review in section 4, and because withdrawing it on the strength of a diagnostic
+would replace a documented number with none. The two open items are recorded rather than resolved: the
+campaign-alone refit is documented as a diagnostic in [its own
+note](../notes/campaign_only_stark_profile.md) and is not in `results/`, and no
+per-session waist measurement exists. Both appear in [the plan](../PLAN.md) as
+work, and the second is the reason
 [chapter 7](07_limitations-and-identifiability.md) calls the waist the largest
 open systematic.
 
