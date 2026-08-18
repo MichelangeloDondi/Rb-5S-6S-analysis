@@ -353,12 +353,70 @@ stabilisation. And at the dim end, where the floor is a third of the variance,
 either raise the signal or move to counting, which
 [photon counting](../wiki/photon-counting.md) sets out.
 
-**A Sobol analysis would answer a different question and is worth running.**
-`d3_sobol` already decomposes the projected collisional precision over its
-design inputs. The analogous decomposition for the acquisition, over scan
-rate, record length, repeats, collection efficiency and the temperature grid,
-has not been run, and it ranks knobs that interact rather than arguing them
-one at a time. It is queued rather than claimed.
+**The floor is not a dark floor, and that changes what to do about it.** The
+noise law's $a$ term is nominally the zero-signal noise, and across the power
+sweep it RISES with power on every line, by 4.1 to 9.9 times from 25 to 225
+mW. Two checks say what it is. It sits 6 to 485 times above the digitiser's
+own quantisation noise, so it is not the ADC. And its log-log exponent against
+power is **0.85 plus or minus 0.10**, where shot noise on a background linear
+in power would give 0.5 and shot noise on a background going as the square of
+the power would give 1.0. So the floor is **shot noise on a power-dependent
+optical background**, dominated at the top of the range by a background that
+scales as the square of the power, which is what a two-photon signal does.
+The Doppler pedestal is exactly such a background and is present in every
+trace by construction.
+
+Meanwhile $b$ is FLAT against power, with log-log exponents of -0.08 to +0.10
+across the four lines, which is the signature of shot noise proper: $b$ is a
+property of the detection chain rather than of the condition.
+
+**What follows for noise management, and it is not what the word suggests.**
+
+  * There is no electronic noise problem to solve. A quieter amplifier, a
+    cooler detector and a better-shielded cable address a term that is not
+    limiting anything.
+  * The baseline and wing regions are limited by the pedestal's own shot
+    noise, which is real two-photon signal at the same wavelength from the
+    same atoms, so no optical filter touches it. This is the term that limits
+    the wing and band-excess work specifically, not the line core.
+  * The line core is limited by its own shot noise, so the only lever there is
+    photons: solid angle, quantum efficiency, and time.
+  * The retro ratio would in principle trade pedestal against line, since the
+    narrow-to-pedestal area ratio is $4\rho/(1+\rho^2)$, but that ratio is
+    stationary at $\rho=1$ and the adopted 0.94 already sits within 0.2 per
+    cent of its maximum. **That lever is exhausted** and is worth stating so
+    nobody spends a session on it.
+
+### Which acquisition knob actually controls the precision
+
+The Sobol decomposition queued above has been run, over a forward model built
+only from committed quantities: the measured noise law with its floor scaling
+as the 0.85 power, a line height going as the square of the power and the
+collection efficiency, and a width uncertainty scaling as the linewidth over
+the peak signal-to-noise times the square root of the independent sample
+count.
+
+| input | first-order | total | reading |
+|---|---|---|---|
+| power | 0.514 | 0.648 | dominates |
+| points across the line | 0.151 | 0.217 | second |
+| collection efficiency | 0.101 | 0.160 | third |
+| repeats | 0.083 | 0.122 | fourth |
+| correlation length | 0.056 | 0.108 | least |
+
+First-order indices sum to 0.91, so about nine per cent of the variance is
+interaction and no input is a pure lever.
+
+**Power controls two thirds of it**, which is the arithmetic behind the
+recommendation to work at the top of the ladder and the reason the saturation
+and light-shift costs of doing so are the binding constraint rather than the
+noise. **Points across the line comes second and is nearly free**, since the
+instrument is already oversampled seventy times, so the whole of that index is
+available by choosing the span rather than by buying anything. Repeats and
+correlation length are the smallest indices, which is worth knowing because
+repeats are the most expensive thing on the list in session time and buy the
+least precision per hour, while remaining essential for a different reason:
+they are the only source of the within-cell error every fit here uses.
 
 ### Fast scans against slow scans, and why this is not the knob
 
