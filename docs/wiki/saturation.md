@@ -208,6 +208,9 @@ measured conservatism rather than as a correction.
 
 ## See also
 
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where
+  saturation is one of the mechanisms sharing the light shift's power law and
+  the reason the width channel cannot separate them.
 - [The beam waist](the-beam-waist.md) for the length whose fourth power this
   page's spot-size argument turns on.
 - [EOM sidebands](eom-sidebands.md) for the comb whose tooth amplitudes a

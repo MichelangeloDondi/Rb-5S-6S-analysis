@@ -233,6 +233,9 @@ retraction before the sweep needed to.
 
 ## See also
 
+- [The campaign page](../quantities/campaign.md), where the waist is the hub
+  of the coupled system and the beam profile is the cheapest entry into the
+  whole programme.
 - [The AC-Stark shift](ac-stark-shift.md) for the shift distribution this
   length's intensity feeds directly.
 - [Saturation](saturation.md) for the fourth-power waist dependence that sets

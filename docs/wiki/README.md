@@ -1,5 +1,17 @@
 # The wiki: one page per concept, method, effect or technique
 
+**The question.** What does a reader need to understand, concept by concept,
+to follow this experiment, and where does each concept live?
+**Takes.** Nothing. Every page stands alone and states its own prerequisites.
+**Gives.** Forty-one pages in seven clusters, the routes through them by what
+the reader came for, and the connection map between them.
+**Skip if.** You want the experiment's own record rather than the concepts,
+which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
+position, which is [the quantities layer](../quantities/README.md).
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 This folder is the repository's general-knowledge layer. It abstracts the
 reusable scientific concepts from the experiment without replacing the
 experiment record, and it is the shared conceptual interface between the
@@ -18,6 +30,9 @@ taxonomy rather than a route. These are routes.
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
 | **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
+| **evaluating the author's judgement**, not only the physics | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
+| **taking over this analysis**, the bus test | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
+| **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [docs/ADAPTING.md](../ADAPTING.md) |
 | **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
 | **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md) |
@@ -189,7 +204,8 @@ For experimental outcomes the order of authority is:
 the committed data and `results/*.csv`, then [RESULTS.md](../RESULTS.md),
 then the [methods chapters](../methods.md), then these pages, then the
 front-door orientation. A wiki page can never override an authoritative
-result. Dated preregistrations are prospective commitments and
+result, and the mechanism enforcing that is the guard suite documented in
+[tests/README.md](../../tests/README.md). Dated preregistrations are prospective commitments and
 [HISTORY.md](../HISTORY.md) is the historical record, and neither is edited
 for navigation. For general theory the authority is the cited literature and
 established mathematics: these pages explain, they are not sources, and a

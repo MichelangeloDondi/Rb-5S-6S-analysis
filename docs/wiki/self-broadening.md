@@ -161,6 +161,9 @@ for the provenance of a fourth point before quoting a bound that needed one.
 
 ## See also
 
+- [The self-broadening dossier](../quantities/self-broadening.md), where this
+  effect's literature ladder, the current bound per construction, and the
+  three levels of improvement live on one page.
 - [The Voigt profile](voigt-profile.md), the Lorentzian kernel this
   coefficient sets the width of.
 - [The joint fit](joint-fit.md), how sharing the laser width across lines

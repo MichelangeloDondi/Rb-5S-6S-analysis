@@ -39,10 +39,12 @@ across the 32 conditions is -0.90.
 makes a beat note against a second laser, a cavity ringdown, or a delayed
 self-heterodyne measurement viable, and the 2025 session had none of them.
 
-**The machinery.** Fit with the laser width pinned rather than free. Simulated
-at the measured noise law, the collisional width scatters by 0.0396 MHz across
-realisations when both are free and by 0.0235 MHz when the laser width is
-known, a factor of 1.7 against a per-condition error of 0.0965 MHz.
+**The machinery.** Fit with the laser width pinned rather than free.
+Simulated on a bright synthetic condition with signal-dependent noise
+(`scripts/run_width_pinning.py`), the collisional width scatters by
+0.0073 MHz across realisations when both are free and by 0.0021 MHz when the
+laser width is known, a factor of 3.4 in an idealised condition whose ratio,
+not whose absolutes, transfers to the real record.
 
 **Target outcome.** The collisional width becomes separately identifiable, and
 the bound of [Q-BETA-01](../BIG_PICTURE.md) becomes a measurement.

@@ -143,6 +143,8 @@ would have caught the 32 µm figure before the fix did.
 
 ## See also
 
+- [The campaign page](../quantities/campaign.md), where the transit kernel's
+  dependence on the waist makes one measurement serve two quantities.
 - [The Voigt profile](voigt-profile.md), the two-kernel convolution this
   transit kernel adds a third term to.
 - [The beam waist](the-beam-waist.md), the provenance of the waist this

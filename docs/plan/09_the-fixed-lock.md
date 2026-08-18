@@ -31,11 +31,14 @@ different quantities in this repository can be called the correlation between
 the two widths, namely this per-condition fit covariance, the global
 identifiability map's own correlation, and the ridge direction the profile
 likelihood traces, and they are different statistical objects with different
-values. A number of this kind is only meaningful with its construction named. Simulated at the measured noise law, fitting both
-widths free returns a collisional width scattering by 0.0396 MHz across
-realisations, and fitting with the laser width KNOWN returns 0.0235 MHz. That
-is a factor of 1.7, and against a committed error of 0.0965 MHz it is the
-difference between reporting a bound and reporting a measurement.
+values. A number of this kind is only meaningful with its construction named, and
+the pinning comparison now has a committed producer that names its own:
+`scripts/run_width_pinning.py`, on a bright synthetic condition with
+signal-dependent noise, returns a collisional-width scatter of 0.0073 MHz
+with both widths free and 0.0021 MHz with the laser width KNOWN, a factor of
+3.4. The factor, not the idealised absolutes, is the point: pinning the
+laser width is the difference between reporting a bound and reporting a
+measurement.
 
 SO THE HIGHEST-VALUE ITEM IN THE CAMPAIGN IS AN INDEPENDENT MEASUREMENT OF THE
 LASER WIDTH. A beat note against a second laser, a cavity ringdown, or a

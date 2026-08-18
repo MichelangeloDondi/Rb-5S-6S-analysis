@@ -2,8 +2,9 @@
 
 ## 5. What new vapour-cell measurements would add
 
-A cell session with a stable lock (the laser's locking has since been
-improved) would convert the bounds into the first measured environmental
+A cell session with a stable lock (the cavity lock was repaired on
+2026-08-16, with minutes-scale stability still to be measured at the bench)
+would convert the bounds into the first measured environmental
 coefficients for this line. None of it is scheduled or agreed. Every item
 below opens with the same four things, so that the quantifying lives in one place:
 what it would convert, what it would cost, how it could come back empty, and
@@ -24,7 +25,7 @@ physics:
 2. **Line centre vs power (the "pull").**
    Converts the AC-Stark bound into the first measured light shift on this
    line, for one morning of randomized power cycling. It could come back empty
-   if the lock will not hold minutes-scale stability. Runs as
+   if the repaired lock does not hold minutes-scale stability, which the plan's stage-0 go/no-go measures before science shots are spent. Runs as
    [`PLAN.md`](../PLAN.md) §6 item 1.
 
    With centres alive, the first-order light shift (−⅔S₀, the strong handle)

@@ -91,13 +91,16 @@ separated by measuring one member independently, the gain is concrete and
 worth computing before deciding whether the measurement is affordable.
 
 In this repository the collisional and laser widths are the degenerate pair.
-Simulated at the measured noise law, a fit with both free recovers the
-collisional width with a scatter of 0.0396 MHz across realisations, and the
-same fit with the laser width KNOWN recovers it with 0.0235 MHz, a factor of
-1.7 with the bias roughly halved as well. Against a committed uncertainty of
-0.0965 MHz that is the difference between a bound and a measurement, which is
-why an independent laser diagnostic is worth more to this experiment than any
-improvement to the fitting.
+Simulated on a bright synthetic condition with signal-dependent noise
+(`python scripts/run_width_pinning.py`, the construction stated in its
+docstring), a fit with both widths free recovers the collisional width with a
+scatter of 0.0073 MHz across realisations, and the same fit with the laser
+width KNOWN recovers it with 0.0021 MHz, a factor of 3.4. The absolute
+scatters belong to that idealised condition, where the real record adds block
+drift and gain scatter on top, and the ratio is the transferable part: an
+independent laser diagnostic is worth more to this experiment than any
+improvement to the fitting, by a factor the simulation now states with its
+construction attached.
 
 THE GENERAL SHAPE OF THAT ARGUMENT is worth more than the number. When two
 parameters trade, the question is never only how to fit better. It is which
@@ -238,6 +241,10 @@ rather than after.
 
 ## See also
 
+- The quantity dossiers that apply this page's argument end to end,
+  [the AC-Stark light shift](../quantities/ac-stark-light-shift.md) and
+  [collisional self-broadening](../quantities/self-broadening.md), each with
+  its limiting degeneracy named and the measurement that would break it.
 - [The profile likelihood](profile-likelihood.md), the tool that maps a
   degenerate valley directly instead of approximating it by an ellipse.
 - [Injection-recovery testing](injection-recovery.md), for whether an

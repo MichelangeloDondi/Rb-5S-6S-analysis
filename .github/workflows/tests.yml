@@ -142,9 +142,29 @@ jobs:
       - name: pin declared minimum dependencies
         if: matrix.deps == 'minimum'
         run: pip install "numpy==2.5.0" "scipy==1.16.0" "pandas==2.2.3" "matplotlib==3.9.4"
-      # FRESHNESS_CHECK on the latest leg only: the committed-CSV-vs-fresh-run
-      # check takes ~4 min and its answer cannot differ between interpreters,
-      # so running it on both costs ~4 minutes of Actions time for nothing.
+      # FRESHNESS_CHECK on BOTH legs, and the two verdicts mean different
+      # things. The pinned leg tests RECORD INTEGRITY, the latest leg is an
+      # ENVIRONMENT-DRIFT MONITOR, non-fatal below. The old placement rested
+      # on the claim that the answer cannot differ between interpreters, a
+      # premise measured false on 2026-08-18 (the legs differ in dependencies
+      # and platform, and the first real run diverged by 62 per cent in one
+      # cell while the pinned leg matched every cell). In THIS repository the
+      # check skips either way, stated rather than silent, because the raw
+      # traces its producers need are not distributed here: the check can
+      # only run in the private tree, which is why its CI matters there.
       - run: pytest -q --runslow   # CI runs the full battery incl. slow closure tests
         env:
-          FRESHNESS_CHECK: ${{ (matrix.deps == 'latest') && '1' || '0' }}
+          # Fatal only where it tests record integrity, the pinned leg.
+          FRESHNESS_CHECK: ${{ (matrix.deps == 'minimum') && '1' || '0' }}
+      # The drift monitor: same check, latest deps, NON-FATAL. A red here
+      # with a green pinned leg is an environment finding, not a record
+      # defect, and it must not redden a release. Skips without raw traces.
+      - name: freshness under latest deps (environment-drift monitor)
+        if: matrix.deps == 'latest'
+        continue-on-error: true
+        run: |
+          if [ -d data_raw/p_sweep ]; then
+            python scripts/verify_results_fresh.py
+          else
+            echo "no raw traces in this checkout: monitor skipped, and this skip is stated rather than silent"
+          fi

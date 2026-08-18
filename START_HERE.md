@@ -105,7 +105,7 @@ Two things are worth knowing before you wonder why something fails:
 The layout, in one sentence each. `rb5s6s/` is the library, one module per
 analysis stage, pure physics with no disk access except in six named modules.
 `scripts/run_*.py` are the drivers, mostly one per stage, writing into
-`results/`. `tests/` holds the closure tests, and each one states the answer it
+`results/`. [`tests/`](tests/README.md) holds the closure tests, and each one states the answer it
 injects before checking what the module recovers, which makes them the second
 half of the documentation.
 

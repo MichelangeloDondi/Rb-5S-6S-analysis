@@ -33,7 +33,10 @@ establish, and the one this session exists to fix, is the missing outer loop:
 no lock against an absolute reference was ever closed, and the cavity set point
 was moved by hand whenever drift walked the line out of the window, which is
 why the dataset's centres carry no metrological meaning. The instrument for closing
-that loop on this system is the wavemeter link.
+that loop on this system is the wavemeter link. The cavity lock itself was
+repaired on 2026-08-16 and its state reconfirmed on 2026-08-18, so this stage
+now tests an existing lock rather than waits on a repair, and the go/no-go
+below is the stability measurement that licenses spending science shots on it.
 **Needs.** The etalon and reference-cavity locks engaged and past the thermal
 transient of §7h, the wavemeter link engaged, and a spare channel carrying the
 lock state. No new hardware (`APPARATUS.md` §1.1). **Shots.** No science shots.

@@ -152,3 +152,26 @@ hiding them behind a reason that did not apply.
 session of 17 July 2025 was named 2025-07-18 in the joint fit's docstring, in
 the same sentence that named its `20250717` directory. `GLOSSARY.md` and
 `DATA.md` both say 17 July and are the canonical naming.
+
+## The 2026-08-18 corrections
+
+**The width-pinning comparison had no producer, and its numbers did not
+survive getting one.** Four documents quoted the same pair, a collisional
+width recovered with a scatter of 0.0396 MHz with both widths free against
+0.0235 MHz with the laser width known, a factor of 1.7, attributed to a
+simulation at the measured noise law. No committed script produced those
+numbers, and the construction behind them was never recorded.
+`scripts/run_width_pinning.py` now exists as the committed producer, states
+its construction in its docstring, and measures 0.0073 against 0.0021 MHz, a
+factor of 3.4, on a bright synthetic condition. The retired pair is not known
+to be wrong, it is unreproducible, which for this record is the same
+disqualification. All four sites now quote the producer's numbers with the
+construction named, and the qualitative conclusion, that an independent
+laser-width measurement is worth more than any fitting improvement, is
+unchanged and strengthened.
+
+**Two plan chapters quoted a superseded lever collapse.** The hierarchical
+beta_self sensitivity was stated as 0.036 to 0.014 in `plan/05` and
+`plan/06`, unqualified, where the record's current values are 0.0534 to
+0.0198 for 85Rb and 0.0219 for 87Rb. The old pair remains in this file's
+retired-values table, which is where it belongs.

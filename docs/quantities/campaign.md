@@ -120,7 +120,7 @@ bench confirmation is not evidence of feasibility.
 | requirement | in the record | needs bench confirmation |
 |---|---|---|
 | beam profiler in the 993 nm path | not documented in this campaign | yes |
-| cavity lock | proposed in [plan 9](../plan/09_the-fixed-lock.md) and [plan 10](../plan/10_the-fixed-lock-instrument.md), reported available | yes, its stability over a ladder |
+| cavity lock | repaired 2026-08-16, acquisition design in [plan 9](../plan/09_the-fixed-lock.md) and [plan 10](../plan/10_the-fixed-lock-instrument.md) | yes, its stability over a ladder, the stage-0 go/no-go |
 | EOM with variable modulation depth | used as the frequency ruler | yes, the accessible depth range |
 | four hyperfine peaks in one scan | the four lines are the campaign's own | yes, whether one span covers all four |
 | temperatures to 170 C | the ladder reached 130 C | yes, the oven's ceiling and gradient |

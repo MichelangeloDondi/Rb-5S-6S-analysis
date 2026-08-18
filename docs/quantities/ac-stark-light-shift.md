@@ -16,9 +16,12 @@ constructions may be compared with each other, which is
 [chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md).
 
 **Where it stands.** A bound, not a measurement, in every construction the
-record carries. The tightest committed value is
-$\kappa \lt 0.944$ MHz/W over the full archive, and the quoted joint construction
-gives $\kappa \lt 1.147$ MHz/W.
+record carries, and the constructions span $\kappa \lt 0.944$ to
+$\kappa \lt 2.811$ MHz/W depending on which data and which channel are used.
+No single number is quotable without its construction, and whether the joint
+three-session construction reproduces remains an open question, so
+section 3's table with its status column is the citable object, not any one
+row of it.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
 > every term and symbol. The physics of the effect is
@@ -149,10 +152,11 @@ is nevertheless the weakest bound in the table, because the laser lock drifted
 during the campaign and absolute centres are lost. **The experiment measured
 the insensitive moment well and the sensitive moment not at all.**
 
-**Model: the geometry is adopted rather than measured.** The waist of 64 µm
-comes from one profiler measurement on the predecessor laser of this apparatus
-lineage, not on the campaign's own beam, and the retro ratio of 0.94 is an
-assumption. Both enter the prediction, and the bound itself moves with the
+**Model: the geometry is adopted rather than measured.** The waist of 64 µm,
+with an adopted band of 62 to 68 µm, comes from one profiler measurement on
+the predecessor laser of this apparatus lineage, not on the campaign's own
+beam, and no error bar on the campaign's own waist exists to be quoted. The
+retro ratio of 0.94 is an assumption. Both enter the prediction, and the bound itself moves with the
 assumed waist, from 1.050 to 1.191 MHz/W across 56 to 72 µm. This is the
 largest open systematic in the whole programme, and it is
 [big picture chapter 5](../big_picture/05_next-vapour-cell.md)'s first item.

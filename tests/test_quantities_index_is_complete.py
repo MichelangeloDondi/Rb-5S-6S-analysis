@@ -16,6 +16,7 @@ Counts are printed on every run rather than only on failure, because a guard
 that finds its subject by pattern has to show what it found.
 """
 from pathlib import Path
+import pathlib
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,3 +187,44 @@ def test_every_quoted_number_matches_its_committed_cell(capsys):
         print(f"  quantities: {len(QUOTED)} quoted numbers re-derived from "
               f"their committed cells")
     assert not bad, "\n  ".join([""] + bad)
+
+
+def test_top_level_docs_are_reachable_from_an_entry_point():
+    """Every top-level doc is the target of a link from somewhere tracked.
+
+    tests/README.md documented the entire guard system for months while zero
+    tracked files linked to it, so the one page explaining how the repository
+    defends its claims was invisible from every entry point. The wiki and
+    results indexes have completeness guards, and the top level had none.
+    This closes the class: every tracked top-level markdown file under docs/
+    plus tests/README.md must be the TARGET of at least one markdown link
+    from some other tracked file.
+    """
+    import subprocess
+    files = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT,
+                           capture_output=True, text=True).stdout.split()
+    targets = {f for f in files
+               if (f.startswith("docs/") and f.count("/") == 1)
+               or f == "tests/README.md"}
+    linked = set()
+    for f in files:
+        body = (ROOT / f).read_text(encoding="utf-8", errors="replace")
+        base = pathlib.PurePosixPath(f).parent
+        for m in re.finditer(r"\]\(([^)#\s]+\.md)", body):
+            tgt = m.group(1)
+            if tgt.startswith(("http://", "https://")):
+                continue
+            resolved = pathlib.PurePosixPath(
+                *(base / tgt).parts).as_posix()
+            parts = []
+            for seg in pathlib.PurePosixPath(resolved).parts:
+                if seg == "..":
+                    if parts:
+                        parts.pop()
+                elif seg != ".":
+                    parts.append(seg)
+            linked.add("/".join(parts))
+    orphans = sorted(t for t in targets if t not in linked and t != "docs/README.md")
+    assert not orphans, (
+        "these top-level documents exist and no tracked file links to them, "
+        "so no reader path reaches them:\n  " + "\n  ".join(orphans))

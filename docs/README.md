@@ -33,6 +33,8 @@ documentation is held to, mechanically.
 Reference layers: [GLOSSARY.md](GLOSSARY.md) for every term and symbol,
 [wiki/](wiki/README.md) for one page per concept, method, effect and
 technique, with the theory, its use here and its failure modes,
+[tests/README.md](../tests/README.md) for how every result is held to what
+it claims, guard by guard, and
 [REPRODUCING.md](REPRODUCING.md) for what runs from a clone and what needs
 data that is not in it,
 [LITERATURE.md](LITERATURE.md) with its

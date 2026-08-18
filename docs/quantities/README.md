@@ -45,9 +45,10 @@ the difference between a quantity layer and one page per variable.
 ## The unit is a quantity AND a construction
 
 A number here is never quoted as belonging to a symbol alone. The AC-Stark
-coefficient has a pooled three-session bound, a campaign-only bound, a
-wing-marginalised bound and a leave-one-peak-out bound, and these differ by up
-to a factor of two with different convergence states. Each dossier's results
+coefficient alone has seven committed constructions, from the full archive
+through the pooled three-session fit to the width and centre channels taken
+separately, and they differ by up to a factor of three with different
+convergence states. Each dossier's results
 section is therefore one row per construction, carrying the estimator, the data
 subset, the status recorded in the committed artefact, and the epistemic class.
 

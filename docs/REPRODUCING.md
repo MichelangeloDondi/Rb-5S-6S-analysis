@@ -21,6 +21,19 @@ the printed digit.
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md)
 gives the versions, the per-column sizes and the reasoning.
 
+One measured incident calibrates how seriously to take that dependence. On
+2026-08-18 the freshness comparison ran in three environments on the same
+tree: under the pinned floor dependencies every committed CSV matched its
+producer, under a local numpy 2.5.2 and scipy 1.18.0 every CSV matched again,
+and on a hosted runner resolving the newest releases two cells drifted, a
+chi-square by 5.4 per cent and the model-form probe's `full_exp` by 62 per
+cent, the latter beyond even its own widened per-column tolerance. The record
+was unchanged in all three runs. The lesson for a reproducer is that
+`full_exp` is the tree's most environment-fragile quantity, that a mismatch
+under moving dependencies is a property of the environment until the pinned
+comparison disagrees, and that the pinned comparison is the one that speaks
+for the record.
+
 The runner's stages write 31 of the 46 committed CSVs. The other twelve each
 have their own script, held out for one of two reasons.
 

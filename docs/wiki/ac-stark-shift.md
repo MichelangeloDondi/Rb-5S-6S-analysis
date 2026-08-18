@@ -156,6 +156,9 @@ re-divided the next time the bound tightens.
 
 ## See also
 
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where the
+  bound per construction, the literature benchmark and the recipes that would
+  convert the bound into a measurement live on one page.
 - [The beam waist](the-beam-waist.md) for the length that converts power into
   the intensity this shift responds to.
 - [Saturation](saturation.md) for the boundary where the underlying I-squared
