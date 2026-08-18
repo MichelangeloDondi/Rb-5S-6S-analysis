@@ -144,7 +144,8 @@ this repository the light-shift term moves the composite width by a few kilohert
 at its bound while moving the line centre by a hundred and fifty kilohertz
 against an eighty-eight kilohertz block scatter, a factor of forty in the same
 fit. The fixed natural linewidth alone, 3.493 ± 0.013 MHz on the transition axis
-from the measured 6S lifetime of 45.57 ± 0.17 ns, is about 0.65 of the observed
+from the measured 6S lifetime of 45.57 ± 0.17 ns
+([Gomez 2005](../lit/gomez2005.md)), is about 0.65 of the observed
 5.4 MHz composite. That is a ratio of two
 defined widths rather than an additive share, since the width of a convolution
 does not decompose additively, and it says only that most of the observed width

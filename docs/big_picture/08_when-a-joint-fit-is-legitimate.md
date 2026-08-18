@@ -292,7 +292,8 @@ Each is answerable from artefacts this pipeline already writes.
 
 Question 6 is the one most often skipped. For this dataset: the fixed natural
 Lorentzian width is 3.493 ± 0.013 MHz on the transition axis, from the measured
-6S lifetime of 45.57 ± 0.17 ns, against an observed composite width near
+6S lifetime of 45.57 ± 0.17 ns ([Gomez 2005](../lit/gomez2005.md)), against an
+observed composite width near
 5.4 MHz, a linear ratio of about 0.65. That is a ratio of two defined widths and not an additive share,
 since the width of a convolution does not decompose additively, and its meaning
 here is only that most of the observed width is a constant no lever moves. The

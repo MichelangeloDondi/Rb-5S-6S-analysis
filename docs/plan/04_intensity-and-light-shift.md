@@ -315,6 +315,25 @@ noise floor when $S_0$ exceeds about 2.5 MHz, and the 16 micron configuration's
 predicted 5.56 MHz clears that threshold by design, which is why the skew
 channel is dead in this archive and central to that proposal.
 
+**Two ways of spending statistics on the skew were considered and neither
+rescues the channel here.** Averaging over the repeats is the first, and the
+pooled regression above already takes it: a hundred traces buy a factor of ten
+on the skew's standard error, which is the whole of what independent repeats can
+give. Against a shortfall near one thousand between the resolved per-trace
+skewness and the ramp's prediction, that leaves a factor of about one hundred
+still to find, so the arithmetic settles the question rather than leaving it
+open. Smoothing the residuals before taking the third cumulant is the second,
+and it does not work for a reason worth stating, because the same reasoning
+recurs whenever a higher moment looks noisy. A moving average is a convolution,
+and a convolution acts on the signal as well as on the noise. The third cumulant
+is not linear in the data, so the smoothed residual's third cumulant is not an
+estimate of the unsmoothed one with a smaller error, it is an estimate of a
+different quantity. What the kernel removes from the variance it also removes
+from the skew it was meant to measure, and the correlation it introduces between
+neighbouring samples breaks the independence the error bar was computed under.
+The channel's limit is set by the size of the effect against the noise floor,
+which no reweighting of the same samples moves.
+
 So the ordering the plan needs is explicit: **a positive detection of $\kappa$
 comes first, and the per-line lever is spendable only afterwards.** The 16 µm
 row above satisfies that on its own, since $S_0$ there is 5.56 MHz against a
@@ -369,8 +388,26 @@ component in the production model is pinned against power already, so that
 structure has nowhere to go and is sitting in the residual. The test frees ONE
 component at a time per condition with the other two held at their physical
 values, since all three at once is degenerate at a condition number of 390, and
-the three kernels have different shapes so the comparison identifies the missing
-term as well as locating it.
+the three kernels have different shapes so the comparison was expected to
+identify the missing term as well as locate it.
+
+**That test has since run as a diagnostic, and the expectation in the previous
+sentence did not hold.** Freeing each component in turn across the campaign's
+hundred traces, all three absorb the concavity at the same chi-square, 0.355
+against 0.357 against 0.360, and none is singled out. Read as a curvature of the
+TOTAL width, so that a Gaussian laser width, a two-sided-exponential transit
+width and a Lorentzian collisional width become comparable, the three land
+between minus 2.6 and minus 4.0 MHz per watt squared at about two standard
+deviations, where the model-free summary statistic gives about minus 11 at four.
+Two things follow, and the second was not anticipated. The kernels are
+interchangeable against this structure rather than distinguishable by shape, so
+the width degeneracy already recorded at condition number 390 governs the power
+channel too. And the two constructions disagree about the SIZE of the concavity
+by a factor near three, which a per-trace free baseline slope could produce and
+which this diagnostic cannot settle. Breaking the first needs a channel where the
+kernels are not interchangeable, which is what the waist measurement below and an
+independent laser-width calibration supply. The diagnostic promotes no number and
+the record's own concavity statement is unchanged.
 
 **Second, and only afterwards, free the transit reference so the cusp measures
 the waist.** The transit kernel goes as the square root of temperature divided by
