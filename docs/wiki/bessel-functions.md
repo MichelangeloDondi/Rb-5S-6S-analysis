@@ -139,4 +139,4 @@ a reader.
 
 ---
 
-[← Designing an acquisition](designing-an-acquisition.md) · *Driving, modulating and detecting, 8 of 9* · [Blackbody radiation →](blackbody-radiation.md)
+[← Designing an acquisition](designing-an-acquisition.md) · *Driving, modulating and detecting, 6 of 7* · [Blackbody radiation →](blackbody-radiation.md)

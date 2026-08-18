@@ -263,4 +263,4 @@ after, would have caught the factor of four before it reached the plan.
 
 ---
 
-[← Digitisation and dynamic range](digitisation-and-dynamic-range.md) · *Driving, modulating and detecting, 7 of 9* · [Bessel functions →](bessel-functions.md)
+[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 5 of 7* · [Bessel functions →](bessel-functions.md)

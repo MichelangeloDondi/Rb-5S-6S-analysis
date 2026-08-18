@@ -212,4 +212,4 @@ a reader.
 
 ---
 
-[← EOM sidebands](eom-sidebands.md) · *Driving, modulating and detecting, 2 of 9* · [The wavemeter and the frequency axis →](the-wavemeter-and-the-frequency-axis.md)
+[← EOM sidebands](eom-sidebands.md) · *Driving, modulating and detecting, 2 of 7* · [The wavemeter and the frequency axis →](the-wavemeter-and-the-frequency-axis.md)

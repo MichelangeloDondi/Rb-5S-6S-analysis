@@ -35,6 +35,7 @@ taxonomy rather than a route. These are routes.
 | **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [docs/ADAPTING.md](../ADAPTING.md) |
 | **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
+| **working out what limits a measurement, and what would help** | [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
 | **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
 **Every page carries the same four lines at the top**, so the decision to read
@@ -81,8 +82,8 @@ how the line is driven, what shape it takes, and what moves or widens it.
 ## C. Driving, modulating and detecting
 
 *How is the measurement actually driven and read?* The instrument layer: what
-is stamped onto the light, how the axis is established, how fast the line may
-be swept, and how the photons are counted.
+is stamped onto the light, how the axis is established, and how fast the line
+may be swept. What limits the reading once the photons arrive is cluster H.
 
 | page | type | in one line |
 |---|---|---|
@@ -90,8 +91,6 @@ be swept, and how the photons are counted.
 | [The two-photon comb](the-two-photon-comb.md) | technique | the same comb seen by a two-photon transition, where the carrier nulls somewhere else |
 | [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) | technique | where a frequency axis comes from, and how a nonlinear scan is calibrated rather than trusted |
 | [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) | physical effect | sweeping fast widens the line and forges the asymmetry the experiment reads |
-| [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
-| [Digitisation and dynamic range](digitisation-and-dynamic-range.md) | technique | how many bits a measurement needs, and why a range changed mid-sweep is several measurements |
 | [Designing an acquisition](designing-an-acquisition.md) | method | span, resolution and record length are one decision, not three |
 | [Bessel functions](bessel-functions.md) | concept, supporting | the amplitudes every phase-modulation problem is written in |
 | [Blackbody radiation](blackbody-radiation.md) | physical effect | the cell's own thermal glow, and how to tell when it matters |
@@ -152,6 +151,21 @@ wrong.
 Bessel functions and the Allan deviation are supporting topics, here because
 the design of the next measurement session leans on them rather than because
 the committed analysis does.
+
+## H. Noise and its management
+
+*What limits the measurement once the photons arrive, and what would actually
+help?* The layer between the detector and the fit: how large each sample's
+uncertainty is, how many of the samples are independent, which part of the
+noise is irreducible, and the two instrument choices that decide the rest.
+
+| page | kind | one line |
+|---|---|---|
+| [The noise law](the-noise-law.md) | method | the measured variance against signal, which supplies every fit's weights |
+| [Shot noise and technical noise](shot-noise-and-technical-noise.md) | concept | the scaling test that says which one you have, and what each implies about what to fix |
+| [Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md) | method | how many independent measurements a dataset really holds, and where an uncorrected count inflates a result |
+| [Digitisation and dynamic range](digitisation-and-dynamic-range.md) | technique | how many bits a measurement needs, and why a range changed mid-sweep is several measurements |
+| [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
 
 ## How the pages connect
 

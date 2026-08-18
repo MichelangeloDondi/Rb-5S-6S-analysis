@@ -162,4 +162,4 @@ a reader.
 
 ---
 
-[← Photon counting](photon-counting.md) · *Driving, modulating and detecting, 6 of 9* · [Designing an acquisition →](designing-an-acquisition.md)
+[← Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md) · *Noise and its management, 4 of 5* · [Photon counting →](photon-counting.md)

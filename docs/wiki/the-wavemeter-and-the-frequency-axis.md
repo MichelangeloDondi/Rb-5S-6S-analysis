@@ -227,4 +227,4 @@ misleading a reader.
 
 ---
 
-[← The two-photon comb](the-two-photon-comb.md) · *Driving, modulating and detecting, 3 of 9* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)
+[← The two-photon comb](the-two-photon-comb.md) · *Driving, modulating and detecting, 3 of 7* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)

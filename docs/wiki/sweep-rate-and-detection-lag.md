@@ -258,4 +258,4 @@ a reader.
 
 ---
 
-[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 9* · [Photon counting →](photon-counting.md)
+[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 7* · [Designing an acquisition →](designing-an-acquisition.md)

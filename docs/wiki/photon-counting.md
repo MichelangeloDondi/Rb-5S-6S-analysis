@@ -257,4 +257,4 @@ once.
 
 ---
 
-[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 5 of 9* · [Digitisation and dynamic range →](digitisation-and-dynamic-range.md)
+[← Digitisation and dynamic range](digitisation-and-dynamic-range.md) · *Noise and its management, 5 of 5* · [wiki index →](README.md)

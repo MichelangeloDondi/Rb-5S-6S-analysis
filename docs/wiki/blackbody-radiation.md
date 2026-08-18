@@ -158,4 +158,4 @@ a reader.
 
 ---
 
-[← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 9 of 9* · [wiki index →](README.md)
+[← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 7 of 7* · [wiki index →](README.md)
