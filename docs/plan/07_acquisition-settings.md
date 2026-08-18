@@ -260,6 +260,80 @@ description of the f = 18 mm lens at about 50 mm from the PMT implies
 M = 1.78 and Z_c = 3.4 mm, outside that bracket. Two ruler readings replace
 an estimate that every ramp-geometry moment depends on.
 
+### The vertical range is a physics setting, measured 2026-08-18
+
+Everything above concerns the horizontal axis and the record length. The
+vertical axis turns out to carry a systematic that nothing in the record had
+looked for, and it was found by reading the quantisation step of the stored
+samples rather than by any documented setting.
+
+**Both 2025 sessions changed the vertical range at every rung of every power
+ladder.** In the 2025-07-04 rehearsal the quantisation step grows by a factor
+of 35 across the ladder while 172 to 210 digitiser steps are used per cell, so
+the range tracked the signal. In the campaign the step ratio across a ladder
+is 48 on 993.4121 nm, 112 on 993.4207 nm, 191 on 993.4154 nm and **596 on
+993.4192 nm**, against a signal that spans only about 80, and the digitiser
+steps actually used run from 486 to 3583.
+
+**A power ladder acquired that way is not one measurement at five powers. It
+is five measurements on five different instrument ranges**, and the fitted
+power-law exponent inherits whatever range-to-range gain and offset error the
+oscilloscope carries. Because each hyperfine line's brightness decides which
+ranges it traverses, the resulting bias is ordered by brightness, which is
+exactly the pattern
+[the amplitude departure note](../notes/amplitude_departure_from_p2.md)
+measures and could not otherwise explain.
+
+**What this requires of the next session, in order of preference.**
+
+1. **Hold ONE vertical range across a ladder.** Whether that is possible is
+   arithmetic rather than taste. The signal goes as the square of the power,
+   so a 25 to 225 mW ladder spans a factor of 81. With the brightest rung at
+   80 per cent of full scale, an 8-bit digitiser leaves the dimmest rung
+   **2.5 steps** and a 12-bit one leaves **40**, against the roughly 30 a rung
+   needs before quantisation noise falls under the shot noise the record
+   already fits. **So an 8-bit acquisition cannot hold one range across this
+   ladder and a 12-bit one can**, which is a reason to prefer the
+   higher-resolution LeCroy acquisition that is now available, stated as an
+   experimental requirement rather than a convenience.
+2. **If the range must change, bracket it.** Wherever the range changes,
+   acquire one rung at BOTH ranges. The ratio of two measurements of the same
+   physical signal measures the range-to-range gain ratio directly, which
+   converts an uncontrolled systematic into a measured calibration for about
+   80 extra traces against the campaign's own 100.
+3. **Never autoscale between the repeats of one cell.** Repeats measure the
+   scatter, and a range change inside a cell puts an instrument step into it.
+4. **Record the vertical scale, offset, coupling and any high-resolution or
+   averaging mode with every trace.** Today's analysis had to recover the
+   range from the quantisation step because none of it was stored, and the
+   only gain record anywhere in the programme is one token in one session's
+   filenames.
+
+### The ladder order, and the one change that costs nothing
+
+In the campaign the power descends with time, so every quantity measured
+against power is also measured against elapsed time and no analysis can
+separate them. That single choice is why the concave width against power
+cannot be established, and it can be removed for free.
+
+**Randomise or interleave the rung order within each ladder, and record the
+seed.** Run at least one ladder in each direction per session, so that the
+direction test exists by design. The archive shows what it is worth: the
+rehearsal's alternating directions, run that way by convenience rather than
+by intent, are the only reason the amplitude departure could be shown to be
+invariant under acquisition order.
+
+### Four peaks in one trace, which the current bench can do
+
+The repaired cavity lock and the LeCroy's ability to hold the full four-peak
+landscape in a single acquisition, with the EOM on and off, change two things
+at once. The known hyperfine splittings become an in-trace frequency ruler, so
+every trace carries its own absolute anchor and its own nonlinearity check
+without needing RF-off traces. And **all four lines are then digitised on ONE
+range in ONE acquisition**, which is the cheapest available test of the
+brightness-ordered departure: if its peak ordering vanishes when the four
+lines share a range, the detection explanation is confirmed outright.
+
 ---
 
 *[Session sizing and spending rules](06_sizing-and-spending-rules.md) · [The acquisition record](08_the-acquisition-record.md)*

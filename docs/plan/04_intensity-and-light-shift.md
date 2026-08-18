@@ -413,10 +413,21 @@ fluctuations cancel before averaging, puts the curvature of the difference at
 about minus 4.7 with an uncertainty near 2.1, a little over two standard
 deviations, where the naive comparison of the two published numbers had
 suggested nearly minus 7. The direction survives and the size does not reach
-the threshold this record would need to act on it. What remains is a
-model-form question, whether the composite model's width and the line's own
-half-max width track each other across the power lever, and the model ladder
-rather than any further slicing of this fit is what settles it. Breaking the
+the threshold this record would need to act on it.
+
+**And on 2026-08-18 the concavity itself was withdrawn to provisional, which
+settles the question above.** The archive holds two further power ladders
+outside the frozen record, and tested against them the concavity does not
+reproduce: it reaches 4.8 standard deviations only on within-cell errors and
+1.4 under the between-block treatment, the pilot's independent non-monotone
+ladder gives the same sign at 1.2, and in the rehearsal a width trend appears
+on the descending ladder while both ascending ladders show none, which is
+order dependence rather than power dependence. Section C3a's original reading,
+that this variation is block scatter, stands. The estimator disagreement above
+therefore concerns the size of an effect whose existence is not established,
+the thermal-lens hypothesis is demoted accordingly, and the measurement that
+would settle both is an INTERLEAVED power ladder rather than any further
+analysis of a monotone one. Breaking the
 first finding needs a channel where the kernels are not interchangeable, which
 is what the waist measurement below and an independent laser-width calibration
 supply. The diagnostics promote no number and the record's own concavity

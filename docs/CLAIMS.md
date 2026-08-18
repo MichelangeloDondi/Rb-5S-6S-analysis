@@ -130,11 +130,19 @@ systematic as fig1.*
 
 - No power trend in the linewidth at fixed temperature, against 3-8%
   between-block scatter.
-- The two-photon amplitude laws hold within stated exceptions: peak
-  amplitude scales as P² at fixed density (log-log slopes 1.83-2.12,
-  the one low slope unresolved between a fitting bias at low signal and
-  real saturation)
-  and linearly with density at fixed power (slopes 0.85-1.02).
+- The two-photon amplitude scales approximately as P² at fixed density
+  (log-log slopes 1.83-2.12) and linearly with density at fixed power
+  (slopes 0.85-1.02). **The power law is NOT claimed exactly: corrected
+  2026-08-18.** Three of the four campaign slopes exclude 2 under a block
+  bootstrap that respects this sweep's power-time collinearity, the departure
+  replicates in an independent session whose ladders ran in alternating
+  directions, and it is invariant under that direction, so it is not an
+  artefact of acquisition order. Its ordering across lines follows their
+  brightness rather than their hyperfine branching, which makes it a
+  detection signature rather than a property of the transition, and its
+  absolute level shifts between sessions with no attributed cause. What is
+  claimed is that the amplitude follows the two-photon rate law to within a
+  few per cent in the exponent, not that it follows it exactly.
 
 **Bounded rather than assumed** (ENVELOPE, computed 2026-08-10):
 

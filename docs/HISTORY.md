@@ -175,3 +175,49 @@ beta_self sensitivity was stated as 0.036 to 0.014 in `plan/05` and
 `plan/06`, unqualified, where the record's current values are 0.0534 to
 0.0198 for 85Rb and 0.0219 for 87Rb. The old pair remains in this file's
 retired-values table, which is where it belongs.
+
+## The amplitude power law was described rather than tested, 2026-08-18
+
+The record stated that the two-photon amplitude scales as the square of the
+power, supported by log-log slopes of 1.83 to 2.12 across the four hyperfine
+lines, and flagged only the low line as unresolved. The four slopes carried
+errors throughout and were never compared with 2. Tested, under a block
+bootstrap that respects this sweep's power-time collinearity, three of the four
+exclude 2, one from below and two from above, and the fourth becomes consistent
+with 2 only once the between-block term replaces the within-cell error. No
+committed number changes and no bound moves, since no published result rests on
+the amplitude's exponent. What changes is the claim: the amplitude follows the
+two-photon rate law approximately and not exactly, the departures are per-peak
+and of both signs, and no inventoried mechanism predicts that.
+
+The general defect is worth more than this instance. A fitted parameter was
+quoted with its uncertainty and then read qualitatively as a band, and the
+arithmetic that would have tested it against its own null was never done.
+`docs/notes/amplitude_departure_from_p2.md` carries the construction.
+
+**The same day found the archive's own control for it.** Two further power
+ladders exist outside the frozen record, and the 2025-07-04 rehearsal ran its
+ladders in ALTERNATING DIRECTIONS inside one session, which varies acquisition
+order while holding scope, gain, cell, alignment, epoch and temperature fixed.
+Against that control the amplitude departure is invariant, so it is not an
+artefact of the campaign's power-time collinearity, and its ordering across
+lines follows brightness rather than branching.
+
+## The width concavity is withdrawn to provisional, 2026-08-18
+
+A concave curvature of the linewidth against power, apex near 120 mW, has been
+carried since 2026-08-17 as a measured diagnostic and it motivated a channel
+sweep, a component-resolved decomposition and an EOM thermal-lens hypothesis.
+Tested with the same care as the amplitude channel, it does not survive. It
+reaches 4.8 standard deviations only on within-cell errors, falls to 1.4 under
+the between-block treatment this record's own width channel uses, is not
+confirmed by the pilot's independent non-monotone ladder at 1.2, and in the
+rehearsal appears on the descending ladder while both ascending ladders show
+none, which is an order-dependence signature. Section C3a's original statement,
+that the width's power variation is block scatter rather than power
+broadening, is the accurate reading and it stands.
+
+No committed number changes, because no published bound rested on the
+concavity. What changes is its standing: it is provisional, the thermal-lens
+hypothesis is demoted to a mechanism for an effect whose existence is not
+established, and an interleaved power ladder is what would settle it.

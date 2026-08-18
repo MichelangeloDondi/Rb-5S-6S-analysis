@@ -104,6 +104,17 @@ not.
 
 #### A fourth power-dependent channel, named late: the EOM as a thermal lens
 
+**DEMOTED 2026-08-18.** This channel was inventoried as a candidate for the
+concave width against power, and that concavity has since been withdrawn to
+provisional: it is 1.4 standard deviations under the between-block treatment,
+is not confirmed by either independent power ladder, and shows
+order-dependence where it can be tested. A mechanism for an effect whose
+existence is not established is not itself established, so the treatment below
+is retained as a physically real channel of the apparatus and is no longer
+offered as an explanation of anything measured. See
+[the acquisition-settings chapter](../plan/07_acquisition-settings.md) for the
+measurement that would settle the concavity.
+
 The mechanism sweep of 2026-08-17 found one channel with no treatment anywhere
 in this record, and it came from apparatus knowledge rather than from analysis:
 the EOM crystal clips the raw laser beam at its 3 mm aperture

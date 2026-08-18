@@ -550,3 +550,38 @@ status cannot be strengthened without changing the producing code.
 | `ARTIFACT` | a feature identified as non-physical |
 
 `beta_self`, `sigma_laser` and the AC-Stark `S0` are all **BOUND**.
+
+## 14. The width concavity is withdrawn to provisional, 2026-08-18
+
+**The decision.** A concave curvature of the linewidth against power, carried
+since 2026-08-17 as a measured diagnostic, is reclassified as PROVISIONAL and
+is not an established physical effect. The EOM thermal-lens channel, which was
+inventoried as its candidate mechanism, is demoted with it.
+
+**What forced it.** The curvature reaches 4.8 standard deviations only on
+within-cell errors and falls to 1.4 under the between-block treatment this
+record's own width channel already uses for the collisional slope. Neither
+independent power ladder confirms it: the 2025-07-17 pilot's non-monotone
+ladder gives the same sign at 1.2, and in the 2025-07-04 rehearsal a width
+trend appears on the descending ladder while both ascending ladders show none,
+which is order dependence rather than power dependence. Section C3a of the
+results ledger had said from the beginning that the width's power variation is
+block scatter, and that reading is now tested rather than asserted.
+
+**The rejected alternative** was to keep the concavity as a measured
+diagnostic with a caveat, on the ground that its sign agrees across sessions
+and that the pilot test is underpowered. Rejected because a diagnostic that
+has motivated a channel sweep, a component-resolved decomposition and a
+mechanism hypothesis is not a caveated number in practice, whatever its label
+says, and because the same evidence standard applied to the amplitude channel
+in the same session let that finding through. Applying one standard to two
+channels and reporting the different outcomes is the point.
+
+**What does not change.** No committed number moves, because no published
+bound rested on the concavity. The component-resolved sweep's own finding, that
+the three width kernels are interchangeable in the power channel, is unaffected
+since it is a statement about the model rather than about the concavity.
+
+**What would settle it.** An interleaved power ladder, which removes the
+power-time collinearity at the source. See
+[the acquisition-settings chapter](plan/07_acquisition-settings.md).

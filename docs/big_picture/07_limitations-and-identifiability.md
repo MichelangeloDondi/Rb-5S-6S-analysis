@@ -232,6 +232,42 @@ shown to be instrumental. **If it does not,** and the isolated blocks carry the
 same excess, that moves it out of the optics and into the detection chain,
 which is a smaller space to search than the one it lives in now.
 
+## 7. The acquisition itself, found 2026-08-18
+
+The six limitations above are properties of the model and the data. This one
+is a property of how the data were TAKEN, and it was found by reading the
+quantisation step of the stored samples rather than any recorded setting.
+
+**Power was confounded with time, and the vertical range moved under the
+measurement.** In the campaign the power descends monotonically with elapsed
+time, so any quantity measured against power is equally a measurement against
+drift, and no analysis of that session alone can separate them. Independently,
+the oscilloscope's vertical range was changed at every rung of every ladder,
+by up to a factor of 596 in quantisation step against a signal spanning only
+about 80, so a power ladder is five measurements on five instrument ranges
+rather than one measurement at five powers.
+
+**What it cost, precisely.** The concave width against power cannot be
+established: it is 1.4 standard deviations under the between-block treatment
+and neither independent ladder confirms it. The amplitude's departure from the
+square law survives, because the 2025-07-04 rehearsal happens to have run its
+ladders in alternating directions and shows the departure to be invariant
+under acquisition order, but its ordering across lines follows their
+brightness rather than any atomic quantity, which points at the ranging rather
+than at the atom.
+
+**Both halves are removable at almost no cost**, which is what makes this a
+limitation rather than a fact of life: randomise the rung order and record the
+seed, and hold one vertical range across a ladder, which needs a 12-bit
+acquisition and is arithmetic rather than preference. The full design is in
+[the acquisition-settings chapter](../plan/07_acquisition-settings.md).
+
+**The general lesson the record should keep.** The archive's most informative
+control was an accident: the rehearsal's alternating ladders were run that way
+for convenience, and they are the only reason one of these two findings could
+be adjudicated at all. A design that varies the nuisance on purpose costs
+nothing and would not have depended on luck.
+
 ## A note on the density design, which is a seventh limitation
 
 The collisional bound has a limitation that is neither degeneracy nor absence

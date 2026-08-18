@@ -126,6 +126,8 @@ bench confirmation is not evidence of feasibility.
 | temperatures to 170 C | the ladder reached 130 C | yes, the oven's ceiling and gradient |
 | absorption channel | proposed, not built | yes |
 | photon counting | proposed in [plan 7](../plan/07_acquisition-settings.md) | yes |
+| a 12-bit or better acquisition | the 2025 sessions were 8-bit natively and re-ranged at every rung | yes, whether the available LeCroy holds 12 bits at the needed record length |
+| a measured detector response curve | never measured; the range-to-range gain is the leading candidate for the amplitude departure | yes, and it needs no atoms, only a calibrated variable source |
 
 ## See also
 

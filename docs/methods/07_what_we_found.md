@@ -130,9 +130,23 @@ data confirm.
 (C3a) The linewidth is **flat**, with no monotonic power broadening, and its
 3 to 8% block scatter is the same between-block wander seen elsewhere.
 
-(C3b) The amplitude is **consistent with $P^2$** (log-log slopes 1.83 to 2.12,
-clustered on the two-photon rate law, with 993.4121 nm below at 1.83). We say
-*consistent with*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
+(C3b) The amplitude is **near $P^2$, and three of the four slopes are not
+consistent with it** (log-log slopes 1.83 to 2.12). **CORRECTED 2026-08-18**:
+this paragraph previously read the four slopes as a band clustered on the rate
+law, flagging only 993.4121 nm as low. Tested against 2 rather than described,
+under a block bootstrap over the power cells that respects this sweep's
+power-time collinearity, 993.4121 nm at 1.831 excludes 2 from below, 993.4154
+nm at 2.121 and 993.4192 nm at 2.116 exclude it from above, and 993.4207 nm at
+2.100 becomes consistent with 2 once the block treatment replaces the
+within-cell error. The departure replicates in the 2025-07-04 rehearsal, whose
+alternating ladder directions show it to be invariant under acquisition order,
+and its ordering across lines follows their brightness rather than their
+hyperfine branching, so it is a signature of the detection rather than of the
+transition. No inventoried mechanism predicts that combination, and
+[the amplitude departure note](../notes/amplitude_departure_from_p2.md)
+carries the construction. The interpretive discussion below is retained
+because it remains the best account of the LOW slope specifically, and it does
+not address the two high ones. We say *near*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
 a slope below 2 could be genuine saturation OR a weak power-dependence of the
 trapping collection efficiency through the saturating emitter profile, and the
 single-temperature 2025 sweep cannot separate the two. The 4121 low slope
