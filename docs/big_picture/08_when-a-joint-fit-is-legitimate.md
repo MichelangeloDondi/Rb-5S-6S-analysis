@@ -164,7 +164,11 @@ on the Delta chi-square curve and not merely on the fitted point. **That test ha
 since run at two evaluation budgets, and the second run resolved it**: at the
 production budget half the starts never converged, and at four times the
 budget two complete curves still disagree by a factor of 2.13 while one start
-converged to a stationary point about 21,000 in chi-square above the best. The
+converged to a stationary point about 21,000 in chi-square above the best. A
+third run repeated the identical design under the pinned dependency floor of
+the continuous-integration minimum leg and the structure REPRODUCED, the same
+two-optimum split at the same scale, so the surface's shape is a property of
+the fit rather than of the environment it was first seen in. The
 pooled surface carries more than one local optimum, the production warm-start
 chain is load-bearing rather than merely efficient, and both runs' per-start
 curves are in [the profile

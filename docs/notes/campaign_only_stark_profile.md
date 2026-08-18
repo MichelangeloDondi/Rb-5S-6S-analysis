@@ -158,6 +158,7 @@ evaluation limit, so a reader can apply their own convergence filter.
 | campaign-only wing variant | cold descending and seeded ascending | chi-square at or below the primary's at every grid point, as nesting requires |
 | pooled, multi-start at the production budget | five independent starts, no warm start | half the optimisations capped, one complete curve: a second optimum and an unfinished search not separated |
 | pooled, multi-start at four times the budget | identical starts, only the cap changed | **RESOLVED, both causes real**: caps halved, two complete curves disagree by a factor 2.13, and one start converged to a stationary point 21,000 above the best. More than one local optimum, and the warm-start chain is load-bearing |
+| pooled, multi-start under the PINNED dependency floor | identical design, numpy 2.5.0 and scipy 1.16.0, the CI minimum leg | **REPRODUCES**: converged starts again split by about 21,300 in chi-square at three of six kappa points, per-start bounds run 0.59 to 2.19 with one degenerate curve, and the pointwise-min bound of 1.92 again sits far above the production warm-start chain's 1.147. The surface's structure is a property of the fit, not of the environment |
 
 ## What this does and does not establish
 
