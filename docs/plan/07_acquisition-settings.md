@@ -384,22 +384,31 @@ of the line amplitude scales as density to the power **-0.14 plus or minus
 0.07**, consistent with flat. Trapping requires that second quantity to RISE
 with density as the cell becomes optically thick. It does not.
 
-**What the two refutations leave is more parsimonious than either.** The floor
-scales as the square root of the line amplitude across both the power sweep
-and the temperature sweep, and the square root of the signal is precisely the
-shot-noise scaling. So the $a$ term behaves like a shot term rather than like
-an additive floor, and the most economical reading is that **the split between
-$a$ and $b$ is not physical**: the noise is shot-dominated throughout, and the
-fitted $a$ absorbs variance the two-parameter form cannot place elsewhere,
-most plausibly the correlated component the same table records as an
-integrated autocorrelation of 3.79 samples.
+**The floor is a directly measured quantity, not an artefact of the fit.**
+The producer already computes the noise in the off-line region with no fitting
+at all and prints its agreement with the fitted floor, and across all 32
+conditions that ratio has a median of **0.953** in a range of 0.884 to 1.086.
+The committed column is `sigma_wing_direct_V`. So the floor is the wing noise,
+measured, and the same power scaling appears in that unfitted column directly,
+at log-log exponents of 0.67 to 1.10 against power.
 
-**The test that would settle it, named rather than run.** Refit every
-condition with a pure shot law and no floor, and compare on the same
-criterion the model-form work already uses. If the floorless law fits as well,
-the floor is an artefact of the parametrisation and the noise budget has one
-term rather than two. That refit needs the raw traces and the environment of
-record, so it is queued rather than claimed here.
+**So there is a real optical background and both candidates for it have
+failed.** Combining the two sweeps, the background goes roughly as the atom
+number to the first power and the laser power squared, which is the scaling of
+the TWO-PHOTON EXCITATION RATE itself. It is therefore two-photon fluorescence
+that is not in the narrow line, which is what the same-beam pedestal is, and
+the pedestal's magnitude is short by a factor of twelve.
+
+**That discrepancy has an arithmetic consequence worth stating.** For the
+pedestal alone to supply the measured background, the narrow-to-pedestal area
+ratio would have to be 0.168 rather than the value near 2 that a good retro
+reflector gives, and since that ratio is $4\rho/(1+\rho^2)$ it would require a
+retro ratio near **0.04** against the adopted 0.94. Either the retro geometry
+is far worse than the record assumes, which would be a significant apparatus
+finding in its own right, or the background carries a component that is not
+the same-beam pedestal. **This measurement cannot separate those two**, and
+saying which it is needs the pedestal measured directly, which is what the
+wide-scan block in this chapter already exists to do.
 
 **None of this changes the practical conclusions above**, which rest on the
 measurement rather than on its interpretation: the floor is not electronic,
