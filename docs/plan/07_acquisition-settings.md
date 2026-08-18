@@ -376,9 +376,13 @@ the measured correlation length of 3.8 samples is taken into account.
     two per cent allows **5 minutes**.
   * **The fast limit** is set by the detection chain's time constant, which
     distorts and shifts the line once it approaches the line-crossing time.
-    The record does not contain a measured chain time constant, and that is
-    the one input this trade needs and lacks. Even at a heavily filtered 1 ms
-    the crossing is 63 time constants long.
+    No instrument specification for it is on record, but **the data constrain
+    it**: the committed noise law's integrated autocorrelation is a median of
+    3.79 samples at the campaign's 0.5 ms sampling, which is a correlation
+    time of about **1.9 ms**, and noise correlated on that scale is the
+    signature of a chain whose response time is of that order, since a wider
+    chain would deliver white samples at 0.5 ms. Taking 1.9 ms, the 63 ms
+    line crossing is about 33 time constants, which is comfortable.
 
 **The campaign's 1 second trace therefore sits about 1600 times inside the
 slow limit and at least 63 times inside the fast one.** Scan rate is not where
@@ -454,6 +458,83 @@ shared physical one, and with at least one quantity measured in every session
 to serve as the cross-session anchor. One long campaign gives precision that
 cannot be checked, and that is the trade this record has already paid for
 once.
+
+### How much of the triangle goes in one trace, and how many periods
+
+**Take the whole up-and-down in one trace.** The two ramps then share the same
+drift epoch, the same vertical range, the same baseline and the same
+acquisition settings, separated only by the turnaround, so the direction
+comparison becomes a WITHIN-TRACE control rather than a within-session one.
+That is the strongest form of the control the 2026-08-18 replication work had
+to find by luck, and it costs only record length, which the instrument has in
+abundance: the rehearsal's own files are 500001 samples over 5 s at 10 µs
+per sample.
+
+**How many periods fit is not a memory question.** At the committed rate a 5 s
+record spans 425 MHz on the transition axis and crosses the 5.37 MHz line in
+63 ms, which is 6318 samples and about 1663 independent points once the
+measured correlation length is taken into account. Against the record's own
+requirement of about 90 points across the line, a single ramp is **oversampled
+by a factor of 70**, so memory alone would allow about 35 up-and-down periods
+per record.
+
+**The detection chain sets the real limit, and it is far lower.** Each period
+added shortens the line crossing proportionally, and the chain's response time
+of about 1.9 ms inferred above does not shrink with it:
+
+| periods per record | points across the line | line crossed in | chain time constants |
+|---|---|---|---|
+| 1 | 3159 | 63.2 ms | 33 |
+| 2 | 1579 | 31.6 ms | 17 |
+| 4 | 790 | 15.8 ms | 8 |
+| 8 | 395 | 7.9 ms | 4 |
+| 16 | 197 | 4.0 ms | 2 |
+
+**So the answer is two to four periods per trace, not thirty-five.** Two is
+comfortable at seventeen time constants and already gives two independent
+up-and-down pairs inside one trace. Four is the point at which the lag begins
+to matter for the asymmetry channel before it matters for the width, which is
+the ordering the sweep-rate page sets out. Beyond eight the chain is
+integrating across the line and the lineshape is no longer the atom's.
+
+**The measurement that would raise this ceiling** is the same one named
+earlier: a measured detector response curve, which turns the 1.9 ms inference
+into a number and would license more periods if the chain is faster than the
+noise correlation suggests. Until then, treat the noise correlation as the
+bound and take two.
+
+### High-resolution mode, yes. Averaging mode, no
+
+These are different things and the answer differs.
+
+**High-resolution mode averages ADJACENT SAMPLES in hardware**, trading
+bandwidth for effective bits. Two facts make it close to free here. A single
+ramp is oversampled seventy times against what the fit needs, so bandwidth is
+not scarce. And the chain already correlates the noise over about 1.9 ms, so
+the scope is resolving structure the detector cannot produce. **Use it**, and
+the gain is not merely cosmetic: extra effective bits are exactly what the
+vertical-range problem needs, since holding one range across an eighty-one-fold
+ladder requires more than the eight bits either instrument offers natively.
+The one caution is to keep the decimation factor recorded per trace, because
+it changes the effective sampling interval and therefore every correlation
+length computed downstream.
+
+**Averaging mode averages SUCCESSIVE SWEEPS**, and it should not be used.
+The reasons are specific to this analysis rather than general.
+
+  * The within-cell error in every fit here is the scatter across repeats.
+    Averaging sweeps in hardware destroys exactly that quantity and replaces
+    it with nothing.
+  * The residual skew is used as a shot-noise diagnostic, and averaging
+    changes the noise distribution it diagnoses.
+  * Drift between sweeps becomes invisible rather than measurable, and this
+    record has already had to reconstruct drift it could not observe directly.
+  * The operation is irreversible in the wrong direction. Individual traces
+    can always be averaged offline, and an averaged trace can never be
+    separated. Anything averaging mode offers is available afterwards at no
+    cost, and everything it destroys is unavailable forever.
+
+**Take single-shot traces and average offline if wanted.**
 
 ### Four peaks in one trace, which the current bench can do
 
