@@ -69,6 +69,45 @@ crossover it costs the same for no gain at all. The decision is a comparison
 of both effects at the level and the rate actually in use, not a rule that
 favors one technology on principle.
 
+## Buying photons: the three routes are not equivalent
+
+"It is shot-limited, so collect more photons" is true and nearly useless,
+because it does not say HOW. In a scanned measurement there are three ways,
+and at equal total time they do not deliver equally.
+
+Shot-limited means the signal-to-noise is the signal divided by its square
+root, so it is the square root of the signal.
+
+  * **Scan more slowly.** Halving the rate doubles the dwell per frequency
+    bin, so the photons per bin double and the signal-to-noise rises by the
+    square root of two.
+  * **Take more repeats.** Two traces at the original rate cost the same total
+    time and double the photons per bin. The signal-to-noise rises by the
+    square root of two.
+  * **Drive harder.** Here the routes part company, and how far depends on the
+    order of the process. For a ONE-photon transition the signal is linear in
+    intensity, so the signal-to-noise goes as the square root of the intensity
+    and driving harder is no better than waiting longer. For a TWO-photon
+    transition the signal goes as the square of the intensity, so the
+    signal-to-noise goes as the intensity ITSELF, linearly, and doubling the
+    drive is worth quadrupling the time.
+
+**The first two are exactly equivalent in photons.** Time is time, and the
+scan rate only decides how it is distributed across frequency. A choice
+between them is a choice on other grounds.
+
+**Those other grounds decide it, and they favour repeats.** Repeats supply the
+scatter that becomes the per-condition uncertainty, and a single long trace
+supplies none however bright it is. Repeats average over drift, where a slow
+scan integrates drift into each trace and leaves nothing able to separate it
+afterwards. Repeats give independent estimates of the line centre. And several
+short traces survive a glitch that destroys one long one.
+
+**The order that follows**: drive harder while the physics allows, then add
+repeats, and leave the scan rate to the constraints that actually bound it,
+which are drift at the slow end and the detection chain's response time at the
+fast end.
+
 ## What problem it solves
 
 It replaces a habit or an equipment default with a computation. Given the

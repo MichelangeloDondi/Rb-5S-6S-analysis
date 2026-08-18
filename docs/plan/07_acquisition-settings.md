@@ -410,6 +410,38 @@ the same-beam pedestal. **This measurement cannot separate those two**, and
 saying which it is needs the pedestal measured directly, which is what the
 wide-scan block in this chapter already exists to do.
 
+**A second channel disagrees with the first, and the disagreement is the most
+useful thing in this section.** A constant background is absorbed by the
+per-trace baseline in the MEAN, but not in the VARIANCE, so the fitted
+baseline level and the wing noise are two independent measurements of the same
+quantity. They do not agree. The background implied by the wing noise exceeds
+the baseline actually sitting under the trace by a median factor of **2.7**,
+and the discrepancy GROWS with power, from about 1.7 at 25 mW to between 4 and
+23 at 225 mW.
+
+Taken at face value that says **the off-line noise is larger than the shot
+noise of the off-line signal**, by about 1.6 times in sigma at the median and
+more at high power, so a component of it is not photon statistics on the
+visible background at all and it grows with laser power.
+
+**No mechanism is named for it here, deliberately.** Three interpretations of
+this floor were proposed and refuted in a single evening, each because an
+interpretation was reached for before the record's own measurements were
+exhausted. What is established is a measurement: the wing noise is real,
+directly measured, rises with power, exceeds the shot noise of the visible
+background, and is not accounted for by the same-beam pedestal at the adopted
+retro ratio.
+
+**This is where analysis stops and the bench starts.** Three measurements
+would close it, none of them expensive. A wide scan that resolves the pedestal
+separates the background's size from the retro ratio. A detector response
+curve with a calibrated source separates chain noise from optical noise. And a
+trace taken with the atoms out of resonance but the laser at full power, which
+costs one detuning step, separates light-dependent background from
+atom-dependent background outright. Until at least one of them exists, further
+analysis of these twenty cells will keep producing interpretations that the
+next check refutes.
+
 **None of this changes the practical conclusions above**, which rest on the
 measurement rather than on its interpretation: the floor is not electronic,
 not the digitiser, and rises with signal, so a quieter amplifier addresses
@@ -428,8 +460,10 @@ property of the detection chain rather than of the condition.
     noise, which is real two-photon signal at the same wavelength from the
     same atoms, so no optical filter touches it. This is the term that limits
     the wing and band-excess work specifically, not the line core.
-  * The line core is limited by its own shot noise, so the only lever there is
-    photons: solid angle, quantum efficiency, and time.
+  * The line core is limited by its own shot noise, so the lever there is
+    photons. **Which way of getting them matters, and they are not equal:**
+    see the ranking below, where power is linear in signal-to-noise and time
+    is only square-root.
   * The retro ratio would in principle trade pedestal against line, since the
     narrow-to-pedestal area ratio is $4\rho/(1+\rho^2)$, but that ratio is
     stationary at $\rho=1$ and the adopted 0.94 already sits within 0.2 per
@@ -466,6 +500,51 @@ correlation length are the smallest indices, which is worth knowing because
 repeats are the most expensive thing on the list in session time and buy the
 least precision per hour, while remaining essential for a different reason:
 they are the only source of the within-cell error every fit here uses.
+
+### Three ways to buy photons, and they are not equivalent
+
+The statement that a shot-limited measurement needs more photons is true and
+almost useless, because it does not say which way to get them. There are
+three, and at equal total session time they differ by a factor that decides
+how a session is spent.
+
+Shot-limited means the signal-to-noise is the signal over the square root of
+the signal, which is the square root of the signal.
+
+| route | photons per bin | signal-to-noise |
+|---|---|---|
+| halve the scan rate | doubled | **times 1.41** |
+| double the repeats | doubled | **times 1.41** |
+| double the power | quadrupled | **times 2.00** |
+
+**Slowing the scan and adding repeats are exactly equivalent in photons.**
+Time is time, and the scan rate only decides how that time is distributed
+across frequency. Anyone choosing between them is choosing on other grounds,
+and there are strong ones below.
+
+**Power is in a different class.** The two-photon signal goes as the square of
+the power while the shot noise goes as the square root of the signal, so the
+signal-to-noise goes as the power ITSELF, linearly. Doubling the power is
+worth quadrupling the time. This is the arithmetic behind the Sobol
+decomposition above putting power at a total index of 0.648 while repeats sit
+at 0.122, and it is why the binding constraints at the top of a power ladder
+are saturation and the light shift rather than noise.
+
+**And when time IS the thing being spent, spend it on repeats rather than on a
+slower scan.** They are equal in photons and unequal in everything else.
+
+  * Repeats give the within-cell scatter, which is the ONLY source of the
+    per-condition error that every fit in this record uses. A single slow
+    trace gives none, however many photons it contains.
+  * Repeats average over drift. A slow scan integrates the drift INTO each
+    trace, where nothing downstream can separate it again.
+  * Repeats give independent line centres, and a slow trace gives one.
+  * Five traces survive a glitch, an operator bump or a mode hop. One long
+    trace does not.
+
+**So the order is: more power until saturation and the light shift bite, then
+more repeats, and the scan rate left alone.** That last clause is not laziness
+about the rate, it is the measured result of the next section.
 
 ### Fast scans against slow scans, and why this is not the knob
 
