@@ -303,4 +303,4 @@ rather than sitting here misleading a reader.
 
 ---
 
-[← Heavy-tailed models](heavy-tailed-models.md) · *Robustness and influence, 5 of 5* · [wiki index →](README.md)
+[← Heavy-tailed models](heavy-tailed-models.md) · *Robustness and influence, 5 of 6* · [Confounding by acquisition order →](confounding-by-acquisition-order.md)

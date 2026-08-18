@@ -218,4 +218,4 @@ once.
 
 ---
 
-[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 5 of 8* · [Designing an acquisition →](designing-an-acquisition.md)
+[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 5 of 9* · [Digitisation and dynamic range →](digitisation-and-dynamic-range.md)

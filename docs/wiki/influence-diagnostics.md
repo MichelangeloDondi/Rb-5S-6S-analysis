@@ -239,4 +239,4 @@ a reader.
 
 ---
 
-[← wiki index](README.md) · *Robustness and influence, 1 of 5* · [Robust fitting →](robust-fitting.md)
+[← wiki index](README.md) · *Robustness and influence, 1 of 6* · [Robust fitting →](robust-fitting.md)

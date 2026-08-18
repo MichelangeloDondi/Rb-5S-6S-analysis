@@ -35,7 +35,7 @@ taxonomy rather than a route. These are routes.
 | **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [docs/ADAPTING.md](../ADAPTING.md) |
 | **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
-| **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md) |
+| **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
 **Every page carries the same four lines at the top**, so the decision to read
 on takes five seconds: the question it answers, what it takes, what it gives,
@@ -91,6 +91,7 @@ be swept, and how the photons are counted.
 | [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) | technique | where a frequency axis comes from, and how a nonlinear scan is calibrated rather than trusted |
 | [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) | physical effect | sweeping fast widens the line and forges the asymmetry the experiment reads |
 | [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
+| [Digitisation and dynamic range](digitisation-and-dynamic-range.md) | technique | how many bits a measurement needs, and why a range changed mid-sweep is several measurements |
 | [Designing an acquisition](designing-an-acquisition.md) | method | span, resolution and record length are one decision, not three |
 | [Bessel functions](bessel-functions.md) | concept, supporting | the amplitudes every phase-modulation problem is written in |
 | [Blackbody radiation](blackbody-radiation.md) | physical effect | the cell's own thermal glow, and how to tell when it matters |
@@ -126,6 +127,7 @@ loss?* Wave 3, and the cluster the repository's own influence audit motivated.
 | [Resampling](resampling.md) | method | the bootstrap and the jackknife, and when the structure of the data breaks them |
 | [Heavy-tailed models](heavy-tailed-models.md) | concept | treating an outlier as evidence about the noise rather than as a point to remove |
 | [Sensitivity analysis](sensitivity-analysis.md) | method | which input a projection actually depends on, locally and globally |
+| [Confounding by acquisition order](confounding-by-acquisition-order.md) | method | when a swept parameter is entangled with elapsed time, and how to find a control for it |
 
 ## F. Simulation and computation
 

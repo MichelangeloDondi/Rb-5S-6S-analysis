@@ -263,4 +263,4 @@ after, would have caught the factor of four before it reached the plan.
 
 ---
 
-[← Photon counting](photon-counting.md) · *Driving, modulating and detecting, 6 of 8* · [Bessel functions →](bessel-functions.md)
+[← Digitisation and dynamic range](digitisation-and-dynamic-range.md) · *Driving, modulating and detecting, 7 of 9* · [Bessel functions →](bessel-functions.md)
