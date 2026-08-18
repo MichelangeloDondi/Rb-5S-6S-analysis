@@ -323,6 +323,138 @@ rehearsal's alternating directions, run that way by convenience rather than
 by intent, are the only reason the amplitude departure could be shown to be
 invariant under acquisition order.
 
+### Where the noise actually comes from, measured rather than assumed
+
+The committed noise law is $\sigma^2 = a^2 + bV + cV^2$ per condition, with
+$a$ the dark and electronic floor, $b$ the shot-like term proportional to
+signal, and $c$ any excess multiplicative term such as laser intensity noise
+or gain fluctuation. Read across the 32 committed conditions of
+[`noise_model.csv`](../../results/noise_model.csv):
+
+  * **The excess term is absent.** $c$ was needed in ONE of 32 conditions.
+    Laser amplitude noise and gain drift are therefore not what limits this
+    measurement, and stabilising them buys nothing. That is worth stating
+    because it is where effort usually goes first.
+  * **Shot noise dominates everywhere that matters.** The dark floor and the
+    shot term cross at about 8.8 mV. At a dim 20 mV signal the floor still
+    contributes 31 per cent of the variance, and by 500 mV it is under 2 per
+    cent. So above the dimmest rung of a power ladder this is a
+    photon-counting problem, and the only lever is more photons: collection
+    solid angle, quantum efficiency, or integration time.
+  * **The noise is correlated over about 3.8 samples**, from the committed
+    integrated autocorrelation. Effective sample counts are therefore about
+    four times smaller than raw ones, which is already carried in the
+    analysis and matters here for a different reason, below.
+
+**What this means for reducing noise, in order of leverage.** Collect more
+light, because the dominant term scales as the square root of the photon
+number and nothing else in the budget responds. Spend nothing on amplitude
+stabilisation. And at the dim end, where the floor is a third of the variance,
+either raise the signal or move to counting, which
+[photon counting](../wiki/photon-counting.md) sets out.
+
+**A Sobol analysis would answer a different question and is worth running.**
+`d3_sobol` already decomposes the projected collisional precision over its
+design inputs. The analogous decomposition for the acquisition, over scan
+rate, record length, repeats, collection efficiency and the temperature grid,
+has not been run, and it ranks knobs that interact rather than arguing them
+one at a time. It is queued rather than claimed.
+
+### Fast scans against slow scans, and why this is not the knob
+
+The trade has a hard limit at each end and the useful window between them is
+enormous, which is the actual finding.
+
+At the committed rate of 0.0850 MHz per ms on the transition axis, the 5.37
+MHz line is crossed in **63 ms**, giving 126 samples across it at the
+campaign's 0.5 ms sampling, of which only about **33 are independent** once
+the measured correlation length of 3.8 samples is taken into account.
+
+  * **The slow limit** is set by drift moving the line during one trace. At
+    the held-lock drift of order 0.02 MHz per minute, keeping the movement
+    under a tenth of the linewidth allows a trace of **27 minutes**, and under
+    two per cent allows **5 minutes**.
+  * **The fast limit** is set by the detection chain's time constant, which
+    distorts and shifts the line once it approaches the line-crossing time.
+    The record does not contain a measured chain time constant, and that is
+    the one input this trade needs and lacks. Even at a heavily filtered 1 ms
+    the crossing is 63 time constants long.
+
+**The campaign's 1 second trace therefore sits about 1600 times inside the
+slow limit and at least 63 times inside the fast one.** Scan rate is not where
+this experiment loses anything, and the knob people reach for first is the one
+with the least to give. What the record's own
+[sweep rate and detection lag](../wiki/sweep-rate-and-detection-lag.md) page
+adds is that the lag degrades the SKEW faster than the width, so if the
+asymmetry channel is ever spent the fast limit tightens and the chain's time
+constant stops being optional to know.
+
+**The one thing worth buying with rate**: more traces per unit time averages
+over drift and gives more independent centre estimates, which is a real gain
+that costs only the flyback.
+
+### Triangular against sawtooth, and a control that comes free
+
+A sawtooth ramps in one direction and flies back. A triangle ramps up and then
+down, so every period yields two traces acquired in OPPOSITE directions.
+
+**The argument for the triangle is exactly the argument this record has just
+had to make the hard way.** The 2026-08-18 replication work turned on the
+2025-07-04 rehearsal's alternating ladder directions, which were run that way
+for convenience and are the only reason two power-dependence findings could be
+separated. A triangular scan builds that control into every period: any
+lineshape feature that reverses between the up-ramp and the down-ramp is a
+property of the scan rather than of the atom, tested continuously and for
+free.
+
+**The argument against, and it is real.** The scanning element has hysteresis,
+so the up-ramp and the down-ramp do not share a rate calibration. Averaging
+the two halves naively broadens the line by the hysteresis offset and
+manufactures exactly the kind of width systematic this record has spent
+weeks on. A triangle therefore requires **per-direction rulers**, which the
+EOM comb already supplies at no extra cost since each half-period carries its
+own teeth.
+
+**Recommendation.** Triangular, with the two directions fitted and reported
+SEPARATELY and never averaged before their rate calibrations are compared. The
+difference between them is a measurement of the hysteresis rather than a
+nuisance, and the record already treats scan hysteresis as an open quantity
+in [the wavemeter reconstruction](../../results/wavemeter_reconstruction.csv).
+If the two directions cannot be separately calibrated, use the sawtooth and
+accept the flyback dead time, because a triangle whose halves are merged is
+worse than a sawtooth.
+
+### One campaign against several, from this record's own experience
+
+The 2025 archive holds one frozen campaign and two excluded sessions, and the
+2026-08-18 work measured what that structure costs and what it buys.
+
+**What one campaign cannot do.** It cannot separate a parameter from anything
+collinear with it. The campaign's power descends with time, so no analysis of
+that session alone can distinguish power dependence from drift, and the
+concave width against power is provisional for exactly that reason.
+
+**What several campaigns buy.** Replication under changed nuisances is the
+only way to establish that an effect belongs to the atom. The amplitude
+departure from the square-of-power law survives precisely because a second
+session with a different scope, a different power range and opposite ladder
+directions reproduces it.
+
+**What several campaigns cost, and the cost is measurable.** They introduce a
+between-session offset that must be modelled rather than ignored: the same
+amplitude exponent shifts by 0.165 between the campaign and the rehearsal
+while the ORDERING across lines is identical at a rank correlation of 1.00. A
+pooled fit that shares a parameter across sessions assumes an equality the
+sessions may not satisfy, which is the whole subject of
+[when a joint fit is legitimate](../big_picture/08_when-a-joint-fit-is-legitimate.md).
+
+**Recommendation.** Several sessions, deliberately differing in the nuisances
+and identical in the physics, with per-session nuisance parameters and a
+shared physical one, and with at least one quantity measured in every session
+to serve as the cross-session anchor. One long campaign gives precision that
+cannot be checked, and that is the trade this record has already paid for
+once.
+
 ### Four peaks in one trace, which the current bench can do
 
 The repaired cavity lock and the LeCroy's ability to hold the full four-peak
