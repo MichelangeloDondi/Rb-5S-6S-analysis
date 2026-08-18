@@ -104,6 +104,9 @@ six questions to ask of any joint fit →
 [`docs/big_picture/08`](docs/big_picture/08_when-a-joint-fit-is-legitimate.md) ·
 one page per concept, method, effect and technique, each with a worked example
 that runs → [`docs/wiki/`](docs/wiki/README.md) ·
+one page per physical quantity, with what the literature has reached, what this
+dataset establishes, why not more, and what a next campaign would buy →
+[`docs/quantities/`](docs/quantities/README.md) ·
 full derivations and statistics → [`docs/methods.md`](docs/methods.md) ·
 results table (auto-generated) → [`docs/RESULTS.md`](docs/RESULTS.md) ·
 measurement plan → [`docs/PLAN.md`](docs/PLAN.md) ·

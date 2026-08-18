@@ -1,0 +1,327 @@
+# The AC-Stark light shift
+
+*[quantities index](README.md) · headline parameter*
+
+**The question.** What light shift can be separated from the other mechanisms
+that share its power signature? The quantity is $\kappa$, relating the on-axis
+shift to the drive power in MHz per watt, and $S_0 = \kappa P$, the shift at a
+stated power, both on the transition axis.
+**Takes.** The committed fits and their profile likelihoods. No new fitting.
+**Gives.** The bound in every construction that produced one, the four reasons
+it is a bound rather than a value, and three defined levels of improvement with
+their bench recipes.
+**Skip if.** The question is how the shift distorts a line, which is
+[the AC-Stark shift](../wiki/ac-stark-shift.md), or whether the joint
+constructions may be compared with each other, which is
+[chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md).
+
+**Where it stands.** A bound, not a measurement, in every construction the
+record carries. The tightest committed value is
+$\kappa \lt 0.944$ MHz/W over the full archive, and the quoted joint construction
+gives $\kappa \lt 1.147$ MHz/W.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
+> every term and symbol. The physics of the effect is
+> [the AC-Stark shift](../wiki/ac-stark-shift.md), and the reason a bound is
+> reported rather than a value is
+> [identifiability](../wiki/identifiability.md).
+
+## 1. What it is, and which observable carries it
+
+The 993 nm drive shifts the 5S and 6S levels by different amounts, so the
+two-photon resonance moves. Because the beam has a spatial intensity profile
+and the transition is two-photon, atoms at different radii see different
+shifts weighted by $I^2$, and the line does not simply translate. It acquires
+a one-sided distortion whose shape is the intensity distribution mapped through
+the differential polarizability. That mapping is the subject of
+[methods chapter 3](../methods/03_the_ac_stark_ramp.md), and it is the reason
+the shift is a lineshape feature rather than only a frequency offset.
+
+Three observables in this archive contain information about $\kappa$, and they
+are not equally sensitive. **The width** grows because the shift distribution
+broadens the line. **The centre** moves because the distribution has a nonzero
+mean. **The skew** appears because the distribution is one-sided. The record
+uses the width, and the reason the width is the weakest of the three is the
+subject of section 4.
+
+The quantity to keep separate from $\kappa$ is the differential polarizability
+$\Delta\alpha$, which is atomic and fixed, where $\kappa$ additionally carries
+the geometry: the waist that sets the intensity and the retroreflection ratio
+that sets the standing-wave contrast. A measurement of $\kappa$ is a
+measurement of $\Delta\alpha$ only to the accuracy of that geometry, which is
+section 4's second theme.
+
+## 2. What the literature has achieved
+
+Three classes of comparator, assembled from the repository's own
+[literature notes](../LITERATURE_INDEX.md). Values appear exactly as
+published, in the units their authors used, because the conventions differ and
+converting them silently is how comparisons stop meaning anything.
+
+**Direct comparators**, the same measurement on the same or a sister line.
+
+| reference | value as published | system | why it is comparable |
+|---|---|---|---|
+| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, THIS line | The only prior work on this transition. Its computed differential polarizability is the value this repository adopts, and its null is the standing prior result on this channel |
+| [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6S-8S two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
+| [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against AVERAGE, not peak, intensity | Cs 6s-8s two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
+
+**Physical analogues**, the same mechanism in a different system.
+[Stalnaker 2006](../lit/stalnaker2006.md) extracted a polarizability from an
+asymmetric line produced by a spatially varying AC-Stark shift in a Yb standing
+wave, quoting $-0.312(34)$ Hz per (V/cm) squared, and is the nearest prior art for the
+method rather than for the number, since it is one-photon and therefore weights
+the intensity linearly rather than quadratically.
+[Slepkov 2010](../lit/slepkov2010.md) is the same atom with the same mechanism
+in a guided mode. [Wall 2014](../lit/wall2014.md) shows the converging-beam
+version of the same distortion in He.
+
+**Scale references.** [Quirk 2024](../lit/quirk2024.md) measured the Cs
+6s-7s differential static polarizability to four significant figures, 5807
+a0 cubed, which is the validation target for the analogous Rb 5S-6S quantity,
+though it is DC where this is AC.
+
+**The counterpoint worth stating, because it defines the gap this experiment
+sits in.** [Yudin 2020](../lit/yudin2020.md),
+[Li 2024](../lit/li2024b.md) and [Gerginov 2018](../lit/gerginov2018.md) all
+treat the light shift as one scalar to be suppressed, and the words
+distribution, waist and inhomogeneous appear nowhere in the last of them. The
+distinction is not that those works are wrong. It is that a programme
+suppressing a shift and a programme reading a distribution from it need
+different things from the apparatus, and the second has almost no measured
+precedent on an alkali nS to n'S line.
+
+## 3. What this dataset establishes
+
+Every row is one CONSTRUCTION. They are not alternative renderings of one
+number, and quoting one where another applies is the error this layer exists to
+prevent.
+
+| construction | $\kappa$ bound | $S_0$ at 225 mW | status | source |
+|---|---|---|---|---|
+| Full archive, power and temperature ladders | $\lt 0.944$ MHz/W | $\lt 0.212$ MHz | BOUND | [`full_dataset_fit.csv`](../../results/full_dataset_fit.csv) |
+| Joint three-session profile, the quoted construction | $\lt 1.147$ MHz/W | $\lt 0.258$ MHz | BOUND | [`stark_joint.csv`](../../results/stark_joint.csv) |
+| Joint, with the red-side wing marginalised | $\lt 1.066$ MHz/W | | BOUND, conditional | `stark_joint.csv` |
+| Joint, dropping the 4192 peak and with it the whole pilot session | $\lt 1.626$ MHz/W | $\lt 0.366$ MHz | BOUND | `stark_joint.csv` |
+| $\kappa$ and $\beta_{\rm self}$ both free, no prior | $\lt 0.963$ MHz/W | $\lt 0.217$ MHz | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
+| Width channel alone | $\lt 2.811$ MHz/W | $\lt 0.632$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
+| Centre channel alone | $\lt 8.653$ MHz/W | | BOUND | [`centre_stark.csv`](../../results/centre_stark.csv) |
+
+**The prediction, for comparison rather than as a result.** $\kappa$ is
+predicted at 1.545 MHz/W, giving $S_0 = 0.348$ MHz at 225 mW, computed from
+$\Delta\alpha = 1093$ a.u. ([Orson 2021](../lit/orson2021.md)), a waist of
+64 µm and a retro ratio of 0.94. The bounds therefore sit BELOW the prediction,
+which is the interesting feature of the table and is discussed in section 4.
+
+**Two things the table does not say, stated here so that it cannot be read as
+saying them.** No construction reports a detection: the joint profile's minimum
+sits at $\kappa = 0.25$ MHz/W with $\Delta\chi^2 = 0.12$ at $\kappa = 0$, which
+is no preference at all. And the pooled three-session construction is **not
+currently reproducible**: its passes span a factor of 2.1 and a second local
+optimum roughly 21,000 in $\chi^2$ above the best has been confirmed, so the
+pooled and campaign-only bounds cannot be compared at the size of their
+difference. That is worked out in
+[big picture chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md),
+which is the page to read before quoting any of these numbers against each
+other.
+
+## 4. Why the experiment cannot do better
+
+Four limitations, of three different kinds, and only one of them is about
+noise.
+
+**Statistical: the estimator sits where its own gradient vanishes.** The width
+grows as the square of $S_0$, so at the best fit, which rails at $\kappa = 0$, the
+derivative of the observable with respect to the parameter is zero. A
+linearised error bar evaluated there is a finite-difference artefact carrying
+no coverage, which is why every bound above is a profile-likelihood bound and
+not a Wald bound. That correction is recorded in
+[`rb5s6s/stark.py`](../../rb5s6s/stark.py) and its coverage was checked by
+simulation.
+
+**The wrong moment is being used, by a factor of forty.** At the bound the
+light-shift term moves the composite width by about 4 kHz, against a per-block
+width scatter of 88 kHz. The same term pulls the line CENTRE by about 150 kHz.
+The centre is the sensitive moment because a one-sided perturbation moves a
+line's position far more than its width, and a symmetric summary of an
+antisymmetric perturbation is insensitive by construction. The centre channel
+is nevertheless the weakest bound in the table, because the laser lock drifted
+during the campaign and absolute centres are lost. **The experiment measured
+the insensitive moment well and the sensitive moment not at all.**
+
+**Model: the geometry is adopted rather than measured.** The waist of 64 µm
+comes from one profiler measurement on the predecessor laser of this apparatus
+lineage, not on the campaign's own beam, and the retro ratio of 0.94 is an
+assumption. Both enter the prediction, and the bound itself moves with the
+assumed waist, from 1.050 to 1.191 MHz/W across 56 to 72 µm. This is the
+largest open systematic in the whole programme, and it is
+[big picture chapter 5](../big_picture/05_next-vapour-cell.md)'s first item.
+
+**Model: mechanisms sharing the power signature are omitted.** Atomic
+saturation and hyperfine pumping both widen the line with the same power
+dependence as the ramp, and both are left out of the production model. Their
+effect is measured rather than argued: including a saturation companion
+tightens the joint bound by a factor of 2.21. The committed bound is therefore
+LOOSE by a known amount, and no committed number moves on it because the
+companion rests on a two-level saturation law that is standard practice rather
+than a derivation for this level structure.
+
+## 5. Three levels of improvement
+
+Every level names the plan block that runs it, so that the recipe and the
+programme cannot drift apart. The
+[Needs, Shots, Go-no-go, Empty and Record](../plan/04_intensity-and-light-shift.md)
+fields stay in the plan.
+
+### An improved bound
+
+**What it delivers.** Removal of the geometry systematic and of the convergence
+ambiguity, tightening the existing bound and making it reproducible, without
+producing a measurement.
+
+**Recipe.** Measure the beam waist on the day, at several powers, with the EOM
+in the beam and thermalised at each, and measure the retro ratio against power
+in the same session. Repeat the existing power ladder in randomised order.
+Nothing else changes: same cell, same temperatures, same detection.
+
+**Success criterion, all six parts.** Precision: the waist known to better than
+2 µm, which holds the bound's geometry sensitivity below the 13 per cent it
+currently spans. Identifiability: unchanged, this level does not break a
+degeneracy. Coverage: the profile construction already over-covers where the
+bounds live and this is unaffected. Convergence: independent starts on the
+pooled surface agree, which is the open question and is the reason the
+randomised ladder matters. Model validity: residuals unchanged from the current
+fit. Calibration: the waist becomes a measurement rather than an adopted prior.
+
+**Minimum viable version.** One session, one beam profile at three powers with
+the EOM thermalised. That alone converts the largest systematic from adopted to
+measured, and it is an afternoon.
+
+**Kill criterion.** If the measured waist at several powers is not stable to
+within the band the transit kernel assumes, the pooling across sessions that
+every joint construction relies on is not licensed, and the joint bounds are
+withdrawn rather than tightened.
+
+### A measurement
+
+**What it delivers.** A value for $\kappa$ with an uncertainty, rather than an
+upper limit, by moving from the insensitive moment to the sensitive one.
+
+**Recipe.** A fixed cavity lock, so that absolute line centres survive across
+the power ladder, then a randomised power ladder at fixed temperature with the
+centre recorded against power. The lever is the 150 kHz centre pull against an
+88 kHz block scatter, so the measurement is a regression of centre on power
+rather than of width on power. This is
+[plan chapter 9](../plan/09_the-fixed-lock.md) and
+[chapter 10](../plan/10_the-fixed-lock-instrument.md), and the lock is now
+available rather than proposed.
+
+**Success criterion.** Precision: a centre pull resolved at better than three
+standard deviations, which the 40-to-1 moment ratio makes reachable where the
+width channel is not. Identifiability: the light shift separated from
+saturation and pumping, which move the width but not the centre, so this level
+breaks the degeneracy that the width channel cannot. Coverage: verified by
+injection and recovery at the achieved noise. Convergence: independent starts
+agree, tested rather than assumed. Model validity: the drift model checked
+against a zero-signal control epoch, since a control epoch has already been
+shown to reproduce a comparable spurious pull. Calibration: the frequency axis
+anchored, and the waist measured as in the level above.
+
+**Minimum viable version.** One fixed-lock session with three powers and a
+control epoch. Three points determine a slope and the control decides whether
+the slope is drift.
+
+**Kill criterion.** If the zero-signal control epoch reproduces the pull, the
+centre channel is measuring lock drift and the result is a bound again. This
+has happened once already, at 2.69 standard deviations, which is why the
+control is in the recipe rather than in the discussion.
+
+### A competitive measurement
+
+**What it delivers.** An uncertainty comparable with the direct comparators of
+section 2, which means a few per cent on the differential polarizability, and
+the first reading of the intensity distribution from the lineshape on an
+alkali nS to n'S line.
+
+**Recipe.** A tighter focus, near 16 µm, which raises the predicted $S_0$ to
+5.56 MHz and clears the measured skew threshold of about 2.5 MHz by design.
+The skew channel then carries signal for the first time, and the skew is the
+observable that maps the distribution rather than only its mean. With the fixed
+lock and the measured waist already in place, all three moments contribute.
+
+**Success criterion.** Precision: comparable with Lee 2010's six per cent on a
+sister line. Identifiability: three moments constraining two parameters, which
+is over-determined rather than degenerate. Coverage: injection and recovery at
+the achieved noise. Convergence: multi-start agreement, a requirement rather
+than an observation. Model validity: the skew's predicted shape tested against
+the measured one, which is the actual scientific content. Calibration: waist,
+retro ratio and axis all measured in-session.
+
+**Minimum viable version.** A single tight-focus condition at maximum power
+alongside one loose-focus reference, to demonstrate the skew appears where the
+threshold says it should. That is a discrimination test, not yet a measurement,
+and it is cheap.
+
+**What is CALCULATION REQUIRED.** The achievable uncertainty at 16 µm is not
+supported by any committed simulation. The threshold crossing is measured and
+the precision beyond it is not, so no number is given here.
+
+## 6. What goes wrong as sensitivity improves
+
+| knob | what it buys | what it costs |
+|---|---|---|
+| more power | signal, and $S_0$ linearly | saturation and hyperfine pumping, which share the ramp's power law exactly and are omitted from the model, so the bound loosens as they grow |
+| tighter waist | $S_0$ quadratically, and the skew channel | transit broadening, a faster-varying envelope along the cell, alignment sensitivity, and a geometry that must be characterised to the same accuracy it is being used at |
+| higher temperature | density and signal | collisional broadening in the same width channel, blackbody, and thermal gradients |
+| wider scan | wings and baseline discrimination | sweep nonlinearity and hysteresis, both measured and both worse at the leading edge |
+| more repeats | the block scatter falls as the square root | drift within the block, which the randomised ladder exists to break |
+
+The pattern worth naming: **every knob that raises $S_0$ also raises something
+that imitates it.** That is why the levels above buy identifiability through
+the centre and skew channels rather than buying precision through power.
+
+## 7. What each level would make answerable
+
+**Improved bound.** Whether the geometry, rather than the statistics, is what
+stands between this archive and a measurement. It converts the programme's
+largest open systematic into a measured quantity.
+
+**Measurement.** Whether the differential polarizability at 993 nm agrees with
+the computed 1093 a.u., which no experiment has yet tested on this line, and
+whether Orson 2021's null is a null or a resolution limit.
+
+**Competitive measurement.** Whether an intensity distribution can be read from
+a two-photon lineshape at all. The technique generalises to any two-photon
+transition in a focused beam, which is the methodological payoff, and it
+inverts the standard practice of engineering the distribution away.
+
+## 8. What remains impossible
+
+**Not measurable with this architecture.** The differential polarizability
+cannot be extracted to better than the geometry is known, so $\Delta\alpha$
+from this apparatus is limited by beam characterisation and not by
+spectroscopy. A percent-level $\Delta\alpha$ needs an intensity calibration
+this cell geometry does not support.
+
+**Not separable in principle here.** Atomic saturation, hyperfine pumping and
+the ramp are degenerate in BOTH of the width channel's continuous knobs, power
+and waist, so no sweep in either separates them. Only the centroid, which they
+do not move, and the line index, which distinguishes them by hyperfine
+branching, can. The centroid route is the measurement level above. The line
+index route gives 4 kHz against an 88 kHz scatter and is real but unspendable
+in this archive.
+
+**Not yet measured, which is different.** The convergence of the pooled
+surface. That is a computational question with a known answer route, and it is
+open rather than closed.
+
+## See also
+
+- [Collisional self-broadening](self-broadening.md), the other headline
+  quantity, which shares the width channel with this one
+- [The campaign](campaign.md), for how one session serves both
+- [The AC-Stark shift](../wiki/ac-stark-shift.md) for the physics
+- [Identifiability](../wiki/identifiability.md) for why a bound rather than a
+  value
+- [Plan chapter 4](../plan/04_intensity-and-light-shift.md) for the blocks that
+  run these recipes

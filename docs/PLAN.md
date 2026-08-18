@@ -70,6 +70,10 @@ the head of [chapter 6](plan/06_sizing-and-spending-rules.md).
 This file owns procedure: what would be set up, in what order, against which
 go/no-go criteria. [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md)
 owns the cost, yield and risk table across all candidate lines,
+[`quantities/`](quantities/README.md) owns the per-quantity view of the same
+material, where each page states the three levels of improvement available for
+one quantity and the recipe for each, and
+[`quantities/campaign.md`](quantities/campaign.md) compares candidate sessions.
 [`BIG_PICTURE.md`](BIG_PICTURE.md) owns the map of what each measurement would
 add, and [`APPARATUS.md`](APPARATUS.md) owns the hardware of record and its
 provenance. Where a number in this file disagrees with the table or the map,

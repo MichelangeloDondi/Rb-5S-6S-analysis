@@ -19,7 +19,7 @@ installed package without the repository beside it fails in a way worth failing
 loudly (see :func:`rb5s6s.config.require_repo_data`).
 """
 
-__version__ = "4.0"
+__version__ = "4.1"
 
 from .constants import (                                    # noqa: F401
     DELTA_ALPHA_AU,

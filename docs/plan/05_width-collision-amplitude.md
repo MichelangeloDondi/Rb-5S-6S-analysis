@@ -67,8 +67,9 @@ fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
 narrower reason than the 2025 post-mortem gave it. The 2025 dataset's lever test
-shows the joint β collapses 0.036 → 0.014 when the ×53 anchor (the 130 °C
-block) is folded in. That collapse is not a session artifact. It is the correct
+shows the joint β collapses 0.0534 → 0.0198 for ⁸⁵Rb and 0.0219 for ⁸⁷Rb when
+the ×53 anchor (the 130 °C block) is folded in
+([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct
 least-squares response to a line that barely moves across a 52.5× density span
 (gamma_coll rises only ×1.47–1.9), which is what makes "residual floor, not
 resolved collisions" a demonstrated conclusion rather than an assumption. The

@@ -216,7 +216,11 @@ SKIP_EXACT = {"docs/STYLE.md", "tests/test_repo_hygiene.py",
               # same reason the two above are here.
               "tests/test_docs_canonical.py",
               "tests/test_ramp_geometry_docs.py",
-              "tests/test_svg_canonical.py"}
+              "tests/test_svg_canonical.py",
+              # The quantities guard forbids "tier" as a name for a
+              # measurement level, so it has to write the word it forbids.
+              # The specification again, for the fourth time.
+              "tests/test_quantities_index_is_complete.py"}
 
 
 def _shipping(*globs: str) -> list[str]:

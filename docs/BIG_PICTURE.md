@@ -8,6 +8,9 @@ convert?
 route into the chapters that argue each part of it.
 **Skip if.** You want the numbers rather than the map, in which case
 [RESULTS.md](RESULTS.md) is the ledger and [CLAIMS.md](CLAIMS.md) the register.
+If you arrived holding ONE quantity and want its literature benchmark, its
+constructions, its limiting mechanism and the recipes that would improve it,
+that is [quantities/](quantities/README.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](GLOSSARY.md)
 > explains the measurement in six sentences, then defines every term
