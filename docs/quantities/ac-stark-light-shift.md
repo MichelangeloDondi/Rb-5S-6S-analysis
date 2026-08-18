@@ -266,9 +266,13 @@ alongside one loose-focus reference, to demonstrate the skew appears where the
 threshold says it should. That is a discrimination test, not yet a measurement,
 and it is cheap.
 
-**What is CALCULATION REQUIRED.** The achievable uncertainty at 16 µm is not
-supported by any committed simulation. The threshold crossing is measured and
-the precision beyond it is not, so no number is given here.
+**What is CALCULATION REQUIRED.** The achievable uncertainty at 16 µm. The
+threshold margin, 5.56 MHz predicted against the measured 2.5 MHz turn-on, is
+computed, and
+[the projection note](../notes/extended_lever_and_skew_projection.md) states
+why the precision beyond it needs a full lineshape simulation at the
+tight-focus geometry rather than an extrapolation, so no number is given
+here.
 
 ## 6. What goes wrong as sensitivity improves
 

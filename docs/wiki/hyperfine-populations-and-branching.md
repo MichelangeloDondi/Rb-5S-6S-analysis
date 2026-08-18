@@ -220,6 +220,9 @@ a reader.
 
 ## See also
 
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where the
+  pumping branching is one of the mechanisms sharing the light shift's power
+  signature.
 - [Hyperfine structure](hyperfine-structure.md), the levels this page
   puts populations on.
 - [Magnetic sublevels](magnetic-sublevels.md), the sublevel structure

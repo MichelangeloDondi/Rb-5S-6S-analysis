@@ -161,8 +161,10 @@ inferred. Same powers, same detection, additional thermocouple readout for the
 gradient. This is [plan chapter 5](../plan/05_width-collision-amplitude.md).
 
 **Success criterion.** Precision: the bound tightened by the factor the
-extended lever supports, which is CALCULATION REQUIRED and is a detection-power
-computation the existing coverage simulation can be extended to run.
+extended lever supports, now computed at the committed coverage construction:
+a factor 3.5 at 150 C and 10 at 170 C on the median null bound, under
+assumptions stated as optimistic in
+[the projection note](../notes/extended_lever_and_skew_projection.md).
 Identifiability: unchanged at this level. Coverage: the existing profile
 construction. Convergence: single-condition fits, not at issue. Model validity:
 the width against density checked for linearity across the extended span rather
@@ -229,8 +231,9 @@ full construction, and saying otherwise would be the kind of claim this page
 exists to avoid.
 
 **What is CALCULATION REQUIRED.** The uncertainty reachable with the extended
-lever and an external laser width. The coverage simulation exists and has not
-been run for this configuration.
+lever AND an external laser width together. The lever alone is computed in
+[the projection note](../notes/extended_lever_and_skew_projection.md), and the
+combined configuration is not.
 
 ## 6. What goes wrong as sensitivity improves
 

@@ -160,6 +160,10 @@ two pilot-derived entries before the 7 of 7 count was ever reported.
 
 ## Further reading
 
+- S. R. Cook, A. Gelman and D. B. Rubin, "Validation of software for
+  Bayesian model-fitting using posterior quantiles", *J. Comput. Graph.
+  Stat.* **15**, 675 (2006), the standard reference for checking an
+  inference pipeline by injecting known truths.
 - [Methods chapter 6](../methods/06_the_statistics.md), sections 4.6 and 4.11,
   for this repository's own closure and coverage studies.
 - [`examples/synthetic_recovery.py`](../../examples/synthetic_recovery.py),

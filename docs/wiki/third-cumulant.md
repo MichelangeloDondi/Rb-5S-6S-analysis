@@ -130,6 +130,8 @@ at one rate can.
 
 ## Further reading
 
+- M. G. Kendall and A. Stuart, *The Advanced Theory of Statistics*,
+  Vol. 1, for cumulants and the sampling behaviour of the third moment.
 - [Wikipedia: cumulant](https://en.wikipedia.org/wiki/Cumulant) for the
   generating function and the additivity property.
 - [Methods chapter 3](../methods/03_the_ac_stark_ramp.md) for the ramp's

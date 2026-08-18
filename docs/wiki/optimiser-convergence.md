@@ -209,6 +209,9 @@ a reader.
 
 ## See also
 
+- [Methods chapter 6](../methods/06_the_statistics.md), which narrates the
+  cold-start chain parking in a false minimum, the same incident this page
+  cites.
 - [Identifiability](identifiability.md), the correlated-parameter valleys a
   converged fit can be trapped inside.
 - [The profile likelihood](profile-likelihood.md), the chain of individual

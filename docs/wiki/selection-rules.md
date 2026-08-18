@@ -205,6 +205,8 @@ a reader.
 
 ## See also
 
+- [Methods chapter 1](../methods/01_the_measurement.md), where the same
+  parity argument selects this apparatus's four hyperfine lines.
 - [Multiphoton transitions](multiphoton-transitions.md), the two-photon
   mechanism a parity-forbidden line proceeds through.
 - [Hyperfine structure](hyperfine-structure.md), for how nuclear spin

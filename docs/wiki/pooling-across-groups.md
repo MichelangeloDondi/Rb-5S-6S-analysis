@@ -151,6 +151,9 @@ one.
 
 ## See also
 
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), whose
+  pooled constructions are this page's worked case, with the literature
+  benchmark attached.
 - [The joint fit](joint-fit.md), for the mechanics of sharing and the levels a
   parameter can be shared at.
 - [Identifiability](identifiability.md), for the case where the data do not

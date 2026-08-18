@@ -67,7 +67,7 @@ is an envelope bounding every photograph rather than a measured stability
 curve.
 
 The page is here because the next session should produce data this applies
-to. [PLAN.md](../PLAN.md) asks for the wavemeter log to be saved rather than
+to. [PLAN.md](../plan/10_the-fixed-lock-instrument.md) asks for the wavemeter log to be saved rather than
 photographed, and for a comb on every block, which together would give both a
 frequency record and a repeated width measurement. The Allan deviation of the
 tooth width across a session is then the natural check on whether the ruler

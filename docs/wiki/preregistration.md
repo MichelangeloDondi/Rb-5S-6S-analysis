@@ -220,6 +220,8 @@ would have called for first. See
 
 ## Further reading
 
+- B. A. Nosek et al., "The preregistration revolution", *PNAS* **115**,
+  2600 (2018), the canonical statement of the practice this page applies.
 - [Wikipedia: Preregistration (science)](https://en.wikipedia.org/wiki/Preregistration_(science)),
   for the general history and the distinction between a preregistration and a
   registered report.

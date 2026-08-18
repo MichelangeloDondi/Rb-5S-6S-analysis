@@ -290,6 +290,8 @@ multiplier stands in for, before quoting it, would have caught the
 
 ## See also
 
+- [Methods chapter 6](../methods/06_the_statistics.md), where the
+  resampling constructions used on the record are specified.
 - [Influence diagnostics](influence-diagnostics.md), the case-deletion idea
   this page's jackknife generalizes, applied one point or one block at a
   time.

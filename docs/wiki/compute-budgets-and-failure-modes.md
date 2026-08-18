@@ -225,6 +225,8 @@ a reader.
 
 ## See also
 
+- [Methods chapter 6](../methods/06_the_statistics.md), whose Jacobian and
+  SVD memory discussion is the worked version of this page's arithmetic.
 - [Optimiser convergence](optimiser-convergence.md), the multi-start and
   bidirectional scans this page's memory arithmetic has to be run against
   before either is launched at scale.
