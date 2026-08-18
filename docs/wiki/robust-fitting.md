@@ -143,7 +143,11 @@ and asked directly whether a single point was carrying a result it should
 not. One point in the power sweep, on one of the four hyperfine peaks, sits
 far off the trend the rest of that sweep follows and yet does not move the
 fitted slope: outlying by its residual, but not influential by its leverage
-or by how much the fit shifts when it is left out. That is exactly the
+or by how much the fit shifts when it is left out. That audit's per-point
+diagnostics were not committed to `results/`, so this sentence describes
+what the audit found rather than a number a reader can open, and the
+statement to trust in this paragraph is the general one about the
+configuration rather than the identity of the point. That is exactly the
 configuration in which a robust fit and the standard weighted fit are
 expected to agree, since a point with little leverage already has little say
 in an ordinary weighted fit, and downweighting it further under a Huber or a
@@ -155,7 +159,13 @@ point is handled rather than a changed number.
 The same audit also shows what robust fitting cannot fix. A separate
 construction, a four-point width-against-density fit, carries one
 temperature condition at leverage close to one, because the sweep leaves it
-far from the other three on the density axis by design. A point at that
+far from the other three on the density axis by design. That leverage is
+exactly computable, since in a two-parameter fit it depends only on where
+the points sit and not on any fitted value: at the campaign's four
+temperatures the density units run 0.56, 2.45, 9.10 and 29.43, and the
+leverages are 0.43, 0.37, 0.25 and **0.94** against a four-point average of
+0.5. The density lever that makes the collisional slope measurable at all is
+the same lever that puts one point almost entirely in charge of it. A point at that
 leverage is not tested by the fit, it is followed by it: the fitted line
 passes almost through it whatever it says, and every diagnostic that decides
 a weight from a residual, a robust loss among them, sees almost no residual

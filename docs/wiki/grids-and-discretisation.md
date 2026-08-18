@@ -176,7 +176,8 @@ preserve that same 20-point ratio at the new one. Nothing in that move asked
 whether 20 was ever the right target for a fit to recover a width from, only
 whether the ratio matched a number nobody had checked.
 
-On 2026-08-16 the B5 and B6 runs asked that question directly, simulating
+On 2026-08-16 two simulation runs, labelled B5 and B6 in that day's
+work queue, asked that question directly, simulating
 the width recovery a 10000-point record delivers at the committed noise law.
 The ratio came out to about 22 points across the line, and 22 fails a frozen
 recovery criterion. The requirement was replaced by 90 points across the

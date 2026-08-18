@@ -72,6 +72,23 @@ the retro ratio alone, symmetric under exchanging which beam is called
 forward, and it is largest when the two beams are equally strong and
 falls away as either one comes to dominate.
 
+**The ratio in three lines, since it is asserted in several places in this
+repository and derived in none of them.** Write the forward intensity as $I$
+and the backward as $\rho I$. The same-beam channel runs on each beam
+separately, so its rate goes as $I^2 + (\rho I)^2$. The cross channel takes
+one photon from each beam, and the two assignments of which photon comes
+from which beam are indistinguishable, so they add in the AMPLITUDE and the
+rate carries the square of that sum, $4 I \cdot \rho I$. The ratio of the
+narrow line's area to the pedestal's is the quotient,
+
+$$\frac{4\rho}{1+\rho^2},$$
+
+which is 2 at a perfect retro reflector. That value is the check worth
+remembering: with equally strong counter-propagating beams the Doppler-free
+line carries twice the area of the pedestal beneath it, and the factor of
+two comes from the interference of two indistinguishable pathways rather
+than from any property of the atom.
+
 ## What problem it solves
 
 A retro-reflected geometry is not optional in Doppler-free two-photon

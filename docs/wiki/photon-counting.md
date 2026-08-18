@@ -138,6 +138,8 @@ counting is than the analog chain a factor of ten below that level.
 import csv
 import math
 
+from rb5s6s.noise import sigma_of_v
+
 with open("results/noise_model.csv", newline="") as f:
     rows = list(csv.DictReader(f))
 
@@ -152,7 +154,8 @@ for r in rows:
     a_v, b_v = float(r["a_V"]), float(r["b_V"])
     v_star = a_v ** 2 / b_v          # the crossover level for this condition
     v = v_star / 10.0                # a factor of ten below it
-    analog_sigma = math.sqrt(a_v ** 2 + b_v * v)
+    law = {"a": a_v, "b": b_v, "c": float(r["c"])}
+    analog_sigma = float(sigma_of_v(v, law))   # the shipped law, not a copy
     counting_sigma = math.sqrt(b_v * v)   # counting never carries the a^2 floor
     ratios.append(analog_sigma / counting_sigma)
 

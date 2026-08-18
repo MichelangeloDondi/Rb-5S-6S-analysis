@@ -105,6 +105,12 @@ own: the two sweep rates are specified to run INTERLEAVED within each block,
 with nothing else in the block changed, because the lag separation needs the
 same line measured at several rates under otherwise identical conditions.
 
+**Nothing on this page has been run on real data.** The 2025 campaign
+acquired at a single sweep rate throughout, so the rate-scaled and
+rate-independent components have never been separated in this experiment:
+the separation is a design of the next session, and the paragraph above
+states a requirement rather than a result.
+
 ## What can go wrong
 
 The first failure is a model one. The scaling above assumes a single,

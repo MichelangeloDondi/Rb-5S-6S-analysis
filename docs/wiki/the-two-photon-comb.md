@@ -87,7 +87,14 @@ at a stated discount, the shape.
 
 ## Where this repository uses it
 
-The comb's use here is planned rather than run.
+The comb's use here is partly running and partly planned, and the two are
+worth separating. What RUNS today is the underlying sideband ruler: every
+committed trace has its frequency axis set by fitting EOM tooth positions,
+the construction of
+[methods chapter 5](../methods/05_the_frequency_ruler.md), which is where
+the campaign's rate of 0.04252(5) MHz per ms comes from. What is PLANNED is
+the two-photon-specific treatment below, the carrier null and the
+forced-against-free tooth diagnostic, neither of which has been run on data.
 [docs/plan/09_the-fixed-lock.md](../plan/09_the-fixed-lock.md), section
 10c.4, sets the modulation depth at the two-photon carrier null derived
 above and treats the resulting comb as the local part of the frequency
