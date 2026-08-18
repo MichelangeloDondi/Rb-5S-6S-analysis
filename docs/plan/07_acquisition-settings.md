@@ -362,9 +362,26 @@ power is **0.85 plus or minus 0.10**, where shot noise on a background linear
 in power would give 0.5 and shot noise on a background going as the square of
 the power would give 1.0. So the floor is **shot noise on a power-dependent
 optical background**, dominated at the top of the range by a background that
-scales as the square of the power, which is what a two-photon signal does.
-The Doppler pedestal is exactly such a background and is present in every
-trace by construction.
+scales roughly as the square of the power, which is what a two-photon signal
+does.
+
+**Which background, and the first candidate is refuted by its own
+arithmetic.** The implied background level is $a^2/b$, which runs at a median
+of 3.4 per cent of the narrow line's peak height across the twenty committed
+cells. The Doppler pedestal is the obvious candidate and it is far too small:
+the narrow line carries about twice the pedestal's AREA and is 175 times
+narrower than the 941 MHz Doppler width at 130 C, so the pedestal's height
+should be about 0.29 per cent of the line's, and the measurement is **11.9
+times larger**. The pedestal is present and it is not what sets the floor.
+
+What remains is a broad background at a few per cent of the line, scaling as
+roughly the square of the power, and it is UNATTRIBUTED. Radiation trapping is
+the candidate with the right shape, since the record already puts the trapping
+optical depth near 160 per cm, so fluorescence is re-absorbed and re-emitted
+throughout the cell and can reach the detector from outside the interaction
+volume while still scaling with the total excitation rate. Its magnitude is
+not computed here and it is therefore named as a candidate rather than as an
+explanation.
 
 Meanwhile $b$ is FLAT against power, with log-log exponents of -0.08 to +0.10
 across the four lines, which is the signature of shot noise proper: $b$ is a
