@@ -374,14 +374,37 @@ narrower than the 941 MHz Doppler width at 130 C, so the pedestal's height
 should be about 0.29 per cent of the line's, and the measurement is **11.9
 times larger**. The pedestal is present and it is not what sets the floor.
 
-What remains is a broad background at a few per cent of the line, scaling as
-roughly the square of the power, and it is UNATTRIBUTED. Radiation trapping is
-the candidate with the right shape, since the record already puts the trapping
-optical depth near 160 per cm, so fluorescence is re-absorbed and re-emitted
-throughout the cell and can reach the detector from outside the interaction
-volume while still scaling with the total excitation rate. Its magnitude is
-not computed here and it is therefore named as a candidate rather than as an
-explanation.
+**Radiation trapping was the next candidate and it is refuted too.** Trapping
+is set by the optical depth, which grows with density, while the excitation is
+not, so the temperature sweep separates them. Across 70, 90 and 110 C at fixed
+power the floor scales as density to the power **0.42 plus or minus 0.10**,
+which is the square-root scaling of shot noise on a background simply
+proportional to the number of atoms, and the floor divided by the square root
+of the line amplitude scales as density to the power **-0.14 plus or minus
+0.07**, consistent with flat. Trapping requires that second quantity to RISE
+with density as the cell becomes optically thick. It does not.
+
+**What the two refutations leave is more parsimonious than either.** The floor
+scales as the square root of the line amplitude across both the power sweep
+and the temperature sweep, and the square root of the signal is precisely the
+shot-noise scaling. So the $a$ term behaves like a shot term rather than like
+an additive floor, and the most economical reading is that **the split between
+$a$ and $b$ is not physical**: the noise is shot-dominated throughout, and the
+fitted $a$ absorbs variance the two-parameter form cannot place elsewhere,
+most plausibly the correlated component the same table records as an
+integrated autocorrelation of 3.79 samples.
+
+**The test that would settle it, named rather than run.** Refit every
+condition with a pure shot law and no floor, and compare on the same
+criterion the model-form work already uses. If the floorless law fits as well,
+the floor is an artefact of the parametrisation and the noise budget has one
+term rather than two. That refit needs the raw traces and the environment of
+record, so it is queued rather than claimed here.
+
+**None of this changes the practical conclusions above**, which rest on the
+measurement rather than on its interpretation: the floor is not electronic,
+not the digitiser, and rises with signal, so a quieter amplifier addresses
+nothing and photons are the only lever.
 
 Meanwhile $b$ is FLAT against power, with log-log exponents of -0.08 to +0.10
 across the four lines, which is the signature of shot noise proper: $b$ is a
