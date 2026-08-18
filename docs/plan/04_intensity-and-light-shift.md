@@ -403,11 +403,24 @@ Two things follow, and the second was not anticipated. The kernels are
 interchangeable against this structure rather than distinguishable by shape, so
 the width degeneracy already recorded at condition number 390 governs the power
 channel too. And the two constructions disagree about the SIZE of the concavity
-by a factor near three, which a per-trace free baseline slope could produce and
-which this diagnostic cannot settle. Breaking the first needs a channel where the
-kernels are not interchangeable, which is what the waist measurement below and an
-independent laser-width calibration supply. The diagnostic promotes no number and
-the record's own concavity statement is unchanged.
+by a factor near three. Two follow-up diagnostics narrowed that second finding
+without closing it. Pinning the per-trace baseline slope to zero, the mechanism
+that could most easily have manufactured the gap, left both the reduced
+chi-square and the recovered curvature unmoved, so the free slope was fitting
+noise rather than absorbing width structure. Computing the disagreement
+correctly, with both statistics taken from the SAME trace so that their shared
+fluctuations cancel before averaging, puts the curvature of the difference at
+about minus 4.7 with an uncertainty near 2.1, a little over two standard
+deviations, where the naive comparison of the two published numbers had
+suggested nearly minus 7. The direction survives and the size does not reach
+the threshold this record would need to act on it. What remains is a
+model-form question, whether the composite model's width and the line's own
+half-max width track each other across the power lever, and the model ladder
+rather than any further slicing of this fit is what settles it. Breaking the
+first finding needs a channel where the kernels are not interchangeable, which
+is what the waist measurement below and an independent laser-width calibration
+supply. The diagnostics promote no number and the record's own concavity
+statement is unchanged.
 
 **Second, and only afterwards, free the transit reference so the cusp measures
 the waist.** The transit kernel goes as the square root of temperature divided by
