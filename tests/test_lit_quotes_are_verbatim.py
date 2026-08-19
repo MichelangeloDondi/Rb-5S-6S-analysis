@@ -118,7 +118,7 @@ def _norm(s: str) -> str:
 
     The cost is that word ORDER is still enforced but word BOUNDARIES are not,
     so in principle two different texts could collide. For the >= MIN_WORDS
-    spans this guard checks, that risk is negligible; a substituted word still
+    spans this guard checks, a collision is negligible; a substituted word still
     changes the string and is still caught, which is the whole point.
 
     Digits are KEPT: a substituted number inside a quotation is as bad as a

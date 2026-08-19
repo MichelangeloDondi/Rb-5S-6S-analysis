@@ -8,12 +8,13 @@ who opens the landing page and clicks Releases.
    1.1.0 while CITATION.cff and the tags had advanced to 1.4.0, caught
    2026-07-25). That catch added a two-file comparison to
    tests/test_repo_hygiene.py. rb5s6s/__init__.py carries a third copy of the
-   same string and was in neither that divergence nor the guard, so the
-   surface was two thirds covered.
+   same string and was in neither the incident nor the guard, so the surface
+   was two thirds covered.
 
-2. The metadata here reached 3.4.0 on 2026-08-06 and the newest tag
-   stayed v3.2.0, thirty-one commits behind it. The installed package
-   therefore announced a version with no tag, no release and no notes. The 2026-07-25 guard had ruled
+2. The mirror's metadata reached 3.4.0 in the port of 2026-08-06 and its
+   newest tag stayed v3.2.0, thirty-one commits behind the port. The
+   installed package therefore announced a version with no tag, no release and
+   no notes on the repository a reader opens. The 2026-07-25 guard had ruled
    the tag out of scope on the grounds that tagging happens after the
    version-bump commit, which is true of the bump commit and false of every
    commit after it. This module keeps that exemption and bounds it: the bump
@@ -23,8 +24,8 @@ who opens the landing page and clicks Releases.
 The invariant, stated once: the metadata version equals the newest version tag
 reachable from HEAD, or it is one bump ahead of it inside the grace window.
 Metadata BEHIND the newest reachable tag fails too, which is the other half of
-the same decoupling. That direction was live here for weeks, the metadata
-sitting at 3.0.0 under a v3.2.0 tag and release.
+the same decoupling. On the mirror that direction was live for weeks, the
+metadata sitting at 3.0.0 under a v3.2.0 tag and release.
 
 Environment. The tag half needs tags, and a default actions/checkout fetches
 none, so it SKIPS on a checkout that has no version tags at all rather than
@@ -33,10 +34,10 @@ raw-trace and not-a-git-checkout skips make. It also means the tag half is
 load-bearing where the full clone is: the scripts/ci_gate.sh run before a
 push. For CI to carry it as well, the pytest job's checkout needs
 `fetch-depth: 0`. A checkout that has SOME version tags but not this one is
-not an environment limitation, it is the defect this module is for, and it
-fails.
+not an environment limitation, it is the incident, and it fails.
 
-WHAT THIS DOES NOT CATCH. These limits are stated rather than papered over.
+WHAT THIS DOES NOT CATCH, established by attacking the first version of it on
+2026-08-09 and left in place rather than papered over.
 
 * It cannot block the omission at the moment it happens. The release sequence
   is bump, gate, commit, push, tag, so at gate time the new version is not yet
@@ -48,7 +49,7 @@ WHAT THIS DOES NOT CATCH. These limits are stated rather than papered over.
   3.3.0 was here, leaves no trace for it to find.
 * `git tag` is local. A tag made and never pushed satisfies this guard while
   the Releases page and the README badge, which read the API, stay behind. Two
-  of this project's own `v*` tags have no release object at all, so the tag is a
+  of the archive's own `v*` tags have no release object at all, so the tag is a
   proxy for the release and not the release itself. Row 10 of section 16.7 of
   the rendering protocol names the Releases page as the evidence for that half.
 """
@@ -67,7 +68,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # the bump commit cannot be required to carry a tag, and neither can the
 # regenerated-results commit that has followed a bump in the waves on record.
 # Four is wider than any bump-to-tag distance in either repository's history
-# and far narrower than the thirty-one commits this guard was written for.
+# and far narrower than the thirty-one commits of the 2026-08-05 port.
 _BUMP_GRACE_COMMITS = 4
 
 _VERSION_FIELDS = (
@@ -77,9 +78,9 @@ _VERSION_FIELDS = (
 )
 
 # MAJOR.MINOR.PATCH or MAJOR.MINOR. The two-part form was adopted at the 4.0
-# release, and every three-part tag cut before it must keep parsing or the
-# comparison against release history breaks. A missing patch reads as zero, so
-# 4.0 and 4.0.0 order identically and no tag in the history is skipped.
+# release, and the three-part tags before it must keep parsing or every
+# comparison against release history breaks. A missing patch reads as zero,
+# so 4.0 and 4.0.0 order identically and no tag in the record is skipped.
 _SEMVER = re.compile(r"^(\d+)\.(\d+)(?:\.(\d+))?$")
 
 
@@ -153,7 +154,8 @@ def _uncommitted_bump() -> bool:
 
 
 # Tags cut before this version were made when the metadata surface and the tag
-# names ran independently: the pyproject read 3.0.0 at v3.1.0 and v3.2.0, and rb5s6s/__init__.py read 0.1.0 at fifteen tagged commits. So
+# names ran independently: the archive's pyproject read 3.0.0 at v3.1.0, v3.2.0
+# AND v3.3.0, and rb5s6s/__init__.py read 0.1.0 at fifteen tagged commits. So
 # the tagged-tree check below starts here rather than rewriting that history.
 _TAG_METADATA_FROM = (3, 5, 0)
 
@@ -174,8 +176,8 @@ def test_the_three_metadata_versions_agree():
     only = distinct.pop()
     assert _SEMVER.match(only), (
         f"the metadata version is {only!r}, which is neither MAJOR.MINOR nor "
-        "MAJOR.MINOR.PATCH. "
-        "The tag guard and the release naming both read it as one.")
+        "MAJOR.MINOR.PATCH. The tag guard and the release naming both read it "
+        "as one of those two.")
 
 
 def test_the_metadata_version_is_the_released_version():
@@ -227,8 +229,7 @@ def test_the_metadata_version_is_the_released_version():
 
     assert _key(meta) > _key(newest), (
         f"the metadata says {meta} while v{newest} is already tagged and "
-        f"reachable from HEAD. This repository ran for weeks with its "
-        f"metadata at "
+        f"reachable from HEAD. The mirror ran for weeks with its metadata at "
         f"3.0.0 under a v3.2.0 tag and release, so a reader's `pip show` "
         f"disagreed with the Releases page. Bump the three metadata files to "
         f"{newest}, or cut the tag the metadata claims.")
@@ -251,13 +252,15 @@ def test_the_metadata_version_is_the_released_version():
         f"the metadata has said {meta} since {bump[:7]}, {distance} commits "
         f"back, and the newest tag reachable from HEAD is still v{newest}. "
         f"The installed package announces a version this repository never "
-        f"released. That is the state of 2026-08-06: the metadata moved to "
-        f"3.4.0 and neither the tag nor the release followed. The distance is measured from the version's EARLIEST "
+        f"released. This is the 2026-08-05 mirror port: the port carried the "
+        f"3.4.0 metadata and the tag and the GitHub release stayed in the "
+        f"archive. The distance is measured from the version's EARLIEST "
         f"introduction, so a detour through another number does not reset it. "
         f"Cut v{meta} here with its notes, or revert the metadata to "
         f"{newest} until the release is cut. The grace window is "
         f"{_BUMP_GRACE_COMMITS} commits, which covers the bump commit and the "
         f"regeneration that follows it.")
+
 
 def test_the_citation_date_moves_with_the_citation_version():
     """`date-released` is the third field of the same shape as the first two.

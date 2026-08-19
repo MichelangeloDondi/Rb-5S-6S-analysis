@@ -94,13 +94,60 @@ In this repository the collisional and laser widths are the degenerate pair.
 Simulated on a bright synthetic condition with signal-dependent noise
 (`python scripts/run_width_pinning.py`, the construction stated in its
 docstring), a fit with both widths free recovers the collisional width with a
-scatter of 0.0073 MHz across realisations, and the same fit with the laser
-width KNOWN recovers it with 0.0021 MHz, a factor of 3.4. The absolute
+scatter of 0.0070 MHz across realisations, and the same fit with the laser
+width KNOWN recovers it with 0.0022 MHz, a ratio of 3.18 with a spread of
+0.20 across nine seeds. The spread is quoted because the ratio of two
+Monte-Carlo standard deviations moves from seed to seed, and an earlier
+version of this passage quoted a single draw of 3.4, which turned out to be
+the largest of the nine. The absolute
 scatters belong to that idealised condition, where the real record adds block
 drift and gain scatter on top, and the ratio is the transferable part: an
 independent laser diagnostic is worth more to this experiment than any
 improvement to the fitting, by a factor the simulation now states with its
 construction attached.
+
+### The factor is not one number, and the arithmetic says which
+
+A simulated scatter ratio answers the question at ONE condition. The general
+answer is arithmetic, and it explains why different parts of this record quote
+different factors for what looks like the same purchase.
+
+Conditioning a multivariate normal on one member of a correlated pair reduces
+the other's variance to $(1-\rho^2)$ of its joint value, so its uncertainty
+falls by $\sqrt{1-\rho^2}$. The factor bought is therefore
+$1/\sqrt{1-\rho^2}$, which depends on the correlation and on nothing else. It
+does not improve with more traces.
+
+| where the correlation was measured | $\rho$ | factor $1/\sqrt{1-\rho^2}$ |
+|---|---|---|
+| median across the 32 committed conditions | $-0.90$ | 2.29 |
+| the tutorial's synthetic design point | $-0.9177$ | 2.52 |
+| the bright condition of the pinning simulation above | $-0.9417$ | 2.97 |
+
+The last row is the check on the first two. The pinning simulation MEASURES
+$3.18 \pm 0.20$ by Monte Carlo at a condition whose own fitted correlation is
+$-0.9417$, where the arithmetic predicts 2.97. The two agree to 7 per cent,
+and the residual is what a scatter ratio carries that a covariance ratio does
+not: twenty per-trace nuisance parameters, a boundary at zero collisional
+width, and the non-Gaussian tail of a nonlinear fit. The correlation itself is
+identical to four decimals in every seed, which is what the arithmetic
+predicts, since a correlation is a property of the design rather than of the
+noise draw.
+
+These are floor numbers rather than numbers of record. The producer is a
+DIAGNOSTIC that writes to `private/run_logs/` and moves nothing in
+`results/`, so it is run on the declared support floor (Python 3.12, numpy
+2.5) rather than on the older versions that reproduce the committed CSV
+digits. [`results/ENVIRONMENT_OF_RECORD.md`](../../results/ENVIRONMENT_OF_RECORD.md)
+explains why those are two different statements, and the producer stamps the
+versions it ran under into every row it writes.
+
+So what an independent laser width buys this experiment is a factor between
+two and three and a half, and the spread across the sites that quote it is not
+disagreement between sources. It is one formula evaluated at different
+correlations. `rb5s6s.forecast.external_constraint_gain` computes it, and
+`scripts/run_width_pinning.py` now reports the correlation and the predicted
+factor beside its measured ratio, so the two cannot drift apart unnoticed.
 
 THE GENERAL SHAPE OF THAT ARGUMENT is worth more than the number. When two
 parameters trade, the question is never only how to fit better. It is which
@@ -124,6 +171,19 @@ than a point, and the two factors become the slope and the intercept.
 The general recipe: when two parameters are degenerate, look for a control
 that enters them ASYMMETRICALLY. The fitting problem is unchanged and the
 experiment has been changed instead, which is usually the cheaper repair.
+
+**A case where the search came back empty, which is the part worth
+recording.** For the two widths of this experiment the search was run rather
+than assumed. Span, point count and repeat count were each varied in the
+[digital twin](the-digital-twin.md), and the correlation did not move:
+$-0.9177$ across a 60 MHz span, $-0.9166$ across 300 MHz, and $-0.881$ at ten
+times the traces. Both uncertainties fell as the data grew and the direction
+the data cannot see stayed invisible, because a Lorentzian core inside a
+Gaussian envelope trades the same way at every sample size. Among the
+acquisition settings the asymmetric knob does not exist, which is why this
+experiment takes the pinning route of the previous section rather than the
+design route of this one. Reporting a failed search matters here: without it,
+the next reader spends a session widening scans.
 
 ## A parameter can be in a channel and carry almost none of it
 

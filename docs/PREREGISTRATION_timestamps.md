@@ -45,6 +45,7 @@ hence the release tagged before the audit runs.
 ## 2. What this does NOT test
 
 Stated first, because the temptation to over-read a recovered clock is the main
+<!-- term-of-art: frozen preregistration record, not edited after the fact -->
 risk here.
 
 - **Assumption A1 (trigger sync — file time $=$ ramp phase)** is untouched.

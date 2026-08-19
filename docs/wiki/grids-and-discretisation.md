@@ -78,7 +78,7 @@ sampled at another, with nothing about the wider window itself announcing
 the loss.
 
 A feature sitting near the boundary of a window carries a further and
-separate risk. Whatever lies outside the window, a slowly varying
+separate hazard. Whatever lies outside the window, a slowly varying
 background, a wider companion feature, an instrument offset, has to be
 assumed or extrapolated rather than measured, because the window carries no
 data there to constrain it. A narrow window fitted right up to a feature's
@@ -220,4 +220,4 @@ the shortfall at its first appearance instead of at its second.
 
 ---
 
-[← Monte Carlo methods](monte-carlo-methods.md) · *Simulation and computation, 2 of 4* · [Optimiser convergence →](optimiser-convergence.md)
+[← The digital twin of an experiment](the-digital-twin.md) · *Simulation and computation, 3 of 5* · [Optimiser convergence →](optimiser-convergence.md)

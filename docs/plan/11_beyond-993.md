@@ -6,7 +6,7 @@ The drive laser is a tunable Ti:Sapphire, so future sessions are not locked to
 this line. The reachable Rb two-photon lines and the papers they enable are
 worked out in
 [`FUTURE_TRANSITIONS_titsapph.md`](../FUTURE_TRANSITIONS_titsapph.md), which is
-also where the cost, yield and risk comparison across all of them lives. The
+also where the cost, yield and failure-mode comparison across all of them lives. The
 most distinctive candidate on the Ti:Sapph itself: the 778 nm clock line is the
 most actively worked AC-Stark system, all of it active suppression, and the
 passive asymmetry method plus the Ti:Sapph tunability could give a

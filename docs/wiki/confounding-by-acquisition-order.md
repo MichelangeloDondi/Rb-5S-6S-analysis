@@ -101,7 +101,7 @@ with the others, that entanglement is harmless, which is a piece of luck to
 notice rather than to rely on.
 
 **Believing randomisation is free of cost.** It is free in acquisition time
-and not in operational risk: a randomised order forbids the settling shortcuts
+and not in operational load: a randomised order forbids the settling shortcuts
 a monotone ramp allows, and can demand a wait at every step that a monotone
 sweep amortises.
 

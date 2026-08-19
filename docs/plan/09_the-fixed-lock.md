@@ -1,5 +1,14 @@
 *Chapter 9 of 11 of [the plan](../PLAN.md)*
 
+**The question.** What does a fixed lock convert, and how is the frequency axis built once positions carry meaning?
+**Takes.** The acquisition settings of chapter 7 and the record discipline of chapter 8.
+**Gives.** Identifiability under a fixed lock, the sweep and scan axis, the modulator, and the atomic pairs as anchor beside the comb as interpolator and clock.
+**Skip if.** You want the lock hardware and the day-one list, which is chapter 10.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## 10c. The fixed cavity lock, and the settings that follow from it
 
 Written 2026-08-16 after the cavity lock was repaired. Section 10a sizes the
@@ -34,9 +43,10 @@ likelihood traces, and they are different statistical objects with different
 values. A number of this kind is only meaningful with its construction named, and
 the pinning comparison now has a committed producer that names its own:
 `scripts/run_width_pinning.py`, on a bright synthetic condition with
-signal-dependent noise, returns a collisional-width scatter of 0.0073 MHz
-with both widths free and 0.0021 MHz with the laser width KNOWN, a factor of
-3.4. The factor, not the idealised absolutes, is the point: pinning the
+signal-dependent noise, returns a collisional-width scatter of 0.0070 MHz
+with both widths free and 0.0022 MHz with the laser width KNOWN, a ratio of
+3.18 with a spread of 0.20 across nine seeds. The ratio, not the idealised
+absolutes, is the point: pinning the
 laser width is the difference between reporting a bound and reporting a
 measurement.
 
@@ -213,6 +223,26 @@ precise one. THE AXIS IS THEREFORE ANCHORED BY THE CONSTANTS RATHER THAN
 MEASURING THEM: at 2 kHz the excited-state constant is far stronger than
 anything a sweep calibration will reach, so it is an input to the ruler and not
 an output of it.
+
+THE SEPARATIONS ARE ALSO LIGHT-SHIFT-IMMUNE TO FIRST ORDER, which the
+individual positions are not. For these $J=\tfrac12 \to J=\tfrac12$ lines
+under linear polarisation the two-photon light shift is purely scalar, the
+tensor term vanishing by the triangle rule, so it moves both members of a
+same-isotope pair identically and cancels in their separation. A pair is
+therefore a ruler even at full power, while any single line's position carries
+the whole shift.
+
+THE PAIRS AND THE EOM COMB DIVIDE THE LABOUR, and neither replaces the other.
+The pairs are the ANCHOR: absolute, atomic, free, and sparse, two marks per
+isotope crossed tens of seconds apart, saying nothing about the axis between
+them and existing at all only in the wide-span design. The comb is the
+INTERPOLATOR and the CLOCK: a mark every tooth spacing, exact against the
+synthesiser, carrying the per-block rate that the 0.6 per cent block-to-block
+scatter makes necessary and the excursion bound of `run_tooth_scatter.py`,
+and carrying no absolute frequency of its own. A third reading exists in
+which the pair stops being a ruler and becomes a measurable, and it is
+[chapter 8 section 10b.4a](08_the-acquisition-record.md), the coincidence
+block.
 
 THE SECOND PAIR SPANS THE WHOLE MANIFOLD. 993.4207 and 993.4121 are both the 87
 isotope, and their separation of 5219.973 MHz covers the entire four-component

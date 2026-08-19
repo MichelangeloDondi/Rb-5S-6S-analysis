@@ -178,7 +178,7 @@ no absolute frequency reference in the chain. The same beam is a sign-reversal
 test of the asymmetry channel and a calibrated shift injector. It rides any
 cell session on one commodity diode and no new laser time, which is why
 [FUTURE_TRANSITIONS_titsapph.md](../FUTURE_TRANSITIONS_titsapph.md) §4.1 ranks it
-first of four candidate papers on risk-adjusted distinctiveness per unit bench
+first of four candidate papers on expected distinctiveness per unit bench
 cost, and §5.1 there carries the design and its envelope numbers. It is deliberately absent from the
 magic-wavelength list above, whose criterion is usability as a trap.
 

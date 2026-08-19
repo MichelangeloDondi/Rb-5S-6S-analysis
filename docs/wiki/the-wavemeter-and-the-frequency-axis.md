@@ -121,6 +121,64 @@ of per-sweep line positions as the next-campaign reproducibility test. The
 rate relative to its mean at a dozen positions across the ramp, each with
 its own uncertainty and sample count.
 
+## The ruler read backwards: the comb as a clock
+
+A frequency ruler is usually read in one direction, turning positions into
+frequencies. It can be read the other way, and the other way measures the
+laser.
+
+The teeth sit at exact multiples of an RF drive, so their positions in TIME
+are a ruler laid down by an oscillator. Fit each tooth centre freely instead
+of on a rigid grid, subtract the ladder the trace's own spacing predicts, and
+the departures are the optical frequency wandering against that oscillator
+while the sweep crosses them. The averaging time is one tooth spacing.
+
+**A departure is two things added together**, and separating them is the whole
+technique:
+
+    tooth departure = sweep nonlinearity + laser frequency excursion
+
+The ramp REPEATS on every sweep and the laser does not. So the mean over many
+traces at a given window position is the nonlinearity, and the SCATTER about
+that mean is the laser. A pipeline that computes only the mean has measured
+the sweep and thrown away the laser, which is what this repository did until
+the two were separated.
+
+**What it cannot see.** A linear drift inside one sweep is exactly degenerate
+with the sweep rate. If the laser adds $at$ to an intended ramp $rt$, the
+teeth stay uniformly spaced at $f_\text{EOM}/(r+a)$ and the fit returns
+$r+a$, so only curvature survives. The two halves of a triangular sweep return
+$r+a$ and $r-a$, which separates them, and that requires the sweep direction
+to have been recorded.
+
+**What it gave here.** Over 509 free-fitted tooth centres from 104 traces, the
+scatter about the sweep map sits at $\chi^2/\text{dof} = 0.53$, so there is no
+excess and the result is a limit: the non-repeating excursion is below
+28.3 kHz on the transition axis at an averaging time of 0.15 s, which is
+$4.7\times10^{-11}$ in fractional frequency. The limit is set by the
+tooth-centre precision, about 96 kHz each, rather than by the laser.
+
+**The clock's blind bands, learned the hard way.** The teeth sample the
+laser at one rate, the tooth-crossing rate, and a periodic disturbance near
+a multiple of that rate ALIASES to a low frequency that the per-trace ladder
+fit absorbs into its own offset and slope. A mains line at 60 Hz against a
+6.8 Hz tooth rate aliases to about 1.2 Hz, nearly linear across one trace,
+and a periodogram of the residuals returns a null there BECAUSE the
+instrument cannot respond, not because the line is absent. The discipline
+that catches this is the ceiling test: before reading any null on real
+data, inject the hypothesised signal into synthetic data and show the
+instrument detects it. The complementary probe that is not blind is
+FM-to-AM conversion on the line's own flanks, described with
+[laser frequency noise](laser-frequency-noise-and-the-linewidth.md).
+
+**Why it matters beyond calibration.** The lineshape fits a Gaussian kernel
+for the laser, which is what slow frequency noise produces. This limit
+excludes the low-frequency-heavy spectra that would justify that kernel, so
+it bears on the model form and not only on the axis. See
+[identifiability](identifiability.md) for what the width channel does with the
+laser width once it is there, and [the Allan deviation](allan-deviation.md)
+for the statistic that belongs on a measurement of this kind.
+
 ## What can go wrong
 
 The first failure is treating a single wavemeter reading as though it
@@ -227,4 +285,4 @@ misleading a reader.
 
 ---
 
-[← The two-photon comb](the-two-photon-comb.md) · *Driving, modulating and detecting, 3 of 7* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)
+[← The two-photon comb](the-two-photon-comb.md) · *Driving, modulating and detecting, 3 of 8* · [Laser frequency noise and the linewidth →](laser-frequency-noise-and-the-linewidth.md)

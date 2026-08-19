@@ -224,4 +224,4 @@ a reader.
 
 ---
 
-[← Hyperfine structure](hyperfine-structure.md) · *Atomic structure and selection rules, 4 of 6* · [Hyperfine populations and branching →](hyperfine-populations-and-branching.md)
+[← Hyperfine structure](hyperfine-structure.md) · *Atomic structure and selection rules, 4 of 7* · [Hyperfine populations and branching →](hyperfine-populations-and-branching.md)

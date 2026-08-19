@@ -3997,8 +3997,8 @@ def fig_method_loop():
     x_obs, x_mech, x_id = 16.0, 50.0, 86.0
     x_claim = 113.0
     # The lower row runs right to left from under the diamond to under the
-    # observation, on an even pitch, and the box width is derived from that
-    # pitch rather than chosen: BOT_GAP is the clearance between neighbours,
+    # observation, on an even spacing, and the box width is derived from that
+    # spacing rather than chosen: BOT_GAP is the clearance between neighbours,
     # so the row cannot overlap itself and every arrow between two of these
     # boxes has the same visible length.
     BOT_PITCH = (x_id - x_obs) / 3.0

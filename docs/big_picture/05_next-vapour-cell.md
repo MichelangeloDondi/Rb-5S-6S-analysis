@@ -22,7 +22,26 @@ physics:
    transit and laser widths are degenerate through it, so measuring it
    retroactively sharpens all of them at once. It is not the systematic under
    the collisional number, which rides on the density scale instead.
-2. **Line centre vs power (the "pull").**
+2. **An independent measurement of the laser width**, a heterodyne beat, a
+   delayed self-heterodyne line or a cavity ring-down width. Converts the
+   collisional coefficient from a bound conditional on a degeneracy into a
+   separately identifiable quantity, for an afternoon on an instrument that
+   never sees the cell. It could come back as an upper bound rather than a
+   value, in which case the bound still enters the fit as a prior and buys a
+   fraction of the same factor. Runs as [`PLAN.md`](../PLAN.md) §3 item 5a.
+
+   This sits second because it is the only item on the list that acts on
+   IDENTIFIABILITY rather than on precision. The collisional and laser widths
+   correlate at about -0.92 in the fit, and no acquisition setting moves that:
+   a five times wider span takes it from -0.9177 to -0.9166 and ten times the
+   traces reaches only -0.881, while both uncertainties shrink throughout.
+   Pinning one member leaves the other with the square root of one minus the
+   correlation squared, so the purchase is between 2.3 and 3.2 across the
+   conditions this record covers, larger than any other item here and
+   available without spending a single shot on the atoms.
+   [Chapter 7](07_limitations-and-identifiability.md) carries the
+   constructions.
+3. **Line centre vs power (the "pull").**
    Converts the AC-Stark bound into the first measured light shift on this
    line, for one morning of randomized power cycling. It could come back empty
    if the repaired lock does not hold minutes-scale stability, which the plan's stage-0 go/no-go measures before science shots are spent. Runs as
@@ -33,7 +52,7 @@ physics:
    a scan series, needing only minutes-scale lock stability. That would be the
    first measured AC-Stark coefficient of the line, and it would validate the
    shape-based method against the same data.
-3. **Same-session high-density points (150–170 °C).**
+4. **Same-session high-density points (150–170 °C).**
    Converts reach on the density lever, rather than combinability, which the
    record has already settled. It rides the temperature-grid days if the oven
    allows, and could come back empty if the oven will not reach or hold the
@@ -56,7 +75,7 @@ physics:
    a refinement. Interleaving also fixes a second problem: in 2025 temperature
    ran monotonically down with elapsed time, so slow drift and density trends
    are confounded.
-4. **A tighter focus (~16 µm).**
+5. **A tighter focus (~16 µm).**
    Converts the bound on the third cumulant into a detection, or into a
    meaningful bound, on the deep-integration day. It is sized for the
    pessimistic end and is not a promised result. Runs as
@@ -121,7 +140,7 @@ dataset had to live with. None of it is scheduled or assigned. The specification
 that becomes possible.
 [`FUTURE_TRANSITIONS_titsapph.md`](../FUTURE_TRANSITIONS_titsapph.md) §4 ranks the
 papers these items would produce against the other candidate lines, by
-risk-adjusted distinctiveness per unit bench cost rather than by leverage, and
+expected distinctiveness per unit bench cost rather than by leverage, and
 puts the O-band null of §1.2 first of the four.
 
 ---

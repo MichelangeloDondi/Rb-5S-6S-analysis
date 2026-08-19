@@ -1,5 +1,14 @@
 *Chapter 2 of 11 of [the plan](../PLAN.md)*
 
+**The question.** If the session loses a day, what gets cut, and what must never be cut?
+**Takes.** The aim of chapter 1, and the block costs of chapter 6.
+**Gives.** A four-stage ranking of every observable, from the systematic floor that cutting cannot reach to the sampling that only refines.
+**Skip if.** You want what each block does rather than what survives a shrinking budget.
+
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> explains the measurement in six sentences, then defines every term
+> and symbol used anywhere in this repository.
+
 ## 3. Priorities if the budget shrinks
 
 The session's job is bounds to measurements. Rank the work by which bound becomes
@@ -10,9 +19,9 @@ modes.
 
 [`BIG_PICTURE.md`](../BIG_PICTURE.md) §5 also ranks new vapour-cell measurements,
 by leverage on the physics rather than by what a shrinking budget cuts, and its
-order is beam waist, the pull, same-session high temperature, tighter focus.
-The two orders differ because the criteria differ, and the items are the same
-items. The ramp-monitor export and the retro ratio are absent from that list
+order is beam waist, the independent laser width, the pull, same-session high
+temperature, tighter focus. The two orders differ because the criteria differ,
+and the items are the same items. The ramp-monitor export and the retro ratio are absent from that list
 because they are instrument repairs rather than new physics, which is exactly
 why they sit at the top of this one.
 
@@ -164,6 +173,34 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    high-temperature grid until the lag is characterised, so it enables rather
    than refines. Runs as §8 item 3.
 
+5a. **An independent measurement of the laser width, which is the only lever
+   that acts on identifiability rather than on noise.** The collisional width
+   and the laser width enter the lineshape as a Lorentzian core inside a
+   Gaussian envelope, and the fit separates them at a correlation of about
+   -0.92. That correlation is a property of the lineshape rather than of the
+   sample, so it does not improve with the session: measured on synthetic data
+   whose truth is known, it runs -0.9177 across a 60 MHz span and -0.9166
+   across 300 MHz, and ten times the traces reaches only -0.881. Every other
+   item on this list buys precision on a pair the fit still cannot separate.
+   Pinning one member reduces the other's variance to $(1-\rho^2)$ of its
+   joint value, so an external laser width is worth $1/\sqrt{1-\rho^2}$ on
+   the collisional width, which is 2.29 at this record's median correlation of
+   $-0.90$ and 2.97 at the bright condition where
+   `scripts/run_width_pinning.py` measures a scatter ratio of 3.18 plus or
+   minus 0.20 across nine seeds directly.
+   Anywhere in that band it is larger than any design change in this chapter,
+   and it is available from an instrument that never sees the cell. **Needs.** A heterodyne beat against a second laser, a delayed
+   self-heterodyne line, or a cavity ring-down width, whichever the lab
+   already has. No cell time. **Shots.** None on the atoms. **Empty.** If the
+   measurement returns only an upper bound, the bound still enters the fit as
+   a prior and buys a fraction of the same factor. **Record.** The measured
+   width with its own uncertainty and the averaging time it was measured over,
+   since a laser width is a function of the observation window and the fit
+   wants the one that matches a trace. The arithmetic behind the factor is
+   `rb5s6s.forecast.external_constraint_gain`, and the twin of
+   [chapter 7](07_acquisition-settings.md) is where a candidate value can be
+   tried before the instrument is booked.
+
 **stage 2, handle strength (S₀ ∝ (1+ρ)P/w₀²), served by two waists.**
 
 6. **Small waist (16 µm), the Stark, skew and lineshape-form configuration**:
@@ -214,4 +251,4 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
 
 ---
 
-*[The aim and the risks](01_aim-and-risks.md) · [Configurations and optics](03_optics-protocol.md)*
+*[The aim and the objections](01_aim-and-failure-modes.md) · [Configurations and optics](03_optics-protocol.md)*

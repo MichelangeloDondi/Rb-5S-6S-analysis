@@ -242,4 +242,4 @@ a reader.
 
 ---
 
-[← Selection rules](selection-rules.md) · *Atomic structure and selection rules, 2 of 6* · [Hyperfine structure →](hyperfine-structure.md)
+[← Selection rules](selection-rules.md) · *Atomic structure and selection rules, 2 of 7* · [Hyperfine structure →](hyperfine-structure.md)

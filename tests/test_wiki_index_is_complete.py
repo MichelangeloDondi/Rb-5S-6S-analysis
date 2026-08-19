@@ -113,3 +113,52 @@ def test_the_page_navigation_follows_the_index_order():
                 bad.append(f"{slug}: position should read {where!r}")
     assert not bad, ("page navigation disagrees with the order in "
                      "docs/wiki/README.md:\n  " + "\n  ".join(bad))
+
+_WORDS = {
+    "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+    "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
+    "twenty": 20, "forty-nine": 49, "fifty": 50, "fifty-one": 51,
+    "fifty-two": 52, "fifty-three": 53, "fifty-four": 54, "fifty-five": 55,
+}
+
+# A scar section says where THIS project got the concept wrong. "What can go
+# wrong" is the generic hazard section every page carries and is not one.
+_SCAR = re.compile(
+    r"^## (What this repository got wrong.*"
+    r"|.*, 20\d\d-\d\d-\d\d"
+    r"|A .*that was not .*"
+    r"|A .*that was actually .*"
+    r"|Two claims this twin refuted.*)$", re.M)
+
+
+def _spelled(text, tail):
+    """The number word immediately before `tail`, as an int."""
+    m = re.search(r"\b([A-Za-z-]+)\s+" + tail, text)
+    if not m:
+        return None
+    return _WORDS.get(m.group(1).lower())
+
+
+def test_the_index_counts_what_is_actually_there(capsys):
+    """The two spelled-out counts on the index page are not stale.
+
+    Reachability is checked above and cannot see a NUMBER written in prose.
+    Both counts here have drifted before: the module-range gloss in
+    docs/methods/ went stale the day a module was added, and its guard caught
+    it, which is the only reason this one exists for the wiki.
+    """
+    text = INDEX.read_text(encoding="utf-8")
+    pages = _pages()
+    scarred = sorted(n for n in pages
+                     if _SCAR.search((WIKI / n).read_text(encoding="utf-8")))
+    with capsys.disabled():
+        print(f"\n  wiki counts: {len(pages)} pages, "
+              f"{len(scarred)} carrying a scar section")
+    said_pages = _spelled(text, "pages in")
+    said_scars = _spelled(text, "of these pages")
+    assert said_pages == len(pages), (
+        f"docs/wiki/README.md says {said_pages} pages, {len(pages)} are on "
+        "disk. Write the number in words, and update both places it appears.")
+    assert said_scars == len(scarred), (
+        f"docs/wiki/README.md says {said_scars} pages carry a scar section, "
+        f"{len(scarred)} do:\n  " + "\n  ".join(scarred))

@@ -188,6 +188,75 @@ Spend structure before statistics: orders before days, blocks before repeats,
 interleaves before points, and one measured cadence instead of a guessed
 alternation.
 
+## What 2026-08-19 added to the spending rules
+
+Three findings from the model and acquisition work change how a session should
+be costed, and all three make the cheap options cheaper rather than the
+expensive ones better.
+
+**The temperature lever has no thermal ceiling worth costing.**
+`rb5s6s/blackbody.py` was built to find the temperature above which blackbody
+radiation enters the systematic budget. Across the cell's 70 to 130 C the
+differential shift is 79.9 to 161.0 Hz, four orders below the light-shift
+bound, and even a campaign chasing one kilohertz has an uncorrected ceiling
+near 340 C. So the density lever is limited by the oven and the cell, and a
+session need not spend anything defending against thermal radiation. One
+detail matters if the ceiling is ever recomputed: the shift scales as the
+4.35 power of temperature rather than the fourth, because the near-resonant
+6S to 6P contribution grows with T, so the naive exponent understates it in
+the direction that matters.
+
+**Four levers cost nothing but a decision, and between them they remove both
+confounds that most limit the 2025 record.** One vertical range across the
+ladder, randomised rung order, all four peaks in one trace, and both halves of
+the triangle kept. None needs hardware, bench time or a new alignment. They
+belong at the head of any session plan, before anything that costs.
+
+**The pedestal thermometer's precision requirement is undemanding.** A Doppler
+width goes as the square root of temperature, so a fractional width error is
+half the fractional temperature error, and resolving 20 K near 400 K asks for
+a width fit good to 2.5 per cent. That is one slow wide trace per temperature
+block, against a factor of 3.2 in density that an adopted temperature
+currently carries.
+
+### The rule these three suggest
+
+Cost a session by INFORMATION PER UNIT OF EFFORT rather than by the interest
+of the measurement. Sorted that way, the settings-only levers come first, the
+levers that convert an adopted quantity into a measured one come second, and
+anything needing new hardware comes last. The 2025 post-mortem's rules were
+about not overspending on a single block. This one is about the order in
+which blocks are chosen at all.
+
+## Costing a session against a twin rather than against intuition
+
+The digital twin of `examples/campaign_twin.py` and the forecast module make
+one spending question answerable in seconds that used to be answerable only
+in argument: what does this design change actually buy.
+
+Three results from it that bear directly on sizing.
+
+**The scan span and the repeat count are interchangeable within a factor.**
+Doubling points, doubling repeats and doubling power all reduce the width
+uncertainty by broadly comparable factors in the twin's measured scalings,
+so the choice among them is governed by dead time and drift exposure rather
+than by information.
+
+**Nothing in that family touches identifiability.** The width correlation is
+unmoved by all of it. A session that spends its whole budget on more of the
+same returns a tighter number for a quantity the record still cannot resolve
+into its components.
+
+**One measurement outside the fit is worth more than any of them.** The
+factor an independent laser width buys, between 2.3 and 3.2 depending on the
+condition it is evaluated at, is larger than any single design change in the
+twin's table, and it costs an afternoon on a different instrument.
+
+THE RULE THIS ADDS to the spending rules already here: before buying more of
+a measurement, run the twin and ask whether the quantity you want is limited
+by NOISE or by IDENTIFIABILITY. More data fixes the first and never the
+second, and the twin distinguishes them in seconds.
+
 ---
 
 *[Width, collisions and amplitude](05_width-collision-amplitude.md) · [Acquisition settings](07_acquisition-settings.md)*

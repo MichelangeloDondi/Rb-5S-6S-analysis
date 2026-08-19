@@ -426,8 +426,8 @@ bash scripts/run_all.sh   # 27 analysis stages in dependency order, then the
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. The runner writes 31 of the 46 committed CSVs, and the other
-twelve have their own scripts, five of which need raw trees that stay outside
+records. The runner writes 31 of the 47 committed CSVs, and the other
+thirteen have their own scripts, five of which need raw trees that stay outside
 the repository. The lock-drift measurement and its audit trail reproduce from
 a clone with no raw traces at all, off the committed acquisition clock.
 [`docs/REPRODUCING.md`](docs/REPRODUCING.md) says which script writes what,
@@ -449,6 +449,40 @@ looks reasonable. Run it first:
 python examples/synthetic_recovery.py
 ```
 
+**The framework is a digital twin of an experiment.** The same forward model
+that fits real data also GENERATES it, so an experiment that has not been
+built yet can be run in software first: choose a line and an apparatus,
+synthesise the traces the real instrument would record, fit them back with
+the fitter the real data would meet, and read the achievable precision off
+the fit's own covariance. [docs/TUTORIAL.md](docs/TUTORIAL.md) walks that
+loop for a line of your choosing, and its every code block runs as
+
+```
+python examples/tutorial_forecast.py
+```
+
+The worked case is this project's own next campaign.
+`examples/campaign_twin.py` builds the dataset that campaign aims to collect,
+with the hyperfine amplitudes and cascade depletion, the saturation
+companions, the AC-Stark ramp, the blackbody shift, the measured noise law
+and the planned acquisition design all present, fits it back, and reports
+what the campaign would establish. It runs two worlds, one with the predicted
+light shift injected and one with nothing injected, because a design that
+finds what was put in has demonstrated only half of what matters.
+
+The expert layer is a second step, deliberately not the first. Cascade
+populations under repeated excitation, blackbody as a temperature boundary,
+and model comparison as an evidence vector are exercised end to end by
+
+```
+python examples/full_model_tour.py
+```
+
+which also reads from no repository data. Meeting the core architecture before
+those modules is the intended order, and the whole route is
+`synthetic_recovery.py`, then [the tutorial](docs/TUTORIAL.md), then
+`your_line.ipynb` for forward modelling, then `full_model_tour.py`.
+
 **The rubidium result** is experiment-specific and still under scientific
 adjudication. Every number in `results/` carries a status label (BOUND,
 PRELIM, DIAGNOSTIC, CALIB, ENVELOPE) and those labels are load-bearing: a
@@ -463,7 +497,9 @@ would be equally correct if both changed tomorrow.
 
 WHAT IS NOT YET TRUE: no independent scientist has installed this and applied
 it to a dataset that is not ours, so this is a release candidate rather than a
-community release.
+community release. What the release act itself requires, and which of those
+requirements have already been verified, is
+[the release checklist](docs/RELEASE_CHECKLIST.md).
 
 ## Repository map
 
@@ -473,8 +509,13 @@ rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
             transit Monte-Carlo, amplitude analyses, shared utilities
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
 examples/   synthetic_recovery.py, the package's own known-truth check on
-            data it generates itself; your_line.ipynb, the pipeline pointed
-            at a different line by editing one dictionary
+            data it generates itself; tutorial_forecast.py, every code block
+            of docs/TUTORIAL.md in order; campaign_twin.py, the digital twin
+            of this project's next campaign with its full physics, run against
+            an injected truth and against a null; full_model_tour.py, the
+            expert modules (cascade depletion, blackbody boundary, model
+            comparison) end to end; your_line.ipynb, the pipeline pointed at a
+            different line by editing one dictionary
 data_raw/   the frozen 2025 dataset (297 unique traces) + MANIFEST.csv
 data_recovered/  the backup-recovered layer: the acquisition clock
             (CLOCK.csv), backup-only discards, degradation lineage

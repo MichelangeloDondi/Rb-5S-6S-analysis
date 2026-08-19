@@ -89,6 +89,34 @@ resonances sit inside the thermal band. It shifts the line and does not
 broaden it, which is why it cannot reach the width results this repository
 reports.
 
+## The campaign boundary it sets
+
+`rb5s6s/blackbody.py` turns this into a design number. The deliverable is not
+"blackbody is included" but a FAMILY,
+
+    T_max(target precision),
+
+the temperature above which thermal radiation enters the systematic budget at
+a given target, with two branches. UNCORRECTED, where a campaign does not
+subtract the shift, the ceiling is where the shift itself reaches the target.
+CORRECTED, where it computes and subtracts it, only the shift's own
+uncertainty remains and the ceiling is far higher. The gap between the two is
+the value of doing the correction.
+
+For this experiment the answer is that **the boundary is not binding**. Across
+the cell's 70 to 130 C range the differential shift runs 79.9 to 161.0 Hz,
+four orders of magnitude below the light-shift bound the record quotes, and
+even a campaign chasing one kilohertz has an uncorrected ceiling near 340 C,
+far above any vapour cell this experiment would use. The temperature lever is
+limited by the oven and the cell, not by thermal radiation.
+
+One detail is worth carrying, because using the naive scaling would err in the
+unsafe direction. A pure quadratic Stark shift in a thermal field scales as
+the fourth power of temperature. The measured shift scales as **T to the
+4.35**, the excess being the near-resonant 6S to 6P contribution whose weight
+grows with temperature, so a model using four understates the shift where a
+ceiling matters most.
+
 ## What can go wrong
 
 The commonest modelling error is to reason from the POWER spectrum, whose
@@ -158,4 +186,4 @@ a reader.
 
 ---
 
-[← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 7 of 7* · [wiki index →](README.md)
+[← Bessel functions](bessel-functions.md) · *Driving, modulating and detecting, 8 of 8* · [wiki index →](README.md)

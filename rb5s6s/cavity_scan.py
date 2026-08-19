@@ -12,7 +12,7 @@ and the level-scheme figure quote from the digitised record is computed here,
 from the committed CSV, under rules stated as module constants.
 
 The record. `docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv`,
-700 samples over one 5.00 s scan period (7.15 ms pitch), two channels in
+700 samples over one 5.00 s scan period (7.15 ms spacing), two channels in
 scope divisions. It is a digitisation of a photographed display, and that
 sets what the integrals can carry: the display compresses the tallest
 spikes (the two 85Rb up-sweep peaks read equal heights to ~1% where the

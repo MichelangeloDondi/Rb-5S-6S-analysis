@@ -50,26 +50,68 @@ costed against exactly that.*
 
 | # | chapter | what it covers |
 |---|---|---|
-| 1 | [The aim and the risks](plan/01_aim-and-risks.md) | what the session is for, and the objections a referee would raise first |
-| 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut |
+| 1 | [The aim and the objections](plan/01_aim-and-failure-modes.md) | what the session is for, and the objections a referee would raise first |
+| 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
-| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, and the amplitude programme |
-| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the block register, session sizing, and the rules drawn from the 2025 post-mortem |
-| 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, record length and sweep rate, and why the 2025 choices bounded what could be learned |
-| 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, and the wavemeter shots |
-| 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep, the scan axis, the modulator and the atomic rulers |
-| 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes, the pedestal, the day-one list, polarisation, and the comb as a statistical instrument |
+| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, and the cascade's competing prediction that makes the four-peak trace discriminating |
+| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the block register, session sizing, the rules drawn from the 2025 post-mortem, and costing by information per unit of effort |
+| 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
+| 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the sweep-direction column, and the wavemeter shots |
+| 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
+| 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes, the pedestal thermometer, the day-one list including the split-signal dual recording, polarisation, and the comb as a statistical instrument |
 | 11 | [Beyond 993 nm](plan/11_beyond-993.md) | the riders that cost no drive time, and the analysis plan of record |
 
 **The block register**, which is the table a session actually runs from, is at
 the head of [chapter 6](plan/06_sizing-and-spending-rules.md).
 
+## This proposal can be run before it is run
+
+Everything below is a prediction about a session that has not happened, and a
+prediction is worth what it costs to check. The forward model that fits the
+2025 data also GENERATES data, so the campaign specified here exists in
+software before it exists on an optical table.
+
+`examples/campaign_twin.py` is that digital twin. It builds the dataset this
+proposal aims to collect, with the physics the chapters argue about actually
+present: hyperfine amplitudes with cascade depletion, the saturation
+companions, the AC-Stark ramp, the blackbody shift, the measured
+signal-dependent noise law, and chapter 7's acquisition design including its
+one-range quantisation and a session drift. Then it fits that dataset back and
+reports what the campaign would establish.
+
+Two runs, not one. The predicted light shift is injected in the first, and
+NOTHING is injected in the second, because a design that detects an effect
+that was put in has proved only half of what matters. The second run asks
+whether it stays quiet when there is nothing to find. What no run of the twin
+establishes is the physics itself: agreement means the record is internally
+consistent, never that the model describes nature, and
+[the digital twin](wiki/the-digital-twin.md) states that boundary in full.
+The reader's own version of the loop, on a line of their choosing, is
+[TUTORIAL.md](TUTORIAL.md).
+
+What this changes for a reader of the proposal is the standing of its numbers.
+A claim that some block improves a quantity by a factor is either supported by
+a simulation or it is an expectation, and the chapters now say which. Where the
+twin refuted a claim, the record says so: an early draft of the tutorial taught
+that widening the scan span breaks the width degeneracy, and the twin measured
+the correlation moving from -0.9177 to -0.9166 across a factor of five in span,
+which is no movement at all. That correction is in
+[HISTORY.md](HISTORY.md), and the surviving lever is in
+[chapter 5](plan/05_width-collision-amplitude.md).
+
+The 2026-08-19 design review of chapters 7 and 8 was run the same way: every
+modulation depth, drive frequency and scan rate now in those chapters was
+adjudicated by computing the design's information under the measured noise
+law rather than by preference, five of the six candidate arguments failed
+under computation before they could ship, and the corrections are each
+recorded in [HISTORY.md](HISTORY.md).
+
 ## Roles, so that four documents need not be reconciled by the reader
 
 This file owns procedure: what would be set up, in what order, against which
 go/no-go criteria. [`FUTURE_TRANSITIONS_titsapph.md`](FUTURE_TRANSITIONS_titsapph.md)
-owns the cost, yield and risk table across all candidate lines,
+owns the cost, yield and failure-mode table across all candidate lines,
 [`quantities/`](quantities/README.md) owns the per-quantity view of the same
 material, where each page states the three levels of improvement available for
 one quantity and the recipe for each, and
@@ -126,8 +168,8 @@ The chapters keep the section numbers this document has always used, so a
 citation of the form `PLAN §7a` still names exactly what it named before. This
 index maps each section to the chapter that now holds it.
 
-**1.** Aim, in [chapter 1](plan/01_aim-and-risks.md).
-**2.** Risks a referee would raise, in [chapter 1](plan/01_aim-and-risks.md).
+**1.** Aim, in [chapter 1](plan/01_aim-and-failure-modes.md).
+**2.** The objections a referee would raise, in [chapter 1](plan/01_aim-and-failure-modes.md).
 **3.** Priorities if the budget shrinks, in [chapter 2](plan/02_priorities.md).
 **4.** Configurations and optics protocol, in [chapter 3](plan/03_optics-protocol.md), whose sub-items are
 **4.1.** the geometry of record,
@@ -150,8 +192,12 @@ index maps each section to the chapter that now holds it.
 **10.7.**, including
 **10.3.** the interleaving rule and
 **10.5.** the calibration-bracket rule.
-**10a.** Acquisition settings, in [chapter 7](plan/07_acquisition-settings.md).
-**10b.** The acquisition record, in [chapter 8](plan/08_the-acquisition-record.md).
+**10a.** Acquisition settings, in [chapter 7](plan/07_acquisition-settings.md), whose card now closes with
+**10a.1.** the modulation and rate menu, one setting per purpose.
+**10b.** The acquisition record, in [chapter 8](plan/08_the-acquisition-record.md), whose sub-items include
+**10b.4a.** the sub-multiple coincidence, where the pair separation becomes a measurement of the 6S hyperfine splitting,
+**10b.4b.** the sweep-direction and mains-phase columns, which the comb clock is blocked on, and
+**10b.4c.** the two-tone cascade for the gaps between the line clusters.
 **10c.** The fixed cavity lock, in [chapter 9](plan/09_the-fixed-lock.md) and [chapter 10](plan/10_the-fixed-lock-instrument.md).
 **11.** Wavemeter calibration shots, in [chapter 8](plan/08_the-acquisition-record.md).
 **12.** Beyond 993 nm, in [chapter 11](plan/11_beyond-993.md).

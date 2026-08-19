@@ -219,6 +219,27 @@ systematic as fig1.*
 - No environmental coefficient of the 993 nm line is measured here.
   The coefficients are bounds, and the collisional floor is not read as
   a detection of Rb-Rb collisions.
+- **No claim that the laser broadening is Gaussian, and the fit assumes it
+  is.** Every lineshape in this record convolves the natural Lorentzian with
+  a GAUSSIAN kernel for the laser, which is what slow frequency noise
+  produces. Fast noise produces a LORENTZIAN laser line instead, and a
+  Lorentzian contribution is absorbed by the collisional width rather than
+  inflating its error, so the kernel choice is a possible bias on
+  $\beta_\text{self}$ and not only a modelling preference. The data do not
+  settle it. The model-form comparison of M8 puts a Gaussian kernel against a
+  cusped two-sided exponential at $\Delta\text{BIC}$ of -0.1 to +3.7 across the four
+  peaks, which is indistinguishable at the gate this record uses. Nor is the
+  laser's frequency-noise spectrum measured anywhere: the noise law of M1 is
+  the DETECTION noise on the photodiode voltage, a different quantity. What
+  the record does have is the M2 stage-4b limit, which excludes the
+  low-frequency-heavy spectra that would make the kernel Gaussian, so the
+  direction the evidence points is the unfavourable one. Settling it needs
+  the laser's frequency-noise spectrum, in the band the width channel
+  integrates. Two routes exist and neither has been run: the lock's own
+  error signal, which costs no cell time, and a fast-scan comb block, where
+  at ten times the 2025 sweep rate the tooth clock of M2 stage 4b samples
+  inside that band directly
+  ([plan chapter 7](plan/07_acquisition-settings.md), the menu).
 - No claim that the light-shift bounds are tight. They are known to be
   conservative by a measured factor rather than by argument, because two
   effects carry the same square-of-power signature as the ramp and were

@@ -61,12 +61,19 @@ It enters the record in three distinct places, and they are worth
 distinguishing because the mechanism is the same and the unit is not.
 
   * **Within a trace**, where adjacent samples are not independent. This is
-    the 3.8 above. **Attributing it correctly took two attempts and the
-    lesson generalises**: it was first read as the detection chain's own
-    response time, and it is in fact the acquisition's high-resolution mode,
-    which averages adjacent samples in hardware. The distinction matters
-    because a chain's response is a constraint while a smoothing mode is a
-    SETTING, and the second can be reduced when bandwidth is wanted. Either
+    the 3.8 above. **Attributing it correctly has so far taken three
+    attempts and the lesson generalises.** It was first read as the detection
+    chain's own response time, then as the high-resolution mode's
+    adjacent-sample averaging. The rehearsal then refuted the chain outright:
+    its hundred times finer sampling shows the correlation already gone
+    within one 10 us sample at the same amplifier gain. And a boxcar that
+    decimates to the stored rate would leave INDEPENDENT samples, so the
+    simple form of the mode explanation does not close it either. What stands
+    is that the correlation belongs to acquisition-side filtering, whose
+    exact form the record does not pin down. The distinction that matters
+    survives every attempt: a chain's response is a CONSTRAINT while
+    acquisition filtering is a SETTING, and a setting can be changed when
+    bandwidth is wanted. Either
     way, oversampling beyond the correlation length adds points without
     adding information.
   * **Within a condition**, where the repeats of one cell share drift and
@@ -149,4 +156,4 @@ a reader.
 
 ---
 
-[← Shot noise and technical noise](shot-noise-and-technical-noise.md) · *Noise and its management, 3 of 5* · [Digitisation and dynamic range →](digitisation-and-dynamic-range.md)
+[← Shot noise and technical noise](shot-noise-and-technical-noise.md) · *Noise and its management, 3 of 6* · [Digitisation and dynamic range →](digitisation-and-dynamic-range.md)

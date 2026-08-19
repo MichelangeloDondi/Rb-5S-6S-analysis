@@ -176,4 +176,4 @@ for the provenance of a fourth point before quoting a bound that needed one.
 
 ---
 
-[← Saturation](saturation.md) · *Experimental spectroscopy, 8 of 8* · [wiki index →](README.md)
+[← Saturation](saturation.md) · *Experimental spectroscopy, 8 of 9* · [Vapour density and temperature →](vapour-density-and-temperature.md)

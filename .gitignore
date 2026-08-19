@@ -1,13 +1,25 @@
+# Generated outputs: results/ IS committed (small, ~180 KB) so the README's
+# claims are verifiable without a run (review round 3). Regenerate with the
+# scripts; the committed copy is the documented run. Only the huge raw QC dump
+# stays out.
+# results/qc_metrics.csv was ignored as a "scratch dump" until 2026-07-27,
+# when two things showed it should not be: the README advertises a public
+# reproduction path (run_qc.py -> run_drift_settling.py) that CANNOT work
+# without raw traces, so the public mirror hit FileNotFoundError; and M20 reads
+# it to rebuild the laser history. It is 112 KB of derived per-trace scalars --
+# baseline, snr, peak position, widths -- with no raw samples, the same
+# category as the committed ruler_traces.csv. Now committed.
+
 # Python
 __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-# no trailing slash, so a symlinked .venv is matched too, and a glob so a
-# RENAMED venv is matched as well: on 2026-08-13 the archive's dev venv was
-# renamed .venv-py39 during the Python migration and `git add -A` staged
-# 14233 files of it, because the pattern was an exact name.
+# Any virtualenv, not just the one called .venv. On 2026-08-13 the dev venv
+# was renamed to .venv-py39 during the Python migration, which this pattern
+# did not match, and a `git add -A` staged 14233 files and 4.5M lines of it
+# into a commit. The glob closes that: .venv, .venv-py39, .venv-anything.
 .venv*
 
 # macOS
@@ -16,12 +28,32 @@ __pycache__/
 # source-literature PDFs (possibly copyrighted): keep the index + bib, not the PDFs
 PDF_papers/
 
-# reference-setup notes and photographs
+# The reference-setup working directory, excluded whole. The photos carry
+# equipment serials and a purchaser name, and the transcription beside them
+# names a colleague in a process role, so publication is an open decision.
+# Twice in one night a broad `git add docs/` re-tracked the notes past the
+# restore-staged discipline, so the guard is structural rather than per file.
+# 2026-08-05: the one tracked file under it, an operator instruction sheet in
+# photos/, was untracked too. It told a reader what was being withheld and
+# pointed at a file this list excludes, and the path the figure code reads is
+# in the code. To publish later: delete this line and curate the content first.
 docs/reference_setup/
 
-# Local working material, personal and correspondence documents, and
-# unpublished drafts. tests/test_repo_hygiene.py fails if any path matching
-# these ever becomes tracked. Both spellings of each name are listed.
+# Personal / correspondence working files kept in the tree for convenience but
+# never published. These were previously protected only by .git/info/exclude,
+# which is local to one clone and does not travel — so a fresh clone elsewhere
+# had no protection at all. Patterns are deliberately generic.
+# tests/test_repo_hygiene.py fails if any of these ever becomes tracked.
+# ---------------------------------------------------------------------------
+# EVERYTHING under private/ is excluded, wholesale and by structure.
+# 2026-07-27: this replaces a list of ten filename globs that had to guess how
+# each private file would be named. It failed exactly that way -- three
+# ChatGPT_redteam_*.md files sat UNIGNORED because every glob assumed the
+# spelling "red_team". A directory cannot be misspelled into visibility.
+# The globs below are kept as a second line of defence for anything that lands
+# in docs/ by mistake.
+# Working rules for Claude sessions. Private: it names the two repositories
+# including the private one, and records conventions rather than results.
 /CLAUDE.md
 
 /private/
@@ -29,13 +61,15 @@ docs/reference_setup/
 docs/brief_*
 docs/*audit*
 docs/*red_team*
+# same material, hyphen-free spelling: external critique of the application
+# itself (names the PI, referees, career strategy). 2026-07-27: three such
+# files were sitting UNIGNORED because the glob above assumes an underscore.
 docs/*redteam*
-docs/**/*red_team*
-docs/**/*redteam*
 docs/ChatGPT*
 ChatGPT*
 docs/CV_*
 docs/PAPERS_PORTFOLIO.md
+# manuscript drafts: unfinished prose with [X] placeholders, not results
 docs/PAPER1_SKELETON.md
 docs/paper1/
 docs/*inquiry*
@@ -45,12 +79,18 @@ docs/linkedin*
 # reference PDFs dropped into docs are never published
 docs/apparatus/*.pdf
 docs/*.pdf
-.venv/
+# 2026-08-05: two application drafts sat in docs/ held out by `docs/brief_*` and
+# `docs/CV_*` alone, one of them naming a colleague. They moved to private/, and
+# this glob is the second line of defence for the next one.
 docs/*.tex
 
-# local tool scratch and nested checkouts
+# agent scratch: worktrees and local tool settings. Nothing here has ever been
+# tracked, and a stray worktree under .claude/ would otherwise be swept up by
+# the broad `git add -A` this repo commits with.
 .claude/
 docs/reference_setup/photos/
 
-# the gate's verdict sentinel: a local artefact, never committed
+# The gate's verdict sentinel (scripts/ci_gate.sh). It records the gate's own
+# exit status where a caller's pipe or trailing echo cannot overwrite it, per
+# protocol rule 19.24. Local run state, never tracked.
 .ci_gate_verdict

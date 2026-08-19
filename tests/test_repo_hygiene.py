@@ -123,6 +123,17 @@ FORBIDDEN = {
         r"\buser(?:'s)?\b(?!name)", r"\bdigestion turn\b", r"\bas discussed\b",
         r"\bper your\b", r"\byou asked\b", r"\bas requested\b",
     ],
+    # OWNER INSTRUCTION 2026-08-19. Both words import a register this record
+    # does not want. "Risk" turns a stated failure mode into a mood, and its
+    # honest replacements are already in use here: failure mode, what would
+    # defeat the session, the objection a referee would raise, the empty case.
+    # "Pitch" frames a scientific case as a sale. Legitimate technical senses
+    # exist (a quoted title, a frozen preregistration record) and those lines
+    # carry a term-of-art marker with a reason rather than an exemption.
+    "sales and mood register": [
+        r"\brisks?\b", r"\brisk(?:y|ed|ing|ier|iest)\b",
+        r"\bat risk\b", r"\bpitch(?:es|ed|ing)?\b",
+    ],
     "assistant/tool name": [
         r"\bchatgpt\b", r"\bclaude\b", r"\banthropic\b", r"\bopenai\b",
         r"\bcopilot\b", r"\bas an ai\b", r"\blanguage model\b",
@@ -272,6 +283,43 @@ def _prose_files() -> list[str]:
 _FORBIDDEN_EXEMPT_FILES = {"docs/HISTORY.md"}
 
 
+# THE TERM-OF-ART MARKER (2026-08-19). Some banned words have a legitimate
+# technical sense somewhere in this tree: a quoted literature title, a frozen
+# preregistration record that must not be edited after the fact, a statistical
+# term with no synonym. Distorting those to satisfy a vocabulary rule makes
+# the document worse, and adding whole files to the exempt set makes the
+# guard blind to everything else in them.
+#
+# So a SINGLE LINE may be marked, and the marker must carry a reason. Write
+#     <!-- term-of-art: <why this word has to stand here> -->
+# on the line itself or on the line immediately above it, in Markdown, or the
+# same text in a Python comment. A bare marker with no reason does not count,
+# which is the whole point: the cost of keeping the word is writing down why.
+# Three ALPHABETIC words at least. Counting bare tokens let the comment's own
+# closing "-->" pay for one of them, so "term-of-art: quoted block" passed on
+# two real words. The reason has to read as a reason.
+_MARKER = re.compile(r"term-of-art:\s*(?:[A-Za-z][\w'-]*\W+){2,}[A-Za-z][\w'-]*")
+
+
+def _marked(lines, i):
+    """True if a reasoned marker heads the block line i (1-based) sits in.
+
+    The scope is the paragraph: search upward from the line until a blank one.
+    Line scope was tried first and is too tight to use. A wrapped sentence can
+    put the same word on two consecutive lines, and interleaving HTML comments
+    inside a frozen preregistration record to satisfy a guard damages the
+    record the marker exists to protect. A marker therefore heads the block it
+    excuses, and stops at the blank line, so it can never quietly cover a
+    whole file.
+    """
+    k = i - 1
+    while k >= 0 and lines[k].strip():
+        if _MARKER.search(lines[k]):
+            return True
+        k -= 1
+    return False
+
+
 @pytest.mark.parametrize("label", sorted(FORBIDDEN))
 def test_no_forbidden_phrases(label):
     pats = [re.compile(p, re.I) for p in FORBIDDEN[label]]
@@ -283,11 +331,14 @@ def test_no_forbidden_phrases(label):
             txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        for i, line in enumerate(txt.split("\n"), 1):
+        lines = txt.split("\n")
+        for i, line in enumerate(lines, 1):
             for pat in pats:
-                if pat.search(line):
+                if pat.search(line) and not _marked(lines, i):
                     hits.append(f"{rel}:{i}: {line.strip()[:90]}")
-    assert not hits, f"{label} in published files:\n  " + "\n  ".join(hits[:20])
+    assert not hits, (f"{label} in published files:\n  " + "\n  ".join(hits[:20])
+                      + "\n\nIf a word genuinely has to stand, mark its line with "
+                        "<!-- term-of-art: reason --> and say why.")
 
 
 def test_no_doubled_words():
@@ -643,7 +694,15 @@ def test_module_range_glosses_are_not_stale():
     for path in [ROOT / p for p in _tan("docs/*.md", "docs/**/*.md")] + [ROOT / "README.md",
                                                         ROOT / "rb5s6s" / "__init__.py"]:
         text = path.read_text(encoding="utf-8")
-        for m in re.finditer(r"M0\s*[–-]\s*M?(\d+)", text):
+        # The separator is spelled at least four ways in this tree: an en
+        # dash, a hyphen, an ellipsis, and the word "to". A guard that knew
+        # only the first two passed over 'M0 ... M33' in methods.md and
+        # 'M1 to M30' in GLOSSARY.md while catching the en-dash form in the
+        # same sweep, which is a guard reporting green on the spelling it
+        # happens to know. The start is still pinned to M0 or M1 so a genuine
+        # sub-range like 'M23 to M25' is not read as a gloss of the whole set.
+        for m in re.finditer(r"M[01]\s*(?:[\u2013\u2014-]|\u2026|\.\.\.|\bto\b)"
+                             r"\s*M?(\d+)", text):
             hi = int(m.group(1))
             # a range that ends below `top` is stale UNLESS it is explicitly a
             # historical/pipeline-stage range (those name the older scheme)

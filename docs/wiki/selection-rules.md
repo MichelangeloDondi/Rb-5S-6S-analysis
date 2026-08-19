@@ -216,4 +216,4 @@ a reader.
 
 ---
 
-[← wiki index](README.md) · *Atomic structure and selection rules, 1 of 6* · [Multiphoton transitions →](multiphoton-transitions.md)
+[← wiki index](README.md) · *Atomic structure and selection rules, 1 of 7* · [Multiphoton transitions →](multiphoton-transitions.md)

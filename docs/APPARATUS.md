@@ -308,6 +308,13 @@ controller top-right.*
 | Also on the bench (not used for the dataset) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 GS/s); LeCroy **WaveSurfer 10** (1 GHz, 10 GS/s) | PHOTO 2025-07-29 |
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
 
+The instrument-native comparison of the three scopes, measured from the files
+each one wrote and from their manuals, is in
+[the acquisition settings chapter](plan/07_acquisition-settings.md), together
+with the next campaign's role split: the quantitative sweeps on the Agilent,
+the fast-record diagnostics on the 3104z, and a split-signal subset recorded on
+both chains at once as the detection-versus-physics discriminator.
+
 **OPEN, and it matters more than its size suggests: the acquisition MODE of
 the archived traces is unresolved, and no per-trace instrument setting was
 ever stored.**
@@ -315,7 +322,15 @@ ever stored.**
   * The one photographed acquisition mode on this page reads **Averaging 32,
     12.5 kSa/s**, while the experimenter's recollection (2026-08-19) is that
     the campaign ran in **High Resolution** mode. On this instrument the two
-    are mutually exclusive. The photographed rate also disagrees with the
+    are mutually exclusive.
+  * The traces themselves settle part of it (measured 2026-08-19): the
+    quantisation grid of the committed campaign files spans **11.86 bits**
+    across the signal swing, which an eight-bit converter cannot write at any
+    record length, so a resolution-raising mode was ACTIVE. The grid alone
+    cannot distinguish High Resolution from Averaging, since both refine it.
+    What tips the reading is the pairing of the stored 2 kSa/s format with the
+    experimenter's statement, and the repeat scatter, which the next bullet
+    explains an averaging mode would have shrunk. The photographed rate also disagrees with the
     archive's own 2 kSa/s trace format, so the photograph may record a
     different configuration entirely, which is the likeliest reading and is
     not established.
@@ -644,6 +659,7 @@ acquisition drift, which the dataset puts two orders below.*
 > record: the display compresses the tallest spikes (the two ⁸⁵ up-sweep
 > peaks read equal heights to about 1% where the populations put them 1.4
 > apart), the ⁸⁷ F=1 crossings span only three samples each at the 7 ms
+<!-- term-of-art: quoted block, and digitisation pitch is the standard name for a sampling interval -->
 > digitisation pitch (its up-sweep integral reads 1/5 of ⁸⁷ F=2's against a
 > predicted 0.6), and the down-sweep is compressed outright, its ⁸⁵ ratio
 > reading 0.65. That is why the level-scheme figure

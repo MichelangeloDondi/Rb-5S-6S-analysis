@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). It runs 25 analysis
+# already-committed data_raw/ (see README.md "Reproduce"). It runs 27 analysis
 # stages, then the figures, the results ledger and the CSV status column. It is
-# not the whole repository. Twelve committed CSVs are written by eleven scripts
+# not the whole repository. Thirteen committed CSVs are written by twelve scripts
 # this file never calls, listed in README.md "Reproduce". Five of those need
 # the prehistory or pilot trees, which stay outside the repository (the
 # rehearsal traces sit inside the prehistory tree, and data_raw/excluded/ is

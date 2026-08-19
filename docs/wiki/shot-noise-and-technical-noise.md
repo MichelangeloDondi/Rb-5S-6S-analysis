@@ -153,4 +153,4 @@ a reader.
 
 ---
 
-[← The noise law](the-noise-law.md) · *Noise and its management, 2 of 5* · [Correlated samples and effective sample size →](correlated-samples-and-effective-sample-size.md)
+[← The noise law](the-noise-law.md) · *Noise and its management, 2 of 6* · [Correlated samples and effective sample size →](correlated-samples-and-effective-sample-size.md)

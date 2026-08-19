@@ -131,6 +131,14 @@ the export signature confirms which instrument wrote the files. Every CSV in
 the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision
 format and not LeCroy's.
 
+The voltage grid of those files spans 11.86 bits across the signal swing,
+which an eight-bit converter cannot write at any record length, so the
+scope's High Resolution mode was active throughout. The vertical range that
+mode was applied on changed at every rung of the power ladder, by a factor
+of 347 in quantisation step across the campaign, and what that costs and
+how the next session avoids it is
+[the acquisition settings chapter](plan/07_acquisition-settings.md).
+
 ## 2. Campaign design and chronology (experimenter-confirmed)
 
 **When.** The whole campaign was acquired in a single run of about **24 hours,

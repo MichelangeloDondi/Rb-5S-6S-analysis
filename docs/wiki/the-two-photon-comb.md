@@ -112,6 +112,113 @@ broadening within a single trace. That comparison is exactly what
 comparing nested models by what the extra freedom actually buys rather than
 by preference.
 
+## Two spacings from one drive, and where the factor of two lives
+
+The sidebands sit at $\nu_c + n\Omega$ on each beam, and there is no optical
+component anywhere at $\Omega/2$. Yet the observed teeth stand $\Omega/2$
+apart on the laser axis. The resolution is that a two-photon resonance
+constrains the SUM: $2\nu_c + s\Omega = \nu_0$ with $s = n + m$, so the
+laser sits at $\nu_c = (\nu_0 - s\Omega)/2$ and consecutive $s$ move the sum
+by $\Omega$ but the laser by $\Omega/2$. The half-spacing belongs to the
+scan axis rather than to any photon, and a pair such as $(+1,-1)$ has $s=0$
+and lands on the carrier tooth rather than making a new one. Running the
+drive and the spacing together has already halved a hardware recommendation
+once, which is why this paragraph exists.
+
+## Tooth positions are not teeth
+
+A tooth needs a position AND a resonance. The positions repeat every
+$\Omega/2$ across the whole sweep, and the teeth exist only where an atomic
+line supplies the resonance, with heights falling as $J_s(2\beta)^2$, which
+at practical depths leaves about five usable teeth per line. Over a
+multi-GHz span the comb is therefore a few CLUSTERS a few tens of MHz wide
+around the lines, with the gaps between them carrying no marks at all.
+Counting positions where teeth are needed overstates the ruler by an order
+of magnitude, and this record made exactly that error once, quoting 192
+positions where 20 teeth existed.
+
+The repair, where the gaps must be measured, is a SECOND drive in cascade:
+with two tones the tooth at offset $s_1\Omega_1 + s_2\Omega_2$ carries
+$J_{s_1}(2\beta_1)^2 J_{s_2}(2\beta_2)^2$, so each coarse order is a
+displaced copy of the whole fine cluster and the islands become a lattice.
+The cost is that the carrier keeps only $J_0(2\beta_2)^2$ of its height,
+under a tenth at gap-filling depths, so the cascade belongs on interleaved
+calibration sweeps rather than on the science sweeps.
+
+## What the teeth are worth as statistics
+
+Each tooth is a copy of the atomic line, so a comb trace looks like free
+replicas, and per sweep it never is: phase modulation conserves the signal
+while the detector floor taxes every copy, so an RF-on sweep carries less
+width information than the RF-off sweep it replaces. The design question is
+usually different, though. Where the RF-on sweeps exist ANYWAY, as
+calibration brackets, their information is marginal and free, and it joins
+the same likelihood the science sweeps feed. The depth then splits by the
+trace's job: a trace that exists to be a ruler goes deep, because spacing
+information is lever-weighted and climbs with depth, and a trace that
+exists for widths stays shallow or unmodulated. Within one trace every
+tooth and every line also shares a single detector gain, which makes
+intra-trace height ratios immune to the gain drift that plagues ratios
+assembled across traces.
+
+## Tooth heights between two limits, and where the crossovers go
+
+The weights $J_s(2\beta)^2$ are not a property of the modulator. They are an
+interference result, and they hold only when every pathway to a tooth
+carries the same phase.
+
+A tooth at sum offset $s$ is fed by every sideband pair $(n, s-n)$: the
+carrier tooth by $(0,0)$, by $(+1,-1)$, by $(+2,-2)$, and so on. At zero
+relative delay these pathways interfere, and their coherent sum is
+$J_s(2\beta)$ by the Bessel addition theorem, which is why a carrier can
+NULL at $2\beta = 2.405$ while all its crossover pathways still exist: they
+cancel. One photon of each pair comes from the retro beam, though, delayed
+by $\tau(z)$ for an atom at $z$, so the pathway $(n, s-n)$ carries a phase
+$(s-n)\Omega\tau$, and the sum collapses exactly to a single tone at
+EFFECTIVE depth $2\beta\cos(\pi f\tau)$. An atom therefore shows weights
+$J_s(2\beta\cos(\pi f\tau))^2$, and a cell shows their average.
+
+The average is where the crossovers come back. Smearing $\tau$ across a
+cell undoes the cancellation, the $(k,-k)$ pairs return to the carrier as
+added height, and the null at 2.405 fills in. Whether any of this matters
+is one number, the phase $2\pi f\tau$: at a 12.5 MHz drive across a 10 cm
+cell it is 0.05 rad and the zero-delay weights hold to two parts in a
+thousand, while at 580 MHz it is order three, the effective depth sweeps
+through zero, and a high-order tooth computed in the zero-delay limit can
+be wrong by a factor of fifty.
+
+Two escapes exist. Modulate ONE ARM ONLY, between the cell and the retro
+mirror: each pathway then carries a distinct order, nothing interferes, and
+the zero-delay weights are exact at any drive. Or stay at a drive low
+enough that the phase is small, which is what this record's 12.5 MHz comb
+does without having had to know it. Residual amplitude modulation adds a
+separate, MEASURED deviation on top of either limit, the $\pm k$ height
+asymmetry the constants file documents.
+`rb5s6s.forecast.comb_tooth_weights` computes both limits and the average,
+with the identity tested against the explicit pathway sum.
+
+## The comb and the atomic pairs divide the labour
+
+An experiment with hyperfine structure carries a second ruler for free: two
+lines of the same isotope are separated by a combination of hyperfine
+constants, often known to kHz. It is tempting to ask which ruler is better,
+and the question is wrong, because they answer different needs.
+
+The atomic pair is the ANCHOR. It is absolute and costs nothing, and it is
+sparse: two marks per isotope, far apart, saying nothing about the axis
+between them, and immune to the light shift at first order when the shift is
+scalar, since both members move identically. The comb is the INTERPOLATOR and
+the CLOCK: a mark every tooth spacing, everywhere in the sweep, exact against
+an RF synthesiser, able to carry a per-block rate and a drift bound at
+sub-second averaging times, and carrying no absolute frequency at all.
+
+A third reading appears when the drive is set so an integer number of tooth
+spacings equals the pair separation. The tooth of one line then lands on the
+other line's carrier, both are excited in the same millisecond, and the pair
+stops being a ruler and becomes a MEASURABLE: the splitting of the resulting
+doublet reads the hyperfine separation against the synthesiser, drift-free
+and light-shift-free, at whatever precision the line centres support.
+
 ## What can go wrong
 
 The first failure is a model one: reading the rate identity as if it were a
@@ -212,4 +319,4 @@ a reader.
 
 ---
 
-[← EOM sidebands](eom-sidebands.md) · *Driving, modulating and detecting, 2 of 7* · [The wavemeter and the frequency axis →](the-wavemeter-and-the-frequency-axis.md)
+[← EOM sidebands](eom-sidebands.md) · *Driving, modulating and detecting, 2 of 8* · [The wavemeter and the frequency axis →](the-wavemeter-and-the-frequency-axis.md)

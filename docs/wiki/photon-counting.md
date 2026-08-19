@@ -257,4 +257,4 @@ once.
 
 ---
 
-[← Digitisation and dynamic range](digitisation-and-dynamic-range.md) · *Noise and its management, 5 of 5* · [wiki index →](README.md)
+[← Resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md) · *Noise and its management, 6 of 6* · [wiki index →](README.md)

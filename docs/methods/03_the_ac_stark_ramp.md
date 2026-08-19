@@ -361,7 +361,7 @@ direction, so the signal $\propto I_\text{fwd}I_\text{bwd}$), not as $1+\rho$:
 a badly mismatched retro would have destroyed the signal long before it
 appreciably moved the shift, so the dataset's strong, clean lines are
 evidence that $\rho$ is not small. The asymmetry is worth
-remembering: the retro is a *signal* risk far more than a *coefficient* risk.
+remembering: the retro threatens the *signal* far more than the *coefficient*.
 It matters for a fixed-lock session precisely because the coefficient is then the point:
 $\rho$ is measured in situ, per configuration (return-path clipping differs
 with waist), before any $\Delta\alpha$ in physical units is quoted.

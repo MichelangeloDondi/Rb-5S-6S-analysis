@@ -111,6 +111,16 @@ rate-independent components have never been separated in this experiment:
 the separation is a design of the next session, and the paragraph above
 states a requirement rather than a result.
 
+One instrument detail decides whether the rate-scaled component exists at
+all. A causal smoothing filter delays the trace by about half its window, so
+its lag is rate-scaled and the up and down halves of a triangular sweep
+split symmetrically about the true centre. A zero-phase filter, which is
+what the LeCroy's ERes math function specifies, produces no delay and
+therefore no splitting, so the same design measures a lag on one instrument
+and confirms its absence on the other. Where the smoothing sits and what it
+does to phase is
+[resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md).
+
 ## What can go wrong
 
 The first failure is a model one. The scaling above assumes a single,
@@ -258,4 +268,4 @@ a reader.
 
 ---
 
-[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 7* · [Designing an acquisition →](designing-an-acquisition.md)
+[← Laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md) · *Driving, modulating and detecting, 5 of 8* · [Designing an acquisition →](designing-an-acquisition.md)

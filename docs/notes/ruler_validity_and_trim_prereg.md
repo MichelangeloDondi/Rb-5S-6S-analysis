@@ -1540,12 +1540,14 @@ wider in nine. Relabelling is a coin flip on the spacing.
 ## E3. The decision
 
 The spacing stays the fit of record, because the measurement above shows the
+<!-- term-of-art: frozen preregistration record, and pitch is the comb's tooth spacing -->
 pitch does not know about the labelling and no case exists for disturbing
 the calibration. The tooth NUMBERING is corrected wherever the labelling test
 fails, on every panel that draws a comb, with the recorded numbering shown
 alongside so the picture never hides the table. The correction is a display
 of the amplitude evidence, not a refit.
 
+<!-- term-of-art: frozen preregistration record, and pitch is the comb's tooth spacing -->
 This separates two things the earlier amendments ran together. Which slot is
 the carrier is settled by the sideband amplitudes at the measured modulation
 index and is not in doubt. What the pitch is, is a fit result, and the

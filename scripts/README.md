@@ -25,6 +25,8 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | script | writes |
 |---|---|
 | `run_qc.py` (M0) | quality metrics for every trace in the manifest into `qc_metrics.csv`, each with its z-scores against its condition siblings, its residual-tail trim record and its outlier mark |
+| `port_to_mirror.sh` | the measured whole-tree port to the public mirror: tracked set against tracked set, data_raw/ excluded in both directions because the two copies differ by design, deletions carried (a copy-only port cannot carry a rename), refusing to run unless BOTH worktrees are clean |
+| `run_tooth_scatter.py` | M2 stage 4b: the comb read as a clock. Keeps the per-trace tooth-position departures that `run_ruler.py` pools into the nonlinearity map, separates the repeating sweep shape from the non-repeating remainder, and bounds the laser's frequency excursion at the tooth spacing |
 | `run_width_pinning.py` | what pinning the laser width buys the collisional width, the committed producer for the pinning comparison four documents quote, writing only to `private/run_logs/` |
 | `run_extended_lever.py` | what the 150 and 170 C blocks would buy the collisional bound, at the committed coverage construction with the temperature grid as a parameter, writing only to `private/run_logs/` |
 | `run_noise.py` (M1) | the variance law per condition into `noise_model.csv`, which is where every later fit takes its weights from |

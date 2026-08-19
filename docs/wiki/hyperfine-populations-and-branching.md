@@ -110,7 +110,13 @@ The branching side is not a single shared number. Because it is a two-step
 cascade through the intermediate $5P$ levels rather than a degeneracy count,
 the branching fraction that lands a decaying atom in the ground level the
 laser is not addressing differs line to line, and the four values are
-committed in `F_PER_LINE` in [`rb5s6s/stark.py`](../../rb5s6s/stark.py). The
+committed in `BRANCHING_F` in
+[`rb5s6s/cascade.py`](../../rb5s6s/cascade.py), which
+[`rb5s6s/stark.py`](../../rb5s6s/stark.py) imports under the local name
+`F_PER_LINE` rather than restating. Which isotope and which ground level each
+line drives is in the same module's `DRIVEN_F`, asserted in the tests against
+`rb5s6s/constants.py` rather than against itself, for a reason
+[HISTORY.md](../HISTORY.md) records. The
 resulting extra width enters through
 [`companion_gamma_mhz`](../../rb5s6s/stark.py), one of two effects this
 repository has identified that broaden the line with exactly the light
@@ -233,4 +239,4 @@ a reader.
 
 ---
 
-[← Magnetic sublevels](magnetic-sublevels.md) · *Atomic structure and selection rules, 5 of 6* · [Doppler-free geometries →](doppler-free-geometries.md)
+[← Magnetic sublevels](magnetic-sublevels.md) · *Atomic structure and selection rules, 5 of 7* · [The cascade and F-depletion →](the-cascade-and-f-depletion.md)

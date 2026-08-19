@@ -74,6 +74,21 @@ tooth width across a session is then the natural check on whether the ruler
 itself is stable over the times the fits assume, which no current dataset can
 answer.
 
+## The estimator that saturates, which is the page's argument in one incident
+
+The reason this statistic exists is that the obvious one has no limit. Under
+$1/f$ noise the variance of a record GROWS with the record, because each
+decade of duration admits another decade of low-frequency power, so the raw
+scatter of a series is an estimate of a quantity that does not exist. Its
+sampling spread then SATURATES rather than shrinking: measured on synthetic
+flicker in this repository, the fractional spread of the raw scatter sits
+near 23 per cent at one hundred points and near 23 per cent at ten thousand,
+while the Allan deviation at fixed averaging time tightens from 7 to 0.8 per
+cent over the same records. A precision that stops improving with data is
+the signature to watch for, and it looks deceptively like convergence. See
+[laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md)
+for the incident where this decided a design question.
+
 ## What can go wrong
 
 The commonest error is a data-insufficiency one wearing a model's clothes: a

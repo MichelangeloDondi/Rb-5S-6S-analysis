@@ -306,7 +306,7 @@ waist $w_0$. It is direct, needs no lineshape model, and is good to about a µm.
 **Why a knife-edge rather than a camera?** Both are beam-profile measurements
 that end in a Gaussian fit, and they differ only in the transducer, so this is a
 choice of instrument, not of method. A camera's resolution is set by its pixel
-pitch (typically 3–5 µm): at the fixed-lock session's small-waist config ($w_0\approx16$ µm,
+spacing (typically 3–5 µm): at the fixed-lock session's small-waist config ($w_0\approx16$ µm,
 so a $1/e^2$ diameter of only $\approx32$ µm) that is 6–9 pixels across the
 entire beam, far too few to fit reliably, whereas the knife-edge's resolution
 comes from the translation stage (sub-µm) and is indifferent to how tight the

@@ -163,4 +163,4 @@ would have caught it at the point the number was first computed.
 
 ---
 
-[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 8* · [Transit-time broadening →](transit-time-broadening.md)
+[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 9* · [Transit-time broadening →](transit-time-broadening.md)

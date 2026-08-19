@@ -240,4 +240,4 @@ a reader.
 
 ---
 
-[← Optimiser convergence](optimiser-convergence.md) · *Simulation and computation, 4 of 4* · [wiki index →](README.md)
+[← Optimiser convergence](optimiser-convergence.md) · *Simulation and computation, 5 of 5* · [wiki index →](README.md)

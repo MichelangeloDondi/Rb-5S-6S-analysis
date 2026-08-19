@@ -192,4 +192,4 @@ a reader.
 
 ---
 
-[← wiki index](README.md) · *Noise and its management, 1 of 5* · [Shot noise and technical noise →](shot-noise-and-technical-noise.md)
+[← wiki index](README.md) · *Noise and its management, 1 of 6* · [Shot noise and technical noise →](shot-noise-and-technical-noise.md)

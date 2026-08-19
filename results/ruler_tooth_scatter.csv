@@ -1,0 +1,9 @@
+quantity,value,unit,note,status
+n_teeth,509,count,free-centre measurements entering the bound,BOUND
+n_traces,104,count,canonical RF-on traces contributing,BOUND
+center_err_median,2.2544,ms,"fitted tooth-centre error, the limiting quantity",BOUND
+chi2_red_after_sweep_removal,0.5259,1,below 1 means the quoted centre errors are conservative,BOUND
+tau,0.147,s,"averaging time, the tooth spacing at the campaign rate",BOUND
+excursion_best,8.75,kHz_laser_axis,"maximum-likelihood non-repeating excursion, consistent with zero",BOUND
+excursion_ub95,14.15,kHz_laser_axis,95 per cent upper limit on the non-linear non-repeating excursion,BOUND
+excursion_ub95_transition,28.3,kHz_transition_axis,the same limit on the axis the lineshape is fitted on,BOUND

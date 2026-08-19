@@ -1,6 +1,6 @@
 quantity,key,value,err,unit,status
-f_wing_red,4121_T70,0.0000,0.0279,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_blue,4121_T70,0.0287,0.0265,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red,4121_T70,0.0000,0.0275,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_blue,4121_T70,0.0288,0.0265,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4121_T90,0.0018,0.0104,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4121_T90,0.0000,0.0104,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4121_T110,0.0000,0.0075,"fraction of peak; standoff wing, per condition",BOUND
@@ -8,39 +8,39 @@ f_wing_blue,4121_T110,0.0000,0.0075,"fraction of peak; standoff wing, per condit
 f_wing_red,4121_T130,0.0000,0.0028,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4121_T130,0.0033,0.0028,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4154_T70,0.0000,0.0222,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_blue,4154_T70,0.0064,0.0223,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_blue,4154_T70,0.0060,0.0223,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4154_T90,0.0063,0.0092,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_blue,4154_T90,0.0000,0.0093,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_blue,4154_T90,0.0000,0.0092,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4154_T110,0.0037,0.0073,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4154_T110,0.0000,0.0073,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4154_T130,0.0000,0.0013,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4154_T130,0.0000,0.0013,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4192_T70,0.0111,0.0101,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4192_T70,0.0000,0.0102,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_red,4192_T90,0.0041,0.0057,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red,4192_T90,0.0040,0.0057,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4192_T90,0.0000,0.0057,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4192_T110,0.0000,0.0039,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4192_T110,0.0030,0.0039,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4192_T130,0.0005,0.0020,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4192_T130,0.0000,0.0020,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_red,4207_T70,0.0185,0.0160,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red,4207_T70,0.0172,0.0160,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4207_T70,0.0000,0.0172,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_red,4207_T90,0.0020,0.0118,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red,4207_T90,0.0020,0.0117,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4207_T90,0.0000,0.0119,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_red,4207_T110,0.0019,0.0058,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red,4207_T110,0.0020,0.0058,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_blue,4207_T110,0.0000,0.0058,"fraction of peak; standoff wing, per condition",BOUND
 f_wing_red,4207_T130,0.0000,0.0023,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_blue,4207_T130,0.0028,0.0023,"fraction of peak; standoff wing, per condition",BOUND
-f_wing_red_mean,T70,0.0106,0.0077,weighted over peaks; N/N(70C) = 1.0,BOUND
-f_wing_blue_mean,T70,0.0033,0.0078,weighted over peaks; N/N(70C) = 1.0,BOUND
+f_wing_blue,4207_T130,0.0027,0.0023,"fraction of peak; standoff wing, per condition",BOUND
+f_wing_red_mean,T70,0.0103,0.0077,weighted over peaks; N/N(70C) = 1.0,BOUND
+f_wing_blue_mean,T70,0.0032,0.0078,weighted over peaks; N/N(70C) = 1.0,BOUND
 f_wing_red_mean,T90,0.0039,0.0041,weighted over peaks; N/N(70C) = 4.4,BOUND
 f_wing_blue_mean,T90,0.0000,0.0041,weighted over peaks; N/N(70C) = 4.4,BOUND
-f_wing_red_mean,T110,0.0009,0.0027,weighted over peaks; N/N(70C) = 16.2,BOUND
+f_wing_red_mean,T110,0.0010,0.0027,weighted over peaks; N/N(70C) = 16.2,BOUND
 f_wing_blue_mean,T110,0.0015,0.0027,weighted over peaks; N/N(70C) = 16.2,BOUND
 f_wing_red_mean,T130,0.0001,0.0009,weighted over peaks; N/N(70C) = 52.5,BOUND
 f_wing_blue_mean,T130,0.0008,0.0009,weighted over peaks; N/N(70C) = 52.5,BOUND
-f_wing_red,4121_P25,0.0036,0.0232,"fraction of peak; power lever, 130 C",BOUND
-f_wing_red,4121_P75,0.0086,0.0114,"fraction of peak; power lever, 130 C",BOUND
+f_wing_red,4121_P25,0.0045,0.0232,"fraction of peak; power lever, 130 C",BOUND
+f_wing_red,4121_P75,0.0087,0.0114,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4121_P125,0.0052,0.0036,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4121_P175,0.0000,0.0037,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4121_P225,0.0000,0.0028,"fraction of peak; power lever, 130 C",BOUND
@@ -49,22 +49,22 @@ f_wing_red,4154_P75,0.0000,0.0059,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4154_P125,0.0003,0.0027,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4154_P175,0.0000,0.0020,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4154_P225,0.0000,0.0013,"fraction of peak; power lever, 130 C",BOUND
-f_wing_red,4192_P25,0.0137,0.0132,"fraction of peak; power lever, 130 C",BOUND
+f_wing_red,4192_P25,0.0130,0.0132,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4192_P75,0.0000,0.0068,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4192_P125,0.0000,0.0077,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4192_P175,0.0044,0.0026,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4192_P225,0.0005,0.0020,"fraction of peak; power lever, 130 C",BOUND
-f_wing_red,4207_P25,0.0057,0.0232,"fraction of peak; power lever, 130 C",BOUND
+f_wing_red,4207_P25,0.0052,0.0232,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4207_P75,0.0000,0.0114,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4207_P125,0.0041,0.0065,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4207_P175,0.0070,0.0055,"fraction of peak; power lever, 130 C",BOUND
 f_wing_red,4207_P225,0.0000,0.0023,"fraction of peak; power lever, 130 C",BOUND
-f_wing_red_mean,P25,0.0081,0.0092,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
+f_wing_red_mean,P25,0.0078,0.0092,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
 f_wing_red_mean,P75,0.0010,0.0039,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
 f_wing_red_mean,P125,0.0021,0.0020,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
 f_wing_red_mean,P175,0.0017,0.0014,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
 f_wing_red_mean,P225,0.0001,0.0009,"weighted over peaks; a physical wing is a constant fraction across this row, an SNR artifact falls",BOUND
-asymmetry_red_minus_blue,T70,+0.0074,0.0109,"fraction of peak; THE observable -- a symmetric misfit cancels here, a one-sided wing does not",MEASURED
+asymmetry_red_minus_blue,T70,+0.0071,0.0109,"fraction of peak; THE observable -- a symmetric misfit cancels here, a one-sided wing does not",MEASURED
 asymmetry_red_minus_blue,T90,+0.0039,0.0058,"fraction of peak; THE observable -- a symmetric misfit cancels here, a one-sided wing does not",MEASURED
 asymmetry_red_minus_blue,T110,-0.0006,0.0039,"fraction of peak; THE observable -- a symmetric misfit cancels here, a one-sided wing does not",MEASURED
 asymmetry_red_minus_blue,T130,-0.0007,0.0013,"fraction of peak; THE observable -- a symmetric misfit cancels here, a one-sided wing does not",MEASURED

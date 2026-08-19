@@ -632,7 +632,7 @@ def validated_comb_fit(t_ms: np.ndarray, v: np.ndarray, law: Optional[Dict] = No
         # own degrees of freedom, which is the scale on which "worse" is
         # answerable at all (see REINDEX_CHI2_NSIGMA). It is recorded and acted
         # on by nothing: the amplitudes say which slot is the carrier and a
-        # rigid grid displaced by whole slots measures the same pitch either
+        # rigid grid displaced by whole slots measures the same tooth spacing either
         # way, so a fit that prefers the other fold is telling the reader the
         # comb is ambiguous rather than telling the pipeline to renumber it.
         try:

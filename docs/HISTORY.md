@@ -31,6 +31,36 @@ superseded value it links to this file rather than repeating the number. The
 version-control history remains the complete record. This file is the curated
 part a reader needs without running `git log`.
 
+## What is in here, newest last
+
+The entries run in the order they were made, so the file reads as a record
+rather than as a ranking. This index exists because a reader arrives looking
+for one quantity rather than for the sequence.
+
+| entry | what moved | did a published number change |
+|---|---|---|
+| [The bound history](#the-bound-history) | the three quantities that have moved repeatedly, as one lineage table | yes, repeatedly |
+| [The 60 µm working waist](#the-60-µm-working-waist-retired-2026-08-15) | a waist that three forward-looking documents kept alive after it was retired | yes |
+| [2026-08-15](#the-2026-08-15-band-and-design-corrections) | the extrapolated-band reading and two design numbers | yes |
+| [2026-08-17](#the-2026-08-17-corrections) | the joint-fit comparison, found to be between quantities that cannot be compared | yes |
+| [2026-08-18](#the-2026-08-18-corrections) | the pooled-versus-campaign bound and its naming | yes |
+| [The amplitude power law](#the-amplitude-power-law-was-described-rather-than-tested-2026-08-18) | a power law asserted from a description rather than from a test | yes |
+| [The width concavity](#the-width-concavity-is-withdrawn-to-provisional-2026-08-18) | a curvature claim withdrawn to provisional | yes |
+| [2026-08-19](#the-2026-08-19-corrections) | four record corrections, three of them found by widening a guard | yes |
+| [The cascade line table](#the-cascade-line-table-was-wrong-on-three-of-four-lines-caught-same-day-2026-08-19) | which isotope and hyperfine level each line drives | no, and nothing was pushed |
+| [The width degeneracy in a draft](#a-claim-about-the-width-degeneracy-was-wrong-in-a-tutorial-draft-2026-08-19) | a teaching claim about scan span, refuted before it shipped | no |
+| [The pinning factor](#the-pinning-factor-was-one-monte-carlo-draw-and-the-largest-of-nine-2026-08-19) | a Monte-Carlo ratio quoted from one seed in four documents | yes, 3.4 to 3.18 plus or minus 0.20 |
+| [A hardware argument](#a-hardware-argument-used-the-wrong-geometry-caught-same-day-2026-08-19) | a plan chapter justified an EOM purchase from the geometry its own proposal had removed | no, and nothing was pushed |
+| [The tooth-height model](#the-tooth-height-model-was-a-limit-and-the-plan-priced-two-designs-outside-it-2026-08-19) | the Bessel weights are a zero-delay limit, and two same-day designs were priced outside it | no committed number, two plan tables same day |
+| [A depth menu](#a-depth-menu-compared-per-sweep-what-the-budget-offers-at-the-margin-2026-08-19) | a per-sweep comparison answered a question the budget never poses | no, one local commit for under an hour |
+
+The last three rows are here on purpose. A history that records only the
+corrections a reader could otherwise discover teaches that the record is
+audited from outside, and these three were caught by the record auditing
+itself. The last of them was caught by running a committed producer with its
+own default arguments, which is the cheapest audit available and had never
+been run.
+
 ## The bound history
 
 Three quantities have moved repeatedly, and their histories are collected here
@@ -221,3 +251,231 @@ No committed number changes, because no published bound rested on the
 concavity. What changes is its standing: it is provisional, the thermal-lens
 hypothesis is demoted to a mechanism for an effect whose existence is not
 established, and an interleaved power ladder is what would settle it.
+
+## The 2026-08-19 corrections
+
+Four corrections to the record, listed first, and one to working memory that
+never reached a file, listed second, since a reader counting the entries below
+is owed the distinction. The first two run in the record's favour and are
+recorded here for that reason rather than despite it.
+
+**The multi-start pointwise-minimum bound was an artefact of a display
+normalisation, and the headline light-shift bound is safer than the record
+had claimed.** `docs/notes/campaign_only_stark_profile.md` reported a
+pointwise-minimum bound near 1.92 MHz per W from the pinned multi-start run
+and read it as evidence that the pooled likelihood surface threatened the
+committed profile. The curves in that note's CSV are stored OWN-NORMALISED,
+each start against its own best point, and a minimum taken across them
+corresponds to no single fit. The instrument that produced them writes
+ABSOLUTE chi-square and its output survives beside it. Anchored to the
+committed production minimum of 186370.92, the best independent start at each
+coefficient value sits above it by 7.54, 4.84, 4.66, 5.32, 7.78 and 26.29,
+every one past the 2.706 threshold, so the independent-start ensemble never
+enters the confidence region. The production warm chain is pointwise-dominant
+everywhere tested. The superseded reading is retired here, and the note
+carries the corrected one.
+
+**The correction that never reached a file: the 2.35 saturation companion
+factor never existed.** A factor of 2.35 was
+carried in working notes as a measured saturation tightening. There is no
+such number: the committed factors are 2.8 for the width-only construction
+and 2.21 for the joint one, both predicted before the run and both recorded
+in `docs/notes/two_photon_saturation_companion.md`. The only 2.35-like values
+in the repository are the FWHM-to-sigma constant 2.3548 and a Student-t
+critical value in plan chapter 5.
+
+**`results/linefit_conditions.csv` was stale, and it did not travel alone.**
+Regenerated under the environment of record after four commits changed the
+producer's numerics, including a selectable transit kernel and an isotope
+correction to the transit width. Ten columns moved across all 32 rows, the
+largest being `sigma_laser` at 21 per cent, which is expected when the
+transit kernel changes because transit, laser width and collisional width are
+the three degenerate components. Two committed files READ that file as input,
+`sigma_laser_sharing.csv` and `resolving_power.csv`, and both were
+regenerated in the same commit. The file is PRELIM and is cited in no claim.
+
+**`results/wing_check.csv` was stale without consequence.** Regenerated under
+the environment of record. The producer is deterministic there, two runs
+returning byte-identical files. The value RESULTS.md quotes, the 130 C
+asymmetry of -0.0007 +/- 0.0013, is unchanged to every digit, and the
+assertion that no temperature exceeds 0.7 sigma survives with its worst case
+improving from 0.68 to 0.67.
+
+**`results/projections.csv` carried a stale vocabulary sweep.** Fifty-five
+string cells still read "archive" where the producer says "record". One numeric cell moved in its eighth significant figure. Nothing
+else changed.
+
+### What made these four visible on the same day
+
+Not a hunt for them. The freshness guard's coverage was widened on 2026-08-19
+from 27 of 46 committed CSVs to 42, with the remaining four registered as
+deliberately uncovered and their reasons stated. **Nineteen files, 41 per cent
+of the record, had been compared against nothing in either mode**, and three of
+the four corrections above are in files that widening reached. The guard had
+been returning green on the 59 per cent it could see, which reads identically
+to a green on the whole.
+
+The fourth correction, the multi-start reading, came from a different
+direction: the committed diagnostic stored its curves in a form that could not
+be combined, and the producer's raw output, which could, was still on disk one
+directory away.
+
+### A number that did NOT move, recorded because it was expected to
+
+`rb5s6s/stark.py` carried its own literal copies of the four cascade branching
+values and of the natural width, while their sources of truth lived elsewhere.
+Both now import from those sources. The natural width is byte-identical, three
+of the four branchings are unchanged, and one gains precision, 0.372478 to
+0.372478177, a relative move of 5 in 10 million. No committed result moves on
+this, and it is recorded here so that a future reader who finds the old
+literals in the history does not mistake the collapse for a correction.
+
+
+## The cascade line table was wrong on three of four lines, caught same day, 2026-08-19
+
+`rb5s6s/cascade.py` shipped with a `DRIVEN_F` table assigning 993.4154 and
+993.4207 to the wrong isotope and 993.4192 to the wrong hyperfine level. The
+branching FRACTIONS were never wrong, because they are keyed by wavelength
+directly from the committed manifold output, so no number moved. What was
+wrong was the labelling of which isotope and which ground F each line drives,
+in the module and in the wiki page's table, for the hours between the
+module's commit and this correction. Nothing was pushed in that window.
+
+How it was caught is the useful part. The campaign digital twin, being built
+the same evening, reads `constants.PEAKS` for the four lines' positions, and
+the two tables disagreed on contact. The module's own test did not catch it
+because the test asserted the module's table back at itself, the
+written-from-the-same-misunderstanding failure this record has met before.
+The test now asserts against `constants.PEAKS`, the repository's independent
+line table, and the twin gets credit as the first consumer strict enough to
+find the defect.
+
+## A claim about the width degeneracy was wrong in a tutorial draft, 2026-08-19
+
+An unreleased draft of `docs/TUTORIAL.md` taught that widening the scan span
+breaks the degeneracy between the laser width and the collisional width. It
+does not, and the same digital twin refuted it before the page shipped.
+
+Measured on synthetic data whose truth is known: the correlation between the
+two widths runs -0.9177 at a 60 MHz span and -0.9166 at 300 MHz, and ten
+times the traces reaches only -0.881. Both uncertainties shrink with more
+data while the correlation does not move, because the degeneracy belongs to
+the LINESHAPE, a Lorentzian core convolved with a Gaussian, rather than to
+the sample size.
+
+Nothing public ever carried the wrong claim, so this entry records a
+correction that did not reach a reader. It appears here because the
+replacement is a result rather than a repair: pinning one side of a
+correlated pair reduces the other's variance to (1 - rho^2), so an
+independent laser-width measurement is worth 1/sqrt(1 - rho^2) on the
+collisional width, which no achievable increase in scan span or repeat count
+approaches. That factor is now `rb5s6s.forecast.external_constraint_gain`,
+and it is guarded by a test written specifically because the earlier draft
+asserted the opposite.
+
+## A depth menu compared per sweep what the budget offers at the margin, 2026-08-19
+
+Plan chapter 7's modulation menu shipped with the sentence that teeth are
+never free statistics, from a comparison of an RF-on sweep against an RF-off
+sweep for the same slot. The budget holds no such choice: the ruler brackets
+are mandatory calibration, recorded regardless, and the M25 joint fit already
+ingests them, with its no-rulers arm as the robustness check. Against the
+budget's real alternative their width information is free and additive, a
+factor 1.26 to 1.33 per block at 2025-like proportions, propagating linearly
+to the collisional coefficient. The menu now splits the depth by the trace's
+job, deep brackets because ruler information is lever-weighted and climbs
+with depth, shallow in-block interleaves because width information falls
+with it, and the per-sweep sentence survives only where it applied, dim-rung
+science sweeps. The wrong frame lived in one local commit for under an hour.
+
+## The tooth-height model was a limit, and the plan priced two designs outside it, 2026-08-19
+
+Every tooth weight this record had ever written was $J_s(2\beta)^2$, treated
+as a property of the modulation depth alone. It is the ZERO-DELAY limit of an
+interference: a tooth is fed by every sideband pair summing to the same
+offset, one photon of each pair arrives on the retro beam late by the
+round-trip to the mirror, and the pathway sum collapses to a single tone at
+effective depth $2\beta\cos(\pi f\tau)$, cell-averaged. The experimenter
+supplied the physics in its sharpest form, that the carrier carries every
+crossover pair on top of the pristine Bessel value, and the closed form
+above reproduces the explicit pathway sum to ten digits.
+
+At the 12.5 MHz drive of the 2025 campaign the delay phase is 0.05 rad and
+the usable teeth correct by at most 0.2 per cent, so NOTHING COMMITTED
+MOVES, and the ruler machinery is untouched. The two designs the plan
+committed EARLIER THE SAME EVENING were priced in the wrong limit: the
+sub-GHz coincidence tooth is 0.003 on the common path rather than 0.16, a
+factor of fifty, and the cascade's main-line survival at 579.6 MHz is 0.62
+rather than 0.076, which inverts its operating mode from
+calibration-sweeps-only to gentle enough for science sweeps. Both sections
+now carry cell-averaged numbers, the coincidence block moves its modulator
+between the cell and the retro mirror, where single-arm pathways cannot
+interfere and the zero-delay weights are exact at any drive, and
+`rb5s6s.forecast.comb_tooth_weights` computes all three cases under test.
+
+## A hardware argument used the wrong geometry, caught same day, 2026-08-19
+
+Plan chapter 8 gained a section recommending a sub-GHz EOM drive, and its
+stated justification was that a tooth-to-pair coincidence removes a
+185-tooth-spacing sweep-rate extrapolation between the two lines of an
+isotope pair. That extrapolation belongs to the 2025 narrow-span geometry,
+where no trace held both lines of a pair. In the wide-span design the same
+chapter proposes, the existing 12.5 MHz comb lays about 192 teeth between the
+pairs and the extrapolation is already gone, so the argument recommended
+buying hardware to fix a problem the proposal had already fixed without it.
+
+The section survives with a different and honest justification. The
+coincidence is an optional metrology block rather than axis hardware: the
+ground splittings are clock-grade, so the pair separation is the 6S hyperfine
+splitting, and reading the coincidence doublet at the measured per-crossing
+centre precision reaches 0.3 kHz in about one hundred crossings against
+constants known to 2 kHz. The chapter now also states the division of labour
+the wrong version obscured, the pairs as the absolute anchor and the comb as
+the dense interpolator and clock, and folds the 27 MHz recommendation and the
+coincidence into one hardware conclusion, since neither runs on the resonant
+tank and one broadband modulator serves both.
+
+**The correction itself then over-corrected, caught the same evening.** The
+replacement text claimed the wide span retires the extrapolation because 192
+teeth join the pairs. That number counts tooth POSITIONS. A tooth needs a
+position and a resonance, and its height carries the Bessel weight, so the
+usable comb is four clusters of about five teeth with gaps up to 1155 MHz
+carrying no marks, a figure this record had itself computed the same day. The
+section now prices the interpolation across those gaps honestly and carries
+the two-tone cascade design that converts it into a measurement on
+interleaved calibration sweeps. Three versions of one section in one day,
+each error smaller: a wrong geometry, then a wrong count inside the right
+geometry, then the count with its construction attached.
+
+Nothing was pushed. The wrong argument lived in one local commit for a day.
+
+## The pinning factor was one Monte-Carlo draw, and the largest of nine, 2026-08-19
+
+Four documents quoted a factor of 3.4 for what an independent laser-width
+measurement buys the collisional width, from `scripts/run_width_pinning.py`.
+The producer's own default seed does not return it. Run at nine seeds of the
+same construction, 200 trials each, the ratio comes out 3.18 with a standard
+deviation of 0.20 and a range of 2.86 to 3.48, and the quoted 3.4 is the
+largest of the nine.
+
+The number was not wrong, it was quoted to two significant figures with no
+uncertainty, which for a ratio of two Monte-Carlo standard deviations is the
+same defect as the unreproducible pair this producer was written to replace
+one day earlier. All four sites now carry 3.18 plus or minus 0.20, and the
+producer's DEFAULT is now an ensemble of nine seeds rather than one, so the
+quotable number and the reproducible number are the same number.
+
+**The arithmetic behind the factor is what makes it checkable at all.**
+Conditioning on one member of a correlated pair leaves the other with
+sqrt(1 - rho^2) of its uncertainty, so the purchase is 1/sqrt(1 - rho^2) and
+depends on the correlation alone. That is 2.29 at this record's median
+correlation of -0.90 and 2.97 at the pinning condition's own -0.9417, against
+the 3.18 measured there, a 7 per cent gap carried by twenty per-trace nuisance
+parameters, a boundary at zero collisional width and the non-Gaussian tail of
+a nonlinear fit. The correlation is identical to four decimals in all nine
+seeds, which is what the arithmetic predicts, since a correlation is a
+property of the design rather than of the noise draw. So the apparent
+disagreement between the 2.5 this record briefly quoted from the twin and the
+3.4 it quoted from the simulation was never two results. It was one formula
+evaluated at three different correlations, and
+[identifiability](wiki/identifiability.md) now carries all three in one table.

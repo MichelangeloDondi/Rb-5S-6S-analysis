@@ -83,6 +83,18 @@ for n in sizes:
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`, so one that stops working fails the suite rather than sitting here misleading a reader.
 
+## The design-stage instrument built on all of this
+
+The simulations above answer what an estimator would do with data that
+exists. The same machinery run forward answers what an apparatus that does
+not exist yet would deliver, which is
+[the digital twin](the-digital-twin.md): `rb5s6s/forecast.py` samples traces
+from a proposed design, fits them back with the production fitter, and
+reports the achievable uncertainty together with the correlations that no
+amount of sampling will improve. It inherits every hazard on this page, and
+adds one of its own, that a twin fitted with the model that generated it can
+only ever confirm its own internal consistency.
+
 ## What this repository got wrong once
 
 The transit-broadening Monte Carlo behind [`transit_mc.py`](../../rb5s6s/transit_mc.py) carried a real bug: the sampler weighted each atom by its excitation probability but omitted the atom-crossing flux factor the steady-state rate actually needs, which ran the simulated transit width about two times too narrow and pointed the fitted beam waist at a nominal 32 µm, a value [HISTORY.md](../HISTORY.md) now marks excluded. The flux factor was fixed on 2026-07-13. An earlier attempt at the same fix, before that date, concluded the waist was closer to 90 µm, and that conclusion itself carried an arithmetic error, a spurious factor of two, and was retracted. The corrected Monte Carlo settled on a beam waist of about 50 µm, later replaced by a direct measurement once one became available. HISTORY's beam-waist rows carry the full lineage.
@@ -113,4 +125,4 @@ What separated the corrected simulation from the retracted one was not a closer 
 
 ---
 
-[← wiki index](README.md) · *Simulation and computation, 1 of 4* · [Grids and discretisation →](grids-and-discretisation.md)
+[← wiki index](README.md) · *Simulation and computation, 1 of 5* · [The digital twin of an experiment →](the-digital-twin.md)

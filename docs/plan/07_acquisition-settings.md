@@ -864,6 +864,70 @@ confounded with each other and the ordering evidence cannot separate them on
 its own. Four different ranges at one power is the handle that can, and it uses
 only data already taken.
 
+### What the manuals say, and one thing they settle
+
+The comparison above is measured from the files. The instrument documentation
+adds three facts that measurement alone cannot supply, and one of them corrects
+a reading given earlier in this chapter's history.
+
+| from the manuals | Agilent DSO-X 3054A | LeCroy WS3104z | LeCroy WaveSurfer 10 |
+|---|---|---|---|
+| converter | 8 bit | 8 bit | 8 bit |
+| acquisition memory | 2 Mpts interleaved, 1 Mpts per channel, upgradable to 4 and 2 | fills automatically at slow timebase | 10 Mpts per channel, 20 interleaved (16 and 32 on the 10M) |
+| smoothing is a | **acquisition mode** | **math function** | math function |
+| ceiling on delivered bits | **12** | **11**, being 8 plus at most 3 | 11 |
+| phase response of the smoothing | not stated, causal average | **exactly zero phase** | zero phase |
+
+**Smoothing lives in a different place on the two makes.** On the Agilent, High
+Resolution is an acquisition mode, so the stored samples themselves carry the
+extra bits, and the campaign's measured 11.86 bits confirm it was in use. On the
+LeCroy, ERes is reached by "the usual steps to set up a math function, selecting
+Eres from the Filter submenu", so it produces a SEPARATE TRACE and a saved
+channel carries eight bits whatever is on the screen.
+
+**What that does NOT establish is why the rehearsal reads 7.74 bits.** Two
+explanations fit the measurement equally well: ERes was configured and the
+channel rather than the math trace was exported, or ERes was not enabled at all.
+Nothing in the stored files distinguishes them, and an earlier version of this
+section asserted the first. It is recorded as UNRESOLVED. What survives either
+way is the operational point, that on this instrument a smoothed display does
+not imply a smoothed export, so the file has to be checked rather than the
+front panel.
+
+**The ceilings differ by one bit and in the opposite direction to the
+capability.** The Agilent's averaging table runs 2 averages to 8 bits, 4 to 9,
+16 to 10, 64 to 11 and 256 or more to 12. ERes offers 0.5 to 3.0 bits in
+half-bit steps, so 11 is the LeCroy ceiling. Against a dither ratio of 30 on
+the traces as taken, neither ceiling binds.
+
+**The bandwidth cost is quantified on one side only.** ERes states it exactly,
+each half bit halving the passband: 0.5 bit leaves 0.5 of Nyquist, 1.0 leaves
+0.241, 2.0 leaves 0.058 and 3.0 leaves 0.016, with filter lengths of 2, 5, 24
+and 117 samples. The Agilent manual says only that High Resolution "limits the
+oscilloscope's real-time bandwidth because it effectively acts like a low-pass
+filter". For a line crossed in tens of milliseconds neither cost is reachable.
+
+### The manuals settle the triangular-scan lag, against the earlier reading
+
+This chapter argued that an acquisition-side filter would displace the apparent
+line centre in opposite directions on the two halves of a triangular scan, and
+that the splitting would therefore measure the lag. **That holds on the Agilent
+and does not hold on the LeCroy.** ERes is a constant-phase FIR whose manual
+states that the filters "do not distort the relative position of different
+events in the waveform" and that the usual filtering delay "can be exactly
+compensated during the computation". A zero-phase filter produces no
+direction-dependent shift, so on the LeCroy the up and down halves give two
+independent crossings and no lag calibration, because there is no lag to
+calibrate. The Agilent's mode carries no such guarantee.
+
+Two smaller manual facts bear on the design. ERes discards samples equal to the
+filter length at each end of the record, between 2 and 117, which is negligible
+against 500 001 points but is a reason not to place a line near a record
+boundary. And the LeCroy sets its own sample rate at slow timebase so that "the
+maximum number of data samples is maintained over time", which is why the
+rehearsal holds 500 001 points without anyone choosing that number, whereas the
+Agilent's 2000-point records were a setting.
+
 ### What actually decides the choice
 
 Bandwidth and sample rate decide nothing here. The line is crossed in tens of
@@ -889,19 +953,83 @@ current one.** It becomes a real discriminator only for a narrower line, which
 is precisely what a fixed-lock session is meant to produce, and at that point
 the coherent baseline structure would no longer average away.
 
-One capability separates them, and it is aimed at an open finding. The 3104z
-can hold all four hyperfine peaks in one trace with the EOM both on and off.
-The amplitude departure from the square-of-power law orders itself by peak
-brightness rather than by branching ratio, which reads as a detection signature
-rather than an atomic one, and four peaks sharing one vertical range in one
-trace is the direct test.
+**The four-peak trace is a property of the laser scan, not of either
+oscilloscope**, and an earlier version of this section miscast it as a 3104z
+capability. The rehearsal demonstrated it on the 3104z, but a scope records
+whatever span the laser sweeps. What the two instruments offer that sweep is
+what differs. The Agilent writes about twelve bits into the saved file, gains
+bits as the sweep slows, and exports at most 64K points. The 3104z stores half
+a million points and more but exports eight bits from the channel, the smoothed
+trace being reachable only through the math-function export. For a slow
+four-peak sweep, resolution is the scarce quantity and points are not, so the
+sweep that tests the brightness ordering belongs on the Agilent too.
 
-**Recommendation.** Use the 3104z for the four-peak landscape and for anything
-comparing peaks against each other, with enhanced resolution enabled, which the
-rehearsal did not have on. Use the Agilent where continuity with the archive's
-calibration outweighs the comparison. Repair the 3104z frequency axis before
-its widths are read as absolute rather than as fractional changes. The
-WaveSurfer 10 offers this measurement nothing it can use.
+**Recommendation, by role rather than by instrument.**
+
+The quantitative campaign stays on the **Agilent**. The ladder on one vertical
+range is feasible at twelve delivered bits and is not on an eight-bit channel
+export, the archive's calibration and loader carry over unchanged, and a slow
+sweep gains resolution exactly where the wide scans want it. Set the export
+Length to its 64K limit, hold one snug range, randomise the ladder, keep both
+triangle halves. A wide sweep that keeps the Doppler pedestal in frame turns
+the pedestal's width into an in-situ temperature, which no 2025 session
+measured, and the twelve bits are what make the low broad pedestal and the
+tall narrow peaks readable on one range.
+
+The thermometer's arithmetic is modest and worth stating. A Doppler width
+scales as the square root of temperature, so the fractional width moves at
+half the fractional temperature, and resolving 20 K at around 400 K asks for
+a width fit good to about 2.5 per cent, which a twelve-bit wide scan supports
+comfortably. That precision is exactly what the archive lacked: the pilot's
+internal temperature is carried as a RANGE from 110 to 130 C, a factor of 3.2
+in vapour density, because the record holds variac set points and no measured
+temperature. One pedestal sweep per temperature block closes that class of
+uncertainty for the next campaign at the cost of one slow trace each.
+
+The **3104z** earns its place in the roles that use its actual strengths, the
+deep record and the fast sampling. The day-one chain step response is its job,
+since the existing bound of faster than 10 us IS that instrument's sampling
+limit and converting the bound into a time constant needs the fast record.
+Long noise and drift captures, whose PSD frequency resolution is set by record
+length, and mains monitoring are its job for the same reason.
+
+**The strongest use of owning both is to record the same light on the two
+chains at once.** Split the detector signal into both scopes for a subset of
+conditions. The amplitude departure reads as a detection signature, and two
+different acquisition chains digitising one photocurrent is the direct
+discriminator: what appears in both records belongs to the experiment, and
+what differs between them belongs to acquisition. No single instrument can
+make that separation at any setting.
+
+Four practicalities decide whether the comparison means anything.
+
+  * **Both inputs at 1 MOhm.** A tee into one high-impedance input and one
+    50 Ohm input builds a divider that changes the signal for BOTH records,
+    and the transimpedance output is not meant to drive 50 Ohm. Two
+    high-impedance inputs load the source equally and negligibly.
+  * **Trigger both from the same edge**, the sweep ramp, so the two records
+    align sample for sample and a per-trace comparison needs no registration
+    step.
+  * **Compare shapes, not volts.** The two chains have different gains and
+    offsets, so the observable is the RATIO structure inside each record, the
+    four peak amplitudes against each other per instrument, and the line
+    widths. Those are dimensionless within one record and chain gain cancels.
+  * **Match the smoothing philosophy, not the setting.** One range on each
+    instrument, smoothing enabled on each, and the LeCroy side exported from the
+    math trace, since the comparison is between best configurations and not
+    between defaults.
+
+The reading is pre-stated so the outcome cannot be argued backwards. If the
+brightness-ordered amplitude departure appears with the same ordering and
+magnitude in both records, it belongs to the light or the shared detector and
+the 2025 finding generalises. If it differs between the records, it is
+acquisition, and the difference measures which stage. Either outcome retires
+the open question, which is what makes a handful of dual-recorded conditions
+worth their bench time.
+
+Repair the 3104z frequency axis before its widths are read as absolute rather
+than as fractional changes. The WaveSurfer 10 offers this measurement nothing
+the 3104z does not.
 
 ## Duty cycle, the largest measured inefficiency
 
@@ -951,6 +1079,253 @@ between them measures the lag, so acquiring both halves self-calibrates the
 delay in addition to giving two independent line crossings.
 
 ---
+
+## The settings card for the next campaign
+
+One table to carry to the bench. Every entry is justified in the sections above
+and the evidence column names what it rests on rather than asserting authority.
+
+| setting | do this | why, and on what evidence |
+|---|---|---|
+| vertical range | **one range for the whole ladder**, set snug to the brightest rung | the step spans a factor of 347 across the 2025 ladder, which is the range switching written into the samples |
+| smoothing | **on**, and verify it reached the file | acquisition mode on the Agilent, math function on the LeCroy, and only one of those exports smoothed |
+| record length | more points across the line, **not** for resolution | the CSV export caps at 64K and its Length control was low, but points buy time resolution rather than bits |
+| peaks per trace | **all four, one range, EOM on and off** | 5.57 per cent duty measured, and it is the direct test of the brightness ordering |
+| scan shape | triangular, keep both halves | two crossings per trace, and on a causal filter the splitting measures the lag |
+| ladder order | randomise or interleave | power and elapsed time were collinear by construction in 2025 |
+| where to spend | **power first** | signal-to-noise is linear in power and square-root in everything else |
+| chopping | no | the noise is 83 to 97 per cent white, and a chopper costs half the photons |
+| transimpedance gain | leave it | it cancels in the shot-limited regime |
+
+### The modulation and rate menu, one setting per purpose
+
+The card above holds per setting. Two of its knobs, the modulation depth and
+the scan rate, want DIFFERENT values for different purposes, and treating
+either as one number wastes one channel to serve another. The menu below is
+computed against the measured noise law and the corrected tooth-weight model
+(`rb5s6s.forecast.comb_tooth_weights`), with the constructions stated.
+
+**Depth costs width information PER SWEEP, and the right frame is marginal.**
+Phase modulation conserves the two-photon signal exactly and the detector
+floor still taxes every copy, so a sweep whose only job is widths runs RF
+off or shallow: at the 2025 depth an RF-on trace carries 0.52 of an RF-off
+trace's width information on the brightest rung and 0.27 on the dimmest.
+The design question is different, though, because the RF-on sweeps EXIST
+ANYWAY: the brackets are mandatory calibration, and M25 already ingests
+ruler traces into the joint likelihood, with the no-rulers arm as the
+robustness check. Their width information is therefore free and additive.
+At 2025-like proportions, eight science and four ruler traces per block,
+the free gain is a factor 1.26 to 1.33 in width statistics, an error factor
+0.87 to 0.89, and the collisional coefficient rides the width error
+linearly.
+
+**So the depth splits by the trace's job.** The RULER information is
+lever-weighted, tooth $s$ pulling on the spacing with arm $s$, so it keeps
+climbing with depth: 0.48 at the 2025 depth against 0.87 to 1.48 at $2\beta$
+of 2.2 to 3.0, where the width contribution still joins the fit at 0.4 to
+0.5. Brackets therefore go DEEP. An in-block RF-on interleave leans the
+other way, $2\beta$ near 1.0 to 1.3, keeping 0.65 of a science trace's
+widths while still carrying its own ladder. Two depths, one joint fit.
+
+**The teeth also clean the amplitude channel, which may be worth more than
+the widths.** Within one RF-on trace every tooth and every line shares ONE
+detector gain. The tooth pattern is RF-predicted, so intra-trace deviations
+calibrate detector nonlinearity and the AM admixture, and cross-line height
+ratios in a wide-span RF-on trace are free of the gain drift that makes the
+committed amplitude ratios swing 30 to 50 per cent between blocks. The
+in-trace ladder likewise removes the sweep rate from the centre channel per
+trace, which was the axis systematic that dominated 2025.
+
+**Rate is free to first order, so it buys band placement.** Information per
+crossing falls as one over the rate and crossings per hour rise with it, so
+the rate is chosen by systematics, and there is a prize. Within any one
+block the clock band and the width band both scale with the rate and their
+ratio never closes, but the laser's noise spectrum is a property of the
+LASER, so the bands of different blocks compose: a block at ten times the
+2025 rate has its tooth clock sampling at 68 Hz, inside the 24 Hz to 1.5 MHz
+band that the SCIENCE blocks' widths integrate at the ordinary rate. One
+fast block therefore measures, in situ, part of the very noise that
+broadens the slow blocks' lines. If the fitted Gaussian is slow laser noise
+the fast clock sees excursions near 180 kHz, if it is fast noise it sees
+near 4 kHz, and tooth centres resolve 96 kHz each, so a single block
+separates the two readings of the laser kernel
+([CLAIMS.md](../CLAIMS.md) section 2) by a factor near forty-five. It needs
+no hardware beyond a knob and a record length that keeps the points per
+tooth.
+
+| scan purpose | drive and depth | rate | what it delivers |
+|---|---|---|---|
+| width blocks | 12.5 MHz at $2\beta$ near 1.0, RF OFF on dim rungs | the 2025 rate, both halves | widths at 0.65 of RF-off information, axis self-calibrated |
+| pull blocks | 12.5 MHz at $2\beta$ near 1.6 | ten times, many triangles | ladder-anchored centres, and the clock inside the science blocks' width band |
+| axis calibration, interleaved | the chapter 8 option in force, deep | the 2025 rate | gaps measured, whole-sweep clock |
+| lag characterisation | either | one fast and one slow block | detection lag from the up against down split, linear in rate |
+| depth diagnostic, occasional | $2\beta = 2.405$ | any | the carrier null pins the depth, valid at low drive or single-arm placement only |
+
+Dim rungs run RF off because the floor makes every tooth copy a pure loss
+there, and the carrier-null diagnostic moved to the last row because the
+null exists only where the retro-delay phase is small
+([chapter 8 section 10b.4a](08_the-acquisition-record.md)).
+
+**The card has an executable form.** Every row above is a setting that this
+card asserts is better, and an assertion about an acquisition is testable
+before the acquisition happens. `examples/campaign_twin.py` builds the dataset
+this card would produce, with the hyperfine amplitudes, the cascade depletion,
+the saturation companions, the Stark ramp, the blackbody shift, the measured
+noise law, the one-range quantisation and a session drift all present, and
+fits it back. Its verdict lines report whether the design detects the predicted
+light shift, whether it stays quiet when nothing is injected, and whether the
+recovered widths match what was put in. A row of this card that the twin cannot
+justify is a row to reconsider, and the twin is where to reconsider it, since
+it costs minutes rather than a session.
+
+### 1. The vertical range, which is the one change that matters most
+
+Hold ONE range across the whole power ladder. This is first because it is the
+only setting that changed a published analysis, and because it costs nothing.
+
+The campaign switched range at every rung, and the recorded quantisation step
+therefore spans a factor of 347 from the dimmest to the brightest condition. A
+power ladder taken that way is five measurements on five instrument
+configurations, and any trend across it carries the range change as a confound.
+
+Feasibility was measured rather than assumed. A single range set to hold the
+brightest rung gives a step of 1502.5 uV against a dim-rung noise of 1487.5 uV,
+so the dim rung arrives at a dither ratio of 0.99, which is exactly the boundary
+of usefulness. The margin is recoverable because the bright range was set
+loosely: the 225 mW trace occupied 38 per cent of its screen, and setting that
+range snug returns a factor of about 2.6. **Snug bright range plus one fixed
+range is the whole of the fix.**
+
+If the dynamic range genuinely cannot be held in one setting, split the ladder
+into two overlapping blocks with at least two rungs measured on BOTH ranges, so
+the range change becomes a measurable offset rather than a confound.
+
+### 2. Smoothing, which the campaign already had, and the check that it reached the file
+
+**The 2025 campaign ran High Resolution and the files confirm it.** The
+quantisation grid gives 11.86 bits across the signal swing, which an eight-bit
+converter cannot produce at any record length. This section is therefore a
+statement of what to keep rather than what to change, and it is written that
+way because an earlier draft of this chapter implied the opposite.
+
+**The digitiser was never the limitation, and would not have been at eight
+bits either.** What decides that is not the bit count but the **dither ratio**,
+the baseline noise divided by the quantisation step. Above about 3 the grid has
+stopped mattering, because the noise moves the signal across codes and averaging
+recovers what rounding discarded. The campaign ran at 30, where quantisation
+contributes 0.008 per cent of the noise. The rehearsal ran at 1.37, where it
+contributes 1.8 per cent. Neither session was resolution-limited.
+
+**The check that matters is on the saved file, not the front panel**, because
+the two makes put the feature in different places. An acquisition mode writes
+its bits into the stored samples. A math function does not, so the channel
+export carries none of it however smooth the display looks. One pass over a file
+settles it: the smallest nonzero voltage difference is the quantisation step,
+and the noise divided by that step is the dither ratio.
+
+**More exported points do not buy resolution.** High Resolution averages
+converter samples into each record point, so every stored point already carries
+its extra bits independently of how many points are written out. The Agilent's
+CSV export has a Length control and the manual caps that format at 64K points,
+so the campaign's 2000 could have been larger. What that would have bought is
+TIME RESOLUTION, more points across the line, and not vertical resolution. At
+0.5 ms per point the 2025 records already placed roughly 110 points across a
+56 ms crossing, which is adequate, so this is a refinement rather than a defect.
+
+### 3. Duty cycle, which is the cheapest factor of four available
+
+Only 5.57 per cent of each 2025 record stands above half maximum. Each trace
+spent about 56 ms on the line and 944 ms on baseline, one line at a time.
+
+Carrying all four hyperfine peaks in one trace multiplies the time on line by
+four at no cost in acquisition time, and trimming the scan span toward the
+occupied region multiplies it again. Both beat scanning slower, which buys only
+the square root of time, and both are free.
+
+The four-peak trace also does something no amount of averaging can. It places
+every peak on ONE vertical range in ONE trace, which is the direct test of
+whether the amplitude departure follows brightness rather than branching ratio.
+Take it with the EOM on and off.
+
+### 4. Scan shape and the two halves
+
+Use a triangular scan and keep both halves rather than discarding the return.
+Each half is an independent crossing of the same line under the same conditions,
+so a trace yields two centre measurements instead of one.
+
+What the two halves are worth beyond that depends on the filter's phase, and
+this is the one place the choice of instrument changes the protocol. A causal
+average delays features by about half its window, so the ascending and
+descending halves disagree about the centre by twice that lag: their midpoint
+recovers the true centre and their splitting MEASURES the lag, which is a free
+calibration. A zero-phase filter, which is what ERes specifies, produces no such
+displacement, so on that instrument the two halves are simply two crossings and
+there is nothing to calibrate.
+
+Take several periods per trace where the record allows it, since periods are
+repeats that cost no extra dead time.
+
+### 5. Ladder order, and the confound to avoid repeating
+
+In 2025 the power descended monotonically and time advanced monotonically, so
+every quantity measured against power was equally a quantity measured against
+elapsed time. Nothing in that dataset can separate them.
+
+Randomise the rung order, or interleave ascending and descending blocks. At
+minimum, repeat the extreme rungs at the END of the session: if the first and
+last measurements of the same nominal condition disagree, the session drifted,
+and that is worth knowing before the analysis rather than after. The 2025-07-04
+rehearsal already ran its ladders in alternating directions and is the reason
+this is stated as a requirement rather than a preference.
+
+### 6. Where to spend the session's time
+
+The two-photon rate goes as the square of intensity, so signal-to-noise is
+LINEAR in power and only square-root in time. Doubling the power is worth four
+doublings of integration.
+
+A sensitivity analysis over the acquisition inputs put power at 0.648, points
+across the line at 0.217, collection efficiency at 0.160 and repeats at 0.122.
+Between the two square-root options, prefer REPEATS over slower scans: they cost
+the same in time and additionally deliver a direct estimate of the
+trace-to-trace scatter, which a single long scan cannot give at any length.
+
+### 7. What not to do, with the reason
+
+Do not chop the light. The noise is 83 to 97 per cent white across the
+conditions, so a lock-in has almost no excess low-frequency noise to reject, and
+a chopper discards half the photons to buy it. Modulate the detuning instead if
+a modulation scheme is wanted.
+
+Do not change the transimpedance gain hoping for signal-to-noise. In the
+shot-limited regime the gain multiplies signal and noise together and cancels.
+Choose it for range and bandwidth, and then record it.
+
+Do not select an instrument on sample rate or bandwidth. Both exceed what this
+measurement needs by orders of magnitude.
+
+### 8. Record what 2025 did not, which is the cheapest improvement of all
+
+The largest single deficiency of the existing archive is not any setting. It is
+that the settings were not written down, so they had to be recovered from the
+samples years later, and some cannot be recovered at all.
+
+Record per trace, in the filename or an accompanying line:
+
+  * **vertical range**, which is recoverable from the quantisation step but
+    should not have to be
+  * **transimpedance gain**, for which the entire programme holds exactly one
+    record, `G = 10^6` in the rehearsal filenames, so the campaign's own gain is
+    simply unknown
+  * **acquisition mode and its depth**, since the apparatus record currently
+    carries two mutually exclusive readings of what the campaign ran
+  * **cell temperature as measured**, distinguished from the variac set point,
+    two of which have already been mistaken for temperatures
+  * **the order and the wall-clock time** of every acquisition, which is what
+    makes a drift test possible at all
+
+None of this costs bench time. All of it decides whether a future analysis can
+separate a physical effect from an instrument setting.
 
 ---
 

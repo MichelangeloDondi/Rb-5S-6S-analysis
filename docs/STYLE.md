@@ -133,6 +133,32 @@ Precise technical contrasts are different and are welcome: "an upper bound,
 not a detection" and "a model fit, not a moment computation" draw real
 distinctions and should stay.
 
+### Banned vocabulary, and the one way to keep a banned word
+
+`tests/test_repo_hygiene.py` holds a bank of vocabulary this record does not
+use, checked line by line over every tracked Markdown and Python file. The
+newest entries are the mood-and-sales pair added on owner instruction,
+2026-08-19. Write the thing itself instead: a failure mode, what would defeat
+the session, the objection a referee would raise, the empty case, the chance
+of returning nothing.
+
+Some banned words have a real technical sense somewhere in this tree. A
+sampling interval is a pitch, a quoted title says what it says, and a frozen
+preregistration record must not be edited after the fact to satisfy a rule
+written later. For those, mark the block:
+
+```
+<!-- term-of-art: why this word has to stand here -->
+```
+
+or the same text in a Python comment. The marker covers the paragraph it
+heads and stops at the next blank line, and it must carry a reason of at
+least three words, checked mechanically. That cost is the design: keeping a
+banned word should take longer than replacing it, and the reason should be
+readable by whoever meets the word next. Adding a file to the exempt set
+instead makes the guard blind to everything else in that file, which is the
+outcome this mechanism exists to avoid.
+
 ## People
 
 Name people in **citation context only**, citing via `docs/lit/<citekey>.md`.

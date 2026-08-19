@@ -84,6 +84,46 @@ parameter is a bound rather than a measurement rests on an improvement far
 below any penalty, so it is criterion-independent too, which matters because
 it is the conclusion a reader is most entitled to be suspicious of.
 
+## The implemented hierarchy, and why no single statistic decides
+
+`rb5s6s/model_compare.py` computes the comparison as an EVIDENCE VECTOR and
+leaves the judgement to a separate function. The separation is the point: an
+algorithmic threshold becomes a scientific verdict the moment one function is
+allowed to return "preferred".
+
+| statistic | what it assumes | status here |
+|---|---|---|
+| delta chi-square, likelihood ratio | nested models, and a residual structure the reference distribution matches | reported where nesting holds |
+| parametric bootstrap of the selection statistic | only that the generative model can be sampled | reported, and UNCALIBRATED until a coverage run measures it on this noise |
+| classical F | independent, homoscedastic, Gaussian residuals from linear models | reported as a labelled convention, never as a verdict |
+| AIC, AICc, BIC | differing parsimony conventions, and a sample size | reported both raw and effective |
+
+**The classical F test is a convention here, not a repaired verdict.** This
+experiment has correlated samples, a fitted noise law, nonlinear models and
+nuisance parameters. Substituting an effective sample size for N does not
+restore the reference distribution: under correlation the numerator and
+denominator sums of squares stop being independent scaled chi-squares, and no
+substitution for N recovers that. The implementation therefore returns the
+statistic together with a validity flag and the specific condition violated,
+so a downstream reader cannot mistake a p-value for authority.
+
+**The effective form changes BOTH terms.** An effective BIC is the WHITENED
+chi-square against a penalty on the effective count. Using a raw chi-square
+against a reduced penalty inflates the fit's apparent gain by roughly the
+correlation time while lowering its parameter cost, and on this archive that
+half-treatment reverses a verdict, moving a delta-BIC from -46 to +62. The
+implementation refuses to compute the effective form unless both are supplied.
+
+The interpretation layer returns one of four words, and three of them are
+refusals to choose:
+
+**robust**, every available criterion agrees and at least one separates
+decisively. **convention-dependent**, the criteria disagree among themselves,
+so the preference is a choice of convention rather than a fact about the data.
+**assumption-dependent**, the raw and effective forms point opposite ways, so
+the answer is about the correlation treatment. **unresolved**, nothing
+separates the models at the threshold treated as decisive.
+
 ## What can go wrong
 
 The deepest failure is a comparability one. These criteria compare models

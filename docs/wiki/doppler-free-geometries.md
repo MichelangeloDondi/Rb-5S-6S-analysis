@@ -307,4 +307,4 @@ have shown the factor of two before it reached a design document.
 
 ---
 
-[← Hyperfine populations and branching](hyperfine-populations-and-branching.md) · *Atomic structure and selection rules, 6 of 6* · [wiki index →](README.md)
+[← The cascade and F-depletion](the-cascade-and-f-depletion.md) · *Atomic structure and selection rules, 7 of 7* · [wiki index →](README.md)

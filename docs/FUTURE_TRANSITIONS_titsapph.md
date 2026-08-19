@@ -196,8 +196,9 @@ Net: the filter swap is required once to reach the upper ladder, and it is a
 *cheap, one-time* cost (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
-**But "cheap" describes the hardware and not the risk. The risk is the noise
-floor, which has to be measured rather than assumed** (2026-07-26). M1's fitted
+**But "cheap" describes the hardware and not what could defeat the session.
+What could defeat it is the noise floor, which has to be measured rather than
+assumed** (2026-07-26). M1's fitted
 law is σ² = a² + b·V: a detector floor plus a Poisson term. Which of the two
 dominates sets how signal-to-noise responds to a *fainter* line, and the two
 answers differ by a square:
@@ -726,8 +727,8 @@ afterthought.
 
 ## The same items costed
 
-Everything above is a physics menu. Deciding bench time takes
-cost, yield and risk instead, so this section restates the same items in
+Everything above is a physics menu. Deciding bench time takes cost, yield
+and failure mode instead, so this section restates the same items in
 those columns, with the last naming the source class that reaches each rung's light-shift ceiling. Nothing below is scheduled, agreed or assigned. Every
 duration is [PLAN.md](PLAN.md)'s own where PLAN.md costs the block, and is
 marked as an estimate with its basis where PLAN.md does not. Every entry in
@@ -791,8 +792,8 @@ afternoon of D4 to a metrology block of knife-edge, camera and retro ratio,
 and §4.1 gives half a day to the 2025-geometry spot check. No atoms are
 needed for it. What it returns is retroactive. Every waist-conditional
 statement in the 2025 dataset would sharpen in place, and the degeneracy
-between transit width and laser width would collapse. The risk is not that
-the measurement fails, since a knife-edge returns a number, but that the
+between transit width and laser width would collapse. The failure mode is not
+that the measurement fails, since a knife-edge returns a number, but that the
 number describes the present bench rather than the 2025 one. Carrying it
 back needs the config-M spot check of `PLAN.md` §4.1, the 2025 geometry
 plus one 130 °C point. If that bridge did not hold, nothing would be
@@ -813,8 +814,8 @@ temperature-grid days, D1 to D3, returning β_self or a much tighter bound
 along with the first fixed-lock laser width. stage 2 buys handle strength
 through a second and tighter waist. stage 3 is sampling that refines without
 enabling, and it is the first thing to cut. The analysis end carries no
-development risk: the existing pipeline ingests session data unchanged, so
-what a session buys is shots rather than software.
+development exposure: the existing pipeline ingests session data unchanged,
+so what a session buys is shots rather than software.
 
 What could come back empty there. β_self is intrinsically a few kHz per
 10¹² cm⁻³, and `PLAN.md` §1 states the deliverable as a modest first
@@ -937,10 +938,12 @@ in hand.
 
 ## 4. The paper portfolio (ranked)
 
-Four papers could be written out of the material above. The ranking criterion is
-risk-adjusted distinctiveness per unit bench cost: how far a result would sit
+Four papers could be written out of the material above. The ranking criterion
+is EXPECTED distinctiveness per unit bench cost: how far a result would sit
 from anything another group could produce, divided by the bench time and the
-hardware it would take, discounted by the chance of returning nothing. That
+hardware it would take, discounted by the chance of returning nothing. The
+word expected does the discounting, and the discount is stated per paper
+rather than folded silently into a score. That
 criterion prefers a cheap measurement of a quantity nobody has published to an
 expensive measurement of a quantity several groups have already published well,
 so the order below is not the order of headline appeal.
@@ -1098,7 +1101,7 @@ sweep would return the clean-case approximation holding everywhere it can be
 tested, and the informative end would be the expensive rung.
 
 **Rank and reason.** Third. Cheap at the 6S and 7S end and it lowers Paper A's
-risk, which is why it ranks above A. Its own distinctive result lives at the 5D
+chance of returning nothing, which is why it ranks above A. Its own distinctive result lives at the 5D
 end, which carries Paper A's cost, which is why it ranks below B.
 
 ### 4.4 Rank 4, Paper A (the topical extension)
@@ -1207,7 +1210,7 @@ necessarily most precise): scanning the 776 nm magic wavelength on 5S→5D and w
 the ramp asymmetry flip sign, a reference-free magic-wavelength determination, on the
 most actively worked transition, by a method those groups do not use. Its systematics
 are orthogonal and it needs no active hardware, and it needs the large-S₀
-small-waist regime to work at all (§Paper A caveat). The lower-risk
+small-waist regime to work at all (§Paper A caveat). The safer
 complement is **Paper B** (the β_self / Δα ladder), which reuses the exact
 rig and method.
 

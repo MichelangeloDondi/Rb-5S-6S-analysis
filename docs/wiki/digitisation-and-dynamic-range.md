@@ -162,4 +162,4 @@ a reader.
 
 ---
 
-[← Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md) · *Noise and its management, 4 of 5* · [Photon counting →](photon-counting.md)
+[← Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md) · *Noise and its management, 4 of 6* · [Resolution enhancement and what it costs →](resolution-enhancement-and-what-it-costs.md)

@@ -389,3 +389,142 @@ config file its power and waist. The shift density, the noise law, the
 frequency axis and the fit layer would not move at all, which is what makes
 it the cheapest adaptation in this document. None of it has been run, and
 the section is written as a proposal.
+
+## The cascade seam, added 2026-08-19
+
+`rb5s6s/cascade.py` carries the ground-level population dynamics under
+repeated excitation: how much of the driven hyperfine level survives an
+atom's transit, and therefore how far an observed amplitude sits below the
+transition strength that would predict it.
+
+**What is general.** The dynamics. `surviving_fraction` is geometric decay
+under a per-cycle loss with an optional repumping term, and holds for any
+two-level ground manifold driven out of one level and returned to the other.
+`CascadePopulations` and `amplitude_factor` are the same arithmetic in a
+form callers can use.
+
+**What is this transition's.** The four numbers in `BRANCHING_F` and the
+line-to-isotope map in `DRIVEN_F`. Both are rubidium 5S-6S. For another
+species or another line, replace the table.
+
+**Where the numbers come from, and the seam that matters.** The branching is
+the committed output of `scripts/run_zeeman_depletion.py`, which carries
+every Clebsch-Gordan coefficient on the full Zeeman manifold and needs sympy
+from the `cascade` extra. `branching_from_manifold` recomputes it exactly
+where sympy is present and RAISES rather than falling back, so a caller
+asking for the exact computation never receives the table by accident. A
+plain install gets the physics from the table without the dependency.
+
+**The guard.** `tests/test_cascade_invariants.py`, which checks population
+conservation, non-negativity, the zero-cycle and zero-excitation identities,
+monotone depletion, the unrepumped and repumped steady states, the
+isotope-to-line assignment, and that the transit average lies between the
+endpoints it averages. Those checks need no sympy, because they test the
+dynamics rather than the table.
+
+**A duplication this seam removed.** `rb5s6s/stark.py` carried its own
+literal copy of the four branching values and its own literal natural width.
+Both now come from their source, so a change to either cannot leave that file
+behind. Reproduced exactly on collapse: the width is byte-identical and three
+of four branchings are unchanged, with 4121 gaining precision from 0.372478
+to 0.372478177, a relative move of 5e-7.
+
+## The blackbody seam, added 2026-08-19
+
+`rb5s6s/blackbody.py` answers a design question rather than reporting a
+number: above which temperature does thermal radiation enter the systematic
+budget, at a given target precision.
+
+**What is general.** `Transition`, `occupation`, `einstein_a` and
+`stimulated_rate` know nothing about rubidium. `t_max` is a solver over any
+shift model.
+
+**What is this transition's.** `RB_5S6S_SHIFT_HZ`, the four committed
+differential-shift values, and the exponent fitted to them. Another species is
+another preset.
+
+**The seam that matters, and the one deliberately NOT crossed.** The
+differential shift is a principal value through the 6S-6P poles, and
+`scripts/run_blackbody_channels.py` records three earlier attempts that were
+each wrong in an instructive way. Reimplementing that integral in the library
+would create a second source of truth for a delicate number, so the committed
+values are carried and interpolated instead, exactly at the four points and
+flagged as extrapolation outside them.
+
+**The guard.** `tests/test_blackbody_boundary.py`, which checks that the
+interpolation reproduces every committed point exactly, that occupation sits
+on the Wien tail for this cascade, that Einstein A scales as the cube of
+frequency, that the ceiling family moves the right way with the target, and
+that correcting the shift raises the ceiling.
+
+## The model-comparison seam, added 2026-08-19
+
+`rb5s6s/model_compare.py` computes an evidence vector.
+`interpret_model_comparison` judges it. They are separate functions on
+purpose, and the invariant is tested: no single statistic in the output can
+return a preference.
+
+**What is general.** All of it. Nothing in this module knows about rubidium.
+
+**What is campaign-specific.** Nothing, except that the effective-sample-size
+convention it enforces is this repository's, described in
+`rb5s6s/sharing_bic.py` and not a theorem.
+
+**The trap this seam closes.** The effective BIC needs the WHITENED
+chi-square against the effective count, both terms. A raw chi-square against a
+reduced penalty inflates the fit's gain by roughly the correlation time while
+lowering its parameter cost, and on this archive that reverses a verdict. The
+module REFUSES the half-treatment rather than computing it.
+
+**Status.** UNCALIBRATED, stated in the docstring and in the output, until a
+bootstrap coverage run measures the selection statistic on this noise
+structure.
+
+**The guard.** `tests/test_model_compare.py`, including the no-verdict
+invariant and the refusal of the half-treatment.
+
+## The forecast seam, added 2026-08-19: the digital twin
+
+`rb5s6s/forecast.py` runs the package backwards. Every other seam takes data
+and returns parameters. This one takes parameters and returns data, then fits
+that data back and reports what an experiment would achieve. An apparatus that
+does not exist yet is therefore a thing that can be measured.
+
+**What is general.** All of it. `synthetic_traces` builds traces from any line
+model this package can evaluate, with noise either as a fraction of peak or
+through a MEASURED noise law evaluated by `rb5s6s.noise.sigma_of_v`, so a
+characterised detector simulates under its own law rather than under a
+convenient one. `forecast_precision` is a Monte-Carlo over
+`synthetic_traces` into `fit_condition` at a chosen design, returning median
+parameter uncertainties, the scalings measured by RE-RUNNING the study at
+scaled designs rather than by asserting exponents, and the ceilings the model
+layer supplies. `external_constraint_gain(rho)` returns $\sqrt{1-\rho^2}$,
+the fraction of its uncertainty a parameter keeps once its correlated partner
+is measured independently. `comb_tooth_weights` returns the two-photon comb
+tooth weights in the zero-delay limit and cell-averaged beyond it, where the
+retro delay maps to a position-dependent effective modulation depth, with
+the identity tested against the explicit pathway sum. Its reciprocal is the factor bought, and it depends
+on the correlation alone, so it is a property of the design rather than of the
+sample size.
+
+**What is campaign-specific.** Nothing in the module. `examples/campaign_twin.py`
+is the campaign-specific instance, and it embeds every committed input it needs
+as a provenance-tagged constant rather than reading `results/`, so it runs from
+a clone with no data present.
+
+**The trap this seam closes.** A design study that reports what MORE data buys
+will always report an improvement, because more data always shrinks an error
+bar. It will not tell you that the pair you care about stays degenerate. Run
+`width_identifiability` or read `corr_laser_coll` alongside every forecast: on
+this line the two widths correlate at about -0.92, and that number does not
+move with span or with repeat count. More data fixes noise and never fixes
+identifiability, and the twin is where the difference becomes visible in
+minutes.
+
+**Status.** Validation class III, design: sensitivity checks with stated
+limits. A forecast holds for its stated truth, design and noise model and for
+nothing else, which is why every returned mapping carries an `assumptions`
+entry.
+
+**The guard.** `tests/test_forecast.py`, including the no-repository-data rule
+and a reduced end-to-end run of the campaign twin.

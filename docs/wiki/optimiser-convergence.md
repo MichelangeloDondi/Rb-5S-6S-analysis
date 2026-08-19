@@ -63,7 +63,7 @@ condition to the next, and that is wrong across its whole extent, because the
 one decision that mattered was made once, by accident, at the first cell, and
 never revisited.
 
-Three defences follow directly from where the risk sits. Starting the search
+Three defences follow directly from where the exposure sits. Starting the search
 from several places, including a start deliberately far from anywhere a
 neighbour's solution would put it, gives the true minimum more than one
 chance to be found. Running a scan in both directions across its grid and
@@ -136,7 +136,7 @@ did converge, to a real stationary point, by every mechanical measure the
 optimiser has.
 
 A second failure sits in scanning one direction only. The first point then
-carries the whole risk and nothing downstream can correct it. Comparing a
+carries the whole chain and nothing downstream can correct it. Comparing a
 forward pass against a backward one turns that single point of failure into
 two chains that would have to land in the same wrong valley independently,
 which is far less likely, and any point where the two disagree is a direct
@@ -226,4 +226,4 @@ a reader.
 
 ---
 
-[← Grids and discretisation](grids-and-discretisation.md) · *Simulation and computation, 3 of 4* · [Compute budgets and failure modes →](compute-budgets-and-failure-modes.md)
+[← Grids and discretisation](grids-and-discretisation.md) · *Simulation and computation, 4 of 5* · [Compute budgets and failure modes →](compute-budgets-and-failure-modes.md)

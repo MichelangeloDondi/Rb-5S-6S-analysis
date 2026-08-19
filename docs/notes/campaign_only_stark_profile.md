@@ -148,6 +148,61 @@ The thirty per-point curves are in
 `pooled_multistart`, each variant tagged `_CAPPED` where that point hit the
 evaluation limit, so a reader can apply their own convergence filter.
 
+## Correction, 2026-08-19: the pointwise-minimum bound was an artefact of the display normalisation
+
+**The paragraphs above report a pointwise-minimum bound of about 1.92 from
+the pinned run and read it as the surface's own instability. That reading
+does not survive an absolute chi-square comparison, and the correction runs
+in the record's favour.**
+
+The CSV in this directory stores each start OWN-NORMALISED, against its own
+best point. A pointwise minimum across starts formed from those columns is
+not a profile: it drags every curve to zero at its own minimum, and the
+minimum over the flattened curves, {0.00, 0.00, 0.00, 0.66, 0.00, 14.17}
+across the six coefficient values, crosses 2.706 at 2.191. **THAT CURVE
+CORRESPONDS TO NO SINGLE FIT.** It is an envelope over five different
+optimisations, most of which never reached the production optimum.
+
+The instrument that produced those starts writes ABSOLUTE chi-square, and
+its output survives beside it. Its provenance was pinned before use: the
+five per-start bounds derived from it reproduce this note's own reported
+pinned-run values exactly, 0.0, 0.593, 1.675, 1.916 and 2.191, so it is the
+pinned run's raw output and therefore the environment of record's own.
+Against the committed production minimum of 186370.92 at kappa 0.25, the
+best independent start at each coefficient value sits above it by:
+
+| kappa, MHz per W | best independent start, above production |
+|---|---|
+| 0.00 | 7.54 |
+| 0.50 | 4.84 |
+| 1.00 | 4.66 |
+| 1.50 | 5.32 |
+| 2.00 | 7.78 |
+| 3.00 | 26.29 |
+
+**The production warm-start chain is pointwise-dominant everywhere tested,
+and every entry exceeds 2.706**, so the independent-start ensemble never
+enters the confidence region and carries no bound information once anchored.
+The reported factor of 2.13 between two fully converged starts is a
+disagreement between two optimisations that both sit tens of chi-square
+units above the production optimum, inside a region the production fit
+dominates.
+
+What the multi-start test establishes therefore stands, and what it was read
+as saying does not. It establishes that the surface is expensive to reach
+from an independent start at the production budget and that the warm-start
+chain is load-bearing, which is the note's own conclusion. It does NOT
+establish that the committed profile sits at the wrong optimum, and the
+anchored comparison says the opposite.
+
+**One premise carries this correction and is stated rather than assumed
+away**: that the instrument's objective is identical to the production
+profile's. Its docstring identifies the pooled chi-square scale as 186371
+against a void run's 31363, its values sit on that scale, and it declares
+production settings. That is strong circumstantial evidence and not a
+verified identity, and it is the one thing that would overturn this
+correction.
+
 ## Which convergence checks each construction has had
 
 | construction | checks run | outcome |

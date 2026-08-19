@@ -67,6 +67,19 @@ amount of the same data fixes this, because the information is not in the
 lineshape at all. Only an independent measurement of one of the two, or a
 lever that moves one without the other, can break it.
 
+Both halves of that sentence are measured rather than argued. Varying the span
+by a factor of five and the trace count by a factor of ten moves the
+correlation between the two widths from -0.9177 to -0.9166 and -0.881, which
+is no movement, so no acquisition setting is the asymmetric lever. Measuring
+one of them elsewhere buys the other a factor of one over the square root of
+one minus the correlation squared, between 2.3 and 3.2 across the conditions
+this record covers, and
+[chapter 7](big_picture/07_limitations-and-identifiability.md) carries the
+constructions, together with the second limitation hiding inside this one:
+the fit assigns the laser a KERNEL SHAPE the record has never measured, and
+the wrong shape biases the collisional width rather than widening its error
+bar.
+
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in
 the archive is differential. Line shapes survive this and line positions do

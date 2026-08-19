@@ -121,7 +121,9 @@ Each of these decides a setting above, and none takes long.
    the amplifier nor the light but the campaign's acquisition mode. What
    remains is converting that bound, which sits at the sampling limit, into a
    measured time constant, and establishing the response at whatever gain the
-   next session actually uses.
+   next session actually uses. This is the 3104z's job: the bound IS that
+   instrument's sampling limit, and its deep fast record is what converts a
+   limit into a curve.
 3. THE SINGLE-PULSE SHAPE AND THE PEAK COUNT RATE. Decides whether the
    counting mode is available, and checks the inverted rate above against a
    direct measurement, which tests the committed noise model microscopically.
@@ -147,6 +149,21 @@ Each of these decides a setting above, and none takes long.
 11. THE WAVEMETER LINK TO DISK. The photographed session shows no network link
     to the wavemeter, which is exactly the photographed-not-logged failure
     section 11 exists to remove.
+12. THE SPLIT-SIGNAL DUAL RECORDING. Tee the detector output into the Agilent
+    and the 3104z and record a handful of conditions on both at once. The
+    amplitude departure from the square-of-power law orders by peak brightness,
+    which reads as a detection signature, and two different chains digitising
+    ONE photocurrent is the direct discriminator: what both records share
+    belongs to the light, what differs belongs to acquisition. No single
+    instrument can make that separation at any setting, and the 2025 archive
+    cannot make it at all.
+13. THE PEDESTAL THERMOMETER. One slow wide sweep per temperature block with
+    the Doppler pedestal in frame, on the Agilent, whose High Resolution mode
+    gains bits exactly at slow sweep and holds the low broad pedestal and the
+    tall narrow peaks on one range. The pedestal width is an in-situ
+    temperature, and no 2025 session measured temperature at all: the archive
+    carries variac set points, two of which have already been mistaken for
+    temperatures.
 
 ### 10c.9 POLARISATION, AND WHAT THE LINEAGE ALREADY SETTLES
 

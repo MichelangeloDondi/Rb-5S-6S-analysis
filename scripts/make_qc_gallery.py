@@ -65,7 +65,7 @@ undecided, and the page says which in a sentence.
 Where a correction is accepted the page draws the corrected tooth order and
 keeps the fitted one beside it, so the picture never hides the table. This is a
 display correction and only that: the spacing and the drawn curve stay the comb
-fit exactly as it stands, because a relabelling does not move the pitch.
+fit exactly as it stands, because a relabelling does not move the tooth spacing.
 
 WHO READS IT. Two external physicists with no knowledge of this repository, plus
 the author. The page body is therefore held to the same register as the citable
@@ -758,7 +758,7 @@ def tooth_correction(rec, rl):
     Display only. The offset is preferred from the calibration record, which
     already holds the trial that rescued the labelling, and is otherwise read off
     the heights on this page. Neither route touches the spacing or the curve: a
-    relabelling leaves the pitch where it was, so the comb fit is drawn exactly
+    relabelling leaves the tooth spacing where it was, so the comb fit is drawn exactly
     as it stands and only the numbers over the teeth move.
     """
     f = rec["fit"]
@@ -835,7 +835,7 @@ def tooth_correction(rec, rl):
                 "had to refit the trace within a fixed cost before it would accept a "
                 "new labelling, and a change of names on a drawing does not. ")
     prov += ("The tooth spacing and the drawn curve are the comb fit exactly as it "
-             "stands, because renaming the teeth does not move their pitch.")
+             "stands, because renaming the teeth does not move their spacing.")
     return {"shift": shift, "source": source, "state": s0, "outcome": "corrected",
             "ratio_before": r0, "ratio_after": r1, "lines": [said, prov]}
 

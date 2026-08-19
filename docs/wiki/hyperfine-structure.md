@@ -186,4 +186,4 @@ a reader.
 
 ---
 
-[← Multiphoton transitions](multiphoton-transitions.md) · *Atomic structure and selection rules, 3 of 6* · [Magnetic sublevels →](magnetic-sublevels.md)
+[← Multiphoton transitions](multiphoton-transitions.md) · *Atomic structure and selection rules, 3 of 7* · [Magnetic sublevels →](magnetic-sublevels.md)

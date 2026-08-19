@@ -684,7 +684,7 @@ two-epoch design turns those nulls into measured coefficients.
   group), absolute hyperfine energy levels and isotope shift of the 5S–6S
   transition. **[CITE]** Their prior AC-Stark and density-shift nulls (on our
   C3d and C1 channels) are consistent with, and refined by, our dataset's
-  bounds (S₀ < 0.64 MHz by profile likelihood, β_self a bound). They are also
+  bounds (S₀ < 0.63 MHz by profile likelihood, β_self a bound). They are also
   the source of `DELTA_ALPHA_AU = +1093` (opposite sign by definition), and
   our `stark_shift_S0_mhz` reproduces their predicted shift to the digit
   (`test_stark_S0_reproduces_orson2021`). Prior groups looked for these

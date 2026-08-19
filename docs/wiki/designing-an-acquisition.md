@@ -132,6 +132,19 @@ needed. [Allan deviation](allan-deviation.md) describes the same limit from
 the other side, that no reproducibility statistic can run on a record that
 is not a time series, however deep that record is in points.
 
+## Sizing a design by simulating it
+
+Everything above sizes a setting by an argument. The arguments are checkable,
+and checking them costs minutes rather than a session:
+[`rb5s6s/forecast.py`](../../rb5s6s/forecast.py) generates the traces a
+proposed design would record and fits them back, so span, point count, repeat
+count and power can each be varied and the resulting parameter uncertainty
+read off rather than predicted. [The digital twin](the-digital-twin.md) is
+the method and its limits, and the one result worth carrying back to this
+page is that a design study reports what more data buys and will never tell
+you that a parameter pair stays degenerate. Read the correlation beside every
+forecast.
+
 ## What can go wrong
 
 The first failure is a model one, conflating a record's ability to draw a
@@ -263,4 +276,4 @@ after, would have caught the factor of four before it reached the plan.
 
 ---
 
-[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 5 of 7* · [Bessel functions →](bessel-functions.md)
+[← Sweep rate and detection lag](sweep-rate-and-detection-lag.md) · *Driving, modulating and detecting, 6 of 8* · [Bessel functions →](bessel-functions.md)

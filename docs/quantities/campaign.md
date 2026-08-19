@@ -89,7 +89,7 @@ Information gain is stated against what the archive currently establishes, and
 the time column is order-of-magnitude rather than a schedule. No utility score
 is computed, because the inputs to one do not exist.
 
-| session | what it buys | time | apparatus change | dominant risk |
+| session | what it buys | time | apparatus change | dominant failure mode |
 |---|---|---|---|---|
 | **A. Beam characterisation** | the waist measured at several powers with the EOM thermalised, and the retro ratio against power | half a day | none, a profiler in the beam | the waist may not be stable against power, which would withdraw the pooling rather than tighten it |
 | **B. Fixed-lock power ladder** | absolute centres across the ladder, opening the sensitive moment for the light shift | one to two days | the lock, now available | lock drift imitating the pull, which a zero-signal control epoch has already produced once at 2.7 standard deviations |
@@ -126,8 +126,8 @@ bench confirmation is not evidence of feasibility.
 | temperatures to 170 C | the ladder reached 130 C | yes, the oven's ceiling and gradient |
 | absorption channel | proposed, not built | yes |
 | photon counting | proposed in [plan 7](../plan/07_acquisition-settings.md) | yes |
-| a 12-bit or better acquisition | the 2025 sessions were 8-bit natively and re-ranged at every rung | yes, whether the available LeCroy holds 12 bits at the needed record length |
-| a measured detector response curve | never measured; the range-to-range gain is the leading candidate for the amplitude departure | yes, and it needs no atoms, only a calibrated variable source |
+| a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding ONE vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set snug, per [plan 7](../plan/07_acquisition-settings.md) |
+| a measured detector response curve | bounded but never traced: the rehearsal's finer-sampled records put the chain faster than 10 us at the 10^6 V/A gain, and the range-to-range gain remains the leading candidate for the amplitude departure | yes, converting the bound into a curve, and it needs no atoms, only a calibrated variable source |
 
 ## See also
 

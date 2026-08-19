@@ -156,4 +156,4 @@ would have caught the 32 µm figure before the fix did.
 
 ---
 
-[← The Voigt profile](voigt-profile.md) · *Experimental spectroscopy, 4 of 8* · [The beam waist →](the-beam-waist.md)
+[← The Voigt profile](voigt-profile.md) · *Experimental spectroscopy, 4 of 9* · [The beam waist →](the-beam-waist.md)

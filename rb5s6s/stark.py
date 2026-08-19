@@ -69,7 +69,9 @@ from scipy.optimize import least_squares
 
 from .lineshape import model_profile, stark_shift_S0_mhz
 from .linefit import transit_fwhm_at_T
-from .constants import RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M, W0_MEASURED_M
+from .constants import (GAMMA_NAT_HZ, RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M,
+                        W0_MEASURED_M)
+from .cascade import BRANCHING_F as F_PER_LINE
 from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 
 
@@ -92,9 +94,15 @@ from .config import TRANSIT_FWHM_PLACEHOLDER_MHZ
 COMPANIONS: dict | None = None
 
 # from run_zeeman_depletion checks 3 and 7, verified two independent ways
-F_PER_LINE = {"4121": 0.372478, "4154": 0.347646,
-              "4192": 0.248319, "4207": 0.223487}
-_GAMMA_MHZ = 3.4925377022579625      # the natural width, transition axis
+# The cascade branching per line, imported at the top of this file. These four
+# numbers were duplicated here as literals until 2026-08-19, while their source
+# of truth is the manifold computation whose committed output rb5s6s.cascade
+# carries.
+
+# The natural width on the transition axis. Was a private literal carrying no
+# uncertainty while the record quotes 3.493 +/- 0.013 MHz from a cited
+# lifetime; taken from the constant so the two cannot diverge again.
+_GAMMA_MHZ = GAMMA_NAT_HZ / 1e6
 
 
 def companion_gamma_mhz(s0: float, peak: str) -> float:

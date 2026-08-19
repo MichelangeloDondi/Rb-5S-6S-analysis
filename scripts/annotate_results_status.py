@@ -96,6 +96,10 @@ FILE_STATUS = {
     "ruler_blocks.csv": "CALIB",
     "ruler_traces.csv": "CALIB",
     "ruler_nlmap.csv": "CALIB",
+    # M2 stage 4b is a BOUND rather than a calibration intermediate: its
+    # deliverable is an upper limit on the laser's non-repeating frequency
+    # excursion, not a number any later stage consumes.
+    "ruler_tooth_scatter.csv": "BOUND",
     # every trim and every outlier removal the pipeline made, collected from
     # the tables that made them. A record of what was cut, never an input.
     "trim_report.csv": "DIAGNOSTIC",

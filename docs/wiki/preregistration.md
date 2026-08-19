@@ -74,7 +74,7 @@ recover that known answer, the fault is in the setup rather than in the
 physics: a threshold set wrong, an exclusion rule that removes the signal
 along with the noise, a simulated noise law that does not match the one the
 real data carry. Running a criterion on real data before it passes its own
-ceiling test risks reading an experimental limitation as a physical absence.
+ceiling test invites reading an experimental limitation as a physical absence.
 
 Together the two tests bracket what a criterion is allowed to claim. One that
 fails its null test is too loose: ordinary noise clears it, so a report of

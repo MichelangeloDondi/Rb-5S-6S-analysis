@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M30, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M34, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -72,6 +72,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M20 laser history (piecewise) | M21 centre channel (null) | M22 wavemeter reconstruction | M23 joint three-session Stark |
   | M24 wing check (null) | M25 global dataset fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
   | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
+  | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -148,10 +149,20 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           sharing_bic(M14) fringe_tail(M15) polarizability(M16) resolving(M17)
           vanderwaals(M18) ramp_transit(M19) hyperpolarizability(M29)
           cavity_scan(M30: the 2025-06-12 cavity-scan photograph, integrated)
+          cascade(M31: hyperfine populations under repeated excitation, and the
+                  ground-F depletion that separates transition strength from
+                  observed amplitude)
+          blackbody(M32: thermal radiation as a campaign boundary, delivering
+                    T_max(target precision) rather than a single ceiling)
+          model_compare(M33: model comparison as an evidence vector, with the
+                        interpretation layer deliberately separate)
+          forecast(M34: the digital twin, synthesise traces for an experiment
+                   that does not exist yet, fit them back, and read the
+                   achievable precision from the fit's own covariance)
           fitutil _compat
-          (M18, M19 and M29 are library-and-test only: they have no CSV
-           product, so grepping results/ for them finds nothing -- see
-           their test files)
+          (M18, M19, M29, M31, M32, M33 and M34 are library-and-test only: they have
+           no CSV product, so grepping results/ for them finds nothing -- see
+           their test files, and for M34 also examples/campaign_twin.py)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           → run_qc → run_noise → run_ruler → run_linefit → run_trim_report
           → run_beta_self(C1) · run_global_fit(M4b) · run_lever_crosscheck(M4d)
@@ -163,7 +174,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    2553-test battery (2499 fast ~4 min + 54 `slow` high-statistics
+tests/    2631-test battery (2576 fast ~4 min + 55 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -187,8 +198,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 2499 fast tests (~4 min)
-pytest -q --runslow                           # full 2553 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 2576 fast tests (~4 min)
+pytest -q --runslow                           # full 2631 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

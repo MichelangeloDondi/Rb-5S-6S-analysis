@@ -34,7 +34,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write 31 of the 46 committed CSVs. The other twelve each
+The runner's stages write 31 of the 47 committed CSVs. The other thirteen each
 have their own script, held out for one of two reasons.
 
 ### Five need trees that stay outside the repository
@@ -50,25 +50,28 @@ reads the raw 4 July and campaign-morning trees), `run_full_dataset_fit.py`
 Three of those five reach the trees indirectly, importing `run_stark_joint`'s
 `load_session_20250704` and `load_session_20250717` rather than reading the environment
 variables themselves, which is worth knowing if you are grepping for what
-depends on them. Three further scripts outside this twelve also need the trees
+depends on them. Three further scripts outside this thirteen also need the trees
 and write no CSV: `build_clock_table.py`, `run_epoch_checks.py`, and
 `run_saturation_probe.py` in its opt-in `--joint` stage.
 
 Point `RB5S6S_SESSION_20250704_DIR` and `RB5S6S_SESSION_20250717_DIR` at the trees if you have
 them. The fallback path the scripts fall back to is not where they live.
 
-### Six run from a clone, held out for runtime or as diagnostics
+### Seven run from a clone, held out for runtime or as diagnostics
 
 `run_wing_check.py` (`wing_check.csv`, about 6 minutes over the raw traces),
 `run_wavemeter_reconstruction.py` (`wavemeter_reconstruction.csv`, digitised
 from a tracked photograph), `run_laser_history.py` (`laser_history.csv` and
 `laser_history_structure.csv`), `run_stark_centres.py` (`stark_centres.csv`),
-`run_centre_stark.py` (`centre_stark.csv`) and `run_cavity_scan.py`
-(`cavity_scan_integrals.csv`). The last three read only committed files (the
+`run_centre_stark.py` (`centre_stark.csv`), `run_cavity_scan.py`
+(`cavity_scan_integrals.csv`) and `run_tooth_scatter.py`
+(`ruler_tooth_scatter.csv`, about a minute refitting every RF-on comb with
+free tooth centres, held out because nothing downstream reads its bound).
+Three of them read only committed files (the
 cavity-scan one integrates the tracked digitisation
 `docs/apparatus/2025-06-12_cavity_scan_IMG_2508_digitised.csv`).
 
-Four of the twelve are still checked without being in the runner:
+Four of the thirteen are still checked without being in the runner:
 `tests/test_results_fresh.py` re-runs `run_laser_history.py` and
 `run_stark_centres.py` and diffs what they produce against what is committed,
 and `tests/test_cavity_scan.py` does the same for `run_cavity_scan.py`.

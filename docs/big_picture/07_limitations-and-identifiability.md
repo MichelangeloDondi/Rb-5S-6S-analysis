@@ -43,8 +43,46 @@ self-heterodyne measurement viable, and the 2025 session had none of them.
 Simulated on a bright synthetic condition with signal-dependent noise
 (`scripts/run_width_pinning.py`), the collisional width scatters by
 0.0073 MHz across realisations when both are free and by 0.0021 MHz when the
-laser width is known, a factor of 3.4 in an idealised condition whose ratio,
-not whose absolutes, transfers to the real record.
+laser width is known, a ratio of 3.18 with a spread of 0.20 across nine
+seeds, in an idealised condition whose ratio, not whose absolutes, transfers
+to the real record.
+
+**What the factor actually is.** The simulated 3.18 is one condition's answer
+to a question whose general form is arithmetic. Conditioning on one member of
+a correlated pair leaves the other with $\sqrt{1-\rho^2}$ of its uncertainty,
+so the purchase is $1/\sqrt{1-\rho^2}$ and depends on the correlation alone.
+That is 2.29 at the record's median $-0.90$ and 2.97 at the pinning
+simulation's own bright condition, whose fitted correlation is $-0.9417$,
+against the $3.18 \pm 0.20$ the simulation measures there. The 7 per cent gap
+is what a Monte-Carlo scatter ratio carries that a covariance ratio does not. The
+comparison lives on
+[the identifiability page](../wiki/identifiability.md), and the consequence is
+that this row's purchase is a factor between two and three and a half rather
+than a single number.
+
+**Whether a design change could do it instead.** It cannot, and this was
+tested rather than assumed. Varying the span by a factor of five and the trace
+count by a factor of ten moves the correlation from $-0.9177$ to $-0.9166$ and
+$-0.881$, which is no movement at all. The degeneracy belongs to the lineshape
+rather than to the sample size, so the external measurement is not the
+cheapest route to this limitation. It is the only one.
+
+**A second limitation hides inside this one: the laser KERNEL is an
+assumption, and its failure mode is a bias rather than an error bar.** Every
+fit convolves a Gaussian for the laser, which is what slow frequency noise
+produces. Fast noise produces a Lorentzian, and a Lorentzian laser
+contribution is absorbed by the collisional width directly. The record
+cannot settle the kernel from lineshape alone, the model-form comparison
+being indistinguishable at its own gate, and nothing measures the laser's
+frequency-noise spectrum, the M1 noise law being the detector's. What
+evidence exists leans the unfavourable way: the comb-clock limit excludes
+the slow spectra that would justify the Gaussian by factors of seventeen to
+eighty. Two in-situ resolutions are designed and neither has run, the lock's
+own error signal and a fast-scan comb block whose tooth clock samples inside
+the band the science blocks' widths integrate
+([plan chapter 7](../plan/07_acquisition-settings.md)). Until one runs, the
+collisional coefficient carries this as an unquantified model systematic,
+stated in [CLAIMS.md](../CLAIMS.md) section 2.
 
 **Target outcome.** The collisional width becomes separately identifiable, and
 the bound of [Q-BETA-01](../BIG_PICTURE.md) becomes a measurement.

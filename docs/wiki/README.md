@@ -3,7 +3,7 @@
 **The question.** What does a reader need to understand, concept by concept,
 to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Forty-one pages in seven clusters, the routes through them by what
+**Gives.** Fifty-one pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
 **Skip if.** You want the experiment's own record rather than the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
@@ -21,7 +21,7 @@ can go wrong with it, and where to read more.
 
 ## Where to start, by what you came for
 
-Forty-one pages is too many to read in order, and the clusters below are a
+Fifty-one pages is too many to read in order, and the clusters below are a
 taxonomy rather than a route. These are routes.
 
 | if you came for | start here, in order |
@@ -33,20 +33,22 @@ taxonomy rather than a route. These are routes.
 | **evaluating the author's judgement**, not only the physics | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
 | **taking over this analysis**, the bus test | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
 | **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
-| **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [docs/ADAPTING.md](../ADAPTING.md) |
+| **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
 | **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
-| **working out what limits a measurement, and what would help** | [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
-| **designing the next measurement** | [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
+| **working out what limits a measurement, and what would help** | [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md), [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
+| **designing the next measurement** | [the digital twin](the-digital-twin.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
 **Every page carries the same four lines at the top**, so the decision to read
 on takes five seconds: the question it answers, what it takes, what it gives,
 and when to skip it. Every page ends with a "See also".
 
-**Where a concept has a scar, the page shows it.** Nineteen of these pages
-carry a dated section describing where this project got that concept wrong,
-what the mistake was mechanically, and what caught it. The replaced values
-themselves stay in [HISTORY.md](../HISTORY.md), which is the only file in this
-repository licensed to print one.
+**Where a concept has a scar, the page shows it.** Fifteen of these pages
+carry a section describing where this project got that concept wrong, what the
+mistake was mechanically, and what caught it. The replaced values themselves
+stay in [HISTORY.md](../HISTORY.md), which is the only file in this repository
+licensed to print one. That count is checked against the pages by
+`tests/test_wiki_index_is_complete.py`, because it had already drifted once
+before anything noticed.
 
 ## A. Atomic structure and selection rules
 
@@ -61,6 +63,7 @@ change, and the geometry that makes a Doppler-free measurement possible.
 | [Hyperfine structure](hyperfine-structure.md) | concept | why one transition is four lines, and why a same-isotope pair is a frequency ruler |
 | [Magnetic sublevels](magnetic-sublevels.md) | concept | the structure a hot cell averages away and a trap can hold |
 | [Hyperfine populations and branching](hyperfine-populations-and-branching.md) | concept | counting sets the line amplitudes, and decay can remove an atom from the experiment |
+| [The cascade and F-depletion](the-cascade-and-f-depletion.md) | concept | why an observed amplitude is not a transition strength, and how the cascade empties the level being probed |
 | [Doppler-free geometries](doppler-free-geometries.md) | concept | the wavevectors have to close, which two photons manage, three equal-colour photons cannot collinearly, and a fundamental with its own second harmonic can |
 
 ## B. Experimental spectroscopy
@@ -78,6 +81,7 @@ how the line is driven, what shape it takes, and what moves or widens it.
 | [The AC-Stark shift](ac-stark-shift.md) | physical effect | the drive light moves the very levels it probes, and a focused beam turns one shift into a distribution |
 | [Saturation](saturation.md) | physical effect | where the square law stops, and why a tighter focus leaves the safe regime faster than it gains signal |
 | [Collisional self-broadening](self-broadening.md) | physical effect | collisions keep the line Lorentzian and grow its width linearly with density |
+| [Vapour density and temperature](vapour-density-and-temperature.md) | concept | how a cell temperature becomes a density, why a set point is not a temperature, and the pedestal that measures it in situ |
 
 ## C. Driving, modulating and detecting
 
@@ -90,6 +94,7 @@ may be swept. What limits the reading once the photons arrive is cluster H.
 | [EOM sidebands](eom-sidebands.md) | technique | phase modulation stamps a radio-accurate frequency comb onto the light |
 | [The two-photon comb](the-two-photon-comb.md) | technique | the same comb seen by a two-photon transition, where the carrier nulls somewhere else |
 | [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) | technique | where a frequency axis comes from, and how a nonlinear scan is calibrated rather than trusted |
+| [Laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md) | concept | the same laser has a different width in every band, and the kernel a fit assigns to it is a physics claim with a bias attached |
 | [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) | physical effect | sweeping fast widens the line and forges the asymmetry the experiment reads |
 | [Designing an acquisition](designing-an-acquisition.md) | method | span, resolution and record length are one decision, not three |
 | [Bessel functions](bessel-functions.md) | concept, supporting | the amplitudes every phase-modulation problem is written in |
@@ -137,6 +142,7 @@ wrong.
 | page | type | in one line |
 |---|---|---|
 | [Monte Carlo methods](monte-carlo-methods.md) | method | sampling to answer what an estimator would do, and why precision costs the square of the samples |
+| [The digital twin of an experiment](the-digital-twin.md) | method | run the apparatus in software before building it, and find out which pairs stay degenerate however the design changes |
 | [Grids and discretisation](grids-and-discretisation.md) | method | a grid step means nothing except against the feature it must represent |
 | [Optimiser convergence](optimiser-convergence.md) | method | a fit that converged is not a fit that is right |
 | [Compute budgets and failure modes](compute-budgets-and-failure-modes.md) | method | the memory arithmetic done before launch, and why a killed run yields no result |
@@ -165,6 +171,7 @@ noise is irreducible, and the two instrument choices that decide the rest.
 | [Shot noise and technical noise](shot-noise-and-technical-noise.md) | concept | the scaling test that says which one you have, and what each implies about what to fix |
 | [Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md) | method | how many independent measurements a dataset really holds, and where an uncorrected count inflates a result |
 | [Digitisation and dynamic range](digitisation-and-dynamic-range.md) | technique | how many bits a measurement needs, and why a range changed mid-sweep is several measurements |
+| [Resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md) | technique | where the extra bits come from, why a smoothed screen can export raw eight-bit data, and the one case where smoothing moves a line centre |
 | [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
 
 ## How the pages connect

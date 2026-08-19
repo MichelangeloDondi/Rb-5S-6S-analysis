@@ -359,6 +359,82 @@ rather than peak height as the drift-robust observable, and a PMT-linearity
 certificate spanning the full fluorescence range with a pre-registered
 ceiling.
 
+## The cascade gives the amplitude channel a competing prediction
+
+Added 2026-08-19, when `rb5s6s/cascade.py` made the pumping calculation
+callable rather than a one-off script.
+
+The amplitude programme's open question is that the departure from the
+square-of-power law orders itself by peak BRIGHTNESS rather than by branching
+ratio, which reads as a detection signature rather than an atomic one. That
+was an observation without an alternative to test it against.
+
+There is one now. Hyperfine pumping predicts its own ordering, and it is
+DIFFERENT. Each excitation returns the atom to the undriven ground level with
+probability f, so a line's amplitude falls with the number of cycles an atom
+completes while crossing the beam, and the four lines have
+
+| line | branching f | surviving fraction after three cycles |
+|---|---|---|
+| 4121 | 0.3725 | 0.247 |
+| 4154 | 0.3476 | 0.278 |
+| 4192 | 0.2483 | 0.425 |
+| 4207 | 0.2235 | 0.468 |
+
+so pumping depletes 4121 fastest and 4207 slowest, spanning a factor of about
+1.9 in the surviving fraction. **The brightness ordering and the pumping
+ordering are not the same ordering**, which is what turns the four-peak trace
+from a descriptive measurement into a discriminating one: it does not merely
+record four amplitudes, it chooses between two named mechanisms.
+
+Two conditions on reading it, both stated before the measurement rather than
+after. The comparison is between RATIOS within one trace, since a common
+factor multiplies all four and cancels. And the cycle count is not known
+independently, so the test is on the ORDER and on the spacing pattern rather
+than on the absolute depletion, which the transit time and the excitation
+probability jointly set.
+
+If the amplitudes follow the pumping order the effect is atomic and the model
+already predicts it. If they follow brightness the effect belongs to the
+detection chain, and the dual-chain recording of chapter 7 is what localises
+it. Either outcome closes the question, which is the property worth having.
+
+## What the twin says the width programme can and cannot buy
+
+Measured 2026-08-19 on synthetic data whose truth is known, through
+`rb5s6s.forecast`, and recorded here because it changes which levers are
+worth session time.
+
+**More of the same measurement does not separate the widths.** The
+correlation between the laser width and the collisional width sits near
+-0.92 and STAYS there: -0.9177 at a 60 MHz span, -0.9166 at 300 MHz, and
+-0.881 with ten times the traces. Both uncertainties shrink as the data
+grow, and the direction the observable cannot see stays invisible. The
+degeneracy is a property of the lineshape rather than of the sample size, so
+no scan design defeats it.
+
+**An external constraint is worth a factor of two to three and a half, and
+it is the only thing that is.** Pinning one member of a correlated pair
+reduces the other's variance to $(1-\rho^2)$ of its joint value, so the
+uncertainty falls by $\sqrt{1-\rho^2}$. That factor depends on $\rho$ and on
+nothing else, which is why it is not a single number here: 2.29 at the
+correlation of $-0.90$ this record measures as its median across the 32
+conditions, 2.52 at the twin's design point, and 2.97 at the bright condition
+of `scripts/run_width_pinning.py`, whose direct Monte-Carlo scatter ratio is
+$3.18 \pm 0.20$ across nine seeds. The arithmetic and the simulation agree to
+7 per cent at the same condition, and
+[the identifiability page](../wiki/identifiability.md) carries the
+comparison. All of it is available from a measurement that never touches
+the atoms.
+
+**Consequence for this chapter's programme.** An independent laser-width
+measurement is not one lever among several, it is the ONLY lever that acts on
+the identifiability rather than on the noise. Session time spent widening
+scans or adding repeats buys precision on a quantity the record already
+declines to quote, and session time spent measuring the laser elsewhere buys
+the quantity itself. The ranking follows from the arithmetic rather than from
+preference.
+
 ---
 
 *[Intensity and the light shift](04_intensity-and-light-shift.md) · [Session sizing and spending rules](06_sizing-and-spending-rules.md)*
