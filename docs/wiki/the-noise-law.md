@@ -45,6 +45,45 @@ dominates over most of a bright line, and the excess term, if present at all,
 dominates at the peak. A measurement limited by one of them is improved by
 interventions that would do nothing for the others.
 
+## The three terms are often one term, and seeing that is the point
+
+Written as three coefficients the law looks like three mechanisms. Usually it
+is one mechanism seen in three places, and recognising that turns the law from
+a curve fit into a calibration.
+
+**The shot coefficient is the gain.** If the recorded voltage is $V = gN$ for
+$N$ detected quanta and $g$ the volts each contributes, then Poisson statistics
+give $\operatorname{Var}(V) = g^2 \operatorname{Var}(N) = g^2 N = gV$. So
+$b = g$, in volts per quantum, and the noise law measures the detection chain's
+gain without any separate calibration. Dividing a signal level by $b$ gives the
+number of quanta behind it.
+
+**And the floor is frequently the same term over a different pool.** Any
+optical background contributes its own counting statistics, so its variance is
+$bV_{\rm bg}$, which is signal-independent and therefore lands in $a^2$. When
+that is what the floor is,
+
+$$\sigma^2 = b (V + V_{\rm bg}), \qquad V_{\rm bg} = a^2/b,$$
+
+and the three-parameter law is one shot process over two pools of quanta. The
+quantity $a^2/b$ is then a measurement of the background LEVEL, obtained from
+the variance rather than from the mean, which is the only route available when
+a constant background is degenerate with a fitted baseline.
+
+**The test that decides whether this reading applies** is whether the
+fractional noise matches one over the square root of the implied count. It
+should, at every level where the background is negligible, and departures at
+the dim end locate the background rather than contradict the law.
+
+**One caveat belongs with the reading.** A detector with internal
+multiplication, such as a photomultiplier or an avalanche photodiode, adds an
+excess-noise factor above ideal Poisson from the randomness of the
+multiplication itself. That factor multiplies $b$ exactly as a loss of
+collection efficiency would, so the law measures their PRODUCT and cannot
+separate them. Shot-limited therefore means the variance tracks the signal, and
+it does not mean the measurement sits at the physical bound for the photons
+arriving at the window.
+
 ## What problem it solves
 
 It replaces a guess with a measurement at the exact point where a guess does

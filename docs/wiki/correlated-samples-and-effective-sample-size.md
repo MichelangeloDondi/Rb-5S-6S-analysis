@@ -60,9 +60,14 @@ so a trace's effective sample count is roughly a quarter of its raw one.
 It enters the record in three distinct places, and they are worth
 distinguishing because the mechanism is the same and the unit is not.
 
-  * **Within a trace**, where the finite response of the detection chain
-    correlates adjacent samples. This is the 3.8 above, and it is why
-    oversampling a line beyond the chain's response adds points without
+  * **Within a trace**, where adjacent samples are not independent. This is
+    the 3.8 above. **Attributing it correctly took two attempts and the
+    lesson generalises**: it was first read as the detection chain's own
+    response time, and it is in fact the acquisition's high-resolution mode,
+    which averages adjacent samples in hardware. The distinction matters
+    because a chain's response is a constraint while a smoothing mode is a
+    SETTING, and the second can be reduced when bandwidth is wanted. Either
+    way, oversampling beyond the correlation length adds points without
     adding information.
   * **Within a condition**, where the repeats of one cell share drift and
     alignment. Here the correction is a cluster or block treatment rather than

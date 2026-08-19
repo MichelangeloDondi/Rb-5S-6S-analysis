@@ -370,8 +370,12 @@ three functionals of it, never several estimators of one moment.
 At fixed density the dataset tests the *convention-free* content, and is
 consistent with it. Across a $9\times$ power sweep the linewidth is flat to
 $\lesssim2$% (the ramp adds variance $\propto S_0^2$, negligible against the
-5 MHz budget), and the amplitude scales as $P^{2}$ (log-log slopes 1.83 to
-2.12). The asymmetry is predicted below the dataset's noise and is not detected,
+5 MHz budget), and the amplitude scales approximately but **not exactly** as $P^{2}$
+(log-log slopes 1.83 to 2.12, of which three of four exclude 2 under a
+block bootstrap. The departure replicates in an independent session, is
+invariant under ladder direction, and is ordered by line brightness rather
+than by any atomic quantity, so it belongs to the detection rather than to
+the transition). The asymmetry is predicted below the dataset's noise and is not detected,
 as designed.
 
 That flatness is not merely a null. Fitting one shared $S_0=\kappa P$ to the

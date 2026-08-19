@@ -237,8 +237,15 @@ three validation analyses that gate the headline bounds
   rate.
 
 The **amplitude checks** are the two-photon rate laws: peak amplitude must
-scale as P² at fixed density and linearly with N at fixed power. Both hold
-(log-log slopes 1.83–2.12 and 0.85–1.02).
+scale as P² at fixed density and linearly with N at fixed power. The density
+law holds (log-log slopes 0.85–1.02). **The power law does not hold exactly,
+and this was corrected in 2026-08-18 after the slopes were tested against 2
+rather than read as a band.** Three of the four exclude 2 under a block
+bootstrap, the departure replicates in an independent session with opposite
+ladder directions and is invariant under that direction, and its ordering
+across the lines follows their brightness rather than any atomic quantity,
+which makes it a signature of the detection rather than of the transition
+([the note](docs/notes/amplitude_departure_from_p2.md)).
 
 Every scan carries its own frequency ruler: the 12.5 MHz EOM's sideband pairs
 excite copies of the line every 12.5 MHz on the transition axis, 6.25 MHz
@@ -288,7 +295,7 @@ measurement that would lift it.
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon, equivalently 2.4 MHz on the transition axis, at the adopted lineage waist, rising with w₀ | bound | beam-profile w₀ |
 | AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted lineage waist, see [RESULTS](docs/RESULTS.md), which records that a later rerun moved a subset bound by about a third and that the disposition of this bound is under review. Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
-| Power scaling | width: no power trend (3–8% block scatter); amplitude consistent with P² | null + consistency check | — |
+| Power scaling | width: no power trend (3–8% block scatter); amplitude DEPARTS from P², replicated and brightness-ordered | null + a measured departure | — |
 | Beam waist **w₀** | 64 µm, adopted from a direct measurement on the apparatus lineage and NOT re-measured in this campaign. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization, and a trapped-atom experiment |

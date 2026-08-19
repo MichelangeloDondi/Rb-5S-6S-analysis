@@ -88,8 +88,15 @@ as a bound. Concretely:
   vapour-cell result. The rule that decides bound against measurement is
   [the statistics chapter](../methods/06_the_statistics.md) §4.5, and the
   result is [what we found](../methods/07_what_we_found.md) §5.1.
-- **The ramp's power laws hold.** The width shows no power trend, a null
-  under 3–8% block scatter, and the amplitude is consistent with P². The
+- **The ramp's power laws hold in the width channel, and the amplitude
+  departs.** The width shows no power trend, a null under 3–8% block scatter.
+  The amplitude was read as consistent with P², and **tested rather than
+  described in 2026-08-18 it is not**: three of the four log-log slopes
+  exclude 2 under a block bootstrap, the departure replicates in an
+  independent session and is invariant under ladder direction, and its
+  ordering across lines follows their brightness rather than any atomic
+  quantity, which makes it a detection signature with no attributed
+  mechanism ([the note](../notes/amplitude_departure_from_p2.md)). The
   laser width is bounded at ≲1.2 MHz on the laser axis, with a central value
   of 1.088 MHz at the measured waist, against the sub-MHz figure quoted for the
   same laser in [Gokhroo 2022](../lit/gokhroo2022.md). The drift-immune skew

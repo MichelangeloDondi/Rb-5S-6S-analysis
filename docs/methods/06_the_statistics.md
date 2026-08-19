@@ -134,7 +134,7 @@ which annihilate any locally-linear trend exactly (so a bright line's steep
 flank contributes nothing) while having unit response to white noise, so for
 white noise of standard deviation $\sigma$, $e_i$ also has standard deviation
 $\sigma$. Binning $e_i$ by local signal level and fitting the variance law
-$\sigma^2=a^2+bV$ then gives $a$ (electronics/dark floor) and $b$ (the
+$\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it RISES with power, so it is shot noise on an optical background rather than electronics or dark current, and the law unifies as $\sigma^2=b(V+V_{\rm bg})$) and $b$ (the
 shot-noise, "Fano", term). Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
 $\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in

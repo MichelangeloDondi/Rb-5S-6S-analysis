@@ -562,13 +562,17 @@ the measured correlation length of 3.8 samples is taken into account.
     two per cent allows **5 minutes**.
   * **The fast limit** is set by the detection chain's time constant, which
     distorts and shifts the line once it approaches the line-crossing time.
-    No instrument specification for it is on record, but **the data constrain
-    it**: the committed noise law's integrated autocorrelation is a median of
-    3.79 samples at the campaign's 0.5 ms sampling, which is a correlation
-    time of about **1.9 ms**, and noise correlated on that scale is the
-    signature of a chain whose response time is of that order, since a wider
-    chain would deliver white samples at 0.5 ms. Taking 1.9 ms, the 63 ms
-    line crossing is about 33 time constants, which is comfortable.
+    **It is genuinely unknown, and an earlier version of this chapter got it
+    wrong.** The committed noise law's integrated autocorrelation is a median
+    of 3.79 samples at the campaign's 0.5 ms sampling, about **1.9 ms**, and
+    that was read here as the chain's response time. **The experimenter has
+    since confirmed the archive was acquired in the oscilloscope's
+    HIGH-RESOLUTION mode**, which averages adjacent samples in hardware, so
+    the 1.9 ms is a smoothing window rather than any property of the detector
+    or the amplifier. The chain itself may be orders of magnitude faster and
+    nothing in the archive says. The campaign's 63 ms line crossing sits 33
+    smoothing windows inside the processing limit, so the acquisition as run
+    was safe whatever the chain's own limit turns out to be.
 
 **The campaign's 1 second trace therefore sits about 1600 times inside the
 slow limit and at least 63 times inside the fast one.** Scan rate is not where
@@ -664,9 +668,11 @@ requirement of about 90 points across the line, a single ramp is **oversampled
 by a factor of 70**, so memory alone would allow about 35 up-and-down periods
 per record.
 
-**The detection chain sets the real limit, and it is far lower.** Each period
-added shortens the line crossing proportionally, and the chain's response time
-of about 1.9 ms inferred above does not shrink with it:
+**A processing limit rather than a physical one, and the difference matters.**
+Each period added shortens the line crossing proportionally while the 1.9 ms
+smoothing window does not shrink with it. That window belongs to the
+high-resolution mode rather than to the chain, so it is a SETTING and not a
+constraint, and choosing less smoothing raises the ceiling:
 
 | periods per record | points across the line | line crossed in | chain time constants |
 |---|---|---|---|
@@ -676,9 +682,10 @@ of about 1.9 ms inferred above does not shrink with it:
 | 8 | 395 | 7.9 ms | 4 |
 | 16 | 197 | 4.0 ms | 2 |
 
-**So the answer is two to four periods per trace, not thirty-five.** Two is
-comfortable at seventeen time constants and already gives two independent
-up-and-down pairs inside one trace. Four is the point at which the lag begins
+**So the answer is two to four periods per trace AT THE ARCHIVE'S SMOOTHING**,
+not thirty-five, and the ceiling rises if the smoothing is reduced. Two is
+comfortable at seventeen windows and already gives two independent up-and-down
+pairs inside one trace. Four is the point at which the lag begins
 to matter for the asymmetry channel before it matters for the width, which is
 the ordering the sweep-rate page sets out. Beyond eight the chain is
 integrating across the line and the lineshape is no longer the atom's.
@@ -694,16 +701,30 @@ bound and take two.
 These are different things and the answer differs.
 
 **High-resolution mode averages ADJACENT SAMPLES in hardware**, trading
-bandwidth for effective bits. Two facts make it close to free here. A single
-ramp is oversampled seventy times against what the fit needs, so bandwidth is
-not scarce. And the chain already correlates the noise over about 1.9 ms, so
-the scope is resolving structure the detector cannot produce. **Use it**, and
-the gain is not merely cosmetic: extra effective bits are exactly what the
-vertical-range problem needs, since holding one range across an eighty-one-fold
-ladder requires more than the eight bits either instrument offers natively.
-The one caution is to keep the decimation factor recorded per trace, because
-it changes the effective sampling interval and therefore every correlation
-length computed downstream.
+bandwidth for effective bits, and **the archive was acquired with it on**, a
+fact recovered from the experimenter rather than from any stored setting.
+Measured from the stored quantisation steps it delivered a median of about
+**9.5 effective bits** against the instrument's native eight, reaching twelve
+on the dimmest cell.
+
+**The trade it made was not obviously the right one.** The bits it bought were
+not needed, since quantisation sits 6 to 485 times below the noise floor in
+every committed condition, so finer steps bought nothing the noise did not
+already swamp. What it spent was bandwidth, and that 1.9 ms window is what
+caps the triangle at two to four periods above.
+
+**It costs no signal-to-noise, which is worth stating because it looks as
+though it should.** Averaging adjacent samples of white noise loses no
+information: four samples at one sigma become one sample at half a sigma, and
+a fit recovers the same precision either way. What is lost is only the ability
+to resolve features faster than the window, and the line is crossed in 63 ms
+against a 1.9 ms window.
+
+**So keep it for a single-ramp design, reduce it if many triangle periods are
+wanted, and in either case RECORD THE SETTING PER TRACE.** The archive did not,
+which is why that 1.9 ms was read here as a property of the detector. Every
+correlation length, effective sample count and design-effect correction
+downstream rests on a number that was nowhere written down.
 
 **Averaging mode averages SUCCESSIVE SWEEPS**, and it should not be used.
 The reasons are specific to this analysis rather than general.

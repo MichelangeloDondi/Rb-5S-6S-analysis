@@ -61,14 +61,14 @@ record. It holds the 297 curated traces and every result that carries an
 absolute number.
 
 The *campaign-morning session* of 17 July 2025 ran the frequency ruler's final
-commissioning at 04:18 to 06:33 and then a four-power sweep at 06:54 to 07:11.
+commissioning at 04:18 to 06:33 and then a four-power sweep at 06:54 to 07:11, run 210 then 35, 70 and 105 mW, NON-MONOTONE in time unlike the campaign's uniform descent, which is what lets it serve as an independent check on order dependence.
 The commissioning is the reason the campaign's frequency axis has a scale, and
 the sweep is a second measurement of the power dependence, taken hours before
 the campaign's own.
 
 The *4 July evening session* is 50 LeCroy traces taken 22:31 to 01:38 JST,
 thirteen days before the campaign, at four peaks and 90/180/270 mW with
-`G=10^6`. It is the only session at an internal 130 °C, and its power dependence
+`G=10^6`, its ladders run in ALTERNATING directions per peak rather than in the campaign's uniform descent, which is the property that makes it evidence about order dependence. It is the only session at an internal 130 °C, and its power dependence
 is one of the three arms the joint AC-Stark bound fits together.
 
 The *4 July first trials* are the earliest traces of all, at 03:37 JST that same
@@ -573,6 +573,12 @@ sub-grid interpolation, which turned out to matter because the committed "MC
 errors" had been the 0.01 MHz grid quantum in disguise. The noise-law floor
 rose to the dark-noise level, verified zero-churn, and tests were added for
 both. Detail is in the commits.
+**The phrase dark-noise level was a numeric regression target rather than a
+physical attribution, and 2026-08-19 established that it is not dark noise.**
+The floor rises with laser power on every line and agrees with the directly
+measured off-line noise at a ratio of 0.953, so it is shot noise on an
+optical background, and the law unifies as one shot term over signal plus
+background.
 
 **The collisional bound, 0.07–0.15 → 0.2–0.4 MHz per 10¹² cm⁻³
 (2026-07-16).**

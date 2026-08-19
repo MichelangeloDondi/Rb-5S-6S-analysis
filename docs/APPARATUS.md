@@ -307,6 +307,37 @@ controller top-right.*
 | **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + EXPERIMENTER |
 | Also on the bench (not used for the dataset) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 GS/s); LeCroy **WaveSurfer 10** (1 GHz, 10 GS/s) | PHOTO 2025-07-29 |
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
+
+**OPEN, and it matters more than its size suggests: the acquisition MODE of
+the archived traces is unresolved, and no per-trace instrument setting was
+ever stored.**
+
+  * The one photographed acquisition mode on this page reads **Averaging 32,
+    12.5 kSa/s**, while the experimenter's recollection (2026-08-19) is that
+    the campaign ran in **High Resolution** mode. On this instrument the two
+    are mutually exclusive. The photographed rate also disagrees with the
+    archive's own 2 kSa/s trace format, so the photograph may record a
+    different configuration entirely, which is the likeliest reading and is
+    not established.
+  * The distinction is not cosmetic. High Resolution averages ADJACENT
+    SAMPLES, which smooths and correlates them. Averaging combines SUCCESSIVE
+    SWEEPS, which would mean the stored traces are already averages and the
+    repeat scatter is not what the analysis takes it to be. The committed
+    integrated autocorrelation of 3.79 samples, about 1.9 ms, was read for two
+    days as the detection chain's response time and is consistent with the
+    high-resolution reading rather than with the chain.
+  * **The chain's own response time therefore remains unknown**, and a
+    measured detector response curve is what would settle it, along with the
+    mode question, in one afternoon.
+  * **The vertical range is not recorded anywhere either**, and it was changed
+    at every rung of every power ladder, by up to a factor of 596 in
+    quantisation step against a signal spanning about 80. The gain appears
+    exactly once in the whole programme, as the `G=10^6` token in the 4 July
+    filenames. Every correlation length, effective sample count and
+    design-effect correction downstream rests on settings that were never
+    written down, which is a record gap rather than a measurement one and is
+    fixed for the next session by storing scale, offset, coupling and mode
+    with every trace.
 | Wavemeter | HighFinesse **Ångstrom WS-8** (WS/8L, unit 4039) | PHOTO |
 | Wavemeter autocal | every 8 minutes | PHOTO 2025-06-08 |
 | Wavemeter feed | fibre directly from the laser head | EXPERIMENTER 2026-08-03 |
