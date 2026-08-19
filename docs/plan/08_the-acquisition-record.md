@@ -255,6 +255,17 @@ returns to 0.16. The same placement makes the carrier-null depth diagnostic
 valid at any frequency. The cost is one more optic in the retro path and its
 3 mm aperture.
 
+**The one magnetic systematic in this plan lives here.** The line barely
+feels a laboratory field, first order doubly cancelled to under 140 Hz at
+50 uT and second order under 3 kHz per state. The PAIR SEPARATION is less
+lucky: it inherits the difference of the quadratic Zeeman terms, dominated
+by the smaller 6S splitting, near 0.9 kHz for the 87 pair and 2.1 kHz for
+the 85 pair at Earth field, against this block's 0.3 kHz target. The term
+scales as the field squared, so nulling to about 15 uT with a coil pair buys
+a factor of ten, and the fluxgate column of section 10b.4b supplies the
+correction either way. No other block in this plan carries a magnetic term
+at its own precision.
+
 **Read it out detuned, not on the coincidence.** Two identical lines exactly
 on top of each other broaden quadratically in their detuning, so the
 coincidence itself is the least sensitive place to sit. Offsetting the drive
@@ -319,6 +330,13 @@ recorded, and the separation cannot be run because nothing says which half a
 trace is. **Log the direction per trace.** It is one column, it costs nothing,
 and it converts an existing bound on the curvature into a measurement of the
 drift itself.
+
+**Log the ambient field once per session.** One three-axis fluxgate reading
+per session, recorded beside the temperatures. The line itself is
+magnetically quiet twice over, the scalar selection and the S-to-S g-factor
+cancellation, so this column exists for the two places the field does act:
+the vector-skew reversal test of [chapter 5](05_width-collision-amplitude.md)
+and the coincidence block's quadratic Zeeman correction below.
 
 **Log the mains phase too, and pick the fast rates off the alias grid.** A
 periodic disturbance near a multiple of the tooth-crossing rate aliases into

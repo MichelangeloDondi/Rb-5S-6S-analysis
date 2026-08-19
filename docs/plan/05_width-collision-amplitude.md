@@ -399,6 +399,42 @@ already predicts it. If they follow brightness the effect belongs to the
 detection chain, and the dual-chain recording of chapter 7 is what localises
 it. Either outcome closes the question, which is the property worth having.
 
+## The asymmetry budget, and how the model earns a new term
+
+The record measures an asymmetry it does not explain. C3g is the open
+finding, a same-side near-core asymmetry in both sessions, absorbed neither
+by a detector time constant nor by the wing nuisance, and the band-excess
+finding names a better profile as the next lever. So the question is not
+whether the lineshape model is missing something asymmetric but WHICH
+asymmetric thing, and the answer is earned by decomposition rather than by
+adding a free skew parameter, because the shape channel is where the physics
+lives: the AC-Stark ramp's own asymmetry is the kappa signal, and a free
+skew would absorb it together with every systematic below into one
+uninterpretable number.
+
+Each candidate carries its own scaling and its own reversal knob, which is
+what makes the budget separable:
+
+| mechanism | scales with | reversal or signature | disposition |
+|---|---|---|---|
+| detection lag | sweep rate | odd under sweep direction, so the triangle-half difference isolates it and the mean cancels it | separable by design, needs the direction column of [chapter 8](08_the-acquisition-record.md) |
+| the AC-Stark ramp | power | fixed side, follows $\kappa$ | in the model already, it is the signal |
+| neighbour wings and pedestals | geometry only | none, computable | the linear part is absorbed by each trace's fitted baseline, and the surviving curvature is sized inside the residual audit's model-set stage rather than guessed here. In the wide-span design the baseline is a SUM of four pedestals by construction, per [chapter 9](09_the-fixed-lock.md) |
+| speed-dependent collisions | density | third cumulant against $N$ | admitted only if the density-keyed skew demands it. The far-wing version is already nulled by M24, and the core is a separate question |
+| vector light shift with pumping | power times circular admixture | REVERSES with the ambient field or a half-wave flip | the one door the magnetic field has into this lineshape, and a coil on the cell makes the test free |
+| standing-wave fringe skew | geometry | suppressed by the fringe-resolved slow tail | closed |
+
+The decision instrument exists in the record: every fit already carries a
+per-trace residual skew, and stacking it per condition, keyed by rate, by
+power, by density and by line, is the model-free half of the residual audit.
+Whichever row reproduces C3g's signature, same physical side in both
+sessions and near the core, is the term the model gains, keyed to its knob
+and never free. The digital twin then sizes each row the other way round,
+injecting the mechanism and reading what the SYMMETRIC fit does to
+$\beta_\text{self}$ and to $\kappa$, so the cost of leaving a term out is a
+number rather than a fear. That injection layer is the twin's next scheduled
+extension.
+
 ## What the twin says the width programme can and cannot buy
 
 Measured 2026-08-19 on synthetic data whose truth is known, through

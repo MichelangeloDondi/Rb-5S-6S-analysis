@@ -113,6 +113,35 @@ shift proportional to $\Delta g_J$ alone, at the sub-kilohertz-per-gauss
 level ([the optics protocol](../plan/03_optics-protocol.md)), small enough
 that no field-dependent term appears in any fitted model here.
 
+## An S-to-S two-photon line is magnetically quiet, twice over
+
+The 5S to 6S line is protected against a laboratory field by two independent
+cancellations, and the numbers are worth carrying because they say when the
+protection runs out.
+
+FIRST ORDER. With identical linear photons the two-photon operator is
+scalar, driving $m_F$ to the same $m_F$, so a component shifts by
+$m_F (g_F^{6S} - g_F^{5S}) \mu_B B$. Both states are $S_{1/2}$ with the
+same hyperfine structure: the nuclear part of $g_F$ cancels exactly, and the
+electronic $g_J$ difference between the two S states is a core correction of
+order $10^{-4}$, leaving under 140 Hz of spread at the Earth's 50 uT against
+a line millions of hertz wide.
+
+SECOND ORDER. The Breit-Rabi quadratic term scales as
+$(g_J \mu_B B)^2 / \Delta_\text{hf}$, under 3 kHz per state at Earth field.
+The LINE barely moves, but a hyperfine PAIR SEPARATION inherits the
+difference of two such terms, near one to two kHz, which matters exactly
+once in this record's plans, at the coincidence block that reads the 6S
+splitting to a few hundred hertz.
+
+WHERE THE PROTECTION ENDS. The scalar selection assumes linear polarisation.
+A circular admixture opens the rank-1 vector light shift, odd in $m_F$ with
+its axis set by the ambient field, and the same admixture pumps orientation,
+so an imperfectly polarised beam acquires a power-dependent line asymmetry
+that REVERSES when the field reverses. The reversal is the diagnostic: a
+coil on the cell turns the one magnetic effect this line can show into a
+switchable signature.
+
 ## What can go wrong
 
 The first failure is a model one: reading a population-averaged
