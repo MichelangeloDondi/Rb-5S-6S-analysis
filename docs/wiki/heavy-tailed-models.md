@@ -261,4 +261,4 @@ rather than sitting here misleading a reader.
 
 ---
 
-[← Resampling](resampling.md) · *Robustness and influence, 4 of 6* · [Sensitivity analysis →](sensitivity-analysis.md)
+[← Resampling](resampling.md) · *Robustness and influence, 4 of 7* · [Sensitivity analysis →](sensitivity-analysis.md)

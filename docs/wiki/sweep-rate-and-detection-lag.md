@@ -121,6 +121,16 @@ and confirms its absence on the other. Where the smoothing sits and what it
 does to phase is
 [resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md).
 
+## The lag is odd, and that is its whole repair
+
+Everything a causal detection chain does to a swept line changes sign with
+the sweep direction, while everything atomic does not care which way the
+laser walked. That single parity fact converts the lag from a systematic
+into a measurement: the difference of the two triangle halves reads the lag,
+their mean cancels it exactly, and neither number is conditional on the
+lineshape model. The general discipline, with the failure modes a dirty flip
+brings, is [reversal tests](reversal-tests.md).
+
 ## What can go wrong
 
 The first failure is a model one. The scaling above assumes a single,

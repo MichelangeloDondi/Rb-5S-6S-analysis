@@ -307,4 +307,4 @@ multiplier stands in for, before quoting it, would have caught the
 
 ---
 
-[← Robust fitting](robust-fitting.md) · *Robustness and influence, 3 of 6* · [Heavy-tailed models →](heavy-tailed-models.md)
+[← Robust fitting](robust-fitting.md) · *Robustness and influence, 3 of 7* · [Heavy-tailed models →](heavy-tailed-models.md)

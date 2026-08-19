@@ -113,6 +113,14 @@ estimator might extract more. The forecast is a statement about the pipeline
 that will actually analyse the data, which is the useful statement, but it is
 not an information-theoretic bound.
 
+**A twin cannot add information, only expose it.** Asked whether an
+apparatus can serve some new purpose, a magnetometer say, the twin computes
+the response of every channel to the new quantity and reports sensitivities,
+which is design work. What it cannot do is make a dataset sensitive to
+something its channels never coupled to: a simulation of the data adds no
+information to the data, and a twin that appears to extract a quantity the
+response matrix says is absent is measuring its own priors.
+
 ## Where this repository uses it
 
 `rb5s6s/forecast.py` is the layer: `synthetic_traces` generates data under

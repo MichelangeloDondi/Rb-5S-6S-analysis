@@ -25,9 +25,13 @@ if [ -n "$(git status --short)" ]; then
   echo "ABORT: archive worktree is not clean"; git status --short | head; exit 1
 fi
 
-# the tracked sets, data_raw excluded both ways
-(cd "$A" && git ls-files | grep -v '^data_raw/') | sort > /tmp/port_src.txt
-(cd "$M" && git ls-files | grep -v '^data_raw/') | sort > /tmp/port_dst.txt
+# the tracked sets, with the BY-DESIGN divergences excluded both ways:
+# data_raw/ (the mirror ships no traces and its README says so) and
+# .github/ (the mirror's workflow is the reference green check with push
+# triggers, the archive's is dispatch-only; the mirror's own
+# test_ci_triggers.py caught the first port that ignored this).
+(cd "$A" && git ls-files | grep -v '^data_raw/' | grep -v '^\.github/') | sort > /tmp/port_src.txt
+(cd "$M" && git ls-files | grep -v '^data_raw/' | grep -v '^\.github/') | sort > /tmp/port_dst.txt
 
 n_copy=0
 while IFS= read -r p; do

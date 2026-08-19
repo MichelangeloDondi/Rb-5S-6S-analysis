@@ -3,7 +3,7 @@
 **The question.** What does a reader need to understand, concept by concept,
 to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Fifty-one pages in eight clusters, the routes through them by what
+**Gives.** Fifty-two pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
 **Skip if.** You want the experiment's own record rather than the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
@@ -21,7 +21,7 @@ can go wrong with it, and where to read more.
 
 ## Where to start, by what you came for
 
-Fifty-one pages is too many to read in order, and the clusters below are a
+Fifty-two pages is too many to read in order, and the clusters below are a
 taxonomy rather than a route. These are routes.
 
 | if you came for | start here, in order |
@@ -34,9 +34,9 @@ taxonomy rather than a route. These are routes.
 | **taking over this analysis**, the bus test | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
 | **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
-| **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md) |
+| **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
 | **working out what limits a measurement, and what would help** | [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md), [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
-| **designing the next measurement** | [the digital twin](the-digital-twin.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
+| **designing the next measurement** | [the digital twin](the-digital-twin.md), [reversal tests](reversal-tests.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
 **Every page carries the same four lines at the top**, so the decision to read
 on takes five seconds: the question it answers, what it takes, what it gives,
@@ -132,6 +132,7 @@ loss?* Wave 3, and the cluster the repository's own influence audit motivated.
 | [Heavy-tailed models](heavy-tailed-models.md) | concept | treating an outlier as evidence about the noise rather than as a point to remove |
 | [Sensitivity analysis](sensitivity-analysis.md) | method | which input a projection actually depends on, locally and globally |
 | [Confounding by acquisition order](confounding-by-acquisition-order.md) | method | when a swept parameter is entangled with elapsed time, and how to find a control for it |
+| [Reversal tests](reversal-tests.md) | method | separating systematics by parity under a flipped knob, and the case where the atom supplies the flip for free |
 
 ## F. Simulation and computation
 

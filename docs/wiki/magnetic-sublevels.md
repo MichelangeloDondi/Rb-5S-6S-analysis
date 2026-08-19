@@ -142,6 +142,23 @@ that REVERSES when the field reverses. The reversal is the diagnostic: a
 coil on the cell turns the one magnetic effect this line can show into a
 switchable signature.
 
+THE ATOM ALSO SUPPLIES A REVERSAL OF ITS OWN. The hyperfine g-factor
+alternates sign between the two F manifolds, so the lines of one isotope are
+built-in polarity pairs for anything odd in $m_F$: a vector-shift asymmetry
+must flip sign between them at fixed field and fixed power. On this record
+the per-line skew carries the SAME sign on all four lines, which excluded
+the vector mechanism from numbers already on disk, the pattern
+[reversal tests](reversal-tests.md) generalises.
+
+AND THE IMMUNITY, READ BACKWARDS, IS A SENSITIVITY STATEMENT. A line chosen
+for magnetic quietness is by the same numbers a poor magnetometer, tesla
+class through its width. The one exception inverts usefully: the quadratic
+term on a hyperfine pair separation is a calibrated field-squared coefficient
+of pure atomic structure, so a design that reads pair separations to a few
+hundred hertz measures the field INSIDE the cell at the microtesla scale,
+where no external probe can sit, with the two isotopes' different
+coefficients supplying an internal consistency check.
+
 ## What can go wrong
 
 The first failure is a model one: reading a population-averaged

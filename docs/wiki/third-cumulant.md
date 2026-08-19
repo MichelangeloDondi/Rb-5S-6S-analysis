@@ -67,6 +67,22 @@ in the third cumulant belongs to the light-shift distribution.*
 The current status of the light-shift parameter it feeds is a bound rather
 than a measurement, and the numbers are in [RESULTS.md](../RESULTS.md).
 
+## A worked interrogation of the skew channel
+
+One evening of this repository's record shows the statistic earning its keep
+three ways. The committed per-trace residual skew, averaged per power rung,
+FALLS from +0.33 to +0.02 across a factor nine in power, all values the same
+sign. First the channel itself was ceiling-tested, a symmetric truth under
+the measured noise law returning skew consistent with zero at every rung, so
+the trend is structure rather than estimator bias. Then the trend's shape
+did the excluding: mechanisms that grow with power cannot produce a fall,
+which removed two candidates at a stroke. Then the SIGN pattern across the
+four hyperfine lines, unchanged where the g-factor alternates, removed a
+third by parity alone ([reversal tests](reversal-tests.md)). What survives
+for the observed asymmetry is a structure of fixed absolute size, and the
+statistic that started as a diagnostic column ended as the record's main
+instrument on an open finding.
+
 ## What can go wrong
 
 The assumption doing all the work is that every other kernel is symmetric,

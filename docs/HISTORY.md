@@ -49,6 +49,7 @@ for one quantity rather than for the sequence.
 | [2026-08-19](#the-2026-08-19-corrections) | four record corrections, three of them found by widening a guard | yes |
 | [The cascade line table](#the-cascade-line-table-was-wrong-on-three-of-four-lines-caught-same-day-2026-08-19) | which isotope and hyperfine level each line drives | no, and nothing was pushed |
 | [The width degeneracy in a draft](#a-claim-about-the-width-degeneracy-was-wrong-in-a-tutorial-draft-2026-08-19) | a teaching claim about scan span, refuted before it shipped | no |
+| [Six counts and one rounding](#six-counts-and-one-rounding-corrected-in-a-single-audited-sweep-2026-08-19) | published counts and a rounding, each now guarded | yes, none of them physics |
 | [The pinning factor](#the-pinning-factor-was-one-monte-carlo-draw-and-the-largest-of-nine-2026-08-19) | a Monte-Carlo ratio quoted from one seed in four documents | yes, 3.4 to 3.18 plus or minus 0.20 |
 | [A hardware argument](#a-hardware-argument-used-the-wrong-geometry-caught-same-day-2026-08-19) | a plan chapter justified an EOM purchase from the geometry its own proposal had removed | no, and nothing was pushed |
 | [The tooth-height model](#the-tooth-height-model-was-a-limit-and-the-plan-priced-two-designs-outside-it-2026-08-19) | the Bessel weights are a zero-delay limit, and two same-day designs were priced outside it | no committed number, two plan tables same day |
@@ -448,6 +449,22 @@ each error smaller: a wrong geometry, then a wrong count inside the right
 geometry, then the count with its construction attached.
 
 Nothing was pushed. The wrong argument lived in one local commit for a day.
+
+## Six counts and one rounding, corrected in a single audited sweep, 2026-08-19
+
+No physics number moved, and the entries are recorded because each was a
+PUBLISHED figure a reader could have quoted. The light-shift width-only bound
+was printed as 0.64 MHz in two documents where the committed cell reads
+0.632, which rounds to 0.63 and is written so everywhere else. The wiki index
+claimed nineteen pages carry a scar section where fourteen did. The runner's
+own header claimed 25 analysis stages against the 27 in its loop three lines
+below. The methods summary stopped its module range one module short of its
+own table, the glossary four short, and the reproduction guide counted
+twelve CSVs as twelve scripts where eleven scripts wrote them. Each fix
+landed with a guard where none had existed, or a widened one where the guard
+knew only one spelling of what it checked: the module-range guard now reads
+every separator this tree has ever used for a range, and the wiki's two
+spelled-out counts are compared against the pages on every run.
 
 ## The pinning factor was one Monte-Carlo draw, and the largest of nine, 2026-08-19
 

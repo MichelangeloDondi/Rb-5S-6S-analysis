@@ -66,6 +66,19 @@ coefficients and quality-control thresholds are calibrated to one apparatus.
 notes, because the first real question anyone adopting this asks is which
 numbers they have to replace.
 
+## The 4.2 release, verified 2026-08-20
+
+Both repositories were pushed, tagged v4.2 at their heads, and given release
+objects titled "v4.2: the digital twin", confirmed non-draft by the GitHub
+CLI, with the mirror's tag commit equal to its branch head. Both pre-push
+gates returned exactly one failure, the release-integrity guard itself
+reporting that the declared 4.2 had no published release yet, which is that
+guard's designed transient during any release and went green with the act.
+The first release attempt was ABORTED by the automation's own check when the
+port was found to have overwritten the mirror's push-trigger workflow with
+the archive's dispatch-only one, a by-design divergence now excluded in
+`scripts/port_to_mirror.sh` both ways.
+
 ## What the release does not need
 
 A tutorial, a documentation site, and a paper are all reasonable things to

@@ -74,6 +74,27 @@ The asymmetry is measured through [the third cumulant](third-cumulant.md), and
 the current status of the light-shift parameter, a bound rather than a
 measurement, is in [RESULTS.md](../RESULTS.md).
 
+## One coefficient across the whole manifold
+
+A hyperfine-resolved spectrum invites the question of whether each component
+carries its own shift coefficient, and for an S-to-S line the answer is no
+at any measurable level, through two channels that were both computed here.
+DISPERSION: the four lines are driven at slightly different wavelengths, and
+the differential polarizability evaluated at each line's own drive spans
+$1.2\times10^{-5}$ of itself across the manifold. HYPERFINE MIXING: the
+F-dependent correction scales as the hyperfine constant over the optical
+detuning, near $4.5\times10^{-5}$. Together they put the per-line shift
+DIFFERENCES at 4 to 16 Hz where the common shift is 0.35 MHz.
+
+Two consequences carry weight. Every separation between components is
+light-shift-immune twice over, once because the scalar shift moves all $m_F$
+together and once because the coefficient is flat across the manifold, so
+the internal geometry of the spectrum is a null channel at full power. And
+no magic wavelength hides between the components: the differential
+polarizability holds its full value across the whole span, with its genuine
+zeros hundreds of nanometres away, where the record's polarizability model
+puts them.
+
 ## What can go wrong
 
 The dominant model failure is treating the shift as a single number. Quoting

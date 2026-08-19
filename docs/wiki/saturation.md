@@ -164,6 +164,26 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## The P-squared family, and why a power law identifies nothing
+
+Saturation broadening at small saturation grows as the drive intensity, and
+for a two-photon line the drive intensity in the resonant sense grows as the
+POWER SQUARED. That places it in a family: the AC-Stark ramp broadens as the
+shift squared, so also as power squared, and hyperfine pumping through the
+cascade rides the excitation rate, power squared again. Three mechanisms,
+one exponent. A measured width rising quadratically with power therefore
+identifies NONE of them, and a fit offered only the width channel will hand
+the whole family to whichever member it was allowed to vary.
+
+Separating them needs channels with different parities and different
+scalings: the shift channel is linear in power where all three widths are
+quadratic, the saturation member alone bends the AMPLITUDE law away from
+power squared, and the pumping member alone moves amplitude RATIOS between
+hyperfine components. This is the reversal-table discipline of
+[reversal tests](reversal-tests.md) applied to a power law, and it is why a
+light-shift bound from the width channel is stated conditional on which
+family members the forward model carried.
+
 ## What a companion calculation found
 
 `docs/HISTORY.md` carries no row for saturation, because no committed bound

@@ -78,7 +78,10 @@ this record covers, and
 constructions, together with the second limitation hiding inside this one:
 the fit assigns the laser a KERNEL SHAPE the record has never measured, and
 the wrong shape biases the collisional width rather than widening its error
-bar.
+bar. What the record does measure brackets the question from both sides,
+0.62 MHz of slow wander below half a hertz from the digitised wavemeter
+record and under 28 kHz at seven hertz from the comb clock, leaving exactly
+the band the width integrates as the unmeasured middle.
 
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in
@@ -110,12 +113,12 @@ which is the part that makes the design testable rather than hopeful.
 
 | ambiguity now | why the present data cannot resolve it | the new measurement | ambiguity removed | target outcome | validation basis | what would say it failed |
 |---|---|---|---|---|---|---|
-| the width split | two kernels trade inside one profile | an independent laser-width measurement, which the repaired lock makes possible | the width ridge | the collisional width becomes separately identifiable | design simulation, [PLAN §10c](PLAN.md) | the pinned fit's residual scatter does not fall, which would place the limitation beyond the laser width |
+| the width split | two kernels trade inside one profile | an independent laser-width measurement, the only lever acting on identifiability rather than noise | the width ridge | the collisional width becomes separately identifiable | the twin's measured span-and-count invariance and the pinning simulation, [chapter 5 of the plan](plan/05_width-collision-amplitude.md) and [identifiability](wiki/identifiability.md) | the pinned fit's residual scatter does not fall, which would place the limitation beyond the laser width |
 | the absolute axis | no logged frequency reference | two same-isotope pairs inside one sweep, plus a logged wavemeter | absolute-frequency ambiguity | the axis becomes calibratable to the accuracy of the hyperfine constants | design simulation, [PLAN §10c](PLAN.md) | the two rulers disagree beyond the projected nonlinearity, which would mean the axis model is wrong rather than imprecise |
 | the baseline | the pedestal is flat across the archive's window and a free baseline absorbs it | a span wide enough to curve the pedestal, with the pedestal fitted as a pedestal | baseline against signal | the baseline becomes measured rather than chosen | design simulation, tested by injection ([PLAN §10a](PLAN.md)) | the wide fit does not recover an injected pedestal, which would mean the span is still too narrow |
 | the transit kernel | the waist is adopted and the cusp form is untested here | a beam profile measured on the day, plus one cold and dim condition | the geometry systematic | the transit model becomes directly testable | design simulation, [PLAN §10c](PLAN.md) | the model comparison stays inconclusive at the achieved precision |
 | the light shift | one power cannot separate the shift from other broadening, and one trace has too little signal in the asymmetry | a randomised power ladder with more rungs and per-sweep normalisation | shift against broadening | measured rather than bounded | design projection, from the projections file | the per-sweep normalisation scatter exceeds the pull it is meant to resolve |
-| the band excess | no candidate mechanism, and the pedestal is excluded as its source | polarisation isolation blocks, which separate line from pedestal in hardware | signal against contaminant | the anomaly becomes attributable | design simulation, [PLAN §10c](PLAN.md) | the isolated blocks show the same excess, which would move it from the optics into the detection chain |
+| the band excess | a model-form candidate and no mechanism, the pedestal excluded as its source, and the skew channel excluding every power-growing and density-keyed origin, leaving structure of fixed absolute size | polarisation isolation blocks, which separate line from pedestal in hardware | signal against contaminant | the anomaly becomes attributable | design simulation, [PLAN §10c](PLAN.md) | the isolated blocks show the same excess, which would move it from the optics into the detection chain |
 
 Each chain is argued in full, with its evidence, in
 [limitations and identifiability](big_picture/07_limitations-and-identifiability.md).

@@ -73,6 +73,26 @@ linewidth enters the line shape with a factor of two already applied, which
 matters because no independent diagnostic of that laser's jitter exists for
 this epoch.
 
+## Crossover resonances, and why this geometry has none
+
+Saturated-absorption spectroscopy trains the expectation that between every
+pair of lines sits a crossover. The mechanism needs two things: a SHARED
+LEVEL, so one pump transition can burn a population feature another probe
+transition reads, and VELOCITY SELECTION, so a specific velocity class links
+the two frequencies. Doppler-free two-photon spectroscopy has neither. Every
+velocity class contributes at the same summed frequency, which is the entire
+point of the counter-propagating geometry, so there is no velocity class to
+share, and hyperfine components with different ground and excited levels
+share no state to burn.
+
+The tempting near-miss is sideband spectroscopy: with a modulated drive, do
+photon pairs mixing different sidebands make extra lines between the teeth?
+They do not, because every pathway with the same frequency SUM lands on the
+same tooth and interferes there, which is why the tooth weights are Bessel
+functions of the total depth rather than sums over pairs. A comb tooth is a
+crossover-like object done coherently, and it sits ON the ladder, never
+between its rungs.
+
 ## What can go wrong
 
 The retro-reflection is an experimental limitation as much as a technique.

@@ -154,4 +154,4 @@ a reader.
 
 ---
 
-[← Sensitivity analysis](sensitivity-analysis.md) · *Robustness and influence, 6 of 6* · [wiki index →](README.md)
+[← Sensitivity analysis](sensitivity-analysis.md) · *Robustness and influence, 6 of 7* · [Reversal tests →](reversal-tests.md)

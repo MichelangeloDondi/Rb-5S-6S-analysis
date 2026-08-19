@@ -309,4 +309,4 @@ a reader.
 
 ---
 
-[← Influence diagnostics](influence-diagnostics.md) · *Robustness and influence, 2 of 6* · [Resampling →](resampling.md)
+[← Influence diagnostics](influence-diagnostics.md) · *Robustness and influence, 2 of 7* · [Resampling →](resampling.md)

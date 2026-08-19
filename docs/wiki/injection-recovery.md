@@ -82,6 +82,21 @@ of a known shape can be injected into real traces to ask what a mechanism the
 model does NOT contain would do to the fitted parameters, which is a way of
 bounding a systematic rather than validating an estimator.
 
+## The ceiling test, which is this method pointed at a null
+
+A null result needs the same closure a detection does: inject the
+hypothesised signal into synthetic data and show the analysis DETECTS it,
+before reading its absence in real data as absence in nature. This record
+holds two same-week instances of the trap the test closes. A periodogram of
+comb-tooth residuals returned a null at the mains frequency, and the null
+meant nothing: the sampling aliased that frequency onto the detrending's own
+freedom, and the instrument could not have responded, which one synthetic
+injection would have shown in a minute. The same week, a residual-skew trend
+WAS read, but only after the channel passed its ceiling test, a symmetric
+truth under the measured noise law returning zero skew at every power. One
+null was blind and nearly believed, one trend was validated before use, and
+the difference between them is exactly one injection.
+
 ## What can go wrong
 
 The dominant failure is the one under its own heading above: reporting a

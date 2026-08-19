@@ -54,10 +54,10 @@ costed against exactly that.*
 | 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
-| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, and the cascade's competing prediction that makes the four-peak trace discriminating |
+| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs |
 | 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the block register, session sizing, the rules drawn from the 2025 post-mortem, and costing by information per unit of effort |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
-| 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the sweep-direction column, and the wavemeter shots |
+| 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
 | 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
 | 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes, the pedestal thermometer, the day-one list including the split-signal dual recording, polarisation, and the comb as a statistical instrument |
 | 11 | [Beyond 993 nm](plan/11_beyond-993.md) | the riders that cost no drive time, and the analysis plan of record |
@@ -105,7 +105,10 @@ modulation depth, drive frequency and scan rate now in those chapters was
 adjudicated by computing the design's information under the measured noise
 law rather than by preference, five of the six candidate arguments failed
 under computation before they could ship, and the corrections are each
-recorded in [HISTORY.md](HISTORY.md).
+recorded in [HISTORY.md](HISTORY.md). The general form of the discipline,
+separating effects by parity under a knob before any fit is asked to, is
+[reversal tests](wiki/reversal-tests.md), and the sharpest instance cost
+nothing because the hyperfine g-factor's sign structure supplied the flip.
 
 ## Roles, so that four documents need not be reconciled by the reader
 
@@ -178,7 +181,7 @@ index maps each section to the chapter that now holds it.
 **4.4.** the modulator.
 **5.** The intensity axis, in [chapter 4](plan/04_intensity-and-light-shift.md).
 **6.** The light-shift program, in [chapter 4](plan/04_intensity-and-light-shift.md), which now closes with a per-session waist requirement and the two analysis steps that run before the next session.
-**7.** The width and collision program, in [chapter 5](plan/05_width-collision-amplitude.md), whose blocks run
+**7.** The width and collision program, in [chapter 5](plan/05_width-collision-amplitude.md), which now closes with the asymmetry budget and its reversal table, and whose blocks run
 **7a.** through
 **7j.**, including
 **7d.** the matched-modulation ruler and

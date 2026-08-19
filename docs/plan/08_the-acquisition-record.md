@@ -266,6 +266,19 @@ a factor of ten, and the fluxgate column of section 10b.4b supplies the
 correction either way. No other block in this plan carries a magnetic term
 at its own precision.
 
+**The systematic measures itself, which makes the block a magnetometer.**
+The quadratic Zeeman term above is a calibrated field-squared coefficient of
+pure atomic structure, so reading the doublet at two coil settings returns
+the field INSIDE the cell, at the atoms, where no external probe sits: near
+3.6 uT per hundred crossings on the 85 pair, with the 87 pair's coefficient
+smaller by the known factor near 2.25 as an internal consistency check. The
+correction the block needs is therefore supplied by the block. Per-peak
+coefficient differences enter this budget too and are computed from the
+record's own polarizability model at 4 to 16 Hz at full power, twenty to
+seventy times below the Zeeman term. The complementary null-seeker, zeroing
+the coil by minimising the vector-skew reversal of
+[chapter 5](05_width-collision-amplitude.md), needs no calibration at all.
+
 **Read it out detuned, not on the coincidence.** Two identical lines exactly
 on top of each other broaden quadratically in their detuning, so the
 coincidence itself is the least sensitive place to sit. Offsetting the drive
