@@ -754,6 +754,171 @@ range in ONE acquisition**, which is the cheapest available test of the
 brightness-ordered departure: if its peak ordering vanishes when the four
 lines share a range, the detection explanation is confirmed outright.
 
+## The three oscilloscopes, and what actually separates them
+
+Three instruments are on the bench. The comparison is measured
+instrument-native on both sides, from the files each scope wrote, because the
+datasheet headline figures are not the deciding ones and two plausible
+readings of them are both wrong.
+
+**Provenance.** The Agilent rows come from the 100 committed `p_sweep` traces.
+The LeCroy rows come from the 47 usable files of the 2025-07-04 rehearsal,
+which carry the native `LECROYWS3104z` header, are unreadable to the archive
+loader and live in the quarantine tree rather than under `data_raw/`. Three of
+the 50 rehearsal files failed to parse and are excluded and counted here rather
+than dropped silently. The LeCroy rows are therefore a measurement of a
+quarantined session and carry that session's standing.
+
+| measured per trace, median | LeCroy WS3104z | Agilent DSO-X 3054A |
+|---|---|---|
+| record length | 500 001 points | 1999 points |
+| record duration | 5.00 s | 1.00 s |
+| sample rate | 100 kSa/s | 2 kSa/s |
+| steps across the signal swing | 214 | **3730** |
+| bits across the swing | 7.74 | **11.86** |
+| baseline noise, detrended | 5505 uV | 3683 uV |
+| noise over quantisation step | 1.37 | 30.1 |
+| fraction of record above half maximum | 7.91 % | 5.90 % |
+
+### The first trap, reading this as a memory-depth result
+
+The LeCroy holds 250 times the samples, which makes it look like the
+better-configured instrument. It is not. Its voltage grid is coarser by a
+factor of 22, and 214 steps across a signal swing is raw eight-bit behaviour.
+**The instrument with the deeper record delivered four fewer bits.** Record
+length does not buy resolution on either instrument, because the smoothing
+modes decimate from the internal converter rate rather than from the stored
+record. The four-bit gap is the difference between a session with the smoothing
+mode on and a session without it, which is a menu item rather than silicon.
+
+### The second trap, then preferring the Agilent on bit depth
+
+Quantisation is harmless whenever the step is small against the noise, because
+the noise dithers the grid and averaging recovers what the grid discarded. The
+quantisation contribution is the step over the square root of twelve, and it
+adds in quadrature:
+
+| | noise over step | quantisation as a share of noise | resulting inflation of the noise |
+|---|---|---|---|
+| LeCroy WS3104z | 1.37 | 19.2 % | 1.83 % |
+| Agilent DSO-X 3054A | 30.1 | 1.3 % | 0.008 % |
+
+**Neither instrument was resolution-limited as it was used.** The Agilent's four
+extra bits bought nothing on the traces that were taken. The LeCroy's 1.8 per
+cent is small but is not zero, and it is the one place where the missing
+smoothing mode has a measurable cost.
+
+### Where the four bits would matter
+
+The bits are unspent headroom rather than waste, and one specific measurement
+would spend them. Holding a single vertical range across the power ladder is
+the fix for the range-switching confound, and it pushes the dimmest rung far
+down the screen. Whether it survives the trip was measured rather than modelled.
+
+| rung | quantisation step | baseline noise | peak amplitude | noise over step |
+|---|---|---|---|---|
+| 25 mW | 20.1 uV | 1488 uV | 0.0309 V | 74.0 |
+| 75 mW | 54.6 uV | 2353 uV | 0.2482 V | 43.1 |
+| 125 mW | 134.3 uV | 3887 uV | 0.6757 V | 28.9 |
+| 175 mW | 492.4 uV | 6973 uV | 1.3621 V | 14.2 |
+| 225 mW | 1502.5 uV | 13583 uV | 2.3615 V | 9.0 |
+
+The step spans a factor of 347 across the ladder, and on the LeCroy a factor of
+35. **That spread is the direct signature of the range switching**, visible in
+the recorded samples without any model of the instrument, and it is the
+cleanest available evidence that a power ladder was also five instrument
+settings.
+
+Every rung as taken sits between 9 and 74 on noise over step, so quantisation
+never bit anywhere in the data. The cross-rung case is tighter. Setting one
+range to hold the brightest rung gives a step of 1502.5 uV, and the dimmest
+rung's noise is 1487.5 uV, so the dim rung arrives at a ratio of **0.99**,
+exactly at the boundary, with about 21 codes across the dim line. Feasible,
+with no margin.
+
+The margin is recoverable, because the bright range was set loosely. The 225 mW
+trace occupies 38 per cent of its screen, so setting the bright range snug to
+the signal buys back a factor of about 2.6 and turns marginal into safe. The
+requirement is therefore two settings rather than either instrument: **the
+smoothing mode on, and the bright range snug.** With both right, either scope
+holds one range across the ladder. With either wrong, neither does comfortably.
+
+### What actually decides the choice
+
+Bandwidth and sample rate decide nothing here. The line is crossed in tens of
+milliseconds, so a 500 MHz front end is seven orders of magnitude faster than
+the signal, and the WaveSurfer 10's extra sample rate buys a fraction of a bit
+against a cap already reached.
+
+One chain property separates them on measured evidence rather than on
+specification, and it is mains pickup. Addendum 13 of the preregistration
+record normalises the 60 Hz line to the signal it sits on, and the LeCroy chain
+carries 105 uV of mains rms on an 81 mV line against the Agilent chain's 633 uV
+on a 306 mV line, which is 0.13 per cent against 0.21 per cent. The Agilent
+chain is six times worse in absolute terms and 1.6 times worse once normalised.
+
+That comparison is quoted with its own history, because the paragraph it
+replaced in that addendum concluded the opposite by a factor of eight, having
+compared each epoch's line to its own noise floor when the two floors differ by
+about four times. It is also quoted with its own limit. For the archive as
+taken the verdict is identified, quantified and negligible, because about 3.6
+whole mains cycles span the line and therefore average rather than displace the
+centroid. **The pickup difference is a conditional advantage rather than a
+current one.** It becomes a real discriminator only for a narrower line, which
+is precisely what a fixed-lock session is meant to produce, and at that point
+the coherent baseline structure would no longer average away.
+
+One capability separates them, and it is aimed at an open finding. The 3104z
+can hold all four hyperfine peaks in one trace with the EOM both on and off.
+The amplitude departure from the square-of-power law orders itself by peak
+brightness rather than by branching ratio, which reads as a detection signature
+rather than an atomic one, and four peaks sharing one vertical range in one
+trace is the direct test.
+
+**Recommendation.** Use the 3104z for the four-peak landscape and for anything
+comparing peaks against each other, with enhanced resolution enabled, which the
+rehearsal did not have on. Use the Agilent where continuity with the archive's
+calibration outweighs the comparison. Repair the 3104z frequency axis before
+its widths are read as absolute rather than as fractional changes. The
+WaveSurfer 10 offers this measurement nothing it can use.
+
+## Duty cycle, the largest measured inefficiency
+
+Across the 100 campaign traces the fraction of the one second record standing
+above half maximum is 5.57 per cent by mean and 5.90 per cent by median. Each
+trace spends about 56 ms on the line and 944 ms on baseline, with one line per
+trace on a single ramp. The rehearsal is comparable at 7.91 per cent.
+
+Baseline is not wasted time, since it anchors the offset and supplies the wing
+noise the noise law is built from, but ninety-four per cent is far more than
+either use requires. Two remedies apply and they multiply. Carrying four peaks
+in one trace raises the on-line fraction fourfold at no cost in acquisition
+time, and trimming the scan span toward the occupied region raises it again.
+Together they are worth more than any plausible gain from scanning slower,
+because scanning slower buys the square root of time and these cost nothing.
+
+## The correlation time is not the smoothing mode
+
+Measured on baseline alone, away from the line, the integrated autocorrelation
+is 2.34 samples, which is 1.17 ms at the campaign's sample interval. A boxcar
+average taken to the stored sample rate returns statistically independent
+samples for white input, so the smoothing mode does not account for this on its
+own. Two candidates remain and the record does not currently separate them. The
+transimpedance stage is one, where the only gain recorded in the programme is
+10^6 V/A in the rehearsal filenames. Input that is already correlated before
+the boxcar is the other, in which case the mode reduces but does not remove the
+correlation. This is carried as OPEN.
+
+If an analogue lag is the cause, it has a consequence for triangular scans
+which is worth stating because it is free to test. A lag of order 1 ms on a
+line crossed in 56 ms displaces the apparent centre by roughly two per cent of
+the width, and in opposite directions on the ascending and descending halves.
+The midpoint of the two halves cancels the displacement and the splitting
+between them measures the lag, so acquiring both halves self-calibrates the
+delay in addition to giving two independent line crossings.
+
+---
+
 ---
 
 *[Session sizing and spending rules](06_sizing-and-spending-rules.md) · [The acquisition record](08_the-acquisition-record.md)*
