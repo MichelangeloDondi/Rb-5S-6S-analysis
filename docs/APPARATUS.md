@@ -326,9 +326,17 @@ ever stored.**
     integrated autocorrelation of 3.79 samples, about 1.9 ms, was read for two
     days as the detection chain's response time and is consistent with the
     high-resolution reading rather than with the chain.
-  * **The chain's own response time therefore remains unknown**, and a
-    measured detector response curve is what would settle it, along with the
-    mode question, in one afternoon.
+  * **The chain's response time is now bounded from the rehearsal itself.**
+    The LeCroy sampled at 10 us, a hundred times finer than the campaign, and
+    its baseline autocorrelation across 47 traces is 0.070 at a lag of 1 ms,
+    where an analogue corner at that timescale would need about 0.99. The 1/e
+    decay is one sample. So at the 10^6 V/A gain the rehearsal filenames
+    record, **the chain is faster than 10 us**, which is the sampling limit
+    rather than a measured time constant. The 1.9 ms correlation in the
+    campaign is therefore not the chain at that gain, and the acquisition mode
+    is what remains. A measured detector response curve would still convert the
+    bound into a number, and would settle the mode question in the same
+    afternoon.
   * **The vertical range is not recorded anywhere either**, and it was changed
     at every rung of every power ladder, by up to a factor of 596 in
     quantisation step against a signal spanning about 80. The gain appears

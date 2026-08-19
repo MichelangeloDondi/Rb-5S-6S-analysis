@@ -67,12 +67,24 @@ worth having for its own reasons, more repeats per unit time, per-sweep centres
 that absorb what drift remains, and an Allan deviation of line centres that
 separates drift from jitter. It is no longer forced.
 
-THE SPEED CEILING IS THE DETECTION CHAIN AND NOT THE LOCK. The noise law's
-correlation time is 3.79 samples at the 2025 sampling, which is 1.9 ms. Holding
-the line crossing at three times that gives about 0.94 MHz per ms, roughly
-eleven times the 2025 rate, and a 2400 MHz sweep in about two and a half
-seconds. WHETHER THAT CORRELATION IS THE AMPLIFIER OR THE LIGHT IS UNMEASURED,
-and it sets the whole timing design, so it is the first day-one item below.
+THE SPEED CEILING IS NO LONGER KNOWN TO BE THE DETECTION CHAIN. The noise
+law's correlation time is 3.79 samples at the 2025 sampling, which is 1.9 ms,
+and holding the line crossing at three times that would give about 0.94 MHz per
+ms, roughly eleven times the 2025 rate, and a 2400 MHz sweep in about two and a
+half seconds. **That ceiling assumed the 1.9 ms belongs to the chain, and the
+rehearsal refutes the assumption.** The LeCroy sampled the same experiment at
+10 us with the same 10^6 V/A gain, and its baseline correlation is 0.070 at
+1 ms against the 0.99 an analogue corner would require, with 1/e decay inside a
+single sample. The chain is faster than 10 us, so it is not the binding
+constraint, and the 1.9 ms is a property of the campaign's acquisition mode
+rather than of the detector.
+
+The timing design is therefore less constrained than this chapter assumed, by
+up to two orders of magnitude, and the binding limit is now unidentified rather
+than known. Photon budget and lock drift are the candidates. The day-one step
+response below is still worth taking, because a bound at the sampling limit is
+not a measured time constant, but it is no longer the item the whole timing
+plan waits on.
 
 ### 10c.3 THE TWO-SPEED SWEEP
 

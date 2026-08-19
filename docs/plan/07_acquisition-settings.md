@@ -843,6 +843,27 @@ requirement is therefore two settings rather than either instrument: **the
 smoothing mode on, and the bright range snug.** With both right, either scope
 holds one range across the ladder. With either wrong, neither does comfortably.
 
+### The vertical range is a measured covariate, and it breaks its own confound
+
+The quantisation step is recoverable per trace from the raw file with no fit of
+any kind, which makes the vertical range an instrument covariate that can enter
+an analysis rather than a setting that merely worries it.
+
+Two facts make it useful. Within a single cell, at identical power, peak and
+alignment, four of the twenty campaign cells contain traces taken on different
+ranges: 4121 at 25 mW by a factor of 4.0, 4192 at 125 mW by 8.0, and 4207 at
+25 mW and 175 mW by 2.0 each. More usefully, at fixed power the step differs
+across the four peaks by factors of 2.3, 4.7, 3.0, 5.0 and 8.0 at 25, 75, 125,
+175 and 225 mW respectively. **Peak identity is not power**, so the vertical
+range is not collinear with power along the peak dimension even though it is
+along the ladder.
+
+The complication is stated rather than hidden. Range tracks brightness, and so
+does the amplitude departure from the square-of-power law, so the two are
+confounded with each other and the ordering evidence cannot separate them on
+its own. Four different ranges at one power is the handle that can, and it uses
+only data already taken.
+
 ### What actually decides the choice
 
 Bandwidth and sample rate decide nothing here. The line is crossed in tens of
@@ -903,11 +924,23 @@ Measured on baseline alone, away from the line, the integrated autocorrelation
 is 2.34 samples, which is 1.17 ms at the campaign's sample interval. A boxcar
 average taken to the stored sample rate returns statistically independent
 samples for white input, so the smoothing mode does not account for this on its
-own. Two candidates remain and the record does not currently separate them. The
-transimpedance stage is one, where the only gain recorded in the programme is
-10^6 V/A in the rehearsal filenames. Input that is already correlated before
-the boxcar is the other, in which case the mode reduces but does not remove the
-correlation. This is carried as OPEN.
+own, and the detection chain is the obvious suspect.
+
+**The rehearsal refutes the chain.** The LeCroy sampled at 10 us, a hundred
+times finer than the campaign, and its baseline autocorrelation across 47
+traces is 0.070 at a lag of 1 ms, where an analogue corner at that timescale
+would require about 0.99. Its 1/e decay is 10.0 us, one single sample, so the
+correlation is already gone at the instrument's own resolution limit. The
+rehearsal filenames record a transimpedance gain of 10^6 V/A, which is the same
+gain the campaign is presumed to have used, so **the analogue stage at that
+gain does not produce a millisecond correlation.**
+
+What survives is the acquisition mode rather than the detector. The remaining
+candidate is a smoothing filter longer than the stored sample interval, which
+would correlate adjacent stored samples without any analogue cause. One caveat
+is carried rather than buried: the campaign's gain is recorded nowhere in the
+programme, so what the rehearsal refutes is precisely the 10^6 V/A stage, not
+every possible chain.
 
 If an analogue lag is the cause, it has a consequence for triangular scans
 which is worth stating because it is free to test. A lag of order 1 ms on a

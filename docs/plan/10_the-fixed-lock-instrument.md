@@ -115,9 +115,13 @@ Each of these decides a setting above, and none takes long.
 
 1. THE DRIFT RATE OF THE REPAIRED LOCK. Decides the sweep timing and whether
    the laser width may be shared globally.
-2. THE STEP RESPONSE OF THE DETECTION CHAIN, into both terminations. Decides
-   the speed ceiling, and tells whether the 1.9 ms correlation is the
-   amplifier or the light.
+2. THE STEP RESPONSE OF THE DETECTION CHAIN, into both terminations. Partly
+   answered from the archive already: the rehearsal's LeCroy traces put the
+   chain faster than 10 us at 10^6 V/A, so the 1.9 ms correlation is neither
+   the amplifier nor the light but the campaign's acquisition mode. What
+   remains is converting that bound, which sits at the sampling limit, into a
+   measured time constant, and establishing the response at whatever gain the
+   next session actually uses.
 3. THE SINGLE-PULSE SHAPE AND THE PEAK COUNT RATE. Decides whether the
    counting mode is available, and checks the inverted rate above against a
    direct measurement, which tests the committed noise model microscopically.
