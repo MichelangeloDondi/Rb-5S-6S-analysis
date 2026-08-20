@@ -45,7 +45,11 @@ What the probes say together (2026-07-23 run):
     power session the fit sees (T-session probes give only bounds). The
     residual audit then revised its size: +0.38 [+0.17, +0.59] ms/min
     = +0.016 [+0.007, +0.025] MHz/min laser (68%), a ~2-sigma positive
-    indication under the adequate (mixture) noise model -- the gaussian
+    indication under the adequate (mixture) noise model. RETRACTED AS A RATE
+    2026-07-30: this comparison is across block medians, which the
+    window-reference correction contaminates, and the defensible statement is
+    a two-sided bound of order 0.02 MHz/min with the sign undetermined
+    (docs/DATA.md, provenance note). What follows is what this fit returned -- the gaussian
     +0.74 was biased by three unmodelled end-of-ladder moves. Adding a
     drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
     amplitude settles, sigma_gap ~ 85 ms x exp(-t / ~90 min). The tau ~ 73 min
@@ -299,7 +303,10 @@ def main() -> int:
     pull_bound_report()
 
     print("\nD0 postscript (post-hoc; D0 was declared uncertain before the backup):")
-    print("  measured constant 0.016 [0.007, 0.025] vs the 4 MHz/min envelope,")
+    print("  constant 0.016 [0.007, 0.025] vs the 4 MHz/min envelope (this "
+          "rate was")
+    print("  retracted 2026-07-30; the record defends a bound of order 0.02, "
+          "sign undetermined),")
     print("  both laser axis: ~250x inside; even the within-block hour-1 bound")
     print(f"  (<~ {4 * RATE_MHZ_MS:.2f} MHz/min laser) never approaches it.")
     rekick_report()

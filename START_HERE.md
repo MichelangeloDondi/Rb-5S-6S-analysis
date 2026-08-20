@@ -86,6 +86,7 @@ Two things are worth knowing before you wonder why something fails:
 
 | you are | start with |
 |---|---|
+| here for ten minutes | [docs/plan/00_the-case.md](docs/plan/00_the-case.md), the whole record compressed: the three bounds with their constructions, what stays unidentified and why, the one measurement that breaks each, what a campaign is projected to achieve, and what this record refuted in its own claims |
 | new to two-photon spectroscopy | [docs/GLOSSARY.md](docs/GLOSSARY.md), which explains the measurement in six sentences and then defines every term and symbol the rest of the repository uses |
 | here for the physics result | [docs/BIG_PICTURE.md](docs/BIG_PICTURE.md), then [docs/RESULTS.md](docs/RESULTS.md). Section 1.3a of the first is the plain-language account of why the light shift is hard to measure here, and it is the shortest route to why the headline numbers are bounds |
 | checking a specific number | [docs/RESULTS.md](docs/RESULTS.md), which reads every headline from its producing CSV, then [docs/UNCERTAINTY.md](docs/UNCERTAINTY.md) for what its error bar means |

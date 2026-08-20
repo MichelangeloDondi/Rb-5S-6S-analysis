@@ -34,7 +34,9 @@ inside every sweep, and a randomised power ladder.
 frequency axis becomes calibratable, and the baseline becomes data rather than
 a modelling choice.
 
-**Where the detailed design lives.** In the eleven chapters below. Nothing
+**Where the detailed design lives.** In the eleven chapters below, with
+[the case in ten minutes](plan/00_the-case.md) as their opening summary.
+Nothing
 here is scheduled, no date is assumed, and the specification names no
 operator. It is a specification, not a booking.
 
@@ -50,6 +52,7 @@ costed against exactly that.*
 
 | # | chapter | what it covers |
 |---|---|---|
+| 0 | [The case in ten minutes](plan/00_the-case.md) | what was measured, what is not identified, the one intervention that breaks each, what a campaign is projected to achieve, and what this record refuted with its own instruments. Start here |
 | 1 | [The aim and the objections](plan/01_aim-and-failure-modes.md) | what the session is for, and the objections a referee would raise first |
 | 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |

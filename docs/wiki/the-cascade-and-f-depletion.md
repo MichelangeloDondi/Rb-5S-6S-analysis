@@ -115,6 +115,47 @@ grow with power. They are separated by their different power laws, not by
 inspection, which is what
 [saturation](saturation.md) and the acquisition chapter set out.
 
+## Which photon is counted, and why the filter is an experimental control
+
+The cascade emits twice, and the two photons leave the cell under different
+rules. The first leg, 6S to 5P, emits near 1324 and 1367 nm, carrying 34.1
+and 65.9 per cent of the decays. The second leg is the D-line terminal, 795 nm
+through 5P1/2 or 780 nm through 5P3/2, and those photons ARE resonant with the
+GROUND state, so the bulk vapour reabsorbs them.
+
+The infrared is not exempt, and the reason it helps is narrower than
+wavelength. Its cross-sections are 1.41 and 1.50e-11 cm², the same as the D1
+line's, so it absorbs just as strongly per lower-state atom and what separates
+the two channels is POPULATION. Inside the driven volume both infrared lines
+are inverted, 4.81 and 5.26 to one, because 5P empties in 27 ns while the
+drive refills 6S, so trapped infrared stimulates 6S downward instead of
+pumping 5P upward. Outside it, trapped D-line photons build a 5P halo where
+there is no 6S, and there the infrared does absorb and re-excite, at about
+1.07 per cent of the primary rate at 130 °C and nothing at 70 °C. The optical depth for that reabsorption
+is $\tau = f_{HF} a N(T) \sigma L$ with $a$ the isotopic abundance, so
+it GROWS WITH DENSITY.
+
+That matters because density is the axis a collisional measurement is read
+along. A detection channel whose efficiency falls with density puts a
+density-dependent factor into every amplitude, and an analysis that reads
+amplitudes against density inherits it. The choice of filter therefore sets
+which systematic the experiment has, not merely how many photons it counts.
+
+Swapping 795 nm for 780 nm does NOT remove the effect, because the D2 photon
+is equally resonant. It changes the cross-section and the hyperfine
+weighting, which makes the pair a MEASUREMENT of the trapping rather than an
+escape from it: the two legs share one excitation and differ only in their
+reabsorption, so their ratio against density is the trapping model's own
+test. Collecting the 1.3 um leg instead reduces the effect by about two
+orders of magnitude at the top of the sweep rather than removing it, and
+moves what remains into a term `scripts/run_trapping_channels.py` has already
+computed. What it costs is a detector that reaches past 900 nm.
+
+`rb5s6s/detection.py` carries the three channels, with their wavelengths
+computed from the term energies rather than typed, and with a trapped channel
+that has no cross-section raising rather than returning zero, since a silent
+zero would assert that the photon escapes.
+
 ## Where this is used
 
 `rb5s6s/cascade.py` implements the population model, with the invariants

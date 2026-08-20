@@ -21,8 +21,9 @@ can go wrong with it, and where to read more.
 
 ## Where to start, by what you came for
 
-Fifty-two pages is too many to read in order, and the clusters below are a
-taxonomy rather than a route. These are routes.
+The clusters further down group the pages by subject. The table here gives
+reading orders instead, one per purpose, each listing its pages in the order
+they build on one another.
 
 | if you came for | start here, in order |
 |---|---|
@@ -30,23 +31,21 @@ taxonomy rather than a route. These are routes.
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
 | **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
-| **evaluating the author's judgement**, not only the physics | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
-| **taking over this analysis**, the bus test | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
-| **writing a thesis chapter** | the clusters below already have the chapter shapes: A for the introduction, B and C for the apparatus and methods, D for the analysis, E for robustness, F and G for appendices. Read a cluster in its listed order and treat its opening line as the chapter's abstract. The prerequisite chain ACROSS clusters is drawn in the connection map below |
+| **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
+| **taking the analysis over, or reproducing it** | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
-| **judging whether the analysis is sound** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
+| **what the data determine, and how far** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
 | **working out what limits a measurement, and what would help** | [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md), [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
 | **designing the next measurement** | [the digital twin](the-digital-twin.md), [reversal tests](reversal-tests.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
-**Every page carries the same four lines at the top**, so the decision to read
-on takes five seconds: the question it answers, what it takes, what it gives,
-and when to skip it. Every page ends with a "See also".
+**Every page opens with the same four lines**: the question it answers, what
+it assumes, what it gives, and when to skip it. Every page ends with a
+"See also".
 
-**Where a concept has a scar, the page shows it.** Fifteen of these pages
-carry a section describing where this project got that concept wrong, what the
-mistake was mechanically, and what caught it. The replaced values themselves
-stay in [HISTORY.md](../HISTORY.md), which is the only file in this repository
-licensed to print one. That count is checked against the pages by
+**Fifteen of these pages carry a section on where this project got that
+concept wrong**, what the mistake was mechanically, and what caught it. The
+replaced values themselves stay in [HISTORY.md](../HISTORY.md), which is the
+only file here licensed to print a value the record has retired. That count is checked against the pages by
 `tests/test_wiki_index_is_complete.py`, because it had already drifted once
 before anything noticed.
 
@@ -177,9 +176,8 @@ noise is irreducible, and the two instrument choices that decide the rest.
 
 ## How the pages connect
 
-The clusters below are a chain, not a filing system. It runs from the light
-the atoms sit in to the question of whether the answer was earned, and each
-page is one link.
+The clusters run in order, from the light the atoms sit in to the question
+of what the fit determined.
 
 ```mermaid
 flowchart LR
@@ -219,8 +217,7 @@ flowchart LR
 *Solid arrows carry the measurement: what the atoms are, what drives them,
 what shapes the line, how it is weighted and fitted, and what decides whether
 the fit determined anything. Dotted arrows are the supporting tools each step
-needs. A reader who follows the solid path once has the whole argument of this
-repository in order.*
+needs. The solid path is the argument in the order the analysis makes it.*
 
 ## What governs what
 
@@ -237,24 +234,12 @@ claim is only as good as the reference it carries. The general section of a
 page may stay valid across model revisions, and only its
 repository-specific section is coupled to the current implementation.
 
-## Waves so far
+## Not covered yet
 
-Wave 1 built the first fifteen pages, on the lineshape and the inference. Wave
-2 added hyperfine structure, the frequency axis, weighted least squares,
-saturation, preregistration, the beam waist and standing waves. Wave 3 added
-the robustness cluster, written after the repository ran the influence audit
-those pages describe rather than before, so their repository sections report
-work done. Wave 4 added the instrument layer, on what is stamped onto the
-light and how it is read. Wave 5 added the first cluster, on the atomic
-structure that licenses the measurement at all, including the geometric reason
-a two-photon transition can be made Doppler-free with one colour while a
-three-photon one needs either crossing beams or a second colour. Wave 6 added
-the simulation layer, since every campaign number here is a simulation result
-and its failure modes were recorded only as incidents.
-
-The next candidates, unordered and none committed: the density scale and the
-vapour-pressure curve it comes from, and the transit-time kernel's thermal
-average as a page of its own rather than a section of the transit page.
+Two concepts have no page and are the first candidates for one: the density
+scale and the vapour-pressure curve behind it, and the transit-time kernel's
+thermal average, which is currently a section of the transit page rather than
+a page of its own.
 
 ## Conventions
 
@@ -269,7 +254,7 @@ can demonstrate the idea in a few lines, and Further reading.
 **The snippets run.** Every `python` block on these pages is executed by
 `tests/test_wiki_snippets_run.py` in a clean subprocess with only the
 repository on the path, and it must print something. A block that stops
-working fails the suite rather than misleading a reader, and two of the first
+working fails the suite, and two of the first
 six were written with a wrong signature and a wrong dictionary key, which is
 why the guard exists. They use only the public API, so they are also a
 working introduction to it. Pages

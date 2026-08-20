@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M34, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M35, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -73,6 +73,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M24 wing check (null) | M25 global dataset fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
   | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
   | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
+  | M35 the detection channel: which decay branch is collected, and its trapping |  |  |  |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -159,8 +160,11 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           forecast(M34: the digital twin, synthesise traces for an experiment
                    that does not exist yet, fit them back, and read the
                    achievable precision from the fit's own covariance)
+          detection(M35: which decay branch the apparatus collects, and the
+                    radiation trapping that follows from it, so the detected
+                    wavelength is a configuration rather than a constant)
           fitutil _compat
-          (M18, M19, M29, M31, M32, M33 and M34 are library-and-test only: they have
+          (M18, M19, M29, M31, M32, M33, M34 and M35 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see
            their test files, and for M34 also examples/campaign_twin.py)
 scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)

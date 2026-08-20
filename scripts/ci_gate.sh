@@ -25,10 +25,39 @@ cd "$(dirname "$0")/.."
 # So the gate writes its own verdict to a file, as its last act, on every
 # path out including a crash. RUNNING is written first, so an interrupted
 # gate reads as RUNNING and never as a pass. Read this file, not $?.
+# THE GATE LOCK, and why a convention was not enough. Sibling sessions edit
+# these same two trees, and the standing rule "never start a gate while
+# another session's gate runs" lived only in each session's head. Two gates on
+# one checkout share a verdict file and a working tree, so the second one's
+# RUNNING erases the first one's result and each reads the other's tree
+# mid-edit. The rule is mechanised here instead: an exclusive lock, taken
+# BEFORE the verdict file is touched, so a refused gate cannot clobber the
+# verdict of the gate it was refused for.
+#
+# mkdir rather than flock: the flock binary is absent on macOS and this script
+# also runs in Linux CI, while mkdir is atomic on every POSIX filesystem and
+# needs nothing installed. The lock lives outside the tree so it is never a
+# tracked file, and it is keyed by the checkout's own path so the archive and
+# the mirror lock independently. A lock whose owner is gone is stolen rather
+# than waited on, which is what makes a killed gate recoverable.
+GATE_LOCK="${CI_GATE_LOCK_DIR:-/tmp/rb5s6s_ci_gate$(pwd | tr '/' '_').lock}"
+if ! mkdir "$GATE_LOCK" 2>/dev/null; then
+  owner=$(cat "$GATE_LOCK/pid" 2>/dev/null || echo "")
+  if [ -n "$owner" ] && kill -0 "$owner" 2>/dev/null; then
+    echo "ci_gate: REFUSED, a gate is already running on this checkout (pid $owner)."
+    echo "ci_gate: wait for it, or read its verdict file. Nothing was touched."
+    exit 3
+  fi
+  echo "ci_gate: stale lock from pid ${owner:-unknown}, taking it over"
+  rm -rf "$GATE_LOCK" && mkdir "$GATE_LOCK"
+fi
+printf '%s\n' "$$" > "$GATE_LOCK/pid"
+trap 'rm -rf "$GATE_LOCK"' EXIT
+
 GATE_VERDICT="${CI_GATE_VERDICT_FILE:-$(pwd)/.ci_gate_verdict}"
 printf 'RUNNING\n' > "$GATE_VERDICT"
 trap 'rc=$?; if [ "$rc" -eq 0 ]; then printf "PASS 0\n" > "$GATE_VERDICT";
-      else printf "FAIL %s\n" "$rc" > "$GATE_VERDICT"; fi' EXIT
+      else printf "FAIL %s\n" "$rc" > "$GATE_VERDICT"; fi; rm -rf "$GATE_LOCK"' EXIT
 # The checkout's own interpreter where there is one, the ambient python
 # otherwise, which is the case in CI. Hard-coding either breaks the other:
 # the bare python3 on a development machine need not carry ruff or pytest.

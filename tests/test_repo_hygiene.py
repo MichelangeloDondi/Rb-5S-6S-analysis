@@ -207,6 +207,37 @@ FORBIDDEN = {
         r"cannot be scooped", r"not a failed measurement",
         r"laundered into", r"not a hunch", r"selling point",
         r"price of admission", r"self-certifies",
+        # META-NARRATION (2026-08-20, owner). Prose that comments on the
+        # document's own shape rather than stating what a section holds:
+        # "N pages is too many to read in order, and the clusters below are a
+        # taxonomy rather than a route. These are routes." A reference
+        # document says what is in it. The X-not-Y frame is the recurring
+        # carrier, so it is matched where it takes the document's own
+        # structure as its subject rather than a physical claim.
+        r"too many to read", r"read in order, and",
+        r"(?:are|is) a taxonomy rather than",
+        r"a chain, not a filing", r"these are routes",
+    ],
+    # APPLICANT-AWARE REGISTER (2026-08-20, owner order). A public record
+    # states what is in it and lets a reader draw conclusions. Three things
+    # break that. It must not frame itself as evidence ABOUT ITS AUTHOR
+    # ("evaluating the author's judgement"), it must not route readers by the
+    # author's private purposes ("writing a thesis chapter"), and it must not
+    # leak internal shorthand for either ("the bus test", which names a
+    # handover standard in the vocabulary of the people who coined it).
+    #
+    # Measured before it was written: seven hits across docs/wiki/README.md,
+    # docs/RELEASE_CHECKLIST.md and docs/plan/01, every one of them a phrase
+    # the owner named on reading the public wiki index. The patterns are
+    # stored SPLIT so this file is not itself the eighth: each is assembled
+    # from parts at load time, which also keeps the release-note checker,
+    # which imports these banks, from flagging its own source.
+    "applicant-aware register": [
+        r"the " + r"author" + r"'s judg",
+        r"evaluating the " + r"author",
+        r"judging whether the analysis",
+        r"writing a " + r"thesis" + r" chapter",
+        r"\bbus[- ]" + r"test\b",
     ],
 }
 

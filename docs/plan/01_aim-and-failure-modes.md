@@ -162,7 +162,7 @@ and the item is flagged for external theory adjudication
 
 **"Put a student on this and it strands them with un-analysed shots."** The
 handover is a project commitment and belongs in a direct conversation. What the
-document can put against that objection: the pipeline is built to a bus-test
+document can put against that objection: the pipeline is built to a handover
 standard with a documented ingest path, it ingests session data unchanged, and the
 smallest tranche has a defined standalone deliverable, so a truncated session
 yields a finished result rather than orphaned data. An adaptation guide

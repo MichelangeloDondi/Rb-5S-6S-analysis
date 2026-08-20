@@ -53,10 +53,13 @@ One continuous wavemeter record at a fixed set point before the first science
 block, and another after any pause long enough to reopen the transient.
 **Go/no-go.** Engage the lock chain and hold it thirty minutes. It passes if
 the held drift magnitude over that half hour stays below 0.025 MHz per minute,
-the upper edge of the dataset's own held-lock band. The fig15 record puts that
-band at 0.016 MHz per minute in magnitude, 0.007 to 0.025, fitted across the
-campaign's five-hour power session with the sign undetermined, so the criterion
-asks the new epoch to be no worse than the old one at its worst. On fail the
+which is above the dataset's own held-lock bound. That bound is of order
+0.02 MHz per minute on the laser axis with its SIGN UNDETERMINED
+([DATA.md](../DATA.md), provenance note of 2026-07-30), and it replaced a
+directional reading of 0.016 with a 0.007 to 0.025 interval that the
+window-reference audit retracted. The criterion therefore asks the new epoch
+to be no worse than the bound the record still defends, and it is stated
+against that bound rather than against the retracted interval. On fail the
 session falls back to the drifting-lock protocol and every block keeps its
 per-block ruler calibration, which is the record's own licensed mode, so the
 day is degraded and not lost. **Empty.** No empty case. The half-hour record

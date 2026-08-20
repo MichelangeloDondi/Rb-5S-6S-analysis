@@ -251,7 +251,7 @@ the manifest depends on the copy you are reading, and
 [data_raw/README.md](../data_raw/README.md) says which this one is
 ([DATA.md](DATA.md)).
 
-**Module, M0 to M34.** One analysis stage, with its script, its result file and
+**Module, M0 to M35.** One analysis stage, with its script, its result file and
 its tests. The map is [methods.md](methods.md).
 
 ## Words for how claims are made

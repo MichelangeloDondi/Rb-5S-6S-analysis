@@ -82,8 +82,8 @@ the archive's dispatch-only one, a by-design divergence now excluded in
 ## What the release does not need
 
 A tutorial, a documentation site, and a paper are all reasonable things to
-want and none is a precondition. The bus test is the criterion: a stranger
-who installs the package can define a transition, simulate a line, fit it,
+want and none is a precondition. The criterion is what a stranger can do
+unaided: someone who installs the package can define a transition, simulate a line, fit it,
 compare models and read an identifiability report inside five minutes, and
 that path is `synthetic_recovery.py` followed by `full_model_tour.py`.
 

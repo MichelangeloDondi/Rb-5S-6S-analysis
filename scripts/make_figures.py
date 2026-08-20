@@ -2714,9 +2714,24 @@ def fig_drift_story():
         measured trend; the held-lock drift SIGN is deliberately not drawn
         anywhere (experimenter call, 2026-08-12: the record does not establish it
         and the figure should not appear to).
+    Panels (a) and (b) were reworked 2026-08-20 on the experimenter's reading.
+    (a) named the model instead of describing its behaviour, and its
+    rejected-candidate note went from three lines to one. (b) now states its
+    proposition on the panel, because points lying on an identity line read
+    as either trivial or broken until the panel says which, and its printed
+    fraction is called a fraction of the position SIGNAL rather than of its
+    variance, the quantity being a fraction of mean square about zero.
+
     (c) The consequence ladder, decluttered: three lock regimes on a log
         axis, two short annotations each. The prose that used to live on the
-        canvas belongs to the documents that cite the figure.
+        canvas belongs to the documents that cite the figure. The held-lock
+        entry is drawn as an UPPER LIMIT at 0.02 MHz/min rather than as a
+        point at 0.016. Correction of record, 2026-08-20: the earlier point
+        carried the state-space constant under the label "the measured
+        bound", which the window-reference audit had already retracted (see
+        the comment at the regime list and DATA.md's provenance note). The
+        sign policy stated for panel (b) applies here too, and the earlier
+        panel broke it.
     """
     import csv as _csv
 
@@ -2745,7 +2760,7 @@ def fig_drift_story():
     ax.plot(t, f, color="#0072B2", lw=0.9, label="band centre = laser frequency")
     mclip = tf > 0.4     # the pre-first-kick baseline is a fit artifact
     ax.plot(tf[mclip], mu[mclip], color="#D55E00", lw=1.6, ls="--",
-            label="fitted model: a step at each confirmed\nre-lock, a ramp in between")
+            label="sawtooth fit: free level and drift rate\nper interval, one shared re-lock rise time")
     confirmed = [s_ for s_ in r["steps"] if s_["step_mhz"] > 1.0]
     rejected = [s_ for s_ in r["steps"] if s_["step_mhz"] <= 1.0]
     for s_ in confirmed:
@@ -2755,9 +2770,8 @@ def fig_drift_story():
     _times = ", ".join(f"{s_['t_kick']:.0f}" for s_ in rejected)
     _amps = ", ".join(f"{s_['step_mhz']:+.2f}" for s_ in rejected)
     ax.text(0.985, 0.03,
-            f"the finder flagged {len(rejected)} more candidates, near "
-            f"{_times} min.\nTheir fitted steps ({_amps} MHz) rule them out:\n"
-            "ramp ends, not re-locks. The bench record agrees.",
+            f"{len(rejected)} further candidates near {_times} min are ramp "
+            f"ends, not re-locks:\ntheir fitted steps are {_amps} MHz.",
             transform=ax.transAxes, fontsize=6.8, color="0.35",
             ha="right", va="bottom")
     ax.set_xlabel("time (min)")
@@ -2801,13 +2815,20 @@ def fig_drift_story():
     ax.plot(dwin, dpos, "o", ms=5.0, color="#009E73", mec="0.2", mew=0.5,
             label=f"steps between the power sweep's\n{len(dpos)} condition blocks")
     _resid = float(np.sqrt(np.mean((dpos - dwin) ** 2)))
+    # A fraction of MEAN SQUARE about zero, not of variance about the mean.
+    # On data of this shape the two agree to the fifth decimal, so the printed
+    # 99.8 is right either way, but the panel no longer calls it variance.
     _frac = 1.0 - _resid ** 2 / float(np.mean(dpos ** 2))
     _knob = int(np.sum(np.abs(dwin) > 1e-9))
+    # THE PROPOSITION, INSIDE THE CANVAS WORD LIMIT. The first attempt at
+    # this said the same thing in fifty words and tripped the guard that
+    # forbids a canvas from arguing: the fix for "unclear" is a sharper
+    # sentence, not a longer one. The reasoning lives in the caption.
     ax.text(0.035, 0.965,
-            f"{100 * _frac:.1f}% of the between-block position variance is "
-            f"the window setting.\n{_knob} of {len(dpos)} steps carry a knob "
-            f"move. Residual scatter {_resid:.0f} ms.",
-            transform=ax.transAxes, fontsize=7.6, color="0.30", va="top")
+            "On the identity line the peak did not move, the window setting "
+            f"did.\n{100 * _frac:.1f}% of the between-block signal is that "
+            f"setting, scatter {_resid:.0f} ms over {len(dpos)} steps.",
+            transform=ax.transAxes, fontsize=7.4, color="0.30", va="top")
     ax.set_xlabel("window-setting move between blocks (ms, scope axis)")
     ax.set_ylabel("peak-position move (ms)")
     ax.set_title("(b) peak-position move against window-setting move,\n"
@@ -2820,7 +2841,17 @@ def fig_drift_story():
     ax = fig.add_subplot(gs[2])
     envelope_mhz_per_min = DRIFT_RATE_LASER_HZ_PER_MIN / 1e6  # rb5s6s.constants ENVELOPE
     ayachitula_mhz_per_min = 0.5e-3 / 50.0  # <0.5 kHz / 50 min (Ayachitula et al. 2024)
-    drift = 0.016   # MHz/min, laser; audit addendum 5 (state-space, recovered clock)
+    # THE HELD LOCK IS A BOUND, NOT A RATE. Earlier versions of this panel
+    # drew the state-space constant 0.016 MHz/min as a point labelled "the
+    # measured bound". That reading was retracted by the window-reference
+    # audit: DATA.md's provenance note (2026-07-30) states that 0.016 "is not
+    # a measured rate in either direction" because the fit compares block
+    # medians ACROSS blocks, the comparison the horizontal-setting correction
+    # contaminates, and PREREGISTRATION_RESULTS addendum 4 records the same
+    # withdrawal. What the record defends is a two-sided bound of order
+    # 0.02 MHz/min with the SIGN UNDETERMINED, which is also the only thing
+    # the drift-immune argument ever used. Drawn as a bound.
+    drift_bound = 0.020   # MHz/min laser, two-sided, sign undetermined
     # MARKERS CARRY THE SPACING, A LEGEND CARRIES THE TEXT. Two earlier
     # layouts put multi-line prose beside each marker on the axis: centred, it
     # left the axes at both ends; anchored inward, the left block grew into the
@@ -2832,13 +2863,13 @@ def fig_drift_story():
     # lost by taking it off the canvas.
     regimes = [
         (envelope_mhz_per_min, "#B0B0B0", "planning envelope,\n2025"),
-        (drift, "#0072B2", "2025 held lock,\nthe measured bound"),
+        (drift_bound, "#0072B2", "2025 held lock,\nbounded below this"),
         (ayachitula_mhz_per_min, "#009E73", "cavity-lock class,\nin the literature"),
     ]
     # THE LEGEND WAS THE COLLISION. The comment above said a legend cannot
     # collide with anything; the shipped PNG showed otherwise, because three
     # multi-line prose entries at upper-center grew into a box that covered
-    # the middle marker, which is the measured bound and the whole point of
+    # the middle marker, which is the held-lock bound and the whole point of
     # the panel. Prose in a legend is prose on the canvas. Replaced by three
     # SHORT direct labels at ONE height, each over its own marker, with the
     # full statement moved to the caption where a qualifier belongs. The
@@ -2847,6 +2878,13 @@ def fig_drift_story():
     for rate, col, short in regimes:
         ax.plot([rate], [0.0], "o", ms=11, color=col, mec="0.25", mew=0.8,
                 zorder=3)
+        if rate == drift_bound:
+            # An upper limit wears a limit marker. The bar sits at the bound
+            # and the arrow points into the allowed region, so the panel
+            # cannot be read as placing the held lock AT this rate.
+            ax.annotate("", xy=(rate / 6.0, 0.0), xytext=(rate, 0.0),
+                        arrowprops=dict(arrowstyle="-|>", color=col, lw=1.6,
+                                        shrinkA=6.0, shrinkB=0.0), zorder=2)
         ax.annotate(short, xy=(rate, 0.0), xytext=(rate, 1.15),
                     textcoords="data", ha="center", va="bottom",
                     fontsize=7.6, color=col,
@@ -2867,8 +2905,10 @@ def fig_drift_story():
     _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (panel a).\n"
                  "results/laser_history.csv, power-sweep condition blocks "
                  "(panel b).\n"
-                 "results/stark_joint.csv, results/beta_self_probe.csv, "
-                 "results/laser_epoch.csv (panel c).\n"
+                 "rb5s6s.constants (2025 planning envelope), DATA.md "
+                 "provenance note\nand PREREGISTRATION_RESULTS addendum 4 "
+                 "(held-lock bound), Ayachitula et al. 2024\n(cavity-lock "
+                 "class) (panel c).\n"
                  "Regenerate: python scripts/make_figures.py.", fontsize=5.9)
     _save(fig, "fig15_drift_story.png")
 
@@ -4301,8 +4341,14 @@ def fig_radiation_environment():
     signal.
 
     THE READING. Trapped light on the cascade's own infrared legs is a per-cent
-    effect and worth carrying. Blackbody light on the same legs is twelve orders
-    below it. The one blackbody channel that is not negligible-squared, 6S to
+    effect and worth carrying. Blackbody light on the same legs is EIGHT orders
+    below it, 1874 against 3.3e-5 per second at 130 C, a ratio of 5.6e7.
+    (Corrected 2026-08-20. This line said twelve orders, which was true of a
+    quantity this docstring no longer names: the thermal OCCUPATION NUMBER at
+    the infrared legs is 2e-12 to 5e-12, about twelve orders below unity. The
+    number survived a reframing and came to sit beside two bars it does not
+    describe. Recomputed from the same functions the panel draws with.)
+    The one blackbody channel that is not negligible-squared, 6S to
     6P at 2.7 um, is visible here as the single thermal bar that clears the
     floor, and it is still two parts per million of the natural decay.
 
@@ -4621,7 +4667,15 @@ def fig_isotope_transit():
     from rb5s6s.linefit import transit_fwhm_at_T
 
     temps = np.linspace(60.0, 140.0, 200)
-    ref = 0.96                       # the record's own transit width at 110 C
+    # THE REFERENCE TRANSIT WIDTH IS READ, NOT TYPED. This was 0.96 with a
+    # comment calling it "the record's own transit width at 110 C". The
+    # record's value at the ADOPTED 64 um waist is 0.9334, and 0.964 is the
+    # value at the tight end of the waist band, w0 about 62 um, which
+    # laser_epoch.csv states. The panel's argument, that the two isotopes do
+    # not share a transit width, is unaffected either way, and the gap it
+    # draws moves by 2.9 per cent. Corrected 2026-08-20 with fig15's, since
+    # both were literals whose comments named a source they did not equal.
+    ref = C.TRANSIT_FWHM_PLACEHOLDER_MHZ
     w85 = np.array([transit_fwhm_at_T(t, ref, isotope=85) for t in temps])
     w87 = np.array([transit_fwhm_at_T(t, ref, isotope=87) for t in temps])
     sweep = [70.0, 90.0, 110.0, 130.0]

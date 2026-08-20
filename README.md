@@ -4,6 +4,11 @@
 [![release](https://img.shields.io/github/v/release/MichelangeloDondi/Rb-5S-6S-analysis)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+> **The result in ten minutes: [docs/plan/00_the-case.md](docs/plan/00_the-case.md)**
+> states what was measured, what is not identified and why, the one
+> measurement that removes each ambiguity, what a next campaign is projected
+> to achieve, and which of this record's claims its own instruments refuted.
+>
 > **New here? [START_HERE.md](START_HERE.md)** is the short front door: a
 > working setup in five minutes, then a reading order that depends on why you
 > came. This page is the full account. If the vocabulary is unfamiliar,
@@ -37,12 +42,24 @@ four peaks (holding across the waist band the data allow), the 2025 laser
 width below 2.4 MHz on the two-photon transition axis, which is the axis the
 analysis works on, equivalently 1.2 MHz per photon, and the AC-Stark
 coefficient S₀(225 mW) < 0.26 MHz against 0.35 predicted (95%, current primary
-construction, whose robustness is under review, see
-[`docs/RESULTS.md`](docs/RESULTS.md)). The last two ride the beam waist, which
+construction). The last two ride the beam waist, which
 is 64 µm ADOPTED FROM A DIRECT MEASUREMENT ON THE APPARATUS LINEAGE and not
 re-measured in this campaign: the prediction rides it directly, the bound only
 weakly through its transit kernel, and it is the largest open systematic in
 the record.
+
+Two robustness questions were raised about the light-shift bound, and
+[`docs/RESULTS.md`](docs/RESULTS.md) records both. The louder one is closed:
+independent optimisations appeared to disagree about the bound by a factor of
+two, the disagreement was diagnosed as the diagnostic's own display
+normalisation, and anchoring the curves to absolute chi-square puts all five
+independent starts 4.66 to 26.29 above the production optimum at every
+coefficient tested, none of them inside the confidence region. The second,
+whether the construction is stable under later code versions, has its cause
+identified: a commit sweep traced the movement to one commit that regenerated
+the committed ruler CSVs while renaming a vocabulary, which shifts a discrete
+trim boundary and changes the fit's point count by five in 248000. How much
+of the reported movement that accounts for is being measured.
 The full claim ledger, including what is deliberately not claimed, is
 [`docs/CLAIMS.md`](docs/CLAIMS.md).
 
@@ -171,8 +188,8 @@ fixed condition, [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 session, a wavemeter record of cavity re-locks and relaxations. Middle: the
 campaign reconstructed from its own traces. Each vertical stroke is one
 trace's own scan ramp, offsets are comparable only between traces taken at
-the same scope setting, and the held lock moves by 0.016 MHz/min in magnitude
-over three hours. Shapes survive, centres do not. Bottom: what each drift
+the same scope setting, and the held lock's drift is bounded at order
+0.02 MHz/min over three hours, with its sign undetermined. Shapes survive, centres do not. Bottom: what each drift
 regime licenses, from the 2025 bounds to the fixed-lock session that would
 convert them.*
 
@@ -294,7 +311,7 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon, equivalently 2.4 MHz on the transition axis, at the adopted lineage waist, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted lineage waist, see [RESULTS](docs/RESULTS.md), which records that a later rerun moved a subset bound by about a third and that the disposition of this bound is under review. Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the adopted lineage waist, see [RESULTS](docs/RESULTS.md). Two robustness questions were raised. The multi-start alarm is CLOSED, diagnosed as the diagnostic's own display normalisation and settled by anchoring to absolute chi-square, where the five independent starts sit 4.66 to 26.29 above the production optimum and none enters the confidence region. The code-version question has its CAUSE IDENTIFIED as of 2026-08-20, and its size is being measured. A commit sweep found the fit's point count changing at exactly one commit, which renamed a vocabulary across the tree and regenerated the committed ruler CSVs as a side effect, shifting fitted rates in their eleventh digit. A shift that small still moves a discrete trim boundary and admits five more samples, so the inputs were never byte-identical and no arithmetic is defective. Whether five samples account for the whole reported movement is the open half, and the primary bound above is unaffected either way. Loose by a measured factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it) | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude DEPARTS from P², replicated and brightness-ordered | null + a measured departure | — |
 | Beam waist **w₀** | 64 µm, adopted from a direct measurement on the apparatus lineage and NOT re-measured in this campaign. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
@@ -506,7 +523,14 @@ requirements have already been verified, is
 ```
 rb5s6s/     the library: ingest, quality control, noise model, frequency ruler,
             lineshape + fitting, density, collisional/global/AC-Stark fits,
-            transit Monte-Carlo, amplitude analyses, shared utilities
+            transit Monte-Carlo, amplitude analyses, shared utilities.
+            `import rb5s6s` exposes an eighteen-name core, the names a first
+            analysis needs. The expert layers stay in submodules and are
+            imported by path, for instance
+            `from rb5s6s.forecast import forecast_precision` for the
+            design and identifiability engine the tutorial's forecast section
+            runs on, and likewise `rb5s6s.cascade`, `rb5s6s.blackbody` and
+            `rb5s6s.identifiability`
 scripts/    one runnable per analysis stage, plus make_figures / make_results_ledger
 examples/   synthetic_recovery.py, the package's own known-truth check on
             data it generates itself; tutorial_forecast.py, every code block

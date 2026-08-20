@@ -579,7 +579,13 @@ measured the in-campaign rate (scripts/run_drift_settling.py, results report
 addenda 4-7). The state-space refinement, under the residual-audited
 mixture noise model, finds ONE CONSTANT drift, +0.016 [+0.007, +0.025]
 MHz/min laser (~250x below this envelope; a ~2-sigma indication) across the
-five-hour power session the fit sees; persisting, ~20 MHz over the 20.5 h --
+five-hour power session the fit sees. RETRACTED 2026-07-30 as a RATE: that
+fit compares block MEDIANS across blocks, which is the comparison the
+window-reference correction contaminates, and recomputing in the corrected
+frame changes the sign of two of the three estimators. What the record
+defends is a two-sided bound of order 0.02 MHz/min with the SIGN
+UNDETERMINED (docs/DATA.md, provenance note). The value below is kept because
+it is what that fit returned and the ENVELOPE argument does not depend on it; persisting, ~20 MHz over the 20.5 h --
 with the recapture excursions, the scale that forced the re-centring. Bounded
 <~0.17 MHz/min within blocks even in hour 1, matching the 0.19 the
 cavity-locked photo shows. What settles (tau ~ 1-2.5 h) is the disturbance
