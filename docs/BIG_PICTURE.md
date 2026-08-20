@@ -76,12 +76,30 @@ one minus the correlation squared, between 2.3 and 3.2 across the conditions
 this record covers, and
 [chapter 7](big_picture/07_limitations-and-identifiability.md) carries the
 constructions, together with the second limitation hiding inside this one:
-the fit assigns the laser a KERNEL SHAPE the record has never measured, and
-the wrong shape biases the collisional width rather than widening its error
-bar. What the record does measure brackets the question from both sides,
-0.62 MHz of slow wander below half a hertz from the digitised wavemeter
-record and under 28 kHz at seven hertz from the comb clock, leaving exactly
-the band the width integrates as the unmeasured middle.
+the fit assigns the laser a KERNEL SHAPE, and the wrong shape biases the
+collisional width rather than widening its error bar. What the record measures
+about the laser's noise brackets the question from both sides, 0.62 MHz of
+slow wander below half a hertz from the digitised wavemeter record and under
+28 kHz at seven hertz from the comb clock, leaving exactly the band the width
+integrates as the unmeasured middle.
+
+**That shape is no longer unmeasured, as of 2026-08-20, and the answer came
+from the line rather than from the laser.** The switch selecting it had been
+wired through four modules and never thrown. Thrown, it moves the collisional
+width by a median 45 per cent per condition, and the headline coefficient
+itself by 45 to 67 per cent, which is nine to seventeen sigma on the
+statistical error quoted beside it. That makes it the largest single
+assumption the width channel rests on, larger than the width degeneracy above
+it, and it means the quoted error bar omits a term about ten times its own
+size. And the archive DISCRIMINATES: the Gaussian the record had been assuming
+fits better on 32 conditions of 32, never once losing, which is a sign test at
+$p = 5\times10^{-10}$ and $p = 0.008$ even counting only eight independent
+conditions. So this limitation is now a tested choice rather than an
+unexamined one, which is a different and much better position, and the
+remaining work is a fitted Lorentzian FRACTION to turn a comparison between
+two corners into the error bar
+([`run_laser_kernel.py`](../scripts/run_laser_kernel.py),
+[the Voigt profile](wiki/voigt-profile.md)).
 
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in

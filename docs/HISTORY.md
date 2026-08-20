@@ -573,9 +573,13 @@ contribution to the line. It is a parameter of `composite_profile`,
 `model_profile`, `fit_condition` and `beta.py`, it is documented in three
 docstrings, and it had never been called with anything but its default.
 
-Turning it moved the collisional coefficient by a median 45 per cent, because
-Lorentzians add linearly and a Lorentzian laser width is degenerate with the
-collisional width. That was the largest unexamined lever on the headline
+Turning it moved the per-condition collisional width by a median 45 per cent,
+because Lorentzians add linearly and a Lorentzian laser width is degenerate
+with the collisional width. **The headline `beta_self` moves further.** Run
+under the record's own hierarchical construction the four peaks move 45 to 67
+per cent, median 58, which is NINE TO SEVENTEEN SIGMA on the statistical error
+the record quotes, so the model-form uncertainty from the kernel exceeds the
+statistical one by about an order of magnitude. That was the largest unexamined lever on the headline
 quantity in the record. The archive also turned out to DISCRIMINATE, which was
 preregistered as unlikely: the Gaussian fits better on 32 conditions out of 32,
 so the assumption the record had been making is the one the data prefer. An

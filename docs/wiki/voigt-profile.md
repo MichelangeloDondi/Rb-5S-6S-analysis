@@ -160,8 +160,12 @@ change the fit quality, it moves the collisional number.
 **How much it moves it.** Every canonical condition was fitted twice, same
 traces, same noise law, same trim, differing only in the kernel. The median
 fractional shift in $\gamma_{\rm coll}$ is **−45 per cent**, falling on 31
-conditions of 32, over a range from −98 to +17. This was the largest
-unexamined lever on the collisional coefficient in the record.
+conditions of 32, over a range from −98 to +17. Run under the record's own
+hierarchical construction the HEADLINE $\beta_{\rm self}$ moves further
+still, 45 to 67 per cent across the four peaks, which is **nine to seventeen
+sigma** on the statistical error quoted beside it. This was the largest
+unexamined lever on the collisional coefficient in the record, and the quoted
+error bar omits a term about ten times its own size.
 
 **And the data settle it.** The expectation, written down before the run, was
 that the archive could not tell the two kernels apart, by the same argument

@@ -75,6 +75,28 @@ resolved collisions. The rule that decides measurement against bound was set
 before the data were examined, and the current numbers are in
 [RESULTS.md](../RESULTS.md).
 
+## One term this coefficient absorbs and cannot separate
+
+A two-atom cooperative channel puts a satellite at twice the single-atom
+magnetic position, because a PAIR of atoms can accept two units of angular
+momentum where one atom can accept only one
+([magnetic sublevels](magnetic-sublevels.md),
+`rb5s6s/cooperative.py`). Its rate is linear in density, since it needs a
+second atom, and so is its contribution to the measured width.
+
+**Linear in density is what this coefficient is.** The two are degenerate
+under a density ladder and no number of temperature blocks separates them, so
+whatever the pair channel contributes is absorbed into
+$\beta_{\rm self}$. That is harmless here only because of the size: at
+Earth's field and 130 °C it adds $3\times10^{-4}$ hertz to a collisional
+width of 492 kHz, six parts in ten thousand million.
+
+The reasoning generalises past this one term. **A design whose only lever is
+density cannot distinguish any two terms that are both linear in it**, and the
+way out is a second lever rather than more density points. Here that lever is
+the FIELD: this coefficient is indifferent to it, and the satellite's width
+contribution goes as $B^2$.
+
 ## What can go wrong
 
 The impact approximation is a physical assumption with a checkable validity

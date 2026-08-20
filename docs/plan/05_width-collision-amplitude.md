@@ -406,7 +406,9 @@ it changes what the density ladder is buying.
 
 Fitting every canonical condition twice, differing only in whether the laser's
 own contribution is modelled as a Gaussian or a Lorentzian, moves
-$\gamma_{\rm coll}$ by a median **45 per cent**. Lorentzians add linearly, so
+$\gamma_{\rm coll}$ by a median **45 per cent**, and the headline
+$\beta_{\rm self}$ by 45 to 67 per cent, which is **nine to seventeen sigma**
+on its own quoted error. Lorentzians add linearly, so
 a Lorentzian laser width is degenerate with the collisional width and competes
 for the same wings. That is a larger lever on the collisional coefficient than
 anything else the record has examined.

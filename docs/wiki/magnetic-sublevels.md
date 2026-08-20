@@ -266,29 +266,40 @@ allowed, and lets those components carry the full uncancelled
 $g_F \mu_B B$ of 350 kHz. **Retracted 2026-08-20**, and the reason closes the
 channel far more firmly than the bound it replaced.
 
-Write the two-photon amplitude with its two orderings. Both photons come from
-ONE laser, so their frequencies are equal, the two energy denominators are
-equal, and the amplitude is manifestly SYMMETRIC under exchanging the two
-polarisation vectors. A symmetric bilinear has no antisymmetric part, and the
-antisymmetric part is exactly rank 1. So a DEGENERATE two-photon transition
-carries ranks 0 and 2 and nothing else, whatever the polarisations are:
+Write the two-photon amplitude with its two orderings. The rank-1 weight is
+the PRODUCT of two factors, $(1/D_1 - 1/D_2)$ and
+$\vec{e}_1 \times \vec{e}_2$, so it needs both. Photons of equal energy make
+the denominators equal and kill the first whatever the polarisations are.
+Parallel polarisation vectors kill the second whatever the energies are. For a
+stationary atom under one laser both factors vanish, and the transition
+carries ranks 0 and 2 and nothing else:
 
 | rank | polarisation factor | $\Delta m_F$ | available? |
 |---|---|---|---|
 | 0 | $\vec{e}_1 \cdot \vec{e}_2$ | 0 | yes, this is the line |
-| 1 | $\vec{e}_1 \times \vec{e}_2$ | $\pm 1$ | NO, the symmetry removes it |
+| 1 | $\vec{e}_1 \times \vec{e}_2$ | $\pm 1$ | only if BOTH factors are nonzero |
 | 2 | $\lbrace \vec{e}_1 \vec{e}_2 \rbrace^{(2)}$ | $\pm 2$ | NO, zero element for $J = 1/2$ |
 
-Only $\Delta m_F = 0$ survives, for any ellipticity, any mismatch, any field
-direction. A SIGMA-PI pair is closed by the same table: its one unit of
-$\Delta m$ lives in ranks 1 and 2, and both are unavailable. The line is
-protected at the level of the MATRIX ELEMENT rather than by a cross product
-happening to vanish.
+$\Delta m_F = 0$ is therefore the only channel available to any useful
+precision, and a SIGMA-PI pair is closed by the same table, since its one unit
+of $\Delta m$ lives in ranks 1 and 2. But NEITHER FACTOR IS EXACTLY ZERO here,
+which the first version of this section claimed and
+[selection rules](selection-rules.md) corrected the same day.
 
-WHAT WOULD BREAK THE SYMMETRY is making the two photons non-degenerate, and
-the EOM does: a pair drawn from opposite sidebands differs by 25 MHz against a
-75 THz detuning, so rank 1 reappears at $3 \times 10^{-7}$ in amplitude and
-$10^{-13}$ in rate.
+The Doppler-free geometry makes the ENERGY factor nonzero for every atom that
+is moving, which is the whole ensemble. In the rest frame the forward photon
+is blue-shifted and the retro photon red-shifted, so the pair the signal is
+built from differs by $2\nu v/c$, which is 395 MHz at 130 °C against a
+75.3 THz detuning, or $5.2\times10^{-6}$ in amplitude. That is sixteen times
+what an EOM sideband pair would give at 25 MHz, so the geometry, not the
+modulator, is the larger of the two energy splits.
+
+What holds the channel shut is the POLARISATION factor, which an ideal retro
+sets to zero exactly. A mismatch of angle $\theta$ reopens rank 1 at
+$\sin\theta$ times the energy factor, which is $2\times10^{-13}$ in rate at
+five degrees (`rb5s6s/polarisation.py`, `rank_one_leak_rate`). The line is
+protected by the retro's polarisation fidelity, not by a symmetry that holds
+whatever the apparatus does.
 
 THE DISTINCTION THAT THE RETRACTED PARAGRAPH MISSED, and it is the whole
 lesson. The TRANSITION operator is built from two absorptions, $e_1 e_2$, and

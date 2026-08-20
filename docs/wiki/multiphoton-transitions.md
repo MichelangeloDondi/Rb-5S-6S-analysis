@@ -69,15 +69,16 @@ dot product $\vec\epsilon_1\cdot\vec\epsilon_2$, a vector part built from
 their cross product, and a rank-two tensor part. Two different constraints
 decide which of them survive here, not one. Angular momentum alone removes
 the tensor piece, which has no reduced matrix element between two $J=1/2$
-states. The vector piece passes that test and is removed anyway, because
-both photons come from one laser: the two time orderings then share a single
-energy denominator, the amplitude is symmetric under exchanging the two
-polarisation vectors, and rank one is exactly the antisymmetric part that a
-symmetric bilinear cannot carry
-([Selection rules](selection-rules.md)). For this degenerate two-photon
-transition between two S states only the scalar part survives, and the
+states. The vector piece passes that test and is removed by a product of two
+factors, an energy difference between the two photons and a cross product of
+their polarisation vectors, either of which vanishing removes it
+([Selection rules](selection-rules.md)). Under one laser and an ideal retro
+both are small, so only the scalar part survives to any useful precision.
+Neither is exactly zero: the Doppler-free geometry makes the energy factor
+nonzero for every moving atom, and a five degree retro mismatch reopens rank
+one at $2\times10^{-13}$ in rate. The
 [two-atom channel](magnetic-sublevels.md) that lifts the rank-two closure
-does so ten orders below anything measurable. The consequence is published
+sits six orders below the tightest bound this record carries. The consequence is published
 for this exact transition. The
 scalar term, proportional to the degree of linear polarisation squared, is
 what the two-photon rate reduces to, and it vanishes identically for two

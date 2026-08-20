@@ -25,6 +25,21 @@ leaves the collisional width degenerate with the laser width, and leaves the
 light shift bounded at below 0.26 MHz at 225 mW against 0.35 MHz predicted,
 with the collisional coefficient bounded at 0.03-0.05 MHz per 10¹² cm⁻³.
 
+**And the degeneracy has a second face, measured 2026-08-20.** It is not only
+the laser width that competes with the collisional one. The laser kernel's
+SHAPE does too, and by more. Fitting every condition twice, differing only in
+whether the laser's contribution is a Gaussian or a Lorentzian, moves the
+per-condition collisional width by a median 45 per cent, and the headline
+collisional coefficient by 45 to 67 per cent, which is nine to seventeen sigma
+on its own quoted error, because Lorentzians add linearly and a Lorentzian laser width is degenerate with a collisional one in
+a way a Gaussian is not. The archive does discriminate, preferring the
+Gaussian on 32 conditions of 32, so the assumption this record makes is the
+one the data prefer and the width channel rests on a tested choice rather than
+an arbitrary one. What the session should carry from it is that a laser kernel
+with a FITTED Lorentzian fraction turns that binary into the model-form error
+bar on the collisional coefficient, and costs a fit rather than beam time
+(`scripts/run_laser_kernel.py`).
+
 **The proposed measurement.** A vapour-cell session under the repaired cavity
 lock, with an independent measurement of the laser width, a span wide enough
 to fit the Doppler pedestal as a pedestal, two same-isotope frequency rulers
@@ -33,6 +48,18 @@ inside every sweep, and a randomised power ladder.
 **What it would establish.** The two bounds above become measurements, the
 frequency axis becomes calibratable, and the baseline becomes data rather than
 a modelling choice.
+
+![where each bound stands today and where the campaign is projected to put it](../figures/fig34_campaign_projection.png)
+
+*The proposal in one figure. Three quantities, each against its own reference
+with the reference named in the row label, filled for what the 2025 archive
+supports and open for what one designed campaign projects, with the single
+lever that moves each named on the segment. The AC-Stark row is the cheapest
+and the closest to turning a bound into a measurement. The collisional row
+moves furthest, and its two markers are different kinds of number, a bound
+today and a precision after. The width split moves least, which is the
+argument for a fixed lock and against simply taking more traces. Every value
+is read from a committed CSV.*
 
 **Where the detailed design lives.** In the eleven chapters below, with
 [the case in ten minutes](plan/00_the-case.md) as their opening summary.
@@ -57,7 +84,7 @@ costed against exactly that.*
 | 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
-| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs |
+| 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as the largest assumption the width channel rests on, and the one term a density ladder cannot separate from collisions |
 | 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the block register, session sizing, the rules drawn from the 2025 post-mortem, and costing by information per unit of effort |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
