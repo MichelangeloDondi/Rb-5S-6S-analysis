@@ -5056,6 +5056,138 @@ def fig_third_cumulant_measured():
     _save(fig, "fig31_third_cumulant_measured.png", rect=(0, 0.09, 1, 1))
 
 
+def fig_campaign_projection():
+    """Where each bound stands today and where the campaign is projected to
+    put it, on one axis, with the lever that moves it named on the row.
+
+    WHY THIS FIGURE EXISTS, and how it differs from fig32. fig32 is a physics
+    figure: two panels, each in its own units, showing what the archive
+    supports beside what the physics predicts. This one is a DECISION figure.
+    It carries a third quantity, it puts all three on one axis so a reader can
+    see which is furthest from being settled, and it names the one
+    intervention that moves each. A decision-maker reads one figure, and this
+    case was spread over a table and four documents.
+
+    THE AXIS IS A RATIO TO EACH ROW'S OWN REFERENCE, and the reference is
+    named in the row label because the three are not the same kind of thing.
+    The AC-Stark row is measured against the value the physics predicts. The
+    collisional row is measured against the van der Waals expectation, using
+    the density-scale-inflated bound rather than the formal one, which is the
+    column the record treats as its headline. The
+    width-split row has NO prediction, because that quantity is an
+    identifiability statement rather than a theory target, so it is measured
+    against the total width the same file determines well. Parity is 1.0 and
+    smaller is better.
+
+    ROW ONE'S PROJECTION IS COMPUTED, NOT READ, and that is said here because
+    a reader would otherwise assume otherwise. `projections.csv` carries no
+    row for the width split. Its projected value is built from two committed
+    things: the median gamma_coll to sigma_laser correlation over the 32
+    conditions in `linefit_conditions.csv`, and
+    `forecast.external_constraint_gain`, which returns the factor
+    sqrt(1 - rho^2) that pinning one side of a correlated pair buys the other.
+    The size of the problem is corroborated by a second route in the same
+    file the row is drawn from: the split direction sits at 0.0624 MHz
+    against a total width determined to 0.0032, and the width block's
+    condition number is 389.7, whose square root is 19.7.
+
+    THE FILLED MARKER IS TODAY AND THE OPEN MARKER IS PROJECTED. A projection
+    drawn as solidly as a measurement is the commonest way a campaign case
+    loses a reader who checks, so the visual weight sits on what is measured.
+
+    NO AXIS OF IMPROVEMENT, deliberately. The quantity is the bound. Whether
+    the move is worth the beam time is the reader's judgement, and a figure
+    that labels its own answer has stopped being evidence.
+
+    EVERY NUMBER IS READ FROM A COMMITTED CSV. Nothing is typed into this
+    producer, which is the rule a literal in fig15 broke.
+    """
+    import statistics
+    from rb5s6s.forecast import external_constraint_gain
+
+    TODAY = "#33322E"
+    FUTURE = "#2F5D50"
+
+    proj = {(r["quantity"], r["key"]): r for r in _rows("projections")}
+    stark = {r["quantity"]: r for r in _rows("stark_joint")}
+    lf = _rows("linefit_conditions")
+    ident = {(r["quantity"], r["key"]): r for r in _rows("identifiability")}
+    probe = {r["peak"]: r for r in _rows("beta_self_probe")}
+
+    rho = statistics.median(float(r["corr"]) for r in lf if r.get("corr"))
+    ref_width = float(ident[("best_constrained_sigma", "total_width")]["value"])
+    t_width = float(ident[("worst_constrained_sigma", "split")]["value"]) / ref_width
+    p_width = t_width * external_constraint_gain(rho)
+
+    s0_pred = float(proj[("input_S0_predicted", "225 mW")]["value"])
+    t_stark = float(stark["S0_225mW_ub95"]["value"]) / s0_pred
+    p_stark = float(proj[("proj_pull_S0_sigma", "24 per day, 1 day")]["value"]) / s0_pred
+
+    beta_exp = float(proj[("input_beta_self_expected", "vdW anchored")]["value"])
+    t_beta = float(probe["pooled_slope"]["bound95_nscale"]) * 1e3 / beta_exp
+    p_beta = float(proj[("proj_beta_self_sigma",
+                         "interleaved, 20 K cold-spot lag")]["value"]) / beta_exp
+
+    ROWS = [
+        ("width split\nover the total width", t_width, p_width,
+         "an independent laser width"),
+        ("collisional coefficient\nover its vdW expectation", t_beta, p_beta,
+         "same-session points at 170 °C"),
+        ("AC-Stark coefficient\nover its predicted value", t_stark, p_stark,
+         "a fixed lock, 24 power cycles a day"),
+    ]
+
+    fig, ax = plt.subplots(figsize=(9.6, 3.3))
+    for i, (name, today, future, lever) in enumerate(ROWS):
+        ax.plot([future, today], [i, i], color=TODAY, lw=1.6, zorder=1,
+                solid_capstyle="round")
+        ax.plot([today], [i], "o", ms=9, color=TODAY, zorder=3)
+        ax.plot([future], [i], "o", ms=9, mfc="white", mec=FUTURE, mew=2.0,
+                zorder=3)
+        # Anchored to the MIDPOINT of the segment in log space, not to the
+        # projected marker. The label describes the move rather than one end
+        # of it, and a label centred on a marker near the axis edge runs off
+        # the panel, which the canvas guard caught on the collisional row.
+        ax.text((future * today) ** 0.5, i + 0.28, lever, ha="center",
+                va="bottom", fontsize=8.2, color=FUTURE)
+        ax.text(today, i - 0.30, f"{today:.3g}", ha="center", va="top",
+                fontsize=8.0, color=TODAY)
+        ax.text(future, i - 0.30, f"{future:.3g}", ha="center", va="top",
+                fontsize=8.0, color=FUTURE)
+
+    ax.axvline(1.0, color="#B03A2E", lw=1.0, ls=(0, (4, 3)), zorder=0)
+    # Below the rows rather than among them: at the top it sat under the
+    # widest lever label, which is the only place a reader looks first.
+    ax.text(1.0, -0.68, "parity", rotation=90, va="bottom", ha="right",
+            fontsize=7.6, color="#B03A2E")
+
+    ax.set_yticks(range(len(ROWS)))
+    ax.set_yticklabels([r[0] for r in ROWS], fontsize=9.0)
+    ax.set_xscale("log")
+    ax.set_xlabel("size relative to the row's own reference")
+    ax.set_ylim(-0.75, len(ROWS) - 0.25)
+    ax.set_xlim(0.05, 40.0)
+    ax.grid(axis="x", color="#DDDAD2", lw=0.6)
+    ax.set_axisbelow(True)
+    for side in ("top", "right", "left"):
+        ax.spines[side].set_visible(False)
+
+    handles = [
+        plt.Line2D([], [], marker="o", ls="", ms=8, color=TODAY,
+                   label="today, from the 2025 archive"),
+        plt.Line2D([], [], marker="o", ls="", ms=8, mfc="white", mec=FUTURE,
+                   mew=2.0, label="projected, one designed campaign"),
+    ]
+    ax.legend(handles=handles, loc="lower left", fontsize=8.2, frameon=False,
+              ncols=2, bbox_to_anchor=(0.0, 1.00))
+
+    _footer(fig, "figure 34 | results/projections.csv, results/stark_joint.csv, "
+                 "results/beta_self_probe.csv, results/identifiability.csv, "
+                 "results/linefit_conditions.csv. "
+                 "Regenerate: python scripts/make_figures.py.")
+    _save(fig, "fig34_campaign_projection.png", rect=(0, 0.10, 1, 0.99))
+
+
 def fig_achieved_vs_achievable():
     """What the 2025 data established beside what a designed session projects.
 
@@ -5331,6 +5463,7 @@ def main() -> int:
     fig_third_cumulant()
     fig_third_cumulant_measured()
     fig_achieved_vs_achievable()
+    fig_campaign_projection()
     fig_identifiability_matrix()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):

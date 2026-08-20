@@ -34,6 +34,36 @@ def rows(name):
     return list(csv.DictReader(open(p))) if p.exists() else []
 
 
+def _skew_scaling_clause():
+    """The measured amplitude exponent, read from the producer's own CSV.
+
+    Replaces an informal per-peak range. The exclusions are
+    SIMULATED under each hypothesis rather than read from the fit covariance,
+    which describes the sampling distribution at the FITTED exponent and not
+    at the one being excluded.
+    """
+    r = {(x["quantity"], x["key"]): x for x in rows("skew_scaling")}
+    mean = r.get(("skew_amp_exponent", "mean over the four lines"))
+    scat = r.get(("skew_amp_exponent_line_scatter", "four lines"))
+    p_sn = r.get(("skew_hypothesis_p_shot_noise", "one-sided"))
+    p_fa = r.get(("skew_hypothesis_p_fixed_amplitude", "one-sided"))
+    if not all((mean, scat, p_sn, p_fa)):
+        return ("Per-peak scaling exponent $-0.2$ to $-0.9$ about the $-0.5$ "
+                "shot-noise value, an informal range pending "
+                "`results/skew_scaling.csv`")
+    return (
+        f"Measured across the four lines, the amplitude exponent is "
+        f"${mean['value']} \\pm {mean['err']}$ with a line-to-line scatter of "
+        f"{scat['value']}, `results/skew_scaling.csv`. Testing each hypothesis "
+        f"by SIMULATION rather than from the fit covariance, which describes "
+        f"the spread at the fitted exponent and not at the excluded one, shot "
+        f"noise ($-0.5$) is consistent at $p = {p_sn['value']}$ while a "
+        f"fixed-absolute-amplitude term ($-1$) is disfavoured at "
+        f"$p = {p_fa['value']}$. So shot noise remains the leading reading and "
+        f"the alternative the measurement plan carried is the one the data "
+        f"argues against")
+
+
 def main() -> int:
     L = []
     W = L.append
@@ -526,11 +556,9 @@ def main() -> int:
       "($\\propto "
       "P^3$ growth). So the excursion is real but identified: `resid_skew` is a "
       "shot-noise-dominated diagnostic, not a ramp signal, and it is why the "
-      "dataset's skew cannot serve as a ramp measurement. (Per-peak scaling exponent "
-      "$-0.2$ to $-0.9$ about the $-0.5$ shot-noise value, so a small extra "
-      "low-power systematic such as a baseline or a line-pull is not excluded, "
-      "though shot noise "
-      "dominates.) A fixed-lock session would lift the real observable two ways: the "
+      "dataset's skew cannot serve as a ramp measurement. "
+      f"({_skew_scaling_clause()}) "
+      "A fixed-lock session would lift the real observable two ways: the "
       "fixed lock "
       "un-absorbs the large first-order pull, and the small waist "
       f"({skew_gain}) "
@@ -716,6 +744,20 @@ def main() -> int:
           f"independent "
           f"centre estimators agree to ±0.02 MHz.\n")
 
+    # THE COMMIT SWEEP'S NUMBERS ARE READ, NOT TYPED. They were typed here
+    # first, which made this paragraph an instance of the very defect it
+    # describes: a number with no producer cannot fail when it stops being
+    # true. `scripts/run_commit_sweep.py` writes them now.
+    cs = {(r["quantity"], r["key"]): r for r in rows("commit_sweep")}
+    _pts = sorted({int(r["value"]) for (q, _), r in cs.items()
+                   if q == "fit_points" and r["value"]}) or [0, 0]
+    _bnd = [(k, int(r["value"])) for (q, k), r in cs.items()
+            if q == "fit_points_boundary"]
+    sweep_lo, sweep_hi = (_pts[0], _pts[-1])
+    sweep_gain = _bnd[0][1] if _bnd else (sweep_hi - sweep_lo)
+    sweep_traces = next((r["value"] for (q, _), r in cs.items()
+                         if q == "fit_traces"), "172")
+
     sj = {(r["quantity"], r["key"]): r for r in rows("stark_joint")}
     if sj and ("S0_225mW_pred", "prediction") not in sj:
         # The joint fit has not been re-run since the priors moved, so its CSV
@@ -792,12 +834,13 @@ def main() -> int:
           f"the opposite direction. **CAUSE IDENTIFIED 2026-08-20, and the inputs "
           f"were not identical after all.** A commit sweep across the range, "
           f"holding one environment, found the construction\u0027s POINT COUNT "
-          f"changing at a single commit, 247783 to 247788 at an unchanged 172 "
+          f"changing at a single commit, {sweep_lo} to {sweep_hi} at an "
+          f"unchanged {sweep_traces} "
           f"traces. That commit renamed a vocabulary across the tree and "
           f"regenerated the committed ruler CSVs as a side effect, moving "
           f"fitted ruler rates in their eleventh digit. A frequency axis "
           f"shifted by 1e-11 moves a DISCRETE trim boundary across a sample "
-          f"edge in a few traces, and five samples enter. Chi-square at fixed "
+          f"edge in a few traces, and {sweep_gain} samples enter. Chi-square at fixed "
           f"kappa moves 6 parts per million. The code itself is BIT-STABLE "
           f"across the range: six commits spanning nine days return the same "
           f"chi-square to the last printed digit at a common grid point, and "
@@ -806,7 +849,7 @@ def main() -> int:
           f"input set. That 6 ppm is what the well-conditioned "
           f"quantities absorb and an ill-conditioned subset column read off a "
           f"nearly flat profile need not. So the movement is a real input "
-          f"change rather than an arithmetic defect. Whether five samples "
+          f"change rather than an arithmetic defect. Whether {sweep_gain} samples "
           f"account for the whole reported third, with that column\u0027s own "
           f"ill-conditioning as the candidate amplifier, is still being "
           f"measured. The primary bound is untouched either way, and the "
@@ -1019,6 +1062,28 @@ def main() -> int:
 
     # ---- supporting ----
     W("## Supporting results\n")
+
+    pb = {(r["quantity"], r["key"]): r for r in rows("polarisation_bound")}
+    _lim = pb.get(("dmf1_broadening_ub95", "87Rb"))
+    _diff = pb.get(("isotope_width_difference", "87 minus 85"))
+    if _lim and _diff:
+        W("- **The two isotopes agree on their widths, which bounds any "
+          "magnetic term carrying an uncancelled $g_F$.** A term that shifts "
+          "sublevels by $g_F \\mu_B B$ broadens as $g_F$ SQUARED, and that "
+          "ratio is fixed by atomic structure at 2.25 between rubidium-87 and "
+          "rubidium-85, so the two isotopes' widths are a null test no fit can "
+          "absorb. Measured, the difference is "
+          f"${float(_diff['value'])*1e3:.0f} \\pm {float(_diff['err'])*1e3:.0f}$ kHz, "
+          "consistent with zero, giving "
+          f"**{float(_lim['value'])*1e3:.0f} kHz, at 95 per cent** as an upper "
+          "limit on any such term (`results/polarisation_bound.csv`, "
+          "`scripts/run_polarisation_bound.py`). It is CONSERVATIVE by "
+          "construction, because every other isotope-dependent effect lands in "
+          "the same difference. The forward-to-retro mismatch this was written "
+          "for is retracted, since a degenerate two-photon amplitude is "
+          "symmetric in the two beams and carries no rank 1, and what the "
+          "limit now ceilings is the two-atom cooperative satellite "
+          "(`rb5s6s/cooperative.py`).\n")
     rc = rows("ruler_campaign")
     rb = rows("ruler_blocks")
     if rc and rb:

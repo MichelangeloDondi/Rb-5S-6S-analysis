@@ -496,3 +496,105 @@ disagreement between the 2.5 this record briefly quoted from the twin and the
 3.4 it quoted from the simulation was never two results. It was one formula
 evaluated at three different correlations, and
 [identifiability](wiki/identifiability.md) now carries all three in one table.
+## A selection rule that was true of one atom and silent about two, 2026-08-20
+
+The record closed the magnetic channel with a single-atom argument: a $J=1/2$
+state has two magnetic sublevels, a rank-two operator has no reduced matrix
+element between two of them, and the same-handedness content of the drive is
+refused. The argument is correct. It was published on the public wiki without
+saying that it was a statement about ONE atom.
+
+A pair of ground-state atoms has four sublevel products and can accept the two
+units by taking one each, so that premise does not hold for a pair and the
+closure lifts. What replaced it is three things, and only the third bounds the
+size. Energy conservation forbids a new line, with the nearest alternative
+pair configuration 23.3 THz off. The exchange and aligned topologies have
+complementary zeros, so no field arrangement closes the channel as a whole.
+Only the dipole-dipole transfer amplitude over its energy denominator sets how
+big it is.
+
+**The replacement argument then had a scope defect of its own.** Its first
+version summed only the $5P_{1/2}$ intermediate leg. $5P_{3/2}$ is E1 allowed
+at every vertex and carries the larger reduced elements, so including it
+multiplies the amplitude by 2.82 and the rate by 7.97. The published figure
+moved from $1.5\times10^{-10}$ to $1.3\times10^{-9}$, which changed the
+finding rather than a digit: the pair route does not match the single-atom
+hyperfine route, it is about eight times larger. A scope error is not a
+beginner's error made once.
+
+## Two claims of headroom that were never sourced, 2026-08-20
+
+The two-atom module said the channel sat "ten orders" below anything the
+record could resolve in one paragraph and "nine orders" in another. Neither
+number had a producer and no constant anywhere in the tree defined what the
+record can resolve. Measured against the tightest bound the record does carry
+on an out-of-window feature, `f_wing_red_mean` at 0.0009 of peak in
+`wing_check.csv`, the margin is SIX orders. Both earlier figures were too
+generous, which is the wrong direction for a claim that something is
+negligible.
+
+## A systematic sized against a bound where a prediction belonged, 2026-08-20
+
+`run_polarisation_bound.py` hard-coded the differential scalar shift at
+0.258 MHz with a comment calling it "the committed differential scalar shift".
+It is not a shift. It is the 95 per cent upper BOUND, and it sits BELOW the
+calibrated prediction of 0.348 MHz. Every number derived from it therefore
+understated itself by a third: the vector light shift's sublevel spread was
+published as 4.5 kHz where 6.0 kHz belongs.
+
+Correcting the prose reproduced the fault one level down. The replacement
+sentence cited 0.348 and did its arithmetic with 0.35 from a different file,
+giving 6.1 kHz where 6.0 is right. Both values now come from
+`stark_joint.csv` at run time, both spreads are emitted with the shift each
+used named in its own cell, and a canonical registry entry ties the two
+documents and the CSV together.
+
+## The case page reintroduced a defect it describes as fixed, 2026-08-20
+
+The ten-minute case page's intervention table gave the purchase from an
+independent laser-width measurement as running "2.3 at the record's median
+$\rho = -0.90$ to 3.5 at the pinning simulation's own $-0.94$". The
+arithmetic $1/\sqrt{1-\rho^2}$ at that condition's own $-0.9417$ is 2.97,
+which both [chapter 7](big_picture/07_limitations-and-identifiability.md) and
+[identifiability](wiki/identifiability.md) already stated, and the nine-seed
+simulated value is $3.18 \pm 0.20$. The 3.5 matches neither. It is closest to
+3.45, the largest of those nine draws, which is the exact defect the entry
+above this one records as closed and which the page's own next paragraph
+presents as fixed.
+
+Found by three independent readers sent at the page cold, two of whom
+identified it separately. All three correlations now carry the construction
+each belongs to.
+
+## A switch wired through four modules and never thrown, 2026-08-20
+
+`laser_kind` selects a Gaussian or a Lorentzian for the laser's own
+contribution to the line. It is a parameter of `composite_profile`,
+`model_profile`, `fit_condition` and `beta.py`, it is documented in three
+docstrings, and it had never been called with anything but its default.
+
+Turning it moved the collisional coefficient by a median 45 per cent, because
+Lorentzians add linearly and a Lorentzian laser width is degenerate with the
+collisional width. That was the largest unexamined lever on the headline
+quantity in the record. The archive also turned out to DISCRIMINATE, which was
+preregistered as unlikely: the Gaussian fits better on 32 conditions out of 32,
+so the assumption the record had been making is the one the data prefer. An
+arbitrary choice became a tested one.
+
+An audit of every model-form switch in the tree found this was the only one
+never exercised. `transit_kind`, `sigma_sharing`, `topology` and `scaling` are
+all compared somewhere. The repository knew the technique and had applied it
+everywhere but here.
+
+## A producer whose default did not reproduce its own output, 2026-08-20
+
+`run_skew_scaling.py` defaulted to 400 simulation draws while the file it had
+committed was made at 1500, the number its own docstring calls stable across
+five seeds. Rule 19.75 says the quotable number is the default invocation's
+number. The default is now 1500 and the file is regenerated from it, which
+moves the exclusion against the fixed-amplitude hypothesis from $p = 0.010$ to
+$p = 0.011$ and the recovered scatter under the shot-noise hypothesis, a
+ceiling-test diagnostic, from 0.301 to 0.532. The conclusion is unchanged and
+the shot-noise p-value is unchanged at 0.083. Three pages and the generated
+ledger carried the old p-value and now carry the new one, tied to the
+producer's cell by a registry entry.

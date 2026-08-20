@@ -1,0 +1,35 @@
+block,label,value,unit,aux,aux_unit,note,status
+pair_state,5S + 6S,0.000,cm^-1,0.000,THz,total 20132.510 cm^-1,DIAGNOSTIC
+pair_state,4D5/2 + 5S,-776.861,cm^-1,-23.290,THz,total 19355.649 cm^-1,DIAGNOSTIC
+pair_state,4D3/2 + 5S,-777.307,cm^-1,-23.303,THz,total 19355.203 cm^-1,DIAGNOSTIC
+pair_state,5S + 6P1/2,3582.571,cm^-1,107.403,THz,total 23715.081 cm^-1,DIAGNOSTIC
+pair_state,5S + 6P3/2,3660.081,cm^-1,109.726,THz,total 23792.591 cm^-1,DIAGNOSTIC
+pair_state,5P1/2 + 5P1/2,5025.390,cm^-1,150.657,THz,total 25157.900 cm^-1,DIAGNOSTIC
+pair_state,5P1/2 + 5P3/2,5262.985,cm^-1,157.780,THz,total 25395.495 cm^-1,DIAGNOSTIC
+pair_state,5P3/2 + 5P3/2,5500.580,cm^-1,164.903,THz,total 25633.090 cm^-1,DIAGNOSTIC
+satellite,aligned 87Rb F=2 + 87Rb F=2,0.6998,MHz,50.0,uT,2.000 times the single-atom position,DIAGNOSTIC
+satellite,aligned 87Rb F=2 + 87Rb F=1,0.0000,MHz,50.0,uT,zero by cancellation,DIAGNOSTIC
+satellite,aligned 85Rb F=3 + 85Rb F=3,0.4665,MHz,50.0,uT,2.000 times the single-atom position,DIAGNOSTIC
+satellite,aligned 85Rb F=3 + 85Rb F=2,0.0000,MHz,50.0,uT,zero by cancellation,DIAGNOSTIC
+satellite,aligned 87Rb F=2 + 85Rb F=3,0.5832,MHz,50.0,uT,1.667 times the single-atom position,DIAGNOSTIC
+satellite,exchange 87Rb F=2 + 87Rb F=2,0.0000,MHz,50.0,uT,zero by cancellation,DIAGNOSTIC
+satellite,exchange 87Rb F=2 + 87Rb F=1,0.6998,MHz,50.0,uT,2.000 times the single-atom position,DIAGNOSTIC
+satellite,exchange 85Rb F=3 + 85Rb F=3,0.0000,MHz,50.0,uT,zero by cancellation,DIAGNOSTIC
+satellite,exchange 85Rb F=3 + 85Rb F=2,0.4665,MHz,50.0,uT,2.000 times the single-atom position,DIAGNOSTIC
+satellite,exchange 87Rb F=2 + 85Rb F=3,0.1166,MHz,50.0,uT,0.333 times the single-atom position,DIAGNOSTIC
+size,perturbative floor,1.4843,nm,0.1,V_dd/Delta,"below this the third-order expression is an extrapolation, and rate_ratio refuses it",DIAGNOSTIC
+size,suppression volume K,3.270408e-28,m^3,5025.4,cm^-1,"V_dd/Delta = K/R^3, aux is the |5P,5P> defect",DIAGNOSTIC
+size,rate ratio at 70 C,2.269644e-11,fraction,2.2280,nm cutoff,"cutoff is the Weisskopf radius, inside which the collision is already counted in beta_self",DIAGNOSTIC
+size,rate ratio at 100 C,1.997288e-10,fraction,2.2094,nm cutoff,"cutoff is the Weisskopf radius, inside which the collision is already counted in beta_self",DIAGNOSTIC
+size,rate ratio at 130 C,1.251342e-09,fraction,2.1924,nm cutoff,"cutoff is the Weisskopf radius, inside which the collision is already counted in beta_self",DIAGNOSTIC
+knob,"power, two-photon pair channel",0.0,exponent of the RATIO against intensity,2,exponent of the rate itself,"the pair channel absorbs the same two photons the line does, so both go as intensity squared and the ratio is FLAT. Power cannot switch this channel on",DIAGNOSTIC
+knob,"power, four-photon pair channel",2.0,exponent of the RATIO against intensity,4,exponent of the rate itself,the only power-tunable member of the family. Doubling the power quadruples its ratio to the line,DIAGNOSTIC
+knob,temperature 70 C,2.269644e-11,fraction,5.6029e+11,cm^-3,"temperature is the ONLY lever on the rate, through density, and the ratio is linear in it",DIAGNOSTIC
+knob,temperature 100 C,1.997288e-10,fraction,4.8081e+12,cm^-3,"temperature is the ONLY lever on the rate, through density, and the ratio is linear in it",DIAGNOSTIC
+knob,temperature 130 C,1.251342e-09,fraction,2.9433e+13,cm^-3,"temperature is the ONLY lever on the rate, through density, and the ratio is linear in it",DIAGNOSTIC
+knob,"field, satellite position",0.013996,"MHz per microtesla, aligned matched 87Rb pair",0,exponent of the RATE against field,"the field is a POSITION lever and not an amplitude one. It moves the satellite and leaves the rate alone, which is what makes it a discriminant",DIAGNOSTIC
+knob,field 5 uT,3.1640e-12,MHz added to the measured width,0.0700,MHz satellite offset,"below the resolving field the satellite is a second-moment contribution, growing as B squared while the channel itself does not change",DIAGNOSTIC
+knob,field 50 uT,3.1640e-10,MHz added to the measured width,0.6998,MHz satellite offset,"below the resolving field the satellite is a second-moment contribution, growing as B squared while the channel itself does not change",DIAGNOSTIC
+knob,field 200 uT,5.0625e-09,MHz added to the measured width,2.7992,MHz satellite offset,"below the resolving field the satellite is a second-moment contribution, growing as B squared while the channel itself does not change",DIAGNOSTIC
+knob,field 500 uT,3.1640e-08,MHz added to the measured width,6.9981,MHz satellite offset,"below the resolving field the satellite is a second-moment contribution, growing as B squared while the channel itself does not change",DIAGNOSTIC
+knob,resolving field,383.7,uT,5.37,MHz line width,"above this the satellite offset exceeds the line width, so a search for it becomes a search for a RESOLVED feature at a known position",DIAGNOSTIC

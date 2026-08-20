@@ -62,6 +62,7 @@ diagnostic rather than write a table.
 
 | script | writes |
 |---|---|
+| `run_commit_sweep.py` | how many samples the joint fit LOADS at each commit of a historical range, into `commit_sweep.csv`. Needs both excluded-session trees and a git worktree per commit, so it is not runnable from a plain clone. It exists because the 2026-08-14 instability was traced with it: the point count changes at one commit that regenerated the committed ruler CSVs while renaming a vocabulary |
 | `run_stark_joint.py` (M23) | the joint light-shift fit over all three sessions with one shared coefficient, into `stark_joint.csv`. A long profile-likelihood run |
 | `run_global_dataset_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_dataset_fit.csv` |
 | `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_dataset_fit_norulers.csv` |
@@ -178,6 +179,20 @@ needs a ruler trace. `run_drift_settling.py` skips the half that reads the
 temperature-session rulers and returns the power-session steps, which come from
 the committed quality table. `verify_results_fresh.py` checks its default set
 without traces and needs them only under `--all`.
+
+Three producers added on 2026-08-19 and 2026-08-20 answer questions the
+campaign raised rather than stages of it. `run_skew_scaling.py` fits the
+residual skew's amplitude exponent and tests each competing hypothesis by
+SIMULATION rather than from the fit covariance.
+`run_polarisation_bound.py` turns the two isotopes' width difference into a
+ceiling on any magnetic term carrying an uncancelled g_F.
+`run_cooperative_channel.py` computes the two-atom two-photon channel, which
+opens the Delta m_F = +-2 position a single atom must refuse, and shows it
+sits ten orders below the line.
+
+`run_laser_kernel.py` (M38) fits every canonical condition twice, differing
+only in the laser kernel's shape, and reports what that assumption costs the
+collisional coefficient. It needs the raw traces.
 
 Everything else reads committed tables and runs from a clone. Among the pipeline
 stages that is `run_trim_report.py`, `run_laser_epoch.py`,

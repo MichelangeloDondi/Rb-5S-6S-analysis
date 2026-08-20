@@ -1,0 +1,15 @@
+quantity,key,value,err,unit,status
+skew_amp_exponent,4121,-0.146,0.108,"dimensionless; skew = scale x amp**exponent, linear-space weighted fit over the power sweep's own amplitude lever",DIAGNOSTIC
+skew_amp_fit_chi2_red,4121,1.08,,reduced chi-square of that fit on 3 degrees of freedom,DIAGNOSTIC
+skew_amp_exponent,4154,-0.513,0.075,"dimensionless; skew = scale x amp**exponent, linear-space weighted fit over the power sweep's own amplitude lever",DIAGNOSTIC
+skew_amp_fit_chi2_red,4154,4.93,,reduced chi-square of that fit on 3 degrees of freedom,DIAGNOSTIC
+skew_amp_exponent,4192,-0.545,0.099,"dimensionless; skew = scale x amp**exponent, linear-space weighted fit over the power sweep's own amplitude lever",DIAGNOSTIC
+skew_amp_fit_chi2_red,4192,4.56,,reduced chi-square of that fit on 3 degrees of freedom,DIAGNOSTIC
+skew_amp_exponent,4207,-0.411,0.061,"dimensionless; skew = scale x amp**exponent, linear-space weighted fit over the power sweep's own amplitude lever",DIAGNOSTIC
+skew_amp_fit_chi2_red,4207,2.68,,reduced chi-square of that fit on 3 degrees of freedom,DIAGNOSTIC
+skew_amp_exponent,mean over the four lines,-0.404,0.091,"dimensionless; the error is the SCATTER of the four lines divided by root four, which is wider than their individual errors because they disagree beyond them",DIAGNOSTIC
+skew_amp_exponent_line_scatter,four lines,0.181,,dimensionless standard deviation of the four exponents,DIAGNOSTIC
+skew_hypothesis_recovered_shot_noise,four-line mean,-0.521,0.532,"four-line mean exponent recovered from data generated at -0.5, 1500 draws. The SCATTER is the ceiling test: where it is large the amplitude lever carries no information at that exponent",DIAGNOSTIC
+skew_hypothesis_p_shot_noise,one-sided,0.083,,fraction of worlds with exponent -0.5 whose four-line mean is at least as high as the observed one,DIAGNOSTIC
+skew_hypothesis_recovered_fixed_amplitude,four-line mean,-1.833,1.214,"four-line mean exponent recovered from data generated at -1.0, 1500 draws. The SCATTER is the ceiling test: where it is large the amplitude lever carries no information at that exponent",DIAGNOSTIC
+skew_hypothesis_p_fixed_amplitude,one-sided,0.011,,fraction of worlds with exponent -1.0 whose four-line mean is at least as high as the observed one,DIAGNOSTIC

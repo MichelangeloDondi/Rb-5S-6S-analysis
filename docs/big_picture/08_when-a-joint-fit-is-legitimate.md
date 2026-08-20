@@ -166,14 +166,34 @@ production budget half the starts never converged, and at four times the
 budget two complete curves still disagree by a factor of 2.13 while one start
 converged to a stationary point about 21,000 in chi-square above the best. A
 third run repeated the identical design under the pinned dependency floor of
-the continuous-integration minimum leg and the structure REPRODUCED, the same
-two-optimum split at the same scale, so the surface's shape is a property of
-the fit rather than of the environment it was first seen in. The
-pooled surface carries more than one local optimum, the production warm-start
-chain is load-bearing rather than merely efficient, and both runs' per-start
-curves are in [the profile
+the continuous-integration minimum leg. A 2026-08-19 correction found the
+apparent reproduction of the two-optimum split to be an artefact of display
+normalisation: the per-start curves were each stored against their own
+minimum, and a pointwise minimum across own-normalised curves is not a single
+fit. Compared instead on absolute chi-square anchored to the production
+optimum, every independent start sits 4.66 to 26.29 chi-square units above it
+at every tested coefficient, all past the 2.706 threshold, so no start has
+been shown to enter the confidence region. What the test still establishes is
+that the surface is expensive to reach from a cold start and that the
+production warm-start chain is load-bearing rather than merely efficient. It
+does not establish that the committed profile sits at the wrong optimum, and
+the anchored comparison says the opposite. All three runs' per-start curves
+are in [the profile
 note](../notes/campaign_only_stark_profile.md). No committed number moves on
 it.
+
+A different question about the same construction, whether the CODE producing
+it is itself stable, was closed on 2026-08-20. A sweep across ten commits of
+the development range, one worktree each and one environment throughout,
+returned the same bound at every commit where the code runs, 1.147 MHz per
+watt to every printed digit across six commits spanning nine days. What did
+move was the point count, from 247783 to 247788 at a single commit, and the
+cause is now named: that commit renamed a vocabulary across the tree and
+regenerated the committed ruler tables as a side effect, moving fitted ruler
+rates in their eleventh digit, which was enough to carry a DISCRETE trim
+boundary across a sample edge in a few traces and admit five more samples.
+Five samples in 247785 is two parts in a hundred thousand, and the bound does
+not see them ([`run_commit_sweep.py`](../../scripts/run_commit_sweep.py)).
 
 A profile-likelihood interval means what it says only when the surface is the
 same surface whichever way it is traversed.

@@ -399,6 +399,61 @@ already predicts it. If they follow brightness the effect belongs to the
 detection chain, and the dual-chain recording of chapter 7 is what localises
 it. Either outcome closes the question, which is the property worth having.
 
+## The laser kernel is the largest assumption the width channel rests on
+
+Measured 2026-08-20 and worth stating before the session is designed, because
+it changes what the density ladder is buying.
+
+Fitting every canonical condition twice, differing only in whether the laser's
+own contribution is modelled as a Gaussian or a Lorentzian, moves
+$\gamma_{\rm coll}$ by a median **45 per cent**. Lorentzians add linearly, so
+a Lorentzian laser width is degenerate with the collisional width and competes
+for the same wings. That is a larger lever on the collisional coefficient than
+anything else the record has examined.
+
+The archive does discriminate, which was not expected: the Gaussian fits
+better on 32 conditions of 32, never once losing. So the assumption the record
+makes is the one the data prefer, and the width channel is not resting on an
+arbitrary choice. **It is resting on a choice that has now been tested**, which
+is a different and much better position.
+
+**What the session should carry from this.** The comparison run here is
+between two extremes. A laser kernel with a FITTED Lorentzian fraction turns
+that binary into a bound on the Lorentzian content, and that bound is the
+model-form error bar on $\beta_{\rm self}$ the paper should quote beside the
+transit-kind one. It costs no beam time, only a fit, and it should be run
+before the session rather than after
+(`scripts/run_laser_kernel.py`, `results/laser_kernel.csv`).
+
+## One term the density ladder cannot separate, and what would
+
+The density ladder is the instrument for $\beta_{\rm self}$, so it is worth
+naming a term that shares its signature exactly and therefore hides inside
+it. A two-atom cooperative channel puts a satellite at twice the single-atom
+magnetic position, because a PAIR can accept the two units of angular
+momentum a single $J=1/2$ atom must refuse
+([`rb5s6s/cooperative.py`](../../rb5s6s/cooperative.py)). Its rate is linear
+in density, since it needs a second atom, and so is its contribution to the
+measured width.
+
+**Linear in density is what $\beta_{\rm self}$ is.** The two are degenerate
+under the ladder, and no number of temperature blocks separates them. The
+term is absorbed into the collisional coefficient.
+
+That is harmless here only because of the size: at Earth's field and 130 °C
+the satellite adds $3\times10^{-4}$ hertz to a collisional width of 492 kHz,
+six parts in ten thousand million. It is named because the reasoning is what
+generalises. **A design whose only lever is density cannot distinguish any
+two terms that are both linear in it**, and the way out is not more density
+points but a second lever. Here that lever is the FIELD: the collisional
+coefficient is indifferent to it and the satellite's width contribution goes
+as $B^2$, leaving the line entirely above 384 microtesla.
+
+The coincidence block's self-calibrating field readout is therefore doing
+more than housekeeping. It is the only axis along which a term of this class
+is separable at all, and any future term that turns out to be
+field-dependent inherits the same argument.
+
 ## The asymmetry budget, and how the model earns a new term
 
 The record measures an asymmetry it does not explain. C3g is the open

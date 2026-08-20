@@ -4,9 +4,9 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
-## The runner, and the twelve scripts outside it
+## The runner, and the seventeen scripts outside it
 
-`bash scripts/run_all.sh` executes 27 analysis stages in dependency order,
+`bash scripts/run_all.sh` executes 29 analysis stages in dependency order,
 then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any
 stage reproduces its committed CSV in `results/` within the tolerance
 `scripts/verify_results_fresh.py` states.
@@ -34,10 +34,10 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write 31 of the 47 committed CSVs. The other thirteen each
+The runner's stages write 35 of the 52 committed CSVs. The other seventeen each
 have their own script, held out for one of two reasons.
 
-### Five need trees that stay outside the repository
+### Six need trees that stay outside the repository
 
 These do not run from a clone: `run_stark_joint.py` (`stark_joint.csv`, the
 joint three-session AC-Stark bound, a long profile-likelihood run that also
@@ -45,7 +45,10 @@ reads the raw 4 July and campaign-morning trees), `run_full_dataset_fit.py`
 (`full_dataset_fit.csv`, the same construction over the full dataset),
 `run_global_dataset_fit.py` (`global_dataset_fit.csv`), `_m25_norulers.py`
 (`global_dataset_fit_norulers.csv`) and `run_morning_ruler.py`
-(`morning_ruler.csv`).
+(`morning_ruler.csv`). The sixth is `run_commit_sweep.py`
+(`commit_sweep.csv`), which counts the samples the joint fit loads at each
+commit of a historical range, so it needs the excluded-session trees AND a
+git worktree per commit.
 
 Three of those five reach the trees indirectly, importing `run_stark_joint`'s
 `load_session_20250704` and `load_session_20250717` rather than reading the environment

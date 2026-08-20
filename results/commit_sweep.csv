@@ -1,0 +1,49 @@
+quantity,key,value,err,unit,status
+fit_points,ac0dac3d,247783,,samples entering the joint light-shift fit. ac0dac3d Correct the end-to-end speedup figure in the parallel note,DIAGNOSTIC
+fit_traces,ac0dac3d,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,1df2a3a2,247783,,"samples entering the joint light-shift fit. 1df2a3a2 Parallelise the waist scan too, and refuse to start when a path is unreadable",DIAGNOSTIC
+fit_traces,1df2a3a2,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,5b590cd1,247783,,"samples entering the joint light-shift fit. 5b590cd1 Clear the banned punctuation hiding in table cells, and a retracted waist claim with it",DIAGNOSTIC
+fit_traces,5b590cd1,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,abb7b567,247783,,samples entering the joint light-shift fit. abb7b567 Say in the first screen what the analysis has to do with the apparatus,DIAGNOSTIC
+fit_traces,abb7b567,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,f97225b3,247783,,samples entering the joint light-shift fit. f97225b3 Put a runnable worked example on the front door,DIAGNOSTIC
+fit_traces,f97225b3,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,b7838ec2,247783,,samples entering the joint light-shift fit. b7838ec2 Cite the document that actually contains the waist measurement,DIAGNOSTIC
+fit_traces,b7838ec2,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,7c4efff6,247783,,samples entering the joint light-shift fit. 7c4efff6 Redraw every figure with the footer repair,DIAGNOSTIC
+fit_traces,7c4efff6,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,0984f076,247783,,"samples entering the joint light-shift fit. 0984f076 Enforce the uncertainty-formatting convention, and cut narrative figure titles",DIAGNOSTIC
+fit_traces,0984f076,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,a59e1aa4,247783,,"samples entering the joint light-shift fit. a59e1aa4 Make the prose guards read what is about to ship, and close the centre channel",DIAGNOSTIC
+fit_traces,a59e1aa4,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,a02efab0,247783,,"samples entering the joint light-shift fit. a02efab0 Format every drawn pair by the two-digit rule, and state bounds as the record does",DIAGNOSTIC
+fit_traces,a02efab0,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,2d30ef23,247783,,samples entering the joint light-shift fit. 2d30ef23 Round the over-precise pairs down to what their uncertainties support,DIAGNOSTIC
+fit_traces,2d30ef23,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,8f554335,247783,,"samples entering the joint light-shift fit. 8f554335 Reject a waist where a transit width is wanted, and sort the parametrized keys",DIAGNOSTIC
+fit_traces,8f554335,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,01e48509,247783,,"samples entering the joint light-shift fit. 01e48509 Memoise the wavemeter reconstruction, which two figures were both computing",DIAGNOSTIC
+fit_traces,01e48509,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,c37de654,247783,,samples entering the joint light-shift fit. c37de654 Move the reproduction bookkeeping off the front page into its own document,DIAGNOSTIC
+fit_traces,c37de654,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,df59f8dc,247783,,samples entering the joint light-shift fit. df59f8dc Correct a gating comment that reads as an open task and is not one,DIAGNOSTIC
+fit_traces,df59f8dc,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,dad60d65,247783,,"samples entering the joint light-shift fit. dad60d65 State what each copy of the repository holds, and condition the reproduction claim",DIAGNOSTIC
+fit_traces,dad60d65,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,35db5055,247783,,samples entering the joint light-shift fit. 35db5055 Make the named-cause failure real for the three loaders that need the repository,DIAGNOSTIC
+fit_traces,35db5055,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,b17609c7,247783,,"samples entering the joint light-shift fit. b17609c7 Correct six claims left by today's two waves, and widen the count guard",DIAGNOSTIC
+fit_traces,b17609c7,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,d7c920e3,247783,,"samples entering the joint light-shift fit. d7c920e3 Make the documented one-command reproduction able to finish, and correct four numbers it exposed",DIAGNOSTIC
+fit_traces,d7c920e3,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,858d0be1,247783,,"samples entering the joint light-shift fit. 858d0be1 Make the figures say what they draw, starting with an uncertainty that was printed as zero",DIAGNOSTIC
+fit_traces,858d0be1,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,ace92901,247783,,"samples entering the joint light-shift fit. ace92901 Correct a session-wide misdating, and make two figures say what they draw",DIAGNOSTIC
+fit_traces,ace92901,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,6fe2af6f,247788,,samples entering the joint light-shift fit. 6fe2af6f Retire six words from every filename and identifier in the tree,DIAGNOSTIC
+fit_traces,6fe2af6f,172,,traces entering the same fit,DIAGNOSTIC
+fit_points,a55d6dd6,247788,,"samples entering the joint light-shift fit. a55d6dd6 Retire the last six words from the prose, and name every session by its date",DIAGNOSTIC
+fit_traces,a55d6dd6,172,,traces entering the same fit,DIAGNOSTIC
+fit_points_boundary,ace92901->6fe2af6f,5,,"samples gained across this adjacent pair, which is where the input set changed",DIAGNOSTIC
+fit_points_boundaries,count,1,,adjacent pairs across which the loaded sample count changes,DIAGNOSTIC

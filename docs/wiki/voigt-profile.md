@@ -139,6 +139,52 @@ different, equally defensible curve returns something else. Running the
 spread of forms before quoting a value, rather than after a retraction,
 would have caught it at the point the number was first computed.
 
+## The switch that was wired through four modules and never thrown, 2026-08-20
+
+The section above is about which EXTRAPOLATION curve was assumed. This one is
+about which KERNEL was, and it ends better.
+
+`laser_kind` is a parameter of `composite_profile`, `model_profile`,
+`fit_condition` and `beta.py`. It selects a Gaussian or a Lorentzian for the
+laser's own contribution, it is plumbed end to end through four modules, and
+until 2026-08-20 it had never been called with anything but `gaussian`. No
+producer, no result and no test had ever turned it.
+
+**Why it is the consequential switch.** The record already carries a
+model-form systematic for the TRANSIT kernel, which is a separate convolution.
+A Lorentzian laser kernel is different in kind, because Lorentzians ADD
+LINEARLY: a Lorentzian laser width is degenerate with $\gamma_{\rm coll}$ and
+competes with it for the same wings. Changing that assumption does not merely
+change the fit quality, it moves the collisional number.
+
+**How much it moves it.** Every canonical condition was fitted twice, same
+traces, same noise law, same trim, differing only in the kernel. The median
+fractional shift in $\gamma_{\rm coll}$ is **−45 per cent**, falling on 31
+conditions of 32, over a range from −98 to +17. This was the largest
+unexamined lever on the collisional coefficient in the record.
+
+**And the data settle it.** The expectation, written down before the run, was
+that the archive could not tell the two kernels apart, by the same argument
+the cusp comparison makes: a 2 MHz smear is not selective about its own shape.
+That expectation was wrong. **The Gaussian kernel fits better on 32 conditions
+out of 32**, never once losing, with a median reduced-chi-square difference of
++0.023. A sign test on 32 of 32 gives $p = 5\times10^{-10}$, and even
+collapsing the four peaks within a trace to one independent condition it is
+$p = 0.008$.
+
+So the Gaussian laser kernel is now SUPPORTED by the line rather than assumed,
+which is a constraint on the laser's noise type obtained from the lineshape
+rather than from the comb
+([laser frequency noise](laser-frequency-noise-and-the-linewidth.md) carries
+what the comb does and does not say).
+
+**What it does not settle.** Gaussian against Lorentzian is a comparison
+between two extremes, not a scan over kernel families, and the truth could be
+neither. The next step is a laser kernel whose Lorentzian FRACTION is fitted,
+which turns a choice between two corners into a bound on the Lorentzian
+content and therefore into a proper error bar
+(`results/laser_kernel.csv`, `scripts/run_laser_kernel.py`).
+
 ## Further reading
 
 - J. J. Olivero and R. L. Longbothum, "Empirical fits to the Voigt line

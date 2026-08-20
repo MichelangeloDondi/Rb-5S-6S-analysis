@@ -121,7 +121,7 @@ density-linked quantity.
 
 | what is unidentified | the measurement that removes it | why it works |
 |---|---|---|
-| the width split | an independent laser-width measurement | it removes one side of a correlated pair instead of fitting both. At ρ = −0.918 an external constraint reduces the other side's variance to (1 − ρ²) = 0.16 of its joint value, so its uncertainty falls by a factor of about 2.5. That factor rides the correlation, running 2.3 at the record's median ρ = −0.90 to 3.5 at the pinning simulation's own −0.94 |
+| the width split | an independent laser-width measurement | it removes one side of a correlated pair instead of fitting both. An external constraint reduces the other side's variance to (1 − ρ²) of its joint value, so its uncertainty falls by 1/√(1 − ρ²). That factor rides the correlation, and the record carries three: 2.29 at the median ρ = −0.90 over the 32 committed conditions, 2.52 at the tutorial's synthetic design point ρ = −0.918, and 2.97 at the pinning simulation's bright condition ρ = −0.9417. Simulated rather than computed at that last condition, over nine seeds, it is 3.18 ± 0.20 |
 | transit against waist | a beam profile in the interaction volume | one afternoon, no atoms required |
 | the excluded axis | the frequency-axis repair, already scoped | the rulers exist in those traces and were not used |
 | amplitude against detection | four peaks on one vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |

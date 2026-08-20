@@ -124,10 +124,18 @@ systematic than the beam waist. It also gates item 3 above, because the
 high-temperature grid cannot be read until the cold-spot lag is characterised.
 
 **Reading the 6S→5P ~1.3 µm cascade** instead of the reabsorbed 795 nm
-fluorescence. It converts the degeneracy law into something measured without
-the trapping confound, and could come back empty if the cascade photon rate
-sits under the detector's own floor ([`PLAN.md`](../PLAN.md) §8 item 5). That is
-trapping-free detection, established on the sibling 5S–5D line
+fluorescence. It converts the degeneracy law into something measured with the
+trapping confound suppressed by about two orders of magnitude rather than
+removed, and could come back empty if the cascade photon rate sits under the
+detector's own floor ([`PLAN.md`](../PLAN.md) §8 item 5). The suppression is
+population, not wavelength. The 1.3 µm legs carry the same Doppler-broadened
+cross-section as D1, but inside the driven column both are population-inverted
+at 4.81 and 5.26 to one and cannot reabsorb, while a 5P halo outside it, fed
+by trapped D-line photons, re-excites at 1.07 per cent of the primary
+two-photon rate at 130 °C, a band of 0.49 to 1.85 per cent over the unmeasured
+detector standoff and nothing at 70 °C
+([`scripts/run_trapping_channels.py`](../../scripts/run_trapping_channels.py)).
+The approach is established on the sibling 5S–5D line
 ([Hassanin 2023](../lit/hassanin2023.md),
 [Beard 2024](../lit/beard2024.md)) and plausibly feasible with the IR receiver
 already on the bench, a New Focus 2153 femtowatt photoreceiver with gain to

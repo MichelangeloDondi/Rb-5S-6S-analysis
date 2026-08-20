@@ -64,7 +64,7 @@ that says what the other seven are conditional on.
 
 ## 7. Where this can go next
 
-*The 2025 dataset, done conditional on $w_0$.* Every 2025 module (M0–M35) is built,
+*The 2025 dataset, done conditional on $w_0$.* Every 2025 module (M0–M37) is built,
 tested, and reported in [what we found](07_what_we_found.md): the collisional
 bound and isotope test, the laser-epoch bound, the power and ramp-law
 predictions, trapping, and the cusp model-form study.
@@ -104,7 +104,7 @@ kill test.
 
 ---
 
-**Where the numbers live.** Modules M0–M35, the whole 2025 pipeline ·
+**Where the numbers live.** Modules M0–M37, the whole 2025 pipeline ·
 producers every `scripts/run_*.py` that writes a committed CSV · results the
 full `results/` set, indexed in [`docs/RESULTS.md`](../RESULTS.md) · figures:
 none of its own. Each assumption is sourced from the chapter that makes it,

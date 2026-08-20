@@ -211,7 +211,18 @@ the asymmetry is smaller than the per-point noise.
 
 **The change.** A randomised power ladder with more rungs and per-sweep
 normalisation, under a lock that holds the centre still so the first-order
-pull is no longer absorbed by a free per-scan centre.
+pull is no longer absorbed by a free per-scan centre. That change brings its
+own confound, found 2026-08-20. Elliptical light optically pumps the
+population through the cascade's own decay, and a biased population no longer
+cancels the vector light shift, which then moves the centre by 1.5 kHz per
+unit of mean projection on rubidium-87 at the highest power and full
+circularity, 1.0 kHz on rubidium-85. Against the 2025 archive's per-trace
+centre precision near 420 kHz that is invisible, which is why it has never
+mattered. Against a fixed-lock measurement built to resolve kilohertz pulls it
+is not, and it is power-proportional, which is the one signature it shares
+with the shift being measured. A linear-polarisation purity check, or the
+field-reversal diagnostic in `rb5s6s/polarisation.py`, belongs in that
+design.
 
 **The machinery.** The joint fit across the ladder, with the projected
 precisions recorded as design envelopes rather than derived here.
@@ -231,7 +242,16 @@ one to fix.
 
 **The limitation.** There is a real, reproducible excess in the residuals
 outside the production fit window, between 0.10 and 0.29 per cent of the peak,
-and it is not attributed to a specific physical term.
+and it is not attributed to a specific physical term. A related question at the
+same scale was closed by simulation on 2026-08-20. The low-power residual skew
+already identified as shot noise could instead have been a structure of fixed
+absolute amplitude sized like this excess, and the two are separated by the
+exponent of skew against amplitude. Measured at $-0.404 \pm 0.091$ with a
+line-to-line scatter of 0.181, the fixed-amplitude reading is disfavoured at
+$p = 0.011$ and shot noise stays consistent at $p = 0.08$
+(`results/skew_scaling.csv`). The exclusion is by SIMULATION under each
+hypothesis rather than from the fit covariance, which describes the spread at
+the fitted exponent and not at the one being excluded.
 
 **The physical cause.** There is now a candidate, and it is the lineshape model
 rather than the atom. A joint fit over every canonical trace, each granted its
@@ -253,7 +273,40 @@ leaves that question open on theory rather than contaminated.
 **The change.** Polarisation isolation. The two-photon rate goes as the squared
 degree of linear polarisation and vanishes for circular light, which is
 published for this transition in this lineage
-([Rajasree and co-workers](../lit/rajasree2020spin.md)). Orthogonal linear
+([Rajasree and co-workers](../lit/rajasree2020spin.md)) and which falls out
+of [the selection rules](../wiki/selection-rules.md) independently: for two
+photons from ONE laser the
+amplitude is symmetric in their polarisation vectors, so the operator carries
+only ranks 0 and 2, and rank 2 has no element between two states of angular
+momentum one half. What is left is the scalar, proportional to the dot
+product of the two polarisation vectors, which is exactly zero for
+co-rotating circular light. The published extinction and the rank argument
+are the same statement twice, which is worth knowing because it means the
+null has a reason and not only a measurement.
+
+**AND THE SAME ARGUMENT CLOSES THE MAGNETIC CHANNEL**, which is a limitation
+this chapter no longer has to carry. Only the zero-change-in-projection
+component survives to any useful precision, for any polarisation, any
+ellipticity, any imperfection in the retro and any direction of an ambient
+field. That component's Zeeman shift cancels between two S states of equal
+hyperfine g-factor, leaving under 140 Hz at the Earth's field.
+
+The components that would NOT cancel, at 350 kHz and 700 kHz per unit, are
+driven so weakly that the distinction from not at all is academic, and saying
+they are not driven AT ALL was an overstatement corrected on 2026-08-20. Each
+has exactly one route. The 700 kHz component is reached by a TWO-ATOM
+cooperative channel, since a pair can accept the two units of angular
+momentum a single J=1/2 atom must refuse, at 1.3e-9 of the line
+(`rb5s6s/cooperative.py`). The 350 kHz component is reached only when a
+polarisation mismatch and the Doppler-free geometry's own rest-frame energy
+split act together, at 2e-13 for a five degree mismatch
+(`rb5s6s/polarisation.py`). Both sit six orders or more below the tightest
+bound this record carries on an out-of-window feature. A
+first pass at this in August 2026 claimed that a polarisation mismatch opened
+the first of them and had to be retracted the same day: the mistake was
+applying the antisymmetric part of the LIGHT-SHIFT operator, which elliptical
+light really does open, to the TRANSITION operator, which it cannot. The
+episode is recorded in [magnetic sublevels](../wiki/magnetic-sublevels.md). Orthogonal linear
 polarisation kills the cross term that drives the Doppler-free line while the
 same-beam terms that drive the pedestal survive, so it is a pedestal-only
 block. Circular polarisation removes the whole two-photon signal, which makes

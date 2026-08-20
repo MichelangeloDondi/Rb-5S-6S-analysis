@@ -271,6 +271,31 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## An instability that was actually a discrete boundary, 2026-08-20
+
+A campaign-only bound appeared to move between code versions, which reads at
+first as the worst kind of finding: a result that depends on which commit
+computed it. A commit sweep across the development range, holding one
+environment fixed, closed it.
+
+The code is bit-stable. Six commits spanning nine days return the same bound
+to every printed digit. What moved was the number of SAMPLES the construction
+loads, from 247783 to 247788, and it moved at exactly one commit, which had
+renamed a vocabulary across the tree and regenerated the committed ruler
+tables as a side effect. That regeneration moved fitted ruler rates in their
+eleventh digit, and the trim that selects usable samples is a DISCRETE
+comparison, so an eleventh-digit change was enough to carry a boundary across
+a sample edge in a few traces.
+
+The identifiability lesson is the one this page opens with. The primary bound
+is well conditioned and absorbs five samples in 247785 without moving. The
+subset that appeared to move is the one whose profile is nearly flat, and a
+flat profile is precisely where an arbitrarily small change in the data can
+relocate the reported minimum while changing nothing about what the data
+knows. **The diagnostic that would have found this in minutes is the first one
+this page names: ask which subset is nearly flat BEFORE asking why its
+reported value moved.**
+
 ## A haircut that was actually a degeneracy, 2026-08-15
 
 On 2026-08-15 the wide-scan span was set to 800 MHz, one Gaussian sigma of

@@ -66,6 +66,27 @@ def _hyp_v1_khz():
     return abs(_h.vector_coefficient(1203.886285673291)) / 1e3
 
 
+def _coop(label, col="value"):
+    """A row of results/cooperative_channel.csv, which is keyed on `label`
+    inside a `block` rather than on quantity and key."""
+    for r in csv.DictReader(open(RESULTS / "cooperative_channel.csv")):
+        if r["label"] == label:
+            return r[col]
+    raise KeyError(label)
+
+
+def _coop_leg_gain():
+    """The RATE factor that carrying both 5P fine-structure legs buys over
+    carrying 5P1/2 alone. Recomputed here from the committed line lists, so
+    the docstrings that quote it are tied to the arithmetic and not to each
+    other."""
+    from rb5s6s import cooperative as _c
+    from rb5s6s.polarizability import LINES_5S, E_6S_CM
+    e1, d5 = LINES_5S[0][0], LINES_5S[0][1]
+    one_leg = d5 * d5 / (2 * e1 - E_6S_CM)
+    return (_c._sum_ratio_au_per_cm() / one_leg) ** 2
+
+
 def _cell(fname, quantity, key=None, col="value"):
     for r in csv.DictReader(open(RESULTS / fname)):
         if r["quantity"] == quantity and (key is None or r["key"] == key):
@@ -516,6 +537,63 @@ CANONICAL = [
         docs=["docs/big_picture/01_why-this-line.md", "docs/CLAIMS.md"],
     ),
     dict(
+        # ADDED 2026-08-20, and the first registry entry ever pointed at a
+        # PYTHON file. The window log named "nothing checks that a docstring's
+        # numbers match what its own code produces" as the strongest candidate
+        # for the next guard. The registry could always do it, since _read
+        # takes any path, and this is that guard: three surfaces and one
+        # producer, and a re-run that moves the number fails all three.
+        name="cooperative: pair channel at 130 C, as a fraction of the line",
+        value=lambda: f"{float(_coop('rate ratio at 130 C')) * 1e9:.1f}",
+        find=re.compile(r"([0-9]\.[0-9])(?:e-9|\\times10\^\{?-9\}?)"),
+        mode="all",
+        docs=["rb5s6s/cooperative.py", "docs/wiki/magnetic-sublevels.md"],
+    ),
+    dict(
+        # ADDED 2026-08-20. This p-value was quoted on three pages and in the
+        # generated ledger, and moved from 0.010 to 0.011 when the producer's
+        # default was corrected to the number its own docstring calls stable.
+        # Four surfaces, one producer, now tied together.
+        name="skew scaling: p against the fixed-amplitude hypothesis",
+        value=lambda: f"{float(_cell('skew_scaling.csv', 'skew_hypothesis_p_fixed_amplitude', 'one-sided')):.3f}",
+        find=re.compile(r"p = (0\.0[0-9]{2})\b"),
+        # "any", not "all": these pages carry OTHER p-values legitimately, so
+        # the requirement is that the canonical one is present, not that every
+        # p on the page equals it.
+        mode="any",
+        docs=["docs/wiki/injection-recovery.md", "docs/wiki/third-cumulant.md",
+              "docs/big_picture/07_limitations-and-identifiability.md"],
+    ),
+    dict(
+        # The factor that carrying both fine-structure legs buys. It appears in
+        # a module docstring and a wiki page and is computed in neither, which
+        # is the exact shape of the defect this entry exists to prevent.
+        name="cooperative: rate gain from carrying both 5P legs",
+        value=lambda: f"{_coop_leg_gain():.2f}",
+        find=re.compile(r"the rate by\s+([0-9]\.[0-9]{2})"),
+        mode="all",
+        docs=["rb5s6s/cooperative.py", "docs/wiki/magnetic-sublevels.md"],
+    ),
+    dict(
+        # ADDED 2026-08-20. This number was quoted for weeks against the 95
+        # per cent UPPER BOUND on the scalar shift rather than the calibrated
+        # PREDICTION, which understated it by a third, and nothing checked it
+        # against its own producer. Now two documents and one CSV must agree.
+        name="polarisation: vector m_F spread at 225 mW, fully circular",
+        value=lambda: f"{float(_cell('polarisation_bound.csv', 'vector_spread_at_225mW_pred')) * 1e3:.1f}",
+        find=re.compile(r"(?:the spread is|sublevels by)\s+([0-9]\.[0-9])\s+kHz"),
+        mode="all",
+        docs=["docs/wiki/magnetic-sublevels.md",
+              "docs/big_picture/02_the-method-and-its-limits.md"],
+    ),
+    dict(
+        name="polarisation: 95 per cent limit on any g_F-squared broadening",
+        value=lambda: f"{float(_cell('polarisation_bound.csv', 'dmf1_broadening_ub95')) * 1e3:.0f}",
+        find=re.compile(r"([0-9]{2})\s+kHz,?\s+at\s+95\s+per\s+cent"),
+        mode="all",
+        docs=["docs/RESULTS.md"],
+    ),
+    dict(
         name="hyperpolarizability: vector-shift coefficient at 1204",
         value=lambda: f"{_hyp_v1_khz():.0f}",
         find=re.compile(r"([0-9]{3})\s+kHz\s+per\s+megahertz\s+of\s+depth"
@@ -585,7 +663,51 @@ REPLACED = [
      "beta bound (was the three-point/dof=1 headline 0.2-0.4, replaced "
      "2026-08-02 by the four-point/dof=2 0.03-0.05 headline)"),
 ]
-_ALLOW_SUPERSEDED = re.compile(r"supersed|replaced|earlier|Wald|was |before |old ", re.I)
+_ALLOW_SUPERSEDED = re.compile(
+    r"supersed|replaced|earlier|Wald|was |before |old |first version|"
+    r"no longer|used to|reported ", re.I)
+
+# THE SAME TRIPWIRE, POINTED AT CODE. Added 2026-08-20 after a number was
+# corrected in a module docstring and a wiki page and left standing in the
+# producer that writes the CSV both of them cite. The front-door list above
+# scans two markdown files; a retired number hides just as well in a
+# docstring, and the window log named that class as the next guard to build.
+#
+# A general check was MEASURED first and rejected: extracting every number
+# from five producers' docstrings and asking whether each appears in that
+# producer's own CSV flagged 16, of which one was a real staleness and the
+# rest are thresholds and hypothesis values that correctly never appear in an
+# output. A tripwire on values known to be retired has no such false floor.
+REPLACED_IN_CODE = [
+    # NOT LISTED, and the reason is the useful part: the retired pair-channel
+    # value 1.5e-10 is ALSO the live single-atom hyperfine sum, so a tripwire
+    # on the bare number cannot tell the two apart and fires on correct prose.
+    # A tripwire is only available where the retired value is unique.
+    ("nine or ten orders",
+     re.compile(r"(?:nine|ten) orders"),
+     "headroom claim: was nine in one paragraph and ten in another, neither "
+     "sourced, retired 2026-08-20 for six orders against wing_check.csv",
+     ("rb5s6s/cooperative.py", "scripts/run_cooperative_channel.py",
+      "docs/wiki/magnetic-sublevels.md")),
+]
+
+
+@pytest.mark.parametrize("val,pat,label,files", REPLACED_IN_CODE,
+                         ids=lambda x: x if isinstance(x, str) else "")
+def test_no_superseded_value_in_the_code_that_carries_it(val, pat, label, files):
+    """A retired number must not survive in a docstring or a producer.
+
+    Ceiling-tested on the way in: planting 1.5e-10 back into
+    scripts/run_cooperative_channel.py fails this, which is how the real
+    instance was found.
+    """
+    for doc in files:
+        if not (ROOT / doc).exists():
+            continue
+        for i, ln in enumerate(_read(doc).splitlines(), 1):
+            if pat.search(ln) and not _ALLOW_SUPERSEDED.search(ln):
+                pytest.fail(f"{doc}:{i}: retired {label} reappears: "
+                            f"{ln.strip()[:90]}")
 
 
 @pytest.mark.parametrize("val,pat,label", REPLACED, ids=lambda x: x if isinstance(x, str) else "")

@@ -27,7 +27,7 @@ they build on one another.
 
 | if you came for | start here, in order |
 |---|---|
-| **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md) |
+| **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md), [magnetic sublevels](magnetic-sublevels.md), [the cascade and F-depletion](the-cascade-and-f-depletion.md) |
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
 | **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
@@ -57,12 +57,12 @@ change, and the geometry that makes a Doppler-free measurement possible.
 
 | page | type | in one line |
 |---|---|---|
-| [Selection rules](selection-rules.md) | concept | parity and angular momentum decide what a photon can do, and everything else is a correction |
+| [Selection rules](selection-rules.md) | concept | parity and angular momentum decide what a photon can do, and one rank here dies for neither reason but because both photons come from one laser |
 | [Multiphoton transitions](multiphoton-transitions.md) | concept | parity alternates with photon number, which is why this transition needs two |
 | [Hyperfine structure](hyperfine-structure.md) | concept | why one transition is four lines, and why a same-isotope pair is a frequency ruler |
-| [Magnetic sublevels](magnetic-sublevels.md) | concept | the structure a hot cell averages away and a trap can hold |
+| [Magnetic sublevels](magnetic-sublevels.md) | concept | the structure a hot cell averages away, why this line stays magnetically quiet against any polarisation or mismatch, and what a second atom changes about that |
 | [Hyperfine populations and branching](hyperfine-populations-and-branching.md) | concept | counting sets the line amplitudes, and decay can remove an atom from the experiment |
-| [The cascade and F-depletion](the-cascade-and-f-depletion.md) | concept | why an observed amplitude is not a transition strength, and how the cascade empties the level being probed |
+| [The cascade and F-depletion](the-cascade-and-f-depletion.md) | concept | why an observed amplitude is not a transition strength, how the cascade empties the level being probed, and why the decay leg collected carries its own density-growing detection systematic |
 | [Doppler-free geometries](doppler-free-geometries.md) | concept | the wavevectors have to close, which two photons manage, three equal-colour photons cannot collinearly, and a fundamental with its own second harmonic can |
 
 ## B. Experimental spectroscopy
@@ -187,6 +187,7 @@ flowchart LR
     DG["Doppler-free<br/>geometries"] -.-> D
     MS["magnetic<br/>sublevels"] -.-> S
     HP["hyperfine populations<br/>and branching"] -.-> T
+    CF["cascade and<br/>F-depletion"] -.-> C
     D --> V["Voigt profile"]
     S["AC-Stark shift"] --> V
     T["transit-time<br/>broadening"] --> V

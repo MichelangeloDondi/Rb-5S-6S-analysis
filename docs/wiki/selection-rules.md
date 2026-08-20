@@ -122,6 +122,55 @@ one of them as an $F$ to $F'$ transition with $\Delta F = 0$, consistent
 with the same angular-momentum bookkeeping applied to $F$ rather than to
 $J$.
 
+WHY THAT IS FORCED, and not merely observed. The two-photon operator is a
+product of two rank-1 dipoles, so it carries ranks 0, 1 and 2, and each rank
+moves $m$ by its own amount. For THIS pair of states both are removed except
+the first:
+
+| rank | polarisation factor | $\Delta m_F$ | available here |
+|---|---|---|---|
+| 0 | $\vec{e}_1 \cdot \vec{e}_2$ | 0 | yes, and it is the whole line |
+| 1 | $\vec{e}_1 \times \vec{e}_2$ | $\pm 1$ | no, see below |
+| 2 | $\lbrace \vec{e}_1 \vec{e}_2 \rbrace^{(2)}$ | $\pm 2$ | no, the reduced element vanishes |
+
+Rank 2 goes because the triangle rule needs a rank between the difference and
+the sum of the two angular momenta, and with both equal to one half that
+window runs from zero to one, which excludes two. Rank 1 goes for a
+different and less obvious reason. Writing the two time orderings with
+denominators $D_1$ and $D_2$, the rank-1 weight is the product
+
+$$(1/D_1 - 1/D_2) \times (\vec\epsilon_1 \times \vec\epsilon_2)$$
+
+so it needs BOTH factors. It vanishes when the two photons carry the same
+energy, whatever the polarisations, and it vanishes when the two polarisation
+vectors are parallel, whatever the energies.
+
+Both factors are small here and NEITHER is exactly zero, which the first
+version of this page did not say. The Doppler-free geometry makes the energy
+factor nonzero for every atom that is moving, which is the whole ensemble: in
+the rest frame the forward photon is blue-shifted and the retro photon
+red-shifted, so the pair the signal is built from differs by
+$2\nu v / c$, which is 395 MHz at 130 °C against a 75.3 THz detuning, or
+$5.2\times10^{-6}$ in amplitude. What holds the channel shut is the
+POLARISATION factor, which an ideal retro sets to zero exactly. A mismatch of
+angle $\theta$ reopens rank 1 at $\sin\theta$ times that, which is
+$2\times10^{-13}$ in rate at five degrees
+(`rb5s6s/polarisation.py`, `rank_one_leak_rate`).
+
+The consequence is therefore strong but not absolute. $\Delta m_F = 0$ is
+the only channel available to any useful precision, for ANY polarisation, ANY
+ellipticity, ANY mismatch between the two beams and ANY direction of an
+applied field. The light can and does
+offer the other combinations, a linear beam carrying equal circular
+components in both directions so that co-rotating pairs arrive with full
+amplitude, and the atom declines them. All four observed lines carry no
+change in F because those are the only ones a scalar operator can produce.
+
+The magnetic consequence of that is in
+[magnetic sublevels](magnetic-sublevels.md), which is where it matters: a
+$\Delta m_F = 0$ component's Zeeman shift cancels between two S states of
+equal $g_F$, and any other component's would not.
+
 ## What can go wrong
 
 The first failure is treating a selection rule as a statement that a

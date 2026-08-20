@@ -84,6 +84,12 @@ FILE_STATUS = {
     # scan's hyperfine reading (APPARATUS.md sec. 6); never an input to a fit.
     "cavity_scan_integrals.csv": "DIAGNOSTIC",
     "resolving_power.csv": "DIAGNOSTIC",
+    # M37 sizes a channel in order to CLOSE it: nothing here feeds a
+    # committed bound, and the rate column is a ceiling, not a detection.
+    "cooperative_channel.csv": "DIAGNOSTIC",
+    # M38 measures what an ASSUMPTION costs and which of two the data
+    # prefer. Nothing here is a bound on a physical coefficient.
+    "laser_kernel.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise
     "stark_centres.csv": "NULL",  # measures the experiment's sensitivity, not the atom
@@ -130,6 +136,38 @@ QUANTITY_STATUS = {
     # M23: the joint two-session profile-likelihood bound. The headline rows
     # are BOUNDs (one-sided by construction -- the ramp model only broadens
     # red); the kappa_min/dchi2 preference is DIAGNOSTIC, not a detection.
+    # Both files are DIAGNOSTIC throughout, deliberately. commit_sweep counts
+    # what a historical commit loads, which is a property of the tree rather
+    # than of the atoms. skew_scaling measures an exponent whose competing
+    # hypotheses are separated by simulation, and until the campaign gives it
+    # a second lever it characterises a residual rather than bounding a
+    # physical coefficient.
+    "commit_sweep.csv": {
+        "fit_points": "DIAGNOSTIC", "fit_traces": "DIAGNOSTIC",
+        "fit_points_boundary": "DIAGNOSTIC",
+        "fit_points_boundaries": "DIAGNOSTIC",
+    },
+    "polarisation_bound.csv": {
+        "mean_fwhm": "DIAGNOSTIC",
+        "isotope_width_difference": "DIAGNOSTIC",
+        "dmf1_broadening_ub95": "BOUND",
+        # the channel these rows answered is retracted. The arithmetic
+        # stands and the question does not arise, which is ARTIFACT here.
+        "mismatch_ub95_at_field": "ARTIFACT",
+        "vector_ratio": "DIAGNOSTIC",
+        "vector_spread_at_225mW_pred": "DIAGNOSTIC",
+        "vector_spread_at_225mW_bound": "DIAGNOSTIC",
+        "vector_centre_shift_per_projection": "DIAGNOSTIC",
+    },
+    "skew_scaling.csv": {
+        "skew_amp_exponent": "DIAGNOSTIC",
+        "skew_amp_fit_chi2_red": "DIAGNOSTIC",
+        "skew_amp_exponent_line_scatter": "DIAGNOSTIC",
+        "skew_hypothesis_recovered_shot_noise": "DIAGNOSTIC",
+        "skew_hypothesis_recovered_fixed_amplitude": "DIAGNOSTIC",
+        "skew_hypothesis_p_shot_noise": "DIAGNOSTIC",
+        "skew_hypothesis_p_fixed_amplitude": "DIAGNOSTIC",
+    },
     "stark_joint.csv": {
         "kappa_ub95": "BOUND", "S0_225mW_ub95": "BOUND",
         "S0_270mW_ub95": "BOUND",

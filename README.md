@@ -436,15 +436,15 @@ try it on your own line by editing one dictionary. Each stage reads the
 previous stages' output in `results/`:
 
 ```bash
-bash scripts/run_all.sh   # 27 analysis stages in dependency order, then the
+bash scripts/run_all.sh   # 29 analysis stages in dependency order, then the
                           # figures, docs/RESULTS.md, and the CSV status column
 ```
 
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. The runner writes 31 of the 47 committed CSVs, and the other
-thirteen have their own scripts, five of which need raw trees that stay outside
+records. The runner writes 35 of the 52 committed CSVs, and the other
+seventeen have their own scripts, six of which need raw trees that stay outside
 the repository. The lock-drift measurement and its audit trail reproduce from
 a clone with no raw traces at all, off the committed acquisition clock.
 [`docs/REPRODUCING.md`](docs/REPRODUCING.md) says which script writes what,

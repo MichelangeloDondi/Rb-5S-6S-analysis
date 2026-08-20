@@ -87,7 +87,7 @@ bounding a systematic rather than validating an estimator.
 A null result needs the same closure a detection does: inject the
 hypothesised signal into synthetic data and show the analysis DETECTS it,
 before reading its absence in real data as absence in nature. This record
-holds two same-week instances of the trap the test closes. A periodogram of
+holds three instances of the trap the test closes. A periodogram of
 comb-tooth residuals returned a null at the mains frequency, and the null
 meant nothing: the sampling aliased that frequency onto the detrending's own
 freedom, and the instrument could not have responded, which one synthetic
@@ -96,6 +96,22 @@ WAS read, but only after the channel passed its ceiling test, a symmetric
 truth under the measured noise law returning zero skew at every power. One
 null was blind and nearly believed, one trend was validated before use, and
 the difference between them is exactly one injection.
+
+A third instance, from that same skew channel, sharpens the lesson from
+"inject before believing a null" to "inject before believing an EXCLUSION".
+Separating shot noise from a fixed-amplitude systematic turns on the exponent
+of skew against amplitude, and a first pass read the exclusion straight off
+the fit's own covariance, returning 6.6 sigma. Injecting the excluded
+hypothesis into the dataset's own amplitudes and errors and refitting showed
+why that number was meaningless: the estimator recovered
+$-1.843 \pm 1.236$ against an injected $-1.0$, a scatter roughly twenty
+times the covariance's stated error, because the amplitude lever carries
+almost no information about the exponent out where the excluded hypothesis
+lives. A fit covariance describes the sampling distribution AT THE FITTED
+VALUE. It says nothing about the distribution at a hypothesis being excluded,
+and only an injection at that hypothesis does
+([`run_skew_scaling.py`](../../scripts/run_skew_scaling.py)). The honest
+exclusion is $p = 0.011$, not 6.6 sigma.
 
 ## What can go wrong
 

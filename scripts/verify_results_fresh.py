@@ -49,6 +49,9 @@ RESULTS = ROOT / "results"
 
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
+    "run_cooperative_channel": ["cooperative_channel.csv"],
+    "run_polarisation_bound": ["polarisation_bound.csv"],
+    "run_skew_scaling": ["skew_scaling.csv"],
     "run_noise": ["noise_model.csv"],
     "run_ruler": [
         "ruler_traces.csv",
@@ -82,6 +85,7 @@ CHEAP = {
 
 # Minutes each, and they need data_raw/ traces.
 EXPENSIVE = {
+    "run_laser_kernel": ["laser_kernel.csv"],
     "run_linefit": ["linefit_conditions.csv"],
     # noise_law_swap.csv is this same run's third output, free to check here.
     "run_beta_self": ["beta_self.csv", "beta_self_probe.csv", "noise_law_swap.csv"],
@@ -107,6 +111,15 @@ EXPENSIVE = {
 # decision rather than an omission nobody noticed. Before this registry existed,
 # 19 of 46 committed CSVs were unchecked and nothing said so.
 UNCOVERED = {
+    "commit_sweep.csv": (
+        "run_commit_sweep.py counts the samples the joint fit loads at each "
+        "commit of a historical range, so it needs BOTH excluded-session "
+        "trees and a git worktree per commit. Without the trees each commit's "
+        "own code returns early and leaves its committed CSV in place, which "
+        "reads as a perfect reproduction, so a freshness comparison here "
+        "would be worse than vacuous. The file exists because the numbers in "
+        "it were previously typed into the ledger by hand."
+    ),
     "stark_joint.csv": (
         "run_stark_joint.py declares ~5 h single-process runtime over three "
         "sessions and 172 traces, and its evening-session arm needs the "
@@ -370,6 +383,45 @@ def _same_but_for_numbers(a: str, b: str, rtol: float) -> bool:
     return True
 
 
+# ---------------------------------------------------------------------------
+# Rule 19.7, EXTENDED 2026-08-20. A difference is read in units of the
+# quantity's OWN error wherever the producer emits one.
+#
+# On 2026-08-20 this script reported drifts of up to 13 per cent and they read
+# as the most serious possible finding about the record. In units of each
+# value's committed error the worst move anywhere was 0.081 sigma. The 13 per
+# cent came from a parameter whose error at that condition is 1.43 on a value
+# of 0.41, a condition `resolving_power.csv` already publishes as
+# CANNOT_RESOLVE. A relative-difference check reads the curvature of an
+# unconstrained likelihood, not the reproducibility of a pipeline, so it fires
+# LOUDEST on exactly the quantities the record has declined to quote.
+#
+# The error columns were sitting in the same rows, unused. This is the fix.
+SIGMA_TOL = 0.25
+"""How far a value may move, in units of its own committed error, and still
+count as reproducing. Deliberately tight: the 2026-08-20 worst case was
+0.081, and a genuine code change moves a well-conditioned number by far more
+than a quarter of its error."""
+
+
+def _paired_error(row: dict, col: str) -> float | None:
+    """The committed error beside `col` in the same row, or None.
+
+    Two conventions live in results/: a `value` column paired with `err`, and
+    a named column paired with `<name>_err`. Both are read here, and anything
+    else returns None so the caller falls back to the relative tolerance.
+    """
+    for cand in ((col + "_err"), ("err" if col == "value" else None)):
+        if not cand or cand not in row:
+            continue
+        try:
+            e = float(row[cand])
+        except (TypeError, ValueError):
+            return None
+        return e if e > 0.0 else None
+    return None
+
+
 def _differs(committed: list[dict], fresh: list[dict], rtol: float = NUMERIC_RTOL,
              csv_name: str = ""):
     """Return a short description of the first meaningful difference, or None."""
@@ -414,8 +466,15 @@ def _differs(committed: list[dict], fresh: list[dict], rtol: float = NUMERIC_RTO
             if fa != fb and abs(fa - fb) > col_rtol * scale:
                 if allowed:
                     continue          # dated, reasoned, in _EXPECTED_INSTABILITY
+                err = _paired_error(a, k)
+                sigma = abs(fa - fb) / err if err else None
+                if sigma is not None and sigma <= SIGMA_TOL:
+                    continue      # inside its own error bar, so it reproduces
+                shown = f"{abs(fa - fb) / scale:.1e} relative"
+                if sigma is not None:
+                    shown = f"{sigma:.3f} sigma of its own error, {shown}"
                 return (f"row {i} column {k!r}: committed {fa!r} vs fresh {fb!r} "
-                        f"({abs(fa - fb) / scale:.1e} relative)")
+                        f"({shown})")
     return None
 
 

@@ -124,6 +124,17 @@ every path the run needs and naming the likely cause in a sentence a reader
 can act on, so that a run measured in hours fails, when it is going to fail,
 in seconds rather than after most of the wall time is already spent.
 
+A companion discipline applies when the expensive step is a FIT rather than a
+launch. Find a cheap observable that sits downstream of the change you suspect
+and upstream of the expensive part, and localise with that before paying for
+the expensive part at every candidate. A 2026-08-20 sweep needed to know which
+commit in a development range had changed a joint construction, and the honest
+answer would have been a full fit at every commit, roughly seventeen hours.
+The construction's POINT COUNT is computed in the loading path before any fit
+starts, depends on the same code, and resolved the whole range in about four
+minutes ([`run_commit_sweep.py`](../../scripts/run_commit_sweep.py)). The fits
+were then run once, to confirm what the proxy had already located.
+
 This repository has also paid for the mirror-image mistake directly, in an
 earlier attempt at the same kappa grid. Splitting it across many worker
 processes at once exhausted the machine's memory before the grid finished,

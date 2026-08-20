@@ -188,6 +188,11 @@ re-divided the next time the bound tightens.
   shift distribution's asymmetry out of a fitted line.
 - [Blackbody radiation](blackbody-radiation.md) for the cell's own thermal
   field, a second source of level shift acting on the same states.
+- [Magnetic sublevels](magnetic-sublevels.md) for the vector piece of this
+  same light shift, 1.7 per cent of the scalar coefficient at the drive
+  wavelength. It cancels in the mean over a symmetric population and only
+  spreads the line, but once ellipticity pumps that population it SHIFTS
+  the line, which this page's scalar treatment does not cover.
 
 ---
 

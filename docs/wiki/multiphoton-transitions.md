@@ -66,11 +66,19 @@ Because a two-photon step carries two polarisation vectors, $\vec\epsilon_1$
 and $\vec\epsilon_2$, the operator driving the transition decomposes into
 pieces of tensor rank zero, one and two: a scalar part built from the plain
 dot product $\vec\epsilon_1\cdot\vec\epsilon_2$, a vector part built from
-their cross product, and a rank-two tensor part. Which parts can act on a
-given pair of levels is set by angular-momentum selection rules on each
-piece's own rank, and for a transition between two S states that carries no
-change in the total hyperfine quantum number, only the scalar and vector
-parts survive. The consequence is published for this exact transition. The
+their cross product, and a rank-two tensor part. Two different constraints
+decide which of them survive here, not one. Angular momentum alone removes
+the tensor piece, which has no reduced matrix element between two $J=1/2$
+states. The vector piece passes that test and is removed anyway, because
+both photons come from one laser: the two time orderings then share a single
+energy denominator, the amplitude is symmetric under exchanging the two
+polarisation vectors, and rank one is exactly the antisymmetric part that a
+symmetric bilinear cannot carry
+([Selection rules](selection-rules.md)). For this degenerate two-photon
+transition between two S states only the scalar part survives, and the
+[two-atom channel](magnetic-sublevels.md) that lifts the rank-two closure
+does so ten orders below anything measurable. The consequence is published
+for this exact transition. The
 scalar term, proportional to the degree of linear polarisation squared, is
 what the two-photon rate reduces to, and it vanishes identically for two
 photons of the same circular handedness, since two vectors of equal helicity
@@ -133,9 +141,9 @@ a line-only or pedestal-only mode.
 The clearest model failure is carrying a one-photon intuition about
 polarisation into the two-photon case unchanged, expecting circular light
 to remove the pedestal while leaving the line, or the reverse. It does
-neither: since an S to S two-photon transition keeps only the scalar and
-vector parts of the coupling, and both die together for two photons of the
-same handedness, circular light is a null test on the whole transition
+neither: since a degenerate S to S two-photon transition keeps only the
+scalar part of the coupling, and that term dies for two photons of the same
+handedness, circular light is a null test on the whole transition
 rather than a filter that separates the line from its pedestal the way
 orthogonal linear polarisation does.
 

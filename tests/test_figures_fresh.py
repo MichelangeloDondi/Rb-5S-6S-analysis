@@ -36,6 +36,9 @@ def _load_make_figures():
     return mod
 
 DATA_DRIVEN = [
+    # Added 2026-08-20. The one carrying figure for the campaign case,
+    # drawn from five committed CSVs, so it goes stale if any of them move.
+    "fig34_campaign_projection",
     "fig1_width_vs_density",
     "fig2_power_sweep",
     "fig3_transit_mc",

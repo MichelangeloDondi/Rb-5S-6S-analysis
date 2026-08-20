@@ -21,7 +21,17 @@ This test reads the shipped runner rather than a copy of it, so it cannot go
 stale, and it is deliberately cheap: it checks ORDER, not behaviour, because
 checking behaviour means a multi-hour pipeline run that no test suite can
 carry.
+
+2026-08-20 ADDED A THIRD THING TO CHECK, between those two and cheaper than
+either. On that date the runner stopped PARSING: adding a stage to the loop
+wrote the continuation as a double backslash, which is an escaped backslash
+and not a line continuation, so `bash scripts/run_all.sh` died on a syntax
+error before running anything. Order was still correct, behaviour was never
+checked, and a full gate passed over it. A shell script that cannot be parsed
+is the cheapest possible failure to detect and was the one thing here that
+nothing looked for.
 """
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -96,3 +106,13 @@ def test_the_annotator_still_runs_after_the_stage_loop():
     assert ann > done, (
         "annotate_results_status.py must be invoked after the stage loop "
         "closes, because every stage in that loop writes a CSV it annotates.")
+
+
+def test_the_runner_parses():
+    """`bash -n` on the shipped runner. Milliseconds, and it is the failure
+    that stops every other check from mattering."""
+    r = subprocess.run(["bash", "-n", str(RUNNER)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, (
+        "scripts/run_all.sh does not parse, so the one-command reproduction "
+        "every front door points at cannot start:\n" + r.stderr)
