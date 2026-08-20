@@ -13,6 +13,18 @@ passive asymmetry method plus the Ti:Sapph tunability could give a
 reference-free magic-wavelength determination, through the asymmetry sign
 reversal across Hamilton 2023's 776 nm magic wavelength.
 
+**The nanofiber beside the cells, three instruments in one apparatus.** The
+lab's ONF with its two-colour trap, run trap-dark, is sized in
+[`onf_candidate.md`](../notes/onf_candidate.md) with every number produced by
+`run_onf_candidate.py` and labelled by basis. The cold trap-off mode measures
+the laser's width independently, which is the identifying rung of the width
+channel's intercept ladder. The atom-surface tail is a C3 measurement for the
+6S state against silica, on the path the Rydberg-near-fiber programme already
+walks. Hot vapor turns the transit kernel into the measured object, though hot
+rubidium degrades fiber transmission, and the Stark geometry seam in
+`model_profile` gets its first second geometry for free. None of it replaces
+the cell campaign, because nothing at the fiber carries a density ladder.
+
 **The O-band null at 1297.5 nm, an optional rider on any cell session.** The
 computed differential polarizability of the 5S and 6S clock states has a steep
 zero crossing at 1297.5 nm, useless as a trap and precise as a lever. One

@@ -266,6 +266,206 @@ def main() -> int:
                       f"laser weight in worst direction {abs(v[i_laser]):.4f}"),
                 status="DIAGNOSTIC"))
 
+    # --- 3. THE JOINT CELL+ONF FISHER BLOCK (design forecast) --------------
+    # What an independent laser-width measurement at the lab's nanofiber
+    # would do to the beta_self inference, computed BEFORE any hardware moves.
+    # The construction mirrors the record's own estimator: one peak, its four
+    # temperatures, a shared Gaussian laser width sigma_G, the collisional
+    # term beta*N(T) riding the density ladder, transit FIXED per condition as
+    # fit_beta_self does, per-condition nuisances (amplitude, centre, two
+    # baseline terms) PROJECTED OUT of the physics columns, and each
+    # condition's block SCALED BY ITS SIGNAL AMPLITUDE, taken proportional to
+    # N(T): the two-photon signal per atom is fixed at fixed power, so the
+    # number of emitting atoms sets the scale and the information leans on
+    # the hot bright conditions, as the real fit's signal scaling implies.
+    # This neglects cascade-photon reabsorption at the hot end
+    # (density.d1_optical_depth_per_cm), which would soften the hot weights;
+    # the choice is validated only empirically, by the gate below.
+    #
+    # THE VALIDATION ROW COMES FIRST and it gates everything after it: the
+    # forecast machinery is run in the record's own TWO-parameter form
+    # (beta, sigma_G, the gaussian arm of kernel_headline.csv) and its
+    # correlation must land near the committed -0.82 to -0.89. A first
+    # version of this block failed its own gate at +0.06, for two reasons now
+    # built in as requirements: the committed correlation belongs to the
+    # 2-parameter model, not the 3-parameter one, and equal condition weights
+    # misstate where the fit's information lives.
+    #
+    # THE ONF ENTERS AS A PRIOR on the laser parameters, because that is how
+    # it would enter fit_beta_self. Prior widths are quoted RELATIVE to the
+    # cell-alone uncertainty of the pinned parameter, so no absolute noise
+    # scale is claimed. All rows are DERIVED EXPECTATIONS in the vocabulary
+    # of results/onf_candidate.csv, and the laser-transfer validity condition
+    # travels with them: the fiber path adds phase noise, so a fiber-side
+    # laser width speaks for the cell only under the simultaneous
+    # differential configuration described in the "shared-path condition"
+    # section of docs/notes/onf_candidate.md, or under a measured bound on
+    # fiber-added noise. Neither exists yet; both are named there as the
+    # design requirement.
+    from rb5s6s.density import density_units
+    from rb5s6s.linefit import transit_fwhm_at_T
+
+    BETA = 0.0156                 # MHz per 1e12 cm^-3, committed 4121 beta_self
+    SIGMA_G = 1.88                # MHz FWHM, committed 4121 sigma_laser
+    GAMMA_L0 = 0.10               # MHz, expansion point for the Lorentzian content
+    TRANSIT_REF = 0.9334247073098216   # C.TRANSIT_FWHM_PLACEHOLDER_MHZ
+    TEMPS_C = (70.0, 90.0, 110.0, 130.0)
+
+    def _mixed_cond(beta, sigma_g, gamma_l, T_C, nu):
+        gc = beta * float(density_units(T_C)) + gamma_l
+        g, prof = composite_profile(gc, sigma_g,
+                                    transit_fwhm_at_T(T_C, TRANSIT_REF),
+                                    "gaussian")
+        return np.interp(nu, g, prof)
+
+    def _cond_window(T_C):
+        """The window the RECORD'S OWN estimator would use for this line.
+
+        A first version of this block inherited the +-8 MHz grid of the
+        fixed-condition sections above. An adversarial verification pass
+        showed that window is less than half of what `adaptive_halfwidth`
+        assigns to these lines (3.5 x FWHM, clipped to [9, 25] MHz, which
+        lands at 17.5 to 19 MHz here), that the truncation moved the
+        cost-of-freeing-Gamma_L figure by 27 per cent, and that the
+        validation gate below passes at EITHER window and so cannot
+        arbitrate. The window is therefore computed from the estimator's
+        own rule rather than chosen, which removes it as a free parameter.
+        """
+        g, prof = composite_profile(
+            BETA * float(density_units(T_C)) + GAMMA_L0, SIGMA_G,
+            transit_fwhm_at_T(T_C, TRANSIT_REF), "gaussian")
+        half = prof / prof.max() - 0.5
+        n2 = len(g) // 2
+        fwhm = g[n2:][np.argmin(np.abs(half[n2:]))] - g[:n2][np.argmin(np.abs(half[:n2]))]
+        hw = float(np.clip(C.FIT_HALFWIDTH_FWHM_MULT * fwhm,
+                           C.FIT_HALFWIDTH_MIN_MHZ, C.FIT_HALFWIDTH_MAX_MHZ))
+        return np.linspace(-hw, hw, 1201)
+
+    def _cond_block(T_C, params):
+        """Projected, amplitude-weighted physics columns for one condition."""
+        nu = _cond_window(T_C)
+        base = dict(beta=BETA, sigma_g=SIGMA_G, gamma_l=GAMMA_L0)
+        cols = []
+        for name in params:
+            h = REL_STEP * max(base[name], 1e-3)
+            up, dn = dict(base), dict(base)
+            up[name] += h
+            dn[name] -= h
+            cols.append((_mixed_cond(up["beta"], up["sigma_g"], up["gamma_l"], T_C, nu)
+                         - _mixed_cond(dn["beta"], dn["sigma_g"], dn["gamma_l"], T_C, nu)) / (2 * h))
+        prof = _mixed_cond(BETA, SIGMA_G, GAMMA_L0, T_C, nu)
+        nuis = np.column_stack([prof, np.gradient(prof, nu),
+                                np.ones_like(nu), nu])
+        Q, _ = np.linalg.qr(nuis)
+        amp = float(density_units(T_C))          # signal weight, ~ atom number
+        return np.column_stack([amp * (c - Q @ (Q.T @ c)) for c in cols])
+
+    def _fisher(params):
+        J = np.vstack([_cond_block(T, params) for T in TEMPS_C])
+        return np.linalg.inv(J.T @ J)
+
+    def _corr(Cm, i, j):
+        return float(Cm[i, j] / np.sqrt(Cm[i, i] * Cm[j, j]))
+
+    # -- validation against the committed estimator (2 params, gaussian arm) --
+    C2 = _fisher(("beta", "sigma_g"))
+    corr2 = _corr(C2, 0, 1)
+    ok = -0.97 <= corr2 <= -0.74     # the committed band plus modelling slack
+    rows.append(dict(
+        block="joint_cell_onf", kind="validation_cell_alone",
+        corr_gamma_sigma=f"{corr2:+.4f}", sv_ratio="1.000",
+        null_dir_gamma="", null_dir_sigma="",
+        note=(f"the forecast machinery in the record's own 2-parameter form: "
+              f"corr(beta, sigma_G) = {corr2:+.3f} against the committed "
+              f"-0.82 to -0.89 (kernel_headline.csv, gaussian arm): "
+              f"{'CREDIBLE, the rows below may be read' if ok else 'OUT OF BAND, do not read the rows below'}"),
+        status="DIAGNOSTIC"))
+
+    # -- the K3 model (3 params) and the prior scan ---------------------------
+    C3m = _fisher(("beta", "sigma_g", "gamma_l"))
+    sig_beta3 = float(np.sqrt(C3m[0, 0]))
+    sig_beta2 = float(np.sqrt(C2[0, 0]))
+    rows.append(dict(
+        block="joint_cell_onf", kind="cost_of_freeing_gamma_L",
+        corr_gamma_sigma=f"{_corr(C3m, 0, 2):+.4f}",
+        sv_ratio=f"{sig_beta3 / sig_beta2:.3f}",
+        null_dir_gamma=f"{_corr(C3m, 0, 1):+.4f}", null_dir_sigma="",
+        note=("freeing Gamma_L inflates sigma(beta) by this factor over the "
+              "2-parameter fit: what K3 pays for honesty about the "
+              "kernel, and the quantity an ONF prior buys back"),
+        status="DIAGNOSTIC"))
+
+    for rel_w in (1.0, 0.5, 0.2, 0.1):
+        for label, idx in (("GL", (2,)), ("GL_and_sigmaG", (2, 1))):
+            F = np.linalg.inv(C3m).copy()
+            for k in idx:
+                w = rel_w * float(np.sqrt(C3m[k, k]))
+                F[k, k] += 1.0 / w ** 2
+            Cp = np.linalg.inv(F)
+            rows.append(dict(
+                block="joint_cell_onf", kind=f"prior_{label}_rel{rel_w:g}",
+                corr_gamma_sigma=f"{_corr(Cp, 0, 2):+.4f}",
+                sv_ratio=f"{float(np.sqrt(Cp[0, 0])) / sig_beta3:.3f}",
+                null_dir_gamma=f"{float(np.sqrt(Cp[0, 0])) / sig_beta2:.3f}",
+                null_dir_sigma="",
+                note=(f"ONF prior at {rel_w:g} x the cell-alone width on "
+                      f"{'Gamma_L alone' if label == 'GL' else 'both laser parameters'}: "
+                      f"sigma(beta) at this fraction of the FREE-Gamma_L fit "
+                      f"(sv_ratio) and of the 2-parameter fit (null_dir_gamma)"),
+                status="DIAGNOSTIC"))
+
+    # the true asymptote of the Gamma_L-alone route, not a sampled point
+    F = np.linalg.inv(C3m).copy()
+    F[2, 2] += 1.0 / (1e-6 * float(np.sqrt(C3m[2, 2]))) ** 2
+    Cp = np.linalg.inv(F)
+    rows.append(dict(
+        block="joint_cell_onf", kind="floor_GL_alone",
+        corr_gamma_sigma="",
+        sv_ratio=f"{float(np.sqrt(Cp[0, 0])) / sig_beta3:.3f}",
+        null_dir_gamma="", null_dir_sigma="",
+        note=("the exact asymptote of a Gamma_L-only prior: however precise, "
+              "sigma(beta) cannot fall below this fraction of the free fit "
+              "while sigma_G stays free"),
+        status="DIAGNOSTIC"))
+
+    # ABSOLUTE anchoring: relative prior widths hide that the cell-alone
+    # Gamma_L determination is itself weak, so a prior quoted as a modest
+    # fraction of it is a demanding absolute measurement. Anchor the scale by
+    # matching the 2-parameter forecast error on beta to the committed
+    # beta_err of the same construction, then state the prior targets in MHz.
+    with (C.RESULTS_DIR / "kernel_headline.csv").open() as fh:
+        hrow = next(r for r in csv.DictReader(fh) if r["peak"] == "4121")
+    anchor = float(hrow["beta_err_gaussian"]) / float(np.sqrt(C2[0, 0]))
+    sig_gl_mhz = float(np.sqrt(C3m[2, 2])) * anchor
+    sig_sg_mhz = float(np.sqrt(C3m[1, 1])) * anchor
+    rows.append(dict(
+        block="joint_cell_onf", kind="absolute_anchor",
+        corr_gamma_sigma="",
+        sv_ratio=f"{sig_gl_mhz:.3f}",
+        null_dir_gamma=f"{sig_sg_mhz:.3f}", null_dir_sigma="",
+        note=("cell-alone sigma(Gamma_L) and sigma(sigma_G) in MHz, anchored "
+              "by matching the 2-parameter forecast to the committed "
+              "beta_err_gaussian of the 4121 peak: the 0.2x prior row "
+              f"therefore asks the ONF for {0.2 * sig_gl_mhz:.2f} MHz on "
+              f"Gamma_L and {0.2 * sig_sg_mhz:.2f} MHz on sigma_G, which is "
+              "the absolute precision target the instrument must meet"),
+        status="DIAGNOSTIC"))
+
+    F = np.linalg.inv(C3m).copy()
+    for k in (1, 2):
+        F[k, k] += 1.0 / (1e-6 * float(np.sqrt(C3m[k, k]))) ** 2
+    Cp = np.linalg.inv(F)
+    rows.append(dict(
+        block="joint_cell_onf", kind="ceiling_laser_pinned",
+        corr_gamma_sigma="",
+        sv_ratio=f"{float(np.sqrt(Cp[0, 0])) / sig_beta3:.3f}",
+        null_dir_gamma=f"{float(np.sqrt(Cp[0, 0])) / sig_beta2:.3f}",
+        null_dir_sigma="",
+        note=("both laser parameters pinned exactly: the ceiling of the "
+              "prior route, relative to the free-Gamma_L fit (sv_ratio) and "
+              "to the 2-parameter fit (null_dir_gamma)"),
+        status="DIAGNOSTIC"))
+
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))

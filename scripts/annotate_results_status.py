@@ -92,6 +92,7 @@ FILE_STATUS = {
     "laser_kernel.csv": "DIAGNOSTIC",
     "kernel_headline.csv": "DIAGNOSTIC",
     "kernel_identifiability.csv": "DIAGNOSTIC",
+    "onf_candidate.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise
     "stark_centres.csv": "NULL",  # measures the experiment's sensitivity, not the atom

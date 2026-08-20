@@ -50,6 +50,7 @@ RESULTS = ROOT / "results"
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
+    "run_onf_candidate": ["onf_candidate.csv"],
     "run_cooperative_channel": ["cooperative_channel.csv"],
     "run_polarisation_bound": ["polarisation_bound.csv"],
     "run_skew_scaling": ["skew_scaling.csv"],

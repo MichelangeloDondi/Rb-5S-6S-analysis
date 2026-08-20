@@ -4,7 +4,7 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
-## The runner, and the nineteen scripts outside it
+## The runner, and the twenty scripts outside it
 
 `bash scripts/run_all.sh` executes 29 analysis stages in dependency order,
 then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any
@@ -34,7 +34,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write 35 of the 54 committed CSVs. The other nineteen each
+The runner's stages write 35 of the 55 committed CSVs. The other twenty each
 have their own script, held out for one of two reasons.
 
 ### Six need trees that stay outside the repository

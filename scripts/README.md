@@ -203,6 +203,11 @@ laser one. It reports the correlation between beta_self and the shared laser
 width under each kernel, which is what says whether the density ladder is
 breaking the degeneracy. It needs the raw traces.
 
+`run_onf_candidate.py` sizes the nanofiber candidate for the campaign
+ranking: every number in docs/notes/onf_candidate.md, each row labelled with
+its basis so an expectation can never be quoted as a measurement. It runs
+from a clone in under a second.
+
 `run_kernel_identifiability.py` (K0) takes no data at all and runs in seconds.
 It asks what the model CAN identify before anything is fitted: the Jacobian at
 a fixed condition under each kernel, a direct sum-invariance test with a
