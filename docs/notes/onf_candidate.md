@@ -5,18 +5,41 @@
 [`onf_candidate.csv`](../../results/onf_candidate.csv), where each row carries
 its basis: a committed input of this repository, a cited outside number, an
 assumed lab parameter waiting to be replaced, or arithmetic on those. Nothing
-here is a measurement. The lab facts this repository does not know are marked
-in the CSV with the word REPLACE and listed at the end of this note.
+here is a measurement. The apparatus parameters this repository does not
+know are marked in the CSV with the word REPLACE and listed at the end of
+this note.
+
+**What is already established on this platform, and what is not.** This note
+was first written without its own literature, and the correction matters
+enough to state at the top. The 5S to 6S transition has already been driven at
+an optical nanofibre with cold atoms, in the lineage this record belongs to.
+[Rajasree 2020](../lit/rajasree2020spin.md) drove it through the evanescent
+field of a 400 nm fibre at 25 to 40 counts per millisecond, and established
+the polarisation law for it, including that the guided mode's longitudinal
+component leaves the circular configuration with a MINIMUM near 13 per cent in
+theory and 25 per cent in practice rather than a null.
+[Gokhroo 2022](../lit/gokhroo2022.md) observed a two-peak pushing profile near
+the fibre on this exact line and did not model it: no fitted lineshape, and no
+Casimir-Polder content anywhere in the paper. A prior-art audit recorded in
+that literature note finds that no one has modelled it since.
+
+So the open problem here is a QUANTITATIVE NEAR-SURFACE LINESHAPE, not a
+standalone surface coefficient and not a feasibility demonstration. Signal
+feasibility is settled by a published measurement on this platform. What this
+note sizes is what such a measurement would additionally buy the vapour-cell
+record, which is a different question and the one the campaign ranking needs
+answered.
 
 **The context that makes this worth sizing.** The width channel's intercept,
 near 0.4 MHz, decomposes as laser + transit + residual, and the ladder that
 attributes it needs an independent lever on each slot. Density separates the
 collisional slope from the intercept and nothing more. The laser slot is the
 identifying one, and the kernel window established that the cell data
-constrain its shape only at one corner. The lab holds an optical nanofiber
-with a two-colour standing-wave trap, built for Rydberg-atom work, usable
-with the trap dark. One apparatus provides three distinct instruments, sized
-below in the order of what they remove from this record's uncertainty.
+constrain its shape only at one corner. The platform this note sizes is an
+optical nanofibre with a two-colour evanescent trap, the configuration of the
+published lineage above, operated with the trap dark where the spectroscopy
+wants it. One apparatus provides three distinct instruments, sized below in
+the order of what they remove from this record's uncertainty.
 
 ## A. Cold atoms, trap off: an independent laser-width instrument
 
@@ -37,8 +60,15 @@ collisional width at fixed condition and correlated at 0.82 to 0.98 with the
 headline coefficient even across the density ladder.
 
 Counter-propagating guided modes preserve the two-photon Doppler
-cancellation. The per-atom two-photon rate at 1 mW guided is about 870 times
-the 225 mW cell rate, because the mode area is half a square micron. That
+cancellation, and the polarisation law governing the rate is
+[Rajasree 2020](../lit/rajasree2020spin.md)'s: proportional to the squared
+degree of linear polarisation, with the circular configuration suppressed to a
+minimum rather than a null by the longitudinal field. Detectability is settled
+there by measurement, at 25 to 40 counts per millisecond on this platform and
+this line, so the ratios that follow are context for the light-shift budget
+rather than the case for seeing the signal. The per-atom two-photon rate at
+1 mW guided is about 870 times the 225 mW cell rate, because the mode area is
+half a square micron. That
 intensity carries the drive's own light shift with it: scaling the committed
 cell value gives 10 MHz at 1 mW, so the spectroscopy setting is tens of
 microwatts, where the shift is at the cell's own 0.3 to 0.5 MHz scale and the
@@ -46,18 +76,38 @@ per-atom rate still exceeds the cell's. About three atoms occupy the
 evanescent shell on average at MOT density, which is the signal regime the
 Rydberg-near-fiber detection already operates in.
 
-## B. The atom-surface tail: a C3 for the 6S state
+## B. The near-surface lineshape, and the surface potential it reads
 
-Evanescent excitation samples atoms 50 to 300 nm from silica. The 6S state is
-far more polarizable than the ground state, so the differential van der Waals
-shift red-shifts the line by an amount set by distance: 1.7 to 4.2 MHz at
-100 nm and 13 to 34 MHz at 50 nm, against a cold line a few MHz wide. The
-near-surface atoms therefore form a resolved red tail whose shape is a
-measurement of the 6S versus silica C3, a coefficient with no published
-measurement that we know of, obtained with the mild lasers of this programme
-on exactly the atom-surface machinery the Rydberg-near-fiber work needs at
-higher n. The C3 ratio band in the CSV brackets the expectation and is the
-first thing a Casimir-Polder sum should replace.
+Evanescent excitation samples atoms 50 to 300 nm from silica, where the
+atom-surface potential shifts 5S and 6S differently and pulls the line red by
+an amount set by distance. In the near-field Casimir-Polder form the
+differential shift is 1.7 to 4.2 MHz at 100 nm and 13 to 34 MHz at 50 nm,
+against a cold line a few MHz wide, so the near-surface atoms make a resolved
+red tail rather than a perturbation.
+
+**The potential has two components and this note's first version had one.**
+[Pennetta 2026](../lit/pennetta2026.md) measures, on this exact class of
+platform, Casimir-Polder attraction PLUS an electrostatic term from surface
+charges on the silica. The second is device- and time-dependent, so it is
+calibrated per run and carried as a systematic rather than as a universal
+constant. That also relocates a caveat this note had misplaced: adsorbate
+fields are not an external nuisance to be listed separately, they are part of
+the potential being measured. And the near-field C3 over z cubed form crosses
+to a retarded C4 over z to the fourth at larger distance, a crossover
+[Ton 2026](../lit/ton2026.md) measures directly while reading a kilohertz
+Casimir-Polder shift out of a spectroscopic lineshape. That paper is the
+template for the estimator here: the surface shift is read as a DISTRIBUTION
+over the atoms' distance from the surface, by the same moment machinery that
+reads the light-shift distribution, so one method handles both
+inhomogeneities.
+
+Read that way the measurement is the quantitative completion of
+[Gokhroo 2022](../lit/gokhroo2022.md)'s observed pushing profile, and a C3 for
+the 6S state against silica is an output of the fitted model rather than the
+goal. A feasibility bound travels with it:
+[Piotrowski 2026](../lit/piotrowski2026.md) shows probe scattering heats
+nanophotonic-trapped atoms, so near-field probing is inherently transient and
+the powers quoted here bound an integration window rather than a steady state.
 
 ## C. Hot vapor: the transit kernel where it is the whole line
 
@@ -155,7 +205,7 @@ the trap light shifts the 6S state strongly and inhomogeneously, so
 spectroscopy wants the trap dark or strobed, which is why the trap-free mode
 leads this note.
 
-## Lab facts to replace before this enters the ranking
+## Apparatus parameters to replace before this enters the ranking
 
 * The fiber diameter, hence the guided-mode index at 993 nm and the decay
   length. The CSV carries 1.08 to 1.25 as a band.
@@ -163,11 +213,21 @@ leads this note.
 * The species and temperature of the MOT, carried as Rb at 150 uK.
 * Transmission of the existing pigtails at 993 nm.
 * A Casimir-Polder sum for C3 of the 6S state, replacing the 3 to 6 band.
-* The residual DC Stark from adsorbates on the fiber surface, which shifts
-  the 6S state and is both a systematic here and a diagnostic the Rydberg
-  work wants measured.
+* A per-run calibration of the electrostatic surface-charge term, which
+  [Pennetta 2026](../lit/pennetta2026.md) shows is a component of the
+  potential rather than an external nuisance.
+* Which fibre. The cold-atom 5S-6S measurement of
+  [Rajasree 2020](../lit/rajasree2020spin.md) used a 400 nm nanofibre and the
+  estimates here follow it. Nanofibres in this platform class span roughly
+  400 to 650 nm, and the decay length, and with it the transit and surface
+  rows, scale with the diameter, so the estimates are re-run for the actual
+  fibre before any of them is quoted.
 
-The cited outside number is the ground-state coefficient against fused
-silica, C3 of about 5.6e-49 J m cubed, from the surface-interaction
-literature for Rb on glass. Everything else is either committed in this
-repository or labelled as an assumption in the CSV.
+The cited outside numbers are the ground-state coefficient against fused
+silica, C3 of about 5.6e-49 J m cubed from the surface-interaction literature
+for Rb on glass, and the platform results carried in this repository's own
+literature notes for [Rajasree 2020](../lit/rajasree2020spin.md),
+[Gokhroo 2022](../lit/gokhroo2022.md),
+[Pennetta 2026](../lit/pennetta2026.md), [Ton 2026](../lit/ton2026.md) and
+[Piotrowski 2026](../lit/piotrowski2026.md). Everything else is either
+committed in this repository or labelled as an assumption in the CSV.

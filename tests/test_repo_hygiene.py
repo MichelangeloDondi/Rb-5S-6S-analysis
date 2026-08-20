@@ -180,6 +180,18 @@ FORBIDDEN = {
         r"\bwe are (?:careful|honest|transparent) (?:to|about|in)",
         r"worth stating plainly rather than",
     ],
+    # THE PUBLIC RECORD HAS NO ADDRESSEE (owner rule, 2026-08-21). It is a
+    # self-contained scientific record, never a pitch to a named person or a
+    # specific laboratory, and it must not carry unpublished lab state or
+    # references to private documents. Found shipping three times in one day
+    # before this bank existed ("the lab holds", "an internal scaffold",
+    # "this laboratory"), fixed the same day.
+    "addressee and private-state register": [
+        r"the lab holds", r"our group", r"the group's",
+        r"this laborator", r"internal scaffold",
+        r"collaboration", r"beam[- ]time ask",
+        r"class of proposal",
+    ],
     "internal process vocabulary": [
         r"red[- ]?team",
         r"\bprice[sd]?\b", r"\bpricing\b",

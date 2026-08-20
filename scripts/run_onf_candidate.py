@@ -9,12 +9,24 @@ its BASIS, and the basis vocabulary is a contract:
 
     committed_input      read from this repository's constants or results
     cited_literature     an outside number with its citation in the note
-    assumed_parameter    a lab fact this repo does not know; the note names
-                         who can replace it and with what measurement
+    assumed_parameter    an apparatus parameter this repo does not know; the
+                         note names the measurement that replaces it
     derived_expectation  arithmetic on the rows above. A PREDICTION, never a
                          measurement, per the rule that a recommendation is
                          measured in data where data exist and labelled an
                          expectation where they do not (protocol 19.65).
+
+THE LINEAGE THIS SITS IN, read before the estimates were made and cited
+rather than re-derived. This transition has ALREADY been driven at an optical
+nanofibre with cold atoms: docs/lit/rajasree2020spin.md (5S-6S through the
+evanescent field of a 400 nm ONF, 25 to 40 counts per millisecond, which is
+the measured feasibility anchor this file uses instead of a rate estimate,
+plus the polarisation law and the nonparaxial circular-null minimum of ~13
+per cent in theory and ~25 per cent in practice) and docs/lit/gokhroo2022.md
+(the two-peak pushing profile near the fibre on our exact line, OBSERVED and
+never modelled: no fitted lineshape, no Casimir-Polder content). The gap that
+audit establishes is a quantitative near-surface LINESHAPE, not a standalone
+surface coefficient, and that is what the atom-surface rows below serve.
 
 WHAT IS BEING SIZED. Three distinct instruments one apparatus provides:
 
@@ -24,13 +36,26 @@ WHAT IS BEING SIZED. Three distinct instruments one apparatus provides:
      independent measurement of the laser's width, the identifying rung of
      the intercept ladder that the cell data can only bound.
   B. THE ATOM-SURFACE TAIL. Evanescent excitation samples atoms 50-300 nm
-     from silica, where the differential van der Waals shift of 5S vs 6S
-     red-shifts the line by an amount that depends on distance. The tail
-     shape is a C3 measurement for a state nobody has measured against
-     silica, on the path the Rydberg-near-fiber programme already walks.
+     from silica, where the atom-surface potential shifts 5S and 6S
+     differently and red-shifts the line by an amount that depends on
+     distance. THE POTENTIAL HAS TWO COMPONENTS, not one:
+     docs/lit/pennetta2026.md measures, on this exact class of platform,
+     Casimir-Polder attraction PLUS an electrostatic term from surface
+     charges on the silica, which is device- and time-dependent and must be
+     calibrated per run rather than carried as a universal constant. The
+     rows below give the CP part only, with a near-field C3/z^3 scaling that
+     crosses over to a retarded C4/z^4 form at larger distance
+     (docs/lit/ton2026.md measures that crossover, and reads a kHz-level
+     shift out of the lineshape, which is the template here).
   C. HOT VAPOR. Transit becomes ~1e2 MHz and dominates the line, which turns
      the transit KERNEL into the measured object instead of a small
      correction. Hot Rb degrades fiber transmission by adsorption.
+
+A FEASIBILITY BOUND ON ALL THREE, from docs/lit/piotrowski2026.md: probe
+light scattering heats nanophotonic-trapped atoms, so near-field probing is
+inherently TRANSIENT, with coupling and atom number decaying during the
+measurement. The probe powers below are therefore ceilings on an integration
+window, not settings that can be held indefinitely.
 
 The Stark geometry is a fourth, free, item: model_profile's `profile` seam
 takes a closure over stark_from_intensity_profile with its own intensities and
@@ -58,9 +83,9 @@ from rb5s6s.lineshape import stark_shift_S0_mhz                   # noqa: E402
 OUT = C.RESULTS_DIR / "onf_candidate.csv"
 
 # ---------------------------------------------------------------------------
-# assumed parameters: lab facts this repository does not know. Each is a
-# placeholder for a measurement or a datasheet value from the fiber's owners,
-# and the note says which. Bands are carried where the ignorance is a range.
+# assumed parameters: apparatus values this repository does not know. Each is
+# a placeholder for a measurement or a mode solution, and the note says
+# which. Bands are carried where the ignorance is a range.
 # ---------------------------------------------------------------------------
 LAMBDA_NM = PEAKS["4121"]["lambda_nm"]      # drive wavelength, committed
 NEFF_BAND = (1.08, 1.25)                    # guided-mode index at 993 nm
@@ -71,7 +96,8 @@ MOT_T_K = 150e-6                            # MOT temperature
 MOT_N_CM3 = 1e10                            # MOT peak density
 MOT_OVERLAP_M = 0.6e-3                      # MOT-waist overlap length
 HOT_OVERLAP_M = 2e-3                        # hot-vapor waist region used
-FIBER_RADIUS_NM = 200.0                     # ONF radius (400 nm diameter class)
+FIBER_RADIUS_NM = 200.0                     # 400 nm ONF, the fibre rajasree2020spin
+                                            # drove this line through
 C3_5S_HZ_UM3 = 845.0                        # Rb 5S vs fused silica, literature
 C3_RATIO_BAND = (3.0, 6.0)                  # C3(6S)/C3(5S), expectation band
 CELL_T_C = 130.0                            # the cell reference condition
@@ -126,6 +152,24 @@ def main() -> int:
         f"lambda/(2 pi sqrt(neff^2-1)) across the neff band, central {lam_c:.0f}")
     add("mode_area_eff", f"{AEFF_UM2:.2f}", "um^2", "assumed_parameter",
         "effective area for surface intensity. REPLACE with the mode solution")
+    add("fiber_diameter", f"{2 * FIBER_RADIUS_NM:.0f}", "nm", "cited_literature",
+        "the ONF rajasree2020spin drove 5S-6S through with cold atoms. NOTE a "
+        "discrepancy to settle: the internal manuscript scaffold describes the "
+        "group's fibres as ~650 nm waist, which is not the fibre of the "
+        "cold-atom 5S-6S measurement")
+    add("measured_count_rate_evanescent", "25 to 40", "counts per ms",
+        "cited_literature",
+        "rajasree2020spin, cold 87Rb around a 400 nm ONF on THIS transition. "
+        "This is the feasibility anchor: the signal question is answered by a "
+        "published measurement on this platform, so the per-atom rate ratios "
+        "below are context for the Stark budget rather than the case for "
+        "detectability")
+    add("circular_null_minimum", "13 theory, 25 practice", "per cent",
+        "cited_literature",
+        "rajasree2020spin: the guided mode's longitudinal component prevents a "
+        "true circular null, so the two-photon rate has a MINIMUM rather than a "
+        "zero. The polarisation at the atom is not the polarisation at the "
+        "input, which is a systematic and also a tomography handle")
 
     # ---- instrument A: cold atoms, trap off -------------------------------
     v_ratio = math.sqrt(MOT_T_K / (CELL_T_C + 273.15))
@@ -201,10 +245,14 @@ def main() -> int:
     for r_nm in (50, 100, 200):
         lo = (C3_RATIO_BAND[0] - 1) * C3_5S_HZ_UM3 / (r_nm * 1e-3) ** 3 / 1e6
         hi = (C3_RATIO_BAND[1] - 1) * C3_5S_HZ_UM3 / (r_nm * 1e-3) ** 3 / 1e6
-        add(f"vdw_shift_at_{r_nm}nm", f"{lo:.2f} to {hi:.2f}", "MHz",
+        add(f"cp_shift_at_{r_nm}nm", f"{lo:.2f} to {hi:.2f}", "MHz",
             "derived_expectation",
-            "differential 5S-6S van der Waals red shift at this distance; "
-            "read against the cold line budget above")
+            "differential 5S-6S Casimir-Polder red shift at this distance in "
+            "the near-field C3/z^3 form, read against the cold line budget "
+            "above. NOT the whole surface shift: the electrostatic "
+            "surface-charge term of pennetta2026 adds to it and is "
+            "device-dependent, and the C3 form crosses to a retarded C4/z^4 "
+            "at larger z (ton2026)")
 
     OUT.parent.mkdir(exist_ok=True)
     with OUT.open("w", newline="") as fh:
