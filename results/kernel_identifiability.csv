@@ -1,0 +1,12 @@
+block,kind,corr_gamma_sigma,sv_ratio,null_dir_gamma,null_dir_sigma,note,status
+fixed_condition_jacobian,gaussian,0.9085236361,1.577e-01,-0.340392,+0.940284,"null direction weight on (gamma,sigma); 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+fixed_condition_jacobian,lorentzian,1.0000000000,1.816e-10,-0.707107,+0.707107,"null direction weight on (gamma,sigma); 1/sqrt(2)=0.7071 is the SUM degeneracy",DIAGNOSTIC
+sum_invariance,gaussian,,4.030e-01,5.782e-03,1.435e-02,"sum-preserving move changes the line by 5.78e-03 of peak, against 1.43e-02 for the sum-changing control",DIAGNOSTIC
+sum_invariance,lorentzian,,0.000e+00,0.000e+00,1.699e-02,"sum-preserving move changes the line by 0.00e+00 of peak, against 1.70e-02 for the sum-changing control",DIAGNOSTIC
+mixed_model_validation,gamma_L->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit; AGREES,DIAGNOSTIC
+mixed_model_validation,sigma_G->0,,0.000e+00,,,reimplementation vs shipped composite_profile in this limit; AGREES,DIAGNOSTIC
+mixed_model_jacobian,G+L,1.0000000000,2.020e-11,-0.707107,+0.707107,"4 params (gamma_coll, sigma_G, Gamma_L_equiv, transit) at ONE condition; corr column is gamma_coll vs Gamma_L_equiv",DIAGNOSTIC
+fisher_transit_frozen,gaussian,,1.577e-01,-0.340392,+0.940284,n_params=2; laser weight in worst direction 0.9403,DIAGNOSTIC
+fisher_transit_free,gaussian,,1.238e-01,+0.630090,-0.482627,n_params=3; laser weight in worst direction 0.4826,DIAGNOSTIC
+fisher_transit_frozen,lorentzian,,1.816e-10,-0.707107,+0.707107,n_params=2; laser weight in worst direction 0.7071,DIAGNOSTIC
+fisher_transit_free,lorentzian,,1.347e-10,-0.707107,+0.707107,n_params=3; laser weight in worst direction 0.7071,DIAGNOSTIC

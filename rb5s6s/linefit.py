@@ -101,15 +101,23 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     the 18-23 per cent beta shift it produces is a SENSITIVITY result, not a
     model-form uncertainty (rule 19.25 and the transit-modelform finding).
     """
-    homog = GNAT_MHZ + max(gamma_coll, 0.0)
-    widths = [homog, max(sigma_laser, 1e-6), max(transit_fwhm, 1e-6)] + ([s0] if s0 > 0 else [])
+    # A Lorentzian laser kernel is ADDED, not convolved: two Lorentzians
+    # convolve to their summed width exactly, and doing it on a finite grid
+    # instead made the profile depend on how the total was SPLIT, at up to
+    # 3.7e-3 of peak, purely through tail truncation. See the long note in
+    # lineshape.composite_profile and results/kernel_identifiability.csv.
+    _lorentz_laser = laser_kind != "gaussian"
+    homog = (GNAT_MHZ + max(gamma_coll, 0.0)
+             + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
+    widths = ([homog] + ([] if _lorentz_laser else [max(sigma_laser, 1e-6)])
+              + [max(transit_fwhm, 1e-6)] + ([s0] if s0 > 0 else []))
     span = 6.0 * (sum(widths) + max(widths)) + 5.0
     dnu = max(min(widths) / 12.0, dnu_floor)
     n = int(np.ceil(span / dnu))
     g = np.arange(-n, n + 1) * dnu
     prof = lorentzian(g, homog)
-    lk = gaussian(g, sigma_laser) if laser_kind == "gaussian" else lorentzian(g, sigma_laser)
-    prof = fftconvolve(prof, lk, "same") * dnu
+    if not _lorentz_laser:
+        prof = fftconvolve(prof, gaussian(g, sigma_laser), "same") * dnu
     tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
           else gaussian(g, transit_fwhm))
     prof = fftconvolve(prof, tk, "same") * dnu

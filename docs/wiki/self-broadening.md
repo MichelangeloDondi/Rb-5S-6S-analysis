@@ -97,6 +97,14 @@ way out is a second lever rather than more density points. Here that lever is
 the FIELD: this coefficient is indifferent to it, and the satellite's width
 contribution goes as $B^2$.
 
+The same rule read the other way is why the density ladder works at all. A
+laser contribution to the width is CONSTANT in density, not linear in it, so
+density does separate it from this coefficient. That separation is what makes
+the headline kernel comparison a measurement while its per-condition version
+is not ([the Voigt profile](voigt-profile.md)). One lever distinguishes terms
+that scale differently under it and nothing else, which is a statement about
+the design rather than about the physics.
+
 ## What can go wrong
 
 The impact approximation is a physical assumption with a checkable validity

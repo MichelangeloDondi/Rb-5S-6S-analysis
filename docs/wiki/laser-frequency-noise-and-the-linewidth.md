@@ -175,3 +175,31 @@ the convolution the kernel enters
 ---
 
 [← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 8* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)
+
+
+## What the LINESHAPE says, and why it does not contradict the comb
+
+Measured 2026-08-21, the line excludes a purely Lorentzian laser contribution
+at 26 of the 32 canonical conditions above three sigma
+([the Voigt profile](voigt-profile.md)). Read quickly that looks like it
+settles the question this page leaves open, and against the tooth-scatter
+evidence above, which leans the other way. It does neither, because the two are
+answers to different questions.
+
+Three questions travel together here and are worth keeping apart, because they
+are three different experiments.
+
+* **Which kernel family fits the line.** The lineshape's question. Answered at
+  one corner: not a pure Lorentzian.
+* **How much laser broadening there is.** An independent-linewidth measurement's
+  question. Under the intercept decomposition this is the identifying one, and
+  it is unmeasured.
+* **Which noise process produces it.** The comb's question, which is what this
+  page is about. Reaching a kernel from a noise spectrum needs stated
+  assumptions about stationarity, observation time and scan rate, and that
+  transfer has not been validated here.
+
+So "not a pure Lorentzian" and "the tooth scatter leans against a Gaussian
+justification" are compatible: the first excludes one endpoint, the second
+argues against the other, and the answer sits between them. What is missing is
+the fitted Lorentzian-equivalent WIDTH that says where.

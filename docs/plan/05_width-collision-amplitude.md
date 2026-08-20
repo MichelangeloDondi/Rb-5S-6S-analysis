@@ -404,20 +404,32 @@ it. Either outcome closes the question, which is the property worth having.
 Measured 2026-08-20 and worth stating before the session is designed, because
 it changes what the density ladder is buying.
 
-Fitting every canonical condition twice, differing only in whether the laser's
-own contribution is modelled as a Gaussian or a Lorentzian, moves
-$\gamma_{\rm coll}$ by a median **45 per cent**, and the headline
-$\beta_{\rm self}$ by 45 to 67 per cent, which is **nine to seventeen sigma**
-on its own quoted error. Lorentzians add linearly, so
-a Lorentzian laser width is degenerate with the collisional width and competes
-for the same wings. That is a larger lever on the collisional coefficient than
-anything else the record has examined.
+Fitting every peak twice under the record's own hierarchical construction,
+differing only in whether the laser's own contribution is modelled as a
+Gaussian or a Lorentzian, moves the headline $\beta_{\rm self}$ by 45 to 67
+per cent, **nine to eighteen sigma** on its own quoted error. That is a larger
+lever on the collisional coefficient than anything else the record has
+examined.
 
-The archive does discriminate, which was not expected: the Gaussian fits
-better on 32 conditions of 32, never once losing. So the assumption the record
-makes is the one the data prefer, and the width channel is not resting on an
-arbitrary choice. **It is resting on a choice that has now been tested**, which
-is a different and much better position.
+Lorentzians add linearly, and that has a consequence sharper than competition
+for the same wings: at a FIXED condition the model depends on the collisional
+and laser widths only through their SUM, so neither is identified there and
+only the sum is. A per-condition version of this comparison was withdrawn on
+2026-08-20 for that reason. Density is what separates them, so this lever and
+the density ladder are the same instrument seen from two sides.
+
+The line does constrain the kernel, but not through that tally. The
+pure-Lorentzian model is NESTED inside the Gaussian one: a zero-width Gaussian
+is a delta function, so the Gaussian arm reaches the Lorentzian arm exactly by
+sending its own width to zero. A containing model cannot fit worse, which makes
+32 of 32 arithmetic rather than evidence. Read instead as the nested likelihood
+ratio it is, the median improvement is $\Delta\chi^2 = 232$ for one boundary
+parameter, about fifteen sigma, ranging from 0.1 to 1303 across conditions.
+**A purely Lorentzian laser contribution is excluded at 26 of the 32
+conditions at better than three sigma**, while at the remaining six the
+improvement falls below that and the data there do not settle it. The
+assumption the record makes is supported, on a firmer test than the one first
+reported.
 
 **What the session should carry from this.** The comparison run here is
 between two extremes. A laser kernel with a FITTED Lorentzian fraction turns

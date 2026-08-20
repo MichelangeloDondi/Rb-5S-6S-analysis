@@ -157,28 +157,79 @@ LINEARLY: a Lorentzian laser width is degenerate with $\gamma_{\rm coll}$ and
 competes with it for the same wings. Changing that assumption does not merely
 change the fit quality, it moves the collisional number.
 
-**How much it moves it.** Every canonical condition was fitted twice, same
-traces, same noise law, same trim, differing only in the kernel. The median
-fractional shift in $\gamma_{\rm coll}$ is **−45 per cent**, falling on 31
-conditions of 32, over a range from −98 to +17. Run under the record's own
-hierarchical construction the HEADLINE $\beta_{\rm self}$ moves further
-still, 45 to 67 per cent across the four peaks, which is **nine to seventeen
-sigma** on the statistical error quoted beside it. This was the largest
-unexamined lever on the collisional coefficient in the record, and the quoted
-error bar omits a term about ten times its own size.
+**How much it moves it, and which comparison is meaningful.** Run under the
+record's own hierarchical construction, the HEADLINE $\beta_{\rm self}$ moves
+by 45 to 67 per cent across the four peaks, **nine to eighteen sigma** on the
+statistical error quoted beside it (`results/kernel_headline.csv`). That is
+the largest single lever on the collisional coefficient the record has
+examined, and it means the quoted error bar omits a term about ten times its
+own size.
 
-**And the data settle it.** The expectation, written down before the run, was
-that the archive could not tell the two kernels apart, by the same argument
-the cusp comparison makes: a 2 MHz smear is not selective about its own shape.
-That expectation was wrong. **The Gaussian kernel fits better on 32 conditions
-out of 32**, never once losing, with a median reduced-chi-square difference of
-+0.023. A sign test on 32 of 32 gives $p = 5\times10^{-10}$, and even
-collapsing the four peaks within a trace to one independent condition it is
-$p = 0.008$.
+A PER-CONDITION version of that comparison was first reported beside it, a
+median −45 per cent shift in $\gamma_{\rm coll}$, and it was **withdrawn on
+2026-08-20**. It was not a smaller version of the same result. It was not a
+measurement at all. Since Lorentzians add linearly, at a fixed condition the
+model depends on $\gamma_{\rm coll}$ and a Lorentzian laser width **only
+through their sum**, so the split between them is unidentified: moving the two
+in opposite directions leaves the predicted line exactly unchanged. Refitting
+confirms it from the data side. Between two implementations the sum stays put
+to 0.02 per cent while each part moves by 16 to 20 per cent, at identical
+reduced chi-square. The quoted per-condition shift was the position the
+optimiser stopped at along a flat direction.
 
-So the Gaussian laser kernel is now SUPPORTED by the line rather than assumed,
-which is a constraint on the laser's noise type obtained from the lineshape
-rather than from the comb
+What breaks the degeneracy is **density**, because the collisional part scales
+with it and the laser part does not. The headline estimator varies density and
+a single condition does not, which is exactly why the headline figure survives
+and the per-condition one never had a referent. The cost is visible in the
+correlation between $\beta_{\rm self}$ and the shared laser width, which runs
+$-0.82$ to $-0.89$ under the Gaussian kernel and $-0.91$ to $-0.98$ under the
+Lorentzian: the density ladder converts an exact degeneracy into a strong but
+finite one. `results/kernel_identifiability.csv` carries the measurement.
+
+**What the fit-quality comparison does and does not settle.** The expectation,
+written down before the run, was that the archive could not tell the two
+kernels apart, by the same argument the cusp comparison makes: a 2 MHz smear
+is not selective about its own shape. Measured, the Gaussian kernel gives the
+lower reduced chi-square at every one of the 32 conditions, with a median
+difference of +0.023, and that ordering is unchanged by the implementation
+correction above.
+
+**That result is weaker than it looks, and the reason is the degeneracy.**
+Because the Lorentzian arm has an exactly flat direction, it has one fewer
+EFFECTIVE shape parameter than the Gaussian arm: it can set the total
+homogeneous width and nothing else, while the Gaussian arm sets two widths of
+different shapes. A comparison in which the more flexible model wins at every
+condition is close to determined before any data are taken, so the tally is
+evidence about parameter counting first and about the laser second. It is
+reported here as implementation evidence, not as a measurement of the laser's
+noise type, and no significance is quoted for it: a sign test whose outcome is
+near-certain under both hypotheses has no significance to quote. Separating
+the two readings needs a comparison at equal effective parameter count, which
+is what the kernel-characterisation step is for.
+
+**Why the tally is arithmetic, stated exactly.** The Gaussian arm builds a
+Lorentzian of width $\Gamma_{\rm nat}+\gamma_{\rm coll}$ convolved with a
+Gaussian of width $\sigma$. The Lorentzian arm builds a single Lorentzian of
+width $\Gamma_{\rm nat}+\gamma_{\rm coll}+\sigma$. Send $\sigma$ to zero in
+the first: the Gaussian factor becomes a delta function and what remains is a
+single Lorentzian whose width the free $\gamma_{\rm coll}$ can set to anything
+the second arm can reach. **The
+second model is contained in the first**, both parameters are bounded
+$[0,50]$ MHz so the containing point is reachable, and it is verified
+numerically to 1.5e-5 of peak. A containing model cannot fit worse. The
+Gaussian winning everywhere was therefore guaranteed before any data existed.
+
+**What IS informative is the size of the improvement**, read as the nested
+likelihood ratio it is rather than as a tally of wins: a median
+$\Delta\chi^2$ of 232 for one extra parameter sitting on its boundary,
+roughly fifteen sigma, over a range from 0.1 to 1303 across the 32 conditions.
+The spread matters and is not decoration: the pure Lorentzian is excluded at 26
+of the 32 conditions at better than three sigma and at 21 at better than ten,
+while at the remaining six the improvement falls below three sigma and the
+data there do not settle it. So the conclusion survives in a
+better-founded and more limited form: **the line requires Gaussian-like
+content at most but not all conditions**, which is a constraint on the laser's noise type
+obtained from the lineshape rather than from the comb
 ([laser frequency noise](laser-frequency-noise-and-the-linewidth.md) carries
 what the comb does and does not say).
 

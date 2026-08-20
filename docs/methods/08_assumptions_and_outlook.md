@@ -18,9 +18,21 @@ that says what the other seven are conditional on.
    strong, experimenter confirmation pending, and the ramp-monitor export of
    PLAN §3 item 0 would settle it).
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
-   split depends on them). The model-form study ([§4.7](06_the_statistics.md)) confirms the 2025
-   data cannot distinguish these forms, so the *shape* assumption is untested
-   by the dataset and is among the assumptions most exposed to being wrong until a fixed-lock session is run.
+   split depends on them). These two are no longer in the same position, as of
+   2026-08-20. The TRANSIT shape is still undistinguished by the 2025 data
+   ([§4.7](06_the_statistics.md)), and the Voigt-versus-Lehmann difference is
+   carried as a model-form error bar for that reason. The LASER shape is not:
+   fitting every condition under a Lorentzian laser kernel instead gives a
+   median $\Delta\chi^2$ of 232 against the Gaussian for one extra parameter,
+   and a purely Lorentzian laser contribution is excluded at 26 of the 32
+   conditions above three sigma. Two cautions travel with that. The comparison
+   is NESTED rather than a choice between alternatives, since the Lorentzian
+   model is the boundary case of the Gaussian one, so the count of conditions
+   the Gaussian wins carries no information and only the size of the
+   improvement does. And excluding one corner is not the same as measuring the
+   shape: how much Lorentzian content the line tolerates is a fitted width
+   that has not been measured yet. The laser shape is therefore TESTED AT ONE
+   CORNER and unmeasured in between.
 4. The beam waist $w_0=64$ µm is **adopted from the lineage measurement,
    not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
    diameter with a beam profiler on the same laser model, the same $f=150$ mm

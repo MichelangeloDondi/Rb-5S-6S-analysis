@@ -49,6 +49,7 @@ RESULTS = ROOT / "results"
 
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
+    "run_kernel_identifiability": ["kernel_identifiability.csv"],
     "run_cooperative_channel": ["cooperative_channel.csv"],
     "run_polarisation_bound": ["polarisation_bound.csv"],
     "run_skew_scaling": ["skew_scaling.csv"],
@@ -86,6 +87,7 @@ CHEAP = {
 # Minutes each, and they need data_raw/ traces.
 EXPENSIVE = {
     "run_laser_kernel": ["laser_kernel.csv"],
+    "run_kernel_headline": ["kernel_headline.csv"],
     "run_linefit": ["linefit_conditions.csv"],
     # noise_law_swap.csv is this same run's third output, free to check here.
     "run_beta_self": ["beta_self.csv", "beta_self_probe.csv", "noise_law_swap.csv"],

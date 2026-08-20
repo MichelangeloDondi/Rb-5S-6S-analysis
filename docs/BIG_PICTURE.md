@@ -85,19 +85,42 @@ integrates as the unmeasured middle.
 
 **That shape is no longer unmeasured, as of 2026-08-20, and the answer came
 from the line rather than from the laser.** The switch selecting it had been
-wired through four modules and never thrown. Thrown, it moves the collisional
-width by a median 45 per cent per condition, and the headline coefficient
-itself by 45 to 67 per cent, which is nine to seventeen sigma on the
-statistical error quoted beside it. That makes it the largest single
+wired through four modules and never thrown. Thrown, it moves the headline
+coefficient by 45 to 67 per cent, which is nine to eighteen sigma on the
+statistical error quoted beside it (`results/kernel_headline.csv`).
+
+The PER-CONDITION figure first reported beside it, a median 45 per cent shift
+in the collisional width, was WITHDRAWN on 2026-08-20 and is not a smaller
+version of the same result. Under a Lorentzian laser kernel the collisional
+and laser widths enter a single lineshape only through their SUM, so at a
+fixed condition the split between them is not identified at all: the fit
+constrains the sum to two parts in ten thousand and leaves each part free.
+The number that had been quoted was the position the optimiser happened to
+stop at along that flat direction. What separates the two is DENSITY, which
+the headline estimator varies and a single condition does not, which is why
+the headline figure survives and the per-condition one never had a referent.
+The correction is in `results/kernel_identifiability.csv`. That makes it the largest single
 assumption the width channel rests on, larger than the width degeneracy above
 it, and it means the quoted error bar omits a term about ten times its own
-size. And the archive DISCRIMINATES: the Gaussian the record had been assuming
-fits better on 32 conditions of 32, never once losing, which is a sign test at
-$p = 5\times10^{-10}$ and $p = 0.008$ even counting only eight independent
-conditions. So this limitation is now a tested choice rather than an
-unexamined one, which is a different and much better position, and the
-remaining work is a fitted Lorentzian FRACTION to turn a comparison between
-two corners into the error bar
+size. And the line does constrain the kernel, though not by the tally first
+reported. **The pure-Lorentzian model is NESTED inside the Gaussian one**: let
+the Gaussian width go to zero and what remains is exactly the Lorentzian arm,
+since a zero-width Gaussian is a delta function and Lorentzian widths add. A
+model that contains another cannot fit worse than it, so the Gaussian winning
+at 32 conditions of 32 is arithmetic rather than evidence, and the sign test
+built on that tally is withdrawn.
+
+What the comparison does say is in the SIZE of the improvement, read as the
+nested likelihood ratio it is: a median $\Delta\chi^2$ of 232 for one extra
+parameter sitting on its boundary, about fifteen sigma, over a range from 0.1
+to 1303 across the conditions. **A purely Lorentzian laser contribution is
+excluded at 26 of the 32 conditions at better than three sigma, 21 of them at
+better than ten, and the line requires Gaussian-like content.** That
+is a stronger statement than the tally made and it rests on a defensible test.
+It also fixes what comes next: since one corner contains the other, the two
+were never alternatives to choose between, and the remaining work is a fitted
+Lorentzian-equivalent WIDTH inside the containing model, which turns a
+comparison of corners into the error bar
 ([`run_laser_kernel.py`](../scripts/run_laser_kernel.py),
 [the Voigt profile](wiki/voigt-profile.md)).
 

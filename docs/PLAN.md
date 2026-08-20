@@ -27,17 +27,23 @@ with the collisional coefficient bounded at 0.03-0.05 MHz per 10¹² cm⁻³.
 
 **And the degeneracy has a second face, measured 2026-08-20.** It is not only
 the laser width that competes with the collisional one. The laser kernel's
-SHAPE does too, and by more. Fitting every condition twice, differing only in
+SHAPE does too, and by more. Fitting every peak twice, differing only in
 whether the laser's contribution is a Gaussian or a Lorentzian, moves the
-per-condition collisional width by a median 45 per cent, and the headline
-collisional coefficient by 45 to 67 per cent, which is nine to seventeen sigma
-on its own quoted error, because Lorentzians add linearly and a Lorentzian laser width is degenerate with a collisional one in
-a way a Gaussian is not. The archive does discriminate, preferring the
-Gaussian on 32 conditions of 32, so the assumption this record makes is the
-one the data prefer and the width channel rests on a tested choice rather than
-an arbitrary one. What the session should carry from it is that a laser kernel
-with a FITTED Lorentzian fraction turns that binary into the model-form error
-bar on the collisional coefficient, and costs a fit rather than beam time
+headline collisional coefficient by 45 to 67 per cent, nine to eighteen sigma
+on its own quoted error. A per-condition version of the same comparison was
+withdrawn on 2026-08-20: at fixed condition the two widths enter only through
+their sum, so the split is unidentified and only the density ladder separates
+them. The mechanism is that Lorentzians add linearly and a Lorentzian laser width is degenerate with a collisional one in
+a way a Gaussian is not. The two kernels are not alternatives: the pure-Lorentzian
+model is NESTED inside the Gaussian one, reached by letting the Gaussian width
+go to zero, so the Gaussian cannot fit worse and the 32-of-32 tally is
+arithmetic rather than evidence. The informative quantity is the SIZE of the
+improvement as a nested likelihood ratio, a median delta chi-square of 232 for
+one boundary parameter, which excludes a purely Lorentzian laser contribution
+at 26 of the 32 conditions at better than three sigma. What the session should carry from it is that a fitted
+Lorentzian-equivalent WIDTH inside the containing model turns that comparison
+into the model-form error bar on the collisional coefficient, and costs a fit
+rather than beam time
 (`scripts/run_laser_kernel.py`).
 
 **The proposed measurement.** A vapour-cell session under the repaired cavity

@@ -90,6 +90,8 @@ FILE_STATUS = {
     # M38 measures what an ASSUMPTION costs and which of two the data
     # prefer. Nothing here is a bound on a physical coefficient.
     "laser_kernel.csv": "DIAGNOSTIC",
+    "kernel_headline.csv": "DIAGNOSTIC",
+    "kernel_identifiability.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise
     "stark_centres.csv": "NULL",  # measures the experiment's sensitivity, not the atom

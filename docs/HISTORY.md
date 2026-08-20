@@ -573,17 +573,14 @@ contribution to the line. It is a parameter of `composite_profile`,
 `model_profile`, `fit_condition` and `beta.py`, it is documented in three
 docstrings, and it had never been called with anything but its default.
 
-Turning it moved the per-condition collisional width by a median 45 per cent,
-because Lorentzians add linearly and a Lorentzian laser width is degenerate
-with the collisional width. **The headline `beta_self` moves further.** Run
-under the record's own hierarchical construction the four peaks move 45 to 67
-per cent, median 58, which is NINE TO SEVENTEEN SIGMA on the statistical error
-the record quotes, so the model-form uncertainty from the kernel exceeds the
-statistical one by about an order of magnitude. That was the largest unexamined lever on the headline
-quantity in the record. The archive also turned out to DISCRIMINATE, which was
-preregistered as unlikely: the Gaussian fits better on 32 conditions out of 32,
-so the assumption the record had been making is the one the data prefer. An
-arbitrary choice became a tested one.
+Turning it moved the headline collisional coefficient by 45 to 67 per cent,
+nine to eighteen sigma on its quoted statistical error. A per-condition figure
+of 45 per cent was reported the same night and WITHDRAWN the next morning: at
+fixed condition a Lorentzian laser width and a collisional width enter only
+through their sum, so that number described where an optimiser stopped on a
+flat direction rather than a property of the data. The headline survives
+because its estimator varies density, which is the only thing that separates
+them.
 
 An audit of every model-form switch in the tree found this was the only one
 never exercised. `transit_kind`, `sigma_sharing`, `topology` and `scaling` are
@@ -602,3 +599,61 @@ ceiling-test diagnostic, from 0.301 to 0.532. The conclusion is unchanged and
 the shot-noise p-value is unchanged at 0.083. Three pages and the generated
 ledger carried the old p-value and now carry the new one, tied to the
 producer's cell by a registry entry.
+
+## An exact degeneracy that the code broke, and the number that had no referent, 2026-08-20
+
+**What moved.** The per-condition figure reported the previous evening, a
+median 45 per cent shift in the collisional width when the laser kernel is
+changed from Gaussian to Lorentzian, is WITHDRAWN. It is not replaced by a
+corrected value, because the quantity it reported is not identified. The
+headline figure beside it, 45 to 67 per cent on `beta_self`, STANDS and is now
+reproduced by a committed producer: `run_kernel_headline.py` gives 45.0, 58.0,
+63.2 and 66.6 per cent across the four peaks, nine to eighteen sigma on the
+statistical error quoted beside them.
+
+**Why the per-condition number had no referent.** Lorentzians add. At a fixed
+condition the model therefore depends on the collisional width and a
+Lorentzian laser width only through their SUM, so the split between them
+carries no information at all. The data say the same thing: between two
+implementations the sum holds to 0.02 per cent while each part moves by 16 to
+20 per cent, at identical reduced chi-square. The published number described
+where an optimiser stopped along a flat direction.
+
+**What positioned the optimiser, which is the part worth keeping.** The code
+realised the exact identity by CONVOLVING two Lorentzians on a finite grid.
+Finite grids truncate Lorentzian tails. The truncation depends on the grid
+span, and the span was computed from the two widths separately. So the
+implementation made the profile depend on the split by up to 3.7e-3 of peak
+where the mathematics forbids any dependence at all, a numerically
+manufactured separability pointing along exactly the direction the next
+measurement was to be made along. Measured against the archive's own noise
+over the ~1e4 points of one condition, that artefact carries up to seventy
+sigma of matched-filter leverage. It was not small in the only units that
+matter.
+
+**The fix and its blast radius.** A Lorentzian laser width is now ADDED into
+the homogeneous width at all three assembly sites rather than convolved:
+exact by construction, and one convolution cheaper. The Gaussian path, which
+every committed number in this repository rides, is bit-identical across 96
+parameter combinations on identical grids, verified against the previous
+commit's own modules rather than argued. No committed number outside
+`laser_kernel.csv` moves. `tests/test_laser_kind_degeneracy.py` pins the
+invariance bit-identically, with the Gaussian branch as the should-fail
+control, and the guard was ceiling-tested against the pre-fix code.
+
+**What survived, and why.** The headline estimator varies DENSITY, which is
+the only thing that separates a collisional width from a laser one, so its
+answer barely moved. The correlation between `beta_self` and the shared laser
+width shows the price: -0.82 to -0.89 under the Gaussian kernel, -0.91 to
+-0.98 under the Lorentzian. The density ladder converts an exact degeneracy
+into a strong but finite one, which is the whole reason the headline figure is
+a measurement and the per-condition one never was.
+
+**Also withdrawn from the public surfaces.** The sign-test p-value quoted for
+the Gaussian giving the lower chi-square at 32 conditions of 32. The tally is
+unchanged by the fix and is kept as implementation evidence, but the
+Lorentzian arm has one fewer EFFECTIVE shape parameter, since it can set the
+total homogeneous width and nothing else. A comparison in which the more
+flexible model wins everywhere is close to determined before any data are
+taken, and a significance computed against a null that both hypotheses nearly
+guarantee is not a significance.

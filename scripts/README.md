@@ -192,7 +192,23 @@ sits ten orders below the line.
 
 `run_laser_kernel.py` (M38) fits every canonical condition twice, differing
 only in the laser kernel's shape, and reports what that assumption costs the
-collisional coefficient. It needs the raw traces.
+collisional coefficient. It needs the raw traces. Read its per-condition
+`gamma_coll` columns with `run_kernel_identifiability.py`'s result in hand:
+under a Lorentzian kernel only their SUM is identified at fixed condition.
+
+`run_kernel_headline.py` (K1) asks the same question of the HEADLINE
+coefficient, fitting each peak twice under the record's own hierarchical
+estimator, where varying density is what separates a collisional width from a
+laser one. It reports the correlation between beta_self and the shared laser
+width under each kernel, which is what says whether the density ladder is
+breaking the degeneracy. It needs the raw traces.
+
+`run_kernel_identifiability.py` (K0) takes no data at all and runs in seconds.
+It asks what the model CAN identify before anything is fitted: the Jacobian at
+a fixed condition under each kernel, a direct sum-invariance test with a
+should-fail control, the mixed G+L model validated against the shipped code in
+both limits, and the hierarchical Fisher matrix with the intercept slots free
+as well as frozen. It runs from a clone.
 
 Everything else reads committed tables and runs from a clone. Among the pipeline
 stages that is `run_trim_report.py`, `run_laser_epoch.py`,

@@ -20,16 +20,38 @@ stopped matching a fresh run of their own producers.
 Recover it with:
 
 ```
-python3.9 -m venv .venv-record
+python3.9 -m venv .venv-record       # 3.10-3.12 also host numpy 2.0.2
 ./.venv-record/bin/python -m pip install \
     "numpy==2.0.2" "scipy==1.13.1" "pandas==2.2.3" "matplotlib==3.9.4"
-./.venv-record/bin/python -m pip install -e .        # ignore the requires-python warning
+./.venv-record/bin/python -m pip install -e . --no-deps
+./.venv-record/bin/python -c "import numpy, scipy; print(numpy.__version__, scipy.__version__)"
 ```
 
-The editable install will complain that the package now declares
-`requires-python >=3.12`. That is expected and it is the point of this file:
-the SUPPORTED environment and the environment OF RECORD are different
-statements, and only the second one reproduces the committed digits.
+**`--no-deps` IS LOAD-BEARING AND THE LAST LINE IS NOT OPTIONAL.** Until
+2026-08-20 this recipe ended `pip install -e .` with a note to ignore the
+`requires-python` warning. That was wrong, and wrong in the one way that
+destroys the thing it is building: an editable install is a DEPENDENCY
+RESOLUTION, not a path fixup. It reads the `numpy>=2.5` floor this package
+declares and enforces it, so the fourth line silently upgraded the 2.0.2
+pinned on the second line. The note told the reader to expect a complaint
+about the Python version while the damage happened quietly beside it, in a
+directory named for the record. Measured on 2026-08-20, both arms run:
+
+| last line | numpy after | `import rb5s6s` |
+|---|---|---|
+| `pip install -e .` | **2.0.2 -> 2.5.2** | works |
+| `pip install -e . --no-deps` | 2.0.2 held | works |
+
+The package still imports either way, so nothing announces the failure. Hence
+the printed versions: an environment is a MEASURED quantity, not a configured
+one, and its name is not evidence about its contents. If PYTHONPATH suits you
+better it is safer still, because it never lets pip near the environment.
+
+The editable install will also complain that the package declares
+`requires-python >=3.12`. THAT complaint is expected, and it is the point of
+this file: the SUPPORTED environment and the environment OF RECORD are
+different statements, and only the second one reproduces the committed
+digits.
 
 ## What reproduces, and how widely
 

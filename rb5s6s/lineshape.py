@@ -181,15 +181,33 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     form, default); 'gaussian' = a Gaussian of the same FWHM, which makes the
     whole line a pure Voigt (no cusp). Running the global fit under both and
     differencing beta gives the model-form error bar the paper must quote."""
-    homog = GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0)
-    widths = [homog, max(sigma_laser, 1e-6), max(transit_fwhm, 1e-6)]
+    # A LORENTZIAN LASER KERNEL IS ADDED, NOT CONVOLVED (2026-08-20).
+    # Two Lorentzians of FWHM a and b convolve to one of FWHM a+b exactly, so
+    # a Lorentzian laser width belongs in `homog` rather than in a second
+    # convolution. This is not an optimisation. Done by convolution on a
+    # finite grid the Lorentzian tails are truncated, and the truncation
+    # depends on the SPAN, which depends on how a given total width is SPLIT
+    # between the two widths. That made the profile depend on the split at up
+    # to 3.7e-3 of peak where the continuum identity says it cannot depend on
+    # it at all: a numerically manufactured separability pointing along
+    # exactly the direction any laser-width inference has to measure. Against
+    # the archive's own noise over ~1e4 points per condition that artefact
+    # carries up to 70-sigma matched-filter leverage, so it could not be
+    # assumed small. Addition removes it identically -- the profile is
+    # invariant under sum-preserving changes of the split to machine zero --
+    # and costs one convolution less. results/kernel_identifiability.csv measures it.
+    _lorentz_laser = laser_kind != "gaussian"
+    homog = (GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0)
+             + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
+    widths = ([homog] + ([] if _lorentz_laser else [max(sigma_laser, 1e-6)])
+              + [max(transit_fwhm, 1e-6)])
     span = 6.0 * (sum(widths) + max(widths)) + 5.0
     dnu = max(min(widths) / GRID_STEPS_PER_KERNEL, GRID_STEP_FLOOR_MHZ)
     n = int(np.ceil(span / dnu))
     g = np.arange(-n, n + 1) * dnu
     prof = lorentzian(g, homog)
-    lk = gaussian(g, sigma_laser) if laser_kind == "gaussian" else lorentzian(g, sigma_laser)
-    prof = np.convolve(prof, lk, "same") * dnu
+    if not _lorentz_laser:
+        prof = np.convolve(prof, gaussian(g, sigma_laser), "same") * dnu
     tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
           else gaussian(g, transit_fwhm))
     prof = np.convolve(prof, tk, "same") * dnu
@@ -393,8 +411,15 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     `nu`. Homogeneous Lorentzians (natural + collisional) are combined
     analytically before convolution.
     """
-    homog = gamma_nat_mhz + gamma_coll
-    kernel_widths = [homog, sigma_laser_fwhm, transit_fwhm]
+    # A Lorentzian laser kernel is ADDED, not convolved: two Lorentzians
+    # convolve to their summed width exactly, and doing it on a finite grid
+    # instead made the profile depend on how the total was SPLIT, at up to
+    # 3.7e-3 of peak, purely through tail truncation. See the long note in
+    # lineshape.composite_profile and results/kernel_identifiability.csv.
+    _lorentz_laser = laser_kind != "gaussian"
+    homog = gamma_nat_mhz + gamma_coll + (sigma_laser_fwhm if _lorentz_laser else 0.0)
+    kernel_widths = ([homog] + ([] if _lorentz_laser else [sigma_laser_fwhm])
+                     + [transit_fwhm])
     span_widths = kernel_widths + ([s0] if s0 > 0 else [])
     span = 6.0 * (sum(span_widths) + max(span_widths)) + 5.0
     # grid step from the smooth kernels only: stark_ramp handles s0 below the
@@ -405,9 +430,8 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     g = _grid(span, dnu)
 
     prof = lorentzian(g, homog)
-    lk = gaussian(g, sigma_laser_fwhm) if laser_kind == "gaussian" \
-        else lorentzian(g, sigma_laser_fwhm)
-    prof = _conv(prof, lk, dnu)
+    if not _lorentz_laser:
+        prof = _conv(prof, gaussian(g, sigma_laser_fwhm), dnu)
     if transit_fwhm > 0:                 # 0 => no transit kernel (nested-model ladder)
         prof = _conv(prof, two_sided_exponential(g, transit_fwhm), dnu)
     if s0 > 0:

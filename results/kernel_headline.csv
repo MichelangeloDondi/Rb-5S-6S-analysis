@@ -1,0 +1,5 @@
+peak,n_temperatures,beta_gaussian,beta_lorentzian,beta_frac_shift,beta_shift_in_sigma,beta_err_gaussian,beta_err_lorentzian,sigma_laser_gaussian,sigma_laser_lorentzian,corr_beta_laser_gaussian,corr_beta_laser_lorentzian,chi2_red_gaussian,chi2_red_lorentzian,status
+4121,4,0.015599,0.005739,-0.632095,-9.49,0.001039,0.001676,1.883617,0.704077,-0.8372,-0.9428,0.843163,0.846557,DIAGNOSTIC
+4154,4,0.018054,0.007577,-0.580318,-17.85,0.000587,0.001467,1.692089,0.667300,-0.8900,-0.9837,0.921290,0.925767,DIAGNOSTIC
+4192,4,0.013071,0.004369,-0.665761,-12.71,0.000685,0.000923,2.026883,0.750793,-0.8168,-0.9081,0.982083,0.981451,DIAGNOSTIC
+4207,4,0.017791,0.009789,-0.449797,-9.09,0.000880,0.001457,1.937681,0.682759,-0.8524,-0.9506,0.945029,0.967450,DIAGNOSTIC

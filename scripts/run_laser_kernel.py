@@ -19,6 +19,23 @@ traces, the same noise law, the same trim, differing only in `laser_kind`. It
 reports gamma_coll and sigma_laser under each, their difference, and the
 chi-square difference that says whether the archive can tell the two apart.
 
+THE TWO ARMS ARE NESTED, WHICH DECIDES HOW THE TALLY MAY BE READ. The
+gaussian arm builds Lorentzian(Gamma_nat + gamma_coll) (X) Gaussian(sigma);
+the lorentzian arm builds Lorentzian(Gamma_nat + gamma_coll + sigma). Sending
+sigma to zero in the first leaves a delta function for the Gaussian factor and
+a single Lorentzian whose width the free gamma_coll can set to anything the
+second arm reaches, and both parameters are bounded [0, 50] MHz so that point
+is reachable. THE LORENTZIAN MODEL IS CONTAINED IN THE GAUSSIAN ONE. A
+containing model cannot fit worse, so "the gaussian wins at N of N" is
+arithmetic and carries no evidence: a sign test on it has no null to test
+against. The informative quantity is the SIZE of the improvement read as a
+nested likelihood ratio, which is why this producer now emits `dof` and
+`delta_chi2` alongside the reduced values. At fixed condition the lorentzian
+arm is also exactly degenerate in (gamma_coll, sigma_laser) -- only their sum
+is identified -- so ITS gamma_coll COLUMN IS NOT A MEASUREMENT and the
+frac_shift column is not a physical shift. Both are kept for the record and
+labelled here rather than deleted. See results/kernel_identifiability.csv.
+
 WHAT IT IS NOT. Not a claim that the laser is Lorentzian. The kernel follows
 from the noise TYPE, which docs/wiki records as unmeasured, and the comb
 bounds an excursion rather than identifying a spectrum. This measures what
@@ -88,6 +105,7 @@ def main() -> int:
             volts.append(v)
         if len(volts) < 3:
             continue
+        n_points = int(sum(v.size for v in volts))
         law = condition_noise_model(volts)
         transit = transit_fwhm_at_T(float(T), C.TRANSIT_FWHM_PLACEHOLDER_MHZ)
 
@@ -119,6 +137,12 @@ def main() -> int:
             "chi2_red_gaussian": f"{c_g:.6f}",
             "chi2_red_lorentzian": f"{c_l:.6f}",
             "chi2_red_diff": f"{c_l - c_g:+.6f}",
+            # dof of the gaussian arm: 2 shared (gamma_coll, sigma_laser)
+            # plus 4 per trace (A, centre, b0, b1). Reported so the nested
+            # likelihood ratio below can be recomputed from this file alone.
+            "n_points": n_points,
+            "dof": n_points - (2 + 4 * len(volts)),
+            "delta_chi2": f"{(c_l - c_g) * (n_points - (2 + 4 * len(volts))):.1f}",
         })
         print(f"  {role} {peak} {T}C {P}mW: gamma_coll {g_g:.4f} -> {g_l:.4f} "
               f"({frac:+.1%}), chi2_red {c_g:.4f} -> {c_l:.4f}")
@@ -129,12 +153,33 @@ def main() -> int:
 
     fr = np.array([float(r["gamma_coll_frac_shift"]) for r in out])
     dc = np.array([float(r["chi2_red_diff"]) for r in out])
-    print(f"\n  median fractional shift in gamma_coll: {np.median(fr):+.1%}")
+    print(f"\n  median fractional shift in gamma_coll: {np.median(fr):+.1%}"
+          f"   <-- NOT A MEASUREMENT, do not quote")
     print(f"  conditions where it falls: {int((fr < 0).sum())} of {fr.size}")
+    print("    (the lorentzian arm is exactly degenerate in "
+          "(gamma_coll, sigma_laser):\n     only their SUM is identified, so this "
+          "shift is where the optimiser\n     stopped on a flat direction. "
+          "Quote the headline instead, from\n     results/kernel_headline.csv.)")
     print(f"  median chi2_red difference (lorentzian minus gaussian): "
           f"{np.median(dc):+.4f}")
-    print(f"  conditions the Lorentzian kernel fits better: "
-          f"{int((dc < 0).sum())} of {dc.size}")
+    # The tally below is arithmetic, not evidence: the lorentzian model is
+    # nested inside the gaussian one, so it cannot win. It is printed only as
+    # an implementation check -- a NEGATIVE count here would mean the
+    # optimiser had failed, since the containing model must reach at least the
+    # contained model's minimum.
+    n_worse = int((dc < 0).sum())
+    print(f"  conditions the Lorentzian kernel fits better: {n_worse} of "
+          f"{dc.size}   (nesting says this must be 0; nonzero = optimiser "
+          f"failure, not evidence for the Lorentzian)")
+    dchi2 = np.array([float(r["delta_chi2"]) for r in out])
+    print("\n  NESTED LIKELIHOOD RATIO, one extra parameter at its boundary:")
+    print(f"    median delta chi2 {np.median(dchi2):.1f} "
+          f"(~{np.sqrt(max(np.median(dchi2), 0)):.1f} sigma), "
+          f"range {dchi2.min():.1f} to {dchi2.max():.1f}")
+    for thr, lab in ((9.0, "3"), (100.0, "10")):
+        print(f"    a pure Lorentzian laser contribution is excluded at "
+              f"{int((dchi2 > thr).sum())} of {dchi2.size} conditions "
+              f"above {lab} sigma")
 
     OUT.parent.mkdir(exist_ok=True)
     with OUT.open("w", newline="") as fh:

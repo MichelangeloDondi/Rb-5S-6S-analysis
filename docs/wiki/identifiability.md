@@ -271,6 +271,63 @@ Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
 
+## An exact degeneracy that the implementation broke, 2026-08-21
+
+Every other case on this page is a degeneracy the data cannot resolve well.
+This one is different: it is a degeneracy the MATHEMATICS makes exact, and the
+code broke it by accident.
+
+Lorentzians add. Convolving a Lorentzian of FWHM $a$ with one of FWHM $b$ gives
+a Lorentzian of FWHM $a+b$, exactly. So if the laser's contribution is modelled
+as a Lorentzian, the predicted line at a FIXED condition depends on
+$\gamma_{\rm coll}$ and the laser width only through their SUM. Not weakly.
+Not approximately. The two directions in parameter space are one direction, and
+the orthogonal one is flat: the profile is unchanged along it to machine zero.
+
+**Two consequences, and the second is the surprising one.**
+
+First, any number reported for $\gamma_{\rm coll}$ alone under that kernel is
+not a measurement. It is wherever the optimiser stopped sliding along the flat
+direction. A per-condition figure published on 2026-08-20 was withdrawn for
+exactly this reason ([the Voigt profile](voigt-profile.md)).
+
+Second, **the code did not have the flat direction it should have had**. It
+realised the identity by CONVOLVING the two Lorentzians on a finite grid. Grids
+truncate Lorentzian tails, the truncation depends on the grid span, and the
+span was computed from the two widths separately. So the predicted line
+depended on how a fixed total width was SPLIT, by up to $3.7\times10^{-3}$ of
+peak, along the direction that is provably flat.
+
+**Why that size is not small.** Against machine precision it is enormous, and
+as a bare fraction it sounds ignorable. The units that decide are the data's:
+per-point noise here is $5.3\times10^{-3}$ of peak and one condition carries
+about $10^4$ points, so a coherent distortion at $3.7\times10^{-3}$ has up to
+seventy sigma of matched-filter leverage. A fit asked to separate the two
+widths would have separated them, confidently, using round-off. This is the
+general lesson: **scale a numerical artefact against the noise of the data it
+will be fitted to, across the number of points it will be fitted over.**
+
+**The fix is the general one for exact identities.** Do not compute them, IMPOSE
+them. The laser width is now added into the homogeneous width instead of
+convolved, which is exact by construction and one convolution cheaper. The
+guard asserts the invariance BIT-IDENTICALLY rather than within a tolerance,
+since any tolerance would hide the artefact's return, and it sits beside a
+control asserting that the Gaussian branch, where no such symmetry holds, DOES
+move under the same transformation.
+
+**What breaks the degeneracy for real is density**, which is this page's own
+theme. The collisional part scales with density and the laser part does not, so
+an estimator that varies density separates them and one that does not, cannot.
+That is why the headline kernel result survived the fix almost unchanged while
+the per-condition one had no referent at all. The cost is visible in the
+correlation between $\beta_{\rm self}$ and the shared laser width: $-0.82$ to
+$-0.89$ under the Gaussian kernel, $-0.91$ to $-0.98$ under the Lorentzian. The
+density ladder turns an exact degeneracy into a strong but finite one.
+
+Measured in [`results/kernel_identifiability.csv`](../../results/kernel_identifiability.csv),
+which runs in seconds and takes no data, because the contract has to exist
+before the inference does.
+
 ## An instability that was actually a discrete boundary, 2026-08-20
 
 A campaign-only bound appeared to move between code versions, which reads at
