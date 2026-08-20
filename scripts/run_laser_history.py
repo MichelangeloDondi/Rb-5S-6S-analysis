@@ -44,8 +44,12 @@ That gives 296 traces in 60 epochs, of which 45 hold three or more traces of one
 line. The within-epoch excursion is 1.28 MHz peak-to-peak (median), and the one
 long knob-untouched stretch -- epoch 38, 993.4121 nm, ten traces over 74.9
 minutes on 2025-07-17 -- drifts at -0.022 MHz/min. That last number is the
-result worth having: DATA.md quotes the held lock at ~0.016 MHz/min from an
-independent argument, and this is a direct measurement of it from the atoms.
+result worth having. DATA.md's independent argument once quoted ~0.016
+MHz/min and RETRACTED that reading on 2026-07-30, since it compares block
+medians across blocks; what the record defends is a bound of order
+0.02 MHz/min with the sign undetermined. This -0.022 is a direct measurement
+from the atoms inside one display epoch, which needs no window-reference
+correction, and it sits inside that bound.
 
 TWO INTERVENTION CHANNELS, and only one is visible in the setting. A knob move
 shows up in window_start_ms and breaks the record. A CAVITY-REFERENCE recentring

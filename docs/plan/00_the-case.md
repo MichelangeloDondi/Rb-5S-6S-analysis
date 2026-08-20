@@ -44,21 +44,20 @@ record's own collisional chain, per-trace free centres so that drift and
 re-locks are profiled out exactly rather than modelled, and a per-session
 detector-saturation nuisance.
 
-THE MARGIN, AND THE TWO THINGS THAT COULD DISSOLVE IT. The predicted
+The margin, and the two things that could dissolve it. The predicted
 coefficient lies above the 95% limit with Δχ² ≈ 4, a two-sigma-level
 exclusion rather than a comfortable one.
 
 First, the subset spread, which is the dominant systematic: 0.258 MHz from
 all three sessions, 0.240 with the red-wing nuisance marginalised, and 0.366
-with peak 4192 dropped, which removes an entire session. THE DROP-4192 SUBSET
-DOES NOT SIT BELOW THE PREDICTION. The primary is the reference because it is
+with peak 4192 dropped, which removes an entire session. That last subset does
+not sit below the prediction. The primary is the reference because it is
 the construction that uses every trace the record admits, and dropping a peak
-is a robustness arm rather than an alternative headline, but the arm that
-disagrees is stated here rather than left in a table.
+is a robustness arm rather than an alternative headline.
 
 Second, a term deliberately absent from the model. Atomic saturation broadens
 with the same power signature as the light shift, so leaving it out makes
-this bound LOOSE by a measured factor: injecting a saturation term and
+this bound loose by a measured factor: injecting a saturation term and
 re-profiling moves the width-only bound by 2.8 and this joint bound by 2.21.
 Neither committed bound was changed, because the injected law is the
 two-level homogeneous form used with a two-photon Rabi frequency, which is
@@ -66,7 +65,7 @@ standard but an approximation rather than a derivation for this system. So
 the quoted bound is conservative in the direction that matters, and the
 exclusion above would tighten rather than dissolve if the term were licensed.
 
-AND ONE QUESTION ABOUT THIS BOUND HAS ITS CAUSE IDENTIFIED AS OF TONIGHT. Rerunning the
+One question about this bound has its cause identified as of 2026-08-20. Rerunning the
 construction under later code moved a subset bound by about a third, measured
 2026-08-14 and recorded as a code-version instability. A sweep across the
 commit range, holding one environment, found the cause. The construction's
@@ -74,19 +73,17 @@ point count changes at exactly one commit, 247783 to 247788 at an unchanged
 172 traces, and that commit renamed a vocabulary across the tree while
 regenerating the committed ruler CSVs as a side effect. Fitted ruler rates
 moved in their eleventh digit, a frequency axis shifted by that much moves a
-DISCRETE trim boundary across a sample edge in a few traces, and five samples
+discrete trim boundary across a sample edge in a few traces, and five samples
 enter. So the inputs were never identical and the arithmetic is not
 defective. The sweep says something stronger: six commits spanning nine days
 of development return the same chi-square to the last printed digit at a
 common grid point, and the two on the far side of the boundary agree with
-each other, so the code is BIT-STABLE across the range and the only thing
+each other, so the code is bit-stable across the range and the only thing
 that moved was the input set. How much of the reported movement five samples
 account for is being measured, and the candidate amplifier is the
 ill-conditioning the subset columns already carry. The primary bound is
 untouched either way.
 
-Each bound above carries its construction, its threshold convention, its
-subset spread, and the subset that disagrees with it.
 
 ## 2. What is not identified, and why it survives
 
@@ -94,7 +91,7 @@ subset spread, and the subset that disagrees with it.
 enter as a sum that the observable constrains almost perfectly and a split
 that it barely constrains at all. In the production per-condition fit, which
 holds the transit width at its waist-derived value, the two are correlated at
-about −0.92. This is a property of the LINESHAPE, a Lorentzian core convolved
+about −0.92. This is a property of the lineshape, a Lorentzian core convolved
 with a Gaussian, not of the sample size, which is why more data does not fix
 it. Free the transit width as well and the degeneracy moves rather than
 lifting: `results/identifiability.csv` then reports −0.964 between the
@@ -110,7 +107,7 @@ widths rather than showing up as a misfit.
 changes, not as absolute positions, until the axis is repaired.
 
 **Amplitude against detection.** The departure from the square-of-power law
-orders by peak BRIGHTNESS rather than by branching ratio, which reads as a
+orders by peak brightness rather than by branching ratio, which reads as a
 detection signature rather than an atomic one. No single acquisition chain
 can separate those two readings.
 
@@ -119,18 +116,15 @@ temperatures. One session's internal temperature is a range from 110 to
 130 °C, a factor 3.2 in vapour density, which propagates into every
 density-linked quantity.
 
-Each of these was established by asking what the data can determine before
-asking what it says, and each is carried as unresolved rather than quoted
-with an optimistic error.
 
 ## 3. The one intervention that breaks each
 
 | what is unidentified | the measurement that removes it | why it works |
 |---|---|---|
-| the width split | an independent laser-width measurement | it removes one side of a correlated pair instead of fitting both. At ρ = −0.918 an external constraint reduces the other side's variance to (1 − ρ²) = 0.16 of its joint value, so its uncertainty falls by a factor of about 2.5 |
+| the width split | an independent laser-width measurement | it removes one side of a correlated pair instead of fitting both. At ρ = −0.918 an external constraint reduces the other side's variance to (1 − ρ²) = 0.16 of its joint value, so its uncertainty falls by a factor of about 2.5. That factor rides the correlation, running 2.3 at the record's median ρ = −0.90 to 3.5 at the pinning simulation's own −0.94 |
 | transit against waist | a beam profile in the interaction volume | one afternoon, no atoms required |
 | the excluded axis | the frequency-axis repair, already scoped | the rulers exist in those traces and were not used |
-| amplitude against detection | four peaks on ONE vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |
+| amplitude against detection | four peaks on one vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |
 | temperature | the wide-scan Doppler pedestal as an in-situ thermometer | one slow trace per block converts an adopted temperature into a measured one |
 
 That factor of 2.5 replaced a claim in this repository's own tutorial, which
@@ -141,40 +135,38 @@ test, and a ratio quoted as an ensemble rather than as a single draw
 (3.18 ± 0.20 over nine seeds, after the single-seed 3.4 that four documents
 had carried turned out to be the largest of the nine).
 
-Each row's gain is computed rather than argued, which is why the table can
-be read as a budget.
 
 ## 4. What a next campaign is projected to achieve
 
-Everything in this section is a PROJECTION from the forward model, not a
+Everything in this section is a projection from the forward model, not a
 result, and each carries the condition that would defeat it. The projections
 come from `rb5s6s/forecast.py` and the campaign twin, which is an
 experiment-design and identifiability engine: it takes a set of experimental
 controls, generates the data those controls would produce, runs the real
 analysis on it, and reports what the analysis recovers and how often. Its
-output is what the ANALYSIS would recover under the simulated world, which
+output is what the analysis would recover under the simulated world, which
 is a weaker statement than what the campaign would establish.
 
 * A one-range power ladder removes the range-switching confound from the
   width and amplitude channels. Projected gain about 2.6 from a snug bright
-  range. DEFEATED IF the dynamic range cannot be held across the ladder, in
+  range. Defeated if the dynamic range cannot be held across the ladder, in
   which case two overlapping blocks with shared rungs measure the offset
   instead of hiding it.
 * The Doppler pedestal converts an adopted temperature into a measured one.
   A Doppler width scales as the square root of temperature, so 20 K at about
-  400 K asks for a width fit good to 2.5%. DEFEATED IF the pedestal does not
+  400 K asks for a width fit good to 2.5%. Defeated if the pedestal does not
   separate from scattered light, or if cell gradients dominate the single
   number.
 
 * Randomised ladder order breaks the power-against-time collinearity that
-  makes every 2025 power trend equally a time trend. DEFEATED IF drift
+  makes every 2025 power trend equally a time trend. Defeated if drift
   remains correlated within blocks despite randomisation.
 
 Every projected number above carries the condition that would defeat it.
 
 ## 5. What stays out of reach
 
-A collisional MEASUREMENT rather than a bound, at these densities and this
+A collisional measurement rather than a bound, at these densities and this
 temperature lever. The width split without an external constraint, at any
 sample size. An absolute cell temperature without an in-situ thermometer.
 And the absolute frequency of the transition, which this apparatus was never
@@ -212,8 +204,6 @@ Five claims were removed after being tested.
   in either direction. It now draws the bound the record defends, and its
   source line names the sources it actually reads.
 
-Each entry carries the diagnosis that closed it, which is what separates a
-retraction from a correction.
 
 ## Where to check any of this
 

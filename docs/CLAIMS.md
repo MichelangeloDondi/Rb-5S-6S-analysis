@@ -334,8 +334,11 @@ would add:
   is 0.09 MHz on S₀(225 mW), which would detect a shift of the predicted
   size at 3.8 sigma and separate the two disputed polarizability signs at
   8 sigma if the shift is that size, conditional on the lock holding to
-  the dataset's own measured held-lock rate rather than to any borrowed
-  cavity figure. Which sign the pull has needs no intensity calibration
+  the dataset's own held-lock BOUND, of order 0.02 MHz/min with the sign
+  undetermined, rather than to any borrowed cavity figure. That bound is what
+  the record defends: the directional 0.016 MHz/min reading was retracted on
+  2026-07-30 (see [DATA.md](DATA.md)'s provenance note), so this condition is
+  stated against a limit and not against a measured rate. Which sign the pull has needs no intensity calibration
   at all. How far apart the two signs sit does, since a common scale
   error moves both predictions together. One hour rather than one morning
   halves that reach to 1.9 sigma, so the morning is what the conversion

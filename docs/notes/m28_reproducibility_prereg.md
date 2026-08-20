@@ -121,6 +121,29 @@ moved by a third. A changed constant or a changed model would have moved the
 primary too. What moves only the poorly conditioned quantities is the
 optimizer path.
 
+> **Third postscript, 2026-08-20: the premise above was wrong and this
+> paragraph's conclusion goes with it.** A commit sweep across the range,
+> holding one environment, found the joint construction's POINT COUNT
+> changing at exactly one commit, 247783 to 247788 with the trace count
+> unchanged at 172. That commit renamed a vocabulary across the tree and
+> REGENERATED THE COMMITTED RULER CSVs as a side effect, moving fitted ruler
+> rates in their eleventh digit, and a frequency axis shifted by that much
+> moves a discrete trim boundary across a sample edge so that five samples
+> enter. So the data were NOT identical: byte-identical described the raw
+> traces and not the fit's inputs, and this note's own check looked at the
+> files it expected to move rather than at the count of what the fit loads.
+>
+> The code, meanwhile, is bit-stable across the whole range: six commits
+> spanning nine days return the same chi-square to the last printed digit at
+> a common grid point. "Changed code" is the half of the premise that fails
+> hardest.
+>
+> What survives is the CONDITIONING argument, and it survives intact. A
+> perturbation this small moving only the poorly conditioned quantities is
+> exactly what the paragraph above says, and it is now the candidate
+> amplifier rather than the cause. How much of the reported third five
+> samples account for is being measured. See `docs/RESULTS.md` C3f.
+
 So section 1's seeded-twin discipline gap, which the first postscript said had
 lost its urgency, HAS ITS URGENCY BACK, and on a second axis: the variants are
 sensitive not only to their own inputs but to the path the optimizer takes to
