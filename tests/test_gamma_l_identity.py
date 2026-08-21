@@ -175,3 +175,65 @@ def test_fit_global_also_gained_laser_kind():
     import inspect
     from rb5s6s import global_fit
     assert "laser_kind" in inspect.signature(global_fit.fit_global).parameters
+
+
+# ---------------------------------------------------------------- 6. the fitted parameter
+def test_fitting_gamma_l_is_off_by_default_and_inert():
+    """fit_gamma_l defaults False, and the returned value is then the input."""
+    from rb5s6s.forecast import synthetic_traces
+    from rb5s6s.linefit import fit_condition
+    rng = np.random.default_rng(1)
+    f, v = synthetic_traces(1.2, 3.0, 0.93, n_traces=3, n_points=800, noise=0.004, rng=rng)
+    out = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93)
+    assert out["gamma_l"] == 0.0
+    assert out["gamma_l_fitted"] is False
+    assert np.isnan(out["gamma_l_err"])
+
+
+def test_at_one_condition_only_the_SUM_of_the_lorentzian_widths_is_identified():
+    """The continuum identity, asserted on the ESTIMATOR rather than the profile.
+
+    gamma_coll and Gamma_L,equiv are both Lorentzian widths, Lorentzians add
+    exactly, so at a single fixed condition only their sum can be measured. The
+    fit must therefore recover the SUM accurately and the SPLIT arbitrarily.
+
+    This is the property that makes the whole kernel question a multi-condition
+    question: the separating lever is density, because gamma_coll scales with
+    N(T) and Gamma_L,equiv does not. A fit that returned a well-determined
+    split HERE would be reporting the discretisation artefact that was removed
+    on 2026-08-20, not a physical separation, so this test failing in the
+    direction of "too good" is as informative as it failing in either other.
+    """
+    from rb5s6s.forecast import synthetic_traces
+    from rb5s6s.linefit import fit_condition
+    truth_gc = 1.2
+    for gl_true in (0.0, 0.5, 1.5):
+        sums = []
+        for seed in range(3):
+            rng = np.random.default_rng(seed)
+            f, v = synthetic_traces(truth_gc, 3.0, 0.93, gamma_l=gl_true,
+                                    n_traces=5, n_points=2000, noise=0.004, rng=rng)
+            o = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True)
+            sums.append(o["gamma_coll"] + o["gamma_l"])
+        recovered = float(np.mean(sums))
+        true_sum = truth_gc + gl_true
+        assert recovered == pytest.approx(true_sum, rel=5e-3), (
+            f"the SUM must be identified: got {recovered:.4f} for {true_sum:.4f}")
+
+
+def test_gamma_l_is_appended_not_inserted_in_the_parameter_vector():
+    """Freeing gamma_l must not move gamma_coll or sigma_laser off index 0 and 1.
+
+    Callers and the covariance read those by position. An inserted shared
+    parameter would silently re-point every one of those reads.
+    """
+    from rb5s6s.forecast import synthetic_traces
+    from rb5s6s.linefit import fit_condition
+    rng = np.random.default_rng(3)
+    f, v = synthetic_traces(1.2, 3.0, 0.93, gamma_l=0.4, n_traces=4,
+                            n_points=1200, noise=0.004, rng=rng)
+    free = fit_condition(f, v, T_C=130.0, transit_fwhm=0.93, fit_gamma_l=True)
+    # gamma_coll and sigma_laser still carry their own errors from cov[0,0]/[1,1]
+    assert np.isfinite(free["gamma_coll_err"]) and free["gamma_coll_err"] > 0
+    assert np.isfinite(free["sigma_laser_err"]) and free["sigma_laser_err"] > 0
+    assert free["gamma_l_fitted"] is True

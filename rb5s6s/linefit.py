@@ -211,7 +211,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   T_C: float, law: Optional[Dict] = None, s0: float = 0.0,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
                   laser_kind: str = "gaussian", trim_tails: bool = False,
-                  gamma_l: float = 0.0,
+                  gamma_l: float = 0.0, fit_gamma_l: bool = False,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
@@ -283,28 +283,39 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     sigmas_raw = sigmas
     sigmas = [s * np.sqrt(tau) for s in sigmas_raw]
 
-    # parameter vector: [gamma_coll, sigma_laser, (transit?)] + per-trace [A, c, b0, b1]
-    nshared = 3 if fit_transit else 2
-    p0 = [0.5, 1.0] + ([transit_fwhm] if fit_transit else [])
+    # parameter vector:
+    #   [gamma_coll, sigma_laser, (transit?), (gamma_l?)] + per-trace [A, c, b0, b1]
+    # gamma_l is APPENDED AFTER transit, never inserted. Callers and tests read
+    # sol.x[0] and sol.x[1] and the covariance's [0,1] element by position, so
+    # inserting a shared parameter ahead of them would silently re-point every
+    # one of those reads at a different quantity. Appending cannot.
+    nshared = 2 + (1 if fit_transit else 0) + (1 if fit_gamma_l else 0)
+    p0 = ([0.5, 1.0] + ([transit_fwhm] if fit_transit else [])
+          + ([max(gamma_l, 0.05)] if fit_gamma_l else []))
     for i in range(ntr):
         p0 += [amps0[i], centers0[i], b0s[i], 0.0]
     p0 = np.array(p0)
-    lo = [0.0, 0.0] + ([0.05] if fit_transit else []) + [(-np.inf)] * (4 * ntr)
-    hi = [50.0, 50.0] + ([10.0] if fit_transit else []) + [np.inf] * (4 * ntr)
+    lo = ([0.0, 0.0] + ([0.05] if fit_transit else [])
+          + ([0.0] if fit_gamma_l else []) + [(-np.inf)] * (4 * ntr))
+    hi = ([50.0, 50.0] + ([10.0] if fit_transit else [])
+          + ([50.0] if fit_gamma_l else []) + [np.inf] * (4 * ntr))
     lo = np.array(lo, float); hi = np.array(hi, float)
     # keep amplitudes non-negative, widths in-range
     for i in range(ntr):
         lo[nshared + 4 * i] = 0.0  # A_i >= 0
 
+    _i_gl = 2 + (1 if fit_transit else 0)   # gamma_l's slot when it is free
+
     def unpack(p):
         gc, sl = p[0], p[1]
         tr = p[2] if fit_transit else transit_fwhm
-        return gc, sl, tr
+        gl = p[_i_gl] if fit_gamma_l else gamma_l
+        return gc, sl, tr, gl
 
     def residuals(p):
-        gc, sl, tr = unpack(p)
+        gc, sl, tr, gl = unpack(p)
         g, prof = _shared_profile_grid(gc, sl, transit_fwhm_at_T(T_C, tr) if fit_transit else tr,
-                                       s0, laser_kind, gamma_l, profile=profile)
+                                       s0, laser_kind, gl, profile=profile)
         out = []
         for i in range(ntr):
             A, c, b0, b1 = p[nshared + 4 * i: nshared + 4 * i + 4]
@@ -323,10 +334,10 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                      "n_trimmed": 0} for _ in range(ntr)]
     if trim_tails:
         from .trim import tail_trim
-        gc0, sl0, tr0 = unpack(sol.x)
+        gc0, sl0, tr0, gl0 = unpack(sol.x)
         g, prof = _shared_profile_grid(
             gc0, sl0, transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-            s0, laser_kind, gamma_l, profile=profile)
+            s0, laser_kind, gl0, profile=profile)
         guard = C.TRIM_CORE_GUARD_FWHM_MULT * _profile_fwhm(g, prof)
         any_trim = False
         for i in range(ntr):
@@ -374,10 +385,14 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     # (asymmetric misfit, e.g. an unmodelled shoulder).
     diag = []
     for i in range(ntr):
-        gc0, sl0, tr0 = unpack(sol.x)
+        # gl0, the FITTED gamma_l, not the fixed input. The diagnostics below
+        # (chi2, lag1, skew) are residuals against the model, so building that
+        # model from the input value while the fit had freed the parameter
+        # would compute every diagnostic against a line the fit did not choose.
+        gc0, sl0, tr0, gl0 = unpack(sol.x)
         g, prof = _shared_profile_grid(gc0, sl0,
                                        transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-                                       s0, laser_kind, gamma_l, profile=profile)
+                                       s0, laser_kind, gl0, profile=profile)
         A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
         model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
         r = (volts[i] - model) / sigmas_raw[i]   # diagnostics on UNSCALED sigma
@@ -387,7 +402,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                      "lag1": lag1,
                      "skew": float(np.mean(r0 ** 3) / max(np.std(r0) ** 3, 1e-12))})
 
-    gc, sl, tr = unpack(sol.x)
+    gc, sl, tr, gl = unpack(sol.x)
     err = np.sqrt(np.clip(np.diag(cov), 0, None))
     corr_gs = float(cov[0, 1] / np.sqrt(cov[0, 0] * cov[1, 1])) if cov[0, 0] > 0 and cov[1, 1] > 0 else np.nan
     return {
@@ -395,6 +410,12 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "sigma_laser": float(sl), "sigma_laser_err": float(err[1]),
         "transit_fwhm": float(transit_fwhm_at_T(T_C, tr) if fit_transit else tr),
         "transit_fitted": bool(fit_transit),
+        # Gamma_L,equiv. Named for what it is: a Lorentzian-EQUIVALENT width.
+        # It is not f_L and it is not "the laser linewidth"; attribution to the
+        # laser is licensed by the K5 triangle, never by this fit.
+        "gamma_l": float(gl), "gamma_l_fitted": bool(fit_gamma_l),
+        "gamma_l_err": float(err[_i_gl]) if fit_gamma_l else float("nan"),
+        "gamma_l_at_bound": bool(fit_gamma_l and gl <= 1e-9),
         "chi2_red": chi2_red, "n_traces": ntr,
         "noise_floor_limited": bool(chi2_red < 0.8),  # errors set by the noise model, not the fit
         # bound_active flags (2026-07-16): scipy's covariance ignores active
