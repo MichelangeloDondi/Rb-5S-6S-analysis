@@ -237,3 +237,51 @@ def test_gamma_l_is_appended_not_inserted_in_the_parameter_vector():
     assert np.isfinite(free["gamma_coll_err"]) and free["gamma_coll_err"] > 0
     assert np.isfinite(free["sigma_laser_err"]) and free["sigma_laser_err"] > 0
     assert free["gamma_l_fitted"] is True
+
+
+# ---------------------------------------------------------------- 7. the density lever
+def test_the_density_ladder_is_what_identifies_gamma_l():
+    """What one condition cannot do, a temperature ladder can.
+
+    At a fixed condition gamma_coll and Gamma_L,equiv are exactly degenerate
+    (the test above). The lever that separates them is DENSITY: gamma_coll is
+    beta_self * N(T) and moves with the ladder, while Gamma_L,equiv is a laser
+    property and does not. This test asserts that the separation actually
+    happens in the shipped multi-condition estimator, because the entire kernel
+    programme rests on it and "the density lever should work" is an argument,
+    not evidence.
+
+    SCOPE, stated so it is not over-read: the generator and the fitter share a
+    model here, so this establishes that the ESTIMATOR can identify the
+    parameter given data of the form it assumes. It is a statement about
+    information geometry, not about whether the real line's kernel is
+    Lorentzian. Misspecification is what the K2 worlds test.
+    """
+    from rb5s6s import config as C
+    from rb5s6s.beta import fit_beta_self
+    from rb5s6s.forecast import synthetic_traces
+    from rb5s6s.linefit import transit_fwhm_at_T
+
+    beta_true, sigma_l, gl_true = 0.30, 3.0, 0.60
+    tref = C.TRANSIT_FWHM_PLACEHOLDER_MHZ
+    rng = np.random.default_rng(0)
+    conds = []
+    for T in (110.0, 120.0, 130.0):          # the NARROW ladder, x3.2 in density
+        n_units = 10 ** ((T - 110.0) / 40.0)
+        f, v = synthetic_traces(beta_true * n_units, sigma_l,
+                                transit_fwhm_at_T(T, tref, 110.0),
+                                gamma_l=gl_true, n_traces=3, n_points=1500,
+                                noise=0.004, rng=rng)
+        conds.append(dict(T_C=T, N_units=n_units, freqs=f, volts=v, law=None))
+
+    out = fit_beta_self(conds, transit_ref_mhz=tref, T_ref_C=110.0,
+                        fit_gamma_l=True)
+    assert out["gamma_l_fitted"] is True
+    assert out["gamma_l"] == pytest.approx(gl_true, abs=0.08), (
+        f"the ladder failed to identify Gamma_L: {out['gamma_l']:.3f} for "
+        f"{gl_true:.3f}. If this fails while the one-condition degeneracy test "
+        "still passes, the density lever has stopped separating them and every "
+        "kernel number downstream is a sum rather than a component")
+    assert out["beta_self"] == pytest.approx(beta_true, abs=0.03), (
+        f"beta_self moved to {out['beta_self']:.3f} for {beta_true:.3f} while "
+        "Gamma_L was free: the two are trading against each other")

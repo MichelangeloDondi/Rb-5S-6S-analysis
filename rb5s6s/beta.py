@@ -139,7 +139,8 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
 def fit_beta_self(conditions: List[Dict], *,
                   transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                   fit_transit: bool = False, T_ref_C: float = 110.0,
-                  laser_kind: str = "gaussian", gamma_l: float = 0.0) -> Dict:
+                  laser_kind: str = "gaussian", gamma_l: float = 0.0,
+                  fit_gamma_l: bool = False) -> Dict:
     """Global beta_self fit for one peak across temperatures.
 
     conditions: list of dicts, each
@@ -183,8 +184,19 @@ def fit_beta_self(conditions: List[Dict], *,
     # multiplied the final covariance, throwing away the per-block structure.
     sigmas = [s * np.sqrt(t) for s, t in zip(sigmas, tr_tau)]
 
-    nshared = 3 if fit_transit else 2
-    p0 = [0.1, 1.0] + ([transit_ref_mhz] if fit_transit else [])
+    # gamma_l is APPENDED after transit, never inserted: beta_self and
+    # sigma_laser are read at 0 and 1 by this function's own return and by the
+    # covariance's corr_beta_laser element.
+    #
+    # THIS is where Gamma_L,equiv can be identified at all. At one condition it
+    # is exactly degenerate with gamma_coll, since both are Lorentzian widths
+    # and Lorentzians add. Here gamma_coll is beta*N(T) and moves with density
+    # while Gamma_L,equiv does not, so the temperature ladder is the lever that
+    # separates them, and the separation is only as good as that ladder's span.
+    nshared = 2 + (1 if fit_transit else 0) + (1 if fit_gamma_l else 0)
+    _i_gl = 2 + (1 if fit_transit else 0)
+    p0 = ([0.1, 1.0] + ([transit_ref_mhz] if fit_transit else [])
+          + ([max(gamma_l, 0.05)] if fit_gamma_l else []))
     for i in range(ntr):
         p0 += [seeds_A[i], seeds_c[i], seeds_b0[i], 0.0]
     p0 = np.array(p0, float)
@@ -193,19 +205,22 @@ def fit_beta_self(conditions: List[Dict], *,
     lo[1] = 0.0            # sigma_laser >= 0
     if fit_transit:
         lo[2] = 0.05; hi[2] = 10.0
+    if fit_gamma_l:
+        lo[_i_gl] = 0.0; hi[_i_gl] = 50.0
     for i in range(ntr):
         lo[nshared + 4 * i] = 0.0  # A_i >= 0
 
     def residuals(p):
         beta, sl = p[0], p[1]
         tref = p[2] if fit_transit else transit_ref_mhz
+        gl = p[_i_gl] if fit_gamma_l else gamma_l
         # one profile per distinct condition (γ_coll, transit depend on T)
         profs = {}
         for ci, cond in enumerate(conditions):
             gc = beta * cond["N_units"]
             tr = transit_fwhm_at_T(cond["T_C"], tref, T_ref_C) if fit_transit \
                 else transit_fwhm_at_T(cond["T_C"], transit_ref_mhz, T_ref_C)
-            profs[ci] = composite_profile(gc, sl, tr, laser_kind, gamma_l=gamma_l)
+            profs[ci] = composite_profile(gc, sl, tr, laser_kind, gamma_l=gl)
         out = []
         for i in range(ntr):
             g, prof = profs[tr_cond[i]]
@@ -238,6 +253,10 @@ def fit_beta_self(conditions: List[Dict], *,
         "transit_fitted": bool(fit_transit),
         "chi2_red": chi2_red, "corr_beta_laser": corr_bl,
         "noise_floor_limited": bool(chi2_red < 0.8),
+        "gamma_l": float(sol.x[_i_gl]) if fit_gamma_l else float(gamma_l),
+        "gamma_l_fitted": bool(fit_gamma_l),
+        "gamma_l_err": float(err[_i_gl]) if fit_gamma_l else float("nan"),
+        "gamma_l_at_bound": bool(fit_gamma_l and sol.x[_i_gl] <= 1e-9),
         "beta_at_bound": bool(sol.x[0] <= 1e-9),
         "sigma_laser_at_bound": bool(sol.x[1] <= 1e-9),
         "gamma_coll_by_cond": [beta * c["N_units"] for c in conditions],
