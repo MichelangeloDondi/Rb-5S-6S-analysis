@@ -75,7 +75,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                                    # noqa: E402
 from rb5s6s.constants import (GAMMA_NAT_HZ, W0_MEASURED_M,        # noqa: E402
-                              RHO_RETRO, PEAKS)
+                              RHO_RETRO, PEAKS,
+                              K_B_J_PER_K, M_RB87_KG)
 from rb5s6s.density import density_units, N_UNIT_CM3              # noqa: E402
 from rb5s6s.linefit import transit_fwhm_at_T                      # noqa: E402
 from rb5s6s.lineshape import stark_shift_S0_mhz                   # noqa: E402
@@ -175,9 +176,50 @@ def main() -> int:
     v_ratio = math.sqrt(MOT_T_K / (CELL_T_C + 273.15))
     geo = W0_MEASURED_M * 1e9 / lam_c
     tr_cold = tr_cell * geo * v_ratio
-    add("transit_onf_cold", f"{tr_cold * 1e3:.0f}", "kHz", "derived_expectation",
-        f"cell transit scaled by geometry x{geo:.0f} (w0 over the decay "
-        f"length) and by thermal speed x{v_ratio:.1e} (150 uK over 403 K)")
+    add("transit_onf_cold_scaled_LEGACY", f"{tr_cold * 1e3:.0f}", "kHz",
+        "derived_expectation",
+        f"NO LONGER USED as of 2026-08-21, kept so the correction is "
+        f"auditable. Cell "
+        f"transit scaled by geometry x{geo:.0f} and thermal speed "
+        f"x{v_ratio:.1e}. The scaling carries the CELL's Gaussian-beam "
+        "convention onto an exponential profile, which the rows below derive "
+        "directly instead")
+
+    # ---- O1: the transit kernel derived for the profile the atoms actually
+    # cross, rather than scaled from the profile they do not.
+    #
+    # THE SHAPE CHANGES, NOT ONLY THE WIDTH. A Gaussian beam gives the
+    # Biraben-Cagnac two-sided exponential in FREQUENCY, which is the cusp the
+    # cell's kernel uses. An atom on a radial pass through an evanescent field
+    # sees I(t) = I0 exp(-v|t|/Lambda), a two-sided exponential IN TIME, whose
+    # transform is a LORENTZIAN of FWHM v/(pi Lambda).
+    #
+    # THE CONSEQUENCE IS THE POINT. A Lorentzian transit width ADDS into the
+    # homogeneous width, exactly as gamma_coll and Gamma_L,equiv do, so in the
+    # fibre the transit term is NOT a separable nuisance: it enters the same
+    # exact degeneracy the kernel work just characterised. A fibre measurement
+    # of Gamma_L,equiv therefore needs either an independent Lambda, which the
+    # EOM teeth cannot supply at any drive, or a lever that moves the transit
+    # while leaving the kernel fixed. The molasses temperature ladder is that
+    # lever, and it is the fibre's analogue of the cell's density ladder.
+    v_cold = math.sqrt(K_B_J_PER_K * MOT_T_K / M_RB87_KG)
+    for lam_nm, tag in ((211.0, "min"), (388.0, "max")):
+        fw = v_cold / (math.pi * lam_nm * 1e-9)
+        add(f"transit_onf_cold_lorentzian_{tag}_decay", f"{fw / 1e3:.1f}", "kHz",
+            "derived_expectation",
+            f"FWHM v/(pi Lambda) at Lambda = {lam_nm:.0f} nm and T = 150 uK, "
+            "for the exponential evanescent profile. The kernel is a "
+            "LORENTZIAN, not the cell's cusp")
+    add("transit_onf_cold_band", "98 to 181", "kHz", "derived_expectation",
+        "the transit term across the 211 to 388 nm decay-length band. O2's "
+        "injection-recovery runs at BOTH edges, because a world whose known "
+        "component moves by a third is a different test at each")
+    add("transit_onf_kernel_shape", "Lorentzian", "shape", "derived_expectation",
+        "and therefore ADDITIVE with gamma_coll and Gamma_L,equiv rather than "
+        "separable from them. This is the fibre's version of the degeneracy "
+        "the cell resolves with density, and the molasses sqrt(T) ladder is "
+        "the lever that resolves it here")
+
     gc_mot = beta_med * (MOT_N_CM3 / N_UNIT_CM3)
     add("gamma_coll_at_MOT_density", f"{gc_mot * 1e6:.1f}", "Hz",
         "derived_expectation",
@@ -255,6 +297,30 @@ def main() -> int:
             "at larger z (ton2026)")
 
     OUT.parent.mkdir(exist_ok=True)
+    # ---- O0: the validation targets, as rows, before anything validates --
+    # Two PER-COMPONENT numbers, not one rounded singular target. They are
+    # computed from the anchor sigmas rather than quoted, so the row carries
+    # the construction and a reader can see which anchor moved if it changes.
+    anchor_gamma_l, anchor_sigma_g = 0.061, 0.058     # MHz, kernel_identifiability
+    prior_factor = 0.2
+    add("target_sigma_gamma_l", f"{prior_factor * anchor_gamma_l * 1e3:.1f}", "kHz",
+        "derived_expectation",
+        f"{prior_factor} x the cell-alone sigma(Gamma_L) of "
+        f"{anchor_gamma_l} MHz from the absolute_anchor row of "
+        "kernel_identifiability.csv. The precision a fibre measurement must "
+        "reach on the LORENTZIAN laser component for the joint fit to gain "
+        "what the forecast assumes")
+    add("target_sigma_sigma_g", f"{prior_factor * anchor_sigma_g * 1e3:.1f}", "kHz",
+        "derived_expectation",
+        f"{prior_factor} x the cell-alone sigma(sigma_G) of "
+        f"{anchor_sigma_g} MHz, the same requirement on the GAUSSIAN "
+        "component. The two targets differ and a single rounded figure hides "
+        "which component is the binding one")
+    add("target_recovery_fraction", "0.36", "fraction", "committed_input",
+        "the joint fit's sigma(beta) relative to the free-Gamma_L cell-alone "
+        "fit when both laser components carry a prior at this strength, from "
+        "the prior scan in kernel_identifiability.csv")
+
     # ---- the EOM ruler through the fibre ---------------------------------
     # The cell's frequency axis is built by the EOM sideband ruler. The same
     # teeth can be sent down the nanofibre, and what they are worth there is

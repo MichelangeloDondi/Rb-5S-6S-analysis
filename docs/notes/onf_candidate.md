@@ -208,6 +208,41 @@ in this repository yet measures either, which is why the forecast rows are
 expectations and the transfer condition is named here rather than assumed
 away.
 
+## The transit kernel in the fibre is a Lorentzian, and that changes the plan
+
+The cold-transit figure this note previously carried, 141 kHz, was obtained by
+scaling the CELL's transit width by the ratio of the beam waist to the
+evanescent decay length. That scaling carries the cell's Gaussian-beam
+convention onto a profile that is not Gaussian, and the profile is the thing
+that sets the kernel. Derived instead for the profile the atoms actually cross:
+
+An atom on a radial pass through an evanescent field sees
+$I(t) = I_0 e^{-v|t|/\Lambda}$, a two-sided exponential IN TIME, whose Fourier
+transform is a **Lorentzian** of FWHM $v/(\pi\Lambda)$. A Gaussian beam gives
+the Biraben-Cagnac two-sided exponential in FREQUENCY, which is the cusp the
+cell's kernel uses. The two geometries give different kernel SHAPES, not merely
+different widths.
+
+At 150 uK the width lands between **98 and 181 kHz** across the 211 to 388 nm
+decay-length band, which brackets the 141 kHz this note used to carry. So that figure was
+not far wrong as a magnitude, and the correction that matters is the shape.
+
+**Why the shape matters more than the width.** A Lorentzian transit width ADDS
+into the homogeneous width, exactly as the collisional width and
+$\Gamma_{L,\text{equiv}}$ do. In the fibre the transit term is therefore NOT a
+separable nuisance: it enters the same exact degeneracy the cell's kernel work
+characterised, where only the sum of the Lorentzian contributions is
+identifiable at a fixed condition.
+
+That has a direct consequence for what a fibre measurement can deliver. It
+needs either an independent decay length, which nothing the modulator can do
+supplies at any drive, or a lever that moves the transit term while leaving the
+laser kernel fixed. **The molasses temperature ladder is that lever**: the
+transit width scales as $\sqrt{T}$ and a laser width does not, which is the
+fibre's analogue of the density ladder the cell uses. It is no longer one
+setting among several on the menu. It is the setting that makes the
+measurement identifiable at all.
+
 ## Sending the EOM teeth down the fibre
 
 The frequency axis of every width and shift in this record is built by an EOM
