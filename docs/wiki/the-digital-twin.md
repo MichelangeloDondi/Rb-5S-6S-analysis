@@ -124,11 +124,21 @@ response matrix says is absent is measuring its own priors.
 ## Where this repository uses it
 
 `rb5s6s/forecast.py` is the layer: `synthetic_traces` generates data under
-either a constant noise fraction or a measured noise law, and
+either a constant noise fraction or a measured noise law, with the laser
+kernel selectable through `laser_kind` and `gamma_l` so a world can carry a
+Gaussian laser component, a Lorentzian one, or both at once, and
 `forecast_precision` runs the Monte Carlo over `synthetic_traces` into
 `fit_condition`, returning median parameter uncertainties together with
 scalings measured by RE-RUNNING the study at scaled designs rather than by
 asserting exponents.
+
+The kernel knobs are what made the 2026-08-21 identifiability worlds possible.
+A twin that can only EMIT a Gaussian laser kernel cannot test whether the
+fitter recovers a Lorentzian one, so a false-positive rate measured on it would
+be a statement about a world the question is not about. With the knobs, five
+hostile worlds at 500 trials each measured that the estimator does not
+manufacture a Lorentzian laser width from a true zero, from a wrong baseline,
+or from a wrong transit kernel (`results/kernel_worlds.csv`).
 
 `examples/campaign_twin.py` is the worked case: the twin of the next
 measurement campaign, carrying the hyperfine amplitudes with cascade

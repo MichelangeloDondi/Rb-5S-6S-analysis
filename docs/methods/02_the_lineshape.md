@@ -127,7 +127,7 @@ laser-frequency noise as a single pass would be
 ([Doppler-free two-photon spectroscopy](../wiki/doppler-free-two-photon.md)
 carries that derivation). The kernel is modelled as a **Gaussian** $G(\nu)$
 on central-limit grounds ([the Voigt profile](../wiki/voigt-profile.md)), with
-a Lorentzian variant retained as a model-form check, §2.5. **No independent diagnostic
+a Lorentzian variant retained as a model-form check, §2.4. **No independent diagnostic
 of the laser's jitter exists for either epoch.** No reference-cavity beat
 note or self-heterodyne measurement was recorded, so $\sigma_\text{laser}$ is
 inferred purely from the fitted lineshape, never benchmarked against a
@@ -147,6 +147,38 @@ removing the transit degeneracy, not by adding an independent check on the laser
 itself, so $\sigma_\text{laser}$ stays a lineshape-fit result throughout.
 *Code:* `gaussian()`, and `sigma_laser` in the fits, already carrying the
 factor 2.
+
+**What a Lorentzian laser component is, and what one condition can say about
+it.** If the jitter is fast rather than slow, the laser contributes a
+LORENTZIAN width rather than a Gaussian one. Two Lorentzians of FWHM $a$ and
+$b$ convolve to a single Lorentzian of FWHM $a+b$ EXACTLY, so a Lorentzian
+laser contribution and the collisional width enter the fixed-condition model
+only through their sum. This is an identity, not an approximation, and the code
+imposes it by ADDING the two widths rather than convolving them: done by
+convolution on a finite grid the truncated tails made the profile depend on how
+a fixed total was SPLIT, at up to $3.7\times10^{-3}$ of peak, which is a
+numerically manufactured separability pointing along exactly the direction a
+laser-width inference has to measure.
+
+The consequence is that **$\Gamma_{L,\text{equiv}}$ is not identifiable at a
+single condition at all**, and this is measured rather than argued: injecting
+six values from 0 to 2.5 MHz into synthetic data and fitting them back recovers
+the SUM to about one part in a thousand every time while the split is
+arbitrary. The separating lever is DENSITY, because the collisional width is
+$\beta_\text{self} N(T)$ and moves with temperature while a laser width does
+not, so the identifiable object lives in the multi-condition fit of §2.4's
+consumers and nowhere else. Injecting 0.600 MHz on the narrow 110 to 130 C
+ladder returns 0.599 with a spread of 0.013 over four seeds
+(`results/kernel_worlds.csv`, `tests/test_gamma_l_identity.py`).
+
+Two readings follow that the earlier form of this section did not separate.
+Switching the kernel wholesale moves the hierarchical $\beta_\text{self}$ by
+45 to 67 per cent, nine to eighteen sigma on its statistical error, which is
+the SENSITIVITY of the coefficient to the choice. Whether the data PREFER one
+kernel is a different question, and it is answered by a nested likelihood
+ratio rather than by counting wins, because the pure-Lorentzian model is
+contained in the mixed one: a win count across conditions carries no
+information when one model cannot fit worse than the other by construction.
 
 ### 2.4 The Voigt profile: Lorentzian $\otimes$ Gaussian
 

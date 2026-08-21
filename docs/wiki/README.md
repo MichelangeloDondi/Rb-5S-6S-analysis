@@ -29,6 +29,17 @@ they build on one another.
 |---|---|
 | **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md), [magnetic sublevels](magnetic-sublevels.md), [the cascade and F-depletion](the-cascade-and-f-depletion.md) |
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
+
+**The platform lane.** The guided-mode row above is the only one that assumes a
+nanofibre. Every other row, and every page they list, is platform-neutral: the
+kernels, the identifiability machinery, the metrology and the decision record
+describe a two-photon line rather than the apparatus around it. A reader with a
+vapour cell and no fibre, or one adapting the pipeline to a different
+transition, skips that one row and loses nothing on their path. The fibre
+thread in full is [chapter 6](../big_picture/06_next-nanofibre.md), the second
+scenario of [chapter 9](../big_picture/09_the-campaign-cases.md), and
+[the sized candidate](../notes/onf_candidate.md).
+
 | **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
 | **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |

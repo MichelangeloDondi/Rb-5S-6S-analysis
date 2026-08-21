@@ -377,10 +377,27 @@ projection, each cell fit from two independent warm-start lineages, with a
 fresh-seed audit on every fifth cell). Its certifications, all committed: audit
 gains $\le0.05$ (no warm-start trapping), map minimum equal to the anchored
 free fit's, and a **straight** valley floor (RMS 0.003 MHz against a 0.020 MHz
-grid step) whose ridge slope (+0.073) **agrees** with the covariance ellipse's
+grid step) whose ridge slope (+0.073) agrees with the covariance ellipse's
 prediction (+0.080), since in the Gaussian limit the profile contours are exactly
-the marginal covariance ellipse, so that agreement is the trust test, and it
-passes. The joint-95% region closes inside the physical range **except toward
+the marginal covariance ellipse.
+
+**How much weight that agreement carries, measured 2026-08-21.** Only one of
+the two numbers is robust. The ridge slope is measured from the map by
+re-minimising $\chi^2$ on a grid, and it is stable: it reproduces unchanged
+when every heavy producer is rerun under a different numpy. The covariance
+prediction is a ratio of elements of a local Hessian taken along a valley this
+same section describes as twenty times looser in one direction than the other,
+and under that same rerun it moves from 0.080 to 0.110, a 37 per cent change
+with the profile measurement untouched beside it. The comparison would then
+read 0.073 against 0.110 rather than against 0.080.
+
+So the agreement is evidence that the profile map and the local covariance are
+describing the same geometry, and it is NOT a precision test: one side of it is
+ill-conditioned by exactly the mechanism the section is about. The robust
+quantity of the two is the profile measurement, which is the same conclusion
+this record reaches everywhere else it sets a profile against an ellipse. The
+committed digits here are those of the environment of record
+([`results/ENVIRONMENT_OF_RECORD.md`](../../results/ENVIRONMENT_OF_RECORD.md)). The joint-95% region closes inside the physical range **except toward
 $\sigma_\text{laser}\to0$**: the line *shape* alone cannot exclude a
 near-zero laser width at this condition.
 

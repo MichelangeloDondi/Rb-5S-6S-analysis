@@ -261,6 +261,35 @@ systematic as fig1.*
   ([the sized candidate](notes/onf_candidate.md), whose joint forecast in
   `results/kernel_identifiability.csv` computes what each route is worth to
   the coefficient).
+  **What changed on 2026-08-21, and what did not.** The mixed G+L kernel is
+  now shipped rather than living in a script, so the question can be put to
+  the estimator directly, and two facts were measured that the entry above
+  could only assert. First, at a FIXED CONDITION $\Gamma_{L,\text{equiv}}$ is
+  exactly unidentifiable alongside the collisional width: over six injected
+  values the recovered SUM tracks the true sum to about one part in a
+  thousand while the split is arbitrary. That is the continuum identity, not
+  a limitation of the fit, and a well-determined split there would be the
+  discretisation artefact this record removed. Second, the DENSITY LADDER
+  separates them, because the collisional width scales with $N(T)$ and a
+  laser width does not: injecting 0.600 MHz on the narrow 110 to 130 C ladder
+  the archive already has returns 0.599 with a spread of 0.013 over four
+  seeds, with $\beta_\text{self}$ unbiased beside it. So the identifiable
+  object is a MULTI-CONDITION quantity, and its uncertainty is set by how far
+  the ladder separates it from the coefficient rather than by any single
+  condition's statistics.
+  Five hostile worlds at 500 preregistered trials each
+  (`results/kernel_worlds.csv`) then asked whether the estimator MANUFACTURES
+  such a width. Against a true zero the false-positive rate is 0.0000, and it
+  is also 0.0000 when the data carry a quadratic baseline the linear model
+  cannot absorb and when they carry a transit kernel of the wrong functional
+  form: not one trial in 500 crossed the detection threshold in any of the
+  three. The exact-symmetry world, which tests the instrument rather than the
+  model, finds the profile invariant to 0.000e+00 when a fixed total
+  Lorentzian width is re-split. The interval coverage against a true mixed
+  kernel is 0.7460 where 0.68 is nominal, so the intervals OVER-cover and any
+  quoted interval is recalibrated against that measured number rather than
+  read as nominal. None of this attributes the width to the laser: that arrow
+  is licensed by the transfer triangle and by nothing here.
 - No claim that the light-shift bounds are tight. They are known to be
   conservative by a measured factor rather than by argument, because two
   effects carry the same square-of-power signature as the ramp and were

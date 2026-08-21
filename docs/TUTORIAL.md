@@ -86,6 +86,27 @@ freqs, volts = synthetic_traces(..., noise=law)     # simulate under YOUR detect
 That is the difference between a toy and a twin. The twin simulates under the
 noise you actually have.
 
+The generator also takes the LASER KERNEL, which matters if the quantity you
+are after is the kernel itself rather than a width measured through it:
+
+```python
+freqs, volts = synthetic_traces(
+    gamma_coll, sigma_laser, transit_fwhm,
+    laser_kind="gaussian",   # the Gaussian component, slow frequency noise
+    gamma_l=0.0,             # a LORENTZIAN laser component, fast noise
+    noise=0.004)
+```
+
+`gamma_l` defaults to zero and that default is bit-identical to the generator
+without it. Setting it emits a line whose laser kernel is Gaussian and
+Lorentzian at once, which is what lets a twin ask whether YOUR analysis can
+recover a Lorentzian laser component from YOUR design. One warning the twin
+will hand you if you try it at a single condition: it cannot. A Lorentzian
+laser width and the collisional width add exactly, so only their sum is
+identifiable there. The lever is a DENSITY LADDER, and
+`fit_beta_self(..., fit_gamma_l=True)` across temperatures is where the
+separation actually happens.
+
 ## 4. Fit it back, and check the recovery
 
 ```python
