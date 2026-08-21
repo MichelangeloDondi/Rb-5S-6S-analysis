@@ -1,5 +1,18 @@
 # The nanofiber candidate: three instruments one apparatus provides
 
+**The question.** What a nanofibre alongside the vapour cell would add to this
+measurement, sized from committed numbers rather than asserted, and which of
+its settings can carry which instrument.
+**Takes.** The lineshape and identifiability chapters for the kernel budget,
+and the joint Fisher block for what a second platform is worth to beta_self.
+**Gives.** The sized candidate, the three instruments the apparatus already
+provides, the joint forecast, and what the EOM ruler is worth once the drive
+becomes a design variable.
+**Skip if.** You have no fibre. The method, the results and the plan are
+platform-neutral and this note is one of the three surfaces you can skip whole
+without losing anything on your path. Terms are in
+[GLOSSARY.md](../GLOSSARY.md).
+
 **Status.** DESIGN NOTE, written 2026-08-21. Every number here is produced by
 [`run_onf_candidate.py`](../../scripts/run_onf_candidate.py) into
 [`onf_candidate.csv`](../../results/onf_candidate.csv), where each row carries
@@ -194,6 +207,107 @@ configuration is the stronger of the two and costs a beamsplitter. Nothing
 in this repository yet measures either, which is why the forecast rows are
 expectations and the transfer condition is named here rather than assumed
 away.
+
+## Sending the EOM teeth down the fibre
+
+The frequency axis of every width and shift in this record is built by an EOM
+sideband ruler. The same teeth can go down the nanofibre, and the drive
+frequency is a design variable for the next campaign rather than a fixed
+property of the apparatus. What the teeth are worth in the fibre is decided by
+two ratios, both computed in `scripts/run_onf_candidate.py` from committed
+constants.
+
+### The ruler is sharper in the cold fibre and absent in the hot one
+
+A ruler is a ruler only while its teeth stay separable against the broadening
+of the line they are laid on. At the present 12.5 MHz drive, on the transition
+axis:
+
+| platform | transit width | teeth per transit width |
+|---|---|---|
+| cell, 130 C | 0.958 MHz | 13.1 |
+| fibre, cold, 150 uK | 0.141 MHz | 88.5 |
+| fibre, room temperature | 232 MHz | 0.05 |
+
+The cold fibre resolves the ruler about seven times more cleanly than the cell,
+because transit broadening there is two orders below the tooth spacing. The
+room-temperature fibre does not resolve it at all: the teeth are washed out
+twenty-fold, and a drive of about 695 MHz would be needed to restore them.
+This is a settings-level statement, not a preference. Any room-temperature
+fibre measurement at the present drive has no ruler, and the MOT, molasses and
+trap-off settings have a better one than the cell does.
+
+### A high drive is a capability the fibre has and the cell does not
+
+With the modulator in the common path, the pathway pairs carry a relative
+phase and the effective modulation depth becomes `2*beta*cos(pi f tau)` for an
+atom at delay `tau`, averaged across the sample
+(`rb5s6s/forecast.py`, `comb_tooth_weights`). The average runs over the
+sample's SPATIAL EXTENT, so the drive at which the comb weights start to smear
+is inversely proportional to that extent. The carrier weight at the depth
+`2*beta = 2.405`, where an unsmeared carrier nulls exactly:
+
+| drive | cell, atoms over ~7 cm | fibre, atoms in the ~2 mm waist |
+|---|---|---|
+| 12.5 MHz | 0.000000 | 0.000000 |
+| 700 MHz | 0.089584 | 0.000000 |
+| 1.5 GHz | 0.438608 | 0.000001 |
+
+At the drive the room-temperature fibre would need, the cell's carrier null has
+filled in to about nine per cent and by 1.5 GHz it is gone. The fibre's null
+survives both, because the waist is some thirty-five times shorter than the
+cell path. That null is the one calibration-free reference the comb offers: it
+occurs at a known modulation depth and nowhere else, so hitting it measures the
+depth AT THE ATOMS without knowing the coupling efficiency, which is the
+quantity a nanofibre cannot otherwise get at. The fibre is therefore not merely
+another place to send the teeth. It is the platform on which a high-drive EOM
+stays usable.
+
+At 12.5 MHz this distinction does not exist, which is why it has not appeared
+in the record before: both geometries null cleanly and the smearing is a part
+in ten thousand. It appears exactly when the drive is raised.
+
+### The drive is pulled in two directions at once
+
+Resolvability wants a high drive. Reading several detunings SIMULTANEOUSLY,
+rather than scanning them, wants a low one, because the teeth must fall inside
+the line:
+
+| drive | teeth within the 3.49 MHz cold-fibre line |
+|---|---|
+| 0.5 MHz | 7.0 |
+| 1.0 MHz | 3.5 |
+| 12.5 MHz | 0.28 |
+
+The present drive puts fewer than one tooth on the line, so simultaneous
+multi-detuning readout is not available at it in any setting. The two regimes
+are separate runs of a tunable modulator, not one compromise setting, and a
+modulator spanning roughly 0.5 MHz to 1 GHz would cover both ends with the
+present value in the middle.
+
+Why the low end is worth having: a SCANNED line convolves any time dependence
+of the surface shift into the lineshape, so a shift that moves during the scan
+and a line that is genuinely broader are the same measurement. Teeth parked
+across the line are read at one instant, which separates them. The surface
+charge near these waveguides is measured to be time-dependent and externally
+suppressible, so this is the difference between modelling that state and
+absorbing it.
+
+### What the teeth do not reach
+
+They do not constrain the guided-mode index, and so they do not narrow the
+evanescent decay length. That would need a dispersion lever, and even a 1.5 GHz
+drive spans a few parts per million of the optical frequency. The 211 to 388 nm
+decay-length band, which is what makes the cold transit term a band from about
+96 to 177 kHz rather than a number, is untouched by anything the modulator can
+do and needs a different instrument.
+
+One geometry constraint travels with all of the above. Two photons taken from
+the same direction carry the full two-photon Doppler shift, about 568 kHz FWHM
+at 150 uK and 208 kHz in a 20 uK molasses, both comparable to or larger than
+the transit term they would sit beside. The counter-propagating configuration
+cancels it to first order, so a teeth measurement in the fibre wants the
+standing-wave geometry rather than a running wave.
 
 ## What this candidate does not buy
 

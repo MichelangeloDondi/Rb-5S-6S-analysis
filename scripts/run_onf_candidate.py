@@ -255,6 +255,82 @@ def main() -> int:
             "at larger z (ton2026)")
 
     OUT.parent.mkdir(exist_ok=True)
+    # ---- the EOM ruler through the fibre ---------------------------------
+    # The cell's frequency axis is built by the EOM sideband ruler. The same
+    # teeth can be sent down the nanofibre, and what they are worth there is
+    # decided by two ratios, both computed here from committed constants.
+    #
+    # The drive is a DESIGN VARIABLE for the next campaign, so these rows are
+    # written as a function of it rather than at the present 12.5 MHz.
+    from rb5s6s import constants as K
+    spacing_transition = K.TOOTH_SPACING_TRANSITION_HZ / 1e6
+    add("eom_tooth_spacing_transition", f"{spacing_transition:.4f}", "MHz",
+        "committed_input",
+        "constants.TOOTH_SPACING_TRANSITION_HZ; the laser-axis spacing is half "
+        "of it, and the axis each number is quoted on is named per rule 19.88")
+
+    # RESOLVABILITY. A ruler is only a ruler while its teeth are separable
+    # against the broadening of the line they are laid on.
+    for label, transit in (("cell_130C", tr_cell),
+                           ("onf_cold", tr_cold),
+                           ("onf_hot_130C", tr_hot)):
+        ratio = spacing_transition / transit
+        add(f"eom_teeth_per_transit_{label}", f"{ratio:.2f}", "dimensionless",
+            "derived_expectation",
+            f"tooth spacing {spacing_transition:.2f} MHz over the transit width "
+            f"{transit:.3f} MHz at this platform and setting. Above about 3 the "
+            "teeth are resolved, below 1 they are washed out")
+        add(f"eom_drive_needed_{label}", f"{3.0 * transit:.1f}", "MHz",
+            "derived_expectation",
+            "drive at which the teeth would sit three transit widths apart on "
+            "the transition axis. The present 12.5 MHz clears the cell and the "
+            "cold fibre and is far below what the room-temperature fibre needs")
+
+    # THE COST OF RAISING THE DRIVE, and why it falls on the cell and not the
+    # fibre. With the modulator in the common path the pathway pairs carry a
+    # phase (s-n)*Omega*tau, so the effective depth is 2*beta*cos(pi f tau) for
+    # an atom at delay tau, averaged over the cloud (forecast.comb_tooth_weights).
+    # The average is over the SPATIAL EXTENT of the sample, so the smearing sets
+    # in at a drive inversely proportional to that extent. The cell spreads its
+    # atoms over centimetres and the fibre confines them to the waist, so the
+    # fibre tolerates a drive the cell cannot.
+    from rb5s6s.forecast import comb_tooth_weights
+    C_LIGHT = 2.998e8
+    for f_mhz in (12.5, 700.0, 1500.0):
+        for label, extent_m in (("cell_7cm", 0.07), ("onf_waist_2mm", 0.002)):
+            w0 = comb_tooth_weights(2.405, drive_hz=f_mhz * 1e6,
+                                    retro_delay_s=(0.0, 2.0 * extent_m / C_LIGHT))[0]
+            add(f"eom_carrier_at_null_{label}_{int(f_mhz)}MHz", f"{w0:.6f}",
+                "weight", "derived_expectation",
+                "carrier tooth weight at the modulation depth 2*beta = 2.405 "
+                "where an unsmeared carrier nulls exactly. A nonzero value is "
+                "carrier returning under the delay average, which is a loss of "
+                "the one calibration-free reference point the comb offers")
+    add("eom_high_drive_is_a_fibre_capability", "cell 0.0896 vs fibre 0.000000",
+        "weight at 700 MHz", "derived_expectation",
+        "at the drive the room-temperature fibre would need, the cell's carrier "
+        "null has filled in to about nine per cent while the fibre's is intact, "
+        "because the smearing average runs over the sample's spatial extent and "
+        "the waist is some thirty-five times shorter than the cell path")
+
+    # SNAPSHOT SAMPLING pulls the drive the other way: to read several detunings
+    # at once rather than scanning, teeth must fall INSIDE the line.
+    for f_mhz in (0.5, 1.0, 12.5):
+        add(f"eom_teeth_across_cold_line_{f_mhz}MHz",
+            f"{3.49 / f_mhz:.2f}", "teeth", "derived_expectation",
+            "teeth landing within the 3.49 MHz known-natural cold-fibre line at "
+            "this drive. Simultaneous multi-detuning readout needs several, and "
+            "the present drive puts fewer than one tooth on the line")
+
+    # WHAT THE TEETH CANNOT DO, recorded so it is not assumed later.
+    add("eom_cannot_measure_neff", "fractional span ~5e-06 at 1.5 GHz",
+        "dimensionless", "derived_expectation",
+        "the guided-mode index, and so the evanescent decay length, would need a "
+        "dispersion lever. Even a 1.5 GHz drive spans a few parts per million of "
+        "the optical frequency, so the teeth do not constrain n_eff and do not "
+        "narrow the 211 to 388 nm decay-length band that dominates the cold "
+        "transit estimate")
+
     with OUT.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
