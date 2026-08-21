@@ -139,7 +139,7 @@ def collisional_slope(N_units, widths_mhz, width_errs_mhz, snr_measure=3.0):
 def fit_beta_self(conditions: List[Dict], *,
                   transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                   fit_transit: bool = False, T_ref_C: float = 110.0,
-                  laser_kind: str = "gaussian") -> Dict:
+                  laser_kind: str = "gaussian", gamma_l: float = 0.0) -> Dict:
     """Global beta_self fit for one peak across temperatures.
 
     conditions: list of dicts, each
@@ -205,7 +205,7 @@ def fit_beta_self(conditions: List[Dict], *,
             gc = beta * cond["N_units"]
             tr = transit_fwhm_at_T(cond["T_C"], tref, T_ref_C) if fit_transit \
                 else transit_fwhm_at_T(cond["T_C"], transit_ref_mhz, T_ref_C)
-            profs[ci] = composite_profile(gc, sl, tr, laser_kind)
+            profs[ci] = composite_profile(gc, sl, tr, laser_kind, gamma_l=gamma_l)
         out = []
         for i in range(ntr):
             g, prof = profs[tr_cond[i]]

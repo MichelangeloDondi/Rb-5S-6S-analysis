@@ -73,6 +73,7 @@ def to_frequency(t_ms: np.ndarray, rate_transition_mhz_per_ms: float) -> np.ndar
 
 
 def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
+                         gamma_l: float = 0.0,
                          dnu_floor: float = 1e-3,
                          profile: Callable[[np.ndarray, np.ndarray], np.ndarray] = stark_ramp,
                          transit_kind: str = "exp"):
@@ -106,8 +107,11 @@ def _shared_profile_grid(gamma_coll, sigma_laser, transit_fwhm, s0, laser_kind,
     # instead made the profile depend on how the total was SPLIT, at up to
     # 3.7e-3 of peak, purely through tail truncation. See the long note in
     # lineshape.composite_profile and results/kernel_identifiability.csv.
+    # gamma_l, the mixed G+L kernel's Lorentzian component, ADDED for the
+    # exactness reason in lineshape.composite_profile's note. Default 0.0 is
+    # bit-identical to the pre-change module.
     _lorentz_laser = laser_kind != "gaussian"
-    homog = (GNAT_MHZ + max(gamma_coll, 0.0)
+    homog = (GNAT_MHZ + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
              + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
     widths = ([homog] + ([] if _lorentz_laser else [max(sigma_laser, 1e-6)])
               + [max(transit_fwhm, 1e-6)] + ([s0] if s0 > 0 else []))
@@ -207,6 +211,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
                   T_C: float, law: Optional[Dict] = None, s0: float = 0.0,
                   transit_fwhm: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ, fit_transit: bool = False,
                   laser_kind: str = "gaussian", trim_tails: bool = False,
+                  gamma_l: float = 0.0,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp) -> Dict:
     """Joint fit of one condition's repeats. `freqs` already in transition MHz.
 
@@ -299,7 +304,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
     def residuals(p):
         gc, sl, tr = unpack(p)
         g, prof = _shared_profile_grid(gc, sl, transit_fwhm_at_T(T_C, tr) if fit_transit else tr,
-                                       s0, laser_kind, profile=profile)
+                                       s0, laser_kind, gamma_l, profile=profile)
         out = []
         for i in range(ntr):
             A, c, b0, b1 = p[nshared + 4 * i: nshared + 4 * i + 4]
@@ -321,7 +326,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0 = unpack(sol.x)
         g, prof = _shared_profile_grid(
             gc0, sl0, transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-            s0, laser_kind, profile=profile)
+            s0, laser_kind, gamma_l, profile=profile)
         guard = C.TRIM_CORE_GUARD_FWHM_MULT * _profile_fwhm(g, prof)
         any_trim = False
         for i in range(ntr):
@@ -372,7 +377,7 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         gc0, sl0, tr0 = unpack(sol.x)
         g, prof = _shared_profile_grid(gc0, sl0,
                                        transit_fwhm_at_T(T_C, tr0) if fit_transit else tr0,
-                                       s0, laser_kind, profile=profile)
+                                       s0, laser_kind, gamma_l, profile=profile)
         A, c, b0, b1 = sol.x[nshared + 4 * i: nshared + 4 * i + 4]
         model = A * np.interp(freqs[i] - c, g, prof, left=0.0, right=0.0) + b0 + b1 * freqs[i]
         r = (volts[i] - model) / sigmas_raw[i]   # diagnostics on UNSCALED sigma

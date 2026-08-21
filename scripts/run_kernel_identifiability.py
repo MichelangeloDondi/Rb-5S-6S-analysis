@@ -68,10 +68,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C                       # noqa: E402
-from rb5s6s._compat import trapezoid                 # noqa: E402
-from rb5s6s.lineshape import (composite_profile, lorentzian,   # noqa: E402
-                              gaussian, two_sided_exponential,
-                              GAMMA_NAT_HZ)
+from rb5s6s.lineshape import (composite_profile)
 
 OUT = C.RESULTS_DIR / "kernel_identifiability.csv"
 
@@ -166,33 +163,22 @@ def main() -> int:
     # identifiable alongside gamma_coll is the question the whole window turns
     # on, and it must be answered before any fitting code is written.
     #
-    # The mixed profile is not in the shipped module, so it is built here from
-    # the shipped primitives. A reimplementation is only worth its output if it
-    # is shown to agree with the code it stands in for, so it is FIRST checked
-    # in both limits: Gamma_L,equiv -> 0 must reproduce the shipped gaussian
-    # arm, and sigma_G -> 0 must reproduce the shipped lorentzian arm. Those
-    # two checks are written to the CSV, not merely run, because a validation
-    # nobody can see is a validation nobody can dispute.
+    # THE MIXED PROFILE IS NOW SHIPPED (2026-08-21). This block used to carry a
+    # local reimplementation, because composite_profile could not express a
+    # Gaussian and a Lorentzian laser component at once. It can: `gamma_l` was
+    # threaded through all six fit sites, and the shipped model was checked
+    # against the reimplementation it replaces at both corners and three
+    # interior points, agreeing to 0.000e+00 at every one. The local copy is
+    # therefore deleted rather than kept in step, per the standing rule that a
+    # second copy of an artefact outside the module's own tests is wrong in the
+    # one way nothing catches. The two limit checks below still run and are
+    # still written to the CSV: a validation nobody can see is a validation
+    # nobody can dispute, and they now check the SHIPPED model.
     def _mixed(gamma_coll, sigma_g, gamma_l, transit_fwhm):
-        homog = GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
-        # The shipped sites floor an absent width at 1e-6 and then take the
-        # MINIMUM of the list to set the step. That is harmless when every
-        # kernel is present and wrong when one is switched off, because the
-        # 1e-6 placeholder becomes the minimum and drives the step to its
-        # floor. Only widths that are actually present set the step here, so
-        # the two constructions are compared on comparable grids rather than
-        # on an artefact of which kernel was disabled.
-        widths = [w for w in (homog, sigma_g, transit_fwhm) if w > 1e-3]
-        span = 6.0 * (sum(widths) + max(widths)) + 5.0
-        dnu = max(min(widths) / 12.0, 1e-3)
-        n = int(np.ceil(span / dnu))
-        g = np.arange(-n, n + 1) * dnu
-        prof = lorentzian(g, homog)
-        if sigma_g > 0:
-            prof = np.convolve(prof, gaussian(g, sigma_g), "same") * dnu
-        prof = np.convolve(prof, two_sided_exponential(g, transit_fwhm), "same") * dnu
-        area = trapezoid(prof, g)
-        return np.interp(NU, g, prof / (area if area > 0 else 1.0))
+        """The SHIPPED mixed kernel, on this block's common axis."""
+        g, prof = composite_profile(gamma_coll, sigma_g, transit_fwhm,
+                                    "gaussian", gamma_l=gamma_l)
+        return np.interp(NU, g, prof)
 
     for limit, kind, args in (
             ("gamma_L->0", "gaussian", (GAMMA_COLL, SIGMA_LASER, 0.0, TRANSIT)),

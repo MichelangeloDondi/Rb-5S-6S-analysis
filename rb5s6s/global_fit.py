@@ -55,7 +55,8 @@ from .fitutil import cov_from_jac, feasible_p0
 
 def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PLACEHOLDER_MHZ,
                fit_transit: bool = False, T_ref_C: float = 110.0,
-               transit_kind: str = "exp", sigma_sharing: str = "per_T") -> Dict:
+               transit_kind: str = "exp", sigma_sharing: str = "per_T",
+               laser_kind: str = "gaussian", gamma_l: float = 0.0) -> Dict:
     """Hierarchical fit over many (peak, T) blocks.
 
     blocks: list of dicts, each
@@ -143,9 +144,18 @@ def fit_global(blocks: List[Dict], *, transit_ref_mhz: float = C.TRANSIT_FWHM_PL
             if key not in profs:
                 si_, bi_, T_ = key
                 gc = beta[bi_] * N_by_T[T_]
+                # laser_kind reached this fit for the first time on
+                # 2026-08-21. Until then the hierarchical fit was hard-wired to
+                # the gaussian arm while fit_condition and fit_beta_self both
+                # took the toggle, so the one fit that produces the committed
+                # global numbers could not be run under the kernel the other
+                # two could. gamma_l arrives with it. Both default to the
+                # previous behaviour exactly.
                 profs[key] = composite_profile(gc, sig_l[si_],
                                                transit_fwhm_at_T(T_, tref, T_ref_C),
-                                               transit_kind=transit_kind)
+                                               laser_kind,
+                                               transit_kind=transit_kind,
+                                               gamma_l=gamma_l)
         out = []
         for i, t in enumerate(tr):
             g, prof = profs[(t[3], t[4], t[6])]

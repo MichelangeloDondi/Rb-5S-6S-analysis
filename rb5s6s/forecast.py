@@ -69,6 +69,7 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
                      amp: float = 1.0, amp_spread: float = 0.05,
                      offset: float = 0.010, offset_spread: float = 0.002,
                      centre_mhz: float = 0.0,
+                     laser_kind: str = "gaussian", gamma_l: float = 0.0,
                      rng: Optional[np.random.Generator] = None,
                      ) -> Tuple[List[np.ndarray], List[np.ndarray]]:
     """Generate the traces your instrument would record for this line.
@@ -90,7 +91,14 @@ def synthetic_traces(gamma_coll: float, sigma_laser: float, transit_fwhm: float,
     if rng is None:
         rng = np.random.default_rng()
     nu = np.linspace(-span_mhz, span_mhz, n_points)
-    grid, prof = composite_profile(gamma_coll, sigma_laser, transit_fwhm)
+    # gamma_l and laser_kind reach the GENERATOR as well as the fitter
+    # (2026-08-21). K2's hostile worlds are generated here and fitted by
+    # linefit, so a twin that cannot INJECT a Lorentzian laser component
+    # cannot test whether the fitter recovers one, and a coverage or
+    # false-positive rate measured on a twin that only ever emits Gaussian
+    # kernels would be a statement about a world the question is not about.
+    grid, prof = composite_profile(gamma_coll, sigma_laser, transit_fwhm,
+                                   laser_kind, gamma_l=gamma_l)
     shape = np.interp(nu - centre_mhz, grid, prof, left=0.0, right=0.0)
     peak = shape.max()
     if peak <= 0.0:

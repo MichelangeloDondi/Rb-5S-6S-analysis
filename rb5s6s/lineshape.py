@@ -166,7 +166,7 @@ def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
 
 def composite_profile(gamma_coll: float, sigma_laser: float,
                       transit_fwhm: float, laser_kind: str = "gaussian",
-                      transit_kind: str = "exp"):
+                      transit_kind: str = "exp", *, gamma_l: float = 0.0):
     """Fast no-Stark composite on a self-sized grid: Lorentzian(Gamma_nat +
     gamma_coll) (X) laser kernel (X) transit kernel, area-normalized.
     Returns (grid, profile). This is the shared kernel of the beta_self and
@@ -196,17 +196,48 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     # assumed small. Addition removes it identically -- the profile is
     # invariant under sum-preserving changes of the split to machine zero --
     # and costs one convolution less. results/kernel_identifiability.csv measures it.
+    # THE MIXED G+L KERNEL (2026-08-21). gamma_l is a SECOND, LORENTZIAN laser
+    # component carried alongside the Gaussian one, so the laser kernel can be
+    # G, L, or both at once, which is what the identifiability question needs.
+    # It is ADDED into homog for the same exact reason the lorentzian arm is:
+    # Lorentzians of FWHM a and b convolve to one of FWHM a+b identically, so
+    # the sum is the only quantity a fit can see and imposing it removes the
+    # discretisation artefact rather than measuring it. gamma_l = 0.0 is the
+    # default and is BIT-IDENTICAL to the pre-change module: adding an exact
+    # zero is a no-op in IEEE arithmetic, and tests/test_gamma_l_identity.py
+    # asserts that against a snapshot rather than trusting the argument.
     _lorentz_laser = laser_kind != "gaussian"
-    homog = (GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0)
+    homog = (GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
              + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
-    widths = ([homog] + ([] if _lorentz_laser else [max(sigma_laser, 1e-6)])
-              + [max(transit_fwhm, 1e-6)])
+    # ONLY KERNELS THAT ARE PRESENT MAY SET THE GRID STEP (2026-08-21). The
+    # step is min(widths)/N, and an ABSENT kernel floored to 1e-6 becomes that
+    # minimum, driving the step to its floor and the grid to ~2e5 points for a
+    # line that needs ~2e3. Harmless while every kernel was always present,
+    # live the moment the sigma_G -> 0 submodel above became reachable. The
+    # scratch reimplementation in run_kernel_identifiability.py had already
+    # identified this and worked around it privately; the fix belongs here.
+    # Bit-identical wherever both widths are positive, which is every
+    # committed call: max(x, 1e-6) == x for the MHz-scale widths this record
+    # uses, so only the previously pathological cases move.
+    widths = ([homog]
+              + ([] if (_lorentz_laser or sigma_laser <= 0.0)
+                 else [max(sigma_laser, 1e-6)])
+              + ([max(transit_fwhm, 1e-6)] if transit_fwhm > 0.0 else []))
     span = 6.0 * (sum(widths) + max(widths)) + 5.0
     dnu = max(min(widths) / GRID_STEPS_PER_KERNEL, GRID_STEP_FLOOR_MHZ)
     n = int(np.ceil(span / dnu))
     g = np.arange(-n, n + 1) * dnu
     prof = lorentzian(g, homog)
-    if not _lorentz_laser:
+    # THE sigma_G -> 0 LIMIT MUST BE REACHABLE (2026-08-21). gaussian() divides
+    # by sigma, so convolving with sigma_laser = 0 returned an all-nan profile.
+    # That corner is not exotic: it IS the pure-Lorentzian model, which is the
+    # nested submodel of the mixed G+L kernel, so the model could not evaluate
+    # its own submodel and any nested likelihood-ratio comparison against it
+    # would have propagated nan rather than failing loudly. A zero-width
+    # Gaussian is a delta function and convolution with it is the identity, so
+    # skipping the convolution IS the correct limit, not a guard against it.
+    # Nothing committed changes: the only values affected were nan.
+    if not _lorentz_laser and sigma_laser > 0.0:
         prof = np.convolve(prof, gaussian(g, sigma_laser), "same") * dnu
     tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
           else gaussian(g, transit_fwhm))
@@ -363,7 +394,7 @@ def _grid(span: float, dnu: float) -> np.ndarray:
 def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
                   transit_fwhm: float, s0: float = 0.0,
                   gamma_nat_mhz: float = GAMMA_NAT_HZ / 1e6,
-                  laser_kind: str = "gaussian",
+                  laser_kind: str = "gaussian", gamma_l: float = 0.0,
                   profile: Callable[[np.ndarray, float], np.ndarray] = stark_ramp
                   ) -> np.ndarray:
     """Area-normalized composite line on the transition axis (MHz).
@@ -416,8 +447,11 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # instead made the profile depend on how the total was SPLIT, at up to
     # 3.7e-3 of peak, purely through tail truncation. See the long note in
     # lineshape.composite_profile and results/kernel_identifiability.csv.
+    # gamma_l: the mixed G+L kernel's Lorentzian component, ADDED for the
+    # exactness reason in composite_profile's note. Default 0.0 is bit-identical.
     _lorentz_laser = laser_kind != "gaussian"
-    homog = gamma_nat_mhz + gamma_coll + (sigma_laser_fwhm if _lorentz_laser else 0.0)
+    homog = (gamma_nat_mhz + gamma_coll + max(gamma_l, 0.0)
+             + (sigma_laser_fwhm if _lorentz_laser else 0.0))
     kernel_widths = ([homog] + ([] if _lorentz_laser else [sigma_laser_fwhm])
                      + [transit_fwhm])
     span_widths = kernel_widths + ([s0] if s0 > 0 else [])
