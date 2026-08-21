@@ -207,11 +207,13 @@ def main() -> int:
         fw = v_cold / (math.pi * lam_nm * 1e-9)
         add(f"transit_onf_cold_lorentzian_{tag}_decay", f"{fw / 1e3:.1f}", "kHz",
             "derived_expectation",
-            f"FWHM v/(pi Lambda) at Lambda = {lam_nm:.0f} nm and T = 150 uK, "
+            f"FWHM v/(pi Lambda), TRANSITION AXIS, at Lambda = {lam_nm:.0f} nm and "
+            f"T = 150 uK, "
             "for the exponential evanescent profile. The kernel is a "
             "LORENTZIAN, not the cell's cusp")
     add("transit_onf_cold_band", "98 to 181", "kHz", "derived_expectation",
-        "the transit term across the 211 to 388 nm decay-length band. O2's "
+        "the transit term on the TRANSITION AXIS across the 211 to 388 nm "
+        "decay-length band. O2's "
         "injection-recovery runs at BOTH edges, because a world whose known "
         "component moves by a third is a different test at each")
     add("transit_onf_kernel_shape", "Lorentzian", "shape", "derived_expectation",
