@@ -1,6 +1,20 @@
 #!/bin/bash
 # Wholesale measured port, archive -> mirror, tracked set to tracked set.
 #
+# TWO MODES.
+#   port_to_mirror.sh            apply the port (copies, removals, as before)
+#   port_to_mirror.sh --check    report drift and change NOTHING, exit 1 if any
+#
+# WHY --check IS THE CANONICAL PARITY INSTRUMENT (2026-08-21). The other tool,
+# sync_public.sh --check, detects delivery by READING COMMIT MESSAGES for
+# cherry-picked hashes. Every port these repositories actually perform is a
+# hand-written wholesale commit that names no hash, so that check reports gaps
+# that do not exist and would keep reporting them forever. Two repositories
+# with deliberately divergent histories cannot be compared by history at all.
+# The only honest ground truth is CONTENT: the tracked sets, file by file,
+# with the by-design divergences excluded. That is what this mode computes,
+# and it is what gates the release.
+#
 # WHY WHOLESALE: a commit-window port (the first version used HEAD~3..HEAD)
 # goes stale the moment the window moves, and a copy-only port cannot carry a
 # rename, which this batch has (plan/01). The tracked SETS are compared
@@ -15,14 +29,22 @@ set -e
 A=~/Documents/GitHub/Rb-5S-6S-analysis
 M=~/Documents/GitHub/Rb-5S-6S-public
 
-cd "$M"
-if [ -n "$(git status --short)" ]; then
-  echo "ABORT: mirror worktree is not clean"; git status --short | head; exit 1
-fi
+MODE=port
+if [ "${1:-}" = "--check" ]; then MODE=check; fi
 
-cd "$A"
-if [ -n "$(git status --short)" ]; then
-  echo "ABORT: archive worktree is not clean"; git status --short | head; exit 1
+# The clean-tree precondition guards the PORT (a port onto strays carries them
+# forward invisibly). A check writes nothing, so it must be runnable at any
+# moment, including mid-edit, which is exactly when one wants to ask it.
+if [ "$MODE" = port ]; then
+  cd "$M"
+  if [ -n "$(git status --short)" ]; then
+    echo "ABORT: mirror worktree is not clean"; git status --short | head; exit 1
+  fi
+
+  cd "$A"
+  if [ -n "$(git status --short)" ]; then
+    echo "ABORT: archive worktree is not clean"; git status --short | head; exit 1
+  fi
 fi
 
 # the tracked sets, with the BY-DESIGN divergences excluded both ways:
@@ -32,6 +54,28 @@ fi
 # test_ci_triggers.py caught the first port that ignored this).
 (cd "$A" && git ls-files | grep -v '^data_raw/' | grep -v '^\.github/') | sort > /tmp/port_src.txt
 (cd "$M" && git ls-files | grep -v '^data_raw/' | grep -v '^\.github/') | sort > /tmp/port_dst.txt
+
+if [ "$MODE" = check ]; then
+  n_diff=0; n_only_a=0; n_only_m=0
+  while IFS= read -r p; do
+    if [ ! -f "$M/$p" ]; then
+      echo "  ONLY IN ARCHIVE: $p"; n_only_a=$((n_only_a+1))
+    elif ! cmp -s "$A/$p" "$M/$p"; then
+      echo "  CONTENT DIFFERS: $p"; n_diff=$((n_diff+1))
+    fi
+  done < /tmp/port_src.txt
+  while IFS= read -r p; do
+    if ! grep -qxF "$p" /tmp/port_src.txt; then
+      echo "  ONLY IN MIRROR:  $p"; n_only_m=$((n_only_m+1))
+    fi
+  done < /tmp/port_dst.txt
+  total=$((n_diff + n_only_a + n_only_m))
+  echo "parity check: $n_diff differ, $n_only_a archive-only, $n_only_m mirror-only"
+  if [ "$total" -eq 0 ]; then
+    echo "PARITY CLEAN"; exit 0
+  fi
+  echo "PARITY DRIFT: $total path(s). Run without --check to port."; exit 1
+fi
 
 n_copy=0
 while IFS= read -r p; do

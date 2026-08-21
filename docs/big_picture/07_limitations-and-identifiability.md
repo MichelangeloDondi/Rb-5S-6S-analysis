@@ -1,4 +1,4 @@
-*Chapter 7 of 8 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 7 of 9 of [the big picture](../BIG_PICTURE.md)*
 
 **The question.** What does this dataset fail to determine, why does each
 failure happen, and which measurement fixes which one?

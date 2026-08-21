@@ -1,4 +1,4 @@
-*Chapter 6 of 8 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 6 of 9 of [the big picture](../BIG_PICTURE.md)*
 
 ## 6. What new nanofibre measurements would add
 
@@ -6,8 +6,15 @@
 > guided mode is
 > [notes/guided_mode_two_photon_design.md](../notes/guided_mode_two_photon_design.md),
 > written for a hollow-core fibre holding either a warm fill or a trapped
-> sample, and it is mostly a record of what does not carry over. The
-> near-surface programme below is not budgeted anywhere yet.
+> sample, and it is mostly a record of what does not carry over.
+>
+> **Updated 2026-08-21: the near-surface programme is now budgeted.**
+> [The sized candidate](../notes/onf_candidate.md) sizes the optical
+> nanofibre platform instrument by instrument, with every number labelled by its
+> basis, and the joint forecast in `results/kernel_identifiability.csv`
+> computes what a fibre-side laser measurement is worth to the committed
+> cell coefficient. [Chapter 9](09_the-campaign-cases.md) states the whole
+> case beside the cell-only alternative.
 
 The evanescent field of an optical nanofibre is, in one sense, the natural
 home of the ramp physics: the intensity gradient is steep and exponential,

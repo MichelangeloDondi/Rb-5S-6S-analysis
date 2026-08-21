@@ -320,6 +320,24 @@ absorbs. What reached the collisional coefficient here was 0.41 per cent of one
 standard error. Where it does not hide is any observable that resolves the
 Doppler pedestal, where the same fraction is megahertz and separable.
 
+## The platform axis, for a reader with no nanofibre
+
+The pipeline is platform-neutral and the fibre material is deliberately
+separable. If you are adapting this record to another transition, 5S to 6D
+say, on a vapour cell and nothing else, the fibre thread is three surfaces
+and you can skip them whole: [big-picture chapter 6](big_picture/06_next-nanofibre.md),
+the second scenario of [chapter 9](big_picture/09_the-campaign-cases.md),
+and [the sized fibre candidate](notes/onf_candidate.md). Nothing in the
+method chapters, the results, the fit layer or the seam map below depends on
+them.
+
+What is actually platform-specific is narrower than it looks. The geometry
+enters the model in exactly one seam, the intensity profile closure of
+`model_profile` (the deep seam above), and the transit kernel's reference
+width. A cell with a focused beam, a guided evanescent field and a hollow
+core are three closures over the same machinery, and the fibre files above
+are one worked instance, not a dependency.
+
 ## What transfers with no edits at all
 
 The statistical machinery holds nothing about rubidium: the noise-law

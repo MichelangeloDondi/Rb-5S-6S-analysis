@@ -204,6 +204,16 @@ and are cited there rather than restated here.
 | 6 | [The next nanofibre session](big_picture/06_next-nanofibre.md) | what a guided-atom platform adds that a cell structurally cannot |
 | 7 | [Limitations and identifiability](big_picture/07_limitations-and-identifiability.md) | the six chains of Part III, argued from the diagnostics |
 | 8 | [When a joint fit is legitimate](big_picture/08_when-a-joint-fit-is-legitimate.md) | the two sharing decisions this record makes, across peaks and across sessions, and six questions to ask of any pooled fit |
+| 9 | [The two campaign cases](big_picture/09_the-campaign-cases.md) | what another campaign adds in total, cell-only against cell-plus-fibre, in the physics, the record, and the laboratory's own instruments |
+
+**The platform lane, for a reader with no fibre.** The fibre thread of this
+repository is [chapter 6](big_picture/06_next-nanofibre.md), the second
+scenario of [chapter 9](big_picture/09_the-campaign-cases.md), and
+[the sized candidate](notes/onf_candidate.md). Everything else, the method,
+the results, the plan and the wiki, is platform-neutral, so a vapour-cell
+reader, or one adapting the pipeline to a different transition
+([ADAPTING.md](ADAPTING.md)), skips those three surfaces whole and loses
+nothing on their path.
 
 For the derivations, [methods.md](methods.md) owns every one. For the general
 concepts, the [wiki](wiki/README.md) explains each technique on its own page.

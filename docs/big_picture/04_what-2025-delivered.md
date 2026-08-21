@@ -1,4 +1,4 @@
-*Chapter 4 of 8 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 4 of 9 of [the big picture](../BIG_PICTURE.md)*
 
 ## 4. What the 2025 dataset delivered
 

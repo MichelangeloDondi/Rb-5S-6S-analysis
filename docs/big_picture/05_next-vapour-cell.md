@@ -1,4 +1,4 @@
-*Chapter 5 of 8 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 5 of 9 of [the big picture](../BIG_PICTURE.md)*
 
 ## 5. What new vapour-cell measurements would add
 

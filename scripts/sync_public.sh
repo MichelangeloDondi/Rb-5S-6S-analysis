@@ -1,4 +1,29 @@
 #!/usr/bin/env bash
+# ============================================================================
+# RETIRED 2026-08-21. NOT THE PORTING TOOL. Use scripts/port_to_mirror.sh.
+#
+# WHY IT WAS RETIRED, measured rather than asserted. This script's --check mode
+# decides whether a change has been DELIVERED to the mirror by reading commit
+# messages and looking for cherry-picked hashes. That model matched the
+# porting practice of 2026-07. It has not matched it for weeks: every port
+# these repositories actually perform is a WHOLESALE CONTENT PORT committed
+# with a hand-written message that names no hash. So --check reports gaps that
+# do not exist, for changes that are fully delivered, and it will report them
+# forever, because nothing it reads will ever contain what it looks for.
+#
+# The deeper reason is structural, and it is why this is a retirement rather
+# than a repair: these two repositories have DELIBERATELY DIVERGENT HISTORIES
+# (the public one was produced by filter-branch). The same change has a
+# different hash in each by construction, so the histories cannot be compared
+# at all. Only CONTENT can. port_to_mirror.sh --check compares the tracked sets
+# file by file with the two by-design divergences excluded, which is the only
+# honest ground truth available here, and it is what gates the release.
+#
+# --check is DISABLED below rather than left to mislead. The port path is left
+# intact but unused: it also carries the known hazard of leaving the archive
+# registered as a remote in the public clone when a cherry-pick conflicts,
+# which once made 192 raw traces reachable from the public checkout.
+# ============================================================================
 # Keep the public repository in step with this one.  RULE (2026-07-25): the two
 # repositories must stay synchronised for as long as either is modified.
 #
@@ -216,6 +241,16 @@ while IFS= read -r line; do
 done < "$_arch"
 
 if [ "${1:-}" = "--check" ]; then
+  # RETIRED 2026-08-21: this mode reads commit messages for cherry-picked
+  # hashes, which wholesale ports never contain, so it cannot return a true
+  # answer. It refuses rather than returning a false one.
+  echo "sync_public.sh --check is RETIRED and would report false gaps." >&2
+  echo "  Use instead:  bash scripts/port_to_mirror.sh --check" >&2
+  echo "  Reason: ports are wholesale and content-level; this mode looks for" >&2
+  echo "  cherry-picked hashes in commit messages that no port ever writes." >&2
+  exit 2
+fi
+if false; then
   if [ ${#missing[@]} -eq 0 ]; then
     echo "sync_public: in step -- the public repo has every source commit."
   else

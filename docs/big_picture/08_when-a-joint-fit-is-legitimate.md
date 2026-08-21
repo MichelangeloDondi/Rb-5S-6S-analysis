@@ -1,4 +1,4 @@
-*Chapter 8 of 8 of [the big picture](../BIG_PICTURE.md)*
+*Chapter 8 of 9 of [the big picture](../BIG_PICTURE.md)*
 
 **The question.** A joint fit shares one parameter across many measurements. When
 does that add information, and when does it only add freedom?
