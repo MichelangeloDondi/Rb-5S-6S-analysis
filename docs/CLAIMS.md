@@ -252,11 +252,22 @@ systematic as fig1.*
   spectrum is still measured nowhere (the M1 law is detection noise, a
   different quantity), and the M2 stage-4b limit still leans against the
   Gaussian's justification, so the kernel is tested at one corner and open in
-  between. Three routes to the content now exist and none has been run: the
-  lock's own error signal, which costs no cell time, a fast-scan comb block,
-  where at ten times the 2025 sweep rate the tooth clock of M2 stage 4b
-  samples inside that band directly
-  ([plan chapter 7](plan/07_acquisition-settings.md), the menu), and an
+  between. Three routes to the content were listed and none has been run, and on
+  2026-08-21 one of the three was RETRACTED as a route to this quantity. The
+  fast-scan comb block was described as sampling inside the relevant band at
+  ten times the 2025 sweep rate. It does not. The tooth clock averages over
+  $\tau = $ tooth spacing over scan rate, so the Fourier frequency it samples
+  is scan rate over tooth spacing, and at ten times the campaign rate that is
+  68 Hz. The band that carries the answer is of order the width itself, about
+  400 kHz, because noise far below the linewidth broadens towards a Gaussian
+  and noise above it produces Lorentzian wings. Even the most favourable
+  setting the next campaign could reach, a hundredfold faster scan with the
+  lowest useful modulator drive, arrives at 17 kHz and is still short by a
+  factor of 23 (`results/kernel_k7.csv`). The comb block remains worth running
+  for what it does measure, the slow non-repeating excursion, and it is not a
+  route to the Lorentzian content. The two routes that survive are the lock's
+  own error signal, which costs no cell time and measures the noise as a
+  function of Fourier frequency rather than at one averaging time, and an
   independent laser-shape measurement at the nanofibre
   ([the sized candidate](notes/onf_candidate.md), whose joint forecast in
   `results/kernel_identifiability.csv` computes what each route is worth to
