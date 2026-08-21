@@ -55,6 +55,40 @@
 
 set -euo pipefail
 
+# ===========================================================================
+# THE RETIREMENT GUARD. IT IS HERE, AT THE FIRST EXECUTABLE LINE, ON PURPOSE.
+#
+# The first attempt at retiring this script put the refusal next to the
+# --check argument parsing, around line 220. That is roughly eighty lines
+# AFTER `git remote add source "$SOURCE_REPO"` and the `git fetch` that
+# follows it. Invoking `sync_public.sh --check` to confirm that the refusal
+# worked therefore registered the ARCHIVE as a remote of the public clone and
+# fetched its refs, which made 192 raw-trace paths reachable from a checkout
+# that deliberately does not track them, and the gate's reachability check
+# failed on exactly the count from the 2026-08-09 incident that guard was
+# written for. Nothing was pushed and the refs were dropped, but the lesson is
+# structural: A GUARD PLACED AFTER THE HAZARD IS NOT A GUARD, and a retired
+# script is not retired while any part of its body can still run.
+#
+# So the refusal is unconditional and it is first. The override exists because
+# a hard-coded refusal with no escape is how someone ends up editing a
+# retired script under pressure, and it names the hazard it is accepting.
+# ===========================================================================
+if [ "${SYNC_PUBLIC_I_ACCEPT_THE_HAZARD:-}" != "1" ]; then
+  echo "sync_public.sh is RETIRED (2026-08-21) and does nothing." >&2
+  echo "  Use instead:  bash scripts/port_to_mirror.sh --check   (report drift)" >&2
+  echo "                bash scripts/port_to_mirror.sh           (apply the port)" >&2
+  echo >&2
+  echo "  Why: --check decided delivery by reading commit messages for" >&2
+  echo "  cherry-picked hashes, which wholesale ports never write, so it" >&2
+  echo "  reported permanent false gaps. Its port path additionally registers" >&2
+  echo "  the ARCHIVE as a remote of the public clone and fetches it, which" >&2
+  echo "  makes raw traces reachable from a repository that withholds them." >&2
+  echo "  Override with SYNC_PUBLIC_I_ACCEPT_THE_HAZARD=1 only if you have" >&2
+  echo "  read that reachability note in scripts/ci_gate.sh first." >&2
+  exit 2
+fi
+
 SOURCE_REPO="$HOME/Documents/GitHub/Rb-5S-6S-analysis"
 PUBLIC="$HOME/Documents/GitHub/Rb-5S-6S-public"
 
