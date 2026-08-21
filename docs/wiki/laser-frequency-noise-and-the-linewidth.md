@@ -201,5 +201,59 @@ are three different experiments.
 
 So "not a pure Lorentzian" and "the tooth scatter leans against a Gaussian
 justification" are compatible: the first excludes one endpoint, the second
-argues against the other, and the answer sits between them. What is missing is
-the fitted Lorentzian-equivalent WIDTH that says where.
+argues against the other, and the answer sits between them. What was missing
+was the fitted Lorentzian-equivalent WIDTH that says where.
+
+## The width that says where, measured
+
+Later on 2026-08-21 that width was measured. Freeing a Lorentzian-equivalent
+component alongside the Gaussian one is preferred at every peak by a nested
+likelihood ratio with one parameter on its boundary, and the inverse-variance
+mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398$ MHz on the transition
+axis (`results/kernel_k3.csv`).
+
+Two properties of that number matter more than its value.
+
+**It is not identifiable at one condition.** A Lorentzian laser width and the
+collisional width add exactly, so at a fixed condition only their sum can be
+measured, and a fit that returns a well-determined split there is reporting a
+numerical artefact rather than physics. The lever that separates them is
+DENSITY, since the collisional width scales with $N(T)$ and a laser width does
+not. The width above is a property of the whole temperature ladder.
+
+**It now dominates the coefficient it perturbs.** Freeing the kernel moves
+$\beta_\text{self}$ by 42 to 66 per cent, and the resulting kernel
+uncertainty is 3.24 times the statistical error. More repetitions of the
+current construction therefore do not improve $\beta_\text{self}$.
+
+**And it still does not answer this page's question.** Which noise process
+produces the width is the third of the three questions above, and measuring
+the width settles the first two only. The transfer from a noise spectrum to a
+kernel remains unvalidated, so nothing yet licenses calling this component the
+laser.
+
+## The band a SCANNED width integrates, which is not the band you would guess
+
+Worth stating because getting it wrong reversed a verdict here once. For a
+free-running laser the lineshape is set by the phase autocorrelation, and
+Lorentzian wings come from noise at Fourier frequencies of order the linewidth.
+**These lines are not measured that way.** They are SCANNED, so the observed
+width integrates laser noise over the SCAN's own timescale: from one over the
+time to cross the line up to the per-point sampling rate, which for the science
+blocks at the campaign rate is 24 Hz to 1.5 MHz.
+
+That difference decides which instruments can see the relevant noise. Within
+one block the clock band and the width band scale together and their ratio
+never closes. But the laser's noise spectrum is a property of the LASER, so the
+bands of different blocks compose, and a block at ten times the campaign rate
+has its tooth clock sampling at 68 Hz, inside the band the ordinary-rate blocks
+integrate. One fast block therefore measures in situ part of the very noise
+that broadened the slow blocks' lines
+([plan chapter 7](../plan/07_acquisition-settings.md)).
+
+The committed tooth-scatter bound is a different measurement from that one. It
+was taken at the campaign rate, so its clock averages at 6.8 Hz, BELOW the band
+the scanned widths integrate, and it permits a Lorentzian width some 1800 times
+the one measured. It constrains the slow excursion it was built to constrain
+and it does not constrain the kernel, which is a statement about that bound and
+not about the faster block.

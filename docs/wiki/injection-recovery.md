@@ -68,6 +68,20 @@ truths from campaign-like synthetics, which is the rule stated in
 coverage study for the headline bound is section 4.11 of the same chapter.
 Several bugs in this repository's own history were caught exactly this way.
 
+The largest application is `results/kernel_worlds.csv`, five worlds at 500
+preregistered trials each, which decided whether a fitted laser-kernel width
+could be read as a measurement at all. Three of the five inject a TRUE ZERO and
+ask whether the estimator manufactures a width anyway: from a true zero, from a
+quadratic baseline the linear model cannot absorb, and from a transit kernel of
+the wrong functional form. None produced a single false positive in 500. A
+fourth injects a real width and measures interval coverage at 0.746 against a
+nominal 0.68, which is recorded as its number rather than rounded to a pass.
+
+The fifth is the ceiling test below pointed at the INSTRUMENT rather than the
+model: it holds an exact symmetry and checks the profile does not move, because
+a grid that manufactures a distinction the physics does not have produces
+neither measurements nor bounds.
+
 The technique also reaches the public surface. The package's worked example,
 [`examples/synthetic_recovery.py`](../../examples/synthetic_recovery.py),
 is an injection-recovery test on data it generates itself: it states its

@@ -83,6 +83,28 @@ is the subject of [the joint fit](joint-fit.md) and of
 [identifiability](identifiability.md), and the numbers are in
 [RESULTS.md](../RESULTS.md).
 
+## Two Lorentzians are one Lorentzian, and that is not a convenience
+
+The Voigt profile convolves a Lorentzian with a Gaussian, and the two widths
+combine in a way that lets a fit separate them. Two LORENTZIANS do not behave
+that way: widths $a$ and $b$ convolve to a single Lorentzian of width $a+b$
+EXACTLY, so a line carrying two Lorentzian contributions carries no information
+about how the total divides between them.
+
+This matters here because the natural width, the collisional width and a
+fast-noise laser contribution are all Lorentzian. At a fixed condition only
+their sum is identifiable, and the split is recoverable only if something makes
+the components enter differently, which for the collisional term is density
+([identifiability](identifiability.md)).
+
+It also constrains how the code may be written. Convolving two Lorentzians
+numerically on a finite grid is not merely wasteful: the truncated tails make
+the result depend on how the total is SPLIT, which is a dependence the
+continuum identity says cannot exist. In this repository that artefact reached
+3.7e-3 of peak along exactly the direction a laser-width inference has to
+measure. The fix is to impose the identity by ADDING the widths, after which
+the profile is invariant to the split at machine zero.
+
 ## What can go wrong
 
 The degeneracy is a data-insufficiency failure, and it is easy to mistake for

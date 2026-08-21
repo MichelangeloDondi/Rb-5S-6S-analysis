@@ -156,6 +156,20 @@ and both halves are computable in advance.
 
 ## Breaking a degeneracy by DESIGN rather than by fitting
 
+**A worked example from this repository, 2026-08-21.** Two Lorentzian widths in
+one line, a collisional one and a laser one, convolve to their sum exactly. At
+a fixed condition that is not a near-degeneracy to be managed with priors, it
+is an EXACT one: the sum is measurable and the split is not, at any signal to
+noise, for ever. Six injected values confirm it, the recovered sum tracking
+truth to a part in a thousand while the split wanders.
+
+No fit breaks that. The DESIGN does: the collisional width scales with density
+and a laser width does not, so a temperature ladder makes the two enter
+differently and both become identifiable. On the ladder this archive already
+has, injecting 0.600 MHz returns 0.599 with a spread of 0.013
+(`tests/test_gamma_l_identity.py`). The lever was in the data all along and the
+question was which measurements to compare, not which fit to run.
+
 The pinning example above buys its improvement by measuring one parameter
 elsewhere. The stronger move is to arrange the measurement so the degeneracy
 does not form, and it is worth stating because it is frequently available and

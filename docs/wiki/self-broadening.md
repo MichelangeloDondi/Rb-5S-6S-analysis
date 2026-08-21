@@ -75,6 +75,26 @@ resolved collisions. The rule that decides measurement against bound was set
 before the data were examined, and the current numbers are in
 [RESULTS.md](../RESULTS.md).
 
+## A second term, and as of 2026-08-21 the larger one
+
+A Lorentzian-equivalent laser width adds to this coefficient's channel the same
+way the collisional width does, because both are Lorentzian and Lorentzians
+convolve to their sum EXACTLY. At a fixed condition the two are therefore not
+merely correlated, they are unidentifiable: only the sum can be measured, and a
+fit returning a confident split there is describing a numerical artefact.
+
+What separates them is DENSITY. The collisional width is
+$\beta_\text{self} N(T)$ and moves with the temperature ladder, a laser width
+does not, and across the ladder both are recovered. Measured on this archive,
+$\Gamma_{L,\text{equiv}} = 0.398$ MHz, and freeing it moves
+$\beta_\text{self}$ by 42 to 66 per cent
+([the laser kernel](laser-frequency-noise-and-the-linewidth.md),
+`results/kernel_k3.csv`).
+
+That makes it the coefficient's binding systematic: the kernel uncertainty is
+3.24 times the statistical error, so more repeats of the same construction do
+not improve the number. The term below is real and smaller.
+
 ## One term this coefficient absorbs and cannot separate
 
 A two-atom cooperative channel puts a satellite at twice the single-atom
