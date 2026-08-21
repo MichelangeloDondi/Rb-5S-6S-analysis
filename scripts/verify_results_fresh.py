@@ -87,6 +87,11 @@ CHEAP = {
 
 # Minutes each, and they need data_raw/ traces.
 EXPENSIVE = {
+    # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
+    # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
+    # index, so the CSV reproduces exactly and IS checkable rather than merely
+    # re-runnable.
+    "run_kernel_worlds": ["kernel_worlds.csv"],
     "run_laser_kernel": ["laser_kernel.csv"],
     "run_kernel_headline": ["kernel_headline.csv"],
     "run_linefit": ["linefit_conditions.csv"],
