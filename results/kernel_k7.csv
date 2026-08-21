@@ -1,5 +1,6 @@
 route,quantity,value,unit,note,status
-all,band_that_must_be_reached,398.4,kHz,"Fourier frequency of order the measured Gamma_L,equiv. Below it a noise component broadens towards a Gaussian, above it towards a Lorentzian, so this is the band that carries the answer",DIAGNOSTIC
+all,band_that_must_be_reached,24 Hz to 1.5 MHz,band,"the band the SCANNED science blocks' widths integrate, from one over the line-crossing time up to the per-point sampling rate (docs/plan/07_acquisition-settings.md). A scanned line integrates laser noise over the scan's timescale, NOT over a band of order the linewidth, which is the free-running-lineshape argument and does not apply here",DIAGNOSTIC
+all,band_earlier_reasoning_kept_for_audit,398.4,kHz,"the band a first version of this producer used, of order the measured width. Kept so the correction is auditable: it is the right band for an intrinsic free-running lineshape and the wrong one for a scanned measurement",DIAGNOSTIC
 all,R_kernel_at_entry,3.2398,dimensionless,"the kernel systematic already dominates the statistical error, which is why this ranking is about reach rather than about precision",DIAGNOSTIC
 comb_clock,campaign_scan_rate,85.0,MHz/s,implied by the committed averaging time and tooth spacing,DIAGNOSTIC
 comb_clock,reach_rate_x1_eom_12.5MHz,0.007,kHz,Fourier frequency sampled at 1 times the campaign scan rate with 12.5 MHz teeth. Compare with the 398 kHz band that carries the answer,DIAGNOSTIC
@@ -8,9 +9,10 @@ comb_clock,reach_rate_x10_eom_12.5MHz,0.068,kHz,Fourier frequency sampled at 10 
 comb_clock,reach_rate_x10_eom_0.5MHz,1.701,kHz,Fourier frequency sampled at 10 times the campaign scan rate with 0.5 MHz teeth. Compare with the 398 kHz band that carries the answer,DIAGNOSTIC
 comb_clock,reach_rate_x100_eom_12.5MHz,0.680,kHz,Fourier frequency sampled at 100 times the campaign scan rate with 12.5 MHz teeth. Compare with the 398 kHz band that carries the answer,DIAGNOSTIC
 comb_clock,reach_rate_x100_eom_0.5MHz,17.007,kHz,Fourier frequency sampled at 100 times the campaign scan rate with 0.5 MHz teeth. Compare with the 398 kHz band that carries the answer,DIAGNOSTIC
-comb_clock,best_reachable_band,17.0,kHz,"the most favourable combination the next campaign could run, a hundredfold faster scan with the lowest useful EOM drive",DIAGNOSTIC
-comb_clock,shortfall_at_best,23,dimensionless,how far the best reachable setting still falls short of the band. Above one means the route cannot answer the question at any setting the campaign can reach,DIAGNOSTIC
-comb_clock,verdict,CANNOT_REACH_THE_BAND,verdict,"the route constrains the SLOW noise that broadens towards a Gaussian, which is worth having and is not the Lorentzian content it is listed as a route to",DIAGNOSTIC
+comb_clock,reach_at_x10_rate,68.0,Hz,"a block at ten times the campaign rate. This sits INSIDE the 24 Hz to 1.5 MHz band the ordinary-rate science blocks integrate, which is the composition the plan chapter describes",DIAGNOSTIC
+comb_clock,discrimination_slow_noise,180,kHz,excursion the fast clock would see if the fitted Gaussian is SLOW laser noise (docs/plan/07_acquisition-settings.md),DIAGNOSTIC
+comb_clock,discrimination_fast_noise,4,kHz,"excursion if it is FAST noise instead. Tooth centres resolve 96 kHz each, so one block separates the two readings by a factor near 45",DIAGNOSTIC
+comb_clock,verdict,REACHES_THE_BAND,verdict,"corrected 2026-08-21. The route composes a fast block's clock band with the slow blocks' width band, and it carries a preregistered discrimination with a stated separation",DIAGNOSTIC
 noise_spectrum,reach,all Fourier frequencies to the detector bandwidth,qualitative,"the lock's own error signal, a self-heterodyne delay line, or a beat against a second laser measure the PSD as a FUNCTION of Fourier frequency rather than at one averaging time, so the band is covered by construction rather than by scan-rate arithmetic",DIAGNOSTIC
 noise_spectrum,cell_time_cost,none,qualitative,"the error signal exists whenever the lock runs, so this route costs no spectroscopy time at all",DIAGNOSTIC
 noise_spectrum,verdict,REACHES_THE_BAND,verdict,the only route in this record that closes K5's leg B directly,DIAGNOSTIC
@@ -18,4 +20,4 @@ nanofibre,reach,"an independent lineshape, not a noise spectrum",qualitative,"th
 nanofibre,verdict,COMPLEMENTARY_NOT_SUFFICIENT,verdict,"valuable against the transit and density degeneracies and silent on the origin question, which is what leg B is for",DIAGNOSTIC
 all,rank_1,noise_spectrum,route,"reaches the band, costs no cell time, and is the only route that closes the attribution",DIAGNOSTIC
 all,rank_2,nanofibre,route,does not close the attribution but adds an independent measurement of the same kernel under different degeneracies,DIAGNOSTIC
-all,rank_3,comb_clock,route,"cannot reach the band at any campaign setting. Retained for what it does measure, the slow non-repeating excursion, and demoted from the role of a route to the Lorentzian content",DIAGNOSTIC
+all,rank_3,comb_clock,route,"reaches the band and carries a stated discrimination, and is ranked third only because it needs cell time the error-signal route does not. Its EXISTING bound, taken at the campaign rate, is separately too loose to constrain the kernel (kernel_k5.csv); that is a statement about the measurement already taken and not about the fast block this row ranks",DIAGNOSTIC

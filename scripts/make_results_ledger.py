@@ -29,6 +29,16 @@ from rb5s6s.lineshape import stark_shift_S0_mhz  # noqa: E402
 W0_SMALL_M = 16e-6
 
 
+def rows_of(csv_name):
+    """Every row of a committed CSV, for files this ledger reads whole."""
+    import csv as _csv
+    path = C.RESULTS_DIR / csv_name
+    if not path.exists():
+        return []
+    with path.open() as fh:
+        return list(_csv.DictReader(fh))
+
+
 def rows(name):
     p = C.RESULTS_DIR / f"{name}.csv"
     return list(csv.DictReader(open(p))) if p.exists() else []
@@ -374,6 +384,47 @@ def main() -> int:
     W("*Lifted by:* a fixed lock (which removes between-block laser drift) plus a "
       "beam-profile $w_0$ (knife-edge and/or camera, which sets the transit "
       "subtraction), giving a clean measurement.\n")
+
+    # ---- C1b: the laser KERNEL, and what it costs beta_self ----
+    # Read from the committed CSVs rather than typed, so the ledger cannot go
+    # stale against the K-chain producers.
+    k3 = {r["quantity"]: r for r in rows_of("kernel_k3.csv")
+          if r.get("scope") == "all"}
+    k5 = {r["quantity"]: r for r in rows_of("kernel_k5.csv")}
+    if k3:
+        W("## C1b. The laser kernel, and what freeing it costs "
+          "$\\beta_\\text{self}$\n")
+        W(f"The kernel is a **model form**, and on this dataset it is also a "
+          f"measurement. Freeing a Lorentzian-equivalent laser width alongside "
+          f"the Gaussian one is preferred at every peak by a nested likelihood "
+          f"ratio with one parameter on its boundary, and the inverse-variance "
+          f"mean across peaks is "
+          f"$\\Gamma_{{L,\\text{{equiv}}}} = "
+          f"{k3['k2p5_gamma_l_weighted_mean']['value']}$ MHz "
+          f"(`results/kernel_k3.csv`). At a FIXED condition this parameter is "
+          f"exactly degenerate with the collisional width, because both are "
+          f"Lorentzian and Lorentzians add, so it is identified only across "
+          f"the density ladder.\n")
+        W(f"- $U_\\text{{statistical}}$ = {k3['U_statistical']['value']}, "
+          f"$U_\\text{{kernel}}$ = {k3['U_kernel']['value']}, both in MHz per "
+          f"density unit and on the same one-sigma-like footing, giving "
+          f"**$R_\\text{{kernel}}$ = {k3['R_kernel']['value']}**. The kernel "
+          f"systematic dominates the statistical error, so repetitions of the "
+          f"current construction no longer buy the coefficient.\n")
+        W("- Freeing the kernel moves $\\beta_\\text{self}$ by 42 to 66 per "
+          "cent across the four peaks, which reproduces from a FREEING "
+          "construction the 45 to 67 per cent this record already carried from "
+          "a SWITCHING one.\n")
+        if k5:
+            W("- **The origin is not settled by any of this.** A non-Gaussian "
+              "homogeneous component is present. Calling it the laser is a "
+              "separate arrow, and the transfer that would carry it is "
+              "classified `"
+              + k5.get("transfer_classification", {}).get("value", "?")
+              + "` for the measurements already taken "
+              "(`results/kernel_k5.csv`). The routes that would close it are "
+              "ranked in `results/kernel_k7.csv`.\n")
+        W("")
 
     # ---- C2: sigma_laser ----
     W("## C2. The 2025 laser-epoch width $\\sigma_\\text{laser}$\n")

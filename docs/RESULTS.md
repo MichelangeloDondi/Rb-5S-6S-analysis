@@ -46,6 +46,17 @@ cross-checks pending a fixed-lock session.
 
 *Lifted by:* a fixed lock (which removes between-block laser drift) plus a beam-profile $w_0$ (knife-edge and/or camera, which sets the transit subtraction), giving a clean measurement.
 
+## C1b. The laser kernel, and what freeing it costs $\beta_\text{self}$
+
+The kernel is a **model form**, and on this dataset it is also a measurement. Freeing a Lorentzian-equivalent laser width alongside the Gaussian one is preferred at every peak by a nested likelihood ratio with one parameter on its boundary, and the inverse-variance mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398352$ MHz (`results/kernel_k3.csv`). At a FIXED condition this parameter is exactly degenerate with the collisional width, because both are Lorentzian and Lorentzians add, so it is identified only across the density ladder.
+
+- $U_\text{statistical}$ = 0.001398, $U_\text{kernel}$ = 0.004530, both in MHz per density unit and on the same one-sigma-like footing, giving **$R_\text{kernel}$ = 3.2398**. The kernel systematic dominates the statistical error, so repetitions of the current construction no longer buy the coefficient.
+
+- Freeing the kernel moves $\beta_\text{self}$ by 42 to 66 per cent across the four peaks, which reproduces from a FREEING construction the 45 to 67 per cent this record already carried from a SWITCHING one.
+
+- **The origin is not settled by any of this.** A non-Gaussian homogeneous component is present. Calling it the laser is a separate arrow, and the transfer that would carry it is classified `NOT_ESTABLISHED` for the measurements already taken (`results/kernel_k5.csv`). The routes that would close it are ranked in `results/kernel_k7.csv`.
+
+
 ## C2. The 2025 laser-epoch width $\sigma_\text{laser}$
 
 - **< 1.2 MHz (laser axis)**. One-sided UPPER limit, so the value is the limit itself and carries no plus-or-minus. Taken over the measured w0 band (62-68um) and rising with w0, reaching zero near w0=16um, so it is formally unconstrained below and quoted to one significant figure for that reason. Conditional on w0=64um, which is measured on this apparatus lineage but not re-measured by this archive

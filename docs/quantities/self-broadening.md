@@ -131,6 +131,24 @@ temperatures spanning a factor of 52 in density sounds generous and is not,
 because the width response is 1.5 over that span. Most of the density lever
 buys almost no width.
 
+**Model form, and as of 2026-08-21 the binding one.** The laser kernel was
+treated as a choice between a Gaussian and a Lorentzian. Freeing BOTH
+components at once, which the shipped model can now do, is preferred at every
+peak by a nested likelihood ratio, and it moves $\beta_\text{self}$ by 42 to
+66 per cent. The uncertainty this contributes,
+$U_\text{kernel} = 0.004530$ MHz per density unit, exceeds the statistical
+error $U_\text{statistical} = 0.001398$ by a factor
+$R_\text{kernel} = 3.24$ (`results/kernel_k3.csv`).
+
+**So the answer to "why can the experiment not do better" has changed.** It is
+no longer the density lever or the statistics. **More repetitions of the
+current construction do not improve this coefficient**, because the kernel
+systematic is three times larger than the thing more data would shrink. What
+improves it is an independent constraint on the laser kernel, and
+`results/kernel_k7.csv` ranks the routes. Note also what the kernel result does
+NOT settle: a non-Gaussian homogeneous component is present, and attributing it
+to the laser is a separate arrow that no measurement yet taken carries.
+
 **Statistical: the width degeneracy.** The collisional width and the laser
 width both broaden the same line, and the sensitivity matrix at one condition
 has a condition number of 390. Simulated on a bright synthetic condition

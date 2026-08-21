@@ -107,24 +107,36 @@ def main() -> int:
         "ratio of what the comb permits to what K3 measured. A constraint "
         "worth having would be of order one")
 
-    # The deeper reason, independent of the algebra above.
+    # WHERE THIS BOUND SITS, corrected 2026-08-21. A first version of this
+    # producer compared the clock's band against "of order the linewidth", on
+    # the free-running-lineshape argument. These lines are SCANNED, so the
+    # width integrates noise over the scan's own timescale, which
+    # docs/plan/07_acquisition-settings.md gives as 24 Hz to 1.5 MHz for the
+    # science blocks. The correct statement is narrower and still sufficient:
+    # this bound was taken at the CAMPAIGN rate, so its clock sits at 6.8 Hz,
+    # BELOW the band the science blocks integrate, and it is besides far too
+    # loose. A block at ten times the rate would sit inside that band, and
+    # that is a different measurement which kernel_k7.csv ranks.
     f_comb_hz = 1.0 / tau
-    f_line_hz = gamma_l_mhz * 1e6
-    add("B", "fourier_band_comb", f"{f_comb_hz:.2f}", "Hz",
-        "the Fourier frequency the comb clock samples, one over the averaging time")
-    add("B", "fourier_band_line", f"{f_line_hz:.3e}", "Hz",
-        "the Fourier frequency band that produces a Lorentzian wing, of order "
-        "the linewidth itself")
-    add("B", "fourier_band_separation", f"{f_line_hz / f_comb_hz:.2e}",
-        "dimensionless",
-        "the two measurements probe bands this far apart. Bridging them IS the "
-        "white-noise assumption, and the noise type is measured nowhere")
+    add("B", "clock_band_of_this_bound", f"{f_comb_hz:.2f}", "Hz",
+        "one over the averaging time of the EXISTING bound, taken at the "
+        "campaign scan rate")
+    add("B", "science_block_width_band", "24 Hz to 1.5 MHz", "band",
+        "the band the scanned science blocks' widths actually integrate. This "
+        "bound's clock sits below it, so it does not sample the noise that "
+        "broadened those lines")
+    add("B", "a_faster_block_would_reach_it", "68 Hz at ten times the rate",
+        "band",
+        "which is inside the science band. That measurement has not been run "
+        "and is ranked in kernel_k7.csv. Nothing here argues against it")
 
     add("B", "transfer_classification", "NOT_ESTABLISHED", "classification",
-        "no validated transfer exists from the comb's excursion statistic to a "
-        "predicted kernel. The conversion needs a noise TYPE the record does "
-        "not measure, and even granting the most favourable type the bound is "
-        "orders of magnitude too loose to test the hypothesis")
+        "for the measurement ALREADY TAKEN. Its clock sits below the band the "
+        "scanned widths integrate, the conversion to a linewidth needs a noise "
+        "TYPE the record does not measure, and granting the most favourable "
+        "type the bound is still orders of magnitude too loose. This is a "
+        "statement about the existing bound and NOT about the faster block "
+        "that would sit inside the band")
 
     # ---- leg C ----------------------------------------------------------
     add("C", "attempted", "NO", "verdict",
@@ -133,8 +145,10 @@ def main() -> int:
         "is nothing to cross-check and no numerical combination is permitted")
     add("C", "laser_attribution", "NOT_LICENSED", "verdict",
         "the arrow from 'a non-Gaussian homogeneous component is present' to "
-        "'it is the laser' is not carried by anything in this record. K3's "
-        "finding stands as a statement about the LINE, not about its origin")
+        "'it is the laser' is not carried by any measurement ALREADY TAKEN. "
+        "K3's finding stands as a statement about the LINE, not about its "
+        "origin. Two unrun measurements would carry it, and kernel_k7.csv "
+        "ranks them")
 
     # ---- K6, which RUNS AFTER K5 and not beside it ----------------------
     # K5's transfer classification IS the class over which K6's numerator is
