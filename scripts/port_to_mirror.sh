@@ -57,9 +57,22 @@ fi
 
 if [ "$MODE" = check ]; then
   n_diff=0; n_only_a=0; n_only_m=0
+  # PARITY IS ABOUT WHAT EACH REPOSITORY SHIPS, NOT WHAT SITS ON ITS DISK.
+  # The first version of this check tested `[ ! -f "$M/$p" ]`, comparing the
+  # archive's TRACKED set against the mirror's FILESYSTEM. A file ported onto
+  # the mirror but never `git add`ed then read as parity-clean while the
+  # pushed mirror would not carry it at all, which is precisely the state a
+  # port leaves behind (the porter copies, it does not stage). Found the hour
+  # the instrument was born, by porting a new chapter and watching the check
+  # go quiet over an untracked file. The mirror's TRACKED set is the referent.
   while IFS= read -r p; do
-    if [ ! -f "$M/$p" ]; then
-      echo "  ONLY IN ARCHIVE: $p"; n_only_a=$((n_only_a+1))
+    if ! grep -qxF "$p" /tmp/port_dst.txt; then
+      if [ -f "$M/$p" ]; then
+        echo "  PRESENT BUT UNTRACKED IN MIRROR: $p"
+      else
+        echo "  ONLY IN ARCHIVE: $p"
+      fi
+      n_only_a=$((n_only_a+1))
     elif ! cmp -s "$A/$p" "$M/$p"; then
       echo "  CONTENT DIFFERS: $p"; n_diff=$((n_diff+1))
     fi
