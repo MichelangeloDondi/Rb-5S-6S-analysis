@@ -344,6 +344,25 @@ the transit term they would sit beside. The counter-propagating configuration
 cancels it to first order, so a teeth measurement in the fibre wants the
 standing-wave geometry rather than a running wave.
 
+## What each instrument here rests on
+
+Every item in this note carries an epistemic class in
+`results/onf_candidate.csv`, because a reader cannot otherwise tell an
+arithmetic estimate from a published measurement, and the two are set in the
+same typeface. The distinction is what the claim RESTS ON, not how plausible
+it seems.
+
+| class | meaning | items |
+|---|---|---|
+| DEMONSTRATED | a published measurement anchors it | the decay-length band, the count-rate feasibility, the polarisation rate suppression |
+| SIMULATION-BACKED | a twin in this repository has run it | **none yet** |
+| PROSPECTIVE | computed from committed arithmetic, not simulated | the Lorentzian transit kernel, the modulator reach and its carrier null, the joint forecast, and the validation targets that inherit the forecast's class |
+
+**Nothing here is simulation-backed.** The nanofibre twin is not built, so the
+joint forecast is predicted by covariance algebra and has not been reproduced
+by an estimator running on synthetic data, which is why the forecast's
+recovery fraction is a target rather than a result.
+
 ## What this candidate does not buy
 
 A better collisional coefficient. There is no density ladder in a MOT and no

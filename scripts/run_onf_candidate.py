@@ -397,6 +397,49 @@ def main() -> int:
         "narrow the 211 to 388 nm decay-length band that dominates the cold "
         "transit estimate")
 
+    # ---- THE EPISTEMIC CLASS OF EVERY INSTRUMENT IN THIS NOTE ------------
+    # The release gate requires that no public claim exceed its epistemic
+    # class, which is only checkable if the classes are written down. Three
+    # classes, and the distinction is what the claim RESTS ON, not how strong it
+    # feels:
+    #   DEMONSTRATED       a published measurement anchors it
+    #   SIMULATION-BACKED  a twin in this repository has run it
+    #   PROSPECTIVE        computed from committed arithmetic, not yet simulated
+    for name, cls, why in (
+        ("evanescent_decay_length", "DEMONSTRATED",
+         "standard guided-mode result, and the band quoted here spans the "
+         "radii the published fibre work uses"),
+        ("count_rate_feasibility", "DEMONSTRATED",
+         "rajasree2020spin measured 25 to 40 counts per ms on this transition "
+         "around a 400 nm fibre"),
+        ("polarisation_rate_suppression", "DEMONSTRATED",
+         "anchored on the published circular-null minimum, not on arithmetic"),
+        ("transit_kernel_lorentzian", "PROSPECTIVE",
+         "derived here from the evanescent profile for a radial pass. No twin "
+         "has run it and no measurement anchors it. The idealisation is "
+         "explicit: real atoms carry a three-dimensional velocity and the "
+         "field has an axial structure this derivation does not model"),
+        ("eom_ruler_reach", "PROSPECTIVE",
+         "committed-input arithmetic on tooth spacing against transit width"),
+        ("eom_carrier_null_at_high_drive", "PROSPECTIVE",
+         "computed with the committed comb-weight function at delays this "
+         "apparatus has not yet run"),
+        ("joint_fisher_forecast", "PROSPECTIVE",
+         "a covariance-algebra forecast. The estimator that would confirm it "
+         "on synthetic data is not built, so the recovery fraction is "
+         "predicted and not reproduced"),
+        ("validation_targets", "PROSPECTIVE",
+         "requirements derived from the forecast above and inheriting its "
+         "class. They are targets, not achievements"),
+    ):
+        add(f"class_{name}", cls, "epistemic class", "derived_expectation", why)
+    add("class_summary",
+        "3 demonstrated, 5 prospective, 0 simulation-backed", "tally",
+        "derived_expectation",
+        "NOTHING in this note is simulation-backed yet, because the ONF twin "
+        "is not built, so the release must not read as endorsing the "
+        "prospective class")
+
     with OUT.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
