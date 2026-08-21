@@ -252,6 +252,16 @@ def fit_beta_self(conditions: List[Dict], *,
         "transit_ref": float(sol.x[2] if fit_transit else transit_ref_mhz),
         "transit_fitted": bool(fit_transit),
         "chi2_red": chi2_red, "corr_beta_laser": corr_bl,
+        # ABSOLUTE chi2 and its bookkeeping, appended 2026-08-21. A nested
+        # likelihood ratio needs the chi2 DIFFERENCE between two fits of the
+        # same data, and a reduced chi2 cannot supply it: the two fits have
+        # different parameter counts, so their dof differ and the ratio of
+        # reduced values is not the statistic. Recomputing chi2_red * dof at
+        # the call site would work only if the caller knew this dof, which is
+        # exactly the kind of quantity that goes wrong silently when it is
+        # reconstructed rather than reported.
+        "chi2": float(chi2_red * dof), "dof": int(dof), "n_data": int(ndata),
+        "n_params": int(len(p0)),
         "noise_floor_limited": bool(chi2_red < 0.8),
         "gamma_l": float(sol.x[_i_gl]) if fit_gamma_l else float(gamma_l),
         "gamma_l_fitted": bool(fit_gamma_l),

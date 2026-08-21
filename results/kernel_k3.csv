@@ -1,0 +1,46 @@
+scope,quantity,value,unit,note,status
+4121,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
+4121,gamma_l_equiv,0.403853,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4121,gamma_l_equiv_err,0.055541,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
+4121,delta_chi2_G_minus_GL,176.1479,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
+4121,p_boundary,1.681e-40,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
+4121,beta_self_G,0.015599,MHz per density unit,beta_self with the kernel pinned Gaussian,DIAGNOSTIC
+4121,beta_self_GL,0.006175,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
+4121,beta_self_err_GL,0.001697,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
+4154,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
+4154,gamma_l_equiv,0.361552,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4154,gamma_l_equiv_err,0.045558,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
+4154,delta_chi2_G_minus_GL,597.7673,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
+4154,p_boundary,2.561e-132,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
+4154,beta_self_G,0.018054,MHz per density unit,beta_self with the kernel pinned Gaussian,DIAGNOSTIC
+4154,beta_self_GL,0.007437,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
+4154,beta_self_err_GL,0.001484,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
+4192,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
+4192,gamma_l_equiv,0.449389,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4192,gamma_l_equiv_err,0.031329,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
+4192,delta_chi2_G_minus_GL,961.1245,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
+4192,p_boundary,2.532e-211,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
+4192,beta_self_G,0.013071,MHz per density unit,beta_self with the kernel pinned Gaussian,DIAGNOSTIC
+4192,beta_self_GL,0.004423,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
+4192,beta_self_err_GL,0.000934,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
+4207,n_conditions,4,count,rungs of the density ladder this peak contributes,DIAGNOSTIC
+4207,gamma_l_equiv,0.314803,MHz,"Gamma_L,equiv: a Lorentzian-EQUIVALENT width. Not f_L, and not attributed to the laser by this fit",DIAGNOSTIC
+4207,gamma_l_equiv_err,0.048140,MHz,one-sigma from the covariance; OVER-covering by K2 world B's measured 0.7460 against a nominal 0.68,DIAGNOSTIC
+4207,delta_chi2_G_minus_GL,229.8217,chi2,"G is nested inside G+L (gamma_l -> 0), one parameter at its boundary",DIAGNOSTIC
+4207,p_boundary,3.260e-52,p-value,"half the naive one-dof tail, because the null sits on the boundary",DIAGNOSTIC
+4207,beta_self_G,0.017791,MHz per density unit,beta_self with the kernel pinned Gaussian,DIAGNOSTIC
+4207,beta_self_GL,0.010237,MHz per density unit,beta_self with the mixed kernel free,DIAGNOSTIC
+4207,beta_self_err_GL,0.001479,MHz per density unit,U_statistical for this peak,DIAGNOSTIC
+4121,beta_self_G_vs_committed,7.51e-04,relative,"the G arm against the committed beta_self. Near zero means this producer reproduces the committed construction with the kernel pinned, which is what licenses reading the G+L difference as a kernel effect",DIAGNOSTIC
+4154,beta_self_G_vs_committed,8.35e-06,relative,"the G arm against the committed beta_self. Near zero means this producer reproduces the committed construction with the kernel pinned, which is what licenses reading the G+L difference as a kernel effect",DIAGNOSTIC
+4192,beta_self_G_vs_committed,4.64e-05,relative,"the G arm against the committed beta_self. Near zero means this producer reproduces the committed construction with the kernel pinned, which is what licenses reading the G+L difference as a kernel effect",DIAGNOSTIC
+4207,beta_self_G_vs_committed,3.83e-04,relative,"the G arm against the committed beta_self. Near zero means this producer reproduces the committed construction with the kernel pinned, which is what licenses reading the G+L difference as a kernel effect",DIAGNOSTIC
+all,validation_worst_beta_G_vs_committed,7.51e-04,relative,largest disagreement between the G arm and the committed beta_self across peaks. Above about 1e-3 the two constructions differ and the kernel comparison below is not interpretable,DIAGNOSTIC
+all,k2p5_gamma_l_weighted_mean,0.398352,MHz,"inverse-variance mean of the per-peak Gamma_L,equiv",DIAGNOSTIC
+all,k2p5_heterogeneity_chi2,6.3282,chi2,"scatter of 4 per-peak values about their weighted mean, dof 3",DIAGNOSTIC
+all,k2p5_heterogeneity_p,9.6689e-02,p-value,"small means the peaks do NOT share one Gamma_L,equiv and a global scalar is the wrong object",DIAGNOSTIC
+all,k2p5_verdict,ONE_SCALAR_LICENSED,verdict,"whether a single global Gamma_L,equiv may be interpreted at all",DIAGNOSTIC
+all,U_statistical,0.001398,MHz per density unit,mean one-sigma statistical error on beta_self from the G+L fits,DIAGNOSTIC
+all,U_kernel,0.004530,MHz per density unit,"HALF-RANGE of beta_self across the admissible kernel class (here the two-member class {G, G+L}), on the same one-sigma-like footing as U_statistical. PROVISIONAL: K5 classifies the class and runs after K3, so this is computed over the data-allowed fallback class",DIAGNOSTIC
+all,U_kernel_status,PROVISIONAL,flag,revised after K5's transfer classification replaces the fallback class,DIAGNOSTIC
+all,R_kernel,3.2398,dimensionless,U_kernel / U_statistical. Above one means the kernel dominates the statistics and more repetitions of the current construction are not the priority,DIAGNOSTIC

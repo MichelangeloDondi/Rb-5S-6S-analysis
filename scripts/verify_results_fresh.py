@@ -91,6 +91,8 @@ EXPENSIVE = {
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely
     # re-runnable.
+    # eight multi-condition fits on real traces, a few minutes.
+    "run_kernel_k3": ["kernel_k3.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
     "run_laser_kernel": ["laser_kernel.csv"],
     "run_kernel_headline": ["kernel_headline.csv"],
