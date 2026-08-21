@@ -89,6 +89,41 @@ constant. The reasoning, including the two mistakes that produced it, is in
 that file's header and in
 [`docs/UNCERTAINTY.md`](../docs/UNCERTAINTY.md) section 4b.
 
+## The convergence run was performed on 2026-08-21, and its result
+
+The full heavy-producer rerun this file anticipates was executed on 2026-08-21
+under Python 3.14.6 / numpy 2.5.2, about forty minutes of wall clock, and
+compared against the committed digits.
+
+**Two of fifty-one committed CSVs drift.** Forty-nine reproduce.
+
+| file | column | committed | fresh |
+|---|---|---|---|
+| `linefit_conditions.csv` | `corr`, row 21 | -0.70340 | -0.66265 |
+| `identifiability.csv` | `unit`, row 10 | "predicts 0.080" | "predicts 0.110" |
+
+Both belong to the families this file already names as ill-conditioned: a
+correlation coefficient, and a ratio of covariance elements taken along a flat
+valley. Neither is a quantity this record reads as physics.
+
+**The migration was nevertheless HELD, and the reason is worth stating.** The
+preregistered threshold was that the migration lands unless a number a public
+document QUOTES moves beyond its stated tolerance. The second drift is such a
+number: `docs/methods/06_the_statistics.md` quotes the covariance prediction
+as +0.080 in running prose. So the committed digits remain those of the
+environment above, and the migration is deferred to a window that can carry its
+own history entry.
+
+Two findings came out of the run that outlast the decision:
+
+* The 0.080 was living inside a `unit` PROSE STRING rather than in a value
+  column, so the freshness comparator was checking it as text rather than at a
+  numeric tolerance. It is promoted to its own row when the migration lands.
+* The published agreement between the profile map's ridge slope and that
+  covariance prediction is a consistency check rather than a precision test,
+  because only one of the two numbers is robust. The statistics chapter now
+  says so and names which one.
+
 ## When this file stops being necessary
 
 The two environments converge on their own at the next full run of the heavy

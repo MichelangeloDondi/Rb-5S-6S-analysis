@@ -1,0 +1,21 @@
+leg,quantity,value,unit,note,status
+A,gamma_l_equiv_transition,0.398352,MHz,"inverse-variance mean across peaks from kernel_k3.csv, on the transition axis the lineshape is fitted on",DIAGNOSTIC
+A,verdict,PRESENT_AND_IDENTIFIED,verdict,"a non-Gaussian homogeneous component, preferred by a nested likelihood ratio at every peak. Says nothing about its origin",DIAGNOSTIC
+B,comb_excursion_ub95_transition,28.3000,kHz,"95 per cent upper limit on the NON-LINEAR, NON-REPEATING excursion. A linear drift within a sweep is exactly degenerate with the sweep rate and is NOT bounded by it",DIAGNOSTIC
+B,comb_tau,0.1470,s,the averaging time. The bound is a statement at THIS scale and carries no information at others without a noise model,DIAGNOSTIC
+B,predicted_excursion_if_line_were_laser,0.6567,kHz,excursion at tau this kernel WOULD produce if it were white frequency noise. Compare against the 28.3 kHz the comb can exclude,DIAGNOSTIC
+B,comb_insensitivity_factor,43.1,dimensionless,how much larger the comb's exclusion threshold is than the signal a laser origin would produce at this averaging time. Above one the measurement cannot see the hypothesis,DIAGNOSTIC
+B,gamma_l_permitted_by_comb,739.7,MHz,the largest Lorentzian width the comb bound permits under the same white-noise assumption. Compare against the 0.4 MHz measured,DIAGNOSTIC
+B,headroom_factor,1857,dimensionless,ratio of what the comb permits to what K3 measured. A constraint worth having would be of order one,DIAGNOSTIC
+B,fourier_band_comb,6.80,Hz,"the Fourier frequency the comb clock samples, one over the averaging time",DIAGNOSTIC
+B,fourier_band_line,3.984e+05,Hz,"the Fourier frequency band that produces a Lorentzian wing, of order the linewidth itself",DIAGNOSTIC
+B,fourier_band_separation,5.86e+04,dimensionless,"the two measurements probe bands this far apart. Bridging them IS the white-noise assumption, and the noise type is measured nowhere",DIAGNOSTIC
+B,transfer_classification,NOT_ESTABLISHED,classification,"no validated transfer exists from the comb's excursion statistic to a predicted kernel. The conversion needs a noise TYPE the record does not measure, and even granting the most favourable type the bound is orders of magnitude too loose to test the hypothesis",DIAGNOSTIC
+C,attempted,NO,verdict,"leg C compares a PREDICTED kernel against the inferred one. Leg B produced no prediction, only a bound too loose to constrain, so there is nothing to cross-check and no numerical combination is permitted",DIAGNOSTIC
+C,laser_attribution,NOT_LICENSED,verdict,"the arrow from 'a non-Gaussian homogeneous component is present' to 'it is the laser' is not carried by anything in this record. K3's finding stands as a statement about the LINE, not about its origin",DIAGNOSTIC
+K6,class_used,DATA_ALLOWED_FALLBACK,classification,"K5 classified the transfer NOT_ESTABLISHED, so the admissible class is not narrowed by any independent laser evidence and stays the two-member class {G, G+L} the data alone allow",DIAGNOSTIC
+K6,U_statistical,0.001398,MHz per density unit,mean one-sigma statistical error on beta_self from the G+L fits,DIAGNOSTIC
+K6,U_kernel,0.004530,MHz per density unit,"half-range of beta_self over the fallback class, on the same one-sigma-like footing. NOT a supremum",DIAGNOSTIC
+K6,R_kernel,3.2403,dimensionless,"final at this value rather than provisional: K5 could not narrow the class, so the fallback K3 used is the class",DIAGNOSTIC
+K6,stop_condition,FIRED,verdict,"U_kernel exceeding U_statistical means repetitions of the CURRENT construction no longer buy the coefficient. What buys it is an instrument that constrains the kernel independently, which is what K7 ranks",DIAGNOSTIC
+all,what_would_close_it,a frequency-noise spectrum measured in the band of the linewidth,requirement,"the lock's own error signal, a self-heterodyne or beat measurement, or a fast-scan comb block sampling inside that band. Each is a candidate K7 ranks; none has been run",DIAGNOSTIC

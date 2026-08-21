@@ -93,6 +93,8 @@ EXPENSIVE = {
     # re-runnable.
     # eight multi-condition fits on real traces, a few minutes.
     "run_kernel_k3": ["kernel_k3.csv"],
+    # reads two committed CSVs and does arithmetic; seconds.
+    "run_kernel_k5": ["kernel_k5.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
     "run_laser_kernel": ["laser_kernel.csv"],
     "run_kernel_headline": ["kernel_headline.csv"],
