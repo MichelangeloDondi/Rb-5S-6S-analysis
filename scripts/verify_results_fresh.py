@@ -52,6 +52,7 @@ CHEAP = {
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_budget": ["kernel_budget.csv"],
+    "run_lever_table": ["lever_table.csv"],
     "run_onf_candidate": ["onf_candidate.csv"],
     "run_cooperative_channel": ["cooperative_channel.csv"],
     "run_polarisation_bound": ["polarisation_bound.csv"],
@@ -99,6 +100,12 @@ EXPENSIVE = {
     "run_kernel_k5": ["kernel_k5.csv"],
     "run_kernel_k7": ["kernel_k7.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
+    # nine synthetic worlds at five hundred trials, about eight minutes.
+    # Deterministic despite being Monte-Carlo: every trial is seeded by its
+    # index, so the CSV reproduces exactly. It sat in CHEAP for one commit
+    # and timed the freshness check out at nine hundred seconds, leaving
+    # nineteen CSVs regenerated and unannotated.
+    "run_fibre_twin": ["fibre_twin.csv"],
     "run_laser_kernel": ["laser_kernel.csv"],
     "run_kernel_headline": ["kernel_headline.csv"],
     "run_linefit": ["linefit_conditions.csv"],

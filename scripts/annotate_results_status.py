@@ -58,10 +58,26 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "trapping_channels.csv", "blackbody_channels.csv",
         # the cascade branching, same reason, and its producer needs the
         # optional sympy extra so it is not in run_all.sh either
-        "cascade_branching.csv"}
+        "cascade_branching.csv",
+        # THE KERNEL FAMILY, all seven. Each producer writes its own `status`
+        # per row, and several also write an `evidence_class` column that only
+        # the producer can fill. They were added to results/ without being
+        # added here, so `annotate_results_status.py` raised
+        # KeyError: 'kernel_budget.csv' on the FIRST of them alphabetically and
+        # took `run_all.sh` down with it. The gate never saw this because the
+        # gate runs pytest and this script runs only from run_all.sh.
+        # Found 2026-08-22 while registering lever_table.csv.
+        "kernel_budget.csv", "kernel_headline.csv",
+        "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
+        "kernel_k7.csv", "kernel_worlds.csv",
+        # the fibre twin, same reason: its producer writes per-row statuses
+        "fibre_twin.csv"}
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
+    # B2: every row is a design statement about what a configuration would
+    # separate, not a measurement, so the whole file is DIAGNOSTIC.
+    "lever_table.csv": "DIAGNOSTIC",
     "beta_self.csv": "PRELIM",            # per-peak model fits; headline is the BOUND
     "beta_self_probe.csv": "BOUND",       # the model-independent width-slope bound = C1 headline
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset

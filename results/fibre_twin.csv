@@ -1,0 +1,25 @@
+world,quantity,value,unit,note,status
+ALL,design_validation_only,TRUE,flag,O2 validates that the design can identify the intended quantities under synthetic worlds. It does not demonstrate that the real fibre experiment will,DIAGNOSTIC
+ALL,measures_laser_linewidth,FALSE,flag,"the fibre tests whether the homogeneous component moves as the transit law predicts, which is not a laser linewidth measurement",DIAGNOSTIC
+ALL,velocity_convention,mean,convention,typed on the estimator; rms differs by about 6 per cent,DIAGNOSTIC
+ALL,per_rung_sd_khz,4.02,kHz,the per-rung scatter on the total width that these settings achieve; every coverage row below assumes it,DIAGNOSTIC
+ALL,per_rung_demonstrated_khz,3.2,kHz,"what the record already achieves per condition on a total width (docs/BIG_PICTURE.md, Q-WIDTH-01, where the SPLIT direction is a factor of twenty worse at 62.4 kHz and carries the same name). The world is calibrated against this rather than chosen, and sits just outside it, which is the conservative direction",DIAGNOSTIC
+O2A_lambda_130nm,coverage_gamma_l,0.9780,fraction,target >= 0.95 within 12.2 kHz,DIAGNOSTIC
+O2A_lambda_130nm,coverage_sigma_g,0.4740,fraction,target >= 0.95 within 11.6 kHz,DIAGNOSTIC
+O2A_lambda_130nm,median_abs_err_gamma_l,3.682,kHz,median absolute error over trials,DIAGNOSTIC
+O2A_lambda_130nm,trials,500,count,failures 0,DIAGNOSTIC
+WORLD_D_lambda_130nm,coverage_gamma_l,0.0000,fraction,"INVERTED pass condition: at one rung the split must FAIL, so a LOW coverage here is the passing result",DIAGNOSTIC
+O2A_lambda_240nm,coverage_gamma_l,0.9660,fraction,target >= 0.95 within 12.2 kHz,DIAGNOSTIC
+O2A_lambda_240nm,coverage_sigma_g,0.4760,fraction,target >= 0.95 within 11.6 kHz,DIAGNOSTIC
+O2A_lambda_240nm,median_abs_err_gamma_l,4.166,kHz,median absolute error over trials,DIAGNOSTIC
+O2A_lambda_240nm,trials,500,count,failures 0,DIAGNOSTIC
+WORLD_D_lambda_240nm,coverage_gamma_l,0.0000,fraction,"INVERTED pass condition: at one rung the split must FAIL, so a LOW coverage here is the passing result",DIAGNOSTIC
+WORLD_F_alpha_0.35,coverage_gamma_l,0.0000,fraction,"data generated under T**(alpha/2), fitted under the correct law; the alpha at which coverage collapses is the departure the design can detect",DIAGNOSTIC
+WORLD_F_alpha_0.6,coverage_gamma_l,0.0000,fraction,"data generated under T**(alpha/2), fitted under the correct law; the alpha at which coverage collapses is the departure the design can detect",DIAGNOSTIC
+WORLD_F_alpha_1.0,coverage_gamma_l,0.9520,fraction,"data generated under T**(alpha/2), fitted under the correct law; the alpha at which coverage collapses is the departure the design can detect",DIAGNOSTIC
+O2B,false_positive_rate,0.0140,fraction,"detection rate at ZERO departure; the nominal 0.05 is the design point, and a measured value far from it means the assumed per-rung scatter is wrong rather than the design",DIAGNOSTIC
+O2B_departure_5kHz,detection_rate,0.1300,fraction,"NECESSARY-CONDITION test on TEMPERATURE RUNGS of one line. This is not evidence about K2.5, which varies four spectral PEAKS across different hyperfine lines and isotopes",DIAGNOSTIC
+O2B_departure_10kHz,detection_rate,0.5320,fraction,"NECESSARY-CONDITION test on TEMPERATURE RUNGS of one line. This is not evidence about K2.5, which varies four spectral PEAKS across different hyperfine lines and isotopes",DIAGNOSTIC
+O2B_departure_20kHz,detection_rate,0.9920,fraction,"NECESSARY-CONDITION test on TEMPERATURE RUNGS of one line. This is not evidence about K2.5, which varies four spectral PEAKS across different hyperfine lines and isotopes",DIAGNOSTIC
+O2B_departure_40kHz,detection_rate,1.0000,fraction,"NECESSARY-CONDITION test on TEMPERATURE RUNGS of one line. This is not evidence about K2.5, which varies four spectral PEAKS across different hyperfine lines and isotopes",DIAGNOSTIC
+ALL,band_edge_licensing,DISAGREEMENT_MEANS_UNIDENTIFIABLE,sentence,"the lever and its calibration are the same order, about 83 kHz. If the two band edges disagree, the world is unidentifiable unless Lambda is pinned independently. It does not license choosing the edge that gives the better answer",DIAGNOSTIC

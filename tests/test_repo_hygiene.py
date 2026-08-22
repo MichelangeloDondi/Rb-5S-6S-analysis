@@ -1198,3 +1198,79 @@ def test_a_docstring_names_no_identifier_the_tree_lacks():
                     bad.add(f"{path.relative_to(ROOT)}: `{tok}`")
     assert not bad, ("a docstring names an identifier the tree does not "
                      "contain:\n  " + "\n  ".join(sorted(bad)))
+
+
+# ---------------------------------------------------------------------------
+# O2-B IS NOT EVIDENCE ABOUT K2.5, AND THIS IS THE GUARD THAT SAYS SO.
+#
+# K2.5 asks whether FOUR SPECTRAL PEAKS share one Gamma_L,equiv -- different
+# hyperfine lines, different isotopes. O2-B asks whether a single-line fibre
+# twin is stable from TEMPERATURE RUNG to rung. Different populations, so a
+# result about one is silent about the other. The two are easy to conflate
+# because both are described as heterogeneity across a set, which is exactly
+# why the confusion needs a mechanical check rather than a warning in prose.
+#
+# THE GUARD'S OWN FALSE POSITIVE IS DESIGNED FOR. A bare proximity test fires
+# on the disclaimer it exists to make people write -- the sentence "O2-B is not
+# evidence on K2.5" trips it. So the licence is the term-of-art marker this
+# file already carries: a co-occurrence is allowed where a reasoned marker
+# heads its paragraph. Same mechanism, no new architecture.
+_O2B = re.compile(r"\bO2-?B\b")
+_K25 = re.compile(r"\bK2\.5\b")
+_O2B_WINDOW = 3
+
+
+def _o2b_k25_violations(files):
+    bad = []
+    for rel in files:
+        try:
+            lines = (ROOT / rel).read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError):
+            continue
+        for i, line in enumerate(lines):
+            if not _O2B.search(line):
+                continue
+            lo = max(0, i - _O2B_WINDOW)
+            hi = min(len(lines), i + _O2B_WINDOW + 1)
+            if any(_K25.search(lines[j]) for j in range(lo, hi)):
+                if not _marked(lines, i + 1):
+                    bad.append(f"{rel}:{i + 1}")
+    return bad
+
+
+def test_o2b_is_not_cited_as_evidence_about_k2_5():
+    bad = _o2b_k25_violations(_prose_files())
+    assert not bad, (
+        "O2-B and K2.5 appear within three lines of each other without a "
+        "reasoned term-of-art marker. O2-B varies temperature RUNGS on one "
+        "line; K2.5 varies four spectral PEAKS. If the co-occurrence is "
+        "deliberate, head the paragraph with "
+        "<!-- term-of-art: why these two belong together here --> :\n  "
+        + "\n  ".join(bad))
+
+
+def test_the_o2b_guard_fires_when_a_violation_is_planted(tmp_path):
+    """The ceiling test: an unguarded guard is indistinguishable from a clean
+    tree, and this one has a second job -- it also checks that the MARKER
+    licences, so the disclaimer people must write does not trip it."""
+    unmarked = tmp_path / "unmarked.md"
+    unmarked.write_text("O2-B reports a rung departure.\nK2.5 is settled by it.\n",
+                        encoding="utf-8")
+    marked = tmp_path / "marked.md"
+    marked.write_text(
+        "<!-- term-of-art: naming both to state that one is not evidence "
+        "about the other -->\nO2-B reports a rung departure.\n"
+        "K2.5 is a different population and this says nothing about it.\n",
+        encoding="utf-8")
+
+    def check(path):
+        lines = path.read_text(encoding="utf-8").splitlines()
+        for i, line in enumerate(lines):
+            if _O2B.search(line):
+                lo, hi = max(0, i - _O2B_WINDOW), min(len(lines), i + _O2B_WINDOW + 1)
+                if any(_K25.search(lines[j]) for j in range(lo, hi)):
+                    return not _marked(lines, i + 1)
+        return False
+
+    assert check(unmarked), "the planted violation was not detected"
+    assert not check(marked), "a reasoned marker failed to licence the pairing"

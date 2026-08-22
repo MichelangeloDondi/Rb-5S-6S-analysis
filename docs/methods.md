@@ -57,7 +57,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   $\beta_\text{self}$, C2 the 2025 laser-epoch width $\sigma_\text{laser}$, and
   C3 the power sweep (ramp-law predictions), with C3d its AC-Stark coefficient
   bound $S_0$. Each is a **bound or null** in the 2025 dataset.
-- **M0 … M37, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
+- **M0 … M38, the analysis *modules* (pipeline stages)**, one `rb5s6s/*.py`
   file and one `scripts/run_*.py` driver each, where the fitting core has
   lettered sub-stages (M4b–M4e). The C-results are the *what*, the M-modules the *how*:
 
@@ -73,7 +73,7 @@ Three separate labels recur throughout the repo and are easy to conflate:
   | M24 wing check (null) | M25 global dataset fit (both coefficients free) | M26 pilot ruler (the pilot day's own rate) | M27 centre-channel Stark |
   | M28 full dataset in one likelihood | M29 trap-design corrections at the magic crossings | M30 cavity-scan photograph, integrated |  |
   | M31 cascade populations and ground-F depletion | M32 blackbody as a campaign temperature boundary | M33 model comparison as an evidence vector | M34 the digital twin: forecast a design before building it |
-  | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse |  |
+  | M35 the detection channel: which decay branch is collected, and its trapping | M36 polarisation: what ellipticity and a beam mismatch open | M37 the two-atom channel: what a pair accepts that one atom must refuse | M38 the fibre twin's forward model: a Lorentzian transit kernel that adds exactly, so only a temperature ladder separates it |
 
 - **CI, Continuous Integration** (*not* C1): the GitHub Actions workflow that
   runs the full `pytest` battery on every push, on the minimum *and* latest
@@ -175,6 +175,11 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
                       rank-2 closure. A pair accepts one unit each, putting a
                       satellite at the Delta m_F = +-2 position, at 1.5e-10
                       of the single-atom rate)
+          fibre(M38: the fibre twin's forward model, PROSPECTIVE. The
+                transit kernel is Lorentzian with FWHM v/(pi*Lambda), so it
+                adds exactly to every other Lorentzian term and has no
+                separate existence at one temperature. A leaf module: it
+                imports core and core never imports it)
           fitutil _compat
           (M18, M19, M29, M31, M32, M33, M34, M35, M36 and M37 are library-and-test only: they have
            no CSV product, so grepping results/ for them finds nothing -- see

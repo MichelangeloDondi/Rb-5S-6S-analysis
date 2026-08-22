@@ -239,9 +239,24 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     # Nothing committed changes: the only values affected were nan.
     if not _lorentz_laser and sigma_laser > 0.0:
         prof = np.convolve(prof, gaussian(g, sigma_laser), "same") * dnu
-    tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
-          else gaussian(g, transit_fwhm))
-    prof = np.convolve(prof, tk, "same") * dnu
+    # THE transit -> 0 LIMIT MUST BE REACHABLE (2026-08-22), for the same
+    # reason and by the same argument as the sigma_G -> 0 limit above.
+    # two_sided_exponential() and gaussian() both divide by their width, so
+    # convolving with a zero-width transit returned an all-nan profile. The
+    # GRID construction above already excludes an absent transit, so the two
+    # halves of this function disagreed about whether the kernel could be
+    # absent, and only the half that could produce nan was unguarded. A
+    # zero-width kernel is a delta function and convolution with it is the
+    # identity, so skipping it IS the correct limit rather than a guard
+    # against it. Reached first by the fibre twin, whose Lorentzian transit is
+    # carried inside the additive Lorentzian channel and needs no separate
+    # transit kernel at all. Nothing committed changes: fit_transit=False pins
+    # the width at TRANSIT_FWHM_PLACEHOLDER_MHZ, so no committed call reaches
+    # zero, and the only values affected were nan.
+    if transit_fwhm > 0.0:
+        tk = (two_sided_exponential(g, transit_fwhm) if transit_kind == "exp"
+              else gaussian(g, transit_fwhm))
+        prof = np.convolve(prof, tk, "same") * dnu
     area = trapezoid(prof, g)
     return g, (prof / area if area > 0 else prof)
 

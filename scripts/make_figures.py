@@ -5426,6 +5426,122 @@ def fig_identifiability_matrix():
     _save(fig, "fig33_identifiability_matrix.png", rect=(0, 0.10, 1, 1))
 
 
+def fig_orthogonal_information():
+    """Which experimental variable breaks which degeneracy.
+
+    WHY THIS FIGURE EXISTS. The kernel chain produced a component that is
+    identified, a commonality that is not, and an attribution that is refused.
+    Prose can state those three outcomes but cannot show WHY they differ, and
+    the reason is geometric: the homogeneous width is a SUM, so a single
+    condition determines only the total, and each experimental variable moves
+    exactly one term of that sum. The left panel is what the data gave; the
+    right panel is why one lever would settle the question and another would
+    not.
+
+    THE EXACT DEGENERACY IS THE POINT OF THE RIGHT PANEL. Two Lorentzians of
+    width a and b convolve to one Lorentzian of width a + b, exactly. This is
+    not an approximation that a better fit or more signal-to-noise defeats: at
+    one condition the individual terms have no separate existence in the
+    lineshape at all. Only a variable that moves one term while leaving the
+    others fixed can separate them, which is what the arrows mean.
+
+    THE ABSENT ROW IS DRAWN, NOT OMITTED. The independent laser diagnostic is
+    the lever that would license calling the identified component the laser.
+    No such measurement has been taken, so the row is drawn greyed with a
+    dashed arrow. Leaving it out would make the diagram describe a closed
+    problem, and the problem is not closed.
+
+    NOTHING IN THE RIGHT PANEL IS A MEASUREMENT. The left panel is drawn from
+    committed rows. The right panel is the information geometry of the model,
+    and the temperature arrow in particular carries an ASSUMPTION rather than
+    a result: changing temperature is INTENDED to move the transit term while
+    leaving the laser contribution invariant, and a campaign using it needs
+    controls that validate that invariance.
+    """
+    import matplotlib.patches as mpatches
+
+    def _num(v):
+        try:
+            return float(v)
+        except ValueError:
+            return None
+
+    k3 = {(r["scope"], r["quantity"]): _num(r["value"])
+          for r in _rows("kernel_k3")}
+
+    peaks = ["4121", "4154", "4192", "4207"]
+    vals = [k3[(p, "gamma_l_equiv")] for p in peaks]
+    errs = [k3[(p, "gamma_l_equiv_err")] for p in peaks]
+    dchi = [k3[(p, "delta_chi2_G_minus_GL")] for p in peaks]
+    wmean = k3[("all", "k2p5_gamma_l_weighted_mean")]
+    pval = k3[("all", "k2p5_heterogeneity_p")]
+
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(11.4, 4.9))
+
+    # ---- left: what the data gave -------------------------------------
+    x = list(range(len(peaks)))
+    axL.axhline(wmean, color="#7C9A6E", lw=1.6, zorder=1)
+    axL.fill_between([-0.5, 3.5], wmean - 0.0, wmean + 0.0, color="none")
+    axL.errorbar(x, vals, yerr=errs, fmt="o", ms=7, color="#2F5D50",
+                 ecolor="#2F5D50", elinewidth=1.6, capsize=4, zorder=3)
+    for xi, v, d in zip(x, vals, dchi):
+        axL.annotate(r"$\Delta\chi^2$ = %.0f" % d, (xi, v), textcoords="offset points",
+                     xytext=(0, 15), ha="center", fontsize=7.4, color="#5A5750")
+    axL.set_xticks(x)
+    axL.set_xticklabels(peaks, fontsize=9)
+    axL.set_xlim(-0.5, 3.5)
+    axL.set_xlabel("peak (nm label)", fontsize=9)
+    axL.set_ylabel(r"$\Gamma_{L,\rm equiv}$  (MHz)", fontsize=9)
+    axL.set_title("identified, per peak", fontsize=10, loc="left")
+    axL.annotate("inverse-variance mean %.3f MHz\n"
+                 "common scalar NOT rejected and NOT established, p = %.3f"
+                 % (wmean, pval),
+                 xy=(0.5, 0.03), xycoords="axes fraction", ha="center",
+                 fontsize=7.6, color="#5A5750")
+    for s in ("top", "right"):
+        axL.spines[s].set_visible(False)
+
+    # ---- right: which lever moves which term ---------------------------
+    axR.set_xlim(0, 10)
+    axR.set_ylim(0, 10)
+    axR.axis("off")
+    axR.set_title("why one lever settles it and another does not",
+                  fontsize=10, loc="left")
+
+    terms = [("$\\gamma_{\\rm nat}$  3.49 MHz", 8.4, "#2F5D50", False),
+             ("$\\gamma_{\\rm coll}(n)$", 6.4, "#2F5D50", False),
+             ("$\\Gamma_{\\rm transit}(T)$", 4.4, "#2F5D50", False),
+             ("$\\Gamma_{L}$  ~0.4 MHz", 2.4, "#2F5D50", False)]
+    for label, y, col, _ in terms:
+        axR.add_patch(mpatches.FancyBboxPatch((6.1, y - 0.42), 3.4, 0.84,
+                      boxstyle="round,pad=0.02", facecolor="#EFEDE6",
+                      edgecolor="#9A9890", lw=0.9))
+        axR.text(7.8, y, label, ha="center", va="center", fontsize=8.6)
+
+    levers = [("fixed, known", 8.4, "#9A9890", True),
+              ("DENSITY  $n$", 6.4, "#2F5D50", False),
+              ("TEMPERATURE  $T$\n(assumed orthogonal)", 4.4, "#2F5D50", False),
+              ("independent laser\ndiagnostic  ABSENT", 2.4, "#B08A3E", True)]
+    for label, y, col, dashed in levers:
+        axR.text(3.6, y, label, ha="right", va="center", fontsize=8.4,
+                 color=col, style=("italic" if dashed else "normal"))
+        axR.annotate("", xy=(6.05, y), xytext=(3.75, y),
+                     arrowprops=dict(arrowstyle="-|>", lw=1.5, color=col,
+                                     linestyle=("dashed" if dashed else "solid")))
+
+    # Caption text in AXES coordinates, not anchored to a data point: the
+    # guard in tests/test_figure_text_stays_on_the_canvas.py caught this box
+    # leaving its own axes when it was placed in data coordinates.
+    axR.text(0.5, 0.02, "these four ADD exactly, so a single condition "
+             "determines only their SUM",
+             transform=axR.transAxes, ha="center", va="bottom",
+             fontsize=8.0, color="#5A5750")
+
+    _footer(fig, "figure 35 | results/kernel_k3.csv\n"
+                 "python scripts/make_figures.py")
+    _save(fig, "fig35_orthogonal_information.png")
+
+
 def main() -> int:
     fig_width_vs_density()
     fig_power_sweep()
@@ -5465,6 +5581,7 @@ def main() -> int:
     fig_achieved_vs_achievable()
     fig_campaign_projection()
     fig_identifiability_matrix()
+    fig_orthogonal_information()
     print(f"wrote figures to {FIG}/")
     for p in sorted(FIG.glob("*.png")):
         print(f"  {p.name}")
