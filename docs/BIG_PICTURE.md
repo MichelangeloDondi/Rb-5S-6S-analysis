@@ -153,6 +153,15 @@ not a model class shown adequate, and this result sits at the first of those
 four. [Chapter 7](big_picture/07_limitations-and-identifiability.md) carries it
 with the figure.
 
+**The fourth of those has since been attempted and the attempt did not
+qualify.** A blind residual atlas, which stacks per-condition residuals to ask
+whether the fitted family leaves a shape no member of it can produce, is built
+and has run. **Its first run is void by its own preregistered reproduction
+check** (`results/kernel_k4.csv`, whose first row says so), and a void run's
+findings may not be cited. Class adequacy is therefore open exactly as it was.
+What changed is only which of two reasons applies, from not attempted to
+attempted without qualifying.
+
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in
 the archive is differential. Line shapes survive this and line positions do

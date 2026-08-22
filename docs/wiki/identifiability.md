@@ -368,6 +368,11 @@ share one value, which stays open at $p = 0.097$. It does not tell you what the
 component IS, and calling it the laser is a separate claim no measurement yet
 taken licenses (`results/kernel_k5.csv`). And it does not tell you the model
 class was adequate, since 3.24 is a sensitivity within the two forms tested.
+That last question has its own instrument, a blind residual atlas that stacks
+per-condition residuals and asks whether the family leaves a shape none of its
+members can make. It is built, it has run, and **its first run is void by its
+own preregistered reproduction check**, so it settles nothing yet
+(`results/kernel_k4.csv`).
 A parameter identified is not a common parameter identified is not an origin
 identified is not a class shown adequate.
 
