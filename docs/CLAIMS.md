@@ -283,11 +283,12 @@ systematic as fig1.*
   condition's statistics.
   Five hostile worlds at 500 preregistered trials each
   (`results/kernel_worlds.csv`) then asked whether the estimator MANUFACTURES
-  such a width. Against a true zero the false-positive rate is 0.0000, and it
-  is also 0.0000 when the data carry a quadratic baseline the linear model
-  cannot absorb and when they carry a transit kernel of the wrong functional
-  form: not one trial in 500 crossed the detection threshold in any of the
-  three. The exact-symmetry world, which tests the instrument rather than the
+  such a width. Against a true zero **no trial in 500 crossed the detection
+  threshold**, and the same held when the data carry a quadratic baseline the
+  linear model cannot absorb and when they carry a transit kernel of the wrong
+  functional form. Zero events is not a rate: 0 of 500 gives a one-sided
+  95 per cent upper bound near 0.6 per cent, **per world**, and the three
+  zero-truth worlds are bounded separately rather than pooled. The exact-symmetry world, which tests the instrument rather than the
   model, finds the profile invariant to 0.000e+00 when a fixed total
   Lorentzian width is re-split. The interval coverage against a true mixed
   kernel is 0.7460 where 0.68 is nominal, so the intervals OVER-cover and any

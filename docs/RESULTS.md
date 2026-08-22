@@ -48,7 +48,7 @@ cross-checks pending a fixed-lock session.
 
 ## C1b. The laser kernel, and what freeing it costs $\beta_\text{self}$
 
-The kernel is a **model form**, and on this dataset it is also a measurement. Freeing a Lorentzian-equivalent laser width alongside the Gaussian one is preferred at every peak by a nested likelihood ratio with one parameter on its boundary, and the inverse-variance mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398352$ MHz (`results/kernel_k3.csv`). At a FIXED condition this parameter is exactly degenerate with the collisional width, because both are Lorentzian and Lorentzians add, so it is identified only across the density ladder.
+The kernel is a **model form**, and on this dataset it is also a measurement. Freeing a Lorentzian-equivalent laser width alongside the Gaussian one is preferred at every peak by a nested likelihood ratio with one parameter on its boundary, and the inverse-variance mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398352$ MHz, and that mean is never quoted alone: the four per-peak values span **0.315 to 0.449 MHz** and a common scalar is neither rejected nor established, at **p = 0.097** (`results/kernel_k3.csv`, `results/kernel_budget.csv`). At a FIXED condition this parameter is exactly degenerate with the collisional width, because both are Lorentzian and Lorentzians add, so it is identified only across the density ladder.
 
 - $U_\text{statistical}$ = 0.001398, $U_\text{kernel}$ = 0.004530, both in MHz per density unit and on the same one-sigma-like footing, giving **$R_\text{kernel}$ = 3.2398**. The kernel systematic dominates the statistical error, so repetitions of the current construction no longer buy the coefficient.
 

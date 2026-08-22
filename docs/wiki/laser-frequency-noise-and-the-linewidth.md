@@ -210,7 +210,10 @@ Later on 2026-08-21 that width was measured. Freeing a Lorentzian-equivalent
 component alongside the Gaussian one is preferred at every peak by a nested
 likelihood ratio with one parameter on its boundary, and the inverse-variance
 mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398$ MHz on the transition
-axis (`results/kernel_k3.csv`).
+axis (`results/kernel_k3.csv`). That mean carries its spread wherever it
+appears: the four per-peak values run from 0.315 to 0.449 MHz, and a common
+scalar is **neither rejected nor established**, at $p = 0.097$. It is an
+aggregate over four different spectral conditions, not a measured constant.
 
 Two properties of that number matter more than its value.
 

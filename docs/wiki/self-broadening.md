@@ -86,7 +86,9 @@ fit returning a confident split there is describing a numerical artefact.
 What separates them is DENSITY. The collisional width is
 $\beta_\text{self} N(T)$ and moves with the temperature ladder, a laser width
 does not, and across the ladder both are recovered. Measured on this archive,
-$\Gamma_{L,\text{equiv}} = 0.398$ MHz, and freeing it moves
+$\Gamma_{L,\text{equiv}} = 0.398$ MHz as an inverse-variance mean over four
+peaks spanning 0.315 to 0.449 MHz, with a common scalar neither rejected nor
+established at $p = 0.097$, and freeing it moves
 $\beta_\text{self}$ by 42 to 66 per cent
 ([the laser kernel](laser-frequency-noise-and-the-linewidth.md),
 `results/kernel_k3.csv`).
