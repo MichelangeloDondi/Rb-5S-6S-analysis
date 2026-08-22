@@ -46,6 +46,31 @@ into the model-form error bar on the collisional coefficient, and costs a fit
 rather than beam time
 (`scripts/run_laser_kernel.py`).
 
+**That fit has since been run, and it changes what the session is for.** Freeing
+the Lorentzian-equivalent width inside the containing model at each peak gives a
+component present everywhere, by a nested likelihood ratio of 176 to 961, at
+0.315 to 0.449 MHz per peak (`results/kernel_k3.csv`). The model-form error bar
+it was meant to produce is $R_\text{kernel} = 3.24$ times the statistical one
+(`results/kernel_budget.csv`). So the model-form question no longer needs beam
+time and is answered.
+
+**What still needs beam time is the ORIGIN, and that is now the sharper reason
+for the session.** The component is identified and unattributed. Calling it the
+laser is a separate claim, and the transfer that would carry it is classified
+NOT_ESTABLISHED for every measurement taken so far, because the one in-situ
+laser measurement samples a different band from the one a scanned width
+integrates (`results/kernel_k5.csv`). No spectroscopic lever substitutes for an
+independent laser diagnostic here, which is why that block is not the first
+thing to cut when the budget shrinks.
+
+The routes that would close it are ranked by what each reaches in
+`results/kernel_k7.csv`, and the levers a campaign can pull are set out with
+their ROLES, rather than as a ranking, in `results/orthogonal_levers.csv`. That
+file states for each lever what it separates and what its orthogonality
+assumes, including the row this record most wants a reader to distrust:
+temperature is INTENDED to move the transit term while leaving the laser
+contribution alone, and a campaign using it needs the controls that show it did.
+
 **The proposed measurement.** A vapour-cell session under the repaired cavity
 lock, with an independent measurement of the laser width, a span wide enough
 to fit the Doppler pedestal as a pedestal, two same-isotope frequency rulers

@@ -71,18 +71,57 @@ cheapest route to this limitation. It is the only one.
 assumption, and its failure mode is a bias rather than an error bar.** Every
 fit convolves a Gaussian for the laser, which is what slow frequency noise
 produces. Fast noise produces a Lorentzian, and a Lorentzian laser
-contribution is absorbed by the collisional width directly. The record
-cannot settle the kernel from lineshape alone, the model-form comparison
-being indistinguishable at its own gate, and nothing measures the laser's
-frequency-noise spectrum, the M1 noise law being the detector's. What
+contribution is absorbed by the collisional width directly. SWITCHING the kernel between two pure
+forms leaves the record unable to choose, that comparison being
+indistinguishable at its own gate, and nothing measures the laser's
+frequency-noise spectrum, the M1 noise law being the detector's. **The form
+of the comparison turns out to matter more than its verdict did.** A switch
+sets two models of equal dimension against each other. FREEING a second,
+Lorentzian component alongside the Gaussian one instead makes the pinned model
+a nested special case of the mixed one, and a nested test has power that a
+switch does not. What
 evidence exists leans the unfavourable way: the comb-clock limit excludes
 the slow spectra that would justify the Gaussian by factors of seventeen to
 eighty. Two in-situ resolutions are designed and neither has run, the lock's
 own error signal and a fast-scan comb block whose tooth clock samples inside
 the band the science blocks' widths integrate
-([plan chapter 7](../plan/07_acquisition-settings.md)). Until one runs, the
-collisional coefficient carries this as an unquantified model systematic,
-stated in [CLAIMS.md](../CLAIMS.md) section 2.
+([plan chapter 7](../plan/07_acquisition-settings.md)).
+
+**That systematic is now measured, and measuring it did not settle the
+question.** A mixed Gaussian-plus-Lorentzian laser kernel was fitted against
+the pinned-Gaussian one at every peak. The mixed form wins decisively, by
+$\Delta\chi^2$ of 176 to 961 on a nested test with one parameter at its
+boundary, so **a non-Gaussian homogeneous component is present**, with
+peak-conditioned values from 0.315 to 0.449 MHz
+(`results/kernel_k3.csv`). Its size against the statistical error is stated on
+a matched footing as $R_\text{kernel} = 3.24$
+(`results/kernel_budget.csv`): the choice of kernel moves the collisional
+coefficient by more than three times what the noise does, so repetitions of
+the current construction no longer buy that coefficient.
+
+![which experimental variable breaks which degeneracy](../../figures/fig35_orthogonal_information.png)
+
+*Left, the component identified at each peak with its own likelihood-ratio
+gate. Right, why the levers differ: the homogeneous terms add exactly, so one
+condition determines only their sum, and each variable moves one term. The
+independent laser diagnostic is drawn greyed because no such measurement has
+been taken.*
+
+**Four things are true at once here and merging any two of them is the error
+this section exists to prevent.** A parameter is identified. Whether the four
+peaks share ONE value is neither rejected nor established, at $p = 0.097$, so
+the inverse-variance mean of those four values is never quoted bare. The
+physical ORIGIN is not identified, and calling the component the laser is a
+separate claim that no measurement taken licenses: the one in-situ laser
+measurement samples a different band from the one a scanned width integrates
+(`results/kernel_k5.csv`). And the model CLASS is not shown adequate, because
+$R_\text{kernel}$ is a sensitivity within the two forms tested and the blind
+residual atlas that would test the class itself has not been run.
+
+So the collisional coefficient no longer carries this as an unquantified
+systematic. It carries a quantified model-form sensitivity with an
+unattributed cause, which is a different and more useful position, and
+[CLAIMS.md](../CLAIMS.md) section 2 states it.
 
 **Target outcome.** The collisional width becomes separately identifiable, and
 the bound of [Q-BETA-01](../BIG_PICTURE.md) becomes a measurement.

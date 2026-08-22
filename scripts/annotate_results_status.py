@@ -66,7 +66,7 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # KeyError: 'kernel_budget.csv' on the FIRST of them alphabetically and
         # took `run_all.sh` down with it. The gate never saw this because the
         # gate runs pytest and this script runs only from run_all.sh.
-        # Found 2026-08-22 while registering lever_table.csv.
+        # Found 2026-08-22 while registering orthogonal_levers.csv.
         "kernel_budget.csv", "kernel_headline.csv",
         "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
         "kernel_k7.csv", "kernel_worlds.csv",
@@ -77,7 +77,7 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 FILE_STATUS = {
     # B2: every row is a design statement about what a configuration would
     # separate, not a measurement, so the whole file is DIAGNOSTIC.
-    "lever_table.csv": "DIAGNOSTIC",
+    "orthogonal_levers.csv": "DIAGNOSTIC",
     "beta_self.csv": "PRELIM",            # per-peak model fits; headline is the BOUND
     "beta_self_probe.csv": "BOUND",       # the model-independent width-slope bound = C1 headline
     "amplitude_ratios.csv": "NULL",       # degeneracy-law ratios drift-limited -> untestable in the dataset

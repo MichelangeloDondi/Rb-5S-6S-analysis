@@ -52,7 +52,7 @@ CHEAP = {
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_budget": ["kernel_budget.csv"],
-    "run_lever_table": ["lever_table.csv"],
+    "run_orthogonal_levers": ["orthogonal_levers.csv"],
     "run_onf_candidate": ["onf_candidate.csv"],
     "run_cooperative_channel": ["cooperative_channel.csv"],
     "run_polarisation_bound": ["polarisation_bound.csv"],

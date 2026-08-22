@@ -30,7 +30,8 @@ summary: >
   300 nm. A common trap for ground 5S1/2 F=1 and Rydberg 68G9/2 is reached by
   detuning to 788.1 nm, giving minima within 10 nm and depths differing by
   about 40 per cent.
-routing: []
+routing:
+  - CITE
 ---
 
 # vylegzhanin2025

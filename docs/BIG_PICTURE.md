@@ -124,6 +124,35 @@ comparison of corners into the error bar
 ([`run_laser_kernel.py`](../scripts/run_laser_kernel.py),
 [the Voigt profile](wiki/voigt-profile.md)).
 
+**That remaining work was done on 2026-08-21, and it stops one level short of
+the sentence a reader will want.** Fitting the Lorentzian-equivalent width
+inside the containing model at each peak, against the pinned-Gaussian arm,
+gives a component present at every peak by $\Delta\chi^2$ of 176 to 961, with
+peak-conditioned values of 0.315 to 0.449 MHz (`results/kernel_k3.csv`). The
+same producer checks its own footing: the pinned arm reproduces the committed
+collisional coefficient to seven parts in ten thousand, without which the
+difference would be between producers rather than between kernels. Sized
+against the statistical error on a matched footing, the kernel choice is
+$R_\text{kernel} = 3.24$ times larger (`results/kernel_budget.csv`), so the
+model form, not the noise, is what limits that coefficient now.
+
+**The estimator was made to fail before it was believed.** Five hostile
+synthetic worlds, 500 trials each, returned **0 false positives per world**,
+including one world that varies only the numerical grid and so tests the
+arithmetic rather than the physics (`results/kernel_worlds.csv`).
+
+**And the record stops there deliberately.** Whether the four peaks share one
+value is neither rejected nor established at $p = 0.097$, so their
+inverse-variance mean is never written on its own. Attributing the component to
+the laser is a separate claim that no measurement yet taken licenses, since the
+one in-situ laser measurement samples a different band from the one a scanned
+width integrates (`results/kernel_k5.csv`). And $R_\text{kernel}$ is a
+sensitivity within the two forms tested, not over all model forms. A parameter
+identified is not a common parameter identified is not an origin identified is
+not a model class shown adequate, and this result sits at the first of those
+four. [Chapter 7](big_picture/07_limitations-and-identifiability.md) carries it
+with the figure.
+
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in
 the archive is differential. Line shapes survive this and line positions do

@@ -54,6 +54,9 @@ for one quantity rather than for the sequence.
 | [A hardware argument](#a-hardware-argument-used-the-wrong-geometry-caught-same-day-2026-08-19) | a plan chapter justified an EOM purchase from the geometry its own proposal had removed | no, and nothing was pushed |
 | [The tooth-height model](#the-tooth-height-model-was-a-limit-and-the-plan-priced-two-designs-outside-it-2026-08-19) | the Bessel weights are a zero-delay limit, and two same-day designs were priced outside it | no committed number, two plan tables same day |
 | [A depth menu](#a-depth-menu-compared-per-sweep-what-the-budget-offers-at-the-margin-2026-08-19) | a per-sweep comparison answered a question the budget never poses | no, one local commit for under an hour |
+| [The identifiability diagnostics](#the-identifiability-diagnostics-moved-under-the-arithmetic-environment-2026-08-22) | the ridge slope, its covariance prediction, the condition number and the valley-floor RMS all move on this floor | not yet, the migration that would land them is held |
+| [Three pages on the kernel](#three-pages-described-the-kernel-systematic-as-unquantified-or-still-to-be-done-2026-08-22) | the narrative layer called a question open that the results layer had answered | no number, three pages of prose |
+| [A results path](#a-results-path-was-renamed-away-from-a-collision-2026-08-22) | `lever_table.csv` became `orthogonal_levers.csv` to clear a name collision | no, the path only |
 
 The last three rows are here on purpose. A history that records only the
 corrections a reader could otherwise discover teaches that the record is
@@ -657,3 +660,65 @@ total homogeneous width and nothing else. A comparison in which the more
 flexible model wins everywhere is close to determined before any data are
 taken, and a significance computed against a null that both hypotheses nearly
 guarantee is not a significance.
+
+## The identifiability diagnostics moved under the arithmetic environment, 2026-08-22
+
+Regenerating `run_identifiability` on this floor moves numbers that
+[the statistics chapter](methods/06_the_statistics.md) quotes. The measured
+ridge slope goes from **0.073 to 0.086** and the covariance prediction from
+**0.080 to 0.110**, so the comparison reads 0.086 against 0.110 rather than
+0.073 against 0.080. The neighbourhood moves with them: the condition number
+falls from **389.7 to 345.1** and the valley-floor RMS from **0.0032 to
+0.0020**. The best-constrained sigma does not move.
+
+Three things were established before anything was concluded. Nondeterminism was
+ruled out, two runs being bit-identical. The cause is the arithmetic
+environment and not the analysis change made the same week, since pre-change
+code run under the same numpy gives the new values too, which exonerates that
+change. And the relative statement the chapter rests on survives, because the
+prediction still exceeds the measurement.
+
+**A claim in that chapter did not survive and was corrected.** It had said the
+ridge slope reproduces unchanged. It does not. It moves by 18 per cent, and the
+chapter now says so.
+
+**The migration that would land these values is HELD.** Its own preregistered
+backstop fired, because a moved quantity changed the interpretation of a
+published claim. The hold was not discharged by correcting that claim, since
+discharging a hold by editing its trigger is the move this record's discipline
+exists to catch, and this same passage had already been refused once on those
+grounds. The values above are therefore the regenerated ones and the committed
+record still carries the originals.
+
+## Three pages described the kernel systematic as unquantified or still to be done, 2026-08-22
+
+[Chapter 7](big_picture/07_limitations-and-identifiability.md) called the laser
+kernel an unquantified model systematic. [BIG_PICTURE.md](BIG_PICTURE.md) and
+[PLAN.md](PLAN.md) each named the remaining work, a fitted
+Lorentzian-equivalent width inside the containing model, and neither recorded
+that it had been done.
+
+It had. Freeing that width at each peak gives a component present everywhere by
+a nested likelihood ratio of 176 to 961, at 0.315 to 0.449 MHz per peak, and
+sized against the statistical error on a matched footing it is 3.24 times
+larger. So the systematic is quantified within the tested class, and the three
+pages now say that instead.
+
+No published number changed. What changed is that a reader of the narrative
+layer was being told a question was open that the results layer had answered
+three days earlier, which is the same failure mode as a superseded number and
+is why it is recorded here.
+
+**Two qualifications travel with the correction**, because the quantification
+settles less than it appears to. Whether the four peaks share one value is
+neither rejected nor established at $p = 0.097$. And attributing the component
+to the laser is a separate claim that no measurement taken licenses.
+
+## A results path was renamed away from a collision, 2026-08-22
+
+`results/lever_table.csv` and `scripts/run_lever_table.py` are now
+`results/orthogonal_levers.csv` and `scripts/run_orthogonal_levers.py`. The old
+name collided with `rb5s6s.hyperpolarizability.lever_table()`, an unrelated
+function that ranks candidate transitions for the Ti:Sapphire study, so a
+reader grepping the tree for one found the other. No content changed. A link to
+the old path from a commit before this date will not resolve.

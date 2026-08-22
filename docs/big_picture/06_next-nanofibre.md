@@ -68,6 +68,45 @@ lineshape program**:
   ramp. It is ambitious, and the per-distance signal budget is an open
   question.
 
+**The group's own Rydberg work says the same thing about itself, which is
+better evidence than our saying it.**
+[Vylegzhanin 2023](../lit/vylegzhanin2023.md) excites Rydberg nS and nD states
+through the evanescent field of the same kind of fibre, and fits each spectrum
+with an *empirical skewed Gaussian* chosen to absorb the 1064 nm AC Stark shift
+and the atom–surface interaction together. That locates a resonance well and
+separates two mechanisms badly. The paper is explicit about what it therefore
+leaves out: DC Stark shifts *"are not included as we have no experimental
+mechanism for quantifying them"*, with stray fields and charging of the fibre
+called *"difficult to quantify with no electrodes in the vacuum chamber"*.
+
+A lineshape is not an electrode, and that is the opening. The quantity they set
+aside is a field, the 6S line is already driven on this platform, and reading a
+shift distribution out of a measured line with a stated prior is what §4–5
+does in the cell. Note the scale is state-dependent and the two numbers do not
+contradict: the Casimir–Polder shift on a *Rydberg* state is of order GHz
+within 300 nm of the fibre, far larger than the ~100 nm scale that matters for
+the low-lying states above.
+
+[Vylegzhanin 2025](../lit/vylegzhanin2025.md) is the companion proposal, a trap
+holding a ground and a Rydberg state in one potential built on the vector shift
+at the 790.2 nm tune-out wavelength and matched by detuning to 788.1 nm. It is
+a proposal and says so. What a trap engineered to cancel a differential shift
+still needs is a measurement showing it cancelled, and the residual is a
+distribution across an evanescent field, which is the same object again.
+
+**A design validation exists for the temperature lever.**
+`results/fibre_twin.csv` asks whether a molasses temperature ladder can
+separate a Lorentzian transit contribution from a temperature-independent
+homogeneous one, since in a fibre the transit kernel is Lorentzian and adds
+exactly to everything else. Under synthetic worlds calibrated to the
+per-condition width precision this record already achieves, it identifies the
+common Lorentzian component at 0.978 and 0.966 coverage at the two
+decay-length band edges, and does **not** identify the Gaussian one, at 0.474.
+A single-rung control fails to split, which is what makes the ladder the lever
+rather than the fit. This is SIMULATION-BACKED and not a measurement: it says
+the design can identify the intended quantities under stated worlds, not that
+the apparatus will.
+
 The cell line of §4–5 is the in-vacuo reference against which every
 near-surface effect would be read. That is the connection between
 the two halves of the program: the cell work is what makes the nanofibre

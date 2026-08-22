@@ -34,7 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rb5s6s import config as C  # noqa: E402
 
-OUT = C.RESULTS_DIR / "lever_table.csv"
+OUT = C.RESULTS_DIR / "orthogonal_levers.csv"
 
 
 def main() -> int:

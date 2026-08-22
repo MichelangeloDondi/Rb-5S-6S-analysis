@@ -342,6 +342,39 @@ Measured in [`results/kernel_identifiability.csv`](../../results/kernel_identifi
 which runs in seconds and takes no data, because the contract has to exist
 before the inference does.
 
+### What breaks it, and what breaking it yielded
+
+The clause that matters above is **at a FIXED condition**. The sum is all that
+exists there, and no amount of signal changes that, because the flatness is
+algebraic rather than statistical. What does change it is a variable that moves
+one term of the sum and leaves the others alone.
+
+Density is that variable here. The collisional width scales with it and a laser
+contribution does not, so a ladder in density turns a flat direction into a
+slope. That is why the collisional coefficient is estimated across a
+temperature ladder rather than from any single condition, and why the
+per-condition version of the same number was withdrawn: it had no referent.
+
+Running that separation over the archive gives a component present at every
+peak, by a nested likelihood ratio of 176 to 961 for one parameter on its
+boundary, with peak-conditioned values of 0.315 to 0.449 MHz
+(`results/kernel_k3.csv`). Sized against the statistical error on a matched
+footing it is 3.24 times larger (`results/kernel_budget.csv`), so the model
+form rather than the noise is what limits that coefficient.
+
+**The page's own lesson applies to the result.** Breaking a degeneracy by
+design tells you a parameter is identified. It does not tell you the four peaks
+share one value, which stays open at $p = 0.097$. It does not tell you what the
+component IS, and calling it the laser is a separate claim no measurement yet
+taken licenses (`results/kernel_k5.csv`). And it does not tell you the model
+class was adequate, since 3.24 is a sensitivity within the two forms tested.
+A parameter identified is not a common parameter identified is not an origin
+identified is not a class shown adequate.
+
+[Figure 35](../../figures/fig35_orthogonal_information.png) draws the lever
+map, including the one measurement that would settle the origin and has not
+been taken.
+
 ## An instability that was actually a discrete boundary, 2026-08-20
 
 A campaign-only bound appeared to move between code versions, which reads at

@@ -32,7 +32,8 @@ summary: >
   interaction. A Maxwell-Bloch model including Casimir-Polder reproduces the
   dip. DC Stark shifts are EXCLUDED from it because the group has no mechanism
   to quantify them.
-routing: []
+routing:
+  - CITE
 ---
 
 # vylegzhanin2023

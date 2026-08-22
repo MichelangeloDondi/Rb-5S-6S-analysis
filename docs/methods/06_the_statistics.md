@@ -394,7 +394,11 @@ moved by 37 per cent against the measurement's 18, and the absolute one does
 not.
 
 The whole neighbourhood moves together: the condition number falls from 389.7
-to 345.1 and the valley-floor RMS from 0.0032 to 0.0020. That is what an
+to 345.1 and the valley-floor RMS from 0.0032 to 0.0020. The earlier values
+and the reason they moved are recorded once, in
+[the history](../HISTORY.md#the-identifiability-diagnostics-moved-under-the-arithmetic-environment-2026-08-22),
+which is also where the hold on the migration that would land them is stated.
+That is what an
 ill-conditioned family does, and it is the reason this section exists.
 
 What has NOT been separated is how much of that movement is the arithmetic
