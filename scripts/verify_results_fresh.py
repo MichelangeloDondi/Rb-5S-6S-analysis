@@ -100,6 +100,9 @@ EXPENSIVE = {
     "run_kernel_k5": ["kernel_k5.csv"],
     "run_kernel_k7": ["kernel_k7.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
+    # 32 conditions fitted three ways (two arms plus a synthetic control)
+    # with a 1000-draw permutation null. About twenty minutes.
+    "run_kernel_k4": ["kernel_k4.csv"],
     # nine synthetic worlds at five hundred trials, about eight minutes.
     # Deterministic despite being Monte-Carlo: every trial is seeded by its
     # index, so the CSV reproduces exactly. It sat in CHEAP for one commit

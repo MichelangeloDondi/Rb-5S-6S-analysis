@@ -1,0 +1,25 @@
+scope,quantity,value,unit,note,status
+RUN,admissible,NO,flag,"the preregistered void check FIRED, so the detection rows below may NOT be cited as a result. See private/reviews/K4_PREREG_2026-08-22.md",DIAGNOSTIC
+G,n_conditions,32,count,conditions contributing to the stack,DIAGNOSTIC
+G,max_z,6.893,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
+G,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
+G,verdict,COMMON_SHAPE_DETECTED,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
+G,sensitivity_frac_of_peak,2.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
+GL,n_conditions,32,count,conditions contributing to the stack,DIAGNOSTIC
+GL,max_z,7.307,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
+GL,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
+GL,verdict,COMMON_SHAPE_DETECTED,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
+GL,sensitivity_frac_of_peak,2.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
+CONTROL,n_conditions,32,count,"synthetic conditions built from the fitted model plus its own noise law, then refitted",DIAGNOSTIC
+CONTROL,max_z,2.560,sigma,same statistic,DIAGNOSTIC
+CONTROL,p_signflip,0.8591,p-value,"a DETECTION here would invalidate the real-data result, because these traces contain no misfit by construction",DIAGNOSTIC
+CONTROL,verdict,CLEAN,verdict,"CLEAN means the binning, axis, statistic and reconstruction do not create a common shape on their own",DIAGNOSTIC
+CHECK,arm_residual_median_abs_diff,1.246e-05,sigma,median over conditions of the largest per-condition difference between the G and G+L residual stacks,DIAGNOSTIC
+CHECK,arm_residual_max_abs_diff,5.946e-01,sigma,"the worst condition. REPORTED AS A DISTRIBUTION rather than one number, because a large max beside a tiny median means ONE condition's two fits landed in different places, not that the degeneracy failed. The degeneracy itself predicts agreement to optimiser tolerance, and the median is what tests it",DIAGNOSTIC
+CHECK,arm_conditions_above_1e3,13,count,conditions whose two arms differ by more than 1e-3 sigma anywhere in the window,DIAGNOSTIC
+VOID_CHECK,n_matched,32,count,conditions matched against results/linefit_conditions.csv,DIAGNOSTIC
+VOID_CHECK,worst_rel_diff_gamma_coll,1.700e-02,relative,this refit against the committed one. Large means the atlas compares producers rather than measuring a residual,DIAGNOSTIC
+VOID_CHECK,verdict,VOID,verdict,the run is void above 1e-3 relative,DIAGNOSTIC
+ALL,window_widths,3.0,fitted total widths,preregistered half-window of the stack,DIAGNOSTIC
+ALL,scope_note,IN_WINDOW_ONLY,flag,"this tests the residual INSIDE the fit window. The record separately carries a reproducible excess OUTSIDE it, which this neither tests nor speaks to, and the two may not be merged",DIAGNOSTIC
+ALL,class_adequacy_note,NOT_ESTABLISHED_EITHER_WAY,flag,"R_kernel remains a sensitivity within {G, G+L}. A null here bounds a common missing term and does not widen the class that was tested",DIAGNOSTIC

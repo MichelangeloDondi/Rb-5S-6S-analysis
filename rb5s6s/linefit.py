@@ -428,6 +428,15 @@ def fit_condition(freqs: List[np.ndarray], volts: List[np.ndarray], *,
         "corr_laser_coll": corr_gs,
         "centers": [float(sol.x[nshared + 4 * i + 1]) for i in range(ntr)],
         "amps": [float(sol.x[nshared + 4 * i]) for i in range(ntr)],
+        # BASELINES COMPLETE THE SET (2026-08-22). centers and amps alone do
+        # not let a caller rebuild the fitted model, because each trace also
+        # carries its own linear background, so any consumer wanting residuals
+        # had to refit or duplicate this function's parameter packing. K4's
+        # residual atlas is the first such consumer. Purely additive: this
+        # reads values already in sol.x and changes no computation, so every
+        # committed number is untouched.
+        "baselines": [(float(sol.x[nshared + 4 * i + 2]),
+                       float(sol.x[nshared + 4 * i + 3])) for i in range(ntr)],
         "per_trace_diag": diag,
         # one record per input trace, in input order, whether or not trimming
         # ran: the caller writes these into results/trim_report.csv

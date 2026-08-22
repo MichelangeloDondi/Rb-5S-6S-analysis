@@ -69,7 +69,7 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         # Found 2026-08-22 while registering orthogonal_levers.csv.
         "kernel_budget.csv", "kernel_headline.csv",
         "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
-        "kernel_k7.csv", "kernel_worlds.csv",
+        "kernel_k4.csv", "kernel_k7.csv", "kernel_worlds.csv",
         # the fibre twin, same reason: its producer writes per-row statuses
         "fibre_twin.csv"}
 

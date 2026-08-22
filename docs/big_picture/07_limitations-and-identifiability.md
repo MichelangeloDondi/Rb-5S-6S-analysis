@@ -115,8 +115,13 @@ physical ORIGIN is not identified, and calling the component the laser is a
 separate claim that no measurement taken licenses: the one in-situ laser
 measurement samples a different band from the one a scanned width integrates
 (`results/kernel_k5.csv`). And the model CLASS is not shown adequate, because
-$R_\text{kernel}$ is a sensitivity within the two forms tested and the blind
-residual atlas that would test the class itself has not been run.
+$R_\text{kernel}$ is a sensitivity within the two forms tested. The blind
+residual atlas that would test the class itself has now been built and run, and
+**its first run is void by its own preregistered reproduction check**
+(`results/kernel_k4.csv`, whose first row says so). Class adequacy is therefore
+unresolved exactly as it was. What changed is the reason, from not attempted to
+attempted without qualifying, and a void run's detection rows may not be
+cited.
 
 So the collisional coefficient no longer carries this as an unquantified
 systematic. It carries a quantified model-form sensitivity with an
