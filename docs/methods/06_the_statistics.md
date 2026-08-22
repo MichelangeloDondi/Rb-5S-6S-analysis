@@ -382,14 +382,25 @@ prediction (+0.080), since in the Gaussian limit the profile contours are exactl
 the marginal covariance ellipse.
 
 **How much weight that agreement carries, measured 2026-08-21.** Only one of
-the two numbers is robust. The ridge slope is measured from the map by
-re-minimising $\chi^2$ on a grid, and it is stable: it reproduces unchanged
-when every heavy producer is rerun under a different numpy. The covariance
-prediction is a ratio of elements of a local Hessian taken along a valley this
-same section describes as twenty times looser in one direction than the other,
-and under that same rerun it moves from 0.080 to 0.110, a 37 per cent change
-with the profile measurement untouched beside it. The comparison would then
-read 0.073 against 0.110 rather than against 0.080.
+the two numbers is robust, and **the correction stated here on 2026-08-21 was
+itself too strong**. It said the ridge slope reproduces unchanged. It does not.
+
+Regenerating this producer deterministically, which was checked by running it
+twice and obtaining bit-identical output, moves BOTH members of the pair:
+the measured ridge slope from 0.073 to 0.086, and the covariance prediction
+from 0.080 to 0.110. So the comparison reads 0.086 against 0.110 rather than
+0.073 against 0.080. The relative statement survives, since the prediction
+moved by 37 per cent against the measurement's 18, and the absolute one does
+not.
+
+The whole neighbourhood moves together: the condition number falls from 389.7
+to 345.1 and the valley-floor RMS from 0.0032 to 0.0020. That is what an
+ill-conditioned family does, and it is the reason this section exists.
+
+What has NOT been separated is how much of that movement is the arithmetic
+environment and how much is a later change to the lineshape module, since the
+committed digits predate both. The record says so rather than attributing it,
+and the attribution is left as an open item.
 
 So the agreement is evidence that the profile map and the local covariance are
 describing the same geometry, and it is NOT a precision test: one side of it is
