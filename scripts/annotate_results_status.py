@@ -79,6 +79,9 @@ FILE_STATUS = {
     # not a measurement of the atom, so the whole file is DIAGNOSTIC. It
     # measures how much of the record no producer regenerates, and a row
     # saying NO_PRODUCER is a label on a gap rather than a result.
+    # every row is a probe result that moves no committed bound, by the
+    # probe's own statement, so the whole file is DIAGNOSTIC.
+    "saturation_companion.csv": "DIAGNOSTIC",
     "unregenerated_claims.csv": "DIAGNOSTIC",
     # B2: every row is a design statement about what a configuration would
     # separate, not a measurement, so the whole file is DIAGNOSTIC.

@@ -6,7 +6,7 @@ signature as the one the C3d and C3f width lever is built on, and several times
 larger, is absent from the forward model. The direction of the bias is favourable,
 which is why this is a note rather than a correction.
 
-`provenance: NO_PRODUCER` - Its own producer states that it writes no results file and changes no committed number, which is also why the factors it reports (2.8 and 2.21) are quoted from prose wherever they appear downstream. **6 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: results/saturation_companion.csv` - **UPGRADED from NO_PRODUCER on 2026-08-23.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows that the freshness machinery regenerates and checks. **The JOINT factor is deliberately NOT a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
 
 
 **The question.** Is the power-squared broadening the light-shift bound rests
@@ -325,7 +325,9 @@ committed bound at 0.6325 MHz, which is the check that it is running production.
 That first run was an in-session patch that was not preserved, so for two days
 the headline could not be re-derived by anyone, including whoever wrote it. It is
 now `scripts/run_saturation_probe.py`, which is deliberately outside
-`run_all.sh` and writes nothing.
+`run_all.sh`. It wrote nothing until 2026-08-23, when a `--emit` flag was
+added so its C3d half lands in `results/saturation_companion.csv`. The joint
+half deliberately persists nothing, because it cannot be computed here.
 
 The injected physics is the homogeneous law Gamma to Gamma\*sqrt(1+s) with
 s = 2\*Omega^2/Gamma^2, applied with the two-photon Rabi frequency. Folding the
@@ -487,4 +489,4 @@ error of 19 to 42 and no standard error at all.
 Full scoring of all five predictions, including the two that this run did not
 test and the two defects it found in the preregistration's own wording, is in
 the [postscript to the preregistration](companion_inclusive_refit_prereg.md).
-Producer: `scripts/run_companion_refit.py`, which writes nothing.
+Producer: `scripts/run_companion_refit.py`, which prints its results and persists none of them.

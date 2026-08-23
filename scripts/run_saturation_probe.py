@@ -205,6 +205,7 @@ def stage2(band: dict) -> None:
     print(f"  {'variant':34s} {'kappa (MHz/W)':>22s} {'S0(225) bound':>14s} "
           f"{'chi2_red':>9s}")
     base = None
+    emitted = []
     for label, ratio in rows:
         res = _run(grid, ratio)
         b = res["S0_225_ub95_profile"]
@@ -218,6 +219,10 @@ def stage2(band: dict) -> None:
             flag = f"  {base/b:.2f}x tighter"
         print(f"  {label:34s} {res['kappa']:+10.4f} +/- {res['kappa_err']:8.4f} "
               f"{b:14.4f} {res['chi2_red']:9.4f}{flag}")
+        emitted.append({"label": label, "ratio": ratio, "bound": b,
+                        "kappa": res["kappa"], "chi2_red": res["chi2_red"],
+                        "factor": (base / b) if ratio is not None else None})
+    return {"committed": committed, "rows": emitted}
 
 
 # ---------------------------------------------------------------- stage 3
@@ -333,16 +338,90 @@ def stage4(band: dict) -> None:
     print("  Nothing was written. results/stark_joint.csv is untouched.")
 
 
+
+# ---------------------------------------------------------------- emission
+def emit(stage2_out: dict) -> None:
+    """Write the C3d half of this probe into results/, and ONLY that half.
+
+    Added 2026-08-23. The script was opt-in and wrote nothing by design, and
+    the consequence was that docs/RESULTS.md and README quoted its factors with
+    no committed row behind them. The partition in unregenerated_claims.csv
+    counted the 0.6325 MHz reproduction as the one ungoverned value reaching a
+    reader-facing surface.
+
+    WHAT IS WRITTEN: stage 2 only. It reads committed CSVs, re-runs production
+    code, and carries its own check that the unpatched arm reproduces the
+    committed bound, so it regenerates from a clean checkout.
+
+    WHAT IS NOT, and this is the point: the JOINT factor. Stage 4 needs two
+    data trees outside this repository and stage 3 says in terms that quoting a
+    number for the joint bound before that fit runs would be inventing one. The
+    joint factor is therefore recorded as a CLASSIFICATION with the date of the
+    run that produced it, never as a value this producer computed. A row that
+    cannot be regenerated here says so rather than carrying a digit.
+    """
+    import csv as _csv
+
+    out = C.RESULTS_DIR / "saturation_companion.csv"
+    rows = []
+
+    def add(scope, quantity, value, unit, note):
+        rows.append({"scope": scope, "quantity": quantity, "value": value,
+                     "unit": unit, "note": note, "status": "DIAGNOSTIC"})
+
+    add("C3d", "committed_bound_reproduced",
+        f"{stage2_out['committed']:.4f}", "MHz",
+        "the committed S0(225 mW) width-only bound, read from stark_sweep.csv "
+        "and reproduced by the unpatched arm below. This IS the probe's check "
+        "that it drives production code rather than a reimplementation")
+    for r in stage2_out["rows"]:
+        if r["ratio"] is None:
+            add("C3d", "bound_ramp_only", f"{r['bound']:.4f}", "MHz",
+                "the width-only bound with the ramp alone, this run. It must "
+                "equal the committed value at the printed digit")
+        else:
+            key = f"bound_with_saturation_ratio_{r['ratio']:.4f}".replace(".", "p")
+            add("C3d", key, f"{r['bound']:.4f}", "MHz",
+                "the same bound with the saturation increment folded into the "
+                "model's own Lorentzian argument, at this end of the "
+                "Omega-over-S0 band. NOT a committed bound: the two-level law "
+                "is standard and is an approximation for a two-photon "
+                "transition, so nothing published moves on it")
+            add("C3d", key.replace("bound_", "factor_"),
+                f"{r['factor']:.2f}", "dimensionless",
+                "how much tighter than the ramp-only arm. The pair of these is "
+                "what documents quote as a factor of about 2.8")
+    add("C3f", "joint_factor", "NEEDS_EXTERNAL_TREE", "classification",
+        "the joint three-session bound tightens too, and BY HOW MUCH cannot be "
+        "computed here: stage 4 reads two data trees outside this repository. "
+        "A run on 2026-08-10 with those trees present reported 2.2, recorded in "
+        "the companion note's postscript. It is NOT reproduced by this producer "
+        "and is not carried here as a digit, because stage 3 states that "
+        "quoting a joint number before the fit runs would be inventing one")
+
+    with open(out, "w", newline="") as f:
+        w = _csv.DictWriter(f, fieldnames=["scope", "quantity", "value",
+                                           "unit", "note", "status"])
+        w.writeheader()
+        for r in rows:
+            w.writerow(r)
+    print(f"\nwrote {out} with {len(rows)} rows")
+
+
 def main() -> int:
     band = stage1()
-    stage2(band)
+    stage2_out = stage2(band)
     stage3(band)
     if "--joint" in sys.argv:
         stage4(band)
-    print()
-    print("=" * 78)
-    print("Nothing was written. docs/notes/two_photon_saturation_companion.md "
-          "records\nwhat this probe licenses and what it does not.")
+    if "--emit" in sys.argv:
+        emit(stage2_out)
+    else:
+        print()
+        print("=" * 78)
+        print("Nothing was written. Pass --emit to write the C3d half into "
+              "results/saturation_companion.csv,\nwhich is what "
+              "docs/RESULTS.md quotes. The joint factor is never written here.")
     return 0
 
 

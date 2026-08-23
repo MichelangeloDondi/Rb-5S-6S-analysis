@@ -1345,3 +1345,40 @@ testing for the one value.
 
 **The guard was ceiling-tested by restoring the old behaviour**, which it
 detects, and it passes on the fix.
+
+## The saturation companion gains a producer, and the last public orphan closes
+
+2026-08-23. **No committed bound moves**, which the probe's own design
+guarantees and its docstring states.
+
+**What changed.** `run_saturation_probe.py` gains `--emit` and writes
+`results/saturation_companion.csv`. The probe was opt-in and persisted nothing
+by design, and the consequence was that `docs/RESULTS.md` and the README
+quoted its factors with nothing behind them. **The partition counted that as
+the one ungoverned value reaching a reader-facing surface, and it now reads
+zero.**
+
+**What is written, and what is deliberately not.** The C3d half only: the
+committed width-only bound reproduced by the unpatched arm, both saturated
+bounds, and both ends of the factor band, **2.75 and 2.84**, which documents
+round to about 2.8. It reads only committed CSVs and carries its own check
+that the unpatched arm reproduces the committed value, so it regenerates from
+a clean checkout.
+
+**The JOINT factor is NOT written as a digit.** Stage 4 reads two data trees
+held outside this repository, and stage 3 says in terms that quoting a joint
+number before that fit runs would be inventing one. The row therefore records
+`NEEDS_EXTERNAL_TREE` with the date of the run that produced 2.21, which is a
+classification rather than a computed value. **A row that cannot be
+regenerated here says so instead of carrying a digit.**
+
+**Two guards caught what the change broke, and both were right.** The
+behaviour-claims test found four places where prose said a script writes
+nothing beside a script that now writes, **including a QUOTE of the very
+sentence this change edited**, so the quotation had gone stale with its
+source. And the results index refused the new file until it was described.
+
+**The debt fell**: notes resting on numbers no producer regenerates, seven to
+**six**, and ungoverned values on reader-facing surfaces, one to **zero**. Both
+budgets were re-recorded downward, which is the only direction a ratchet
+permits.

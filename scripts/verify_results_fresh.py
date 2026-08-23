@@ -104,6 +104,11 @@ EXPENSIVE = {
     "run_kernel_k5": ["kernel_k5.csv"],
     # 32 conditions refitted once in the G arm, then a weighted joint
     # regression and a leave-one-out over it. A few minutes.
+    # re-runs the C3d profile-likelihood scan three times, about a minute,
+    # and needs only committed CSVs. Its --emit flag writes the C3d half
+    # only: the joint factor needs trees outside this repository and is
+    # recorded as a classification rather than a digit.
+    "run_saturation_probe --emit": ["saturation_companion.csv"],
     "run_kernel_k8": ["kernel_k8.csv"],
     "run_kernel_k7": ["kernel_k7.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
