@@ -1,7 +1,7 @@
 quantity,value,unit,evidence_class,note,status
 U_stat,0.001398,MHz per density unit,ESTABLISHED,"statistical uncertainty on beta_self from the G+L fits (kernel_k5.csv, key K6)",DIAGNOSTIC
 U_shape,0.004530,MHz per density unit,ESTABLISHED,"half-range of beta_self over the model class {G, G+L}, on the same one-sigma-like footing. NOT a supremum",DIAGNOSTIC
-R_kernel,3.2403,dimensionless,ESTABLISHED,"U_shape / U_stat, carried through from kernel_k5.csv UNCHANGED. It is the model-class sensitivity within the TESTED class and is not replaced by any composite here",DIAGNOSTIC
+R_kernel,3.2398,dimensionless,ESTABLISHED,"U_shape / U_stat, carried through from kernel_k5.csv UNCHANGED. It is the model-class sensitivity within the TESTED class and is not replaced by any composite here",DIAGNOSTIC
 R_kernel_scope,"within the class {G, G+L}",scope,ESTABLISHED,"class ADEQUACY was TESTED, by the blind residual atlas, which detected reproducible in-window residual structure that no member of the tested family produces and reproduced that detection unchanged across an environment migration. No mechanism is assigned and the structure's effect on the coefficient is not quantified, so R_kernel still bounds sensitivity within a class the analysis chose, not over all model forms",DIAGNOSTIC
 Delta_peak_raw,134.6,kHz,DIAGNOSTIC,"QUESTION ANSWERED: how different are the fitted peak values? Raw peak-to-peak spread of Gamma_L,equiv across the four peaks",DIAGNOSTIC
 Delta_peak_excess_dispersion_tau,40.9,kHz,DIAGNOSTIC,"QUESTION ANSWERED: how much unexplained dispersion would a HIERARCHICAL EXCHANGEABLE model infer? Conditional on exchangeability, which p = 0.097 does not establish",DIAGNOSTIC

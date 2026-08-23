@@ -1153,3 +1153,58 @@ excess being unresolved, which K8 answered on 2026-08-23. The sentence is left
 standing and now carries a pointer, because the entry is dated and closed.
 **What earned the pointer is the present tense**: a dated entry may hold what
 was believed then and may not claim to be what is live now.
+
+## Two producers disagreed about R_kernel in the fourth decimal, 2026-08-23
+
+**What moved.** `results/kernel_k5.csv`'s `R_kernel` from **3.2403 to 3.2398**,
+which is now identical to `results/kernel_k3.csv`. **No published claim
+changes**, because every quotation of this number in every document says 3.24
+and both values round to it.
+
+**The cause, and it is the reason the entry exists.** `run_kernel_k3.py`
+computes the ratio from full-precision floats. `run_kernel_k5.py` read
+`kernel_k3.csv` back off disk **as text**, took the already-rounded six-decimal
+display strings 0.004530 and 0.001398, and divided them, giving 3.2403. The K5
+note asserted the two were the same quantity, and they are, and the files
+disagreed.
+
+**Why it survived.** The disagreement was invisible at the precision anyone
+quoted. A defect that changes nothing a reader can see is the kind that lives
+longest, and the only reason it was found is that an adversarial audit compared
+two committed files against each other rather than each against its own
+producer.
+
+**The general rule, which is worth more than the fix.** **A producer that reads
+another producer's OUTPUT FILE inherits its display precision, not its
+arithmetic.** K5 now reuses K3's own `R_kernel` value rather than re-deriving it
+from displayed intermediates, so one producer owns the number.
+
+**What this cost.** The edit restales every figure through the data
+fingerprint, which is why it waited for a window with nothing else in flight.
+
+## Two results files were committed without their status column, 2026-08-23
+
+**What was wrong.** `cooperative_channel.csv` and `orthogonal_levers.csv` were
+committed missing the `status` column that every result file carries, and the
+committed figures did not match the committed CSVs. **No value was wrong.** The
+files were structurally incomplete and the commit was internally inconsistent.
+
+**The cause, and it is a process failure rather than a code one.** Producers
+write their CSVs without the status column and `annotate_results_status.py`
+adds it afterwards. **A batch of read-only investigation running against this
+same working tree executed several producers to check their behaviour**, which
+stripped the column, and the next `git add -A` committed that state along with
+the intended change.
+
+**Two gates caught it and neither diagnosis was the first one.** The first gate
+failed on eleven stale figures, which reads like a forgotten redraw. The second
+failed on the missing status column, which is the actual defect. **The figure
+fingerprint is a downstream symptom of any results mutation**, so it fires
+first and points at the wrong thing.
+
+**The rule.** `git add -A` commits whatever is in the tree, including changes
+made by something other than the work in hand. **Anything that writes
+`results/` must have the tree to itself**, and that includes investigation
+running beside the work rather than only the known tree-writers. The repair is
+deterministic: re-run the producers, re-run the annotator, redraw, and the
+values are unchanged because the producers are reproducible.

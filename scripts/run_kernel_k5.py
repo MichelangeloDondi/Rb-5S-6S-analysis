@@ -168,9 +168,21 @@ def main() -> int:
     add("K6", "U_kernel", f"{u_kern:.6f}", "MHz per density unit",
         "half-range of beta_self over the fallback class, on the same "
         "one-sigma-like footing. NOT a supremum")
-    add("K6", "R_kernel", f"{u_kern / u_stat:.4f}", "dimensionless",
+    # ONE PRODUCER OWNS THIS NUMBER, and until 2026-08-23 two did not agree.
+    # This row used to be computed here as u_kern / u_stat. Both of those are
+    # read back from kernel_k3.csv as TEXT, already rounded to six decimals, so
+    # dividing them gave 0.004530 / 0.001398 = 3.2403 while K3 itself computes
+    # 3.2398 from full-precision floats, for what the note below calls the same
+    # quantity. Both round to the published 3.24 and no claim ever moved, which
+    # is exactly why it survived: the disagreement was invisible at the
+    # precision anyone quoted. THE GENERAL RULE: a producer that reads another
+    # producer's OUTPUT FILE inherits its display precision, not its
+    # arithmetic. So K5 now reuses K3's own value rather than re-deriving it.
+    add("K6", "R_kernel", k3["R_kernel"], "dimensionless",
         "final at this value rather than provisional: K5 could not narrow the "
-        "class, so the fallback K3 used is the class")
+        "class, so the fallback K3 used is the class. Reused verbatim from "
+        "kernel_k3.csv, whose producer computes it at full precision, rather "
+        "than re-derived here from rounded display strings")
     add("K6", "stop_condition",
         "FIRED" if u_kern > u_stat else "not fired", "verdict",
         "U_kernel exceeding U_statistical means repetitions of the CURRENT "
