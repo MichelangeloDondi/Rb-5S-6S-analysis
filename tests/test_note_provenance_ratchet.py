@@ -71,13 +71,26 @@ ROOT = Path(__file__).resolve().parents[1]
 NOTES = ROOT / "docs" / "notes"
 BASELINE = Path(__file__).parent / "_note_provenance_baseline.json"
 
-# A numeric CLAIM about data, not any number. Bare integers, dates, section
-# numbers and MHz values are not claims; a sigma, a percentage and a bolded
-# signed decimal are how this repository states a result.
+# A numeric CLAIM about data. WIDENED 2026-08-23, and the reason is the most
+# important comment in this file.
+#
+# The first version matched only a decimal followed by "sigma" or "per cent",
+# or a bolded signed decimal, on the theory that MHz values are not claims.
+# **That was wrong and it made this guard report a clean corpus that was not
+# clean.** Measured against the corpus: the narrow pattern saw claims on 14 of
+# 23 notes and scored the undeclared budget at ZERO. The widened pattern sees
+# claims on ALL 23 and finds NINE notes undeclared. On one page the narrow
+# pattern counted 1 claim where an audit counted 16.
+#
+# So the budget of zero that this file recorded, and that docs/HISTORY.md
+# published, was substantially an artefact of a detector that could not see
+# most of the numbers. A guard's blind region matters more than its holes, and
+# this one had been measured for coverage of FILES and never for coverage of
+# NUMBERS WITHIN a file.
 CLAIM = re.compile(
-    r"[-+]?\d+\.\d+\s*(?:sigma|per cent)"      # 8.65 sigma, 0.57 per cent
-    r"|\*\*[-+]\d+\.\d+\*\*"                   # **+8.65** in a results table
-    r"|\*\*[-+]?\d+\.\d+\s*(?:sigma|per cent)\*\*",
+    r"(?<![\w.])[-+]?\d+(?:\.\d+)?\s*"
+    r"(?:sigma|per cent|%|MHz|kHz|Hz|uK|mK|mW|W|mbar|nm|um|ms|counts?|dof)"
+    r"|\*\*[-+]?\d+(?:\.\d+)?\*\*",
     re.I,
 )
 
@@ -85,8 +98,19 @@ CLAIM = re.compile(
 # declaration, which is the hole the distribution ratchet's own first version
 # had when a status column was allowed to supply the reason.
 KINDS = ("DESIGN", "PREREG", "INDEX", "NO_PRODUCER")
+# A committed pure function is a LEGITIMATE and arguably stronger provenance
+# than a CSV, because a function cannot go stale relative to itself. The
+# vocabulary lacked it until 2026-08-23, and the cost of that gap was a FALSE
+# declaration: docs/notes/vdw_difference_potential_and_4d_channel.md declared
+# NO_PRODUCER while rb5s6s/vanderwaals.py::beta_self_anchored() reproduces its
+# table exactly, verified by calling it. Faced with no correct option the
+# author took the merely pessimistic one, which overstates the gap and so
+# attracts no scrutiny. A GUARD WHOSE VOCABULARY CANNOT EXPRESS THE TRUTH WILL
+# BE SATISFIED WITH SOMETHING FALSE.
+CODE_REF = r"[A-Za-z0-9_./-]+\.py::[A-Za-z_][A-Za-z0-9_]*"
 DECLARED = re.compile(
-    r"provenance:\s*(?:`?(?:results/[A-Za-z0-9_./-]+\.csv)`?|" + "|".join(KINDS) + r")",
+    r"provenance:\s*(?:`?(?:results/[A-Za-z0-9_./-]+\.csv)`?|`?(?:" + CODE_REF + r")`?|"
+    + "|".join(KINDS) + r")",
     re.I,
 )
 
@@ -163,7 +187,12 @@ def test_the_counter_separates_the_five_kinds(tmp_path):
         (tmp_path / name).write_text(body)
 
     assert _claims(cases["bare.md"]) == 1
-    assert _claims(cases["prose.md"]) == 0, "a MHz span is not a claim"
+    # This assertion used to read `== 0, "a MHz span is not a claim"`, pinning
+    # the belief that made the detector blind. Widening the pattern broke it,
+    # which is the ceiling test doing its job: it held the old design in place
+    # until the design was deliberately changed. A MHz value IS a claim, and
+    # treating it as scenery is how a page carrying sixteen numbers scored one.
+    assert _claims(cases["prose.md"]) == 1, "a MHz value is a claim"
     assert _declared(cases["csv.md"])
     assert _declared(cases["design.md"])
     assert _declared(cases["noprod.md"])
@@ -193,6 +222,54 @@ def test_a_declaration_that_wraps_a_line_is_still_seen(tmp_path):
     assert _declared(inline)
     wrapped = "The numbers carry `provenance:\nNO_PRODUCER` and stand at 8.65 sigma."
     assert _declared(wrapped), "a declaration split by a line break must still count"
+
+
+def test_a_declared_target_must_actually_exist():
+    """A declaration naming a results/ CSV or a function is graded as true
+    forever unless something checks it against the filesystem.
+
+    This was found by attacking the instrument rather than by using it: the
+    regex matched the STRING and never asked whether the file was there, so
+    `provenance: results/does_not_exist.csv` would have satisfied the ratchet
+    permanently and at no cost. A lie that costs nothing to write and nothing
+    to sustain is the one to expect.
+    """
+    missing = []
+    for p in sorted(NOTES.glob("*.md")):
+        text = p.read_text()
+        for m in re.finditer(r"provenance:\s*`?(results/[A-Za-z0-9_./-]+\.csv)`?", text, re.I):
+            if not (ROOT / m.group(1)).is_file():
+                missing.append(f"{p.name} -> {m.group(1)} (no such file)")
+        for m in re.finditer(r"provenance:\s*`?([A-Za-z0-9_./-]+\.py)::([A-Za-z_][A-Za-z0-9_]*)`?", text, re.I):
+            mod, fn = m.group(1), m.group(2)
+            if not (ROOT / mod).is_file():
+                missing.append(f"{p.name} -> {mod} (no such file)")
+            elif f"def {fn}" not in (ROOT / mod).read_text():
+                missing.append(f"{p.name} -> {mod}::{fn} (no such function)")
+
+    assert not missing, (
+        "a note declares a provenance target that does not exist. The "
+        "declaration is the whole escape hatch, so it has to name something "
+        "real.\n  " + "\n  ".join(missing))
+
+
+def test_the_claim_detector_sees_the_corpus_it_polices():
+    """The detector must not be so narrow that a clean report is meaningless.
+
+    This is the check the first version of this file lacked. Its blast radius
+    was measured over FILES (how many notes owe a declaration) and never over
+    NUMBERS WITHIN a file, so a pattern that saw one claim on a page carrying
+    sixteen still reported a clean corpus. The threshold below is deliberately
+    weak: it only asserts the detector is not blind on the pages that most
+    obviously carry quantitative content.
+    """
+    seen = {p.name: _claims(p.read_text()) for p in NOTES.glob("*.md")}
+    assert seen, "no notes found at all"
+    blind = [n for n, c in seen.items() if c == 0]
+    assert len(blind) <= 2, (
+        "the claim detector finds no numbers on these notes, which is more "
+        "likely a defect in the pattern than a property of the corpus:\n  "
+        + "\n  ".join(sorted(blind)))
 
 
 def _relax() -> None:

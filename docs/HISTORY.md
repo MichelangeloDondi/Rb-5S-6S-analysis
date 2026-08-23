@@ -1208,3 +1208,45 @@ made by something other than the work in hand. **Anything that writes
 running beside the work rather than only the known tree-writers. The repair is
 deterministic: re-run the producers, re-run the annotator, redraw, and the
 values are unchanged because the producers are reproducible.
+
+## The provenance guard reported a clean corpus it could not see, 2026-08-23
+
+**What changed.** `results/unregenerated_claims.csv` gained four rows and two
+of its counts moved. **No measured number moved.** What moved is this
+repository's account of how much of itself it cannot check.
+
+**The claim being corrected.** The entry above says the ratchet's budget "is
+now zero", meaning every note declared what it stands on. **That was true of
+the notes the detector could see, and the detector was nearly blind.** Its
+pattern matched only a decimal followed by "sigma" or "per cent", or a bolded
+signed decimal. Measured against the corpus: it found claims on 14 of 23 notes
+and scored the undeclared budget at zero. **A widened pattern that also counts
+MHz, kHz, mW, percentages and plain counts finds claims on ALL 23 notes and
+NINE undeclared, carrying 252 claims between them.** On one page the narrow
+pattern counted one claim where an audit counted sixteen.
+
+**So the budget of zero was substantially an artefact of the measuring
+instrument.** The blast radius had been measured over FILES, how many notes owe
+a declaration, and never over NUMBERS WITHIN a file. **A guard's blind region
+matters more than its holes**, and this one had a blind region inside every
+page it passed.
+
+**A second defect, in the opposite direction.**
+`vdw_difference_potential_and_4d_channel.md` was declared NO_PRODUCER and that
+was FALSE. Its numbers are reproduced by
+`rb5s6s/vanderwaals.py::beta_self_anchored()`, a committed pure function taking
+no CSV and no raw trace, which returns the page's 0.3473 and 0.3128 exactly.
+**The declaration was false because the guard's vocabulary had no kind for a
+committed function**, so the only available option was the merely pessimistic
+one. **A guard whose vocabulary cannot express the truth will be satisfied with
+something false**, and an error that makes the record look worse than it is
+attracts no scrutiny, which is why it would have survived.
+
+**What shipped.** The claim pattern is widened in the guard and in the
+producer, deliberately kept in step. A `path.py::function` provenance kind
+exists. A new test refuses a declaration naming a `results/` file or a function
+that does not exist, which nothing checked before. The nine undeclared notes
+are recorded as debt rather than declared in bulk, because declaring in bulk is
+how an instrument stops measuring anything. **And the counts are now published
+as rows**, including the undeclared ones, so the next reader sees the debt
+without reading a test baseline.
