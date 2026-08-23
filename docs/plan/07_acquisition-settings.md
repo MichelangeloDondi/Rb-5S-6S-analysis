@@ -754,6 +754,73 @@ range in ONE acquisition**, which is the cheapest available test of the
 brightness-ordered departure: if its peak ordering vanishes when the four
 lines share a range, the detection explanation is confirmed outright.
 
+### The two trace kinds, sized against the instruments (2026-08-24)
+
+The owner asked four questions at once: which instrument for the one-peak and
+the four-peak traces, how many of each, what the one-peak traces still add,
+and which scanning rates. The sections around this one carry most of the
+evidence, so this is the consolidation, with the instrument facts now read
+from the three manufacturer manuals (held in the private tree, models and
+provenance in [APPARATUS.md](../APPARATUS.md)).
+
+**What each instrument can store per trace, and with what vertical mechanism.**
+
+| | points per trace | vertical resolution, by mechanism |
+|---|---|---|
+| Agilent DSO-X 3054A | 1999 used in 2025. MegaZoom memory is 2 Mpts interleaved, upgradeable to 4, and the CSV export capped at 64 K in the bench test below | 8-bit ADC. High Resolution boxcars the samples inside each stored interval, DISJOINT blocks, ceiling **12 bits at or above 20 us/div** printed as a table in the manual. The campaign sat four decades past the threshold, so its 11.86 measured bits ARE the ceiling |
+| LeCroy WS3104z | **500 001 points over 5 s measured** in the rehearsal files | 8-bit ADC raw. **ERes is a moving-average FIR ACROSS stored samples**, 0.5 to 3.0 bits in half-bit steps, each step halving bandwidth. It correlates neighbouring points by construction, which is the artefact class the mode correction just removed from this record, **so the LeCroy runs RAW and any smoothing happens offline**, where the kernel is known and disjoint |
+| R&S RTM3004 | record length selectable **5 k to 80 MSample** | High Resolution is decimation, the average of the samples behind each stored point, same disjoint family as the Agilent, and the stored words go 8-bit to **16-bit**. Sixteen-bit words are not sixteen effective bits, and the native ADC depth is a datasheet item the manual does not print. Has Average+HR combined and a segmented HISTORY mode |
+
+**Which instrument for which kind.** The quantitative one-peak ladders stay on
+the **Agilent**: its High Resolution is disjoint and documented, its export
+signature is the provenance anchor this archive already keys on, and staying
+on the 2025 chain keeps the new ladders comparable with the committed ones.
+The **four-peak traces go to the LeCroy**, whose measured half-million points
+hold the full landscape at fine spacing, run RAW with offline smoothing. **If
+the RTM3004 is borrowable it takes the LeCroy's place**, on three documented
+counts: disjoint high resolution at 16-bit words, the record length menu, and
+HISTORY segments, which capture a whole ladder without touching the horizontal
+control, the exact practice that severed the 2025 centre record. **The
+dual-chain subset runs on BOTH at once**, one split signal, because a
+nonlinearity is a property of the chain and a shape error is not, and that
+comparison is the one design the 2025 record cannot support.
+
+**What the one-peak traces still add, once four-peak traces exist.** Points
+density where the width lives: at fixed record length a one-peak span puts
+several times more points across the line, and the collisional ladder rides
+the width error linearly. Continuity: the committed beta_self construction is
+built from one-peak conditions, so the next campaign's ladders splice into it
+only if taken the same way. And the per-condition noise law is fitted per
+trace-set, which wants repeats of the same narrow condition. **The four-peak
+traces add what no one-peak trace can**: the known splittings as an in-trace
+frequency ruler, every trace carrying its own absolute anchor and its own
+nonlinearity check, all four lines digitised on ONE range in ONE acquisition,
+which is the direct test of the brightness-ordered departure, and cross-line
+height ratios free of the between-block gain drift that made the committed
+amplitude ratios untestable, swinging 30 to 50 per cent between blocks.
+
+**How many, stated as the design defaults with their sources.** Per one-peak
+condition, **five repeats**, the 2025 practice the noise model is fitted on,
+in blocks interleaved A-B-A so power and elapsed time stop being collinear.
+Per block, **eight science and four ruler traces** at 2025-like proportions,
+which the modulation menu above puts at a free 1.26 to 1.33 width-statistics
+gain since the brackets exist anyway. Four-peak blocks of **five traces**, the
+size at which every row of the wide-scan reach schedule still detects its
+target. The dual-chain subset is **one full power ladder duplicated on both
+chains**, twenty traces, PROSPECTIVE until the second chain is on the bench.
+Counts scale as the square root, so doubling any of them buys 1.4, and the
+place to spend remains power, which buys linearly.
+
+**Rates, one setting per purpose, from the menu above.** Science and
+four-peak traces at the ordinary rate, triangular, BOTH halves kept, because
+the up-down splitting measures the detection lag on a causal chain trace by
+trace, which is why no separate rate ladder is needed for lag. **One block at
+ten times the rate**, whose tooth clock samples at 68 Hz inside the very band
+the slow blocks integrate, the single cheapest discriminator this record has
+for whether the fitted Gaussian is laser noise. And the fast-record
+diagnostics stay on the LeCroy at 10 us sampling, which is what bounded the
+chain below 10 us in the rehearsal.
+
 ## The three oscilloscopes, and what actually separates them
 
 Three instruments are on the bench. The comparison is measured
