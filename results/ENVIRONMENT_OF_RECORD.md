@@ -120,7 +120,10 @@ The full heavy-producer rerun this file anticipates was executed on 2026-08-21
 under Python 3.14.6 / numpy 2.5.2, about forty minutes of wall clock, and
 compared against the committed digits.
 
-**Two of fifty-one committed CSVs drift.** Forty-nine reproduce.
+**Two of fifty-one committed CSVs drift, as measured on 2026-08-21.**
+Forty-nine reproduce. The denominator is 58 at the landing on 2026-08-23,
+because seven committed results were added between the two dates. The
+NUMERATOR did not move, and it is the same two files.
 
 | file | column | committed | fresh |
 |---|---|---|---|
@@ -131,23 +134,31 @@ Both belong to the families this file already names as ill-conditioned: a
 correlation coefficient, and a ratio of covariance elements taken along a flat
 valley. Neither is a quantity this record reads as physics.
 
-**The migration was nevertheless HELD, and the reason is worth stating.** The
+**The migration was HELD at that point, and it LANDED on 2026-08-23.** The
 preregistered threshold was that the migration lands unless a number a public
-document QUOTES moves beyond its stated tolerance. The second drift is such a
-number: `docs/methods/06_the_statistics.md` quotes the covariance prediction
-as +0.080 in running prose. So the committed digits remain those of the
-environment above, and the migration is deferred to a window that can carry its
-own history entry.
+document QUOTES moves beyond its stated tolerance. The second drift was such a
+number: `docs/methods/06_the_statistics.md` quoted the covariance prediction as
++0.080 in running prose. The hold stood until the owner authorised the
+migration, and the paragraph above records the versions the committed digits
+are made under NOW.
+
+**This paragraph described the hold in the present tense for two days after it
+was written**, and it survived four propagation sweeps in the window that
+landed the migration, because a sweep that greps `docs/` does not read a file
+in `results/`. It is corrected here for the same reason
+`results/kernel_budget.csv` was: a statement a reader could act on has no
+business going stale wherever it lives.
 
 Two findings came out of the run that outlast the decision:
 
 * The 0.080 was living inside a `unit` PROSE STRING rather than in a value
   column, so the freshness comparator was checking it as text rather than at a
-  numeric tolerance. It is promoted to its own row when the migration lands.
+  numeric tolerance. **It now has its own row**, `ridge_slope_covariance_pred`,
+  added when the migration landed.
 * The published agreement between the profile map's ridge slope and that
   covariance prediction is a consistency check rather than a precision test,
-  because only one of the two numbers is robust. The statistics chapter now
-  says so and names which one.
+  because only one of the two numbers is robust. The statistics chapter says so
+  and names which one.
 
 ## When this file stops being necessary
 
