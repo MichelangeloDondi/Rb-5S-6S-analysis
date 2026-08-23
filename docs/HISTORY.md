@@ -1250,3 +1250,42 @@ are recorded as debt rather than declared in bulk, because declaring in bulk is
 how an instrument stops measuring anything. **And the counts are now published
 as rows**, including the undeclared ones, so the next reader sees the debt
 without reading a test baseline.
+
+## The case page audited, and two numbers had no row, 2026-08-23
+
+**What changed.** No value moved. `docs/plan/00_the-case.md` now says which of
+its numbers no producer regenerates.
+
+**Why this page and not another.** It is the primary-aim artifact, written for
+a reader deciding whether to take the work seriously, and it had never been
+swept for provenance. **Seventeen numeric claims, fifteen grounded.** The
+AC-Stark trio traces to `stark_joint.csv` exactly, the red-wing variant is one
+multiplication from `kappa_ub95_wing`, the laser bound is
+`laser_epoch.csv`'s and the two-photon figure is twice it with the conversion
+stated on the page, and the collisional range is the per-peak
+`bound95_nscale` set, where the page's "loosest of a per-peak 95 per cent
+range" is exactly what those four numbers are.
+
+**Two are not grounded.** The digital twin's span-sweep correlations,
+**-0.9177, -0.9166 and -0.881**, appear on TEN public surfaces and no
+committed row carries them at any precision. The exhaustive search found
+`linefit_conditions.csv` at -0.91733 and -0.91743 instead, which are the
+CAMPAIGN's own per-condition correlations, near enough to be mistaken for
+these and a different quantity. **Four decimals imply a computation a reader
+could check, and none can.** The claim they support is unaffected and is not
+in question: widening the span does not break the degeneracy, because the
+degeneracy belongs to the lineshape rather than to the sample size. The case
+page now says so where it prints them.
+
+The second is the **99.8 per cent** position-excursion attribution, which has
+no row either.
+
+**A method note, because the search taught it.** Every `99.8` in `results/`
+was a false positive at three significant figures, including a detector
+saturation voltage of 399.8 V. **A provenance grep must be restricted to three
+or more significant figures or to value-plus-unit**, with shorter values given
+their own counted class, or its verdict is noise and looks like a clean pass.
+
+**What is not done**: a twin span-sweep producer, and the same disclosure on
+the other nine surfaces. Both are recorded in the private audit note so a
+later window sweeps once rather than rediscovering.

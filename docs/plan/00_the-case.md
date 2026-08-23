@@ -130,6 +130,12 @@ density-linked quantity.
 That factor of 2.5 replaced a claim in this repository's own tutorial, which
 taught that widening the scan span breaks the width degeneracy. Run, it does not: the correlation moves from −0.9177 at
 60 MHz to −0.9166 at 300 MHz, and ten times the traces reaches only −0.881.
+**Those three correlations are twin numbers with no `results/` row**, unlike
+every other figure on this page, so they are quoted here at the precision the
+run printed and no committed producer regenerates them. The conclusion they
+support does not rest on their fourth decimal: the degeneracy belongs to the
+lineshape rather than to the sample size, which is why neither widening the
+span nor multiplying the traces moves it.
 The pinning result that replaced it is a committed function with a guarded
 test, and a ratio quoted as an ensemble rather than as a single draw
 (3.18 ± 0.20 over nine seeds, after the single-seed 3.4 that four documents

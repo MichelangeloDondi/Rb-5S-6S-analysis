@@ -33,6 +33,22 @@ exactly those conditions. An unweighted fit would confound the predictor with
 the reliability of the response, which is why every fit here is weighted by the
 inverse variance of its own amplitude estimate.
 
+WHY THE OBVIOUS FOLLOW-UP TEST HAS NO POWER, stated here because this file is
+public and the test has now been proposed twice from outside. The natural next
+move is to profile out a PER-TRACE MULTIPLICATIVE nuisance and ask whether the
+structure collapses, separating a trace-level cause from a lineshape one. It
+cannot work. fit_condition floats FOUR parameters per trace already, indexed
+sol.x[nshared + 4*i + k]: amplitude, centre, and two baseline coefficients. A
+per-trace multiplicative term is absorbed exactly by the amplitude, a constant
+offset by b0, a linear-in-frequency term by b1. Such a test returns nothing by
+construction, and reading that nothing as "the trace hypothesis is refuted"
+would be a false inference from a powerless test, which is worse than no test
+because it looks like a result. The within-trace version fails too: on a
+symmetric line, equal model value occurs at equal and opposite detuning, so a
+shape error and a level nonlinearity predict the same pattern. Before
+preregistering any nuisance term, check it against the parameters the fit
+already carries.
+
 WHAT THIS PRODUCER CANNOT DO, stated because the result is easy to over-read.
 The residual is normalised by the per-point noise, so ANY fractional model
 error gives a residual proportional to the signal. Profile mismatch does that,
