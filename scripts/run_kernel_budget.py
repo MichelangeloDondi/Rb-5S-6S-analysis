@@ -104,11 +104,21 @@ def main() -> int:
         "U_shape / U_stat, carried through from kernel_k5.csv UNCHANGED. It is "
         "the model-class sensitivity within the TESTED class and is not "
         "replaced by any composite here")
+    # THE WORD "deferred" STOOD HERE UNTIL 2026-08-23 AND WAS FALSE BY THEN.
+    # The blind residual atlas was built, run, voided on its own preregistered
+    # criterion, diagnosed, preregistered again, re-run to a qualifying
+    # detection, and re-run once more across an environment migration under a
+    # freeze, unchanged. The sentence survived because the propagation sweep
+    # for future-tense claims reads docs/ and this claim lives in a CSV note
+    # column, which is prose no prose check reads.
     add("R_kernel_scope", "within the class {G, G+L}", "scope", "ESTABLISHED",
-        "class ADEQUACY is a separate and unresolved question: the blind "
-        "residual atlas that would test whether the true kernel lies outside "
-        "this class is deferred, so R_kernel bounds sensitivity within a class "
-        "the analysis chose, not over all model forms")
+        "class ADEQUACY was TESTED, by the blind residual atlas, which "
+        "detected reproducible in-window residual structure that no member of "
+        "the tested family produces and reproduced that detection unchanged "
+        "across an environment migration. No mechanism is assigned and the "
+        "structure's effect on the coefficient is not quantified, so R_kernel "
+        "still bounds sensitivity within a class the analysis chose, not over "
+        "all model forms")
 
     # ---- the DIAGNOSTIC, in three readings, each with its question --------
     ptp = float(x.max() - x.min())

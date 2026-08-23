@@ -33,11 +33,22 @@ summary: >
   estimated.
 relevance: >
   Same group and same first author as the OIST lineage. Method-adjacent to
-  this campaign's frequency handling twice over. First, the lock's stability
-  numbers, 0.15 MHz short-term against a lock linewidth of 0.8 to 1.8 MHz,
-  are the same order as the effective homogeneous component this analysis
-  extracts, so a lock of this class in a similar setup does not by itself
-  place a laser below the widths at issue. Second, the paper quantifies a
+  this campaign's frequency handling. The paper reports three DISTINCT
+  quantities and this note keeps them apart: a short-term frequency stability
+  of 0.15 MHz, whose averaging time the abstract does not state, a long-term
+  stability within 0.5 MHz estimated by histogramming drift over a ten-minute
+  recording, and a lock LINEWIDTH of 0.8 MHz with the applied field and 1.8 MHz
+  without.
+  NONE of the three is directly comparable with the effective homogeneous
+  component this analysis extracts, which is a convolution kernel width
+  inferred over an interrogation. They live on different axes and at different
+  observation times, and this archive's own rule is that a frequency-noise
+  statement carries its observation time, which is why its comb measurement is
+  quoted as an excursion below 28.3 kHz AT 0.15 s rather than as a bare width.
+  Whether a lock of this class places a laser below the widths at issue is
+  therefore an OPEN QUESTION here, not a finding, and answering it needs a
+  common observation time and a stated transfer function. An earlier version of
+  this note called the numbers the same order and drew the inference anyway. Second, the paper quantifies a
   systematic of its own reference, the polarization-dependent lock-point
   shift, and reduces it by choosing a less polarization-sensitive line,
   which is the same discipline as this record's ruler-first treatment of a

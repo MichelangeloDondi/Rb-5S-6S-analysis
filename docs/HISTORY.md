@@ -933,3 +933,39 @@ which fired on `docs/methods/06_the_statistics.md`'s quoted +0.080. That
 chapter now carries the new pair. The other two backstops, a classification
 change and more than six moved columns, were evaluated and did not fire, at
 2 of 58.
+
+## A results file said a finished instrument was deferred, 2026-08-23
+
+**The sentence, published in both repositories.**
+`results/kernel_budget.csv`, row `R_kernel_scope`, read: "class ADEQUACY is a
+separate and unresolved question: the blind residual atlas that would test
+whether the true kernel lies outside this class **is deferred**".
+
+**It was false by the time it was read.** That atlas was built, run, voided on
+its own preregistered criterion, diagnosed, preregistered again, re-run to a
+qualifying detection, and re-run once more across an environment migration
+under a freeze in which only the environment differed, returning fourteen
+detection rows bit-identical. The row now says class adequacy was TESTED, that
+no mechanism is assigned, and that the structure's effect on the coefficient is
+not quantified, so R_kernel still bounds sensitivity within the class the
+analysis chose.
+
+**This entry exists under a contract widened here rather than by drift.** The
+stated contract is an entry for a superseded published VALUE. No value moved.
+A published CLAIM moved, and a reader could have acted on it, which is the test
+this file now applies.
+
+**Why four sweeps missed it, and it is a class rather than an incident.** The
+propagation protocol's second step greps for exactly this word. It ran, over
+`docs/`. **The claim lives in a CSV note column, which is prose that no prose
+check reads.** The same hiding place produced the migration drift that first
+surfaced as a unit-string change, where no numeric comparison could grade a 37
+per cent move. The remedy is general: any statement a reader could act on
+belongs in a row a test can grade, not in a note column, and the future-tense
+sweep now covers `results/` as well as `docs/`.
+
+**Two sibling rows were checked and are legitimate.** `kernel_k5.csv` records a
+faster-block measurement that genuinely has not been run and points at where it
+is ranked, and one row in the fibre thread carries a forecast explicitly
+classed PROSPECTIVE with its estimator described as not built. Both describe
+work that really is future, which is the distinction that matters.
