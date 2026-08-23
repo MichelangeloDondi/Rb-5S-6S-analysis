@@ -17,6 +17,14 @@ once, the model's own profile height and log10 vapour density, and reported
 +8.65 against -0.75. Taken one at a time density looked significant at +2.2, so
 the JOINT form is what settles it and the marginal form is not run here.
 
+THE INHERITED NUMBERS ARE WEAKER THAN THE ONES COMPUTED HERE, and this producer
+is the only place that says so. +8.65, -0.75 and +2.2 come from a note with NO
+COMMITTED PRODUCER, computed once for the commit that introduced it, held in no
+results/ row, and therefore invisible to verify_results_fresh and to the
+freshness test. Everything this file computes is regenerated and graded on every
+run. The two are quoted side by side downstream, so the difference in standing
+is stated wherever they meet. Neither is withdrawn.
+
 WHY THE WEIGHTS ARE NOT OPTIONAL. P5 found that the two fitting arms disagree
 on 13 of 32 conditions and that the disagreement is monotonic in power, 4 of 4
 at the dimmest rung and 0 of 4 at each of the top three. So the conditions with

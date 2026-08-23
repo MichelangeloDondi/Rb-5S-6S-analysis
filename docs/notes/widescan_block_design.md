@@ -1,4 +1,6 @@
 ---
+`provenance: DESIGN` - the spans, block counts and percentages here size a
+proposed acquisition. Nothing on this page is a measurement of data.
 title: The wide-scan block, sized so the next session can run it cold
 status: DESIGN
 ---

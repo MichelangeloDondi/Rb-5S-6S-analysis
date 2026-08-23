@@ -178,7 +178,10 @@ only 0.49 and the height term surviving every leave-one-out above 8.5
 (`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
 -0.75 on the same two predictors by the same method**, so both structures share
 a predictor and both exclude density, and one common cause explains them better
-than two unrelated ones.
+than two unrelated ones. **The two band figures are the weaker pair**: they
+come from [a note with no committed producer](notes/band_excess_is_model_form.md),
+so no `results/` row holds them and the freshness machinery cannot check them,
+while the K8 pair beside them is regenerated and graded on every run.
 
 **What that does NOT say.** A residual normalised by the noise scales with the
 signal under ANY fractional model error, so profile mismatch, a detector

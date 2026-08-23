@@ -1,5 +1,8 @@
 # Running the two-photon measurement in a hollow-core fibre
 
+`provenance: DESIGN` - the numbers here are closed-form properties of a
+proposed configuration, checked against `lineshape.stark_ramp`. Nothing on this
+page is a measurement of data.
 **Status: DESIGN NOTE, 2026-08-04. Nothing here is scheduled, agreed or
 costed.** It sets out options and budgets for taking the record's
 5S → 6S two-photon measurement out of the vapour cell and into a guided mode,

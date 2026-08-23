@@ -143,7 +143,10 @@ only 0.49 and the height term surviving every leave-one-out above 8.5
 (`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
 -0.75 on the same two predictors by the same method**, so both structures share
 a predictor and both exclude density, and one common cause explains them better
-than two unrelated ones.
+than two unrelated ones. **The two band figures are the weaker pair**: they
+come from [a note with no committed producer](../notes/band_excess_is_model_form.md),
+so no `results/` row holds them and the freshness machinery cannot check them,
+while the K8 pair beside them is regenerated and graded on every run.
 
 **What that does NOT say.** A residual normalised by the noise scales with the
 signal under ANY fractional model error, so profile mismatch, a detector
@@ -342,7 +345,13 @@ vapour density is a null predictor at -0.75 sigma, and a band re-cut in units of
 each trace's own linewidth keeps the trend. A placebo band inside the fitted
 window carries structure too, which a general profile mismatch predicts and a
 far-wing collisional excess does not.
-[The full construction and its controls](../notes/band_excess_is_model_form.md).
+[The full construction and its controls](../notes/band_excess_is_model_form.md),
+**which carries no committed producer**: these four numbers were computed once
+for the commit that introduced them, no `results/` row holds them, and the
+freshness machinery that guards every ledger number cannot see them. They are
+not withdrawn and none is known to be wrong. They simply stand on a weaker
+footing than the bounds around them, and a reader cannot tell that from the
+sentence alone.
 
 **This is a candidate mechanism and not an explanation**, so the limitation
 stands. Nothing in `results/` moved on it. What it does settle is what the

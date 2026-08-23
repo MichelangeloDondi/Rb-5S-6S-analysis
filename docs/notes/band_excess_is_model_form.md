@@ -7,6 +7,17 @@ mechanism. It has one. **Nothing in `results/` moved on this and no committed
 bound changed**, so the finding is diagnostic and the chapter's limitation
 stands as a limitation.
 
+`provenance: NO_PRODUCER` - **every number on this page was computed once, for
+the commit that introduced the page, and no committed producer regenerates
+them.** There is no `results/` row for the regression below, so
+`verify_results_fresh` cannot check it and the freshness test cannot see it.
+That is a weaker standing than any number in the ledger, and it is stated here
+because a reader cannot tell the two apart from the page alone. **The numbers
+are not withdrawn and nothing here is known to be wrong.** What is missing is
+the machinery that would notice if it were. Giving this analysis a producer and
+a graded row is an open item, filed as such rather than left to be discovered
+by the next reader.
+
 ## What was already known, and why it stalled
 
 An earlier pass established that the excess is real and reproducible, then

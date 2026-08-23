@@ -1,5 +1,8 @@
 # The working notes
 
+`provenance: INDEX` - the rows below quote their own children, and each child
+carries the standing of its own numbers.
+
 A large share of the files here are preregistrations. A preregistration is a
 specification written and committed before the run whose outcome it scores. The
 estimator, the thresholds, the trace census and the stop conditions are fixed in
