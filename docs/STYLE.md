@@ -25,6 +25,17 @@ how they are stated, not what they say.
   measures, say so in the sentence that gives the number, not in a footnote.
   Every headline value carries a provenance tag (MEASURED-HERE / CALCULATED /
   ESTABLISHED / ENVELOPE / OPEN / DESCOPED).
+- **A quantity that varies is quoted with its spread, never as a bare worst
+  case.** A maximum answers "how bad can it get", which is a different question
+  from "what is it", and the two get confused when only one number is printed.
+  Two instances on 2026-08-22: a ratio quoted at 3.4 from a single draw sat at
+  3.18 plus or minus 0.20 across nine seeds, and a reproduction gap quoted at
+  its maximum hid a median four orders of magnitude below it, which voided a
+  preregistered run. Where one number genuinely is the whole quantity, because
+  it is a bound or a design maximum, say so in the row.
+  `tests/test_distribution_ratchet.py` holds each producer to a falling budget
+  of rows that report a worst case without a spread and without that
+  declaration.
 - **Proposed work is written as proposed.** No session, campaign, or paper in
   this repository is scheduled or agreed. Use "a proposed session", "would
   measure", "if run". Never "the session will" or a present-tense outcome
