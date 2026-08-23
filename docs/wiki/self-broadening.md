@@ -93,9 +93,12 @@ $\beta_\text{self}$ by 42 to 66 per cent
 ([the laser kernel](laser-frequency-noise-and-the-linewidth.md),
 `results/kernel_k3.csv`).
 
-That makes it the coefficient's binding systematic: the kernel uncertainty is
-3.24 times the statistical error, so more repeats of the same construction do
-not improve the number. The term below is real and smaller.
+That makes it the coefficient's binding systematic: the sensitivity to the
+kernel representation, within the family tested, is 3.24 times the statistical
+error, so more repeats of the same construction do not improve the number. It
+is a sensitivity within that family and not an uncertainty on the coefficient,
+and the family's own adequacy is a separate question with its own instrument
+([identifiability](identifiability.md)). The term below is real and smaller.
 
 ## One term this coefficient absorbs and cannot separate
 

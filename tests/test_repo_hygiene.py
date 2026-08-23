@@ -119,6 +119,46 @@ FORBIDDEN = {
         r"p ?= ?0\.0078",
         r"\b7/7\b",
     ],
+    # R_kernel = 3.24 IS A SENSITIVITY, NOT AN UNCERTAINTY, and the difference
+    # is the whole scientific identity of the v4.3 record. 3.24 measures how far
+    # the inferred collisional coefficient moves when the kernel representation
+    # is changed WITHIN the tested G, L and G+L family. Calling it "the kernel
+    # uncertainty" asserts that the family spans the space of possibilities,
+    # which is exactly the claim the blind residual atlas was built to test and
+    # did NOT establish.
+    #
+    # THIS GUARD WAS ADDED THE DAY A LIVE PAGE WAS FOUND CARRYING THE PHRASE.
+    # docs/wiki/self-broadening.md read "the kernel uncertainty is 3.24 times
+    # the statistical error", and the same line was live on the public mirror.
+    # The number was right and its description was not, which is the class of
+    # error no number-checking guard can see. The page was corrected first so
+    # this bank starts green, per the rule stated above.
+    # NARROWED ON THE DAY IT WAS WRITTEN, by the bank's own rule above: a token
+    # reused for a live quantity is fixed by narrowing it, never by an
+    # exemption. The bare token hit run_kernel_budget.py and results/README.md,
+    # where "the kernel uncertainty statement" names the uncertainty BUDGET, a
+    # producer whose entire subject is refusing to combine three terms into one
+    # total. That usage is correct and is the opposite of the error guarded
+    # against here, so the two words are excluded rather than the two files.
+    "R_kernel described as an uncertainty": [
+        # The bare token, minus the two legitimate compounds. An adversarial
+        # audit on 2026-08-23 showed the lookahead is only two words wide, so
+        # "the kernel uncertainty statement is that 3.24 IS the uncertainty"
+        # slipped past every pattern. The exemption is therefore narrowed to
+        # the two producer phrases that actually occur, anchored on what
+        # follows them, rather than exempting any sentence containing them.
+        r"kernel uncertainty(?!\s+(?:statement|budget)\b)",
+        r"kernel uncertainty\s+(?:statement|budget)\b[^.]*\bis\s+the\s+uncertainty\b",
+        r"uncertainty (?:in|on|of|from) the kernel\b",
+        r"\bkernel error\b",
+        # The same claim without the word kernel adjacent to uncertainty.
+        # Each of these was checked against the tree and occurs nowhere, so
+        # the bank still starts green.
+        r"\b3\.24\b[^.]{0,40}\bis the uncertainty\b",
+        r"\bthe uncertainty\b[^.]{0,30}\bkernel choice\b",
+        r"\bkernel[- ]derived uncertainty\b",
+        r"\bkernel contributes an uncertainty\b",
+    ],
     "drafting-process reference": [
         r"\buser(?:'s)?\b(?!name)", r"\bdigestion turn\b", r"\bas discussed\b",
         r"\bper your\b", r"\byou asked\b", r"\bas requested\b",
@@ -361,6 +401,51 @@ def _marked(lines, i):
             return True
         k -= 1
     return False
+
+
+# The bank above matches LINE BY LINE, which is right for almost everything and
+# wrong for a phrase that wraps. On 2026-08-23 an audit prompted a sweep that
+# found `docs/wiki/laser-frequency-noise-and-the-linewidth.md` carrying "the
+# resulting kernel\nuncertainty is 3.24 times the statistical error", the exact
+# claim the R_kernel bank forbids, invisible to it because "kernel" ended one
+# line and "uncertainty" began the next. That page had been public with the
+# wrong noun the whole time and the per-line guard read it as clean.
+#
+# Re-architecting the whole bank to flatten would cost its line numbers and
+# would make it fail on its own source, which quotes the banned phrases in
+# comments. So this is one narrow test, over one label, on flattened prose.
+_RKERNEL_FLAT = [
+    r"kernel uncertainty(?!\s+(?:statement|budget)\b)",
+    r"uncertainty (?:in|on|of|from) the kernel\b",
+    r"\bkernel[- ]derived uncertainty\b",
+]
+
+# HISTORY.md is licensed to print what the record no longer believes, and this
+# file necessarily quotes the phrases it bans.
+_FLAT_EXEMPT = {"docs/HISTORY.md", "tests/test_repo_hygiene.py"}
+
+
+def test_r_kernel_is_not_called_an_uncertainty_across_a_line_break():
+    """The same ban as the bank's label, on prose with its line breaks removed."""
+    pats = [re.compile(p, re.I) for p in _RKERNEL_FLAT]
+    hits = []
+    for rel in _prose_files():
+        if rel in _FLAT_EXEMPT or rel.startswith("docs/lit/"):
+            continue
+        try:
+            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        flat = " ".join(txt.split())
+        for pat in pats:
+            m = pat.search(flat)
+            if m:
+                hits.append(f"{rel}: ...{flat[max(0, m.start()-50):m.end()+20]}...")
+    assert not hits, (
+        "R_kernel is described as an uncertainty across a line break. It is a "
+        "sensitivity to the kernel representation WITHIN the tested family, "
+        "and the family's adequacy is a separate open question.\n  "
+        + "\n  ".join(hits))
 
 
 @pytest.mark.parametrize("label", sorted(FORBIDDEN))

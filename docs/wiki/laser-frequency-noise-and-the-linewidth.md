@@ -225,9 +225,13 @@ DENSITY, since the collisional width scales with $N(T)$ and a laser width does
 not. The width above is a property of the whole temperature ladder.
 
 **It now dominates the coefficient it perturbs.** Freeing the kernel moves
-$\beta_\text{self}$ by 42 to 66 per cent, and the resulting kernel
-uncertainty is 3.24 times the statistical error. More repetitions of the
-current construction therefore do not improve $\beta_\text{self}$.
+$\beta_\text{self}$ by 42 to 66 per cent, and the resulting sensitivity to
+the kernel representation, within the family tested, is 3.24 times the
+statistical error. More repetitions of the current construction therefore do
+not improve $\beta_\text{self}$. That factor is a sensitivity within the
+tested family and not an uncertainty on the coefficient, since the family's own
+adequacy is a separate question with its own instrument
+([identifiability](identifiability.md)).
 
 **And it still does not answer this page's question.** Which noise process
 produces the width is the third of the three questions above, and measuring
