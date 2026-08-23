@@ -191,9 +191,18 @@ def main() -> int:
                     f"transit-unpinned rows only (vs gc grid step {zfl['gc_step']:.4f}; "
                     f"the trust verdict needs this AND the slope agreement below)"])
         w.writerow(["ridge_slope", "zoom_profile", f"{zfl['ridge_slope']:.3f}",
-                    f"d(gamma_coll)/d(sigma_laser) along the profile valley; the local "
-                    f"covariance predicts {slope_pred:.3f} (agreement = the Gaussian "
-                    f"profile<->ellipse correspondence holds where transit is unpinned)"])
+                    "d(gamma_coll)/d(sigma_laser) along the profile valley (compare "
+                    "ridge_slope_covariance_pred; agreement = the Gaussian "
+                    "profile<->ellipse correspondence holds where transit is unpinned)"])
+        # The covariance-side prediction used to live INSIDE the row above's
+        # note string, so when the 2026-08-21 environment re-measure moved it
+        # from 0.080 to 0.110 the drift surfaced as a UNIT-COLUMN text change,
+        # the one place a numeric comparison cannot grade. A quantity two
+        # public documents quote gets its own row.
+        w.writerow(["ridge_slope_covariance_pred", "zoom_profile", f"{slope_pred:.3f}",
+                    "d(gamma_coll)/d(sigma_laser) predicted by the marginal covariance "
+                    "ellipse at the constrained minimum, the other half of the "
+                    "ridge_slope agreement check"])
         w.writerow(["profile_free_gap", "zoom_profile", f"{dmin:.2f}",
                     "profile chi2_min minus the free-fit chi2 (same model space; ~0 = consistent)"])
         w.writerow(["audit_max_gain", "zoom_profile", f"{zoom['audit_max_gain']:.3f}",

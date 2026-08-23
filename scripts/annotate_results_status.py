@@ -261,6 +261,7 @@ QUANTITY_STATUS = {
         "best_constrained_sigma": "DIAGNOSTIC", "worst_constrained_sigma": "DIAGNOSTIC",
         # the global profile-likelihood complements (all shape diagnostics)
         "banana_rms": "DIAGNOSTIC", "ridge_slope": "DIAGNOSTIC",
+        "ridge_slope_covariance_pred": "DIAGNOSTIC",
         "profile_free_gap": "DIAGNOSTIC", "closed_95": "DIAGNOSTIC",
         "audit_max_gain": "DIAGNOSTIC", "transit_railed_frac": "DIAGNOSTIC",
         "wide_free_gap": "DIAGNOSTIC", "branch": "DIAGNOSTIC",

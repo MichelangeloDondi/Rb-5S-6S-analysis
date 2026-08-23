@@ -1,56 +1,45 @@
 # CI: the full pytest battery.
 #
-# This repository is PUBLIC, so GitHub Actions minutes are free here. The
-# private tree the ports come from is billed per minute and has run on manual
-# dispatch alone since 2026-07-30, so this repo is the reference green check
-# for the slow closure tests.
+# COST NOTE (2026-07-29). This repository is PRIVATE, so every minute here is
+# billed against the account's Actions allowance, while the public mirror
+# (MichelangeloDondi/Rb-5S-6S-analysis) runs the same battery for free and is
+# the reference green check. Running the full matrix on every push cost ~35
+# minutes a push and exhausted the allowance.
 #
-# WHAT RUNS WHEN (owner instruction, 2026-08-12). The full two-leg battery
-# runs on TAGS, pull requests and manual dispatch: it is the RELEASE gate.
-# An ordinary push gets lint plus the fast suite, about three minutes.
+# So the matrix now runs on TAGS and on manual dispatch only. Ordinary pushes
+# get `lint` and a single fast-suite job, ~3 minutes. Nothing is lost: the full
+# battery still runs locally before every commit (house rule), and the public
+# mirror runs it on every push at no cost.
 #
-# The reason is WALL CLOCK, not minutes, and the distinction matters because
-# the previous note in this position got it wrong in the other direction. The
-# full matrix measured 46 to 60 minutes across its last five runs, and the
-# release sequence blocks on it. Minutes are free here; an hour of waiting is
-# not. What did NOT change is the real gate: scripts/ci_gate.sh runs locally,
-# unpiped, on the exact tree being pushed, every time. The per-push CI was
-# always a redundancy check on top of that, never the primary gate, which is
-# why narrowing it is safe.
+# A MATRIX, not one job (fix, 2026-07-11): the original single latest-deps
+# job silently installed numpy 2.x while pyproject declared numpy>=1.24, so
+# code calling numpy-2-only API passed CI and failed on every environment the
+# manifest actually promised to support. The "minimum" leg pins the declared
+# dependency FLOOR so the contract is tested, not assumed.
 #
-# A PROMISE THIS FILE ONCE BROKE ABOUT ITSELF, kept here because the failure
-# mode outlives the policy: the cost-gated workflow was copied from the archive
-# verbatim along with its cost note, which left THIS repo skipping --runslow on
-# push while its own comment claimed the mirror ran it on every push. Found by
-# a skip audit, 2026-07-29. The matrix job now carries an `if:` again, by
-# intent, and the header above was rewritten in the same commit to say so.
-# Whoever changes the gates next: change the words in the same edit.
-#
-# THREE jobs, not one (fix, 2026-07-11): the original single
-# latest-deps job silently installed numpy 2.x while pyproject declared
-# numpy>=1.24, so code calling numpy-2-only API passed CI and failed on
-# every environment the manifest actually promised to support. The
-# "minimum" job pins the declared dependency FLOOR so the contract is
-# tested, not assumed.
-#
-# The data-manifest tests re-hash data_raw/, which in this mirror holds only the
-# README and MANIFEST.csv -- the raw traces are held privately. So a green run
-# here certifies the CODE; dataset integrity is certified in the archive.
+# The data-manifest tests re-hash all of data_raw/ (~20 MB, committed), so a
+# green run certifies code AND dataset integrity together.
 name: tests
 
-# TRIGGERS: every push, and that is the point -- this repo is the reference
-# green check, because the private tree the ports come from runs its Actions on
-# manual dispatch alone. On 2026-07-30 that tree was set to
-# workflow_dispatch-only, and the change PROPAGATED HERE silently:
-# the `on:` blocks were identical in the two repos, so the cherry-pick applied
-# cleanly even though this file is on the sync script's DIVERGENT list. That list
-# predicts conflicts; it does not prevent merges. Guarded now by
-# tests/test_ci_triggers.py.
+# TRIGGERS: manual only, from 2026-07-30.
+#
+# This repository is PRIVATE, so its Actions are billed, and the account's
+# Actions are blocked: every job fails in 2-3 seconds without starting, with
+# "The job was not started because recent account payments have failed or your
+# spending limit needs to be increased". `lint` is `pip install ruff && ruff
+# check` and cannot fail on content, so a 3-second lint failure is proof the job
+# never ran. Nothing here is broken.
+#
+# Pushing therefore produced one red run and one failure email per commit, for
+# CI that cannot execute. The owner has decided not to pay, so the honest
+# configuration is not to schedule work that cannot run: push and pull_request
+# are removed and the workflow is manual only. If the billing state is ever
+# cleared, add them back -- nothing else needs changing.
+#
+# Coverage is unaffected. The full battery runs locally before every commit
+# (house rule), and the PUBLIC mirror runs the two-leg --runslow matrix on
+# every push for free; it is the reference green check.
 on:
-  push:
-    branches: [main]
-    tags: ["v*"]
-  pull_request:
   workflow_dispatch:
 
 
@@ -61,33 +50,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          # tests/test_version_surface.py's tag half needs the tags.
-          # A default checkout fetches none and the test skips.
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install ruff
       - run: ruff check rb5s6s scripts tests
 
-  # Every ordinary push gets this instead of the matrix: the fast suite on one
-  # interpreter, about two minutes, enough to catch a break within a minute of
-  # a push. The slow closures and the numpy-floor leg run on tags and on demand.
+  # Every push gets this instead of the matrix: the fast suite on one
+  # interpreter, ~2 minutes. The slow closures and the numpy-floor job run on
+  # tags and on demand.
   fast:
-    if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
       - run: pytest -q          # fast suite only; --runslow runs on tags
 
-  # The release gate: tags, pull requests and manual dispatch only.
+  # The full battery: tags and manual dispatch only -- see the cost note above.
   pytest:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -124,8 +107,6 @@ jobs:
             deps: latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
@@ -143,15 +124,17 @@ jobs:
         if: matrix.deps == 'minimum'
         run: pip install "numpy==2.5.0" "scipy==1.16.0" "pandas==2.2.3" "matplotlib==3.9.4"
       # FRESHNESS_CHECK on BOTH legs, and the two verdicts mean different
-      # things. The pinned leg tests RECORD INTEGRITY, the latest leg is an
-      # ENVIRONMENT-DRIFT MONITOR, non-fatal below. The old placement rested
-      # on the claim that the answer cannot differ between interpreters, a
-      # premise measured false on 2026-08-18 (the legs differ in dependencies
-      # and platform, and the first real run diverged by 62 per cent in one
-      # cell while the pinned leg matched every cell). In THIS repository the
-      # check skips either way, stated rather than silent, because the raw
-      # traces its producers need are not distributed here: the check can
-      # only run in the private tree, which is why its CI matters there.
+      # things. The pinned leg tests RECORD INTEGRITY: the committed CSVs
+      # against their producers under the dependency set the record was made
+      # for. The latest leg is an ENVIRONMENT-DRIFT MONITOR: a red there with
+      # a green pinned leg means the current ecosystem reproduces the record
+      # only outside tolerance, which is a property of the environment and
+      # not of the record. This replaces a comment claiming the answer
+      # "cannot differ between interpreters", a premise measured false on
+      # 2026-08-18: the legs differ in dependencies and platform, and the
+      # first real run diverged (noise_model chi2_red 5.4%, modelform
+      # full_exp 62% on the unpinned leg) while the pinned leg and both
+      # local environments matched every cell.
       - run: pytest -q --runslow   # CI runs the full battery incl. slow closure tests
         env:
           # Fatal only where it tests record integrity, the pinned leg.

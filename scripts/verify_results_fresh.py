@@ -101,7 +101,15 @@ EXPENSIVE = {
     "run_kernel_k7": ["kernel_k7.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
     # 32 conditions fitted three ways (two arms plus a synthetic control)
-    # with a 1000-draw permutation null. About twenty minutes.
+    # with a 1000-draw permutation null, plus a leave-one-out over every
+    # condition. MEASURED at 8.75 s wall on 2026-08-22, from a clean worktree
+    # at HEAD, reproducing the committed CSV byte for byte. This comment
+    # previously said about twenty minutes, which is wrong by two orders of
+    # magnitude and had been used to budget a re-run. The permutation null
+    # flips signs on residuals that are already computed, so it costs almost
+    # nothing next to the fits. It stays in EXPENSIVE because that map is
+    # about which producers the cheap freshness path may run, not about
+    # wall-clock alone.
     "run_kernel_k4": ["kernel_k4.csv"],
     # nine synthetic worlds at five hundred trials, about eight minutes.
     # Deterministic despite being Monte-Carlo: every trial is seeded by its
