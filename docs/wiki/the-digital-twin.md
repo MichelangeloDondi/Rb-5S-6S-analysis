@@ -206,11 +206,31 @@ purpose entirely, and the two disagreed on contact.
 
 **A teaching claim was wrong in a draft.** An unreleased draft of the tutorial
 taught that widening the scan span breaks the width degeneracy. The twin
-measured the correlation at $-0.9177$ across a 60 MHz span and $-0.9166$
-across 300 MHz, and at ten times the traces it reached only $-0.881$. Both
-uncertainties fell and the correlation did not move, because the degeneracy
-belongs to the lineshape rather than to the sample size. The claim was
-replaced by the arithmetic above before the page shipped.
+refuted it before the page shipped, and the refutation now has a producer:
+[`results/twin_span_sweep.csv`](../../results/twin_span_sweep.csv), from
+`run_twin_span_sweep.py`, whose truth is READ from a named committed condition
+and whose seed is fixed.
+
+Over a five times wider span the width-width correlation moves **0.0075**. At
+ten times the repeats it moves **0.0000**, while the collisional-width
+uncertainty falls by **3.16**, which is the root of ten and what independent
+samples give. **The data buys precision and the correlation stays where it
+is**, because the degeneracy belongs to the lineshape rather than to the
+sample size.
+
+**One thing that sweep adds, which the original claim did not carry**:
+widening the span at a FIXED point count made the uncertainty 2.72 times
+WORSE. That is a coupling between two design knobs rather than a property of
+span, since a wider window sampled at the same number of points measures the
+line five times more thinly. **Widen the span only alongside the points to
+match.**
+
+**The original run is not reproduced and that is stated rather than hidden.**
+It reported $-0.9177$, $-0.9166$ and $-0.881$, numbers that ten public
+surfaces still quote, and it recorded neither its truth parameters nor its
+seed, so nobody can regenerate those four decimals. The producer above
+re-establishes the CLAIM rather than the digits, because choosing inputs that
+hit a remembered output is the opposite of a measurement.
 
 Both are recorded in [HISTORY.md](../HISTORY.md).
 

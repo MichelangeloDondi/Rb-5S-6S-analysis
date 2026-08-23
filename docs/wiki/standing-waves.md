@@ -253,4 +253,4 @@ counting before it reached a design document.
 
 ---
 
-[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 2 of 9* · [The Voigt profile →](voigt-profile.md)
+[← Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) · *Experimental spectroscopy, 2 of 10* · [The Voigt profile →](voigt-profile.md)

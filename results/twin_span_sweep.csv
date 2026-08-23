@@ -1,0 +1,21 @@
+scope,quantity,value,unit,note,status
+TRUTH,gamma_coll,0.580779,MHz,"read from linefit_conditions.csv at p_sweep/4154/130/225, not chosen",DIAGNOSTIC
+TRUTH,sigma_laser,1.560691,MHz,"read from linefit_conditions.csv at p_sweep/4154/130/225, not chosen",DIAGNOSTIC
+TRUTH,transit_fwhm,0.957477,MHz,from the committed 64 um waist through constants.transit_fwhm_from_w0 at 130 C,DIAGNOSTIC
+TRUTH,seed,0,count,"fixed, because the run this producer replaces recorded neither its truth nor its seed and therefore cannot be reproduced by anyone",DIAGNOSTIC
+TRUTH,n_trials,6,count,"Monte-Carlo trials per design. Small enough to run inside a gate, so each correlation carries sampling scatter and the comparison between designs is what this producer supports",DIAGNOSTIC
+span_060MHz,corr_laser_coll,-0.9421,dimensionless,correlation between the fitted laser and collisional widths. the campaign's own span,DIAGNOSTIC
+span_060MHz,gamma_coll_err,0.009987,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_060MHz,sigma_laser_err,0.018892,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_300MHz,corr_laser_coll,-0.9345,dimensionless,"correlation between the fitted laser and collisional widths. five times wider, which the withdrawn draft said would break the degeneracy",DIAGNOSTIC
+span_300MHz,gamma_coll_err,0.027175,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+span_300MHz,sigma_laser_err,0.054771,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+traces_10x,corr_laser_coll,-0.9420,dimensionless,"correlation between the fitted laser and collisional widths. ten times the repeats at the campaign's span, which tests the sample-size half of the same claim",DIAGNOSTIC
+traces_10x,gamma_coll_err,0.003159,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+traces_10x,sigma_laser_err,0.005999,MHz,"the fit's own reported one-sigma, median over trials",DIAGNOSTIC
+VERDICT,corr_move_with_span,0.0075,dimensionless,how far the correlation moved when the span went from 60 to 300 MHz,DIAGNOSTIC
+VERDICT,corr_move_with_traces,0.0000,dimensionless,how far it moved at ten times the repeats,DIAGNOSTIC
+VERDICT,claim,DEGENERACY_IS_A_LINESHAPE_PROPERTY,verdict,"the correlation stays close to its starting value under both a five times wider span and ten times the data, which is what a degeneracy belonging to the lineshape does and what one belonging to the sample size does not. This is a comparison between designs under one seed, not a precision measurement of any single correlation",DIAGNOSTIC
+VERDICT,err_ratio_10x_traces,3.16,dimensionless,"how much the collisional-width uncertainty SHRANK at ten times the repeats. Near the root of ten is what independent samples give, and it is the other half of the claim: the data buys precision while the correlation stays put",DIAGNOSTIC
+VERDICT,err_ratio_wide_span,2.72,dimensionless,"how much it GREW at five times the span. Above one means widening COSTS precision here, which the record has not stated before. CAVEAT, and it is load-bearing: n_points is held fixed, so a wider span samples the line five times more thinly. This is a coupling between two design knobs and not a pure span effect, and it says widen the span only alongside the points to match",DIAGNOSTIC
+VERDICT,campaign_corr_for_scale,-0.9062,dimensionless,"the CAMPAIGN's own fitted correlation at p_sweep/4154/130/225, carried here only so a reader can see the twin sits in the same region. It is a different quantity from the twin's and must not be quoted as one",DIAGNOSTIC

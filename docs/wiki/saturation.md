@@ -242,4 +242,4 @@ measured conservatism rather than as a correction.
 
 ---
 
-[← The AC-Stark shift](ac-stark-shift.md) · *Experimental spectroscopy, 7 of 9* · [Collisional self-broadening →](self-broadening.md)
+[← The AC-Stark shift](ac-stark-shift.md) · *Experimental spectroscopy, 7 of 10* · [Collisional self-broadening →](self-broadening.md)

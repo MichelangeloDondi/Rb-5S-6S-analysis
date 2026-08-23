@@ -165,4 +165,4 @@ a reader.
 
 ---
 
-[← wiki index](README.md) · *Experimental spectroscopy, 1 of 9* · [Standing waves →](standing-waves.md)
+[← wiki index](README.md) · *Experimental spectroscopy, 1 of 10* · [Standing waves →](standing-waves.md)

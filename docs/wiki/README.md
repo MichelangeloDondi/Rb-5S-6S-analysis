@@ -3,7 +3,7 @@
 **The question.** What does a reader need to understand, concept by concept,
 to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Fifty-two pages in eight clusters, the routes through them by what
+**Gives.** Fifty-three pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
 **Skip if.** You want the experiment's own record rather than the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
@@ -92,6 +92,7 @@ how the line is driven, what shape it takes, and what moves or widens it.
 | [Saturation](saturation.md) | physical effect | where the square law stops, and why a tighter focus leaves the safe regime faster than it gains signal |
 | [Collisional self-broadening](self-broadening.md) | physical effect | collisions keep the line Lorentzian and grow its width linearly with density |
 | [Vapour density and temperature](vapour-density-and-temperature.md) | concept | how a cell temperature becomes a density, why a set point is not a temperature, and the pedestal that measures it in situ |
+| [Guided atoms and nanofibres](guided-atoms-and-nanofibres.md) | concept | what changes when the atoms and the light share a waveguide: the hollow core puts them inside the mode and the nanofibre puts them outside the glass, and each turns transit broadening from a fixed cost into a design knob while charging a new systematic for it |
 
 ## C. Driving, modulating and detecting
 

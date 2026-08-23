@@ -281,11 +281,14 @@ and are cited there rather than restated here.
 
 **The platform lane, for a reader with no fibre.** The fibre thread of this
 repository is [chapter 6](big_picture/06_next-nanofibre.md), the second
-scenario of [chapter 9](big_picture/09_the-campaign-cases.md), and
-[the sized candidate](notes/onf_candidate.md). Everything else, the method,
-the results, the plan and the wiki, is platform-neutral, so a vapour-cell
-reader, or one adapting the pipeline to a different transition
-([ADAPTING.md](ADAPTING.md)), skips those three surfaces whole and loses
+scenario of [chapter 9](big_picture/09_the-campaign-cases.md),
+[the sized candidate](notes/onf_candidate.md), and one wiki page,
+[guided atoms and nanofibres](wiki/guided-atoms-and-nanofibres.md), which
+carries its own skip line and is the only page there that is not
+platform-neutral. Everything else, the method, the results, the plan and the
+rest of the wiki, is platform-neutral, so a vapour-cell reader, or one
+adapting the pipeline to a different transition
+([ADAPTING.md](ADAPTING.md)), skips those four surfaces whole and loses
 nothing on their path.
 
 For the derivations, [methods.md](methods.md) owns every one. For the general

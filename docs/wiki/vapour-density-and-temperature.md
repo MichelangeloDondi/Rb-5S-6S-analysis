@@ -110,4 +110,4 @@ its cost and failure conditions are carried in
 
 ---
 
-[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 9 of 9* · [wiki index →](README.md)
+[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 9 of 10* · [Guided atoms and nanofibres →](guided-atoms-and-nanofibres.md)

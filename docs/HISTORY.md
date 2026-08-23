@@ -1382,3 +1382,49 @@ source. And the results index refused the new file until it was described.
 **six**, and ungoverned values on reader-facing surfaces, one to **zero**. Both
 budgets were re-recorded downward, which is the only direction a ratchet
 permits.
+
+## The twin's span sweep gains a producer, and the wiki gains its fibre page
+
+2026-08-23. **No committed bound moves.**
+
+**The span sweep.** Three correlations quoted on ten public surfaces had no
+row, and the run that made them recorded neither its truth parameters nor its
+seed, so nobody could regenerate those four decimals.
+`scripts/run_twin_span_sweep.py` re-establishes the CLAIM rather than the
+digits: truth READ from `linefit_conditions.csv` at a named condition, transit
+from the committed waist, seed fixed. **The correlation moves 0.0075 over a
+five times wider span and 0.0000 at ten times the repeats, while the
+collisional-width uncertainty falls by 3.16**, which is the root of ten and
+what independent samples give. The degeneracy belongs to the lineshape.
+
+**It also found something the record had not stated.** Widening the span at a
+FIXED point count made the uncertainty 2.72 times WORSE, because a wider
+window sampled at the same number of points measures the line five times more
+thinly. **That is a coupling between two design knobs rather than a property
+of span**, and it says widen the span only alongside the points to match.
+
+**Choosing inputs that hit a remembered output is the opposite of a
+measurement**, so the historical numbers are left where they are quoted, next
+to a row that can be checked, and the producer says plainly that it does not
+reproduce them.
+
+**The wiki gained its fibre page.** Fifty-three pages and none on the platform
+that is half this record's forward programme.
+`wiki/guided-atoms-and-nanofibres.md` sets the two guided geometries against
+each other, sizes the nanofibre from the sized-candidate note's own committed row set, and states
+what the platform CHARGES as plainly as what it buys, since a geometry that
+removes transit broadening and adds a surface shift has improved nothing until
+the new term is measured.
+
+**And the guard fired TWICE, the second time on this entry.** The first
+catch was the new wiki page. The second was this HISTORY entry itself,
+which cited the fibre-only CSV by path from a platform-neutral surface.
+**It was written AFTER the suite had been run and in the same command as
+the commit**, so nothing checked it until the gate did, fourteen minutes
+later. **The suite runs after the LAST edit, not after the last edit that
+felt substantial.**
+
+**The platform-lane promise was widened rather than quietly broken.** Its guard
+caught the new page citing a fibre-only result from a surface the promise
+called platform-neutral. The paragraph now names four surfaces instead of
+three and says the wiki carries exactly one page a fibre-less reader skips.
