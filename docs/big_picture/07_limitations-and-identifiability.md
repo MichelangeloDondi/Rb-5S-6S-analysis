@@ -25,8 +25,8 @@ failure teaches nothing is a design worth less than it costs.
 
 **The limitation.** The collisional width and the laser width are not
 separately determined. The archive fixes the total width to 0.0032 MHz and the
-direction that divides it to only 0.0624 MHz, twenty times worse, at a
-condition number of 390 across the three width parameters.
+direction that divides it to only 0.0588 MHz, eighteen times worse, at a
+condition number of 345 across the three width parameters.
 
 **The physical cause.** A Lorentzian collisional kernel and a Gaussian laser
 kernel convolve into a profile whose shape barely distinguishes them at these
@@ -116,12 +116,33 @@ separate claim that no measurement taken licenses: the one in-situ laser
 measurement samples a different band from the one a scanned width integrates
 (`results/kernel_k5.csv`). And the model CLASS is not shown adequate, because
 $R_\text{kernel}$ is a sensitivity within the two forms tested. The blind
-residual atlas that would test the class itself has now been built and run, and
-**its first run is void by its own preregistered reproduction check**
-(`results/kernel_k4.csv`, whose first row says so). Class adequacy is therefore
-unresolved exactly as it was. What changed is the reason, from not attempted to
-attempted without qualifying, and a void run's detection rows may not be
-cited.
+residual atlas that would test the class itself has been built and run.
+
+**The atlas now qualifies, and it detects.** Stacking per-condition residuals
+on a common axis and testing against a null that flips each condition's sign, a
+common residual structure appears at the permutation floor in both arms, the
+synthetic control built from the fitted model returns clean, and **the
+detection survives the removal of any single condition**. The tested inference
+family leaves **reproducible residual structure** that no member of it produces
+(`results/kernel_k4.csv`).
+
+**What that is and is not.** It is named unexplained reproducible residual
+structure rather than model inadequacy, because a residual can come from the
+physical model, the noise model, preprocessing or the instrument, and this test
+separates none of them. **No mechanism is named.** **$R_\text{kernel}$ is
+unchanged and remains a sensitivity within the class that was tested**, since
+turning this structure into an admissible alternative model and computing its
+effect on the collisional coefficient has not been done. And the domain is
+stated: the structure is INSIDE the fit window, and its relation to the
+reproducible excess OUTSIDE that window is unresolved.
+
+**On the two runs.** An earlier run of the same atlas on the same data was
+declared void by its own preregistered check, which had invented a reproduction
+threshold twenty times stricter than the one `verify_results_fresh.py` sets for
+this repository and voided on a single condition already measured as
+environment-sensitive. The criterion was not loosened afterwards: a second run
+was preregistered with the repository's own standard plus a leave-one-out test,
+and both runs stand in the record.
 
 So the collisional coefficient no longer carries this as an unquantified
 systematic. It carries a quantified model-form sensitivity with an

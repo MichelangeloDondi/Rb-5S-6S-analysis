@@ -387,7 +387,7 @@ read. Every
 component in the production model is pinned against power already, so that
 structure has nowhere to go and is sitting in the residual. The test frees ONE
 component at a time per condition with the other two held at their physical
-values, since all three at once is degenerate at a condition number of 390, and
+values, since all three at once is degenerate at a condition number of 345, and
 the three kernels have different shapes so the comparison was expected to
 identify the missing term as well as locate it.
 
@@ -401,7 +401,7 @@ between minus 2.6 and minus 4.0 MHz per watt squared at about two standard
 deviations, where the model-free summary statistic gives about minus 11 at four.
 Two things follow, and the second was not anticipated. The kernels are
 interchangeable against this structure rather than distinguishable by shape, so
-the width degeneracy already recorded at condition number 390 governs the power
+the width degeneracy already recorded at condition number 345 governs the power
 channel too. And the two constructions disagree about the SIZE of the concavity
 by a factor near three. Two follow-up diagnostics narrowed that second finding
 without closing it. Pinning the per-trace baseline slope to zero, the mechanism

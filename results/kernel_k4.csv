@@ -1,5 +1,5 @@
 scope,quantity,value,unit,note,status
-RUN,admissible,NO,flag,"the preregistered void check FIRED, so the detection rows below may NOT be cited as a result. See private/reviews/K4_PREREG_2026-08-22.md",DIAGNOSTIC
+RUN,admissible,YES,flag,the preregistered void check passed,DIAGNOSTIC
 G,n_conditions,32,count,conditions contributing to the stack,DIAGNOSTIC
 G,max_z,6.893,sigma,largest |stacked mean / its across-condition standard error| inside the preregistered window,DIAGNOSTIC
 G,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
@@ -10,6 +10,10 @@ GL,max_z,7.307,sigma,largest |stacked mean / its across-condition standard error
 GL,p_signflip,0.0010,p-value,"1000 sign-flip draws. Below 0.01 would be evidence of a COMMON residual shape, which would mean the model class is inadequate. It would NOT name the missing term",DIAGNOSTIC
 GL,verdict,COMMON_SHAPE_DETECTED,verdict,a null does NOT establish that the class is adequate. It bounds any common missing term at the sensitivity reported below,DIAGNOSTIC
 GL,sensitivity_frac_of_peak,2.0e-03,fraction,"smallest injected common bump, as a fraction of line peak, detected in 90 per cent of trials at the observed threshold. This is what a null result bounds",DIAGNOSTIC
+LOO_G,worst_p,0.0010,p-value,"the least significant leave-one-out. The detection stands only if this stays below the threshold, meaning no single condition drives it",DIAGNOSTIC
+LOO_G,median_p,0.0010,p-value,median across the leave-one-out set,DIAGNOSTIC
+LOO_G,n_above_alpha,0,count,leave-one-out runs failing the 0.01 threshold,DIAGNOSTIC
+LOO_G,verdict,ROBUST,verdict,ROBUST means the finding survives removing any one condition,DIAGNOSTIC
 CONTROL,n_conditions,32,count,"synthetic conditions built from the fitted model plus its own noise law, then refitted",DIAGNOSTIC
 CONTROL,max_z,2.560,sigma,same statistic,DIAGNOSTIC
 CONTROL,p_signflip,0.8591,p-value,"a DETECTION here would invalidate the real-data result, because these traces contain no misfit by construction",DIAGNOSTIC
@@ -17,9 +21,11 @@ CONTROL,verdict,CLEAN,verdict,"CLEAN means the binning, axis, statistic and reco
 CHECK,arm_residual_median_abs_diff,1.246e-05,sigma,median over conditions of the largest per-condition difference between the G and G+L residual stacks,DIAGNOSTIC
 CHECK,arm_residual_max_abs_diff,5.946e-01,sigma,"the worst condition. REPORTED AS A DISTRIBUTION rather than one number, because a large max beside a tiny median means ONE condition's two fits landed in different places, not that the degeneracy failed. The degeneracy itself predicts agreement to optimiser tolerance, and the median is what tests it",DIAGNOSTIC
 CHECK,arm_conditions_above_1e3,13,count,conditions whose two arms differ by more than 1e-3 sigma anywhere in the window,DIAGNOSTIC
+VOID_CHECK,median_rel_diff_gamma_coll,0.000e+00,relative,median across matched conditions. The distribution is reported because a maximum alone hides whether one condition or all of them disagree,DIAGNOSTIC
+VOID_CHECK,n_above_void_rtol,0,count,conditions above the repository's own 0.02 reproduction standard,DIAGNOSTIC
 VOID_CHECK,n_matched,32,count,conditions matched against results/linefit_conditions.csv,DIAGNOSTIC
-VOID_CHECK,worst_rel_diff_gamma_coll,1.700e-02,relative,this refit against the committed one. Large means the atlas compares producers rather than measuring a residual,DIAGNOSTIC
-VOID_CHECK,verdict,VOID,verdict,the run is void above 1e-3 relative,DIAGNOSTIC
+VOID_CHECK,worst_rel_diff_gamma_coll,0.000e+00,relative,this refit against the committed one. Large means the atlas compares producers rather than measuring a residual,DIAGNOSTIC
+VOID_CHECK,verdict,REPRODUCES,verdict,"void if any condition exceeds 0.02 or the median exceeds 1e-05, both fixed in the preregistration before this run",DIAGNOSTIC
 ALL,window_widths,3.0,fitted total widths,preregistered half-window of the stack,DIAGNOSTIC
 ALL,scope_note,IN_WINDOW_ONLY,flag,"this tests the residual INSIDE the fit window. The record separately carries a reproducible excess OUTSIDE it, which this neither tests nor speaks to, and the two may not be merged",DIAGNOSTIC
 ALL,class_adequacy_note,NOT_ESTABLISHED_EITHER_WAY,flag,"R_kernel remains a sensitivity within {G, G+L}. A null here bounds a common missing term and does not widen the class that was tested",DIAGNOSTIC

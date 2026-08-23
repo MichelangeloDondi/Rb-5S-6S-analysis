@@ -7,7 +7,29 @@ version pulled in numpy 2.5, which replaced the `np.convolve` implementation
 this whole lineshape model is built on, and four of sixteen committed files
 stopped matching a fresh run of their own producers.
 
-## The versions of record
+**That is now the history of this file rather than its present tense.** The
+migration onto numpy 2.5 was measured, held for two days on a preregistered
+backstop, and landed on 2026-08-23. What it moved, cell by cell, is in
+[the history](../docs/HISTORY.md#the-environment-migration-landed-2026-08-23):
+56 of 58 committed result files reproduced ACROSS the change, and the two that
+moved are the archive's known ill-conditioned direction.
+
+## The versions of record, since 2026-08-23
+
+| | version |
+|---|---|
+| Python | 3.14.6 |
+| numpy | 2.5.2 |
+| scipy | 1.18.0 |
+| pandas | 3.0.5 |
+| BLAS | Apple Accelerate |
+| platform | macOS 26.6.2, arm64 |
+
+**The environment is recorded item by item on purpose.** "The environment"
+is too broad to be a controlled variable, and the migration was run as a
+controlled intervention with these rows as the only thing allowed to differ.
+
+## The previous environment of record, until 2026-08-23
 
 | | version |
 |---|---|
@@ -16,6 +38,9 @@ stopped matching a fresh run of their own producers.
 | scipy | 1.13.1 |
 | pandas | 2.2.3 |
 | matplotlib | 3.9.4 |
+
+Recover it with the recipe below when reproducing a pre-2026-08-23 commit.
+The `--no-deps` warning under it is load-bearing in either direction.
 
 Recover it with:
 

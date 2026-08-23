@@ -363,7 +363,7 @@ At the anchored branch, the covariance (SVD of the Jacobian,
 
 - the strongest trade-off is $\gamma_\text{coll}\leftrightarrow$ transit
   ($\approx-0.96$): the two cusp-generating widths swap almost freely.
-- the **condition number** of the width-block *covariance* is $\approx390$,
+- the **condition number** of the width-block *covariance* is $\approx345$,
   which is strongly ill-conditioned.
 - the **eigen-directions**: the best-constrained combination (a
   total-width-like sum, mostly $\gamma_\text{coll}$ + transit) is pinned to
@@ -375,29 +375,26 @@ fixes ($\gamma_\text{coll}$, $\sigma_\text{laser}$) on a grid and re-minimises
 $\chi^2$ over transit and every per-trace nuisance at each point (variable
 projection, each cell fit from two independent warm-start lineages, with a
 fresh-seed audit on every fifth cell). Its certifications, all committed: audit
-gains $\le0.05$ (no warm-start trapping), map minimum equal to the anchored
-free fit's, and a **straight** valley floor (RMS 0.003 MHz against a 0.020 MHz
-grid step) whose ridge slope (+0.073) agrees with the covariance ellipse's
-prediction (+0.080), since in the Gaussian limit the profile contours are exactly
-the marginal covariance ellipse.
+gains $\le0.05$ (no warm-start trapping) and a **straight** valley floor
+(RMS 0.002 MHz against a 0.019 MHz grid step) whose ridge slope (+0.086) is
+compared against the covariance ellipse's prediction (+0.110), since in the
+Gaussian limit the profile contours are exactly the marginal covariance
+ellipse.
 
-**How much weight that agreement carries, measured 2026-08-21.** Only one of
-the two numbers is robust, and **the correction stated here on 2026-08-21 was
-itself too strong**. It said the ridge slope reproduces unchanged. It does not.
+**How much weight that comparison carries, and it is less than the word
+agreement suggests.** The two numbers share a sign and an order of magnitude.
+The prediction sits 28 per cent above the measurement, and BOTH moved when the
+arithmetic environment changed, the slope by 18 per cent and the prediction by
+37. A pair that both moves and still tracks to this tolerance certifies the
+SHAPE of the valley, not the value of either number.
 
-Regenerating this producer deterministically, which was checked by running it
-twice and obtaining bit-identical output, moves BOTH members of the pair:
-the measured ridge slope from 0.073 to 0.086, and the covariance prediction
-from 0.080 to 0.110. So the comparison reads 0.086 against 0.110 rather than
-0.073 against 0.080. The relative statement survives, since the prediction
-moved by 37 per cent against the measurement's 18, and the absolute one does
-not.
-
-The whole neighbourhood moves together: the condition number falls from 389.7
-to 345.1 and the valley-floor RMS from 0.0032 to 0.0020. The earlier values
-and the reason they moved are recorded once, in
-[the history](../HISTORY.md#the-identifiability-diagnostics-moved-under-the-arithmetic-environment-2026-08-22),
-which is also where the hold on the migration that would land them is stated.
+The whole neighbourhood moves together under an environment change: the
+condition number and the valley-floor RMS are now 345.1 and 0.0020 against the
+pre-migration 389.7 and 0.0032, and the map-minimum certification changed
+character, from a free fit that was the map's optimum to a zoom map that finds
+a point 1.3 below it. The pre-migration values and the reason they moved are
+recorded once, in
+[the history](../HISTORY.md#the-environment-migration-landed-2026-08-23).
 That is what an
 ill-conditioned family does, and it is the reason this section exists.
 

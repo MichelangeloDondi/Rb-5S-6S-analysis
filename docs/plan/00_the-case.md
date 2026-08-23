@@ -94,8 +94,8 @@ holds the transit width at its waist-derived value, the two are correlated at
 about −0.92. This is a property of the lineshape, a Lorentzian core convolved
 with a Gaussian, not of the sample size, which is why more data does not fix
 it. Free the transit width as well and the degeneracy moves rather than
-lifting: `results/identifiability.csv` then reports −0.964 between the
-collisional and transit widths and only +0.152 between the collisional and
+lifting: `results/identifiability.csv` then reports −0.958 between the
+collisional and transit widths and only +0.196 between the collisional and
 laser widths, which is the same trade seen from a different corner.
 
 **Transit against waist.** The transit width follows from the beam waist.

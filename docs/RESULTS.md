@@ -121,9 +121,9 @@ An observable can only answer a question if it moves more across the conditions 
 | `amplitude` | 45.1 | resolves |
 | `total_fwhm` | 6.0 | marginal |
 | `gamma_coll` | 2.7 | cannot resolve |
-| `sigma_laser` | 2.3 | cannot resolve |
+| `sigma_laser` | 2.4 | cannot resolve |
 
-The ratio reproduces this ledger's own status assignments, each of which was argued separately and by different means. Amplitude clears the floor 45× and is the one place the record extracts a number (the cold spot, ΔT ≈ +20 K), while the widths sit at 2.3–6.0 and are exactly where it reports bounds.
+The ratio reproduces this ledger's own status assignments, each of which was argued separately and by different means. Amplitude clears the floor 45× and is the one place the record extracts a number (the cold spot, ΔT ≈ +20 K), while the widths sit at 2.4–6.0 and are exactly where it reports bounds.
 
 It is also predictive, which is the point. The plan asks for two things, hot points at 150–170 °C to grow the signal, and interleaving with per-trace power logging to cut the block noise. Hot points alone reach only 0.9–3.0σ per block. With the noise cut 4× as well they reach 3.4–12.2σ. **Both halves of the prescription are load-bearing**, and the second is not a refinement of the first. Reproducible: `run_resolving_power.py`.
 

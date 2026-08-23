@@ -151,7 +151,7 @@ to the laser is a separate arrow that no measurement yet taken carries.
 
 **Statistical: the width degeneracy.** The collisional width and the laser
 width both broaden the same line, and the sensitivity matrix at one condition
-has a condition number of 390. Simulated on a bright synthetic condition
+has a condition number of 345. Simulated on a bright synthetic condition
 with signal-dependent noise (`scripts/run_width_pinning.py`), freeing both
 recovers the collisional width with a scatter of 0.0073 MHz where fixing the
 laser width recovers it with 0.0022 MHz, a ratio of $3.18 \pm 0.20$ across

@@ -370,9 +370,12 @@ taken licenses (`results/kernel_k5.csv`). And it does not tell you the model
 class was adequate, since 3.24 is a sensitivity within the two forms tested.
 That last question has its own instrument, a blind residual atlas that stacks
 per-condition residuals and asks whether the family leaves a shape none of its
-members can make. It is built, it has run, and **its first run is void by its
-own preregistered reproduction check**, so it settles nothing yet
-(`results/kernel_k4.csv`).
+members can make. It has been run, it qualifies, and **it detects**: a common
+residual structure at the permutation floor, with a clean synthetic control and
+survival under leave-one-out over every condition (`results/kernel_k4.csv`).
+The finding is named unexplained reproducible residual structure rather than
+model inadequacy, no mechanism is named, and R_kernel is unchanged, since the
+structure's effect on the coefficient is not quantified.
 A parameter identified is not a common parameter identified is not an origin
 identified is not a class shown adequate.
 

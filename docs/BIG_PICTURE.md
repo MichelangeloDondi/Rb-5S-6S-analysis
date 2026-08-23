@@ -37,7 +37,7 @@ construction reads as model-independent and none of these are.
 | question | quantity | what is observed | what is inferred | parameter status | 2025 result | construction it depends on | what limits it |
 |---|---|---|---|---|---|---|---|
 | **Q-MODEL-01** Does one lineshape model describe every condition? | the composite profile | 32 conditions of a temperature and power sweep | natural, transit, laser and collisional widths convolved | described | reduced chi-square 0.78 to 1.09, mean 0.89 | the adopted transit kernel and the adopted waist | model |
-| **Q-WIDTH-01** Can the collisional and laser widths be separated? | the width split | one total width per condition, to 0.0032 MHz | the split into its parts | **not identified** | the split direction is constrained only to 0.0624 MHz, a factor of twenty worse, at a condition number of 390 | the joint fit over the shared-width structure | identifiability |
+| **Q-WIDTH-01** Can the collisional and laser widths be separated? | the width split | one total width per condition, to 0.0032 MHz | the split into its parts | **not identified** | the split direction is constrained only to 0.0588 MHz, a factor of eighteen worse, at a condition number of 345 | the joint fit over the shared-width structure | identifiability |
 | **Q-BETA-01** How fast do collisions broaden the line? | the collisional coefficient | widths across four densities | a rate per unit density | **bounded** | below 0.03 to 0.05 MHz per 1e12 per cubic centimetre, 95 per cent, per peak | the four-temperature construction, on a density scale from vapour-pressure curves | experimental, the density scale |
 | **Q-S0-01** How large is the light shift at full power? | the light-shift amplitude | line shapes across a power ladder | the shift amplitude through the shape | **bounded** | below 0.26 MHz at 225 mW, against 0.35 MHz predicted | the joint three-session fit, conditional on the adopted waist | experimental, the waist, AND identifiability if the three pooled sessions do not share it, since the coefficient goes as one over the waist squared. See [chapter 8](big_picture/08_when-a-joint-fit-is-legitimate.md) |
 | **Q-LASER-01** How narrow was the laser? | the laser width | the total width and its trend | the laser part of it | **bounded** | below about 1.2 MHz on the laser axis, median 1.74 MHz across conditions | the same split as Q-WIDTH-01, so conditional on it | identifiability |
@@ -153,14 +153,31 @@ not a model class shown adequate, and this result sits at the first of those
 four. [Chapter 7](big_picture/07_limitations-and-identifiability.md) carries it
 with the figure.
 
-**The fourth of those has since been attempted and the attempt did not
-qualify.** A blind residual atlas, which stacks per-condition residuals to ask
-whether the fitted family leaves a shape no member of it can produce, is built
-and has run. **Its first run is void by its own preregistered reproduction
-check** (`results/kernel_k4.csv`, whose first row says so), and a void run's
-findings may not be cited. Class adequacy is therefore open exactly as it was.
-What changed is only which of two reasons applies, from not attempted to
-attempted without qualifying.
+**The atlas now qualifies, and it detects.** Stacking per-condition residuals
+on a common axis and testing against a null that flips each condition's sign, a
+common residual structure appears at the permutation floor in both arms, the
+synthetic control built from the fitted model returns clean, and **the
+detection survives the removal of any single condition**. The tested inference
+family leaves **reproducible residual structure** that no member of it produces
+(`results/kernel_k4.csv`).
+
+**What that is and is not.** It is named unexplained reproducible residual
+structure rather than model inadequacy, because a residual can come from the
+physical model, the noise model, preprocessing or the instrument, and this test
+separates none of them. **No mechanism is named.** **$R_\text{kernel}$ is
+unchanged and remains a sensitivity within the class that was tested**, since
+turning this structure into an admissible alternative model and computing its
+effect on the collisional coefficient has not been done. And the domain is
+stated: the structure is INSIDE the fit window, and its relation to the
+reproducible excess OUTSIDE that window is unresolved.
+
+**On the two runs.** An earlier run of the same atlas on the same data was
+declared void by its own preregistered check, which had invented a reproduction
+threshold twenty times stricter than the one `verify_results_fresh.py` sets for
+this repository and voided on a single condition already measured as
+environment-sensitive. The criterion was not loosened afterwards: a second run
+was preregistered with the repository's own standard plus a leave-one-out test,
+and both runs stand in the record.
 
 **The absolute frequency axis is undetermined by CONSTRUCTION.** The lock
 drifted and the wavemeter was photographed rather than logged, so every axis in

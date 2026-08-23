@@ -57,6 +57,7 @@ for one quantity rather than for the sequence.
 | [The identifiability diagnostics](#the-identifiability-diagnostics-moved-under-the-arithmetic-environment-2026-08-22) | the ridge slope, its covariance prediction, the condition number and the valley-floor RMS all move on this floor | not yet, the migration that would land them is held |
 | [Three pages on the kernel](#three-pages-described-the-kernel-systematic-as-unquantified-or-still-to-be-done-2026-08-22) | the narrative layer called a question open that the results layer had answered | no number, three pages of prose |
 | [A results path](#a-results-path-was-renamed-away-from-a-collision-2026-08-22) | `lever_table.csv` became `orthogonal_levers.csv` to clear a name collision | no, the path only |
+| [The class-adequacy caveat](#the-class-adequacy-caveat-tested-twice-in-one-day-2026-08-22) | the atlas ran, voided, was diagnosed and re-ran, and the fourth-level statement moved with it | no number, three surfaces of prose |
 
 The last three rows are here on purpose. A history that records only the
 corrections a reader could otherwise discover teaches that the record is
@@ -682,13 +683,17 @@ prediction still exceeds the measurement.
 ridge slope reproduces unchanged. It does not. It moves by 18 per cent, and the
 chapter now says so.
 
-**The migration that would land these values is HELD.** Its own preregistered
-backstop fired, because a moved quantity changed the interpretation of a
-published claim. The hold was not discharged by correcting that claim, since
-discharging a hold by editing its trigger is the move this record's discipline
-exists to catch, and this same passage had already been refused once on those
-grounds. The values above are therefore the regenerated ones and the committed
-record still carries the originals.
+**The migration that would land these values was HELD when this entry was
+written, and it landed on 2026-08-23.** Its own preregistered backstop had
+fired, because a moved quantity changed the interpretation of a published
+claim. The hold was not discharged by correcting that claim, since discharging
+a hold by editing its trigger is the move this record's discipline exists to
+catch, and this same passage had already been refused once on those grounds. It
+was discharged by the owner authorising the migration, and the values above are
+now the committed ones. See
+[the migration entry](#the-environment-migration-landed-2026-08-23), which also
+records that this entry's four predictions all held and that ten further rows
+moved which it did not name.
 
 ## Three pages described the kernel systematic as unquantified or still to be done, 2026-08-22
 
@@ -722,3 +727,209 @@ name collided with `rb5s6s.hyperpolarizability.lever_table()`, an unrelated
 function that ranks candidate transitions for the Ti:Sapphire study, so a
 reader grepping the tree for one found the other. No content changed. A link to
 the old path from a commit before this date will not resolve.
+
+## The class-adequacy caveat, tested twice in one day, 2026-08-22
+
+Three surfaces carried the statement that the blind residual atlas had not been
+run and that class adequacy was therefore untested. Within the same day the
+atlas was built, run, declared void, diagnosed and re-run, and each of those
+states was written down as it happened. The entry exists so a reader meeting an
+intermediate wording knows which one is live.
+
+**The sequence.** The first run detected a common residual shape at the
+permutation floor with a clean control, and its own preregistered reproduction
+check fired, so the run was declared void and the detection was not reported.
+The cause was then traced to a single condition of thirty-two, already measured
+by the environment migration as drifting, whose reproduction difference of
+1.7e-2 sits BELOW the 2e-2 that `verify_results_fresh.py` sets as this
+repository's definition of reproducing. The first run had invented a threshold
+twenty times stricter than the guard that defines the term.
+
+**What changed for the second run, and what did not.** The criterion was not
+loosened after the fact. A second run was preregistered with the repository's
+own standard, plus a leave-one-out over all thirty-two conditions to test what
+a threshold cannot: whether one condition drives a detection. It qualified,
+detected at the floor in both arms, kept a clean control, and survived every
+leave-one-out with zero failures.
+
+**The live statement** is that the tested inference family leaves reproducible
+residual structure inside the fit window. It is NOT called model inadequacy,
+no mechanism is named, R_kernel is unchanged and its class caveat stands, and
+the relation to the excess outside the window is unresolved.
+
+**Both runs stand.** `results/kernel_k4.csv` carries the second. The first is
+in the version history and in the preregistration, which records the void, the
+diagnosis and the criteria in the order they were written.
+
+## A published sentence called a sensitivity an uncertainty, 2026-08-22
+
+**The wording, live here and on the public mirror.**
+`docs/wiki/self-broadening.md` read "the kernel uncertainty is 3.24 times the
+statistical error". It now reads "the sensitivity to the kernel
+representation, within the family tested, is 3.24 times the statistical
+error", with a following sentence saying that it is a sensitivity within that
+family rather than an uncertainty on the coefficient.
+
+**The number never moved.** 3.24 is unchanged, its producer is unchanged, and
+`results/kernel_budget.csv` is untouched. What was wrong was the noun.
+
+**Why the noun matters here more than usual.** R_kernel measures how far the
+inferred collisional coefficient moves when the kernel representation is
+changed WITHIN the tested G, L and G plus L family. Calling it the kernel
+uncertainty asserts that the family spans the possibilities, and that is the
+one claim the blind residual atlas was built to test and did not establish.
+The record's own statement is that class adequacy is not established either
+way, so a sentence asserting a total uncertainty contradicted it.
+
+**A SECOND page carried the same wrong noun and was found later the same
+night**, by a sweep prompted by an audit of the first correction.
+`docs/wiki/laser-frequency-noise-and-the-linewidth.md` read "the resulting
+kernel uncertainty is 3.24 times the statistical error". It now states the
+sensitivity to the kernel representation within the family tested.
+
+**That page had been invisible to the new guard**, because "kernel" ended one
+line and "uncertainty" began the next, and the phrase bank matches line by
+line. A phrase that wraps was unreachable by the mechanism built to forbid it,
+which is why `tests/test_repo_hygiene.py` now also checks these patterns
+against prose with its line breaks removed.
+
+**The full enumeration, corrected.** Seven tracked prose surfaces carry 3.24.
+TWO carried the wrong noun and are fixed: `docs/wiki/self-broadening.md` and
+`docs/wiki/laser-frequency-noise-and-the-linewidth.md`. Five were already
+right: `docs/PLAN.md` calls it a model-form error bar,
+`docs/BIG_PICTURE.md`, `docs/wiki/identifiability.md` and
+`docs/big_picture/07_limitations-and-identifiability.md` all size it against
+the statistical error on a matched footing, and
+`docs/quantities/self-broadening.md` states it as a factor between two named
+quantities. An earlier version of this entry said four and one, having counted
+neither the second defect nor the fourth correct surface.
+
+**What now prevents it.** `tests/test_repo_hygiene.py` banks the phrasing, so
+no tracked prose file can call 3.24 the kernel uncertainty or the uncertainty
+in the kernel. The bank was narrowed on the day it was written to exclude
+"kernel uncertainty statement" and "kernel uncertainty budget", which name the
+uncertainty budget producer whose subject is refusing to combine three terms
+into one total. That usage is the opposite of this error, and the bank's own
+rule is to narrow a token rather than exempt a file.
+
+**The class of defect.** No number-checking guard could see this, because
+every number was right. The canonical registry ties surfaces to producer cells
+and would have reported this page as correct.
+
+## The environment migration landed, 2026-08-23
+
+The committed digits were made under Python 3.9.6 and numpy 2.0.2. They are now
+made under Python 3.14.6, numpy 2.5.2, scipy 1.18.0, pandas 3.0.5, Apple
+Accelerate, macOS 26.6.2 on arm64. `results/ENVIRONMENT_OF_RECORD.md` states
+the new versions and keeps the recovery recipe for the old ones.
+
+**What moved, measured cell by cell rather than summarised.** Of 58 committed
+result files, 56 reproduce. Two moved, and they moved for one reason.
+
+**`results/linefit_conditions.csv`.** 256 cells differ and 250 of them by 1e-7
+to 1e-9, which is a different `np.convolve` and nothing else. **Exactly one row
+of 32 moves above a part in a thousand**, `t_sweep / 4121 / 70 C`:
+
+| quantity | was | now | relative |
+|---|---|---|---|
+| `sigma_laser` | 0.4052 | 0.3531 | 1.29e-01 |
+| `corr` | -0.70340 | -0.66265 | 5.79e-02 |
+| `gamma_coll_err` | 0.23210 | 0.22059 | 4.96e-02 |
+| `sigma_laser_err` | 1.4270 | 1.4721 | 3.16e-02 |
+| `gamma_coll` | 0.78394 | 0.79727 | 1.70e-02 |
+| `total_fwhm_err` | 0.18185 | 0.17972 | 1.17e-02 |
+| `total_fwhm` | 5.07133 | 5.07598 | 9.17e-04 |
+
+**That row is flagged `noise_floor_limited`, and its `sigma_laser_err` of 1.47
+is four times its `sigma_laser` of 0.35.** The data do not determine the split
+there. The TOTAL width, which the data do determine, moves by 0.09 per cent
+while the split moves by 13. That is the archive's documented degeneracy
+behaving as documented, not a new instability.
+
+**It is the same condition, at the same number, that voided the first run of
+the blind residual atlas.** That run reported its worst per-condition
+difference as 1.700e-02 on `gamma_coll`. This table's `gamma_coll` row is
+1.700e-02. The K4 void and this drift were always one event seen twice.
+
+**`results/identifiability.csv`.** Fourteen rows move. The four this file
+predicted on 2026-08-22 all move exactly as predicted: the ridge slope 0.073 to
+0.086, the covariance prediction 0.080 to 0.110, the condition number 389.7 to
+345.1, the valley-floor RMS 0.0032 to 0.0020, and the best-constrained sigma
+does not move. Ten more move that the earlier entry did not name: the three
+width-width correlations, the split sigma 0.0624 to 0.0588, the two branch
+chi-squares and their gap, the wide-map audit gain, and both free-fit gaps.
+
+**Two of those ten are quoted in public documents and are corrected in this
+commit.** The split sigma appears on the front page and in chapter 7, where
+the ratio it forms with the total width goes from twenty to eighteen. The
+collisional-to-transit and collisional-to-laser correlations appear in the plan's
+opening chapter, moving from -0.964 and +0.152 to -0.958 and +0.196. The
+condition number is quoted on four pages and becomes 345 on all of them.
+
+**One certification changed character rather than value.** `profile_free_gap`
+was -0.01 and is -1.30, so the zoom map now finds a point 1.3 in chi-square
+below the anchored free fit rather than agreeing with it. `wide_free_gap` moved
+the other way, -0.1 to +1.2. The statistics chapter no longer claims the map
+minimum equals the free fit's.
+
+**Two claims made in this file on 2026-08-22 do not survive.**
+A note written in this window at 00:50 claimed
+that only one of the four predicted movements reproduced, and that the other
+three were a defect in this record. **That was wrong, and it was wrong for a
+mechanical reason worth stating.** The comparison was made against the
+verifier's worktree copy of the file, and `verify_results_fresh.py` computes
+its fresh values IN MEMORY and does not write them. The worktree copy was the
+committed file all along, so the comparison was committed against committed.
+
+The same trap explains an earlier reading of `linefit_conditions.csv` in the
+same window, which appeared to show zero drift. Running the PRODUCERS is the
+only way to land or inspect a migration. The verifier detects and reports.
+
+**The condition number is quoted on SEVEN pages, and the first sweep found
+four.** The grep searched for the phrase "condition number of 390". Two more
+pages write it without the "of", and one writes it as an inline approximation
+in maths. `tests/test_docs_canonical.py`
+caught the survivor by comparing the prose against the CSV row it describes,
+which is what that guard exists for and what no phrasing-based search can
+promise. The lesson is the same one this file recorded hours earlier about a
+phrase that wrapped a line: a grep proves presence, never absence, and the
+pattern that finds four of seven reports clean while doing it.
+
+**Why the drift first appeared as a text change.** The covariance-side
+prediction lived inside another row's note string, where no numeric comparison
+could grade it and a 37 per cent move surfaced as a changed sentence. It is now
+its own row, `ridge_slope_covariance_pred`.
+
+**The blind residual atlas was re-run across the migration, under a freeze in
+which only the environment differed, and its detection did not move.** All
+fourteen detection rows are unchanged: both arms at the permutation floor with
+a common shape detected, leave-one-out robust with no condition above the
+preregistered alpha, and the synthetic control clean. Two rows moved, both
+measuring how well K4's own refits agree with the committed inputs, and both
+went to exactly zero from 1.700e-02 and 6.596e-08.
+
+That was predicted in writing before the run, in both directions, and it closes
+a loop: the atlas's first run voided itself on `t_sweep / 4121 / 70 C` at
+1.700e-02, which is the same condition and the same number this migration
+moved. **The void, the linefit drift and the identifiability drift were one
+event seen three times.** `results/kernel_k4.csv` carries the re-run.
+
+**Two DERIVED products were stale and the gate caught them**, which the drift
+report could not have, because they are computed FROM the file that drifted.
+`resolving_power.csv` and `sigma_laser_sharing.csv` are regenerated. The
+sharing chi-squares still round to the 0.27, 0.58 and 0.33 this record quotes,
+and the free common sigma_laser range 1.5 to 1.7 is unchanged.
+
+**One published number moves with them.** The resolving-power ledger in
+`docs/RESULTS.md` now reads 2.4 for `sigma_laser` where it read 2.3, and its
+summary sentence 2.4 to 6.0 where it read 2.3 to 6.0. That number is the ratio
+of a width's signal to the noise floor, it carries the verdict `cannot resolve`
+at either value, and the change comes from row 21's `sigma_laser` moving 13 per
+cent upstream. No conclusion depends on it.
+
+**The hold is discharged.** The migration was held on 2026-08-21 by the
+preregistered clause covering a moved quantity that a public document quotes,
+which fired on `docs/methods/06_the_statistics.md`'s quoted +0.080. That
+chapter now carries the new pair. The other two backstops, a classification
+change and more than six moved columns, were evaluated and did not fire, at
+2 of 58.
