@@ -4,6 +4,9 @@
 number came out of it.** Every prediction below is stated with its arithmetic so
 the run can only confirm it or fail it.
 
+`provenance: NO_PRODUCER` - Lines 1 to 181 preregister. The postscript reports what `run_companion_refit.py` returned, and that script contains exactly one `open()` call, a READ, with every output a `print()`. The note says so itself: "which writes nothing". It is also absent from `run_all.sh`. Two prereg-side factors (2.8 and 2.21) come from `run_saturation_probe.py`, whose docstring likewise says it writes no results file. **15 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 **The question.** The fits of record quote the light-shift bounds with a stated
 looseness, because three width-adding effects sit outside the forward model on
 purpose. What happens when they go inside it?

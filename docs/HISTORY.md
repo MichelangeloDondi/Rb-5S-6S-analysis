@@ -1067,3 +1067,48 @@ now would recompute six-day-old numbers under a different numpy in an
 environment the record already flags as not the environment of record, so a
 disagreement could not be read as either drift or a difference in
 reconstruction. It belongs in a window that can do it properly.
+
+## Seven of ten notes had no producer, 2026-08-23
+
+**What changed.** No number moved. What changed is that every note in
+`docs/notes/` now states what its numbers stand on.
+
+**The audit.** The band-excess finding earlier the same day raised the obvious
+question: how many other notes are like that? Ten notes carrying undeclared
+numeric claims were read claim by claim against `results/` and `scripts/`.
+**Seven of the ten have no committed producer for the numbers that carry their
+own argument.** Three have a genuine `results/` home. **109 individual claims
+across the corpus remain unaccounted for**, and the declarations now name them
+rather than leave them to be discovered.
+
+**Three cases are worth stating individually.**
+
+`s0_block_bootstrap_prereg.md`. The producer's own docstring says it writes
+"one row per resample to private/run_logs/, nothing into results/", and calls
+its output DIAGNOSTIC "until the prereg postscript adjudicates". **The
+postscript adjudicated and nothing was ever promoted.** A deliberate temporary
+state became permanent. Worse, its factor of 2.4 was hand-copied into
+`scripts/make_results_ledger.py` as a string literal and published in
+`docs/RESULTS.md`, so a public page asserts a number whose only evidence is a
+gitignored run log. **That page now says so.**
+
+`companion_inclusive_refit_prereg.md`. Its producer contains exactly one
+`open()` call, a read, and every output is a `print()`. The note says so itself,
+"which writes nothing". The script is also absent from `run_all.sh`, so even a
+full pipeline run leaves no artefact.
+
+`centre_channel_cannot_be_revived.md`. A hybrid. Its comparisons against the
+width channel are properly homed in two committed CSVs, and **every number
+carrying its own argument, the forecast table included, has no trace anywhere**.
+
+**One arithmetic error was found and corrected.** `model_selection_prereg.md`
+printed `dAIC = -24.6 - 18 = -6.6`. The operator is wrong and the value is
+right, since 9 ln(13853) is 85.8, so the chi-squared difference is -24.6 and
+AIC's charge of 18 gives -6.6 by addition. **The AIC reversal it reports
+stands.** The line now reads `-24.6 + 18 = -6.6`.
+
+**What this does not do.** It does not give any of these numbers a producer.
+Seven notes still rest on computations nothing regenerates, and the honest
+position is that a declaration is a label on a gap rather than a repair.
+`tests/test_note_provenance_ratchet.py` now holds a budget of zero, which means
+every note SAYS what it stands on and not that every number is graded.

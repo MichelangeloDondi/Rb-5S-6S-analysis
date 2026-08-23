@@ -5,6 +5,9 @@ number came out of it.** Nothing below is chosen after seeing a fit. The
 thresholds, the grid, the trace census and the stop conditions are fixed here so
 that the run can only confirm or fail them.
 
+`provenance: results/full_dataset_fit.csv` - The preregistered construction is realised in this CSV and the headline quantities match it. **Sixteen further numeric claims on the page have no row in it**, and paying that down means checking each against the producer rather than relabelling the file. **16 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 **The question.** What will the cross-campaign joint fit do, decided before it
 was written?
 **Takes.** [methods/06_the_statistics.md](../methods/06_the_statistics.md), for

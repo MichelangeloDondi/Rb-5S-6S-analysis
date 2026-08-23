@@ -6,6 +6,9 @@ signature as the one the C3d and C3f width lever is built on, and several times
 larger, is absent from the forward model. The direction of the bias is favourable,
 which is why this is a note rather than a correction.
 
+`provenance: NO_PRODUCER` - Its own producer states that it writes no results file and changes no committed number, which is also why the factors it reports (2.8 and 2.21) are quoted from prose wherever they appear downstream. **6 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 **The question.** Is the power-squared broadening the light-shift bound rests
 on really the light shift?
 **Takes.** [methods/04_the_composite_model.md](../methods/04_the_composite_model.md).

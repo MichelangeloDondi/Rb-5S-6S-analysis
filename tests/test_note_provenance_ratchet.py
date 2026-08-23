@@ -32,6 +32,17 @@ been relaxed into uselessness by lunchtime. So this records a per-file budget
 that can only fall, the mechanism test_prose_style_ratchet.py and
 test_distribution_ratchet.py already run.
 
+THE BUDGET IS NOW ZERO, and what it took to get there is the finding. Ten
+notes were audited claim by claim against results/ and scripts/ on 2026-08-23.
+**Seven of the ten turned out to have no producer for the numbers carrying
+their own argument**, including one whose producer states in its own docstring
+that it writes nothing, and one whose outcome factor had additionally been
+hand-copied into the ledger generator as a literal and published in
+docs/RESULTS.md. Three notes have a genuine results/ home and 109 individual
+claims across the corpus remain unaccounted for INSIDE declared files, which
+the declarations name rather than hide. A budget at zero therefore means every
+note SAYS what it stands on, not that every number is graded.
+
 THE ESCAPE, deliberately explicit. A note leaves the budget by declaring what
 its numbers stand on, with the token `provenance:` and one of
 

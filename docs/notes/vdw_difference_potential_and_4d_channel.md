@@ -5,6 +5,9 @@ Status: adjudicated 2026-08-05. Both items were parked in
 findings recorded for separate adjudication, not acted on here". This note
 closes the first and opens the second properly.
 
+`provenance: NO_PRODUCER` - Computed once, with no committed producer regenerating the values. **4 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 ## 1. The question
 
 A referee argued on 2026-08-04 that the anchor ratio in `rb5s6s/vanderwaals.py`

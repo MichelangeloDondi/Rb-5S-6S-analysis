@@ -5,6 +5,9 @@ number came out of it.** Every threshold below is fixed here, with its
 justification, so that the run can only confirm or fail it. No value in this
 note was chosen after seeing a fit.
 
+`provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the CUSUM null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished review rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 **The question.** How can the frequency ruler be wrong in a way the data can
 detect, and what rule catches each way?
 **Takes.** [methods/05_the_frequency_ruler.md](../methods/05_the_frequency_ruler.md).

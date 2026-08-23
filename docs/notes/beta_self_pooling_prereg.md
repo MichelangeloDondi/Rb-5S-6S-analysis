@@ -8,6 +8,9 @@ The construction below was fixed after a three-referee verification
 `scripts/run_beta_self.py` was touched. The pooled code runs only after this
 note is committed.
 
+`provenance: results/beta_self_probe.csv` - Sections 1 to 6 are genuine preregistration and their numbers are physics estimates and pre-stated thresholds. The postscript reports OUTCOMES, and those match the `pooled_*` rows of this CSV, which the same commit added. **One claim has no row**: the 70 C narrowing (2.0 per cent, 0.10 MHz, three of four lines low) is computed by `anchor_narrowing_share` and printed, and only the derived share reaches the CSV. **1 numeric claim on this page remains unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+
+
 ## 1. The physics that licenses one shared slope
 
 The four 993 nm lines are hyperfine components of one dipole-forbidden
