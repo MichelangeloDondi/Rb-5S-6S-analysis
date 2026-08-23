@@ -969,3 +969,54 @@ faster-block measurement that genuinely has not been run and points at where it
 is ranked, and one row in the fibre thread carries a forecast explicitly
 classed PROSPECTIVE with its estimator described as not built. Both describe
 work that really is future, which is the distinction that matters.
+
+## The in-window structure and the band excess share a predictor, 2026-08-23
+
+**What was unresolved.** K4 detects reproducible residual structure inside the
+fit window and assigns no mechanism. Three surfaces said its relation to the
+reproducible excess OUTSIDE the window was unresolved. It is now measured, and
+those surfaces say so.
+
+**The instrument was reused rather than invented.** The band-excess work
+settled the outside structure by regressing each trace's excess amplitude on
+two competing predictors at once, the model's own profile height and log10
+vapour number density. Height won at +8.65 and density was null at -0.75.
+Taken ONE AT A TIME density looked significant at +2.2, so only the joint form
+settles it, and only the joint form is run here.
+
+**The result** (`results/kernel_k8.csv`), n = 32 conditions, weighted by the
+inverse variance of each condition's own amplitude:
+
+| predictor | z, inside the window | z, outside, for comparison |
+|---|---|---|
+| the model's own profile height | **+9.41** | +8.65 |
+| log10 vapour number density | +1.30 | -0.75 |
+
+The two predictors correlate +0.488, below the preregistered 0.8, so this is a
+separation and not collinearity. Height survives every leave-one-out above
++8.53, so no single condition carries it.
+
+**Why the weights are not optional.** The arm diagnostic found the two fitting
+arms disagree on 13 of 32 conditions, monotonically in power, 4 of 4 at the
+dimmest rung and 0 of 4 at each of the top three. The least reliable residuals
+are the dim ones and profile height is lowest there, so an unweighted fit would
+confound the predictor with the reliability of the response.
+
+**A DEVIATION from the preregistration, recorded rather than hidden.** The
+preregistered secondary was the twelve conditions at the top three powers, and
+all twelve sit at one temperature, because the power sweep runs at one
+temperature. So density has zero variance there and the joint fit is singular
+by construction. A height-only fit gives +4.96, which shows height matters and
+cannot show density does not. **The lesson is that a subset selected on one
+experimental axis often has no variation on another, and a preregistered
+secondary must be checked for predictor variance when it is written.**
+
+**What this does NOT establish, and it is the important half.** A residual
+normalised by the per-point noise scales with the signal under ANY fractional
+model error. Profile mismatch does that, and so does a detector nonlinearity,
+which this record already fits as a per-session saturation nuisance, and so
+does an amplitude-dependent baseline error. **So the mechanism is not named.**
+What is excluded is a density-driven collisional origin, at 9.4 against 1.3.
+
+**R_kernel is unchanged and no committed number moves.** The effect of the
+structure on the collisional coefficient remains unquantified.

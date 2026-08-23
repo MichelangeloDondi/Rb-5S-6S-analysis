@@ -1,0 +1,12 @@
+scope,quantity,value,unit,note,status
+PRIMARY,n_conditions,32,count,conditions entering the weighted joint regression,DIAGNOSTIC
+PRIMARY,height_z,9.41,sigma,"z on the model's own profile height, peak SNR, in a JOINT weighted regression against log10 vapour density. The band excess outside the window gives +8.65 on the same predictor by the same method",DIAGNOSTIC
+PRIMARY,density_z,1.30,sigma,"z on log10 vapour number density in the same joint fit. The band excess gives -0.75. Non-significant in both, on opposite signs",DIAGNOSTIC
+PRIMARY,predictor_corr,0.488,dimensionless,"correlation between the two predictors. Below the preregistered 0.8, so the separation is genuine and not collinearity",DIAGNOSTIC
+PRIMARY,loo_height_z_min,8.53,sigma,"smallest height z over all leave-one-out refits. REPORTED AS A DISTRIBUTION, min and median, single_valued does not apply",DIAGNOSTIC
+PRIMARY,loo_height_z_median,9.24,sigma,median height z over leave-one-out. No single condition carries the result,DIAGNOSTIC
+SECONDARY,n_conditions,12,count,"the bright subset, the top three powers",DIAGNOSTIC
+SECONDARY,height_z,4.96,sigma,"DEVIATION from the preregistration, recorded rather than hidden: logN has zero variance in this subset, so the preregistered joint fit is not computable and a height-only fit is reported. It cannot show that density does not matter, only that height does",DIAGNOSTIC
+ALL,verdict,MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY,verdict,"the in-window structure scales with signal amplitude and not with vapour density, the same predictor and the same order of significance as the band excess outside the window. That makes one common multiplicative cause a better explanation than two unrelated structures",DIAGNOSTIC
+ALL,mechanism_note,NOT_NAMED,scope,"a normalised residual scales with signal under ANY fractional model error, so profile mismatch, detector nonlinearity and an amplitude-dependent baseline all predict this. A density-driven collisional origin is excluded. The mechanism is not named",DIAGNOSTIC
+ALL,r_kernel_effect,NONE,scope,R_kernel is unchanged and the effect on the collisional coefficient remains unquantified,DIAGNOSTIC

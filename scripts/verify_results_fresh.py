@@ -98,6 +98,9 @@ EXPENSIVE = {
     "run_kernel_k3": ["kernel_k3.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_k5": ["kernel_k5.csv"],
+    # 32 conditions refitted once in the G arm, then a weighted joint
+    # regression and a leave-one-out over it. A few minutes.
+    "run_kernel_k8": ["kernel_k8.csv"],
     "run_kernel_k7": ["kernel_k7.csv"],
     "run_kernel_worlds": ["kernel_worlds.csv"],
     # 32 conditions fitted three ways (two arms plus a synthetic control)

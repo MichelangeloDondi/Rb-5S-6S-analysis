@@ -256,6 +256,13 @@ QUANTITY_STATUS = {
     "model_ladder.csv": {
         "summed_bic": "DIAGNOSTIC", "dBIC_rung": "DIAGNOSTIC",
     },
+    "kernel_k8.csv": {
+        "n_conditions": "DIAGNOSTIC", "height_z": "DIAGNOSTIC",
+        "density_z": "DIAGNOSTIC", "predictor_corr": "DIAGNOSTIC",
+        "loo_height_z_min": "DIAGNOSTIC", "loo_height_z_median": "DIAGNOSTIC",
+        "verdict": "DIAGNOSTIC", "mechanism_note": "DIAGNOSTIC",
+        "r_kernel_effect": "DIAGNOSTIC",
+    },
     "identifiability.csv": {
         "condition_number": "DIAGNOSTIC", "corr": "DIAGNOSTIC",
         "best_constrained_sigma": "DIAGNOSTIC", "worst_constrained_sigma": "DIAGNOSTIC",

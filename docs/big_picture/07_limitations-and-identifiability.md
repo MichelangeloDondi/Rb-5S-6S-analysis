@@ -133,8 +133,23 @@ separates none of them. **No mechanism is named.** **$R_\text{kernel}$ is
 unchanged and remains a sensitivity within the class that was tested**, since
 turning this structure into an admissible alternative model and computing its
 effect on the collisional coefficient has not been done. And the domain is
-stated: the structure is INSIDE the fit window, and its relation to the
-reproducible excess OUTSIDE that window is unresolved.
+stated: the structure is INSIDE the fit window.
+
+**Its relation to the excess OUTSIDE the window was measured on 2026-08-23 and
+is no longer unresolved.** Regressing each condition's in-window amplitude on
+the model's own profile height and on vapour density at once, weighted, height
+wins at 9.4 sigma and density gives 1.3, with the two predictors correlated
+only 0.49 and the height term surviving every leave-one-out above 8.5
+(`results/kernel_k8.csv`). **The band excess outside the window gives +8.65 and
+-0.75 on the same two predictors by the same method**, so both structures share
+a predictor and both exclude density, and one common cause explains them better
+than two unrelated ones.
+
+**What that does NOT say.** A residual normalised by the noise scales with the
+signal under ANY fractional model error, so profile mismatch, a detector
+nonlinearity and an amplitude-dependent baseline all predict this. **The
+mechanism is not named.** What is excluded is a density-driven collisional
+origin.
 
 **On the two runs.** An earlier run of the same atlas on the same data was
 declared void by its own preregistered check, which had invented a reproduction
