@@ -1501,3 +1501,33 @@ described two instruments' behaviour in one sentence and then reasoned from
 that sentence. **An explanation that fits the data is not the same as a
 mechanism that could produce it**, and the arithmetic that would have caught it,
 half a log-two of N against a documented ceiling, was available the whole time.
+
+## The acquisition-mode ceiling is settled from the manual, 2026-08-24
+
+The entry above inferred a twelve-bit ceiling from arithmetic and asked for the
+datasheet. **The experimenter supplied both instrument manuals and they settle it.**
+
+**The InfiniiVision manual prints the ceiling as a table** against sweep speed:
+eight bits at or below 1 us per division, one more bit per step, and **twelve
+bits at or above 20 us per division**, with nothing beyond. The campaign ran at
+100 ms per division, four decades past that threshold, **so the mode delivered
+exactly twelve bits and the measured 11.86 IS that ceiling**, not a coincidence
+near it.
+
+**And the mechanism is in the same manual.** High Resolution "averages
+sequential sample points within the same acquisition", and "all samples in the
+effective sample period are averaged and the average value is stored". That is
+a boxcar over DISJOINT blocks. Averaging is documented separately as a mode for
+periodic signals combined across acquisitions.
+
+**The second manual agrees and states the taxonomy outright.** The RTM3000
+manual separates the two families by name: Peak Detect and High Resolution are
+**decimation** methods, Average and Envelope are **arithmetic** methods built
+from several consecutive acquisitions, and its High Resolution is "the average
+of n captured sample points recorded as one waveform sample". **Two
+instruments, two manuals, the same mechanism.**
+
+**So the correction stands on documents rather than on inference**, and the
+1.9 ms correlation stays without an explanation. That is the honest state and
+the leading candidate remains the decimation between acquisition memory and
+the 2000 stored points.

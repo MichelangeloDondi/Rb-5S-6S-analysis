@@ -355,9 +355,21 @@ ever stored.**
     committed files span **11.86 bits, which is 0.14 under a 12-bit ceiling**,
     and a ceiling at 12 bits is what InfiniiVision High Resolution is
     documented to have. **A capped High Resolution mode is exactly what 11.86
-    bits looks like**, and the photographed "Averaging 32" is not. *(Confirm
-    the ceiling on the DSO-X 3054A datasheet before this is quoted as
-    settled.)*
+    bits looks like**, and the photographed "Averaging 32" is not.
+
+    **CONFIRMED FROM THE MANUAL, 2026-08-24, so this is settled rather than
+    inferred.** The InfiniiVision 3000 X-Series manual says High
+    Resolution "averages sequential sample points within the same acquisition"
+    and that "all samples in the effective sample period are averaged and the
+    average value is stored". That is a boxcar over DISJOINT blocks, not a
+    filter reaching across stored points. The manual also prints the ceiling as
+    a table against sweep speed: eight bits at or below 1 us/div, one more bit
+    per step, and **twelve bits at or above 20 us/div**. The campaign ran at
+    100 ms/div, four decades past that threshold, **so the mode delivered
+    exactly twelve bits and the measured 11.86 IS that ceiling.** Averaging is
+    documented separately as a mode for periodic signals combined across
+    acquisitions, which is a different mechanism and would leave a different
+    signature.
 
     **So the 1.9 ms correlation is left without an explanation, and that is the
     honest consequence.** It was read for two days as the detection chain, then
