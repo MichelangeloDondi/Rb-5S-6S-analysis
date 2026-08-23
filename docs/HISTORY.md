@@ -752,10 +752,19 @@ a threshold cannot: whether one condition drives a detection. It qualified,
 detected at the floor in both arms, kept a clean control, and survived every
 leave-one-out with zero failures.
 
-**The live statement** is that the tested inference family leaves reproducible
-residual structure inside the fit window. It is NOT called model inadequacy,
-no mechanism is named, R_kernel is unchanged and its class caveat stands, and
-the relation to the excess outside the window is unresolved.
+**The live statement AS OF THIS ENTRY** is that the tested inference family
+leaves reproducible residual structure inside the fit window. It is NOT called
+model inadequacy, no mechanism is named, R_kernel is unchanged and its class
+caveat stands, and the relation to the excess outside the window is unresolved.
+
+**The last clause was answered on 2026-08-23** and the entry below records it:
+the in-window structure and the band excess share a multiplicative-in-signal
+predictor, height at 9.41 and 8.65 sigma against density at 1.30 and -0.75.
+**The rest of the statement is unchanged.** This sentence is left standing
+rather than edited, because the entry is dated and closed and the pointer is
+what this file is for. What earned the pointer is the words "the live
+statement" in the present tense: a dated entry may hold what was believed then,
+and it may not claim to be what is live now.
 
 **Both runs stand.** `results/kernel_k4.csv` carries the second. The first is
 in the version history and in the preregistration, which records the void, the
@@ -1112,3 +1121,35 @@ Seven notes still rest on computations nothing regenerates, and the honest
 position is that a declaration is a label on a gap rather than a repair.
 `tests/test_note_provenance_ratchet.py` now holds a budget of zero, which means
 every note SAYS what it stands on and not that every number is graded.
+
+## A governed row about ungoverned numbers, 2026-08-23
+
+**What changed.** No measured number moved. `results/unregenerated_claims.csv`
+is new, and it counts how much of this record no producer regenerates.
+
+**Why a CSV and not prose.** The declarations added earlier the same day live
+in ten separate notes, in prose, which is where the problem started. **Every
+freshness instrument here begins at a `results/` row**, so a gap described only
+in prose is governed by nothing. As rows, the gap is graded by the same
+machinery as any measurement, and a reader counts it without opening ten files.
+
+**What it says today.** Fourteen notes carry a declaration. **Eight rest on
+numbers no committed producer regenerates**, three have a real `results/` home,
+three are design or index pages where none is expected, and **109 individual
+claims remain unaccounted for inside declared notes.** A declared note is not a
+clean note.
+
+**The producer derives its rows rather than listing them**, by scanning the
+`provenance:` tokens in `docs/notes/`. A hardcoded inventory would be a literal
+in a producer, which is the failure this repository has now met twice: a figure
+drew a retracted value from a literal in its generator, and a bootstrap factor
+reached `docs/RESULTS.md` the same way. **The instrument is subject to the rule
+it enforces**, so a declaration edited without re-running it fails the
+freshness test.
+
+**And a forward pointer was added to the K4 entry above.** That entry says "the
+live statement" in the present tense and ends on the relation to the band
+excess being unresolved, which K8 answered on 2026-08-23. The sentence is left
+standing and now carries a pointer, because the entry is dated and closed.
+**What earned the pointer is the present tense**: a dated entry may hold what
+was believed then and may not claim to be what is live now.

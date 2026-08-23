@@ -1,0 +1,20 @@
+scope,quantity,value,unit,note,status
+SUMMARY,notes_declared,14,count,"notes under docs/notes/ carrying a provenance declaration. The ratchet in tests/test_note_provenance_ratchet.py holds the undeclared count at zero, which means every note SAYS what it stands on and NOT that every number is graded",DIAGNOSTIC
+SUMMARY,notes_no_producer,8,count,"notes whose own argument rests on numbers no committed producer regenerates. These are published and ungoverned by every freshness instrument here, because all of them start from a results/ row",DIAGNOSTIC
+SUMMARY,notes_with_results_home,3,count,notes whose headline numbers were traced to a committed CSV,DIAGNOSTIC
+SUMMARY,notes_design_or_index,3,count,"notes whose numbers are proposed parameters, preregistered thresholds or quoted from their own children, so no results/ home is expected",DIAGNOSTIC
+SUMMARY,orphan_claims_total,109,count,"individual numeric claims unaccounted for INSIDE declared notes, summed over the notes that state a count. A declared note is not a clean note",DIAGNOSTIC
+band_excess_is_model_form.md,provenance,NO_PRODUCER,declaration,"declared, count not stated",DIAGNOSTIC
+centre_channel_cannot_be_revived.md,provenance,NO_PRODUCER,declaration,34 claim(s) unaccounted for on this page,DIAGNOSTIC
+companion_inclusive_refit_prereg.md,provenance,NO_PRODUCER,declaration,15 claim(s) unaccounted for on this page,DIAGNOSTIC
+m28_reproducibility_prereg.md,provenance,NO_PRODUCER,declaration,5 claim(s) unaccounted for on this page,DIAGNOSTIC
+model_selection_prereg.md,provenance,NO_PRODUCER,declaration,12 claim(s) unaccounted for on this page,DIAGNOSTIC
+s0_block_bootstrap_prereg.md,provenance,NO_PRODUCER,declaration,6 claim(s) unaccounted for on this page,DIAGNOSTIC
+two_photon_saturation_companion.md,provenance,NO_PRODUCER,declaration,6 claim(s) unaccounted for on this page,DIAGNOSTIC
+vdw_difference_potential_and_4d_channel.md,provenance,NO_PRODUCER,declaration,4 claim(s) unaccounted for on this page,DIAGNOSTIC
+README.md,provenance,INDEX,declaration,"declared, count not stated",DIAGNOSTIC
+beta_self_pooling_prereg.md,provenance,results/beta_self_probe.csv,declaration,1 claim(s) unaccounted for on this page,DIAGNOSTIC
+full_dataset_fit_prereg.md,provenance,results/full_dataset_fit.csv,declaration,16 claim(s) unaccounted for on this page,DIAGNOSTIC
+guided_mode_two_photon_design.md,provenance,DESIGN,declaration,"declared, count not stated",DIAGNOSTIC
+ruler_validity_and_trim_prereg.md,provenance,results/ruler_campaign.csv,declaration,10 claim(s) unaccounted for on this page,DIAGNOSTIC
+widescan_block_design.md,provenance,DESIGN,declaration,"declared, count not stated",DIAGNOSTIC

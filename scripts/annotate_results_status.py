@@ -75,6 +75,11 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
+    # Every row is a count of the repository's own provenance declarations,
+    # not a measurement of the atom, so the whole file is DIAGNOSTIC. It
+    # measures how much of the record no producer regenerates, and a row
+    # saying NO_PRODUCER is a label on a gap rather than a result.
+    "unregenerated_claims.csv": "DIAGNOSTIC",
     # B2: every row is a design statement about what a configuration would
     # separate, not a measurement, so the whole file is DIAGNOSTIC.
     "orthogonal_levers.csv": "DIAGNOSTIC",

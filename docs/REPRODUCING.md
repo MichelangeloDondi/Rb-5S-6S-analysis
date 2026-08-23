@@ -34,7 +34,7 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write 35 of the 64 committed CSVs. The other twenty one
+The runner's stages write 35 of the 65 committed CSVs. The other twenty two
 each have their own script, held out for one of two reasons.
 
 ### Six need trees that stay outside the repository

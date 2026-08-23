@@ -49,6 +49,10 @@ RESULTS = ROOT / "results"
 
 # Producer -> the CSVs it writes. Cheap enough to re-run in a test.
 CHEAP = {
+    # reads only the provenance declarations in docs/notes/ and counts them;
+    # milliseconds, no traces, and deliberately checkable because the whole
+    # point of the file is that the gap it measures is graded like any number.
+    "run_unregenerated_claims": ["unregenerated_claims.csv"],
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_budget": ["kernel_budget.csv"],
