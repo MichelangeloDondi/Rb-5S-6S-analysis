@@ -1428,3 +1428,76 @@ felt substantial.**
 caught the new page citing a fibre-only result from a surface the promise
 called platform-neutral. The paragraph now names four surfaces instead of
 three and says the wiki carries exactly one page a fibre-less reader skips.
+
+## Every note now declares what it stands on, 2026-08-23
+
+**What changed.** The last nine undeclared notes were declared. **No value
+moved anywhere.**
+
+**Declared by CHECKING, not by labelling.** Every three-significant-figure
+value on each page was compared against `results/` first, and each note's own
+status line decided its kind. Four went to a `results/` CSV they cite and whose
+values they carry (17 of 25, 43 of 57, all 24 and all 30 grounded
+respectively). Three are DESIGN, each because its own header says so and names
+a producer that writes nothing. One is PREREG, written from a frozen script
+while the run was executing. **One is NO_PRODUCER**: the coverage postscript's
+run happened, 15600 fits over 24 cells with zero failures, and its producer
+wrote the output into `private/run_logs/`, which is gitignored, **so a fresh
+clone cannot regenerate or check any of it.** Same shape as the block
+bootstrap: the producer exists and its output sink is the problem.
+
+**Two counts ROSE and that is honest bookkeeping, not new debt.**
+`notes_no_producer` went 6 to 7 because a note moved from invisible to visibly
+ungoverned, and `orphan_claims_total` went 105 to 182 because newly declared
+notes brought their own unaccounted counts into a total that had never seen
+them. **A record that counts more of its own gaps is not a worse record.**
+
+**So the instrument gained the quantity a ratchet can actually hold.**
+`notes_ungoverned_total`, the sum of the no-producer and undeclared counts,
+**fell from 15 to 7**. It cannot rise on honest bookkeeping, because declaring
+a note moves it from one side of the sum to the other. **`notes_undeclared` is
+now ZERO**, so the other counts are stable from here and can only fall.
+
+**The budgets were re-recorded once, deliberately, with the reason written into
+the test** rather than relaxed silently, and the new metric was ceiling-tested
+by planting a violation.
+
+## The acquisition mode was described with one sentence for two instruments
+
+2026-08-23, corrected by the experimenter. **No number moves.** What moves is
+an explanation this record had accepted.
+
+**The claim withdrawn.** `APPARATUS.md` said High Resolution "averages ADJACENT
+SAMPLES, which smooths and correlates them", and used that to explain the
+committed 1.9 ms autocorrelation as an acquisition artefact.
+
+**The distinction that was missed.** On the InfiniiVision, High Resolution
+boxcar-averages the real-time samples inside each stored point's OWN interval.
+The blocks are disjoint, so the mode buys resolution **without correlating one
+stored point to the next**. The LeCroy's ERes is the other mechanism, a digital
+filter spanning several output points, and that one does correlate them. **Two
+instruments, two mechanisms, one sentence.**
+
+**The bit arithmetic now supports the experimenter's recollection against the
+photograph**, which is the opposite of where this page stood. A boxcar of N
+raw samples buys half a log-two of N in bits, so at the instrument's maximum
+rate a 0.5 ms bin would reach about eighteen. **The committed files span 11.86
+bits, 0.14 under a twelve-bit ceiling**, and a ceiling at twelve is what
+InfiniiVision High Resolution is documented to have. A capped High Resolution
+mode is what 11.86 bits looks like. The photographed "Averaging 32" is not.
+
+**The honest consequence is that the 1.9 ms correlation loses its
+explanation.** It was read for two days as the detection chain, then reassigned
+to the acquisition mode, and neither survives: a disjoint boxcar shares no raw
+samples between adjacent points, and the rehearsal puts the chain's baseline
+autocorrelation at 0.070 at a lag of 1 ms with a 1/e decay of one sample.
+
+**What remains is the stage between acquisition memory and the 2000 stored
+points**, which is now the leading candidate and is cheap to test on the same
+instrument at the same timebase.
+
+**The general lesson, and it is the reason this entry exists.** The record
+described two instruments' behaviour in one sentence and then reasoned from
+that sentence. **An explanation that fits the data is not the same as a
+mechanism that could produce it**, and the arithmetic that would have caught it,
+half a log-two of N against a documented ceiling, was available the whole time.

@@ -1,5 +1,7 @@
 {
-  "notes_no_producer": 6,
-  "orphan_claims_total": 105,
+  "notes_no_producer": 7,
+  "notes_undeclared": 0,
+  "notes_ungoverned_total": 7,
+  "orphan_claims_total": 182,
   "orphans_on_reader_facing_surfaces": 0
 }

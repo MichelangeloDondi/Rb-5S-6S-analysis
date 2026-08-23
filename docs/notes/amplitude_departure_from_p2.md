@@ -6,6 +6,9 @@ quoted here are the record's own committed values, tested against 2 rather
 than described as a band. The rehearsal and pilot are outside the frozen
 archive, and each use below says so.
 
+`provenance: results/stark_joint.csv` - The page's own status line says nothing in `results/` moves and that the campaign slopes quoted here are the record's own committed values, tested against an exponent of 2 rather than derived afresh. It cites `stark_joint.csv` and 17 of its 25 three-significant-figure values appear in committed CSVs. **8 numeric claims on this page remain unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+
+
 ## What was claimed, and what testing it showed
 
 The record states that the two-photon amplitude scales as the square of the

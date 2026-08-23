@@ -334,13 +334,46 @@ ever stored.**
     archive's own 2 kSa/s trace format, so the photograph may record a
     different configuration entirely, which is the likeliest reading and is
     not established.
-  * The distinction is not cosmetic. High Resolution averages ADJACENT
-    SAMPLES, which smooths and correlates them. Averaging combines SUCCESSIVE
-    SWEEPS, which would mean the stored traces are already averages and the
-    repeat scatter is not what the analysis takes it to be. The committed
-    integrated autocorrelation of 3.79 samples, about 1.9 ms, was read for two
-    days as the detection chain's response time and is consistent with the
-    high-resolution reading rather than with the chain.
+  * **CORRECTED 2026-08-23 by the experimenter, and the correction reopens
+    something this page had closed.** The sentence here previously said that
+    High Resolution "averages ADJACENT SAMPLES, which smooths and correlates
+    them". That conflates two different mechanisms and the distinction decides
+    the reading.
+
+    **On the InfiniiVision, High Resolution is a BOXCAR of the real-time
+    samples that fall inside each stored point's own interval.** At a 0.5 ms
+    stored spacing every output point owns its own block of raw samples and
+    the blocks are DISJOINT, so the mode raises resolution without correlating
+    one stored point to the next. **The LeCroy's ERes is the other thing**, a
+    digital filter whose kernel spans several output points, and that one does
+    correlate them. The two instruments were being described with one
+    sentence.
+
+    **The bit arithmetic supports the experimenter's recollection over the
+    photograph.** A boxcar of N raw samples buys half a log2 N in bits, so at
+    the instrument's maximum rate a 0.5 ms bin would reach about 18 bits. The
+    committed files span **11.86 bits, which is 0.14 under a 12-bit ceiling**,
+    and a ceiling at 12 bits is what InfiniiVision High Resolution is
+    documented to have. **A capped High Resolution mode is exactly what 11.86
+    bits looks like**, and the photographed "Averaging 32" is not. *(Confirm
+    the ceiling on the DSO-X 3054A datasheet before this is quoted as
+    settled.)*
+
+    **So the 1.9 ms correlation is left without an explanation, and that is the
+    honest consequence.** It was read for two days as the detection chain, then
+    reassigned to the acquisition mode. **A disjoint boxcar cannot produce it**,
+    because adjacent stored points share no raw samples. Neither can the chain:
+    the rehearsal below puts the baseline autocorrelation at 0.070 at a lag of
+    1 ms with a 1/e decay of one sample, where an analogue corner at that
+    timescale would need about 0.99.
+
+    **What remains is the stage between acquisition memory and the 2000 stored
+    points.** If the instrument produced those 2000 from a deeper record by
+    interpolation or by a sliding window rather than by disjoint blocks,
+    adjacent output points would share raw samples and would correlate.
+    **That is now the leading candidate and it is cheap to test**: the same
+    scope, the same timebase, a known input, and a look at whether the
+    correlation survives.
   * **The chain's response time is now bounded from the rehearsal itself.**
     The LeCroy sampled at 10 us, a hundred times finer than the campaign, and
     its baseline autocorrelation across 47 traces is 0.070 at a lag of 1 ms,

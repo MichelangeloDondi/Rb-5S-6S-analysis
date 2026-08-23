@@ -200,6 +200,14 @@ def main() -> int:
         "it at ZERO using a claim pattern that could not see most numbers")
     add("SUMMARY", "undeclared_claims_total", sum(undeclared.values()), "count",
         "numeric claims on those undeclared notes")
+    add("SUMMARY", "notes_ungoverned_total",
+        len(no_producer) + len(undeclared), "count",
+        "THE MONOTONE QUANTITY, and the one a ratchet can hold. Declaring an "
+        "undeclared note as NO_PRODUCER RAISES notes_no_producer while lowering "
+        "notes_undeclared, because the note moves from invisible to visibly "
+        "ungoverned. That is an improvement counted as a regression by either "
+        "number alone. Their SUM falls whenever a note gains a producer or a "
+        "real home and never rises on honest bookkeeping")
     add("SUMMARY", "notes_design_or_index", len(design), "count",
         "notes whose numbers are proposed parameters, preregistered thresholds "
         "or quoted from their own children, so no results/ home is expected")

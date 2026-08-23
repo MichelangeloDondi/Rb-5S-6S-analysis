@@ -277,13 +277,25 @@ BUDGETS = Path(__file__).parent / "_provenance_budgets.json"
 
 
 def _csv_counts() -> dict:
-    """The two headline counts, read from the committed instrument."""
+    """The headline counts, read from the committed instrument.
+
+    ONE-TIME REVALUATION, 2026-08-23. When the last nine undeclared notes were
+    declared, two of these counts ROSE: notes_no_producer 6 to 7, because a
+    note moved from invisible to visibly ungoverned, and orphan_claims_total
+    105 to 182, because newly declared notes brought their own unaccounted
+    counts into a total that had never seen them. **Neither rise is new debt.**
+    The quantity that fell is notes_ungoverned_total, 15 to 7, which is why it
+    exists. With notes_undeclared now at zero the other two are stable and can
+    only fall from here, so the budgets were re-recorded once, deliberately,
+    with this note rather than silently.
+    """
     import csv as _csv
     out = {}
     p = ROOT / "results" / "unregenerated_claims.csv"
     for row in _csv.DictReader(p.open()):
         if row["quantity"] in ("notes_no_producer", "orphan_claims_total",
-                               "orphans_on_reader_facing_surfaces"):
+                               "orphans_on_reader_facing_surfaces",
+                               "notes_undeclared", "notes_ungoverned_total"):
             out[row["quantity"]] = int(row["value"])
     return out
 

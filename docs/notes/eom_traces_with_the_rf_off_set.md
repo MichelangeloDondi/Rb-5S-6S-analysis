@@ -5,6 +5,9 @@ RF-on traces are, what combining them with the RF-off set can and cannot buy, an
 one test that tonight's saturation work makes newly decisive. The joint fit itself
 is not built.
 
+`provenance: DESIGN` - Its own status line is OPEN and scoped, and says plainly that nothing here is a result and the joint fit is not built. Every one of its eleven three-significant-figure values appears in a committed CSV, because the page quotes the record rather than producing numbers. **No claim on this page is unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+
+
 ## The census, which corrects a docstring
 
 | role | n | temperature | power | comb |
