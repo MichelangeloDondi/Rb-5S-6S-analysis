@@ -78,6 +78,79 @@ def _scan() -> list[dict]:
     return rows
 
 
+
+# --- the consequence partition, added 2026-08-23 ------------------------------
+# COUNTING the gap was the easy half. What matters is whether an ungoverned
+# number reaches a surface a reader ACTS on, so this partitions the claims of
+# every NO_PRODUCER note into three classes and reports the one that matters.
+#
+# TWO FILTERS, both learned by measuring before asserting. First, a value under
+# three significant figures cannot be grepped against a repository full of
+# numbers: auditing `99.8` returned five matches and all five were noise,
+# including a detector saturation voltage of 399.8 V. Those go in their own
+# counted class rather than into the answer. Second, and this one inverted the
+# result: a NO_PRODUCER note still QUOTES committed values, so the first
+# version of this partition returned 30 reader-facing hits that were dominated
+# by peak identifiers (993.4121 nm) and by grounded numbers the note cites,
+# such as kappa_ub95 and the committed natural width. Excluding values that
+# appear in any results/ CSV takes the answer from 30 to ONE.
+VALUE = re.compile(
+    r"(?<![\w.])([-+]?\d+\.\d+)\s*"
+    r"(sigma|per cent|%|MHz|kHz|Hz|uK|mK|mW|W|mbar|nm|um|ms)", re.I)
+NO_PROD = re.compile(r"provenance:\s*`?NO_PRODUCER", re.I)
+FRONT_GLOBS = ("docs/RESULTS.md", "docs/BIG_PICTURE.md", "docs/CLAIMS.md",
+               "README.md", "docs/big_picture/*.md", "docs/wiki/*.md",
+               "docs/plan/*.md")
+
+
+def _sigfigs(v: str) -> int:
+    d = v.lstrip("+-").replace(".", "").lstrip("0")
+    return len(d.rstrip("0")) if d else 0
+
+
+def _partition() -> dict:
+    front = []
+    for g in FRONT_GLOBS:
+        front.extend(sorted(ROOT.glob(g)) if "*" in g else
+                     ([ROOT / g] if (ROOT / g).is_file() else []))
+    front_text = {f.name: f.read_text(errors="ignore") for f in front}
+    # THIS FILE IS EXCLUDED FROM ITS OWN GROUNDING TEST, and the freshness
+    # guard is what found the need. The partition NAMES the reader-facing
+    # orphan in a note column, so a second run found 0.6325 inside
+    # unregenerated_claims.csv, counted it as present in results/, and
+    # reclassified it from orphan to quoted. The instrument was eating its own
+    # output and the count moved 40 to 41 between runs.
+    # THE PRINCIPLE, not just the fix: a value appearing in the provenance
+    # instrument's own prose is not evidence that a producer regenerates it.
+    # Self-reference is not provenance.
+    results_blob = "".join(f.read_text(errors="ignore")
+                           for f in sorted((ROOT / "results").glob("*.csv"))
+                           if f.name != OUT.name)
+
+    generic = quoted = 0
+    reader_facing = []
+    for p in sorted(NOTES.glob("*.md")):
+        text = p.read_text()
+        if not NO_PROD.search(text):
+            continue
+        seen = set()
+        for m in VALUE.finditer(text):
+            v = m.group(1)
+            if (v, p.name) in seen:
+                continue
+            seen.add((v, p.name))
+            if _sigfigs(v) < 3:
+                generic += 1
+                continue
+            if v in results_blob:          # the note cites a committed row
+                quoted += 1
+                continue
+            where = [n for n, t in front_text.items() if v in t]
+            if where:
+                reader_facing.append(f"{p.name}: {v} {m.group(2)} -> {', '.join(where[:3])}")
+    return {"generic": generic, "quoted": quoted, "reader_facing": reader_facing}
+
+
 def _undeclared() -> dict:
     """Notes that carry numeric claims and declare nothing at all."""
     out = {}
@@ -135,6 +208,23 @@ def main() -> int:
         "summed over the notes that state a count. A declared note is not a "
         "clean note")
 
+    part = _partition()
+    add("PARTITION", "claims_too_generic_to_grep", part["generic"], "count",
+        "values under three significant figures in NO_PRODUCER notes. Grepping "
+        "these against a repository full of numbers returns noise, so they are "
+        "counted here rather than answered. Auditing 99.8 returned five matches "
+        "and all five were false, one of them a detector saturation voltage")
+    add("PARTITION", "claims_quoted_from_results", part["quoted"], "count",
+        "values in NO_PRODUCER notes that DO appear in a committed CSV. A note "
+        "resting on ungoverned numbers still cites grounded ones, and counting "
+        "those as orphans took an earlier version of this partition from ONE "
+        "reader-facing hit to thirty")
+    add("PARTITION", "orphans_on_reader_facing_surfaces",
+        len(part["reader_facing"]), "count",
+        "THE NUMBER THAT MATTERS: ungoverned values quoted on a page a reader "
+        "acts on. " + ("; ".join(part["reader_facing"]) if part["reader_facing"]
+                       else "none") + ". A release blocker is an entry here with "
+        "neither a producer nor a disclosure")
     for r in sorted(scanned, key=lambda x: (x["kind"].upper() != "NO_PRODUCER", x["note"])):
         add(r["note"], "provenance", r["kind"], "declaration",
             f"{r['orphans']} claim(s) unaccounted for on this page"

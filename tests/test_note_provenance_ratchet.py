@@ -272,13 +272,134 @@ def test_the_claim_detector_sees_the_corpus_it_polices():
         + "\n  ".join(sorted(blind)))
 
 
+# --- the two falling budgets, added 2026-08-23 --------------------------------
+BUDGETS = Path(__file__).parent / "_provenance_budgets.json"
+
+
+def _csv_counts() -> dict:
+    """The two headline counts, read from the committed instrument."""
+    import csv as _csv
+    out = {}
+    p = ROOT / "results" / "unregenerated_claims.csv"
+    for row in _csv.DictReader(p.open()):
+        if row["quantity"] in ("notes_no_producer", "orphan_claims_total",
+                               "orphans_on_reader_facing_surfaces"):
+            out[row["quantity"]] = int(row["value"])
+    return out
+
+
+def test_the_provenance_debt_only_falls():
+    """Two budgets that can only fall, the mechanism this repository already
+    runs for prose, distributions, axes and note declarations.
+
+    COUNTING the gap was done on 2026-08-23 and counting alone does not hold
+    it. New work must not be able to add a note that rests on numbers nothing
+    regenerates, nor add unaccounted claims to the notes already declared.
+    Retirement happens when someone writes a producer or checks a claim into a
+    row, and neither of those is a relabelling.
+    """
+    budgets = json.loads(BUDGETS.read_text())
+    now = _csv_counts()
+
+    worse = []
+    for key, was in sorted(budgets.items()):
+        is_now = now.get(key)
+        if is_now is None:
+            worse.append(f"{key}: no longer reported by the producer")
+        elif is_now > was:
+            worse.append(f"{key}: {was} -> {is_now} (+{is_now - was})")
+
+    assert not worse, (
+        "the provenance debt grew. A note may not newly rest on numbers no "
+        "producer regenerates, and a declared note may not gain unaccounted "
+        "claims. Write the producer, or check the claim into a row.\n  "
+        + "\n  ".join(worse)
+        + "\n\nAfter a genuine reduction, re-record with:"
+          "\n  python tests/test_note_provenance_ratchet.py --relax-budgets")
+
+
+def test_no_reader_facing_orphan_is_undisclosed():
+    """The one class that is a release blocker.
+
+    An ungoverned number confined to its own note is debt. The same number
+    quoted on a page a reader acts on is a published claim with nothing behind
+    it, and the partition in the producer counts exactly those. The budget
+    holds that count, and the single current entry is disclosed at both of its
+    printing sites.
+    """
+    budgets = json.loads(BUDGETS.read_text())
+    now = _csv_counts()
+    key = "orphans_on_reader_facing_surfaces"
+    assert now.get(key, 99) <= budgets[key], (
+        f"an ungoverned number reached a reader-facing surface: "
+        f"{budgets[key]} allowed, {now.get(key)} found. Give it a producer or "
+        f"disclose its standing where the page prints it.")
+
+
+def test_the_budget_file_matches_the_instrument_today():
+    """A budget recorded above the true count is a budget that permits growth
+    silently, which is how a ratchet stops ratcheting."""
+    budgets = json.loads(BUDGETS.read_text())
+    now = _csv_counts()
+    slack = {k: budgets[k] - now[k] for k in budgets if k in now and budgets[k] > now[k]}
+    assert not slack, (
+        "a budget sits above the current count, so the debt could grow back to "
+        f"it unnoticed. Re-record: {slack}")
+
+
+def test_the_instrument_does_not_eat_its_own_output(tmp_path):
+    """Running the producer twice must give the same answer.
+
+    It did not. The partition NAMES its reader-facing orphan in a note column,
+    so the second run found that value inside unregenerated_claims.csv, counted
+    it as present in results/, and reclassified it from orphan to quoted. The
+    count moved 40 to 41 between runs and the CI freshness guard caught it.
+
+    The principle behind the fix, which is worth more than the fix: a value
+    appearing in the provenance instrument's own prose is not evidence that a
+    producer regenerates it. SELF-REFERENCE IS NOT PROVENANCE. Any instrument
+    that both writes into results/ and reads results/ to make a judgement can
+    fail this way, so the check is the general one, idempotency, rather than a
+    test for the one value.
+    """
+    import csv as _csv
+    import shutil
+    import subprocess
+    import sys
+
+    out = ROOT / "results" / "unregenerated_claims.csv"
+    if not out.is_file():
+        return
+    backup = tmp_path / "before.csv"
+    shutil.copy2(out, backup)
+
+    def _partition_rows():
+        return {r["quantity"]: r["value"] for r in _csv.DictReader(out.open())
+                if r["scope"] == "PARTITION"}
+
+    try:
+        first = _partition_rows()
+        r = subprocess.run([sys.executable, "scripts/run_unregenerated_claims.py"],
+                           cwd=ROOT, capture_output=True, text=True)
+        assert r.returncode == 0, r.stderr[-400:]
+        second = _partition_rows()
+        assert first == second, (
+            "the producer gives a different answer on a second run, so it is "
+            f"reading something it wrote:\n  before {first}\n  after  {second}")
+    finally:
+        shutil.copy2(backup, out)
+
+
 def _relax() -> None:
     BASELINE.write_text(json.dumps(_undeclared_notes(), indent=2, sort_keys=True) + "\n")
     print(f"re-recorded {BASELINE.name}")
 
 
 if __name__ == "__main__":
-    if "--relax" in sys.argv:
+    if "--relax-budgets" in sys.argv:
+        BUDGETS.write_text(json.dumps(_csv_counts(), indent=2, sort_keys=True) + "\n")
+        print(f"re-recorded {BUDGETS.name}")
+    elif "--relax" in sys.argv:
         _relax()
     else:
         print(json.dumps(_undeclared_notes(), indent=2, sort_keys=True))

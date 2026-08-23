@@ -7,6 +7,9 @@ SUMMARY,notes_undeclared,9,count,"notes carrying numeric claims that declare NOT
 SUMMARY,undeclared_claims_total,252,count,numeric claims on those undeclared notes,DIAGNOSTIC
 SUMMARY,notes_design_or_index,3,count,"notes whose numbers are proposed parameters, preregistered thresholds or quoted from their own children, so no results/ home is expected",DIAGNOSTIC
 SUMMARY,orphan_claims_total,105,count,"individual numeric claims unaccounted for INSIDE declared notes, summed over the notes that state a count. A declared note is not a clean note",DIAGNOSTIC
+PARTITION,claims_too_generic_to_grep,43,count,"values under three significant figures in NO_PRODUCER notes. Grepping these against a repository full of numbers returns noise, so they are counted here rather than answered. Auditing 99.8 returned five matches and all five were false, one of them a detector saturation voltage",DIAGNOSTIC
+PARTITION,claims_quoted_from_results,40,count,"values in NO_PRODUCER notes that DO appear in a committed CSV. A note resting on ungoverned numbers still cites grounded ones, and counting those as orphans took an earlier version of this partition from ONE reader-facing hit to thirty",DIAGNOSTIC
+PARTITION,orphans_on_reader_facing_surfaces,1,count,"THE NUMBER THAT MATTERS: ungoverned values quoted on a page a reader acts on. two_photon_saturation_companion.md: 0.6325 MHz -> RESULTS.md, saturation.md. A release blocker is an entry here with neither a producer nor a disclosure",DIAGNOSTIC
 band_excess_is_model_form.md,provenance,NO_PRODUCER,declaration,"declared, count not stated",DIAGNOSTIC
 centre_channel_cannot_be_revived.md,provenance,NO_PRODUCER,declaration,34 claim(s) unaccounted for on this page,DIAGNOSTIC
 companion_inclusive_refit_prereg.md,provenance,NO_PRODUCER,declaration,15 claim(s) unaccounted for on this page,DIAGNOSTIC

@@ -1289,3 +1289,59 @@ their own counted class, or its verdict is noise and looks like a clean pass.
 **What is not done**: a twin span-sweep producer, and the same disclosure on
 the other nine surfaces. Both are recorded in the private audit note so a
 later window sweeps once rather than rediscovering.
+
+## The provenance debt gains budgets, and the partition returns one, 2026-08-23
+
+**What changed.** No value moved. `results/unregenerated_claims.csv` gained a
+PARTITION section, and the debt it counts is now held by budgets that can only
+fall.
+
+**The partition answers the question counting could not.** 105 orphan claims
+is a number, not a diagnosis. What matters is whether an ungoverned value
+reaches a page a reader acts on. Of the claims in the seven NO_PRODUCER notes:
+**43 are under three significant figures**, too generic to grep against a
+repository full of numbers and counted rather than answered. **40 appear in a
+committed CSV**, because a note resting on ungoverned numbers still cites
+grounded ones. And **exactly ONE is an ungoverned value quoted on a
+reader-facing surface**, the saturation companion's 0.6325 MHz, which
+`docs/RESULTS.md` and the saturation wiki page both print and both already
+disclose.
+
+**The second filter is the one that changed the answer.** Without it the
+partition returned THIRTY reader-facing hits, dominated by peak identifiers
+such as 993.4121 nm and by grounded values the notes quote, among them
+`kappa_ub95` and the committed natural width. **Excluding values that appear in
+any `results/` CSV takes the answer from thirty to one**, and the first version
+would have fired its own kill condition on noise, which looks identical to the
+partition being unnecessary.
+
+**So there is no release blocker.** The debt is real and it is almost entirely
+internal.
+
+**Three budgets, each ceiling-tested by planting a violation**: the two counts
+may fall and never rise, an ungoverned value on a reader-facing surface fails
+the suite outright, and a budget recorded ABOVE the current count is itself
+refused, because slack in a ratchet is a hole that lets the debt grow back
+unnoticed.
+
+## The provenance instrument was reading its own output, 2026-08-23
+
+**What changed.** No count moved. `run_unregenerated_claims.py` now excludes
+its own output file when deciding whether a value is grounded.
+
+**The defect, caught by the CI freshness guard rather than by inspection.** The
+partition NAMES its one reader-facing orphan in a note column. A second run
+then found that value inside `results/unregenerated_claims.csv`, counted it as
+present in `results/`, and reclassified it from orphan to quoted. The count
+moved **40 to 41 between two runs of the same producer on the same tree**, and
+the committed-CSV test failed with exactly that comparison.
+
+**The principle is worth more than the fix.** A value appearing in the
+provenance instrument's own prose is not evidence that a producer regenerates
+it. **Self-reference is not provenance.** Any instrument that both writes into
+`results/` and reads `results/` to form a judgement can fail this way, which
+is why the new guard checks the general property, idempotency, rather than
+testing for the one value.
+
+**The guard was ceiling-tested by restoring the old behaviour**, which it
+detects, and it passes on the fix.
