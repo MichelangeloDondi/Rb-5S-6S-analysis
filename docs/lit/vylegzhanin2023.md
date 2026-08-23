@@ -18,8 +18,8 @@ pages: 6-13
 year: 2023
 doi: null
 arxiv: 2305.05186
-pdf: null
-held: false
+pdf: PDF_papers/Vylegzhanin_2023_Rb-Rydberg-nS-nD-via-optical-nanofiber.pdf
+held: true
 status: VERIFIED
 verified_date: 2026-08-22
 section: oist-lineage

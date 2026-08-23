@@ -15,8 +15,8 @@ pages: 073203
 year: 2025
 doi: 10.1088/1367-2630/adf058
 arxiv: null
-pdf: null
-held: false
+pdf: PDF_papers/Vylegzhanin_2025_fictitious-magnetic-trap-ground-and-Rydberg-nanofiber.pdf
+held: true
 status: VERIFIED
 verified_date: 2026-08-22
 section: oist-lineage

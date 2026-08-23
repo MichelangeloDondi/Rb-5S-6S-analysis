@@ -65,7 +65,10 @@ KNOWN_DANGLING = {
     # wieman1987 left this list 2026-07-30: it now has a note at REPORTED with a
     # full bibliographic record (PRL 58, 1738; DOI 10.1103/PhysRevLett.58.1738).
     # Still not held -- 1987, pre-arXiv, APS 403 without a subscription.
-    "li2024perspective",
+    # li2024perspective left this list 2026-08-22: now a REPORTED note with the
+    # unit publication list's full record (J. Phys. Photon. 6, 021002 (2024),
+    # DOI 10.1088/2515-7647/ad3d19). Not held -- the IOP PDF resists scripted
+    # retrieval; upgrade through institutional access and a full read.
     # feng2026 left this list 2026-08-03: now docs/lit/feng2026.md, held and
     # VERIFIED (Opt. Lett. 51, 1363-1366 (2026), DOI 10.1364/OL.589640).
     # lidou2024 still wanted, not yet supplied.
@@ -109,6 +112,12 @@ QUARANTINE = {
 # Legitimate prefix pairs (a base key and a variant of the same lineage).
 INTENTIONAL_PREFIX_PAIRS = {
     ("li2024", "li2024b"),  # same year, same 778 nm line, different first authors; cross-referenced in both notes
+    # li2024 is a Wang/Li atomic-clock shift-compensation paper. The
+    # perspective is Li, Wenfang and the whole OIST unit in J. Phys.
+    # Photonics. Different people, different journals, and the longer key
+    # predates its own note: docs/LITERATURE.md cited it while it sat on
+    # KNOWN_DANGLING, so renaming it would break those citing sites.
+    ("li2024", "li2024perspective"),
 ("rajasree2020", "rajasree2020spin"),
     # THREE distinct Rajasree 2020 documents, and conflating them is not
     # hypothetical: until 2026-07-31 both LITERATURE.md and rajasree2020.md
