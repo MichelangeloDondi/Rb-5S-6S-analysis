@@ -13,7 +13,7 @@ platform-neutral and this note is one of the three surfaces you can skip whole
 without losing anything on your path. Terms are in
 [GLOSSARY.md](../GLOSSARY.md).
 
-`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words, and every one of its 24 three-significant-figure values appears in a committed CSV. This is the fibre lane's own row set. **No claim on this page is unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/onf_candidate.csv` - Sized from committed numbers rather than asserted, in its own words, and every one of its 24 three-significant-figure values appears in a committed CSV. This is the fibre lane's own row set. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 **Status.** DESIGN NOTE, written 2026-08-21. Every number here is produced by

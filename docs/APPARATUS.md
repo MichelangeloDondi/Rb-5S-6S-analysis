@@ -334,7 +334,7 @@ ever stored.**
     archive's own 2 kSa/s trace format, so the photograph may record a
     different configuration entirely, which is the likeliest reading and is
     not established.
-  * **CORRECTED 2026-08-23 by the experimenter, and the correction reopens
+  * **CORRECTED by the experimenter, and the correction reopens
     something this page had closed.** The sentence here previously said that
     High Resolution "averages ADJACENT SAMPLES, which smooths and correlates
     them". That conflates two different mechanisms and the distinction decides
@@ -357,7 +357,7 @@ ever stored.**
     documented to have. **A capped High Resolution mode is exactly what 11.86
     bits looks like**, and the photographed "Averaging 32" is not.
 
-    **CONFIRMED FROM THE MANUAL, 2026-08-24, so this is settled rather than
+    **CONFIRMED FROM THE MANUAL, so this is settled rather than
     inferred.** The InfiniiVision 3000 X-Series manual says High
     Resolution "averages sequential sample points within the same acquisition"
     and that "all samples in the effective sample period are averaged and the

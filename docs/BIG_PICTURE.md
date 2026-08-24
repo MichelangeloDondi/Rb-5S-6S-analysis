@@ -170,8 +170,8 @@ turning this structure into an admissible alternative model and computing its
 effect on the collisional coefficient has not been done. And the domain is
 stated: the structure is INSIDE the fit window.
 
-**Its relation to the excess OUTSIDE the window was measured on 2026-08-23 and
-is no longer unresolved.** Regressing each condition's in-window amplitude on
+**Its relation to the excess OUTSIDE the window has since been measured and is no longer
+unresolved.** Regressing each condition's in-window amplitude on
 the model's own profile height and on vapour density at once, weighted, height
 wins at 9.4 sigma and density gives 1.3, with the two predictors correlated
 only 0.49 and the height term surviving every leave-one-out above 8.5
@@ -179,9 +179,13 @@ only 0.49 and the height term surviving every leave-one-out above 8.5
 -0.75 on the same two predictors by the same method**, so both structures share
 a predictor and both exclude density, and one common cause explains them better
 than two unrelated ones. **The two band figures are the weaker pair**: they
-come from [a note with no committed producer](notes/band_excess_is_model_form.md),
-so no `results/` row holds them and the freshness machinery cannot check them,
-while the K8 pair beside them is regenerated and graded on every run.
+come from [a note with no committed producer](notes/band_excess_is_model_form.md).
+**A documented reconstruction (`results/band_excess.csv`) rebuilt
+the construction from the same committed traces and did NOT reproduce them**:
+the census matches exactly at 79 traces and the density negative holds, while
+the cubic-surviving amplitude and the height significance come back far
+weaker, so the note's exact numbers stand as the output of one unrecorded run.
+The K8 pair beside them is regenerated and graded on every run.
 
 **What that does NOT say.** A residual normalised by the noise scales with the
 signal under ANY fractional model error, so profile mismatch, a detector

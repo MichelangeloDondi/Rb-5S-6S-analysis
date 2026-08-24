@@ -5,7 +5,7 @@ computed. The construction below is frozen together with the script
 that implements it (`scripts/run_s0_block_bootstrap.py`), in the same
 commit.
 
-`provenance: NO_PRODUCER` - The producer's own docstring says it writes "one row per resample to private/run_logs/, nothing into results/", DIAGNOSTIC until this postscript adjudicated. **The postscript adjudicated and nothing was promoted.** So the outcome numbers (0.262 MHz, the factor 2.4, 41.6 per cent railed, the 0.634 median with its range) reproduce from retained raw rows in a gitignored log and have no committed home. **The factor 2.4 also reached `docs/RESULTS.md` as a literal in the ledger generator**, which is now stated there. **6 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: NO_PRODUCER` - The producer's own docstring says it writes "one row per resample to private/run_logs/, nothing into results/", DIAGNOSTIC until this postscript adjudicated. **The postscript adjudicated and nothing was promoted.** So the outcome numbers (0.262 MHz, the factor 2.4, 41.6 per cent railed, the 0.634 median with its range) reproduce from retained raw rows in a gitignored log and have no committed home. **The factor 2.4 also reached `docs/RESULTS.md` as a literal in the ledger generator**, which is now stated there. **6 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 ## What this answers, and what it can break

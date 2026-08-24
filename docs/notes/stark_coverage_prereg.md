@@ -5,7 +5,7 @@ was already executing and **before any summary row existed**. The construction
 below is frozen in `scripts/run_stark_coverage.py`, which carries the seed, the
 ladder and the two arms as module constants, and the two are committed together.
 
-`provenance: PREREG` - Written from the frozen script while the run was already executing and before any summary row existed, by its own header. Its numbers are thresholds and cell definitions fixed in advance, and 17 of its 19 values appear in committed CSVs. **2 numeric claims on this page remain unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: PREREG` - Written from the frozen script while the run was already executing and before any summary row existed, by its own header. Its numbers are thresholds and cell definitions fixed in advance, and 17 of its 19 values appear in committed CSVs. **2 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 ## What this answers, and what it can break

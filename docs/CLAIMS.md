@@ -295,7 +295,7 @@ systematic as fig1.*
   quoted interval is recalibrated against that measured number rather than
   read as nominal. None of this attributes the width to the laser: that arrow
   is licensed by the transfer triangle and by nothing here.
-  **What the EXISTING comb bound settles, and what it does not** (2026-08-21).
+  **What the EXISTING comb bound settles, and what it does not** .
   The committed 28.3 kHz limit was taken at the campaign scan rate, so its
   clock averages at 6.8 Hz, BELOW the band the scanned widths integrate, and
   converting an excursion at one averaging time into a linewidth needs a noise

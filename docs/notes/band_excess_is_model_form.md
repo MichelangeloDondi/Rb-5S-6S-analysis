@@ -7,16 +7,7 @@ mechanism. It has one. **Nothing in `results/` moved on this and no committed
 bound changed**, so the finding is diagnostic and the chapter's limitation
 stands as a limitation.
 
-`provenance: NO_PRODUCER` - **every number on this page was computed once, for
-the commit that introduced the page, and no committed producer regenerates
-them.** There is no `results/` row for the regression below, so
-`verify_results_fresh` cannot check it and the freshness test cannot see it.
-That is a weaker standing than any number in the ledger, and it is stated here
-because a reader cannot tell the two apart from the page alone. **The numbers
-are not withdrawn and nothing here is known to be wrong.** What is missing is
-the machinery that would notice if it were. Giving this analysis a producer and
-a graded row is an open item, filed as such rather than left to be discovered
-by the next reader.
+`provenance: NO_PRODUCER` - the numbers ON THIS PAGE remain computed once, by a run that recorded neither its environment nor its construction details. **A documented reconstruction now exists**, `scripts/run_band_excess.py` writing `results/band_excess.csv` from the same committed inputs, and its outcome is the reason this declaration does NOT upgrade: **the census reproduces exactly, 79 traces, and the headline rows do not.** The low-order shared amplitude survives near six sigma, the cubic-surviving amplitude returns 1.4 sigma against this page's 3.6, the joint height significance returns 3.05 against 8.65, and the reconstructed predictors are collinear at 0.896 where this page reports 0.415, which says the height predictor built here is not the one the original run used. **The page under-specifies its own construction**, and until the original's exact choices are recovered, its digits stand as what one unrecorded run printed. The density NEGATIVE, which is what the finding turns on, is the one part both runs agree on.
 
 ## What was already known, and why it stalled
 

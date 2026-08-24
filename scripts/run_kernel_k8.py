@@ -23,7 +23,10 @@ COMMITTED PRODUCER, computed once for the commit that introduced it, held in no
 results/ row, and therefore invisible to verify_results_fresh and to the
 freshness test. Everything this file computes is regenerated and graded on every
 run. The two are quoted side by side downstream, so the difference in standing
-is stated wherever they meet. Neither is withdrawn.
+is stated wherever they meet. Neither is withdrawn. A documented
+reconstruction (run_band_excess.py, 2026-08-24) matched the census exactly and
+did not reproduce the headline rows, which results/band_excess.csv records
+with the historical values alongside.
 
 WHY THE WEIGHTS ARE NOT OPTIONAL. P5 found that the two fitting arms disagree
 on 13 of 32 conditions and that the disagreement is monotonic in power, 4 of 4
@@ -217,10 +220,12 @@ def main() -> int:
     add("ALL", "verdict",
         "MULTIPLICATIVE_IN_SIGNAL_NOT_DENSITY", "verdict",
         "the in-window structure scales with signal amplitude and not with "
-        "vapour density, the same predictor and the same order of "
-        "significance as the band excess outside the window. That makes one "
-        "common multiplicative cause a better explanation than two unrelated "
-        "structures")
+        "vapour density, the same predictor and the same sign as the band "
+        "excess outside the window. The band's height z is 3.05 in "
+        "reconstruction (band_excess.csv) against the note's 8.65, so the "
+        "magnitudes are not the same order and the original is not "
+        "reproducible. One common multiplicative cause rests on the "
+        "predictor agreement and the density null, which both reproduce")
     add("ALL", "mechanism_note", "NOT_NAMED", "scope",
         "a normalised residual scales with signal under ANY fractional model "
         "error, so profile mismatch, detector nonlinearity and an "

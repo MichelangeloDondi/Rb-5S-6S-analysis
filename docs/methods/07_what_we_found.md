@@ -131,7 +131,7 @@ data confirm.
 3 to 8% block scatter is the same between-block wander seen elsewhere.
 
 (C3b) The amplitude is **near $P^2$, and three of the four slopes are not
-consistent with it** (log-log slopes 1.83 to 2.12). **CORRECTED 2026-08-18**:
+consistent with it** (log-log slopes 1.83 to 2.12). **CORRECTED**:
 this paragraph previously read the four slopes as a band clustered on the rate
 law, flagging only 993.4121 nm as low. Tested against 2 rather than described,
 under a block bootstrap over the power cells that respects this sweep's

@@ -83,6 +83,9 @@ FILE_STATUS = {
     # probe's own statement, so the whole file is DIAGNOSTIC.
     # every row is a twin result about a DESIGN, not a measurement of the
     # atom, so the whole file is DIAGNOSTIC.
+    # a reconstruction of a note's construction, judged on the claim and not
+    # the digits, so every row is DIAGNOSTIC.
+    "band_excess.csv": "DIAGNOSTIC",
     "twin_span_sweep.csv": "DIAGNOSTIC",
     "saturation_companion.csv": "DIAGNOSTIC",
     "unregenerated_claims.csv": "DIAGNOSTIC",

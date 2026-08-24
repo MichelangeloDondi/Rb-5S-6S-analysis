@@ -5,7 +5,7 @@ Status: adjudicated 2026-08-05. Both items were parked in
 findings recorded for separate adjudication, not acted on here". This note
 closes the first and opens the second properly.
 
-`provenance: rb5s6s/vanderwaals.py::beta_self_anchored` - **this page was declared NO_PRODUCER on 2026-08-23 and that was WRONG.** Its load-bearing numbers are reproduced right now by that committed pure function, which takes no CSV and no raw trace: calling it returns `c6_ratio = 0.34733905` and `dc6_ratio = 0.31282691`, the table's 0.3473 and 0.3128 exactly. **The declaration was false because the guard's vocabulary had no kind for a committed function**, so the only available option was the merely pessimistic one. That error overstates the gap, which is why it would have survived: a number making the record look worse than it is attracts no scrutiny. Recorded in `docs/HISTORY.md`.
+`provenance: rb5s6s/vanderwaals.py::beta_self_anchored` - **this page was declared NO_PRODUCER and that was WRONG.** Its load-bearing numbers are reproduced right now by that committed pure function, which takes no CSV and no raw trace: calling it returns `c6_ratio = 0.34733905` and `dc6_ratio = 0.31282691`, the table's 0.3473 and 0.3128 exactly. **The declaration was false because the guard's vocabulary had no kind for a committed function**, so the only available option was the merely pessimistic one. That error overstates the gap, which is why it would have survived: a number making the record look worse than it is attracts no scrutiny. Recorded in `docs/HISTORY.md`.
 
 
 ## 1. The question

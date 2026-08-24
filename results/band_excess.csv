@@ -1,0 +1,23 @@
+scope,quantity,value,unit,note,status
+ENV,numpy,2.5.2,version,"the reconstruction environment. The 2026-08-17 run recorded neither its environment nor its seed, so agreement is judged on the CLAIM and not on digits",DIAGNOSTIC
+COMPOSITION,n_traces,79,count,"QC-passed canonical traces of peaks 4154 and 4192 entering the ladder. A trace is a raw repeat FILE after QC, which is the reading that resolves the note's own composition ambiguity",DIAGNOSTIC
+COMPOSITION,n_130C,50,count,note said 50 of 79,DIAGNOSTIC
+COMPOSITION,n_130C_225mW,10,count,"note said 39. The note's count does not reconcile with a manifest filter, and this row is the QC-passed answer",DIAGNOSTIC
+LADDER_k0,A_mean,+0.00132,fraction of peak,"shared band amplitude at per-trace polynomial order 0, across-trace mean. Note 2026-08-17: +0.00200",DIAGNOSTIC
+LADDER_k0,A_sem,0.00023,fraction of peak,note: 0.00028,DIAGNOSTIC
+LADDER_k0,z,5.65,sigma,note: 7.1,DIAGNOSTIC
+LADDER_k1,A_mean,+0.00132,fraction of peak,"shared band amplitude at per-trace polynomial order 1, across-trace mean. Note 2026-08-17: +0.00201",DIAGNOSTIC
+LADDER_k1,A_sem,0.00023,fraction of peak,note: 0.00028,DIAGNOSTIC
+LADDER_k1,z,5.66,sigma,note: 7.1,DIAGNOSTIC
+LADDER_k2,A_mean,+0.00034,fraction of peak,"shared band amplitude at per-trace polynomial order 2, across-trace mean. Note 2026-08-17: +0.00076",DIAGNOSTIC
+LADDER_k2,A_sem,0.00025,fraction of peak,note: 0.00021,DIAGNOSTIC
+LADDER_k2,z,1.36,sigma,note: 3.7,DIAGNOSTIC
+LADDER_k3,A_mean,+0.00034,fraction of peak,"shared band amplitude at per-trace polynomial order 3, across-trace mean. Note 2026-08-17: +0.00075",DIAGNOSTIC
+LADDER_k3,A_sem,0.00025,fraction of peak,note: 0.00021,DIAGNOSTIC
+LADDER_k3,z,1.36,sigma,note: 3.6,DIAGNOSTIC
+JOINT,height_coef,+0.00160,fraction of peak per SD,"per-trace band amplitude on standardised mean profile height inside the band, jointly with density. Note: +0.00138",DIAGNOSTIC
+JOINT,height_z,+3.05,sigma,note: +8.65,DIAGNOSTIC
+JOINT,density_coef,-0.00083,fraction of peak per SD,note: -0.00012,DIAGNOSTIC
+JOINT,density_z,-1.57,sigma,note: -0.75,DIAGNOSTIC
+JOINT,predictor_corr,+0.896,dimensionless,note: +0.415,DIAGNOSTIC
+VERDICT,claim_reproduces,NO,verdict,"the CLAIM, not the digits: a positive shared band amplitude that survives per-trace cubic freedom, and a joint regression where profile height carries the significance while density does not. Judged at the thresholds printed in this producer, fixed before the first run",DIAGNOSTIC

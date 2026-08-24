@@ -94,6 +94,9 @@ CHEAP = {
 
 # Minutes each, and they need data_raw/ traces.
 EXPENSIVE = {
+    # 1.7 s, but it refits 16 conditions from the raw traces, so it belongs
+    # with the producers a clone without data_raw cannot run.
+    "run_band_excess": ["band_excess.csv"],
     # 2000 multi-condition fits at ~1.05 s each, about five minutes on eight
     # lanes. Deterministic despite being Monte-Carlo: every trial's seed is its
     # index, so the CSV reproduces exactly and IS checkable rather than merely

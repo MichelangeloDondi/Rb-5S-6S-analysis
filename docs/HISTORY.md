@@ -1531,3 +1531,70 @@ instruments, two manuals, the same mechanism.**
 1.9 ms correlation stays without an explanation. That is the honest state and
 the leading candidate remains the decimation between acquisition memory and
 the 2000 stored points.
+
+## The band-excess construction was reconstructed, and the digits did not survive
+
+2026-08-24. `scripts/run_band_excess.py` rebuilds the 2026-08-17 note's
+construction from the same committed traces, with every choice documented, and
+writes `results/band_excess.csv` with the note's historical values alongside.
+
+**The census reproduces exactly: 79 traces**, and the composition ambiguity is
+settled (a trace is a QC-passed repeat file). **The headline rows do not
+reproduce.** The low-order shared amplitude survives near six sigma, the
+cubic-surviving amplitude returns 1.4 sigma against the note's 3.6, the joint
+height significance returns 3.05 against 8.65, and the reconstructed
+predictors are collinear at 0.896 where the note reports 0.415, which says the
+note's height predictor was a different construction than its prose specifies.
+**The note under-specified its own construction, and its digits stand as what
+one unrecorded run printed.** The density NEGATIVE, which the finding turns
+on, is the part both runs agree on. Every surface that quotes the pair now
+says so.
+
+## The case page rebuilt around its reader, 2026-08-24
+
+An outside red team of `docs/plan/00_the-case.md` was checked claim by claim
+against the file and was right on substance, strategy and presentation at
+once. **No bound moved.** What moved is how the page argues.
+
+**The headline sentence was the worst line on the page and it was the most
+important one.** "S₀(225 mW) below 0.258 MHz at 95%, against 0.348 MHz
+predicted" never defined S₀, called a shift a coefficient, quoted three
+significant figures against a 0.13 MHz subset spread, buried the actual claim
+in a preposition, **and asserted an exclusion that one of its own robustness
+arms contradicts fifteen lines later** (drop-4192 returns 0.37, above the
+prediction). It now defines the quantity, quotes two significant figures,
+states the exclusion WITH its two-sigma strength and its failing arm in the
+same breath, and links its producer.
+
+**The self-scrutiny section was reframed, not removed.** "Results this record
+refuted with its own instruments" closed the page as a list of five removals,
+which skims as five mistakes. It is now "How these numbers were
+stress-tested", sits directly after the results it defends, and reads four
+detections: a number was believed, an instrument was pointed at it, here is
+what came back. The code-version diagnosis moved into it from the middle of
+section 1, where 250 words of provenance story had interrupted the results.
+The fig15 entry, inside baseball to any outside reader, was cut, and the
+tutorial-claim entry folded into the section that carries its replacement.
+
+**The page now navigates.** It had one link and no images across 221 lines:
+now a contents block, every producer and CSV linked, the five check-documents
+in the footer linked, the identifiability and twin wiki pages linked where
+they are used, and `fig35`, built as the master figure and never used
+anywhere, opens the degeneracy section. The twin correlations' historical
+digits left the page entirely, replaced by the regenerable
+`twin_span_sweep.csv` row, which removes one of the ten surfaces that quoted
+numbers no producer makes.
+
+## A forward pointer for the band digits quoted above, 2026-08-24
+
+Six earlier entries in this file quote the band-excess pair, 8.65 sigma on
+profile height and 3.6 sigma cubic-surviving, as live numbers, including one
+side-by-side table that invites weighing 8.65 against the graded 9.41. Those
+entries are dated and closed and hold what was believed when they were
+written. **The reconstruction entry above ("The band-excess construction was
+reconstructed, and the digits did not survive") is the live statement**: the
+documented rebuild returns 3.05 and 1.4 sigma, the note's construction is
+not recoverable from its prose, and the density null is the part both runs
+agree on. A dated entry may hold what was believed then and may not claim to
+be what is live now, which is the same rule that earned the K4 entry its
+pointer.

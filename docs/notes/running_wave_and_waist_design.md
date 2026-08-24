@@ -5,7 +5,7 @@ number changes. Both calculations are in `scripts/run_geometry_design.py`, which
 writes nothing, and both are reported with the first pass that was wrong beside
 the answer, because in each case the error was the interesting part.
 
-`provenance: DESIGN` - Its own status line is DESIGN, says nothing here is a result, and names `run_geometry_design.py`, which writes nothing. The 43 unaccounted values are geometry intermediates of a PROPOSED configuration rather than measurements of data, which is what DESIGN means here. **43 numeric claims on this page remain unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: DESIGN` - Its own status line is DESIGN, says nothing here is a result, and names `run_geometry_design.py`, which writes nothing. The 43 unaccounted values are geometry intermediates of a PROPOSED configuration rather than measurements of data, which is what DESIGN means here. **43 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 **The question.** Two geometry choices for a future session: should one arm be

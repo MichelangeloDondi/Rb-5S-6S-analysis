@@ -9,7 +9,7 @@ open, argued in
 and recorded as a decision in
 [RESEARCH_DECISIONS section 13](../RESEARCH_DECISIONS.md).
 
-`provenance: results/stark_joint.csv` - DIAGNOSTIC by its own header, and it says in terms that the quoted light-shift construction REMAINS the pooled three-session fit in this file. 43 of its 57 three-significant-figure values appear in committed CSVs. The remainder are the campaign-only variant's own intermediates. **14 numeric claims on this page remain unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/stark_joint.csv` - DIAGNOSTIC by its own header, and it says in terms that the quoted light-shift construction REMAINS the pooled three-session fit in this file. 43 of its 57 three-significant-figure values appear in committed CSVs. The remainder are the campaign-only variant's own intermediates. **14 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 This note exists because that chapter states how a campaign-only refit behaved,

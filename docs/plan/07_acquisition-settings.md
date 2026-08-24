@@ -754,7 +754,7 @@ range in ONE acquisition**, which is the cheapest available test of the
 brightness-ordered departure: if its peak ordering vanishes when the four
 lines share a range, the detection explanation is confirmed outright.
 
-### The two trace kinds, sized against the instruments (2026-08-24)
+### The two trace kinds, sized against the instruments 
 
 The owner asked four questions at once: which instrument for the one-peak and
 the four-peak traces, how many of each, what the one-peak traces still add,

@@ -6,7 +6,7 @@ signature as the one the C3d and C3f width lever is built on, and several times
 larger, is absent from the forward model. The direction of the bias is favourable,
 which is why this is a note rather than a correction.
 
-`provenance: results/saturation_companion.csv` - **UPGRADED from NO_PRODUCER on 2026-08-23.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows that the freshness machinery regenerates and checks. **The JOINT factor is deliberately NOT a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
+`provenance: results/saturation_companion.csv` - **UPGRADED from NO_PRODUCER.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows that the freshness machinery regenerates and checks. **The JOINT factor is deliberately NOT a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
 
 
 **The question.** Is the power-squared broadening the light-shift bound rests
@@ -325,7 +325,7 @@ committed bound at 0.6325 MHz, which is the check that it is running production.
 That first run was an in-session patch that was not preserved, so for two days
 the headline could not be re-derived by anyone, including whoever wrote it. It is
 now `scripts/run_saturation_probe.py`, which is deliberately outside
-`run_all.sh`. It wrote nothing until 2026-08-23, when a `--emit` flag was
+`run_all.sh`. It wrote nothing until a `--emit` flag was later
 added so its C3d half lands in `results/saturation_companion.csv`. The joint
 half deliberately persists nothing, because it cannot be computed here.
 

@@ -24,6 +24,7 @@ before counting, because a semicolon in a code sample is not a style problem.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 import subprocess
 
@@ -266,9 +267,76 @@ def test_filler_openers_stay_absent(phrase):
     assert not hits, f"{phrase!r} appears in: {', '.join(hits)}"
 
 
+# --- the constructions ratchet, added 2026-08-24 ------------------------------
+CONSTRUCTION_BASELINE = Path(__file__).parent / "_construction_baseline.json"
+RATHER_THAN = re.compile(r"\brather than\b")
+
+
+def _rather_than_counts() -> dict[str, int]:
+    out = {}
+    for rel in _tracked_markdown():
+        if not (ROOT / rel).exists():
+            continue
+        n = len(RATHER_THAN.findall((ROOT / rel).read_text(encoding="utf-8")))
+        if n:
+            out[rel] = n
+    return out
+
+
+def test_no_file_gains_the_rather_than_construction():
+    """A per-file falling budget on one syntactic tic.
+
+    The word banks cannot see a construction, and this one is the single
+    largest machine-register tell the case-page review measured: 14 instances
+    in 2098 words on the page a PI reads first, where two or three is what a
+    person writes. The rewrite then made it SIXTEEN before anyone counted,
+    which is why this is a machine and not a style note. The corpus baseline
+    is seeded at measured counts (BIG_PICTURE alone carries 22), so nothing is
+    retrofitted: files fall as they are edited and may not rise.
+
+    Only this one construction is mechanised. The review also named "not X
+    but Y" and coordinated clause-lists of four or more, and both are left to
+    judgement DELIBERATELY: a regex for either matches ordinary contrast and
+    ordinary lists far too often, and a guard that cries wolf gets relaxed
+    into uselessness.
+    """
+    baseline = json.loads(CONSTRUCTION_BASELINE.read_text())
+    current = _rather_than_counts()
+
+    worse = []
+    for rel, now in sorted(current.items()):
+        was = baseline.get(rel)
+        if was is None:
+            if now > 3:
+                worse.append(f"{rel}: NEW file with {now}")
+        elif now > was:
+            worse.append(f"{rel}: {was} -> {now} (+{now - was})")
+
+    assert not worse, (
+        "a file gained 'rather than' constructions. Two or three per document "
+        "is what a person writes: end the contrast or restructure the "
+        "sentence.\n  " + "\n  ".join(worse)
+        + "\n\nAfter a genuine cleanup, re-record with:"
+          "\n  python tests/test_prose_style_ratchet.py --relax-constructions")
+
+
+def test_the_construction_counter_sees_a_planted_tic():
+    """Ceiling test, including the wrapped-phrase blind spot named."""
+    assert len(RATHER_THAN.findall("bounded rather than measured")) == 1
+    assert len(RATHER_THAN.findall("bounded rather\nthan measured")) == 0, (
+        "a wrapped instance is invisible to the per-line form, recorded as "
+        "the known blind region: flattening would also merge hyphenated "
+        "wraps, and the budget errs toward under-counting rather than noise")
+
+
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
-    if "--relax" in sys.argv:
+    if "--relax-constructions" in sys.argv:
+        CONSTRUCTION_BASELINE.write_text(
+            json.dumps(_rather_than_counts(), indent=1, sort_keys=True) + "\n")
+        print(f"re-recorded {CONSTRUCTION_BASELINE.name} "
+              f"({sum(_rather_than_counts().values())} total)")
+    elif "--relax" in sys.argv:
         cur = _current()
         old = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
         BASELINE.write_text(json.dumps(cur, indent=1, sort_keys=True) + "\n")

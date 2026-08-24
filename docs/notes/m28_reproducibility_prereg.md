@@ -5,7 +5,7 @@ with the v3.4.0 release and the run launches after it, so the inputs are the
 release's own committed tables and the record shows the rule before the
 outcome.
 
-`provenance: NO_PRODUCER` - Reported at medium confidence by the audit that found it. The outcome numbers were not traced to any committed row, and the next reader should treat this declaration as the current best account rather than as settled. **5 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: NO_PRODUCER` - Reported at medium confidence by the audit that found it. The outcome numbers were not traced to any committed row, and the next reader should treat this declaration as the current best account rather than as settled. **5 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 ## 1. The observation that forces the question

@@ -5,7 +5,7 @@ failures. Output `private/run_logs/stark_coverage_2026-08-17T015322Z/`.
 Read `stark_coverage_prereg.md` first: every endpoint below was named there
 before the run, and none has been added or promoted since.
 
-`provenance: NO_PRODUCER` - The run happened, 15600 fits over 24 cells with zero failures, and `run_stark_coverage.py` wrote its trials and summary into `private/run_logs/`, which is gitignored. **So a fresh clone cannot regenerate or check any of it**, which is the same shape as the block bootstrap. The producer exists and its output sink is the problem. **10 numeric claims on this page remain unaccounted for.** Declared 2026-08-23 after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: NO_PRODUCER` - The run happened, 15600 fits over 24 cells with zero failures, and `run_stark_coverage.py` wrote its trials and summary into `private/run_logs/`, which is gitignored. **So a fresh clone cannot regenerate or check any of it**, which is the same shape as the block bootstrap. The producer exists and its output sink is the problem. **10 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 The abandoned first run's directory exists and is EMPTY, which is the evidence

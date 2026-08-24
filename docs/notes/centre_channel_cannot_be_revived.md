@@ -5,7 +5,7 @@ question that had been left open in the shape "the centres are excluded" without
 the exclusions ever being costed, and it names the one measurement that would
 reopen it.
 
-`provenance: NO_PRODUCER` - **The largest gap in the corpus.** The note is a hybrid: its comparisons against the width channel are properly homed in `results/centre_stark.csv` and `results/stark_joint.csv`, and every number carrying the note's OWN argument, the forecast table among them, has no trace in any committed CSV or producer. The declaration is NO_PRODUCER because the argument is what a reader takes away. **34 numeric claims on this page remain unaccounted for.** Recorded 2026-08-23 by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: NO_PRODUCER` - **The largest gap in the corpus.** The note is a hybrid: its comparisons against the width channel are properly homed in `results/centre_stark.csv` and `results/stark_joint.csv`, and every number carrying the note's OWN argument, the forecast table among them, has no trace in any committed CSV or producer. The declaration is NO_PRODUCER because the argument is what a reader takes away. **34 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 ## The question
