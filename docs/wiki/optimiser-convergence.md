@@ -41,7 +41,7 @@ whether the valley connects to somewhere lower or whether a separate valley
 elsewhere is deeper still.
 
 The distinction worth holding onto is between two questions that the single
-word "converged" is sometimes made to answer for both. The optimiser'S
+word "converged" is sometimes made to answer for both. The optimiser's
 question is local: did the step size and the gradient shrink the way the
 algorithm expects near a stationary point. The statistical question is
 global: is that stationary point the minimum the objective actually has,

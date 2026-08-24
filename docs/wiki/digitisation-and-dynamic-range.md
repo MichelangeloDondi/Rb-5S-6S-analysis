@@ -157,7 +157,7 @@ a reader.
   resolution and record length are decided together.
 - [Confounding by acquisition order](confounding-by-acquisition-order.md), the
   other way an acquisition choice becomes a physics claim.
-- [The noise law](weighted-least-squares.md), for the measured noise that
+- [The noise law](the-noise-law.md), for the measured noise that
   quantisation has to be compared against.
 
 ---

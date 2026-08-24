@@ -40,7 +40,7 @@ platforms and not two versions of one.
 | what limits coherence | collisions with the wall, guided-mode light shifts | the surface, through van der Waals and its own thermal field |
 | what it is good at | long interrogation of a dense guided sample | strong coupling of a few atoms to a single mode |
 
-## The numbers this record actually holds
+## Where this repository uses it, and the numbers it actually holds
 
 From [`results/onf_candidate.csv`](../../results/onf_candidate.csv), which
 sizes a nanofibre alongside this measurement's vapour cell:
@@ -50,7 +50,7 @@ sizes a nanofibre alongside this measurement's vapour cell:
 | fibre diameter | 400 nm | below the wavelength, which is what makes the field evanescent |
 | effective index band | 1.08 to 1.25 | how tightly the mode is bound, and therefore how far it reaches |
 | evanescent decay length | 211 to 388 nm | **the atom-surface distance scale.** Everything about surface effects is measured against this |
-| effective mode area | 0.50 um^2 | the intensity a given power makes, which is the nanofibre's whole advantage |
+| effective mode area | 0.50 µm² | the intensity a given power makes, which is the nanofibre's whole advantage |
 
 **Compare the last one with the cell.** The same file carries the cell's
 effective intensity at 6.784e7 W per square metre and the light shift it makes
@@ -115,16 +115,23 @@ twin question.
 
 ## Further reading
 
+* [`docs/notes/onf_candidate.md`](../notes/onf_candidate.md), the sized
+  candidate this page summarises, with the three instruments one apparatus
+  provides.
+* [Chapter 6 of the big picture](../big_picture/06_next-nanofibre.md), the
+  fibre thread in full.
+
+## See also
+
 * [Identifiability](identifiability.md), the degeneracy a second platform is
   meant to break.
 * [Transit-time broadening](transit-time-broadening.md), the term a guide
   turns into a design choice.
 * [The digital twin](the-digital-twin.md), which is how a guided design is
   scored before it is built.
-* [`docs/notes/onf_candidate.md`](../notes/onf_candidate.md), the sized
-  candidate this page summarises, with the three instruments one apparatus
-  provides.
+* [The beam waist](the-beam-waist.md), the free-space quantity a guide
+  replaces with a mode.
 
 ---
 
-[← Vapour density and temperature](vapour-density-and-temperature.md) · *Experimental spectroscopy, 10 of 10* · [wiki index →](README.md)
+[← Vapour density and temperature](vapour-density-and-temperature.md) · *Experimental spectroscopy, 11 of 11* · [wiki index →](README.md)

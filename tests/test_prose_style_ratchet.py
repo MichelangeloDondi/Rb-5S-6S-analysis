@@ -433,7 +433,10 @@ def _caps_ok(word: str) -> bool:
         parts = [x for x in bare.split("-") if x]
         return bool(parts) and all(
             p in CAPS_ACRONYM or p in CAPS_TOKEN
-            or CAPS_NOTATION.fullmatch(p) or p.isdigit() for p in parts)
+            or CAPS_NOTATION.fullmatch(p) or p.isdigit()
+            # a single-letter piece of a part number (DSO-X, I-98T-5L)
+            # carries no emphasis a reader could hear
+            or len(p) == 1 for p in parts)
     return False
 
 
@@ -533,6 +536,18 @@ def test_the_emphasis_caps_detector_sees_a_planted_word():
 
 
 BANNED_SHAPED = [
+    # The bound-measurement fusion, banned at the owner's third correction
+    # of the class (2026-08-24, "make sure to avoid confusion between
+    # measurement and bounds, as you have done already many times").
+    # LANGUAGE 2.3c holds the full rule and its three-step form; these two
+    # patterns catch only the clean fusions a machine can judge. "the
+    # reason it is a bound is measured" is legitimate, grades the evidence
+    # and not the bound, and is deliberately NOT matched.
+    ("measured-bound", re.compile(r"\bmeasured (bound|limit)\b"),
+     "a bound is not measured, it is set, and the evidence for it may be"),
+    ("measurement-of-bound",
+     re.compile(r"\bmeasurement of (the|a|this|its) (bound|limit)\b"),
+     "a bound is a limit on a quantity, not a measurement of one"),
     # (name, pattern, what may stand)
     ("trade", re.compile(r"\btrade[sd]?\b(?!-off)|\btrading\b|\btradeoffs?\b"),
      "trade-off and trade-offs stand, the owner's own carve-out, and the "
@@ -589,3 +604,83 @@ if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
         print(f"baseline re-recorded: {before} -> {after} ({after - before:+d})")
     else:
         print(f"total splice punctuation in prose: {sum(_current().values())}")
+
+
+# The acronyms the 2026-08-24 caps sweep lowered, restored the same night and
+# guarded here. DATA, not prose: rule 19.102. Kept beside the detector rather
+# than in the allowlist file because these two lists answer different
+# questions. The allowlist says "this may be capitalised". This says "this
+# MUST be", and only the second one catches a form already lowered.
+LOWERED_ACRONYM_FORMS = (
+    # journals, publishers, institutions, projects
+    "pra", "prr", "njp", "rmp", "aps", "josa", "pnas", "crc", "pdg",
+    "nist", "usafa", "usaf", "ncku", "itu", "onna",
+    # instruments and model numbers
+    "dso", "3054a", "r636", "ds9010", "tpms1016e", "mtcd", "mbr", "98t",
+    "wavedesc", "wlm", "swr", "brf", "apd",
+    # statistics and computing initialisms
+    "crlf", "exif", "acf", "dfbeta", "dfbetas", "dffits", "bfgs", "lopo",
+    "lrt", "cusum", "mcse", "rempi", "bbc",
+)
+
+
+def test_no_lowered_acronyms_in_prose():
+    """Journal, instrument and institution acronyms stay capitalised.
+
+    THE FAULT THIS CLOSES, and it is the twin of the state-notation one
+    above. The emphasis-capitals sweep of 2026-08-24 carried an allowlist
+    built from a SAMPLE of the words it had touched rather than from its
+    own diff, so a second class went through undetected: `Proc. IEEE`
+    became `Proc. Ieee`, `NIST Special Publication` became `nist`, the
+    Coherent `MBR-110` became `mbr-110`, and the EU project `CRYST3`
+    became lower case in the literature index. Ninety prose instances
+    across forty-two terms, found a day later by a wiki audit that
+    noticed two citations and by then measuring the commit's own
+    word-level diff rather than grepping guesses.
+
+    Prevention was never the missing half. The allowlist already stopped
+    NEW lowering; nothing looked back at what the first pass had done.
+    So this detector reads the already-lowered form, which is the only
+    shape that catches a repair that was never completed.
+
+    Code spans, math, link targets and file paths are out of scope: a
+    path is a path and `dso_x_3054a.csv` is a filename, not a sentence.
+    """
+    strip = re.compile(
+        r"```.*?```|`[^`]*`|\$\$.*?\$\$|\$[^$\n]*\$|\]\([^)]*\)"
+        r"|https?://\S+|\b[\w/.-]+\.(?:md|csv|py|png|jpg|jpeg|json|sh|txt"
+        r"|pdf|yml|toml)\b|^\s{4,}\S.*$",
+        re.S | re.M)
+    pattern = re.compile(
+        r"\b(" + "|".join(LOWERED_ACRONYM_FORMS) + r")\b")
+    hits = {}
+    for rel in _tracked_markdown():
+        if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
+            continue
+        text = strip.sub(" ", (ROOT / rel).read_text(encoding="utf-8"))
+        found = sorted(set(pattern.findall(text)))
+        if found:
+            hits[rel] = found[:6]
+    assert not hits, (
+        "acronyms lowered in prose, write NIST not nist and PRA not pra:\n  "
+        + "\n  ".join(f"{k}: {', '.join(v)}" for k, v in sorted(hits.items()))
+        + "\n(if one of these is genuinely lower case in its context, the "
+          "term belongs out of LOWERED_ACRONYM_FORMS, not silenced here)")
+
+
+def test_the_lowered_acronym_detector_sees_a_planted_case():
+    """Ceiling test, both directions, and the deliberate exclusions.
+
+    The exclusions are as load-bearing as the inclusions: `dof` and
+    `ad hoc` are correctly lower case in physics prose, and unit
+    prefixes like `64k` are not acronyms at all, so none of the three
+    may ever enter the list.
+    """
+    pat = re.compile(r"\b(" + "|".join(LOWERED_ACRONYM_FORMS) + r")\b")
+    assert pat.search("published in pra 86")
+    assert pat.search("the nist term energies")
+    assert pat.search("an mbr-110 at about 100 kHz")
+    assert not pat.search("published in PRA 86")
+    assert not pat.search("2.83 on 3 dof")
+    assert not pat.search("an ad hoc correction")
+    assert not pat.search("exports at most 64k points")

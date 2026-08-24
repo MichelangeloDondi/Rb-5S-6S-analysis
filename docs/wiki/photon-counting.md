@@ -85,9 +85,9 @@ root, so it is the square root of the signal.
     time and double the photons per bin. The signal-to-noise rises by the
     square root of two.
   * **Drive harder.** Here the routes part company, and how far depends on the
-    order of the process. For a ONE-photon transition the signal is linear in
+    order of the process. For a one-photon transition the signal is linear in
     intensity, so the signal-to-noise goes as the square root of the intensity
-    and driving harder is no better than waiting longer. For a TWO-photon
+    and driving harder is no better than waiting longer. For a two-photon
     transition the signal goes as the square of the intensity, so the
     signal-to-noise goes as the intensity itself, linearly, and doubling the
     drive is worth quadrupling the time.

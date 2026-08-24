@@ -177,7 +177,7 @@ is $10^{-8}$ of a channel that is itself one per cent.
 **It does not touch the signal, and the blocking element is not the filters.**
 Stimulated emission on D1 runs at $1.2\times10^{-12}$ s⁻¹ against a 28 ns
 lifetime. For the background, the photocathode's own red edge does the blocking,
-not the 50 dB of 795 nm filtering: the r636-10 is a GaAs tube whose response
+not the 50 dB of 795 nm filtering: the R636-10 is a GaAs tube whose response
 ends near 900 nm (datasheet, not confirmed against the sheet here), and the
 conclusion does not depend on that figure, because a cathode with a red edge
 anywhere below a couple of µm is blind to a 9.1 µm peak. In the band it can

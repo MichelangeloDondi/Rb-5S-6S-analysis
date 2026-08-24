@@ -32,6 +32,15 @@ what the transition strength alone would predict.
 The quantity that governs it is the **cascade branching** $f$: the probability
 that one excitation-and-decay cycle ends in the undriven level.
 
+## What problem it solves
+
+Without the cascade, an amplitude that falls with power or with time in the
+beam has two candidate readings, saturation and depletion, and the two scale
+differently with everything else. The population model weighs the depletion
+reading from committed atomic structure alone, so the amplitude channel can
+be interpreted, and the pumping fraction becomes a prediction the data
+can test instead of a nuisance the fit absorbs.
+
 ## The population model
 
 Each cycle removes a fraction $f$ of what remains in the driven level, so the
@@ -156,12 +165,56 @@ computed from the term energies rather than typed, and with a trapped channel
 that has no cross-section raising rather than returning zero, since a silent
 zero would assert that the photon escapes.
 
-## Where this is used
+## Where this repository uses it
 
 `rb5s6s/cascade.py` implements the population model, with the invariants
 above as its tests. The exact manifold computation behind the table is
 `scripts/run_zeeman_depletion.py`, whose committed output is
 `results/cascade_branching.csv`.
+
+## Try it
+
+The committed branching table and the survival law together give the
+per-peak depletion after a few excitation cycles, from the installed
+package alone.
+
+```python
+from rb5s6s.cascade import BRANCHING_F, surviving_fraction
+
+for peak, f in sorted(BRANCHING_F.items()):
+    s1 = surviving_fraction(f, 1.0)
+    s5 = surviving_fraction(f, 5.0)
+    print(f"{peak}: f = {f:.3f}, surviving after 1 cycle {s1:.3f}, "
+          f"after 5 {s5:.3f}")
+```
+
+The exact Zeeman-manifold recomputation behind the table is
+`branching_from_manifold`, which needs the `cascade` extra and raises
+without it, so a caller asking for the exact computation never receives
+the cached table by accident.
+
+## Further reading
+
+- W. Happer, "Optical pumping," *Rev. Mod. Phys.* 44, 169 (1972), the
+  founding treatment of population transfer by branching through an
+  intermediate level.
+- [`../lit/arora2012.md`](../lit/arora2012.md), the coupled-cluster
+  branching of the $6S$ decay between $5P_{1/2}$ and $5P_{3/2}$, the first
+  step of the cascade this page models.
+- [`../lit/steck_rb.md`](../lit/steck_rb.md), the D-line branching ratios
+  and hyperfine constants the population model draws on.
+
+## See also
+
+- [Hyperfine populations and branching](hyperfine-populations-and-branching.md),
+  the thermal starting populations this page's cycles act on.
+- [Saturation](saturation.md), the other mechanism that bends amplitude
+  against power, and the one the depletion reading must be separated from.
+- [Magnetic sublevels](magnetic-sublevels.md), the manifold the exact
+  branching computation runs over.
+- [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where
+  pumping is one of the mechanisms sharing the light shift's power
+  signature.
 
 ---
 

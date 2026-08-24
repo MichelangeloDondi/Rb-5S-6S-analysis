@@ -68,7 +68,7 @@ risk here.
 | T3 | **Mass-copy signature** | no single mtime shared by an implausible fraction of files | Same as T2 — copy artifact, not acquisition clock |
 | T4 | **Granularity** | record the quantisation (1 s, 2 s fat, sub-second) | Not a failure; the spacing predictions (P5) are scored against the measured granularity, not against an assumed one |
 | T5 | **Timezone discipline** | all comparisons in raw epoch seconds | Not a failure; a fixed convention recorded once. JST acquisition read on a CET machine displaces displayed times by 7–8 h — never compare rendered local strings |
-| T6 | **Clock of record** | if native Agilent/Keysight `.h5` acquisitions are present, their embedded acquisition time replaces mtime and is used instead | Not a failure; the choice is recorded per prediction, since an embedded time survives copying and an mtime may not. *Corrected 2026-07-23, still pre-data: the traces were taken on the InfiniiVision dso-x 3054a, not the LeCroy this gate originally named, so `.trc`/wavedesc does not apply* |
+| T6 | **Clock of record** | if native Agilent/Keysight `.h5` acquisitions are present, their embedded acquisition time replaces mtime and is used instead | Not a failure; the choice is recorded per prediction, since an embedded time survives copying and an mtime may not. *Corrected 2026-07-23, still pre-data: the traces were taken on the InfiniiVision DSO-x 3054A, not the LeCroy this gate originally named, so `.trc`/WAVEDESC does not apply* |
 
 ## 4. Predictions
 
@@ -189,10 +189,10 @@ assumption limitation row 5 calls untestable.
 
 ### 8.2 Retraction: the "20× too high" reading was from outside the campaign
 
-Setup photographs carry three HighFinesse ws/8l long-term records. Their exif
+Setup photographs carry three HighFinesse ws/8l long-term records. Their EXIF
 dates place only one inside the campaign:
 
-| record | exif date | relative to campaign | reading |
+| record | EXIF date | relative to campaign | reading |
 |---|---|---|---|
 | IMG_2504 / IMG_2506 | 2025-06-11 | **5 weeks before** | ±0.19 MHz/min, swept (≈30 MHz band) |
 | IMG_3020 | 2025-07-23 | **5 days after** | −0.17 MHz/min, swept (≈32 MHz band) |
@@ -226,7 +226,7 @@ by any photograph here.
   itself showing intra-block scatter growing with block duration (that is D2).
   If D2 shows no growth, D4 is void rather than failed.
 
-### 8.4 The wlm logs do not exist — and the archive answered anyway
+### 8.4 The WLM logs do not exist — and the archive answered anyway
 
 The wavemeter's long-term logs were **not saved** (experimenter, 2026-07-22).
 The three photographs are the whole of the wavemeter evidence; there is no

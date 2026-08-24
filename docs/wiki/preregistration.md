@@ -60,7 +60,7 @@ Two checks decide whether a criterion is worth freezing at all, and this
 repository requires both of any procedure it preregisters for a simulated or
 synthetic study.
 
-A NULL test asks what the procedure reports when there is nothing to find:
+A null test asks what the procedure reports when there is nothing to find:
 run it many times on data built to contain no effect, at a stated threshold,
 and record how often it claims one anyway. A trustworthy criterion's
 false-positive rate matches its stated threshold. If the rate is
@@ -220,7 +220,7 @@ would have called for first. See
 
 ## Further reading
 
-- B. A. Nosek et al., "The preregistration revolution", *pnas* **115**,
+- B. A. Nosek et al., "The preregistration revolution", *PNAS* **115**,
   2600 (2018), the canonical statement of the practice this page applies.
 - [Wikipedia: Preregistration (science)](https://en.wikipedia.org/wiki/Preregistration_(science)),
   for the general history and the distinction between a preregistration and a

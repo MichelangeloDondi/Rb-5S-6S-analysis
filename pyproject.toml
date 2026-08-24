@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rb5s6s"
 version = "4.3"
-description = "Physics-based forward-model analysis of the Rb 5S->6S two-photon lineshape (2025 OIST archival campaign)"
+description = "Physics-based forward-model analysis of the Rb 5S->6S two-photon lineshape (2025 OIST archival campaign). The version number tracks the framework; the rubidium record moves independently"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.12"
@@ -71,6 +71,11 @@ cascade = ["sympy>=1.12"]
 
 [tool.setuptools]
 packages = ["rb5s6s"]
+
+[tool.setuptools.package-data]
+# The per-module map travels in the wheel: a user who installs from an
+# index gets the code AND the map (2026-08-17 audit, gap one).
+rb5s6s = ["README.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

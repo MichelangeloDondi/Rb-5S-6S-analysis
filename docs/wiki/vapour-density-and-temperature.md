@@ -27,6 +27,23 @@ per cent. **Density is the lever every collisional measurement runs on**, and
 it is also the quantity most easily got wrong, because the thing that is easy
 to read off the apparatus is not the thing the formula wants.
 
+## What problem it solves
+
+Every collisional quantity in this record is a slope against density, and
+density is never measured directly: it is computed from a temperature
+through the vapour-pressure curve. This page's conversion is therefore the
+exchange rate between what the apparatus reports and what the fits
+consume, and its steepness is why a modest temperature question becomes a
+factor-level density question.
+
+## Where this repository uses it
+
+The density conversion enters the self-broadening channel and the trapping
+channels. The pedestal thermometer is set out as a campaign lever in
+[the acquisition settings chapter](../plan/07_acquisition-settings.md), and
+its cost and failure conditions are carried in
+[the sizing chapter](../plan/06_sizing-and-spending-rules.md).
+
 ## A set point is not a temperature
 
 This distinction has already cost this record twice, and it is worth stating
@@ -109,14 +126,39 @@ systematic error in the temperature scale moves every condition the same way,
 so it does not average down across a temperature sweep, and a fit that treats
 it as random will report an interval that is too small.
 
-## Where this is used
 
-The density conversion enters the self-broadening channel and the trapping
-channels. The pedestal thermometer is set out as a campaign lever in
-[the acquisition settings chapter](../plan/07_acquisition-settings.md), and
-its cost and failure conditions are carried in
-[the sizing chapter](../plan/06_sizing-and-spending-rules.md).
+## Try it
+
+The committed conversion reproduces this page's own factor: the pilot's
+110 to 130 C internal-temperature range is a factor 3.2 in density.
+
+```python
+from rb5s6s.density import number_density_cm3
+
+for t_c in (110.0, 120.0, 130.0):
+    print(f"{t_c:.0f} C: {number_density_cm3(t_c):.3e} cm^-3")
+
+ratio = number_density_cm3(130.0) / number_density_cm3(110.0)
+print(f"110 to 130 C moves the density by a factor {ratio:.2f}")
+```
+
+## Further reading
+
+- A. N. Nesmeyanov, *Vapor Pressure of the Chemical Elements* (Elsevier,
+  1963), the classical compilation the rubidium vapour-pressure
+  parameters trace to.
+- [`../lit/steck_rb.md`](../lit/steck_rb.md), which carries the
+  vapour-pressure model in the form most laboratories quote.
+
+## See also
+
+- [Collisional self-broadening](self-broadening.md), the channel that
+  divides by this page's density.
+- [Doppler-free two-photon](doppler-free-two-photon.md), whose pedestal
+  is the in-situ thermometer above.
+- [The acquisition settings chapter](../plan/07_acquisition-settings.md),
+  where the pedestal thermometer is a campaign lever with a cost.
 
 ---
 
-[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 9 of 10* · [Guided atoms and nanofibres →](guided-atoms-and-nanofibres.md)
+[← Collisional self-broadening](self-broadening.md) · *Experimental spectroscopy, 10 of 11* · [Guided atoms and nanofibres →](guided-atoms-and-nanofibres.md)

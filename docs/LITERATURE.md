@@ -52,7 +52,7 @@ been done to a paper, never about how good it is.
 | [3. Transit-time lineshape](#3-transit-time-lineshape) | that the transit kernel is a published analytic form, not an assumption |
 | [4. Anchors still at REPORTED](#4-anchors-still-at-reported-status) | what is quoted from a summary and must be read before it is cited |
 | [5. What may be claimed](#5-what-may-be-claimed-and-what-may-not) | the novelty law: the concessions, the survivors, and the searches that found nothing |
-| [6. Prior work on this line](#6-prior-work-on-this-line-5s6s-993-nm) | the two lineages that measured 5S–6S before us, OIST and usafa |
+| [6. Prior work on this line](#6-prior-work-on-this-line-5s6s-993-nm) | the two lineages that measured 5S–6S before us, OIST and USAFA |
 | [7. Method anchors](#7-method-anchors) | the ruler, the trapping, the detection channels, the reference standards |
 | [8. The 2024–2026 field](#8-the-20242026-field) | where a vapour-cell paper from here sits among the 778 nm clocks |
 | [9. The nanofibre extension](#9-the-nanofibre-extension-and-the-onf-community-map) | the literature of the proposed extension, for which no data exist |
@@ -178,7 +178,7 @@ self-broadening number, and the source that answers each.
   4.15–4.18, n=6). Table 4.1 also prints two n=6-specific, potential-free
   checks (width/shift ratio 2γ/β = 2.75, temperature exponent α = 0.300):
   see §2's β_self discussion and `docs/PLAN.md` §7 for what we do with them.
-  Allard & Kielkopf 1982 (rmp 54, 1103) remains the companion review (still
+  Allard & Kielkopf 1982 (RMP 54, 1103) remains the companion review (still
   paywalled). The Allard–Kielkopf lineage's recent [Spiegelman, Allard &
   Kielkopf 2022](lit/spiegelman2022.md) is a **[FEED]** pointer to the
   quasistatic/satellite regime our low-density impact-regime Lorentzian
@@ -235,8 +235,8 @@ is the established Doppler-free two-photon transit-time lineshape. Chain:
 
 This upgrades the transit model from "assumed shape" to "literature-standard
 analytic form," and makes the M8 Voigt-vs-Lehmann BIC test Gaussian-core
-(Voigt) against the bbc-1979 cusp, a test between two *published* forms. Our
-M9 Monte-Carlo then refines the bbc idealization for our exact 3D-mb + w(z) +
+(Voigt) against the BBC-1979 cusp, a test between two *published* forms. Our
+M9 Monte-Carlo then refines the BBC idealization for our exact 3D-mb + w(z) +
 I² + collection conditions, finding the real kernel slightly more cusped
 (excess kurtosis ~4.6). To-do before submission: pull the exact γ₀(w₀,T)
 prefactor from Lehmann so the transit width is an absolute prediction, not a
@@ -382,7 +382,7 @@ distribution of AC-Stark shifts is a new frame**.
 > and the record were read from the publisher, and the physics from the
 > introduction of [`stalnaker2006`](lit/stalnaker2006.md), held, read, and
 > self-described as generalising it, but the paper itself is 1987, predates
-> arXiv, and aps returns 403 without a subscription.
+> arXiv, and APS returns 403 without a subscription.
 >
 > What that establishes: they excited the **forbidden 6S → 7S M1 and
 > Stark-induced** line in Cs where an atomic beam crosses an intense **standing
@@ -544,7 +544,7 @@ The same audit searched and found nothing, which is worth stating explicitly in
 any manuscript:
 
 - **No other group working 5S–6S.** Precision work on this line remains the
-  usafa lineage (Orson, Ayachitula). No new entrants found.
+  USAFA lineage (Orson, Ayachitula). No new entrants found.
 - **No prior 5S–6S magic wavelength.** *Phrase the claim as 5S–6S
   specifically*, because the nearest prior number is close:
   [zang2012](lit/zang2012.md) (arXiv:1204.4354, held) tabulates magic
@@ -616,7 +616,7 @@ novelty claim, recorded in §5 above). Two attribution errors were found and
 fixed outside the checked set: [saha2010](lit/saha2010.md) and
 [slepkov2010](lit/slepkov2010.md) were both credited with an 18 µm
 hollow-core mode field that appears in **neither** paper, which belongs
-instead to the experimenter's own cryst³ fibre at Bologna, an injection-beam
+instead to the experimenter's own CRYST³ fibre at Bologna, an injection-beam
 *radius* for the 1064 nm dipole-trap beam supplied by a held Nasoni 2026
 thesis, not the guided mode of a two-photon probe. **[OPEN]**: the
 delineation table and the fringe-tail derivation built on Stalnaker are this
@@ -653,7 +653,7 @@ and density-shift nulls this dataset's bounds refine).
   diameter, cell at 130 °C) and cites Steck for the Rb data, confirming both
   the beam geometry and the N(T) vapour-pressure chain `density.py` uses.
   **[FEED, VERIFIED]**
-- **[Rajasree 2020, prr 2, 033341](lit/rajasree2020spin.md)** (held), *spin
+- **[Rajasree 2020, PRR 2, 033341](lit/rajasree2020spin.md)** (held), *spin
   selection in single-frequency two-photon excitation*, tested on our line.
   **[CITE, established]** The transition rate scales as the squared degree of
   linear polarization, D², exactly zero for circular light: a drifting
@@ -680,7 +680,7 @@ two-epoch design turns those nulls into measured coefficients.
   `constants.py`, replacing Perez Galván 2008. **[CITE, established]**
   Their line-center drift control (<0.5 kHz over 50 min) is the benchmark
   for what a fixed lock buys.
-- **[Orson 2021](lit/orson2021.md)** (J. Phys. B **54**, 175001, same usafa
+- **[Orson 2021](lit/orson2021.md)** (J. Phys. B **54**, 175001, same USAFA
   group), absolute hyperfine energy levels and isotope shift of the 5S–6S
   transition. **[CITE]** Their prior AC-Stark and density-shift nulls (on our
   C3d and C1 channels) are consistent with, and refined by, our dataset's
@@ -793,7 +793,7 @@ an older note knows which paper it meant.
 ### 8a. Positioning on the 993 nm line
 
 **Positioning this analysis (our 993 nm 5S→6S).** No other group is currently working this line: the only active
-group, usafa/Knize with [`orson2021`](lit/orson2021.md), the absolute-hyperfine-energy
+group, USAFA/Knize with [`orson2021`](lit/orson2021.md), the absolute-hyperfine-energy
 work with McLaughlin as second author, and its successor
 [`ayachitula2024`](lit/ayachitula2024.md), the vol/year question resolved
 2026-08-03, both held) reports
@@ -838,7 +838,7 @@ held, so the language stays scoped until it is read in full:
 - [antypas2018](lit/antypas2018.md), the AC-Stark-asymmetry elimination
   precedent (Yb) our method inverts. **[CITE]**
 - [`bruvelis2012`](lit/bruvelis2012.md), Bruvelis, Ulmanis, Bezuglov, Miculis,
-  Andreeva, Mahrov, Tretyakov & Ekers, *pra* **86**, 012501 (2012): two-photon
+  Andreeva, Mahrov, Tretyakov & Ekers, *PRA* **86**, 012501 (2012): two-photon
   excitation in a three-level ladder gives a Voigt whose width is set **solely by
   w₀**, because wavefront-curvature broadening is *exactly compensated* by the
   longer transit of particles farther off axis. **[CITE]**
@@ -858,7 +858,7 @@ held, so the language stays scoped until it is read in full:
 suppress the AC-Stark shift *actively*, which is what the passive method here
 contrasts with. **[FEED]** and **[CITE]** for the systematics and outlook
 sections, and for the future Paper A.
-- [andeweg2026](lit/andeweg2026.md), Andeweg, Kitching, Hummon (nist): the
+- [andeweg2026](lit/andeweg2026.md), Andeweg, Kitching, Hummon (NIST): the
   newest competitor method, active **power-modulation** AC-Stark suppression
   (×1000). Contrast the passive approach here against it.
 - [ahern2025](lit/ahern2025.md), Ahern et al. (Adelaide): two-color 5S–5D
@@ -881,7 +881,7 @@ sections, and for the future Paper A.
 - [bandi2025](lit/bandi2025.md), comprehensive review of Rb two-photon clock
   systematics and the stability benchmarks. **[CITE]** the single best field-survey
   citation.
-- **`bjorkholm1976`**, *pra* **14**, 751: two-photon lineshape with a near-resonant
+- **`bjorkholm1976`**, *PRA* **14**, 751: two-photon lineshape with a near-resonant
   intermediate, the theory anchor for the future 6S(clean)-vs-5D(resonant) Paper C
   (intermediate detunings 75 → 1 THz, see `FUTURE_TRANSITIONS_titsapph.md`).
 
@@ -892,7 +892,7 @@ canon (Kaiser, Passerat de Silans), for the 795 nm trapping systematic:
 - [chevrollier2012](lit/chevrollier2012.md), the canonical radiation-trapping /
   Lévy-flight review. **[CITE]** framework.
 - [araujo2021](lit/araujo2021.md) (Lévy flights in He-broadened hot Rb, α≈0.5),
-  **`weiss2018`** (*njp* **20**, 063024, trapping against subradiance) and
+  **`weiss2018`** (*NJP* **20**, 063024, trapping against subradiance) and
   **`nunes2024`** (arXiv:2411.18570, frequency redistribution for Rb and Cs).
   **[FEED]** for modern Rb-specific trapping.
 
@@ -928,7 +928,7 @@ differential to about half a percent, from two directions:
   side, all-order sd with evaluated uncertainties: $\alpha_{6s} = 398.4(7)$,
   $\alpha_{7s} = 6238(41)$, $\alpha_{8s} = 38270(280)~a_0^3$. Its differential
   $5840~a_0^3$ agrees with Quirk's measured $5807$ to **0.57%**. **[FEED]**
-- `sieradzan2004`, Sieradzan, Havey & Safronova, *pra* **69**, 022502 (2004),
+- `sieradzan2004`, Sieradzan, Havey & Safronova, *PRA* **69**, 022502 (2004),
   "Combined experimental and theoretical study of the $6p~^2P_j \to 8s~^2S_{1/2}$
   relative transition matrix elements in atomic Cs" (record confirmed via
   Crossref 2026-07-30). The experimental check on the matrix elements between
@@ -942,7 +942,7 @@ constrains the 993 nm cancellation directly. They validate the machine, not the
 answer.
 
 **The Cs 6S–8S line, the closest analogue experiment there is.**
-[lee2010](lit/lee2010.md) (Tsai/Chui, ncku Tainan) and its sister
+[lee2010](lit/lee2010.md) (Tsai/Chui, NCKU Tainan) and its sister
 [lee2012](lit/lee2012.md) run the same experiment in Cs: hot-cell,
 retro-reflected, cascade-detected two-photon $nS\to n'S$ with laser intensity
 and vapour density as independent variables. Their Voigt decomposition
@@ -982,7 +982,7 @@ and read: linewidth ~16 MHz against a 5.2 MHz natural width, with
 the reference against which ONF surface/pushing effects are read.
 
 - [patterson2018](lit/patterson2018.md), Patterson, Solano, Julienne, Orozco
-  & Rolston, *pra* **97**, 032509 (2018), held and read. It stands to the
+  & Rolston, *PRA* **97**, 032509 (2018), held and read. It stands to the
   nanofibre extension as [wieman1987](lit/wieman1987.md) does to this
   analysis: cold Rb around a 240 nm nanofibre, where a static van der Waals
   surface potential red-shifts atoms nearer the silica and the transmission
@@ -1038,14 +1038,14 @@ the reference against which ONF surface/pushing effects are read.
   4, not the sphere's 6). The concave enhancement costs a hollow-core
   geometry nothing, since it multiplies an on-axis $C_3/x_0^3$ that is
   already $10^{-4}$ to $10^{-10}$ of the near-wall value for realistic bores.
-- **[Perrella et al. 2013](lit/perrella2013.md)** (*pra* **87**, 013818),
+- **[Perrella et al. 2013](lit/perrella2013.md)** (*PRA* **87**, 013818),
   two-photon spectroscopy of thermal Rb in a hollow-core photonic-crystal
   fibre, 10 MHz linewidths. Its true geometry, from the first author's
   open-access thesis, is a **45 µm kagomé core** at 90 °C, two-colour
   780+776 nm, so transit supplies only 3–4 MHz of the observed 10 MHz and the
   rest is likely higher-order-mode coupling from a curved fibre, not a
   transit-limited line. Its ~15 µm mode radius is the closest published
-  analogue to this programme's own cryst³ hollow core at Bologna (~18 µm, now
+  analogue to this programme's own CRYST³ hollow core at Bologna (~18 µm, now
   sourced as a measured injection-beam radius for the 1064 nm trap beam in a
   held Nasoni 2026 thesis, an assumption rather than a measurement for a
   778 nm probe): transit there costs ~3–4 MHz against 0.93 MHz for the
@@ -1113,6 +1113,6 @@ of the optical-nanofibre cold-atom field are the **Rauschenbeutel group** (Humbo
 Berlin, with `pennetta2026` and `pache2026`) and the **Nic Chormaic group** (OIST,
 with `nieddu2019`, `rajasree2020` and `gokhroo2022`, the provenance of this
 apparatus and the platform the extension would use). They
-co-organise the onna (Optical Nanofibre Applications) conference series. So the newest
+co-organise the ONNA (Optical Nanofibre Applications) conference series. So the newest
 nearest-platform work is from the nanofibre community, and engaging it well is both good
 scholarship and the natural way this program is read by that community.

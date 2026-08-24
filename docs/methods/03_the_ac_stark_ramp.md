@@ -137,7 +137,7 @@ forbidden lines of the parity-violation literature) the distribution is
 **uniform**: mean $-S_0/2$ and, being symmetric about its mean, $\kappa_3=0$,
 which is **zero skew**. The skewness observable exists at all *only because the two-photon
 signal goes as $I^2$*. This one line is the delineation from the nearest
-prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), pra **73**, 043416 (2006), who extracted an
+prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**, 043416 (2006), who extracted an
 AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
 the $n=1$, fringe-resolved regime, with the full delineation in
 `docs/LITERATURE.md`).
@@ -240,7 +240,7 @@ collection optics, and $Z_c$ is not a free parameter: for the side-viewing
 $f=18$ mm lens imaging the beam onto the PMT it is the axial field of view in
 object space, $Z_c=L_\parallel/2M$ with magnification $M=v/u$ ($u$ = lens–beam
 and $v$ = lens–PMT distances, $1/u+1/v=1/f$), where $L_\parallel$ is the
-photocathode's active extent *along the beam image*. The r636-10 cathode, the
+photocathode's active extent *along the beam image*. The R636-10 cathode, the
 tube housed in the Thorlabs PXT1/M module seen in the in-campaign photograph,
 is a 3 × 12 mm rectangle, so which of its axes lies along the beam is a ×4
 lever on $Z_c$.

@@ -7,7 +7,7 @@ and how does that differ from which observations merely look surprising.
 **Takes.** A least-squares fit already run, weighted or not, and no further
 assumption about the shape of the noise law.
 **Gives.** The leverage and case-deletion machinery, Cook's distance and
-dfbeta among them, that separates an outlying point from an influential one.
+DFBETA among them, that separates an outlying point from an influential one.
 **Skip if.** You want the weighting a fit itself should carry rather than
 what to check after fitting. That is
 [weighted least squares](weighted-least-squares.md).
@@ -129,7 +129,7 @@ than a single point. [RESULTS.md](../RESULTS.md) records that the joint
 light-shift bound survives dropping any one peak, and
 [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv) carries
 the analogous rows for the self-broadening slope, one per dropped peak and
-one per dropped temperature block. Both are Cook's distance and dfbeta in
+one per dropped temperature block. Both are Cook's distance and DFBETA in
 spirit, run by hand at the resolution of a condition before either name was
 attached to the practice.
 
@@ -212,7 +212,7 @@ a reader.
   distance.
 - D. A. Belsley, E. Kuh and R. E. Welsch, *Regression Diagnostics:
   Identifying Influential Data and Sources of Collinearity* (Wiley, 1980),
-  for dffits and dfbeta.
+  for DFFITS and DFBETA.
 - D. C. Montgomery, E. A. Peck and G. G. Vining, *Introduction to Linear
   Regression Analysis*, 5th ed. (Wiley, 2012), chapter 6, for leverage and
   the case-deletion family together.

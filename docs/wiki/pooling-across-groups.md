@@ -173,6 +173,15 @@ question of this page appears as whether a coefficient should be fixed across
 groups or allowed to vary. The vocabulary differs and the decision is the same
 one.
 
+- A. Gelman and J. Hill, *Data Analysis Using Regression and
+  Multilevel/Hierarchical Models* (Cambridge University Press, 2006), the
+  standard reference for partial pooling and the shrinkage this page
+  describes.
+- W. Viechtbauer, "Bias and efficiency of meta-analytic variance
+  estimators in the random-effects model," *J. Educ. Behav. Stat.* 30,
+  261 (2005), for the between-group variance estimators the REML split
+  above belongs to.
+
 ## See also
 
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), whose

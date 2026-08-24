@@ -15,7 +15,7 @@ for the amendment's claim that no output existed when it was stopped.
 
 Coverage of `kappa_ub95_profile` in the over-dispersed arm, target 0.95:
 
-| $\kappa_{\rm true}$ (MHz/W) | $S_0$(225) implied | coverage | mcse |
+| $\kappa_{\rm true}$ (MHz/W) | $S_0$(225) implied | coverage | MCSE |
 |---|---|---|---|
 | 0.00, the boundary the construction exists for | 0 | **1.0000** | 0 |
 | 1.15, the joint C3f bound | 0.259 | **1.0000** | 0 |

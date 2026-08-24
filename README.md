@@ -596,7 +596,7 @@ table carries the current state of every ruler rule, and the
 ## About
 
 I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
-the University of Bologna, on the EU project cryst³. My work there is the
+the University of Bologna, on the EU project CRYST³. My work there is the
 transport and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal
 fibres, where the light shifts of the guided mode vary across the atoms and
 set what can be cooled and how long it stays coherent. This repository looks

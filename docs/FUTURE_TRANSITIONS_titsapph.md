@@ -40,10 +40,10 @@ section 4 with the published measurement this document reads against it.*
 ## 1. The one-sentence picture
 
 Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere**. The only
-active group (usafa/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
+active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
 reports *null* AC-Stark and density shifts at ~6 MHz resolution, so it is the
 clean **demonstrator** of the drift-immune method. The **far more actively worked line is one
-transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (nist/Andeweg,
+transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (NIST/Andeweg,
 Adelaide/Ahern, Feng, femto-st/Callejo, Gerginov, Li) suppresses the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
@@ -66,7 +66,7 @@ lists discrete sets 670–710 / 725–875 / 725–975 / 700–1000 / 950–1050 
 | **7S₁/₂** | **760 nm** | 10 THz | intermediate | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | light (Morzyński, Chui) |
 | 8S₁/₂ | 697 nm | 46 THz | ~clean | 420 nm (6P→5S) | **670–710 only** (blue set) | none |
 | 9S₁/₂ | 660 nm | 70 THz | clean | 420 nm (6P→5S) | custom <700 nm | none |
-| **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + usafa) |
+| **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + USAFA) |
 | 4D_J | 1033 nm | 87 THz | clean | (5D→…) | 950–1050 / custom >1000 | 4D_J clock (2024) |
 
 ### A selection criterion the menu was choosing without: the thermal field
@@ -113,7 +113,7 @@ is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set
 - **Pump is not the limiter, the optics set is.** The Verdi V18 delivers up to
   **18 W at 532 nm** (datasheet-confirmed). Whether 18.5 A is your full-power point
   or a set-point, that is a *generous* pump for a SolsTiS (which needs far less), so
-  tuning range is fixed by the installed brf/mirror set, not by pump. Ample pump is
+  tuning range is fixed by the installed BRF/mirror set, not by pump. Ample pump is
   exactly what buys usable power at a set's *edges*, which is how you reach 993 nm
   at the top of a 700–1000 set, and what the large-S₀ regime Paper A needs.
 - **Tuning mechanism** (why "within a set it's continuous"): motorized

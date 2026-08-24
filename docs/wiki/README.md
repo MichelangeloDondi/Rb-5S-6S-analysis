@@ -3,7 +3,7 @@
 **The question.** What does a reader need to understand, concept by concept,
 to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Fifty-three pages in eight clusters, the routes through them by what
+**Gives.** Fifty-four pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
 **Skip if.** You want the experiment's own record rather than the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
@@ -30,6 +30,12 @@ they build on one another.
 | **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md), [magnetic sublevels](magnetic-sublevels.md), [the cascade and F-depletion](the-cascade-and-f-depletion.md) |
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
 
+| **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
+| **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
+| **reproducing the headline analysis**, page by page in the order the fit consumes them | [the Voigt profile](voigt-profile.md), [transit-time broadening](transit-time-broadening.md), [the inhomogeneous light shift](the-inhomogeneous-light-shift.md), [self-broadening](self-broadening.md), [weighted least squares](weighted-least-squares.md), [the profile likelihood](profile-likelihood.md), then leave the wiki for [the case page](../plan/00_the-case.md) and [RESULTS.md](../RESULTS.md), where every number these concepts produce is ledgered |
+| **background for a thesis chapter**, the platform-neutral concept pages written to be citable on their own | any single page stands alone by construction, states its prerequisites in its header, and closes with its literature, so the shortest route is the page for the concept the chapter needs, and the clusters below group them by subject |
+| **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
+
 **The platform lane.** The guided-mode row above is the only one that assumes a
 nanofibre. Every other row, and every page they list, is platform-neutral: the
 kernels, the identifiability machinery, the metrology and the decision record
@@ -39,10 +45,6 @@ transition, skips that one row and loses nothing on their path. The fibre
 thread in full is [chapter 6](../big_picture/06_next-nanofibre.md), the second
 scenario of [chapter 9](../big_picture/09_the-campaign-cases.md), and
 [the sized candidate](../notes/onf_candidate.md).
-
-| **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
-| **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
-| **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
 | **taking the analysis over, or reproducing it** | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
 | **what the data determine, and how far** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
@@ -89,6 +91,7 @@ how the line is driven, what shape it takes, and what moves or widens it.
 | [Transit-time broadening](transit-time-broadening.md) | physical effect | a finite crossing time broadens the line, and the thermal average makes a cusp, not a Gaussian |
 | [The beam waist](the-beam-waist.md) | concept | the one number that turns a power into an intensity, and why every other quantity inherits it |
 | [The AC-Stark shift](ac-stark-shift.md) | physical effect | the drive light moves the very levels it probes, and a focused beam turns one shift into a distribution |
+| [The inhomogeneous light shift](the-inhomogeneous-light-shift.md) | concept | the distribution of shifts a structured beam imposes, the object a lineshape reads and a guided design is graded by |
 | [Saturation](saturation.md) | physical effect | where the square law stops, and why a tighter focus leaves the safe regime faster than it gains signal |
 | [Collisional self-broadening](self-broadening.md) | physical effect | collisions keep the line Lorentzian and grow its width linearly with density |
 | [Vapour density and temperature](vapour-density-and-temperature.md) | concept | how a cell temperature becomes a density, why a set point is not a temperature, and the pedestal that measures it in situ |
@@ -177,7 +180,7 @@ help?* The layer between the detector and the fit: how large each sample's
 uncertainty is, how many of the samples are independent, which part of the
 noise is irreducible, and the two instrument choices that decide the rest.
 
-| page | kind | one line |
+| page | type | in one line |
 |---|---|---|
 | [The noise law](the-noise-law.md) | method | the measured variance against signal, which supplies every fit's weights |
 | [Shot noise and technical noise](shot-noise-and-technical-noise.md) | concept | the scaling test that says which one you have, and what each implies about what to fix |

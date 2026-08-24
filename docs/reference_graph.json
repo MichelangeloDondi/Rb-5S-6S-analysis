@@ -1,0 +1,183 @@
+{
+ "beta_self_probe:pooled_slope::bound95": {
+  "producer": "run_beta_self.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 98,
+    "writes": "0.0249"
+   }
+  ],
+  "source_file": "results/beta_self_probe.csv",
+  "source_value": "0.024859254261601908"
+ },
+ "beta_self_probe:pooled_slope::bound95_nscale": {
+  "producer": "run_beta_self.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 13,
+    "writes": "0.030"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 34,
+    "writes": "0.030"
+   }
+  ],
+  "source_file": "results/beta_self_probe.csv",
+  "source_value": "0.02983110511392229"
+ },
+ "full_dataset_fit:kappa_ub95:primary": {
+  "producer": "run_full_dataset_fit.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 105,
+    "writes": "0.944"
+   }
+  ],
+  "source_file": "results/full_dataset_fit.csv",
+  "source_value": "0.944"
+ },
+ "laser_epoch:sigma_laser_bound:over_w0_band": {
+  "producer": "run_laser_epoch.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 60,
+    "writes": "1.2"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 48,
+    "writes": "1.2"
+   }
+  ],
+  "source_file": "results/laser_epoch.csv",
+  "source_value": "1.2"
+ },
+ "lit:gomez2005:tau_6s_ns": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 764,
+    "writes": "45.57(17)"
+   }
+  ],
+  "source_file": "docs/lit/gomez2005.md",
+  "source_value": "45.57(17)"
+ },
+ "lit:leonard2017:tuneout_nm": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 724,
+    "writes": "790.032326(32)"
+   }
+  ],
+  "source_file": "docs/lit/leonard2017.md",
+  "source_value": "790.032326(32)"
+ },
+ "lit:orson2021:alpha_56_au": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/THEORY_NOTE.md",
+    "line": 700,
+    "writes": "-1093"
+   }
+  ],
+  "source_file": "docs/lit/orson2021.md",
+  "source_value": "-1093"
+ },
+ "stark_joint:S0_225mW_pred:prediction": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 80,
+    "writes": "0.35"
+   },
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 114,
+    "writes": "0.348"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "0.348"
+ },
+ "stark_joint:S0_225mW_ub95:primary": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/RESULTS.md",
+    "line": 74,
+    "writes": "0.26"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 72,
+    "writes": "0.26"
+   },
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 106,
+    "writes": "0.258"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "0.258"
+ },
+ "stark_joint:kappa_pred:prediction": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 114,
+    "writes": "1.545"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "1.545"
+ },
+ "stark_joint:kappa_ub95:primary": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 106,
+    "writes": "1.147"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "1.147"
+ },
+ "stark_joint:kappa_ub95_drop4192:robustness": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 108,
+    "writes": "1.626"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "1.626"
+ },
+ "stark_joint:kappa_ub95_wing:robustness": {
+  "producer": "run_stark_joint.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 107,
+    "writes": "1.066"
+   }
+  ],
+  "source_file": "results/stark_joint.csv",
+  "source_value": "1.066"
+ }
+}

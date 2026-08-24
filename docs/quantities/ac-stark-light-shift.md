@@ -102,16 +102,16 @@ prevent.
 
 | construction | $\kappa$ bound | $S_0$ at 225 mW | status | source |
 |---|---|---|---|---|
-| Full archive, power and temperature ladders | $\lt 0.944$ MHz/W | $\lt 0.212$ MHz | BOUND | [`full_dataset_fit.csv`](../../results/full_dataset_fit.csv) |
-| Joint three-session profile, the quoted construction | $\lt 1.147$ MHz/W | $\lt 0.258$ MHz | BOUND | [`stark_joint.csv`](../../results/stark_joint.csv) |
-| Joint, with the red-side wing marginalised | $\lt 1.066$ MHz/W | | BOUND, conditional | `stark_joint.csv` |
-| Joint, dropping the 4192 peak and with it the whole pilot session | $\lt 1.626$ MHz/W | $\lt 0.366$ MHz | BOUND | `stark_joint.csv` |
+| Full archive, power and temperature ladders | $\lt$ [0.944](../../results/full_dataset_fit.csv "ref:full_dataset_fit:kappa_ub95:primary") MHz/W | $\lt 0.212$ MHz | BOUND | [`full_dataset_fit.csv`](../../results/full_dataset_fit.csv) |
+| Joint three-session profile, the quoted construction | $\lt$ [1.147](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95:primary") MHz/W | $\lt$ [0.258](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz | BOUND | [`stark_joint.csv`](../../results/stark_joint.csv) |
+| Joint, with the red-side wing marginalised | $\lt$ [1.066](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_wing:robustness") MHz/W | | BOUND, conditional | `stark_joint.csv` |
+| Joint, dropping the 4192 peak and with it the whole pilot session | $\lt$ [1.626](../../results/stark_joint.csv "ref:stark_joint:kappa_ub95_drop4192:robustness") MHz/W | $\lt 0.366$ MHz | BOUND | `stark_joint.csv` |
 | $\kappa$ and $\beta_{\rm self}$ both free, no prior | $\lt 0.963$ MHz/W | $\lt 0.217$ MHz | PRELIM | [`global_dataset_fit.csv`](../../results/global_dataset_fit.csv) |
 | Width channel alone | $\lt 2.811$ MHz/W | $\lt 0.632$ MHz | BOUND | [`stark_sweep.csv`](../../results/stark_sweep.csv) |
 | Centre channel alone | $\lt 8.653$ MHz/W | | BOUND | [`centre_stark.csv`](../../results/centre_stark.csv) |
 
 **The prediction, for comparison rather than as a result.** $\kappa$ is
-predicted at 1.545 MHz/W, giving $S_0 = 0.348$ MHz at 225 mW, computed from
+predicted at [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W, giving $S_0 =$ [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at 225 mW, computed from
 $\Delta\alpha = 1093$ a.u. ([Orson 2021](../lit/orson2021.md)), a waist of
 64 µm and a retro ratio of 0.94. The bounds therefore sit below the prediction,
 which is the interesting feature of the table and is discussed in section 4.

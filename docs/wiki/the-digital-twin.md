@@ -297,24 +297,28 @@ Both are recorded in [HISTORY.md](../HISTORY.md).
 
 ## Further reading
 
-Digital twins as a term come from engineering, where a simulation of a
-physical asset is kept synchronised with the asset itself. The usage here is
-the design-stage half of that idea, which in the statistics literature is
-closer to DESIGN of experiments and to simulation-based power analysis. The
-underlying arithmetic, that conditioning on a correlated parameter reduces
-variance by $(1-\rho^2)$, is the standard partitioned-inverse result for a
-multivariate normal and appears in any regression text under partial
-correlation.
+- Digital twins as a term come from engineering, where a simulation of a
+  physical asset is kept synchronised with the asset itself. The usage here
+  is the design-stage half of that idea, which the statistics literature
+  covers under design of experiments and simulation-based power analysis.
+- The underlying arithmetic, that conditioning on a correlated parameter
+  reduces variance by $(1-\rho^2)$, is the standard partitioned-inverse
+  result for a multivariate normal, in any regression text under partial
+  correlation.
 
 ## See also
 
-[Injection-recovery testing](injection-recovery.md), the closure test this
-extends · [Identifiability](identifiability.md), which is the quantity a twin
-is most useful for reporting · [Monte Carlo methods](monte-carlo-methods.md),
-the sampling underneath · [Designing an acquisition](designing-an-acquisition.md),
-the settings a twin evaluates · [Sensitivity analysis](sensitivity-analysis.md),
-for which input a projection depends on · [The noise law](the-noise-law.md),
-without which a forecast is optimistic
+- [Injection-recovery testing](injection-recovery.md), the closure test
+  this extends.
+- [Identifiability](identifiability.md), the quantity a twin is most
+  useful for reporting.
+- [Monte Carlo methods](monte-carlo-methods.md), the sampling underneath.
+- [Designing an acquisition](designing-an-acquisition.md), the settings a
+  twin evaluates.
+- [Sensitivity analysis](sensitivity-analysis.md), for which input a
+  projection depends on.
+- [The noise law](the-noise-law.md), without which a forecast is
+  optimistic.
 
 ---
 

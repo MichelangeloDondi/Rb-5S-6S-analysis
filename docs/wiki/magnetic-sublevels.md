@@ -219,7 +219,7 @@ line's area is still nothing, but the reason is that both channels are tiny
 rather than that the suppression is field-independent, and only one of them
 is.
 
-One route that looks OPEN and is not. A magnetic-dipole leg would act on the
+One route that looks open and is not. A magnetic-dipole leg would act on the
 nuclear moment directly and so would not need the hyperfine mixing above.
 Parity closes it: 5S and 6S have the same parity, a two-photon path must
 therefore be even overall, and one electric-dipole leg with one
@@ -278,7 +278,7 @@ carries ranks 0 and 2 and nothing else:
 |---|---|---|---|
 | 0 | $\vec{e}_1 \cdot \vec{e}_2$ | 0 | yes, this is the line |
 | 1 | $\vec{e}_1 \times \vec{e}_2$ | $\pm 1$ | only if both factors are nonzero |
-| 2 | $\lbrace \vec{e}_1 \vec{e}_2 \rbrace^{(2)}$ | $\pm 2$ | NO, zero element for $J = 1/2$ |
+| 2 | $\lbrace \vec{e}_1 \vec{e}_2 \rbrace^{(2)}$ | $\pm 2$ | no, the reduced element vanishes for $J = 1/2$ |
 
 $\Delta m_F = 0$ is therefore the only channel available to any useful
 precision, and a sigma-pi pair is closed by the same table, since its one unit
@@ -398,7 +398,7 @@ $4\pi n K^2 / 3R_c^3$ and is dominated by the closest pairs, so the cutoff
 carries it and the cutoff is stated rather than implied. At the Weisskopf
 radius of the same van der Waals difference the record already uses for
 $\beta_{\rm self}$, inside which a collision is strong and fully dephasing
-and therefore already MEASURED rather than new, the ratio is
+and therefore already measured rather than new, the ratio is
 $1.3\times10^{-9}$ at 130 °C, falling to $2.3\times10^{-11}$ at 70 °C
 because it is linear in density.
 
@@ -468,7 +468,7 @@ the ratio between them is flat in power. Turning the laser up multiplies the
 satellite and the line by the same factor and changes nothing about their
 contrast. This is the most useful single fact about the channel, because it
 says the obvious experiment does not work. The only power-tunable member of
-the family is the FOUR-photon version, which goes as intensity to the fourth,
+the family is the four-photon version, which goes as intensity to the fourth,
 so its ratio to the line goes as intensity squared and doubling the power
 quadruples it, from a base at most as large as the number below.
 
@@ -485,7 +485,7 @@ them. The rate fraction is linear in density:
 Fifty-five times across the campaign's own range, of which the density
 supplies 52.5 and the rest comes from the Weisskopf cutoff shrinking slightly
 as collisions get faster. **This is also the channel's fingerprint.** The
-single-atom hyperfine-mixing route is density-INDEPENDENT, so the density
+single-atom hyperfine-mixing route is density-independent, so the density
 lever separates the two cleanly, and the record already sweeps density by a
 factor of 53 for another reason entirely.
 
@@ -506,7 +506,7 @@ does not change:
 
 **Above 384 microtesla the offset exceeds the 5.37 MHz line width**, and the
 search changes character completely: no longer a width excess of order
-$10^{-4}$ hertz, which nothing can measure, but a RESOLVED feature at a
+$10^{-4}$ hertz, which nothing can measure, but a resolved feature at a
 position atomic structure fixes in advance. That is the only version of this
 measurement that is not hopeless, and it is still six orders below the
 tightest bound this record carries. The numbers in both tables are in
@@ -532,7 +532,7 @@ channel contributes is silently absorbed into the collisional coefficient,
 at six parts in ten thousand million of it.
 
 **What the density lever does separate** is the pair route from the
-single-atom hyperfine route, because that one is density-INDEPENDENT. That
+single-atom hyperfine route, because that one is density-independent. That
 is a real discriminant between the two forbidden channels and it is worth
 having written down, but neither channel is visible, so it is a discriminant
 with nothing to discriminate.

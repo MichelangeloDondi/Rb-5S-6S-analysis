@@ -196,4 +196,4 @@ re-divided the next time the bound tightens.
 
 ---
 
-[← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 6 of 10* · [Saturation →](saturation.md)
+[← The beam waist](the-beam-waist.md) · *Experimental spectroscopy, 6 of 11* · [The inhomogeneous light shift →](the-inhomogeneous-light-shift.md)

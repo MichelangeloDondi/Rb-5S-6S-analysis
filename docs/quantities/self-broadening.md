@@ -95,7 +95,7 @@ cent.
 
 | construction | value | status | source |
 |---|---|---|---|
-| Four-temperature width slope, pooled, dof 2 | $\lt 0.0249$ MHz per 1e12 per cubic centimetre | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
+| Four-temperature width slope, pooled, dof 2 | $\lt$ [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") MHz per 1e12 per cubic centimetre | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
 | Four-temperature width slope, per peak | $\lt 0.0239$ to $\lt 0.0411$ | BOUND | `beta_self_probe.csv` |
 | Model-independent per-peak central values | 0.0131 to 0.0181 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
 | Hierarchical joint fit, cooling sweep | $0.0534 \pm 0.0043$ (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |

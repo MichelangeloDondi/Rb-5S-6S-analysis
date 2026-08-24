@@ -155,28 +155,6 @@ into the collisional width. The mistake is this page's thesis in miniature, a
 noise type assumed where only a noise spectrum would do, and a day spent
 computing consequences of the assumption rather than measuring it.
 
-## Further reading
-
-Di Domenico, Schilt and Thomann, "Simple approach to the relation between
-laser frequency noise and laser line shape" (Applied Optics 49, 4801, 2010),
-is the beta-separation-line paper. Any frequency-metrology text carries the
-Allan-variance route from $S_\nu$ to a width and back.
-
-## See also
-
-[The noise law](the-noise-law.md), the detector's noise, which this page is
-not · [Allan deviation](allan-deviation.md), the statistic that survives
-$1/f$ · [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
-where the comb-clock bound lives · [Shot noise and technical noise](shot-noise-and-technical-noise.md),
-the same band-thinking on the detection side · [Identifiability](identifiability.md),
-what the kernel choice does to the width budget · [The Voigt profile](voigt-profile.md),
-the convolution the kernel enters
-
----
-
-[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 8* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)
-
-
 ## What the lineshape says, and why it does not contradict the comb
 
 Measured 2026-08-21, the line excludes a purely Lorentzian laser contribution
@@ -264,3 +242,24 @@ the scanned widths integrate, and it permits a Lorentzian width some 1800 times
 the one measured. It constrains the slow excursion it was built to constrain
 and it does not constrain the kernel, which is a statement about that bound and
 not about the faster block.
+
+## Further reading
+
+Di Domenico, Schilt and Thomann, "Simple approach to the relation between
+laser frequency noise and laser line shape" (Applied Optics 49, 4801, 2010),
+is the beta-separation-line paper. Any frequency-metrology text carries the
+Allan-variance route from $S_\nu$ to a width and back.
+
+## See also
+
+[The noise law](the-noise-law.md), the detector's noise, which this page is
+not · [Allan deviation](allan-deviation.md), the statistic that survives
+$1/f$ · [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
+where the comb-clock bound lives · [Shot noise and technical noise](shot-noise-and-technical-noise.md),
+the same band-thinking on the detection side · [Identifiability](identifiability.md),
+what the kernel choice does to the width budget · [The Voigt profile](voigt-profile.md),
+the convolution the kernel enters
+
+---
+
+[← The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) · *Driving, modulating and detecting, 4 of 8* · [Sweep rate and detection lag →](sweep-rate-and-detection-lag.md)

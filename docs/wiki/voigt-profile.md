@@ -286,4 +286,4 @@ content and therefore into a proper error bar
 
 ---
 
-[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 10* · [Transit-time broadening →](transit-time-broadening.md)
+[← Standing waves](standing-waves.md) · *Experimental spectroscopy, 3 of 11* · [Transit-time broadening →](transit-time-broadening.md)

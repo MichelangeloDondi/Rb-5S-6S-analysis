@@ -130,8 +130,8 @@ shifts become measurable at all.
 
 | item | value | provenance |
 |---|---|---|
-| Optical isolator | isowave **I-98t-5l** | EXPERIMENTER, 2026-08-01 |
-| Clear aperture | **5 mm** | manufacturer datasheet (isowave ds9010-012010, 900–1000 nm series) |
+| Optical isolator | Isowave **I-98T-5L** | EXPERIMENTER, 2026-08-01 |
+| Clear aperture | **5 mm** | manufacturer datasheet (Isowave DS9010-012010, 900–1000 nm series) |
 | Design wavelength | centred at 980 nm standard, orderable anywhere 900–1000 nm | manufacturer datasheet |
 | Isolation / insertion loss | 35 dB min (38 typical) / 0.3 dB typical, 0.5 dB max | manufacturer datasheet |
 | Tunable | yes (input polarizer rotates to maximize isolation) | manufacturer datasheet |
@@ -159,9 +159,9 @@ The EOM does: the experimenter recalls an IR viewer card showing clipping at
 the EOM aperture (recollection, over a year old, not a contemporaneous
 measurement). That aperture is now a sourced number rather than an
 assumption. The manufacturer's own "Standard Characteristics" table for the
-eom-01/eom-02 series (Photonics Technologies, `photonicstechnologies.com`,
+EOM-01/EOM-02 series (Photonics Technologies, `photonicstechnologies.com`,
 confirmed 2026-08-01) states **Aperture Diameter 3 mm** for both crystal
-variants, so it applies to our eom-02-12.5-v. This is the same 3 mm the
+variants, so it applies to our EOM-02-12.5-v. This is the same 3 mm the
 naive Gaussian-optics $w_0\approx32\ \mu\mathrm{m}$ estimate in `constants.py` used.
 It was previously carried as an inferred number chosen to make the clipping
 story work, and is now grounded in a manufacturer spec plus an experimenter recollection
@@ -205,7 +205,7 @@ documented in hardware:
 | EOM resonance | **12.5 MHz** (both units) | PHOTO |
 | EOM 3 dB bandwidth | 550 kHz / 546 kHz | PHOTO |
 | EOM ar coating | **650–1000 nm**, covers 993.4 nm | PHOTO |
-| EOM impedance / swr | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 | PHOTO |
+| EOM impedance / SWR | 52 Ω, 1.29:1 / 50 Ω, 1.09:1 | PHOTO |
 | EOM clear aperture | **3 mm** (both crystal variants, eom-01 and eom-02) | manufacturer's "Standard Characteristics" table, `photonicstechnologies.com`, confirmed 2026-08-01, not on the test certificates §1.2 |
 | Drive for 100% modulation | 15.4 V / 16.0 V pk-pk | PHOTO |
 
@@ -234,7 +234,7 @@ generator as well as a different tank.
 |---|---|---|
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
 | Photocathode spectral response | GaAs, roughly 300 to 900 nm. Datasheet, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 9.1 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 9 µm | datasheet + ASSUMED |
-| Cathode geometry | 3 × 12 mm rectangle | datasheet tpms1016e |
+| Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
 | Cathode orientation (2025) | **12 mm axis along the beam** | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
@@ -244,7 +244,7 @@ generator as well as a different tank.
 
 **OPEN: the PMT's high-voltage supply and setting are not on record**
 (2026-08-03 audit). No photograph or note names the supply that biased the
-r636-10 or its voltage. A bench fact only the experimenter can assert.
+R636-10 or its voltage. A bench fact only the experimenter can assert.
 
 **The off-centre focus is not a detail, and it moves two numbers the analysis
 uses** (added 2026-08-09 when the experimenter stated it). Both follow from the
@@ -275,10 +275,10 @@ and hence $u$, a quantity the session has to set on purpose and record.
 [notes/running_wave_and_waist_design.md](notes/running_wave_and_waist_design.md)
 carries the tables.
 
-> **Resolved 2026-07-23.** `config.py` attributed the detector to an r636-10
+> **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
 > citing *Nieddu 2019, the nanofibre experiment and not this bench*, and the only
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
-> contradiction. The experimenter confirms the PXT1/M **houses** the r636-10, so
+> contradiction. The experimenter confirms the PXT1/M **houses** the R636-10, so
 > the attribution was right by luck rather than by sourcing. The 3 × 12 mm
 > cathode and the along-beam-vs-upright install decision in `PLAN.md` §6 #4
 > therefore stand. One practical rider: the tube sits in a commercial housing,
@@ -292,18 +292,18 @@ DC–750 Hz bandwidth is comfortable against a 1 s scan.
 
 ---
 
-<img src="apparatus/2025-07-18_detection_region_overview.jpg" width="80%" alt="Detection region: foil-wrapped cell, Thorlabs PXT1/M PMT module, mtcd temperature controller">
+<img src="apparatus/2025-07-18_detection_region_overview.jpg" width="80%" alt="Detection region: foil-wrapped cell, Thorlabs PXT1/M PMT module, MTCD temperature controller">
 
 *The detection region as it ran (2025-07-18, in campaign): the foil-wrapped
-cell at centre-right, the Thorlabs PXT1/M module housing the r636-10 below
-it, lens tube toward the cell, and the mtcd dual-channel temperature
+cell at centre-right, the Thorlabs PXT1/M module housing the R636-10 below
+it, lens tube toward the cell, and the MTCD dual-channel temperature
 controller top-right.*
 
 ## 4. Acquisition
 
 | item | value | provenance |
 |---|---|---|
-| **Scope of record** | Agilent/Keysight **InfiniiVision dso-x 3054a**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + EXPERIMENTER |
+| **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + EXPERIMENTER |
 | Also on the bench (not used for the dataset) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 gs/s); LeCroy **WaveSurfer 10** (1 GHz, 10 gs/s) | PHOTO 2025-07-29 |
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
 
@@ -432,9 +432,9 @@ the same way, before the backup was opened.
 
 ### 4.2 The ramp-monitor channel: available, not saved, and not worth much
 
-<img src="apparatus/2025-06-10_agilent_ramp_and_hyperfine_peaks.jpg" width="90%" alt="Agilent dso-x 3054a: triangle ramp on channel 1 and the hyperfine fluorescence peaks on channel 2, with fold-mirror echoes at the ramp apex">
+<img src="apparatus/2025-06-10_agilent_ramp_and_hyperfine_peaks.jpg" width="90%" alt="Agilent DSO-X 3054A: triangle ramp on channel 1 and the hyperfine fluorescence peaks on channel 2, with fold-mirror echoes at the ramp apex">
 
-*The acquisition in one frame (2025-06-10): the Agilent dso-x 3054a of
+*The acquisition in one frame (2025-06-10): the Agilent DSO-X 3054A of
 record, channel 1 the cavity triangle, channel 2 the fluorescence, so four
 hyperfine peaks riding Doppler pedestals, and their mirror images folding at
 the ramp apex, the very effect the analysis's adaptive fit window exists to

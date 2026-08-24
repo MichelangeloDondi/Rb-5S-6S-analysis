@@ -116,7 +116,7 @@ computes physics.
 | `test_docs_canonical.py` | One registry of headline numbers. Each entry reads its true value from the producing CSV or constant, formats it the way the documents write it, and lists the documents that must cite it. A stale value left anywhere fails here. |
 | `test_svg_canonical.py` | The same discipline for numbers drawn on hand-authored SVGs under `docs/`, which no other check can see. |
 | `test_docs_links.py` | Every internal link and image path resolves, every `#anchor` matches a real heading in the target, and the run commands in fenced blocks name real scripts. Bare section pointers into the three long planning documents resolve too. |
-| `test_docs_images.py` | Every referenced image exists, every published photograph is referenced somewhere, and none carries exif metadata. |
+| `test_docs_images.py` | Every referenced image exists, every published photograph is referenced somewhere, and none carries EXIF metadata. |
 | `test_docs_math_render.py` | Every math span survives GitHub's markdown-to-MathJax pipeline. A backslash before an ascii punctuation character is eaten before MathJax sees the content, which is invisible in a local editor. |
 | `test_figure_register.py` | An ast walk over the figure-drawing scripts, requiring that no module code, CSV column name or provenance tag reaches a rendered title, legend, annotation or parameter box. The footer is the one place file paths belong. |
 | `test_lit_consistency.py` | `docs/lit/<citekey>.md` is the one place a paper's facts live, and `docs/references.bib` with `docs/LITERATURE_INDEX.md` are generated from it. Citekey resolution, frontmatter schema and holdings all have to agree. |

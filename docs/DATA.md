@@ -125,7 +125,7 @@ a position rather than a width is built to live inside those runs, and the ones
 that could not be are withdrawn.*
 
 Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an
-**Agilent/Keysight InfiniiVision dso-x 3054a** (500 MHz, 4 GSa/s). The LeCroy
+**Agilent/Keysight InfiniiVision DSO-x 3054A** (500 MHz, 4 GSa/s). The LeCroy
 on the same bench would not trigger reliably (experimenter, 2026-07-23), and
 the export signature confirms which instrument wrote the files. Every CSV in
 the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision

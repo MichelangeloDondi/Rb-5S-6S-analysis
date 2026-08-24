@@ -67,7 +67,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
 | The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-15x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
 | The v3.2.0 light-shift bound 0.151 MHz was **cold-start-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units (0.27 was the bound when this row was written. The six-tooth recompute of addendum 26 moved it to 0.258, which the results ledger rounds to 0.26. Noted 2026-08-09, the row left as written) | addendum 24 |
-| The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 acf 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
+| The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 ACF 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -943,7 +943,7 @@ since addendum 2 — and they close it.
 |---|---|---|
 | `4192nm_225mw2…5.csv` | 2025-07-17 23:47:42–23:48:02 JST | byte-identical to the repo's canonical block; acquisition mtimes match the audit exactly |
 | `4192nm_225mw1copy.csv` | 2025-08-16 18:51 cest | byte-identical to the main backup's degraded copy |
-| `4192nm_225mw1.csv` | 2025-08-16 22:15 cest | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after crlf→lf** |
+| `4192nm_225mw1.csv` | 2025-08-16 22:15 cest | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after CRLF→lf** |
 
 **The T1 audit's one genuine absence is resolved.** The analysed
 `p_sweep/4192nm_225mw1.csv` — whose bytes the main backup never contained —
@@ -957,8 +957,8 @@ now has a complete, dated lineage:
    processing: the same evening as the stray `Julia.code-workspace` in the
    backup root.
 3. **2025-08-16 22:15 cest** — the `jj,nj` header restored (RawData2's
-   unique file, crlf line endings).
-4. **≤ 2025-08-23 22:05 cest** — crlf→lf, and mass-copied into the analysis
+   unique file, CRLF line endings).
+4. **≤ 2025-08-23 22:05 cest** — CRLF→lf, and mass-copied into the analysis
    dataset: the repo's working-tree mtimes carry the bulk stamp
    2025-08-23 22:05:18 across `p_sweep/` and `t_sweep/` (rulers
    2025-10-05) — a bonus provenance fact: **the analysed dataset was
@@ -1133,7 +1133,7 @@ the disturbance model predicts recapture steps at the settled scale
 ±20–70 ms, with two window moves in the hundreds.)
 
 **3. The frequency calibration is coherent across days.** The pilot-day
-`Def` rulers give an acf comb period of **144.2 ± 1.1 ms vs the campaign's
+`Def` rulers give an ACF comb period of **144.2 ± 1.1 ms vs the campaign's
 146.81 ms — the sweep rate agrees to 1.7%** across a day and a
 re-preparation. That is exactly the wander M2's design anticipates: every
 block carries its own rulers because the rate is only per-cent-stable
@@ -1272,7 +1272,7 @@ so σ²(t) = A²e^{−2t_session/τ_camp} + B²e^{−2t_epoch/τ_kick}. At n = 2
 
 **The second timescale's amplitude fits to zero.** Not "small" — zero: the
 log-likelihood is *identical* to the one-timescale fit (139.17 in all three
-campaign-component variants; lrt p = 1.00). Freeing τ per subset buys
+campaign-component variants; LRT p = 1.00). Freeing τ per subset buys
 2Δln L = 2.83 on 3 dof (p = 0.42) and leaves the τ's unidentified (one runs
 to 10¹² min, one goes negative). The data does not merely fail to support a
 second process; its best fit contains none.
@@ -2472,7 +2472,7 @@ The prior update accounts only for the remaining step from 0.221 to the
 production bound.
 
 **The bound of record.** The corrected run (382 minutes, all four
-families seeded, lopo complete) puts the profile minimum at kappa = 0.00
+families seeded, LOPO complete) puts the profile minimum at kappa = 0.00
 exactly, with no chi-square preference for any positive shift. The 95%
 upper limit is kappa < 1.192 MHz per W, which is
 
@@ -2524,7 +2524,7 @@ digitises the 2025-06-11 wavemeter photograph and fits the trace. Since
 and then relaxing back on one shared time constant of 353 min, riding on a
 record-wide quadratic background of drift and curvature, with a
 three-parameter settling noise model on top. Nineteen parameters, fitted by
-twenty restarts of l-bfgs-b over all nineteen at once. The number it published
+twenty restarts of l-BFGS-b over all nineteen at once. The number it published
 was the settled floor on unmodelled laser motion, 0.63 MHz.
 
 **What a model comparison found.** Fourteen alternatives were fitted against

@@ -177,7 +177,7 @@ The derivation above is quasi-static. Each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
 zero to the on-axis maximum and back within a transit time (about 0.2 µs at
 $w_0\approx 64$ µm) that is only a few times the natural response
-$1/\Gamma\approx 45$ ns. [Camparo and Lambropoulos](lit/camparo1992.md) (*josa
+$1/\Gamma\approx 45$ ns. [Camparo and Lambropoulos](lit/camparo1992.md) (*JOSA
 B* **9**, 2163 (1992)) show for a two-photon transition in a fluctuating field
 that this ratio decides the answer. Slowly-varying intensity gives an
 asymmetric line, rapidly-varying intensity averages to a symmetric one at the
@@ -697,7 +697,7 @@ explicitly before anything is compared:
 | transition shift | $-\tfrac{1}{2}\Delta\alpha E^2 \equiv +\tfrac{1}{2}\alpha_{56}E^2$ | — |
 
 The last row is the point: both conventions give the same formula, so the
-algebra is not in dispute. Orson prints $\alpha_{56}=-1093$, hence a red
+algebra is not in dispute. Orson prints $\alpha_{56}=$ [-1093](lit/orson2021.md "ref:lit:orson2021:alpha_56_au"), hence a red
 transition shift. This work computes $\Delta\alpha=-1145$, that is
 $\alpha_{56}=+1145$, hence a blue one. Same equation, opposite input. Both
 sides are verified from the typeset PDFs. Orson states the convention in
@@ -721,7 +721,7 @@ caption for the same coefficient, verified from the held PDF.
 $\alpha_{5S}$ here is pinned by two measurements the model does not fit: the
 static value ($+318.28$ computed against the measured $318.79(1.42)$) and the
 5S tune-out wavelength ($790.0339$ nm computed against the measured
-$790.032326(32)$, [Leonard 2015](lit/leonard2015.md) as corrected by their
+[790.032326(32)](lit/leonard2017.md "ref:lit:leonard2017:tuneout_nm"), [Leonard 2015](lit/leonard2015.md) as corrected by their
 [2017 erratum](lit/leonard2017.md), both held). A positive ground-state
 polarizability far below resonance is also required physically. Orson reports
 only the difference, which cannot be checked this way.
@@ -761,7 +761,7 @@ downward 6S–5P cascade could only supply by growing from $+624$ to $+2874$: a
 factor 4.6 in $\alpha$, hence $\times2.15$ in the dipole elements.
 
 Those same elements set the 6S lifetime. Unscaled they give **45.42 ns**
-against the measured **45.57(17) ns** ([Gomez 2005](lit/gomez2005.md)), a
+against the measured **[45.57(17)](lit/gomez2005.md "ref:lit:gomez2005:tau_6s_ns") ns** ([Gomez 2005](lit/gomez2005.md)), a
 0.9σ agreement. Scaled to reach Orson's sign they give **9.9 ns**, about
 **210σ** from the measurement. Held as a permanent test
 (`test_orsons_sign_would_require_an_excluded_6S_lifetime`).
@@ -1042,7 +1042,7 @@ The cleanest proof that the number is meaningless is that **it changes sign acro
 the four measured lines**, swinging from $-27.75$ to $+152.73$ Hz. The reason is
 that $D$ is not a physical detuning at all. The peak labels are fitted hyperfine
 positions, so the drive sits *on* the component it addresses, while `E_6S_CM` is
-the nist hyperfine **centroid**. $D$ is the residue between them, part genuine
+the NIST hyperfine **centroid**. $D$ is the residue between them, part genuine
 hyperfine offset and part a common-mode calibration offset shared by all four
 labels. The genuine non-resonant value is of order $10^{-3}$ Hz, about
 $5\times10^{7}$ below the second-order differential shift at the same field and
@@ -1133,7 +1133,7 @@ piles weight at weak out-of-focus shifts.
 Where the crossover falls is set by the collection geometry. $Z_c$ is the
 imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens, with
 $L_\parallel$ the cathode's active extent along the beam image. That extent is
-12 mm: the r636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
+12 mm: the R636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
 photo) has a 3 × 12 mm cathode, whose rotation is a ×4 lever on $Z_c$, and it
 was mounted with its long axis along the beam (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm,
 and the two-waist flip holds for every $M$ from 0.5 to 6 rather than depending

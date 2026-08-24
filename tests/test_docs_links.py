@@ -80,6 +80,13 @@ def test_doc_references_resolve(doc):
     # (a)+(b) links / images, with optional #anchor
     for tgt in re.findall(r"\]\(([^)]+)\)", text):
         t = tgt.strip()
+        # a markdown link may carry a quoted title after the target, which
+        # the reference system uses for its machine-readable keys:
+        # [0.030](../results/x.csv "ref:x:a:b"). The path is the first
+        # whitespace-separated piece when a quote follows.
+        m = re.match(r'([^"\s]+)\s+"[^"]*"\s*$', t)
+        if m:
+            t = m.group(1)
         if t.startswith(("http://", "https://", "mailto:")):
             continue
         path, _, anchor = t.partition("#")

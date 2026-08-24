@@ -272,7 +272,7 @@ multiplier stands in for, before quoting it, would have caught the
   Statist.* **7**, 1 (1979), the paper that introduced the nonparametric
   bootstrap and named it after the jackknife it generalizes.
 - B. Efron and R. J. Tibshirani, *An Introduction to the Bootstrap* (Chapman
-  and Hall/crc, 1993), the standard reference for the bootstrap, the
+  and Hall/CRC, 1993), the standard reference for the bootstrap, the
   parametric bootstrap and the jackknife together.
 - J. W. Tukey, "Bias and confidence in not-quite large samples" (abstract),
   *Ann. Math. Statist.* **29**, 614 (1958), the paper the jackknife takes its

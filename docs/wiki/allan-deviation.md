@@ -142,7 +142,7 @@ a reader.
 
 - D. W. Allan, "Statistics of atomic frequency standards", *Proc. Ieee* **54**,
   221 (1966), the original definition.
-- W. J. Riley, *Handbook of Frequency Stability Analysis*, nist Special
+- W. J. Riley, *Handbook of Frequency Stability Analysis*, NIST Special
   Publication 1065 (2008), which is free, thorough and the standard practical
   reference for the variants and their confidence intervals.
 - [Wikipedia: Allan variance](https://en.wikipedia.org/wiki/Allan_variance)

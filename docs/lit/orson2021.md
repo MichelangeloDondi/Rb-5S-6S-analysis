@@ -103,3 +103,16 @@ He also notes calculating "in a manner similar to that of Martin et al [24]" --
 see [martin2019](martin2019.md), whose printed Eqs. (2) and (21) carry a leading
 minus. Whether that propagated here is a hypothesis, not a finding; it is stated
 as such in THEORY_NOTE section 5.
+
+## Values
+
+The load-bearing numbers of this source, each at its stated
+location, so a prose quote anywhere in this repository can
+reference a row here and be checked against it.
+
+| field | value | where in the paper |
+|---|---|---|
+| alpha_56_au | -1093 | their COMPUTED differential polarizability alpha(5S)-alpha(6S) in a.u., a calculation and not a measurement (their own AC-Stark search was a null at 6 MHz resolution, so no experiment has set this sign), the sign this record's section 5 dispute is about |
+| predicted_shift_mhz | -0.66 | their predicted shift at 0.8 W and their 63 um waist, which this record's unit chain reproduces to the digit |
+| isotope_shift_mhz | +94(12) | the 87-85 isotope shift |
+| laser_linewidth_khz | <50 | their stated laser linewidth |

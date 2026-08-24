@@ -136,7 +136,7 @@ def main() -> int:
                    if r["peak"] == "pooled_slope"), None)
     if pooled:
         pb = float(pooled["bound95_nscale"])
-        W(f"**The headline bound is the pooled one: below {pb:.3F} MHz per "
+        W(f"**The headline bound is the pooled one: below [{pb:.3F}](../results/beta_self_probe.csv \"ref:beta_self_probe:pooled_slope::bound95_nscale\") MHz per "
           f"10¹² cm⁻³ at 95%**, one shared slope across the four lines with "
           "per-line floors, a construction preregistered before computation "
           "and accepted on its adjudication "
@@ -475,7 +475,7 @@ def main() -> int:
         # the unit field opens with its own axis statement, which this sentence
         # has already made, so quote only the caveat that follows it
         _caveat = b["unit"].split(".", 1)[1].strip() if "." in b["unit"] else b["unit"]
-        W(f"- **< {b['value']} MHz (laser axis)**. {_caveat.replace(';', ',')}")
+        W(f"- **< [{b['value']}](../results/laser_epoch.csv \"ref:laser_epoch:sigma_laser_bound:over_w0_band\") MHz (laser axis)**. {_caveat.replace(';', ',')}")
     W("- Degenerate with $w_0$ through the transit kernel: the transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which overshoots the observed line, so 32 µm is excluded) and "
       f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2F} MHz at the "
@@ -871,7 +871,7 @@ def main() -> int:
         v = lambda q, k: float(sj[(q, k)]["value"])
         pred_ratio = v("S0_225mW_pred", "prediction") / v("S0_225mW_ub95", "primary")
         W(f"- **C3f. The joint three-session fit puts the light-shift bound "
-          f"at $S_0(225\\ \\mathrm{{mW}})$ below {v('S0_225mW_ub95','primary'):.2F} MHz** "
+          f"at $S_0(225\\ \\mathrm{{mW}})$ below [{v('S0_225mW_ub95','primary'):.2F}](../results/stark_joint.csv \"ref:stark_joint:S0_225mW_ub95:primary\") MHz** "
           f"(`run_stark_joint`, 95% one-sided profile likelihood at the "
           f"unscaled 2.706 threshold. The over-dispersion widening of "
           f"`rb5s6s/stark.py` belongs to C3d's width-only bound, not to this "
@@ -1246,7 +1246,7 @@ def main() -> int:
         W(f"- **Frequency axis:** {mean:.5F}({float(c['rate_laser_err'])*1e5:.0F}) "
           f"MHz/ms laser axis. The 20 ruler blocks disagree by more than their own "
           f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1F}$), and the quoted error "
-          f"carries one pdg scale factor of "
+          f"carries one PDG scale factor of "
           f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1F}\\times$ for it. A single "
           f"scale factor is the wrong shape for this scatter, and the blocks reject it: "
           f"the {n_p} power blocks over-disperse at "
@@ -1384,7 +1384,7 @@ def main() -> int:
           f"($S_0$ bounds and the asymmetry null use $|\\Delta\\alpha|$). "
           f"Validation against anchors the model does not use: the measured 5S "
           f"tune-out 790.032326(32) nm (Leonard 2015 as corrected by their 2017 "
-          f"erratum, pra 95 059901(E), both now held, and the replaced 2015 value "
+          f"erratum, PRA 95 059901(E), both now held, and the replaced 2015 value "
           f"was 790.032388(32), 0.062 pm away) is "
           f"reproduced at {to:.4F} nm (≈1.6 pm), "
           f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2F}, and the "

@@ -21,8 +21,7 @@ fitted rather than which input drives a projection. That is
 ## What it is
 
 Sensitivity analysis asks how much an output changes when the inputs that
-feed it change, and that question is answered in two different ways
-different shapes depending on how far the inputs are allowed to move.
+feed it change, and that question is answered in two different ways depending on how far the inputs are allowed to move.
 
 Local sensitivity is a derivative. It asks how the output responds to an
 infinitesimal wiggle of one input around a single point, usually the best

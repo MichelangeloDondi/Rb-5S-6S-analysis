@@ -31,7 +31,7 @@ each limit.
 
 Three bounds, each with the construction that produced it.
 
-**Collisional self-broadening.** Below 0.030 MHz per 10¹² cm⁻³ at 95%,
+**Collisional self-broadening.** Below [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 10¹² cm⁻³ at 95%,
 pooled across the four hyperfine lines by a shared-slope construction
 preregistered before computation, from the four-point 70 to 130 °C density
 lever ([`run_beta_self.py`](../../scripts/run_beta_self.py),
@@ -45,7 +45,7 @@ resolves a collisional width and every number here is a bound.
 
 **The unexplained Gaussian width, which this record used to call the laser
 width.** Below 2.4 MHz on the two-photon transition axis, the axis the
-analysis works on, or 1.2 MHz per photon
+analysis works on, or [1.2](../../results/laser_epoch.csv "ref:laser_epoch:sigma_laser_bound:over_w0_band") MHz per photon
 ([`laser_epoch.csv`](../../results/laser_epoch.csv)). **The name matters
 more than the number.** What the fit bounds is the Gaussian left over once
 transit is removed at the measured waist, which is why the bound rises with
@@ -69,7 +69,7 @@ next block).
 **The light shift.** The joint three-session fit detects no shift: the
 best-fit power coefficient is consistent with zero (Δχ² against zero of
 0.12). What the data give is a 95% upper limit, S₀ at the campaign's
-225 mW operating power **below 0.26 MHz**
+225 mW operating power **below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
 [`stark_joint.csv`](../../results/stark_joint.csv)). The limit comes from
 how the line moves with power and needs no waist.
@@ -77,7 +77,7 @@ how the line moves with power and needs no waist.
 The predicted shift does need one. At the 64 µm waist, measured by Rajasree
 on this same optical table with the same laser and lenses, though not in
 the cell at campaign time, which is why section 4 still asks for the
-profile, the prediction is 0.35 MHz, above the limit, so the prediction is excluded at 95%, at
+profile, the prediction is [0.35](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz, above the limit, so the prediction is excluded at 95%, at
 about two sigma. Over the waist measurement's own 62 to 68 µm band the
 prediction runs 0.30 to 0.38, all of it above the limit, so reconciling at
 95% needs a waist outside its stated band. One robustness arm weakens the

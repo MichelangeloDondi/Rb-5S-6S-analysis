@@ -89,7 +89,7 @@ equally:
   tooth-dependent pull, scan nonlinearity and differential shape effects
   together, **empirically at $\lesssim0.3$% per position**
   (`results/ruler_nlmap.csv`), already inside the quoted error through the
-  pdg block-scatter inflation.
+  PDG block-scatter inflation.
 - **Sideband amplitude imbalance** (residual am from the carrier-suppression
   trick): absorbed by the free per-tooth heights, so amplitude never enters the
   spacing.

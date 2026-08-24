@@ -160,12 +160,30 @@ Where the smoothing decimates to the output rate the stored samples can still be
 independent, and where it filters without decimating they are not, so the
 setting alone does not settle it and the autocorrelation has to be measured.
 
-## Where this is used
+## Where this repository uses it
 
 The instrument comparison and the per-rung range analysis are in
 [the acquisition settings chapter](../plan/07_acquisition-settings.md). The
 apparatus record carries the unresolved question of which mode the campaign
 actually ran in, in [APPARATUS.md](../APPARATUS.md).
+
+## Further reading
+
+- The Agilent/Keysight InfiniiVision 3000 X-Series operator manual,
+  which states the High Resolution behaviour this page weighs, an extra
+  bit per factor of two in sample rate.
+- The Teledyne LeCroy WaveSurfer operator's manual, the ERes filter
+  specification the boxcar comparison above is read against.
+
+## See also
+
+- [Digitisation and dynamic range](digitisation-and-dynamic-range.md), the
+  quantiser this page's modes spend sample rate on.
+- [Photon counting](photon-counting.md), the shot-noise floor no
+  resolution mode moves.
+- [Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md),
+  why averaged samples stop being independent, which is this page's cost in
+  its statistical form.
 
 ---
 

@@ -12,6 +12,9 @@ light shift and the transit width, and the value of record's provenance.
 **Skip if.** You want what the waist does to the line shape rather than the
 length itself, covered in [the AC-Stark shift](ac-stark-shift.md).
 
+> **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
+> defines every term and symbol used anywhere in this repository.
+
 ## What it is
 
 A beam brought to a focus by a lens narrows to a minimum radius before
@@ -250,4 +253,4 @@ retraction before the sweep needed to.
 
 ---
 
-[← Transit-time broadening](transit-time-broadening.md) · *Experimental spectroscopy, 5 of 10* · [The AC-Stark shift →](ac-stark-shift.md)
+[← Transit-time broadening](transit-time-broadening.md) · *Experimental spectroscopy, 5 of 11* · [The AC-Stark shift →](ac-stark-shift.md)

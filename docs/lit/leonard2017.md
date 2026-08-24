@@ -93,3 +93,13 @@ What changed is provenance: the anchor quoted in
 `rb5s6s/polarizability.py`, `docs/THEORY_NOTE.md`, `scripts/run_polarizability.py`
 and the results ledger is now the **erratum** value, read from the document,
 rather than the 2015 value with a footnote about an unread correction.
+
+## Values
+
+The load-bearing numbers of this source, each at its stated
+location, so a prose quote anywhere in this repository can
+reference a row here and be checked against it.
+
+| field | value | where in the paper |
+|---|---|---|
+| tuneout_nm | 790.032326(32) | the corrected 5S tune-out wavelength, the erratum's value and the anchor of this record's polarizability sign |
