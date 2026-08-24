@@ -38,8 +38,7 @@ transition or a different geometry.
   Even resolved, the coefficient carries the 20 per cent density-scale
   systematic until an independent density measurement
   ([CLAIMS](../CLAIMS.md) section 3).
-* The laser content: the kernel question is tested at one corner and open in
-  between (`results/laser_kernel.csv`). The cell campaign's own routes to
+* The laser content: the kernel question is tested at one end-member and open in between (`results/laser_kernel.csv`). The cell campaign's own routes to
   the content are the lock's error signal and a fast-scan comb block
   ([plan chapter 7](../plan/07_acquisition-settings.md)).
 

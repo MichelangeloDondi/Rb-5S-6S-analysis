@@ -21,7 +21,7 @@ is [digitisation and dynamic range](digitisation-and-dynamic-range.md).
 Every oscilloscope in ordinary laboratory use has an eight-bit converter, and
 eight bits is 256 levels across the screen. That is far too coarse for a
 measurement that wants a per cent of a line height, and instruments therefore
-offer a smoothing feature that trades bandwidth for resolution. The trade is
+offer a smoothing feature that exchanges bandwidth for resolution. The exchange is
 real rather than cosmetic, because averaging genuinely reduces the uncertainty
 of each reported number. What is easy to get wrong is how much resolution is
 bought, where the feature sits in the instrument, and what else it changes.

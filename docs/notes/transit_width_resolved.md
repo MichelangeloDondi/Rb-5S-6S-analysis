@@ -79,7 +79,7 @@ The note above kept 50 µm because the transit-width match slightly preferred
 50–55 and because the 2025 alignment was not guaranteed to match Nieddu's.
 Two things settled it. Rajasree's thesis §5.2 turns out to record the same
 128 µm diameter on the **same laser model** this campaign used, through the
-same f = 150 mm lens, at the same 130 °C, in the same 2f retro geometry, so
+same f = 150 mm lens, at the same 130 °C, in the same 2F retro geometry, so
 the transfer is far better evidenced than a bare citation. And the
 three-session Stark bound (M23) lands below the prediction at every data
 subset, which is what a lower intensity, meaning a wider waist, produces.

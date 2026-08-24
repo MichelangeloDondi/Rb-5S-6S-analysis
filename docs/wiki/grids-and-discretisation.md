@@ -69,7 +69,7 @@ oscillates faster than the grid resolves reappears in a fit at an apparent
 frequency set by the grid rather than by the line, the general aliasing
 failure of any regular sampling below the feature's own Nyquist rate.
 
-Span and resolution trade against each other at a fixed record length, and
+Span and resolution exchange against each other at a fixed record length, and
 widening a window for a good reason, to reach a wing or a companion feature
 further out, is not free. Every point spent on the wider reach is a point
 no longer spent on the narrow feature at the centre, so the same total
@@ -164,7 +164,7 @@ a reader.
 
 ## The ratio that was asserted rather than tested once
 
-This page's own remedy for a coupled span-resolution-record trade is to test
+This page's own remedy for a coupled span-resolution-record exchange is to test
 the points-across-the-feature ratio by simulation rather than assert it
 because a number sounds generous. On the wide-scan design in
 [chapter 7 of the plan](../plan/07_acquisition-settings.md), that remedy was

@@ -258,7 +258,7 @@ what the comb does and does not say).
 **What it does not settle.** Gaussian against Lorentzian is a comparison
 between two extremes, not a scan over kernel families, and the truth could be
 neither. The next step is a laser kernel whose Lorentzian fraction is fitted,
-which turns a choice between two corners into a bound on the Lorentzian
+which turns a choice between two end-members into a bound on the Lorentzian
 content and therefore into a proper error bar
 (`results/laser_kernel.csv`, `scripts/run_laser_kernel.py`).
 

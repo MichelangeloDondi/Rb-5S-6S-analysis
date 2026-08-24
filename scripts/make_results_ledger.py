@@ -99,8 +99,8 @@ def main() -> int:
       "64 µm waist measurement (Nieddu/Rajasree) is what makes the exclusion "
       "safe. "
       f"Since v3.0.0 the analysis uses it: $w_0$ is **"
-      f"{C.W0_MEASURED_M*1e6:.0f} µm** (band {C.W0_BAND_M[0]*1e6:.0f}–"
-      f"{C.W0_BAND_M[1]*1e6:.0f}), taken from the lineage measurement rather "
+      f"{C.W0_MEASURED_M*1e6:.0F} µm** (band {C.W0_BAND_M[0]*1e6:.0F}–"
+      f"{C.W0_BAND_M[1]*1e6:.0F}), taken from the lineage measurement rather "
       "than inferred from our own line, and the retro ratio is assumed at "
       f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$. "
       "Every $w_0$-conditional number below (the "
@@ -136,7 +136,7 @@ def main() -> int:
                    if r["peak"] == "pooled_slope"), None)
     if pooled:
         pb = float(pooled["bound95_nscale"])
-        W(f"**The headline bound is the pooled one: below {pb:.3f} MHz per "
+        W(f"**The headline bound is the pooled one: below {pb:.3F} MHz per "
           f"10¹² cm⁻³ at 95%**, one shared slope across the four lines with "
           "per-line floors, a construction preregistered before computation "
           "and accepted on its adjudication "
@@ -146,27 +146,27 @@ def main() -> int:
           "parity-forbidden transition seeing the same R⁻⁶ collision "
           "physics, and the data agree (per-line vs shared ≤ 1.1σ, isotope "
           "split null).")
-    W(f"**The per-peak range {pbounds[0]:.2f}–{pbounds[-1]:.2f}, floored at "
-      f"the loosest (below {pbounds[-1]:.2f}), stands beside it as the "
+    W(f"**The per-peak range {pbounds[0]:.2F}–{pbounds[-1]:.2F}, floored at "
+      f"the loosest (below {pbounds[-1]:.2F}), stands beside it as the "
       "geometry-robust floor.** Three fitted estimators of the same quantity "
       "under different $\\sigma_\\text{laser}$ treatments span a "
-      f"**factor ~{max(fitvals) / min(fitvals):.0f}** "
-      f"({min(fitvals):.2f}–{max(fitvals):.2f}). That model-dependence is "
+      f"**factor ~{max(fitvals) / min(fitvals):.0F}** "
+      f"({min(fitvals):.2F}–{max(fitvals):.2F}). That model-dependence is "
       "larger than any single fit's error bar, and the fits are preliminary "
       "cross-checks pending a fixed-lock session.\n")
     W("| estimator | value (MHz per 10¹² cm⁻³) | status |")
     W("|---|---|---|")
     if pooled:
         W(f"| pooled shared slope, per-line floors (95% bound, preregistered) "
-          f"| below {float(pooled['bound95_nscale']):.3f} | **headline bound** |")
+          f"| below {float(pooled['bound95_nscale']):.3F} | **headline bound** |")
     if pr:
-        bnds = [f"993.{p} nm below {float(pr[p]['bound95_nscale']):.2f}" for p in sorted(pr)]
+        bnds = [f"993.{p} nm below {float(pr[p]['bound95_nscale']):.2F}" for p in sorted(pr)]
         any_r = next(iter(pr.values()))
         W(f"| model-independent width-slope (95% bound, per peak: "
-          f"$t({any_r['dof']})={float(any_r['t95']):.2f}$ × syst, then "
-          f"×{1 + float(any_r['n_frac_syst']):.1f} density-scale) | "
+          f"$t({any_r['dof']})={float(any_r['t95']):.2F}$ × syst, then "
+          f"×{1 + float(any_r['n_frac_syst']):.1F} density-scale) | "
           f"{', '.join(bnds)} | per-peak floor (geometry-robust) |")
-    rr = "/".join(f"{float(pr[p]['resid_rms']):.2f}" for p in sorted(pr))
+    rr = "/".join(f"{float(pr[p]['resid_rms']):.2F}" for p in sorted(pr))
     nmono = sum(1 for r in pr.values() if r["monotonic"] != "True")
     hdof = int(any_r["dof"]) if pr else 2
     hpts = hdof + 2
@@ -178,7 +178,7 @@ def main() -> int:
       f"slope error is estimated on only **{hdof} residual degrees of freedom** "
       f"({hpts} density "
       f"points, 2 fit parameters), so a one-sided 95% needs $t(0.95, {hdof}) = "
-      f"{ht95:.2f}$, not the "
+      f"{ht95:.2F}$, not the "
       "Gaussian-asymptotic 2 used before. The old “≈2σ” bounds "
       "(0.07–0.15) under-covered, which is why they were always flagged with a "
       "~factor-2 own-uncertainty, and the t-quantile formalizes exactly that. "
@@ -221,14 +221,14 @@ def main() -> int:
       "`docs/RESEARCH_DECISIONS.md`).\n")
     bs = rows("beta_self")
     if bs:
-        s = ", ".join(f"993.{r['peak']} nm {float(r['beta_self']):.3f}({float(r['beta_self_err'])*1e3:.0f})"
+        s = ", ".join(f"993.{r['peak']} nm {float(r['beta_self']):.3F}({float(r['beta_self_err'])*1e3:.0F})"
                       for r in bs)
         W(f"| per-peak fits ($\\sigma_\\text{{laser}}$ free per peak) | {s} | "
           "preliminary (993.4207 nm ~1.6σ above 993.4121 nm) |")
     gf = rows("global_fit")
     betas = [r for r in gf if r["quantity"] == "beta_self"]
     if betas:
-        s = ", ".join(f"{r['key']} {float(r['value']):.3f}({float(r['err'])*1e3:.0f})" for r in betas)
+        s = ", ".join(f"{r['key']} {float(r['value']):.3F}({float(r['err'])*1e3:.0F})" for r in betas)
         W(f"| hierarchical ($\\sigma_\\text{{laser}}$ shared per temperature across "
           f"peaks, $\\beta$ per isotope) "
           f"| {s} | preliminary. The (·) is **statistical only**, and the dominant "
@@ -254,7 +254,7 @@ def main() -> int:
       "n=12), and of the position jitter $r=+0.19$ ($p=0.6$), so sharing is not "
       "*refuted* either. It is simply **untested by a design that spread the "
       "peaks over an hour**, on 12 points with no power to resolve a slow width "
-      f"wander. So the hierarchical {hb:.3f} stays conditional on an "
+      f"wander. So the hierarchical {hb:.3F} stays conditional on an "
       "**acquisition-timing assumption the record can now date but not "
       "validate**, which is the real reason it is a cross-check while the "
       "pooled bound heads the table with the per-peak floor beside it, rather than merely "
@@ -297,33 +297,33 @@ def main() -> int:
             trx, shx = _dv("beta_err_transit", iso), _dv("beta_err_sharing", iso)
             wb, lp = _dv("beta_w0_band", iso), _dv("beta_loo_peak", iso)
             who = (lp["unit"].split("(")[-1].rstrip(")") if lp and "(" in lp["unit"] else "")
-            W(f"| {iso} | {float(bd['value']):.4f} | ±{float(bd['err']):.4f} | "
-              f"±{float(mf['value']):.3f} ({float(trx['value']):.3f} / "
-              f"{float(shx['value']):.3f}) | [{float(wb['value']):.3f}, "
-              f"{float(wb['err']):.3f}] | {float(lp['value']):.4f} ({who}) |")
-        W(f"> **Read the $\\pm{bemax:.3f}$ as this estimator's precision, not $\\beta$'s.** It "
+            W(f"| {iso} | {float(bd['value']):.4F} | ±{float(bd['err']):.4F} | "
+              f"±{float(mf['value']):.3F} ({float(trx['value']):.3F} / "
+              f"{float(shx['value']):.3F}) | [{float(wb['value']):.3F}, "
+              f"{float(wb['err']):.3F}] | {float(lp['value']):.4F} ({who}) |")
+        W(f"> **Read the $\\pm{bemax:.3F}$ as this estimator's precision, not $\\beta$'s.** It "
           "is the cooling-sweep joint-fit covariance, but $\\beta$ rides on only "
           "**three density points**, so the slope lever is fragile (few effective "
           "degrees of freedom, "
           "heavy-tailed, the same ~factor-2 own-uncertainty the model-independent "
           "bound carries), and the **lever test below moves this central value by "
-          f"$\\sim8\\sigma$**. So {bmax:.3f} is a bound wearing an estimator's error budget. "
+          f"$\\sim8\\sigma$**. So {bmax:.3F} is a bound wearing an estimator's error budget. "
           "Treat it as the short-lever end of a lever-dependent range (per-condition "
-          f"~0.01 rising to {bmax:.3f} on the cooling sweep), and the "
-          f"$\\pm{bemax:.3f}$, model-form and $w_0$ bars as the "
+          f"~0.01 rising to {bmax:.3F} on the cooling sweep), and the "
+          f"$\\pm{bemax:.3F}$, model-form and $w_0$ bars as the "
           "precision and systematics *of this estimator*, which do not span the bound. "
           "The headline number stays the top-row width-slope bound.\n")
         d87 = _dv("beta_loo_drop", "4207|87Rb")
         s4207 = {r["key"].split("|")[1]: float(r["value"]) for r in dfr
                  if r["quantity"] == "sigma_loo_drop" and r["key"].startswith("4207|")}
         if d87 and s4207:
-            sl = "/".join(f"{s4207[k]:.2f}" for k in ("70c", "90c", "110c") if k in s4207)
+            sl = "/".join(f"{s4207[k]:.2F}" for k in ("70c", "90c", "110c") if k in s4207)
             sgl = {r["key"]: float(r["value"]) for r in gf if r["quantity"] == "sigma_laser"}
-            sall = "/".join(f"{sgl[k]:.2f}" for k in ("70c", "90c", "110c") if k in sgl)
+            sall = "/".join(f"{sgl[k]:.2F}" for k in ("70c", "90c", "110c") if k in sgl)
             W(f"> Per-drop detail is committed (`beta_loo_drop` and `sigma_loo_drop` "
               f"rows). "
               f"Dropping the 993.4207 nm suspect moves $\\beta_{{87}}$ by "
-              f"{float(d87['err']):+.4f} (below its statistical error) and leaves the "
+              f"{float(d87['err']):+.4F} (below its statistical error) and leaves the "
               f"$\\sigma_\\text{{laser}}(T)$ pattern intact ({sl} against {sall} with "
               f"all peaks). The suspect drives **neither** the coefficient **nor** the "
               f"$\\sigma_\\text{{laser}}$ trend, whose 110 °C dip the sharing check "
@@ -338,14 +338,14 @@ def main() -> int:
           "beam-profile measurement collapses), then the transit model-form (Lehmann cusp "
           "against Voigt). The $\\sigma_\\text{laser}$ A-against-B *sharing* choice is "
           "minor: "
-          f"per-block (Model B) gives $\\beta_{{87}}={float(pb87['value']):.3f}$ against "
-          f"per-temperature {bcv['87Rb']:.3f}, agreeing to "
-          f"~{float(sh87['value']):.3f}, so the per-temperature headline (the "
+          f"per-block (Model B) gives $\\beta_{{87}}={float(pb87['value']):.3F}$ against "
+          f"per-temperature {bcv['87Rb']:.3F}, agreeing to "
+          f"~{float(sh87['value']):.3F}, so the per-temperature headline (the "
           "physically motivated choice, and the one the sharing check finds "
           "consistent) is *robust to the sharing choice*. **Drop-a-peak is "
           "small.** No single peak, "
           "including the 993.4207 nm suspect, drives $\\beta$. (Drop-a-*temperature* is "
-          f"large, up to {float(lt['value']):.2f} if present, but that is expected "
+          f"large, up to {float(lt['value']):.2F} if present, but that is expected "
           "**lever leverage**: removing one of only three temperatures shortens the "
           "density arm, so it is a sensitivity diagnostic rather than a robustness "
           "failure.) A "
@@ -357,22 +357,22 @@ def main() -> int:
         pb = [_dv("beta_lever_probe_130", i) for i in isos]
         grf = _dv("gamma_rise_factor", "70to130")
         if all(pb) and grf:
-            shifts = ", ".join(f"{r['key']} {float(r['value']):.3f}" for r in pb)
+            shifts = ", ".join(f"{r['key']} {float(r['value']):.3F}" for r in pb)
             gfac, nfac = float(grf["value"]), float(grf["err"])
             W(f"> **Lever test. $\\beta$ is reported as a bound because "
               f"$\\gamma_\\text{{coll}}$ barely grows with density.** Adding the curated "
               f"130 °C anchor (`serves_t130`, 225 mW, density lever "
               f"$\\times16\\to\\times53$) "
               f"pulls the joint $\\beta$ to [{shifts}], well below the cooling-sweep "
-              f"{bmax:.3f} "
+              f"{bmax:.3F} "
               f"and larger than every error bar above. This is **not** one bad block. The "
-              f"per-condition $\\gamma_\\text{{coll}}$ rises only ×{gfac:.1f} across "
-              f"the ×{nfac:.0f} density span (70→130 °C), and the 130 °C widths sit "
+              f"per-condition $\\gamma_\\text{{coll}}$ rises only ×{gfac:.1F} across "
+              f"the ×{nfac:.0F} density span (70→130 °C), and the 130 °C widths sit "
               f"*on* that near-flat trend, whereas a real binary-collision width is "
               f"**linear** in $N$. So the fitted $\\gamma_\\text{{coll}}$ is a residual "
               f"**floor**, not resolved collisions, and the apparent $\\beta$ shrinks as the "
               f"lever lengthens (per-condition $\\beta$ is only ~0.01, and the joint "
-              f"{bmax:.3f} "
+              f"{bmax:.3F} "
               f"is inflated by the $\\sigma_\\text{{laser}}$ sharing). That is precisely why "
               f"$\\beta$ is quoted as a bound. The 130 °C block is not a separate "
               f"session, since the "
@@ -387,13 +387,13 @@ def main() -> int:
             mf = max(float(r["value"]) for r in gf_mf)
             gf_ns = [r for r in rows("global_fit") if r["quantity"] == "beta_nscale_syst"]
             ns = max((float(r["value"]) for r in gf_ns), default=0.0)
-            W(f"> **Four separate error bars on the hierarchical $\\beta$ ({hb:.3f}), and the "
-              f"systematics dominate:** statistical ±{hbe:.3f} (joint-fit "
+            W(f"> **Four separate error bars on the hierarchical $\\beta$ ({hb:.3F}), and the "
+              f"systematics dominate:** statistical ±{hbe:.3F} (joint-fit "
               f"covariance), the "
-              f"**transit model-form ±{mf:.3f}** (the |Voigt − Lehmann| $\\beta$ "
+              f"**transit model-form ±{mf:.3F}** (the |Voigt − Lehmann| $\\beta$ "
               f"shift, `run_global_fit`), the $w_0$-band ~±0.01–0.02 (the "
               f"unmeasured "
-              f"beam waist), and the **density scale ±{ns:.3f}** ($\\beta\\propto1/N$, "
+              f"beam waist), and the **density scale ±{ns:.3F}** ($\\beta\\propto1/N$, "
               f"the ~20% vapor-pressure-correlation spread, `density.py`). The paper "
               f"quotes all four bars, not one optimistic $\\pm$.\n")
     W("*Lifted by:* a fixed lock (which removes between-block laser drift) plus a "
@@ -446,7 +446,23 @@ def main() -> int:
         W("")
 
     # ---- C2: sigma_laser ----
-    W("## C2. The 2025 laser-epoch width $\\sigma_\\text{laser}$\n")
+    W("## C2. The 2025 laser-epoch Gaussian width $\\sigma_\\text{laser}$\n")
+    W("**What this bounds, and what it does not.** The parameter carries the "
+      "name `sigma_laser` in the code and the fit, and what it measures is the "
+      "GAUSSIAN WIDTH LEFT OVER once transit is removed at the measured "
+      "waist. It is not a laser measurement. Three independent pieces of "
+      "bench evidence put the laser far below this bound: a wavemeter record "
+      "taken mid-acquisition holds a 100 kHz standard deviation over 24 "
+      "minutes, the comb read as a clock bounds the non-repeating excursion "
+      "below 28.3 kHz on the transition axis, and the previous generation of "
+      "this laser at about 100 kHz produced a line of 4.9 to 5.2 MHz on the "
+      "TRANSITION axis, 2.4 to 2.6 per photon, where the 2025 line sits at "
+      "about 5.25 and where a 2.4 MHz line would be narrower than the "
+      "3.49 MHz natural width and so impossible. So roughly a megahertz "
+      "of Gaussian width is unaccounted for, the record's leading candidate "
+      "is residual Doppler from a retro tilt of 3.2 to 3.5 mrad, and the "
+      "independent laser measurement that would separate them is the "
+      "top-ranked lever of the next campaign.\n")
     lerows = rows("laser_epoch")
     le = {r["quantity"]: r for r in lerows}
     b = le.get("sigma_laser_bound")
@@ -462,8 +478,8 @@ def main() -> int:
         W(f"- **< {b['value']} MHz (laser axis)**. {_caveat.replace(';', ',')}")
     W("- Degenerate with $w_0$ through the transit kernel: the transit adds ~2.1 MHz "
       "at $w_0=32$ µm (which overshoots the observed line, so 32 µm is excluded) and "
-      f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2f} MHz at the "
-      f"{C.W0_MEASURED_M*1e6:.0f} µm measured waist. More transit leaves less width for "
+      f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2F} MHz at the "
+      f"{C.W0_MEASURED_M*1e6:.0F} µm measured waist. More transit leaves less width for "
       "the laser.")
     # Axis discipline: laser_epoch.csv is on the laser axis, every fit below is
     # on the transition axis (= 2x laser). All four numbers are read from the
@@ -481,30 +497,30 @@ def main() -> int:
     if b and gsig and fsig and cores and cen:
         tk = [k for k in ("70c", "90c", "110c") if k in gsig]
         fk = [k for k in ("70", "90", "110") if k in fsig]
-        tied = "/".join(f"{gsig[k]:.2f}" for k in tk)
-        free = "/".join(f"{fsig[k]:.2f}" for k in fk)
+        tied = "/".join(f"{gsig[k]:.2F}" for k in tk)
+        free = "/".join(f"{fsig[k]:.2F}" for k in fk)
         # same normalisation as above: value_MHz -> value, and the bound's
         # inequality now lives in the unit field rather than in the number
         bnd = float(b["value"])
         cv = float(cen["value"])
         W(f"\n> **The laser width is quoted on two axes, and the factor of two "
           f"between them is where it goes wrong.** The bound above is "
-          f"{b['value']} MHz on the **laser** axis, which is below {2 * bnd:.1f} "
+          f"{b['value']} MHz on the **laser** axis, which is below {2 * bnd:.1F} "
           f"MHz on the **transition** axis every fit below works on. At "
           f"70/90/110 °C the per-temperature tied widths are {tied} MHz "
           f"transition, the free per-condition widths are {free} MHz "
           f"transition, and the power-sweep core widths are "
-          f"{min(cores):.2f}–{max(cores):.2f} MHz transition. Halved onto the "
+          f"{min(cores):.2F}–{max(cores):.2F} MHz transition. Halved onto the "
           f"laser axis those become "
-          f"{min(gsig[k] for k in tk) / 2:.2f}–{max(gsig[k] for k in tk) / 2:.2f}, "
-          f"{min(fsig[k] for k in fk) / 2:.2f}–{max(fsig[k] for k in fk) / 2:.2f} "
-          f"and {min(cores) / 2:.2f}–{max(cores) / 2:.2f} MHz, all under the "
+          f"{min(gsig[k] for k in tk) / 2:.2F}–{max(gsig[k] for k in tk) / 2:.2F}, "
+          f"{min(fsig[k] for k in fk) / 2:.2F}–{max(fsig[k] for k in fk) / 2:.2F} "
+          f"and {min(cores) / 2:.2F}–{max(cores) / 2:.2F} MHz, all under the "
           f"bound. The tied values spread much further across temperature than "
           f"the free ones, and that spread is the "
           f"$\\beta\\leftrightarrow\\sigma_\\text{{laser}}$ degeneracy under the "
           f"density constraint rather than a physical laser drift. The record's "
-          f"own central value at the measured waist is {cv:.2f} MHz on the laser "
-          f"axis ({2 * cv:.2f} transition). Every committed CSV carries the axis "
+          f"own central value at the measured waist is {cv:.2F} MHz on the laser "
+          f"axis ({2 * cv:.2F} transition). Every committed CSV carries the axis "
           f"in its unit string.\n")
     W("*Lifted by:* a beam-profile $w_0$ (knife-edge and/or camera) plus a direct "
       "linewidth measurement in a fixed-lock session.\n")
@@ -520,7 +536,7 @@ def main() -> int:
         for p, d in by.items():
             w = [x[1] for x in d]
             infl.append(100 * (max(w) - min(w)) / np.mean(w))
-        W(f"- **C3a linewidth, no power trend:** inflation {min(infl):.0f}–{max(infl):.0f}% "
+        W(f"- **C3a linewidth, no power trend:** inflation {min(infl):.0F}–{max(infl):.0F}% "
           "across 25–225 mW, non-monotonic (block scatter, not power broadening). "
           "**Tested 2026-08-18 and it holds.** A concave curvature fitted to the "
           "same widths reaches 4.8 standard deviations on within-cell errors and "
@@ -576,20 +592,20 @@ def main() -> int:
     s0p = swp.get(("S0_225mW_pred", "shared"))
     gain = (stark_shift_S0_mhz(0.225, W0_SMALL_M)
             / stark_shift_S0_mhz(0.225, C.W0_MEASURED_M))
-    skew_gain = (f"$S_0$ {float(s0p['value']):.2f} → "
-                 f"{float(s0p['value']) * gain:.1f} MHz at 225 mW, "
-                 f"{gain:.0f} times larger at the {W0_SMALL_M * 1e6:.0f} µm "
+    skew_gain = (f"$S_0$ {float(s0p['value']):.2F} → "
+                 f"{float(s0p['value']) * gain:.1F} MHz at 225 mW, "
+                 f"{gain:.0F} times larger at the {W0_SMALL_M * 1e6:.0F} µm "
                  f"configuration than at the measured "
-                 f"{C.W0_MEASURED_M * 1e6:.0f} µm") if s0p else "a larger $S_0$"
+                 f"{C.W0_MEASURED_M * 1e6:.0F} µm") if s0p else "a larger $S_0$"
     # worst low-power residual skew, read from the CSV rather than typed: the
     # same figure was quoted as ~10 sigma and then as 9 sigma in one bullet
     lowp = [r for r in ps if int(r["power_mW"]) == min(int(x["power_mW"])
                                                        for x in ps)]
     wsk = max(lowp, key=lambda r: abs(float(r["resid_skew"]))
               / max(float(r["resid_skew_err"]), 1e-12)) if lowp else None
-    skew_txt = (f"**{abs(float(wsk['resid_skew'])) / float(wsk['resid_skew_err']):.1f}σ** "
+    skew_txt = (f"**{abs(float(wsk['resid_skew'])) / float(wsk['resid_skew_err']):.1F}σ** "
                 f"at {int(wsk['power_mW'])} mW on 993.{wsk['peak']} nm, "
-                f"{float(wsk['resid_skew']):.3f}±{float(wsk['resid_skew_err']):.3f}"
+                f"{float(wsk['resid_skew']):.3F}±{float(wsk['resid_skew_err']):.3F}"
                 ) if wsk else "many sigma at the lowest power"
     # The fringe-tail suppression is read from fringe_tail.csv rather than typed,
     # and its denominator is named. It is |d_skew|, the change in the
@@ -601,7 +617,7 @@ def main() -> int:
     fsupp = [abs(float(r["value"])) / (18 ** 1.5 / 135) * 100.0
              for r in rows("fringe_tail")
              if r["quantity"] == "d_skew" and r["key"].startswith("S_")]
-    ftail_txt = (f"~{min(fsupp):.0f}-{max(fsupp):.0f}% of the intrinsic +0.566 "
+    ftail_txt = (f"~{min(fsupp):.0F}-{max(fsupp):.0F}% of the intrinsic +0.566 "
                  f"ramp skew at 16 µm, `results/fringe_tail.csv`"
                  ) if fsupp else "quantified in `results/fringe_tail.csv`"
     W("- **C3c. The ramp asymmetry is a bound, and the significant low-power skew in "
@@ -637,7 +653,7 @@ def main() -> int:
       "and, "
       "past $Z_c/z_R\\approx1.12$, its sign (see `docs/PLAN.md`). Which side of that "
       "crossover each configuration sits on is set by $Z_c = L_\\parallel/2M$, and "
-      "that is now largely pinned: the cathode is landscape, so $L_\\parallel = 12$ "
+      "that is now largely pinned: the cathode sits long axis along the beam, so $L_\\parallel = 12$ "
       "mm and $Z_c = 6/M$ mm, and the detector is not re-oriented between "
       "configurations. "
       "The two-waist sign flip then holds for every $M$ from 0.5 to 6, so it no "
@@ -675,19 +691,19 @@ def main() -> int:
         # further down. It was hardcoded here at 0.11 while the CSV said 0.21
         rp_a = next((r for r in rows("resolving_power")
                      if r["kind"] == "assumption"), None)
-        perm_p = f"p = {float(rp_a['ratio']):.2f}" if rp_a else "not computed here"
+        perm_p = f"p = {float(rp_a['ratio']):.2F}" if rp_a else "not computed here"
         W(f"- **C3d. The AC-Stark coefficient from the power lever is an upper bound, "
-          f"$S_0$(225 mW) below {ub:.2f} MHz (95%, over-dispersion-adjusted "
+          f"$S_0$(225 mW) below {ub:.2F} MHz (95%, over-dispersion-adjusted "
           f"profile likelihood, the C3f construction), "
           + ("landing inside" if plo <= ub <= phi else
              ("sitting above" if ub > phi else "sitting below"))
-          + f" the predicted band {plo:.2f}–{phi:.2f} MHz** (`run_stark_sweep`, "
+          + f" the predicted band {plo:.2F}–{phi:.2F} MHz** (`run_stark_sweep`, "
           f"the power-lever twin of the $\\beta$ fit). One shared $\\kappa$ "
           f"($S_0=\\kappa "
           f"P$) is fit to the four peaks' FWHM-against-power (each floating its core "
           f"width). The ramp broadens the line as $\\sim S_0^2$, the only live handle "
           f"since the *shift* (pull $\\sim S_0$) is dead in the 2025 drift. The fit "
-          f"($S_0(225) = {fit:.2f}$, $\\kappa$ consistent with zero) is **not** a "
+          f"($S_0(225) = {fit:.2F}$, $\\kappa$ consistent with zero) is **not** a "
           f"measurement. It **brackets** the prediction. The bound and the "
           f"prediction are independent by construction: the bound uses only the "
           f"width-against-power data (no $w_0$ enters), while the prediction is the "
@@ -698,11 +714,11 @@ def main() -> int:
           f"model-independent width-slope bound that heads C1), the $\\kappa$ fit "
           f"forward-models each line through `model_profile`, so this bound is "
           f"conditional on that spectral model. "
-          f"The prediction is not a point but a **band**: the {plo:.2f}–{phi:.2f} "
+          f"The prediction is not a point but a **band**: the {plo:.2F}–{phi:.2F} "
           f"MHz spread is $S_0$ over the measured $w_0$ band "
-          f"{C.W0_BAND_M[0]*1e6:.0f}–{C.W0_BAND_M[1]*1e6:.0f} µm "
-          f"($\\propto 1/w_0^2$, central {pr:.2f} at the measured "
-          f"{C.W0_MEASURED_M*1e6:.0f} µm) folded with "
+          f"{C.W0_BAND_M[0]*1e6:.0F}–{C.W0_BAND_M[1]*1e6:.0F} µm "
+          f"($\\propto 1/w_0^2$, central {pr:.2F} at the measured "
+          f"{C.W0_MEASURED_M*1e6:.0F} µm) folded with "
           f"$\\rho={C.RHO_RETRO}\\pm{C.RHO_RETRO_ERR}$, the assumed retro "
           f"ratio ($S_0\\propto(1+\\rho)$, measured in situ in the next "
           f"campaign, see `docs/PLAN.md`), under "
@@ -713,15 +729,15 @@ def main() -> int:
           f"where the width handle ($\\propto S_0^2$) has zero gradient, so a "
           f"linearized (Wald) $\\kappa+1.645\\sigma$ bound has no valid coverage "
           f"there, its $\\sigma$ being a finite-difference artifact (the replaced "
-          f"Wald numbers, {float(sv['S0_225mW_ub95_raw']['value']):.1f} raw and "
-          f"{float(sv['S0_225mW_ub95']['value']):.1f} inflated MHz, stay in the CSV "
+          f"Wald numbers, {float(sv['S0_225mW_ub95_raw']['value']):.1F} raw and "
+          f"{float(sv['S0_225mW_ub95']['value']):.1F} inflated MHz, stay in the CSV "
           f"as diagnostics). The quoted bound is instead a **profile-likelihood** "
           f"limit: $\\kappa$ is scanned upward with the per-peak cores re-minimized "
           f"at each point, and the limit sits where $\\chi^2$ rises by $2.706\\times"
           f"\\chi^2_\\text{{red}}$. That threshold scaling carries the "
           # one decimal, not zero: the same cell is quoted to 1 dp in the
           # methods results chapter, and a 0 dp render cannot agree with it.
-          f"over-dispersion ($\\chi^2_\\text{{red}}\\approx{c2:.1f}$, block-to-block "
+          f"over-dispersion ($\\chi^2_\\text{{red}}\\approx{c2:.1F}$, block-to-block "
           f"width scatter) into the bound conservatively, though as one global "
           f"factor: it treats the over-dispersion as homogeneous across the width "
           f"points, while the scatter is block-level. A preregistered "
@@ -786,15 +802,15 @@ def main() -> int:
           f"epoch spans two lines. Inside those three, power still descends with "
           f"time, exactly as the campaign was run. Fitting a shared pull against "
           f"three drift forms therefore gives "
-          f"$|S_0(225\\ \\mathrm{{mW}})|$ below {float(lin['S0_abs_ub95']):.2f}, "
-          f"below {float(ex['S0_abs_ub95']):.2f} and "
-          f"below {float(ex2['S0_abs_ub95']):.2f} MHz for linear, one-exponential and "
+          f"$|S_0(225\\ \\mathrm{{mW}})|$ below {float(lin['S0_abs_ub95']):.2F}, "
+          f"below {float(ex['S0_abs_ub95']):.2F} and "
+          f"below {float(ex2['S0_abs_ub95']):.2F} MHz for linear, one-exponential and "
           f"two-exponential drift, and the pull's **sign flips** between the first "
-          f"two ({float(lin['pull_mhz_per_w_laser']):+.1f} against "
-          f"{float(ex['pull_mhz_per_w_laser']):+.1f} MHz/W) while the bound degrades "
+          f"two ({float(lin['pull_mhz_per_w_laser']):+.1F} against "
+          f"{float(ex['pull_mhz_per_w_laser']):+.1F} MHz/W) while the bound degrades "
           f"monotonically as the drift model gains freedom. A merely imprecise "
           f"parameter does neither. The best of the three is "
-          f"{float(lin['times_weaker_than_width']):.0f}× weaker than C3d's width "
+          f"{float(lin['times_weaker_than_width']):.0F}× weaker than C3d's width "
           f"bound, so the width channel carries the light-shift information and the "
           f"centres carry none. It is tagged a null, not a bound. **The design "
           f"consequence is "
@@ -812,13 +828,13 @@ def main() -> int:
           f"$S_0(225) = +0.89\\pm0.27$ MHz, apparently $3.3\\sigma$. It is not "
           f"one. An AC-Stark pull is **linear in $P$ by construction**, and "
           f"free per-rung offsets reject linearity at "
-          f"$F(3,91) = {float(sc['knob_immune_linearity']['linearity_F']):.2f}$, "
-          f"$p = {float(sc['knob_immune_linearity']['linearity_p']):.4f}$: the rung "
+          f"$F(3,91) = {float(sc['knob_immune_linearity']['linearity_F']):.2F}$, "
+          f"$p = {float(sc['knob_immune_linearity']['linearity_p']):.4F}$: the rung "
           f"means are non-monotone (+0.243 MHz at 25 mW against −0.137 at "
           f"225 mW, so the highest power sits above the middle ones). Dropping "
           f"the 25 mW rung leaves "
-          f"${float(sc['knob_immune_linearity']['S0_drop_lowest_rung']):+.2f}"
-          f"\\pm{float(sc['knob_immune_linearity']['S0_drop_lowest_rung_err']):.2f}$ "
+          f"${float(sc['knob_immune_linearity']['S0_drop_lowest_rung']):+.2F}"
+          f"\\pm{float(sc['knob_immune_linearity']['S0_drop_lowest_rung_err']):.2F}$ "
           f"MHz over a threefold power range. That rung is also the worst to "
           f"lean on: SNR 18 against 193, scatter 4.6× larger, and the "
           f"only level where the sweep retrace makes a second above-half-max "
@@ -855,7 +871,7 @@ def main() -> int:
         v = lambda q, k: float(sj[(q, k)]["value"])
         pred_ratio = v("S0_225mW_pred", "prediction") / v("S0_225mW_ub95", "primary")
         W(f"- **C3f. The joint three-session fit puts the light-shift bound "
-          f"at $S_0(225\\ \\mathrm{{mW}})$ below {v('S0_225mW_ub95','primary'):.2f} MHz** "
+          f"at $S_0(225\\ \\mathrm{{mW}})$ below {v('S0_225mW_ub95','primary'):.2F} MHz** "
           f"(`run_stark_joint`, 95% one-sided profile likelihood at the "
           f"unscaled 2.706 threshold. The over-dispersion widening of "
           f"`rb5s6s/stark.py` belongs to C3d's width-only bound, not to this "
@@ -1038,10 +1054,10 @@ def main() -> int:
           f"symmetric mismatch between the fixed transit kernel and the free "
           f"core raises both wings together and is not an asymmetry, so only "
           f"the difference answers the question. It returns "
-          f"**{a130:+.4f} ± {ae130:.4f}** of peak at 130 °C, "
-          f"{abs(a130)/ae130:.1f}σ, exactly where a collisional satellite "
+          f"**{a130:+.4F} ± {ae130:.4F}** of peak at 130 °C, "
+          f"{abs(a130)/ae130:.1F}σ, exactly where a collisional satellite "
           f"would be 52× enhanced, and no temperature exceeds "
-          f"{abs(worst[1][0])/max(worst[1][1], 1e-9):.1f}σ. The power lever "
+          f"{abs(worst[1][0])/max(worst[1][1], 1e-9):.1F}σ. The power lever "
           f"agrees: at fixed density the fitted fraction does not hold "
           f"constant as a physical wing must, but tracks amplitude, exactly "
           f"as C3c's shot-noise identification of the residual skew already "
@@ -1071,15 +1087,15 @@ def main() -> int:
                   f"interpretable next to the effect size the analysis could "
                   f"actually have caught, so the same injection-recovery machinery "
                   f"is run forward: the **minimum detectable effect** is "
-                  f"$\\beta \\approx$ **{d50:.3f}** "
-                  f"at 50% and **{d95:.3f}** at 95% "
+                  f"$\\beta \\approx$ **{d50:.3F}** "
+                  f"at 50% and **{d95:.3F}** at 95% "
                   f"detection probability (MHz per 10¹² cm⁻³). The record was "
                   f"therefore genuinely sensitive between those two values and saw "
                   f"nothing, so the null is a real constraint rather than an "
                   f"insensitive "
                   f"experiment. The per-peak floor "
-                  f"({pbounds[-1]:.2f}) sits above the 95% detection point "
-                  f"({d95:.3f}), deliberately, through the "
+                  f"({pbounds[-1]:.2F}) sits above the 95% detection point "
+                  f"({d95:.3F}), deliberately, through the "
                   f"$t(0.95, {hdof})$ and density-scale inflations "
                   f"(C1). At $\\beta=0$ the SNR rule alone fires "
                   f"{fp[0]:.0%} of the time" + (", close to its nominal 5%, which is "
@@ -1102,13 +1118,13 @@ def main() -> int:
         W("| vary this | β_self moves by (85Rb · 87Rb) | reading |")
         W("|---|---|---|")
         W(f"| the unmeasured w₀ (transit band, ~65→40 µm) | spans "
-          f"{w0lo[0]:.3f}–{w0hi[0]:.3f} · {w0lo[1]:.3f}–{w0hi[1]:.3f} | "
+          f"{w0lo[0]:.3F}–{w0hi[0]:.3F} · {w0lo[1]:.3F}–{w0hi[1]:.3F} | "
           f"the dominant systematic, which a beam-profile measurement collapses |")
-        W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3f} · "
-          f"{mf[1]:.3f} | comparable to β_self itself, part of why the "
+        W(f"| transit model-form (Lehmann cusp ↔ Voigt) | {mf[0]:.3F} · "
+          f"{mf[1]:.3F} | comparable to β_self itself, part of why the "
           f"headline is a bound |")
-        W(f"| σ_laser sharing (per-temperature ↔ per-block) | {sh[0]:.3f} · "
-          f"{sh[1]:.3f} "
+        W(f"| σ_laser sharing (per-temperature ↔ per-block) | {sh[0]:.3F} · "
+          f"{sh[1]:.3F} "
           f"| negligible next to the other two rows |")
         nls = rows("noise_law_swap")
         if nls:
@@ -1124,13 +1140,13 @@ def main() -> int:
             # printed correct numbers beside a wrong name.
             worst = max(nls, key=lambda r: abs(float(r["shift"])))
             W(f"| the measured noise law (σ(V) ↔ uniform weights) | "
-              f"≤ {m85:.3f} · ≤ {m87:.3f} | the weights are not doing physics, "
+              f"≤ {m85:.3F} · ≤ {m87:.3F} | the weights are not doing physics, "
               f"and the largest shift is on the 993.{worst['peak']} nm peak |")
-        W(f"| drop any one peak | ≤ {lp[0]:.3f} · ≤ {lp[1]:.3f} | no single "
+        W(f"| drop any one peak | ≤ {lp[0]:.3F} · ≤ {lp[1]:.3F} | no single "
           f"line drives the result |")
-        W(f"| drop one temperature | up to {lt[0]:.2f} · {lt[1]:.2f} | lever "
+        W(f"| drop one temperature | up to {lt[0]:.2F} · {lt[1]:.2F} | lever "
           f"leverage with three densities, expected rather than fragility |")
-        W(f"| add the ×53 130 °C lever | {pv[0]:+.3f} · {pv[1]:+.3f} | pulls "
+        W(f"| add the ×53 130 °C lever | {pv[0]:+.3F} · {pv[1]:+.3F} | pulls "
           f"β_self down, since the width is a floor rather than resolved "
           f"collisions (C1) |\n")
         W("| vary this | the S₀(225 mW) bound | reading |")
@@ -1138,8 +1154,8 @@ def main() -> int:
         W("| the unmeasured w₀ | unchanged | the bound uses width against power "
           "only, and only the *prediction* is w₀- and ρ-conditional |")
         W(f"| bound construction (Wald ↔ profile) | "
-          f"{float(sv['S0_225mW_ub95_raw']['value']):.1f} / "
-          f"{float(sv['S0_225mW_ub95']['value']):.1f} → {ub:.2f} MHz | Wald "
+          f"{float(sv['S0_225mW_ub95_raw']['value']):.1F} / "
+          f"{float(sv['S0_225mW_ub95']['value']):.1F} → {ub:.2F} MHz | Wald "
           f"has no coverage at the κ = 0 rail, and the profile limit is the "
           f"quoted bound |")
         W("| per-peak core widths | absorbed | each peak's core floats per "
@@ -1158,9 +1174,9 @@ def main() -> int:
           "ratio is fixed by atomic structure at 2.25 between rubidium-87 and "
           "rubidium-85, so the two isotopes' widths are a null test no fit can "
           "absorb. Measured, the difference is "
-          f"${float(_diff['value'])*1e3:.0f} \\pm {float(_diff['err'])*1e3:.0f}$ kHz, "
+          f"${float(_diff['value'])*1e3:.0F} \\pm {float(_diff['err'])*1e3:.0F}$ kHz, "
           "consistent with zero, giving "
-          f"**{float(_lim['value'])*1e3:.0f} kHz, at 95 per cent** as an upper "
+          f"**{float(_lim['value'])*1e3:.0F} kHz, at 95 per cent** as an upper "
           "limit on any such term (`results/polarisation_bound.csv`, "
           "`scripts/run_polarisation_bound.py`). It is conservative by "
           "construction, because every other isotope-dependent effect lands in "
@@ -1227,31 +1243,31 @@ def main() -> int:
         drop_sigma = (drop_mean - mean) / float(c["rate_laser_err"])
         out_label = f"993.{rb[i]['peak']} nm {rb[i].get('bracket') or rb[i]['T'] + ' C'}"
         out_dev = 100 * (rate[i] / mean - 1)
-        W(f"- **Frequency axis:** {mean:.5f}({float(c['rate_laser_err'])*1e5:.0f}) "
+        W(f"- **Frequency axis:** {mean:.5F}({float(c['rate_laser_err'])*1e5:.0F}) "
           f"MHz/ms laser axis. The 20 ruler blocks disagree by more than their own "
-          f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1f}$), and the quoted error "
+          f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1F}$), and the quoted error "
           f"carries one pdg scale factor of "
-          f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1f}\\times$ for it. A single "
+          f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1F}\\times$ for it. A single "
           f"scale factor is the wrong shape for this scatter, and the blocks reject it: "
           f"the {n_p} power blocks over-disperse at "
-          f"$\\chi^2_\\text{{red}}={d_p:.1f}$ against {d_t:.1f} on the {n_t} temperature "
-          f"blocks, {d_p / d_t:.1f}× more, at F p = {p_split:.4f}. The error that covers "
-          f"the axis is `rate_err_total` at {tot_pct:.3f}% of the rate, {tot_ratio:.1f}× "
+          f"$\\chi^2_\\text{{red}}={d_p:.1F}$ against {d_t:.1F} on the {n_t} temperature "
+          f"blocks, {d_p / d_t:.1F}× more, at F p = {p_split:.4F}. The error that covers "
+          f"the axis is `rate_err_total` at {tot_pct:.3F}% of the rate, {tot_ratio:.1F}× "
           f"the campaign statistical error alone, and that is what a consumer of the "
           f"rate carries. The scatter is block level: before/after brackets drift within "
           f"a session, and the measured attribution is per peak rather than common-mode. "
-          f"Per-peak offsets absorb half of it ($\\chi^2_\\text{{red}}$ {chi2:.1f} to "
-          f"{peak_red:.1f}, F({peak_k},{peak_dof}) = {peak_f:.1f}, p = {peak_p:.4f}) "
-          f"while per-session offsets absorb none ({chi2:.1f} to {sess_red:.1f}), so the "
+          f"Per-peak offsets absorb half of it ($\\chi^2_\\text{{red}}$ {chi2:.1F} to "
+          f"{peak_red:.1F}, F({peak_k},{peak_dof}) = {peak_f:.1F}, p = {peak_p:.4F}) "
+          f"while per-session offsets absorb none ({chi2:.1F} to {sess_red:.1F}), so the "
           f"peaks move apart rather than in step. What protects a cross-peak comparison "
           f"such as $\\beta_{{85}}$ against $\\beta_{{87}}$ is each science block using "
           f"its own condition's rate, not the scatter being common-mode. The "
           f"sweep is linear to below 0.3% across the well-sampled windows, which is "
           f"that family's value and gate-dependent outside it (ruler "
           f"specification, amendment 8). The single largest outlier is "
-          f"{out_label} at {out_dev:+.1f}% from the campaign mean. Dropping it moves the "
-          f"campaign rate by {drop_shift:+.2f}% ({abs(drop_sigma):.1f}σ) and "
-          f"$\\chi^2_\\text{{red}}$ from {chi2:.1f} to {drop_chi2:.1f}: the inflation "
+          f"{out_label} at {out_dev:+.1F}% from the campaign mean. Dropping it moves the "
+          f"campaign rate by {drop_shift:+.2F}% ({abs(drop_sigma):.1F}σ) and "
+          f"$\\chi^2_\\text{{red}}$ from {chi2:.1F} to {drop_chi2:.1F}: the inflation "
           f"already covers it, so it stays in by the pre-registered policy of reviewing "
           f"outliers rather than cutting them.")
     ts = {r["quantity"]: r["value"] for r in rows("ruler_tooth_scatter")}
@@ -1287,11 +1303,11 @@ def main() -> int:
           f"what broadens the line.")
     ss = rows("sigma_laser_sharing")
     if ss:
-        chis = "/".join(f"{float(r['chi2_red_4peak']):.2f}" for r in ss)
+        chis = "/".join(f"{float(r['chi2_red_4peak']):.2F}" for r in ss)
         free = [float(r["sigma_laser_free_common"]) for r in ss]
         tied = [float(r["sigma_laser_globalA_tied"]) for r in ss]
-        free_rng = f"{min(free):.1f}–{max(free):.1f}"
-        tied_rng = f"{min(tied):.1f}–{max(tied):.1f}"
+        free_rng = f"{min(free):.1F}–{max(free):.1F}"
+        tied_rng = f"{min(tied):.1F}–{max(tied):.1F}"
         W(f"- **σ_laser sharing is an in-sample consistency check, not a proof:** "
           f"at 70/90/110 °C the four peak-blocks agree on one σ_laser (χ²/dof {chis}, "
           f"all below 1), consistent with the per-temperature sharing the global fit "
@@ -1323,7 +1339,7 @@ def main() -> int:
     mf = rows("modelform")
     if mf:
         d = [float(r["dBIC_voigt_minus_lehmann"]) for r in mf]
-        W(f"- **Lehmann cusp:** ΔBIC(Voigt−Lehmann) {min(d):+.1f}…{max(d):+.1f}, "
+        W(f"- **Lehmann cusp:** ΔBIC(Voigt−Lehmann) {min(d):+.1F}…{max(d):+.1F}, "
           "so no preference for the cusp (the negative end is a mild dispreference "
           "on 993.4207 nm), all far below the gate ≥10. Deciding it needs the "
           "fixed-lock session's narrow laser.")
@@ -1370,8 +1386,8 @@ def main() -> int:
           f"tune-out 790.032326(32) nm (Leonard 2015 as corrected by their 2017 "
           f"erratum, pra 95 059901(E), both now held, and the replaced 2015 value "
           f"was 790.032388(32), 0.062 pm away) is "
-          f"reproduced at {to:.4f} nm (≈1.6 pm), "
-          f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2f}, and the "
+          f"reproduced at {to:.4F} nm (≈1.6 pm), "
+          f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2F}, and the "
           f"static $\\alpha_{{6S}}$ tail is calibrated to Safronova's 5167(22) "
           f"({a6:.0f}). The same model gives the **first 5S–6S magic wavelengths** "
           f"(scalar, an envelope estimate): $\\lambda_m \\approx$ {mtxt} nm, and a "
@@ -1382,9 +1398,9 @@ def main() -> int:
           f"vector term matters only for circular components near the 6S–5P "
           f"lines. Nearest prior work in the same band is Zang *et al.* 2012 "
           f"(arXiv:1204.4354), which reports six magic wavelengths between 1200 "
-          f"and 1600 nm for the **6s–5p** pairs of a four-level active clock: "
-          f"1342 and 1421 nm for 6s–5p_1/2, and 1331, 1336, 1453, 1461 nm for "
-          f"6s–5p_3/2. Two of them bracket the 1339.6 here (1336 and 1342), "
+          f"and 1600 nm for the **6S–5P** pairs of a four-level active clock: "
+          f"1342 and 1421 nm for 6S–5P_1/2, and 1331, 1336, 1453, 1461 nm for "
+          f"6S–5P_3/2. Two of them bracket the 1339.6 here (1336 and 1342), "
           f"which is expected rather than suspicious: every 6S-involving root "
           f"in this band is confined between the 5p_1/2–6s_1/2 and 5p_3/2–6s_1/2 "
           f"resonances at 1323.88 and 1366.87 nm, a 43 nm window. Different "
@@ -1412,20 +1428,20 @@ def main() -> int:
                   f"{obs[k]['verdict'].replace('_', ' ').lower()} |")
         W(f"\nThe ratio reproduces this ledger's own status assignments, each of "
           f"which was argued separately and by different means. Amplitude clears "
-          f"the floor {_r('amplitude'):.0f}× and is the one place the record "
+          f"the floor {_r('amplitude'):.0F}× and is the one place the record "
           f"extracts a number (the cold spot, ΔT ≈ +20 K), while the widths sit at "
-          f"{_r('sigma_laser'):.1f}–{_r('total_fwhm'):.1f} and are exactly where "
+          f"{_r('sigma_laser'):.1F}–{_r('total_fwhm'):.1F} and are exactly where "
           f"it reports bounds.\n")
         if pr:
             W(f"It is also predictive, which is the point. The plan asks for two "
               f"things, hot points at 150–170 °C to grow the signal, and "
               f"interleaving with per-trace power logging to cut the block noise. "
               f"Hot points alone reach only "
-              f"{float(pr['hot_only_low']['ratio']):.1f}–"
-              f"{float(pr['hot_only_high']['ratio']):.1f}σ per block. With the "
+              f"{float(pr['hot_only_low']['ratio']):.1F}–"
+              f"{float(pr['hot_only_high']['ratio']):.1F}σ per block. With the "
               f"noise cut 4× as well they reach "
-              f"{float(pr['both_low']['ratio']):.1f}–"
-              f"{float(pr['both_high']['ratio']):.1f}σ. **Both halves of the "
+              f"{float(pr['both_low']['ratio']):.1F}–"
+              f"{float(pr['both_high']['ratio']):.1F}σ. **Both halves of the "
               f"prescription are load-bearing**, and the second is not a refinement "
               f"of the first. Reproducible: `run_resolving_power.py`.")
         asm = [r for r in rp if r["kind"] == "assumption"]
@@ -1437,7 +1453,7 @@ def main() -> int:
               f"scatter averages down, and the predicted ramp broadening at "
               f"225 mW is almost exactly one single-block scatter, so the bound "
               f"rests on it. A permutation test against the independence null "
-              f"returns p = {float(a['ratio']):.2f}, neither established nor "
+              f"returns p = {float(a['ratio']):.2F}, neither established nor "
               f"excluded, because four peaks by five powers cannot resolve it. "
               f"That is untested rather than wrong, and `docs/PLAN.md` now asks "
               f"for the "

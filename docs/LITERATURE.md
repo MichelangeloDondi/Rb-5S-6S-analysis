@@ -54,7 +54,7 @@ been done to a paper, never about how good it is.
 | [5. What may be claimed](#5-what-may-be-claimed-and-what-may-not) | the novelty law: the concessions, the survivors, and the searches that found nothing |
 | [6. Prior work on this line](#6-prior-work-on-this-line-5s6s-993-nm) | the two lineages that measured 5S–6S before us, OIST and usafa |
 | [7. Method anchors](#7-method-anchors) | the ruler, the trapping, the detection channels, the reference standards |
-| [8. The 2024–2026 landscape](#8-the-20242026-landscape) | where a vapour-cell paper from here sits among the 778 nm clocks |
+| [8. The 2024–2026 field](#8-the-20242026-field) | where a vapour-cell paper from here sits among the 778 nm clocks |
 | [9. The nanofibre extension](#9-the-nanofibre-extension-and-the-onf-community-map) | the literature of the proposed extension, for which no data exist |
 
 ## 1. Nearest prior art
@@ -200,7 +200,7 @@ recomputed here.
 | Source | Transition | Measured coefficient | Status | Comparability |
 |---|---|---|---|---|
 | [Zameroski 2014](lit/zameroski2014.md) | Rb 5S→7S (self) | 129 ± 11 kHz/mTorr = 5.39 ± 0.46 kHz per 10¹² cm⁻³ | VERIFIED | one state above the 6S pair studied here, C₆-scaled to the β_self(6S) anchor of 3.4 ± 0.3 kHz per 10¹² cm⁻³ used throughout this ledger |
-| [Rahaman & Dutta 2022](lit/rahaman2022.md) | Cs 6s→7d₃/₂ (self) | −32.6 ± 2.0 kHz/mTorr collisional shift | VERIFIED | different alkali and a d state rather than an S–S pair, but the same two-photon vapour-cell class and the same convention as this work |
+| [Rahaman & Dutta 2022](lit/rahaman2022.md) | Cs 6S→7d₃/₂ (self) | −32.6 ± 2.0 kHz/mTorr collisional shift | VERIFIED | different alkali and a d state rather than an S–S pair, but the same two-photon vapour-cell class and the same convention as this work |
 | [Lee et al. 2010](lit/lee2010.md) | Cs 6S→8S | −7.25 ± 0.45 Hz/(mW/mm²) light shift | VERIFIED | an AC-Stark coefficient, not a collisional one, kept here because it is the closest analogue experiment there is, the same retro-reflected two-photon vapour-cell architecture as this work |
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
 | [Weller et al. 2011](lit/weller2011.md) | Rb 5S→5P₁/₂ (D1, self) | (0.69 ± 0.04)×10⁻⁷ Hz cm³ = 69 kHz per 10¹² cm⁻³ | VERIFIED | resonant dipole–dipole on an allowed line, the largest self-broadening mechanism there is, so a ceiling rather than an estimate for an S–S pair |
@@ -236,7 +236,7 @@ is the established Doppler-free two-photon transit-time lineshape. Chain:
 This upgrades the transit model from "assumed shape" to "literature-standard
 analytic form," and makes the M8 Voigt-vs-Lehmann BIC test Gaussian-core
 (Voigt) against the bbc-1979 cusp, a test between two *published* forms. Our
-M9 Monte-Carlo then refines the bbc idealization for our exact 3d-mb + w(z) +
+M9 Monte-Carlo then refines the bbc idealization for our exact 3D-mb + w(z) +
 I² + collection conditions, finding the real kernel slightly more cusped
 (excess kurtosis ~4.6). To-do before submission: pull the exact γ₀(w₀,T)
 prefactor from Lehmann so the transit width is an absolute prediction, not a
@@ -320,7 +320,7 @@ A number here is an identifier, not a position.
    factor in the model core (the natural and collisional Lorentzian, the laser
    kernel, the transit kernel) is **symmetric by construction**, and a
    symmetric factor cannot produce asymmetry at any width. The ramp is the only
-   asymmetric factor, so the fitted asymmetry does **not** trade against
+   asymmetric factor, so the fitted asymmetry does **not** exchange against
    $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or the
    transit width, the four-way degeneracy that dominates the width channel.
    The single remaining exposure is an *asymmetric* misspecification of the
@@ -548,9 +548,9 @@ any manuscript:
 - **No prior 5S–6S magic wavelength.** *Phrase the claim as 5S–6S
   specifically*, because the nearest prior number is close:
   [zang2012](lit/zang2012.md) (arXiv:1204.4354, held) tabulates magic
-  wavelengths for the **6s–5p₁/₂,₃/₂** pairs of a four-level active clock and
+  wavelengths for the **6S–5p₁/₂,₃/₂** pairs of a four-level active clock and
   reports **six** of them between 1200 and 1600 nm: 1342 and 1421 nm for
-  6s–5p₁/₂, and 1331, 1336, 1453, 1461 nm for 6s–5p₃/₂. **This work's 1339.6 nm
+  6S–5p₁/₂, and 1331, 1336, 1453, 1461 nm for 6S–5p₃/₂. **This work's 1339.6 nm
   is bracketed by two**, 1336 (−3.6) and 1342 (+2.4). *This entry previously
   recorded only 1342, which understated it.*
   What defuses it is structural rather than rhetorical: their Table I puts the
@@ -642,7 +642,7 @@ and density-shift nulls this dataset's bounds refine).
   re-pin (32 µm excluded, dataset w₀ ~ 50–64 µm, see
   `docs/notes/transit_width_resolved.md`). Their four two-photon peaks
   (FWHM ~5 MHz transition axis) are consistent with our dataset's ~5.25 MHz.
-  Their retro is a self-imaging concave mirror (f = 75 mm) at 2f. Ours (md,
+  Their retro is a self-imaging concave mirror (f = 75 mm) at 2F. Ours (md,
   2026-07-14) is the lens-based equivalent, L1/L2 at f = 150 mm with a flat
   mirror at the ~1 mm intermediate waist, so ρ ≈ 1 is a design property in
   both. Their detection is the 780+795 nm cascades together, unlike our
@@ -756,7 +756,7 @@ given, so a reader checking a number ends up here rather than in a module.
   example of why a replaced number has to be chased into every file that
   quotes it. **[CITE]**
 - **An independent matrix-element set.** [Arora & Sahoo
-  2012](lit/arora2012.md), coupled-cluster 6s-5p reduced elements and a 6S
+  2012](lit/arora2012.md), coupled-cluster 6S-5P reduced elements and a 6S
   lifetime of 45.44(8) ns against the 45.57(17) ns measurement, the cross-check
   on the sum this analysis builds. **[FEED]**
 - **Matrix elements for the 6S polarizability.**
@@ -766,7 +766,7 @@ given, so a reader checking a number ends up here rather than in a module.
   REPORTED, the record confirmed from the publisher listing and the source
   not read here. **[FEED]**
 
-## 8. The 2024–2026 landscape
+## 8. The 2024–2026 field
 
 Where a vapour-cell paper from this programme sits among the groups working the
 neighbouring lines, and which of them a referee will have read. The source sweep
@@ -802,7 +802,7 @@ work with McLaughlin as second author, and its successor
 order of magnitude, and that sharpening is what is new here.
 
 **Cross-alkali check, 2026-08-03.** [`kirankumar2011`](lit/kirankumar2011.md),
-a K 4s→6s two-photon isotope-shift and hyperfine paper (a Δn=2 s-s line, the
+a K 4S→6S two-photon isotope-shift and hyperfine paper (a Δn=2 s-s line, the
 same class as `zameroski2014`'s Rb 5S→7S, not a Δn=1 analogue of our line),
 confirms the same-family scoping directly: it treats AC-Stark, blackbody and
 pressure-broadening shifts entirely as calculated or extrapolated corrections
@@ -879,7 +879,7 @@ sections, and for the future Paper A.
   [hamilton2023](lit/hamilton2023.md)'s magic-wavelength target for the proposed
   Ti:Sapph asymmetry scan.)
 - [bandi2025](lit/bandi2025.md), comprehensive review of Rb two-photon clock
-  systematics and the stability benchmarks. **[CITE]** the single best landscape
+  systematics and the stability benchmarks. **[CITE]** the single best field-survey
   citation.
 - **`bjorkholm1976`**, *pra* **14**, 751: two-photon lineshape with a near-resonant
   intermediate, the theory anchor for the future 6S(clean)-vs-5D(resonant) Paper C
@@ -896,7 +896,7 @@ canon (Kaiser, Passerat de Silans), for the 795 nm trapping systematic:
   **`nunes2024`** (arXiv:2411.18570, frequency redistribution for Rb and Cs).
   **[FEED]** for modern Rb-specific trapping.
 
-### 8d. Theory anchors and the Cs validation triangle
+### 8D. Theory anchors and the Cs validation triangle
 
 **Theory anchors.** [safronova2004](lit/safronova2004.md) joins
 [safronova2006](lit/safronova2006.md) and [gomez2005](lit/gomez2005.md). There is

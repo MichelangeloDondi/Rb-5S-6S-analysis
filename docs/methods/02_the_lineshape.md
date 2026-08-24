@@ -9,7 +9,7 @@ inside the transit section.
 degeneracy the statistics chapter has to manage, and the measured waist every
 absolute number is conditional on.
 **Skip if.** You want the results rather than their derivation. The one thing
-to carry away is that transit and laser width trade against each other through
+to carry away is that transit and laser width exchange against each other through
 $w_0$.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -185,10 +185,10 @@ information when one model cannot fit worse than the other by construction.
 Convolving the homogeneous Lorentzian with the Gaussian laser kernel gives the
 **Voigt profile**, a Gaussian-like core with Lorentzian wings and no closed
 form, so we build it on a fine grid. Its definition, the Olivero-Longbothum
-width approximation used for seeds, and the reason the two widths trade
+width approximation used for seeds, and the reason the two widths exchange
 against each other are in [the Voigt profile](../wiki/voigt-profile.md).
 
-**The property that dominates the statistics** is that trade: in any real fit
+**The property that dominates the statistics** is that exchange: in any real fit
 $\sigma_\text{laser}$ and $\gamma_\text{coll}$ are strongly anti-correlated,
 and here we measure $\mathrm{corr}\approx-0.85$. The *total* width is well
 determined and the *split between the two* is fragile. Section 4 covers how

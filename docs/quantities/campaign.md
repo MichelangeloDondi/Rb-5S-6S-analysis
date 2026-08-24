@@ -42,7 +42,7 @@ is the whole lever for self-broadening, and it arrives with blackbody
 redistribution, thermal gradients, and a vapour-pressure extrapolation carrying
 more weight.
 
-**The laser width and the collisional width trade directly.** They broaden the
+**The laser width and the collisional width exchange directly.** They broaden the
 same line and sit on a ridge at condition number 345. Measuring either one
 externally is worth more to the other than any improvement in fitting.
 

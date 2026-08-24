@@ -267,7 +267,7 @@ $S_0$. Computed from the fitted function rather than the raw trace it stays
 finite and window-independent, and the Lorentzian wings that make a raw-data
 skewness divergent never enter. The residual systematic is then
 core-model-dependence. The fitted asymmetry depends on the assumed core, and a
-wrong core (Voigt where the truth is Voigt $\otimes$ transit-cusp) trades
+wrong core (Voigt where the truth is Voigt $\otimes$ transit-cusp) exchanges
 against it. Unlike raw-moment window-dependence, that is *checkable*, by BIC
 and the M8 cusp fit.
 
@@ -280,7 +280,7 @@ natural and collisional Lorentzian, the laser kernel and the transit kernel
 (two-sided exponential or Gaussian, `lineshape.composite_profile`). A symmetric
 component cannot produce asymmetry at any width. The ramp is the *only*
 asymmetric factor in the model, so the fitted asymmetry coefficient does not
-trade against $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or
+exchange against $\Gamma_{\rm nat}$, $\gamma_{\rm coll}$, $\sigma_{\rm laser}$ or
 the transit width, which is the four-way degeneracy that dominates the width
 channel and that M9 and M4c work on. (Stated as symmetry rather
 than as $\kappa_3 = 0$. Cumulants are additive under convolution and vanish for
@@ -1033,7 +1033,7 @@ their terms sit far below the natural width at this intensity.
 **A caution about the fourth-order machinery, recorded where it will be found.**
 `hyperpolarizability._rspt4` must not be evaluated at this wavelength. Its
 Floquet basis contains the partner S state two photons down, so it carries a pole
-wherever $2h\nu$ equals a real S-to-S interval, and for 5s-6s that is here. Fed a
+wherever $2h\nu$ equals a real S-to-S interval, and for 5S-6S that is here. Fed a
 campaign peak label it returns a differential fourth-order shift of order 100 Hz,
 of which 99.995% is that single term: it is the two-photon level repulsion,
 $|M|^2/D$ with $|M|$ of order $2\times10^{5}$ Hz, not a hyperpolarizability.
@@ -1135,7 +1135,7 @@ imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens, with
 $L_\parallel$ the cathode's active extent along the beam image. That extent is
 12 mm: the r636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
 photo) has a 3 × 12 mm cathode, whose rotation is a ×4 lever on $Z_c$, and it
-was mounted landscape (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm,
+was mounted with its long axis along the beam (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm,
 and the two-waist flip holds for every $M$ from 0.5 to 6 rather than depending
 on which layout the bench happens to realise. $u$ and $v$ remain unmeasured, so
 the magnitude still carries an envelope (PLAN §6 #4). The pure triangle holds

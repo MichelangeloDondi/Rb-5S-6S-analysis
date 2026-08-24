@@ -33,8 +33,9 @@ physics:
    This sits second because it is the only item on the list that acts on
    identifiability rather than on precision. The collisional and laser widths
    correlate at about -0.92 in the fit, and no acquisition setting moves that:
-   a five times wider span takes it from -0.9177 to -0.9166 and ten times the
-   traces reaches only -0.881, while both uncertainties shrink throughout.
+   the correlation moves by 0.0075 across a five times wider span and by
+   0.0000 at ten times the traces (`results/twin_span_sweep.csv`), while
+   repeats shrink the uncertainty as sampling predicts.
    Pinning one member leaves the other with the square root of one minus the
    correlation squared, so the purchase is between 2.3 and 3.2 across the
    conditions this record covers, larger than any other item here and
@@ -88,7 +89,7 @@ physics:
    both record as replaced. The axial average over the
    collection window changes both its size and, if the window is long enough,
    its sign ([`PLAN.md`](../PLAN.md) §6 item 4: the sign flip is secured by the
-   landscape cathode for any plausible magnification, while its size still
+   along-beam cathode for any plausible magnification, while its size still
    rides on the unmeasured lens conjugates). The intrinsic asymmetry would
    become detectable, turning the drift-immune shape readout from a bound into
    a demonstration, cross-checked against the simultaneously measured pull.
@@ -102,7 +103,7 @@ timestamp**, which the analysed exports do not carry. It converts cross-peak
 systematics from something assumed into something checked, rides inside every
 dwell at no cost of its own, and fails only if the scope will not export
 per-trace times, in which case an external log carries it
-([`PLAN.md`](../PLAN.md) §7f and §7g). A recovered backup supplied file timestamps
+([`PLAN.md`](../PLAN.md) §7F and §7g). A recovered backup supplied file timestamps
 after the fact, and that dating exposed the gap: the four peaks at one
 temperature were acquired **54–76 minutes apart**, so the sharing assumption
 behind the tighter β was never close-in-time to begin with

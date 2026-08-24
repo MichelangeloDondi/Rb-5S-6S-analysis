@@ -199,10 +199,10 @@ overstates the geometry's reach at extreme precision.
 
 The third is a design trap rather than a modelling one: assuming a
 multiphoton scheme with more photons automatically buys more resolution or
-more signal for the same effort. Going from two photons to three does not
+more signal for the same work. Going from two photons to three does not
 add a photon onto an existing collinear beam. It forces a non-collinear
 geometry that spends the very overlap that made the two-photon signal
-strong, and a design that has not budgeted for that trade will find the
+strong, and a design that has not budgeted for that exchange will find the
 interaction volume, not the atom, setting the achievable signal.
 
 The fourth is assuming any collinear arrangement of more than two photons is

@@ -190,7 +190,7 @@ Three questions travel together here and are worth keeping apart, because they
 are three different experiments.
 
 * **Which kernel family fits the line.** The lineshape's question. Answered at
-  one corner: not a pure Lorentzian.
+  one end-member: not a pure Lorentzian.
 * **How much laser broadening there is.** An independent-linewidth measurement's
   question. Under the intercept decomposition this is the identifying one, and
   it is unmeasured.

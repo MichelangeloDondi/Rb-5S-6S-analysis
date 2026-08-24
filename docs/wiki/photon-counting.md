@@ -143,7 +143,7 @@ result.
 
 The clearest model failure is treating "below the crossover, counting wins"
 as "counting is worth switching to regardless of what it costs," which skips
-the amplitude argument above and can trade a real electronic floor for a
+the amplitude argument above and can exchange a real electronic floor for a
 lost-count problem that is just as large.
 
 An implementation trap sits in the discriminator itself. Set its threshold

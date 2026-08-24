@@ -68,7 +68,7 @@ all qualify.
 **A measurement** makes the quantity separately identifiable under a model that
 has been tested and a calibration that has been supplied independently. The
 distinction from the level above is identifiability, not precision: a small
-error bar on a quantity that trades freely with another is not a measurement.
+error bar on a quantity that exchanges freely with another is not a measurement.
 
 **A competitive measurement** reaches an uncertainty, a coverage and a
 systematic control comparable with the literature benchmark in that dossier's

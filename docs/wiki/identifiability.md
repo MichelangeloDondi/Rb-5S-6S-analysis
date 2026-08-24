@@ -121,7 +121,7 @@ does not improve with more traces.
 | where the correlation was measured | $\rho$ | factor $1/\sqrt{1-\rho^2}$ |
 |---|---|---|
 | median across the 32 committed conditions | $-0.90$ | 2.29 |
-| the tutorial's synthetic design point | $-0.9177$ | 2.52 |
+| the twin's committed design condition ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), 60 MHz span) | $-0.9421$ | 2.98 |
 | the bright condition of the pinning simulation above | $-0.9417$ | 2.97 |
 
 The last row is the check on the first two. The pinning simulation measures
@@ -150,7 +150,7 @@ correlations. `rb5s6s.forecast.external_constraint_gain` computes it, and
 factor beside its measured ratio, so the two cannot drift apart unnoticed.
 
 The general shape of that argument is worth more than the number. When two
-parameters trade, the question is never only how to fit better. It is which
+parameters exchange, the question is never only how to fit better. It is which
 of them can be measured by some other instrument, and what that would buy,
 and both halves are computable in advance.
 
@@ -193,7 +193,7 @@ than assumed, and it is regenerable:
 [digital twin](the-digital-twin.md) from a named committed condition. The
 correlation between the laser and collisional widths moves by 0.0075 when
 the span widens from 60 to 300 MHz and by 0.0000 at ten times the repeats,
-because a Lorentzian core inside a Gaussian envelope trades the same way at
+because a Lorentzian core inside a Gaussian envelope exchanges the same way at
 every sample size. Repeats buy precision as sampling predicts, a factor
 3.16 at ten times the traces, while widening the span costs a factor 2.72
 at fixed points per trace, since the same points spread over more baseline.
@@ -284,7 +284,7 @@ d_gamma = shape(0.66, 1.40) - shape(0.54, 1.40)
 d_sigma = shape(0.60, 1.47) - shape(0.60, 1.33)
 overlap = (d_gamma @ d_sigma) / np.sqrt((d_gamma @ d_gamma) * (d_sigma @ d_sigma))
 print(f"overlap of the two shape changes: {overlap:+.3f}")
-print("near +1 means one can be traded for the other almost freely")
+print("near +1 means one can be exchanged for the other almost freely")
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,

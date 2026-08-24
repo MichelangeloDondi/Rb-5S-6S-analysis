@@ -33,7 +33,7 @@ summary: >
   <7s||r||7p_j> and the vector transition polarizability to beta-tilde =
   27.043(36) a0^3, resolving a discrepancy between two techniques. The value
   here is a VALIDATION TARGET: the same nS -> (n+1)S differential this
-  programme computes for Rb 5s-6s, measured in Cs to four significant figures.
+  programme computes for Rb 5S-6S, measured in Cs to four significant figures.
 loci:
   - M16
   - THEORY

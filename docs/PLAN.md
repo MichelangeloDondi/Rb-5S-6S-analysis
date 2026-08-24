@@ -116,7 +116,7 @@ costed against exactly that.*
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
 | 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as the largest assumption the width channel rests on, and the one term a density ladder cannot separate from collisions |
-| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the block register, session sizing, the rules drawn from the 2025 post-mortem, and costing by information per unit of effort |
+| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the uncertainty ledger of the next campaign, one row per component with its knob, its expected purchase and the twin world that sizes it, then the block register, session sizing, the 2025 post-mortem rules and the twin costing |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
 | 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
@@ -156,8 +156,9 @@ A claim that some block improves a quantity by a factor is either supported by
 a simulation or it is an expectation, and the chapters now say which. Where the
 twin refuted a claim, the record says so: an early draft of the tutorial taught
 that widening the scan span breaks the width degeneracy, and the twin measured
-the correlation moving from -0.9177 to -0.9166 across a factor of five in span,
-which is no movement at all. That correction is in
+the correlation moving by 0.0075 across a factor of five in span
+([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), which is no
+movement at all. That correction is in
 [HISTORY.md](HISTORY.md), and the surviving lever is in
 [chapter 5](plan/05_width-collision-amplitude.md).
 
@@ -245,8 +246,8 @@ index maps each section to the chapter that now holds it.
 **7.** The width and collision program, in [chapter 5](plan/05_width-collision-amplitude.md), which now closes with the asymmetry budget and its reversal table, and whose blocks run
 **7a.** through
 **7j.**, including
-**7d.** the matched-modulation ruler and
-**7f.** the interleaved density ladder.
+**7D.** the matched-modulation ruler and
+**7F.** the interleaved density ladder.
 **8.** The amplitude program, in [chapter 5](plan/05_width-collision-amplitude.md), whose sub-items include
 **8.1.** the cascade branch and
 **8.3.** the saturation check.

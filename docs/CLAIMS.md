@@ -188,7 +188,7 @@ systematic as fig1.*
   The disagreement is established as real rather than a convention
   artifact. Which side is right remains open until an external
   adjudication.
-- The first scalar magic wavelengths for the 5s-6s pair, near 1203.9,
+- The first scalar magic wavelengths for the 5S-6S pair, near 1203.9,
   1287.9 and 1339.6 nm, the 1204 nm crossing being the practically
   usable one. Its 16 to 84 percent band runs 1203.06 to 1204.73 nm. No
   published values were found to the depth searched. The trap-design
@@ -244,15 +244,14 @@ systematic as fig1.*
   information, and the nested likelihood ratio (median $\Delta\chi^2 = 232$
   for one parameter at its boundary, `results/laser_kernel.csv`) excludes a
   purely Lorentzian laser contribution at 26 of 32 conditions above three
-  sigma while leaving the Lorentzian content between the corners unmeasured.
+  sigma while leaving the Lorentzian content between the end-members unmeasured.
   The identifiable spectroscopic object is $\Gamma_{L,\text{equiv}}$, a width
   in MHz, and a fraction would need an independent laser total. The M8 cusp
   comparison ($\Delta\text{BIC}$ of -0.1 to +3.7) is unchanged and is about
   the transit kernel, a separate question. The laser's frequency-noise
   spectrum is still measured nowhere (the M1 law is detection noise, a
   different quantity), and the M2 stage-4b limit still leans against the
-  Gaussian's justification, so the kernel is tested at one corner and open in
-  between. Three routes to the content exist and none has been run: the lock's own
+  Gaussian's justification, so the kernel is tested at one end-member and open in between. Three routes to the content exist and none has been run: the lock's own
   error signal, which costs no cell time, a fast-scan comb block, where at ten
   times the 2025 sweep rate the tooth clock of M2 stage 4b samples at 68 Hz,
   inside the 24 Hz to 1.5 MHz band the ordinary-rate science blocks' widths
@@ -501,7 +500,7 @@ block scatter being signal limited at the ladder maximum, which is the
 conservative reading of a scatter averaged over a whole ladder. The
 ceiling goes as the square of the waist, so a looser focus raises it
 and buys back signal at the cost of transit width and of the density
-lever, which is the trade the 778 nm rung would have to make and which
+lever, which is the exchange the 778 nm rung would have to make and which
 this projection does not quantify.
 
 For the experimenter choosing a source rather than a line, those

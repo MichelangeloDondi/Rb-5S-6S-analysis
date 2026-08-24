@@ -92,7 +92,7 @@ both states), with a 16 to 84 percent band of 1203.06 to 1204.73 nm on the
 1203.9 nm crossing, so the
 trapped-atom version of this measurement has candidate wavelengths where
 before it had none. The state pair has to be said out loud: Zang *et al.* 2012
-report six magic wavelengths between 1200 and 1600 nm for the **6s–5p₁/₂,₃/₂**
+report six magic wavelengths between 1200 and 1600 nm for the **6S–5p₁/₂,₃/₂**
 pairs of a four-level active clock, two of which (1336 and 1342 nm) bracket the
 1339.6 here. They are a different state pair and a different magic condition,
 and the crowding is expected: between the 5p₁/₂–6s₁/₂ and 5p₃/₂–6s₁/₂
@@ -106,7 +106,7 @@ vanishes identically for $J=1/2$
 approximation. None of the three crossings has been measured. The list is also
 deliberately incomplete: three more crossings exist hard against poles, one at
 1297.5 nm sitting 0.7 nm from the 6s₁/₂–7p₁/₂ resonance at 1298.3 nm and two
-hugging the 6s–8p doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
+hugging the 6S–8P doublet near 1029.7 and 1031.9 nm, and the 1.5 nm pole guard
 in `magic_wavelengths()` drops them by construction. That close to a resonance,
 photon scattering and the sensitivity to trap-laser frequency make a crossing
 magic in name only. `rb5s6s/hyperpolarizability.py` puts numbers on all six crossings, the
@@ -124,7 +124,7 @@ usable only in strictly linear light. Trap photons scatter off the 6S state a fe
 megahertz of depth at 1203.9 nm and ten to sixty times faster at the 1287.9,
 1297.5 and 1339.6 nm crossings. The pair near 1030 nm shows lower rates on
 this line list, but there the module flags its upward entries as several-fold
-understatements, and holding a trap wavelength against the adjacent 6s–8p
+understatements, and holding a trap wavelength against the adjacent 6S–8P
 doublet would put the trap laser's own stability into the error budget. That
 leaves 1203.9 nm as the one practical operating point. The crossings also read backwards. Where one sits is fixed by
 the matrix elements that build the two polarizabilities, so measuring a

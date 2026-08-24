@@ -255,6 +255,20 @@ FORBIDDEN = {
         # hyphenated tails like "through-line", since re.search only needs
         # the pattern present as a substring.
         r"the honest \w+",
+        # The ADVERB, added after the fifteenth review found two instances
+        # live on the case page, which had just been through a register pass:
+        # the noun phrase was banked and "honestly unexplained" was not.
+        #
+        # NARROW ON PURPOSE. A bare ban on the adverb was written first and
+        # measured at seven sites, and reading them killed it: "a package
+        # that fails honestly reports larger errors", "accounts honestly for
+        # every nuisance parameter", "varies honestly across the stated
+        # range". That is the STATISTICAL sense, honest coverage, and it is
+        # correct usage in all seven. What is banned is the adverb attached
+        # to the record's own epistemic state, which is the narrator
+        # announcing honesty instead of stating the fact.
+        r"\bhonestly (unexplained|open|uncertain|incomplete|inconclusive)\b",
+        r"\b(weaken|weakens|weakened|qualifies|qualified) [^.]{0,30} honestly\b",
         r"not a hedge but",
         r"cannot be scooped", r"not a failed measurement",
         r"laundered into", r"not a hunch", r"selling point",

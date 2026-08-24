@@ -4,8 +4,7 @@
 premise (recorded 2026-07-13): the drive laser is a **tunable Ti:Sapphire**, so a new
 measurement session is not locked to 993 nm. It can reach *other* Rb two-photon
 transitions, "as long as we can reach the frequency and the optics is fine at the
-next frequency." This note maps what that buys us, grounded in the 2024–2026
-landscape collected in [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-landscape).
+next frequency." This note maps what that buys us, grounded in the 2024–2026 field collected in [`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-field).
 
 **The question.** The drive laser tunes, so what else could this bench measure,
 and what would each option be worth?
@@ -437,7 +436,7 @@ uncapped precision back. On the 778 nm rung it goes from about 8 to about
 which is the one result in this file the ceiling takes away. About 66 repeats would
 restore its power. The ceiling goes as the square of the waist, so a looser
 focus raises it, at the cost of transit width and of the density lever, and this
-file does not cost that trade.
+file does not cost that exchange.
 
 **Magic wavelengths: a family that moves along the ladder.** The way the zero
 crossings of Δα move with n is a map in its own right, and the three rungs this
@@ -596,14 +595,14 @@ carries, so none of them needs the doubling stage. 4F needs a redder set.
 the chain is 5S to 5P to 6S to 8P, and the near resonance is with the 6S state
 this record characterises, 230 cm^-1 away. For 5F the chain is 5S to 5P to 4D
 to 5F, near resonant with 4D at 163 cm^-1, and both upper dipoles are far
-larger: 5P3/2-4d5/2 is the committed 10.90 a.u. against 6s-8p3/2 at 0.629, and
-4d-5f is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
+larger: 5P3/2-4d5/2 is the committed 10.90 a.u. against 6S-8p3/2 at 0.629, and
+4D-5F is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
 of merit $|d_1d_2d_3|/(\Delta_1\Delta_2)$ puts 5F ahead by a factor of about
 **21**, on an honest range of 10 to 40 once the unmeasured element and the choice
 of 4D fine-structure partner are both allowed to move. A first pass here quoted
 38 to 76, from a coarser treatment of the same two freedoms.
 
-The trade is real and runs the other way on quality. 5F's natural width is
+The exchange is real and runs the other way on quality. 5F's natural width is
 1.51 MHz against 8P3/2's 327 kHz, a factor 4.6, and the ramp is measured as a
 distortion of the observed line, so 8P needs 4.6 times less $S_0$ for the same
 fractional asymmetry. Reading the two together: **5F first, because a
@@ -650,7 +649,7 @@ have at all. For 5F, whose 1.51 MHz width dominates, the cold-atom residual is
 negligible. So cold atoms alone suffice for 5F and do not quite suffice for 8P,
 while the star geometry suffices for both and works in a cell.
 
-**What is not settled here.** The 4d-5f dipole is an estimate rather than a
+**What is not settled here.** The 4D-5F dipole is an estimate rather than a
 value, and it carries the whole factor-of-two spread in the ranking. The
 detection path for each target is unexamined, and it decides feasibility as much
 as the excitation rate does. Whether a fourth photon ionizes the excited state
@@ -1125,7 +1124,7 @@ two-colour at 6×10⁻¹⁴/√τ and is light-shift limited in the long term,
 shift, [li2024b](lit/li2024b.md) nulls by dual interrogation, and
 [gerginov2018](lit/gerginov2018.md) is the suppress-the-shift stance this
 programme contrasts with. [bandi2025](lit/bandi2025.md) is the review that
-frames the benchmark landscape.
+frames the benchmark field.
 
 **Prior art, and it is the field that most constrains this entry.**
 [delone1980](lit/delone1980.md), a 1980 review, already carries the
@@ -1144,7 +1143,7 @@ and Wall do not perform, and the third cumulant as a drift-immune channel. The
 closest external precedent to the inversion is a 2015 nanofibre-trap analysis
 recorded in LITERATURE.md §8 as reported and not held, so the wording stays
 scoped until it is read. No passive-asymmetry determination on the 778 nm line
-appears anywhere in the swept landscape.
+appears anywhere in the swept range.
 
 **Data beyond the 2025 dataset.** A 778 nm drive, detection at 420 nm unless the 5D
 cascade channels the near-IR path already passes turn out to be sufficient, and
@@ -1421,5 +1420,5 @@ measurement.
   that no longer run at the ramp edge.
 
 *References for §4 are collected in
-[`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-landscape), which is where
-the 2024–2026 landscape is held and is the citable source for every claim above.*
+[`docs/LITERATURE.md` §8](LITERATURE.md#8-the-20242026-field), which is where
+the 2024–2026 field is held and is the citable source for every claim above.*

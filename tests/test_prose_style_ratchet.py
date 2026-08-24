@@ -268,6 +268,12 @@ def test_the_baseline_itself_only_ever_shrinks():
     "defeat",
     "snug",
     "intervention",
+    # The evening additions are loaded from _banned_words.json: naming them
+    # here as literals made this file fail the internal-vocabulary bank,
+    # which is the guard-fixture-is-prose lesson a second time. The family:
+    # words that dress work as drama, and the assistant register's verbs.
+    *json.loads((Path(__file__).parent / "_banned_words.json").read_text())[
+        "banned_words_2026_08_24_evening"],
 ])
 def test_filler_openers_stay_absent(phrase):
     """Phrases that announce importance instead of demonstrating it.
@@ -417,8 +423,18 @@ CAPS_TOKEN_RE = re.compile(r"[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*")
 
 def _caps_ok(word: str) -> bool:
     bare = word.strip("-")
-    return ("_" in bare or bare in CAPS_ACRONYM or bare in CAPS_TOKEN
-            or bool(CAPS_NOTATION.fullmatch(bare)) or len(bare) < 2)
+    if ("_" in bare or bare in CAPS_ACRONYM or bare in CAPS_TOKEN
+            or bool(CAPS_NOTATION.fullmatch(bare)) or len(bare) < 2):
+        return True
+    # a hyphenated compound is fine when every piece is: 5S-6S, AC-DC,
+    # a manufacturer part number. Without this the state-notation repair and this guard
+    # disagree about the same string, which is how 5s-6s got stuck lowered.
+    if "-" in bare:
+        parts = [x for x in bare.split("-") if x]
+        return bool(parts) and all(
+            p in CAPS_ACRONYM or p in CAPS_TOKEN
+            or CAPS_NOTATION.fullmatch(p) or p.isdigit() for p in parts)
+    return False
 
 
 def _emphasis_caps(rel: str) -> list[str]:
@@ -469,6 +485,41 @@ def test_no_emphasis_capitals_in_tracked_prose():
         + "\n  ".join(f"{k}: {', '.join(v)}" for k, v in sorted(hits.items())))
 
 
+def test_no_lowered_state_notation_in_prose():
+    """Atomic-state notation stays uppercase, and LOWERED notation is found.
+
+    The caps guard PREVENTS new lowering, and prevention has a blind spot
+    this test closes: the first, broken caps pass lowered `5S-6S` to
+    `5s-6s` across twenty files, one of them the third word of the case
+    page, and the repaired guard never looked back. A detector for the
+    already-lowered form is the other half of the rule. Code spans, math
+    and lit notes keep their own case (a paper may typeset states however
+    it likes, and code identifiers are not prose).
+    """
+    lowered = re.compile(r"\b\d[spdf]\b(?!\))")
+    strip = re.compile(r"```.*?```|`[^`]*`|\$[^$]*\$", re.S)
+    hits = {}
+    for rel in _tracked_markdown():
+        if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
+            continue
+        text = strip.sub("", (ROOT / rel).read_text(encoding="utf-8"))
+        found = sorted(set(lowered.findall(text)))
+        if found:
+            hits[rel] = found[:5]
+    assert not hits, (
+        "lowered atomic-state notation in prose, write 5S not 5s:\n  "
+        + "\n  ".join(f"{k}: {', '.join(v)}" for k, v in sorted(hits.items())))
+
+
+def test_the_state_notation_detector_sees_a_planted_case():
+    """Ceiling test on the planted forms."""
+    pat = re.compile(r"\b\d[spdf]\b(?!\))")
+    assert pat.search("the 5s level")
+    assert pat.search("the 5s-6s line") 
+    assert not pat.search("the 5S-6S line")
+    assert not pat.search("about 5 seconds")
+
+
 def test_the_emphasis_caps_detector_sees_a_planted_word():
     """Ceiling test, with the blind region named."""
     assert not _caps_ok("IMPORTANT")
@@ -477,6 +528,44 @@ def test_the_emphasis_caps_detector_sees_a_planted_word():
     # Blind region, recorded rather than fixed: a capitalised word inside
     # backticks, a link target or a filename is invisible here, because those
     # are code and paths where capitals carry meaning this guard cannot judge.
+
+
+
+
+BANNED_SHAPED = [
+    # (name, pattern, what may stand)
+    ("trade", re.compile(r"\btrade[sd]?\b(?!-off)|\btrading\b|\btradeoffs?\b"),
+     "trade-off and trade-offs stand, the owner's own carve-out, and the "
+     "unhyphenated spelling is normalised to it rather than allowed to hide"),
+    ("corner", re.compile(r"\bcorners?\b"),
+     "a literal geometric corner stands with a term-of-art marker on its line"),
+    ("landscape", re.compile(r"\blandscapes?\b"),
+     "nothing stands: orientation is said as the axis, surveys are fields"),
+]
+
+
+def test_shaped_bans_stay_at_zero():
+    """Three bans that need a shape, not a substring.
+
+    "trade" must not match "trade-off", which the experimenter kept. "corner"
+    has one literal geometric use, marked term-of-art where it stands. Each
+    ban was measured before it was made: 49 exchanges of parameter weight,
+    24 corners of model classes and grids, 31 landscapes of surveys and
+    cathode orientation, every one replaced by the word that says it exactly
+    (exchange, end-member or vertex or region, field or the axis itself).
+    """
+    hits = []
+    for rel in _tracked_markdown():
+        if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
+            continue
+        for line in (ROOT / rel).read_text(encoding="utf-8").splitlines():
+            if "term-of-art" in line:
+                continue
+            line = re.sub(r"`[^`]*`", "", line)   # code labels are identifiers
+            for name, pat, _ in BANNED_SHAPED:
+                if pat.search(line):
+                    hits.append(f"{rel}: [{name}] {line.strip()[:90]}")
+    assert not hits, ("a shaped ban regressed:\n  " + "\n  ".join(hits[:12]))
 
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`

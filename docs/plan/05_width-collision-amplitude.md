@@ -155,7 +155,7 @@ well-sampled windows alone. The open markers at the scan edges have an
 uncertainty larger than the bound, so they do not constrain it. The session keeps
 the comb and fixes its two hardware mismatches, below.*
 
-**7d. The matched-PM ruler, and the two knobs a seven-tooth comb needs.** In
+**7D. The matched-PM ruler, and the two knobs a seven-tooth comb needs.** In
 2025 the ruler light differed from the science light (the half-wave-plate
 carrier-suppression trick), so tooth widths could not serve as a drift
 compensator. The fix is to drive the EOM at modulation index β ≈ 1.202, where
@@ -212,7 +212,7 @@ near-repetition tests nothing. **Empty.** One block settles the direction and
 not the magnitude, so a null here is weak evidence rather than a clean answer.
 **Record.** The repeat block beside its original, and the difference.
 
-**7f. Four peaks interleaved within every block**, minutes apart, with
+**7F. Four peaks interleaved within every block**, minutes apart, with
 per-trace power logging. Cross-peak systematics drop from 30–50% to 2–4% and
 the amplitude discriminators (§8) become possible. Amplitude-ratio blocks get
 12–16 repeats (gain-limited), width blocks 8, with the power order randomized.
@@ -288,7 +288,7 @@ Amplitudes were useless in 2025 for one measured reason: within-block
 statistics of 1–3% under a between-block gain, power and polarization wander
 of 30–50%. Every exploit below is a ratio, a within-block slope, or a
 monitored quantity, so the wander cancels identically. All five share the
-prerequisite of §7f, four peaks interleaved with per-trace power logging,
+prerequisite of §7F, four peaks interleaved with per-trace power logging,
 without which none of them clears the wander.
 
 1. **The degeneracy-law test.** The S→S operator is pure scalar, so line areas
@@ -297,7 +297,7 @@ without which none of them clears the wander.
    test runs at the 1–3% floor. The cross-isotope total-area ratio is the flat
    abundance ratio 2.59, constant in T, whose curvature onset flags PMT
    nonlinearity.
-   **Needs.** §7f. **Shots.** No shots of its own, it reads the interleaved
+   **Needs.** §7F. **Shots.** No shots of its own, it reads the interleaved
    blocks. **Go/no-go.** The PMT-linearity certificate of the defensive set
    below, with its ceiling pre-registered. **Empty.** PMT nonlinearity may
    swamp the 1–3% floor, which the cross-isotope curvature is there to reveal.
@@ -306,7 +306,7 @@ without which none of them clears the wander.
    four lines share one Stark slope: a fourfold over-determined Δα with
    line-specific pulls isolated as residuals. Since area ∝ I², √area is a
    per-trace intensity proxy that soaks up alignment wander.
-   **Needs.** §7f and the §6 item 1 power blocks. **Shots.** Rides §6 item 1.
+   **Needs.** §7F and the §6 item 1 power blocks. **Shots.** Rides §6 item 1.
    **Go/no-go.** A pre-registered admissibility gate restricting the √area proxy
    to configuration L, since S is saturated. **Empty.** The line-specific
    residuals may not separate from the shared slope at the achieved precision.
@@ -511,12 +511,16 @@ Measured 2026-08-19 on synthetic data whose truth is known, through
 worth session time.
 
 **More of the same measurement does not separate the widths.** The
-correlation between the laser width and the collisional width sits near
--0.92 and stays there: -0.9177 at a 60 MHz span, -0.9166 at 300 MHz, and
--0.881 with ten times the traces. Both uncertainties shrink as the data
-grow, and the direction the observable cannot see stays invisible. The
-degeneracy is a property of the lineshape rather than of the sample size, so
-no scan design breaks it.
+regenerable form of the search
+([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), truth from a
+named committed condition, seed fixed): the correlation between the laser
+and collisional widths moves by 0.0075 when the span widens five times and
+by 0.0000 at ten times the repeats. Repeats buy precision as sampling
+predicts, a factor 3.16 at ten times the traces, while the wider span
+costs a factor 2.72 at fixed points per trace. The direction the
+observable cannot see stays invisible either way: the degeneracy is a
+property of the lineshape rather than of the sample size, so no scan
+design breaks it.
 
 **An external constraint is worth a factor of two to three and a half, and
 it is the only thing that is.** Pinning one member of a correlated pair

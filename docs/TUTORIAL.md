@@ -131,7 +131,7 @@ confidently wrong, which looks better on a plot and is worse.
 Run chapter 4 and look at `res["corr_laser_coll"]`. It will be around
 **-0.9**. That number is the tutorial's real lesson: the laser width and the
 collisional width are strongly anticorrelated, so the data constrain their
-sum far better than either alone, and a fit can trade one against the other
+sum far better than either alone, and a fit can exchange one against the other
 almost freely.
 
 Now break the package deliberately. Each of these teaches what honest failure
@@ -154,12 +154,15 @@ This is where a twin stops being a demonstration and starts being a design
 tool, and the first thing it will tell you is unwelcome.
 
 Run the same fit with a five times wider span, then with ten times the
-traces. **The correlation barely moves.** Widening the span from 60 to 300
-MHz takes it from -0.9177 to -0.9166, which is nothing at all, and ten times
-the traces reaches only -0.881, while both uncertainties shrink throughout. That is the twin telling you something the residual
+traces. **The correlation barely moves**: by 0.0075 across the five times
+wider span and by 0.0000 at ten times the traces, in the regenerable form
+of this exercise (`results/twin_span_sweep.csv`, truth from a named
+committed condition, seed fixed). Repeats shrink the uncertainty by the
+root of ten, while the wider span costs a factor 2.72 at fixed points per
+trace. That is the twin telling you something the residual
 plots never would: **the degeneracy is a property of the lineshape, not of how
 much data you collect.** A Lorentzian core convolved with a Gaussian looks
-almost the same when you trade a little of one width for a little of the
+almost the same when you exchange a little of one width for a little of the
 other, and no amount of the same measurement distinguishes them.
 
 You break it by measuring one side somewhere else. For a pair with

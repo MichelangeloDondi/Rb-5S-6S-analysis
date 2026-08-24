@@ -182,8 +182,9 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    Gaussian envelope, and the fit separates them at a correlation of about
    -0.92. That correlation is a property of the lineshape rather than of the
    sample, so it does not improve with the session: measured on synthetic data
-   whose truth is known, it runs -0.9177 across a 60 MHz span and -0.9166
-   across 300 MHz, and ten times the traces reaches only -0.881. Every other
+   whose truth is known, it moves by 0.0075 across a five times wider span
+   and by 0.0000 at ten times the traces
+   ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv)). Every other
    item on this list buys precision on a pair the fit still cannot separate.
    Pinning one member reduces the other's variance to $(1-\rho^2)$ of its
    joint value, so an external laser width is worth $1/\sqrt{1-\rho^2}$ on
@@ -250,7 +251,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    check beats crowded points.
 9. More days: the value is earning the day-to-day systematic error bar, plus
    the epoch bridge to the 2025 dataset's own waist. Budget 1–2 days. Never
-   trade the high-T lever or the beam profile for averaging days.
+   exchange the high-T lever or the beam profile for averaging days.
 
 ---
 

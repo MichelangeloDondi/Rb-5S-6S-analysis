@@ -1,12 +1,19 @@
 # The case in ten minutes
 
-This is a 2025 two-photon 5s-6s spectroscopy campaign in a rubidium vapour
+This is a 2025 two-photon 5S-6S spectroscopy campaign in a rubidium vapour
 cell. The three quantities below are the systematic limits on any precision
 measurement built on the transition, and the question is not what they are
 but what currently prevents measuring them.
 
-Every number below is a committed result with its producer named. Where a
-quantity is bounded rather than measured, it is written as a bound.
+Every number below is a committed result with its producer named, except
+where this page says otherwise, and it says otherwise in four places: the
+pinning factors of section 4, the excursion percentage and the
+independent-information fraction of section 2, and the projected ladder
+gain of section 5. Those come from notes whose numbers no producer
+regenerates, which the record's own provenance audit established and
+[`unregenerated_claims.csv`](../../results/unregenerated_claims.csv)
+counts. Where a quantity is bounded rather than measured, it is written as
+a bound.
 
 In one sentence: for each of three quantities the campaign could bound but
 not measure, this record identifies why, as a property of the lineshape, the
@@ -36,11 +43,28 @@ the 20% density systematic. The effective coefficients sit at 0.005 to
 0.016, each below 2 sigma against its own standard error, so nothing
 resolves a collisional width and every number here is a bound.
 
-**The 2025 laser width.** Below 2.4 MHz on the two-photon transition axis,
-the axis the analysis works on, or 1.2 MHz per photon
-([`laser_epoch.csv`](../../results/laser_epoch.csv)). It is quoted at the measured
-64 µm waist and rises with it, the record's largest open systematic (the
-waist's own standing is in the next block).
+**The unexplained Gaussian width, which this record used to call the laser
+width.** Below 2.4 MHz on the two-photon transition axis, the axis the
+analysis works on, or 1.2 MHz per photon
+([`laser_epoch.csv`](../../results/laser_epoch.csv)). **The name matters
+more than the number.** What the fit bounds is the Gaussian left over once
+transit is removed at the measured waist, which is why the bound rises with
+the waist and falls to zero near 16 µm. **The laser is not what fills that
+slot.** A wavemeter record taken mid-acquisition holds a 100 kHz standard
+deviation over 24 minutes, the comb read as a clock bounds the
+non-repeating excursion below 28.3 kHz, and the previous generation of this
+laser, at about 100 kHz, produced a line of **4.9 to 5.2 MHz on this page's
+transition axis** (2.4 to 2.6 per photon), which is where the 2025 line sits
+at about 5.25. The axis matters and the natural width settles it: at
+3.49 MHz on the transition axis, a 2.4 MHz line would be narrower than
+natural and therefore impossible, so the comparison only closes when both
+numbers are read on the same axis. **A laser two orders of magnitude
+narrower than this bound reproduces the observed line**, and about a
+megahertz of Gaussian width is unaccounted for. The record's leading
+candidate is residual Doppler from a retro tilt of 3.2 to 3.5 mrad, about
+0.19 degrees, which section 4 measures directly. The waist enters here too,
+and it is the record's largest open systematic (its own standing is in the
+next block).
 
 **The light shift.** The joint three-session fit detects no shift: the
 best-fit power coefficient is consistent with zero (Δχ² against zero of
@@ -51,12 +75,13 @@ best-fit power coefficient is consistent with zero (Δχ² against zero of
 how the line moves with power and needs no waist.
 
 The predicted shift does need one. At the 64 µm waist, measured by Rajasree
-on this same optical table with the same laser and lenses, the prediction
-is 0.35 MHz, above the limit, so the prediction is excluded at 95%, at
+on this same optical table with the same laser and lenses, though not in
+the cell at campaign time, which is why section 4 still asks for the
+profile, the prediction is 0.35 MHz, above the limit, so the prediction is excluded at 95%, at
 about two sigma. Over the waist measurement's own 62 to 68 µm band the
 prediction runs 0.30 to 0.38, all of it above the limit, so reconciling at
 95% needs a waist outside its stated band. One robustness arm weakens the
-exclusion honestly: dropping peak 4192 removes a whole session and raises
+exclusion: dropping peak 4192 removes a whole session and raises
 the limit to 0.37, which does not exclude the prediction. And the
 prediction stands on a polarizability whose sign this record's own
 [THEORY_NOTE](../THEORY_NOTE.md) disputes with the published calculation,
@@ -70,7 +95,7 @@ The construction: every point of every canonical power-sweep profile enters
 one three-session maximum-likelihood fit with one shared coefficient,
 per-peak physical widths under a prior from the collisional chain, per-trace
 free centres that profile out drift and re-locks, and a per-session
-detector-saturation nuisance. The subset spread is the dominant systematic:
+detector-saturation nuisance. The subset spread is the dominant systematic on this bound:
 0.26 MHz from all three sessions, 0.24 with the red-wing nuisance
 marginalised, 0.37 with peak 4192 dropped. The primary uses every trace the
 record admits, and dropping a peak is a robustness arm rather than an
@@ -119,7 +144,6 @@ pointed at it, and here is what came back. The full audit trail is in
   trace carries roughly a quarter of the independent information its raw
   count suggests. Attributing that correlation to a mechanism has failed
   three times and stays marked open.
-
 * **The record's own provenance, audited to the row.** Every published
   numeric claim in this record now declares what regenerates it, a committed
   instrument counts the declarations and names the seven notes whose numbers
@@ -133,7 +157,7 @@ pointed at it, and here is what came back. The full audit trail is in
   wrong, and the instrument manual settled it his way: a disjoint
   per-interval average, capped at twelve bits, exactly where the campaign's
   files sit. Direct apparatus knowledge outranked a documented inference,
-  and the correlation is honestly unexplained, the decimation stage the
+  and the correlation is unexplained, the decimation stage the
   candidate.
 
 ## 3. What is not identified, and why it survives
@@ -152,8 +176,8 @@ not of the sample size, so more data does not fix it
 ([the identifiability page](../wiki/identifiability.md)).
 Free the transit width as well and the degeneracy moves instead of lifting:
 [`identifiability.csv`](../../results/identifiability.csv) then reports
-−0.958 between the collisional and transit widths, the same trade seen from
-a different corner.
+−0.958 between the collisional and transit widths, the same exchange seen from
+a different direction.
 
 **Transit against waist.** The transit width follows from the waist.
 The 64 µm value is Rajasree's measurement on this same optical table, laser
@@ -188,8 +212,8 @@ series. One session's internal temperature spans 110 to 130 °C, a factor
 The width-split factor rides the correlation: 2.29 at the median ρ = −0.90
 over the 32 committed conditions, 2.52 at the tutorial's design point, and
 2.97 at the pinning simulation's bright condition, where nine seeds give
-3.18 ± 0.20, an ensemble that replaced the single-seed 3.4 four documents
-had carried.
+3.18 ± 0.20, quoted as an ensemble because a single seed of the same
+simulation returns the largest of the nine.
 
 The tutorial's own claim that widening the scan span breaks this degeneracy
 did not survive being run: the correlation barely moves with span or with
@@ -225,7 +249,8 @@ the campaign would establish.
 A measured collisional coefficient, at these densities and this
 temperature lever. The width split without an external constraint, at any
 sample size. An absolute cell temperature without an in-situ thermometer.
-And the absolute frequency of the transition, which this apparatus was never
+And the absolute optical frequency of the transition, a different quantity
+from the scan-axis repair of section 4, which this apparatus was never
 built to deliver and which the record does not claim.
 
 ## Where to check any of this

@@ -74,8 +74,8 @@ carries a factor-of-two ambiguity, and its own note flags this. And Cao 2025
 infers density from temperature rather than measuring it, which is the same
 systematic this experiment carries.
 
-**Physical analogues.** [Rahaman 2022](../lit/rahaman2022.md) measured Cs 6s to
-7d 3/2 self-broadening at 99(6) kHz/mTorr, about 4.18 kHz per $10^{12}$
+**Physical analogues.** [Rahaman 2022](../lit/rahaman2022.md) measured Cs 6S to
+7D 3/2 self-broadening at 99(6) kHz/mTorr, about 4.18 kHz per $10^{12}$
 per cubic centimetre, in a convention identical to the one used here, and did so with an
 absolute frequency axis. [Weller 2011](../lit/weller2011.md) measured the Rb D1
 resonant self-broadening at 69 kHz per 1e12 per cubic centimetre, which is a ceiling

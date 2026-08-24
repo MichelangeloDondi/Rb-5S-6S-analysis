@@ -66,7 +66,7 @@ longer convex, it can carry more than one local minimum, and the iteration
 below can converge to different answers depending on where it starts,
 typically an ordinary or a Huber fit rather than an arbitrary point.
 
-Both tuning constants set the trade this family always makes. A small
+Both tuning constants set the exchange this family always makes. A small
 constant discounts the tails aggressively and tolerates heavier
 contamination, at the cost of also discounting large residuals that are
 genuinely honest, which loses precision on data that turn out to be clean. A

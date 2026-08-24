@@ -147,8 +147,7 @@ isolator-before-the-focusing-lens order matches the
 [Nieddu 2019](lit/nieddu2019.md) /
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md) description ("An optical
 isolator is placed ... before the vapor cell ... A plano-convex lens (L1)
-... is placed after the optical isolator to focus the beam"). The 993 nm
-focus sits near the cell's lower corner on the detection side, at the
+... is placed after the optical isolator to focus the beam"). The 993 nm focus sits near the cell's lower corner <!-- term-of-art: literal geometry of the rectangular cell --> on the detection side, at the
 f = 18 mm lens's object plane, so the collection lens re-images the
 fluorescence spot onto the PMT (EXPERIMENTER, 2026-08-03).
 
@@ -236,7 +235,7 @@ generator as well as a different tank.
 | Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
 | Photocathode spectral response | GaAs, roughly 300 to 900 nm. Datasheet, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 9.1 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 9 µm | datasheet + ASSUMED |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet tpms1016e |
-| Cathode orientation (2025) | **landscape**, 12 mm axis along the beam | EXPERIMENTER |
+| Cathode orientation (2025) | **12 mm axis along the beam** | EXPERIMENTER |
 | Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
 | Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
 | Focus position in the cell | **not the cell's mid-plane**. The 993 nm waist was placed close to the collection lens deliberately, to raise the collected solid angle. The standoff from the near window is not recorded | EXPERIMENTER 2026-08-09 |
@@ -281,7 +280,7 @@ carries the tables.
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
 > contradiction. The experimenter confirms the PXT1/M **houses** the r636-10, so
 > the attribution was right by luck rather than by sourcing. The 3 × 12 mm
-> cathode and the landscape-vs-portrait install decision in `PLAN.md` §6 #4
+> cathode and the along-beam-vs-upright install decision in `PLAN.md` §6 #4
 > therefore stand. One practical rider: the tube sits in a commercial housing,
 > so orientation is set by rotating the *module*, worth checking its mounting
 > before assuming both orientations are equally easy to realise.
@@ -376,7 +375,7 @@ ever stored.**
     reassigned to the acquisition mode. **A disjoint boxcar cannot produce it**,
     because adjacent stored points share no raw samples. Neither can the chain:
     the rehearsal below puts the baseline autocorrelation at 0.070 at a lag of
-    1 ms with a 1/e decay of one sample, where an analogue corner at that
+    1 ms with a 1/e decay of one sample, where an analogue pole at that
     timescale would need about 0.99.
 
     **What remains is the stage between acquisition memory and the 2000 stored
@@ -389,7 +388,7 @@ ever stored.**
   * **The chain's response time is now bounded from the rehearsal itself.**
     The LeCroy sampled at 10 us, a hundred times finer than the campaign, and
     its baseline autocorrelation across 47 traces is 0.070 at a lag of 1 ms,
-    where an analogue corner at that timescale would need about 0.99. The 1/e
+    where an analogue pole at that timescale would need about 0.99. The 1/e
     decay is one sample. So at the 10^6 V/A gain the rehearsal filenames
     record, **the chain is faster than 10 us**, which is the sampling limit
     rather than a measured time constant. The 1.9 ms correlation in the

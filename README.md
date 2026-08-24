@@ -38,9 +38,12 @@ written to be pointed at other transitions
 The scope and the headline numbers, up front. Four hyperfine components, 264
 fitted traces across 70–130 °C and 25–225 mW, three bounds at 95%:
 collisional self-broadening β_self < 0.03-0.05 MHz per 10¹² cm⁻³ across the
-four peaks (holding across the waist band the data allow), the 2025 laser
-width below 2.4 MHz on the two-photon transition axis, which is the axis the
-analysis works on, equivalently 1.2 MHz per photon, and the AC-Stark
+four peaks (holding across the waist band the data allow), the unexplained
+Gaussian width below 2.4 MHz on the two-photon transition axis, which is the
+axis the analysis works on, equivalently 1.2 MHz per photon (a bound on what
+is left once transit is removed at the measured waist, and not a laser
+measurement: the bench evidence puts the laser two orders of magnitude
+narrower), and the AC-Stark
 coefficient S₀(225 mW) < 0.26 MHz against 0.35 predicted (95%, current primary
 construction). The last two ride the beam waist, which
 is 64 µm from Rajasree's direct measurement in the same conditions, same
@@ -443,7 +446,7 @@ bash scripts/run_all.sh   # 29 analysis stages in dependency order, then the
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. The runner writes the core subset of the 69 committed CSVs, and
+records. The runner writes the core subset of the 70 committed CSVs, and
 the rest have their own scripts, several needing raw trees that stay
 outside the repository. The lock-drift measurement and its audit trail reproduce from
 a clone with no raw traces at all, off the committed acquisition clock.

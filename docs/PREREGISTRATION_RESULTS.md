@@ -697,7 +697,7 @@ declined is now made, in both directions:
   150 ms move it by less than 0.02.
 - **Re-centrings: σ_gap ≈ 88 ms × exp(−t/86 min)** — per-gap re-centring
   RMS ~1–4 MHz laser in hour 1, ≲0.2 MHz after hour 4. τ_i is the least
-  stable number (≈70–160 min across the same variants, trading against the
+  stable number (≈70–160 min across the same variants, exchanging against the
   amplitude on only ~14 constrained gaps); the *structure* — re-centrings
   settle, drift does not — survives every variant.
 
@@ -1691,7 +1691,7 @@ found trapping unneeded).
 `power_mW` is empty for every t_sweep row — and amplitude goes as P², so a
 12% power difference alone makes 25%. Add that the four peaks of a dwell were
 acquired 54–76 minutes apart under a hand-re-centred lock and the size is
-unremarkable. PLAN §7f pre-registered exactly this: cross-peak systematics of
+unremarkable. PLAN §7F pre-registered exactly this: cross-peak systematics of
 **30–50%**, to be cut to 2–4% by per-trace power logging. The measurement
 sits inside the band the plan predicted for it, which is the more useful
 outcome than a surprise would have been.
@@ -1922,7 +1922,7 @@ settles one loose end. After the width test failed, the tempting next move is
 to read the pilot's γ_coll (0.43–0.49) against the campaign's ladder (0.201 /
 0.300 / 0.301 / 0.469), where it lands squarely on 130 °C and looks like the
 missing third strand. **It is not evidence.** γ_coll varies 8% across blocks
-that differ only in power, at fixed density, purely by trading against
+that differ only in power, at fixed density, purely by exchanging against
 σ_laser. A parameter that moves that much at constant density cannot measure
 density.
 
@@ -2204,7 +2204,7 @@ C3g's conclusion is unchanged. What changed is that it no longer rests on a
 number that a different starting guess would have moved.
 
 **The general lesson, which is why this is an addendum and not a commit
-message.** A bounded least-squares fit of an amplitude that can trade
+message.** A bounded least-squares fit of an amplitude that can exchange
 against the core is not safe from one start at high signal-to-noise.
 The failure is silent: the fitter returns, the error bar is small, and the
 result reads as a detection. Two rounds of this report treated the output as
@@ -2290,7 +2290,7 @@ block the free-width probe had resolved, the refit reproduces the probe's
 ordering exactly: 993.4121 nm pulls −14 kHz, 993.4154 nm −36 kHz, 993.4192 nm
 −57 kHz, and 993.4207 nm +107 kHz, against the probe's unshrunk −287 kHz
 pull on 993.4192 nm. The shrinkage prior moderates the amplitude as
-designed, trading the probe's free-per-trace deviation for a value
+designed, exchanging the probe's free-per-trace deviation for a value
 disciplined by its block's mean. The attributed half of the excess is
 confirmed structural. The unattributed remainder stands exactly as stated
 above, open, below the inflated noise, and moving nothing.

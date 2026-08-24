@@ -29,10 +29,9 @@ that says what the other seven are conditional on.
    is nested rather than a choice between alternatives, since the Lorentzian
    model is the boundary case of the Gaussian one, so the count of conditions
    the Gaussian wins carries no information and only the size of the
-   improvement does. And excluding one corner is not the same as measuring the
+   improvement does. And excluding one end-member is not the same as measuring the
    shape: how much Lorentzian content the line tolerates is a fitted width
-   that has not been measured yet. The laser shape is therefore tested at one
-   corner and unmeasured in between.
+   that has not been measured yet. The laser shape is therefore tested at one end-member and unmeasured in between.
 4. The beam waist $w_0=64$ µm is **accepted from the lineage measurement,
    not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
    diameter with a beam profiler on the same laser model, the same $f=150$ mm
@@ -107,7 +106,7 @@ The headline shots would be these.
   10¹² cm⁻³, the anchor `docs/LITERATURE.md` scales from Zameroski's
   measured 7S rate through the computed C₆ difference ratio, and it is what
   `rb5s6s.vanderwaals.beta_self_anchored` returns.
-* The Lehmann cusp in the cold-dim small-waist corner.
+* The Lehmann cusp at the cold-dim small-waist extreme.
 * The beam-profile $w_0$ itself. Wavemeter calibration is folded in as a
 byproduct (PLAN §11): the atoms ($\sim$ kHz) calibrate the wavemeter
 ($\sim$ 10 MHz), not the reverse.

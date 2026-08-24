@@ -117,6 +117,7 @@ EXPENSIVE = {
     # neither and could not be reproduced by anyone.
     "run_twin_span_sweep": ["twin_span_sweep.csv"],
     "run_quantisation_check": ["quantisation.csv"],
+    "run_twin_realism": ["twin_realism.csv"],
     "run_saturation_probe --emit": ["saturation_companion.csv"],
     "run_kernel_k8": ["kernel_k8.csv"],
     "run_kernel_k7": ["kernel_k7.csv"],

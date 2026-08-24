@@ -37,7 +37,7 @@ w(z) at five or more z positions in two orientations, camera z-scan through the
 same focus (§4.2), lens separations calipered at setup and teardown (§4.3), ρ in
 situ (both directions), collection geometry measured (u, v, and the detector
 aperture. The PMT of record is the side-on r636-10 with a 3 × 12 mm cathode,
-mounted landscape, an attribution that is ASSUMED rather than verified on this
+mounted with its long axis along the beam, an attribution that is ASSUMED rather than verified on this
 bench: it comes from the lineage's nanofibre setup, and an in-campaign
 photograph shows the cell detector labelled as a Thorlabs PXT1/M, so the
 cathode geometry is an open item and not a measured fact), and polarization

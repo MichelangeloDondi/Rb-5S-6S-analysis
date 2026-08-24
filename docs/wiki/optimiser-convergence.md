@@ -30,9 +30,9 @@ point that clears every stopping rule can still sit in a local minimum, with
 a deeper one elsewhere on the surface that the optimiser never visited and
 has no way of knowing about.
 
-This gap is sharpest where parameters trade against each other, because a
+This gap is sharpest where parameters exchange against each other, because a
 likelihood surface with correlated parameters is rarely a bowl with one
-obvious floor. It is closer to a landscape carrying a long, shallow valley:
+obvious floor. It is closer to a surface carrying a long, shallow valley:
 a direction along which moving one parameter and compensating with another
 leaves the objective almost unchanged over a wide stretch. An optimiser
 dropped anywhere in that valley slides to the nearest point where the local

@@ -160,6 +160,16 @@ rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           forecast(M34: the digital twin, synthesise traces for an experiment
                    that does not exist yet, fit them back, and read the
                    achievable precision from the fit's own covariance)
+          instruments(M34a: the oscilloscopes as objects, record length,
+                      effective depth per resolution mode, and whether that
+                      mode correlates neighbouring samples, every number from
+                      a manufacturer manual and None where none is printed)
+          twin(M34b: the twin as an acquisition. An instrument at settings, a
+               one-peak or four-peak trace, the measured noise law and sample
+               correlation, and the platform that decides the radiation
+               temperature: the heated cell radiates against itself while the
+               nanofibre radiates against a 300 K room whatever its
+               microkelvin atoms do)
           detection(M35: which decay branch the apparatus collects, and the
                     radiation trapping that follows from it, so the detected
                     wavelength is a configuration rather than a constant)

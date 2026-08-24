@@ -32,7 +32,7 @@ condition number of 345 across the three width parameters.
 kernel convolve into a profile whose shape barely distinguishes them at these
 widths. The information that would separate them is not weakly present in the
 lineshape. It is close to absent, which is why more data of the same kind does
-not help. Inside a single condition the two trade at a correlation whose median
+not help. Inside a single condition the two exchange at a correlation whose median
 across the 32 conditions is -0.90.
 
 **The change.** Measure one of them independently. The repaired cavity lock
@@ -62,8 +62,8 @@ than a single number.
 
 **Whether a design change could do it instead.** It cannot, and this was
 tested rather than assumed. Varying the span by a factor of five and the trace
-count by a factor of ten moves the correlation from $-0.9177$ to $-0.9166$ and
-$-0.881$, which is no movement at all. The degeneracy belongs to the lineshape
+count by a factor of ten moves the correlation by 0.0075 and 0.0000
+(`results/twin_span_sweep.csv`), which is no movement at all. The degeneracy belongs to the lineshape
 rather than to the sample size, so the external measurement is not the
 cheapest route to this limitation. It is the only one.
 

@@ -183,7 +183,7 @@ matched intensity the shift is identical at every waist: 0.348 MHz at 64 um and
 225 mW, at 32 um and 56 mW, and at 16 um and 14 mW. What a smaller waist buys is
 the intensity a limited power can reach. What it pays is saturation, which grows
 as the square of the intensity while the shift grows as the first power, and the
-axial average, which reverses the skew's sign past 1.12. Stated that way the trade
+axial average, which reverses the skew's sign past 1.12. Stated that way the exchange
 stops being a matter of opinion.
 
 **The proposed 32 um sweet spot survives, with a different justification and a
@@ -284,7 +284,7 @@ linewidth. It becomes useful around $2\sigma_v/\lambda$ = 395 MHz, which is
 where $v_\text{fringe}$ equals one standard deviation, and it is decisive an
 octave above that.
 
-### What that costs, and why the trade is comfortable
+### What that costs, and why the exchange is comfortable
 
 With the two arms at different frequencies the first-order Doppler no longer
 cancels exactly. The residue is $\Delta v_z/c$, which smears the line by

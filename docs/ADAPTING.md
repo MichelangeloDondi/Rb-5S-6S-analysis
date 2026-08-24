@@ -422,7 +422,7 @@ two-level ground manifold driven out of one level and returned to the other.
 form callers can use.
 
 **What is this transition's.** The four numbers in `BRANCHING_F` and the
-line-to-isotope map in `DRIVEN_F`. Both are rubidium 5s-6s. For another
+line-to-isotope map in `DRIVEN_F`. Both are rubidium 5S-6S. For another
 species or another line, replace the table.
 
 **Where the numbers come from, and the seam that matters.** The branching is
@@ -462,7 +462,7 @@ differential-shift values, and the exponent fitted to them. Another species is
 another preset.
 
 **The seam that matters, and the one deliberately not crossed.** The
-differential shift is a principal value through the 6s-6p poles, and
+differential shift is a principal value through the 6S-6P poles, and
 `scripts/run_blackbody_channels.py` records three earlier attempts that were
 each wrong in an instructive way. Reimplementing that integral in the library
 would create a second source of truth for a delicate number, so the committed

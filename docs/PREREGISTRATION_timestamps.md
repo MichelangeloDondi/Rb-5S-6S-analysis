@@ -328,7 +328,7 @@ with push access to this repository can backdate.
 What is weaker than before: a release object is a more conspicuous, harder-to-
 overlook timestamp than a commit, and there is no longer one that predates the
 audit. Nothing about the ordering changed — only how prominently it is
-advertised. This note is the record of that trade, made deliberately: publishing
+advertised. This note is the record of that exchange, made deliberately: publishing
 an unfinished manuscript to preserve a redundant timestamp would have been the
 worse choice.
 

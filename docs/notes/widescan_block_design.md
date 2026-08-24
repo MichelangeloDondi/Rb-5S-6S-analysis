@@ -99,7 +99,7 @@ however long the block runs.
 The sizing result worth carrying: at the 2025 record length of 2000 points
 the span and the shape requirements are mutually exclusive. **No setting of a
 2000-point record answers both questions at once.** A deeper record is a menu
-setting on any modern instrument, and it dissolves the tradeoff entirely: one
+setting on any modern instrument, and it dissolves the trade-off entirely: one
 trace then carries the Doppler-free line, its near wings, and the pedestal
 together.
 

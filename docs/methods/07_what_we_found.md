@@ -279,7 +279,7 @@ baseline (not loaded here).
 ### 5.6 The Lehmann cusp, not resolvable in 2025 as designed
 
 At the
-cold-dim 70 °C corner the BIC comparison ([§4.7](06_the_statistics.md)) gives
+cold-dim 70 °C cell of the grid the BIC comparison ([§4.7](06_the_statistics.md)) gives
 $\Delta\text{BIC}(\text{Voigt}-\text{Lehmann})=+0.4/+0.9/+3.7/-0.1$ across
 peaks, a **statistical null**: three of four have $|\Delta\text{BIC}|$ below 2
 (the "not worth a mention" band) and the fourth is 3.6 (weak, and it is the

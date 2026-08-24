@@ -22,11 +22,11 @@ verify_flags:
   - Author list/DOI VERIFY at submission
 verified_date: null
 summary: >
-  Recent microcell landscape.
+  Recent microcell field survey.
 loci: []
 section: landscape-24-26
 ---
 
 # callejo2025
 
-Recent microcell landscape. Author list/DOI VERIFY at submission.
+Recent microcell field survey. Author list/DOI VERIFY at submission.

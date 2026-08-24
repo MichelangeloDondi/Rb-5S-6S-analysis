@@ -297,7 +297,7 @@ rather than sitting here misleading a reader.
   matters question, asked locally of a fit already run rather than globally
   of a projection.
 - [Resampling](resampling.md), another Monte Carlo construction, and the
-  cost tradeoffs that decide when either one is affordable.
+  cost trade-offs that decide when either one is affordable.
 - [Robust fitting](robust-fitting.md), for what to do once local sensitivity
   flags a fit that depends too much on one input.
 

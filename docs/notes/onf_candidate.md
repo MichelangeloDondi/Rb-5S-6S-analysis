@@ -51,7 +51,7 @@ near 0.4 MHz, decomposes as laser + transit + residual, and the ladder that
 attributes it needs an independent lever on each slot. Density separates the
 collisional slope from the intercept and nothing more. The laser slot is the
 identifying one, and the kernel window established that the cell data
-constrain its shape only at one corner. The platform this note sizes is an
+constrain its shape only at one end-member. The platform this note sizes is an
 optical nanofibre with a two-colour evanescent trap, the configuration of the
 published lineage above, operated with the trap dark where the spectroscopy
 wants it. One apparatus provides three distinct instruments, sized below in
@@ -392,7 +392,7 @@ leads this note.
 * A per-run calibration of the electrostatic surface-charge term, which
   [Pennetta 2026](../lit/pennetta2026.md) shows is a component of the
   potential rather than an external nuisance.
-* Which fibre. The cold-atom 5s-6s measurement of
+* Which fibre. The cold-atom 5S-6S measurement of
   [Rajasree 2020](../lit/rajasree2020spin.md) used a 400 nm nanofibre and the
   estimates here follow it. Nanofibres in this platform class span roughly
   400 to 650 nm, and the decay length, and with it the transit and surface

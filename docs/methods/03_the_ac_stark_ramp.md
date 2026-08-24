@@ -245,11 +245,11 @@ tube housed in the Thorlabs PXT1/M module seen in the in-campaign photograph,
 is a 3 × 12 mm rectangle, so which of its axes lies along the beam is a ×4
 lever on $Z_c$.
 
-It is the 12 mm axis. The cathode was mounted **landscape** through the 2025
+It is the 12 mm axis. The cathode was mounted with its 12 mm axis along the beam through the 2025
 campaign (experimenter-confirmed 2026-07-23, [APPARATUS](../APPARATUS.md)) and is not
 re-oriented between configurations, so $Z_c = 6/M$ mm is a single fixed number
 and $Z_c/z_R$ moves between the two configurations only through $w_0$.
-Landscape is the larger of the two cases, so it pushes $Z_c$ *towards* the
+The along-beam mounting is the larger of the two cases, so it pushes $Z_c$ *towards* the
 crossover rather than away from it, and the two-waist flip survives it across
 the whole plausible range of magnification:
 

@@ -151,8 +151,7 @@ earlier version of this bullet specified 10000, which is the failing member
 of that set. At the 2025 record of 2000 points the span and shape
 requirements are mutually exclusive at any span.
 Any modern oscilloscope offers megapoint records, so this is a menu setting
-and not a purchase. Set it to the deepest record the export tolerates and the
-tradeoff disappears: one trace then carries the Doppler-free line, its near
+and not a purchase. Set it to the deepest record the export tolerates and the trade-off disappears: one trace then carries the Doppler-free line, its near
 wings, and the pedestal together.
 
 **Equivalently, if the record length cannot move:** hold the 2025 rate and
@@ -253,6 +252,20 @@ waist, and the beams stay overlapped over 4.1 cm. So the existence of a
 Doppler-free peak does not refute this candidate. Measure the tilt, or
 deliberately scan it, and the hypothesis is settled either way.
 
+**Third, and it is cheaper than either: the wing-noise discriminator.**
+Half an hour, no atoms needed on the line. Detune far off resonance and
+record the baseline against power, which isolates the light-linked $a$
+term from anything the line contributes. Then record the monitor
+photodiode of chapter 8 simultaneously and take the coherence between it
+and the fluorescence baseline. A coherent share is intensity noise on the
+background and regresses out of every trace offline, for free, forever. An
+incoherent share growing linearly with power is shot noise on a background
+that grows as the power squared, and it is attacked with the interference
+filter, a pinhole at the collection image plane, and the retro dump. The
+prize is the same eight-to-ten-times growth the budget measures across the
+ladder, in the region where the pedestal and the band excess live, and
+this record cannot currently tell the two mechanisms apart.
+
 **And while the ruler is out:** measure u and v for the collection lens.
 `config.py` derives the axial field of view as Z_c = L_par / 2m and its M is
 an estimate, so Z_c is bracketed at 2.0 to 2.4 mm. The experimenter's own
@@ -326,17 +339,32 @@ invariant under acquisition order.
 ### Where the noise actually comes from, measured rather than assumed
 
 The committed noise law is $\sigma^2 = a^2 + bV + cV^2$ per condition, with
-$a$ the dark and electronic floor, $b$ the shot-like term proportional to
+$a$ the signal-independent term, $b$ the shot-like term proportional to
 signal, and $c$ any excess multiplicative term such as laser intensity noise
-or gain fluctuation. Read across the 32 committed conditions of
-[`noise_model.csv`](../../results/noise_model.csv):
+on the fluorescence itself. Read across the 32 committed conditions of
+[`noise_model.csv`](../../results/noise_model.csv), with the power scaling
+of each term measured in
+[`quantisation.csv`](../../results/quantisation.csv)'s budget rows:
 
-  * **The excess term is absent.** $c$ was needed in one of 32 conditions.
-    Laser amplitude noise and gain drift are therefore not what limits this
-    measurement, and stabilising them buys nothing. That is worth stating
-    because it is where effort usually goes first.
-  * **Shot noise dominates everywhere that matters.** The dark floor and the
-    shot term cross at about 8.8 mV. At a dim 20 mV signal the floor still
+  * **$a$ is not the dark floor, and reading it as one was this chapter's
+    own error.** It grows linearly with laser power, from about 1.5 mV at
+    25 mW to 12 to 15 mV at 225 mW, eight to ten times across the ladder.
+    A dark and electronic floor cannot do that. What $a$ measures is
+    light-linked background reaching the detector, and the true dark and
+    electronics floor is its power-to-zero intercept, a few tenths of a
+    millivolt, far below the light-linked term at any working power. **This
+    is the term that limits the wings**, which is where every question this
+    record leaves open lives.
+  * **The excess term is absent, and that says less than it seems.** $c$ was
+    needed in one of 32 conditions, so intensity noise on the fluorescence
+    is below shot noise. It does not follow that laser amplitude noise buys
+    nothing: intensity noise on the background enters through $a$, where it
+    is degenerate with shot noise on that background, and this record has
+    not separated them. The discriminator is item 9a of the day-one list,
+    a coherence measurement against a monitor photodiode, and it decides
+    which repair the wings need.
+  * **Shot noise dominates on the line itself.** The signal-independent term
+    and the shot term cross at about 8.8 mV. At a dim 20 mV signal the floor still
     contributes 31 per cent of the variance, and by 500 mV it is under 2 per
     cent. So above the dimmest rung of a power ladder this is a
     photon-counting problem, and the only lever is more photons: collection
@@ -464,7 +492,7 @@ property of the detection chain rather than of the condition.
     photons. **Which way of getting them matters, and they are not equal:**
     see the ranking below, where power is linear in signal-to-noise and time
     is only square-root.
-  * The retro ratio would in principle trade pedestal against line, since the
+  * The retro ratio would in principle exchange pedestal against line, since the
     narrow-to-pedestal area ratio is $4\rho/(1+\rho^2)$, but that ratio is
     stationary at $\rho=1$ and the accepted 0.94 already sits within 0.2 per
     cent of its maximum. **That lever is exhausted** and is worth stating so
@@ -500,6 +528,16 @@ correlation length are the smallest indices, which is worth knowing because
 repeats are the most expensive thing on the list in session time and buy the
 least precision per hour, while remaining essential for a different reason:
 they are the only source of the within-cell error every fit here uses.
+
+**Two things this table does not say, both of which the next section
+measures.** It ranks the width of the line, so it serves what improves the
+peak, and it assumes repeats are independent. Neither holds for the open
+questions. The pedestal and the band excess live in the wings, where the
+light-linked $a$ term rules and the ranking is different: attacking the
+background is worth up to the eight-to-ten-times growth it shows across
+the ladder, more than any index in this table. And back-to-back repeats
+carry a condition-common share that no fit removes, so their real index is
+lower still until the schedule interleaves them.
 
 ### Three ways to buy photons, and they are not equivalent
 
@@ -571,7 +609,7 @@ order above is this same rule one level up.
 
 ### Fast scans against slow scans, and why this is not the knob
 
-The trade has a hard limit at each end and the useful window between them is
+The exchange has a hard limit at each end and the useful window between them is
 enormous, which is the actual finding.
 
 At the committed rate of 0.0850 MHz per ms on the transition axis, the 5.37
@@ -669,7 +707,7 @@ sessions may not satisfy, which is the whole subject of
 and identical in the physics, with per-session nuisance parameters and a
 shared physical one, and with at least one quantity measured in every session
 to serve as the cross-session anchor. One long campaign gives precision that
-cannot be checked, and that is the trade this record has already paid for
+cannot be checked, and that is the exchange this record has already paid for
 once.
 
 ### How much of the triangle goes in one trace, and how many periods
@@ -723,14 +761,14 @@ bound and take two.
 
 These are different things and the answer differs.
 
-**High-resolution mode averages adjacent samples in hardware**, trading
+**High-resolution mode averages adjacent samples in hardware**, exchanging
 bandwidth for effective bits, and **the archive was acquired with it on**, a
 fact recovered from the experimenter rather than from any stored setting.
 Measured from the stored quantisation steps it delivered a median of about
 **9.5 effective bits** against the instrument's native eight, reaching twelve
 on the dimmest cell.
 
-**The trade it made was not obviously the right one.** The bits it bought were
+**The exchange it made was not obviously the right one.** The bits it bought were
 not needed, since quantisation sits 6 to 485 times below the noise floor in
 every committed condition, so finer steps bought nothing the noise did not
 already swamp. What it spent was bandwidth, and that 1.9 ms window is what
@@ -768,8 +806,7 @@ The reasons are specific to this analysis rather than general.
 
 ### Four peaks in one trace, which the current bench can do
 
-The repaired cavity lock and the LeCroy's ability to hold the full four-peak
-landscape in a single acquisition, with the EOM on and off, change two things
+The repaired cavity lock and the LeCroy's ability to hold all four peaks in a single acquisition, with the EOM on and off, change two things
 at once. The known hyperfine splittings become an in-trace frequency ruler, so
 every trace carries its own absolute anchor and its own nonlinearity check
 without needing RF-off traces. And **all four lines are then digitised on one
@@ -799,7 +836,7 @@ the **Agilent**: its High Resolution is disjoint and documented, its export
 signature is the provenance anchor this archive already keys on, and staying
 on the 2025 chain keeps the new ladders comparable with the committed ones.
 The **four-peak traces go to the LeCroy**, whose measured half-million points
-hold the full landscape at fine spacing, run raw with offline smoothing. **If
+hold all four peaks at fine spacing, run raw with offline smoothing. **If
 the RTM3004 is borrowable it takes the LeCroy's place**, on three documented
 counts: disjoint high resolution at 16-bit words, the record length menu, and
 HISTORY segments, which capture a whole ladder without touching the horizontal
@@ -825,6 +862,13 @@ amplitude ratios untestable, swinging 30 to 50 per cent between blocks.
 **How many, stated as the design defaults with their sources.** Per one-peak
 condition, **five repeats**, the 2025 practice the noise model is fitted on,
 in blocks interleaved a-b-a so power and elapsed time stop being collinear.
+**Split those five across two visits, three and two, with the lock
+re-acquired between them**, because the repeats section above measures the
+condition-common share at 0.23 and five back-to-back repeats therefore buy
+1.6 where independent ones buy 2.24. Three within a visit still give the
+within-visit scatter every fit uses, and the second visit is what makes the
+pair of visits behave like independent samples. It costs no photons, only
+the schedule.
 Per block, **eight science and four ruler traces** at 2025-like proportions,
 which the modulation menu above puts at a free 1.26 to 1.33 width-statistics
 gain since the brackets exist anyway. Four-peak blocks of **five traces**, the
@@ -840,7 +884,16 @@ the up-down splitting measures the detection lag on a causal chain trace by
 trace, which is why no separate rate ladder is needed for lag. **One block at
 ten times the rate**, whose tooth clock samples at 68 Hz inside the very band
 the slow blocks integrate, the single cheapest discriminator this record has
-for whether the fitted Gaussian is laser noise. And the fast-record
+for whether the fitted Gaussian is laser noise. **The drive frequency decides
+whether that block reaches at all, and it is the easier half of the setting
+to get wrong.** The reach rows of
+[`kernel_k7.csv`](../../results/kernel_k7.csv) weigh all four combinations
+against the band: at ten times the rate the 0.5 MHz drive samples 1.70 kHz
+while the 12.5 MHz drive reaches only 0.068 kHz, a factor 25 apart, because
+finer teeth clock the axis more often. At the ordinary rate neither drive
+reaches. **So the fast block runs the 0.5 MHz drive, and a fast block on
+the 12.5 MHz teeth is a block that cannot answer the question it was taken
+for.** And the fast-record
 diagnostics stay on the LeCroy at 10 us sampling, which is what bounded the
 chain below 10 us in the rehearsal.
 
@@ -1152,7 +1205,7 @@ own, and the detection chain is the obvious suspect.
 
 **The rehearsal refutes the chain.** The LeCroy sampled at 10 us, a hundred
 times finer than the campaign, and its baseline autocorrelation across 47
-traces is 0.070 at a lag of 1 ms, where an analogue corner at that timescale
+traces is 0.070 at a lag of 1 ms, where an analogue pole at that timescale
 would require about 0.99. Its 1/e decay is 10.0 us, one single sample, so the
 correlation is already gone at the instrument's own resolution limit. The
 rehearsal filenames record a transimpedance gain of 10^6 V/A, which is the same

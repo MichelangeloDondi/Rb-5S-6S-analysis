@@ -165,6 +165,50 @@ asymmetric-knob search that [identifiability](identifiability.md) records.
 `docs/TUTORIAL.md` walks the loop for a line of the reader's own choosing, and
 every code block in it runs as `examples/tutorial_forecast.py`.
 
+## The redesign: an instrument, a trace kind, and a platform
+
+The twin above answers how well an estimator recovers a known truth. On the
+experimenter's instruction it now answers the question an acquisition design
+asks instead, which is what a named instrument at named settings would
+actually store. Three things moved into configuration
+(`rb5s6s/instruments.py` and `rb5s6s/twin.py`, exercised by
+[`twin_realism.csv`](../../results/twin_realism.csv)).
+
+**The instruments are objects with their own limits**, every number read
+from a manufacturer manual: record length, effective bit depth per
+resolution mode, channel count, and where a manual does not print a
+quantity the field says so and does not guess. Asking for a record longer
+than an instrument stores raises instead of silently succeeding, because a
+design that cannot be run should not pass in a twin.
+
+**The two resolution mechanisms are distinguished in code**, since treating
+them alike is how an artefact enters. High resolution is a disjoint boxcar
+and leaves neighbouring samples independent. Enhanced resolution is a
+moving average across stored samples: it correlates neighbours by
+construction, which the analysis would later read as physics, and a test
+asserts the difference on white noise.
+
+**A trace is one peak or all four on a single vertical range.** The
+four-peak kind carries the measured splittings computed from the peak
+wavelengths themselves, so a hand-copied spacing cannot enter, and it is
+the kind that brings its own frequency ruler and its own brightness
+comparison.
+
+**And the platform decides the blackbody term, which is where a plausible
+twin goes silently wrong.** In the heated cell the atoms sit inside the
+radiating body, so the shift is evaluated at the cell temperature. On the
+nanofibre they do not: laser-cooled atoms at microkelvin sit microns from a
+fibre in a room-temperature laboratory, and **the radiation field is the
+room's**. The twin fixes the fibre platform at 300 K whatever the atom
+temperature is, and carries the atom temperature separately because it sets
+the transit time and nothing else. Evaluating the shift at the atomic
+temperature would return essentially zero and would be wrong by the whole
+size of the term. An invariant test pins both halves.
+
+**What it does not do, deliberately.** It does not fit. It emits traces in
+the form `fit_condition` accepts, so the estimator under test is the
+production one and the twin cannot grade its own homework.
+
 ## What can go wrong
 
 **Running only the injected world.** A twin that injects an effect and then
@@ -241,9 +285,11 @@ line five times more thinly. **Widen the span only alongside the points to
 match.**
 
 **The original run is not reproduced and that is stated rather than hidden.**
-It reported $-0.9177$, $-0.9166$ and $-0.881$, numbers that ten public
-surfaces still quote, and it recorded neither its truth parameters nor its
-seed, so nobody can regenerate those four decimals. The producer above
+It reported $-0.9177$, $-0.9166$ and $-0.881$, and it recorded neither
+its truth parameters nor its seed, so nobody can regenerate those four
+decimals. The public surfaces that once quoted them now quote the
+producer's rows instead, and the digits remain only here and in HISTORY,
+as the record of what was retired. The producer above
 re-establishes the claim rather than the digits, because choosing inputs that
 hit a remembered output is the opposite of a measurement.
 

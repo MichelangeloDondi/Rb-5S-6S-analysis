@@ -31,7 +31,7 @@ $w_0$, and beyond that range the beam spreads at the far-field divergence
 half-angle $\theta \approx \lambda/(\pi w_0)$. Multiplying the two
 definitions together gives $w_0\theta = \lambda/\pi$, a fixed product: a
 tighter focus always buys a shorter working distance and a wider spray
-angle, in the same measure. No lens design escapes that trade, because it is
+angle, in the same measure. No lens design escapes that exchange, because it is
 a statement about waves, not about glass.
 
 The waist is also the step that converts a number a power meter can read
@@ -142,7 +142,7 @@ quoted with, and dropping that step understates every downstream result.
 
 A third is a data-insufficiency point specific to inferring $w_0$ from a
 fitted line rather than measuring it directly: the transit width and the
-laser width both broaden the same line and trade against each other in a
+laser width both broaden the same line and exchange against each other in a
 fit, so a spectroscopic line alone under-determines the waist that produced
 its transit contribution. Only an external, spatially resolved measurement
 of the beam settles it.

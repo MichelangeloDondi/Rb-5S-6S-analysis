@@ -95,9 +95,9 @@ half codes at the bottom rung and a twelve-bit one about forty.
 ## What can go wrong
 
 **Confusing effective bits with nominal bits.** Averaging and
-high-resolution modes buy resolution by trading bandwidth, so a nominally
+high-resolution modes buy resolution by exchanging bandwidth, so a nominally
 eight-bit instrument can deliver far finer steps than its specification while
-its response time lengthens. Both numbers matter and they trade against each
+its response time lengthens. Both numbers matter and they exchange against each
 other.
 
 **Assuming dither is present.** The argument that noise rescues resolution

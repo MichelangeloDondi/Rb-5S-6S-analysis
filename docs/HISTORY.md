@@ -1576,7 +1576,7 @@ section 1, where 250 words of provenance story had interrupted the results.
 The fig15 entry, inside baseball to any outside reader, was cut, and the
 tutorial-claim entry folded into the section that carries its replacement.
 
-**The page now navigates.** It had one link and no images across 221 lines:
+**The page now carries its own navigation.** It had one link and no images across 221 lines:
 now a contents block, every producer and CSV linked, the five check-documents
 in the footer linked, the identifiability and twin wiki pages linked where
 they are used, and `fig35`, built as the master figure and never used
@@ -1717,3 +1717,99 @@ common fraction 0.23, so five back-to-back repeats buy 1.6 instead of
 2.24), and the acquisition-design page ranks the levers. The twin pages now
 point at their regenerable producers, and the four-decimal correlations
 from the unrecorded twin run left their last wiki surface.
+
+## The retired twin digits left every quoting surface, and the campaign got its uncertainty ledger
+
+The four-decimal correlations from the unrecorded twin run, retired when
+their producer was built, were still quoted verbatim on eight surfaces
+(BIG_PICTURE, PLAN, the tutorial, plan chapters 2 and 5, big-picture chapters 5
+and 7, and the identifiability wiki's factor table). Every one now quotes
+`results/twin_span_sweep.csv` instead, and the digits survive only in the
+twin page's retirement record and here. The identifiability table's middle
+row moves from the unregenerable tutorial point to the sweep's committed
+design condition, -0.9421 and a pin factor of 2.98.
+
+And chapter 6 gains the uncertainty ledger of the next campaign: one row
+per component of the three headline uncertainties, each with its committed
+size, what limits it, the knob that acts on it, the expected purchase, the
+twin world that sizes the purchase before session time is spent, and the
+day-one check that validates it. The fibre platform's knobs stay behind
+the fibre thread, and every ledger row stands on the cell campaign alone.
+
+## A misnamed quantity in the headline, and a wrong apparatus in the sentence beside it
+
+Two defects on the case page, both found by readers and not by
+instruments, and both in the page's most-read block.
+
+**The bound called "the 2025 laser width" is not a laser measurement.** The
+experimenter: 2.4 MHz "seems huge", and the previous generation of this
+laser ran at 100 kHz. He is right, and `laser_epoch.csv` says so in its own
+note: the number is the Gaussian left over once transit is removed at the
+measured waist, which its note calls the degeneracy the bound rides on
+instead of a measurement, and it falls to zero near a 16 micrometre waist. Three
+independent pieces of evidence put the laser far below it: a wavemeter
+record taken mid-acquisition holds 100 kHz standard deviation over 24
+minutes, the comb read as a clock bounds the non-repeating excursion below
+28.3 kHz on the transition axis, and Nieddu's 100 kHz laser produced a line
+of 4.9 to 5.2 MHz on the transition axis, 2.4 to 2.6 per photon, where the
+2025 line sits at about 5.25 and where the per-photon reading alone would
+be narrower than the 3.49 MHz natural width and so impossible. So
+a laser two orders of magnitude narrower reproduces the observed line and
+about a megahertz of Gaussian width is unaccounted for, with residual
+Doppler from a 3.2 to 3.5 mrad retro tilt as the leading candidate. The
+quantity is renamed to what it bounds on the case page, in README and in
+the results ledger's C2, which now opens by saying what it is not. **No
+number moves.** This is the five-bounds-one-name failure again, and the
+name was the load-bearing part.
+
+**And the same block described an apparatus this campaign does not have.**
+The rebuild wrote "the shift the trap beam imposes on the line" into a
+heated vapour cell with no trap. It passed the suite, a full gate, an
+external retrieval and a de-tic pass over its own paragraph, and it was
+removed accidentally, by the rewrite the experimenter's
+bounds-against-measurements correction prompted, while nobody noticed the
+noun. No mechanical check here can see a wrong apparatus word: it is
+spelled correctly, sits in the right slot, breaks no bank, and names a real
+thing found in other people's experiments.
+
+Six further findings from the same review are applied: the introduction no
+longer claims every number has a producer, since the page's own audit
+established otherwise and now names the four exceptions. Two performed-honesty
+adverbs are gone and the bank widened to catch that construction while
+keeping the statistical sense of the word, measured at seven correct sites. A list seam that switched half a section to loose rendering is closed, two
+superlatives four lines apart are scoped, the scan-axis repair is
+distinguished from the absolute optical frequency, and a line of internal
+bookkeeping naming four documents the reader cannot identify is cut.
+
+## The digital twin becomes instrument-aware, and the fibre gets its own sky
+
+On the experimenter's instruction the twin was redesigned to produce
+realistic traces of the next campaign and not idealised ones. The
+oscilloscopes are now objects with their own limits (`rb5s6s/instruments.py`),
+every number read from a manufacturer manual, and where a manual does not
+print a quantity the field records that and does not guess. An acquisition
+carries the instrument, the resolution mode, the record length, the vertical
+window, the sample correlation and the trace kind, and asking for a record
+longer than an instrument stores raises instead of quietly succeeding.
+
+The two resolution mechanisms are distinguished in code, because treating
+them alike is how an artefact enters: the disjoint boxcar leaves neighbours
+independent and the moving average correlates them, asserted on white noise
+by a test. A trace is one peak or all four on a single vertical range, with
+the splittings computed from the peak wavelengths so a hand-copied spacing
+cannot enter.
+
+**And the platform now decides the blackbody term.** The heated cell
+radiates against itself, so the shift is evaluated at the cell temperature.
+The nanofibre does not: laser-cooled atoms microns from a fibre in a
+room-temperature laboratory radiate against the room, so that platform is
+fixed at 300 K whatever the atoms do, and the atom temperature is carried
+separately because it sets the transit time and nothing else. Reading the
+atom temperature as the radiation temperature would return essentially zero
+and would be wrong by the whole size of the term. An invariant test pins
+both halves and the contrast between them.
+
+`results/twin_realism.csv` records what each instrument stores and what the
+production fitter recovers from the twin's output, ratios between 0.99 and
+1.06 at two sample correlations, so a bias there would be a bias in the
+analysis and not in the twin.

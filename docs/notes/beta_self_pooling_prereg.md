@@ -18,13 +18,13 @@ transition, and the broadening they see from ground-state Rb is R^-6
 physics. Three statements carry the licence, each checked adversarially:
 
 1. There is no first-order resonant exchange term of the D-line type. The
-   5s-6s transition dipole is zero by parity, the electronic quadrupole
+   5S-6S transition dipole is zero by parity, the electronic quadrupole
    vanishes between two J = 1/2 states (rank 2 exceeds 2j), and the magnetic
    channel sits thirteen orders below the van der Waals term.
 2. The R^-6 exchange contribution is large (the referee estimates about 0.7
    of the direct term through the dominant intermediate channel) but
    isotope-blind: the collision is sudden with respect to the 99.2 MHz
-   5s-6s isotope shift by a factor of order 300, so the exchange operates on
+   5S-6S isotope shift by a factor of order 300, so the exchange operates on
    effectively degenerate pair states for both isotope pairings.
 3. What survives is kinematics. With natural abundance the reduced-mass
    velocity factor puts the 87 radiator 0.35 per cent below the 85 radiator,

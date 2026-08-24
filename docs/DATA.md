@@ -34,7 +34,7 @@ here the moment a specific number looks wrong.
 | rebuilding the census from a clone | whether the counts regenerate without any private folder | section 4, and `tests/test_manifest.py`, whose file-level re-hash runs in a copy that carries the traces and skips, with a stated reason, in one that does not |
 | after data products | which tables exist, what produced each one, and how far each is checked | [`results/README.md`](../results/README.md) and [`data_recovered/README.md`](../data_recovered/README.md), with the folder roles in section 3a |
 
-<img src="apparatus/program_timeline.png" alt="The 5s-6s program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The whole record on one axis, before the census that describes it. Three
 sittings, every acquisition at its recovered time, the etalon-transient windows
@@ -171,7 +171,7 @@ missing log, which has since been found.
 > provenance rests on commit history rather than on a release object
 > ([preregistration §9](PREREGISTRATION_timestamps.md)).
 
-<img src="apparatus/program_timeline.png" alt="The 5s-6s program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The program on its recovered clock. Every acquisition in
 [`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv), drawn by

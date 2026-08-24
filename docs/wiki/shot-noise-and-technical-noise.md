@@ -7,7 +7,7 @@ statistics of the quanta being counted, or something the apparatus is adding.
 **Takes.** Measurements at several settings of a control the experimenter can
 change.
 **Gives.** The scaling test that separates the two, what each implies about
-what to fix, and why the distinction decides where effort goes.
+what to fix, and why the distinction decides where work goes.
 **Skip if.** The question is the functional form of the variance against
 signal, which is [the noise law](the-noise-law.md).
 
@@ -59,7 +59,7 @@ technical, and the direction of the departure names the class.
 
 ## What problem it solves
 
-It decides where effort goes, and the two answers are expensive in different
+It decides where work goes, and the two answers are expensive in different
 ways. Believing a shot-limited measurement is technically limited leads to
 buying quieter electronics that change nothing. Believing a technically
 limited measurement is shot-limited leads to integrating for hours against a
@@ -101,7 +101,7 @@ backgrounds that scale with something else entirely.
 
 **Assuming shot noise is the best case.** It is the best case for a given
 number of collected quanta, and collection efficiency is an apparatus property
-that technical effort can improve. Shot-limited does not mean optimised.
+that technical work can improve. Shot-limited does not mean optimised.
 
 **Forgetting the detector's own multiplication noise.** A photomultiplier's
 gain process adds excess variance above Poisson, by a factor that is a

@@ -326,7 +326,7 @@ rises. The argument is sound for that apex phase and only for that apex phase.
 A parallel measurement of injected folds across the full range of apex
 positions finds both signs occurring, with the sign set by where the apex sits
 relative to the tooth grid. A one-directional prediction was therefore a
-statement about one corner of the parameter space presented as a statement
+statement about one extreme of the parameter space presented as a statement
 about the effect. It is withdrawn here rather than quietly relaxed later, and
 no number produced under it is quoted anywhere.
 
@@ -496,10 +496,10 @@ below.
 **The tolerance was calibrated on a case that cannot show the cost.** Section 3
 argues that a whole-slot relabelling of a rigid grid is chi-squared degenerate.
 That is true when the slots the relabel gains and loses are empty. The closure
-synthetics put five teeth in a seven-slot grid, so a one-slot shift trades an
+synthetics put five teeth in a seven-slot grid, so a one-slot shift exchanges an
 empty slot for an empty slot and costs nothing. Campaign combs populate all
 seven slots, and the comb spans 882 ms in a 999 ms window, so a one-slot shift
-always trades a populated slot for one that is partly outside the window. Over
+always exchanges a populated slot for one that is partly outside the window. Over
 the 26 mislabelled campaign traces of A3 the correct relabelling costs a median
 of 6e-4 of chi2_red and reaches 5.8e-1. The tolerance of 1e-3 accepted 13 of
 those 26 relabellings and rejected the other 13.
@@ -693,7 +693,7 @@ What gating would buy is small and is now on the record: the rate moves 0.019
 per cent, `block_chi2_red` falls from 8.078 to 7.755, and `scatter_pct` falls
 from 0.618 to 0.606. What it costs is eight traces removed from the calibration
 on a criterion with an unmeasured false-negative rate for the defect it names.
-That trade does not favour gating today.
+That exchange does not favour gating today.
 
 What would settle it is a sensitivity measurement rather than another
 threshold. The rule needs to be shown to fire on injected folds across the full

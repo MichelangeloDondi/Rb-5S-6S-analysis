@@ -22,7 +22,7 @@ argument alone.
 ### 10c.1 the prize is identifiability, not a narrower line
 
 The instinct that a better lock gives a narrower line is nearly wrong here,
-and the arithmetic matters because it decides where the effort goes. The
+and the arithmetic matters because it decides where the work goes. The
 natural width is 3.4925 MHz and it is the floor. Driving the laser
 contribution from its committed median of 1.738 MHz down to 0.2 would move
 the total width only from about 5.29 to 4.90 MHz, a nine per cent change, and
@@ -30,7 +30,7 @@ the transit kernel would rise from 17.6 to 19.0 per cent of the line. The
 record length of section 10a is unaffected, and the transit cusp does not
 become materially easier to resolve from the lock alone.
 
-What does change is the degeneracy. The collisional and laser widths trade
+What does change is the degeneracy. The collisional and laser widths exchange
 against each other inside every single-condition fit, at a correlation whose
 median across the 32 committed conditions is -0.90 and whose range runs -0.92
 to -0.63 (`results/linefit_conditions.csv`, column `corr`), and that is the
@@ -84,7 +84,7 @@ ms, roughly eleven times the 2025 rate, and a 2400 MHz sweep in about two and a
 half seconds. **That ceiling assumed the 1.9 ms belongs to the chain, and the
 rehearsal refutes the assumption.** The LeCroy sampled the same experiment at
 10 us with the same 10^6 V/A gain, and its baseline correlation is 0.070 at
-1 ms against the 0.99 an analogue corner would require, with 1/e decay inside a
+1 ms against the 0.99 an analogue pole would require, with 1/e decay inside a
 single sample. The chain is faster than 10 us, so it is not the binding
 constraint, and the 1.9 ms is a property of the campaign's acquisition mode
 rather than of the detector.

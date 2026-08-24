@@ -34,14 +34,14 @@ of its items points at the block that executes it.
 | mean pull against P | §6 item 1 | the AC-Stark bound into the first measured light shift on this line | one morning of randomized power cycling | the lock may not hold minutes-scale stability | community |
 | excess variance against P² | §6 item 2 | a second, independent functional of the same S₀ | rides the same blocks as item 1 | the second moment may stay under its own floor | community |
 | skew hunt at S | §6 item 3 | a bound on the third cumulant into a detection, or a meaningful bound | the deep-integration day, §9 D5 | not a promised result, sized for the pessimistic end | community |
-| geometry sign flip | §6 item 4 | a parameter-free prediction into a test, through the axial window Z_c | the slit scan inside §9 D5 | the flip is secured by the landscape cathode, so the exposure is magnitude and not sign | community |
+| geometry sign flip | §6 item 4 | a parameter-free prediction into a test, through the axial window Z_c | the slit scan inside §9 D5 | the flip is secured by the along-beam cathode, so the exposure is magnitude and not sign | community |
 | collection rebuild | §6, the two-lens relay | field of view decoupled from collection, and Z_c set as hardware | inside §9 D1 | the slit image plane may not be reachable with the available focal lengths | internal |
 | opposite-order T grid | §7a | a drift-confounded density slope into a measured residual | two days, §9 D2 and D3 | the residual may exceed the physics, which would be the result rather than a failure | community |
 | five T blocks per peak | §7b | one residual degree of freedom into three | inside D2 and D3 | nothing, the blocks either run or they do not | internal |
 | same-session 150–170 °C | §7c | reach, not combinability, on the density lever | inside D2 and D3 if the oven allows | the oven may not reach or hold the top of the range | community |
-| matched-PM ruler | §7d | a monitor that was uncorrelated with the science light into a drift compensator | interleaved with science blocks, unpriced separately | the tank may not reach the modulation index the null needs, which is an open item | community |
+| matched-PM ruler | §7D | a monitor that was uncorrelated with the science light into a drift compensator | interleaved with science blocks, unpriced separately | the tank may not reach the modulation index the null needs, which is an open item | community |
 | returned-to block | §7e | an assumption that block scatter averages down into a test of it | one short block per day | one block settles the direction, not the magnitude | internal |
-| interleaved peaks and timestamps | §7f, §7g | cross-peak systematics of 30–50% into 2–4%, and block order into a clock | inside every dwell | the scope may not export per-trace times, in which case the external log carries it | internal |
+| interleaved peaks and timestamps | §7F, §7g | cross-peak systematics of 30–50% into 2–4%, and block order into a clock | inside every dwell | the scope may not export per-trace times, in which case the external log carries it | internal |
 | etalon thermal discipline | §7h | dropouts inside the thermal transient into a bounded held-lock drift | two hours before first data, and again after any long pause | the transient may be longer on the day than the dataset measured | internal |
 | σ_laser at L | §7i | a drifting-lock bound into a fixed-lock measurement, with the collision prior stated | falls out of the T grid | it stays a bound if the collision prior cannot be tightened | community |
 | width-to-shift ratio | §7j | a van der Waals anchor into an independent test | needs the centre channel, so it rides the fixed lock | the pressure shift may stay under the block scatter | community |
@@ -79,13 +79,13 @@ conversions done.
    and its calibration drift. This is the system's only outer loop, it needs no
    new hardware, and it decides whether shifts are measurable at all.
 4. Telescope install.
-5. Collection rebuild, the relay and slit of §6, landscape.
+5. Collection rebuild, the relay and slit of §6, long axis along the beam.
 6. Configuration L metrology, an afternoon: knife-edge, camera, calipers, ρ,
    and polarization with tomography and the extinction null.
 7. While the oven settles, the drift-characterization block that freezes the RF
    cadence (§10.5).
 
-The interleaved blocks of §7f run inside D2 to D5 and carry the degeneracy-law
+The interleaved blocks of §7F run inside D2 to D5 and carry the degeneracy-law
 and trapping tests of §8. The wide-scan pedestal of §5 rides whichever of these
 days runs.
 
@@ -104,12 +104,12 @@ example as a bench fact.
 | 2 | only 3 densities, 1 residual dof | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (the 2026-08-02 headline), and five or more T blocks tighten further (§7b) |
 | 3 | T monotonic in time | density slope collinear with drift | a guard had to carry the claim | opposite-order days (§7a) |
 | 4 | 2025 lever short at ×16.2 (three T points) | joint β collapses 0.0534 → 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) once the ×52.5 (130 °C) anchor is folded in | the fitted floor responding correctly to a near-flat gamma_coll(T), folded into the headline 2026-08-02 | same-session 150–170 °C (§7c), to reach densities where a ~kHz effect could clear the block-noise floor |
-| 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable, and the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes plus hardware timestamps (§7f, §7g) |
-| 6 | ruler light differed from science light (HWP trick) | monitor reliability ≈ 0 | no drift compensator | matched-PM ruler (§7d) |
+| 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable, and the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes plus hardware timestamps (§7F, §7g) |
+| 6 | ruler light differed from science light (HWP trick) | monitor reliability ≈ 0 | no drift compensator | matched-PM ruler (§7D) |
 | 7 | w₀ never measured | *not measured*, a tens-of-% prior, from the 64 µm beamline-lineage value | every absolute number conditional | beam profile first (§3 item 1) |
 | 8 | ρ(T) never measured | *not measured*, ~8% S₀ drift, computed in §3 item 2 for an assumed film taking per-pass transmission 0.99 to 0.90, not observed on these windows | optics drift reads as physics | T_win before and after, per condition (§3 item 2), with the pedestal cross-check of §5 |
 | 9 | P sweep at a single T | *not measured*, the trapping immunity is untested across density, so this row is a gap rather than a size | discriminators data-starved | mini-P excursion per dwell (§10.4) |
-| 10 | between-block amplitude wander | 30–50% | amplitude observables dead | polarization defined plus tomography (§4.4), 12–16 repeats (§7f) |
+| 10 | between-block amplitude wander | 30–50% | amplitude observables dead | polarization defined plus tomography (§4.4), 12–16 repeats (§7F) |
 
 Items 1 to 3 share one root cause: 2025 spent statistics against a
 systematics-limited experiment. Within-block noise was already 2.4× below the
@@ -221,12 +221,42 @@ currently carries.
 
 ### The rule these three suggest
 
-Cost a session by information per unit of effort rather than by the interest
+Cost a session by information per unit of work rather than by the interest
 of the measurement. Sorted that way, the settings-only levers come first, the
 levers that convert an accepted quantity into a measured one come second, and
 anything needing new hardware comes last. The 2025 post-mortem's rules were
 about not overspending on a single block. This one is about the order in
 which blocks are chosen at all.
+
+## The uncertainty ledger of the next campaign
+
+Every component of the three headline uncertainties, the knob that acts on
+it, what the knob is expected to buy, the twin world that sizes the
+purchase before any session time is spent, and the day-one check that
+validates it on the bench. Each number is committed. This table is the
+uncertainty management of the campaign in one place, and a session plan
+that contradicts it owes this page an edit.
+
+| component | size now | limited by | the knob | expected purchase | sized by | validated on day one by |
+|---|---|---|---|---|---|---|
+| laser width | bounded below 2.4 MHz, not measured | identifiability, the width correlation at -0.90 to -0.94 | an independent laser measurement: the fast comb block at ten times the scan rate with the 0.5 MHz drive reaches the band the widths integrate ([`kernel_k7.csv`](../../results/kernel_k7.csv), reach 1.70), the cavity error channel recorded per block, or a self-heterodyne | 2.3 to 3.0 on the partner width by the pin factor, 3.18 ± 0.20 by direct Monte Carlo | the nine-seed run of [`run_width_pinning.py`](../../scripts/run_width_pinning.py), the five hostile worlds of [`kernel_worlds.csv`](../../results/kernel_worlds.csv) | item 7 of the day-one list |
+| collisional slope | pooled bound below 0.030 | between-block scatter on 2 degrees of freedom, common fraction 0.23 | repeats interleaved across the session with re-locks between visits, and interleaved high-temperature points on the same axis | root-n restored beyond the third repeat, and the lever already stretched 16 to 53 times when the 130 C point joined | the forecast's detection study, minimum detectable effect 0.015 to 0.038 | the pedestal thermometer against the logged thermocouples |
+| transit and waist | 64 um, band 62 to 68, the largest open systematic | never re-read in the campaign's own volume | a beam profile in the interaction volume, one afternoon, no atoms, standoff recorded | the prediction band 0.30 to 0.38 collapses to a point, and the -0.958 transit-collisional correlation unlocks | the campaign twin run at both ends of the waist band | the profile itself, first item on the bench |
+| light shift | limit below 0.26 against 0.35 predicted, excluded at about two sigma | the prediction's waist and a disputed polarizability sign | the beam profile above, a denser one-range power ladder in randomised order, and the sign adjudication already referred | exclusion becomes agreement or measurement | the campaign twin's ladder worlds | the one-range ladder rehearsal |
+| wing noise, where the pedestal and band questions live | grows linearly with power, 8 to 10 times over the ladder | light-linked background | the monitor-photodiode coherence test, then regression for the correlated share or filter, pinhole and retro dump for the shot share | up to the factor the power scaling implies, with quantisation staying irrelevant at 0.155 per cent worst | [`quantisation.csv`](../../results/quantisation.csv) budget rows | item 9a, the discriminator half hour |
+| sample independence | correlation time about 1.9 ms, so a 2 s sweep holds at most about a thousand independent samples | the correlation ceiling, not the sample rate | scan rate anywhere in the wide flat window, deep records raw on the enhanced-resolution pair, the high-resolution pair at max-rate averaging, and the decimation bench test that closes the 1.9 ms question | information per sweep set by duration alone, spent as repeats | [`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) | item 2, the step response, plus the decimation test |
+| frequency axis | comb-calibrated in the campaign, fractional-only in the excluded sessions | ruler coverage and flyback | the cascade drive of chapter 8, the sweep-direction column, wavemeter shots per block | an absolute axis everywhere | | item 6, flyback settle |
+| amplitude against detection | departure follows brightness, not branching | range switching and a single chain | four peaks on one vertical range, and the same photocurrent on two chains at once | the confound held fixed, and the dual-chain subset is the kernel discriminator's lever | | the dual recording |
+
+**The fibre platform sits behind its own thread** and its knobs are the
+subject of [the guided-atoms page](../wiki/guided-atoms-and-nanofibres.md)
+and [the candidate note](../notes/onf_candidate.md): an apparatus whose
+trap-colour ratio scans the atom-surface distance pins geometry directly,
+whose molasses temperature moves velocity at fixed atom number, and whose
+running-against-standing toggle isolates intensity-distribution effects,
+which are the cell campaign's two hardest degeneracies attacked by
+hardware instead of by statistics. A reader with no fibre loses nothing
+here: every row above stands on the cell campaign alone.
 
 ## Costing a session against a twin rather than against intuition
 

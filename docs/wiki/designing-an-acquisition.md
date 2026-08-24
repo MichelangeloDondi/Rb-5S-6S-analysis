@@ -2,7 +2,7 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How do span, resolution and record length trade against
+**The question.** How do span, resolution and record length exchange against
 each other, and which acquisition choices cannot be revisited once a
 session has run.
 **Takes.** The idea of a digitized sweep, an oscilloscope trace or a
@@ -39,7 +39,7 @@ needs, because $n_{\text{line}}$ scales with the record length and falls
 directly with the span. Widening the span at a fixed record length, to
 reach a wing, a pedestal or a reference line further out, spreads the same
 point budget over more frequency and thins the sampling of the narrow
-feature in exact proportion. Nothing about that trade is visible on the
+feature in exact proportion. Nothing about that exchange is visible on the
 instrument's own display, since a screen redraws the same number of pixels
 whatever the record length is doing underneath it.
 
@@ -95,7 +95,7 @@ comfortable for the fit the campaign ran. Holding that same record length
 fixed while widening the span to reach a co-propagating Doppler pedestal, as
 the Try it block below computes directly from the constant, collapses the
 points-across-the-line count toward single digits, which is the concrete
-form of the trade above and the reason chapter 7 calls the 2000-point record
+form of the exchange above and the reason chapter 7 calls the 2000-point record
 unable to answer the span question and the shape question at once.
 
 An earlier version of that chapter fixed the wider-span record length at
@@ -272,7 +272,7 @@ after, would have caught the factor of four before it reached the plan.
 - [The Voigt profile](voigt-profile.md), the lineshape a record's points are
   spent fitting.
 - [Weighted least squares](weighted-least-squares.md), the fit whose
-  precision this page's sampling trade feeds directly.
+  precision this page's sampling exchange feeds directly.
 - [The joint fit](joint-fit.md), what a raw per-sweep record is kept intact
   for.
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),

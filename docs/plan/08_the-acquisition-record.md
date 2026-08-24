@@ -447,6 +447,28 @@ offline for every trace afterwards. It takes the spare input of whichever
 instrument has one, and its gain and bandwidth go in the block log like
 everything else.
 
+### 10b.5b the block row, in full, because a missing column is a lost measurement
+
+Every failure this chapter documents is a column that was not written. The
+list below is the row a block must carry, each entry naming the question it
+answers, so an operator can check completeness without reading the chapter.
+
+| column | why it exists |
+|---|---|
+| instrument model, firmware, and the saved setup file | the acquisition-mode question cost two days and was settled from a manual, not from the record |
+| record length, sample interval, vertical range and offset per channel | the range is a physics setting and a measured covariate, not a display choice |
+| resolution mode and its setting | high resolution is a boxcar with a printed ceiling, enhanced resolution is a filter that halves bandwidth, and they are not interchangeable |
+| piezo amplitude and the sweep direction | the amplitude was missing once and cost a session its frequency axis, and direction separates a real asymmetry from a lag |
+| the four thermocouple readings, at block start and block end | the dataset carried a set point where the bench carried four sensors, and a factor 3.2 in density rides on the gap |
+| the laser-power monitor channel, with its gain | the wings are limited by light-linked background, and this channel is both the discriminator and the offline repair |
+| the comb bracket, before and after | the axis is only as good as the ruler that brackets it |
+| a content checksum and a line count, written at the bench | three of fifty files in one session were corrupt and nobody knew for a year |
+| the wall clock, from the instrument | the record's own timing had to be reconstructed from file metadata afterwards |
+
+**The rule this table encodes: a setting that is not written is a setting
+that did not happen.** Every one of these rows exists because its absence
+cost a measurement that the analysis then spent days trying to recover.
+
 ### 10b.6 scan speed, and the two rates that must differ
 
 Take at least one block at a deliberately different scan rate, with the piezo

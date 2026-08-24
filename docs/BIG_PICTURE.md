@@ -69,8 +69,9 @@ lever that moves one without the other, can break it.
 
 Both halves of that sentence are measured rather than argued. Varying the span
 by a factor of five and the trace count by a factor of ten moves the
-correlation between the two widths from -0.9177 to -0.9166 and -0.881, which
-is no movement, so no acquisition setting is the asymmetric lever. Measuring
+correlation between the two widths by 0.0075 and 0.0000
+([`twin_span_sweep.csv`](../results/twin_span_sweep.csv)), which is no
+movement, so no acquisition setting is the asymmetric lever. Measuring
 one of them elsewhere buys the other a factor of one over the square root of
 one minus the correlation squared, between 2.3 and 3.2 across the conditions
 this record covers, and
@@ -117,10 +118,10 @@ to 1303 across the conditions. **A purely Lorentzian laser contribution is
 excluded at 26 of the 32 conditions at better than three sigma, 21 of them at
 better than ten, and the line requires Gaussian-like content.** That
 is a stronger statement than the tally made and it rests on a defensible test.
-It also fixes what comes next: since one corner contains the other, the two
+It also fixes what comes next: since one end-member contains the other, the two
 were never alternatives to choose between, and the remaining work is a fitted
 Lorentzian-equivalent width inside the containing model, which turns a
-comparison of corners into the error bar
+comparison of end-members into the error bar
 ([`run_laser_kernel.py`](../scripts/run_laser_kernel.py),
 [the Voigt profile](wiki/voigt-profile.md)).
 
@@ -237,7 +238,7 @@ which is the part that makes the design testable rather than hopeful.
 
 | ambiguity now | why the present data cannot resolve it | the new measurement | ambiguity removed | target outcome | validation basis | what would say it failed |
 |---|---|---|---|---|---|---|
-| the width split | two kernels trade inside one profile | an independent laser-width measurement, the only lever acting on identifiability rather than noise | the width ridge | the collisional width becomes separately identifiable | the twin's measured span-and-count invariance and the pinning simulation, [chapter 5 of the plan](plan/05_width-collision-amplitude.md) and [identifiability](wiki/identifiability.md) | the pinned fit's residual scatter does not fall, which would place the limitation beyond the laser width |
+| the width split | two kernels exchange inside one profile | an independent laser-width measurement, the only lever acting on identifiability rather than noise | the width ridge | the collisional width becomes separately identifiable | the twin's measured span-and-count invariance and the pinning simulation, [chapter 5 of the plan](plan/05_width-collision-amplitude.md) and [identifiability](wiki/identifiability.md) | the pinned fit's residual scatter does not fall, which would place the limitation beyond the laser width |
 | the absolute axis | no logged frequency reference | two same-isotope pairs inside one sweep, plus a logged wavemeter | absolute-frequency ambiguity | the axis becomes calibratable to the accuracy of the hyperfine constants | design simulation, [PLAN §10c](PLAN.md) | the two rulers disagree beyond the projected nonlinearity, which would mean the axis model is wrong rather than imprecise |
 | the baseline | the pedestal is flat across the archive's window and a free baseline absorbs it | a span wide enough to curve the pedestal, with the pedestal fitted as a pedestal | baseline against signal | the baseline becomes measured rather than chosen | design simulation, tested by injection ([PLAN §10a](PLAN.md)) | the wide fit does not recover an injected pedestal, which would mean the span is still too narrow |
 | the transit kernel | the waist is accepted and the cusp form is untested here | a beam profile measured on the day, plus one cold and dim condition | the geometry systematic | the transit model becomes directly testable | design simulation, [PLAN §10c](PLAN.md) | the model comparison stays inconclusive at the achieved precision |

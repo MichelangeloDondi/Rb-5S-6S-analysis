@@ -48,7 +48,7 @@ SECTION_ORDER = [
     ("oist-lineage",     "This line (5S-6S, 993 nm): OIST apparatus lineage"),
     ("usafa-lineage",    "This line (5S-6S, 993 nm): USAFA (Knize/Lindsay) lineage"),
     ("method-anchors",   "Method anchors and reference standards"),
-    ("landscape-24-26",  "The 2024-2026 landscape and future transitions"),
+    ("landscape-24-26",  "The 2024-2026 field and future transitions"),
     ("deep-search",      "ONF community map and near-surface physics (the nanofibre extension)"),
     ("unsorted",         "Unsorted"),
 ]

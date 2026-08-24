@@ -11,7 +11,7 @@
 
 > **Question.** How is the drive intensity pinned, and how would the light shift be measured rather than bounded?
 > **Design.** A randomised power ladder under a fixed lock, with per-sweep normalisation and a measured beam profile.
-> **Ambiguity removed.** The light shift traded against every other term that grows with power.
+> **Ambiguity removed.** The light shift exchanged against every other term that grows with power.
 > **Success.** The fitted pull scales with power at the projected precision.
 > **Residual uncertainty.** The waist, until it is measured on the day, and the transit kernel it feeds.
 
@@ -48,9 +48,9 @@ excluded, because waists below about 40 µm would put the transit and natural
 widths together above the observed total on their own. The laser and collisional
 contributions are not in the curve, so the true waist is higher still.*
 
-**The block that delivers the anchor, and the corner it runs in.** The anchor
+**The block that delivers the anchor, and the region it runs in.** The anchor
 and the composite model's transit-kernel choice come off the same data, taken
-cold and at low drive power at the small waist. That corner is where transit
+cold and at low drive power at the small waist. That region is where transit
 dominates the core, which is what makes the S minus L difference large against
 everything that cancels in it, and it is also where the transit kernel the
 composite model uses, the closed-form transit-limit lineshape of
@@ -187,21 +187,21 @@ this section, which has to be in place before any of them runs.
    correction (g1 +0.558). At configuration S the skew flips sign, with the
    crossover at Z_c/z_R ≈ 1.12. The flip condition is Z_c > 1.12 z_R ≈ 0.9 mm at
    S, while at L it would need Z_c > 12.7 mm, beyond any achievable field of
-   view. With the cathode landscape (L∥ = 12 mm, the 2025 orientation)
+   view. With the cathode long axis along the beam (L∥ = 12 mm, the 2025 orientation)
    Z_c = 6/M mm, and the flip holds for every M < 6.6: secured by hardware,
    not tuning. Numbers from `scripts/run_ramp_geometry.py`:
 
    | orientation | M | Z_c | g₁ @ L (64 µm) | g₁ @ S (16 µm) | flip |
    |---|---|---|---|---|---|
-   | landscape (12 mm) | 1.9 | 3.16 mm | +0.555 | **−0.421** | yes |
-   | landscape (12 mm) | 2.8 | 2.14 mm | +0.563 | **−0.367** | yes |
+   | long axis along the beam (`landscape` in `run_ramp_geometry.py`, 12 mm) | 1.9 | 3.16 mm | +0.555 | **−0.421** | yes |
+   | long axis along the beam (12 mm) | 2.8 | 2.14 mm | +0.563 | **−0.367** | yes |
    | portrait (3 mm) | 1.9 | 0.79 mm | +0.566 | +0.103 | no |
    | portrait (3 mm) | 2.8 | 0.54 mm | +0.566 | +0.367 | no |
 
-   Portrait removes the test at every plausible M. Keep landscape.
+   The upright mounting removes the test at every plausible M. Keep the long axis along the beam.
 
    **Needs.** The two-lens relay and its slit, configuration S, and the cathode
-   in landscape orientation (`APPARATUS.md`). **Shots.** The slit scan at four or
+   with the long axis along the beam (`APPARATUS.md`). **Shots.** The slit scan at four or
    five settings inside §9 D5, with atoms, power, lock and waist all held fixed.
    **Go/no-go.** The magnification M measured from the conjugates rather than
    assumed, since Z_c = L∥/2m is what places the configuration relative to the
@@ -245,7 +245,7 @@ lowest-order moment above its own floor. Report the primary as the
 measurement and the others as consistency checks. Choosing post hoc which
 moment "worked" is rejected, as is hybridizing extraction methods for one
 moment: one estimator per observable, the hierarchy across moments only.
-Any bounded amplitude that can trade against the core is fitted from a spread
+Any bounded amplitude that can exchange against the core is fitted from a spread
 of starting values, and convergence is checked before an outlier is
 interpreted. A single zero start once parked a wing amplitude at twenty times
 the true optimum's χ² and read as physics for two days

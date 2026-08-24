@@ -31,7 +31,7 @@ AC-Stark coefficient kappa with the collisional width held under a Gaussian
 prior, and reads only the power-sweep traces of three sessions. M25 reads every
 canonical trace and frees `beta_self` alongside kappa, which buys a joint
 confidence region and pays for it with a second free coefficient in the same
-width budget. M28 takes the third corner: the full archive, the collisional term
+width budget. M28 takes the third vertex: the full archive, the collisional term
 under the repo's own four-point measurement as a prior, and one profiled
 coefficient.
 

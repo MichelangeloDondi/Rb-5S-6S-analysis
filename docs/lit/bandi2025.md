@@ -33,7 +33,7 @@ verify_flags:
     the review -- cite Hamilton directly, not this.'
 verified_date: 2026-07-26
 summary: >
-  Landscape/systematics review for the Rb two-photon clock. Names the AC Stark
+  Field/systematics review for the Rb two-photon clock. Names the AC Stark
   shift, the temperature-induced shift and laser drift together as the
   medium-to-long-term limiters; targets better than 1e-15 at a day.
 loci:

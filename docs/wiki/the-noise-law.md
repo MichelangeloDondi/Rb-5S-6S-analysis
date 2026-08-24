@@ -136,7 +136,7 @@ Three findings from those thirty-two conditions are worth carrying:
 
 **Fitting the law over too small a range of signal.** The three terms are
 separated by their scaling, so a fit confined to one decade of signal cannot
-tell them apart, and the coefficients trade.
+tell them apart, and the coefficients exchange.
 
 **Assuming the floor is instrumental.** A floor is signal-independent by
 construction of the model, which is not the same as being independent of

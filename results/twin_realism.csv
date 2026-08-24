@@ -1,0 +1,28 @@
+scope,quantity,value,unit,note,status
+TRUTH,source,linefit_conditions p_sweep/4154/130/225,reference,"the truth is read from a named committed condition and the transit from the measured waist, so no number here is chosen to be recovered",DIAGNOSTIC
+TRUTH,gamma_coll_mhz,0.580779,MHz,the world the twin generates,DIAGNOSTIC
+TRUTH,sigma_laser_mhz,1.560691,MHz,the world the twin generates,DIAGNOSTIC
+TRUTH,transit_fwhm_mhz,0.957477,MHz,the world the twin generates,DIAGNOSTIC
+agilent_3054a_one_peak,n_points,2000,count,"the instrument's own record length, Keysight InfiniiVision manual, private/Manuals",DIAGNOSTIC
+agilent_3054a_one_peak,peak_over_lsb,3236,LSB,"line peak in vertical steps at hires, a boxcar mechanism",DIAGNOSTIC
+agilent_3054a_one_peak,span_mhz,120,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
+agilent_3054a_one_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+lecroy_ws3104z_four_peak,n_points,500001,count,"the instrument's own record length, WaveSurfer 3000z operator manual, private/Manuals",DIAGNOSTIC
+lecroy_ws3104z_four_peak,peak_over_lsb,202,LSB,"line peak in vertical steps at raw, a raw mechanism",DIAGNOSTIC
+lecroy_ws3104z_four_peak,span_mhz,5345,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
+lecroy_ws3104z_four_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+rtm3004_four_peak,n_points,5000000,count,"the instrument's own record length, RTM3000 user manual, private/Manuals",DIAGNOSTIC
+rtm3004_four_peak,peak_over_lsb,51773,LSB,"line peak in vertical steps at hires, a boxcar mechanism",DIAGNOSTIC
+rtm3004_four_peak,span_mhz,5345,MHz,"the frequency window the trace covers, which for a four-peak trace has to hold all four lines on one vertical range",DIAGNOSTIC
+rtm3004_four_peak,correlates_neighbours,False,flag,"true only for the moving-average mode, which is why the design runs the LeCroy raw and smooths offline",DIAGNOSTIC
+RECOVERY_tau1,gamma_coll_ratio,1.045,dimensionless,fitted over true at sample correlation 1. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
+RECOVERY_tau1,sigma_laser_ratio,0.989,dimensionless,fitted over true at sample correlation 1. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
+RECOVERY_tau3.8,gamma_coll_ratio,1.055,dimensionless,fitted over true at sample correlation 3.8. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
+RECOVERY_tau3.8,sigma_laser_ratio,1.004,dimensionless,fitted over true at sample correlation 3.8. One means the production fitter reads the twin's world correctly,DIAGNOSTIC
+PLATFORM_cell,radiation_temperature,403.15,K,the heated cell IS the radiation environment its atoms see,DIAGNOSTIC
+PLATFORM_cell,blackbody_shift,0.000161,MHz,evaluated at the cell temperature,DIAGNOSTIC
+PLATFORM_nanofibre,radiation_temperature,300.00,K,"the ROOM, fixed at 300 K, and not the atoms. Microkelvin atoms microns from a fibre in a laboratory radiate against the laboratory",DIAGNOSTIC
+PLATFORM_nanofibre,atom_temperature,3.00e-05,K,"carried because it sets the transit time through the guided mode, and never used as a radiation temperature",DIAGNOSTIC
+PLATFORM_nanofibre,blackbody_shift,0.000045,MHz,evaluated at 300 K. Reading the atom temperature as the radiation temperature would return essentially zero and would be wrong by the whole size of the term,DIAGNOSTIC
+PLATFORM_nanofibre,acquires,YES,flag,"the twin runs for the fibre platform too, 100000 points at raw",DIAGNOSTIC
+VERDICT,twin_is_instrument_aware,YES,verdict,"point count, vertical step, resolution mechanism, sample correlation, trace kind and platform all come from the configuration rather than from a default",DIAGNOSTIC

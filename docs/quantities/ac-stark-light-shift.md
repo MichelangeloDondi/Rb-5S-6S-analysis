@@ -65,9 +65,9 @@ converting them silently is how comparisons stop meaning anything.
 
 | reference | value as published | system | why it is comparable |
 |---|---|---|---|
-| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5s-6s at 993 nm, this line | The only prior work on this transition. Its computed differential polarizability is the value this repository adopts, and its null is the standing prior result on this channel |
-| [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6s-8s two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
-| [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against average, not peak, intensity | Cs 6s-8s two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
+| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, this line | The only prior work on this transition. Its computed differential polarizability is the value this repository adopts, and its null is the standing prior result on this channel |
+| [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6S-8S two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
+| [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against average, not peak, intensity | Cs 6S-8S two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
 
 **Physical analogues**, the same mechanism in a different system.
 [Stalnaker 2006](../lit/stalnaker2006.md) extracted a polarizability from an
@@ -80,8 +80,8 @@ in a guided mode. [Wall 2014](../lit/wall2014.md) shows the converging-beam
 version of the same distortion in He.
 
 **Scale references.** [Quirk 2024](../lit/quirk2024.md) measured the Cs
-6s-7s differential static polarizability to four significant figures, 5807
-a0 cubed, which is the validation target for the analogous Rb 5s-6s quantity,
+6S-7S differential static polarizability to four significant figures, 5807
+a0 cubed, which is the validation target for the analogous Rb 5S-6S quantity,
 though it is DC where this is AC.
 
 **The counterpoint worth stating, because it defines the gap this experiment
