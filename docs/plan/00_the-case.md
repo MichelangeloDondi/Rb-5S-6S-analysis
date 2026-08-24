@@ -1,6 +1,6 @@
 # The case in ten minutes
 
-This is a 2025 two-photon 5S-6S spectroscopy campaign in a rubidium vapour
+This is a 2025 two-photon 5s-6s spectroscopy campaign in a rubidium vapour
 cell. The three quantities below are the systematic limits on any precision
 measurement built on the transition, and the question is not what they are
 but what currently prevents measuring them.
@@ -16,7 +16,7 @@ each limit.
 1. [What was measured](#1-what-was-measured)
 2. [How these numbers were stress-tested](#2-how-these-numbers-were-stress-tested)
 3. [What is not identified, and why it survives](#3-what-is-not-identified-and-why-it-survives)
-4. [The one intervention that breaks each](#4-the-one-intervention-that-breaks-each)
+4. [The one measurement that breaks each](#4-the-one-measurement-that-breaks-each)
 5. [What a next campaign is projected to achieve](#5-what-a-next-campaign-is-projected-to-achieve)
 6. [What stays out of reach](#6-what-stays-out-of-reach)
 
@@ -24,45 +24,47 @@ each limit.
 
 Three bounds, each with the construction that produced it.
 
-**Collisional self-broadening.** Below 0.05 MHz per 10¹² cm⁻³, the loosest of a
-per-peak 95% range of 0.03 to 0.05 from the four-point 70 to 130 °C density
-lever in one configuration
-([`run_beta_self.py`](../../scripts/run_beta_self.py),
-[`beta_self_probe.csv`](../../results/beta_self_probe.csv)).
-That range includes the 20% density systematic. The effective coefficients
-themselves sit at 0.005 to 0.016, each below 2 sigma against its own
-standard error, so none resolves a collisional width and every line is a
-bound.
+**Collisional self-broadening.** Below 0.030 MHz per 10¹² cm⁻³ at 95%,
+pooled across the four hyperfine lines by a shared-slope construction
+preregistered before computation, from the four-point 70 to 130 °C density
+lever ([`run_beta_self.py`](../../scripts/run_beta_self.py),
+[`beta_self_probe.csv`](../../results/beta_self_probe.csv)). The pooling is
+licensed by physics, one R⁻⁶ slope for hyperfine components of one
+parity-forbidden line, and checked in the data. The loosest per-peak bound,
+below 0.05, stands beside it as the geometry-robust floor, and both include
+the 20% density systematic. The effective coefficients sit at 0.005 to
+0.016, each below 2 sigma against its own standard error, so nothing
+resolves a collisional width and every number here is a bound.
 
 **The 2025 laser width.** Below 2.4 MHz on the two-photon transition axis,
 the axis the analysis works on, or 1.2 MHz per photon
-([`laser_epoch.csv`](../../results/laser_epoch.csv)). It is quoted at the
-adopted 64 µm lineage waist and rises with it, the record's largest open
-systematic.
+([`laser_epoch.csv`](../../results/laser_epoch.csv)). It is quoted at the measured
+64 µm waist and rises with it, the record's largest open systematic (the
+waist's own standing is in the next block).
 
-**The light shift.** At 225 mW, the campaign's operating power, the shift
-the trap beam imposes on the line is **below 0.26 MHz at 95%**
+**The light shift.** The joint three-session fit detects no shift: the
+best-fit power coefficient is consistent with zero (Δχ² against zero of
+0.12). What the data give is a 95% upper limit, S₀ at the campaign's
+225 mW operating power **below 0.26 MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
-[`stark_joint.csv`](../../results/stark_joint.csv)). The shift expected at
-the adopted 64 µm waist is 0.35 MHz.
+[`stark_joint.csv`](../../results/stark_joint.csv)). The limit comes from
+how the line moves with power and needs no waist.
 
-That gap is not yet a result about the atom, and the cheapest explanation is
-the waist. The measured bound needs no waist, since it comes from how the
-line moves with power, while the expected value scales as 1/w₀² on a waist
-inherited from an earlier apparatus and never measured in this campaign's
-interaction volume:
-
-| adopted waist | expected S₀(225 mW) | against the 0.26 bound |
-|---|---|---|
-| 64 µm | 0.35 MHz | above it |
-| 74 µm (+16%) | 0.26 MHz | the gap closes |
-
-A 16% waist error closes the gap. So does one robustness arm, dropping peak
-4192, which removes a whole session and returns 0.37. And the expected value stands
-on a polarizability whose sign this record's own
+The predicted shift does need one. At the 64 µm waist, measured by Rajasree
+on this same optical table with the same laser and lenses, the prediction
+is 0.35 MHz, above the limit, so the prediction is excluded at 95%, at
+about two sigma. Over the waist measurement's own 62 to 68 µm band the
+prediction runs 0.30 to 0.38, all of it above the limit, so reconciling at
+95% needs a waist outside its stated band. One robustness arm weakens the
+exclusion honestly: dropping peak 4192 removes a whole session and raises
+the limit to 0.37, which does not exclude the prediction. And the
+prediction stands on a polarizability whose sign this record's own
 [THEORY_NOTE](../THEORY_NOTE.md) disputes with the published calculation,
-referred for outside adjudication. The measurement that settles this is a
-beam profile in the interaction volume, section 4.
+referred for outside adjudication. So the excess of prediction over limit
+has three candidate readings, a waist error beyond its band, a
+polarizability error, or the 5% fluctuation, and the measurements that
+decide it are a beam profile in the interaction volume and a longer power
+lever, section 4.
 
 The construction: every point of every canonical power-sweep profile enters
 one three-session maximum-likelihood fit with one shared coefficient,
@@ -153,10 +155,11 @@ Free the transit width as well and the degeneracy moves instead of lifting:
 −0.958 between the collisional and transit widths, the same trade seen from
 a different corner.
 
-**Transit against waist.** The transit width follows from the waist,
-inherited from the lineage and never measured in this campaign's interaction
-volume. A wrong waist is absorbed by the other widths, so it never shows up
-as a misfit.
+**Transit against waist.** The transit width follows from the waist.
+The 64 µm value is Rajasree's measurement on this same optical table, laser
+and lenses. What this campaign did not do is re-measure it in its own
+interaction volume at its own time. A wrong waist is absorbed by the other
+widths, so it never shows up as a misfit.
 
 **The excluded sessions' absolute frequency axis.** Usable as fractional
 changes, not absolute positions, until the axis is repaired.
@@ -166,11 +169,13 @@ follows peak brightness where branching ratio would be the atomic ordering,
 so it points at the detection chain. No single acquisition chain
 can separate those two readings.
 
-**Temperature.** The record carries variac set points rather than
-temperatures. One session's internal temperature spans 110 to 130 °C, a factor 3.2 in vapour density, propagating into every
-density-linked quantity.
+**Temperature.** The cell was instrumented, four thermocouples between the
+vapour cell and its metal case inside a cubic foil-wrapped oven, and what
+the dataset carries per block is the set point, not a logged thermocouple
+series. One session's internal temperature spans 110 to 130 °C, a factor
+3.2 in vapour density, propagating into every density-linked quantity.
 
-## 4. The one intervention that breaks each
+## 4. The one measurement that breaks each
 
 | what is unidentified | the measurement that removes it | why it works |
 |---|---|---|
@@ -178,7 +183,7 @@ density-linked quantity.
 | transit against waist | a beam profile in the interaction volume | one afternoon, no atoms required |
 | the excluded axis | the frequency-axis repair, already scoped | the rulers exist in those traces and were not used |
 | amplitude against detection | four peaks on one vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |
-| temperature | the wide-scan Doppler pedestal as an in-situ thermometer | one slow trace per block converts an adopted temperature into a measured one |
+| temperature | the wide-scan Doppler pedestal as an in-situ thermometer | one slow trace per block converts an set-point temperature into a measured one |
 
 The width-split factor rides the correlation: 2.29 at the median ρ = −0.90
 over the 32 committed conditions, 2.52 at the tutorial's design point, and
@@ -197,22 +202,22 @@ sweep from a named committed condition).
 Everything in this section is a projection from the forward model
 ([`forecast.py`](../../rb5s6s/forecast.py) and
 [the campaign twin](../wiki/the-digital-twin.md)), not a result, and each
-carries the condition that would defeat it. The twin generates the data a
+carries the condition that would break it. The twin generates the data a
 set of experimental controls would produce, runs the real analysis on it,
 and reports what it recovers and how often, a weaker statement than what
 the campaign would establish.
 
 * A one-range power ladder removes the range-switching confound from the
-  width and amplitude channels, projected gain about 2.6 from a snug bright
-  range. Defeated if the dynamic range cannot be held, in which case two
+  width and amplitude channels, projected gain about 2.6 from a tight bright
+  range. Broken if the dynamic range cannot be held, in which case two
   overlapping blocks with shared rungs measure the offset instead.
-* The Doppler pedestal converts an adopted temperature into a measured one.
+* The Doppler pedestal converts an set-point temperature into a measured one.
   A Doppler width scales as the square root of temperature, so 20 K at
-  400 K asks for a width fit good to 2.5%. Defeated if the pedestal does not
+  400 K asks for a width fit good to 2.5%. Broken if the pedestal does not
   separate from scattered light, or if cell gradients dominate the single
   number.
 * Randomised ladder order breaks the power-against-time collinearity that
-  makes every 2025 power trend equally a time trend. Defeated if drift
+  makes every 2025 power trend equally a time trend. Broken if drift
   remains correlated within blocks despite randomisation.
 
 ## 6. What stays out of reach
@@ -225,8 +230,10 @@ built to deliver and which the record does not claim.
 
 ## Where to check any of this
 
-[RESULTS.md](../RESULTS.md) for the claim ledger,
-[CLAIMS.md](../CLAIMS.md) for what is deliberately not claimed,
+[RESULTS.md](../RESULTS.md) for the results ledger, every value read from
+its producing CSV,
+[CLAIMS.md](../CLAIMS.md) for the claim ledger, what is claimed and what
+deliberately is not,
 [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md) for every rejected
 alternative,
 [PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md) for the

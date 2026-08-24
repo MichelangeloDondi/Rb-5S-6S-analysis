@@ -210,8 +210,8 @@ built on, and a different algorithm rounds differently.
 produced them.** The versions themselves, and the command that recovers them,
 are pinned in
 [`results/ENVIRONMENT_OF_RECORD.md`](../results/ENVIRONMENT_OF_RECORD.md), which
-also states plainly that the SUPPORTED environment and the environment OF
-RECORD are two different claims: the suite passes on the declared floor and on
+also states plainly that the supported environment and the environment of
+record are two different claims: the suite passes on the declared floor and on
 the current stack, and only the environment of record reproduces the committed
 digits to the precision the files store. They still matched on 2.0 to 2.4 and failed on both 1.26 and
 2.5.

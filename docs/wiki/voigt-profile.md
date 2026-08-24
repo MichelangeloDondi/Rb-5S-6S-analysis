@@ -45,13 +45,13 @@ is accurate to a few parts in ten thousand.
 ![four line-shape kernels compared](../../figures/fig26_lineshape_kernels.png)
 
 *The kernels that build a composite line, drawn at this experiment's own
-widths so the comparison is concrete. They differ in SHAPE and not only in
+widths so the comparison is concrete. They differ in shape and not only in
 width, which is the property the fits turn on.*
 
 One property dominates everything downstream. Near line centre, a modest
 increase in the Gaussian width and a modest increase in the Lorentzian width
 change the profile in very similar ways, so a fit that frees both finds them
-strongly anti-correlated. The TOTAL width is determined well and the SPLIT
+strongly anti-correlated. The total width is determined well and the split
 between the two components is fragile. This is not a numerical weakness to be
 tuned away, it is a property of the shape itself.
 
@@ -86,9 +86,9 @@ is the subject of [the joint fit](joint-fit.md) and of
 ## Two Lorentzians are one Lorentzian, and that is not a convenience
 
 The Voigt profile convolves a Lorentzian with a Gaussian, and the two widths
-combine in a way that lets a fit separate them. Two LORENTZIANS do not behave
+combine in a way that lets a fit separate them. Two lorentzians do not behave
 that way: widths $a$ and $b$ convolve to a single Lorentzian of width $a+b$
-EXACTLY, so a line carrying two Lorentzian contributions carries no information
+exactly, so a line carrying two Lorentzian contributions carries no information
 about how the total divides between them.
 
 This matters here because the natural width, the collisional width and a
@@ -99,10 +99,10 @@ the components enter differently, which for the collisional term is density
 
 It also constrains how the code may be written. Convolving two Lorentzians
 numerically on a finite grid is not merely wasteful: the truncated tails make
-the result depend on how the total is SPLIT, which is a dependence the
+the result depend on how the total is split, which is a dependence the
 continuum identity says cannot exist. In this repository that artefact reached
 3.7e-3 of peak along exactly the direction a laser-width inference has to
-measure. The fix is to impose the identity by ADDING the widths, after which
+measure. The fix is to impose the identity by adding the widths, after which
 the profile is invariant to the split at machine zero.
 
 ## What can go wrong
@@ -163,8 +163,8 @@ would have caught it at the point the number was first computed.
 
 ## The switch that was wired through four modules and never thrown, 2026-08-20
 
-The section above is about which EXTRAPOLATION curve was assumed. This one is
-about which KERNEL was, and it ends better.
+The section above is about which extrapolation curve was assumed. This one is
+about which kernel was, and it ends better.
 
 `laser_kind` is a parameter of `composite_profile`, `model_profile`,
 `fit_condition` and `beta.py`. It selects a Gaussian or a Lorentzian for the
@@ -173,21 +173,21 @@ until 2026-08-20 it had never been called with anything but `gaussian`. No
 producer, no result and no test had ever turned it.
 
 **Why it is the consequential switch.** The record already carries a
-model-form systematic for the TRANSIT kernel, which is a separate convolution.
-A Lorentzian laser kernel is different in kind, because Lorentzians ADD
-LINEARLY: a Lorentzian laser width is degenerate with $\gamma_{\rm coll}$ and
+model-form systematic for the transit kernel, which is a separate convolution.
+A Lorentzian laser kernel is different in kind, because Lorentzians add
+linearly: a Lorentzian laser width is degenerate with $\gamma_{\rm coll}$ and
 competes with it for the same wings. Changing that assumption does not merely
 change the fit quality, it moves the collisional number.
 
 **How much it moves it, and which comparison is meaningful.** Run under the
-record's own hierarchical construction, the HEADLINE $\beta_{\rm self}$ moves
+record's own hierarchical construction, the headline $\beta_{\rm self}$ moves
 by 45 to 67 per cent across the four peaks, **nine to eighteen sigma** on the
 statistical error quoted beside it (`results/kernel_headline.csv`). That is
 the largest single lever on the collisional coefficient the record has
 examined, and it means the quoted error bar omits a term about ten times its
 own size.
 
-A PER-CONDITION version of that comparison was first reported beside it, a
+A per-condition version of that comparison was first reported beside it, a
 median −45 per cent shift in $\gamma_{\rm coll}$, and it was **withdrawn on
 2026-08-20**. It was not a smaller version of the same result. It was not a
 measurement at all. Since Lorentzians add linearly, at a fixed condition the
@@ -218,7 +218,7 @@ correction above.
 
 **That result is weaker than it looks, and the reason is the degeneracy.**
 Because the Lorentzian arm has an exactly flat direction, it has one fewer
-EFFECTIVE shape parameter than the Gaussian arm: it can set the total
+effective shape parameter than the Gaussian arm: it can set the total
 homogeneous width and nothing else, while the Gaussian arm sets two widths of
 different shapes. A comparison in which the more flexible model wins at every
 condition is close to determined before any data are taken, so the tally is
@@ -241,7 +241,7 @@ $[0,50]$ MHz so the containing point is reachable, and it is verified
 numerically to 1.5e-5 of peak. A containing model cannot fit worse. The
 Gaussian winning everywhere was therefore guaranteed before any data existed.
 
-**What IS informative is the size of the improvement**, read as the nested
+**What is informative is the size of the improvement**, read as the nested
 likelihood ratio it is rather than as a tally of wins: a median
 $\Delta\chi^2$ of 232 for one extra parameter sitting on its boundary,
 roughly fifteen sigma, over a range from 0.1 to 1303 across the 32 conditions.
@@ -257,7 +257,7 @@ what the comb does and does not say).
 
 **What it does not settle.** Gaussian against Lorentzian is a comparison
 between two extremes, not a scan over kernel families, and the truth could be
-neither. The next step is a laser kernel whose Lorentzian FRACTION is fitted,
+neither. The next step is a laser kernel whose Lorentzian fraction is fitted,
 which turns a choice between two corners into a bound on the Lorentzian
 content and therefore into a proper error bar
 (`results/laser_kernel.csv`, `scripts/run_laser_kernel.py`).

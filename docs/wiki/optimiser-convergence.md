@@ -41,16 +41,16 @@ whether the valley connects to somewhere lower or whether a separate valley
 elsewhere is deeper still.
 
 The distinction worth holding onto is between two questions that the single
-word "converged" is sometimes made to answer for both. The OPTIMISER'S
+word "converged" is sometimes made to answer for both. The optimiser'S
 question is local: did the step size and the gradient shrink the way the
-algorithm expects near a stationary point. The STATISTICAL question is
+algorithm expects near a stationary point. The statistical question is
 global: is that stationary point the minimum the objective actually has,
 among however many stationary points the surface carries. An optimiser can
 answer the first question correctly and say nothing at all about the second,
 and the two get conflated whenever a convergence flag is read as a
 correctness flag.
 
-WARM STARTING sharpens the gap rather than closing it. Seeding a fit from the
+Warm starting sharpens the gap rather than closing it. Seeding a fit from the
 solution of a neighbouring one, a nearby grid cell in a scan or a nearby
 condition in a sweep, is standard practice because it is fast and because a
 smoothly varying problem usually has a smoothly varying solution. But if the
@@ -110,7 +110,7 @@ Each cell in [`rb5s6s/identifiability.py`](../../rb5s6s/identifiability.py)
 is warm-started from its neighbour in the scan, refit again from an
 independent lineage arriving from the row above, and, at a fixed stride,
 refit once more from a fresh seed untouched by any neighbour's solution. Any
-improvement the fresh seed finds is adopted into the map rather than
+improvement the fresh seed finds is accepted into the map rather than
 discarded. The largest improvement found this way, over the whole audited
 sample, is committed as `audit_max_gain` in
 [`results/identifiability.csv`](../../results/identifiability.csv),
@@ -151,7 +151,7 @@ informative only when its sample is large enough, and reported as such, to
 have a real chance of landing on a trapped cell if one is there.
 
 The refitted audit is the defence that matters most, because it is the only
-one of the three that can catch trapping AFTER the fact, on a surface that
+one of the three that can catch trapping after the fact, on a surface that
 already exists. Starting from several places and comparing both directions
 of a scan are built into how the surface is generated, and they lower the
 chance of trapping happening in the first place, but neither can prove a

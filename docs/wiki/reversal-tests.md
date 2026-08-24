@@ -18,7 +18,7 @@ separating effects by symmetry before any fit is asked to.
 
 ## What it is
 
-A reversal test separates effects by their PARITY under a knob the
+A reversal test separates effects by their parity under a knob the
 experimenter can flip. Flip the knob, take the difference and the sum: the
 difference isolates everything odd under that knob, the sum keeps everything
 even, and the two halves are exact, model-free, and computed from the same
@@ -31,7 +31,7 @@ cancels it exactly, while a real shift, even under sweep direction, survives
 in the mean untouched. One knob, one flip, and a systematic becomes a
 measurement of itself.
 
-The discipline scales into a TABLE. Where several mechanisms produce the
+The discipline scales into a table. Where several mechanisms produce the
 same raw signature, list each with the knob that flips it and the scaling
 that grows it: one is odd under sweep direction, another follows power, a
 third follows density, a fourth reverses with an ambient field. A mechanism
@@ -84,12 +84,12 @@ speed-dependent collisional asymmetry follows density, and a vector light
 shift reverses with the ambient magnetic field, so each candidate for an
 observed asymmetry carries the flip that would convict or acquit it.
 
-The sharpest instance cost nothing, because THE ATOM SUPPLIED THE REVERSAL.
+The sharpest instance cost nothing, because the atom supplied the reversal.
 The hyperfine g-factor alternates sign between the two F manifolds of each
 isotope, so the four lines of the spectrum form built-in polarity pairs for
 anything odd in $m_F$: a vector-shift asymmetry would have to flip sign
 between the two lines of an isotope at fixed field, fixed power and fixed
-everything else. The committed record's per-line skew has the SAME sign on
+everything else. The committed record's per-line skew has the same sign on
 all four lines, and one afternoon's reading of numbers already on disk
 excluded the vector mechanism without a coil, a reversal block, or a single
 new trace. The general lesson travels: before building the knob, check
@@ -97,7 +97,7 @@ whether the level structure already flipped it.
 
 The same discipline runs backwards as a null-seeker. Where an effect
 reverses through zero with a knob, scanning the knob to minimise the odd
-signature FINDS the knob's zero, which is how a coil can null the ambient
+signature finds the knob's zero, which is how a coil can null the ambient
 field at the atoms without any calibrated magnetometer in the loop.
 
 ## What can go wrong
@@ -113,7 +113,7 @@ channel, suppressed but not gone. The suppression factor belongs in the
 budget, not in the wastebasket.
 
 **The even channel is read as clean.** The decomposition isolates what is
-odd under THIS knob. Effects even under it, including the one being hunted,
+odd under this knob. Effects even under it, including the one being hunted,
 remain superposed in the sum, and separating those needs a different knob or
 a scaling.
 

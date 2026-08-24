@@ -12,20 +12,20 @@ new fitting: every number on these pages is read from a committed artefact.
 **Gives.** A literature benchmark, the current result with its epistemic
 class, the named limitation, three defined levels of improvement with their
 bench recipes, the failure modes, and what remains impossible.
-**Skip if.** The question is what a term MEANS, which is
-[the glossary](../GLOSSARY.md), or how a method WORKS, which is
+**Skip if.** The question is what a term means, which is
+[the glossary](../GLOSSARY.md), or how a method works, which is
 [the wiki](../wiki/README.md), or what the whole programme found, which is
 [the synthesis](../BIG_PICTURE.md).
 
 ## What a dossier is, and what it is not
 
 The rest of this repository is organised by theme, by method and by
-intervention. A reader who arrives holding a quantity, wanting to know where
+re-centring. A reader who arrives holding a quantity, wanting to know where
 this experiment stands on it and what a next campaign would buy, has had to
 assemble that from five places. These pages are that assembly, and nothing
 more.
 
-A dossier is therefore a ROUTER with recipes attached. Where a treatment
+A dossier is therefore a router with recipes attached. Where a treatment
 already exists it is linked rather than repeated: the physics of an effect
 belongs in [the wiki](../wiki/README.md), the derivation in
 [the methods chapters](../methods.md), the block that would run a measurement
@@ -42,7 +42,7 @@ a decision if better measured, and contributes to one integrated campaign. A
 quantity failing most of those is a section inside another dossier, which is
 the difference between a quantity layer and one page per variable.
 
-## The unit is a quantity AND a construction
+## The unit is a quantity and a construction
 
 A number here is never quoted as belonging to a symbol alone. The AC-Stark
 coefficient alone has seven committed constructions, from the full archive
@@ -80,7 +80,7 @@ identifiability, coverage, convergence, model validity and calibration. A
 nominal precision reached while two models remain degenerate is not a success,
 and the criterion says so before the measurement is taken rather than after.
 
-Each level also states its MINIMUM VIABLE version, the smallest campaign that
+Each level also states its minimum viable version, the smallest campaign that
 would already be worth running, so that a programme can be entered rather than
 committed to.
 
@@ -100,7 +100,7 @@ experiment and the inference.
 | [the AC-Stark light shift](ac-stark-light-shift.md) | What light shift can be separated from the other mechanisms sharing its power signature? | written |
 | [collisional self-broadening](self-broadening.md) | How much self-broadening does this experiment resolve independently of the laser width and the density scale? | written |
 | the laser width | Can the laser contribution be calibrated independently rather than inferred from the line it broadens? | queued |
-| the beam waist | Is the intensity and transit geometry independently known, or adopted? | queued |
+| the beam waist | Is the intensity and transit geometry independently known, or accepted? | queued |
 | the frequency axis | Can the frequency scale be anchored physically rather than reconstructed differentially? | queued |
 | the transit kernel | Is the cusp a measured shape or a pinned assumption? | queued |
 | the band excess | Is the excess outside the fit window physical or instrumental? | queued |
@@ -115,5 +115,5 @@ measurement usually moves several quantities at once, and the waist is the
 clearest case, entering the intensity that sets the light shift and the
 transit width in the same stroke.
 [The campaign page](campaign.md) carries that coupling, the leverage of each
-intervention across all the quantities, and the comparison between candidate
+re-centring across all the quantities, and the comparison between candidate
 campaigns.

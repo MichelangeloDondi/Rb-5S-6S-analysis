@@ -1,6 +1,6 @@
 # Release checklist
 
-The framework is a RELEASE CANDIDATE and the release act is the owner's. This
+The framework is a release candidate and the release act is the owner's. This
 page is what that act requires, assembled so it can be worked through rather
 than reconstructed. Nothing here has been performed.
 
@@ -22,7 +22,7 @@ than leaving it inferred.
 **2. Retire or keep the release-candidate paragraph.** README carries "no
 independent scientist has installed this and applied it to a dataset that is
 not ours, so this is a release candidate rather than a community release."
-That sentence is TRUE and it is the most useful sentence in the file for
+That sentence is true and it is the most useful sentence in the file for
 anyone deciding whether to adopt the framework. Releasing does not make it
 false. Keep it, and add the date of the first outside application when there
 is one.
@@ -59,7 +59,7 @@ manifold computation. The committed coefficient table means a plain install
 has the physics without it, so the extra is genuinely optional, and the
 release notes should say that rather than leaving it to be discovered.
 
-**7. State what the framework does NOT do.** It does not download data, does
+**7. State what the framework does not do.** It does not download data, does
 not fit anything it has not been given a model for, and its noise-law
 coefficients and quality-control thresholds are calibrated to one apparatus.
 `docs/ADAPTING.md` is the seam map and should be linked from the release
@@ -70,11 +70,11 @@ numbers they have to replace.
 
 Both repositories were pushed, tagged v4.2 at their heads, and given release
 objects titled "v4.2: the digital twin", confirmed non-draft by the GitHub
-CLI, with the mirror's tag commit equal to its branch head. Both pre-push
+cli, with the mirror's tag commit equal to its branch head. Both pre-push
 gates returned exactly one failure, the release-integrity guard itself
 reporting that the declared 4.2 had no published release yet, which is that
 guard's designed transient during any release and went green with the act.
-The first release attempt was ABORTED by the automation's own check when the
+The first release attempt was aborted by the automation's own check when the
 port was found to have overwritten the mirror's push-trigger workflow with
 the archive's dispatch-only one, a by-design divergence now excluded in
 `scripts/port_to_mirror.sh` both ways.
@@ -100,7 +100,7 @@ be retired, and it is worth waiting for rather than asserting.
 Every mechanical item below was executed rather than asserted. The
 judgement items are marked and remain open.
 
-**READ THIS SECTION AS DATED RATHER THAN AS CURRENT.** Every check below was
+**Read this section as dated rather than as current.** Every check below was
 measured against a public checkout that predates `rb5s6s/cascade.py`,
 `rb5s6s/blackbody.py`, `rb5s6s/model_compare.py`, `rb5s6s/forecast.py`,
 `docs/TUTORIAL.md` and the two example scripts that exercise them. A PASS
@@ -112,8 +112,8 @@ the first run checked.
 ### The clean-environment check, run against the genuine public checkout
 
 The first attempt at this was flawed and is recorded because the flaw is easy
-to repeat: a clone of the ARCHIVE had its whole `data_raw/` removed, including
-the two TRACKED files every real clone carries, `MANIFEST.csv` and
+to repeat: a clone of the archive had its whole `data_raw/` removed, including
+the two tracked files every real clone carries, `MANIFEST.csv` and
 `README.md`. The suite then errored during collection, which looked like a
 packaging defect and was a defect in the test.
 
@@ -124,25 +124,25 @@ two files and no traces, in a clean Python 3.12 environment:
   * `examples/synthetic_recovery.py` returns PASS, every parameter recovered
     within 3 of its own standard error, with no repository data present.
   * The full suite returns **2429 passed, 52 skipped, 1 xfailed, none
-    failed**. It DEGRADES BY SKIPPING rather than erroring, which is what
+    failed**. It degrades by skipping rather than erroring, which is what
     START_HERE promises and what the flawed first attempt appeared to deny.
 
 ### The wheel
 
-`python -m build --wheel` produces a 200 KB wheel. Installed into a THIRD
+`python -m build --wheel` produces a 200 KB wheel. Installed into a third
 environment, which is the only check that catches a package depending on
 files the wheel does not carry, `rb5s6s.__version__` resolves and all 18
 public API names import.
 
-THE OUTSTANDING ITEM WAS RE-RUN on 2026-08-19 against the committed tree at
+The outstanding item was re-run on 2026-08-19 against the committed tree at
 the fourteen-commit batch head. `python -m build --wheel` from a fresh local
-clone produces `rb5s6s-4.1-py3-none-any.whl`. Installed into a THIRD
+clone produces `rb5s6s-4.1-py3-none-any.whl`. Installed into a third
 environment, a clean Python 3.14 venv holding nothing else: the version
 resolves, all four expert modules import (cascade, blackbody, model_compare,
 forecast), all 18 public API names resolve, `comb_tooth_weights` returns the
-committed weights, and BOTH new entry points run from the installed package
+committed weights, and both new entry points run from the installed package
 in a bare directory outside any repository, `tutorial_forecast.py` and
-`campaign_twin.py` each ending in their VERDICT: PASS line. The mirror-side
+`campaign_twin.py` each ending in their verdict: PASS line. The mirror-side
 clean-environment suite run is repeated after the port, which is the one
 check that has to wait for the port by construction.
 

@@ -30,7 +30,7 @@ as a bound. Concretely:
   < 0.26 MHz (95%, from a joint full-profile fit of three sessions, every
   trace with a free centre so the drifting laser costs nothing. An earlier,
   tighter figure was cold-start-inflated and is retracted, preregistration
-  addendum 24). The predicted 0.35 MHz at the adopted geometry puts the
+  addendum 24). The predicted 0.35 MHz at the accepted geometry puts the
   bound **1.3× below it**, equivalently Δα ≲ 810 a.u. against the 1093 a.u.
   the prediction is built on, which is [Orson 2021](../lit/orson2021.md)'s
   computed value and the repository's `DELTA_ALPHA_AU`. That bracket is
@@ -41,7 +41,7 @@ as a bound. Concretely:
   what the prediction uses. The tension is modest, and the most conservative
   data subset (dropping the peak that carries the campaign-morning
   session) reaches the prediction itself. Either the intensity sits
-  slightly lower than the adopted geometry implies, or |Δα| is slightly smaller than
+  slightly lower than the accepted geometry implies, or |Δα| is slightly smaller than
   computed. A beam-profile measurement decides which. More than twenty times
   below Orson's ~6 MHz null, from shape alone.
   There is a third candidate, and it is the reason the bound is quoted where
@@ -49,7 +49,7 @@ as a bound. Concretely:
   square-of-power signature as the ramp and are absent from the forward model
   that produced the bound: atomic saturation, and hyperfine pumping through
   the real cascade, which sends 2 to 6 per cent of transiting atoms into the
-  other ground state mid-flight. That is a SMALLER quantity than the 8 to 15
+  other ground state mid-flight. That is a smaller quantity than the 8 to 15
   per cent of atoms that decay at all, quoted earlier, since only a share of
   cascades lands in the other half, and its range is wider in kind: it spans
   both the signal-weighted-to-on-axis span and the branching fraction's

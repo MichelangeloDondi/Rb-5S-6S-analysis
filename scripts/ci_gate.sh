@@ -13,7 +13,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 # THE VERDICT SENTINEL, and why a habit was not enough. Protocol rule 19.24
 # says to read the exit code of the gate itself. On 2026-08-15 that rule was
-# defeated three times in one evening by callers of the form
+# broken three times in one evening by callers of the form
 #   ./scripts/ci_gate.sh > log; echo "EXIT: $?"
 # which reports the echo's status, and once more in the other direction by
 #   ./private/check_invariants.py | tail -3

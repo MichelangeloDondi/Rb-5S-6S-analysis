@@ -30,8 +30,8 @@ through an operator that is odd under spatial inversion, the same operator
 that gives an ordinary one-photon transition its Laporte parity rule.
 Absorbing $N$ photons applies that odd operator $N$ times, and $N$ factors
 of an odd sign combine to an overall sign of $(-1)^N$. A one-photon
-transition connects states of OPPOSITE parity. A two-photon transition
-connects states of the SAME parity, because the two flips cancel, which is
+transition connects states of opposite parity. A two-photon transition
+connects states of the same parity, because the two flips cancel, which is
 precisely why an S to S transition is drivable by two photons and not by
 one: both S levels have the same, even parity, so a single photon cannot
 join them and two of the same photon can. A three-photon transition flips
@@ -89,11 +89,11 @@ rubidium vapour, the rate following the squared degree of linear
 polarisation and dropping to zero for circular light.
 
 Adding a third photon flips the parity balance back. A three-photon
-transition connects states of OPPOSITE parity, the same relation a single
+transition connects states of opposite parity, the same relation a single
 photon obeys, so it can reach a level two photons cannot and the reverse of
 what two photons alone permit. The rate follows the same construction one
 step further: three factors of the field in the amplitude give a rate that
-scales as the CUBE of the intensity rather than its square. Each extra
+scales as the cube of the intensity rather than its square. Each extra
 photon order also adds another off-resonant energy denominator to the
 amplitude, so at a given available power the achievable rate falls sharply
 as the photon count grows, and a process absorbing more photons responds
@@ -133,7 +133,7 @@ polarisation is not a third way of isolating one of
 those two pieces. Because the whole coupling for this transition reduces to
 the scalar term, and that term vanishes identically for two photons of the
 same handedness, circular light removes the cross term and the same-beam
-term together. It is an EXTINCTION NULL, useful for measuring whatever the
+term together. It is an extinction NULL, useful for measuring whatever the
 detector reports with the atoms switched off by polarisation alone, and not
 a line-only or pedestal-only mode.
 

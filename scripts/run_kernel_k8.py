@@ -224,8 +224,12 @@ def main() -> int:
         "excess outside the window. The band's height z is 3.05 in "
         "reconstruction (band_excess.csv) against the note's 8.65, so the "
         "magnitudes are not the same order and the original is not "
-        "reproducible. One common multiplicative cause rests on the "
-        "predictor agreement and the density null, which both reproduce")
+        "reproducible, and the recovery rows show the band's density "
+        "reading is construction-dependent. This row's own in-window "
+        "density null is per-condition at peak SNR and stands on its own. "
+        "One common multiplicative cause is the better reading of the "
+        "in-window structure; the band's support for it is weaker than "
+        "first graded")
     add("ALL", "mechanism_note", "NOT_NAMED", "scope",
         "a normalised residual scales with signal under ANY fractional model "
         "error, so profile mismatch, detector nonlinearity and an "

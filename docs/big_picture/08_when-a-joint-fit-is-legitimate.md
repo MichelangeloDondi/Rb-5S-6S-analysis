@@ -64,7 +64,7 @@ unsurprising: it rescales the chi-square as well as the sample count, so the
 freer model's chi-square advantage shrinks roughly as the over-sampling factor
 while the parameter penalty shrinks only logarithmically, and the verdict moves
 toward the shared model. The decomposition from the committed numbers: the
-penalty change alone would move the verdict by about eleven units TOWARD the
+penalty change alone would move the verdict by about eleven units toward the
 freer model, the chi-square whitening moves it by about one hundred and twenty
 the other way, and their sum is the observed flip of one hundred and thirteen. A
 dataset whose verdict flips with the counting convention does not resolve shared
@@ -102,10 +102,10 @@ session-to-session difference in this fit has a nuisance assigned to it. This on
 does not, by construction.
 
 **The boundary of the claim, stated exactly.** That the sessions ran in different
-configurations is ESTABLISHED: the rehearsal's scan rate is fitted from its own
+configurations is established: the rehearsal's scan rate is fitted from its own
 widths rather than transferred, the 4 July configuration does not share the
 campaign's rate, and one session ran at a different cell temperature. That the
-sessions had different GEOMETRY is UNTESTED. The archive carries no per-session
+sessions had different geometry is untested. The archive carries no per-session
 waist measurement, so the question is open on apparatus knowledge rather than
 settled either way.
 
@@ -135,9 +135,9 @@ exactly what moves a bound, which is why those passes land answers a factor of
 two apart. The committed run separately records `direction_dchi2_max` as 8.59,
 the largest pointwise gap between its two direction variants, each of which is
 already a pointwise minimum over several chains. **Neither raw gap establishes
-anything by itself**, because each profile is normalised to its OWN minimum
+anything by itself**, because each profile is normalised to its own minimum
 before the threshold is applied, so a constant offset between passes moves no
-bound at all. The quantity that matters is the spread of the ANSWERS, and that is
+bound at all. The quantity that matters is the spread of the answers, and that is
 the factor of 2.1 above.
 
 **The signal and every noise scale it must beat, in one table.** The loosening
@@ -182,7 +182,7 @@ are in [the profile
 note](../notes/campaign_only_stark_profile.md). No committed number moves on
 it.
 
-A different question about the same construction, whether the CODE producing
+A different question about the same construction, whether the code producing
 it is itself stable, was closed on 2026-08-20. A sweep across ten commits of
 the development range, one worktree each and one environment throughout,
 returned the same bound at every commit where the code runs, 1.147 MHz per
@@ -190,7 +190,7 @@ watt to every printed digit across six commits spanning nine days. What did
 move was the point count, from 247783 to 247788 at a single commit, and the
 cause is now named: that commit renamed a vocabulary across the tree and
 regenerated the committed ruler tables as a side effect, moving fitted ruler
-rates in their eleventh digit, which was enough to carry a DISCRETE trim
+rates in their eleventh digit, which was enough to carry a discrete trim
 boundary across a sample edge in a few traces and admit five more samples.
 Five samples in 247785 is two parts in a hundred thousand, and the bound does
 not see them ([`run_commit_sweep.py`](../../scripts/run_commit_sweep.py)).
@@ -209,21 +209,21 @@ record](../PREREGISTRATION_RESULTS.md) and in [the full-dataset
 preregistration](../notes/full_dataset_fit_prereg.md).
 
 **The interpretation, which is the one step this chapter adds, stated as narrowly
-as the evidence allows.** Two objects have to be kept apart. The INFORMATION the
+as the evidence allows.** Two objects have to be kept apart. The information the
 data carry about a shared parameter is a property of the data under a correctly
 specified common model, and adding informative data cannot reduce it: the pooled
 dataset contains the campaign, so it cannot know less about a genuinely shared
-quantity. The REPORTED INTERVAL is a different object. It is the output of a
+quantity. The REPORTED interval is a different object. It is the output of a
 particular model, nuisance structure and optimiser, and it is the thing observed
 to loosen. So a longer lever that loosens the bound does not say the added data
-destroyed information, which is impossible. It says the enlarged CONSTRUCTION
+destroyed information, which is impossible. It says the enlarged construction
 changed the reported inference, and the question becomes which part of the
 construction did it. A further consequence follows and is the defensible
 headline: **the two bounds profile different parameter spaces, so they are not
 comparable as constraints on one quantity**, and no ordering between them should
 be read as one construction knowing more than the other.
 
-It does NOT follow that the groups disagree about the quantity, and separating
+It does not follow that the groups disagree about the quantity, and separating
 the candidates is the work. There are five.
 
   * **A genuine preference for a nonzero value** in the added group, which would
@@ -242,7 +242,7 @@ the candidates is the work. There are five.
   * **Added nuisance freedom** absorbing structure the shared parameter was
     reading. The extra sessions bring their own detector saturation, scan rates
     and rate scale, and those are constrained by data in the pool while sitting
-    inert in a campaign-only fit. This is a real cost of pooling and is NOT
+    inert in a campaign-only fit. This is a real cost of pooling and is not
     heterogeneity.
   * **A group-dependent error model.** If the construction weighted groups by
     their own misfit, adding a group that fits less well would flatten every
@@ -276,7 +276,7 @@ bound by a factor of 1.42, and the chi-square cost of removing peak 4121 from
 the fit at the predicted coefficient is 8.75 against 1.12, 2.27 and 0.61 for the
 other three, so the constraint is substantially owned by one peak and one
 subset. That is why the record publishes the leave-one-out rows and treats their
-spread as the dominant reported sensitivity of this construction. WHY one peak
+spread as the dominant reported sensitivity of this construction. Why one peak
 carries most of the leverage is a separate open question with several boring and
 one interesting answer, more data, lower noise, cleaner separation from its
 neighbour, a stronger model sensitivity, or a defect, and no adjudication
@@ -285,16 +285,16 @@ between them has been run.
 **What this does not establish, and the distinction matters.** A poorly behaved
 likelihood surface is a statement about the surface. It is not proof that the
 sessions saw different coefficients, and concentrated ownership is not proof of a
-contradiction between the peaks. What the ownership numbers above DO establish is
+contradiction between the peaks. What the ownership numbers above do establish is
 answered where question 3 is applied, not waved past.
 
 ## 5. Six questions to ask of any pooled fit
 
 Each is answerable from artefacts this pipeline already writes.
 
-1. **Do the profile passes agree about the ANSWER?** Scan the profiled parameter
+1. **Do the profile passes agree about the answer?** Scan the profiled parameter
    in both directions and from a seeded start, then derive the interval
-   SEPARATELY from each pass and compare those. Do not compare the passes'
+   separately from each pass and compare those. Do not compare the passes'
    chi-square values, because each profile is normalised to its own minimum, so a
    constant offset between two passes changes no interval while a gap that varies
    along the profile changes it a great deal. The quantity that matters is the
@@ -346,7 +346,7 @@ same structure the light shift is read from. Granting it moves the campaign-alon
 upper limit by a factor of about 7.3 and the pooled upper limit by a factor of
 about 1.07, stated that way because the two movements are the same kind of ratio
 and should read as one. That is a statement about the reported limits under two
-stated constructions, not a measured systematic error, and it is a REASSIGNMENT
+stated constructions, not a measured systematic error, and it is a reassignment
 rather than a tightening: the wing's thirteen units of chi-square say real
 red-side structure exists, and the fit reassigns that structure from the light
 shift to the wing without any current test adjudicating which explanation is

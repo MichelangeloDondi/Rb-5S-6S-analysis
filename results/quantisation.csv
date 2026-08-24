@@ -1,0 +1,92 @@
+scope,quantity,value,unit,note,status
+excluded_4154_130_125,sigma_over_lsb,13.5,LSB,"baseline noise in units of the true quantisation step, over 8 traces. Lattice fraction 0.91, peak 2695 LSB, 11.4 bits of range",DIAGNOSTIC
+excluded_4154_130_125,quantisation_noise_inflation,0.023,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+excluded_4154_130_225,sigma_over_lsb,63.6,LSB,"baseline noise in units of the true quantisation step, over 6 traces. Lattice fraction 0.85, peak 2227 LSB, 11.1 bits of range",DIAGNOSTIC
+excluded_4154_130_225,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+excluded_4154_130_25,sigma_over_lsb,73.2,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.92, peak 1790 LSB, 10.8 bits of range",DIAGNOSTIC
+excluded_4154_130_25,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4121_130_125,sigma_over_lsb,33.4,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.36, peak 4398 LSB, 12.1 bits of range",DIAGNOSTIC
+p_sweep_4121_130_125,quantisation_noise_inflation,0.004,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4121_130_175,sigma_over_lsb,7.3,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.85, peak 1353 LSB, 10.4 bits of range",DIAGNOSTIC
+p_sweep_4121_130_175,quantisation_noise_inflation,0.078,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4121_130_225,sigma_over_lsb,6.1,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.95, peak 1254 LSB, 10.3 bits of range",DIAGNOSTIC
+p_sweep_4121_130_225,quantisation_noise_inflation,0.112,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4121_130_25,sigma_over_lsb,39.6,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.01, peak 663 LSB, 9.4 bits of range",DIAGNOSTIC
+p_sweep_4121_130_25,quantisation_noise_inflation,0.003,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4121_130_75,sigma_over_lsb,52.4,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.01, peak 4217 LSB, 12.0 bits of range",DIAGNOSTIC
+p_sweep_4121_130_75,quantisation_noise_inflation,0.002,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4154_130_125,sigma_over_lsb,26.1,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.02, peak 5209 LSB, 12.3 bits of range",DIAGNOSTIC
+p_sweep_4154_130_125,quantisation_noise_inflation,0.006,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4154_130_175,sigma_over_lsb,6.4,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.89, peak 1313 LSB, 10.4 bits of range",DIAGNOSTIC
+p_sweep_4154_130_175,quantisation_noise_inflation,0.102,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4154_130_225,sigma_over_lsb,5.5,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 1.00, peak 1271 LSB, 10.3 bits of range",DIAGNOSTIC
+p_sweep_4154_130_225,quantisation_noise_inflation,0.140,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4154_130_25,sigma_over_lsb,64.2,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.00, peak 1586 LSB, 10.6 bits of range",DIAGNOSTIC
+p_sweep_4154_130_25,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4154_130_75,sigma_over_lsb,36.8,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.02, peak 4468 LSB, 12.1 bits of range",DIAGNOSTIC
+p_sweep_4154_130_75,quantisation_noise_inflation,0.003,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4192_130_125,sigma_over_lsb,26.9,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.47, peak 4949 LSB, 12.3 bits of range",DIAGNOSTIC
+p_sweep_4192_130_125,quantisation_noise_inflation,0.006,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4192_130_175,sigma_over_lsb,38.5,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.79, peak 5334 LSB, 12.4 bits of range",DIAGNOSTIC
+p_sweep_4192_130_175,quantisation_noise_inflation,0.003,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4192_130_225,sigma_over_lsb,5.2,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.94, peak 1444 LSB, 10.5 bits of range",DIAGNOSTIC
+p_sweep_4192_130_225,quantisation_noise_inflation,0.155,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4192_130_25,sigma_over_lsb,109.7,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.04, peak 3577 LSB, 11.8 bits of range",DIAGNOSTIC
+p_sweep_4192_130_25,quantisation_noise_inflation,0.000,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4192_130_75,sigma_over_lsb,16.8,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.15, peak 2498 LSB, 11.3 bits of range",DIAGNOSTIC
+p_sweep_4192_130_75,quantisation_noise_inflation,0.015,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4207_130_125,sigma_over_lsb,36.8,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.02, peak 5047 LSB, 12.3 bits of range",DIAGNOSTIC
+p_sweep_4207_130_125,quantisation_noise_inflation,0.003,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4207_130_175,sigma_over_lsb,24.5,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.41, peak 4489 LSB, 12.1 bits of range",DIAGNOSTIC
+p_sweep_4207_130_175,quantisation_noise_inflation,0.007,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4207_130_225,sigma_over_lsb,236.5,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.16, peak 5228 LSB, 12.4 bits of range",DIAGNOSTIC
+p_sweep_4207_130_225,quantisation_noise_inflation,0.000,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4207_130_25,sigma_over_lsb,246.0,LSB,"baseline noise in units of the true quantisation step, over 6 traces. Lattice fraction 0.94, peak 1374 LSB, 10.4 bits of range",DIAGNOSTIC
+p_sweep_4207_130_25,quantisation_noise_inflation,0.000,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+p_sweep_4207_130_75,sigma_over_lsb,57.1,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.01, peak 4722 LSB, 12.2 bits of range",DIAGNOSTIC
+p_sweep_4207_130_75,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4121_110_,sigma_over_lsb,39.9,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.01, peak 4912 LSB, 12.3 bits of range",DIAGNOSTIC
+t_sweep_4121_110_,quantisation_noise_inflation,0.003,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4121_70_,sigma_over_lsb,86.9,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.96, peak 1637 LSB, 10.7 bits of range",DIAGNOSTIC
+t_sweep_4121_70_,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4121_90_,sigma_over_lsb,59.7,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.01, peak 4312 LSB, 12.1 bits of range",DIAGNOSTIC
+t_sweep_4121_90_,quantisation_noise_inflation,0.001,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4154_110_,sigma_over_lsb,42.0,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.87, peak 5032 LSB, 12.3 bits of range",DIAGNOSTIC
+t_sweep_4154_110_,quantisation_noise_inflation,0.002,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4154_70_,sigma_over_lsb,127.2,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.04, peak 4069 LSB, 12.0 bits of range",DIAGNOSTIC
+t_sweep_4154_70_,quantisation_noise_inflation,0.000,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4154_90_,sigma_over_lsb,10.9,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.78, peak 1302 LSB, 10.3 bits of range",DIAGNOSTIC
+t_sweep_4154_90_,quantisation_noise_inflation,0.035,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4192_110_,sigma_over_lsb,11.8,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.80, peak 2185 LSB, 11.1 bits of range",DIAGNOSTIC
+t_sweep_4192_110_,quantisation_noise_inflation,0.030,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4192_70_,sigma_over_lsb,10.6,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.73, peak 484 LSB, 8.9 bits of range",DIAGNOSTIC
+t_sweep_4192_70_,quantisation_noise_inflation,0.037,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4192_90_,sigma_over_lsb,24.5,LSB,"baseline noise in units of the true quantisation step, over 6 traces. Lattice fraction 0.11, peak 2316 LSB, 11.2 bits of range",DIAGNOSTIC
+t_sweep_4192_90_,quantisation_noise_inflation,0.007,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4207_110_,sigma_over_lsb,13.5,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.92, peak 2316 LSB, 11.2 bits of range",DIAGNOSTIC
+t_sweep_4207_110_,quantisation_noise_inflation,0.023,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4207_70_,sigma_over_lsb,168.8,LSB,"baseline noise in units of the true quantisation step, over 6 traces. Lattice fraction 0.04, peak 3615 LSB, 11.8 bits of range",DIAGNOSTIC
+t_sweep_4207_70_,quantisation_noise_inflation,0.000,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+t_sweep_4207_90_,sigma_over_lsb,7.9,LSB,"baseline noise in units of the true quantisation step, over 5 traces. Lattice fraction 0.87, peak 574 LSB, 9.2 bits of range",DIAGNOSTIC
+t_sweep_4207_90_,quantisation_noise_inflation,0.067,per cent,"how much the quantiser adds to the analogue noise, in quadrature at LSB over root twelve",DIAGNOSTIC
+ALL,n_conditions,35,count,"conditions entering, radio-frequency off, quality-control passed",DIAGNOSTIC
+ALL,sigma_over_lsb_lo,5.2,LSB,the least dithered condition in the campaign,DIAGNOSTIC
+ALL,sigma_over_lsb_median,36.8,LSB,the typical condition,DIAGNOSTIC
+ALL,sigma_over_lsb_hi,246.0,LSB,the most dithered condition,DIAGNOSTIC
+ALL,median_inflation,0.0031,per cent,the typical contribution across conditions,DIAGNOSTIC
+ALL,inflation_hi,0.155,per cent,"the top of the distribution across conditions, beside its median so the tail does not read as the summary",DIAGNOSTIC
+ALL,lattice_fraction_median,0.47,fraction,"how much of the sample set sits on the inferred grid. Below about 0.9 the stored values carry finer structure than one step, which makes the ratio above a LOWER bound on the dither",DIAGNOSTIC
+EIGHT_BIT,median_inflation,0.91,per cent,the typical value of the same hypothetical,DIAGNOSTIC
+EIGHT_BIT,inflation_hi,4.82,per cent,"the same traces re-expressed against an eight-bit front end with the line peak filling the screen, which is the configuration the acquisition chapter argues about",DIAGNOSTIC
+peak_4121,a_vs_P_slope,0.0198,mV per mW,"the baseline noise grows LINEARLY with power (r 0.976 linear against 0.940 for a square-root law), which is the signature of light-linked background, not of electronics and not of shot noise on a fixed background",DIAGNOSTIC
+peak_4121,a_at_P0,0.579,mV,"the power-to-zero intercept, the dark and electronics floor",DIAGNOSTIC
+peak_4154,a_vs_P_slope,0.0549,mV per mW,"the baseline noise grows LINEARLY with power (r 0.970 linear against 0.925 for a square-root law), which is the signature of light-linked background, not of electronics and not of shot noise on a fixed background",DIAGNOSTIC
+peak_4154,a_at_P0,-1.047,mV,"the power-to-zero intercept, the dark and electronics floor",DIAGNOSTIC
+peak_4192,a_vs_P_slope,0.0712,mV per mW,"the baseline noise grows LINEARLY with power (r 0.984 linear against 0.946 for a square-root law), which is the signature of light-linked background, not of electronics and not of shot noise on a fixed background",DIAGNOSTIC
+peak_4192,a_at_P0,-1.419,mV,"the power-to-zero intercept, the dark and electronics floor",DIAGNOSTIC
+peak_4207,a_vs_P_slope,0.0394,mV per mW,"the baseline noise grows LINEARLY with power (r 0.967 linear against 0.921 for a square-root law), which is the signature of light-linked background, not of electronics and not of shot noise on a fixed background",DIAGNOSTIC
+peak_4207,a_at_P0,-0.392,mV,"the power-to-zero intercept, the dark and electronics floor",DIAGNOSTIC
+BUDGET,electronics_floor_median,-0.72,mV,"median dark-plus-electronics floor across peaks. Against the 4 to 15 mV of light-linked noise at operating power, the electronics are not the limit, so the transimpedance gain is in the right decade and neither raising nor lowering it buys noise",DIAGNOSTIC
+BUDGET,b_median,0.981,mV,"the level-proportional variance coefficient, near-constant across every condition and peak, the signature of cathode shot noise through the multiplier. On the peak this term dominates, and only more collected photons improve it",DIAGNOSTIC
+BUDGET,what_binds,ANALOGUE_NOISE_AND_INDEPENDENT_SAMPLES,verdict,"the ranked levers: the light-linked background in the wings, which grows linearly with power and is 8 to 10 times worse at 225 mW than at 25 mW, then repeats that are actually independent, then collection solid angle on the shot-limited peak. Sample rate and bit depth buy nothing: the noise is correlated at about 1.9 ms, so a sweep carries at most its duration over that time of independent samples regardless of rate",DIAGNOSTIC
+VERDICT,quantisation,NOT_THE_BINDING_TERM,verdict,"the quantiser is dithered by the analogue noise, so vertical resolution is not what limits this measurement. What limits it is the analogue noise per point and the number of INDEPENDENT samples, which noise_model.csv reports as tau_int between 1.3 and 19.8 samples. Threshold fixed before the first run: a contribution below 5 per cent of the noise is not a binding term",DIAGNOSTIC

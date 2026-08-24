@@ -20,13 +20,13 @@ data rather than how repeats of one condition are combined. That is
 
 When an experiment records the same physical quantity several times, the
 repeats can be fitted one at a time and the answers averaged, or they can be
-fitted TOGETHER with the physics shared and the nuisances free. The second is
+fitted together with the physics shared and the nuisances free. The second is
 a joint fit, and the two are not the same operation.
 
 The structure is the useful part. Parameters are divided by what they
-describe. A SHARED parameter is one the repeats genuinely have in common,
+describe. A shared parameter is one the repeats genuinely have in common,
 typically the physics: a linewidth, a cross-section, a shift coefficient. A
-PER-TRACE parameter is one that legitimately differs between repeats, such as
+per-trace parameter is one that legitimately differs between repeats, such as
 an amplitude that follows detector gain, a centre that follows drift, or a
 baseline that follows the background at that moment. All of them are fitted
 at once, minimising a single objective over the whole dataset.
@@ -45,7 +45,7 @@ separately the widths scatter. Fitted jointly with one shared width and a
 free centre and amplitude per trace, the estimate lands near the truth. Both
 estimates in the right panel are real least-squares fits.*
 
-The decision of WHICH level to share at is where the physics enters, and it
+The decision of which level to share at is where the physics enters, and it
 is a modelling choice rather than a technical one. Sharing across repeats
 taken minutes apart is usually safe. Sharing across conditions recorded hours
 apart asserts that the quantity did not change in between, and that assertion
@@ -73,7 +73,7 @@ a physical claim. The laser width is shared per temperature across the four
 hyperfine lines, because those four are measured within one dwell and see the
 same laser at that moment, which lets its drift across a session be measured
 instead of mistaken for collisions. The self-broadening coefficient is shared
-per isotope rather than globally, so that the two isotopes can be TESTED
+per isotope rather than globally, so that the two isotopes can be tested
 against each other rather than assumed equal. The transit width is shared
 globally, since it follows the beam and the temperature law.
 
@@ -90,7 +90,7 @@ exactly this failure, and this repository's guard against it is a
 model-independent rule fixed before the data were examined.
 
 A sharper version of over-sharing, and the one hardest to see, is a shared
-parameter that DEPENDS on something the groups differ in and no nuisance
+parameter that depends on something the groups differ in and no nuisance
 represents. Over-sharing a drifting laser width is caught eventually because
 the width has an independently known scale. This is not, because nothing in
 the fit is out of range. Suppose the shared quantity scales as one over the
@@ -106,7 +106,7 @@ dependency that appears in the first list, differs between groups, and has no
 nuisance opposite it in the model. [Pooling across
 groups](pooling-across-groups.md) works this through with a runnable
 demonstration where adding a group with three times the leverage makes the
-answer WORSE.
+answer worse.
 
 The next failure is a correlated-data one. A joint fit assumes the repeats
 contribute independent information, and repeats that share a systematic do
@@ -118,7 +118,7 @@ Third, an implementation trap. Adding traces grows the parameter vector, and
 a fit with many per-trace nuisances can converge to a local optimum where one
 trace's parameters have gone somewhere unphysical while the shared value
 compensates. A per-trace residual audit catches this and a global
-goodness-of-fit does not, because a joint fit must be good for EVERY trace
+goodness-of-fit does not, because a joint fit must be good for every trace
 and not merely on average.
 
 Finally, sharing does not remove a degeneracy that the whole dataset carries.

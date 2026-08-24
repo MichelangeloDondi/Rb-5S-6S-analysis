@@ -21,9 +21,9 @@ against, rather than how densely that grid is sampled. That is
 
 A digitizing scan (an oscilloscope trace, a lock-in sweep, anything that
 turns a continuous signal into a finite list of numbers) is set by three
-menu items that look independent and are not. The SPAN is the frequency
-range the sweep covers. The RECORD LENGTH is how many points the instrument
-digitizes. The RESOLUTION is what falls out once the other two are chosen,
+menu items that look independent and are not. The span is the frequency
+range the sweep covers. The record length is how many points the instrument
+digitizes. The resolution is what falls out once the other two are chosen,
 the frequency step between neighbouring points, span divided by record
 length. Fixing any two fixes the third, so span, resolution and record
 length are one decision wearing three knobs, not three decisions.
@@ -102,7 +102,7 @@ An earlier version of that chapter fixed the wider-span record length at
 10000 points, a number set before any simulation had tested it. Simulated
 later against a frozen recovery criterion, 10000 points leaves 22 points
 across the line and fails the criterion, 20000 points passes, and 40000
-points passes with margin, so the adopted record length is 40000, several
+points passes with margin, so the record length in force is 40000, several
 times the figure the requirement carried before it was tested, giving about
 90 points across the line at the proposed 2400 MHz span
 ([chapter 7](../plan/07_acquisition-settings.md)). The number this
@@ -144,6 +144,23 @@ the method and its limits, and the one result worth carrying back to this
 page is that a design study reports what more data buys and will never tell
 you that a parameter pair stays degenerate. Read the correlation beside every
 forecast.
+
+## The levers this campaign's own budget ranks
+
+Measured, not argued, from the committed noise model and
+[`quantisation.csv`](../../results/quantisation.csv): the digitiser is
+dithered by 5 to 246 times its step and binds nothing. What binds is the
+light-linked background in the wings, growing linearly with power, then
+the independence structure of the samples. Within a trace the noise is
+correlated at about 1.9 ms, so a sweep carries at most its duration over
+that time of independent samples regardless of sample rate, and between
+repeats the condition-common scatter floors the root-n gain beyond three
+or four back-to-back repeats (the pooled rows of
+[`beta_self_probe.csv`](../../results/beta_self_probe.csv)). The ranked
+design moves that follow: reduce or reference out the light-linked
+background, interleave repeats in time so their scatter averages, spend
+sweep time and repeat count, not sample rate, and buy collection
+solid angle for the shot-limited peak.
 
 ## What can go wrong
 
@@ -219,7 +236,7 @@ a reader.
 
 ## The requirement that was stated before it was tested
 
-The chapter 7 case study above reports that the adopted record length is
+The chapter 7 case study above reports that the record length in force is
 40000 points, several times the number the requirement carried before it was
 tested, without dating the steps it passed through. [HISTORY.md](../HISTORY.md)
 carries the dates. On 2026-08-15 the wide-scan span moved from 800 MHz to
@@ -230,7 +247,7 @@ On 2026-08-16 the 20-point requirement itself was tested for the first time:
 the B5 and B6 runs measured the width recovery a 10000-point record actually
 delivers at the committed noise law, found about 22 points across the line,
 and found that 22 fails a frozen recovery criterion. The requirement was
-replaced by 90 points, the figure the adopted 40000-point record delivers.
+replaced by 90 points, the figure the accepted 40000-point record delivers.
 
 The mistake was not an error in dividing a span by a record length. It was
 treating "20 points across the line" as a specification rather than as an

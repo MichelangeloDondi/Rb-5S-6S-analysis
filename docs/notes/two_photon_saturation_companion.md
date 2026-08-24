@@ -6,7 +6,7 @@ signature as the one the C3d and C3f width lever is built on, and several times
 larger, is absent from the forward model. The direction of the bias is favourable,
 which is why this is a note rather than a correction.
 
-`provenance: results/saturation_companion.csv` - **UPGRADED from NO_PRODUCER.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows that the freshness machinery regenerates and checks. **The JOINT factor is deliberately NOT a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
+`provenance: results/saturation_companion.csv` - **Upgraded from NO_PRODUCER.** The probe now writes its C3d half, so the reproduced committed bound, both saturated bounds and both tightening factors are committed rows that the freshness machinery regenerates and checks. **The joint factor is deliberately not a row**: stage 4 reads two data trees outside this repository, and stage 3 states in terms that quoting a joint number before that fit runs would be inventing one, so the CSV records it as a classification with the date of the run that produced it rather than as a digit. **6 numeric claims on this page remain unaccounted for**, the stage-1 and stage-3 intermediates among them.
 
 
 **The question.** Is the power-squared broadening the light-shift bound rests
@@ -48,8 +48,8 @@ where the error was.
 ![the standing wave, its mean and its fringe amplitude, and the gap between them](../../figures/fig25_retro_combination.png)
 
 *The paragraph below in one picture. One field, two readings: the shift follows
-the fringe MEAN because it is linear in intensity, and the Doppler-free
-coupling takes the fringe AMPLITUDE because only the wavevector-cancelling term
+the fringe mean because it is linear in intensity, and the Doppler-free
+coupling takes the fringe amplitude because only the wavevector-cancelling term
 survives. The right panel is the size of the difference against the retro
 return fraction, which is why the formula carries the distinction even though
 it moves no digit at this bench's own rho.*
@@ -63,14 +63,14 @@ contrast 2 sqrt(rho)/(1 + rho) that `constants.DELTA_ALPHA_AU` already defines:
 0.05 per cent at rho = 0.94, so 450 kHz stands to three digits, but 1.0 per cent
 at rho = 0.75, so the formula carries it now. A corollary is worth more than the
 correction: the Doppler-free coupling has no fringe dependence at all, so the
-RATE is fringe-immune while the SHIFT is not.
+rate is fringe-immune while the shift is not.
 
 *The earlier "correction" of the ratio was itself wrong.* This note first used
 Omega/2pi = 1.294 x S0, then recorded 1.237 as a correction of "two field
 conventions". That diagnosis was mistaken. Both numbers are right about
 different denominators, because the project holds two values of |Delta_alpha|
 that differ by a documented 4.7 per cent: the cited 1093 a.u. that every
-committed S0 is written with, giving 2T/1093 = 1.2951, and this package's own
+committed S0 is written with, giving 2t/1093 = 1.2951, and this package's own
 sum-over-states 1145 a.u., giving 1.2367. The ratio is therefore a 1.24 to 1.30
 band whose width is the Delta_alpha discrepancy, and the probe below now reports
 both ends. The matrix element itself, T = 707.75 a.u. and M = 225 kHz at the
@@ -127,21 +127,21 @@ The size is not negligible and the arithmetic is short. At the campaign maximum
 the steady-state excited fraction is s/2/(1+s) = 0.0161 on axis, so real decays
 occur at 3.5e5 per second, which is 0.16 cascades per 456 ns transit.
 
-**TWO DIFFERENT NUMBERS COME OUT OF THAT AND THEY ARE EASY TO SWAP.** Stated
+**Two different numbers come out of that and they are easy to swap.** Stated
 once here, since this note is where the arithmetic lives and every other
 document should carry these and say which is which.
 
 | quantity | signal-weighted | on axis | what its range spans |
 |---|---|---|---|
 | mean cascades per transit, n | 0.081 | 0.162 | the weighting only |
-| **decays AT LEAST ONCE**, 1 - exp(-n) | **7.8%** | **15.0%** | the weighting only |
-| **pumped into the OTHER ground state** | **1.8%** | **5.9%** | the weighting AND the per-line branching |
+| **decays at least once**, 1 - exp(-n) | **7.8%** | **15.0%** | the weighting only |
+| **pumped into the other ground state** | **1.8%** | **5.9%** | the weighting and the per-line branching |
 
 The first two rows differ because 1 - exp(-n) is not n, an 8 per cent gap at
 this n, and quoting n while saying "decay at least once" is the specific error
 this table exists to prevent. The third row is smaller than the second because
 only a share f of cascades lands in the other hyperfine level, and its range is
-wider IN KIND: it runs over the four lines' branching fractions as well as over
+wider in kind: it runs over the four lines' branching fractions as well as over
 the weighting, so it is not a signal-weighted-to-axis span the way the row
 above it is.
 
@@ -159,7 +159,7 @@ gamma_p/2pi to the Lorentzian FWHM.
 What makes it worth writing down is that the ratio to the saturation term is
 exactly the branching fraction, with everything else cancelling. In the weak-drive
 limit the saturation increment is Gamma_FWHM x s/2, and the pumping increment is
-f x (s/2) x Gamma_6S/2pi, and Gamma_6S/2pi IS Gamma_FWHM. So
+f x (s/2) x Gamma_6S/2pi, and Gamma_6S/2pi is Gamma_FWHM. So
 
     pumping width / saturation width = f,
 
@@ -167,15 +167,15 @@ independent of power, waist, retro ratio and Rabi frequency. Numerically, at the
 campaign maximum: saturation 57.5 kHz on axis and 25.4 signal-weighted, pumping
 18.7 to 37.4 kHz on axis and 8.4 to 16.8 signal-weighted over f = 1/3 to 2/3.
 
-**f IS NOT A BRACKET, it is four numbers (2026-08-10).** The 1/3 to 2/3 range
+**f is not a bracket, it is four numbers (2026-08-10).** The 1/3 to 2/3 range
 below was a placeholder for an unresolved branching, and the branching resolves.
 
-The two-photon operator here is SCALAR, K = 0 only (the ABUNDANCE_RB85 note), so
-6S is populated in ONE hyperfine level F and not statistically. f is then the
+The two-photon operator here is scalar, k = 0 only (the ABUNDANCE_RB85 note), so
+6S is populated in one hyperfine level F and not statistically. f is then the
 product of the two cascade steps, 6S(F) to 5P_J(F'') and 5P_J(F'') to 5S, with
 6j symbols throughout. Each J leg scales the naive degeneracy weight of the
 undriven level by a clean fraction, 8/9 through 5P1/2 and 4/9 through 5P3/2, so
-the combination is 0.596 and is the SAME for all four lines:
+the combination is 0.596 and is the same for all four lines:
 
 | line | isotope, driven F | naive weight | f | pumping width at 225 mW |
 |---|---|---|---|---|
@@ -209,7 +209,7 @@ with $p = 5/9$ through $5P_{1/2}$ and $7/9$ through $5P_{3/2}$, giving 8/9 and
 and they cancel exactly against the paths that are enhanced.
 
 **One step of that argument was stated too strongly at first and is corrected
-here.** A sum of PROBABILITIES over an intermediate basis is not basis-free, so
+here.** A sum of probabilities over an intermediate basis is not basis-free, so
 "the hyperfine sum equals the $(m_J,m_I)$ sum" is not something the completeness
 of the basis gives you. What licenses dropping the hyperfine coherences is that
 the $5P$ splitting far exceeds the linewidth, so they dephase within the
@@ -223,19 +223,19 @@ structure in the evolution. It returns 5/9, 14/27, 10/27, 1/3 and 5/18, 7/27,
 a density-matrix treatment keeps make no difference to this observable, and that
 is a computed fact rather than an argument.
 
-A FIRST PASS ASSUMED A STATISTICAL 6S POPULATION and gave the naive column as f.
+A first PASS ASSUMED a statistical 6S population and gave the naive column as f.
 That was wrong by exactly the 0.596, and it is recorded because the error had a
-direction: it made the pumping companion LARGER than it is. The lower two lines
+direction: it made the pumping companion larger than it is. The lower two lines
 fall outside the retired 1/3 to 2/3 bracket, so this does not merely narrow the
 bracket, it moves the answer down. Drawn in
 figures/fig23_hyperfine_pumping.png panel (b).
 
-**AND THIS BREAKS THE DEGENERACY, in the one variable nobody was varying.** The
-AC-Stark ramp and the saturation are the SAME on all four lines, because the
+**And this breaks the degeneracy, in the one variable nobody was varying.** The
+AC-Stark ramp and the saturation are the same on all four lines, because the
 two-photon Rabi frequency is F-independent here (the hyperfine factor is
 exactly 1, constants.ABUNDANCE_RB85). The pumping is not. So the three
 same-signature terms are degenerate in power and in waist, as stated
-everywhere, and are NOT degenerate across the line index. The lever between the
+everywhere, and are not degenerate across the line index. The lever between the
 extreme lines is 0.625/0.375 = 1.67, which is 7 kHz of width at the campaign
 maximum against an 88 kHz single-block width scatter. This dataset cannot spend
 it. A session that controls the block scatter can, and it is the only handle
@@ -267,7 +267,7 @@ Three consequences.
    plausible alkali branching rather than a calculation. Pinning it is cheap and
    is the natural next step on this note.
 
-One thing this does NOT do is compete with the transit width. The transit
+One thing this does not do is compete with the transit width. The transit
 truncation rate, 2.2e6 per second, is twelve times the pumping rate, so transit
 still sets that channel and the pumping term is a small addition on top of an
 already-fitted 0.96 MHz. It matters because of its power signature, not its size.
@@ -384,14 +384,14 @@ is a data-access fact rather than a modelling one:** the joint fit reads the
 outside the repository, and `run_stark_joint.py` exits early when they are absent,
 which they are on the machine this probe ran on.
 
-What the probe does instead is fix the DIRECTION, which is arithmetic at C3f's own
+What the probe does instead is fix the direction, which is arithmetic at C3f's own
 numbers. At C3f's profile minimum, kappa = 0.25 MHz/W, the ramp broadens the line
 by 2.4 kHz and saturation by 1.4 to 1.5 kHz, so the companion is the smaller
 term. At C3f's 95 per cent bound, kappa = 1.15 MHz/W, the ramp gives 3.9 kHz and
 saturation 29 to 32 kHz, a ratio of 7.5 to 8.2. The companion therefore outgrows
 the ramp exactly where the bound is set, so the joint bound must tighten as well.
 
-Its SIZE was left unquoted here, pending the run. **The run has since happened, and
+Its size was left unquoted here, pending the run. **The run has since happened, and
 the paragraph above is replaced by the postscript below.**
 
 ## Postscript, 2026-08-10: the joint bound was re-profiled, and it tightens by 2.2
@@ -420,7 +420,7 @@ the reason it gave: the joint fit carries a collisional-width prior that can abs
 part of an added Lorentzian width where the width-only fit cannot.
 
 One behaviour runs opposite to C3d's and is worth recording rather than smoothing.
-In the width-only fit, adding the companion UN-RAILED the minimum, from exactly
+In the width-only fit, adding the companion un-railed the minimum, from exactly
 zero to +0.449 MHz/W, because it gave the width a resolvable gradient where the
 ramp alone had none. In the joint fit the minimum moves the other way, from
 +0.25 MHz/W to exactly zero. Both are consistent with no shift, and the difference

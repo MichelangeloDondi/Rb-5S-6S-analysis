@@ -24,7 +24,7 @@ gives the method and §4 states what of it is new.
 
 ## 3. What others have already done
 
-**On this line.** Precision work on 5S–6S is essentially one group: the USAF
+**On this line.** Precision work on 5S–6S is essentially one group: the usaf
 Academy measured the absolute frequencies and hyperfine constants ([Orson
 2021](../lit/orson2021.md) to MHz, [Ayachitula 2024](../lit/ayachitula2024.md) to kHz, with a lock stable to <0.5 kHz over
 50 minutes). [Orson 2021](../lit/orson2021.md) also reports two null results at ~6 MHz resolution,

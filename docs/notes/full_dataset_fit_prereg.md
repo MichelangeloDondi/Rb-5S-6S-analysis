@@ -188,7 +188,7 @@ comparable point by point.
 Smoke runs use the three-point grid 0, `KAPPA_PRED`, 5.0, one trace per
 condition group, one sample in three from each trace, and short chains. They
 exist to exercise every code path in minutes and they quote nothing. A smoke run
-fails gate B1 by construction, and reports that as SMOKE rather than as a
+fails gate B1 by construction, and reports that as smoke rather than as a
 failure.
 
 If the 95% crossing does not exist inside the grid, the run says so and the grid
@@ -249,7 +249,7 @@ settled.
 |---|---|---|---|
 | B1 | trace census | exactly 100 + 59 + 46 + 26 = 231 | a silent loader change is the failure mode this catches |
 | B2 | chi2 per point at the profile minimum | between 0.3 and 3.0 | the archive's per-condition fits run 0.84 to 0.98, so anything outside this band means the weights or the model, not the physics |
-| B3 | railed shared PHYSICS parameters, meaning `beta_self`, `sigma_laser` and the rehearsal rates (amended, see below) | zero | a railed parameter carries no information and biases everything sharing its budget, which is the lesson the five-tooth ruler truncation taught M25. `beta_self` railed at 0 is a hard stop |
+| B3 | railed shared physics parameters, meaning `beta_self`, `sigma_laser` and the rehearsal rates (amended, see below) | zero | a railed parameter carries no information and biases everything sharing its budget, which is the lesson the five-tooth ruler truncation taught M25. `beta_self` railed at 0 is a hard stop |
 | B4 | prior tension per peak, abs(post minus prior) over prior error | below 3 | above 3 the fit and the four-point measurement disagree about the same quantity, which is reported and not averaged away |
 | B5 | 95% crossing inside the grid | present | otherwise the bound is an extrapolation |
 | B6 | local minimum gap, best cold chain minus best seeded chain at any kappa | reported always, flagged above 1000 | the M23 incident printed 283,000 here. The pointwise minimum keeps the profile safe either way, so this is a flag rather than a stop |
@@ -259,10 +259,10 @@ settled.
 **Amendment 1, 2026-08-03, after the smoke run and before any production
 number.** B3 as first written counted every railed shared parameter and made all
 of them a stop. The smoke run railed two, and neither is a defect. `Vsat` for
-the Agilent sat on the TOP of its box at 403.4 V, which is the same answer M23
+the Agilent sat on the top of its box at 403.4 V, which is the same answer M23
 reports from the same box at 402.8 V and which means the detector ran linear.
 A saturation parameter running to the ceiling is the expected outcome, not a
-fault. The pilot rate scale sat on the LOWER edge of M26's measured box, where
+fault. The pilot rate scale sat on the lower edge of M26's measured box, where
 M23's own run sat on the upper edge, which is the live open question the M23
 docstring already poses about that axis rather than a broken fit. B3 therefore
 counts only the physics parameters that carry the widths. The other two classes

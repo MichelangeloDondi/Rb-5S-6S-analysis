@@ -11,7 +11,7 @@ stopped matching a fresh run of their own producers.
 migration onto numpy 2.5 was measured, held for two days on a preregistered
 backstop, and landed on 2026-08-23. What it moved, cell by cell, is in
 [the history](../docs/HISTORY.md#the-environment-migration-landed-2026-08-23):
-56 of 58 committed result files reproduced ACROSS the change, and the two that
+56 of 58 committed result files reproduced across the change, and the two that
 moved are the archive's known ill-conditioned direction.
 
 ## The versions of record, since 2026-08-23
@@ -22,12 +22,12 @@ moved are the archive's known ill-conditioned direction.
 | numpy | 2.5.2 |
 | scipy | 1.18.0 |
 | pandas | 3.0.5 |
-| BLAS | Apple Accelerate |
+| blas | Apple Accelerate |
 | platform | macOS 26.6.2, arm64 |
 
 **The environment is recorded item by item on purpose.** "The environment"
 is too broad to be a controlled variable, and the migration was run as a
-controlled intervention with these rows as the only thing allowed to differ.
+controlled re-centring with these rows as the only thing allowed to differ.
 
 ## The previous environment of record, until 2026-08-23
 
@@ -52,11 +52,11 @@ python3.9 -m venv .venv-record       # 3.10-3.12 also host numpy 2.0.2
 ./.venv-record/bin/python -c "import numpy, scipy; print(numpy.__version__, scipy.__version__)"
 ```
 
-**`--no-deps` IS LOAD-BEARING AND THE LAST LINE IS NOT OPTIONAL.** Until
+**`--no-deps` is load-bearing and the last line is not optional.** Until
 2026-08-20 this recipe ended `pip install -e .` with a note to ignore the
 `requires-python` warning. That was wrong, and wrong in the one way that
-destroys the thing it is building: an editable install is a DEPENDENCY
-RESOLUTION, not a path fixup. It reads the `numpy>=2.5` floor this package
+destroys the thing it is building: an editable install is a dependency
+resolution, not a path fixup. It reads the `numpy>=2.5` floor this package
 declares and enforces it, so the fourth line silently upgraded the 2.0.2
 pinned on the second line. The note told the reader to expect a complaint
 about the Python version while the damage happened quietly beside it, in a
@@ -69,12 +69,12 @@ directory named for the record. Measured on 2026-08-20, both arms run:
 
 The package still imports either way, so nothing announces the failure. Hence
 the printed versions: an environment is a MEASURED quantity, not a configured
-one, and its name is not evidence about its contents. If PYTHONPATH suits you
+one, and its name is not evidence about its contents. If pythonpath suits you
 better it is safer still, because it never lets pip near the environment.
 
 The editable install will also complain that the package declares
-`requires-python >=3.12`. THAT complaint is expected, and it is the point of
-this file: the SUPPORTED environment and the environment OF RECORD are
+`requires-python >=3.12`. That complaint is expected, and it is the point of
+this file: the supported environment and the environment of record are
 different statements, and only the second one reproduces the committed
 digits.
 
@@ -123,7 +123,7 @@ compared against the committed digits.
 **Two of fifty-one committed CSVs drift, as measured on 2026-08-21.**
 Forty-nine reproduce. The denominator is 58 at the landing on 2026-08-23,
 because seven committed results were added between the two dates. The
-NUMERATOR did not move, and it is the same two files.
+numerator did not move, and it is the same two files.
 
 | file | column | committed | fresh |
 |---|---|---|---|
@@ -134,13 +134,13 @@ Both belong to the families this file already names as ill-conditioned: a
 correlation coefficient, and a ratio of covariance elements taken along a flat
 valley. Neither is a quantity this record reads as physics.
 
-**The migration was HELD at that point, and it LANDED on 2026-08-23.** The
+**The migration was held at that point, and it landed on 2026-08-23.** The
 preregistered threshold was that the migration lands unless a number a public
-document QUOTES moves beyond its stated tolerance. The second drift was such a
+document quotes moves beyond its stated tolerance. The second drift was such a
 number: `docs/methods/06_the_statistics.md` quoted the covariance prediction as
 +0.080 in running prose. The hold stood until the owner authorised the
 migration, and the paragraph above records the versions the committed digits
-are made under NOW.
+are made under now.
 
 **This paragraph described the hold in the present tense for two days after it
 was written**, and it survived four propagation sweeps in the window that
@@ -151,7 +151,7 @@ business going stale wherever it lives.
 
 Two findings came out of the run that outlast the decision:
 
-* The 0.080 was living inside a `unit` PROSE STRING rather than in a value
+* The 0.080 was living inside a `unit` prose string rather than in a value
   column, so the freshness comparator was checking it as text rather than at a
   numeric tolerance. **It now has its own row**, `ridge_slope_covariance_pred`,
   added when the migration landed.

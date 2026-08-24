@@ -23,8 +23,8 @@ how they are stated, not what they say.
 
 - **A bound is reported as a bound.** Where the dataset constrains rather than
   measures, say so in the sentence that gives the number, not in a footnote.
-  Every headline value carries a provenance tag (MEASURED-HERE / CALCULATED /
-  ESTABLISHED / ENVELOPE / OPEN / DESCOPED).
+  Every headline value carries a provenance tag (measured-here / calculated /
+  established / ENVELOPE / OPEN / descoped).
 - **A quantity that varies is quoted with its spread, never as a bare worst
   case.** A maximum answers "how bad can it get", which is a different question
   from "what is it", and the two get confused when only one number is printed.
@@ -52,7 +52,7 @@ how they are stated, not what they say.
   a document and its producing code disagree.
 - **Name the construction whenever you quote a number.** Five committed
   constructions in this repository produce a quantity called "S0(225 mW)", and
-  three of them also carry rows that are REPLACED diagnostics kept for
+  three of them also carry rows that are replaced diagnostics kept for
   continuity. A bare "the bound" is ambiguous, and on 2026-08-14 a reader of
   this repository (the author) quoted `stark_sweep.csv`'s replaced Wald row
   2.205 in place of its actual bound, `S0_225mW_ub95_profile` = 0.632, whose own
@@ -71,14 +71,14 @@ how they are stated, not what they say.
   until 2026-08-14.
 - **A retired value is marked as retired at every site that still names it.**
   When a constant is re-pinned, the edit is not finished at the constant: grep
-  the OLD value across the tree and decide per site whether it is history or a
+  the old value across the tree and decide per site whether it is history or a
   live claim. `tests/test_repo_hygiene.py` now fails on a retired beam waist
   quoted beside a live claim, and the same discipline applies to any re-pin.
-- **A superseded number is REPLACED here and RECORDED in `HISTORY.md`.** That
+- **A superseded number is replaced here and recorded in `HISTORY.md`.** That
   file is the one place in this repository licensed to print a value the
   record no longer believes. Every other document, this one included, states
-  only what is live, and refers to a superseded value by LINKING to
-  `HISTORY.md` rather than repeating the number. Where the number was COMPUTED
+  only what is live, and refers to a superseded value by linking to
+  `HISTORY.md` rather than repeating the number. Where the number was computed
   at the old value, recompute rather than relabel, since a relabelled table is
   a new falsehood rather than a surviving one. Earned 2026-08-15, when a
   pre-measurement stand-in for the beam waist survived a re-pin in three
@@ -88,7 +88,7 @@ how they are stated, not what they say.
   without running `git log`.
 - **Two documents agreeing is not corroboration if they share an ancestor.**
   Date a claim before counting the sites that repeat it, and resolve prose
-  against its SOURCE (a constant, a CSV, a measurement) rather than against
+  against its source (a constant, a CSV, a measurement) rather than against
   other prose. A consistency sweep with no source in it converges the tree onto
   whichever value is most widely repeated.
 - **Do not carry a discrepancy you cannot adjudicate.** If two sites disagree
@@ -106,7 +106,7 @@ how they are stated, not what they say.
   convention beside the number rather than trusting a reader to have found the
   definition.
 
-- **A reimplemented number is checked against the record BEFORE it is
+- **A reimplemented number is checked against the record before it is
   reported.** Rebuild the fitted width and compare it with the committed one,
   rebuild the reduced chi-squared and compare it with the committed one, and
   only then read whatever new thing the reimplementation was built to measure.
@@ -149,7 +149,7 @@ distinctions and should stay.
 `tests/test_repo_hygiene.py` holds a bank of vocabulary this record does not
 use, checked line by line over every tracked Markdown and Python file. The
 newest entries are the mood-and-sales pair added on owner instruction,
-2026-08-19. Write the thing itself instead: a failure mode, what would defeat
+2026-08-19. Write the thing itself instead: a failure mode, what would break
 the session, the objection a referee would raise, the empty case, the chance
 of returning nothing.
 
@@ -193,9 +193,9 @@ them. Write "a new operator", "the group", "an external theory check".
 
 Editing these directly is lost on the next run, and the freshness tests fail.
 
-**Redraw with the generator you edited, by name, and then LOOK at the output.**
+**Redraw with the generator you edited, by name, and then look at the output.**
 `scripts/run_all.sh` calls `make_fig0_spectrum`, `make_figures` and
-`make_results_ledger`. It does NOT call `make_timeline_figure`, so a text edit
+`make_results_ledger`. It does not call `make_timeline_figure`, so a text edit
 to that generator leaves a stale published PNG that every test passes over: the
 figure-freshness guard hashes the RESULTS CSVs and asks whether a figure was
 drawn from stale RESULTS, and a wording change moves no result. On 2026-08-14 a
@@ -206,13 +206,13 @@ check which generators it actually calls.
 **A guard keyed to data freshness says nothing about text freshness.** Whenever
 a pass changes words rather than numbers, name what will detect it.
 
-**Editing a SOURCE regenerates its artifacts too.** The table above reads in
+**Editing a source regenerates its artifacts too.** The table above reads in
 one direction, generator to output, and the trap runs the other way: the
-literature notes under `docs/lit/` are hand-written SOURCES from which
+literature notes under `docs/lit/` are hand-written sources from which
 `build_lit_index.py` generates `docs/LITERATURE_INDEX.md`, `docs/references.bib`
 and a local `PDF_papers/README.md`. Editing one note therefore makes three
 tracked files stale, and the gate is where that surfaces. After editing any
-file, ask what is generated FROM it, not only what generates it.
+file, ask what is generated from it, not only what generates it.
 
 ## Markdown and maths
 
@@ -273,7 +273,7 @@ file, ask what is generated FROM it, not only what generates it.
   drawn on the canvas.
 - **Redraw only where `results/` is clean.** The figure fingerprint reads the
   working tree, so drawing while another session holds uncommitted CSVs stamps
-  its numbers into a published PNG. Use a detached worktree at HEAD and confirm
+  its numbers into a published PNG. Use a detached worktree at head and confirm
   the fingerprint matches the tree you are publishing from.
 - **Compute every drawn number at draw time, from the function that produces
   it.** Never copy it from the document the figure illustrates. When a figure
@@ -339,7 +339,7 @@ manifest alone. So a sentence can be true where it is written and false where
 it is read, and the guards cannot tell, because both copies pass their own
 tests.
 
-A published sentence must be true in EVERY copy it appears in. Where a fact
+A published sentence must be true in every copy it appears in. Where a fact
 genuinely differs between copies, there are two honest resolutions and no
 third:
 
@@ -352,7 +352,7 @@ third:
   copy acknowledging the other. `data_raw/README.md` is the worked example
   and is the reason the first route has somewhere to point.
 
-A REPLACEMENT EARNS THE SAME TEST. On 2026-08-14 a batch of sentences of this
+A replacement earns the same test. On 2026-08-14 a batch of sentences of this
 kind was corrected, and the first replacement written for `START_HERE.md`
 said the fast suite needs no data because the tests that matter are synthetic.
 True in the published copy. False in the one with the traces, where the

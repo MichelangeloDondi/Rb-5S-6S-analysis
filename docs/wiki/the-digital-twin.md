@@ -11,9 +11,9 @@ builds on.
 **Gives.** The achievable uncertainty on each parameter at a proposed design,
 which pairs stay degenerate no matter how the design is changed, and the
 false-alarm behaviour of the design when there is nothing to find.
-**Skip if.** You want to know whether an ANALYSIS is correct, which is
+**Skip if.** You want to know whether an analysis is correct, which is
 [injection recovery](injection-recovery.md). This page is about whether an
-EXPERIMENT is worth building.
+experiment is worth building.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -34,7 +34,7 @@ The loop has five steps and the fifth is the point of it.
 3. Generate the traces that apparatus would record under that truth.
 4. Fit them back with the production fitter, unchanged.
 5. Read the achievable uncertainties, the parameter correlations and the
-   detection significance, then CHANGE THE DESIGN AND REPEAT.
+   detection significance, then change the DESIGN and repeat.
 
 Steps 1 to 4 are an injection-recovery test. Step 5 is what makes it a twin:
 the object under study stops being the analysis and becomes the experiment.
@@ -45,7 +45,7 @@ Designing a measurement means choosing among options that all sound
 reasonable. More power, a wider span, more repeats, a hotter cell, a tighter
 focus. Each is defended with an argument about scaling, and arguments about
 scaling are cheap and frequently wrong, because the quantity that matters is
-not the signal-to-noise of a trace but the uncertainty on a PARAMETER after a
+not the signal-to-noise of a trace but the uncertainty on a parameter after a
 fit that has several other parameters in it.
 
 A twin replaces the argument with a measurement. Doubling the points is worth
@@ -61,7 +61,7 @@ a number.
 ## The arithmetic that decides whether a twin is even needed
 
 The single most useful thing a twin reports is not an uncertainty. It is a
-CORRELATION, because a correlation says whether more data can help at all.
+correlation, because a correlation says whether more data can help at all.
 
 When two parameters are correlated at $\rho$ in the fit, measuring one of them
 independently and holding it fixed reduces the other's variance to
@@ -129,11 +129,11 @@ kernel selectable through `laser_kind` and `gamma_l` so a world can carry a
 Gaussian laser component, a Lorentzian one, or both at once, and
 `forecast_precision` runs the Monte Carlo over `synthetic_traces` into
 `fit_condition`, returning median parameter uncertainties together with
-scalings measured by RE-RUNNING the study at scaled designs rather than by
+scalings measured by re-running the study at scaled designs rather than by
 asserting exponents.
 
 The kernel knobs are what made the 2026-08-21 identifiability worlds possible.
-A twin that can only EMIT a Gaussian laser kernel cannot test whether the
+A twin that can only emit a Gaussian laser kernel cannot test whether the
 fitter recovers a Lorentzian one, so a false-positive rate measured on it would
 be a statement about a world the question is not about. With the knobs, five
 hostile worlds at 500 trials each measured that the estimator does not
@@ -147,13 +147,28 @@ the measured noise law, and the acquisition design of
 [PLAN chapter 7](../plan/07_acquisition-settings.md), including its
 single-vertical-range quantisation and a session drift.
 
+The twin is also pointed at a future apparatus in the fibre thread: the
+nanofibre candidate's design validation lives with the rest of the fibre
+material in [the guided-atoms page](guided-atoms-and-nanofibres.md) and
+[`onf_candidate`](../notes/onf_candidate.md), so a reader with no fibre
+can skip that thread and lose nothing here.
+
+`scripts/run_twin_span_sweep.py` is the twin pointed at a question the
+record once answered with unregenerable digits: the span-and-repeats
+search, rebuilt from a named committed condition into
+[`twin_span_sweep.csv`](../../results/twin_span_sweep.csv). Repeats buy precision as sampling predicts, a
+factor 3.16 at ten times the traces, while a five times wider span costs a
+factor 2.72 at fixed points per trace, and the width degeneracy moves by
+at most 0.0075 under either, which is the regenerable form of the failed
+asymmetric-knob search that [identifiability](identifiability.md) records.
+
 `docs/TUTORIAL.md` walks the loop for a line of the reader's own choosing, and
 every code block in it runs as `examples/tutorial_forecast.py`.
 
 ## What can go wrong
 
 **Running only the injected world.** A twin that injects an effect and then
-detects it has shown that the design responds to a signal. It has NOT shown
+detects it has shown that the design responds to a signal. It has not shown
 that the design stays quiet when there is no signal. Run a null world beside
 every injected one and report both, because a design that false-alarms is
 worse than a design that misses.
@@ -208,7 +223,7 @@ purpose entirely, and the two disagreed on contact.
 taught that widening the scan span breaks the width degeneracy. The twin
 refuted it before the page shipped, and the refutation now has a producer:
 [`results/twin_span_sweep.csv`](../../results/twin_span_sweep.csv), from
-`run_twin_span_sweep.py`, whose truth is READ from a named committed condition
+`run_twin_span_sweep.py`, whose truth is read from a named committed condition
 and whose seed is fixed.
 
 Over a five times wider span the width-width correlation moves **0.0075**. At
@@ -219,8 +234,8 @@ is**, because the degeneracy belongs to the lineshape rather than to the
 sample size.
 
 **One thing that sweep adds, which the original claim did not carry**:
-widening the span at a FIXED point count made the uncertainty 2.72 times
-WORSE. That is a coupling between two design knobs rather than a property of
+widening the span at a fixed point count made the uncertainty 2.72 times
+worse. That is a coupling between two design knobs rather than a property of
 span, since a wider window sampled at the same number of points measures the
 line five times more thinly. **Widen the span only alongside the points to
 match.**
@@ -229,7 +244,7 @@ match.**
 It reported $-0.9177$, $-0.9166$ and $-0.881$, numbers that ten public
 surfaces still quote, and it recorded neither its truth parameters nor its
 seed, so nobody can regenerate those four decimals. The producer above
-re-establishes the CLAIM rather than the digits, because choosing inputs that
+re-establishes the claim rather than the digits, because choosing inputs that
 hit a remembered output is the opposite of a measurement.
 
 Both are recorded in [HISTORY.md](../HISTORY.md).
@@ -239,7 +254,7 @@ Both are recorded in [HISTORY.md](../HISTORY.md).
 Digital twins as a term come from engineering, where a simulation of a
 physical asset is kept synchronised with the asset itself. The usage here is
 the design-stage half of that idea, which in the statistics literature is
-closer to DESIGN OF EXPERIMENTS and to simulation-based power analysis. The
+closer to DESIGN of experiments and to simulation-based power analysis. The
 underlying arithmetic, that conditioning on a correlated parameter reduces
 variance by $(1-\rho^2)$, is the standard partitioned-inverse result for a
 multivariate normal and appears in any regression text under partial

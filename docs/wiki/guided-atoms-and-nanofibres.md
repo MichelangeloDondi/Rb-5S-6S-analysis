@@ -10,7 +10,7 @@ measurement's limits that fixes?
 crossing costs, and [the AC-Stark shift](ac-stark-shift.md) for what a
 structured field does to the levels.
 **Gives.** The two guided geometries, what each one buys and charges, and why
-a guided platform is a different LEVER on this record's degeneracies rather
+a guided platform is a different lever on this record's degeneracies rather
 than a better version of the same one.
 **Skip if.** You have no fibre. Nothing on the record's main path depends on
 this page.
@@ -20,12 +20,12 @@ this page.
 
 ## The two geometries, and they are opposites
 
-**A hollow-core fibre puts the atoms INSIDE the light.** The guided mode runs
+**A hollow-core fibre puts the atoms inside the light.** The guided mode runs
 down a hollow channel and the atoms sit in it. Interaction length becomes a
 design choice rather than a beam crossing, and it can be centimetres where a
 free-space waist gives millimetres.
 
-**A nanofibre puts the atoms OUTSIDE the light.** The glass is drawn until its
+**A nanofibre puts the atoms outside the light.** The glass is drawn until its
 diameter is below the wavelength, so a large fraction of the mode travels as
 an evanescent field in the vacuum around it. Atoms are trapped in that
 evanescent field, a few hundred nanometres from a glass surface.
@@ -37,7 +37,7 @@ platforms and not two versions of one.
 |---|---|---|
 | where the atom sits | inside the mode | outside the glass, in the evanescent tail |
 | interaction length | centimetres, by design | the taper waist, millimetres |
-| what limits coherence | collisions with the wall, guided-mode light shifts | the SURFACE, through van der Waals and its own thermal field |
+| what limits coherence | collisions with the wall, guided-mode light shifts | the surface, through van der Waals and its own thermal field |
 | what it is good at | long interrogation of a dense guided sample | strong coupling of a few atoms to a single mode |
 
 ## The numbers this record actually holds
@@ -58,7 +58,7 @@ at 0.348 MHz for 225 mW. A mode area of half a square micron reaches that
 intensity at microwatts. **The nanofibre's argument is not that it is bigger.
 It is that a tiny power does what a large one does in free space.**
 
-## Why this is a LEVER and not an improvement
+## Why this is a lever and not an improvement
 
 This record's central difficulty is that a total width is well determined
 while the split between its causes is not
@@ -75,7 +75,7 @@ off. **In a guide it becomes a knob**, which is what makes the platform an
 orthogonal lever on the degeneracy rather than more of the same.
 
 **And the knobs are real, not hypothetical.** A two-colour trap can be turned
-on and off, and the RELATIVE intensity of its two colours scans the
+on and off, and the relative intensity of its two colours scans the
 atom-surface distance. The red trapping beam can run as a travelling wave or
 as a standing wave. The MOT can be on or off, and molasses temperature is a
 ladder rather than a setting. **Each of those moves a different term**, which
@@ -96,8 +96,22 @@ shift, they see a distribution, and a measurement that assumes one number
 inherits the spread as a systematic.
 
 **A guided measurement is not automatically better conditioned.** It is
-DIFFERENTLY conditioned, and the value comes from combining it with the cell,
+differently conditioned, and the value comes from combining it with the cell,
 not from replacing the cell with it.
+
+## The design has a twin, and the twin's honesty is in its flags
+
+`scripts/run_fibre_twin.py` runs the nanofibre candidate's molasses ladder
+as 500 recovery trials per synthetic world into
+[`fibre_twin.csv`](../../results/fibre_twin.csv). Its own flags carry its
+scope, `design_validation_only TRUE` and `measures_laser_linewidth FALSE`:
+it establishes that the proposed design can identify the homogeneous
+component under worlds where the answer is known, with per-rung scatter
+4.0 kHz against the 3.2 kHz the cell record demonstrates per condition,
+and it carries the band-edge licensing sentence, since the lever and its
+calibration are the same order and a disagreement therefore means
+unidentifiable, not wrong. What the real fibre will do is not a
+twin question.
 
 ## Further reading
 

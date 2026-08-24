@@ -88,7 +88,7 @@ carrier-null depth off a one-photon formula and applying it to a two-photon
 comb puts the modulator at twice the intended depth, which is the confusion
 the two paragraphs above exist to prevent.
 
-The physical assumption is that the modulation is PURE phase modulation. Any
+The physical assumption is that the modulation is pure phase modulation. Any
 residual amplitude modulation, which a real modulator produces when its
 polarisation axis is not aligned to the crystal, breaks the symmetry of the
 comb, and the tooth heights then no longer follow the Bessel law at all. That

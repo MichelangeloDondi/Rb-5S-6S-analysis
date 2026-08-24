@@ -12,25 +12,25 @@
 ## 10b. The acquisition record itself, and the one setting whose absence cost a measurement
 
 Section 10a sizes the span and the record length. This section is about what
-must be WRITTEN DOWN while the traces are taken, and it exists because on
+must be written down while the traces are taken, and it exists because on
 2026-08-16 a complete, deep, well-conditioned dataset turned out to be
 uninterpretable for want of a single number nobody recorded.
 
-### 10b.1 THE PIEZO AMPLITUDE IS RECORDED PER BLOCK, and this is not optional
+### 10b.1 the piezo amplitude is recorded per block, and this is not optional
 
 The 2025-07-04 session holds fifty traces at 500,001 points, 5.000 s, 10 us
 per sample: 250 times the record depth of the campaign, 50 times its time
 resolution. It carries all four peaks at three powers with five repeats.
 
-IT HAS NO EOM COMB, so its frequency axis is uncalibrated. The natural repair
+It has NO EOM comb, so its frequency axis is uncalibrated. The natural repair
 is to calibrate it against the campaign's own line widths, which are known in
 MHz, by measuring the same lines in ms. That works, passes its internal
-consistency tests, and is DEGENERATE:
+consistency tests, and is degenerate:
 
   * if the piezo ran at about three quarters of the campaign's amplitude, the
     rate is 0.0129 MHz per ms, the lines have the same width as the campaign's,
     and there is no crossing-time broadening
-  * if the piezo ran at the SAME amplitude, the rate is 0.0170 MHz per ms, the
+  * if the piezo ran at the same amplitude, the rate is 0.0170 MHz per ms, the
     lines are 1.26 times wider, and that width is what accumulated laser
     frequency noise would produce over a crossing 6.5 times longer.
 
@@ -40,9 +40,9 @@ so calibrating one by assuming the other is the same degeneracy the fit already
 has between the laser width and the collisional width, moved to a different
 pair of variables.
 
-ONE RECORDED NUMBER WOULD HAVE DECIDED IT. So:
+One recorded number would have decided it. So:
 
-  * **EXPORT THE RAMP CHANNEL WITH EVERY TRACE.** This is stricter and cheaper
+  * **Export the ramp channel with every trace.** This is stricter and cheaper
     than writing the amplitude down, and 2026-08-16 showed why: the scope
     monitored the ramp during the deep session and the export took channel 2
     alone, so the number existed on the screen and never reached disk. A
@@ -57,7 +57,7 @@ ONE RECORDED NUMBER WOULD HAVE DECIDED IT. So:
     So a recorded ramp in volts converts straight to a frequency axis with no
     comb at all, which makes the ramp channel a second, independent
     calibration rather than a convenience.
-  * the piezo amplitude, its offset, and the ramp frequency are ALSO recorded
+  * the piezo amplitude, its offset, and the ramp frequency are also recorded
     in the block log, in the units the driver displays
   * so is the scope's timebase and record length, even though they are in the
     file header, because a header can be lost in a format conversion and a
@@ -65,20 +65,20 @@ ONE RECORDED NUMBER WOULD HAVE DECIDED IT. So:
   * any change to any of them starts a new block, and the change is written
     down at the moment it is made rather than reconstructed afterwards.
 
-### 10b.2 EVERY SESSION CARRIES A COMB, and it brackets the block
+### 10b.2 every session carries a comb, and it brackets the block
 
 The 2025-07-04 session's real defect is not its missing amplitude, it is its
 missing comb. A comb is the only calibration that does not borrow a number from
 somewhere else, because the RF oscillator's frequency is exact.
 
-  * NO SESSION SHIPS WITHOUT AN EOM RULER, taken at the start and at the end of
+  * NO session ships without an EOM ruler, taken at the start and at the end of
     every block, at the same scan settings as the science traces.
   * A ruler taken at different settings from the block it calibrates is not a
     ruler. The 2025-07-03 rulers share the 5 s window with the 2025-07-04
     science traces and are still useless for them: different day, different
     cell temperature, and no record that the piezo was unchanged.
 
-### 10b.3 EOM DRIVE: modulation depth at the carrier zero
+### 10b.3 EOM drive: modulation depth at the carrier zero
 
 Set the modulation index to **beta = 2.405**, the first zero of the Bessel
 function J0. Computed at that depth:
@@ -90,7 +90,7 @@ function J0. Computed at that depth:
 | n = +-2 | 0.4318 | 0.373 |
 | n = +-3 | 0.1990 | 0.079 |
 
-THE CARRIER VANISHES. That matters for three reasons. The comb becomes
+the carrier vanishes. That matters for three reasons. The comb becomes
 symmetric with no dominant central tooth, so the fit is no longer trying to
 measure weak teeth beside a strong one. The integer-fold ambiguity, which
 numbered 54 of the 104 campaign combs one slot out until it was fixed in
@@ -102,7 +102,7 @@ modulation depth to an alignment.
 Record the drive voltage that achieves beta = 2.405 and re-check it whenever
 the crystal temperature is touched, since beta drifts with it.
 
-### 10b.4 EOM RF FREQUENCY: raise it, and only with the wider span
+### 10b.4 EOM RF frequency: raise it, and only with the wider span
 
 The 2025 drive was 12.5 MHz. The teeth it produces sit 12.5 MHz apart on the
 transition axis and 6.25 MHz apart on the laser axis, against a line 5.4 MHz
@@ -114,7 +114,7 @@ sit at $\nu_c + n\Omega$ on each beam, and there is no optical component at
 6.25 MHz anywhere in the light. A two-photon resonance needs
 $\nu_a + \nu_b = \nu_0$, so $2\nu_c + s\Omega = \nu_0$ with $s = n + m$, and
 the laser sits at $\nu_c = (\nu_0 - s\Omega)/2$. Consecutive $s$ move the
-two-photon SUM by $\Omega$ and the LASER by $\Omega/2$. **The 6.25 MHz is
+two-photon sum by $\Omega$ and the laser by $\Omega/2$. **The 6.25 MHz is
 therefore a property of the scan axis rather than of any photon**, and a pair
 such as $(+1,-1)$ has $s=0$ and lands on the carrier tooth rather than making
 a new one. The drive is photographed at 12.500 000 000 0 MHz on the generator
@@ -133,24 +133,24 @@ fit has to be simultaneous over all seven teeth rather than tooth by tooth.
 | **5 linewidths** | **27.0 MHz** | **27.0 MHz** | **13.50 MHz** |
 | 6 linewidths | 32.4 MHz | 32.4 MHz | 16.20 MHz |
 
-FIVE LINEWIDTHS IS THE RECOMMENDATION, a drive of about 27 MHz. At that separation a
+five linewidths is the recommendation, a drive of about 27 MHz. At that separation a
 neighbour's Lorentzian wing is a per cent rather than twenty, and each tooth
 can be fitted alone as a cross-check on the simultaneous fit.
 
-BUT THIS ONLY WORKS WITH THE WIDER SPAN, and the two changes have to be made
+But this only works with the wider span, and the two changes have to be made
 together:
 
 | | drive 12.5 MHz | drive 27.0 MHz |
 |---|---|---|
 | teeth inside the 2025 span (85 MHz) | 6 | **3** |
-| tooth POSITIONS inside the proposed span (2400 MHz) | 192 | 88 |
-| teeth ABOVE NOISE in that span | 20 | 20 |
+| tooth positions inside the proposed span (2400 MHz) | 192 | 88 |
+| teeth above noise in that span | 20 | 20 |
 
 The last row is the one to read, and an earlier draft of this section did
 not carry it. A tooth is a copy of an atomic line reached through a sideband
 pair, so it needs both a position and a resonance, and its height falls as
 $J_s(2\beta)^2$, which at the committed depth leaves about five usable teeth
-per line whatever the drive. The comb is therefore FOUR CLUSTERS of five,
+per line whatever the drive. The comb is therefore four clusters of five,
 each spanning a few tens of MHz, with gaps of 456, 1003 and 1155 MHz on the
 laser axis between them carrying no marks at all. Raising the drive widens
 the clusters and never fills the gaps.
@@ -166,24 +166,24 @@ paragraph has been corrected twice and both corrections are on the record.
 The first version justified the coincidence by a 185-tooth-spacing rate
 extrapolation, which belongs to the 2025 narrow-span geometry alone. The
 second version claimed the wide span retires the issue outright because 192
-teeth join the pairs, and that conflated tooth POSITIONS with teeth: the
+teeth join the pairs, and that conflated tooth positions with teeth: the
 usable comb is four clusters of about five, and the gaps of up to 1155 MHz
 between clusters carry no marks. What actually holds the pair integral in
 the wide-span design is the pairs themselves as endpoint anchors, the local
-rate measured inside four clusters, and INTERPOLATION between them, which
+rate measured inside four clusters, and interpolation between them, which
 the nonlinearity map's own excess structure puts at the half-per-cent
 level. Section 10b.4c is the design that converts that interpolation into a
 measurement.
 
 The division of labour that makes both rulers necessary and neither
-sufficient: the atomic pairs are the ANCHOR, absolute and free but two marks
-per isotope crossed tens of seconds apart, and the comb is the INTERPOLATOR
+sufficient: the atomic pairs are the anchor, absolute and free but two marks
+per isotope crossed tens of seconds apart, and the comb is the interpolator
 and the CLOCK, dense and local and exact against the synthesiser but carrying
 no absolute frequency of its own.
 
 What a coincidence adds is different in kind. Set the drive so that an
 integer number of tooth spacings equals a same-isotope pair separation, and
-tooth $n$ of one line lands ON the other line's carrier. The 85 pair is
+tooth $n$ of one line lands on the other line's carrier. The 85 pair is
 2318.537 MHz on the transition axis and the 87 pair 5219.973 MHz, both known
 to a few kHz, so the drives are exact:
 
@@ -195,7 +195,7 @@ to a few kHz, so the drives are exact:
 | 4 | 579.634 MHz | 1304.993 MHz | 0.160 | 5.32 |
 
 **What it buys is a measurement, not a calibration.** The ground hyperfine
-splittings are clock-grade, so a pair separation IS the 6S hyperfine
+splittings are clock-grade, so a pair separation is the 6S hyperfine
 splitting, currently known to about 2 kHz through the constants of
 [Ayachitula and co-workers](../lit/ayachitula2024.md). Under the coincidence
 the tooth and the partner line are excited at the same laser frequency in the
@@ -235,7 +235,7 @@ two blocks and two optima.
 these drives it is not.** The weights $J_n(2\beta)^2$ assume every pathway
 pair interferes with zero relative phase. With the modulator in the common
 path the retro photon arrives late by $\tau(z)$, and the pathway sum
-collapses exactly to a single tone at EFFECTIVE depth
+collapses exactly to a single tone at effective depth
 $2\beta\cos(\pi f\tau)$, so an atom's tooth weights are
 $J_n(2\beta\cos(\pi f\tau))^2$ averaged over the cell
 (`rb5s6s.forecast.comb_tooth_weights`, with the identity tested against the
@@ -248,7 +248,7 @@ interference had cancelled also return to the carrier, which keeps 0.62 of
 its height at $2\beta = 3.05$ rather than 0.076, and never nulls at 2.405.
 
 **The repair is placement, not power.** Put the coincidence modulator
-BETWEEN THE CELL AND THE RETRO MIRROR. The forward photon is then
+between the cell and the retro mirror. The forward photon is then
 unmodulated, every pathway carries a distinct order, nothing interferes, and
 the zero-delay weights are exact at any drive: the fourth-order tooth
 returns to 0.16. The same placement makes the carrier-null depth diagnostic
@@ -257,7 +257,7 @@ valid at any frequency. The cost is one more optic in the retro path and its
 
 **The one magnetic systematic in this plan lives here.** The line barely
 feels a laboratory field, first order doubly cancelled to under 140 Hz at
-50 uT and second order under 3 kHz per state. The PAIR SEPARATION is less
+50 uT and second order under 3 kHz per state. The pair separation is less
 lucky: it inherits the difference of the quadratic Zeeman terms, dominated
 by the smaller 6S splitting, near 0.9 kHz for the 87 pair and 2.1 kHz for
 the 85 pair at Earth field, against this block's 0.3 kHz target. The term
@@ -269,7 +269,7 @@ at its own precision.
 **The systematic measures itself, which makes the block a magnetometer.**
 The quadratic Zeeman term above is a calibrated field-squared coefficient of
 pure atomic structure, so reading the doublet at two coil settings returns
-the field INSIDE the cell, at the atoms, where no external probe sits: near
+the field inside the cell, at the atoms, where no external probe sits: near
 3.6 uT per hundred crossings on the 85 pair, with the 87 pair's coefficient
 smaller by the known factor near 2.25 as an internal consistency check. The
 correction the block needs is therefore supplied by the block. Per-peak
@@ -289,36 +289,36 @@ splitting is then read linearly.
 the adjudication sharpened, and the current form is a menu rather than a
 single recommendation.
 
-BASELINE, no purchase: the 12.5 MHz tank the bench has runs everything else
+Baseline, no purchase: the 12.5 MHz tank the bench has runs everything else
 in this plan, with the tooth-overlap cost the simultaneous comb fit already
 carries, and with the axis between the four line clusters interpolated over
 stretches up to 1130 MHz.
 
-BEST VALUE, one resonant modulator near 150 MHz, KEPT BESIDE the 12.5 tank:
+Best value, one resonant modulator near 150 MHz, kept beside the 12.5 tank:
 at calibration depth ($2\beta$ 4.5 to 7) its clusters shrink the largest
 unmarked stretch from 1130 to 255 MHz or to nothing, its teeth stand 28
 linewidths apart so single-tooth fits become available, the fractional rate
 per tooth pair improves twelvefold on the longer lever, and the tooth clock
 marks every 1.8 s of the wide sweep instead of only four one-second islands.
 The nearest accidental tooth misses the 85 pair by 13 linewidths and the 87
-pair by 6, so nothing collides. 100 MHz FAILS the coverage margin, leaving
+pair by 6, so nothing collides. 100 MHz fails the coverage margin, leaving
 555 MHz stretches, so the band's usable edge is near 150. The 12.5 tank
 stays for the fine clock band and for any narrow-span block, which are the
 two jobs a 150 MHz spacing cannot do.
 
-ONLY FOR THE METROLOGY BLOCK, a broadband modulator: the deliberate
+Only for the metrology block, a broadband modulator: the deliberate
 coincidence needs 579.634 or 1304.993 MHz at $2\beta$ near 5.3, which no
 resonant tank reaches, and the 6S-hyperfine-constant measurement of this
 section is the one deliverable that justifies it. The 85 pair at 150 MHz
 would need order sixteen, which is unreachable at any survivable depth.
 
-### 10b.4b RECORD THE SWEEP DIRECTION, which costs one column
+### 10b.4b record the sweep direction, which costs one column
 
 The manifest records no sweep direction, and one measurement is blocked
 entirely on that omission. `run_tooth_scatter.py` reads the comb as a clock
 and bounds the laser's non-repeating frequency excursion at the tooth spacing,
 below 28.3 kHz on the transition axis at 0.15 s. That bound is on the
-NON-LINEAR part only, because a linear drift within a sweep is exactly
+non-linear part only, because a linear drift within a sweep is exactly
 degenerate with the sweep rate: a laser adding $at$ to an intended ramp $rt$
 leaves the teeth uniformly spaced at $f_\text{EOM}/(r+a)$ and the fit returns
 $r+a$.
@@ -329,7 +329,7 @@ width band scale together and their 3.6 ratio never closes. Across blocks
 they compose, because the noise spectrum belongs to the laser rather than
 to the scan: a block at ten times the 2025 rate puts the comb's clock at
 68 Hz, and thirty times at 204 Hz, both inside the 24 Hz to 1.5 MHz band
-the SCIENCE blocks' widths integrate at the ordinary rate. A fast block
+the science blocks' widths integrate at the ordinary rate. A fast block
 therefore measures the laser's frequency noise where the slow blocks'
 lineshapes absorb it, which no external instrument on this bench does, and
 which is the in-situ half of resolving whether the laser kernel is Gaussian
@@ -357,15 +357,15 @@ the ladder fit's own offset and slope, where no residual test can see it,
 and at the 2025 rate the 60 Hz mains sits almost exactly there. One more
 column, the mains phase at trigger, lets any hum be folded coherently
 across traces, and the fast-block rates of chapter 7's menu are chosen so
-the tooth interval is NOT near an integer number of mains periods, which
+the tooth interval is not near an integer number of mains periods, which
 costs nothing and keeps the clock's response at the one frequency a lab is
 guaranteed to be asked about.
 
-### 10b.4c TWO DRIVES IN CASCADE, which fills the gaps the single comb cannot
+### 10b.4c two drives in cascade, which fills the gaps the single comb cannot
 
 Drive the light with two tones at once, the 12.5 MHz tank and a broadband
 modulator near 580 MHz in series, and the two-photon tooth amplitudes
-FACTORISE: the tooth at sum offset $s_1\Omega_1 + s_2\Omega_2$ carries
+factorise: the tooth at sum offset $s_1\Omega_1 + s_2\Omega_2$ carries
 $J_{s_1}(2\beta_1)^2 J_{s_2}(2\beta_2)^2$, verified numerically to five
 digits. Each coarse order is therefore a displaced copy of the whole fine
 cluster, and the four isolated clusters become a lattice across the span.
@@ -378,10 +378,10 @@ cluster, and the four isolated clusters become a lattice across the span.
 
 The weights here are the cell-averaged ones of section 10b.4a rather than
 the zero-delay Bessel values an earlier draft used, and the correction
-CHANGES THE OPERATING MODE at the high drive. At 579.6 MHz the effective
+changes the operating mode at the high drive. At 579.6 MHz the effective
 depth sweeps through zero across the cell, so the drive is self-limiting:
 the gaps fill completely at $2\beta_2$ near 3 while the main lines keep 62
-per cent of their height, which is gentle enough to run DURING science
+per cent of their height, which is gentle enough to run during science
 sweeps rather than only on interleaved calibration ones. At 150 MHz the
 delay phase is small, the zero-delay picture nearly holds, and full gap
 coverage still costs the main lines a factor near 16, so the
@@ -399,14 +399,14 @@ exactly the stretch where the pair-separation integral accumulates drift.
 The costs, stated. A second modulator in series adds insertion loss and a
 second 3 mm aperture, and this bench has already met aperture clipping as a
 waist systematic. And the cascade is no longer the only route to a measured
-axis: a SINGLE resonant modulator near 150 MHz at calibration depth reaches
+axis: a single resonant modulator near 150 MHz at calibration depth reaches
 the same largest-unmarked-stretch figure, near 255 MHz, with cleaner teeth
 and denser clock ticks, and 10b.4a's menu now carries it as the value
 option. What the cascade alone preserves is the fine 0.15 s clock band
 running simultaneously with the gap-filling lattice, and the coincidence
 metrology keeps needing the broadband device either way.
 
-### 10b.5 OSCILLOSCOPE: use the deep one, and say which one
+### 10b.5 oscilloscope: use the deep one, and say which one
 
 The campaign used a 2000-point record. The 2025-07-04 session used a LeCroy
 WaveSurfer 3104z at 500,001 points, and that instrument was available all
@@ -414,20 +414,42 @@ along. Record depth is a menu setting, and section 10a shows the 2025 span was
 the binding constraint precisely because the record was too shallow to afford a
 wider one.
 
-  * USE THE DEEPEST RECORD THE EXPORT TOLERATES, and state the instrument model
+  * use the deepest record the export tolerates, and state the instrument model
     and the record length in the block log.
   * The 10 us sampling of the deep session puts about 45,000 points across the
     line against about 128 in the campaign, which is what makes a lineshape
     question answerable rather than arguable.
-  * CHECK THE EXPORTED FILES BEFORE LEAVING THE BENCH. Three of the fifty
+  * check the exported files before leaving the bench. Three of the fifty
     LeCroy files are corrupt, two of them entirely filled with 0xFF, and this
     was found in 2026 because nothing had ever read them. A checksum and a
     line count at the end of each block would have caught it while the block
     could still be repeated.
 
-### 10b.6 SCAN SPEED, and the two rates that must differ
+### 10b.5a two channels the block log gains, both because the bench had the signal and the record did not
 
-Take at least one block at a DELIBERATELY DIFFERENT scan rate, with the piezo
+**The thermocouples are logged, not merely present.** The cell carries four
+thermocouples between the vapour cell and its metallic case inside the
+foil-wrapped oven, and the 2025 dataset holds only the set point per block,
+which is why one session's internal temperature spans 110 to 130 C in the
+record and a factor 3.2 in density rides on it. The repair is a column,
+not hardware: every block writes the four thermocouple readings beside the
+set point, at block start and block end so a drift across the block is
+visible. The Doppler pedestal thermometer of chapter 10 then calibrates
+the atoms against the logged wall reading instead of against a set point.
+
+**The laser-power monitor is a recorded channel.** The measured noise
+budget ([`quantisation.csv`](../../results/quantisation.csv), budget rows)
+puts the wing noise on a light-linked background growing linearly with
+power, and a monitor photodiode is both the discriminator and the repair:
+its coherence with the fluorescence baseline separates intensity noise
+from background shot on day one, and the correlated share regresses out
+offline for every trace afterwards. It takes the spare input of whichever
+instrument has one, and its gain and bandwidth go in the block log like
+everything else.
+
+### 10b.6 scan speed, and the two rates that must differ
+
+Take at least one block at a deliberately different scan rate, with the piezo
 amplitude recorded, at otherwise identical conditions.
 
 A laser width accumulates over the time the scan takes to cross the line and a
@@ -456,7 +478,7 @@ absolute offset. Three shots:
 3. **MHz transfer check during the shift grids**: log the wavemeter
    continuously and compare its reported shifts to the comb, which wins.
 
-**The wavemeter is LOGGED to disk, never photographed.** The 2025 record's
+**The wavemeter is logged to disk, never photographed.** The 2025 record's
 wavemeter evidence is screen photographs digitised by hand, whose noise
 floor near 3 MHz per sample is the digitiser rather than the laser, and one
 adjudication of an apparent 50 s modulation spent a full analysis deciding

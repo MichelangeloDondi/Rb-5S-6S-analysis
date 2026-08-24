@@ -22,7 +22,7 @@ product $\vec k \cdot \vec v$. That single fact is the whole content of the
 Doppler effect in spectroscopy, and it stays true no matter how many photons a transition
 absorbs at once. When several photons are absorbed together, each one
 contributes its own wavevector to the resonance condition, and the total
-first-order Doppler shift is proportional to the SUM of those wavevectors
+first-order Doppler shift is proportional to the sum of those wavevectors
 dotted into the atom's velocity, $\big(\sum_i \vec k_i\big)\cdot \vec v$. It
 is that sum, not any individual photon's shift, that a multiphoton resonance
 actually sees. The shift therefore vanishes for every atom, whatever its
@@ -37,7 +37,7 @@ of it.
 For two photons of the same colour taken from counter-propagating beams,
 $\vec k_1=-\vec k_2$ by construction, and the sum is exactly zero for every
 atom in the ensemble. It is worth stating plainly why that matters: this is
-a cancellation for ALL atoms, not a selection of a favourable few. Contrast
+a cancellation for all atoms, not a selection of a favourable few. Contrast
 it with saturated-absorption spectroscopy, where a strong pump beam and a
 weak probe beam counter-propagate through the same single-photon transition
 and only the narrow slice of the population whose velocity along the beam
@@ -53,7 +53,7 @@ order in $v/c$, and a second-order, relativistic term proportional to
 $(v/c)^2$ survives and does not cancel, small at ordinary vapour-cell speeds
 but present in principle. And the same two beams that cancel a cross pair
 also, unavoidably, drive a second process: an atom can take both photons
-from the SAME beam rather than one from each. That same-direction pair is
+from the same beam rather than one from each. That same-direction pair is
 not cancelled at all, since its wavevector sum is $2\vec k$ rather than
 zero, and the ensemble of atoms taking it produces a broad Doppler-broadened
 pedestal sitting directly underneath the sharp cancelled line. Both
@@ -61,7 +61,7 @@ processes are driven by the same two beams and neither can be switched off
 without the other, so the pedestal is a fixed companion of the technique
 rather than an avoidable flaw in it.
 
-THEN THE THREE-PHOTON CASE. Suppose three photons of the same colour are
+Then the three-photon case. Suppose three photons of the same colour are
 absorbed together. Their wavevectors all share one magnitude $k$, and the
 condition $\vec k_1+\vec k_2+\vec k_3=0$ with equal magnitudes
 $|\vec k_1|=|\vec k_2|=|\vec k_3|=k$ has a solution, but only one shape: three
@@ -88,8 +88,8 @@ order as a single uncancelled photon, so the residual Doppler width stays a
 large fraction of the width the transition would show with no cancellation
 attempted at all, and the geometry buys nothing worth having.
 
-THE COLLINEAR THREE-PHOTON CASE, WHICH THE EQUAL-COLOUR ARGUMENT ABOVE HIDES.
-Everything above assumed three photons of the SAME colour. Drop that and the
+The collinear three-photon case, which the equal-colour argument above hides.
+Everything above assumed three photons of the same colour. Drop that and the
 triangle is free to degenerate into a line, because a closing polygon with
 unequal side lengths can be flat. The case that matters is
 $\vec k+\vec k-2\vec k=0$: two photons of frequency $\omega$ taken from one
@@ -99,16 +99,16 @@ two, and the sum vanishes exactly. The transition sits at $4\omega$, and the
 cancellation is again exact for every atom whatever its velocity, not for a
 selected class.
 
-WHAT MAKES THIS BETTER THAN A COINCIDENCE is where the ratio comes from. A
+What makes this better than a coincidence is where the ratio comes from. A
 closure that needed two independently tuned lasers to hold a $2:1$ frequency
 ratio would drift out of it, and the residual wavevector would grow with the
-mismatch. Here the second beam is naturally the SECOND HARMONIC of the first,
+mismatch. Here the second beam is naturally the second harmonic of the first,
 produced by doubling it, so the ratio is fixed by the harmonic generation
 rather than by tuning. If the fundamental drifts, the harmonic drifts with it
 and the closure is preserved, which makes the arrangement robust in exactly
 the place a two-colour scheme would normally be fragile.
 
-WHAT IT STILL COSTS. A doubling stage and the power that leaves in it. Two
+What it still costs. A doubling stage and the power that leaves in it. Two
 colours to overlap and focus together, whose diffraction and optics differ.
 The transition must lie at four times the fundamental with the parity a
 three-photon process reaches, which is a constraint on the level scheme rather
@@ -116,7 +116,7 @@ than on the geometry. And the rate is still third order in the intensity, so
 the signal problem that motivates a Doppler-free scheme in the first place
 does not go away.
 
-The general statement is therefore about MAGNITUDES rather than about photon
+The general statement is therefore about magnitudes rather than about photon
 number. A collinear closure exists whenever the wavevector magnitudes can be
 signed to cancel along one axis, which for equal colours needs an even count
 and for unequal colours needs one side to equal the sum of the others. Equal
@@ -125,11 +125,11 @@ is what forces the crossing-beam geometry above.
 
 The rule this page exists to state: a Doppler-free multiphoton geometry needs
 its wavevectors to close, $\sum_i \vec k_i=0$, and the cost of closing them
-depends on whether they can close FLAT. Two equal wavevectors close
+depends on whether they can close flat. Two equal wavevectors close
 collinearly, a single beam retro-reflected onto itself, which is why the
-two-photon case keeps its full spatial overlap for free. Three EQUAL
+two-photon case keeps its full spatial overlap for free. Three equal
 wavevectors cannot close flat, so they demand crossing beams and spend the
-interaction volume, the alignment tolerance and the signal. Three UNEQUAL
+interaction volume, the alignment tolerance and the signal. Three unequal
 wavevectors can close flat when one balances the other two, which the
 fundamental and its second harmonic do exactly, so the crossing-beam cost is
 avoidable at odd photon number provided the colours are chosen to make the
@@ -144,7 +144,7 @@ rather than for one velocity class. Stated this generally, it also explains
 why the two-photon case is the practical sweet spot rather than an arbitrary
 starting point: it is the lowest order at which the Doppler-cancelling
 geometry and the fully-overlapping geometry coincide, and it reaches that
-coincidence with ONE colour. Higher orders can also be made collinear, but
+coincidence with one colour. Higher orders can also be made collinear, but
 only by choosing the colours so the wavevectors cancel along a line, which
 buys the overlap back and costs a second beam at a different frequency.
 
@@ -156,7 +156,7 @@ and a backward photon of the same colour and the two-sided polygon closes
 trivially. [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md)
 works out that cancellation for this apparatus in detail, and
 [standing waves](standing-waves.md) works out what the same retro-reflected
-geometry does to the same-direction pairs that are NOT cancelled.
+geometry does to the same-direction pairs that are not cancelled.
 
 The Doppler pedestal that geometry produces is treated as a designed
 observable rather than a nuisance to be modelled away.
@@ -215,7 +215,7 @@ single-photon Doppler width rather than a small correction to a narrow line.
 ## Try it
 
 The first-order Doppler width of a multiphoton resonance, computed by summing
-SIGNED WAVEVECTORS rather than counting photons, which is what lets the
+signed wavevectors rather than counting photons, which is what lets the
 two-colour case be expressed at all.
 
 ```python
@@ -263,17 +263,17 @@ On 2026-08-15 the residual Doppler width expected from a tilted retro-reflector
 was budgeted from the co-propagating pedestal's own
 coefficient. That pedestal is the same-beam pair this page describes above,
 two photons taken from one beam, whose wavevector sum is $2\vec k$, not
-$\vec k$. A retro tilted by angle $\theta$ instead drives a CROSS pair, one
+$\vec k$. A retro tilted by angle $\theta$ instead drives a cross pair, one
 photon from each of the two nearly-antiparallel beams, whose sum is
 $|\vec k_1+\vec k_2| = 2k\sin(\theta/2) \approx k\theta$, half the pedestal's
 coefficient because the pedestal already carries the doubled wavevector. The
-budget was recomputed at 471 MHz per radian rather than 942, which LOOSENED
+budget was recomputed at 471 MHz per radian rather than 942, which loosened
 the tilt tolerance by about a factor of two. Both tolerances, the first and
 the corrected one, are in [docs/HISTORY.md](../HISTORY.md), which is the one
 place this repository licenses a replaced number to appear.
 
-The rule stated above, that a multiphoton shift comes from SUMMING SIGNED
-WAVEVECTORS rather than counting photons, is exactly what this error skipped.
+The rule stated above, that a multiphoton shift comes from summing signed
+wavevectors rather than counting photons, is exactly what this error skipped.
 Writing out $\sum_i \vec k_i$ for the two pairs separately, rather than
 carrying one coefficient across from a different pair by resemblance, would
 have shown the factor of two before it reached a design document.

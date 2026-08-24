@@ -26,12 +26,12 @@ drives, typically a ramp voltage or a time, and turning that into frequency
 is a calibration problem of its own, separate from fitting the line. Two
 kinds of instrument address it, and they are not interchangeable.
 
-An absolute reference reports what a single measurement IS, on its own. A
+An absolute reference reports what a single measurement is, on its own. A
 wavemeter is the standard one in a laser laboratory: an interferometer,
 periodically recalibrated against its own internal reference, that reports
 a vacuum wavelength from one shot of light. Each reading stands alone and
 is not phase continuous with the next, so a handful of shots taken during a
-sweep give a few points ON the sweep rather than its rate in between. A
+sweep give a few points on the sweep rather than its rate in between. A
 differential reference instead reports how two things compare: an atomic
 separation, fixed by the atom, or a radio-frequency comb, whose spacing is
 set by a synthesiser. A systematic error that shifts both ends of an
@@ -63,7 +63,7 @@ an assumption into a number.
 ## What problem it solves
 
 The question is not whether a spectrum has a frequency axis. Every plotted
-trace has one. The question is whether that axis is the RIGHT one: whether
+trace has one. The question is whether that axis is the right one: whether
 a width or a shift measured in volts or in milliseconds converts to
 megahertz without smuggling in the very distortion the physics is supposed
 to explain. An absolute reference alone cannot answer this, because knowing
@@ -88,7 +88,7 @@ known to a couple of kilohertz, established by
 
 The wavemeter's own role is narrower. The four hyperfine components in
 `rb5s6s/constants.py` (`PEAKS`) carry the 2025 campaign's file labels,
-direct uncalibrated readings of the bench's HighFinesse WS-8. Comparing
+direct uncalibrated readings of the bench's HighFinesse ws-8. Comparing
 each label to the transition it names, rather than to a centroid that mixes
 in real hyperfine structure, finds a common offset of mean +292 MHz and
 spread about 19 MHz across the four components (`label_offset_mhz` in
@@ -127,7 +127,7 @@ A frequency ruler is usually read in one direction, turning positions into
 frequencies. It can be read the other way, and the other way measures the
 laser.
 
-The teeth sit at exact multiples of an RF drive, so their positions in TIME
+The teeth sit at exact multiples of an RF drive, so their positions in time
 are a ruler laid down by an oscillator. Fit each tooth centre freely instead
 of on a rigid grid, subtract the ladder the trace's own spacing predicts, and
 the departures are the optical frequency wandering against that oscillator
@@ -138,8 +138,8 @@ technique:
 
     tooth departure = sweep nonlinearity + laser frequency excursion
 
-The ramp REPEATS on every sweep and the laser does not. So the mean over many
-traces at a given window position is the nonlinearity, and the SCATTER about
+The ramp repeats on every sweep and the laser does not. So the mean over many
+traces at a given window position is the nonlinearity, and the scatter about
 that mean is the laser. A pipeline that computes only the mean has measured
 the sweep and thrown away the laser, which is what this repository did until
 the two were separated.
@@ -160,10 +160,10 @@ tooth-centre precision, about 96 kHz each, rather than by the laser.
 
 **The clock's blind bands, learned the hard way.** The teeth sample the
 laser at one rate, the tooth-crossing rate, and a periodic disturbance near
-a multiple of that rate ALIASES to a low frequency that the per-trace ladder
+a multiple of that rate aliases to a low frequency that the per-trace ladder
 fit absorbs into its own offset and slope. A mains line at 60 Hz against a
 6.8 Hz tooth rate aliases to about 1.2 Hz, nearly linear across one trace,
-and a periodogram of the residuals returns a null there BECAUSE the
+and a periodogram of the residuals returns a null there because the
 instrument cannot respond, not because the line is absent. The discipline
 that catches this is the ceiling test: before reading any null on real
 data, inject the hypothesised signal into synthetic data and show the

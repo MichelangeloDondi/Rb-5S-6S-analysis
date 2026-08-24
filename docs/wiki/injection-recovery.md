@@ -19,15 +19,15 @@ built from, rather than the closure test itself. That is
 
 An injection-recovery test asks whether an analysis can find an answer it
 already knows. Choose true parameter values $\theta_\text{true}$, generate
-synthetic data from them with realistic noise, run the ENTIRE analysis
+synthetic data from them with realistic noise, run the entire analysis
 unchanged, and compare the estimate $\hat\theta$ with the truth. Repeat many
 times.
 
 Three things come out of it, and only the first is usually remembered. The
-BIAS is the mean of $\hat\theta - \theta_\text{true}$, and it says whether
-the estimator systematically misses. The COVERAGE is the fraction of trials
+bias is the mean of $\hat\theta - \theta_\text{true}$, and it says whether
+the estimator systematically misses. The coverage is the fraction of trials
 whose quoted interval contains the truth, which should equal the nominal
-confidence level and frequently does not. And the PULL distribution, the
+confidence level and frequently does not. And the pull distribution, the
 error-normalised residual $(\hat\theta - \theta_\text{true})/\sigma$, should
 be standard normal. If it is too wide the uncertainties are understated, and
 if it is too narrow they are inflated.
@@ -48,10 +48,10 @@ coverage.
 ## What it cannot establish
 
 This deserves its own heading because it is where the method is most often
-oversold. Generating synthetic data FROM the model and recovering the
-injected truth validates the IMPLEMENTATION: the estimator is unbiased, the
+oversold. Generating synthetic data from the model and recovering the
+injected truth validates the implementation: the estimator is unbiased, the
 optimiser converges, the intervals cover, the degeneracies behave, all of it
-UNDER the simulated model. It cannot validate the model. Whether the physical
+under the simulated model. It cannot validate the model. Whether the physical
 lineshape is the right one, whether a mechanism is missing, whether the real
 noise resembles the simulated law, none of these is tested by a closure test,
 because the same assumption generated the data and analysed it.
@@ -70,14 +70,14 @@ Several bugs in this repository's own history were caught exactly this way.
 
 The largest application is `results/kernel_worlds.csv`, five worlds at 500
 preregistered trials each, which decided whether a fitted laser-kernel width
-could be read as a measurement at all. Three of the five inject a TRUE ZERO and
+could be read as a measurement at all. Three of the five inject a true zero and
 ask whether the estimator manufactures a width anyway: from a true zero, from a
 quadratic baseline the linear model cannot absorb, and from a transit kernel of
 the wrong functional form. None produced a single false positive in 500. A
 fourth injects a real width and measures interval coverage at 0.746 against a
 nominal 0.68, which is recorded as its number rather than rounded to a pass.
 
-The fifth is the ceiling test below pointed at the INSTRUMENT rather than the
+The fifth is the ceiling test below pointed at the instrument rather than the
 model: it holds an exact symmetry and checks the profile does not move, because
 a grid that manufactures a distinction the physics does not have produces
 neither measurements nor bounds.
@@ -93,36 +93,36 @@ present, which is the point.
 
 Injection is used adversarially too, not only as a closure check. Contaminants
 of a known shape can be injected into real traces to ask what a mechanism the
-model does NOT contain would do to the fitted parameters, which is a way of
+model does not contain would do to the fitted parameters, which is a way of
 bounding a systematic rather than validating an estimator.
 
 ## The ceiling test, which is this method pointed at a null
 
 A null result needs the same closure a detection does: inject the
-hypothesised signal into synthetic data and show the analysis DETECTS it,
+hypothesised signal into synthetic data and show the analysis detects it,
 before reading its absence in real data as absence in nature. This record
 holds three instances of the trap the test closes. A periodogram of
 comb-tooth residuals returned a null at the mains frequency, and the null
 meant nothing: the sampling aliased that frequency onto the detrending's own
 freedom, and the instrument could not have responded, which one synthetic
 injection would have shown in a minute. The same week, a residual-skew trend
-WAS read, but only after the channel passed its ceiling test, a symmetric
+was read, but only after the channel passed its ceiling test, a symmetric
 truth under the measured noise law returning zero skew at every power. One
 null was blind and nearly believed, one trend was validated before use, and
 the difference between them is exactly one injection.
 
 A third instance, from that same skew channel, sharpens the lesson from
-"inject before believing a null" to "inject before believing an EXCLUSION".
+"inject before believing a null" to "inject before believing an exclusion".
 Separating shot noise from a fixed-amplitude systematic turns on the exponent
 of skew against amplitude, and a first pass read the exclusion straight off
 the fit's own covariance, returning 6.6 sigma. Injecting the excluded
 hypothesis into the dataset's own amplitudes and errors and refitting showed
 why that number was meaningless: the estimator recovered
-$-1.843 \pm 1.236$ against an injected $-1.0$, a scatter roughly twenty
+$-1.833 \pm 1.214$ against an injected $-1.0$, a scatter roughly twenty
 times the covariance's stated error, because the amplitude lever carries
 almost no information about the exponent out where the excluded hypothesis
-lives. A fit covariance describes the sampling distribution AT THE FITTED
-VALUE. It says nothing about the distribution at a hypothesis being excluded,
+lives. A fit covariance describes the sampling distribution at the fitted
+value. It says nothing about the distribution at a hypothesis being excluded,
 and only an injection at that hypothesis does
 ([`run_skew_scaling.py`](../../scripts/run_skew_scaling.py)). The honest
 exclusion is $p = 0.011$, not 6.6 sigma.

@@ -19,27 +19,27 @@ that says what the other seven are conditional on.
    PLAN §3 item 0 would settle it).
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). These two are no longer in the same position, as of
-   2026-08-20. The TRANSIT shape is still undistinguished by the 2025 data
+   2026-08-20. The transit shape is still undistinguished by the 2025 data
    ([§4.7](06_the_statistics.md)), and the Voigt-versus-Lehmann difference is
-   carried as a model-form error bar for that reason. The LASER shape is not:
+   carried as a model-form error bar for that reason. The laser shape is not:
    fitting every condition under a Lorentzian laser kernel instead gives a
    median $\Delta\chi^2$ of 232 against the Gaussian for one extra parameter,
    and a purely Lorentzian laser contribution is excluded at 26 of the 32
    conditions above three sigma. Two cautions travel with that. The comparison
-   is NESTED rather than a choice between alternatives, since the Lorentzian
+   is nested rather than a choice between alternatives, since the Lorentzian
    model is the boundary case of the Gaussian one, so the count of conditions
    the Gaussian wins carries no information and only the size of the
    improvement does. And excluding one corner is not the same as measuring the
    shape: how much Lorentzian content the line tolerates is a fitted width
-   that has not been measured yet. The laser shape is therefore TESTED AT ONE
-   CORNER and unmeasured in between.
-4. The beam waist $w_0=64$ µm is **adopted from the lineage measurement,
+   that has not been measured yet. The laser shape is therefore tested at one
+   corner and unmeasured in between.
+4. The beam waist $w_0=64$ µm is **accepted from the lineage measurement,
    not measured on this bench**. Rajasree 2020 recorded a 128 µm $1/e^2$
    diameter with a beam profiler on the same laser model, the same $f=150$ mm
    lens, the same 130 °C cell and the same $2f$ retro geometry, and Nieddu
    2019 quotes the same number on the older laser. Transferring it assumes the
    2025 alignment matched. Two documented effects push the *effective* waist
-   ABOVE 64 µm and neither is fitted: residual clipping at the 3 mm EOM
+   above 64 µm and neither is fitted: residual clipping at the 3 mm EOM
    aperture, and imperfect superposition of the retro beam. A direct
    beam-profile measurement in a fixed-lock session settles it for this bench,
    and until then every absolute number carries the $w_0$ band.

@@ -8,7 +8,7 @@ a lever, through an estimator the experimenter proposed (2026-07-23): treat
 the reference re-centrings as offset steps that move the frequency but not the
 underlying drift, and difference positions inside spans the steps cannot
 reach. Two differencing baselines exist, and they disagree -- the
-disagreement is what identifies the interventions:
+disagreement is what identifies the re-centrings:
 
   * BETWEEN blocks (adjacent conditions of one peak's power ladder, ~3-14 min):
     position steps of either sign -- drift PLUS the operator's re-centrings,
@@ -19,12 +19,12 @@ disagreement is what identifies the interventions:
     construction, so a pure -- if noisy -- local drift probe.
 
 A third, refined estimator (same proposal, taken to trace level) fits ALL 99
-timestamped positions jointly: per-segment offsets absorb the interventions,
+timestamped positions jointly: per-segment offsets absorb the re-centrings,
 one smooth r(t) is shared by every segment, and the segmentation is found
 iteratively (>=4 sigma standardized steps, per-trace sigma from each block's
 own robust scatter, likelihood scale profiled). It is the most powerful probe
 and carries one caveat the layers below make explicit: a gap-step consistent
-with the fitted r(t) is absorbed as drift, so sub-threshold interventions can
+with the fitted r(t) is absorbed as drift, so sub-threshold re-centrings can
 still masquerade -- and in one early block the within-block slope disagrees
 with the fitted rate at ~3 sigma, which is why the within-block layer, not
 the joint fit, owns the pure-drift claim.
@@ -51,7 +51,7 @@ What the probes say together (2026-07-23 run):
     a two-sided bound of order 0.02 MHz/min with the sign undetermined
     (docs/DATA.md, provenance note). What follows is what this fit returned -- the gaussian
     +0.74 was biased by three unmodelled end-of-ladder moves. Adding a
-    drift-settling term buys nothing (dAIC +4.0) -- while the INTERVENTION
+    drift-settling term buys nothing (dAIC +4.0) -- while the re-centring
     amplitude settles, sigma_gap ~ 85 ms x exp(-t / ~90 min). The tau ~ 73 min
     the segmented fit reported was the operator's settling, not the laser's;
     it matches the ~1-1.5 h post-retune scale the wavemeter photographs show
@@ -79,7 +79,7 @@ within-block moves with no channel at all.
 
 Across the 16 adjacent-block steps: RMS d(peak_pos) = 145.2 ms, RMS d(window)
 = 145.9 ms, RMS d(peak_pos - window) = 6.3 ms. 99.8% of the between-block
-variance fitted here as intervention is the horizontal setting. The five blocks
+variance fitted here as re-centring is the horizontal setting. The five blocks
 this script screens out as "step-like" are exactly, one for one, the five whose
 setting changes mid-block.
 
@@ -90,7 +90,7 @@ with the photographed +-0.19 MHz/min, the null on drift settling (dAIC +4 in
 every cell), the >=125x margin on the 4 MHz/min envelope, the identification of
 the two 4207 excursions as window travel, and the T-epoch step sizes, which grow
 under subtraction and so are not knob artifacts. What flips: the sign of the
-settled drift in two of three estimators, the 2x2 winner, the intervention
+settled drift in two of three estimators, the 2x2 winner, the re-centring
 settling verdict (dAIC +17.1 -> -2.9), sigma_gap (88 -> 3 ms), and addendum 12's
 re-kick model, which loses to its own per-epoch level control.
 
@@ -288,12 +288,12 @@ def main() -> int:
           f"= {med * RATE_MHZ_MS:+.3f} MHz/min laser axis "
           f"({2 * med * RATE_MHZ_MS:+.3f} transition)")
     core = lp[(lp.rate - med).abs() < 1.0]      # the tight cluster; the rest are
-    w = 1.0 / core.err ** 2                     # +-2 ms/min residual interventions
+    w = 1.0 / core.err ** 2                     # +-2 ms/min residual re-centrings
     cm, ce = float((core.rate * w).sum() / w.sum()), float(1 / np.sqrt(w.sum()))
-    print(f"  the MAD above is intervention-inclusive; the {len(core)} pairs inside")
+    print(f"  the MAD above is re-centring-inclusive; the {len(core)} pairs inside")
     print(f"  +-1 ms/min of the median agree to {cm:+.2f} +/- {ce:.2f} ms/min "
           f"-- a detection,\n  not a bound, though its cleanliness rests on the "
-          f"cluster being interventions-free.")
+          f"cluster being re-centrings-free.")
     print(f"  over a 32 s block: {med * 32 / 60:.2f} ms of centre walk, below the")
     print("  1.8 ms jitter -- consistent with the intra-block JITTER verdict.")
 
@@ -404,7 +404,7 @@ def joint_fit_report() -> None:
     a0, a1 = aic(chi0, nseg + 1), aic(chi1, nseg + 3)
     scale = float(np.sqrt(chi1 / (n - nseg - 3)))
 
-    print("\nJOINT SEGMENTED FIT (trace level; offsets absorb interventions,")
+    print("\nJOINT SEGMENTED FIT (trace level; offsets absorb re-centrings,")
     print("one r(t) shared; same segmentation for both models):")
     print(f"  points {n}, segments {nseg}, residual scale {scale:.2f}")
     print(f"  M0 constant : c = {th0[0]:+.3f} ms/min            AIC {a0:7.1f}")
@@ -430,11 +430,11 @@ def joint_fit_report() -> None:
 
 # ---- the refined model: linear-Gaussian state space, exact likelihood ------
 #
-# y_i = x_i + R(t_i; drift) + eps_i;  x is the cumulative-intervention offset,
+# y_i = x_i + R(t_i; drift) + eps_i;  x is the cumulative re-centring offset,
 # a random walk whose steps live at between-block gaps: eta ~ N(0, sig_gap(t)^2).
 # Steps > 100 ms are scan-window repositionings and are freed wherever they
 # occur (the 4207 excursion RETURNS mid-block -- gap-only freeing strands the
-# state and poisons every later block). Drift law and intervention law each
+# state and poisons every later block). Drift law and re-centring law each
 # get {constant | exponential}: the 2x2 comparison asks directly which one
 # settles. The likelihood skip set (first obs per peak + freed window moves)
 # is deterministic and identical across models.
@@ -515,7 +515,7 @@ def state_space_report() -> None:
         peaks.append(dict(peak=int(peak), y=y, t=g.t_h.to_numpy(),
                           sig=g.sig.to_numpy(), gap=gap, wm=step > 100.0))
 
-    print("\nSTATE-SPACE REFINEMENT (Kalman; interventions = a random walk at the")
+    print("\nSTATE-SPACE REFINEMENT (Kalman; re-centrings = a random walk at the")
     print("gaps; which settles, the drift or the operator, is the 2x2 comparison):")
     out = {}
     for kd in ("const", "exp"):
@@ -527,7 +527,7 @@ def state_space_report() -> None:
     th_d, th_i, sc = _unpack(x, kd, ki)
     d_cc = out[("const", "const")][2] - out[("const", "exp")][2]
     d_ee = out[("exp", "exp")][2] - out[("const", "exp")][2]
-    print(f"  best: drift {kd.upper()} x interventions {ki.upper()}"
+    print(f"  best: drift {kd.upper()} x re-centrings {ki.upper()}"
           f"   (interv settling dAIC {d_cc:+.1f}; adding drift settling {d_ee:+.1f})")
 
     # profile c by continuation
@@ -558,7 +558,7 @@ def state_space_report() -> None:
     print(f"  obs-noise scale {sc:.2f} on the block MADs -- effective per-trace noise")
     print("  ~1.5-3 ms, consistent with the 1.8 ms jitter figure.")
     print("  This claims the split addendum 4 declined: the earlier tau ~ 73 min")
-    print("  exponential was the INTERVENTION amplitude; the drift never settled.")
+    print("  exponential was the re-centring amplitude; the drift never settled.")
 
 
 # ---- the adequate noise model: sparse within-block moves (addendum 7) ------
@@ -678,7 +678,7 @@ def mixture_report() -> None:
     print("  gaussian 3-sigma rested on three real end-of-ladder moves absorbed")
     print("  as drift. Converges with the segmented floor (+0.19..+0.37) and")
     print("  the clean-pair cluster (+0.55 +/- 0.17). Structure unchanged:")
-    print("  interventions settle (dAIC ~ +17), drift settling buys nothing")
+    print("  re-centrings settle (dAIC ~ +17), drift settling buys nothing")
     print(f"  (dAIC ~ +4 against). Persisting, ~{abs(c0)*RATE_MHZ_MS*60*20.5:.0f} MHz laser over 20.5 h.")
 
 

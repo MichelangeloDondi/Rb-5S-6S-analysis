@@ -41,7 +41,7 @@ A residual beyond $k$ still pulls the fit, since the loss keeps growing, but
 only in proportion to its size rather than to its square, so no single point
 can dominate a sum the way it could under a pure square.
 
-Tukey's biweight is REDESCENDING: past its own tuning constant $c$, the pull
+Tukey's biweight is redescending: past its own tuning constant $c$, the pull
 a point exerts turns over and returns all the way to zero rather than
 leveling off. Expressed as the weight a point carries once the loss is
 written as a weighted square,
@@ -52,7 +52,7 @@ w(r) = 0 \text{ for } |r| \gt c,$$
 a point beyond $c$ contributes nothing further to the fit at all, which is
 what it means for far points to carry exactly zero weight under this loss.
 
-The BREAKDOWN POINT is the concept that separates these two families: the
+The breakdown point is the concept that separates these two families: the
 largest fraction of contaminated points an estimator can carry before its
 answer can be driven arbitrarily far from the truth. An ordinary
 least-squares fit breaks down at a single point, since one badly placed
@@ -82,8 +82,8 @@ need it.
 
 Neither loss has a closed-form minimizer, because the normal equations stop
 being linear once the loss stops being a pure square everywhere. The way
-these estimators are actually computed is ITERATIVELY REWEIGHTED LEAST
-SQUARES: fit once, ordinarily, to get a starting residual for every point,
+these estimators are actually computed is iteratively reweighted least
+squares: fit once, ordinarily, to get a starting residual for every point,
 convert each residual into a weight through the loss's own weight function,
 solve the ordinary weighted least-squares problem with those weights,
 recompute the residuals and the weights from the new fit, and repeat until

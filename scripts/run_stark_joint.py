@@ -94,7 +94,7 @@ conclusion, not an assumption. No usable in-trace ruler exists for the
 evening session itself.
 
 THE PRIORS MOVED AT v3.0.0 (2026-08-01), which is why the numbers in this
-docstring's history differ from the CSV. w0 went 50 -> 64 um (adopted from
+docstring's history differ from the CSV. w0 went 50 -> 64 um (accepted from
 the Nieddu/Rajasree lineage measurement on the same laser model, lens and
 geometry) and the retro ratio went from an asserted 1 to an assumed
 0.94 +/- 0.04. The predicted coefficient therefore moved 2.62 -> 1.55 MHz/W

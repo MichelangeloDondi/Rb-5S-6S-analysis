@@ -4,7 +4,7 @@
 number came out of it.** Every prediction below is stated with its arithmetic so
 the run can only confirm it or fail it.
 
-`provenance: NO_PRODUCER` - Lines 1 to 181 preregister. The postscript reports what `run_companion_refit.py` returned, and that script contains exactly one `open()` call, a READ, with every output a `print()`. The note says so itself: "prints its results and persists none of them". It is also absent from `run_all.sh`. Two prereg-side factors (2.8 and 2.21) come from `run_saturation_probe.py`, which since 2026-08-23 persists its C3d half into `results/saturation_companion.csv` and deliberately persists no joint figure, since that fit needs trees outside this repository. **15 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: NO_PRODUCER` - Lines 1 to 181 preregister. The postscript reports what `run_companion_refit.py` returned, and that script contains exactly one `open()` call, a read, with every output a `print()`. The note says so itself: "prints its results and persists none of them". It is also absent from `run_all.sh`. Two prereg-side factors (2.8 and 2.21) come from `run_saturation_probe.py`, which since 2026-08-23 persists its C3d half into `results/saturation_companion.csv` and deliberately persists no joint figure, since that fit needs trees outside this repository. **15 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 **The question.** The fits of record quote the light-shift bounds with a stated

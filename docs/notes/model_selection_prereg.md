@@ -1,6 +1,6 @@
 # Preregistration: AIC as the model-complexity criterion
 
-**Written 2026-08-15, BEFORE any recomputation.** Nothing in this note reports
+**Written 2026-08-15, before any recomputation.** Nothing in this note reports
 a result. Its whole purpose is to fix, in advance, what is being re-decided and
 what each outcome would mean, because changing a selection criterion after
 seeing which way it goes is the failure mode preregistration exists to stop.
@@ -36,14 +36,14 @@ in this project**. Measured:
 
 This table is the reason the change is worth making carefully rather than
 globally. A first draft of the night plan asserted "n of order 10^4 to 10^5" at
-every site and that is wrong: the noise law's n is the number of LEVEL BINS,
+every site and that is wrong: the noise law's n is the number of level bins,
 ten of them, where the two criteria are within 15 per cent of each other. At
 that site BIC is not the conservative element at all. `NOISE_BIC_MARGIN = 6.0`
 is: a hand-set margin requiring the quadratic term to win by six units on top
 of whichever criterion is used. Switching criteria there would change almost
 nothing, and removing or justifying that margin is the real question.
 
-Where the criterion DOES matter is the fits over raw samples, four to six times
+Where the criterion does matter is the fits over raw samples, four to six times
 the penalty per parameter, and that is exactly where the open physics sits.
 
 ## The comparisons being re-decided
@@ -56,7 +56,7 @@ the penalty per parameter, and that is exactly where the open physics sits.
 - What AIC would admit: the `c` term more often.
 - What depends on it: every per-point weight in every fit, hence every error
   bar and every profile-likelihood bound.
-- PREDICTION, fixed here: because n is 10 and the margin is 6.0, the criterion
+- prediction, fixed here: because n is 10 and the margin is 6.0, the criterion
   switch alone will flip few or no conditions. If many flip, the cause is the
   margin and not the criterion, and the note reporting it must say so.
 
@@ -67,7 +67,7 @@ Biraben-Cagnac two-sided exponential, whose central cusp is the transit
 signature) against `'gaussian'` (making the whole line a pure Voigt, no cusp).
 `docs/THEORY_NOTE.md:293` calls this "checkable by BIC and the M8 cusp fit".
 
-- **THIS COMPARISON IS STRUCTURALLY IMMUNE TO THE CRITERION, and an earlier
+- **This comparison is structurally immune to the criterion, and an earlier
   draft of this note had it wrong.** `rb5s6s/modelform.py:8-9` states it
   plainly: the Voigt and the Lehmann cusp "have the same parameter count, so a
   Bayesian-information-criterion comparison is essentially a chi^2 comparison".
@@ -78,9 +78,9 @@ signature) against `'gaussian'` (making the whole line a pure Voigt, no cusp).
 - What depends on it: `beta_self`. The lineshape module states in its own words
   that running the fit under both and differencing beta "gives the model-form
   error bar the paper must quote". That remains worth producing. It is a
-  MODEL-FORM SYSTEMATIC to be quoted, not a selection to be made, and this note
+  model-form systematic to be quoted, not a selection to be made, and this note
   should never have filed it under the criterion change.
-- A BLOCKER THAT MUST BE FIXED FIRST: the production path cannot do this
+- a blocker that must be fixed first: the production path cannot do this
   comparison. `rb5s6s/linefit.py:100` hardcodes `two_sided_exponential` with no
   `transit_kind` argument, so the switch exists only in the sibling builder in
   `lineshape.py`. The model-form error bar the record says the paper must quote
@@ -88,7 +88,7 @@ signature) against `'gaussian'` (making the whole line a pure Voigt, no cusp).
   the argument, defaulting to the current behaviour so no committed number
   moves, is a precondition for C2.
 
-### C3. The sigma_laser sharing comparison. THE ONE SITE THAT FLIPS.
+### C3. The sigma_laser sharing comparison. The one site that flips.
 
 `rb5s6s/sharing_bic.py` (M14) compares `sigma_laser` shared per temperature
 (241 parameters) against per block (250, nine more), scored with a
@@ -109,13 +109,13 @@ demonstrably flips an answer.
 
 - What depends on it: `sharing_bic.csv` and the default `sigma_sharing="per_T"`
   baked into `rb5s6s/global_fit.py:58`, which feeds the lever cross-check.
-- What does NOT depend on it: the headline. Both `docs/RESULTS.md` and
+- What does not depend on it: the headline. Both `docs/RESULTS.md` and
   methods 4.13 already say the headline stays the model-independent width-slope
   bound rather than the sharing-dependent hierarchical value, and the sharing
   axis contributes about 0.001 of the quoted 0.014 model-form spread. So the
   flip changes a cross-check and an interpretive label.
 - Note the direction, because it is the opposite of the intuition that started
-  this: AIC here admits LESS sharing, that is MORE free parameters, which is
+  this: AIC here admits less sharing, that is more free parameters, which is
   the "admits more structure" direction. It just lands on a cross-check.
 
 ### C4. The nested model ladder (M11), robust
@@ -143,9 +143,9 @@ reason is small n ("At n=26 the criterion is AICc"). It writes nothing to
 `results/`.
 
 So the codebase already practises a defensible convention: AICc where n is
-tens, BIC where n is thousands. **Adopting AIC everywhere would REVERSE that
+tens, BIC where n is thousands. **Adopting AIC everywhere would reverse that
 convention at the large-n sites rather than extend it**, and the owner should
-know that before it is adopted, because the existing behaviour is not an
+know that before it is accepted, because the existing behaviour is not an
 oversight. There are three ways forward: AIC everywhere as instructed, AIC
 everywhere with the small-n sites using AICc (which is AIC, corrected, and is
 what small n requires), or the current split made explicit and defended. This
@@ -154,7 +154,7 @@ consequences in hand.
 
 ## What this preregistration commits to
 
-1. **The PANEL is reported at every site, always, as numbers.** (Amended
+1. **The panel is reported at every site, always, as numbers.** (Amended
    2026-08-15 by owner instruction: not AIC alone but three or four criteria,
    their pros and cons weighed, their disagreement used informatively.) The
    panel is AIC, AICc, BIC over raw n, and BIC over the repository's
@@ -179,7 +179,7 @@ consequences in hand.
 3. **Reproduction before belief.** The new helper, handed BIC, must reproduce
    the current committed decision at every site. A helper that cannot reproduce
    the present answer has not earned the right to give a new one.
-4. **Adoption is not mine.** This note preregisters a MEASUREMENT of what the
+4. **Adoption is not mine.** This note preregisters a measurement of what the
    criterion change would do. Whether any flip enters the record is the owner's
    decision, and no committed CSV or results narrative changes without it.
 5. **No outcome is a failure.** If AIC changes nothing anywhere, that is a
@@ -202,12 +202,12 @@ consequences in hand.
 ## Relation to the open wing question
 
 Measured 2026-08-15 and written up in the private evidence directory: the model
-runs a few tenths of one per cent of peak BELOW the data through the whole
+runs a few tenths of one per cent of peak below the data through the whole
 unfitted outer region, symmetrically, on every peak. Separately, the fitted
 window sets `gamma_coll` at the 30-per-cent level while chi-squared stays flat.
 
-Both are reasons to expect the data to support MORE structure than the current
+Both are reasons to expect the data to support more structure than the current
 model carries, and AIC is the criterion that would let it. That is a motivation
-and explicitly NOT a prediction: this note does not assume the wing excess is
+and explicitly not a prediction: this note does not assume the wing excess is
 real physics, and the density evidence for it stands at 2.8 sigma, which is not
 a detection.

@@ -28,12 +28,12 @@ cooling. Send the beam through the vapour and retro-reflect it, so every atom
 sees two counter-propagating beams of the same frequency $\nu$. An atom
 moving with velocity component $v$ along the beam sees the photon it meets
 head-on shifted up to $\nu(1+v/c)$ and the one it runs from shifted down to
-$\nu(1-v/c)$. If it absorbs ONE FROM EACH, the two-photon resonance condition
+$\nu(1-v/c)$. If it absorbs one from each, the two-photon resonance condition
 is
 
 $$\nu\Big(1+\tfrac{v}{c}\Big) + \nu\Big(1-\tfrac{v}{c}\Big) = 2\nu$$
 
-and the velocity term cancels exactly to first order, FOR EVERY ATOM. Not for
+and the velocity term cancels exactly to first order, for every atom. Not for
 a selected velocity class: the whole ensemble contributes to one narrow line.
 A second-order term proportional to $(v/c)^2$ survives and is normally
 negligible.
@@ -41,10 +41,10 @@ negligible.
 Three consequences follow, and all three shape how such an experiment is
 built. The transition is driven at half its own frequency, so the transition
 axis is twice the laser axis and every frequency has to be labelled with
-which axis it is on. Atoms that take both photons from the SAME direction are
+which axis it is on. Atoms that take both photons from the same direction are
 not Doppler-free, and they produce a broad pedestal underneath the narrow
 line. And because the detuning sums both photons, laser frequency jitter
-enters TWICE rather than once: the fluctuation is common to both photons,
+enters twice rather than once: the fluctuation is common to both photons,
 being one source retro-reflected onto itself, so it adds where the Doppler
 shift cancels. A two-photon line is twice as sensitive to laser noise as a
 single-pass one.
@@ -76,9 +76,9 @@ this epoch.
 ## Crossover resonances, and why this geometry has none
 
 Saturated-absorption spectroscopy trains the expectation that between every
-pair of lines sits a crossover. The mechanism needs two things: a SHARED
-LEVEL, so one pump transition can burn a population feature another probe
-transition reads, and VELOCITY SELECTION, so a specific velocity class links
+pair of lines sits a crossover. The mechanism needs two things: a shared
+level, so one pump transition can burn a population feature another probe
+transition reads, and velocity selection, so a specific velocity class links
 the two frequencies. Doppler-free two-photon spectroscopy has neither. Every
 velocity class contributes at the same summed frequency, which is the entire
 point of the counter-propagating geometry, so there is no velocity class to
@@ -87,10 +87,10 @@ share no state to burn.
 
 The tempting near-miss is sideband spectroscopy: with a modulated drive, do
 photon pairs mixing different sidebands make extra lines between the teeth?
-They do not, because every pathway with the same frequency SUM lands on the
+They do not, because every pathway with the same frequency sum lands on the
 same tooth and interferes there, which is why the tooth weights are Bessel
 functions of the total depth rather than sums over pairs. A comb tooth is a
-crossover-like object done coherently, and it sits ON the ladder, never
+crossover-like object done coherently, and it sits on the ladder, never
 between its rungs.
 
 ## What can go wrong
@@ -102,7 +102,7 @@ that angle, which broadens the line in a way that mimics a physical
 mechanism. Imperfect retro-reflection also changes the balance between the
 Doppler-free peak and its pedestal.
 
-The pedestal's SIZE is computable and worth knowing before a scan is
+The pedestal's size is computable and worth knowing before a scan is
 designed. The Doppler-free line is driven by the cross term between the two
 beams while the pedestal is driven by the same-beam terms, so their areas
 stand as $4\rho$ to $1+\rho^2$ in the retro ratio, and dividing each by its

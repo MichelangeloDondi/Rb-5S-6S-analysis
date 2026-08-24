@@ -4,7 +4,7 @@ WHY THIS EXISTS. The tree is well guarded against stale NUMBERS: the canonical
 registry in `test_docs_canonical.py` derives ~31 headline quantities live and
 fails on any stale citation of them. It is not guarded at all against stale
 BEHAVIOUR claims, and the protocol says so in its own words
-(`private/RENDERING_PROTOCOL.md` section 19.2): "A guard keyed to data
+(`private/LOGIC_PROTOCOL.md` section 19.2): "A guard keyed to data
 freshness is silent on text freshness... Whenever a pass changes words rather
 than numbers, name in advance what will detect a mistake. If the answer is
 nothing, that is the finding."

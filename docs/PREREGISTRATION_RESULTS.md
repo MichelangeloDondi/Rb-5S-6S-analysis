@@ -4,7 +4,7 @@
 (committed before first contact with the backup; predictions committed at
 `0af038b`, 2026-07-22 — the release that also carried them was later
 withdrawn for unrelated scope reasons, see the pre-registration's §9). Quarantine copy frozen with a
-SHA-256+MD5+size+epoch manifest before scoring. One run; this file is its
+sha-256+MD5+size+epoch manifest before scoring. One run; this file is its
 unedited output plus this provenance header.*
 
 *This file covers the timestamp audit and the dated addenda that followed it.
@@ -29,7 +29,7 @@ timestamps. A backup that carried them surfaced a year later. Before opening
 it, predictions were committed about what it would contain
 ([`PREREGISTRATION_timestamps.md`](PREREGISTRATION_timestamps.md), commit
 `0af038b`); the quarantine copy was then frozen under a
-SHA-256+MD5+size+epoch manifest and scored once.
+sha-256+MD5+size+epoch manifest and scored once.
 
 **The audit voided.** Its own integrity gate, content identity between
 archive and backup, failed at T1. That verdict stands unedited, and
@@ -48,9 +48,9 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The megahertz-scale motion was **not drift** but hand re-centring after lock dropouts | addendum 5 |
 | That disturbance is **one transient re-armed by every re-lock**: B = 103 [78, 139] ms, τ = 97 [87, 118] min | addendum 12 |
 | A **second, campaign-wide** timescale is absent, and bounded (< 0.4–1.9 MHz depending on assumed τ) | addendum 12 postscript |
-| The ruler’s tooth indexing was unprotected against the retrace. 54 of 104 combs carried a one-slot mislabelling, corrected display-side on a ratio test. The recomputed calibration is byte-identical and the primary bounds stand. The 4207 nm separation prediction FAILED and stands as a measured campaign property | addendum 26 |
-| An **amplitude-seeded fold** for the comb fit, evaluated against three pre-stated criteria: it lands all 104 combs undisplaced with no ladder, but the campaign rate moves +61.5 ppm through the group-outlier rule, and on injected folds the seed defeats the fold detector. Not adopted. Production stays on proximity seeding, the rule stays as an explicit opt-in diagnostic | addendum 27 |
-| A committed **95 per cent interval had zero width**, both edges landing on one grid point of a membership test that should have been a likelihood crossing. Fixed by interpolating both edges, and fixed TWICE because the no-rulers arm is a deliberate second copy carrying the same code. The end-to-end refit changed exactly one value in 137, the broken edge itself, so the module's byte-stability survives with one named exception | addendum 28 |
+| The ruler’s tooth indexing was unprotected against the retrace. 54 of 104 combs carried a one-slot mislabelling, corrected display-side on a ratio test. The recomputed calibration is byte-identical and the primary bounds stand. The 4207 nm separation prediction failed and stands as a measured campaign property | addendum 26 |
+| An **amplitude-seeded fold** for the comb fit, evaluated against three pre-stated criteria: it lands all 104 combs undisplaced with no ladder, but the campaign rate moves +61.5 ppm through the group-outlier rule, and on injected folds the seed breaks the fold detector. Not accepted. Production stays on proximity seeding, the rule stays as an explicit opt-in diagnostic | addendum 27 |
+| A committed **95 per cent interval had zero width**, both edges landing on one grid point of a membership test that should have been a likelihood crossing. Fixed by interpolating both edges, and fixed twice because the no-rulers arm is a deliberate second copy carrying the same code. The end-to-end refit changed exactly one value in 137, the broken edge itself, so the module's byte-stability survives with one named exception | addendum 28 |
 | The **centre channel's bound was built on a drift prior whose sign had already been withdrawn** by the 2026-07-30 window-reference correction. Refitting on the sign-undetermined prior loosens the bound from 8.653 to 12.213 MHz/W, so the error runs the unfavourable way. The verdict and every downstream reading are unchanged, because the channel is closed on grounds that do not involve the prior | addendum 29 |
 | The interval that **replaced** the zero-width one was wrong too, and in the same direction: linear interpolation of a quadratic profile understated it by 14.4x, and a grid ten times too coarse put it somewhere the file's own best fit does not lie. Both arms now refine the grid until the interval spans it, the edges interpolate in sqrt(dchi2), and a third guard refuses any interval that excludes its own point estimate. The headline kappa bound moves 0.5 per cent | addendum 30 |
 | The four peaks of each dwell were acquired **54–76 min apart**, so the σ_laser-sharing assumption was never "close in time" | addendum 12 / [RESULTS.md](RESULTS.md) C1 |
@@ -67,7 +67,7 @@ a clone via `scripts/run_drift_settling.py`, off the committed
 | The EOM comb's **tooth spacings are proved exact** (velocity symmetry from forward=retro spectrum; worst-case pull 10^-6 of the spacing). Companion: power-session rulers fail the amplitude model, so rulers stay unlicensed as shape data | addendum 22 |
 | The vdW module's 1.67x-high 7S closure was a **double-applied HWHM-to-FWHM conversion**, one line. Corrected, it closes to 17% low, inside the truncation's own envelope. The 3.53 kHz beta_self(6S) anchor and the 8-15x archival-bound comparison are unaffected, the doubled prefactor cancels in their ratio | addendum 23 |
 | The v3.2.0 light-shift bound 0.151 MHz was **cold-start-inflated 32%**: its profile chains inherited a cold start 3,401 units off the true minimum, and the four-point rerun's 283,135-unit direction row was a stuck chain, not physics. Seeded re-profiling gives the bound of record S0(225 mW) < 0.27 MHz, minimum at zero shift, direction indifferent at 10.5 units (0.27 was the bound when this row was written. The six-tooth recompute of addendum 26 moved it to 0.258, which the results ledger rounds to 0.26. Noted 2026-08-09, the row left as written) | addendum 24 |
-| The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 ACF 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
+| The 2025-06-11 wavemeter record is a **sawtooth**, not twelve relaxations. The old mean model left a non-white residual (lag-1 acf 0.68, runs z = -6.3), moved 19.8 in likelihood across seeds, and gave four of its twelve kick amplitudes nothing to do. A free level and free ramp per inter-lock interval, with one shared 2.6 s rise at each re-lock, leaves runs z = -0.21 at RMS 0.66 MHz. The settled floor is 0.62 MHz, essentially where it was, and the record stays diagnostic | addendum 25 |
 
 **What it corrected about itself.** Six readings were withdrawn after being
 published here: a "~32 ms satellite" structure that was an artifact of the
@@ -136,7 +136,7 @@ re-open a fitted result.
 - [Addendum 24, 2026-08-03: the light-shift bound was reading a starting point, not the data](#addendum-24-2026-08-03-the-light-shift-bound-was-reading-a-starting-point-not-the-data)
 - [Addendum 25, 2026-08-03: the wavemeter record is a sawtooth, not a sequence of relaxations](#addendum-25-2026-08-03-the-wavemeter-record-is-a-sawtooth-not-a-sequence-of-relaxations)
 - [Addendum 26, 2026-08-05: the six-tooth defect, the recalibration, and the full recompute](#addendum-26-2026-08-05-the-six-tooth-defect-the-recalibration-and-the-full-recompute)
-- [Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not adopted](#addendum-27-2026-08-06-the-amplitude-seeded-fold-evaluated-and-not-adopted)
+- [Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not accepted](#addendum-27-2026-08-06-the-amplitude-seeded-fold-evaluated-and-not-accepted)
 - [Addendum 28, 2026-08-10: a 95 per cent interval of zero width, and the second copy that carried it](#addendum-28-2026-08-10-a-95-per-cent-interval-of-zero-width-and-the-second-copy-that-carried-it)
 - [Addendum 29, 2026-08-10: the centre channel's bound was built on a prior whose sign had already been withdrawn](#addendum-29-2026-08-10-the-centre-channels-bound-was-built-on-a-prior-whose-sign-had-already-been-withdrawn)
 - [Addendum 30, 2026-08-10: the interval that replaced the zero-width one was also wrong, in the same direction](#addendum-30-2026-08-10-the-interval-that-replaced-the-zero-width-one-was-also-wrong-in-the-same-direction)
@@ -155,15 +155,15 @@ Manifest rows matched to backup: 282; missing: 15
   mismatched (first 10): p_sweep/4121nm_125mw5.csv, p_sweep/4121nm_175mw3.csv, p_sweep/4121nm_075mw1.csv, p_sweep/4121nm_075mw2.csv, p_sweep/4121nm_075mw3.csv, p_sweep/4121nm_075mw4.csv, p_sweep/4121nm_075mw5.csv, p_sweep/4192nm_225mw1.csv, p_sweep/4192nm_075mw5.csv
 * **T2 clock plausibility: PASS** — 282/282 mtimes inside 17–18 July 2025 (JST). Range seen: 2025-07-17 22:48:12 JST → 2025-07-18 20:26:34 JST.
 * **T3 mass-copy signature: PASS** — largest shared-mtime fraction 0.4% (threshold 20%).
-* **T4 granularity (recorded)** — 0/282 carry sub-second parts; 0 odd integer seconds (0 would suggest FAT 2 s).
+* **T4 granularity (recorded)** — 0/282 carry sub-second parts; 0 odd integer seconds (0 would suggest fat 2 s).
 * **T5**: all comparisons in raw epoch seconds; JST used for display only.
 * **T6 clock of record** — native scope files present: 0 (mtimes are the clock of record if 0).
 
-**INTEGRITY VOID — predictions deliberately not scored (per the gate table).**
+**Integrity VOID — predictions deliberately not scored (per the gate table).**
 
 ---
 
-# Timestamp audit — POST-HOC content-matched pass (NO pre-registered standing)
+# Timestamp audit — post-hoc content-matched pass (NO pre-registered standing)
 
 Backup (quarantine copy): `~/Documents/RawDataBackUp_QUARANTINE_2026-07-23`  ·  manifest rows: 297
 Backup files seen: 325 (325 distinct basenames)
@@ -176,11 +176,11 @@ Manifest rows matched to backup: 296; missing: 1
 * **T1 content identity: FAIL** — 296/297 rows byte-identical (MD5); 0 mismatched, 1 absent.
 * **T2 clock plausibility: PASS** — 296/296 mtimes inside 17–18 July 2025 (JST). Range seen: 2025-07-17 22:48:12 JST → 2025-07-18 20:26:34 JST.
 * **T3 mass-copy signature: PASS** — largest shared-mtime fraction 0.3% (threshold 20%).
-* **T4 granularity (recorded)** — 0/296 carry sub-second parts; 0 odd integer seconds (0 would suggest FAT 2 s).
+* **T4 granularity (recorded)** — 0/296 carry sub-second parts; 0 odd integer seconds (0 would suggest fat 2 s).
 * **T5**: all comparisons in raw epoch seconds; JST used for display only.
 * **T6 clock of record** — native scope files present: 0 (mtimes are the clock of record if 0).
 
-*POST-HOC MODE: scoring proceeds despite 1 absent row(s) (listed above and excluded); these verdicts carry no pre-registered standing.*
+*post-hoc mode: scoring proceeds despite 1 absent row(s) (listed above and excluded); these verdicts carry no pre-registered standing.*
 
 ## Predictions
 
@@ -190,7 +190,7 @@ Manifest rows matched to backup: 296; missing: 1
 * **P4: PASS** — 0 temperature increases along the time-ordered block sequence
 * **P5: PASS** — median intra-block gap 8.0 s vs inter-block 383.0 s → ratio 47.9 (needs ≥10)
 * **P6: PASS** — all four peaks bracketed
-* **P7: AMBIGUOUS** — 4154nm_070c1.csv|4154nm_070c2.csv absent from backup
+* **P7: Ambiguous** — 4154nm_070c1.csv|4154nm_070c2.csv absent from backup
 * **P8: FAIL** — 4/194 curated copies predate their raw/ source
 * **D5: PASS** — median 5-repeat block span 34.0 s (needs <70 s; range 20–148 s)
 
@@ -249,10 +249,10 @@ the backup. None of them was retired after seeing the timestamps.
   `p_sweep/4192nm_225mw1.csv`'s analysed bytes are nowhere in this backup.
 * P8's 4 flagged rows are a name-collision artifact of content-mode matching
   (a consistent-name recheck finds zero curated-before-raw violations);
-  P7 is AMBIGUOUS because the pair names are naming-variant casualties.
+  P7 is ambiguous because the pair names are naming-variant casualties.
 * The backup carries a workspace file literally named
   `2025-07-17-Julia.code-workspace`, and every mtime has even seconds — the
-  FAT 2 s signature of the stick it lived on.
+  fat 2 s signature of the stick it lived on.
 
 ---
 
@@ -520,7 +520,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > power session, RMS Δ(peak position) = **145.2 ms** while RMS Δ(window setting)
 > = **145.9 ms** and RMS Δ(difference) = **6.3 ms**. Thirteen of the sixteen gaps
 > carry a knob move. So **99.8% of the between-block variance these addenda model
-> as "intervention" is the horizontal setting.** And the five "step-like" blocks
+> as "re-centring" is the horizontal setting.** And the five "step-like" blocks
 > of the table below are *exactly*, one for one, the five blocks whose window
 > setting changes mid-block — set equality, no exceptions.
 >
@@ -554,7 +554,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > | settled floor, tight cluster | +0.55 ± 0.17 | −0.28 ± 0.16 | **sign flips** |
 > | state-space drift c | +0.74 [+0.54, +0.94] | +0.24 [+0.14, +0.34] | band −0.03 … +0.74 |
 > | mixture drift c | +0.38 [+0.17, +0.59] | +0.00 [−0.21, +0.21] | **straddles zero** |
-> | intervention settling | ΔAIC +17.1 (exp wins) | ΔAIC −2.9 (const wins) | **flips** |
+> | re-centring settling | ΔAIC +17.1 (exp wins) | ΔAIC −2.9 (const wins) | **flips** |
 > | σ_gap amplitude | 88 ms | 2.9 ms | factor 30 |
 > | re-kick B, τ | 103 ms, 97 min | level control wins | **flips** |
 >
@@ -574,7 +574,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > 0.02 MHz/min on the laser axis with the sign undetermined.**
 
 Two differencing baselines exist in the power session, and they disagree —
-the disagreement is what identifies the interventions:
+the disagreement is what identifies the re-centrings:
 
 | probe | baseline | what it contains | result |
 |---|---|---|---|
@@ -582,7 +582,7 @@ the disagreement is what identifies the interventions:
 | between adjacent blocks of one ladder | 3–14 min | drift **plus re-centrings** (the reference was moved in exactly those gaps, while power was being changed) | 6–9 ms/min apparent in hour 1, collapsing to +0.4–0.7 after hour 3.7 |
 
 The hour-1 between-block rates exceed the within-block bound severalfold, so
-they are not drift: they are the **operator interventions**, both signs,
+they are not drift: they are the **operator re-centrings**, both signs,
 ±20–70 ms (±1–3 MHz on the laser axis). Their signature is independent:
 mid-block position steps concentrate early (4 of 10 early blocks vs 1 of 10
 late).
@@ -590,7 +590,7 @@ late).
 **What settles is the disturbance — and the refined fit makes that
 quantitative.** Taking the proposal to trace level, all 99 timestamped
 positions enter one segmented joint fit: per-segment offsets absorb the
-interventions, one smooth r(t) is shared by every segment, the segmentation
+re-centrings, one smooth r(t) is shared by every segment, the segmentation
 is found iteratively (≥4σ standardized steps, per-trace σ from each block's
 own robust scatter), and the same segmentation serves both rate laws so the
 AIC compares models, not segmentations. The exponential wins decisively —
@@ -598,7 +598,7 @@ AIC compares models, not segmentations. The exponential wins decisively —
 same ~1–1.5 h thermal settling scale the wavemeter photographs show after a
 retune (`APPARATUS.md` §6). One caveat is structural, and the layering above
 exists because of it: a gap-step consistent with the fitted r(t) is absorbed
-*as* drift, so sub-threshold interventions can masquerade — and in one early
+*as* drift, so sub-threshold re-centrings can masquerade — and in one early
 block the within-block slope disagrees with the fitted rate at ~3σ. The
 within-block bounds, not the joint fit, own the pure-drift claim; τ
 describes drift and forced re-centrings jointly.
@@ -617,9 +617,9 @@ three estimators**: joint fit **+0.30 [+0.19, +0.37]**, pair median
 one, i.e. **0.013–0.023 MHz/min on the laser axis (0.03–0.05 transition)**.
 Over a 32 s block that is ~0.2–0.3 ms of centre walk, below the 1.8 ms
 jitter, which is why the pre-registered intra-block test rightly returned
-JITTER (§8.4's verdict stands untouched).
+jitter (§8.4's verdict stands untouched).
 
-**The intervention census falls out of the same fit**: 13 segments over four
+**The re-centring census falls out of the same fit**: 13 segments over four
 ladders — hour-1 hunting on 4192 (steps of −1.6 and +1.0 MHz laser within
 25 min), the two 4207 scan-window repositionings (+564 ms and −1151 ms of window
 travel — **not** frequency; quoted here as +24 and −49 MHz until 2026-07-30, which was the retracted arithmetic, M21), and
@@ -655,7 +655,7 @@ them. *Post-hoc throughout; estimator proposed by the experimenter
 Addendum 4 fitted one smooth r(t) with hard-segmented offsets and declined to
 split drift from re-centrings. The refinement replaces the greedy
 segmentation with the model the data actually implies: **a state-space
-formulation** in which the cumulative-intervention offset is a random walk
+formulation** in which the cumulative re-centring offset is a random walk
 whose steps live at the between-block gaps, η ~ N(0, σ_gap(t)²), with
 scan-window repositionings (steps >100 ms, wherever they occur — the 4207
 excursion returns *mid-block*) freed exactly. *Caveat added 2026-07-30:* the
@@ -666,10 +666,10 @@ absorbed into the very σ_gap ("~1–4 MHz laser in hour 1") this fit reports as
 hand re-centring. The fit should be redone with a free offset at every recorded
 move, not at a threshold. The marginal likelihood is then
 exact (Kalman filter), no segmentation is chosen by hand, and — the point —
-**drift and intervention amplitude each get their own time law**, so "what
+**drift and re-centring amplitude each get their own time law**, so "what
 settles?" becomes a 2×2 model comparison:
 
-| drift law | intervention law | AIC |
+| drift law | re-centring law | AIC |
 |---|---|---|
 | constant | constant | 634.6 |
 | **constant** | **exponential** | **617.5** |
@@ -678,7 +678,7 @@ settles?" becomes a 2×2 model comparison:
 
 **The drift is one constant.** Adding a drift-settling term buys nothing
 (ΔAIC +4.0 — pure parameter penalty, the amplitude fits to zero);
-intervention settling is decisive (ΔAIC +17.1). The claim addendum 4
+re-centring settling is decisive (ΔAIC +17.1). The claim addendum 4
 declined is now made, in both directions:
 
 > **Replaced by addendum 7:** the residual audit found this noise model
@@ -695,10 +695,10 @@ declined is now made, in both directions:
   dropping
   peak 4207 entirely moves c by +0.013; window-move thresholds of 60 and
   150 ms move it by less than 0.02.
-- **Interventions: σ_gap ≈ 88 ms × exp(−t/86 min)** — per-gap re-centring
+- **Re-centrings: σ_gap ≈ 88 ms × exp(−t/86 min)** — per-gap re-centring
   RMS ~1–4 MHz laser in hour 1, ≲0.2 MHz after hour 4. τ_i is the least
   stable number (≈70–160 min across the same variants, trading against the
-  amplitude on only ~14 constrained gaps); the *structure* — interventions
+  amplitude on only ~14 constrained gaps); the *structure* — re-centrings
   settle, drift does not — survives every variant.
 
 **What this corrects in the earlier addenda, stated plainly:** the τ ≈ 73 min
@@ -731,7 +731,7 @@ answers one half. For the **drift**, per-temperature re-kicks stay untestable
 (the T-session baselines are too short; intra-block bounds ≲5 ms/min per
 dwell). For the **operator**, the answer was hiding in the discarded probe:
 under the state-space reading, the ruler→science steps that *contaminate* the
-drift estimate simply *are* the intervention amplitude — and it re-kicks at
+drift estimate simply *are* the re-centring amplitude — and it re-kicks at
 every dwell:
 
 | dwell | steps (n) | RMS step | in frequency |
@@ -903,12 +903,12 @@ Within-block moves were rare, as remembered: 3 events in 78 transitions.
   = +0.0163 [+0.0073, +0.0252] MHz/min laser.** A **~2σ positive
   indication, no longer a firm detection** — the Gaussian 3σ rested on the
   three moves. Robustness now holds: dropping the 25 mW blocks gives +0.25
-  (inside the interval, where the Gaussian model broke), LOO-4207 +0.44.
+  (inside the interval, where the Gaussian model broke), loo-4207 +0.44.
   And the methods converge: the segmented floor (+0.19…+0.37), the clean-pair
   cluster (+0.55 ± 0.17) and the mixture (+0.17…+0.59) now agree within
   errors — the Gaussian state space was the outlier, for a diagnosed reason.
 - **Structure unchanged**: the 2×2 re-run under the mixture still picks
-  drift-constant × interventions-exponential (settling ΔAIC +16.7; adding
+  drift-constant × re-centrings-exponential (settling ΔAIC +16.7; adding
   drift settling +4.0 against; τ_i ≈ 91 min). The etalon-transient story is
   untouched.
 - **Pull bound, re-profiled under the mixture: q = −0.050 [−0.190, +0.070]
@@ -942,8 +942,8 @@ since addendum 2 — and they close it.
 | file (RawData2) | mtime | identity |
 |---|---|---|
 | `4192nm_225mw2…5.csv` | 2025-07-17 23:47:42–23:48:02 JST | byte-identical to the repo's canonical block; acquisition mtimes match the audit exactly |
-| `4192nm_225mw1copy.csv` | 2025-08-16 18:51 CEST | byte-identical to the main backup's degraded copy |
-| `4192nm_225mw1.csv` | 2025-08-16 22:15 CEST | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after CRLF→LF** |
+| `4192nm_225mw1copy.csv` | 2025-08-16 18:51 cest | byte-identical to the main backup's degraded copy |
+| `4192nm_225mw1.csv` | 2025-08-16 22:15 cest | **a fourth variant, nowhere else — and the analysed repo copy is this file byte-for-byte after crlf→lf** |
 
 **The T1 audit's one genuine absence is resolved.** The analysed
 `p_sweep/4192nm_225mw1.csv` — whose bytes the main backup never contained —
@@ -951,14 +951,14 @@ now has a complete, dated lineage:
 
 1. **2025-07-17 23:47:38 JST** — pristine acquisition (53.8 kB, uniform time
    axis; preserved in the main backup — addendum 2's find).
-2. **2025-08-16 18:51 CEST** — a degraded, headerless re-export
+2. **2025-08-16 18:51 cest** — a degraded, headerless re-export
    (`…copy.csv`, 39.5 kB, time axis at reduced precision → the 799 duplicate
    timestamps). This is the degradation event, and it is post-campaign
    processing: the same evening as the stray `Julia.code-workspace` in the
    backup root.
-3. **2025-08-16 22:15 CEST** — the `jj,nj` header restored (RawData2's
-   unique file, CRLF line endings).
-4. **≤ 2025-08-23 22:05 CEST** — CRLF→LF, and mass-copied into the analysis
+3. **2025-08-16 22:15 cest** — the `jj,nj` header restored (RawData2's
+   unique file, crlf line endings).
+4. **≤ 2025-08-23 22:05 cest** — crlf→lf, and mass-copied into the analysis
    dataset: the repo's working-tree mtimes carry the bulk stamp
    2025-08-23 22:05:18 across `p_sweep/` and `t_sweep/` (rulers
    2025-10-05) — a bonus provenance fact: **the analysed dataset was
@@ -1071,7 +1071,7 @@ The two-folder problem (a frozen repo archive with no clock; a private
 backup that *is* the clock) is resolved in four moves, all shipped:
 
 1. **The clock is committed as data.** `data_recovered/CLOCK.csv` — content
-   hash → FAT mtime for all 438 backup files across the four source trees,
+   hash → fat mtime for all 438 backup files across the four source trees,
    with the manifest identity wherever content matches the archive. Built
    deterministically by `scripts/build_clock_table.py`;
    `run_drift_settling.py` now reads the table first, so **a clone
@@ -1122,7 +1122,7 @@ cannot perform on itself (`scripts/run_epoch_checks.py`; nothing enters `results
 rehearsal files embed wall-clock trigger times. Across 47 files:
 **mtime(JST) − TrigTime = +4…+9 s (median +6 s)** — the save-after-trigger
 delay — with one +145 s operator pause. Every timestamp conclusion in
-addenda 1–9 rested on interpreting FAT mtimes as JST; an independent,
+addenda 1–9 rested on interpreting fat mtimes as JST; an independent,
 instrument-written clock now confirms that reading to seconds.
 
 **2. The etalon-transient model passes an out-of-sample test.** The pilot's
@@ -1133,7 +1133,7 @@ the disturbance model predicts recapture steps at the settled scale
 ±20–70 ms, with two window moves in the hundreds.)
 
 **3. The frequency calibration is coherent across days.** The pilot-day
-`Def` rulers give an ACF comb period of **144.2 ± 1.1 ms vs the campaign's
+`Def` rulers give an acf comb period of **144.2 ± 1.1 ms vs the campaign's
 146.81 ms — the sweep rate agrees to 1.7%** across a day and a
 re-preparation. That is exactly the wander M2's design anticipates: every
 block carries its own rulers because the rate is only per-cent-stable
@@ -1179,7 +1179,7 @@ withdrawn; the M2 calibration carries no satellite systematic.
 
 **The three binary `4192…270 mW` rehearsal files are unrecoverable
 non-data**: 8.6 MB of pure `0xFF` each — allocation placeholders whose
-content never flushed to the FAT medium (a save failure, consistent with the
+content never flushed to the fat medium (a save failure, consistent with the
 LeCroy's remembered unreliability that evening). Nothing misnamed, nothing
 to parse; the block simply holds 2 real traces of 5, both TrigTime-stamped.
 
@@ -1272,7 +1272,7 @@ so σ²(t) = A²e^{−2t_session/τ_camp} + B²e^{−2t_epoch/τ_kick}. At n = 2
 
 **The second timescale's amplitude fits to zero.** Not "small" — zero: the
 log-likelihood is *identical* to the one-timescale fit (139.17 in all three
-campaign-component variants; LRT p = 1.00). Freeing τ per subset buys
+campaign-component variants; lrt p = 1.00). Freeing τ per subset buys
 2Δln L = 2.83 on 3 dof (p = 0.42) and leaves the τ's unidentified (one runs
 to 10¹² min, one goes negative). The data does not merely fail to support a
 second process; its best fit contains none.
@@ -1763,7 +1763,7 @@ legitimate, because width is power-independent, the C3 null — gives
 | 130 °C | 2.693 MHz | −0.054 ± 0.047 | −1.2σ |
 
 *(Replaced. Two errors: the widths are crude QC FWHMs, and the 1.7%
-cross-day figure is the rate DIFFERENCE, which the pilot's own ruler already
+cross-day figure is the rate difference, which the pilot's own ruler already
 removes — the term that actually dominates, block-to-block reproducibility,
 was missing.)*
 
@@ -1866,7 +1866,7 @@ where width is power-independent. It is **1.9%**, and it does not average
 down.
 
 **The corrected test.** Fitting the pilot's four blocks with the same
-composite model, on its own frequency axis, gives **5.318 ± 0.019 (block SE)
+composite model, on its own frequency axis, gives **5.318 ± 0.019 (block se)
 ± 0.103 (reproducibility) MHz** — and the fitted `total_fwhm` is genuinely
 robust to the split, moving under 0.01 MHz whether the transit is evaluated
 at an assumed 90, 110 or 130 °C:
@@ -2472,7 +2472,7 @@ The prior update accounts only for the remaining step from 0.221 to the
 production bound.
 
 **The bound of record.** The corrected run (382 minutes, all four
-families seeded, LOPO complete) puts the profile minimum at kappa = 0.00
+families seeded, lopo complete) puts the profile minimum at kappa = 0.00
 exactly, with no chi-square preference for any positive shift. The 95%
 upper limit is kappa < 1.192 MHz per W, which is
 
@@ -2521,10 +2521,10 @@ different places.
 **What the module claimed.** `scripts/run_wavemeter_reconstruction.py` (M22)
 digitises the 2025-06-11 wavemeter photograph and fits the trace. Since
 2026-08-02 it read the record as twelve re-locks, each kicking the frequency up
-and then relaxing back on ONE shared time constant of 353 min, riding on a
+and then relaxing back on one shared time constant of 353 min, riding on a
 record-wide quadratic background of drift and curvature, with a
 three-parameter settling noise model on top. Nineteen parameters, fitted by
-twenty restarts of L-BFGS-B over all nineteen at once. The number it published
+twenty restarts of l-bfgs-b over all nineteen at once. The number it published
 was the settled floor on unmodelled laser motion, 0.63 MHz.
 
 **What a model comparison found.** Fourteen alternatives were fitted against
@@ -2587,7 +2587,7 @@ model carried a shared linear drift of -1.44 MHz/min and a shared curvature of
 absence had been called the biggest defect of the model before that one.
 Neither survives. The per-interval ramps absorb both: they fall in
 magnitude from -8.9 MHz/min in the first fitted interval to -0.4 MHz/min in
-the last, and that fall IS the thermal settle the quadratic was standing in
+the last, and that fall is the thermal settle the quadratic was standing in
 for. Reading the settle interval by interval is what removes the need for a
 record-wide background term, so the two rows are dropped from the output rather
 than updated.
@@ -2742,10 +2742,10 @@ census departing 231 (did not fire). Fired and acted on: the seven-tooth
 figure-eligibility clause returned the empty set and was relaxed to six
 standing teeth by owner decision with two measured causes recorded
 (amendment 4). Fired and standing: the 4207 separation prediction,
-recorded as FAILED above.
+recorded as failed above.
 
 
-## Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not adopted
+## Addendum 27, 2026-08-06: the amplitude-seeded fold, evaluated and not accepted
 
 Amendment 8 of the ruler specification recorded RT12's demonstration that
 seeding the comb fit's integer fold from the sideband amplitudes lands
@@ -2796,7 +2796,7 @@ excision rung recovers them. The construction would therefore
 reintroduce the vulnerability class this specification exists to
 prevent, in a quieter form. This is pinned as a test.
 
-**Decision, by the pre-stated criteria.** Not adopted. Production stays
+**Decision, by the pre-stated criteria.** Not accepted. Production stays
 on proximity seeding with the validity verdict and the re-index ladder.
 The committed tables are unchanged. The amplitude rule remains in the
 code as an explicit opt-in diagnostic, its fold-misfit statistic is
@@ -2827,7 +2827,7 @@ described in its own units as a one-parameter 95 per cent interval at
 `dchi2 < 3.841`. The two edges were identical, so the interval had zero width.
 
 **The cause was a membership test standing in for a crossing.** The edges were
-taken as the smallest and largest GRID POINTS whose profile sat under the
+taken as the smallest and largest grid points whose profile sat under the
 threshold, on a beta grid of step 0.01. Where exactly one grid point qualified,
 both edges landed on it. An interval narrower than the grid that resolves it is
 the tell, and nothing had ever compared the two edges to each other. The
@@ -2846,7 +2846,7 @@ fixed and rerun. A defect can be fixed and still ship when the code that carries
 it exists twice.
 
 **The refit is otherwise byte-stable, which is the useful part.** Rerunning the
-rulers-on arm end to end, 10.1 hours, changed exactly ONE value out of 137:
+rulers-on arm end to end, 10.1 hours, changed exactly one value out of 137:
 `beta_self_hi95`, from 0.0150 to 0.0151. Every other number, including the
 headline `kappa < 0.963` MHz/W, `S0(225) < 0.217` MHz and the joint slope
 0.0183, reproduced exactly. So the correction is localised to the quantity it

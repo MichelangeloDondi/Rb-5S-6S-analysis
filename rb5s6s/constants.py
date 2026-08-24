@@ -140,7 +140,7 @@ def peak_title(key: str) -> str:
         $^{85}$Rb $5S_{1/2}$ F=3 $\\rightarrow$ $6S_{1/2}$ F'=3 at 993.4192 nm
 
     The hyperfine line is Delta F = 0 (S to S two-photon), so F' equals F.
-    Part of the trace-figure standard adopted 2026-08-09 (RENDERING_PROTOCOL
+    Part of the trace-figure standard accepted 2026-08-09 (RENDERING_PROTOCOL
     section 12.3 in the working notes): the title carries the transition and
     the condition, the parameter box carries fitted values with uncertainties
     and marks fixed inputs, the beam waist lives in the caption, never on the
@@ -400,7 +400,7 @@ own sentence quotes the 128 um WITHOUT the convention, which the paper it
 reprints in Appendix B.2 supplies. ONE profiler measurement, reported in two
 documents, on the predecessor laser rather than on this campaign's. It is
 still a direct measurement of this geometry with its convention stated, which
-is why it stands as the adopted value, but it is not corroborated by a second
+is why it stands as the value of record, but it is not corroborated by a second
 independent measurement and this file no longer says it is.
 
 What this dataset does NOT do is re-measure it. The transit-against-laser-width
@@ -505,7 +505,7 @@ MODE MATCH is by construction. What that argument does not cover is LOSS --
 two extra L2 passes, two extra window passes, mirror reflectivity -- nor
 imperfect superposition from alignment. Both push rho below 1.
 
-0.94 +/- 0.04 is adopted as a deliberately modest departure from the design
+0.94 +/- 0.04 is accepted as a deliberately modest departure from the design
 value, covering a few per cent of loss per surface. The exposure is bounded
 either way: S0 ~ (1 + rho) confines the prediction to within a factor 2 of
 the rho = 1 value for ANY rho, so no plausible error here changes an

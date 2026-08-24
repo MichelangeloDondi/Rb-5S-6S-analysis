@@ -103,7 +103,7 @@ per-condition width precision this record already achieves, it identifies the
 common Lorentzian component at 0.978 and 0.966 coverage at the two
 decay-length band edges, and does **not** identify the Gaussian one, at 0.474.
 A single-rung control fails to split, which is what makes the ladder the lever
-rather than the fit. This is SIMULATION-BACKED and not a measurement: it says
+rather than the fit. This is simulation-backed and not a measurement: it says
 the design can identify the intended quantities under stated worlds, not that
 the apparatus will.
 

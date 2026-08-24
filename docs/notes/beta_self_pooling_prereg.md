@@ -8,7 +8,7 @@ The construction below was fixed after a three-referee verification
 `scripts/run_beta_self.py` was touched. The pooled code runs only after this
 note is committed.
 
-`provenance: results/beta_self_probe.csv` - Sections 1 to 6 are genuine preregistration and their numbers are physics estimates and pre-stated thresholds. The postscript reports OUTCOMES, and those match the `pooled_*` rows of this CSV, which the same commit added. **One claim has no row**: the 70 C narrowing (2.0 per cent, 0.10 MHz, three of four lines low) is computed by `anchor_narrowing_share` and printed, and only the derived share reaches the CSV. **1 numeric claim on this page remains unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: results/beta_self_probe.csv` - Sections 1 to 6 are genuine preregistration and their numbers are physics estimates and pre-stated thresholds. The postscript reports outcomes, and those match the `pooled_*` rows of this CSV, which the same commit added. **One claim has no row**: the 70 C narrowing (2.0 per cent, 0.10 MHz, three of four lines low) is computed by `anchor_narrowing_share` and printed, and only the derived share reaches the CSV. **1 numeric claim on this page remains unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 ## 1. The physics that licenses one shared slope
@@ -18,13 +18,13 @@ transition, and the broadening they see from ground-state Rb is R^-6
 physics. Three statements carry the licence, each checked adversarially:
 
 1. There is no first-order resonant exchange term of the D-line type. The
-   5S-6S transition dipole is zero by parity, the electronic quadrupole
-   vanishes between two J = 1/2 states (rank 2 exceeds 2J), and the magnetic
+   5s-6s transition dipole is zero by parity, the electronic quadrupole
+   vanishes between two J = 1/2 states (rank 2 exceeds 2j), and the magnetic
    channel sits thirteen orders below the van der Waals term.
 2. The R^-6 exchange contribution is large (the referee estimates about 0.7
    of the direct term through the dominant intermediate channel) but
    isotope-blind: the collision is sudden with respect to the 99.2 MHz
-   5S-6S isotope shift by a factor of order 300, so the exchange operates on
+   5s-6s isotope shift by a factor of order 300, so the exchange operates on
    effectively degenerate pair states for both isotope pairings.
 3. What survives is kinematics. With natural abundance the reduced-mass
    velocity factor puts the 87 radiator 0.35 per cent below the 85 radiator,
@@ -83,9 +83,9 @@ and printed by the implementation, not typed here.
 Two products exist and only one changes.
 
 * `results/beta_self_probe.csv`, the model-independent width-slope bound
-  that fig19 panel 1 draws and the documents quote: THIS pools.
+  that fig19 panel 1 draws and the documents quote: This pools.
 * `results/beta_self.csv`, the per-line model fit whose values the M23 and
-  M28 joint fits consume as a fixed prior at fit time: UNTOUCHED this
+  M28 joint fits consume as a fixed prior at fit time: Untouched this
   release. Changing it after the poles finish would silently stale both
   (the dependency referee confirmed neither pole reads the probe file, and
   M25 frees the coefficient itself and depends on neither). Sharing the
@@ -104,7 +104,7 @@ Two products exist and only one changes.
 If prediction 1 or 3 fails, stop, and nothing is written until that failure
 has been settled. If prediction 2 fails, that is a finding about a per-line
 systematic (the cross-line consistency probe exists for exactly this) and
-the pooling stays unadopted while the question is open.
+the pooling stays out of force while the question is open.
 
 ## 6. Sequencing
 
@@ -131,21 +131,21 @@ floors it already shows.
 
 ## Postscript, 2026-08-06: the predictions, adjudicated on the implementation
 
-All three predictions of section 5 HOLD, and the construction is adopted.
+All three predictions of section 5 hold, and the construction is accepted.
 Numbers below are read from the implementation's output, not typed from
 memory.
 
-1. HOLDS. The pooled 95 per cent bound is 0.0298 MHz per 10^12 cm^-3,
+1. Holds. The pooled 95 per cent bound is 0.0298 MHz per 10^12 cm^-3,
    between one quarter of the worst per-line bound (0.0123) and the worst
    itself (0.0494). Stated plainly beside it: the pooled bound beats three
    of the four per-line bounds and sits 3.7 per cent above the tightest
    (4192 at 0.0287). The prediction was written against the worst and
    holds as written.
-2. HOLDS. Per-line slopes against the shared slope, on their own total
+2. Holds. Per-line slopes against the shared slope, on their own total
    errors: -0.41, -0.36, -1.10 and +0.41 sigma, chi-squared per dof 0.56.
    The per-isotope split is +0.0034 +/- 0.0058, 0.58 sigma from zero, with
    the condition-common mode cancelling exactly in the difference.
-3. HOLDS, by a different mechanism than this note predicted. The gain is
+3. Holds, by a different mechanism than this note predicted. The gain is
    1.654, inside the pre-stated 1.1 to 1.8. But the measured common-mode
    fraction is f = 0.230 (95 per cent profile range 0.000 to 0.912), far
    below the near-unity fraction argued from the +0.98 residual

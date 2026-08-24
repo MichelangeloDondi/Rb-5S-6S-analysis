@@ -46,13 +46,13 @@ only when the model is linear and every input stays a small perturbation
 around the point evaluated, which is precisely the regime local sensitivity
 assumes and global sensitivity does not need.
 
-The cheapest way to approach the global question, one-at-a-time (OAT)
+The cheapest way to approach the global question, one-at-a-time (oat)
 variation, sweeps a single input across its range while holding every other
 input at a baseline, then repeats for the next input. It costs one sweep per
 input and is easy to read, but every other input sits frozen while the sweep
 runs, so an effect that depends on two inputs moving together is invisible
 to it: the swept input can look unimportant at the baseline and dominate the
-output once its partner also moves. OAT sees the response along the axes
+output once its partner also moves. Oat sees the response along the axes
 through the baseline and nothing about the surface between them.
 
 Variance-based sensitivity, the Sobol decomposition, covers that surface.
@@ -73,7 +73,7 @@ there is no interaction at all, and the total-effect indices add to at least
 one whenever interactions exist, since a shared piece of variance counts
 once for every input that shares it. A large gap between the two for one
 input, $S_{T_i}$ well above $S_i$, means that input matters mainly through
-interaction: an OAT sweep of it alone, however finely spaced, would report
+interaction: an oat sweep of it alone, however finely spaced, would report
 it as unimportant, because it only matters once a partner input moves too.
 
 Sobol indices are not free. Estimating them by the standard Monte Carlo
@@ -94,7 +94,7 @@ reverse once an input's own plausible range and its interactions with other
 inputs are taken into account. An input with a large derivative can matter
 little if its realistic range is narrow, and an input with a small
 derivative can dominate if its range is wide or if it acts mainly through
-another input, and neither case is visible from the derivative or the OAT
+another input, and neither case is visible from the derivative or the oat
 sweep alone. Variance-based sensitivity works in the units the question is
 actually asked in, the output's own variance, and apportions that variance
 honestly across the whole stated range of every input and every interaction
@@ -103,13 +103,13 @@ uncertainty budget should be spent.
 
 ## Where this repository uses it
 
-A variance-based study HAS been run here, on the projected precision of the
+A variance-based study has been run here, on the projected precision of the
 next campaign rather than on a committed 2025 number. It decomposes the
 projection's variance across the plausible range of every design input and
 ranks them, and the ranking is in
 [plan chapter 5](../plan/05_width-collision-amplitude.md). The top temperature
 reached takes the largest share at 0.58 and the unmeasured cold-spot lag takes
-0.33, while the NUMBER of temperature blocks takes 0.002. The design
+0.33, while the number of temperature blocks takes 0.002. The design
 consequence is the useful part: adding blocks buys almost nothing, and the
 campaign should argue for reach and for measuring the lag. That is the same
 fact [influence diagnostics](influence-diagnostics.md) reports from the other

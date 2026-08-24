@@ -51,7 +51,7 @@ medians across blocks; what the record defends is a bound of order
 from the atoms inside one display epoch, which needs no window-reference
 correction, and it sits inside that bound.
 
-TWO INTERVENTION CHANNELS, and only one is visible in the setting. A knob move
+TWO re-centring CHANNELS, and only one is visible in the setting. A knob move
 shows up in window_start_ms and breaks the record. A CAVITY-REFERENCE recentring
 does not -- it is a genuine frequency step, and it appears as a step inside an
 epoch. So a within-epoch excursion of 10-15 MHz (some epochs) is real frequency
@@ -272,8 +272,8 @@ def structure_function(rows: list[dict], same_peak: bool = True,
     horizontal-knob move differences two numbers measured against different
     zeros, and the earlier version did exactly that: its monotone rise to
     11-13 MHz with a few-minute correlation time was the knob's cadence, since
-    an intervention every few minutes produces the same shape as drift over the
-    same scale. This test cannot distinguish drift from intervention, so it is
+    an re-centring every few minutes produces the same shape as drift over the
+    same scale. This test cannot distinguish drift from re-centring, so it is
     now only asked the question it can answer -- whether the WITHIN-epoch
     reconstruction is time-correlated rather than per-trace scatter. That costs
     the long-lag bins, which is honest: nothing in the dataset constrains them.
@@ -303,7 +303,7 @@ def step_statistics(rows: list[dict], max_gap_s: int = 120) -> dict:
     """The re-kick population, from steps between consecutive traces of one
     line. A continuously-drifting laser gives a Gaussian step distribution; a
     hand re-centred one gives a narrow core (the drift) plus a heavy tail (the
-    interventions), and the median-to-RMS ratio is the cleanest way to see it.
+    re-centrings), and the median-to-RMS ratio is the cleanest way to see it.
 
     Steps are taken WITHIN a display epoch only, so the tail is the CAVITY
     reference being recentred -- a real frequency step -- and not the horizontal
@@ -394,7 +394,7 @@ def main() -> int:
               f" | median |step| {st['median_abs_mhz']:.2f} | max {st['max_abs_mhz']:.1f}")
         print(f"    heavy-tail ratio RMS/median = {st['heavy_tail_ratio']:.0f}x"
               f"  ({100 * st['frac_beyond_3sigma']:.1f}% beyond 3 sigma vs 0.3% Gaussian)")
-        print("    -> quiet drift punctuated by discrete operator interventions")
+        print("    -> quiet drift punctuated by discrete operator re-centrings")
     print("  This is a PREDICTION of what a wavemeter log would show, from the")
     print("  atoms and the file timestamps alone -- testable if a log turns up.")
     return 0

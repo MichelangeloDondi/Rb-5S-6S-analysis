@@ -1,20 +1,20 @@
 # Why the centre channel cannot be revived on this record
 
-Status: RECORD, 2026-08-10. Nothing here retracts a committed number. It closes a
+Status: Record, 2026-08-10. Nothing here retracts a committed number. It closes a
 question that had been left open in the shape "the centres are excluded" without
 the exclusions ever being costed, and it names the one measurement that would
 reopen it.
 
-`provenance: NO_PRODUCER` - **The largest gap in the corpus.** The note is a hybrid: its comparisons against the width channel are properly homed in `results/centre_stark.csv` and `results/stark_joint.csv`, and every number carrying the note's OWN argument, the forecast table among them, has no trace in any committed CSV or producer. The declaration is NO_PRODUCER because the argument is what a reader takes away. **34 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: NO_PRODUCER` - **The largest gap in the corpus.** The note is a hybrid: its comparisons against the width channel are properly homed in `results/centre_stark.csv` and `results/stark_joint.csv`, and every number carrying the note's own argument, the forecast table among them, has no trace in any committed CSV or producer. The declaration is NO_PRODUCER because the argument is what a reader takes away. **34 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 ## The question
 
-The line CENTRE is the strongest of the three AC-Stark channels: the pull goes as
+The line centre is the strongest of the three AC-Stark channels: the pull goes as
 the shift itself, where the width goes as its square and the skew as its cube. The
 record reports a width-channel bound and treats the centre channel as dead,
 because the 2025 lock drifted and was re-centred by hand. The question put in
-2026-08-10 was whether restricting to intervals between lock interventions, using
+2026-08-10 was whether restricting to intervals between lock re-centrings, using
 the recovered timestamps and the measured drift, and fitting the three sessions
 jointly, could recover it.
 
@@ -58,12 +58,12 @@ addendum 29. Its drift prior is directional, +0.016 +/- 0.009 MHz/min, and the
 that sign, leaving a two-sided bound of about 0.02 MHz/min. Refitting on the
 sign-undetermined prior gives +6.6 +/- 3.4 rather than +4.8 +/- 2.4 MHz/W,
 so the significance is unchanged at 1.95 sigma against 2.00 and the bound
-LOOSENS to 12.21 MHz/W, 10.6 times weaker than the width channel. The
+loosens to 12.21 MHz/W, 10.6 times weaker than the width channel. The
 direction is the unfavourable one and it strengthens rather than weakens
 everything below, since the channel is closed here on grounds that never
 involve the prior.
 
-## The campaign morning: the power order IS scrambled, and the frame eats it
+## The campaign morning: the power order is scrambled, and the frame eats it
 
 Recovering the campaign morning's clock from its file times shows a power
 sequence of **210, then 35, then 70, then 105 mW** across 16.8 minutes. That
@@ -91,14 +91,14 @@ columns. Allowing one offset per window setting already takes the forecast from
 ## The 4 July evening session: no trace can fix its own frequency origin
 
 The 4 July evening session is the one session whose ladders ran in
-ALTERNATING directions, which is exactly the design the campaign lacked, and
+alternating directions, which is exactly the design the campaign lacked, and
 it carries an instrument-native trigger clock rather than a recovered file
 time. Its centres are excluded for a reason unrelated to either: the scope
 auto-triggered, so the ramp phase is random from trace to trace and an
 absolute position carries no frequency.
 
 There is a way around that in principle, and the repository already uses it
-elsewhere: a record containing BOTH the up-sweep and the down-sweep crossing of one
+elsewhere: a record containing both the up-sweep and the down-sweep crossing of one
 line fixes its own origin from the mirror-pair midpoint, which is a feature of the
 ramp rather than of any knob, so it is immune to both trigger phase and window
 setting. `rb5s6s/cavity_scan.py` does this arithmetic for a photograph.
@@ -111,7 +111,7 @@ one feature is 330 to 405 ms wide, and the other is 5 to 8 ms wide at about
 same ramp must match in both width and height. It does not. At the 4 July
 evening session's sweep rate a 6 ms feature is some tens of kilohertz
 across, more than fifty times narrower than the 3.4925 MHz natural width, so
-it cannot be an atomic line at all. The 5 s record therefore contains ONE
+it cannot be an atomic line at all. The 5 s record therefore contains one
 crossing, and the record's own segmentation rule, which keeps the widest
 excursion, was right to keep one.
 
@@ -131,7 +131,7 @@ Reading the acquisition clock off both folders:
 | the 27 rulers | 21:18:22 to 23:33:36 |
 | the 26 power traces | 23:54:26 to 00:11:12 |
 
-EVERY RULER PRECEDES THE ENTIRE POWER SWEEP, the last of them by 21 minutes.
+every ruler precedes the entire power sweep, the last of them by 21 minutes.
 Not one falls inside the sweep, so none brackets any of the three power steps,
 whose gaps are 388 s at 210 to 35 mW, 170 s at 35 to 70, and 184 s at 70 to
 105. The step that carries nearly all the lever, and whose window moves by

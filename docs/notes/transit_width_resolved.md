@@ -1,6 +1,6 @@
 # Transit-width tension: RESOLVED, one flux bug, w₀ re-centred 32 → 50 → 64 µm
 
-**Status: RESOLVED. The beam-measured waist in force is the adopted
+**Status: RESOLVED. The beam-measured waist in force is the accepted
 64 µm**, taken at v3.0.0 (2026-08-01) from the lineage measurement in the
 v3.0.0 block below, which replaces the 50 µm conclusion this note originally
 reached. How it got there: the M9 transit MC (`rb5s6s/transit_mc.py`) had
@@ -11,14 +11,14 @@ to 64 µm. An earlier draft of this note claimed the MC had **two** bugs and
 inferred **w₀ ≈ 90 µm**, which was wrong by a factor of 2 (see "What the
 earlier note got wrong" below) and is retracted.
 
-`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the adopted 64 um waist in force since v3.0.0. It cites this file and every one of its 30 three-significant-figure values appears in a committed CSV. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/transit_mc.csv` - RESOLVED by its own header, with the accepted 64 um waist in force since v3.0.0. It cites this file and every one of its 30 three-significant-figure values appears in a committed CSV. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 ## The one real bug (flux), and the fix
 
 The signal is a steady-state excitation **rate** = (atom crossing **flux**) ×
 (excitation probability per crossing). Lehmann 2021 eq. 6 carries the flux factor
-`v` explicitly. The MC sampled transverse speeds from the 2-D Maxwell–Boltzmann
+`v` explicitly. The MC sampled transverse speeds from the 2-d Maxwell–Boltzmann
 speed density (Rayleigh, ∝ v) and weighted the per-atom amplitude by
 `|c_e|² ∝ 1/v²`, but **omitted the flux `v`**, giving a net weight ∝ 1/v, a spurious
 log-divergent, n_atoms-dependent cusp that ran the transit **~2× too narrow**.
@@ -46,14 +46,14 @@ rests on the direct waist measurement as much as on the line. Matching the obser
     w₀ ≈ 45–70 µm  (central ~50 µm, hard floor ~38 µm),
 
 i.e. **~1.5× the old nominal, not ~3×**. `W0_MEASURED_M` is re-centred to 50 µm and
-`TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from it (≈1.20 MHz at 110 °C).
+`TRANSIT_FWHM_PLACEHOLDER_MHZ` is now derived from it (≈1.20 MHz at 110 °C).
 
 **A direct beam measurement (2026-07-13, provenance corrected 2026-08-14).**
 The group's own 993 nm lineage measured the focused cell beam directly.
 **Nieddu 2019** (Opt. Express 27, 6528, page 6530) states it with its
 convention: "The 1/e² beam diameter is 128 µm", with the same f = 150 mm lens,
 so **w₀ = 64 µm**. The **Rajasree-KP 2020** OIST thesis quotes the same 128 µm
-in its section 5.2, and that is the SAME measurement rather than a second one:
+in its section 5.2, and that is the same measurement rather than a second one:
 the thesis footnote at section 5.1 records that the section 5.2 data "were
 collected by T. Nieddu and plotted by K.P. Subramonian Rajasree", with the
 paper reprinted as Appendix B.2. This note previously called the pair
@@ -63,8 +63,8 @@ carries its convention from the paper, and still **independently excludes
 naive Gaussian estimate assumed a 3 mm input beam diameter clipped by "the EOM
 aperture". That attribution is now sourced rather than inferred (2026-08-01,
 APPARATUS.md §1.2/§2): no lens or telescope sits between the SolsTiS and the
-EOM, the isolator ahead of it (ISOWAVE I-98T-5L, 5 mm clear aperture) is wide
-enough not to clip, and the EOM-02-12.5-V's own clear aperture **is** 3 mm per
+EOM, the isolator ahead of it (isowave i-98t-5l, 5 mm clear aperture) is wide
+enough not to clip, and the eom-02-12.5-v's own clear aperture **is** 3 mm per
 the manufacturer's specification table, with the experimenter separately
 recalling an IR-card observation of clipping there. A recollected clipping
 event does not fix how much of the beam was clipped, so the estimate stays a
@@ -74,7 +74,7 @@ and a direct beam-profile
 measurement, both below) now converge on **w₀ ≈ 50–64 µm**, above the naive
 32 µm estimate.
 
-**Resolved at v3.0.0 (2026-08-01): the prior IS the measurement, 64 µm.**
+**Resolved at v3.0.0 (2026-08-01): the prior is the measurement, 64 µm.**
 The note above kept 50 µm because the transit-width match slightly preferred
 50–55 and because the 2025 alignment was not guaranteed to match Nieddu's.
 Two things settled it. Rajasree's thesis §5.2 turns out to record the same
@@ -124,14 +124,14 @@ rather than falling, which is the same mechanism methods/07 already documents
 for the tied-fit σ_laser(T) values. Neither is a new degeneracy, just this
 one moving along the curve the earlier columns already describe.
 
-Every result stays **w₀-conditional and PRELIMINARY**: the transit↔σ_laser
+Every result stays **w₀-conditional and preliminary**: the transit↔σ_laser
 degeneracy means the 2025 line cannot pin w₀ on its own, and the fixed-lock
 session's direct beam-profile measurement does. The re-pin corrects the central
 prior and excludes 32 µm, and it is not a w₀ measurement.
 
 ## What the earlier note got wrong (retracted)
 
-The earlier "DIAGNOSED (decisive), w₀ ≈ 90 µm" claim had two errors:
+The earlier "diagnosed (decisive), w₀ ≈ 90 µm" claim had two errors:
 1. It claimed a **second** bug, a laser-vs-transition "factor of 2" in the
    per-atom Gaussian. That was spurious: the MC's `(2π ν_T)²` transition-axis
    convention is correct (δ = 2π ν_T is the transition detuning, and the

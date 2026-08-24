@@ -51,7 +51,7 @@ We now build each factor.
 
 *The whole chapter in advance. On the left the four kernels at the campaign's
 own representative widths, drawn together so the point is visible: they differ
-in SHAPE and not only in width, and the shapes are the only handle the fit has
+in shape and not only in width, and the shapes are the only handle the fit has
 for telling them apart. On the right the line assembled one convolution at a
 time. The natural width is about two thirds of the observed 5.37 MHz and
 everything above it is apparatus, which is why the sections below spend most of
@@ -121,7 +121,7 @@ correlation), with $\gamma_\text{coll}$ entering the fits in
 
 ### 2.3 Laser linewidth, and why it enters *twice*
 
-Because the two-photon detuning SUMS both photons, laser jitter enters twice
+Because the two-photon detuning sums both photons, laser jitter enters twice
 where the Doppler shift cancels, so the line is twice as sensitive to
 laser-frequency noise as a single pass would be
 ([Doppler-free two-photon spectroscopy](../wiki/doppler-free-two-photon.md)
@@ -150,21 +150,21 @@ factor 2.
 
 **What a Lorentzian laser component is, and what one condition can say about
 it.** If the jitter is fast rather than slow, the laser contributes a
-LORENTZIAN width rather than a Gaussian one. Two Lorentzians of FWHM $a$ and
-$b$ convolve to a single Lorentzian of FWHM $a+b$ EXACTLY, so a Lorentzian
+lorentzian width rather than a Gaussian one. Two Lorentzians of FWHM $a$ and
+$b$ convolve to a single Lorentzian of FWHM $a+b$ exactly, so a Lorentzian
 laser contribution and the collisional width enter the fixed-condition model
 only through their sum. This is an identity, not an approximation, and the code
-imposes it by ADDING the two widths rather than convolving them: done by
+imposes it by adding the two widths rather than convolving them: done by
 convolution on a finite grid the truncated tails made the profile depend on how
-a fixed total was SPLIT, at up to $3.7\times10^{-3}$ of peak, which is a
+a fixed total was split, at up to $3.7\times10^{-3}$ of peak, which is a
 numerically manufactured separability pointing along exactly the direction a
 laser-width inference has to measure.
 
 The consequence is that **$\Gamma_{L,\text{equiv}}$ is not identifiable at a
 single condition at all**, and this is measured rather than argued: injecting
 six values from 0 to 2.5 MHz into synthetic data and fitting them back recovers
-the SUM to about one part in a thousand every time while the split is
-arbitrary. The separating lever is DENSITY, because the collisional width is
+the sum to about one part in a thousand every time while the split is
+arbitrary. The separating lever is density, because the collisional width is
 $\beta_\text{self} N(T)$ and moves with temperature while a laser width does
 not, so the identifiable object lives in the multi-condition fit of §2.4's
 consumers and nowhere else. Injecting 0.600 MHz on the narrow 110 to 130 C
@@ -174,7 +174,7 @@ ladder returns 0.599 with a spread of 0.013 over four seeds
 Two readings follow that the earlier form of this section did not separate.
 Switching the kernel wholesale moves the hierarchical $\beta_\text{self}$ by
 45 to 67 per cent, nine to eighteen sigma on its statistical error, which is
-the SENSITIVITY of the coefficient to the choice. Whether the data PREFER one
+the sensitivity of the coefficient to the choice. Whether the data prefer one
 kernel is a different question, and it is answered by a nested likelihood
 ratio rather than by counting wins, because the pure-Lorentzian model is
 contained in the mixed one: a win count across conditions carries no
@@ -225,7 +225,7 @@ earlier version omitted it, weighting $\propto1/v$ near $v=0$, and produced a
 spurious log-divergence, fixed 2026-07-13 and validated against
 [Lehmann's](../lit/lehmann2021.md) 41.2 kHz NNO example). We quote the width the kernel *adds to the natural line* once
 convolved. Second, the added width is $\sim2.1$ MHz at $w_0=32$ µm and
-$\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the adopted
+$\sim0.88$ MHz at 65 µm, the Monte-Carlo grid point beside the accepted
 64 µm measured waist (it was $\sim1.2$ MHz at the replaced 50 µm prior). At
 32 µm that is large enough that
 natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
@@ -238,13 +238,13 @@ directly by [Nieddu](../lit/nieddu2019.md) (2019, Opt. Express 27, 6528, page
 is 128 µm", with the same $f=150$ mm focusing lens, so $w_0=64$ µm, with the
 same 3 mm EOM aperture truncating the input beam that the naive (untruncated)
 estimate misses. The [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis
-reports the same number in its section 5.2, but that is the SAME measurement
+reports the same number in its section 5.2, but that is the same measurement
 rather than a second one: the thesis footnote at its section 5.1 says the
 section 5.2 data "were collected by T. Nieddu and plotted by K.P. Subramonian
 Rajasree", and reprints the paper as its Appendix B.2 (corrected 2026-08-14,
 having previously been described here as two independent measurements). That
 direct measurement lands at the top of the transit-inferred band and
-independently excludes 32 µm, agreeing with the corrected transit physics. The adopted prior
+independently excludes 32 µm, agreeing with the corrected transit physics. The accepted prior
 is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from
 60 and 70 on 2026-08-10), and the wider ranges this section reached on the way
 there, 45 to 70 and then 50 to 64 µm, are replaced by it for that purpose.
@@ -263,13 +263,13 @@ The cusp is a *falsifiable prediction*: at the coldest, dimmest condition
 Voigt against a Lorentzian⊗exponential can detect it, and to our
 knowledge it is not cleanly resolved as a *cusp* in a thermal two-photon line
 anywhere (a target for a fixed-lock session with a narrow laser). Caveat: $w_0$
-is not measured on this beam, 64 µm with a 62–68 µm band, adopted from the beamline
+is not measured on this beam, 64 µm with a 62–68 µm band, accepted from the beamline
 lineage measurement above rather than measured on this beam (it was re-centred
 from 32 to 50 µm when the transit physics was corrected, then from 50 to 64 µm
-when that measurement was adopted, and the beam is clipped by a 3 mm aperture,
+when that measurement was accepted, and the beam is clipped by a 3 mm aperture,
 so it stays uncertain at the tens-of-% level) **until the
 beam-profile measurement** (below), so every *absolute* width built on it is
-PRELIMINARY. *Code:* `two_sided_exponential()`, and `transit_fwhm_at_T()`
+preliminary. *Code:* `two_sided_exponential()`, and `transit_fwhm_at_T()`
 enforces the $\sqrt T$ law.
 
 #### The two isotopes do not share a transit width
@@ -361,7 +361,7 @@ Why $w_0$ matters most here: $w_0$ sets the **transit width**
 ($\propto 1/w_0$, §2.5) *and* every AC-Stark magnitude ($\propto 1/w_0^2$,
 [§2.6](03_the_ac_stark_ramp.md)), and it is **degenerate with $\sigma_\text{laser}$** in the fits (§2.4,
 [what we found](07_what_we_found.md)). So as long as $w_0$ is only the clipped-beam prior, the transit/laser
-split and all absolute coefficients stay PRELIMINARY. Measuring $w_0$ directly
+split and all absolute coefficients stay preliminary. Measuring $w_0$ directly
 in a fixed-lock session would collapse that degeneracy: transit becomes fixed, the leftover
 Gaussian is then unambiguously the laser (turning the $\sigma_\text{laser}$
 *bound* of [what we found](07_what_we_found.md) into a measurement,
@@ -385,7 +385,7 @@ Library code:
 `rb5s6s/vanderwaals.py`.
 
 **What would falsify this.** A direct beam-profile measurement of $w_0$ that
-disagreed with the transit width the fits return at the adopted prior. Every
+disagreed with the transit width the fits return at the accepted prior. Every
 absolute width in this chapter is conditional on that one number, and the
 measurement can fall either side of it.
 

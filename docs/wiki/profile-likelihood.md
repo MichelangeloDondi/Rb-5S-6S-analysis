@@ -20,7 +20,7 @@ before any interval is scanned. That is
 
 Most fits have one or two parameters of interest and a crowd of nuisance
 parameters that have to be there but are not the point. The profile
-likelihood handles the crowd by RE-OPTIMISING rather than fixing. For each
+likelihood handles the crowd by re-optimising rather than fixing. For each
 candidate value $\theta$ of the parameter of interest, every nuisance
 parameter $\eta$ is re-fitted to its best value at that $\theta$:
 
@@ -31,10 +31,10 @@ where it drops by a calibrated amount from its maximum, which for a
 well-behaved single parameter is the value of $\Delta\chi^2$ that
 corresponds to the desired coverage.
 
-The contrast worth holding onto is with the two cheaper alternatives. FIXING
+The contrast worth holding onto is with the two cheaper alternatives. Fixing
 the nuisances at their best-fit values and scanning $\theta$ pretends the
 nuisances are known, and gives an interval that is too narrow, sometimes by a
-large factor. Approximating the likelihood by a QUADRATIC at the best fit,
+large factor. Approximating the likelihood by a quadratic at the best fit,
 which is what a covariance matrix does, gives a symmetric interval and is
 exact only if the surface really is quadratic. The profile makes neither
 assumption. It costs a full re-fit per grid point and it returns asymmetric
@@ -42,7 +42,7 @@ intervals when the problem is asymmetric, which is what the likelihood says
 near a physical boundary.
 
 The profile is also a diagnostic, and this is the part most easily missed. A
-profile that is FLAT over a wide range is not a wide confidence interval, it
+profile that is flat over a wide range is not a wide confidence interval, it
 is a statement that the data do not determine the parameter at all. The
 shape of the curve carries information the interval alone discards.
 
@@ -65,7 +65,7 @@ than as a preference.
 The headline results are bounds, and a bound is only worth its frequentist
 coverage, which the repository buys by simulation rather than by assertion
 (see [injection-recovery](injection-recovery.md)). The dominant systematic,
-the beam waist, is deliberately kept OUT of the likelihood: marginalising it
+the beam waist, is deliberately kept out of the likelihood: marginalising it
 would fold a prior invisibly into the number, whereas quoting an explicit
 band keeps the conditionality visible and lets the band collapse without
 redoing the inference when a measurement lands. And where the data are
@@ -93,7 +93,7 @@ scanning from both directions is the cheap check.
 Two calibration traps. The $\Delta\chi^2$ threshold for a given coverage
 assumes the asymptotic regime, and with few effective degrees of freedom the
 nominal threshold under-covers, so a small-sample quantile is the honest
-choice. And where the maximum sits AT a physical boundary, such as a width
+choice. And where the maximum sits at a physical boundary, such as a width
 pinned at zero, the standard threshold does not apply at all and the interval
 is one-sided by construction.
 

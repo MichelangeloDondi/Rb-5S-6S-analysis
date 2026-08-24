@@ -5,7 +5,7 @@ Nothing here is a result about the atom, and no committed number moves.
 Producers: `scripts/run_extended_lever.py` and, for the pinning factor it
 cites, `scripts/run_width_pinning.py`. Run logs under `private/run_logs/`.
 
-`provenance: DESIGN` - PROJECTIONS of what proposed levers would buy, by its own header, with nothing about the atom and no committed number moving. It names `run_extended_lever.py` and `run_width_pinning.py`, both of which exist and neither of which writes a results file. All eleven of its values are grounded. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: DESIGN` - projections of what proposed levers would buy, by its own header, with nothing about the atom and no committed number moving. It names `run_extended_lever.py` and `run_width_pinning.py`, both of which exist and neither of which writes a results file. All eleven of its values are grounded. **No claim on this page is unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 ## 1. The extended temperature lever for the collisional bound
@@ -28,10 +28,10 @@ record's actual pooled bound of 0.0249, so the construction reproduces the
 scale of the real analysis before its extensions are read.
 
 Read with both eyes open. The gain is a factor 3.5 at 150 C and 10 at
-170 C on the median bound, and the assumptions are OPTIMISTIC by
+170 C on the median bound, and the assumptions are optimistic by
 construction: the block scatter is held at its 130 C value, while blackbody
 redistribution and thermal gradients can only raise it, which is exactly the
-dossier's kill criterion. The 170 C bound would sit BELOW the van der Waals
+dossier's kill criterion. The 170 C bound would sit below the van der Waals
 anchor of about 0.0034, so at that lever the experiment would constrain the
 prediction, while the detection threshold at 95 per cent, 0.019, stays
 above it: the extension converts the bound into a prediction-constraining
@@ -45,7 +45,7 @@ level runs at a waist near 16 microns, where the predicted on-axis shift is
 2.2. That margin is computable from committed numbers and is the honest
 extent of what can be projected today.
 
-The achievable uncertainty on kappa at that operating point is NOT
+The achievable uncertainty on kappa at that operating point is not
 projected here, for a stated reason rather than an oversight: at 5.56 MHz
 the shift is comparable to the 5.4 MHz linewidth, the perturbative
 cumulant scaling that sets the skew channel's cost at the current bound does not

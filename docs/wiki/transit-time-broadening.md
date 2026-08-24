@@ -29,7 +29,7 @@ $\Delta\nu_t\sim 1/(2\pi\tau_t)\sim v/(2\pi w_0)$. Nothing about the atom is
 disturbed. The line is broadened because the measurement was cut short, which
 is the same reason a short pulse has a wide spectrum.
 
-For a SINGLE speed the atom sees a roughly Gaussian intensity envelope as it
+For a single speed the atom sees a roughly Gaussian intensity envelope as it
 crosses, giving a roughly Gaussian frequency response of width proportional
 to $v/w_0$. But a thermal vapour presents every speed at once, and the
 average has to be taken over the Maxwell-Boltzmann distribution. Since the
@@ -37,11 +37,11 @@ mean speed scales as $\sqrt{T/m}$, the width scales as
 
 $$\Delta\nu_\text{transit} \propto \frac{\sqrt{T}}{w_0}$$
 
-and the SHAPE matters as much as the width. Averaging Gaussians whose widths
+and the shape matters as much as the width. Averaging Gaussians whose widths
 span the whole thermal range does not give a Gaussian. Slow atoms pile up
-sharp, narrow responses at line centre and produce a CUSP, a sharp point at
+sharp, narrow responses at line centre and produce a cusp, a sharp point at
 zero detuning, while fast atoms contribute broad tails that fall off
-EXPONENTIALLY, far fatter than a Gaussian's.
+exponentially, far fatter than a Gaussian's.
 
 This is not a phenomenological guess. For Doppler-free two-photon
 spectroscopy the finite-transit line was derived as exactly a Lorentzian
@@ -71,8 +71,9 @@ two-photon signal weights each atom by the square of the intensity while the
 collection optics see only part of the beam.
 
 The kernel is where two of this repository's hardest problems meet. Its width
-depends on the beam waist, which is not measured on this bench, so the transit
-width and the laser width are degenerate through the waist, and a waist small
+depends on the beam waist, which was measured on this bench (Rajasree, same
+optical table, laser and lenses) but never re-read during the campaign, so
+the transit width and the laser width are degenerate through the waist, and a waist small
 enough would make the natural and transit widths alone exceed the observed
 line. The cusp is also a falsifiable prediction that this dataset was not
 designed to test, and
@@ -89,10 +90,11 @@ is not cosmetic.
 
 The second is an experimental limitation dressed as a parameter. Since the
 width depends on $1/w_0$, the transit contribution is only as well known as
-the beam waist, and a waist adopted from another beamline rather than
-measured on this one makes every transit-derived number conditional on that
-transfer. This repository states the adopted band explicitly for exactly that
-reason.
+the beam waist. Here the waist is a same-bench measurement (Rajasree, same
+optical table, laser and lenses) that the campaign never re-read at its own
+time in its own interaction volume, so every transit-derived number is
+conditional on drift or realignment since that measurement. This repository
+states the waist band explicitly for exactly that reason.
 
 The third is an implementation trap with a history: averaging over speeds
 requires the correct weighting for the flux of atoms crossing the beam, and

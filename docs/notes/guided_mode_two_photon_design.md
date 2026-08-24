@@ -9,7 +9,7 @@ costed.** It sets out options and budgets for taking the record's
 and it is written so that a reader can recompute every number. Where a number
 comes from this repository's own modules the call is given. Where a parameter
 had to be assumed, the assumption is labelled and its basis stated. Provenance
-tags follow `docs/STYLE.md` (MEASURED-HERE / CALCULATED / ESTABLISHED /
+tags follow `docs/STYLE.md` (measured-here / calculated / established /
 ENVELOPE / OPEN).
 
 **The question.** What would it take to move this measurement out of the
@@ -52,7 +52,7 @@ travelling wave and, with `rho` = 0.94, an on-axis maximum shift
 
     lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94, 1093.0) = 0.3476 MHz
 
-on the transition axis (CALCULATED, and the value `docs/RESULTS.md` C3d
+on the transition axis (calculated, and the value `docs/RESULTS.md` C3d
 carries). A guided mode of radius 15 µm reaches the same intensity at
 **11.45 mW**, and a 10 µm mode at **5.09 mW**. That is the first and largest
 change: the power that a cell spends on one focal volume would instead buy
@@ -120,7 +120,7 @@ Two corrections to the closed form, both computed rather than asserted:
 This is the mechanism with no cell analogue, and it is the largest single
 number in the note.
 
-From `rb5s6s.polarizability` at 1064 nm (CALCULATED, the module's own line
+From `rb5s6s.polarizability` at 1064 nm (calculated, the module's own line
 lists): `alpha_5s(1064.0)` = 687.39 a.u., `alpha_6s(1064.0)` = −116.43 a.u.,
 `delta_alpha(1064.0)` = −803.82 a.u. Two consequences follow immediately.
 
@@ -137,7 +137,7 @@ Combining the mean deficit `(3/2) k_B T/U0` with `S_trap = U0 · Δα/α_5S` giv
     mean trap-induced shift = (3/2) (k_B T / h) · |Δα / α_5S|,
 
 in which `U0` has cancelled. At 1064 nm the ratio is 1.1694 and the coefficient
-is **36.55 kHz per µK of atom temperature** (CALCULATED). Making the trap
+is **36.55 kHz per µK of atom temperature** (calculated). Making the trap
 deeper does not help. Only colder atoms, or a different trap wavelength, would.
 
 | atom temperature | mean trap-induced shift at 1064 nm |
@@ -156,7 +156,7 @@ measures.
 
 **The way out is a magic wavelength, and this repository already computes
 them.** `polarizability.magic_wavelengths(950.0, 1500.0)` returns three
-crossings in that window (CALCULATED, and exact in the scalar-only sense
+crossings in that window (calculated, and exact in the scalar-only sense
 because both states have J = 1/2, so no tensor term exists to spoil them):
 
 | magic wavelength | `alpha` there |
@@ -176,7 +176,7 @@ is the difference between a 3.7 MHz systematic and none.
 For the 19 µm mode assumed in the sibling design studies, two counter-propagating
 1064 nm beams of 1.0 W each give an antinode intensity of
 `4 × 2P/(pi w²)` = 7.054e9 W/m², a depth `U0` = 22.727 MHz = 1090.7 µK, an
-axial frequency of 429.4 kHz and a radial frequency of 5.41 kHz (all CALCULATED
+axial frequency of 429.4 kHz and a radial frequency of 5.41 kHz (all calculated
 here from `alpha_5s(1064.0)`, and reproducing the sibling repositories' own
 stored 430 kHz to 0.1 %). The recoil frequency is 2.028 kHz, so the fractional
 intensity a single axial vibrational quantum costs is `2 E_rec/(h nu_z)` =
@@ -197,7 +197,7 @@ transfer is `k_eff` = 0 **exactly** and the confinement parameter for the
 two-photon line vanishes. There are no first-order motional sidebands at all,
 whatever the trap. A residual survives only through beam misalignment, and even
 a 10 mrad misalignment gives `k_eff/k` = 0.010 and an effective confinement
-parameter of 7.4e-4 (CALCULATED). In a fibre the two beams are the same
+parameter of 7.4e-4 (calculated). In a fibre the two beams are the same
 guided mode counter-propagating, so the misalignment is bounded by the mode,
 not by the alignment.
 
@@ -219,7 +219,7 @@ for the first higher-order mode with on-axis field) and
 
     L_beat = 8 pi² a² / [ lambda (u_2² - u_1²) ],
 
-the beat lengths for a 48 µm core (a = 24 µm) are (CALCULATED):
+the beat lengths for a 48 µm core (a = 24 µm) are (calculated):
 
 | wavelength | `L_beat` vs the first higher-order group | `L_beat` vs the first on-axis higher-order mode |
 |---|---|---|
@@ -234,7 +234,7 @@ the first higher-order group has zero field on axis. Normalising the capillary
 modes by power, the on-axis amplitude ratio is
 `|J1(2.4048)/J1(5.5201)|` = 1.5257, so a higher-order power fraction `eta`
 gives an on-axis amplitude ratio `eps = 1.5257 sqrt(eta)` and an intensity
-modulated by `1 ± 2 eps` (CALCULATED):
+modulated by `1 ± 2 eps` (calculated):
 
 | higher-order power fraction | intensity swing | two-photon rate swing | `S0` swing |
 |---|---|---|---|
@@ -249,7 +249,7 @@ the two extremes rather than at the mean. Differential loss does not clean this
 up over the length of an atom column: a published mode-resolved measurement puts
 the first higher-order modes at 2.57 and 2.62 times the fundamental loss, which
 at 70 dB/km is 0.11 dB/m, so 3 cm of fibre would strip 0.08 % of the
-higher-order power (ESTABLISHED from that measurement, arithmetic CALCULATED).
+higher-order power (established from that measurement, arithmetic calculated).
 Whatever the launch puts in is still there at the atoms.
 
 ---
@@ -284,9 +284,9 @@ bench work, not by any calculation (section 6).
 
 ### 2.2 The three candidate lines
 
-Geometry for the table: mode radius 10 µm (ASSUMPTION, representing a core
+Geometry for the table: mode radius 10 µm (assumption, representing a core
 radius near 15 µm), 100 mW per direction, perfect counter-propagating overlap
-`rho` = 1 (ASSUMPTION, against the cell's adopted 0.94), giving
+`rho` = 1 (assumption, against the cell's accepted 0.94), giving
 `2P/(pi w²)` = 6.366e8 W/m² per travelling wave, 18.2 times the cell's
 3.497e7. Cold case 1e4 atoms held on axis at the natural width. Hot case
 100 °C from `density.number_density_cm3(100)` = 4.808e12 cm⁻³ over 10 cm of
@@ -294,7 +294,7 @@ filled fibre, line width natural plus transit plus ramp.
 
 | | 5S → 6S | 5S → 7S | 5S → 5D5/2 |
 |---|---|---|---|
-| drive (from the repo's NIST terms) | 993.418 nm | 760.126 nm | 778.104 nm |
+| drive (from the repo's nist terms) | 993.418 nm | 760.126 nm | 778.104 nm |
 | detection | 795.0 / 780.2 nm | 420.30 nm | 420.30 nm |
 | `Δα` (a.u.) | 1144.6 | 4371.7 | 28649 (ENVELOPE) |
 | natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
@@ -327,7 +327,7 @@ rather than passively.
 
 For the 5S → 6S line this is the binding constraint, and it is the same
 radiation-trapping physics the repository already carries for the cell.
-`density.d1_optical_depth_per_cm` gives, at `f_hf` = 0.5 (CALCULATED):
+`density.d1_optical_depth_per_cm` gives, at `f_hf` = 0.5 (calculated):
 
 | | 85Rb | 87Rb |
 |---|---|---|
@@ -350,7 +350,7 @@ a fill contributes) at the cost of a 19-fold drop in density.
 
 Six schemes were costed. Collection into the guided mode uses
 `NA = lambda/(pi w)` from the Gaussian mode divergence and
-`eta = 1 - cos(arcsin NA)` counting both fibre ends (CALCULATED):
+`eta = 1 - cos(arcsin NA)` counting both fibre ends (calculated):
 
 | mode radius | `eta` at 420 nm | at 795 nm | at 1324 nm |
 |---|---|---|---|
@@ -376,7 +376,7 @@ and no fibre in this discussion has one.
 **Scheme 2 and the wall.** Shelving accumulates only if the ground hyperfine
 state survives. On bare silica it does not: the mean thermal speed at 100 °C is
 301.5 m/s, so an atom in a 22.5 µm core hits the wall every **149 ns**
-(6.7e6 per second, CALCULATED), and the state is re-randomised. That converts an
+(6.7e6 per second, calculated), and the state is re-randomised. That converts an
 accumulation into a steady-state imbalance and costs a factor 3.5e3 in the
 minimum detectable per-atom excitation rate, 1.22 /s against 3.5e-4 /s for
 side-collected fluorescence. The break-even hyperfine memory time would be
@@ -429,7 +429,7 @@ matching what the record already carries rather than exceeding it.
 
 ## 4. Background and filtering budget
 
-Drive photon flux at 10 mW delivered (CALCULATED): 5.001e16 /s at 993.418 nm,
+Drive photon flux at 10 mW delivered (calculated): 5.001e16 /s at 993.418 nm,
 3.827e16 /s at 760.126 nm, 3.917e16 /s at 778.104 nm.
 
 **Spectral rejection**, defined as the filter transmission at which drive
@@ -446,14 +446,14 @@ rate:
 worth stating because it is unusual.** Both candidate pairings detect **bluer**
 than they drive. From the repository's own term energies, 993 → 795 is
 +2512.7 cm⁻¹ anti-Stokes, 778 → 420.30 is +10940.8 cm⁻¹, and 760 → 420.30 is
-+10636.9 cm⁻¹ (CALCULATED). One-photon fluorescence of glass, coatings and
++10636.9 cm⁻¹ (calculated). One-photon fluorescence of glass, coatings and
 cement is Stokes-shifted, so it cannot reach either detection band at all. Only
 `I²` processes can, and those fall with drive power. Coloured-glass filter
 fluorescence, normally the worst offender in a high-power fluorescence
 experiment, is absent by construction.
 
 **Raman in the silica.** The one-phonon band of fused silica peaks near
-440 cm⁻¹ with an edge near 1200 cm⁻¹ (ESTABLISHED from the literature, not
+440 cm⁻¹ with an edge near 1200 cm⁻¹ (established from the literature, not
 recomputed here, and worth checking against a source before it is relied on).
 All three shifts above are outside it. The 993 → 795 case is additionally
 suppressed thermally: `k_B T/hc` at 100 °C is 259.4 cm⁻¹, so
@@ -464,7 +464,7 @@ reachable by second-order and cascaded Raman, which would need checking at
 higher powers (OPEN).
 
 **In-band background that no filter removes.** The drive itself excites 5P
-off-resonantly, and those atoms emit real D-line photons at exactly the NIR
+off-resonantly, and those atoms emit real D-line photons at exactly the nir
 pairing's detection wavelength. At the working intensity a 993 nm drive gives
 0.158 excitations per atom per second and a parasitic flux 1.6e-6 of the
 two-photon signal, negligible. The parasitic term scales as `I` while the
@@ -494,7 +494,7 @@ the silica strut of thickness `t`. High-loss resonances sit at
 `lambda_m = (2t/m) sqrt(n² - 1)`, equally spaced in frequency. Using the
 standard three-term Sellmeier fit for fused silica (1965), the margin of
 `F = 2t sqrt(n²-1)/lambda` to the nearest integer, where 0.00 is on resonance
-and 0.50 is mid-band, is (CALCULATED):
+and 0.50 is mid-band, is (calculated):
 
 | strut `t` | 420.30 | 780.24 | 794.98 | 993.42 | 1064.0 | 1203.89 | 1323.88 |
 |---|---|---|---|---|---|---|---|
@@ -536,7 +536,7 @@ independent checks put it wide. The capillary model gives `w0 = 0.6435 a`, so a
 48 µm core implies **15.4 µm**, not 19. A published kagome measurement gives
 `w0/a` = 0.694, which applied to a 24 µm core radius gives **16.7 µm**. Taking
 16.7 µm raises the intensity by 1.30, so the depth would move from 1090.7 to
-1411.9 µK and the axial frequency from 429.4 to 488.5 kHz (CALCULATED).
+1411.9 µK and the axial frequency from 429.4 to 488.5 kHz (calculated).
 
 For the shift budget of section 1.3 this does not matter, because the trap depth
 cancels out of the closed form. For everything anchored to the axial frequency
@@ -578,7 +578,7 @@ scanned observable.
 What it would look like. At a conveyor speed `v`, the modulation frequency would
 be `v/L_beat`. For the 1.85 mm beat at 993 nm in a 48 µm core, that is 0.54 Hz
 at 1 mm/s and 0.054 Hz at 0.1 mm/s, one full period every 1.85 or 18.5 seconds
-(CALCULATED). Both are slow enough to record a line at each phase.
+(calculated). Both are slow enough to record a line at each phase.
 
 Three features that would make it a measurement rather than a curiosity:
 

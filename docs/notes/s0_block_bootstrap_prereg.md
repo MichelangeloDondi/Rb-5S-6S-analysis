@@ -15,7 +15,7 @@ profile threshold `2.706 x max(chi2_red, 1)` carries the block-to-block
 over-dispersion into the bound "conservatively, though as one global
 factor", and "a block bootstrap of the profile limit would be the
 sharper construction, and it is not run on the archive". This note runs
-it. The run can FALSIFY the committed wording: if the bootstrap bound
+it. The run can falsify the committed wording: if the bootstrap bound
 comes out above the committed profile bound, then the global-factor
 treatment was not conservative and the word falls, by addendum, at
 three sites (the `rb5s6s/stark.py` docstring, the `run_stark_sweep`
@@ -27,20 +27,20 @@ Data: the committed 20-cell grid (4 peaks x 5 powers) from
 `results/power_sweep.csv`, exactly as `run_stark_sweep` reads it.
 Model and fitter: `rb5s6s.stark.fit_stark_sweep`, unchanged.
 
-Resampling: STRATIFIED BY PEAK. Each resample draws, for every peak
+Resampling: Stratified by peak. Each resample draws, for every peak
 independently, five cells with replacement from that peak's five power
 cells. Stratification keeps every per-peak nuisance identified in
 every resample. B = 1000 resamples, seed 20260807, both frozen here.
 
 Estimators, two, with distinct roles:
 
-1. PRIMARY, the percentile bound: for each resample, the fitted
+1. Primary, the percentile bound: for each resample, the fitted
    `kappa_hat` (the minimizer, profile machinery off). The bootstrap
    bound is the 95th percentile of the `kappa_hat` distribution,
    quoted as S0(225 mW) = 0.225 x kappa. Rail-safe by construction
    (resamples railing at kappa = 0 enter the distribution as zeros).
-2. SECONDARY, diagnostic only: for each of the first B2 = 200
-   resamples, the RAW profile bound at threshold 2.706 UNSCALED (the
+2. Secondary, diagnostic only: for each of the first B2 = 200
+   resamples, the raw profile bound at threshold 2.706 unscaled (the
    resampling now carries the dispersion the global factor stood in
    for). Reported as the median and interquartile range of the bound
    distribution. Not the headline under this preregistration.
@@ -55,9 +55,9 @@ before the predictions are scored.
 
 ## Predictions, scored before anything is written
 
-- P1 (direction): the primary bootstrap bound lies AT OR BELOW the
+- P1 (direction): the primary bootstrap bound lies at or below the
   committed profile bound. This is what "conservative" predicts.
-- P2 (the falsifier): if the primary bound EXCEEDS the committed
+- P2 (the falsifier): if the primary bound exceeds the committed
   bound, the conservatism wording is wrong at the three sites named
   above and is corrected by a dated addendum. A bound that survives
   on a wrong mechanism is not kept on it.
@@ -73,26 +73,26 @@ before the predictions are scored.
   be reduced (secondary only) and the reduction recorded here by
   amendment. The primary B = 1000 does not shrink.
 
-## What is NOT claimed
+## What is not claimed
 
 The bootstrap does not replace the committed bound in this
 preregistration. Whether it becomes a companion number, a replacing
 construction, or a recorded diagnostic is the postscript's decision,
-taken against P1-P3 with the numbers on the table.
+taken against p1-p3 with the numbers on the table.
 
 ## Postscript, 2026-08-07: run complete, predictions scored
 
 Run integrity: 1000 of 1000 resamples converged, zero failures (stop
 condition 10 per cent, did not fire), 23.8 minutes, seed as frozen.
 
-- P1 HOLDS. The primary percentile bound is S0(225 mW) = 0.262 MHz
+- P1 holds. The primary percentile bound is S0(225 mW) = 0.262 MHz
   at the 95th percentile of the resampled minimizers, against the
   committed profile bound of 0.632 MHz. The committed construction is
   conservative relative to the empirical percentile bound, by a
   factor of 2.4.
-- P2 DOES NOT FIRE. The conservatism wording stands unchanged at its
+- P2 does not fire. The conservatism wording stands unchanged at its
   three sites.
-- P3 FAILS, and is recorded as failed. 41.6 per cent of resamples
+- P3 fails, and is recorded as failed. 41.6 per cent of resamples
   rail at kappa = 0 against the predicted at-least-half. The
   committed fit rails, but under block resampling the minimizer
   leaves the rail in a majority of resamples: the rail is a feature
@@ -107,7 +107,7 @@ condition 10 per cent, did not fire), 23.8 minutes, seed as frozen.
   one it stood in for.
 
 Disposition, per the preregistration's own scope clause: the
-bootstrap is RECORDED AS A DIAGNOSTIC. The committed bound stays the
+bootstrap is recorded as a DIAGNOSTIC. The committed bound stays the
 quoted construction, now carrying the validation this run supplies.
 The numerical proximity of the percentile bound (0.262) to the joint
 three-session headline bound (0.26) is a coincidence of scale

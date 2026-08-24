@@ -7,23 +7,23 @@ mechanism. It has one. **Nothing in `results/` moved on this and no committed
 bound changed**, so the finding is diagnostic and the chapter's limitation
 stands as a limitation.
 
-`provenance: NO_PRODUCER` - the numbers ON THIS PAGE remain computed once, by a run that recorded neither its environment nor its construction details. **A documented reconstruction now exists**, `scripts/run_band_excess.py` writing `results/band_excess.csv` from the same committed inputs, and its outcome is the reason this declaration does NOT upgrade: **the census reproduces exactly, 79 traces, and the headline rows do not.** The low-order shared amplitude survives near six sigma, the cubic-surviving amplitude returns 1.4 sigma against this page's 3.6, the joint height significance returns 3.05 against 8.65, and the reconstructed predictors are collinear at 0.896 where this page reports 0.415, which says the height predictor built here is not the one the original run used. **The page under-specifies its own construction**, and until the original's exact choices are recovered, its digits stand as what one unrecorded run printed. The density NEGATIVE, which is what the finding turns on, is the one part both runs agree on.
+`provenance: NO_PRODUCER` - the numbers on this page remain computed once, by a run that recorded neither its environment nor its construction details. **A documented reconstruction now exists**, `scripts/run_band_excess.py` writing `results/band_excess.csv` from the same committed inputs, and its outcome is the reason this declaration does not upgrade: **the census reproduces exactly, 79 traces, and the headline rows do not.** The low-order shared amplitude survives near six sigma, the cubic-surviving amplitude returns 1.4 sigma against this page's 3.6, the joint height significance returns 3.05 against 8.65, and the reconstructed predictors are collinear at 0.896 where this page reports 0.415, which says the height predictor built here is not the one the original run used. **The page under-specifies its own construction, and a preregistered recovery has now gone as far as the data allow**: the 0.415 predictor correlation is matched to 0.001 by the absolute in-band model height and by no shape-only quantity, so the original's predictor carried the trace amplitude, and under that recovered predictor the current amplitudes return height near zero with density at the marginal +2.2, the opposite pattern from this page. No predictor of any kind reaches this page's +8.65 with the current amplitudes, which would require a 0.70 partial correlation where the best candidate achieves 0.39 (recovery rows in the CSV). The irreproducibility therefore sits in the amplitude vector itself, the same axis as the ladder mismatch. **The density reading is construction-dependent in the current tree**, negative under the shape-only predictor and the marginal positive under the recovered absolute one, so the density question this page called settled is OPEN.
 
 ## What was already known, and why it stalled
 
 An earlier pass established that the excess is real and reproducible, then
-stopped, because the offset was not robust to the BASELINE FORM: granting each
+stopped, because the offset was not robust to the baseline form: granting each
 trace a quadratic swung it from +0.215 to -0.158, a change larger than the
 offset itself. Two things limited that verdict, and both were properties of the
 instrument rather than of the atom.
 
-The error bar was the scatter across the five traces of ONE condition. An n of
+The error bar was the scatter across the five traces of one condition. An n of
 five cannot separate a shared systematic from a per-trace one, whatever the
 sample count inside each trace.
 
-And the baseline forms were compared SEQUENTIALLY, one fitted after another.
-That measures how much the offset MOVES with the form. It never asks what the
-offset IS once the form is free, which is the question the record needs.
+And the baseline forms were compared sequentially, one fitted after another.
+That measures how much the offset moves with the form. It never asks what the
+offset is once the form is free, which is the question the record needs.
 
 ## The construction
 
@@ -37,8 +37,8 @@ amplitude has a closed form: project the polynomial basis out of both the
 residual and the band indicator, per trace, then combine. No optimiser and no
 iteration, and every trace keeps its own curvature.
 
-Baseline curvature is a property of ONE trace and drifts in sign and size
-between them. A physical band excess is COMMON, at the same detunings, in every
+Baseline curvature is a property of one trace and drifts in sign and size
+between them. A physical band excess is common, at the same detunings, in every
 trace. Granting each trace its own free polynomial removes the curvature that
 can imitate the offset, and what survives is only the part they share.
 
@@ -64,7 +64,7 @@ at n = 5 and is confirmed here at n = 79.
 
 ## The mechanism, from a joint regression
 
-Each trace's own amplitude regressed on BOTH competing predictors at once,
+Each trace's own amplitude regressed on both competing predictors at once,
 standardised, n = 79, k = 3:
 
 | predictor | coefficient | z |
@@ -79,26 +79,26 @@ significant at +2.2 sigma, and only the joint regression settles it.
 
 ## Two controls
 
-**A band pinned in LINEWIDTH units.** The band runs from the fit half-width out
+**A band pinned in linewidth units.** The band runs from the fit half-width out
 to 36 MHz in absolute frequency, and the line is far broader at the hot end, so
 the same MHz sits nearer the core there. Re-cutting the band at a fixed multiple
 of each trace's own FWHM removes that confound by construction. The trend
 survives, and by temperature it runs -0.1, -0.5, +0.4, +3.5 sigma from cold to
 hot. The band is not creeping toward the core.
 
-**A placebo band INSIDE the fitted window** carries structure too. Whatever this
+**A placebo band inside the fitted window** carries structure too. Whatever this
 is, it is not confined to the extrapolated region, which is what a general
 profile mismatch predicts and a far-wing collisional excess does not.
 
 ## What this changes
 
 The excess acquires the candidate mechanism the record said it lacked, and the
-candidate is the LINESHAPE MODEL rather than the atom. Three consequences:
+candidate is the lineshape model rather than the atom. Three consequences:
 
   * The band is not evidence for a quasistatic collisional wing, which leaves
     that question open on theory rather than contaminated by a measurement that
     looked like an answer.
-  * The lever that matters next is a better PROFILE, which is the model-ladder
+  * The lever that matters next is a better profile, which is the model-ladder
     work in `scripts/run_modelform.py`, and not a longer collisional lever.
   * The limitation itself is unchanged: the excess is still unattributed to a
     specific physical term, and a candidate mechanism is not an explanation.

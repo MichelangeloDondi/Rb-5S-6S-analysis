@@ -137,7 +137,7 @@ forbidden lines of the parity-violation literature) the distribution is
 **uniform**: mean $-S_0/2$ and, being symmetric about its mean, $\kappa_3=0$,
 which is **zero skew**. The skewness observable exists at all *only because the two-photon
 signal goes as $I^2$*. This one line is the delineation from the nearest
-prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), PRA **73**, 043416 (2006), who extracted an
+prior art ([Stalnaker *et al.*](../lit/stalnaker2006.md), pra **73**, 043416 (2006), who extracted an
 AC-Stark parameter from asymmetric standing-wave lineshapes numerically, in
 the $n=1$, fringe-resolved regime, with the full delineation in
 `docs/LITERATURE.md`).
@@ -240,7 +240,7 @@ collection optics, and $Z_c$ is not a free parameter: for the side-viewing
 $f=18$ mm lens imaging the beam onto the PMT it is the axial field of view in
 object space, $Z_c=L_\parallel/2M$ with magnification $M=v/u$ ($u$ = lens–beam
 and $v$ = lens–PMT distances, $1/u+1/v=1/f$), where $L_\parallel$ is the
-photocathode's active extent *along the beam image*. The R636-10 cathode, the
+photocathode's active extent *along the beam image*. The r636-10 cathode, the
 tube housed in the Thorlabs PXT1/M module seen in the in-campaign photograph,
 is a 3 × 12 mm rectangle, so which of its axes lies along the beam is a ×4
 lever on $Z_c$.
@@ -267,7 +267,7 @@ below the 0.90 mm flip threshold for any $M$ above 1.7 (PLAN §6 #4).
 
 **The magnification is roughly known too.** The collection lens was the
 $f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (experimenter,
-2026-07-29, an ESTIMATE and not a measurement, with $u$ and $v$ still wanting
+2026-07-29, an estimate and not a measurement, with $u$ and $v$ still wanting
 a ruler).
 That gives $Z_c = 6/M = 2.0$ to $2.4$ mm, and it hangs together: $1/u+1/v=1/f$ with
 $M=2.5$–3 puts the lens 24–25 mm from the beam and the photocathode 63–72 mm
@@ -379,7 +379,7 @@ $$S_0=\frac{\Delta\alpha\ I_\text{eff}}{2\varepsilon_0 c h},\qquad
 I_\text{eff}=(1+\rho)\frac{2P}{\pi w_0^2}$$
 
 With $\Delta\alpha=1093$ a.u. ([Orson *et al.*](../lit/orson2021.md) 2021) this is $S_0=0.35$ MHz (transition) at 225 mW,
-$w_0=64$ µm (the adopted prior, where it read 0.59 at the replaced 50 µm and
+$w_0=64$ µm (the accepted prior, where it read 0.59 at the replaced 50 µm and
 1.43 at the 32 µm nominal before that) and
 $\rho=0.94$, growing to 5.6 MHz at $w_0=16$ µm. The on-axis $\propto S_0^3$
 scaling above is the *pure transverse triangle*. At a small waist the axial

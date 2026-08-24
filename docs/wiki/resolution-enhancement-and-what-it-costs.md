@@ -23,8 +23,8 @@ eight bits is 256 levels across the screen. That is far too coarse for a
 measurement that wants a per cent of a line height, and instruments therefore
 offer a smoothing feature that trades bandwidth for resolution. The trade is
 real rather than cosmetic, because averaging genuinely reduces the uncertainty
-of each reported number. What is easy to get wrong is HOW MUCH resolution is
-bought, WHERE the feature sits in the instrument, and WHAT ELSE it changes.
+of each reported number. What is easy to get wrong is how much resolution is
+bought, where the feature sits in the instrument, and what else it changes.
 
 ## Two different rates, and mistaking one for the other
 
@@ -54,7 +54,7 @@ Agilent manual states both: an extra bit per factor of two, and noise reduced by
 one half per factor of four.
 
 In this repository the distinction has a concrete use. The quantisation grid of
-the campaign traces gives 11.86 bits, which is a WORD LENGTH. It says the
+the campaign traces gives 11.86 bits, which is a word length. It says the
 instrument wrote fine-grained numbers. It does not say the measurement is
 twelve-bit good, and the question of whether the grid matters at all is settled
 separately by the dither ratio below.
@@ -78,7 +78,7 @@ range across a power ladder rather than switching range at every rung.
 
 ## Where the feature lives, which is the trap
 
-The same capability is an ACQUISITION MODE on one make and a MATH FUNCTION on
+The same capability is an acquisition mode on one make and a math function on
 the other, and the difference decides what ends up in the file.
 
 | | acquisition mode | math function |
@@ -95,7 +95,7 @@ signal swing, which is raw eight-bit behaviour, while the campaign traces from
 the other instrument measure 11.86, which an eight-bit converter cannot produce
 at any record length.
 
-**What the measurement does not settle is WHY.** A math-function smoothing that
+**What the measurement does not settle is why.** A math-function smoothing that
 was configured but exported from the channel, and a smoothing that was never
 enabled, leave identical files. The lesson is therefore the operational one
 rather than a diagnosis of either session: where the feature is a math function,
@@ -132,7 +132,7 @@ causal average does move features, by roughly half its window.
 
 That distinction matters as soon as the frequency axis is swept in both
 directions. On a triangular scan a causal filter delays the line on the
-ascending and descending halves in OPPOSITE directions along the frequency
+ascending and descending halves in opposite directions along the frequency
 axis, so the two halves disagree about the centre by twice the lag, and the
 midpoint of the two recovers the true centre while the splitting measures the
 lag. Under a zero-phase filter there is no such splitting, because there is no
@@ -151,7 +151,7 @@ reaching for more bits when the dither ratio already says quantisation
 contributes a fraction of a per cent, which spends bandwidth to buy nothing.
 
 A fourth is subtler and worth stating because smoothing invites it. Averaging
-adjacent samples CORRELATES them, so a smoothed record contains fewer
+adjacent samples correlates them, so a smoothed record contains fewer
 independent points than it has samples, and any uncertainty computed as if the
 samples were independent is too small. That is the subject of
 [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md),

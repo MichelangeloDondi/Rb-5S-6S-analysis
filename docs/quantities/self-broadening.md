@@ -34,7 +34,7 @@ perturber density. That proportionality is the impact-theory result of
 separated, and it is what makes a single coefficient meaningful:
 $\gamma_{\rm coll} = \beta_{\rm self} N$, linear in $N$.
 
-The observable is the line WIDTH against temperature, since temperature sets
+The observable is the line width against temperature, since temperature sets
 the density through the vapour pressure curve. That is the whole lever, and it
 has a consequence worth stating at the top: the collisional width shares the
 width channel with the laser width, the transit width and the natural width,
@@ -61,7 +61,7 @@ rubidium.
 |---|---|---|---|
 | [Zameroski 2014](../lit/zameroski2014.md) | $129 \pm 11$ kHz/mTorr | 85Rb 5S to 7S, cascade fluorescence | FWHM, stated |
 | [Cao 2025](../lit/cao2025.md) | $40 \pm 0.54$ kHz/mTorr | 85Rb 5S to 5D 3/2, cascade fluorescence | FWHM, stated |
-| [Wang 2025](../lit/wang2025.md) | $0.32 \pm 0.01$ MHz/mTorr | 85Rb 5S to 7S, five-channel fluorescence | **NOT STATED** |
+| [Wang 2025](../lit/wang2025.md) | $0.32 \pm 0.01$ MHz/mTorr | 85Rb 5S to 7S, five-channel fluorescence | **Not stated** |
 
 Zameroski 2014 is the closest, being the only measured self-broadening rate for
 an nS state in rubidium, and it converts to about $5.39 \pm 0.46$ kHz per
@@ -78,7 +78,7 @@ systematic this experiment carries.
 7d 3/2 self-broadening at 99(6) kHz/mTorr, about 4.18 kHz per $10^{12}$
 per cubic centimetre, in a convention identical to the one used here, and did so with an
 absolute frequency axis. [Weller 2011](../lit/weller2011.md) measured the Rb D1
-RESONANT self-broadening at 69 kHz per 1e12 per cubic centimetre, which is a ceiling
+resonant self-broadening at 69 kHz per 1e12 per cubic centimetre, which is a ceiling
 rather than an estimate: a resonant dipole channel exists there and does not
 exist for an S-to-S transition, so the S-to-S coefficient must be far smaller.
 [Sautenkov 2026](../lit/sautenkov2026.md) is the resonance-broadened case this
@@ -132,7 +132,7 @@ because the width response is 1.5 over that span. Most of the density lever
 buys almost no width.
 
 **Model form, and as of 2026-08-21 the binding one.** The laser kernel was
-treated as a choice between a Gaussian and a Lorentzian. Freeing BOTH
+treated as a choice between a Gaussian and a Lorentzian. Freeing both
 components at once, which the shipped model can now do, is preferred at every
 peak by a nested likelihood ratio, and it moves $\beta_\text{self}$ by 42 to
 66 per cent. The uncertainty this contributes,
@@ -146,7 +146,7 @@ current construction do not improve this coefficient**, because the kernel
 systematic is three times larger than the thing more data would shrink. What
 improves it is an independent constraint on the laser kernel, and
 `results/kernel_k7.csv` ranks the routes. Note also what the kernel result does
-NOT settle: a non-Gaussian homogeneous component is present, and attributing it
+not settle: a non-Gaussian homogeneous component is present, and attributing it
 to the laser is a separate arrow that no measurement yet taken carries.
 
 **Statistical: the width degeneracy.** The collisional width and the laser
@@ -251,8 +251,8 @@ experiment currently does.
 full construction, and saying otherwise would be the kind of claim this page
 exists to avoid.
 
-**What is CALCULATION REQUIRED.** The uncertainty reachable with the extended
-lever AND an external laser width together. The lever alone is computed in
+**What is calculation required.** The uncertainty reachable with the extended
+lever and an external laser width together. The lever alone is computed in
 [the projection note](../notes/extended_lever_and_skew_projection.md), and the
 combined configuration is not.
 
@@ -266,7 +266,7 @@ combined configuration is not.
 | an absorption channel | a measured density, which is the single largest gain | optical access, an additional alignment, and a new systematic in the absorption path itself |
 
 The knob that matters most here is not on the list of things that raise
-sensitivity. It is the EXTERNAL laser-width measurement, which raises nothing
+sensitivity. It is the external laser-width measurement, which raises nothing
 and instead removes a competitor, and that asymmetry is the general lesson of
 [identifiability](../wiki/identifiability.md).
 

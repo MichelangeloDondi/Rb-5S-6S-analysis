@@ -26,7 +26,7 @@ of pure tones spaced by the drive frequency. Their amplitudes are
 the spacing is the drive frequency itself, known as accurately as the
 synthesiser that produces it.
 
-The point is that the spacing is a KNOWN frequency interval imposed on the
+The point is that the spacing is a known frequency interval imposed on the
 light. Any spectral feature the laser sweeps across is reproduced once per
 sideband, so a single sweep records several copies of the same line at
 intervals that are known to many digits. Measuring the separation of those
@@ -35,14 +35,14 @@ axis into frequency. The modulator becomes a ruler.
 
 In a two-photon transition the arithmetic changes, and the change is the
 useful part. The atom absorbs one photon from each beam, so a tooth appears
-wherever a PAIR of sidebands sums to the right total. The tooth at order $k$
+wherever a pair of sidebands sums to the right total. The tooth at order $k$
 therefore collects every pair $m+m'=k$, and by Neumann's addition theorem the
 sum collapses:
 
 $$A_k \propto \Big|\sum_m J_m(\beta) J_{k-m}(\beta)\Big|^2 = J_k(2\beta)^2$$
 
 So a two-photon comb has the same form as a one-photon one but at twice the
-modulation depth, and its teeth are spaced by HALF the drive frequency on the
+modulation depth, and its teeth are spaced by half the drive frequency on the
 transition axis, since a pair of sidebands one step apart shifts the total by
 one step.
 
@@ -68,7 +68,7 @@ The frequency axis of every trace comes from this.
 [Methods chapter 3](../methods/05_the_frequency_ruler.md) derives the comb,
 gives the measured sweep rate with its uncertainty, and explains why the rate
 is a clean number: it is a differential measurement across several copies of
-the SAME line, so everything that afflicts the line afflicts every copy
+the same line, so everything that afflicts the line afflicts every copy
 equally and cancels. [`rb5s6s/ruler.py`](../../rb5s6s/ruler.py) implements the
 simultaneous fit over all the teeth.
 
@@ -93,7 +93,7 @@ two or three teeth rise above the noise, and a ruler with three teeth over a
 short span constrains the rate far less than the same modulator would at a
 better depth. That is data insufficiency created by a setting.
 
-The second is a model failure. The Bessel law above holds for PURE phase
+The second is a model failure. The Bessel law above holds for pure phase
 modulation. Admixed amplitude modulation, whether deliberate or from a
 misaligned polarisation axis, changes the tooth heights and breaks the
 symmetry of the comb, so tooth amplitudes should not be used to infer $\beta$
@@ -106,7 +106,7 @@ $J_k(2\beta)$, which puts the carrier null at the wrong drive amplitude by a
 factor of two.
 
 A fourth, subtler one is a calibration degeneracy. The rate and the width
-enter the analysis as a product, so calibrating the rate by ASSUMING a width
+enter the analysis as a product, so calibrating the rate by assuming a width
 cannot then detect that the width has changed. The ruler has to be measured
 from the comb itself, on the same trace, for the calibration to be
 independent of what it calibrates.

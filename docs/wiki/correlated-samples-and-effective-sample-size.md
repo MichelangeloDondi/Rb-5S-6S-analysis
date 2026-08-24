@@ -2,7 +2,7 @@
 
 *[wiki index](README.md) · method*
 
-**The question.** How many INDEPENDENT measurements a dataset actually
+**The question.** How many independent measurements a dataset actually
 contains, when adjacent points are not independent.
 **Takes.** Any series whose points were acquired in order, and its residuals.
 **Gives.** The autocorrelation time, the design effect it implies, and the
@@ -67,12 +67,12 @@ distinguishing because the mechanism is the same and the unit is not.
     adjacent-sample averaging. The rehearsal then refuted the chain outright:
     its hundred times finer sampling shows the correlation already gone
     within one 10 us sample at the same amplifier gain. And a boxcar that
-    decimates to the stored rate would leave INDEPENDENT samples, so the
+    decimates to the stored rate would leave independent samples, so the
     simple form of the mode explanation does not close it either. What stands
     is that the correlation belongs to acquisition-side filtering, whose
     exact form the record does not pin down. The distinction that matters
-    survives every attempt: a chain's response is a CONSTRAINT while
-    acquisition filtering is a SETTING, and a setting can be changed when
+    survives every attempt: a chain's response is a constraint while
+    acquisition filtering is a setting, and a setting can be changed when
     bandwidth is wanted. Either
     way, oversampling beyond the correlation length adds points without
     adding information.
@@ -82,7 +82,7 @@ distinguishing because the mechanism is the same and the unit is not.
     between-block term.
   * **In model comparison**, where an information criterion's parameter
     penalty must be computed on the effective count rather than the raw one.
-    The record carries both versions of one such comparison, and they DISAGREE
+    The record carries both versions of one such comparison, and they disagree
     in their verdict, which is the sharpest available demonstration that the
     correction is not cosmetic.
 

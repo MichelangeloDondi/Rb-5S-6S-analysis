@@ -22,16 +22,16 @@ is [The Voigt profile](voigt-profile.md).
 An atom radiating in a gas is interrupted. When another atom passes close
 enough, the interaction shifts the emitter's levels for the duration of the
 encounter, and the phase of the light it is radiating is scrambled. In the
-IMPACT APPROXIMATION, where a collision lasts far less time than the mean
+impact approximation, where a collision lasts far less time than the mean
 interval between collisions, each encounter can be treated as an instantaneous
 randomisation of the optical phase.
 
 Random phase interruptions at mean rate $1/\tau_c$ are statistically
 indistinguishable from an extra decay channel: they add $1/\tau_c$ to the
 decay rate of the coherence. The consequences are the two that matter.
-The line STAYS LORENTZIAN, because an exponentially decaying coherence
+The line stays lorentzian, because an exponentially decaying coherence
 transforms to a Lorentzian whatever the reason for the decay. And its width
-grows LINEARLY with the collision rate, which for a gas at fixed temperature
+grows linearly with the collision rate, which for a gas at fixed temperature
 means linearly with density,
 
 $$\gamma_\text{coll}=\beta_\text{self}N$$
@@ -79,11 +79,11 @@ before the data were examined, and the current numbers are in
 
 A Lorentzian-equivalent laser width adds to this coefficient's channel the same
 way the collisional width does, because both are Lorentzian and Lorentzians
-convolve to their sum EXACTLY. At a fixed condition the two are therefore not
+convolve to their sum exactly. At a fixed condition the two are therefore not
 merely correlated, they are unidentifiable: only the sum can be measured, and a
 fit returning a confident split there is describing a numerical artefact.
 
-What separates them is DENSITY. The collisional width is
+What separates them is density. The collisional width is
 $\beta_\text{self} N(T)$ and moves with the temperature ladder, a laser width
 does not, and across the ladder both are recovered. Measured on this archive,
 $\Gamma_{L,\text{equiv}} = 0.398$ MHz as an inverse-variance mean over four
@@ -103,7 +103,7 @@ and the family's own adequacy is a separate question with its own instrument
 ## One term this coefficient absorbs and cannot separate
 
 A two-atom cooperative channel puts a satellite at twice the single-atom
-magnetic position, because a PAIR of atoms can accept two units of angular
+magnetic position, because a pair of atoms can accept two units of angular
 momentum where one atom can accept only one
 ([magnetic sublevels](magnetic-sublevels.md),
 `rb5s6s/cooperative.py`). Its rate is linear in density, since it needs a
@@ -119,11 +119,11 @@ width of 492 kHz, six parts in ten thousand million.
 The reasoning generalises past this one term. **A design whose only lever is
 density cannot distinguish any two terms that are both linear in it**, and the
 way out is a second lever rather than more density points. Here that lever is
-the FIELD: this coefficient is indifferent to it, and the satellite's width
+the field: this coefficient is indifferent to it, and the satellite's width
 contribution goes as $B^2$.
 
 The same rule read the other way is why the density ladder works at all. A
-laser contribution to the width is CONSTANT in density, not linear in it, so
+laser contribution to the width is constant in density, not linear in it, so
 density does separate it from this coefficient. That separation is what makes
 the headline kernel comparison a measurement while its per-condition version
 is not ([the Voigt profile](voigt-profile.md)). One lever distinguishes terms

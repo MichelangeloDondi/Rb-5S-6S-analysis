@@ -9,7 +9,7 @@ open, argued in
 and recorded as a decision in
 [RESEARCH_DECISIONS section 13](../RESEARCH_DECISIONS.md).
 
-`provenance: results/stark_joint.csv` - DIAGNOSTIC by its own header, and it says in terms that the quoted light-shift construction REMAINS the pooled three-session fit in this file. 43 of its 57 three-significant-figure values appear in committed CSVs. The remainder are the campaign-only variant's own intermediates. **14 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: results/stark_joint.csv` - DIAGNOSTIC by its own header, and it says in terms that the quoted light-shift construction remains the pooled three-session fit in this file. 43 of its 57 three-significant-figure values appear in committed CSVs. The remainder are the campaign-only variant's own intermediates. **14 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 This note exists because that chapter states how a campaign-only refit behaved,
@@ -75,14 +75,14 @@ crossing collapses to a small fraction of the primary's.
 what the light shift could be if the red-side excess is instrumental, and a
 construction that assumes away the effect it bounds cannot supply the record's
 number for that effect. The table is shown because it demonstrates the
-mechanism by which added nuisance freedom can TIGHTEN a profile interval, which
+mechanism by which added nuisance freedom can tighten a profile interval, which
 is the point [the chapter](../big_picture/08_when-a-joint-fit-is-legitimate.md)
 makes in prose, and because the same comparison measures how sensitive this
 construction's reported limit is to the treatment of the red-side structure.
 
 ## The pooled construction's own re-run, beside it
 
-The same day's diagnostic re-run of the POOLED construction is the comparison
+The same day's diagnostic re-run of the pooled construction is the comparison
 the chapter interprets, so its per-pass answers belong here too. Ascending
 2.106, descending 1.007, seeded 1.231 MHz per W, against the committed
 production value of 1.147 from the earlier pointwise-minimum construction. The
@@ -96,13 +96,13 @@ grid point, each variant's chi-square given relative to its own minimum.
 ## The multi-start reproducibility test, run 2026-08-17, and what it did not settle
 
 The convergence-checks table below used to say that no construction had been
-given a profile-reproducibility test. One has now been attempted on the POOLED
+given a profile-reproducibility test. One has now been attempted on the pooled
 construction, and the result refines the question rather than answering it.
 
 **The design, frozen before the run.** Six coefficient values spanning the
 bound region, five starts each. Start zero is the production initial vector and
 the other four are jittered componentwise by five per cent, each jitter drawn
-once per START and applied at every coefficient value, so each start yields one
+once per start and applied at every coefficient value, so each start yields one
 coherent profile curve and therefore one bound. Every optimisation is
 independent, with no warm start from a neighbouring point, which is the single
 difference from the production construction and the point of the test.
@@ -136,7 +136,7 @@ halved the capped points from fifteen to seven, so part of the first run's
 spread was an unfinished search. What remains is not: two starts produced
 complete curves with no capped point and their bounds are 1.000 and 2.133 MHz
 per W, a factor of 2.13 between fully converged independent starts, and one
-start CONVERGED at three coefficient values to a stationary point about
+start converged at three coefficient values to a stationary point about
 21,000 in chi-square above the best, which is a second local optimum and not a
 search that ran out. **The pooled likelihood surface carries more than one
 local optimum, and the production construction's warm-start chain is
@@ -158,15 +158,15 @@ the pinned run and read it as the surface's own instability. That reading
 does not survive an absolute chi-square comparison, and the correction runs
 in the record's favour.**
 
-The CSV in this directory stores each start OWN-NORMALISED, against its own
+The CSV in this directory stores each start own-normalised, against its own
 best point. A pointwise minimum across starts formed from those columns is
 not a profile: it drags every curve to zero at its own minimum, and the
 minimum over the flattened curves, {0.00, 0.00, 0.00, 0.66, 0.00, 14.17}
-across the six coefficient values, crosses 2.706 at 2.191. **THAT CURVE
-CORRESPONDS TO NO SINGLE FIT.** It is an envelope over five different
+across the six coefficient values, crosses 2.706 at 2.191. **That curve
+corresponds to NO single fit.** It is an envelope over five different
 optimisations, most of which never reached the production optimum.
 
-The instrument that produced those starts writes ABSOLUTE chi-square, and
+The instrument that produced those starts writes absolute chi-square, and
 its output survives beside it. Its provenance was pinned before use: the
 five per-start bounds derived from it reproduce this note's own reported
 pinned-run values exactly, 0.0, 0.593, 1.675, 1.916 and 2.191, so it is the
@@ -194,7 +194,7 @@ dominates.
 What the multi-start test establishes therefore stands, and what it was read
 as saying does not. It establishes that the surface is expensive to reach
 from an independent start at the production budget and that the warm-start
-chain is load-bearing, which is the note's own conclusion. It does NOT
+chain is load-bearing, which is the note's own conclusion. It does not
 establish that the committed profile sits at the wrong optimum, and the
 anchored comparison says the opposite.
 
@@ -216,7 +216,7 @@ correction.
 | campaign-only wing variant | cold descending and seeded ascending | chi-square at or below the primary's at every grid point, as nesting requires |
 | pooled, multi-start at the production budget | five independent starts, no warm start | half the optimisations capped, one complete curve: a second optimum and an unfinished search not separated |
 | pooled, multi-start at four times the budget | identical starts, only the cap changed | **RESOLVED, both causes real**: caps halved, two complete curves disagree by a factor 2.13, and one start converged to a stationary point 21,000 above the best. More than one local optimum, and the warm-start chain is load-bearing |
-| pooled, multi-start under the PINNED dependency floor | identical design, numpy 2.5.0 and scipy 1.16.0, the CI minimum leg | **REPRODUCES**: converged starts again split by about 21,300 in chi-square at three of six kappa points, per-start bounds run 0.59 to 2.19 with one degenerate curve, and the pointwise-min bound of 1.92 again sits far above the production warm-start chain's 1.147. The surface's structure is a property of the fit, not of the environment |
+| pooled, multi-start under the pinned dependency floor | identical design, numpy 2.5.0 and scipy 1.16.0, the CI minimum leg | **Reproduces**: converged starts again split by about 21,300 in chi-square at three of six kappa points, per-start bounds run 0.59 to 2.19 with one degenerate curve, and the pointwise-min bound of 1.92 again sits far above the production warm-start chain's 1.147. The surface's structure is a property of the fit, not of the environment |
 
 ## What this does and does not establish
 

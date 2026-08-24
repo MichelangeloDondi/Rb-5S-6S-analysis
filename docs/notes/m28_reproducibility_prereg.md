@@ -110,13 +110,13 @@ moved by about a third and both tightened: campaign-only 0.864 to 0.557 and
 power-ladder 0.874 to 0.617. `basin_gap_max` went from 0.82 to 57.29, still
 inside gate B6's threshold of 1000.
 
-A PRECISION THIS NOTE OWES ITS OWN SECTION 1. That section says the subset
+A precision this NOTE owes its own section 1. That section says the subset
 variants "run without such a seed", which reads as though they are separately
 run cold profiles. They are not. `run_full_archive_fit.py` computes them as
 `ub95(prof_a, col=2)` and `ub95(prof_a, col=3)`, partial-chi-squared columns of
-the SAME seeded profile the primary bound is read from at `col=1`. So the
-seeding and the pointwise-minimum discipline protect the TOTAL, and what has
-no protection of its own is the SPLIT of that total between sessions. Section
+the same seeded profile the primary bound is read from at `col=1`. So the
+seeding and the pointwise-minimum discipline protect the total, and what has
+no protection of its own is the split of that total between sessions. Section
 1's instinct was right and its mechanism was loose.
 
 Identical data, changed code, the total exact, the split between sessions
@@ -126,13 +126,13 @@ optimizer path.
 
 > **Third postscript, 2026-08-20: the premise above was wrong and this
 > paragraph's conclusion goes with it.** A commit sweep across the range,
-> holding one environment, found the joint construction's POINT COUNT
+> holding one environment, found the joint construction's point count
 > changing at exactly one commit, 247783 to 247788 with the trace count
 > unchanged at 172. That commit renamed a vocabulary across the tree and
-> REGENERATED THE COMMITTED RULER CSVs as a side effect, moving fitted ruler
+> regenerated the committed ruler CSVs as a side effect, moving fitted ruler
 > rates in their eleventh digit, and a frequency axis shifted by that much
 > moves a discrete trim boundary across a sample edge so that five samples
-> enter. So the data were NOT identical: byte-identical described the raw
+> enter. So the data were not identical: byte-identical described the raw
 > traces and not the fit's inputs, and this note's own check looked at the
 > files it expected to move rather than at the count of what the fit loads.
 >
@@ -141,14 +141,14 @@ optimizer path.
 > a common grid point. "Changed code" is the half of the premise that fails
 > hardest.
 >
-> What survives is the CONDITIONING argument, and it survives intact. A
+> What survives is the conditioning argument, and it survives intact. A
 > perturbation this small moving only the poorly conditioned quantities is
 > exactly what the paragraph above says, and it is now the candidate
 > amplifier rather than the cause. How much of the reported third five
 > samples account for is being measured. See `docs/RESULTS.md` C3f.
 
 So section 1's seeded-twin discipline gap, which the first postscript said had
-lost its urgency, HAS ITS URGENCY BACK, and on a second axis: the variants are
+lost its urgency, has its urgency back, and on a second axis: the variants are
 sensitive not only to their own inputs but to the path the optimizer takes to
 them. The remedy is unchanged and is now better motivated, which is to seed the
 subset variants the way the primary is seeded. Until that is done the subset

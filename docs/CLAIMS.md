@@ -48,7 +48,7 @@ two-photon sum frequency, twice the laser frequency.
 - Light shift at the campaign maximum of 225 mW:
   S₀(225 mW) < 0.26 MHz, from a joint three-session fit of every point
   of every power profile, minimum consistent with zero shift. **The
-  disposition of a SUBSET of this bound had been under review** because
+  disposition of a subset of this bound had been under review** because
   rerunning the construction on 2026-08-14 moved a subset bound by about a
   third, and the cause was identified on 2026-08-20: the inputs were not
   byte-identical, since one commit regenerated the committed ruler CSVs while
@@ -69,7 +69,7 @@ two-photon sum frequency, twice the laser frequency.
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
 - The 2025 laser linewidth: below 1.2 MHz per photon, equivalently 2.4 MHz on
-  the transition axis, at the adopted lineage waist,
+  the transition axis, at the accepted lineage waist,
   rising with the waist. The per-block fitted values, 1.75 to 2.15 MHz
   on the transition axis, are preliminary: their block-to-block
   variation is partly the collision-laser degeneracy rather than
@@ -139,7 +139,7 @@ systematic as fig1.*
   between-block scatter.
 - The two-photon amplitude scales approximately as P² at fixed density
   (log-log slopes 1.83-2.12) and linearly with density at fixed power
-  (slopes 0.85-1.02). **The power law is NOT claimed exactly: corrected
+  (slopes 0.85-1.02). **The power law is not claimed exactly: corrected
   2026-08-18.** Three of the four campaign slopes exclude 2 under a block
   bootstrap that respects this sweep's power-time collinearity, the departure
   replicates in an independent session whose ladders ran in alternating
@@ -188,7 +188,7 @@ systematic as fig1.*
   The disagreement is established as real rather than a convention
   artifact. Which side is right remains open until an external
   adjudication.
-- The first scalar magic wavelengths for the 5S-6S pair, near 1203.9,
+- The first scalar magic wavelengths for the 5s-6s pair, near 1203.9,
   1287.9 and 1339.6 nm, the 1204 nm crossing being the practically
   usable one. Its 16 to 84 percent band runs 1203.06 to 1204.73 nm. No
   published values were found to the depth searched. The trap-design
@@ -230,25 +230,25 @@ systematic as fig1.*
   MEASURED rather than unquantified** (updated 2026-08-21: the earlier form of
   this entry said the size was unquantified and that the data do not settle
   it, and both halves changed). Every lineshape in this record convolves the
-  natural Lorentzian with a GAUSSIAN kernel for the laser, which is what slow
-  frequency noise produces. Fast noise produces a LORENTZIAN laser line
+  natural Lorentzian with a gaussian kernel for the laser, which is what slow
+  frequency noise produces. Fast noise produces a lorentzian laser line
   instead, and a Lorentzian laser width enters the fixed-condition model only
-  through its SUM with the collisional width, so the kernel choice is a bias
+  through its sum with the collisional width, so the kernel choice is a bias
   channel on $\beta_\text{self}$ and not only a modelling preference. Its
   size is measured: switching the kernel moves the hierarchical
   $\beta_\text{self}$ by 45 to 67 per cent, nine to eighteen sigma on the
   quoted statistical error (`results/kernel_headline.csv`). The headline
   slope bound above does not lean on the kernel and is unaffected. What the
   line itself settles, and what it does not: the pure-Lorentzian model is
-  NESTED inside the Gaussian one, so a win-count comparison carries no
+  nested inside the Gaussian one, so a win-count comparison carries no
   information, and the nested likelihood ratio (median $\Delta\chi^2 = 232$
   for one parameter at its boundary, `results/laser_kernel.csv`) excludes a
   purely Lorentzian laser contribution at 26 of 32 conditions above three
-  sigma while leaving the Lorentzian CONTENT between the corners unmeasured.
+  sigma while leaving the Lorentzian content between the corners unmeasured.
   The identifiable spectroscopic object is $\Gamma_{L,\text{equiv}}$, a width
   in MHz, and a fraction would need an independent laser total. The M8 cusp
   comparison ($\Delta\text{BIC}$ of -0.1 to +3.7) is unchanged and is about
-  the TRANSIT kernel, a separate question. The laser's frequency-noise
+  the transit kernel, a separate question. The laser's frequency-noise
   spectrum is still measured nowhere (the M1 law is detection noise, a
   different quantity), and the M2 stage-4b limit still leans against the
   Gaussian's justification, so the kernel is tested at one corner and open in
@@ -268,21 +268,21 @@ systematic as fig1.*
   **What changed on 2026-08-21, and what did not.** The mixed G+L kernel is
   now shipped rather than living in a script, so the question can be put to
   the estimator directly, and two facts were measured that the entry above
-  could only assert. First, at a FIXED CONDITION $\Gamma_{L,\text{equiv}}$ is
+  could only assert. First, at a fixed condition $\Gamma_{L,\text{equiv}}$ is
   exactly unidentifiable alongside the collisional width: over six injected
-  values the recovered SUM tracks the true sum to about one part in a
+  values the recovered sum tracks the true sum to about one part in a
   thousand while the split is arbitrary. That is the continuum identity, not
   a limitation of the fit, and a well-determined split there would be the
-  discretisation artefact this record removed. Second, the DENSITY LADDER
+  discretisation artefact this record removed. Second, the density ladder
   separates them, because the collisional width scales with $N(T)$ and a
   laser width does not: injecting 0.600 MHz on the narrow 110 to 130 C ladder
   the archive already has returns 0.599 with a spread of 0.013 over four
   seeds, with $\beta_\text{self}$ unbiased beside it. So the identifiable
-  object is a MULTI-CONDITION quantity, and its uncertainty is set by how far
+  object is a multi-condition quantity, and its uncertainty is set by how far
   the ladder separates it from the coefficient rather than by any single
   condition's statistics.
   Five hostile worlds at 500 preregistered trials each
-  (`results/kernel_worlds.csv`) then asked whether the estimator MANUFACTURES
+  (`results/kernel_worlds.csv`) then asked whether the estimator manufactures
   such a width. Against a true zero **no trial in 500 crossed the detection
   threshold**, and the same held when the data carry a quadratic baseline the
   linear model cannot absorb and when they carry a transit kernel of the wrong
@@ -295,14 +295,14 @@ systematic as fig1.*
   quoted interval is recalibrated against that measured number rather than
   read as nominal. None of this attributes the width to the laser: that arrow
   is licensed by the transfer triangle and by nothing here.
-  **What the EXISTING comb bound settles, and what it does not** .
+  **What the existing comb bound settles, and what it does not** .
   The committed 28.3 kHz limit was taken at the campaign scan rate, so its
-  clock averages at 6.8 Hz, BELOW the band the scanned widths integrate, and
+  clock averages at 6.8 Hz, below the band the scanned widths integrate, and
   converting an excursion at one averaging time into a linewidth needs a noise
   type measured nowhere. Granting the most favourable type, that bound permits
   a width some 1800 times the one measured, so it does not constrain the kernel
   (`results/kernel_k5.csv`). That is a statement about the measurement already
-  taken. It is NOT an argument against the fast block above, which samples a
+  taken. It is not an argument against the fast block above, which samples a
   different band by design, and an earlier version of this entry wrongly
   generalised the one into the other.
 - No claim that the light-shift bounds are tight. They are known to be
@@ -533,8 +533,8 @@ curve's 22-fold leverage leaves the implied density inside the
 20 percent scale systematic it would check, and about 31 hours if only
 one hyperfine component's pedestal is fitted rather than the comb of
 four. For everyone using the light-shift prediction, the same design
-reaches the adopted retro ratio in about 2.1 hours on the comb and about
-33 hours on one component, which converts an adopted prior into a
+reaches the assumed retro ratio in about 2.1 hours on the comb and about
+33 hours on one component, which converts an accepted prior into a
 same-trace measurement rather than improving on one. Two conditions
 travel with both. The pedestal has to be separated from the
 scattered-light background, which the projection does not model, and the
@@ -670,7 +670,7 @@ it at, with the condition attached:
   density-conditioned number in this record, which is every collisional
   coefficient and every rate quoted per 10¹² cm⁻³, and separately
   everyone who uses the light-shift prediction, since the retro ratio it
-  rides on is adopted here and would become measured. The add-on rides
+  rides on is accepted here and would become measured. The add-on rides
   on any session that runs at all, so it has no audience of its own to
   justify it.
 - The guided-mode family is section 3's last entry, and none of it is

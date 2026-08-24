@@ -105,7 +105,7 @@ state through an intermediate level, and that intermediate decay does not care
 which half it lands in. If it lands in the other one, it is off resonance by
 thousands of times the linewidth, which is to say it is gone: this dataset
 resolves the two halves as two of its own four lines. Between 8 and 15 per cent
-of atoms decay AT LEAST ONCE while crossing the beam, the two ends being the
+of atoms decay at least once while crossing the beam, the two ends being the
 signal-weighted average over the collection volume and the value on the beam
 axis, so a real fraction of them leave the line while being measured. Only a
 share of those decays actually lands in the other half, and that smaller
@@ -210,7 +210,7 @@ where a conservative penalty is most likely to be refusing something real. But
 the two penalties answer different questions, one about predicting new data
 and one about identifying a single true model, and neither question is
 obviously ours, so this record does not crown either. It reports a small
-PANEL of criteria, numerically, everywhere a complexity decision is made, and
+panel of criteria, numerically, everywhere a complexity decision is made, and
 treats their disagreement as a measurement: when every member selects the
 same model the choice is robust across the conventions the panel spans, and
 when they split, the model ranking is sensitive to the selection convention
@@ -263,11 +263,11 @@ residual gap.
 The input to the phase shift is the difference potential, not the pair
 coefficient: what dephases the line is ΔC₆ = C₆(5S+nS) − C₆(5S+5S), the
 excited pair against the ground pair (a 2026-08-04 referee point the
-record adopted, [notes/vdw_difference_potential_and_4d_channel.md](../notes/vdw_difference_potential_and_4d_channel.md)).
+record accepted, [notes/vdw_difference_potential_and_4d_channel.md](../notes/vdw_difference_potential_and_4d_channel.md)).
 The Lindholm-Foley prefactor, the mean-speed step and the dropped core
 and tail are common to the 6S and 7S rungs and divide out of the ratio.
 The ground-pair subtraction is not that kind of error and does not
-cancel, which is why the adopted ratio is a ratio of differences: with
+cancel, which is why the assumed ratio is a ratio of differences: with
 ΔC₆(6S) = 24728 and ΔC₆(7S) = 79048 a.u., the ratio 0.3128 enters
 through the (ΔC₆/ħ)^0.4 scaling and scales the *measured* 7S rate of
 5.386 kHz per 10¹² cm⁻³ by 0.3128^0.4 = 0.628, giving

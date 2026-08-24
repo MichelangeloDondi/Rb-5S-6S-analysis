@@ -54,7 +54,7 @@ block, and another after any pause long enough to reopen the transient.
 **Go/no-go.** Engage the lock chain and hold it thirty minutes. It passes if
 the held drift magnitude over that half hour stays below 0.025 MHz per minute,
 which is above the dataset's own held-lock bound. That bound is of order
-0.02 MHz per minute on the laser axis with its SIGN UNDETERMINED
+0.02 MHz per minute on the laser axis with its sign undetermined
 ([DATA.md](../DATA.md), provenance note of 2026-07-30), and it replaced a
 directional reading of 0.016 with a 0.007 to 0.025 interval that the
 window-reference audit retracted. The criterion therefore asks the new epoch
@@ -116,14 +116,14 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    0.90 takes ρ from ~0.90 to ~0.75 across 130→70 °C: an ~8% drift in S₀ from
    optics alone, which uncorrected reads as a temperature-dependent light shift.
    Measure the stable part (lens²·mirror, once, before the campaign) and the
-   drifting part (window transmission before AND after the cell, at every
+   drifting part (window transmission before and after the cell, at every
    condition). A pick-off reading both the outgoing and returning beam gives ρ
    directly with no symmetry assumption. The wide-scan pedestal of §5 would give
    a second, in-situ ρ on the same traces, by a route that shares no optic with
    the pick-off.
    **Added 2026-08-09.** A third route exists and it measures a better quantity.
    Offsetting the retro arm in frequency makes the two arms beat, and the beat
-   amplitude reads the MODE-OVERLAP-WEIGHTED ρ, which is what enters S₀, where a
+   amplitude reads the mode-overlap-weighted ρ, which is what enters S₀, where a
    pick-off reads power. It also makes the fringe mean exact for every velocity
    class instead of the fast ones, which is the fringe-resolved tail's only
    remedy. It is not cheap: the offset has to outrun the axial thermal spread
@@ -214,7 +214,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    (§6 item 4). **64 µm is the clean-κ width workhorse.**
    **Added 2026-08-09, and it bears on the number this item quotes.** Item 7
    below already notes that 16 µm is saturated at 225 mW and treats that as a
-   statement about power headroom. It is also a statement about the SKEW, which
+   statement about power headroom. It is also a statement about the skew, which
    this item does not make. The ramp weights each shift by the signal it
    produces, and that weighting is the intensity squared only while the drive is
    weak, so at a saturation parameter of 8.5 the effective exponent falls and the
@@ -232,7 +232,7 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    threshold at 1.68 eV). Two-photon saturation leaves 1–2 W of headroom at
    the measured waist, where the on-axis saturation parameter is 0.033 at
    225 mW and falls as the inverse fourth power of the waist, so a wider
-   focus only adds headroom. The predicted on-axis shift at 225 mW is 0.35 MHz at the adopted
+   focus only adds headroom. The predicted on-axis shift at 225 mW is 0.35 MHz at the accepted
    measured waist, with a band of 0.285 to 0.404 MHz across the waist and retro
    priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the 2025
    dataset's amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the

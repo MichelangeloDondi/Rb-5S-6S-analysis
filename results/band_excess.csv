@@ -20,4 +20,9 @@ JOINT,height_z,+3.05,sigma,note: +8.65,DIAGNOSTIC
 JOINT,density_coef,-0.00083,fraction of peak per SD,note: -0.00012,DIAGNOSTIC
 JOINT,density_z,-1.57,sigma,note: -0.75,DIAGNOSTIC
 JOINT,predictor_corr,+0.896,dimensionless,note: +0.415,DIAGNOSTIC
+RECOVERY,predictor_corr_absolute,+0.414,dimensionless,"absolute in-band model height against density. Note: +0.415, matched by the absolute family and not by the shape-only predictor above, which is the recovery",DIAGNOSTIC
+RECOVERY,height_z_recovered_predictor,+0.11,sigma,joint height z under the recovered absolute predictor. The note reports +8.65 for what its correlation says is this construction,DIAGNOSTIC
+RECOVERY,density_z_recovered_predictor,+2.20,sigma,under the recovered predictor the density term carries the marginal instead of being stripped. The density-null reading is therefore CONSTRUCTION-DEPENDENT in the current tree,DIAGNOSTIC
+RECOVERY,density_z_marginal,+2.49,sigma,"density alone. The note's marginal was +2.2, and this approximate agreement plus the ladder mismatch localises the note's irreproducibility to the amplitude vector",DIAGNOSTIC
+RECOVERY,r_needed_for_note_z,0.704,dimensionless,"partial correlation the note's +8.65 would require at n=79. The best any candidate predictor achieves against the current amplitudes is 0.386, so NO predictor reproduces the note's z with these amplitudes",DIAGNOSTIC
 VERDICT,claim_reproduces,NO,verdict,"the CLAIM, not the digits: a positive shared band amplitude that survives per-trace cubic freedom, and a joint regression where profile height carries the significance while density does not. Judged at the thresholds printed in this producer, fixed before the first run",DIAGNOSTIC

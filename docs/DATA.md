@@ -34,7 +34,7 @@ here the moment a specific number looks wrong.
 | rebuilding the census from a clone | whether the counts regenerate without any private folder | section 4, and `tests/test_manifest.py`, whose file-level re-hash runs in a copy that carries the traces and skips, with a stated reason, in one that does not |
 | after data products | which tables exist, what produced each one, and how far each is checked | [`results/README.md`](../results/README.md) and [`data_recovered/README.md`](../data_recovered/README.md), with the folder roles in section 3a |
 
-<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5s-6s program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The whole record on one axis, before the census that describes it. Three
 sittings, every acquisition at its recovered time, the etalon-transient windows
@@ -61,14 +61,14 @@ record. It holds the 297 curated traces and every result that carries an
 absolute number.
 
 The *campaign-morning session* of 17 July 2025 ran the frequency ruler's final
-commissioning at 04:18 to 06:33 and then a four-power sweep at 06:54 to 07:11, run 210 then 35, 70 and 105 mW, NON-MONOTONE in time unlike the campaign's uniform descent, which is what lets it serve as an independent check on order dependence.
+commissioning at 04:18 to 06:33 and then a four-power sweep at 06:54 to 07:11, run 210 then 35, 70 and 105 mW, non-monotone in time unlike the campaign's uniform descent, which is what lets it serve as an independent check on order dependence.
 The commissioning is the reason the campaign's frequency axis has a scale, and
 the sweep is a second measurement of the power dependence, taken hours before
 the campaign's own.
 
 The *4 July evening session* is 50 LeCroy traces taken 22:31 to 01:38 JST,
 thirteen days before the campaign, at four peaks and 90/180/270 mW with
-`G=10^6`, its ladders run in ALTERNATING directions per peak rather than in the campaign's uniform descent, which is the property that makes it evidence about order dependence. It is the only session at an internal 130 °C, and its power dependence
+`G=10^6`, its ladders run in alternating directions per peak rather than in the campaign's uniform descent, which is the property that makes it evidence about order dependence. It is the only session at an internal 130 °C, and its power dependence
 is one of the three arms the joint AC-Stark bound fits together.
 
 The *4 July first trials* are the earliest traces of all, at 03:37 JST that same
@@ -101,7 +101,7 @@ components are labelled by their wavelengths: 4207 (⁸⁷Rb F=2→2), 4192
 (⁸⁵Rb F=3→3), 4154 (⁸⁵Rb F=2→2), 4121 (⁸⁷Rb F=1→1).
 
 The laser (M Squared SolsTiS) was scanned slowly across each line. An EOM at
-exactly 12.5 MHz was toggled ON for separate "ruler" traces, whose two-photon
+exactly 12.5 MHz was toggled on for separate "ruler" traces, whose two-photon
 comb teeth sit 6.25 MHz apart on the laser axis and calibrate the sweep. The
 12.5 MHz is confirmed in hardware twice, as the generator setting (Tektronix
 AFG31021 at 12.500 000 000 0 MHz) and as the EOM's designed resonance on its
@@ -125,7 +125,7 @@ a position rather than a width is built to live inside those runs, and the ones
 that could not be are withdrawn.*
 
 Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an
-**Agilent/Keysight InfiniiVision DSO-X 3054A** (500 MHz, 4 GSa/s). The LeCroy
+**Agilent/Keysight InfiniiVision dso-x 3054a** (500 MHz, 4 GSa/s). The LeCroy
 on the same bench would not trigger reliably (experimenter, 2026-07-23), and
 the export signature confirms which instrument wrote the files. Every CSV in
 the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision
@@ -169,9 +169,9 @@ missing log, which has since been found.
 > below is corrected as a result, and the correction is marked where it sits.
 > The releases carrying this text were themselves later withdrawn, so its
 > provenance rests on commit history rather than on a release object
-> ([PREREGISTRATION §9](PREREGISTRATION_timestamps.md)).
+> ([preregistration §9](PREREGISTRATION_timestamps.md)).
 
-<img src="apparatus/program_timeline.png" alt="The 5S-6S program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
+<img src="apparatus/program_timeline.png" alt="The 5s-6s program on its recovered clock: the 4 July evening session, the campaign morning, and the campaign, each panel marking every acquisition, with etalon-transient windows shaded and the 9.6 h break annotated">
 
 *The program on its recovered clock. Every acquisition in
 [`data_recovered/CLOCK.csv`](../data_recovered/CLOCK.csv), drawn by
@@ -263,7 +263,7 @@ them by ~1 s, larger than the trace window, so the axis offset itself moved.
 > longest knob-untouched segments give −0.022 and −0.018 MHz/min, bracketing the
 > quoted value. The shorter segments (3–6 min) scatter to ±1.5 MHz/min, which is
 > what a 0.27 MHz per-trace scatter produces over such baselines. The dataset
-> simply has no long intervention-free stretch.
+> simply has no long re-centring-free stretch.
 >
 > *Sharpened 2026-07-30, after recomputing the whole fit in both frames.* Across
 > the 16 adjacent-block steps of the power session, RMS Δ(peak position) is
@@ -735,7 +735,7 @@ conclusions:
   between-block drift the model-independent probe exposes.
   **Replaced 2026-08-02 (Michelangelo, firsthand apparatus authority):** the
   three-point 70–110 °C headline above is retired. The 130 °C power-sweep
-  session's 225 mW block ran in the SAME optical/cell configuration as this
+  session's 225 mW block ran in the same optical/cell configuration as this
   T-sweep, so the "different configuration" reason for excluding it no
   longer holds, and the two sessions differ only by acquisition epoch and axis
   calibration, and the calibration is already handled per session
@@ -765,8 +765,8 @@ the brief, and they moved no headline number.
   the flags that survive are fit-time instructions (retrace masking, cold
   rulers → per-trace bright-tooth fits), and RF labels verified 297/297.
 - **The lever test, in which the fitted γ_coll is a floor and β_self is lever-dependent,
-  hence a *bound* (2026-07-12).** THE FIGURES IN THIS ENTRY ARE AS MEASURED ON
-  ITS OWN DATE and the pipeline has been refit since, so read the current
+  hence a *bound* (2026-07-12).** The figures in this entry are as MEASURED on
+  its own date and the pipeline has been refit since, so read the current
   values from `results/lever_crosscheck.csv` rather than from here. As of
   2026-08-14 that file gives the 4-peak mean γ_coll as 0.404 / 0.390 / 0.444 /
   0.594 MHz and the rise as ×1.47 over a density ratio of ×52.5, and the joint
@@ -778,7 +778,7 @@ the brief, and they moved no headline number.
   while the density rises ×52, a ×1.85 rise where a real binary-collision
   width must be *linear* in N. Consistently, the joint hierarchical β collapses
   0.036 → 0.014 when the ×53 130 °C anchor (`serves_t130`, 225 mW) is folded
-  in (lever_crosscheck.csv: beta_lever_probe_130), and the 130 °C widths sit ON
+  in (lever_crosscheck.csv: beta_lever_probe_130), and the 130 °C widths sit on
   the near-flat trend, not a session outlier. Split-independent check: the
   pooled total FWHM grows only ~0.38 MHz across the span, below the
   ≥0.55 MHz minimum a linear β=0.036 demands (Voigt slope ≥0.5346). See
@@ -796,7 +796,7 @@ the brief, and they moved no headline number.
   rise factor ×1.85 over ×52 (lever_crosscheck.csv: gamma_rise_factor).
 - **Discard/excluded audit adjudicated + `qc_reason` column added (2026-07-12).**
   An external audit of the excluded traces was verified against the
-  repo, and its two central factual claims did NOT survive, in opposite directions
+  repo, and its two central factual claims did not survive, in opposite directions
   (do not re-litigate either):
   (i) *"the four discards are MD5-replaced duplicate exports, not real
   discards"*. False for 3 of 4: `4154nm_070c4`, `4192nm_090c3`,
@@ -808,7 +808,7 @@ the brief, and they moved no headline number.
   (above) stands: four real excluded shots, one objective defect
   (070c4, zsib_height=−3.1), three kept-excluded by pre-registration.
   (ii) *"the 29 excluded traces fail hard, 'peak cut by window
-  (margin 0 ms)', snr=inf, independently confirmed"* does NOT reproduce:
+  (margin 0 ms)', snr=inf, independently confirmed"* does not reproduce:
   recomputing `hard_flags` on all 29 gives zero flags (spot: edge_margin
   333 ms, snr=61), agreeing with the committed `qc_metrics.csv`. The
   excluded is legitimate but session-grain (the aborted first 4154 130 °C
@@ -833,7 +833,7 @@ the brief, and they moved no headline number.
   retracted.
 
 - **Literature provenance dig (2026-07-13).** The Nieddu 2019 /
-  Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm, adopted since
+  Rajasree-KP 2020 direct beam-waist measurement (w₀ = 64 µm, in force since
   2026-08-01 as the working prior) and the resolution
   of a since-debunked "Nieddu 2.5 MHz" note are documented in full in
   `docs/LITERATURE.md` §6a, both external corroborations of the record's w₀ re-pin
@@ -841,7 +841,7 @@ the brief, and they moved no headline number.
   **N(T) chain confirmed:** `rb5s6s/density.py` uses the Steck/Nesmeyanov liquid-Rb correlation
   + ideal gas, exactly the T→P→N chain the theses use (Rajasree cites Steck). No
   change. The June-2025 `Lab_plan` is a 4-week project-management doc (planned
-  40–80 °C, while the campaign actually went to 130 °C) and does NOT pin the beam
+  40–80 °C, while the campaign actually went to 130 °C) and does not pin the beam
   geometry. So the w₀ prior legitimately rests on the Gaussian estimate +
   Nieddu's measurement, not the plan.
 
@@ -929,7 +929,7 @@ with the recompute's addendum.*
 
 ### Fold robustness of the ruler fits
 
-- **REPLACED 2026-08-05 by addendum 26, corrected reading first.** The
+- **Replaced 2026-08-05 by addendum 26, corrected reading first.** The
   structural argument below is true of the ramp and false of a rigid-grid
   fit, whose window assignment is exactly what a fold displaces. The
   bounded form survives: an apex landing on a tooth (or, immaterially, on

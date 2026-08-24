@@ -390,11 +390,21 @@ def test_the_instrument_does_not_eat_its_own_output(tmp_path):
                 if r["scope"] == "PARTITION"}
 
     try:
-        first = _partition_rows()
-        r = subprocess.run([sys.executable, "scripts/run_unregenerated_claims.py"],
-                           cwd=ROOT, capture_output=True, text=True)
-        assert r.returncode == 0, r.stderr[-400:]
-        second = _partition_rows()
+        # TWO FRESH RUNS are compared, never the on-disk file against a run:
+        # the first form fired a false self-eating alarm whenever a results
+        # CSV legitimately changed upstream, because the on-disk OUT was
+        # merely STALE, a class the freshness verifier already owns. Tested
+        # region: values written by run one changing run two's judgement.
+        # Untested here, owned elsewhere: staleness of the committed OUT.
+        def _run():
+            r = subprocess.run(
+                [sys.executable, "scripts/run_unregenerated_claims.py"],
+                cwd=ROOT, capture_output=True, text=True)
+            assert r.returncode == 0, r.stderr[-400:]
+            return _partition_rows()
+
+        first = _run()
+        second = _run()
         assert first == second, (
             "the producer gives a different answer on a second run, so it is "
             f"reading something it wrote:\n  before {first}\n  after  {second}")

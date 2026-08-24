@@ -20,18 +20,18 @@ rather than what the intensity does to the line, covered in
 An oscillating electric field shifts atomic energy levels. For light far from
 any resonance the shift of a level is proportional to the intensity and to
 that level's dynamic polarizability, and what a spectroscopist measures is
-the DIFFERENTIAL shift, the difference between the two levels of the
+the differential shift, the difference between the two levels of the
 transition. The line moves in proportion to intensity, and the constant of
 proportionality is a property of the atom and the wavelength.
 
 The complication in real experiments is that intensity is not one number. A
 focused beam has an intensity profile, so atoms at different places see
 different shifts, and the observed line is not shifted by a single amount but
-BLURRED BY A DISTRIBUTION of shifts. The lineshape acquires an extra kernel
+blurred by a distribution of shifts. The lineshape acquires an extra kernel
 whose form is set by the geometry: how intensity is distributed over the
 atoms that actually contribute signal.
 
-That kernel is generally ASYMMETRIC, and the asymmetry is the useful part. A
+That kernel is generally asymmetric, and the asymmetry is the useful part. A
 symmetric broadening mechanism cannot be told apart from any other symmetric
 mechanism in a fitted width, but a skew is a distinct signature. Its size
 depends on how the signal responds to intensity: a process whose rate goes as
@@ -79,12 +79,12 @@ measurement, is in [RESULTS.md](../RESULTS.md).
 A hyperfine-resolved spectrum invites the question of whether each component
 carries its own shift coefficient, and for an S-to-S line the answer is no
 at any measurable level, through two channels that were both computed here.
-DISPERSION: the four lines are driven at slightly different wavelengths, and
+Dispersion: the four lines are driven at slightly different wavelengths, and
 the differential polarizability evaluated at each line's own drive spans
-$1.2\times10^{-5}$ of itself across the manifold. HYPERFINE MIXING: the
+$1.2\times10^{-5}$ of itself across the manifold. Hyperfine mixing: the
 F-dependent correction scales as the hyperfine constant over the optical
 detuning, near $4.5\times10^{-5}$. Together they put the per-line shift
-DIFFERENCES at 4 to 16 Hz where the common shift is 0.35 MHz.
+differences at 4 to 16 Hz where the common shift is 0.35 MHz.
 
 Two consequences carry weight. Every separation between components is
 light-shift-immune twice over, once because the scalar shift moves all $m_F$
@@ -105,7 +105,7 @@ derived quantity. The three differ, and which one a fitted parameter
 corresponds to depends on the model that produced it.
 
 The second is a geometry assumption. The kernel depends on which atoms are
-COLLECTED as well as which are illuminated, so the collection optics enter
+collected as well as which are illuminated, so the collection optics enter
 the lineshape. Changing the collection solid angle can change the sign of the
 skew, which means a shift kernel transferred between benches without
 recomputing the geometry is likely to be wrong in a way no fit will reveal.
@@ -142,7 +142,7 @@ a reader.
 
 The ramp law turns a beam waist into a predicted shift, and on 2026-07-16 that
 prediction was published at $S_0 = 0.59$ MHz, evaluated at the transit Monte
-Carlo's 50 µm waist. On 2026-08-01 the adopted waist moved to 64 µm, Rajasree's
+Carlo's 50 µm waist. On 2026-08-01 the waist of record moved to 64 µm, Rajasree's
 direct measurement on the same laser replacing the transit estimate as the
 prior, and the 0.59 MHz figure kept standing without being recomputed against
 the new input. [HISTORY.md](../HISTORY.md) names the standing plainly: "a
@@ -191,7 +191,7 @@ re-divided the next time the bound tightens.
 - [Magnetic sublevels](magnetic-sublevels.md) for the vector piece of this
   same light shift, 1.7 per cent of the scalar coefficient at the drive
   wavelength. It cancels in the mean over a symmetric population and only
-  spreads the line, but once ellipticity pumps that population it SHIFTS
+  spreads the line, but once ellipticity pumps that population it shifts
   the line, which this page's scalar treatment does not cover.
 
 ---

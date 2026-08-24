@@ -3,13 +3,13 @@
 *[wiki index](README.md) · method*
 
 **The question.** Whether an apparent dependence on a control variable is a
-dependence on WHEN each point was taken.
+dependence on when each point was taken.
 **Takes.** A measurement swept over a parameter, and the order in which its
 points were acquired.
 **Gives.** Why a monotone sweep cannot separate the parameter from elapsed
 time, how to find a control for it inside data already taken, and what
 randomising the order costs.
-**Skip if.** The question is whether two parameters of a MODEL can be
+**Skip if.** The question is whether two parameters of a model can be
 separated by the data, which is [identifiability](identifiability.md). This
 page is about a variable the experiment controls being entangled with one it
 does not.
@@ -48,7 +48,7 @@ another. Sessions run for other reasons, rehearsals, pilots and commissioning
 runs, are frequently acquired in whatever order was convenient, and that
 convenience is a randomisation nobody paid for.
 
-**What to look for, in order of value.** A session that ran the SAME sweep in
+**What to look for, in order of value.** A session that ran the same sweep in
 the opposite direction, best of all inside one sitting so that instrument,
 alignment and epoch are held fixed while only the ordering changes. Failing
 that, a session with a non-monotone order. Failing that, a session at a
@@ -63,21 +63,21 @@ dependence, and separating them is a later question than establishing it.
 
 ## Where this repository uses it
 
-The 2025 campaign ran its power ladder DESCENDING in time on all four lines,
+The 2025 campaign ran its power ladder descending in time on all four lines,
 so power and elapsed time are collinear across the whole session and every
 quantity measured against power there is equally a measurement against drift.
 Two findings rested on it, and on 2026-08-18 the archive's own control settled
 them differently.
 
-The 2025-07-04 rehearsal ran its ladders in ALTERNATING DIRECTIONS, one line
+The 2025-07-04 rehearsal ran its ladders in alternating directions, one line
 descending while two ascended, each ladder complete inside minutes on one
 instrument at one gain with one alignment. That is the best case above, and it
 was run that way for convenience rather than by design.
 
 Against it, the amplitude's departure from the square-of-power law is
-INVARIANT: the descending line's exponent sits inside the range spanned by the
+invariant: the descending line's exponent sits inside the range spanned by the
 two ascending ones, which excludes the whole class of order-dependent causes.
-The concave width against power is NOT: a trend appears on the descending
+The concave width against power is not: a trend appears on the descending
 ladder and neither ascending ladder shows one, and the concavity is
 consequently carried as provisional rather than established. Both adjudications,
 and the numbers, are in
@@ -96,7 +96,7 @@ order-dependent cause, not a demonstration that nothing drifted.
 
 **Confounding the confound.** If only one of several groups was acquired in
 the reversed order, then direction is entangled with group identity, and a
-DIFFERENCE between them cannot be attributed. When the reversed group agrees
+difference between them cannot be attributed. When the reversed group agrees
 with the others, that entanglement is harmless, which is a piece of luck to
 notice rather than to rely on.
 

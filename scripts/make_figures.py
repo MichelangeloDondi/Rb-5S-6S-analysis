@@ -1641,7 +1641,7 @@ def fig_laser_history():
     # NOT the longest: the longest (75 min) is two bursts 75 min apart with
     # ~13 MHz of internal scatter, so a line through it measures a cavity
     # re-centring between the clusters, not a drift rate. Drawing it is what
-    # exposed that. No epoch in the dataset gives a long intervention-free
+    # exposed that. No epoch in the dataset gives a long re-centring-free
     # stretch, so the dataset does NOT measure a drift rate; what it does
     # measure is how still the laser sat when nobody touched it.
     ax = axes[1]
@@ -2578,7 +2578,7 @@ def fig_wavemeter_reconstruction():
     """The wavemeter record, its model, and the same quantity from our traces (M22).
 
     The result is the settled floor on unmodelled laser motion. The model is
-    the sawtooth adopted 2026-08-03 (preregistration addendum 25): a free level
+    the sawtooth accepted 2026-08-03 (preregistration addendum 25): a free level
     and a free ramp rate for each inter-lock interval, with a shared finite
     rise at each re-lock and no relaxation term. The event census and the floor
     are read from results/wavemeter_reconstruction.csv so the panels cannot
@@ -3533,7 +3533,7 @@ def fig_width_trends():
     P_anchor, T_anchor = BETA_ANCHOR_130
     ymin_p1, ymax_p1 = 1e9, 0.0
     # The shared slope and its error, from the pooled construction's row of
-    # record (results/beta_self_probe.csv, adopted per its preregistration).
+    # record (results/beta_self_probe.csv, accepted per its preregistration).
     import csv as _csv
     _pooled = next(r for r in _csv.DictReader(open(C.RESULTS_DIR / "beta_self_probe.csv"))
                    if r["peak"] == "pooled_slope")
@@ -3576,7 +3576,7 @@ def fig_width_trends():
         Esys = np.sqrt(E ** 2 + cs["resid_rms"] ** 2)
 
         # One SHARED slope across the four lines (the pooled construction of
-        # the pooling preregistration, adopted 2026-08-06), with this line's
+        # the pooling preregistration, accepted 2026-08-06), with this line's
         # own floor refit at that fixed slope. The physics licence is in the
         # prereg: no resonant exchange by parity, the R^-6 exchange is
         # isotope-blind, so the model ladder gives one slope and four floors.
@@ -5065,7 +5065,7 @@ def fig_campaign_projection():
     supports beside what the physics predicts. This one is a DECISION figure.
     It carries a third quantity, it puts all three on one axis so a reader can
     see which is furthest from being settled, and it names the one
-    intervention that moves each. A decision-maker reads one figure, and this
+    re-centring that moves each. A decision-maker reads one figure, and this
     case was spread over a table and four documents.
 
     THE AXIS IS A RATIO TO EACH ROW'S OWN REFERENCE, and the reference is
@@ -5440,7 +5440,7 @@ def fig_orthogonal_information():
 
     THE EXACT DEGENERACY IS THE POINT OF THE RIGHT PANEL. Two Lorentzians of
     width a and b convolve to one Lorentzian of width a + b, exactly. This is
-    not an approximation that a better fit or more signal-to-noise defeats: at
+    not an approximation that a better fit or more signal-to-noise breaks: at
     one condition the individual terms have no separate existence in the
     lineshape at all. Only a variable that moves one term while leaving the
     others fixed can separate them, which is what the arrows mean.

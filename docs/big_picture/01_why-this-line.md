@@ -151,7 +151,7 @@ rather than of a measurement, which is why the crossings below are quoted with
 theirs. Nothing here has been checked against a trap.*
 
 Where they landed was not designed for. **Two of the three sit inside the
-telecom O-band** (1260–1360 nm, ITU), 1287.9 ± 0.2 and
+telecom O-band** (1260–1360 nm, itu), 1287.9 ± 0.2 and
 1339.6 ± 0.1 nm over the same Monte-Carlo band
 (`results/polarizability.csv`), so a trap at either could in principle be built
 from datacom-grade

@@ -22,12 +22,12 @@ An atom couples to a light field through its charges, and the coupling is not
 one term but a series. Expand the interaction in powers of $k \cdot r$, the
 atom's own size $r$ measured against the light's wavevector $k = 2\pi/\lambda$,
 and each successive term is a different multipole order. The leading term,
-independent of $k \cdot r$, is the ELECTRIC DIPOLE (E1) interaction, the
+independent of $k \cdot r$, is the electric dipole (E1) interaction, the
 electron's charge distribution coupling to the field as if it were a single
 displaced point charge. The next term, one power of $k \cdot r$ smaller in
-amplitude, splits into two pieces of the same order: the MAGNETIC DIPOLE (M1)
-interaction, from the current the moving charge represents, and the ELECTRIC
-QUADRUPOLE (E2) interaction, from the charge distribution's departure from a
+amplitude, splits into two pieces of the same order: the magnetic dipole (M1)
+interaction, from the current the moving charge represents, and the electric
+quadrupole (E2) interaction, from the charge distribution's departure from a
 point. Further terms, octupole and beyond, continue the same ladder, each one
 power of $k \cdot r$ weaker again.
 
@@ -35,23 +35,23 @@ The dipole term dominates because $k \cdot r$ is tiny for an atom driven by
 visible or near-infrared light. The atom's size is set by the Bohr radius, a
 fraction of an angstrom, while the wavelength is hundreds of nanometers, so
 $k a_0$ itself sits at roughly $10^{-3}$ to $10^{-4}$. Because a transition
-RATE scales with the square of the coupling amplitude, each step up the
+rate scales with the square of the coupling amplitude, each step up the
 multipole ladder costs a factor of about $(k a_0)^2$ in rate relative to the
 step before it, typically six to eight orders of magnitude. A transition the
 dipole term cannot drive is therefore not impossible. It proceeds through the
 next term at a correspondingly reduced rate, which is why it is called
-FORBIDDEN rather than absent, a statement about its speed and not about
+forbidden rather than absent, a statement about its speed and not about
 whether it happens at all.
 
 Which multipole order actually connects two given states follows from two
-properties only. The first is PARITY. Spatial inversion sends $r \to -r$, and
+properties only. The first is parity. Spatial inversion sends $r \to -r$, and
 the electric dipole operator, linear in $r$, is odd under that operation. A
 matrix element between states of definite parity vanishes unless the
 operator's parity and the two states' parities multiply to an even result, so
-an odd operator connects only states of OPPOSITE parity. Every E1 photon
+an odd operator connects only states of opposite parity. Every E1 photon
 absorbed or emitted changes the atom's parity.
 
-The second property is ANGULAR MOMENTUM. A photon is a spin-1 particle and
+The second property is angular momentum. A photon is a spin-1 particle and
 carries at least one unit of angular momentum into or out of the atom, so the
 atom's own angular momentum has to be able to absorb or supply that unit. For
 a dipole photon, the simplest carrier, the total angular momentum $J$ can
@@ -60,10 +60,10 @@ because a photon always carries at least one unit and a state with no angular
 momentum to reorganise has nowhere for that unit to go.
 
 Magnetic dipole and electric quadrupole radiation differ from electric dipole
-on both counts. Both operators are EVEN under spatial inversion, the magnetic
+on both counts. Both operators are even under spatial inversion, the magnetic
 dipole because it is built from orbital or spin angular momentum, unchanged
 by $r \to -r$, and the electric quadrupole because it is quadratic in $r$ and
-$(-r)(-r) = rr$. Both therefore connect states of the SAME parity, the
+$(-r)(-r) = rr$. Both therefore connect states of the same parity, the
 opposite of the dipole rule, which is how a dipole-forbidden transition can
 still proceed. On angular momentum the two channels part ways: magnetic
 dipole radiation carries the same single unit as electric dipole and obeys the
@@ -76,7 +76,7 @@ The nucleus enters through coupling, not through a rule of its own. [Hyperfine
 structure](hyperfine-structure.md) describes how nuclear spin $I$ combines
 with the electronic angular momentum $J$ to give the total angular momentum
 $F$ a real spectral line is labelled by. The photon interacts with the
-ELECTRONS, so every rule above is a statement about $J$ and about electronic
+electrons, so every rule above is a statement about $J$ and about electronic
 parity, not about $F$ directly. What holds for $F$ is the ordinary
 angular-momentum addition of a fixed $I$ onto both sides of the $J$ rule: $F$
 follows the same shape of rule $J$ does for a given multipole order, once $I$
@@ -90,7 +90,7 @@ any matrix element is computed. Given only the parity and the angular
 momentum of two states, they say at a glance which multipole order connects
 them, and therefore roughly how strong or how slow the transition will be,
 without touching a radial wavefunction or a coupling constant. That
-bookkeeping is also what makes a level METASTABLE: a state with no
+bookkeeping is also what makes a level metastable: a state with no
 dipole-allowed path down decays only through the far slower magnetic-dipole
 or electric-quadrupole channel, if even those are open, and identifying which
 states qualify needs nothing beyond parity and angular momentum. Because the
@@ -122,9 +122,9 @@ one of them as an $F$ to $F'$ transition with $\Delta F = 0$, consistent
 with the same angular-momentum bookkeeping applied to $F$ rather than to
 $J$.
 
-WHY THAT IS FORCED, and not merely observed. The two-photon operator is a
+Why that is forced, and not merely observed. The two-photon operator is a
 product of two rank-1 dipoles, so it carries ranks 0, 1 and 2, and each rank
-moves $m$ by its own amount. For THIS pair of states both are removed except
+moves $m$ by its own amount. For this pair of states both are removed except
 the first:
 
 | rank | polarisation factor | $\Delta m_F$ | available here |
@@ -141,25 +141,25 @@ denominators $D_1$ and $D_2$, the rank-1 weight is the product
 
 $$(1/D_1 - 1/D_2) \times (\vec\epsilon_1 \times \vec\epsilon_2)$$
 
-so it needs BOTH factors. It vanishes when the two photons carry the same
+so it needs both factors. It vanishes when the two photons carry the same
 energy, whatever the polarisations, and it vanishes when the two polarisation
 vectors are parallel, whatever the energies.
 
-Both factors are small here and NEITHER is exactly zero, which the first
+Both factors are small here and neither is exactly zero, which the first
 version of this page did not say. The Doppler-free geometry makes the energy
 factor nonzero for every atom that is moving, which is the whole ensemble: in
 the rest frame the forward photon is blue-shifted and the retro photon
 red-shifted, so the pair the signal is built from differs by
 $2\nu v / c$, which is 395 MHz at 130 °C against a 75.3 THz detuning, or
 $5.2\times10^{-6}$ in amplitude. What holds the channel shut is the
-POLARISATION factor, which an ideal retro sets to zero exactly. A mismatch of
+polarisation factor, which an ideal retro sets to zero exactly. A mismatch of
 angle $\theta$ reopens rank 1 at $\sin\theta$ times that, which is
 $2\times10^{-13}$ in rate at five degrees
 (`rb5s6s/polarisation.py`, `rank_one_leak_rate`).
 
 The consequence is therefore strong but not absolute. $\Delta m_F = 0$ is
-the only channel available to any useful precision, for ANY polarisation, ANY
-ellipticity, ANY mismatch between the two beams and ANY direction of an
+the only channel available to any useful precision, for any polarisation, any
+ellipticity, any mismatch between the two beams and any direction of an
 applied field. The light can and does
 offer the other combinations, a linear beam carrying equal circular
 components in both directions so that co-rotating pairs arrive with full
@@ -193,7 +193,7 @@ as in this repository's own two-photon case, on photon counting and energy
 conservation rather than on intensity scaling alone.
 
 The third is an implementation trap specific to a many-electron atom. Reading
-a state's parity as $(-1)^l$ from the ORBITAL angular momentum of a single
+a state's parity as $(-1)^l$ from the orbital angular momentum of a single
 active electron is safe for an alkali like the one this repository studies,
 but it is not a general recipe: for a multi-electron configuration the
 relevant parity is the sum over every electron's $l$, and using the total

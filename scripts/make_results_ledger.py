@@ -2,7 +2,7 @@
 """
 Generate docs/RESULTS.md -- the single referee-facing results ledger.
 
-Every headline number is READ from the committed results/*.csv (never
+Every headline number is read from the committed results/*.csv (never
 hand-typed), so the ledger cannot drift from the code: re-run this after the
 pipeline and the table regenerates. Each row carries value, error, the
 dominant systematic, a provenance status, and the fixed-lock session measurement that
@@ -48,8 +48,8 @@ def _skew_scaling_clause():
     """The measured amplitude exponent, read from the producer's own CSV.
 
     Replaces an informal per-peak range. The exclusions are
-    SIMULATED under each hypothesis rather than read from the fit covariance,
-    which describes the sampling distribution at the FITTED exponent and not
+    simulated under each hypothesis rather than read from the fit covariance,
+    which describes the sampling distribution at the fitted exponent and not
     at the one being excluded.
     """
     r = {(x["quantity"], x["key"]): x for x in rows("skew_scaling")}
@@ -65,7 +65,7 @@ def _skew_scaling_clause():
         f"Measured across the four lines, the amplitude exponent is "
         f"${mean['value']} \\pm {mean['err']}$ with a line-to-line scatter of "
         f"{scat['value']}, `results/skew_scaling.csv`. Testing each hypothesis "
-        f"by SIMULATION rather than from the fit covariance, which describes "
+        f"by simulation rather than from the fit covariance, which describes "
         f"the spread at the fitted exponent and not at the excluded one, shot "
         f"noise ($-0.5$) is consistent at $p = {p_sn['value']}$ while a "
         f"fixed-absolute-amplitude term ($-1$) is disfavoured at "
@@ -132,25 +132,40 @@ def main() -> int:
     fitvals = ([float(r["beta_self"]) for r in rows("beta_self")] +
                [float(r["value"]) for r in rows("global_fit")
                 if r["quantity"] == "beta_self"])
-    W("Three estimators of the same quantity under different "
-      "$\\sigma_\\text{laser}$")
-    W(f"treatments. They span a **factor ~{max(fitvals) / min(fitvals):.0f}** "
-      f"({min(fitvals):.2f}–{max(fitvals):.2f}). That")
-    W("model-dependence is the uncertainty on this quantity, larger than any single")
-    W("fit's error bar, and it is the headline uncertainty. The **conservative")
-    W(f"model-independent bound (per-peak 95% range {pbounds[0]:.2f}–"
-      f"{pbounds[-1]:.2f}, floored at the")
-    W(f"loosest, below {pbounds[-1]:.2f}) is the robust floor**. The fits are preliminary")
-    W("cross-checks pending a fixed-lock session.\n")
+    pooled = next((r for r in rows("beta_self_probe")
+                   if r["peak"] == "pooled_slope"), None)
+    if pooled:
+        pb = float(pooled["bound95_nscale"])
+        W(f"**The headline bound is the pooled one: below {pb:.3f} MHz per "
+          f"10¹² cm⁻³ at 95%**, one shared slope across the four lines with "
+          "per-line floors, a construction preregistered before computation "
+          "and accepted on its adjudication "
+          "([the prereg](notes/beta_self_pooling_prereg.md), with the "
+          "pooled-first headline decided by the experimenter). The physics "
+          "licence: the four lines are hyperfine components of one "
+          "parity-forbidden transition seeing the same R⁻⁶ collision "
+          "physics, and the data agree (per-line vs shared ≤ 1.1σ, isotope "
+          "split null).")
+    W(f"**The per-peak range {pbounds[0]:.2f}–{pbounds[-1]:.2f}, floored at "
+      f"the loosest (below {pbounds[-1]:.2f}), stands beside it as the "
+      "geometry-robust floor.** Three fitted estimators of the same quantity "
+      "under different $\\sigma_\\text{laser}$ treatments span a "
+      f"**factor ~{max(fitvals) / min(fitvals):.0f}** "
+      f"({min(fitvals):.2f}–{max(fitvals):.2f}). That model-dependence is "
+      "larger than any single fit's error bar, and the fits are preliminary "
+      "cross-checks pending a fixed-lock session.\n")
     W("| estimator | value (MHz per 10¹² cm⁻³) | status |")
     W("|---|---|---|")
+    if pooled:
+        W(f"| pooled shared slope, per-line floors (95% bound, preregistered) "
+          f"| below {float(pooled['bound95_nscale']):.3f} | **headline bound** |")
     if pr:
         bnds = [f"993.{p} nm below {float(pr[p]['bound95_nscale']):.2f}" for p in sorted(pr)]
         any_r = next(iter(pr.values()))
         W(f"| model-independent width-slope (95% bound, per peak: "
           f"$t({any_r['dof']})={float(any_r['t95']):.2f}$ × syst, then "
           f"×{1 + float(any_r['n_frac_syst']):.1f} density-scale) | "
-          f"{', '.join(bnds)} | **headline bound** (geometry-robust) |")
+          f"{', '.join(bnds)} | per-peak floor (geometry-robust) |")
     rr = "/".join(f"{float(pr[p]['resid_rms']):.2f}" for p in sorted(pr))
     nmono = sum(1 for r in pr.values() if r["monotonic"] != "True")
     hdof = int(any_r["dof"]) if pr else 2
@@ -241,8 +256,8 @@ def main() -> int:
       "peaks over an hour**, on 12 points with no power to resolve a slow width "
       f"wander. So the hierarchical {hb:.3f} stays conditional on an "
       "**acquisition-timing assumption the record can now date but not "
-      "validate**, which is the real reason it is a cross-check and the "
-      "conservative model-independent bound is the headline, rather than merely "
+      "validate**, which is the real reason it is a cross-check while the "
+      "pooled bound heads the table with the per-peak floor beside it, rather than merely "
       "that it "
       "is optimistic. (A fixed-lock session's fix is cheap and already in the "
       "plan: interleave the four peaks within minutes, not across an hour.) "
@@ -262,8 +277,8 @@ def main() -> int:
           "cross-check estimator, not the headline $\\beta$.** *(Renamed from the "
           "misleading `definitive_fit`. It is a cross-check, so do not grab "
           "`lever_crosscheck.csv` as the headline. That is `beta_self_probe.csv`.)* "
-          "The model-independent "
-          "width-slope bound (top row) is the headline. This row is the "
+          "The pooled bound "
+          "(top row) is the headline, the width-slope floor beneath it. This row is the "
           "internally-consistent **70/90/110 °C cooling-sweep** joint fit (one session), "
           "whose central value the lever test below shows to be a *bound*, not a "
           "measurement. It uses the Lehmann-cusp transit, the **established** "
@@ -302,9 +317,9 @@ def main() -> int:
         s4207 = {r["key"].split("|")[1]: float(r["value"]) for r in dfr
                  if r["quantity"] == "sigma_loo_drop" and r["key"].startswith("4207|")}
         if d87 and s4207:
-            sl = "/".join(f"{s4207[k]:.2f}" for k in ("70C", "90C", "110C") if k in s4207)
+            sl = "/".join(f"{s4207[k]:.2f}" for k in ("70c", "90c", "110c") if k in s4207)
             sgl = {r["key"]: float(r["value"]) for r in gf if r["quantity"] == "sigma_laser"}
-            sall = "/".join(f"{sgl[k]:.2f}" for k in ("70C", "90C", "110C") if k in sgl)
+            sall = "/".join(f"{sgl[k]:.2f}" for k in ("70c", "90c", "110c") if k in sgl)
             W(f"> Per-drop detail is committed (`beta_loo_drop` and `sigma_loo_drop` "
               f"rows). "
               f"Dropping the 993.4207 nm suspect moves $\\beta_{{87}}$ by "
@@ -404,7 +419,7 @@ def main() -> int:
           f"never quoted alone: the four per-peak values span **0.315 to 0.449 "
           f"MHz** and a common scalar is neither rejected nor established, at "
           f"**p = 0.097** "
-          f"(`results/kernel_k3.csv`, `results/kernel_budget.csv`). At a FIXED "
+          f"(`results/kernel_k3.csv`, `results/kernel_budget.csv`). At a fixed "
           f"condition this parameter is "
           f"exactly degenerate with the collisional width, because both are "
           f"Lorentzian and Lorentzians add, so it is identified only across "
@@ -416,9 +431,9 @@ def main() -> int:
           f"systematic dominates the statistical error, so repetitions of the "
           f"current construction no longer buy the coefficient.\n")
         W("- Freeing the kernel moves $\\beta_\\text{self}$ by 42 to 66 per "
-          "cent across the four peaks, which reproduces from a FREEING "
+          "cent across the four peaks, which reproduces from a freeing "
           "construction the 45 to 67 per cent this record already carried from "
-          "a SWITCHING one.\n")
+          "a switching one.\n")
         if k5:
             W("- **The origin is not settled by any of this.** A non-Gaussian "
               "homogeneous component is present. Calling it the laser is a "
@@ -450,7 +465,7 @@ def main() -> int:
       f"~{C.TRANSIT_FWHM_PLACEHOLDER_MHZ:.2f} MHz at the "
       f"{C.W0_MEASURED_M*1e6:.0f} µm measured waist. More transit leaves less width for "
       "the laser.")
-    # Axis discipline: laser_epoch.csv is on the LASER axis, every fit below is
+    # Axis discipline: laser_epoch.csv is on the laser axis, every fit below is
     # on the transition axis (= 2x laser). All four numbers are read from the
     # CSVs. A hand-typed trio here (1.48/1.63/1.06) went stale and inverted the
     # conversion, which is what tests/test_docs_canonical.py records.
@@ -464,7 +479,7 @@ def main() -> int:
                 if r["quantity"].startswith("sigma_laser_at_transit")
                 and "prior" in r["status"]), None)
     if b and gsig and fsig and cores and cen:
-        tk = [k for k in ("70C", "90C", "110C") if k in gsig]
+        tk = [k for k in ("70c", "90c", "110c") if k in gsig]
         fk = [k for k in ("70", "90", "110") if k in fsig]
         tied = "/".join(f"{gsig[k]:.2f}" for k in tk)
         free = "/".join(f"{fsig[k]:.2f}" for k in fk)
@@ -515,7 +530,7 @@ def main() -> int:
           "and in the 2025-07-04 rehearsal a width trend appears on the descending "
           "ladder while both ascending ladders show none, which is an "
           "order-dependence signature rather than a power dependence. The "
-          "concavity is therefore PROVISIONAL and is not an established physical "
+          "concavity is therefore provisional and is not an established physical "
           "effect. Both sessions sit outside the frozen archive for epoch and "
           "instrument reasons rather than any data defect.")
     W("- **C3b amplitude near $P^2$, and three of the four slopes are not "
@@ -526,12 +541,12 @@ def main() -> int:
       "excludes 2 from below while 993.4154 nm at 2.121 and 993.4192 nm at 2.116 "
       "exclude it from above, and 993.4207 nm at 2.100 becomes consistent with 2 "
       "once the block treatment replaces the within-cell error. **The departure "
-      "REPLICATES and is invariant under acquisition order**: the 2025-07-04 "
+      "Replicates and is invariant under acquisition order**: the 2025-07-04 "
       "rehearsal ran its ladders in alternating directions on one scope at one "
       "gain, and its three exponents of 2.244 descending against 2.228 and 2.070 "
       "ascending place the descending peak inside the ascending spread. Across the "
       "two sessions the peak ordering is identical at a rank correlation of 1.00, "
-      "and that ordering follows line BRIGHTNESS rather than hyperfine branching, "
+      "and that ordering follows line brightness rather than hyperfine branching, "
       "so the departure is a signature of the detection rather than of the "
       "transition. Reading the raw files directly found the mechanism candidate: "
       "the vertical range was changed at every rung of every ladder, by up to a "
@@ -814,7 +829,7 @@ def main() -> int:
           f"independent "
           f"centre estimators agree to ±0.02 MHz.\n")
 
-    # THE COMMIT SWEEP'S NUMBERS ARE READ, NOT TYPED. They were typed here
+    # THE COMMIT SWEEP'S numbers are read, not typed. They were typed here
     # first, which made this paragraph an instance of the very defect it
     # describes: a number with no producer cannot fail when it stops being
     # true. `scripts/run_commit_sweep.py` writes them now.
@@ -1062,7 +1077,7 @@ def main() -> int:
                   f"therefore genuinely sensitive between those two values and saw "
                   f"nothing, so the null is a real constraint rather than an "
                   f"insensitive "
-                  f"experiment. The quoted headline floor "
+                  f"experiment. The per-peak floor "
                   f"({pbounds[-1]:.2f}) sits above the 95% detection point "
                   f"({d95:.3f}), deliberately, through the "
                   f"$t(0.95, {hdof})$ and density-scale inflations "
@@ -1102,8 +1117,8 @@ def main() -> int:
                 per_iso.setdefault(r["isotope"], []).append(abs(float(r["shift"])))
             m85 = max(per_iso.get("85", [float("nan")]))
             m87 = max(per_iso.get("87", [float("nan")]))
-            # The peak name is READ OFF THE ROWS, not typed. It used to be
-            # hardcoded as 993.4207, which is the peak with the SMALLEST shift
+            # The peak name is read off the rows, not typed. It used to be
+            # hardcoded as 993.4207, which is the peak with the smallest shift
             # of the four (-0.0003); the largest is 993.4154 at -0.0046. The
             # two maxima on the same line were always computed, so the table
             # printed correct numbers beside a wrong name.
@@ -1147,7 +1162,7 @@ def main() -> int:
           "consistent with zero, giving "
           f"**{float(_lim['value'])*1e3:.0f} kHz, at 95 per cent** as an upper "
           "limit on any such term (`results/polarisation_bound.csv`, "
-          "`scripts/run_polarisation_bound.py`). It is CONSERVATIVE by "
+          "`scripts/run_polarisation_bound.py`). It is conservative by "
           "construction, because every other isotope-dependent effect lands in "
           "the same difference. The forward-to-retro mismatch this was written "
           "for is retracted, since a degenerate two-photon amplitude is "
@@ -1215,7 +1230,7 @@ def main() -> int:
         W(f"- **Frequency axis:** {mean:.5f}({float(c['rate_laser_err'])*1e5:.0f}) "
           f"MHz/ms laser axis. The 20 ruler blocks disagree by more than their own "
           f"statistical errors ($\\chi^2_\\text{{red}}={chi2:.1f}$), and the quoted error "
-          f"carries one PDG scale factor of "
+          f"carries one pdg scale factor of "
           f"$\\sqrt{{\\chi^2_\\text{{red}}}}\\approx{infl:.1f}\\times$ for it. A single "
           f"scale factor is the wrong shape for this scatter, and the blocks reject it: "
           f"the {n_p} power blocks over-disperse at "
@@ -1353,7 +1368,7 @@ def main() -> int:
           f"($S_0$ bounds and the asymmetry null use $|\\Delta\\alpha|$). "
           f"Validation against anchors the model does not use: the measured 5S "
           f"tune-out 790.032326(32) nm (Leonard 2015 as corrected by their 2017 "
-          f"erratum, PRA 95 059901(E), both now held, and the replaced 2015 value "
+          f"erratum, pra 95 059901(E), both now held, and the replaced 2015 value "
           f"was 790.032388(32), 0.062 pm away) is "
           f"reproduced at {to:.4f} nm (≈1.6 pm), "
           f"the measured static $\\alpha_{{5S}}$ 318.79(1.42) at {a5:.2f}, and the "

@@ -107,7 +107,7 @@ def main() -> int:
     conds, dropped = k4._conditions()
 
     amps = {k: [] for k in ORDERS}
-    height, logn, comp = [], [], []
+    height, height_abs, logn, comp = [], [], [], []
     for key in sorted(conds):
         role, peak, T, P = key
         if peak not in PEAKS:
@@ -155,8 +155,10 @@ def main() -> int:
             for k in ORDERS:
                 amps[k].append(per_k[k])
             inb = (np.abs(x) >= BAND_LO) & (np.abs(x) <= BAND_HI)
-            height.append(float(np.mean(
-                np.interp(x[inb], g, prof, left=0.0, right=0.0)) / pmax))
+            mean_prof = float(np.mean(
+                np.interp(x[inb], g, prof, left=0.0, right=0.0)))
+            height.append(mean_prof / pmax)
+            height_abs.append(A * mean_prof)
             logn.append(ln)
             comp.append((T, P))
 
@@ -216,6 +218,53 @@ def main() -> int:
         f"note: {jr['density'][2]:+.2f}")
     add("JOINT", "predictor_corr", f"{corr:+.3f}", "dimensionless",
         f"note: {jr['corr']:+.3f}")
+
+    # THE RECOVERED PREDICTOR. The note's 0.415 correlation is matched to
+    # 0.001 by the ABSOLUTE in-band model height (A times the mean in-band
+    # profile, in volts), and by no shape-only quantity, so the original
+    # run's predictor carried the trace amplitude. Under it, the current
+    # amplitudes give the OPPOSITE pattern from the note: height near zero
+    # and density at the marginal +2.2. And no predictor of any kind can
+    # reach the note's height z with the current amplitudes: z = 8.65 at
+    # n = 79 requires a partial correlation of 0.70 against the amplitude
+    # vector, whose best correlation with any candidate is 0.39. The
+    # irreproducibility therefore sits in the AMPLITUDE VECTOR itself, the
+    # same axis as the ladder mismatch, for which the input-set drift the
+    # rename diagnosis established is the candidate mechanism.
+    ha = np.array(height_abs)
+    haz = (ha - ha.mean()) / ha.std(ddof=1)
+    Xr = np.column_stack([np.ones(n), haz, nz])
+    br, er = k4_wls(a3, Xr)
+    corr_r = float(np.corrcoef(haz, nz)[0, 1])
+    add("RECOVERY", "predictor_corr_absolute", f"{corr_r:+.3f}",
+        "dimensionless",
+        f"absolute in-band model height against density. Note: "
+        f"{jr['corr']:+.3f}, matched by the absolute family and not by the "
+        f"shape-only predictor above, which is the recovery")
+    add("RECOVERY", "height_z_recovered_predictor", f"{br[1]/er[1]:+.2f}",
+        "sigma",
+        "joint height z under the recovered absolute predictor. The note "
+        "reports +8.65 for what its correlation says is this construction")
+    add("RECOVERY", "density_z_recovered_predictor", f"{br[2]/er[2]:+.2f}",
+        "sigma",
+        "under the recovered predictor the density term carries the "
+        "marginal instead of being stripped. The density-null reading is "
+        "therefore CONSTRUCTION-DEPENDENT in the current tree")
+    bm, em = k4_wls(a3, np.column_stack([np.ones(n), nz]))
+    add("RECOVERY", "density_z_marginal", f"{bm[1]/em[1]:+.2f}", "sigma",
+        "density alone. The note's marginal was +2.2, and this approximate "
+        "agreement plus the ladder mismatch localises the note's "
+        "irreproducibility to the amplitude vector")
+    z_req = jr["height"][2]
+    import math as _m
+    r_need = _m.sqrt(z_req**2 / (z_req**2 + (n - 3)))
+    best_r = max(abs(float(np.corrcoef(a3, (v - np.mean(v)) / np.std(v, ddof=1))[0, 1]))
+                 for v in (h, ha))
+    add("RECOVERY", "r_needed_for_note_z", f"{r_need:.3f}", "dimensionless",
+        f"partial correlation the note's +{z_req} would require at n={n}. "
+        f"The best any candidate predictor achieves against the current "
+        f"amplitudes is {best_r:.3f}, so NO predictor reproduces the note's "
+        f"z with these amplitudes")
 
     ok_ladder = (amps and np.sign(np.mean(amps[3])) > 0
                  and abs(np.mean(amps[3]) / (np.std(amps[3], ddof=1)

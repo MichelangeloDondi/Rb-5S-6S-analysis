@@ -51,14 +51,14 @@ This is the part that costs experiments results, and it is invisible in the
 stored data unless someone looks for it.
 
 Autoscaling, whether by the instrument or by a careful operator, keeps each
-individual trace beautifully filling the screen. It does so by CHANGING THE
-RANGE between traces. Every range on a real instrument carries its own gain
+individual trace beautifully filling the screen. It does so by changing the
+range between traces. Every range on a real instrument carries its own gain
 and offset calibration, specified to perhaps one to three per cent, and those
 errors are not common between ranges. So a series of measurements taken on
 different ranges is a series of measurements on different instruments, joined
 by calibration constants nobody recorded.
 
-For a single trace this is harmless. For a measurement that COMPARES traces,
+For a single trace this is harmless. For a measurement that compares traces,
 which is what any sweep or ladder does, it is a systematic that enters
 exactly where the comparison lives. The signature is characteristic: the
 error tracks how much signal each point delivered, because that is what
@@ -67,7 +67,7 @@ instrument's appears ordered by brightness.
 
 The two repairs are ordinary. Hold one range across everything being compared,
 which is possible only if the bit depth covers the full span. Or, where it
-cannot be held, deliberately measure ONE point on both ranges wherever the
+cannot be held, deliberately measure one point on both ranges wherever the
 range changes: the ratio of the two readings of one physical signal measures
 the range-to-range gain ratio, turning an unknown into a calibration.
 
@@ -101,7 +101,7 @@ its response time lengthens. Both numbers matter and they trade against each
 other.
 
 **Assuming dither is present.** The argument that noise rescues resolution
-requires noise LARGER than a step. A quiet baseline digitised coarsely does
+requires noise larger than a step. A quiet baseline digitised coarsely does
 not dither, and its average is biased toward the nearest code rather than
 converging on the truth.
 

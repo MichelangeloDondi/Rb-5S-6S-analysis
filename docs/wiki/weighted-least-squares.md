@@ -209,7 +209,7 @@ The standard repair is a family of robust and influence diagnostics: loss
 functions that flatten for large residuals instead of squaring them, such as
 Huber loss and Tukey's biweight, transformations like Winsorization that cap
 an extreme value rather than deleting it, and influence measures, Cook's
-distance, DFBETAS and DFFITS among them, that quantify how much a fit or a
+distance, dfbetas and dffits among them, that quantify how much a fit or a
 single parameter moves if one point is removed. Case deletion, the bootstrap
 and the jackknife all ask a version of the same question by resampling
 rather than by reweighting.

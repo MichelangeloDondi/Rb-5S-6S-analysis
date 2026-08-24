@@ -112,10 +112,10 @@ unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 
 **"A Δα bracket that wide discriminates nothing."** Partly answered by the
 joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
-0.35 MHz at the adopted geometry (`results/stark_joint.csv`,
+0.35 MHz at the accepted geometry (`results/stark_joint.csv`,
 `results/stark_sweep.csv`), so the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits
-modestly below the adopted values, and the most conservative data subset
+modestly below the values of record, and the most conservative data subset
 reaches the prediction itself and needs no headroom at all. A beam-profile
 measurement decides which. The measured coefficient needs the session.
 
@@ -141,7 +141,7 @@ and the companions because the saturation parameter carries the two-photon Rabi
 frequency squared. So neither a power sweep nor a change of focus separates
 them. Two things do. The centroid pull, on which the companions do not act at
 all because they broaden the line without moving it, and that needs the fixed
-lock. And the LINE INDEX, found 2026-08-10: the ramp and the saturation are
+lock. And the line INDEX, found 2026-08-10: the ramp and the saturation are
 identical on all four lines while the pumping is not, since its branching runs
 0.223 to 0.372 across the four (a two-step cascade product, not a degeneracy
 weight, because the scalar two-photon operator leaves 6S in one hyperfine

@@ -41,11 +41,11 @@ section 4 with the published measurement this document reads against it.*
 ## 1. The one-sentence picture
 
 Our current line (5S→6S, 993 nm) is **little studied and not currently pursued elsewhere**. The only
-active group (USAFA/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
+active group (usafa/Knize: Ayachitula 2024, and the earlier McLaughlin 5S–6S work)
 reports *null* AC-Stark and density shifts at ~6 MHz resolution, so it is the
 clean **demonstrator** of the drift-immune method. The **far more actively worked line is one
-transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (NIST/Andeweg,
-Adelaide/Ahern, Feng, FEMTO-ST/Callejo, Gerginov, Li) suppresses the AC-Stark
+transition over**, at 778 nm 5S→5D, where 2024–2026 clock work (nist/Andeweg,
+Adelaide/Ahern, Feng, femto-st/Callejo, Gerginov, Li) suppresses the AC-Stark
 shift **entirely with *active* schemes** (power modulation, dual interrogation,
 two-color, magic-wavelength locking). **Nobody uses a passive lineshape-asymmetry
 observable there.** A tunable Ti:Sapph lets us carry our reference-free method onto
@@ -67,14 +67,14 @@ lists discrete sets 670–710 / 725–875 / 725–975 / 700–1000 / 950–1050 
 | **7S₁/₂** | **760 nm** | 10 THz | intermediate | 420 nm (6P→5S) | 725–875 / 725–975 / **700–1000** | light (Morzyński, Chui) |
 | 8S₁/₂ | 697 nm | 46 THz | ~clean | 420 nm (6P→5S) | **670–710 only** (blue set) | none |
 | 9S₁/₂ | 660 nm | 70 THz | clean | 420 nm (6P→5S) | custom <700 nm | none |
-| **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + USAFA) |
+| **6S₁/₂** | **993 nm** | 75 THz | **clean** | 795 nm (5P₁/₂→5S) | **700–1000** (edge) or 950–1050 ← *current* | none (us + usafa) |
 | 4D_J | 1033 nm | 87 THz | clean | (5D→…) | 950–1050 / custom >1000 | 4D_J clock (2024) |
 
 ### A selection criterion the menu was choosing without: the thermal field
 
 Added 2026-08-10, after the blackbody environment was computed for 6S. What
 couples an upper state to the cell's own thermal radiation is not the drive
-wavelength but **the gap to the nearest nP level**, and that gap SHRINKS as
+wavelength but **the gap to the nearest nP level**, and that gap shrinks as
 the upper state climbs. So the occupation number at the coupling wavelength
 spans five orders of magnitude across a menu whose entries differ by less than a
 factor of two in drive wavelength:
@@ -114,7 +114,7 @@ is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set
 - **Pump is not the limiter, the optics set is.** The Verdi V18 delivers up to
   **18 W at 532 nm** (datasheet-confirmed). Whether 18.5 A is your full-power point
   or a set-point, that is a *generous* pump for a SolsTiS (which needs far less), so
-  tuning range is fixed by the installed BRF/mirror set, not by pump. Ample pump is
+  tuning range is fixed by the installed brf/mirror set, not by pump. Ample pump is
   exactly what buys usable power at a set's *edges*, which is how you reach 993 nm
   at the top of a 700–1000 set, and what the large-S₀ regime Paper A needs.
 - **Tuning mechanism** (why "within a set it's continuous"): motorized
@@ -134,7 +134,7 @@ is **950–1050 nm**, 993 and 4D (1033) are easy but 5D/7S require an optics-set
   consistent with holding that red edge.
 
 Three things fall out. (i) **5D and 7S sit in the Ti:Sapph sweet spot** (more power,
-easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares ONE
+easier lock than the 993 nm red edge). (ii) **The whole upper ladder shares one
 detection channel**, 420 nm (6P→5S blue fluorescence), which serves 5D, 7S, 8S *and* 9S,
 because they all cascade through 6P. Only 6S is the near-IR (795 nm) outlier. So
 the detection swap noted above (the 795 nm filters → a 420 nm bandpass + a
@@ -151,7 +151,7 @@ A lot, but as an **enabler rather than an optimisation**. The 6S work detects th
 the current near-IR path does not pass. So:
 
 - To see *any* of the upper-ladder transitions at all, the detection filters must
-  change to a **420 nm bandpass** (plus a PMT/APD with useful blue quantum
+  change to a **420 nm bandpass** (plus a PMT/apd with useful blue quantum
   efficiency, since many near-IR-optimised detectors are poor at 420 nm). This is a
   hard requirement. It cannot be trimmed or optimised around.
 - **Corrected 2026-08-03 (see §3.2): the requirement above is not hard for 7S,
@@ -159,7 +159,7 @@ the current near-IR path does not pass. So:
   five channels at once and measure the branching, normalised to 780 nm, as
   1 : 0.64 : 0.52 : 0.35 : 0.20 for 780 / 741 / 795 / 728 / 420 nm, which puts
   420 nm last of the five ([wang2025](lit/wang2025.md)). The 741 and 728 nm
-  lines are the direct 7S→5P decays, at 741.02 and 728.20 nm from the same NIST
+  lines are the direct 7S→5P decays, at 741.02 and 728.20 nm from the same nist
   energies this repository uses for its polarizability sums, and the 780 and
   795 nm lines are the D-line terminals the present chain already works in. Cao
   *et al.* 2025 likewise read 5D₃/₂ on 795, 762 and 420 nm
@@ -196,8 +196,8 @@ Net: the filter swap is required once to reach the upper ladder, and it is a
 *cheap, one-time* cost (one blue detection path) for a *large* payoff (four new
 transitions, including the hot 5D clock line).
 
-**But "cheap" describes the hardware and not what could defeat the session.
-What could defeat it is the noise floor, which has to be measured rather than
+**But "cheap" describes the hardware and not what could break the session.
+What could break it is the noise floor, which has to be measured rather than
 assumed** (2026-07-26). M1's fitted
 law is σ² = a² + b·V: a detector floor plus a Poisson term. Which of the two
 dominates sets how signal-to-noise responds to a *fainter* line, and the two
@@ -273,7 +273,7 @@ is real and it is not a scan of the drive. Hamilton's clock is driven by *fixed*
 780 nm and 776 nm lasers locked to the two-photon line, and the magic wavelength
 is measured with a **third** tunable Ti:Sapph, 760 to 800 nm, that illuminates
 the same cell, perturbs the clock, and is read out as a frequency change of the
-778 nm clock output against a comb referenced to a ULE cavity. Two things
+778 nm clock output against a comb referenced to a ule cavity. Two things
 follow. The single-colour drive at **778.104 nm** (computed in §3.4) is pinned
 by the resonance and cannot be tuned, so the field scanned across 776.179 nm is
 the *perturbing* one, not the drive. And that is exactly the configuration in
@@ -371,7 +371,7 @@ phase-shift cross-section, Lewis 1980 §4.2 eq. (4.15) to (4.17), written out in
 `vanderwaals.beta_self_vdw`. The C₆ side is computed rather than borrowed.
 Between the 6S and 7S rungs the module's own Casimir-Polder integrals give
 C₆(5S+nS) growing as **n\*^3.5** (28908 to 83228 a.u., with n\* = 2.845 and
-3.856 from the NIST term energies and the Rb ionization limit, or 3.54 if a
+3.856 from the nist term energies and the Rb ionization limit, or 3.54 if a
 fixed quantum defect of 3.131 is used instead). The quantity the broadening
 law reads is the difference against the ground pair, which grows a little
 faster because the same 4180 a.u. is subtracted from both, **n\*^3.8** (24728
@@ -403,11 +403,11 @@ prediction of the same sum-over-states machinery whose 6S sign is disputed. A
 bench that measured both signs would be testing that machinery's structure
 rather than adjudicating the 6S dispute, because a convention error would flip
 both together. 5D is left un-recomputed on purpose (`polarizability.py`,
-Ti:Sapph ladder block header), and Hamilton's measurement is adopted instead.
+Ti:Sapph ladder block header), and Hamilton's measurement is accepted instead.
 
 **The anchored 5D entry, and what it is allowed to be used for.** The third row
 is not a sum over states. It is two statements with no free parameter, which is
-what the adopted measurement licenses. Hamilton's measured 776.179 nm magic
+what the accepted measurement licenses. Hamilton's measured 776.179 nm magic
 wavelength is where Δα crosses zero. Moving from there to the 778.104 nm drive,
 Δα changes by the near-resonant 5P₃/₂–5D₅/₂ term evaluated with Hamilton's own
 measured 1.80 a.u. element, minus the change in α₅S, which the module computes
@@ -473,7 +473,7 @@ slope above into a fitted exponent.
 ### 3.4 What a doubling stage would add (options map)
 
 A second-harmonic stage on the Ti:Sapph reaches the single-photon UV resonances
-out of the 5S ground state. The wavelengths below are computed from the NIST
+out of the 5S ground state. The wavelengths below are computed from the nist
 term energies this repository already carries in `rb5s6s/polarizability.py`
 (`LINES_5S`), as 10⁷/E, in vacuum, to 0.1 nm.
 
@@ -510,7 +510,7 @@ What the UV would and would not be for:
   overshoots by 4404 cm⁻¹, and the present 993.418 nm drive overshoots by
   6574 cm⁻¹. So on this laser the combination would photoionize rather than
   excite a bound state, and the ion collection it would need for detection,
-  which doubles as its own REMPI background, would return a smooth yield and
+  which doubles as its own rempi background, would return a smooth yield and
   no line. It would reopen only for a fundamental redder than 1187.3 nm, which
   no listed set covers.
 - **A resonant source at the wavelength the upper ladder detects on.** The
@@ -546,11 +546,11 @@ separately.
 
 ### 3.5 The one-colour three-photon rung, and the parabolic ramp
 
-Proposed by the experimenter on 2026-08-09. Three photons of ONE colour from
+Proposed by the experimenter on 2026-08-09. Three photons of one colour from
 5S reach an odd-parity state, and the reason to want that is not a new
-coefficient but a new SHAPE. This record's signal-weighted shift distribution
+coefficient but a new shape. This record's signal-weighted shift distribution
 is $f(s)\propto|s|^{n-1}$ on $[-S_0,0]$ with $n$ the number of photons, so
-$n=2$ gives the triangle the 993 nm work fits and $n=3$ gives a PARABOLA,
+$n=2$ gives the triangle the 993 nm work fits and $n=3$ gives a parabola,
 $f(s)=3s^2/S_0^3$. Its cumulants follow by the same direct integration:
 
 $$\langle s\rangle=-\tfrac34 S_0,\qquad \mathrm{Var}=\tfrac{3}{80}S_0^2,\qquad
@@ -572,7 +572,7 @@ runs 26786 to 31579 cm^-1, below the 33690.81 cm^-1 limit by 2112 to 6905 cm^-1,
 and only crosses it blue of about 890 nm.
 
 **The candidate table.** Term energies from the committed line list where it has them, which already
-carries 8P, 9P and 10P, and from NIST ASD otherwise, verified 2026-08-09. The
+carries 8P, 9P and 10P, and from nist asd otherwise, verified 2026-08-09. The
 F-state quantum defect runs with $n$ rather than sitting at its asymptote, so a
 fixed-defect estimate is 17 cm^-1 out at 4F and converges by 7F. The column that decides the rate is where the
 TWO-photon virtual level $2E/3$ falls relative to a real state that couples to
@@ -595,9 +595,9 @@ carries, so none of them needs the doubling stage. 4F needs a redder set.
 **5F is the stronger target, and it is not the one the question named.** For 8P
 the chain is 5S to 5P to 6S to 8P, and the near resonance is with the 6S state
 this record characterises, 230 cm^-1 away. For 5F the chain is 5S to 5P to 4D
-to 5F, near resonant with 4D at 163 cm^-1, and BOTH upper dipoles are far
-larger: 5P3/2-4D5/2 is the committed 10.90 a.u. against 6S-8P3/2 at 0.629, and
-4D-5F is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
+to 5F, near resonant with 4D at 163 cm^-1, and both upper dipoles are far
+larger: 5P3/2-4d5/2 is the committed 10.90 a.u. against 6s-8p3/2 at 0.629, and
+4d-5f is a near-hydrogenic D-to-F transition of order 10 to 20 a.u. The figure
 of merit $|d_1d_2d_3|/(\Delta_1\Delta_2)$ puts 5F ahead by a factor of about
 **21**, on an honest range of 10 to 40 once the unmeasured element and the choice
 of 4D fine-structure partner are both allowed to move. A first pass here quoted
@@ -619,7 +619,7 @@ one-photon width, about 1.38 GHz at 130 C, against natural widths of 0.3 to
 1.5 MHz. Collinear geometry in a cell is therefore useless for shape work. The
 fix is the STAR: three coplanar beams of equal $|k|$ at 120 degrees, whose wave
 vectors sum to zero exactly, so the $(1,1,1)$ absorption channel is
-first-order-Doppler-free AND recoil-free, the recoil vanishing because the net
+first-order-Doppler-free and recoil-free, the recoil vanishing because the net
 momentum transfer is zero rather than merely small. The other channels are the
 cost: $(2,1,0)$ leaves net $|k|=\sqrt3 k$ and $(3,0,0)$ leaves $3k$, so a sharp
 Doppler-free peak sits on a pedestal 1.7 and 3 times the one-photon Doppler
@@ -632,7 +632,7 @@ Ryabtsev and co-workers proposed the star geometry for three-photon Rydberg
 excitation (Phys. Rev. A 84, 053409, 2011), and a 2025 warm-vapour experiment
 measured the narrowing directly, 4.36(6) MHz collinear against 1.18(8) MHz in
 the tailored geometry with three times the excited density
-(arXiv:2506.04504). All of that work is THREE-COLOUR through real stepwise
+(arXiv:2506.04504). All of that work is three-colour through real stepwise
 intermediates. **A one-colour three-photon 5S to nP or nF measurement in Rb was
 not found in the literature**, and the difference is structural rather than
 cosmetic: at 1005 nm the single-photon detuning from 5P is tens of terahertz, so
@@ -641,7 +641,7 @@ population, which is what the shape method needs and what the stepwise schemes
 do not provide.
 
 **The cold-atom route is the alternative, and it is weaker than it looks.** At
-10 microkelvin the one-dimensional rms speed is 3.1 cm/s, so a COLLINEAR
+10 microkelvin the one-dimensional rms speed is 3.1 cm/s, so a collinear
 one-colour scheme keeps a residual three-photon Doppler width of about 92 kHz
 at one sigma, 215 kHz full width. Against 8P3/2's 327 kHz that is a 20 per cent
 broadening rather than a negligible one, and collinear geometry also carries a
@@ -650,7 +650,7 @@ have at all. For 5F, whose 1.51 MHz width dominates, the cold-atom residual is
 negligible. So cold atoms alone suffice for 5F and do not quite suffice for 8P,
 while the star geometry suffices for both and works in a cell.
 
-**What is not settled here.** The 4D-5F dipole is an estimate rather than a
+**What is not settled here.** The 4d-5f dipole is an estimate rather than a
 value, and it carries the whole factor-of-two spread in the ranking. The
 detection path for each target is unexamined, and it decides feasibility as much
 as the excitation rate does. Whether a fourth photon ionizes the excited state
@@ -672,7 +672,7 @@ three halves while an AC Stark shift goes as the first power, so the ratio of ra
 to shift is fixed by the atom and not by a knob: the shift can be made small only
 by making the rate smaller still. And the near resonance that makes the rate
 viable is the same small denominator that makes the shift large, so the two are
-locked. Computed here from the ARC reduced elements and this section's own
+locked. Computed here from the arc reduced elements and this section's own
 detunings, the level repulsion between target and near-resonant intermediate
 reaches the target's natural width at 740 W/cm^2 for 5F and 1.85e4 W/cm^2 for
 8P3/2, against the 3497 W/cm^2 per arm the present 993 nm drive already runs at.
@@ -713,7 +713,7 @@ of megahertz, both two orders of magnitude above the widths tabulated as though 
 single line were being driven. Rb-85 adds its own manifold in a natural-abundance
 cell. So 8P is a resolved multiplet to be assigned, not a line, which is a
 detection and fitting problem rather than a rate problem. For 5F no measured
-hyperfine constant appears in ARC's compilation or in the literature searched,
+hyperfine constant appears in arc's compilation or in the literature searched,
 and the F-state trend in n suggests sub-megahertz to a few megahertz, which is
 comparable to the 1.5 MHz natural width. That is an unmeasured input, and it is
 now listed among them.
@@ -751,7 +751,7 @@ the assumption set behind each figure carried in
 **How long the pedestal row takes, since the cell above only gives the total.**
 The design pins the temperature in about 1.9 hours, to where the vapour curve's
 22-fold leverage keeps the implied density inside the 20 percent scale
-systematic, and it reaches the adopted retro ratio in about 2.1 hours. Both
+systematic, and it reaches the assumed retro ratio in about 2.1 hours. Both
 figures are for the four-pedestal comb, and both are about sixteen times longer
 on a single component.
 
@@ -770,7 +770,7 @@ a megahertz of lock drift, so the scan needs no lock quality, no new source and
 no new detection path, which is why the table above costs it against any
 session that runs at all rather than against a session of its own. What it does
 cost is time on the stack: the design pins the temperature in about 1.9 hours
-and reaches the adopted retro ratio in about 2.1 hours, both on the comb of four
+and reaches the assumed retro ratio in about 2.1 hours, both on the comb of four
 hyperfine pedestals, and both about sixteen times longer if only one component
 is fitted.
 
@@ -939,7 +939,7 @@ in hand.
 ## 4. The paper portfolio (ranked)
 
 Four papers could be written out of the material above. The ranking criterion
-is EXPECTED distinctiveness per unit bench cost: how far a result would sit
+is expected distinctiveness per unit bench cost: how far a result would sit
 from anything another group could produce, divided by the bench time and the
 hardware it would take, discounted by the chance of returning nothing. The
 word expected does the discounting, and the discount is stated per paper
@@ -1189,7 +1189,7 @@ physics argues for if the programme is pursued at all.*
    demonstrator, and reframe its introduction around the scoped novelty
    section 4.4's prior-art field states: the closed form, its cumulants,
    and the reference-free extraction, against the active 778 nm
-   suppression schemes and the USAFA nulls. A vapour-cell introduction
+   suppression schemes and the usafa nulls. A vapour-cell introduction
    edit, cheap, with the references in `LITERATURE.md` §8.
 2. **Paper D** rides whichever cell session runs first, because it costs
    one commodity diode and no Ti:Sapph time (§5.1, and rank 1 of §4 on
@@ -1198,7 +1198,7 @@ physics argues for if the programme is pursued at all.*
 3. **Paper A + C together** are the high-impact Ti:Sapph step: carry the
    method to the 778 nm clock line, with the intermediate-state
    lineshape study (C) as the validated bridge from the clean 6S anchor.
-   The tunability argument is for the SCAN across the magic point, not
+   The tunability argument is for the scan across the magic point, not
    for reaching 778 nm as such, which the decision-maker table costs
    with a fibre-amplifier alternative that makes the Ti:Sapph
    unnecessary for a fixed-wavelength run.
@@ -1233,7 +1233,7 @@ Add one auxiliary beam near 1297.5 nm to the existing cell experiment and
 scan its wavelength across the root while reading the light shift it induces
 on the 993 nm line through the lineshape channel this record already
 extracts. The induced shift crosses zero at the root and its asymmetry
-changes sign there, so the null is identified from the SHAPE of the line,
+changes sign there, so the null is identified from the shape of the line,
 needing no absolute frequency reference, which is the property this whole
 programme is built on. The position of the null is set by the 6S to 7P line
 strength, so locating it measures that matrix element by frequency metrology
@@ -1260,7 +1260,7 @@ falsifiable test the asymmetry claim can be given, and it is a test the
 kilohertz of controllable differential shift at campaign intensity, with
 either sign available within a few picometres. That is a calibrated shift
 injector for exercising the fixed-lock campaign's analysis on data with a
-KNOWN light shift, which no other knob on the bench provides.
+known light shift, which no other knob on the bench provides.
 
 **And the practicality is the punchline**: 1297.5 nm sits in the telecom O
 band, where stabilized diode lasers and calibrated wavemeters are commodity
@@ -1314,7 +1314,7 @@ electric-dipole inputs themselves: a ten per cent error on the 7P residue
 or on the background moves the root by about 75 pm, and the 7P hyperfine
 substructure smears the pole by under half a picometre at this detuning.
 The measurement is insensitive to all of it in the direction that matters,
-because the proposal is to MEASURE the root against the spectroscopically
+because the proposal is to measure the root against the spectroscopically
 exact pole position, and the theory envelope on its location is precisely
 why a 26 pm localization buys a matrix element.
 
@@ -1333,7 +1333,7 @@ for the other five. Doing so confirms the choice and replaces the reason.
 Two quantities decide what a crossing can measure, and steepness, which is
 what section 5.1 selected on, is neither of them.
 
-**Steepness** sets how precisely a crossing can be LOCATED in wavelength from
+**Steepness** sets how precisely a crossing can be located in wavelength from
 a measured shift. **Position sensitivity** sets how far the crossing moves in
 wavelength when an element changes. Both scale as one over the steepness, the
 first because a steep root turns a shift precision into a short wavelength
@@ -1400,7 +1400,7 @@ question was already decided by existing data. Nothing here adds to it.
 **What this does not claim.** The sensitivities are one element at a time, so
 they name the element each crossing speaks to rather than delivering a joint
 error budget, which needs the covariance of the whole set. The conversion from
-shift precision to wavelength rides the campaign intensity and the adopted
+shift precision to wavelength rides the campaign intensity and the accepted
 waist, like every other projection here, and sharpens with the waist
 measurement.
 ## 6. Open feasibility questions, to be settled at the bench

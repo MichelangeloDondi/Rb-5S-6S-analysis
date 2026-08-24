@@ -85,13 +85,13 @@ magnitude above the ~3.5 kHz expectation (§1,
 [`BIG_PICTURE.md`](../BIG_PICTURE.md) §1), so the case for the session is about
 reach, not about combining points at all.
 
-A THIRD REASON, INDEPENDENT OF BOTH, from the influence audit of 2026-08-16.
+A third reason, independent of both, from the influence audit of 2026-08-16.
 On the density axis the three lower temperature blocks sit close together and
 the 130 °C anchor sits far from them, so the anchor carries a hat-matrix
 leverage of 0.996 on all four peaks. A straight line through that design passes
-very nearly THROUGH the far point whatever the far point says, which has a
-consequence worth stating plainly: THE FOUR-POINT CONSTRUCTION CANNOT DETECT AN
-ERROR IN ITS OWN ANCHOR. An outlier planted at 130 °C leaves almost no
+very nearly through the far point whatever the far point says, which has a
+consequence worth stating plainly: The four-point construction cannot detect an
+error in its own anchor. An outlier planted at 130 °C leaves almost no
 residual, and the audit's power ladder failed to detect one at any size up to a
 hundred times the point's own error bar. Nothing about the anchor is thereby
 suspect. What is established is that the construction is not able to check it,
@@ -99,14 +99,14 @@ so the anchor is an input to the slope rather than a constraint on it.
 
 Points at 150–170 °C move the far end of that lever and put a second constraint
 out there, which converts the collisional coefficient from anchor-defined to
-checkable. SPACE THEM IN DENSITY RATHER THAN IN TEMPERATURE. Density rises
+checkable. Space them in density rather than in temperature. Density rises
 steeply enough with temperature that evenly spaced set points cluster at the
 cold end and leave the hot end carrying the fit, which is the geometry that
 produced the leverage above. The same audit found the 25 mW condition neither
 outlying nor influential on any peak, so its large error bar is already doing
 the right thing and it needs no special handling.
 
-WHICH OF THIS SECTION'S ASKS ACTUALLY MOVES THE PROJECTION. A global
+Which of this section's asks actually moves the projection. A global
 sensitivity analysis of the projected precision, decomposing its variance
 across the plausible range of every design input, ranks them:
 
@@ -116,13 +116,13 @@ across the plausible range of every design input, ranks them:
 | the cold-spot lag | 0.33 |
 | the block-noise cut from interleaving | 0.27 |
 | the measured block-to-block width scatter | 0.02 |
-| the NUMBER of temperature blocks | 0.002 |
+| the number of temperature blocks | 0.002 |
 
-THE BLOCK COUNT BUYS ALMOST NOTHING, which is the same fact as the leverage
+the block count buys almost nothing, which is the same fact as the leverage
 above seen from the other side: the lever is the spread of densities about
 their mean, and the hottest point dominates that spread, so intermediate blocks
-near the cold end add almost none of it. The session should argue for REACH and
-for MEASURING THE LAG rather than for more points. The lag deserves particular
+near the cold end add almost none of it. The session should argue for reach and
+for measuring the lag rather than for more points. The lag deserves particular
 attention because it carries a third of the variance and is currently a
 face-value figure rather than a measurement, which is what makes the day-one
 item that measures it worth more than its duration suggests. A caution on that
@@ -365,12 +365,12 @@ Added 2026-08-19, when `rb5s6s/cascade.py` made the pumping calculation
 callable rather than a one-off script.
 
 The amplitude programme's open question is that the departure from the
-square-of-power law orders itself by peak BRIGHTNESS rather than by branching
+square-of-power law orders itself by peak brightness rather than by branching
 ratio, which reads as a detection signature rather than an atomic one. That
 was an observation without an alternative to test it against.
 
 There is one now. Hyperfine pumping predicts its own ordering, and it is
-DIFFERENT. Each excitation returns the atom to the undriven ground level with
+different. Each excitation returns the atom to the undriven ground level with
 probability f, so a line's amplitude falls with the number of cycles an atom
 completes while crossing the beam, and the four lines have
 
@@ -388,9 +388,9 @@ from a descriptive measurement into a discriminating one: it does not merely
 record four amplitudes, it chooses between two named mechanisms.
 
 Two conditions on reading it, both stated before the measurement rather than
-after. The comparison is between RATIOS within one trace, since a common
+after. The comparison is between ratios within one trace, since a common
 factor multiplies all four and cancels. And the cycle count is not known
-independently, so the test is on the ORDER and on the spacing pattern rather
+independently, so the test is on the order and on the spacing pattern rather
 than on the absolute depletion, which the transit time and the excitation
 probability jointly set.
 
@@ -412,14 +412,14 @@ lever on the collisional coefficient than anything else the record has
 examined.
 
 Lorentzians add linearly, and that has a consequence sharper than competition
-for the same wings: at a FIXED condition the model depends on the collisional
-and laser widths only through their SUM, so neither is identified there and
+for the same wings: at a fixed condition the model depends on the collisional
+and laser widths only through their sum, so neither is identified there and
 only the sum is. A per-condition version of this comparison was withdrawn on
 2026-08-20 for that reason. Density is what separates them, so this lever and
 the density ladder are the same instrument seen from two sides.
 
 The line does constrain the kernel, but not through that tally. The
-pure-Lorentzian model is NESTED inside the Gaussian one: a zero-width Gaussian
+pure-Lorentzian model is nested inside the Gaussian one: a zero-width Gaussian
 is a delta function, so the Gaussian arm reaches the Lorentzian arm exactly by
 sending its own width to zero. A containing model cannot fit worse, which makes
 32 of 32 arithmetic rather than evidence. Read instead as the nested likelihood
@@ -432,7 +432,7 @@ assumption the record makes is supported, on a firmer test than the one first
 reported.
 
 **What the session should carry from this.** The comparison run here is
-between two extremes. A laser kernel with a FITTED Lorentzian fraction turns
+between two extremes. A laser kernel with a fitted Lorentzian fraction turns
 that binary into a bound on the Lorentzian content, and that bound is the
 model-form error bar on $\beta_{\rm self}$ the paper should quote beside the
 transit-kind one. It costs no beam time, only a fit, and it should be run
@@ -444,7 +444,7 @@ before the session rather than after
 The density ladder is the instrument for $\beta_{\rm self}$, so it is worth
 naming a term that shares its signature exactly and therefore hides inside
 it. A two-atom cooperative channel puts a satellite at twice the single-atom
-magnetic position, because a PAIR can accept the two units of angular
+magnetic position, because a pair can accept the two units of angular
 momentum a single $J=1/2$ atom must refuse
 ([`rb5s6s/cooperative.py`](../../rb5s6s/cooperative.py)). Its rate is linear
 in density, since it needs a second atom, and so is its contribution to the
@@ -459,7 +459,7 @@ the satellite adds $3\times10^{-4}$ hertz to a collisional width of 492 kHz,
 six parts in ten thousand million. It is named because the reasoning is what
 generalises. **A design whose only lever is density cannot distinguish any
 two terms that are both linear in it**, and the way out is not more density
-points but a second lever. Here that lever is the FIELD: the collisional
+points but a second lever. Here that lever is the field: the collisional
 coefficient is indifferent to it and the satellite's width contribution goes
 as $B^2$, leaving the line entirely above 384 microtesla.
 
@@ -474,7 +474,7 @@ The record measures an asymmetry it does not explain. C3g is the open
 finding, a same-side near-core asymmetry in both sessions, absorbed neither
 by a detector time constant nor by the wing nuisance, and the band-excess
 finding names a better profile as the next lever. So the question is not
-whether the lineshape model is missing something asymmetric but WHICH
+whether the lineshape model is missing something asymmetric but which
 asymmetric thing, and the answer is earned by decomposition rather than by
 adding a free skew parameter, because the shape channel is where the physics
 lives: the AC-Stark ramp's own asymmetry is the kappa signal, and a free
@@ -488,9 +488,9 @@ what makes the budget separable:
 |---|---|---|---|
 | detection lag | sweep rate | odd under sweep direction, so the triangle-half difference isolates it and the mean cancels it | separable by design, needs the direction column of [chapter 8](08_the-acquisition-record.md) |
 | the AC-Stark ramp | power | fixed side, follows $\kappa$ | in the model already, it is the signal |
-| neighbour wings and pedestals | geometry only | none, computable | the linear part is absorbed by each trace's fitted baseline, and the surviving curvature is sized inside the residual audit's model-set stage rather than guessed here. In the wide-span design the baseline is a SUM of four pedestals by construction, per [chapter 9](09_the-fixed-lock.md) |
+| neighbour wings and pedestals | geometry only | none, computable | the linear part is absorbed by each trace's fitted baseline, and the surviving curvature is sized inside the residual audit's model-set stage rather than guessed here. In the wide-span design the baseline is a sum of four pedestals by construction, per [chapter 9](09_the-fixed-lock.md) |
 | speed-dependent collisions | density | third cumulant against $N$ | admitted only if the density-keyed skew demands it. The far-wing version is already nulled by M24, and the core is a separate question |
-| vector light shift with pumping | power times circular admixture | REVERSES with the ambient field or a half-wave flip | the one door the magnetic field has into this lineshape, and a coil on the cell makes the test free |
+| vector light shift with pumping | power times circular admixture | reverses with the ambient field or a half-wave flip | the one door the magnetic field has into this lineshape, and a coil on the cell makes the test free |
 | standing-wave fringe skew | geometry | suppressed by the fringe-resolved slow tail | closed |
 
 The decision instrument exists in the record: every fit already carries a
@@ -499,7 +499,7 @@ power, by density and by line, is the model-free half of the residual audit.
 Whichever row reproduces C3g's signature, same physical side in both
 sessions and near the core, is the term the model gains, keyed to its knob
 and never free. The digital twin then sizes each row the other way round,
-injecting the mechanism and reading what the SYMMETRIC fit does to
+injecting the mechanism and reading what the symmetric fit does to
 $\beta_\text{self}$ and to $\kappa$, so the cost of leaving a term out is a
 number rather than a fear. That injection layer is the twin's next scheduled
 extension.
@@ -512,11 +512,11 @@ worth session time.
 
 **More of the same measurement does not separate the widths.** The
 correlation between the laser width and the collisional width sits near
--0.92 and STAYS there: -0.9177 at a 60 MHz span, -0.9166 at 300 MHz, and
+-0.92 and stays there: -0.9177 at a 60 MHz span, -0.9166 at 300 MHz, and
 -0.881 with ten times the traces. Both uncertainties shrink as the data
 grow, and the direction the observable cannot see stays invisible. The
 degeneracy is a property of the lineshape rather than of the sample size, so
-no scan design defeats it.
+no scan design breaks it.
 
 **An external constraint is worth a factor of two to three and a half, and
 it is the only thing that is.** Pinning one member of a correlated pair
@@ -533,7 +533,7 @@ comparison. All of it is available from a measurement that never touches
 the atoms.
 
 **Consequence for this chapter's programme.** An independent laser-width
-measurement is not one lever among several, it is the ONLY lever that acts on
+measurement is not one lever among several, it is the only lever that acts on
 the identifiability rather than on the noise. Session time spent widening
 scans or adding repeats buys precision on a quantity the record already
 declines to quote, and session time spent measuring the laser elsewhere buys

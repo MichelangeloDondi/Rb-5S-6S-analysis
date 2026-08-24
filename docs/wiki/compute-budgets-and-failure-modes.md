@@ -31,7 +31,7 @@ fit carries a Jacobian, one row per data point and one column per free
 parameter, and a solver keeps that matrix resident for as long as the fit
 runs, together with a few arrays of comparable size for the residual, the
 trust-region step and a QR or SVD factorization of the Jacobian itself. The
-memory a single fit needs therefore scales with the PRODUCT of the point
+memory a single fit needs therefore scales with the product of the point
 count and the parameter count, not their sum, and a fit that is comfortable
 on ten thousand points and a dozen parameters can be uncomfortable on the
 same data with several times as many parameters, or on several times as much
@@ -124,13 +124,13 @@ every path the run needs and naming the likely cause in a sentence a reader
 can act on, so that a run measured in hours fails, when it is going to fail,
 in seconds rather than after most of the wall time is already spent.
 
-A companion discipline applies when the expensive step is a FIT rather than a
+A companion discipline applies when the expensive step is a fit rather than a
 launch. Find a cheap observable that sits downstream of the change you suspect
 and upstream of the expensive part, and localise with that before paying for
 the expensive part at every candidate. A 2026-08-20 sweep needed to know which
 commit in a development range had changed a joint construction, and the honest
 answer would have been a full fit at every commit, roughly seventeen hours.
-The construction's POINT COUNT is computed in the loading path before any fit
+The construction's point count is computed in the loading path before any fit
 starts, depends on the same code, and resolved the whole range in about four
 minutes ([`run_commit_sweep.py`](../../scripts/run_commit_sweep.py)). The fits
 were then run once, to confirm what the proxy had already located.

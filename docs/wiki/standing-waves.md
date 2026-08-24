@@ -35,19 +35,19 @@ and which one applies is a question of timescale, not of geometry. A slow
 or nearly transverse atom crosses a negligible fraction of one fringe
 during the time it takes to respond to the light, so it sits at
 essentially one point of the standing wave and reads whatever intensity is
-there. That is FRINGE-RESOLVED: the atom's response depends on where in
+there. That is fringe-resolved: the atom's response depends on where in
 the fringe it happens to be, and an ensemble of such atoms carries the
 fringe's spatial structure into the signal. A fast axial atom instead
 sweeps through many fringes within that same response time, so what
 reaches the atom is a rapid modulation about a well-defined mean, and to
-lowest order only the mean survives. That is FRINGE-AVERAGED. The two
+lowest order only the mean survives. That is fringe-averaged. The two
 limits bracket every real ensemble, which is always a thermal mixture of
 transverse and axial motion, and the fraction that falls into each regime
 is set by the ratio of the fringe-crossing rate to the atom's response
 rate.
 
 A second, independent question is how much power actually comes back. The
-RETRO RATIO is the fraction of forward power returned to the atoms after
+retro ratio is the fraction of forward power returned to the atoms after
 every loss along the retro path, mirror reflectivity, window and lens
 passes, and imperfect overlap between the outgoing and returning modes.
 It is a number between zero and one for any real retro-reflector, one
@@ -56,14 +56,14 @@ only in the lossless, perfectly mode-matched limit.
 The retro ratio matters beyond the fringe contrast because a
 counter-propagating geometry drives two-photon absorption through two
 distinct channels. An atom can take one photon from the forward beam and
-one from the backward beam, a CROSS TERM whose rate scales with the
+one from the backward beam, a cross term whose rate scales with the
 product of the two intensities. Because the two photons travelling in
 opposite directions carry opposite first-order Doppler shifts, this
 channel cancels the atom's velocity and produces the narrow,
 Doppler-free line. Or an atom can take both photons from the same beam,
-a SAME-BEAM term whose rate scales with the square of that beam's own
+a same-beam term whose rate scales with the square of that beam's own
 intensity. Both photons then carry the same first-order Doppler shift,
-nothing cancels, and the ensemble produces a broad, Doppler-BROADENED
+nothing cancels, and the ensemble produces a broad, Doppler-broadened
 pedestal underneath the narrow line. Both channels are driven by the
 same two beams, so their relative strength depends on nothing but how
 those two intensities compare, which is exactly what the retro ratio
@@ -77,7 +77,7 @@ repository and derived in none of them.** Write the forward intensity as $I$
 and the backward as $\rho I$. The same-beam channel runs on each beam
 separately, so its rate goes as $I^2 + (\rho I)^2$. The cross channel takes
 one photon from each beam, and the two assignments of which photon comes
-from which beam are indistinguishable, so they add in the AMPLITUDE and the
+from which beam are indistinguishable, so they add in the amplitude and the
 rate carries the square of that sum, $4 I \cdot \rho I$. The ratio of the
 narrow line's area to the pedestal's is the quotient,
 
@@ -109,7 +109,7 @@ itself.
 ## Where this repository uses it
 
 [`rb5s6s.constants.RHO_RETRO`](../../rb5s6s/constants.py) holds the
-adopted retro power ratio, 0.94 with an uncertainty of 0.04, a design
+assumed retro power ratio, 0.94 with an uncertainty of 0.04, a design
 assumption rather than a bench measurement: the retro path is built to be
 self-imaging so the forward and returning modes match by construction,
 but loss at every extra surface and any residual misalignment push the
@@ -122,7 +122,7 @@ The fringe-averaging argument is worked out in
 Doppler-free line is shown to be uniform along the standing wave, so only
 the AC-Stark shift fringes, and a fast axial atom's modulation index at
 that shift depth is small enough to put the effective intensity at the
-fringe MEAN, which is the fringe-averaged limit above applied to this
+fringe mean, which is the fringe-averaged limit above applied to this
 transition. A frozen-fringe simulation of the weak-excitation amplitude
 along each trajectory (module `rb5s6s/ramp_transit.py`) recovers that mean
 in both the fast-sweep and frozen-fringe limits to about a tenth of a
@@ -137,7 +137,7 @@ around and reads it as a diagnostic.
 [The fixed cavity lock chapter](../plan/09_the-fixed-lock.md) checks that
 the drive depth chosen to null the sideband comb does not also null the
 same-beam term, since a drive that suppressed the pedestal along with the
-comb would defeat the wide scan's purpose, and confirms the two channels
+comb would break the wide scan's purpose, and confirms the two channels
 share one Bessel law. The following chapter,
 [§10c.7](../plan/10_the-fixed-lock-instrument.md), and
 [`scripts/run_widescan_design.py`](../../scripts/run_widescan_design.py),
@@ -167,7 +167,7 @@ to a change in the retro ratio vanishes exactly where a well-aligned
 retro-reflector is expected to sit, so a pedestal measured to some
 fractional precision constrains the retro ratio far more loosely than the
 same precision would suggest away from that point. A departure from the
-adopted value that is small is, for that reason, the hardest one to
+value of record that is small is, for that reason, the hardest one to
 catch this way.
 
 Finally, an experimental limitation shared by any pedestal-based
@@ -181,7 +181,7 @@ produce.
 ## Try it
 
 The narrow-to-pedestal area ratio and its slope, evaluated at a perfect
-retro reflector and at the value this repository adopts.
+retro reflector and at the accepted value.
 
 ```python
 from rb5s6s import RHO_RETRO
@@ -195,7 +195,7 @@ def area_ratio_slope(rho):
     return 4.0 * (1.0 - rho ** 2) / (1.0 + rho ** 2) ** 2
 
 
-for rho, label in ((1.0, "perfect retro"), (RHO_RETRO, "adopted RHO_RETRO")):
+for rho, label in ((1.0, "perfect retro"), (RHO_RETRO, "accepted RHO_RETRO")):
     print(f"rho = {rho:.3f} ({label}): area ratio = {area_ratio(rho):.4f}, "
           f"slope = {area_ratio_slope(rho):+.4f} per unit rho")
 print("the slope vanishes at rho = 1, so the ratio is a weak monitor near it")
@@ -210,9 +210,9 @@ a reader.
 On 2026-08-15 a residual-Doppler tolerance for a tilted retro-reflector was
 first written using the same-beam pedestal's own width coefficient to scale a
 tilt angle into a frequency. That coefficient belongs
-to the SAME-BEAM term this page describes above, where both photons come
+to the same-beam term this page describes above, where both photons come
 from one beam and carry a wavevector sum of $2\vec k$. A retro tilt instead
-acts on the CROSS term, one photon from each of the two counter-propagating
+acts on the cross term, one photon from each of the two counter-propagating
 beams, whose sum for a small angle $\theta$ is $k\theta$, not $2k\theta$:
 half the pedestal's coefficient, because the pedestal already carries the
 doubled wavevector the tilt does not. Recomputed at 471 MHz per radian

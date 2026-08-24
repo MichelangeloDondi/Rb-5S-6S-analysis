@@ -26,7 +26,7 @@ where the power lever lives, and that is why its missing power matters.
 ## The brackets were taken at one power, not at the ladder's ends
 
 ruler_p is 23 traces marked `before` and 21 marked `after`, at block sequence 0
-and 6, so they bracket the WHOLE ladder for each peak rather than any individual
+and 6, so they bracket the whole ladder for each peak rather than any individual
 rung. That leaves their power to be inferred. The total comb area, integrated
 above baseline over the whole record, settles it:
 
@@ -58,8 +58,8 @@ seven teeth with the carrier deliberately suppressed, so each tooth drives with 
 small fraction of the total power. The saturation parameter goes as the square of
 the intensity, so a tooth carrying a seventh of the power saturates roughly fifty
 times less than the unmodulated beam at the same total power. Saturation
-broadening therefore predicts the RF-on cores to be NARROWER than the RF-off
-cores. They are three times WIDER. A candidate that predicts the opposite sign of
+broadening therefore predicts the RF-on cores to be narrower than the RF-off
+cores. They are three times wider. A candidate that predicts the opposite sign of
 the observed effect is not the explanation, which leaves EOM phase noise and
 velocity-class selection, and those two are distinguishable: phase noise adds
 laser width and should scale with the RF drive amplitude, while velocity-class
@@ -75,7 +75,7 @@ whether the ruler traces' cores may be pooled with the campaign's at all.
    calibration carries that spread as a systematic rather than assuming a square.
 2. Settle the RF-on core question above. If the cores do not agree after phase
    noise is given its own width parameter, the ruler traces contribute frequency
-   calibration and lineshape SHAPE but must not contribute the collisional width.
+   calibration and lineshape shape but must not contribute the collisional width.
 3. Only then pool. What that buys is not a new lever but a better-pinned core at 130 C,
    which is the nuisance the width-channel Stark bound is limited by, and 44
    traces at seven teeth each is a large amount of shape information at exactly
@@ -88,4 +88,4 @@ It does not revive the centre channel.
 every session lacks a knob-independent frequency origin, and the comb does not
 supply one: its teeth locate the line relative to itself, since all seven replicas
 are the same transition and shift together under a light shift. The comb fixes the
-SCALE of a trace's frequency axis, which it already does, and not its ORIGIN.
+scale of a trace's frequency axis, which it already does, and not its origin.

@@ -7,7 +7,7 @@ and how does that differ from which observations merely look surprising.
 **Takes.** A least-squares fit already run, weighted or not, and no further
 assumption about the shape of the noise law.
 **Gives.** The leverage and case-deletion machinery, Cook's distance and
-DFBETA among them, that separates an outlying point from an influential one.
+dfbeta among them, that separates an outlying point from an influential one.
 **Skip if.** You want the weighting a fit itself should carry rather than
 what to check after fitting. That is
 [weighted least squares](weighted-least-squares.md).
@@ -19,7 +19,7 @@ what to check after fitting. That is
 
 A least-squares fit turns a vector of measurements $d$ into a vector of
 fitted values $\hat d = X\hat\theta$, and that map is linear in $d$ itself:
-$\hat d = Hd$, with the HAT MATRIX
+$\hat d = Hd$, with the hat matrix
 
 $$H = X\left(X^\top X\right)^{-1}X^\top$$
 
@@ -30,7 +30,7 @@ and the kind this repository always runs, the same object generalizes to
 $H = X\left(X^\top WX\right)^{-1}X^\top W$ with $W$ the diagonal weight
 matrix, and everything below carries over unchanged.
 
-The diagonal entries $h_{ii}$ are each point's LEVERAGE. Leverage is a
+The diagonal entries $h_{ii}$ are each point's leverage. Leverage is a
 property of the design and not of the data: it depends on where a point sits
 among the settings that were chosen, not on what it measured. Every $h_{ii}$
 lies between 0 and 1, and because $H$ is idempotent its trace equals the
@@ -47,14 +47,14 @@ regardless of whether the measurement is right or wrong. The fit is not
 tested against such a point. It is drawn through it.
 
 Case-deletion diagnostics are one idea, applied to different targets: refit
-with point $i$ removed and ask what changed. The DELETED STUDENTIZED
-RESIDUAL compares the point's own value against a fit that never saw it,
+with point $i$ removed and ask what changed. The deleted studentized
+residual compares the point's own value against a fit that never saw it,
 scaled by an error estimate that also excludes it, and answers whether the
-point looks OUTLYING. COOK'S DISTANCE asks how far the entire fitted vector,
+point looks outlying. Cook's distance asks how far the entire fitted vector,
 equivalently every parameter at once, moves when the point is dropped, and
-answers whether the point is INFLUENTIAL on the fit as a whole. DFFITS asks
-the same question narrowed to that point's own fitted value. DFBETA narrows
-it further still, to how much one NAMED coefficient moves, which matters
+answers whether the point is influential on the fit as a whole. Dffits asks
+the same question narrowed to that point's own fitted value. Dfbeta narrows
+it further still, to how much one named coefficient moves, which matters
 whenever a fit carries several free parameters and a point could move one of
 them without touching the rest.
 
@@ -129,7 +129,7 @@ than a single point. [RESULTS.md](../RESULTS.md) records that the joint
 light-shift bound survives dropping any one peak, and
 [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv) carries
 the analogous rows for the self-broadening slope, one per dropped peak and
-one per dropped temperature block. Both are Cook's distance and DFBETA in
+one per dropped temperature block. Both are Cook's distance and dfbeta in
 spirit, run by hand at the resolution of a condition before either name was
 attached to the practice.
 
@@ -150,7 +150,7 @@ point. The audit above calibrates against a null built for that specific
 design instead, by parametric bootstrap, rather than a fixed number carried
 over from a much larger textbook example.
 
-A studentized residual computed with the point still IN the fit lets an
+A studentized residual computed with the point still in the fit lets an
 outlier inflate its own yardstick and hide from the very test meant to catch
 it. The repair is the externally studentized, deleted residual, whose
 denominator is recomputed with the point left out, and an early version of
@@ -212,7 +212,7 @@ a reader.
   distance.
 - D. A. Belsley, E. Kuh and R. E. Welsch, *Regression Diagnostics:
   Identifying Influential Data and Sources of Collinearity* (Wiley, 1980),
-  for DFFITS and DFBETA.
+  for dffits and dfbeta.
 - D. C. Montgomery, E. A. Peck and G. G. Vining, *Introduction to Linear
   Regression Analysis*, 5th ed. (Wiley, 2012), chapter 6, for leverage and
   the case-deletion family together.

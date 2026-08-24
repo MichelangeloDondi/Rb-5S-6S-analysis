@@ -106,7 +106,7 @@ The sign is positive because the substitution $u=-s/S_0$ maps the density onto
 a Beta distribution with parameters $(n,1)$ on the unit interval, whose own skew
 is negative, and the reflection
 $s=-S_0u$ flips it. The magnitude rises with $n$: zero at $n=1$, 0.566 at $n=2$, and 0.861 at
-$n=3$, where the distribution is the PARABOLA $f(s)=3s^2/S_0^3$ with
+$n=3$, where the distribution is the parabola $f(s)=3s^2/S_0^3$ with
 $\langle s\rangle=-\tfrac34 S_0$ and $\mathrm{Var}=\tfrac{3}{80}S_0^2$. So a
 three-photon rung would carry a shape asymmetry 1.52 times this one's on a
 relatively tighter distribution, which is the reason to want it. The moment
@@ -152,7 +152,7 @@ weight is the steady-state excited fraction $(s/2)/(1+s)$, whose logarithmic
 slope in intensity falls below $n$, and **the whole family above moves with it**:
 $g_1$ shrinks toward its $n=1$ value of zero.
 
-This matters because $s$ scales as the FOURTH power of the inverse waist. At
+This matters because $s$ scales as the fourth power of the inverse waist. At
 the dataset's measured 64 µm and 225 mW it is 0.033, so the weak-field law is
 good to a per cent and nothing here is affected. At the 16 µm the fixed-lock
 session proposes it is 8.5, and integrating the moments with the saturated
@@ -177,7 +177,7 @@ The derivation above is quasi-static. Each atom sits at one intensity and
 carries one shift. Real atoms cross the beam, sweeping their own shift from
 zero to the on-axis maximum and back within a transit time (about 0.2 µs at
 $w_0\approx 64$ µm) that is only a few times the natural response
-$1/\Gamma\approx 45$ ns. [Camparo and Lambropoulos](lit/camparo1992.md) (*JOSA
+$1/\Gamma\approx 45$ ns. [Camparo and Lambropoulos](lit/camparo1992.md) (*josa
 B* **9**, 2163 (1992)) show for a two-photon transition in a fluctuating field
 that this ratio decides the answer. Slowly-varying intensity gives an
 asymmetric line, rapidly-varying intensity averages to a symmetric one at the
@@ -299,7 +299,7 @@ $S_0 = 0.348$ MHz, so the ramp kernel is 0.20 MHz FWHM. Added in quadrature to
 the observed 5.2 MHz line that is **0.004 MHz** of extra width, a part in 1400,
 far below the width budget's own systematics. No width measurement of any
 precision reaches this signal. The asymmetry channel is not a refinement of the
-width channel but the only channel there is. CALCULATED 2026-07-30, requoted
+width channel but the only channel there is. Calculated 2026-07-30, requoted
 2026-08-02 at the measured waist.
 
 The reference moments the fit encodes,
@@ -494,7 +494,7 @@ rather than a derivation for a two-photon transition.
 [notes/two_photon_saturation_companion.md](notes/two_photon_saturation_companion.md)
 carries the derivation, the probe and what it does not license.
 
-**And the degeneracy is complete in both of the width channel's CONTINUOUS
+**And the degeneracy is complete in both of the width channel's continuous
 knobs, which is why no sweep can break it.** All three terms grow as $P^2$, and all three
 also grow as the inverse fourth power of the waist: the ramp because its width
 increment goes as $S_0^2$ and $S_0$ goes as $w_0^{-2}$, the companions because
@@ -510,8 +510,8 @@ conclusion §3 reaches from the other direction.
 ramp and the saturation are identical on all four dataset lines, because the
 two-photon Rabi frequency is $F$-independent here and the hyperfine factor is
 exactly 1 (`constants.ABUNDANCE_RB85`). The pumping is not. Its branching is
-the branching of the cascade into the ground level NOT being driven. Because
-the two-photon operator is scalar, 6S sits in ONE hyperfine level, so this is a
+the branching of the cascade into the ground level not being driven. Because
+the two-photon operator is scalar, 6S sits in one hyperfine level, so this is a
 two-step product rather than a degeneracy weight, and each leg scales that
 weight by a clean fraction:
 
@@ -642,7 +642,7 @@ M16), a sum-over-states model from Safronova-lineage matrix elements. Two of
 its three anchors are held out and one is not, and the distinction is worth
 making rather than blurring. Held out, and therefore evidence: it reproduces
 the *measured* 5S scalar tune-out 790.032326(32) nm to $\approx1.6$ pm, and
-the measured static $\alpha_{5S}=318.79(1.42)$. NOT held out: the model also
+the measured static $\alpha_{5S}=318.79(1.42)$. Not held out: the model also
 returns the Safronova-group static $\alpha_{6S}=5167(22)$, but its 6S tail term
 is *fixed by* that value (`TAIL_6S` in `rb5s6s/polarizability.py`, and
 `results/polarizability.csv` records the row as tail-calibrated), so the
@@ -713,7 +713,7 @@ would have to move $\alpha_{6S}$ by ~2200 a.u. and then land within 5% of
 the original magnitude by coincidence, whereas a global sign error, in either
 work, produces exactly magnitude agreement with sign opposition. The same
 literature demonstrably carries printed-sign faults: [Martin 2019](lit/martin2019.md)
-quotes $+2.30$ in its abstract and Table II against $-2.5$ in its Fig. 5
+quotes $+2.30$ in its abstract and Table ii against $-2.5$ in its Fig. 5
 caption for the same coefficient, verified from the held PDF.
 
 ### 5.0.1 Where this work's sign is anchored
@@ -937,7 +937,7 @@ channels cap any such term empirically: the width shows no power trend under
 3 to 8 per cent block scatter (C3a), and the window-referenced centre analysis
 bounds power-correlated centre motion at the few-hundred-kilohertz level (C3e).
 So for this dataset the bath shift is bounded well below the drive's own
-$S_0$, but it is NOT dismissible a priori at the precision a fixed-lock centre
+$S_0$, but it is not dismissible a priori at the precision a fixed-lock centre
 campaign aims for, and it is common-mode across the four peaks. Recorded OPEN:
 a fixed-lock session that reads absolute centres should either estimate the
 trapped-light shift properly, Holstein geometry and measured fluorescence in
@@ -957,7 +957,7 @@ dimensions as APPARATUS.md section 5 now records them, about 25 mm across and
 100 mm long, the transverse escape path is a 1.25 cm radius and the trapping
 factor is **about 500 natural lifetimes at 130 C and 140 at 110 C**, against the
 64 quoted. Reproducing 64 would need a 2 mm radius. So that link makes the
-estimate eight times WORSE at the campaign's hottest condition, and by
+estimate eight times worse at the campaign's hottest condition, and by
 elimination the overestimate sits in the excitation-rate assumption, which is
 where a Gaussian beam column is being treated as a uniform one at peak rate.
 
@@ -1033,7 +1033,7 @@ their terms sit far below the natural width at this intensity.
 **A caution about the fourth-order machinery, recorded where it will be found.**
 `hyperpolarizability._rspt4` must not be evaluated at this wavelength. Its
 Floquet basis contains the partner S state two photons down, so it carries a pole
-wherever $2h\nu$ equals a real S-to-S interval, and for 5S-6S that is here. Fed a
+wherever $2h\nu$ equals a real S-to-S interval, and for 5s-6s that is here. Fed a
 campaign peak label it returns a differential fourth-order shift of order 100 Hz,
 of which 99.995% is that single term: it is the two-photon level repulsion,
 $|M|^2/D$ with $|M|$ of order $2\times10^{5}$ Hz, not a hyperpolarizability.
@@ -1042,7 +1042,7 @@ The cleanest proof that the number is meaningless is that **it changes sign acro
 the four measured lines**, swinging from $-27.75$ to $+152.73$ Hz. The reason is
 that $D$ is not a physical detuning at all. The peak labels are fitted hyperfine
 positions, so the drive sits *on* the component it addresses, while `E_6S_CM` is
-the NIST hyperfine **centroid**. $D$ is the residue between them, part genuine
+the nist hyperfine **centroid**. $D$ is the residue between them, part genuine
 hyperfine offset and part a common-mode calibration offset shared by all four
 labels. The genuine non-resonant value is of order $10^{-3}$ Hz, about
 $5\times10^{7}$ below the second-order differential shift at the same field and
@@ -1133,7 +1133,7 @@ piles weight at weak out-of-focus shifts.
 Where the crossover falls is set by the collection geometry. $Z_c$ is the
 imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens, with
 $L_\parallel$ the cathode's active extent along the beam image. That extent is
-12 mm: the R636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
+12 mm: the r636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
 photo) has a 3 × 12 mm cathode, whose rotation is a ×4 lever on $Z_c$, and it
 was mounted landscape (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm,
 and the two-waist flip holds for every $M$ from 0.5 to 6 rather than depending
@@ -1156,5 +1156,5 @@ they sit exactly at the focused-two-photon / inhomogeneous-field boundary.
 [methods chapter 3](methods/03_the_ac_stark_ramp.md) (the long-form
 derivation), `docs/LITERATURE.md` (prior-art ledger), `docs/PLAN.md` §6 (the
 light-shift program of the proposed fixed-lock session, which would measure
-$S_0$ and test the sign-flip). Absolute numbers are PRELIMINARY pending the
+$S_0$ and test the sign-flip). Absolute numbers are preliminary pending the
 fixed-lock session beam-waist measurement, on which every magnitude rides.*

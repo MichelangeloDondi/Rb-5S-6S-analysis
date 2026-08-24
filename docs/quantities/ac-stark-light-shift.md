@@ -65,9 +65,9 @@ converting them silently is how comparisons stop meaning anything.
 
 | reference | value as published | system | why it is comparable |
 |---|---|---|---|
-| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5S-6S at 993 nm, THIS line | The only prior work on this transition. Its computed differential polarizability is the value this repository adopts, and its null is the standing prior result on this channel |
-| [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6S-8S two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
-| [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against AVERAGE, not peak, intensity | Cs 6s-8s two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
+| [Orson 2021](../lit/orson2021.md) | no shift resolved at 6 MHz spectral resolution, and computes $\alpha_{56} = -1093$ a.u. | Rb 5s-6s at 993 nm, this line | The only prior work on this transition. Its computed differential polarizability is the value this repository adopts, and its null is the standing prior result on this channel |
+| [Lee 2010](../lit/lee2010.md) | -7.25(45) Hz per mW per square millimetre, against theory $-6.58$ and a prior $-6.13(1.25)$ | Cs 6s-8s two-photon, hot cell | The closest published analogue: an nS to n'S alkali two-photon line with intensity and density scanned independently |
+| [Fendel 2007](../lit/fendel2007.md) | $-0.21$ Hz per mW per square centimetre against average, not peak, intensity | Cs 6s-8s two-photon, comb-driven | The same experiment one element to the left. It engineered the spatial distribution away with an unfocused 0.72 mm waist, which is the effect measured here |
 
 **Physical analogues**, the same mechanism in a different system.
 [Stalnaker 2006](../lit/stalnaker2006.md) extracted a polarizability from an
@@ -81,7 +81,7 @@ version of the same distortion in He.
 
 **Scale references.** [Quirk 2024](../lit/quirk2024.md) measured the Cs
 6s-7s differential static polarizability to four significant figures, 5807
-a0 cubed, which is the validation target for the analogous Rb 5S-6S quantity,
+a0 cubed, which is the validation target for the analogous Rb 5s-6s quantity,
 though it is DC where this is AC.
 
 **The counterpoint worth stating, because it defines the gap this experiment
@@ -96,7 +96,7 @@ precedent on an alkali nS to n'S line.
 
 ## 3. What this dataset establishes
 
-Every row is one CONSTRUCTION. They are not alternative renderings of one
+Every row is one construction. They are not alternative renderings of one
 number, and quoting one where another applies is the error this layer exists to
 prevent.
 
@@ -113,7 +113,7 @@ prevent.
 **The prediction, for comparison rather than as a result.** $\kappa$ is
 predicted at 1.545 MHz/W, giving $S_0 = 0.348$ MHz at 225 mW, computed from
 $\Delta\alpha = 1093$ a.u. ([Orson 2021](../lit/orson2021.md)), a waist of
-64 µm and a retro ratio of 0.94. The bounds therefore sit BELOW the prediction,
+64 µm and a retro ratio of 0.94. The bounds therefore sit below the prediction,
 which is the interesting feature of the table and is discussed in section 4.
 
 **Two things the table does not say, stated here so that it cannot be read as
@@ -144,7 +144,7 @@ simulation.
 
 **The wrong moment is being used, by a factor of forty.** At the bound the
 light-shift term moves the composite width by about 4 kHz, against a per-block
-width scatter of 88 kHz. The same term pulls the line CENTRE by about 150 kHz.
+width scatter of 88 kHz. The same term pulls the line centre by about 150 kHz.
 The centre is the sensitive moment because a one-sided perturbation moves a
 line's position far more than its width, and a symmetric summary of an
 antisymmetric perturbation is insensitive by construction. The centre channel
@@ -152,8 +152,8 @@ is nevertheless the weakest bound in the table, because the laser lock drifted
 during the campaign and absolute centres are lost. **The experiment measured
 the insensitive moment well and the sensitive moment not at all.**
 
-**Model: the geometry is adopted rather than measured.** The waist of 64 µm,
-with an adopted band of 62 to 68 µm, comes from one profiler measurement on
+**Model: the geometry is accepted rather than measured.** The waist of 64 µm,
+with an accepted band of 62 to 68 µm, comes from one profiler measurement on
 the predecessor laser of this apparatus lineage, not on the campaign's own
 beam, and no error bar on the campaign's own waist exists to be quoted. The
 retro ratio of 0.94 is an assumption. Both enter the prediction, and the bound itself moves with the
@@ -166,7 +166,7 @@ saturation and hyperfine pumping both widen the line with the same power
 dependence as the ramp, and both are left out of the production model. Their
 effect is measured rather than argued: including a saturation companion
 tightens the joint bound by a factor of 2.21. The committed bound is therefore
-LOOSE by a known amount, and no committed number moves on it because the
+loose by a known amount, and no committed number moves on it because the
 companion rests on a two-level saturation law that is standard practice rather
 than a derivation for this level structure.
 
@@ -195,10 +195,10 @@ degeneracy. Coverage: the profile construction already over-covers where the
 bounds live and this is unaffected. Convergence: independent starts on the
 pooled surface agree, which is the open question and is the reason the
 randomised ladder matters. Model validity: residuals unchanged from the current
-fit. Calibration: the waist becomes a measurement rather than an adopted prior.
+fit. Calibration: the waist becomes a measurement rather than an accepted prior.
 
 **Minimum viable version.** One session, one beam profile at three powers with
-the EOM thermalised. That alone converts the largest systematic from adopted to
+the EOM thermalised. That alone converts the largest systematic from accepted to
 measured, and it is an afternoon.
 
 **Kill criterion.** If the measured waist at several powers is not stable to
@@ -266,7 +266,7 @@ alongside one loose-focus reference, to demonstrate the skew appears where the
 threshold says it should. That is a discrimination test, not yet a measurement,
 and it is cheap.
 
-**What is CALCULATION REQUIRED.** The achievable uncertainty at 16 µm. The
+**What is calculation required.** The achievable uncertainty at 16 µm. The
 threshold margin, 5.56 MHz predicted against the measured 2.5 MHz turn-on, is
 computed, and
 [the projection note](../notes/extended_lever_and_skew_projection.md) states
@@ -312,7 +312,7 @@ spectroscopy. A percent-level $\Delta\alpha$ needs an intensity calibration
 this cell geometry does not support.
 
 **Not separable in principle here.** Atomic saturation, hyperfine pumping and
-the ramp are degenerate in BOTH of the width channel's continuous knobs, power
+the ramp are degenerate in both of the width channel's continuous knobs, power
 and waist, so no sweep in either separates them. Only the centroid, which they
 do not move, and the line index, which distinguishes them by hyperfine
 branching, can. The centroid route is the measurement level above. The line

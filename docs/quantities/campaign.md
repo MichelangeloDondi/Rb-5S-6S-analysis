@@ -3,11 +3,11 @@
 *[quantities index](README.md) · synthesis*
 
 **The question.** The dossiers are written one quantity at a time, and a
-measurement session is not. Which interventions move which quantities, which
+measurement session is not. Which re-centrings move which quantities, which
 ones move several at once, and what would one session actually buy?
 **Takes.** The dossiers and the plan chapters. Nothing new.
 **Gives.** The coupling between the quantities, the leverage of each
-intervention across all of them, a comparison of candidate sessions, and the
+re-centring across all of them, a comparison of candidate sessions, and the
 smallest version of each that is already worth running.
 **Skip if.** The question is the ordering of the whole programme by leverage,
 which is [big picture chapter 5](../big_picture/05_next-vapour-cell.md), or the
@@ -26,8 +26,9 @@ single session can be efficient.
 quadratically. It sets the transit width, inversely. Those two enter the same
 composite line, so an error in the waist moves the light-shift prediction and
 the transit kernel in the same stroke and in different directions. It is one
-number that two dossiers both depend on, and it is currently ADOPTED rather
-than measured, which is why it is the first item of
+number that two dossiers both depend on, measured on this bench by Rajasree
+but never re-read during the campaign itself, which is why it is the first
+item of
 [big picture chapter 5](../big_picture/05_next-vapour-cell.md).
 
 **Power raises the signal and three contaminants together.** The light shift
@@ -50,13 +51,13 @@ shift read from line centres is a measurement of the axis as much as of the
 atom, which is why the fixed lock appears in the light-shift dossier rather
 than only in a calibration chapter.
 
-## What each intervention moves
+## What each re-centring moves
 
 Qualitative, and deliberately so. A numeric leverage would need a simulation
 per cell, and only the cells marked with a computed factor have one. Every
 entry points at the section that argues it.
 
-| intervention | light shift | self-broadening | laser width | waist | transit | axis | band excess |
+| re-centring | light shift | self-broadening | laser width | waist | transit | axis | band excess |
 |---|---|---|---|---|---|---|---|
 | beam profile on the day, several powers, EOM thermalised | +++ | | | +++ | +++ | | + |
 | fixed cavity lock | +++ | | | | | +++ | + |
@@ -77,8 +78,8 @@ Two readings of that table matter more than any single cell.
 lock between them touch five of the seven quantities, and neither requires
 apparatus that does not exist. The lock is now available rather than proposed.
 
-**The external laser-width calibration is the only row that buys by REMOVING.**
-Every other intervention raises a sensitivity and brings a new systematic with
+**The external laser-width calibration is the only row that buys by removing.**
+Every other re-centring raises a sensitivity and brings a new systematic with
 it. That one takes a competitor out of the fit and is the only cell in the table
 with a computed factor behind it, the 1.7 in
 [identifiability](../wiki/identifiability.md).
@@ -106,7 +107,7 @@ would spoil it, so it goes last and only after A has fixed the geometry.
 **The minimum entry into the whole programme is session A at its minimum
 viable version**, which is one profiler measurement at three powers with the
 EOM in the beam and thermalised. That is an afternoon, it converts the
-programme's largest open systematic from adopted to measured, and it can return
+programme's largest open systematic from set point to measured, and it can return
 a result that changes what the rest of the plan should be. A programme that can
 be entered that cheaply should be.
 
@@ -126,7 +127,7 @@ bench confirmation is not evidence of feasibility.
 | temperatures to 170 C | the ladder reached 130 C | yes, the oven's ceiling and gradient |
 | absorption channel | proposed, not built | yes |
 | photon counting | proposed in [plan 7](../plan/07_acquisition-settings.md) | yes |
-| a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding ONE vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set snug, per [plan 7](../plan/07_acquisition-settings.md) |
+| a 12-bit or better acquisition | **already delivered**: the campaign's own files carry an 11.86-bit grid from the Agilent's High Resolution mode, measured 2026-08-19, and the LeCroy channel export is the eight-bit one | no. The open item moved: holding one vertical range across the ladder, feasible at a dither ratio of 0.99 with the bright range set tight, per [plan 7](../plan/07_acquisition-settings.md) |
 | a measured detector response curve | bounded but never traced: the rehearsal's finer-sampled records put the chain faster than 10 us at the 10^6 V/A gain, and the range-to-range gain remains the leading candidate for the amplitude departure | yes, converting the bound into a curve, and it needs no atoms, only a calibrated variable source |
 
 ## See also

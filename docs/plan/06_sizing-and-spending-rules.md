@@ -30,7 +30,7 @@ of its items points at the block that executes it.
 | beam profile w₀ | §3 item 1, §4.2, run in §9 D1 and D4 | every w₀-conditional absolute number into a measured one | an afternoon per configuration, no atoms | the number may describe the present bench rather than the 2025 one | community |
 | retro ratio ρ in situ | §3 item 2, §4.2, run in §9 D1 and D4 | an assumed ρ into a measured one, per configuration and per temperature | inside the metrology afternoon | a pick-off that does not separate outgoing from returning light | internal |
 | transit-difference anchor and model-form closure | §5, run in §9 D6 | a knife-edge-conditional intensity axis into one anchored on thermal physics, and an assumed transit kernel into a tested one | one cold, low-power day at S and L | the cusp may sit under the detection bandwidth, leaving the model comparison without a preference | community |
-| wide-scan Doppler pedestal | §5 | an adopted gas temperature and retro ratio into in-situ measurements | a wider scan setting on dwells already costed, no new hardware and no lock quality | the pedestal may not separate from scattered light, and the area ratio is flat in ρ near one | community |
+| wide-scan Doppler pedestal | §5 | an accepted gas temperature and retro ratio into in-situ measurements | a wider scan setting on dwells already costed, no new hardware and no lock quality | the pedestal may not separate from scattered light, and the area ratio is flat in ρ near one | community |
 | mean pull against P | §6 item 1 | the AC-Stark bound into the first measured light shift on this line | one morning of randomized power cycling | the lock may not hold minutes-scale stability | community |
 | excess variance against P² | §6 item 2 | a second, independent functional of the same S₀ | rides the same blocks as item 1 | the second moment may stay under its own floor | community |
 | skew hunt at S | §6 item 3 | a bound on the third cumulant into a detection, or a meaningful bound | the deep-integration day, §9 D5 | not a promised result, sized for the pessimistic end | community |
@@ -47,7 +47,7 @@ of its items points at the block that executes it.
 | width-to-shift ratio | §7j | a van der Waals anchor into an independent test | needs the centre channel, so it rides the fixed lock | the pressure shift may stay under the block scatter | community |
 | degeneracy-law test | §8 item 1 | area ratios into a parameter-free check at the interleaved floor | inside every interleaved block | PMT nonlinearity may swamp the 1–3% floor | community |
 | four-line common-slope Δα | §8 item 2 | four line-specific pulls into one over-determined coefficient | rides the §6 item 1 blocks | admissible at L only, since S is saturated | community |
-| absorption channel for N(T) | §8 item 3 | an adopted vapour density into a measured one, with the cold-spot lag | a weak D-line probe and a photodiode, new hardware | the cold spot may not flatten enough at the high end to be read | community |
+| absorption channel for N(T) | §8 item 3 | an set-point vapour density into a measured one, with the cold-spot lag | a weak D-line probe and a photodiode, new hardware | the cold spot may not flatten enough at the high end to be read | community |
 | fluorescence over absorption | §8 item 4 | a trapping confound into a measured collection efficiency | rides the same blocks as item 3 | needs item 3 to run at all | community |
 | 1.3 µm cascade channel | §8 item 5 | the degeneracy law measured without the trapping confound | an InGaAs detector, new hardware | the cascade photon rate may sit under the detector's own floor | community |
 | O-band null rider | §12 | a computed polarizability zero into a 6S to 7P matrix element | one telecom-band diode and its wavemeter, riding any cell session | the delivered perturber intensity at the cell could undershoot | community |
@@ -101,7 +101,7 @@ example as a bench fact.
 | # | what bit | size, measured unless the cell says otherwise | consequence | cure |
 |---|---|---|---|---|
 | 1 | between-block width scatter (drifting lock) | σ_B ≈ 0.12 MHz vs within-block SEM ≈ 0.05 | widths drift-limited, σ_laser a bound | fixed lock, brackets and veto (§7a) |
-| 2 | only 3 densities, 1 residual DOF | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (the 2026-08-02 headline), and five or more T blocks tighten further (§7b) |
+| 2 | only 3 densities, 1 residual dof | t(0.95,1) = 6.31 | β_self a bound | folding in the 130 °C point gives dof=2, t=2.92 (the 2026-08-02 headline), and five or more T blocks tighten further (§7b) |
 | 3 | T monotonic in time | density slope collinear with drift | a guard had to carry the claim | opposite-order days (§7a) |
 | 4 | 2025 lever short at ×16.2 (three T points) | joint β collapses 0.0534 → 0.0198 (⁸⁵Rb) and 0.0219 (⁸⁷Rb) once the ×52.5 (130 °C) anchor is folded in | the fitted floor responding correctly to a near-flat gamma_coll(T), folded into the headline 2026-08-02 | same-session 150–170 °C (§7c), to reach densities where a ~kHz effect could clear the block-noise floor |
 | 5 | no acquisition clock in the analysed exports | block order was the only time coordinate, and not even the acquisition order | σ_laser-sharing untestable, and the recovered clock later dated the peaks 54–76 min apart | interleave the peaks in minutes plus hardware timestamps (§7f, §7g) |
@@ -125,7 +125,7 @@ Var(mean) = σ_w²/n + σ_B², and repetition divides only the first term. At th
 2025 numbers, doubling the repeats buys 4% for 100% more time. The same
 hour on one more T block divides σ_B by √N and buys a residual degree of
 freedom, and the t ladder is where the record bled: 6.31, 2.92, 2.35, 2.13,
-2.02 for one to five DOF. Freeze the stopping rule in the run notebook:
+2.02 for one to five dof. Freeze the stopping rule in the run notebook:
 repeat a condition until σ_w/√n < σ_B/2, then stop, since past that point
 infinite repeats recover at most 12%. With 2025-like noise that is n ≈ 4–5.
 Repetition is the right currency only where the observable is genuinely
@@ -179,7 +179,7 @@ no condition was ever revisited. The sentinel makes drift a direct observable.
 |---|---|---|---|
 | beam profile, ρ, same-session high T | the systematic floor | converts bounds to absolute measurements | never cut |
 | second day, opposite T order | time-monotone bias | removes what no averaging can, and measures the residual | mandatory |
-| more T blocks (to ~6) | DOF and σ_B averaging | ~2.7× from the t quantile alone | best statistical buy |
+| more T blocks (to ~6) | dof and σ_B averaging | ~2.7× from the t quantile alone | best statistical buy |
 | interleaves (peaks, mini-P, rulers) | cross-condition systematics | 30–50% → 2–4% at near-zero cost | always on |
 | more repeats, same condition | photon noise only | 4% for 2× time | only for skew, amplitudes, ruler monitor |
 | strict RF alternation | monitor variance | saturates, and halves science time | no, use the measured cadence (§10.5) |
@@ -216,14 +216,14 @@ belong at the head of any session plan, before anything that costs.
 width goes as the square root of temperature, so a fractional width error is
 half the fractional temperature error, and resolving 20 K near 400 K asks for
 a width fit good to 2.5 per cent. That is one slow wide trace per temperature
-block, against a factor of 3.2 in density that an adopted temperature
+block, against a factor of 3.2 in density that an set-point temperature
 currently carries.
 
 ### The rule these three suggest
 
-Cost a session by INFORMATION PER UNIT OF EFFORT rather than by the interest
+Cost a session by information per unit of effort rather than by the interest
 of the measurement. Sorted that way, the settings-only levers come first, the
-levers that convert an adopted quantity into a measured one come second, and
+levers that convert an accepted quantity into a measured one come second, and
 anything needing new hardware comes last. The 2025 post-mortem's rules were
 about not overspending on a single block. This one is about the order in
 which blocks are chosen at all.
@@ -252,9 +252,9 @@ factor an independent laser width buys, between 2.3 and 3.2 depending on the
 condition it is evaluated at, is larger than any single design change in the
 twin's table, and it costs an afternoon on a different instrument.
 
-THE RULE THIS ADDS to the spending rules already here: before buying more of
+The rule this adds to the spending rules already here: before buying more of
 a measurement, run the twin and ask whether the quantity you want is limited
-by NOISE or by IDENTIFIABILITY. More data fixes the first and never the
+by noise or by identifiability. More data fixes the first and never the
 second, and the twin distinguishes them in seconds.
 
 ---

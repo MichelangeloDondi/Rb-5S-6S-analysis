@@ -22,7 +22,7 @@ replace. Two of those three are span questions, and span is a knob.
 
 WHAT THE BLOCK BUYS, in the record's own terms:
   * the pedestal becomes an IN-SITU THERMOMETER (its width is 2 sqrt(8 ln2
-    kT/m)/lambda, so the gas temperature stops being an adopted number) and an
+    kT/m)/lambda, so the gas temperature stops being an accepted number) and an
     IN-SITU RETRO RATIO (the narrow-to-pedestal area ratio is 4 rho/(1+rho^2),
     the block register's own entry);
   * the band excess gets frequency reach: any candidate that is broad must
@@ -239,7 +239,7 @@ def main() -> int:
     print("  REACHABLE, the table above is also the fallback schedule: read off")
     print("  the widest reach the hardware allows and take that row's numbers.")
     print("  Every row still detects the pedestal in a five-trace block, so a")
-    print("  narrower span degrades the measurement without defeating it.")
+    print("  narrower span degrades the measurement without breaking it.")
     print("  THE ONE THING NOT TO DO is keep the 2025 span, where the retained")
     print(f"  fraction is {background_degeneracy_factor(span25/2/ped_sigma, ped_sigma):.4f} "
           "and the pedestal is unmeasurable in principle.")

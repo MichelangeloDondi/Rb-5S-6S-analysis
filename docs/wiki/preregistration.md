@@ -42,7 +42,7 @@ data. Freezing the choices first removes that freedom at the one point where
 it can be exercised, before the numbers are read.
 
 A preregistration is not a promise never to look further. It is a commitment
-about what the FIRST look counts as, so that later exploration is labelled as
+about what the first look counts as, so that later exploration is labelled as
 exploration and does not borrow the standing of a confirmed result.
 
 ## What problem it solves
@@ -60,14 +60,14 @@ Two checks decide whether a criterion is worth freezing at all, and this
 repository requires both of any procedure it preregisters for a simulated or
 synthetic study.
 
-A NULL TEST asks what the procedure reports when there is nothing to find:
+A NULL test asks what the procedure reports when there is nothing to find:
 run it many times on data built to contain no effect, at a stated threshold,
 and record how often it claims one anyway. A trustworthy criterion's
 false-positive rate matches its stated threshold. If the rate is
 systematically higher, the criterion does not measure the effect, it invents
 it, whatever the real data later show.
 
-A CEILING TEST asks the opposite question, in a regime where the true answer
+A ceiling test asks the opposite question, in a regime where the true answer
 is already known independently, usually because the input was injected by
 hand at a size no reasonable procedure could miss. If the procedure fails to
 recover that known answer, the fault is in the setup rather than in the
@@ -220,7 +220,7 @@ would have called for first. See
 
 ## Further reading
 
-- B. A. Nosek et al., "The preregistration revolution", *PNAS* **115**,
+- B. A. Nosek et al., "The preregistration revolution", *pnas* **115**,
   2600 (2018), the canonical statement of the practice this page applies.
 - [Wikipedia: Preregistration (science)](https://en.wikipedia.org/wiki/Preregistration_(science)),
   for the general history and the distinction between a preregistration and a

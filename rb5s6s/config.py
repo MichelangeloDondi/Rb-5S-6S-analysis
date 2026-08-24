@@ -546,7 +546,7 @@ outputs. Do not quote a number built on this without the w0 caveat.
 History: was a hand-set 0.9 (tied to the OLD buggy transit MC, which was ~2x
 too narrow); re-derived 2026-07-12 when the MC flux bug was fixed and w0
 re-centred 32 -> 50 um; re-derived again 2026-08-01 (v3.0.0) when w0 moved
-50 -> 64 um on the adopted lineage measurement, narrowing this to ~0.93 MHz.
+50 -> 64 um on the accepted lineage measurement, narrowing this to ~0.93 MHz.
 See constants.W0_MEASURED_M."""
 
 RAMP_GEOMETRY_CONFIGS_UM = {

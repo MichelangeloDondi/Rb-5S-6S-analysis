@@ -25,20 +25,21 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 | script | writes |
 |---|---|
 | `run_qc.py` (M0) | quality metrics for every trace in the manifest into `qc_metrics.csv`, each with its z-scores against its condition siblings, its residual-tail trim record and its outlier mark |
-| `port_to_mirror.sh` | the measured whole-tree port to the public mirror: tracked set against tracked set, data_raw/ excluded in both directions because the two copies differ by design, deletions carried (a copy-only port cannot carry a rename), refusing to run unless BOTH worktrees are clean |
+| `port_to_mirror.sh` | the measured whole-tree port to the public mirror: tracked set against tracked set, data_raw/ excluded in both directions because the two copies differ by design, deletions carried (a copy-only port cannot carry a rename), refusing to run unless both worktrees are clean |
 | `run_kernel_budget.py` (A1) | the uncertainty statement as three side-by-side quantities, the peak spread reported as a diagnostic in three labelled readings rather than folded into a budget, and the source-discriminator table naming the measurement that would distinguish each candidate origin |
-| `run_orthogonal_levers.py` (B2) | the orthogonal levers as ROLES in an information geometry rather than a ranking, because the homogeneous components add exactly and each lever supplies one coordinate while the others are held fixed. Every row carries the ASSUMPTION its orthogonality rests on; the temperature row states that its orthogonality is INTENDED and not established, and names the controls a campaign would need |
-| `run_fibre_twin.py` (B3/O2) | the fibre twin, preregistered in `private/reviews/O2_PREREG_2026-08-22.md`. A DESIGN VALIDATION, not an experimental result: it validates that a temperature ladder can identify the intended quantities under specified synthetic worlds, and does not demonstrate that the real fibre experiment will. Carries world D, the same generator with the ladder collapsed to one rung, whose pass condition is INVERTED because at one rung the split must fail |
-| `run_kernel_k4.py` (K4) | the blind residual atlas, the one K-chain item that speaks to whether the MODEL CLASS is adequate rather than to a sensitivity within it. Stacks per-condition residuals on a common axis and asks whether conditions share a shape, against a per-condition sign-flip null. Carries a synthetic control built from the fitted model, whose job is to invalidate a detection if the machinery manufactures one, and a preregistered void check. **The 2026-08-22 run is VOID by that check** and its first row says so |
+| `run_orthogonal_levers.py` (B2) | the orthogonal levers as roles in an information geometry rather than a ranking, because the homogeneous components add exactly and each lever supplies one coordinate while the others are held fixed. Every row carries the assumption its orthogonality rests on; the temperature row states that its orthogonality is intended and not established, and names the controls a campaign would need |
+| `run_fibre_twin.py` (B3/O2) | the fibre twin, preregistered in `private/reviews/O2_PREREG_2026-08-22.md`. A DESIGN validation, not an experimental result: it validates that a temperature ladder can identify the intended quantities under specified synthetic worlds, and does not demonstrate that the real fibre experiment will. Carries world D, the same generator with the ladder collapsed to one rung, whose pass condition is inverted because at one rung the split must fail |
+| `run_kernel_k4.py` (K4) | the blind residual atlas, the one K-chain item that speaks to whether the model class is adequate rather than to a sensitivity within it. Stacks per-condition residuals on a common axis and asks whether conditions share a shape, against a per-condition sign-flip null. Carries a synthetic control built from the fitted model, whose job is to invalidate a detection if the machinery manufactures one, and a preregistered void check. **The 2026-08-22 run is VOID by that check** and its first row says so |
 | `run_kernel_k7.py` (K7) | ranks the routes to the kernel by the Fourier band each reaches, computing the tooth clock's reach from scan rate and tooth spacing at every setting the campaign could run |
 | `run_kernel_k8.py` (K8) | asks whether K4's in-window structure and the out-of-window band excess share a cause, by regressing each condition's in-window amplitude on profile height and vapour density at once, weighted, with a leave-one-out. Both structures track height and neither tracks density. The mechanism is not named, because any fractional model error scales with signal |
 | `run_unregenerated_claims.py` | scans the `provenance:` declarations in `docs/notes/` and emits them as rows, so the size of the no-producer gap is graded by the freshness machinery like any other number. Derived rather than listed, because a hardcoded inventory here would be the literal-in-a-producer failure it exists to measure. Writes `results/unregenerated_claims.csv`. |
 | `run_saturation_probe.py --emit` | writes `results/saturation_companion.csv`, the C3d half only. Without `--emit` it writes nothing, which was its original opt-in design and is why the factors it reports reached RESULTS.md with no row behind them. The joint factor is never written here, because stage 3 states that quoting a joint number before the fit runs would be inventing one. |
-| `run_band_excess.py` | reconstructs the band-excess ladder and joint regression from the raw traces, writing `results/band_excess.csv` with the note's historical values alongside for the side-by-side. Judged on the CLAIM at thresholds fixed in the producer, and the verdict is NO. |
+| `run_band_excess.py` | reconstructs the band-excess ladder and joint regression from the raw traces, writing `results/band_excess.csv` with the note's historical values alongside for the side-by-side. Judged on the claim at thresholds fixed in the producer, and the verdict is NO. |
+| `run_quantisation_check.py` | measures the true quantisation step of every stored trace against its baseline noise, answering whether bit depth binds (it does not, dither is 5 to 246 steps), and reads the committed noise law for what does: the power scaling of the floor, the constancy of the shot term, and the electronics intercept. Writes `results/quantisation.csv`. |
 | `run_twin_span_sweep.py` | runs the digital twin at 60 and 300 MHz spans and at ten times the repeats, writing `results/twin_span_sweep.csv`. Truth is read from `linefit_conditions.csv` at a named condition and the seed is fixed, because the run whose numbers ten public surfaces quote recorded neither and cannot be reproduced by anyone. |
 | `run_kernel_k5.py` (K5, K6) | whether the non-Gaussian component K3 found may be called the laser. Computes what the comb-as-clock bound would have to be converted through to predict a kernel, how far short of that it falls, and how far apart the two Fourier bands are, then classifies the transfer and takes R_kernel over whatever class survives |
 | `run_kernel_k3.py` (K2.5, K3) | the mixed kernel against real data: per-peak density-ladder fits with the Lorentzian-equivalent width pinned and free, the nested likelihood ratio between them, the heterogeneity test across peaks, and the three uncertainty quantities. Validates its own G arm against the committed `beta_self` first |
-| `run_kernel_worlds.py` (K2) | the five hostile worlds that decide whether a fitted `Gamma_L,equiv` is a measurement: false-positive rate against a true zero, interval coverage against a true mixed kernel, and whether a wrong baseline, a wrong transit kernel or the GRID ITSELF manufactures one. Trial count is a command-line argument defaulting to the preregistered 500, and the count used is written into the CSV |
+| `run_kernel_worlds.py` (K2) | the five hostile worlds that decide whether a fitted `Gamma_L,equiv` is a measurement: false-positive rate against a true zero, interval coverage against a true mixed kernel, and whether a wrong baseline, a wrong transit kernel or the grid itself manufactures one. Trial count is a command-line argument defaulting to the preregistered 500, and the count used is written into the CSV |
 | `run_tooth_scatter.py` | M2 stage 4b: the comb read as a clock. Keeps the per-trace tooth-position departures that `run_ruler.py` pools into the nonlinearity map, separates the repeating sweep shape from the non-repeating remainder, and bounds the laser's frequency excursion at the tooth spacing |
 | `run_width_pinning.py` | what pinning the laser width buys the collisional width, the committed producer for the pinning comparison four documents quote, writing only to `private/run_logs/` |
 | `run_extended_lever.py` | what the 150 and 170 C blocks would buy the collisional bound, at the committed coverage construction with the temperature grid as a parameter, writing only to `private/run_logs/` |
@@ -75,7 +76,7 @@ diagnostic rather than write a table.
 
 | script | writes |
 |---|---|
-| `run_commit_sweep.py` | how many samples the joint fit LOADS at each commit of a historical range, into `commit_sweep.csv`. Needs both excluded-session trees and a git worktree per commit, so it is not runnable from a plain clone. It exists because the 2026-08-14 instability was traced with it: the point count changes at one commit that regenerated the committed ruler CSVs while renaming a vocabulary |
+| `run_commit_sweep.py` | how many samples the joint fit loads at each commit of a historical range, into `commit_sweep.csv`. Needs both excluded-session trees and a git worktree per commit, so it is not runnable from a plain clone. It exists because the 2026-08-14 instability was traced with it: the point count changes at one commit that regenerated the committed ruler CSVs while renaming a vocabulary |
 | `run_stark_joint.py` (M23) | the joint light-shift fit over all three sessions with one shared coefficient, into `stark_joint.csv`. A long profile-likelihood run |
 | `run_global_dataset_fit.py` (M25) | one likelihood over every canonical trace, collisional and AC-Stark coefficients both free, into `global_dataset_fit.csv` |
 | `_m25_norulers.py` | the same fit with the ruler arm removed, into `global_dataset_fit_norulers.csv` |
@@ -91,7 +92,7 @@ diagnostic rather than write a table.
 | `run_epoch_checks.py` | the campaign-morning and 4 July cross-checks of the clock, the disturbance model and the cross-day calibration, printed, with nothing entering `results/` |
 | `run_polarizability_ladder.py` | the three-transition polarizability ladder, printed, plus `figures/fig9_polarizability_ladder.png` |
 | `run_s0_block_bootstrap.py` | the block bootstrap of the power-lever limit, one row per resample, under `private/run_logs/` rather than `results/` |
-| `run_stark_coverage.py` | M14, the injection-recovery COVERAGE of the power-lever 95% bound, which had never been measured for this estimator. Two noise arms across a ladder of true kappa, one row per trial under `private/run_logs/` rather than `results/`. Preregistered in `docs/notes/stark_coverage_prereg.md` |
+| `run_stark_coverage.py` | M14, the injection-recovery coverage of the power-lever 95% bound, which had never been measured for this estimator. Two noise arms across a ladder of true kappa, one row per trial under `private/run_logs/` rather than `results/`. Preregistered in `docs/notes/stark_coverage_prereg.md` |
 | `run_cavity_scan.py` (M30) | the cavity-scan photograph digitised and integrated into `cavity_scan_integrals.csv`, the one result whose input is an image |
 | `run_campaign_conditions.py` | what a next campaign's waist, power, temperature and choice of transition do to the six effects this record has measured, printed rather than written. Its three answers are the per-line lever becoming spendable at a tighter waist, the infrared halo growing thirtyfold over the hot extension the collisional programme wants, and the blackbody test that orders the transition menu |
 | `run_companion_refit.py` | the preregistered refit with the two width companions inside the fitted model rather than beside it, scored against `docs/notes/companion_inclusive_refit_prereg.md`. Writes nothing, and checks the option is inert before reading any result. Its answer is that the per-line scale is unidentifiable on this dataset, because it enters only as a multiple of a light shift the dataset bounds rather than measures |
@@ -196,7 +197,7 @@ without traces and needs them only under `--all`.
 Three producers added on 2026-08-19 and 2026-08-20 answer questions the
 campaign raised rather than stages of it. `run_skew_scaling.py` fits the
 residual skew's amplitude exponent and tests each competing hypothesis by
-SIMULATION rather than from the fit covariance.
+simulation rather than from the fit covariance.
 `run_polarisation_bound.py` turns the two isotopes' width difference into a
 ceiling on any magnetic term carrying an uncancelled g_F.
 `run_cooperative_channel.py` computes the two-atom two-photon channel, which
@@ -207,9 +208,9 @@ sits ten orders below the line.
 only in the laser kernel's shape, and reports what that assumption costs the
 collisional coefficient. It needs the raw traces. Read its per-condition
 `gamma_coll` columns with `run_kernel_identifiability.py`'s result in hand:
-under a Lorentzian kernel only their SUM is identified at fixed condition.
+under a Lorentzian kernel only their sum is identified at fixed condition.
 
-`run_kernel_headline.py` (K1) asks the same question of the HEADLINE
+`run_kernel_headline.py` (K1) asks the same question of the headline
 coefficient, fitting each peak twice under the record's own hierarchical
 estimator, where varying density is what separates a collisional width from a
 laser one. It reports the correlation between beta_self and the shared laser
@@ -222,7 +223,7 @@ its basis so an expectation can never be quoted as a measurement. It runs
 from a clone in under a second.
 
 `run_kernel_identifiability.py` (K0) takes no data at all and runs in seconds.
-It asks what the model CAN identify before anything is fitted: the Jacobian at
+It asks what the model can identify before anything is fitted: the Jacobian at
 a fixed condition under each kernel, a direct sum-invariance test with a
 should-fail control, the mixed G+L model validated against the shipped code in
 both limits, and the hierarchical Fisher matrix with the intercept slots free

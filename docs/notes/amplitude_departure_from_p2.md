@@ -1,7 +1,7 @@
 # The amplitude departs from the square-of-power law, and the departure is a detection signature
 
-Status: MEASURED and REPLICATED across two independent sessions, mechanism
-UNATTRIBUTED, 2026-08-18. Nothing in `results/` moves. The campaign slopes
+Status: MEASURED and replicated across two independent sessions, mechanism
+unattributed, 2026-08-18. Nothing in `results/` moves. The campaign slopes
 quoted here are the record's own committed values, tested against 2 rather
 than described as a band. The rehearsal and pilot are outside the frozen
 archive, and each use below says so.
@@ -41,7 +41,7 @@ and the 2025-07-17 pilot at 210, 35, 70 and 105 mW. They are excluded from the
 frozen record for epoch and instrument reasons rather than for any data
 defect, and that standing is stated here because a claim rests on them.
 
-**The rehearsal ran its ladders in ALTERNATING DIRECTIONS**, 4192 descending
+**The rehearsal ran its ladders in alternating directions**, 4192 descending
 while 4207 and 4121 ascended, inside one session on one scope at one gain with
 one alignment. That varies the acquisition ordering while holding everything
 else fixed, which no other comparison in this archive can do.
@@ -61,23 +61,23 @@ peaks carry five usable traces at every power and show the departure alone.
 
 ## The structure: a reproducible pattern plus a session offset
 
-Across the two sessions that share three peaks the ORDERING is identical, a
+Across the two sessions that share three peaks the ordering is identical, a
 rank correlation of 1.00, and the gap between the top two peaks is 0.016 in
 both. The whole set shifts by 0.165 between sessions.
 
-    exponent = a reproducible PEAK pattern + a SESSION offset
+    exponent = a reproducible peak pattern + a session offset
 
 ## What the pattern follows, and it is not an atomic quantity
 
     by hyperfine branching, high to low : 4121, 4154, 4192, 4207
-    by BRIGHTNESS,          dim to bright: 4121, 4207, 4154, 4192
+    by brightness,          dim to bright: 4121, 4207, 4154, 4192
     by exponent,            low to high  : 4121, 4207, 4192, 4154
 
 **The exponent follows the brightness order, not the branching order**, at a
 rank correlation of 0.80 on the campaign's four lines and 1.00 on the
 rehearsal's three. Brightness is a property of how much signal a line delivers
 into the detection chain, and branching is a property of which line it is, so
-the departure is a signature of the DETECTION of the line rather than of the
+the departure is a signature of the detection of the line rather than of the
 transition.
 
 ## What is not explained
@@ -88,8 +88,8 @@ deviation grows with brightness and changes sign between sessions. The
 session offset has no candidate at all. The committed per-chain detector
 saturations differ by one per cent, far too little to carry a shift of 0.165,
 and the gain is recorded exactly once in the entire programme, in the
-rehearsal's filenames, so a gain explanation is NOT DETERMINABLE FROM THE
-RECORD.
+rehearsal's filenames, so a gain explanation is not determinable from the
+record.
 
 ## What would settle it
 

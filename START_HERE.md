@@ -34,7 +34,7 @@ Integrate over a wider axis and they go away.
 
 Two names are easy to confuse and worth stating once. `model_profile` takes
 the frequency axis and keyword arguments, and is the one you want.
-`composite_profile` builds the kernel from its widths and does NOT take an
+`composite_profile` builds the kernel from its widths and does not take an
 axis. And `stark_shift_S0_mhz` needs the waist as well as the power, because
 the light shift depends on both. A third pair sits one level down:
 `transit_fwhm_from_w0` takes a waist in metres, while `linefit`'s

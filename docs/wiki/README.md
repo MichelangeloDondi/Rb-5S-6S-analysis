@@ -277,7 +277,7 @@ repository-specific claims link to their source of truth.
 **Status of the references.** A citation to `../lit/` points at a note in this
 repository, which carries its own VERIFIED or REPORTED status. A citation to
 anything else is a standard reference given for the reader's benefit and is
-NOT held here or checked against its source, so it has the standing of
+not held here or checked against its source, so it has the standing of
 REPORTED in the same vocabulary. Textbook results on these pages are
 verifiable by computation rather than by citation, and the numeric ones were
 checked that way: the Bessel zeros, the two carrier nulls, the Voigt width

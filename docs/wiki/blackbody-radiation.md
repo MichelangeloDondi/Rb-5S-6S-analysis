@@ -34,9 +34,9 @@ $e^{-h\nu/k_BT}$, and the collapse is violent, because the exponent is
 linear in frequency. At 400 K the thermal energy $k_BT$ corresponds to a
 wavelength near 36 µm.
 
-WHICH PEAK IS QUOTED MATTERS, and the two differ by a quarter. The familiar
+Which peak is quoted matters, and the two differ by a quarter. The familiar
 Wien displacement law, $\lambda T = 2898$ µm K, locates the peak of the
-spectrum of ENERGY per unit wavelength. The peak of the PHOTON NUMBER per
+spectrum of energy per unit wavelength. The peak of the photon number per
 unit wavelength sits at $\lambda T = 3670$ µm K, because dividing the energy
 density by the photon energy shifts the maximum. At 400 K those are 7.2 µm and
 9.1 µm. A transition at 1 µm sits far out on the exponential tail of either,
@@ -92,14 +92,14 @@ reports.
 ## The campaign boundary it sets
 
 `rb5s6s/blackbody.py` turns this into a design number. The deliverable is not
-"blackbody is included" but a FAMILY,
+"blackbody is included" but a family,
 
     T_max(target precision),
 
 the temperature above which thermal radiation enters the systematic budget at
-a given target, with two branches. UNCORRECTED, where a campaign does not
+a given target, with two branches. Uncorrected, where a campaign does not
 subtract the shift, the ceiling is where the shift itself reaches the target.
-CORRECTED, where it computes and subtracts it, only the shift's own
+Corrected, where it computes and subtracts it, only the shift's own
 uncertainty remains and the ceiling is far higher. The gap between the two is
 the value of doing the correction.
 
@@ -119,7 +119,7 @@ ceiling matters most.
 
 ## What can go wrong
 
-The commonest modelling error is to reason from the POWER spectrum, whose
+The commonest modelling error is to reason from the power spectrum, whose
 peak sits at a different wavelength from the photon-number peak, and then to
 place a transition on the wrong side of it. Occupation number is the quantity
 an atomic rate is proportional to, and it is the one to plot. The first draft
@@ -135,7 +135,7 @@ experimental limitation rather than a calculational one.
 The third is to bound the driving and then assume the shift is bounded too.
 They scale differently. A transition can be utterly immune to blackbody
 driving, because its occupation number is $10^{-12}$, and still carry a
-measurable blackbody shift, because the shift sums over ALL levels the state
+measurable blackbody shift, because the shift sums over all levels the state
 couples to and is dominated by whichever resonance lies nearest the thermal
 band. That is exactly what happens here.
 

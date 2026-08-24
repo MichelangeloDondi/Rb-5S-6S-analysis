@@ -34,8 +34,8 @@ under moving dependencies is a property of the environment until the pinned
 comparison disagrees, and that the pinned comparison is the one that speaks
 for the record.
 
-The runner's stages write 35 of the 68 committed CSVs. The other twenty two
-each have their own script, held out for one of two reasons.
+The runner's stages write the core subset of the 69 committed CSVs. The
+rest each have their own script, held out for one of two reasons.
 
 ### Six need trees that stay outside the repository
 
@@ -47,7 +47,7 @@ reads the raw 4 July and campaign-morning trees), `run_full_dataset_fit.py`
 (`global_dataset_fit_norulers.csv`) and `run_morning_ruler.py`
 (`morning_ruler.csv`). The sixth is `run_commit_sweep.py`
 (`commit_sweep.csv`), which counts the samples the joint fit loads at each
-commit of a historical range, so it needs the excluded-session trees AND a
+commit of a historical range, so it needs the excluded-session trees and a
 git worktree per commit.
 
 Three of those five reach the trees indirectly, importing `run_stark_joint`'s

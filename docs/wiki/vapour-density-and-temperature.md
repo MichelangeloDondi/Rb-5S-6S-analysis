@@ -7,7 +7,7 @@ point is not a temperature, and what an unmeasured temperature costs every
 density-linked quantity.
 **Takes.** A vapour-pressure curve and a cell.
 **Gives.** The conversion, its steepness, and the in-situ measurement that
-replaces an adopted number with a measured one.
+replaces an accepted number with a measured one.
 **Skip if.** The question is what density does to a lineshape once you have
 it, which is [self-broadening](self-broadening.md).
 
@@ -32,7 +32,7 @@ to read off the apparatus is not the thing the formula wants.
 This distinction has already cost this record twice, and it is worth stating
 in its own section.
 
-A variac setting, a controller dial and a heater current are all SET POINTS.
+A variac setting, a controller dial and a heater current are all set points.
 They determine the temperature only through the oven's own transfer function,
 which depends on ambient conditions, on the cell's thermal contact, and on how
 long the system has been running. Two labels in this archive that read like
@@ -40,7 +40,7 @@ temperatures, `91c` and `(90C-0.65A)`, are variac set points, and the internal
 temperature they produced is a different number.
 
 The consequence is not cosmetic. The 2025-07-17 pilot's internal temperature
-is carried as a RANGE, 110 to 130 C, because that is what the record supports.
+is carried as a range, 110 to 130 C, because that is what the record supports.
 Through the vapour-pressure curve that range is **a factor of 3.2 in number
 density**, and every quantity that divides by density inherits it.
 
@@ -50,11 +50,20 @@ Three failure modes follow, and they are distinct:
 
 **The reading is a real temperature somewhere else.** A thermocouple on the
 oven body, on the cold finger, or on the cell wall each measure a different
-thing, and the vapour density is set by the COLDEST POINT in the cell, since
+thing, and the vapour density is set by the coldest point in the cell, since
 that is where the reservoir equilibrates.
 
 **The cell has a gradient.** One number then describes a distribution, and the
 density along the beam is not the density at the sensor.
+
+**The cell was instrumented, and the page must not imply otherwise.** Four
+thermocouples sat between the vapour cell and its metallic case, inside a
+cubic oven wrapped in aluminium foil (experimenter, direct apparatus
+knowledge). What the dataset carries per block is the set point and not
+a logged thermocouple series, and that gap between an instrumented bench
+and a recorded channel is the whole problem this page describes: the
+temperature existed and was watched, and the record cannot regenerate it.
+The next campaign's fix is logging, not new hardware.
 
 ## The in-situ measurement that removes the problem
 
@@ -68,7 +77,7 @@ $$\Delta\nu_D = \frac{\nu_0}{c}\sqrt{\frac{8 k_B T \ln 2}{m}},$$
 which depends on temperature and on nothing else that is unknown.
 
 The arithmetic of using it as a thermometer is modest. Because the width goes
-as $\sqrt{T}$, a fractional width error is HALF the fractional temperature
+as $\sqrt{T}$, a fractional width error is half the fractional temperature
 error, so
 
 $$\frac{\delta T}{T} = 2 \frac{\delta(\Delta\nu_D)}{\Delta\nu_D}.$$
@@ -77,7 +86,7 @@ Resolving 20 K near 400 K, a five per cent temperature determination, asks for
 a width fit good to 2.5 per cent. That is undemanding for a fit, and it costs
 one wide slow scan per temperature block.
 
-Two things can defeat it, both worth stating rather than discovering: the
+Two things can break it, both worth stating rather than discovering: the
 pedestal may not separate cleanly from scattered light, and the pedestal area
 ratio is flat in the retro-reflection ratio near one, so an area-based
 estimator loses sensitivity exactly where the geometry is best.

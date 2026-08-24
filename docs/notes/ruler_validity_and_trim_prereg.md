@@ -5,7 +5,7 @@ number came out of it.** Every threshold below is fixed here, with its
 justification, so that the run can only confirm or fail it. No value in this
 note was chosen after seeing a fit.
 
-`provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the CUSUM null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished review rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the cusum null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished review rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 **The question.** How can the frequency ruler be wrong in a way the data can
@@ -136,7 +136,7 @@ it left the labelling test failing.
 3. **Labelling test.** The top-three rule of section 2.
 4. **Phase shifts.** Refit with the comb phase seeded at t0 plus j times Delta
    for j in minus two, minus one, plus one, plus two. A shift is accepted only
-   if the refit passes the test AND does not raise the reduced chi-squared
+   if the refit passes the test and does not raise the reduced chi-squared
    by more than `RULER_REINDEX_CHI2_TOL = 1e-3` of its own value. Among the
    accepted shifts the lowest reduced chi-squared wins. Both conditions are
    required because a re-index that rescues the test while worsening the fit
@@ -166,7 +166,7 @@ it left the labelling test failing.
 6. **Quarantine.** If the test still fails, the trace is quarantined with a
    reason from section 4.
 
-Whether the ladder's answer is APPLIED or merely recorded is a single switch,
+Whether the ladder's answer is applied or merely recorded is a single switch,
 `RULER_TOP3_GATED`, which lands off. Section 10 says why and what would settle
 it. Everything in this section runs either way, so the population can be
 studied without the test touching a number.
@@ -216,7 +216,7 @@ end. Five parameters, each fixed without reference to campaign data.
 
 | parameter | value | where the value comes from |
 |---|---|---|
-| `TRIM_SMOOTH_W` | 21 samples | the boxcar width the quality module already uses, adopted rather than tuned |
+| `TRIM_SMOOTH_W` | 21 samples | the boxcar width the quality module already uses, accepted rather than tuned |
 | `TRIM_CUSUM_DRIFT` | 0.5 | the standard allowance of a one-sided cumulative-sum detector, in units of the residual standard deviation |
 | `TRIM_CUSUM_H` | set by the null calibration of section 6 | a false-alarm rate, not a chosen number |
 | `TRIM_MIN_RUN` | 40 samples | 20 ms at the campaign sampling interval, which is below the narrowest physical feature the apparatus can produce, so nothing physical can be cut by a run shorter than this |
@@ -305,7 +305,7 @@ nothing to check.
 
 | quantity | current committed value | prediction |
 |---|---|---|
-| campaign laser-axis rate `rate_laser` | 0.042526 MHz/ms | moves by less than about 0.2%, direction NOT predicted |
+| campaign laser-axis rate `rate_laser` | 0.042526 MHz/ms | moves by less than about 0.2%, direction not predicted |
 | block-to-block consistency `block_chi2_red` | 8.078 | falls |
 | block rate spread `scatter_pct` | 0.618 | does not rise |
 | 993.4207 nm before-against-after spacing separation | 3.7 standard deviations | shrinks |
@@ -405,7 +405,7 @@ below it the second-order teeth cannot outrank the first for any reason
 internal to the modulation.
 
 The index was fitted to the median normalized height profile of the
-TRUSTWORTHY population, meaning the 78 of 104 traces whose tallest fitted tooth
+trustworthy population, meaning the 78 of 104 traces whose tallest fitted tooth
 sits at k of zero or plus or minus one. Each trace was normalized by the sum of
 its own in-window heights, so trace brightness drops out, and each slot's
 median was taken over the traces where that slot lies inside the acquisition
@@ -419,7 +419,7 @@ on k equal to zero for the half-wave-plate carrier trick.
 
 Intervals are from 600 bootstrap resamples of the 78 traces. Not one resample
 of either variant reached 2.6299. The fitted carrier factor is 1.57, meaning
-the k equal to zero tooth stands ABOVE the pure phase-modulation prediction
+the k equal to zero tooth stands above the pure phase-modulation prediction
 rather than below it. That is recorded as a measurement and is not interpreted
 here, since the half-wave-plate trick suppressed the optical carrier of the
 ruler light and the two-photon k equal to zero tooth is not the same quantity.
@@ -435,7 +435,7 @@ One independent check, stated with its assumption because the assumption is not
 verified. `docs/APPARATUS.md` section 2 puts the campaign drive at 10.00 Vpp,
 which the manufacturer certificates place at 54 to 60 per cent of full
 modulation, and notes that the phase-modulation index scales as one over the
-wavelength so the index at 993 nm is about 0.79 of the 780 nm figure. IF full
+wavelength so the index at 993 nm is about 0.79 of the 780 nm figure. If full
 modulation on those certificates means a half-wave retardation, beta of pi over
 two, then the campaign index is about 2 beta equal to 1.4. That is consistent
 with the measurement above. It is corroboration and not evidence, because the
@@ -453,7 +453,7 @@ one and plus two, and the amplitude rule was applied to each refit.
 | tallest tooth at order two | 26 | 0 |
 | tallest tooth at order three | 0 | 2 |
 | top-three test PASS | 0 | 26 |
-| top-three test FAIL or MARGINAL | 26 | 0 |
+| top-three test FAIL or marginal | 26 | 0 |
 
 Every one of the 26 is rescued by a phase shift, and every accepted shift is by
 exactly one slot, 21 at j equal to plus one and 5 at j equal to minus one, with
@@ -512,7 +512,7 @@ quantity it tests, so it was rejecting refits that no measurement could call
 worse. On `4154nm_eom_before_1` the correct relabelling costs 0.71 of one such
 standard deviation.
 
-**The ordering is NOT wrong, and the obvious ordering fix is wrong.** Blocking
+**The ordering is not wrong, and the obvious ordering fix is wrong.** Blocking
 the excision rung whenever any phase shift passes the amplitude rule was tried
 and it breaks fold recovery. On the ladder's own fold injector at apex 0.8 a
 phase shift does pass the amplitude rule while keeping a spacing of 131.9 ms
@@ -520,7 +520,7 @@ against a truth of 147.3 ms. The chi-squared condition is what rejects it, and
 the excision rung is what then recovers the true spacing on all eight seeds.
 Spacing preservation was also tried as a replacement acceptance test and it
 does not separate either, because the false rescue on a folded comb preserves
-the CONTRACTED spacing by construction.
+the contracted spacing by construction.
 
 **What is wrong in the ordering is that the destructive rung was the only
 unguarded one.** The phase rung carried a chi-squared condition. The excision
@@ -599,7 +599,7 @@ relabellings the spacing moves by a median of 4.7e-4 and by 2.5e-3 at the 90th
 percentile, which is consistent with a refit of the same peaks. One trace,
 `rulers_p/4121nm_eom_after3.csv`, moves 1.49 per cent, lands with its tallest
 tooth in the outer slot at order three, and is accepted because its chi2_red
-IMPROVES. The amplitude rule reads only the two first-order slots, so it cannot
+improves. The amplitude rule reads only the two first-order slots, so it cannot
 see an implausible outer height, and the chi-squared ceiling only bounds
 worsening. Two of the 26 traces in A3 fail this way. That is a known residual
 limit of the ladder as it now stands, it affects a small number of traces, and
@@ -611,7 +611,7 @@ calibration behind it.
 `results/*.csv` were left untouched by this work and were verified
 byte-identical afterwards. That leaves them stale against their own producer,
 so `tests/test_results_fresh.py::test_committed_csvs_still_match_their_producers`
-FAILS under `--runslow` until the producer is re-run and the status column is
+fails under `--runslow` until the producer is re-run and the status column is
 re-annotated. The default suite is unaffected, since that test is slow-gated.
 Every other test passes, 1470 of them.
 
@@ -635,7 +635,7 @@ trial and the new one are comparable line by line.
 |---|---|---|---|---|
 | `rate_laser` | 0.042526 | moves less than about 0.2% | 0.042544, plus 0.042% | 0.042535, plus 0.019% |
 | `block_chi2_red` | 8.078 | falls | 6.439 | 7.755 |
-| `scatter_pct` | 0.6176 | does not rise | 0.6524, ROSE | 0.6058 |
+| `scatter_pct` | 0.6176 | does not rise | 0.6524, rose | 0.6058 |
 | 4207 before against after | 3.7 sigma | shrinks | 6.2 sigma | 5.6 sigma |
 
 **None of the three stop conditions of section 9 fires under the fixed
@@ -672,14 +672,14 @@ Gating stays off for three reasons, and two of the three arguments in section
 
 Withdrawn. The first was that the rule "fails 54 of 104, so it is measuring the
 population". It is not. Of the 52 failures, 44 are relabelled by a one-slot
-comb-phase shift, and gated the census is 93 PASS, 3 MARGINAL and 8 FAIL. An
+comb-phase shift, and gated the census is 93 PASS, 3 marginal and 8 FAIL. An
 instrument that fires on 8 per cent of a population is a plausible defect
 detector. The second was that the rule "fails clean combs above 2 beta of about
 2.7". True of the rule, and irrelevant here, because section A2 measures the
 campaign index at 1.62 and the crossing is at 2.63.
 
 Standing. The third argument survives untouched and it is the decisive one. A
-parallel measurement finds the rule PASSING an injected fold that costs 7.9 per
+parallel measurement finds the rule passing an injected fold that costs 7.9 per
 cent in rate. The rule is not sensitive to the defect it was written for, and
 gating on an insensitive instrument buys the appearance of a validity filter
 without the substance of one. Two further findings point the same way. The
@@ -714,7 +714,7 @@ A6. Both were about the top-three rule firing too often, and both dissolve once
 the modulation index is measured and the ladder stops mistaking relabellings
 for mirrors.
 
-Section 9's fourth prediction is recorded as FAILED in A5 rather than
+Section 9's fourth prediction is recorded as failed in A5 rather than
 reinterpreted. It was not a stop condition and the work does not stop on it,
 but a prediction that fails is a prediction that failed.
 
@@ -773,7 +773,7 @@ The three integration points.
    `results/ruler_traces.csv` and two disagreeing records of the same decision
    are worse than one.
 
-`trim_start_ms` and `trim_end_ms` bound the KEPT interval, in both tables, so
+`trim_start_ms` and `trim_end_ms` bound the kept interval, in both tables, so
 there is one convention in the repository rather than two. They are empty when
 nothing was trimmed.
 
@@ -844,7 +844,7 @@ adds to the other fractional terms directly.
 in `run_beta_self.py` build a per-block relative rate error and use it as a
 block-coherent fractional error on every width in the block. Both fold in the
 fractional terms of `rate_err_total`, which are `rate_est_spread` divided by the
-campaign rate and `position_mismatch_relerr`. They do NOT fold in
+campaign rate and `position_mismatch_relerr`. They do not fold in
 `rate_laser_err` itself, because the per-block statistical error is already in
 their own budget and adding the campaign one would count it twice.
 
@@ -901,10 +901,10 @@ sibling z scores `zsib_height_v` and `zsib_fwhm_ms` that
 `results/qc_metrics.csv` already carries, so `m` is 2 and the tested quantity is
 the larger of the two absolute values.
 
-Those columns are ALREADY the rule's own deviation: `sibling_zscores` centres
+Those columns are already the rule's own deviation: `sibling_zscores` centres
 each metric on the median of the trace's siblings and scales it by their scaled
 median absolute deviation, with the floor `QC_SIBLING_MAD_FLOOR_FRAC`. So the
-centring and scaling step of the rule is already done and is NOT repeated. The
+centring and scaling step of the rule is already done and is not repeated. The
 threshold is applied directly to the larger absolute z score, and the single
 largest member of a group is removed when it exceeds `threshold(n, 2)`. Only
 canonical traces are tested, because the sibling groups are built from canonical
@@ -939,7 +939,7 @@ path at the longest scan any stage performs.
 
 **The procedure as pre-registered returned a degenerate answer, and the
 resolution is on the record rather than hidden.** `TRIM_MIN_RUN` alone holds the
-false-alarm rate below the 1-in-297 target at EVERY threshold on the grid, down
+false-alarm rate below the 1-in-297 target at every threshold on the grid, down
 to 0.5, because an excursion that keeps accumulating for 40 samples is already
 rare. "The smallest threshold meeting the target" would therefore have picked an
 arbitrarily small number. The threshold is instead the smallest integer at which
@@ -950,10 +950,10 @@ what section 6 asked for. The largest null statistic over the 10,000 traces was
 One thing had to be settled that section 5 did not fix, and it moves the
 threshold by a factor of twenty. Section 5 says the detector runs on "signed
 smoothed normalized residuals" without saying whether the normalization comes
-before or after the smoothing. Normalizing AFTER leaves the smoother's own
+before or after the smoothing. Normalizing after leaves the smoother's own
 correlation inside the statistic, the null wanders to a threshold of 165, and
 that threshold depends strongly on how much tail happens to be scanned.
-Normalizing FIRST puts one unit of the statistic at one sample sigma, which is
+Normalizing first puts one unit of the statistic at one sample sigma, which is
 the reading taken, and it lands on 8.
 
 ### B5.2 The trim census
@@ -966,7 +966,7 @@ the reading taken, and it lands on 8.
 
 **The ruler stage moves two traces and nothing else.**
 `rulers_t/4207nm_eom_110c5.csv` gains 0.181 ms of spacing and
-`rulers_t/4207nm_eom_090c6.csv` gains 0.016 ms. Both move UP, which is the
+`rulers_t/4207nm_eom_090c6.csv` gains 0.016 ms. Both move up, which is the
 direction removing contamination that contracted the grid predicts. Every other
 fitted ruler is byte-identical to the untrimmed fit. The refusals are the
 guarded-half rule working: a centred campaign comb spans 882 ms of a 999 ms
@@ -1028,7 +1028,7 @@ concluded that the right remedy is to quote the estimator spread as a systematic
 rather than to reject blocks. That is now a column.
 
 `clipped3` clips nothing. The pre-registered definition drops blocks further
-than three SAMPLE standard deviations from the running mean, and the most
+than three sample standard deviations from the running mean, and the most
 deviant block is 2.0 of them, so this member returns the unweighted mean exactly.
 RT6's clip dropped four blocks because it clipped on the per-block errors rather
 than on the sample spread. The member is kept as pre-registered and it adds
@@ -1055,7 +1055,7 @@ the tightest blocks, which is the expected shape: a systematic floor matters
 most where the statistics are best. The 993.4154 nm power-session bracket grows
 the most, from 0.146 to 0.322 per cent.
 
-Both consumers already carried a per-block STATISTICAL rate error, so
+Both consumers already carried a per-block statistical rate error, so
 `rate_laser_err` is not folded in on top of it. Only the two fractional terms
 are, and `run_beta_self.py` folds them after the time-resolved rate model has
 replaced the per-block error, so the model's own smaller error still gains the
@@ -1078,7 +1078,7 @@ blocks, all of them temperature-session dwells.
 `p_sweep/4121nm_025mw5.csv` at 5.91 against 5.60, `t_sweep/4154nm_070c1.csv` at
 11.74 against 6.90, and `t_sweep/4207nm_090c5.csv` at 6.14 against 5.60.
 
-**The expected catch did NOT fire, and that is a failed prediction.** B4 named
+**The expected catch did not fire, and that is a failed prediction.** B4 named
 `rulers_p/4207nm_eom_before5.csv` in advance. Its spacing of 145.40 ms sits
 0.95 per cent below its block median of 146.80 ms, but the other four members of
 that block spread over 146.49 to 147.08 ms, so the block's own scaled median
@@ -1135,7 +1135,7 @@ The campaign rate moved, so the eight files that hand-type it are stale and
 `tests/test_docs_canonical.py` says so for both the laser-axis and the
 transition-axis entries. The tokens move from 0.04253, 0.042526 and 0.0425265
 to 0.04252, 0.042524 and 0.0425243, and the transition axis from 0.085053 to
-0.085049. The propagation is deliberately NOT done here. It belongs with the
+0.085049. The propagation is deliberately not done here. It belongs with the
 recompute, alongside the sites the registry does not guard, and a partial
 propagation would turn the guard green while leaving the unguarded sites stale,
 which is the failure the guard exists to catch.
@@ -1196,11 +1196,11 @@ The two populations do not compute the same deviation, and calibrating one null
 for both would leave the other wrong.
 
 **The group scaling.** `rb5s6s.qc.group_outlier` takes the median and the scaled
-median absolute deviation over the WHOLE group, including the member under test.
+median absolute deviation over the whole group, including the member under test.
 That is population A, the ruler spacings.
 
 **The sibling scaling.** `rb5s6s.qc.sibling_zscores` centres and scales each
-member on the OTHER n-1 members, and B4 fixed that those columns are the rule's
+member on the other n-1 members, and B4 fixed that those columns are the rule's
 own deviation and are not rescaled. That is population B, the lines. A member
 left out of its own scale sits further from it than one included in it, and the
 scale is built from one point fewer, so the same nominal level needs a
@@ -1312,7 +1312,7 @@ The mechanism is the one `OUTLIER_MIN_GROUP` was written for, displaced by one
 step. B4 set the minimum group at four because with three members the scaled
 median absolute deviation is a single number and a rule built on it reports the
 arithmetic of three points. On the sibling scaling a group of four gives each
-member exactly three siblings, so the scale IS a three-point median absolute
+member exactly three siblings, so the scale is a three-point median absolute
 deviation and the pathology is back.
 
 The value is carried as the null returns it rather than capped, which leaves the
@@ -1389,7 +1389,7 @@ cent, a fortieth of the 0.2 per cent bound, and `block_chi2_red` falls. The
 fourth prediction still does not fire in either direction: the 4207 bracket
 separation does not move, as it did not in B5.8.
 
-**The removals are therefore APPLIED, not diagnostic.** A removed trace keeps
+**The removals are therefore applied, not diagnostic.** A removed trace keeps
 its row, its `outlier` mark and its reason, contributes nothing to a block
 spacing, the campaign rate, the rate model or the sweep-nonlinearity map, and is
 listed in `results/trim_report.csv` under stage `outlier`, exactly as B4
@@ -1425,7 +1425,7 @@ unchanged, because re-running two of the downstream producers and not the nine
 expensive ones would leave a tree that looks recomputed and is not. That is the
 failure B5.9 named for the documents and it applies to the tables in the same
 way. `tests/test_results_fresh.py::test_committed_csvs_still_match_their_producers`
-is the test that says so, it compares against HEAD rather than the working tree,
+is the test that says so, it compares against head rather than the working tree,
 and it stays red until the recompute lands and is committed.
 
 **Update, 2026-08-05.** All three entries above are discharged.
@@ -1545,7 +1545,7 @@ wider in nine. Relabelling is a coin flip on the spacing.
 The spacing stays the fit of record, because the measurement above shows the
 <!-- term-of-art: frozen preregistration record, and pitch is the comb's tooth spacing -->
 pitch does not know about the labelling and no case exists for disturbing
-the calibration. The tooth NUMBERING is corrected wherever the labelling test
+the calibration. The tooth numbering is corrected wherever the labelling test
 fails, on every panel that draws a comb, with the recorded numbering shown
 alongside so the picture never hides the table. The correction is a display
 of the amplitude evidence, not a refit.
@@ -1581,7 +1581,7 @@ height ordering of a correctly labelled comb is therefore
 
 Two consequences, and the second is the one that was being got wrong.
 
-A carrier weaker than its first-order pair is EXPECTED at this depth. It
+A carrier weaker than its first-order pair is expected at this depth. It
 identifies nothing. One reviewer, an expert reading the panels cold, flagged
 a correctly labelled comb as defective on exactly that reading, because no
 panel said the suppressed carrier was the physics of the drive. The panels
@@ -1627,8 +1627,8 @@ those bare statements as beta and got half the answer.
 The comb-amplitude derivation of
 [the frequency ruler](../methods/05_the_frequency_ruler.md) sums every
 sideband pair m plus m prime equal to k and returns, by Neumann's addition
-theorem, a two-photon AMPLITUDE of J_k(2 beta) for the tooth at k. A tooth
-height is a two-photon SIGNAL, so the drawn height is the modulus squared of
+theorem, a two-photon amplitude of J_k(2 beta) for the tooth at k. A tooth
+height is a two-photon signal, so the drawn height is the modulus squared of
 that amplitude,
 
     h_k proportional to J_k(2 beta) squared,
@@ -1636,7 +1636,7 @@ that amplitude,
 with the Bessel weights taken at 2 beta and not at beta. The comb fit in
 `ruler.py` reads those heights straight out of the recorded fluorescence with
 no square root in between, so the persisted heights carry the square. The
-second-to-first HEIGHT ratio at depth 2 beta is therefore J_2(2 beta) squared
+second-to-first height ratio at depth 2 beta is therefore J_2(2 beta) squared
 over J_1(2 beta) squared, and that is the function inverted below. The
 synthetic combs the ladder is calibrated on in `tests/test_ruler.py` are built
 from that same law, so the only place in the repository that read the heights
@@ -1697,10 +1697,10 @@ crossing does not depend on which reading of the height law is taken, since
 both are monotone in the same J_2 over J_1 and both put the ratio at one
 where the two weights are equal, so section E5 is untouched by section F1's
 settlement, and so is the census below. Independently: on the combs the test
-flags, 40 have a first-order pair whose MEAN stands above five times the fit
+flags, 40 have a first-order pair whose mean stands above five times the fit
 residual (the resolution cut here is on the mean of the pair, where section
 F1's cut on the smaller member gives its 41), and the recorded ratio is
-UNPHYSICAL on 34 of those 40, meaning no depth below the crossing reproduces
+unphysical on 34 of those 40, meaning no depth below the crossing reproduces
 it at all, and the remaining six sit within 0.18 of the crossing, at
 2 beta = 2.451 to 2 beta = 2.612. A mislabelled grid does not merely shift the
 implied depth, it pushes the recorded ratio outside what phase modulation
@@ -1710,7 +1710,7 @@ can produce, which is a second, independent signature of displacement.
 
 At 2 beta = 1.569 pure phase modulation predicts a carrier-to-first height
 ratio of 0.696. On the same 41 clean combs the measured ratio runs 0.360 to
-1.188, and on ten of them the carrier stands TALLER than the first-order
+1.188, and on ten of them the carrier stands taller than the first-order
 mean. The fig8 winner, `rulers_p/4192nm_eom_after1.csv`, is one of the ten,
 carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The
 second-to-first ratio is tight while the carrier ratio is wide, which is the
@@ -1723,7 +1723,7 @@ angle while the drive depth evidently did not.
 Two withdrawals follow. The claim that a suppressed carrier is expected on
 every trace is withdrawn, because the carrier height carries amplitude
 modulation and can stand above the first order on a correctly numbered comb.
-And any use of the CARRIER height as labelling evidence is withdrawn with
+And any use of the carrier height as labelling evidence is withdrawn with
 it. The first-order pair and the second-order ratio remain the reliable
 amplitude evidence.
 
@@ -1764,7 +1764,7 @@ a tall carrier is residual amplitude modulation and says nothing about the
 numbering in either direction.
 
 Whether the residual amplitude modulation is large enough to bias the tooth
-SPACING rather than only the heights stays with the frequency-calibration
+spacing rather than only the heights stays with the frequency-calibration
 review. Nothing here touches the spacing, which is measured from tooth
 positions and not from heights.
 
@@ -1855,14 +1855,14 @@ cent refutation rate. The working note with full instruments and
 adjudications is an internal review document and stays unpublished by the
 standing rule. What binds here:
 
-Six CONFIRMED, five REFUTED, one OPEN (42 per cent refuted). Three findings moved. RT3 and RT6 fall from CONFIRMED to REFUTED, and RT1 from CONFIRMED to REFUTED. RT10 rises from REFUTED to CONFIRMED. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's SPREAD separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4. Two attempts to refute it both failed, and each produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.
+Six confirmed, five refuted, one OPEN (42 per cent refuted). Three findings moved. RT3 and RT6 fall from confirmed to refuted, and RT1 from confirmed to refuted. RT10 rises from refuted to confirmed. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's spread separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4. Two attempts to refute it both failed, and each produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.
 
 The confirmed actions are implemented as of this date with one
 exception, the amplitude-seeded fold construction (RT12), which was
-evaluated and not adopted (addendum 27 of
+evaluated and not accepted (addendum 27 of
 [PREREGISTRATION_RESULTS.md](../PREREGISTRATION_RESULTS.md): the
 seeding reproduces RT12's demonstration, but the campaign rate moves
-+61.5 ppm through the group-outlier rule, and the seed defeats the
++61.5 ppm through the group-outlier rule, and the seed breaks the
 fold detector on injected folds, so production stays on proximity
 seeding and the rule stays as an explicit opt-in diagnostic). The RT6
 statistic was re-derived at

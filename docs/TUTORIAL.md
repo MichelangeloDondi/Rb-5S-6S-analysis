@@ -16,7 +16,7 @@ are degenerate, and forecasts the precision you can reach.
 
 ## What a digital twin is, and why it is the point
 
-The same forward model that FITS data can GENERATE it. That single fact turns
+The same forward model that fits data can generate it. That single fact turns
 an analysis package into a design instrument: an experiment that does not
 exist yet can be run in software, its data collected, its analysis rehearsed,
 and its achievable precision read off, before a single optic is mounted.
@@ -86,7 +86,7 @@ freqs, volts = synthetic_traces(..., noise=law)     # simulate under YOUR detect
 That is the difference between a toy and a twin. The twin simulates under the
 noise you actually have.
 
-The generator also takes the LASER KERNEL, which matters if the quantity you
+The generator also takes the laser kernel, which matters if the quantity you
 are after is the kernel itself rather than a width measured through it:
 
 ```python
@@ -99,11 +99,11 @@ freqs, volts = synthetic_traces(
 
 `gamma_l` defaults to zero and that default is bit-identical to the generator
 without it. Setting it emits a line whose laser kernel is Gaussian and
-Lorentzian at once, which is what lets a twin ask whether YOUR analysis can
-recover a Lorentzian laser component from YOUR design. One warning the twin
+Lorentzian at once, which is what lets a twin ask whether your analysis can
+recover a Lorentzian laser component from your design. One warning the twin
 will hand you if you try it at a single condition: it cannot. A Lorentzian
 laser width and the collisional width add exactly, so only their sum is
-identifiable there. The lever is a DENSITY LADDER, and
+identifiable there. The lever is a density ladder, and
 `fit_beta_self(..., fit_gamma_l=True)` across temperatures is where the
 separation actually happens.
 
@@ -121,7 +121,7 @@ on their thermal speed. Pass the temperature your own cell actually sits at,
 and pass `transit_fwhm` explicitly as above if you would rather hold the
 transit width fixed than let the temperature set it.
 
-**The discipline that matters: judge the fit by its PULL, not by its residual
+**The discipline that matters: judge the fit by its pull, not by its residual
 plot.** A pull under about three says the fit recovered the truth within the
 uncertainty it claims. A small residual with a pull of ten means the fit is
 confidently wrong, which looks better on a plot and is worse.
@@ -131,7 +131,7 @@ confidently wrong, which looks better on a plot and is worse.
 Run chapter 4 and look at `res["corr_laser_coll"]`. It will be around
 **-0.9**. That number is the tutorial's real lesson: the laser width and the
 collisional width are strongly anticorrelated, so the data constrain their
-SUM far better than either alone, and a fit can trade one against the other
+sum far better than either alone, and a fit can trade one against the other
 almost freely.
 
 Now break the package deliberately. Each of these teaches what honest failure
@@ -191,7 +191,7 @@ out = forecast_precision(
 ```
 
 You get the median uncertainty the real analysis would report, the
-correlation, and a table of measured SCALINGS: what doubling the power, the
+correlation, and a table of measured scalings: what doubling the power, the
 repeats or the points actually buys. The scalings are measured by re-running
 the study, not asserted from an exponent, because an asserted exponent is a
 claim about a regime you may not be in.
@@ -209,7 +209,7 @@ That file is this method applied to a real planned experiment: four hyperfine
 peaks on one vertical range, a randomised power ladder with session drift,
 cascade depletion, saturation companions, an AC-Stark ramp, blackbody
 radiation, shot-like noise and twelve-bit quantisation. It does not
-illustrate the campaign, it CROSS-EXAMINES it: each layer prints whether the
+illustrate the campaign, it cross-examines it: each layer prints whether the
 record's claim about that layer survives its own simulation.
 
 When it was first

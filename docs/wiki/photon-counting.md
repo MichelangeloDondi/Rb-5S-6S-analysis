@@ -72,7 +72,7 @@ favors one technology on principle.
 ## Buying photons: the three routes are not equivalent
 
 "It is shot-limited, so collect more photons" is true and nearly useless,
-because it does not say HOW. In a scanned measurement there are three ways,
+because it does not say how. In a scanned measurement there are three ways,
 and at equal total time they do not deliver equally.
 
 Shot-limited means the signal-to-noise is the signal divided by its square
@@ -89,7 +89,7 @@ root, so it is the square root of the signal.
     intensity, so the signal-to-noise goes as the square root of the intensity
     and driving harder is no better than waiting longer. For a TWO-photon
     transition the signal goes as the square of the intensity, so the
-    signal-to-noise goes as the intensity ITSELF, linearly, and doubling the
+    signal-to-noise goes as the intensity itself, linearly, and doubling the
     drive is worth quadrupling the time.
 
 **The first two are exactly equivalent in photons.** Time is time, and the

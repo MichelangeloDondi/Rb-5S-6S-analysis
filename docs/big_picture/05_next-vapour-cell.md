@@ -31,7 +31,7 @@ physics:
    fraction of the same factor. Runs as [`PLAN.md`](../PLAN.md) §3 item 5a.
 
    This sits second because it is the only item on the list that acts on
-   IDENTIFIABILITY rather than on precision. The collisional and laser widths
+   identifiability rather than on precision. The collisional and laser widths
    correlate at about -0.92 in the fit, and no acquisition setting moves that:
    a five times wider span takes it from -0.9177 to -0.9166 and ten times the
    traces reaches only -0.881, while both uncertainties shrink throughout.
@@ -112,7 +112,7 @@ untested into a checked fact. The HighFinesse wavemeter's own long-term log,
 running alongside, is an independent drift diary for free.
 
 **An absorption channel for the rubidium density N(T).** It converts an
-adopted vapour density into a measured one, needs a weak D-line probe and a
+set-point vapour density into a measured one, needs a weak D-line probe and a
 photodiode of its own, neither of which the apparatus record lists, and could
 come back empty if the cold spot will not flatten enough at the high end to be
 read ([`PLAN.md`](../PLAN.md) §8 item 3). The infrared receiver named below is on

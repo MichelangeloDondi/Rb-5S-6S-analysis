@@ -27,7 +27,7 @@ with the collisional coefficient bounded at 0.03-0.05 MHz per 10¹² cm⁻³.
 
 **And the degeneracy has a second face, measured 2026-08-20.** It is not only
 the laser width that competes with the collisional one. The laser kernel's
-SHAPE does too, and by more. Fitting every peak twice, differing only in
+shape does too, and by more. Fitting every peak twice, differing only in
 whether the laser's contribution is a Gaussian or a Lorentzian, moves the
 headline collisional coefficient by 45 to 67 per cent, nine to eighteen sigma
 on its own quoted error. A per-condition version of the same comparison was
@@ -35,13 +35,13 @@ withdrawn on 2026-08-20: at fixed condition the two widths enter only through
 their sum, so the split is unidentified and only the density ladder separates
 them. The mechanism is that Lorentzians add linearly and a Lorentzian laser width is degenerate with a collisional one in
 a way a Gaussian is not. The two kernels are not alternatives: the pure-Lorentzian
-model is NESTED inside the Gaussian one, reached by letting the Gaussian width
+model is nested inside the Gaussian one, reached by letting the Gaussian width
 go to zero, so the Gaussian cannot fit worse and the 32-of-32 tally is
-arithmetic rather than evidence. The informative quantity is the SIZE of the
+arithmetic rather than evidence. The informative quantity is the size of the
 improvement as a nested likelihood ratio, a median delta chi-square of 232 for
 one boundary parameter, which excludes a purely Lorentzian laser contribution
 at 26 of the 32 conditions at better than three sigma. What the session should carry from it is that a fitted
-Lorentzian-equivalent WIDTH inside the containing model turns that comparison
+Lorentzian-equivalent width inside the containing model turns that comparison
 into the model-form error bar on the collisional coefficient, and costs a fit
 rather than beam time
 (`scripts/run_laser_kernel.py`).
@@ -54,7 +54,7 @@ it was meant to produce is $R_\text{kernel} = 3.24$ times the statistical one
 (`results/kernel_budget.csv`). So the model-form question no longer needs beam
 time and is answered.
 
-**What still needs beam time is the ORIGIN, and that is now the sharper reason
+**What still needs beam time is the origin, and that is now the sharper reason
 for the session.** The component is identified and unattributed. Calling it the
 laser is a separate claim, and the transfer that would carry it is classified
 NOT_ESTABLISHED for every measurement taken so far, because the one in-situ
@@ -65,10 +65,10 @@ thing to cut when the budget shrinks.
 
 The routes that would close it are ranked by what each reaches in
 `results/kernel_k7.csv`, and the levers a campaign can pull are set out with
-their ROLES, rather than as a ranking, in `results/orthogonal_levers.csv`. That
+their roles, rather than as a ranking, in `results/orthogonal_levers.csv`. That
 file states for each lever what it separates and what its orthogonality
 assumes, including the row this record most wants a reader to distrust:
-temperature is INTENDED to move the transit term while leaving the laser
+temperature is intended to move the transit term while leaving the laser
 contribution alone, and a campaign using it needs the controls that show it did.
 
 **The proposed measurement.** A vapour-cell session under the repaired cavity
@@ -103,14 +103,14 @@ operator. It is a specification, not a booking.
 *The reason this document exists, before any of its procedure. The 2025 lock
 was re-centred by hand between blocks, so the line's absolute position carries
 no meaning across a step and every result is a bound read out of the line
-SHAPE. The bottom panel is what a fixed lock converts, and each block below is
+shape. The bottom panel is what a fixed lock converts, and each block below is
 costed against exactly that.*
 
 ## The chapters
 
 | # | chapter | what it covers |
 |---|---|---|
-| 0 | [The case in ten minutes](plan/00_the-case.md) | what was measured, what is not identified, the one intervention that breaks each, what a campaign is projected to achieve, and what this record refuted with its own instruments. Start here |
+| 0 | [The case in ten minutes](plan/00_the-case.md) | what was measured, what is not identified, the one measurement that breaks each, what a campaign is projected to achieve, and what this record refuted with its own instruments. Start here |
 | 1 | [The aim and the objections](plan/01_aim-and-failure-modes.md) | what the session is for, and the objections a referee would raise first |
 | 2 | [Priorities if the budget shrinks](plan/02_priorities.md) | the order in which blocks would be cut, and the one lever that acts on identifiability rather than on noise, the independent laser width |
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
@@ -120,7 +120,7 @@ costed against exactly that.*
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
 | 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
-| 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes, the pedestal thermometer, the day-one list including the split-signal dual recording, polarisation, and the comb as a statistical instrument |
+| 10 | [The instrument and the session](plan/10_the-fixed-lock-instrument.md) | the oscilloscopes and the measured noise budget that retires the bit-depth argument, the pedestal thermometer, the day-one list with the wing-noise discriminator, polarisation, and the comb as a statistical instrument |
 | 11 | [Beyond 993 nm](plan/11_beyond-993.md) | the riders that cost no drive time, and the analysis plan of record |
 
 **The block register**, which is the table a session actually runs from, is at
@@ -130,7 +130,7 @@ the head of [chapter 6](plan/06_sizing-and-spending-rules.md).
 
 Everything below is a prediction about a session that has not happened, and a
 prediction is worth what it costs to check. The forward model that fits the
-2025 data also GENERATES data, so the campaign specified here exists in
+2025 data also generates data, so the campaign specified here exists in
 software before it exists on an optical table.
 
 `examples/campaign_twin.py` is that digital twin. It builds the dataset this
@@ -142,7 +142,7 @@ one-range quantisation and a session drift. Then it fits that dataset back and
 reports what the campaign would establish.
 
 Two runs, not one. The predicted light shift is injected in the first, and
-NOTHING is injected in the second, because a design that detects an effect
+nothing is injected in the second, because a design that detects an effect
 that was put in has proved only half of what matters. The second run asks
 whether it stays quiet when there is nothing to find. What no run of the twin
 establishes is the physics itself: agreement means the record is internally

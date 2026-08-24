@@ -32,7 +32,7 @@ past those to the null distribution of almost any statistic, because none of
 them needs an analytic formula once a computer can draw the resamples and
 count.
 
-The plain version is the NONPARAMETRIC, or CASE-RESAMPLING, bootstrap. Given
+The plain version is the nonparametric, or case-resampling, bootstrap. Given
 $n$ observations, draw $n$ of them with replacement, so some appear more than
 once and some not at all, compute the statistic of interest on that resample,
 and repeat $B$ times. The empirical distribution of the $B$ resulting values
@@ -43,9 +43,9 @@ that the observed sample's empirical distribution is a fair enough picture of
 the population, which is the same assumption most other statistics computed
 from the sample are already making.
 
-The PARAMETRIC bootstrap keeps the resampling logic and changes what gets
+The parametric bootstrap keeps the resampling logic and changes what gets
 resampled. Instead of drawing new points from the observed sample, it draws
-new datasets from a MODEL fitted to that sample: at each design point,
+new datasets from a model fitted to that sample: at each design point,
 simulate a new observation from the fitted curve plus noise drawn from the
 assumed, or separately measured, noise law, recompute the statistic on the
 simulated dataset, and repeat. Because the randomness now comes from the
@@ -56,7 +56,7 @@ nonparametric version does: what this statistic would look like if the
 fitted model were the whole truth, so that anything the real data do beyond
 that is attributable to something the model does not contain.
 
-The JACKKNIFE is older and simpler. Leave one observation out, recompute the
+The jackknife is older and simpler. Leave one observation out, recompute the
 statistic on the remaining $n-1$, and repeat once for every observation, so
 $n$ deletions replace the bootstrap's $B$ random draws with a fixed,
 exhaustive set. The spread of the $n$ leave-one-out estimates around their
@@ -68,7 +68,7 @@ afford, and it can fail outright for a statistic that does not respond
 smoothly to dropping one observation, the sample median being the standard
 example.
 
-JACKKNIFE-AFTER-BOOTSTRAP turns the bootstrap's own output into a diagnostic
+Jackknife-after-bootstrap turns the bootstrap's own output into a diagnostic
 rather than running a second procedure. Every bootstrap resample either
 happens to include a given observation or happens to leave it out, purely by
 the luck of the draw, so the $B$ resamples already contain, for free,
@@ -156,7 +156,7 @@ narrow while resting on almost no independent information. The sharper
 version of the same limit showed up in the influence audit above: one of the
 four design points sits at a leverage close to one, meaning the fitted line
 passes almost exactly through it whatever value it carries, and no resampling
-of the CASES can expose a defect planted there. The fit is refit around it
+of the cases can expose a defect planted there. The fit is refit around it
 every time, leaving no residual for any diagnostic to catch, bootstrap-based
 or not. That is a property of the design's geometry rather than of the
 resampling method, and it is why the audit could report no verdict at all for
@@ -164,7 +164,7 @@ that one point rather than a false clean bill.
 
 A second failure is structural rather than a matter of sample size. Real data
 are often not $n$ exchangeable individual points but a smaller number of
-exchangeable BLOCKS, each carrying an internal correlation or a shared
+exchangeable blocks, each carrying an internal correlation or a shared
 nuisance parameter that a single point does not carry alone, a whole peak's
 power sweep sharing one systematic being the case above, or consecutive
 samples in a trace sharing the correlation time
@@ -272,7 +272,7 @@ multiplier stands in for, before quoting it, would have caught the
   Statist.* **7**, 1 (1979), the paper that introduced the nonparametric
   bootstrap and named it after the jackknife it generalizes.
 - B. Efron and R. J. Tibshirani, *An Introduction to the Bootstrap* (Chapman
-  and Hall/CRC, 1993), the standard reference for the bootstrap, the
+  and Hall/crc, 1993), the standard reference for the bootstrap, the
   parametric bootstrap and the jackknife together.
 - J. W. Tukey, "Bias and confidence in not-quite large samples" (abstract),
   *Ann. Math. Statist.* **29**, 614 (1958), the paper the jackknife takes its

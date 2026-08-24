@@ -60,7 +60,7 @@ to 6S and feeds the signal a second time.
 `scripts/run_trapping_channels.py` answers it and the answer has two halves.
 
 Three facts first, all computed from this package's own line data rather than
-adopted. The two legs' Einstein coefficients sum to 100.33 per cent of the
+accepted. The two legs' Einstein coefficients sum to 100.33 per cent of the
 independently measured 6S decay rate, which is a closure check because 6S has
 no allowed decay to 5S, and the branching is 34.09 per cent through $5P_{1/2}$
 and 65.91 through $5P_{3/2}$. Their Doppler-broadened peak cross-sections are
@@ -104,7 +104,7 @@ not.
 
 #### A fourth power-dependent channel, named late: the EOM as a thermal lens
 
-**DEMOTED 2026-08-18.** This channel was inventoried as a candidate for the
+**Demoted 2026-08-18.** This channel was inventoried as a candidate for the
 concave width against power, and that concavity has since been withdrawn to
 provisional: it is 1.4 standard deviations under the between-block treatment,
 is not confirmed by either independent power ladder, and shows
@@ -118,15 +118,15 @@ measurement that would settle the concavity.
 The mechanism sweep of 2026-08-17 found one channel with no treatment anywhere
 in this record, and it came from apparatus knowledge rather than from analysis:
 the EOM crystal clips the raw laser beam at its 3 mm aperture
-([APPARATUS](../APPARATUS.md), manufacturer-sourced) and sits BEFORE the
+([APPARATUS](../APPARATUS.md), manufacturer-sourced) and sits before the
 focusing lens, so power absorbed at the crystal makes a thermal lens and the
 cell waist becomes a function of drive power. That candidate matters because it
-is the only proposed mechanism whose width signature can be NON-MONOTONE in
+is the only proposed mechanism whose width signature can be non-monotone in
 power, through the focus walking along the cell, and a non-monotone width
 against power is what the summary widths show.
 
 What the archive could test, it has. A lens with a thermal time constant
-comparable to a block would drift WITHIN each five-repeat block as the crystal
+comparable to a block would drift within each five-repeat block as the crystal
 re-equilibrates after every power step, and the pooled within-block drift
 across all twenty campaign cells is minus 7.7 plus or minus 6.4 kHz per repeat,
 a null that kills the slow branch alone. The rehearsal session's
@@ -163,7 +163,7 @@ does it touch the 795 nm signal. `scripts/run_blackbody_channels.py` answers
 both, and one number decides almost all of it. At 403 K the blackbody **photon**
 spectrum peaks near 9.1 µm while every line of this cascade lies between 0.79
 and 2.8 µm, and the occupation number falls as $e^{-h\nu/kT}$. (The familiar
-Wien figure, 7.2 µm here, is the peak of the ENERGY spectrum. Photon number
+Wien figure, 7.2 µm here, is the peak of the energy spectrum. Photon number
 peaks a quarter further out, and it is photon number an atomic rate follows.
 Nothing below depends on which is quoted, since every rate is computed from
 $h\nu/kT$ line by line.)
@@ -177,8 +177,8 @@ is $10^{-8}$ of a channel that is itself one per cent.
 **It does not touch the signal, and the blocking element is not the filters.**
 Stimulated emission on D1 runs at $1.2\times10^{-12}$ s⁻¹ against a 28 ns
 lifetime. For the background, the photocathode's own red edge does the blocking,
-not the 50 dB of 795 nm filtering: the R636-10 is a GaAs tube whose response
-ends near 900 nm (DATASHEET, not confirmed against the sheet here), and the
+not the 50 dB of 795 nm filtering: the r636-10 is a GaAs tube whose response
+ends near 900 nm (datasheet, not confirmed against the sheet here), and the
 conclusion does not depend on that figure, because a cathode with a red edge
 anywhere below a couple of µm is blind to a 9.1 µm peak. In the band it can
 respond to at all, the whole cell wall emits
@@ -277,7 +277,7 @@ and that is the fixed lock's job.
 
 ![one peak fitted with the composite model, with its residual strip](../../figures/fig18_single_4192.png)
 
-*The model of this chapter against one peak at ONE condition, 130 degrees and
+*The model of this chapter against one peak at one condition, 130 degrees and
 225 mW, with its residual strip and the parameters it was given against the
 ones it fitted here. The shared shape comes from the joint fit over every
 campaign trace and only the per-trace nuisances are refitted for this panel.

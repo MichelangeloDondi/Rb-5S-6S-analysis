@@ -100,7 +100,7 @@ axis and would read $1.746$ MHz on the laser axis.
 
 ## The chapters
 
-The chapters are the EXPERIMENT: what was done here, in what order, and what
+The chapters are the experiment: what was done here, in what order, and what
 the numbers came out as. The general theory behind each technique lives once,
 in the [wiki](wiki/README.md), and every chapter links to it where the term
 first does real work.
@@ -195,7 +195,7 @@ scripts/  import_data (+ annotate_manifest_qc: qc_reason provenance)
           run_geometry_design (the running-wave and waist designs, whose
           weak-field branch reproduces lineshape.stark_ramp_axial_moments)
 data_raw/ MANIFEST.csv, and the 297 traces where the copy carries them
-tests/    2769-test battery (2714 fast ~4 min + 55 `slow` high-statistics
+tests/    2857-test battery (2801 fast ~5 min + 56 `slow` high-statistics
           closure tests via --runslow, incl. the M4d synthetic-β and M4e
           synthetic-κ closures, the MANIFEST qc_reason guards, and the
           docs-consistency gates: canonical numbers, links+anchors, math
@@ -219,8 +219,8 @@ The first six scripts form the pipeline (each reads the previous ones'
 
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]" && pytest -q          # 2714 fast tests (~4 min)
-pytest -q --runslow                           # full 2769 incl. slow closures (what CI runs)
+pip install -e ".[dev]" && pytest -q          # 2801 fast tests (~5 min)
+pytest -q --runslow                           # full 2857 incl. slow closures (what CI runs)
 # reproduce every committed CSV, figure, and docs/RESULTS.md from data_raw/
 # (already in git; import_data.py only re-imports from the original tree):
 bash scripts/run_all.sh

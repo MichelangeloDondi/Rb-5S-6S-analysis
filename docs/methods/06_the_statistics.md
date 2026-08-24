@@ -134,7 +134,7 @@ which annihilate any locally-linear trend exactly (so a bright line's steep
 flank contributes nothing) while having unit response to white noise, so for
 white noise of standard deviation $\sigma$, $e_i$ also has standard deviation
 $\sigma$. Binning $e_i$ by local signal level and fitting the variance law
-$\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it RISES with power, so it is shot noise on an optical background rather than electronics or dark current, and the law unifies as $\sigma^2=b(V+V_{\rm bg})$) and $b$ (the
+$\sigma^2=a^2+bV$ then gives $a$ (a floor by construction of the model, though measured on this dataset it rises with power, so it is shot noise on an optical background rather than electronics or dark current, and the law unifies as $\sigma^2=b(V+V_{\rm bg})$) and $b$ (the
 shot-noise, "Fano", term). Wing-noise **correlation** is measured separately
 by the blocking method and summarized as an integrated correlation time
 $\tau_\text{int}$, which inflates the fit errors as above. We found $b$ flat in
@@ -241,7 +241,7 @@ inequality measures the optimizer rather than the data.
 `rb5s6s.modelform.compare_ic` reports every criterion and
 refuses to interpret a comparison whose nesting inequality is violated.
 
-In practice this record reports a PANEL of four: AIC, AICc (its small-sample
+In practice this record reports a panel of four: AIC, AICc (its small-sample
 correction, which the drift-settling analysis already uses at $n=26$ with that
 stated reason), BIC over raw $N$, and BIC over the effective sample size
 $N_\text{eff}=N/\tau_\text{int}$, the last being this repository's own
@@ -311,7 +311,7 @@ $$
 On the T-sweep dataset the summed $\Delta\text{BIC}$ per rung is **A→B $\approx +879$** (transit decisively warranted), **B→C $\approx +1091$** (a free
 Lorentzian width beyond natural is warranted, and the line genuinely needs both a
 Lorentzian and a Gaussian component), and **C→D $\approx -100$**, *the free
-AC-Stark parameter is decisively NOT warranted*. This is the two-epoch design
+AC-Stark parameter is decisively not warranted*. This is the two-epoch design
 stated as a model comparison, and it answers "is
 your novel AC-Stark component an unnecessary parameter?": on the *drifted*
 dataset it **is**, because the free per-scan centres absorb the ramp's pull and
@@ -333,7 +333,7 @@ closure `tests/test_model_ladder.py`, numbers `results/model_ladder.csv`.
 The degeneracy asserted throughout, that $\gamma_\text{coll}$,
 $\sigma_\text{laser}$ and transit all broaden the same line, so the main fit
 *fixes* transit and reports $\sigma_\text{laser}$ as a bound, is here made
-quantitative in two layers: a LOCAL covariance analysis and the GLOBAL
+quantitative in two layers: a local covariance analysis and the global
 profile-likelihood map that first corrected and then certified it. Both on one
 bright condition (993.4192 nm, 130 °C, 225 mW), all three widths free plus the
 per-trace nuisances.
@@ -346,9 +346,9 @@ $\sigma_\text{laser}\approx0.46$, transit $\approx1.43$ MHz, i.e. the transit
 width the $w_0\approx43$ µm geometry predicts, at $\chi^2 = 4551$, a
 $\Delta\chi^2\approx475$ preference. The local analysis is therefore anchored
 by a **two-start fit** at the deeper branch, and both branches plus their gap
-are committed (`branch`, `branch_gap` rows). Set beside the adopted prior that
+are committed (`branch`, `branch_gap` rows). Set beside the accepted prior that
 is a tension the dataset owns rather than resolves: the shape prefers
-$w_0\approx43$ µm where the beamline-lineage measurement puts it at the adopted
+$w_0\approx43$ µm where the beamline-lineage measurement puts it at the accepted
 **64 µm**, which is 1.43 MHz of transit width against 0.96 MHz at 130 °C.
 Taken at face value the shape data
 *prefer* the physical decomposition (real transit cusp, narrow laser). But
@@ -383,10 +383,10 @@ ellipse.
 
 **How much weight that comparison carries, and it is less than the word
 agreement suggests.** The two numbers share a sign and an order of magnitude.
-The prediction sits 28 per cent above the measurement, and BOTH moved when the
+The prediction sits 28 per cent above the measurement, and both moved when the
 arithmetic environment changed, the slope by 18 per cent and the prediction by
 37. A pair that both moves and still tracks to this tolerance certifies the
-SHAPE of the valley, not the value of either number.
+shape of the valley, not the value of either number.
 
 The whole neighbourhood moves together under an environment change: the
 condition number and the valley-floor RMS are now 345.1 and 0.0020 against the
@@ -398,13 +398,13 @@ recorded once, in
 That is what an
 ill-conditioned family does, and it is the reason this section exists.
 
-What has NOT been separated is how much of that movement is the arithmetic
+What has not been separated is how much of that movement is the arithmetic
 environment and how much is a later change to the lineshape module, since the
 committed digits predate both. The record says so rather than attributing it,
 and the attribution is left as an open item.
 
 So the agreement is evidence that the profile map and the local covariance are
-describing the same geometry, and it is NOT a precision test: one side of it is
+describing the same geometry, and it is not a precision test: one side of it is
 ill-conditioned by exactly the mechanism the section is about. The robust
 quantity of the two is the profile measurement, which is the same conclusion
 this record reaches everywhere else it sets a profile against an ellipse. The
@@ -461,7 +461,7 @@ bias, coverage, and the false-detection rate. The result:
 - the point estimate is **unbiased** (bias $\approx-0.0001$ MHz per $10^{12}$
   cm⁻³, well below the bound).
 - the Student-t 95% upper bound **covers the true $\beta$ $\approx100$% of the
-  time**, valid and, on 2 DOF, conservative (the safe direction for a bound, and
+  time**, valid and, on 2 dof, conservative (the safe direction for a bound, and
   the Gaussian-2 bound this replaced would *under*-cover, which is the whole
   the reason for the t-quantile).
 - at $\beta_\text{true}=0$ the pre-registered SNR $\ge3$ "measurement" rule

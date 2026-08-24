@@ -20,8 +20,8 @@ parameters are separable in the first place. That is
 ## What it is
 
 A parameter is identifiable if the data could, in principle, distinguish its
-true value from any other. This is a property of the MODEL and the
-EXPERIMENT together, not of the fitting routine, and it is decided before any
+true value from any other. This is a property of the model and the
+experiment together, not of the fitting routine, and it is decided before any
 data are collected. If two different parameter values predict exactly the
 same observation, no amount of data, no better optimiser and no cleverer
 algorithm will separate them.
@@ -95,7 +95,7 @@ Simulated on a bright synthetic condition with signal-dependent noise
 (`python scripts/run_width_pinning.py`, the construction stated in its
 docstring), a fit with both widths free recovers the collisional width with a
 scatter of 0.0070 MHz across realisations, and the same fit with the laser
-width KNOWN recovers it with 0.0022 MHz, a ratio of 3.18 with a spread of
+width known recovers it with 0.0022 MHz, a ratio of 3.18 with a spread of
 0.20 across nine seeds. The spread is quoted because the ratio of two
 Monte-Carlo standard deviations moves from seed to seed, and an earlier
 version of this passage quoted a single draw of 3.4, which turned out to be
@@ -108,7 +108,7 @@ construction attached.
 
 ### The factor is not one number, and the arithmetic says which
 
-A simulated scatter ratio answers the question at ONE condition. The general
+A simulated scatter ratio answers the question at one condition. The general
 answer is arithmetic, and it explains why different parts of this record quote
 different factors for what looks like the same purchase.
 
@@ -124,7 +124,7 @@ does not improve with more traces.
 | the tutorial's synthetic design point | $-0.9177$ | 2.52 |
 | the bright condition of the pinning simulation above | $-0.9417$ | 2.97 |
 
-The last row is the check on the first two. The pinning simulation MEASURES
+The last row is the check on the first two. The pinning simulation measures
 $3.18 \pm 0.20$ by Monte Carlo at a condition whose own fitted correlation is
 $-0.9417$, where the arithmetic predicts 2.97. The two agree to 7 per cent,
 and the residual is what a scatter ratio carries that a covariance ratio does
@@ -149,7 +149,7 @@ correlations. `rb5s6s.forecast.external_constraint_gain` computes it, and
 `scripts/run_width_pinning.py` now reports the correlation and the predicted
 factor beside its measured ratio, so the two cannot drift apart unnoticed.
 
-THE GENERAL SHAPE OF THAT ARGUMENT is worth more than the number. When two
+The general shape of that argument is worth more than the number. When two
 parameters trade, the question is never only how to fit better. It is which
 of them can be measured by some other instrument, and what that would buy,
 and both halves are computable in advance.
@@ -159,7 +159,7 @@ and both halves are computable in advance.
 **A worked example from this repository, 2026-08-21.** Two Lorentzian widths in
 one line, a collisional one and a laser one, convolve to their sum exactly. At
 a fixed condition that is not a near-degeneracy to be managed with priors, it
-is an EXACT one: the sum is measurable and the split is not, at any signal to
+is an exact one: the sum is measurable and the split is not, at any signal to
 noise, for ever. Six injected values confirm it, the recovered sum tracking
 truth to a part in a thousand while the split wanders.
 
@@ -179,21 +179,27 @@ Take two quantities that reach the data only through their product, so that a
 single measurement determines the product and neither factor. No fit can
 separate them, and no amount of data at that setting will. But if some
 experimental knob scales one factor and not the other, then repeating the
-measurement at several settings of that knob makes the product a LINE rather
+measurement at several settings of that knob makes the product a line rather
 than a point, and the two factors become the slope and the intercept.
 
 The general recipe: when two parameters are degenerate, look for a control
-that enters them ASYMMETRICALLY. The fitting problem is unchanged and the
+that enters them asymmetrically. The fitting problem is unchanged and the
 experiment has been changed instead, which is usually the cheaper repair.
 
 **A case where the search came back empty, which is the part worth
 recording.** For the two widths of this experiment the search was run rather
-than assumed. Span, point count and repeat count were each varied in the
-[digital twin](the-digital-twin.md), and the correlation did not move:
-$-0.9177$ across a 60 MHz span, $-0.9166$ across 300 MHz, and $-0.881$ at ten
-times the traces. Both uncertainties fell as the data grew and the direction
-the data cannot see stayed invisible, because a Lorentzian core inside a
-Gaussian envelope trades the same way at every sample size. Among the
+than assumed, and it is regenerable:
+[`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) rebuilds it in the
+[digital twin](the-digital-twin.md) from a named committed condition. The
+correlation between the laser and collisional widths moves by 0.0075 when
+the span widens from 60 to 300 MHz and by 0.0000 at ten times the repeats,
+because a Lorentzian core inside a Gaussian envelope trades the same way at
+every sample size. Repeats buy precision as sampling predicts, a factor
+3.16 at ten times the traces, while widening the span costs a factor 2.72
+at fixed points per trace, since the same points spread over more baseline.
+An earlier run of this search printed correlations to four decimals from a
+run that recorded neither its truth nor its seed, and those digits are
+retired everywhere the producer's rows can stand instead. Among the
 acquisition settings the asymmetric knob does not exist, which is why this
 experiment takes the pinning route of the previous section rather than the
 design route of this one. Reporting a failed search matters here: without it,
@@ -202,7 +208,7 @@ the next reader spends a session widening scans.
 ## A parameter can be in a channel and carry almost none of it
 
 Identifiability asks whether the data determine a parameter. A question comes
-before it and is easy to skip: whether the OBSERVABLE being used is sensitive to
+before it and is easy to skip: whether the observable being used is sensitive to
 the parameter at all. The two are different, and a parameter can be perfectly
 non-degenerate in a channel that barely responds to it.
 
@@ -288,13 +294,13 @@ a reader.
 ## An exact degeneracy that the implementation broke, 2026-08-21
 
 Every other case on this page is a degeneracy the data cannot resolve well.
-This one is different: it is a degeneracy the MATHEMATICS makes exact, and the
+This one is different: it is a degeneracy the mathematics makes exact, and the
 code broke it by accident.
 
 Lorentzians add. Convolving a Lorentzian of FWHM $a$ with one of FWHM $b$ gives
 a Lorentzian of FWHM $a+b$, exactly. So if the laser's contribution is modelled
-as a Lorentzian, the predicted line at a FIXED condition depends on
-$\gamma_{\rm coll}$ and the laser width only through their SUM. Not weakly.
+as a Lorentzian, the predicted line at a fixed condition depends on
+$\gamma_{\rm coll}$ and the laser width only through their sum. Not weakly.
 Not approximately. The two directions in parameter space are one direction, and
 the orthogonal one is flat: the profile is unchanged along it to machine zero.
 
@@ -306,10 +312,10 @@ direction. A per-condition figure published on 2026-08-20 was withdrawn for
 exactly this reason ([the Voigt profile](voigt-profile.md)).
 
 Second, **the code did not have the flat direction it should have had**. It
-realised the identity by CONVOLVING the two Lorentzians on a finite grid. Grids
+realised the identity by convolving the two Lorentzians on a finite grid. Grids
 truncate Lorentzian tails, the truncation depends on the grid span, and the
 span was computed from the two widths separately. So the predicted line
-depended on how a fixed total width was SPLIT, by up to $3.7\times10^{-3}$ of
+depended on how a fixed total width was split, by up to $3.7\times10^{-3}$ of
 peak, along the direction that is provably flat.
 
 **Why that size is not small.** Against machine precision it is enormous, and
@@ -321,12 +327,12 @@ widths would have separated them, confidently, using round-off. This is the
 general lesson: **scale a numerical artefact against the noise of the data it
 will be fitted to, across the number of points it will be fitted over.**
 
-**The fix is the general one for exact identities.** Do not compute them, IMPOSE
+**The fix is the general one for exact identities.** Do not compute them, impose
 them. The laser width is now added into the homogeneous width instead of
 convolved, which is exact by construction and one convolution cheaper. The
-guard asserts the invariance BIT-IDENTICALLY rather than within a tolerance,
+guard asserts the invariance bit-identically rather than within a tolerance,
 since any tolerance would hide the artefact's return, and it sits beside a
-control asserting that the Gaussian branch, where no such symmetry holds, DOES
+control asserting that the Gaussian branch, where no such symmetry holds, does
 move under the same transformation.
 
 **What breaks the degeneracy for real is density**, which is this page's own
@@ -344,7 +350,7 @@ before the inference does.
 
 ### What breaks it, and what breaking it yielded
 
-The clause that matters above is **at a FIXED condition**. The sum is all that
+The clause that matters above is **at a fixed condition**. The sum is all that
 exists there, and no amount of signal changes that, because the flatness is
 algebraic rather than statistical. What does change it is a variable that moves
 one term of the sum and leaves the others alone.
@@ -365,7 +371,7 @@ form rather than the noise is what limits that coefficient.
 **The page's own lesson applies to the result.** Breaking a degeneracy by
 design tells you a parameter is identified. It does not tell you the four peaks
 share one value, which stays open at $p = 0.097$. It does not tell you what the
-component IS, and calling it the laser is a separate claim no measurement yet
+component is, and calling it the laser is a separate claim no measurement yet
 taken licenses (`results/kernel_k5.csv`). And it does not tell you the model
 class was adequate, since 3.24 is a sensitivity within the two forms tested.
 That last question has its own instrument, a blind residual atlas that stacks
@@ -391,11 +397,11 @@ computed it. A commit sweep across the development range, holding one
 environment fixed, closed it.
 
 The code is bit-stable. Six commits spanning nine days return the same bound
-to every printed digit. What moved was the number of SAMPLES the construction
+to every printed digit. What moved was the number of samples the construction
 loads, from 247783 to 247788, and it moved at exactly one commit, which had
 renamed a vocabulary across the tree and regenerated the committed ruler
 tables as a side effect. That regeneration moved fitted ruler rates in their
-eleventh digit, and the trim that selects usable samples is a DISCRETE
+eleventh digit, and the trim that selects usable samples is a discrete
 comparison, so an eleventh-digit change was enough to carry a boundary across
 a sample edge in a few traces.
 
@@ -405,7 +411,7 @@ subset that appeared to move is the one whose profile is nearly flat, and a
 flat profile is precisely where an arbitrarily small change in the data can
 relocate the reported minimum while changing nothing about what the data
 knows. **The diagnostic that would have found this in minutes is the first one
-this page names: ask which subset is nearly flat BEFORE asking why its
+this page names: ask which subset is nearly flat before asking why its
 reported value moved.**
 
 ## A haircut that was actually a degeneracy, 2026-08-15

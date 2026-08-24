@@ -28,7 +28,7 @@ page turn a beam profile into a calculable, asymmetric shift distribution.
 The law cannot hold without limit. An atom already sitting in the excited
 state cannot be excited again until it decays, so the excited-state
 population approaches a ceiling as the drive strengthens rather than growing
-forever. The dimensionless SATURATION PARAMETER, conventionally written $s$,
+forever. The dimensionless saturation parameter, conventionally written $s$,
 measures how close the drive sits to that ceiling. It is proportional to the
 square of the coupling strength, the two-photon Rabi frequency, over the
 square of the natural linewidth. The steady-state excited fraction then
@@ -39,7 +39,7 @@ the atom now spending as much time excited as decay allows.
 Because the two-photon coupling itself scales with intensity, $s$ scales with
 the square of intensity, and intensity at fixed input power scales as the
 inverse square of the focused spot size. Combining those two facts is the
-scaling that governs beam design: $s$ grows as the inverse FOURTH power of
+scaling that governs beam design: $s$ grows as the inverse fourth power of
 the spot size, while a first-order effect that is only linear in intensity,
 such as the light shift, grows as the inverse square. Halving the spot size
 doubles the light shift's reach but multiplies the saturation parameter by
@@ -58,7 +58,7 @@ closest to its excited-state ceiling while the weakest barely move it, so a
 saturating comb reads out with its strong teeth compressed toward its weak
 ones relative to the pure Bessel prediction. A single comb, at one drive
 depth, cannot tell a genuine Bessel pattern apart from a compensated
-deviation from it. A LADDER of modulation depths can, because it changes
+deviation from it. A ladder of modulation depths can, because it changes
 which teeth carry the strong amplitude and checks that the law holds at
 every rung rather than assuming it holds at one.
 
@@ -92,7 +92,7 @@ the fitted model, a companion argument worked out in full in
 The comb side of the same physics is planned rather than run yet.
 [The fixed-lock instrument, section 10c.10](../plan/10_the-fixed-lock-instrument.md)
 proposes fitting every comb twice, once with the tooth amplitudes forced to
-the Bessel law and once with each tooth free, and reading the AMPLITUDE
+the Bessel law and once with each tooth free, and reading the amplitude
 residual between the two as the saturation and depletion diagnostic. The
 session grammar it specifies runs the modulator at several depths for exactly
 the reason above, so the amplitude law is tested at more than one point
@@ -168,17 +168,17 @@ a reader.
 
 Saturation broadening at small saturation grows as the drive intensity, and
 for a two-photon line the drive intensity in the resonant sense grows as the
-POWER SQUARED. That places it in a family: the AC-Stark ramp broadens as the
+power squared. That places it in a family: the AC-Stark ramp broadens as the
 shift squared, so also as power squared, and hyperfine pumping through the
 cascade rides the excitation rate, power squared again. Three mechanisms,
 one exponent. A measured width rising quadratically with power therefore
-identifies NONE of them, and a fit offered only the width channel will hand
+identifies none of them, and a fit offered only the width channel will hand
 the whole family to whichever member it was allowed to vary.
 
 Separating them needs channels with different parities and different
 scalings: the shift channel is linear in power where all three widths are
-quadratic, the saturation member alone bends the AMPLITUDE law away from
-power squared, and the pumping member alone moves amplitude RATIOS between
+quadratic, the saturation member alone bends the amplitude law away from
+power squared, and the pumping member alone moves amplitude ratios between
 hyperfine components. This is the reversal-table discipline of
 [reversal tests](reversal-tests.md) applied to a power law, and it is why a
 light-shift bound from the width channel is stated conditional on which

@@ -77,6 +77,30 @@ directions and the two directions disagree by more than the entire interval
 criterion. The session with the longest lever, covering 1.44 times the largest
 squared-shift reach of the others, leaves the bound looser rather than tighter.
 
+## Repeats do not buy root-n unless they are independent
+
+The question the experimenter asked in exactly these words: for joint fits
+over repetitions of the same condition, does the uncertainty fall as the
+root of n the way separate fits averaged together would? Only for the noise
+that is independent between the repeats. The variance of a shared parameter
+behaves as the condition-common part plus the per-repeat part over n, so
+the common part sets a floor that no amount of joint fitting removes, and a
+fit that models the repeats as independent will report root-n shrinkage
+whether or not it is earned. This record measured the split for the
+collisional chain by restricted maximum likelihood
+([`beta_self_probe.csv`](../../results/beta_self_probe.csv), the pooled
+rows): per-repeat scatter 0.133 MHz, condition-common 0.073 MHz, common
+fraction 0.23. At those numbers five repeats buy a factor 1.6 instead of
+2.24, and the gains flatten beyond three or four repeats of the same
+back-to-back configuration. Joint and separate-then-average agree for the
+independent part, and joint is genuinely better only where a single trace
+barely constrains a nonlinear parameter. The design fix is to break the
+commonality itself: interleave and re-lock between repeats, spread a
+condition's repeats across the session, which converts common scatter into
+the kind that averages. Until then, quote the across-repeat empirical
+spread whenever it exceeds the noise-law propagation, which is this
+record's standing rule.
+
 ## What can go wrong
 
 **Reading a converged fit as a checked assumption.** Convergence is a statement

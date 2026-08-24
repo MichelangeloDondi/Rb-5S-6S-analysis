@@ -91,10 +91,10 @@ def main() -> int:
         w = csv.DictWriter(f, fieldnames=list(out[0].keys())); w.writeheader(); w.writerows(out)
 
     print(f"\n{'-'*74}\nWHAT IT MEANS (transit physics corrected 2026-07-12 -- flux factor):")
-    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um,\n    both RETIRED waists. At the adopted 64 um it is ~0.93 MHz.")
+    print("  * The transit contribution is ~2.1 MHz at w0=32 um and ~1.2 MHz at 50 um,\n    both RETIRED waists. At the accepted 64 um it is ~0.93 MHz.")
     print("    At 32 um, natural (x) transit already EXCEEDS the observed 5.25 MHz line,")
     print("    so 32 um is EXCLUDED. The line ALONE can accommodate w0 ~ 45-70 um,")
-    print("    which is a DIFFERENT quantity from the adopted prior. The band of")
+    print("    which is a DIFFERENT quantity from the accepted prior. The band of")
     print("    record is 62-68 um, constants.W0_BAND_M. transit and the laser")
     print("    Gaussian remain DEGENERATE via w0:")
     print("      - w0 ~< 40 um: transit alone ~fills the 5.25 MHz => laser NARROW/none;")

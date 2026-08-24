@@ -20,17 +20,17 @@ fast it can be crossed, a case covered by
 
 ## What it is
 
-A line can be measured two ways. STEP AND SETTLE parks the laser at one
+A line can be measured two ways. Step and settle parks the laser at one
 frequency, waits for the detector and its amplifier to reach a steady
 reading, records it, and moves on, so every point is a measurement of the
-line alone. A CONTINUOUS SWEEP instead moves the frequency throughout the
+line alone. A continuous sweep instead moves the frequency throughout the
 whole record, and every sample now carries a small residue of the detector's
 own response to whatever the light was doing an instant before, because no
 real detector or amplifier reports a change in optical power instantly.
 
 That residue is not noise, it is structure. The trace a continuous sweep
 actually records is the true line convolved with the detector's response,
-with the convolution taken IN TIME, since the response is a property of the
+with the convolution taken in time, since the response is a property of the
 electronics reacting moment to moment, not of frequency as such. A fit that
 converts the time axis to a frequency axis through the sweep rate and reads
 the convolved trace as though it were the line itself reports a width that
@@ -55,11 +55,11 @@ and the intercept is the lag the electronics contribute regardless of speed.
 
 The part that matters most is not the width at all. A detector or amplifier
 can only respond to what has already happened, never to what is about to
-happen, so its impulse response is CAUSAL and therefore ONE-SIDED in time,
+happen, so its impulse response is causal and therefore one-sided in time,
 zero before the event and decaying after it. Convolving a symmetric line
 with a one-sided kernel does not produce a symmetric result, it smears one
-side of the trace more than the other, and an asymmetric TRACE is exactly
-what a symmetric LINE looks like once a one-sided response has acted on it.
+side of the trace more than the other, and an asymmetric trace is exactly
+what a symmetric line looks like once a one-sided response has acted on it.
 A detection lag therefore forges asymmetry, not only width, and it does so
 in the one observable that a light-shift measurement of this kind is built
 to read. The separation still works for the same reason it works for the
@@ -101,7 +101,7 @@ measurement reads, as [the third cumulant](third-cumulant.md) page's own
 account of the same mechanism sets out in full. [Section 10c.10 of the
 following chapter](../plan/10_the-fixed-lock-instrument.md) turns the
 regression above into a design requirement rather than a convenience of its
-own: the two sweep rates are specified to run INTERLEAVED within each block,
+own: the two sweep rates are specified to run interleaved within each block,
 with nothing else in the block changed, because the lag separation needs the
 same line measured at several rates under otherwise identical conditions.
 

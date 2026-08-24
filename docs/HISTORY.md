@@ -89,13 +89,13 @@ the citation.
 | β_self, joint hierarchical fit | 0.036 → 0.014 | 2026-07-12 | the same fit with and without the ×53 130 °C anchor | lengthening the lever, which is the lever test itself | a cross-check estimator, never the headline |
 | AC-Stark S₀ at 225 mW | 3.1 MHz | before 2026-07-16 | Wald interval linearised at a fit that rails at κ = 0 | no coverage at a boundary | replaced, kept in `stark_sweep.csv` as a labelled diagnostic |
 | AC-Stark S₀ at 225 mW | 0.63 MHz | 2026-07-16 | profile likelihood on the width channel, over-dispersion scaled | interval construction, not new data | the independent width-only bracket |
-| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | **superseded by later re-runs of the same construction, so this number is lineage and NOT the live bound.** Requote from RESULTS.md, never from this row |
+| AC-Stark S₀ at 225 mW | 0.14 MHz | 2026-08-01 | joint fit over every point of every profile across all three sessions, the campaign, the 4 July evening and the campaign morning | a construction change rather than a correction. Both bounds stand and the tighter is quoted | **superseded by later re-runs of the same construction, so this number is lineage and not the live bound.** Requote from RESULTS.md, never from this row |
 | AC-Stark S₀ at 225 mW, predicted | 0.59 MHz | 2026-07-16 | the ramp prediction evaluated at the 50 µm measured waist | the measured waist moved to 64 µm on 2026-08-01 | a prediction at a retired input. Read RESULTS.md |
 | Δα bracket | ~5800 → ~1200 a.u. | 2026-07-16 | the light-shift bound divided through by the predicted coefficient | the profile-likelihood rebuild above | tracks whichever bound is quoted |
 | beam waist w₀ | 32 µm | nominal | the design value | the transit Monte Carlo's missing crossing-flux factor, fixed 2026-07-13 | excluded |
 | beam waist w₀ | ~90 µm | before 2026-07-13 | a note that carried a factor-of-2 error | arithmetic | retracted |
 | beam waist w₀ | ~50 µm | 2026-07-13 | the corrected transit Monte Carlo, validated against Lehmann's 41.2 kHz example | a direct measurement became available | replaced |
-| beam waist w₀ | 64 µm | 2026-08-01 | Rajasree 2020's direct measurement on the same laser | nothing yet | **the adopted prior**, and still open |
+| beam waist w₀ | 64 µm | 2026-08-01 | Rajasree 2020's direct measurement on the same laser | nothing yet | **the accepted prior**, and still open |
 
 Each row's argument, and what it taught, is in §6.
 
@@ -105,7 +105,7 @@ Each row's argument, and what it taught, is in §6.
 |---|---|---|---|---|---|
 | proposed working waist, configuration L | 60 µm | 2026-08-02 | a round stand-in for the working beam, written before the waist was stated as measured | the beam is the 64 µm one [Rajasree 2020](lit/rajasree2020thesis.md) and [Nieddu 2019](lit/nieddu2019.md) recorded, and no telescope was ever specified to produce 60 | retired |
 | two-waist intensity ratio | ×14 | 2026-08-02 | (60/16)² at the stand-in above | recomputed at the measured waist, (64/16)² | replaced by ×16 |
-| $g_1$ sign-flip table, L column | computed at 60 µm | 2026-08-02 | the axial-moment integral at $z_R = 11$ mm | RECOMPUTED at 64 µm, $z_R = 13$ mm | replaced. The conclusion survives: the flip holds for every $M$ from 0.5 to 6, and the largest change is the $M = 0.5$ row, $+0.044 \to +0.142$, which does not approach zero |
+| $g_1$ sign-flip table, L column | computed at 60 µm | 2026-08-02 | the axial-moment integral at $z_R = 11$ mm | recomputed at 64 µm, $z_R = 13$ mm | replaced. The conclusion survives: the flip holds for every $M$ from 0.5 to 6, and the largest change is the $M = 0.5$ row, $+0.044 \to +0.142$, which does not approach zero |
 
 Why this one is worth a section rather than a row. The 60 µm figure survived
 the re-pin in three forward-looking documents while the measured value was
@@ -125,16 +125,16 @@ appear.
 | quantity | value | date | construction | what moved it | standing |
 |---|---|---|---|---|---|
 | band-holdout replication | 7 of 7 conditions low, p = 0.0078 | 2026-08-15 | the calibration-sound subset of a sixteen-condition cohort | two of the seven were the pilot's own traces regrouped by peak, and the numeric soundness threshold was never in the frozen script | replaced by 11 of 14 fresh conditions, p = 0.029 |
-| infinite-window collisional width | γ(∞) = 0.246 MHz | 2026-08-15 | a 1/w extrapolation of the window scan on peak 4154 | the frozen spec required a form SPREAD, and 1/w² gives 0.446 against an exponential approach at 0.504, and 4154 is the lowest of the four peaks | RETRACTED. Only the direction survives: every physical form on every peak lands below the committed value |
+| infinite-window collisional width | γ(∞) = 0.246 MHz | 2026-08-15 | a 1/w extrapolation of the window scan on peak 4154 | the frozen spec required a form spread, and 1/w² gives 0.446 against an exponential approach at 0.504, and 4154 is the lowest of the four peaks | RETRACTED. Only the direction survives: every physical form on every peak lands below the committed value |
 | wide-scan span | 800 MHz, ±400 | 2026-08-15 | one Gaussian σ of the Doppler pedestal, chosen so the pedestal visibly falls | the free per-trace background is a degeneracy, not a haircut: the retained SNR is √(1 − ⟨g⟩²/⟨g²⟩), which is 0.140 at 1σ of reach and not the 0.7 assumed | replaced by 2400 MHz, ±1200, at 3σ of reach |
 | wide-scan record length | 3000 points | 2026-08-15 | 20 points across the line at the 800 MHz span | the span moved | replaced by 10000 points |
 | pedestal detectability | ~29σ per trace | 2026-08-15 | the naive count with the 0.7 degeneracy factor and τ = 2.0 | both inputs were wrong, since the degeneracy factor is 0.645 at the new reach and the record's τ_int median is 3.81 | replaced by ~31σ per trace, 13σ at the record's worst τ |
 | residual-Doppler retro tilt | 1.6 mrad | 2026-08-15 | the co-propagating pedestal width scaled by θ | double-counting: the pedestal already carries k_eff = 2k, while two beams at angle θ carry k·θ, so the coefficient is 471 MHz/rad and not 942 | replaced by 3.2 to 3.5 mrad |
 | in-campaign wavemeter records | one | 2026-08-16 | the register held a single 17:03 photograph and the drift synthesis was written around it | a second in-campaign record, 2025-07-18 02:37, was already among photographs the register had never taken in | replaced by two, and the section count by ten |
-| wide-scan shape requirement | 20 points across the line FWHM | 2026-08-16 | stated in the design script before any simulation tested it | the B5 and B6 runs measured the width recovery at the committed noise law and about 22 points across the line FAILS a frozen recovery criterion | replaced by 90, which is what the 40000-point record of PLAN section 10a delivers |
+| wide-scan shape requirement | 20 points across the line FWHM | 2026-08-16 | stated in the design script before any simulation tested it | the B5 and B6 runs measured the width recovery at the committed noise law and about 22 points across the line fails a frozen recovery criterion | replaced by 90, which is what the 40000-point record of PLAN section 10a delivers |
 | pedestal detectability | ~31σ per trace | 2026-08-16 | the same calculation at a 10000-point record | the record length rose with the shape requirement above, and the significance follows it | replaced by ~61σ per trace, 27σ at the record's worst τ |
 
-Two further corrections were to SCOPE rather than to value, and no number
+Two further corrections were to scope rather than to value, and no number
 moved. The fitted `sigma_laser` was described as "three to eight times what
 this bench's own in-campaign measurements allow", where only one of the eight
 wavemeter records falls inside the campaign and that one supports three to
@@ -154,14 +154,14 @@ rather than by an argument.
 
 | quantity | value | date | construction | what moved it | standing |
 |---|---|---|---|---|---|
-| the saturation companion's factor on the joint light-shift bound | 2.21 | 2026-08-09 | inferred from the width-only channel's factor, never run on the joint fit | the joint refit RAN, so the factor is measured rather than inferred | replaced by the measured value. Read `RESULTS.md` |
-| `kappa_ub95_camponly` read as a bound on the campaign alone | 0.674 MHz per W | 2026-08-01 | the campaign's chi-square along the POOLED profile, whose nuisances were fitted on all three sessions | a genuine campaign-alone refit was run and disagreed, so the row was never the campaign-alone answer | the row keeps its value and loses that reading. It is a subset column of the pooled profile |
+| the saturation companion's factor on the joint light-shift bound | 2.21 | 2026-08-09 | inferred from the width-only channel's factor, never run on the joint fit | the joint refit ran, so the factor is measured rather than inferred | replaced by the measured value. Read `RESULTS.md` |
+| `kappa_ub95_camponly` read as a bound on the campaign alone | 0.674 MHz per W | 2026-08-01 | the campaign's chi-square along the pooled profile, whose nuisances were fitted on all three sessions | a genuine campaign-alone refit was run and disagreed, so the row was never the campaign-alone answer | the row keeps its value and loses that reading. It is a subset column of the pooled profile |
 | the subset spread of the light-shift bound across constructions | a factor of 2.4 | 2026-08-17 | the pooled bound against the campaign-rows column, treating the latter as a campaign-alone bound | the campaign-rows column is not a campaign-alone bound, so it cannot be one end of the comparison | withdrawn. The committed rows support a leave-one-peak-out factor of 1.42 and nothing wider |
 | the excess outside the fit window | no candidate mechanism | 2026-08-16 | a per-trace baseline ladder that swung the offset by more than the offset | one joint fit over 79 traces with per-trace free polynomials, plus a regression of the amplitude on two competing predictors | replaced. The candidate is the lineshape model, and the limitation itself stands |
 
 **A scar about naming rather than about a value.** The second and third rows are
-one defect seen twice. A results row whose NAME implies a provenance its
-COMPUTATION does not have will be read as what its name says, including by the
+one defect seen twice. A results row whose name implies a provenance its
+computation does not have will be read as what its name says, including by the
 people who wrote it, and the arithmetic done on that reading enters documents
 downstream before anyone checks. The rule the record now applies is that a row
 identifies its quantity, its construction and its source, and that a name
@@ -174,11 +174,11 @@ its caption said the local sweep rate never departs from the block rate by more
 than the bound in any well-sampled window, with the thinly-sampled edge windows
 excluded as carrying uncertainties larger than the bound. Checked against
 `results/ruler_nlmap.csv`, that justification was true of two of the five
-excluded windows, and the two leading-edge windows are PRECISE departures,
+excluded windows, and the two leading-edge windows are precise departures,
 minus 1.75 plus or minus 0.40 per cent and plus 0.73 plus or minus 0.18 per
 cent, which are 4.4 and 4.0 standard deviations from flat. The claim the record
 now makes is stronger and different: the conversion from scan time to frequency
-is linear to 0.25 per cent across the interior and is NOT linear at the leading
+is linear to 0.25 per cent across the interior and is not linear at the leading
 edge, where the ramp is turning, and the analysis windows do not reach into it.
 The figure draws the sample count and marks the departing windows rather than
 hiding them behind a reason that did not apply.
@@ -232,7 +232,7 @@ arithmetic that would have tested it against its own null was never done.
 
 **The same day found the archive's own control for it.** Two further power
 ladders exist outside the frozen record, and the 2025-07-04 rehearsal ran its
-ladders in ALTERNATING DIRECTIONS inside one session, which varies acquisition
+ladders in alternating directions inside one session, which varies acquisition
 order while holding scope, gain, cell, alignment, epoch and temperature fixed.
 Against that control the amplitude departure is invariant, so it is not an
 artefact of the campaign's power-time collinearity, and its ordering across
@@ -269,10 +269,10 @@ normalisation, and the headline light-shift bound is safer than the record
 had claimed.** `docs/notes/campaign_only_stark_profile.md` reported a
 pointwise-minimum bound near 1.92 MHz per W from the pinned multi-start run
 and read it as evidence that the pooled likelihood surface threatened the
-committed profile. The curves in that note's CSV are stored OWN-NORMALISED,
+committed profile. The curves in that note's CSV are stored own-normalised,
 each start against its own best point, and a minimum taken across them
 corresponds to no single fit. The instrument that produced them writes
-ABSOLUTE chi-square and its output survives beside it. Anchored to the
+absolute chi-square and its output survives beside it. Anchored to the
 committed production minimum of 186370.92, the best independent start at each
 coefficient value sits above it by 7.54, 4.84, 4.66, 5.32, 7.78 and 26.29,
 every one past the 2.706 threshold, so the independent-start ensemble never
@@ -295,7 +295,7 @@ producer's numerics, including a selectable transit kernel and an isotope
 correction to the transit width. Ten columns moved across all 32 rows, the
 largest being `sigma_laser` at 21 per cent, which is expected when the
 transit kernel changes because transit, laser width and collisional width are
-the three degenerate components. Two committed files READ that file as input,
+the three degenerate components. Two committed files read that file as input,
 `sigma_laser_sharing.csv` and `resolving_power.csv`, and both were
 regenerated in the same commit. The file is PRELIM and is cited in no claim.
 
@@ -325,7 +325,7 @@ direction: the committed diagnostic stored its curves in a form that could not
 be combined, and the producer's raw output, which could, was still on disk one
 directory away.
 
-### A number that did NOT move, recorded because it was expected to
+### A number that did not move, recorded because it was expected to
 
 `rb5s6s/stark.py` carried its own literal copies of the four cascade branching
 values and of the natural width, while their sources of truth lived elsewhere.
@@ -340,7 +340,7 @@ literals in the history does not mistake the collapse for a correction.
 
 `rb5s6s/cascade.py` shipped with a `DRIVEN_F` table assigning 993.4154 and
 993.4207 to the wrong isotope and 993.4192 to the wrong hyperfine level. The
-branching FRACTIONS were never wrong, because they are keyed by wavelength
+branching fractions were never wrong, because they are keyed by wavelength
 directly from the committed manifold output, so no number moved. What was
 wrong was the labelling of which isotope and which ground F each line drives,
 in the module and in the wiki page's table, for the hours between the
@@ -365,7 +365,7 @@ Measured on synthetic data whose truth is known: the correlation between the
 two widths runs -0.9177 at a 60 MHz span and -0.9166 at 300 MHz, and ten
 times the traces reaches only -0.881. Both uncertainties shrink with more
 data while the correlation does not move, because the degeneracy belongs to
-the LINESHAPE, a Lorentzian core convolved with a Gaussian, rather than to
+the lineshape, a Lorentzian core convolved with a Gaussian, rather than to
 the sample size.
 
 Nothing public ever carried the wrong claim, so this entry records a
@@ -396,7 +396,7 @@ science sweeps. The wrong frame lived in one local commit for under an hour.
 ## The tooth-height model was a limit, and the plan priced two designs outside it, 2026-08-19
 
 Every tooth weight this record had ever written was $J_s(2\beta)^2$, treated
-as a property of the modulation depth alone. It is the ZERO-DELAY limit of an
+as a property of the modulation depth alone. It is the zero-delay limit of an
 interference: a tooth is fed by every sideband pair summing to the same
 offset, one photon of each pair arrives on the retro beam late by the
 round-trip to the mirror, and the pathway sum collapses to a single tone at
@@ -406,9 +406,9 @@ crossover pair on top of the pristine Bessel value, and the closed form
 above reproduces the explicit pathway sum to ten digits.
 
 At the 12.5 MHz drive of the 2025 campaign the delay phase is 0.05 rad and
-the usable teeth correct by at most 0.2 per cent, so NOTHING COMMITTED
-MOVES, and the ruler machinery is untouched. The two designs the plan
-committed EARLIER THE SAME EVENING were priced in the wrong limit: the
+the usable teeth correct by at most 0.2 per cent, so nothing committed
+moves, and the ruler machinery is untouched. The two designs the plan
+committed earlier the same evening were priced in the wrong limit: the
 sub-GHz coincidence tooth is 0.003 on the common path rather than 0.16, a
 factor of fifty, and the cascade's main-line survival at 579.6 MHz is 0.62
 rather than 0.076, which inverts its operating mode from
@@ -442,7 +442,7 @@ tank and one broadband modulator serves both.
 
 **The correction itself then over-corrected, caught the same evening.** The
 replacement text claimed the wide span retires the extrapolation because 192
-teeth join the pairs. That number counts tooth POSITIONS. A tooth needs a
+teeth join the pairs. That number counts tooth positions. A tooth needs a
 position and a resonance, and its height carries the Bessel weight, so the
 usable comb is four clusters of about five teeth with gaps up to 1155 MHz
 carrying no marks, a figure this record had itself computed the same day. The
@@ -457,7 +457,7 @@ Nothing was pushed. The wrong argument lived in one local commit for a day.
 ## Six counts and one rounding, corrected in a single audited sweep, 2026-08-19
 
 No physics number moved, and the entries are recorded because each was a
-PUBLISHED figure a reader could have quoted. The light-shift width-only bound
+published figure a reader could have quoted. The light-shift width-only bound
 was printed as 0.64 MHz in two documents where the committed cell reads
 0.632, which rounds to 0.63 and is written so everywhere else. The wiki index
 claimed nineteen pages carry a scar section where fourteen did. The runner's
@@ -483,7 +483,7 @@ The number was not wrong, it was quoted to two significant figures with no
 uncertainty, which for a ratio of two Monte-Carlo standard deviations is the
 same defect as the unreproducible pair this producer was written to replace
 one day earlier. All four sites now carry 3.18 plus or minus 0.20, and the
-producer's DEFAULT is now an ensemble of nine seeds rather than one, so the
+producer's default is now an ensemble of nine seeds rather than one, so the
 quotable number and the reproducible number are the same number.
 
 **The arithmetic behind the factor is what makes it checkable at all.**
@@ -506,7 +506,7 @@ The record closed the magnetic channel with a single-atom argument: a $J=1/2$
 state has two magnetic sublevels, a rank-two operator has no reduced matrix
 element between two of them, and the same-handedness content of the drive is
 refused. The argument is correct. It was published on the public wiki without
-saying that it was a statement about ONE atom.
+saying that it was a statement about one atom.
 
 A pair of ground-state atoms has four sublevel products and can accept the two
 units by taking one each, so that premise does not hold for a pair and the
@@ -533,7 +533,7 @@ record could resolve in one paragraph and "nine orders" in another. Neither
 number had a producer and no constant anywhere in the tree defined what the
 record can resolve. Measured against the tightest bound the record does carry
 on an out-of-window feature, `f_wing_red_mean` at 0.0009 of peak in
-`wing_check.csv`, the margin is SIX orders. Both earlier figures were too
+`wing_check.csv`, the margin is six orders. Both earlier figures were too
 generous, which is the wrong direction for a claim that something is
 negligible.
 
@@ -541,7 +541,7 @@ negligible.
 
 `run_polarisation_bound.py` hard-coded the differential scalar shift at
 0.258 MHz with a comment calling it "the committed differential scalar shift".
-It is not a shift. It is the 95 per cent upper BOUND, and it sits BELOW the
+It is not a shift. It is the 95 per cent upper BOUND, and it sits below the
 calibrated prediction of 0.348 MHz. Every number derived from it therefore
 understated itself by a third: the vector light shift's sublevel spread was
 published as 4.5 kHz where 6.0 kHz belongs.
@@ -555,7 +555,7 @@ documents and the CSV together.
 
 ## The case page reintroduced a defect it describes as fixed, 2026-08-20
 
-The ten-minute case page's intervention table gave the purchase from an
+The ten-minute case page's re-centring table gave the purchase from an
 independent laser-width measurement as running "2.3 at the record's median
 $\rho = -0.90$ to 3.5 at the pinning simulation's own $-0.94$". The
 arithmetic $1/\sqrt{1-\rho^2}$ at that condition's own $-0.9417$ is 2.97,
@@ -610,21 +610,21 @@ producer's cell by a registry entry.
 median 45 per cent shift in the collisional width when the laser kernel is
 changed from Gaussian to Lorentzian, is WITHDRAWN. It is not replaced by a
 corrected value, because the quantity it reported is not identified. The
-headline figure beside it, 45 to 67 per cent on `beta_self`, STANDS and is now
+headline figure beside it, 45 to 67 per cent on `beta_self`, stands and is now
 reproduced by a committed producer: `run_kernel_headline.py` gives 45.0, 58.0,
 63.2 and 66.6 per cent across the four peaks, nine to eighteen sigma on the
 statistical error quoted beside them.
 
 **Why the per-condition number had no referent.** Lorentzians add. At a fixed
 condition the model therefore depends on the collisional width and a
-Lorentzian laser width only through their SUM, so the split between them
+Lorentzian laser width only through their sum, so the split between them
 carries no information at all. The data say the same thing: between two
 implementations the sum holds to 0.02 per cent while each part moves by 16 to
 20 per cent, at identical reduced chi-square. The published number described
 where an optimiser stopped along a flat direction.
 
 **What positioned the optimiser, which is the part worth keeping.** The code
-realised the exact identity by CONVOLVING two Lorentzians on a finite grid.
+realised the exact identity by convolving two Lorentzians on a finite grid.
 Finite grids truncate Lorentzian tails. The truncation depends on the grid
 span, and the span was computed from the two widths separately. So the
 implementation made the profile depend on the split by up to 3.7e-3 of peak
@@ -635,7 +635,7 @@ over the ~1e4 points of one condition, that artefact carries up to seventy
 sigma of matched-filter leverage. It was not small in the only units that
 matter.
 
-**The fix and its blast radius.** A Lorentzian laser width is now ADDED into
+**The fix and its blast radius.** A Lorentzian laser width is now added into
 the homogeneous width at all three assembly sites rather than convolved:
 exact by construction, and one convolution cheaper. The Gaussian path, which
 every committed number in this repository rides, is bit-identical across 96
@@ -645,7 +645,7 @@ commit's own modules rather than argued. No committed number outside
 invariance bit-identically, with the Gaussian branch as the should-fail
 control, and the guard was ceiling-tested against the pre-fix code.
 
-**What survived, and why.** The headline estimator varies DENSITY, which is
+**What survived, and why.** The headline estimator varies density, which is
 the only thing that separates a collisional width from a laser one, so its
 answer barely moved. The correlation between `beta_self` and the shared laser
 width shows the price: -0.82 to -0.89 under the Gaussian kernel, -0.91 to
@@ -656,7 +656,7 @@ a measurement and the per-condition one never was.
 **Also withdrawn from the public surfaces.** The sign-test p-value quoted for
 the Gaussian giving the lower chi-square at 32 conditions of 32. The tally is
 unchanged by the fix and is kept as implementation evidence, but the
-Lorentzian arm has one fewer EFFECTIVE shape parameter, since it can set the
+Lorentzian arm has one fewer effective shape parameter, since it can set the
 total homogeneous width and nothing else. A comparison in which the more
 flexible model wins everywhere is close to determined before any data are
 taken, and a significance computed against a null that both hypotheses nearly
@@ -741,7 +741,7 @@ permutation floor with a clean control, and its own preregistered reproduction
 check fired, so the run was declared void and the detection was not reported.
 The cause was then traced to a single condition of thirty-two, already measured
 by the environment migration as drifting, whose reproduction difference of
-1.7e-2 sits BELOW the 2e-2 that `verify_results_fresh.py` sets as this
+1.7e-2 sits below the 2e-2 that `verify_results_fresh.py` sets as this
 repository's definition of reproducing. The first run had invented a threshold
 twenty times stricter than the guard that defines the term.
 
@@ -752,8 +752,8 @@ a threshold cannot: whether one condition drives a detection. It qualified,
 detected at the floor in both arms, kept a clean control, and survived every
 leave-one-out with zero failures.
 
-**The live statement AS OF THIS ENTRY** is that the tested inference family
-leaves reproducible residual structure inside the fit window. It is NOT called
+**The live statement as of this entry** is that the tested inference family
+leaves reproducible residual structure inside the fit window. It is not called
 model inadequacy, no mechanism is named, R_kernel is unchanged and its class
 caveat stands, and the relation to the excess outside the window is unresolved.
 
@@ -784,13 +784,13 @@ family rather than an uncertainty on the coefficient.
 
 **Why the noun matters here more than usual.** R_kernel measures how far the
 inferred collisional coefficient moves when the kernel representation is
-changed WITHIN the tested G, L and G plus L family. Calling it the kernel
+changed within the tested G, L and G plus L family. Calling it the kernel
 uncertainty asserts that the family spans the possibilities, and that is the
 one claim the blind residual atlas was built to test and did not establish.
 The record's own statement is that class adequacy is not established either
 way, so a sentence asserting a total uncertainty contradicted it.
 
-**A SECOND page carried the same wrong noun and was found later the same
+**A second page carried the same wrong noun and was found later the same
 night**, by a sweep prompted by an audit of the first correction.
 `docs/wiki/laser-frequency-noise-and-the-linewidth.md` read "the resulting
 kernel uncertainty is 3.24 times the statistical error". It now states the
@@ -803,7 +803,7 @@ which is why `tests/test_repo_hygiene.py` now also checks these patterns
 against prose with its line breaks removed.
 
 **The full enumeration, corrected.** Seven tracked prose surfaces carry 3.24.
-TWO carried the wrong noun and are fixed: `docs/wiki/self-broadening.md` and
+Two carried the wrong noun and are fixed: `docs/wiki/self-broadening.md` and
 `docs/wiki/laser-frequency-noise-and-the-linewidth.md`. Five were already
 right: `docs/PLAN.md` calls it a model-form error bar,
 `docs/BIG_PICTURE.md`, `docs/wiki/identifiability.md` and
@@ -851,7 +851,7 @@ of 32 moves above a part in a thousand**, `t_sweep / 4121 / 70 C`:
 
 **That row is flagged `noise_floor_limited`, and its `sigma_laser_err` of 1.47
 is four times its `sigma_laser` of 0.35.** The data do not determine the split
-there. The TOTAL width, which the data do determine, moves by 0.09 per cent
+there. The total width, which the data do determine, moves by 0.09 per cent
 while the split moves by 13. That is the archive's documented degeneracy
 behaving as documented, not a new instability.
 
@@ -887,14 +887,14 @@ that only one of the four predicted movements reproduced, and that the other
 three were a defect in this record. **That was wrong, and it was wrong for a
 mechanical reason worth stating.** The comparison was made against the
 verifier's worktree copy of the file, and `verify_results_fresh.py` computes
-its fresh values IN MEMORY and does not write them. The worktree copy was the
+its fresh values in MEMORY and does not write them. The worktree copy was the
 committed file all along, so the comparison was committed against committed.
 
 The same trap explains an earlier reading of `linefit_conditions.csv` in the
-same window, which appeared to show zero drift. Running the PRODUCERS is the
+same window, which appeared to show zero drift. Running the producers is the
 only way to land or inspect a migration. The verifier detects and reports.
 
-**The condition number is quoted on SEVEN pages, and the first sweep found
+**The condition number is quoted on seven pages, and the first sweep found
 four.** The grep searched for the phrase "condition number of 390". Two more
 pages write it without the "of", and one writes it as an inline approximation
 in maths. `tests/test_docs_canonical.py`
@@ -923,8 +923,8 @@ a loop: the atlas's first run voided itself on `t_sweep / 4121 / 70 C` at
 moved. **The void, the linefit drift and the identifiability drift were one
 event seen three times.** `results/kernel_k4.csv` carries the re-run.
 
-**Two DERIVED products were stale and the gate caught them**, which the drift
-report could not have, because they are computed FROM the file that drifted.
+**Two derived products were stale and the gate caught them**, which the drift
+report could not have, because they are computed from the file that drifted.
 `resolving_power.csv` and `sigma_laser_sharing.csv` are regenerated. The
 sharing chi-squares still round to the 0.27, 0.58 and 0.33 this record quotes,
 and the free common sigma_laser range 1.5 to 1.7 is unchanged.
@@ -946,7 +946,7 @@ change and more than six moved columns, were evaluated and did not fire, at
 ## A results file said a finished instrument was deferred, 2026-08-23
 
 **The sentence, published in both repositories.**
-`results/kernel_budget.csv`, row `R_kernel_scope`, read: "class ADEQUACY is a
+`results/kernel_budget.csv`, row `R_kernel_scope`, read: "class adequacy is a
 separate and unresolved question: the blind residual atlas that would test
 whether the true kernel lies outside this class **is deferred**".
 
@@ -954,14 +954,14 @@ whether the true kernel lies outside this class **is deferred**".
 its own preregistered criterion, diagnosed, preregistered again, re-run to a
 qualifying detection, and re-run once more across an environment migration
 under a freeze in which only the environment differed, returning fourteen
-detection rows bit-identical. The row now says class adequacy was TESTED, that
+detection rows bit-identical. The row now says class adequacy was tested, that
 no mechanism is assigned, and that the structure's effect on the coefficient is
 not quantified, so R_kernel still bounds sensitivity within the class the
 analysis chose.
 
 **This entry exists under a contract widened here rather than by drift.** The
-stated contract is an entry for a superseded published VALUE. No value moved.
-A published CLAIM moved, and a reader could have acted on it, which is the test
+stated contract is an entry for a superseded published value. No value moved.
+A published claim moved, and a reader could have acted on it, which is the test
 this file now applies.
 
 **Why four sweeps missed it, and it is a class rather than an incident.** The
@@ -976,21 +976,21 @@ sweep now covers `results/` as well as `docs/`.
 **Two sibling rows were checked and are legitimate.** `kernel_k5.csv` records a
 faster-block measurement that genuinely has not been run and points at where it
 is ranked, and one row in the fibre thread carries a forecast explicitly
-classed PROSPECTIVE with its estimator described as not built. Both describe
+classed prospective with its estimator described as not built. Both describe
 work that really is future, which is the distinction that matters.
 
 ## The in-window structure and the band excess share a predictor, 2026-08-23
 
 **What was unresolved.** K4 detects reproducible residual structure inside the
 fit window and assigns no mechanism. Three surfaces said its relation to the
-reproducible excess OUTSIDE the window was unresolved. It is now measured, and
+reproducible excess outside the window was unresolved. It is now measured, and
 those surfaces say so.
 
 **The instrument was reused rather than invented.** The band-excess work
 settled the outside structure by regressing each trace's excess amplitude on
 two competing predictors at once, the model's own profile height and log10
 vapour number density. Height won at +8.65 and density was null at -0.75.
-Taken ONE AT A TIME density looked significant at +2.2, so only the joint form
+Taken one at a time density looked significant at +2.2, so only the joint form
 settles it, and only the joint form is run here.
 
 **The result** (`results/kernel_k8.csv`), n = 32 conditions, weighted by the
@@ -1011,7 +1011,7 @@ dimmest rung and 0 of 4 at each of the top three. The least reliable residuals
 are the dim ones and profile height is lowest there, so an unweighted fit would
 confound the predictor with the reliability of the response.
 
-**A DEVIATION from the preregistration, recorded rather than hidden.** The
+**A deviation from the preregistration, recorded rather than hidden.** The
 preregistered secondary was the twelve conditions at the top three powers, and
 all twelve sit at one temperature, because the power sweep runs at one
 temperature. So density has zero variance there and the joint fit is singular
@@ -1020,8 +1020,8 @@ cannot show density does not. **The lesson is that a subset selected on one
 experimental axis often has no variation on another, and a preregistered
 secondary must be checked for predictor variance when it is written.**
 
-**What this does NOT establish, and it is the important half.** A residual
-normalised by the per-point noise scales with the signal under ANY fractional
+**What this does not establish, and it is the important half.** A residual
+normalised by the per-point noise scales with the signal under any fractional
 model error. Profile mismatch does that, and so does a detector nonlinearity,
 which this record already fits as a per-session saturation nuisance, and so
 does an amplitude-dependent baseline error. **So the mechanism is not named.**
@@ -1120,7 +1120,7 @@ stands.** The line now reads `-24.6 + 18 = -6.6`.
 Seven notes still rest on computations nothing regenerates, and the honest
 position is that a declaration is a label on a gap rather than a repair.
 `tests/test_note_provenance_ratchet.py` now holds a budget of zero, which means
-every note SAYS what it stands on and not that every number is graded.
+every note says what it stands on and not that every number is graded.
 
 ## A governed row about ungoverned numbers, 2026-08-23
 
@@ -1175,7 +1175,7 @@ two committed files against each other rather than each against its own
 producer.
 
 **The general rule, which is worth more than the fix.** **A producer that reads
-another producer's OUTPUT FILE inherits its display precision, not its
+another producer's output file inherits its display precision, not its
 arithmetic.** K5 now reuses K3's own `R_kernel` value rather than re-deriving it
 from displayed intermediates, so one producer owns the number.
 
@@ -1221,19 +1221,19 @@ the notes the detector could see, and the detector was nearly blind.** Its
 pattern matched only a decimal followed by "sigma" or "per cent", or a bolded
 signed decimal. Measured against the corpus: it found claims on 14 of 23 notes
 and scored the undeclared budget at zero. **A widened pattern that also counts
-MHz, kHz, mW, percentages and plain counts finds claims on ALL 23 notes and
-NINE undeclared, carrying 252 claims between them.** On one page the narrow
+MHz, kHz, mW, percentages and plain counts finds claims on all 23 notes and
+nine undeclared, carrying 252 claims between them.** On one page the narrow
 pattern counted one claim where an audit counted sixteen.
 
 **So the budget of zero was substantially an artefact of the measuring
-instrument.** The blast radius had been measured over FILES, how many notes owe
-a declaration, and never over NUMBERS WITHIN a file. **A guard's blind region
+instrument.** The blast radius had been measured over files, how many notes owe
+a declaration, and never over numbers within a file. **A guard's blind region
 matters more than its holes**, and this one had a blind region inside every
 page it passed.
 
 **A second defect, in the opposite direction.**
 `vdw_difference_potential_and_4d_channel.md` was declared NO_PRODUCER and that
-was FALSE. Its numbers are reproduced by
+was false. Its numbers are reproduced by
 `rb5s6s/vanderwaals.py::beta_self_anchored()`, a committed pure function taking
 no CSV and no raw trace, which returns the page's 0.3473 and 0.3128 exactly.
 **The declaration was false because the guard's vocabulary had no kind for a
@@ -1267,10 +1267,10 @@ stated on the page, and the collisional range is the per-peak
 range" is exactly what those four numbers are.
 
 **Two are not grounded.** The digital twin's span-sweep correlations,
-**-0.9177, -0.9166 and -0.881**, appear on TEN public surfaces and no
+**-0.9177, -0.9166 and -0.881**, appear on ten public surfaces and no
 committed row carries them at any precision. The exhaustive search found
 `linefit_conditions.csv` at -0.91733 and -0.91743 instead, which are the
-CAMPAIGN's own per-condition correlations, near enough to be mistaken for
+campaign's own per-condition correlations, near enough to be mistaken for
 these and a different quantity. **Four decimals imply a computation a reader
 could check, and none can.** The claim they support is unaffected and is not
 in question: widening the span does not break the degeneracy, because the
@@ -1293,7 +1293,7 @@ later window sweeps once rather than rediscovering.
 ## The provenance debt gains budgets, and the partition returns one, 2026-08-23
 
 **What changed.** No value moved. `results/unregenerated_claims.csv` gained a
-PARTITION section, and the debt it counts is now held by budgets that can only
+partition section, and the debt it counts is now held by budgets that can only
 fall.
 
 **The partition answers the question counting could not.** 105 orphan claims
@@ -1302,13 +1302,13 @@ reaches a page a reader acts on. Of the claims in the seven NO_PRODUCER notes:
 **43 are under three significant figures**, too generic to grep against a
 repository full of numbers and counted rather than answered. **40 appear in a
 committed CSV**, because a note resting on ungoverned numbers still cites
-grounded ones. And **exactly ONE is an ungoverned value quoted on a
+grounded ones. And **exactly one is an ungoverned value quoted on a
 reader-facing surface**, the saturation companion's 0.6325 MHz, which
 `docs/RESULTS.md` and the saturation wiki page both print and both already
 disclose.
 
 **The second filter is the one that changed the answer.** Without it the
-partition returned THIRTY reader-facing hits, dominated by peak identifiers
+partition returned thirty reader-facing hits, dominated by peak identifiers
 such as 993.4121 nm and by grounded values the notes quote, among them
 `kappa_ub95` and the committed natural width. **Excluding values that appear in
 any `results/` CSV takes the answer from thirty to one**, and the first version
@@ -1320,7 +1320,7 @@ internal.
 
 **Three budgets, each ceiling-tested by planting a violation**: the two counts
 may fall and never rise, an ungoverned value on a reader-facing surface fails
-the suite outright, and a budget recorded ABOVE the current count is itself
+the suite outright, and a budget recorded above the current count is itself
 refused, because slack in a ratchet is a hole that lets the debt grow back
 unnoticed.
 
@@ -1330,7 +1330,7 @@ unnoticed.
 its own output file when deciding whether a value is grounded.
 
 **The defect, caught by the CI freshness guard rather than by inspection.** The
-partition NAMES its one reader-facing orphan in a note column. A second run
+partition names its one reader-facing orphan in a note column. A second run
 then found that value inside `results/unregenerated_claims.csv`, counted it as
 present in `results/`, and reclassified it from orphan to quoted. The count
 moved **40 to 41 between two runs of the same producer on the same tree**, and
@@ -1365,7 +1365,7 @@ round to about 2.8. It reads only committed CSVs and carries its own check
 that the unpatched arm reproduces the committed value, so it regenerates from
 a clean checkout.
 
-**The JOINT factor is NOT written as a digit.** Stage 4 reads two data trees
+**The joint factor is not written as a digit.** Stage 4 reads two data trees
 held outside this repository, and stage 3 says in terms that quoting a joint
 number before that fit runs would be inventing one. The row therefore records
 `NEEDS_EXTERNAL_TREE` with the date of the run that produced 2.21, which is a
@@ -1374,7 +1374,7 @@ regenerated here says so instead of carrying a digit.**
 
 **Two guards caught what the change broke, and both were right.** The
 behaviour-claims test found four places where prose said a script writes
-nothing beside a script that now writes, **including a QUOTE of the very
+nothing beside a script that now writes, **including a quote of the very
 sentence this change edited**, so the quotation had gone stale with its
 source. And the results index refused the new file until it was described.
 
@@ -1390,15 +1390,15 @@ permits.
 **The span sweep.** Three correlations quoted on ten public surfaces had no
 row, and the run that made them recorded neither its truth parameters nor its
 seed, so nobody could regenerate those four decimals.
-`scripts/run_twin_span_sweep.py` re-establishes the CLAIM rather than the
-digits: truth READ from `linefit_conditions.csv` at a named condition, transit
+`scripts/run_twin_span_sweep.py` re-establishes the claim rather than the
+digits: truth read from `linefit_conditions.csv` at a named condition, transit
 from the committed waist, seed fixed. **The correlation moves 0.0075 over a
 five times wider span and 0.0000 at ten times the repeats, while the
 collisional-width uncertainty falls by 3.16**, which is the root of ten and
 what independent samples give. The degeneracy belongs to the lineshape.
 
 **It also found something the record had not stated.** Widening the span at a
-FIXED point count made the uncertainty 2.72 times WORSE, because a wider
+fixed point count made the uncertainty 2.72 times worse, because a wider
 window sampled at the same number of points measures the line five times more
 thinly. **That is a coupling between two design knobs rather than a property
 of span**, and it says widen the span only alongside the points to match.
@@ -1412,16 +1412,16 @@ reproduce them.
 that is half this record's forward programme.
 `wiki/guided-atoms-and-nanofibres.md` sets the two guided geometries against
 each other, sizes the nanofibre from the sized-candidate note's own committed row set, and states
-what the platform CHARGES as plainly as what it buys, since a geometry that
+what the platform charges as plainly as what it buys, since a geometry that
 removes transit broadening and adds a surface shift has improved nothing until
 the new term is measured.
 
-**And the guard fired TWICE, the second time on this entry.** The first
+**And the guard fired twice, the second time on this entry.** The first
 catch was the new wiki page. The second was this HISTORY entry itself,
 which cited the fibre-only CSV by path from a platform-neutral surface.
-**It was written AFTER the suite had been run and in the same command as
+**It was written after the suite had been run and in the same command as
 the commit**, so nothing checked it until the gate did, fourteen minutes
-later. **The suite runs after the LAST edit, not after the last edit that
+later. **The suite runs after the last edit, not after the last edit that
 felt substantial.**
 
 **The platform-lane promise was widened rather than quietly broken.** Its guard
@@ -1434,7 +1434,7 @@ three and says the wiki carries exactly one page a fibre-less reader skips.
 **What changed.** The last nine undeclared notes were declared. **No value
 moved anywhere.**
 
-**Declared by CHECKING, not by labelling.** Every three-significant-figure
+**Declared by checking, not by labelling.** Every three-significant-figure
 value on each page was compared against `results/` first, and each note's own
 status line decided its kind. Four went to a `results/` CSV they cite and whose
 values they carry (17 of 25, 43 of 57, all 24 and all 30 grounded
@@ -1446,7 +1446,7 @@ wrote the output into `private/run_logs/`, which is gitignored, **so a fresh
 clone cannot regenerate or check any of it.** Same shape as the block
 bootstrap: the producer exists and its output sink is the problem.
 
-**Two counts ROSE and that is honest bookkeeping, not new debt.**
+**Two counts rose and that is honest bookkeeping, not new debt.**
 `notes_no_producer` went 6 to 7 because a note moved from invisible to visibly
 ungoverned, and `orphan_claims_total` went 105 to 182 because newly declared
 notes brought their own unaccounted counts into a total that had never seen
@@ -1456,7 +1456,7 @@ them. **A record that counts more of its own gaps is not a worse record.**
 `notes_ungoverned_total`, the sum of the no-producer and undeclared counts,
 **fell from 15 to 7**. It cannot rise on honest bookkeeping, because declaring
 a note moves it from one side of the sum to the other. **`notes_undeclared` is
-now ZERO**, so the other counts are stable from here and can only fall.
+now zero**, so the other counts are stable from here and can only fall.
 
 **The budgets were re-recorded once, deliberately, with the reason written into
 the test** rather than relaxed silently, and the new metric was ceiling-tested
@@ -1467,12 +1467,12 @@ by planting a violation.
 2026-08-23, corrected by the experimenter. **No number moves.** What moves is
 an explanation this record had accepted.
 
-**The claim withdrawn.** `APPARATUS.md` said High Resolution "averages ADJACENT
-SAMPLES, which smooths and correlates them", and used that to explain the
+**The claim withdrawn.** `APPARATUS.md` said High Resolution "averages adjacent
+samples, which smooths and correlates them", and used that to explain the
 committed 1.9 ms autocorrelation as an acquisition artefact.
 
 **The distinction that was missed.** On the InfiniiVision, High Resolution
-boxcar-averages the real-time samples inside each stored point's OWN interval.
+boxcar-averages the real-time samples inside each stored point's own interval.
 The blocks are disjoint, so the mode buys resolution **without correlating one
 stored point to the next**. The LeCroy's ERes is the other mechanism, a digital
 filter spanning several output points, and that one does correlate them. **Two
@@ -1511,13 +1511,13 @@ datasheet. **The experimenter supplied both instrument manuals and they settle i
 eight bits at or below 1 us per division, one more bit per step, and **twelve
 bits at or above 20 us per division**, with nothing beyond. The campaign ran at
 100 ms per division, four decades past that threshold, **so the mode delivered
-exactly twelve bits and the measured 11.86 IS that ceiling**, not a coincidence
+exactly twelve bits and the measured 11.86 is that ceiling**, not a coincidence
 near it.
 
 **And the mechanism is in the same manual.** High Resolution "averages
 sequential sample points within the same acquisition", and "all samples in the
 effective sample period are averaged and the average value is stored". That is
-a boxcar over DISJOINT blocks. Averaging is documented separately as a mode for
+a boxcar over disjoint blocks. Averaging is documented separately as a mode for
 periodic signals combined across acquisitions.
 
 **The second manual agrees and states the taxonomy outright.** The RTM3000
@@ -1546,7 +1546,7 @@ height significance returns 3.05 against 8.65, and the reconstructed
 predictors are collinear at 0.896 where the note reports 0.415, which says the
 note's height predictor was a different construction than its prose specifies.
 **The note under-specified its own construction, and its digits stand as what
-one unrecorded run printed.** The density NEGATIVE, which the finding turns
+one unrecorded run printed.** The density negative, which the finding turns
 on, is the part both runs agree on. Every surface that quotes the pair now
 says so.
 
@@ -1563,7 +1563,7 @@ significant figures against a 0.13 MHz subset spread, buried the actual claim
 in a preposition, **and asserted an exclusion that one of its own robustness
 arms contradicts fifteen lines later** (drop-4192 returns 0.37, above the
 prediction). It now defines the quantity, quotes two significant figures,
-states the exclusion WITH its two-sigma strength and its failing arm in the
+states the exclusion with its two-sigma strength and its failing arm in the
 same breath, and links its producer.
 
 **The self-scrutiny section was reframed, not removed.** "Results this record
@@ -1598,3 +1598,122 @@ not recoverable from its prose, and the density null is the part both runs
 agree on. A dated entry may hold what was believed then and may not claim to
 be what is live now, which is the same rule that earned the K4 entry its
 pointer.
+
+## The band predictor was recovered, and the recovery moved the density claim, 2026-08-24
+
+A preregistered enumeration (five predictor variants, thresholds fixed
+before the first run) identified the irreproducible band note's predictor:
+its 0.415 correlation fingerprint is matched to 0.001 by the absolute
+in-band model height, an amplitude-carrying quantity, and by no shape-only
+one. Under that recovered predictor the current amplitudes return the
+opposite joint pattern from the note, height near zero and density at the
+marginal +2.2. Arithmetic closes the space: the note's +8.65 needs a 0.70
+partial correlation against the amplitude vector, whose best available is
+0.39, so NO predictor reproduces the note's significance with the current
+amplitudes and the discrepancy sits in the amplitude vector itself, the
+same axis as the ladder mismatch.
+
+**The claim that moved**: "the density negative is the part both runs agree
+on", published with the reconstruction. It was true of the two runs as
+executed and is now known to be construction-dependent: negative under the
+shape-only predictor the reconstruction introduced, the marginal positive
+under the note's own recovered predictor. The band's mechanism question is
+therefore OPEN, and every surface that carried the agreement sentence now
+says so (the note, BIG_PICTURE, chapter 07, K8's verdict note). K8's
+in-window result is per-condition at peak SNR and stands unchanged.
+
+## A forward pointer for the band digits quoted above
+
+Six earlier entries in this file quote the band-excess pair, 8.65 sigma on
+profile height and 3.6 sigma cubic-surviving, as live numbers, including one
+side-by-side table that invites weighing 8.65 against the graded 9.41. Those
+entries are dated and closed and hold what was believed when they were
+written. The reconstruction entry above is the live statement: the
+documented rebuild returns 3.05 and 1.4 sigma, the note's construction is
+not recoverable from its prose, and the density null is the part both runs
+agree on. A dated entry may hold what was believed then and may not claim to
+be what is live now, which is the same rule that earned the K4 entry its
+pointer.
+
+## The waist's provenance was wrong, and a word chosen for it hid that
+
+The experimenter, reading the case page: the 64 µm waist is not a convention
+someone chose, it is Rajasree's measurement in the very same conditions,
+same optical table, same laser, same lenses, and the cell temperature is not
+one either, since four thermocouples sat between the vapour cell and its
+metallic case inside a cubic oven wrapped in aluminium foil.
+
+**A claim is withdrawn on his authority.** `docs/wiki/the-beam-waist.md`
+described the value as a transfer across apparatus, attributing the
+measurement to Nieddu 2019 with Rajasree 2020 reprinting it, and stated that
+the laser was not the same laser and that five years separated the two
+benches. The correct provenance is a same-bench measurement by Rajasree, so
+the extra transfer uncertainty that page told downstream users to carry was
+never owed. What remains open is narrower and now stated as such: the
+campaign never re-read the waist at its own time in its own interaction
+volume, so drift, realignment and the unrecorded focus standoff are the live
+questions. No number moves. Direct apparatus knowledge outranks a documented
+inference, the same hierarchy that settled the acquisition mode.
+
+**And the words are banned.** The term he objected to and its stem join the
+prose bank (`tests/test_prose_style_ratchet.py`), with three more he named
+the same day, because each dresses a measurement as something else. A corpus
+sweep replaced every occurrence by sense: a measured quantity names its
+measurement, a fixed input is "of record" or "in force", a prior is
+"assumed", a set point is a set point, a decision is "accepted", a
+projection is broken by a condition rather than beaten by one, a range is
+tight, and where a word named a real event, the operator re-centring the
+lock, "re-centring" says it exactly. One producer
+is deliberately unswept: `scripts/run_projections.py` puts prose in the note
+column of `results/projections.csv`, which the freshness map covers, and
+regenerating it here moves 51 values in their fifth decimal under this
+machine's numpy, so its sweep waits for the environment of record.
+
+## Emphasis capitals are gone from the corpus
+
+The experimenter: all-capital words are banned unless they are acronyms that
+have to be written that way. A measurement found 3003 emphasis capitals
+across 130 tracked pages, a habit this record had acquired at scale, and a
+sweep lowered every one of them. What stays capitalised is what a machine or
+a reader needs capitalised: acronyms, the status vocabulary the literature
+and results ledgers are graded on (VERIFIED, REPORTED, CITE, FEED, BOUND,
+MEASURED, DIAGNOSTIC and their siblings), provenance tags, machine
+identifiers carrying an underscore, atomic-state notation, and document
+names. The first pass of the sweep lowered 45 acronyms and four status
+tokens by using an allowlist that was too short, which a before-and-after
+count over every page caught before anything was committed.
+
+## The bit-depth argument is withdrawn, and the noise budget replaces it
+
+The experimenter asked whether the oscilloscope's vertical resolution
+really binds, or whether the small features were already below the noise.
+Measured across all 35 quality-passed conditions
+(`results/quantisation.csv`, thresholds fixed before the first run): the
+analogue baseline noise is 5.2 to 246 times the true quantisation step,
+median 37, so the quantiser is dithered and contributes at most 0.155 per
+cent of the noise. Even the eight-bit hypothetical the fixed-lock chapter
+argued about gives 1.3 steps of dither. **The chapter's claim that every
+open question lives under the quantisation step is withdrawn**, and with it
+the two-window acquisition loses its stated justification, surviving only
+where it earns its keep as clipping headroom or as a second simultaneous
+chain.
+
+The same producer carries what binds instead, read from the committed noise
+law: the baseline noise grows linearly with laser power, the signature of
+light-linked background and not electronics or fixed-background shot,
+the level term is constant everywhere, cathode shot noise, and the
+power-to-zero intercept puts the electronics floor well under the
+light-linked noise, which settles the transimpedance-gain question the
+experimenter asked (10^6 volts per ampere is in the right decade, and
+neither direction buys noise). One earlier candidate died on the record's
+own data in the same pass: an anode time constant cannot be the 1.9 ms
+correlation, because the rehearsal bounded the chain faster than 10
+microseconds at this exact gain. The decimation-stage candidate stands.
+
+The wiki gained the connected statements the same day: the noise-law page
+carries the budget diagnosis, the pooling page carries the measured answer
+to whether repeats buy root-n (they floor at the condition-common scatter,
+common fraction 0.23, so five back-to-back repeats buy 1.6 instead of
+2.24), and the acquisition-design page ranks the levers. The twin pages now
+point at their regenerable producers, and the four-decimal correlations
+from the unrecorded twin run left their last wiki surface.

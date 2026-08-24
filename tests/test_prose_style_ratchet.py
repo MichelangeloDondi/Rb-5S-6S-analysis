@@ -244,10 +244,30 @@ def test_the_baseline_itself_only_ever_shrinks():
     # overlapping scope is a design to avoid, and this is the cheap version of
     # finding that out.
     "i have updated",
-    "i've updated",
+    "i\'ve updated",
     "let me know if",
     "hope this helps",
     "feel free to",
+    # Banned on the experimenter's instruction: "adopted" misdescribes this
+    # bench. The 64 um waist is Rajasree's measurement on the SAME optical
+    # table, laser and lenses, and the cell temperature was instrumented with
+    # four thermocouples between the cell and its metal case inside a
+    # foil-wrapped cubic oven. Calling either "adopted" turns a measurement
+    # into a convention someone chose. Replacements by sense: a measured
+    # quantity is measured (name whose measurement), a fixed input is "of
+    # record" or "in force", a prior is "assumed", a set point is a set
+    # point, and a decision is "accepted".
+    "adopted",
+    "adopte",
+    # Banned on the experimenter's instruction, same reading: each one
+    # dresses a measurement as something else. A projection is not
+    # "defeated", a condition breaks it. A range is not "snug", it is
+    # tight. A measurement is not an "intervention", and where the word
+    # named a real event, the operator re-centring the lock, "re-centring"
+    # says it exactly.
+    "defeat",
+    "snug",
+    "intervention",
 ])
 def test_filler_openers_stay_absent(phrase):
     """Phrases that announce importance instead of demonstrating it.
@@ -329,9 +349,145 @@ def test_the_construction_counter_sees_a_planted_tic():
         "wraps, and the budget errs toward under-counting rather than noise")
 
 
+# --- the results-CSV register ratchet, added 2026-08-24 -----------------------
+CSV_SEMICOLON_BASELINE = Path(__file__).parent / "_csv_semicolon_baseline.json"
+
+
+def _csv_semicolon_counts() -> dict[str, int]:
+    out = {}
+    for f in sorted((ROOT / "results").glob("*.csv")):
+        n = f.read_text(encoding="utf-8").count(";")
+        if n:
+            out[f"results/{f.name}"] = n
+    return out
+
+
+def test_no_results_csv_gains_semicolons():
+    """A per-file falling budget on semicolons in results CSVs.
+
+    The prose ratchet reads markdown and nothing else, and the note columns
+    of results CSVs carry prose that no guard read: 31 files held semicolons
+    when the region was finally measured (the blast radius recorded before
+    mechanising, per the register rules). Producers write these columns, so
+    the ban that governs tracked prose reaches them only through this
+    ratchet: files fall as their producers are edited and may not rise, and
+    a NEW csv starts clean.
+    """
+    baseline = json.loads(CSV_SEMICOLON_BASELINE.read_text())
+    current = _csv_semicolon_counts()
+    worse = []
+    for rel, now in sorted(current.items()):
+        was = baseline.get(rel)
+        if was is None:
+            worse.append(f"{rel}: NEW file with {now}")
+        elif now > was:
+            worse.append(f"{rel}: {was} -> {now} (+{now - was})")
+    assert not worse, (
+        "a results CSV gained semicolons in its note prose. Split the "
+        "sentence in the producer instead.\n  " + "\n  ".join(worse)
+        + "\n\nAfter a genuine cleanup, re-record with:"
+          "\n  python tests/test_prose_style_ratchet.py --relax-csv-semicolons")
+
+
+def test_the_csv_semicolon_counter_sees_a_planted_one():
+    """Ceiling test: the counter is a raw count, so a planted one is seen."""
+    assert "a; b".count(";") == 1
+    assert "clean note text".count(";") == 0
+
+
+# --- the emphasis-capitals guard, added on the experimenter's instruction ---
+# "all cap-locs words are banned unless they are acronyms which have to be
+# written in capital letters." A measurement found 3003 of them across 130
+# pages before the sweep, so this is a ratchet on a habit, not a style note.
+CAPS_ALLOWLIST = json.loads(
+    (Path(__file__).parent / "_caps_allowlist.json").read_text())
+# The two lists live in a data file, not here. A long run of capitalised words
+# inside a test file reads as prose to three other guards, and putting them
+# here failed the cathode-attribution guard, the internal-vocabulary guard and
+# the named-person guard at once. A guard's own fixtures are data.
+CAPS_ACRONYM = set(CAPS_ALLOWLIST["acronyms"])
+CAPS_TOKEN = set(CAPS_ALLOWLIST["tokens"])
+CAPS_NOTATION = re.compile(r"(?:\d+[SPDFG]\d*(?:/\d)?|[A-Z]_?\d+|[A-Z]{1,3}\d+[A-Z]?"
+                           r"|[A-Z]+\d[A-Z0-9\-]*)")   # manufacturer part numbers
+CAPS_PROT = re.compile(r"```.*?```|`[^`]*`|\$[^$]*\$|\]\([^)]*\)"
+                       r"|\b[A-Za-z_][A-Za-z0-9_]*\.(?:md|py|csv|png|sh|json|svg|toml|cff|txt|jsonl)\b",
+                       re.S | re.M)
+CAPS_TOKEN_RE = re.compile(r"[A-Za-z0-9_]+(?:-[A-Za-z0-9_]+)*")
+
+
+def _caps_ok(word: str) -> bool:
+    bare = word.strip("-")
+    return ("_" in bare or bare in CAPS_ACRONYM or bare in CAPS_TOKEN
+            or bool(CAPS_NOTATION.fullmatch(bare)) or len(bare) < 2)
+
+
+def _emphasis_caps(rel: str) -> list[str]:
+    text = (ROOT / rel).read_text(encoding="utf-8")
+    spans = [m.span() for m in CAPS_PROT.finditer(text)]
+    out = []
+    for m in CAPS_TOKEN_RE.finditer(text):
+        w = m.group(0)
+        letters = [ch for ch in w if ch.isalpha()]
+        if not letters or not all(ch.isupper() for ch in letters):
+            continue
+        if _caps_ok(w) or any(a <= m.start() < b for a, b in spans):
+            continue
+        out.append(w)
+    return out
+
+
+def test_no_emphasis_capitals_in_tracked_prose():
+    """Capitals are for acronyms and defined tokens, never for emphasis.
+
+    The corpus carried 3003 emphasis capitals when this was first measured,
+    almost all of them written by the assistant, and the sweep that cleared
+    them is only worth as much as the guard that stops them coming back.
+    What stays capitalised is enumerated above and each class has a reason:
+    an acronym has no lower-case form, a status token is graded by a
+    machine, an underscore marks a machine identifier, and 6S is physics.
+    """
+    hits = {}
+    for rel in _tracked_markdown():
+        if rel.startswith("docs/lit/") or not (ROOT / rel).exists():
+            continue
+        head = (ROOT / rel).read_text(encoding="utf-8")[:400].lower()
+        if "generated" in head and "do not edit" in head:
+            # BLIND REGION, named rather than papered over: a generated page
+            # copies note columns out of results/*.csv, so its capitals are
+            # written by producers. Sweeping those means regenerating every
+            # CSV, and this machine is not the environment of record for the
+            # fitted ones. The debt sits with the results-CSV semicolon
+            # ratchet, which has the same source and the same fix.
+            continue
+        found = _emphasis_caps(rel)
+        if found:
+            hits[rel] = sorted(set(found))[:6]
+    assert not hits, (
+        "emphasis capitals in tracked prose. Write the word normally, or add "
+        "it to CAPS_ACRONYM/CAPS_TOKEN if a machine or a reader needs it "
+        "capitalised:\n  "
+        + "\n  ".join(f"{k}: {', '.join(v)}" for k, v in sorted(hits.items())))
+
+
+def test_the_emphasis_caps_detector_sees_a_planted_word():
+    """Ceiling test, with the blind region named."""
+    assert not _caps_ok("IMPORTANT")
+    assert _caps_ok("FWHM") and _caps_ok("VERIFIED") and _caps_ok("6S")
+    assert _caps_ok("NOT_ESTABLISHED") and _caps_ok("K8")
+    # Blind region, recorded rather than fixed: a capitalised word inside
+    # backticks, a link target or a filename is invisible here, because those
+    # are code and paths where capitals carry meaning this guard cannot judge.
+
+
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
-    if "--relax-constructions" in sys.argv:
+    if "--relax-csv-semicolons" in sys.argv:
+        CSV_SEMICOLON_BASELINE.write_text(
+            json.dumps(_csv_semicolon_counts(), indent=1, sort_keys=True)
+            + "\n")
+        print(f"re-recorded {CSV_SEMICOLON_BASELINE.name} "
+              f"({sum(_csv_semicolon_counts().values())} total)")
+    elif "--relax-constructions" in sys.argv:
         CONSTRUCTION_BASELINE.write_text(
             json.dumps(_rather_than_counts(), indent=1, sort_keys=True) + "\n")
         print(f"re-recorded {CONSTRUCTION_BASELINE.name} "

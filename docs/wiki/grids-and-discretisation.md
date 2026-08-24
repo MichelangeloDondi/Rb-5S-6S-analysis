@@ -27,8 +27,8 @@ width, $n = w / \delta$ for a feature of width $w$ sampled at step $\delta$,
 and a sound design decision follows from that ratio rather than from either
 number alone.
 
-The distinction that matters is between a grid fine enough to DRAW a curve
-and one fine enough to FIT it. A plot interpolates between the recorded
+The distinction that matters is between a grid fine enough to draw a curve
+and one fine enough to fit it. A plot interpolates between the recorded
 points, so a display can look smooth with the feature carried by a handful
 of samples or by hundreds, because the eye supplies whatever curvature the
 gaps leave out. A fit gets none of that help. It estimates a width, an
@@ -95,7 +95,7 @@ earlier version of that chapter fixed the record at 10000 points, a figure
 set before any simulation had tested it. Simulated later against a frozen
 recovery criterion, at the span the chapter proposes, 10000 points leaves
 22 points across the line and fails the criterion, 20000 points passes, and
-40000 points passes with margin, so the adopted record length rose several
+40000 points passes with margin, so the record length in force rose several
 times over from a starting figure nobody had yet checked.
 
 The same ratio governs a grid this repository builds itself rather than

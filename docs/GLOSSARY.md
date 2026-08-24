@@ -111,7 +111,7 @@ and what matters for the shortest way out is the distance to the nearest window
 rather than the cell's radius ([methods 4](methods/04_the_composite_model.md)).
 
 **The branching fraction, $f$.** How often an atom that decays mid-flight lands
-in the ground level that is NOT being driven, so it is lost from the line rather
+in the ground level that is not being driven, so it is lost from the line rather
 than returned to it. It is a different number for each of the four lines, 0.372
 down to 0.223, and it is the only thing in the width budget that differs between
 them. Everything else that grows with power grows the same on all four, which is
@@ -184,7 +184,7 @@ separately derived in
 **All three broaden the line identically.** The light shift and both effects
 above grow as the square of the power and as the fourth power of the inverse
 spot size, so no sweep this dataset can run separates them. Only the line
-CENTRE does, because the two companions broaden without moving the line. That
+centre does, because the two companions broaden without moving the line. That
 needs a lock that holds still, which is why the light-shift results here are
 bounds and are quoted as loose by a stated factor.
 

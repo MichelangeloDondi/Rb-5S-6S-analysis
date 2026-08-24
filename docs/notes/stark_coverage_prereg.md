@@ -25,7 +25,7 @@ Stark row.
 
 The gap is not cosmetic. At a parameter boundary the likelihood-ratio statistic
 is not $\chi^2_1$: the classical result is an equal mixture of $\chi^2_0$ and
-$\chi^2_1$, under which a one-sided 2.706 threshold is CONSERVATIVE rather than
+$\chi^2_1$, under which a one-sided 2.706 threshold is conservative rather than
 exact. Conservative would mean the published bound is looser than the data
 require, which matters directly, because the record already carries a separate
 factor 2.21 of looseness from the deliberately omitted saturation companion.
@@ -45,7 +45,7 @@ is quotable as headroom rather than left as an unknown.
 |---|---|
 | estimator under test | `rb5s6s.stark.fit_stark_sweep`, the shipped one, unmodified |
 | data | the committed 20-cell grid, `results/power_sweep.csv`, 4 peaks by 5 powers |
-| truth model | the estimator's OWN `_fwhm_of`, `companion_gamma_mhz` and `companion_transit_mhz`, at the per-peak `sigma_laser` the real fit returns |
+| truth model | the estimator's own `_fwhm_of`, `companion_gamma_mhz` and `companion_transit_mhz`, at the per-peak `sigma_laser` the real fit returns |
 | $T$ | 130 °C, as in production |
 | seed | 20260817, one independent `SeedSequence` stream per (arm, $\kappa$, trial) |
 | trials | 650 per cell (see the amendment below) |
@@ -55,7 +55,7 @@ is quotable as headroom rather than left as an unknown.
 The ladder is chosen to span the boundary the construction exists for
 ($\kappa = 0$), both quoted bounds (1.15 is the joint C3f bound, 2.81 the
 width-only C3d bound, since $S_0 = \kappa \times 0.225$ W), the ramp prediction
-at 1.56, and then to run well PAST the typical bound, because coverage is
+at 1.56, and then to run well past the typical bound, because coverage is
 trivially 1 wherever the ladder sits below the bound and the informative region
 is where it breaks.
 
@@ -88,11 +88,11 @@ Secondary, all pre-named so that none can be promoted after the fact:
    archive's own realisation is typical or lucky, which no single fit can
    answer, and it was added to the frozen script before the run.
 
-## What this study deliberately does NOT do
+## What this study deliberately does not do
 
 It does not test model misspecification. Truth and estimator share the same
 forward model by construction, so a coverage number from this run is a statement
-about the INTERVAL and nothing else. Mixing the two would produce a number that
+about the interval and nothing else. Mixing the two would produce a number that
 cannot be attributed to either, and the misspecification arm is a separate
 study.
 
@@ -109,7 +109,7 @@ what, if anything, is promoted, and the adjudication is the owner's.
 ## Environment, stated because it is load bearing
 
 The run is on the project `.venv`, which carries a newer numpy than the one the
-committed digits were produced under. That is acceptable HERE and would not be
+committed digits were produced under. That is acceptable here and would not be
 for a committed value: this study reports a probability estimated from fresh
 simulation rather than a re-derivation of an archived number, and its own base
 fit is printed at the top of the log so any drift against the committed
@@ -135,6 +135,6 @@ whole of the 650-trial design. The smaller run is a prefix of the larger one,
 and extending it later to 1750 would reuse these 650 unchanged rather than
 invalidate them.
 
-The ladder was NOT trimmed, because its twelve points were chosen for physics
+The ladder was not trimmed, because its twelve points were chosen for physics
 (the boundary, both quoted bounds, the ramp prediction, and the region past the
 bound where coverage can break) while the trial count is only precision.

@@ -444,7 +444,11 @@ CANONICAL = [
     dict(
         name="pedestal retro-ratio stacking time, four-pedestal comb",
         value=lambda: f"{float(_cell('projections.csv', 'proj_pedestal_rho_hours', 'to match the adopted prior, four-pedestal comb')):.1f}",
-        find=re.compile(r"reaches\s+the\s+adopted\s+retro\s+ratio\s+in\s+about\s+([0-9.]+)\s+hours"),
+        find=re.compile(r"reaches\s+the\s+assumed\s+retro\s+ratio\s+in\s+about\s+([0-9.]+)\s+hours"),
+        # The CSV key above still reads "adopted" on purpose: its producer
+        # is the one file the word sweep left alone, because regenerating
+        # results/projections.csv off the environment of record moves 51
+        # values in their fifth decimal. The docs moved, the key did not.
         mode="all",
         docs=["docs/CLAIMS.md", "docs/FUTURE_TRANSITIONS_titsapph.md"],
     ),

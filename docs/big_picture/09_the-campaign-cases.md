@@ -5,7 +5,7 @@
 [Chapter 5](05_next-vapour-cell.md) weighs each vapour-cell measurement with its cost and
 [chapter 6](06_next-nanofibre.md) does the same for the guided platform. This
 chapter answers the question those two leave open: what does a new campaign
-add IN TOTAL, if it is cell-only, and what does the fibre add on top. Each
+add in total, if it is cell-only, and what does the fibre add on top. Each
 scenario is stated in three registers, the physics, the record, and the
 instrumentation that outlives the campaign, because the three are different
 kinds of gain and conflating them is how campaign cases go soft. Every
@@ -69,7 +69,7 @@ Everything in scenario one, plus four additions no cell can provide.
   term into its own sqrt(T) ladder, so the laser measurement calibrates
   itself (`results/onf_candidate.csv`). Fed back as a prior, it recovers
   the collisional coefficient's error to 0.36 of the free-kernel fit
-  ON THE DATA ALREADY TAKEN, against the exact floor of 0.585 that any
+  on the DATA already taken, against the exact floor of 0.585 that any
   single-component measurement hits (`results/kernel_identifiability.csv`,
   the joint rows). This is the one addition that improves the committed
   record retroactively, before any new cell point is taken.

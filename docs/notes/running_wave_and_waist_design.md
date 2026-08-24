@@ -5,7 +5,7 @@ number changes. Both calculations are in `scripts/run_geometry_design.py`, which
 writes nothing, and both are reported with the first pass that was wrong beside
 the answer, because in each case the error was the interesting part.
 
-`provenance: DESIGN` - Its own status line is DESIGN, says nothing here is a result, and names `run_geometry_design.py`, which writes nothing. The 43 unaccounted values are geometry intermediates of a PROPOSED configuration rather than measurements of data, which is what DESIGN means here. **43 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
+`provenance: DESIGN` - Its own status line is DESIGN, says nothing here is a result, and names `run_geometry_design.py`, which writes nothing. The 43 unaccounted values are geometry intermediates of a proposed configuration rather than measurements of data, which is what DESIGN means here. **43 numeric claims on this page remain unaccounted for.** Declared after checking every three-significant-figure value on the page against `results/`, not by labelling.
 
 
 **The question.** Two geometry choices for a future session: should one arm be
@@ -47,7 +47,7 @@ does almost nothing.
 
 A frozen fringe is not a slow modulation. It is a resonance between the atom and
 the pattern. The fringe phase an atom sees advances at 2 k v_z minus Delta, so
-offsetting Delta does not remove the frozen-fringe class: it MOVES it, from
+offsetting Delta does not remove the frozen-fringe class: it moves it, from
 v_z = 0 to the co-moving speed v_fringe = Delta lambda / 2. What decides whether
 that helps is how many atoms sit at the new speed, which makes the criterion
 thermal:
@@ -97,7 +97,7 @@ not: `docs/PLAN.md` items at section 3 and section 4.2 already measure rho in th
 metrology afternoon with a pick-off, cross-checked against the Doppler-pedestal
 area ratio, and no modulator is involved. What the running wave adds is a
 different and better measurement rather than a first one, because a heterodyne
-beat between the two arms reads the MODE-OVERLAP-WEIGHTED rho, which is the
+beat between the two arms reads the mode-overlap-weighted rho, which is the
 quantity that actually enters the shift, where a power-meter ratio reads the
 power. That is worth having, but it is an improvement on a planned measurement,
 not a replacement for a missing one. The same correction applies to the pedestal:
@@ -111,7 +111,7 @@ and time-reverses it on a flat mirror at that flat wavefront. A single-pass
 diffracting element in that path sends the beam back at an angle and it does not
 retrace, which is the standard reason frequency-shifted retroreflectors are built
 double-pass, with a cat's eye and a quarter-wave plate. So this design is a retro
-REBUILD, not an insertion, and the rebuild costs the double-pass loss on top of
+rebuild, not an insertion, and the rebuild costs the double-pass loss on top of
 the modulator's own.
 
 ### Where that leaves it
@@ -197,7 +197,7 @@ where the weak-field weighting is bent by about a quarter rather than replaced.
 
 The 16 um configuration is not ruled out. Its figure of merit is three orders of
 magnitude above the present one, and the record's own plan already says that at
-the small waist the SIGN is the robust observable and the magnitudes belong to a
+the small waist the sign is the robust observable and the magnitudes belong to a
 later session. A large negative skew is a perfectly good observable. But it is a
 different observable from the one the committed machinery predicts, and choosing
 it deliberately needs the ramp machinery to carry saturation, which is a
@@ -332,7 +332,7 @@ solid angle. The tables above used Z_c = 2.0 mm, the middle of the envelope
 `config.py` records for a source at a nominal object distance. That envelope is
 too generous at the near end and the consequence runs both ways.
 
-Z_c = L_parallel / 2M with the cathode's 12 mm axis along the beam, and M rises
+Z_c = L_parallel / 2m with the cathode's 12 mm axis along the beam, and M rises
 steeply as the source approaches the f = 18 mm lens:
 
 | object distance | M | Z_c | solid angle, relative |

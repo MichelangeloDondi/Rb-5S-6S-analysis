@@ -31,7 +31,7 @@ does.
 ![transit width against beam waist, in the thin single-waist limit](../../figures/fig3_transit_mc.png)
 
 *The physics behind the anchor: the Monte-Carlo transit width against waist,
-in the THIN single-waist limit only. The producer filters
+in the thin single-waist limit only. The producer filters
 `results/transit_mc.csv` to its `thin` rows, so the collection-geometry
 dependence that file also carries is not on this canvas, and it runs the
 direction that would soften the exclusion shaded here: at the one waist where
@@ -109,10 +109,10 @@ The pedestal must separate from the scattered-light background, which is not
 modelled. If it does not, the block yields nothing and costs no bench time that
 was not already being spent. **Empty.** The area ratio peaks at ρ = 1 where its
 slope in ρ vanishes and is symmetric under ρ → 1/ρ, so it is a weak lever near
-the adopted value and could return no useful constraint on ρ even with a clean
+the value of record and could return no useful constraint on ρ even with a clean
 pedestal. **Record.** The stacked wide traces, the fitted pedestal width and
-area, and the implied temperature and ρ against the adopted values. Stacking
-times to reach the density-scale systematic and the adopted ρ prior are in
+area, and the implied temperature and ρ against the values of record. Stacking
+times to reach the density-scale systematic and the assumed ρ prior are in
 [`results/projections.csv`](../../results/projections.csv), on the four-component
 hyperfine comb and on a single component.
 
@@ -204,7 +204,7 @@ this section, which has to be in place before any of them runs.
    in landscape orientation (`APPARATUS.md`). **Shots.** The slit scan at four or
    five settings inside §9 D5, with atoms, power, lock and waist all held fixed.
    **Go/no-go.** The magnification M measured from the conjugates rather than
-   assumed, since Z_c = L∥/2M is what places the configuration relative to the
+   assumed, since Z_c = L∥/2m is what places the configuration relative to the
    crossover. **Empty.** The sign is secured by hardware for every plausible M,
    so what could come back empty is the magnitude, which rides on the unmeasured
    lens conjugates. **Record.** M, u and v, the slit setting per point, and
@@ -354,7 +354,7 @@ no session measured its own waist, which is argued in
 block of a future session records a waist measurement**, and a session that
 cannot is analysed alone rather than pooled.
 
-**The waist measurement is taken AT SEVERAL POWERS, with the EOM in the beam
+**The waist measurement is taken at several powers, with the EOM in the beam
 and thermalised at each.** The 2026-08-17 mechanism sweep left exactly two
 candidates able to produce the measured non-monotone width-against-power
 structure, and both are power-dependent geometry. The EOM crystal clips the raw
@@ -364,7 +364,7 @@ and the cell waist becomes a function of drive power, with a focus that can
 walk through the cell and turn the transit width around. The archive tested the
 slow-thermalisation branch through the five consecutive repeats of every
 campaign block and found no within-block drift, minus 7.7 plus or minus 6.4 kHz
-per repeat, which kills the slow branch ONLY: a lens that equilibrates within
+per repeat, which kills the slow branch only: a lens that equilibrates within
 one sweep is untouched by that null and is discriminated exactly by measuring
 w0 against power. The second candidate is the retro ratio rho drifting with
 power, which moves the standing-wave contrast and the pedestal-to-line ratio
@@ -385,7 +385,7 @@ range of the smoothing setting, while at the narrowest setting the estimator
 fails its control for a measured reason, a single-sample level bias, and is not
 read. Every
 component in the production model is pinned against power already, so that
-structure has nowhere to go and is sitting in the residual. The test frees ONE
+structure has nowhere to go and is sitting in the residual. The test frees one
 component at a time per condition with the other two held at their physical
 values, since all three at once is degenerate at a condition number of 345, and
 the three kernels have different shapes so the comparison was expected to
@@ -395,20 +395,20 @@ identify the missing term as well as locate it.
 sentence did not hold.** Freeing each component in turn across the campaign's
 hundred traces, all three absorb the concavity at the same chi-square, 0.355
 against 0.357 against 0.360, and none is singled out. Read as a curvature of the
-TOTAL width, so that a Gaussian laser width, a two-sided-exponential transit
+total width, so that a Gaussian laser width, a two-sided-exponential transit
 width and a Lorentzian collisional width become comparable, the three land
 between minus 2.6 and minus 4.0 MHz per watt squared at about two standard
 deviations, where the model-free summary statistic gives about minus 11 at four.
 Two things follow, and the second was not anticipated. The kernels are
 interchangeable against this structure rather than distinguishable by shape, so
 the width degeneracy already recorded at condition number 345 governs the power
-channel too. And the two constructions disagree about the SIZE of the concavity
+channel too. And the two constructions disagree about the size of the concavity
 by a factor near three. Two follow-up diagnostics narrowed that second finding
 without closing it. Pinning the per-trace baseline slope to zero, the mechanism
 that could most easily have manufactured the gap, left both the reduced
 chi-square and the recovered curvature unmoved, so the free slope was fitting
 noise rather than absorbing width structure. Computing the disagreement
-correctly, with both statistics taken from the SAME trace so that their shared
+correctly, with both statistics taken from the same trace so that their shared
 fluctuations cancel before averaging, puts the curvature of the difference at
 about minus 4.7 with an uncertainty near 2.1, a little over two standard
 deviations, where the naive comparison of the two published numbers had
@@ -426,7 +426,7 @@ order dependence rather than power dependence. Section C3a's original reading,
 that this variation is block scatter, stands. The estimator disagreement above
 therefore concerns the size of an effect whose existence is not established,
 the thermal-lens hypothesis is demoted accordingly, and the measurement that
-would settle both is an INTERLEAVED power ladder rather than any further
+would settle both is an interleaved power ladder rather than any further
 analysis of a monotone one. Breaking the
 first finding needs a channel where the kernels are not interchangeable, which
 is what the waist measurement below and an independent laser-width calibration
@@ -435,10 +435,10 @@ statement is unchanged.
 
 **Second, and only afterwards, free the transit reference so the cusp measures
 the waist.** The transit kernel goes as the square root of temperature divided by
-the waist, and the repository currently sets its reference BY computing it from
+the waist, and the repository currently sets its reference by computing it from
 the waist, which spends the information rather than collecting it. Run the other
 way it becomes a waist measurement internal to the lineshape and independent of
-the apparatus lineage, and the transit kernel is separable by SHAPE rather than by
+the apparatus lineage, and the transit kernel is separable by shape rather than by
 width, since neither the Lorentzian nor the Gaussian beside it can imitate a cusp.
 The order matters: if the unexplained power dependence turns out to live in the
 transit kernel, freeing its reference first would let a power systematic

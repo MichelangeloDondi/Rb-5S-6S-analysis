@@ -34,7 +34,7 @@ between neighbouring windows rather than the total excursion of the record.
 The ordinary standard deviation cannot do this. For a record whose mean is
 drifting, the standard deviation depends on how long you watched, and it
 grows without limit as you keep watching. The Allan deviation is finite for
-those records and its SHAPE identifies the noise: on a log-log plot,
+those records and its shape identifies the noise: on a log-log plot,
 white frequency noise falls as $\tau^{-1/2}$, because averaging longer helps,
 a random walk rises as $\tau^{+1/2}$, because averaging longer hurts, and
 flicker noise is flat. A minimum in the curve marks the averaging time beyond
@@ -77,10 +77,10 @@ answer.
 ## The estimator that saturates, which is the page's argument in one incident
 
 The reason this statistic exists is that the obvious one has no limit. Under
-$1/f$ noise the variance of a record GROWS with the record, because each
+$1/f$ noise the variance of a record grows with the record, because each
 decade of duration admits another decade of low-frequency power, so the raw
 scatter of a series is an estimate of a quantity that does not exist. Its
-sampling spread then SATURATES rather than shrinking: measured on synthetic
+sampling spread then saturates rather than shrinking: measured on synthetic
 flicker in this repository, the fractional spread of the raw scatter sits
 near 23 per cent at one hundred points and near 23 per cent at ten thousand,
 while the Allan deviation at fixed averaging time tightens from 7 to 0.8 per
@@ -140,9 +140,9 @@ a reader.
 
 ## Further reading
 
-- D. W. Allan, "Statistics of atomic frequency standards", *Proc. IEEE* **54**,
+- D. W. Allan, "Statistics of atomic frequency standards", *Proc. Ieee* **54**,
   221 (1966), the original definition.
-- W. J. Riley, *Handbook of Frequency Stability Analysis*, NIST Special
+- W. J. Riley, *Handbook of Frequency Stability Analysis*, nist Special
   Publication 1065 (2008), which is free, thorough and the standard practical
   reference for the variants and their confidence intervals.
 - [Wikipedia: Allan variance](https://en.wikipedia.org/wiki/Allan_variance)

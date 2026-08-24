@@ -22,7 +22,7 @@ without losing anything on your path. Terms are in
 its basis: a committed input of this repository, a cited outside number, an
 assumed lab parameter waiting to be replaced, or arithmetic on those. Nothing
 here is a measurement. The apparatus parameters this repository does not
-know are marked in the CSV with the word REPLACE and listed at the end of
+know are marked in the CSV with the word replace and listed at the end of
 this note.
 
 **What is already established on this platform, and what is not.** This note
@@ -32,14 +32,14 @@ an optical nanofibre with cold atoms, in the lineage this record belongs to.
 [Rajasree 2020](../lit/rajasree2020spin.md) drove it through the evanescent
 field of a 400 nm fibre at 25 to 40 counts per millisecond, and established
 the polarisation law for it, including that the guided mode's longitudinal
-component leaves the circular configuration with a MINIMUM near 13 per cent in
+component leaves the circular configuration with a minimum near 13 per cent in
 theory and 25 per cent in practice rather than a null.
 [Gokhroo 2022](../lit/gokhroo2022.md) observed a two-peak pushing profile near
 the fibre on this exact line and did not model it: no fitted lineshape, and no
 Casimir-Polder content anywhere in the paper. A prior-art audit recorded in
 that literature note finds that no one has modelled it since.
 
-So the open problem here is a QUANTITATIVE NEAR-SURFACE LINESHAPE, not a
+So the open problem here is a quantitative near-surface lineshape, not a
 standalone surface coefficient and not a feasibility demonstration. Signal
 feasibility is settled by a published measurement on this platform. What this
 note sizes is what such a measurement would additionally buy the vapour-cell
@@ -103,7 +103,7 @@ red tail rather than a perturbation.
 
 **The potential has two components and this note's first version had one.**
 [Pennetta 2026](../lit/pennetta2026.md) measures, on this exact class of
-platform, Casimir-Polder attraction PLUS an electrostatic term from surface
+platform, Casimir-Polder attraction plus an electrostatic term from surface
 charges on the silica. The second is device- and time-dependent, so it is
 calibrated per run and carried as a systematic rather than as a universal
 constant. That also relocates a caveat this note had misplaced: adsorbate
@@ -112,7 +112,7 @@ the potential being measured. And the near-field C3 over z cubed form crosses
 to a retarded C4 over z to the fourth at larger distance, a crossover
 [Ton 2026](../lit/ton2026.md) measures directly while reading a kilohertz
 Casimir-Polder shift out of a spectroscopic lineshape. That paper is the
-template for the estimator here: the surface shift is read as a DISTRIBUTION
+template for the estimator here: the surface shift is read as a distribution
 over the atoms' distance from the surface, by the same moment machinery that
 reads the light-shift distribution, so one method handles both
 inhomogeneities.
@@ -171,10 +171,10 @@ Four numbers carry the case.
 * Freeing the Lorentzian laser content, which is what an honest K3 fit must
   do, inflates the coefficient's statistical error by a factor 1.71. That is
   what kernel honesty costs with cell data alone.
-* An ONF measurement of BOTH laser shape components at one fifth of the
+* An ONF measurement of both laser shape components at one fifth of the
   cell's own precision on them brings the error to 0.36 of the free fit,
   buying back the whole inflation and more, on data already taken.
-* A measurement of the Lorentzian content ALONE has an exact floor at 0.585
+* A measurement of the Lorentzian content alone has an exact floor at 0.585
   of the free fit however precise it is, because the free Gaussian width
   stays correlated with the coefficient. The design consequence decides the
   instrument: the ONF must measure the laser's shape, both components, which
@@ -201,7 +201,7 @@ Every use of an ONF laser measurement as a prior on the cell inference
 assumes the laser at the fiber is the laser at the cell. Fiber transport
 adds acoustic and thermal phase noise, so that assumption is a design
 requirement, not a fact, and it is met in one of two ways. Either the drive
-is split and both instruments run SIMULTANEOUSLY, cell and fiber recording
+is split and both instruments run simultaneously, cell and fiber recording
 the same laser at the same moments, so the cell's own drift machinery
 becomes the live reference and everything the fiber path adds shows up as a
 cell-versus-fiber difference. Or the fiber-added noise is measured once,
@@ -214,25 +214,25 @@ away.
 ## The transit kernel in the fibre is a Lorentzian, and that changes the plan
 
 The cold-transit figure this note previously carried, 141 kHz, was obtained by
-scaling the CELL's transit width by the ratio of the beam waist to the
+scaling the cell's transit width by the ratio of the beam waist to the
 evanescent decay length. That scaling carries the cell's Gaussian-beam
 convention onto a profile that is not Gaussian, and the profile is the thing
 that sets the kernel. Derived instead for the profile the atoms actually cross:
 
 An atom on a radial pass through an evanescent field sees
-$I(t) = I_0 e^{-v|t|/\Lambda}$, a two-sided exponential IN TIME, whose Fourier
+$I(t) = I_0 e^{-v|t|/\Lambda}$, a two-sided exponential in time, whose Fourier
 transform is a **Lorentzian** of FWHM $v/(\pi\Lambda)$. A Gaussian beam gives
-the Biraben-Cagnac two-sided exponential in FREQUENCY, which is the cusp the
-cell's kernel uses. The two geometries give different kernel SHAPES, not merely
+the Biraben-Cagnac two-sided exponential in frequency, which is the cusp the
+cell's kernel uses. The two geometries give different kernel shapes, not merely
 different widths.
 
 At 150 uK the width lands between **98 and 181 kHz** across the 211 to 388 nm
 decay-length band, which brackets the 141 kHz this note used to carry. So that figure was
 not far wrong as a magnitude, and the correction that matters is the shape.
 
-**Why the shape matters more than the width.** A Lorentzian transit width ADDS
+**Why the shape matters more than the width.** A Lorentzian transit width adds
 into the homogeneous width, exactly as the collisional width and
-$\Gamma_{L,\text{equiv}}$ do. In the fibre the transit term is therefore NOT a
+$\Gamma_{L,\text{equiv}}$ do. In the fibre the transit term is therefore not a
 separable nuisance: it enters the same exact degeneracy the cell's kernel work
 characterised, where only the sum of the Lorentzian contributions is
 identifiable at a fixed condition.
@@ -281,7 +281,7 @@ With the modulator in the common path, the pathway pairs carry a relative
 phase and the effective modulation depth becomes `2*beta*cos(pi f tau)` for an
 atom at delay `tau`, averaged across the sample
 (`rb5s6s/forecast.py`, `comb_tooth_weights`). The average runs over the
-sample's SPATIAL EXTENT, so the drive at which the comb weights start to smear
+sample's spatial extent, so the drive at which the comb weights start to smear
 is inversely proportional to that extent. The carrier weight at the depth
 `2*beta = 2.405`, where an unsmeared carrier nulls exactly:
 
@@ -296,7 +296,7 @@ filled in to about nine per cent and by 1.5 GHz it is gone. The fibre's null
 survives both, because the waist is some thirty-five times shorter than the
 cell path. That null is the one calibration-free reference the comb offers: it
 occurs at a known modulation depth and nowhere else, so hitting it measures the
-depth AT THE ATOMS without knowing the coupling efficiency, which is the
+depth at the atoms without knowing the coupling efficiency, which is the
 quantity a nanofibre cannot otherwise get at. The fibre is therefore not merely
 another place to send the teeth. It is the platform on which a high-drive EOM
 stays usable.
@@ -307,7 +307,7 @@ in ten thousand. It appears exactly when the drive is raised.
 
 ### The drive is pulled in two directions at once
 
-Resolvability wants a high drive. Reading several detunings SIMULTANEOUSLY,
+Resolvability wants a high drive. Reading several detunings simultaneously,
 rather than scanning them, wants a low one, because the teeth must fall inside
 the line:
 
@@ -323,7 +323,7 @@ are separate runs of a tunable modulator, not one compromise setting, and a
 modulator spanning roughly 0.5 MHz to 1 GHz would cover both ends with the
 present value in the middle.
 
-Why the low end is worth having: a SCANNED line convolves any time dependence
+Why the low end is worth having: a scanned line convolves any time dependence
 of the surface shift into the lineshape, so a shift that moves during the scan
 and a line that is genuinely broader are the same measurement. Teeth parked
 across the line are read at one instant, which separates them. The surface
@@ -352,26 +352,31 @@ standing-wave geometry rather than a running wave.
 Every item in this note carries an epistemic class in
 `results/onf_candidate.csv`, because a reader cannot otherwise tell an
 arithmetic estimate from a published measurement, and the two are set in the
-same typeface. The distinction is what the claim RESTS ON, not how plausible
+same typeface. The distinction is what the claim rests on, not how plausible
 it seems.
 
 | class | meaning | items |
 |---|---|---|
-| DEMONSTRATED | a published measurement anchors it | the decay-length band, the count-rate feasibility, the polarisation rate suppression |
-| SIMULATION-BACKED | a twin in this repository has run it | **none yet** |
-| PROSPECTIVE | computed from committed arithmetic, not simulated | the Lorentzian transit kernel, the modulator reach and its carrier null, the joint forecast, and the validation targets that inherit the forecast's class |
+| demonstrated | a published measurement anchors it | the decay-length band, the count-rate feasibility, the polarisation rate suppression |
+| simulation-backed | a twin in this repository has run it | the molasses-ladder identification of the homogeneous component: [`fibre_twin.csv`](../../results/fibre_twin.csv) runs 500-trial recoveries per world and reports coverage per quantity |
+| prospective | computed from committed arithmetic, not simulated | the modulator reach and its carrier null, the joint forecast, and the validation targets that inherit the forecast's class |
 
-**Nothing here is simulation-backed.** The nanofibre twin is not built, so the
-joint forecast is predicted by covariance algebra and has not been reproduced
-by an estimator running on synthetic data, which is why the forecast's
-recovery fraction is a target rather than a result.
+**The nanofibre twin now exists and its honesty is in its own flags.** The
+producer (`scripts/run_fibre_twin.py`, registered as an expensive producer)
+marks itself `design_validation_only` and `measures_laser_linewidth FALSE`:
+it validates that the DESIGN can identify the intended quantities under
+synthetic worlds, with per-rung scatter 4.0 kHz against the 3.2 kHz the
+record demonstrates per condition, and it carries the band-edge licensing
+sentence (lever and calibration are the same order, so a disagreement means
+unidentifiable, not wrong). The joint forecast's recovery fraction remains a
+target where the twin has not run that world.
 
 ## What this candidate does not buy
 
 A better collisional coefficient. There is no density ladder in a MOT and no
 controlled density near a hot surface, so the cell campaign keeps the
 beta_self measurement. The candidate feeds the two intercept slots the cell
-cannot separate and opens one new coefficient. With the two-colour trap ON
+cannot separate and opens one new coefficient. With the two-colour trap on
 the trap light shifts the 6S state strongly and inhomogeneously, so
 spectroscopy wants the trap dark or strobed, which is why the trap-free mode
 leads this note.
@@ -387,7 +392,7 @@ leads this note.
 * A per-run calibration of the electrostatic surface-charge term, which
   [Pennetta 2026](../lit/pennetta2026.md) shows is a component of the
   potential rather than an external nuisance.
-* Which fibre. The cold-atom 5S-6S measurement of
+* Which fibre. The cold-atom 5s-6s measurement of
   [Rajasree 2020](../lit/rajasree2020spin.md) used a 400 nm nanofibre and the
   estimates here follow it. Nanofibres in this platform class span roughly
   400 to 650 nm, and the decay length, and with it the transit and surface

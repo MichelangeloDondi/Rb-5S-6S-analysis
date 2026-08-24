@@ -21,7 +21,7 @@ data at all rather than whether a model deserves an extra one. That is
 A richer model always fits better. Adding a parameter cannot increase the
 best achievable $\chi^2$, so goodness of fit alone always prefers the more
 complicated model and is useless for choosing between them. An information
-criterion scores a model as its fit quality plus a PENALTY for the parameters
+criterion scores a model as its fit quality plus a penalty for the parameters
 it spent, and the model with the lowest score wins.
 
 The two standard criteria differ only in that penalty:
@@ -43,11 +43,11 @@ dataset it demands several times the evidence Akaike's does before admitting
 a parameter.*
 
 Two consequences bound how much the choice can matter, and both are worth
-knowing before arguing about it. A comparison between two forms with the SAME
+knowing before arguing about it. A comparison between two forms with the same
 number of parameters is unaffected by the criterion entirely, because the
 penalty is identical on both sides and cancels, so such a comparison is a
 $\chi^2$ comparison however it is dressed. And a criterion only decides an
-outcome when the fit improvement lands BETWEEN the two penalties: where a
+outcome when the fit improvement lands between the two penalties: where a
 component buys far more than $\ln N$ per parameter or far less than 2, every
 criterion agrees and the data have spoken rather than the statistician.
 
@@ -73,7 +73,7 @@ The choice is not academic here, because $N$ varies by four orders of
 magnitude across the places this record makes a complexity decision, from a
 handful of noise-law bins to a global fit over hundreds of thousands of
 points. The chapter tabulates the penalty ratio at each. It also reports a
-PANEL of criteria rather than one, and treats agreement across the panel as
+panel of criteria rather than one, and treats agreement across the panel as
 robustness and disagreement as a fact about the sample size rather than a
 licence to pick the flattering answer.
 
@@ -86,7 +86,7 @@ it is the conclusion a reader is most entitled to be suspicious of.
 
 ## The implemented hierarchy, and why no single statistic decides
 
-`rb5s6s/model_compare.py` computes the comparison as an EVIDENCE VECTOR and
+`rb5s6s/model_compare.py` computes the comparison as an evidence vector and
 leaves the judgement to a separate function. The separation is the point: an
 algorithmic threshold becomes a scientific verdict the moment one function is
 allowed to return "preferred".
@@ -94,7 +94,7 @@ allowed to return "preferred".
 | statistic | what it assumes | status here |
 |---|---|---|
 | delta chi-square, likelihood ratio | nested models, and a residual structure the reference distribution matches | reported where nesting holds |
-| parametric bootstrap of the selection statistic | only that the generative model can be sampled | reported, and UNCALIBRATED until a coverage run measures it on this noise |
+| parametric bootstrap of the selection statistic | only that the generative model can be sampled | reported, and uncalibrated until a coverage run measures it on this noise |
 | classical F | independent, homoscedastic, Gaussian residuals from linear models | reported as a labelled convention, never as a verdict |
 | AIC, AICc, BIC | differing parsimony conventions, and a sample size | reported both raw and effective |
 
@@ -107,11 +107,11 @@ substitution for N recovers that. The implementation therefore returns the
 statistic together with a validity flag and the specific condition violated,
 so a downstream reader cannot mistake a p-value for authority.
 
-**The effective form changes BOTH terms.** An effective BIC is the WHITENED
+**The effective form changes both terms.** An effective BIC is the whitened
 chi-square against a penalty on the effective count. Using a raw chi-square
 against a reduced penalty inflates the fit's apparent gain by roughly the
 correlation time while lowering its parameter cost, and on this archive that
-half-treatment reverses a verdict, moving a delta-BIC from -46 to +62. The
+half-treatment reverses a verdict, moving a delta-BIC from decisively negative to decisively positive (the two rows of [`sharing_bic.csv`](../../results/sharing_bic.csv), -51.9 and +61.3 at this writing, regenerated with the rates). The
 implementation refuses to compute the effective form unless both are supplied.
 
 The interpretation layer returns one of four words, and three of them are
@@ -127,7 +127,7 @@ separates the models at the threshold treated as decisive.
 ## What can go wrong
 
 The deepest failure is a comparability one. These criteria compare models
-fitted to the SAME data with likelihoods on the same scale. Comparing scores
+fitted to the same data with likelihoods on the same scale. Comparing scores
 across different datasets, different weightings, or a fit whose likelihood
 was rescaled, is meaningless arithmetic that produces a perfectly ordinary
 looking number.
@@ -155,7 +155,7 @@ understates them, because the selection itself used the data.
 ## The nested case, where an F-test is available instead
 
 An information criterion compares models that need not be related. When one
-model is a RESTRICTION of another, obtained by fixing or tying parameters
+model is a restriction of another, obtained by fixing or tying parameters
 rather than by changing the functional form, a sharper tool applies. The
 F-test compares the drop in the residual sum of squares against the number of
 parameters given up, referred to an F distribution with those two degrees of
@@ -164,9 +164,9 @@ predicts better, but whether the extra freedom bought a statistically
 significant improvement.
 
 The distinction matters for a modulated spectrum. A comb of teeth can be
-fitted twice. The FORCED model shares one centre, the radio-exact tooth
+fitted twice. The forced model shares one centre, the radio-exact tooth
 spacing and the Bessel amplitude law across the whole group, and has very few
-free parameters. The FREE model lets every tooth carry its own amplitude,
+free parameters. The free model lets every tooth carry its own amplitude,
 centre and width. The second contains the first exactly, so the pair is
 nested, and the F-test asks whether releasing the constraints improved the fit
 by more than the parameters cost. A significant result does not say the comb

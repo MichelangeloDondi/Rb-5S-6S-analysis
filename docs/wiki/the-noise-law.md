@@ -7,7 +7,7 @@ of the signal at that sample, measured rather than assumed.
 **Takes.** Repeated traces of the same condition. No model of the line.
 **Gives.** The variance law that supplies every fit's weights, what each of
 its terms means physically, and the checks that decide whether a term is real.
-**Skip if.** The question is how to USE weights once you have them, which is
+**Skip if.** The question is how to use weights once you have them, which is
 [weighted least squares](weighted-least-squares.md), or whether adjacent
 samples are independent, which is
 [correlated samples](correlated-samples-and-effective-sample-size.md).
@@ -43,7 +43,7 @@ distinct and that is the point of writing them separately.
 useful.** The floor dominates in the wings and the baseline, the shot term
 dominates over most of a bright line, and the excess term, if present at all,
 dominates at the peak. A measurement limited by one of them is improved by
-interventions that would do nothing for the others.
+re-centrings that would do nothing for the others.
 
 ## The three terms are often one term, and seeing that is the point
 
@@ -66,7 +66,7 @@ that is what the floor is,
 $$\sigma^2 = b (V + V_{\rm bg}), \qquad V_{\rm bg} = a^2/b,$$
 
 and the three-parameter law is one shot process over two pools of quanta. The
-quantity $a^2/b$ is then a measurement of the background LEVEL, obtained from
+quantity $a^2/b$ is then a measurement of the background level, obtained from
 the variance rather than from the mean, which is the only route available when
 a constant background is degenerate with a fitted baseline.
 
@@ -79,7 +79,7 @@ the dim end locate the background rather than contradict the law.
 multiplication, such as a photomultiplier or an avalanche photodiode, adds an
 excess-noise factor above ideal Poisson from the randomness of the
 multiplication itself. That factor multiplies $b$ exactly as a loss of
-collection efficiency would, so the law measures their PRODUCT and cannot
+collection efficiency would, so the law measures their product and cannot
 separate them. Shot-limited therefore means the variance tracks the signal, and
 it does not mean the measurement sits at the physical bound for the photons
 arriving at the window.
@@ -91,7 +91,7 @@ the most damage. Least-squares weights are one over the variance, so a wrong
 noise model does not merely mis-state the error bars, it mis-weights the data
 and moves the fitted parameters themselves. It also converts "reduce the
 noise" from a slogan into a decision, because the term that dominates names
-the intervention that would help.
+the re-centring that would help.
 
 ## How it is measured, and the check that matters
 
@@ -107,7 +107,7 @@ others, so the extra terms are admitted only when an information criterion
 prefers them.
 
 **The check worth building in**, and the one that distinguishes a fitted
-parameter from a measured one: compute the noise DIRECTLY in a region where
+parameter from a measured one: compute the noise directly in a region where
 the signal is absent, and compare it with the fitted floor. They are the same
 quantity arrived at two ways, and if they disagree, the fit is absorbing
 something into the floor that does not belong there.
@@ -143,7 +143,7 @@ construction of the model, which is not the same as being independent of
 everything. An optical background that scales with a control parameter, but
 not with the signal being fitted, lands in $a$ and looks electronic.
 
-**Forgetting that the law describes SAMPLES.** If adjacent samples are
+**Forgetting that the law describes samples.** If adjacent samples are
 correlated, the law is still correct per sample and the number of independent
 samples is smaller than the count, which is a separate correction and a
 separate page.
@@ -171,6 +171,25 @@ print(f"\nfloor and shot cross at V = a^2/b = {1e3*a*a/b:.2f} mV")
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
 so one that stops working fails the suite rather than sitting here misleading
 a reader.
+
+## What the fitted terms say about the apparatus
+
+Read across the campaign, the three terms diagnose three different noise
+sources, and the diagnosis is a committed result
+([`quantisation.csv`](../../results/quantisation.csv), budget rows). The
+floor `a` grows linearly with laser power, 8 to 10 times between 25 and
+225 mW, which is the signature of light-linked background reaching the
+detector, consistent with shot noise on a background that grows as the
+power squared, with a smaller correlated share that a monitor-photodiode
+coherence test would separate. The level term `b` is near-constant across
+every condition and peak, which is cathode shot noise through the
+multiplier, so the line peak is photon-limited and only collection helps
+there. The quadratic term `c` fits at zero, so intensity noise on the
+fluorescence itself sits below shot noise. The power-to-zero intercept of
+`a` is the dark and electronics floor, well under the light-linked noise
+at operating power, which is why the transimpedance gain is in the right
+decade and the digitiser's step, dithered by 5 to 246 times its size,
+contributes at most 0.155 per cent.
 
 ## Further reading
 

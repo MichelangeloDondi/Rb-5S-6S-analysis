@@ -8,7 +8,7 @@ knows its value.
 **Takes.** Nothing beyond the idea of a focused beam, and no fitted data of
 its own.
 **Gives.** The waist's defining relations, its opposite-signed pull on the
-light shift and the transit width, and the adopted value's provenance.
+light shift and the transit width, and the value of record's provenance.
 **Skip if.** You want what the waist does to the line shape rather than the
 length itself, covered in [the AC-Stark shift](ac-stark-shift.md).
 
@@ -85,18 +85,21 @@ fractional size would suggest.
 ## Where this repository uses it
 
 [`rb5s6s/constants.py`](../../rb5s6s/constants.py) holds `W0_MEASURED_M` and
-`W0_BAND_M`, the adopted central value and the working band every
+`W0_BAND_M`, the accepted central value and the working band every
 $w_0$-dependent quantity in the package reads from, so the band is never
 hand-typed downstream. The status recorded there, and repeated plainly here,
-is that this waist is ADOPTED, not MEASURED on this bench. It was measured
-once, on this apparatus lineage, in the configuration [Nieddu
-2019](../lit/nieddu2019.md) describes: the same focusing lens, the same
-focal length, the same retro-reflecting geometry this campaign uses, stated
-with its $1/e^2$ convention. [Rajasree 2020](../lit/rajasree2020thesis.md)
-reprints the same number rather than adding a second, independent reading.
-The laser is not the same laser, and five years separate the two benches, so
-the value is a transfer across apparatus rather than a reading off the beam
-this dataset was collected with. Two known effects, residual clipping at a
+is that this waist is measured on this bench and was not re-measured during
+the campaign. **Corrected by the experimenter against an earlier reading of
+this page**, which described the value as a transfer across apparatus from
+[Nieddu 2019](../lit/nieddu2019.md) on a different laser: the 64 µm figure
+is [Rajasree 2020](../lit/rajasree2020thesis.md)'s measurement made in the
+very same conditions as this campaign, the same optical table, the same
+laser and the same lenses, stated with its $1/e^2$ convention.
+What the campaign did not do is read the waist off its own beam at its own
+time and in its own interaction volume, so what remains open is drift or
+realignment between that measurement and the campaign, and the focus
+position inside the cell, which [APPARATUS](../APPARATUS.md) records as
+deliberately placed near the collection lens with the standoff unrecorded. Two known effects, residual clipping at a
 narrow downstream aperture and imperfect overlap of the retro-reflected
 beam, both push the effective waist above the transferred value on this
 bench, which is why the band leans high of the central number rather than
@@ -104,13 +107,13 @@ sitting symmetric around it. This is the repository's largest open
 systematic.
 
 [`docs/big_picture/04_what-2025-delivered.md`](../big_picture/04_what-2025-delivered.md)
-reports what the 2025 archive did with the adopted value and its band, and
+reports what the 2025 archive did with the value of record and its band, and
 how the light-shift bound compares with the prediction it produces.
 [`docs/plan/03_optics-protocol.md` section
 4.2](../plan/03_optics-protocol.md#42-two-instruments-for-the-waist)
 specifies the two instruments described above, a knife-edge stage and a
 camera, as the pair of measurements the next session runs to replace the
-adopted value with one measured on this bench, cross-checked against each
+value of record with one measured on this bench, cross-checked against each
 other and against the geometric relation $z_R = \pi w_0^2/\lambda$ as a
 third, independent ruler.
 
@@ -131,12 +134,11 @@ $1/e^2$ width was meant. Each is a factor of two, or worse, hiding inside a
 single unlabelled adjective, and it costs nothing to check because the
 convention is always stated somewhere in the source, once someone looks.
 
-A second is a model failure: treating an ADOPTED value as though it carried
-the confidence of a value MEASURED on the bench in question. A transferred
-number can be the right thing to use, and often is, but every quantity
-computed from it inherits the transfer's own uncertainty on top of whatever
-band the number is quoted with, and dropping that extra step understates
-every downstream result.
+A second is a model failure: treating a value measured once as though it
+were monitored. A same-bench measurement is the right thing to use, and this
+one is, but every quantity computed from it inherits whatever changed
+between that measurement and the run, on top of the band the number is
+quoted with, and dropping that step understates every downstream result.
 
 A third is a data-insufficiency point specific to inferring $w_0$ from a
 fitted line rather than measuring it directly: the transit width and the
@@ -164,7 +166,7 @@ and at teardown rather than trusted for the length of a campaign.
 
 ## Try it
 
-`rb5s6s.constants` holds the adopted waist and its working band. Since
+`rb5s6s.constants` holds the waist of record and its working band. Since
 intensity runs as $1/w_0^2$, walking across the band shows directly how much
 the light-shift prediction moves for a fixed power.
 
@@ -176,12 +178,12 @@ power_w = 0.225  # 225 mW, the top of the 2025 campaign's power sweep
 w0_lo, w0_hi = W0_BAND_M
 
 print("rb5s6s.constants.W0_MEASURED_M and W0_BAND_M:")
-for label, w0 in (("band low", w0_lo), ("adopted", W0_MEASURED_M),
+for label, w0 in (("band low", w0_lo), ("accepted", W0_MEASURED_M),
                   ("band high", w0_hi)):
     intensity_ratio = (W0_MEASURED_M / w0) ** 2
     s0_mhz = stark_shift_S0_mhz(power_w, w0, rho=RHO_RETRO)
     print(f"  {label:>9}: w0 = {w0 * 1e6:5.1f} um   "
-          f"I / I(adopted) = {intensity_ratio:6.3f}   "
+          f"I / I(accepted) = {intensity_ratio:6.3f}   "
           f"S0(225 mW) = {s0_mhz:.4f} MHz")
 print("intensity and the light shift both run as 1/w0^2: the same band "
       "moves both by the same fraction")
@@ -204,7 +206,8 @@ factor-of-two arithmetic error, had put the figure at roughly 90 µm before
 2026-07-13, and validating it against Lehmann's 41.2 kHz worked example,
 moved the figure to roughly 50 µm. Rajasree 2020's direct measurement on
 the same laser then replaced that Monte-Carlo estimate with the 64 µm
-value this page calls ADOPTED, on 2026-08-01, still open.
+value of record, still open in the sense that this campaign never re-read
+it.
 
 A second failure came from trusting repetition over provenance rather than
 from a bad number. A stand-in figure of 60 µm, chosen before the waist was
@@ -219,10 +222,12 @@ retraction before the sweep needed to.
 
 ## Further reading
 
-- [`../lit/nieddu2019.md`](../lit/nieddu2019.md), the paper measuring the
-  beam diameter this repository's adopted waist is read from.
-- [`../lit/rajasree2020thesis.md`](../lit/rajasree2020thesis.md), the thesis
-  that reprints the same measurement rather than adding an independent one.
+- [`../lit/rajasree2020thesis.md`](../lit/rajasree2020thesis.md), the
+  thesis carrying the same-bench measurement this repository's waist of
+  record is read from, made in the campaign's own conditions.
+- [`../lit/nieddu2019.md`](../lit/nieddu2019.md), the earlier paper on the
+  previous laser that quotes the same beam diameter, kept as lineage
+  context rather than as the source.
 - A. E. Siegman, *Lasers*, University Science Books (1986), the standard
   reference for Gaussian-beam propagation, the Rayleigh range and the
   divergence relation used above.

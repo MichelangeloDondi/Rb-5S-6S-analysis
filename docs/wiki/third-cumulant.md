@@ -23,19 +23,19 @@ $$K(t) = \log \mathbb{E}\big[e^{tX}\big] = \sum_{n\ge1} \kappa_n \frac{t^n}{n!}$
 
 and the first three are familiar: $\kappa_1$ is the mean, $\kappa_2$ is the
 variance, and $\kappa_3$ is the third central moment, the leading measure of
-ASYMMETRY. Dividing by $\kappa_2^{3/2}$ gives the dimensionless skewness
+asymmetry. Dividing by $\kappa_2^{3/2}$ gives the dimensionless skewness
 $g_1$.
 
-The property that makes cumulants worth the definition is that THEY ADD UNDER
-CONVOLUTION. The cumulant of a sum of independent variables is the sum of the
+The property that makes cumulants worth the definition is that they add under
+convolution. The cumulant of a sum of independent variables is the sum of the
 cumulants, at every order. Moments do not do this, and neither do widths in
 general.
 
 For spectroscopy that is decisive, because an observed line is a convolution
 of kernels. Each kernel contributes its own $\kappa_3$ and they simply add.
-Every SYMMETRIC kernel, a Lorentzian, a Gaussian, a two-sided exponential,
+Every symmetric kernel, a Lorentzian, a Gaussian, a two-sided exponential,
 has $\kappa_3 = 0$ exactly. So the third cumulant of a composite line is the
-sum of the third cumulants of only its ASYMMETRIC components, and every
+sum of the third cumulants of only its asymmetric components, and every
 symmetric mechanism drops out of the arithmetic regardless of how wide it is.
 
 That is what turns $\kappa_3$ into a selective probe. A width mixes every
@@ -71,12 +71,12 @@ than a measurement, and the numbers are in [RESULTS.md](../RESULTS.md).
 
 One evening of this repository's record shows the statistic earning its keep
 three ways. The committed per-trace residual skew, averaged per power rung,
-FALLS from +0.33 to +0.02 across a factor nine in power, all values the same
+falls from +0.33 to +0.02 across a factor nine in power, all values the same
 sign. First the channel itself was ceiling-tested, a symmetric truth under
 the measured noise law returning skew consistent with zero at every rung, so
 the trend is structure rather than estimator bias. Then the trend's shape
 did the excluding: mechanisms that grow with power cannot produce a fall,
-which removed two candidates at a stroke. Then the SIGN pattern across the
+which removed two candidates at a stroke. Then the sign pattern across the
 four hyperfine lines, unchanged where the g-factor alternates, removed a
 third by parity alone ([reversal tests](reversal-tests.md)). That left two
 candidates, shot noise and a term of fixed absolute size, separated by the
@@ -135,7 +135,7 @@ a reader.
 
 ## The failure mode worth its own paragraph
 
-An asymmetric INSTRUMENT forges an asymmetric LINE, and a third cumulant
+An asymmetric instrument forges an asymmetric line, and a third cumulant
 cannot tell the two apart from a single measurement. A detector or amplifier
 with a one-sided response, which is what any first-order chain has, smears the
 signal in one direction only, so a line swept past it acquires a skew that
@@ -147,7 +147,7 @@ enough to inflate the fitted width by a quarter inflates the standardised skew
 by a half. The observable that carries the physics degrades twice as fast as
 the one that does not.
 
-WHAT SEPARATES THEM IS A PROPERTY OF THE SWEEP AND NOT OF THE FIT. A physical
+What separates them is a property of the sweep and not of the fit. A physical
 asymmetry belongs to the line, so it is the same however fast the line is
 crossed. An instrumental one belongs to the response, so it grows with sweep
 rate and reverses with sweep direction. Measuring the same line at several

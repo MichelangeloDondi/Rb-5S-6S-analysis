@@ -56,7 +56,7 @@ Three of those rows need more than a row. They are the next three sections.
 
 One gap in the seam is worth naming rather than leaving to be found.
 `fit_stark_sweep`, the stage that turns measured widths against power into the
-width-channel AC-Stark bound, is NOT on the geometry seam. Its `profile`
+width-channel AC-Stark bound, is not on the geometry seam. Its `profile`
 argument is a boolean switch and not the geometry callable of the same name
 that `model_profile` and `fit_condition` accept, and its `_fwhm_of` helper has
 no override point. Pointing that stage at another geometry means editing it
@@ -289,7 +289,7 @@ costs nothing to evaluate:
 $$f = \frac{2F'+1}{\sum_F (2F+1)} \times \sum_J b_J \cdot 2(1-p_J)$$
 
 where $b_J$ is the branching into each fine-structure leg and $p_J$ is the
-probability that the ELECTRON's $m_J$ survives the two-step cascade through that
+probability that the electron's $m_J$ survives the two-step cascade through that
 leg. For $S\to P\to S$ it is $5/9$ through $J=1/2$ and $7/9$ through $J=3/2$,
 giving $8/9$ and $4/9$. No nuclear spin appears in the derivation, so the same
 two fractions serve any isotope and any driven level, which is worth checking
@@ -376,13 +376,13 @@ installed wheel their paths resolve inside site-packages, where the
 directories are not. Those six split into two contracts, and the split is
 deliberate.
 
-The ones that REQUIRE the repository raise `config.RepoDataMissing` naming
+The ones that require the repository raise `config.RepoDataMissing` naming
 what needs cloning, rather than resolving a path into site-packages and
 failing somewhere stranger later: `ingest.load_manifest`,
 `rate_model.load_clock`, `cavity_scan.load_scan` on its default path, and
 `config.require_repo_data` itself.
 
-The ones that DEGRADE raise nothing: `qc.outlier_files` returns an empty set
+The ones that degrade raise nothing: `qc.outlier_files` returns an empty set
 and `ruler.campaign_rate_relsyst` returns 0.0 when their tables are absent,
 so a checkout without a quality or a ruler run behaves exactly as it did
 before. Each says so where it is defined.
@@ -422,14 +422,14 @@ two-level ground manifold driven out of one level and returned to the other.
 form callers can use.
 
 **What is this transition's.** The four numbers in `BRANCHING_F` and the
-line-to-isotope map in `DRIVEN_F`. Both are rubidium 5S-6S. For another
+line-to-isotope map in `DRIVEN_F`. Both are rubidium 5s-6s. For another
 species or another line, replace the table.
 
 **Where the numbers come from, and the seam that matters.** The branching is
 the committed output of `scripts/run_zeeman_depletion.py`, which carries
 every Clebsch-Gordan coefficient on the full Zeeman manifold and needs sympy
 from the `cascade` extra. `branching_from_manifold` recomputes it exactly
-where sympy is present and RAISES rather than falling back, so a caller
+where sympy is present and raises rather than falling back, so a caller
 asking for the exact computation never receives the table by accident. A
 plain install gets the physics from the table without the dependency.
 
@@ -461,8 +461,8 @@ shift model.
 differential-shift values, and the exponent fitted to them. Another species is
 another preset.
 
-**The seam that matters, and the one deliberately NOT crossed.** The
-differential shift is a principal value through the 6S-6P poles, and
+**The seam that matters, and the one deliberately not crossed.** The
+differential shift is a principal value through the 6s-6p poles, and
 `scripts/run_blackbody_channels.py` records three earlier attempts that were
 each wrong in an instructive way. Reimplementing that integral in the library
 would create a second source of truth for a delicate number, so the committed
@@ -488,13 +488,13 @@ return a preference.
 convention it enforces is this repository's, described in
 `rb5s6s/sharing_bic.py` and not a theorem.
 
-**The trap this seam closes.** The effective BIC needs the WHITENED
+**The trap this seam closes.** The effective BIC needs the whitened
 chi-square against the effective count, both terms. A raw chi-square against a
 reduced penalty inflates the fit's gain by roughly the correlation time while
 lowering its parameter cost, and on this archive that reverses a verdict. The
-module REFUSES the half-treatment rather than computing it.
+module refuses the half-treatment rather than computing it.
 
-**Status.** UNCALIBRATED, stated in the docstring and in the output, until a
+**Status.** Uncalibrated, stated in the docstring and in the output, until a
 bootstrap coverage run measures the selection statistic on this noise
 structure.
 
@@ -514,7 +514,7 @@ through a MEASURED noise law evaluated by `rb5s6s.noise.sigma_of_v`, so a
 characterised detector simulates under its own law rather than under a
 convenient one. `forecast_precision` is a Monte-Carlo over
 `synthetic_traces` into `fit_condition` at a chosen design, returning median
-parameter uncertainties, the scalings measured by RE-RUNNING the study at
+parameter uncertainties, the scalings measured by re-running the study at
 scaled designs rather than by asserting exponents, and the ceilings the model
 layer supplies. `external_constraint_gain(rho)` returns $\sqrt{1-\rho^2}$,
 the fraction of its uncertainty a parameter keeps once its correlated partner
@@ -530,7 +530,7 @@ is the campaign-specific instance, and it embeds every committed input it needs
 as a provenance-tagged constant rather than reading `results/`, so it runs from
 a clone with no data present.
 
-**The trap this seam closes.** A design study that reports what MORE data buys
+**The trap this seam closes.** A design study that reports what more data buys
 will always report an improvement, because more data always shrinks an error
 bar. It will not tell you that the pair you care about stays degenerate. Run
 `width_identifiability` or read `corr_laser_coll` alongside every forecast: on
@@ -539,7 +539,7 @@ move with span or with repeat count. More data fixes noise and never fixes
 identifiability, and the twin is where the difference becomes visible in
 minutes.
 
-**Status.** Validation class III, design: sensitivity checks with stated
+**Status.** Validation class iii, design: sensitivity checks with stated
 limits. A forecast holds for its stated truth, design and noise model and for
 nothing else, which is why every returned mapping carries an `assumptions`
 entry.

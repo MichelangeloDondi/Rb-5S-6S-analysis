@@ -111,7 +111,7 @@ $w_0=64$ µm prior.
 It is a bound and not a measurement, because that non-Lorentzian Gaussian
 is degenerate with the transit width, and the transit Monte-Carlo ([§2.5](02_the_lineshape.md), M9)
 now makes the degeneracy quantitative: the corrected transit adds $\sim2.1$ MHz
-at $w_0=32$ µm (which OVERSHOOTS the observed line, excluding 32 µm) but only
+at $w_0=32$ µm (which overshoots the observed line, excluding 32 µm) but only
 $\sim0.93$ MHz at the 64 µm measured waist, so below $w_0\approx38$ µm transit
 alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 measured 64 µm waist the laser carries $\sim1.09$ MHz laser-axis, close to the
@@ -131,7 +131,7 @@ data confirm.
 3 to 8% block scatter is the same between-block wander seen elsewhere.
 
 (C3b) The amplitude is **near $P^2$, and three of the four slopes are not
-consistent with it** (log-log slopes 1.83 to 2.12). **CORRECTED**:
+consistent with it** (log-log slopes 1.83 to 2.12). **Corrected**:
 this paragraph previously read the four slopes as a band clustered on the rate
 law, flagging only 993.4121 nm as low. Tested against 2 rather than described,
 under a block bootstrap over the power cells that respects this sweep's
@@ -145,9 +145,9 @@ hyperfine branching, so it is a signature of the detection rather than of the
 transition. No inventoried mechanism predicts that combination, and
 [the amplitude departure note](../notes/amplitude_departure_from_p2.md)
 carries the construction. The interpretive discussion below is retained
-because it remains the best account of the LOW slope specifically, and it does
+because it remains the best account of the low slope specifically, and it does
 not address the two high ones. We say *near*, not *confirms*: at the thick-cell end ($\tau/\text{cm}$ up to 160)
-a slope below 2 could be genuine saturation OR a weak power-dependence of the
+a slope below 2 could be genuine saturation or a weak power-dependence of the
 trapping collection efficiency through the saturating emitter profile, and the
 single-temperature 2025 sweep cannot separate the two. The 4121 low slope
 is the visible symptom of that degeneracy, resolvable only by the fixed-lock

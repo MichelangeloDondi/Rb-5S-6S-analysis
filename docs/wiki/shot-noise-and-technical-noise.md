@@ -28,7 +28,7 @@ mechanical vibration, temperature drift. It is not fundamental, it can in
 principle be engineered away, and the engineering differs completely by
 source.
 
-The distinction matters because the two respond to opposite interventions. A
+The distinction matters because the two respond to opposite re-centrings. A
 shot-limited measurement is improved only by more signal or more time. A
 technically limited one is improved by fixing the apparatus, and collecting
 longer may not help at all.
@@ -38,9 +38,9 @@ longer may not help at all.
 Neither type announces itself. What separates them is how the noise responds
 when a control is changed, because their dependences differ.
 
-**Against the signal level.** Shot noise grows as the SQUARE ROOT of the
-signal, so the fractional noise FALLS as the signal rises. A multiplicative
-technical noise, such as laser intensity fluctuation, grows in PROPORTION to
+**Against the signal level.** Shot noise grows as the square root of the
+signal, so the fractional noise falls as the signal rises. A multiplicative
+technical noise, such as laser intensity fluctuation, grows in proportion to
 the signal, so the fractional noise is constant. An additive technical noise
 does not grow at all. Those three behaviours are the three terms of
 [the noise law](the-noise-law.md) and fitting it is one way to run this test.
@@ -101,7 +101,7 @@ backgrounds that scale with something else entirely.
 
 **Assuming shot noise is the best case.** It is the best case for a given
 number of collected quanta, and collection efficiency is an apparatus property
-that technical effort CAN improve. Shot-limited does not mean optimised.
+that technical effort can improve. Shot-limited does not mean optimised.
 
 **Forgetting the detector's own multiplication noise.** A photomultiplier's
 gain process adds excess variance above Poisson, by a factor that is a

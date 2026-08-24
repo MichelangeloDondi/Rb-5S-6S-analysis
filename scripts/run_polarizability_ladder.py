@@ -103,7 +103,7 @@ def main() -> None:
     except Exception:
         print("    (MC band on the 742 crossing unstable near the pole -- omitted)")
 
-    # --- 5S->5D5/2 (adopted from Hamilton 2023) ---
+    # --- 5S->5D5/2 (accepted from Hamilton 2023) ---
     lam_res = 1e7 / (P.E_5D52_CM - 12816.545)
     print("\n5S->5D5/2  (778 nm, NEAR-RESONANT):  ADOPTED from Hamilton et al. 2023")
     print(f"  5P3/2-5D5/2 resonance at {lam_res:.1f} nm (RME {P.RME_5P32_5D52} a.u.)")
@@ -146,7 +146,7 @@ def main() -> None:
         ax.set_xlabel("wavelength (nm)")
         ax.set_ylabel(r"$\Delta\alpha=\alpha_\mathrm{upper}-\alpha_{5S}$  (a.u.)")
         ax.legend(fontsize=8, loc="lower left", framealpha=0.95, frameon=True)
-    axes[1].annotate("5D magic 776.18 nm\n(Hamilton 2023, adopted)", (776, 0),
+    axes[1].annotate("5D magic 776.18 nm\n(Hamilton 2023, accepted)", (776, 0),
                      xytext=(730, 3500), fontsize=8, color="0.3",
                      arrowprops=dict(arrowstyle="->", color="0.5"))
     fig.suptitle("Polarizability ladders from the Rb ground state, with the\n"
@@ -155,7 +155,7 @@ def main() -> None:
     fig.tight_layout(rect=(0, 0.055, 1, 0.945))
     _footer(fig, "Source: rb5s6s/polarizability.py (sum over states, Safronova 2004 "
                  "all-order elements for 7S) + Hamilton et al. 2023 (the 5D magic "
-                 "wavelength, adopted).\nRegenerate: python "
+                 "wavelength, accepted).\nRegenerate: python "
                  "scripts/run_polarizability_ladder.py.")
     out = Path(__file__).resolve().parents[1] / "figures" / "fig9_polarizability_ladder.png"
     fig.savefig(out, dpi=140)

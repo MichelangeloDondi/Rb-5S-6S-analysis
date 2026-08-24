@@ -19,7 +19,7 @@ gives **41.3 kHz** and vrms 337 m/s, a match to 0.2%. So the analytic form is
 right, and two independent things follow:
 
 - **Our M9 Monte Carlo (`transit_mc.py`) had one real bug, a missing flux
-  factor, now FIXED (2026-07-13).** Lehmann page 6 states the lineshape has a
+  factor, now fixed (2026-07-13).** Lehmann page 6 states the lineshape has a
   *finite cusp* because the crossing flux `v` cancels the `1/v²` of the
   excitation amplitude. The MC sampled `v~Rayleigh` and weighted by `1/v²` but
   omitted the leading flux `v` (Lehmann eq. 6), producing a v-power-−1
@@ -34,7 +34,7 @@ right, and two independent things follow:
   the source of the doubled transit. There is only **one** bug (flux).
 
 - **w₀ is re-centred 32 → 50 µm, not 90.** natural(3.49) ⊛ transit(32 µm, 1.87)
-  = 5.64 MHz already EXCEEDS the observed ~5.25 line, so 32 µm is EXCLUDED, and the
+  = 5.64 MHz already exceeds the observed ~5.25 line, so 32 µm is excluded, and the
   width is consistent with **w₀ ≈ 45–70 µm (central 50, floor 38)**. The earlier
   "w₀ ≈ 90 µm" needed the doubled transit and an implausible ~2.3 MHz laser.
 
@@ -43,10 +43,10 @@ right, and two independent things follow:
 - $S_0\propto 1/w_0^2$, so the predicted AC-Stark shift drops by
   $(32/50)^2\approx2.4\times$: $S_0(225\text{ mW})\approx1.43\to0.59$ MHz (not ÷8).
   The recorded bound (re-run: 95% ≲0.64 MHz, profile likelihood) still brackets it, now narrowly.
-- `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now DERIVED from w₀ via
+- `TRANSIT_FWHM_PLACEHOLDER_MHZ` is now derived from w₀ via
   `constants.transit_fwhm_from_w0` (≈1.20 MHz at 50 µm), and every fit was re-run.
 
-**This propagation is DONE** (`docs/notes/transit_width_resolved.md`): the flux fix +
+**This propagation is done** (`docs/notes/transit_width_resolved.md`): the flux fix +
 Lehmann test, the w₀ re-pin, and the C1/C2/C3d re-runs all landed 2026-07-13. The
 headline results are unchanged in *kind* (model-independent bounds and
 nulls, gated on a direct beam-profile measurement), and only the w₀-conditional central values
@@ -61,7 +61,7 @@ Converting: at 393 K, 1 mTorr ↔ 24.5×10¹² cm⁻³, so
 $$\beta_\text{self}(7S)\approx 129/24.5 \approx 5\ \text{kHz per }10^{12}\ \text{cm}^{-3}.$$
 
 Our β_self **bound** is 0.2–0.4 MHz = 200–440 kHz per 10¹² cm⁻³ (95%,
-t-corrected for the 1-DOF scatter + the 20% density-scale systematic), so it
+t-corrected for the 1-dof scatter + the 20% density-scale systematic), so it
 sits ~40–90× above the 7S self-broadening scale (6S should be similar or a bit
 smaller). Refinement for the paper: quote the **self-broadening** coefficient
 (what β_self is), not the self-*shift* (−17.8 kHz/mTorr) the memory had used,
@@ -72,7 +72,7 @@ the fixed-lock session's 150–170 °C).
 ## 3. Grimm and Stalnaker: the ⟨E²⟩ convention and the novelty bound (both hold)
 
 - **Grimm 2000** confirms our S₀ convention verbatim: $\Delta E=-\tfrac14\alpha E_0^2=-\alpha I/(2\varepsilon_0 c)$
-  (their oscillator model, §II). No change, and it is the right citation for
+  (their oscillator model, §ii). No change, and it is the right citation for
   `stark_shift_S0_mhz`.
 - **Stalnaker 2006** is genuinely the nearest prior art: a spatially-varying
   AC-Stark shift producing an asymmetric lineshape from which α was extracted.
@@ -80,9 +80,9 @@ the fixed-lock session's 150–170 °C).
   *supports our method*, being a precedent for using the shift's spatial
   structure as a measurement channel, in the fringe-averaged FM regime we invoke.
 
-## 4. Lehmann §II: a ready-made tool for the fixed-lock session's saturated Stark regime
+## 4. Lehmann §ii: a ready-made tool for the fixed-lock session's saturated Stark regime
 
-Lehmann's saturated-field treatment (his §II) gives the two-photon lineshape
+Lehmann's saturated-field treatment (his §ii) gives the two-photon lineshape
 *with* an AC-Stark shift in dimensionless reduced units (reduced Rabi
 $\Omega'=\sqrt{\pi/2}\cdot w\Omega_{2p}/v$, reduced shift $\beta=\Delta\omega_{fg}/\Omega_{2p}$).
 The small-waist runs are exactly this regime (high intensity, non-negligible
@@ -100,5 +100,5 @@ in the transit MC** (a missing crossing-flux factor) **and re-centred the domina
 systematic** (w₀ ~50 µm, not the 32 µm nominal, which the corrected transit
 excludes), with a clean downstream consequence (the predicted AC-Stark shift is
 ~2.4× smaller, 1.43 → 0.59 MHz). Everything is confirmed against Lehmann's own
-worked example (41.2 kHz, 0.2%). The propagation is DONE (2026-07-13): the fix,
+worked example (41.2 kHz, 0.2%). The propagation is done (2026-07-13): the fix,
 the w₀ re-pin, and every w₀-conditional fit have been re-run.

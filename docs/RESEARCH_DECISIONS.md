@@ -36,7 +36,7 @@ The decisions at a glance, each argued in full in its numbered section:
 | The 130 °C density point? | Promoted from diagnostic to the headline four-point lever | same configuration as the temperature ladder, session receipts checked (§9) |
 | The joint-refit choices (2026-08-03)? | Measured priors over seeded ones, per-session widths, no robustness row | each argued from the fits' own receipts (§10) |
 | Can a cold-start profile be quoted? | Not without a seeded twin, and the minimum search variant runs first | a stuck primary printed a 283,000-unit artifact where the answer is indifference (§11) |
-| Why pool the four lines into one slope? | Adopted by a preregistered probe, scored after the pooled number existed | its predictions held, one by a different mechanism than the note argued (§12) |
+| Why pool the four lines into one slope? | Accepted by a preregistered probe, scored after the pooled number existed | its predictions held, one by a different mechanism than the note argued (§12) |
 | Why does the ruler figure show six teeth, not seven? | The all-seven clause returned the empty set and was relaxed by amendment, in the open | two measured causes, recorded in the ruler specification (§12) |
 | Why is the fixed-lock session proposed rather than run? | It is the next campaign, and this record's remit is the 2025 data | every descoped item names its fixed-lock revival condition (§12) |
 | Where are the raw traces? | Held privately, with the manifest and every certifying check shipped | what runs here certifies the analysis, and what cannot is stated (§12) |
@@ -53,7 +53,7 @@ A single-condition fit returns both, strongly anti-correlated at
 `corr(sigma_laser, gamma_coll) ~ -0.9`, closure-measured at SNR ~ 130
 ([linefit.py:37](../rb5s6s/linefit.py#L37)):
 
-> the TOTAL Voigt width (their combination) is robust and the individual split
+> the total Voigt width (their combination) is robust and the individual split
 > is not, so never quote a single-condition sigma_laser or gamma_coll as physics
 > without its error and this correlation.
 
@@ -95,7 +95,7 @@ profiled over the (`gamma_coll`, `sigma_laser`) plane with every other parameter
 re-minimised at each point ([fig7](../figures/fig7_identifiability_profile.png)),
 giving
 
-> the dataset constrains the TOTAL width well but the SPLIT poorly, so the
+> the dataset constrains the total width well but the split poorly, so the
 > individual coefficients are w0-conditional bounds, not measurements
 > ([identifiability.py:37](../rb5s6s/identifiability.py#L37))
 
@@ -118,7 +118,7 @@ The constrained fit then produces a `sigma_laser(T)` rising to 1.5–1.6 MHz at
 flat at 1.0–1.2. The rise is not a measured laser drift:
 
 > that σ_laser(T) trend is the **β↔σ_laser degeneracy** under the density
-> constraint, NOT a physical laser drift, so the trend is a model artifact,
+> constraint, not a physical laser drift, so the trend is a model artifact,
 > not a stale block ([RESULTS.md](RESULTS.md) M4c)
 
 A smooth curve from a constrained fit is not better evidence than a scattered
@@ -136,14 +136,14 @@ Two estimates of `beta_self` exist: a model-independent width-versus-density
 slope, and the hierarchical global fit, which is tighter. The tighter one is not
 the headline.
 
-> its beta is the best MODEL-BASED cross-check of the model-independent
+> its beta is the best model-based cross-check of the model-independent
 > raw-width bound (M4), not a replacement for it
 > ([global_fit.py:37](../rb5s6s/global_fit.py#L37))
 
 M4's own producer says the same about its error bars, and gives the mechanism:
 
-> the dataset's four-point lever BOUNDS beta_self (it does not measure it). The
-> global-fit sigmas above are OVERCONFIDENT, since they assume one shared sigma_laser
+> the dataset's four-point lever bounds beta_self (it does not measure it). The
+> global-fit sigmas above are overconfident, since they assume one shared sigma_laser
 > across blocks and so omit exactly this between-block drift.
 > ([run_beta_self.py:396](../scripts/run_beta_self.py#L396))
 
@@ -163,7 +163,7 @@ the ladder rejects it
 ([06_the_statistics.md](methods/06_the_statistics.md)):
 
 > **A→B ≈ +1700** (transit decisively warranted), **B→C ≈ +435** … and **C→D
-> ≈ −100**, so *the free AC-Stark parameter is decisively NOT warranted*
+> ≈ −100**, so *the free AC-Stark parameter is decisively not warranted*
 
 > A model-comparison that *declined* to add the AC-Stark term is the statement
 > of "we do not claim to have measured it here."
@@ -188,7 +188,7 @@ not robustly resolve shared against independent
 A favourable score would not have meant much either:
 
 > dBIC > 0 reads "the dataset cannot justify per-block freedom" (Occam on
-> underpowered data), NOT "the sharing is confirmed"
+> underpowered data), not "the sharing is confirmed"
 > ([sharing_bic.py:36](../rb5s6s/sharing_bic.py#L36))
 
 The in-sample check (M4c) returns χ²/dof of 0.19/0.58/0.33, all *below* one,
@@ -309,12 +309,12 @@ ruler.
 
 **Decision: the 130 °C point is folded into the headline.** On firsthand
 knowledge of the bench, the 130 °C power-sweep session ran
-in the SAME optical/cell configuration as the 70/90/110 °C temperature sweep
+in the same optical/cell configuration as the 70/90/110 °C temperature sweep
 with the same beam path, the same cell and the same detection chain. That
 removes the
 "different configuration" objection. What genuinely differs between the two
 sessions is the acquisition epoch and the axis calibration, and the
-calibration difference is already handled PER SESSION: `load_t_rates()`
+calibration difference is already handled per session: `load_t_rates()`
 derives the T-sweep rate from the T-session's own per-block ruler and the
 P-sweep rate from the P-session's before/after bracket combination
 independently, so combining the two onto one shared density axis carries no
@@ -330,7 +330,7 @@ stronger with it: `rb5s6s/lever_crosscheck.py` had already noted that folding
 in the 130 °C anchor pulls the fitted slope down because `gamma_coll(T)`
 barely grows across the full lever, which is a residual floor rather than
 resolved collisions, and that is a cleaner demonstration with the full ×52.5 span
-than with the ×16.2 one. What does NOT change: the bound still sits an order
+than with the ×16.2 one. What does not change: the bound still sits an order
 of magnitude above the ~3.5 kHz expectation anchored on the measured 7S
 self-broadening rate ([BIG_PICTURE.md](BIG_PICTURE.md) §1), so a same-session
 150 to 170 °C extension remains worth doing, not to combine extreme lever
@@ -500,8 +500,8 @@ record what it assumes rather than to assert that the assumption holds.**
 The assumption is specific. The coefficient scales as one over the beam waist
 squared, so a session recorded at a different focus has a different coefficient,
 and none of the nuisances above is the waist. That the three sessions ran in
-different CONFIGURATIONS is established from their own receipts. That they shared
-a GEOMETRY is untested, because the archive holds no per-session waist
+different configurations is established from their own receipts. That they shared
+a geometry is untested, because the archive holds no per-session waist
 measurement.
 
 Two committed diagnostics show the pooled surface behaving badly.
@@ -554,7 +554,7 @@ status cannot be strengthened without changing the producing code.
 ## 14. The width concavity is withdrawn to provisional, 2026-08-18
 
 **The decision.** A concave curvature of the linewidth against power, carried
-since 2026-08-17 as a measured diagnostic, is reclassified as PROVISIONAL and
+since 2026-08-17 as a measured diagnostic, is reclassified as provisional and
 is not an established physical effect. The EOM thermal-lens channel, which was
 inventoried as its candidate mechanism, is demoted with it.
 

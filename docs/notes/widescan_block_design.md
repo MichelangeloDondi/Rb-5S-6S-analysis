@@ -33,11 +33,11 @@ acquisition time.
 The out-of-window band that carries ridge-breaking information about the
 collisional width is 17 MHz wide, from the fit half-width at 19 to the
 retrace mirror at 36, out of a 43 MHz half-span. That was enough to show the
-band PREFERS a lower collisional width than the core fit assigns, on 11 of 14
+band prefers a lower collisional width than the core fit assigns, on 11 of 14
 fresh conditions (p = 0.029), and not enough to say what lives in it.
 
 The shaped-contaminant injection that would decide it has since run, and the
-answer is that the preference is NOT shape-independent: injecting a contaminant
+answer is that the preference is not shape-independent: injecting a contaminant
 of a shape the measured band deficits allow reproduces the displacement without
 touching the collisional width. A second measurement then found the band's own
 offset is smaller than the swing produced by changing the per-trace background
@@ -59,15 +59,15 @@ retro, degenerate with the term it would replace.
 
 | requirement | value | why |
 |---|---|---|
-| SPAN | 2400 MHz, plus or minus 1200 | three Gaussian sigma of the pedestal, set by the degeneracy calculation below and NOT by where the curve looks like it has fallen |
-| RECORD LENGTH | 10000 points, deeper preferred | keeping 22 points across the 5.4 MHz line at that span |
-| PIEZO SHAPE | sawtooth, or export one direction | a symmetric triangle images an off-centre line, which is the 40 MHz mirror that caps the fit window at 25 |
-| DWELL | at least the 2025 0.5 ms per point | the transit cusp is a time-domain feature and a fast scan smears it |
-| RATE or WINDOW | 28 times the 2025 piezo amplitude at a 1 s window, or a 28 s window at the 2025 rate | the same span reached two ways |
+| span | 2400 MHz, plus or minus 1200 | three Gaussian sigma of the pedestal, set by the degeneracy calculation below and not by where the curve looks like it has fallen |
+| record length | 10000 points, deeper preferred | keeping 22 points across the 5.4 MHz line at that span |
+| piezo shape | sawtooth, or export one direction | a symmetric triangle images an off-centre line, which is the 40 MHz mirror that caps the fit window at 25 |
+| dwell | at least the 2025 0.5 ms per point | the transit cusp is a time-domain feature and a fast scan smears it |
+| rate or window | 28 times the 2025 piezo amplitude at a 1 s window, or a 28 s window at the 2025 rate | the same span reached two ways |
 
-**WHY THREE SIGMA AND NOT ONE.** The per-trace background is FREE, so it
+**Why three sigma and not one.** The per-trace background is free, so it
 absorbs whatever is flat and the pedestal is measured only through its
-CURVATURE across the span. The cost is a Fisher ratio and not a haircut: with
+curvature across the span. The cost is a Fisher ratio and not a haircut: with
 y = A g(nu) + B and B free, the amplitude's signal-to-noise retains
 sqrt(1 - <g>^2/<g^2>). That is 0.140 at one sigma of reach and 0.645 at three,
 so a span chosen to make the pedestal look visible is not the same span that
@@ -77,7 +77,7 @@ computes it and a test pins the value.
 (The earlier span and its assumed degeneracy factor are recorded in
 [HISTORY.md](../HISTORY.md).)
 
-The reach schedule, which is also the FALLBACK if the piezo cannot reach three
+The reach schedule, which is also the fallback if the piezo cannot reach three
 sigma. Read off the widest row the hardware allows:
 
 | reach | span | SNR retained | sigma per trace | points across the line |
@@ -92,11 +92,11 @@ sigma. Read off the widest row the hardware allows:
 at 10000 points and the record's median tau_int of 3.81. The knee is near three sigma: past it the retained fraction
 gains little while the resolution keeps falling. Every row still detects the
 pedestal in a five-trace block, so a narrower span degrades the measurement
-without defeating it. The one thing not to do is keep the 2025 span, where
+without breaking it. The one thing not to do is keep the 2025 span, where
 the retained fraction is 0.0013 and the pedestal is unmeasurable in principle
 however long the block runs.
 
-THE SIZING RESULT WORTH CARRYING: at the 2025 record length of 2000 points
+The sizing result worth carrying: at the 2025 record length of 2000 points
 the span and the shape requirements are mutually exclusive. **No setting of a
 2000-point record answers both questions at once.** A deeper record is a menu
 setting on any modern instrument, and it dissolves the tradeoff entirely: one
@@ -122,7 +122,7 @@ requirement was raised to the 90 points across the line that the B5 and B6
 simulations support. What they replaced is recorded in
 [HISTORY.md](../HISTORY.md).
 
-THE tau ASSUMPTION IS NOT LOAD-BEARING, and the range is wide enough that this
+The tau assumption is not load-bearing, and the range is wide enough that this
 matters: at the record's best tau the detection is 105 sigma per trace, at its
 median 61, and at its worst 27. Every one of those is decisive in a
 five-trace block. Stating the naive 93 beside them is deliberate: it is the
@@ -131,14 +131,14 @@ number to distrust.
 ## What it buys
 
 **An in-situ thermometer.** The pedestal width goes as the square root of the
-temperature, so the gas temperature stops being an adopted number. At the
+temperature, so the gas temperature stops being an accepted number. At the
 corrected significance the width lands to 3.2 per cent in one trace and the
 temperature to 6.5 per cent, about 26 K at 130 C, improving to 12 K in a
 five-trace block. Useful as a cross-check on the cold-spot model rather than
 as a precision thermometry result.
 
-**An in-situ retro ratio, weakly.** The area ratio 4rho/(1+rho^2) is FLAT in
-rho near unity, with a derivative of 0.13 per unit rho at the adopted 0.94.
+**An in-situ retro ratio, weakly.** The area ratio 4rho/(1+rho^2) is flat in
+rho near unity, with a derivative of 0.13 per unit rho at the accepted 0.94.
 This is a poor handle unless rho is well away from one, and the block
 register already lists that as this entry's empty case.
 
@@ -163,11 +163,11 @@ somewhere inside 2400 MHz. A constant cannot. That is the discrimination the
 6. the ramp monitor is on its own channel and saved, per PLAN section 3
    item 0.
 
-## What this block does NOT settle
+## What this block does not settle
 
 The laser linewidth and the retro alignment. The 2026-08-15 analysis showed
 that a retro tilt produces a Gaussian of the same functional form and width
-as the fitted laser term, so the two are degenerate BY CONSTRUCTION and no
+as the fitted laser term, so the two are degenerate by construction and no
 scan setting separates them. Those need a beat-note or self-heterodyne
 measurement and an alignment check, both session-level, neither riding this
 block.
