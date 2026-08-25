@@ -117,7 +117,7 @@ one power.
 
 Finally, a data-insufficiency point specific to the asymmetry. A skew is a
 third-moment quantity, and third moments need far more signal-to-noise than
-widths do, so a dataset that determines a width comfortably may bound only
+widths do, so a dataset that determines a width well may bound only
 the skew.
 
 ## Try it

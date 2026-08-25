@@ -26,7 +26,7 @@ the estimate the lineage measurement replaced) an atom takes w0/v ~ 260 ns to
 cross one waist radius, or 520 ns for the full beam diameter, against a natural
 response time of 1/(2 pi Gamma_FWHM) = 45.6 ns. The transverse speed here is
 the 2D Maxwell-Boltzmann mean, sigma_v sqrt(pi/2) = 246 m/s at 130 C.
-That is not a comfortable separation, and "the asymmetry survives motion" is
+That is a thin separation, and "the asymmetry survives motion" is
 therefore an assumption, not an obvious truth.
 
 THE RESULT: it survives exactly, and the factorization is legitimate.

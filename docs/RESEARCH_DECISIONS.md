@@ -523,7 +523,7 @@ argued in
 [big_picture/08](big_picture/08_when-a-joint-fit-is-legitimate.md).
 
 The cross-peak half of the same question is settled differently and more
-comfortably. Sharing across the four hyperfine components is a physical statement
+firmly. Sharing across the four hyperfine components is a physical statement
 because the light shift is blind to the hyperfine index, the one known peak
 difference is calculable at about 4 kHz against an 88 kHz scatter, and the fit
 statistics are reported as a check rather than as the licence, following the

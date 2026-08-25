@@ -205,7 +205,7 @@ conditions there (worst case, 130 C, where the margins are smallest):
   the collision phase becomes order unity, $\rho_W=(C_6/\hbar v)^{1/5}$, using
   $C_6(5S{+}6S)\approx2.9\times10^4 \text{a.u.}$ from M18) is
   $\rho_W\approx2.3 \text{nm}$. Spacing exceeds the interaction radius by a
-  factor of $\sim140$ (a volume ratio of $\sim10^6$): comfortably in the
+  factor of $\sim140$ (a volume ratio of $\sim10^6$): well inside the
   binary-collision regime at every temperature in the sweep (the ratio only
   grows at lower $T$, where the density is smaller).
 - **Energy condition (43a)/(43b).** $kT/h\approx8.4 \text{THz}$ at 130 C,

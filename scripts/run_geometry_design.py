@@ -245,7 +245,7 @@ def fringe_velocity_classes() -> None:
     Doppler no longer cancels exactly. The residue is Delta v_z / c, which
     smears the line by Delta sigma_v / c. It grows LINEARLY in Delta while the
     fringe suppression improves as a Gaussian in Delta, so the trade has a
-    comfortable window rather than a knife edge, and both numbers are printed.
+    wide window rather than a knife edge, and both numbers are printed.
     """
     sigma_v = math.sqrt(K_B_J_PER_K * (T_C + 273.15) / M_RB87_KG)
     v_perp = sigma_v * math.sqrt(math.pi / 2.0)      # 2D Rayleigh mean

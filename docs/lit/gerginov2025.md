@@ -82,7 +82,7 @@ Diagnostic decompositions are shown *and* flagged as already counted.
 **4. Bounding a systematic by amplification, which is the one to steal.** Their
 AC Stark (light) entry is $0 \pm 0.01$, and it is not a guess. They measure the
 light shift in a deliberately *amplified* configuration — shutters open, where it
-is $49(1.5) \times 10^{-15}$ and comfortably measurable — then attenuate by a
+is $49(1.5) \times 10^{-15}$ and readily measurable — then attenuate by a
 calibrated 40 dB (two mechanical shutters per fibre input, for redundancy, each
 at least 40 dB) and assign the scaled residual, $\approx 5 \times 10^{-19}$,
 rounded up to an upper limit of $1.0 \times 10^{-18}$.

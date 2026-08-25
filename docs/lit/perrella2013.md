@@ -179,7 +179,7 @@ thesis.
 rather than between the two groups.** A ~15 µm mode radius against a *measured*
 17.1–19.3 µm injection waist is the same regime. That makes this the **most
 relevant published point in the table** — and its lesson is not the transit
-number, which is a comfortable 3–4 MHz, but that the *measured* line was
+number, which is a moderate 3–4 MHz, but that the *measured* line was
 10 MHz. In a real large-core fibre,
 transit was less than half the width. Any guided-geometry experiment on this
 line should budget separately for mode structure. That remains true whether or

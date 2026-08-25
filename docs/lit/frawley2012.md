@@ -135,7 +135,7 @@ Evaluated (CALCULATED 2026-07-31):
 So this paper is usable at Patterson's fibre but **only just** — $a$ is 97% of
 the stated limit — and it is **out of range at Sagué's**. That must be carried
 into any refit rather than discovered afterwards. The companion distance
-condition is comfortably met for the near-surface atoms that matter, which sit
+condition is amply met for the near-surface atoms that matter, which sit
 tens of nanometres out.
 
 **Also useful, from their worked example:** for caesium around a silica fibre of

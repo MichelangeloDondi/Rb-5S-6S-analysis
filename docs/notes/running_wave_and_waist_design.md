@@ -284,7 +284,7 @@ linewidth. It becomes useful around $2\sigma_v/\lambda$ = 395 MHz, which is
 where $v_\text{fringe}$ equals one standard deviation, and it is decisive an
 octave above that.
 
-### What that costs, and why the exchange is comfortable
+### What that costs, and why the exchange is favourable
 
 With the two arms at different frequencies the first-order Doppler no longer
 cancels exactly. The residue is $\Delta v_z/c$, which smears the line by

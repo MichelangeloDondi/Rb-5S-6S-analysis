@@ -54,7 +54,7 @@ def dynamic_range(frame, col: str, by: str) -> float:
 def verdict(ratio: float) -> str:
     """Three coarse bands. The boundaries are conventions, not physics: 3 is
     where a signal starts to stand out of block scatter at all, 10 is where it
-    does so comfortably enough to carry a measurement rather than a bound."""
+    does so with margin enough to carry a measurement rather than a bound."""
     if ratio > 10:
         return "RESOLVES"
     return "MARGINAL" if ratio > 3 else "CANNOT_RESOLVE"

@@ -156,7 +156,7 @@ somewhere inside 2400 MHz. A constant cannot. That is the discrimination the
    retrace mirror survived the piezo change.
 4. the EOM comb is still resolvable for the frequency axis. At 6.25 MHz
    spacing on the laser axis this is about 62 points per tooth at the
-   proposed resolution, which is comfortable.
+   proposed resolution, which is ample.
 5. the per-trace timestamp is in the export. The archive had to recover the
    clock separately, and blocks turned out to be 54 to 76 minutes apart
    rather than minutes.

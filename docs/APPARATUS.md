@@ -288,7 +288,7 @@ carries the tables.
 The IR receiver is the instrument [BIG_PICTURE](BIG_PICTURE.md) refers to as
 "an IR receiver already on the bench" for the trapping-free 6S→5P 1.3 µm
 cascade option ([FUTURE_TRANSITIONS](FUTURE_TRANSITIONS_titsapph.md)). Its
-DC–750 Hz bandwidth is comfortable against a 1 s scan.
+DC–750 Hz bandwidth leaves wide margin against a 1 s scan.
 
 ---
 

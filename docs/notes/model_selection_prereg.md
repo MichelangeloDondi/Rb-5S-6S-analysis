@@ -132,7 +132,7 @@ demonstrably flips an answer.
 The C to D rung is the one that matters for the headline, because it is the
 statement that the AC-Stark parameter is not warranted on the drifted data and
 therefore that the result is a bound rather than a measurement. **It survives
-the criterion change comfortably**: the ramp buys essentially zero chi-squared,
+the criterion change by a clear margin**: the ramp buys essentially zero chi-squared,
 so no penalty scheme can prefer it. That is a reassuring result for the record
 and it should be stated rather than left implicit.
 

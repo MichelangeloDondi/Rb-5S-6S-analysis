@@ -744,8 +744,8 @@ constraint, and choosing less smoothing raises the ceiling:
 | 16 | 197 | 4.0 ms | 2 |
 
 **So the answer is two to four periods per trace at the archive's smoothing**,
-not thirty-five, and the ceiling rises if the smoothing is reduced. Two is
-comfortable at seventeen windows and already gives two independent up-and-down
+not thirty-five, and the ceiling rises if the smoothing is reduced. Two has
+margin at seventeen windows and already gives two independent up-and-down
 pairs inside one trace. Four is the point at which the lag begins
 to matter for the asymmetry channel before it matters for the width, which is
 the ordering the sweep-rate page sets out. Beyond eight the chain is
@@ -990,7 +990,7 @@ trace occupies 38 per cent of its screen, so setting the bright range tight to
 the signal buys back a factor of about 2.6 and turns marginal into safe. The
 requirement is therefore two settings rather than either instrument: **the
 smoothing mode on, and the bright range tight.** With both right, either scope
-holds one range across the ladder. With either wrong, neither does comfortably.
+holds one range across the ladder. With either wrong, neither does with margin.
 
 ### The vertical range is a measured covariate, and it breaks its own confound
 
@@ -1129,7 +1129,7 @@ The thermometer's arithmetic is modest and worth stating. A Doppler width
 scales as the square root of temperature, so the fractional width moves at
 half the fractional temperature, and resolving 20 K at around 400 K asks for
 a width fit good to about 2.5 per cent, which a twelve-bit wide scan supports
-comfortably. That precision is exactly what the archive lacked: the pilot's
+with room to spare. That precision is exactly what the archive lacked: the pilot's
 internal temperature is carried as a range from 110 to 130 C, a factor of 3.2
 in vapour density, because the record holds variac set points and no measured
 temperature. One pedestal sweep per temperature block closes that class of

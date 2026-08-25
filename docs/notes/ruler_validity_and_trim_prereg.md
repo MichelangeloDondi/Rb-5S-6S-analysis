@@ -559,8 +559,9 @@ flagged rather than silently fixed.
 | B. folds at apex 0.8, the excision that must be accepted | 8 | minus 85 to minus 96 |
 
 One standard deviation sits a factor of 16 above the largest clean relabelling
-cost and a factor of 2.4 below the median false-rescue cost. The clean side is
-comfortable and the fold side is not, and that asymmetry is stated rather than
+cost and a factor of 2.4 below the median false-rescue cost. The clean side
+clears by that factor of 16 and the fold side does not, and that asymmetry
+is stated rather than
 hidden. The fold side is carried by the excision rung, which on the same
 injector improves chi2_red by 84 to 96 standard deviations, so guarding it
 costs nothing there while blocking it on a clean comb where it would delete
@@ -1812,7 +1813,7 @@ Whether the window is in the right place is a separate question from whether
 the trimmer works, and it was not settled here. The cap that excludes the
 retrace is a fixed number of megahertz, and the retrace crossing moves with
 the sweep rate, which the six-tooth correction had just re-measured. A cap
-that is comfortable at one rate is not automatically comfortable at another.
+that is safe at one rate is not automatically safe at another.
 The frequency-calibration review took this on, and the check was cheap: for
 every canonical trace, the distance from the window edge to the nearest
 recorded retrace crossing, in units of the fitted width.

@@ -73,7 +73,7 @@ Span and resolution exchange against each other at a fixed record length, and
 widening a window for a good reason, to reach a wing or a companion feature
 further out, is not free. Every point spent on the wider reach is a point
 no longer spent on the narrow feature at the centre, so the same total
-record that resolves a line comfortably at one span can leave it thinly
+record that resolves a line easily at one span can leave it thinly
 sampled at another, with nothing about the wider window itself announcing
 the loss.
 

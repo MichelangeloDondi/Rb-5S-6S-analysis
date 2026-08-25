@@ -2279,7 +2279,7 @@ def fig_weak_field_limit():
     distribution triangular and its skewness non-zero. That is the leading
     term of the excited fraction and not the fraction itself: the real weight
     is (s/2)/(1+s), which is quadratic in intensity only while s is small.
-    The dataset sits comfortably inside that regime. The small-waist session
+    The dataset sits well inside that regime. The small-waist session
     the record reaches for does not, and the reason is a scaling accident
     worth drawing: s carries the two-photon Rabi frequency squared, so it goes
     as the FOURTH power of the inverse waist, while the shift itself goes only
@@ -5326,7 +5326,7 @@ def fig_achieved_vs_achievable():
 
     THE TENSION IN PANEL B IS THE RESULT, not a blemish to smooth. The primary
     joint bound sits below the predicted value, which is an exclusion at about
-    the two-sigma level rather than a comfortable one, and the robustness
+    the two-sigma level with little margin, and the robustness
     subset that drops one peak does not sit below it. Both bounds are drawn,
     because the distance between them is what makes the exclusion marginal.
     """

@@ -61,7 +61,7 @@ once and never revisited. An irreversible on-instrument average, a
 "high-resolution" or peak-detect acquisition mode, folds several raw sweeps
 into the single record that reaches disk before any later analysis sees
 them, and the individual sweeps are then gone rather than merely
-uncollected. A bandwidth limit is a different operation: set comfortably
+uncollected. A bandwidth limit is a different operation: set well
 above the signal's own bandwidth, it removes noise power from a band the
 signal never occupied and leaves the signal itself untouched, so it costs
 nothing and is safe to leave on. And a per-sweep timestamp is one channel or
@@ -91,7 +91,7 @@ was raised once, and only once a simulation had actually tested it.
 The 2025 record length is `TRACE_N_POINTS` in
 [`rb5s6s/constants.py`](../../rb5s6s/constants.py), 2000 points, and at the
 2025 span that chapter reports 127 points across the line's measured width,
-comfortable for the fit the campaign ran. Holding that same record length
+ample for the fit the campaign ran. Holding that same record length
 fixed while widening the span to reach a co-propagating Doppler pedestal, as
 the Try it block below computes directly from the constant, collapses the
 points-across-the-line count toward single digits, which is the concrete

@@ -711,7 +711,7 @@ because those decompositions leaked early drift into their exponentials;
 itself replaces: under the adequate noise model the constant is +0.016
 [+0.007, +0.025], agreeing with those floors — the leak ran the other way)*.
 The within-block
-bounds (|r| ≲ 4 ms/min) contain the constant comfortably and stay the
+bounds (|r| ≲ 4 ms/min) contain the constant with room to spare and stay the
 model-free anchor. D0's envelope, compared on its own axis: measured
 constant 0.032 [0.023, 0.040] vs 4 MHz/min laser — **~125× inside**.
 
@@ -2033,9 +2033,9 @@ sensitivity, not the atom); summarised in [`RESULTS.md`](RESULTS.md) M17.
 
 ### Postscript to addendum 18 — the same lens on the power axis, and an assumption nobody had tested
 
-The density axis was the comfortable one: the ratio reproduced the archive's
+The density axis was the easy one: the ratio reproduced the archive's
 own statuses and the projection sharpened PLAN. Turned on the **power** axis
-the lens finds something less comfortable, and it sits underneath a headline.
+the lens finds something harder, and it sits underneath a headline.
 
 **The setup.** The AC-Stark bound (M4e) fits one shared κ to the width-versus-
 power data and inflates its errors by √χ² — χ²_red ≈ 4.3 — to absorb the
@@ -2067,7 +2067,8 @@ entirely common.
 **The verdict is a shrug, and the shrug is the finding.** A common component
 is not established — p = 0.11 clears nothing. It is equally **not excluded**:
 the null's own 90% band runs from 1.29 to 4.04, so the statistic is wildly
-uncertain, and the observed 1.39 sits comfortably inside it. Four peaks by
+uncertain, and the observed 1.39 sits inside it, though just above its
+lower edge. Four peaks by
 five powers cannot resolve this question. The point estimate of the common
 variance fraction is 36%, which is worth exactly nothing given that band.
 
@@ -2247,7 +2248,7 @@ number depends on its resolution.
 **Status and lesson.** Open and unattributed, the only such feature in the
 gallery. The measured-prior refit and the fixed-lock session should both
 look at it with fresh data. The lesson is the inverse of addendum 20's:
-there a confident number hid a failure to converge, here a comfortable χ²
+there a confident number hid a failure to converge, here a reassuring χ²
 hides visible structure. Conservative error inflation buys robustness and
 costs sensitivity, and a residual panel is the check the inflated
 statistics cannot perform. The gallery stays in the pipeline so every
@@ -2499,7 +2500,7 @@ the headline: the primary and campaign-only subsets still sit below the
 prediction, the most conservative subset no longer does. The predicted
 coefficient kappa = 1.545 lies above the 95% limit but only by
 delta-chi-square of about 4.0, an exclusion at roughly the two-sigma
-level, not the comfortable rejection the inflated bound implied.
+level, not the clear rejection the inflated bound implied.
 
 **One observation logged, not interpreted.** With the wing nuisance free,
 the flipped-direction family settles about 54 units below its unflipped

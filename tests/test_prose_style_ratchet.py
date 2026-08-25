@@ -212,6 +212,9 @@ def test_the_baseline_itself_only_ever_shrinks():
     # beside the vague one. It gets the falling budget below instead, which is
     # how this file already treats "rather than".
     "compelling",
+    "nuanced",
+    "underscores the",
+    "underscored the",
     "multifaceted",
     "rich tapestry",
     "in today's",
@@ -361,8 +364,8 @@ def test_no_file_gains_the_rather_than_construction():
           "\n  python tests/test_prose_style_ratchet.py --relax-constructions")
 
 
-VAGUE_JUDGEMENT = re.compile(r"\bcomfortabl[ey]\b", re.I)
-VAGUE_BASELINE = Path(__file__).parent / "_vague_judgement_baseline.json"
+VAGUE_JUDGEMENT = re.compile(r"\b(?:un)?comfortabl[ey]\b", re.I)
+VAGUE_ALLOWED = Path(__file__).parent / "_vague_judgement_baseline.json"
 
 
 def _vague_counts() -> dict[str, int]:
@@ -377,41 +380,46 @@ def _vague_counts() -> dict[str, int]:
 
 
 def test_no_file_gains_a_vague_judgement_word():
-    """A per-file falling budget on "comfortable", which cannot be banned.
+    """A HARD BAN on "comfortable", by the experimenter's order of 2026-08-26.
 
-    THE FAILURE, 2026-08-26. The experimenter read the v4.3 release note and
-    said it sounded machine-written. One phrase he could have pointed at was
-    "not a comfortable exclusion": it reads as considered judgement and
-    carries no number, where "the margin is 1.35x and one subset arm does not
-    exclude at all" says the same thing and can be checked.
+    This began as a falling budget seeded at the measured 32. The
+    experimenter overruled it the same day: "add comfortable and similar
+    AI-like expressions to the hard bans". Thirty-six prose sites, markdown
+    and package docstrings alike, were reworded by hand with each meaning
+    kept, the ledger generator's one emitting literal edited in the
+    generator, the count verified before and after.
 
-    IT CANNOT JOIN THE FILLER BAN ABOVE, because that list is zero-cost by
-    construction and this word is not at zero. It appears 32 times, and some
-    of those are the legitimate engineering sense of margin, "DC to 750 Hz is
-    comfortable against a 1 s scan", or "39 sits comfortably inside it". A
-    ban would forbid the good use with the vague one, which is the mistake
-    the 2026-08-10 batch avoided by keeping "leverage" and "underscore".
+    THE MECHANISM IS THE HARD-BAN ONE, not the budget one it replaced. The
+    first conversion changed only the docstring and left the budget code
+    with its --relax-vague escape hatch, and the pre-commit board's rules
+    seat caught the mismatch on the board's first convening: a ban whose
+    baseline can be re-recorded is a preference. The allowlist below is a
+    frozen constant with no relax flag, and any change to it is a reviewed
+    edit to a fixture, never a command.
 
-    So it takes the shape this file already uses for "rather than": a
-    per-file budget seeded at the measured counts, allowed down, never up.
-    Each file loses its vague uses when someone edits it for another reason.
+    THE TWO ALLOWED SITES are in docs/lit/klimovducloy2004.md, and their
+    provenance matters because the first justification given was FALSE and
+    the board's protocols seat caught that too. They are not quotations of
+    the cited paper. They are the note QUOTING ITS OWN earlier, retracted
+    conclusion ("comfortably subwavelength, so there is a closed form",
+    later marked wrong). A retraction must quote the exact words it
+    retracts, so those two self-quotations stay verbatim.
     """
-    baseline = json.loads(VAGUE_BASELINE.read_text())
+    allowed = json.loads(VAGUE_ALLOWED.read_text())
     current = _vague_counts()
-    worse = [f"{rel}: {baseline.get(rel, 0)} -> {n}"
-             for rel, n in sorted(current.items()) if n > baseline.get(rel, 0)]
-    assert not worse, (
-        "a file gained a vague-judgement word. Say the number instead: "
-        "'not a comfortable exclusion' is 'the margin is 1.35x, and one "
-        "subset arm does not exclude at all'.\n  " + "\n  ".join(worse)
-        + "\n\nAfter a genuine cleanup, re-record with:"
-          "\n  python tests/test_prose_style_ratchet.py --relax-vague")
+    over = [f"{rel}: {n} (allowed {allowed.get(rel, 0)})"
+            for rel, n in sorted(current.items()) if n > allowed.get(rel, 0)]
+    assert not over, (
+        "a vague-judgement word appeared. The ban is absolute outside the "
+        "two frozen self-quotations: say the margin, the cost, or the "
+        "number instead.\n  " + "\n  ".join(over))
 
 
 def test_the_vague_counter_sees_a_planted_word():
     """Ceiling test: the counter must be able to fire."""
     assert len(VAGUE_JUDGEMENT.findall("this is a comfortable margin")) == 1
     assert len(VAGUE_JUDGEMENT.findall("it sits comfortably inside")) == 1
+    assert len(VAGUE_JUDGEMENT.findall("an uncomfortable fit")) == 1
     assert len(VAGUE_JUDGEMENT.findall("no such word here")) == 0
 
 
@@ -654,10 +662,7 @@ def test_shaped_bans_stay_at_zero():
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
-    if "--relax-vague" in sys.argv:
-        VAGUE_BASELINE.write_text(json.dumps(_vague_counts(), indent=1, sort_keys=True) + "\n")
-        print("re-recorded the vague-judgement baseline")
-    elif "--relax-csv-semicolons" in sys.argv:
+    if "--relax-csv-semicolons" in sys.argv:
         CSV_SEMICOLON_BASELINE.write_text(
             json.dumps(_csv_semicolon_counts(), indent=1, sort_keys=True)
             + "\n")

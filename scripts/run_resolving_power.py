@@ -35,7 +35,7 @@ projection at the end shows the temperature lever ALONE buys only ~1-3 sigma
 per block, so the second half is not a refinement of the first: both are
 load-bearing.
 
-The same lens turned on the POWER axis finds something less comfortable. The
+The same lens turned on the POWER axis finds something harder. The
 AC-Stark bound (M4e) inflates its errors by sqrt(chi2) to absorb the
 block-to-block width scatter, which is the right remedy only if that scatter
 is INDEPENDENT between blocks -- independent noise averages down, a

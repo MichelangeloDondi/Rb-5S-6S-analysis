@@ -1,21 +1,3 @@
 {
- "docs/APPARATUS.md": 1,
- "docs/CLAIMS.md": 1,
- "docs/PREREGISTRATION_RESULTS.md": 6,
- "docs/RESEARCH_DECISIONS.md": 1,
- "docs/RESULTS.md": 1,
- "docs/lit/baranger1958.md": 1,
- "docs/lit/frawley2012.md": 1,
- "docs/lit/gerginov2025.md": 1,
- "docs/lit/klimovducloy2004.md": 2,
- "docs/lit/perrella2013.md": 1,
- "docs/notes/model_selection_prereg.md": 1,
- "docs/notes/ruler_validity_and_trim_prereg.md": 3,
- "docs/notes/running_wave_and_waist_design.md": 1,
- "docs/notes/widescan_block_design.md": 1,
- "docs/plan/07_acquisition-settings.md": 3,
- "docs/wiki/ac-stark-shift.md": 1,
- "docs/wiki/compute-budgets-and-failure-modes.md": 3,
- "docs/wiki/designing-an-acquisition.md": 2,
- "docs/wiki/grids-and-discretisation.md": 1
+ "docs/lit/klimovducloy2004.md": 2
 }

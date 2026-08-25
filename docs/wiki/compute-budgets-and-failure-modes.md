@@ -32,8 +32,8 @@ parameter, and a solver keeps that matrix resident for as long as the fit
 runs, together with a few arrays of comparable size for the residual, the
 trust-region step and a QR or SVD factorization of the Jacobian itself. The
 memory a single fit needs therefore scales with the product of the point
-count and the parameter count, not their sum, and a fit that is comfortable
-on ten thousand points and a dozen parameters can be uncomfortable on the
+count and the parameter count, not their sum, and a fit whose memory is modest
+on ten thousand points and a dozen parameters can be memory-bound on the
 same data with several times as many parameters, or on several times as much
 data with the same parameters.
 
@@ -42,8 +42,8 @@ way to turn a long queue of independent fits into a short one. Each worker
 is a separate process with its own copy of everything the fit needs, so a
 machine's memory is divided among however many workers are launched at once,
 while its core count is the resource the parallelism is spending time to
-buy. A per-fit footprint that is comfortable run one at a time therefore does
-not stay comfortable under multiplication: ten workers holding the same
+buy. A per-fit footprint that is modest run one at a time therefore does
+not stay modest under multiplication: ten workers holding the same
 Jacobian each need ten times the memory one of them needed alone, and the
 machine's memory, not its core count, is usually the first thing the job
 runs into.

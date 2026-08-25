@@ -66,7 +66,7 @@ two-photon sum frequency, twice the laser frequency.
   Orson figure they were 0.35 and 0.30-0.38, and the exclusion holds
   either way). The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
-  but not a comfortable one, and the most conservative data subset's
+  with little margin, and the most conservative data subset's
   bound rises marginally above the central prediction (0.366 against
   0.348), so it excludes none of it. The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
@@ -576,7 +576,7 @@ natural width. None of this family is claimable from the 2025 data.
 One further conversion needs no Ti:Sapph time at all. The differential
 polarizability of the clock pair has a steep zero crossing at 1297.5 nm,
 0.745 nm from the 6S to 7P resonance at the dipole computation's central
-inputs (multipole terms bounded below a hundredth of a picometre, the
+inputs (multipole terms below a hundredth of a picometre, the
 dipole inputs themselves worth about 75 pm per ten per cent), in the
 telecom O band where
 stabilized diodes are commodity. An auxiliary beam scanned across that
