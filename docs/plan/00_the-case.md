@@ -84,12 +84,20 @@ prediction runs 0.30 to 0.38, all of it above the limit, so reconciling at
 exclusion: dropping peak 4192 removes a whole session and raises
 the limit to 0.37, which does not exclude the prediction. And the
 prediction stands on a polarizability whose sign this record's own
-[THEORY_NOTE](../THEORY_NOTE.md) disputes with the published calculation,
-referred for outside adjudication. So the excess of prediction over limit
+[THEORY_NOTE](../THEORY_NOTE.md) finds opposite to the published
+calculation. The experimenter settled it, taking this
+record's value as the package value and keeping the published one named
+beside it. **An adjudication is not a measurement.** The sign stays unset by
+experiment, and what would settle it is the fixed-lock pull direction,
+section 4. The prediction cell linked above was computed before that
+decision, which raises it by about 5 per cent. Its producer needs two
+sessions held outside this repository and carries the change when it next
+runs. No bound moves either way, because every bound here reads the
+magnitude. So the excess of prediction over limit
 has three candidate readings, a waist error beyond its band, a
-polarizability error, or the 5% fluctuation, and the measurements that
-decide it are a beam profile in the interaction volume and a longer power
-lever, section 4.
+polarizability magnitude error, or the 5% fluctuation, and the measurements
+that decide it are a beam profile in the interaction volume and a longer
+power lever, section 4.
 
 The construction: every point of every canonical power-sweep profile enters
 one three-session maximum-likelihood fit with one shared coefficient,

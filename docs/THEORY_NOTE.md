@@ -678,10 +678,14 @@ is negative and the light shift of the transition is **blue**, not red. Every
 recorded result is sign-immune (C3c is a symmetric null, and C3d and the
 prediction band use $|\Delta\alpha|$), but the fixed-lock *pull direction*
 and the ramp's stated side depend on it. The discrepancy with Orson's printed
-$\alpha_{56}=-1093$ is flagged for adjudication, and the decisive check is one
-line for a theorist: the sign of $\alpha_{6S}$ at 993 nm.
+$\alpha_{56}=-1093$ was **settled by the experimenter, who took this
+record's value as the package value** and kept the published one named
+beside it as `DELTA_ALPHA_AU_ORSON2021`. That is a decision on the theory and
+not a measurement: the sign remains unset by experiment, and the decisive
+check is still one line for a theorist, the sign of $\alpha_{6S}$ at 993 nm,
+with the fixed-lock pull direction as the experiment that would settle it.
 
-### 5.0 The sign dispute, laid out for adjudication
+### 5.0 The sign dispute, and the adjudication that closed it
 
 An external audit (2026-07-26) proposed that the whole Orson disagreement was
 a convention artifact. It is not, but a careful reader did reach that

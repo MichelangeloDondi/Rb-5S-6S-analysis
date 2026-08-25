@@ -546,12 +546,35 @@ guarded below rather than left to discipline.
 """
 
 
+# The two session trees and the pattern each must actually match. A
+# directory that EXISTS and is EMPTY is what a half-finished copy or a failed
+# sync leaves behind, and it passes an is_dir() check while contributing zero
+# traces to a fit that would then run for hours and write a headline bound
+# from one session instead of three. The directory test below was already
+# right about absence; this pair makes it right about emptiness too.
+_REQUIRED_SESSIONS = (
+    ("RB5S6S_SESSION_20250704_DIR", SESSION_20250704,
+     SESSION_20250704 / "2025-07-04" / "C2L=*.csv"),
+    ("RB5S6S_SESSION_20250717_DIR", SESSION_20250717,
+     SESSION_20250717 / "*mw*.csv"),
+)
+
+
 def main() -> int:
     if not (SESSION_20250704.is_dir() and SESSION_20250717.is_dir()):
         print(f"excluded tree(s) not on this machine "
               f"({SESSION_20250704}, {SESSION_20250717}) -- the committed "
               f"results/stark_joint.csv is the record; nothing to do.")
         return 0
+    for env_var, root, pattern in _REQUIRED_SESSIONS:
+        if not glob.glob(str(pattern)):
+            print(f"REFUSING TO RUN: {root} exists but holds no file matching "
+                  f"{pattern.name}. This fit reads three sessions and would "
+                  f"otherwise proceed on the two it can see, writing a "
+                  f"headline bound built from less data than the committed "
+                  f"one. Point {env_var} at the real tree, or leave the "
+                  f"committed results/stark_joint.csv as the record.")
+            return 1
     priors = gc_priors()
     camp = load_campaign()
     reh, n_corrupt = load_session_20250704()
