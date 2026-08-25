@@ -71,8 +71,11 @@ best-fit power coefficient is consistent with zero (Δχ² against zero of
 0.12). What the data give is a 95% upper limit, S₀ at the campaign's
 225 mW operating power **below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
-[`stark_joint.csv`](../../results/stark_joint.csv)). The limit comes from
-how the line moves with power and needs no waist.
+[`stark_joint.csv`](../../results/stark_joint.csv)). The limit is not read from
+where the line sits. Every trace keeps a free centre, so drift and re-locks
+are profiled out exactly, and an on-axis shift instead spreads the line into
+a ramp of red shifts across the beam, which broadens and skews it as the
+power rises. That construction needs no waist.
 
 The predicted shift does need one. At the 64 µm waist, measured by Rajasree
 on this same optical table with the same laser and lenses, though not in

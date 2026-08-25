@@ -459,7 +459,12 @@ This repository holds two things with different lifetimes, and telling them
 apart is worth one paragraph before the map.
 
 **The framework** is the analysis machinery: line shapes, fitting, the noise
-model, the frequency ruler, the diagnostics. It is a release candidate. It
+model, the frequency ruler, the diagnostics. **It is a release candidate, and that
+phrase describes the package, not the record.** The record is released and
+tagged, as the top of this page says. The `rb5s6s` package has not been
+released to an index, and its version is not a community release. Two objects
+with different lifetimes and one phrase between them is how a reader ends up
+believing the wrong one. It
 imports and runs with no raw data present, and `examples/synthetic_recovery.py`
 demonstrates it end to end on synthetic data whose answer is known, reporting
 the recovery against the fit's own uncertainty rather than asserting the fit
@@ -516,8 +521,12 @@ collisional coefficient or the light-shift bound is settled, and the framework
 would be equally correct if both changed tomorrow.
 
 What is not yet true: no independent scientist has installed this and applied
-it to a dataset that is not ours, so this is a release candidate rather than a
-community release. What the release act itself requires, and which of those
+it to a dataset that is not ours, so the package is a release candidate and
+not yet a community release. The record itself is released, at the tag the top
+of this page names. That residual has not moved, but what it costs to close has:
+the package now exports the analysis path and `examples/your_line.ipynb` opens
+a data file and fits it, so running this on someone else's line is an
+afternoon's work rather than a project. What the release act itself requires, and which of those
 requirements have already been verified, is
 [the release checklist](docs/RELEASE_CHECKLIST.md).
 

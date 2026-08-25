@@ -1,6 +1,6 @@
 # Release checklist
 
-The framework is a release candidate and the release act is the owner's. This
+The framework is a release candidate and the release act is the experimenter's. The phrase describes the package: the record is released and tagged, and the two have different lifetimes. This
 page is what that act requires, assembled so it can be worked through rather
 than reconstructed. Nothing here has been performed.
 
@@ -21,11 +21,19 @@ than leaving it inferred.
 
 **2. Retire or keep the release-candidate paragraph.** README carries "no
 independent scientist has installed this and applied it to a dataset that is
-not ours, so this is a release candidate rather than a community release."
-That sentence is true and it is the most useful sentence in the file for
-anyone deciding whether to adopt the framework. Releasing does not make it
-false. Keep it, and add the date of the first outside application when there
-is one.
+not ours, so the package is a release candidate and not yet a community
+release." That sentence is true and it is the most useful sentence in the file
+for anyone deciding whether to take up the framework. Releasing does not make
+it false. Keep it, and add the date of the first outside application when
+there is one.
+
+The sentence now names the package because "this is a release candidate"
+sat fifty lines below a blockquote saying the record is released and tagged,
+so one phrase was doing duty for two objects with different lifetimes. The
+residual it names has not moved. What moved is the cost of closing it:
+the package now exports the analysis path and the notebook opens a data file
+and fits it, so a first outside application is an afternoon rather than a
+project.
 
 **3. Refresh `CITATION.cff`.** Version, date, and the author list. The DOI, if
 one is minted, goes here and in the README badge.
