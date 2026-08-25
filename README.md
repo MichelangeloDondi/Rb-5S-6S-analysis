@@ -4,6 +4,8 @@
 [![release](https://img.shields.io/github/v/release/MichelangeloDondi/Rb-5S-6S-analysis)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+> **The record is released and tagged.** The badge above carries the current version, and [the releases page](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases) says what each one froze. `v4.3` is the width question taken to its data's limit. It froze the three bounds, the kernel identification at its likelihood ratio, and the named next experiment for what stays unresolved. Every number below is reproducible from the committed producers at that tag.
+>
 > **The result in ten minutes: [docs/plan/00_the-case.md](docs/plan/00_the-case.md)**
 > states what was measured, what is not identified and why, the one
 > measurement that removes each ambiguity, what a next campaign is projected
