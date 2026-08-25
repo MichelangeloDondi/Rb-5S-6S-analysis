@@ -29,7 +29,6 @@ they build on one another.
 |---|---|
 | **the physics of the transition** | [selection rules](selection-rules.md), [multiphoton transitions](multiphoton-transitions.md), [hyperfine structure](hyperfine-structure.md), [Doppler-free geometries](doppler-free-geometries.md), [magnetic sublevels](magnetic-sublevels.md), [the cascade and F-depletion](the-cascade-and-f-depletion.md) |
 | **guided-mode or nanofibre spectroscopy**, where the same atom is driven in an evanescent field | [Doppler-free two-photon](doppler-free-two-photon.md), [standing waves](standing-waves.md), [transit-time broadening](transit-time-broadening.md), [the beam waist](the-beam-waist.md), [saturation](saturation.md) |
-
 | **frequency metrology**, how the axis is built and what it is worth | [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md), [hyperfine structure](hyperfine-structure.md), [EOM sidebands](eom-sidebands.md), [the two-photon comb](the-two-photon-comb.md), [Allan deviation](allan-deviation.md) |
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
 | **reproducing the headline analysis**, page by page in the order the fit consumes them | [the Voigt profile](voigt-profile.md), [transit-time broadening](transit-time-broadening.md), [the inhomogeneous light shift](the-inhomogeneous-light-shift.md), [self-broadening](self-broadening.md), [weighted least squares](weighted-least-squares.md), [the profile likelihood](profile-likelihood.md), then leave the wiki for [the case page](../plan/00_the-case.md) and [RESULTS.md](../RESULTS.md), where every number these concepts produce is ledgered |
@@ -252,10 +251,13 @@ repository-specific section is coupled to the current implementation.
 
 ## Not covered yet
 
-Two concepts have no page and are the first candidates for one: the density
-scale and the vapour-pressure curve behind it, and the transit-time kernel's
-thermal average, which is currently a section of the transit page rather than
-a page of its own.
+One concept has no page and is the first candidate for one: the
+transit-time kernel's thermal average, currently a section of the transit
+page. The density scale's page is
+[vapour density and temperature](vapour-density-and-temperature.md), and
+an earlier revision of this section kept naming it as missing for five
+days after it existed, which is why the count above it is guarded and
+this list is now one item read against the shelf before it is believed.
 
 ## Conventions
 

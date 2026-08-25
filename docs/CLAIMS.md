@@ -59,9 +59,12 @@ two-photon sum frequency, twice the laser frequency.
   measurement and the open options. The bound
   depends on the waist only weakly, through the transit kernel in its
   lineshape. The prediction it is compared against rides the waist
-  prior directly: 0.35 MHz
-  central, with a 0.30-0.38 MHz band over the waist measurement band and the
-  retro ratio. The predicted coefficient lies above the 95% limit at
+  measurement directly: 0.36 MHz
+  central, with a 0.32-0.40 MHz band over the waist measurement band and the
+  retro ratio (the values under this record's own differential
+  polarizability, taken as the package's on 2026-08-25. Under the cited
+  Orson figure they were 0.35 and 0.30-0.38, and the exclusion holds
+  either way). The predicted coefficient lies above the 95% limit at
   roughly the two-sigma level (delta chi-square about 4), an exclusion
   but not a comfortable one, and the most conservative data subset's
   bound rises marginally above the central prediction (0.366 against

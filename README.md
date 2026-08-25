@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/actions/workflows/tests.yml/badge.svg)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/MichelangeloDondi/Rb-5S-6S-analysis)](https://github.com/MichelangeloDondi/Rb-5S-6S-analysis/releases)
-[![license: Mit](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > **The result in ten minutes: [docs/plan/00_the-case.md](docs/plan/00_the-case.md)**
 > states what was measured, what is not identified and why, the one
@@ -44,7 +44,7 @@ axis the analysis works on, equivalently 1.2 MHz per photon (a bound on what
 is left once transit is removed at the measured waist, and not a laser
 measurement: the bench evidence puts the laser two orders of magnitude
 narrower), and the AC-Stark
-coefficient S₀(225 mW) < 0.26 MHz against 0.35 predicted (95%, current primary
+coefficient S₀(225 mW) < 0.26 MHz against 0.36 predicted (95%, current primary
 construction). The last two ride the beam waist, which
 is 64 µm from Rajasree's direct measurement in the same conditions, same
 optical table, laser and lenses, and not re-measured in this campaign: the prediction rides it directly, the bound only
@@ -184,17 +184,10 @@ fixed condition, [APPARATUS §6](docs/APPARATUS.md)). The consequence:
 - line **shapes are preserved**.
 
 <p align="center">
-  <img src="figures/fig15_drift_story.png" width="760" alt="The drift problem photographed, the campaign reconstructed from its own traces, and what each drift regime licenses">
+  <img src="figures/fig15_drift_story.png" width="760" alt="A wavemeter record of the drifting lock, the campaign's recorded line centres lying exactly on the oscilloscope window settings, and the light-shift error each way of running the measurement would leave">
 </p>
 
-*The whole constraint. Top: the problem as photographed on a preliminary
-session, a wavemeter record of cavity re-locks and relaxations. Middle: the
-campaign reconstructed from its own traces. Each vertical stroke is one
-trace's own scan ramp, offsets are comparable only between traces taken at
-the same scope setting, and the held lock's drift is bounded at order
-0.02 MHz/min over three hours, with its sign undetermined. Shapes survive, centres do not. Bottom: what each drift
-regime licenses, from the 2025 bounds to the fixed-lock session that would
-convert them.*
+*Why the campaign has line shapes and no line centres.* **Top**: *the lock as photographed, a preliminary session's wavemeter record. It ramps steadily, is re-locked by hand, ramps again. The twelve fitted ramp rates fall as the session runs, and their decay measures the lock's thermal settle, [12.6](results/wavemeter_reconstruction.csv "ref:wavemeter_reconstruction:settle_tau_min:2025-06-11") ± [1.2](results/wavemeter_reconstruction.csv "ref:wavemeter_reconstruction:settle_tau_min:2025-06-11:err") min, a property of the lock as it then was.* **Middle**: *the campaign's own centre record. Each point is one condition block, in the order the blocks were taken, and the four groups are the four lines of the spectrum, drawn apart because moving between them is the operator moving the window and not anything drifting. The thick grey line is where the operator set the oscilloscope window. The thin green line is where the fitted peak was found. They are the same line. The strip beneath magnifies their difference, and states by how much: [8](results/window_attribution.csv "ref:window_attribution:rms_residual_ms:peak_power") ms rms out of a [557](results/window_attribution.csv "ref:window_attribution:excursion_peak_to_peak_ms:peak_power") ms excursion, so [99.8](results/window_attribution.csv "ref:window_attribution:window_attributed_pct:peak_power") per cent of what looks like the line moving is the instrument's display frame. The three steps that cross between lines are the largest, so the claim is checked without them: on the [16](results/window_attribution.csv "ref:window_attribution:n_block_steps_within_line:peak_power") steps that stay on one line it is [99.6](results/window_attribution.csv "ref:window_attribution:window_attributed_pct_within_line:peak_power") per cent. Shapes survive, centres do not.* **Bottom**: *what would fix it. The error each way of running this measurement would leave on the light shift, in units of the predicted shift itself, so 1 means the channel cannot tell the prediction from no shift at all. As the 2025 ladder was taken it leaves [3.48](results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_as_taken"), because every repeat of one power was taken back to back, which leaves two tight clusters in time and makes a one-time power step and a drifting line the same shape. Cycling the powers through the epoch instead, on the same traces at the same times, leaves [0.48](results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"), as good as knowing the drift, for the cost of writing the powers down in a different order. The drift rate was never the binding term. The window moves and the ladder order were.*
 
 The numbers behind the figure were recovered, not recorded: the exports carry
 no acquisition time, and a backup that did was audited under a
@@ -314,11 +307,15 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon, equivalently 2.4 MHz on the transition axis, at the accepted lineage waist, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.35 predicted at the accepted lineage waist, see [RESULTS](docs/RESULTS.md). Two robustness questions were raised. The multi-start alarm is CLOSED, diagnosed as the diagnostic's own display normalisation and settled by anchoring to absolute chi-square, where the five independent starts sit 4.66 to 26.29 above the production optimum and none enters the confidence region. The code-version question has its cause identified as of 2026-08-20, and its size is being measured. A commit sweep found the fit's point count changing at exactly one commit, which renamed a vocabulary across the tree and regenerated the committed ruler CSVs as a side effect, shifting fitted rates in their eleventh digit. A shift that small still moves a discrete trim boundary and admits five more samples, so the inputs were never byte-identical and no arithmetic is defective. Whether five samples account for the whole reported movement is the open half, and the primary bound above is unaffected either way. Loose by a factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it. That factor comes from a companion note that no producer regenerates, so it is weaker evidence than the bound it qualifies) | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.36 predicted at the measured lineage waist, see [RESULTS](docs/RESULTS.md). Two robustness questions were raised and both are set out below the table. | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude departs from P², replicated and brightness-ordered | null + a measured departure | — |
 | Beam waist **w₀** | 64 µm, Rajasree's direct measurement in the same conditions (same optical table, laser and lenses), not re-measured in this campaign. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
-| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | external sign adjudication |
+| Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | sign adjudicated 2026-08-24 and taken as the package value, a decision on the theory; the experiment that would settle it, the fixed-lock pull direction, is unrun |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization, and a trapped-atom experiment |
+
+**The two robustness questions on the AC-Stark bound, moved out of the
+table because a paragraph inside a cell cannot be scanned.** Two robustness questions were raised. The multi-start alarm is CLOSED, diagnosed as the diagnostic's own display normalisation and settled by anchoring to absolute chi-square, where the five independent starts sit 4.66 to 26.29 above the production optimum and none enters the confidence region. The code-version question has its cause identified as of 2026-08-20, and its size is being measured. A commit sweep found the fit's point count changing at exactly one commit, which renamed a vocabulary across the tree and regenerated the committed ruler CSVs as a side effect, shifting fitted rates in their eleventh digit. A shift that small still moves a discrete trim boundary and admits five more samples, so the inputs were never byte-identical and no arithmetic is defective. Whether five samples account for the whole reported movement is the open half, and the primary bound above is unaffected either way. Loose by a factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it. That factor comes from a companion note that no producer regenerates, so it is weaker evidence than the bound it qualifies)
+
 
 The last row of the table, drawn. The lower panel shows why the crossings
 exist where they do: the flat 5S polarizability threads the 6S curve's
@@ -349,7 +346,7 @@ width is equally what zero shift would give, and the ramp's *distinctive*
 signature, the skew ∝ S₀³, is below detection in the dataset (a bound). The
 coefficient itself waits for a fixed-lock session. The S₀ bound and its
 prediction are independent by construction: the bound uses only the
-width-vs-power data (no w₀ enters), while the predicted 0.35 MHz is the
+width-vs-power data (no w₀ enters), while the predicted 0.36 MHz is the
 computed polarizability at the beam geometry's w₀ prior, with the retro
 ratio ρ=0.94±0.04 (its in-situ measurement is a fixed-lock-session task),
 fixed before the fit and never an input to it.
@@ -370,7 +367,7 @@ $$I(\nu) = A\left[ L_{\Gamma_\mathrm{nat}+\gamma_\mathrm{coll}} \otimes G_{\sigm
 | Collisional **γ_coll** | Rb–Rb collisions | 0.19–0.93 MHz across the 32 fitted conditions | Lorentzian (adds to natural) |
 | Laser **σ_laser** | laser frequency jitter | 1.75–2.15 MHz across temperature blocks | Gaussian |
 | Transit | finite time an atom spends in the beam | ~0.93 MHz at w₀ ≈ 64 µm | cusp kernel (Biraben–Cagnac / Lehmann) |
-| AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.35 MHz at 225 mW | triangular "ramp" |
+| AC-Stark **R(S₀)** | intensity-dependent light shift across the focus | ~0.36 MHz at 225 mW | triangular "ramp" |
 
 Every width in the table is a FWHM. σ_laser names the Gaussian laser kernel's
 FWHM, already doubled for the two photons. The background is flat over the
@@ -424,13 +421,14 @@ glance").
 ## Reproduce
 
 ```bash
+# needs python >= 3.12, the floor pyproject.toml declares
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 pytest -q                 # fast test suite (~2 min)
 pytest -q --runslow       # full suite incl. high-statistics closure tests (what CI runs)
 ```
 
-The 2025 dataset is already in `data_raw/`, so the pipeline runs directly.
+The 2025 dataset is already in `data_raw/`, so from a clone of this repository the pipeline runs directly. An install from a wheel or sdist carries the package and the examples but not `data_raw/`, so the examples run anywhere while `run_all.sh` and the producers need this repository cloned.
 The analysis is a library with its physics, apparatus, and statistics kept
 behind separate seams. [docs/ADAPTING.md](docs/ADAPTING.md) names them for
 anyone pointing the machinery at a different transition, species, or light
@@ -446,7 +444,7 @@ bash scripts/run_all.sh   # 29 analysis stages in dependency order, then the
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. The runner writes the core subset of the 70 committed CSVs, and
+records. The runner writes the core subset of the 72 committed CSVs, and
 the rest have their own scripts, several needing raw trees that stay
 outside the repository. The lock-drift measurement and its audit trail reproduce from
 a clone with no raw traces at all, off the committed acquisition clock.

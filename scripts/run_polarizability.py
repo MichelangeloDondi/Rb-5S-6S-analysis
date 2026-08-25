@@ -129,7 +129,7 @@ def main() -> int:
                     f"{b['lo']:.0f}", f"{b['hi']:.0f}",
                     "au (alpha_6S - alpha_5S); |value| within ~5% of Orson "
                     "2021's 1093 but OPPOSITE sign (6S pushed up at 993 nm "
-                    "=> blue shift) -- flagged, archival results sign-immune", "DIAGNOSTIC"])
+                    "=> blue shift) -- ADJUDICATED 2026-08-24 and now the package default, a decision on the theory and not a measurement, the sign being unset by experiment, archival results sign-immune", "DIAGNOSTIC"])
         w.writerow(["alpha_6s_1064", "model", f"{a6_1064:.1f}",
                     f"{b_a6_1064['lo']:.1f}", f"{b_a6_1064['hi']:.1f}",
                     "au; small and negative -- a 1064 nm trap arm adds nearly the "

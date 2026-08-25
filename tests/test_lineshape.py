@@ -212,27 +212,41 @@ def test_axial_ramp_grid_density_matches_moments():
 
 
 def test_stark_S0_convention_and_scaling():
-    # Pinned standard convention (constants.DELTA_ALPHA_AU): S0 at the archival
-    # reference is 1.43 MHz transition (0.72 laser). Locks the factor-of-2.
+    # Pinned standard convention. The 1.43 MHz checkpoint (225 mW, the old
+    # 32 um nominal, rho=1) was computed under the cited 1093, so the
+    # convention lock keeps using that constant EXPLICITLY: since the
+    # 2026-08-24 adjudication the package default is this record's -1145,
+    # under which the same point is 1.50. The factor-of-2 is what this
+    # pins, and it is Delta_alpha-independent.
+    from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    s0 = stark_shift_S0_mhz(0.225, 32e-6, rho=1.0)
+    s0 = stark_shift_S0_mhz(0.225, 32e-6, rho=1.0,
+                            delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
     assert abs(s0 - 1.43) < 0.02, s0
-    # scaling: linear in P, 1/w0^2, and (1+rho)
-    assert abs(stark_shift_S0_mhz(0.450, 32e-6, 1.0) / s0 - 2.0) < 1e-9
-    assert abs(stark_shift_S0_mhz(0.225, 16e-6, 1.0) / s0 - 4.0) < 1e-9
-    assert abs(stark_shift_S0_mhz(0.225, 32e-6, 0.0) / s0 - 0.5) < 1e-9
+    # scaling: linear in P, 1/w0^2, and (1+rho), checked at ONE constant
+    kw = dict(delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
+    assert abs(stark_shift_S0_mhz(0.450, 32e-6, 1.0, **kw) / s0 - 2.0) < 1e-9
+    assert abs(stark_shift_S0_mhz(0.225, 16e-6, 1.0, **kw) / s0 - 4.0) < 1e-9
+    assert abs(stark_shift_S0_mhz(0.225, 32e-6, 0.0, **kw) / s0 - 0.5) < 1e-9
 
 
 def test_stark_S0_reproduces_orson2021():
     # LITERATURE ANCHOR (the Stark analogue of the Lehmann transit test): Orson
     # et al. 2021 (J. Phys. B 54, 175001), prior art on THIS 5S-6S line, compute
     # the differential polarizability alpha_56 = alpha(5S)-alpha(6S) = -1093 a.u.
-    # (our DELTA_ALPHA_AU = +1093, opposite sign by definition) and predict an
-    # AC-Stark shift |Df| = 0.66 MHz at their conditions -- 0.8 W into a 63 um
-    # waist radius, single beam (rho=0, their I = 2P/pi r^2). Reproducing it locks
-    # DELTA_ALPHA_AU + the light-shift convention to a published external number.
+    # and predict an AC-Stark shift |Df| = 0.66 MHz at their conditions -- 0.8 W
+    # into a 63 um waist radius, single beam (rho=0, their I = 2P/pi r^2).
+    # Reproducing it locks the light-shift CONVENTION to a published external
+    # number. Since 2026-08-24 this passes THEIR constant explicitly: the
+    # package default is now this record's own -1145 (the experimenter's
+    # adjudication of the sign dispute), so reproducing Orson's arithmetic
+    # needs Orson's input, and using the default here would silently test the
+    # convention against a different number than the one it was pinned to.
+    from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.lineshape import stark_shift_S0_mhz
-    assert abs(stark_shift_S0_mhz(0.8, 63e-6, rho=0.0) - 0.66) < 0.03
+    got = stark_shift_S0_mhz(0.8, 63e-6, rho=0.0,
+                             delta_alpha_au=DELTA_ALPHA_AU_ORSON2021)
+    assert abs(got - 0.66) < 0.03
 
 
 def test_ramp_moment_contributions_forward_model():

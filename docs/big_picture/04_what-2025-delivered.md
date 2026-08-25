@@ -30,8 +30,8 @@ as a bound. Concretely:
   < 0.26 MHz (95%, from a joint full-profile fit of three sessions, every
   trace with a free centre so the drifting laser costs nothing. An earlier,
   tighter figure was cold-start-inflated and is retracted, preregistration
-  addendum 24). The predicted 0.35 MHz at the accepted geometry puts the
-  bound **1.3× below it**, equivalently Δα ≲ 810 a.u. against the 1093 a.u.
+  addendum 24). The predicted 0.36 MHz at the measured geometry puts the
+  bound **1.4× below it**, equivalently |Δα| ≲ 812 a.u. against the 1145 a.u.
   the prediction is built on, which is [Orson 2021](../lit/orson2021.md)'s
   computed value and the repository's `DELTA_ALPHA_AU`. That bracket is
   derived rather than typed, the constant scaled by the bound over the

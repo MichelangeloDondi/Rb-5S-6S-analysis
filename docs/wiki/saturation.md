@@ -42,10 +42,12 @@ inverse square of the focused spot size. Combining those two facts is the
 scaling that governs beam design: $s$ grows as the inverse fourth power of
 the spot size, while a first-order effect that is only linear in intensity,
 such as the light shift, grows as the inverse square. Halving the spot size
-doubles the light shift's reach but multiplies the saturation parameter by
-sixteen. A tighter focus therefore leaves the weak-field regime, where every
-I-squared argument in this analysis holds cleanly, twice as fast in
-logarithmic terms as it gains signal.
+quadruples the light shift but multiplies the saturation parameter by
+sixteen, the same inverse-square against inverse-fourth contest the Try
+it below runs at a factor of four. A tighter focus therefore leaves the
+weak-field regime, where every I-squared argument in this analysis holds
+cleanly, twice as fast in logarithmic terms as its signal grows, since
+the saturation parameter's exponent is double the intensity's.
 
 The same law governs a phase-modulated drive. [EOM sidebands](eom-sidebands.md)
 stamp a comb of copies of the line onto the light, and in a two-photon

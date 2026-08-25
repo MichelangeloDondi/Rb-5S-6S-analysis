@@ -45,6 +45,12 @@ def _tracked_markdown() -> list[str]:
 
 
 def _counts() -> dict[str, int]:
+    # Re-seeded 2026-08-25 for ONE decimal: docs/ADAPTING.md's units
+    # section illustrates the metres-for-nanometres trap with "microns
+    # give 0.99". That is a pedagogical example of a WRONG input, not a
+    # claim about the apparatus, so it has no source to reference and
+    # referencing it would be false. Recorded here because a re-seed
+    # without its reason is how a falling ratchet stops falling.
     counts: dict[str, int] = {}
     for rel in _tracked_markdown():
         path = ROOT / rel

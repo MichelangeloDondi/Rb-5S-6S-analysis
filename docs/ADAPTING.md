@@ -40,12 +40,31 @@ different species, or a different light geometry. The test battery
 so an adaptation that breaks an assumption fails loudly rather than
 silently.
 
+## Units, before anything else
+
+Every quantity's unit lives in its parameter name: `lam_nm` is
+nanometres, `power_w` is watts, `w0_m` is metres, `T_C` is Celsius,
+`gamma_mhz` is MHz. The name is the contract, and with one exception the
+package trusts your arithmetic, because a range check is a ceiling
+someone else's physics has to argue with.
+
+The exception is wavelengths on the exported polarizability surface:
+a value strictly between zero and 50 nm raises, because it can only be
+a unit mistake (metres give 1e-6, microns give 0.99), while the static
+limit `lam_nm = 0` and everything from 50 nm upward pass, since the far
+infrared is legitimate physics no guard should ceiling. Metres for
+nanometres was the one trap both silent and catastrophic, returning a
+plausible number a factor of a billion off. The decision and its
+reasoning sit beside the guard in `rb5s6s/polarizability.py` (the
+experimenter's adjudication, 2026-08-24).
+
 ## The seam map
 
 | you want to change | you touch | what lives there | a wrong change looks like | the check |
 |---|---|---|---|---|
 | the transition or species | [`rb5s6s/constants.py`](../rb5s6s/constants.py) | line frequencies, hyperfine constants, natural width from the upper-state lifetime, polarizability inputs. Every value carries a provenance tag and a source | fits that converge on widths meaning something else. Nothing downstream re-derives a constant | [`tests/test_constants.py`](../tests/test_constants.py), which holds the peak identification and the two frequency axes apart |
 | the vapour and its density | [`rb5s6s/density.py`](../rb5s6s/density.py) | the vapour-pressure chain N(T) and its stated systematics | a clean multiplier on every collisional coefficient, with no fit residual to show it | [`tests/test_density.py`](../tests/test_density.py). A molecular beam or a buffer-gas cell replaces the file outright, and nothing else reads the vapour law |
+| the detection channels and radiation trapping | [`rb5s6s/detection.py`](../rb5s6s/detection.py) | which cascade leg the detector collects, its wavelength and cross-section | a density-dependent amplitude loss that mimics saturation if the channel is wrong | [`tests/test_detection.py`](../tests/test_detection.py). A different detection filter is a new `DetectionChannel`, and a channel with no cross-section raises instead of returning zero |
 | the apparatus | [`rb5s6s/config.py`](../rb5s6s/config.py) for file layouts, directory roots, fit windows and QC thresholds. [`rb5s6s/constants.py`](../rb5s6s/constants.py) for the beam itself, since `W0_MEASURED_M`, `W0_BAND_M`, `RHO_RETRO` and `RHO_RETRO_ERR` are measured quantities with provenance tags and live there. `config.py` re-exports those four by name, so a script importing them from either module gets the same value, and only `constants.py` is the place to change one | the peak light shift quoted at the wrong intensity, since it goes as the inverse square of the waist | [`tests/test_ramp_geometry_docs.py`](../tests/test_ramp_geometry_docs.py), which recomputes the geometry tables the documents print |
 | the light geometry | [`rb5s6s/lineshape.py`](../rb5s6s/lineshape.py) | the composite line model and the shift-distribution machinery. The deep seam, below | a symmetric fit to an asymmetric line, with the shift absorbed into a width | [`tests/test_lineshape.py`](../tests/test_lineshape.py) |
 | the detection noise | [`rb5s6s/noise.py`](../rb5s6s/noise.py) | the noise law measured from the traces themselves, used as fit weights everywhere | error bars wrong by a factor, and a model comparison that then picks its model with confidence | [`tests/test_noise.py`](../tests/test_noise.py) |

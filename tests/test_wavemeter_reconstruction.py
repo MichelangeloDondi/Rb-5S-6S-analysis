@@ -98,6 +98,13 @@ def test_fresh_fit_reproduces_the_committed_csv():
              "pull_width": r["pull_width"], "residual_rms": r["resid_rms"],
              "residual_acf1": r["resid_acf1"],
              "residual_runs_z": r["resid_runs_z"], "nll": r["nll"]}
+    # The settle is fitted by its own function so that this test can rebuild
+    # it here. It was written inline in the CSV writer until 2026-08-25, and
+    # this test failed on the existence of its two rows: a quantity only a
+    # writer can compute is a quantity nothing can check.
+    _tau, _tau_err, _rate0, _n_used, _n_all = W.settle_fit(r)
+    fresh["settle_tau_min"] = _tau
+    fresh["settle_rate_at_start"] = _rate0
     committed = {r_["quantity"] for r_ in _rows()}
     assert committed == set(fresh), (
         f"the file and the fit disagree about which quantities exist: "

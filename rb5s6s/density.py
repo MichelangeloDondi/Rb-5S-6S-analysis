@@ -111,5 +111,11 @@ def d1_optical_depth_per_cm(T_C, isotope, f_hf=0.5):
     value); its ISOTOPE RATIO (85/87 = abundance ratio ~2.6) is robust and is
     what drives differential trapping between the peaks."""
     from .constants import SIGMA_D1_CM2, ABUNDANCE_RB85, ABUNDANCE_RB87
+    if isotope not in (85, 87):
+        raise ValueError(
+            f"isotope={isotope} is neither 85 nor 87, and the natural "
+            f"abundances this function carries are rubidium's. It used "
+            f"to return the Rb-87 abundance for anything else, which is "
+            f"a wrong number rather than a refusal.")
     ab = ABUNDANCE_RB85 if isotope == 85 else ABUNDANCE_RB87
     return f_hf * ab * number_density_cm3(T_C) * SIGMA_D1_CM2

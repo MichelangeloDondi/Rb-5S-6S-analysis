@@ -98,6 +98,11 @@ class DetectionChannel:
                 "line; this module ships one only for D1, from the record.")
         from .constants import ABUNDANCE_RB85, ABUNDANCE_RB87
         from .density import number_density_cm3
+        if isotope not in (85, 87):
+            raise ValueError(
+                f"isotope={isotope} is neither 85 nor 87; the abundances "
+                f"here are rubidium's and any other value used to "
+                f"receive Rb-87's silently.")
         ab = ABUNDANCE_RB85 if isotope == 85 else ABUNDANCE_RB87
         return f_hf * ab * number_density_cm3(T_C) * self.sigma_cm2
 

@@ -463,6 +463,43 @@ def bootstrap_sigma_inf(t, f, tk, res, mu_all, sg_all, n_boot: int = 400,
             for k, v in draws.items()}, {k: len(v) for k, v in draws.items()}
 
 
+def settle_fit(r: dict) -> tuple[float, float, float, int, int]:
+    """The lock's thermal settle, from the decay of the per-interval ramps.
+
+    SEPARATE FROM main() SINCE 2026-08-25, and the reason is a test. The
+    fit lived inside the CSV-writing block, so the freshness test, which
+    rebuilds every quantity independently from `reconstruct()` and compares,
+    could not see these two rows and failed on their existence. A quantity
+    that only a writer can compute is a quantity nothing can check.
+
+    The physics: the docstring above has always said the ramp rates fall
+    monotonically through the record, which is the thermal settle, and
+    stopped there. If the record is one global settle then each interval's
+    ramp rate is that settle's DERIVATIVE, so the rates decay with the
+    settle's own time constant. Fitting them is one straight line in log
+    space over twelve nearly independent numbers, with no degeneracy
+    against the levels or the steps, which is why it succeeds where the
+    2026-08-03 relaxation model failed: the same physics, asked of a
+    quantity that is not degenerate with the rest of the fit.
+
+    Returns (tau_min, tau_err_min, rate_at_start, n_used, n_intervals).
+    """
+    ramp = np.asarray(r["ramp_mhz_per_min"])
+    kicks = np.asarray(r["kick_times"])
+    edges = np.concatenate([kicks, [kicks[-1] + (kicks[-1] - kicks[-2])]])
+    mid = (0.5 * (edges[:-1] + edges[1:]))[:len(ramp)]
+    falling = ramp < 0                  # the one positive rate cannot be logged
+    x, y = mid[falling], np.log(np.abs(ramp[falling]))
+    design = np.vstack([np.ones_like(x), x]).T
+    coef, *_ = np.linalg.lstsq(design, y, rcond=None)
+    resid = y - design @ coef
+    slope_err = np.sqrt((resid @ resid) / (len(x) - 2)
+                        / ((x - x.mean()) ** 2).sum())
+    tau = -1.0 / coef[1]
+    return (float(tau), float(abs(slope_err / coef[1] ** 2)),
+            float(np.exp(coef[0])), int(falling.sum()), int(len(ramp)))
+
+
 @functools.lru_cache(maxsize=1)
 def reconstruct() -> dict:
     # MEMOISED 2026-08-13. This runs a 400-replicate bootstrap and takes
@@ -542,6 +579,26 @@ if __name__ == "__main__":
                     "", "MHz/min; the fitted ramp of the first fitted inter-lock "
                     "interval. these per-interval ramps replace the replaced "
                     "model's record-wide drift and curvature", "DIAGNOSTIC"])
+        # THE THERMAL SETTLE, measured 2026-08-25. Construction and the
+        # reason it succeeds where the relaxation model failed are in
+        # settle_fit's own docstring.
+        _tau, _tau_err, _rate0, _n_used, _n_all = settle_fit(r)
+        w.writerow(["settle_tau_min", "2025-06-11", f"{_tau:.1f}",
+                    f"{_tau_err:.1f}",
+                    "min. THE LOCK'S THERMAL SETTLE, fitted to the decay of "
+                    "the per-interval ramp rates rather than to the trace. "
+                    f"{_n_used} of {_n_all} intervals enter. The "
+                    "excluded one has a positive rate. This is the record's "
+                    "first measurement of a settling constant: the replaced "
+                    "relaxation model returned 353 min on a 54 min record, "
+                    "unresolvable in principle", "DIAGNOSTIC"])
+        w.writerow(["settle_rate_at_start", "2025-06-11",
+                    f"{_rate0:.1f}", "",
+                    "MHz/min. the settle's rate extrapolated to the record's "
+                    "start. With the constant above it says a disturbed lock "
+                    "takes about 40 min to fall below 0.5 MHz/min, which is a "
+                    "scheduling fact for a block that needs a quiet axis",
+                    "DIAGNOSTIC"])
         w.writerow(["ramp_rate_last_interval", "2025-06-11",
                     f"{r['ramp_mhz_per_min'][-1]:.2f}",
                     "", "MHz/min; the fitted ramp of the last interval. the fall "

@@ -154,12 +154,20 @@ def stark_shift_S0_mhz(power_w: float, w0_m: float, rho: float = 1.0,
         S0   = Delta_alpha * I_eff / (2 eps0 c h),
         I_eff = (1+rho) * 2 P / (pi w0^2)   (time-averaged fwd+retro, no x2).
 
-    rho = retro power ratio (1.0 = perfect retro). Returns S0 > 0 for a red
-    shift (Delta_alpha > 0). Laser-axis value is S0/2. This is the coefficient
+    rho = retro power ratio (1.0 = perfect retro). Returns S0 >= 0 always,
+    the DEPTH of the shift; its direction is the sign of Delta_alpha, which
+    this record computes negative, a blue shift. Laser-axis value is S0/2. This is the coefficient
     the fixed-lock mean-pull-vs-power fit measures (inverted to give
     Delta_alpha); the archival ramp SHAPE does not depend on it."""
     i_eff = (1.0 + rho) * 2.0 * power_w / (np.pi * w0_m ** 2)
-    d_alpha = delta_alpha_au * ATOMIC_POLARIZABILITY_SI
+    # S0 is the ramp's DEPTH, a magnitude, which is how every consumer
+    # uses it: the ramp runs on [-S0, 0], every bound here is one-sided
+    # positive, and every fit bounds S0 >= 0. The docstring above has
+    # always defined it with |dE_6S - dE_5S|; the implementation dropped
+    # the modulus and agreed only while Delta_alpha happened to be
+    # positive. The DIRECTION of the shift lives in Delta_alpha's sign
+    # (negative here, so a blue shift), not in this magnitude.
+    d_alpha = abs(delta_alpha_au) * ATOMIC_POLARIZABILITY_SI
     s0_hz = d_alpha * i_eff / (2.0 * EPS0_F_PER_M * C_M_PER_S * H_PLANCK_JS)
     return s0_hz / 1e6
 
@@ -206,6 +214,13 @@ def composite_profile(gamma_coll: float, sigma_laser: float,
     # default and is BIT-IDENTICAL to the pre-change module: adding an exact
     # zero is a no-op in IEEE arithmetic, and tests/test_gamma_l_identity.py
     # asserts that against a snapshot rather than trusting the argument.
+    if laser_kind not in ("gaussian", "lorentzian"):
+        raise ValueError(
+            f"laser_kind={laser_kind!r} is neither 'gaussian' nor "
+            f"'lorentzian'. This selector used to treat any other "
+            f"string as Lorentzian, so a typo chose a MODEL FORM "
+            f"silently, which is the systematic this record spends its "
+            f"kernel chain measuring.")
     _lorentz_laser = laser_kind != "gaussian"
     homog = (GAMMA_NAT_HZ / 1e6 + max(gamma_coll, 0.0) + max(gamma_l, 0.0)
              + (max(sigma_laser, 0.0) if _lorentz_laser else 0.0))
@@ -315,6 +330,14 @@ def stark_ramp_axial_moments(s0: float, z_ratio: float, n_photon: int = 2,
     mean = -(2/3) s0, var/mean^2 = 1/8, g1 = 18^1.5/135 ~ +0.5657;
     n=1 uniform gives mean = -s0/2, g1 = 0 — the skew exists at all only
     because the two-photon signal goes as I^2."""
+    if s0 <= 0:
+        # No ramp, so the shift distribution is a delta at zero: its mean and
+        # variance are exactly zero and its standardized skew is 0/0. The two
+        # sibling functions guard this case and return the spike; this one
+        # divided by a zero norm and returned NaN for all three, which says
+        # "undefined" about two moments that are exactly defined.
+        return {"mean": 0.0, "var": 0.0,
+                "skew_standardized": float("nan")}
     s = np.linspace(-s0, 0.0, n_grid)
     a = np.abs(s)
     with np.errstate(divide="ignore", invalid="ignore"):
@@ -464,6 +487,13 @@ def model_profile(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
     # lineshape.composite_profile and results/kernel_identifiability.csv.
     # gamma_l: the mixed G+L kernel's Lorentzian component, ADDED for the
     # exactness reason in composite_profile's note. Default 0.0 is bit-identical.
+    if laser_kind not in ("gaussian", "lorentzian"):
+        raise ValueError(
+            f"laser_kind={laser_kind!r} is neither 'gaussian' nor "
+            f"'lorentzian'. This selector used to treat any other "
+            f"string as Lorentzian, so a typo chose a MODEL FORM "
+            f"silently, which is the systematic this record spends its "
+            f"kernel chain measuring.")
     _lorentz_laser = laser_kind != "gaussian"
     homog = (gamma_nat_mhz + gamma_coll + max(gamma_l, 0.0)
              + (sigma_laser_fwhm if _lorentz_laser else 0.0))

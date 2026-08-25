@@ -37,6 +37,8 @@ retro-reflected drive adds fringe structure on top, and whether an atom
 averages over fringes during its transit or samples one fringe is a
 question of speed, covered in [standing waves](standing-waves.md).
 
+![The distribution of light shifts across a focused beam, under the one-photon and two-photon weightings, each with its mean marked](figures/wiki_shift_distribution.png)
+
 The peak shift at the focus is the scale of the whole object. This
 repository computes it as $S_0$, the shift at beam centre at full power,
 and the distribution hangs below it.

@@ -88,7 +88,7 @@ one being excluded
 [`results/skew_scaling.csv`](../../results/skew_scaling.csv)), the four-line
 mean exponent came out at $-0.404 \pm 0.091$ with a line-to-line scatter of
 0.181. That disfavours the fixed-size candidate at $p = 0.011$, about
-2.6 sigma, and leaves shot noise consistent at $p = 0.08$. The statistic
+2.3 sigma one-sided, and leaves shot noise consistent at $p = 0.08$. The statistic
 that started as a diagnostic column ended as the record's main instrument on
 an open finding, and what it found sits closer to the null than to the
 candidate that was expected to survive.

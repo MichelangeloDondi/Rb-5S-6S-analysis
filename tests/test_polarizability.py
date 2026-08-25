@@ -13,7 +13,6 @@ from __future__ import annotations
 import pytest
 
 
-from rb5s6s.constants import DELTA_ALPHA_AU
 from rb5s6s.polarizability import (alpha_5s, alpha_6s, alpha_7s, delta_alpha,
                                    delta_alpha_7s, tuneout_5s, magic_wavelengths,
                                    magic_5s7s, mc_band, MAGIC_5S5D52_EXP_NM,
@@ -42,11 +41,13 @@ def test_measured_tuneout_reproduced():
 
 
 def test_delta_alpha_993_magnitude_matches_orson():
-    # the shipped analysis uses |Delta_alpha| = 1093 au (Orson 2021); the
-    # independent recompute must agree in MAGNITUDE (the sign finding is
-    # documented in the module docstring and the results CSV)
+    # Since the 2026-08-24 adjudication the package constant IS the
+    # recompute's value, so the ~5-per-cent magnitude claim is against the
+    # CITED Orson figure, kept under its own name. The sign relationship
+    # lives in tests/test_polarizability_sign_divergence.py.
+    from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     da = delta_alpha(993.0)
-    assert abs(abs(da) / DELTA_ALPHA_AU - 1.0) < 0.10, da
+    assert abs(abs(da) / DELTA_ALPHA_AU_ORSON2021 - 1.0) < 0.10, da
     assert da < 0.0, "sign finding: alpha_6S(993) < alpha_5S(993) (blue shift)"
 
 
@@ -296,3 +297,33 @@ def test_orsons_sign_would_require_an_excluded_6S_lifetime():
     assert k > 1.8, f"scale factor {k:.2f} unexpectedly small -- re-derive the argument"
     assert tau(k) * 1e9 < 15.0, (
         f"Orson's sign would need tau(6S) = {tau(k) * 1e9:.1f} ns; measured is 45.5(2)")
+
+
+def test_metres_for_nanometres_raise_instead_of_answering():
+    """The one unit guard, at the one trap that is silent and catastrophic.
+
+    993.4e-9 passed to delta_alpha used to return 3.7 a.u., a plausible
+    number for an impossible input, and that shape of failure is what the
+    release audit found to matter most for a stranger. The experimenter's
+    adjudication (2026-08-24): guard wavelengths alone, generously, and
+    let every other argument trust the unit its name states, because
+    eleven functions of invented ranges would ceiling someone else's
+    physics. 50 nm to 50 um admits any wavelength a caller could mean.
+    """
+    import pytest as _pytest
+
+    from rb5s6s import alpha_5s, alpha_6s, two_photon_matrix_element
+
+    for fn in (delta_alpha, alpha_5s, alpha_6s, two_photon_matrix_element):
+        with _pytest.raises(ValueError, match="NANOMETRES"):
+            fn(993.4e-9)          # metres
+        with _pytest.raises(ValueError, match="NANOMETRES"):
+            fn(0.9934)            # microns
+        with _pytest.raises(ValueError):
+            fn(-993.4)
+    # and the guard must NOT ceiling the package's own physics: the static
+    # limit and the far infrared pass, which the guard's first day taught
+    # when a generous band rejected the module's own lam_nm = 0 calls
+    alpha_5s(0.0)
+    alpha_5s(1.0e7)
+    assert abs(delta_alpha(993.4) - (alpha_6s(993.4) - alpha_5s(993.4))) < 1e-9

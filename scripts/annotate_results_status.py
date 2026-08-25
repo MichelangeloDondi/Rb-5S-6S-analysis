@@ -85,6 +85,16 @@ FILE_STATUS = {
     # atom, so the whole file is DIAGNOSTIC.
     # a reconstruction of a note's construction, judged on the claim and not
     # the digits, so every row is DIAGNOSTIC.
+    # Both files below were added 2026-08-24 and reached results/ without
+    # entering this map, so a full run_all.sh died on the deliberate
+    # KeyError below. That is the map working: a producer may not add a
+    # committed file without saying what its rows are. The noise budget
+    # measures the INSTRUMENT rather than the atom, and the twin's
+    # recovery ratios measure the twin against its own injected truth, so
+    # every row of each is DIAGNOSTIC. Both producers already write their
+    # own status column, which is why nothing downstream noticed.
+    "quantisation.csv": "DIAGNOSTIC",
+    "twin_realism.csv": "DIAGNOSTIC",
     "band_excess.csv": "DIAGNOSTIC",
     "twin_span_sweep.csv": "DIAGNOSTIC",
     "saturation_companion.csv": "DIAGNOSTIC",

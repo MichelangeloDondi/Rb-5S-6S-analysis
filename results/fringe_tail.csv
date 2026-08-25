@@ -55,8 +55,8 @@ frac_resolved_mc_err,2025_rho0.75_tau6s,0.0001,block-to-block standard error on 
 window_frac,2025_rho0.75_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho1.00_transit,-0.1556,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho1.00_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho1.00_transit,-0.1390,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho1.00_transit,0.0035,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho1.00_transit,-0.1598,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho1.00_transit,0.0040,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho1.00_transit,0.0631,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho1.00_transit,0.0007,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho1.00_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
@@ -64,8 +64,8 @@ frac_resolved_mc_err,S_rho1.00_transit,0.0001,block-to-block standard error on f
 window_frac,S_rho1.00_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho1.00_tau6s,-0.1493,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho1.00_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho1.00_tau6s,-0.1629,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho1.00_tau6s,0.0040,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho1.00_tau6s,-0.1873,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho1.00_tau6s,0.0047,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho1.00_tau6s,0.0663,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho1.00_tau6s,0.0006,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho1.00_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
@@ -73,8 +73,8 @@ frac_resolved_mc_err,S_rho1.00_tau6s,0.0001,block-to-block standard error on fra
 window_frac,S_rho1.00_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho0.94_transit,-0.1555,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho0.94_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho0.94_transit,-0.1389,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho0.94_transit,0.0035,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho0.94_transit,-0.1596,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho0.94_transit,0.0040,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho0.94_transit,0.0630,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho0.94_transit,0.0007,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho0.94_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
@@ -82,8 +82,8 @@ frac_resolved_mc_err,S_rho0.94_transit,0.0001,block-to-block standard error on f
 window_frac,S_rho0.94_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho0.94_tau6s,-0.1492,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho0.94_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho0.94_tau6s,-0.1628,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho0.94_tau6s,0.0040,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho0.94_tau6s,-0.1871,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho0.94_tau6s,0.0046,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho0.94_tau6s,0.0662,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho0.94_tau6s,0.0006,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho0.94_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
@@ -91,8 +91,8 @@ frac_resolved_mc_err,S_rho0.94_tau6s,0.0001,block-to-block standard error on fra
 window_frac,S_rho0.94_tau6s,0.0443,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho0.75_transit,-0.1527,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho0.75_transit,0.0030,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho0.75_transit,-0.1362,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho0.75_transit,0.0034,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho0.75_transit,-0.1566,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho0.75_transit,0.0039,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho0.75_transit,0.0618,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho0.75_transit,0.0007,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho0.75_transit,0.0201,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE
@@ -100,8 +100,8 @@ frac_resolved_mc_err,S_rho0.75_transit,0.0001,block-to-block standard error on f
 window_frac,S_rho0.75_transit,0.0310,coherence-window axial-speed fraction P(|vz| < (lambda/2)/T_window),DIAGNOSTIC
 d_skew,S_rho0.75_tau6s,-0.1466,standardized skew change (with - without fringe),ENVELOPE
 d_skew_mc_err,S_rho0.75_tau6s,0.0028,block-to-block standard error on d_skew,DIAGNOSTIC
-d_kappa3,S_rho0.75_tau6s,-0.1596,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
-d_kappa3_mc_err,S_rho0.75_tau6s,0.0039,block-to-block standard error on d_kappa3,DIAGNOSTIC
+d_kappa3,S_rho0.75_tau6s,-0.1835,third-cumulant change MHz^3 (with - without fringe),ENVELOPE
+d_kappa3_mc_err,S_rho0.75_tau6s,0.0045,block-to-block standard error on d_kappa3,DIAGNOSTIC
 excess_var_frac,S_rho0.75_tau6s,0.0650,fraction of the shift variance contributed by the fringe,ENVELOPE
 excess_var_frac_mc_err,S_rho0.75_tau6s,0.0006,block-to-block standard error on excess_var_frac,DIAGNOSTIC
 frac_resolved,S_rho0.75_tau6s,0.0222,signal-weighted fraction with fringe survival F > 0.5,ENVELOPE

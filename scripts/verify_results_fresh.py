@@ -90,6 +90,8 @@ CHEAP = {
     "run_stark_centres": ["stark_centres.csv"],
     "run_laser_history": ["laser_history.csv", "laser_history_structure.csv"],
     "run_fringe_tail": ["fringe_tail.csv"],
+    "run_window_attribution": ["window_attribution.csv"],
+    "run_centre_fisher": ["centre_fisher.csv"],
 }
 
 # Minutes each, and they need data_raw/ traces.

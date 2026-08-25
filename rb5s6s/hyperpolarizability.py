@@ -367,6 +367,8 @@ def two_photon_matrix_element(lam_nm: float = 993.4192) -> float:
     two_photon_rabi_hz(), which goes from power to field to M without passing
     through Delta_alpha at all.
     """
+    from .polarizability import _check_lam_nm
+    _check_lam_nm(lam_nm)
     w = (1e7 / lam_nm) / CM
     tot = 0.0
     for nm, (e5, d5, _), (e6, d6, _) in zip(_PN, LINES_5S[:8], LINES_6S):

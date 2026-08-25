@@ -783,8 +783,17 @@ Recorded because it is testable.
 Every recorded result uses $|\Delta\alpha|$ and is unaffected either way.
 Orson's own AC-Stark measurement was a null at 6 MHz resolution, so the sign
 has never been set by experiment. A fixed-lock pull measurement (the sign of
-the shift-versus-power slope) settles it outright, and until then the
-narrative keeps the established convention. The decisive theory check is one
+the shift-versus-power slope) settles it outright, and it has not been run.
+
+**What changed on 2026-08-24, and what did not.** The experimenter
+adjudicated the theoretical evidence and took this record's value as
+the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $-1145$ a.u. and Orson's
+$+1093$ is kept beside it under its own name for the comparison. That is a
+decision about which value the framework hands its reader, taken on the three
+anchors and the lifetime discriminant above. **It is not an experimental
+resolution**: the sign remains unset by measurement, this section stands
+unchanged as the argument, and the fixed-lock pull is still what would
+settle it. The decisive theory check is one
 line for a specialist: the sign of $\alpha_{6S}$ at 993 nm.
 
 ### 5.1 Electric quadrupole and magnetic dipole: why neither appears

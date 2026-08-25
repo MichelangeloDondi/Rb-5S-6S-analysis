@@ -28,6 +28,100 @@
   "source_file": "results/beta_self_probe.csv",
   "source_value": "0.02983110511392229"
  },
+ "centre_fisher:inflation_linear_over_constant:measured": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "7.3"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "7.3456"
+ },
+ "centre_fisher:ladder_order_gain:cycled_over_as_taken": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "7.2"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "7.1974"
+ },
+ "centre_fisher:prediction_significance_sigma:constant_per_epoch": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "2.1"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "2.1086"
+ },
+ "centre_fisher:sigma_amplitude_forecast:linear_drift_as_taken": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "3.48"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "3.48"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "3.4837"
+ },
+ "centre_fisher:sigma_amplitude_forecast:linear_drift_cycled": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "0.48"
+   },
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "0.48"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "0.4840"
+ },
+ "centre_fisher:sigma_per_trace_mhz:epoch_28": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "0.025"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "0.0247"
+ },
+ "centre_fisher:sigma_per_trace_mhz:epoch_33": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/07_acquisition-settings.md",
+    "line": 1244,
+    "writes": "0.065"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "0.0647"
+ },
  "full_dataset_fit:kappa_ub95:primary": {
   "producer": "run_full_dataset_fit.py",
   "quoting_sites": [
@@ -179,5 +273,89 @@
   ],
   "source_file": "results/stark_joint.csv",
   "source_value": "1.066"
+ },
+ "wavemeter_reconstruction:settle_tau_min:2025-06-11": {
+  "producer": "run_wavemeter_reconstruction.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "12.6"
+   }
+  ],
+  "source_file": "results/wavemeter_reconstruction.csv",
+  "source_value": "12.6"
+ },
+ "wavemeter_reconstruction:settle_tau_min:2025-06-11:err": {
+  "producer": "run_wavemeter_reconstruction.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "1.2"
+   }
+  ],
+  "source_file": "results/wavemeter_reconstruction.csv",
+  "source_value": "1.2"
+ },
+ "window_attribution:excursion_peak_to_peak_ms:peak_power": {
+  "producer": "run_window_attribution.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "557"
+   }
+  ],
+  "source_file": "results/window_attribution.csv",
+  "source_value": "556.8000"
+ },
+ "window_attribution:n_block_steps_within_line:peak_power": {
+  "producer": "run_window_attribution.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "16"
+   }
+  ],
+  "source_file": "results/window_attribution.csv",
+  "source_value": "16.0000"
+ },
+ "window_attribution:rms_residual_ms:peak_power": {
+  "producer": "run_window_attribution.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "8"
+   }
+  ],
+  "source_file": "results/window_attribution.csv",
+  "source_value": "7.9991"
+ },
+ "window_attribution:window_attributed_pct:peak_power": {
+  "producer": "run_window_attribution.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "99.8"
+   }
+  ],
+  "source_file": "results/window_attribution.csv",
+  "source_value": "99.7680"
+ },
+ "window_attribution:window_attributed_pct_within_line:peak_power": {
+  "producer": "run_window_attribution.py",
+  "quoting_sites": [
+   {
+    "file": "README.md",
+    "line": 190,
+    "writes": "99.6"
+   }
+  ],
+  "source_file": "results/window_attribution.csv",
+  "source_value": "99.6300"
  }
 }

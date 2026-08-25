@@ -4,7 +4,7 @@ transit_cell_130C,0.9575,MHz,committed_input,transit_fwhm_at_T at the cell waist
 beta_self_median,0.0178,MHz per 1e12 cm^-3,committed_input,median over the four peaks of results/beta_self.csv,DIAGNOSTIC
 density_cell_130C,29.433,1e12 cm^-3,committed_input,density.density_units at the cell reference condition,DIAGNOSTIC
 intensity_cell_eff,6.784e+07,W m^-2,committed_input,"time-averaged fwd+retro on-axis intensity at 225 mW, w0 = 64 um, rho = 0.94 (the constants.py convention)",DIAGNOSTIC
-S0_cell_225mW,0.348,MHz,committed_input,stark_shift_S0_mhz at the cell reference condition,DIAGNOSTIC
+S0_cell_225mW,0.364,MHz,committed_input,stark_shift_S0_mhz at the cell reference condition,DIAGNOSTIC
 neff_band,1.08 to 1.25,,assumed_parameter,guided-mode index at 993 nm for a 400 nm class ONF. REPLACE with the value computed from the actual fiber diameter,DIAGNOSTIC
 evanescent_decay_length,211 to 388,nm,derived_expectation,"lambda/(2 pi sqrt(neff^2-1)) across the neff band, central 265",DIAGNOSTIC
 mode_area_eff,0.50,um^2,assumed_parameter,effective area for surface intensity. REPLACE with the mode solution,DIAGNOSTIC
@@ -21,8 +21,8 @@ cold_line_budget,3.49 + laser + 0.141,MHz,derived_expectation,"the cold-ONF line
 intensity_onf_1mW,2.000e+09,W m^-2,derived_expectation,"guided power over effective area, evaluated at the surface",DIAGNOSTIC
 intensity_ratio_onf_over_cell,29,,derived_expectation,1 mW guided against the 225 mW cell reference,DIAGNOSTIC
 two_photon_rate_ratio_per_atom,869,,derived_expectation,intensity ratio squared,DIAGNOSTIC
-S0_onf_1mW,10.2,MHz,derived_expectation,"the cell Stark shift scaled by intensity: at 1 mW the drive's own light shift DOMINATES the line, so 1 mW is a Stark-geometry instrument, not a spectroscopy setting",DIAGNOSTIC
-S0_onf_50uW,0.51,MHz,derived_expectation,"the spectroscopy setting: Stark comparable to the cell's, per-atom rate still x2.2 the cell's",DIAGNOSTIC
+S0_onf_1mW,10.7,MHz,derived_expectation,"the cell Stark shift scaled by intensity: at 1 mW the drive's own light shift DOMINATES the line, so 1 mW is a Stark-geometry instrument, not a spectroscopy setting",DIAGNOSTIC
+S0_onf_50uW,0.54,MHz,derived_expectation,"the spectroscopy setting: Stark comparable to the cell's, per-atom rate still x2.2 the cell's",DIAGNOSTIC
 atoms_in_evanescent_MOT,3.3,,derived_expectation,"evanescent shell (0.55 um^2 cross-section) times 0.6 mm overlap at 1e10 cm^-3: a few atoms on average, the regime the Rydberg-near-fiber detection already works in",DIAGNOSTIC
 atoms_in_evanescent_hot,32509,,derived_expectation,the same shell in 130 C vapor over a 2 mm region,DIAGNOSTIC
 transit_onf_hot_130C,232,MHz,derived_expectation,"cell transit scaled by geometry alone: transit goes from a small component of the cell line to essentially all of the ONF line, so the transit KERNEL becomes the measured object. The evanescent profile is exponential, not Gaussian, so this tests the transit machinery on a second geometry rather than re-testing the cusp",DIAGNOSTIC

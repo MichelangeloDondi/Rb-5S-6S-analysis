@@ -40,7 +40,7 @@ lowest-power skew, the same estimator is run, and the p-value is the fraction
 of draws whose four-line mean is at least as high as the observed one. A first
 version of this module quoted 6.6 sigma against the fixed-amplitude
 hypothesis from the fit covariance. Read this way it is p = 0.01, about
-2.6 sigma, stable across five seeds at 1500 draws.
+2.3 sigma one-sided, stable across five seeds at 1500 draws.
 
     python scripts/run_skew_scaling.py             # writes results/skew_scaling.csv
     python scripts/run_skew_scaling.py --draws 2000

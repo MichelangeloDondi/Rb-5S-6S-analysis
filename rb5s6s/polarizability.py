@@ -19,7 +19,11 @@ energies -- every number in the tables below carries its source. Three jobs:
    the depth searched 2026-07-17) and alpha_6S(1064) (also unpublished), the
    design inputs for a state-insensitive trap on this transition.
 
-THE SIGN FINDING (flagged, not silently adopted). With these matrix elements
+THE SIGN FINDING (adjudicated 2026-08-24, and the adjudication is a
+decision on the theory rather than a measurement: the sign is still
+unset by experiment). This value is now the package's default, carried
+by constants.DELTA_ALPHA_AU, with Orson's kept as
+DELTA_ALPHA_AU_ORSON2021 for the comparison. With these matrix elements
 the differential at 993 nm is alpha_6S - alpha_5S ~ -1150 a.u.: at 993 nm the
 5S state (red of the D lines) shifts DOWN while 6S -- whose dominant couplings
 6S-6P lie far to the red at 2.73/2.79 um, so the 993 field drives them far
@@ -115,6 +119,35 @@ _POLES_5S_NM = sorted(1e7 / abs(e) for e, _, _ in LINES_5S)
 _POLES_6S_NM = sorted(1e7 / abs(e - E_6S_CM) for e, _, _ in LINES_6S)
 
 
+# The one unit guard in the package, and why exactly here (QUESTIONS 26,
+# the experimenter's adjudication 2026-08-24): units live in parameter
+# NAMES throughout (`lam_nm`, `power_w`, `w0_m`), documented and never
+# validated, because eleven functions of invented ranges would put a
+# ceiling a stranger cannot argue with on physics they may legitimately
+# want. Wavelengths are the exception on two grounds at once: metres for
+# nanometres is off by 1e9 and the sum-over-states still returns a
+# plausible number (993.4e-9 nm used to yield 3.7 a.u., the most
+# newcomer-shaped trap the release audit found). The rule is the
+# narrowest that catches it: only the interval strictly between zero and
+# 50 nm raises, because a value there can only be a unit mistake (metres
+# give 1e-6, microns give 0.99). Everything else passes, deliberately:
+# lam_nm = 0 is this module's own static-limit convention, and the far
+# infrared upward is legitimate physics no guard should ceiling. The
+# suite taught this shape on the guard's first day, when a generous
+# 50 nm to 50 um band rejected the package's own static calls, which is
+# the specialist's-ceiling failure the adjudication warned against.
+_LAM_NM_TRAP = 50.0
+
+
+def _check_lam_nm(lam_nm: float) -> float:
+    if 0.0 < lam_nm < _LAM_NM_TRAP or lam_nm < 0.0:
+        raise ValueError(
+            f"lam_nm = {lam_nm!r} can only be a unit mistake: the argument "
+            f"is in NANOMETRES, so 993.4 nm is lam_nm=993.4, not 993.4e-9. "
+            f"(lam_nm = 0 is the static limit and passes.)")
+    return lam_nm
+
+
 def _alpha(lines, lam_nm, upper_cm=0.0, tail=0.0, core=0.0, scale=None,
            prefactor=1.0 / 6.0):
     """Scalar polarizability (a.u.) of a state from its line list.
@@ -131,18 +164,39 @@ def _alpha(lines, lam_nm, upper_cm=0.0, tail=0.0, core=0.0, scale=None,
 
 def alpha_5s(lam_nm: float, scale=None, tail=TAIL_5S, core=CORE_5S) -> float:
     """Dynamic scalar polarizability of 5S1/2 (a.u.); lam_nm=0 gives static."""
+    _check_lam_nm(lam_nm)
     return _alpha(LINES_5S, lam_nm, 0.0, tail, core, scale)
 
 
 def alpha_6s(lam_nm: float, scale=None, tail=TAIL_6S, core=CORE_6S) -> float:
     """Dynamic scalar polarizability of 6S1/2 (a.u.); lam_nm=0 gives static."""
+    _check_lam_nm(lam_nm)
     return _alpha(LINES_6S, lam_nm, E_6S_CM, tail, core, scale)
 
 
 def delta_alpha(lam_nm: float, **kw) -> float:
-    """alpha_6S - alpha_5S (a.u.) -- the light shift's differential; its SIGN
-    at 993 nm is the flagged finding (module docstring)."""
-    return alpha_6s(lam_nm) - alpha_5s(lam_nm)
+    """alpha_6S - alpha_5S (a.u.), the light shift's differential.
+
+    `scale` is FORWARDED to both levels. It used to be accepted and
+    discarded, so a caller who scaled the two levels and then asked for
+    their difference received an unscaled difference with nothing said.
+
+    The wavelength is guarded (see _check_lam_nm above): metres
+    passed for nanometres raise instead of returning a plausible
+    number, the experimenter's QUESTIONS 26 adjudication.
+
+    `tail` and `core` are deliberately REFUSED rather than forwarded:
+    their defaults are level-specific (TAIL_5S against TAIL_6S), so one
+    value cannot mean the same thing for both terms, and forwarding it
+    would apply one level's tail to the other level's sum. Call alpha_5s
+    and alpha_6s directly and subtract if that is what you want."""
+    unknown = set(kw) - {"scale"}
+    if unknown:
+        raise TypeError(
+            f"delta_alpha does not take {sorted(unknown)}: those arguments "
+            f"are level-specific and cannot be shared between alpha_5s and "
+            f"alpha_6s. Call the two functions directly and subtract.")
+    return alpha_6s(lam_nm, **kw) - alpha_5s(lam_nm, **kw)
 
 
 def tuneout_5s(lo: float = 781.0, hi: float = 794.0) -> float:

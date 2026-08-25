@@ -257,11 +257,14 @@ CANONICAL = [
         # formula gives 261 at the values that produced it). A hand-typed
         # number here defeats the point of the registry.
         name="Delta-alpha record bracket (was ~1200, before that ~5800)",
-        value=lambda: str(int(round(
-            _const("DELTA_ALPHA_AU")
+        # abs() since the 2026-08-24 adjudication made the constant carry
+        # this record's negative sign: the bracket has always been a bound
+        # on the MAGNITUDE, and the docs now write it as |Δα|.
+        value=lambda: str(int(round(abs(
+            _const("DELTA_ALPHA_AU"))
             * float(_cell("stark_joint.csv", "S0_225mW_ub95", "primary"))
             / float(_cell("stark_sweep.csv", "S0_225mW_pred"))))),
-        find=re.compile(r"Δα\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
+        find=re.compile(r"\|?Δα\|?\s*[<≲]\s*~?\s*([0-9]+)\s*a\.u"),
         mode="all",
         docs=["docs/big_picture/04_what-2025-delivered.md", "private/manuscripts/PAPER1_SKELETON.md"],
     ),

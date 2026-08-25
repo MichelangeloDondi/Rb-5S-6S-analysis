@@ -89,6 +89,8 @@ diagnostic rather than write a table.
 | `run_stark_centres.py` (M21) | what the line centres can and cannot say about the light shift, one row per drift form, into `stark_centres.csv` |
 | `run_centre_stark.py` (M27) | the centre-channel coefficient from the held-lock epochs into `centre_stark.csv`, exiting cleanly if either input table is absent |
 | `run_wavemeter_reconstruction.py` (M22) | the 2025-06-11 wavemeter record, digitised from its tracked photograph, into `wavemeter_reconstruction.csv` |
+| `run_window_attribution.py` (M28) | how much of the between-block peak-position move is the oscilloscope's horizontal setting, into `window_attribution.csv`. This is why the campaign has line shapes and no line centres, and the number had been published on four surfaces with no producer until this module was written |
+| `run_centre_fisher.py` (M29) | what a freely fitted drift costs the centre channel, into `centre_fisher.csv`. Its ladder-order rows say what cycling the power through a display epoch would buy, on the campaign's own traces and times |
 | `run_drift_settling.py` | the lock disturbance against time, off the committed clock, printed rather than written |
 | `run_intrablock_trend.py` | whether the position scatter within a block is drift or jitter, printed rather than written |
 | `run_epoch_checks.py` | the campaign-morning and 4 July cross-checks of the clock, the disturbance model and the cross-day calibration, printed, with nothing entering `results/` |

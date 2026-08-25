@@ -246,16 +246,21 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
     the 4.7 per cent between them is the documented Delta_alpha discrepancy. So
     this test pins BOTH ends and the fact that they bracket the same physics.
     """
-    from rb5s6s.constants import DELTA_ALPHA_AU
+    from rb5s6s.constants import DELTA_ALPHA_AU, DELTA_ALPHA_AU_ORSON2021
     from rb5s6s.polarizability import delta_alpha
     T = hp.two_photon_matrix_element(993.4192)
     assert abs(T - 707.75) < 0.5
     ratio = 2.0 * abs(T) / abs(delta_alpha(993.4192))
     assert abs(ratio - 1.2367) < 0.002
-    ratio_cited = 2.0 * abs(T) / DELTA_ALPHA_AU
+    # Since the 2026-08-24 adjudication the package constant IS this
+    # record's value, so the constant end and the model end coincide, and
+    # the CITED end of the band lives under the Orson name.
+    assert abs(2.0 * abs(T) / abs(DELTA_ALPHA_AU) - 1.2367) < 0.002
+    ratio_cited = 2.0 * abs(T) / DELTA_ALPHA_AU_ORSON2021
     assert abs(ratio_cited - 1.2951) < 0.002
     # the band is the Delta_alpha gap and nothing else
-    assert abs(ratio_cited / ratio - abs(delta_alpha(993.4192)) / DELTA_ALPHA_AU) < 1e-12
+    assert abs(ratio_cited / ratio
+               - abs(delta_alpha(993.4192)) / DELTA_ALPHA_AU_ORSON2021) < 1e-12
     # the fine-structure paths through 5P must ADD (the sign theorem)
     from rb5s6s.hyperpolarizability import _RADIAL_SIGN
     s12 = _RADIAL_SIGN[("5S", "5P")] * _RADIAL_SIGN[("6S", "5P")]
@@ -293,8 +298,16 @@ def test_two_photon_rabi_uses_the_geometric_arm_combination():
     assert abs(hp.two_photon_rabi_hz(0.450, 64e-6, 0.94) / om - 2.0) < 1e-12
     assert abs(hp.two_photon_rabi_hz(0.225, 32e-6, 0.94) / om - 4.0) < 1e-12
 
-    # and the ratio to the committed S0 is the cited-Delta_alpha end of the band
-    # times the contrast, which is the whole content of the correction
+    # and the ratio to the committed S0 is the band's matching end times the
+    # contrast, which is the whole content of the correction. Since the
+    # 2026-08-24 adjudication S0 defaults to this record's Delta_alpha, so
+    # the matching end is 1.2367; the cited 1.2951 end is reproduced by
+    # passing the Orson constant explicitly.
+    from rb5s6s.constants import DELTA_ALPHA_AU_ORSON2021
     contrast = 2.0 * math.sqrt(0.94) / 1.94
     ratio = om / (stark_shift_S0_mhz(0.225, 64e-6, rho=0.94) * 1e6)
-    assert abs(ratio - 1.2951 * contrast) < 1e-3
+    assert abs(ratio - 1.2367 * contrast) < 1e-3
+    ratio_cited = om / (stark_shift_S0_mhz(
+        0.225, 64e-6, rho=0.94,
+        delta_alpha_au=DELTA_ALPHA_AU_ORSON2021) * 1e6)
+    assert abs(ratio_cited - 1.2951 * contrast) < 1e-3

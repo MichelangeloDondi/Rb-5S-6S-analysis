@@ -248,24 +248,59 @@ Galvan et al. 2008's 239.18(3) MHz). 6S splitting F=3-F=2 = 3A = 717.195(3) MHz
 # --------------------------------------------------------------------------
 # AC-Stark / polarizability (fixed-lock physics; 2025 *prediction* only)
 # --------------------------------------------------------------------------
-DELTA_ALPHA_AU = 1093.0
-"""alpha(6S) - alpha(5S) at 993 nm, atomic units. SOURCED (2026-07-13) to Orson
+DELTA_ALPHA_AU = -1145.0
+"""alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
+value, matching results/polarizability.csv's delta_alpha_993 row
+(-1145, band -1151 to -1140) and reproducible as delta_alpha(993.4) =
+-1144.6 from alpha_6s - alpha_5s. Adopted as the package value on the
+experimenter's adjudication (2026-08-24) of the sign dispute below.
+The negative sign is a BLUE shift of the two-photon transition.
+
+THE CITED ALTERNATIVE, kept named rather than deleted, is
+DELTA_ALPHA_AU_ORSON2021 = +1093.0 in this record's sign convention.
+SOURCED (2026-07-13) to Orson
 et al., J. Phys. B 54, 175001 (2021) -- prior art on THIS 5S-6S line: they
 calculate the differential polarizability alpha_56 = alpha(5S) - alpha(6S) =
 -1093 a.u. (= -1.80e-38 J m^2/V^2) "in a manner similar to Martin et al. 2019"
 (the 5S-5D method paper, Phys. Rev. A 100, 023417). Our Delta_alpha =
-alpha(6S) - alpha(5S) = -alpha_56 = +1093 a.u. (SAME number, opposite sign by
-definition). This replaces the earlier "CALCULATED (provisional), refine
-with theory" tag -- the value was right and is now a CITED number that
-cross-checks our Stark code THREE ways (all verified 2026-07-13):
-  (i)   SI: 1093 * ATOMIC_POLARIZABILITY_SI = 1.80e-38 J m^2/V^2 = Orson exactly;
-  (ii)  SIGN: Delta_alpha > 0 => 6S pulled down more than 5S => the two-photon
-        transition RED-shifts => S0 > 0 (Orson's shift is negative, consistent);
-  (iii) MAGNITUDE: stark_shift_S0_mhz(0.8 W, 63 um, rho=0) = 0.66 MHz reproduces
-        Orson's predicted |Df| = 0.66 MHz at their conditions to the digit
-        (tests/test_lineshape.py::test_stark_S0_reproduces_orson2021).
-An independent recompute from Safronova, Arora & Clark, Phys. Rev. A 73, 022505
-(2006) matrix elements remains available if a referee pushes; no longer OPEN.
+alpha(6S) - alpha(5S) = -alpha_56 = +1093 a.u. under THEIR sign.
+
+THE SIGN IS DISPUTED WITH THE LITERATURE, AND THIS PACKAGE NOW CARRIES
+THIS RECORD'S. The two values, both of alpha(6S) - alpha(5S) at 993 nm:
+
+  * this constant, the package default:  -1145.0
+    (reproducible as delta_alpha(993.4) = -1144.6 =
+     alpha_6s(993.4) - alpha_5s(993.4) = -312.2 - 832.5)
+  * DELTA_ALPHA_AU_ORSON2021, the cited: +1093.0
+    the same quantity by the same definition, opposite sign, 4.7 per
+    cent apart in magnitude.
+
+docs/THEORY_NOTE.md section 5 lays the disagreement out in full and does
+NOT read it as a convention artifact: this record's sign is anchored by
+the measured static polarizability, by the measured 5S tune-out
+wavelength, and by the 6S lifetime, which the dipole elements required
+by Orson's sign would place about 210 sigma from the measured
+45.57(17) ns. Orson's own AC-Stark search was a null at 6 MHz
+resolution, so no experiment has set the sign either way.
+
+WHAT THE ADOPTION MOVES, stated because it is not nothing: every BOUND
+in this record uses |Delta_alpha| and is untouched, but the PREDICTED
+light shift is computed from this constant and rises 4.6 per cent, from
+0.348 to 0.364 MHz at 225 mW (kappa_pred 1.545 -> 1.618 MHz/W). Both sit
+inside the predicted band 0.30-0.38 MHz that the measured waist already
+implies, and the bound at 0.258 excludes the prediction either way, with
+the margin widening from 1.35x to 1.41x. The joint fit's committed
+prediction cells lag until that producer runs again: it needs about five
+hours and a data tree outside this repository.
+
+WHAT IS NOT IN DISPUTE: the magnitude. It cross-checks against Orson (1093 * ATOMIC_POLARIZABILITY_SI =
+1.80e-38 J m^2/V^2, and stark_shift_S0_mhz(0.8 W, 63 um, rho=0) = 0.66
+MHz reproduces their predicted |Df| to the digit, see
+tests/test_lineshape.py::test_stark_S0_reproduces_orson2021).
+
+The resolution is an open owner item, and until it lands a caller who
+needs the SIGN should take it from delta_alpha() and read section 5,
+while a caller who needs the magnitude may use either.
 
 CONVENTION (pinned 2026-07-12, so the coefficient is no longer factor-of-2
 ambiguous). Standard AMO light-shift convention (Grimm, Weidemueller &
@@ -311,6 +346,29 @@ that is the only normalisation any of them use. Remaining measured input
 before an absolute Stark coefficient: the retro ratio rho (measured in a fixed-lock session, per
 config) and the Delta_alpha magnitude. Novelty delineation: docs/LITERATURE.md
 and docs/THEORY_NOTE.md."""
+
+DELTA_ALPHA_AU_ORSON2021 = 1093.0
+"""alpha(6S) - alpha(5S) at 993 nm from Orson et al., J. Phys. B 54, 175001
+(2021), expressed in THIS record's convention: they print
+alpha_56 = alpha(5S) - alpha(6S) = -1093 a.u., so alpha(6S) - alpha(5S) =
++1093 a.u. under their sign.
+
+Kept as a named constant, not deleted, for three reasons. It is the cited
+literature figure and this record compares against it rather than ignoring
+it (tests/test_lineshape.py::test_stark_S0_reproduces_orson2021 uses THIS
+constant to reproduce their predicted 0.66 MHz to the digit). Its
+MAGNITUDE agrees with ours to 4.7 per cent, which is the observation the
+sign argument rests on: a matrix-element disagreement would not land that
+close by coincidence, while a sign error produces exactly this pattern.
+And a reader who meets +1093 in the literature can find here, by name,
+which value it is and why this package does not default to it.
+
+WHY THE PACKAGE DOES NOT DEFAULT TO IT (docs/THEORY_NOTE.md section 5):
+this record's sign is anchored by the measured static polarizability, by
+the measured 5S tune-out wavelength, and by the 6S lifetime, which the
+dipole elements required by Orson's sign would place about 210 sigma from
+the measured 45.57(17) ns. No experiment has set the sign either way:
+Orson's own AC-Stark search was a null at 6 MHz resolution."""
 
 ATOMIC_POLARIZABILITY_SI = 1.648_772_7436e-41
 """1 atomic unit of polarizability = 4*pi*eps0*a0^3 in C^2 m^2 / J.

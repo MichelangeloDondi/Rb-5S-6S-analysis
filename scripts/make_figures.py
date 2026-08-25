@@ -33,7 +33,7 @@ from rb5s6s import config as C  # noqa: E402
 from rb5s6s.density import density_units  # noqa: E402
 from rb5s6s.constants import (
     peak_title,  # noqa: E402
-    GAMMA_NAT_HZ, TOOTH_SPACING_LASER_HZ, DRIFT_RATE_LASER_HZ_PER_MIN)
+    GAMMA_NAT_HZ, TOOTH_SPACING_LASER_HZ)
 
 GNAT = GAMMA_NAT_HZ / 1e6
 FIG = C.REPO_ROOT / "figures"
@@ -2692,46 +2692,62 @@ def fig_wavemeter_reconstruction():
 
 
 def fig_drift_story():
-    """The drift problem, what the analysis extracted despite it, and what a
-    fixed lock buys (fig15). Three panels, rebuilt 2026-08-12 on the experimenter's
-    reading of the previous version.
+    """Why the campaign has line shapes and no line centres (fig15).
 
-    (a) The problem, photographed: the 2025-06-11 wavemeter record, digitised
-        by M22. Re-lock markers are drawn ONLY where the sawtooth fit returns
-        a real upward step. The kick finder proposed three more candidates
-        (near 16, 28 and 31 min); their fitted steps are -1.1, -0.05 and
-        -0.15 MHz, the end of a steep ramp rather than a re-lock, and the
-        experimenter's own recollection of the session agrees, so they are
-        named on the panel and not drawn as re-locks. An earlier version drew
-        a grey line at every candidate, which invented kicks the record does
-        not contain.
-    (b) The campaign's central bookkeeping fact, shown as one comparison:
-        between consecutive oscilloscope window settings, the move of the
-        fitted peak position against the move of the window itself. The
-        points lie on the identity line, so the centre record follows the
-        instrument's own display frame, not the atom. This replaces a
-        per-epoch offset plot with a drift-wedge inset that read as a
-        measured trend; the held-lock drift SIGN is deliberately not drawn
-        anywhere (experimenter call, 2026-08-12: the record does not establish it
-        and the figure should not appear to).
-    Panels (a) and (b) were reworked 2026-08-20 on the experimenter's reading.
-    (a) named the model instead of describing its behaviour, and its
-    rejected-candidate note went from three lines to one. (b) now states its
-    proposition on the panel, because points lying on an identity line read
-    as either trivial or broken until the panel says which, and its printed
-    fraction is called a fraction of the position SIGNAL rather than of its
-    variance, the quantity being a fraction of mean square about zero.
+    THREE PANELS, REBUILT 2026-08-25 after the experimenter read the
+    previous version twice: "I don't like panel (b) and (c) ... they seem
+    wrong and they are definitely unclear", then, of the rebuild, "the 99.8
+    is not clear how it is. However I still don't like the whole image and
+    I find it unclear." The second reading is the useful one, because it
+    says the defect was never in one panel.
 
-    (c) The consequence ladder, decluttered: three lock regimes on a log
-        axis, two short annotations each. The prose that used to live on the
-        canvas belongs to the documents that cite the figure. The held-lock
-        entry is drawn as an UPPER LIMIT at 0.02 MHz/min rather than as a
-        point at 0.016. Correction of record, 2026-08-20: the earlier point
-        carried the state-space constant under the label "the measured
-        bound", which the window-reference audit had already retracted (see
-        the comment at the regime list and DATA.md's provenance note). The
-        sign policy stated for panel (b) applies here too, and the earlier
-        panel broke it.
+    WHAT WAS WRONG WITH THE OLD FIGURE. It asked the reader to hold three
+    unrelated frames at once: a wavemeter time series, a scatter on an
+    identity line, and an abstract requirement curve in drift-rate space.
+    Worse, the panel carrying the argument showed a CORRELATION when its
+    claim is a RESIDUAL. "99.8 per cent of the move is the window setting"
+    is a statement about what is LEFT, and points lying on a diagonal
+    cannot show a reader where that percentage came from -- nor could the
+    residual inset that was tried first, which only asserted the same
+    number at a second scale.
+
+    (a) THE LOCK, PHOTOGRAPHED. The 2025-06-11 preliminary session's
+        wavemeter record, digitised by M22: steady ramps between re-locks,
+        each re-lock a step. Re-lock markers are drawn ONLY where the
+        sawtooth fit returns a real upward step; three further candidates
+        are named on the panel with their fitted steps, because an earlier
+        version drew a line at every candidate and so invented kicks the
+        record does not contain. The decay of the twelve fitted ramp rates
+        measures the lock's thermal settle (M22), which the caption quotes.
+
+    (b) THE CAMPAIGN'S OWN CENTRES, against the oscilloscope window they
+        were recorded in. The two series are drawn on ONE axis, the window
+        thick and the peak thin on top of it, so that coincidence reads as
+        coincidence rather than as one line. Beneath, at a stated
+        magnification, what is left of their difference. The fraction stops
+        being a number printed on the canvas and becomes the thing the
+        reader is looking at. Every value is READ from
+        results/window_attribution.csv (M28), a producer written the same
+        day: the fraction had been published on four surfaces, including
+        this canvas, with no committed row behind it.
+
+    (c) WHAT EACH WAY OF RUNNING IT WOULD LEAVE. This panel spent months as
+        a number line under the words "claimable precision against laser
+        drift rate", then one day as the curve that title promised.
+        Drawing the curve was worth doing, because it refuted the panel's
+        own implied story: the held lock's bound already cleared what a
+        few-minute block needs, so the drift RATE was never the binding
+        term. Having learned that, a panel about drift rate is a panel
+        about the wrong variable. It now answers the question a reader
+        actually has after (b) -- what would fix this -- in the unit that
+        decides it, the error left on the light shift measured in units of
+        the predicted shift itself. Values READ from
+        results/centre_fisher.csv (M29), whose factor corrected a published
+        one that failed to reproduce.
+
+    THE SIGN POLICY, unchanged and binding on every panel: the held-lock
+    drift SIGN is drawn nowhere, because the record does not establish it
+    and the figure must not appear to (experimenter call, 2026-08-12).
     """
     import csv as _csv
 
@@ -2787,7 +2803,9 @@ def fig_drift_story():
     ax.legend(fontsize=7, loc="upper left", framealpha=1.0, frameon=True)
 
     # ---- (b) the centre record follows the window -----------------------
-    ax = fig.add_subplot(gs[1])
+    # NO add_subplot(gs[1]) HERE: the panel is a sub-gridspec of two axes
+    # (below), and an empty parent axes left at this slot drew a second set
+    # of tick labels straight through theirs.
     # THE POWER SESSION'S OWN BLOCKS, which is the construction the record
     # uses (PREREGISTRATION_RESULTS addendum on the window frame, DATA.md):
     # contiguous runs of one (peak, power) condition, then the step between
@@ -2806,109 +2824,202 @@ def fig_drift_story():
     for _k, _g in _it.groupby(P, key=lambda x: (x["peak"], x["power_mW"])):
         _g = list(_g)
         blocks.append((np.mean([float(x["peak_pos_ms"]) for x in _g]),
-                       np.mean([float(x["window_start_ms"]) for x in _g])))
-    dpos = np.diff([b[0] for b in blocks])
-    dwin = np.diff([b[1] for b in blocks])
-    lim = 1.10 * max(np.abs(dwin).max(), np.abs(dpos).max())
-    ax.plot([-lim, lim], [-lim, lim], "-", color="0.6", lw=1.0,
-            label="identity: the position moved exactly\nas the window moved")
-    ax.plot(dwin, dpos, "o", ms=5.0, color="#009E73", mec="0.2", mew=0.5,
-            label=f"steps between the power sweep's\n{len(dpos)} condition blocks")
-    _resid = float(np.sqrt(np.mean((dpos - dwin) ** 2)))
-    # A fraction of MEAN SQUARE about zero, not of variance about the mean.
-    # On data of this shape the two agree to the fifth decimal, so the printed
-    # 99.8 is right either way, but the panel no longer calls it variance.
-    _frac = 1.0 - _resid ** 2 / float(np.mean(dpos ** 2))
-    _knob = int(np.sum(np.abs(dwin) > 1e-9))
-    # THE PROPOSITION, INSIDE THE CANVAS WORD LIMIT. The first attempt at
-    # this said the same thing in fifty words and tripped the guard that
-    # forbids a canvas from arguing: the fix for "unclear" is a sharper
-    # sentence, not a longer one. The reasoning lives in the caption.
-    ax.text(0.035, 0.965,
-            "On the identity line the peak did not move, the window setting "
-            f"did.\n{100 * _frac:.1f}% of the between-block signal is that "
-            f"setting, scatter {_resid:.0f} ms over {len(dpos)} steps.",
-            transform=ax.transAxes, fontsize=7.4, color="0.30", va="top")
-    ax.set_xlabel("window-setting move between blocks (ms, scope axis)")
-    ax.set_ylabel("peak-position move (ms)")
-    ax.set_title("(b) peak-position move against window-setting move,\n"
-                 "between consecutive power-sweep blocks",
-                 fontsize=9)
-    ax.legend(fontsize=7, loc="lower right", framealpha=1.0, frameon=True)
-    ax.grid(alpha=0.25, lw=0.5)
+                       np.mean([float(x["window_start_ms"]) for x in _g]),
+                       _g[0]["peak"]))
+    # The DIFFERENCES are what the producer decomposes; this panel plots the
+    # series themselves, because a difference is where the reader lost the
+    # thread. The two live in one place, results/window_attribution.csv.
+    _wa = {(r["quantity"], r["key"]): r for r in _rows("window_attribution")}
+    _resid = float(_wa[("rms_residual_ms", "peak_power")]["value"])
+    _frac = float(_wa[("window_attributed_pct", "peak_power")]["value"]) / 100.0
 
-    # ---- (c) the consequence ladder, decluttered -------------------------
-    ax = fig.add_subplot(gs[2])
-    envelope_mhz_per_min = DRIFT_RATE_LASER_HZ_PER_MIN / 1e6  # rb5s6s.constants ENVELOPE
-    ayachitula_mhz_per_min = 0.5e-3 / 50.0  # <0.5 kHz / 50 min (Ayachitula et al. 2024)
-    # THE HELD LOCK IS A BOUND, NOT A RATE. Earlier versions of this panel
-    # drew the state-space constant 0.016 MHz/min as a point labelled "the
-    # measured bound". That reading was retracted by the window-reference
-    # audit: DATA.md's provenance note (2026-07-30) states that 0.016 "is not
-    # a measured rate in either direction" because the fit compares block
-    # medians ACROSS blocks, the comparison the horizontal-setting correction
-    # contaminates, and PREREGISTRATION_RESULTS addendum 4 records the same
-    # withdrawal. What the record defends is a two-sided bound of order
-    # 0.02 MHz/min with the SIGN UNDETERMINED, which is also the only thing
-    # the drift-immune argument ever used. Drawn as a bound.
-    drift_bound = 0.020   # MHz/min laser, two-sided, sign undetermined
-    # MARKERS CARRY THE SPACING, A LEGEND CARRIES THE TEXT. Two earlier
-    # layouts put multi-line prose beside each marker on the axis: centred, it
-    # left the axes at both ends; anchored inward, the left block grew into the
-    # middle one. Both were caught by looking. A legend cannot collide with
-    # anything, and what this panel has to show is that the three regimes sit
-    # five decades apart, which the markers do on their own.
-    # SHORT labels only. Every number these used to carry ($S_0$, sigma_laser,
-    # beta) is committed in results/ and quoted by the caption, so nothing is
-    # lost by taking it off the canvas.
-    regimes = [
-        (envelope_mhz_per_min, "#B0B0B0", "planning envelope,\n2025"),
-        (drift_bound, "#0072B2", "2025 held lock,\nbounded below this"),
-        (ayachitula_mhz_per_min, "#009E73", "cavity-lock class,\nin the literature"),
-    ]
-    # THE LEGEND WAS THE COLLISION. The comment above said a legend cannot
-    # collide with anything; the shipped PNG showed otherwise, because three
-    # multi-line prose entries at upper-center grew into a box that covered
-    # the middle marker, which is the held-lock bound and the whole point of
-    # the panel. Prose in a legend is prose on the canvas. Replaced by three
-    # SHORT direct labels at ONE height, each over its own marker, with the
-    # full statement moved to the caption where a qualifier belongs. The
-    # markers are three decades apart on a log axis, so short labels centred
-    # on them cannot reach each other.
-    for rate, col, short in regimes:
-        ax.plot([rate], [0.0], "o", ms=11, color=col, mec="0.25", mew=0.8,
-                zorder=3)
-        if rate == drift_bound:
-            # An upper limit wears a limit marker. The bar sits at the bound
-            # and the arrow points into the allowed region, so the panel
-            # cannot be read as placing the held lock AT this rate.
-            ax.annotate("", xy=(rate / 6.0, 0.0), xytext=(rate, 0.0),
-                        arrowprops=dict(arrowstyle="-|>", color=col, lw=1.6,
-                                        shrinkA=6.0, shrinkB=0.0), zorder=2)
-        ax.annotate(short, xy=(rate, 0.0), xytext=(rate, 1.15),
-                    textcoords="data", ha="center", va="bottom",
-                    fontsize=7.6, color=col,
-                    arrowprops=dict(arrowstyle="-", color=col, lw=0.8,
-                                    alpha=0.55, shrinkA=1.0, shrinkB=5.0))
-    ax.set_xscale("log")
-    ax.set_xlim(2e-6, 300.0)
-    # room above the markers for the legend, which sits over empty axis
-    ax.set_ylim(-0.35, 2.6)
-    ax.set_yticks([])
-    ax.set_xlabel("laser drift rate (MHz/min)")
-    ax.set_title("(c) claimable precision against laser drift rate",
+    # REBUILT 2026-08-25, on the experimenter's reading twice over: first
+    # "I don't like panel (b) ... they seem wrong and they are definitely
+    # unclear", then "the 99.8 is not clear how it is". Both readings are
+    # the same defect. The panel plotted the peak move against the window
+    # move on an identity line, which displays a CORRELATION, while the
+    # claim it exists to make is a RESIDUAL: subtract the window setting
+    # and nothing is left. A scatter on a diagonal cannot show a reader
+    # where a percentage came from, and an inset of the residual only
+    # asserted the same thing at a second scale.
+    #
+    # What it draws now is the two records themselves, block by block, on
+    # one axis, with their difference beneath at its own magnified scale.
+    # The fraction stops being a number printed on the canvas and becomes
+    # the thing the reader is looking at: an excursion of about a thousand
+    # milliseconds above, a wiggle of eight below. The panel states the
+    # magnification, because a residual strip that hides its own scale is
+    # how a small number is made to look inevitable.
+    _gsb = gs[1].subgridspec(2, 1, height_ratios=[2.5, 1.0], hspace=0.12)
+    ax = fig.add_subplot(_gsb[0])
+    _axr = fig.add_subplot(_gsb[1], sharex=ax)
+
+    _pos = np.array([b[0] for b in blocks]); _pos = _pos - _pos[0]
+    _win = np.array([b[1] for b in blocks]); _win = _win - _win[0]
+    _idx = np.arange(1, len(blocks) + 1)
+    # THE LINE IS BROKEN AT EVERY CHANGE OF SPECTRAL LINE, 2026-08-25, on the
+    # experimenter's "panel b has clearly something wrong". It was drawn as
+    # one continuous series across all twenty blocks, and those blocks span
+    # FOUR DIFFERENT LINES of the two-photon spectrum. Joining them implies a
+    # single record of a single quantity, and the panel's largest feature was
+    # exactly such a join: a 517 ms segment between the last 993.4192 block
+    # and the first 993.4207 one, which is the operator moving to a different
+    # line and not anything drifting. Segments now stop at the boundary,
+    # which the group labels name.
+    _grp = [b[2] for b in blocks]
+    _bounds = [0] + [i for i in range(1, len(_grp)) if _grp[i] != _grp[i - 1]] \
+        + [len(_grp)]
+    _segs = [(a, b) for a, b in zip(_bounds[:-1], _bounds[1:])]
+    # The window setting goes down THICK and the peak on top of it THIN, so
+    # that coincidence reads as coincidence. Two lines of equal weight on
+    # top of each other read as one line, and a reader cannot tell whether
+    # the second was drawn at all.
+    for _n, (_a, _b) in enumerate(_segs):
+        _sl = slice(_a, _b)
+        ax.plot(_idx[_sl], _win[_sl], "-", color="0.62", lw=4.2,
+                solid_capstyle="round",
+                label="where the operator set the oscilloscope window"
+                if _n == 0 else None)
+        ax.plot(_idx[_sl], _pos[_sl], "o-", color="#009E73", ms=4.4, lw=1.3,
+                mec="0.2", mew=0.4,
+                label="where the fitted peak was recorded" if _n == 0 else None)
+    _span = float(_wa[("excursion_peak_to_peak_ms", "peak_power")]["value"])
+    ax.set_ylabel("position on the scope (ms)")
+    ax.tick_params(labelbottom=False)
+    ax.grid(alpha=0.25, lw=0.5)
+    # HEADROOM BEFORE THE LEGEND. The legend sat over the 557 ms feature,
+    # which is the largest thing in the panel and the one the caption quotes.
+    # A blank strip above the data is the same treatment panel (a) uses.
+    _y0, _y1 = float(min(_pos.min(), _win.min())), float(max(_pos.max(), _win.max()))
+    _pad = 0.10 * (_y1 - _y0)
+    ax.set_ylim(_y0 - _pad, _y1 + 5.2 * _pad)
+    # THE LEGEND GOES WHERE THE DATA IS NOT, and on this panel that is the
+    # right-hand middle: the last three lines sit near zero, so everything
+    # above them and right of block 11 is empty. Upper left put it over the
+    # first two line labels, and before the headroom existed it covered the
+    # 557 ms feature itself.
+    ax.legend(fontsize=7.2, loc="upper right", bbox_to_anchor=(0.995, 0.74),
+              framealpha=1.0, frameon=True)
+    # Each segment named by its line, and a divider where the operator moved.
+    for _n, (_a, _b) in enumerate(_segs):
+        if _n:
+            ax.axvline(_idx[_a] - 0.5, color="0.8", lw=0.8, zorder=0)
+            _axr.axvline(_idx[_a] - 0.5, color="0.8", lw=0.8, zorder=0)
+        ax.annotate(f"993.{_grp[_a]} nm",
+                    xy=(0.5 * (_idx[_a] + _idx[_b - 1]), _y1 + 2.3 * _pad),
+                    ha="center", va="center", fontsize=7.0, color="0.40")
+    ax.set_title("(b) the campaign's recorded line centres, against the "
+                 "oscilloscope\nwindow they were recorded in",
                  fontsize=9)
-    ax.grid(axis="y", visible=False)
-    # Wrapped. As one line this ran 193 px past the right edge of the canvas
-    # and the guard reported it; the provenance is the same, the line breaks
-    # are the fix.
+
+    _r = _pos - _win
+    _axr.axhspan(-_resid, _resid, color="#009E73", alpha=0.16, lw=0)
+    _axr.axhline(0.0, color="0.6", lw=0.8)
+    _axr.plot(_idx, _r, "o-", color="#009E73", ms=3.4, lw=1.0)
+    _axr.set_ylim(-4.6 * _resid, 4.6 * _resid)
+    _axr.set_xticks([1, 5, 10, 15, 20])
+    _axr.set_xlim(0.3, len(_idx) + 0.7)
+    _axr.set_xlabel("condition block, in the order they were taken")
+    _axr.set_ylabel("difference\n(ms)", fontsize=8)
+    _axr.grid(alpha=0.25, lw=0.5)
+    # THE MAGNIFICATION, computed rather than claimed.
+    _mag = ((ax.get_ylim()[1] - ax.get_ylim()[0])
+            / (_axr.get_ylim()[1] - _axr.get_ylim()[0]))
+    _axr.text(0.015, 0.90,
+              f"same data, vertical scale x{_mag:.0f}: {_resid:.0f} ms rms "
+              f"left of a {_span:.0f} ms excursion, which is "
+              f"{100 * (1 - _frac):.1f}% of it",
+              transform=_axr.transAxes, fontsize=7.0, color="0.30", va="top")
+
+
+    # ---- (c) what each fix is worth --------------------------------------
+    # REPLACED 2026-08-25. This panel spent months as a number line under
+    # the title "claimable precision against laser drift rate", then one
+    # day as the curve that title promised. Drawing the curve was worth
+    # doing, because it refuted the panel's own implied story: the held
+    # lock's bound already cleared what a few-minute block needs, so the
+    # drift RATE was never the binding term. But having learned that, a
+    # panel about drift rate is a panel about the wrong variable, and the
+    # experimenter read the whole figure as unclear.
+    #
+    # So it now answers the question a reader actually has after panel (b),
+    # which is what to do about it. Four ways of running this measurement,
+    # and the error each leaves on the light shift. The unit is the
+    # PREDICTED SHIFT ITSELF, so 1 means the measurement cannot tell the
+    # predicted shift from no shift at all, and everything below 0.5 is a
+    # channel that says something. Every value is READ from
+    # results/centre_fisher.csv, whose producer was written the same day
+    # after the factor this panel would have quoted failed to reproduce.
+    ax = fig.add_subplot(gs[2])
+    _cf = {(x["quantity"], x["key"]): x for x in _rows("centre_fisher")}
+
+    def _cfv(q, k):
+        return float(_cf[(q, k)]["value"])
+
+    # measured=True draws a filled marker, because a forecast and a
+    # measurement on one axis must be told apart without reading a caption.
+    scenarios = [
+        ("a lock that does not drift", _cfv("sigma_amplitude", "drift_known"),
+         "0.45", False),
+        ("drift pinned to a level",
+         _cfv("sigma_amplitude", "constant_per_epoch"), "#0072B2", True),
+        ("power cycled through the epoch",
+         _cfv("sigma_amplitude_forecast", "linear_drift_cycled"), "#009E73",
+         False),
+        ("the 2025 ladder, as taken",
+         _cfv("sigma_amplitude_forecast", "linear_drift_as_taken"), "#D55E00",
+         True),
+    ]
+    # THE ROW LABELS SIT INSIDE THE AXES. As y tick labels they were clipped
+    # by the left edge, because this figure's panel (b) is a sub-gridspec and
+    # tight_layout declines to size margins around it. A label whose
+    # legibility depends on the layout engine agreeing with you is a label
+    # that will be cut in some other render.
+    for i, (label, val, col, measured) in enumerate(scenarios):
+        ax.annotate(label, xy=(0.152, i + 0.26), fontsize=8.2, color="0.25",
+                    va="bottom", ha="left", zorder=6)
+        ax.plot([0.15, val], [i, i], "-", color=col, lw=1.6, alpha=0.55,
+                zorder=2)
+        ax.plot([val], [i], "o", ms=11, color=col if measured else "white",
+                mec=col, mew=1.8, zorder=4)
+        ax.annotate(f"{val:.2f}", xy=(val, i), xytext=(13, 0),
+                    textcoords="offset points", va="center", fontsize=8.2,
+                    color=col)
+    ax.axvline(1.0, color="0.35", lw=1.3, ls="--", zorder=1)
+    ax.axvline(0.5, color="0.35", lw=1.0, ls=":", zorder=1)
+    # AXES COORDINATES, not data. Anchored to the reference lines these two
+    # boxes extended past the top of the panel, which the canvas guard
+    # caught: a label that names an axis feature is caption text and belongs
+    # in the axes frame, where it cannot be pushed out by a limit change.
+    ax.text(0.578, 0.955, "the whole predicted shift:\nthe channel says nothing",
+            transform=ax.transAxes, fontsize=7.0, color="0.35", va="top")
+    ax.text(0.418, 0.955, "resolved\nat 2$\\sigma$", transform=ax.transAxes,
+            fontsize=7.0, color="0.35", va="top", ha="right")
+    ax.set_xscale("log")
+    ax.set_xlim(0.14, 9.0)
+    ax.set_ylim(-0.65, 4.15)
+    ax.set_yticks([])
+    # Explicit ticks: the log locator put 3x10^0 and 4x10^0 close enough to
+    # overprint each other.
+    ax.set_xticks([0.2, 0.3, 0.5, 1.0, 2.0, 3.0, 5.0])
+    ax.set_xticklabels(["0.2", "0.3", "0.5", "1", "2", "3", "5"])
+    ax.minorticks_off()
+    ax.set_xlabel("light-shift error (predicted shift = 1)")
+    ax.grid(axis="x", alpha=0.25, lw=0.5)
+    ax.set_title("(c) what each way of running the measurement would leave",
+                 fontsize=9)
+    from matplotlib.lines import Line2D as _L2D
+    ax.legend(handles=[
+        _L2D([], [], marker="o", ls="", ms=8, mfc="0.35", mec="0.35",
+             label="measured on the 2025 archive"),
+        _L2D([], [], marker="o", ls="", ms=8, mfc="white", mec="0.35",
+             mew=1.6, label="forecast, same traces and times")],
+        loc="lower right", fontsize=7.0, frameon=True, framealpha=1.0)
+
     _footer(fig, "Source: scripts/run_wavemeter_reconstruction.py (panel a).\n"
-                 "results/laser_history.csv, power-sweep condition blocks "
+                 "results/window_attribution.csv, from laser_history.csv "
                  "(panel b).\n"
-                 "rb5s6s.constants (2025 planning envelope), DATA.md "
-                 "provenance note\nand PREREGISTRATION_RESULTS addendum 4 "
-                 "(held-lock bound), Ayachitula et al. 2024\n(cavity-lock "
-                 "class) (panel c).\n"
+                 "results/centre_fisher.csv (panel c).\n"
                  "Regenerate: python scripts/make_figures.py.", fontsize=5.9)
     _save(fig, "fig15_drift_story.png")
 

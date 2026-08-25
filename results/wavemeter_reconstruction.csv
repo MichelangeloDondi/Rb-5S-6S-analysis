@@ -10,6 +10,8 @@ n_downward_steps,2025-06-11,1,,count; modelled steps below -1 MHz. the replaced 
 n_null_events,2025-06-11,2,,"count; flagged events whose modelled step is within 1 MHz of zero, i.e. the end of a steep ramp rather than a re-lock",DIAGNOSTIC
 relock_rise_time,2025-06-11,0.0428,,"min; ONE shared rise time for the step at every re-lock (logistic width). about 2.6 s, roughly one digitised pixel, so the record resolves the step as fast but not as instantaneous",DIAGNOSTIC
 ramp_rate_first_interval,2025-06-11,-8.87,,MHz/min; the fitted ramp of the first fitted inter-lock interval. these per-interval ramps replace the replaced model's record-wide drift and curvature,DIAGNOSTIC
+settle_tau_min,2025-06-11,12.6,1.2,"min. THE LOCK'S THERMAL SETTLE, fitted to the decay of the per-interval ramp rates rather than to the trace. 11 of 12 intervals enter. The excluded one has a positive rate. This is the record's first measurement of a settling constant: the replaced relaxation model returned 353 min on a 54 min record, unresolvable in principle",DIAGNOSTIC
+settle_rate_at_start,2025-06-11,7.4,,"MHz/min. the settle's rate extrapolated to the record's start. With the constant above it says a disturbed lock takes about 40 min to fall below 0.5 MHz/min, which is a scheduling fact for a block that needs a quiet axis",DIAGNOSTIC
 ramp_rate_last_interval,2025-06-11,-0.43,,MHz/min; the fitted ramp of the last interval. the fall in magnitude across the record is the thermal settle,DIAGNOSTIC
 pull_width,2025-06-11,1.000,,dimensionless; 1.0 means the settling-noise model is right,DIAGNOSTIC
 residual_rms,2025-06-11,0.660,,"MHz; over the fitted points, against the record's own kick-free scatter of 0.55 MHz",DIAGNOSTIC
