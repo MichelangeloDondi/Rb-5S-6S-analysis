@@ -161,8 +161,9 @@ def main() -> int:
             "setting between consecutive blocks", "DIAGNOSTIC")
         add("excursion_peak_to_peak_ms", name, d["excursion_ms"], "",
             "ms. how far the block-mean peak position travels across the "
-            "whole session, end to end. this is the excursion the attributed "
-            "fraction is a fraction of", "DIAGNOSTIC")
+            "whole session, end to end. a scale for the figure, and NOT the "
+            "attributed fraction's denominator, which is the mean square of "
+            "the between-block steps", "DIAGNOSTIC")
         add("rms_residual_ms", name, d["rms_resid"], "",
             "ms. what is left of the peak-position move once the window "
             "move is subtracted, which is the part a laser could have "

@@ -1,6 +1,6 @@
 """The supported entry point: a trace in, a linewidth out.
 
-WHY THIS MODULE EXISTS. Until 2026-08-26 this package exported eighteen
+WHY THIS MODULE EXISTS. Until v4.4 this package exported eighteen
 names, every one a constant or a forward-model primitive, while the six
 modules a stranger needs to fit their own data -- `linefit`, `ingest`,
 `ruler`, `trim`, `qc`, `global_fit` -- were all present and none reachable

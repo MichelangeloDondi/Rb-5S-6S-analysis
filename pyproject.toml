@@ -75,7 +75,7 @@ packages = ["rb5s6s"]
 [tool.setuptools.package-data]
 # The per-module map travels in the wheel: a user who installs from an
 # index gets the code AND the map (2026-08-17 audit, gap one).
-# The example trace travels too (2026-08-26): the tutorial now starts from a
+# The example trace travels too: the tutorial now starts from a
 # measurement rather than from a dictionary, and a tutorial whose data is
 # absent from the wheel is a tutorial a stranger cannot run.
 rb5s6s = ["README.md", "data/*.csv"]

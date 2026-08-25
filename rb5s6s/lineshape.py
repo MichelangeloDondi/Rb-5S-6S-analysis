@@ -530,7 +530,7 @@ def total_fwhm_mhz(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float
                    transit_fwhm: float, s0: float = 0.0, **profile_kw) -> float:
     """The composite line's FULL WIDTH AT HALF MAXIMUM, transition axis, MHz.
 
-    THE HEADLINE QUANTITY OF THIS WHOLE RECORD, and until 2026-08-26 the only
+    THE HEADLINE QUANTITY OF THIS WHOLE RECORD, and until v4.4 the only
     implementation of it was `stark._fwhm_of`, a private function. A package
     that exports eleven forward-model primitives and hides the one number the
     work is about is surfacing what its author found interesting rather than

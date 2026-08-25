@@ -103,7 +103,8 @@ operator. It is a specification, not a booking.
 *The reason this document exists, before any of its procedure. The 2025 lock
 was re-centred by hand between blocks, so the line's absolute position carries
 no meaning across a step and every result is a bound read out of the line
-shape. The bottom panel is what a fixed lock converts, and each block below is
+shape. The bottom panel sets each way of running the
+measurement against the shift it is trying to see, and each block below is
 costed against exactly that.*
 
 ## The chapters

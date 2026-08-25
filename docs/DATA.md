@@ -268,7 +268,7 @@ them by ~1 s, larger than the trace window, so the axis offset itself moved.
 > *Sharpened 2026-07-30, after recomputing the whole fit in both frames.* Across
 > the 16 adjacent-block steps of the power session, RMS Δ(peak position) is
 > 145.2 ms while RMS Δ(window setting) is 145.9 ms and RMS Δ(difference) is
-> 6.3 ms: **99.8% of the between-block excursion the fit reads as re-centring is
+> 6.3 ms: **99.8% of the between-block steps' mean square, which the fit reads as re-centring, is
 > the horizontal setting.** Recomputed in the other frame, two of the three
 > estimators for the settled drift **change sign** (+0.55 ± 0.17 → −0.28 ± 0.16).
 > So 0.016 MHz/min is not a measured rate in either direction. The defensible

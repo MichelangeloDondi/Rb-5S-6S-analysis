@@ -519,7 +519,7 @@ stdout-only, skips cleanly where the backup is absent.)
 > The scale of the exposure, measured: across the 16 adjacent-block steps of the
 > power session, RMS Δ(peak position) = **145.2 ms** while RMS Δ(window setting)
 > = **145.9 ms** and RMS Δ(difference) = **6.3 ms**. Thirteen of the sixteen gaps
-> carry a knob move. So **99.8% of the between-block variance these addenda model
+> carry a knob move. So **99.8% of the between-block steps' mean square that these addenda model
 > as "re-centring" is the horizontal setting.** And the five "step-like" blocks
 > of the table below are *exactly*, one for one, the five blocks whose window
 > setting changes mid-block — set equality, no exceptions.

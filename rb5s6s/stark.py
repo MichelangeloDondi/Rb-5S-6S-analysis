@@ -139,7 +139,7 @@ def companion_transit_mhz(transit: float, s0: float, peak: str) -> float:
 def _fwhm_of(gamma_coll: float, sigma_laser: float, transit: float, s0: float,
              nu: np.ndarray) -> float:
     """Positional shim over `lineshape.total_fwhm_mhz`, which is the public
-    name since 2026-08-26. Kept because three scripts and this module call it
+    name since v4.4. Kept because three scripts and this module call it
     positionally; it holds no arithmetic of its own, so the package cannot
     drift into two definitions of its own headline quantity."""
     return total_fwhm_mhz(nu, gamma_coll=gamma_coll, sigma_laser_fwhm=sigma_laser,

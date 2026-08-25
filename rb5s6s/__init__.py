@@ -43,7 +43,7 @@ from .lineshape import (                                    # noqa: F401
     total_fwhm_mhz,
     voigt_fwhm,
 )
-# THE ANALYSIS PATH, exported 2026-08-26. Everything above derives the
+# THE ANALYSIS PATH. Everything above derives the
 # physics; until this line the package shipped no supported way to fit a
 # measured trace, though `linefit` had done exactly that for the whole
 # campaign. `api.fit_linewidth` is the one-call entry and `linefit` and

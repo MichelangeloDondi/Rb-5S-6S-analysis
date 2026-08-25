@@ -158,7 +158,10 @@ def test_the_baseline_itself_only_ever_shrinks():
         + "\n  python tests/test_prose_style_ratchet.py --relax")
 
 
-@pytest.mark.parametrize("phrase", [
+# NAMED so scripts/check_release_notes.py can import it: release notes are
+# the one surface with no tracked-file checker, and this bank exists because
+# of one. The board's third convening found the guard blind to it.
+FILLER_PHRASES = [
     "it is worth noting",
     "it should be noted",
     "crucially,",
@@ -203,14 +206,14 @@ def test_the_baseline_itself_only_ever_shrinks():
     "plethora",
     "when it comes to",
     "in conclusion",
-    # Added 2026-08-26 on the experimenter's instruction, after he read a
+    # Added 2026-08-25 on the experimenter's instruction, after he read a
     # release note and said it "sounds so much AI written". Measured the same
     # way the 2026-08-10 batch was: each of these is at ZERO across the tracked
     # corpus, which is what makes an outright ban free. "Comfortable" was the
     # word he named and it is NOT here, because it appears 32 times with a
     # legitimate margin sense ("750 Hz is comfortable against a 1 s scan")
-    # beside the vague one. It gets the falling budget below instead, which is
-    # how this file already treats "rather than".
+    # beside the vague one. The experimenter then overruled that reasoning
+    # and the word is under the frozen-allowlist hard ban below.
     "compelling",
     "nuanced",
     "underscores the",
@@ -292,7 +295,10 @@ def test_the_baseline_itself_only_ever_shrinks():
     # words that dress work as drama, and the assistant register's verbs.
     *json.loads((Path(__file__).parent / "_banned_words.json").read_text())[
         "banned_words_2026_08_24_evening"],
-])
+]
+
+
+@pytest.mark.parametrize("phrase", FILLER_PHRASES)
 def test_filler_openers_stay_absent(phrase):
     """Phrases that announce importance instead of demonstrating it.
 
@@ -380,7 +386,7 @@ def _vague_counts() -> dict[str, int]:
 
 
 def test_no_file_gains_a_vague_judgement_word():
-    """A HARD BAN on "comfortable", by the experimenter's order of 2026-08-26.
+    """A HARD BAN on "comfortable", by the experimenter's order of 2026-08-25.
 
     This began as a falling budget seeded at the measured 32. The
     experimenter overruled it the same day: "add comfortable and similar

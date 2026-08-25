@@ -1277,8 +1277,10 @@ in question: widening the span does not break the degeneracy, because the
 degeneracy belongs to the lineshape rather than to the sample size. The case
 page now says so where it prints them.
 
-The second is the **99.8 per cent** position-excursion attribution, which has
-no row either.
+The second was the **99.8 per cent** window attribution, which had no row
+either. It has one now: `results/window_attribution.csv`, from
+`run_window_attribution.py`, with the denominator named as the mean square
+of the between-block steps.
 
 **A method note, because the search taught it.** Every `99.8` in `results/`
 was a false positive at three significant figures, including a detector
@@ -1813,3 +1815,33 @@ both halves and the contrast between them.
 production fitter recovers from the twin's output, ratios between 0.99 and
 1.06 at two sample correlations, so a bias there would be a bias in the
 analysis and not in the twin.
+
+## The drift-freedom factor of 48, retracted 2026-08-25
+
+The data-collection chapter said that letting each display epoch of the 2025
+campaign carry a freely fitted drift inflates the centre channel's error on
+the light-shift amplitude by a factor of 48 over its noise limit. The factor
+had been computed once, inline, recorded in a preregistration, and quoted
+onward without a producer. When the standing rule that a public number needs
+a committed row forced the producer to be built, the factor did not
+reproduce: it divided a measured quantity by a fixed-lock baseline that is
+not a measurement of this dataset, because every centre here is already
+referenced to the mean of its own display epoch, so a no-drift-freedom row
+describes a lock this campaign did not have. The producer publishes that
+comparison as a forecast,
+[14.4](../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_drift_known:forecast"),
+and the cost measured with both terms on the same traces under the same
+noise model is
+[7.3](../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured")
+(`run_centre_fisher.py`), and the chapter now carries that value with the
+producer beside it. The design recommendation the 48 supported survives and
+strengthened: on the campaign's own traces at the same times, re-ordering
+the powers alone is forecast to take the error from
+[3.48](../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch")
+to
+[0.48](../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled").
+Found by the experimenter's reading of the v4.3 release note, which carried
+the number. The note's body was then corrected in place on the release
+pages of both repositories, this one and its public mirror, after his
+review. This row is the disclosure that the published body
+changed after publication.

@@ -4,14 +4,14 @@ n_condition_blocks,peak_power,20.0000,,count. maximal runs of consecutive traces
 n_block_steps,peak_power,19.0000,,"count. differences between consecutive blocks, of which 16 carry a window-setting move",DIAGNOSTIC
 rms_d_peak_position_ms,peak_power,166.0586,,ms. root mean square move of the block-mean fitted peak position between consecutive blocks,DIAGNOSTIC
 rms_d_window_setting_ms,peak_power,169.5306,,ms. root mean square move of the block-mean window-start setting between consecutive blocks,DIAGNOSTIC
-excursion_peak_to_peak_ms,peak_power,556.8000,,"ms. how far the block-mean peak position travels across the whole session, end to end. this is the excursion the attributed fraction is a fraction of",DIAGNOSTIC
+excursion_peak_to_peak_ms,peak_power,556.8000,,"ms. how far the block-mean peak position travels across the whole session, end to end. a scale for the figure, and NOT the attributed fraction's denominator, which is the mean square of the between-block steps",DIAGNOSTIC
 rms_residual_ms,peak_power,7.9991,,"ms. what is left of the peak-position move once the window move is subtracted, which is the part a laser could have caused",DIAGNOSTIC
 window_attributed_pct,peak_power,99.7680,,"per cent of the mean square between-block peak-position move, about zero rather than about the mean, that the window setting accounts for. THE CAMPAIGN HAS SHAPES AND NOT CENTRES BECAUSE OF THIS ROW",MEASURED
 n_condition_blocks,epoch_peak_power,29.0000,,"count. maximal runs of consecutive traces sharing the grouping keys. a finer cut, reported to show the fraction is not the grouping's",DIAGNOSTIC
 n_block_steps,epoch_peak_power,28.0000,,"count. differences between consecutive blocks, of which 25 carry a window-setting move",DIAGNOSTIC
 rms_d_peak_position_ms,epoch_peak_power,267.2621,,ms. root mean square move of the block-mean fitted peak position between consecutive blocks,DIAGNOSTIC
 rms_d_window_setting_ms,epoch_peak_power,265.6307,,ms. root mean square move of the block-mean window-start setting between consecutive blocks,DIAGNOSTIC
-excursion_peak_to_peak_ms,epoch_peak_power,1142.5833,,"ms. how far the block-mean peak position travels across the whole session, end to end. this is the excursion the attributed fraction is a fraction of",DIAGNOSTIC
+excursion_peak_to_peak_ms,epoch_peak_power,1142.5833,,"ms. how far the block-mean peak position travels across the whole session, end to end. a scale for the figure, and NOT the attributed fraction's denominator, which is the mean square of the between-block steps",DIAGNOSTIC
 rms_residual_ms,epoch_peak_power,7.9580,,"ms. what is left of the peak-position move once the window move is subtracted, which is the part a laser could have caused",DIAGNOSTIC
 window_attributed_pct,epoch_peak_power,99.9113,,"per cent of the mean square between-block peak-position move, about zero rather than about the mean, that the window setting accounts for. THE CAMPAIGN HAS SHAPES AND NOT CENTRES BECAUSE OF THIS ROW",DIAGNOSTIC
 n_block_steps_within_line,peak_power,16.0000,,"count. steps between consecutive blocks that stay on one spectral line. the other steps move to a different line, which moves the window a long way for a reason nobody disputes",DIAGNOSTIC

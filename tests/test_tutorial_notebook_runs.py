@@ -1,7 +1,7 @@
 """The advertised front door opens, and it opens onto data.
 
 `examples/your_line.ipynb` is named by START_HERE.md and by the README as the
-place a stranger begins. Until 2026-08-26 it never loaded a file or fitted
+place a stranger begins. Until v4.4 it never loaded a file or fitted
 anything: it recomputed the forward model from a dictionary, which
 demonstrates what the package can PREDICT and not what it can MEASURE. A
 front door that cannot be walked through is worse than no front door, because
@@ -39,7 +39,7 @@ def test_the_notebook_is_valid_and_has_code():
 
 
 def test_the_first_code_cell_opens_a_file_and_fits_it():
-    """The whole point of the 2026-08-26 rewrite, held here.
+    """The whole point of the v4.4 rewrite, held here.
 
     Checked on the FIRST code cell specifically: a load buried at cell ten,
     after nine cells of model exploration, is the defect this replaced.

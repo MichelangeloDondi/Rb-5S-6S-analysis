@@ -6,10 +6,9 @@ measurement built on the transition, and the question is not what they are
 but what currently prevents measuring them.
 
 Every number below is a committed result with its producer named, except
-where this page says otherwise, and it says otherwise in four places: the
-pinning factors of section 4, the excursion percentage and the
-independent-information fraction of section 2, and the projected ladder
-gain of section 5. Those come from notes whose numbers no producer
+where this page says otherwise, and it says otherwise in three places: the
+pinning factors of section 4, the independent-information fraction of
+section 2, and the projected ladder gain of section 5. Those come from notes whose numbers no producer
 regenerates, which the record's own provenance audit established and
 [`unregenerated_claims.csv`](../../results/unregenerated_claims.csv)
 counts. Where a quantity is bounded rather than measured, it is written as
@@ -69,7 +68,7 @@ next block).
 
 **The light shift.** The joint three-session fit detects no shift: the
 best-fit power coefficient is consistent with zero (Δχ² against zero of
-0.12). What the data give is a 95% upper limit on S₀, the
+0.12). The data give a 95% upper limit on S₀, the
 shift an atom on the beam axis sees at the campaign's 225 mW, the deepest
 anywhere in the beam:
 **below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
@@ -138,7 +137,7 @@ pointed at it, and here is what came back. The full audit trail is in
   well above the production optimum and none enters the confidence region.
 * **The megahertz-scale drift.** Read as laser drift, diagnosed as hand
   re-centring after cavity-lock dropouts: between consecutive condition
-  blocks, 99.8% of the position excursion is the oscilloscope's horizontal
+  blocks, 99.8% of the steps' mean square is the scope's horizontal
   setting. The corrected frame flipped the sign of two of the three drift
   estimators.
 * **The code-version instability that was not one.** Rerunning the

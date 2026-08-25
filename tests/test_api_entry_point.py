@@ -1,6 +1,6 @@
 """The supported entry point, tested as a stranger would meet it.
 
-The package exported eighteen names until 2026-08-26 and every one was a
+The package exported eighteen names until v4.4 and every one was a
 constant or a forward-model primitive, so a reader holding a frequency axis
 and a voltage trace had no supported route into it. These tests fix what
 that route promises: it is reachable from the top-level package, it recovers

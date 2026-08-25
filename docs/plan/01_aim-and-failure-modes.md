@@ -76,31 +76,32 @@ record was once read as.
 
 ![the drift problem, what was extracted, and what a fixed lock buys](../../figures/fig15_drift_story.png)
 
-*The whole argument in one figure. Top: the drift problem as photographed on
-a preliminary session, a wavemeter record read as a sawtooth of per-interval
-levels and ramps with one shared 2.6 s rise at each re-lock, the laser holding
-a reference that is itself still settling (no such log survives from the
-campaign itself), with its twelve confirmed re-locks and the three candidates
-the finder rejected. Middle: peak-position move against window-setting move
-between consecutive power-sweep blocks, which is where the frame problem is
-visible: 99.8 per cent of the between-block position variance is the window
-setting, so line offsets are meaningful only within one scope-knob epoch. The
-held-lock drift is bounded at order 0.02 MHz/min on the laser axis with the
-sign undetermined, which is why shapes survive and centres do not. Bottom: the
-three lock regimes, three decades apart. At the 2025 held lock the line shapes
-stay usable and the coefficients are therefore upper bounds (S₀ < 0.26 MHz, β
-between 0.03 and 0.05 MHz per 10¹² cm⁻³). In the cavity-lock class shown on this
-transition in the literature, line centres become usable and those same
-coefficients would turn into measurements. The oscilloscope window was moved 58 times over the campaign and each move
-re-zeroes the offset axis, so only the widths and shapes of the individual traces
-carry information. Each vertical stroke is that trace's own scan ramp drawn to
-scale, which is a sweep extent and not an uncertainty. The inset is drawn for
-scale rather than as a measurement, and because the sign is not established it
-draws both directions. Bottom: what each drift regime licenses. The 2025 lock supported the
-shape-only bounds reported here. A fixed lock of the class already
-demonstrated on this transition would make the centre channel usable,
-converting the bounds into the measured pull, the collisional self-shift, and a
-3–12σ β_self.*
+*The whole argument in one figure. Top: the drift problem as photographed
+on a preliminary session, a wavemeter record read as a sawtooth of
+per-interval levels and ramps with one shared 2.6 s rise at each re-lock,
+the laser holding a reference that is itself still settling (no such log
+survives from the campaign itself), with its confirmed re-locks marked and
+the three candidates the finder rejected named on the panel. Middle: the
+campaign's own centre record, block by block, drawn against the
+oscilloscope window setting each block was recorded in, the four spectral
+lines drawn apart because moving between them is the operator moving the
+window. The two series are the same line, and the strip beneath magnifies
+their difference:
+[99.8](../../results/window_attribution.csv "ref:window_attribution:window_attributed_pct:peak_power")
+per cent of the steps' mean square is the window setting, so line offsets
+are meaningful only within one scope-knob epoch, and shapes survive where
+centres do not. The held-lock drift is bounded at order 0.02 MHz/min on the
+laser axis with the sign undetermined. Bottom: what each way of running the
+measurement leaves on the light shift, in units of the predicted shift, with
+measured values filled and forecasts open. As taken, the free drift leaves
+[3.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude:linear_per_epoch").
+Re-ordering the powers through the epoch is forecast to leave
+[0.48](../../results/centre_fisher.csv "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"),
+a factor of two from a lock whose drift is known. The 2025 lock
+supported the shape-only bounds reported here, and a fixed lock of the class
+already demonstrated on this transition would make the centre channel
+usable, converting the bounds into the measured pull, the collisional
+self-shift, and a 3–12σ β_self.*
 
 **"Drift does not stay out of the shape. It skews the line within a scan, and
 skew is your observable."** Right in principle, answered by timescale. A scan

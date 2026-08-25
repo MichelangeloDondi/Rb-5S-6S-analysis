@@ -21,7 +21,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 34,
+    "line": 33,
     "writes": "0.030"
    }
   ],
@@ -32,6 +32,16 @@
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
+    "file": "docs/HISTORY.md",
+    "line": 1835,
+    "writes": "7.3"
+   },
+   {
+    "file": "docs/RESULTS.md",
+    "line": 72,
+    "writes": "7.3"
+   },
+   {
     "file": "docs/plan/07_acquisition-settings.md",
     "line": 1244,
     "writes": "7.3"
@@ -39,6 +49,18 @@
   ],
   "source_file": "results/centre_fisher.csv",
   "source_value": "7.3456"
+ },
+ "centre_fisher:inflation_linear_over_drift_known:forecast": {
+  "producer": "run_centre_fisher.py",
+  "quoting_sites": [
+   {
+    "file": "docs/HISTORY.md",
+    "line": 1832,
+    "writes": "14.4"
+   }
+  ],
+  "source_file": "results/centre_fisher.csv",
+  "source_value": "14.3958"
  },
  "centre_fisher:ladder_order_gain:cycled_over_as_taken": {
   "producer": "run_centre_fisher.py",
@@ -64,12 +86,22 @@
   "source_file": "results/centre_fisher.csv",
   "source_value": "2.1086"
  },
- "centre_fisher:sigma_amplitude_forecast:linear_drift_as_taken": {
+ "centre_fisher:sigma_amplitude:linear_per_epoch": {
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
     "file": "README.md",
     "line": 192,
+    "writes": "3.48"
+   },
+   {
+    "file": "docs/HISTORY.md",
+    "line": 1840,
+    "writes": "3.48"
+   },
+   {
+    "file": "docs/plan/01_aim-and-failure-modes.md",
+    "line": 97,
     "writes": "3.48"
    },
    {
@@ -87,6 +119,16 @@
    {
     "file": "README.md",
     "line": 192,
+    "writes": "0.48"
+   },
+   {
+    "file": "docs/HISTORY.md",
+    "line": 1842,
+    "writes": "0.48"
+   },
+   {
+    "file": "docs/plan/01_aim-and-failure-modes.md",
+    "line": 99,
     "writes": "0.48"
    },
    {
@@ -144,7 +186,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 48,
+    "line": 47,
     "writes": "1.2"
    }
   ],
@@ -192,7 +234,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 118,
+    "line": 117,
     "writes": "2.75"
    }
   ],
@@ -204,7 +246,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 86,
+    "line": 85,
     "writes": "0.35"
    },
    {
@@ -226,7 +268,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 75,
+    "line": 74,
     "writes": "0.26"
    },
    {
@@ -310,18 +352,6 @@
   "source_file": "results/wavemeter_reconstruction.csv",
   "source_value": "1.2"
  },
- "window_attribution:excursion_peak_to_peak_ms:peak_power": {
-  "producer": "run_window_attribution.py",
-  "quoting_sites": [
-   {
-    "file": "README.md",
-    "line": 192,
-    "writes": "557"
-   }
-  ],
-  "source_file": "results/window_attribution.csv",
-  "source_value": "556.8000"
- },
  "window_attribution:n_block_steps_within_line:peak_power": {
   "producer": "run_window_attribution.py",
   "quoting_sites": [
@@ -352,6 +382,11 @@
    {
     "file": "README.md",
     "line": 192,
+    "writes": "99.8"
+   },
+   {
+    "file": "docs/plan/01_aim-and-failure-modes.md",
+    "line": 90,
     "writes": "99.8"
    }
   ],

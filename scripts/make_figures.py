@@ -2883,7 +2883,6 @@ def fig_drift_story():
         ax.plot(_idx[_sl], _pos[_sl], "o-", color="#009E73", ms=4.4, lw=1.3,
                 mec="0.2", mew=0.4,
                 label="where the fitted peak was recorded" if _n == 0 else None)
-    _span = float(_wa[("excursion_peak_to_peak_ms", "peak_power")]["value"])
     ax.set_ylabel("position on the scope (ms)")
     ax.tick_params(labelbottom=False)
     ax.grid(alpha=0.25, lw=0.5)
@@ -2927,8 +2926,8 @@ def fig_drift_story():
             / (_axr.get_ylim()[1] - _axr.get_ylim()[0]))
     _axr.text(0.015, 0.90,
               f"same data, vertical scale x{_mag:.0f}: {_resid:.0f} ms rms "
-              f"left of a {_span:.0f} ms excursion, which is "
-              f"{100 * (1 - _frac):.1f}% of it",
+              f"survives per step, {100 * (1 - _frac):.1f}% of the steps' "
+              f"mean square",
               transform=_axr.transAxes, fontsize=7.0, color="0.30", va="top")
 
 
@@ -2966,8 +2965,12 @@ def fig_drift_story():
         ("power cycled through the epoch",
          _cfv("sigma_amplitude_forecast", "linear_drift_cycled"), "#009E73",
          False),
+        # the as-taken value exists twice, as the MEASURED sigma_amplitude
+        # row and as the ordering-forecast row with the identical value. The
+        # filled marker claims a measurement, so it reads the measured row;
+        # the board's second convening caught it reading the forecast twin.
         ("the 2025 ladder, as taken",
-         _cfv("sigma_amplitude_forecast", "linear_drift_as_taken"), "#D55E00",
+         _cfv("sigma_amplitude", "linear_per_epoch"), "#D55E00",
          True),
     ]
     # THE ROW LABELS SIT INSIDE THE AXES. As y tick labels they were clipped

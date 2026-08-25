@@ -1,6 +1,6 @@
 """The joint fit refuses a session tree that exists and is empty.
 
-On 2026-08-26 the experimenter asked whether the long run could start, and
+On 2026-08-25 the experimenter asked whether the long run could start, and
 answering it meant reading what the producer does when its two external
 session trees are missing. A first reading looked only at the loader, which uses
 `glob.glob(...)` and so returns an empty list rather than raising, and
@@ -51,7 +51,7 @@ def test_a_present_but_empty_tree_is_REFUSED(tmp_path):
     """The gap this file was written for.
 
     Both directories exist and neither holds a matching file. Before the
-    2026-08-26 tightening this passed the directory check and the fit began.
+    2026-08-25 tightening this passed the directory check and the fit began.
     """
     (tmp_path / "s4" / "2025-07-04").mkdir(parents=True)
     (tmp_path / "s7" / "4192nm91c650ma").mkdir(parents=True)
