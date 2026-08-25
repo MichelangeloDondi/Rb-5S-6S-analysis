@@ -141,7 +141,8 @@ physics constants vs analysis choices split across `constants.py` / `config.py`
 rejection pre-registered and QC-based, never result-based.
 
 ```
-rb5s6s/   constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
+rb5s6s/   api(the supported entry point: a trace in, a linewidth out)
+          constants config ingest(M0) qc(M0) noise(M1) ruler(M2)
           rate_model(M2b: the time-resolved sweep rate)
           trim(M2c: the residual-tail trimmer, shared by M0, M2 and M3)
           lineshape(M3) linefit(M3) density(M4) beta(M4) global_fit(M4b)

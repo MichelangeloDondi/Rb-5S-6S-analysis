@@ -40,7 +40,19 @@ from .lineshape import (                                    # noqa: F401
     stark_ramp,
     stark_ramp_axial_moments,
     stark_shift_S0_mhz,
+    total_fwhm_mhz,
+    voigt_fwhm,
 )
+# THE ANALYSIS PATH, exported 2026-08-26. Everything above derives the
+# physics; until this line the package shipped no supported way to fit a
+# measured trace, though `linefit` had done exactly that for the whole
+# campaign. `api.fit_linewidth` is the one-call entry and `linefit` and
+# `ingest` are the modules under it. `ruler`, `trim`, `qc` and `global_fit`
+# stay unexported on purpose: they carry this campaign's own conventions and
+# exporting a name is a promise it can be used correctly on other data.
+from . import ingest, linefit                               # noqa: F401
+from .api import LinewidthResult, fit_linewidth             # noqa: F401
+from .linefit import fit_condition                          # noqa: F401
 from .polarizability import (                               # noqa: F401
     alpha_5s,
     alpha_6s,
@@ -58,4 +70,8 @@ __all__ = [
     # what predicts the shift, and what couples to the light
     "alpha_5s", "alpha_6s", "delta_alpha",
     "two_photon_matrix_element", "two_photon_rabi_hz",
+    # the analysis path: a measured trace in, a linewidth out
+    "fit_linewidth", "LinewidthResult", "fit_condition",
+    "total_fwhm_mhz", "voigt_fwhm",
+    "linefit", "ingest",
 ]

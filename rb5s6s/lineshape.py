@@ -526,6 +526,47 @@ def _conv(a: np.ndarray, b: np.ndarray, dnu: float) -> np.ndarray:
     return np.convolve(a, b, mode="same") * dnu
 
 
+def total_fwhm_mhz(nu: np.ndarray, *, gamma_coll: float, sigma_laser_fwhm: float,
+                   transit_fwhm: float, s0: float = 0.0, **profile_kw) -> float:
+    """The composite line's FULL WIDTH AT HALF MAXIMUM, transition axis, MHz.
+
+    THE HEADLINE QUANTITY OF THIS WHOLE RECORD, and until 2026-08-26 the only
+    implementation of it was `stark._fwhm_of`, a private function. A package
+    that exports eleven forward-model primitives and hides the one number the
+    work is about is surfacing what its author found interesting rather than
+    what a reader needs, and `stark._fwhm_of` now delegates here so there is
+    exactly one definition. Two definitions of a headline quantity is how a
+    factor of 48 survived five citations.
+
+    The width is read off the model profile rather than composed from a
+    formula, because the composite is a convolution of a Lorentzian, a
+    Gaussian and a transit kernel with an optional Stark ramp, and no closed
+    form is exact for it. `voigt_fwhm` below is the quick approximation for
+    seeds and comparisons and is NOT this.
+
+    `nu` sets the grid the half-maximum crossings are interpolated on, so it
+    must span the line generously and be fine enough to resolve it; a grid
+    that clips the wings returns the grid's width, not the line's.
+    """
+    y = model_profile(nu, gamma_coll=max(gamma_coll, 0.0),
+                      sigma_laser_fwhm=sigma_laser_fwhm,
+                      transit_fwhm=transit_fwhm, s0=max(s0, 0.0), **profile_kw)
+    ypk = y.max()
+    above = np.where(y >= 0.5 * ypk)[0]
+    if above.size == 0:
+        return float("nan")
+    lo, hi = above[0], above[-1]
+
+    def cross(i, j):
+        y1, y2 = y[i], y[j]
+        return (nu[i] + (0.5 * ypk - y1) * (nu[j] - nu[i]) / (y2 - y1)
+                if y2 != y1 else nu[i])
+
+    left = cross(lo - 1, lo) if lo > 0 else nu[lo]
+    right = cross(hi, hi + 1) if hi + 1 < len(nu) else nu[hi]
+    return float(right - left)
+
+
 def voigt_fwhm(sigma_g_fwhm: float, gamma_l_fwhm: float) -> float:
     """Olivero-Longbothum Voigt FWHM approximation (for quick comparisons /
     seeds; the fits use the exact convolution above)."""

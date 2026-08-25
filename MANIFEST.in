@@ -3,4 +3,5 @@
 # and both absent from the 4.0 through 4.3 distributions (the 2026-08-17
 # audit's gaps one and two, confirmed live against the 4.2-era wheel).
 include rb5s6s/README.md
+include rb5s6s/data/*.csv
 recursive-include examples *.py

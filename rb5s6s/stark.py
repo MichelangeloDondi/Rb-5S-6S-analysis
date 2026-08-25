@@ -67,7 +67,7 @@ import math
 import numpy as np
 from scipy.optimize import least_squares
 
-from .lineshape import model_profile, stark_shift_S0_mhz
+from .lineshape import stark_shift_S0_mhz, total_fwhm_mhz
 from .linefit import transit_fwhm_at_T
 from .constants import (GAMMA_NAT_HZ, RHO_RETRO, RHO_RETRO_ERR, W0_BAND_M,
                         W0_MEASURED_M)
@@ -138,18 +138,12 @@ def companion_transit_mhz(transit: float, s0: float, peak: str) -> float:
 
 def _fwhm_of(gamma_coll: float, sigma_laser: float, transit: float, s0: float,
              nu: np.ndarray) -> float:
-    y = model_profile(nu, gamma_coll=max(gamma_coll, 0.0), sigma_laser_fwhm=sigma_laser,
-                      transit_fwhm=transit, s0=max(s0, 0.0))
-    ypk = y.max()
-    above = np.where(y >= 0.5 * ypk)[0]
-    lo, hi = above[0], above[-1]
-    # sub-grid linear interpolation of the two half-max crossings
-    def cross(i, j):
-        y1, y2 = y[i], y[j]
-        return nu[i] + (0.5 * ypk - y1) * (nu[j] - nu[i]) / (y2 - y1) if y2 != y1 else nu[i]
-    left = cross(lo - 1, lo) if lo > 0 else nu[lo]
-    right = cross(hi, hi + 1) if hi + 1 < len(nu) else nu[hi]
-    return right - left
+    """Positional shim over `lineshape.total_fwhm_mhz`, which is the public
+    name since 2026-08-26. Kept because three scripts and this module call it
+    positionally; it holds no arithmetic of its own, so the package cannot
+    drift into two definitions of its own headline quantity."""
+    return total_fwhm_mhz(nu, gamma_coll=gamma_coll, sigma_laser_fwhm=sigma_laser,
+                          transit_fwhm=transit, s0=s0)
 
 
 def fit_stark_sweep(grid: Dict[Tuple[str, float], Tuple[float, float]], *,
