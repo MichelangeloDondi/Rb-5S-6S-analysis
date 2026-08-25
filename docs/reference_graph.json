@@ -192,7 +192,7 @@
   "quoting_sites": [
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 83,
+    "line": 85,
     "writes": "0.35"
    },
    {
@@ -214,7 +214,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 72,
+    "line": 74,
     "writes": "0.26"
    },
    {

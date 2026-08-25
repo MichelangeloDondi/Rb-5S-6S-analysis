@@ -68,8 +68,10 @@ next block).
 
 **The light shift.** The joint three-session fit detects no shift: the
 best-fit power coefficient is consistent with zero (Δχ² against zero of
-0.12). What the data give is a 95% upper limit, S₀ at the campaign's
-225 mW operating power **below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
+0.12). What the data give is a 95% upper limit on S₀, which
+is the shift an atom sitting on the beam axis sees at the campaign's 225 mW
+operating power, and so the deepest shift anywhere in the beam:
+**below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
 [`stark_joint.csv`](../../results/stark_joint.csv)). The limit is not read from
 where the line sits. Every trace keeps a free centre, so drift and re-locks

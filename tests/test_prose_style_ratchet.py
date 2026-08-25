@@ -203,6 +203,21 @@ def test_the_baseline_itself_only_ever_shrinks():
     "plethora",
     "when it comes to",
     "in conclusion",
+    # Added 2026-08-26 on the experimenter's instruction, after he read a
+    # release note and said it "sounds so much AI written". Measured the same
+    # way the 2026-08-10 batch was: each of these is at ZERO across the tracked
+    # corpus, which is what makes an outright ban free. "Comfortable" was the
+    # word he named and it is NOT here, because it appears 32 times with a
+    # legitimate margin sense ("750 Hz is comfortable against a 1 s scan")
+    # beside the vague one. It gets the falling budget below instead, which is
+    # how this file already treats "rather than".
+    "compelling",
+    "multifaceted",
+    "rich tapestry",
+    "in today's",
+    "it's worth noting",
+    "delving",
+    "underscoring",
     "to summarize",
     "to summarise",
     "double-edged sword",
@@ -344,6 +359,60 @@ def test_no_file_gains_the_rather_than_construction():
         "sentence.\n  " + "\n  ".join(worse)
         + "\n\nAfter a genuine cleanup, re-record with:"
           "\n  python tests/test_prose_style_ratchet.py --relax-constructions")
+
+
+VAGUE_JUDGEMENT = re.compile(r"\bcomfortabl[ey]\b", re.I)
+VAGUE_BASELINE = Path(__file__).parent / "_vague_judgement_baseline.json"
+
+
+def _vague_counts() -> dict[str, int]:
+    out = {}
+    for rel in _tracked_markdown():
+        if not (ROOT / rel).exists():
+            continue
+        n = len(VAGUE_JUDGEMENT.findall((ROOT / rel).read_text(encoding="utf-8")))
+        if n:
+            out[rel] = n
+    return out
+
+
+def test_no_file_gains_a_vague_judgement_word():
+    """A per-file falling budget on "comfortable", which cannot be banned.
+
+    THE FAILURE, 2026-08-26. The experimenter read the v4.3 release note and
+    said it sounded machine-written. One phrase he could have pointed at was
+    "not a comfortable exclusion": it reads as considered judgement and
+    carries no number, where "the margin is 1.35x and one subset arm does not
+    exclude at all" says the same thing and can be checked.
+
+    IT CANNOT JOIN THE FILLER BAN ABOVE, because that list is zero-cost by
+    construction and this word is not at zero. It appears 32 times, and some
+    of those are the legitimate engineering sense of margin, "DC to 750 Hz is
+    comfortable against a 1 s scan", or "39 sits comfortably inside it". A
+    ban would forbid the good use with the vague one, which is the mistake
+    the 2026-08-10 batch avoided by keeping "leverage" and "underscore".
+
+    So it takes the shape this file already uses for "rather than": a
+    per-file budget seeded at the measured counts, allowed down, never up.
+    Each file loses its vague uses when someone edits it for another reason.
+    """
+    baseline = json.loads(VAGUE_BASELINE.read_text())
+    current = _vague_counts()
+    worse = [f"{rel}: {baseline.get(rel, 0)} -> {n}"
+             for rel, n in sorted(current.items()) if n > baseline.get(rel, 0)]
+    assert not worse, (
+        "a file gained a vague-judgement word. Say the number instead: "
+        "'not a comfortable exclusion' is 'the margin is 1.35x, and one "
+        "subset arm does not exclude at all'.\n  " + "\n  ".join(worse)
+        + "\n\nAfter a genuine cleanup, re-record with:"
+          "\n  python tests/test_prose_style_ratchet.py --relax-vague")
+
+
+def test_the_vague_counter_sees_a_planted_word():
+    """Ceiling test: the counter must be able to fire."""
+    assert len(VAGUE_JUDGEMENT.findall("this is a comfortable margin")) == 1
+    assert len(VAGUE_JUDGEMENT.findall("it sits comfortably inside")) == 1
+    assert len(VAGUE_JUDGEMENT.findall("no such word here")) == 0
 
 
 def test_the_construction_counter_sees_a_planted_tic():
@@ -585,7 +654,10 @@ def test_shaped_bans_stay_at_zero():
 
 if __name__ == "__main__":  # `python tests/test_prose_style_ratchet.py --relax`
     import sys
-    if "--relax-csv-semicolons" in sys.argv:
+    if "--relax-vague" in sys.argv:
+        VAGUE_BASELINE.write_text(json.dumps(_vague_counts(), indent=1, sort_keys=True) + "\n")
+        print("re-recorded the vague-judgement baseline")
+    elif "--relax-csv-semicolons" in sys.argv:
         CSV_SEMICOLON_BASELINE.write_text(
             json.dumps(_csv_semicolon_counts(), indent=1, sort_keys=True)
             + "\n")
