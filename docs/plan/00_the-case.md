@@ -52,7 +52,8 @@ transit is removed at the measured waist, which is why the bound rises with
 the waist and falls to zero near 16 µm. **The laser is not what fills that
 slot.** A wavemeter record taken mid-acquisition holds a 100 kHz standard
 deviation over 24 minutes, the comb read as a clock bounds the
-non-repeating excursion below 28.3 kHz, and the previous generation of this
+non-repeating excursion below 28.3 kHz on this page's transition axis, and
+the previous generation of this
 laser, at about 100 kHz, produced a line of **4.9 to 5.2 MHz on this page's
 transition axis** (2.4 to 2.6 per photon), which is where the 2025 line sits
 at about 5.25. The axis matters and the natural width settles it: at
@@ -68,16 +69,16 @@ next block).
 
 **The light shift.** The joint three-session fit detects no shift: the
 best-fit power coefficient is consistent with zero (Δχ² against zero of
-0.12). What the data give is a 95% upper limit on S₀, which
-is the shift an atom sitting on the beam axis sees at the campaign's 225 mW
-operating power, and so the deepest shift anywhere in the beam:
+0.12). What the data give is a 95% upper limit on S₀, the
+shift an atom on the beam axis sees at the campaign's 225 mW, the deepest
+anywhere in the beam:
 **below [0.26](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary") MHz**
 ([`run_stark_joint.py`](../../scripts/run_stark_joint.py),
-[`stark_joint.csv`](../../results/stark_joint.csv)). The limit is not read from
-where the line sits. Every trace keeps a free centre, so drift and re-locks
-are profiled out exactly, and an on-axis shift instead spreads the line into
-a ramp of red shifts across the beam, which broadens and skews it as the
-power rises. That construction needs no waist.
+[`stark_joint.csv`](../../results/stark_joint.csv)). The limit is not read from where the
+line sits: every trace keeps a free centre, profiling drift and re-locks
+out exactly. An on-axis shift instead spreads the line into a ramp of red
+shifts across the beam, broadening and skewing it as power rises, with no
+waist needed.
 
 The predicted shift does need one. At the 64 µm waist, measured by Rajasree
 on this same optical table with the same laser and lenses, though not in
@@ -90,19 +91,15 @@ exclusion: dropping peak 4192 removes a whole session and raises
 the limit to 0.37, which does not exclude the prediction. And the
 prediction stands on a polarizability whose sign this record's own
 [THEORY_NOTE](../THEORY_NOTE.md) finds opposite to the published
-calculation. The experimenter settled it, taking this
-record's value as the package value and keeping the published one named
-beside it. **An adjudication is not a measurement.** The sign stays unset by
-experiment, and what would settle it is the fixed-lock pull direction,
-section 4. The prediction cell linked above was computed before that
-decision, which raises it by about 5 per cent. Its producer needs two
-sessions held outside this repository and carries the change when it next
-runs. No bound moves either way, because every bound here reads the
-magnitude. So the excess of prediction over limit
-has three candidate readings, a waist error beyond its band, a
-polarizability magnitude error, or the 5% fluctuation, and the measurements
-that decide it are a beam profile in the interaction volume and a longer
-power lever, section 4.
+calculation. The experimenter adjudicated it: this
+record's value is the package value, the published one named beside it. **An adjudication is not a measurement.** The sign stays unset
+by experiment, and the fixed-lock pull direction would set it, section 4. The
+prediction cell linked above predates that decision, which raises it by
+about 5 per cent, and its producer carries the change on its next run. No
+bound moves, since every bound here reads the magnitude. So the excess of prediction over
+limit keeps three candidate readings, a waist error beyond its band, a
+polarizability magnitude error, or the 5% fluctuation, decided by a beam
+profile in the interaction volume and a longer power lever, section 4.
 
 The construction: every point of every canonical power-sweep profile enters
 one three-session maximum-likelihood fit with one shared coefficient,
@@ -117,9 +114,10 @@ alternative headline.
 One term is deliberately absent, and its absence is conservative in the
 direction that matters. Atomic saturation broadens with the same power
 signature as the light shift: injecting the standard two-level term and
-re-profiling moves the width-only bound by a measured 2.8 and this joint
-bound by 2.21
-([`saturation_companion.csv`](../../results/saturation_companion.csv)).
+re-profiling tightens the width-only bound by a measured factor of
+[2.75](../../results/saturation_companion.csv "ref:saturation_companion:C3d:factor_with_saturation_ratio_-1p2362"),
+and the joint bound by about 2.2 in a 2026-08-10 run on data trees this
+repository does not hold, reproduced by no producer here.
 The term stays out because for this system that law is an underived
 approximation, and licensing it would only tighten the bound.
 
@@ -216,7 +214,7 @@ series. One session's internal temperature spans 110 to 130 °C, a factor
 
 | what is unidentified | the measurement that removes it | why it works |
 |---|---|---|
-| the width split | an independent laser-width measurement | it removes one side of a correlated pair, and the other side's uncertainty falls by 1/√(1 − ρ²), about 2.5 to 3 across the committed conditions |
+| the width split | an independent laser-width measurement | it removes one side of a correlated pair, and the other side's uncertainty falls by 1/√(1 − ρ²), about 1.3 to 2.5 across the 32 committed conditions, rising to about 3 at the design points the text below names |
 | transit against waist | a beam profile in the interaction volume | one afternoon, no atoms required |
 | the excluded axis | the frequency-axis repair, already scoped | the rulers exist in those traces and were not used |
 | amplitude against detection | four peaks on one vertical range, and one photocurrent on two acquisition chains at once | the confound is the range switch and the chain, so hold both fixed |
