@@ -125,7 +125,7 @@ diagnostic rather than write a table.
 | `import_data.py` | the one-time, idempotent import of the 2025 dataset into `data_raw/`, deduplicating by MD5 and writing `MANIFEST.csv` |
 | `annotate_manifest_qc.py` | refreshes the `qc_reason` provenance column of `data_raw/MANIFEST.csv` in place, leaving the other columns untouched |
 | `check_references.py` | resolves every inline data reference (a markdown link whose title is a `ref:` key) against its CSV cell or literature values row, with `--fix` for pure-value link texts and `--graph` for the derived dependents map |
-| `check_release_notes.py` | the register checks applied to a release body or any other untracked prose, since a release body is not a tracked file and nothing else looks at it |
+| `check_release_notes.py` | the register banks plus the release-note style rules (word ceiling, shorthand-code ban, narrative markers, `docs/RELEASE_NOTE_STYLE.md`) applied to a release body or any other untracked prose, since a release body is not a tracked file and nothing else looks at it |
 | `publish_recovered.py` | copies the backup-recovered acquisitions into `data_recovered/` under hash-suffixed names, since nine of the original names collide with different bytes |
 | `run_timestamp_audit.py` | scores the preregistered timestamp criteria against a excluded copy of the recovered backup and the committed manifest |
 

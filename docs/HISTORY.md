@@ -58,8 +58,10 @@ for one quantity rather than for the sequence.
 | [Three pages on the kernel](#three-pages-described-the-kernel-systematic-as-unquantified-or-still-to-be-done-2026-08-22) | the narrative layer called a question open that the results layer had answered | no number, three pages of prose |
 | [A results path](#a-results-path-was-renamed-away-from-a-collision-2026-08-22) | `lever_table.csv` became `orthogonal_levers.csv` to clear a name collision | no, the path only |
 | [The class-adequacy caveat](#the-class-adequacy-caveat-tested-twice-in-one-day-2026-08-22) | the atlas ran, voided, was diagnosed and re-ran, and the fourth-level statement moved with it | no number, three surfaces of prose |
+| [The drift-freedom factor](#the-drift-freedom-factor-of-48-retracted-2026-08-25) | a published 48 with no producer, rebuilt and measured | yes, 48 to [7.3](../results/centre_fisher.csv "ref:centre_fisher:inflation_linear_over_constant:measured") |
+| [The release pages](#the-v43-and-v44-release-pages-withdrawn-and-replaced-2026-08-26) | the v4.3 and v4.4 bodies withdrawn, the note rules now in `RELEASE_NOTE_STYLE.md` | no, the pages only |
 
-The last three rows are here on purpose. A history that records only the
+The last three rows before these two are here on purpose. A history that records only the
 corrections a reader could otherwise discover teaches that the record is
 audited from outside, and these three were caught by the record auditing
 itself. The last of them was caught by running a committed producer with its
@@ -1362,10 +1364,14 @@ zero.**
 
 **What is written, and what is deliberately not.** The C3d half only: the
 committed width-only bound reproduced by the unpatched arm, both saturated
-bounds, and both ends of the factor band, **2.75 and 2.84**, which documents
-round to about 2.8. It reads only committed CSVs and carries its own check
-that the unpatched arm reproduces the committed value, so it regenerates from
-a clean checkout.
+bounds, and the factor at both saturation arms,
+[2.75](../results/saturation_companion.csv "ref:saturation_companion:C3d:factor_with_saturation_ratio_-1p2362") at each, which
+documents round to about 2.8. It reads only committed CSVs and carries its
+own check that the unpatched arm reproduces the committed value, so it
+regenerates from a clean checkout. Corrected 2026-08-26: this sentence and
+`docs/RESULTS.md` both carried a stale second-arm value that predates
+the current arm set in `results/saturation_companion.csv`. Both pages
+were corrected the same day, through the ledger's generator.
 
 **The joint factor is not written as a digit.** Stage 4 reads two data trees
 held outside this repository, and stage 3 says in terms that quoting a joint
@@ -1845,3 +1851,19 @@ the number. The note's body was then corrected in place on the release
 pages of both repositories, this one and its public mirror, after his
 review. This row is the disclosure that the published body
 changed after publication.
+
+## The v4.3 and v4.4 release pages, withdrawn and replaced 2026-08-26
+
+The experimenter judged both bodies defective on reading them: written as
+narratives, with numbers that named no committed file and terms a cold
+reader could not resolve. An adversarial review of every release note
+published on this project's two repositories found the same defect
+profile in each one. The rules a note must now satisfy are in
+[RELEASE_NOTE_STYLE.md](RELEASE_NOTE_STYLE.md), and
+`scripts/check_release_notes.py` refuses their mechanical half. The v4.3 and first v4.4 pages were deleted
+on both repositories. In their place stand a short reconstructed v4.3
+page and a replacement v4.4 note conforming to the style rules, and the
+v4.4 tag moves to the tree that carries this entry, with `CITATION.cff`
+re-dated to match. No committed number changed in the
+replacement. Release pages before v4.3 stand as published, as the record
+of what was said at the time.

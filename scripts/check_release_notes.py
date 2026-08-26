@@ -23,9 +23,16 @@ What it checks, all of it borrowed:
 * the GitHub inline-math adjacency rule of tests/test_docs_math_render.py,
   measured against GitHub's own renderer rather than assumed
 * the house punctuation rule, no em-dashes and no semicolons
+* the release-note style rules' mechanical half (docs/RELEASE_NOTE_STYLE.md,
+  2026-08-26, written after an adversarial review of every published
+  note): a 400-word ceiling on the body, no internal shorthand codes
+  outside file paths, and the narrative-register markers that review
+  measured in every published note. Passing `--self-check` skips these
+  three, for the protocol-file self-audits of LOGIC 17.3, whose subjects
+  are long by design and quote the register they ban.
 
-Exit status is 1 on any finding, so it can gate a release the way ci_gate.sh
-gates a push.
+Exit status is 1 on any finding, 2 on usage, 3 when a required rule bank
+cannot be loaded, so a checker that lost its rules can never report clean.
 """
 from __future__ import annotations
 
@@ -49,15 +56,15 @@ def _load_rules():
     from test_repo_hygiene import FORBIDDEN
     banks = {label: [re.compile(p, re.I) for p in pats]
              for label, pats in FORBIDDEN.items()}
-    try:
-        import test_prose_style_ratchet as _r
-        extra = [re.escape(w) for w in _r.FILLER_PHRASES]
-        extra.append(_r.VAGUE_JUDGEMENT.pattern)
-        banks["filler and vague judgement"] = [
-            re.compile(rf"\b{p}\b" if not p.startswith("\\b") else p, re.I)
-            for p in extra]
-    except Exception:
-        pass
+    # A failed import here once left the filler bank silently missing and
+    # the checker printing clean, so a missing bank is now a hard stop
+    # (exit 3 in main) and never a pass.
+    import test_prose_style_ratchet as _r
+    extra = [re.escape(w) for w in _r.FILLER_PHRASES]
+    extra.append(_r.VAGUE_JUDGEMENT.pattern)
+    banks["filler and vague judgement"] = [
+        re.compile(rf"\b{p}\b" if not p.startswith("\\b") else p, re.I)
+        for p in extra]
     math_checks = None
     try:
         import test_docs_math_render as m
@@ -107,34 +114,137 @@ def _fallback_math(text: str) -> list[str]:
     return out
 
 
+# The style rules' mechanical half (docs/RELEASE_NOTE_STYLE.md). The word
+# ceiling is the refusal level and the target is 300. The code pattern
+# spares file paths (results/kernel_k4.csv stays citable) by refusing only
+# codes that stand as their own word outside a path or code span, and it
+# spares physics vocabulary that shares the shape: "the M1 transition" and
+# "the C3 dispersion coefficient" name multipoles and dispersion physics,
+# recognised when any of the next three words names the physics.
+WORD_CEILING = 400
+_CODE = re.compile(r"(?<![\w/.-])([MCKP]\d{1,2}[a-z]?)(?![\w/.-])")
+_PHYSICS_NEXT = ("transition", "coefficient", "multipole", "admixture",
+                 "dispersion")
+# Register markers measured by the 2026-08-26 adversarial review in every
+# published note. Literal phrases, kept few and unambiguous so a false
+# positive is nearly impossible. The voice review seat carries the
+# semantic half.
+NARRATIVE_MARKERS = [
+    "two things happened",
+    "which is exactly",
+    "which is precisely",
+    "the story",
+    "not a claim, a measurement",
+    "survives and sharpens",
+    "interrogated to exhaustion",
+    "and that is a result",
+    "and that is the recommendation",
+]
+
+
+def _paragraphs(text: str) -> list[tuple[int, str]]:
+    """(start_line, flattened prose) per paragraph, code fences skipped,
+    inline code spans stripped, bullets treated as their own paragraphs.
+
+    Every content pattern in this file matches against the FLATTENED
+    paragraph, never a physical line. A banned phrase spanning a hard
+    line wrap defeated a per-line guard on a public page once before, and
+    the first version of this function's callers repeated the class on
+    the day they were written: a wrapped "M1 / transition" pair defeated
+    the physics allowance, and a wrapped banned phrase passed unseen.
+    """
+    out: list[tuple[int, str]] = []
+    fenced = False
+    buf: list[str] = []
+    start = 0
+    for i, line in enumerate(text.split("\n"), 1):
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+            continue
+        bullet = bool(re.match(r"\s*[*-]\s", line))
+        if fenced or not line.strip() or bullet:
+            if buf:
+                out.append((start, " ".join(buf)))
+                buf = []
+            if fenced or not line.strip():
+                continue
+        cleaned = re.sub(r"`[^`]*`", "", line).strip()
+        if not buf:
+            start = i
+        buf.append(cleaned)
+    if buf:
+        out.append((start, " ".join(buf)))
+    return out
+
+
+def _protocol_findings(paragraphs: list[tuple[int, str]],
+                       n_words: int) -> list[str]:
+    out = []
+    if n_words > WORD_CEILING:
+        out.append(f"[style N2] body is {n_words} words against the "
+                   f"{WORD_CEILING}-word refusal ceiling (target 300)")
+    for ln, flat in paragraphs:
+        for m in _CODE.finditer(flat):
+            following = re.findall(r"[A-Za-z-]+", flat[m.end():])[:3]
+            if any(w.lower() in _PHYSICS_NEXT for w in following):
+                continue
+            out.append(f"[style N4] paragraph at line {ln}: internal code "
+                       f"{m.group(0)!r} outside a file path: {flat[:70]}")
+        low = flat.lower()
+        for phrase in NARRATIVE_MARKERS:
+            if phrase in low:
+                out.append(f"[style N7] paragraph at line {ln}: register "
+                           f"marker {phrase!r}: {flat[:70]}")
+    return out
+
+
 def main(argv: list[str]) -> int:
-    if len(argv) != 2:
+    args = [a for a in argv[1:] if a != "--self-check"]
+    self_check = "--self-check" in argv[1:]
+    if len(args) != 1:
         print(__doc__.strip().split("\n")[2].strip())
         return 2
-    path = Path(argv[1])
+    path = Path(args[0])
     if not path.exists():
         print(f"check_release_notes: no such file: {path}")
         return 2
     text = path.read_text(encoding="utf-8", errors="replace")
-    banks, math_helper = _load_rules()
+    try:
+        banks, math_helper = _load_rules()
+    except Exception as exc:
+        print(f"check_release_notes: a required rule bank failed to load "
+              f"({type(exc).__name__}: {exc}), refusing to report clean")
+        return 3
 
     findings: list[str] = []
 
+    paragraphs = _paragraphs(text)
     for label, pats in sorted(banks.items()):
-        for i, line in enumerate(text.split("\n"), 1):
+        for ln, flat in paragraphs:
             for pat in pats:
-                if pat.search(line):
-                    findings.append(f"[{label}] {i}: {line.strip()[:88]}")
+                if pat.search(flat):
+                    findings.append(f"[{label}] paragraph at line {ln}: "
+                                    f"{flat[:88]}")
 
-    for problem in (_fallback_math(text) if math_helper is None
-                    else _fallback_math(text)):
+    # The test module exposes no callable helper on this tree, so the
+    # restated rule below is the one that runs. math_helper is kept so a
+    # future helper is picked up here the day it exists.
+    del math_helper
+    for problem in _fallback_math(text):
         findings.append(f"[math would render as source] {problem}")
 
     for i, line in enumerate(text.split("\n"), 1):
         if "—" in line:
             findings.append(f"[punctuation] {i}: em-dash: {line.strip()[:80]}")
-        if ";" in line and not line.lstrip().startswith(("    ", "\t", "```")):
+        # The indent test reads the RAW line: an lstrip()ed line can never
+        # start with whitespace, which made the first version's exemption
+        # for indented code unreachable.
+        if (";" in line and not line.startswith(("    ", "\t"))
+                and not line.lstrip().startswith("```")):
             findings.append(f"[punctuation] {i}: semicolon: {line.strip()[:80]}")
+
+    if not self_check:
+        findings.extend(_protocol_findings(paragraphs, len(text.split())))
 
     if findings:
         print(f"check_release_notes: FAIL, {len(findings)} finding(s) in {path}\n")

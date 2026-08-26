@@ -33,7 +33,12 @@
   "quoting_sites": [
    {
     "file": "docs/HISTORY.md",
-    "line": 1835,
+    "line": 61,
+    "writes": "7.3"
+   },
+   {
+    "file": "docs/HISTORY.md",
+    "line": 1841,
     "writes": "7.3"
    },
    {
@@ -55,7 +60,7 @@
   "quoting_sites": [
    {
     "file": "docs/HISTORY.md",
-    "line": 1832,
+    "line": 1838,
     "writes": "14.4"
    }
   ],
@@ -96,7 +101,7 @@
    },
    {
     "file": "docs/HISTORY.md",
-    "line": 1840,
+    "line": 1846,
     "writes": "3.48"
    },
    {
@@ -123,7 +128,7 @@
    },
    {
     "file": "docs/HISTORY.md",
-    "line": 1842,
+    "line": 1848,
     "writes": "0.48"
    },
    {
@@ -232,6 +237,11 @@
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
   "quoting_sites": [
+   {
+    "file": "docs/HISTORY.md",
+    "line": 1368,
+    "writes": "2.75"
+   },
    {
     "file": "docs/plan/00_the-case.md",
     "line": 117,
