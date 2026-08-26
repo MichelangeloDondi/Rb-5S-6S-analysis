@@ -34,75 +34,25 @@ section: usafa-lineage
 
 # orson2021
 
-Source of DELTA\_ALPHA\_AU: they compute alpha\_56=alpha(5S)-alpha(6S) =-1093 a.u. (our +1093). Prior nulls: no AC-Stark and no density shift at 6 MHz resolution. Our stark\_shift\_S0\_mhz reproduces their -0.66 MHz shift to the digit.
+Held. The article number 175001 and the sign convention and predicted Stark shift below were verified against the PDF.
 
-Absolute hyperfine energy levels + isotope shift of the 5S-6S transition (same USAFA group as ayachitula2024). Load-bearing prior nulls: they "find no AC Stark or light shift of the lines at 6 MHz spectral resolution" (varied laser power) and "no density shift ... for a range of Rb atom densities from 3e11 cm^-3" upward — both are prior NULLS on our AC-Stark and collisional self-shift channels, refined by our archival bounds (S0 < 0.64 MHz profile likelihood; beta_self a bound). They compute the differential polarizability alpha_56 = alpha(5S)-alpha(6S) = -1093 a.u. (-1.80e-38 J m^2/V^2), "in a manner similar to Martin 2019" (martin2019) — the source of our DELTA_ALPHA_AU=+1093, never a loose in-house estimate. Our stark_shift_S0_mhz reproduces their predicted -0.66 MHz shift (0.8 W, 63 um waist) to the digit (`test_stark_S0_reproduces_orson2021`); their 63 um waist coincidentally echoes nieddu2019's 64 um, a different apparatus. Isotope shift (87-85) = +94(12) MHz — cross-checks ayachitula2024's more precise +99.189(3). Laser linewidth <50 kHz; they use the Perez Galvan hyperfine constants, now superseded by ayachitula2024.
+## The system
 
-**Intro framing:** prior groups looked for these shifts on THIS line and saw nulls at ~MHz resolution; our drift-immune ramp method + two-epoch design is the route to the coefficients below that floor.
+Absolute hyperfine energy levels and the isotope shift of the Rb 5S-6S two-photon transition, measured by the same group (USAFA) as ayachitula2024, using the Perez Galvan hyperfine constants (since superseded by ayachitula2024's more precise values). Laser linewidth below 50 kHz.
 
-## The polarizability convention and sign, read from the PDF (2026-07-26)
+## The numbers
 
-Quoted verbatim, because an external literature audit proposed that the
-programme's "sign disagreement" was a convention artifact and this settles it:
+No AC-Stark or light shift was detected in the line positions at 6 MHz spectral resolution across the laser powers used, and no density shift was observed for Rb densities from 3e11 cm^-3 upward. The isotope shift (87Rb minus 85Rb) is +94(12) MHz.
 
-> "We have calculated the AC Stark differential polarizabilty of the 5S state
-> minus 6S state α5 − α6 = α56 in a manner similar to that of Martin, et al
-> [24], and find **α56 = −1093** in atomic units, which in SI units is
-> −1.80 × 10−38 J m2 V−2."
+The differential polarizability alpha_56 = alpha(5S) - alpha(6S) is computed, not measured, in a manner similar to that of martin2019: alpha_56 = -1093 a.u., or -1.80e-38 J m^2 V^-2. At 0.8 W and a 63 um waist this predicts a Stark shift of -0.66 MHz, a red shift.
 
-So both halves are now fixed by the paper itself: the convention **is**
-α56 ≡ α5S − α6S (the audit had this right), and the printed value **is
-negative**. Orson therefore implies α6S − α5S = **+1093**, against this
-repo's recompute of **−1145**. The disagreement is real, not bookkeeping.
+## Validity
 
-**Orson is internally consistent**: α56 = −1.80e-38 J m²/V² with their
-E² = 4.8e10 V²/m² gives ½α56E²/h = −0.65 MHz, matching the −0.66 MHz they
-state, and a negative transition shift is the red shift they describe.
+The isotope shift, +94(12) MHz, is consistent with ayachitula2024's later, more precise value of +99.189(3) MHz. The paper's own predicted Stark shift also reproduces from its own equation: running its stated inputs (E^2 = 4.8e10 V^2/m^2 at 0.8 W and a 63 um waist) through this repository's unit conversion returns -0.653 MHz, matching the stated -0.66 MHz.
 
-**What their sign would require.** With α5S(993) = +832 (our value, and the
-robust one — every 5S term is red-detuned at 993 nm, so it is sign-unanimous),
-α56 = −1093 implies α6S(993) = **+1925**. Reaching a large positive α6S needs
-993 nm to sit RED of the strong 6S upward transitions; it does not — the
-dominant 6S–6P lines are at 2.7/2.8 µm, so 993 nm is far blue of them and
-those terms are negative. Our −312 is the sum of that negative upward group
-(−947) and the positive downward 5P cascade (+623).
+## Use in this record
 
-**The cascade term is pinned, and this is now first-hand rather than relayed.**
-The downward 6S–5P contribution is what would have to move to flip the sign,
-and three independent determinations agree on it to well under a percent:
-
-| transition | this repo | [Safronova 2004](safronova2004.md) all-order | [Arora 2012](arora2012.md) CC | spread |
-|---|---|---|---|---|
-| 6s–5p₁/₂ | 4.146 | 4.119 | 4.144(3) | 0.66% |
-| 6s–5p₃/₂ | 6.048 | 6.013 | 6.048(5) | 0.58% |
-
-A sign flip needs a **33%** revision of the 6s–5p₃/₂ strength — **50× the
-disagreement between three state-of-the-art calculations** — and the lifetime
-those elements imply, 45.44(8) ns, already matches the Gomez 2005 measurement
-of 45.57(17) ns to 0.29%. The atomic data does not permit the flip.
-
-## Identifier confirmed (2026-07-26)
-
-The external audit could not confirm the article number from citation trails
-and advised citing the DOI alone. The PDF settles it — **175001 confirmed** from
-the paper's own header: "S T Orson *et al* 2021 *J. Phys. B: At. Mol. Opt.
-Phys.* **54** 175001", and the running head "J. Phys. B: At. Mol. Opt. Phys. 54
-(2021) 175001 (6pp), https://doi.org/10.1088/1361-6455/ac2812". Six pages.
-Cite with confidence.
-
-**Sign fact verified from the typeset PDF, 2026-07-29** — previously this rested
-on a text extraction. The paper states the convention in words ("the AC Stark
-differential polarizabilty of the 5S state minus 6S state alpha_5 - alpha_6 =
-alpha_56"), prints **alpha_56 = -1093 a.u.**, repeats it in SI as
-**-1.80e-38 J m^2 V^-2** (also negative), and works a consequence: at w0 = 63 um
-and P = 0.8 W, E^2 = 4.8e10 V^2/m^2 and **Delta_f = -0.66 MHz**, a RED shift.
-Running his own inputs through this repo's unit chain returns -0.653 MHz, so the
-disagreement with this work is not a units or convention artifact.
-
-He also notes calculating "in a manner similar to that of Martin et al [24]" --
-see [martin2019](martin2019.md), whose printed Eqs. (2) and (21) carry a leading
-minus. Whether that propagated here is a hypothesis, not a finding; it is stated
-as such in THEORY_NOTE section 5.
+This repository's independently computed alpha(6S) - alpha(5S) is +1145 a.u., opposite in sign to this paper's implied alpha(6S) - alpha(5S) = +1093 a.u. and 4.8% different in magnitude. Since the predicted shift itself reproduces closely, the discrepancy is not a units or convention error but one of atomic-structure calculation. Resolving it in the paper's favor would require a 33% revision to the 6s-5p3/2 radial matrix element, on which this repository's value, Safronova 2004, and Arora 2012 agree to within 0.7%.
 
 ## Values
 

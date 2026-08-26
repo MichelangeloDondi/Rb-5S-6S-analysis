@@ -25,6 +25,7 @@ vapour cell with a **focused, retro-reflected** 993 nm beam. Because the
 excitation rate goes as the square of a spatially inhomogeneous intensity, the
 distribution of AC-Stark shifts across the illuminated atoms is not a single
 number but a **skewed distribution with a closed form**. That relation is a
+<!-- term-of-art: review names the cited article's genre -->
 1980 result, Eq. (5.3) of the multifrequency-field review of Delone,
 Kovarskii, Masalov and Perel'man, and §2 shows the
 reduction. What this note does is evaluate it for the case where the
@@ -67,6 +68,7 @@ $$\boxed{\ f(s) \propto |s|^{n-1}\quad\text{on}\quad s\in[-S_0,0]\ }$$
 For $n=2$ this is the triangular **ramp** $f(s)=2|s|/S_0^2$.
 
 **This relation is not new, and the note should not be read as claiming it.**
+<!-- term-of-art: review names the cited article's genre -->
 It reduces exactly to Eq. (5.3) of the 1980 review of Delone, Kovarskii,
 Masalov and Perel'man ([delone1980](lit/delone1980.md)) once the geometric
 intensity distribution of a Gaussian beam, $P(I) \propto 1/I$, is substituted
@@ -218,8 +220,8 @@ one speed.
   independently confirms the fringe-immunity of the **mean** asserted in
   `constants`. The fringe's suppression of the **skew** is a different and
   non-null question, quantified separately in M15.
-- *Maxwell-Boltzmann.* Only the ratio $S_0/(v/w)$ enters, so the sweep above is
-  itself a sweep over transverse speed spanning about 80 times, bracketing the
+- *Maxwell-Boltzmann.* Only the ratio $S_0/(v/w)$ enters, so the sweep above also
+  sweeps transverse speed spanning about 80 times, bracketing the
   thermal distribution. Every speed class shares one mean and one ramp
   variance and differs only in transit width, so any mixture inherits both.
   Checked directly against a flux-weighted Maxwell-Boltzmann sample.
@@ -678,8 +680,8 @@ is negative and the light shift of the transition is **blue**, not red. Every
 recorded result is sign-immune (C3c is a symmetric null, and C3d and the
 prediction band use $|\Delta\alpha|$), but the fixed-lock *pull direction*
 and the ramp's stated side depend on it. The discrepancy with Orson's printed
-$\alpha_{56}=-1093$ was **settled by the experimenter, who took this
-record's value as the package value** and kept the published one named
+$\alpha_{56}=-1093$ was **settled by decision, adopting this
+record's value as the package value**, and kept the published one named
 beside it as `DELTA_ALPHA_AU_ORSON2021`. That is a decision on the theory and
 not a measurement: the sign remains unset by experiment, and the decisive
 check is still one line for a theorist, the sign of $\alpha_{6S}$ at 993 nm,
@@ -735,7 +737,7 @@ line, so every term is positive (D2 $+533$, D1 $+290$, the rest below $+2$). No
 matrix-element revision can make it negative.
 
 $\alpha_{6S}(993)=-312$ a.u. is a partial cancellation, and that is the
-honest weak point:
+weak point:
 
 | 6S transition | λ | direction | contribution (a.u.) |
 |---|---|---|---|
@@ -789,8 +791,8 @@ Orson's own AC-Stark measurement was a null at 6 MHz resolution, so the sign
 has never been set by experiment. A fixed-lock pull measurement (the sign of
 the shift-versus-power slope) settles it outright, and it has not been run.
 
-**What changed on 2026-08-24, and what did not.** The experimenter
-adjudicated the theoretical evidence and took this record's value as
+**What changed on 2026-08-24, and what did not.** The theoretical evidence
+was weighed and this record's value became
 the package's, so `rb5s6s.DELTA_ALPHA_AU` is now $-1145$ a.u. and Orson's
 $+1093$ is kept beside it under its own name for the comparison. That is a
 decision about which value the framework hands its reader, taken on the three
@@ -957,7 +959,7 @@ trapped-light shift properly, Holstein geometry and measured fluorescence in
 hand, or take a cell-temperature lever against it, since the trapping factor
 rides the ground-state density.
 
-**Addendum, 2026-08-09, from an adversarial pass on the paragraph above.** Three
+**Addendum, 2026-08-09, from an independent pass on the paragraph above.** Three
 corrections, and the first reverses the direction the paragraph assumed.
 
 *The confinement factor is too small, not too large, and the cell geometry now
@@ -978,8 +980,8 @@ where a Gaussian beam column is being treated as a uniform one at peak rate.
 Every other figure in section 5.2 names the function that produced it. The
 equivalent bath intensity of order 100 milliwatts per square centimetre names
 none, and no module, script or test in the repository computes a Holstein factor
-or a bath intensity. Its intermediate arithmetic could not be reconstructed on
-review. Until it is code, read it as an order-of-magnitude marker rather than a
+or a bath intensity. Its intermediate arithmetic could not be reconstructed from
+the record. Until it is code, read it as an order-of-magnitude marker rather than a
 computed quantity.
 
 *The uncertainty is dominated by the excitation profile, not by the temperature
@@ -997,14 +999,14 @@ measuring anything.
 *The bench fact this needed is now recorded, and it is approximate.* Nothing in
 this repository held the cell's length or diameter until 2026-08-09, because
 nothing else needed them. APPARATUS.md section 5 now carries them, about 25 mm
-across and 100 mm long, tagged as an experimenter recollection rather than a
+across and 100 mm long, tagged as a recollection rather than a
 datasheet reading. A supplier record or a photograph with a scale would upgrade
 them, and neither is on hand: a search of this repository's history, the
 excluded trees and the wider filesystem found no primary record, and the one
 close-up cell photograph carries no scale.
 
 *Second correction, same day: the correction above is itself conditional on a
-centred source, and the source is not centred.* The experimenter then stated that
+centred source, and the source is not centred.* Recollection then supplied that
 the 993 nm focus was placed close to the collection lens rather than at the cell's
 mid-plane, to raise the collected solid angle (APPARATUS.md section 3). That
 changes the escape geometry, because a trapped photon leaves by the shortest
@@ -1148,7 +1150,7 @@ imaging field of view $L_\parallel/2M$ of the side-viewing $f=18$ mm lens, with
 $L_\parallel$ the cathode's active extent along the beam image. That extent is
 12 mm: the R636-10 (housed in the Thorlabs PXT1/M module seen in the in-campaign
 photo) has a 3 × 12 mm cathode, whose rotation is a ×4 lever on $Z_c$, and it
-was mounted with its long axis along the beam (experimenter-confirmed 2026-07-23). So $Z_c = 6/M$ mm,
+was mounted with its long axis along the beam (confirmed from recollection, 2026-07-23). So $Z_c = 6/M$ mm,
 and the two-waist flip holds for every $M$ from 0.5 to 6 rather than depending
 on which layout the bench happens to realise. $u$ and $v$ remain unmeasured, so
 the magnitude still carries an envelope (PLAN §6 #4). The pure triangle holds

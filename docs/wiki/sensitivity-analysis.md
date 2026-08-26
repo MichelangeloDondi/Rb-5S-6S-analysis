@@ -11,8 +11,8 @@ matters most.
 **Gives.** Local sensitivity through error propagation and the Jacobian, why
 one-at-a-time sweeps miss interactions, and the Sobol first-order and
 total-effect indices that catch them.
-**Skip if.** You want to know which single data point drives a result already
-fitted rather than which input drives a projection. That is
+**Skip if.** You want to know which single data point drives an
+already-fitted result, not which input drives a projection. That is
 [influence diagnostics](influence-diagnostics.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -42,8 +42,8 @@ Global sensitivity gives up the single point. Instead of a derivative it
 asks, across the whole plausible range of every input at once, how much of
 the output's variance each input accounts for. The two questions coincide
 only when the model is linear and every input stays a small perturbation
-around the point evaluated, which is precisely the regime local sensitivity
-assumes and global sensitivity does not need.
+around the point evaluated, exactly the regime local sensitivity assumes
+and global sensitivity does not need.
 
 The cheapest way to approach the global question, one-at-a-time (oat)
 variation, sweeps a single input across its range while holding every other
@@ -51,8 +51,7 @@ input at a baseline, then repeats for the next input. It costs one sweep per
 input and is easy to read, but every other input sits frozen while the sweep
 runs, so an effect that depends on two inputs moving together is invisible
 to it: the swept input can look unimportant at the baseline and dominate the
-output once its partner also moves. Oat sees the response along the axes
-through the baseline and nothing about the surface between them.
+output once its partner also moves.
 
 Variance-based sensitivity, the Sobol decomposition, covers that surface.
 For independent inputs drawn from stated distributions, the output's total
@@ -75,15 +74,16 @@ input, $S_{T_i}$ well above $S_i$, means that input matters mainly through
 interaction: an oat sweep of it alone, however finely spaced, would report
 it as unimportant, because it only matters once a partner input moves too.
 
-Sobol indices are not free. Estimating them by the standard Monte Carlo
-schemes needs on the order of $N(k+2)$ evaluations of the model for $k$
-inputs and a sample size $N$ typically in the thousands, so a full run can
-reach hundreds of thousands of evaluations before the indices settle down.
-A model that costs milliseconds to evaluate, a closed-form projection
-formula among them, absorbs that easily. A model that costs seconds, a
-nonlinear least-squares fit converging on real data, does not, which is why
-global sensitivity suits the cheap calculation and local sensitivity, via
-the Jacobian a fit already computes, suits the expensive one.
+Sobol indices carry a real computational cost. Estimating them by the
+standard Monte Carlo schemes needs on the order of $N(k+2)$ evaluations of
+the model for $k$ inputs and a sample size $N$ typically in the thousands,
+so a full run can reach hundreds of thousands of evaluations before the
+indices settle down. A model that costs milliseconds to evaluate, a
+closed-form projection formula among them, absorbs that easily. A model
+that costs seconds, a nonlinear least-squares fit converging on real data,
+does not, which is why global sensitivity suits the cheap calculation and
+local sensitivity, via the Jacobian a fit already computes, suits the
+expensive one.
 
 ## What problem it solves
 
@@ -96,26 +96,32 @@ derivative can dominate if its range is wide or if it acts mainly through
 another input, and neither case is visible from the derivative or the oat
 sweep alone. Variance-based sensitivity works in the units the question is
 actually asked in, the output's own variance, and apportions that variance
-honestly across the whole stated range of every input and every interaction
-among them, which is what a design or a projection needs to decide where its
+across the whole stated range of every input and every interaction among
+them, which is what a design or a projection needs to decide where its
 uncertainty budget should be spent.
 
 ## Where this repository uses it
 
 A variance-based study has been run here, on the projected precision of the
-next campaign rather than on a committed 2025 number. It decomposes the
-projection's variance across the plausible range of every design input and
-ranks them, and the ranking is in
-[plan chapter 5](../plan/05_width-collision-amplitude.md). The top temperature
-reached takes the largest share at 0.58 and the unmeasured cold-spot lag takes
-0.33, while the number of temperature blocks takes 0.002. The design
-consequence is the useful part: adding blocks buys almost nothing, and the
-campaign should argue for reach and for measuring the lag. That is the same
-fact [influence diagnostics](influence-diagnostics.md) reports from the other
+next campaign, not a committed 2025 number. It decomposes the projection's
+variance across the plausible range of every design input and ranks them,
+and the ranking is in
+[plan chapter 5](../plan/05_width-collision-amplitude.md). The top
+temperature reached takes the largest share at 0.58 and the unmeasured
+cold-spot lag takes 0.33, while the number of temperature blocks takes
+0.002. Adding temperature blocks changes the projected precision by almost
+nothing, so the case for a next campaign rests on reaching a higher top
+temperature and on measuring the cold-spot lag. That is the same fact
+[influence diagnostics](influence-diagnostics.md) reports from the other
 side, since the lever is the spread of densities about their mean and the
 hottest point dominates it.
 
-Local sensitivity is used besides, implicitly, every time a
+![Bar chart of variance share by design input for the campaign projection](figures/wiki_sensitivity_analysis_2.png)
+
+*Share of the projected next-campaign precision's variance attributable to
+three design inputs. Adding temperature blocks barely moves it.*
+
+Local sensitivity is also used, implicitly, every time a
 fitted quantity's uncertainty is propagated:
 [`rb5s6s/fitutil.py`](../../rb5s6s/fitutil.py)'s `cov_from_jac` turns a
 fit's own Jacobian, the matrix of partial derivatives at the point the
@@ -146,40 +152,23 @@ most of the projected precision's variance across the range those parameters
 could plausibly take, a different ranking than reading the formulas by eye
 or nudging one parameter at a time.
 
-A closely related question was already asked of a construction already in
-production, though by a local rather than a global method. The repository's
-own influence audit, run against the four-point fit that extracts a
-collisional-broadening slope from width against density, measured how much
-that slope depends on one data point at a time using leverage and
-case-deletion diagnostics, and found that the highest-temperature anchor
-sits at a leverage close to one in a design where three lower-temperature
-blocks cluster together in density and the anchor sits far off alone, so no
-diagnostic evaluated at that single realized design can detect a fault in
-the anchor regardless of its size. That is a local, one-point-at-a-time
-answer, and its own recommendation, a density ladder spread more evenly
-across density rather than evenly across temperature, is a global question
-in disguise: which candidate placement of the ladder's points would most
-reduce the leverage the anchor is stuck carrying is exactly what a variance
-decomposition over a family of candidate ladders would answer directly,
-rather than by trying placements one at a time.
-
 ## What can go wrong
 
 The indices are a property of the chosen input distributions, not of the
 model alone. Widening or narrowing the assumed range of an input changes its
 first-order and total-effect indices even though nothing about the model
 changed, so quoting a Sobol index without the input ranges it was computed
-against reports a number that belongs to the assumption rather than to the
-system it describes. An unrealistically wide range inflates an input's
-apparent importance, and an unrealistically narrow one hides it.
+against reports a number that belongs to the assumption, not to the system
+it describes. An unrealistically wide range inflates an input's apparent
+importance, and an unrealistically narrow one hides it.
 
-A second failure is data insufficiency dressed as a result. Sobol indices
-are estimated by Monte Carlo, not returned exactly, and every estimator
-above carries its own sampling error that shrinks with $N$ but never reaches
-zero. Common estimators can even print a first-order index slightly below
-zero for a genuinely small true index, since the estimator is unbiased but
-not everywhere non-negative, so a single run at a modest $N$ can read
-sampling noise as if it were the answer rather than as a sign that more
+A second failure is data insufficiency that looks like a result. Sobol
+indices are estimated by Monte Carlo, not returned exactly, and every
+estimator above carries its own sampling error that shrinks with $N$ but
+never reaches zero. Common estimators can even print a first-order index
+slightly below zero for a genuinely small true index, since the estimator is
+unbiased but not everywhere non-negative, so a single run at a modest $N$
+can read sampling noise as if it were the answer instead of a sign that more
 samples, or a check across more than one seed, are needed before the number
 is trusted.
 
@@ -191,17 +180,16 @@ produces indices that look plausible individually while failing the one
 cheap internal check the method offers against exactly this mistake, that
 the first-order indices cannot sum to more than one.
 
-Finally, the method's own cost is a limitation on where it can be pointed.
-Thousands to hundreds of thousands of model evaluations are cheap against a
-closed-form or vectorized calculation and expensive against a fit that
-itself takes seconds to converge, so pointing a global sensitivity study at
-the wrong kind of model is not a wrong answer, it is a computation nobody
-will wait for.
+Finally, the method's cost limits where it can be used. Thousands to
+hundreds of thousands of model evaluations are cheap against a closed-form
+or vectorized calculation and expensive against a fit that itself takes
+seconds to converge, so pointing a global sensitivity study at the wrong
+kind of model produces a computation that runs too long to be useful.
 
 ## Try it
 
 A test function with a known interaction, so the indices computed below have
-an exact answer to check against rather than only each other. The function
+an exact answer to check against, not only each other. The function
 $Y = X_1 + c X_1 X_2$, with $X_1$ and $X_2$ drawn independently and uniformly
 on $[-1, 1]$, has
 an exact Sobol decomposition: $X_2$ has no term of its own in the model, so
@@ -211,6 +199,12 @@ estimator and the Jansen (1999) total-effect estimator computed below
 recover that: $X_2$'s first-order index lands near zero while its
 total-effect index lands far above it, entirely from the interaction with
 $X_1$ that a one-at-a-time sweep of $X_2$ alone would never see.
+
+![Bar chart of first-order and total-effect Sobol indices for X1 and X2](figures/wiki_sensitivity_analysis_1.png)
+
+*First-order and total-effect Sobol indices for the worked interaction
+model on this page. X2 has no first-order effect but a large total effect
+through its interaction with X1.*
 
 ```python
 import numpy as np
@@ -267,7 +261,7 @@ print("varying X2 one at a time, with X1 fixed, would call it unimportant.")
 
 Every snippet on these pages is executed by
 `tests/test_wiki_snippets_run.py`, so one that stops working fails the suite
-rather than sitting here misleading a reader.
+instead of sitting here misleading a reader.
 
 ## Further reading
 
@@ -293,7 +287,7 @@ rather than sitting here misleading a reader.
 ## See also
 
 - [Influence diagnostics](influence-diagnostics.md), the same which-input-
-  matters question, asked locally of a fit already run rather than globally
+  matters question, asked locally of a fit already run, not globally
   of a projection.
 - [Resampling](resampling.md), another Monte Carlo construction, and the
   cost trade-offs that decide when either one is affordable.

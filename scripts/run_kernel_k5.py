@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """K5: the attribution triangle. Is the non-Gaussian component THE LASER?
 
+# term-of-art: the private reviews directory is a filesystem path
 Preregistered in private/reviews/K3_PREREG_2026-08-21.md. K3 established that a
 Lorentzian-equivalent homogeneous width of about 0.4 MHz is present and
 identified. K3 is not permitted to call it the laser. This producer asks

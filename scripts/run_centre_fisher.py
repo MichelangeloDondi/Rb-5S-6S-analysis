@@ -3,7 +3,7 @@
 What the drifting lock's freedom costs the centre channel (module M29)
 =====================================================================
 
-THE QUESTION, and it is the experimenter's. Asked on 2026-08-25 to invert
+THE QUESTION was asked on 2026-08-25 to invert
 the centre channel from an estimate into a test -- assume the light shift
 is known, and ask what the data says about it -- the answer came back
 uninformative, and the DIAGNOSIS was the finding: the limit is not the

@@ -29,4 +29,4 @@ section: collision-series
 
 # araujo2021
 
-Levy flights in He-broadened hot Rb (alpha~0.5) — closest to a heated cell.
+Lévy flights of photons in helium-broadened hot rubidium vapor (α ≈ 0.5), the closest match among the confinement/diffusion literature to a heated-cell geometry.

@@ -6,131 +6,120 @@
 same waveguide instead of crossing in free space, and which of this
 measurement's limits that fixes?
 **Takes.** [The beam waist](the-beam-waist.md) for what an intensity is,
-[transit-time broadening](transit-time-broadening.md) for the width a finite
-crossing costs, and [the AC-Stark shift](ac-stark-shift.md) for what a
-structured field does to the levels.
-**Gives.** The two guided geometries, what each one buys and charges, and why
-a guided platform is a different lever on this record's degeneracies rather
-than a better version of the same one.
+[transit-time broadening](transit-time-broadening.md) for the width a
+crossing costs, and [the AC-Stark shift](ac-stark-shift.md) for what a field
+does to the levels.
+**Gives.** The two guided geometries, their trade-offs, and why a guided
+platform is a different lever on this record's degeneracies.
 **Skip if.** You have no fibre. Nothing on the record's main path depends on
-this page.
+it.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
 
-## The two geometries, and they are opposites
+## The two geometries
 
-**A hollow-core fibre puts the atoms inside the light.** The guided mode runs
+A hollow-core fibre puts the atoms inside the light: the guided mode runs
 down a hollow channel and the atoms sit in it. Interaction length becomes a
-design choice rather than a beam crossing, and it can be centimetres where a
-free-space waist gives millimetres.
+design choice, centimetres where a free-space waist gives millimetres.
 
-**A nanofibre puts the atoms outside the light.** The glass is drawn until its
-diameter is below the wavelength, so a large fraction of the mode travels as
-an evanescent field in the vacuum around it. Atoms are trapped in that
-evanescent field, a few hundred nanometres from a glass surface.
+![Two mode profiles, atom position marked inside the core and in the evanescent tail.](figures/wiki_guided_atoms_and_nanofibres_1.png)
 
-**The consequences run in opposite directions**, which is why they are two
-platforms and not two versions of one.
+*Where the atom sits relative to the guided intensity in each geometry: inside the core, or in the evanescent tail outside it.*
+
+A nanofibre puts the atoms outside the light: the glass is drawn below the
+wavelength, so much of the mode travels as an evanescent field in the
+vacuum around it, and atoms are trapped there, a few hundred nanometres from
+the surface.
 
 | | hollow core | nanofibre |
 |---|---|---|
 | where the atom sits | inside the mode | outside the glass, in the evanescent tail |
 | interaction length | centimetres, by design | the taper waist, millimetres |
-| what limits coherence | collisions with the wall, guided-mode light shifts | the surface, through van der Waals and its own thermal field |
+| what limits coherence | collisions with the wall, guided-mode light shifts | the surface, through van der Waals and its thermal field |
 | what it is good at | long interrogation of a dense guided sample | strong coupling of a few atoms to a single mode |
 
-## Where this repository uses it, and the numbers it actually holds
+## Where this repository uses it
 
 From [`results/onf_candidate.csv`](../../results/onf_candidate.csv), which
-sizes a nanofibre alongside this measurement's vapour cell:
+sizes a nanofibre candidate alongside this vapour cell:
+
+![Bar comparison of drive power needed for the same intensity, cell versus fibre mode.](figures/wiki_guided_atoms_and_nanofibres_2.png)
+
+*Power needed for the same effective intensity: milliwatts in the cell against microwatts in the nanofibre mode.*
 
 | quantity | value | what it sets |
 |---|---|---|
-| fibre diameter | 400 nm | below the wavelength, which is what makes the field evanescent |
-| effective index band | 1.08 to 1.25 | how tightly the mode is bound, and therefore how far it reaches |
-| evanescent decay length | 211 to 388 nm | **the atom-surface distance scale.** Everything about surface effects is measured against this |
-| effective mode area | 0.50 µm² | the intensity a given power makes, which is the nanofibre's whole advantage |
+| fibre diameter | 400 nm | below the wavelength, which makes the field evanescent |
+| effective index band | 1.08 to 1.25 | how tightly the mode is bound |
+| evanescent decay length | 211 to 388 nm | the atom-surface distance scale |
+| effective mode area | 0.50 µm² | the intensity a given power makes, the nanofibre's advantage |
 
-**Compare the last one with the cell.** The same file carries the cell's
-effective intensity at 6.784e7 W per square metre and the light shift it makes
-at 0.348 MHz for 225 mW. A mode area of half a square micron reaches that
-intensity at microwatts. **The nanofibre's argument is not that it is bigger.
-It is that a tiny power does what a large one does in free space.**
+The same file gives the cell's effective intensity as 6.784e7 W per square
+metre, with a 0.348 MHz shift at 225 mW. A mode area of half a square
+micron reaches that intensity at microwatts.
 
-## Why this is a lever and not an improvement
+## A lever on the degeneracy
 
-This record's central difficulty is that a total width is well determined
-while the split between its causes is not
-([identifiability](identifiability.md)). Adding more of the same measurement
-does not help, which
-[`results/twin_span_sweep.csv`](../../results/twin_span_sweep.csv) shows
-directly: ten times the data moves the width-width correlation by 0.0000.
+The total width is well determined. The split between its causes is not
+([identifiability](identifiability.md)). More data does not help:
+[`results/twin_span_sweep.csv`](../../results/twin_span_sweep.csv) shows ten
+times the data moving the width-width correlation by 0.0000.
 
-**A guided platform moves a term no cell setting can reach.** Transit
-broadening is set by how long an atom stays in the light, and in a guide that
-is set by the geometry rather than by a thermal velocity through a waist. The
-cell's transit contribution at 130 C is 0.9575 MHz and it cannot be turned
-off. **In a guide it becomes a knob**, which is what makes the platform an
-orthogonal lever on the degeneracy rather than more of the same.
+Transit broadening is set by how long an atom stays in the light: a thermal
+velocity crossing the beam waist in a cell, a fixed geometry in a guide. The
+cell's contribution at 130 C is 0.9575 MHz and cannot be turned off. In a
+guide it becomes a knob, an orthogonal lever on the degeneracy.
 
-**And the knobs are real, not hypothetical.** A two-colour trap can be turned
-on and off, and the relative intensity of its two colours scans the
-atom-surface distance. The red trapping beam can run as a travelling wave or
-as a standing wave. The MOT can be on or off, and molasses temperature is a
-ladder rather than a setting. **Each of those moves a different term**, which
-is the property a lever needs.
+The knobs are concrete: a two-colour trap turned on or off with its colour
+ratio scanning the atom-surface distance, a red beam run as travelling or
+standing wave, the MOT on or off, and molasses temperature stepped along a
+ladder. Each moves a different term in the width budget.
 
-## What it charges, stated because the page would be dishonest without it
+## New systematics
 
-**The surface is a new systematic, not a free lunch.** At a few hundred
-nanometres the van der Waals interaction with the glass shifts and broadens
-the line, and the fibre's own thermal field adds to it. A platform that
-removes transit broadening and adds a surface shift has not obviously
-improved anything until the new term is measured.
+The surface introduces a new systematic: at a few hundred nanometres the van
+der Waals interaction with the glass shifts and broadens the line, and its
+own thermal field adds to it. Removing transit broadening while adding a
+surface shift is no improvement until that term is measured.
 
-**Two-colour traps impose their own light shift distribution**, which is the
-same class of problem as
-[the Stark ramp](ac-stark-shift.md) in the cell: the atoms do not all see one
-shift, they see a distribution, and a measurement that assumes one number
-inherits the spread as a systematic.
+Two-colour traps impose their own light-shift distribution, the same class
+of problem as [the Stark ramp](ac-stark-shift.md) in the cell: atoms see a
+spread of shifts, and a measurement that assumes a single number inherits
+that spread as a systematic.
 
-**A guided measurement is not automatically better conditioned.** It is
-differently conditioned, and the value comes from combining it with the cell,
-not from replacing the cell with it.
+A guided measurement is differently conditioned, and its value lies in
+combining it with the cell measurement.
 
-## The design has a twin, and the twin's honesty is in its flags
+## Digital-twin validation
 
-`scripts/run_fibre_twin.py` runs the nanofibre candidate's molasses ladder
-as 500 recovery trials per synthetic world into
-[`fibre_twin.csv`](../../results/fibre_twin.csv). Its own flags carry its
-scope, `design_validation_only TRUE` and `measures_laser_linewidth FALSE`:
-it establishes that the proposed design can identify the homogeneous
-component under worlds where the answer is known, with per-rung scatter
-4.0 kHz against the 3.2 kHz the cell record demonstrates per condition,
-and it carries the band-edge licensing sentence, since the lever and its
-calibration are the same order and a disagreement therefore means
-unidentifiable, not wrong. What the real fibre will do is not a
-twin question.
+`scripts/run_fibre_twin.py` tests the candidate's molasses ladder with 500
+recovery trials per synthetic world, in
+[`fibre_twin.csv`](../../results/fibre_twin.csv). It is a design check, not
+a measurement of the real fibre: it shows the design can identify the
+homogeneous linewidth component in synthetic worlds with a known answer,
+with a per-rung scatter of 4.0 kHz against the 3.2 kHz the cell record
+achieves per condition. The lever under test and its own calibration
+sit at the same scale, so a mismatch means the quantity is unidentifiable,
+not that the design is wrong. The real fibre itself still has to be
+measured.
 
 ## Further reading
 
 * [`docs/notes/onf_candidate.md`](../notes/onf_candidate.md), the sized
-  candidate this page summarises, with the three instruments one apparatus
-  provides.
+  candidate this page summarises.
 * [Chapter 6 of the big picture](../big_picture/06_next-nanofibre.md), the
   fibre thread in full.
 
 ## See also
 
-* [Identifiability](identifiability.md), the degeneracy a second platform is
-  meant to break.
+* [Identifiability](identifiability.md), the degeneracy a second platform
+  breaks.
 * [Transit-time broadening](transit-time-broadening.md), the term a guide
-  turns into a design choice.
-* [The digital twin](the-digital-twin.md), which is how a guided design is
-  scored before it is built.
-* [The beam waist](the-beam-waist.md), the free-space quantity a guide
-  replaces with a mode.
+  converts to a design choice.
+* [The digital twin](the-digital-twin.md), how a design is scored before it
+  is built.
+* [The beam waist](the-beam-waist.md), the quantity a guide replaces.
 
 ---
 

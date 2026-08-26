@@ -3,6 +3,7 @@
 
 WHAT THIS ANSWERS. Whether a fitted Gamma_L,equiv may be read as a measurement,
 and under which conditions. Preregistered in
+# term-of-art: the private reviews directory is a filesystem path
 private/reviews/K2_PREREG_2026-08-21.md BEFORE any world ran: the five worlds,
 the acceptance thresholds, the null's attainability, and the trial count with
 the precision argument that sets it.

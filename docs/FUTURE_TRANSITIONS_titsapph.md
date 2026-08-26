@@ -171,7 +171,7 @@ the current near-IR path does not pass. So:
 - Caveat on signal: the 420 nm branching ratio is favourable for 5D and 7S but
   **dilutes for 8S/9S** (more open decay channels), compounding their blue-edge
   Ti:Sapph disadvantage, so 5D/7S are the high-yield targets and 8S/9S the reach.
-- Practical check, now answered (experimenter-confirmed): the present 795 nm
+- Practical check, now answered (confirmed firsthand): the present 795 nm
   optics are a **passband stack**
   (~50 dB, `DATA.md`), not a pump-rejection notch, so this is the simple branch:
   the stack is swapped wholesale for a 420 nm bandpass, and no separate
@@ -545,7 +545,7 @@ separately.
 
 ### 3.5 The one-colour three-photon rung, and the parabolic ramp
 
-Proposed by the experimenter on 2026-08-09. Three photons of one colour from
+Proposed on 2026-08-09. Three photons of one colour from
 5S reach an odd-parity state, and the reason to want that is not a new
 coefficient but a new shape. This record's signal-weighted shift distribution
 is $f(s)\propto|s|^{n-1}$ on $[-S_0,0]$ with $n$ the number of photons, so
@@ -659,7 +659,7 @@ assumes a Doppler-free line with no broad background under it.
 
 ### Addendum, 2026-08-09: four things this section was silent about
 
-Written after an adversarial pass over the section. Two of the four change what
+Written after an independent pass over the section. Two of the four change what
 the rung is for, so they are here rather than in a note.
 
 **The drive's own light shift is not a small distortion, and this reframes the
@@ -1123,10 +1123,12 @@ two-colour at 6×10⁻¹⁴/√τ and is light-shift limited in the long term,
 [feng2026](lit/feng2026.md) chooses a sub-transition with a smaller tensor
 shift, [li2024b](lit/li2024b.md) nulls by dual interrogation, and
 [gerginov2018](lit/gerginov2018.md) is the suppress-the-shift stance this
+<!-- term-of-art: review names the cited article's genre -->
 programme contrasts with. [bandi2025](lit/bandi2025.md) is the review that
 frames the benchmark field.
 
 **Prior art, and it is the field that most constrains this entry.**
+<!-- term-of-art: review names the cited article's genre -->
 [delone1980](lit/delone1980.md), a 1980 review, already carries the
 lineshape-as-map frame, the multiphoton intensity weight and the
 shift-dominated asymmetric limit, and this repository's closed form is its Eq.

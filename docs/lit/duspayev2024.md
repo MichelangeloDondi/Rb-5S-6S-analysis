@@ -29,4 +29,8 @@ section: landscape-24-26
 
 # duspayev2024
 
-Rb 5S-to-4D two-photon lattice clock; magic wavelength ~1060 nm for in-trap Doppler-free interrogation, two-color Rabi-matching AC-Stark cancellation. Sibling to our ladder (the 4D = 1033 nm rung); an independent magic-wavelength determination to cross-check M16. Verified 2026-07-17.
+Rb 5S-to-4D two-photon lattice clock. Magic wavelength near 1060 nm for in-trap, Doppler-free interrogation, using two-colour Rabi-matching for AC-Stark cancellation.
+
+## Use in this record
+
+An independent magic-wavelength determination for the 4D_J ladder (4D at 1033 nm), used as a cross-check on the 5S-6S magic-wavelength calculation (locus M16). Verified.

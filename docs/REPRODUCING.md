@@ -4,7 +4,7 @@ What runs from a clone, what needs data that is not in it, and how the
 committed numbers are held to the files that produce them. The short version
 is on the front page under Reproduce. This is the detail behind it.
 
-## The runner, and the twenty scripts outside it
+## The runner, and the sixteen scripts outside it
 
 `bash scripts/run_all.sh` executes 29 analysis stages in dependency order,
 then the figures, `docs/RESULTS.md`, and the CSV status column. Re-running any

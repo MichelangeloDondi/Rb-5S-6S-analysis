@@ -43,8 +43,8 @@ lineshape statistics at exactly the three cooling temperatures where the
 density lever wants them. Their tooth SPACINGS calibrated the frequency axis (M2);
 their tooth SHAPES had never fed a width fit until now.
 
-Two facts about the comb, both experimenter-supplied and both confirmed
-against the traces. The carrier is DELIBERATELY SUPPRESSED (the half-wave
+Two facts about the comb, both RECOLLECTION and both
+confirmed against the traces. The carrier is DELIBERATELY SUPPRESSED (the half-wave
 plate was tilted), and the comb is uniform. Measured on 993.4121/4192/4207
 at 110 C over the five INNER slots, k = -2..+2, which is all the 2026-07-11
 reading resolved: 12.49 +/- 1.10, 12.25 +/- 0.29 and 12.37 +/- 0.58 MHz
@@ -59,11 +59,11 @@ of a comb map that showed extra teeth at ~4 MHz offsets, read as a
 triangular-sweep retrace folding a mirrored comb into the window. That was
 wrong: the peak finder used a 3% threshold on unsmoothed data and was
 picking up noise between the real teeth. At a 20% threshold the comb is
-clean and uniform, as the experimenter said. The lesson is in the record
+clean and uniform (RECOLLECTION). The lesson is in the record
 because the wrong reading was one step from being shipped.
 
 HOW MANY TEETH, and why it matters more than it sounds. The comb runs to
-+/-3 orders: the 6th and 7th teeth are present (EXPERIMENTER), and
++/-3 orders: the 6th and 7th teeth are present (RECOLLECTION), and
 truncating the model at five RAILS gamma_coll AT ZERO. Fitting the same
 110 C ruler blocks both ways:
 
@@ -118,6 +118,7 @@ per campaign temperature, plus one each for the evening-session and
 campaign-morning sessions,
 6 total), which POOLS ALL FOUR PEAKS inside every block. Free-Gaussian-sigma
 probes on the single brightest trace per peak at 225 mW/130 C (private/
+# term-of-art: the private reviews directory is a filesystem path
 reviews/digest/fig16_residual_asymmetry.md, "Seventh addition") found that
 pooling too coarse there: peak-level deviations of -287 kHz (4192, dchi2
 21.5, 4.6 sigma) and -121 kHz (4154, dchi2 9.1, 3.0 sigma), with 4121 and
@@ -598,6 +599,7 @@ def ub95(k, c):
 # which is the author's and is parked post-send: whether a 0.4 per cent move in
 # the last digit of two 95 per cent upper bounds is worth migrating for. If it
 # is taken, flip the default and record it in the CSV's own status notes.
+# term-of-art: the private reviews directory is a filesystem path
 # Evidence: private/reviews/ACCEPTANCE_RUN_2026-08-13.md.
 #
 # macOS spawns workers, so the worker rebuilds the residual from the loaders

@@ -13,7 +13,7 @@ and recorded as a decision in
 
 
 This note exists because that chapter states how a campaign-only refit behaved,
-and an outside review observed that the chapter's claim outran the public
+and a reader outside the project found that the chapter's claim outran the public
 evidence: the refit's profile lived only in a private working area, so a reader
 could not see the thing the sentences described. The construction and its
 profile are recorded here so that the public claim and the public evidence

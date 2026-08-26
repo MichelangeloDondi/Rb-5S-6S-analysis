@@ -29,4 +29,6 @@ section: deep-search
 
 # sargsyan2025
 
-Extracts the atom-surface red shift (estimates C3) of the Cs 6S-7P line from a nanocell selective-reflection lineshape (below 400 nm thickness) — the experimental analogue of reading a surface shift from the line for the nanofibre extension sec IV. Verified 2026-07-18.
+Held. Verified against the PDF.
+
+Extracts the atom-surface red shift (estimates C3) of the Cs 6S-7P line from a nanocell selective-reflection lineshape, at cell thickness below 400 nm. This is the experimental analogue of reading a surface shift from the line, relevant to the nanofibre extension, Sec. IV.

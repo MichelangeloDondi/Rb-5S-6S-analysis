@@ -27,23 +27,19 @@ section: method-anchors
 
 # arora2012
 
-**Read here 2026-07-26.** Verbatim: "we evaluate the lifetime of the 6s state
-using our calculated matrix elements as **4.144(3) and 6.048(5)** in au of the
-6s-5p1/2 and 6s-5p3/2 transitions, respectively. We obtain its lifetime as
-**45.44(8) ns** against the experimental result 45.57(17) ns with branching
-ratios 34% to the 5p1/2 state and 66% to the 5p3/2 state".
+Held. The matrix elements, lifetime, and branching ratios below were verified directly against the PDF.
 
-**Why it is load-bearing here: it closes the Delta_alpha(993) sign argument.**
-The downward 6S-5P cascade is the term that would have to move to flip the sign
-of alpha_6S(993), and it is now pinned by three independent determinations
-agreeing to well under a percent:
+The paper reports: "we evaluate the lifetime of the 6s state using our calculated matrix elements as 4.144(3) and 6.048(5) in au of the 6s-5p1/2 and 6s-5p3/2 transitions, respectively. We obtain its lifetime as 45.44(8) ns against the experimental result 45.57(17) ns with branching ratios 34% to the 5p1/2 state and 66% to the 5p3/2 state."
 
-| transition | this repo | Safronova 2004 (all-order) | Arora 2012 (CC) | spread |
+| transition | this work | Safronova 2004 (all-order) | Arora 2012 (coupled-cluster) | spread |
 |---|---|---|---|---|
 | 6s-5p1/2 | 4.146 | 4.119 | 4.144(3) | 0.66% |
 | 6s-5p3/2 | 6.048 | 6.013 | 6.048(5) | 0.58% |
 
-A sign flip needs a **33%** revision of the 6s-5p3/2 strength -- **50x the
-disagreement between three independent state-of-the-art calculations**, and the
-lifetime they imply already matches the Gomez 2005 measurement to 0.29%. The
-atomic data does not permit the flip.
+## Validity
+
+Three independent determinations of the 6s-5p reduced matrix elements agree to well under one percent, and the lifetime implied by them matches the Gomez 2005 measurement to 0.29%.
+
+## Use in this record
+
+The sign of Δα_6S(993) depends on the downward 6S-5P cascade term. Flipping that sign would require a 33% revision of the 6s-5p3/2 matrix element, fifty times the spread among the three independent calculations above, which the atomic data does not permit.

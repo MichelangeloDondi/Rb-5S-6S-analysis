@@ -42,41 +42,22 @@ section: prior-art
 
 # quirk2024
 
-**Read 2026-07-30** from the held arXiv PDF (2311.09169).
+Held. Verified against the arXiv preprint (2311.09169). The published journal reference has not been independently confirmed.
 
-**The numbers, verbatim.** The differential Stark shift slope is
-**k = 0.72246(29) Hz/(V/cm)²**, a relative uncertainty of 0.04%, about 0.5%
-smaller than the previous measurement (Bennett *et al.*, 0.7262(8)) with an
-uncertainty more than twice smaller. Using a weighted average of ground-state
-measurements, **α₆ₛ = 401.1(5) a₀³ = 0.09980(11) Hz/(V/cm)²**, their Table II
-gives **α₇ₛ = 6207.9(2.4) a₀³**. So the differential is
+## The numbers
+
+The differential Stark shift slope is k = 0.72246(29) Hz/(V/cm)², a relative uncertainty of 0.04%, about 0.5% smaller than the previous measurement (Bennett et al., 0.7262(8)) with an uncertainty more than twice smaller. Using a weighted average of ground-state measurements, α₆ₛ = 401.1(5) a₀³ = 0.09980(11) Hz/(V/cm)², Table II gives α₇ₛ = 6207.9(2.4) a₀³. So the differential is
 
     Δα_static(Cs 6s → 7s) = 6207.9 − 401.1 = 5806.8 ≈ 5807 a₀³.
 
-*A conversion trap worth recording, because it caught me on first reading.* `k`
-carries the ½ of ΔE = −½αE² while their α↔Hz/(V/cm)² mapping does not: dividing
-`k` by their own α₆ₛ ratio gives 2903.6 a₀³, exactly half the right answer. Use
-Table II's α₇ₛ, not a ratio of the two quoted units.
+## Units
 
-**Why it is here.** This programme's disputed quantity is Δα for
-Rb 5S → 6S, and `polarizability.py` gives the *static* differential as
-α₆S − α₅S = 5167.0 − 318.3 = **4848.7 a.u.** Quirk's 5807 a₀³ is the same
-structural quantity — an alkali nS → (n+1)S differential static polarizability —
-measured in the neighbouring element to 0.04%. The two agree to about 20%, as
-two different alkalis should.
+k carries the ½ of ΔE = −½αE² while the paper's α↔Hz/(V/cm)² mapping does not. Dividing k by the α₆ₛ ratio gives 2903.6 a₀³, exactly half the right answer. Table II's α₇ₛ must be used, not a ratio of the two quoted units.
 
-**The use to make of it, which is stronger than the agreement.** Feed Cs matrix
-elements through this repository's own sum-over-states machinery and require it
-to reproduce **6207.9(2.4) a₀³**. Quirk derive α₇ₛ from exactly that expression
-(their Eq. 4, a sum over |⟨7s‖r‖np_j⟩|² weighted by 1/(E_np − E_7s)) — the same
-construction `rb5s6s/polarizability.py` uses. A code that reproduces a *measured*
-differential polarizability of the structural analogue to four significant
-figures, signs included, is not making a global sign error. That is a far better
-argument for the Δα(993 nm) sign than the magnitude-coincidence reasoning the
-literature ledger currently leans on, and it is a day's work rather than a new
-measurement.
+## Validity
 
-**What it does not do.** It is a *dc* Stark measurement. It says nothing
-directly about the ac polarizability at 993 nm, where the Rb sign dispute lives
-and where the answer is a cancellation between an upward and a downward group.
-It validates the machine, not the answer.
+This is a dc Stark measurement. It says nothing directly about the ac polarizability at 993 nm, where the Rb sign dispute lives and where the answer is a cancellation between an upward and a downward group.
+
+## Use in this record
+
+This project's static differential polarizability for Rb 5S → 6S is α₆S − α₅S = 5167.0 − 318.3 = 4848.7 a.u. Quirk's 5807 a₀³ is the same structural quantity, an alkali nS → (n+1)S differential static polarizability, measured in the neighbouring element to 0.04%. The two agree to about 20%, as two different alkalis should. Quirk derive α₇ₛ from a sum over |⟨7s‖r‖np_j⟩|² weighted by 1/(E_np − E_7s) (their Eq. 4), the same construction `rb5s6s/polarizability.py` uses.

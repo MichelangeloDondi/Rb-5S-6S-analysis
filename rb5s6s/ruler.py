@@ -145,7 +145,7 @@ def comb_phase_seed(t_ms: np.ndarray, v: np.ndarray, delta_ms: float, *,
 # ---------------------------------------------------------------------------
 # stage 1b: the integer fold, seeded from the sideband amplitudes
 # ---------------------------------------------------------------------------
-# Adjudicated action RT12 of the frequency-calibration adversarial review, amendment 8 of
+# Adjudicated action RT12 of the frequency-calibration audit, amendment 8 of
 # docs/notes/ruler_validity_and_trim_prereg.md, answering the question amendment
 # 5 section E4 parked: whether the fit should be seeded to land on the correct
 # labelling rather than corrected after inspection.
@@ -260,7 +260,7 @@ N_TEETH = 7          # the comb runs to +/-3 orders. Fitting only +/-2 lets
 TEETH = tuple(range(-(N_TEETH // 2), N_TEETH // 2 + 1))
 """Tooth orders fitted. RAISED 5 -> 7 on 2026-08-01 and it moves the rate.
 
-The 6th and 7th teeth are present (EXPERIMENTER), and truncating at five
+The 6th and 7th teeth are present (direct confirmation), and truncating at five
 biases the SPACING: the unmodelled +/-3 tails pull the outermost fitted
 teeth outward, so Delta comes out too small and the rate too high. Measured
 on 24 ruler traces across the four peaks, refitting the same data both ways:

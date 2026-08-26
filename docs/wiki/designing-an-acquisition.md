@@ -11,7 +11,7 @@ lock-in scan. No other wiki page is required first.
 points across the feature as the governing quantity, and the choices a
 later analysis can never repair.
 **Skip if.** You want the frequency axis a record's grid is calibrated
-against, rather than how densely that grid is sampled. That is
+against, instead of how densely that grid is sampled. That is
 [the wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -25,8 +25,13 @@ menu items that look independent and are not. The span is the frequency
 range the sweep covers. The record length is how many points the instrument
 digitizes. The resolution is what falls out once the other two are chosen,
 the frequency step between neighbouring points, span divided by record
-length. Fixing any two fixes the third, so span, resolution and record
-length are one decision wearing three knobs, not three decisions.
+length. Fixing any two fixes the third.
+
+![Fitted line-width scatter at two record lengths](figures/wiki_sampling_the_line.png)
+
+*Fitted line-width scatter over 40 noise draws at 10,000 versus 40,000
+points across the same 2400 MHz span, at the campaign's measured noise
+law.*
 
 $$\delta = \frac{S}{N}, \qquad n_{\text{line}} = \frac{w}{\delta} = \frac{wN}{S}$$
 
@@ -60,33 +65,37 @@ What an acquisition stores, not only how densely, is a second decision made
 once and never revisited. An irreversible on-instrument average, a
 "high-resolution" or peak-detect acquisition mode, folds several raw sweeps
 into the single record that reaches disk before any later analysis sees
-them, and the individual sweeps are then gone rather than merely
-uncollected. A bandwidth limit is a different operation: set well
-above the signal's own bandwidth, it removes noise power from a band the
-signal never occupied and leaves the signal itself untouched, so it costs
-nothing and is safe to leave on. And a per-sweep timestamp is one channel or
-one logged column that a later stability statistic consumes directly.
-Without it, the only surviving order is the sequence files were saved in,
-which says nothing about how much time actually separated them.
+them, and the individual sweeps are then gone, not merely uncollected. A
+bandwidth limit is a different operation: set well above the signal's own
+bandwidth, it removes noise power from a band the signal never occupied and
+leaves the signal itself untouched, so it costs nothing and is safe to
+leave on. And a per-sweep timestamp is one channel or one logged column
+that a later stability statistic consumes directly. Without it, the only
+surviving order is the sequence files were saved in, which says nothing
+about how much time actually separated them.
 
 ## What problem it solves
 
 It turns three settings that look like separate line items on an
 instrument's menu into one design question with a numeric, testable answer,
-worked out before any bench time is spent rather than discovered afterward
+worked out before any bench time is spent instead of discovered afterward
 in a fit that will not converge to a useful precision. It also protects the
 decisions that cannot be revisited once a session has run. A raw sweep
 folded into an on-instrument average cannot be un-averaged, and a trace
 exported with no clock can never gain one, so both are worth deciding
-correctly before the first point is digitized rather than repaired in
-analysis.
+correctly before the first point is digitized, since neither can be
+repaired in analysis.
 
 ## Where this repository uses it
 
 [Chapter 7 of the plan](../plan/07_acquisition-settings.md) sizes the
-wide-scan record for the next campaign exactly this way, and its own
-history is the case study worth telling, because the requirement it states
-was raised once, and only once a simulation had actually tested it.
+wide-scan record for the next campaign exactly this way.
+
+![Piezo ramp and hyperfine peaks recorded as their own channel](../apparatus/2025-06-10_agilent_ramp_and_hyperfine_peaks.jpg)
+
+*The piezo ramp and hyperfine reference peaks recorded as their own
+channel alongside a sweep, the raw record the acquisition plan requires
+be kept intact.*
 
 The 2025 record length is `TRACE_N_POINTS` in
 [`rb5s6s/constants.py`](../../rb5s6s/constants.py), 2000 points, and at the
@@ -95,8 +104,8 @@ ample for the fit the campaign ran. Holding that same record length
 fixed while widening the span to reach a co-propagating Doppler pedestal, as
 the Try it block below computes directly from the constant, collapses the
 points-across-the-line count toward single digits, which is the concrete
-form of the exchange above and the reason chapter 7 calls the 2000-point record
-unable to answer the span question and the shape question at once.
+form of the exchange above and the reason chapter 7 calls the 2000-point
+record unable to answer the span question and the shape question at once.
 
 An earlier version of that chapter fixed the wider-span record length at
 10000 points, a number set before any simulation had tested it. Simulated
@@ -106,10 +115,11 @@ points passes with margin, so the record length in force is 40000, several
 times the figure the requirement carried before it was tested, giving about
 90 points across the line at the proposed 2400 MHz span
 ([chapter 7](../plan/07_acquisition-settings.md)). The number this
-simulation produced is corroborated rather than contradicted by
+simulation produced is corroborated, not contradicted, by
 [the wide-scan block design note](../notes/widescan_block_design.md), which
 records the same 90-points-across target as what its own B5 and B6
-simulations support.
+simulations support. [HISTORY.md](../HISTORY.md) carries the dates behind
+this revision.
 
 The raw-storage question is written down for the ramp channel specifically.
 [Section 10b.1 of the acquisition record](../plan/08_the-acquisition-record.md)
@@ -123,7 +133,7 @@ background free per trace, which needs the individual sweeps intact.
 
 Per-sweep timestamps are asked for directly.
 [Item 7g of the width and collision-amplitude chapter](../plan/05_width-collision-amplitude.md)
-requires a per-scan timestamp in hardware metadata rather than only a
+requires a per-scan timestamp in hardware metadata, not only a
 notebook entry, because the 2025 exports carried no acquisition time at all.
 [RESULTS.md](../RESULTS.md) records what that omission cost: a clock
 recovered after the fact dates the four peak-blocks of a dwell 54 to 76
@@ -134,16 +144,15 @@ is not a time series, however deep that record is in points.
 
 ## Sizing a design by simulating it
 
-Everything above sizes a setting by an argument. The arguments are checkable,
-and checking them costs minutes rather than a session:
+Everything above sizes a setting by an argument. The arguments are
+checkable, and checking them costs minutes, not a session:
 [`rb5s6s/forecast.py`](../../rb5s6s/forecast.py) generates the traces a
-proposed design would record and fits them back, so span, point count, repeat
-count and power can each be varied and the resulting parameter uncertainty
-read off rather than predicted. [The digital twin](the-digital-twin.md) is
-the method and its limits, and the one result worth carrying back to this
-page is that a design study reports what more data buys and will never tell
-you that a parameter pair stays degenerate. Read the correlation beside every
-forecast.
+proposed design would record and fits them back, so span, point count,
+repeat count and power can each be varied and the resulting parameter
+uncertainty read off instead of predicted. [The digital twin](the-digital-twin.md)
+is the method and its limits: a design study reports what more data
+yields, never that a parameter pair stays degenerate. Read the correlation
+beside every forecast.
 
 ## The levers this campaign's own budget ranks
 
@@ -159,46 +168,41 @@ or four back-to-back repeats (the pooled rows of
 [`beta_self_probe.csv`](../../results/beta_self_probe.csv)). The ranked
 design moves that follow: reduce or reference out the light-linked
 background, interleave repeats in time so their scatter averages, spend
-sweep time and repeat count, not sample rate, and buy collection
+sweep time and repeat count, not sample rate, and increase collection
 solid angle for the shot-limited peak.
 
 ## What can go wrong
 
-The first failure is a model one, conflating a record's ability to draw a
-convincing curve with its ability to fit one. A trace with a thin
+The first failure is a model one, mistaking a record's ability to draw a
+convincing curve for its ability to fit one. A trace with a thin
 points-across-the-line count can still plot smoothly, because plotting
 interpolates and the eye fills the gaps, so nothing in the picture warns
 that the same points carry too little independent information to pin down
 a width.
 
-The second is data insufficiency wearing the shape of a reasonable request.
-Widening a span for a good reason, to reach a wing, a pedestal or a
-reference feature, without lengthening the record to match, thins the
-sampling of the narrow feature in direct proportion and can turn a
+The second is widening a span for a good reason, to reach a wing, a
+pedestal or a reference feature, without lengthening the record to match.
+Span, resolution and record length are read off an instrument's menu as
+three separate settings, but fixing any two fixes the third, and thinning
+the sampling of the narrow feature in direct proportion can turn a
 well-conditioned fit into a poorly conditioned one without changing
-anything about the line itself. Span, resolution and record length are read
-off an instrument's menu as three settings, and treating them as three
-independent choices rather than the one relation above is the mistake this
-page exists to head off.
+anything about the line itself.
 
-The third is an implementation trap that a default menu setting invites.
-Many oscilloscopes ship with an on-instrument averaging or high-resolution
-acquisition mode enabled, and it folds several raw sweeps into the single
-record that reaches disk before a joint fit ever gets to see them. By the
-time the loss is noticed, the individual sweeps are not merely uncollected,
-they no longer exist to be collected.
+The third is a default acquisition mode: many oscilloscopes ship with
+on-instrument averaging or a high-resolution mode enabled, folding several
+raw sweeps into the single record that reaches disk before a joint fit
+ever sees them. Once folded, the individual sweeps cannot be recovered
+from the single record left behind.
 
-The fourth is an experimental limitation that no downstream analysis can
-repair. A record acquired with no per-sweep timestamp cannot gain one
-afterward, and the only substitute, reconstructing elapsed time from
-whatever other trace of it survives, is exactly the kind of after-the-fact
-recovery this repository had to perform once and would rather not perform
-again.
+The fourth is a limitation that cannot be repaired afterward. A record
+acquired with no per-sweep timestamp cannot gain one later. The only
+substitute, reconstructing elapsed time from whatever other trace of it
+survives, is unreliable.
 
 ## Try it
 
 For a fixed record length, read from this repository's own 2025 constant
-rather than typed from memory, points across a stated line width at several
+instead of typed from memory, points across a stated line width at several
 spans, and the record length a target points-across-the-line count would
 need at the widest of them.
 
@@ -231,34 +235,8 @@ print(f"holding {target_points_across_line} points across a {line_fwhm_mhz} MHz 
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
-
-## The requirement that was stated before it was tested
-
-The chapter 7 case study above reports that the record length in force is
-40000 points, several times the number the requirement carried before it was
-tested, without dating the steps it passed through. [HISTORY.md](../HISTORY.md)
-carries the dates. On 2026-08-15 the wide-scan span moved from 800 MHz to
-2400 MHz, and the record length that had stood at 3000 points, sized against
-a shape requirement of 20 points across the line FWHM evaluated at the old
-span, moved to 10000 points to hold that same 20-point target at the new one.
-On 2026-08-16 the 20-point requirement itself was tested for the first time:
-the B5 and B6 runs measured the width recovery a 10000-point record actually
-delivers at the committed noise law, found about 22 points across the line,
-and found that 22 fails a frozen recovery criterion. The requirement was
-replaced by 90 points, the figure the accepted 40000-point record delivers.
-
-The mistake was not an error in dividing a span by a record length. It was
-treating "20 points across the line" as a specification rather than as an
-untested guess, a number moved twice to match a span before anyone asked
-whether it recovered a known width at all. This page's own distinction,
-between a record that draws a convincing curve and one that fits it, names
-exactly the gap the requirement fell into: a 22-point record can still plot
-smoothly, and nothing about the plot would have shown that the fit behind it
-needed four and a half times as many points. Testing the requirement by
-simulated recovery before it was written into a design script, rather than
-after, would have caught the factor of four before it reached the plan.
+so one that stops working fails the suite instead of sitting here
+misleading a reader.
 
 ## Further reading
 

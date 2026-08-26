@@ -27,10 +27,13 @@ section: method-anchors
 
 # steck_rb
 
-Reference atomic constants for Rb (line frequencies, natural widths, polarizabilities). No PDF held — standard online ref.
+Held. Verified against the Rb87 sheet.
 
-**Constants read from the held Rb87 sheet (2026-07-26).** Recorded so the next
-calculation cites rather than re-derives them:
+## The system
+
+Reference atomic constants for Rb: line frequencies, natural linewidths, and polarizabilities. Available online. Both isotope sheets (Rb87 and Rb85) are held as PDFs.
+
+## The numbers
 
 | quantity | D2 (780 nm) | D1 (795 nm) |
 |---|---|---|
@@ -38,16 +41,8 @@ calculation cites rather than re-derives them:
 | natural width Γ | 2π · 6.0666(18) MHz | 2π · 5.7500(56) MHz |
 | recoil temperature | 361.96 nK | 348.66 nK |
 
-Saturation intensity: **1.66933(49) mW/cm² = 16.69 W/m²** (D2 cycling, circular
-pump; the sheet also gives 3.5771(10) mW/cm² for an initially uniform F=2
-sublevel population — use the one matching the polarisation being modelled).
+Saturation intensity: 1.66933(49) mW/cm² = 16.69 W/m² (D2 cycling, circular pump). The sheet also gives 3.5771(10) mW/cm² for an initially uniform F=2 sublevel population. Use whichever value matches the polarization being modeled.
 
-These are what the guided-platform probe-scattering estimate uses (private
-planning note). An earlier version of that estimate flagged them as coming from
-outside the repo and needing sourcing; that was wrong — both Steck sheets were
-already in `PDF_papers/`, and the values used match this sheet exactly.
+## Validity
 
-**Both isotope tables are held**, not just the one the `pdf:` field can name:
-`Steck_Rb87_D-line-data.pdf` and `Steck_Rb85_D-line-data.pdf`. The 85 tables
-matter here because two of the four measured lines are 85Rb, and the
-per-isotope beta_self split (M4b) needs both sets of matrix elements.
+Values above are read from the Rb87 sheet. The Rb85 sheet is needed separately because two of the four measured lines in this work are 85Rb, and a per-isotope split of self-broadening coefficients requires matrix elements from both isotopes.

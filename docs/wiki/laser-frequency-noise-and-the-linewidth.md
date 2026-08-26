@@ -7,11 +7,11 @@ the same laser have different widths in different measurements?
 **Takes.** [Shot noise and technical noise](shot-noise-and-technical-noise.md)
 for the idea of a noise spectrum. Nothing else.
 **Gives.** The map from a frequency-noise spectrum to a lineshape, why the
-width depends on the band the measurement samples, and why the kernel a fit
-assigns to the laser is a physics claim with a bias attached.
-**Skip if.** You want the detector's noise rather than the laser's, which is
-[the noise law](the-noise-law.md). The two are different quantities, and
-conflating them is this page's first warning.
+width depends on the sampled band, and why the kernel a fit assigns the
+laser is a physics claim with a bias attached.
+**Skip if.** You want the detector's noise instead of the laser's: see
+[the noise law](the-noise-law.md). The two are different quantities, easy
+to conflate.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -19,44 +19,41 @@ conflating them is this page's first warning.
 ## What it is
 
 A laser's frequency wanders. The complete description is the frequency-noise
-spectral density $S_\nu(f)$, the power of the wandering at each Fourier
-frequency, and every statement about "the linewidth" is a compression of that
-function into one number. The compression loses information, and which
-information it loses depends on the noise type.
+spectral density $S_\nu(f)$, its power at each Fourier frequency. Every
+statement about "the linewidth" compresses that function into one number,
+and which information is lost depends on the noise type.
 
-Two limits organise everything. **Fast noise**, where $S_\nu$ is flat (white
+Two limits organise everything. Fast noise, where $S_\nu$ is flat (white
 frequency noise), produces a lorentzian line whose width is set by the noise
-level alone. **Slow noise**, where the power sits at low frequency, produces
-a gaussian line: the laser sits at a slowly moving frequency and the line is
-the histogram of where it sat. Real lasers are between the two, and the
+level alone. Slow noise, where the power sits at low frequency, produces a
+gaussian line: the laser sits at a slowly moving frequency and the line is
+the histogram of where it sat. Real lasers sit between the two, and the
 useful boundary is the beta-separation line: noise at Fourier frequencies
 where $S_\nu(f) \gt 8\ln 2\ f/\pi^2$ contributes Gaussian width, and noise
 below that threshold contributes wings.
 
-The consequence that matters in practice: **the Gaussian part depends on how
-long you look.** An observation of duration $T$ samples the noise from
-roughly $1/T$ upward, so lengthening the observation admits more slow noise
-and widens the measured line. "The linewidth" without its observation time is
-not a specification.
+The Gaussian part depends on how long the measurement looks: an observation
+of duration $T$ samples the noise from roughly $1/T$ upward, so lengthening
+it admits more slow noise and widens the measured line. A linewidth quoted
+without its observation time is not a full specification.
 
 ## What problem it solves
 
-A lineshape fit has to give the laser a kernel, and the choice is a physics
-claim about $S_\nu$ rather than a convenience. The two candidates fail
-differently. A gaussian kernel is right for slow noise, and if the truth is
-fast, the real laser contribution is Lorentzian, which the fit then absorbs
-into whatever other Lorentzian it holds, typically the collisional width.
-That is a bias on a physical coefficient, not an inflated error bar. A
-lorentzian kernel has the mirror problem.
+A lineshape fit gives the laser a kernel, a physics claim about $S_\nu$,
+not a convenience. A gaussian kernel suits slow noise. If the truth is
+fast, the fit absorbs the real Lorentzian laser contribution into whatever
+other Lorentzian it holds, typically the collisional width: a bias on a
+physical coefficient, not an inflated error bar. A lorentzian kernel has
+the mirror problem.
 
-The same trap in instrument form: an external linewidth measurement is only
-usable if its band matches the spectroscopy's. A scanning cavity that watches
-the laser for seconds samples down to sub-hertz frequencies, while a line
-crossed in forty milliseconds samples nothing below about twenty hertz. Under
-low-frequency-heavy noise the two instruments report different widths for the
-same laser, both correctly, and transplanting one number into the other's
-band is a bias no averaging removes. The transportable object is $S_\nu(f)$
-itself, never a single width.
+The same trap appears in instrument form: an external linewidth measurement
+is only usable if its band matches the spectroscopy's. A scanning cavity
+watching the laser for seconds samples down to sub-hertz frequencies, while
+a line crossed in forty milliseconds samples nothing below twenty hertz.
+Under low-frequency-heavy noise the two report different, correct widths
+for the same laser, and transplanting one into the other's band is a bias
+no averaging removes. The transportable object is $S_\nu(f)$ itself, never
+a single width.
 
 ```python
 import numpy as np
@@ -75,173 +72,142 @@ print("one laser, three linewidths, each correct in its own band")
 
 ## Where this repository uses it
 
-**The record fits a Gaussian laser kernel and states plainly that this is an
-assumption** ([CLAIMS.md](../CLAIMS.md) section 2). The lineshape data cannot
-settle the kernel: the model-form comparison of M8 puts a Gaussian against a
-cusped exponential at $\Delta\text{BIC}$ between -0.1 and +3.7, which is
-indistinguishable at this record's own gate.
+The record fits a Gaussian laser kernel, stated plainly as an assumption
+([CLAIMS.md](../CLAIMS.md) section 2). The lineshape data cannot settle the
+kernel: M8's model-form comparison puts a Gaussian against a cusped
+exponential at $\Delta\text{BIC}$ between -0.1 and +3.7, indistinguishable
+at this record's own gate.
 
-**The record measures $S_\nu$ on three rungs, and none of them is the rung
-that broadens the line.** The digitised wavemeter record of M22 puts
-0.62 MHz rms of unmodelled laser motion below 0.5 Hz, once re-lock kicks and
-the scan ramps are removed. The comb clock bounds the excursion at 7 Hz
-below 28 kHz. The width channel integrates from 24 Hz up, and in that band
-the only handle is the fitted width, an upper bound degenerate with the
-transit width through the beam waist. Read together the three rungs say the
-spectrum falls steeply through the decade below the width band, which is
-what a drift-and-kick-dominated laser looks like, and they leave the width
-band itself measured by nothing. The measured noise law of M1 is the
-detection noise on the photodiode voltage, a different quantity again.
+![The four line-shape kernels this campaign's fit distinguishes, on a shared detuning axis](../../figures/fig26_lineshape_kernels.png)
 
-**What the record does hold is one direct in-situ statement**, the comb read
-as a clock ([the wavemeter page](the-wavemeter-and-the-frequency-axis.md)):
-the non-repeating excursion is below 28.3 kHz on the transition axis at an
-averaging time of 0.15 s. That bound excludes the low-frequency-heavy
-spectra by large factors, seventeen for flicker and eighty for a random
-walk, which is evidence against the Gaussian kernel's justification rather
-than for it. The measurement that settles the question, the frequency-noise
-spectrum from the lock's own error signal, has not been made and costs no
-cell time.
+*The four kernels this campaign's fit distinguishes: natural, collisional,
+laser and transit, each with its own width and shape on the same detuning
+axis.*
 
-## Catching a narrow line with the line itself
+$S_\nu$ is measured on three rungs, none of which is the rung that broadens
+the line. M22's digitised wavemeter record puts 0.62 MHz rms of unmodelled
+laser motion below 0.5 Hz, once re-lock kicks and scan ramps are removed.
+The comb clock bounds the excursion at 7 Hz below 28 kHz. The width channel
+integrates from 24 Hz up, where the only handle is the fitted width,
+degenerate with the transit width through the beam waist. Read together the
+three rungs say the spectrum falls steeply through the decade below the
+width band, which is what a drift-and-kick-dominated laser looks like, and
+they leave the width band itself measured by nothing. The measured noise
+law of M1 is the detection noise on the photodiode voltage, a different
+quantity again.
 
-A mains hum is not broadband noise but a line, and a line at a known
-frequency is best sought by demodulation. The lineshape supplies its own
-demodulator: on a flank, frequency wobble times the flank slope becomes
-voltage wobble at the same frequency, so laser FM appears at the mains
-frequency with opposite sign on the two flanks, while electronic pickup and
-intensity noise appear with the same sign. That sign flip is the
-discriminator, it needs no comb and no extra hardware, and its sensitivity
-is set by the flank slope, which for a deep line beats a tooth-position
-clock by an order of magnitude at the same noise. A diagnostic run of
-exactly this test on the 2025 traces found no mains-scale line, and the
-committed producer that will carry its number is pending, so the number is
-not quoted here.
+![The digitised wavemeter record used to bound the laser's low-frequency motion](../../figures/fig14_wavemeter_reconstruction.png)
+
+*The digitised wavemeter record behind the 0.62 MHz rms bound: the
+photographed sweep, its fitted sawtooth, and the residual once the drift
+model is removed.*
+
+One direct in-situ statement exists, from the comb read as a clock
+([the wavemeter page](the-wavemeter-and-the-frequency-axis.md)): the
+non-repeating excursion is below 28.3 kHz on the transition axis at 0.15 s
+averaging. That bound excludes the low-frequency-heavy spectra by large
+factors, seventeen for flicker and eighty for a random walk, weighing
+against the Gaussian kernel's justification and ruling out flicker noise as
+the source of the scanned linewidth here. The measurement that would
+settle the question, the frequency-noise spectrum from the lock's own error
+signal, has not been made and costs no cell time.
+
+## Finding a narrow line with the flank slope
+
+Mains hum is a narrow line at a known frequency, best sought by
+demodulation, and the lineshape supplies its own demodulator: on a flank,
+frequency wobble times the flank slope becomes voltage wobble at the same
+frequency, so laser FM appears with opposite sign on the two flanks while
+electronic pickup and intensity noise share one sign. That sign flip is the
+discriminator, needs no comb or extra hardware, and for a deep line beats a
+tooth-position clock by an order of magnitude.
 
 ## What can go wrong
 
 **Quoting a linewidth without its band.** The number is not portable. Carry
-the observation time, or better, carry $S_\nu$.
+the observation time, or better, $S_\nu$.
 
-**Reading a converged fit as a validated kernel.** A Voigt fit converges
-happily on a line whose Lorentzian part is mislabelled, and the misfit lands
-in the physical coefficient sharing that shape.
+**Reading a converged fit as a validated kernel.** A Voigt fit converges on
+a line whose Lorentzian part is mislabelled, and the misfit lands in the
+coefficient sharing that shape.
 
 **Estimating slow noise with a statistic that has no limit.** Under $1/f$
 noise the variance of a record grows with the record, so the raw scatter of
-line centres saturates at the same fractional spread however long you
-measure, and it looks like a convergence plateau while being nothing of the
-kind. The [Allan deviation](allan-deviation.md) at fixed averaging time is
-the statistic built for exactly this, and it converges as $1/\sqrt{N}$ on
-the same data.
+line centres saturates at a fixed fractional spread however long you
+measure: a false convergence plateau. The [Allan deviation](allan-deviation.md)
+at fixed averaging time converges as $1/\sqrt{N}$.
 
-**Trusting the noise floor of the instrument instead of the band of the
-instrument.** A measurement can be far more precise than the width it
-reports and still report the wrong width for your use, because a band
-mismatch is a systematic, not a noise.
+**Trusting an instrument's noise floor instead of its band.** A measurement
+can be far more precise than the width it reports and still report the
+wrong width: a band mismatch is a systematic, not a noise.
 
-## What this repository got wrong once
+## The three separate questions
 
-For most of one day, 2026-08-19, a design study sized a scan-rate ladder on
-the assumption that the fitted 1.4 MHz Gaussian was flicker laser noise. The
-record's own numbers then dismantled the assumption twice over: the measured
-centre stability within a scan sits seventy-five times below what that
-flicker would produce, and the comb-clock bound came in seventeen to eighty
-times below the low-frequency spectra generally. The scan-rate lever the
-model had promised shrank by a factor of nine, to below usefulness, and the
-honest conclusion inverted: whatever broadens the line is fast or is not the
-laser, and if fast, the Gaussian kernel is the wrong shape and the bias runs
-into the collisional width. The mistake is this page's thesis in miniature, a
-noise type assumed where only a noise spectrum would do, and a day spent
-computing consequences of the assumption rather than measuring it.
+Measured 2026-08-21, the line excludes a purely Lorentzian laser
+contribution at 26 of the 32 canonical conditions above three sigma
+([the Voigt profile](voigt-profile.md)). That result and the tooth-scatter
+evidence above answer different questions. The lineshape asks which kernel
+family fits, answered at one end-member: not a pure Lorentzian. An
+independent-linewidth measurement asks how much laser broadening there is,
+the identifying quantity under the intercept decomposition, and it is
+unmeasured. The comb asks which noise process produces it, and reaching a
+kernel from a noise spectrum needs assumptions about stationarity,
+observation time and scan rate not validated here.
 
-## What the lineshape says, and why it does not contradict the comb
+The two findings are compatible: the Voigt exclusion rules out one
+endpoint, a purely Lorentzian laser, and the comb evidence argues against
+the other, a purely Gaussian one, leaving the answer between them.
 
-Measured 2026-08-21, the line excludes a purely Lorentzian laser contribution
-at 26 of the 32 canonical conditions above three sigma
-([the Voigt profile](voigt-profile.md)). Read quickly that looks like it
-settles the question this page leaves open, and against the tooth-scatter
-evidence above, which leans the other way. It does neither, because the two are
-answers to different questions.
+## The laser-equivalent width, measured
 
-Three questions travel together here and are worth keeping apart, because they
-are three different experiments.
-
-* **Which kernel family fits the line.** The lineshape's question. Answered at
-  one end-member: not a pure Lorentzian.
-* **How much laser broadening there is.** An independent-linewidth measurement's
-  question. Under the intercept decomposition this is the identifying one, and
-  it is unmeasured.
-* **Which noise process produces it.** The comb's question, which is what this
-  page is about. Reaching a kernel from a noise spectrum needs stated
-  assumptions about stationarity, observation time and scan rate, and that
-  transfer has not been validated here.
-
-So "not a pure Lorentzian" and "the tooth scatter leans against a Gaussian
-justification" are compatible: the first excludes one endpoint, the second
-argues against the other, and the answer sits between them. What was missing
-was the fitted Lorentzian-equivalent width that says where.
-
-## The width that says where, measured
-
-Later on 2026-08-21 that width was measured. Freeing a Lorentzian-equivalent
+Later on 2026-08-21 that width was measured: freeing a Lorentzian-equivalent
 component alongside the Gaussian one is preferred at every peak by a nested
 likelihood ratio with one parameter on its boundary, and the inverse-variance
 mean across peaks is $\Gamma_{L,\text{equiv}} = 0.398$ MHz on the transition
-axis (`results/kernel_k3.csv`). That mean carries its spread wherever it
-appears: the four per-peak values run from 0.315 to 0.449 MHz, and a common
-scalar is **neither rejected nor established**, at $p = 0.097$. It is an
-aggregate over four different spectral conditions, not a measured constant.
+axis (`results/kernel_k3.csv`). The four per-peak values run from 0.315 to
+0.449 MHz, and a common scalar is neither rejected nor established, at
+$p = 0.097$: an aggregate over four spectral conditions, not a measured
+constant.
 
-Two properties of that number matter more than its value.
-
-**It is not identifiable at one condition.** A Lorentzian laser width and the
-collisional width add exactly, so at a fixed condition only their sum can be
-measured, and a fit that returns a well-determined split there is reporting a
-numerical artefact rather than physics. The lever that separates them is
-density, since the collisional width scales with $N(T)$ and a laser width does
-not. The width above is a property of the whole temperature ladder.
-
-**It now dominates the coefficient it perturbs.** Freeing the kernel moves
-$\beta_\text{self}$ by 42 to 66 per cent, and the resulting sensitivity to
-the kernel representation, within the family tested, is 3.24 times the
-statistical error. More repetitions of the current construction therefore do
-not improve $\beta_\text{self}$. That factor is a sensitivity within the
-tested family and not an uncertainty on the coefficient, since the family's own
-adequacy is a separate question with its own instrument
+It is not identifiable at one condition: a Lorentzian laser width and the
+collisional width add exactly, so only their sum can be measured there,
+and a well-determined split at a single condition is a numerical artefact,
+not physics. Density is the lever that separates them, since the
+collisional width scales with $N(T)$ and a laser width does not, so the
+width above is a property of the whole temperature ladder, not any single
+point. It also dominates the coefficient it perturbs: freeing the kernel
+moves $\beta_\text{self}$ by 42 to 66 per cent, with a kernel-representation
+sensitivity, within the family tested, of 3.24 times the statistical
+error, so more repetitions of the current construction do not improve
+$\beta_\text{self}$. That factor is a sensitivity within the tested
+family, not an uncertainty on the coefficient: the family's own adequacy
+is a separate question with its own instrument
 ([identifiability](identifiability.md)).
 
-**And it still does not answer this page's question.** Which noise process
-produces the width is the third of the three questions above, and measuring
-the width settles the first two only. The transfer from a noise spectrum to a
-kernel remains unvalidated, so nothing yet licenses calling this component the
-laser.
+Which noise process produces the width is the third question above,
+unanswered by this measurement: the transfer from a noise spectrum to a
+kernel remains unvalidated, so nothing yet licenses calling this component
+the laser.
 
-## The band a scanned width integrates, which is not the band you would guess
+## The band a scanned width integrates
 
-Worth stating because getting it wrong reversed a verdict here once. For a
-free-running laser the lineshape is set by the phase autocorrelation, and
-Lorentzian wings come from noise at Fourier frequencies of order the linewidth.
-**These lines are not measured that way.** They are scanned, so the observed
-width integrates laser noise over the scan's own timescale: from one over the
-time to cross the line up to the per-point sampling rate, which for the science
-blocks at the campaign rate is 24 Hz to 1.5 MHz.
-
-That difference decides which instruments can see the relevant noise. Within
-one block the clock band and the width band scale together and their ratio
-never closes. But the laser's noise spectrum is a property of the laser, so the
-bands of different blocks compose, and a block at ten times the campaign rate
-has its tooth clock sampling at 68 Hz, inside the band the ordinary-rate blocks
-integrate. One fast block therefore measures in situ part of the very noise
-that broadened the slow blocks' lines
+A free-running laser's Lorentzian wings come from noise at Fourier
+frequencies of order the linewidth, but these lines are scanned, so the
+observed width integrates noise over the scan's own timescale: from
+one over the crossing time up to the per-point sampling rate, 24 Hz to
+1.5 MHz for the campaign's science blocks. That band composes across
+blocks run at different rates, since the noise spectrum is a fixed
+property of the laser, not of any one block: a block at ten times the
+campaign rate has its tooth clock sampling at 68 Hz, inside the band the
+ordinary-rate blocks integrate, and so measures in situ part of the noise
+that broadened the slower blocks' lines
 ([plan chapter 7](../plan/07_acquisition-settings.md)).
 
-The committed tooth-scatter bound is a different measurement from that one. It
-was taken at the campaign rate, so its clock averages at 6.8 Hz, below the band
-the scanned widths integrate, and it permits a Lorentzian width some 1800 times
-the one measured. It constrains the slow excursion it was built to constrain
-and it does not constrain the kernel, which is a statement about that bound and
-not about the faster block.
+The committed tooth-scatter bound, taken at the campaign rate, is a
+different measurement: its clock averages at 6.8 Hz, below the scanned
+widths' band, and permits a Lorentzian width some 1800 times the one
+measured. It bounds the slow excursion it was built for, not the faster
+block's kernel.
 
 ## Further reading
 

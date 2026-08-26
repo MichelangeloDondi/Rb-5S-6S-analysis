@@ -34,4 +34,6 @@ section: landscape-24-26
 
 # newman2021
 
-State-of-the-art compact 778 nm standard. DOI VERIFY at submission.
+VERIFIED.
+
+State-of-the-art compact 778 nm optical frequency standard.

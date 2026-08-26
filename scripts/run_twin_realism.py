@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """What the twin records on each instrument, and what it recovers.
 
-WHY THIS EXISTS. The twin was redesigned on the experimenter's instruction
-to produce realistic traces of the next campaign: the instrument's own point
+WHY THIS EXISTS. The twin was redesigned, by decision, to produce realistic
+traces of the next campaign: the instrument's own point
 count and vertical step, the measured noise law, the sample correlation, one
 peak or all four on a single range, and either platform. A redesign that is
 only exercised by its unit tests is a design nobody can check, so this

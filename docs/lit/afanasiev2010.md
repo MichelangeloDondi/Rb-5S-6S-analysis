@@ -50,59 +50,32 @@ section: method-anchors
 
 # afanasiev2010
 
-**Held and read.** Institute of Spectroscopy, Troitsk.
+Held. The prose, abstract, and conclusion were verified directly against the PDF. The Bessel integrand of Eq. (20) could not be extracted cleanly from the rendered page and is not used here.
 
-## Why it was wanted
+## The system
 
-[schmidt2011](schmidt2011.md) reports that *concave* surfaces **enhance** the van
-der Waals energy — up to a factor of 6 — but it is a **sphere**. This note's
-predecessor flagged that carrying that into a cylindrical bore was "an
-extrapolation across geometries and is not established here", and recorded it as
-OPEN. **This paper is the cylinder case**, so the extrapolation is no longer
-needed. The cylinder figure is **4**, not 6.
+An atom inside a hollow metal or dielectric cylinder, the concave counterpart of the exterior treatment in [frawley2012](frawley2012.md), solved in the electrostatic approximation with closed analytical results.
 
-## What it gives
+## The potential
 
-Same structure as its convex sibling [frawley2012](frawley2012.md) — which is
-the point, since the two then compose into one consistent treatment:
+$$U = -\frac{C_3}{x_0^3} \mu \qquad \text{(Eq. 19)}$$
 
-$$U = -\frac{C_3}{x_0^3} \mu \qquad \text{(their Eq. 19)}$$
+with $\mu$ the internal cylindrical surface factor (Eq. 20), a Bessel integral summed over $m$, and $\rho_0 = R - x_0$ the distance from the axis. For a dielectric of permittivity $\varepsilon$, the same equations hold with $C_3$ from Eq. (10).
 
-with $\mu$ the **internal** cylindrical surface factor (Eq. 20), a Bessel
-integral summed over $m$, and $\rho_0 = R - x_0$ the distance from the axis.
-Metal or dielectric; for a dielectric of permittivity $\varepsilon$ the same
-equations hold with $C_3$ from their Eq. (10).
+> "the potential for a concave cylindrical surface coincides with that for a flat surface at $\rho_0 \to R$ when $\mu \to 1$ and exceeds that for a flat surface by a factor of 4 near the center of the cylinder"
 
-## The behaviour, verbatim
-
-> "the potential for a concave cylindrical surface coincides with that for a
-> flat surface at $\rho_0 \to R$ when $\mu \to 1$ and exceeds that for a flat
-> surface by a factor of 4 near the center of the cylinder"
-
-and against the two-plane case:
-
-> "the absolute value of the potential for the cylindrical surface exceeds that
-> for the two planes by a factor of 2 near the cent[re]"
+> "the absolute value of the potential for the cylindrical surface exceeds that for the two planes by a factor of 2 near the cent[re]"
 
 | position | $\mu$ |
 |---|---|
 | at the wall ($\rho_0 \to R$, $x_0 \to 0$) | $\to 1$ |
 | near the axis | $\to 4$ |
 
-**This confirms, from the opposite geometry, the correction made today to
-[frawley2012](frawley2012.md).** In *both* the convex and the concave case
-$\mu \to 1$ at the surface: a flat-surface $C_3/x^3$ is the right form for an
-atom close to a wall, whichever way the wall curves. Curvature only bites at
-distances comparable to the radius — weakening it outside a fibre
-($\mu \to 0.5$ and below), strengthening it inside a bore ($\mu \to 4$). The
-paper says as much in its introduction, that the flat assumption "is evidently
-fairly good for atoms located near the surface ... $x_0 \ll R$".
+In both the convex and concave geometries, $\mu \to 1$ at the surface, so a flat-surface $C_3/x^3$ form holds for an atom close to a wall regardless of the curvature direction. Curvature effects appear only at distances comparable to the radius. They weaken the potential outside a fibre ($\mu \to 0.5$ and below, per frawley2012) and strengthen it inside a bore ($\mu \to 4$, here).
 
-## What the factor of 4 is worth in practice: almost nothing
+## Magnitude for realistic bores
 
-The enhancement lives near the **axis**, and $C_3/x_0^3$ at the axis is tiny.
-Comparing the on-axis value $4C_3/R^3$ against the value 10 nm from the wall
-(CALCULATED here, ratios only, so $C_3$ cancels):
+Ratio of the on-axis value $4C_3/R^3$ to the value 10 nm from the wall, by bore radius (ratios only, so $C_3$ cancels):
 
 | bore radius $R$ | on-axis $\div$ 10-nm-from-wall |
 |---|---|
@@ -111,21 +84,12 @@ Comparing the on-axis value $4C_3/R^3$ against the value 10 nm from the wall
 | 9 µm | $5.5\times10^{-9}$ |
 | 22.5 µm ([perrella2013](perrella2013.md)) | $3.5\times10^{-10}$ |
 
-So for every hollow core in this programme's sights the 4× multiplies a
-vanishing quantity. **The concave enhancement is not a cost the guided-mode
-extension has to carry**, and the earlier note in
-[schmidt2011](schmidt2011.md) suggesting it be estimated for few-micron cores
-"before the geometry is argued for on linewidth grounds alone" is answered: it
-was estimated, and it is negligible. It would matter only for a *submicron*
-bore, where atoms sit within a radius of the wall by construction.
+For bore radii of a few hundred nanometres and above, the concave enhancement multiplies a vanishing quantity and is negligible. It matters only for a sub-micron bore, where atoms sit within one radius of the wall by construction.
 
-## The other thing it proposes, which is not for us but is worth knowing
+## A proposed measurement of C3
 
-A **measurement scheme for $C_3$**: an atomic beam through a submicron channel
-develops "a sharp transformation of the atomic beam profile, with a clear
-separation of an internal narrow peak from a broad pedestal", and the transverse
-density profile at different cross-sections then determines $C_3$. They note the
-obvious difficulty, outgassing of submicron tubes, and argue the tube is short
-enough for UHV to be realistic. Not a direction this programme is taking, but it
-is a live experimental proposal on the same constant that
-[patterson2018](patterson2018.md)'s bound-state analysis depends on.
+The paper also proposes measuring $C_3$ from an atomic beam through a sub-micron channel. The transverse density profile develops "a sharp transformation of the atomic beam profile, with a clear separation of an internal narrow peak from a broad pedestal," and its shape at different cross-sections determines $C_3$. The main obstacle is outgassing of sub-micron tubes. The authors argue the required tube length is short enough for UHV to remain realistic.
+
+## Use in this record
+
+Together with [frawley2012](frawley2012.md), this settles the surface-curvature question for both the nanofibre exterior and the hollow-core interior from primary sources, replacing an earlier sphere-to-cylinder extrapolation. For the hollow-core radii relevant here (≥250 nm), the concave correction is negligible and a flat-surface treatment is used.

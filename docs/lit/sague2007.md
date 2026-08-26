@@ -48,134 +48,38 @@ section: oist-lineage
 
 # sague2007
 
-**Read from the held arXiv v4.** Bonn (Meschede/Rauschenbeutel), the origin of
-the whole optical nanofibre cold-atom line, and the paper `patterson2018` cites
-as its ref [8].
+Held as arXiv v4 (quant-ph/0701167v4). The model's lack of a fitted width parameter and its predicted 57% increase in decay rate at the surface are both confirmed against the source, the second matching the paper's wording verbatim.
 
-## What reading it settles
-
-Two claims about this paper were sitting in this repository as **REPORTED**,
-from an external literature pass, and both were doing real work: that its model
-has no fitted width parameter, and that its decay rate reaches +57% at the
-surface. **Both are confirmed from the source, and the second is verbatim.**
+Work from Bonn (Meschede and Rauschenbeutel), the origin of the optical nanofibre cold-atom line and cited by patterson2018 as its reference [8].
 
 ## The system
 
-A Cs MOT (1/√e radius 0.6 mm, 125 µK) overlapped with the waist of a tapered
-fibre — **500 nm diameter, 5 mm waist length, 93% transmission**, single
-HE₁₁ mode at the 852 nm Cs D2 wavelength. A probe scanned ±24 MHz across
-6²S₁∕₂ F=4 → 6²P₃∕₂ F=5 is launched *through* the fibre and its transmission
-recorded on an APD. Probe powers span femtowatts to 1 nW; the probe laser
-linewidth is 1 MHz against the 5.2 MHz natural width. MOT beams and field are off
-during the 10 ms spectroscopy window.
+A Cs magneto-optical trap (1/√e radius 0.6 mm, 125 µK) overlaps the waist of a tapered optical fibre (500 nm diameter, 5 mm waist length, 93% transmission), with a single HE₁₁ mode at 852 nm (Cs D2). A probe beam scanned ±24 MHz across 6²S₁∕₂ F=4 → 6²P₃∕₂ F=5 is launched through the fibre and its transmission recorded on an avalanche photodiode. Probe powers span femtowatts to 1 nW, with a probe laser linewidth of 1 MHz against the 5.2 MHz natural width. The MOT beams and field are switched off during the 10 ms spectroscopy window.
 
-## The model, which is the part that matters
+## The model
 
 Their Eq. (1) is
 
 $$A_P(\delta) = \frac{\hbar w}{P} \int \rho_{\delta,P}(r,z)  \Gamma\left(I_P(r), \gamma(r), \delta + \delta_{\rm vdW}(r)\right) {\rm d}V$$
 
-Read the arguments of $\Gamma$: the intensity, **the decay rate, and the shift
-are all functions of $r$**. The decay rate is split (their Eq. 2) as
-$\gamma(r) = \gamma_{\rm free}(r) + \gamma_{\rm guid}(r)$, with
-$\gamma_{\rm free}(r)$ taken from [klimovducloy2004](klimovducloy2004.md) and
+The arguments of $\Gamma$ (intensity, decay rate, shift) are all functions of $r$. The decay rate is split (their Eq. 2) as $\gamma(r) = \gamma_{\rm free}(r) + \gamma_{\rm guid}(r) $, with $\gamma_{\rm free}(r)$ taken from [klimovducloy2004](klimovducloy2004.md) and
 
 $$\gamma_{\rm guid}(r) \simeq 0.3 \gamma_0  I_P(r)/I_P(a)$$
 
-where $a$ is the fibre radius and $0.3\gamma_0$ is the emission rate of an atom
-*on* the surface into the guided mode.
+where $a$ is the fibre radius and $0.3\gamma_0$ is the emission rate of an atom on the surface into the guided mode. The closed-form expression in klimovducloy2004 is quasistatic, valid only for $ka$ below $1/\varepsilon$ (0.473 for silica). This fibre's $ka = 1.844$ falls outside that range, so $\gamma_{\rm free}$ comes from the paper's full electrodynamic Section IV rather than its closed-form Eq. (29).
 
-The van der Waals shift $\delta_{\rm vdW}(r)$ is **their own calculation**, not a
-number imported from elsewhere. Verbatim: "We calculated the vdW shift,
-δvdW(r), for the D2 line of Cs near a 500 nm diameter dielectric cylinder [15]."
-The emphasis is worth stating plainly rather than with markup inside the
-quotation: it is *their* calculation, and the cylinder is *dielectric*.
-Their [15] is `boustimi2002`, cited for the *method*. This
-distinction was missed on the first pass through and matters (established
-2026-07-31): the standing objection that Boustimi's worked case is an argon atom
-near an *aluminium* wire, while this fibre is silica, does not land — nobody
-imported a metallic number into a dielectric problem. What has to be reproduced
-to redo this is a calculation, not a lookup. See
-[boustimi2017](boustimi2017.md) and [frawley2012](frawley2012.md).
+The van der Waals shift $\delta_{\rm vdW}(r)$ is the authors' own calculation: "We calculated the vdW shift, δvdW(r), for the D2 line of Cs near a 500 nm diameter dielectric cylinder [15]." Their [15] is `boustimi2002`, cited for the calculation method. The fibre here is silica, a dielectric, distinct from Boustimi's worked case of an argon atom near an aluminium wire. See [boustimi2017](boustimi2017.md) and [frawley2012](frawley2012.md).
 
-**On the surface, Eq. (2) predicts a 57% increase of the spontaneous emission
-rate** — verbatim: "On the surface of the fiber, Eq. (2) then predicts a 57%
-increase of the spontaneous emission rate of the Cs atoms, resulting in a
-broadening of the absorbance line shapes."
+The paper states: "On the surface of the fiber, Eq. (2) then predicts a 57% increase of the spontaneous emission rate of the Cs atoms, resulting in a broadening of the absorbance line shapes." The density $\rho_{\delta,P}(r,z)$ is a Gaussian cloud times a factor $f_{\delta,P}(r)$ from a 100,000-trajectory Monte Carlo calculation including the attractive van der Waals force and the saturating dipole force. The only fitting parameters in $A_P(\delta)$ are $n_0$ and an experimental frequency offset. The model carries no width parameter.
 
-The density $\rho_{\delta,P}(r,z)$ is a Gaussian cloud times a factor
-$f_{\delta,P}(r)$ from a 100,000-trajectory Monte Carlo including the attractive
-vdW force and the saturating dipole force.
+## The numbers
 
-## The two results this repository needs
+Measured linewidths approach 6.2 MHz for vanishing probe power, exceeding the natural Cs D2 linewidth (5.2 MHz) by almost 20%. The paper attributes the excess to two effects of comparable size: "This broadening can be explained by surface interactions, i.e., the vdW shift of the Cs D2 line and the modification of the spontaneous emission rate of the atoms near the fiber... Both effects have the same magnitude and only their combination yields the very good agreement between our model and the experimental data."
 
-**1. There is no fitted width parameter.** Verbatim: "$A_P(\delta)$ from Eq. (1)
-can now be adjusted to the experimental line shapes, **the only fitting
-parameters being $n_0$ and an experimental frequency offset**." Two free
-parameters, neither of them a width. Their linewidth is therefore an *output* of
-a model containing $\gamma(r)$ and $\delta_{\rm vdW}(r)$, not a fitted residual.
+Above 100 pW, the measured lines are "considerably narrower than what would be expected in absence of dipole forces and surface interactions." At 1 nW, "this narrowing exceeds 40%." Blue and red detunings both reduce the integrated near-surface density. For red detuning, the acceleration toward the fibre is cancelled "almost perfectly" up to 100 nm by shorter time of flight and higher loss, beyond which the reducing effects dominate.
 
-**2. The excess is explained, and by two effects of equal size.** Measured
-linewidths "approach 6.2 MHz for vanishing powers. This result exceeds the
-natural Cs D2 linewidth in free space by almost 20%." And then: "This broadening
-can be explained by surface interactions, i.e., the vdW shift of the Cs D2 line
-and the modification of the spontaneous emission rate of the atoms near the
-fiber... **Both effects have the same magnitude and only their combination
-yields the very good agreement between our model and the experimental data.**"
+The extracted effective atom numbers are 107, 14, and 2 fully saturated atoms contributing at 1 nW, 52 pW, and 6 pW respectively. On resonance, "as little as two atoms on average, coupled to the evanescent field surrounding the fiber, already absorbed 20% of the total power transmitted through the fiber." The maximum atomic density is $4.4\times10^{10}$ cm⁻³, and the mean atom-surface distance of the probed atoms is power-tunable down to 248 nm.
 
-## What this does to the excess-linewidth question
+## Use in this record
 
-**It removes Sagué from the unexplained column entirely** — a correction this
-repository can now make from the source rather than on report. The count of ONF
-experiments reporting an *unaccounted* excess is `patterson2018` plus the
-newly-surfaced Liu *et al.* (2024/25), not three.
-
-**And the contrast with Patterson is the whole finding.** Sagué put
-$\gamma(r)$ **inside** the spatial integral and needed no residual.
-[patterson2018](patterson2018.md)'s Eq. (10) passes $\Gamma_0$ in as a **scalar**
-while using the same physical quantity — $\alpha(r) = \Gamma_{\rm 1D}(r)/\Gamma_0$,
-their Eq. (3) — as a detection weight, and is left with 2 MHz it explicitly
-cannot explain. Two experiments in the same geometry, eleven years apart: the one
-that modelled the decay rate as position-dependent closed its budget, and the one
-that did not has an unexplained residual of about the size that omission would
-produce. That is no longer a hypothesis about a mechanism; it is a controlled
-comparison already present in the literature. Patterson's fibre is 240 nm against
-Sagué's 500 nm, where guided coupling is *stronger*, so the omitted term should
-be larger there, not smaller.
-
-**A caution against over-reading it.** Sagué is one-photon absorption on cold
-atoms with a 1 MHz probe laser and 20% excess; Patterson fits a five-parameter
-model to spectra taken with a desorption laser present. The two are not the same
-measurement, and "Sagué's model structure would have absorbed Patterson's
-residual" remains a **prediction to be tested by refitting**, not a demonstrated
-result. What *is* now established is that the term is physically real and is
-absent from Patterson's width.
-
-**This sentence also said the term "is computable from
-[klimovducloy2004](klimovducloy2004.md)"; that was too quick, and is corrected
-here rather than dropped (2026-07-31).** That paper's closed form is
-quasistatic, and its own Conclusion bounds the quasistatic regime at
-$ka$ below $1/\varepsilon$ — 0.473 for silica, against $ka = 1.844$ for *this* fibre
-and 0.967 for Patterson's (CALCULATED). Computable it is, but from that paper's
-full electrodynamic Section IV, not from its Eq. (29). Sagué's own
-$\gamma = \gamma_{\rm free} + \gamma_{\rm guid}$ split is the tell: a separate
-guided-mode term is exactly what this regime demands.
-
-## Two smaller things worth keeping
-
-- **The dipole-force narrowing runs the other way and is large.** Above 100 pW
-  the measured lines are "considerably narrower than what would be expected in
-  absence of dipole forces and surface interactions"; at 1 nW "this narrowing
-  exceeds 40%". Blue and red detunings both *reduce* the integrated near-surface
-  density — for red detuning the acceleration toward the fibre is cancelled
-  "almost perfectly" up to 100 nm by shorter time of flight and higher loss, and
-  beyond that the reducing effects dominate. Any ONF lineshape model that omits
-  light-induced dipole forces gets the *power* dependence wrong in the opposite
-  direction from the surface terms.
-- **The sensitivity is extraordinary and worth quoting in a proposal.** They
-  extract effective atom numbers of **107, 14 and 2** fully-saturated atoms
-  contributing at 1 nW, 52 pW and 6 pW; on resonance "as little as two atoms on
-  average, coupled to the evanescent field surrounding the fiber, already
-  absorbed 20% of the total power transmitted through the fiber". Maximum atomic
-  density $4.4\times10^{10}$ cm⁻³; the mean atom-surface distance of the probed
-  atoms is power-tunable down to **248 nm**.
+The comparison with [patterson2018](patterson2018.md) fixes the size of the unexplained residual in that paper's ONF linewidth budget. This model carries the decay rate $\gamma(r)$ inside the spatial integral and needs no residual term to match the data. Patterson's Eq. (10) instead passes $\Gamma_0$ in as a scalar, while using the same physical quantity, $\alpha(r) = \Gamma_{\rm 1D}(r)/\Gamma_0$ (their Eq. 3), only as a detection weight, and is left with about 2 MHz unexplained. Patterson's fibre (240 nm) is narrower than this one (500 nm), where guided-mode coupling is stronger, so the omitted term would be larger for Patterson's geometry. Patterson's fibre also falls outside klimovducloy2004's quasistatic regime (calculated $ka = 0.967$ against the 0.473 threshold), so the same guided-mode term is missing there too. Whether this model's structure would account for Patterson's residual has not been tested by refitting Patterson's data. The two measurements also differ in kind, one-photon absorption on cold atoms with a 1 MHz probe laser here, against a five-parameter fit to spectra taken with a desorption laser present in Patterson's case.

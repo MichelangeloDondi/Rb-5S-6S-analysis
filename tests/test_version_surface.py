@@ -51,7 +51,7 @@ WHAT THIS DOES NOT CATCH, established by attacking the first version of it on
   the Releases page and the README badge, which read the API, stay behind. Two
   of the archive's own `v*` tags have no release object at all, so the tag is a
   proxy for the release and not the release itself. Row 10 of section 16.7 of
-  the rendering protocol names the Releases page as the evidence for that half.
+  the logic protocol names the Releases page as the evidence for that half.
 """
 
 from __future__ import annotations

@@ -10,7 +10,7 @@ separate quantum numbers, nothing else assumed.
 **Gives.** The interval formula for a $J=1/2$ hyperfine splitting and the
 isotope-and-sublevel identity of the four measured components.
 **Skip if.** the reader wants what a further applied field does to those
-sublevels rather than their zero-field structure, in which case
+sublevels instead of their zero-field structure, in which case
 [Magnetic sublevels](magnetic-sublevels.md) is the right page.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -24,7 +24,11 @@ the two combine into a total angular momentum $F$, running from $|I-J|$ to
 $I+J$ in integer steps. Each allowed $F$ sits at a slightly different energy,
 so one electronic level splits into several closely spaced sublevels: this is
 hyperfine structure, and a transition between two electronic levels becomes a
-small cluster of transitions between their sublevels rather than one line.
+small cluster of transitions between their sublevels instead of one line.
+
+![Level scheme of the driven and detected transitions](../../figures/fig13_level_scheme.png)
+
+*Term diagram of the driven and detected transitions, showing which F sublevels this two-photon line addresses.*
 
 The dominant interaction is magnetic dipole coupling, the nuclear magnetic
 moment sensing the magnetic field the electrons produce at the nucleus, with
@@ -56,10 +60,10 @@ properties measurable on their own, independent of and often far more
 precisely than the optical transition itself. Because the pattern differs
 isotope to isotope, it also answers an identification question: which
 isotope, and which pair of sublevels, a given narrow spectral feature belongs
-to. And because the sublevel spacings are fixed by measured constants rather
-than by anything in a particular apparatus, a same-isotope spacing doubles as
-an absolute frequency reference that needs no external calibration once the
-constants are known.
+to. And because the sublevel spacings are fixed by constants intrinsic to the
+atom, not by anything in a particular apparatus, a same-isotope spacing
+doubles as an absolute frequency reference that needs no external
+calibration once the constants are known.
 
 ## Where this repository uses it
 
@@ -79,12 +83,9 @@ comment in that file, sourced to [Ayachitula and co-workers](../lit/ayachitula20
 the kHz-precision remeasurement that replaced an earlier, less precise
 determination for the excited-state constants.
 
-[`tests/test_constants.py`](../../tests/test_constants.py) runs a
-labels-against-constants consistency lock: the transition-axis gap between
-two same-isotope file labels, computed purely from the ground splitting and
-$A_{6S}$, must match the gap the label wavelengths themselves imply to within
-one per cent. Either side drifting, a mistyped label or an edited constant,
-fails the test.
+![Fit gallery of the four hyperfine components](../../figures/fig16_fit_gallery.png)
+
+*The brightest campaign trace of each of the four hyperfine components, fitted model and residuals, in one frame.*
 
 [docs/plan/09_the-fixed-lock.md](../plan/09_the-fixed-lock.md) section 10c.5
 uses the same-isotope pair separations as an in-trace frequency reference. A
@@ -96,15 +97,15 @@ wavemeter reading.
 
 ## What can go wrong
 
-Comparing a labelled component against the wrong reference frequency
-overstates a residual with real physics rather than error. Measuring each
-component against an isotope-averaged centroid instead of the specific
-sublevel it names folds hyperfine structure into what should be a pure
-calibration offset, which is exactly the mistake
-[`two_photon_frequency_hz`](../../rb5s6s/constants.py) documents fixing: read
+Comparing a labelled component against the wrong reference frequency reports
+real physics as a residual error. Measuring each component against an
+isotope-averaged centroid instead of the specific sublevel it names folds
+hyperfine structure into what should be a pure calibration offset. Read
 against the centroid, the four components disagree with the labels by a
-spread of several gigahertz, and read against the component each label
-actually names, the spread collapses by two orders of magnitude.
+spread of several gigahertz. Read against the component each label actually
+names, the spread collapses by two orders of magnitude.
+[`two_photon_frequency_hz`](../../rb5s6s/constants.py) implements the second
+comparison.
 
 Hyperfine splitting and isotope shift are two different effects and are easy
 to run together when a trace holds components from both isotopes. Hyperfine
@@ -121,17 +122,14 @@ a predicted spacing without raising any error on its own.
 
 The two halves of a transition are not equally well known. A ground-state
 splitting is close to a defined quantity at present precision, while an
-excited-state $A$ constant rests on one spectroscopic remeasurement, and this
-repository's own history records replacing an earlier determination with a
-newer one that moved a constant by a few tenths of a megahertz, small next to
-the one-per-cent identification tolerance but not small next to a
-kilohertz-level ruler use.
+excited-state $A$ constant rests on one spectroscopic remeasurement. An
+earlier determination was replaced by a newer one that moved the constant by
+a few tenths of a megahertz, small next to the one-per-cent identification
+tolerance but not small next to a kilohertz-level ruler use.
 
-Finally, an implementation trap rather than a physics one: dropping the
-$(2F+1)$ weighting when summing hyperfine shifts back to the unperturbed term
-energy silently breaks the identity that the weighted sum must vanish, which
-is why that identity is pinned as a permanent test rather than left as an
-assumption.
+Finally, a different kind of trap: dropping the $(2F+1)$ weighting when
+summing hyperfine shifts back to the unperturbed term energy silently breaks
+the identity that the weighted sum must vanish.
 
 ## Try it
 
@@ -156,10 +154,6 @@ print(f"87Rb same-isotope pair separation: {pair_rb87_hz / 1e6:.3f} MHz")
 print(f"85Rb same-isotope pair separation: {pair_rb85_hz / 1e6:.3f} MHz")
 print("neither value carries the 85-87 isotope shift, both are same-isotope")
 ```
-
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
 
 ## Further reading
 

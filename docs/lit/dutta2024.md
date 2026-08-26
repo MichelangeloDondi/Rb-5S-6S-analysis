@@ -33,4 +33,8 @@ section: deep-search
 
 # dutta2024
 
-Quadrupole/octupole CP corrections when the atomic wavefunction is not small vs atom-surface distance, and their imprint on thin-cell / selective-reflection lineshapes. Background for the nanofibre extension near-surface term at close range. Verified 2026-07-18.
+Quadrupole and octupole Casimir-Polder corrections that become significant when the atomic wavefunction is not small compared with the atom-surface distance, and their imprint on thin-cell and selective-reflection lineshapes.
+
+## Use in this record
+
+Background for the near-surface Casimir-Polder term in the nanofibre extension at close range. Verified.

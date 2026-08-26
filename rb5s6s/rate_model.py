@@ -36,7 +36,7 @@ uncertainty rather than modelled (`run_beta_self.load_t_rates`, audit fix of
 THE MODEL. Per (session, peak): rate(t) = a + b (t - t0)/3600, ordinary
 least squares over that peak's ruler traces, with SCATTER-BASED covariance
 (the residual variance, not the per-trace formal errors - the scatter is the
-honest dispersion and it already carries any per-block over-dispersion, e.g.
+measured dispersion and it already carries any per-block over-dispersion, e.g.
 4121's per-T means straddle its fit by up to 0.9%). Rates are LASER-axis
 MHz/ms, like `ruler_blocks.csv`; consumers double for the transition axis.
 

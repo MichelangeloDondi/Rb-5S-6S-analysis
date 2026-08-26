@@ -217,7 +217,7 @@ line is considered cut by the acquisition window."""
 QC_MIN_SNR = 8.0
 """SNR reporting floor. NOT an unconditional exclusion (QC-design critic,
 2026-07-11): for RF-on rulers the flag only routes the trace to M2's pooled
-/ bright-tooth path; for RF-off lines it is review-only, because line SNR
+/ bright-tooth path; for RF-off lines it is advisory-only, because line SNR
 tracks vapor density — the very lever arm beta_self regresses on — and an
 automatic floor there would be result-correlated selection in disguise."""
 
@@ -318,7 +318,7 @@ with the carrier left out because its height carries residual amplitude
 modulation (amendment 6 section F3).
 
 Landed 2026-08-06 as the adjudicated action RT12 of the frequency-calibration
-adversarial review, answering the question amendment 5 section E4 parked. `proximity` is
+audit, answering the question amendment 5 section E4 parked. `proximity` is
 kept because the re-index ladder is calibrated on combs that are mislabelled to
 begin with, and the only honest way to build one is to number it the old way."""
 
@@ -567,13 +567,13 @@ single f=18 mm lens + PMT geometry collects light from 'many mm' of the beam
 parameter: for a lens imaging the beam onto the detector it is the axial
 field of view L_par/(2M), M = v/u with 1/u + 1/v = 1/f, where L_par is the
 detector's active extent ALONG the beam image. The PMT of record is the
-side-on Hamamatsu R636-10 (datasheet TPMS1016E; experimenter-confirmed
-2026-07-23), whose cathode is a 3 x 12 mm rectangle -- rotation alone is a x4
+side-on Hamamatsu R636-10 (datasheet TPMS1016E; RECOLLECTION, 2026-07-23),
+whose cathode is a 3 x 12 mm rectangle -- rotation alone is a x4
 lever on Z_c, and the cathode was LANDSCAPE through the 2025 campaign
-(experimenter-confirmed 2026-07-23), so L_par = 12 mm and Z_c = 6/M mm.
+(RECOLLECTION, 2026-07-23), so L_par = 12 mm and Z_c = 6/M mm.
 
 Two of the three inputs are now fixed and the third is estimated: M = 2.5-3
-for the bare f18 (experimenter, 2026-07-29 -- an ESTIMATE, u and v unmeasured),
+for the bare f18 (2026-07-29 -- an ESTIMATE, u and v unmeasured),
 giving Z_c = 2.0-2.4 mm. This envelope is DELIBERATELY NOT narrowed to it. An
 estimate is not a measurement, and every ramp-geometry moment coefficient --
 including whether the g1 sign flip at config S occurs at all (crossover
@@ -587,7 +587,7 @@ hardware and directly measurable (PLAN §6 #4)."""
 RAMP_PMT_CATHODE_MM = (3.0, 12.0)
 """R636-10 photocathode rectangle (short, long axis), datasheet TPMS1016E.
 
-CONFIRMED for this apparatus (experimenter, 2026-07-23): the module visible
+CONFIRMED for this apparatus (2026-07-23): the module visible
 in the in-campaign photograph, a Thorlabs PXT1/M, HOUSES the R636-10. So the
 3 x 12 mm rectangle stands and the install decision built on it is live. Note
 the tube sits in a commercial housing, so orientation is set by rotating the
@@ -599,7 +599,7 @@ experiment, and happened to be right; it was flagged as unverified on
 
 Which axis lies along the beam image is the install decision: L_par = 12 mm
 ('landscape') or 3 mm ('portrait'), a x4 lever on Z_c. The 2025 dataset was
-taken in LANDSCAPE (experimenter-confirmed 2026-07-23), which is also the
+taken in LANDSCAPE (confirmed 2026-07-23), which is also the
 recommendation for a future session (PLAN §6 #4) -- portrait puts Z_c below the 0.90 mm flip
 threshold at every plausible M and forfeits the sign-flip test, while its
 one advantage (less axial averaging) is recovered by closing the slit."""

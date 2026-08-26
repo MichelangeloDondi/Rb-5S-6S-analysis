@@ -85,7 +85,7 @@ both counts.
 
 THE FACTOR OF TEN REPLACES AN EARLIER NUMBER. The first version of this
 module summed only the 5P1/2 intermediate leg and reported 1.5e-10, which
-made the two routes look equal. An adversarial review on 2026-08-20 found the omission.
+made the two routes look equal. That omission surfaced on 2026-08-20.
 5P3/2 is E1 allowed at every vertex, its reduced matrix elements are the
 larger pair, and its energy denominators are not much worse, so carrying all
 four leg combinations multiplies the amplitude ratio by 2.82 and the rate by
@@ -177,8 +177,8 @@ def pair_final_states(limit: int = 8):
 def _legs():
     """The two 5P fine-structure legs, each with the term energy and the two
     reduced matrix elements the pair sum needs. BOTH are E1-allowed at every
-    vertex, and an adversarial review on 2026-08-20 found the first version of
-    this module silently carrying only 5P1/2."""
+    vertex. The first version of
+    this module silently carried only 5P1/2, found on 2026-08-20."""
     from .polarizability import LINES_5S, LINES_6S
     return ((LINES_5S[0][0], LINES_5S[0][1], LINES_6S[0][1]),
             (LINES_5S[1][0], LINES_5S[1][1], LINES_6S[1][1]))

@@ -304,7 +304,7 @@ def test_metres_for_nanometres_raise_instead_of_answering():
 
     993.4e-9 passed to delta_alpha used to return 3.7 a.u., a plausible
     number for an impossible input, and that shape of failure is what the
-    release audit found to matter most for a stranger. The experimenter's
+    release audit found to matter most for a stranger. The
     adjudication (2026-08-24): guard wavelengths alone, generously, and
     let every other argument trust the unit its name states, because
     eleven functions of invented ranges would ceiling someone else's

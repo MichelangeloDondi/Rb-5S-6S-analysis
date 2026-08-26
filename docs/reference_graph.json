@@ -4,7 +4,12 @@
   "quoting_sites": [
    {
     "file": "docs/quantities/self-broadening.md",
-    "line": 98,
+    "line": 25,
+    "writes": "0.0249"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 101,
     "writes": "0.0249"
    }
   ],
@@ -23,6 +28,16 @@
     "file": "docs/plan/00_the-case.md",
     "line": 33,
     "writes": "0.030"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 21,
+    "writes": "0.030"
+   },
+   {
+    "file": "docs/quantities/self-broadening.md",
+    "line": 101,
+    "writes": "0.030"
    }
   ],
   "source_file": "results/beta_self_probe.csv",
@@ -32,18 +47,13 @@
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
-    "file": "docs/HISTORY.md",
-    "line": 61,
-    "writes": "7.3"
-   },
-   {
-    "file": "docs/HISTORY.md",
-    "line": 1841,
-    "writes": "7.3"
-   },
-   {
     "file": "docs/RESULTS.md",
     "line": 72,
+    "writes": "7.3"
+   },
+   {
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 60,
     "writes": "7.3"
    },
    {
@@ -59,8 +69,8 @@
   "producer": "run_centre_fisher.py",
   "quoting_sites": [
    {
-    "file": "docs/HISTORY.md",
-    "line": 1838,
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 58,
     "writes": "14.4"
    }
   ],
@@ -96,12 +106,12 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "3.48"
    },
    {
-    "file": "docs/HISTORY.md",
-    "line": 1846,
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 64,
     "writes": "3.48"
    },
    {
@@ -123,12 +133,12 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "0.48"
    },
    {
-    "file": "docs/HISTORY.md",
-    "line": 1848,
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 66,
     "writes": "0.48"
    },
    {
@@ -203,7 +213,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 768,
+    "line": 770,
     "writes": "45.57(17)"
    }
   ],
@@ -215,7 +225,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 728,
+    "line": 730,
     "writes": "790.032326(32)"
    }
   ],
@@ -227,7 +237,7 @@
   "quoting_sites": [
    {
     "file": "docs/THEORY_NOTE.md",
-    "line": 704,
+    "line": 706,
     "writes": "-1093"
    }
   ],
@@ -238,8 +248,8 @@
   "producer": null,
   "quoting_sites": [
    {
-    "file": "docs/HISTORY.md",
-    "line": 1368,
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 47,
     "writes": "2.75"
    },
    {
@@ -343,7 +353,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "12.6"
    }
   ],
@@ -355,7 +365,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "1.2"
    }
   ],
@@ -367,7 +377,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "16"
    }
   ],
@@ -379,7 +389,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "8"
    }
   ],
@@ -391,7 +401,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "99.8"
    },
    {
@@ -408,7 +418,7 @@
   "quoting_sites": [
    {
     "file": "README.md",
-    "line": 192,
+    "line": 215,
     "writes": "99.6"
    }
   ],

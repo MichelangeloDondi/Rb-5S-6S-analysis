@@ -11,7 +11,7 @@ wiki page is required.
 law, and the arithmetic that separates the one-photon carrier null from the
 two-photon one.
 **Skip if.** The reader wants the full two-photon amplitude law and
-derivation on a real bench rather than the identity underneath it. That is
+derivation on a real bench, not the identity underneath it. That is
 [EOM sidebands](eom-sidebands.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -45,14 +45,13 @@ orders.
 
 ![the first three orders and the power in each sideband](figures/wiki_bessel.png)
 
-*Left, the first three orders against modulation depth. Right, the power
-fraction in each sideband, which is the amplitude squared. The dotted line
-marks $\beta = 2.405$, the first zero of $J_0$, where a phase modulator puts
-no power at all in the carrier.*
+*The first three Bessel orders and the power fraction in each sideband
+against modulation depth, with the one-photon carrier null at
+$\beta = 2.405$ marked.*
 
 A useful pair of facts follows from the identity. The total power is
 conserved, $\sum_n J_n^2(\beta) = 1$, so modulation redistributes light
-rather than creating or destroying it. And the sidebands are symmetric in
+without creating or destroying it. The sidebands are symmetric in
 magnitude, $J_{-n} = (-1)^n J_n$, so pure phase modulation gives a symmetric
 comb.
 
@@ -72,28 +71,27 @@ copies converts a time axis into a frequency axis. That is the subject of
 [EOM sidebands](eom-sidebands.md), which carries the two-photon amplitude law
 and the derivation, and of [methods chapter 3](../methods/05_the_frequency_ruler.md).
 
-The one thing worth carrying here is the arithmetic that connects the two
-pages, because it is a genuine trap. In a one-photon spectrum the sideband
-amplitude is $J_n(\beta)$ and the carrier vanishes at the first zero of
-$J_0$, at $\beta = 2.405$. In the two-photon comb every tooth sums the pairs
-of sidebands that reach it, and the addition theorem collapses that sum to
-$J_k(2\beta)$. The carrier therefore vanishes at $2\beta = 2.405$, that is at
-$\beta = 1.202$. Both numbers are correct and they are not the same number,
-because they answer different questions.
+![two comb shapes at different modulation depths](figures/wiki_eom_comb.png)
+
+*The two-photon comb at the carrier-null depth $\beta = 1.202$, the depth a
+one-photon formula would misplace at 2.405.*
+
+In a one-photon spectrum the sideband amplitude is $J_n(\beta)$ and the
+carrier vanishes at the first zero of $J_0$, at $\beta = 2.405$. In the
+two-photon comb every tooth sums the pairs of sidebands that reach it, and
+the addition theorem collapses that sum to $J_k(2\beta)$. The carrier
+therefore vanishes at $2\beta = 2.405$, that is at $\beta = 1.202$.
 
 ## What can go wrong
 
-The failure mode that matters here is implementation, not theory. Reading a
-carrier-null depth off a one-photon formula and applying it to a two-photon
-comb puts the modulator at twice the intended depth, which is the confusion
-the two paragraphs above exist to prevent.
+Reading a carrier-null depth off a one-photon formula and applying it to a
+two-photon comb puts the modulator at twice the intended depth.
 
 The physical assumption is that the modulation is pure phase modulation. Any
 residual amplitude modulation, which a real modulator produces when its
 polarisation axis is not aligned to the crystal, breaks the symmetry of the
-comb, and the tooth heights then no longer follow the Bessel law at all. That
-makes the tooth pattern a diagnostic: an asymmetric comb is telling you about
-the modulator rather than about the atom.
+comb, and the tooth heights then no longer follow the Bessel law at all.
+That makes the tooth pattern a diagnostic of the modulator, not of the atom.
 
 Finally, a data-insufficiency limit. The expansion has infinitely many
 orders, but only the teeth that rise above the noise can be fitted, so at
@@ -115,7 +113,7 @@ print(f"  check: J0(2 x {z / 2:.4f}) = {jv(0, 2 * (z / 2)):.2e}")
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
+so one that stops working fails the suite instead of sitting here misleading
 a reader.
 
 ## Further reading

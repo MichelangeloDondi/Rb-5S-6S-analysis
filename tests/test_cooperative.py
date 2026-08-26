@@ -103,7 +103,7 @@ def test_the_pair_route_dominates_the_single_atom_route():
 
 
 def test_both_fine_structure_legs_are_carried():
-    """The omission an adversarial review found on 2026-08-20. Dropping 5P3/2
+    """The omission found on 2026-08-20. Dropping 5P3/2
     understates the amplitude by 2.82 and the rate by 7.97, which is the
     difference between the pair route matching the single-atom one and
     dominating it."""

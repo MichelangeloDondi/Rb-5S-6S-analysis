@@ -29,4 +29,6 @@ section: deep-search
 
 # piotrowski2026
 
-Probe-light scattering heats nanophotonic-trapped atoms, so near-field probing is inherently transient (coupling + atom-number decay). A feasibility systematic bounding the measurement window/power for any nanofibre ONF near-surface lineshape. Rauschenbeutel group. Verified 2026-07-18.
+Held. Verified against the arXiv preprint.
+
+Probe-light scattering heats nanophotonic-trapped atoms, so near-field probing is inherently transient (coupling and atom-number decay). A feasibility systematic from the Rauschenbeutel group bounding the measurement window and power for any nanofibre (ONF) near-surface lineshape measurement.

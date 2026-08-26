@@ -79,8 +79,8 @@ whatever the energies. Saying the transition is protected at the level of the
 matrix element rather than by a cross product was therefore half the story,
 and the half it dropped is the one this apparatus actually leans on.
 
-BOTH FACTORS ARE SMALL HERE, AND NEITHER IS ZERO. An adversarial review on
-2026-08-20 pointed out that the Doppler-free geometry makes the energy factor
+BOTH FACTORS ARE SMALL HERE, AND NEITHER IS ZERO. On 2026-08-20 it became clear
+that the Doppler-free geometry makes the energy factor
 nonzero for every atom that is moving, which is the whole ensemble. In the
 atom's rest frame the forward photon is blue-shifted and the retro photon is
 red-shifted, so the pair the Doppler-free signal is built from differs by
@@ -149,7 +149,7 @@ def hyperfine_mixing_rate() -> dict:
     their own hyperfine structure. The admixture is the hyperfine splitting
     over the detuning, and the rate is its square.
 
-    WHY THIS FUNCTION EXISTS. An adversarial pass on 2026-08-20 found that
+    WHY THIS FUNCTION EXISTS. An independent pass on 2026-08-20 found that
     1.1e-5, 6.0e-6 and 1.2e-10 appeared in three files and were computed in
     none, held up by mutual citation. They are all correct. They are now
     derived here from the committed detunings and the splittings above, so a

@@ -1,6 +1,6 @@
 """The joint fit refuses a session tree that exists and is empty.
 
-On 2026-08-25 the experimenter asked whether the long run could start, and
+On 2026-08-25, whether the long run could start was the open question, and
 answering it meant reading what the producer does when its two external
 session trees are missing. A first reading looked only at the loader, which uses
 `glob.glob(...)` and so returns an empty list rather than raising, and

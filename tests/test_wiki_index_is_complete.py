@@ -115,16 +115,33 @@ def test_the_page_navigation_follows_the_index_order():
                      "docs/wiki/README.md:\n  " + "\n  ".join(bad))
 
 _WORDS = {
+    # The correction count fell to the small integers on 2026-08-26, when the
+    # corrections moved out of the pages and into docs/HISTORY.md where the
+    # history protocol puts them. A map that only spans the counts of the
+    # day it was written turns a real improvement into a guard failure.
+    "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+    "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11,
     "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
     "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19,
     "twenty": 20, "forty-nine": 49, "fifty": 50, "fifty-one": 51,
     "fifty-two": 52, "fifty-three": 53, "fifty-four": 54, "fifty-five": 55,
 }
 
-# A scar section says where THIS project got the concept wrong. "What can go
+# A correction section says where THIS project got the concept wrong. "What can go
 # wrong" is the generic hazard section every page carries and is not one.
-_SCAR = re.compile(
+#
+# "Values that moved" JOINED 2026-08-26, and the reason is worth more than the
+# line. This guard was GREEN while eight pages carried a correction section it
+# could not recognise, because the pattern enumerated the heading forms that
+# existed when it was written and a later pass introduced a ninth. The count it
+# compared against the index was therefore true of one page and blind to eight,
+# and an outside reading found the discrepancy that the guard was built to find.
+# A detector that enumerates known forms goes quietly stale every time the
+# corpus grows a new one, so this list is checked whenever a page gains a
+# section heading that names a value.
+_CORRECTION_SECTION = re.compile(
     r"^## (What this repository got wrong.*"
+    r"|Values that moved.*"
     r"|.*, 20\d\d-\d\d-\d\d"
     r"|A .*that was not .*"
     r"|A .*that was actually .*"
@@ -149,16 +166,16 @@ def test_the_index_counts_what_is_actually_there(capsys):
     """
     text = INDEX.read_text(encoding="utf-8")
     pages = _pages()
-    scarred = sorted(n for n in pages
-                     if _SCAR.search((WIKI / n).read_text(encoding="utf-8")))
+    corrected = sorted(n for n in pages
+                     if _CORRECTION_SECTION.search((WIKI / n).read_text(encoding="utf-8")))
     with capsys.disabled():
         print(f"\n  wiki counts: {len(pages)} pages, "
-              f"{len(scarred)} carrying a scar section")
+              f"{len(corrected)} carrying a correction section")
     said_pages = _spelled(text, "pages in")
     said_scars = _spelled(text, "of these pages")
     assert said_pages == len(pages), (
         f"docs/wiki/README.md says {said_pages} pages, {len(pages)} are on "
         "disk. Write the number in words, and update both places it appears.")
-    assert said_scars == len(scarred), (
-        f"docs/wiki/README.md says {said_scars} pages carry a scar section, "
-        f"{len(scarred)} do:\n  " + "\n  ".join(scarred))
+    assert said_scars == len(corrected), (
+        f"docs/wiki/README.md says {said_scars} pages carry a correction section, "
+        f"{len(corrected)} do:\n  " + "\n  ".join(corrected))

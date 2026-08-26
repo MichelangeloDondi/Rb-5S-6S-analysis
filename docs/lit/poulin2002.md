@@ -28,4 +28,6 @@ section: landscape-24-26
 
 # poulin2002
 
-Telecom-band (192.6 THz) standard referenced to the Rb two-photon line. Vol/page VERIFY at submission.
+Held. Volume and page numbers not independently verified.
+
+Reports a telecom-band (192.6 THz) optical frequency standard referenced to the rubidium two-photon transition.

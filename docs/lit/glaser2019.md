@@ -30,4 +30,8 @@ section: prior-art
 
 # glaser2019
 
-**Held 2026-07-29.** Absolute 5S-6P frequencies. Relevant here through M16: the 6S-6P group dominates the upward half of alpha_6S(993), and its detunings depend on the 6P positions. The polarizability recompute uses NIST ASD levels; this is an independent high-precision determination against which those inputs can be checked if the sign dispute is ever pushed to that level of scrutiny.
+Held. Absolute frequency measurement of the Rb 5S-6P transitions.
+
+## Use in this record
+
+The 6S-6P group dominates the upward half of alpha_6S(993 nm), and its detunings depend on the 6P level positions used in the polarizability calculation, which are otherwise taken from NIST ASD. This paper provides an independent high-precision determination of those positions.

@@ -29,4 +29,8 @@ section: landscape-24-26
 
 # andeweg2026
 
-Newest competitor: active power-modulation ac-Stark suppression (x1000) on 778 nm 5S-5D. The passive-vs-active contrast for our method. (APS "coden" DOI 10.1103/25md-vv43 — verify at cite; arXiv is the handle.)
+Active power-modulation suppression of the ac-Stark shift, by three orders of magnitude, in a two-photon 778 nm 5S-5D rubidium optical frequency reference.
+
+## Use in this record
+
+Serves as the active-suppression contrast to the passive ac-Stark treatment used here.

@@ -30,7 +30,8 @@ section: method-anchors
 
 # gomez2005
 
-tau(6S)=45.57(17) ns -> GAMMA\_NAT\_HZ (3.4925 MHz) in constants.py.
+The measured 6S lifetime, $\tau_{6S} = 45.57(17)$ ns, sets GAMMA_NAT_HZ
+(3.4925 MHz) among this project's physical constants.
 
 ## Values
 
@@ -40,4 +41,4 @@ reference a row here and be checked against it.
 
 | field | value | where in the paper |
 |---|---|---|
-| tau_6s_ns | 45.57(17) | the measured 6S lifetime, the source of GAMMA_NAT_HZ and the lifetime discriminant of the sign adjudication |
+| tau_6s_ns | 45.57(17) | the measured 6S lifetime, the source of GAMMA_NAT_HZ and the lifetime discriminant of the sign decision |

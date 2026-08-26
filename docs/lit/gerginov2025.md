@@ -45,66 +45,43 @@ section: method-anchors
 
 # gerginov2025
 
-**Skimmed for metrological practice.** **Not read in full**, and deliberately
-not mined for physics: this is
-a caesium *microwave* fountain, and nothing in it bears on Rb two-photon
-lineshapes, nanofibres, or the polarizabilities this programme computes. What it
-offers is a worked example of how a primary standard states what it does not
-know.
+Held. Read for its uncertainty-budget structure rather than its physics. It
+reports a caesium microwave fountain, distinct from gerginov2018, an earlier
+two-photon Rb optical clock paper by the same lead author. No quantity here
+is a physics input to Rb two-photon lineshapes, nanofibres, or
+polarizabilities.
 
-*A misidentification to record.* This was first taken here for the "Gerginov
-2018" row of [bandi2025](bandi2025.md)'s Table 1. It is not — that is a separate,
-earlier paper on a Rb two-photon optical clock, and it remains unheld.
+## The uncertainty budget
 
-## The four practices worth copying
+Table 2 lists every systematic with both a correction and a type-B
+uncertainty, totalling $3019.5 \pm 2.2$ in units of $10^{-16}$: relativistic
+shifts, quadratic Zeeman, blackbody, cold collisions, microwave lensing,
+distributed cavity phase (split by azimuthal order $m = 0, 1, 2$), microwave
+modulation and spurs, microwave leakage, cavity pulling, Rabi and Ramsey
+pulling, Majorana transitions, background-gas collisions, and AC Stark.
+Seven of those entries have a correction of exactly 0, and are listed anyway
+with their uncertainties.
 
-**1. Every systematic gets a correction *and* an uncertainty, including the
-zeros.** Their Table 2 runs relativistic shifts, quadratic Zeeman, blackbody,
-cold collisions, microwave lensing, distributed cavity phase (split by azimuthal
-order $m = 0, 1, 2$), microwave modulation and spurs, microwave leakage, cavity
-pulling, Rabi and Ramsey pulling, Majorana transitions, background-gas
-collisions, and AC Stark — to a total of $3019.5 \pm 2.2$ in units of
-$10^{-16}$. Seven of those entries have a correction of exactly **0**, and they
-are listed anyway with their uncertainties. **A term considered and found
-negligible is reported, not omitted.** That is the opposite of the usual habit,
-and it is what makes a budget auditable: a reader can tell the difference
-between "we bounded it and it is small" and "we did not think of it".
+Uncertainties are asymmetric where the physics is asymmetric. Microwave
+lensing is $0.9\ (^{+0.2}_{-0.4}) $. Distributed cavity phase ($m=0$) is
+$0.05\ (^{+0.02}_{-0.08}) $.
 
-**2. Asymmetric uncertainties where the physics is asymmetric.** Microwave
-lensing is $0.9\ (^{+0.2}_{-0.4})$; DCP $(m=0)$ is $0.05\ (^{+0.02}_{-0.08})$.
-They do not symmetrise for tidiness.
+The X- and Y-tilt-axis entries carry a footnote stating the shifts and
+uncertainties along those axes "are given for information only, as they are
+included in quadrature in the DCP $(m = 1)$ term."
 
-**3. An explicit anti-double-counting note.** The X- and Y-tilt-axis entries
-carry a footnote: the shifts and uncertainties along those axes "are given for
-information only, as they are included in quadrature in the DCP $(m = 1)$ term".
-Diagnostic decompositions are shown *and* flagged as already counted.
+The AC Stark (light) entry is $0 \pm 0.01$. It is measured in a deliberately
+amplified configuration, shutters open, where it is $49(1.5) \times 10^{-15}$
+and readily measurable, then attenuated by a calibrated 40 dB (two mechanical
+shutters per fibre input, each at least 40 dB, for redundancy) to a scaled
+residual of about $5 \times 10^{-19}$, rounded up to an upper limit of
+$1.0 \times 10^{-18}$.
 
-**4. Bounding a systematic by amplification, which is the one to steal.** Their
-AC Stark (light) entry is $0 \pm 0.01$, and it is not a guess. They measure the
-light shift in a deliberately *amplified* configuration — shutters open, where it
-is $49(1.5) \times 10^{-15}$ and readily measurable — then attenuate by a
-calibrated 40 dB (two mechanical shutters per fibre input, for redundancy, each
-at least 40 dB) and assign the scaled residual, $\approx 5 \times 10^{-19}$,
-rounded up to an upper limit of $1.0 \times 10^{-18}$.
+## Validity
 
-**Why that last one matters here.** This programme's AC-Stark shift is confounded
-with frequency drift at operating power — that confound is what forced the M20
-retraction and what makes the centre channel unusable. The fountain answer is not
-a better drift model: it is to measure the systematic where it *dominates*, in a
-configuration built to amplify it, and then transfer the bound through a
-calibrated attenuation. The analogue would be a deliberately over-powered or
-tightly-focused configuration in which $S_0$ is large enough to measure against
-the drift, with the operating-point bound obtained by scaling. **Not proposed as
-a shot-list item here — recorded as a method this repository does not currently
-use.**
-
-## What is not transferable
-
-The blackbody section is a Stark shift of the caesium *hyperfine* clock
-transition — $\Delta f_{\rm BBR}/\nu_0 = k_0 E_{300}^2/\nu_0 \cdot (T/T_0)^4 [1 + \epsilon (T/T_0)^2]$
-with $E_{300} = 831.9$ V/m — and the 0.2 K temperature
-uncertainty propagates to $0.6 \times 10^{-16}$. That is a differential
-polarizability known to great precision, but it is the microwave one, not the
-$6s \to 7s$ optical differential in the Cs validation triangle
-([quirk2024](quirk2024.md), [iskrenovatchoukova2007](iskrenovatchoukova2007.md)).
-**Different quantity; not a target.**
+The blackbody term is a Stark shift of the caesium hyperfine clock
+transition, $\Delta f_{\rm BBR}/\nu_0 = k_0 E_{300}^2/\nu_0 \cdot (T/T_0)^4 [1 + \epsilon (T/T_0)^2]$ with $E_{300} = 831.9$ V/m, where a 0.2 K
+temperature uncertainty propagates to $0.6 \times 10^{-16}$. This is the
+microwave hyperfine differential polarizability, not the $6s \to 7s$ optical
+differential relevant to the caesium validation triangle (quirk2024,
+iskrenovatchoukova2007). It is a different quantity.

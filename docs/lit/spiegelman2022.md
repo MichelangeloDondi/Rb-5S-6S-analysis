@@ -24,6 +24,10 @@ section: collision-series
 
 # spiegelman2022
 
-Allard-Kielkopf broadening lineage (quasistatic satellites); FEED.
+## The system
 
-arXiv:2201.03294, non-Lorentzian Balmer satellites in white dwarfs — a pointer to the quasistatic/satellite broadening regime (Lewis 1980, Allard & Kielkopf 1982 lineage) that our low-density impact-regime Lorentzian assumption sits opposite to: a contrast reference, not a supporting one.
+Collision-induced satellite structure in the blue wing of the Balmer-beta line, arising when perturber densities are high enough to leave the impact approximation and enter the quasistatic regime, with consequences for the broader Balmer series.
+
+## Use in this record
+
+A contrast reference rather than a supporting one. Part of the Allard-Kielkopf lineage of quasistatic-satellite broadening theory (Lewis 1980, Allard and Kielkopf 1982), it describes the high-density quasistatic regime, opposite the low-density impact-regime Lorentzian lineshape assumption used in this record.

@@ -85,7 +85,7 @@ LEVELS.update({
 # measurement with its LS partners, and the 6P-4D, 6P-5D and 7P-5D
 # families are the Safronova-Williams-Clark all-order values
 # (PRA 69, 022509), cross-checked against a model-potential
-# integration during the 2026-08-08 adversarial review.
+# integration on 2026-08-08.
 _PD_MAG = {
     ("5P1/2", "4D3/2"): 8.02, ("5P3/2", "4D3/2"): 3.65,
     ("5P3/2", "4D5/2"): 10.90,

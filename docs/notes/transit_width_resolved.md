@@ -65,8 +65,8 @@ aperture". That attribution is now sourced rather than inferred (2026-08-01,
 APPARATUS.md §1.2/§2): no lens or telescope sits between the SolsTiS and the
 EOM, the isolator ahead of it (isowave i-98t-5l, 5 mm clear aperture) is wide
 enough not to clip, and the eom-02-12.5-v's own clear aperture **is** 3 mm per
-the manufacturer's specification table, with the experimenter separately
-recalling an IR-card observation of clipping there. A recollected clipping
+the manufacturer's specification table, with a separately recalled
+IR-card observation of clipping there. A recollected clipping
 event does not fix how much of the beam was clipped, so the estimate stays a
 Gaussian-optics calculation, not a measurement. It is, though, no longer a free
 parameter chosen to fit. Two independent routes (the corrected transit physics

@@ -27,4 +27,12 @@ section: oist-lineage
 
 # stern2013
 
-**Held 2026-07-29.** An early demonstration of alkali vapour interacting with a tightly confined waveguide mode as the cladding medium, part of the platform lineage that [Skljarow 2020](skljarow2020.md) later carries to two-photon spectroscopy. Held for completeness of that lineage; it bears on no claim here directly.
+Held.
+
+## The system
+
+Rb vapor used as the cladding of a nanoscale waveguide (Hebrew University), demonstrating light-matter interaction in a strongly confined guided optical mode with an alkali vapor. One-photon interaction, with no two-photon line and no lineshape decomposition.
+
+## Use in this record
+
+An early demonstration in the on-chip atomic-photonics platform lineage carried forward to two-photon spectroscopy by [Skljarow 2020](skljarow2020.md). No quantity in this record rests on this paper. It is held for completeness of that lineage.

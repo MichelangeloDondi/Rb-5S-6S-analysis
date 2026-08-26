@@ -30,4 +30,4 @@ section: method-anchors
 
 # safronova2004
 
-Benchmark Rb ns matrix elements/lifetimes/polarizabilities — carries the 6S dynamic polarizability; the stronger Delta\_alpha anchor for 6S.
+Benchmark Rb ns matrix elements, lifetimes, and polarizabilities, including the 6S dynamic polarizability. The stronger Delta\_alpha anchor for 6S.

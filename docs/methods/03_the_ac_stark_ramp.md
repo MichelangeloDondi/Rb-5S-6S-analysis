@@ -225,7 +225,7 @@ signal exponent $n$ there is below 2: that *strengthens* the negative skew but t
 $n=2$ magnitudes in this row are no longer parameter-free. At config S the
 sign is the robust observable, and the magnitudes belong to L and M.
 
-An independent derivation reached the same numbers (external review,
+An independent derivation reached the same numbers (a reader outside the project,
 2026-07-26, held privately): working the $z$-integration by hand gives the
 long-cell weight in closed form, $w(u)\propto\sqrt{(1-u)/u}(1+2u)$ with
 mean $S_0/3$, variance $11S_0^2/144$ and $|g_1| = 0.5482$, and its quadrature
@@ -246,7 +246,7 @@ is a 3 × 12 mm rectangle, so which of its axes lies along the beam is a ×4
 lever on $Z_c$.
 
 It is the 12 mm axis. The cathode was mounted with its 12 mm axis along the beam through the 2025
-campaign (experimenter-confirmed 2026-07-23, [APPARATUS](../APPARATUS.md)) and is not
+campaign (confirmed from recollection 2026-07-23, [APPARATUS](../APPARATUS.md)) and is not
 re-oriented between configurations, so $Z_c = 6/M$ mm is a single fixed number
 and $Z_c/z_R$ moves between the two configurations only through $w_0$.
 The along-beam mounting is the larger of the two cases, so it pushes $Z_c$ *towards* the
@@ -266,7 +266,7 @@ from 0.5 to 6. Portrait would have forfeited it, because $Z_c = 1.5/M$ mm sits
 below the 0.90 mm flip threshold for any $M$ above 1.7 (PLAN §6 #4).
 
 **The magnification is roughly known too.** The collection lens was the
-$f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (experimenter,
+$f=18$ mm one and nothing else, with $M$ estimated at 2.5–3 (recollection,
 2026-07-29, an estimate and not a measurement, with $u$ and $v$ still wanting
 a ruler).
 That gives $Z_c = 6/M = 2.0$ to $2.4$ mm, and it hangs together: $1/u+1/v=1/f$ with
@@ -324,8 +324,7 @@ speed $\lesssim5$ m/s, 1 to 2% of the signal, are fringe-resolved, which is a
 percent-level correction.) The remaining OPEN quantity in $S_0$ is the
 measured $\rho$ per beam configuration (in situ at the cell, in a fixed-lock session).
 
-**Why $\rho$ sits close to 1 by design, and why it is now assumed rather
-than asserted.** The 2025 retro is a
+**Why $\rho$ sits close to 1 by design, and what the assumption rests on.** The 2025 retro is a
 self-imaging (lens-based) one: the beam is focused into the cell by L1
 ($f=150$ mm), and a second lens L2 ($f=150$ mm) after the cell maps the cell
 waist onto an intermediate waist behind it, since by the Gaussian f–f property a
@@ -408,7 +407,7 @@ convention behind $S_0$. Library code:
 
 **What would falsify this.** A measured skewness of the same sign at both beam
 configurations. The sign flip is set by $Z_c/z_R$ and by nothing an
-experimenter can tune independently, so a sign-preserving pair would refute the
+experimentalist can tune independently, so a sign-preserving pair would refute the
 diverging-beam form, and a skew magnitude away from the tabulated one at a
 measured $Z_c$ would refute the $n=2$ weighting the whole law rests on.
 

@@ -31,16 +31,15 @@ section: method-anchors
 
 # safronovaSS2011
 
-The critically-evaluated Rb ns/np/nd matrix elements and scalar/tensor static
-polarizabilities, the lineage this programme's polarizability elements descend
-from, and an independent check on the M16 static values.
+Held. Verified in full against the PDF.
 
-**Held and read in full.** What it contains, and the limits of what it can
-settle here:
+## The system
 
-**Reduced E1 matrix elements** (Table II, "recommended values", atomic units),
-the four 6S channels that dominate the 6S polarizability sum plus the two 5S
-ones, each with its quoted uncertainty:
+Critically evaluated theoretical energies, lifetimes, hyperfine constants, and multipole polarizabilities for atomic Rb-87, from relativistic many-body calculations.
+
+## The numbers
+
+Reduced E1 matrix elements (Table II, recommended values, atomic units) for the four 6S channels that dominate the 6S polarizability sum, and the two 5S channels, each with its quoted uncertainty:
 
 | transition | value | unc. |
 |---|---|---|
@@ -51,29 +50,14 @@ ones, each with its quoted uncertainty:
 | 5s(1/2)-5p(1/2) | 4.253(34) | 0.79% |
 | 5s(1/2)-5p(3/2) | 6.003(24) | 0.80% |
 
-Table I supplies the matching level energies, both their own and the NIST
-values, so the sum-over-states denominators come from the same document.
+Table I gives the matching level energies, both the paper's own values and the NIST values, so the sum-over-states denominators come from the same document.
 
-**Static polarizabilities.** alpha(5s) = 322(4) a0^3 (Table V), against the
-measured 319(6) and 329(23) they compare to. alpha_0(6s) = 5169(21) a0^3
-(Table VI). Ionic core alpha_core = 9.076 a0^3.
+Static polarizabilities: alpha(5s) = 322(4) a0^3 (Table V), compared against measured values of 319(6) and 329(23). alpha_0(6s) = 5169(21) a0^3 (Table VI). Ionic core alpha_core = 9.076 a0^3.
 
-That 6S value is a useful independent check rather than a duplicate.
-`polarizability.py` calibrates its 6S tail to 5167(22), taken from the
-Safronova-group online portal, and the paper's own Table VI gives 5169(21).
-The two agree to 0.04%, well inside either uncertainty, so the tail
-calibration is confirmed against the published table and not only against the
-portal it was read from.
+## Validity
 
-**What it cannot do, and this is the point for M16.** Every polarizability in
-it is STATIC. There is no frequency-dependent formula anywhere in the paper,
-so it cannot give Delta_alpha at 993 nm on its own, and it cannot be used to
-adjudicate the sign disagreement with [orson2021](orson2021.md): it never
-writes a light-shift equation, so it never states whether a positive alpha
-pulls a level down. The dynamic evaluation belongs to
-[safronova2006](safronova2006.md), which is the frequency-dependent paper and
-is also held.
+Every polarizability in the paper is static. It contains no frequency-dependent formula, so it cannot give Delta_alpha at 993 nm and cannot settle the sign disagreement with [orson2021](orson2021.md), which turns on a light-shift equation this paper does not write. The frequency-dependent evaluation is in [safronova2006](safronova2006.md).
 
-So its role here is inputs and anchors rather than an answer: matrix elements
-and energies to feed a dynamic recompute, and static totals that such a
-recompute must reproduce in the zero-frequency limit.
+## Use in this record
+
+`polarizability.py` calibrates its 6S tail to 5167(22) a0^3, taken from the Safronova-group online portal. Table VI here gives 5169(21) a0^3, agreement to 0.04%, confirming the tail calibration against a published table independent of the portal.

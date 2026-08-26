@@ -271,7 +271,7 @@ from here may assert, followed by the list of what it may not. Each concession
 has its own subsection, and they are placed in the order the argument runs
 rather than in the order they were found:
 
-- **[5.1](#51-narrowed-by-the-adversarial-audit-2026-07-26)** the precedents an
+- **[5.1](#51-narrowed-by-the-precedent-audit-2026-07-26)** the precedents an
   external audit surfaced, which cost the first version of claim 1.
 - **[5.2a](#52a-the-concession-runs-to-1980-and-the-closed-form-is-not-new-either)**
   the 1980 review that replaces even what 5.1 left standing. This is the
@@ -406,7 +406,7 @@ distribution of AC-Stark shifts is a new frame**.
 > the introduction here. The three things to check are listed at the end of the
 > note.
 
-### 5.1 Narrowed by the adversarial audit, 2026-07-26
+### 5.1 Narrowed by the precedent audit, 2026-07-26
 
 An external deep-search audit found **two further precedents, both now read
 here**, and claim 1 above had to give ground twice:
@@ -616,7 +616,7 @@ novelty claim, recorded in §5 above). Two attribution errors were found and
 fixed outside the checked set: [saha2010](lit/saha2010.md) and
 [slepkov2010](lit/slepkov2010.md) were both credited with an 18 µm
 hollow-core mode field that appears in **neither** paper, which belongs
-instead to the experimenter's own CRYST³ fibre at Bologna, an injection-beam
+instead to the thesis author's own CRYST³ fibre at Bologna, an injection-beam
 *radius* for the 1064 nm dipole-trap beam supplied by a held Nasoni 2026
 thesis, not the guided mode of a two-photon probe. **[OPEN]**: the
 delineation table and the fringe-tail derivation built on Stalnaker are this

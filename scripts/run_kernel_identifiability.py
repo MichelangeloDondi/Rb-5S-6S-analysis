@@ -308,7 +308,7 @@ def main() -> int:
         """The window the RECORD'S OWN estimator would use for this line.
 
         A first version of this block inherited the +-8 MHz grid of the
-        fixed-condition sections above. An adversarial verification pass
+        fixed-condition sections above. Independent verification
         showed that window is less than half of what `adaptive_halfwidth`
         assigns to these lines (3.5 x FWHM, clipped to [9, 25] MHz, which
         lands at 17.5 to 19 MHz here), that the truncation moved the

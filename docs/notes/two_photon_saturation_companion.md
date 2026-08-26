@@ -113,7 +113,7 @@ Two consequences follow.
    practice the quoted bound is conservative rather than wrong. That is why this
    note opens no retraction.
 
-## A second companion, found on the 2026-08-09 adversarial pass
+## A second companion, found on the 2026-08-09 independent pass
 
 Saturation broadening is not the only P-squared term missing from the width
 model. The atom is not a closed two-level system: every real 6S decay cascades
@@ -305,8 +305,8 @@ calculation, and an estimate built on the assumed cancellation came out a factor
 
 Adding the saturation term to `rb5s6s/stark.py`'s forward model and re-profiling
 kappa. The prediction is that the bound tightens and the minimum stays at zero. It adds
-no free parameter, because the term is a closed form in Omega_2ph, which is
-itself a fixed multiple of S0.
+no free parameter, because the term is a closed form in Omega_2ph, and Omega_2ph is
+a fixed multiple of S0.
 
 Until that is run, the committed bounds stand as quoted and are conservative in
 the direction that matters.

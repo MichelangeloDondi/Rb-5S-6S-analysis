@@ -47,7 +47,7 @@ MHZ_TOOTH = TOOTH_SPACING_LASER_HZ / 1e6
 
 def load_block_rates():
     """Read M2 results/ruler_blocks.csv -> transition-axis rate per block,
-    WITH each block's relative rate error (2026-07-16 -- review finding: the
+    WITH each block's relative rate error (2026-07-16 -- finding: the
     ruler calibration error was folded in run_beta_self/run_power_sweep but
     dropped here, where the per-condition widths are made). A rate error
     scales the whole frequency axis of its block, so every width-type
@@ -194,7 +194,7 @@ def main() -> int:
             "rate_relerr": rate_relerr,
             # the block-coherent ruler-rate error scales every width in the
             # block together; folded here so no consumer of this CSV can drop
-            # it (review finding 4, 2026-07-16)
+            # it (finding 4, 2026-07-16)
             "n": len(volts), "gamma_coll": fit["gamma_coll"],
             "gamma_coll_err": float(np.hypot(fit["gamma_coll_err"],
                                              fit["gamma_coll"] * rate_relerr)),

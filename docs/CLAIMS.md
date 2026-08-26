@@ -48,7 +48,7 @@ two-photon sum frequency, twice the laser frequency.
 - Light shift at the campaign maximum of 225 mW:
   S₀(225 mW) < 0.26 MHz, from a joint three-session fit of every point
   of every power profile, minimum consistent with zero shift. **The
-  disposition of a subset of this bound had been under review** because
+  disposition of a subset of this bound was unresolved** because
   rerunning the construction on 2026-08-14 moved a subset bound by about a
   third, and the cause was identified on 2026-08-20: the inputs were not
   byte-identical, since one commit regenerated the committed ruler CSVs while
@@ -206,6 +206,7 @@ systematic as fig1.*
 **Method:**
 
 - The lineshape-as-shift-map frame is not new: it is the 1980
+<!-- term-of-art: review names the cited article's genre -->
   multifrequency-field review of Delone, Kovarskii, Masalov and
   Perel'man, and this record's core relation reduces exactly to their
   Eq. (5.3). What this record adds is the closure of that frame for a
@@ -339,6 +340,7 @@ systematic as fig1.*
   ([docs/notes/centre_channel_cannot_be_revived.md](notes/centre_channel_cannot_be_revived.md)).
 - No claim that 993 nm competes with the 778 nm two-photon reference.
   On natural linewidth it starts an order of magnitude behind.
+<!-- term-of-art: review names the cited article's genre -->
 - No claim to the lineshape frame itself, which is 1980 review
   material. The claim is the geometric closure and its cumulants.
 - No claim that the projected precisions of section 3 are results. They
@@ -506,7 +508,7 @@ and buys back signal at the cost of transit width and of the density
 lever, which is the exchange the 778 nm rung would have to make and which
 this projection does not quantify.
 
-For the experimenter choosing a source rather than a line, those
+For an experimentalist choosing a source rather than a line, those
 ceilings decide the hardware. At 993 nm the ceiling sits above what
 the bench delivers, so the titanium sapphire stays necessary, and the
 diode-seeded ytterbium fibre alternative would be working at the

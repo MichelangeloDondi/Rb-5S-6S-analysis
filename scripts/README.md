@@ -22,6 +22,7 @@ committed table holds. The `M` codes below are the pipeline stage labels of
 
 ## The pipeline, in the order `run_all.sh` runs it
 
+<!-- term-of-art: rows cite private reviews directory paths verbatim -->
 | script | writes |
 |---|---|
 | `run_qc.py` (M0) | quality metrics for every trace in the manifest into `qc_metrics.csv`, each with its z-scores against its condition siblings, its residual-tail trim record and its outlier mark |

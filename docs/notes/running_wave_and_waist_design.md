@@ -326,7 +326,7 @@ are orthogonal, which is convenient and is not obvious in advance.
 
 ## Addendum, 2026-08-09: the collection region is smaller than assumed, and the crossing is inside reach
 
-Written after the experimenter stated that the 993 nm focus sits close to the
+Written after APPARATUS.md recorded that the 993 nm focus sits close to the
 collection lens rather than at the cell's mid-plane, chosen to raise the collected
 solid angle. The tables above used Z_c = 2.0 mm, the middle of the envelope
 `config.py` records for a source at a nominal object distance. That envelope is

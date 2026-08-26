@@ -42,6 +42,7 @@ bounds an excursion rather than identifying a spectrum. This measures what
 the ASSUMPTION costs, not which assumption is right.
 
 The reading was preregistered before the first run, in
+# term-of-art: the private reviews directory is a filesystem path
 private/reviews/PREREG_laser_kernel_2026-08-20.md.
 
     python scripts/run_laser_kernel.py

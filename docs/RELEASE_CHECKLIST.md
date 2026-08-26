@@ -1,6 +1,6 @@
 # Release checklist
 
-The framework is a release candidate and the release act is the experimenter's. The phrase describes the package: the record is released and tagged, and the two have different lifetimes. This
+The framework is a release candidate and the release act is the owner's. The phrase describes the package: the record is released and tagged, and the two have different lifetimes. This
 page is what that act requires, assembled so it can be worked through rather
 than reconstructed. Nothing here has been performed.
 

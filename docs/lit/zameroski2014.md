@@ -34,57 +34,24 @@ section: collision-series
 
 # zameroski2014
 
-**Re-read from the held PDF 2026-07-27, and the earlier reading was wrong in
-its central number.** This entry used to build the expected beta_self from a
-self-SHIFT of -17.82 kHz/mTorr attributed to Zameroski. That figure is not his.
-Section 2.5 states plainly that for 7S "the self-shift rate could not be
-extracted from the experimental data"; the -17.82 kHz/mTorr is Morzynski 2013's,
-quoted on the LASER axis, which Zameroski restates on the transition axis as
--35.6 +- 1.6 kHz/mTorr. The old chain then converted that shift into a
-broadening through a Lindholm-Foley ratio -- a conversion that was never needed,
-because the paper measures the broadening directly.
+Verified against the held PDF. Section 2.5 gives the self-broadening rate cited below.
 
-**What it actually measures, and why it is the anchor.** Section 2.5, verbatim:
-"The self-broadening rate gamma_B = 129 +- 11 kHz mTorr^-1", for the
-85Rb 5S(F=2) -> 7S(F=2) two-photon line -- the sister transition to this
-programme's, one principal quantum number up. Self-broadening is exactly what
-beta_self is, so no conversion of any kind is required. At their cell
-temperature (~403 K; 1 mTorr <-> 2.40e13 cm^-3) that is
-**beta_self(7S) = 5.39 +- 0.46 kHz per 1e12 cm^-3**.
+## The measurement
 
-This is the **only measured self-broadening rate for an nS state in rubidium**,
-and so the only external check M18 has.
+Pressure broadening and frequency shift of the 5S -> 5D and 5S -> 7S two-photon transitions in 85Rb by the noble gases and N2, at a cell temperature of ~403 K, where 1 mTorr corresponds to 2.40e13 cm^-3.
 
-**It sits ~17% low, inside the envelope the truncation already predicts.** Run
-on 7S, M18's corrected absolute prediction is 4.50 kHz per 1e12 cm^-3 against
-the measured 5.39. An earlier version of `beta_self_vdw` double-applied the
-HWHM->FWHM conversion and reported this as "high by 1.67x" -- that was a
-double-count in the code, not a physical discrepancy (traced and fixed
-2026-08-03, docs/PREREGISTRATION_RESULTS.md Addendum 23). The corrected 17%
-gap is close to (a bit past) the +-10-15% the valence-only truncation and the
-mean-speed-vs-full-Boltzmann-average approximation can explain.
+## The self-broadening rate
 
-The prefactor is common to 6S and 7S -- same law, same units -- so it cancels
-in a ratio regardless. `vanderwaals.beta_self_anchored` therefore uses M18 only
-for C6(6S)/C6(7S) = 0.347, a ratio of two sums over the same matrix elements,
-and takes the absolute scale from this measurement:
+Section 2.5 gives the self-broadening rate for the 85Rb 5S(F=2) -> 7S(F=2) two-photon line as gamma_B = 129 +- 11 kHz/mTorr, equivalent to beta_self(7S) = 5.39 +- 0.46 kHz per 1e12 cm^-3. This is the only measured self-broadening rate for an nS state in rubidium.
 
-    beta_self(6S) = 5.39 * 0.347^(2/5) = **3.53 +- 0.30 kHz per 1e12 cm^-3**
+## The self-shift
 
-**Consequences.** The archival bound sits **8-15x above** this (the four-point
-70/90/110/130 C headline, 2026-08-02, ~0.03-0.05 MHz per 1e12 cm^-3) -- was
-57-113x above on the earlier three-point 70-110 C headline (~0.2-0.4 MHz),
-which was itself tighter than the ~40-100x the old misattributed chain gave,
-or the 34-68x M18's uncorrected absolute value gave. The conclusion is
-unchanged in kind -- the bound is still above any expected value -- and is
-anchored on a measurement of the same observable on the neighbouring state.
+Section 2.5 states that the self-shift rate for 7S could not be extracted from the experimental data. A commonly cited value of -17.82 kHz/mTorr for the 7S self-shift belongs to Morzynski (2013), on the laser-frequency axis. Zameroski restates it on the transition-frequency axis as -35.6 +- 1.6 kHz/mTorr.
 
-The old entry's forward-looking point stands and is worth keeping, just at a
-tighter margin: even the full 70-130 C archival lever cannot MEASURE a beta
-of this size. Delta-N ~ 2.9e13 cm^-3 gives Delta-gamma ~ 0.10 MHz at
-3.4 kHz per 1e12, still under the width budget, and a real
-measurement needs 150-170 C points.
+## Other transitions measured
 
-Also measured here, and not used by this programme: broadening and shift rates
-of 5S->5D (778 nm) and 5S->7S (760 nm) by the noble gases and N2, reported for
-the first time.
+Broadening and shift rates of 5S -> 5D (778 nm) and 5S -> 7S (760 nm) by the noble gases and N2 are also reported, for the first time.
+
+## Use in this record
+
+M18 predicts beta_self(7S) = 4.50 kHz per 1e12 cm^-3, about 17% below the measured 5.39 +- 0.46 kHz per 1e12 cm^-3, within the +-10-15% expected from the valence-only truncation and the mean-speed approximation. The ratio C6(6S)/C6(7S) = 0.347 from M18, combined with this measurement as the absolute scale, gives beta_self(6S) = 5.39 * 0.347^(2/5) = 3.53 +- 0.30 kHz per 1e12 cm^-3. The archival bound on beta_self(6S), the four-point 70/90/110/130 °C headline (~0.03-0.05 MHz per 1e12 cm^-3), sits 8-15x above this value.

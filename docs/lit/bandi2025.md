@@ -43,151 +43,56 @@ section: landscape-24-26
 
 # bandi2025
 
-MDPI open access. The single best
-landscape/systematics-benchmark review for the Rb two-photon clock.
+Held. Verified in full (44 pages).
 
-**Full text read** (44 pp).
+## The review
 
-**What it actually ranks.** The abstract lists three limiters without ordering
-them, but the body does order them:
+MDPI open-access review of systematics in the Rb two-photon vapor-cell optical clock.
 
-> "light shift variations (stemming from fluctuations in the laser optical power
-> that probe the rubidium transition) [117,120,136,157] and vapor-cell
-> temperature variations [136] **predominantly limit performance for medium- to
-> long-term averaging**."
+## What limits performance
 
-So the pair -- light shift AND cell temperature -- is named as predominant
-together, above laser drift and the rest. Both halves matter here: the light
-shift is what the ramp method reads, and the cell-temperature term is the
-density-coefficient territory this archive bounds.
+The abstract lists three limiting effects without ranking them, but the body ranks two of them above the third:
 
-**Numbers worth having.** The 5S-5D two-photon working linewidth is quoted as
-**~330 kHz**, against the 3.49 MHz natural width of 5S-6S -- the 778 nm line is
-roughly an order of magnitude narrower, which is the quantitative form of why
-993 nm is not a better clock line. Field target: better than 1e-15 at one day.
-Reported temperature coefficient -1.09(4)e-12 per K; He collisional shift
-0.55e-8.
+> "light shift variations (stemming from fluctuations in the laser optical power that probe the rubidium transition) [117,120,136,157] and vapor-cell temperature variations [136] predominantly limit performance for medium- to long-term averaging."
 
-**A transcription error to route around.** The review reports Hamilton's 5S-5D
-magic wavelength as "an experimental magic wavelength of 778.179(5) nm and a
-theoretical magic wavelength of 776.21 nm". Hamilton 2023 (held here) says
-**776.179(5) nm** experimental and 776.21 nm theoretical, repeatedly, in both
-abstract and conclusions -- the review has transposed a digit. `constants.py`
-carries 776.179, which is correct. Hamilton also reports a SECOND magic
-wavelength at 790.26 nm, close to the 5S tune-out.
+Light shift and cell temperature are named together as the predominant pair, above laser drift and the remaining effects.
 
-**Coverage gap, confirmed by search.** 5S-6S / 993 nm appears nowhere in the
-body -- the only hits are reference titles (Nez 1993, a 5S-5D3/2 paper). The
-review is a 5S-5D landscape; it does not touch this line.
+## The numbers
 
-**Citation scope.** <!-- not-from-pdf: the two strings below are OUR claim
-wordings under discussion, not passages quoted from the paper. -->
-The claim "the review identifies light shift and cell temperature as
-predominantly limiting medium-to-long-term performance" is **supported**, though
-it is a paraphrase and not a quotation; the paper's own sentence is "light shift
-variations (stemming from fluctuations in the laser optical power that probe the
-rubidium transition) and vapor-cell temperature variations predominantly limit
-performance for medium- to long-term averaging". *The word "verbatim" was
-attached to our paraphrase here until 2026-07-30, when a mechanical check
-against the PDF caught it.* The stronger claim "the review identifies the light
-shift as THE limiting systematic" is **not** supported -- it was written and
-withdrawn on 2026-07-26, before the full text was available.
+The 5S-5D two-photon linewidth is quoted as approximately 330 kHz, against the 3.49 MHz natural width of 5S-6S: the 778 nm line is roughly an order of magnitude narrower. Field target: better than 1e-15 at one day. Reported temperature coefficient -1.09(4)e-12 per K. Helium collisional shift 0.55e-8.
 
-**A line worth carrying into this analysis, found while checking the above.** The
-review states: "The natural linewidth of the two-photon transition in Rb is
-[approximately] 330 kHz; however, as shown in Table 1, the measured linewidths
-consistently exceed this intrinsic value." That is a *third* setting -- Rb
-two-photon vapour-cell clocks, alongside the nanofibre cases in
-[patterson2018](patterson2018.md) -- where measured linewidths sit above the
-intrinsic value across a whole table of published work. Whether the causes are
-shared is OPEN and almost certainly not; the point is that "the measured line is
-wider than it should be, consistently, and the field notes it" is a broader
-premise than this programme had realised.
+The review states that measured linewidths in its Table 1 consistently exceed the natural value: "The natural linewidth of the two-photon transition in Rb is [approximately] 330 kHz; however, as shown in Table 1, the measured linewidths consistently exceed this intrinsic value." A comparable excess over the intrinsic linewidth appears in the nanofibre measurements of [patterson2018](patterson2018.md); whether the two excesses share a cause is open.
 
-## Their Table 1 is an external test set for M9 — and it does not come out clean
+## A transcription error in the review
 
-Their Table 1 tabulates, for ten Rb two-photon vapour-cell standards, the signal
-linewidth **together with the cell temperature and the 1/e² beam waist**. Those
-are precisely the three quantities `rb5s6s.constants.transit_fwhm_from_w0` maps
-between, so it is a chance to test M9's transit model against somebody else's
-apparatus. Against a natural linewidth of ≈330 kHz (their figure, for 5S→5D),
-taking the tabulated waist as a *radius* (CALCULATED here):
+The review reports Hamilton's 5S-5D magic wavelength as "an experimental magic wavelength of 778.179(5) nm and a theoretical magic wavelength of 776.21 nm." Hamilton 2023 (held here) states 776.179(5) nm experimental and 776.21 nm theoretical, in both the abstract and the conclusions: the review has transposed a digit. `constants.py` carries 776.179 nm, which is correct. Hamilton also reports a second magic wavelength at 790.26 nm, close to the 5S tune-out.
+
+## Coverage
+
+5S-6S / 993 nm does not appear in the body text. The only hits are reference titles (Nez 1993, a 5S-5D3/2 paper). The review covers the 5S-5D line only.
+
+## Table 1 against the transit model
+
+The review's Table 1 lists, for ten Rb two-photon vapor-cell standards, the signal linewidth together with the cell temperature and the 1/e² beam waist. Those three quantities are what `rb5s6s.constants.transit_fwhm_from_w0` maps between. Taking the tabulated waist as a radius and the natural linewidth as 330 kHz:
 
 | work | observed | excess over natural | transit predicted |
 |---|---|---|---|
 | Poulin 2002 | 410 kHz | 80 | 138 |
-| Callejo 2024 | 450 | 120 | **597** |
+| Callejo 2024 | 450 | 120 | 597 |
 | Lemke 2022 | 550 | 220 | 28 |
 | Li 2024 | 618 | 288 | 74 |
 | Erickson 2024 | 774 | 444 | 256 |
 | Gerginov 2018 | 795 | 465 | 145 |
 | Maurice 2020 | 2200 | 1870 | 574 |
 
-**This is recorded as a DIAGNOSTIC, not as a validation and not as a
-refutation.** Two things stop it being either.
+The transit-predicted column sits below the tabulated excess in five of seven rows, by factors of 2 to 8, consistent with transit being one among several broadening terms: Bandi attribute the excess to "transit-time broadening due to the finite interaction period of atoms with the laser and self-collisional broadening, as well as the laser's linewidth."
 
-First, transit is only one term. Bandi attribute the broadening to "transit-time
-broadening due to the finite interaction period of atoms with the laser and
-self-collisional broadening, as well as the laser's linewidth", so the
-prediction should sit *below* the excess — which it does in five of seven rows,
-by factors of 2 to 8. That is the expected direction but says nothing sharp,
-because the missing factor is unconstrained.
+Two rows do not check out against the review's own figures. Callejo's tabulated linewidth (450 kHz) belongs to a different cell than the tabulated waist: [callejo2025](callejo2025.md) (held) reports a 100 µm waist focused into a 2 mm x 1.5 mm MEMS cavity with a measured linewidth of 1.5-2.1 MHz, while the 450 kHz figure and the "25 mm diameter, 70 mm length" cell dimensions belong to their separate reference glass-blown cell. Against the primary numbers, 597 kHz of transit accounts for 34-51% of the 1170-1770 kHz excess over 330 kHz. Lemke's row is consistent once read at source: w0 = 2.1(3) mm, stated as an intensity radius (1/e²), giving 28 kHz of transit against 220 kHz excess (13%).
 
-Second — **and this was run down to its source on 2026-07-30, with a result that
-indicts the review rather than the formula.** Callejo's row looked impossible: a
-100 µm waist at 110 °C gives 597 kHz of transit on its own, against a *total*
-tabulated linewidth of 450 kHz. Reading the primary
-([callejo2025](callejo2025.md), held) resolves it. Their waist is genuine —
-"the waist of the laser beam (w0 ∼ 100 µm)", focused into a 2 mm × 1.5 mm MEMS
-cavity — but **their measured linewidth is "in the 1.5 - 2.1 MHz range", not
-450 kHz**, and the "25 mm diameter, 70 mm length" cell in this table row is
-their *reference glass-blown* cell, used for comparison, not the microcell.
-The row conflates two cells and reports a width matching neither.
+The waist column does not use one convention throughout. Lemke states a radius. Erickson's thesis (held, `theses/`) states a diameter explicitly: "310 kHz for 230 µm beam diameter at 100 °C." At Erickson's geometry (w0 = 115 µm), `transit_fwhm_from_w0` gives 513 kHz against his own reported 310 kHz, a factor of 1.65 that reflects differing definitions of what "transit-time broadening" means rather than a waist-convention error (candidates include a 1/e² crossing time, a FWHM, the Biraben-Cagnac two-sided-exponential width, and a Gaussian approximation to it).
 
-With the primary numbers the row is **consistent**: 597 kHz of transit against
-1170–1770 kHz of excess over the 330 kHz natural width, i.e. transit supplying
-34–51% and the rest going to collisions in a microcell plus laser width.
-`lemke2022` likewise checks out once read at source: w₀ = 2.1(3) mm, stated as
-an **intensity radius (1/e²)**, giving 28 kHz of transit against 220 kHz of
-excess — 13%, as a beam that large should.
+Erickson's paper is the one row that publishes a complete budget rather than a total: 762 kHz observed (cw), from natural 330 kHz, transit 310 kHz, helium collisional 200 kHz at 4 mTorr, Rb collisional 16 kHz, Zeeman negligible.
 
-**But the waist column is NOT uniform, and a third primary shows it.** A claim
-first written here — that the column is a radius throughout — was wrong, and
-Erickson's thesis (held, `theses/`) says so explicitly: his transit contribution
-is "310 kHz for 230 µm beam **diameter** at 100 °C". Lemke states a radius,
-Erickson states a diameter, both unambiguously, in the same tabulated column.
-**Every row must be taken to its own primary; the column cannot be read as one
-convention.**
+## Use in this record
 
-**And a second, deeper mismatch that the same line exposes.** At Erickson's
-physical geometry — 230 µm diameter, so $w_0 = 115$ µm — this repository's
-`transit_fwhm_from_w0` gives **513 kHz** against his stated **310 kHz**, a factor
-of 1.65. That is not a waist-convention error; it is a difference in what
-"transit-time broadening" *means*, and the candidates are well known (a 1/e²
-crossing time, a FWHM, the Biraben–Cagnac two-sided-exponential width, a Gaussian
-approximation to it). **Until that is pinned down, no cross-paper transit
-comparison from this table is quotable**, including the two rows above, whose
-apparent agreement may be a coincidence of matched conventions.
-
-Erickson is the most useful row regardless, because he publishes a **complete
-budget** rather than a total: 762 kHz observed (cw), from natural 330 kHz,
-transit 310 kHz, helium collisional 200 kHz at 4 mTorr, Rb collisional 16 kHz,
-Zeeman negligible. That is the only row that can be checked term by term.
-
-**The lesson is about the review, not the physics.** Three primaries read, one
-review row simply wrong, and a column that mixes conventions. Any further use of
-this table should go to the primaries — seven of which are **already held here**:
-[gerginov2018](gerginov2018.md), [callejo2025](callejo2025.md),
-[beard2024](beard2024.md), [poulin2002](poulin2002.md),
-[martin2018](martin2018.md), [erickson2024](erickson2024.md) (thesis) and
-[lemke2022](lemke2022.md) (note pending).
-
-**What would make this worth doing properly**, and it is cheap: take the three or
-four rows whose primary sources are held or obtainable, read the waist
-definition out of each paper rather than the review, and redo the comparison. A
-transit model that reproduces published linewidths across four independent
-apparatus would be a far stronger statement about M9 than any internal
-consistency check — and the same exercise would put a real prior on $w_0$, which
-is the open systematic every absolute result in this repository is bound on.
-**Not attempted here. Recorded as OPEN.**
-
+Cross-paper transit-time comparisons drawn from this table are not usable without checking each primary source's own waist and width convention. The apparent agreement in some rows may reflect matched conventions rather than a correct model. Seven of the ten primaries are held separately in this literature store: [gerginov2018](gerginov2018.md), [callejo2025](callejo2025.md), [beard2024](beard2024.md), [poulin2002](poulin2002.md), [martin2018](martin2018.md), [erickson2024](erickson2024.md) (thesis) and [lemke2022](lemke2022.md) (note pending).

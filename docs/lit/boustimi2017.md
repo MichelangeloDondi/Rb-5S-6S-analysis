@@ -53,51 +53,14 @@ section: method-anchors
 
 # boustimi2017
 
-**Held and skimmed**, while chasing the
-paywalled [boustimi2002], which it does not replace, but may make unnecessary.
+Held. Verified from the prose. The equations did not survive PDF text extraction and have not been checked against the rendered pages.
 
-## Why it matters: what Sagué actually needed from Boustimi
+## The system and method
 
-The refit blocked on `boustimi2002` (PRB 65, 155402) on the assumption that a
-*number* was needed from it. Re-reading [sague2007](sague2007.md) settles that it
-is not. Their words: "**We calculated** the vdW shift, $\delta_{\rm vdW}(r)$, for
-the D2 line of Cs near a 500 nm diameter **dielectric cylinder** [15]." Sagué did
-the calculation themselves and cite Boustimi for the **method**. The often-noted
-objection — that Boustimi's worked case is an argon atom near an *aluminium*
-wire, while Sagué's fibre is silica — therefore does not land: nobody imported a
-metallic number into a dielectric problem.
+An open-access conference paper by an author of the paywalled `boustimi2002`, presenting the same susceptibility-tensor framework for van der Waals dispersion energy and covering sphere, cylinder and plane geometries. Section 2.2, "Atom near a metallic nanowire," writes the atom-wire dispersive interaction (their Eq. 11) as an integral over the wire's reflection coefficient, with k_parallel the wave-vector component along the wire axis.
 
-## What this paper provides
+The worked case is metallic: the dispersion coefficients "carry the nonlocal behavior of the metal." Whether the reflection coefficient can be evaluated directly for a dielectric permittivity is not established in this paper.
 
-The same framework, stated for highly symmetric geometries — "sphere, cylinder
-and plane" — built on "the susceptibility tensors of the two partners in
-interaction" to give a general expression for the dispersive energy. Its §2.2,
-"Atom near a metallic nanowire", writes the atom–wire dispersive interaction
-(their Eq. 11) as an integral over the wire's reflection coefficient, with
-$k_\parallel$ the wave-vector component along the wire axis.
+## Use in this record
 
-**The limitation is the same as the 2002 paper's, and is explicit**: the
-dispersion coefficients "carry the nonlocal behavior of the **metal**". So the
-worked expressions are metallic. Whether the reflection coefficient can simply
-be evaluated for a dielectric $\varepsilon$ — which is what Sagué must have done
-— is **not established here**, and is the thing to check on the rendered pages
-before treating this as a drop-in.
-
-## Status for the refit: replaced, later the same day
-
-**This paper is no longer needed, and neither is `boustimi2002`.**
-[frawley2012](frawley2012.md) is held and read:
-same electrostatic approximation, the right **cylindrical** geometry, and
-explicitly **metal *and* dielectric** rather than metal only. It also gives the
-answer in the directly usable form $U = -(C_3/x_0^3)\mu$, a flat-surface result
-times one position-dependent scalar. That is strictly better than anything this
-proceeding offers for the refit.
-
-What this paper is still good for is corroboration — an independent statement of
-the same susceptibility-tensor framework across sphere, cylinder and plane, by a
-different group, open access. Keep it as a method cross-check, not as an input.
-
-The vdW shift was in any case the *second* input to the Patterson refit. The
-first, [klimovducloy2004](klimovducloy2004.md)'s decay rate, turns out to be the
-harder one: its closed form is quasistatic and **not valid at either fibre of
-interest**.
+[sague2007](sague2007.md) computed its own van der Waals shift for the D2 line of Cs near a 500 nm dielectric cylinder, citing Boustimi's group for the method rather than for a number. [frawley2012](frawley2012.md) gives the same electrostatic approximation in cylindrical geometry, for both metal and dielectric, in the closed form U = -(C3/x0^3) mu, and supplies the numerical input used in the analysis. This paper is kept as an independent check on the susceptibility-tensor framework across sphere, cylinder and plane.

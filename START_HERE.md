@@ -91,7 +91,7 @@ Two things are worth knowing before you wonder why something fails:
 | here for the physics result | [docs/BIG_PICTURE.md](docs/BIG_PICTURE.md), then [docs/RESULTS.md](docs/RESULTS.md). Section 1.3a of the first is the plain-language account of why the light shift is hard to measure here, and it is the shortest route to why the headline numbers are bounds |
 | checking a specific number | [docs/RESULTS.md](docs/RESULTS.md), which reads every headline from its producing CSV, then [docs/UNCERTAINTY.md](docs/UNCERTAINTY.md) for what its error bar means |
 | refereeing the claims | [docs/CLAIMS.md](docs/CLAIMS.md) for what is and is not claimed, then [docs/PREREGISTRATION_RESULTS.md](docs/PREREGISTRATION_RESULTS.md) for what was predicted before it was run, including what failed |
-| meeting a technique for the first time | [docs/wiki/](docs/wiki/README.md), one page per concept, method, effect and technique: what it is, what problem it solves, where this repository uses it, and how it fails. Every page carries a worked example that runs |
+| meeting a technique for the first time | [docs/wiki/](docs/wiki/README.md), one page per concept, method, effect and technique: what it is, what problem it solves, where this repository uses it, and how it fails. Most pages carry a worked example that runs |
 | here for the lineshape theory | [docs/THEORY_NOTE.md](docs/THEORY_NOTE.md) |
 | going to work on the code | section 3 below |
 | pointing this at a different transition | [docs/ADAPTING.md](docs/ADAPTING.md), which names every seam, and `examples/your_line.ipynb`. Start with its three radiation tests and its branching-fraction recipe, since those decide whether the machinery applies to your line at all before any of the fitting does |

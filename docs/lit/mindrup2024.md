@@ -24,4 +24,6 @@ section: collision-series
 
 # mindrup2024
 
-**Held** (86 pp, front matter and scope read). The mechanism is electron-impact broadening, which requires a plasma or discharge and so does not act in this programme's sealed thermal cell -- it neither competes with nor constrains the beta_self bound. Held so the collision-series citation trail is complete and so the distinction is on record.
+Held. Front matter and scope verified against the PDF (86 pp).
+
+AFIT thesis on electron-impact broadening of rubidium lines, collisional and spatial characterization. Electron-impact broadening requires a plasma or discharge, so it does not occur in a sealed thermal vapor cell with no plasma. It neither competes with nor constrains a measured Rb-Rb self-broadening rate.

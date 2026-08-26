@@ -14,7 +14,7 @@ days earlier is titled "Restore the mirror's own CI triggers after the whole
 tree port", so it was the second occurrence in three days.
 
 WHY THE NAME IS THE WORST PART, and why this file exists rather than a note.
-An outside reviewer investigated, read the COMMITTED `port_to_mirror.sh`, found
+A reader outside the project investigated, read the COMMITTED `port_to_mirror.sh`, found
 the exclusion and the comment, and concluded correctly from the evidence
 available that the port could not have written the workflow. **A shadowing name
 makes a failure unattributable.** The knowledge was encoded, in the right tool,

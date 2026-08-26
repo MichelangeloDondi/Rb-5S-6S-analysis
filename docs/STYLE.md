@@ -362,7 +362,7 @@ not after.
 
 ## Private material
 
-Correspondence and personal documents (CV, letters, briefs, reviewer notes)
+Correspondence and personal documents (CV, letters, briefs, referee reports)
 live in the working tree but are never committed. `.gitignore` carries generic
 patterns for them, and `tests/test_repo_hygiene.py` fails if a matching path
 ever becomes tracked. Do not rely on `.git/info/exclude`, which is local to one

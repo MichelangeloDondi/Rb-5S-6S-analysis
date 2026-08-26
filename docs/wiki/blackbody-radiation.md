@@ -8,8 +8,8 @@ to 6S cascade, and by how much.
 no fitted data of its own.
 **Gives.** The two blackbody peaks and why they rarely matter here, plus the
 one channel and the one shift that do.
-**Skip if.** You want the light shift from the drive laser itself rather than
-from the cell's own thermal field, covered in
+**Skip if.** You want the light shift from the drive laser itself, not the
+cell's own thermal field, covered in
 [the AC-Stark shift](ac-stark-shift.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -18,31 +18,30 @@ from the cell's own thermal field, covered in
 ## What it is
 
 Any object at temperature $T$ glows. The spectrum of that glow is set by
-temperature alone, and the quantity that matters for atoms is not the power
-but the mean number of photons per mode,
+temperature alone, and the quantity that matters for atoms is the mean
+number of photons per mode,
 
 $$\bar n(\nu) = \frac{1}{e^{h\nu/k_BT}-1}$$
 
-which is the Bose-Einstein occupation number. It is the number an atom
-responds to, because a stimulated rate is proportional to it.
+the Bose-Einstein occupation number. It is the number an atom responds to,
+because a stimulated rate is proportional to it.
 
 Two regimes follow, and almost every practical question is decided by which
 one a transition sits in. Where $h\nu \ll k_BT$ the exponential can be
 expanded and $\bar n \approx k_BT/h\nu$, a large number: the mode is
 thermally crowded. Where $h\nu \gg k_BT$ the occupation collapses as
-$e^{-h\nu/k_BT}$, and the collapse is violent, because the exponent is
-linear in frequency. At 400 K the thermal energy $k_BT$ corresponds to a
-wavelength near 36 µm.
+$e^{-h\nu/k_BT}$, a sharp fall because the exponent is linear in frequency.
+At 400 K the thermal energy $k_BT$ corresponds to a wavelength near 36 µm.
 
-Which peak is quoted matters, and the two differ by a quarter. The familiar
-Wien displacement law, $\lambda T = 2898$ µm K, locates the peak of the
-spectrum of energy per unit wavelength. The peak of the photon number per
-unit wavelength sits at $\lambda T = 3670$ µm K, because dividing the energy
-density by the photon energy shifts the maximum. At 400 K those are 7.2 µm and
-9.1 µm. A transition at 1 µm sits far out on the exponential tail of either,
-and its occupation number is smaller by ten or more orders of magnitude than
-one near the peak, which is why the distinction rarely changes a conclusion
-even though it changes the number.
+The two ways of defining the peak differ by a quarter, so which one is
+quoted matters. The familiar Wien displacement law, $\lambda T = 2898$ µm K,
+locates the peak of the spectrum of energy per unit wavelength. The peak of
+the photon number per unit wavelength sits at $\lambda T = 3670$ µm K,
+because dividing the energy density by the photon energy shifts the
+maximum. At 400 K those are 7.2 µm and 9.1 µm. A transition at 1 µm sits far
+out on the exponential tail of either, and its occupation number is smaller
+by ten or more orders of magnitude than one near the peak, which is why the
+distinction rarely changes a conclusion even though it changes the number.
 
 Blackbody light does two distinct things to an atom. It drives transitions,
 at a rate proportional to $\bar n$ times the spontaneous rate, which
@@ -55,12 +54,9 @@ other.
 
 ## What problem it solves
 
-It does not solve a problem, it creates one, and the useful move is to bound
-it. In precision spectroscopy the blackbody shift is often the largest
+In precision spectroscopy the blackbody shift is often the largest
 uncontrolled systematic, because a cell or a trap has a temperature and the
-$T^4$ scaling is steep. Knowing where a transition sits relative to the
-thermal peak tells you in advance whether it can be ignored, which is worth
-more than measuring it afterwards.
+$T^4$ scaling is steep.
 
 ## Where this repository uses it
 
@@ -69,30 +65,33 @@ The cell runs at 70 to 130 °C, so it sits inside its own glow, and
 questions separately for the 5S to 6S cascade. Both are computed by
 [`scripts/run_blackbody_channels.py`](../../scripts/run_blackbody_channels.py).
 
+![Thermal occupation number at each cascade wavelength and the resulting rate budget](../../figures/fig27_radiation_environment.png)
+
+*Thermal occupation number at each cascade wavelength, and the resulting rate budget from natural decay down to the blackbody-driven channels.*
+
 One comparison decides most of it. At 403 K the thermal peak is at 7.2 µm by
 energy and 9.1 µm by photon number, while every line of the cascade lies
 between 0.79 and 2.8 µm, so the cascade lives on the exponential tail of
 either. The rates below do not depend on which peak is quoted, because they
-are computed from $h\nu/k_BT$ line by line. Blackbody light does not re-drive 5P to 6S:
-the occupation numbers are around $10^{-12}$ on the infrared legs, which is
-$10^{-8}$ of a channel that is itself one per cent. And it does not reach the
-795 nm signal, where the blocking element turns out to be the photocathode's
-own red edge rather than the interference filters.
+are computed from $h\nu/k_BT$ line by line. Blackbody light does not
+re-drive 5P to 6S: the occupation numbers are around $10^{-12}$ on the
+infrared legs, which is $10^{-8}$ of a channel that is one per cent. And it
+does not reach the 795 nm signal: the photocathode's own red edge blocks it,
+not the interference filters.
 
 Two things survive that argument and the chapter records both. The one real
 blackbody channel is 6S to 6P near 2.73 and 2.79 µm, close enough to the peak
 that the occupation number is about $2\times10^{-6}$, leaking two parts per
 million out of the detected cascade. And the blackbody AC-Stark shift is
-hundreds of hertz rather than the order of one hertz the ground state alone
-would give, because the differential polarizability is large and the 6S
+hundreds of hertz, not the order of one hertz the ground state alone would
+give, because the differential polarizability is large and the 6S
 resonances sit inside the thermal band. It shifts the line and does not
 broaden it, which is why it cannot reach the width results this repository
 reports.
 
 ## The campaign boundary it sets
 
-`rb5s6s/blackbody.py` turns this into a design number. The deliverable is not
-"blackbody is included" but a family,
+`rb5s6s/blackbody.py` turns this into a design number: a family,
 
     T_max(target precision),
 
@@ -100,44 +99,45 @@ the temperature above which thermal radiation enters the systematic budget at
 a given target, with two branches. Uncorrected, where a campaign does not
 subtract the shift, the ceiling is where the shift itself reaches the target.
 Corrected, where it computes and subtracts it, only the shift's own
-uncertainty remains and the ceiling is far higher. The gap between the two is
-the value of doing the correction.
+uncertainty remains and the ceiling is far higher. The gap between the two
+shows how much the correction extends the ceiling.
 
-For this experiment the answer is that **the boundary is not binding**. Across
-the cell's 70 to 130 C range the differential shift runs 79.9 to 161.0 Hz,
-four orders of magnitude below the light-shift bound the record quotes, and
-even a campaign chasing one kilohertz has an uncorrected ceiling near 340 C,
-far above any vapour cell this experiment would use. The temperature lever is
-limited by the oven and the cell, not by thermal radiation.
+![Blackbody shift against cell temperature compared with a plain fourth-power law](figures/wiki_blackbody_radiation.png)
 
-One detail is worth carrying, because using the naive scaling would err in the
-unsafe direction. A pure quadratic Stark shift in a thermal field scales as
-the fourth power of temperature. The measured shift scales as **T to the
-4.35**, the excess being the near-resonant 6S to 6P contribution whose weight
-grows with temperature, so a model using four understates the shift where a
+*The blackbody shift across the campaign's temperature range, and how far a naive T^4 law would undershoot it.*
+
+For this experiment, the boundary is not binding. Across the cell's 70 to
+130 C range the differential shift runs 79.9 to 161.0 Hz, four orders of
+magnitude below the light-shift bound the record quotes, and even a campaign
+targeting one kilohertz has an uncorrected ceiling near 340 C, far above any
+vapour cell this experiment would use. The temperature lever is limited by
+the oven and the cell, not by thermal radiation.
+
+A pure quadratic Stark shift in a thermal field scales as the fourth power
+of temperature. The measured shift scales as T to the 4.35, the excess being
+the near-resonant 6S to 6P contribution whose weight grows with temperature,
+so a model that assumes the fourth power understates the shift where a
 ceiling matters most.
 
 ## What can go wrong
 
 The commonest modelling error is to reason from the power spectrum, whose
 peak sits at a different wavelength from the photon-number peak, and then to
-place a transition on the wrong side of it. Occupation number is the quantity
-an atomic rate is proportional to, and it is the one to plot. The first draft
-of the section above made exactly this mistake, quoting the Wien energy peak
-and calling it the photon peak, which is how easily it happens.
+place a transition on the wrong side of it. Occupation number is the
+quantity an atomic rate is proportional to, and it is the one to plot.
 
 The second is to assume a single temperature. The relevant temperature is
 that of the surfaces the atom actually sees, and a cell with a cold window, a
 warm oven and a room-temperature viewport has no single $T$. A quoted
 blackbody shift is only as good as the assumed enclosure, which is an
-experimental limitation rather than a calculational one.
+experimental limitation, not a calculational one.
 
 The third is to bound the driving and then assume the shift is bounded too.
-They scale differently. A transition can be utterly immune to blackbody
-driving, because its occupation number is $10^{-12}$, and still carry a
-measurable blackbody shift, because the shift sums over all levels the state
-couples to and is dominated by whichever resonance lies nearest the thermal
-band. That is exactly what happens here.
+They scale differently. A transition can be immune to blackbody driving,
+because its occupation number is $10^{-12}$, and still carry a measurable
+blackbody shift, because the shift sums over all levels the state couples to
+and is dominated by whichever resonance lies nearest the thermal band. That
+is exactly what happens here.
 
 ## Try it
 
@@ -160,10 +160,6 @@ for lam in (0.795, 1.324, 2.73):
     print(f"  {lam:5.3f} um: occupation {1 / np.expm1(c2 / (lam * T)):.2e}")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
-
 ## Further reading
 
 - [`../lit/safronova2004.md`](../lit/safronova2004.md) for the dynamic
@@ -177,12 +173,11 @@ a reader.
 ## See also
 
 - [The AC-Stark shift](ac-stark-shift.md) for the other source of level shift
-  acting on the same states, driven by the beam rather than by the cell.
+  acting on the same states, driven by the beam, not the cell.
 - [Hyperfine populations and branching](hyperfine-populations-and-branching.md)
   for the population bookkeeping a driving channel like this one feeds into.
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md)
-  for another background effect that has to be bounded rather than measured
-  away.
+  for another background effect that has to be bounded, not measured away.
 
 ---
 

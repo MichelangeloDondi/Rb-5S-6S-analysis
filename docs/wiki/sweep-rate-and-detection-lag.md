@@ -6,12 +6,12 @@
 asymmetry that a slow one would not, and how is that instrumental
 component separated from the atoms' own.
 **Takes.** That a fit reads skew as light-shift information, established
-in [The third cumulant](third-cumulant.md) and assumed here rather than
+in [The third cumulant](third-cumulant.md) and assumed here, not
 re-argued.
 **Gives.** The regression of apparent width against inverse sweep rate,
 the causal-kernel argument for why a lag forges asymmetry and not only
 width, and the two-rate design this repository specifies.
-**Skip if.** The question is how densely a line is sampled rather than how
+**Skip if.** The question is how densely a line is sampled, not how
 fast it can be crossed, a case covered by
 [Designing an acquisition](designing-an-acquisition.md).
 
@@ -21,167 +21,154 @@ fast it can be crossed, a case covered by
 ## What it is
 
 A line can be measured two ways. Step and settle parks the laser at one
-frequency, waits for the detector and its amplifier to reach a steady
-reading, records it, and moves on, so every point is a measurement of the
-line alone. A continuous sweep instead moves the frequency throughout the
-whole record, and every sample now carries a small residue of the detector's
-own response to whatever the light was doing an instant before, because no
-real detector or amplifier reports a change in optical power instantly.
+frequency, waits for the detector to settle, and records a steady reading,
+so every point measures the line alone. A continuous sweep instead moves
+the frequency throughout the record, so every sample carries a residue of
+the detector's response to what the light was doing an instant before:
+no real detector reports a change in optical power instantly.
 
-That residue is not noise, it is structure. The trace a continuous sweep
-actually records is the true line convolved with the detector's response,
-with the convolution taken in time, since the response is a property of the
-electronics reacting moment to moment, not of frequency as such. A fit that
-converts the time axis to a frequency axis through the sweep rate and reads
-the convolved trace as though it were the line itself reports a width that
-is too large, because it is measuring the shape of a convolution rather than
-the shape of the line.
+![Simulated skew and width growth from a fixed detector lag at two sweep rates](figures/wiki_sweep_rate_and_detection_lag.png)
+
+*Simulated effect of a fixed detector time constant at two sweep rates:
+skew grows faster than width.*
+
+The trace a continuous sweep records is the true line convolved with the
+detector's response, the convolution taken in time because the response is
+a property of the electronics reacting moment to moment, not of frequency.
+A fit that converts the time axis to a frequency axis through the sweep
+rate and reads the convolved trace as the line itself reports a width that
+is too large: it is measuring a convolution, not the line.
 
 The scaling follows from timing alone. Crossing a true linewidth $\Delta\nu$
-at a sweep rate $R$ (frequency per unit time) takes a time $\Delta\nu / R$,
-which is the line's own contribution to how long the feature lasts on the
-oscilloscope. The detector adds a further smearing on a timescale set by its
-own electronics, a rise time or an integration window, call it $\tau$, and
-that timescale does not depend on how fast the laser happens to be moving.
-The apparent width measured on the time axis is therefore close to
+at rate $R$ (frequency per unit time) takes a time $\Delta\nu / R$, the
+line's own contribution to how long the feature lasts on the oscilloscope.
+The detector adds a further smearing set by its electronics, a rise time
+or integration window, call it $\tau$, independent of how fast the laser
+moves. The apparent width on the time axis is therefore close to
 
 $$w(R) \approx \frac{\Delta\nu}{R} + \tau$$
 
-linear in the inverse of the rate, with slope $\Delta\nu$ and intercept
-$\tau$. Measuring the same line at several sweep rates and regressing the
-apparent time-width against $1/R$ recovers both quantities from one
-consistent dataset: the slope is the physical width the line actually has,
-and the intercept is the lag the electronics contribute regardless of speed.
+linear in $1/R$, with slope $\Delta\nu$ and intercept $\tau$. Regressing the
+apparent time-width against $1/R$ at several rates recovers both
+quantities from one dataset: the slope is the physical width, and the
+intercept is the lag the electronics contribute regardless of speed.
 
-The part that matters most is not the width at all. A detector or amplifier
-can only respond to what has already happened, never to what is about to
-happen, so its impulse response is causal and therefore one-sided in time,
-zero before the event and decaying after it. Convolving a symmetric line
-with a one-sided kernel does not produce a symmetric result, it smears one
-side of the trace more than the other, and an asymmetric trace is exactly
-what a symmetric line looks like once a one-sided response has acted on it.
-A detection lag therefore forges asymmetry, not only width, and it does so
-in the one observable that a light-shift measurement of this kind is built
-to read. The separation still works for the same reason it works for the
-width: a physical asymmetry belongs to the line and does not care how fast
-the line is crossed, while an instrumental one belongs to the response, so
-it grows with sweep rate and reverses if the sweep direction reverses.
-Measuring the same line at several rates therefore separates a real
-asymmetry from a manufactured one exactly as it separates a real width from
-an inflated one, and neither a better model at one rate nor more averaging
-at one rate can substitute for the comparison across rates.
+A detector or amplifier responds only to what already happened, so its
+impulse response is causal: one-sided in time, zero before the event and
+decaying after it. Convolving a symmetric line with a one-sided kernel
+smears one side of the trace more, so an asymmetric trace is what a
+symmetric line looks like once such a response has acted on it. A
+detection lag therefore forges asymmetry, not only width, in the one
+observable a light-shift measurement is built to read. The separation
+works as for the width: a physical asymmetry belongs to the line
+regardless of sweep speed, while an instrumental one belongs to the
+response, growing with sweep rate and reversing with sweep direction.
+Measuring the same line at several rates separates a real asymmetry from a
+manufactured one, and neither a better model nor more averaging at one
+rate substitutes for the comparison across rates.
 
 ## What problem it solves
 
 A single trace, taken at one sweep rate, cannot tell a physical width and
-asymmetry apart from an instrumental one, because both a real line and a
-convolved one produce a trace that some model can fit. Sweeping the same
-line at more than one rate turns that ambiguity into a resolved question: a
-component that scales with rate is the acquisition, and a component that
-does not is the atoms. It converts a design choice, how fast to scan, from a
-matter of convenience into a testable claim about what the recorded shape
-actually contains.
+asymmetry apart from an instrumental one: both a real line and a convolved
+one produce a trace some model can fit. Sweeping the same line at more
+than one rate resolves the ambiguity: a component that scales with rate is
+the acquisition, one that does not is the atoms.
 
-This is a different question from how densely a line is sampled, which
-[designing an acquisition](designing-an-acquisition.md) covers. That page
-asks how many points sit across a feature at a given span and record
-length. This one asks how fast those points can be taken before the
-detection chain's own response time starts writing itself into the shape
-the points describe, and both questions have to be answered before a scan
-rate is chosen.
+This differs from how densely a line is sampled, covered by
+[designing an acquisition](designing-an-acquisition.md): how many points
+sit across a feature at a given span and record length. This page asks how
+fast those points can be taken before the detection chain's response time
+writes itself into their shape, and both questions must be answered before
+a scan rate is chosen.
 
 ## Where this repository uses it
 
 [Section 10c.3 of the fixed-lock chapter](../plan/09_the-fixed-lock.md)
-specifies a two-speed sweep, slow across each line and fast between them,
-and states plainly that the slow segment is required rather than merely
-convenient, because a detection lag degrades the standardised skew faster
-than it degrades the width, and the skew is the channel the light-shift
-measurement reads, as [the third cumulant](third-cumulant.md) page's own
-account of the same mechanism sets out in full. [Section 10c.10 of the
-following chapter](../plan/10_the-fixed-lock-instrument.md) turns the
-regression above into a design requirement rather than a convenience of its
-own: the two sweep rates are specified to run interleaved within each block,
-with nothing else in the block changed, because the lag separation needs the
-same line measured at several rates under otherwise identical conditions.
+specifies a two-speed sweep, slow across each line and fast between them:
+the slow segment is required because a detection lag degrades the
+standardised skew faster than the width, the channel the light-shift
+measurement reads, as [the third cumulant](third-cumulant.md) sets out.
+[Section 10c.10 of the following
+chapter](../plan/10_the-fixed-lock-instrument.md) makes the regression a
+design requirement: the two sweep rates run interleaved within each
+block, nothing else changed, since the separation needs the same line at
+several rates.
 
-**Nothing on this page has been run on real data.** The 2025 campaign
-acquired at a single sweep rate throughout, so the rate-scaled and
-rate-independent components have never been separated in this experiment:
-the separation is a design of the next session, and the paragraph above
-states a requirement rather than a result.
+![The LeCroy WaveSurfer 3104z oscilloscope used in the 2025 campaign](../apparatus/2025-07-29_lecroy_ws3104z.jpg)
+
+*The LeCroy WaveSurfer 3104z used in the 2025 campaign. Its ERes math
+function is the zero-phase filter this page's parity argument
+distinguishes from a causal one.*
+
+Nothing on this page has been run on real data. The 2025 campaign acquired
+at a single sweep rate throughout, so the rate-scaled and rate-independent
+components have never been separated. The separation is a design of the
+next session, and the paragraph above states a requirement, not a result.
 
 One instrument detail decides whether the rate-scaled component exists at
-all. A causal smoothing filter delays the trace by about half its window, so
-its lag is rate-scaled and the up and down halves of a triangular sweep
-split symmetrically about the true centre. A zero-phase filter, which is
-what the LeCroy's ERes math function specifies, produces no delay and
-therefore no splitting, so the same design measures a lag on one instrument
-and confirms its absence on the other. Where the smoothing sits and what it
-does to phase is
+all. A causal smoothing filter delays the trace by about half its window,
+so its lag is rate-scaled and the two halves of a triangular sweep split
+symmetrically about the true centre. A zero-phase filter, what the
+LeCroy's ERes math function specifies, produces no delay and no splitting,
+so the same design measures a lag on one instrument and confirms its
+absence on the other, covered further in
 [resolution enhancement and what it costs](resolution-enhancement-and-what-it-costs.md).
 
-## The lag is odd, and that is its whole repair
+## Triangle-branch differencing
 
 Everything a causal detection chain does to a swept line changes sign with
-the sweep direction, while everything atomic does not care which way the
-laser walked. That single parity fact converts the lag from a systematic
-into a measurement: the difference of the two triangle halves reads the lag,
-their mean cancels it exactly, and neither number is conditional on the
-lineshape model. The general discipline, with the failure modes a dirty flip
-brings, is [reversal tests](reversal-tests.md).
+the sweep direction. Everything atomic does not care which way the laser
+walked. The difference of the two triangle halves reads the lag, their
+mean cancels it exactly, and neither number depends on the lineshape
+model. The failure modes a dirty flip brings are covered in
+[reversal tests](reversal-tests.md).
 
 ## What can go wrong
 
-The first failure is a model one. The scaling above assumes a single,
-first-order response with one characteristic timescale, and a real
-detection chain, photodiode, transimpedance stage, any following filter, can
-have more than one time constant or a response that is not exponential at
-all. The qualitative separation still holds as long as the instrumental
-component is genuinely rate-scaled and the physical one genuinely is not,
-but the intercept of the regression above then no longer maps onto a single
-clean number the way the formula suggests.
+The first failure is a model one. The scaling assumes a single,
+first-order response with one timescale, and a real detection chain,
+photodiode, transimpedance stage, any following filter, can have more than
+one time constant or a non-exponential response. The qualitative
+separation holds as long as the instrumental component is
+rate-scaled and the physical one is not, but the intercept then no longer
+maps onto one clean number the way the formula suggests.
 
-The second is data insufficiency dressed as a clean result. Two rates that
-are too close together barely move the apparent width or skew at all, and a
-regression through two similar points is dominated by noise rather than by
-the underlying line, which can return a slope or an intercept that looks
-plausible without actually constraining either quantity. A spread of rates,
-together with a check that the intercept vanishes when no lag is present,
-is what turns the regression into an actual test rather than a curve drawn
-through too few points.
+The second failure is data insufficiency. Two rates too close together
+barely move the apparent width or skew, and a regression through two
+similar points is dominated by noise, not the line, so a fitted slope or
+intercept can look plausible without constraining either quantity. A
+spread of rates, plus a check that the intercept vanishes when no lag is
+present, turns the regression into an actual test, not a curve through too
+few points.
 
-The third is an implementation trap specific to this repository. Two
-different documents in the plan both ask for a second sweep rate, and they
-test two different pieces of physics. This page and
-[section 10c.3](../plan/09_the-fixed-lock.md) are about a detection lag that
-inflates width and forges skew.
-[Section 10b.6 of the acquisition record](../plan/08_the-acquisition-record.md)
+The third failure is conflating two different reasons for a second sweep
+rate. [Section 10c.3 of the fixed-lock chapter](../plan/09_the-fixed-lock.md)
+and this page are about a detection lag that inflates width and forges
+skew. [Section 10b.6 of the acquisition record](../plan/08_the-acquisition-record.md)
 asks for a second rate for an unrelated reason, that a laser linewidth
 accumulates over the time the scan takes to cross the line while a
 collisional width does not, so the two rates there separate a laser
-contribution from a collisional one. Treating the two requirements as one
-test because both mention a second sweep rate misses whichever effect the
-chosen pair of rates does not happen to probe.
+contribution from a collisional one. A pair of rates chosen to test one of
+these does not automatically test the other.
 
-The fourth is an experimental limitation worth naming rather than assuming
-away. A rate-scaled detection lag is not the only route to a convolution
-that fakes a line asymmetry. Correlated amplitude and frequency noise on the
+The fourth failure is a distinct mechanism that mimics this one. A
+rate-scaled detection lag is not the only route to a convolution that
+fakes an asymmetry: correlated amplitude and frequency noise on the
 driving light produces an asymmetric field spectrum of its own, and the
-measured line is the convolution of that spectrum with the atomic response,
-which skews the line with no detector involved at all, a distinct mechanism
-documented in [Camparo and Klimcak](../lit/camparo1992b.md). That route does
-not scale with sweep rate, so the multi-rate regression above cannot see
-it, and it needs its own discriminator, principally that it does not scale
-with the optical power at the atoms the way a light shift does.
+measured line is that spectrum convolved with the atomic response, skewing
+the line with no detector involved, documented in
+[Camparo and Klimcak](../lit/camparo1992b.md). That route does not scale
+with sweep rate, so the multi-rate regression cannot see it, and needs its
+own discriminator: it does not scale with the optical power at the atoms
+the way a light shift does.
 
 ## Try it
 
 A synthetic symmetric line convolved with a one-sided exponential response
 at two sweep rates, with a fixed detector time constant. The half-maximum
-width and the third standardised moment (the skew) both grow with rate, and
-the skew, zero for the true line, grows in relative terms far faster than
-the width does.
+width and the skew both grow with rate, and the skew, zero for the true
+line, grows far faster than the width.
 
 ```python
 import numpy as np
@@ -239,13 +226,12 @@ print(f"from {r1:.0f} to {r2:.0f} MHz/ms the width excess grew "
       "the asymmetry is the more sensitive of the two")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
+Every snippet on these pages runs in `tests/test_wiki_snippets_run.py`, so a
+broken one fails the suite instead of misleading a reader here.
 
 ## Further reading
 
-- [Camparo and Klimcak](../lit/camparo1992b.md), the distinct correlated
+- [Camparo and Klimcak](../lit/camparo1992b.md), the correlated
   amplitude-and-frequency-noise mechanism that convolves a driving field's
   own asymmetric spectrum into the line without any detector involved.
 - P. Horowitz and W. Hill, *The Art of Electronics*, 3rd ed. (Cambridge
@@ -253,28 +239,23 @@ a reader.
   first-order response this page's lag kernel stands in for.
 - [Wikipedia: exponentially modified Gaussian
   distribution](https://en.wikipedia.org/wiki/Exponentially_modified_Gaussian_distribution),
-  the closed form for a symmetric line convolved with a one-sided
-  exponential, and its standard skewness formula.
+  the closed form for a line convolved with a one-sided exponential.
 - [The third cumulant](third-cumulant.md), for the cumulant-additivity
-  argument that makes the skew a clean channel for an asymmetric mechanism
-  in the first place, and for the same lag mechanism developed in terms of
-  the standardised skew this repository's own fit reads.
-- [Designing an acquisition](designing-an-acquisition.md), the companion
-  question of how densely a line is sampled, including the raw-storage and
-  per-sweep timestamp requirements a multi-rate regression of the kind
-  described above needs in order to run at all.
+  argument that makes skew a clean channel for an asymmetric mechanism.
+- [Designing an acquisition](designing-an-acquisition.md), the raw-storage
+  and per-sweep timestamp requirements a multi-rate regression needs to run
+  at all.
 
 ## See also
 
-- [The third cumulant](third-cumulant.md) for why skew is the channel a
-  light-shift fit reads, and the same lag mechanism developed there in
-  standardised-skew terms.
+- [The third cumulant](third-cumulant.md), for why skew is the channel a
+  light-shift fit reads.
 - [Designing an acquisition](designing-an-acquisition.md), the companion
-  question of point density rather than sweep speed.
+  question of point density, not sweep speed.
 - [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md),
-  the previous page, for the calibration this convolution acts on top of.
+  the previous page, for the calibration this convolution builds on.
 - [Photon counting](photon-counting.md), the next page, another
-  detection-chain property that can be mistaken for the atoms' own signal.
+  detection-chain property mistaken for the atoms' own signal.
 
 ---
 

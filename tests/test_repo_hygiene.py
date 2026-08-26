@@ -241,6 +241,17 @@ FORBIDDEN = {
         r"\blong pole\b",
         r"\btrouble", r"\btriage",
         r"\bknown-red\b", r"plant[- ]verif",
+        # Added 2026-08-26 on the owner's instruction: words this project
+        # used about its own working process where the page should speak to
+        # an outside reader. The prose names the fact or the mechanism, or
+        # says "an experimentalist" for the generic reader. docs/lit/ is
+        # outside this scan, so journal names and review articles are
+        # unaffected, and the two preregistration files are exempt below as
+        # frozen records.
+        r"\bexperimenters?\b",
+        r"\breview(?:s|ed|ing|ers?)?\b",
+        r"\bexternal(?:ly)? check(?:s|ed)?\b",
+        r"\badversarial(?:ly)?\b",
     ],
     "aphoristic register": [
         r"is itself an?\b", r"is itself the\b",
@@ -298,6 +309,24 @@ FORBIDDEN = {
     # stored SPLIT so this file is not itself the eighth: each is assembled
     # from parts at load time, which also keeps the release-note checker,
     # which imports these banks, from flagging its own source.
+    # WOUND-AND-BATTLE METAPHOR, banked 2026-08-26 on the owner's
+    # instruction. A correction is a correction. Calling it a scar, a wound
+    # or a post-mortem casts the record as a survivor of its own history,
+    # which is a literary move a reader discounts and an assessing reader
+    # discounts twice. Measured before the ban: seven of the eleven patterns
+    # stood at zero, and the four that did not (scar, post-mortem, culprit,
+    # casualty) were swept the same day, eleven sites in all.
+    "wound and battle metaphor": [
+        r"\bscars?\b", r"\bscarred\b", r"\bwounds?\b", r"\bbruis\w+\b",
+        r"\bpost[- ]?mortems?\b", r"\bautops(?:y|ies)\b",
+        r"\bbattles?\b", r"\bbattle[- ]tested\b", r"\bwarfare\b",
+        r"\bwar[- ]room\b", r"\bwar stor\w+\b", r"\bfirefight\w*\b",
+        r"\bconfess\w+\b", r"\bmea culpa\b",
+        r"\bculprits?\b", r"\bguilty\b",
+        r"\bvictims?\b", r"\bcasualt\w+\b",
+        r"\btraumat?\w*\b", r"\bgraveyards?\b", r"\btombstones?\b",
+        r"\bamputat\w+\b", r"\bheroic\w*\b",
+    ],
     "applicant-aware register": [
         r"the " + r"author" + r"'s judg",
         r"evaluating the " + r"author",
@@ -368,7 +397,16 @@ def _about_to_be_tracked(*globs: str) -> list[str]:
 
 
 def _prose_files() -> list[str]:
-    candidates = _tracked("*.md", "*.py") + _about_to_be_tracked("*.md", "*.py")
+    # *.svg JOINED 2026-08-26, and the reason is that a schematic is a
+    # reader-facing surface with prose inside it. The bank globbed .md and
+    # .py only, so the XML comments in docs/apparatus/apparatus_schematic.svg
+    # were the one place in the tree where the banned register was invisible
+    # by construction. That file is embedded on the README, on APPARATUS, on
+    # a plan chapter and on the wiki index, and it carried a retired
+    # provenance tag through a whole rename that swept every other surface.
+    # It was found by hand, which is the definition of an uncovered surface.
+    _EXTS = ("*.md", "*.py", "*.svg")
+    candidates = _tracked(*_EXTS) + _about_to_be_tracked(*_EXTS)
     return [p for p in candidates
             if not p.startswith(SKIP_PREFIXES) and p not in SKIP_EXACT]
 
@@ -377,7 +415,56 @@ def _prose_files() -> list[str]:
 # them, exactly as the protocol and the lessons file must print the vocabulary
 # they govern. Exempt BY DESIGN and by name, which is different from a file
 # drifting out of a guard's reach (2026-08-15, rule 19.16a).
-_FORBIDDEN_EXEMPT_FILES = {"docs/HISTORY.md"}
+#
+# The two preregistration files joined 2026-08-26 with the process-vocabulary
+# additions: they are frozen records whose text may not be edited after the
+# fact, which the term-of-art marker's own docstring names as the case a
+# per-line marker must not be threaded through. Exempting the record beats
+# editing it.
+_FORBIDDEN_EXEMPT_FILES = {"docs/PREREGISTRATION_RESULTS.md",
+                           "docs/PREREGISTRATION_timestamps.md",
+                           # The literature ledger does the same bibliographic
+                           # work as docs/lit/, which SKIP_PREFIXES already
+                           # spares: it names review articles by their genre
+                           # on most of its pages. Same reason, same standing
+                           # (2026-08-26, with the process-vocabulary bans).
+                           "docs/LITERATURE.md",
+                           # Generated from the lit notes by build_lit_index.py
+                           # and carrying their genre vocabulary verbatim.
+                           "docs/LITERATURE_INDEX.md"}
+
+
+# PER-LABEL EXEMPTION, and docs/HISTORY.md is the whole reason it exists
+# (2026-08-26, the history protocol's H10). That file was on the blanket
+# list above, which spared it from all ten banks when its purpose needs it
+# spared from exactly one: it must be able to name a value the record has
+# retired. Measured the day the exemption was narrowed, 44 paragraph-hits
+# stood in it against the nine banks that have nothing to do with retired
+# values, most of them process vocabulary. The one file no guard read is
+# the file where the register pools.
+# The correction record became a hub over docs/history/ chapters on
+# 2026-08-26, so the exemption follows the entries: it is the CHAPTERS that
+# print retired values now, and the hub carries the index. Written as a
+# predicate rather than a set, because a set of filenames goes stale the
+# next time a chapter is added and nothing would say so.
+def _is_history(rel: str) -> bool:
+    return rel == "docs/HISTORY.md" or rel.startswith("docs/history/")
+
+
+_LABEL_EXEMPT_PRED = {
+    "retired value outside HISTORY.md": _is_history,
+    # A retired WORDING is retired the same way a retired value is, and the
+    # record identifies what was corrected by quoting it. The R_kernel bank
+    # exists to stop the wrong noun being ASSERTED, which is not what an
+    # entry saying "this page used to read X, it now reads Y" does. Without
+    # this the record cannot describe the correction it is the record of.
+    "R_kernel described as an uncertainty": _is_history,
+}
+
+
+def _label_exempt(label: str, rel: str) -> bool:
+    pred = _LABEL_EXEMPT_PRED.get(label)
+    return bool(pred and pred(rel))
 
 
 # THE TERM-OF-ART MARKER (2026-08-19). Some banned words have a legitimate
@@ -439,12 +526,19 @@ _RKERNEL_FLAT = [
 _FLAT_EXEMPT = {"docs/HISTORY.md", "tests/test_repo_hygiene.py"}
 
 
+# The record is licensed to QUOTE the wording it retired, which is how a
+# reader identifies what was corrected, so the flat R_kernel check spares
+# the record and its chapters exactly as the banks do.
+def _flat_exempt(rel: str) -> bool:
+    return rel in _FLAT_EXEMPT or rel.startswith("docs/history/")
+
+
 def test_r_kernel_is_not_called_an_uncertainty_across_a_line_break():
     """The same ban as the bank's label, on prose with its line breaks removed."""
     pats = [re.compile(p, re.I) for p in _RKERNEL_FLAT]
     hits = []
     for rel in _prose_files():
-        if rel in _FLAT_EXEMPT or rel.startswith("docs/lit/"):
+        if _flat_exempt(rel) or rel.startswith("docs/lit/"):
             continue
         try:
             txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
@@ -462,12 +556,88 @@ def test_r_kernel_is_not_called_an_uncertainty_across_a_line_break():
         + "\n  ".join(hits))
 
 
+# THE WRAP IS A HIDING PLACE FOR EVERY MULTI-WORD BAN, not just one label
+# (2026-08-26). The narrow test above was written on 2026-08-23, when a
+# wrapped "kernel\nuncertainty" was found on a public page, and it closed the
+# hole for ONE label out of ten. Measured the day this generalisation was
+# written: 61 of the bank's 85 patterns contain a space and can therefore
+# wrap, and FIFTEEN banned phrases were sitting hidden in a line break across
+# docs/, rb5s6s/ and the wiki, nine of them the self-congratulatory "the
+# honest ..." construction. A fix applied at the instance and not at the
+# class leaves the class running, which is the failure this repeats.
+#
+# The unit is the PARAGRAPH, not the file. Flattening a whole file would join
+# text across blank lines and could match a phrase that spans two paragraphs,
+# which is not a wrap and not a defect; it would also break the term-of-art
+# marker, whose scope is the block. A hard wrap never crosses a blank line,
+# so the paragraph is exactly the right window.
+def _paragraphs_with_lines(text):
+    """(first_line_number, flattened text) per blank-line-delimited block."""
+    out, buf, start = [], [], 0
+    for i, line in enumerate(text.split("\n"), 1):
+        if not line.strip():
+            if buf:
+                out.append((start, " ".join(buf)))
+                buf = []
+            continue
+        if not buf:
+            start = i
+        buf.append(line.strip())
+    if buf:
+        out.append((start, " ".join(buf)))
+    return out
+
+
+_WRAPPABLE = {label: [p for p in pats if " " in p or r"\s" in p or "[- ]" in p]
+              for label, pats in FORBIDDEN.items()}
+
+
+@pytest.mark.parametrize("label", sorted(l for l in _WRAPPABLE if _WRAPPABLE[l]))
+def test_no_forbidden_phrases_hide_in_a_line_wrap(label):
+    """Every multi-word ban, matched against paragraph-flattened prose.
+
+    The per-line test is kept as it is: it gives exact line numbers and it is
+    right for the single-word patterns, which cannot wrap. This one adds the
+    window the other cannot see.
+    """
+    pats = [re.compile(p, re.I) for p in _WRAPPABLE[label]]
+    hits = []
+    for rel in _prose_files():
+        if (rel in _FORBIDDEN_EXEMPT_FILES or rel in _FLAT_EXEMPT
+                or _label_exempt(label, rel)):
+            continue
+        try:
+            txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        lines = txt.split("\n")
+        for start, flat in _paragraphs_with_lines(txt):
+            # The marker heads the block it excuses, so it is in this
+            # paragraph's own lines: reuse the per-line helper on its first
+            # line, which searches upward to the blank line above.
+            if _marked(lines, start):
+                continue
+            per_line = any(pat.search(ln) for pat in pats
+                           for ln in lines[start - 1:start - 1 + flat.count(" ") + 2])
+            for pat in pats:
+                m = pat.search(flat)
+                if m and not per_line:
+                    hits.append(f"{rel}:{start}: ...{flat[max(0, m.start() - 55):m.end() + 25]}...")
+                    break
+    assert not hits, (
+        f"banned {label} phrases hidden in a line wrap. The per-line bank "
+        f"cannot see these: the phrase starts on one line and finishes on "
+        f"the next. Reword, or mark the line with a reasoned "
+        f"<!-- term-of-art: ... --> if the words genuinely have to stand.\n  "
+        + "\n  ".join(hits))
+
+
 @pytest.mark.parametrize("label", sorted(FORBIDDEN))
 def test_no_forbidden_phrases(label):
     pats = [re.compile(p, re.I) for p in FORBIDDEN[label]]
     hits = []
     for rel in _prose_files():
-        if rel in _FORBIDDEN_EXEMPT_FILES:
+        if rel in _FORBIDDEN_EXEMPT_FILES or _label_exempt(label, rel):
             continue
         try:
             txt = (ROOT / rel).read_text(encoding="utf-8", errors="replace")
@@ -1202,7 +1372,11 @@ def test_history_is_confined_to_the_history_file():
         "docs/HISTORY.md is missing, so superseded values have nowhere "
         "licensed to live and will scatter back into the working documents")
     text = hist.read_text(encoding="utf-8")
-    assert "superseded" in text.lower(), (
+    # "supersede" joined the internal-process ban on 2026-08-26, so the
+    # record cannot use the word this guard originally demanded. What the
+    # guard actually needs is that the file DECLARES its subject, so it
+    # accepts the vocabulary the record now uses for the same thing.
+    assert any(w in text.lower() for w in ("replaced", "retired")), (
         "HISTORY.md no longer says what it is for")
 
     # the page that used to hold the bound history must point at it, or a

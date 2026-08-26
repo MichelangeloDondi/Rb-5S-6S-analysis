@@ -278,7 +278,7 @@ MOD_DEPTH_RANGE = (1.449, 1.730)
 `docs/notes/ruler_validity_and_trim_prereg.md` on the 41 combs whose recorded
 numbering the verdict passes cleanly and whose first-order pair stands above
 five times the fit residual. Written as 2 beta throughout and never as a bare
-depth in radians, which a reviewer read as beta. Median 2 beta = 1.569,
+depth in radians, easily misread as beta. Median 2 beta = 1.569,
 standard deviation 0.058, range 2 beta = 1.449 to 2 beta = 1.730. The earlier
 pooled 2 beta = 1.62 sits at the upper edge of it."""
 

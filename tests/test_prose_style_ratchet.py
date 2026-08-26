@@ -174,7 +174,7 @@ FILLER_PHRASES = [
     # forty-nine candidates tested, thirty-seven were already absent, five were
     # genuine filler and were removed in the same pass, and the rest turned out
     # to be technical usage and were KEPT. Those keepers are named in the
-    # rendering protocol section 2.3 with the reason, because a word list that
+    # language protocol section 2.3 with the reason, because a word list that
     # bans "leverage" in a project with a density lever, or "underscore" in a
     # project whose filenames turn on one, would be worse than no list.
     "delve",
@@ -206,13 +206,13 @@ FILLER_PHRASES = [
     "plethora",
     "when it comes to",
     "in conclusion",
-    # Added 2026-08-25 on the experimenter's instruction, after he read a
+    # Added 2026-08-25 on the owner's instruction, after he read a
     # release note and said it "sounds so much AI written". Measured the same
     # way the 2026-08-10 batch was: each of these is at ZERO across the tracked
     # corpus, which is what makes an outright ban free. "Comfortable" was the
     # word he named and it is NOT here, because it appears 32 times with a
     # legitimate margin sense ("750 Hz is comfortable against a 1 s scan")
-    # beside the vague one. The experimenter then overruled that reasoning
+    # beside the vague one. The owner then overruled that reasoning
     # and the word is under the frozen-allowlist hard ban below.
     "compelling",
     "nuanced",
@@ -242,7 +242,7 @@ FILLER_PHRASES = [
     # since a claim that lost scope did not merely change its words.
     #
     # KEPT DELIBERATELY, measured and rejected as candidates, for the reason
-    # section 2.3 of the rendering protocol gives: "tighten" appears in
+    # section 2.3 of the language protocol gives: "tighten" appears in
     # thirty-six files and is what one does to a bound or a focus, "polish" is
     # a derivative-free refinement step in the wavemeter reconstruction,
     # "rewrite" is what happens to a document when a preregistered condition
@@ -269,7 +269,7 @@ FILLER_PHRASES = [
     "let me know if",
     "hope this helps",
     "feel free to",
-    # Banned on the experimenter's instruction: "adopted" misdescribes this
+    # Banned on the owner's instruction: "adopted" misdescribes this
     # bench. The 64 um waist is Rajasree's measurement on the SAME optical
     # table, laser and lenses, and the cell temperature was instrumented with
     # four thermocouples between the cell and its metal case inside a
@@ -280,7 +280,7 @@ FILLER_PHRASES = [
     # point, and a decision is "accepted".
     "adopted",
     "adopte",
-    # Banned on the experimenter's instruction, same reading: each one
+    # Banned on the owner's instruction, same reading: each one
     # dresses a measurement as something else. A projection is not
     # "defeated", a condition breaks it. A range is not "snug", it is
     # tight. A measurement is not an "intervention", and where the word
@@ -337,14 +337,14 @@ def test_no_file_gains_the_rather_than_construction():
     """A per-file falling budget on one syntactic tic.
 
     The word banks cannot see a construction, and this one is the single
-    largest machine-register tell the case-page review measured: 14 instances
+    largest machine-register tell the case-page audit measured: 14 instances
     in 2098 words on the page a PI reads first, where two or three is what a
     person writes. The rewrite then made it SIXTEEN before anyone counted,
     which is why this is a machine and not a style note. The corpus baseline
     is seeded at measured counts (BIG_PICTURE alone carries 22), so nothing is
     retrofitted: files fall as they are edited and may not rise.
 
-    Only this one construction is mechanised. The review also named "not X
+    Only this one construction is mechanised. The audit also named "not X
     but Y" and coordinated clause-lists of four or more, and both are left to
     judgement DELIBERATELY: a regex for either matches ordinary contrast and
     ordinary lists far too often, and a guard that cries wolf gets relaxed
@@ -386,10 +386,10 @@ def _vague_counts() -> dict[str, int]:
 
 
 def test_no_file_gains_a_vague_judgement_word():
-    """A HARD BAN on "comfortable", by the experimenter's order of 2026-08-25.
+    """A HARD BAN on "comfortable", by the owner's order of 2026-08-25.
 
     This began as a falling budget seeded at the measured 32. The
-    experimenter overruled it the same day: "add comfortable and similar
+    owner overruled it the same day: "add comfortable and similar
     AI-like expressions to the hard bans". Thirty-six prose sites, markdown
     and package docstrings alike, were reworded by hand with each meaning
     kept, the ledger generator's one emitting literal edited in the
@@ -400,7 +400,7 @@ def test_no_file_gains_a_vague_judgement_word():
     with its --relax-vague escape hatch, and the pre-commit board's rules
     seat caught the mismatch on the board's first convening: a ban whose
     baseline can be re-recorded is a preference. The allowlist below is a
-    frozen constant with no relax flag, and any change to it is a reviewed
+    frozen constant with no relax flag, and any change to it is a board-approved
     edit to a fixture, never a command.
 
     THE TWO ALLOWED SITES are in docs/lit/klimovducloy2004.md, and their
@@ -484,7 +484,7 @@ def test_the_csv_semicolon_counter_sees_a_planted_one():
     assert "clean note text".count(";") == 0
 
 
-# --- the emphasis-capitals guard, added on the experimenter's instruction ---
+# --- the emphasis-capitals guard, added on the owner's instruction ---
 # "all cap-locs words are banned unless they are acronyms which have to be
 # written in capital letters." A measurement found 3003 of them across 130
 # pages before the sweep, so this is a ratchet on a habit, not a style note.
@@ -645,7 +645,7 @@ BANNED_SHAPED = [
 def test_shaped_bans_stay_at_zero():
     """Three bans that need a shape, not a substring.
 
-    "trade" must not match "trade-off", which the experimenter kept. "corner"
+    "trade" must not match "trade-off", which the owner kept. "corner"
     has one literal geometric use, marked term-of-art where it stands. Each
     ban was measured before it was made: 49 exchanges of parameter weight,
     24 corners of model classes and grids, 31 landscapes of surveys and

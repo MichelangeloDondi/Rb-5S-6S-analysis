@@ -31,27 +31,16 @@ section: prior-art
 
 # bjorkholm1976
 
-**VERIFIED, 2026-08-02**, full text read.
+Held. Verified in full.
 
-**What it is.** The closed-form theory of two-photon absorption with unequal
-photons and a resonant or near-resonant intermediate state, Doppler-averaged
-via error functions of complex argument, confirmed in detail on Na 3S to 4D.
-On intermediate-state resonance the signal grows by 6 billion with no loss
-of resolution.
+## The theory
 
-**Why it was checked, and the clean negative.** A closed-form two-photon
-lineshape whose peak sits off the naive resonance sounds adjacent to this
-programme's method. It is not prior art for it. The paper works "at low
-optical intensities" where saturation and AC-Stark effects are avoided by
-construction, and it contains no shift distribution, no moments, and no
-spatial beam treatment (beams are ~2 cm and unfocused). Its one named
-distortion, frequency pulling, has a different origin entirely: the resonant
-denominator varies across the Doppler velocity integral, and the effect was
-too small for them to measure.
+Closed-form theory of two-photon absorption with unequal photons and a resonant or near-resonant intermediate state, Doppler-averaged via error functions of complex argument, confirmed in detail on Na 3S to 4D. On intermediate-state resonance the signal grows by a factor of 6 billion with no loss of resolution.
 
-**What it is still good for.** A citable precedent for the general
-proposition that two-photon lineshape theory produces a peak displaced from
-the naive resonance condition, on an axis (velocity integration through a
-resonant denominator) orthogonal to this programme's spatial-intensity axis.
-Also the natural reference for the resonant-intermediate corrections a 778 nm
-extension would need ([FUTURE_TRANSITIONS](../FUTURE_TRANSITIONS_titsapph.md)).
+## Scope
+
+The theory holds at low optical intensities, where saturation and AC-Stark effects are excluded by construction. It contains no shift distribution, no moments, and no spatial beam treatment (the beams are about 2 cm and unfocused). Its one named distortion, frequency pulling, arises because the resonant denominator varies across the Doppler velocity integral. The effect was too small for the authors to measure.
+
+## Use in this record
+
+A citable precedent for the general result that two-photon lineshape theory produces a peak displaced from the naive resonance condition, on an axis (velocity integration through a resonant denominator) distinct from a spatial-intensity axis. Also the reference for the resonant-intermediate corrections a 778 nm extension would need ([FUTURE_TRANSITIONS](../FUTURE_TRANSITIONS_titsapph.md)).

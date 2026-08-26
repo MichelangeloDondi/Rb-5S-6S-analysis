@@ -45,39 +45,16 @@ section: method-anchors
 
 # erickson2024
 
-**Read (relevant sections) from the held PDF**, to resolve an
-apparent anomaly in [bandi2025](bandi2025.md)'s Table 1 review of Rb two-photon
-clocks. See that note for the full M9 comparison; this note carries the
-bibliographic record and the passage it depends on.
+Held. Covers the same experiment as the related Optics Letters article and states the same measured linewidth budget.
 
-## The budget, verbatim
+## The system
 
-> A lorentzian fit to these lineshapes resulted in a FWHM linewidth of 762 kHz
-> for cw excitation and 774 kHz for direct comb excitation. This linewidth
-> includes contributions from the natural lifetime (330 kHz), transit-time
-> (310 kHz for 230 µm beam diameter at 100 °C), helium collisional broadening
-> (200 kHz given 4 mTorr He partial pressure). The contribution from rubidium
-> collisional broadening (16 kHz) and Zeeman broadening are believed to be
-> negligible.
+A Rb 778 nm two-photon optical clock (University of Arizona).
 
-## Why it is here
+## The linewidth budget
 
-It is the only row in [bandi2025](bandi2025.md)'s Table 1 with a published
-**term-by-term** budget rather than a bare total, which makes it checkable
-against this repository's own model piece by piece rather than only in
-aggregate.
+> A lorentzian fit to these lineshapes resulted in a FWHM linewidth of 762 kHz for cw excitation and 774 kHz for direct comb excitation. This linewidth includes contributions from the natural lifetime (330 kHz), transit-time (310 kHz for 230 µm beam diameter at 100 °C), helium collisional broadening (200 kHz given 4 mTorr He partial pressure). The contribution from rubidium collisional broadening (16 kHz) and Zeeman broadening are believed to be negligible.
 
-It also settles, and then re-opens, a question about that table. It settles
-that the waist column is **not a single convention**: this paper states "230 µm
-beam **diameter**" where [lemke2022](lemke2022.md) states its own waist as an
-explicit 1/e² **radius**. And feeding $w_0 = 115$ µm (half the stated diameter)
-at 100 °C through `rb5s6s.constants.transit_fwhm_from_w0` gives **513 kHz**
-against Erickson's own **310 kHz** — a factor of 1.65 that widens rather than
-narrows the question, because it is not explained by the radius/diameter
-ambiguity already found. The candidate explanation is a **transit-form**
-mismatch: this repository's function is the FWHM of the Biraben–Cagnac
-two-sided-exponential (the cusp), while Erickson cites Demtröder, *Laser
-Spectroscopy* Vol. 1, §3.4 for "transit-time broadening" without reproducing
-the formula in the text. **Not resolved here** — reading Demtröder §3.4 is the
-cheap next step, and it would convert this from a suggestive mismatch into a
-quantitative statement about which transit form his 310 kHz actually is.
+## Use in this record
+
+This is the only entry in the Table 1 comparison of Rb two-photon clocks (see [bandi2025](bandi2025.md)) with a published term-by-term linewidth budget rather than a bare total. It states the beam waist as a 230 µm diameter, where [lemke2022](lemke2022.md) states its own waist as an explicit 1/e² radius, so the waist column in that comparison is not a single convention. Passing w0 = 115 µm (half the stated diameter) at 100 °C through `rb5s6s.constants.transit_fwhm_from_w0` gives 513 kHz against the paper's stated 310 kHz, a factor of 1.65 not explained by the radius/diameter difference alone. The likely source is a difference in transit-time functional form, a two-sided-exponential cusp against the Gaussian form cited from Demtröder, *Laser Spectroscopy* Vol. 1, §3.4, whose formula is not reproduced in the text.

@@ -25,6 +25,7 @@ unusable.
 The neighbouring field handles the same problem from the other
 end. On the 778 nm 5S→5D line the AC-Stark shift is *the* limiting
 systematic. [Ahern 2025](../lit/ahern2025.md) is explicitly light-shift-limited
+<!-- term-of-art: review names the cited article's genre -->
 at 6×10⁻¹⁴/√τ, and [Bandi 2025](../lit/bandi2025.md)'s review states that light-shift
 variations "and vapor-cell temperature variations predominantly limit
 performance for medium- to long-term averaging", against a field target of
@@ -66,6 +67,7 @@ environment takes away.
 None of the ingredients of that paragraph is new. Keeping the shift
 distribution rather than its mean, reading a lineshape as a map of that
 distribution, the I² weighting, and the closed form itself all appear in a 1980
+<!-- term-of-art: review names the cited article's genre -->
 review, and because that is a review they were established before it. §5 of
 [LITERATURE.md](../LITERATURE.md) fixes what
 is claimable after that concession, and §4 below states what survives it, at

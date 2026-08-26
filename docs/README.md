@@ -43,3 +43,7 @@ working notes under [notes/](notes/),
 [ADAPTING.md](ADAPTING.md) for reusing the pipeline on other data, and
 [FUTURE_TRANSITIONS_titsapph.md](FUTURE_TRANSITIONS_titsapph.md), a
 survey of physics options beyond this campaign.
+
+**Conventions this record publishes so a reader can check them:**
+[RELEASE_NOTE_STYLE.md](RELEASE_NOTE_STYLE.md) sets the form every release
+note must satisfy, and the note checker refuses its mechanical half.

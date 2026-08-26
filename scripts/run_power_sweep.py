@@ -152,7 +152,7 @@ def main() -> int:
                    "no ramp asymmetry (skew falls with power: SNR artifact)")
         print(f"  {peak}: skew-vs-P slope = {slope:+.2e} +/- {serr:.1e} per mW "
               f"({sig:+.1f}sigma -> {verdict})")
-    # Shot-noise cross-check (reviewed 2026-07-12): the low-power residual skew
+    # Shot-noise cross-check (checked 2026-07-12): the low-power residual skew
     # is LARGE and significant (up to ~10sigma at 25 mW) -- but Poisson noise is
     # right-skewed as ~1/sqrt(counts), and counts ~ amplitude, so a shot-noise
     # residual skew scales as ~amp^-0.5 (positive, falling with power) -- the

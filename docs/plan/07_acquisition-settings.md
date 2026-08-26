@@ -268,8 +268,8 @@ this record cannot currently tell the two mechanisms apart.
 
 **And while the ruler is out:** measure u and v for the collection lens.
 `config.py` derives the axial field of view as Z_c = L_par / 2m and its M is
-an estimate, so Z_c is bracketed at 2.0 to 2.4 mm. The experimenter's own
-description of the f = 18 mm lens at about 50 mm from the PMT implies
+an estimate, so Z_c is bracketed at 2.0 to 2.4 mm. The RECOLLECTION of the
+f = 18 mm lens at about 50 mm from the PMT implies
 M = 1.78 and Z_c = 3.4 mm, outside that bracket. Two ruler readings replace
 an estimate that every ramp-geometry moment depends on.
 
@@ -626,8 +626,8 @@ the measured correlation length of 3.8 samples is taken into account.
     **It is genuinely unknown, and an earlier version of this chapter got it
     wrong.** The committed noise law's integrated autocorrelation is a median
     of 3.79 samples at the campaign's 0.5 ms sampling, about **1.9 ms**, and
-    that was read here as the chain's response time. **The experimenter has
-    since confirmed the archive was acquired in the oscilloscope's
+    that was read here as the chain's response time. **It has
+    since been confirmed that the archive was acquired in the oscilloscope's
     high-resolution mode**, which averages adjacent samples in hardware, so
     the 1.9 ms is a smoothing window rather than any property of the detector
     or the amplifier. The chain itself may be orders of magnitude faster and
@@ -763,7 +763,7 @@ These are different things and the answer differs.
 
 **High-resolution mode averages adjacent samples in hardware**, exchanging
 bandwidth for effective bits, and **the archive was acquired with it on**, a
-fact recovered from the experimenter rather than from any stored setting.
+fact recovered from direct recollection rather than from any stored setting.
 Measured from the stored quantisation steps it delivered a median of about
 **9.5 effective bits** against the instrument's native eight, reaching twelve
 on the dimmest cell.

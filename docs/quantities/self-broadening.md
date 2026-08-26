@@ -18,9 +18,12 @@ shared with the light shift, which is
 [the AC-Stark dossier](ac-stark-light-shift.md).
 
 **Where it stands.** A bound. The pooled four-temperature construction gives
-$\beta_{\rm self} \lt 0.0249$ MHz per 1e12 per cubic centimetre, and the reason it is a
+$\beta_{\rm self} \lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, which is the
+figure the rest of the record quotes, and the reason it is a
 bound is measured rather than assumed: across a factor of 52.5 in density the
-fitted collisional width rises only by a factor of 1.5.
+fitted collisional width rises only by a factor of 1.5. Without the
+vapour-pressure scale systematic the same construction gives [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95"), and
+section 4 says why that column is not the one to quote.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md) defines
 > every term and symbol used anywhere in this repository.
@@ -95,7 +98,7 @@ cent.
 
 | construction | value | status | source |
 |---|---|---|---|
-| Four-temperature width slope, pooled, dof 2 | $\lt$ [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") MHz per 1e12 per cubic centimetre | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
+| Four-temperature width slope, pooled, dof 2 | $\lt$ [0.030](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95_nscale") MHz per 1e12 per cubic centimetre, the headline; [0.0249](../../results/beta_self_probe.csv "ref:beta_self_probe:pooled_slope::bound95") before the density-scale systematic | BOUND | [`beta_self_probe.csv`](../../results/beta_self_probe.csv) |
 | Four-temperature width slope, per peak | $\lt 0.0239$ to $\lt 0.0411$ | BOUND | `beta_self_probe.csv` |
 | Model-independent per-peak central values | 0.0131 to 0.0181 | PRELIM | [`beta_self.csv`](../../results/beta_self.csv) |
 | Hierarchical joint fit, cooling sweep | $0.0534 \pm 0.0043$ (85Rb) | BOUND | [`global_fit.csv`](../../results/global_fit.csv) |

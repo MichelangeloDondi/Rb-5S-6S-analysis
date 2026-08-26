@@ -788,7 +788,7 @@ deliberate move (during the transient the hour-1 hunting is plainly a mix),
 and the τ-to-transient match is a scale agreement (86 [70, 104] min vs
 "about 2 h"), not a calibration.
 
-*Testimony: EXPERIMENTER, 2026-07-23, after the committed fit. Everything
+*Provenance: RECOLLECTION, 2026-07-23, after the committed fit. Everything
 else post-hoc as before.*
 
 

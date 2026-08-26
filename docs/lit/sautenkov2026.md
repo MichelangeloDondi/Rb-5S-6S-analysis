@@ -27,6 +27,14 @@ section: collision-series
 
 # sautenkov2026
 
-Rb D2 RESONANCE-line self-broadening (static+collision width): the resonance-vs-vdW contrast for why our S->S self term is small.
+## The system
 
-Self-broadened line shapes in optically saturated high-density Rb vapor (arXiv:2607.07303). They decompose the Rb D2 resonance line (5S-5P_3/2, 780 nm) self-broadening into static + collision width at N ~ 1e17 cm^-3 (1e5x our densities) — precisely the resonance-broadened case our S->S line is definitionally NOT (the 5S-6S pair has no resonance dipole-dipole/C3 self-broadening, only van-der-Waals/C6, far below the resonance lines). Their static+collision-width split mirrors our transit(static-ish)/gamma_coll(collision) decomposition.
+Rb D2 resonance line (5S-5P3/2, 780 nm) self-broadening in optically saturated, high-density Rb vapour, at densities N ~ 1e17 cm^-3, about five orders of magnitude above the densities used in the 5S-6S two-photon campaigns this record concerns.
+
+## The numbers
+
+The line is decomposed into a static width and a collision width.
+
+## Use in this record
+
+The Rb D2 line is resonance-broadened (dipole-dipole, C3), a mechanism the 5S-6S line does not have. The 5S-6S pair broadens only through van der Waals interactions (C6), far weaker than the resonance case. This contrast is why the self-broadening term in the 5S-6S analysis is small. The static-width and collision-width split used here parallels the transit (near-static) and gamma_coll (collision) decomposition used for the 5S-6S line.

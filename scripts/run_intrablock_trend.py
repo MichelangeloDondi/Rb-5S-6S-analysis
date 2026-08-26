@@ -2,7 +2,7 @@
 """
 Is the intra-block position scatter DRIFT or JITTER?  (PLAN §7, limitation 5)
 
-The experimenter confirmed (2026-07-22) that the scope horizontal knob and the
+Confirmed (2026-07-22) that the scope horizontal knob and the
 cavity reference were USUALLY not touched within a single 5-repeat block --
 a tendency, not a protocol -- though they were moved many times between
 blocks. The exceptions are visible in the data and are separated below: a

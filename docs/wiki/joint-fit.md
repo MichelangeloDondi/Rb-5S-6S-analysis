@@ -10,7 +10,7 @@ the subject of [weighted least squares](weighted-least-squares.md).
 **Gives.** The shared-versus-per-trace structure, the physical claim each
 sharing level makes, and the over-sharing failure that looks like success.
 **Skip if.** The question is whether an extra parameter is justified by the
-data rather than how repeats of one condition are combined. That is
+data, not how repeats of one condition are combined. That is
 [information criteria](information-criteria.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -18,45 +18,41 @@ data rather than how repeats of one condition are combined. That is
 
 ## What it is
 
-When an experiment records the same physical quantity several times, the
-repeats can be fitted one at a time and the answers averaged, or they can be
-fitted together with the physics shared and the nuisances free. The second is
-a joint fit, and the two are not the same operation.
-
-The structure is the useful part. Parameters are divided by what they
-describe. A shared parameter is one the repeats genuinely have in common,
-typically the physics: a linewidth, a cross-section, a shift coefficient. A
-per-trace parameter is one that legitimately differs between repeats, such as
-an amplitude that follows detector gain, a centre that follows drift, or a
-baseline that follows the background at that moment. All of them are fitted
-at once, minimising a single objective over the whole dataset.
-
-The gain is that every repeat contributes to the shared parameter with its
-full weight, while the things that drifted are absorbed where they belong
-instead of inflating the scatter of the quantity of interest. Averaging
-independent fits cannot do this, because each independent fit has already
-paid for its own nuisances with its own degrees of freedom, and information
-about the shared quantity is lost before the averaging starts.
+When an experiment records the same quantity several times, the repeats can
+be fitted one at a time and averaged, or fitted together with the physics
+shared and the nuisances free. The second is a joint fit, and the two are
+not the same operation.
 
 ![four drifted repeats, and the widths recovered two ways](figures/wiki_joint_fit_toy.png)
 
-*Four synthetic repeats of one line, each drifted in centre. Fitted
-separately the widths scatter. Fitted jointly with one shared width and a
-free centre and amplitude per trace, the estimate lands near the truth. Both
-estimates in the right panel are real least-squares fits.*
+*Four synthetic repeats with independent centres, fitted separately
+(scattered widths) and jointly with one shared width (recovers the truth).*
 
-The decision of which level to share at is where the physics enters, and it
-is a modelling choice rather than a technical one. Sharing across repeats
-taken minutes apart is usually safe. Sharing across conditions recorded hours
-apart asserts that the quantity did not change in between, and that assertion
-is the substance of the fit.
+The structure is the useful part. A shared parameter is one the repeats
+genuinely have in common, typically the physics: a linewidth, a
+cross-section, a shift coefficient. A per-trace parameter is one that
+legitimately differs between repeats, such as an amplitude that follows
+detector gain, a centre that follows drift, or a baseline that follows the
+background at the time. All are fitted at once, minimising a single
+objective over the whole dataset.
+
+The gain is that every repeat contributes to the shared parameter with its
+full weight, while the things that drifted are absorbed where they belong.
+Averaging independent fits cannot do this, because each independent fit has
+already paid for its own nuisances with its own degrees of freedom, and
+information about the shared quantity is lost before the averaging starts.
+
+Deciding which level to share at is where the physics enters: a modelling
+choice, not a technical one. Sharing across repeats taken minutes apart is
+usually safe. Sharing across conditions recorded hours apart asserts that
+the quantity did not change in between, and that assertion is the substance
+of the fit.
 
 ## What problem it solves
 
 It makes drifting data usable. If an instrument wanders between repeats but
 the physics does not, a joint fit puts the wander in the per-trace
-parameters and keeps the physics in the shared ones, which is the difference
-between discarding a dataset and measuring with it.
+parameters and keeps the physics in the shared ones.
 
 ## Where this repository uses it
 
@@ -68,42 +64,45 @@ Each condition has several back-to-back repeats of the same line, and the
 fitted jointly with the line-shape parameters shared and the amplitude,
 centre and a tilted baseline free per trace.
 
+![five repeats of one condition fitted with a shared line shape](../../figures/fig21_joint_fit_five.png)
+
+*Five back-to-back repeats of one campaign condition (993.4192 nm, 130 C,
+225 mW) under a single shared line shape, with per-repeat centre, amplitude
+and residuals shown separately.*
+
 The sharing continues upward, and the chapter is explicit that each level is
 a physical claim. The laser width is shared per temperature across the four
-hyperfine lines, because those four are measured within one dwell and see the
-same laser at that moment, which lets its drift across a session be measured
-instead of mistaken for collisions. The self-broadening coefficient is shared
-per isotope rather than globally, so that the two isotopes can be tested
-against each other rather than assumed equal. The transit width is shared
+hyperfine lines, because those four are measured within one dwell and see
+the same laser at that moment, which lets its drift across a session be
+measured instead of mistaken for collisions. The self-broadening coefficient
+is shared per isotope, not globally, so the two isotopes can be tested
+against each other instead of assumed equal. The transit width is shared
 globally, since it follows the beam and the temperature law.
 
 ## What can go wrong
 
-The characteristic failure of joint fitting is over-sharing, and it is
-dangerous precisely because it looks like success. A large shared fit returns
-a small formal error, and if the shared quantity actually varied between the
-blocks it was shared across, that variation is absorbed by whichever other
-parameter can imitate it. The result is a confident number that is
-instrument drift wearing the name of physics. Sharing the laser width across
-blocks recorded hours apart, in a session where the laser was drifting, is
-exactly this failure, and this repository's guard against it is a
-model-independent rule fixed before the data were examined.
+Over-sharing is the characteristic failure of joint fitting. A large shared
+fit returns a small formal error, and if the shared quantity varied between
+the blocks it was shared across, that variation is absorbed by whichever
+parameter can imitate it: a confident number that reflects instrument
+drift, not physics. Sharing the laser width across blocks recorded hours
+apart, in a session where the laser was drifting, is exactly this failure.
 
-A sharper version of over-sharing, and the one hardest to see, is a shared
-parameter that depends on something the groups differ in and no nuisance
-represents. Over-sharing a drifting laser width is caught eventually because
-the width has an independently known scale. This is not, because nothing in
-the fit is out of range. Suppose the shared quantity scales as one over the
-square of a beam radius, and the groups were recorded at different focus
-settings that nobody logged. Each group then has its own true value of the
-shared parameter, the fit returns some average of them, the formal error is
-small, and no per-trace audit or goodness-of-fit reports anything, because
-every group is fitted well by its own free offset and its own gain.
+A second form of over-sharing is a shared parameter that depends on
+something the groups differ in and no nuisance represents. Over-sharing a
+drifting laser width is caught eventually because the width has an
+independently known scale. This is not, because nothing in the fit is out
+of range. Suppose the shared quantity scales as one over the square of a
+beam radius, and the groups were recorded at different, unlogged focus
+settings. Each group then has its own true value of the shared parameter,
+the fit returns an average of them, the formal error is small, and no
+per-trace audit or goodness-of-fit reports anything, because every group is
+fitted well by its own free offset and gain.
 
-The test is mechanical rather than statistical. Write down what the shared
+The test is mechanical, not statistical. Write down what the shared
 parameter depends on, list the ways the groups differ, and look for a
-dependency that appears in the first list, differs between groups, and has no
-nuisance opposite it in the model. [Pooling across
+dependency that appears in the first list, differs between groups, and has
+no nuisance opposite it in the model. [Pooling across
 groups](pooling-across-groups.md) works this through with a runnable
 demonstration where adding a group with three times the leverage makes the
 answer worse.
@@ -114,17 +113,18 @@ not. The effective number of independent samples is then smaller than the
 number of points, which matters both for the error bars and for any
 [information criterion](information-criteria.md) computed from the same fit.
 
-Third, an implementation trap. Adding traces grows the parameter vector, and
-a fit with many per-trace nuisances can converge to a local optimum where one
-trace's parameters have gone somewhere unphysical while the shared value
+Third, an implementation trap: adding traces grows the parameter vector, and
+a fit with many per-trace nuisances can converge to a local optimum where
+one trace's parameters land somewhere unphysical while the shared value
 compensates. A per-trace residual audit catches this and a global
-goodness-of-fit does not, because a joint fit must be good for every trace
-and not merely on average.
+goodness-of-fit does not, because a joint fit must be good for every trace,
+not merely on average.
 
-Finally, sharing does not remove a degeneracy that the whole dataset carries.
-If every repeat has the same degenerate pair, sharing improves the precision
-of the degenerate combination and leaves the split as poorly determined as
-before, which is the subject of [identifiability](identifiability.md).
+Finally, sharing does not remove a degeneracy that the whole dataset
+carries. If every repeat has the same degenerate pair, sharing improves the
+precision of the degenerate combination and leaves the split as poorly
+determined as before, which is the subject of
+[identifiability](identifiability.md).
 
 ## Try it
 
@@ -151,10 +151,6 @@ joint = abs(least_squares(
 print("fitted alone: " + ", ".join(f"{v:.3f}" for v in alone))
 print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
 ```
-
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
 
 ## Further reading
 

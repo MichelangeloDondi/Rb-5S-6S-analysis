@@ -59,58 +59,57 @@ section: prior-art
 
 # rahaman2022
 
-**Held 2026-07-29** (preprint; front matter and abstract read). Rahaman and
-Dutta, TIFR Mumbai: the hyperfine splitting and the ac Stark shift of the
-6s²S₁/₂ → 7d²D₃/₂ two-photon transition at 767 nm, measured together.
+Held. Front matter and abstract verified against the preprint (arXiv:2210.01481).
 
-**"Kumar 2022" does not exist, and this note used to invent it.** The summary
-here, and the audit's Priority-2 table, treated `arXiv:2210.01481` as a
-companion paper by Kumar carrying the ac-Stark and collisional coefficients.
-That arXiv ID *is* this paper. Rahaman and Dutta state plainly that "there are
-no prior reports on the measurement of ac Stark shift and collisional shift for
-the cesium 6s ²S₁/₂ → 7d ²D₃/₂ two-photon transition", so no such companion can
-exist. There is a real Kumar *et al.* on Cs 6s–7d **hyperfine structure** (their
-ref [25], which they criticise for a 420 kHz internal inconsistency) — a
-different paper with different content. Corrected 2026-07-30; the
-mean-collapse count drops from five instances to four.
+## The system
 
-**The numbers, reduced to this repository's convention**
-($S_0 = \Delta\alpha I_\text{eff}/2\varepsilon_0 c h$, 1 a.u. =
-0.046871 Hz/(W/cm²)):
+Rahaman and Dutta (TIFR Mumbai) measure the hyperfine splitting, ac Stark
+shift, collisional shift, and self-broadening of the caesium 6s²S₁/₂ →
+7d²D₃/₂ two-photon transition at 767 nm, in a single experiment.
+
+A separate paper by Kumar et al. (their ref [25]) reports the Cs 6s-7d
+hyperfine structure, with a noted 420 kHz internal inconsistency. Rahaman
+and Dutta state that no prior measurement exists of the ac Stark shift or
+collisional shift for this transition.
+
+## The numbers
+
+Reduced to this repository's convention ($S_0 = \Delta\alpha I_\text{eff}/2\varepsilon_0 c h$, 1 a.u. = 0.046871 Hz/(W/cm²)):
 
 | quantity | Rahaman & Dutta (Cs 6s–7d₃/₂, 767.8 nm) | this programme (Rb 5S–6S, 993 nm) |
 |---|---|---|
-| ac Stark, measured | **−49 ± 5 Hz/(W/cm²)** → Δα = 1045 ± 107 a.u. | never measured |
+| ac Stark, measured | −49 ± 5 Hz/(W/cm²) → Δα = 1045 ± 107 a.u. | never measured |
 | ac Stark, calculated | −54 → Δα = 1152 a.u. | −51.23 → Δα = 1093 a.u. |
-| self-broadening | 99(6) kHz/mTorr @135 °C → **4.18 kHz per 10¹² cm⁻³** | β_self(6S) = 3.4 ± 0.3 (expectation) |
-| self-shift | −32.6 ± 2.0 kHz/mTorr → **−1.38 kHz per 10¹² cm⁻³** | never constrained |
+| self-broadening | 99(6) kHz/mTorr @135 °C → 4.18 kHz per 10¹² cm⁻³ | β_self(6S) = 3.4 ± 0.3 (expectation) |
+| self-shift | −32.6 ± 2.0 kHz/mTorr → −1.38 kHz per 10¹² cm⁻³ | never constrained |
 
-Their convention is *identical* to ours — 1152 a.u. reproduces 54.0 Hz/(W/cm²)
-through this repo's own conversion constant — so the comparison is exact rather
-than approximate, and our unmeasured coefficient sits inside the 1σ band of
-their measured one.
+Their convention matches this repository's exactly: 1152 a.u. reproduces
+54.0 Hz/(W/cm²) through the same conversion constant. Their shift-to-width
+ratio, −0.33 of FWHM, predicts an Rb 6S self-shift near −1.2 kHz per
+10¹² cm⁻³, about 24 kHz across the 70-130 °C archival range, and is roughly
+twice the classical van der Waals impact-theory ratio referred to HWHM
+(−0.66).
 
-Two things this hands us for nothing. Their **shift/width ratio is −0.33 of
-FWHM**, which predicts an Rb 6S self-shift of ≈−1.2 kHz per 10¹² cm⁻³, about
-24 kHz across the archival 70→130 °C lever — permanently invisible, so C1 is a
-bound by physics rather than by bad luck. And −0.66 of HWHM is roughly *twice*
-the classical van der Waals impact ratio, which is a live cross-check for M18.
-Their temperature span, 50–175 °C with most data at 135 °C, is also the
-citation for this repo's 150–170 °C requirement: they needed all of it to
+## Method
+
+Scan nonlinearity is identified as the dominant historical error source on
+this line. Their remedy:
+
+- the frequency axis is co-recorded on the same oscilloscope trace as the
+  signal, referenced to an rf-synthesiser voltage linear in frequency
+- the scanning AOM is cat's-eye double-passed, so beam pointing does not
+  move with frequency
+- power is held to 0.2% across a scan
+- results taken over several months are reported stratified by
+  oscilloscope acquisition mode, and shown to agree
+
+## Validity
+
+Their temperature range, 50-175 °C with most data at 135 °C, was needed to
 resolve a 99 kHz/mTorr slope on a 2 MHz line.
 
-**And they are the published answer to M20.** Scan nonlinearity is named as the
-dominant historical error on this Cs line ("the nonlinearity of the laser
-frequency scans", "calibration jitter"), and their remedy is architectural: the
-frequency axis is co-recorded on the same oscilloscope trace as the signal from
-an rf-synthesiser voltage linear in frequency, the scanning AOM is cat's-eye
-double-passed so pointing does not move with frequency, power is held to 0.2%
-across a scan, and — the precedent that matters here — the multi-month results
-are **published stratified by oscilloscope acquisition mode** and shown to
-agree. Treating a scope setting as an experimental variable is exactly what
-`window_start_ms` epoching became. Cite them in the methods section that
-explains it.
+## Use in this record
 
-What none of the family does — and what remains this programme's territory — is
-treat the shift as a distribution over a focused profile rather than a single
-coefficient.
+The calculated Rb 5S-6S ac Stark coefficient (−51.23 Hz/(W/cm²)) falls
+within the 1σ band of this paper's measured caesium analogue
+(−49 ± 5 Hz/(W/cm²)).

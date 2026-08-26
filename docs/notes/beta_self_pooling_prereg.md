@@ -15,7 +15,7 @@ note is committed.
 
 The four 993 nm lines are hyperfine components of one dipole-forbidden
 transition, and the broadening they see from ground-state Rb is R^-6
-physics. Three statements carry the licence, each checked adversarially:
+physics. Three statements carry the licence, each checked independently:
 
 1. There is no first-order resonant exchange term of the D-line type. The
    5S-6S transition dipole is zero by parity, the electronic quadrupole

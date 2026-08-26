@@ -30,6 +30,12 @@ section: oist-lineage
 
 # skljarow2020
 
-**Held 2026-07-29.** Two-photon Rb spectroscopy integrated with silicon photonics: the transition driven and read out in the evanescent field of an on-chip waveguide.
+Held. Verified against the PDF.
 
-Completes the guided-geometry prior-art set — hollow core ([Saha](saha2010.md)), tapered nanofibre ([Hendrickson](hendrickson2010.md)), and now integrated waveguide. All three establish that a two-photon alkali line works in a strongly confined mode at modest power. None treats the mode's intensity distribution as a light-shift *distribution* with a closed-form weight, which is what the ramp formalism would add in this geometry and is the only part the nanofibre extension should claim.
+## The system
+
+Two-photon Rb spectroscopy integrated with silicon photonics (Stuttgart, Pfau group). The transition is driven and read out in the evanescent field of an on-chip waveguide.
+
+## Use in this record
+
+This is the third guided-mode geometry reported for two-photon Rb spectroscopy, after the hollow-core fibre ([saha2010](saha2010.md)) and the tapered nanofibre ([hendrickson2010](hendrickson2010.md)). None of the three treats the guided mode's intensity distribution as a light-shift distribution with a closed-form weight.

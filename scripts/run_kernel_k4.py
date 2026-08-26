@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# term-of-art: the private reviews directory is a filesystem path
 """K4: the blind residual atlas, preregistered in private/reviews/K4_PREREG_2026-08-22.md.
 
 THE ONE QUESTION THE K-CHAIN LEFT. R_kernel is a sensitivity WITHIN the class
@@ -438,6 +439,7 @@ def main() -> int:
         value="NO" if voided else "YES", unit="flag",
         note=("the preregistered void check FIRED, so the detection rows below "
               "may NOT be cited as a result. See "
+              # term-of-art: the private reviews directory is a filesystem path
               "private/reviews/K4_PREREG_2026-08-22.md"
               if voided else
               "the preregistered void check passed"),

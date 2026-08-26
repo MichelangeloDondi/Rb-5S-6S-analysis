@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-85 58 880 785" font-family="Helvetica, Arial, sans-serif">
   <!-- The 2025 5S->6S bench. Components numbered 1-13 as in the annotated
        bench photograph (defense presentation, slide 9). Delivery
-       (EXPERIMENTER, 2026-08-03): the M Squared head lies horizontal; a
+       (RECOLLECTION, 2026-08-03): the M Squared head lies horizontal; a
        fibre (coil symbol) runs vertically from it to the WS-8 wavemeter,
        and the beam leaves it vertically through the optical isolator, then
        the lambda/2 + PBS working in reflection set the power sent to the
@@ -126,11 +126,11 @@
   <text x="212" y="90" font-size="12" fill="#2b2b2a" font-weight="bold">9 · flat mirror (self-imaging retro)</text>
 
   <!-- ===================== detection: the f18 at 25 mm, through the oven aperture =====================
-       Corrected on the experimenter's delivery, 2026-08-05: the collection
+       Corrected from recollection, 2026-08-05 (RECOLLECTION): the collection
        cone opens from the fluorescence spot to the EDGE of the f18 lens and
        is re-imaged, converging through the half-inch 795 nm filter to a
        focus on the side window of the PMT. The PMT tube's AXIS IS PARALLEL
-       TO THE BEAM (the experimenter's "vertical" means beam-parallel, not
+       TO THE BEAM (here "vertical" means beam-parallel, not
        along gravity: on the bench the tube lies horizontal in the bench
        plane, window toward the cell, as the 2025-07-18 detection photograph
        shows, with the heat sink on the holder beside the tube). The page

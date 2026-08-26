@@ -1,10 +1,10 @@
 # Release note style
 
 The rules a release body must satisfy before it is published, written
-after an adversarial review of every release note published on this
-project's two repositories found the same defects in each one. The
+after every release note published on this project's two repositories
+was read against one defect list and found to carry the same defects. The
 mechanical half is enforced by `scripts/check_release_notes.py`. The
-judgement half is enforced by the review seats in the last section.
+judgement half is enforced by the readers in the last section.
 
 ## The note's form
 
@@ -50,16 +50,15 @@ by a physicist in under a minute.
   provenance line naming the `docs/HISTORY.md` disclosure. The
   reconstruction fact is that closing line, never the opening one.
 
-## The review
+## The checks before publishing
 
 * The body passes `scripts/check_release_notes.py` before anyone reads
   it.
-* The standing pre-release review adds two seats for a release: a voice
-  seat, which reads only for register against N7, and a cold-reader
-  seat, which receives the note alone with no repository access and must
+* The standing pre-release board gains two readers for a release: a
+  voice reader, reading only for register against N7, and a cold
+  reader, who receives the note alone with no repository access and must
   state what changed, quote the headline numbers, and resolve every
-  term. Either seat can block. The cold-reader seat exists because
-  reviewers who know the repository resolve undefined terms without
-  noticing them.
+  term. Either reader can block. The cold reader exists because anyone who
+  knows the repository resolves undefined terms without noticing them.
 * A published body is edited in place only with a disclosure entry in
   `docs/HISTORY.md` naming what changed and why.

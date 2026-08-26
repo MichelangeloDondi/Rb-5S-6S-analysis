@@ -34,6 +34,6 @@ section: transit-time
 
 # borde1976
 
-(scanned image, title not machine-recovered — VERIFY title/authors). The earlier, more general transit-time treatment that Biraben~1979 and Lehmann~2021 both simplify.
+Held as a scanned image. Title and authors were not machine-recovered from the PDF and remain unconfirmed against the source.
 
-The original, most general derivation of the two-photon transit-time lineshape; cite as the primary general treatment only (the specific closed forms used in the pipeline are `biraben1979`'s Lorentzian-times-two-sided-exponential and `lehmann2021`'s modern simplification).
+The original, most general derivation of the two-photon Doppler-free transit-time lineshape, specialized to closed forms by Biraben (1979) and Lehmann (2021): Biraben's Lorentzian-times-two-sided-exponential, and Lehmann's later simplification. Used as the general treatment only. The specific closed forms applied come from those two papers.

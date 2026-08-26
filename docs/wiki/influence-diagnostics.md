@@ -8,8 +8,8 @@ and how does that differ from which observations merely look surprising.
 assumption about the shape of the noise law.
 **Gives.** The leverage and case-deletion machinery, Cook's distance and
 DFBETA among them, that separates an outlying point from an influential one.
-**Skip if.** You want the weighting a fit itself should carry rather than
-what to check after fitting. That is
+**Skip if.** You want the weighting a fit itself should carry, not what to
+check after fitting. That is
 [weighted least squares](weighted-least-squares.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -43,8 +43,8 @@ leverage there instead.
 What leverage close to one means follows directly from the algebra. As
 $h_{ii}\to1$, the fitted value at that point converges to the measured value
 at that point, whatever it is, so the residual there shrinks toward zero
-regardless of whether the measurement is right or wrong. The fit is not
-tested against such a point. It is drawn through it.
+regardless of whether the measurement is right or wrong. The fit is drawn
+through such a point instead of tested against it.
 
 Case-deletion diagnostics are one idea, applied to different targets: refit
 with point $i$ removed and ask what changed. The deleted studentized
@@ -64,15 +64,14 @@ caught by a large residual and barely moves the fit, because the rest of the
 design anchors the line against it: outlying without being influential. A
 point at leverage near one can carry almost no residual, having pulled the
 fit to itself, and still swing the fit entirely if it is removed: influential
-without being outlying. The second case is the one worth remembering, because
-nothing built from the residual alone can see it.
+without being outlying.
 
 ## What problem it solves
 
 A residual, weighted correctly or not, answers whether a point looks
 surprising against the fitted model. It does not answer whether the point
 matters, and the two questions come apart exactly where it counts: at high
-leverage an error is absorbed into the fit rather than flagged by it, so the
+leverage an error is absorbed into the fit instead of flagged by it, so the
 point that would do the most damage if it were wrong is the one least likely
 to look wrong. Case-deletion diagnostics answer the second question directly,
 by actually removing a point and measuring what moves, instead of judging the
@@ -82,8 +81,14 @@ point from a residual that its own pull on the fit has already shrunk.
 
 The repository's influence audit, run on 2026-08-16, computed leverage,
 deleted residuals, Cook's distance and drop-one comparisons on two of its own
-committed constructions, rather than reading either one from its residual
+committed constructions, instead of reading either one from its residual
 plot alone.
+
+![Total FWHM plotted against Rb density for the four hyperfine components](../../figures/fig1_width_vs_density.png)
+
+*Total FWHM against Rb density for the four hyperfine components. The 130 °C
+point is the high-leverage anchor of the four-point construction discussed in
+the text.*
 
 The first target was the four-point width-against-density construction
 behind the self-broadening slope. Its design puts three cooler temperature
@@ -100,17 +105,16 @@ anchor's leverage came out within a hair of the maximum value of one, so the
 construction cannot in principle distinguish an accurate anchor from a wrong
 one from its own fit.
 
-That sharpens something the record already reports rather than contradicting
+That sharpens something the record already reports. It does not contradict
 it. [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv)
 carries the same comparison read the other way: folding the 130 °C point
 into the joint fit moves $\beta_\text{self}$ from 0.0534 to 0.0198 MHz per
 $10^{12} \mathrm{cm^{-3}}$ for $^{85}\text{Rb}$, and from 0.0534 to 0.0219 for
-$^{87}\text{Rb}$, a shift the file logs directly and one comparable in size to the
-coefficient itself. That is what a leverage close to one predicts: a point
-that anchors a fit moves the fit by close to its own scale whenever it is
-added or removed. It is also why the density-slope coefficient in
-[self-broadening](self-broadening.md) is reported as a bound rather than a
-value.
+$^{87}\text{Rb}$, a shift the file logs directly and one comparable in size to
+the coefficient itself. That is what a leverage close to one predicts: a
+point that anchors a fit moves the fit by close to its own scale whenever it
+is added or removed. It is also why the density-slope coefficient in
+[self-broadening](self-broadening.md) is reported as a bound, not a value.
 
 The second target was the five-point power sweep behind the joint
 light-shift bound in [RESULTS.md](../RESULTS.md). Here the audit found the
@@ -120,12 +124,12 @@ most peaks and was neither outlying by its deleted residual nor influential
 by Cook's distance on any of them, consistent with a correctly weighted fit
 already discounting an imprecise point on its own account. One separate
 condition on one peak did come out outlying without being influential, the
-low-leverage half of the distinction above, worth a closer look rather than a
+low-leverage half of the distinction above, worth a closer look, not a
 finding by itself at that rate across eight constructions checked.
 
 The repository's practice of reporting leave-one-out subsets is the same
-case-deletion idea applied by hand, at the scale of a whole condition rather
-than a single point. [RESULTS.md](../RESULTS.md) records that the joint
+case-deletion idea applied by hand, at the scale of a whole condition instead
+of a single point. [RESULTS.md](../RESULTS.md) records that the joint
 light-shift bound survives dropping any one peak, and
 [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv) carries
 the analogous rows for the self-broadening slope, one per dropped peak and
@@ -133,9 +137,8 @@ one per dropped temperature block. Both are Cook's distance and DFBETA in
 spirit, run by hand at the resolution of a condition before either name was
 attached to the practice.
 
-Nothing committed moved as a result of the audit. Its use is forward-looking
-rather than corrective: a future density ladder spread more evenly across
-density itself, rather than evenly across temperature, would lower the
+Nothing committed moved as a result of the audit. A future density ladder
+spread evenly across density itself, not across temperature, would lower the
 anchor's leverage and let the coefficient be checked by the fit instead of
 anchored to one point in it.
 
@@ -145,21 +148,20 @@ A textbook Cook's-distance cutoff such as $4/n$ assumes enough degrees of
 freedom for its null distribution to behave the way the rule of thumb
 expects. With as few points as the four-point density construction carries,
 the null is heavy tailed, and a generic cutoff calls nearly every condition
-influential, which is a statement about the design rather than about any one
-point. The audit above calibrates against a null built for that specific
-design instead, by parametric bootstrap, rather than a fixed number carried
-over from a much larger textbook example.
+influential, which is a statement about the design, not about any one point.
+The audit above calibrates against a null built for that specific design, by
+parametric bootstrap, not a fixed number carried over from a much larger
+textbook example.
 
-A studentized residual computed with the point still in the fit lets an
-outlier inflate its own yardstick and hide from the very test meant to catch
-it. The repair is the externally studentized, deleted residual, whose
-denominator is recomputed with the point left out, and an early version of
-this repository's own instrument made exactly this mistake before its own
-ceiling test caught it.
+A studentized residual computed with the point still in the fit uses a scale
+estimate that the same point has already inflated, so the residual
+understates how outlying the point is. The repair is the externally
+studentized, deleted residual, whose denominator is recomputed with the
+point left out.
 
-A related implementation trap sits in how a diagnostic is validated rather
-than in the diagnostic itself. A synthetic check that only ever plants its
-test error at a low-leverage point can show that a deleted residual finds
+A related implementation trap sits in how a diagnostic is validated, not in
+the diagnostic itself. A synthetic check that only ever plants its test
+error at a low-leverage point can show that a deleted residual finds
 outliers, but it can never show that Cook's distance also finds influence,
 since low leverage never exercises the part of a design a high-leverage point
 would. Confirming both jobs needs two seeded checks, one at low leverage and
@@ -167,14 +169,13 @@ one at high.
 
 Leverage is a design property, and no amount of repeated measurement at an
 existing design point lowers it. Only adding points elsewhere on the axis
-changes the leverage of the ones already there. Treating more repeats as a
-fix for a design-driven leverage problem mistakes a data-insufficiency
-question for a design one.
+changes the leverage of the ones already there. More repeats fix a
+data-insufficiency problem. They do not change a design property such as
+leverage.
 
 Finally, an interpretive trap specific to this family: a clean fit at a
 leverage-near-one point is not evidence the point is correct, because the
-construction is nearly incapable of returning anything else there. Reading
-it as confirmation mistakes a blind spot for a validation.
+construction is nearly incapable of returning anything else there.
 
 ## Try it
 
@@ -183,6 +184,11 @@ out on the axis, the shape a temperature sweep takes when read on a density
 axis. The hat matrix diagonal shows how unevenly leverage falls across it,
 and its entries sum to the number of free parameters regardless of where the
 points sit.
+
+![Bar chart of the hat-matrix leverage for the four points in the toy design](figures/wiki_influence_diagnostics.png)
+
+*Leverage of each point in the four-point toy design used in this page's
+worked example. The outlying point carries nearly the whole fit.*
 
 ```python
 import numpy as np
@@ -202,7 +208,7 @@ print(f"sum of leverages = {leverage.sum():.4f} (equals p = {p} for any design)"
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
+so one that stops working fails the suite instead of sitting here misleading
 a reader.
 
 ## Further reading
@@ -228,11 +234,10 @@ a reader.
 - [Robust fitting](robust-fitting.md), the losses that discount a point once
   diagnostics like these say it is not simply outlying.
 - [Resampling](resampling.md), for building a leverage or Cook's-distance
-  threshold from the design's own null distribution rather than a textbook
-  cutoff.
+  threshold from the design's own null distribution, not a textbook cutoff.
 - [Heavy-tailed models](heavy-tailed-models.md), for treating a whole
-  population of large residuals as a property of the noise rather than one
-  point at a time.
+  population of large residuals as a property of the noise, not one point at
+  a time.
 - [Sensitivity analysis](sensitivity-analysis.md), the same which-input-
   matters question asked of a projection's parameters instead of a fit
   already run.

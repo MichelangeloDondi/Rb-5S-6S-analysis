@@ -80,9 +80,9 @@ WHAT THIS IS FOR, and it is not decoration.
    mis-scales every linewidth it reports. This dataset is protected by accident
    -- the EOM ruler measured the rate per block rather than assuming it -- but
    the protection is invisible until the roll-off is characterised, and a future
-   experimenter has no way to know how fast is too fast.
+   operator has no way to know how fast is too fast.
 
-EVERYTHING BELOW THIS LINE PREDATES THE RETRACTION and is under review. The
+EVERYTHING BELOW THIS LINE PREDATES THE RETRACTION and awaits reassessment. The
 numbers in it were computed from session-referenced offsets, so any of them that
 differences peak positions ACROSS a horizontal-setting change is affected --
 including the quoted "48.8 MHz re-kick" in the 993.4207 nm sweep, the "11.3" at

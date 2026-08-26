@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Hyperfine pumping on the full Zeeman manifold, per line, per isotope.
 
-WHY THIS EXISTS (2026-08-10, the experimenter's instruction). The branching that sets the
+WHY THIS EXISTS (2026-08-10, by decision). The branching that sets the
 pumping companion was first computed at the level of F alone, with two
 successive assumptions that were not checked: that the intermediate hyperfine
 levels are populated statistically (WRONG, and corrected earlier the same day),
@@ -50,12 +50,12 @@ WHAT IT CHECKS.
      surviving fraction after the excitation and decay cycles an atom completes
      while crossing the beam, per line and per isotope. The crossing time is
      taken per isotope, because the two masses differ.
-  5. What that mass difference is worth in the fit, which is the
-     experimenter's question of 2026-08-10. The transit width goes as the
+  5. What that mass difference is worth in the fit, a question asked
+     on 2026-08-10. The transit width goes as the
      thermal speed, so 85Rb's kernel is wider than 87Rb's by 1.169 per cent
      and the fits share one transit width between them. The check reports
      where that matters.
-  6. THE BLOCKED CASCADE PATHS, a second experimenter question. An atom in
+  6. THE BLOCKED CASCADE PATHS, a second question asked the same day. An atom in
      5P3/2 F=0 of 87Rb cannot reach the F=2 ground level at all, because a
      J=1 photon cannot connect F=0 to F=2, so the branching is not the naive
      degeneracy weight level by level. Check 6 resolves the cascade by
@@ -384,7 +384,7 @@ def main() -> int:
     print("  ramp and the saturation do not carry.")
     print()
     print("CHECK 6  the blocked cascade paths, and why they do not survive")
-    print("  Experimenter question, 2026-08-10: an atom that lands in 5P3/2 F=0 of")
+    print("  Asked 2026-08-10: an atom that lands in 5P3/2 F=0 of")
     print("  87Rb cannot reach the F=2 ground level at all, since a J=1 photon")
     print("  cannot connect F=0 to F=2. So the branching is NOT the naive")
     print("  degeneracy weight level by level, and the check is whether this")

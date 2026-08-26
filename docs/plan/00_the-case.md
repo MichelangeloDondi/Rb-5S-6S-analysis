@@ -90,7 +90,7 @@ exclusion: dropping peak 4192 removes a whole session and raises
 the limit to 0.37, which does not exclude the prediction. And the
 prediction stands on a polarizability whose sign this record's own
 [THEORY_NOTE](../THEORY_NOTE.md) finds opposite to the published
-calculation. The experimenter adjudicated it: this
+calculation. It was adjudicated: this
 record's value is the package value, the published one named beside it. **An adjudication is not a measurement.** The sign stays unset
 by experiment, and the fixed-lock pull direction would set it, section 4. The
 prediction cell linked above predates that decision, which raises it by
@@ -161,10 +161,10 @@ pointed at it, and here is what came back. The full audit trail is in
   ([`unregenerated_claims.csv`](../../results/unregenerated_claims.csv)). One
   published regression failed its reconstruction outright and every surface
   that quotes it says so.
-* **The acquisition-mode explanation, corrected by the experimenter.** The
+* **The acquisition-mode explanation, corrected on direct apparatus knowledge.** The
   record explained a 1.9 ms sample correlation as the scope's High Resolution
-  mode smoothing adjacent points. The experimenter said the mechanism was
-  wrong, and the instrument manual settled it his way: a disjoint
+  mode smoothing adjacent points. That mechanism was
+  wrong, and the instrument manual settled it instead: a disjoint
   per-interval average, capped at twelve bits, exactly where the campaign's
   files sit. Direct apparatus knowledge outranked a documented inference,
   and the correlation is unexplained, the decimation stage the

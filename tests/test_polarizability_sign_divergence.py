@@ -8,7 +8,7 @@ was looking: every place the suite touched the constant divided by its
 magnitude, so a sign could disagree with the package's own physics in
 the open for a month.
 
-The experimenter adjudicated it that night, on the evidence of
+It was adjudicated that night, on the evidence of
 docs/THEORY_NOTE.md section 5 (the measured static polarizability, the
 measured 5S tune-out wavelength, and the 6S lifetime that Orson's sign
 would place about 210 sigma from its measured value). The package now

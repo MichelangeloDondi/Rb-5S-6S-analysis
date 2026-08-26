@@ -27,7 +27,7 @@ from conftest import requires_raw_traces
 # act, not an accident.
 EXPECTED_CENSUS = {
     ("p_sweep", "canonical"): 100,       # 4 peaks x 5 powers x 5 repeats
-    ("p_sweep", "discarded"): 1,         # shot rejected by the experimenter at curation (4207, 25 mW)
+    ("p_sweep", "discarded"): 1,         # shot rejected at curation (4207, 25 mW)
     ("t_sweep", "canonical"): 59,        # 4 x {70,90,110} x 5, minus the 4154@70C double-save
     ("t_sweep", "discarded"): 3,         # shots rejected at curation ("seemed quite bad")
     ("ruler_t", "canonical"): 61,        # per-T ruler blocks (4192@90C block has a double-save)
@@ -123,6 +123,7 @@ def test_flags_match_folders(rows):
     # the canonical role folders where a loop over files might pick it up.
     role_dirs = {"t_sweep": "t_sweep", "p_sweep": "p_sweep",
                  "ruler_t": "rulers_t", "ruler_p": "rulers_p",
+                 # term-of-art: review is a frozen manifest classification token
                  "excluded": "excluded", "review": "review"}
     for r in rows:
         top = r["file"].split("/")[0]
@@ -135,4 +136,5 @@ def test_flags_match_folders(rows):
 
 
 def test_nothing_needs_review(rows):
+    # term-of-art: review is a frozen manifest classification token
     assert not [r for r in rows if r["flag"] == "review"]

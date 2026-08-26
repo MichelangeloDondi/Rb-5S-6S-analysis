@@ -1,5 +1,5 @@
 """
-Guards on the machine-attached `status` provenance column (review commission,
+Guards on the machine-attached `status` provenance column (added
 2026-07-12): every committed result CSV must carry the caveat *with the number*,
 so a plot script that never opens RESULTS.md cannot mistake a bound for a
 measurement. Pins: every result file has a status/flag column; annotated files
@@ -55,7 +55,7 @@ def test_annotated_statuses_use_controlled_vocab():
 
 
 def test_headline_bounds_tagged_bound_not_measurement():
-    # the reviewer's exact concern, pinned: a bare beta/S0 must not read as a
+    # the exact concern, pinned: a bare beta/S0 must not read as a
     # measurement, and the replaced per-peak fits must not look like a headline.
     d = {r["quantity"]: r for r in _rows("lever_crosscheck.csv")}
     assert d["beta_crosscheck"]["status"] == "BOUND"

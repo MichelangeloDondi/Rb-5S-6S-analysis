@@ -51,6 +51,27 @@ def _counts() -> dict[str, int]:
     # claim about the apparatus, so it has no source to reference and
     # referencing it would be false. Recorded here because a re-seed
     # without its reason is how a falling ratchet stops falling.
+    #
+    # Re-seeded again for the wiki figure captions, and the re-seed is
+    # only recorded because the guard EARNED it. Seven pages gained one
+    # decimal each, every one of them in a caption under a new figure.
+    # Each was resolved to its source before the seed moved: 2.405 is the
+    # first zero of J0; 993.4192 nm, 5.41 MHz, 11.86 bits, leverage 0.94
+    # and the factor 3.2 all resolve to committed rows. The seventh did
+    # NOT. A caption put the 6.25 MHz tooth spacing on the transition
+    # axis, where the constant is Omega and not Omega/2, and reading the
+    # page to fix it found the same error three lines above in prose. A
+    # caption is a claim surface that gets less scrutiny than the prose
+    # it sits under, which is the fig15 class exactly.
+    #
+    # Re-seeded a third time for the eight docs/history/ chapters, which are
+    # new files rather than new claims: docs/HISTORY.md became a hub over a
+    # directory and its entries moved out under it. The hub's count did not
+    # fall, because the hub keeps a quantity index that restates each
+    # entry's old and new value on purpose, so the same decimal is now
+    # counted in two files. That duplication is the index's whole function
+    # and it is also a place a value could drift, which is why it is
+    # written down here rather than absorbed silently.
     counts: dict[str, int] = {}
     for rel in _tracked_markdown():
         path = ROOT / rel
@@ -71,7 +92,7 @@ def test_unreferenced_decimals_only_fall():
     assert not grew, (
         "files gained unreferenced decimal claims. Either add an inline "
         "reference to the source (the design note has the syntax) or, "
-        "after a genuine review, re-seed with "
+        "after confirming the additions are legitimate, re-seed with "
         "python tests/test_reference_coverage.py --reseed:\n  "
         + "\n  ".join(f"{k}: {a} -> {b}" for k, (a, b) in sorted(grew.items())))
 

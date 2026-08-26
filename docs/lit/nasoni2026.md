@@ -55,73 +55,38 @@ section: oist-lineage
 
 # nasoni2026
 
-**Read for the injection-waist passage.** An unpublished master's thesis at the
-University of Bologna, defended July 2026, on the hollow-core-fibre dipole trap
-itself. It is filed here as **apparatus provenance**, not as
-literature.
+VERIFIED, 2026-07-31. Read for the injection-waist passage and the abstract (103 pp). The trap-depth model, loading-efficiency result, and fibre-characterization chapters are not read.
 
-## Why it needed a record
+Unpublished master's thesis, University of Bologna, defended July 2026. Apparatus provenance for the CRYST3 hollow-core fibre, not independent literature.
 
-The repository carried an "18 µm mode field" for the CRYST³ hollow-core fibre
-that entered [saha2010](saha2010.md) in commit 080d2b2 **with no citation**, was
-twice mis-attributed to published papers that do not contain it, and left open
-whether it was a radius or a diameter — a factor of two in every transit
-estimate built on it. This thesis is where it comes from.
+## The system
 
-## What it actually says
+An optical dipole trap for cold 87Rb made by coupling 1064 nm light into a hollow-core photonic-crystal fibre, with a near-field imaging system for beam alignment at the injection point.
 
-Verbatim, from its injection-setup section:
+## The numbers
 
-> "the real waist at the injection is expected to be closer to the target value
-> of approximately ~18 µm"
+The injection waist is designed to approximately 18 µm:
 
-with the ideal thin-lens calculation giving $w_{\rm inj} \simeq 13.6 \pm 0.1$ µm
-and an $M^2 = 1.2$ correction giving $\simeq 15.1$ µm. And then it is
-**measured**:
+> "the real waist at the injection is expected to be closer to the target value of approximately ~18 µm"
 
-> "the beam profile after the injection lens was characterized … yielding
-> $w_{\rm inj\text{-}x} = (17.1 \pm 0.7\ \mu m)$, $w_{\rm inj\text{-}y} = (19.3 \pm 0.4\ \mu m)$,
-> sufficiently close to the target waist"
+An ideal thin-lens calculation gives $w_{\rm inj} \simeq 13.6 \pm 0.1$ µm, and an $M^2 = 1.2$ correction gives $\simeq 15.1$ µm. The measured value:
 
-slightly elliptical, which the thesis attributes to the AOM compressing the beam
-in $y$ and expanding it in $x$.
+> "the beam profile after the injection lens was characterized … yielding $w_{\rm inj\text{-}x} = (17.1 \pm 0.7\ \mu m) $, $w_{\rm inj\text{-}y} = (19.3 \pm 0.4\ \mu m) $, sufficiently close to the target waist"
 
-**So the 18 µm is a radius** — the 3.3 MHz reading was right and the 6.6 MHz
-alternative is dead — and it is a target that the measurement bears out.
-Through the repo's own `transit_fwhm_from_w0` at 100 °C (CALCULATED):
+is slightly elliptical, attributed by the thesis to the AOM compressing the beam in $y$ and expanding it in $x$. The 18 µm figure is therefore a beam radius, not a diameter, borne out by the measurement.
 
-| $w_0$ | source | transit fwhm |
+The loading efficiency is quoted against an expected value of $0.41 \pm 0.04$ per cent.
+
+## Use in this record
+
+The measured injection waist belongs to the 1064 nm trapping beam, not to a 778 nm or 993 nm two-photon probe. A hollow-core guided mode depends on wavelength, so applying this waist to a different wavelength is an assumption, not a measurement. Converting each waist value to a transit-time-broadening FWHM at a cell temperature of 100°C (calculated) gives:
+
+| $w_0$ | source | transit FWHM |
 |---|---|---|
 | 13.6 µm | ideal thin-lens | 4.34 MHz |
 | 15.1 µm | $M^2 = 1.2$ | 3.90 MHz |
-| 17.1 µm | **measured**, $x$ | 3.45 MHz |
+| 17.1 µm | measured, $x$ | 3.45 MHz |
 | 18.0 µm | design target | 3.28 MHz |
-| 19.3 µm | **measured**, $y$ | 3.06 MHz |
+| 19.3 µm | measured, $y$ | 3.06 MHz |
 
-## What the fibre is actually for, and it is not this analysis
-
-**This is a private communication, not a statement in the thesis.** The 18 µm
-is the guided mode of the **1064 nm trapping laser**. The next step planned for that apparatus is
-**780 nm light for EIT cooling**. Running a 778 nm two-photon line in the
-hollow core is *an idea for a possible separate paper, and is speculative at
-this stage.*
-
-That matters because this repository had drifted into describing the
-hollow-core fibre as its own "guided-mode extension", as though a two-photon
-spectroscopy campaign there were planned. It is not. The fibre belongs to an
-EIT-cooling programme, and the two-photon use of it is one speculative option
-among others. Every transit number computed here for a 778 nm probe answers a
-hypothetical question, and is labelled as such wherever it appears.
-
-The physical caveat stands on top of that. A hollow-core guided mode is set by
-the fibre *at the wavelength in question*, so the 1064 nm trap mode is not the
-778 nm or 993 nm probe mode. Even if the speculative experiment happened, 18 µm
-would be an assumption about it rather than a measurement of it.
-
-## Other content, not read
-
-The trap-depth ("non-shallow") model, the loading-efficiency result quoted
-against an expected $0.41 \pm 0.04$ per cent, the near-field imaging alignment
-procedure, and the conveyor-belt plan for a counter-propagating second 1064 nm
-beam. If the speculative two-photon use of this fibre is ever pursued, the
-loading efficiency and the alignment method are the parts to return to.
+Per a private communication, the fibre's next planned use is 780 nm light for EIT cooling. A 778 nm two-photon line in the hollow core is a speculative idea for a possible separate paper, not a planned measurement. Any transit-time number computed here for a 778 nm probe therefore answers a hypothetical.

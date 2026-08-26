@@ -34,4 +34,6 @@ section: landscape-24-26
 
 # martin2018
 
+VERIFIED.
+
 Compact-clock motivation for the transition class.

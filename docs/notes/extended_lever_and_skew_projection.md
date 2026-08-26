@@ -42,15 +42,15 @@ one and does not yet promise a detection at the predicted size.
 The [AC-Stark dossier](../quantities/ac-stark-light-shift.md)'s competitive
 level runs at a waist near 16 microns, where the predicted on-axis shift is
 5.56 MHz against the measured skew threshold of about 2.5 MHz, a margin of
-2.2. That margin is computable from committed numbers and is the honest
+2.2. That margin is computable from committed numbers and is the
 extent of what can be projected today.
 
 The achievable uncertainty on kappa at that operating point is not
 projected here, for a stated reason rather than an oversight: at 5.56 MHz
 the shift is comparable to the 5.4 MHz linewidth, the perturbative
 cumulant scaling that sets the skew channel's cost at the current bound does not
-extrapolate across the four orders of magnitude in between, and the honest
-tool is a full lineshape simulation at the tight-focus geometry, which the
+extrapolate across the four orders of magnitude in between, and the
+tool it needs is a full lineshape simulation at the tight-focus geometry, which the
 record does not yet carry. That simulation is the named remaining
 calculation, and any number quoted for this level before it exists would be
 an invented one.

@@ -49,52 +49,16 @@ section: oist-lineage
 
 # sadeghi2026
 
-**Read 2026-07-30** from the held arXiv v1. Auckland (Dodd-Walls Centre).
+Held. Verified against the arXiv v1 PDF.
 
-**What it is.** Not primarily a lineshape paper. Photons spontaneously emitted
-by a strongly driven laser-cooled Cs ensemble into an optical nanofibre travel
-down ~64 m of conventional fibre, reflect from a fibre-Bragg-grating mirror, and
-return to interact with the same ensemble after a delay — a one-way cascaded /
-delayed-feedback atom–photon interface, motivated by distributed quantum
-computing.
+## The system
 
-**Why it matters to the nanofibre extension anyway, and this is the part to cite.** The ONF
-lineshape they report is dominated by things that are not the atom:
+Cold Cs atoms coupled to an optical nanofibre (Dodd-Walls Centre, Auckland). Photons spontaneously emitted by a strongly driven, laser-cooled Cs ensemble into the nanofibre travel down approximately 64 m of conventional fibre, reflect from a fibre-Bragg-grating mirror, and return to interact with the same ensemble after a delay: a cascaded, delayed-feedback atom-photon interface aimed at distributed quantum networking.
 
-- observed linewidth **~16 MHz** against a natural **5.2 MHz**;
-- fitting Γ and an additional Γ₀ gives **Γ = 6.45 ± 1.17 MHz** and
-  **Γ₀ = 8.44 ± 0.80 MHz**, the latter attributed to surface interactions,
-  magnetic-field gradients and laser linewidth together;
-- the frequency shift between direct and returned fluorescence **increases with
-  excitation power**, slope **(0.25 ± 0.06) MHz**, which they explain as atoms
-  whose resonance is surface-shifted being excited preferentially as the drive
-  strengthens.
+## The numbers
 
-That last mechanism is a *power-dependent shift arising from a spatially varying
-potential selecting which atoms are excited* — structurally the same kind of
-statement this programme makes about the AC-Stark ramp, in the geometry the nanofibre extension
-targets, and with the roles of the two effects reversed: for them the surface
-potential is the nuisance, for us the intensity distribution is the signal. A
-nanofibre lineshape treatment has to account for their Γ₀ before it can claim to
-have modelled anything.
+The observed nanofibre fluorescence linewidth is approximately 16 MHz, against a natural linewidth of 5.2 MHz. A fit to a linewidth Γ and an additional broadening Γ₀ gives Γ = 6.45 ± 1.17 MHz and Γ₀ = 8.44 ± 0.80 MHz, the latter attributed jointly to surface interactions, magnetic-field gradients, and laser linewidth. The frequency shift between direct and returned fluorescence increases with excitation power, with slope (0.25 ± 0.06) MHz, attributed to atoms whose resonance is surface-shifted being excited preferentially as the drive strengthens.
 
-**A correction to how this repository described it.** The intake files call it
-"power-dependent surface shift … atoms redistributing in the van der Waals
-range". On the abstract alone that looked wrong, because the abstract is about
-the networking result. Reading it, the intake description is essentially right —
-the effect is there in the paper, with the numbers above. The initial suspicion
-is recorded because it is a reminder that an abstract can foreground a different
-paper than the one you need.
+## Use in this record
 
-**The lead it turned up, which may matter more than the paper.** Its ref [25] is
-B. Patterson, P. Solano, P. Julienne, L. Orozco and S. Rolston, *"Spectral
-asymmetry of atoms in the van der Waals potential of an optical nanofiber"*,
-Phys. Rev. A **97**, 032509 (2018). Lineshape **asymmetry** produced by a
-distributed potential, in the ONF geometry, a direct precedent for the nanofibre extension's
-central object, and absent from these holdings entirely when this note was
-written. **Obtained and read the same day**: see
-[patterson2018](patterson2018.md). It confirms the reasoning that made
-[wieman1987](wieman1987.md) matter for this analysis, and it turns this paper's Γ₀ into
-part of a pattern — Patterson report the same ~2 MHz of unexplained excess width
-in Rb that this paper reports in Cs, and say explicitly that they cannot account
-for it.
+This power-dependent shift is structurally the same class of effect as the AC-Stark ramp analysed in this programme, with the roles of signal and nuisance reversed: here the surface potential is the nuisance, in the 5S-6S analysis the intensity distribution is the signal. Reference 25 of the paper, Patterson et al., "Spectral asymmetry of atoms in the van der Waals potential of an optical nanofiber," Phys. Rev. A 97, 032509 (2018) ([patterson2018](patterson2018.md)), reports a comparable unexplained excess width (~2 MHz) in Rb.

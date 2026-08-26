@@ -36,63 +36,33 @@ section: prior-art
 
 # stalnaker2006
 
-Nearest prior art: a spatially-varying AC-Stark shift producing an asymmetric lineshape from which alpha was extracted (standing wave, numerical Bloch). Bounds our novelty claim (we do NOT claim the asymmetry's existence) and supplies the fringe-averaged FM regime. Lineage: Wieman, Noecker, Masterson & Cooper, *PRL* **58**, 1738 (1987), the Cs 6S→7S parity-violation precedent.
+Held. Eq. (45), Eqs. (37)-(38), and Table IV were verified against the PDF, as was the wording drawn from this paper's introduction into [wieman1987](wieman1987.md). The delineation table and the fringe-suppression derivation below have not been checked against the PDF.
 
-**What it is.** Yb 6s² ¹S₀ → 5d6s ³D₁ (408 nm) — a one-photon forbidden Stark-induced transition, collimated atomic beam, intense standing wave in a power-buildup cavity. Numerical optical-Bloch lineshapes, integrated over trajectories, velocities and standing-wave phase. *(A "20–60 min each" computation time appeared here until 2026-07-30. No such figure is in the paper — searches for the numbers, for "takes", "runtime", "CPU" and "computation" all come up empty. It has been removed rather than re-sourced.)* They fit the measured asymmetric lineshapes and extract the ac-Stark parameter alpha = -0.312(34) Hz/(V/cm)^2 — so the asymmetry-as-observable idea exists in prior art; the novelty claim must be narrower than "first use of the asymmetry."
+## The system
 
-**Delineation (what is genuinely not in Stalnaker/Wieman):**
+Yb $6s^2 ^1S_0 \to 5d6s ^3D_1$ (408 nm), a one-photon forbidden Stark-induced transition studied with a collimated atomic beam crossing an intense standing wave in a power-buildup cavity. Numerical optical-Bloch lineshapes, integrated over trajectories, velocities, and standing-wave phase, are fit to the measured asymmetric lineshapes to extract the ac-Stark parameter. Lineage: Wieman, Noecker, Masterson, and Cooper, *Phys. Rev. Lett.* **58**, 1738 (1987), the Cs $6S \to 7S$ parity-violation precedent.
 
-| Axis | Stalnaker 2006 | This work |
+## The numbers
+
+Eq. (45) gives $\alpha_0^{ac}(^3D_1) + \alpha_2^{ac}(^3D_1) - \alpha_0^{ac}(^1S_0) = -0.312(34)$ Hz/(V/cm) $^2$, a combination of scalar and tensor ac polarizabilities minus the ground-state scalar, not a single polarizability. Table IV (all-data row) gives ac-Stark shift $-0.3284(5) $, $\beta = 2.237(2) $, $s = 0.9730(3) $, $N = 45$. Eq. (47) gives $\vert \beta\vert  = 2.19(8)\times10^{-8} e a_0$/(V/cm). The experiment runs at a modulation depth of 0.28 to 7.4 MHz, from Eq. (37), $\xi = \tfrac12\alpha\varepsilon_0^2$, and Eq. (38), $\Omega/2\pi = 2v_y/\lambda = 2\Delta\nu_D$, with the factor of two arising because the ac-Stark shift is quadratic, so the shift's period is half the light's wavelength. The paper's carrier-only criterion is $\xi/2 \ll \Omega$, not $\xi \ll \Omega$.
+
+## Delineation from the 5S-6S two-photon case
+
+| Axis | Stalnaker 2006 | 5S-6S two-photon |
 |---|---|---|
-| Transition | 1-photon Stark-induced (signal proportional to I) | 2-photon (signal proportional to I^2) |
+| Transition | 1-photon Stark-induced (signal proportional to $I$) | 2-photon (signal proportional to $I^2$) |
 | Ensemble | collimated beam, velocity-selective | thermal vapor cell |
-| Regime | fringe-resolved: FM index xi/Omega >~ 1, Bessel sidebands, sub-Doppler features | fringe-averaged: xi/Omega ~ 10^-3, atoms see the time-averaged envelope |
-| Lineshape | numerical Bloch, per-condition | closed-form shift density f(s) proportional to \|s\| on [-S0,0] |
-| Extraction | full-shape fit; needs beta, cavity field, velocity model, per-scan free center | closed-form ramp fit with a per-trace free center; the ramp SHIFT is absorbed by the free center, so S0 is read from the drift-invariant SHAPE ASYMMETRY (skew) |
-| Saturation | saturating + hole-burning entangled with the asymmetry | unsaturated throughout (amplitude proportional to P^2 confirmed) |
+| Regime | fringe-resolved: FM index $\xi/\Omega \gtrsim 1$, Bessel sidebands, sub-Doppler features | fringe-averaged: $\xi/\Omega \sim 10^{-3}$, atoms see the time-averaged envelope |
+| Lineshape | numerical Bloch, per-condition | closed-form shift density $f(s) \propto \vert s\vert $ on $[-S_0,0]$ |
+| Extraction | full-shape fit, needing $\beta$, cavity field, velocity model, per-scan free center | closed-form ramp fit with a per-trace free center, which absorbs the ramp shift, so $S_0$ is read from the drift-invariant shape asymmetry (skew) |
+| Saturation | saturating, with hole-burning entangled with the asymmetry | unsaturated throughout (amplitude proportional to $P^2$ confirmed) |
 
-The generic quasi-static law both regimes reduce to: signal weight proportional to I^n over a Gaussian envelope gives dA proportional to dI/I, hence f(s) proportional to \|s\|^(n-1) — uniform for their n=1, triangular for our n=2. The same dA proportional to dI/I holds for a thin evanescent shell, the geometry-independence bridge to the nanofibre extension.
+Both regimes reduce to the same quasi-static law: signal weight proportional to $I^n$ over a Gaussian envelope gives $dA \propto dI/I$, hence $f(s) \propto \vert s\vert ^{n-1}$, uniform for Stalnaker's $n=1$ and triangular for the two-photon case's $n=2$. The same $dA \propto dI/I$ relation holds for a thin evanescent shell, extending the argument to the nanofibre geometry.
 
-**Gift #1 — their FM framework settles our <E^2> convention question.** Their Sec. IV/Fig. 6: an atom crossing standing-wave fringes sees frequency modulation of depth xi = (1/2)*alpha*epsilon0^2 at rate Omega/2pi = 2v/lambda. For us: lambda/2 ~ 0.50 um fringes, axial thermal speed ~280 m/s -> Omega/2pi ~ 0.56 GHz, xi = S0 <~ 1 MHz -> modulation index xi/Omega <~ 2e-3 -> pure carrier at the time-averaged intensity. So the shift is set by the fringe-averaged intensity I1+I2 = (1+rho)*I1 — no coherent x2 fringe enhancement. But the fringe-resolved tail is NOT benign: near-transverse atoms (small axial speed) sample the node/antinode arcsine, and because the fringe multiplies the shift (s -> s(1+x), x arcsine) it SUPPRESSES the ramp skew — kappa3 -> S0^3*(1/135 - f_res/10) at rho=1, a -13.5*f_res fractional leverage. As a fraction of the intrinsic +0.566 triangle skew: negligible at the w0=64 um prior (~7-14% of an already-below-noise skew), ~26-28% at w0=16 um, and same-sign-additive to the beam-divergence correction (`rb5s6s/fringe_tail.py`).
+## The fringe-modulation regime
 
-## Audit against the PDF, 2026-07-30
+Section IV and Fig. 6 give the fringe-modulation framework used here. An atom crossing standing-wave fringes sees frequency modulation of depth $\xi = \tfrac12\alpha\varepsilon_0^2$ at rate $\Omega/2\pi = 2v/\lambda$. For a fringe spacing $\lambda/2 \approx 0.50 \mu\text{m}$ and axial thermal speed $\approx 280$ m/s, $\Omega/2\pi \approx 0.56$ GHz and $\xi = S_0 \lesssim 1$ MHz, giving a modulation index $\xi/\Omega \lesssim 2\times10^{-3}$: a pure carrier at the fringe-averaged intensity $I_1+I_2=(1+\rho)I_1$, with no coherent fringe enhancement of the shift. Near-transverse atoms, with small axial speed, instead sample the node-antinode arcsine distribution, which suppresses the ramp skew: $\kappa_3 \to S_0^3(1/135 - f_{res}/10)$ at $\rho=1$, a $-13.5 f_{res}$ fractional leverage. As a fraction of the intrinsic $+0.566$ triangle skew, this is small at $w_0=64 \mu\text{m}$ (7-14% of an already-below-noise skew) and reaches 26-28% at $w_0=16 \mu\text{m}$, additive in sign to the beam-divergence correction.
 
-Not a full pass, but the claims §5 of `LITERATURE.md` leans on were checked
-directly, and they hold.
+## Use in this record
 
-- **The concession is correct.** Their Eq. (45) does extract a polarizability
-  from the fitted lineshapes:
-  $\alpha_0^{ac}(^3D_1) + \alpha_2^{ac}(^3D_1) - \alpha_0^{ac}(^1S_0) = -0.312(34)$
-  Hz/(V/cm)². Note it is a **combination** of scalar and tensor ac
-  polarizabilities minus the ground-state scalar — structurally the same kind of
-  differential this programme calls $\Delta\alpha$, not a single $\alpha$. Their
-  Table IV gives the per-field-setting fits (all-data row: ac-Stark shift
-  −0.3284(5), $\beta$ 2.237(2), $s$ 0.9730(3), $N = 45$), and Eq. (47) gives
-  $|\beta| = 2.19(8)\times10^{-8}$ $e a_0$/(V/cm).
-- **The FM framework is as this note describes it.** Eq. (37) is
-  $\xi = \frac{1}{2}\alpha\varepsilon_0^2$ for the modulation *depth*, and
-  Eq. (38) is $\Omega/2\pi = 2v_y/\lambda = 2\Delta\nu_D$ for its *rate*, with
-  the factor of two arising "from the fact that the ac-Stark shift is quadratic
-  so that the period of the shift is half that of the wave length". Their own
-  experiment runs at a modulation depth of **0.28 to 7.4 MHz**. Fig. 6 shows the
-  Bessel-sideband evolution at $\xi = 1\Omega$, $10\Omega$, $100\Omega$.
-- **One nuance worth carrying, because it is a factor of two.** Their
-  carrier-only criterion is stated as $\xi/2 \ll \Omega$, not $\xi \ll \Omega$.
-  This programme quotes a modulation index $\xi/\Omega \lesssim 2\times10^{-3}$,
-  which satisfies either form by three orders of magnitude, so nothing shipped
-  changes — but a paper sentence should use their inequality, not a rounded
-  version of it.
-- **Every characterisation of Wieman that [wieman1987](wieman1987.md) sources
-  from this paper's introduction is verbatim**, including "Spatial variation of
-  the intense standing-wave light field leads to position- and
-  velocity-dependent ac-Stark shifts. This results in asymmetric line shapes
-  exhibiting sub-Doppler features" and "generalizes and extends the approach of
-  Wieman et al." Confirmed also that this paper **never** characterises Wieman's
-  calculation as numerical, which is why that word was struck from the Wieman
-  note the same day.
-
-**Still not done:** a claim-by-claim pass over the delineation table and the
-"Gift #1" fringe-tail derivation. Those are this repository's own inferences
-built on the paper rather than reports of it, so they need checking against
-`rb5s6s/fringe_tail.py` as well as against the PDF.
-
+The asymmetric-lineshape method used in this record's two-photon analysis is bounded in novelty by this paper. A spatially-varying ac-Stark shift producing an asymmetric lineshape, from which a polarizability parameter is extracted, is established prior art, generalizing Wieman (1987). What differs is the transition order (two-photon vs. one-photon), the ensemble (vapor cell vs. beam), the regime (fringe-averaged vs. fringe-resolved), and the extraction method (closed-form skew fit vs. full numerical-Bloch fit).

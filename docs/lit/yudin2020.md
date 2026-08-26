@@ -41,25 +41,20 @@ section: prior-art
 
 # yudin2020
 
-**VERIFIED, 2026-08-02**, full text read.
+Verified. Full text read.
 
-**What it is.** The methods paper of the power-modulation family: measure the
-clock error signal at two intensity levels and combine them so the servo
-crosses zero at the unperturbed resonance (PM-CES), or servo an engineered
-antishift until it cancels the real one (PM-ACS). Explicitly the cw analog of
-the autobalanced-Ramsey lineage, general across one- and two-photon optical
-clocks, CPT and microwave.
+## The method
 
-**Why it is cited here.** Its model of the light shift is one line: the shift
-is linear in the optical power, one coefficient, one value per setting. No
-beam profile, no distribution, no moments, no asymmetric lineshape appears
-anywhere in the paper. This is the most general and most authoritative
-statement of the suppress-the-mean approach, which makes it the strongest
-member of the comparison class ([gerginov2018](gerginov2018.md),
-[andeweg2026](andeweg2026.md), [li2024b](li2024b.md)) against which the
-distribution-reading method is delineated. Its own Rb two-photon citation is
-the 5S to 5D line, not this one.
+Two power-modulation servo schemes for suppressing the light shift in atomic clocks: measuring the clock error signal at two intensity levels and combining them so the servo crosses zero at the unperturbed resonance (PM-CES), or servoing an engineered antishift until it cancels the real one (PM-ACS). Both are presented as the continuous-wave analogue of the autobalanced-Ramsey method, general across one- and two-photon optical clocks, CPT clocks, and microwave clocks.
 
-**One caution when citing.** The paper is theory. It reports no suppression
-factor of its own, so quote its demonstrated relatives for numbers, not this
-reference.
+## The light-shift model
+
+The light shift is modelled as linear in the optical power, one coefficient, one value per setting. No beam profile, distribution, moments, or asymmetric lineshape appears anywhere in the paper. Its own two-photon rubidium citation is the 5S to 5D line, not 5S to 6S.
+
+## Validity
+
+The paper is theoretical and reports no suppression factor of its own. Numbers for the power-modulation approach are found in its demonstrated relatives, [gerginov2018](gerginov2018.md), [andeweg2026](andeweg2026.md), and [li2024b](li2024b.md).
+
+## Use in this record
+
+Cited as the general statement of the suppress-the-mean approach against which the distribution-reading method used here is compared. No numerical value from this paper is used in the analysis.

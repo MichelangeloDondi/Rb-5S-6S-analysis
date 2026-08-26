@@ -41,7 +41,7 @@ that produce no results table.
 | module | what it computes | documented in |
 |---|---|---|
 | `ingest.py` | reads one oscilloscope CSV and the dataset manifest, validating the format rather than trusting it, and returns time in milliseconds with no frequency calibration applied | [The measurement](../docs/methods/01_the_measurement.md) |
-| `qc.py` | per-trace quality metrics that fit no lineshape, and a symmetric comparison of the experimenter's curation against them, each trace against its same-condition siblings | [The measurement](../docs/methods/01_the_measurement.md), [DATA.md](../docs/DATA.md) |
+| `qc.py` | per-trace quality metrics that fit no lineshape, and a symmetric comparison of the hand curation against them, each trace against its same-condition siblings | [The measurement](../docs/methods/01_the_measurement.md), [DATA.md](../docs/DATA.md) |
 | `noise.py` | the empirical noise law against signal level from second differences, and the residual correlation time that later fits inflate their errors by | [The statistics](../docs/methods/06_the_statistics.md) |
 | `ruler.py` | the sweep rate from the EOM comb: autocorrelation initialisation, one simultaneous fit of the whole tooth grid, and the amplitude test of the tooth labelling | [From volts to a frequency axis](../docs/methods/05_the_frequency_ruler.md), [ruler validity and trimmer note](../docs/notes/ruler_validity_and_trim_prereg.md) |
 | `rate_model.py` | the time-resolved sweep rate, one straight line per session and peak with scatter-based covariance, in place of a before-and-after bracket average | [ruler validity and trimmer note](../docs/notes/ruler_validity_and_trim_prereg.md) |

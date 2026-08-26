@@ -31,19 +31,14 @@ section: prior-art
 
 # caracasnunez2023
 
-**Held 2026-07-29** (published Opt. Express version; front matter read).
-Universidad de los Andes, Bogotá: the 6S–8S two-photon absorption
-cross-section in Cs, theory and experiment in one study; the measured value
-is sigma_TPA = 3.10e-24 cm^4 (their notation and conditions -- read the
-definition from the paper before comparing, two-photon cross-section
-conventions differ).
+Held. Front matter verified against the published Opt. Express version.
 
-Two roles here. First, it is a third independent group on the Cs 6S–8S sister
-line, alongside MPQ ([Fendel 2007](fendel2007.md)) and NCKU
-([Lee 2012](lee2012.md)) — the line one element to the left of 993 nm is an
-active, multi-group field in a way 5S–6S is not, which is context worth having
-when arguing the 993 nm line is under-characterised rather than uninteresting.
-Second, a measured absolute cross-section on the sister transition is the
-right anchor for signal-budget scaling: the feasibility estimates here (HCF,
-ONF) currently scale from the 2025 campaign's own count rates, and a
-literature cross-section lets that budget be checked from a second direction.
+## The system and method
+
+A theoretical and experimental study of the 6S-8S two-photon absorption cross-section in caesium, from Universidad de los Andes, Bogotá. The measured value is sigma_TPA = 3.10e-24 cm^4, in the paper's own notation and conditions. Two-photon cross-section conventions differ across the literature, and the definition should be checked before comparing this value with others.
+
+This is a third independent group working on the Cs 6S-8S line, alongside MPQ ([Fendel 2007](fendel2007.md)) and NCKU ([Lee 2012](lee2012.md)).
+
+## Use in this record
+
+A measured absolute cross-section on the Cs 6S-8S sister transition, usable as an independent anchor for signal-budget scaling estimates (HCF, ONF) that would otherwise rest only on this campaign's own count rates.

@@ -59,95 +59,24 @@ section: prior-art
 
 # bruvelis2012
 
-**Bibliographic record from Crossref**, which is authoritative for the DOI. The
-full abstract from the publisher listing confirms the author list and the
-citekey correction below.
+Held. Read in full. Bibliographic record confirmed against Crossref. Authors: Bruvelis, Ulmanis, Bezuglov, Miculis, Andreeva, Mahrov, Tretyakov and Ekers.
 
-**Abstract, verbatim.** "We revisit transit time broadening for one of the
-typical experiment designs in molecular spectroscopy, that of a collimated
-supersonic beam of particles crossing a focused Gaussian laser beam. In
-particular, we consider a Doppler-free arrangement of a collimated supersonic
-beam of Na₂ molecules crossing two counterpropagating laser beams that excite a
-two-photon transition in a three-level ladder scheme. We propose an analytical
-two-level model with a virtual intermediate level to show that the excitation
-line shape is described by a Voigt profile and provide the validity range of this
-model with respect to significant experimental parameters. The model also shows
-that line broadening due to the curvature of laser field wave fronts on the
-particle beam path is exactly compensated by increased transit time of particles
-farther away from the beam axis, such that the broadening is determined solely by
-the size of the laser beam waist. The analytical model is validated by comparing
-it with numerical simulations of density-matrix equations of motion using a split
-propagation technique and with experimental results."
+## Abstract
 
-**Read in full, and it weakens the transfer rather than strengthening it.**
-This note previously argued from the abstract that the geometry is "the same
-class as this programme's, not merely a general ladder result, which
-strengthens the transfer considerably". The excitation scheme is indeed the
-same class, Doppler-free and counterpropagating through a virtual intermediate
-level. The geometry is not.
+"We revisit transit time broadening for one of the typical experiment designs in molecular spectroscopy, that of a collimated supersonic beam of particles crossing a focused Gaussian laser beam. In particular, we consider a Doppler-free arrangement of a collimated supersonic beam of Na₂ molecules crossing two counterpropagating laser beams that excite a two-photon transition in a three-level ladder scheme. We propose an analytical two-level model with a virtual intermediate level to show that the excitation line shape is described by a Voigt profile and provide the validity range of this model with respect to significant experimental parameters. The model also shows that line broadening due to the curvature of laser field wave fronts on the particle beam path is exactly compensated by increased transit time of particles farther away from the beam axis, such that the broadening is determined solely by the size of the laser beam waist. The analytical model is validated by comparing it with numerical simulations of density-matrix equations of motion using a split propagation technique and with experimental results."
 
-Their laser is focused by a **cylindrical lens** into a sheet, with measured
-waists of 26.1 and 86 µm along one axis and about 1 cm along the other, and it
-is crossed at right angles by a **collimated supersonic beam of Na₂ molecules**
-at 1340 m/s with a 260 m/s spread. This campaign focuses a circular beam into an
-isotropic thermal vapour. The compensation they derive is between wavefront
-curvature along a single particle path and the transit time of particles farther
-off axis, which is a statement about that crossed-beam arrangement.
+## The system
 
-The paper makes the distinction itself, which is what settles it:
+The laser is focused by a cylindrical lens into a sheet, with measured waists of 26.1 and 86 µm along one axis and about 1 cm along the other, crossed at right angles by a collimated supersonic beam of Na₂ molecules at 1340 m/s with a 260 m/s spread. The excitation scheme is Doppler-free two-photon absorption through a virtual intermediate level in a three-level ladder, the same class as a retro-reflected two-photon transition, but the geometry, a crossed collimated molecular beam and a laser sheet, differs from a circular beam focused into an isotropic thermal vapour.
 
-> "mechanisms of the formation of Voigt profile … in the case of collimated
-> beams and in the case of thermal gases are different. In the former case all
-> molecules have nearly the same velocity, and the Voigt profile results from
-> Gaussian switching of coupling between the molecules and the laser field,
-> while in the latter case it results from the Maxwell velocity distribution"
+The paper distinguishes the two cases explicitly:
 
-So both geometries give a Voigt profile and they arrive at it by different
-routes. Citing this paper as external support for a thermal-vapour transit
-kernel would be citing the right conclusion from the wrong mechanism.
+> "mechanisms of the formation of Voigt profile … in the case of collimated beams and in the case of thermal gases are different. In the former case all molecules have nearly the same velocity, and the Voigt profile results from Gaussian switching of coupling between the molecules and the laser field, while in the latter case it results from the Maxwell velocity distribution"
 
-What does survive: the analytical model is validated twice, against
-density-matrix numerics and against experiment, so the compensation result is
-not resting on analytics alone. It is a clean statement that in a crossed-beam
-geometry the divergence does not add an independent width.
+## The result
 
-**The result this programme needs.** For two-photon excitation in a three-level
-ladder, an analytical two-level treatment with a virtual intermediate level gives
-an excitation lineshape that is a **Voigt profile**, with the validity range
-stated against the experimental parameters. The geometric part is the one that
-matters here: line broadening caused by the **curvature of the laser wavefronts**
-along the particle path is *exactly compensated* by the **increased transit time
-of particles farther from the axis**, so the broadening is determined **solely by
-the size of the beam waist**.
+For two-photon excitation in a three-level ladder, an analytical two-level treatment with a virtual intermediate level gives an excitation lineshape that is a Voigt profile, with a validity range stated against the experimental parameters, validated against both density-matrix numerics and experiment. The geometric result: line broadening caused by the curvature of the laser wavefronts along the particle path is exactly compensated by the increased transit time of particles farther from the axis, so the broadening is determined solely by the size of the beam waist.
 
-That is precisely the assumption underneath M9 and the whole
-`w0`-as-dominant-systematic story: the transit contribution is a function of
-$w_0$ alone, and the beam's divergence does not add a second, independent width.
-**A correction to how this note first described the transit kernel, because it
-had the repository's own position backwards.** Neither
-[biraben1979](biraben1979.md) nor [lehmann2021](lehmann2021.md) gives a Voigt:
-Biraben, Bassini & Cagnac obtain a *convolution of a Lorentzian and a
-double-exponential* — the cusped kernel — and Lehmann's form is the same family.
-In this repository the **Voigt is the rival**, not the inherited assumption: it
-is the `transit_kind='gaussian'` leg of the M4c/M8 model-form systematic on
-$\beta_{\rm self}$, run precisely so the difference against the two-sided
-exponential can be quoted as an error bar. So Bruvelis reporting a **Voigt**
-excitation profile is not a confirmation of what this repository assumes — it is
-a data point on the side of the rival form, for a different geometry (supersonic
-molecular beam) and a different observable. What transfers cleanly is the
-geometric result below; the lineshape claim needs the full text and a careful
-look at whether their two-level-with-virtual-intermediate reduction is doing the
-Gaussianising.
+## Use in this record
 
-**Two things to hold onto rather than assume.** The measurement is a collimated
-supersonic beam of **Na₂ molecules**, not a hot alkali vapour — the derivation is
-for a general ladder and the transfer is geometric, but this is not a vapour-cell
-result and should not be cited as one. And the exact-compensation claim is
-strong enough that it should be read in the original before this analysis leans on it.
-a summary is not a derivation.
-
-**Citekey correction.** This paper was carried as `bevilacqua2012` from the
-literature audit onward. The volume, page, year and physics description were all
-correct; the first author was not — there is no Bevilacqua among
-Bruvelis, Ulmanis, Bezuglov, Miculis, Andreeva, Mahrov, Tretyakov and Ekers. The
-old key is retired rather than aliased, so nothing can cite it by accident.
+The geometric compensation result, that the transit contribution is a function of the beam waist $w_0$ alone and the beam's divergence does not add a second, independent width, supports this repository's treatment of $w_0$ as the dominant transit systematic (M9). The lineshape result is different: this paper reports a Voigt excitation profile, while [biraben1979](biraben1979.md) and [lehmann2021](lehmann2021.md) both give a convolution of a Lorentzian and a double-exponential, the cusped kernel this repository uses, rather than a Voigt. In this repository the Voigt is the rival form, the `transit_kind='gaussian'` leg of the M4c/M8 model-form systematic on $\beta_\text{self}$, run so the difference against the two-sided exponential can be quoted as an error bar. The measured system here is a collimated supersonic beam of Na₂ molecules, not a hot alkali vapour: the derivation is for a general ladder and the transfer to this repository is on the geometry, not the species.

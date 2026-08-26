@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Run the M0 quality-control metrics over the full manifest and audit the
-experimenter's curation symmetrically (pre-registered 2026-07-11: "challenge
+curation symmetrically (pre-registered 2026-07-11: "challenge
 my choices on both sides").
 
 Outputs
@@ -20,8 +20,8 @@ stdout                   the audit:
 
 Policy reminder (docs/PLAN.md): hard-QC failures may exclude canonical traces
 from headline fits (QC-based, pre-registered). Clean-looking discards are
-REPORTED, not auto-acted-on. The experimenter is the instrument for apparatus
-context.
+REPORTED, not auto-acted-on. Apparatus context is supplied by hand, not
+inferred from the data.
 
 Sibling outliers used to be report-only too. Since 2026-08-04 a single
 pre-registered rule (docs/notes/ruler_validity_and_trim_prereg.md, amendment 2

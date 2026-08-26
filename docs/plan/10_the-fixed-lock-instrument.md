@@ -35,8 +35,8 @@ the scope identity and firmware go in the block manifest, and the acquisition
 script is versioned here.
 
 The vertical resolution is not the constraint, and an earlier version of
-this section said it was. The experimenter asked whether the small features
-were not already below the noise, and the measurement answered him
+this section said it was. The question of whether the small features
+were already below the noise went to measurement, which answered it
 ([`quantisation.csv`](../../results/quantisation.csv), threshold fixed
 before the first run): across all 35 quality-passed conditions the analogue
 baseline noise is 5.2 to 246 times the true quantisation step, median 37,

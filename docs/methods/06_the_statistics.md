@@ -394,7 +394,7 @@ pre-migration 389.7 and 0.0032, and the map-minimum certification changed
 character, from a free fit that was the map's optimum to a zoom map that finds
 a point 1.3 below it. The pre-migration values and the reason they moved are
 recorded once, in
-[the history](../HISTORY.md#the-environment-migration-landed-2026-08-23).
+[the history](../history/07_the-environment-and-the-code.md#the-environment-migration-landed-2026-08-23).
 That is what an
 ill-conditioned family does, and it is the reason this section exists.
 

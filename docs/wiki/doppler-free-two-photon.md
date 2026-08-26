@@ -10,7 +10,7 @@ first-order Doppler shift, and what that immunity costs.
 same-beam pedestal it leaves behind, and the doubled laser-noise sensitivity
 that follows from summing both photons' detuning.
 **Skip if.** You want the general closure rule for any photon count and
-colour combination rather than this apparatus's two-photon case. That is
+colour combination, not this apparatus's two-photon case. That is
 [Doppler-free geometries](doppler-free-geometries.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -23,46 +23,55 @@ frequency. Since the velocities span a thermal distribution, an ordinary
 absorption line is smeared over hundreds of megahertz by the Doppler effect,
 which buries every narrower feature in it.
 
-Two-photon spectroscopy removes the smearing with geometry rather than with
-cooling. Send the beam through the vapour and retro-reflect it, so every atom
-sees two counter-propagating beams of the same frequency $\nu$. An atom
-moving with velocity component $v$ along the beam sees the photon it meets
-head-on shifted up to $\nu(1+v/c)$ and the one it runs from shifted down to
+![A fitted Doppler-free two-photon line with its fit residuals](../../figures/fig0_spectrum.png)
+
+*A fitted Doppler-free line with its residuals, from this campaign's own data.*
+
+Two-photon spectroscopy removes the smearing using geometry, without cooling.
+Send the beam through the vapour and retro-reflect it, so every atom sees two
+counter-propagating beams of the same frequency $\nu$. An atom moving with
+velocity component $v$ along the beam sees the photon it meets head-on
+shifted up to $\nu(1+v/c)$ and the one it runs from shifted down to
 $\nu(1-v/c)$. If it absorbs one from each, the two-photon resonance condition
 is
 
 $$\nu\Big(1+\tfrac{v}{c}\Big) + \nu\Big(1-\tfrac{v}{c}\Big) = 2\nu$$
 
-and the velocity term cancels exactly to first order, for every atom. Not for
-a selected velocity class: the whole ensemble contributes to one narrow line.
-A second-order term proportional to $(v/c)^2$ survives and is normally
-negligible.
+and the velocity term cancels exactly to first order, for every atom. The
+cancellation covers the whole ensemble, not a single selected velocity class,
+so every atom contributes to one narrow line. A second-order term
+proportional to $(v/c)^2$ survives and is normally negligible.
 
-Three consequences follow, and all three shape how such an experiment is
-built. The transition is driven at half its own frequency, so the transition
-axis is twice the laser axis and every frequency has to be labelled with
-which axis it is on. Atoms that take both photons from the same direction are
-not Doppler-free, and they produce a broad pedestal underneath the narrow
-line. And because the detuning sums both photons, laser frequency jitter
-enters twice rather than once: the fluctuation is common to both photons,
-being one source retro-reflected onto itself, so it adds where the Doppler
-shift cancels. A two-photon line is twice as sensitive to laser noise as a
-single-pass one.
+Three consequences follow. The transition is driven at half its own
+frequency, so the transition axis is twice the laser axis, and every
+frequency has to be labelled with which axis it is on. Atoms that take both
+photons from the same direction are not Doppler-free and produce a broad
+pedestal underneath the narrow line. And because the detuning sums both
+photons, laser frequency jitter enters twice, not once. It is one source
+retro-reflected onto itself, so the same fluctuation reaches both photons and
+adds where the Doppler shift cancels. A two-photon line is twice as sensitive
+to laser noise as a single-pass one.
 
 ## What problem it solves
 
 It makes sub-megahertz structure visible in a room-temperature vapour cell,
-without a trap, a beam or any cooling. That is why two-photon transitions
-carry so many optical frequency standards: the linewidth is set by the atom
-and the apparatus rather than by the temperature.
+without a trap, a beam, or any cooling. The linewidth is set by the atom and
+the apparatus, not by the temperature, which is why two-photon transitions
+are used for so many optical frequency standards.
 
 ## Where this repository uses it
 
 It is the measurement. The 5S to 6S transition in rubidium is driven by two
 993 nm photons in a retro-reflected beam through a warm cell, and the
 fluorescence from the decay back down is what the detector counts.
-[Methods chapter 1](../methods/01_the_measurement.md) derives the cancellation
-and sets out the four hyperfine components the experiment resolves.
+
+![The 5S to 6S level scheme with its resolved hyperfine components](../../figures/fig13_level_scheme.png)
+
+*The 5S1/2 to 6S1/2 level scheme driven by two 993 nm photons, with the four resolved hyperfine components.*
+
+[Methods chapter 1](../methods/01_the_measurement.md) derives the
+cancellation and sets out the four hyperfine components the experiment
+resolves.
 
 Two of the consequences above are load-bearing here. Every frequency in the
 repository is quoted on the transition axis unless its name says otherwise,
@@ -75,23 +84,21 @@ this epoch.
 
 ## Crossover resonances, and why this geometry has none
 
-Saturated-absorption spectroscopy trains the expectation that between every
-pair of lines sits a crossover. The mechanism needs two things: a shared
-level, so one pump transition can burn a population feature another probe
-transition reads, and velocity selection, so a specific velocity class links
-the two frequencies. Doppler-free two-photon spectroscopy has neither. Every
-velocity class contributes at the same summed frequency, which is the entire
-point of the counter-propagating geometry, so there is no velocity class to
-share, and hyperfine components with different ground and excited levels
-share no state to burn.
+Saturated-absorption spectroscopy has a crossover between every pair of
+lines. The mechanism needs two things: a shared level, so a pump transition
+can burn a population feature that a probe transition reads, and velocity
+selection, so a specific velocity class links the two frequencies.
+Doppler-free two-photon spectroscopy has neither. Every velocity class
+contributes at the same summed frequency, which is the point of the
+counter-propagating geometry, so there is no velocity class to share, and
+hyperfine components with different ground and excited levels share no state
+to burn.
 
-The tempting near-miss is sideband spectroscopy: with a modulated drive, do
-photon pairs mixing different sidebands make extra lines between the teeth?
-They do not, because every pathway with the same frequency sum lands on the
-same tooth and interferes there, which is why the tooth weights are Bessel
-functions of the total depth rather than sums over pairs. A comb tooth is a
-crossover-like object done coherently, and it sits on the ladder, never
-between its rungs.
+With a modulated drive, photon pairs mixing different sidebands might seem
+to make extra lines between the comb teeth. They do not. Every pathway with
+the same frequency sum lands on the same tooth and interferes there, so the
+tooth weights are Bessel functions of the total modulation depth, not sums
+over pairs.
 
 ## What can go wrong
 
@@ -108,25 +115,25 @@ beams while the pedestal is driven by the same-beam terms, so their areas
 stand as $4\rho$ to $1+\rho^2$ in the retro ratio, and dividing each by its
 own width turns that into heights. For this apparatus the pedestal comes out
 near half a per cent of the line peak, spread over a width set by the thermal
-speed rather than by the atom. Two consequences follow: it is far too flat to
-mimic any narrow feature, and it is faint enough that seeing it at all takes a
-span wide enough to show its curvature.
+speed, not by the atom. Two consequences follow. It is far too flat to mimic
+any narrow feature, and it is faint enough that seeing it at all takes a span
+wide enough to show its curvature.
 
-The pedestal is a model failure waiting to happen. It is broad enough that
-across a narrow scan it looks flat, so a free baseline absorbs it entirely
-and it can be neither measured nor excluded. Any analysis quoting a small
-excess in the wings of such a line should ask whether the pedestal, rather
-than the atom, is what the baseline is standing in for.
+The pedestal is broad enough that across a narrow scan it looks flat, so a
+free baseline absorbs it entirely, and it can be neither measured nor
+excluded. Any analysis quoting a small excess in the wings of such a line
+should ask whether the pedestal, not the atom, is what the baseline is
+standing in for.
 
-Finally, an inference trap specific to the doubled sensitivity. A laser whose
-linewidth is not independently known contributes a width that must be fitted,
-and it is degenerate with every other broadening mechanism in the line, which
-is the subject of [the Voigt profile](voigt-profile.md) and of
-[identifiability](identifiability.md).
+Finally, the doubled sensitivity creates a specific inference trap. A laser
+whose linewidth is not independently known contributes a width that must be
+fitted, and that width is degenerate with every other broadening mechanism in
+the line, which is the subject of [the Voigt profile](voigt-profile.md) and
+of [identifiability](identifiability.md).
 
 ## Try it
 
-What the technique buys, in one number: the width the line would have had.
+The width the line would have had without this technique, in one number.
 
 ```python
 import math
@@ -137,10 +144,6 @@ v = math.sqrt(8 * math.log(2) * kb * 403.15 / m_rb)
 print(f"one-photon Doppler width {2 * v / LAMBDA_LASER_M / 1e6:.0f} MHz")
 print("counter-propagating pair: cancels to first order, for every atom")
 ```
-
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
 
 ## Further reading
 

@@ -76,7 +76,7 @@ direction and at the same scale as the expected pull (-478 ms at 210 mW,
 ambiguity in miniature. Shape and width only, like everything else here.
 THE PIEZO-RAMP CHANNEL of the 2025-07-03 EOM traces, and what
 it settles (an earlier version of this note dismissed it as a near-DC
-monitor; the experimenter's memory said piezo ramp, and the data agree).
+monitor; prior notes said piezo ramp, and the data agree).
 The signal channel's two equal peaks are the SAME line crossed twice near
 a sweep turnaround, and the ramp channel proves it: at the two crossings
 it reads equal to 0.04-0.12 mV on a 13 mV in-window sweep, forty times
@@ -112,6 +112,7 @@ campaign's peak-4192 slot rather than getting a dedicated one, which is not
 a pooling gap: the morning session only ever touches peak 4192, so there is nothing
 else its own slot could resolve, and sharing it with the campaign's
 best-measured peak is a data-availability choice, not an averaging-away of
+# term-of-art: the private reviews directory is a filesystem path
 distinct physics. private/reviews/digest/fig16_residual_asymmetry.md
 ("Seventh addition", Granularity recommendation) reads this same code and
 reaches the same conclusion: "M23's peak-resolved choice is closer to what

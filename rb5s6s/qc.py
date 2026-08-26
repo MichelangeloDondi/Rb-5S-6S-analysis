@@ -11,7 +11,7 @@ exclusion stops being unbiased):
 1. Compute, for every trace in the manifest, a set of objective quality
    metrics (baseline, noise, glitches, steps, clipping, peak location and
    crude extent, comb periodicity).
-2. Audit the experimenter's curation SYMMETRICALLY (pre-registered,
+2. Audit the experimentalist's curation SYMMETRICALLY (pre-registered,
    2026-07-11): the discarded traces must look bad by these metrics, and the
    canonical traces must look good — each trace is compared against its
    same-condition siblings. Disagreements in either direction are reported;
@@ -336,7 +336,7 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
     These are the ONLY criteria that may exclude a canonical trace from
     headline fits (plan: QC-based, never result-based). Sibling-comparison
     *outliers* (see audit) are reported but do not auto-exclude — they go to
-    the experimenter, who is the instrument for apparatus context.
+    an experimentalist, who is the instrument for apparatus context.
     """
     flags = []
     if m["clip_run"] >= C.QC_CLIP_RUN_MAX:
@@ -361,9 +361,9 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
             flags.append(f"low-SNR ruler ({m['snr']:.1f}) — M2 pooled path, not excluded")
         else:
             # For RF-off lines SNR tracks vapor density — the beta_self lever
-            # arm — so this flag is REVIEW-ONLY and any exclusion decision
+            # arm — so this flag is ADVISORY-ONLY and any exclusion decision
             # must document why it is not density-correlated selection.
-            flags.append(f"SNR {m['snr']:.1f} < {C.QC_MIN_SNR} (review-only: "
+            flags.append(f"SNR {m['snr']:.1f} < {C.QC_MIN_SNR} (advisory-only: "
                          "SNR tracks the density lever arm)")
     if not np.isnan(m.get("lf_ratio", np.nan)) and m["lf_ratio"] > C.QC_LF_RATIO_MAX:
         flags.append(f"low-frequency wing power (lf_ratio {m['lf_ratio']:.2f})")
@@ -380,7 +380,7 @@ def hard_flags(m: Dict[str, float], rf_on: bool) -> List[str]:
         # discarding the trace. Flag surfaces it for the mask bookkeeping.
         #
         # RF-off only, and here is the measured reason (2026-08-06, RT9 of the
-        # frequency-calibration review, amendment 8): a comb stands three
+        # frequency-calibration audit, amendment 8): a comb stands three
         # structures above half maximum by construction, so run on rulers this
         # threshold fires on 104 of 104 fitted combs (44/44 power, 60/60
         # temperature, n_major 3 on 88 and 2 on 16) and separates nothing. The

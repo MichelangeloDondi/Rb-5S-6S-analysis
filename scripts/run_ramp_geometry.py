@@ -2,7 +2,7 @@
 """
 Ramp-law moment coefficients vs collection geometry (PLAN §6).
 
-Review 2026-07-12 #3 required extending the triangular-ramp model to the
+The 2026-07-12 finding (#3) required extending the triangular-ramp model to the
 diverging-beam collection geometry before the small-waist skew can be
 interpreted. This script evaluates the closed-form axial-averaged shift
 density (lineshape.stark_ramp_axial) at the three proposed configurations
@@ -18,7 +18,7 @@ crossover is set by the collection geometry: Z_c is the imaging field of
 view L_par/2M (M = v/u for the side-viewing f = 18 mm lens), so the flip
 needs Z_c > ~0.9 mm at 16 um. The rotation lever is closed -- the R636-10
 cathode is a 3 x 12 mm rectangle (the tube housed in the Thorlabs PXT1/M
-module; experimenter-confirmed 2026-07-23) and it was mounted LANDSCAPE, so
+module; confirmed 2026-07-23) and it was mounted LANDSCAPE, so
 L_par = 12 mm and Z_c = 6/M mm, which clears 0.9 mm for every M < 6.6. The
 flip therefore holds across the whole plausible magnification range rather
 than depending on how the bench is laid out; measuring u and v pins the

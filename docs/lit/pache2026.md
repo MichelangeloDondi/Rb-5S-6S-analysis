@@ -30,4 +30,12 @@ section: deep-search
 
 # pache2026
 
-EIT-cooling / atom-source thread (companion to pennetta2026, same group + 450 nm fibre). Lambda-enhanced gray molasses = 6x loading over red-detuned PGC; ~4000 Cs atoms in a 24 uK trap, optical depth >140, collisional blockade over ~1 mm; EIT-assisted cooling raises storage to 400(9) ms (5x), works with two co-propagating guided fields at a few hundred pW. Relevant to guided-atom source optimisation and the nanofibre extension's loading/cooling toolkit. Verified from the held arXiv PDF 2026-07-17.
+Held. Verified against the PDF.
+
+A companion to pennetta2026 from the same group, using the same 450 nm nanofibre platform, demonstrating Λ-enhanced gray-molasses loading and EIT-assisted cooling of atoms in a nanophotonic trap.
+
+## The numbers
+
+- Λ-enhanced gray-molasses loading gives a sixfold increase in atom number over red-detuned polarization-gradient cooling (PGC).
+- About 4000 Cs atoms are held in a 24 uK trap, with optical depth above 140 and collisional blockade extending over roughly 1 mm.
+- EIT-assisted cooling extends the storage time to 400(9) ms, a fivefold increase, using two co-propagating guided fields at a few hundred pW.

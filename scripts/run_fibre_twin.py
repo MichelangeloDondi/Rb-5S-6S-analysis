@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# term-of-art: the private reviews directory is a filesystem path
 """O2: the fibre twin, preregistered in private/reviews/O2_PREREG_2026-08-22.md.
 
 O2 IS A DESIGN VALIDATION, NOT AN EXPERIMENTAL RESULT. It validates that the

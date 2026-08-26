@@ -72,7 +72,7 @@ direction indifference) for both runs side by side.
 
 About five hours on this machine, sequential with nothing. It launches after
 the v3.4.0 push so that a failure cannot entangle the release, and its
-outcome feeds the frequency-calibration review's RT6 (block combination)
+outcome feeds the frequency-calibration audit's RT6 (block combination)
 and the M28 documentation, not the release itself.
 
 ## Postscript, 2026-08-06: adjudicated, branch one

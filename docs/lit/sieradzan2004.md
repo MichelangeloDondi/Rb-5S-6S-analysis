@@ -42,33 +42,16 @@ section: method-anchors
 
 # sieradzan2004
 
-**Read from the held arXiv preprint (physics/0308092).**
+Held, verified. The correct journal record is Phys. Rev. A 69, 022502 (2004). The arXiv abstract page (physics/0308092) shows the journal-ref of a different, overlapping-author paper.
 
-## What it is
+## The system
 
-A. Sieradzan (Central Michigan), M. D. Havey (Old Dominion), M. S. Safronova
-(NIST Gaithersburg). Combined experimental and theoretical study of the
-**relative** transition matrix elements $\langle 6p~^2P_j \Vert r \Vert 8s~^2S_{1/2}\rangle$
-in atomic caesium — the ratio between the $j=1/2$ and
-$j=3/2$ legs, not their absolute values.
+Sieradzan, Havey, and Safronova combine two-step laser and rf spectroscopy with relativistic all-order theory to determine the ratio between the $j=1/2$ and $j=3/2$ legs of the $6p ^2P_j \to 8s ^2S_{1/2}$ reduced transition matrix elements in atomic caesium.
 
-## The number
+## The numbers
 
-Experimental ratio **1.423(2)**, against a relativistic all-order theoretical
-value of **1.425(2)** — agreement inside the combined uncertainty.
+Measured ratio: **1.423(2)**. Theoretical (relativistic all-order) ratio: **1.425(2)**. The two agree within the combined uncertainty.
 
-## Why it is here
+## Use in this record
 
-[iskrenovatchoukova2007](iskrenovatchoukova2007.md)'s Table I lists all-order SD
-values $\langle 8s \Vert r \Vert 6p_{1/2}\rangle = 17.78(7)$ and
-$\langle 8s \Vert r \Vert 6p_{3/2}\rangle = 24.56(10)~ea_0$, a ratio of 1.381 —
-this is the paper whose measured ratio is the experimental check on that pair.
-The two ratios, 1.381 (Iskrenova-Tchoukova, absolute matrix elements) and
-1.423–1.425 (this paper, direct ratio measurement), are **not the same
-quantity** stated twice: Iskrenova-Tchoukova's is a ratio of two independently
-computed matrix elements, while this paper measures the ratio directly and
-independently confirms it theoretically. Comparing the two numbers is not yet
-done here — it needs the two papers' matrix-element definitions confirmed
-identical (both should be $j$-reduced matrix elements in the same convention)
-before the 3% gap between 1.381 and 1.424 is treated as anything. **Recorded as
-OPEN**, not as a discrepancy.
+[iskrenovatchoukova2007](iskrenovatchoukova2007.md) lists all-order SD values $\langle 8s \Vert r \Vert 6p_{1/2}\rangle = 17.78(7)$ and $\langle 8s \Vert r \Vert 6p_{3/2}\rangle = 24.56(10) ea_0$, giving a ratio of 1.381 between two independently computed matrix elements, rather than the direct measurement reported here. Whether the 3% gap to this paper's 1.423 to 1.425 is a discrepancy depends on the two papers using the same matrix-element convention, which has not been confirmed. Recorded as OPEN.

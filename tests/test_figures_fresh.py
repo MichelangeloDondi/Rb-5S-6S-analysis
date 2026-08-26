@@ -97,7 +97,7 @@ def test_all_data_driven_figures_share_one_fingerprint():
 def test_figure_text_does_not_overlap():
     """Measure label collisions instead of eyeballing them.
 
-    Added 2026-07-29 after a review asked for no overlapping labels in the
+    Added 2026-07-29 after overlapping labels were noticed in the
     figures. Reading them by eye passed fig13; measuring the rendered bounding
     boxes did not -- its level names overlapped their own energy annotations by
     ~25%, invisible at a glance and obvious at 200%. Every figure is drawn

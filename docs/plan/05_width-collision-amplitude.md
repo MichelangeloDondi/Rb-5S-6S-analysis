@@ -66,7 +66,7 @@ be settled before the shot list is frozen, since a pooled slope changes what a
 fifth block buys.
 
 **7c. 150–170 °C in the same locked session, interleaved.** Wanted for a
-narrower reason than the 2025 post-mortem gave it. The 2025 dataset's lever test
+narrower reason than the 2025 reading gave it. The 2025 dataset's lever test
 shows the joint β collapses 0.0534 → 0.0198 for ⁸⁵Rb and 0.0219 for ⁸⁷Rb when
 the ×53 anchor (the 130 °C block) is folded in
 ([`lever_crosscheck.csv`](../../results/lever_crosscheck.csv)). That collapse is not a session artifact. It is the correct

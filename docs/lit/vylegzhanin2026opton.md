@@ -50,44 +50,53 @@ relevance: >
   the candidate's own nanofibre work with the group was presented.
 ---
 
-## What the paper is
+# vylegzhanin2026opton
 
-A trap-design calculation for holding cold 87Rb near an optical nanofibre by
-combining two light fields the group already runs: a circularly polarized
-free-space tweezers (Gaussian or LG01) and the quasi-linearly polarized
-guided mode of the fibre. The tweezers' ellipticity near the fibre acts on
-the atom as a fictitious magnetic field, and the total potential is computed
-from the field geometry.
+## The system
 
-The point of the scheme, in the paper's own framing, is IN-SITU tunability.
-Reflection-based tweezers-plus-waveguide traps pin the atom at a distance set
-by the geometry, and this one moves the minimum by changing the power ratio of
-the two fields. An earlier version of this note described the reflection as
-something this paper models, which inverts its argument: it is the prior art's
-limitation.
+A trap-design calculation for holding cold 87Rb near an optical nanofibre
+by combining two light fields: a circularly polarized free-space optical
+tweezers beam (Gaussian or Laguerre-Gaussian LG01) and the quasi-linearly
+polarized guided mode of the fibre. Near the fibre, the tweezers beam
+acquires nonzero ellipticity, which acts on the atom as a fictitious
+magnetic field. The total trapping potential is computed from the combined
+field geometry.
 
-## The design points
+The scheme's stated advantage is in-situ tunability. Reflection-based
+tweezers-plus-waveguide traps, the prior approach, pin the atom at a
+distance from the surface fixed by the geometry, adjustable only by
+remaking the waveguide, tuning the laser over hundreds of nanometres, or
+switching polarization. This scheme instead moves the trap minimum by
+changing the power ratio between the tweezers and fibre fields, tunable in
+situ.
 
-* Fibre radius 175 nm, the same platform as the lineage's other papers.
-* The trap minimum sits 100 to 400 nm from the surface, with depths of 0.3 to
+## The numbers
+
+* Fibre radius: 175 nm, the same platform as the lineage's other papers.
+* Trap minimum: 100 to 400 nm from the surface, with depths of 0.3 to
   0.8 mK, in the configurations the paper calls typical.
-* The 825 nm and 1325 nm that appear in the figures are a DIFFERENT quantity:
-  the distance d at which the tweezers beam is focused from the surface, for
-  the Gaussian and LG cases at 0.3 mW with w0 = 500 nm. That is a chosen setup
-  parameter, not where the atom sits, and an earlier version of this note
-  conflated the two.
-* Trap depths and minima positions are mapped against the powers in both
-  fields, including a 762 nm case where the scalar polarizability is four
-  times larger.
-* Loading and dynamics are discussed on microsecond timescales, stated as
+* The 825 nm and 1325 nm values shown in the figures denote a different
+  quantity: the distance d at which the tweezers beam is focused from the
+  surface, for the Gaussian and LG cases at 0.3 mW with w0 = 500 nm. This is
+  a chosen setup parameter, not the atom's trapped position.
+* Trap depths and minima are mapped against the power in both fields,
+  including a 762 nm case where the scalar polarizability is four times
+  larger.
+* Loading and dynamics occur on microsecond timescales, stated as
   comparable to current cold-atom tweezers experiments.
-* The LG mode is calculated to give a deeper trap than the Gaussian at similar
-  powers, attributed to their different intensity distributions.
+* The LG mode is calculated to give a deeper trap than the Gaussian at
+  similar powers, attributed to their different intensity distributions.
 
-## Why it is in this corpus
+## Validity
 
-The OIST lineage's next platform. With vylegzhanin2025 it brackets the
-group's move from MOT-overlap delivery (the configuration the candidate
-worked on in 2025) toward deterministic tweezers delivery, which is the
-context any conversation with this group about nanofibre atom interfaces
-now happens in.
+This is a calculation: no apparatus is run and no measurement is reported,
+though the paper describes its computed results with the verbs "we show"
+and "we demonstrated."
+
+## Use in this record
+
+No numerical value from this paper enters a committed result. It documents
+the group's proposed next platform, extending fictitious-field trapping
+from nanofibre-only (vylegzhanin2025) to a tweezers-nanofibre hybrid aimed
+at deterministic atom delivery to the fibre surface, in place of
+MOT-overlap delivery.

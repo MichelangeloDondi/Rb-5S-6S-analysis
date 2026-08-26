@@ -268,7 +268,7 @@ def pilot_ch1_identity() -> None:
     """What is the campaign-morning rulers' second channel? (was: "1.92 V DC,
     power monitor?")
 
-    The experimenter's recollection was that it is the piezo sweeping the laser
+    The prior assumption was that it is the piezo sweeping the laser
     frequency. The data agree, and the discriminator is the SIGN. A power
     monitor sits at a level; a triangle frequency sweep is caught one leg at a
     time, so successive records must show a RAMP whose slope alternates in sign

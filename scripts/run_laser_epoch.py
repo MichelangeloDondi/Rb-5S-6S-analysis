@@ -14,7 +14,7 @@ the fit cannot say how much is which --
     transit 0.93 MHz (w0=64um measured) => sigma_laser ~ 1.1 MHz
     transit 1.49 MHz (w0~40um)       => sigma_laser ~ 0.4 MHz (laser could be narrow)
 So we quote sigma_laser(2025) <~ 1 MHz (laser axis) as an upper bound, with that
-w0-degeneracy band, and note slow drift is not the culprit (~0.01 MHz within a
+w0-degeneracy band, and note slow drift is not the cause (~0.01 MHz within a
 scan). A knife-edge measurement of w0 on this bench, fixing the transit term,
 turns this bound into a measurement. (History: w0 was re-centred 32 -> 50 um on
 2026-07-12 when the transit physics was corrected, and later to the measured

@@ -2,14 +2,14 @@
 
 *[wiki index](README.md) · concept*
 
-**The question.** Whether the noise limiting a measurement is the irreducible
-statistics of the quanta being counted, or something the apparatus is adding.
-**Takes.** Measurements at several settings of a control the experimenter can
-change.
-**Gives.** The scaling test that separates the two, what each implies about
-what to fix, and why the distinction decides where work goes.
-**Skip if.** The question is the functional form of the variance against
-signal, which is [the noise law](the-noise-law.md).
+**The question.** Whether a measurement's noise is the irreducible statistics
+of the quanta counted, or something the apparatus adds.
+**Takes.** Measurements at several settings of a control an experimentalist
+can change.
+**Gives.** The scaling test that separates the two, and what to fix once it
+does.
+**Skip if.** The question is the variance's functional form against signal,
+which is [the noise law](the-noise-law.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -17,100 +17,100 @@ signal, which is [the noise law](the-noise-law.md).
 ## What it is
 
 **Shot noise** is the counting statistics of discrete events. Photons arrive
-as a Poisson process, so a measurement collecting $N$ of them carries a
-variance of $N$ and a fractional uncertainty of $1/\sqrt{N}$. It is a property
-of the quanta and of nothing else, and no improvement to the apparatus removes
-it. Only collecting more quanta does.
+as a Poisson process, so collecting $N$ of them gives a variance of $N$ and a
+fractional uncertainty of $1/\sqrt{N}$, a property of the quanta alone,
+changed only by collecting more.
+
+![the three noise scalings compared](figures/wiki_shot_noise_and_technical_noise.png)
+
+*The three noise scalings and their fractional-noise signatures, the test
+this page runs on the committed noise law.*
 
 **Technical noise** is everything the apparatus adds: amplifier and Johnson
-noise, digitiser quantisation, pickup, laser intensity fluctuations,
-mechanical vibration, temperature drift. It is not fundamental, it can in
-principle be engineered away, and the engineering differs completely by
-source.
+noise, digitiser quantisation, laser intensity fluctuations, mechanical
+drift. It is not fundamental, and its remedy differs by source.
 
-The distinction matters because the two respond to opposite re-centrings. A
-shot-limited measurement is improved only by more signal or more time. A
-technically limited one is improved by fixing the apparatus, and collecting
-longer may not help at all.
+The distinction matters. A shot-limited measurement improves only with more
+signal or time. A technically limited one improves only by fixing the
+apparatus, and collecting longer may not help.
 
-## The scaling test, which is the whole method
+## The scaling test
 
-Neither type announces itself. What separates them is how the noise responds
-when a control is changed, because their dependences differ.
+What separates them is how each responds when a control changes.
+
+![Allan deviation of two synthetic noise records](figures/wiki_allan_deviation.png)
+
+*Allan deviation of a white-noise record and a random-walk record, resolving
+by their averaging slope what a plain standard deviation cannot.*
 
 **Against the signal level.** Shot noise grows as the square root of the
-signal, so the fractional noise falls as the signal rises. A multiplicative
-technical noise, such as laser intensity fluctuation, grows in proportion to
-the signal, so the fractional noise is constant. An additive technical noise
-does not grow at all. Those three behaviours are the three terms of
-[the noise law](the-noise-law.md) and fitting it is one way to run this test.
+signal, so its fractional noise falls as it rises. A multiplicative
+technical noise, such as laser intensity fluctuation, grows with the signal,
+so its fractional noise stays constant. An additive technical noise does not
+grow at all. These are the three terms of
+[the noise law](the-noise-law.md), and fitting it runs this test.
 
-**Against averaging.** Shot noise falls as the square root of the number of
-independent samples, indefinitely. Technical noise with a long correlation
-time does not: it averages down only until the averaging window reaches its
-correlation time, after which more data buys nothing. A measurement whose
-uncertainty stops improving with time is technically limited by definition.
+**Against averaging.** Shot noise falls as the square root of the sample
+count, indefinitely. Technical noise with a long correlation time averages
+down only until the window reaches that time, after which longer averaging
+does nothing: a measurement whose uncertainty stops improving with time is
+technically limited by definition.
 
-**Against a control that moves the signal without moving the apparatus.** This
-is the sharpest version and it needs a designed comparison rather than a fit.
-If a control changes the number of quanta collected while leaving the chain
-untouched, the noise must track the square root of the signal. A departure is
-technical, and the direction of the departure names the class.
+**Against a control that moves the signal without moving the apparatus.**
+This is the sharpest version: a comparison built for the purpose, not a fit.
+If a control changes the number of quanta collected
+without touching the chain, the noise must track the square root of the
+signal. A departure is technical, and its direction names the class.
 
 ## What problem it solves
 
 It decides where work goes, and the two answers are expensive in different
-ways. Believing a shot-limited measurement is technically limited leads to
-buying quieter electronics that change nothing. Believing a technically
-limited measurement is shot-limited leads to integrating for hours against a
-noise that does not average down.
+ways.
 
 ## Where this repository uses it
 
-The scaling test is run in both directions on the committed noise law.
+The scaling test runs in both directions on the committed noise law.
 
 **The shot term is confirmed as shot.** Its coefficient is flat against laser
-power across the four hyperfine lines, with log-log exponents between $-0.08$
-and $+0.10$, which is what a property of the detection chain rather than of
-the condition should do.
+power across the four hyperfine lines, with log-log exponents between
+$-0.08$ and $+0.10$, a detection-chain property, independent of the
+condition.
 
 **The excess term is essentially absent**, needed in one condition of
-thirty-two, so multiplicative technical noise is not limiting this experiment
-and stabilising the laser's amplitude would buy nothing.
+thirty-two, so it is not limiting here, and stabilising the laser's
+amplitude would not help.
 
-**And the floor failed the test in an informative way.** A floor is
-signal-independent by construction, yet this one rises with laser power on
-every line, so it is not instrumental. It is an optical background that scales
-with the drive, and the same conclusion appears in the directly measured
-off-line noise, which is not a fitted quantity at all.
+**The floor did not pass the test.** A floor is signal-independent by
+construction, yet this one rises with laser power on every line: an optical
+background that scales with the drive, not instrumental noise. The same
+holds for the directly measured off-line noise, which is not fitted at all.
 
-A second measured fact belongs here because it is the averaging half of the
-test: the noise is correlated over several samples, so it averages down more
-slowly than the sample count suggests. That correction has
+The noise is correlated over several samples, so it averages down more
+slowly than the sample count suggests, a correction covered on
 [its own page](correlated-samples-and-effective-sample-size.md).
 
 ## What can go wrong
 
-**Concluding from one setting.** A single condition cannot separate scalings.
-The test needs the control varied, and varied enough that the predicted
-behaviours differ by more than the uncertainty.
+**Concluding from one setting.** A single condition cannot separate the
+scalings: the control must vary enough that the predicted behaviours differ
+by more than the uncertainty.
 
 **Confusing a fitted floor with an instrumental one.** The model's floor is
-whatever does not scale with the signal being fitted, which includes optical
-backgrounds that scale with something else entirely.
+whatever does not scale with the fitted signal, including optical
+backgrounds scaling with something else.
 
-**Assuming shot noise is the best case.** It is the best case for a given
-number of collected quanta, and collection efficiency is an apparatus property
-that technical work can improve. Shot-limited does not mean optimised.
+**Assuming shot noise is the best case.** It is the best case only for a
+given photon count, and collection efficiency, an apparatus property, remains
+open to technical improvement.
 
 **Forgetting the detector's own multiplication noise.** A photomultiplier's
-gain process adds excess variance above Poisson, by a factor that is a
-property of the tube. A measurement can be limited by counting statistics and
-still be a fixed factor worse than the ideal Poisson bound.
+gain process adds excess variance above Poisson by a tube-fixed factor, so a
+measurement can be limited by counting statistics and still sit a fixed
+factor above the ideal Poisson bound.
 
 ## Try it
 
-How the three behaviours separate as the signal is varied, and how quickly.
+How the three behaviours separate as signal varies, and how quickly.
 
 ```python
 import math
@@ -130,26 +130,26 @@ print("\nonly the multiplicative one is flat: that is its signature")
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
+so one that stops working fails the suite instead of sitting here misleading
 a reader.
 
 ## Further reading
 
 - A. van der Ziel, *Noise in Solid State Devices and Circuits* (Wiley, 1986),
-  for the taxonomy of technical noise sources and their spectra.
+  for technical noise taxonomy.
 - P. R. Bevington and D. K. Robinson, *Data Reduction and Error Analysis for
-  the Physical Sciences*, 3rd ed. (McGraw-Hill, 2003), for Poisson statistics
-  and their propagation.
+  the Physical Sciences*, 3rd ed. (McGraw-Hill, 2003), for Poisson
+  statistics.
 
 ## See also
 
-- [The noise law](the-noise-law.md), which parametrises the three behaviours
+- [The noise law](the-noise-law.md), parametrising the three behaviours
 - [Correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md),
   the averaging half of the test
-- [Photon counting](photon-counting.md), the regime where shot noise is
-  counted directly rather than inferred
-- [Digitisation and dynamic range](digitisation-and-dynamic-range.md), for one
-  specific technical contribution and when it matters
+- [Photon counting](photon-counting.md), where shot noise is counted, not
+  inferred
+- [Digitisation and dynamic range](digitisation-and-dynamic-range.md), for
+  one technical contribution
 
 ---
 

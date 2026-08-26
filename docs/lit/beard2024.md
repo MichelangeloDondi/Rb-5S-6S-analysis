@@ -32,4 +32,4 @@ section: deep-search
 
 # beard2024
 
-First 5S-5D5/2 two-photon Rb clock read out on the 776 nm (5D-to-6P) cascade fluorescence — a second cascade-detection precedent for PLAN §8. DOI + PDF verified 2026-07-17.
+Held and verified. First 5S-5D5/2 two-photon Rb clock read out on the 776 nm (5D-to-6P) cascade fluorescence, a second cascade-detection precedent for PLAN §8.

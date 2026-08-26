@@ -104,7 +104,7 @@ def test_the_quoted_bound_is_far_weaker_than_the_width_channel():
     """Matches the established pattern (M20's retracted 7.3 MHz, M21's
     9.5-17.7 MHz): every centre-channel attempt on this archive lands far
     weaker than the width channel. Pinned at 5x so a silent tightening
-    cannot slip the narrative without review."""
+    cannot slip the narrative unnoticed."""
     bound = float(_one("kappa_ub95_centre", "primary")["value"])
     m23 = float(_one("kappa_ub95_m23", "reference")["value"])
     assert bound > 5.0 * m23, (bound, m23)

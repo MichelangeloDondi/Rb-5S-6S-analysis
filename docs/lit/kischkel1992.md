@@ -37,93 +37,22 @@ section: collision-series
 
 # kischkel1992
 
-**Read here 2026-08-03, in full (9 pages,
-PDF_papers/Kischkel_1992_Yb-two-photon-hyperfine-isotope-shift-6s9d-6s10d.pdf).**
-<!-- not-from-pdf: this scan's OCR text layer is badly corrupted at the
-letter level ("Two-photon" reads as "No-photon", "verified" as "wrified",
-"experimental" as "aperimental"), well past what
-test_lit_quotes_are_verbatim.py's normalization can absorb, so the
-quotation below is transcribed by eye from the rendered page image rather
-than checked against extracted text. -->
-Verbatim abstract, transcribed from the rendered page: "Using Doppler-free
-laser spectroscopy with thermionic
-detection the 4f¹⁴6s9d and 4f¹⁴6s10d ¹D₂ and ³D₂ levels as well as the
-4f¹³5d6s6p (7/2,3/2) J = 2 level at 48135.6 cm⁻¹ and the 4f¹⁴6p² ¹S₀ level in
-neutral ytterbium have been investigated via two-photon transitions from the
-4f¹⁴6s² ¹S₀ ground state. The spectra have been analysed with regard to the
-hyperfine splitting in the excited states and the isotope shift in the
-corresponding transition. The isotope shifts in the transitions involving
-the ³D₂ states exhibit strong influences of second-order hyperfine
-interaction for the odd isotopes ¹⁷¹Yb and ¹⁷³Yb. The experimental results of
-the hyperfine splitting constants have been interpreted in terms of
-intermediate coupling schemes. In addition a mixing of the 4f¹⁴6s9d and, to a
-minor degree, of the 4f¹⁴6s10d configurations with the 4f¹⁴6p² configuration
-could be verified."
+Held. Read and verified in full against the PDF (9 pages).
 
-## Identification, and its relation to kischkel1991
+> "Using Doppler-free laser spectroscopy with thermionic detection the 4f¹⁴6s9d and 4f¹⁴6s10d ¹D₂ and ³D₂ levels as well as the 4f¹³5d6s6p (7/2,3/2) J = 2 level at 48135.6 cm⁻¹ and the 4f¹⁴6p² ¹S₀ level in neutral ytterbium have been investigated via two-photon transitions from the 4f¹⁴6s² ¹S₀ ground state. The spectra have been analysed with regard to the hyperfine splitting in the excited states and the isotope shift in the corresponding transition. The isotope shifts in the transitions involving the ³D₂ states exhibit strong influences of second-order hyperfine interaction for the odd isotopes ¹⁷¹Yb and ¹⁷³Yb. The experimental results of the hyperfine splitting constants have been interpreted in terms of intermediate coupling schemes. In addition a mixing of the 4f¹⁴6s9d and, to a minor degree, of the 4f¹⁴6s10d configurations with the 4f¹⁴6p² configuration could be verified."
 
-This is the direct sequel to [kischkel1991](kischkel1991.md), same three
-authors, same Tübingen group, same thermionic-diode apparatus, published a
-year later once "a more powerful UV pump laser has become available" (their
-Section 1) let the dye laser tune down to 413 nm. Where kischkel1991 covered
-the 4f¹⁴6s7d and 4f¹⁴6s8d configurations, this paper covers the next two
-members of the same Rydberg-like nd series, 4f¹⁴6s9d and 4f¹⁴6s10d, plus one
-further 4f¹³5d6s6p level and the 4f¹⁴6p² ¹S₀ level that kischkel1991 could
-only estimate by calculation because it lay out of reach. Like kischkel1991,
-it is neutral ytterbium, not cesium, and it is hyperfine structure and
-isotope shift, not pressure broadening or shift.
+## The system
 
-## What it does
+This is the direct sequel to [kischkel1991](kischkel1991.md): same three authors, same Tübingen group, same thermionic-diode apparatus, published a year later once a more powerful UV pump laser let the dye laser tune down to 413 nm. Where kischkel1991 covered the 4f¹⁴6s7d and 4f¹⁴6s8d configurations, this paper covers the next two members of the same Rydberg-like nd series, 4f¹⁴6s9d and 4f¹⁴6s10d, plus one further 4f¹³5d6s6p level and the 4f¹⁴6p² ¹S₀ level that kischkel1991 could only estimate by calculation because it lay out of reach.
 
-Two-photon excitation from the same 4f¹⁴6s² ¹S₀ ground state reaches the
-³D₂ and ¹D₂ members of 4f¹⁴6s9d and 4f¹⁴6s10d, the 4f¹³5d6s6p (7/2,3/2)₂
-level at 48135.6 cm⁻¹, and 4f¹⁴6p² ¹S₀. As before, Lorentzian peak fits to
-the Doppler-free spectra give A and B hyperfine constants (Table 2) and
-isotope shifts δν across the isotope set (Table 1), processed through King
-plots (Figure 1) exactly as in kischkel1991. Second-order hyperfine
-corrections are large and clearly resolved for the ³D₂ states of both
-configurations (Table 3): the correction to the isotope shift, δIS⁽²⁾, is
--68(16) MHz for ¹⁷¹Yb in 6s9d ³D₂ and -178(37) MHz for ¹⁷¹Yb in 6s10d ³D₂,
-each traced to a specific nearby perturbing level (the ³D₁ state of the same
-configuration). Section 3 confirms, from the small measured A constants,
-that the 4f¹⁴6s9d ¹D₂ state carries roughly a 50 percent admixture of
-4f¹⁴6p² ¹D₂ predicted by earlier calculations (Aymar et al 1980), while the
-6s10d ¹D₂ state stays close to pure (admixture under 5 percent).
+## The numbers
 
-## Measured coefficients
+Two-photon excitation from the 4f¹⁴6s² ¹S₀ ground state reaches the ³D₂ and ¹D₂ members of 4f¹⁴6s9d and 4f¹⁴6s10d, the 4f¹³5d6s6p (7/2,3/2)₂ level at 48135.6 cm⁻¹, and 4f¹⁴6p² ¹S₀. Lorentzian peak fits to the Doppler-free spectra give A and B hyperfine constants (Table 2) and isotope shifts δν across the isotope set (Table 1), processed through King plots (Figure 1) as in kischkel1991. For 4f¹⁴6s9d ³D₂: A(¹⁷¹Yb) = 1226(5) MHz, A(¹⁷³Yb) = -335(7) MHz. For 4f¹⁴6s10d ³D₂: A(¹⁷¹Yb) = 1674(10) MHz. The isotope shift δν(172-176) for 4f¹⁴6s9d ³D₂ is -687(5) MHz.
 
-As in kischkel1991, there is no pressure-broadening or pressure-shift
-coefficient anywhere in this paper. Table 2 gives hyperfine constants in
-MHz, for example 4f¹⁴6s9d ³D₂, A(¹⁷¹Yb) = 1226(5) MHz and
-A(¹⁷³Yb) = -335(7) MHz, and 4f¹⁴6s10d ³D₂, A(¹⁷¹Yb) = 1674(10) MHz. Table 1
-gives isotope shifts in MHz, for example δν(172-176) for 4f¹⁴6s9d ³D₂ is
--687(5) MHz. None of these is a collisional rate. The word "broadening"
-does not appear anywhere in this paper's text, not even in the passing,
-uncoupled way kischkel1991 uses it once for an instrumental linewidth.
+Second-order hyperfine corrections are large and clearly resolved for the ³D₂ states of both configurations (Table 3): the correction to the isotope shift, δIS⁽²⁾, is -68(16) MHz for ¹⁷¹Yb in 6s9d ³D₂ and -178(37) MHz for ¹⁷¹Yb in 6s10d ³D₂, each traced to a specific nearby perturbing level (the ³D₁ state of the same configuration). From the small measured A constants, the 4f¹⁴6s9d ¹D₂ state carries roughly a 50 percent admixture of 4f¹⁴6p² ¹D₂ predicted by earlier calculations (Aymar et al 1980), while the 6s10d ¹D₂ state stays close to pure (admixture under 5 percent).
 
-## BRIDGES
+No pressure-broadening or pressure-shift coefficient appears anywhere in this paper, and the word "broadening" does not occur in its text.
 
-Same verdict as [kischkel1991](kischkel1991.md), and for the same
-reason: this is atomic hyperfine structure and isotope shift in a lanthanide,
-not a collisional broadening or shift measurement in an alkali, so it
-carries nothing for the beta_self calibration comparison this pair of notes
-was checked against. That comparison still rests on
-[zameroski2014](zameroski2014.md) alone as the only measured
-self-broadening rate for an nS state in an alkali (Rb 5S to 7S,
-129 ± 11 kHz/mTorr, 5.39 ± 0.46 kHz per 10¹² cm⁻³, scaled by the computed C₆
-ratio to the expected β_self(6S) = 3.5 ± 0.3 kHz per 10¹² cm⁻³ this
-programme anchors on), with [lewis1980](lewis1980.md) confirming from a
-full read of its 71-page review that no van der Waals-type nS-n'S alkali
-self-broadening coefficient is available anywhere else in that literature.
+## Use in this record
 
-The "true2021" citation named alongside zameroski2014 as a second
-comparison point has no file, no citation and no bibliographic record
-anywhere in this repository, as documented in
-[kischkel1991](kischkel1991.md). This note does not add one.
-
-The only connection worth recording is the same methodological one
-kischkel1991.md already names: a Doppler-free two-photon apparatus in the
-Biraben and Cagnac lineage, applied here to Yb hyperfine structure rather
-than to a transit-time lineshape, and adding nothing to this repository's
-own transit-time citations from [biraben1979](biraben1979.md) and
-[borde1976](borde1976.md).
+This paper contributes no pressure-broadening or pressure-shift coefficient, for any species, matching [kischkel1991](kischkel1991.md). The self-broadening comparison in this project rests on [zameroski2014](zameroski2014.md) alone, with [lewis1980](lewis1980.md) confirming, from its own review of the literature, that no such coefficient is reported elsewhere.

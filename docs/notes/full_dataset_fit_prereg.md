@@ -64,7 +64,7 @@ From `data_raw/MANIFEST.csv` (297 rows) plus the two quarantine trees.
 | 2025-07-18 morning pilot | quarantine tree | 26 | 4 (peak 4192 at 35/70/105/210 mW) | yes |
 | campaign EOM rulers, temperature session | `ruler_t`, canonical, RF on | 61 | 0 | **no** |
 | campaign EOM rulers, power session | `ruler_p`, canonical, RF on | 44 | 0 | **no** |
-| experimenter-discarded | `p_sweep` 1, `t_sweep` 3 | 4 | 0 | no |
+| curation-discarded | `p_sweep` 1, `t_sweep` 3 | 4 | 0 | no |
 | quarantined | `quarantine` | 29 | 0 | no |
 
 **Total in the fit: 231 traces**, roughly 300,000 points. The number 231 is a
@@ -168,7 +168,7 @@ comes from the same in-place reduction rather than from the manifest.
 
 **A3, rulers.** All 105 canonical ruler traces are excluded (§2).
 
-**A4, curation.** Experimenter-discarded and quarantined rows never enter.
+**A4, curation.** Curation-discarded and quarantined rows never enter.
 
 **A5, sibling outliers are reported and not dropped.** The standing policy is
 that only hard-QC failures may exclude a canonical trace. The largest sibling

@@ -117,7 +117,7 @@ costed against exactly that.*
 | 3 | [Configurations and optics](plan/03_optics-protocol.md) | the optical layout and the alignment protocol |
 | 4 | [Intensity and the light shift](plan/04_intensity-and-light-shift.md) | the intensity axis and the light-shift programme |
 | 5 | [Width, collisions and amplitude](plan/05_width-collision-amplitude.md) | the width and collision programme, the amplitude programme, the cascade's competing prediction that makes the four-peak trace discriminating, and the asymmetry budget that decomposes the open C3g finding by reversal knobs, the laser kernel as the largest assumption the width channel rests on, and the one term a density ladder cannot separate from collisions |
-| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the uncertainty ledger of the next campaign, one row per component with its knob, its expected purchase and the twin world that sizes it, then the block register, session sizing, the 2025 post-mortem rules and the twin costing |
+| 6 | [Session sizing and spending rules](plan/06_sizing-and-spending-rules.md) | the uncertainty ledger of the next campaign, one row per component with its knob, its expected purchase and the twin world that sizes it, then the block register, session sizing, the 2025 session reading rules and the twin costing |
 | 7 | [Acquisition settings](plan/07_acquisition-settings.md) | span, sweep and instrument settings, the three-oscilloscope comparison measured from the files, the settings card, and the modulation-and-rate menu that assigns the depth and the scan rate per scan purpose |
 | 8 | [The acquisition record](plan/08_the-acquisition-record.md) | what every block must log, the comb read as a ruler and as a clock, the EOM drive menu with the coincidence and cascade designs, the coincidence block's own in-cell field readout, the sweep-direction and mains-phase columns, and the wavemeter shots |
 | 9 | [The fixed lock, and what it buys](plan/09_the-fixed-lock.md) | identifiability, drift, the sweep and the scan axis, and the two rulers with their division of labour, the atomic pairs as the light-shift-immune anchor and the comb as the interpolator and the clock |
@@ -163,7 +163,7 @@ movement at all. That correction is in
 [HISTORY.md](HISTORY.md), and the surviving lever is in
 [chapter 5](plan/05_width-collision-amplitude.md).
 
-The 2026-08-19 design review of chapters 7 and 8 was run the same way: every
+The 2026-08-19 design pass over chapters 7 and 8 ran the same way: every
 modulation depth, drive frequency and scan rate now in those chapters was
 adjudicated by computing the design's information under the measured noise
 law rather than by preference, five of the six candidate arguments failed
@@ -253,7 +253,7 @@ index maps each section to the chapter that now holds it.
 **8.1.** the cascade branch and
 **8.3.** the saturation check.
 **9.** Session sizing, in [chapter 6](plan/06_sizing-and-spending-rules.md).
-**10.** Spending rules from the 2025 post-mortem, in [chapter 6](plan/06_sizing-and-spending-rules.md), whose rules run
+**10.** Spending rules from the 2025 session, in [chapter 6](plan/06_sizing-and-spending-rules.md), whose rules run
 **10.1.** through
 **10.7.**, including
 **10.3.** the interleaving rule and

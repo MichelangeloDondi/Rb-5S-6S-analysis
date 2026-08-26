@@ -28,4 +28,4 @@ section: method-anchors
 
 # chevrollier2012
 
-The dedicated radiation-trapping / Levy-flight review for M7/VI.D. DOI VERIFY.
+The reference for radiation-trapping and Lévy-flight effects used in this analysis. DOI unconfirmed.

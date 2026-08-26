@@ -4,14 +4,12 @@
 
 **The question.** Whether the data can actually separate two parameters, or
 only determine some combination of them.
-**Takes.** A fitted model and its parameter covariance. No new fitting, and
-nothing beyond what a standard fit already produces.
-**Gives.** The structural-versus-practical distinction, the three
-diagnostics that expose a degeneracy, and what breaking one by design or by
-an independent measurement is worth.
-**Skip if.** The question is how to build a confidence interval that already
-accounts for a nuisance parameter's freedom, rather than whether two
-parameters are separable in the first place. That is
+**Takes.** A fitted model and its parameter covariance.
+**Gives.** The structural-versus-practical distinction, three diagnostics
+for a degeneracy, and what breaking one is worth.
+**Skip if.** The question is building a confidence interval that already
+accounts for a nuisance parameter's freedom, instead of whether two
+parameters are separable at all. That is
 [the profile likelihood](profile-likelihood.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -21,68 +19,65 @@ parameters are separable in the first place. That is
 
 A parameter is identifiable if the data could, in principle, distinguish its
 true value from any other. This is a property of the model and the
-experiment together, not of the fitting routine, and it is decided before any
-data are collected. If two different parameter values predict exactly the
-same observation, no amount of data, no better optimiser and no cleverer
-algorithm will separate them.
+experiment together, not of the fitting routine, and it is decided before
+any data are collected. If two different parameter values predict exactly
+the same observation, no amount of data, no better optimiser and no
+cleverer algorithm will separate them.
 
 The clean case is structural non-identifiability: the model is written so
 that only a combination of parameters appears. If a prediction depends only
 on the product $ab$, then $a$ and $b$ are separately unknowable and the
-product is the only thing measured. A fit will still return values for both,
-because software returns whatever the optimiser stopped at, and their
-apparent precision will be an artefact of where it started.
+product is the only thing measured. A fit will still return values for
+both, because software returns whatever the optimiser stopped at, and their
+apparent precision is an artefact of where it started.
 
 The commoner case is practical non-identifiability: the parameters are
 distinguishable in principle, but only through a feature the data do not
 resolve at the available signal-to-noise. Here the likelihood has a long
-flat valley rather than an exactly flat direction, and estimates slide along
-it. The diagnostics are the same in both cases and there are three worth
-running: the parameter covariance, whose near-unit correlations name the
-degenerate pairs, the condition number of the sensitivity matrix, which says
-how nearly singular the problem is, and the
-[profile likelihood](profile-likelihood.md), which maps the valley directly
-instead of approximating it by an ellipse at one point.
+flat valley instead of an exactly flat direction, and estimates slide along
+it. The same three diagnostics apply in both cases:
 
-The practical remedy is never a better fitter. It is to change the
-experiment, by adding a measurement that moves one parameter and not the
-other, or to stop reporting the individual parameters and report the
-combination the data actually determine.
+- the parameter covariance, whose near-unit correlations name the degenerate pairs
+- the condition number of the sensitivity matrix, which says how nearly singular the problem is
+- the [profile likelihood](profile-likelihood.md), which maps the valley directly instead of approximating it with an ellipse at one point
+
+The remedy is to change the experiment, either by adding a measurement that
+moves one parameter and not the other, or by reporting only the combination
+the data determine.
 
 ## What problem it solves
 
-It answers the question that decides whether a number should be published:
-does this dataset determine this quantity, or does it only determine
-something the quantity is part of. Answering it early converts an
-unfalsifiable result into either a real measurement or an honest bound.
+It decides whether a number should be published, by asking whether the
+dataset determines the quantity itself or only something the quantity is
+part of. Answering it early turns an unfalsifiable result into either a
+measurement or a stated bound.
 
 ## Where this repository uses it
 
-It is the reason several quantities here are reported as bounds rather than
-values, and the analysis is worked in full in
+It is the reason several quantities here are reported as bounds instead of
+values. The analysis is worked in full in
 [methods chapter 6 section 4.10](../methods/06_the_statistics.md), with the
 numbers committed to
-[`results/identifiability.csv`](../../results/identifiability.csv) and drawn
-in the figure below.
+[`results/identifiability.csv`](../../results/identifiability.csv) and
+drawn in the figure below.
 
-The degeneracy is physical and unavoidable: the collisional width, the laser
-width and the transit width all broaden the same line, so a single line
-constrains their sum far better than their split. The chapter makes that
-quantitative on one bright condition, with all three widths free, in two
-layers: a local covariance analysis and a global profile map over the pair.
+![Profile-likelihood map of collisional and laser width](../../figures/fig7_identifiability_profile.png)
 
-The most instructive part is what the map found. A single-start fit of all
-three widths settles in one minimum. The profile map exposed a second, deeper
-one elsewhere in the plane, and the two are separated by a gap the chapter
-records rather than smooths over. Both branches are committed. That is the
-difference between a fit that converged and a parameter that is determined,
-and it is why the map exists at all.
+*The collisional-versus-laser-width plane at one bright condition: the
+profile-likelihood valley against the local covariance ellipse a single fit
+would report alone.*
 
-![the profile-likelihood map of the two-width decomposition](../../figures/fig7_identifiability_profile.png)
+The degeneracy is physical: the collisional width, the laser width and the
+transit width all broaden the same line, so a single line constrains their
+sum far better than their split. The chapter quantifies this at one bright
+condition using a local covariance analysis and a global profile map, with
+all three widths free.
 
-*The two-width plane at one condition, with the covariance ellipse over the
-profile map. The valley is straight and long, which is the degeneracy made
-visible.*
+A single-start fit of all three widths settles in one minimum. The profile
+map exposed a second, deeper minimum elsewhere in the plane, separated from
+the first by a gap the chapter records instead of smoothing over. A fit
+that converges is not the same as a parameter that is determined, which is
+why the map exists.
 
 ## What breaking it is worth
 
@@ -90,33 +85,31 @@ Non-identifiability is not always permanent. Where a degenerate pair can be
 separated by measuring one member independently, the gain is concrete and
 worth computing before deciding whether the measurement is affordable.
 
-In this repository the collisional and laser widths are the degenerate pair.
-Simulated on a bright synthetic condition with signal-dependent noise
-(`python scripts/run_width_pinning.py`, the construction stated in its
-docstring), a fit with both widths free recovers the collisional width with a
-scatter of 0.0070 MHz across realisations, and the same fit with the laser
-width known recovers it with 0.0022 MHz, a ratio of 3.18 with a spread of
-0.20 across nine seeds. The spread is quoted because the ratio of two
-Monte-Carlo standard deviations moves from seed to seed, and an earlier
-version of this passage quoted a single draw of 3.4, which turned out to be
-the largest of the nine. The absolute
-scatters belong to that idealised condition, where the real record adds block
-drift and gain scatter on top, and the ratio is the transferable part: an
-independent laser diagnostic is worth more to this experiment than any
-improvement to the fitting, by a factor the simulation now states with its
-construction attached.
+![Parameter identifiability status by design increment](../../figures/fig33_identifiability_matrix.png)
 
-### The factor is not one number, and the arithmetic says which
+*Parameter status across four campaign design increments, from the 2025
+archive to a beam profile measured on the day: bounded, identified, or
+measured.*
 
-A simulated scatter ratio answers the question at one condition. The general
-answer is arithmetic, and it explains why different parts of this record quote
-different factors for what looks like the same purchase.
+In this repository the collisional and laser widths are the degenerate
+pair. On a bright synthetic condition with signal-dependent noise
+(`python scripts/run_width_pinning.py`), a fit with both widths free
+recovers the collisional width with a scatter of 0.0070 MHz, and the same
+fit with the laser width fixed recovers it with 0.0022 MHz, a ratio of 3.18
+with a spread of 0.20 across nine seeds, since Monte Carlo ratios vary by
+seed. An earlier version of this page quoted a single draw of 3.4, the
+largest of the nine. The absolute scatters belong to this idealised
+condition. The real record adds block drift and gain scatter on top, and
+the ratio is what transfers: an independent laser diagnostic reduces the
+collisional-width scatter by about this factor.
 
-Conditioning a multivariate normal on one member of a correlated pair reduces
-the other's variance to $(1-\rho^2)$ of its joint value, so its uncertainty
-falls by $\sqrt{1-\rho^2}$. The factor bought is therefore
-$1/\sqrt{1-\rho^2}$, which depends on the correlation and on nothing else. It
-does not improve with more traces.
+### The general formula for the factor
+
+The general answer is arithmetic: conditioning a multivariate normal on one
+member of a correlated pair reduces the other's variance to $(1-\rho^2)$ of
+its joint value, so its uncertainty falls by $\sqrt{1-\rho^2}$, a factor of
+$1/\sqrt{1-\rho^2}$ that depends only on the correlation and does not
+improve with more traces.
 
 | where the correlation was measured | $\rho$ | factor $1/\sqrt{1-\rho^2}$ |
 |---|---|---|
@@ -124,150 +117,194 @@ does not improve with more traces.
 | the twin's committed design condition ([`twin_span_sweep.csv`](../../results/twin_span_sweep.csv), 60 MHz span) | $-0.9421$ | 2.98 |
 | the bright condition of the pinning simulation above | $-0.9417$ | 2.97 |
 
-The last row is the check on the first two. The pinning simulation measures
-$3.18 \pm 0.20$ by Monte Carlo at a condition whose own fitted correlation is
-$-0.9417$, where the arithmetic predicts 2.97. The two agree to 7 per cent,
-and the residual is what a scatter ratio carries that a covariance ratio does
-not: twenty per-trace nuisance parameters, a boundary at zero collisional
-width, and the non-Gaussian tail of a nonlinear fit. The correlation itself is
-identical to four decimals in every seed, which is what the arithmetic
-predicts, since a correlation is a property of the design rather than of the
-noise draw.
+The last row checks the first two: the pinning simulation's measured
+$3.18 \pm 0.20$ agrees with the arithmetic's 2.97, to 7 per cent, at the
+same fitted correlation of $-0.9417$.
 
-These are floor numbers rather than numbers of record. The producer is a
-DIAGNOSTIC that writes to `private/run_logs/` and moves nothing in
-`results/`, so it is run on the declared support floor (Python 3.12, numpy
-2.5) rather than on the older versions that reproduce the committed CSV
+These are floor numbers, not numbers of record. The producer is a
+diagnostic that writes to `private/run_logs/` and moves nothing in
+`results/`, so it runs on the declared support floor (Python 3.12, numpy
+2.5) instead of the older versions that reproduce the committed CSV
 digits. [`results/ENVIRONMENT_OF_RECORD.md`](../../results/ENVIRONMENT_OF_RECORD.md)
-explains why those are two different statements, and the producer stamps the
-versions it ran under into every row it writes.
+explains why those are two different statements, and the producer stamps
+the versions it ran under into every row it writes.
 
-So what an independent laser width buys this experiment is a factor between
-two and three and a half, and the spread across the sites that quote it is not
-disagreement between sources. It is one formula evaluated at different
-correlations. `rb5s6s.forecast.external_constraint_gain` computes it, and
-`scripts/run_width_pinning.py` now reports the correlation and the predicted
-factor beside its measured ratio, so the two cannot drift apart unnoticed.
+## Breaking a degeneracy by design
 
-The general shape of that argument is worth more than the number. When two
-parameters exchange, the question is never only how to fit better. It is which
-of them can be measured by some other instrument, and what that would buy,
-and both halves are computable in advance.
+Two Lorentzian widths in one line, a collisional one and a laser one,
+convolve to their sum exactly. At a fixed condition this is an exact
+degeneracy, not one managed with priors: the sum is measurable and the
+split is not, at any signal to noise. Six injected values confirm it, the
+recovered sum tracking truth to a part in a thousand while the split
+wanders.
 
-## Breaking a degeneracy by DESIGN rather than by fitting
-
-**A worked example from this repository, 2026-08-21.** Two Lorentzian widths in
-one line, a collisional one and a laser one, convolve to their sum exactly. At
-a fixed condition that is not a near-degeneracy to be managed with priors, it
-is an exact one: the sum is measurable and the split is not, at any signal to
-noise, for ever. Six injected values confirm it, the recovered sum tracking
-truth to a part in a thousand while the split wanders.
-
-No fit breaks that. The DESIGN does: the collisional width scales with density
-and a laser width does not, so a temperature ladder makes the two enter
-differently and both become identifiable. On the ladder this archive already
-has, injecting 0.600 MHz returns 0.599 with a spread of 0.013
-(`tests/test_gamma_l_identity.py`). The lever was in the data all along and the
+No fit breaks that degeneracy. A change to the experiment does: the
+collisional width scales with density and the laser width does not, so a
+temperature ladder makes both widths identifiable. Injecting 0.600 MHz on
+the ladder already in this archive returns 0.599 with a spread of 0.013
+(`tests/test_gamma_l_identity.py`). The lever was already in the data. The
 question was which measurements to compare, not which fit to run.
 
-The pinning example above buys its improvement by measuring one parameter
-elsewhere. The stronger move is to arrange the measurement so the degeneracy
-does not form, and it is worth stating because it is frequently available and
-rarely looked for.
+More generally, two quantities that reach the data only through their
+product cannot be separated by any fit at a fixed setting: a control
+scaling one factor and not the other turns repeated measurements into a
+line instead of a point, with the two factors as slope and intercept.
 
-Take two quantities that reach the data only through their product, so that a
-single measurement determines the product and neither factor. No fit can
-separate them, and no amount of data at that setting will. But if some
-experimental knob scales one factor and not the other, then repeating the
-measurement at several settings of that knob makes the product a line rather
-than a point, and the two factors become the slope and the intercept.
+No such control exists for the laser-versus-collisional pair. The search
+was run, not assumed:
+[`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) rebuilds it in
+the [digital twin](the-digital-twin.md) from a named committed condition.
+The correlation between the laser and collisional widths moves by 0.0075
+when the span widens from 60 to 300 MHz and by 0.0000 at ten times the
+repeats, because a Lorentzian core inside a Gaussian envelope exchanges
+the same way at every sample size. Repeats buy precision as sampling
+predicts, a factor 3.16 at ten times the traces, while widening the span
+costs a factor 2.72 at fixed points per trace, since the same points
+spread over more baseline. Among the acquisition settings the asymmetric
+knob does not exist, which is why the pinning approach above is used
+instead.
 
-The general recipe: when two parameters are degenerate, look for a control
-that enters them asymmetrically. The fitting problem is unchanged and the
-experiment has been changed instead, which is usually the cheaper repair.
+## Leverage in a channel
 
-**A case where the search came back empty, which is the part worth
-recording.** For the two widths of this experiment the search was run rather
-than assumed, and it is regenerable:
-[`twin_span_sweep.csv`](../../results/twin_span_sweep.csv) rebuilds it in the
-[digital twin](the-digital-twin.md) from a named committed condition. The
-correlation between the laser and collisional widths moves by 0.0075 when
-the span widens from 60 to 300 MHz and by 0.0000 at ten times the repeats,
-because a Lorentzian core inside a Gaussian envelope exchanges the same way at
-every sample size. Repeats buy precision as sampling predicts, a factor
-3.16 at ten times the traces, while widening the span costs a factor 2.72
-at fixed points per trace, since the same points spread over more baseline.
-An earlier run of this search printed correlations to four decimals from a
-run that recorded neither its truth nor its seed, and those digits are
-retired everywhere the producer's rows can stand instead. Among the
-acquisition settings the asymmetric knob does not exist, which is why this
-experiment takes the pinning route of the previous section rather than the
-design route of this one. Reporting a failed search matters here: without it,
-the next reader spends a session widening scans.
+Identifiability asks whether the data determine a parameter. A prior
+question is whether the observable used is even sensitive to it: a channel
+can be correctly modelled, well measured, and still nearly empty of the
+parameter. The relevant number is the derivative of the observable with
+respect to the parameter, in units of the observable's own scatter, its
+leverage. Appearing in the forward model is not leverage. Constraining
+such a channel harder adds almost no information.
 
-## A parameter can be in a channel and carry almost none of it
+### Matching the summary statistic to the perturbation
 
-Identifiability asks whether the data determine a parameter. A question comes
-before it and is easy to skip: whether the observable being used is sensitive to
-the parameter at all. The two are different, and a parameter can be perfectly
-non-degenerate in a channel that barely responds to it.
-
-The number to compute is the derivative of the observable with respect to the
-parameter, expressed in units of the observable's own scatter. Call it the
-leverage. Appearing in the forward model is not leverage. A channel can be
-correctly modelled, well measured, and nearly empty of the parameter, in which
-case constraining that channel harder buys almost nothing.
-
-**Match the moment to the symmetry of the perturbation.** This is where the
-leverage usually hides. If a perturbation is one-sided, it moves the line's
-centre and its asymmetry strongly while barely changing its width, because a
-symmetric summary of an antisymmetric perturbation is insensitive by
-construction. A width can be the natural-seeming handle and the wrong one. In
-this repository the light-shift term moves the composite width by a few kilohertz
-at its bound while moving the line centre by a hundred and fifty kilohertz
-against an eighty-eight kilohertz block scatter, a factor of forty in the same
-fit. The fixed natural linewidth alone, 3.493 ± 0.013 MHz on the transition axis
+A one-sided perturbation moves the line's centre and asymmetry strongly
+while barely changing its width, since a symmetric summary of an
+antisymmetric perturbation is insensitive by construction. A width can be
+the natural-seeming handle and the wrong one: in this repository the
+light-shift term moves the composite width by a few kilohertz at its bound
+but the line centre by a hundred and fifty kilohertz against an
+eighty-eight kilohertz block scatter, a factor of forty in the same fit.
+The fixed natural linewidth alone, 3.493 ± 0.013 MHz on the transition axis
 from the measured 6S lifetime of 45.57 ± 0.17 ns
-([Gomez 2005](../lit/gomez2005.md)), is about 0.65 of the observed
-5.4 MHz composite. That is a ratio of two
-defined widths rather than an additive share, since the width of a convolution
-does not decompose additively, and it says only that most of the observed width
-is a constant no lever moves.
+([Gomez 2005](../lit/gomez2005.md)), is about 0.65 of the observed 5.4 MHz
+composite, a ratio of two defined widths, not an additive share, since a
+convolution's width does not decompose additively.
 
-The practical order is therefore: build the component budget, compute the
-leverage in each available channel, and only then ask whether the parameter is
-identifiable in the channel that carries it.
+The practical order is to build the component budget, compute the leverage
+in each channel, and only then ask whether the parameter is identifiable in
+the channel that carries it.
+
+## The exact Lorentzian-sum degeneracy
+
+Every other case here is a degeneracy the data cannot resolve well. This
+one is different: the mathematics makes it exact, and the implementation
+once broke that exactness by accident.
+
+![Lever map for the collisional and laser width components](../../figures/fig35_orthogonal_information.png)
+
+*Which lever moves which width component: density resolves the collisional
+width, an independent laser diagnostic is the only lever on the laser
+width, and without that diagnostic the two currently add to a single
+measured sum.*
+
+Lorentzians add: convolving one of FWHM $a$ with one of FWHM $b$ gives a
+Lorentzian of FWHM $a+b$, exactly. If the laser's contribution is modelled
+as a Lorentzian, the predicted line at a fixed condition depends on
+$\gamma_{\rm coll}$ and the laser width only through their sum, and the
+orthogonal direction is flat to machine zero. Any number reported for
+$\gamma_{\rm coll}$ alone under that kernel marks only where the optimiser
+stopped. A per-condition figure was withdrawn for exactly this reason
+([the Voigt profile](voigt-profile.md)).
+
+The code did not preserve that flat direction. It realised the sum
+identity by convolving the two Lorentzians on a finite grid, and the grid
+span was computed from the two widths separately, so grid truncation of
+the Lorentzian tails made the predicted line depend on how a fixed total
+width was split, by up to $3.7\times10^{-3}$ of peak. That size matters:
+per-point noise here is $5.3\times10^{-3}$ of peak across about $10^4$
+points, so a distortion at $3.7\times10^{-3}$ carries up to seventy sigma
+of matched-filter leverage, enough for round-off alone to separate the two
+widths confidently.
+
+The fix imposes the identity instead of computing it: the laser width is
+now added directly into the homogeneous width instead of convolved, exact
+by construction and cheaper by one convolution, with a bit-identical guard
+and a control confirming the Gaussian branch still moves under the same
+transformation.
+
+Density is what resolves the degeneracy here: the collisional part scales
+with it and the laser part does not, so an estimator that varies density
+separates them. The headline kernel result survived the fix almost
+unchanged, while the per-condition number had no referent, and a density
+ladder turns the exact degeneracy into one that is strong but finite. The
+cost is visible in the correlation between $\beta_{\rm self}$ and the
+shared laser width: $-0.82$ to $-0.89$ under the Gaussian kernel, $-0.91$
+to $-0.98$ under the Lorentzian.
+Measured in
+[`results/kernel_identifiability.csv`](../../results/kernel_identifiability.csv),
+which runs in seconds and needs no data.
+
+### The collisional component across the archive
+
+At a fixed condition the sum is all that exists, since the flatness is
+algebraic, not statistical. Density moves one term of the sum and leaves
+the other alone, which is why the collisional coefficient is estimated
+across a temperature ladder instead of from any single condition, and why
+the per-condition version was withdrawn.
+
+Running that separation over the archive finds a component present at
+every peak, by a nested likelihood ratio of 176 to 961 for one parameter on
+its boundary, with peak-conditioned values of 0.315 to 0.449 MHz
+(`results/kernel_k3.csv`), sized at 3.24 times the statistical error on a
+matched footing (`results/kernel_budget.csv`): the model form, not the
+noise, limits that coefficient.
+
+This does not establish that the four peaks share one value, open at
+$p = 0.097$, or what the component is (calling it the laser is a separate
+claim, `results/kernel_k5.csv`), or that the model class is adequate, since
+3.24 is only a sensitivity within the two forms tested. A residual check
+finds a common cross-condition structure with no named mechanism and no
+quantified effect on the coefficient (`results/kernel_k4.csv`). The lever
+map above marks the one measurement that would settle its origin, still
+untaken.
+
+## Values that moved
+Three figures on this page's subject were withdrawn or rebuilt. A
+per-condition collisional-width split was traced to a grid-truncation
+artefact rather than to physics. A background span sized on an assumed
+signal retention was rebuilt once the true fraction was computed. And a
+campaign-only bound that appeared to move across commits was traced to a
+sample-count change landing on a discrete trim boundary in a nearly flat
+profile direction. [HISTORY.md](../HISTORY.md) carries each row with its
+before and after.
 
 ## What can go wrong
 
 The failure that matters is mistaking a converged fit for a determined
-parameter. An optimiser always returns a point and a covariance matrix
-always returns error bars, and neither is evidence that the data chose the
-answer. A near-unit correlation between two parameters is the signal that
-their individual values are not results.
+parameter: an optimiser always returns a point, a covariance matrix always
+returns error bars, and neither is evidence the data chose the answer. A
+near-unit correlation between two parameters signals that their individual
+values are not results.
 
-A second, subtler one: a local covariance is a quadratic approximation at a
-single point, so it describes the valley only near where the fit stopped. If
-the likelihood has more than one minimum, the covariance around one of them
-says nothing about the other, and reporting its error bars implies a global
-statement the analysis did not make.
+A local covariance is a quadratic approximation at a single point,
+describing the valley only near where the fit stopped. If the likelihood
+has more than one minimum, the covariance around one says nothing about
+the other, and its error bars imply a global statement the analysis did
+not make.
 
-Third, an implementation failure that imitates non-identifiability exactly.
-A parameter railed at a bound, a mis-scaled Jacobian, or a numerical
-derivative with the wrong step size all produce flat directions that are
-artefacts of the code. Distinguishing these from genuine degeneracy needs
-the model examined, not the fit re-run.
-
-Fourth, the resolution is easy to overstate. Adding data that moves the
-degenerate combination only a little makes the valley shorter without making
-it narrow, and a parameter that goes from unmeasurable to poorly measured is
-still not a measurement.
+An implementation failure can imitate non-identifiability exactly, through
+a parameter railed at a bound, a mis-scaled Jacobian, or a wrong
+derivative step size, all artefacts of the code and not genuine
+degeneracy, distinguishable only by examining the model. Resolution is
+also easy to overstate: adding data that moves the degenerate combination
+only a little makes the valley shorter without making it narrower, and a
+parameter that goes from unmeasurable to poorly measured is still not a
+measurement.
 
 ## Try it
 
-How similar the line looks when you widen the collisional part against when
-you widen the laser part. An overlap near one means the data cannot tell the
-two changes apart.
+How similar the line looks when you widen the collisional part against
+when you widen the laser part. An overlap near one means the data cannot
+tell the two changes apart.
 
 ```python
 import numpy as np
@@ -287,175 +324,35 @@ print(f"overlap of the two shape changes: {overlap:+.3f}")
 print("near +1 means one can be exchanged for the other almost freely")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
-
-## An exact degeneracy that the implementation broke, 2026-08-21
-
-Every other case on this page is a degeneracy the data cannot resolve well.
-This one is different: it is a degeneracy the mathematics makes exact, and the
-code broke it by accident.
-
-Lorentzians add. Convolving a Lorentzian of FWHM $a$ with one of FWHM $b$ gives
-a Lorentzian of FWHM $a+b$, exactly. So if the laser's contribution is modelled
-as a Lorentzian, the predicted line at a fixed condition depends on
-$\gamma_{\rm coll}$ and the laser width only through their sum. Not weakly.
-Not approximately. The two directions in parameter space are one direction, and
-the orthogonal one is flat: the profile is unchanged along it to machine zero.
-
-**Two consequences, and the second is the surprising one.**
-
-First, any number reported for $\gamma_{\rm coll}$ alone under that kernel is
-not a measurement. It is wherever the optimiser stopped sliding along the flat
-direction. A per-condition figure published on 2026-08-20 was withdrawn for
-exactly this reason ([the Voigt profile](voigt-profile.md)).
-
-Second, **the code did not have the flat direction it should have had**. It
-realised the identity by convolving the two Lorentzians on a finite grid. Grids
-truncate Lorentzian tails, the truncation depends on the grid span, and the
-span was computed from the two widths separately. So the predicted line
-depended on how a fixed total width was split, by up to $3.7\times10^{-3}$ of
-peak, along the direction that is provably flat.
-
-**Why that size is not small.** Against machine precision it is enormous, and
-as a bare fraction it sounds ignorable. The units that decide are the data's:
-per-point noise here is $5.3\times10^{-3}$ of peak and one condition carries
-about $10^4$ points, so a coherent distortion at $3.7\times10^{-3}$ has up to
-seventy sigma of matched-filter leverage. A fit asked to separate the two
-widths would have separated them, confidently, using round-off. This is the
-general lesson: **scale a numerical artefact against the noise of the data it
-will be fitted to, across the number of points it will be fitted over.**
-
-**The fix is the general one for exact identities.** Do not compute them, impose
-them. The laser width is now added into the homogeneous width instead of
-convolved, which is exact by construction and one convolution cheaper. The
-guard asserts the invariance bit-identically rather than within a tolerance,
-since any tolerance would hide the artefact's return, and it sits beside a
-control asserting that the Gaussian branch, where no such symmetry holds, does
-move under the same transformation.
-
-**What breaks the degeneracy for real is density**, which is this page's own
-theme. The collisional part scales with density and the laser part does not, so
-an estimator that varies density separates them and one that does not, cannot.
-That is why the headline kernel result survived the fix almost unchanged while
-the per-condition one had no referent at all. The cost is visible in the
-correlation between $\beta_{\rm self}$ and the shared laser width: $-0.82$ to
-$-0.89$ under the Gaussian kernel, $-0.91$ to $-0.98$ under the Lorentzian. The
-density ladder turns an exact degeneracy into a strong but finite one.
-
-Measured in [`results/kernel_identifiability.csv`](../../results/kernel_identifiability.csv),
-which runs in seconds and takes no data, because the contract has to exist
-before the inference does.
-
-### What breaks it, and what breaking it yielded
-
-The clause that matters above is **at a fixed condition**. The sum is all that
-exists there, and no amount of signal changes that, because the flatness is
-algebraic rather than statistical. What does change it is a variable that moves
-one term of the sum and leaves the others alone.
-
-Density is that variable here. The collisional width scales with it and a laser
-contribution does not, so a ladder in density turns a flat direction into a
-slope. That is why the collisional coefficient is estimated across a
-temperature ladder rather than from any single condition, and why the
-per-condition version of the same number was withdrawn: it had no referent.
-
-Running that separation over the archive gives a component present at every
-peak, by a nested likelihood ratio of 176 to 961 for one parameter on its
-boundary, with peak-conditioned values of 0.315 to 0.449 MHz
-(`results/kernel_k3.csv`). Sized against the statistical error on a matched
-footing it is 3.24 times larger (`results/kernel_budget.csv`), so the model
-form rather than the noise is what limits that coefficient.
-
-**The page's own lesson applies to the result.** Breaking a degeneracy by
-design tells you a parameter is identified. It does not tell you the four peaks
-share one value, which stays open at $p = 0.097$. It does not tell you what the
-component is, and calling it the laser is a separate claim no measurement yet
-taken licenses (`results/kernel_k5.csv`). And it does not tell you the model
-class was adequate, since 3.24 is a sensitivity within the two forms tested.
-That last question has its own instrument, a blind residual atlas that stacks
-per-condition residuals and asks whether the family leaves a shape none of its
-members can make. It has been run, it qualifies, and **it detects**: a common
-residual structure at the permutation floor, with a clean synthetic control and
-survival under leave-one-out over every condition (`results/kernel_k4.csv`).
-The finding is named unexplained reproducible residual structure rather than
-model inadequacy, no mechanism is named, and R_kernel is unchanged, since the
-structure's effect on the coefficient is not quantified.
-A parameter identified is not a common parameter identified is not an origin
-identified is not a class shown adequate.
-
-[Figure 35](../../figures/fig35_orthogonal_information.png) draws the lever
-map, including the one measurement that would settle the origin and has not
-been taken.
-
-## An instability that was actually a discrete boundary, 2026-08-20
-
-A campaign-only bound appeared to move between code versions, which reads at
-first as the worst kind of finding: a result that depends on which commit
-computed it. A commit sweep across the development range, holding one
-environment fixed, closed it.
-
-The code is bit-stable. Six commits spanning nine days return the same bound
-to every printed digit. What moved was the number of samples the construction
-loads, from 247783 to 247788, and it moved at exactly one commit, which had
-renamed a vocabulary across the tree and regenerated the committed ruler
-tables as a side effect. That regeneration moved fitted ruler rates in their
-eleventh digit, and the trim that selects usable samples is a discrete
-comparison, so an eleventh-digit change was enough to carry a boundary across
-a sample edge in a few traces.
-
-The identifiability lesson is the one this page opens with. The primary bound
-is well conditioned and absorbs five samples in 247785 without moving. The
-subset that appeared to move is the one whose profile is nearly flat, and a
-flat profile is precisely where an arbitrarily small change in the data can
-relocate the reported minimum while changing nothing about what the data
-knows. **The diagnostic that would have found this in minutes is the first one
-this page names: ask which subset is nearly flat before asking why its
-reported value moved.**
-
-## A haircut that was actually a degeneracy, 2026-08-15
-
-On 2026-08-15 the wide-scan span was set to 800 MHz, one Gaussian sigma of
-the Doppler pedestal, on the reasoning that fitting a free per-trace
-background over that window costs a fixed haircut of signal-to-noise, taken
-as 0.7. The free background and the pedestal amplitude were not two
-quantities that merely share a little signal: they form a near-degenerate
-pair, and the retained SNR is √(1 − ⟨g⟩²/⟨g²⟩), which evaluates to 0.140 at
-that span's one sigma of reach and not the assumed 0.7. The span was
-replaced by 2400 MHz, three sigma of reach, once the retained SNR was worked
-out properly. [docs/HISTORY.md](../HISTORY.md) carries the row.
-
-A parameter-correlation check between the free background and the pedestal
-amplitude, the first diagnostic this page names, would have shown the
-near-unit correlation and the true retained SNR before the span was chosen
-rather than after.
+Every snippet on these pages runs in `tests/test_wiki_snippets_run.py`, so
+one that stops working fails the suite instead of sitting here misleading a
+reader.
 
 ## Further reading
 
 - A. Raue et al., "Structural and practical identifiability analysis of
   partially observed dynamical models by exploiting the profile likelihood",
-  *Bioinformatics* **25**, 1923 (2009), which introduced the distinction used
-  on this page and the profile-based diagnostic.
+  *Bioinformatics* **25**, 1923 (2009): the source of the distinction and the
+  profile-based diagnostic used on this page.
 - [The profile likelihood](profile-likelihood.md), the tool that maps the
   valley.
-- [Injection-recovery testing](injection-recovery.md), which shows whether the
+- [Injection-recovery testing](injection-recovery.md), for whether the
   intervals a degenerate problem produces actually cover.
 
 ## See also
 
-- The quantity dossiers that apply this page's argument end to end,
-  [the AC-Stark light shift](../quantities/ac-stark-light-shift.md) and
-  [collisional self-broadening](../quantities/self-broadening.md), each with
-  its limiting degeneracy named and the measurement that would break it.
-- [The profile likelihood](profile-likelihood.md), the tool that maps a
-  degenerate valley directly instead of approximating it by an ellipse.
-- [Injection-recovery testing](injection-recovery.md), for whether an
-  interval built on a degenerate problem actually covers.
-- [The joint fit](joint-fit.md), for what sharing a parameter across repeats
-  does and does not do to a degeneracy the whole dataset carries.
-- [Information criteria](information-criteria.md), for the separate question
-  of comparing models rather than separating a model's own parameters.
+- [The AC-Stark light shift](../quantities/ac-stark-light-shift.md) and
+  [collisional self-broadening](../quantities/self-broadening.md), the
+  quantity dossiers with their own limiting degeneracy and the measurement
+  that would break it.
+- [The profile likelihood](profile-likelihood.md), which maps a degenerate
+  valley directly instead of approximating it by an ellipse.
+- [Injection-recovery testing](injection-recovery.md), for whether a
+  degenerate problem's intervals actually cover.
+- [The joint fit](joint-fit.md), for what sharing a parameter across
+  repeats does and does not do to a shared degeneracy.
+- [Information criteria](information-criteria.md), for comparing models
+  instead of separating a model's own parameters.
 
 ---
 

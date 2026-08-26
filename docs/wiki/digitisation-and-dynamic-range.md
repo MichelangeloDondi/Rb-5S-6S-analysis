@@ -7,7 +7,7 @@ digitiser stops mattering, and what changing the vertical range mid-experiment
 costs.
 **Takes.** A signal, a range setting and a noise level.
 **Gives.** The number of levels a measurement needs, the reason a vertical
-range is a physics setting rather than a display preference, and why a range
+range is a physics setting and not a display preference, and why a range
 changed between points turns one measurement into several.
 **Skip if.** The question is whether to count photons instead of digitising a
 current at all, which is [photon counting](photon-counting.md).
@@ -28,11 +28,11 @@ with $\Delta$ the step. That is the whole of the theory. Everything that
 matters follows from comparing $\sigma_q$ with the noise already present.
 
 **The comparison that decides the setting.** If the signal's own noise is much
-larger than $\sigma_q$, digitisation is free: the noise dithers the signal
-across many codes and averaging recovers resolution the single sample does not
-have. If $\sigma_q$ is comparable to or larger than the noise, the digitiser
-becomes the dominant error and no amount of averaging fixes it, because the
-error is deterministic given the input rather than random.
+larger than $\sigma_q$, quantisation adds no meaningful error: the noise
+dithers the signal across many codes and averaging recovers resolution the
+single sample does not have. If $\sigma_q$ is comparable to or larger than the
+noise, the digitiser becomes the dominant error and no amount of averaging
+fixes it, because the error is deterministic given the input, not random.
 
 A useful rule of thumb, and it is only that: a feature needs roughly thirty
 codes across it before quantisation stops contributing meaningfully to a
@@ -47,9 +47,6 @@ serve a whole measurement.
 
 ## The trap: a range that moves under the measurement
 
-This is the part that costs experiments results, and it is invisible in the
-stored data unless someone looks for it.
-
 Autoscaling, whether by the instrument or by a careful operator, keeps each
 individual trace beautifully filling the screen. It does so by changing the
 range between traces. Every range on a real instrument carries its own gain
@@ -57,6 +54,11 @@ and offset calibration, specified to perhaps one to three per cent, and those
 errors are not common between ranges. So a series of measurements taken on
 different ranges is a series of measurements on different instruments, joined
 by calibration constants nobody recorded.
+
+![Codes at each rung of a power ladder for three digitiser bit depths](figures/wiki_digitisation_and_dynamic_range.png)
+
+*Codes at the dim end of a nine-fold power ladder collapse toward the noise
+floor as bit depth drops.*
 
 For a single trace this is harmless. For a measurement that compares traces,
 which is what any sweep or ladder does, it is a systematic that enters
@@ -79,10 +81,16 @@ no vertical setting was ever recorded. Across a single power ladder the step
 changed by a factor of 48 to 596 depending on the line, against a signal
 spanning about 80, and the number of codes actually used per trace varied by a
 factor of seven. The measured departure of the two-photon amplitude from its
-expected square-of-power law is ordered by line brightness rather than by any
+expected square-of-power law is ordered by line brightness and not by any
 atomic property, which is the signature above, and
 [the amplitude departure note](../notes/amplitude_departure_from_p2.md)
 carries the evidence.
+
+![Peak fluorescence against drive power for four lines with a square-law reference](../../figures/fig2_power_sweep.png)
+
+*Peak fluorescence against drive power for the four lines. The square-of-power
+reference line is what the range-change artefact departs from, tracking line
+brightness instead of any atomic property.*
 
 The arithmetic that follows sets a requirement for the next session, written
 out in
@@ -95,24 +103,22 @@ half codes at the bottom rung and a twelve-bit one about forty.
 ## What can go wrong
 
 **Confusing effective bits with nominal bits.** Averaging and
-high-resolution modes buy resolution by exchanging bandwidth, so a nominally
+high-resolution modes convert bandwidth into resolution, so a nominally
 eight-bit instrument can deliver far finer steps than its specification while
-its response time lengthens. Both numbers matter and they exchange against each
-other.
+its response time lengthens. The two figures move against each other.
 
 **Assuming dither is present.** The argument that noise rescues resolution
 requires noise larger than a step. A quiet baseline digitised coarsely does
-not dither, and its average is biased toward the nearest code rather than
+not dither, and its average is biased toward the nearest code instead of
 converging on the truth.
 
-**Reading the range off the specification rather than the data.** The step
+**Reading the range off the specification instead of the data.** The step
 actually used is visible in any stored trace as the smallest nonzero spacing
 between distinct sample values, which is how this repository recovered
 settings nobody had written down.
 
 **Filling the screen.** Putting a peak at 95 per cent of full scale leaves no
-headroom for the excursions a real experiment produces, and a clipped peak is
-a lost trace rather than a slightly compressed one.
+headroom for the excursions a real experiment produces.
 
 ## Try it
 
@@ -139,7 +145,7 @@ for b in (8, 12, 14):
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
+so one that stops working fails the suite instead of sitting here misleading
 a reader.
 
 ## Further reading
@@ -152,7 +158,7 @@ a reader.
 ## See also
 
 - [Photon counting](photon-counting.md), for the regime where the analogue
-  chain is abandoned rather than digitised better.
+  chain is abandoned instead of digitised better.
 - [Designing an acquisition](designing-an-acquisition.md), where span,
   resolution and record length are decided together.
 - [Confounding by acquisition order](confounding-by-acquisition-order.md), the

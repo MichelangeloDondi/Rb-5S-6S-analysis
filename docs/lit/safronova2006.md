@@ -28,4 +28,4 @@ section: method-anchors
 
 # safronova2006
 
-Dynamic alpha(omega) matrix-element source; the independent-recompute fallback for Delta\_alpha (which we take from Orson 2021).
+Dynamic alpha(omega) matrix-element source. The independent-recompute fallback for Delta\_alpha, adopted elsewhere from Orson 2021.

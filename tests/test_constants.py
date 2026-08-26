@@ -94,7 +94,7 @@ def test_no_direct_trapezoid_outside_compat():
 # --------------------------------------------------------------------------
 # The drift envelope is in tension with the measured intra-block scatter.
 # --------------------------------------------------------------------------
-# The reference was NOT moved within a 5-repeat block (experimenter-confirmed
+# The reference was NOT moved within a 5-repeat block (confirmed
 # 2026-07-22), so the ~0.08 MHz intra-block position scatter is drift
 # accumulated over the block, not a re-centring artifact. For 5 evenly spaced
 # traces under linear drift the scatter is rate x T x 0.354, so the 4 MHz/min

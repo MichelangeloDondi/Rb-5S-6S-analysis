@@ -32,36 +32,14 @@ section: prior-art
 
 # camparo1992b
 
-**Read from the held PDF.** Opt. Commun.
-**91**, 343 (1992), received February 1992, the same year and group as
-[Camparo & Lambropoulos](camparo1992.md), and a distinct mechanism.
+Held.
 
-**The mechanism.** A field with **correlated** amplitude and frequency
-fluctuations has an asymmetric spectrum of its own. The measured resonance is
-the convolution of that field spectrum with the atomic response, so the line
-centre shifts — and the profile skews — with no atomic physics involved at
-all. The paper states it plainly: the shift "is independent of any ac Stark
-or Bloch–Siegert effect."
+Opt. Commun. 91, 343 (1992), received February 1992, the same year and group as `camparo1992`, addressing a distinct mechanism.
 
-**Why this earns an entry rather than a footnote.** The asymmetry programme
-here reads atomic physics out of a line's shape. That inference admits two
-laser-noise counterfeits, and they are different:
+## The mechanism
 
-1. *Uncorrelated* intensity noise sampled slowly — the
-   [Camparo & Lambropoulos](camparo1992.md) skew, bounded in these data
-   through the noise model's multiplicative term (BIC selects it in 1 of 32
-   conditions, and there negative, an artifact);
-2. **Correlated AM/FM noise** — this paper. A diode laser's amplitude and
-   frequency fluctuations are generically correlated (the same injection
-   current drives both), so the mechanism is not exotic, and the M1 bound on
-   multiplicative *variance* does not address it: the counterfeit lives in
-   the field's spectral asymmetry, not in the signal's noise floor.
+A field with correlated amplitude and frequency fluctuations has an asymmetric spectrum of its own. The measured resonance is the convolution of that field spectrum with the atomic response, so the line centre shifts and the profile skews with no atomic physics involved. The shift "is independent of any ac Stark or Bloch-Siegert effect."
 
-For the archival results nothing changes — the committed asymmetry channel is
-a bound, and the C3c skew is identified as shot noise. But any future claim
-of a *detected* ramp asymmetry (the fixed-lock session's purpose) must
-exclude this channel explicitly: the natural discriminator is that the ramp
-skew scales as P³ through S₀ while a field-spectrum asymmetry does not scale
-with optical power at the atoms, and the geometric sign flip
-(methods §2.6) is immune to it entirely — a field-spectrum artifact cannot
-know the beam waist.
+## Use in this record
+
+Two noise mechanisms can each produce a line asymmetry that mimics an atomic effect: uncorrelated intensity noise sampled slowly (`camparo1992`), and correlated AM/FM noise (this paper). The second is not exotic, since a diode laser's amplitude and frequency fluctuations are generically correlated by the same injection current, and it lives in the field's spectral asymmetry rather than in the noise floor of the signal, so a bound on multiplicative noise variance alone does not constrain it. The two mechanisms are distinguishable by scaling: the amplitude-noise skew scales as P^3 through S0, while a field-spectrum asymmetry does not scale with optical power at the atoms. The geometric sign flip used in this analysis (methods section 2.6) does not depend on the beam waist, so it is unaffected by this mechanism.

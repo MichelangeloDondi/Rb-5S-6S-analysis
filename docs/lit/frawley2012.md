@@ -59,25 +59,21 @@ section: method-anchors
 
 # frawley2012
 
-**Held and read.** University College Cork / Tyndall National
-Institute, with Minogin at Troitsk. Síle Nic Chormaic is now at **OIST**.
+Held.
 
-## What it gives
+## The model
 
 The van der Waals potential of an atom outside a cylinder of radius $R$ at
-distance $x_0$ from the surface, in the electrostatic approximation, for
-**metal and dielectric** cylinders. The useful form is their Eq. (19), which
-factorises the answer into the flat-surface result times a dimensionless
-**surface factor**:
+distance $x_0$ from the surface, in the electrostatic approximation, for metal
+and dielectric cylinders. Eq. (19) factorises the result into the flat-surface
+potential times a dimensionless surface factor:
 
 $$U = -\frac{C_3}{x_0^3} \mu$$
 
-with $\mu$ (their Eq. 20) an integral of modified Bessel functions summed over $m$,
-and a matching force factor $\nu$ (Eqs. 22–23) with $F = -3C_3\nu/x_0^4$. That
-factorisation is what makes the paper usable: an existing $C_3/x^3$ model is
-corrected by multiplying by one position-dependent scalar.
+with $\mu$ (Eq. 20) an integral of modified Bessel functions summed over $m$,
+and a matching force factor $\nu$ (Eqs. 22-23) with $F = -3C_3\nu/x_0^4$.
 
-## The numbers, and the correction they force
+## The numbers
 
 Verbatim from the body:
 
@@ -91,7 +87,8 @@ Verbatim from the body:
 
 > "at a distance $x_0 = 100R$, the value of the $\mu$-factor is about 0.2"
 
-$\nu$ behaves the same way — unity near the surface, ~0.5 by $x_0 \simeq 10R$.
+$\nu$ behaves the same way: near unity at the surface, about 0.5 by
+$x_0 \simeq 10R$.
 
 | $x_0/R$ | $\mu$ |
 |---|---|
@@ -100,77 +97,61 @@ $\nu$ behaves the same way — unity near the surface, ~0.5 by $x_0 \simeq 10R$.
 | 5 | $\approx 0.5$ |
 | 100 | $\approx 0.2$ |
 
-This repository briefly claimed the opposite, that a flat-surface $C_3/r^3$
-overestimates the shift at nanofibre distances by about a factor of two. That
-came from the abstract rather than the body. The factor of two lives at
-$x_0 \sim 5R$, and near-surface spectroscopy happens at tens of nanometres from
-a 120 nm fibre, so $x_0/R \lesssim 1$ and $\mu$ is between 0.75 and 1. The
-flat-surface form is good there to tens of percent.
+The abstract states the halving of the surface factor at "distances of the
+order of a cylinder radius," while the body gives $\mu \lt  0.75$ at $x_0 = R$ and
+$\mu \approx 0.5$ only near $x_0 = 5R$. The body's figures are used here.
 
-(The abstract is the source of the confusion: it puts the halving "at distances
-of the order of a cylinder radius", where the body says $x_0 = R$ gives less than $0.75$
-and $0.5$ arrives around $x_0 = 5R$. Where they differ, the body governs.)
+For caesium around a silica fibre of radius $a = 100$ nm, the paper's worked
+example gives $C_3 = 1.6$ mHz $\mu\mathrm{m}^3$.
 
-## Where its own derivation is licensed — and it is not unconditional
+## Validity
 
-**VERIFIED from section 1.** Frawley states the condition under which the
-electrostatic route replaces the full QED problem:
+The paper states the condition under which the electrostatic route replaces
+the full QED problem:
 
 > "if one is dealing specifically with nanobodies of sizes less than
 > $\lambda/2\pi \simeq 100$ nm and if one assumes that the distance between the
 > atom and the nanobody is of the same order of magnitude, the van der Waals
 > energy can be determined using a relatively simple electrostatic approach"
 
-The size condition is $a$ below $\lambda/2\pi$, i.e. **$ka$ below 1** — the same
-$ka$ that governs [klimovducloy2004](klimovducloy2004.md), just with a looser
-threshold (Klimov's quasistatic bound is the stricter $ka$ below
-$1/\varepsilon = 0.473$).
-Evaluated (CALCULATED 2026-07-31):
+The size condition is $a$ below $\lambda/2\pi$, i.e. $ka$ below 1. This is the
+same $ka$ that governs klimovducloy2004, with a looser threshold than that
+paper's quasistatic bound of $ka$ below $1/\varepsilon = 0.473$.
 
 | fibre | $\lambda/2\pi$ | $a$ | $ka$ | Frawley ($ka$ below 1) | Klimov ($ka$ below 0.473) |
 |---|---|---|---|---|---|
-| [patterson2018](patterson2018.md) | 124.1 nm | 120 nm | **0.967** | inside, **marginally** | violated |
-| [sague2007](sague2007.md) | 135.6 nm | 250 nm | **1.844** | **violated** | violated |
+| patterson2018 | 124.1 nm | 120 nm | 0.967 | inside, marginally | violated |
+| sague2007 | 135.6 nm | 250 nm | 1.844 | violated | violated |
 
-So this paper is usable at Patterson's fibre but **only just** — $a$ is 97% of
-the stated limit — and it is **out of range at Sagué's**. That must be carried
-into any refit rather than discovered afterwards. The companion distance
-condition is amply met for the near-surface atoms that matter, which sit
-tens of nanometres out.
+The electrostatic approximation is marginally valid at Patterson's fibre ($a$
+is 97 percent of the stated limit) and outside its range at Sagué's. The
+companion distance condition, that the atom sits at roughly the nanobody's own
+size scale from the surface, is satisfied for near-surface atoms tens of
+nanometres from the wall.
 
-**Also useful, from their worked example:** for caesium around a silica fibre of
-radius $a = 100$ nm they take $C_3 = 1.6$ mHz µm³ — a concrete constant for this
-geometry, and the same alkali-on-silica combination as `sague2007`.
+The companion interior-geometry solution (afanasiev2010) gives the hollow-core
+case in the same factorised form, and the two agree that the surface factor
+approaches unity at the wall in either curvature, making curvature a
+distance-scale effect rather than a near-surface one.
 
-## The claim in its Conclusion that matters for the nanofibre extension
+## The asymmetry proposal
 
-> "the sharp decrease in the potential with distance can be responsible for the
-> **strong asymmetry of the spontaneous emission line** of an atom into an
+The Conclusion states:
+
+> "the sharp decrease in the potential with distance can be responsible for
+> the strong asymmetry of the spontaneous emission line of an atom into an
 > optical nanofiber"
 
-That is asymmetry-of-a-line attributed to a distance-dependent surface
-potential, proposed in 2012 — **six years before**
-[patterson2018](patterson2018.md) measured it and named it. It is a
-*suggestion*, not a derivation: there is no lineshape, no moment, no fit to
-data here, and the paper does not develop it. But it belongs in the prior-art
-discussion alongside [delone1980](delone1980.md), and it should be cited.
+This attributes line asymmetry to a distance-dependent surface potential,
+predating patterson2018's measurement and naming of such an asymmetry by six
+years. The paper does not develop the idea. There is no lineshape, moment, or
+fit to data. Eq. (24) folds $\mu$ into an effective potential with the
+centrifugal term, giving "expanded atomic orbits around the nanofibers, and
+... Lowering the corresponding rotational frequencies."
 
-It also draws the trapping consequence — Eq. (24) puts $\mu$ into an effective
-potential with the centrifugal term, giving "expanded atomic orbits around the
-nanofibers, and ... Lowering the corresponding rotational frequencies".
+## Use in this record
 
-## Status
-
-The formulae are **not yet coded**, and per the verify flag they must be read
-off the rendered page before they are — the Bessel integrands do not extract
-reliably. Together with [klimovducloy2004](klimovducloy2004.md) (whose
-quasistatic form, note, is *not* valid at either fibre of interest) this is one
-of the two theory inputs the Patterson refit needs. **Recorded as OPEN.**
-
-Its concave counterpart, [afanasiev2010](afanasiev2010.md) (Minogin again), was
-obtained the same day and gives the interior case in the identical factorised
-form. The two together settle the geometry question for the nanofibre exterior
-and the hollow-core interior from primary sources, and they agree on the point
-that matters most: **the surface factor tends to unity at the wall in both
-curvatures**, so a flat-surface $C_3/x^3$ is the right form close in and
-curvature is a distance-scale effect, not a near-surface one.
+For patterson2018's fibre geometry (120 nm radius silica, near-surface atoms
+tens of nanometres out), $x_0/R \lesssim 1$ and $\mu$ lies between 0.75 and 1,
+so the flat-surface $C_3/x^3$ form holds there to within tens of percent. The
+correction becomes significant only at $x_0 \gtrsim 5R$.

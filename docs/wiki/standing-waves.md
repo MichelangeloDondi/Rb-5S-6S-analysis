@@ -10,9 +10,9 @@ splits between the fringe-resolved and fringe-averaged regimes.
 fitting, no data.
 **Gives.** The fringe-resolved and fringe-averaged limits, the retro ratio,
 and the area ratio between the Doppler-free line and its same-beam pedestal.
-**Skip if.** You want the frequency cancellation itself rather than the
-spatial intensity pattern it rides on. That is
-[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md).
+**Skip if.** You want the frequency cancellation itself: see
+[Doppler-free two-photon spectroscopy](doppler-free-two-photon.md). This
+page covers the spatial pattern it rides on.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -21,167 +21,147 @@ spatial intensity pattern it rides on. That is
 
 Retro-reflecting a laser beam back through itself sends two waves of the
 same frequency through the same volume in opposite directions. Their
-superposition does not travel. At each point the two fields add with a
-phase that depends on position, so the total intensity is fixed in space
-rather than sweeping through it: bright antinodes and dark nodes, spaced at
-half the optical wavelength. The half comes from the round trip, not from
-the reflection alone. A single forward wave has phase $kz$, the returning
-wave has phase $-kz$, and their difference advances by $2k$ per unit
-length, so the pattern repeats every $\lambda/2$, twice as often as either
-wave would alone.
+superposition does not travel: the two fields add with a position-dependent
+phase, so the intensity is fixed in space, bright antinodes and dark nodes
+spaced at half the optical wavelength. The half comes from the round trip,
+not the reflection alone: a forward wave has phase $kz$, the returning
+wave $-kz$, and their difference advances by $2k$ per unit length, so the
+pattern repeats every $\lambda/2$, twice as often as either wave alone.
 
-An atom moving through that pattern can be in either of two regimes,
-and which one applies is a question of timescale, not of geometry. A slow
-or nearly transverse atom crosses a negligible fraction of one fringe
-during the time it takes to respond to the light, so it sits at
+An atom moving through that pattern falls into one of two regimes, decided
+by timescale, not geometry. A slow or nearly transverse atom crosses a
+negligible fraction of one fringe during its response time, so it sits at
 essentially one point of the standing wave and reads whatever intensity is
-there. That is fringe-resolved: the atom's response depends on where in
-the fringe it happens to be, and an ensemble of such atoms carries the
-fringe's spatial structure into the signal. A fast axial atom instead
-sweeps through many fringes within that same response time, so what
-reaches the atom is a rapid modulation about a well-defined mean, and to
-lowest order only the mean survives. That is fringe-averaged. The two
-limits bracket every real ensemble, which is always a thermal mixture of
-transverse and axial motion, and the fraction that falls into each regime
-is set by the ratio of the fringe-crossing rate to the atom's response
-rate.
+there: fringe-resolved, an ensemble of such atoms carrying the fringe's
+spatial structure into the signal. A fast axial atom instead sweeps through
+many fringes within that same response time, so only the mean intensity
+survives to lowest order: fringe-averaged. The two limits bracket every
+real ensemble, always a thermal mixture of transverse and axial motion, and
+the fraction in each regime is set by the ratio of the fringe-crossing rate
+to the atom's response rate.
 
-A second, independent question is how much power actually comes back. The
-retro ratio is the fraction of forward power returned to the atoms after
+The retro ratio is the fraction of forward power returned to the atoms after
 every loss along the retro path, mirror reflectivity, window and lens
 passes, and imperfect overlap between the outgoing and returning modes.
 It is a number between zero and one for any real retro-reflector, one
 only in the lossless, perfectly mode-matched limit.
 
-The retro ratio matters beyond the fringe contrast because a
-counter-propagating geometry drives two-photon absorption through two
-distinct channels. An atom can take one photon from the forward beam and
-one from the backward beam, a cross term whose rate scales with the
-product of the two intensities. Because the two photons travelling in
-opposite directions carry opposite first-order Doppler shifts, this
-channel cancels the atom's velocity and produces the narrow,
-Doppler-free line. Or an atom can take both photons from the same beam,
-a same-beam term whose rate scales with the square of that beam's own
-intensity. Both photons then carry the same first-order Doppler shift,
-nothing cancels, and the ensemble produces a broad, Doppler-broadened
-pedestal underneath the narrow line. Both channels are driven by the
-same two beams, so their relative strength depends on nothing but how
-those two intensities compare, which is exactly what the retro ratio
-measures. The ratio of the two channels' areas is therefore a function of
-the retro ratio alone, symmetric under exchanging which beam is called
-forward, and it is largest when the two beams are equally strong and
-falls away as either one comes to dominate.
+A counter-propagating geometry also drives two-photon absorption through
+two distinct channels. An atom can take one photon from each beam, a cross
+term that cancels the atom's velocity because the two photons carry
+opposite first-order Doppler shifts, producing the narrow, Doppler-free
+line. Or it can take both photons from the same beam, a same-beam term
+whose photons carry the same Doppler shift: nothing cancels, and the
+ensemble produces a broad pedestal beneath the narrow line. Both channels
+run on the same two beams, so their relative strength is a function of the
+retro ratio alone, largest when the two beams are equally strong and
+falling away as either one dominates.
 
-**The ratio in three lines, since it is asserted in several places in this
-repository and derived in none of them.** Write the forward intensity as $I$
-and the backward as $\rho I$. The same-beam channel runs on each beam
-separately, so its rate goes as $I^2 + (\rho I)^2$. The cross channel takes
-one photon from each beam, and the two assignments of which photon comes
-from which beam are indistinguishable, so they add in the amplitude and the
-rate carries the square of that sum, $4 I \cdot \rho I$. The ratio of the
-narrow line's area to the pedestal's is the quotient,
+Write the forward intensity as $I$ and the backward as $\rho I$. The
+same-beam channel runs on each beam separately, so its rate goes as
+$I^2 + (\rho I)^2$. The cross channel takes one photon from each beam, and
+the two assignments of which photon comes from which beam are
+indistinguishable, so they add in the amplitude and the rate carries the
+square of that sum, $4 I \cdot \rho I$. The ratio of the narrow line's
+area to the pedestal's is the quotient,
 
 $$\frac{4\rho}{1+\rho^2},$$
 
-which is 2 at a perfect retro reflector. That value is the check worth
-remembering: with equally strong counter-propagating beams the Doppler-free
-line carries twice the area of the pedestal beneath it, and the factor of
-two comes from the interference of two indistinguishable pathways rather
-than from any property of the atom.
+which is 2 at a perfect retro reflector: with equally strong
+counter-propagating beams the Doppler-free line carries twice the area of
+the pedestal beneath it, from the interference of two indistinguishable
+excitation pathways.
 
 ## What problem it solves
 
-A retro-reflected geometry is not optional in Doppler-free two-photon
-spectroscopy: the cancellation that makes the line narrow needs both
-counter-propagating beams, so the standing wave and the same-beam pedestal
-it carries are unavoidable, not a design choice. What the fringe-resolved
-and fringe-averaged limits settle is whether the spatial structure of
-that standing wave needs to be carried explicitly through a lineshape
-calculation or whether it safely collapses to its mean, which is the
-difference between a model with one extra parameter distribution and one
-without. And because the two absorption channels are locked together by
-the same retro ratio, a feature that would otherwise look like pure
-background, the pedestal, becomes a second observable: its size relative
-to the narrow line is a prediction, not a nuisance, and a measured
-departure from that prediction is informative about the retro ratio
-itself.
+A retro-reflected geometry is required for Doppler-free two-photon
+spectroscopy: the cancellation needs both counter-propagating beams, so
+the standing wave and its same-beam pedestal are unavoidable. What the
+fringe-resolved and fringe-averaged limits settle is whether the standing
+wave's spatial structure must be carried explicitly through a lineshape
+calculation, or safely collapses to its mean, the difference between a
+model with one extra parameter distribution and one without. Because the
+two absorption channels share the same retro ratio, the pedestal's size
+relative to the narrow line is a second observable: a measured departure
+from the predicted ratio constrains the retro ratio itself.
 
 ## Where this repository uses it
 
 [`rb5s6s.constants.RHO_RETRO`](../../rb5s6s/constants.py) holds the
 assumed retro power ratio, 0.94 with an uncertainty of 0.04, a design
-assumption rather than a bench measurement: the retro path is built to be
-self-imaging so the forward and returning modes match by construction,
+assumption with no bench measurement behind it. The retro path is built to
+be self-imaging so the forward and returning modes match by construction,
 but loss at every extra surface and any residual misalignment push the
 real ratio below the ideal value of one. Every absolute AC-Stark
-prediction in the repository scales with $(1+\rho)$, so this constant
-enters [the AC-Stark shift](ac-stark-shift.md) directly.
+prediction scales with $(1+\rho)$, so this constant enters
+[the AC-Stark shift](ac-stark-shift.md) directly.
+
+![The standing wave's intensity pattern with its fringe-averaged mean and fringe amplitude above it](../../figures/fig25_retro_combination.png)
+
+*The standing wave's intensity pattern, its fringe-averaged mean, and the
+fringe amplitude above that mean.*
 
 The fringe-averaging argument is worked out in
-[THEORY_NOTE.md](../THEORY_NOTE.md). There the coupling that drives the
-Doppler-free line is shown to be uniform along the standing wave, so only
-the AC-Stark shift fringes, and a fast axial atom's modulation index at
-that shift depth is small enough to put the effective intensity at the
-fringe mean, which is the fringe-averaged limit above applied to this
-transition. A frozen-fringe simulation of the weak-excitation amplitude
-along each trajectory (module `rb5s6s/ramp_transit.py`) recovers that mean
-in both the fast-sweep and frozen-fringe limits to about a tenth of a
-per cent, independent of the quasi-static assumption the rest of the
-argument relies on. The fringe-resolved tail left over from
-near-transverse atoms does not move that mean, but it does suppress the
-line's third moment, a separate and smaller effect documented in the same
-note.
+[THEORY_NOTE.md](../THEORY_NOTE.md): the coupling that drives the
+Doppler-free line is uniform along the standing wave, so only the AC-Stark
+shift fringes, and a fast axial atom's modulation index at that shift
+depth is small enough to put the effective intensity at the fringe mean,
+the fringe-averaged limit applied here. A frozen-fringe simulation of the
+weak-excitation amplitude along each trajectory (module
+`rb5s6s/ramp_transit.py`) recovers that mean in both
+the fast-sweep and frozen-fringe limits to about a tenth of a per cent,
+independent of the quasi-static assumption. The fringe-resolved tail left
+over from near-transverse atoms does not move that mean, but it suppresses
+the line's third moment, a smaller effect documented in the same note.
 
-The wide-scan design in the fixed-lock proposal turns the same physics
-around and reads it as a diagnostic.
-[The fixed cavity lock chapter](../plan/09_the-fixed-lock.md) checks that
-the drive depth chosen to null the sideband comb does not also null the
-same-beam term, since a drive that suppressed the pedestal along with the
-comb would break the wide scan's purpose, and confirms the two channels
-share one Bessel law. The following chapter,
-[§10c.7](../plan/10_the-fixed-lock-instrument.md), and
-[`scripts/run_widescan_design.py`](../../scripts/run_widescan_design.py),
-which is the actual source of the number below, carry the area ratio
-forward into an in-situ, if weak, monitor of the retro ratio measured on
-the same traces as the line itself, without a separate power meter.
+The wide-scan design in the fixed-lock proposal uses the same physics as a
+diagnostic. [The fixed cavity lock chapter](../plan/09_the-fixed-lock.md)
+checks that the drive depth chosen to null the sideband comb does not also
+null the same-beam term, since that would break the wide scan's purpose,
+and confirms the two channels share one Bessel law.
+[§10c.7](../plan/10_the-fixed-lock-instrument.md) and
+[`scripts/run_widescan_design.py`](../../scripts/run_widescan_design.py)
+carry the area ratio forward into an in-situ monitor of the retro ratio
+on the same traces as the line itself, without a separate power meter.
 
 ## What can go wrong
 
 The most common model failure is a factor-of-two slip in the fringe
-period. Because the pattern is set by the round-trip phase, its spacing
-is $\lambda/2$, and treating it as $\lambda$ mislabels every fringe by
-one and shifts any node-antinode argument by half a period.
+period: the pattern's spacing is $\lambda/2$ because it is set by the
+round-trip phase, and treating it as $\lambda$ mislabels every fringe and
+shifts any node-antinode argument by half a period.
 
-A subtler model failure is collapsing the two things that fringe and the
-one that does not into a single picture. The AC-Stark shift fringes with
-position because it follows the total field intensity, but the
-Doppler-free coupling does not, because it is driven by a cross term that
-stays uniform along the standing wave. Assuming both are governed by the
-same spatial pattern, or that a fringe-averaged treatment of the shift
-also settles the coupling, produces conclusions about the lineshape that
-the underlying physics does not support.
+The AC-Stark shift fringes with position because it follows the total
+field intensity, but the Doppler-free coupling does not, driven instead by
+a cross term that stays uniform along the standing wave. Assuming both are
+governed by the same spatial pattern, or that a fringe-averaged treatment
+of the shift also settles the coupling, produces conclusions about the
+lineshape the underlying physics does not support.
 
 A data-insufficiency limit is built into the area-ratio diagnostic itself.
-Because the ratio is stationary at a retro ratio of one, its sensitivity
-to a change in the retro ratio vanishes exactly where a well-aligned
-retro-reflector is expected to sit, so a pedestal measured to some
-fractional precision constrains the retro ratio far more loosely than the
-same precision would suggest away from that point. A departure from the
-value of record that is small is, for that reason, the hardest one to
-catch this way.
+The ratio is stationary at a retro ratio of one, so its sensitivity to a
+change vanishes exactly where a well-aligned retro-reflector is expected
+to sit, and a pedestal measured to some fractional precision constrains
+the retro ratio far more loosely than the same precision would suggest
+away from that point. A small departure from the value of record is the
+hardest to catch this way.
 
 Finally, an experimental limitation shared by any pedestal-based
-measurement: the same-beam channel has to be separated from whatever
-broad, non-atomic background sits under it, stray and scattered light in
-particular, before its area means anything. A pedestal that has not been
-isolated from that background will read as a retro ratio that is too
-large, since scattered light adds area the standing-wave physics did not
-produce.
+measurement: the same-beam channel must be separated from whatever broad,
+non-atomic background sits under it, stray and scattered light in
+particular, before its area means anything. A pedestal not isolated from
+that background reads as a retro ratio too large, since scattered light
+adds area the standing-wave physics did not produce.
 
 ## Try it
 
 The narrow-to-pedestal area ratio and its slope, evaluated at a perfect
 retro reflector and at the accepted value.
+
+![Area ratio against retro ratio, with the accepted value and its rho equals one maximum marked](figures/wiki_standing_waves.png)
+
+*The area ratio against the retro ratio, with the accepted value and its
+rho=1 maximum marked.*
 
 ```python
 from rb5s6s import RHO_RETRO
@@ -201,30 +181,12 @@ for rho, label in ((1.0, "perfect retro"), (RHO_RETRO, "accepted RHO_RETRO")):
 print("the slope vanishes at rho = 1, so the ratio is a weak monitor near it")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
-
-## A coefficient carried over from the wrong channel, 2026-08-15
-
-On 2026-08-15 a residual-Doppler tolerance for a tilted retro-reflector was
-first written using the same-beam pedestal's own width coefficient to scale a
-tilt angle into a frequency. That coefficient belongs
-to the same-beam term this page describes above, where both photons come
-from one beam and carry a wavevector sum of $2\vec k$. A retro tilt instead
-acts on the cross term, one photon from each of the two counter-propagating
-beams, whose sum for a small angle $\theta$ is $k\theta$, not $2k\theta$:
-half the pedestal's coefficient, because the pedestal already carries the
-doubled wavevector the tilt does not. Recomputed at 471 MHz per radian
-rather than 942, the tolerance loosened to **3.2 to 3.5 mrad**.
-[docs/HISTORY.md](../HISTORY.md) carries the row.
-
-The failure mode is the one named above under model failure: two things that
-look alike because the same two beams drive both were treated as sharing one
-coefficient. The cross term and the same-beam term are locked together by the
-retro ratio but are not the same channel, and keeping them separate, as the
-description above already does, is what would have caught the double
-counting before it reached a design document.
+## Values that moved
+A tilt tolerance for the retro-reflector was once computed from the
+same-beam term's coefficient, which carries the wavevector sum $2k$, when
+the mechanism is the cross term, whose sum for a small tilt $\theta$ is
+$k\theta$, half of it. The tolerance quoted above is the recomputed one.
+[HISTORY.md](../HISTORY.md) carries the figure that was replaced.
 
 ## Further reading
 

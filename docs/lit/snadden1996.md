@@ -28,4 +28,4 @@ section: method-anchors
 
 # snadden1996
 
-FM two-photon in cold Rb — EOM-ruler ancestry (with Zapka 1983, Bjorklund 1980). Conference abstract; no DOI.
+FM two-photon spectroscopy in cold Rb, in the EOM-ruler ancestry with Zapka 1983 and Bjorklund 1980. Conference abstract, no DOI.

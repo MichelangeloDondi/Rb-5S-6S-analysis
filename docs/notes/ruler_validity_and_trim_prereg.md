@@ -5,7 +5,7 @@ number came out of it.** Every threshold below is fixed here, with its
 justification, so that the run can only confirm or fail it. No value in this
 note was chosen after seeing a fit.
 
-`provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the CUSUM null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished review rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
+`provenance: results/ruler_campaign.csv` - The body thresholds are true preregistration and every one was confirmed present in `rb5s6s/config.py`, `rb5s6s/ruler.py` or `make_figures.py`. The eight dated amendments report outcomes, and the four quantities section 9 exists to police match this CSV exactly. **Ten claims remain unaccounted**, among them the Bessel inversion table, the CUSUM null calibration, the per-member estimator family and amendment 8's adjudication statistics, which live in an unpublished audit note rather than in `results/`. **10 numeric claims on this page remain unaccounted for.** Recorded by an audit that read every numeric claim on this page against `results/` and `scripts/`. See `docs/HISTORY.md`.
 
 
 **The question.** How can the frequency ruler be wrong in a way the data can
@@ -87,7 +87,7 @@ of those same 104 rulers, whose n_major is 3 on 88 and 2 on 16, and catches 39
 of 48 injected folds while staying blind at apex 0.8, which is a second
 instrument agreeing with amendment A6. The reason now sits beside the exclusion
 in `rb5s6s/qc.py`. Measured in RT9 of
-the frequency-calibration review (amendment 8).
+the frequency-calibration audit (amendment 8).
 
 What this specification is not. It is not a claim that the campaign rate is
 wrong by any stated amount. It fixes the tests and the remedies. What they
@@ -1021,7 +1021,7 @@ and it was not sufficient. No threshold was touched.
 `rate_laser_err` is 5.098e-5, which is 0.120 per cent. `rate_err_total` is
 8.699e-5, which is 0.205 per cent and 1.71 times the statistical error alone.
 
-**The family reproduces the unpublished review's finding RT6 and implements
+**The family reproduces the unpublished audit's finding RT6 and implements
 its recommendation.** RT6 measured five of these estimators against the previous
 committed rate, found the choice of estimator moving the central value by up to
 0.23 per cent while the scatter inflation widened only the error bar, and
@@ -1464,7 +1464,7 @@ is covered in full by the kept samples and its tooth still stands at only 0.63
 of the fit residual. The amplitude cause binds even where the span cause does
 not.
 
-The second cause is the ramp span, raised by the experimenter and confirmed by
+The second cause is the ramp span, confirmed by
 measurement. For every fitted ruler, take the kept sample interval after any
 recorded trim, the recorded `t0_ms` and `delta_ms`, and ask whether each outer
 tooth window, centre plus or minus half a spacing, lies inside that interval.
@@ -1480,8 +1480,7 @@ that a fully covered third-order tooth still sits below the noise.
 The finding was put up for decision as section 7 requires, with three options:
 relax the clause to six standing, relax it and overlay the fitted Bessel
 envelope, or drop the figure. Six standing with no envelope was chosen, with
-the caption stating why the third order is below the noise. The experimenter
-also named the span cause before the measurement confirmed it.
+the caption stating why the third order is below the noise.
 
 The amended clause: at least six of the seven fitted heights stand strictly
 above the fit residual standard deviation, none railed. Every other clause is
@@ -1563,7 +1562,7 @@ reasoning.
 
 Whether the fit of record should be seeded to land on the correct labelling
 in the first place, so that the two never disagree, is a question for the
-frequency-calibration review. It is the difference between a fit that is
+frequency-calibration audit. It is the difference between a fit that is
 right by construction and one that is right after inspection, and it is
 worth a session of its own rather than a change made while a recompute is
 running.
@@ -1571,7 +1570,7 @@ running.
 ## E5. The criterion that identifies a displaced grid, stated exactly
 
 Section E3 left the identification to the labelling test. Two independent
-reviews of the rendered inspection panels showed that the test is the
+passes over the rendered inspection panels showed that the test is the
 wrong gate for it, in both directions, so the criterion is fixed here.
 
 At 2 beta = 1.62 the Bessel weights are 0.444 for the carrier, 0.572 for the
@@ -1583,7 +1582,7 @@ height ordering of a correctly labelled comb is therefore
 Two consequences, and the second is the one that was being got wrong.
 
 A carrier weaker than its first-order pair is expected at this depth. It
-identifies nothing. One reviewer, an expert reading the panels cold, flagged
+identifies nothing. Reading the panels cold, an expert flagged
 a correctly labelled comb as defective on exactly that reading, because no
 panel said the suppressed carrier was the physics of the drive. The panels
 now say it.
@@ -1622,8 +1621,8 @@ nowhere else.
 
 The height law first, because two computations of the depth disagreed until
 it was pinned down, and because the depth is always to be written as
-`2 beta = ...` rather than as a bare depth in radians. A reviewer read one of
-those bare statements as beta and got half the answer.
+`2 beta = ...` rather than as a bare depth in radians. One of
+those bare statements was read as beta, halving the answer.
 
 The comb-amplitude derivation of
 [the frequency ruler](../methods/05_the_frequency_ruler.md) sums every
@@ -1716,9 +1715,9 @@ mean. The fig8 winner, `rulers_p/4192nm_eom_after1.csv`, is one of the ten,
 carrier 0.704 V over first-order teeth of 0.677 and 0.691 V. The
 second-to-first ratio is tight while the carrier ratio is wide, which is the
 signature of residual amplitude modulation at the carrier, the imperfection
-of the carrier-suppression setting that the methods note already lists. The
-experimenter's record that the input polarisation angle changed between sessions is
-consistent with this, since the suppression working point depends on that
+of the carrier-suppression setting that the methods note already lists. That the
+input polarisation angle changed between sessions is RECOLLECTION, not a
+recorded fact, and it is consistent with this, since the suppression working point depends on that
 angle while the drive depth evidently did not.
 
 Two withdrawals follow. The claim that a suppressed carrier is expected on
@@ -1766,7 +1765,7 @@ numbering in either direction.
 
 Whether the residual amplitude modulation is large enough to bias the tooth
 spacing rather than only the heights stays with the frequency-calibration
-review. Nothing here touches the spacing, which is measured from tooth
+audit. Nothing here touches the spacing, which is measured from tooth
 positions and not from heights.
 
 # Amendment 7, 2026-08-05: why the trimmer never fires on a line
@@ -1814,12 +1813,12 @@ the trimmer works, and it was not settled here. The cap that excludes the
 retrace is a fixed number of megahertz, and the retrace crossing moves with
 the sweep rate, which the six-tooth correction had just re-measured. A cap
 that is safe at one rate is not automatically safe at another.
-The frequency-calibration review took this on, and the check was cheap: for
+The frequency-calibration audit took this on, and the check was cheap: for
 every canonical trace, the distance from the window edge to the nearest
 recorded retrace crossing, in units of the fitted width.
 
 It has now been run, in RT10 of
-the frequency-calibration review (amendment 8), and
+the frequency-calibration audit (amendment 8), and
 it names a different constant than the one this section worried about.
 
 Neither clip is active on the archive. The 25 MHz cap binds on 0 of 159
@@ -1849,11 +1848,11 @@ not say the crossing contributes nothing inside it.
 
 ## Amendment 8, 2026-08-06: the phase 7 adjudication, summarised
 
-The frequency-calibration review ran against v3.4.0: twelve pre-scoped
-targets, each finding adversarially adjudicated with re-derivation from
+The frequency-calibration audit ran against v3.4.0: twelve pre-scoped
+targets, each finding independently adjudicated with re-derivation from
 the committed tables. Six confirmed, five refuted, one open, a 42 per
 cent refutation rate. The working note with full instruments and
-adjudications is an internal review document and stays unpublished by the
+adjudications is an internal audit document and stays unpublished by the
 standing rule. What binds here:
 
 Six confirmed, five refuted, one OPEN (42 per cent refuted). Three findings moved. RT3 and RT6 fall from confirmed to refuted, and RT1 from confirmed to refuted. RT10 rises from refuted to confirmed. RT3 dies because its decisive supporting claim, that no in-window slot separates the sessions once brightness is accounted for, tested only the carrier's median. the carrier's spread separates them at Levene p = 0.019 with twice the distance from the phase-modulation prediction, which is amendment 6 F3's finding and its session-dependent polarisation cause, and its correct residue is RT7's, not its own. RT6 dies on three closures already in the archive: results/ruler_campaign.csv's rate_err_total of 0.205 per cent already exceeds the 0.146 per cent the excess-variance model wants, the +0.130 per cent centre shift sits inside amendment B2's rate_est_spread of 0.166 per cent, and B2 built its error-blind estimators for exactly this reason ("those errors are inflated twice"). RT1 dies because no published text states the benign condition as an iff, only a test docstring does, and section 9 already records that the fold's sign is set by apex phase. the live defect at that anchor is instead that addendum 26 says docs/DATA.md section 7 "now carries the corrected reading" and it does not, the two documents pointing at each other while the uncorrected "do not re-litigate" bullet stands. RT10 rises because it answers a question the specification parked and shows it named the wrong constant. The single most consequential finding is RT4. Two attempts to refute it both failed, and each produced worse news than the finding reported: reproducing the map cell for cell from raw traces and then printing the worst well-sampled window at each binning shows one localised, sign-coherent departure of −0.40 to −0.76 per cent near −40 to −85 ms at every resolution finer than the committed 12 bins (2.27, 2.62, 2.85 and 4.41 sigma at 10, 16, 20 bins and at frac 0.00), which the committed 125 ms bin averages down to −0.245 per cent, just inside the quoted 0.3 per cent, and that position lies inside the line-fit window, so the fig8 sparse-edge split does not reach it. The unqualified sentences at docs/RESULTS.md line 93 and docs/DATA.md line 646 are false against the archive's own map, and the two-sided ratchet at tests/test_ruler.py line 538 will keep pulling the published number down to whatever the current, unpre-registered gates produce.

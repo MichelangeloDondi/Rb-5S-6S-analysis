@@ -120,7 +120,7 @@ _POLES_6S_NM = sorted(1e7 / abs(e - E_6S_CM) for e, _, _ in LINES_6S)
 
 
 # The one unit guard in the package, and why exactly here (QUESTIONS 26,
-# the experimenter's adjudication 2026-08-24): units live in parameter
+# decided 2026-08-24): units live in parameter
 # NAMES throughout (`lam_nm`, `power_w`, `w0_m`), documented and never
 # validated, because eleven functions of invented ranges would put a
 # ceiling a stranger cannot argue with on physics they may legitimately
@@ -183,7 +183,7 @@ def delta_alpha(lam_nm: float, **kw) -> float:
 
     The wavelength is guarded (see _check_lam_nm above): metres
     passed for nanometres raise instead of returning a plausible
-    number, the experimenter's QUESTIONS 26 adjudication.
+    number, per the QUESTIONS 26 decision.
 
     `tail` and `core` are deliberately REFUSED rather than forwarded:
     their defaults are level-specific (TAIL_5S against TAIL_6S), so one

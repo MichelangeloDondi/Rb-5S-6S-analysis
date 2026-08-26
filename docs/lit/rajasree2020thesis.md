@@ -46,49 +46,16 @@ section: oist-lineage
 
 # rajasree2020thesis
 
-**Held and read in part.** This note separates the thesis from
-[rajasree2020](rajasree2020.md), a different document, against which the claim
-that actually depends on the thesis had been filed.
+Held. Section 5.2 verified against the PDF.
 
-## What it supplies, and why it is [FEED]
+## The system
 
-Section 5.2 is the warm-cell 993 nm spectroscopy chapter. Verbatim from it:
+OIST PhD thesis (Nic Chormaic group), September 2020, 149 pp. Section 5.2, "Single-Frequency, Two-Photon Spectroscopy in a Rubidium Vapour Cell," describes a warm-cell 993 nm two-photon spectroscopy apparatus. This document is distinct from the citekey [rajasree2020](rajasree2020.md) (Phys. Rev. Research 2, 012038), which reports cold Rydberg atoms near an optical nanofibre with no warm vapour cell, and from rajasree2020spin, a separate paper on spin selection in single-frequency two-photon excitation.
 
-> "During the experiment, the vapour cell is maintained at 130°C. A 993 nm laser
-> of 150 mW is focussed on to the vapour cell using L1 (f = 150 mm). The beam
-> diameter is 128 µm, measured using a beam profiler (Thorlabs, BC106VIS). Using
-> a concave mirror (CM, f_CM = 75 mm), placed at 2 f_CM from lens L1, the beam is
-> retro-reflected."
+## The apparatus
 
-Two things this repository takes from that:
+The vapour cell is held at 130°C. A 993 nm laser at 150 mW is focused onto the cell by lens L1 (f = 150 mm) to a beam diameter of 128 µm, measured with a Thorlabs BC106VIS beam profiler. A concave mirror (f_CM = 75 mm), placed at 2 f_CM from L1, retro-reflects the beam. The thesis cites Steck's *Rubidium 87 D Line Data* for the rubidium vapour-pressure data.
 
-**The beam geometry.** It is the same focused-and-retro-reflected single-colour
-993 nm arrangement this campaign runs, and the beam size is **measured**, not
-inferred — with the profiler named. Note it is a **diameter**: 128 µm, so a
-radius of 64 µm, in the same range as this campaign's unmeasured
-$w_0 \approx 50$ µm and a useful sanity check on it. It does not substitute for
-the knife-edge, which remains the largest open systematic.
+## Use in this record
 
-**The N(T) chain.** The thesis cites Steck's *Rubidium 87 D line data* for the Rb
-data, which is the vapour-pressure route `rb5s6s/density.py` uses. That makes
-this a corroborating source for the density chain rather than an independent
-measurement of it.
-
-## The conflation this file corrects
-
-Three Rajasree 2020 documents are in play and they were not being kept apart:
-
-| citekey | document |
-|---|---|
-| [rajasree2020](rajasree2020.md) | *PRR* **2**, 012038 — cold Rydberg atoms near an ONF. **No warm cell.** |
-| `rajasree2020spin` | a separate paper on spin selection in single-frequency two-photon excitation |
-| **`rajasree2020thesis`** (this file) | the OIST PhD thesis, whose §5.2 is the vapour-cell apparatus |
-
-`LITERATURE.md` and `docs/lit/rajasree2020.md` both described "Rajasree-KP's OIST
-PhD thesis" while pointing at the PRR paper's citekey. The prose named the right
-document; the key resolved to the wrong one. Corrected in both places
-2026-07-31.
-
-[nieddu2019](nieddu2019.md) remains the **primary** apparatus source for this
-lineage — same group, and the published 993 nm frequency-reference paper. This
-thesis corroborates it.
+This thesis is the source of record for the beam waist this repository uses. Its measured beam diameter of 128 µm, radius 64 µm, was taken on the same optical table, the same laser and the same lenses as the 2025 campaign, so `W0_MEASURED_M` in [`rb5s6s/constants.py`](../../rb5s6s/constants.py) is a same-bench measurement rather than a value carried across apparatus. [nieddu2019](nieddu2019.md) is kept for lineage and is not the measurement. What the campaign did not do is read the waist off its own beam at its own time, so drift or realignment since remains open and is the record's largest stated systematic, traced on [the beam waist](../wiki/the-beam-waist.md). The vapour-pressure route in `rb5s6s/density.py` and the cell apparatus described here both draw on Steck's *Rubidium 87 D Line Data*.

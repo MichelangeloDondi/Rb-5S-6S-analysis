@@ -29,4 +29,4 @@ section: landscape-24-26
 
 # callejo2025
 
-Recent microcell field survey. Author list/DOI VERIFY at submission.
+A recent survey of microcell optical references based on the Rb two-photon transition. Author list and DOI unconfirmed, to be verified before citation.

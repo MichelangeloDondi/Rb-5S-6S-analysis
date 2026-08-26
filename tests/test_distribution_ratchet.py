@@ -61,7 +61,7 @@ WORST_CASE = re.compile(r"(^|_)(max|worst)(_|$)|_(max|worst)$", re.I)
 SPREAD = re.compile(
     r"(^|_)(median|mean|p50|std|sigma|spread|iqr|percentile|p\d\d)(_|$)", re.I)
 
-# The escape token, and the FORM it must take. An adversarial audit on
+# The escape token, and the FORM it must take. An independent audit on
 # 2026-08-23 broke the first version, which was a bare case-insensitive
 # substring test over the whole row. Three ways past it, all reproduced:
 # a note reading "this quantity is NOT single_valued across seeds" exempted the
@@ -134,7 +134,7 @@ def _undeclared(path: Path) -> tuple[int, int]:
     if not key_cols:
         # WIDE FORMAT, and this branch used to return (0, 0) in silence.
         #
-        # An adversarial audit on 2026-08-23 found the silence and called it a
+        # An independent audit on 2026-08-23 found the silence and called it a
         # whitelist gap. Measuring it showed something larger and different:
         # 26 of the 63 committed result CSVs carry no key column at all,
         # because they are wide tables whose quantity names are COLUMN HEADERS

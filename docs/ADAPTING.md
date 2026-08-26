@@ -55,8 +55,8 @@ limit `lam_nm = 0` and everything from 50 nm upward pass, since the far
 infrared is legitimate physics no guard should ceiling. Metres for
 nanometres was the one trap both silent and catastrophic, returning a
 plausible number a factor of a billion off. The decision and its
-reasoning sit beside the guard in `rb5s6s/polarizability.py` (the
-experimenter's adjudication, 2026-08-24).
+reasoning sit beside the guard in `rb5s6s/polarizability.py` (an
+owner adjudication on the theory, 2026-08-24).
 
 ## The seam map
 
@@ -124,6 +124,7 @@ for a focused beam, which is why a guided-mode system can reuse the
 extraction and not only the pictures. What changes between geometries is the
 volume weight and the support of the density, and both are arguments to the
 same function. The relation itself is not new. [`LITERATURE.md`](LITERATURE.md)
+<!-- term-of-art: review names the cited article's genre -->
 section 5 traces it to a 1980 review, whose Eq. (5.3) the closed form used
 here reduces to exactly once the geometric measure is substituted. What this
 repository adds is the evaluation for a fixed geometry and the consequences

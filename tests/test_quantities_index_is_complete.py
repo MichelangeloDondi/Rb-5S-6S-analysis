@@ -10,7 +10,7 @@ guard of its own. A dossier states a bound or a value, and a bound stated
 without the construction that produced it is the defect this whole cluster was
 built to prevent, five bounds in this project having shared one name. So the
 results table of every dossier is required to carry a construction column and
-a status column, checked here rather than trusted to review.
+a status column, checked here rather than left to inspection.
 
 Counts are printed on every run rather than only on failure, because a guard
 that finds its subject by pattern has to show what it found.

@@ -110,7 +110,7 @@ A0 = 5.29177210903e-11
 E_C = 1.602176634e-19
 HBAR = 1.054571817e-34
 LAM_D1_M = 794.979e-9
-CELL_D_M, CELL_L_M = 0.025, 0.100      # EXPERIMENTER, 10 per cent, see APPARATUS
+CELL_D_M, CELL_L_M = 0.025, 0.100      # NOMINAL, 10 per cent, see APPARATUS
 # GaAs response of the R636-10 in its PXT1/M housing. The tube attribution is
 # ASSUMED rather than measured here (it came from Nieddu 2019, a different
 # bench, and APPARATUS records how it was reconciled with the in-campaign

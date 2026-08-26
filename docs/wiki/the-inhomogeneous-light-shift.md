@@ -28,6 +28,10 @@ distribution's mean moves the line, its variance broadens it, and its skew
 makes the shape asymmetric, so the first few cumulants of the position
 distribution are printed directly onto the lineshape.
 
+![Position-distribution cumulants mapped onto the lineshape](../../figures/fig30_third_cumulant.png)
+
+*How the position distribution's mean, variance and third cumulant print onto the lineshape, and which mechanisms can produce each.*
+
 Which atoms contribute is itself intensity-weighted. A two-photon signal
 scales as intensity squared, so the bright centre of a focused beam is
 over-represented relative to the wings, and the distribution the line
@@ -39,29 +43,26 @@ question of speed, covered in [standing waves](standing-waves.md).
 
 ![The distribution of light shifts across a focused beam, under the one-photon and two-photon weightings, each with its mean marked](figures/wiki_shift_distribution.png)
 
+*The distribution of light shifts across a focused beam under one-photon and two-photon weighting, each with its mean marked.*
+
 The peak shift at the focus is the scale of the whole object. This
 repository computes it as $S_0$, the shift at beam centre at full power,
 and the distribution hangs below it.
 
 ## What problem it solves
 
-It turns the light shift from a feared systematic into an object the
-data can grade. A single shifted frequency could hide inside a drifting
-lock, but a distribution has a shape, and a shape survives where absolute
-positions are unusable. What this record then holds is the three-step
-chain in its proper order: no shift was detected, the width channel
+The light shift was an unconstrained systematic. This record holds the
+three-step chain in order: no shift was detected, the width channel
 bounded the scale below the predicted value, and the prediction is
 thereby excluded at 95 per cent. A bound is not a measurement of the
-shift, and this page's object is what makes even the bound possible on a
-dataset whose absolute frequencies carry no information.
+shift, and the distribution above is what makes even the bound possible
+on a dataset whose absolute frequencies carry no information.
 
 The same object is the design quantity of a guided platform. Inside a
 hollow core or on a nanofibre the mode profile replaces the free-space
 Gaussian, every trapped or guided atom samples the mode's intensity
 profile, and the spread of shifts across that profile is what limits
-a cooling scheme's bandwidth and a superposition's coherence. A design
-that quotes one number for the trap depth has not yet asked the question
-this page is about.
+a cooling scheme's bandwidth and a superposition's coherence.
 
 ## Where this repository uses it
 

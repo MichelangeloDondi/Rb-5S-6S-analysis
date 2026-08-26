@@ -20,8 +20,8 @@ them is a check rather than a note: it never routes through the citable figure
 saver, it is never added to the figure register's targets, and it is never
 wired into the gate.
 
-The fifth holds the panel REGISTER. Two external reviews of a rendered set
-found the same class of defect over and over: pipeline shorthand printed on a
+The fifth holds the panel REGISTER. Two readers outside the project found
+the same class of defect over and over on a rendered set: pipeline shorthand printed on a
 picture drawn for a reader who has never seen this repository. The phrases they
 named are banned here by name, so that removing them once removes them for good.
 
@@ -192,7 +192,7 @@ def test_gallery_is_not_wired_into_the_gate():
     assert not offenders, f"the gallery is wired into {offenders}"
 
 
-# Shorthand two external reviewers found on the rendered panels and could not
+# Shorthand two readers outside the project found on the rendered panels and could not
 # read. Each one is a phrase the pipeline uses among its own tests and tables and
 # that means nothing to a physicist meeting the record for the first time.
 BANNED_ON_A_PANEL = (

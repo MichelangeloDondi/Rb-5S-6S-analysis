@@ -184,7 +184,7 @@ def test_bias_is_scan_direction_dependent_at_stress():
 # --------------------------------------------------------------------------
 # Intra-BLOCK (between repeats) position variation: jitter, not drift.
 # --------------------------------------------------------------------------
-# Distinct from the intra-SCAN drift above. The experimenter confirmed nothing
+# Distinct from the intra-SCAN drift above. Confirmed: nothing
 # was moved within a 5-repeat block, so repeat positions are comparable and
 # repeat_idx is their time order. If the 0.08 MHz scatter were accumulated
 # drift it would trend with that index; it does not. This matters because

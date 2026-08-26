@@ -34,25 +34,12 @@ section: oist-lineage
 
 # hendrickson2010
 
-**Read 2026-07-29** (arXiv v1, held). UMBC, Franson group. Two-photon
-absorption of Rb vapour in the evanescent field of a **tapered optical
-fibre** — the same sub-wavelength-waist geometry as the ONF platform in the
-OIST lineage ([Rajasree 2020](rajasree2020.md)).
+VERIFIED. Held as the arXiv v1 (2010).
 
-**The scheme, precisely, because the distinction carries the delineation.**
-This is the **two-colour, stepwise, near-resonant ladder** 5S₁/₂ → 5P₃/₂ →
-5D₅/₂ at 780 + 776 nm — a real intermediate state, small detuning Δ from
-5P₃/₂, co-propagating fields. It is *not* the degenerate single-colour
-Doppler-free configuration this programme uses at 993 nm (virtual intermediate
-level, one photon from each direction). Consequences: their signal is not
-Doppler-free, the resonant enhancement buys their low-power operation, and the
-counter-propagating I₊I₋ structure that makes the ramp weight and the
-fringe-immunity argument (M15/M19) does not arise.
+## The system
 
-**Why it matters here.** Together with [Saha 2010/2011](saha2010.md) it
-completes the guided-geometry prior-art pair: hollow core and nanofibre, both
-demonstrated for two-photon Rb at low power around 2010. What neither does is
-the degenerate Doppler-free scheme in the guided mode, nor any treatment of
-the guided-mode light-shift distribution — the two things the proposed
-extension actually contributes. Cite both up front in the nanofibre extension's framing and
-claim only the remainder.
+Two-photon absorption of Rb vapor in the evanescent field of a tapered optical fiber, the same sub-wavelength-waist geometry as the ONF platform in the OIST lineage ([Rajasree 2020](rajasree2020.md)). The transition is a two-color, stepwise, near-resonant ladder, 5S₁/₂ → 5P₃/₂ → 5D₅/₂ at 780 + 776 nm, with a real intermediate state and co-propagating fields, unlike the degenerate single-color Doppler-free configuration at 993 nm. The signal is accordingly not Doppler-free, and resonant enhancement, not the counter-propagating I₊I₋ structure behind the ramp-weight and fringe-immunity argument (M15/M19), is what allows the low-power operation.
+
+## Use in this record
+
+Together with [Saha 2010/2011](saha2010.md), this paper completes the guided-geometry prior art for two-photon Rb absorption at low power around 2010: hollow core and nanofiber. Neither demonstrates the degenerate Doppler-free scheme in a guided mode, nor treats the guided-mode light-shift distribution.

@@ -253,7 +253,7 @@ Most of the suite's guards are regression guards for mistakes that were made:
 - that guard's ±4-line window was widened after a planted violation was
   "satisfied by the very correction note explaining the reversal"
   ([test_docs_canonical.py:428](../tests/test_docs_canonical.py#L428)).
-- an asymptotic w0 → ∞ test, after an external adversarial review found it untested
+- an asymptotic w0 → ∞ test, after a reader outside the project found it untested
   ([test_transit_mc.py:119](../tests/test_transit_mc.py#L119)).
 - an SVG canonical-number guard, because the hand-authored bench schematic
   quoted a waist matching no value in the record and asserted the retro ratio
@@ -341,7 +341,7 @@ clear the block-noise floor ([PLAN.md](PLAN.md) §7).
 
 ## 10. Three decisions from the same joint-refit night (2026-08-03)
 
-Recorded together because the fold-in reviews them as one commit.
+Recorded together because the fold-in groups them as one commit.
 
 **Decision: the four-point `beta_self` lever, already decided in §9, gets
 the code that had not caught up to it.** The promotion of the
@@ -427,8 +427,8 @@ primary needs the same correction, goes to the results report as addendum
 
 ## 12. Decisions argued in their home documents
 
-Five load-bearing judgement calls live where their evidence lives. An
-external review found that a reader of the table above would not learn
+Five load-bearing judgement calls live where their evidence lives. A
+reader of the table above would not learn
 they exist, which was true. This section is the missing index, and each
 entry stays short because the argument is already written elsewhere.
 

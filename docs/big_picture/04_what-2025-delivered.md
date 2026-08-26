@@ -125,6 +125,7 @@ as a bound. Concretely:
 **What of the method is actually new, stated at the size it will survive.** The
 relation the analysis rests on, that the signal-weighted shift distribution goes
 as $|s|^{n-1}$, is **not new**. It reduces exactly to Eq. (5.3) of the 1980
+<!-- term-of-art: review names the cited article's genre -->
 review of Delone, Kovarskii, Masalov and Perel'man, checked against the
 shipped implementation to
 $7\times10^{-12}$, and that review already carries the lineshape as a map of the

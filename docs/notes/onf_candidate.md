@@ -158,7 +158,7 @@ built on the record's own estimator structure: four temperatures, the density
 ladder, per-condition nuisances projected out, conditions weighted by signal,
 and the fit window taken from the estimator's own `adaptive_halfwidth` rule
 rather than chosen. That last point was a correction. A first version
-inherited a narrow fixed window from an adjacent code block, an adversarial
+inherited a narrow fixed window from an adjacent code block, an independent
 verification pass showed the truncation moved the headline ratio by 27 per
 cent while the validation gate passed at either window, and the fix removes
 the window as a free parameter. The block still validates itself before it

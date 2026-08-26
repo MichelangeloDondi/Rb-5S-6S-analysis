@@ -41,68 +41,25 @@ section: unsorted
 
 # broadhurst1974
 
-**Read in full 2026-08-03.** This is a 1974 J. Phys. B Letter to the Editor,
-not a two-photon paper and not on an alkali. It reports the hyperfine
-structure and isotope shifts of the ytterbium (Yb I) 555.648 nm
-intercombination line, 4f14 6s2 1S0 to 4f14 6s6p 3P1, a single-photon,
-spin-forbidden E1 transition. Ytterbium is a lanthanide with a closed-shell
-1S0 ground state, not an alkali doublet system, so there is no S-to-S
-two-photon transition anywhere in this paper.
+Held. Verified in full.
 
-**Abstract, verbatim (the method clause):** the isotope shifts and hyperfine
-structure "have been measured by observing the resonant scattering of light
-from a cw tunable dye laser incident on a collimated atomic beam." Results
-for all stable Yb isotopes are reported to about +/-0.6 MHz (+/-0.02 mK),
-and the abstract closes: "Improved relative isotope shifts are obtained, and
-the hyperfine anomaly of 171,173Yb is also calculated."
+A 1974 Letter to the Editor in *J. Phys. B*, not a two-photon paper and not on an alkali. It reports the hyperfine structure and isotope shifts of the ytterbium (Yb I) 555.648 nm intercombination line, 4f14 6s2 1S0 to 4f14 6s6p 3P1, a single-photon, spin-forbidden E1 transition. Ytterbium has a closed-shell 1S0 ground state, not an alkali doublet system, so there is no S-to-S two-photon transition in this paper.
 
-**Opening, verbatim:** "The present work uses a continuous-wave tunable dye
-laser, and the resonant scattering from a well collimated atomic beam is
-studied. This method suffers less from the limitations in frequency range
-associated with other scanning techniques, and yet retains the high
-resolution features of atomic beams."
+## The system and method
 
-**What it does.** A cw dye laser (Spectra Physics 580-01, argon-ion pumped,
-17 MHz FWHM) is scanned across a collimated Yb atomic beam and the resonant
-fluorescence is recorded. Doppler broadening is suppressed geometrically, by
-beam collimation, not by a two-photon counter-propagating geometry: "Atomic
-beam collimation assured that frequency broadening due to Doppler spread was
-less than 5 MHz, compared to a natural width of the Yb line of 0.2 MHz." A
-stabilised confocal Fabry-Perot etalon, itself locked to a Lamb-dip-stabilised
-He-Ne laser, supplies frequency markers (300.31 MHz free spectral range, and
-sub-markers down to 41.7 MHz by stepping the servo-lock order) so that peak
-centres are read to about 0.6 MHz against 17 MHz wide lines. All nine stable
-Yb isotopes are resolved and referenced to 174Yb. Component splittings give a
-171,173Yb hyperfine anomaly of -0.47(2)%, compared with -0.367(9)% from prior
-level-crossing work, a discrepancy the authors note without resolving.
+A cw dye laser (Spectra Physics 580-01, argon-ion pumped, 17 MHz FWHM) is scanned across a collimated Yb atomic beam and the resonant fluorescence is recorded. Doppler broadening is suppressed geometrically, by beam collimation, not by a two-photon counter-propagating geometry: "Atomic beam collimation assured that frequency broadening due to Doppler spread was less than 5 MHz, compared to a natural width of the Yb line of 0.2 MHz." A stabilised confocal Fabry-Perot etalon, locked to a Lamb-dip-stabilised He-Ne laser, supplies frequency markers (300.31 MHz free spectral range, and sub-markers down to 41.7 MHz by stepping the servo-lock order), so peak centres are read to about 0.6 MHz against 17 MHz wide lines. All nine stable Yb isotopes are resolved and referenced to 174Yb. Component splittings give a 171,173Yb hyperfine anomaly of -0.47(2)%, compared with -0.367(9)% from prior level-crossing work, a discrepancy the authors note without resolving.
 
-**Key numbers.**
+## The numbers
 
 - Laser linewidth: 17 MHz FWHM.
 - Natural Yb line width: 0.2 MHz.
 - Doppler contribution: held below 5 MHz by beam collimation.
-- Peak-centre accuracy: about +/-0.6 MHz.
+- Peak-centre accuracy: about ±0.6 MHz.
 - Etalon free spectral range: 300.31(2) MHz.
 - Hyperfine anomaly of 171,173Yb: -0.47(2)%.
 
-These are an order of magnitude tighter than the prior hollow-cathode-lamp
-measurements the paper compares against (2000 MHz FWHM typical, 630 MHz best
-case).
+These are an order of magnitude tighter than the hollow-cathode-lamp measurements the paper compares against (2000 MHz FWHM typical, 630 MHz best case).
 
-**Bridge to the Rb 5S-6S prior-art chain: none.** This paper sits outside
-the lineage `LITERATURE.md` traces (Levenson and Bloembergen 1974,
-`biraben1974`, through the OIST/USAFA 993 nm work and
-`orson2021`/`ayachitula2024`) on every axis that lineage is built from.
-Species: ytterbium, not rubidium or any alkali. Transition order: one-photon
-resonant scattering, not two-photon absorption or fluorescence. Doppler
-strategy: mechanical beam collimation, not the counter-propagating
-two-photon cancellation that defines the founding-era papers. The only
-contact point is the calendar: it was received 17 October 1974, the same
-year as the Doppler-free two-photon demonstrations, and its own
-introduction cites Hänsch et al 1974 (the H2-D2 saturation-spectroscopy
-letter, PRL 32, 1336) as a contemporary example of tunable-dye-laser
-precision spectroscopy. That places it as a same-year, unrelated route to
-sub-Doppler resolution, useful only as period colour for how varied 1974
-laser spectroscopy already was, not as prior art this programme needs to
-delineate itself from. It is catalogued here and left uncited in the
-manuscript docs.
+## Use in this record
+
+Outside the Rb 5S-6S prior-art lineage traced in `LITERATURE.md` (Levenson and Bloembergen 1974, `biraben1974`, through the OIST/USAFA 993 nm work, `orson2021` and `ayachitula2024`) on every relevant axis: different species (ytterbium, a lanthanide, not an alkali), single-photon rather than two-photon transition order, and Doppler suppression by mechanical beam collimation rather than counter-propagating two-photon cancellation. Contemporary with the first Doppler-free two-photon demonstrations (received 17 October 1974) and cites Hänsch et al. (1974) as a contemporary example of tunable-dye-laser precision spectroscopy, but supplies no prior art for this line.

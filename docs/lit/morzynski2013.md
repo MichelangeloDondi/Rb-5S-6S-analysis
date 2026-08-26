@@ -36,4 +36,4 @@ section: landscape-24-26
 
 # morzynski2013
 
-5S-7S sibling; DOI Crossref-verified 2026-07-13.
+5S-7S sibling. DOI verified against Crossref (2026-07-13).

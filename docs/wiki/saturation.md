@@ -7,130 +7,115 @@ stops holding, and what that costs a tightly focused beam.
 **Takes.** The two-photon Rabi frequency and the natural linewidth, and no
 fitted data of its own.
 **Gives.** The saturation parameter, its fourth-power waist scaling, and the
-size of the bound a saturation term would buy if folded into the fit.
-**Skip if.** You want the light shift itself rather than the ceiling on the
-drive that produces it, covered in [the AC-Stark shift](ac-stark-shift.md).
+size of the bound available if a saturation term is folded into the fit.
+**Skip if.** You want the light shift itself. That is covered in
+[the AC-Stark shift](ac-stark-shift.md). This page covers the ceiling on the
+drive that produces it.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
 
 ## What it is
 
-A two-photon transition is driven by absorbing two photons at once, so the
-excitation amplitude scales with the square of the field and the excitation
-rate scales with the fourth power of the field, that is, with the square of
-the intensity. At low drive that I-squared law is the whole story: doubling
-the intensity quadruples the signal. It is also the reason a two-photon
-signal weights the bright core of a focused beam so much more heavily than
-its dim wings, which is what lets the [AC-Stark shift](ac-stark-shift.md)
-page turn a beam profile into a calculable, asymmetric shift distribution.
+A two-photon transition absorbs two photons at once: the excitation
+amplitude scales with the square of the field, the rate with the square of
+the intensity. At low drive this I-squared law is exact, doubling the
+intensity quadruples the signal. It is also why a two-photon signal weights
+a beam's bright core over its dim wings, feeding the
+[AC-Stark shift](ac-stark-shift.md) page's calculable, asymmetric shift
+distribution.
 
-The law cannot hold without limit. An atom already sitting in the excited
-state cannot be excited again until it decays, so the excited-state
-population approaches a ceiling as the drive strengthens rather than growing
-forever. The dimensionless saturation parameter, conventionally written $s$,
-measures how close the drive sits to that ceiling. It is proportional to the
-square of the coupling strength, the two-photon Rabi frequency, over the
-square of the natural linewidth. The steady-state excited fraction then
-follows the standard two-level form $s / (2(1+s))$, which reduces to the
-I-squared law when $s$ is small and flattens toward one half as $s$ grows,
-the atom now spending as much time excited as decay allows.
+![Two EOM comb shapes at different modulation depths](figures/wiki_eom_comb.png)
 
-Because the two-photon coupling itself scales with intensity, $s$ scales with
-the square of intensity, and intensity at fixed input power scales as the
-inverse square of the focused spot size. Combining those two facts is the
-scaling that governs beam design: $s$ grows as the inverse fourth power of
-the spot size, while a first-order effect that is only linear in intensity,
-such as the light shift, grows as the inverse square. Halving the spot size
-quadruples the light shift but multiplies the saturation parameter by
-sixteen, the same inverse-square against inverse-fourth contest the Try
-it below runs at a factor of four. A tighter focus therefore leaves the
-weak-field regime, where every I-squared argument in this analysis holds
-cleanly, twice as fast in logarithmic terms as its signal grows, since
-the saturation parameter's exponent is double the intensity's.
+*Two comb shapes at different modulation depths. The ladder separates
+saturation-driven compression from a genuine Bessel pattern.*
 
-The same law governs a phase-modulated drive. [EOM sidebands](eom-sidebands.md)
-stamp a comb of copies of the line onto the light, and in a two-photon
-transition the amplitude of the tooth at order $k$ follows a
+The law cannot hold without limit: an atom already excited cannot be excited
+again until it decays, so the excited-state population approaches a ceiling
+as the drive strengthens. The saturation parameter $s$, proportional to the
+square of the two-photon Rabi frequency over the square of the natural
+linewidth, measures proximity to that ceiling. The steady-state excited
+fraction follows $s/(2(1+s))$, reducing to the I-squared law at small $s$ and
+flattening toward one half as $s$ grows.
+
+Because the two-photon coupling scales with intensity, $s$ scales with
+intensity squared, and intensity at fixed power scales as the inverse square
+of the spot size: $s$ grows as the inverse fourth power of the spot size,
+while a linear effect such as the light shift grows only as the inverse
+square. Halving the spot size quadruples the light shift but multiplies $s$
+by sixteen. A tighter focus therefore leaves the weak-field regime, where
+every I-squared argument in this analysis holds cleanly, twice as fast in
+logarithmic terms as its signal grows, since the saturation parameter's
+exponent is double the intensity's.
+
+The same law governs a phase-modulated drive: [EOM sidebands](eom-sidebands.md)
+stamp a comb onto the light, and the tooth amplitude at order $k$ follows a
 [Bessel](bessel-functions.md) law, $J_k(2\beta)^2$ in the modulation depth
-$\beta$. That law is a weak-field statement in its own right: it assumes every pair of
-sidebands drives the atom independently and additively. Saturation breaks
-that assumption asymmetrically, because the strongest teeth push the atom
-closest to its excited-state ceiling while the weakest barely move it, so a
-saturating comb reads out with its strong teeth compressed toward its weak
-ones relative to the pure Bessel prediction. A single comb, at one drive
-depth, cannot tell a genuine Bessel pattern apart from a compensated
-deviation from it. A ladder of modulation depths can, because it changes
-which teeth carry the strong amplitude and checks that the law holds at
-every rung rather than assuming it holds at one.
+$\beta$. That law is a weak-field statement in its own right: it assumes
+every pair of sidebands drives the atom independently and additively.
+Saturation compresses it asymmetrically: the strongest teeth sit
+nearest the excited-state ceiling, the weakest barely move it, so a
+saturating comb reads out with its strong teeth pulled toward its weak ones.
 
 ## What problem it solves
 
 It sets the boundary of validity for every I-squared argument this analysis
-makes, from the shape of the light-shift distribution to the amplitude
-pattern of a modulation comb, and it gives that boundary a number rather than
-a guess. It also turns the comb's amplitude law from an assumption a fit
-takes on trust into a claim a session can check, by driving the modulator at
-more than one depth and asking whether the same law fits all of them.
+makes, from the light-shift distribution to a modulation comb's amplitude
+pattern, and gives that boundary a number instead of a guess. It also turns
+the comb's amplitude law from an assumption into a checkable claim, by
+driving the modulator at more than one depth and testing whether the law
+holds at all of them.
 
 ## Where this repository uses it
 
 The weak-field limit and its cost are discussed in
 [BIG_PICTURE, the method and its limits](../big_picture/02_the-method-and-its-limits.md),
-with the committed panel at
-[fig24](../../figures/fig24_weak_field_limit.png). The public function that
-computes the two-photon coupling from bench quantities is
-[`two_photon_rabi_hz`](../../rb5s6s/hyperpolarizability.py), the natural
-linewidth it is compared against is
-[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py), and the measured beam waist that
-sets the intensity is [`W0_MEASURED_M`](../../rb5s6s/constants.py). The
-[`stark_ramp`](../../rb5s6s/lineshape.py) docstring states the same
-weak-field caveat for the light-shift distribution and points at
-`scripts/run_saturation_probe.py`, the script that measures how much a
-saturation term would tighten the light-shift bound if it were folded into
-the fitted model, a companion argument worked out in full in
+with the committed panel at [fig24](../../figures/fig24_weak_field_limit.png).
+[`two_photon_rabi_hz`](../../rb5s6s/hyperpolarizability.py) computes the
+two-photon coupling from bench quantities, compared against
+[`GAMMA_NAT_HZ`](../../rb5s6s/constants.py) using the measured waist
+[`W0_MEASURED_M`](../../rb5s6s/constants.py). The
+[`stark_ramp`](../../rb5s6s/lineshape.py) docstring states the same caveat
+and points at `scripts/run_saturation_probe.py`, which measures the
+light-shift tightening from a saturation term, detailed in
 [`docs/notes/two_photon_saturation_companion.md`](../notes/two_photon_saturation_companion.md).
 
-The comb side of the same physics is planned rather than run yet.
+![Fitted width response against drive power showing saturation departure from the square law](../../figures/fig24_weak_field_limit.png)
+
+*The committed weak-field panel: fitted width response against drive power,
+with the saturating departure from the square law.*
+
+The comb side of the same physics has been planned but not yet run.
 [The fixed-lock instrument, section 10c.10](../plan/10_the-fixed-lock-instrument.md)
-proposes fitting every comb twice, once with the tooth amplitudes forced to
-the Bessel law and once with each tooth free, and reading the amplitude
-residual between the two as the saturation and depletion diagnostic. The
-session grammar it specifies runs the modulator at several depths for exactly
-the reason above, so the amplitude law is tested at more than one point
-rather than assumed at the single depth a session happens to use.
+proposes fitting every comb twice, once with tooth amplitudes forced to the
+Bessel law and once free, reading the residual as the saturation and
+depletion diagnostic. It runs the modulator at several depths so the
+amplitude law is tested at more than one point.
 
 ## What can go wrong
 
 The first failure is a model one: treating the I-squared law, or the pure
-Bessel comb it implies, as exact rather than as the limit it holds in at small $s$ for a
-saturating response. Nothing in a single fit announces that the assumption
-has been made, so a model that omits saturation entirely returns a plausible
-answer whether or not the drive is actually weak.
+Bessel comb it implies, as exact instead of the small $s$ limit it is.
+A model that omits saturation returns a plausible answer regardless of
+drive strength.
 
-The second is data insufficiency dressed as a clean result. A forced-versus-free
-comparison at one modulation depth can come back statistically indistinguishable
-even when real saturation is present, if the individual teeth are not resolved
-well enough to constrain their amplitudes tightly. A quiet residual at one depth
-is not evidence that the weak-field regime holds. Only a ladder across depths,
-which changes which teeth carry the strong amplitude, converts silence at a
-single setting into an actual test of the law.
+The second is data insufficiency that can look like a clean result: a
+forced-versus-free comparison at one modulation depth can come back
+indistinguishable from a genuine Bessel pattern when the teeth are not
+resolved tightly. Only a ladder across depths converts a quiet residual
+into an actual test.
 
-The third is an implementation trap of the kind the [EOM sidebands](eom-sidebands.md)
-page also warns about: computing the saturation parameter from the ONE-photon
-Rabi frequency where the two-photon coupling belongs, or quoting the on-axis
-value of $s$ where the beam-averaged, signal-weighted value is the one that
-matters for a broadening or a comb prediction. The two differ by roughly a
-factor of two in this apparatus's geometry, and either mistake changes the
-conclusion about whether a configuration is safely weak-field.
+The third is an implementation trap: using the one-photon Rabi frequency
+where the two-photon coupling belongs, or the on-axis $s$ where a broadening
+or comb prediction needs the beam-averaged, signal-weighted value. The two
+differ by roughly a factor of two in this apparatus's geometry, and either
+mistake changes the weak-field verdict.
 
-The fourth is an experimental limitation stated plainly rather than smoothed
-over. The two-level formula $\Gamma \to \Gamma\sqrt{1+s}$ used throughout this
-page is standard practice for a two-level atom driven near resonance. Applied
-here with a two-photon Rabi frequency, it is an approximation carried by
-analogy rather than a law derived for this apparatus's real cascade of
-hyperfine levels, and no committed bound in this repository is adjusted on
-the strength of it alone.
+The fourth concerns the formula itself. $\Gamma \to \Gamma\sqrt{1+s}$ is
+standard for a two-level atom driven near resonance. Applied here with a
+two-photon Rabi frequency, it is carried over by analogy, not derived for
+this apparatus's real cascade of hyperfine levels. No committed bound
+currently depends on it.
 
 ## Try it
 
@@ -162,85 +147,65 @@ for target in (0.01, 0.05, 0.10):
           f" (s = {s[i]:.3f})")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
+## The P-squared family
 
-## The P-squared family, and why a power law identifies nothing
+Saturation broadening at small $s$ grows as the drive intensity, and for a
+two-photon line that intensity grows as the power squared. The AC-Stark
+ramp broadens as the shift squared, also power squared, and hyperfine
+pumping rides the excitation rate, power squared again. A measured width
+rising quadratically with power identifies none of them: a fit offered only
+the width channel hands the family to whichever member it was allowed to
+vary.
 
-Saturation broadening at small saturation grows as the drive intensity, and
-for a two-photon line the drive intensity in the resonant sense grows as the
-power squared. That places it in a family: the AC-Stark ramp broadens as the
-shift squared, so also as power squared, and hyperfine pumping through the
-cascade rides the excitation rate, power squared again. Three mechanisms,
-one exponent. A measured width rising quadratically with power therefore
-identifies none of them, and a fit offered only the width channel will hand
-the whole family to whichever member it was allowed to vary.
+Separating them needs channels with different parities: the shift channel
+is linear in power where all three widths are quadratic, the saturation
+member alone bends the amplitude law away from power squared, and the
+pumping member alone shifts amplitude ratios between hyperfine components.
+This is the [reversal tests](reversal-tests.md) discipline applied to a
+power law: a light-shift bound from the width channel is conditional on
+which family members the forward model carried.
 
-Separating them needs channels with different parities and different
-scalings: the shift channel is linear in power where all three widths are
-quadratic, the saturation member alone bends the amplitude law away from
-power squared, and the pumping member alone moves amplitude ratios between
-hyperfine components. This is the reversal-table discipline of
-[reversal tests](reversal-tests.md) applied to a power law, and it is why a
-light-shift bound from the width channel is stated conditional on which
-family members the forward model carried.
+## The companion calculation
 
-## What a companion calculation found
-
-`docs/HISTORY.md` carries no row for saturation, because no committed bound
-has ever moved on it, but the calculation this page describes was run and is
-recorded in
+No committed bound has moved on this calculation, detailed in
 [`docs/notes/two_photon_saturation_companion.md`](../notes/two_photon_saturation_companion.md).
-Folding the homogeneous saturation increment into the forward model, using the
-two-photon Rabi frequency `scripts/run_saturation_probe.py` rebuilds from bench
-quantities, the width-channel light-shift bound $S_0$(225 mW) tightens from the
-committed 0.6325 MHz to about 0.23 MHz, a factor of 2.8. The mechanism is the
-first failure mode this page names, a model that omits saturation entirely
-returning a plausible answer whether or not the drive is actually weak: the
-ramp-only fit rails at exactly $\kappa = 0$ because its width response goes as
-$S_0^2$ and has no gradient there, and only once the saturation term supplies
-a comparable, larger power-signature term does the width get a resolvable
-gradient and the fit stop sitting on the boundary.
+Folding the homogeneous saturation increment into the forward model, using
+the two-photon Rabi frequency `scripts/run_saturation_probe.py` rebuilds
+from bench quantities, the width-channel bound $S_0$(225 mW) tightens from
+the committed 0.6325 MHz to about 0.23 MHz, a factor of 2.8. This matches
+the first failure above: the ramp-only fit rails at $\kappa = 0$ because its
+width response has no gradient there until the saturation term supplies one.
 
-The bound does not move in any committed result, and the note is explicit
-about why: the injected law, $\Gamma \to \Gamma\sqrt{1+s}$ with $s$ built from
-the two-photon Rabi frequency, is the standard two-level steady-state form
-carried over by analogy rather than derived for this apparatus's real cascade
-of hyperfine levels, which is the same caveat this page's fourth "What can go
-wrong" paragraph states. A calculation that tightens a number is not licensed
-to move it until that approximation is either derived properly for a
-two-photon transition or replaced. Reading this page's own caveat before
-reading the companion note's headline factor is what keeps the factor of 2.8,
-and the factor of 2.21 the note also records for the joint-fit analogue, as a
-measured conservatism rather than as a correction.
+The bound has not moved in any committed result. The injected law,
+$\Gamma \to \Gamma\sqrt{1+s}$ built from the two-photon Rabi frequency, is
+the standard two-level steady-state form carried over by analogy, not
+derived for this apparatus's real cascade of hyperfine levels, the same
+caveat as above. The factor of 2.8, and the factor of 2.21 the note records
+for the joint-fit analogue, are conservative estimates that have not
+changed the committed number.
 
 ## Further reading
 
-- [`../lit/bjorkholm1976.md`](../lit/bjorkholm1976.md), the classic closed-form
-  theory of two-photon absorption strength and lineshape, the setting the
-  I-squared law and its saturation both come from.
-- [`../lit/steck_rb.md`](../lit/steck_rb.md), the standard compilation this
-  repository draws its natural linewidths and two-level saturation formulas
-  from.
-- [EOM sidebands](eom-sidebands.md) for the comb the amplitude law is tested
-  on, and [Bessel functions](bessel-functions.md) for the law itself.
-- [The AC-Stark shift](ac-stark-shift.md) for the first-order effect this
-  page's fourth-power scaling is contrasted against.
+- [`../lit/bjorkholm1976.md`](../lit/bjorkholm1976.md), the closed-form
+  theory behind the I-squared law and its saturation.
+- [`../lit/steck_rb.md`](../lit/steck_rb.md), the reference for natural
+  linewidths and saturation formulas.
+- [EOM sidebands](eom-sidebands.md) and [Bessel functions](bessel-functions.md)
+  for the comb and the law it follows.
+- [The AC-Stark shift](ac-stark-shift.md) for the effect the fourth-power
+  scaling contrasts against.
 
 ## See also
 
 - [The AC-Stark dossier](../quantities/ac-stark-light-shift.md), where
-  saturation is one of the mechanisms sharing the light shift's power law and
-  the reason the width channel cannot separate them.
-- [The beam waist](the-beam-waist.md) for the length whose fourth power this
-  page's spot-size argument turns on.
-- [EOM sidebands](eom-sidebands.md) for the comb whose tooth amplitudes a
-  saturating drive compresses.
-- [Bessel functions](bessel-functions.md) for the weak-field amplitude law
-  saturation is tested against.
-- [Identifiability](identifiability.md) for what it takes for a fit to tell a
-  saturation term apart from the mechanisms already in the model.
+  saturation shares the light shift's power law with the mechanisms the
+  width channel cannot separate.
+- [The beam waist](the-beam-waist.md) for the length whose fourth power the
+  spot-size argument turns on.
+- [EOM sidebands](eom-sidebands.md) and [Bessel functions](bessel-functions.md)
+  for the comb and the amplitude law saturation is tested against.
+- [Identifiability](identifiability.md) for what it takes to tell a
+  saturation term apart from the model's other mechanisms.
 
 ---
 

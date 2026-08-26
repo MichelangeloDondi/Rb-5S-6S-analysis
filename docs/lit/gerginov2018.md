@@ -27,4 +27,6 @@ section: prior-art
 
 # gerginov2018
 
-The suppress-the-shift stance our USE-the-shift method contrasts with.
+Active cancellation of the AC Stark shift in a two-photon optical frequency
+reference. This is the suppress-the-shift approach, the counterpart to
+methods that use the shift itself as a measurement channel.

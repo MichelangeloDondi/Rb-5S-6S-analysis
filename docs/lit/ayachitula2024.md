@@ -33,6 +33,18 @@ section: usafa-lineage
 
 # ayachitula2024
 
-Source of A\_6S\_RB87/85\_HZ in rb5s6s/constants.py (807.355(2), 239.065(2) MHz); isotope shift (85-87) -99.189(3) MHz.
+## The system
 
-The kHz-precision Doppler-free two-photon remeasurement of the 6S_1/2 hyperfine structure, both isotopes. Replaces Perez Galvan, Zhao & Orozco, *PRA* **78**, 012502 (2008), which gave 807.66(8) MHz (87Rb) / 239.18(3) MHz (85Rb) — a ~0.3 MHz shift, negligible for peak ID; the consistency-lock test still passes. 6S splittings F=3-F=2: 1614.709(3) MHz (87Rb) / 717.195(3) MHz (85Rb). Their line-center drift control (<0.5 kHz over 50 minutes; centers stable to 3 kHz) is a benchmark for what a fixed lock buys — exactly the target for a fixed-lock session.
+kHz-precision Doppler-free two-photon measurement of the Rb 6S1/2 hyperfine structure, both isotopes.
+
+## The numbers
+
+A_6S(87Rb) = 807.355(2) MHz, A_6S(85Rb) = 239.065(2) MHz. Isotope shift (85−87) = −99.189(3) MHz. 6S splitting F=3−F=2: 1614.709(3) MHz (87Rb), 717.195(3) MHz (85Rb). Line-center drift control below 0.5 kHz over 50 minutes, with centers stable to 3 kHz.
+
+## Validity
+
+Supersedes Perez Galvan, Zhao & Orozco, Phys. Rev. A 78, 012502 (2008): 807.66(8) MHz (87Rb) and 239.18(3) MHz (85Rb), a shift of about 0.3 MHz, negligible for peak identification.
+
+## Use in this record
+
+Source of A_6S_RB87/85_HZ in rb5s6s/constants.py.

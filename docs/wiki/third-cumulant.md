@@ -8,8 +8,8 @@ from every symmetric mechanism broadening it at the same time.
 fitted data of its own.
 **Gives.** The additivity property that lets $\kappa_3$ single out one
 asymmetric mechanism, and the traps that forge a fake one.
-**Skip if.** You want the mechanism that produces the asymmetry rather than
-the statistic that reads it, covered in [the AC-Stark shift](ac-stark-shift.md).
+**Skip if.** You want the asymmetry-producing mechanism itself, covered in
+[the AC-Stark shift](ac-stark-shift.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -60,43 +60,48 @@ the ramp's own cumulants, and the standardised skew they predict, is in
 
 ![the third cumulant as an observable](../../figures/fig30_third_cumulant.png)
 
-*How the observable works, with the shift exaggerated so the eye can see it.
-The symmetric kernels contribute nothing to the asymmetry, so what survives
-in the third cumulant belongs to the light-shift distribution.*
+*How the third-cumulant observable works: symmetric kernels contribute
+nothing to the asymmetry, so what survives belongs to the light-shift
+distribution (shift exaggerated for visibility).*
 
-The current status of the light-shift parameter it feeds is a bound rather
-than a measurement, and the numbers are in [RESULTS.md](../RESULTS.md).
+The current status of the light-shift parameter it feeds is a bound, not a
+measurement, and the numbers are in [RESULTS.md](../RESULTS.md).
 
 ## A worked interrogation of the skew channel
 
-One evening of this repository's record shows the statistic earning its keep
-three ways. The committed per-trace residual skew, averaged per power rung,
-falls from +0.33 to +0.02 across a factor nine in power, all values the same
-sign. First the channel itself was ceiling-tested, a symmetric truth under
-the measured noise law returning skew consistent with zero at every rung, so
-the trend is structure rather than estimator bias. Then the trend's shape
-did the excluding: mechanisms that grow with power cannot produce a fall,
-which removed two candidates at a stroke. Then the sign pattern across the
-four hyperfine lines, unchanged where the g-factor alternates, removed a
-third by parity alone ([reversal tests](reversal-tests.md)). That left two
-candidates, shot noise and a term of fixed absolute size, separated by the
-exponent of skew against amplitude. Measured by simulating the sampling
-distribution under each hypothesis rather than reading it from the fit's own
-covariance, which describes the spread at the fitted exponent and not at the
-one being excluded
+The committed per-trace residual skew, averaged per power rung, falls from
++0.33 to +0.02 across a factor of nine in power, the same sign at every rung.
+A symmetric truth simulated under the measured noise law returns skew
+consistent with zero at every rung, which confirms the trend is structure,
+not estimator bias. The trend's shape excludes two candidates at a stroke,
+since a mechanism that grows with power cannot produce a fall. The sign
+pattern across the four hyperfine lines, unchanged where the g-factor
+alternates, removes a third candidate by parity alone
+([reversal tests](reversal-tests.md)).
+
+![measured third cumulant across the power sweep](../../figures/fig31_third_cumulant_measured.png)
+
+*The measured third cumulant across the 2025 power sweep: values straddling
+zero, the two hyperfine peaks disagreeing in sign, and the AC-Stark
+prediction four orders of magnitude below the error bars.*
+
+That leaves two candidates, shot noise and a term of fixed absolute size,
+separated by the exponent of skew against amplitude. The exponent is
+measured by simulating the sampling distribution under each hypothesis
+instead of reading it from the fit's own covariance, which describes the
+spread at the fitted exponent and not at the one being excluded
 ([`scripts/run_skew_scaling.py`](../../scripts/run_skew_scaling.py),
-[`results/skew_scaling.csv`](../../results/skew_scaling.csv)), the four-line
-mean exponent came out at $-0.404 \pm 0.091$ with a line-to-line scatter of
+[`results/skew_scaling.csv`](../../results/skew_scaling.csv)). The four-line
+mean exponent comes out at $-0.404 \pm 0.091$ with a line-to-line scatter of
 0.181. That disfavours the fixed-size candidate at $p = 0.011$, about
-2.3 sigma one-sided, and leaves shot noise consistent at $p = 0.08$. The statistic
-that started as a diagnostic column ended as the record's main instrument on
-an open finding, and what it found sits closer to the null than to the
-candidate that was expected to survive.
+2.3 sigma one-sided, and leaves shot noise consistent at $p = 0.08$. The
+fixed-size candidate had been expected to survive this test. The data
+instead favour the null.
 
 ## What can go wrong
 
 The assumption doing all the work is that every other kernel is symmetric,
-and it is a model assumption rather than a fact. An unmodelled asymmetric
+and it is a model assumption, not a fact. An unmodelled asymmetric
 contaminant, an optical fringe, a nearby unresolved line, a detector
 nonlinearity, adds to $\kappa_3$ indistinguishably from the effect being
 measured. The selectivity is only as good as that list.
@@ -110,7 +115,7 @@ enters the answer.
 
 Two implementation traps follow from that. Subtracting a baseline that is
 itself slightly asymmetric injects a third cumulant directly. And computing
-$\kappa_3$ about the fitted centre rather than the true one couples the
+$\kappa_3$ about the fitted centre instead of the true one couples the
 answer to the centre estimate, which is the sort of thing that produces a
 confident skew from a symmetric line.
 
@@ -129,11 +134,11 @@ for n in (1, 2):
           f"{m['skew_standardized']:+.4f}")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
+Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`.
+One that stops working fails the suite instead of sitting here misleading a
+reader.
 
-## The failure mode worth its own paragraph
+## Instrumental asymmetry
 
 An asymmetric instrument forges an asymmetric line, and a third cumulant
 cannot tell the two apart from a single measurement. A detector or amplifier
@@ -144,8 +149,7 @@ belongs to the electronics.
 The size is not negligible and it is worse than the corresponding error on the
 width. Simulated at this repository's own noise correlation time, sweeping fast
 enough to inflate the fitted width by a quarter inflates the standardised skew
-by a half. The observable that carries the physics degrades twice as fast as
-the one that does not.
+by a half.
 
 What separates them is a property of the sweep and not of the fit. A physical
 asymmetry belongs to the line, so it is the same however fast the line is

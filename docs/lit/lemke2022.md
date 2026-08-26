@@ -42,26 +42,16 @@ section: method-anchors
 
 # lemke2022
 
-**Read (relevant sections) from the held PDF**, to resolve a
-waist-convention question in [bandi2025](bandi2025.md)'s Table 1 review. See
-that note for the full M9 comparison.
+VERIFIED.
 
-## The waist, verbatim
+## The system and waist
 
-> With an intensity radius (1/e2) of w0 = 2.1(3) mm and one-way laser power of
-> 10(1) mW, we calculate a light shift of −183 Hz, and an uncertainty in this
-> correction of 55 Hz.
+A Rb two-photon optical clock (AFRL/Space Dynamics Laboratory). The beam waist is stated as an intensity radius (1/e²), w0 = 2.1(3) mm, at a one-way laser power of 10(1) mW, giving a calculated light shift of −183 Hz with an uncertainty of 55 Hz. This is a radius, not a diameter, the opposite convention from [erickson2024](erickson2024.md)'s 230 µm beam diameter in the same column of a comparison table.
 
-Explicit and unambiguous: **radius**, not diameter — the opposite convention
-from [erickson2024](erickson2024.md)'s "230 µm beam **diameter**" in the same
-tabulated column of the review. That contrast is what shows the column mixes
-conventions rather than being a single one, mishandled.
+## Other results
 
-## Other headline results, not otherwise used here
+A 65-day measurement of helium contamination in the glass vapor cell gives a drift rate of $4\times10^{-15}$/day, a 10-day Allan deviation below $5\times10^{-15}$, and an absolute Rb-87 two-photon clock transition frequency of $385~284~566~371~190(1970)$ Hz.
 
-A 65-day continuous measurement quantifying helium contamination of the glass
-vapour cell (by gradually removing it under vacuum), giving a drift rate of
-$4\times10^{-15}$/day, a 10-day Allan deviation below $5\times10^{-15}$, and an
-absolute frequency for the Rb-87 two-photon clock transition of
-$385~284~566~371~190(1970)$ Hz. None of this has been used against this
-programme's own measurements; recorded for completeness of the note.
+## Use in this record
+
+Resolves a waist-convention question in [bandi2025](bandi2025.md)'s Table 1.

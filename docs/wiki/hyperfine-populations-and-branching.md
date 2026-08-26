@@ -10,9 +10,9 @@ an atom out of the one the laser addresses.
 **Gives.** The degeneracy-and-abundance counting law that predicts each
 line's relative strength, and the pumping mechanism that both reduces
 amplitude and broadens the line.
-**Skip if.** the reader wants the magnetic sublevel structure itself
-rather than how atoms populate it, in which case
-[Magnetic sublevels](magnetic-sublevels.md) is the right page.
+**Skip if.** the reader wants the magnetic sublevel structure itself,
+not how atoms populate it. [Magnetic sublevels](magnetic-sublevels.md)
+is the right page.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
@@ -33,6 +33,10 @@ degeneracy summed over every $F$ the ground state offers. Counting sublevels,
 not solving a rate equation, is what fixes how many atoms sit in each
 hyperfine level.
 
+![Term diagram of the depletion branch and the pumping fraction it sets](../../figures/fig23_hyperfine_pumping.png)
+
+*The depletion branch on the term diagram, the per-crossing pumping fraction, and the pumping width companion sized against the AC-Stark ramp.*
+
 A second element carries its own atoms of a different isotope, and natural
 abundance multiplies the same counting by one more factor: the population
 feeding a given isotope's hyperfine level is the product of how common that
@@ -43,10 +47,7 @@ other isotope's count.
 When the driving field couples every populated sublevel alike, which holds
 for a two-photon operator built from identical photons on a transition that
 carries no rank able to prefer one $m_F$ over another, the strength of each
-observed hyperfine line is exactly the population feeding it. No transition
-rate, no matrix element and no lineshape parameter enters the ratio between
-two such lines: it is counting, gated by degeneracy and by abundance, and
-nothing dynamical.
+observed hyperfine line is exactly the population feeding it.
 
 Population statistics reappear on the way down. An excited atom does not
 fall straight back to the ground hyperfine level that launched it. It decays
@@ -55,16 +56,14 @@ answers to its own selection rules and branching ratios, which know nothing
 about which ground level the atom started in. An atom driven from the
 ground level the laser addresses can therefore land, after the round trip,
 in the ground level the laser does not address, detuned by a splitting
-thousands of times its own linewidth. It has left the experiment while still
-physically inside the beam. This is hyperfine pumping, built entirely from
-branching probabilities rather than from any coherent dynamics.
+thousands of times its own linewidth. This is hyperfine pumping, driven
+entirely by branching probabilities and not by coherent dynamics.
 
 That departure is a lineshape effect, not only a signal-size one. An atom
 that is pumped out partway through its crossing stops contributing after a
-shorter stretch of time than an atom that survives the whole transit, and a
-shorter interaction time broadens the response the same way any early
-truncation does: a measurement cut short reads out with a wider spectrum,
-whatever cut it short.
+shorter stretch of time than an atom that survives the whole transit, and
+a shorter interaction time broadens the response, the same way any early
+truncation does.
 
 ## What problem it solves
 
@@ -80,10 +79,10 @@ fitting anything.
 It also separates two distinct costs of an atom leaving mid-transit. One is
 that fewer photons are collected, which affects amplitude. The other is that
 the atoms still being collected were, on average, interrupted earlier in
-their crossing, which affects width. A population argument that stops at
-counting misses the second cost entirely, and it is the one that couples
-hyperfine pumping to every other broadening mechanism this repository has to
-separate from the light shift.
+their crossing, which affects width. A population argument that only counts
+atoms misses this second cost. This cost is what makes hyperfine pumping one
+of the mechanisms that broaden the line with the light shift's own power and
+waist signature.
 
 ## Where this repository uses it
 
@@ -101,22 +100,23 @@ ratio at exactly $7/5$ from degeneracy alone, and the cross-isotope
 too. The measured column in the same file is the comparison against those
 counting-only numbers, drawn in
 [`figures/fig4_amplitude_ratios.png`](../../figures/fig4_amplitude_ratios.png).
+
+![Measured amplitude ratios against the degeneracy-only prediction](../../figures/fig4_amplitude_ratios.png)
+
+*Measured within-isotope amplitude ratios against the parameter-free degeneracy prediction, with repeat and inter-block drift scatter shown.*
+
 The same module also reads the temperature dependence of the
 measured-to-predicted ratio as a probe of radiation trapping, the emitted
 795 nm decay photons being reabsorbed on the way out, a density-dependent
 effect the pure counting law above does not include.
 
 The branching side is not a single shared number. Because it is a two-step
-cascade through the intermediate $5P$ levels rather than a degeneracy count,
+cascade through the intermediate $5P$ levels, instead of a degeneracy count,
 the branching fraction that lands a decaying atom in the ground level the
 laser is not addressing differs line to line, and the four values are
 committed in `BRANCHING_F` in
-[`rb5s6s/cascade.py`](../../rb5s6s/cascade.py), which
-[`rb5s6s/stark.py`](../../rb5s6s/stark.py) imports under the local name
-`F_PER_LINE` rather than restating. Which isotope and which ground level each
-line drives is in the same module's `DRIVEN_F`, asserted in the tests against
-`rb5s6s/constants.py` rather than against itself, for a reason
-[HISTORY.md](../HISTORY.md) records. The
+[`rb5s6s/cascade.py`](../../rb5s6s/cascade.py). Which isotope and which
+ground level each line drives is in the same module's `DRIVEN_F`. The
 resulting extra width enters through
 [`companion_gamma_mhz`](../../rb5s6s/stark.py), one of two effects this
 repository has identified that broaden the line with exactly the light
@@ -129,14 +129,14 @@ and in
 
 ## What can go wrong
 
-The most direct mistake is comparing peak heights rather than integrated
+The most direct mistake is comparing peak heights instead of integrated
 areas. Height is area divided by width times a shape factor, so a height
 comparison folds in whatever makes the width drift from one measurement
 block to the next, typically laser alignment, and quietly turns a
 population comparison into a width comparison. The area is what the
 population argument actually predicts, which is why `peak_area` in
 [`rb5s6s/amplitudes.py`](../../rb5s6s/amplitudes.py) integrates the trace
-rather than reading its maximum.
+instead of reading its maximum.
 
 A second trap is conflating two different fractions that both get called
 "pumping". The share of transiting atoms that decay at least once is
@@ -152,7 +152,7 @@ too. It is not: it is a cascade product through two intermediate fine
 structure levels, not a degeneracy ratio, so nothing guarantees it repeats
 across lines the way a population weight does.
 
-A fourth is experimental rather than a modelling error. Each hyperfine line
+A fourth is experimental, not a modelling error. Each hyperfine line
 in this campaign is its own measurement block, taken hours apart from the
 others, so a cross-peak amplitude ratio inherits whatever power or
 alignment drift happened between those blocks on top of the population
@@ -201,10 +201,6 @@ print(f"4192/4154 (same isotope, abundance cancels): {r_85:.4f} (= 7/5)")
 print(f"4192/4207 (cross isotope, abundance also enters): {r_cross:.4f}")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
-
 ## Further reading
 
 - C. J. Foot, *Atomic Physics* (Oxford University Press, 2005), chapter 6,
@@ -218,11 +214,6 @@ a reader.
 - [`../lit/steck_rb.md`](../lit/steck_rb.md), the standard reference for the
   D-line branching ratios and hyperfine constants this repository's cascade
   calculations draw on.
-- [Hyperfine structure](hyperfine-structure.md), for the levels this page
-  puts populations on.
-- [Transit-time broadening](transit-time-broadening.md), for the general
-  relation between a shortened interaction time and a broader line that the
-  pumping argument above uses.
 
 ## See also
 

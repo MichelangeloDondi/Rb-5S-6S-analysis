@@ -428,12 +428,36 @@ def test_no_process_language_in_lit_notes(key):
         r"|\bchatgpt\b|\bclaude\b|\banthropic\b",
         re.I,
     )
+    # The reading-diary class, added 2026-08-26 on the owner's instruction:
+    # a literature note is an annotated-bibliography entry, never a reading
+    # diary. It does not name itself, date its own reading, draw lessons,
+    # plan adoptions, or narrate its own past claims (docs/HISTORY.md holds
+    # any superseded claim). "review" stays allowed here alone, for journal
+    # names and the review-article genre. Enforced on the BODY only: the
+    # frontmatter's qa_flags and summary are preserved QA records, kept
+    # byte-stable by the note conventions, and they may name the note.
+    diary = re.compile(
+        r"\bthis note\b|\bread 20\d\d-|\bthe lesson\b"
+        r"|\bworth (?:adopting|noting|stating)\b"
+        r"|\bpreviously (?:concluded|claimed|stated)\b"
+        r"|\bexperimenters?\b|\badversarial(?:ly)?\b"
+        r"|\bexternal(?:ly)? check|\bpreregist\w+\b|\badjudicat\w+\b",
+        re.I,
+    )
     authors = " ".join(str(a) for a in (_fm(key).get("authors") or []))
     watched = _NAME_DIGESTS - {_digest(w) for w in _WORD.findall(authors)}
     bad = []
+    in_front = False
+    front_done = False
     for i, line in enumerate(_lit_lines(key), 1):
+        if line.strip() == "---" and not front_done:
+            in_front = not in_front
+            if not in_front:
+                front_done = True
+            continue
         named = any(_digest(w) in watched for w in _WORD.findall(line))
-        if pat.search(line) or named:
+        body_hit = (not in_front and front_done) and diary.search(line)
+        if pat.search(line) or named or body_hit:
             bad.append(f"{key}.md:{i}: {line.strip()[:100]}")
     assert not bad, "process language in a literature note:\n  " + "\n  ".join(bad)
 

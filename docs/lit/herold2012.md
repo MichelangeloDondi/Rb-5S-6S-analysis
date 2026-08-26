@@ -46,27 +46,26 @@ section: method-anchors
 
 # herold2012
 
-**REPORTED. The record is confirmed, the paper is not held and has not been read
-here.**
+REPORTED. Not held. Bibliographic record confirmed from the publisher listing
+and two independent indexes. Content not verified against the paper.
 
-## Why this repository needs it
+## The method
 
-`rb5s6s/polarizability.py` builds the 5S and 6S dynamic polarizabilities from a
-sum over states. Its 5S to 6P entry, 0.3235(9) and 0.5230(8) ea0 for the two
-fine-structure components, comes from this measurement. That group is one of the
-two large terms whose near-cancellation sets the 993 nm difference, so an error
-in it does not average away.
+The atomic ground-state light shift passes through zero near 421 nm and
+423 nm. At each such zero the ratio of the two contributing matrix elements
+is fixed by the wavelength alone, turning a matrix-element measurement into
+a wavelength measurement.
 
-The method is worth one line for the reader who meets it in the sum: the light
-shift of the ground state passes through zero at particular wavelengths, near
-421 and 423 nm here, and at such a zero the ratio of the matrix elements feeding
-the shift is fixed by the wavelength alone. That turns a matrix-element
-measurement into a wavelength measurement, which is the same move this
-programme's magic-wavelength work in M16 makes on the 5S to 6S pair.
+## The numbers
 
-## What is missing
+Reduced dipole matrix elements for 5S to 6P: 0.3235(9) ea0 (5s-6p1/2) and
+0.5230(8) ea0 (5s-6p3/2), quoted from the `rb5s6s/polarizability.py`
+docstring, the source of record until the PDF is held.
 
-The paper has not been obtained, so nothing beyond the two matrix elements and
-the method may be attributed to it. Upgrading this note means holding the PDF,
-reading the uncertainty budget, and checking that the values in
-`polarizability.py` carry the same convention as the ones printed there.
+## Use in this record
+
+`rb5s6s/polarizability.py` builds the 5S and 6S dynamic polarizabilities
+from a sum over states. The 5S-6P group is one of the two large opposing
+terms setting the 993 nm polarizability difference, so its uncertainty
+propagates directly into every magic wavelength computed for that
+transition.

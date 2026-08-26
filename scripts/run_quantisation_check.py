@@ -3,8 +3,8 @@
 
 WHY THIS EXISTS. The acquisition chapter argued that vertical resolution is
 what binds this measurement, on the reasoning that the pedestal is about one
-least significant bit and the band excess sits below one. The experimenter
-asked whether the features were not already below the NOISE, which is the
+least significant bit and the band excess sits below one. The open question
+was whether the features were not already below the NOISE, which is the
 question that decides whether quantisation binds at all, and the record had
 never measured it.
 

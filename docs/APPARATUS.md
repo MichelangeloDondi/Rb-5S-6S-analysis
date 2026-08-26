@@ -11,8 +11,8 @@ every technical fact and its date in text.*
 piece of that known?
 **Takes.** Nothing.
 **Gives.** Every hardware fact with a provenance tag and a date, from the laser
-to the oven to the detector, including the ones that are experimenter
-recollection rather than photograph and are labelled as such.
+to the oven to the detector, including the ones that are recollection
+instead of photograph and are labelled as such.
 **Skip if.** You are working on the analysis rather than the bench. The one
 section worth reading anyway is the lock, because its misconfiguration is what
 shapes every result in this repository.
@@ -32,7 +32,7 @@ through this page show the same elements in the flesh.*
 
 Provenance tags: **PHOTO** (read off a dated setup photograph), **DATA**
 (established from the dataset files), **ASSUMED** (inherited from a citation,
-not verified for this bench), **EXPERIMENTER** (recollection).
+not verified for this bench), **RECOLLECTION** (recalled after the fact, not a contemporaneous record).
 
 ---
 
@@ -78,8 +78,8 @@ laser short-term, which is why shapes survive.*
 > "the cheapest highest-leverage test a future session could open with".
 > **That was wrong.** On the M Squared system **ECD is the External Cavity
 > Doubler**, the resonant second-harmonic stage, and its lock is the
-> doubling cavity's, not a frequency reference (a laser-side colleague, via
-> the experimenter, 2026-07-25: *"ECD is for second harmonic generation"*).
+> doubling cavity's, not a frequency reference (a laser-side colleague,
+> 2026-07-25: *"ECD is for second harmonic generation"*).
 > It reads *Not Locked* in every photograph for the simple reason that this
 > experiment uses the **993 nm fundamental** and never needed the doubler.
 > Nothing about the dataset's limitation changes, since the frequency axis still
@@ -90,11 +90,11 @@ laser short-term, which is why shapes survive.*
 > wavemeter. That, not the doubler, is what a future session should
 > engage and characterise.
 
-**For the campaign itself** the experimenter confirms (2026-07-23) that the
+**For the campaign itself**, recollection confirms (2026-07-23) that the
 **reference cavity was locked**, with its **set point moved from time to time
 to follow the drift**,
 which is what `DATA.md` §2 records as "cavity-reference recenters". A further
-recollection (EXPERIMENTER, 2026-07-23, given *after* the state-space fit
+recollection (2026-07-23, given *after* the state-space fit
 below was already committed): **the cavity lock was dropping out on its own,
 typically within a few tens of minutes, especially while the etalon
 temperature transient, about 2 h of lock-on after at least 3 h of lock-off, had not
@@ -130,7 +130,7 @@ shifts become measurable at all.
 
 | item | value | provenance |
 |---|---|---|
-| Optical isolator | Isowave **I-98T-5L** | EXPERIMENTER, 2026-08-01 |
+| Optical isolator | Isowave **I-98T-5L** | RECOLLECTION, 2026-08-01 |
 | Clear aperture | **5 mm** | manufacturer datasheet (Isowave DS9010-012010, 900–1000 nm series) |
 | Design wavelength | centred at 980 nm standard, orderable anywhere 900–1000 nm | manufacturer datasheet |
 | Isolation / insertion loss | 35 dB min (38 typical) / 0.3 dB typical, 0.5 dB max | manufacturer datasheet |
@@ -141,7 +141,7 @@ On the bench the delivery runs: laser, then a λ/2 + PBS pair that sets the
 power sent to the cell (working in reflection, the PBS's reflected port
 feeding the cell path and providing the turn onto the arm), then the fold
 mirror, with the optical isolator standing on the vertical cell axis just
-after the fold, before the polarizing filter (EXPERIMENTER, 2026-08-03).
+after the fold, before the polarizing filter (RECOLLECTION, 2026-08-03).
 A fibre runs directly from the laser head to the ws-8 wavemeter. The
 isolator-before-the-focusing-lens order matches the
 [Nieddu 2019](lit/nieddu2019.md) /
@@ -149,13 +149,13 @@ isolator-before-the-focusing-lens order matches the
 isolator is placed ... before the vapor cell ... A plano-convex lens (L1)
 ... is placed after the optical isolator to focus the beam"). The 993 nm focus sits near the cell's lower corner <!-- term-of-art: literal geometry of the rectangular cell --> on the detection side, at the
 f = 18 mm lens's object plane, so the collection lens re-images the
-fluorescence spot onto the PMT (EXPERIMENTER, 2026-08-03).
+fluorescence spot onto the PMT (RECOLLECTION, 2026-08-03).
 
 **The beam path order and the EOM aperture, now sourced (2026-08-01).**
-EXPERIMENTER: no lens or telescope sits between the SolsTiS output and the
+RECOLLECTION: no lens or telescope sits between the SolsTiS output and the
 EOM, so the isolator and the EOM both see the raw SolsTiS beam. The isolator's
 5 mm clear aperture is wider than that beam and does not obviously clip it.
-The EOM does: the experimenter recalls an IR viewer card showing clipping at
+The EOM does: an IR viewer card is recalled showing clipping at
 the EOM aperture (recollection, over a year old, not a contemporaneous
 measurement). That aperture is now a sourced number rather than an
 assumption. The manufacturer's own "Standard Characteristics" table for the
@@ -164,7 +164,7 @@ confirmed 2026-08-01) states **Aperture Diameter 3 mm** for both crystal
 variants, so it applies to our EOM-02-12.5-v. This is the same 3 mm the
 naive Gaussian-optics $w_0\approx32\ \mu\mathrm{m}$ estimate in `constants.py` used.
 It was previously carried as an inferred number chosen to make the clipping
-story work, and is now grounded in a manufacturer spec plus an experimenter recollection
+story work, and is now grounded in a manufacturer spec plus a recollection
 of the clipping itself. See `constants.py`'s `W0_MEASURED_M` docstring and
 `docs/notes/transit_width_resolved.md` for the full waist reasoning, and the
 [Rajasree 2020 thesis](lit/rajasree2020thesis.md)'s directly measured 128 µm
@@ -181,7 +181,7 @@ flip-in power meter and the retro mirror (9). All six are visible and
 numbered on the annotated bench photograph (defense presentation, slide 9),
 and the f = 150 mm value is the same lens the Rajasree lineage measurement
 above rides on. PHOTO. The pipes (5 and 7) reach inside the oven's foil
-wrap. EXPERIMENTER, 2026-08-03.
+wrap. RECOLLECTION, 2026-08-03.
 
 ---
 
@@ -232,22 +232,22 @@ generator as well as a different tank.
 
 | item | value | provenance |
 |---|---|---|
-| Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + EXPERIMENTER |
+| Cell fluorescence detector | Hamamatsu **R636-10** side-on PMT, housed in a **Thorlabs PXT1/M** module | PHOTO 2025-07-18 (in campaign) + RECOLLECTION |
 | Photocathode spectral response | GaAs, roughly 300 to 900 nm. Datasheet, not read off the sheet here, and the tube attribution is itself assumed (see the resolved note below). It became load-bearing on 2026-08-10: it is the red edge, and not the 50 dB of 795 nm filtering, that blocks the cell's own 9.1 µm thermal peak from the detector. Nothing rests on the exact figure, since no photocathode of any kind responds at 9 µm | datasheet + ASSUMED |
 | Cathode geometry | 3 × 12 mm rectangle | datasheet TPMS1016E |
-| Cathode orientation (2025) | **12 mm axis along the beam** | EXPERIMENTER |
-| Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / EXPERIMENTER |
-| Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | EXPERIMENTER 2026-08-03 |
-| Focus position in the cell | **not the cell's mid-plane**. The 993 nm waist was placed close to the collection lens deliberately, to raise the collected solid angle. The standoff from the near window is not recorded | EXPERIMENTER 2026-08-09 |
-| Signal chain | PMT → **pre-amplifier, G = 10⁶ V/A** → scope | DATA, the 4 July evening session's filenames record `G=10^6` (addendum 9). Confirmed by the experimenter, who also confirmed the units. The measured noise budget (`results/quantisation.csv`, budget rows) puts the electronics floor well under the light-linked noise at operating power, so the gain sits in the right decade and neither direction buys noise |
+| Cathode orientation (2025) | **12 mm axis along the beam** | RECOLLECTION |
+| Filter stack | ~50 dB of 795 nm passband (not a short-pass) | DATA / RECOLLECTION |
+| Collection optics | f = 18 mm lens and the 795 nm filter, mounted in a tube fastened to the PMT holder | RECOLLECTION 2026-08-03 |
+| Focus position in the cell | **not the cell's mid-plane**. The 993 nm waist was placed close to the collection lens deliberately, to raise the collected solid angle. The standoff from the near window is not recorded | RECOLLECTION 2026-08-09 |
+| Signal chain | PMT → **pre-amplifier, G = 10⁶ V/A** → scope | DATA, the 4 July evening session's filenames record `G=10^6` (addendum 9). Confirmed from recollection, including the units (RECOLLECTION). The measured noise budget (`results/quantisation.csv`, budget rows) puts the electronics floor well under the light-linked noise at operating power, so the gain sits in the right decade and neither direction buys noise |
 | IR receiver on the bench | **New Focus 2153 IR femtowatt photoreceiver**, gain to 2×10¹¹ V/A, DC–750 Hz | PHOTO 2025-07-29 |
 
 **OPEN: the PMT's high-voltage supply and setting are not on record**
 (2026-08-03 audit). No photograph or note names the supply that biased the
-R636-10 or its voltage. A bench fact only the experimenter can assert.
+R636-10 or its voltage. A bench fact recoverable only by recollection.
 
 **The off-centre focus is not a detail, and it moves two numbers the analysis
-uses** (added 2026-08-09 when the experimenter stated it). Both follow from the
+uses** (added 2026-08-09, from recollection). Both follow from the
 same geometry, that the source sits close to the collection lens rather than at
 the cell's mid-plane.
 
@@ -278,7 +278,7 @@ carries the tables.
 > **Resolved 2026-07-23.** `config.py` attributed the detector to an R636-10
 > citing *Nieddu 2019, the nanofibre experiment and not this bench*, and the only
 > in-campaign photograph shows a Thorlabs PXT1/M module, which looked like a
-> contradiction. The experimenter confirms the PXT1/M **houses** the R636-10, so
+> contradiction. Recollection confirms the PXT1/M **houses** the R636-10, so
 > the attribution was right by luck rather than by sourcing. The 3 × 12 mm
 > cathode and the along-beam-vs-upright install decision in `PLAN.md` §6 #4
 > therefore stand. One practical rider: the tube sits in a commercial housing,
@@ -303,7 +303,7 @@ controller top-right.*
 
 | item | value | provenance |
 |---|---|---|
-| **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + EXPERIMENTER |
+| **Scope of record** | Agilent/Keysight **InfiniiVision DSO-X 3054A**, 500 MHz, 4 GSa/s | PHOTO 2025-06-10 + **DATA** (CSV signature) + RECOLLECTION |
 | Also on the bench (not used for the dataset) | LeCroy **WaveSurfer 3104z** (1 GHz, 4 gs/s); LeCroy **WaveSurfer 10** (1 GHz, 10 gs/s) | PHOTO 2025-07-29 |
 | Trace format | 2000 points, 0.5 ms step, 1.000 s window | DATA |
 
@@ -319,7 +319,7 @@ the archived traces is unresolved, and no per-trace instrument setting was
 ever stored.**
 
   * The one photographed acquisition mode on this page reads **Averaging 32,
-    12.5 kSa/s**, while the experimenter's recollection (2026-08-19) is that
+    12.5 kSa/s**, while recollection (2026-08-19) is that
     the campaign ran in **High Resolution** mode. On this instrument the two
     are mutually exclusive.
   * The traces themselves settle part of it (measured 2026-08-19): the
@@ -328,12 +328,12 @@ ever stored.**
     record length, so a resolution-raising mode was active. The grid alone
     cannot distinguish High Resolution from Averaging, since both refine it.
     What tips the reading is the pairing of the stored 2 kSa/s format with the
-    experimenter's statement, and the repeat scatter, which the next bullet
+    recollection above, and the repeat scatter, which the next bullet
     explains an averaging mode would have shrunk. The photographed rate also disagrees with the
     archive's own 2 kSa/s trace format, so the photograph may record a
     different configuration entirely, which is the likeliest reading and is
     not established.
-  * **Corrected by the experimenter, and the correction reopens
+  * **Corrected from recollection, and the correction reopens
     something this page had closed.** The sentence here previously said that
     High Resolution "averages adjacent samples, which smooths and correlates
     them". That conflates two different mechanisms and the distinction decides
@@ -348,7 +348,7 @@ ever stored.**
     correlate them. The two instruments were being described with one
     sentence.
 
-    **The bit arithmetic supports the experimenter's recollection over the
+    **The bit arithmetic supports the recollection over the
     photograph.** A boxcar of N raw samples buys half a log2 N in bits, so at
     the instrument's maximum rate a 0.5 ms bin would reach about 18 bits. The
     committed files span **11.86 bits, which is 0.14 under a 12-bit ceiling**,
@@ -370,8 +370,7 @@ ever stored.**
     acquisitions, which is a different mechanism and would leave a different
     signature.
 
-    **So the 1.9 ms correlation is left without an explanation, and that is the
-    honest consequence.** It was read for two days as the detection chain, then
+    **So the 1.9 ms correlation is left without an explanation.** It was read for two days as the detection chain, then
     reassigned to the acquisition mode. **A disjoint boxcar cannot produce it**,
     because adjacent stored points share no raw samples. Neither can the chain:
     the rehearsal below puts the baseline autocorrelation at 0.070 at a lag of
@@ -407,7 +406,7 @@ ever stored.**
     with every trace.
 | Wavemeter | HighFinesse **Ångstrom ws-8** (ws/8l, unit 4039) | PHOTO |
 | Wavemeter autocal | every 8 minutes | PHOTO 2025-06-08 |
-| Wavemeter feed | fibre directly from the laser head | EXPERIMENTER 2026-08-03 |
+| Wavemeter feed | fibre directly from the laser head | RECOLLECTION 2026-08-03 |
 | Wavemeter short-term StdDev | 100 kHz (floating, 10 measurements) | PHOTO 2025-07-18 |
 
 **OPEN: the ws-8's pickoff point is not on record** (2026-08-03 audit). The
@@ -417,7 +416,7 @@ is not.
 ### 4.1 Why the Agilent, and how we know
 
 The dataset was taken on the Agilent, not either LeCroy: the LeCroy would not
-trigger reliably (experimenter, 2026-07-23). That is independently confirmed
+trigger reliably (recollection, 2026-07-23). That is independently confirmed
 by the files. Every CSV in the dataset opens `x-axis,N` / `second,Volt`, the
 Keysight InfiniiVision export signature (398 of 400 sampled, and the other
 two carry a corrupted first line already tracked as `header_variant`).
@@ -443,7 +442,7 @@ handle. Averaging 32, 12.5 kSa/s.*
 A 2025-06-10 photograph of the Agilent shows **two channels**: a clean
 triangular sweep-ramp monitor on Ch1 and the fluorescence on Ch2, with the
 fluorescence peaks mirrored about the ramp apex, which is the fold made directly visible.
-It was **not saved** with the dataset's traces (experimenter, 2026-07-23).
+It was **not saved** with the dataset's traces (recollection, 2026-07-23).
 
 **OPEN: which output fed Ch1, and the Agilent's trigger settings, are not
 on record** (2026-08-03 audit). The photographs show the ramp arriving at
@@ -511,12 +510,12 @@ campaign has only fat mtimes at 2 s granularity.
 | item | value | provenance |
 |---|---|---|
 | Cell | glass vapour cell in a copper block, Kapton-taped, foil-wrapped in operation | PHOTO 2025-07-01, 07-18 |
-| Cell dimensions | about **25 mm diameter, 100 mm long**. Approximate and recalled, not read off a datasheet or a purchase record, so treat both figures as ±10% until the primary record surfaces | EXPERIMENTER 2026-08-09 |
-| Temperature controller | 2-channel. The 4 July evening session's filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: EXPERIMENTER did not recognise it) | PHOTO 2025-07-18 |
+| Cell dimensions | about **25 mm diameter, 100 mm long**. Approximate and recalled, not read off a datasheet or a purchase record, so treat both figures as ±10% until the primary record surfaces | RECOLLECTION 2026-08-09 |
+| Temperature controller | 2-channel. The 4 July evening session's filenames pair the thermocouple reading with the variac set point, `130C(90C-0.65A)` (results report addendum 15). Which positions each channel drives is not established here, and the term "two-zone oven" is retired (2026-08-03: not recognised from recollection) | PHOTO 2025-07-18 |
 | Operating range | 70–130 °C across the campaign's condition grid | DATA (manifest) |
 | Thermocouple/heater positions | **four**, marked 1, 2 (one end) and 3, 4 (the other) | PHOTO 2025-07-01 |
 | Rb condensation | visible on the cell windows when unwrapped | PHOTO 2025-07-01 |
-| Oven tilt | about 3° off the beam normal, keeping window back-reflections out of the retro path | EXPERIMENTER 2026-08-03 |
+| Oven tilt | about 3° off the beam normal, keeping window back-reflections out of the retro path | RECOLLECTION 2026-08-03 |
 
 <img src="apparatus/2025-07-01_cell_thermocouples.jpg" width="70%" alt="Unwrapped cell in its copper block, thermocouple positions 3 and 4 annotated, Rb condensation visible on the window">
 
@@ -757,7 +756,7 @@ laser holds ±0.19 MHz/min, and on etalon lock alone it drifts 0.4–1.0 MHz/min
 were photographed at 22:52 and 23:22 and the control page showing *etalon
 Locked, reference cavity Locked, ECD Not Locked* at 23:33, eleven minutes
 after the second. Circumstantial, but tight. The 06-19 state
-(etalon on, cavity off, thermally settled) is experimenter-confirmed and
+(etalon on, cavity off, thermally settled) is confirmed by recollection and
 matches the configuration photographed on 06-10.
 
 **A within-record control.** The 06-19 record runs unswept for its first
@@ -777,7 +776,7 @@ therefore holds as a genuine **envelope**, bounding every record here,
 while the settled rate is several times smaller.
 
 **The dataset's own numbers, recovered 2026-07-23.** Differencing block
-positions against the recovered clock (estimator: experimenter,
+positions against the recovered clock (estimator: chosen by hand,
 `scripts/run_drift_settling.py`, results report addendum 4) gives the
 campaign's in-situ figures, resting on a clock reading that is now
 instrument-validated: the LeCroy files from the 4 July evening session embed
@@ -808,8 +807,8 @@ exactly the ~1–4 MHz they are compared against.
 That operator settling is what matches the post-retune photographs' scale,
 as it should: re-lock transients are when the re-centring works hardest. The
 mechanism arrived after the fit, in the right order to count as
-corroboration: the model found τ ≈ 86 [70, 104] min blind, and the
-experimenter then independently recalled the ~2 h etalon thermal transient,
+corroboration: the model found τ ≈ 86 [70, 104] min blind, and
+an independently gathered recollection then supplied the ~2 h etalon thermal transient,
 same scale. Fitting the disturbance as a transient that **restarts at each
 re-lock** (results report addendum 12) sharpens both numbers and beats a
 single session-long decay by ΔAIC +16: **B = 103 [78, 139] ms = 4.4 MHz
@@ -831,7 +830,7 @@ the envelope exists to bound, not the acquisition-time drift, which the
 dataset puts two orders below.
 
 **What this implies for the campaign.** The campaign ran with the reference
-cavity locked (experimenter, 2026-07-23), i.e. the 06-11 regime, so the settled
+cavity locked (recollection, 2026-07-23), i.e. the 06-11 regime, so the settled
 expectation is **≈0.2 MHz/min**, not the ~1 MHz/min of etalon-only operation.
 The Ti:Sapph ran continuously through the 24 h ([DATA.md](DATA.md) §2), so most
 acquisition sat in the settled regime, and each manual set-point move re-zeroed the

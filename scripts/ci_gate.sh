@@ -89,4 +89,11 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
 fi
 "$PY" -m ruff check rb5s6s scripts tests
 "$PY" -m pytest -q --runslow
+# The protocol citation checker was written to catch the one propagation
+# failure a grep of a claim cannot see, because the claim IS a pointer, and
+# it had never been wired into the gate: it ran when someone remembered to
+# run it. Skipped where private/ is absent, which is every clone but this one.
+if [ -f private/checks/protocol_citations.py ]; then
+  "$PY" private/checks/protocol_citations.py || exit 1
+fi
 echo "ci_gate: clean"

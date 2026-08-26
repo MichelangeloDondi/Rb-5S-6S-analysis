@@ -3,7 +3,7 @@
 The AC-Stark pull was once reported from the centres as |S0(225 mW)| < 7.3 MHz.
 That came from session-referenced peak positions, i.e. the scope's horizontal
 setting (see run_laser_history.py's retraction). Recomputed with a free offset on
-every display epoch -- the correct handling, and the experimenter's own
+every display epoch -- the correct handling, and the previously recorded
 suggestion of "the re-kicks as extra free parameters" -- the pull is
 unidentifiable: only 3 of 26 power-sweep epochs contrast two powers, no epoch
 spans two lines, and inside those three power still descends with time.

@@ -52,72 +52,24 @@ section: method-anchors
 
 # schmidt2011
 
-**Held, abstract read.** Consulted alongside
-[boustimi2017](boustimi2017.md) while chasing the paywalled `boustimi2002`.
+Held. Abstract and front matter read. The derivations in Sections 2-4 are not verified.
 
-## The geometry is wrong, and the cylinder papers are the ones to use
+## The system
 
-This is a **sphere**, not a cylinder, so it is not an input to the
-[patterson2018](patterson2018.md) refit. It is by **Nic Chormaic and Minogin**,
-the same authors as [frawley2012](frawley2012.md), whose cylinder paper is the
-one actually needed.
+Schmidt, Nic Chormaic, and Minogin derive closed analytical equations, in the electrostatic approximation, for the van der Waals interaction energy of an atom near the internal and external surfaces of a metal or dielectric nanosphere. The sign of the surface curvature sets the direction of the correction relative to a flat surface. Concave (internal) surfaces enhance the interaction, convex (external) surfaces weaken it.
 
-**Correction, recorded in place (2026-07-31).** This section previously said
-this paper was useful because it "establishes in a primary source we hold the
-claim that frawley2012 is currently carried on the strength of a search-engine
-paraphrase". That was written in the few hours when frawley2012 was believed
-unheld. It *was* held, and has since been read — so this paper underwrites
-nothing about it, and where the two differ, Frawley's body governs. What
-survives is narrower: this is an independent primary statement that **curvature
-sign matters at all**, and it is the method anchor for the family.
+## The numbers
 
-## The result worth taking
+From the abstract:
 
-Verbatim from the abstract:
+> "We derive closed analytical equations for the van der Waals interaction energy using an electrostatic approximation and show that the energy increases or decreases as a function of the atom's distance from the surface, depending on the surface curvature. For concave spherical surfaces, the van der Waals energy can increase by up to a factor of 6, while for convex surfaces it decreases by as much as a factor of 2, when compared to that obtained for a flat surface."
 
-> "We derive closed analytical equations for the van der Waals interaction
-> energy using an electrostatic approximation and show that the energy increases
-> or decreases as a function of the atom's distance from the surface, depending
-> on the surface curvature. For concave spherical surfaces, the van der Waals
-> energy can increase by up to a factor of 6, while for convex surfaces it
-> decreases by as much as a factor of 2, when compared to that obtained for a
-> flat surface."
+The paper states that the closed-form equations are intended for direct comparison between theory and experimental measurements of the van der Waals constant $C_3$.
 
-And on what they are for:
+## Validity
 
-> "The derived analytical equations are very simple and can be used for a
-> comparison between theory and experimental measurements of the van der Waals
-> constant, $C_3$."
+The geometry treated here is a sphere, not the cylinder relevant to an optical nanofibre or a hollow-core fibre. The cylinder analogues, from the same authors (Nic Chormaic and Minogin), are [frawley2012](frawley2012.md) for the convex exterior and [afanasiev2010](afanasiev2010.md) for the concave interior of a hollow core. Both show the curvature correction to be a far-field effect rather than a near-surface one. frawley2012's surface factor $\mu \to 1$ for $x_0 \ll R$, where curvature has no effect, and reaches only about 0.5 near $x_0 = 5R$. afanasiev2010 gives a concave enhancement factor of 4, not 6, evaluated on the axis of a hollow cylinder, with the internal surface factor likewise tending to 1 at the wall. A flat-surface $C_3/r^3$ term is therefore adequate close to a surface of either curvature, with the extreme factors from this paper applying only far from it. For the core sizes relevant to a hollow-core geometry, the 4x on-axis enhancement multiplies a $C_3/x_0^3$ term that is between $10^{-4}$ and $10^{-10}$ of its value 10 nm from the wall, so the concave correction is negligible at any distance an atom would occupy.
 
-## Two consequences for this programme
+## Use in this record
 
-**Convex, factor of 2 down — but read the distance carefully.** The abstract's
-"as much as" is doing real work. The cylindrical counterpart,
-[frawley2012](frawley2012.md), is held and read, and it is explicit that the
-weakening is a *far-field* effect: its surface factor $\mu \to 1$ for
-$x_0 \ll R$, where "the curvature of the surface is of no importance", and only
-reaches ~0.5 around $x_0 = 5R$. A flat-surface $C_3/r^3$ is therefore **fine
-close to a nanofibre** and wrong far from it — the opposite of the reading this
-note first took from the sphere abstract alone. That bears on
-[patterson2018](patterson2018.md) and [liu2024](liu2024.md), both of which sit
-on the convex exterior of a fibre with their atoms *close* to it, and for which
-the flat-surface form is consequently adequate.
-
-**Concave, factor of 6 up — and this is now closed, without needing the
-extrapolation.** A hollow-core experiment would put atoms *inside* a
-hollow core: a concave dielectric surface. This note previously asked whether
-the spherical 6× carries over to a cylindrical bore and recorded it as OPEN and
-unquantified, warning that the sphere→cylinder step was exactly the kind of
-geometric extrapolation this repository has been burned by. **The extrapolation
-turned out to be unnecessary**: [afanasiev2010](afanasiev2010.md) (Minogin
-again, pra **82**, 052903) is the hollow-*cylinder* case, was obtained the same
-day, and gives the factor directly. It is **4**, not 6, and it applies near the
-axis; at the wall the internal surface factor goes to 1, exactly as the convex
-factor does.
-
-**And the enhancement is negligible in practice.** The 4× multiplies $C_3/x_0^3$
-evaluated on the axis, which for any core in this programme's sights is between
-$10^{-4}$ and $10^{-10}$ of the value 10 nm from the wall — see the table in
-[afanasiev2010](afanasiev2010.md). So a hollow-core geometry would carry no van
-der Waals cost from concavity, and the estimate this note asked for has been
-done rather than deferred.
+[patterson2018](patterson2018.md) and [liu2024](liu2024.md) place their atoms close to the convex exterior of a fibre, where the flat-surface approximation is adequate, so this sphere paper is not an input to that refit. It is retained as the source of the general principle that curvature sign changes the van der Waals coupling, with the cylinder-specific numbers taken from frawley2012 and afanasiev2010.

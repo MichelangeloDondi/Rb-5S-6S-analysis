@@ -9,7 +9,7 @@ run_laser_history.py's retraction). This module re-asks it on a defensible
 model and reports the answer as a producer, because the result is a NULL that
 the paper has to state rather than a number it can use.
 
-THE MODEL is the one the experimenter proposed: put a free offset on every
+THE MODEL puts a free offset on every
 display epoch -- which is exactly "the re-kicks as extra free parameters",
 since an epoch boundary IS a horizontal-knob move and the offset across it is
 unknown -- then fit a shared drift and a shared pull on top. Three drift forms,

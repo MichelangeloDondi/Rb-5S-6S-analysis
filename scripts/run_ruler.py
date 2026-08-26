@@ -341,7 +341,7 @@ def main() -> int:
         rate_all, _ = rate_of(blk_all["delta_ms"], blk_all["delta_err_ms"])
         # normalize each tooth-pair's local rate by THIS block's rate so the
         # pooled map isolates the sweep SHAPE ν(t)/⟨ν⟩, not the 0.6%
-        # block-to-block rate scatter (self-review, 2026-07-11).
+        # block-to-block rate scatter (checked 2026-07-11).
         for pos, lr, le in block_nl:
             nlmap_pts.append((pos, lr / rate, le / rate))
         block_out.append({

@@ -19,97 +19,97 @@ does not.
 
 ## What it is
 
-An experiment sets a parameter to several values and records an observable at
-each. If the values are visited in monotone order, the parameter and the
-elapsed time increase together, and the two columns of the design matrix are
-collinear. Anything that drifts, and something always drifts, then produces
-exactly the same signature as a real dependence on the parameter.
+An experiment sets a parameter to several values and records an observable
+at each. Visited in monotone order, the parameter and elapsed time increase
+together, so the two columns of the design matrix become collinear, and
+anything that drifts produces the same signature as a real dependence on the
+parameter.
 
-No estimator repairs this. The information is absent from the data, not merely
-obscured in them, and a more careful fit to the same points recovers nothing.
-Fitting a drift term alongside the parameter does not help either, because the
-two regressors are the same regressor.
-
-**The asymmetry worth remembering**: the confound is created for free by an
-ordering nobody thought about, and removed for free by an ordering that takes
-the same time to acquire.
+No estimator repairs this: the information is absent, not merely obscured,
+and a more careful fit to the same points recovers nothing. A drift term
+fitted alongside the parameter does not help either, since the two
+regressors are the same one. Avoiding the confound costs no more time than
+creating it.
 
 ## What problem it solves
 
-Naming it converts an unanswerable question into a design decision. Once the
-collinearity is written down, there are only three moves: randomise or
-interleave the order, repeat the sweep in the reverse direction, or find an
-existing dataset where the ordering differed.
+Naming it converts an unanswerable question into a design decision. Once
+written down, there are three moves: randomise or interleave the order,
+repeat the sweep in reverse, or find an existing dataset where the ordering
+differed.
 
-## The natural experiment, and how to look for one
+## The natural experiment
 
-A confound present by design in one dataset is often absent by accident in
-another. Sessions run for other reasons, rehearsals, pilots and commissioning
-runs, are frequently acquired in whatever order was convenient, and that
-convenience is a randomisation nobody paid for.
+Sessions run for other reasons, rehearsals, pilots and commissioning runs,
+are often acquired in whatever order was convenient, supplying the
+randomisation a designed sweep skipped.
 
-**What to look for, in order of value.** A session that ran the same sweep in
-the opposite direction, best of all inside one sitting so that instrument,
-alignment and epoch are held fixed while only the ordering changes. Failing
-that, a session with a non-monotone order. Failing that, a session at a
-different epoch, which is weaker because it changes everything at once.
+**In order of value.** Best is a session that ran the same sweep in the
+opposite direction inside one sitting, so instrument, alignment and epoch
+stay fixed. Next best is a non-monotone order, and weakest is a different
+epoch, which changes everything at once.
 
-The test is then simple. Fit the same quantity in each ordering. An effect
-that is a function of the parameter is invariant under the ordering. An effect
-that tracks the ordering is a function of history, and the word for that is
-not automatically "drift": thermal and mechanical hysteresis, detector and
-amplifier settling, baseline memory and alignment history all produce order
-dependence, and separating them is a later question than establishing it.
+Fit the same quantity in each ordering. An effect that is a function of the
+parameter is invariant under it. One that tracks the ordering is a function
+of history, not necessarily drift: thermal and mechanical hysteresis,
+detector and amplifier settling, baseline memory and alignment history all
+produce order dependence, and separating them comes later.
 
 ## Where this repository uses it
 
-The 2025 campaign ran its power ladder descending in time on all four lines,
-so power and elapsed time are collinear across the whole session and every
-quantity measured against power there is equally a measurement against drift.
-Two findings rested on it, and on 2026-08-18 the archive's own control settled
-them differently.
+The 2025 campaign ran its power ladder descending in time on all four
+lines, so power and elapsed time are collinear, and every quantity measured
+against power is equally a measurement against drift. Two
+of its findings, the amplitude's power-law exponent and the width's
+concavity against power, were checked against a control dataset on
+2026-08-18.
+
+![Power ladder FWHM and peak signal plot](../../figures/fig2_power_sweep.png)
+
+*The 2025 campaign's own power ladder: FWHM and peak signal against drive
+power, acquired in monotonically descending order.*
 
 The 2025-07-04 rehearsal ran its ladders in alternating directions, one line
-descending while two ascended, each ladder complete inside minutes on one
-instrument at one gain with one alignment. That is the best case above, and it
-was run that way for convenience rather than by design.
+descending while two ascended, each complete in minutes on one instrument,
+gain and alignment. It is the best case above, run for convenience, not by
+design.
 
-Against it, the amplitude's departure from the square-of-power law is
-invariant: the descending line's exponent sits inside the range spanned by the
-two ascending ones, which excludes the whole class of order-dependent causes.
-The concave width against power is not: a trend appears on the descending
-ladder and neither ascending ladder shows one, and the concavity is
-consequently carried as provisional rather than established. Both adjudications,
-and the numbers, are in
+Against it, the amplitude's exponent is invariant, sitting inside the range
+spanned by the two ascending ladders and excluding order-dependent causes.
+The width's concavity is not: it appears only on the descending ladder, so
+it stays provisional. Numbers for both are in
 [the amplitude departure note](../notes/amplitude_departure_from_p2.md) and
 [limitations and identifiability](../big_picture/07_limitations-and-identifiability.md).
 
 ## What can go wrong
 
 **Reading order dependence as drift.** Order dependence is the observation.
-Drift is one mechanism for it, and hysteresis, settling and history effects are
-others with different remedies. The page above says which is which.
+Drift is one of several mechanisms, alongside hysteresis, settling and other
+history effects, each with its own remedy.
+
+![Laser line centre drift plot](../../figures/fig15_drift_story.png)
+
+*The laser line centre drifting across the 2025 campaign, the mechanism a
+monotone sweep cannot tell apart from a real dependence on the swept
+parameter.*
 
 **Treating a null as proof of no drift.** An effect invariant under ordering
-in one session with a handful of points is evidence against an
-order-dependent cause, not a demonstration that nothing drifted.
+in one small session is evidence against an order-dependent cause, not proof
+nothing drifted.
 
-**Confounding the confound.** If only one of several groups was acquired in
-the reversed order, then direction is entangled with group identity, and a
-difference between them cannot be attributed. When the reversed group agrees
-with the others, that entanglement is harmless, which is a piece of luck to
-notice rather than to rely on.
+**Group and direction entangled.** If only one group ran in the reversed
+order, direction is entangled with group identity, and a difference between
+groups is unattributable. Here the reversed group agrees with the others, so
+it did no harm.
 
-**Believing randomisation is free of cost.** It is free in acquisition time
-and not in operational load: a randomised order forbids the settling shortcuts
-a monotone ramp allows, and can demand a wait at every step that a monotone
-sweep amortises.
+**Randomising has an operational cost.** It costs nothing in acquisition
+time, but forbids the settling shortcuts a monotone ramp allows, demanding a
+wait at every step instead.
 
 ## Try it
 
-Two sweeps of the same underlying flat signal, one monotone in time and one
-interleaved, both subject to the same linear drift. The monotone one reports a
-dependence that is not there.
+Two sweeps of the same flat signal, monotone and interleaved, under the
+same linear drift: the monotone one reports a dependence that is not there.
 
 ```python
 import numpy as np
@@ -127,30 +127,28 @@ for name, order in (("monotone descending", P[::-1]),
 print("the truth is 0.00000: the monotone sweep reports the drift as physics")
 ```
 
-Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
-a reader.
+Every snippet here runs in `tests/test_wiki_snippets_run.py`, so one that
+stops working fails the suite instead of quietly misleading a reader.
 
 ## Further reading
 
+<!-- term-of-art: the book title is quoted verbatim -->
 - G. E. P. Box, J. S. Hunter and W. G. Hunter, *Statistics for Experimenters*,
-  2nd ed. (Wiley, 2005), chapters on randomisation and blocking, which is the
-  general theory this page applies to one variable.
-- R. A. Fisher, *The Design of Experiments* (Oliver and Boyd, 1935), for the
-  original argument that randomisation is what licenses the inference rather
-  than a precaution added to it.
+  2nd ed. (Wiley, 2005), on randomisation and blocking, this page's general
+  theory.
+- R. A. Fisher, *The Design of Experiments* (Oliver and Boyd, 1935):
+  randomisation licenses the inference, not a precaution added afterward.
 
 ## See also
 
-- [Identifiability](identifiability.md), the model-side analogue: two
-  parameters entangled inside the model rather than two variables entangled by
-  the schedule.
+- [Identifiability](identifiability.md), the model-side analogue: parameters
+  entangled inside the model instead of variables entangled by the schedule.
 - [Digitisation and dynamic range](digitisation-and-dynamic-range.md), the
   other acquisition choice that becomes a physics claim.
-- [Designing an acquisition](designing-an-acquisition.md), where the ordering
-  is chosen alongside span and record length.
+- [Designing an acquisition](designing-an-acquisition.md), where ordering is
+  chosen alongside span and record length.
 - [Influence diagnostics](influence-diagnostics.md), for which points a
-  confounded fit actually rests on.
+  confounded fit rests on.
 
 ---
 

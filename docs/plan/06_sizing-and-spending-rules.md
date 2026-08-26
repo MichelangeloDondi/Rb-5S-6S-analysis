@@ -1,6 +1,6 @@
 *Chapter 6 of 11 of [the plan](../PLAN.md)*
 
-**The question.** How large must a session be, and what does the 2025 post-mortem forbid?
+**The question.** How large must a session be, and what does the 2025 session forbid?
 **Takes.** The blocks of chapters 4 and 5.
 **Gives.** The block register, the sizing arithmetic, and the spending rules.
 **Skip if.** You want the physics rather than the budget.
@@ -9,7 +9,7 @@
 > explains the measurement in six sentences, then defines every term
 > and symbol used anywhere in this repository.
 
-> **Question.** How large must a session be, and what does the 2025 post-mortem forbid?
+> **Question.** How large must a session be, and what does the 2025 session forbid?
 > **Design.** Block sizes set by the precision each block must reach, not by the time available.
 > **Ambiguity removed.** The block-to-block drift that swamped the 2025 trends.
 > **Success.** Each block reaches its stated go criterion inside its stated duration.
@@ -89,7 +89,7 @@ The interleaved blocks of §7F run inside D2 to D5 and carry the degeneracy-law
 and trapping tests of §8. The wide-scan pedestal of §5 rides whichever of these
 days runs.
 
-## 10. Spending rules from the 2025 post-mortem
+## 10. Spending rules from the 2025 session
 
 ### 10.1 The 2025 failure modes
 
@@ -224,7 +224,7 @@ currently carries.
 Cost a session by information per unit of work rather than by the interest
 of the measurement. Sorted that way, the settings-only levers come first, the
 levers that convert an accepted quantity into a measured one come second, and
-anything needing new hardware comes last. The 2025 post-mortem's rules were
+anything needing new hardware comes last. The 2025 session's rules were
 about not overspending on a single block. This one is about the order in
 which blocks are chosen at all.
 

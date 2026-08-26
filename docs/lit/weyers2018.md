@@ -44,60 +44,28 @@ section: method-anchors
 
 # weyers2018
 
-**Skimmed for metrological practice**, alongside
-[gerginov2025](gerginov2025.md). **Not read in full.**
-Caesium microwave fountains; no physics input here.
+Skimmed for metrological practice, alongside [gerginov2025](gerginov2025.md). Not read in full. Concerns caesium microwave fountain clocks (CSF1, CSF2). No physics input to this programme.
 
-## The rule for an inseparable systematic
+## The fountains
 
-The sentence worth carrying, verbatim: **"Because the processing of the
-collisional shift coefficients in CSF1 entangles statistical and systematic
-uncertainties, we attribute an overall collisional shift uncertainty to ...
-the systematic uncertainty budget."** <!-- not-from-pdf: verbatim across a
-page break; the "..." marks a running header ("Metrologia 55 (2018) 789
-S Weyers et al 794") that the source PDF inlines at that exact point, not an
-elision of the authors' text -->
+PTB operates two caesium fountain clocks, CSF1 and CSF2, and reports advances in their accuracy, stability, and reliability.
 
+## The collisional shift uncertainty
 
-That is a stated decision rule for a situation this programme is in. The
-$\beta_{\rm self}$ determination has exactly this character: the collisional
-term is not cleanly separable from the drift, and the archival bound (the
-four-point 70/90/110/130 °C headline, 2026-08-02) sits 8–15× above the
-expected value precisely because the two are entangled -- was 57–113× on the
-earlier three-point headline. PTB's
-answer is neither to force a separation nor to quote a statistical-only bar, but
-to declare the entanglement and book the whole thing as systematic. **this analysis'
-$\beta_{\rm self}$ section should say what it does with the entangled part, in
-those terms, and can cite a primary standard for the practice.**
+For CSF1, processing the collisional shift coefficients entangles statistical and systematic uncertainties, so the overall collisional shift uncertainty is attributed entirely to the systematic uncertainty budget rather than split between the two.
 
-## Two levers this campaign does not have, and both are instructive
+## Operating near a null
 
-**Operating at the null.** "Since the CSF1 operation parameters are close to the
-parameters that cancel the collisional shift, the measured relative collisional
-frequency shift is normally less than $10^{-15}$ and its uncertainty is a few
-parts in $10^{16}$." Rather than measure a large systematic well, they arrange
-for it to be small. The analogue worth asking about is whether any operating
-point of the 5S–6S geometry makes a dominant term vanish — the magic-wavelength
-work (M16) is the same instinct applied to the light shift.
+CSF1 is operated close to the parameters that cancel the collisional shift. The measured relative collisional frequency shift is normally below $10^{-15}$, with an uncertainty of a few parts in $10^{16}$.
 
-**A controlled knob for the confounded variable.** "In CSF2 the density is varied
-using rapid adiabatic passage (RAP) as the atoms traverse the state selection
-cavity", with a full RAP pulse selecting all atoms. Density is therefore varied
-*at fixed everything else*. This campaign has no such knob: its density lever is
-cell temperature, which moves the thermal velocity with it — the same degeneracy
-[lee2010](lee2010.md) turns out to have, and the reason the global fit must break
-it by shape rather than by design. **Worth stating in the apparatus section as a
-known limitation with a known solution**, since a state-selection or
-optical-pumping density knob is the standard fix and this programme should say
-it knows that.
+## The density knob (CSF2)
 
-## External validation, which is the other thing a primary standard does
+In CSF2, atomic density is varied by rapid adiabatic passage (RAP) as the atoms cross the state-selection cavity, with a full RAP pulse selecting all atoms. Density is varied while other parameters, including velocity, are held fixed.
 
-"The first comparison of distant fountain clocks, at PTB and LNE-SYRTE ... via a
-1400 km long optical fibre link showed very good agreement, below the
-$3 \times 10^{-16}$ level for all of the participating fountain clocks, which is
-compatible with their statistical and systematic uncertainties." An independent
-instrument, in another country, agreeing inside the quoted bars. This
-programme's nearest analogues are weaker: the recovered drift bound against the
-photographed $\pm 0.19$ MHz/min, and the Cs polarizability triangle, which checks
-the code rather than the measurement.
+## Comparison with LNE-SYRTE
+
+A comparison of PTB's fountains with LNE-SYRTE over a 1400 km optical fibre link found agreement below $3 \times 10^{-16}$ for all participating clocks, compatible with their combined statistical and systematic uncertainties.
+
+## Use in this record
+
+No quantity from this paper enters the analysis. It is cited as a methodological precedent for treating an entangled systematic uncertainty as fully systematic, and for varying atomic density independently of velocity.

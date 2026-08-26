@@ -5,25 +5,25 @@ to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
 **Gives.** Fifty-four pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
-**Skip if.** You want the experiment's own record rather than the concepts,
+**Skip if.** You want the experiment's own record instead of the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
 position, which is [the quantities layer](../quantities/README.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
 
-This folder is the repository's general-knowledge layer. It abstracts the
+This folder is the repository's general-knowledge layer, abstracting the
 reusable scientific concepts from the experiment without replacing the
-experiment record, and it is the shared conceptual interface between the
-methods chapters, a thesis and any future reusable package. Each page says
-what a thing is, what problem it solves, where this repository uses it, what
-can go wrong with it, and where to read more.
+experiment record. It is the shared conceptual interface between the methods
+chapters, a thesis and any future reusable package. Each page states what a
+thing is, what problem it solves, where this repository uses it, what can go
+wrong, and where to read more.
 
 ## Where to start, by what you came for
 
-The clusters further down group the pages by subject. The table here gives
-reading orders instead, one per purpose, each listing its pages in the order
-they build on one another.
+The clusters further down group the pages by subject. This table gives
+reading orders instead, one per purpose, each in the order its pages build
+on one another.
 
 | if you came for | start here, in order |
 |---|---|
@@ -33,43 +33,47 @@ they build on one another.
 | **one particular quantity**, where it stands and what would improve it | the wiki explains the concepts, and [docs/quantities/](../quantities/README.md) assembles them per quantity with the literature benchmark and the next campaign's recipe |
 | **reproducing the headline analysis**, page by page in the order the fit consumes them | [the Voigt profile](voigt-profile.md), [transit-time broadening](transit-time-broadening.md), [the inhomogeneous light shift](the-inhomogeneous-light-shift.md), [self-broadening](self-broadening.md), [weighted least squares](weighted-least-squares.md), [the profile likelihood](profile-likelihood.md), then leave the wiki for [the case page](../plan/00_the-case.md) and [RESULTS.md](../RESULTS.md), where every number these concepts produce is ledgered |
 | **background for a thesis chapter**, the platform-neutral concept pages written to be citable on their own | any single page stands alone by construction, states its prerequisites in its header, and closes with its literature, so the shortest route is the page for the concept the chapter needs, and the clusters below group them by subject |
-| **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for honesty about what the data determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
-
-**The platform lane.** The guided-mode row above is the only one that assumes a
-nanofibre. Every other row, and every page they list, is platform-neutral: the
-kernels, the identifiability machinery, the metrology and the decision record
-describe a two-photon line rather than the apparatus around it. A reader with a
-vapour cell and no fibre, or one adapting the pipeline to a different
-transition, skips that one row and loses nothing on their path. The fibre
-thread in full is [chapter 6](../big_picture/06_next-nanofibre.md), the second
-scenario of [chapter 9](../big_picture/09_the-campaign-cases.md), and
-[the sized candidate](../notes/onf_candidate.md).
+| **the decision record behind the analysis** | [preregistration](preregistration.md) for the commitments made before looking, [identifiability](identifiability.md) and [the profile likelihood](profile-likelihood.md) for what the data actually determine, [influence diagnostics](influence-diagnostics.md) for which points the answer rests on, then leave the wiki for [RESEARCH_DECISIONS.md](../RESEARCH_DECISIONS.md), where every rejected alternative is argued, and [CLAIMS.md](../CLAIMS.md), which states what is deliberately not claimed |
 | **taking the analysis over, or reproducing it** | [weighted least squares](weighted-least-squares.md), [the joint fit](joint-fit.md), [identifiability](identifiability.md) and [injection recovery](injection-recovery.md) for the methodology the pipeline runs, then [START_HERE.md](../../START_HERE.md) for the code layout, [tests/README.md](../../tests/README.md) for what the guards check and why, and [REPRODUCING.md](../REPRODUCING.md) for what runs from a clone |
 | **reusing the code on your own line** | [the Voigt profile](voigt-profile.md), [weighted least squares](weighted-least-squares.md), [identifiability](identifiability.md), [injection recovery](injection-recovery.md), then [the tutorial](../TUTORIAL.md) to build a twin of your own apparatus, and [docs/ADAPTING.md](../ADAPTING.md) for the seams |
 | **what the data determine, and how far** | [identifiability](identifiability.md), [profile likelihood](profile-likelihood.md), [preregistration](preregistration.md), [influence diagnostics](influence-diagnostics.md), [sensitivity analysis](sensitivity-analysis.md), [reversal tests](reversal-tests.md) |
 | **working out what limits a measurement, and what would help** | [laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md), [the noise law](the-noise-law.md), [shot noise and technical noise](shot-noise-and-technical-noise.md), [correlated samples and effective sample size](correlated-samples-and-effective-sample-size.md), then [digitisation and dynamic range](digitisation-and-dynamic-range.md) and [photon counting](photon-counting.md) for the two instrument choices |
 | **designing the next measurement** | [the digital twin](the-digital-twin.md), [reversal tests](reversal-tests.md), [designing an acquisition](designing-an-acquisition.md), [grids and discretisation](grids-and-discretisation.md), [sweep rate and detection lag](sweep-rate-and-detection-lag.md), [photon counting](photon-counting.md), [digitisation and dynamic range](digitisation-and-dynamic-range.md), [confounding by acquisition order](confounding-by-acquisition-order.md) |
 
+**The platform lane.** The guided-mode row above is the only one that assumes a
+nanofibre. Every other row, and every page they list, is platform-neutral: the
+kernels, the identifiability machinery, the metrology and the decision record
+describe a two-photon line, independent of the apparatus around it. A reader
+with a vapour cell and no fibre, or one adapting the pipeline to a different
+transition, skips that one row and loses nothing. The fibre
+thread in full is [chapter 6](../big_picture/06_next-nanofibre.md), the second
+scenario of [chapter 9](../big_picture/09_the-campaign-cases.md), and
+[the sized candidate](../notes/onf_candidate.md).
+
 **Every page opens with the same four lines**: the question it answers, what
 it assumes, what it gives, and when to skip it. Every page ends with a
 "See also".
 
-**Fifteen of these pages carry a section on where this project got that
-concept wrong**, what the mistake was mechanically, and what caught it. The
-replaced values themselves stay in [HISTORY.md](../HISTORY.md), which is the
-only file here licensed to print a value the record has retired. That count is checked against the pages by
-`tests/test_wiki_index_is_complete.py`, because it had already drifted once
-before anything noticed.
+Nine of these pages record a value that has moved since it was first
+published. Eight carry a short "Values that moved" section naming what
+changed and why, and linking to [HISTORY.md](../HISTORY.md), which is the
+single home of every retired number. The ninth is the digital twin, which
+carries its correction in full, because being wrong twice is part of what
+the twin is for. No page here prints a retired figure.
 
 ## A. Atomic structure and selection rules
 
-*What does the atom allow, and why is this transition drivable at all?* The
-layer underneath everything else: which transitions exist, what a photon can
-change, and the geometry that makes a Doppler-free measurement possible.
+The layer underneath everything else: which transitions exist, what a photon
+can change, and the geometry that makes a Doppler-free measurement possible.
+
+![Level diagram of the 5S to 6S two-photon cascade](../../figures/fig13_level_scheme.png)
+
+*The 5S–6S two-photon cascade through the 5P intermediate levels, with the
+993 nm drive and the 795/780 nm decay legs the cluster below discusses.*
 
 | page | type | in one line |
 |---|---|---|
-| [Selection rules](selection-rules.md) | concept | parity and angular momentum decide what a photon can do, and one rank here dies for neither reason but because both photons come from one laser |
+| [Selection rules](selection-rules.md) | concept | parity and angular momentum decide what a photon can do, though one rank here is suppressed by a different mechanism: both photons come from a single laser |
 | [Multiphoton transitions](multiphoton-transitions.md) | concept | parity alternates with photon number, which is why this transition needs two |
 | [Hyperfine structure](hyperfine-structure.md) | concept | why one transition is four lines, and why a same-isotope pair is a frequency ruler |
 | [Magnetic sublevels](magnetic-sublevels.md) | concept | the structure a hot cell averages away, why this line stays magnetically quiet against any polarisation or mismatch, and what a second atom changes about that |
@@ -79,47 +83,51 @@ change, and the geometry that makes a Doppler-free measurement possible.
 
 ## B. Experimental spectroscopy
 
-*What is measured?* Read in order and the sequence is the measurement itself:
-how the line is driven, what shape it takes, and what moves or widens it.
+Read in order: how the line is driven, what shape it takes, and what moves
+or widens it.
 
 | page | type | in one line |
 |---|---|---|
 | [Doppler-free two-photon spectroscopy](doppler-free-two-photon.md) | technique | why two counter-propagating photons cancel thermal motion, and what that costs in laser-noise sensitivity |
-| [Standing waves](standing-waves.md) | physical effect | what a retro-reflected beam really makes, and how the fringes divide the signal from its pedestal |
+| [Standing waves](standing-waves.md) | physical effect | what a retro-reflected beam actually makes, and how the fringes divide the signal from its pedestal |
 | [The Voigt profile](voigt-profile.md) | concept | the Lorentzian-Gaussian convolution every real line becomes, and the width degeneracy it carries |
 | [Transit-time broadening](transit-time-broadening.md) | physical effect | a finite crossing time broadens the line, and the thermal average makes a cusp, not a Gaussian |
-| [The beam waist](the-beam-waist.md) | concept | the one number that turns a power into an intensity, and why every other quantity inherits it |
-| [The AC-Stark shift](ac-stark-shift.md) | physical effect | the drive light moves the very levels it probes, and a focused beam turns one shift into a distribution |
+| [The beam waist](the-beam-waist.md) | concept | the one number that turns a power into an intensity, and why every other quantity depends on it |
+| [The AC-Stark shift](ac-stark-shift.md) | physical effect | the drive light moves the levels it probes, and a focused beam turns one shift into a distribution |
 | [The inhomogeneous light shift](the-inhomogeneous-light-shift.md) | concept | the distribution of shifts a structured beam imposes, the object a lineshape reads and a guided design is graded by |
 | [Saturation](saturation.md) | physical effect | where the square law stops, and why a tighter focus leaves the safe regime faster than it gains signal |
 | [Collisional self-broadening](self-broadening.md) | physical effect | collisions keep the line Lorentzian and grow its width linearly with density |
 | [Vapour density and temperature](vapour-density-and-temperature.md) | concept | how a cell temperature becomes a density, why a set point is not a temperature, and the pedestal that measures it in situ |
-| [Guided atoms and nanofibres](guided-atoms-and-nanofibres.md) | concept | what changes when the atoms and the light share a waveguide: the hollow core puts them inside the mode and the nanofibre puts them outside the glass, and each turns transit broadening from a fixed cost into a design knob while charging a new systematic for it |
+| [Guided atoms and nanofibres](guided-atoms-and-nanofibres.md) | concept | what changes when the atoms and the light share a waveguide: the hollow core puts them inside the mode and the nanofibre puts them outside the glass, and each turns transit broadening from a fixed cost into a design knob and introduces a new systematic in its place |
 
 ## C. Driving, modulating and detecting
 
-*How is the measurement actually driven and read?* The instrument layer: what
-is stamped onto the light, how the axis is established, and how fast the line
-may be swept. What limits the reading once the photons arrive is cluster H.
+The instrument layer: what is stamped onto the light, how the axis is
+established, and how fast the line may be swept. What limits the reading
+once the photons arrive is cluster H.
+
+![Schematic of the laser, EOM, cell and detection chain](../apparatus/apparatus_schematic.svg)
+
+*The source, modulation and detection chain the clusters below describe:
+laser, EOM, cell, and the PMT signal path to the scope.*
 
 | page | type | in one line |
 |---|---|---|
 | [EOM sidebands](eom-sidebands.md) | technique | phase modulation stamps a radio-accurate frequency comb onto the light |
 | [The two-photon comb](the-two-photon-comb.md) | technique | the same comb seen by a two-photon transition, where the carrier nulls somewhere else |
-| [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) | technique | where a frequency axis comes from, and how a nonlinear scan is calibrated rather than trusted |
+| [The wavemeter and the frequency axis](the-wavemeter-and-the-frequency-axis.md) | technique | where a frequency axis comes from, and how a nonlinear scan is calibrated instead of trusted |
 | [Laser frequency noise and the linewidth](laser-frequency-noise-and-the-linewidth.md) | concept | the same laser has a different width in every band, and the kernel a fit assigns to it is a physics claim with a bias attached |
-| [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) | physical effect | sweeping fast widens the line and forges the asymmetry the experiment reads |
-| [Designing an acquisition](designing-an-acquisition.md) | method | span, resolution and record length are one decision, not three |
+| [Sweep rate and detection lag](sweep-rate-and-detection-lag.md) | physical effect | sweeping fast widens the line and creates the asymmetry the experiment reads |
+| [Designing an acquisition](designing-an-acquisition.md) | method | span, resolution and record length form one decision |
 | [Bessel functions](bessel-functions.md) | concept, supporting | the amplitudes every phase-modulation problem is written in |
 | [Blackbody radiation](blackbody-radiation.md) | physical effect | the cell's own thermal glow, and how to tell when it matters |
 
 ## D. Statistical inference
 
-*How is it modelled, what is identifiable, and how do we know the inference is
-valid?* The chain this repository actually runs, in order: weight the data by
-what the noise actually does, fit jointly, choose the model honestly, ask what
-the data determine, carry the uncertainty faithfully, prove the machinery on
-known truth, and freeze the criterion before reading the answer.
+The chain this repository actually runs, in order: weight the data by what
+the noise actually does, fit jointly, choose the model, ask what the data
+determine, carry the uncertainty faithfully, prove the machinery on known
+truth, and freeze the criterion before reading the answer.
 
 | page | type | in one line |
 |---|---|---|
@@ -134,31 +142,29 @@ known truth, and freeze the criterion before reading the answer.
 
 ## E. Robustness and influence
 
-*Which observations is the answer resting on, and would it survive their
-loss?* Wave 3, and the cluster the repository's own influence audit motivated.
+Wave 3, and the cluster the repository's own influence audit motivated.
 
 | page | type | in one line |
 |---|---|---|
 | [Influence diagnostics](influence-diagnostics.md) | method | leverage, case deletion, and why outlying and influential are different words |
-| [Robust fitting](robust-fitting.md) | method | losses that stop rewarding a far point, run beside the standard fit rather than in place of it |
+| [Robust fitting](robust-fitting.md) | method | losses that stop rewarding a far point, run beside the standard fit instead of replacing it |
 | [Resampling](resampling.md) | method | the bootstrap and the jackknife, and when the structure of the data breaks them |
-| [Heavy-tailed models](heavy-tailed-models.md) | concept | treating an outlier as evidence about the noise rather than as a point to remove |
+| [Heavy-tailed models](heavy-tailed-models.md) | concept | treating an outlier as evidence about the noise instead of a point to remove |
 | [Sensitivity analysis](sensitivity-analysis.md) | method | which input a projection actually depends on, locally and globally |
 | [Confounding by acquisition order](confounding-by-acquisition-order.md) | method | when a swept parameter is entangled with elapsed time, and how to find a control for it |
-| [Reversal tests](reversal-tests.md) | method | separating systematics by parity under a flipped knob, and the case where the atom supplies the flip for free |
+| [Reversal tests](reversal-tests.md) | method | separating systematics by parity under a flipped knob, and the case where the atom supplies the flip on its own |
 
 ## F. Simulation and computation
 
-*How is a number that came from a simulation earned?* Every campaign figure in
-this record is a simulation result, and these are the ways such a result goes
-wrong.
+Every campaign figure in this record is a simulation result, and these are
+the ways such a result goes wrong.
 
 | page | type | in one line |
 |---|---|---|
 | [Monte Carlo methods](monte-carlo-methods.md) | method | sampling to answer what an estimator would do, and why precision costs the square of the samples |
 | [The digital twin of an experiment](the-digital-twin.md) | method | run the apparatus in software before building it, and find out which pairs stay degenerate however the design changes |
 | [Grids and discretisation](grids-and-discretisation.md) | method | a grid step means nothing except against the feature it must represent |
-| [Optimiser convergence](optimiser-convergence.md) | method | a fit that converged is not a fit that is right |
+| [Optimiser convergence](optimiser-convergence.md) | method | a converged fit can still be wrong |
 | [Compute budgets and failure modes](compute-budgets-and-failure-modes.md) | method | the memory arithmetic done before launch, and why a killed run yields no result |
 
 ## G. Mathematical descriptors
@@ -168,14 +174,13 @@ wrong.
 | [The third cumulant](third-cumulant.md) | concept | the number that isolates a lineshape's asymmetry from its width |
 | [Allan deviation](allan-deviation.md) | concept, supporting | the statistic that separates noise types by how they average down |
 
-Bessel functions and the Allan deviation are supporting topics, here because
-the design of the next measurement session leans on them rather than because
-the committed analysis does.
+Bessel functions and the Allan deviation are supporting topics: the design of
+the next measurement session leans on them, though the committed analysis
+does not.
 
 ## H. Noise and its management
 
-*What limits the measurement once the photons arrive, and what would actually
-help?* The layer between the detector and the fit: how large each sample's
+The layer between the detector and the fit: how large each sample's
 uncertainty is, how many of the samples are independent, which part of the
 noise is irreducible, and the two instrument choices that decide the rest.
 
@@ -189,9 +194,6 @@ noise is irreducible, and the two instrument choices that decide the rest.
 | [Photon counting](photon-counting.md) | technique | when counting beats an analog chain, and the level where they cross |
 
 ## How the pages connect
-
-The clusters run in order, from the light the atoms sit in to the question
-of what the fit determined.
 
 ```mermaid
 flowchart LR
@@ -229,10 +231,8 @@ flowchart LR
     BF["Bessel functions"] -.-> E
 ```
 
-*Solid arrows carry the measurement: what the atoms are, what drives them,
-what shapes the line, how it is weighted and fitted, and what decides whether
-the fit determined anything. Dotted arrows are the supporting tools each step
-needs. The solid path is the argument in the order the analysis makes it.*
+*Solid arrows are the measurement path, dotted arrows the supporting tools
+each step needs.*
 
 ## What governs what
 
@@ -251,13 +251,9 @@ repository-specific section is coupled to the current implementation.
 
 ## Not covered yet
 
-One concept has no page and is the first candidate for one: the
-transit-time kernel's thermal average, currently a section of the transit
-page. The density scale's page is
-[vapour density and temperature](vapour-density-and-temperature.md), and
-an earlier revision of this section kept naming it as missing for five
-days after it existed, which is why the count above it is guarded and
-this list is now one item read against the shelf before it is believed.
+One concept has no page of its own: the transit-time kernel's thermal
+average, covered instead as a section of
+[transit-time broadening](transit-time-broadening.md).
 
 ## Conventions
 
@@ -272,11 +268,8 @@ can demonstrate the idea in a few lines, and Further reading.
 **The snippets run.** Every `python` block on these pages is executed by
 `tests/test_wiki_snippets_run.py` in a clean subprocess with only the
 repository on the path, and it must print something. A block that stops
-working fails the suite, and two of the first
-six were written with a wrong signature and a wrong dictionary key, which is
-why the guard exists. They use only the public API, so they are also a
-working introduction to it. Pages
-carry no external images. General claims carry references, and
+working fails the suite. They use only the public API, so they are also a
+working introduction to it. General claims carry references, and
 repository-specific claims link to their source of truth.
 
 **Status of the references.** A citation to `../lit/` points at a note in this
@@ -284,7 +277,7 @@ repository, which carries its own VERIFIED or REPORTED status. A citation to
 anything else is a standard reference given for the reader's benefit and is
 not held here or checked against its source, so it has the standing of
 REPORTED in the same vocabulary. Textbook results on these pages are
-verifiable by computation rather than by citation, and the numeric ones were
+verifiable by computation instead of by citation, and the numeric ones were
 checked that way: the Bessel zeros, the two carrier nulls, the Voigt width
 approximation against a numerical profile, the criterion crossing, the width
 conversion factor and both blackbody peaks.

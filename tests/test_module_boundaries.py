@@ -67,8 +67,8 @@ def test_the_guard_fires_when_a_violation_is_planted():
     with tempfile.TemporaryDirectory() as td:
         copy = Path(td) / "rb5s6s"
         shutil.copytree(PKG, copy)
-        victim = copy / "lineshape.py"
-        victim.write_text("from . import fibre\n" + victim.read_text(encoding="utf-8"),
+        target = copy / "lineshape.py"
+        target.write_text("from . import fibre\n" + target.read_text(encoding="utf-8"),
                           encoding="utf-8")
         found = _violations(copy)
         assert found, "the planted violation was not detected"

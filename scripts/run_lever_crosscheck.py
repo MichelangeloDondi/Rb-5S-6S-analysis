@@ -199,7 +199,7 @@ def main() -> int:
         if r["session"] == "T":
             # rate_err omitted deliberately: same sub-dominance argument as
             # run_global_fit (beta * relerr ~ 0.0006 vs +/-0.004 stat;
-            # review finding 4, 2026-07-16)
+            # finding 4, 2026-07-16)
             trates[(r["peak"], r["T"])] = 2.0 * float(r["rate"])
         elif r["session"] == "P" and r["T"] == "130":
             prb.setdefault(r["peak"], []).append(float(r["rate"]))

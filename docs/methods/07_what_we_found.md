@@ -65,7 +65,7 @@ a *model-based* value, and it sits **above** both the per-peak model fits
 (0.013–0.018) and all four model-independent per-peak bounds
 (0.03–0.05). The three estimators of the same quantity therefore span about
 a factor of four, and that spread across $\sigma_\text{laser}$ treatments is
-itself the uncertainty on this deliverable, larger than any single fit's error
+the uncertainty on this deliverable, larger than any single fit's error
 bar. This $0.053$ carries **four separate error bars**, and the systematics
 dominate the statistical one: statistical
 $\pm0.004$ (joint-fit covariance), **transit model-form $\pm0.014$**, the
@@ -117,7 +117,7 @@ alone fills the observed 5.25 MHz and **the laser is narrow**, while at the
 measured 64 µm waist the laser carries $\sim1.09$ MHz laser-axis, close to the
 bound itself: widening the waist hands width from transit to laser. The
 dataset cannot locate that crossover, and only a direct beam-profile $w_0$
-can. (Slow drift is *not* the culprit, at only $\sim0.01$ MHz within a scan.)
+can. (Slow drift is *not* the cause, at only $\sim0.01$ MHz within a scan.)
 A measured $w_0$, by fixing transit, would turn this bound into a measurement.
 Until then it is the ONF starting linewidth for the nanofibre extension.
 

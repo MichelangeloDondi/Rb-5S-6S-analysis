@@ -38,8 +38,6 @@ section: oist-lineage
 
 # li2024perspective
 
-A bibliographic stub. The unit's own invited statement of where nanofibre
-atom-light interfaces stand and are going, in Journal of Physics: Photonics.
-Not read here, so nothing from it may be quoted or relied on. The owner can
-retrieve it through institutional access, after which this note is upgraded
-the way `raj2026` was: read in full, then VERIFIED with the reading dated.
+REPORTED. Bibliographic record only, not read in full.
+
+Invited perspective article from the OIST Light-Matter Interactions unit on atom-light interfaces built on optical nanofibres, published in Journal of Physics: Photonics.

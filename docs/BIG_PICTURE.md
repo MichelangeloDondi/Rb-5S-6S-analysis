@@ -51,7 +51,7 @@ construction. *Not identified* means the data determine a combination of
 parameters but not the parameters themselves, which is a stronger and more
 useful statement than a wide error bar. The counts across the whole record are
 122 bounds, 55 measured values, 21 nulls and 149 design envelopes, which is the
-honest shape of a dataset taken under a drifting lock.
+shape of a dataset taken under a drifting lock.
 
 ---
 

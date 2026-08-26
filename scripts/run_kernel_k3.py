@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """K2.5 and K3: the mixed G+L kernel against the real archive.
 
+# term-of-art: the private reviews directory is a filesystem path
 Preregistered in private/reviews/K3_PREREG_2026-08-21.md BEFORE this ran.
 
 WHY THIS IS A MULTI-CONDITION PRODUCER AND NOT A PER-CONDITION ONE. At a fixed

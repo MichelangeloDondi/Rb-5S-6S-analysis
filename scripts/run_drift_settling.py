@@ -4,7 +4,7 @@ The lock disturbance vs time, from the recovered clock.  (post-hoc, 2026-07-23)
 
 run_intrablock_trend.py closed with "the archive has no lever on the lock
 DRIFT RATE at all" -- true of the archive alone. The recovered backup restores
-a lever, through an estimator the experimenter proposed (2026-07-23): treat
+a lever, through an estimator adopted on 2026-07-23: treat
 the reference re-centrings as offset steps that move the frequency but not the
 underlying drift, and difference positions inside spans the steps cannot
 reach. Two differencing baselines exist, and they disagree -- the
@@ -13,7 +13,7 @@ disagreement is what identifies the re-centrings:
   * BETWEEN blocks (adjacent conditions of one peak's power ladder, ~3-14 min):
     position steps of either sign -- drift PLUS the operator's re-centrings,
     which happen exactly in those gaps (power was being changed anyway; the
-    experimenter recalls moving the reference "many times", never within a
+    reference was moved "many times", never within a
     block).
   * WITHIN blocks (~30 s, timestamps in place of repeat index): reset-free by
     construction, so a pure -- if noisy -- local drift probe.
@@ -235,7 +235,7 @@ def main() -> int:
     B = load_blocks()
     PR = pair_rates(B)
     print("=" * 74)
-    print("LOCK DISTURBANCE SETTLING  (recovered clock; estimator: experimenter,")
+    print("LOCK DISTURBANCE SETTLING  (recovered clock; estimator: post-hoc,")
     print("2026-07-23 -- offsets reset, the rate survives differencing)")
     print(f"P-session blocks with clock: {len(B)}  "
           f"(step-like, screened from slopes: {int(B.step.sum())})")
@@ -683,7 +683,7 @@ def mixture_report() -> None:
 
 
 def pull_bound_report() -> None:
-    """The centre channel, attempted (experimenter's insistence, 2026-07-23).
+    """The centre channel, attempted anyway (2026-07-23).
 
     The AC-Stark pull (-2/3 S0, S0 = kappa P) is a DIFFERENTIAL centre
     observable: locked to the power ladder, repeated at four different times,
@@ -766,7 +766,7 @@ def pull_bound_report() -> None:
 
 # ---- the re-kick fit: does the transient restart at each epoch? (addendum 12)
 #
-# The experimenter's proposal (2026-07-24): fit the disturbance as an
+# Proposed 2026-07-24: fit the disturbance as an
 # exponential RE-KICKED at each temperature rather than one decay from session
 # start. Estimable through a physical constraint, not more data -- tau is the
 # ETALON's thermal time constant (a laser property, not the cell's), so it can
@@ -917,7 +917,7 @@ def rekick_report() -> None:
         print("  comparison is between a session clock and a per-epoch decay, so")
         print("  one epoch cannot answer it. Numbers of record: addendum 12.")
         return
-    print("\nTHE PER-TEMPERATURE QUESTION, FITTED (experimenter's proposal; addendum 12)")
+    print("\nTHE PER-TEMPERATURE QUESTION, FITTED (proposed; addendum 12)")
     print("  for the DRIFT it stays unresolved (T-session baselines too short;")
     print("  intra-block bounds |r| <~ 5 ms/min per dwell). For the DISTURBANCE,")
     print(f"  {len(S)} gap steps ({(S.epoch=='P').sum()} P-session ladder pairs + "
@@ -965,7 +965,7 @@ def _twoproc_nll(A, tau_c, B, tau_k, S):
 
 
 def _second_timescale_report(S, rekick1_fit) -> None:
-    """A campaign-wide second time constant (experimenter, 2026-07-24): is
+    """A campaign-wide second time constant (proposed 2026-07-24): is
     there one, and if not, how large could it be? At n=26 the criterion is
     AICc; the answer is a bound, and its caveat is the degeneracy."""
     n = len(S)

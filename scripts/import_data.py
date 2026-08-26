@@ -7,8 +7,8 @@ WHY THIS SCRIPT EXISTS
 ----------------------
 The original dataset (old repo, ``Rb-5S-to-6S-broadening/data/``) holds 722
 CSVs that are ~2x duplicated across six directories, with three structural
-facts that were only decoded on 2026-07-11 (hash comparison + experimenter
-answers; full story in docs/DATA.md):
+facts that were only decoded on 2026-07-11 (hash comparison plus curation
+notes; full story in docs/DATA.md):
 
 1. The RF-off "130 °C" temperature-sweep files are byte-identical renames of
    the 225 mW power-sweep files (the power session ran at 130 °C, and that
@@ -33,7 +33,7 @@ are curation facts, deliberately not recomputable from the data alone).
 QUARANTINE (pre-registered, never entered in headline fits)
 -----------------------------------------------------------
 * ``raw/4154nm_130c_{025,125,225}mw*`` — an aborted first attempt at the power
-  sweep; the experimenter does not remember why it was stopped and flags it
+  sweep; why it was stopped is not recorded, and it is flagged
   as suspicious (2026-07-11).
 * ``4154nm_eom_before{1..5}`` / ``4154nm_eom_after{1..5}`` (NON-underscore) —
   4154 is the only peak with two bracket sets; the underscore re-take is the
@@ -42,15 +42,16 @@ QUARANTINE (pre-registered, never entered in headline fits)
 
 FLAGS
 -----
-* ``canonical``   — the curated measurement set (the experimenter's selection)
-* ``discarded``   — exists only in the old ``raw/`` dump because the
-                    experimenter discarded it at curation time ("seemed quite
-                    bad", statement 2026-07-11) and renumbered the keepers —
+* ``canonical``   — the curated measurement set (selected during curation)
+* ``discarded``   — exists only in the old ``raw/`` dump because it was
+                    discarded at curation time ("seemed quite
+                    bad", statement 2026-07-11) and the keepers were renumbered —
                     which is also why raw/'s indices are shifted vs the
                     curated dirs. Stored under ``data_raw/discarded/``; NEVER
                     enters a headline fit. The M0 objective QC runs on these
                     only as a consistency check on the curation (appendix).
 * ``excluded`` — see above
+# term-of-art: review is a frozen manifest classification token
 * ``review``      — did not match any known naming pattern; needs a human
 
 CHRONOLOGY ENCODING
@@ -107,6 +108,7 @@ ROLE_DIRS = {
     "ruler_t": "rulers_t",
     "ruler_p": "rulers_p",
     "excluded": "excluded",
+# term-of-art: review is a frozen manifest classification token
     "review": "review",
 }
 
@@ -143,6 +145,7 @@ def classify(peak: str, rest: str):
     """Map a canonical filename's <rest> to (role, fields...).
 
     Returns dict with: role, temperature_C, power_mW, rf_on, bracket,
+# term-of-art: review is a frozen manifest classification token
     session, block_seq.  Raises nothing: unknown patterns get role='review'.
     """
     d = {
@@ -224,6 +227,7 @@ def main() -> int:
         canon = sorted(paths, key=_pref_key)[0]
         m = NAME_RE.match(canon.name)
         if not m:
+            # term-of-art: review is a frozen manifest classification token
             info = {"role": "review", "temperature_C": "", "power_mW": "",
                     "rf_on": False, "bracket": "", "session": "", "block_seq": ""}
             peak, idx = "", ""
@@ -231,13 +235,14 @@ def main() -> int:
             peak, rest, idx = m.group("peak"), m.group("rest"), int(m.group("idx"))
             info = classify(peak, rest)
 
-        # discarded: the trace exists ONLY in the raw/ dump — the experimenter
-        # rejected it at curation time (see module docstring, FLAGS).
+        # discarded: the trace exists ONLY in the raw/ dump — rejected
+        # at curation time (see module docstring, FLAGS).
         curated = any(p.parent.name != "raw" for p in paths)
         if info["role"] in ("t_sweep", "p_sweep", "ruler_t", "ruler_p") and not curated:
             flag = "discarded"
         elif info["role"] == "excluded":
             flag = "excluded"
+        # term-of-art: review is a frozen manifest classification token
         elif info["role"] == "review":
             flag = "review"
         else:
@@ -293,16 +298,17 @@ def main() -> int:
     print(f"\nwrote {MANIFEST_CSV} with {len(rows)} unique traces:")
     for (role, flag), n in sorted(counts.items()):
         print(f"   {role:12s} {flag:16s} {n:4d}")
+    # term-of-art: review is a frozen manifest classification token
     review = [r for r in rows if r["flag"] == "review"]
     if review:
-        print("\nFILES NEEDING HUMAN REVIEW:")
+        print("\nFILES NEEDING MANUAL CLASSIFICATION:")
         for r in review:
             print(f"   {r['file']}  <- {r['source_paths']}")
     # Design-grid sanity: the canonical grid the analysis expects.
     # t_sweep is 59, not 60: the curated dataset double-saved one 4154@70C
     # repeat (two filenames, identical bytes), so that condition has only 4
-    # unique curated repeats (a distinct 5th shot exists but was discarded by
-    # the experimenter => that condition runs on N=4). Documented in
+    # unique curated repeats (a distinct 5th shot exists but was discarded
+    # at curation time => that condition runs on N=4). Documented in
     # docs/DATA.md; statistics must always count manifest rows, never files.
     expect = {
         ("t_sweep", "canonical"): 59,    # 4 peaks x {70,90,110} x 5 repeats, minus the 4154@70C double-save

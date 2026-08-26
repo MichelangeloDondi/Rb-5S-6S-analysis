@@ -39,151 +39,95 @@ section: prior-art
 
 # lahad2019
 
-**Read in full.** Identification: Ohr Lahad and Ran
-Finkelstein contributed equally, with Omri Davidson, Ohad Michel, Eilon Poem
-and Ofer Firstenberg, Department of Physics of Complex Systems, Weizmann
-Institute of Science. Physical Review Letters 123, 173203 (2019), received
-18 April 2019, published 25 October 2019, DOI 10.1103/PhysRevLett.123.173203.
-This is the published version of arXiv 1904.06233.
+Held. DOI and arXiv identity confirmed against the arXiv abstract page for
+1904.06233. Title, authors, and DOI match the held PDF, the published
+Physical Review Letters version.
 
-**Abstract, verbatim.** "The resonant absorption of light by an ensemble of
-absorbers decreases when the resonance is inhomogeneously broadened.
-Recovering the lost absorption cross section is of great importance for
-various applications of light-matter interactions, particularly in quantum
-optics, but no recovery mechanism has yet been identified and successfully
-demonstrated. Here, we formulate the limit set by the inhomogeneity on the
-absorption, and present a mechanism able to circumvent this limit and fully
-recover the homogeneous absorption of the ensemble. We experimentally study
-this mechanism using two different level schemes in atomic vapors and
-demonstrate up to fivefold enhancement of the absorption above the
-inhomogeneous limit. Our scheme relies on light shifts induced by auxiliary
-fields and is thus applicable to various physical systems and inhomogeneity
-mechanisms."
+Lahad, Finkelstein (equal contribution), Davidson, Michel, Poem, and
+Firstenberg, Department of Physics of Complex Systems, Weizmann Institute
+of Science. Physical Review Letters 123, 173203 (2019), received 18 April
+2019, published 25 October 2019.
 
-## What it does
+## The system
 
-A two-level transition with homogeneous half linewidth gamma, inhomogeneously
-shifted by a Gaussian random detuning delta of standard deviation sigma much
-larger than gamma, loses absorption amplitude by a factor beta0 = sqrt(2/pi)
-sigma/gamma, their "inhomogeneous limit." Worked examples in the paper: the
+A two-level transition with homogeneous half linewidth gamma,
+inhomogeneously shifted by a Gaussian random detuning delta of standard
+deviation sigma much larger than gamma, loses absorption amplitude by a
+factor beta0 = sqrt(2/pi) sigma/gamma, the "inhomogeneous limit." For the
 Rb D1 line at 50 C, gamma = 2.875 MHz against a Doppler sigma = 220 MHz,
-beta0 is about 60. Silicon-vacancy centers in diamond, gamma about 50 MHz
-against a strain-broadened sigma about 5 GHz, beta0 is about 80.
+beta0 is about 60. For silicon-vacancy centers in diamond, gamma about 50
+MHz against a strain-broadened sigma about 5 GHz, beta0 is about 80.
 
-The paper's first result is that a three-level Raman (two-photon) transition
-does not evade this limit even though its bare linewidth is much narrower.
-A coupling field detuned by Delta from the intermediate state shifts the
-final state by roughly Omega squared over Delta, and because Delta itself
-carries the inhomogeneous spread delta, that light shift becomes
-Omega^2/Delta + (Omega/Delta)^2 delta. The two-photon resonance inherits an
-induced broadening (Omega/Delta)^2 sigma on top of a homogeneous width that
-scales the same way, so the ratio sigma/gamma, and therefore beta0, carries
-over unchanged.
+A three-level Raman (two-photon) transition does not evade this limit even
+though its bare linewidth is much narrower. A coupling field detuned by
+Delta from the intermediate state shifts the final state by roughly
+Omega^2/Delta, and because Delta itself carries the inhomogeneous spread
+delta, that light shift becomes Omega^2/Delta + (Omega/Delta)^2 delta. The
+two-photon resonance inherits an induced broadening (Omega/Delta)^2 sigma
+on top of a homogeneous width that scales the same way, so the ratio
+sigma/gamma, and beta0 with it, carries over unchanged.
 
-The fix is a fourth level. A second, far detuned "recovery" field drives a
-separate transition from the ground state and shifts it by Omega_r^2 over
-(Delta_r minus delta_r). If delta and delta_r are correlated, both linear in
-atomic velocity for copropagating beams since delta = kv and delta_r =
-k_r v, then tuning Omega_r and Delta_r to satisfy their compensation
-condition Omega^2/(Delta - delta) = Omega_r^2/(Delta_r - delta_r) makes the
-ground and final state track the same shift for every atom, so the
-two-photon resonance frequency becomes common to the whole ensemble
-regardless of delta. The enhancement beta, defined as the ratio of the
-two-photon peak absorption to the one-photon peak absorption, is bounded
-above by beta0 and given in the symmetric case (gamma equal to gamma_r,
-Omega equal to Omega_r) by beta = beta0 [gamma/(gamma+gamma_r)]
-[mu^2/(1+mu^2)], with a saturation parameter mu^2 that scales linearly with
-intensity.
+The fix adds a fourth level. A second, far-detuned "recovery" field drives
+a separate transition from the ground state and shifts it by
+Omega_r^2/(Delta_r - delta_r). If delta and delta_r are correlated (both
+linear in atomic velocity for copropagating beams, delta = kv and delta_r
+= k_r v), tuning Omega_r and Delta_r to satisfy the compensation condition
 
-Two hot 87Rb experiments demonstrate it. An N-type scheme in a 75 mm natural
-abundance cell at 33 to 42 C measures beta = 4.8 +/- 0.4. A ladder scheme
-through a Rydberg state, in a 5 mm isotopically pure cell, measures beta =
-4.6 +/- 0.3. Both exceed the inhomogeneous limit by design, and both are
-matched by a full calculation with no free parameters once the extra
-hyperfine structure and finite beam size are included.
+    Omega^2/(Delta - delta) = Omega_r^2/(Delta_r - delta_r)
 
-## Key numbers
+makes the ground and final state track the same shift for every atom, so
+the two-photon resonance frequency becomes common to the whole ensemble
+regardless of delta. The enhancement beta, the ratio of the two-photon
+peak absorption to the one-photon peak absorption, is bounded above by
+beta0 and given in the symmetric case (gamma = gamma_r, Omega = Omega_r)
+by
 
-- beta0 = sqrt(2/pi) sigma/gamma, the inhomogeneous amplitude loss factor.
-- Rb D1 worked example: gamma = 2.875 MHz, sigma(50 C) = 220 MHz, beta0
-  about 60.
-- Silicon-vacancy diamond example: gamma about 50 MHz, sigma about 5 GHz,
-  beta0 about 80.
-- Compensation condition, their Eq. (1): Omega^2/(Delta - delta) =
-  Omega_r^2/(Delta_r - delta_r).
-- Enhancement, their Eq. (2), symmetric case: beta = beta0
-  [gamma/(gamma+gamma_r)] [mu^2/(1+mu^2)].
-- N-type measurement: beta = 4.8 +/- 0.4, Omega = 29, Omega_r = 29.6 MHz,
-  Delta = -270 MHz, Delta_r = -300 MHz, bare two-photon width gamma_sg =
-  0.35 MHz, gamma = 2.875 MHz, gamma_r = 3.033 MHz, probe waist 375 um.
-- Ladder Rydberg measurement: beta = 4.6 +/- 0.3, Omega = 55, Omega_r = 45
-  MHz on resonance, gamma_sg about 1.25 MHz, gamma_r about 1 MHz, residual
-  two-photon Doppler width sigma_2 = 1 MHz, probe waist 85 um.
-- Ladder level scheme: 5S1/2 ground, 5P3/2 probed at 780 nm, 5D5/2 coupled
-  at 776 nm, and a 31F7/2 Rydberg state driven by the 1270 nm recovery field.
-- Ideal far detuned calculation: enhancement saturates at beta0
-  gamma/(gamma+gamma_r), about 30 for beta0 = 60 and gamma about gamma_r.
-  The real experiment tops out near beta = 5, limited by an extra excited
-  hyperfine level and nonuniform beam intensity, not by the mechanism.
+    beta = beta0 * [gamma/(gamma+gamma_r)] * [mu^2/(1+mu^2)]
 
-## BRIDGES: what this paper actually inverts, and where it sits in the lineage
+with a saturation parameter mu^2 that scales linearly with intensity.
 
-**Nothing is inverted here.** This repository reads a light-shift
-DISTRIBUTION f(s) from a two-photon lineshape, the Delone 1980 reduction
-recorded in [delone1980](delone1980.md). This paper's title, "recovering
-the homogeneous absorption," reads like the same operation on first sight,
-but the mechanism is not a reconstruction of anything. Its random variable
-delta is a Doppler shift whose width sigma is taken as GIVEN, read off a
-known temperature or a known crystal strain distribution, never extracted
-from an observed lineshape. Its measured observable is a single scalar, the
-enhancement ratio beta between two peak heights, compared point by point
-against a closed form formula or a parameter free calculation. There is no
-regularisation anywhere in the paper because there is no ill posed inverse
-problem to regularise. The task solved is a forward design problem, choose
-Omega_r and Delta_r so that an already known sigma and sigma_r cancel, which
-is the opposite operation from reading an unknown distribution off data.
+## The numbers
 
-This corrects an earlier, second hand characterization of this paper as "a
-light-shift-based scheme to invert an inhomogeneous frequency distribution, a
-modern forward-analogue of the Delone-Krainov map." That description was drawn
-from the title rather than from the mechanism, and does not survive a full
-reading. It is the second instance here of the failure mode recorded in
-[hummer2021](hummer2021.md)'s verify_flags, a description that turned out wrong
-only once the source itself was opened.
+Two hot 87Rb experiments test the mechanism. An N-type scheme in a 75 mm
+natural-abundance cell at 33-42 C gives beta = 4.8 +/- 0.4, with Omega =
+29 MHz, Omega_r = 29.6 MHz, Delta = -270 MHz, Delta_r = -300 MHz, a bare
+two-photon width gamma_sg = 0.35 MHz, gamma = 2.875 MHz, gamma_r = 3.033
+MHz, and a 375 um probe waist. A ladder scheme through a Rydberg state
+(5S1/2 ground, 5P3/2 probed at 780 nm, 5D5/2 coupled at 776 nm, 31F7/2
+driven by a 1270 nm recovery field), in a 5 mm isotopically pure cell,
+gives beta = 4.6 +/- 0.3, with Omega = 55 MHz, Omega_r = 45 MHz on
+resonance, gamma_sg about 1.25 MHz, gamma_r about 1 MHz, a residual
+two-photon Doppler width sigma_2 = 1 MHz, and an 85 um probe waist. Both
+results exceed the inhomogeneous limit by design and are matched by a
+calculation with no free parameters once the extra hyperfine structure
+and finite beam size are included.
 
-**What does survive as kinship, and it is narrow.** Both this paper and this
-repository's construction start from the same first order light-shift
-identity, a light shift proportional to intensity or detuning, linearised
-against whatever variable the ensemble is spread over. Lahad's version is
-Omega^2/Delta plus (Omega/Delta)^2 delta, this repository's is a light shift
-linear in a spatially varying intensity. That identity is already Delone's
-Eq. (4.5), the lineshape as a rescaled copy of the underlying spread, so
-neither paper originates it. Past that point the two programmes diverge.
-Delone's F^k weighting for a k-photon transition, this repository's
-|s|^(n-1) closed form family, and the third cumulant used as a drift immune
-channel have no counterpart here: Lahad never integrates a distribution
-against an intensity weight to predict a lineshape, characterizes the
-spread by one moment only (the Gaussian standard deviation sigma), and never
-needs a closed form family because delta is never reconstructed, only
-cancelled.
+An ideal far-detuned calculation puts the enhancement ceiling at beta0 *
+gamma/(gamma+gamma_r), about 30 for beta0 = 60 and gamma about gamma_r.
+The measured enhancement tops out near 5, limited by an extra excited
+hyperfine level and nonuniform beam intensity rather than by the
+mechanism itself.
 
-**Where it belongs instead.** The paper's own introduction places it beside
-Cohen-Tannoudji, Hoffbeck and Reynaud's 1978 proposal that a light shift can
-counteract Doppler broadening, next to hole burning, Doppler-free methods
-and spin echo, all suppression techniques that engage the whole ensemble
-without reading anything off it. That is a different lineage from delone1980,
-Efimov and Khitrov 1979, and Prokopeva and Kildishev 2025, which all read an
-unknown distribution off a measured profile. [delone1980](delone1980.md) is
-updated to say so explicitly: this paper is not a member of that family.
+## Validity
 
-**The introduction is citable on its own**, separate from the inversion
-question. Verbatim: "Inhomogeneous
-broadening of spectral lines is a prevalent limiting factor in experiments and
-applications involving light-matter interactions in ensembles. This common
-impediment occurs for various atomic and atomlike absorbers, including quantum
-dots, diamond color centers, rare-earth ions in crystals, hot atoms, and
-particularly with Rydberg excitations. The broadening originates from a
-distribution of resonant frequencies of the individual absorbers." Excluded
-from the inversion family on method, but this introduction is citable for its
-cross-platform framing of inhomogeneous broadening as a distribution of
-resonant frequencies.
+The mechanism is a compensation scheme, not a reconstruction of an
+unknown distribution. The inhomogeneous width sigma is taken as given,
+read from a known temperature or a known strain distribution, and the
+recovery field is tuned in advance so that sigma and the correlated
+sigma_r cancel. The measured observable is a single scalar, the
+enhancement ratio beta between two peak heights, compared against a
+closed-form expression or a parameter-free calculation, and there is no
+inverse problem to regularize. The paper places the scheme alongside
+earlier ensemble-wide suppression techniques: Cohen-Tannoudji, Hoffbeck
+and Reynaud's 1978 proposal that a light shift can counteract Doppler
+broadening, hole burning, Doppler-free methods, and spin echo, all of
+which act on the whole ensemble without inferring anything from it.
+
+## Use in this record
+
+No quantity in this analysis is adopted from this paper. It is cited as
+prior art for light-shift-based line narrowing, distinguished from the
+distribution-reconstruction method used elsewhere for a two-photon
+lineshape (see [delone1980](delone1980.md)): here the inhomogeneous width
+is specified in advance and cancelled, and not inferred from an
+observed profile.

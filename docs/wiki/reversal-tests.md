@@ -7,50 +7,43 @@ same signature in the data?
 **Takes.** Nothing beyond the idea of a systematic. Pairs naturally with
 [confounding by acquisition order](confounding-by-acquisition-order.md).
 **Gives.** The odd-even decomposition under a flipped knob, the reversal
-table as a design discipline, and the case where the atom supplies the
-reversal for free.
+table as a design discipline, and the case where the atom's structure
+supplies it directly.
 **Skip if.** You want the statistics of separating parameters inside one
-fit, which is [identifiability](identifiability.md). This page is about
-separating effects by symmetry before any fit is asked to.
+fit, which is [identifiability](identifiability.md). This page separates
+effects by symmetry before any fit runs.
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
 > defines every term and symbol used anywhere in this repository.
 
 ## What it is
 
-A reversal test separates effects by their parity under a knob the
-experimenter can flip. Flip the knob, take the difference and the sum: the
-difference isolates everything odd under that knob, the sum keeps everything
-even, and the two halves are exact, model-free, and computed from the same
-data.
+A reversal test separates effects by their parity under a knob that can be
+flipped. The difference of the flipped and unflipped results isolates
+everything odd under the knob, and the sum keeps everything even.
 
-The elementary example is a triangular sweep. Detection lag shifts the
-apparent line centre one way on the rising half and the other way on the
-falling half, so the half-difference measures the lag and the half-mean
-cancels it exactly, while a real shift, even under sweep direction, survives
-in the mean untouched. One knob, one flip, and a systematic becomes a
-measurement of itself.
+In a triangular sweep, detection lag shifts the apparent line centre one
+way on the rising half and the other on the falling half. The
+half-difference measures the lag, the half-mean cancels it, and a real
+shift survives the mean regardless of sweep direction.
 
-The discipline scales into a table. Where several mechanisms produce the
-same raw signature, list each with the knob that flips it and the scaling
-that grows it: one is odd under sweep direction, another follows power, a
-third follows density, a fourth reverses with an ambient field. A mechanism
-with no knob and no scaling is either exactly computable or it is not a
-mechanism, it is an excuse.
+The discipline scales into a table: each candidate mechanism is listed with
+the knob that flips it and the scaling that grows it. A mechanism without
+an assigned knob or scaling is admitted only if it can be computed exactly.
 
 ## What problem it solves
 
 Fitting cannot separate what the data do not distinguish, and two effects
 with the same functional signature are one effect to any fit. A reversal
-changes the DATA rather than the model: after the flip the two effects are
-no longer degenerate because only one of them moved. This is the same move
-as breaking a parameter degeneracy by design rather than by fitting, applied
-to systematics rather than to parameters.
+changes the data instead of the model, so after the flip the two effects
+are no longer degenerate because only one of them moved.
 
-The decomposition is also immune to a whole class of modelling errors. The
-half-difference of a triangular sweep does not care what the lineshape is,
-only that it is the same shape on both halves, so the lag it returns is not
-conditional on a profile choice.
+![Triangular sweep recovering an injected shift and lag from the half sum and half difference](figures/wiki_reversal_tests.png)
+
+*The odd and even parts of a triangular sweep: the half-difference recovers the lag, the half-sum recovers the real shift, neither needing the lineshape to be right.*
+
+The decomposition also does not depend on the lineshape: the half-difference
+only needs the same shape on both halves, not a correct profile.
 
 ```python
 import numpy as np
@@ -80,67 +73,60 @@ print("neither number needed the lineshape model to be right")
 
 The measurement plan's asymmetry budget is a reversal table: detection lag
 is odd under sweep direction, the AC-Stark ramp's asymmetry follows power,
-speed-dependent collisional asymmetry follows density, and a vector light
-shift reverses with the ambient magnetic field, so each candidate for an
-observed asymmetry carries the flip that would convict or acquit it.
+collisional asymmetry follows density, and a vector light shift reverses
+with the ambient field. Each candidate carries the flip that would confirm
+or rule it out.
 
-The sharpest instance cost nothing, because the atom supplied the reversal.
-The hyperfine g-factor alternates sign between the two F manifolds of each
-isotope, so the four lines of the spectrum form built-in polarity pairs for
-anything odd in $m_F$: a vector-shift asymmetry would have to flip sign
-between the two lines of an isotope at fixed field, fixed power and fixed
-everything else. The committed record's per-line skew has the same sign on
-all four lines, and one afternoon's reading of numbers already on disk
-excluded the vector mechanism without a coil, a reversal block, or a single
-new trace. The general lesson travels: before building the knob, check
-whether the level structure already flipped it.
+![Fitted line-area ratios by isotope line pair against cell temperature](../../figures/fig4_amplitude_ratios.png)
 
-The same discipline runs backwards as a null-seeker. Where an effect
-reverses through zero with a knob, scanning the knob to minimise the odd
-signature finds the knob's zero, which is how a coil can null the ambient
-field at the atoms without any calibrated magnetometer in the loop.
+*The two within-isotope line pairs the reversal below relies on: each isotope's higher-F line over its lower-F line, 87Rb F=2/F=1 and 85Rb F=3/F=2.*
+
+One case needed no added hardware: the hyperfine g-factor alternates sign
+between each isotope's two F manifolds, giving the four lines built-in
+polarity pairs for anything odd in $m_F$. A vector-shift asymmetry would
+flip sign between an isotope's two lines, but the committed per-line skew
+is the same sign on all four, excluding the mechanism from existing data.
+
+The same approach also finds a null: scanning a knob to minimise an odd
+signature locates its zero, as when a coil nulls the ambient field without
+a magnetometer.
 
 ## What can go wrong
 
-**The flip is not clean.** Reversing a sweep also changes which settling
-transient the line meets, so the half-difference carries settling as well as
-lag. A knob that changes two things separates nothing until the second thing
-is controlled or modelled.
+**The flip is not clean.** Reversing a sweep changes the settling transient
+the line meets, so the half-difference carries settling along with lag. A
+knob that changes two things separates nothing until the second is
+controlled.
 
-**The flip is incomplete.** A half-wave plate that rotates polarisation by
-almost the right angle leaves a residual of the odd effect in the even
-channel, suppressed but not gone. The suppression factor belongs in the
-budget, not in the wastebasket.
+**The flip is incomplete.** A half-wave plate rotating polarisation by
+almost the right angle leaves a suppressed residual of the odd effect in
+the even channel. The suppression factor is recorded in the budget.
 
 **The even channel is read as clean.** The decomposition isolates what is
-odd under this knob. Effects even under it, including the one being hunted,
-remain superposed in the sum, and separating those needs a different knob or
-a scaling.
+odd under the knob. Effects even under it, including the one under study,
+stay superposed and need a different knob or scaling.
 
 **The reversal is run but never checked for closure.** Flipping twice must
-reproduce the original within errors. A sequence that drifts between flips
-converts drift into a fake odd signal, which is why reversal pairs are taken
-adjacent in time, not at opposite ends of a session.
+reproduce the original within errors. Drift between flips reads as a fake
+odd signal, so reversal pairs are taken adjacent in time, not at opposite
+session ends.
 
 ## Further reading
 
-Reversal and modulation methods are the working spine of precision
-measurement: parity experiments alternate handedness, electric-dipole-moment
-searches reverse fields against comagnetometers, and clock evaluations
-interleave states. Any of those literatures shows the same grammar, odd
-signals as physics candidates, even signals as references, and every claimed
-effect wearing the flip that would kill it.
+Reversal and modulation methods appear throughout precision measurement:
+parity experiments alternate handedness, electric-dipole-moment searches
+reverse fields, and clock evaluations interleave states. Odd signals are
+candidate physics, even signals are references, and a claimed effect
+carries the flip that would rule it out.
 
 ## See also
 
 [Confounding by acquisition order](confounding-by-acquisition-order.md), the
-time-ordering member of the same family · [Identifiability](identifiability.md),
-separation inside the fit where this page separates outside it ·
-[Sweep rate and detection lag](sweep-rate-and-detection-lag.md), the
-triangle-halves reversal in full · [Magnetic sublevels](magnetic-sublevels.md),
-the g-factor sign structure that gives the free reversal ·
-[The digital twin of an experiment](the-digital-twin.md), where a proposed
-reversal is rehearsed before it is built
+time-ordering member · [Identifiability](identifiability.md), separation
+inside the fit · [Sweep rate and detection lag](sweep-rate-and-detection-lag.md),
+the triangle-halves reversal · [Magnetic sublevels](magnetic-sublevels.md),
+the g-factor structure above · [The digital twin of an
+experiment](the-digital-twin.md), where a reversal is rehearsed first
 
 ---
 

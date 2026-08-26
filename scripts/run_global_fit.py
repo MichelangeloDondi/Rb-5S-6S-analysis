@@ -71,7 +71,7 @@ def main() -> int:
             # moves beta by <= beta * relerr ~ 0.0006 (relerr <= 1.8%), far under
             # the +/-0.004 stat bar and the 0.01-0.03 systematics; a full
             # treatment needs per-block scale nuisances, out of scope for a
-            # sub-dominant term (review finding 4, 2026-07-16)
+            # sub-dominant term (finding 4, 2026-07-16)
             trates[(r["peak"], r["T"])] = 2.0 * float(r["rate"])
 
     blocks = build_blocks(rows, trates)

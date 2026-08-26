@@ -28,6 +28,7 @@ handled PER SESSION -- load_t_rates() derives the T-sweep rate from the
 T-session's own per-block ruler and the P-sweep rate from the P-session's
 before/after bracket combination, so folding the 130 C point into one shared
 density axis carries no unhandled calibration mismatch. See
+# term-of-art: the private reviews directory is a filesystem path
 private/reviews/digest/fig19_trend_audit.md for the prior "different
 configuration" reading this decision overrides, and docs/DATA.md's clock
 entry for the timing (130 C sits 2.3 h from the 110 C dwell, inside the same
@@ -669,7 +670,7 @@ def main() -> int:
     # The weights come from the measured sigma(V) law (M1). If beta depended
     # strongly on that choice, the noise model would be doing physics work it
     # was never validated for. Refit every peak with law=None (uniform) and
-    # record the shift; an adversarial review named this swap as untested (2026-07-25).
+    # record the shift; this swap was flagged as untested (2026-07-25).
     swap_rows = []
     for peak, (fit_w, conds) in fits.items():
         uni = fit_beta_self([dict(c, law=None) for c in conds],

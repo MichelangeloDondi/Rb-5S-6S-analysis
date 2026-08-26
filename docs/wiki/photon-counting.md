@@ -6,13 +6,13 @@
 voltage measurement, and when is a counter unavailable regardless of the
 crossover.
 **Takes.** The additive-plus-multiplicative noise law from
-[Weighted least squares](weighted-least-squares.md), restated here rather
-than re-derived.
+[Weighted least squares](weighted-least-squares.md), restated here instead
+of re-derived.
 **Gives.** The crossover level computed from measured noise coefficients,
-the dead-time pile-up condition, and where this repository's own noise law
-and planned counter check live.
+the dead-time pile-up condition, and where this repository's noise law and
+planned counter check live.
 **Skip if.** The noise law itself, and why it sets a fit's weights, is
-wanted rather than the counting decision built on it, a case covered by
+wanted instead of the counting decision built on it. See
 [Weighted least squares](weighted-least-squares.md).
 
 > **Unfamiliar with the vocabulary?** [GLOSSARY.md](../GLOSSARY.md)
@@ -20,158 +20,151 @@ wanted rather than the counting decision built on it, a case covered by
 
 ## What it is
 
-A detector that turns incident light into a number can do it two ways.
-An analog chain integrates the photocurrent continuously: a photodiode or a
-photomultiplier feeds a transimpedance amplifier, and the resulting voltage is
-digitized on a continuous scale. A counting chain instead registers each
-detected photoelectron as one discrete event, above a fixed discriminator
-threshold, and reports a count or a rate. The two differ in more than
-hardware. An analog voltage always carries a fixed electronic noise floor,
-from Johnson noise in the amplifier, input-referred amplifier noise, ADC
-quantization and dark current, all present with no light at all, on top of
-the shot noise the photocurrent itself carries once light arrives. A counting
-chain has no such floor: with the atoms and every light source switched off
-it reports zero, on average, and what noise remains once light does arrive is
-purely the statistics of how many photons were counted, which grows with the
-count itself rather than sitting on top of a fixed offset.
+A detector that turns light into a number can do it two ways. An analog
+chain integrates the photocurrent continuously: a photodiode or
+photomultiplier feeds a transimpedance amplifier onto a continuously
+digitized voltage. A counting chain instead registers each photoelectron
+as one discrete event above a fixed threshold and reports a count or a
+rate.
+
+![Analogue noise and a pure shot-noise floor versus signal level](figures/wiki_photon_counting.png)
+
+*Analogue noise against a pure shot-noise floor, median coefficients from
+results/noise_model.csv. Below the marked crossover a counter removes the
+dominant term.*
+
+An analog voltage always carries a fixed electronic noise floor, from
+Johnson noise, amplifier noise, ADC quantization and dark current, present
+even with no light. A counting chain has no such floor: with the light
+off it reports zero on average, and the remaining noise is purely the
+statistics of the count, growing with the count instead of a fixed
+offset.
 
 In the variance language [Weighted least squares](weighted-least-squares.md)
 sets out, $\sigma^2(V) = a^2 + bV$ for an analog signal at level $V$, with $a$
 the electronic floor and $b$ the shot-noise coefficient, sometimes called a
-Fano term. A counting chain measuring the same light carries only the $bV$
-part, because it never inherits $a$. The two variances are therefore equal
-exactly where $a^2$ equals $bV$, and that crossing is not a preference to
-argue about, it is a signal level fixed by the ratio of the two measured
-coefficients. Below it the floor dominates the analog chain and counting wins
-outright. Above it both chains are limited by the same shot term and the
-choice between them stops mattering.
+Fano term. A counting chain carries only the $bV$ part, since it never
+inherits $a$. The two variances are equal where $a^2 = bV$, a signal level
+fixed by the ratio of the two measured coefficients: below it the floor
+dominates and counting wins outright, above it both chains share the same
+shot term and the choice stops mattering.
 
-Counting is not available at every rate, though. Each registered event needs
-a minimum resolvable separation from the next, the dead time $\tau_d$ of the
-discriminator and the electronics behind it. Two photons arriving closer
-together than $\tau_d$ cannot both be registered, and for photons arriving as
-a Poisson process at rate $R$ the probability of such an overlap grows with
-$R\tau_d$. A discriminator and time-to-digital chain with $\tau_d$ near a
-nanosecond keeps that product small out past hundreds of millions of counts
-per second, while a slower gate or an older counter card with $\tau_d$ near a
-microsecond saturates a thousand times sooner. A peak rate a nanosecond chain
-shrugs off can put a microsecond chain deep into pile-up, so whether counting
-is available is a property of the actual electronics against the actual peak
-rate, not a property of counting as an idea.
+Counting is not available at every rate. Each event needs a minimum
+separation from the next, the discriminator's dead time $\tau_d$: two
+photons closer than that cannot both register, and for a Poisson process
+at rate $R$ the probability of such overlap grows with $R\tau_d$. A
+discriminator with $\tau_d$ near a nanosecond keeps that product small out
+past hundreds of millions of counts per second, while one near a
+microsecond saturates a thousand times sooner: availability depends on the
+actual electronics and peak rate.
 
-Nor is counting a free upgrade even where the crossover favors it. A
-threshold discriminator keeps only whether a pulse crossed the line, not how
-tall it was, so two photoelectrons close enough to blur into one pulse
-register as a single count indistinguishable from one photoelectron, while an
-analog integrator still reports the extra charge. Below the crossover that
-lost amplitude usually costs less than the floor it removes. Above the
-crossover it costs the same for no gain at all. The decision is a comparison
-of both effects at the level and the rate actually in use, not a rule that
-favors one technology on principle.
+A threshold discriminator keeps only whether a pulse crossed the line, not
+how tall it was, so two photoelectrons close enough to blur into one pulse
+register as a single count, while an analog integrator still reports the
+extra charge. Below the crossover that lost amplitude usually costs less
+than the floor it removes. Above it, the same loss gains nothing.
 
-## Buying photons: the three routes are not equivalent
+## Collecting more photons in a scan
 
-"It is shot-limited, so collect more photons" is true and nearly useless,
-because it does not say how. In a scanned measurement there are three ways,
-and at equal total time they do not deliver equally.
+At equal total time, a scanned measurement can gain photons three ways,
+and they do not deliver equally. Shot-limited means the signal-to-noise
+scales as the square root of the signal.
 
-Shot-limited means the signal-to-noise is the signal divided by its square
-root, so it is the square root of the signal.
+  * **Scan more slowly.** Halving the rate doubles the dwell per bin and
+    the photons in it, so the signal-to-noise rises by the square root of
+    two.
+  * **Take more repeats.** Two traces at the original rate cost the same
+    total time and give the same square-root-of-two gain.
+  * **Drive harder.** For a one-photon transition the signal is linear in
+    intensity, so the signal-to-noise scales as the square root of the
+    intensity. For a two-photon transition the signal scales as the square
+    of the intensity, so the signal-to-noise scales as the intensity
+    itself, and doubling the drive is worth quadrupling the time.
 
-  * **Scan more slowly.** Halving the rate doubles the dwell per frequency
-    bin, so the photons per bin double and the signal-to-noise rises by the
-    square root of two.
-  * **Take more repeats.** Two traces at the original rate cost the same total
-    time and double the photons per bin. The signal-to-noise rises by the
-    square root of two.
-  * **Drive harder.** Here the routes part company, and how far depends on the
-    order of the process. For a one-photon transition the signal is linear in
-    intensity, so the signal-to-noise goes as the square root of the intensity
-    and driving harder is no better than waiting longer. For a two-photon
-    transition the signal goes as the square of the intensity, so the
-    signal-to-noise goes as the intensity itself, linearly, and doubling the
-    drive is worth quadrupling the time.
-
-**The first two are exactly equivalent in photons.** Time is time, and the
-scan rate only decides how it is distributed across frequency. A choice
-between them is a choice on other grounds.
-
-**Those other grounds decide it, and they favour repeats.** Repeats supply the
-scatter that becomes the per-condition uncertainty, and a single long trace
-supplies none however bright it is. Repeats average over drift, where a slow
-scan integrates drift into each trace and leaves nothing able to separate it
-afterwards. Repeats give independent estimates of the line centre. And several
-short traces survive a glitch that destroys one long one.
-
-**The order that follows**: drive harder while the physics allows, then add
-repeats, and leave the scan rate to the constraints that actually bound it,
-which are drift at the slow end and the detection chain's response time at the
-fast end.
+Scanning slowly and repeating are equivalent in photons: the scan rate
+only decides how the same time is spread across frequency, so the choice
+rests on other grounds. Repeats supply the scatter behind the
+per-condition uncertainty, give independent estimates of the line centre,
+average over drift a slow scan instead bakes into one trace, and let a
+glitch destroy only one short trace instead of the whole record. In
+practice, drive harder while the physics allows, add repeats, and set the
+scan rate from drift at the slow end and the detection chain's response
+time at the fast end.
 
 ## What problem it solves
 
-It replaces a habit or an equipment default with a computation. Given the
-measured noise law of a detection chain and the signal level an experiment
-actually operates at, the crossover says whether the electronic floor a
-counter removes is even the dominant term there, and the dead time says
-whether a counter can keep up with the peak rate at all. Both answers come
-from the same handful of measured numbers, so the choice does not have to
-rest on which detector happened to be on the bench.
+It replaces a habit or an equipment default with a computation. Given a
+detection chain's measured noise law and the signal level in use, the
+crossover says whether the electronic floor a counter removes is even the
+dominant term there, and the dead time says whether a counter can keep up
+with the peak rate. Both answers come from the same measured numbers, so
+the choice does not rest on which detector happened to be on the bench.
 
 ## Where this repository uses it
 
 The committed noise law lives in
 [`results/noise_model.csv`](../../results/noise_model.csv), one row per
 condition with the fitted $a_V$ and $b_V$ coefficients, produced by
-[`rb5s6s/noise.py`](../../rb5s6s/noise.py) exactly as
+[`rb5s6s/noise.py`](../../rb5s6s/noise.py) as
 [Weighted least squares](weighted-least-squares.md) describes.
 [`docs/plan/10_the-fixed-lock-instrument.md`](../plan/10_the-fixed-lock-instrument.md),
-section 10c.6, inverts that law for the 2025 analog chain and finds the
-crossover sits at a small percentage of a typical line peak, in the same
-range where the Doppler pedestal and the far line wings sit, which is
-where this record's open questions live. The same section works out the
-peak photoelectron rate the committed coefficients imply and finds pile-up
-negligible at a nanosecond dead time, so a counter would be available there,
-not merely favored on paper. Two of the day-one measurements in section
-10c.8, the single-pulse shape and peak count rate and a fresh noise law for
-whatever chain is on the bench that day, exist to check both halves of that
-argument directly rather than carry the 2025 numbers forward unmeasured. No
-counting hardware has been run yet, so this is a planned instrument, not a
-result.
+section 10c.6, inverts that law for the 2025 analog chain: the crossover
+sits at a small percentage of a typical line peak, near the Doppler
+pedestal and the far line wings, where this record's open questions live.
+The same section finds pile-up negligible at a nanosecond dead time for
+the implied peak photoelectron rate, so a counter would be available
+there. Two day-one measurements in section 10c.8, the single-pulse shape
+and peak count rate, and a fresh noise law for the chain on the bench,
+check both halves of it instead of carrying the 2025 numbers forward
+unmeasured. No counting hardware has been run yet, so this is a planned
+instrument, not a result.
+
+![Photograph of the 2025 analogue detection region](../apparatus/2025-07-18_detection_region_overview.jpg)
+
+*The 2025 analogue detection region: the receiver whose measured noise law
+sets the crossover above. No counting hardware has been installed here
+yet.*
 
 ## What can go wrong
 
-The clearest model failure is treating "below the crossover, counting wins"
-as "counting is worth switching to regardless of what it costs," which skips
-the amplitude argument above and can exchange a real electronic floor for a
-lost-count problem that is just as large.
+The clearest model failure is treating "below the crossover, counting
+wins" as "counting is worth switching to regardless of what it costs,"
+which skips the amplitude argument above and can exchange a real
+electronic floor for a lost-count problem that is just as large.
 
-An implementation trap sits in the discriminator itself. Set its threshold
-too low and electronic noise pulses start crossing it, so the count rate
-carries a floor of its own, dark counts and afterpulses, in exactly the
-regime the counting law promised would be floor-free. No single reported
-count rate announces that this has happened, since a few extra counts per
-second look like signal until compared against a light-off measurement.
+Set a discriminator's threshold too low and electronic noise pulses start
+crossing it, so the count rate carries its own floor, dark counts and
+afterpulses, exactly where the counting law promised none. No single
+count rate announces this: a few extra counts per second look like signal
+until compared against a light-off measurement.
 
-A noise law belongs to the chain it was measured on, and the caveat
-[Weighted least squares](weighted-least-squares.md) states for fit weights
-applies again here: a crossover computed from an old $a_V$ and $b_V$ says
-nothing reliable about a chain whose tube, gain or termination has since
-changed, and reusing it can call the wrong technology the winner just as
-easily as it can misweight a fit.
+A noise law belongs to the chain it was measured on, the same caveat
+[Weighted least squares](weighted-least-squares.md) states for fit
+weights: an old $a_V$ and $b_V$ say nothing about a chain whose tube, gain
+or termination has since changed, and reusing them can call the wrong
+technology the winner as easily as they can misweight a fit.
 
-Finally, an experimental limitation. Running near or above the dead-time
-ceiling without correcting for missed coincident photons produces a
-rate-dependent shortfall that grows with signal level in the same direction a
-real physical saturation would, so an uncorrected pile-up loss and an actual
-saturating response are easy to mistake for each other unless the dead time
-and the peak rate are checked on their own terms first.
+Running near or above the dead-time ceiling without correcting for missed
+coincident photons produces a rate-dependent shortfall that grows with
+signal level much like a real saturation would. An uncorrected pile-up
+loss and an actual saturation are easy to mistake for each other unless
+the dead time and peak rate are checked first.
+
+A photon count only obeys the shot-noise scaling above where events are
+independent, the same condition the dead-time discussion rests on. A
+record's own correlation time sets an analogous ceiling, and treating a
+correlated record as independent overstates a detectability figure.
+[HISTORY.md](../HISTORY.md) records one correction to this repository's
+pedestal-detectability estimate that came from exactly that assumption,
+and a second, unrelated revision after the record length changed to meet
+a separate shape requirement.
 
 ## Try it
 
-The signal level at which the electronic floor and the shot term are equal,
-read from the committed noise law rather than assumed, and how much quieter
-counting is than the analog chain a factor of ten below that level.
+This computes the signal level where the electronic floor and the shot
+term are equal, read from the committed noise law instead of assumed, and
+how much quieter counting is than the analog chain a factor of ten below
+that level.
 
 ```python
 import csv
@@ -205,34 +198,8 @@ print(f"(every condition gives the same ratio, sqrt(11) = {math.sqrt(11):.3f}, "
 ```
 
 Every snippet on these pages is executed by `tests/test_wiki_snippets_run.py`,
-so one that stops working fails the suite rather than sitting here misleading
+so one that stops working fails the suite instead of sitting here misleading
 a reader.
-
-## A naive count that assumed independence twice
-
-On 2026-08-15 the pedestal detectability figure for the redesigned wide-scan
-block first stood at about 29σ per trace, a naive count over the off-line
-points scaled by an assumed background-degeneracy factor of 0.7 and an
-assumed correlation time τ of 2.0. Both assumed inputs were wrong at the
-reach the design settled on: the degeneracy factor is 0.645 at the new
-reach, not 0.7, and the record's own median τ_int is 3.81, not the assumed
-2.0. Correcting both moved the figure to about 31σ per trace, with 13σ at
-the record's worst τ. The same calculation moved again the next day, once
-the record length itself rose to meet a separate shape requirement, to
-about 61σ per trace and 27σ at the record's worst τ.
-[HISTORY.md](../HISTORY.md) carries both rows.
-
-The naive count treated every point of the record as an independent event,
-the same assumption this page's account of dead time rests on: a counted
-rate obeys the square-root scaling of shot noise only where successive
-events do not interfere with one another, and a discriminator's dead time
-$\tau_d$ is exactly the timescale past which that stops holding. τ_int
-plays the same role for this record's own correlated noise, a measured
-timescale rather than a round number to assume. Reading it from the record
-before quoting a significance is the same check this page asks of a
-dead-time fraction before trusting a peak count rate, and applied to the
-29σ figure before it was quoted, it would have caught both wrong inputs at
-once.
 
 ## Further reading
 

@@ -80,7 +80,7 @@ C6_RB2_GROUND_LIT_AU = 4691.0
 # 129 +- 11 kHz/mTorr. Their 7S self-SHIFT could not be extracted from the data
 # -- the -17.8 kHz/mTorr sometimes attributed to them is Morzynski 2013's, on
 # the laser axis. This is the only measured self-broadening rate for an nS state
-# in Rb, and so the only external check this module has.
+# in Rb, and so the only independent validation this module has.
 ZAMEROSKI_7S_BROADENING_KHZ_PER_MTORR = 129.0
 ZAMEROSKI_7S_BROADENING_ERR = 11.0
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """K8: does the in-window structure track profile height or vapour density?
 
+# term-of-art: the private reviews directory is a filesystem path
 Preregistered in private/reviews/K8_PREREG_2026-08-23.md before any number here
 was computed, decision rule and all.
 

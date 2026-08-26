@@ -65,7 +65,7 @@ def test_stark_ramp_shape_and_mean():
 
 
 def test_stark_ramp_small_s0_continuous_and_mean_exact():
-    # Review fix regression lock: the old implementation switched
+    # Fix regression lock: the old implementation switched
     # DISCONTINUOUSLY from ramp to grid spike at s0 <= dnu (a false-minimum
     # trap for fixed-lock fits that float s0). The cell-integral + moment-
     # corrected version must (a) keep exact unit mass, (b) keep the exact
@@ -238,7 +238,7 @@ def test_stark_S0_reproduces_orson2021():
     # into a 63 um waist radius, single beam (rho=0, their I = 2P/pi r^2).
     # Reproducing it locks the light-shift CONVENTION to a published external
     # number. Since 2026-08-24 this passes THEIR constant explicitly: the
-    # package default is now this record's own -1145 (the experimenter's
+    # package default is now this record's own -1145 (this record's
     # adjudication of the sign dispute), so reproducing Orson's arithmetic
     # needs Orson's input, and using the default here would silently test the
     # convention against a different number than the one it was pinned to.

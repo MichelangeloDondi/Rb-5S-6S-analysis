@@ -11,7 +11,7 @@ Deviations from the pre-registration wording, declared here rather than
 discovered later:
   * T1 speaks of SHA-256; the committed manifest records MD5, so content
     identity is scored on MD5 (same identity claim, different hash family).
-  * T2's window is the experimenter-confirmed campaign: a single ~24 h run,
+  * T2's window is the documented campaign: a single ~24 h run,
     17-18 July 2025, Ti:Sapph on throughout. Implemented as JST calendar
     dates {17, 18} July 2025 (UTC+9, fixed offset -- epochs only, never the
     local clock; the analysis machine runs CET).
@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "data_raw" / "MANIFEST.csv"
 
 JST = 9 * 3600                       # fixed offset; never the local clock
-# T2: experimenter-confirmed campaign window, JST calendar days 17-18 July 2025
+# T2: documented campaign window, JST calendar days 17-18 July 2025
 T2_LO = 1752678000                   # 2025-07-17 00:00:00 JST  (epoch, UTC)
 T2_HI = 1752850800                   # 2025-07-19 00:00:00 JST  (exclusive)
 T3_MAX_SHARED_FRACTION = 0.20        # mass-copy signature threshold

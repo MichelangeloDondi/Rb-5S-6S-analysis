@@ -4,7 +4,7 @@ the docs must point at something that exists.
 
 A repo whose README carries its own GitHub URL and whose eight methods chapters
 cross-link each other is one file-rename away from a dead link — invisible until
-someone (a reviewer, a collaborator) clicks it. This gate makes that mechanical:
+someone (a reader, a collaborator) clicks it. This gate makes that mechanical:
 
   (a) markdown links / image embeds `](path)` resolve to a real file;
   (b) an `#anchor` on such a link (or a same-file `#anchor`) matches a real

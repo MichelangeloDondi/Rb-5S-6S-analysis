@@ -11,8 +11,8 @@ House rules
 -----------
 * Every number carries a provenance tag in its comment:
 
-  - ``ESTABLISHED``   published/cited value, or an apparatus fact verified by
-                      the experimenter (photos, datasheets, direct confirmation)
+  - ``ESTABLISHED``   published/cited value, or an apparatus fact verified from photos,
+                      datasheets, or direct confirmation
   - ``MEASURED-HERE`` extracted from the 2025 dataset's CSVs by this pipeline
   - ``CALCULATED``    derived; the derivation is stated where first used
   - ``ENVELOPE``      order-of-magnitude; must be re-derived before publication
@@ -93,8 +93,7 @@ The short keys ('4192') are the manifest/filename keys; use peak_label() for
 all human-facing output (full '993.4192 nm ...' form).
 
 WHAT THESE NUMBERS ARE, and it matters for what may be claimed with them
-(recorded 2026-08-09 after the experimenter noted the wavemeter was not
-calibrated). They are READINGS of an uncalibrated HighFinesse WS-8, recorded
+(recorded 2026-08-09, after the wavemeter was found uncalibrated). They are READINGS of an uncalibrated HighFinesse WS-8, recorded
 in the campaign filenames. They are NOT absolute wavelength measurements and
 no result here treats them as one.
 
@@ -252,8 +251,7 @@ DELTA_ALPHA_AU = -1145.0
 """alpha(6S) - alpha(5S) at 993 nm, atomic units. THIS RECORD'S OWN
 value, matching results/polarizability.csv's delta_alpha_993 row
 (-1145, band -1151 to -1140) and reproducible as delta_alpha(993.4) =
--1144.6 from alpha_6s - alpha_5s. Adopted as the package value on the
-experimenter's adjudication (2026-08-24) of the sign dispute below.
+-1144.6 from alpha_6s - alpha_5s. Adopted as the package value by the 2026-08-24 adjudication of the sign dispute below.
 The negative sign is a BLUE shift of the two-photon transition.
 
 THE CITED ALTERNATIVE, kept named rather than deleted, is
@@ -434,7 +432,7 @@ LAMBDA_LASER_M = 993.4e-9              # drive wavelength (sets the Rayleigh ran
 # --------------------------------------------------------------------------
 W0_MEASURED_M = 64e-6
 """Beam waist, 64 um. ESTABLISHED: measured once on this apparatus lineage, in
-this configuration, and stated with its convention in a peer-reviewed paper.
+this configuration, and stated with its convention in a published paper.
 Enters the transit width (~1/w0) and all Stark magnitudes (~1/w0^2), so it is
 the dominant systematic and is used as measured.
 
@@ -479,12 +477,12 @@ pin w0 on its own -- that is exactly what the knife-edge measurement settles. (T
 Gaussian-optics estimate f = 150 mm, w_in = 1.5 mm gave ~32 um, attributed to
 "the EOM aperture" clipping the beam. That attribution is now sourced rather
 than inferred (2026-08-01, APPARATUS.md sec 1.2/2): no lens or telescope sits
-between the SolsTiS and the EOM (EXPERIMENTER), the isolator before it (ISOWAVE
+between the SolsTiS and the EOM (direct confirmation), the isolator before it (ISOWAVE
 I-98T-5L, 5 mm clear aperture, manufacturer datasheet) is wide enough not to
 clip, and the EOM-02-12.5-V's own clear aperture IS 3 mm per the manufacturer's
 "Standard Characteristics" table -- confirmed directly from
 photonicstechnologies.com, not from the test certificates, which do not state
-it. The experimenter separately recalls an IR viewer card showing clipping at
+it. Separately, an IR viewer card showed clipping at
 the EOM (a recollection over a year old, not a contemporaneous measurement).
 So w_in = 1.5 mm (3 mm diameter) is a real aperture with a real clipping
 observation behind it, not a free parameter chosen to fit -- though a
@@ -542,7 +540,7 @@ both bias the EFFECTIVE waist upward, and -2/+4 um about 64 keeps that lean.
 Single source for w0-conditional prediction bands (e.g. stark.fit_stark_sweep),
 so the band is never hand-typed downstream.
 
-NARROWED 2026-08-10, experimenter instruction, from (60, 70) um. Every quantity that
+NARROWED 2026-08-10 by decision, from (60, 70) um. Every quantity that
 reads this constant moves with it, which is the point of there being one
 source: the S0 prediction band, the laser-epoch band and the beta w0
 systematic in lever_crosscheck all recompute. It does NOT touch the central
@@ -606,7 +604,7 @@ block the measured scatter is only ~0.08 MHz (MEASURED-HERE) because repeats
 were saved back-to-back.
 
 IN TENSION. The reference was usually (not always) left alone within a
-5-repeat block (experimenter-confirmed 2026-07-22). NOTE the 0.08 MHz is NOT
+5-repeat block (confirmed 2026-07-22). NOTE the 0.08 MHz is NOT
 accumulated drift: it shows no trend with repeat index (p = 0.33,
 scripts/run_intrablock_trend.py), so it is jitter. For 5 evenly spaced traces the scatter is
 rate x T x 0.354, so this envelope requires a block spanning only ~3.4 s --
@@ -648,7 +646,7 @@ with the recapture excursions, the scale that forced the re-centring. Bounded
 <~0.17 MHz/min within blocks even in hour 1, matching the 0.19 the
 cavity-locked photo shows. What settles (tau ~ 1-2.5 h) is the disturbance
 amplitude -- cavity-lock drop-and-recapture excursions during the ~2 h etalon
-thermal transient, executed by hand (experimenter, 2026-07-23, recalled AFTER
+thermal transient, executed by hand (2026-07-23, recalled AFTER
 the blind fit found the same scale) -- not the held lock's drift. The tension
 paragraph above dissolves: the envelope
 describes RE-TUNE transients, and IMG_2896 (17:03) is exactly that -- shot 18

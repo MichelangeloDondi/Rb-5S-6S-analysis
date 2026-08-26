@@ -10,7 +10,7 @@ stopped matching a fresh run of their own producers.
 **That is now the history of this file rather than its present tense.** The
 migration onto numpy 2.5 was measured, held for two days on a preregistered
 backstop, and landed on 2026-08-23. What it moved, cell by cell, is in
-[the history](../docs/HISTORY.md#the-environment-migration-landed-2026-08-23):
+[the history](../docs/history/07_the-environment-and-the-code.md#the-environment-migration-landed-2026-08-23):
 56 of 58 committed result files reproduced across the change, and the two that
 moved are the archive's known ill-conditioned direction.
 

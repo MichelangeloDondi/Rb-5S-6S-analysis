@@ -58,55 +58,51 @@ section: method-anchors
 
 # leonard2015
 
-**Read (relevant sections) from the held arXiv PDF (1507.07898)**, after an
-audit found the repository had been citing a tune-out value
-that appears in no published source.
+Held. Relevant sections verified against the held arXiv PDF (1507.07898).
+The headline tune-out value is superseded by the 2017 erratum (see
+[leonard2017](leonard2017.md)).
 
-## Why this note exists
+## The system
 
-`rb5s6s/polarizability.py` has depended on this paper since M16 — for the
-validation anchor, for two numerical constants, and for the 5P–12P energies —
-without a note. That gap is the reason a wrong tune-out value survived: there
-was nowhere for the correct one to be checked against.
+A Bose-Einstein-condensate atom interferometer measurement of the 87Rb
+D-line tune-out wavelength, the wavelength at which the scalar
+polarizabilities of the 5S ground state from the D1 and D2 lines cancel,
+improving on prior measurements by a factor of fifty.
 
-## What the module takes from it, all verified against the held PDF
+## The numbers
 
-| module constant | Leonard source | verified |
+The paper reports five wavelengths. The headline value, from the
+abstract's constrained fit, is 790.032388(32) nm (790.032388(29) nm in
+the text). An unconstrained fit gives 790.032439(35) nm, a raw regression
+intercept gives 790.03232 nm, and two theoretical values are given,
+790.0312(7) nm and 790.02568 nm. The headline value is corrected by the
+2017 erratum to 790.032326(32) nm (see [leonard2017](leonard2017.md)).
+
+The matrix-element ratio |<5P3/2||d||5S1/2>|^2 / |<5P1/2||d||5S1/2>|^2 is
+given as 1.99221(3), a hundredfold improvement on the previous
+experimental value, corrected by the erratum to 1.99217(3).
+
+## Quantities used in this analysis
+
+| quantity | Leonard source | value |
 |---|---|---|
-| tune-out anchor | 790.032388(32) nm (abstract; constrained fit) — **replaced**; the module's anchor is the erratum's 790.032326(32), see [leonard2017](leonard2017.md) | yes, and the erratum value verified against its own held PDF |
-| `TAIL_5S = 0.097` | Table II, (n>12)P₁∕₂ **0.022(22)** + (n>12)P₃∕₂ **0.075(75)** | yes, sums exactly |
-| `CORE_5S = 8.709`, σ 0.093 | Table II, "Core + vc" **8.709(93)** | yes |
-| 9P–12P energies | Table II | yes |
+| tune-out anchor | abstract, constrained fit | 790.032388(32) nm, superseded by the erratum's 790.032326(32) nm |
+| TAIL_5S | Table II, (n>12) tails | 0.022(22) for P1/2 plus 0.075(75) for P3/2, summing to 0.097 |
+| CORE_5S | Table II, "Core + vc" row | 8.709(93) |
+| 5P–12P energies | Table II | as tabulated |
 
-The `±100%` uncertainty the module puts on the tail is Leonard's own: both tail
-entries carry an uncertainty equal to their value.
+Both tail entries carry an uncertainty equal to their own value, a ±100%
+uncertainty that is Leonard's own.
 
-## The value that was wrong, and what it should have been
+## Use in this record
 
-Until 2026-07-31 the repository cited **790.03235(3)**. That number appears
-nowhere in this paper. Searching the full text turns up five wavelengths —
-790.032388(32), 790.032439(35), 790.03232, 790.0312(7), 790.02568 — and it is
-none of them, nor a rounding of any. Its origin is unknown.
-
-**Nothing downstream turns on the correction.** The computed tune-out is
-790.0339 nm, so the agreement is 1.51 pm against the 2015 value and 1.55 pm
-against the wrong one — the claim was, and remains, "≈2 pm". The correction is
-a provenance fix, not a physics one.
-
-## The erratum, now HELD and VERIFIED
-
-The erratum is now held and read from the APS PDF, see
-[leonard2017](leonard2017.md). It had been carried here as REPORTED from a
-secondary literature pass. Everything that pass reported was right —
-**790.032326(32)** and R = 1.99217(3), from a ground-state Zeeman shift omitted
-from $\omega'$ — and the erratum adds a corrected theory value, 790.0315(7) nm,
-plus the resolution of the apparent Lamporesi conflict (an $F=1$ versus $F=2$
-difference, not a discrepancy).
-
-The 0.062 pm shift is twenty-five times smaller than the model's ~1.6 pm
-agreement, so it changes no conclusion; what changed is that the repo's anchor
-is now quoted from a document it holds. **`TAIL_5S` and `CORE_5S` remain
-assumed-untouched, not checked**: they come from this paper's theoretical
-decomposition table rather than from the measured tune-out, and the erratum
-corrects the measurement analysis, so it should not reach them — but the erratum
-does not say so explicitly and the table was not re-derived.
+The tune-out anchor used elsewhere in this analysis is the 2017 erratum's
+corrected value, 790.032326(32) nm, rather than this paper's original
+790.032388(32) nm. The computed tune-out (790.0339 nm) sits 1.57 pm from
+the corrected anchor, about twenty-five times larger than the 0.062 pm
+shift the erratum introduces, so the choice between the two published
+values changes no conclusion. TAIL_5S and CORE_5S are taken from this
+paper's theoretical decomposition table and not from the measured
+tune-out and are not affected by the erratum's correction to the
+measurement analysis, though the paper does not state this explicitly
+and the table itself was not re-derived after the erratum.

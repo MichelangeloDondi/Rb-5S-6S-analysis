@@ -15,7 +15,7 @@ that says what the other seven are conditional on.
    wrong, and it is locked by tests, by the 5-tooth amplitude pattern and by a
    hyperfine label-spacing check).
 2. Scope triggered on the sweep sync so file-time $=$ ramp-phase (evidence
-   strong, experimenter confirmation pending, and the ramp-monitor export of
+   strong, confirmation from recollection pending, and the ramp-monitor export of
    PLAN §3 item 0 would settle it).
 3. Kernel *shapes*: laser Gaussian, transit two-sided exponential (the Voigt
    split depends on them). These two are no longer in the same position, as of

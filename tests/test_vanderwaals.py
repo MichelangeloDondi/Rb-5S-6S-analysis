@@ -102,7 +102,7 @@ def test_mean_relative_speed_uses_the_reduced_mass():
 
 
 def test_module_underpredicts_the_one_measured_nS_rate():
-    """The external check this module lacked until Zameroski's 7S broadening
+    """The independent test this module lacked until Zameroski's 7S broadening
     rate was read off the held PDF. Run on 7S -- the only nS state in Rb with a
     measured self-broadening rate -- the absolute prediction sits ~18% low,
     just past the +-10-15% envelope the dropped core/tail and the mean-speed

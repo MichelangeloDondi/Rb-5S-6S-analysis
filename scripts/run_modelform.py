@@ -36,7 +36,7 @@ def main() -> int:
         if r["session"] == "T":
             # rate_err omitted deliberately: the BIC comparison is within-block,
             # and a common axis-scale factor rescales both candidate models
-            # identically, cancelling in the BIC difference (review finding 4)
+            # identically, cancelling in the BIC difference (finding 4)
             trates[(r["peak"], r["T"])] = 2.0 * float(r["rate"])
 
     print("=" * 78)

@@ -33,4 +33,8 @@ section: deep-search
 
 # dutta2025
 
-Folds the finite thermal (Doppler) velocity distribution into the CP selective-reflection lineshape (beyond the infinite-Doppler approximation) — the direct template for reading the near-surface shift as a thermal-averaged distribution in the nanofibre extension sec IV. Verified 2026-07-18.
+Folds the finite thermal (Doppler) velocity distribution into the Casimir-Polder selective-reflection lineshape, beyond the infinite-Doppler approximation.
+
+## Use in this record
+
+Template for reading the near-surface shift as a thermal-averaged distribution, used in the nanofibre extension (Section IV). Verified.

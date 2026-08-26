@@ -361,8 +361,8 @@ on either one alone would pick a different answer, which is the reason this chap
 argues for a checklist rather than for a construction.
 
 The pooled bound stays the quoted construction, S₀(225 mW) below 0.26 MHz,
-because it is the one that has been run and published, with its convergence under
-review in section 4, and because withdrawing it on the strength of a diagnostic
+because it is the one that has been run and published, with its convergence
+examined in section 4, and because withdrawing it on the strength of a diagnostic
 would replace a documented number with none. The two open items are recorded rather than resolved: the
 campaign-alone refit is documented as a diagnostic in [its own
 note](../notes/campaign_only_stark_profile.md) and is not in `results/`, and no

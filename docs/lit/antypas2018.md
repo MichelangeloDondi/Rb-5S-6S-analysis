@@ -27,4 +27,8 @@ section: prior-art
 
 # antypas2018
 
-The ac-Stark-asymmetry ELIMINATION precedent (Yb) our method INVERTS into a reference-free observable. Vol/page/DOI VERIFY.
+Demonstrates elimination of ac-Stark-induced lineshape asymmetry in a weak atomic transition in ytterbium driven by an intense standing-wave field.
+
+## Use in this record
+
+The asymmetry-elimination technique described here is inverted in this analysis into a reference-free asymmetry observable, rather than removed as a systematic.

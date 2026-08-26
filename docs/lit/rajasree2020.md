@@ -33,21 +33,6 @@ section: oist-lineage
 
 # rajasree2020
 
-Cold Rydberg atoms at submicron distances from an optical nanofibre. This
-paper carries no warm vapour cell, so the 128 um beam and the Steck N(T)
-chain belong to the OIST thesis at
-[rajasree2020thesis](rajasree2020thesis.md), not here.
+Cold Rydberg atoms generated at submicron distances from an optical nanofibre. The experiment uses no warm vapour cell. The 128 um probe beam and the Steck N(T) density chain belong to the companion OIST thesis at [rajasree2020thesis](rajasree2020thesis.md), not to this paper.
 
-**The paragraph that stood here described the wrong document and is corrected
-(2026-07-31).** It opened "Rajasree-KP's OIST PhD thesis repeats the same 993 nm
-cell setup…" — but *this* file is the **PRR 2, 012038 paper**, a cold-atom
-nanofibre experiment with no warm vapour cell and no 993 nm cell setup. The
-apparatus claim belongs to the thesis, which now has its own record at
-[rajasree2020thesis](rajasree2020thesis.md), and the FEED routing for the
-`density.py` N(T) chain travels with it. The prose named the right document all
-along; the citekey resolved to the wrong one.
-
-For the polarization-law and ONF-feasibility content see `rajasree2020spin` (a
-third Rajasree 2020 document, on spin selection in single-frequency two-photon
-excitation), and see [nieddu2019](nieddu2019.md) for the primary apparatus
-source of this lineage.
+For the polarization-law and nanofibre-feasibility content, see `rajasree2020spin`, a separate 2020 Rajasree document on spin selection in single-frequency two-photon excitation. See [rajasree2020thesis](rajasree2020thesis.md) for the waist of record, and [nieddu2019](nieddu2019.md) for the earlier report in the same lineage.

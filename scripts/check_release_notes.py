@@ -24,9 +24,9 @@ What it checks, all of it borrowed:
   measured against GitHub's own renderer rather than assumed
 * the house punctuation rule, no em-dashes and no semicolons
 * the release-note style rules' mechanical half (docs/RELEASE_NOTE_STYLE.md,
-  2026-08-26, written after an adversarial review of every published
-  note): a 400-word ceiling on the body, no internal shorthand codes
-  outside file paths, and the narrative-register markers that review
+  2026-08-26, written after a reading of every published note): a
+  400-word ceiling on the body, no internal shorthand codes
+  outside file paths, and the narrative-register markers that reading
   measured in every published note. Passing `--self-check` skips these
   three, for the protocol-file self-audits of LOGIC 17.3, whose subjects
   are long by design and quote the register they ban.
@@ -125,9 +125,8 @@ WORD_CEILING = 400
 _CODE = re.compile(r"(?<![\w/.-])([MCKP]\d{1,2}[a-z]?)(?![\w/.-])")
 _PHYSICS_NEXT = ("transition", "coefficient", "multipole", "admixture",
                  "dispersion")
-# Register markers measured by the 2026-08-26 adversarial review in every
-# published note. Literal phrases, kept few and unambiguous so a false
-# positive is nearly impossible. The voice review seat carries the
+# Register markers measured 2026-08-26 in every published note. Literal phrases, kept few and unambiguous so a false
+# positive is nearly impossible. The voice reader carries the
 # semantic half.
 NARRATIVE_MARKERS = [
     "two things happened",

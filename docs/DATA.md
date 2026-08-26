@@ -86,7 +86,7 @@ attempt held in excluded (29).
 
 *The chronology and the identities below were established on 2026-07-10 and
 2026-07-11 by hash comparison against the original dataset, with the design
-answered directly by the experimenter. The file has been extended since by the
+confirmed from recollection. The file has been extended since by the
 recovered acquisition clock (2026-07-23), the folder consolidation
 (2026-07-24), and the ruler re-adjudication of 2026-08-04 and 2026-08-05. Every
 later addition carries its own date where it appears.*
@@ -126,7 +126,7 @@ that could not be are withdrawn.*
 
 Every trace is 2000 points, 0.5 ms step, 1.000 s window, taken on an
 **Agilent/Keysight InfiniiVision DSO-x 3054A** (500 MHz, 4 GSa/s). The LeCroy
-on the same bench would not trigger reliably (experimenter, 2026-07-23), and
+on the same bench would not trigger reliably (recollection, 2026-07-23), and
 the export signature confirms which instrument wrote the files. Every CSV in
 the dataset opens `x-axis,N` and `second,Volt`, which is the InfiniiVision
 format and not LeCroy's.
@@ -139,14 +139,14 @@ of 347 in quantisation step across the campaign, and what that costs and
 how the next session avoids it is
 [the acquisition settings chapter](plan/07_acquisition-settings.md).
 
-## 2. Campaign design and chronology (experimenter-confirmed)
+## 2. Campaign design and chronology (confirmed from recollection)
 
 **When.** The whole campaign was acquired in a single run of about **24 hours,
 17–18 July 2025**, with the Ti:Sapph **left running throughout**
-(experimenter-confirmed, 2026-07-22). Continuous operation matters beyond
+(confirmed from recollection, 2026-07-22). Continuous operation matters beyond
 provenance: it removes warm-up transients between blocks, and it is the
 physical reason a *shared* laser-noise epoch across neighbouring blocks is
-plausible at all, which is the assumption `PLAN.md` §10.1 post-mortem row 5 records. The
+plausible at all, which is the assumption `PLAN.md` §10.1 spending-rules row 5 records. The
 recovered clock has since dated it rather than settled it: within a
 temperature dwell the four peak-blocks are **54–76 minutes apart**, so
 "neighbouring" means an hour, and their widths track that hour no better than
@@ -223,7 +223,7 @@ same script reads from a second private tree (`results/stark_joint.csv`, row
 Those private copies themselves remain read-only and unmodified. The EOM
 trial traces, whose folder is labelled `2025-07-03` while the clock reads
 2025-07-04 03:37 JST, turned out to carry the **piezo ramp on their second
-channel**, recalled by the experimenter and confirmed by the data: the
+channel**, identified from recollection and confirmed by the data: the
 same line crossed twice near a sweep turnaround reads the same ramp
 voltage to 0.1 mV on a 13 mV sweep, and a sideband satellite at a constant
 voltage offset calibrates that axis at 5.24 MHz/mV, under which the line
@@ -234,8 +234,8 @@ transfers. The full account is in `run_stark_joint.py`.
 
 Repeats were
 saved seconds apart (measured position scatter within a block: 1.8 ms ≈
-0.08 MHz laser). Between saves the experimenter moved the scope's horizontal
-knob and manually recentered the cavity reference **many times**, not
+0.08 MHz laser). Between saves the scope's horizontal
+knob was moved and the cavity reference manually recentered **many times**, not
 because the held lock drifted fast (the then-current reading was
 ~0.016 MHz/min, which would take tens of hours to cross the window, and the
 provenance note below retracts the number while leaving this conclusion
@@ -245,7 +245,7 @@ dropping out during the etalon thermal transient, each recapture landing
 MHz-scale off (`APPARATUS.md` §6, results report addenda 4–7), so
 **absolute trace positions carry no meaning across saves**, and each trace's comb is its own frequency axis. **Within a 5-repeat block the reference was
 usually left alone**, a tendency rather than a protocol
-(experimenter-confirmed, 2026-07-22), and the dataset shows the exceptions:
+(confirmed from recollection, 2026-07-22), and the dataset shows the exceptions:
 24 of 32 RF-off science blocks scatter about a common position (median
 1.79 ms, confirming the figure quoted above), while 8 step mid-block, two of
 them by ~1 s, larger than the trace window, so the axis offset itself moved.
@@ -308,7 +308,7 @@ byte-exact:
    `power_eom/4192nm_eom_after3 ≡ after4`, `raw/4154nm_130c_225mw4 ≡ 225mw5`.
    **Rule: always count repeats from manifest rows, never from filenames.**
 4. **The curated dirs are a deliberate selection, and `raw/` is everything.**
-   The experimenter discarded some acquisitions at curation time because they
+   Some acquisitions were discarded at curation time because they
    "seemed quite bad" (statement, 2026-07-11) and renumbered the keepers,
    that is why `raw/`'s repeat numbering is shifted vs the curated dirs
    (e.g. `temperature/4207nm_090c1 ≡ raw/4207nm_090c6`) and why four
@@ -352,7 +352,7 @@ byte-exact:
    salvage. The old pipeline's `genfromtxt`+NaN-drop parsing swallowed all
    of this silently.
 
-> **The temperature notation, resolved 2026-07-25 (experimenter).** In
+> **The temperature notation, resolved 2026-07-25 (recollection).** In
 > filenames of the form `130C(90C-0.65A)` the parenthetical is the **variac
 > set point and current**, its thermocouple mounted on the aluminium foil on
 > the *outside* of the oven. The campaign temperature is the value outside
@@ -394,7 +394,8 @@ layer.
 | `rulers_t/` | RF-on comb traces per temperature block | 61 |
 | `rulers_p/` | RF-on bracket blocks (`before`/`after`) per peak | 44 |
 | `excluded/` | the aborted 4154 power attempt + its plausible rulers (§5) | 29 |
-| `discarded/` | shots the experimenter rejected at curation (§3, item 4) | 4 |
+| `discarded/` | shots rejected at curation (§3, item 4) | 4 |
+<!-- term-of-art: review is a frozen manifest directory name -->
 | `review/` | anything that failed pattern classification | 0 |
 
 Total: **297 unique traces** (from 722 dataset files). The census is pinned by
@@ -403,6 +404,7 @@ a copy that carries the traces and skips, with a stated reason, in one that
 does not.
 
 The `flag` column takes values `canonical` / `discarded` / `excluded` /
+<!-- term-of-art: review is a frozen manifest classification token -->
 `review`, and §5 is the register of every exclusion behind them.
 
 **Every column of the manifest.** Sixteen, in file order. This is the table the
@@ -412,6 +414,7 @@ analyst tracing one trace needs.
 |---|---|
 | `file` | the path inside `data_raw/` |
 | `md5` | the content hash, which is the identity. Names collide across folders, bytes do not |
+<!-- term-of-art: the role vocabulary is frozen manifest data -->
 | `role` | the acquisition role, one of `p_sweep` (101), `t_sweep` (62), `ruler_t` (61), `ruler_p` (44), `excluded` (29). There is no `discarded` or `review` value: a discard keeps the role of the folder it came from, which is why these five counts exceed the folder counts above by exactly the four discards |
 | `peak` | the hyperfine component, by its wavelength label |
 | `temperature_C` | the cell temperature, read from the four thermocouples inside the oven |
@@ -420,6 +423,7 @@ analyst tracing one trace needs.
 | `bracket` | `before` or `after`, for the power-session ruler brackets |
 | `repeat_idx` | position within the repeat block, which is the time order |
 | `serves_t130` | marks the 225 mW rows that double as the 130 °C density point |
+<!-- term-of-art: review is a frozen manifest classification token -->
 | `flag` | the status: `canonical`, `discarded`, `excluded` or `review` |
 | `session` | which acquisition session the trace belongs to, `P`, `T` or `Q`, decoded in the glossary above |
 | `block_seq` | the block's position within its session |
@@ -472,9 +476,9 @@ for the backup-only discards, which are not in the frozen record at all.
 
 | what | count | decided | by whom | criterion | effect |
 |---|---|---|---|---|---|
-| curation discards, `data_raw/discarded/` | 4 | 2026-07-11, audited 2026-07-12 and re-audited 2026-07-23 | the experimenter at curation time, blind to any fitted physics | acquisitions that "seemed quite bad" at the bench, then held out by pre-registration | none on any headline. All four sit inside their conditions' kept linewidth spread. One condition drops to four repeats (§3 item 4) |
+| curation discards, `data_raw/discarded/` | 4 | 2026-07-11, audited 2026-07-12 and re-audited 2026-07-23 | curation-time judgement, blind to any fitted physics | acquisitions that "seemed quite bad" at the bench, then held out by pre-registration | none on any headline. All four sit inside their conditions' kept linewidth spread. One condition drops to four repeats (§3 item 4) |
 | session excluded, `data_raw/excluded/` | 29 | 2026-07-12, re-examined the same day | pre-registration, on a curation fact rather than a per-trace defect | the aborted first 4154 130 °C power attempt and its ten ruler brackets, redundant against a complete retake | none on any headline. Folding it into the power fit moves the light-shift bound within that bound's own scatter (below) |
-| backup-only discards, `data_recovered/discarded_backup/` | 16 | discarded at curation, recovered from the backup and assessed 2026-07-23, published here 2026-07-24 | the experimenter at curation time | discarded at the bench and absent from the frozen record, published for inspection only | none. They enter no fit |
+| backup-only discards, `data_recovered/discarded_backup/` | 16 | discarded at curation, recovered from the backup and assessed 2026-07-23, published here 2026-07-24 | curation-time judgement | discarded at the bench and absent from the frozen record, published for inspection only | none. They enter no fit |
 | hard-flagged ruler export | 1 | 2026-07-11 | mechanical rule, at first strict-parse contact | interior dropouts leaving 1047 valid samples (§3 item 5(ii)) | the fitted ruler population is 104 rather than 105 |
 | 4 July evening traces not entering the joint light-shift fit | 4 of 50 | 2026-08-01 | mechanical rule | three are 0xff-corrupted on disk and one has no line in the window (§2) | 46 of the 50 enter |
 | ruler traces removed by the spacing outlier rule | 3 | 2026-08-04 | pre-registered rule, threshold calibrated against nulls rather than a quantile | median and median absolute deviation against the calibrated threshold (amendment 3 §C6) | three temperature-block combs leave the frequency calibration |
@@ -572,7 +576,7 @@ Two later corrections moved headline numbers after this pipeline existed, and
 neither came from new data or a refitted model. Both were interval
 construction. They are the two entries below marked as such.
 
-**Error-handling round (2026-07-16).** Five review items closed, none moving a
+**Error-handling round (2026-07-16).** Five items closed, none moving a
 headline number: the block-coherent ruler-rate error is now folded into every
 width-type error in `linefit_conditions.csv`. The `noise_floor_limited` and
 `*_at_bound` flags travel with the fits, so a parameter pinned at a rail no
@@ -654,8 +658,8 @@ Downstream, the $\Delta\alpha$ bracket tightens from ~5800 to ~1200 a.u.
 
 **Cross-check against the earlier analysis of this dataset (2026-07-16).** Per the
 ground rule this analysis ran under (old *code* is never read, and old *outputs* serve only as
-external cross-check targets), the previous attempt's committed report and summary
-CSVs, not its source, were reviewed after this analysis was complete. The
+independent comparison targets), the previous attempt's committed report and summary
+CSVs, not its source, were examined after this analysis was complete. The
 comparison is worth recording because it explains the two analyses' different
 conclusions:
 
@@ -725,7 +729,7 @@ conclusions:
   5.28 MHz, narrower at higher density, impossible for collisions). The
   within-block repeat scatter is tiny (~0.05 MHz), so each block is internally
   precise. The blocks simply disagree with a monotonic density trend. The
-  culprit is **laser-width (σ_laser) drift between the cooling-session blocks
+  cause is **laser-width (σ_laser) drift between the cooling-session blocks
   (~0.06–0.16 MHz)**, comparable to the whole collisional trend. Result:
   β_self < 0.21–0.44 MHz per 10¹² cm⁻³ (95%, per peak, headline ≲0.2–0.4). A clean measurement
   needs a fixed-lock session, which is this dataset itself showing that the

@@ -141,7 +141,7 @@ def main() -> int:
           "per-line floors, a construction preregistered before computation "
           "and accepted on its adjudication "
           "([the prereg](notes/beta_self_pooling_prereg.md), with the "
-          "pooled-first headline decided by the experimenter). The physics "
+          "pooled-first headline fixed by that decision). The physics "
           "licence: the four lines are hyperfine components of one "
           "parity-forbidden transition seeing the same R⁻⁶ collision "
           "physics, and the data agree (per-line vs shared ≤ 1.1σ, isotope "
@@ -204,8 +204,8 @@ def main() -> int:
       "and folded 130 °C in only as a separate, non-headline probe variant, "
       "reasoning it might be a different apparatus configuration (a power "
       "sweep, calibrated off before/after modulator brackets rather than the "
-      "temperature session's own per-block ruler). The experimenter confirmed "
-      "firsthand that "
+      "temperature session's own per-block ruler). Confirmed from recollection "
+        "(RECOLLECTION, no contemporaneous record) that "
       "the 130 °C power-sweep session ran in the same optical and cell "
       "configuration as the temperature sweep. What differs is the acquisition "
       "epoch "
@@ -878,7 +878,7 @@ def main() -> int:
           f"(`run_stark_joint`, 95% one-sided profile likelihood at the "
           f"unscaled 2.706 threshold. The over-dispersion widening of "
           f"`rb5s6s/stark.py` belongs to C3d's width-only bound, not to this "
-          f"joint construction, a misattribution the 2026-08-04 review caught "
+          f"joint construction, a misattribution caught on 2026-08-04 "
           f"and this sentence corrects). Instead "
           f"of C3d's 20 summary widths, every point of every canonical "
           f"power-sweep profile enters a joint maximum-likelihood fit, "
@@ -1202,7 +1202,7 @@ def main() -> int:
         # different data cannot leave a stale number behind.
         dev = np.abs(rate - mean) / err
         i = int(np.argmax(dev))
-        # RT6 of the frequency-calibration review (amendment 8): a single
+        # RT6 (amendment 8): a single
         # sqrt(chi2_red) factor is the wrong shape for this dispersion, and
         # the attribution the prose used to assert was untested. Both are
         # measured here, from the same committed block table, so neither can
@@ -1271,7 +1271,7 @@ def main() -> int:
           f"{out_label} at {out_dev:+.1F}% from the campaign mean. Dropping it moves the "
           f"campaign rate by {drop_shift:+.2F}% ({abs(drop_sigma):.1F}σ) and "
           f"$\\chi^2_\\text{{red}}$ from {chi2:.1F} to {drop_chi2:.1F}: the inflation "
-          f"already covers it, so it stays in by the pre-registered policy of reviewing "
+          f"already covers it, so it stays in by the pre-registered policy of absorbing "
           f"outliers rather than cutting them.")
     ts = {r["quantity"]: r["value"] for r in rows("ruler_tooth_scatter")}
     if ts:
@@ -1382,7 +1382,7 @@ def main() -> int:
           f"matrix-element and tail uncertainties propagated), putting "
           f"$|\\Delta\\alpha|$ within ~5% of Orson et "
           f"al.'s 1093 but with the **opposite sign** (a blue transition shift). The "
-          f"sign was adjudicated by the experimenter on 2026-08-24 and this "
+          f"sign was fixed by decision on 2026-08-24 and this "
           f"value is now the package default, a decision on the theory "
           f"and not a measurement, since the sign remains unset by "
           f"experiment "

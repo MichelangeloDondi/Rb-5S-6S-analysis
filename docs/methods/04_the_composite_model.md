@@ -258,7 +258,7 @@ second is hyperfine pumping: every real 6S decay cascades through 5P, whose
 decay does not preserve $F$, so a transiting atom can leave the driven ground
 state mid-flight and the effective transit width rises. The ratio of the two
 widths is exactly the branching fraction $f$, because $\Gamma_{6S}/2\pi$ is
-itself the natural width, and $f$ is not resolved here beyond the bracket
+the natural width, and $f$ is not resolved here beyond the bracket
 $1/3$ to $2/3$. Both are omitted for the same reason: injecting them means
 committing to the two-level homogeneous saturation law with a two-photon Rabi
 frequency, which is standard practice rather than a derivation for this level

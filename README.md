@@ -16,6 +16,11 @@
 > came. This page is the full account. If the vocabulary is unfamiliar,
 > [docs/GLOSSARY.md](docs/GLOSSARY.md) explains the measurement in six
 > sentences and then defines every term and symbol used anywhere here.
+>
+> **The concepts behind the measurement: [the wiki](docs/wiki/README.md)**,
+> fifty-four pages in eight clusters, from the atomic structure to what the
+> fit determines, each with figures and most with a runnable snippet. It
+> stands on its own.
 
 A physics-based forward-model analysis of the rubidium **5S₁/₂ → 6S₁/₂**
 two-photon transition at **993 nm**, from Doppler-free spectroscopy in a hot
@@ -26,10 +31,28 @@ field varies across the atoms that sample it, every atom shifts by a
 different amount and the line carries that whole distribution rather than one
 number. The same object sets what can be cooled inside a hollow-core fibre,
 and for how long it stays coherent, which is the apparatus work this analysis
-sits beside (see [About](#about)). A fixed-lock follow-up session is
+sits beside, described next. A fixed-lock follow-up session is
 proposed and specified in [`docs/PLAN.md`](docs/PLAN.md), and the machinery is
 written to be pointed at other transitions
 ([`docs/ADAPTING.md`](docs/ADAPTING.md) names the seams).
+
+## About
+
+I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
+the University of Bologna, on the EU project CRYST³. My work there is the
+transport and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal
+fibres, where the light shifts of the guided mode vary across the atoms and
+set what can be cooled and how long it stays coherent. This repository looks
+at the same physics through a different observable: the shape a two-photon
+line takes when a focused standing wave shifts each atom differently.
+
+<!-- term-of-art: the disclosure names the tool deliberately, on owner instruction -->
+The dataset was taken during a six-month research visit to OIST (Japan) in
+2025, an independent project alongside my work there on atom-nanofibre
+interfaces. The analysis was written after the campaign. This repository was
+developed with the assistance of Claude Code for coding, documentation and
+workflow support. The experiment, data analysis, and scientific decisions
+are my own. A manuscript is in preparation.
 
 > **In one sentence:** when the lock drifts, the position of a line is lost but
 > its shape is not, so this record reads collisional broadening, laser width
@@ -124,7 +147,7 @@ measurement adds) → [`docs/BIG_PICTURE.md`](docs/BIG_PICTURE.md) ·
 when pooling measurements adds information and when it only adds freedom, with
 six questions to ask of any joint fit →
 [`docs/big_picture/08`](docs/big_picture/08_when-a-joint-fit-is-legitimate.md) ·
-one page per concept, method, effect and technique, each with a worked example
+one page per concept, method, effect and technique, most with a worked example
 that runs → [`docs/wiki/`](docs/wiki/README.md) ·
 one page per physical quantity, with what the literature has reached, what this
 dataset establishes, why not more, and what a next campaign would buy →
@@ -602,21 +625,8 @@ table carries the current state of every ruler rule, and the
   inferred from filenames, and data-quality cuts are fixed before fitting
   rather than chosen afterward.
 
-## About
-
-I am Michelangelo Dondi, a PhD candidate in experimental cold-atom physics at
-the University of Bologna, on the EU project CRYST³. My work there is the
-transport and cooling of cold ⁸⁷Rb atoms inside hollow-core photonic-crystal
-fibres, where the light shifts of the guided mode vary across the atoms and
-set what can be cooled and how long it stays coherent. This repository looks
-at the same physics through a different observable: the shape a two-photon
-line takes when a focused standing wave shifts each atom differently.
-
-The dataset was taken during a six-month research visit to OIST (Japan) in
-2025, an independent project alongside my work there on atom-nanofibre
-interfaces. The analysis was written after the campaign. A manuscript is in
-preparation.
+## Contact
 
 Contact: michelangelo.dondi@unibo.it ·
 [ORCID 0009-0006-9050-2881](https://orcid.org/0009-0006-9050-2881) ·
-citation metadata in [`CITATION.cff`](CITATION.cff) · mit license.
+citation in [`CITATION.cff`](CITATION.cff) · MIT.

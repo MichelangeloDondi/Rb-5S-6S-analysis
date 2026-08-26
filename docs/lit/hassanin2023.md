@@ -32,4 +32,12 @@ section: deep-search
 
 # hassanin2023
 
-Detects the 5D-to-5P INFRARED cascade to observe the Doppler-free 5S-5D two-photon line without reabsorption at high density — the direct precedent for our 1.3 um (6S-to-5P) trapping-free amplitude channel (PLAN §8). DOI verified 2026-07-17; PDF paywalled (APS), pull if needed.
+VERIFIED. PDF not held (paywalled by the publisher).
+
+## The system
+
+Detects the 5D-to-5P infrared cascade to observe the Doppler-free 5S-5D two-photon line in Rb vapor without reabsorption at high density.
+
+## Use in this record
+
+Direct precedent for the 1.3 µm (6S-to-5P) trapping-free amplitude channel (PLAN §8).
