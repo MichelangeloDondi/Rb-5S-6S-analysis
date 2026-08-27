@@ -71,7 +71,38 @@ SKIP = {"laser_epoch.csv", "qc_metrics.csv",
         "kernel_identifiability.csv", "kernel_k3.csv", "kernel_k5.csv",
         "kernel_k4.csv", "kernel_k7.csv", "kernel_worlds.csv",
         # the fibre twin, same reason: its producer writes per-row statuses
-        "fibre_twin.csv"}
+        "fibre_twin.csv",
+        # M28's window attribution and M29's centre Fisher, added 2026-08-24
+        # and 2026-08-25 and the last two files to reach results/ without
+        # entering this map, so the deliberate KeyError below was live in both
+        # trees until 2026-08-26 and nothing ran to see it.
+        #
+        # They belong here rather than in either map below, and the reason is
+        # structural rather than a preference. Both producers write their own
+        # per-row `status`, and in both the status varies WITHIN a single
+        # `quantity`, across its `key` values: centre_fisher's
+        # `sigma_amplitude` is MEASURED for the three per-epoch drift classes
+        # this archive can evaluate and ENVELOPE for the fixed-lock forecast,
+        # and window_attribution's `window_attributed_pct` is MEASURED for the
+        # primary grouping and DIAGNOSTIC for the finer one, which is reported
+        # only to show the fraction is not the grouping's. `status_for()` reads
+        # `row["quantity"]` and never `row["key"]`, so QUANTITY_STATUS cannot
+        # express either file, and FILE_STATUS carries one status for a whole
+        # file, which neither of these is.
+        "window_attribution.csv", "centre_fisher.csv",
+        # the collisional-shift bound, added 2026-08-27. Same structural
+        # reason: its rows are a BOUND (the borrowed ceiling through the
+        # vapour-pressure chain), an ENVELOPE (this atom's own expected
+        # shift, which is not a bound and must not be read as one) and two
+        # DIAGNOSTIC ratios, and only the producer knows which is which.
+        # Registered here in the same commit that created the file, which is
+        # the discipline the two entries above were added for failing.
+        "collisional_shift_bound.csv",
+        # the posterior: two BOUND limits from two constructions of one
+        # likelihood, and the rest DIAGNOSTIC, including a point value the
+        # committed grid does not resolve. The status varies within the file
+        # and only the producer knows which row is which.
+        "delta_alpha_posterior.csv"}
 
 # wide CSVs: one status for the whole file (its rows are homogeneous)
 FILE_STATUS = {
@@ -130,8 +161,6 @@ FILE_STATUS = {
     # M38 measures what an ASSUMPTION costs and which of two the data
     # prefer. Nothing here is a bound on a physical coefficient.
     "laser_kernel.csv": "DIAGNOSTIC",
-    "kernel_headline.csv": "DIAGNOSTIC",
-    "kernel_identifiability.csv": "DIAGNOSTIC",
     "onf_candidate.csv": "DIAGNOSTIC",
     # M21: the centre channel cannot measure the pull -- a NULL, not a bound,
     # because the parameter is unidentifiable rather than merely imprecise
@@ -224,7 +253,13 @@ QUANTITY_STATUS = {
         # holds at the 1e-4 level of the 190k chi2 profile.
         "direction_dchi2_max": "DIAGNOSTIC",
         "lopo_dchi2_262": "DIAGNOSTIC", "lopo_dchi2_pred": "DIAGNOSTIC",
-        "kappa_pred": "CALIB", "S0_225mW_pred": "CALIB",
+        # ENVELOPE, not CALIB: both depend on an effective waist never
+        # measured in the cell and on RHO_RETRO, which constants.py calls
+        # an assumption. UNCERTAINTY.md section 1 caps a result at
+        # ENVELOPE when an ENVELOPE input feeds it, and an ENVELOPE
+        # must never carry a published digit. A 95 per cent significance
+        # was computed against these while they were tagged CALIB.
+        "kappa_pred": "ENVELOPE", "S0_225mW_pred": "ENVELOPE",
         "kappa_ub95_drop4192": "BOUND", "S0_225mW_ub95_drop4192": "BOUND",
         "gamma_coll_post": "PRELIM",
         "reh_rate": "CALIB", "pilot_rate_scale": "CALIB",
@@ -241,7 +276,25 @@ QUANTITY_STATUS = {
         "kappa_ub95": "BOUND", "S0_225mW_ub95": "BOUND",
         "S0_270mW_ub95": "BOUND",
         "kappa_min": "DIAGNOSTIC", "dchi2_kappa0": "DIAGNOSTIC",
-        "kappa_pred": "CALIB", "S0_225mW_pred": "CALIB",
+        # EXPLICIT, 2026-08-27. Each of these was resolving through the
+        # prefix fallback onto an entry that NAMES A DIFFERENT ROW of this
+        # same file,
+        # so one quantity's tag was deciding another's. Every one of them
+        # happened to inherit the right answer; `sigma_laser_sp` inheriting
+        # `sigma_laser_s` is the one that shows how thin the luck was. The
+        # values below are what the fallback produced, so nothing changes
+        # except that it is now written down.
+        "S0_225mW_ub95_drop4192": "BOUND", "kappa_min_wing": "DIAGNOSTIC",
+        "kappa_ub95_camponly": "BOUND", "kappa_ub95_drop4192": "BOUND",
+        "kappa_ub95_pladder": "BOUND", "kappa_ub95_wing": "BOUND",
+        "profile_point_pladder": "DIAGNOSTIC", "sigma_laser_sp": "PRELIM",
+        # ENVELOPE, not CALIB: both depend on an effective waist never
+        # measured in the cell and on RHO_RETRO, which constants.py calls
+        # an assumption. UNCERTAINTY.md section 1 caps a result at
+        # ENVELOPE when an ENVELOPE input feeds it, and an ENVELOPE
+        # must never carry a published digit. A 95 per cent significance
+        # was computed against these while they were tagged CALIB.
+        "kappa_pred": "ENVELOPE", "S0_225mW_pred": "ENVELOPE",
         "direction_dchi2_max": "DIAGNOSTIC", "basin_gap_max": "DIAGNOSTIC",
         "lopo_dchi2": "DIAGNOSTIC",
         "beta_self_post": "PRELIM", "gamma_coll_post_130C": "PRELIM",
@@ -274,7 +327,11 @@ QUANTITY_STATUS = {
         # bounds, so the point estimate is a DIAGNOSTIC, not a BOUND.
         "kappa_ub95": "DIAGNOSTIC", "kappa_err_raw": "DIAGNOSTIC", "kappa": "DIAGNOSTIC",
         "S0_225mW_ub95_raw": "DIAGNOSTIC", "S0_225mW_ub95": "DIAGNOSTIC",
-        "S0_225mW_fit": "BOUND", "S0_225mW_pred": "CALIB",
+        "S0_225mW_fit": "BOUND", "S0_225mW_pred": "ENVELOPE",
+        # EXPLICIT, 2026-08-27: the two sensitivity anchors were inheriting
+        # ENVELOPE from `S0_225mW_pred` through the prefix fallback, which
+        # is the right tag reached by the wrong mechanism.
+        "S0_225mW_pred_lo": "ENVELOPE", "S0_225mW_pred_hi": "ENVELOPE",
         "chi2_red": "DIAGNOSTIC", "core_sigma_laser": "PRELIM",
     },
     "model_ladder.csv": {
@@ -314,6 +371,12 @@ QUANTITY_STATUS = {
         # numbers (magic wavelengths, alpha_6S(1064)) are model estimates
         "alpha_5s_static": "DIAGNOSTIC", "alpha_6s_static": "DIAGNOSTIC",
         "tuneout_5s": "DIAGNOSTIC", "delta_alpha_993": "DIAGNOSTIC",
+        # EXPLICIT, 2026-08-27. Without this entry the prefix fallback below
+        # matched it to "delta_alpha_993" and silently retagged an ENVELOPE
+        # row DIAGNOSTIC, dropping the caveat from figures that quote its
+        # 4.2-to-21.7 a.u. range. The collision was an accident of naming,
+        # which is why the fallback needs an exact entry to beat it.
+        "delta_alpha_993_tail_dispersion": "ENVELOPE",
         # the two states separately at 993 nm -- the evidence behind the sign
         "alpha_5s_993": "DIAGNOSTIC", "alpha_6s_993": "DIAGNOSTIC",
         "alpha_6s_1064": "ENVELOPE", "magic_5s6s": "ENVELOPE",

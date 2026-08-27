@@ -3,7 +3,7 @@
 **The question.** What does a reader need to understand, concept by concept,
 to follow this experiment, and where does each concept live?
 **Takes.** Nothing. Every page stands alone and states its own prerequisites.
-**Gives.** Fifty-four pages in eight clusters, the routes through them by what
+**Gives.** Fifty-five pages in eight clusters, the routes through them by what
 the reader came for, and the connection map between them.
 **Skip if.** You want the experiment's own record instead of the concepts,
 which is [BIG_PICTURE.md](../BIG_PICTURE.md), or one quantity's complete
@@ -136,6 +136,7 @@ truth, and freeze the criterion before reading the answer.
 | [Pooling across groups](pooling-across-groups.md) | method | when combining groups adds information, and when it only adds freedom |
 | [Information criteria](information-criteria.md) | method | when is a better fit worth its extra parameters |
 | [Identifiability](identifiability.md) | method | when does the data actually determine the parameter we want |
+| [Reduced chi-squared](reduced-chi-squared.md) | method | what a misfit does and does not tell you, and what it costs a confidence interval |
 | [The profile likelihood](profile-likelihood.md) | method | an interval that keeps its shape when nuisance parameters are degenerate |
 | [Injection-recovery testing](injection-recovery.md) | method | no fitter touches real data before it recovers known truth from synthetic data |
 | [Preregistration](preregistration.md) | method | the criterion, the null test and the ceiling test, frozen before any number is read |

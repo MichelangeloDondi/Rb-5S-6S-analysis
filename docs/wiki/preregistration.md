@@ -197,4 +197,4 @@ misleading a reader.
 
 ---
 
-[← Injection-recovery testing](injection-recovery.md) · *Statistical inference, 8 of 8* · [wiki index →](README.md)
+[← Injection-recovery testing](injection-recovery.md) · *Statistical inference, 9 of 9* · [wiki index →](README.md)

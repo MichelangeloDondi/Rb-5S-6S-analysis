@@ -81,14 +81,25 @@ def test_campaign_only_and_joint_bounds_are_same_order():
     assert joint < 4.0 * camp, (camp, joint)
 
 
-def test_every_subset_lies_below_the_nominal_prediction():
-    """The load-bearing claim of C3f: the bound excludes the predicted S0 at
-    the current priors, whichever subset carries the weight. `pred` is READ
-    from the CSV's own `S0_225mW_pred` row (v3.0.0: this used to be a 0.59
-    literal, hand-typed at the old 50 um prior, and went stale the moment the
-    priors moved to 64 um / rho=0.94 without this test noticing). The two
-    subsets in the CSV are checked here; the third (drop peak 4192, which
-    removes the pilot) is a LOPO row and is checked in the docs."""
+def test_the_two_full_subsets_lie_below_the_nominal_prediction():
+    """The primary and campaign-only bounds sit below the predicted S0.
+
+    RENAMED AND RESCOPED 2026-08-27. This test was called
+    `test_every_subset_lies_below_the_nominal_prediction` and its docstring
+    called that "the load-bearing claim of C3f: ... whichever subset carries
+    the weight". **The record retracts exactly that**:
+    `docs/PREREGISTRATION_RESULTS.md` says the statement that every subset
+    requires a lower intensity is withdrawn, and `S0_225mW_ub95_drop4192` =
+    0.366 sits ABOVE the prediction. The test stayed green only because it
+    excused the drop-4192 arm in a clause and read `pred` from the stale
+    0.348 cell. A test whose NAME asserts a retracted proposition will revive
+    it, so the name now says what the body checks: two subsets, not every
+    one. The drop-4192 arm is covered by
+    `test_the_leave_one_out_arms_are_checked_against_the_threshold` below.
+
+    `pred` is READ from the CSV's own `S0_225mW_pred` row (v3.0.0: this used
+    to be a 0.59 literal, hand-typed at the old 50 um prior, and went stale
+    the moment the priors moved without this test noticing)."""
     pred = val("S0_225mW_pred", "prediction")
     assert val("S0_225mW_ub95", "primary") < pred
     assert val("kappa_ub95_camponly", "robustness") * 0.225 < pred
@@ -113,8 +124,40 @@ def test_direction_indifference():
     assert float(row["value"]) < 30.0
 
 
-def test_lopo_no_single_peak_drives():
-    """Every leave-one-peak-out fit must still disfavour kappa=2.62."""
+def test_the_leave_one_out_arms_are_checked_against_the_threshold():
+    """The leave-one-out arms, measured against 2.706 and not against zero.
+
+    REPLACES `test_lopo_no_single_peak_drives` on 2026-08-27. That test's
+    NAME asserted the proposition the record has since withdrawn, and its
+    body could not have caught the defect: it asserted only positivity, and
+    only at the legacy kappa = 2.62 checkpoint, which sits far above the
+    predicted coefficient. Positivity was never the test. The threshold is
+    2.706, and the arms straddle it: bracketed to the value the constants
+    later gave, 4121 clears at both ends, 4154 and 4207 fail at both ends,
+    and 4192 straddles the threshold. No count is quotable.
+
+    This test pins the COMMITTED ROWS so they cannot silently revert, and pins the
+    2.62 checkpoint separately as the convergence check it actually is.
+
+    NOTE THE REFERENT. The committed `lopo_dchi2_pred` rows were evaluated at
+    whatever `KAPPA_PRED` the constants gave at run time, which is 1.545, the
+    pre-adjudication value. This record's own predicted coefficient is now
+    1.618, where each arm would sit higher by roughly the amount the full
+    profile rises over that interval, about half a unit. The count below
+    threshold is therefore stated at 1.545 and is provisional until the
+    five-hour refit runs."""
+    below = [pk for pk in ("4121", "4154", "4192", "4207")
+             if val("lopo_dchi2_pred", pk) < 2.706]
+    assert sorted(below) == ["4154", "4192", "4207"], (
+        f"the committed leave-one-out arms below 2.706 changed: {below}. "
+        f"This pins the COMMITTED ROWS at the pre-adjudication kappa_pred of "
+        f"1.545; it is not a claim that the record summarises them as a "
+        f"count, which it does not, because the arms are separate "
+        f"likelihoods and carrying them to 1.618 leaves 4192 inside the "
+        f"profile's own scatter of the threshold. If the refit has run, "
+        f"restate the finding rather than re-seeding this list.")
+    # the legacy checkpoint, which is a convergence check and speaks to
+    # nothing about the exclusion at the prediction
     for pk in ("4121", "4154", "4192", "4207"):
         assert val("lopo_dchi2_262", pk) > 0.0
 

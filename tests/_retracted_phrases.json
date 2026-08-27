@@ -1,0 +1,50 @@
+{
+  "_comment": [
+    "A retraction is not complete until the retracted string is absent from the",
+    "tree. Each entry is one retirement. `pattern` is a regex matched against",
+    "WHITESPACE-FLATTENED text, so a wrapped phrase cannot slip through a",
+    "line-based grep. `marker_window` is how many characters around a hit are",
+    "searched for a retraction marker: a hit that sits inside an explicit",
+    "withdrawal is the record doing its job, not a survival.",
+    "Seed the bank when a claim is retired, in the same commit that retires it."
+  ],
+  "markers": [
+    "withdrawn", "withdraw", "retired", "retracted", "used to read",
+    "used to say", "no longer", "until 2026-", "corrected 2026-",
+    "intermediate draft", "earlier draft", "an earlier version",
+    "first draft", "NOT a stable summary", "no count of arms",
+    "is not quotable", "do NOT summarise", "criterion corrected"
+  ],
+  "entries": [
+    {
+      "pattern": "all[ -]?positive[ -]?and[ -]?similar",
+      "retired": "2026-08-27",
+      "why": "positivity was never the test for the leave-one-out arms; the threshold is 2.706 and the arms span a factor of fourteen",
+      "marker_window": 400
+    },
+    {
+      "pattern": "three of (?:the )?four[a-z ,-]{0,40}(?:arms|below|threshold|clear)",
+      "retired": "2026-08-27",
+      "why": "a binary count of leave-one-out arms is not a stable summary: the arms are separate likelihoods and carrying them to the adopted kappa leaves one inside the profile's own scatter of the threshold",
+      "marker_window": 400
+    },
+    {
+      "pattern": "(?:survives|survive) dropping any one peak",
+      "retired": "2026-08-27",
+      "why": "withdrawn on the same rows it cited",
+      "marker_window": 400
+    },
+    {
+      "pattern": "only the DIFFERENTIAL[a-z ]{0,40}can bias a width",
+      "retired": "2026-08-27",
+      "why": "beta.py floats a centre per trace and density is constant within a trace, so a collisional shift is absorbed whether or not it varies across the sweep",
+      "marker_window": 400
+    },
+    {
+      "pattern": "closer to five to eight",
+      "retired": "2026-08-27",
+      "why": "an intermediate draft of the Orson density-null comparison; the committed like-for-like figure is about 24",
+      "marker_window": 400
+    }
+  ]
+}

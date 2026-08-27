@@ -135,7 +135,8 @@ Ellipticity shifts levels through the vector light shift, computed in
 `rb5s6s/polarisation.py`, and does not open a transition channel. The
 differential vector polarizability is 1.7 per cent of the differential
 scalar one at the drive wavelength. `results/stark_joint.csv` gives the
-calibrated prediction `S0_225mW_pred` as 0.348 MHz and the joint
+predicted `S0_225mW_pred` as 0.348 MHz, an ENVELOPE conditional on a waist
+never measured in the cell and on an assumed retro ratio, and the joint
 three-session bound `S0_225mW_ub95` as 0.258 MHz. Sized against the
 larger, the spread is 6.0 kHz at the campaign's highest power for fully
 circular light, or 4.5 kHz against the bound, small against

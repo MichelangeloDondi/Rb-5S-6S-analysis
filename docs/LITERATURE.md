@@ -204,7 +204,7 @@ recomputed here.
 | [Lee et al. 2010](lit/lee2010.md) | Cs 6S→8S | −7.25 ± 0.45 Hz/(mW/mm²) light shift | VERIFIED | an AC-Stark coefficient, not a collisional one, kept here because it is the closest analogue experiment there is, the same retro-reflected two-photon vapour-cell architecture as this work |
 | Lee et al., *J. Phys. B* (2010, the sibling to lee2010, not yet held) | Cs 6S→8S (self) | −588 ± 387 Hz/mPa pressure shift | REPORTED, abstract only | the direct collisional analogue to β_self, same group and line as lee2010, cite nothing further from it until the full text is read |
 | [Weller et al. 2011](lit/weller2011.md) | Rb 5S→5P₁/₂ (D1, self) | (0.69 ± 0.04)×10⁻⁷ Hz cm³ = 69 kHz per 10¹² cm⁻³ | VERIFIED | resonant dipole–dipole on an allowed line, the largest self-broadening mechanism there is, so a ceiling rather than an estimate for an S–S pair |
-| [Orson et al. 2021](lit/orson2021.md) | Rb 5S→6S (this exact transition) | null, no AC-Stark or density shift at 6 MHz resolution, N = 3×10¹¹–5×10¹³ cm⁻³ | VERIFIED | the only prior measurement attempt on this line, three orders of magnitude coarser than the bound below |
+| [Orson et al. 2021](lit/orson2021.md) | Rb 5S→6S (this exact transition) | null, no AC-Stark or density shift at 6 MHz resolution, N = 3×10¹¹–5×10¹³ cm⁻³ | VERIFIED | the only prior measurement attempt on this line. Its null is on the shift and this column is a width, so the two are only comparable once one is converted. Read as a shift rate over its own density span, on the transition axis, it is about [0.24](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_null_as_shift_rate") MHz per 10¹² cm⁻³; this record's pooled width bound implies a shift rate of [0.0098](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:width_bound_as_shift_rate") through the measured shift-to-width ratio, so like for like the gap is about [24](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_density_null_over_implied") times, and wider still once their one-sigma resolution is matched to this record's 95 per cent. Earlier versions of this cell said three orders of magnitude, then five to eight |
 | This work | Rb 5S→6S (self) | 0.03–0.05 MHz per 10¹² cm⁻³ bound, four-point 70–130 °C dataset | BOUND, not a measurement | 8–15× above the 3.4 ± 0.3 kHz per 10¹² cm⁻³ expectation, consistent but not constraining |
 
 ## 3. Transit-time lineshape
@@ -685,7 +685,8 @@ two-epoch design turns those nulls into measured coefficients.
   transition. **[CITE]** Their prior AC-Stark and density-shift nulls (on our
   C3d and C1 channels) are consistent with, and refined by, our dataset's
   bounds (S₀ < 0.63 MHz by profile likelihood, β_self a bound). They are also
-  the source of `DELTA_ALPHA_AU = +1093` (opposite sign by definition), and
+  the source of `DELTA_ALPHA_AU_ORSON2021 = +1093`, kept beside this record's
+  own `DELTA_ALPHA_AU = -1145` instead of pinning it, and
   our `stark_shift_S0_mhz` reproduces their predicted shift to the digit
   (`test_stark_S0_reproduces_orson2021`). Prior groups looked for these
   shifts on this line and saw nulls at ~MHz resolution. The drift-immune
@@ -798,8 +799,18 @@ work with McLaughlin as second author, and its successor
 [`ayachitula2024`](lit/ayachitula2024.md), the vol/year question resolved
 2026-08-03, both held) reports
 **null AC-Stark and density shifts at ~6 MHz resolution** (up to 10⁴ W/cm², N =
-3×10¹¹–5×10¹³ cm⁻³). Our bounds sharpen those 6 MHz nulls by more than an
-order of magnitude, and that sharpening is what is new here.
+3×10¹¹–5×10¹³ cm⁻³). That 6 MHz is a one-photon figure, so it is 12 MHz on
+the transition axis where a shift prediction lives. Neither null tests what
+this record tests, and the two fail differently. On the AC-Stark side the
+difference is a threshold and not a factor: their null sits eighteen times
+above the shift their own Δα predicts at their own conditions, so it tests
+neither size nor sign, while this record's bound sits below the shift
+predicted at its own conditions. On the density side their limit is a shift
+and this record's is a width, and once the measured shift-to-width ratio
+converts one into the other the gap is about twenty-four times, wider still
+once their one-sigma resolution is matched to a 95 per cent limit. Crossing
+the predicted signal is what is new here, not any ratio between two
+apparatuses.
 
 **Cross-alkali check, 2026-08-03.** [`kirankumar2011`](lit/kirankumar2011.md),
 a K 4S→6S two-photon isotope-shift and hyperfine paper (a Δn=2 s-s line, the

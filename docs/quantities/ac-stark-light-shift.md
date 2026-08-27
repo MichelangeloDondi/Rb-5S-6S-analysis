@@ -111,9 +111,13 @@ prevent.
 | Centre channel alone | $\lt 8.653$ MHz/W | | BOUND | [`centre_stark.csv`](../../results/centre_stark.csv) |
 
 **The prediction, for comparison rather than as a result.** $\kappa$ is
-predicted at [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W, giving $S_0 =$ [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at 225 mW, computed from
-$\Delta\alpha = 1093$ a.u. ([Orson 2021](../lit/orson2021.md)), a waist of
-64 µm and a retro ratio of 0.94. The bounds therefore sit below the prediction,
+predicted at [1.545](../../results/stark_joint.csv "ref:stark_joint:kappa_pred:prediction") MHz/W, giving $S_0 =$ [0.348](../../results/stark_joint.csv "ref:stark_joint:S0_225mW_pred:prediction") MHz at 225 mW, a waist of 64 µm and a retro ratio of 0.94. Those two cells
+were computed under the earlier $|\Delta\alpha| = 1093$ default and have not
+been regenerated since this record pinned its own 1145, which raises them by
+the ratio 1145/1093, about 4.8 per cent.
+ The file `results/stark_sweep.csv` carries the
+current shift, 0.364 MHz. The coefficient 1.618 MHz/W is that divided by the
+225 mW drive and has no committed row of its own, and its producer is the cheap one. The bounds therefore sit below the prediction,
 which is the interesting feature of the table and is discussed in section 4.
 
 **Two things the table does not say, stated here so that it cannot be read as
@@ -127,6 +131,114 @@ difference. That is worked out in
 [big picture chapter 8](../big_picture/08_when-a-joint-fit-is-legitimate.md),
 which is the page to read before quoting any of these numbers against each
 other.
+
+### The retired significance, and the two supports that did not hold
+
+Every bound in the primary constructions sits below the prediction, and until
+2026-08-27 this record called that an exclusion at 95 per cent, at roughly
+the two-sigma level. **On the primary three-session fit both halves hold**,
+and what the sentence lacked is two qualifications instead of a correction.
+The record spent one night discovering that, offering five wider retractions
+and withdrawing all five. They are listed at the end of this section.
+
+**What stands.** The 95 per cent one-sided limit on the full three-session
+fit, $\kappa \lt 1.147$ MHz/W, lies below every point of the predicted
+envelope, which runs 1.404 to 1.760 over the stated waist and retro band. So
+the prediction is excluded at 95 per cent at every geometry in that band.
+
+**Qualification one: the strength is a range and not a number.**
+$\Delta\chi^2$ runs 4.1 at the envelope's lower vertex to 5.7 at its upper,
+2.0 to 2.4 $\sigma$ under Wilks, and the same profile read as a posterior
+puts the computed 1145 a.u. in the upper 3 per cent, about 1.8 $\sigma$. A
+single calibrated two-sigma is what the record withdraws, not the existence
+of a significance. The envelope's own half-width is a two-vertex scan and
+must never be used as the denominator of one.
+
+**Qualification two, and it is the larger: on this construction the exclusion
+does not survive leaving one peak out.** At the predicted $\kappa$ the committed
+`lopo_dchi2_pred` rows read 8.75, 2.27, 1.12 and 0.61 for 993.4121, 993.4192,
+993.4154 and 993.4207 nm against a 2.706 threshold. **No count of arms is
+quoted here.** Each arm is a fit with one peak removed against its own
+minimum, so the arms do not share the full profile's derivative. Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable. The rows are
+evaluated at the pre-adjudication predicted $\kappa$ of 1.545 and not at
+this record's own 1.618, which is why the bracket above is quoted instead of
+a count. The record used to
+read those four as "all positive and similar" over a span of fourteen. Note
+too that drop-4192 is called the most conservative subset only because
+`run_stark_joint` gives that one drop a fine $\kappa$ grid, so it is the only
+arm whose bound can be read off at all.
+
+**An observation that looks like a third reason and is not.** The drop-4192
+arm of the table above, $\kappa \lt 1.626$, lands inside the predicted
+envelope and not below it. It cannot carry the retraction: its margin
+against the predicted point is half a per cent, several times smaller than
+the profile's own committed numerical scatter, and `RESULTS.md` C3f reads
+this margin from the primary construction alone and calls the subset columns
+a robustness range and not separately quotable limits. An earlier draft of
+this section led on it, which is the third leading reason this retraction has
+had to withdraw.
+
+**A caveat that runs the other way**, recorded because it is easy to
+over-read in this record's favour. The limit bounds the sum of three channels
+sharing the $P^2$ signature, of which the ramp is about a sixth. But the
+width grows as $S_0^2$, so a bound on $\kappa$ scales as the square root of
+that budget: the companions make the limit about 2.4 to 2.5 times
+conservative, not six. The record's own measured saturation-only tightening
+of the joint bound is of the same size, but it is classified
+NEEDS_EXTERNAL_TREE in `results/saturation_companion.csv` and is not
+committed as a digit, so it corroborates the scale and not the value. Which of the three channels is
+smallest varies by line: the pumping term is below the ramp on 993.4207 and
+993.4192 nm and above it on the other two. **The branching fractions 0.223 to
+0.372 are not commensurate with the ramp's ~1/6 share of the P-squared budget
+and this page put them on one line as though they were**, which a reader who
+checks concludes is false. The per-line statement is the checkable form and is
+carried in `docs/methods/04_the_composite_model.md`.
+
+**Five wider retractions were offered in one night and all five were
+withdrawn. They are named so that none is revived.**
+
+1. **The reduced chi-square of about 3.7.** It is `stark_sweep.csv`'s, a
+   property of C3d's width-only summary regression. The quoted limit is
+   C3f's, whose `ub95()` reads a plain 2.706 and whose own total sits below
+   one. This record had caught the same misattribution on 2026-08-04.
+2. **The coverage study's zeroth percentile.** Its subject is the same C3d
+   bound, and the reading was already withdrawn in-record as a like-for-like
+   error mixing railed and unrailed simulations. Restricted properly it is a
+   12th percentile of 41. Entries 1 and 2 are one category error made twice.
+3. **The 837-to-1038 construction spread.** Real and correctly computed, and
+   the two limits differ by
+   [1.231](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
+   at fixed geometry on both sides, about 23 per cent, and the tail
+   probabilities they imply differ by a factor of two, 0.0324 against 0.0165,
+   so neither is a third-digit effect and an earlier draft of this entry
+   called them one. **The figure is the committed like-for-like row and not
+   1038/837.** That ratio of 1.24 divides a geometry-marginalised percentile
+   by a central-geometry crossing, mixing the construction change with a
+   marginalisation. That is the not-like-for-like class the producer was
+   rewritten to remove, reintroduced here by hand. It does not bear on whether an exclusion
+   exists, since both readings put the computed value above the limit. It does
+   bear on the whole-envelope statement, and that caveat is stated in
+   Qualification one above instead of here.
+4. **The pass-to-pass spread of a factor of two.** Two different diagnostics
+   of near-identical size sit behind it, the 2026-08-17 three-pass warm chain
+   and the five cold multi-starts, and the 2026-08-19 correction records the
+   second as a display-normalisation artefact. Citing one factor for both is
+   the two-instruments-one-sentence class.
+5. **The drop-4192 arm.** Its bound lands inside the envelope and not above
+   it, its margin is several times smaller than the profile's own numerical
+   scatter, and `RESULTS.md` C3f reads the margin from the primary alone.
+
+**What survives all of this is the tension itself.** The computed 1145 a.u.
+sits in the upper
+[0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+of the posterior and Orson's 1093 in the upper
+[0.0404](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_orson2021"),
+under the posterior, and 0.017 and 0.016 under the crossing. Those two sit
+closer together than this profile's own numerical noise floor, so no ordering
+between them may be read. Neither pair is quotable
+to three digits, and the data prefer a smaller shift than the calculation
+predicts under both. This record simply does not claim a calibrated
+confidence level for that preference.
 
 ## 4. Why the experiment cannot do better
 
@@ -295,7 +407,7 @@ stands between this archive and a measurement. It converts the programme's
 largest open systematic into a measured quantity.
 
 **Measurement.** Whether the differential polarizability at 993 nm agrees with
-the computed 1093 a.u., which no experiment has yet tested on this line, and
+the computed value, which no experiment has yet tested on this line, and
 whether Orson 2021's null is a null or a resolution limit.
 
 **Competitive measurement.** Whether an intensity distribution can be read from

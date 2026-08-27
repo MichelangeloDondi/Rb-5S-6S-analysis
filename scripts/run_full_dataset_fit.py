@@ -853,7 +853,7 @@ def main(argv=None) -> int:
                 w.writerow(["lopo_dchi2_pred", pk,
                             f"{lopo[pk][round(KAPPA_PRED, 3)]:+.2f}", "",
                             "chi2(kappa_pred) - min with this peak dropped; "
-                            "all positive and similar = no single peak drives it"])
+                            "compare each against the 2.706 threshold and not against zero, since positivity was never the test. ON THIS CONSTRUCTION all four arms CLEAR the threshold, with margin, which the three-session joint fit does not: there one arm clearly excludes, two clearly do not, and the fourth sits inside that profile's own scatter of the threshold. No count of arms is quotable there. Note also that this construction carries gate_B4_prior_tension FAIL at 3.78 sigma on beta_self, which is degenerate with the width channel the bound is read from, so robust here means robust to leaving a peak out and not robust in every respect"])
                 if 2.62 in lopo[pk]:
                     w.writerow(["lopo_dchi2_262", pk, f"{lopo[pk][2.62]:+.2f}", "",
                                 "chi2(kappa=2.62) - min with this peak dropped"])

@@ -39,7 +39,7 @@ construction reads as model-independent and none of these are.
 | **Q-model-01** Does one lineshape model describe every condition? | the composite profile | 32 conditions of a temperature and power sweep | natural, transit, laser and collisional widths convolved | described | reduced chi-square 0.78 to 1.09, mean 0.89 | the accepted transit kernel and the waist of record | model |
 | **Q-width-01** Can the collisional and laser widths be separated? | the width split | one total width per condition, to 0.0032 MHz | the split into its parts | **not identified** | the split direction is constrained only to 0.0588 MHz, a factor of eighteen worse, at a condition number of 345 | the joint fit over the shared-width structure | identifiability |
 | **Q-beta-01** How fast do collisions broaden the line? | the collisional coefficient | widths across four densities | a rate per unit density | **bounded** | below 0.03 to 0.05 MHz per 1e12 per cubic centimetre, 95 per cent, per peak | the four-temperature construction, on a density scale from vapour-pressure curves | experimental, the density scale |
-| **Q-s0-01** How large is the light shift at full power? | the light-shift amplitude | line shapes across a power ladder | the shift amplitude through the shape | **bounded** | below 0.26 MHz at 225 mW, against 0.35 MHz predicted | the joint three-session fit, conditional on the waist of record | experimental, the waist, and identifiability if the three pooled sessions do not share it, since the coefficient goes as one over the waist squared. See [chapter 8](big_picture/08_when-a-joint-fit-is-legitimate.md) |
+| **Q-s0-01** How large is the light shift at full power? | the light-shift amplitude | line shapes across a power ladder | the shift amplitude through the shape | **bounded** | below 0.26 MHz at 225 mW, against 0.36 MHz predicted | the joint three-session fit, conditional on the waist of record | experimental, the waist, and identifiability if the three pooled sessions do not share it, since the coefficient goes as one over the waist squared. See [chapter 8](big_picture/08_when-a-joint-fit-is-legitimate.md) |
 | **Q-laser-01** How narrow was the laser? | the laser width | the total width and its trend | the laser part of it | **bounded** | below about 1.2 MHz on the laser axis, median 1.74 MHz across conditions | the same split as q-width-01, so conditional on it | identifiability |
 | **Q-geom-01** What is the beam waist? | the waist | nothing on this bench | accepted from the apparatus lineage | **not measured here** | taken as 64 micrometres, band 62 to 68 | the lineage, and a transit-width consistency argument | experimental, and it is the largest open systematic |
 | **Q-band-01** What is the excess outside the fit window? | the out-of-window residual | a real structured excess, 0.10 to 0.29 per cent of peak | a candidate mechanism, the lineshape rather than the atom | **unattributed, with a candidate** | survives per-trace cubic baselines, and tracks the model's own in-band profile height while vapour density is a null predictor | the production baseline and window | model, and see [the finding](notes/band_excess_is_model_form.md) |
@@ -263,10 +263,13 @@ rate the van der Waals anchor predicts, while the projected precisions sit an
 order of magnitude below it, which is what a detection at 9.7 sigma for an
 interleaved session and 3.0 at the archive's own noise level means. Panel B
 carries a genuine tension rather than a gap: the primary bound on the light
-shift sits below the predicted value, an exclusion at about the two-sigma
-level, and the robustness fit that drops one peak does not sit below it, so
-the exclusion is marginal and subset-dependent. Both bounds are drawn for that
-reason.*
+shift sits below the predicted value, and the robustness fit that drops one
+peak does not, so the ordering is subset-dependent. Both bounds are drawn for
+that reason. The exclusion holds on the full fit, its strength is a range
+and not a single two-sigma, and on the three-session construction it does not
+survive leaving one peak out: one arm clearly excludes, two clearly do not, and
+the fourth sits inside the profile's own scatter of the threshold, so no count
+of arms is quotable. RESULTS.md C3f carries all three statements.*
 
 a projection is not a result. The values drawn above are envelope calculations
 attached to specific session designs, and they are reported so the cost of a

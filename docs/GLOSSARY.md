@@ -35,6 +35,21 @@ signal grows as the *square* of the intensity, because each photon contributes
 one factor, and that square is what gives the light-shift distribution its
 usable shape ([methods 3](methods/03_the_ac_stark_ramp.md)). Full page: [doppler-free-two-photon](wiki/doppler-free-two-photon.md).
 
+**Crossover, three unrelated meanings.** The word is used here for three
+different things and none of them implies another. A **crossover resonance**
+is the spurious extra line that saturated-absorption spectroscopy shows at the
+midpoint of two real ones, produced by a single velocity class that one beam
+pumps and the other probes. This geometry produces none, because no velocity
+class is selected and the hyperfine components share no level, so every peak
+fitted here is a real transition. A **crossover pathway** is one of the
+sideband pairs that feed a single comb tooth, which adds amplitude to an
+existing tooth and never a line of its own. The **noise crossover** is the
+signal level at which a detector's constant electronic floor gives way to shot
+noise, and it is a voltage, not a frequency. Full pages:
+[doppler-free-two-photon](wiki/doppler-free-two-photon.md),
+[the-two-photon-comb](wiki/the-two-photon-comb.md),
+[weighted-least-squares](wiki/weighted-least-squares.md).
+
 **Doppler-free.** The property above: because the two photons come from
 opposite directions, the first-order Doppler shifts cancel and the line is not
 smeared by the atoms' thermal motion. It is the reason a hot cell can give a

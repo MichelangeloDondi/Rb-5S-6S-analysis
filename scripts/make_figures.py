@@ -2249,10 +2249,13 @@ def fig_hyperfine_pumping():
                 xytext=(1.42, ramp_khz + sat_khz + pump_hi * 0.5), fontsize=7.6,
                 color="#009E73", va="center", ha="left")
     cx.set_xlim(-0.55, 2.35)
+    # The budget ratio is NOT the factor on the bound. Width grows as S0^2,
+    # so a bound on kappa scales as the SQUARE ROOT of the width budget. This
+    # annotation printed the raw ratio as "times too loose" until 2026-08-27,
+    # which over-states the looseness by its own square root.
     cx.text(0.5, 0.965,
-            f"the fit assigns the whole right-hand bar\n"
-            f"to the left-hand one, so the bound comes\n"
-            f"out {total/ramp_khz:.1f} times too loose",
+            f"budget ratio {total/ramp_khz:.1f}\n"
+            f"bound loose by its root, {(total/ramp_khz) ** 0.5:.1f}",
             transform=cx.transAxes, fontsize=7.8, color="0.25", ha="center",
             va="top")
 
@@ -3304,7 +3307,7 @@ def fig_fit_gallery():
         # legend covered the apex and the points beside it in all four panels.
         # The left shoulder is flat background at this window in all four.
         ax_main.legend(fontsize=7, loc="upper left", frameon=True, framealpha=0.9)
-        # and headroom above the line, so the legend's lower corner clears the
+        # and headroom above the line, so the legend's lower vertex clears the
         # rising flank as well as the apex. Quarter-page panels are too narrow
         # for a two-line entry to fit beside the line without it.
         y0, y1 = ax_main.get_ylim()
@@ -5329,10 +5332,30 @@ def fig_achieved_vs_achievable():
     density-shaped mark here would render a spread the record does not carry.
 
     THE TENSION IN PANEL B IS THE RESULT, not a blemish to smooth. The primary
-    joint bound sits below the predicted value, which is an exclusion at about
-    the two-sigma level with little margin, and the robustness
-    subset that drops one peak does not sit below it. Both bounds are drawn,
-    because the distance between them is what makes the exclusion marginal.
+    joint bound sits below the predicted value and the robustness subset that
+    drops one peak does not. Both bounds are drawn, because the distance
+    between them is what makes the ordering subset-dependent.
+
+    WHAT THE RECORD NOW CLAIMS, and this docstring had it wrong twice. The
+    exclusion at 95 per cent STANDS on the primary construction: the limit
+    lies below every point of the predicted envelope. What was withdrawn on
+    2026-08-27 is the single calibrated two-sigma, for two reasons, and this
+    docstring gave neither. FIRST, the strength is a range, Delta_chi2 of 4.1
+    to 5.7 across the envelope. SECOND, and the larger, on this construction
+    the exclusion does not survive leaving one peak out. No count of arms is
+    quoted: each lopo_dchi2_pred arm is a fit with one peak removed against
+    its own minimum, so the arms do not share the full profile's derivative.
+    Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable.
+    The fuller full_dataset_fit construction is stronger and keeps all four.
+
+    The reason this docstring used to give, that the limit moves by a quarter
+    between two readings of one likelihood, is one of the five supports the
+    record explicitly WITHDREW: it bears on the tail probabilities and not on
+    whether an exclusion exists. Citing a retired support as the live reason
+    is the class named in the next paragraph, committed in the same file.
+    See RESULTS.md C3f. The class this instance belongs to is
+    a retracted claim surviving as a literal inside a producer, where no
+    prose sweep can see it.
     """
     from rb5s6s import constants as K
 

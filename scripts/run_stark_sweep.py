@@ -86,12 +86,20 @@ def main() -> int:
                     "REPLACED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead"])
         w.writerow(["S0_225mW_ub95_raw", "shared", f"{res['S0_225_ub95_raw']:.3f}", "",
                     "REPLACED diagnostic: un-inflated Wald bound (MHz)"])
+        # ENVELOPE, not CALIB, and the retag is the record's own rule
+        # applied. These rows depend on an effective waist never measured in
+        # the cell and on RHO_RETRO, which constants.py calls "an ASSUMPTION,
+        # not a measurement". docs/UNCERTAINTY.md section 1: an ENVELOPE
+        # input caps its result at ENVELOPE, and an ENVELOPE "must never
+        # carry a published digit". They were CALIB, which is the tag for an
+        # instrument calibration, and a 95 per cent significance was computed
+        # against them.
         w.writerow(["S0_225mW_pred", "shared", f"{res['S0_225_pred']:.3f}", "",
-                    f"predicted S0 at 225 mW (w0={C.W0_MEASURED_M*1e6:.0f}um prior, rho={C.RHO_RETRO}) for comparison"])
+                    f"predicted S0 at 225 mW (w0={C.W0_MEASURED_M*1e6:.0f}um prior, rho={C.RHO_RETRO}). ENVELOPE: conditional on an effective waist not measured in the cell and on an assumed retro ratio, so its band is an envelope over two opposite vertices of the +-1 sigma box and NOT a sigma band, and a sigma distance measured from it is not a sigma"])
         w.writerow(["S0_225mW_pred_lo", "shared", f"{res['S0_225_pred_lo']:.3f}", "",
-                    f"predicted S0 at 225 mW, w0={C.W0_BAND_M[1]*1e6:.0f}um, rho={C.RHO_RETRO-C.RHO_RETRO_ERR:.2f} (band LOW edge)"])
+                    f"SENSITIVITY ANCHOR, not a confidence bound: S0 re-evaluated at w0={C.W0_BAND_M[1]*1e6:.0f}um, rho={C.RHO_RETRO-C.RHO_RETRO_ERR:.2f}. Calling this a band edge turned a sensitivity scan into an interval by nomenclature alone"])
         w.writerow(["S0_225mW_pred_hi", "shared", f"{res['S0_225_pred_hi']:.3f}", "",
-                    f"predicted S0 at 225 mW, w0={C.W0_BAND_M[0]*1e6:.0f}um, rho={C.RHO_RETRO+C.RHO_RETRO_ERR:.2f} (band HIGH edge)"])
+                    f"SENSITIVITY ANCHOR, not a confidence bound: S0 re-evaluated at w0={C.W0_BAND_M[0]*1e6:.0f}um, rho={C.RHO_RETRO+C.RHO_RETRO_ERR:.2f}"])
         w.writerow(["chi2_red", "fit", f"{res['chi2_red']:.3f}", "",
                     f"over {res['n']} width points"])
         for p, s in res["sigma_laser_by_peak"].items():

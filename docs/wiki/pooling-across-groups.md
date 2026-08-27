@@ -203,4 +203,4 @@ the same one.
 
 ---
 
-[← The joint fit](joint-fit.md) · *Statistical inference, 3 of 8* · [Information criteria →](information-criteria.md)
+[← The joint fit](joint-fit.md) · *Statistical inference, 3 of 9* · [Information criteria →](information-criteria.md)

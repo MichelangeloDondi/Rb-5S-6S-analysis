@@ -173,4 +173,4 @@ print(f"fitted jointly: {joint:.3f}   truth: {w_true}")
 
 ---
 
-[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 8* · [Pooling across groups →](pooling-across-groups.md)
+[← Weighted least squares](weighted-least-squares.md) · *Statistical inference, 2 of 9* · [Pooling across groups →](pooling-across-groups.md)

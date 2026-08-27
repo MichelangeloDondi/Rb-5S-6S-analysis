@@ -4,6 +4,31 @@
 
 > Entries are dated records, newest last. The live value of anything named here is in the file the entry names, never in this page.
 
+## The package exported a polarizability the record disagreed with, 2026-08-25
+
+This record computed alpha(6S) - alpha(5S) = -1145 a.u. on 2026-07-17
+([`results/polarizability.csv`](../../results/polarizability.csv), row
+`delta_alpha_993`), finding the cited magnitude and the opposite sign.
+`rb5s6s.constants.DELTA_ALPHA_AU` went on exporting +1093 for five weeks and
+the shift predictor defaulted to it. The two were reconciled on 2026-08-25
+by owner decision on the theory, not by a measurement, the published value
+kept beside it as `DELTA_ALPHA_AU_ORSON2021`.
+
+No committed bound moved, which is why nothing caught it: every bound reads
+the magnitude. Three consumers written against +1093 broke when the
+constant caught up, repaired 2026-08-26. Two further defects in the value
+were found the same day, one now closed and one open.
+
+| defect | was | now |
+|---|---|---|
+| evaluation wavelength | 993.0 nm, which made the value more negative | 993.4181 nm, the literature line; the repair moved it 0.70 a.u. less negative |
+| 6S line-list truncation | open, its size unstated | still open, and sized at 4.2 to 21.7 a.u., which is 0.8 to 3.9 half-widths of the quoted band, so its top end puts the value outside that band entirely, because the tail standing in for the omitted states is calibrated at the static limit while the drive sits between 8P and 9P where the first omitted term is enhanced sevenfold |
+
+An earlier wording called both "making it less negative", true of the
+repairs and false of the defects. [RESULTS.md](../RESULTS.md) and the
+`delta_alpha_993` note now carry the open one, disclosed here alone until
+then.
+
 ## The 2026-08-17 corrections
 
 Four joint-fit quantities, a sweep-linearity claim, and a session-date label were corrected on 2026-08-17.
@@ -32,7 +57,7 @@ Several unrelated values were corrected on this date, tabulated below with the f
 
 ## The vector light shift's sublevel spread, 2026-08-20
 
-`run_polarisation_bound.py` hard-coded the differential scalar shift at 0.258 MHz, calling it "the committed differential scalar shift." That value is the 95 per cent upper bound, not a shift. The calibrated prediction is 0.348 MHz. The understated shift propagated into the published sublevel spread. The first correction repeated the fault one level down, pulling a rounded duplicate from a different file instead of the source CSV.
+`run_polarisation_bound.py` hard-coded the differential scalar shift at 0.258 MHz, calling it "the committed differential scalar shift." That value is the 95 per cent upper bound, not a shift. The predicted shift, an ENVELOPE conditional on a waist never measured in the cell, is 0.348 MHz. The understated shift propagated into the published sublevel spread. The first correction repeated the fault one level down, pulling a rounded duplicate from a different file instead of the source CSV.
 
 | stage | shift used | sublevel spread reported |
 |---|---|---|
@@ -66,3 +91,27 @@ the error from [3.48](../../results/centre_fisher.csv
 [0.48](../../results/centre_fisher.csv
 "ref:centre_fisher:sigma_amplitude_forecast:linear_drift_cycled"). Corrected
 on the v4.3 release pages of both repositories.
+
+## The collisional-shift entry and Orson's own axis, 2026-08-27
+
+Five board seats read the entry the night it was written, and four of
+its numbers did not survive. The sharpest sat inside a sentence the previous
+round had just corrected: fixing *which* resolution Orson's null used broke
+the *axis* that resolution belongs to. The entry now has a producer,
+[`run_collisional_shift_bound.py`](../../scripts/run_collisional_shift_bound.py),
+so its figures are rows rather than hand arithmetic.
+
+| quantity | was | now |
+|---|---|---|
+| Orson's null against the Stark prediction | nine times, mixing a laser-axis 6 MHz against a transition-axis 0.65 | eighteen times, both on the transition axis, where their one-photon 6 MHz is 12 |
+| this record's AC-Stark bound against Orson's null, on two pages | 23x (plan/01), twenty times (big_picture/04), both dividing shifts taken at different powers | about 13x, on the coefficient: their null is 12 MHz on the transition axis at 0.8 W, this bound is at 225 mW, and dividing the two shifts credits this record with the power ratio 3.56 |
+| this record's self-broadening column against Orson's density null (LITERATURE) | three orders of magnitude coarser | about [24](../../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:orson_density_null_over_implied") times, and a scale comparison rather than a bound against a bound, since their null constrains a shift and this column a width. **The original was overstated by roughly forty-fold**, in the opposite direction from the two above. (This cell read "five to eight times" until 2026-08-27, which was an intermediate draft of the same correction and not its result; the 160x that stood beside it was computed against that draft.) |
+| the collisional differential across 70-130 C | 0.036 MHz, with no density-scale systematic | 0.044 MHz, inflated by (1 + `N_SCALE_FRAC_SYST`) as `density.py` instructs every consumer to |
+| that differential against the light-shift bound | seven times smaller | 5.9 times smaller |
+| the Rahaman extrapolation across the same range | 24 kHz, which is arithmetically the 110-130 C span | 32 kHz, the rate re-anchored at each temperature |
+| the two sources' relation | "an independent direction" | one route: both run through Zameroski 2014 |
+| the ceiling beside the expectation | read as two routes corroborating | the expectation uses 0.87 of the ceiling raw against raw, so the ceiling is very nearly saturated |
+| Rahaman's shift-to-width against classical theory | "roughly twice" it | agrees to ten per cent; the two was an FWHM-against-HWHM normalisation |
+| `vanderwaals.py`'s shift machinery | "already carries" it | a width prefactor only; no shift prefactor exists in the package |
+| Orson's 0.09 MHz at 140 C | explained by the vapour-pressure correlation spread | their own stated density contradicts their own stated pressure by 1.4 |
+| Orson's section number | section 4, three times, plus a section 5 | section 3; the paper has four sections |

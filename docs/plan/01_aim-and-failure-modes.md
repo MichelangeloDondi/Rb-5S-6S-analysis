@@ -39,7 +39,14 @@ saw nothing', slower."** True as pure numbers: this record's bounds are
 confirmatory of Orson's nulls, same direction, tighter. The increment is by
 channel. The method (a closed-form two-photon ramp lineshape law plus a
 reference-free moment readout) is not pursued elsewhere. The S₀ bound
-(< 0.26 MHz, ~23× below Orson's ~6 MHz null) was extracted from shape alone
+(< 0.26 MHz on the transition axis. No single ratio against Orson's null is
+well posed: the two apparatuses differ in power convention, waist and beam
+architecture, and their null is a one-sigma resolution against this record's
+95 per cent limit. Each is compared with its own prediction instead. Theirs
+sits [18](../lit/orson2021.md "ref:lit:orson2021:null_over_own_prediction")
+times above the shift its own Δα predicts, so it tests neither size nor
+sign, where this bound sits below the shift predicted at its own
+conditions) was extracted from shape alone
 under a drifting lock. And a fixed-lock session would give the first measured
 light shift on this line, plus the collisional self-shift: positive
 observables, not sharper nulls.
@@ -113,8 +120,10 @@ unbiased moments) is committed: `tests/test_intrascan_drift.py`.
 
 **"A Δα bracket that wide discriminates nothing."** Partly answered by the
 joint three-session bound: S₀(225 mW) < 0.26 MHz sits below the predicted
-0.35 MHz at the accepted geometry (`results/stark_joint.csv`,
-`results/stark_sweep.csv`), so the record constrains the (Δα, intensity)
+shift at the accepted geometry. Two files carry that prediction and they
+disagree: `results/stark_sweep.csv` has 0.364 at the polarizability this
+record now pins, while `results/stark_joint.csv` still has 0.348 from
+before that decision, because its five-hour producer has not re-run, so the record constrains the (Δα, intensity)
 pair. What it cannot do is split the pair: either the intensity or |Δα| sits
 modestly below the values of record, and the most conservative data subset
 reaches the prediction itself and needs no headroom at all. A beam-profile

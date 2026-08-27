@@ -84,21 +84,64 @@ this epoch.
 
 ## Crossover resonances, and why this geometry has none
 
-Saturated-absorption spectroscopy has a crossover between every pair of
-lines. The mechanism needs two things: a shared level, so a pump transition
-can burn a population feature that a probe transition reads, and velocity
-selection, so a specific velocity class links the two frequencies.
-Doppler-free two-photon spectroscopy has neither. Every velocity class
-contributes at the same summed frequency, which is the point of the
-counter-propagating geometry, so there is no velocity class to share, and
-hyperfine components with different ground and excited levels share no state
-to burn.
+**One word, three meanings, and they are unrelated.** This repository uses
+"crossover" for three different things, and mixing them is easy because two
+of them live on neighbouring pages. A *crossover resonance* is the spurious
+extra line of saturated-absorption spectroscopy, and it is this section's
+subject. A *crossover pathway* is one of the sideband pairs that feed a single
+comb tooth, in [the two-photon comb](the-two-photon-comb.md). The *noise
+crossover* is the signal level at which a detector's constant electronic
+floor gives way to shot noise, in
+[weighted least squares](weighted-least-squares.md) and
+[photon counting](photon-counting.md). Nothing connects them beyond the
+word.
+
+**What a crossover resonance is**, because a reader who has not built a
+saturated-absorption lock has no reason to know. Take a pump beam and a
+counter-propagating probe through a warm vapour, and two transitions that
+share a level, at frequencies $\nu_1$ and $\nu_2$. An atom moving at
+velocity $v$ sees the two beams Doppler-shifted in opposite directions. At
+one particular speed, $v = (\nu_2-\nu_1)\lambda/2$, the pump comes into
+resonance with one transition at the same moment the probe comes into
+resonance with the other. That single velocity class is therefore addressed
+by both beams at once. The pump burns a population hole in it, the probe
+reads the hole, and a signal appears at the arithmetic midpoint of the two
+real lines, $(\nu_1+\nu_2)/2$, where no transition exists. Crossovers are
+often taller than the lines they sit between, and the reason is not the one
+usually given. The class they select sits at nonzero speed, so it is less
+populated than the zero-velocity class the ordinary saturated-absorption dip
+addresses. What makes them tall is that two classes feed one feature, moving
+at plus and minus that speed, where the dip has only the single class at
+rest. That is a factor of two before the Boltzmann reduction takes some of it
+back, and optical pumping adds more in an open system.
+
+**The mechanism needs two ingredients and this geometry supplies neither.**
+It needs a *shared level*, so that a hole burnt by one transition is visible
+to the other. And it needs *velocity selection*, so that one velocity class
+can link two different frequencies. In Doppler-free two-photon spectroscopy
+every velocity class contributes at the same summed frequency, which is the
+entire point of the counter-propagating geometry, so no velocity class is
+singled out and there is nothing for a second transition to be selected
+against. And the hyperfine components here differ in both their ground and
+their excited level, so they share no state in which a hole could be burnt.
+The absence is structural. It is not a matter of the crossovers being weak
+or unresolved, and a line found at the midpoint of two of these would need a
+different explanation entirely.
+
+**This is a feature and not only a curiosity.** A saturated-absorption
+spectrum of four lines carries six crossovers on top of them, and telling
+the two kinds apart is a standing chore. Every peak in the spectra this
+record fits is a real transition, which is why the four-line assignment
+needs no disentangling step.
 
 With a modulated drive, photon pairs mixing different sidebands might seem
-to make extra lines between the comb teeth. They do not. Every pathway with
-the same frequency sum lands on the same tooth and interferes there, so the
-tooth weights are Bessel functions of the total modulation depth, not sums
-over pairs.
+to make extra lines between the comb teeth. They do not, and the reason is
+interference and not absence. Every pathway with the same frequency sum
+lands on the same tooth, so the tooth weights are Bessel functions of the
+total modulation depth and not sums over pairs. Those pathways are the
+crossover pathways of the second meaning above, and
+[the two-photon comb](the-two-photon-comb.md) works out what happens to
+them when the retro delay stops them interfering cleanly.
 
 ## What can go wrong
 

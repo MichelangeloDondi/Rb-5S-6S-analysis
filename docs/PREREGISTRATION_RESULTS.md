@@ -2484,7 +2484,7 @@ wing-marginalized profile gives 0.195 MHz, dropping peak 4192 (which
 removes the entire pilot session) gives 0.355 MHz, and the rehearsal
 direction row sits at 10.5 units of chi square across the whole grid,
 indifference where the artifact printed 283,135. No single peak drives
-the result (all leave-one-peak-out rows positive and similar). Two
+the result (all leave-one-peak-out rows positive and similar). **WITHDRAWN 2026-08-27**: positivity was never the test. Against the 2.706 threshold the four arms span a factor of fourteen, and carried to the kappa of 1.618 one clearly excludes, two clearly do not, and the fourth sits inside the profile's own scatter of the threshold, so no count of arms is quotable. Two
 features of the corrected local minimum are logged as observations: the joint
 bound sits looser than its own campaign-only column, because the
 rehearsal data mildly prefer a positive shift and drag the profile's
@@ -2499,8 +2499,13 @@ requires a lower intensity than the prior assumes is retracted along with
 the headline: the primary and campaign-only subsets still sit below the
 prediction, the most conservative subset no longer does. The predicted
 coefficient kappa = 1.545 lies above the 95% limit but only by
-delta-chi-square of about 4.0, an exclusion at roughly the two-sigma
-level, not the clear rejection the inflated bound implied.
+delta-chi-square of about 4.0, not the clear rejection the inflated bound
+implied. **Two qualifications were added on 2026-08-27 and neither
+was stated here**: the strength is a range, Δχ² running 4.1 to 5.7 across the
+prediction's envelope, and the exclusion does not survive leaving one peak
+out: one arm clearly excludes, two clearly do not, and the fourth is
+indistinguishable from the threshold at 1.618. The
+exclusion on the full fit itself stands. See RESULTS.md C3f.
 
 **One observation logged, not interpreted.** With the wing nuisance free,
 the flipped-direction family settles about 54 units below its unflipped

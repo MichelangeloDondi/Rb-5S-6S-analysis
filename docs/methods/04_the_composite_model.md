@@ -245,8 +245,10 @@ module.
 not preserve $F$, so an atom that decays while crossing the beam can land in
 the other ground state and leave the line for good. The right panel is the
 reason this paragraph exists: the AC-Stark ramp, which the light-shift bound is
-built on, is the smallest of the three terms that grow as the square of the
-power.*
+built on, is about a sixth of the sum of the three terms that grow as the square of the
+power. Which of the three is smallest varies by line, since hyperfine pumping
+runs from below the ramp on 993.4207 and 993.4192 nm to above it on the other
+two, so no fixed ordering holds and the share is what transports.*
 
 **Two broadeners with the ramp's own power signature are deliberately absent
 from it.** Both grow as the square of the drive power, which is the ramp's
@@ -258,8 +260,11 @@ second is hyperfine pumping: every real 6S decay cascades through 5P, whose
 decay does not preserve $F$, so a transiting atom can leave the driven ground
 state mid-flight and the effective transit width rises. The ratio of the two
 widths is exactly the branching fraction $f$, because $\Gamma_{6S}/2\pi$ is
-the natural width, and $f$ is not resolved here beyond the bracket
-$1/3$ to $2/3$. Both are omitted for the same reason: injecting them means
+the natural width. The committed per-line values run 0.223, 0.248, 0.348 and
+0.372 across 993.4207, 993.4192, 993.4154 and 993.4121 nm, so $f$ straddles
+$1/3$ and the older bracket of $1/3$ to $2/3$ quoted here was too high at the
+bottom, which is why the pumping term falls below the ramp on the first two
+lines and above it on the last two. Both are omitted for the same reason: injecting them means
 committing to the two-level homogeneous saturation law with a two-photon Rabi
 frequency, which is standard practice rather than a derivation for this level
 structure. The consequence is measured rather than argued, a factor 2.8 on the

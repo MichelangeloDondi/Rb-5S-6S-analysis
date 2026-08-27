@@ -145,7 +145,13 @@ def test_the_file_does_not_count_itself(pattern):
 # the pattern this repository already uses for provenance. Lower it by
 # finding the real live-value file for an entry, never by deleting the
 # entry or by pointing it somewhere plausible.
-NAKED_ENTRY_BUDGET = 14
+# 14 -> 11 on 2026-08-26. Three were paid down by naming the file that
+# actually holds the live value: the waist entry gained its lit note, the
+# emphasis-capitals entry gained the test and allowlist that hold the rule
+# now, and the polarizability entry written the same day named its CSV row
+# from the start. Lower this again only by finding a real home for an entry,
+# never by deleting the entry or pointing it somewhere plausible.
+NAKED_ENTRY_BUDGET = 11
 
 
 def test_entries_naming_no_live_value_file_only_fall(capsys):

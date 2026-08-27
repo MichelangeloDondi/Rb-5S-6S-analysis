@@ -26,7 +26,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 33,
+    "line": 47,
     "writes": "0.030"
    },
    {
@@ -53,7 +53,7 @@
    },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 60,
+    "line": 85,
     "writes": "7.3"
    },
    {
@@ -70,7 +70,7 @@
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 58,
+    "line": 83,
     "writes": "14.4"
    }
   ],
@@ -111,12 +111,12 @@
    },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 64,
+    "line": 89,
     "writes": "3.48"
    },
    {
     "file": "docs/plan/01_aim-and-failure-modes.md",
-    "line": 97,
+    "line": 104,
     "writes": "3.48"
    },
    {
@@ -138,12 +138,12 @@
    },
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 66,
+    "line": 91,
     "writes": "0.48"
    },
    {
     "file": "docs/plan/01_aim-and-failure-modes.md",
-    "line": 99,
+    "line": 106,
     "writes": "0.48"
    },
    {
@@ -179,6 +179,209 @@
   "source_file": "results/centre_fisher.csv",
   "source_value": "0.0647"
  },
+ "collisional_shift_bound:bound:shift_bound_differential": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 336,
+    "writes": "0.044"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "0.04352"
+ },
+ "collisional_shift_bound:comparison:light_shift_over_collisional": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 338,
+    "writes": "5.9"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "5.93"
+ },
+ "collisional_shift_bound:comparison:orson_density_null_over_implied": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 207,
+    "writes": "24"
+   },
+   {
+    "file": "docs/history/01_bounds-and-the-light-shift.md",
+    "line": 108,
+    "writes": "24"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "24.5"
+ },
+ "collisional_shift_bound:comparison:orson_null_as_shift_rate": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 207,
+    "writes": "0.24"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "0.2414"
+ },
+ "collisional_shift_bound:comparison:width_bound_as_shift_rate": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/LITERATURE.md",
+    "line": 207,
+    "writes": "0.0098"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "0.0098"
+ },
+ "collisional_shift_bound:expectation:expectation_over_bound": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 376,
+    "writes": "0.87"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "0.874"
+ },
+ "collisional_shift_bound:expectation:shift_expected_differential": {
+  "producer": "run_collisional_shift_bound.py",
+  "quoting_sites": [
+   {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 374,
+    "writes": "0.032"
+   }
+  ],
+  "source_file": "results/collisional_shift_bound.csv",
+  "source_value": "0.03170"
+ },
+ "delta_alpha_posterior:budget:geometry_share_of_variance": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 40,
+    "writes": "0.0153"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "0.0153"
+ },
+ "delta_alpha_posterior:comparison:posterior_prob_above_computed_here": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 67,
+    "writes": "0.0324"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 137,
+    "writes": "0.0324"
+   },
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 233,
+    "writes": "0.0324"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "0.0324"
+ },
+ "delta_alpha_posterior:comparison:posterior_prob_above_orson2021": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 235,
+    "writes": "0.0404"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "0.0404"
+ },
+ "delta_alpha_posterior:estimator:sigma_from_zero": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 36,
+    "writes": "0.35"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 133,
+    "writes": "0.35"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "0.35"
+ },
+ "delta_alpha_posterior:limit:construction_spread": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 62,
+    "writes": "1.231"
+   },
+   {
+    "file": "docs/quantities/ac-stark-light-shift.md",
+    "line": 210,
+    "writes": "1.231"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "1.231"
+ },
+ "delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 34,
+    "writes": "1038"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 131,
+    "writes": "1038"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "1038"
+ },
+ "delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile": {
+  "producer": "run_delta_alpha_posterior.py",
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 32,
+    "writes": "837"
+   },
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 129,
+    "writes": "837"
+   }
+  ],
+  "source_file": "results/delta_alpha_posterior.csv",
+  "source_value": "837"
+ },
  "full_dataset_fit:kappa_ub95:primary": {
   "producer": "run_full_dataset_fit.py",
   "quoting_sites": [
@@ -201,7 +404,7 @@
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 47,
+    "line": 61,
     "writes": "1.2"
    }
   ],
@@ -244,17 +447,46 @@
   "source_file": "docs/lit/orson2021.md",
   "source_value": "-1093"
  },
+ "lit:orson2021:density_shift_bound_mhz_per_torr": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 309,
+    "writes": "30"
+   }
+  ],
+  "source_file": "docs/lit/orson2021.md",
+  "source_value": "30"
+ },
+ "lit:orson2021:null_over_own_prediction": {
+  "producer": null,
+  "quoting_sites": [
+   {
+    "file": "docs/big_picture/04_what-2025-delivered.md",
+    "line": 87,
+    "writes": "18"
+   },
+   {
+    "file": "docs/plan/01_aim-and-failure-modes.md",
+    "line": 46,
+    "writes": "18"
+   }
+  ],
+  "source_file": "docs/lit/orson2021.md",
+  "source_value": "18"
+ },
  "saturation_companion:C3d:factor_with_saturation_ratio_-1p2362": {
   "producer": null,
   "quoting_sites": [
    {
     "file": "docs/history/01_bounds-and-the-light-shift.md",
-    "line": 47,
+    "line": 72,
     "writes": "2.75"
    },
    {
     "file": "docs/plan/00_the-case.md",
-    "line": 117,
+    "line": 200,
     "writes": "2.75"
    }
   ],
@@ -264,11 +496,6 @@
  "stark_joint:S0_225mW_pred:prediction": {
   "producer": "run_stark_joint.py",
   "quoting_sites": [
-   {
-    "file": "docs/plan/00_the-case.md",
-    "line": 85,
-    "writes": "0.35"
-   },
    {
     "file": "docs/quantities/ac-stark-light-shift.md",
     "line": 114,
@@ -287,8 +514,13 @@
     "writes": "0.26"
    },
    {
+    "file": "docs/UNCERTAINTY.md",
+    "line": 341,
+    "writes": "0.26"
+   },
+   {
     "file": "docs/plan/00_the-case.md",
-    "line": 74,
+    "line": 88,
     "writes": "0.26"
    },
    {
@@ -348,6 +580,30 @@
   "source_file": "results/stark_joint.csv",
   "source_value": "1.066"
  },
+ "stark_sweep:S0_225mW_pred:shared": {
+  "producer": "run_stark_sweep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/plan/00_the-case.md",
+    "line": 99,
+    "writes": "0.364"
+   }
+  ],
+  "source_file": "results/stark_sweep.csv",
+  "source_value": "0.364"
+ },
+ "stark_sweep:chi2_red:fit": {
+  "producer": "run_stark_sweep.py",
+  "quoting_sites": [
+   {
+    "file": "docs/wiki/reduced-chi-squared.md",
+    "line": 116,
+    "writes": "3.7"
+   }
+  ],
+  "source_file": "results/stark_sweep.csv",
+  "source_value": "3.705"
+ },
  "wavemeter_reconstruction:settle_tau_min:2025-06-11": {
   "producer": "run_wavemeter_reconstruction.py",
   "quoting_sites": [
@@ -406,7 +662,7 @@
    },
    {
     "file": "docs/plan/01_aim-and-failure-modes.md",
-    "line": 90,
+    "line": 97,
     "writes": "99.8"
    }
   ],

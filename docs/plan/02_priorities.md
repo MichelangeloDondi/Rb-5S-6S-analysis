@@ -207,6 +207,46 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
 
 **stage 2, handle strength (S₀ ∝ (1+ρ)P/w₀²), served by two waists.**
 
+**Why two and not simply a tighter one, which this chapter had never said.**
+A single waist cannot separate the atomic physics from the geometry: the
+width channel constrains κ ∝ Δα(1+ρ)/w₀², so Δα and the beam enter as one
+product and no amount of signal splits them. Measuring κ at two waists in the
+same session does split them, because
+
+    κ(w₁) / κ(w₂) = (w₂/w₁)²
+
+and **Δα cancels exactly**, so the ratio is a statement about the beam that
+does not depend on the atomic physics.
+
+**What the ratio does not buy, stated because an earlier draft of this
+passage claimed all three.** It is a ratio, so it fixes w₂/w₁ and no
+absolute waist. It cancels Δα but **not (1+ρ)**: the correct identity is
+κ(w₁)/κ(w₂) = [(1+ρ₁)/(1+ρ₂)]·(w₂/w₁)², and reaching a second waist means
+changing the focusing optics, which is exactly what moves the retro overlap
+that ρ describes, a quantity `constants.py` already calls an assumption
+and not a measurement. So the pair measures the combination w₀²/(1+ρ),
+which is the same degeneracy one level down. And it does not separate the
+ramp from its two companions, because atomic saturation and hyperfine
+pumping share the ramp's inverse-fourth-power dependence on the waist, so
+both configurations carry the same mixture and their ratio is blind to it.
+At 16 µm the weak-field statement that underwrites that scaling has itself
+broken down, the saturation parameter having risen from a few per cent at
+64 µm to well above one.
+
+**What the pair does buy, which is still the argument for the second
+configuration.** It falsifies a mis-scaled geometry: if the effective waists
+do not stand in the ratio the bench implies, the two κ values say so
+directly, and that is the one systematic the 2025 record could not touch
+from inside its own data. **And the handle that finishes the job is the
+skew**, item 6 below, which grows as the cube of S₀ where symmetric power
+broadening grows as its square. It is the one signature the ramp has that
+its companions do not, and one this record already has the third-cumulant
+machinery to read. **The tight waist buys signal, the pair calibrates the
+geometry, and the skew separates the ramp.** Only the three together turn
+the null into a measurement. The 2025 dataset's own limit is the
+demonstration of what any one of them leaves behind: a null on a product.
+
+
 6. **Small waist (16 µm), the Stark, skew and lineshape-form configuration**:
    ~16× more S₀ than 64 µm, so the skew (∝ S₀³) becomes measurable, and at the
    cliff (S₀ ≫ linewidth) the triangular ramp is directly visible. The skew's
@@ -233,8 +273,8 @@ the protocol selected. Runs first in §9 D1, ahead of the export below.
    threshold at 1.68 eV). Two-photon saturation leaves 1–2 W of headroom at
    the measured waist, where the on-axis saturation parameter is 0.033 at
    225 mW and falls as the inverse fourth power of the waist, so a wider
-   focus only adds headroom. The predicted on-axis shift at 225 mW is 0.35 MHz at the accepted
-   measured waist, with a band of 0.285 to 0.404 MHz across the waist and retro
+   focus only adds headroom. The predicted on-axis shift at 225 mW is 0.36 MHz at the accepted
+   measured waist, with an envelope of 0.32 to 0.40 MHz across the waist and retro
    priors (`results/stark_sweep.csv`), against Γ = 3.49 MHz, and the 2025
    dataset's amplitude ∝ P² to 225 mW confirms the headroom. At 16 µm the
    line is already saturated at 225 mW, so power is not the knob there. The

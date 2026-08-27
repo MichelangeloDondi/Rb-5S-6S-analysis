@@ -26,26 +26,70 @@ as a bound. Concretely:
   waist above 64 µm, so the working band is 62–68 µm and ρ = 0.94 ± 0.04.
   Derived in [the lineshape chapter](../methods/02_the_lineshape.md) and
   assembled in [the composite model](../methods/04_the_composite_model.md).
-- **The light-shift bound sits just below its own prediction.** S₀(225 mW)
-  < 0.26 MHz (95%, from a joint full-profile fit of three sessions, every
-  trace with a free centre so the drifting laser costs nothing. An earlier,
-  tighter figure was cold-start-inflated and is retracted, preregistration
-  addendum 24). The predicted 0.36 MHz at the measured geometry puts the
-  bound **1.4× below it**, equivalently |Δα| ≲ 812 a.u. against the 1145 a.u.
-  the prediction is built on, which is [Orson 2021](../lit/orson2021.md)'s
-  computed value and the repository's `DELTA_ALPHA_AU`. That bracket is
-  derived rather than typed, the constant scaled by the bound over the
-  prediction, so it moves whenever either of them does, and both of them are
-  read from `results/stark_joint.csv` and `results/stark_sweep.csv`. The
-  in-repo recompute of §3 is a different number, −1145 a.u., and it is not
-  what the prediction uses. The tension is modest, and the most conservative
-  data subset (dropping the peak that carries the campaign-morning
-  session) reaches the prediction itself. Either the intensity sits
-  slightly lower than the accepted geometry implies, or |Δα| is slightly smaller than
-  computed. A beam-profile measurement decides which. More than twenty times
-  below Orson's ~6 MHz null, from shape alone.
-  There is a third candidate, and it is the reason the bound is quoted where
-  it is rather than lower. Two effects broaden the line with the same
+- **The width channel returns the differential polarizability itself, and it
+  is a null.** Taking the geometry as a stated prior and inverting the usual
+  comparison, the magnitude comes out below
+  [837](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_profile")
+  a.u. in this record's own construction and below
+  [1038](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:delta_alpha_abs_ub95_posterior")
+  a.u. read as a posterior over the same committed likelihood, against the
+  [0.35](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:estimator:sigma_from_zero")
+  σ that separates the fit from zero. **Which uncertainty dominates depends on
+  which row you take**: the posterior's spread is the data's, the geometry
+  priors carrying
+  [0.0153](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:budget:geometry_share_of_variance")
+  of its variance, while the quoted limit's whole ±79 is geometric, because
+  the crossing behind it is a fixed committed number. Beam metrology sharpens
+  the second and not the first. The older hand-scaled form, |Δα| ≲ 812 a.u.,
+  is derived rather than typed, and it is the same formula one micrometre
+  away: 837 at 65 µm against 812 at the pinned 64, differing by exactly
+  (65/64)² and by nothing else, so the two agreeing is arithmetic and not
+  corroboration.
+
+  The bound behind it is S₀(225 mW) < 0.26 MHz (95%, from a joint
+  full-profile fit of three sessions, every trace with a free centre so the
+  drifting laser costs nothing. An earlier, tighter figure was
+  cold-start-inflated and is retracted, preregistration addendum 24). The
+  predicted 0.36 MHz at the measured geometry sits above it by a factor of
+  about 1.4. **The exclusion holds on the full fit**, the limit lying
+  below every point of the predicted envelope, and this bullet used to state
+  it without its two qualifications. Its strength is a range, 2.0 to 2.4 σ
+  across the envelope, and on this construction it does not survive leaving one
+  peak out: one arm clearly excludes, two clearly do not, and the fourth sits
+  inside the profile's own scatter of the threshold, so no count of arms is
+  quotable. The fuller archive fit is stronger and keeps all four, and carries
+  a failing prior-tension gate of its own. Separately the limit moves by
+  a factor of [1.231](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:limit:construction_spread")
+  between two readings of one likelihood, about 1.104 of which is generic to
+  those two readings and not a property of this fit. **The gap is not
+  withdrawn, only the number attached to it**: the computed value sits in the
+  upper tail at posterior probability
+  [0.0324](../../results/delta_alpha_posterior.csv "ref:delta_alpha_posterior:comparison:posterior_prob_above_computed_here")
+  and at 0.017 under the crossing, real under both and quotable to neither's
+  third digit, and the primary limit sits below the whole predicted envelope.
+  Either the intensity sits lower than the accepted geometry implies, or |Δα|
+  is smaller than computed, or the forward model is missing something that
+  suppresses the width response to power. A beam-profile measurement
+  separates the geometry reading from the other two.
+
+  The prediction is built on the magnitude of this repository's own
+  recompute, **−1145 a.u.** (§3), the value `DELTA_ALPHA_AU` now carries.
+  [Orson
+  2021](../lit/orson2021.md)'s computed value is 1093, about five per cent
+  smaller and of the other sign, kept beside ours as
+  `DELTA_ALPHA_AU_ORSON2021`. The sign is adjudicated and not measured, and
+  no bound here depends on it, because every bound reads the magnitude. Set
+  against the only prior search on this line, the comparison that transports
+  is each bound against its own prediction, because no single cross-apparatus
+  ratio survives: the two differ in power convention, waist and beam
+  architecture, and their figure is a one-sigma resolution against this
+  record's 95 per cent limit. Orson's null sits
+  [18](../lit/orson2021.md "ref:lit:orson2021:null_over_own_prediction")
+  times above the shift their own Δα predicts, so it tests neither the size
+  nor the sign, where this bound sits below the shift predicted at its own
+  conditions.
+  The third of those readings has a named mechanism, and it is the reason the
+  bound is quoted where it is rather than lower. Two effects broaden the line with the same
   square-of-power signature as the ramp and are absent from the forward model
   that produced the bound: atomic saturation, and hyperfine pumping through
   the real cascade, which sends 2 to 6 per cent of transiting atoms into the
@@ -55,7 +99,7 @@ as a bound. Concretely:
   both the signal-weighted-to-on-axis span and the branching fraction's
   variation across the four lines, which figure 23 computes per line. Injecting the saturation term and
   re-profiling tightens this bound by 2.21, which would widen the bracket
-  from 1.3× to about 3× rather than relieving it. The committed bound does
+  from 1.4× to about 3× rather than relieving it. The committed bound does
   not move, because the injected law is the two-level homogeneous form used
   with a two-photon Rabi frequency, which is standard practice and not a
   derivation for this level structure, so the effect is carried as a stated
@@ -66,9 +110,11 @@ as a bound. Concretely:
 
   ![the hyperfine branch, how often it fires, and the three terms it competes with](../../figures/fig23_hyperfine_pumping.png)
 
-  *The third candidate, drawn. The bound is built on the AC-Stark ramp, which
-  is the smallest of the three terms that broaden the line as the square of the
-  power. The other two are absent from the model that produced it, and the
+  *The model-incompleteness reading, drawn. The bound is built on the AC-Stark ramp, which
+  is about a sixth of the sum of the three terms that broaden the line as the
+  square of the power. Which of the three is smallest varies by line, since
+  hyperfine pumping runs from below the ramp on 993.4207 and 993.4192 nm to
+  above it on the other two, so no fixed ordering holds. The other two are absent from the model that produced it, and the
   second of them is the one worth a picture: the 5P decay does not preserve
   $F$, so an atom that decays while crossing the beam can land in the other
   ground state, hundreds of linewidths away, and is gone from the line rather

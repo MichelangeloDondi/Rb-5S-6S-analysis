@@ -246,4 +246,4 @@ HISTORY.md labels the change interval construction, not new data.
 
 ---
 
-[← wiki index](README.md) · *Statistical inference, 1 of 8* · [The joint fit →](joint-fit.md)
+[← wiki index](README.md) · *Statistical inference, 1 of 9* · [The joint fit →](joint-fit.md)

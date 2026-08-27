@@ -231,4 +231,4 @@ print(f"  Bayesian: {d_bic:+.1f}  -> prefers the "
 
 ---
 
-[← Pooling across groups](pooling-across-groups.md) · *Statistical inference, 4 of 8* · [Identifiability →](identifiability.md)
+[← Pooling across groups](pooling-across-groups.md) · *Statistical inference, 4 of 9* · [Identifiability →](identifiability.md)

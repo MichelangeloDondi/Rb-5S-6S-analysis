@@ -18,7 +18,7 @@
 > sentences and then defines every term and symbol used anywhere here.
 >
 > **The concepts behind the measurement: [the wiki](docs/wiki/README.md)**,
-> fifty-four pages in eight clusters, from the atomic structure to what the
+> fifty-five pages in eight clusters, from the atomic structure to what the
 > fit determines, each with figures and most with a runnable snippet. It
 > stands on its own.
 
@@ -76,8 +76,8 @@ optical table, laser and lenses, and not re-measured in this campaign: the predi
 weakly through its transit kernel, and it is the largest open systematic in
 the record.
 
-Two robustness questions were raised about the light-shift bound, and
-[`docs/RESULTS.md`](docs/RESULTS.md) records both. The louder one is closed:
+Three robustness questions were raised about the light-shift bound, and
+[`docs/RESULTS.md`](docs/RESULTS.md) records all three. The louder one is closed:
 independent optimisations appeared to disagree about the bound by a factor of
 two, the disagreement was diagnosed as the diagnostic's own display
 normalisation, and anchoring the curves to absolute chi-square puts all five
@@ -332,14 +332,14 @@ measurement that would lift it.
 |---|---|---|---|
 | Collisional self-broadening **β_self** | ≲ 0.03-0.05 MHz per 10¹² cm⁻³ (95% per peak, four-point 70/90/110/130 °C density lever) | bound | partly delivered already by folding the dataset's 130 °C point into the density lever (2026-08-02). Same-session 150–170 °C points and a lower between-block scatter are still needed for a measurement |
 | 2025 laser linewidth **σ_laser** | 1.75–2.15 MHz across the four temperature blocks (transition axis, so 0.88–1.08 MHz per photon). 95% bound 1.2 MHz per photon, equivalently 2.4 MHz on the transition axis, at the accepted lineage waist, rising with w₀ | bound | beam-profile w₀ |
-| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.36 predicted at the measured lineage waist, see [RESULTS](docs/RESULTS.md). Two robustness questions were raised and both are set out below the table. | bound | fixed lock + tighter focus |
+| AC-Stark coefficient **S₀(225 mW)** | < 0.26 MHz (95%, joint three-session profile likelihood at the unscaled 2.706 threshold. Below the 0.36 predicted at the measured lineage waist, see [RESULTS](docs/RESULTS.md). Three robustness questions were raised and all three are set out below the table. | bound | fixed lock + tighter focus |
 | Power scaling | width: no power trend (3–8% block scatter); amplitude departs from P², replicated and brightness-ordered | null + a measured departure | — |
 | Beam waist **w₀** | 64 µm, Rajasree's direct measurement in the same conditions (same optical table, laser and lenses), not re-measured in this campaign. Rajasree's 2020 OIST thesis recorded a 128 µm 1/e² diameter on a profiler, through the same 150 mm lens, at 130 °C, in the same retro geometry, on the same laser model. Nieddu 2019 quotes the identical 128 µm on the previous laser | measured (lineage) | a knife-edge scan on this bench would confirm it here |
 | Differential polarizability **Δα(993 nm)** | recomputed −1145 a.u.; \|Δα\| within ~5% of Orson 2021's 1093 but opposite sign. Orson's side is verified from the typeset PDF (convention stated in words, value repeated in SI, his own worked −0.66 MHz reproduced here at −0.653), so the disagreement is real rather than a units artifact ([THEORY_NOTE §5](docs/THEORY_NOTE.md)); this work's sign is anchored to the measured static α and tune-out | calculated | sign adjudicated 2026-08-24 and taken as the package value, a decision on the theory; the experiment that would settle it, the fixed-lock pull direction, is unrun |
 | First **5S–6S magic wavelengths** (scalar) | ≈ 1203.9 / 1287.9 / 1339.6 nm, a trap there would hold both states without pulling the 993 nm line. The 1204 nm crossing sits on the smooth part of the curve and is the practical one, and the other two lie hard against 6S→nP resonances, where trap-photon scattering is high. No published values found to the depth searched (2026-07-17) | calculated (envelope) | vector term under circular polarization, and a trapped-atom experiment |
 
-**The two robustness questions on the AC-Stark bound, moved out of the
-table because a paragraph inside a cell cannot be scanned.** Two robustness questions were raised. The multi-start alarm is CLOSED, diagnosed as the diagnostic's own display normalisation and settled by anchoring to absolute chi-square, where the five independent starts sit 4.66 to 26.29 above the production optimum and none enters the confidence region. The code-version question has its cause identified as of 2026-08-20, and its size is being measured. A commit sweep found the fit's point count changing at exactly one commit, which renamed a vocabulary across the tree and regenerated the committed ruler CSVs as a side effect, shifting fitted rates in their eleventh digit. A shift that small still moves a discrete trim boundary and admits five more samples, so the inputs were never byte-identical and no arithmetic is defective. Whether five samples account for the whole reported movement is the open half, and the primary bound above is unaffected either way. Loose by a factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it. That factor comes from a companion note that no producer regenerates, so it is weaker evidence than the bound it qualifies)
+**The three robustness questions on the AC-Stark bound, moved out of the
+table because a paragraph inside a cell cannot be scanned.** The third and largest is the leave-one-out fragility: the four arms span a factor of fourteen, and carried to this record's own predicted kappa one clearly excludes, two clearly do not, and the fourth sits inside the profile's own numerical scatter of the threshold, so no count of arms is a stable summary of this construction. The fuller full-archive fit is tighter and clears on all four arms, and carries a failing prior-tension gate of its own. The multi-start alarm is CLOSED, diagnosed as the diagnostic's own display normalisation and settled by anchoring to absolute chi-square, where the five independent starts sit 4.66 to 26.29 above the production optimum and none enters the confidence region. The code-version question has its cause identified as of 2026-08-20, and its size is being measured. A commit sweep found the fit's point count changing at exactly one commit, which renamed a vocabulary across the tree and regenerated the committed ruler CSVs as a side effect, shifting fitted rates in their eleventh digit. A shift that small still moves a discrete trim boundary and admits five more samples, so the inputs were never byte-identical and no arithmetic is defective. Whether five samples account for the whole reported movement is the open half, and the primary bound above is unaffected either way. Loose by a factor 2.21, because atomic saturation broadens with the same power signature and is deliberately absent from the model behind it. That factor comes from a companion note that no producer regenerates, so it is weaker evidence than the bound it qualifies)
 
 
 The last row of the table, drawn. The lower panel shows why the crossings
@@ -462,14 +462,14 @@ try it on your own line by editing one dictionary. Each stage reads the
 previous stages' output in `results/`:
 
 ```bash
-bash scripts/run_all.sh   # 29 analysis stages in dependency order, then the
+bash scripts/run_all.sh   # 31 analysis stages in dependency order, then the
                           # figures, docs/RESULTS.md, and the CSV status column
 ```
 
 Re-running any stage reproduces its committed CSV in `results/` within the
 tolerance `scripts/verify_results_fresh.py` states, and to the printed digit
 in the environment [`results/ENVIRONMENT_OF_RECORD.md`](results/ENVIRONMENT_OF_RECORD.md)
-records. The runner writes the core subset of the 72 committed CSVs, and
+records. The runner writes the core subset of the 74 committed CSVs, and
 the rest have their own scripts, several needing raw trees that stay
 outside the repository. The lock-drift measurement and its audit trail reproduce from
 a clone with no raw traces at all, off the committed acquisition clock.

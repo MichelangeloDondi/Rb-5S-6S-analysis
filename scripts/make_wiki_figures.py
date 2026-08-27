@@ -1571,6 +1571,90 @@ def fig_the_noise_law():
     _save(fig, "wiki_the_noise_law.png")
 
 
+def fig_reduced_chi_squared_1():
+    """The sampling spread of chi2_red collapses with the degrees of freedom.
+
+    The panel exists because a bare chi2_red is uninterpretable: 1.3 is
+    unremarkable on ten degrees of freedom and a crisis on ten thousand.
+    """
+    from scipy import stats
+    fig, ax = plt.subplots(figsize=(7.4, 3.6))
+    for dof, colour, style in ((10, ACCENT3, ":"), (100, ACCENT, "--"),
+                               (1000, ACCENT2, "-")):
+        x = np.linspace(0.2, 4.2, 1600)
+        y = dof * stats.chi2.pdf(x * dof, dof)
+        ax.plot(x, y / y.max(), style, color=colour, lw=1.6,
+                label=f"ν = {dof}, sd = {np.sqrt(2 / dof):.2f}")
+    ax.axvline(1.0, color=INK, lw=0.9)
+    ax.annotate("expected value 1", xy=(1.0, 1.16), xytext=(1.45, 1.16),
+                fontsize=8, color=INK, va="center",
+                arrowprops=dict(arrowstyle="-", color=INK, lw=0.7))
+    ax.axvline(3.7, color="0.45", lw=0.9, ls="-.")
+    ax.annotate("3.7, the summary width regression",
+                xy=(3.7, 0.30), xytext=(3.52, 0.30),
+                fontsize=8, color="0.35", va="center", ha="right",
+                arrowprops=dict(arrowstyle="->", color="0.45", lw=0.7))
+    ax.set_xlabel("reduced chi-squared")
+    ax.set_ylabel("density (each scaled to its own peak)")
+    ax.set_xlim(0.2, 4.2)
+    ax.set_ylim(0, 1.32)
+    ax.legend(frameon=False, fontsize=8, loc="upper right")
+    ax.spines[["top", "right"]].set_visible(False)
+    _footer(fig, "Teaching panel. Chi-squared sampling density, closed form, "
+                 "no data. Rebuild: python scripts/make_wiki_figures.py")
+    _save(fig, "wiki_reduced_chi_squared_1.png")
+
+def fig_reduced_chi_squared_2():
+    """One misfit, two readings that chi2_red alone cannot separate.
+
+    Left: a model missing a component. Right: the identical residuals with
+    the errors inflated by the square root of chi2_red, which sets the
+    number to one and leaves the structure untouched. The injected amplitude
+    is solved for at draw time so the left panel lands on 3.7, the value
+    this record's own width-against-power fit returns.
+    """
+    from scipy.optimize import brentq
+    rng = np.random.default_rng(20260827)
+    n = 40
+    x = np.linspace(-3.0, 3.0, n)
+    sigma = np.full(n, 0.05)
+    truth = np.exp(-x ** 2 / 2)
+    shape = np.cos(2.1 * x)
+    noise = rng.normal(0, sigma, n)
+
+    def cr_of(amp):
+        r = (truth + amp * shape + noise - truth) / sigma
+        return float(np.sum(r ** 2) / (n - 2))
+    amp = brentq(lambda a: cr_of(a) - 3.7, 0.0, 0.5, xtol=1e-9)
+    y = truth + amp * shape + noise
+    cr = cr_of(amp)
+    infl = np.sqrt(cr)
+
+    fig, axes = plt.subplots(2, 2, figsize=(7.8, 4.6), sharex=True,
+                             sharey="row",
+                             gridspec_kw={"height_ratios": [2, 1]})
+    for col, (s, lab) in enumerate(
+            ((sigma, f"errors as quoted, reduced chi-squared {cr:.1f}"),
+             (sigma * infl,
+              f"errors inflated {infl:.1f} times, reduced chi-squared 1.0"))):
+        top, bot = axes[0, col], axes[1, col]
+        top.errorbar(x, y, yerr=s, fmt="o", ms=3, lw=0.9, color=ACCENT,
+                     ecolor="0.6", capsize=0)
+        top.plot(x, truth, "-", color=ACCENT2, lw=1.6)
+        top.set_title(lab, fontsize=9, color=INK)
+        bot.axhline(0, color=INK, lw=0.8)
+        bot.errorbar(x, y - truth, yerr=s, fmt="o", ms=2.6, lw=0.8,
+                     color=ACCENT, ecolor="0.6", capsize=0)
+        bot.set_xlabel("detuning (arbitrary)")
+        for a in (top, bot):
+            a.spines[["top", "right"]].set_visible(False)
+    axes[0, 0].set_ylabel("signal")
+    axes[1, 0].set_ylabel("residual")
+    _footer(fig, "Teaching panel. Synthetic, seed 20260827, drawn here. The "
+                 "points and the residual structure are identical in both "
+                 "columns. Rebuild: python scripts/make_wiki_figures.py")
+    _save(fig, "wiki_reduced_chi_squared_2.png")
+
 def main():
     print(f"drawing wiki panels into {OUT}")
     fig_allan_deviation()
@@ -1617,6 +1701,8 @@ def main():
     fig_doppler_free_geometries_2()
     fig_shot_noise_and_technical_noise()
     fig_the_noise_law()
+    fig_reduced_chi_squared_1()
+    fig_reduced_chi_squared_2()
     print("done")
 
 

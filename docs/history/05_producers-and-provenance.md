@@ -69,7 +69,7 @@ A forward pointer was added to "The in-window structure and the band excess shar
 
 ## Two results files were committed without their status column, 2026-08-23
 
-`results/cooperative_channel.csv` and `results/orthogonal_levers.csv` were committed missing the `status` column every results file carries, and the committed figures did not match the committed CSVs. No value was wrong.
+`results/cooperative_channel.csv` and `results/orthogonal_levers.csv` were committed missing the `status` column the other results files carry, and the committed figures did not match the committed CSVs. No value was wrong.
 
 Producers write CSVs without the status column, and `scripts/annotate_results_status.py` adds it afterward. A read-only investigation running several producers against the same working tree stripped the column before a `git add -A` commit captured that state. A first gate failed on eleven stale figures, a downstream symptom, and a second failed on the missing column, the actual defect. Producers and the annotator were re-run and figures redrawn. Values are unchanged.
 

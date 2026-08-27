@@ -65,7 +65,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from rb5s6s import config as C  # noqa: E402
 from rb5s6s import stark  # noqa: E402
-from rb5s6s.constants import (C_M_PER_S, DELTA_ALPHA_AU,  # noqa: E402
+from rb5s6s.constants import (C_M_PER_S,  # noqa: E402
+                              DELTA_ALPHA_AU_ORSON2021,
                               EPS0_F_PER_M, GAMMA_NAT_HZ)
 from rb5s6s.hyperpolarizability import (ATOMIC_FIELD_V_PER_M,  # noqa: E402
                                         HARTREE_HZ,
@@ -150,13 +151,21 @@ def stage1() -> dict:
     print()
     print("  the ratio of Omega to S0 is field-independent but NOT "
           "single-valued,\n  because two values of |Delta_alpha| are in play:")
-    r_cited = 2.0 * t_au / DELTA_ALPHA_AU
+    # STALE UNTIL 2026-08-26. This block was written when DELTA_ALPHA_AU
+    # carried the CITED 1093, so "cited" against "this package's own" was a
+    # real contrast. The 2026-08-24 adjudication made DELTA_ALPHA_AU the
+    # record's own -1145, after which the branch labelled "cited" compared
+    # that value with itself, and the printed gap read -200 per cent because
+    # an abs() numerator sat over a signed denominator. Magnitudes on both
+    # sides now, and the cited value read from its own constant.
+    r_cited = 2.0 * t_au / abs(DELTA_ALPHA_AU_ORSON2021)
     r_module = 2.0 * t_au / abs(delta_alpha(LAM_NM))
-    print(f"    cited  {DELTA_ALPHA_AU:.0f} a.u. (constants.DELTA_ALPHA_AU, and "
-          f"every committed S0) -> {r_cited:.4f}")
+    print(f"    cited  {abs(DELTA_ALPHA_AU_ORSON2021):.0f} a.u. "
+          f"(constants.DELTA_ALPHA_AU_ORSON2021, Orson 2021) -> {r_cited:.4f}")
     print(f"    this package's own sum-over-states "
           f"{abs(delta_alpha(LAM_NM)):.1f} a.u.          -> {r_module:.4f}")
-    print(f"    the gap is the documented {100*(abs(delta_alpha(LAM_NM))/DELTA_ALPHA_AU-1):.1f} "
+    print(f"    the gap is the documented "
+          f"{100*(abs(delta_alpha(LAM_NM))/abs(DELTA_ALPHA_AU_ORSON2021)-1):.1f} "
           f"per cent Delta_alpha discrepancy, not a\n    convention error. "
           f"Stage 2 runs both ends. Direct check: Omega/S0 = "
           f"{om/(s0*1e6):.4f}.")

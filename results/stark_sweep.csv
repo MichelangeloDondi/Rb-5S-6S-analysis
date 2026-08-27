@@ -7,9 +7,9 @@ kappa_ub95,shared,9.798,,"REPLACED diagnostic: linearized (Wald) bound from the 
 S0_225mW_fit,shared,0.000,,"fitted on-axis AC-Stark shift at 225 mW (MHz, transition)",BOUND
 S0_225mW_ub95,shared,2.205,,REPLACED diagnostic: Wald chi2-inflated bound (MHz); kept for continuity with earlier ledgers -- quote the profile row instead,DIAGNOSTIC
 S0_225mW_ub95_raw,shared,1.145,,REPLACED diagnostic: un-inflated Wald bound (MHz),DIAGNOSTIC
-S0_225mW_pred,shared,0.364,,"predicted S0 at 225 mW (w0=64um prior, rho=0.94) for comparison",CALIB
-S0_225mW_pred_lo,shared,0.316,,"predicted S0 at 225 mW, w0=68um, rho=0.90 (band LOW edge)",CALIB
-S0_225mW_pred_hi,shared,0.396,,"predicted S0 at 225 mW, w0=62um, rho=0.98 (band HIGH edge)",CALIB
+S0_225mW_pred,shared,0.364,,"predicted S0 at 225 mW (w0=64um prior, rho=0.94). ENVELOPE: conditional on an effective waist not measured in the cell and on an assumed retro ratio, so its band is an envelope over two opposite vertices of the +-1 sigma box and NOT a sigma band, and a sigma distance measured from it is not a sigma",ENVELOPE
+S0_225mW_pred_lo,shared,0.316,,"SENSITIVITY ANCHOR, not a confidence bound: S0 re-evaluated at w0=68um, rho=0.90. Calling this a band edge turned a sensitivity scan into an interval by nomenclature alone",ENVELOPE
+S0_225mW_pred_hi,shared,0.396,,"SENSITIVITY ANCHOR, not a confidence bound: S0 re-evaluated at w0=62um, rho=0.98",ENVELOPE
 chi2_red,fit,3.705,,over 20 width points,DIAGNOSTIC
 core_sigma_laser,993.4121nm,1.509,,"per-peak power-independent core width (MHz, transition)",PRELIM
 core_sigma_laser,993.4154nm,1.519,,"per-peak power-independent core width (MHz, transition)",PRELIM

@@ -167,4 +167,4 @@ describes. [HISTORY.md](../HISTORY.md) carries the figures.
 
 ---
 
-[← Identifiability](identifiability.md) · *Statistical inference, 6 of 8* · [Injection-recovery testing →](injection-recovery.md)
+[← Reduced chi-squared](reduced-chi-squared.md) · *Statistical inference, 7 of 9* · [Injection-recovery testing →](injection-recovery.md)

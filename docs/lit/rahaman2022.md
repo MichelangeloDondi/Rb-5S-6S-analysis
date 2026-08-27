@@ -85,10 +85,22 @@ Reduced to this repository's convention ($S_0 = \Delta\alpha I_\text{eff}/2\vare
 
 Their convention matches this repository's exactly: 1152 a.u. reproduces
 54.0 Hz/(W/cm²) through the same conversion constant. Their shift-to-width
-ratio, −0.33 of FWHM, predicts an Rb 6S self-shift near −1.2 kHz per
-10¹² cm⁻³, about 24 kHz across the 70-130 °C archival range, and is roughly
-twice the classical van der Waals impact-theory ratio referred to HWHM
-(−0.66).
+ratio, −0.33 of FWHM, predicts an Rb 6S self-shift near −1.1 kHz per
+10¹² cm⁻³ and about **32 kHz** across the 70-130 °C archival range. That
+figure is the `shift_expected_differential` row of
+`results/collisional_shift_bound.csv`, which re-anchors the rate at each
+temperature instead of holding it flat, and it is computed rather than
+typed: this sentence carried 24 kHz, which is arithmetically the 110-130 °C
+span and not the range it names.
+
+**That ratio agrees with classical impact theory rather than differing from
+it, and the appearance of a factor of two is a normalisation.** −0.33 of
+FWHM is the same quantity as −0.66 of HWHM. The Lindholm-Foley value for a
+−C6/R⁶ potential is about −0.73 of HWHM, i.e. −0.36 of FWHM, so measurement
+and theory are ten per cent apart. This sentence had compared an
+FWHM-referred measurement against an HWHM-referred theory value and read the
+resulting two as physics, which in turn licensed calling this an independent
+route from the van der Waals model when it is the same physics.
 
 ## Method
 

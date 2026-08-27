@@ -72,7 +72,15 @@ HBAR = 1.054571817e-34
 KB = 1.380649e-23
 M_RB87 = 86.909180527 * 1.66053907e-27
 
-# Literature Rb2 ground-state C6, for the validation path only.
+# Literature Rb2 ground-state C6, for the validation path only. SOURCED
+# 2026-08-26, having stood uncited while the module's other SOURCED values
+# carry their journal and section. Stewart, Shen, Booth and Madison,
+# Phys. Rev. A 106, 052812 (2022), arXiv:2208.12805, measure the Rb-Rb
+# ground-state coefficient at 4688(198)(95) E_h a_0^6 from atom-trap
+# loss-rate diffractive-collision universality. That is an EXPERIMENTAL
+# determination rather than a sum-over-states one, so it is an independent
+# check on the calibration point this module's own machinery is validated
+# against, and 4691 sits well inside its first error bar.
 C6_RB2_GROUND_LIT_AU = 4691.0
 
 # Zameroski 2014 (J. Phys. B 47, 225205), section 2.5: the MEASURED self-

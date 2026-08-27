@@ -356,4 +356,4 @@ reader.
 
 ---
 
-[← Information criteria](information-criteria.md) · *Statistical inference, 5 of 8* · [The profile likelihood →](profile-likelihood.md)
+[← Information criteria](information-criteria.md) · *Statistical inference, 5 of 9* · [Reduced chi-squared →](reduced-chi-squared.md)

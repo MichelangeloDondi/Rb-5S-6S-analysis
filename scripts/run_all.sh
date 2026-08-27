@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reproduce the committed results/*.csv, figures, and docs/RESULTS.md from the
-# already-committed data_raw/ (see README.md "Reproduce"). It runs 29 analysis
+# already-committed data_raw/ (see README.md "Reproduce"). It runs 31 analysis
 # stages, then the figures, the results ledger and the CSV status column. It is
 # not the whole repository. Thirteen committed CSVs are written by twelve scripts
 # this file never calls, listed in README.md "Reproduce". Five of those need
@@ -34,7 +34,7 @@ for s in run_qc run_noise run_ruler run_linefit run_trim_report \
          run_model_ladder run_identifiability run_coverage run_sharing_bic run_fringe_tail \
          run_polarizability run_resolving_power run_projections \
          run_trapping_channels run_blackbody_channels run_skew_scaling \
-         run_polarisation_bound; do
+         run_polarisation_bound run_collisional_shift_bound run_delta_alpha_posterior; do
     echo "== scripts/$s.py =="
     python scripts/$s.py
 done

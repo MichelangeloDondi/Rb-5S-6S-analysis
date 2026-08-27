@@ -63,12 +63,37 @@ two-photon sum frequency, twice the laser frequency.
   central, with a 0.32-0.40 MHz band over the waist measurement band and the
   retro ratio (the values under this record's own differential
   polarizability, taken as the package's on 2026-08-25. Under the cited
-  Orson figure they were 0.35 and 0.30-0.38, and the exclusion holds
-  either way). The predicted coefficient lies above the 95% limit at
-  roughly the two-sigma level (delta chi-square about 4), an exclusion
-  with little margin, and the most conservative data subset's
-  bound rises marginally above the central prediction (0.366 against
-  0.348), so it excludes none of it. The constraint lands on the
+  Orson figure they were 0.35 and 0.30-0.38, and the ordering holds
+  either way). That band is an ENVELOPE over the two opposite vertices of the
+  ±1σ box in waist and retro ratio, picked to be the widest credible interval,
+  so it is not a σ band. The predicted coefficient lies above the primary 95%
+  limit by a delta chi-square of about 4, and this register called that an
+  exclusion at roughly the two-sigma level. **Both halves hold on the full fit,
+  and the sentence lacked two qualifications instead of being wrong.** The
+  exclusion holds, the limit lying below every point of the predicted
+  envelope, 1.404 to 1.760 in κ. Two things qualify it. Its strength is a range, Δχ² running 4.1 to 5.7
+  across the envelope, 2.0 to 2.4 σ, so a single calibrated two-sigma is what
+  is withdrawn. And it does not survive leaving one peak out: the
+  leave-one-out Δχ² are 8.75, 2.27, 1.12 and 0.61 against a 2.706 threshold
+  (`results/stark_joint.csv`), at the pre-adjudication κ of 1.545 and not at
+  this record's own 1.618. Each arm is a fit with one peak removed against its
+  own minimum, so they do not share the full profile's derivative. Carrying them to 1.618 needs no curvature model. Each arm's own committed pair, at 1.545 and at 2.62, brackets it between its value at 1.545 and that value plus its own secant slope across the gap, giving 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles the threshold and is not callable. **No count of arms is quoted, because one arm's bracket straddles
+  the threshold.**
+  On the full-archive fit the exclusion is stronger and robust, κ < 0.944 with
+  all four arms clearing the threshold (`results/full_dataset_fit.csv`, and RESULTS.md C3f).
+  That construction's own `gate_B4_prior_tension` reads FAIL at 3.78 against a
+  < 3.0 σ criterion, on β_self, which is degenerate with the width channel the
+  bound is read from, so it is the stronger construction and not an
+  unqualified one. The most
+  conservative subset, which drops one peak and with it a whole session,
+  raises the bound to 0.366 and lands inside the predicted envelope rather
+  than below it, but the record reads this margin from the primary
+  construction alone and that arm's half-per-cent margin is several times
+  smaller than the profile's own numerical scatter. The gap on the primary
+  construction stands, the primary limit sitting below the whole envelope,
+  and the computed polarizability sits in the upper few per cent under either
+  reading, so the gap is real and what is withdrawn is the single calibrated sigma and the leave-one-out robustness, not the confidence level, which the sentence above still asserts.
+  The constraint lands on the
   (Δα, intensity) pair, that is, on the product the light shift actually
   measures, rather than on either factor alone.
 - The 2025 laser linewidth: below 1.2 MHz per photon, equivalently 2.4 MHz on

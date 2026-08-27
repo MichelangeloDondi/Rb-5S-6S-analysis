@@ -8,10 +8,10 @@
 
 The twin previously produced idealised traces, not what a named instrument
 at named settings would record. It is now instrument-aware: oscilloscopes
-are objects with real limits (`rb5s6s/instruments.py`), every number taken
-from a manufacturer manual, and the two resolution mechanisms, disjoint
-boxcar and moving average, are distinguished in code instead of treated
-alike. The platform now decides the blackbody term: the heated cell
+are objects with real limits (`rb5s6s/instruments.py`), each labelled in
+place with its source, a manual or a measurement, and the two resolution
+mechanisms, disjoint boxcar and moving average, are distinguished in code
+instead of treated alike. The platform now decides the blackbody term: the heated cell
 radiates against itself and is evaluated at the cell temperature, while
 the nanofibre is fixed at 300 K regardless of the atom temperature, since
 laser-cooled atoms near a fibre radiate against the room and not against

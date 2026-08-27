@@ -35,6 +35,27 @@ module's own house rules, restated here so a reader need not open the source.
 | `ENVELOPE` | order of magnitude only | may bound an argument, must never carry a published digit |
 | `OPEN` | not settled | must never reach a published number |
 
+**One word does double duty and the two meanings differ, which is worth saying
+before a reader trips on it.** The table above is the vocabulary of
+`constants.py`, describing where a physical input came from. The `status`
+column on every row of `results/` is a different vocabulary, described in
+`scripts/annotate_results_status.py`, describing what a result is. Both
+contain the token `ENVELOPE`. The input tag means order of magnitude only.
+The results tag means a quantity conditional on something unmeasured, which
+may be computed to three digits and still not support a confidence statement:
+`S0_225mW_pred` is calculated exactly from constants and is `ENVELOPE` in the
+results sense because the waist behind it was never measured in this cell. So
+a results-row `ENVELOPE` may carry a digit, provided its conditional travels
+with it, and **may not carry a single calibrated significance.** It may carry
+a range obtained by scanning the conditional, which is what the light-shift
+block does when it reports Δχ² running 4.1 to 5.7 across the predicted
+envelope. The envelope is a scan and not a σ band, so the range is what the
+scan supports and collapsing it to one number is what was withdrawn. **This
+sentence read "may not carry a significance" until 2026-08-27, unqualified,
+and three reader-facing pages violated it in the same commit that introduced
+it**. The rule was written narrower than the practice it describes. The input-tag rule below is the stricter one and applies to
+`constants.py` alone.
+
 Two of these are load-bearing in an unusual way. `ENVELOPE` is not a large error
 bar, it is a statement that the quantity has no error bar worth quoting, so an
 `ENVELOPE` input propagating into a result caps that result at `ENVELOPE` too.
@@ -55,10 +76,18 @@ a new quantity cannot ship untagged.
 | `CALIB` | an instrument calibration rather than a physics result |
 | `DIAGNOSTIC` | an internal check, a count, a flag, or an error on another row. Never a result |
 | `ENVELOPE` | as in section 1: an order of magnitude, re-derive before publication |
-| `ARTIFACT` | identified as an instrumental or statistical artifact, kept so the identification stays visible. In the vocabulary and currently carried by no row: the one identified artifact, the shot-noise residual skew, is discussed in `RESULTS.md` C3c rather than tagged |
+| `ARTIFACT` | identified as an instrumental or statistical artifact, kept so the identification stays visible. Carried by four rows, all in `results/polarisation_bound.csv`, for a retracted channel. This cell said the tag was carried by no row until 2026-08-27, which was already false when written |
 
-Counts across the ledger as of 2026-08-15: 3150 `DIAGNOSTIC`, 425 `PRELIM`, 208
-`CALIB`, 149 `ENVELOPE`, 122 `BOUND`, 55 `MEASURED`, 21 `NULL`. The
+Counts across the ledger, recounted from every committed `results/*.csv`:
+3818 `DIAGNOSTIC`, 425 `PRELIM`, 201 `CALIB`, 168 `ENVELOPE`, 141 `BOUND`,
+62 `MEASURED`, 21 `NULL`, 4 `ARTIFACT`. **The previous line stood at
+2026-08-15 figures and five of its seven counts had drifted**, `CALIB` last of
+all, because this wave's own retag moved seven rows out of it. It also said
+`ARTIFACT` was carried by no row, which four rows already contradicted. **No
+guard ties this census to a live recount**, unlike the test-count line in
+`docs/methods.md`, so it is a hand-maintained number in a document about
+provenance discipline. It is recorded as a defect until a guard sums the
+column. The
 preponderance of `DIAGNOSTIC` is expected and is not a weakness: most rows in
 this ledger are checks, counts and errors-on-other-rows rather than results, and
 the results are deliberately few.
@@ -266,6 +295,96 @@ Uncertainty handling is guarded, not merely documented.
   they come from, so a document cannot drift from its source.
 
 ## 6. What is not covered, stated rather than implied
+
+**The collisional (pressure) shift is not in the model, and this is the
+number that says why.** The lineshape carries a collisional width,
+`gamma_coll`, and no collisional shift term. Collisions do both. The
+absence is given a number, and every number below is a committed row and not a
+typed digit: `scripts/run_collisional_shift_bound.py` writes
+`results/collisional_shift_bound.csv`, built because four of the figures
+this block previously printed by hand were wrong or unwarranted at once.
+[Orson 2021](lit/orson2021.md), section 3, records that the density shift of
+the 5S-6S line itself has **never been measured**, and bounds it from other
+Rb and Cs transitions at less than
+[30](lit/orson2021.md "ref:lit:orson2021:density_shift_bound_mhz_per_torr")
+MHz per Torr, a figure it takes in turn from Zameroski 2014, which this
+record also holds as [zameroski2014](lit/zameroski2014.md).
+
+**Every frequency in this block is on the transition axis, which is twice
+the laser axis.** The warrant is Zameroski's own statement that it defines
+nu = 2 nu_L and reports its shift rates on the atomic frequency scale. It is
+not that Orson's worked example uses that axis, which is how this block
+justified it before: a multiplication inherits the axis of its input rate,
+so reading the axis off the arithmetic is circular. This record has now
+mixed the two axes three times, which is why the producer writes the axis
+into the unit field of every row it emits.
+
+Applying that limit through the record's own vapour-pressure chain
+(`rb5s6s/density.py`), and inflating by (1 + `N_SCALE_FRAC_SYST`) as that
+module's docstring instructs every consumer of a quoted upper bound to do
+for the spread between published vapour-pressure correlations:
+
+| cell temperature | row | shift bound, transition axis |
+|---|---|---|
+| 70 C | `shift_bound_70C` | below `0.0007` MHz |
+| 90 C | `shift_bound_90C` | below `0.0033` MHz |
+| 110 C | `shift_bound_110C` | below `0.013` MHz |
+| 130 C | `shift_bound_130C` | below `0.044` MHz |
+
+**Across the campaign's own four-point grid, 70/90/110/130 C, the
+differential is below
+[0.044](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:bound:shift_bound_differential")
+MHz**, about
+[5.9](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:comparison:light_shift_over_collisional")
+times smaller than the light-shift bound this record quotes on the same
+axis, below
+[0.26](../results/stark_joint.csv "ref:stark_joint:S0_225mW_ub95:primary")
+MHz at 225 mW. So a collisional shift is not separable from zero by this
+dataset. The differential is quoted beside the absolute
+bound because it is the smaller and more relevant scale. **The mechanism this
+sentence used to give was wrong and is withdrawn**: it said a common shift is
+absorbed by the per-condition centre so only the variation across the sweep
+can bias a width, but `rb5s6s/beta.py` floats a centre per trace, and the
+density and hence the collisional shift are constant within a trace at a fixed
+set point. A shift is therefore absorbed at every trace whether or not it
+varies across the sweep, so neither figure is a width bias this fit could see.
+Both stand as ceilings on a channel the forward model does not carry, which is
+what a borrowed bound can honestly be.
+
+Three conditions on that statement, all real. The bound is borrowed from
+other transitions because none exists for this one, so it is a genus-level
+limit and not a measurement of the 5S-6S line. A pressure shift tracks
+density, hence temperature, while the light shift tracks power, and the
+power sweep sits at a single temperature, so the two are not degenerate in
+the sweep the light-shift bound is built from. And **this record cannot yet
+compute the shift itself**: `rb5s6s/vanderwaals.py` carries an impact-theory
+width prefactor, quoted from the literature and explicitly not derived
+there, and the package holds no shift prefactor anywhere. This block
+previously said the machinery was already present. It is not, and even if it
+were the answer would not be independent, because for a -C6/R^6 potential
+the shift-to-width ratio is a fixed constant, so the shift produced would be
+a fixed multiple of the `beta_self` this record already has.
+
+**The record's own expectation for this atom very nearly exhausts the borrowed
+ceiling, and that is what two numbers agreeing in size actually say.**
+[Rahaman 2022](lit/rahaman2022.md) measures a Cs 6S-7D self-shift whose
+shift-to-broadening ratio is -0.33 of the FWHM, a value Zameroski's Rb
+5S-5D5/2 pair independently reproduces. Applied to this record's own
+`beta_self(6S)` it predicts a differential of
+[0.032](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:shift_expected_differential")
+MHz across the same grid, which is
+[0.87](../results/collisional_shift_bound.csv "ref:collisional_shift_bound:expectation:expectation_over_bound")
+of the **uninflated** ceiling, 0.0363 MHz, and **not** of the 0.044 quoted
+above, which would give 0.73. The denominator is named because both figures
+carry the same vapour-density inflation and it cancels in the ratio, so raw
+against raw is the like-for-like comparison. Dividing the central expectation
+by the inflated ceiling was a first draft of this line. Two numbers that close in size, one a ceiling and one an
+expectation, do not corroborate one another: they say the ceiling is nearly
+used up by the only estimate the record holds. **Nor are they two routes.**
+The borrowed 30 MHz/Torr is Zameroski's measured 5D self-shift, and the
+expectation's absolute scale is a `beta_self` anchored on Zameroski's 7S
+broadening. Both run through the same paper, and this block called them
+independent.
 
 **The waist conditionality is not a statistical error and is not in any `err`
 column.** Every absolute result rides on the beam waist through the transit

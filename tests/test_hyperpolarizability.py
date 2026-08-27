@@ -241,8 +241,9 @@ def test_two_photon_matrix_element_and_its_ratio_to_the_light_shift():
     The ratio 2T/|Delta_alpha| is the saturation companion note's input, and it
     took two passes to get right. The note first used 1.294, then recorded 1.237
     as a correction of "two field conventions". That diagnosis was wrong: 1.294
-    divides by the CITED 1093 a.u. that constants.DELTA_ALPHA_AU carries and
-    every committed S0 uses, 1.237 divides by this package's own 1145 a.u., and
+    divides by the CITED 1093 a.u., which constants.DELTA_ALPHA_AU carried
+    until the 2026-08-24 adjudication and which now lives in
+    DELTA_ALPHA_AU_ORSON2021, 1.237 divides by this record's own 1145 a.u., and
     the 4.7 per cent between them is the documented Delta_alpha discrepancy. So
     this test pins BOTH ends and the fact that they bracket the same physics.
     """

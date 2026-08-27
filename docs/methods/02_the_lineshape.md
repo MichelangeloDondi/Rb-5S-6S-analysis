@@ -232,17 +232,24 @@ natural⊗transit already exceeds the observed $\sim5.25$ MHz line, which
 is why **$w_0=32$ µm is excluded** and why transit and the laser are degenerate
 through $w_0$ ([what we found](07_what_we_found.md)).
 
-**A direct beam measurement, made once.** The same 993 nm beamline was measured
-directly by [Nieddu](../lit/nieddu2019.md) (2019, Opt. Express 27, 6528, page
-6530), which states the convention in its own words: "The $1/e^2$ beam diameter
-is 128 µm", with the same $f=150$ mm focusing lens, so $w_0=64$ µm, with the
-same 3 mm EOM aperture truncating the input beam that the naive (untruncated)
-estimate misses. The [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis
-reports the same number in its section 5.2, but that is the same measurement
-rather than a second one: the thesis footnote at its section 5.1 says the
-section 5.2 data "were collected by T. Nieddu and plotted by K.P. Subramonian
-Rajasree", and reprints the paper as its Appendix B.2 (corrected 2026-08-14,
-having previously been described here as two independent measurements). That
+**A direct beam measurement, and whose it is matters.** The waist authority is
+the [Rajasree-KP](../lit/rajasree2020.md) 2020 OIST thesis, which reports the
+$1/e^2$ beam diameter as 128 µm with the same $f=150$ mm focusing lens, so
+$w_0=64$ µm, and with the same 3 mm EOM aperture truncating the input beam
+that the naive (untruncated) estimate misses.
+[Nieddu](../lit/nieddu2019.md) (2019, Opt. Express 27, 6528, page 6530) states
+the same figure, and the thesis credits the underlying data collection to
+T. Nieddu, **but that paper's bench carried an earlier laser generation than
+this campaign**. That is why the thesis and not the paper is this record's
+source for the waist. `docs/lit/nieddu2019.md` has said so. This page did not.
+
+**A correction to a correction, 2026-08-27, on the owner's own
+statement.** This paragraph previously credited the measurement to Nieddu and
+demoted the thesis to a reprint, and carried a note saying that form was
+itself a correction made on 2026-08-14 from an earlier "two independent
+measurements". Collapsing the two reports into one removed the distinction
+that actually matters, which is not how many measurements there were but
+which laser each was taken on. That
 direct measurement lands at the top of the transit-inferred band and
 independently excludes 32 µm, agreeing with the corrected transit physics. The accepted prior
 is $w_0=64$ µm with a 62–68 µm band (`constants.W0_BAND_M`, narrowed from

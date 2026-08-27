@@ -129,8 +129,14 @@ finding by itself at that rate across eight constructions checked.
 
 The repository's practice of reporting leave-one-out subsets is the same
 case-deletion idea applied by hand, at the scale of a whole condition instead
-of a single point. [RESULTS.md](../RESULTS.md) records that the joint
-light-shift bound survives dropping any one peak, and
+of a single point. **And it is the example of what the technique is for**:
+[RESULTS.md](../RESULTS.md) once read those leave-one-out rows as "all
+positive and similar" and concluded the joint light-shift bound survives
+dropping any one peak. That reading was withdrawn on 2026-08-27. The four arms span a factor of fourteen,
+one clearly excludes, two clearly do not, and the fourth sits inside the
+profile's own numerical scatter of the threshold. That is the reading a
+case-deletion diagnostic exists to produce and a glance at four positive
+numbers does not.
 [`results/lever_crosscheck.csv`](../../results/lever_crosscheck.csv) carries
 the analogous rows for the self-broadening slope, one per dropped peak and
 one per dropped temperature block. Both are Cook's distance and DFBETA in

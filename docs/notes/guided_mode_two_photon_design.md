@@ -50,10 +50,12 @@ In the cell the working point is 225 mW into a waist of
 `constants.W0_MEASURED_M` = 64 µm, giving `2P/(pi w0^2)` = 3.497e7 W/m² per
 travelling wave and, with `rho` = 0.94, an on-axis maximum shift
 
-    lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94, 1093.0) = 0.3476 MHz
+    lineshape.stark_shift_S0_mhz(0.225, 64e-6, 0.94) = 0.3641 MHz
 
-on the transition axis (calculated, and the value `docs/RESULTS.md` C3d
-carries). A guided mode of radius 15 µm reaches the same intensity at
+on the transition axis, at the record's own pinned `DELTA_ALPHA_AU`. An
+earlier version of this line passed `1093.0` explicitly and got 0.3476,
+which matched `results/stark_joint.csv` only because that file's five-hour
+producer has not re-run since this record pinned its own polarizability. A guided mode of radius 15 µm reaches the same intensity at
 **11.45 mW**, and a 10 µm mode at **5.09 mW**. That is the first and largest
 change: the power that a cell spends on one focal volume would instead buy
 either a much lower shift at the same rate, or the same shift over tens of
@@ -147,7 +149,7 @@ deeper does not help. Only colder atoms, or a different trap wavelength, would.
 | 100 µK | 3.655 MHz |
 | 556 µK | 20.3 MHz (ENVELOPE, past the harmonic limit) |
 
-For scale, the record's whole ramp edge is 0.348 MHz and the natural width is
+For scale, the record's whole ramp edge is 0.364 MHz and the natural width is
 `constants.GAMMA_NAT_HZ` = 3.4925 MHz. A 1064 nm trap reaches the record's
 ramp edge at **9.5 µK** and the natural width at **95.6 µK**. A sample at the
 few-hundred-µK temperature that a fibre load without further cooling would
@@ -263,7 +265,7 @@ being used: an independent rebuild of `polarizability.alpha_5s` agreeing to
 1.000000 at four wavelengths, an Einstein-A route to the 6S lifetime giving
 45.42 ns against the repository's `TAU_6S_S` = 45.57 ns (0.3 %), a computed
 6S → 5P1/2 branch of 0.341 against the 34/66 split held in `docs/lit/`, and
-`lineshape.stark_shift_S0_mhz` reproducing the C3d value of 0.348 MHz.
+`lineshape.stark_shift_S0_mhz` reproducing the C3d prediction at the pinned constant.
 
 Backing the same chain out of the dataset's own detected photons does **not**
 agree with it. The first-principles peak rate at the cell's working point is
@@ -300,7 +302,7 @@ filled fibre, line width natural plus transit plus ramp.
 | natural FWHM | 3.4925 MHz | 1.802 MHz | 0.410 MHz (ENVELOPE) |
 | `S0` at 100 mW | 6.83 MHz | 26.1 MHz | 171 MHz |
 | power at which `S0` = natural width | **51.1 mW** | **6.91 mW** | **240 µW** |
-| power at which `S0` = the cell's 0.348 MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
+| power at which `S0` = the cell's 0.364 MHz | 5.09 mW | 0.68 mW | 0.0049 mW |
 | peak rate per atom at 100 mW | 6.22e6 /s | 5.48e6 /s | 1.29e6 /s |
 | counts/s, 1e4 cold atoms, 100 mW | 2.7e5 | 1.6e5 | 9.9e3 |
 | counts/s, cold, at the usable power | 1.2e5 | 2.2e4 | 4.2e3 |
@@ -308,7 +310,7 @@ filled fibre, line width natural plus transit plus ramp.
 
 The `Δα` values come from `polarizability.delta_alpha(993.4181)` and
 `polarizability.delta_alpha_7s(760.1257)`. The module returns them with the
-opposite sign convention to the pinned `constants.DELTA_ALPHA_AU` = 1093, whose
+opposite sign convention to `constants.DELTA_ALPHA_AU_ORSON2021` = +1093, whose
 sign is the subject of an unresolved dispute recorded elsewhere in this
 repository. Magnitudes agree to 5 %, and nothing in this note depends on the
 sign, only on the magnitude. The 5D5/2 column rests on a construction from one

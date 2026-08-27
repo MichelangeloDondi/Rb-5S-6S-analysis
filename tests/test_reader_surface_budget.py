@@ -34,6 +34,142 @@ log establishes that fact, which rests on one person's memory, and the
 repaired sentence carries the RECOLLECTION tag instead. It runs five words
 longer than the invented one. A budget that made that trade the other way
 would be a budget worth deleting.
+
+RAISED A SECOND TIME, twenty words, and for the same kind of trade. A board
+found that the polarizability's one known OPEN defect was disclosed in a
+history chapter while the results ledger, the front path, hardened the claim
+in the same commit. The record already names that class: a claim is read
+where the reader stands. So the caveat moved to where the claim is, and it
+says what the defect is worth, 0.8 to 3.9 half-widths of the band quoted
+beside it. The addition cost sixty words and about ninety were paid back
+first, by DELETING a retracted tune-out value and two derivation steps from
+the polarizability bullet: reference detail a reader of a results ledger
+does not need. A first draft of this note said those words were MOVED to
+the pages that own them. They were not, and a board seat checked; nothing
+in this diff received them. The residual twenty is what a caveat costs when
+it stands where its claim does.
+
+RAISED A THIRD TIME, two hundred and eleven words. The record's flagship
+light-shift statement said the prediction was excluded at 95 per cent, and
+it is not. **Retiring a significance costs more words than asserting one**,
+because the assertion is four words and the retirement has to say what is
+wrong with it and what the data do support instead. Twelve words of
+now-duplicative framing were cut from the case page first. A budget that
+made the record keep a wrong significance because the correction ran longer
+would be a budget worth deleting, which is the same sentence as the first
+raise and the reason this file exists in the form it does.
+
+RAISED A FOURTH TIME, five hundred and forty-two words. (The four stated
+deltas sum to 778 against a measured 780 from HEAD, a two-word gap a
+board found and this parenthesis is the whole of its repair: the first
+three raises were recorded to the word and the arithmetic was not
+re-checked when the fourth was added.) The reason is
+that the third raise bought a correction whose own stated reasons were
+wrong. This docstring carried them until today: it said the limit comes from
+a regression over-dispersed at about 3.7 and that the prediction carries no
+distribution. A five-seat board refuted both. The 3.7 belongs to the
+width-only summary regression, whose threshold is scaled by it, and not to
+the joint construction the limit actually comes from, whose `ub95()` reads
+an unscaled 2.706. The record had caught that same misattribution once
+before, on 2026-08-04. And the prediction's inputs do carry stated
+one-sigma uncertainties, so the defensible claim is the narrower one, that
+its committed band is an envelope over two opposite vertices of that box and
+therefore not a sigma band. A third support, the coverage study's zeroth
+percentile, was already withdrawn inside this record as a like-for-like
+error and was about to be revived.
+
+What replaces them is measured rather than argued, and it is why the words
+are worth their space: the same committed profile gives a limit 24 per cent
+apart depending on whether it is read as a Delta-chi-square crossing or as a
+posterior, and a number that unstable cannot carry a two-sigma significance.
+**The deeper cost this raise is paying for is that a corrected sentence is
+where the next defect lands**, because it has been rewritten since the last
+reading and re-read by nobody. Three of the four pages here grew
+because a wrong sentence had to be replaced twice.
+
+AMENDED THE SAME NIGHT, to 32,559, after a SECOND board read the
+repair this raise paid for and refuted its leading reason. The
+retraction had argued that a limit moving by a quarter between two
+readings of one likelihood cannot support an exclusion at 95 per
+cent. Both readings still placed the prediction above the limit, so
+the spread never bore on the exclusion at all, only on quoting it to
+three digits. What actually falsifies it was committed in the record
+already: drop the peak that carries a whole session and the bound
+crosses above the prediction. The words bought here are that
+substitution across five surfaces, plus the square-root conversion
+that stops a reader reading a sixth of a width budget as a factor of
+six on a bound. This is one raise recorded twice rather than a fifth,
+because it is one wave and one night.
+
+AMENDED AGAIN, to 32,720, after a THIRD board refuted the leading
+reason the second amendment paid for. The subset arm it led on lands
+INSIDE the prediction's own envelope rather than above it, so the
+argument had quietly reverted to a point centre the next paragraph
+denies. What replaced it was already in the record and had never been
+used: the construction does not reproduce, its passes spanning a
+factor of 2.1. **Four leading reasons in one night, three of them
+withdrawn, and the words here are the cost of finding that out in
+private rather than in a referee report.** If a fifth is needed, stop and
+hand the owner the facts instead of raising this number again.
+
+A RAISE FOR A DISAMBIGUATION, and it is the cheapest kind. The owner asked
+for the crossovers to be explained better, and the finding was that three
+unrelated things share the word: the crossover RESONANCE of saturated
+absorption, which this geometry does not produce; the crossover PATHWAYS
+that feed one comb tooth; and the NOISE crossover, which is a voltage. Two
+of them sit on neighbouring wiki pages and one was used undefined. The
+glossary had no entry at all, so it gains one, and a glossary that omits
+the word a reader is most likely to conflate is not doing its job.
+
+A RAISE THAT BUYS A RESULT, for once. The seventh board found the
+leave-one-out fragility belongs to the three-session construction alone:
+the full-archive fit is stronger AND keeps all four arms. The record had
+been broadcasting the weaker model's weakness unscoped, against its own
+standing rule to present the fullest model. These words state the
+comparison, and the record is stronger with them than without.
+
+A LAST RAISE, for the referent. The leave-one-out rows are evaluated at the
+pre-adjudication predicted coefficient of 1.545 and not at this record's own
+1.618, where each would sit higher, so the count of arms below threshold is
+provisional until a five-hour refit runs. Saying which coefficient a number
+is at costs a clause and is the difference between a finding and a claim.
+
+AND THE FIFTH WAS NEEDED, so this last amendment is DOWNWARD. The
+replacement reason cited the multi-start spread of a factor of two, which
+the very paragraph it was written into records as a display-normalisation
+artefact. That is the second retracted number cited in one night. The
+retraction was then cut back to the one basis nothing in the record
+disputes, that a two-sigma statement needs a prediction which is a point
+carrying a distribution and this one is neither, and the front path FELL
+as a result. A budget that only ever rises is a budget being used to
+license prose. This entry exists to show it can fall when an argument is
+cut back to what it can carry.
+
+AND ONE LAST AMENDMENT, upward by seventeen words on the case page, for the
+opposite reason to every other on this list. A fourth board found the
+retraction had OVERCORRECTED: only the two-sigma calibration fails, and the
+exclusion at 95 per cent itself stands, because the primary limit lies below
+every point of the predicted envelope. Saying which half of a retracted
+sentence survives takes more words than retracting all of it, and the
+seventeen buy a true statement in place of a false one.
+
+AND FORTY MORE, for the same class one bullet over: C3f was quoting the
+pre-adjudication prediction and its ratio inside the same paragraph that
+uses the current envelope. The cells cannot be regenerated here, so the
+clause states their staleness and gives the current pair. A number that
+cannot be fixed can still be labelled, and labelling costs words.
+
+AND A LAST ONE, for the finding that ends this wave. The retraction had
+been aimed at a claim that was substantially true: the two-sigma was the
+square root of a Delta_chi2 the sentence itself named, and it holds at
+every geometry in the envelope. What was missing were two qualifications,
+and the larger of them was in committed rows the whole time -- three of the
+the leave-one-out arms straddle the threshold at the predicted coefficient
+(the count this line used to give was withdrawn 2026-08-27),
+where the record said dropping any one peak left the tension intact. **The
+words bought here replace a false sentence with the four numbers that
+refute it.** That is the cheapest kind of prose this budget will ever pay
+for, and it took five boards to find it.
 """
 from __future__ import annotations
 

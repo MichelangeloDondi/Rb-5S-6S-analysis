@@ -56,6 +56,14 @@ CHEAP = {
     "run_kernel_identifiability": ["kernel_identifiability.csv"],
     # reads two committed CSVs and does arithmetic; seconds.
     "run_kernel_budget": ["kernel_budget.csv"],
+    # reads the vapour-pressure chain, the van der Waals anchor and the
+    # committed stark_joint.csv; milliseconds. Cheap on purpose: every row it
+    # writes used to be a digit typed into prose, and four of them were wrong.
+    "run_collisional_shift_bound": ["collisional_shift_bound.csv"],
+    # inverts the committed kappa profile against the stated geometry
+    # priors; seconds. Cheap on purpose: the number it emits was headed
+    # for eight reader-facing surfaces with no row behind it.
+    "run_delta_alpha_posterior": ["delta_alpha_posterior.csv"],
     "run_orthogonal_levers": ["orthogonal_levers.csv"],
     "run_onf_candidate": ["onf_candidate.csv"],
     "run_cooperative_channel": ["cooperative_channel.csv"],

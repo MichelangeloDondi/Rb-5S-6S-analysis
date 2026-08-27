@@ -223,4 +223,4 @@ reported.
 
 ---
 
-[← The profile likelihood](profile-likelihood.md) · *Statistical inference, 7 of 8* · [Preregistration →](preregistration.md)
+[← The profile likelihood](profile-likelihood.md) · *Statistical inference, 8 of 9* · [Preregistration →](preregistration.md)

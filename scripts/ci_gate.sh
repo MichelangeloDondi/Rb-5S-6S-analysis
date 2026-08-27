@@ -96,4 +96,22 @@ fi
 if [ -f private/checks/protocol_citations.py ]; then
   "$PY" private/checks/protocol_citations.py || exit 1
 fi
+# The board ledger, wired for the same reason and after the same finding.
+# LOGIC 0c says five adversarial seats read the staged diff before every
+# commit. The ledger that measures it was written, shipped, and called by
+# NOTHING -- in the very commit whose best content was a docstring recording
+# that the results annotator's deliberate KeyError had fired for nobody
+# because nothing ever called it. Two dead guards, twenty-five lines apart.
+# A guard that nothing calls is not a guard, so it is called here.
+if [ -f private/checks/board_ledger.py ]; then
+  "$PY" private/checks/board_ledger.py --verify || exit 1
+fi
+# The enforcement report is a REPORT and not a gate: it prints one line per
+# standing owner rule and does not decide anything, so its exit code is not
+# consulted. It runs here so the verdict a terminal state quotes is the
+# verdict of the tree that just passed, rather than one remembered from
+# earlier in the session.
+if [ -f private/checks/enforcement_report.py ]; then
+  "$PY" private/checks/enforcement_report.py || true
+fi
 echo "ci_gate: clean"

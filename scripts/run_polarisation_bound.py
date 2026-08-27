@@ -168,10 +168,12 @@ def main() -> int:
     out.append(["vector_spread_at_225mW_pred", "fully circular",
                 f"{vs:.5f}", "",
                 f"MHz, the m_F spread the vector light shift opens at 225 mW "
-                f"for fully circular light, sized against the CALIBRATED "
-                f"PREDICTION S0_225mW_pred = {s0_pred:.3f} MHz. This is the "
-                f"headline, because a systematic is sized against the larger "
-                f"of the two available shifts", "DIAGNOSTIC"])
+                f"for fully circular light, sized against the PREDICTED "
+                f"S0_225mW_pred = {s0_pred:.3f} MHz, an ENVELOPE conditional "
+                f"on a waist not measured in the cell and on an assumed "
+                f"retro ratio. This is the headline, because a systematic is "
+                f"sized against the larger of the two available shifts",
+                "DIAGNOSTIC"])
     out.append(["vector_spread_at_225mW_bound", "fully circular",
                 f"{vs_bound:.5f}", "",
                 f"MHz, the same spread sized against the 95 per cent upper "

@@ -53,9 +53,20 @@ and the distribution hangs below it.
 
 The light shift was an unconstrained systematic. This record holds the
 three-step chain in order: no shift was detected, the width channel
-bounded the scale below the predicted value, and the prediction is
-thereby excluded at 95 per cent. A bound is not a measurement of the
-shift, and the distribution above is what makes even the bound possible
+bounded the scale, and that bound sits below the value predicted at the
+accepted geometry. **The third step holds on the full fit and this page
+stated it too flatly.** The limit lies below every point of the predicted
+envelope, so the prediction is excluded at 95 per cent at every geometry in
+the stated band. What the page did not say is that the strength is a range,
+2.0 to 2.4 σ across the envelope, and that on this construction the exclusion does
+not survive leaving one peak out: one arm clearly excludes, two clearly do not,
+and the fourth lands inside the profile's own scatter of the threshold, so a
+count of arms is not a stable summary. The fuller archive fit is stronger and
+keeps all four, and carries a failing prior-tension gate of its own.
+The gap survives, the computed polarizability sitting in the upper few per
+cent of the posterior either way. What is withdrawn is the single calibrated
+sigma and the leave-one-out robustness, not the confidence level. A bound is not a
+measurement of the shift, and the distribution above is what makes even the bound possible
 on a dataset whose absolute frequencies carry no information.
 
 The same object is the design quantity of a guided platform. Inside a

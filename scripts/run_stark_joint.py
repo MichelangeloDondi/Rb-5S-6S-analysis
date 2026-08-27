@@ -710,11 +710,12 @@ def main() -> int:
         for pk in PEAKS:
             w.writerow(["lopo_dchi2_pred", pk,
                         f"{lopo[pk][round(KAPPA_PRED, 3)]:+.2f}", "",
-                        "chi2(kappa_pred) - min with this peak dropped; all "
-                        "positive and similar = no single peak drives it"])
+                        (
+                        "chi2(kappa_pred) - min with this peak dropped. compare against 2.706 and not against zero, since positivity was never the test, and reading these as all-positive-and-similar is the error withdrawn 2026-08-27. Do NOT summarise these as a count of arms below threshold either. Each arm is a fit with one peak REMOVED measured against its OWN minimum, so the four are separate likelihoods. Carrying them to the 1.618 the constants later gave needs no curvature model: each arm's own pair here, at kappa_pred and at 2.62, brackets it between its value at kappa_pred and that value plus its own secant slope across the gap. That gives 4121 in [8.75, 10.05], 4192 in [2.27, 2.77], 4154 in [1.12, 1.35] and 4207 in [0.61, 0.86]. So 4121 clears at both ends, 4154 and 4207 fail at both ends, and 4192 straddles 2.706 and is not callable. kappa_pred is whatever the constants gave at run time, so state which value these are at")])
             w.writerow(["lopo_dchi2_262", pk, f"{lopo[pk][2.62]:+.2f}", "",
-                        "chi2(kappa=2.62)-min with this peak dropped; all "
-                        "positive and similar = no single peak drives it"])
+                        "chi2(kappa=2.62)-min with this peak dropped. This "
+                        "is a legacy checkpoint well above kappa_pred and it "
+                        "cannot speak to the exclusion at the prediction"])
         for k, pk in enumerate(PEAKS):
             w.writerow(["gamma_coll_post", pk, f"{q_a[2 + k]:.3f}", "",
                         f"MHz; posterior under the beta_self prior "

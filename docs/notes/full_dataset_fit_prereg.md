@@ -274,7 +274,7 @@ as much as its stated reason.
 A sane result, stated in advance: profile minimum at or near kappa = 0 with no
 appreciable preference, a 95% upper limit of the same order as M23's 1.192 MHz
 per W and plausibly tighter given 59 more traces on the core, all four
-leave-one-peak-out rows positive and similar, direction indifference at the tens
+leave-one-peak-out rows positive and similar **[criterion corrected 2026-08-27: positivity was never the test, the threshold is 2.706. On this construction all four arms clear it at 3.17 to 11.48, so this prereg's verdict stands. On the three-session joint fit no count of arms is quotable, since the arms are separate likelihoods and carrying them to 1.618 leaves one inside that profile's own scatter of the threshold]**, direction indifference at the tens
 of chi-squared, and posterior collisional widths within 3 sigma of their priors.
 
 Stop conditions: B1, B3 or B5 failing. Also any of the following, which are

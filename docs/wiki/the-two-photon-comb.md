@@ -151,11 +151,25 @@ The weights $J_s(2\beta)^2$ are an interference result, holding only when
 every pathway to a tooth carries the same phase.
 
 A tooth at sum offset $s$ is fed by every sideband pair $(n, s-n)$: the
-carrier tooth by $(0,0)$, by $(+1,-1)$, by $(+2,-2)$, and so on. At zero
-relative delay these pathways interfere, and their coherent sum is
+carrier tooth by $(0,0)$, by $(+1,-1)$, by $(+2,-2)$, and so on. **Those
+pairs are what this page calls *crossover pathways***, and the name is worth
+pinning because it is the second of three unrelated uses of "crossover" in
+this repository. Here it means only this: two photons drawn from different
+sidebands, whose frequencies sum to the same tooth as a pair drawn from the
+carrier. It is not the crossover resonance of saturated absorption, which is
+a spurious line at the midpoint of two real ones and which this geometry
+does not produce at all
+([Doppler-free two-photon](doppler-free-two-photon.md) works out why), and
+it is not the noise crossover of
+[weighted least squares](weighted-least-squares.md), which is a signal
+level. A crossover pathway adds no line of its own. It adds amplitude to a
+tooth that already exists.
+
+At zero relative delay these pathways interfere, and their coherent sum is
 $J_s(2\beta)$ by the Bessel addition theorem, so a carrier vanishes at
 $2\beta = 2.405$ even though its crossover pathways still exist and
-cancel. One photon of each pair comes from the retro beam, delayed
+cancel. **A vanishing carrier is therefore a cancellation and not an
+absence**, which is the whole reason the retro delay below can undo it. One photon of each pair comes from the retro beam, delayed
 by $\tau(z)$ for an atom at $z$, so the pathway $(n, s-n)$ carries a phase
 $(s-n)\Omega\tau$, and the sum collapses to a single tone at effective
 depth $2\beta\cos(\pi f\tau)$. An atom shows weights
